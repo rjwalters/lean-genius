@@ -159,9 +159,144 @@ theorem sevenHighT0CanonicalDegreeVars_eq_generator (center : Fin 42) :
       rw [heq]
       simp [sevenHighT0CanonicalOtherLow, hi]
 
+theorem SeqCounterInputReifies.mono_agree
+    {n : Nat} {base next : DimacsValuation} {baseTop nextTop : Nat}
+    {vars : Array Int} {x : Fin n → Bool}
+    (h : SeqCounterInputReifies base baseTop vars x)
+    (htop : baseTop ≤ nextTop)
+    (hagree : ∀ id, id ≤ baseTop → next id = base id) :
+    SeqCounterInputReifies next nextTop vars x := by
+  constructor
+  · exact h.size_eq
+  · exact h.nonzero
+  · intro i hi
+    exact (h.bounded i hi).trans htop
+  · intro i hi
+    rw [← h.value i hi]
+    exact dimacsLitValue_eq_of_agree next base
+      (hagree _ (h.bounded i hi))
+
+abbrev SevenHighT0CanonicalDegreeValState :=
+  SevenHighT0CanonicalCnfState × DimacsValuation
+
+structure SevenHighT0CanonicalDegreeSemanticSound
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (acc : SevenHighT0CanonicalDegreeValState) : Prop where
+  top_bound : 861 ≤ acc.1.top
+  satisfied : dimacsFormulaSatisfied acc.2 acc.1.clauses
+  bounded : dimacsFormulaBounded acc.1.top acc.1.clauses
+  edge_agree : ∀ id, id ≤ 861 → acc.2 id = sevenHighT0CanonicalEdgeVal H id
+
+def sevenHighT0CanonicalDegreeVarsRow
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (center : Fin 42) :
+    Fin (sevenHighT0CanonicalDegreeVars center).size → Bool := fun index =>
+  sevenHighT0CanonicalDegreeRow H center
+    (Fin.cast (sevenHighT0CanonicalDegreeVars_size center) index)
+
+theorem sevenHighT0CanonicalDegreeVarsRow_inputReifies
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (center : Fin 42) :
+    SeqCounterInputReifies (sevenHighT0CanonicalEdgeVal H) 861
+      (sevenHighT0CanonicalDegreeVars center)
+      (sevenHighT0CanonicalDegreeVarsRow H center) := by
+  let base := sevenHighT0CanonicalDegreeInputReifies H center
+  constructor
+  · rfl
+  · intro i hi
+    exact base.nonzero i (by
+      rw [← sevenHighT0CanonicalDegreeVars_size center]
+      exact hi)
+  · intro i hi
+    exact base.bounded i (by
+      rw [← sevenHighT0CanonicalDegreeVars_size center]
+      exact hi)
+  · intro i hi
+    have hi' : i < 41 := by
+      rw [← sevenHighT0CanonicalDegreeVars_size center]
+      exact hi
+    simpa only [sevenHighT0CanonicalDegreeVarsRow, Fin.cast_mk] using
+      base.value i hi'
+
+theorem sevenHighT0CanonicalDegreeVarsRow_target
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H)
+    (center : Fin 42) :
+    seqPrefixTrue (sevenHighT0CanonicalDegreeVarsRow H center)
+        (sevenHighT0CanonicalDegreeVars center).size =
+      sevenHighT0CanonicalLowDegree (center.1 + 7) := by
+  calc
+    _ = seqPrefixTrue (sevenHighT0CanonicalDegreeVarsRow H center) 41 :=
+      congrArg (seqPrefixTrue (sevenHighT0CanonicalDegreeVarsRow H center))
+        (sevenHighT0CanonicalDegreeVars_size center)
+    _ = seqPrefixTrue (sevenHighT0CanonicalDegreeRow H center) 41 := by
+      unfold seqPrefixTrue
+      apply congrArg Finset.card
+      ext i
+      by_cases hi : i < 41
+      · simp [hi, sevenHighT0CanonicalDegreeVarsRow]
+      · simp [hi]
+    _ = _ := sevenHighT0CanonicalDegreeRow_target H semantics center
+
+def sevenHighT0CanonicalDegreeStepVal
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (center : Fin 42) (acc : SevenHighT0CanonicalDegreeValState) :
+    SevenHighT0CanonicalDegreeValState :=
+  let vars := sevenHighT0CanonicalDegreeVars center
+  let target := sevenHighT0CanonicalLowDegree (center.1 + 7)
+  let out := seqCounterEquals acc.1.top vars target
+  ({ top := out.top, clauses := acc.1.clauses ++ out.clauses },
+    seqCounterEqualsVal acc.2 acc.1.top vars
+      (sevenHighT0CanonicalDegreeVarsRow H center) target)
+
+@[simp] theorem sevenHighT0CanonicalDegreeStepVal_state
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (center : Fin 42) (acc : SevenHighT0CanonicalDegreeValState) :
+    (sevenHighT0CanonicalDegreeStepVal H center acc).1 =
+      sevenHighT0CanonicalDegreeStep (center.1 + 7) acc.1 := by
+  rw [sevenHighT0CanonicalDegreeStep]
+  rw [← sevenHighT0CanonicalDegreeVars_eq_generator center]
+  rfl
+
+theorem sevenHighT0CanonicalDegreeSemanticSound_initial
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj] :
+    SevenHighT0CanonicalDegreeSemanticSound H
+      (({} : SevenHighT0CanonicalCnfState), sevenHighT0CanonicalEdgeVal H) := by
+  constructor
+  · rfl
+  · exact dimacsFormulaSatisfied_empty _
+  · exact dimacsFormulaBounded_empty _
+  · intros
+    rfl
+
+theorem sevenHighT0CanonicalDegreeStepVal_semanticSound
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H)
+    (center : Fin 42) {acc : SevenHighT0CanonicalDegreeValState}
+    (h : SevenHighT0CanonicalDegreeSemanticSound H acc) :
+    SevenHighT0CanonicalDegreeSemanticSound H
+      (sevenHighT0CanonicalDegreeStepVal H center acc) := by
+  let vars := sevenHighT0CanonicalDegreeVars center
+  let row := sevenHighT0CanonicalDegreeVarsRow H center
+  let target := sevenHighT0CanonicalLowDegree (center.1 + 7)
+  have hinput : SeqCounterInputReifies acc.2 acc.1.top vars row :=
+    (sevenHighT0CanonicalDegreeVarsRow_inputReifies H center).mono_agree
+      h.top_bound h.edge_agree
+  have hblock := seqCounterEqualsVal_formulaSatisfied_append
+    acc.2 acc.1.top acc.1.clauses vars row h.satisfied h.bounded
+      hinput target (sevenHighT0CanonicalDegreeVarsRow_target H semantics center)
+  constructor
+  · exact h.top_bound.trans (seqCounterEquals_top_bound acc.1.top vars target)
+  · exact hblock.1
+  · exact hblock.2.1
+  · intro id hid
+    exact (seqCounterEqualsVal_input acc.2 acc.1.top vars row target id
+      (hid.trans h.top_bound)).trans (h.edge_agree id hid)
+
 end Erdos85
 
 #print axioms Erdos85.sevenHighT0CanonicalDegreeVarId_bounds
 #print axioms Erdos85.sevenHighT0CanonicalDegreeInputReifies
 #print axioms Erdos85.sevenHighT0CanonicalDegreeRow_target
 #print axioms Erdos85.sevenHighT0CanonicalDegreeVars_eq_generator
+#print axioms Erdos85.sevenHighT0CanonicalDegreeStepVal_semanticSound
