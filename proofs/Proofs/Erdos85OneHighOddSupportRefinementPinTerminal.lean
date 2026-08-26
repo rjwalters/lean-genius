@@ -1,4 +1,5 @@
 import Proofs.Erdos85OneHighGraphCanonicalSlotCoverage
+import Proofs.Erdos85OneHighAllEvenCapacityTerminal
 import Proofs.Erdos85OneHighMultiplicitySectorSupport
 import Proofs.Erdos85OneHighOddProfileSlotVariantInventory
 import Proofs.Erdos85OneHighRefinementPinnedExclusion
@@ -237,6 +238,50 @@ theorem false_of_oneHigh_crossBlock_refinementPinBank
   · exact (oneHighGraphPairingRefinement_multiplicity_odd_iff
       G hfree hv p hhh.1).2 hhh.2
 
+/-- Complete one-high assembly using the capacity-covered presentation once.
+The all-even branch uses the existing table certificates; the two odd-support
+branches use the new exact-refinement banks.  Only the mate-miss hexagon
+terminal remains structural at this interface. -/
+theorem orderFortyNineStratumExcluded_one_of_capacitySectorRefinementPinBanks
+    (hcheckedEven : ∀ (profile : Fin 5) table,
+      table ∈ oneHighAllEvenCapacityInventoryTables profile →
+        OneHighFamilyV2CheckedUnsat profile.val table)
+    (hhexagon : OneHighMateMissHexagonSectorExcluded)
+    (hturnBank : OneHighThreePairTurnRefinementPinBank)
+    (hcrossBank : OneHighCrossBlockRefinementPinBank) :
+    OrderFortyNineStratumExcluded 1 := by
+  intro G _ _ _ hfree hmin hHigh
+  obtain ⟨v, hv, p, stored, hstored, hagree⟩ :=
+    oneHighRawV2OrbitCover_capacityInventory G inferInstance inferInstance
+      inferInstance hfree hmin hHigh
+  rcases orderFortyNine_oneHigh_structural_sector_capstone
+      G hfree hmin (Fintype.card_fin 49) hv p with
+    heven | hmate | hthree | hfour
+  · let profile : Fin 5 :=
+      ⟨p.profile, Nat.lt_succ_iff.mpr p.profile_le⟩
+    have hstoredAll : stored ∈
+        oneHighAllEvenCapacityInventoryTables profile :=
+      oneHigh_storedTable_mem_allEvenCapacityInventory
+        G hfree hv p heven stored hstored hagree
+    have hcertStored : OneHighFamilyV2CheckedUnsat p.profile stored :=
+      hcheckedEven profile stored hstoredAll
+    have hcertGraph : OneHighFamilyV2CheckedUnsat p.profile
+        (oneHighFamilyGraphTable
+          (oneHighRelabeledLeafGraph G v
+            (oneHighLeafFinFortyEquiv G hfree v
+              p.branchLabel p.leafLabel)) p.profile) :=
+      hcertStored.transport hagree.symm
+    exact false_of_rawOneHigh_v2Checked
+      G hfree hmin (Fintype.card_fin 49) hv p.unique_high p.external_empty
+        p.outer_degree p.mate p.mate_involutive p.mate_adj p.branchLabel
+        p.branch_mate p.leafLabel p.profile p.constraints hcertGraph
+  · exact hhexagon G inferInstance inferInstance inferInstance
+      hfree hmin hHigh hv p hmate
+  · exact false_of_oneHigh_threePairTurn_refinementPinBank
+      hturnBank G hfree hv p stored hstored hagree hthree
+  · exact false_of_oneHigh_crossBlock_refinementPinBank
+      hcrossBank G hfree hv p stored hstored hagree hfour
+
 end
 
 end Erdos85
@@ -245,3 +290,4 @@ end Erdos85
 #print axioms Erdos85.false_of_oneHigh_capacitySector_refinementPinBank
 #print axioms Erdos85.false_of_oneHigh_threePairTurn_refinementPinBank
 #print axioms Erdos85.false_of_oneHigh_crossBlock_refinementPinBank
+#print axioms Erdos85.orderFortyNineStratumExcluded_one_of_capacitySectorRefinementPinBanks
