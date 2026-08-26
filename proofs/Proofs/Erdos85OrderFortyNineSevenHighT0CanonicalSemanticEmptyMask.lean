@@ -1,5 +1,7 @@
 import Proofs.Erdos85OrderFortyNineSevenHighT0CanonicalSemanticStructure
 import Proofs.Erdos85OrderFortyNineSevenHighT0CanonicalCnfC4Witness
+import Proofs.Erdos85OrderFortyNineSevenHighT0CanonicalRelabeling
+import Proofs.Erdos85OrderFortyNineSevenHighT0CanonicalFinTransport
 
 /-! # The executable empty-sector mask of canonical H7 semantics
 
@@ -123,6 +125,49 @@ private theorem sevenHighT0CanonicalLabelPairs_nodup :
     sevenHighT0CanonicalLabelPairs.Nodup := by
   decide
 
+private theorem sevenHighT0CanonicalPairKey_injective :
+    Function.Injective sevenHighT0CanonicalPairKey := by
+  decide
+
+noncomputable def sevenHighT0CanonicalPairKeyEquiv :
+    Fin 21 ≃ SevenHighT0PairIndex :=
+  Equiv.ofBijective sevenHighT0CanonicalPairKey
+    ((Fintype.bijective_iff_injective_and_card
+      sevenHighT0CanonicalPairKey).2
+      ⟨sevenHighT0CanonicalPairKey_injective, by
+        simpa using sevenHighT0PairIndex_card.symm⟩)
+
+private theorem sevenHighT0CanonicalPairNat_sym2_injective
+    (left right : Fin 21)
+    (h : s(Fin.ofNat 7 (sevenHighT0CanonicalPairNat left).1,
+          Fin.ofNat 7 (sevenHighT0CanonicalPairNat left).2) =
+        s(Fin.ofNat 7 (sevenHighT0CanonicalPairNat right).1,
+          Fin.ofNat 7 (sevenHighT0CanonicalPairNat right).2)) :
+    left = right := by
+  fin_cases left <;> fin_cases right <;>
+    simp_all [sevenHighT0CanonicalPairNat, Fin.ofNat]
+
+private theorem sevenHighT0CanonicalLabelPair_exists_index
+    {pair : Nat × Nat} (hpair : pair ∈ sevenHighT0CanonicalLabelPairs) :
+    ∃ index : Fin 21, pair = sevenHighT0CanonicalPairNat index := by
+  obtain ⟨index, hindex, rfl⟩ := List.getElem_of_mem hpair
+  have hpairs : sevenHighT0CanonicalLabelPairs.length = 21 := by decide
+  have hi21 : index < 21 := by simpa [hpairs] using hindex
+  refine ⟨⟨index, hi21⟩, ?_⟩
+  have hlookup := sevenHighT0CanonicalLabelPairs_lookup_pairNat ⟨index, hi21⟩
+  rw [List.getElem?_eq_getElem hindex] at hlookup
+  exact Option.some.inj hlookup
+
+private theorem sevenHighT0CanonicalPairNat_sym2_eq_pairKey
+    (index : Fin 21) :
+    s(Fin.ofNat 7 (sevenHighT0CanonicalPairNat index).1,
+        Fin.ofNat 7 (sevenHighT0CanonicalPairNat index).2) =
+      (sevenHighT0PairIndexSym2Equiv
+        (sevenHighT0CanonicalPairKey index)).1 := by
+  fin_cases index <;>
+    simp [sevenHighT0CanonicalPairNat, sevenHighT0CanonicalPairKey,
+      sevenHighT0PairIndexSym2Equiv, Fin.ofNat]
+
 def sevenHighT0CanonicalEmptySemanticEdgePairs
     (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj] :
     Finset (Nat × Nat) :=
@@ -148,7 +193,99 @@ theorem sevenHighT0CanonicalEmptySemanticBits_countP_eq_edgePairs_card
   rw [sevenHighT0CanonicalEmptySemanticEdgePairs, List.toFinset_filter]
   simp only [decide_eq_true_eq]
 
+theorem sevenHighT0CanonicalEmptySemanticEdgePairs_card_eq_edgeFinset
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj] :
+    (sevenHighT0CanonicalEmptySemanticEdgePairs H).card =
+      (H.comap (fun w : Fin 7 => Sum.inr (Sum.inl w))).edgeFinset.card := by
+  let E := H.comap (fun w : Fin 7 => Sum.inr (Sum.inl w))
+  apply Finset.card_bij (fun pair _ =>
+    s(Fin.ofNat 7 pair.1, Fin.ofNat 7 pair.2))
+  · intro pair hpair
+    rw [SimpleGraph.mem_edgeFinset, SimpleGraph.mem_edgeSet]
+    exact (Finset.mem_filter.mp hpair).2
+  · intro left hleft right hright heq
+    obtain ⟨i, hi⟩ := sevenHighT0CanonicalLabelPair_exists_index
+      (List.mem_toFinset.mp (Finset.mem_filter.mp hleft).1)
+    obtain ⟨j, hj⟩ := sevenHighT0CanonicalLabelPair_exists_index
+      (List.mem_toFinset.mp (Finset.mem_filter.mp hright).1)
+    subst left
+    subst right
+    have hij := sevenHighT0CanonicalPairNat_sym2_injective i j heq
+    subst j
+    rfl
+  · intro edge hedge
+    have hnotDiag : ¬ edge.IsDiag :=
+      E.not_isDiag_of_mem_edgeFinset hedge
+    let offDiag : {z : Sym2 (Fin 7) // ¬ z.IsDiag} := ⟨edge, hnotDiag⟩
+    let key : SevenHighT0PairIndex :=
+      sevenHighT0PairIndexSym2Equiv.symm offDiag
+    let index : Fin 21 := sevenHighT0CanonicalPairKeyEquiv.symm key
+    let pair := sevenHighT0CanonicalPairNat index
+    have hpairs : sevenHighT0CanonicalLabelPairs.length = 21 := by decide
+    have hlookup := sevenHighT0CanonicalLabelPairs_lookup_pairNat index
+    have hindex : index.1 < sevenHighT0CanonicalLabelPairs.length := by
+      rw [hpairs]
+      exact index.2
+    rw [List.getElem?_eq_getElem hindex] at hlookup
+    have hpairMem : pair ∈ sevenHighT0CanonicalLabelPairs := by
+      change sevenHighT0CanonicalPairNat index ∈
+        sevenHighT0CanonicalLabelPairs
+      rw [← Option.some.inj hlookup]
+      exact List.getElem_mem hindex
+    have hedgeEq :
+        s(Fin.ofNat 7 pair.1, Fin.ofNat 7 pair.2) = edge := by
+      calc
+        s(Fin.ofNat 7 pair.1, Fin.ofNat 7 pair.2) =
+            (sevenHighT0PairIndexSym2Equiv
+              (sevenHighT0CanonicalPairKey index)).1 :=
+          sevenHighT0CanonicalPairNat_sym2_eq_pairKey index
+        _ = (sevenHighT0PairIndexSym2Equiv key).1 := by
+          rw [show sevenHighT0CanonicalPairKey index = key by
+            exact sevenHighT0CanonicalPairKeyEquiv.apply_symm_apply key]
+        _ = edge := by
+          exact congrArg Subtype.val
+            (sevenHighT0PairIndexSym2Equiv.apply_symm_apply offDiag)
+    refine ⟨pair, ?_, hedgeEq⟩
+    rw [sevenHighT0CanonicalEmptySemanticEdgePairs,
+      Finset.mem_filter]
+    refine ⟨List.mem_toFinset.mpr hpairMem, ?_⟩
+    change E.Adj (Fin.ofNat 7 pair.1) (Fin.ofNat 7 pair.2)
+    rw [← SimpleGraph.mem_edgeSet, ← SimpleGraph.mem_edgeFinset, hedgeEq]
+    exact hedge
+
+theorem sevenHighT0CanonicalEmptySemanticMask_countP_eq_internalEdgeCount
+    {H : SimpleGraph SevenHighT0CanonicalIndex} [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H) :
+    (List.range 21).countP
+        (sevenHighT0CanonicalEmptySemanticMask H).testBit =
+      sevenHighT0InternalEdgeCount (sevenHighT0CanonicalFinGraph H) 0 := by
+  calc
+    (List.range 21).countP
+        (sevenHighT0CanonicalEmptySemanticMask H).testBit =
+        (sevenHighT0CanonicalEmptySemanticBits H).countP id :=
+      sevenHighT0CanonicalEmptySemanticMask_countP_testBit H
+    _ = (sevenHighT0CanonicalEmptySemanticEdgePairs H).card :=
+      sevenHighT0CanonicalEmptySemanticBits_countP_eq_edgePairs_card H
+    _ = (H.comap
+        (fun w : Fin 7 => Sum.inr (Sum.inl w))).edgeFinset.card :=
+      sevenHighT0CanonicalEmptySemanticEdgePairs_card_eq_edgeFinset H
+    _ = sevenHighT0InternalEdgeCount
+        (sevenHighT0CanonicalFinGraph H) 0 :=
+      semantics.finGraph_internalEmptyEdgeCount_eq.symm
+
+theorem SevenHighT0CanonicalCompletionSemantics.semanticMask_edge_bounds
+    {H : SimpleGraph SevenHighT0CanonicalIndex} [DecidableRel H.Adj]
+    (semantics : SevenHighT0CanonicalCompletionSemantics H) :
+    6 ≤ (List.range 21).countP
+          (sevenHighT0CanonicalEmptySemanticMask H).testBit ∧
+      (List.range 21).countP
+          (sevenHighT0CanonicalEmptySemanticMask H).testBit ≤ 10 := by
+  rw [sevenHighT0CanonicalEmptySemanticMask_countP_eq_internalEdgeCount
+    semantics]
+  exact semantics.finGraph_internalEmptyEdge_bounds
+
 end Erdos85
 
 #print axioms Erdos85.sevenHighT0CanonicalEmptySemanticMask_testBit
 #print axioms Erdos85.sevenHighT0CanonicalEmptySemanticMask_countP_testBit
+#print axioms Erdos85.SevenHighT0CanonicalCompletionSemantics.semanticMask_edge_bounds
