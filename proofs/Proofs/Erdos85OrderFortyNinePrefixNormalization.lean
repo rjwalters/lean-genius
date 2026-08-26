@@ -364,13 +364,22 @@ theorem encTriple_disjointPrefix_lt_remaining :
   native_decide
 
 @[simp] theorem tripleDigits_012 :
-    tripleDigits ({0, 1, 2} : Finset (Fin 9)) = [0, 1, 2] := by native_decide
+    tripleDigits ({0, 1, 2} : Finset (Fin 9)) = [0, 1, 2] := by
+  change ((([0, 1, 2] : List (Fin 9)).toFinset.sort (· ≤ ·)).map Fin.val) = _
+  rw [(List.toFinset_sort (r := (· ≤ ·)) (by decide)).2 (by decide)]
+  rfl
 
 @[simp] theorem tripleDigits_034 :
-    tripleDigits ({0, 3, 4} : Finset (Fin 9)) = [0, 3, 4] := by native_decide
+    tripleDigits ({0, 3, 4} : Finset (Fin 9)) = [0, 3, 4] := by
+  change ((([0, 3, 4] : List (Fin 9)).toFinset.sort (· ≤ ·)).map Fin.val) = _
+  rw [(List.toFinset_sort (r := (· ≤ ·)) (by decide)).2 (by decide)]
+  rfl
 
 @[simp] theorem tripleDigits_345 :
-    tripleDigits ({3, 4, 5} : Finset (Fin 9)) = [3, 4, 5] := by native_decide
+    tripleDigits ({3, 4, 5} : Finset (Fin 9)) = [3, 4, 5] := by
+  change ((([3, 4, 5] : List (Fin 9)).toFinset.sort (· ≤ ·)).map Fin.val) = _
+  rw [(List.toFinset_sort (r := (· ≤ ·)) (by decide)).2 (by decide)]
+  rfl
 
 theorem mem_rawT2_iff {T2 : List Nat} :
     [firstTriple, T2] ∈ rawT2 ↔ T2 ∈ secondTriples := by
