@@ -209,7 +209,7 @@ theorem exists_labeling_normalizing_intersecting_threeFinsets
       simpa using hinter
     rw [hAe, hdisjoint] at hmapInter
     have hz : (({0, 1, 2} : Finset (Fin 9)) ∩ {3, 4, 5}).card = 0 := by
-      native_decide
+      decide
     omega
   · exact hintersecting
 
@@ -235,7 +235,7 @@ theorem exists_labeling_normalizing_disjoint_threeFinsets
       simpa using hinter
     rw [hAe, hintersecting] at hmapInter
     have ho : (({0, 1, 2} : Finset (Fin 9)) ∩ {0, 3, 4}).card = 1 := by
-      native_decide
+      decide
     omega
 
 /-- Mathematical membership criterion for the executable list of triples. -/
@@ -348,20 +348,59 @@ theorem eq_of_encTriple_tripleDigits_eq
 the executable order.  These are tiny closed nine-point facts; expressing
 them here keeps the graph-facing selection argument conceptual. -/
 
+set_option maxHeartbeats 0 in
 theorem encTriple_intersectingPrefix_lt_remaining :
     ∀ S : Finset (Fin 9), S.card = 3 →
       (({0, 1, 2} : Finset (Fin 9)) ∩ S).card ≤ 1 →
       (({0, 3, 4} : Finset (Fin 9)) ∩ S).card ≤ 1 →
       S ≠ {0, 1, 2} → S ≠ {0, 3, 4} →
       encTriple [0, 3, 4] < encTriple (tripleDigits S) := by
-  native_decide
+  intro S hcard hfirst hsecond hneFirst hneSecond
+  have hlen : (S.sort (· ≤ ·)).length = 3 := by simpa using hcard
+  obtain ⟨a, b, c, hlist⟩ := List.length_eq_three.mp hlen
+  have hsorted := Finset.sortedLT_sort S
+  rw [hlist] at hsorted
+  have hab : a < b := by
+    simpa using hsorted (show (0 : Fin 3) < (1 : Fin 3) by decide)
+  have hbc : b < c := by
+    simpa using hsorted (show (1 : Fin 3) < (2 : Fin 3) by decide)
+  have hfin : ({a, b, c} : Finset (Fin 9)) = S := by
+    rw [← Finset.sort_toFinset S (· ≤ ·), hlist]
+    simp
+  rw [← hfin] at hfirst hsecond hneFirst hneSecond
+  rw [tripleDigits, hlist]
+  fin_cases a
+  all_goals fin_cases b
+  all_goals fin_cases c
+  all_goals norm_num [encTriple] at *
+  all_goals simp_all
 
+set_option maxHeartbeats 0 in
 theorem encTriple_disjointPrefix_lt_remaining :
     ∀ S : Finset (Fin 9), S.card = 3 →
       (({0, 1, 2} : Finset (Fin 9)) ∩ S).card = 0 →
       (({3, 4, 5} : Finset (Fin 9)) ∩ S).card = 0 →
       encTriple [3, 4, 5] < encTriple (tripleDigits S) := by
-  native_decide
+  intro S hcard hfirst hsecond
+  have hlen : (S.sort (· ≤ ·)).length = 3 := by simpa using hcard
+  obtain ⟨a, b, c, hlist⟩ := List.length_eq_three.mp hlen
+  have hsorted := Finset.sortedLT_sort S
+  rw [hlist] at hsorted
+  have hab : a < b := by
+    simpa using hsorted (show (0 : Fin 3) < (1 : Fin 3) by decide)
+  have hbc : b < c := by
+    simpa using hsorted (show (1 : Fin 3) < (2 : Fin 3) by decide)
+  have hfin : ({a, b, c} : Finset (Fin 9)) = S := by
+    rw [← Finset.sort_toFinset S (· ≤ ·), hlist]
+    simp
+  rw [← hfin] at hfirst hsecond
+  rw [tripleDigits, hlist]
+  clear S hcard hlen hlist hsorted hfin
+  fin_cases a
+  all_goals fin_cases b
+  all_goals fin_cases c
+  all_goals norm_num [encTriple] at *
+  all_goals simp_all
 
 @[simp] theorem tripleDigits_012 :
     tripleDigits ({0, 1, 2} : Finset (Fin 9)) = [0, 1, 2] := by
