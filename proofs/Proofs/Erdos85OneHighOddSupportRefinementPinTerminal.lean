@@ -42,6 +42,11 @@ def OneHighCapacitySectorRefinementPinBank
     refinement ∈ oneHighCapacitySectorSlotVariants accept profile →
       OneHighRefinementCheckedUnsat profile.val refinement
 
+/-- The exact finite target for the odd standard-mate-key sector. -/
+def oneHighOddMateKeyCapacitySlotVariants (profile : Fin 5) :=
+  oneHighCapacitySectorSlotVariants
+    oneHighRefinementHasOddMateKey profile
+
 /-- The exact finite target for the three-pair-turn sector. -/
 def oneHighThreePairTurnCapacitySlotVariants (profile : Fin 5) :=
   oneHighCapacitySectorSlotVariants
@@ -55,6 +60,10 @@ def oneHighCrossBlockCapacitySlotVariants (profile : Fin 5) :=
 def OneHighThreePairTurnRefinementPinBank : Prop :=
   OneHighCapacitySectorRefinementPinBank
     oneHighRefinementHasOddThreePairTurn
+
+def OneHighOddMateKeyRefinementPinBank : Prop :=
+  OneHighCapacitySectorRefinementPinBank
+    oneHighRefinementHasOddMateKey
 
 def OneHighCrossBlockRefinementPinBank : Prop :=
   OneHighCapacitySectorRefinementPinBank
@@ -159,6 +168,36 @@ private theorem oneHighGraphPairingRefinement_multiplicity_odd_iff
       (oneHighCanonicalLabelPair a b)) := by
   rw [oneHighGraphPairingRefinementMultiplicity_eq_global]
   exact min_lt_max.mpr hab
+
+/-- A checked mate-key refinement bank excludes the odd standard-mate sector
+before its structural witness is weakened to a mate-miss hexagon. -/
+theorem false_of_oneHigh_oddMateKey_refinementPinBank
+    (hbank : OneHighOddMateKeyRefinementPinBank)
+    {V : Type*} [Fintype V] [DecidableEq V] [LinearOrder V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 V G) {v : V} (hv : G.degree v = 8)
+    (p : OneHighRawV2Presentation G hfree v)
+    (stored : OneHighMissTable)
+    (hstored : stored ∈ oneHighCapacityInventoryTables
+      ⟨p.profile, Nat.lt_succ_iff.mpr p.profile_le⟩)
+    (hagree : OneHighTableRelevantAgree
+      (oneHighFamilyGraphTable
+        (oneHighRelabeledLeafGraph G v
+          (oneHighLeafFinFortyEquiv G hfree v p.branchLabel p.leafLabel))
+        p.profile) stored)
+    (hmate : OneHighOddSupportMateEdgeProp
+      (exchangedMissPairMultiplicity
+        (oneHighGlobalInternalMate G hfree v)
+        (fun x => p.branchLabel
+          (oneHighGlobalMissLabel G hfree hv p.external_empty p.outer_degree
+            p.mate p.mate_adj x)))) : False := by
+  apply false_of_oneHigh_capacitySector_refinementPinBank
+    oneHighRefinementHasOddMateKey hbank
+    G hfree hv p stored hstored hagree
+  apply (oneHighRefinementHasOddMateKey_eq_true_iff _).2
+  obtain ⟨i, hi⟩ := hmate
+  exact ⟨i, (oneHighGraphPairingRefinement_multiplicity_odd_iff
+    G hfree hv p hi.1).2 hi.2⟩
 
 /-- A checked turn-sector refinement bank excludes a graph carrying the
 three-root-pair odd turn, once its capacity-orbit representative is supplied. -/
@@ -282,12 +321,64 @@ theorem orderFortyNineStratumExcluded_one_of_capacitySectorRefinementPinBanks
   · exact false_of_oneHigh_crossBlock_refinementPinBank
       hcrossBank G hfree hv p stored hstored hagree hfour
 
+/-- Fully certificate-facing one-high assembly.  Unlike the hexagon-facing
+capstone above, this retains the odd mate-key parity witness and therefore
+routes every non-even sector through an exact refinement-pin bank. -/
+theorem orderFortyNineStratumExcluded_one_of_allCapacityRefinementPinBanks
+    (hcheckedEven : ∀ (profile : Fin 5) table,
+      table ∈ oneHighAllEvenCapacityInventoryTables profile →
+        OneHighFamilyV2CheckedUnsat profile.val table)
+    (hmateBank : OneHighOddMateKeyRefinementPinBank)
+    (hturnBank : OneHighThreePairTurnRefinementPinBank)
+    (hcrossBank : OneHighCrossBlockRefinementPinBank) :
+    OrderFortyNineStratumExcluded 1 := by
+  intro G _ _ _ hfree hmin hHigh
+  obtain ⟨v, hv, p, stored, hstored, hagree⟩ :=
+    oneHighRawV2OrbitCover_capacityInventory G inferInstance inferInstance
+      inferInstance hfree hmin hHigh
+  have hneigh : ∀ y, G.Adj v y → G.degree y = 7 := by
+    intro y hy
+    exact orderFortyNine_neighbor_degree_seven_of_degreeEight
+      G hfree hmin (Fintype.card_fin 49) hv hy
+  have hlocal : ∀ u : {z : Fin 49 // z ∈ G.neighborSet v},
+      (G.induce (G.neighborSet v)).degree u = 1 :=
+    orderFortyNine_localNeighborhood_degree_eq_one_of_degreeEight
+      G hfree hmin (Fintype.card_fin 49) hv
+  rcases oneHighGraphExchangedMultiplicity_oddSupport_structural
+      G hfree hv hneigh hlocal p with heven | hmate | hturn | hcross
+  · let profile : Fin 5 :=
+      ⟨p.profile, Nat.lt_succ_iff.mpr p.profile_le⟩
+    have hstoredAll : stored ∈
+        oneHighAllEvenCapacityInventoryTables profile :=
+      oneHigh_storedTable_mem_allEvenCapacityInventory
+        G hfree hv p heven stored hstored hagree
+    have hcertStored : OneHighFamilyV2CheckedUnsat p.profile stored :=
+      hcheckedEven profile stored hstoredAll
+    have hcertGraph : OneHighFamilyV2CheckedUnsat p.profile
+        (oneHighFamilyGraphTable
+          (oneHighRelabeledLeafGraph G v
+            (oneHighLeafFinFortyEquiv G hfree v
+              p.branchLabel p.leafLabel)) p.profile) :=
+      hcertStored.transport hagree.symm
+    exact false_of_rawOneHigh_v2Checked
+      G hfree hmin (Fintype.card_fin 49) hv p.unique_high p.external_empty
+        p.outer_degree p.mate p.mate_involutive p.mate_adj p.branchLabel
+        p.branch_mate p.leafLabel p.profile p.constraints hcertGraph
+  · exact false_of_oneHigh_oddMateKey_refinementPinBank
+      hmateBank G hfree hv p stored hstored hagree hmate
+  · exact false_of_oneHigh_threePairTurn_refinementPinBank
+      hturnBank G hfree hv p stored hstored hagree hturn
+  · exact false_of_oneHigh_crossBlock_refinementPinBank
+      hcrossBank G hfree hv p stored hstored hagree hcross
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.oneHighGraphPairingRefinement_mem_capacityInventoryRefinements
 #print axioms Erdos85.false_of_oneHigh_capacitySector_refinementPinBank
+#print axioms Erdos85.false_of_oneHigh_oddMateKey_refinementPinBank
 #print axioms Erdos85.false_of_oneHigh_threePairTurn_refinementPinBank
 #print axioms Erdos85.false_of_oneHigh_crossBlock_refinementPinBank
 #print axioms Erdos85.orderFortyNineStratumExcluded_one_of_capacitySectorRefinementPinBanks
+#print axioms Erdos85.orderFortyNineStratumExcluded_one_of_allCapacityRefinementPinBanks
