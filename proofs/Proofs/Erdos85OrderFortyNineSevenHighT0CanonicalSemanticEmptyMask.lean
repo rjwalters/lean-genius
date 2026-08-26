@@ -40,6 +40,25 @@ theorem sevenHighT0CanonicalBoolsToNat_lt_pow_length (bits : List Bool) :
         simp only [sevenHighT0CanonicalBoolsToNat, Nat.bit_false,
           Nat.bit_true, List.length_cons, pow_succ] <;> omega
 
+theorem sevenHighT0CanonicalBoolsToNat_countP_testBit (bits : List Bool) :
+    (List.range bits.length).countP
+        (sevenHighT0CanonicalBoolsToNat bits).testBit =
+      bits.countP id := by
+  induction bits with
+  | nil => simp
+  | cons bit bits ih =>
+      rw [List.length_cons, List.range_succ_eq_map]
+      simp only [sevenHighT0CanonicalBoolsToNat, List.countP_cons,
+        Nat.testBit_bit_zero, List.countP_map]
+      have hshift :
+          (Nat.bit bit (sevenHighT0CanonicalBoolsToNat bits)).testBit ∘
+              Nat.succ =
+            (sevenHighT0CanonicalBoolsToNat bits).testBit := by
+        funext index
+        exact Nat.testBit_bit_succ index bit _
+      rw [hshift, ih]
+      simp
+
 def sevenHighT0CanonicalEmptySemanticBits
     (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj] :
     List Bool :=
@@ -91,6 +110,16 @@ theorem sevenHighT0CanonicalEmptySemanticMask_testBit
   · rw [sevenHighT0CanonicalEmptySemanticBits_length]
     exact index.2
 
+theorem sevenHighT0CanonicalEmptySemanticMask_countP_testBit
+    (H : SimpleGraph SevenHighT0CanonicalIndex) [DecidableRel H.Adj] :
+    (List.range 21).countP
+        (sevenHighT0CanonicalEmptySemanticMask H).testBit =
+      (sevenHighT0CanonicalEmptySemanticBits H).countP id := by
+  rw [← sevenHighT0CanonicalEmptySemanticBits_length H,
+    sevenHighT0CanonicalEmptySemanticMask,
+    sevenHighT0CanonicalBoolsToNat_countP_testBit]
+
 end Erdos85
 
 #print axioms Erdos85.sevenHighT0CanonicalEmptySemanticMask_testBit
+#print axioms Erdos85.sevenHighT0CanonicalEmptySemanticMask_countP_testBit
