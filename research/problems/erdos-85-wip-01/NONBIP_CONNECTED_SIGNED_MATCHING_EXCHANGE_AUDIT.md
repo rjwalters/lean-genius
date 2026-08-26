@@ -47,9 +47,10 @@ matchings with an even alternating switch       19,972
 It then constructs a deterministic sparse subgraph of the full
 sign-changing exchange graph.  For each positive matching it samples only
 32 negative matchings and retains pairs whose symmetric difference is one
-even alternating cycle.  This gives 104,237 exchange edges.  Exact
-Hopcroft--Karp matching covers all 9,986 vertices on each shore, yielding a
-verified fixed-point-free sign-reversing pairing of every determinant term.
+even alternating cycle.  This gives 104,237 exchange edges, and even this
+sparse subgraph is connected.  Exact Hopcroft--Karp matching covers all
+9,986 vertices on each shore, yielding a verified fixed-point-free
+sign-reversing pairing of every determinant term.
 
 The q=4 matrix is already singular and has disconnected deficiency, so this
 does not address the `k>=3` or connectedness hypotheses.  Its value is as a

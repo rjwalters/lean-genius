@@ -112,6 +112,7 @@ def main() -> None:
             ):
                 exchange.add_edge(left_index, right_index)
     assert exchange.number_of_edges() == 104_237
+    assert nx.is_connected(exchange)
 
     pairing = nx.algorithms.bipartite.maximum_matching(
         exchange, top_nodes=set(positive)
@@ -128,7 +129,7 @@ def main() -> None:
     print("verified q=4 signed Levi matching-exchange calibration")
     print("perfect matchings = 19972; signs = 9986/9986")
     print("every matching has an even alternating-cycle switch")
-    print("sparse exchange edges = 104237; paired = 9986")
+    print("sparse exchange edges = 104237; connected; paired = 9986")
 
 
 if __name__ == "__main__":
