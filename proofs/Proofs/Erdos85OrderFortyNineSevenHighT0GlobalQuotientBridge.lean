@@ -1,4 +1,4 @@
-import Proofs.Erdos85OrderFortyNineSevenHighT0LocalQuotientCapacity
+import Proofs.Erdos85OrderFortyNineSevenHighT0LocalProfile
 
 /-!
 # Global quotient sums in the seven-high empty-triple case
@@ -71,6 +71,22 @@ private theorem mem_low_of_support_card_eq_two
   change (orderFortyNineHighSupport G x).card = 0 at hxZero
   omega
 
+private theorem mem_low_of_support_card_eq_one
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    {x : Fin 49} (hx : (orderFortyNineHighSupport G x).card = 1) :
+    x ∈ orderFortyNineLowVertices G := by
+  apply Finset.mem_sdiff.mpr
+  refine ⟨Finset.mem_univ x, ?_⟩
+  intro hxHigh
+  have hxZero := orderFortyNine_highNeighborCount_eq_zero_of_high
+    G hfree hmin (Fintype.card_fin 49) hxHigh
+  change (orderFortyNineHighSupport G x).card = 0 at hxZero
+  omega
+
 private theorem pairNeighborCount_eq_fiberIncidence
     (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
     [DecidableRel (antipodalGraph G).Adj]
@@ -88,6 +104,27 @@ private theorem pairNeighborCount_eq_fiberIncidence
   · rintro ⟨hxy, hxTwo⟩
     exact ⟨hxy, Finset.mem_filter.mpr
       ⟨mem_low_of_support_card_eq_two G hfree hmin hxTwo, hxTwo⟩⟩
+  · rintro ⟨hxy, hxFiber⟩
+    exact ⟨hxy, (Finset.mem_filter.mp hxFiber).2⟩
+
+private theorem singletonNeighborCount_eq_fiberIncidence
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (y : Fin 49) :
+    ((G.neighborFinset y).filter fun x =>
+      (orderFortyNineHighSupport G x).card = 1).card =
+      ((G.neighborFinset y).filter fun x =>
+        x ∈ sevenHighT0LowSupportFiber G 1).card := by
+  apply congrArg Finset.card
+  ext x
+  simp only [Finset.mem_filter]
+  constructor
+  · rintro ⟨hxy, hxOne⟩
+    exact ⟨hxy, Finset.mem_filter.mpr
+      ⟨mem_low_of_support_card_eq_one G hfree hmin hxOne, hxOne⟩⟩
   · rintro ⟨hxy, hxFiber⟩
     exact ⟨hxy, (Finset.mem_filter.mp hxFiber).2⟩
 
@@ -329,6 +366,79 @@ theorem sevenHigh_t0_directedIncidence_empty_capacity_bounds
   simp [hcardZero] at hzeroFiber
   exact ⟨htwo, hone, hzeroFiber⟩
 
+/-- Summing the exact pointwise profiles over the census fibers gives the
+remaining three directed quotient equations. -/
+theorem sevenHigh_t0_directedIncidence_profile_equations
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x : Fin 49, 7 ≤ G.degree x)
+    (hHigh : (orderFortyNineHighVertices G).card = 7)
+    (hzero : orderFortyNineHighIncidenceCount G 3 = 0) :
+    2 * sevenHighT0DirectedIncidence G 2 0 +
+        sevenHighT0DirectedIncidence G 2 1 = 63 ∧
+      2 * sevenHighT0DirectedIncidence G 1 0 +
+        sevenHighT0DirectedIncidence G 1 1 = 70 ∧
+      2 * sevenHighT0DirectedIncidence G 0 0 +
+        sevenHighT0DirectedIncidence G 0 1 = 49 := by
+  have hcensus := sevenHigh_t0_global_incidence G hfree hmin hHigh hzero
+  have hcardTwo : (sevenHighT0LowSupportFiber G 2).card = 21 := by
+    simpa [sevenHighT0LowSupportFiber, orderFortyNineHighSupport,
+      orderFortyNineHighIncidenceCount] using hcensus.2.2
+  have hcardOne : (sevenHighT0LowSupportFiber G 1).card = 14 := by
+    simpa [sevenHighT0LowSupportFiber, orderFortyNineHighSupport,
+      orderFortyNineHighIncidenceCount] using hcensus.2.1
+  have hcardZero : (sevenHighT0LowSupportFiber G 0).card = 7 := by
+    simpa [sevenHighT0LowSupportFiber, orderFortyNineHighSupport,
+      orderFortyNineHighIncidenceCount] using hcensus.1
+  have hpair : (∑ y ∈ sevenHighT0LowSupportFiber G 2,
+      (2 * sevenHighT0LowEmptyNeighborCount G y +
+        ((G.neighborFinset y).filter fun x =>
+          (orderFortyNineHighSupport G x).card = 1).card)) =
+      ∑ _y ∈ sevenHighT0LowSupportFiber G 2, 3 := by
+    apply Finset.sum_congr rfl
+    intro y hy
+    exact sevenHigh_t0_pairRoot_lowEmpty_singleton_profile
+      G hfree hmin hHigh hzero
+        (degree_eq_seven_of_mem_lowSupportFiber G hfree hmin hy)
+        (Finset.mem_filter.mp hy).2
+  have hsingleton : (∑ y ∈ sevenHighT0LowSupportFiber G 1,
+      (2 * sevenHighT0LowEmptyNeighborCount G y +
+        ((G.neighborFinset y).filter fun x =>
+          (orderFortyNineHighSupport G x).card = 1).card)) =
+      ∑ _y ∈ sevenHighT0LowSupportFiber G 1, 5 := by
+    apply Finset.sum_congr rfl
+    intro y hy
+    exact sevenHigh_t0_singletonRoot_lowEmpty_singleton_profile
+      G hfree hmin hHigh hzero
+        (degree_eq_seven_of_mem_lowSupportFiber G hfree hmin hy)
+        (Finset.mem_filter.mp hy).2
+  have hempty : (∑ y ∈ sevenHighT0LowSupportFiber G 0,
+      (2 * sevenHighT0LowEmptyNeighborCount G y +
+        ((G.neighborFinset y).filter fun x =>
+          (orderFortyNineHighSupport G x).card = 1).card)) =
+      ∑ _y ∈ sevenHighT0LowSupportFiber G 0, 7 := by
+    apply Finset.sum_congr rfl
+    intro y hy
+    exact sevenHigh_t0_emptyRoot_lowEmpty_singleton_profile
+      G hfree hmin hHigh hzero
+        (degree_eq_seven_of_mem_lowSupportFiber G hfree hmin hy)
+        (Finset.mem_filter.mp hy).2
+  simp_rw [Finset.sum_add_distrib, ← Finset.mul_sum,
+    lowEmptyNeighborCount_eq_fiberIncidence,
+    singletonNeighborCount_eq_fiberIncidence G hfree hmin] at hpair hsingleton hempty
+  change 2 * sevenHighT0DirectedIncidence G 2 0 +
+    sevenHighT0DirectedIncidence G 2 1 = _ at hpair
+  change 2 * sevenHighT0DirectedIncidence G 1 0 +
+    sevenHighT0DirectedIncidence G 1 1 = _ at hsingleton
+  change 2 * sevenHighT0DirectedIncidence G 0 0 +
+    sevenHighT0DirectedIncidence G 0 1 = _ at hempty
+  simp [hcardTwo] at hpair
+  simp [hcardOne] at hsingleton
+  simp [hcardZero] at hempty
+  exact ⟨hpair, hsingleton, hempty⟩
+
 end
 
 end Erdos85
@@ -340,3 +450,4 @@ end Erdos85
 #print axioms Erdos85.sevenHighT0DirectedIncidence_comm
 #print axioms Erdos85.sevenHigh_t0_directedIncidence_global_balances
 #print axioms Erdos85.sevenHigh_t0_directedIncidence_empty_capacity_bounds
+#print axioms Erdos85.sevenHigh_t0_directedIncidence_profile_equations
