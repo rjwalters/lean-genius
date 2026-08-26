@@ -30,7 +30,29 @@ N = Q * Q
 ROOT_NEIGHBORS = set(range(1, Q + 1))
 
 
-def profile(edges: list[tuple[int, int]]) -> list[tuple[int, ...]]:
+def maximum_bipartite_matching_size(
+    left: tuple[int, ...], right: tuple[int, ...], relation: list[list[bool]]
+) -> int:
+    """Tiny exact matcher used only on the at-most-six-vertex remote set."""
+    best = 0
+
+    def search(index: int, used: set[int], matched: int) -> None:
+        nonlocal best
+        if index == len(left):
+            best = max(best, matched)
+            return
+        search(index + 1, used, matched)
+        for vertex in right:
+            if vertex not in used and relation[left[index]][vertex]:
+                search(index + 1, used | {vertex}, matched + 1)
+
+    search(0, set(), 0)
+    return best
+
+
+def profile(
+    edges: list[tuple[int, int]],
+) -> tuple[list[tuple[int, ...]], list[tuple[int, ...]]]:
     adjacency = [[False] * N for _ in range(N)]
     for left, right in edges:
         adjacency[left][right] = adjacency[right][left] = True
@@ -83,7 +105,35 @@ def profile(edges: list[tuple[int, int]]) -> list[tuple[int, ...]]:
                 remote_second_edges,
             )
         )
-    return answer
+    defect = [[left != right and common[left][right] == 0 for right in range(N)] for left in range(N)]
+    edge_answer = []
+    for u, v in itertools.combinations(range(N), 2):
+        if not defect[u][v]:
+            continue
+        u_star = {vertex for vertex in range(N) if adjacency[u][vertex]}
+        v_star = {vertex for vertex in range(N) if adjacency[v][vertex]}
+        remote = set(range(N)) - {u, v} - u_star - v_star
+        left = tuple(sorted(
+            vertex for vertex in remote
+            if any(adjacency[vertex][z] for z in u_star)
+            and not any(adjacency[vertex][z] for z in v_star)
+        ))
+        right = tuple(sorted(
+            vertex for vertex in remote
+            if any(adjacency[vertex][z] for z in v_star)
+            and not any(adjacency[vertex][z] for z in u_star)
+        ))
+        edge_answer.append(
+            (
+                int(adjacency[u][v]),
+                len(remote),
+                len(left),
+                len(right),
+                maximum_bipartite_matching_size(left, right, adjacency),
+                maximum_bipartite_matching_size(left, right, defect),
+            )
+        )
+    return answer, edge_answer
 
 
 def main() -> None:
@@ -119,6 +169,7 @@ def main() -> None:
         )
 
     joint_profiles: Counter[tuple[int, ...]] = Counter()
+    defect_edge_profiles: Counter[tuple[int, ...]] = Counter()
     external_by_t: dict[int, Counter[int]] = defaultdict(Counter)
     for index in range(args.models):
         result = solver.check()
@@ -127,7 +178,7 @@ def main() -> None:
             raise SystemExit(2)
         model = solver.model()
         edges = [pair for pair, variable in variables.items() if is_true(model.eval(variable))]
-        vertex_profiles = profile(edges)
+        vertex_profiles, edge_profiles = profile(edges)
         for entry in vertex_profiles:
             t, external, at, _k, ak, _remote, _remote_edges, _remote_second_edges = entry
             joint_profiles[entry] += 1
@@ -138,6 +189,15 @@ def main() -> None:
             if external + _remote_edges != Q:
                 print(f"remote_edge_identity_falsifier_model={index}; profile={entry}; edges={edges}")
                 raise SystemExit(3)
+        defect_edge_profiles.update(edge_profiles)
+        for entry in edge_profiles:
+            _auv, _remote, left_size, right_size, ambient_matching, _defect_matching = entry
+            if ambient_matching != left_size or left_size != right_size:
+                print(
+                    f"exclusive_remote_A_matching_falsifier_model={index}; "
+                    f"profile={entry}; edges={edges}"
+                )
+                raise SystemExit(4)
         solver.add(Or([variable != model.eval(variable) for variable in variables.values()]))
 
     print(f"bounded_models={args.models}")
@@ -146,10 +206,15 @@ def main() -> None:
         f"{dict(sorted(joint_profiles.items()))}"
     )
     print(f"external_by_t={dict(sorted((t, dict(sorted(counts.items()))) for t, counts in external_by_t.items()))}")
+    print(
+        "defect_edge_profiles(Auv,|Ruv|,|Uonly|,|Vonly|,nu_A,nu_D)="
+        f"{dict(sorted(defect_edge_profiles.items()))}"
+    )
     print("Ak_mod_8_eq_4_universal_on_sample=true")
     print("At_mod_4_eq_2_universal_on_sample=true")
     print("external_plus_2t_mod_4_eq_2_universal_on_sample=true")
     print("external_plus_remote_edges_eq_q_universal_on_sample=true")
+    print("exclusive_remote_contact_classes_A_perfectly_matched_on_sample=true")
 
 
 if __name__ == "__main__":
