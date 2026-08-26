@@ -186,18 +186,18 @@ theorem orderFortyNineH9T2_profileMasks_size
     (rep : OrderFortyNineH9System)
     (hrep : rep ∈ orderFortyNineH9T2Systems) :
     (orderFortyNineH9ProfileMasks rep).size = 49 := by
-  native_decide +revert
+  decide +revert
 
 theorem orderFortyNineH9T3_profileMasks_size
     (rep : OrderFortyNineH9System)
     (hrep : rep ∈ orderFortyNineH9T3Systems) :
     (orderFortyNineH9ProfileMasks rep).size = 49 := by
-  native_decide +revert
+  decide +revert
 
 theorem orderFortyNineH9T4_profileMasks_size
     (rep : OrderFortyNineH9System)
     (hrep : rep ∈ orderFortyNineH9T4Systems) :
     (orderFortyNineH9ProfileMasks rep).size = 49 := by
-  native_decide +revert
+  decide +revert
 
 end Erdos85
