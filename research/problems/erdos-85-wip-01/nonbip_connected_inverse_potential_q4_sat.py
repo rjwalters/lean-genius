@@ -34,6 +34,8 @@ def main() -> None:
                         help="seek any exact Ax=e_0 column, without a sign violation")
     parser.add_argument("--graph-only", action="store_true",
                         help="seek only the finite incidence graph")
+    parser.add_argument("--connected-defect", action="store_true",
+                        help="require the second-order defect graph to be connected")
     parser.add_argument("--enumerate", type=int, default=0,
                         help="enumerate this many graph models, stopping at a nonsingular one")
     args = parser.parse_args()
@@ -77,6 +79,28 @@ def main() -> None:
             ])
             common[(i, j)] = count
             solver.add(count <= 1)
+
+    if args.connected_defect:
+        # Exact bounded reachability in the defect graph.  A pair is a
+        # defect edge precisely when its common-neighbor count is zero.
+        reachable = [
+            [Bool(f"reach_{step}_{vertex}") for vertex in range(N)]
+            for step in range(N)
+        ]
+        for vertex in range(N):
+            solver.add(reachable[0][vertex] == (vertex == ROOT))
+        for step in range(1, N):
+            for vertex in range(N):
+                arrivals = [
+                    And(reachable[step - 1][other],
+                        common[tuple(sorted((vertex, other)))] == 0)
+                    for other in range(N) if other != vertex
+                ]
+                solver.add(
+                    reachable[step][vertex]
+                    == Or(reachable[step - 1][vertex], *arrivals)
+                )
+        solver.add(And(reachable[-1]))
 
     potential = [Real(f"x_{i}") for i in range(N)]
     if not graph_only:
