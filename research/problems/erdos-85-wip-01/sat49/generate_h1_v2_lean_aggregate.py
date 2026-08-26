@@ -86,6 +86,8 @@ def aggregate_source(rows: list[IndexRow], stub_module_prefix: str) -> str:
             lines.append(f"  {stub_stem(row)}Entry{comma}")
         lines.extend([
             "]", "",
+            "set_option maxHeartbeats 0 in",
+            "set_option maxRecDepth 1000000 in",
             f"theorem h1V2CheckedBank{profile}_covers :",
             "    oneHighFamilyV2CheckedBankTables "
             f"h1V2CheckedBank{profile} =",
