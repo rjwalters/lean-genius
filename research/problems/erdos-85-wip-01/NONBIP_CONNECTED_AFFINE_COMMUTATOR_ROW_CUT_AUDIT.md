@@ -72,6 +72,46 @@ Equating this tautological evaluation of the *left* side with the
 conjectural polynomial *right* side is precisely the new content.  The
 generic commutator row theorem does not provide that equality.
 
+In the degree coordinates `k_x=deg_K(x)=q-2t_x`, the two aggregate affine
+identities are exactly
+
+```text
+3 sum_x k_x^2 - (2q-2) sum_x k_x
+  = -q^2(q-2)(q-4)/3,                         (aggregate T1)
+
+3 sum_x k_x^2 - (4q-2) sum_x k_x + q^3(q-2)
+  = 0.                                        (aggregate T2)
+```
+
+This also locates the nearest existing trace result:
+`trace_adj_sq_triangleFree_sq_sub_fourth_eq_degreeMoments` rewrites a trace
+difference as
+
+```text
+q sum_x k_x - sum_x k_x^2.
+```
+
+It names a linear combination of the two free degree moments, but does not
+fix either moment and hence does not imply either displayed equation.
+
+## Incidence-bottleneck comparison
+
+The matrix `E=AD-(J-A)` does see these moments on its diagonal, since the
+banked theorem
+`incidenceBottleneck_diag_eq_triangleFreeDegree_sub_one` gives
+
+```text
+E[x,x] = k_x-1,
+sum_x E[x,x]^2 = sum_x k_x^2 - 2 sum_x k_x + q^2.
+```
+
+However, the connected-incidence ledger bounds the *full* Frobenius energy
+`sum_{x,y} E[x,y]^2`.  Its off-diagonal energy is not determined by the
+diagonal, and the current lower bounds therefore give only inequalities in
+the degree moments, not either required equality.  Passing from the full
+energy to the affine moment would require a new sharp off-diagonal identity
+or equality case; the diagonal formula alone is not a bridge.
+
 ## Verdict
 
 **CUT for the unweighted row-sum route.**  The banked commutator theorem is
