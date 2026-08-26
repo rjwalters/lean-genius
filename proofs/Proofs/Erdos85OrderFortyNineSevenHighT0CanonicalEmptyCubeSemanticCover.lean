@@ -13,19 +13,24 @@ theorem sevenHighT0CanonicalEmptyCubeSemanticCover_of_baseSat
     (hbase : ∀ (H : SimpleGraph SevenHighT0CanonicalIndex)
       (_ : DecidableRel H.Adj),
       SevenHighT0CanonicalCompletionSemantics H →
-        orderFortyNineSevenHighT0CanonicalSatCnf.Sat
-          (sevenHighT0CanonicalEdgeVal H)) :
+        ∃ val : DimacsValuation,
+          orderFortyNineSevenHighT0CanonicalSatCnf.Sat
+              (satAssignmentOfDimacs val) ∧
+            ∀ id, id ≤ 861 →
+              val id = sevenHighT0CanonicalEdgeVal H id) :
     SevenHighT0CanonicalEmptyCubeSemanticCover := by
   intro H _ semantics
   obtain ⟨edgeCount, hedgeLow, hedgeHigh, typeIndex, htypeIndex,
       σ, relabeledSemantics, hmask⟩ :=
     semantics.exists_relabel_emptyRepresentative
+  obtain ⟨val, hbaseSat, hedgeAgree⟩ :=
+    hbase (sevenHighT0CanonicalRelabel σ H) inferInstance
+      relabeledSemantics
   refine ⟨edgeCount, hedgeLow, hedgeHigh, typeIndex, htypeIndex,
-    sevenHighT0CanonicalEdgeVal (sevenHighT0CanonicalRelabel σ H), ?_⟩
+    satAssignmentOfDimacs val, ?_⟩
   exact sevenHighT0CanonicalEmptyRepresentativeCube_sat
-    (sevenHighT0CanonicalRelabel σ H) edgeCount typeIndex
-    (hbase (sevenHighT0CanonicalRelabel σ H) inferInstance
-      relabeledSemantics) hmask
+    (sevenHighT0CanonicalRelabel σ H) val edgeCount typeIndex
+    hbaseSat hedgeAgree hmask
 
 end Erdos85
 
