@@ -54,6 +54,7 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
         rendered = MOD.aggregate_source(rows, "Proofs.Generated.H1", 2)
         self.assertIn("by_cases h : i < 2", rendered)
         self.assertIn("  · by_cases h : i < 4", rendered)
+        self.assertIn("    · exact h1V2InventoryProfile0Chunk001", rendered)
         self.assertIn("    · exact h1V2InventoryProfile0Chunk002", rendered)
 
     def test_stub_sources_must_exist_with_exact_entry(self):

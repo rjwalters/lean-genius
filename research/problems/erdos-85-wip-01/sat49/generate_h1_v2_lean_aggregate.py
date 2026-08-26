@@ -116,21 +116,25 @@ def aggregate_source(rows: list[IndexRow], stub_module_prefix: str,
             f"      ((oneHighInventoryTables ({profile} : Fin 5)).get i) := by",
             "  rcases i with ⟨i, hi⟩",
         ])
-        indent = "  "
-        for chunk_index, chunk in enumerate(chunks[:-1]):
-            hi = chunk[-1].local_index + 1
-            prefix = "by_cases" if chunk_index == 0 else "· by_cases"
-            lines.extend([
-                f"{indent}{prefix} h : i < {hi}",
-                f"{indent}· exact h1V2InventoryProfile{profile}Chunk{chunk_index:03d} "
-                "i (by omega) h",
-            ])
-            indent += "  "
-        if chunks:
-            last_index = len(chunks) - 1
-            bullet = "exact" if len(chunks) == 1 else "· exact"
+        if len(chunks) == 1:
             lines.append(
-                f"{indent}{bullet} h1V2InventoryProfile{profile}Chunk{last_index:03d} "
+                f"  exact h1V2InventoryProfile{profile}Chunk000 "
+                "i (by omega) (by omega)")
+        elif chunks:
+            indent = "  "
+            first_hi = chunks[0][-1].local_index + 1
+            lines.append(f"{indent}by_cases h : i < {first_hi}")
+            for chunk_index, chunk in enumerate(chunks[:-1]):
+                lines.append(
+                    f"{indent}· exact h1V2InventoryProfile{profile}Chunk{chunk_index:03d} "
+                    "i (by omega) h")
+                if chunk_index + 1 < len(chunks) - 1:
+                    next_hi = chunks[chunk_index + 1][-1].local_index + 1
+                    lines.append(f"{indent}· by_cases h : i < {next_hi}")
+                    indent += "  "
+            last_index = len(chunks) - 1
+            lines.append(
+                f"{indent}· exact h1V2InventoryProfile{profile}Chunk{last_index:03d} "
                 "i (by omega) (by omega)")
         lines.extend([
             "",
