@@ -219,6 +219,7 @@ def render(parent: dict, nested: dict, direct: dict[str, str],
            nested_payloads: dict[str, str]) -> str:
     lines = [
         "import Proofs.Erdos85OrderFortyNineSevenHighT0CubeOneNestedCover",
+        "import Proofs.Erdos85OrderFortyNineSevenHighCertificates",
         "import Proofs.Erdos85OrderFortyNineLratCertificateBase", "",
         "/-! GENERATED mixed direct/nested certificates for the h7/t0 cube-one cover. -/",
         "", "namespace Erdos85", "", "open Std Sat Std.Tactic.BVDecide", "",
@@ -269,8 +270,16 @@ def render(parent: dict, nested: dict, direct: dict[str, str],
         "theorem sevenHighT0_canonicalExcluded_of_mixedCubeOne_certificates :",
         "    SevenHighCanonicalRepresentativeExcluded 0 0 :=",
         "  sevenHighT0_canonicalExcluded_of_cubeOne_checkedGrid",
-        "    sevenHighT0CubeOneMixedCertificateGrid", "", "end Erdos85", "",
+        "    sevenHighT0CubeOneMixedCertificateGrid", "",
+        "/-- The mixed cube-one bank closes the complete seven-high stratum. -/",
+        "theorem orderFortyNineStratumExcluded_seven_of_mixedCubeOne_certificates :",
+        "    OrderFortyNineStratumExcluded 7 :=",
+        "  orderFortyNineStratumExcluded_seven_of_t0",
+        "    sevenHighT0_canonicalExcluded_of_mixedCubeOne_certificates", "",
+        "end Erdos85", "",
         "#print axioms Erdos85.sevenHighT0_canonicalExcluded_of_mixedCubeOne_certificates", "",
+        "#print axioms Erdos85.orderFortyNineStratumExcluded_seven_of_mixedCubeOne_certificates",
+        "",
     ])
     return "\n".join(lines)
 
