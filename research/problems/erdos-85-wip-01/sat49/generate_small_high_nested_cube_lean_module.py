@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
 from generate_small_high_cube_jobs import sha256
@@ -101,11 +102,23 @@ def nested_cnf_expression(cell_name: str, parent_job: dict,
             f"({base}) ({left})[{li}] ({right})[{ri}]")
 
 
-def render_check(lines: list[str], stem: str, cnf: str, payload: Path) -> None:
+def portable_include_path(payload: Path, include_root: Path,
+                          output: Path) -> str:
+    root = include_root.resolve()
+    resolved = payload.resolve()
+    try:
+        resolved.relative_to(root)
+    except ValueError as error:
+        raise ValueError(
+            f"LRAT payload is outside --include-root: {resolved}") from error
+    return os.path.relpath(resolved, output.resolve().parent)
+
+
+def render_check(lines: list[str], stem: str, cnf: str, payload: str) -> None:
     lines.extend([
         f"def {stem}Proof : Array LRAT.IntAction :=",
         "  parseOrderFortyNineLratProof",
-        f"    (include_str \"{payload}\")", "",
+        f"    (include_str {json.dumps(payload)})", "",
         "set_option maxHeartbeats 0 in",
         "set_option maxRecDepth 1000000 in",
         f"theorem {stem}_check : LRAT.check {stem}Proof ({cnf}) := by",
@@ -115,7 +128,8 @@ def render_check(lines: list[str], stem: str, cnf: str, payload: Path) -> None:
     ])
 
 
-def render(parent: dict, nested: dict, certificate_dir: Path) -> str:
+def render(parent: dict, nested: dict, certificate_dir: Path,
+           include_root: Path, output: Path) -> str:
     lines = [
         "import Proofs.Erdos85OrderFortyNineSmallHighCubeGridTerminal",
         "import Proofs.Erdos85OrderFortyNineSmallHighNestedCubeSelectors",
@@ -129,15 +143,21 @@ def render(parent: dict, nested: dict, certificate_dir: Path) -> str:
         for job in parent["cells"][cell_name]["jobs"]:
             parent_lookup[job["id"]] = (cell_name, job)
             if job["id"] not in hard:
+                payload = portable_include_path(
+                    payload_path(certificate_dir, job["id"]),
+                    include_root, output)
                 render_check(lines, lean_stem(job["id"]),
                              cnf_expression(cell_name, job),
-                             payload_path(certificate_dir, job["id"]))
+                             payload)
     for parent_id, leaf in nested["leaves"].items():
         cell_name, parent_job = parent_lookup[parent_id]
         for child in leaf["jobs"]:
+            payload = portable_include_path(
+                payload_path(certificate_dir, child["id"]),
+                include_root, output)
             render_check(lines, lean_stem(child["id"]),
                          nested_cnf_expression(cell_name, parent_job, child),
-                         payload_path(certificate_dir, child["id"]))
+                         payload)
         left, right = nested_arrays(cell_name)
         parent_cnf = cnf_expression(cell_name, parent_job)
         grid_stem = lean_stem(f"{parent_id}.nested-grid")
@@ -196,13 +216,18 @@ def main() -> int:
     parser.add_argument("--parent-manifest", type=Path, required=True)
     parser.add_argument("--nested-manifest", type=Path, required=True)
     parser.add_argument("--certificate-dir", type=Path, required=True)
+    parser.add_argument(
+        "--include-root", type=Path, required=True,
+        help="portable certificate root that must contain every LRAT payload")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     parent, nested = load_and_validate(
         args.parent_manifest.resolve(), args.nested_manifest.resolve(),
         args.certificate_dir.resolve())
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(render(parent, nested, args.certificate_dir.resolve()))
+    args.output.write_text(render(
+        parent, nested, args.certificate_dir.resolve(),
+        args.include_root.resolve(), args.output.resolve()))
     print(f"WROTE {args.output.resolve()}")
     return 0
 
