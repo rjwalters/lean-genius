@@ -37,6 +37,62 @@ ORDINARY = tuple(range(3, 49))
 ODD_PRIMES = (3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47)
 
 
+def residual_square_root_trace_possible(
+    adjacency_square: list[list[int]], target_trace: int = -7,
+) -> tuple[bool, tuple[int, ...]]:
+    """Test the exact rational characteristic-polynomial square-root law.
+
+    After removing the forced zero/quadratic sector, a true ordinary
+    adjacency matrix C would give
+
+        charpoly(C_res)(t) charpoly(C_res)(-t)
+          = charpoly((C_res)^2)(t^2).
+
+    Factoring the right side over Q reduces existence to choosing one factor
+    from every +/- orbit.  The returned traces are all traces obtainable by
+    those choices; a true completion must contain ``target_trace``.
+    """
+    import sympy as sp
+
+    x, t = sp.symbols("x t")
+    characteristic = sp.Poly(sp.Matrix(adjacency_square).charpoly(x).as_expr(), x)
+    forced = sp.Poly(x**2 * (x**2 - 43*x + 9), x)
+    residual, remainder = sp.div(characteristic, forced)
+    if remainder.as_expr() != 0:
+        return False, ()
+    even_lift = sp.Poly(residual.as_expr().subs(x, t**2), t)
+    _content, factors = sp.factor_list(even_lift)
+    factor_powers = {sp.Poly(factor, t).monic(): exponent for factor, exponent in factors}
+
+    traces = {0}
+    visited: set[sp.Poly] = set()
+    for factor, exponent in factor_powers.items():
+        if factor in visited:
+            continue
+        partner = sp.Poly(factor.as_expr().subs(t, -t), t).monic()
+        partner_exponent = factor_powers.get(partner)
+        if partner == factor:
+            if exponent % 2:
+                return False, tuple(sorted(traces))
+            copies = exponent // 2
+            coefficient = int(factor.all_coeffs()[1]) if factor.degree() else 0
+            contribution = -copies * coefficient
+            traces = {value + contribution for value in traces}
+            visited.add(factor)
+            continue
+        if partner_exponent != exponent:
+            return False, tuple(sorted(traces))
+        coefficient = int(factor.all_coeffs()[1]) if factor.degree() else 0
+        contribution = -exponent * coefficient
+        traces = {
+            value + sign * contribution
+            for value in traces for sign in (-1, 1)
+        }
+        visited.update((factor, partner))
+    possible = tuple(sorted(traces))
+    return target_trace in traces, possible
+
+
 def nullspace_mod_prime(matrix: list[list[int]], prime: int) -> list[list[int]]:
     rows = [[entry % prime for entry in row] for row in matrix]
     rank = 0
@@ -225,6 +281,7 @@ def main() -> int:
     parser.add_argument("--enforce-high-kernel", action="store_true")
     parser.add_argument("--enforce-high-eigenvectors", action="store_true")
     parser.add_argument("--enforce-high-affine", action="store_true")
+    parser.add_argument("--audit-square-root-charpoly", action="store_true")
     parser.add_argument("--print-values", action="store_true")
     args = parser.parse_args()
     if args.ungrounded_components < 0:
@@ -262,6 +319,7 @@ def main() -> int:
     ] = Counter()
     empty_block_profiles: Counter[tuple[int, tuple[tuple[int, int], ...]]] = Counter()
     normalized_residual_mod_sixteen: Counter[int | str] = Counter()
+    square_root_charpoly_profiles: Counter[tuple[bool, tuple[int, ...]]] = Counter()
     normalized_residual_three_adic: Counter[tuple[int, int] | str] = Counter()
     ordinary_adjacency_square_inertia: Counter[int] = Counter()
     ordinary_adjacency_square_determinants: Counter[tuple[str, bool]] = Counter()
@@ -356,6 +414,12 @@ def main() -> int:
             adjacency_square_determinant = bareiss_determinant(
                 adjacency_square.astype(int).tolist()
             )
+            if args.audit_square_root_charpoly:
+                square_root_charpoly_profiles[
+                    residual_square_root_trace_possible(
+                        adjacency_square.astype(int).tolist()
+                    )
+                ] += 1
             ungrounded = sorted(
                 len(component)
                 for component in nx.connected_components(defect)
@@ -440,6 +504,8 @@ def main() -> int:
     print("root_defect_balance_profiles", dict(sorted(root_defect_balance_profiles.items())))
     print("empty_block_profiles", dict(sorted(empty_block_profiles.items())))
     print("normalized_residual_mod16", dict(normalized_residual_mod_sixteen))
+    if args.audit_square_root_charpoly:
+        print("square_root_charpoly_profiles", dict(square_root_charpoly_profiles))
     print("normalized_residual_mod3_valuation", dict(normalized_residual_three_adic))
     print("ordinary_adjacency_square_negative_eigenvalues", dict(
         ordinary_adjacency_square_inertia
