@@ -207,6 +207,7 @@ def main() -> int:
     parser.add_argument("--min-ungrounded-size", type=int, default=0)
     parser.add_argument("--enforce-high-kernel", action="store_true")
     parser.add_argument("--enforce-high-eigenvectors", action="store_true")
+    parser.add_argument("--print-values", action="store_true")
     args = parser.parse_args()
     if args.ungrounded_components < 0:
         parser.error("--ungrounded-components must be nonnegative")
@@ -241,7 +242,7 @@ def main() -> int:
     for job_id in job_ids:
         state = propagated_graph(clauses, occurrences, base_units, jobs[job_id])
         blocked: list[frozenset[tuple[int, int]]] = []
-        for _ in range(args.completions):
+        for completion_index in range(args.completions):
             try:
                 solved = solve_defect(
                     state, blocked, args.timeout, ungrounded_components,
@@ -286,6 +287,12 @@ def main() -> int:
                 det_lap = bareiss_determinant(lap)
                 forest_green = -bareiss_determinant(bordered)
                 lifted_forest_terms[(nullity, det_lap % 49, forest_green % 7)] += 1
+                if args.print_values:
+                    print(
+                        "value", job_id, completion_index,
+                        "detL", det_lap, "K", forest_green,
+                        "T", value, "S", value // 49,
+                    )
             residues[value % 49] += 1
             if value % 49:
                 continue
