@@ -18,6 +18,7 @@ def read_model(path: Path) -> tuple[list[bool], str]:
     digest = hashlib.sha256()
     status_count = 0
     literals: list[int] = []
+    model_terminated = False
     with path.open("rb") as source:
         for line_number, raw in enumerate(source, 1):
             digest.update(raw)
@@ -33,17 +34,24 @@ def read_model(path: Path) -> tuple[list[bool], str]:
                     raise VerificationError(f"{path}:{line_number}: status is not SATISFIABLE")
                 status_count += 1
             elif fields[:1] == ["v"]:
+                if model_terminated:
+                    raise VerificationError(f"{path}:{line_number}: assignment after model terminator")
                 try:
                     values = [int(field) for field in fields[1:]]
                 except ValueError as error:
                     raise VerificationError(f"{path}:{line_number}: malformed model literal") from error
-                if not values or values[-1] != 0 or 0 in values[:-1]:
-                    raise VerificationError(f"{path}:{line_number}: malformed model terminator")
-                literals.extend(values[:-1])
+                if not values or 0 in values[:-1]:
+                    raise VerificationError(f"{path}:{line_number}: malformed model assignment")
+                if values[-1] == 0:
+                    model_terminated = True
+                    values.pop()
+                literals.extend(values)
             else:
                 raise VerificationError(f"{path}:{line_number}: unexpected model line")
     if status_count != 1:
         raise VerificationError(f"{path}: expected exactly one SATISFIABLE status")
+    if not model_terminated:
+        raise VerificationError(f"{path}: unterminated model assignment")
     maximum = max((abs(literal) for literal in literals), default=0)
     assignment: list[bool | None] = [None] * (maximum + 1)
     for literal in literals:
