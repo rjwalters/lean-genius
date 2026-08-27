@@ -83,6 +83,7 @@ def signed_edges(graph: nx.Graph) -> tuple[set[tuple[int, int]], set[tuple[int, 
 def defect_smt(
     graph: nx.Graph, blocked: list[frozenset[tuple[int, int]]],
     ungrounded_components: int, min_ungrounded_size: int,
+    enforce_high_kernel: bool,
 ) -> tuple[str, list[tuple[int, int]]]:
     positive, negative = signed_edges(graph)
     pairs = [(u, v) for u in ORDINARY for v in ORDINARY if u < v]
@@ -114,6 +115,19 @@ def defect_smt(
         if high_incidence:
             for component in range(ungrounded_components):
                 lines.append(f"(assert (not s_{component}_{u}))")
+    if enforce_high_kernel:
+        for left in (0, 1):
+            vector = {
+                u: int(edge(left, u) in positive) - int(edge(2, u) in positive)
+                for u in ORDINARY
+            }
+            for u in ORDINARY:
+                terms = [str(6 * vector[u])]
+                terms.extend(
+                    f"(ite d_{min(u, v)}_{max(u, v)} {-vector[v]} 0)"
+                    for v in ORDINARY if v != u and vector[v]
+                )
+                lines.append(f"(assert (= (mod (+ {' '.join(terms)}) 7) 0))")
     for component in range(ungrounded_components):
         lines.append("(assert (or " + " ".join(
             f"s_{component}_{u}" for u in ORDINARY
@@ -148,9 +162,11 @@ def defect_smt(
 def solve_defect(
     graph: nx.Graph, blocked: list[frozenset[tuple[int, int]]], timeout: int,
     ungrounded_components: int, min_ungrounded_size: int,
+    enforce_high_kernel: bool,
 ) -> tuple[nx.Graph, frozenset[tuple[int, int]]] | None:
     smt, pairs = defect_smt(
-        graph, blocked, ungrounded_components, min_ungrounded_size
+        graph, blocked, ungrounded_components, min_ungrounded_size,
+        enforce_high_kernel,
     )
     completed = subprocess.run(
         ["z3", "-in", f"-T:{timeout}"], input=smt, text=True,
@@ -183,6 +199,7 @@ def main() -> int:
     parser.add_argument("--require-ungrounded-component", action="store_true")
     parser.add_argument("--ungrounded-components", type=int, default=0)
     parser.add_argument("--min-ungrounded-size", type=int, default=0)
+    parser.add_argument("--enforce-high-kernel", action="store_true")
     args = parser.parse_args()
     if args.ungrounded_components < 0:
         parser.error("--ungrounded-components must be nonnegative")
@@ -216,10 +233,16 @@ def main() -> int:
         state = propagated_graph(clauses, occurrences, base_units, jobs[job_id])
         blocked: list[frozenset[tuple[int, int]]] = []
         for _ in range(args.completions):
-            solved = solve_defect(
-                state, blocked, args.timeout, ungrounded_components,
-                args.min_ungrounded_size,
-            )
+            try:
+                solved = solve_defect(
+                    state, blocked, args.timeout, ungrounded_components,
+                    args.min_ungrounded_size, args.enforce_high_kernel,
+                )
+            except RuntimeError as error:
+                if str(error) != "timeout":
+                    raise
+                counts["timeout"] += 1
+                break
             if solved is None:
                 counts["unsat"] += 1
                 break
