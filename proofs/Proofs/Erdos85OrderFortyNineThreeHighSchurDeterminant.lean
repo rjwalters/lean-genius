@@ -62,4 +62,40 @@ theorem orderFortyNine_threeHigh_block_det_schur
   simp [orderFortyNineOnes]
   ring
 
+private def orderFortyNineOneVector : Fin 46 → ℚ := fun _ => 1
+
+private theorem orderFortyNineOnes_eq_rankOne :
+    orderFortyNineOnes (Fin 46) (Fin 46) =
+      Matrix.replicateCol Unit orderFortyNineOneVector *
+        Matrix.replicateRow Unit orderFortyNineOneVector := by
+  ext i j
+  simp [orderFortyNineOnes, orderFortyNineOneVector,
+    Matrix.mul_apply]
+
+/-- Rank-one expansion of the Schur determinant when the grounded ordinary
+block is nonsingular.  The scalar on the right is the bordered-adjugate
+quantity used by the exact defect audit. -/
+theorem orderFortyNine_rankOne_det_expansion_of_isUnit
+    (L : Matrix (Fin 46) (Fin 46) ℚ) (hL : IsUnit L.det) :
+    10 * (L + (7 / 10 : ℚ) •
+        orderFortyNineOnes (Fin 46) (Fin 46)).det =
+      10 * L.det + 7 * dotProduct orderFortyNineOneVector
+        (L.adjugate.mulVec orderFortyNineOneVector) := by
+  rw [orderFortyNineOnes_eq_rankOne]
+  have hrank :
+      (7 / 10 : ℚ) •
+          (Matrix.replicateCol Unit orderFortyNineOneVector *
+            Matrix.replicateRow Unit orderFortyNineOneVector) =
+        Matrix.replicateCol Unit
+            ((7 / 10 : ℚ) • orderFortyNineOneVector) *
+          Matrix.replicateRow Unit orderFortyNineOneVector := by
+    ext i j
+    simp [Matrix.mul_apply, orderFortyNineOneVector]
+  rw [hrank, Matrix.det_add_replicateCol_mul_replicateRow hL]
+  rw [Matrix.inv_def]
+  simp [Matrix.det_unique, Matrix.mul_apply, Matrix.mulVec, dotProduct,
+    orderFortyNineOneVector]
+  field_simp [IsUnit.ne_zero hL]
+  rw [Finset.sum_comm]
+
 end Erdos85
