@@ -98,4 +98,19 @@ theorem orderFortyNine_rankOne_det_expansion_of_isUnit
   field_simp [IsUnit.ne_zero hL]
   rw [Finset.sum_comm]
 
+/-- Combined form used by the defect audit: after the forced factor `49`,
+the remaining integer-shaped expression is `10 det L + 7 K`. -/
+theorem orderFortyNine_threeHigh_block_det_eq_fortyNine_mul_T_of_isUnit
+    (L : Matrix (Fin 46) (Fin 46) ℚ) (hL : IsUnit L.det) :
+    (Matrix.fromBlocks
+      orderFortyNineThreeHighRootBlock
+      (orderFortyNineOnes (Fin 3) (Fin 46))
+      (orderFortyNineOnes (Fin 46) (Fin 3))
+      (L + orderFortyNineOnes (Fin 46) (Fin 46))).det =
+        49 * (10 * L.det + 7 * dotProduct orderFortyNineOneVector
+          (L.adjugate.mulVec orderFortyNineOneVector)) := by
+  rw [orderFortyNine_threeHigh_block_det_schur,
+    ← orderFortyNine_rankOne_det_expansion_of_isUnit L hL]
+  ring
+
 end Erdos85
