@@ -51,3 +51,44 @@ disjoint distance layers, so a topological explanation needs additional
 connecting 1-cells or 2-cells encoding the layer handshakes.  Merely declaring
 remote edges and rooted C5s as adjacent-dimensional cells produces a zero
 boundary and restates the cardinality residue without mechanism.
+
+## Nonbacktracking reversal follow-up
+
+The remaining orbit proposal also stops at the known count.  A rooted closed
+length-five walk
+
+```text
+x,v1,v2,v3,v4,x
+```
+
+with no immediate reversal at the four internal positions has only two
+possible shapes in a simple C4-free graph:
+
+1. `v1,v2,v3,v4` are distinct, giving a simple rooted C5;
+2. `v1=v4`, giving a triangle `v1,v2,v3` not containing `x`, attached to
+   `x` at its unique neighbor `v1`.
+
+All other repetitions are either loops or immediate reversals.  In the second
+case C4-freeness prevents `v2` or `v3` from also being adjacent to `x`, so the
+triangle is exactly one of the objects counted by `B_x`.
+
+Walk reversal is fixed-point-free and has two orientations for every object.
+Consequently
+
+```text
+number of oriented rooted nonbacktracking closed 5-walks = 2(B_x + C5_x),
+number of reversal orbits = B_x + C5_x.
+```
+
+The q=4 profiles give orbit counts `4+9=13` and `2+6=8`, so even the parity of
+the reversal quotient is not uniform while the desired residue is uniformly
+2 modulo 4.  Reversal therefore supplies only the familiar factor of two; it
+does not create four-element orbits or eliminate the C5 term.  Moreover, a
+simple C5 has no guaranteed `D`-chord: every distance-two pair already has its
+intermediate common neighbor.  The proposed "first defect chord" operation is
+not defined on all cycles.
+
+Thus rooted nonbacktracking reversal is cut as a standalone mechanism.  Any
+successful orbit proof needs a new total operation mixing the triangle-tail
+and C5 classes and using global square-order data; ordinary reversal and local
+C4-freeness do not provide it.
