@@ -33,6 +33,7 @@ from audit_h16_circulant_tree_squares import bareiss_determinant
 
 
 ORDINARY = tuple(range(3, 49))
+ODD_PRIMES = (3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47)
 
 
 def nullspace_mod_prime(matrix: list[list[int]], prime: int) -> list[list[int]]:
@@ -231,6 +232,7 @@ def main() -> int:
         tuple[int, bool, tuple[tuple[int, int], ...]]
     ] = Counter()
     lifted_forest_terms: Counter[tuple[int, int, int]] = Counter()
+    quotient_nonresidue_primes: Counter[int | str] = Counter()
     for job_id in job_ids:
         state = propagated_graph(clauses, occurrences, base_units, jobs[job_id])
         blocked: list[frozenset[tuple[int, int]]] = []
@@ -285,6 +287,13 @@ def main() -> int:
             quotient = value // 49
             if quotient >= 0 and math.isqrt(quotient) ** 2 == quotient:
                 counts["forty_nine_times_square"] += 1
+            else:
+                obstruction = next(
+                    (prime for prime in ODD_PRIMES
+                     if pow(quotient % prime, (prime - 1) // 2, prime) == prime - 1),
+                    "none",
+                )
+                quotient_nonresidue_primes[obstruction] += 1
 
     print("jobs", len(job_ids), "completions", args.completions, dict(counts))
     print("residues_mod_49", dict(sorted(residues.items())))
@@ -294,6 +303,7 @@ def main() -> int:
         sorted(mod_seven_kernel_signatures.items())
     ))
     print("lifted_nullity_detL_mod49_K_mod7", dict(sorted(lifted_forest_terms.items())))
+    print("quotient_first_nonresidue_prime", dict(quotient_nonresidue_primes))
     return 0
 
 
