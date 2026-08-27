@@ -143,6 +143,65 @@ theorem orderFortyNineOrdinaryAdjInt_mulVec_one
   rw [hs3]
   omega
 
+/-- Squaring the ordinary adjacency block on the all-ones vector stays in
+the forced sector: `C²·1 = 46·1 - 7s`. -/
+theorem orderFortyNineOrdinaryAdjInt_sq_mulVec_one
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x, 7 ≤ G.degree x)
+    (hhigh : ∀ y : Fin 49, G.degree y = 8 ↔ y.val < 3) :
+    (orderFortyNineOrdinaryAdjInt G).mulVec
+        ((orderFortyNineOrdinaryAdjInt G).mulVec (fun _ => 1)) =
+      fun i => 46 - 7 * orderFortyNineOrdinaryHighSupportCountInt G i := by
+  rw [orderFortyNineOrdinaryAdjInt_mulVec_one G hfree hmin hhigh]
+  have hone := orderFortyNineOrdinaryAdjInt_mulVec_one G hfree hmin hhigh
+  have hs := orderFortyNineOrdinaryAdjInt_mulVec_highSupportCount
+    G hfree hmin hhigh
+  funext i
+  simp only [Matrix.mulVec, dotProduct]
+  simp_rw [mul_sub]
+  rw [Finset.sum_sub_distrib]
+  have hleft : (∑ j : Fin 46,
+      orderFortyNineOrdinaryAdjInt G i j * 7) =
+      7 * ((orderFortyNineOrdinaryAdjInt G).mulVec (fun _ => 1)) i := by
+    simp only [Matrix.mulVec, dotProduct, mul_one]
+    rw [← Finset.sum_mul]
+    ring
+  have hsi := congrFun hs i
+  simp only [Matrix.mulVec, dotProduct] at hsi
+  rw [hleft, congrFun hone i, hsi]
+  ring
+
+/-- The companion square action is `C²s = 21·1 - 3s`. -/
+theorem orderFortyNineOrdinaryAdjInt_sq_mulVec_highSupportCount
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x, 7 ≤ G.degree x)
+    (hhigh : ∀ y : Fin 49, G.degree y = 8 ↔ y.val < 3) :
+    (orderFortyNineOrdinaryAdjInt G).mulVec
+        ((orderFortyNineOrdinaryAdjInt G).mulVec
+          (orderFortyNineOrdinaryHighSupportCountInt G)) =
+      fun i => 21 - 3 * orderFortyNineOrdinaryHighSupportCountInt G i := by
+  rw [orderFortyNineOrdinaryAdjInt_mulVec_highSupportCount
+    G hfree hmin hhigh]
+  have hone := orderFortyNineOrdinaryAdjInt_mulVec_one G hfree hmin hhigh
+  funext i
+  have honei := congrFun hone i
+  simp only [Matrix.mulVec, dotProduct] at honei ⊢
+  have hthree : (∑ j : Fin 46,
+      orderFortyNineOrdinaryAdjInt G i j * 3) =
+      3 * (∑ j : Fin 46, orderFortyNineOrdinaryAdjInt G i j) := by
+    rw [← Finset.sum_mul]
+    ring
+  rw [hthree]
+  simp only [mul_one] at honei
+  rw [honei]
+  ring
+
 end
 
 end Erdos85
@@ -150,3 +209,5 @@ end Erdos85
 #print axioms Erdos85.orderFortyNineOrdinaryAdjInt_mulVec_highIncidence
 #print axioms Erdos85.orderFortyNineOrdinaryAdjInt_mulVec_highSupportCount
 #print axioms Erdos85.orderFortyNineOrdinaryAdjInt_mulVec_one
+#print axioms Erdos85.orderFortyNineOrdinaryAdjInt_sq_mulVec_one
+#print axioms Erdos85.orderFortyNineOrdinaryAdjInt_sq_mulVec_highSupportCount
