@@ -34,9 +34,10 @@ from audit_order49_defect_determinant import defect_matrices, determinant_expres
 ORDINARY = tuple(range(3, 49))
 
 
-def rank_mod_prime(matrix: list[list[int]], prime: int) -> int:
+def nullspace_mod_prime(matrix: list[list[int]], prime: int) -> list[list[int]]:
     rows = [[entry % prime for entry in row] for row in matrix]
     rank = 0
+    pivots = []
     for column in range(len(rows[0])):
         pivot = next(
             (row for row in range(rank, len(rows)) if rows[row][column]), None
@@ -55,7 +56,16 @@ def rank_mod_prime(matrix: list[list[int]], prime: int) -> int:
                 for left, right in zip(rows[row], rows[rank])
             ]
         rank += 1
-    return rank
+        pivots.append(column)
+    free = [column for column in range(len(rows[0])) if column not in pivots]
+    basis = []
+    for column in free:
+        vector = [0] * len(rows[0])
+        vector[column] = 1
+        for row, pivot in enumerate(pivots):
+            vector[pivot] = (-rows[row][column]) % prime
+        basis.append(vector)
+    return basis
 
 
 def edge(u: int, v: int) -> tuple[int, int]:
@@ -199,6 +209,9 @@ def main() -> int:
     residues: Counter[int] = Counter()
     ungrounded_patterns: Counter[tuple[int, ...]] = Counter()
     mod_seven_nullities: Counter[tuple[int, bool]] = Counter()
+    mod_seven_kernel_signatures: Counter[
+        tuple[int, bool, tuple[tuple[int, int], ...]]
+    ] = Counter()
     for job_id in job_ids:
         state = propagated_graph(clauses, occurrences, base_units, jobs[job_id])
         blocked: list[frozenset[tuple[int, int]]] = []
@@ -227,8 +240,14 @@ def main() -> int:
                 counts["connected"] += 1
             value = determinant_expression(defect)
             lap, _bordered = defect_matrices(defect)
-            nullity = len(lap) - rank_mod_prime(lap, 7)
+            kernel = nullspace_mod_prime(lap, 7)
+            nullity = len(kernel)
             mod_seven_nullities[(nullity, value % 49 == 0)] += 1
+            signature = tuple(
+                (sum(entry != 0 for entry in vector), sum(vector) % 7)
+                for vector in kernel
+            )
+            mod_seven_kernel_signatures[(nullity, value % 49 == 0, signature)] += 1
             residues[value % 49] += 1
             if value % 49:
                 continue
@@ -241,6 +260,9 @@ def main() -> int:
     print("residues_mod_49", dict(sorted(residues.items())))
     print("ungrounded_component_sizes", dict(sorted(ungrounded_patterns.items())))
     print("mod7_nullity_by_mod49", dict(sorted(mod_seven_nullities.items())))
+    print("mod7_kernel_support_sum_by_mod49", dict(
+        sorted(mod_seven_kernel_signatures.items())
+    ))
     return 0
 
 
