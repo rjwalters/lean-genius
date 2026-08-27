@@ -111,49 +111,4 @@ theorem orderFortyNineThreeHighB1AdaptiveFourthResidual_of_aligned
     | rcases h with ⟨rfl, rfl⟩ <;>
         exact (H.adj_comm _ _).mp (by assumption)
 
-/-- Fully graph-facing fourth-level pruning from a canonical aligned `b1`
-graph, the two nested parent units, and four adaptive selector edges. -/
-theorem orderFortyNineThreeHighB1AdaptiveFourthResidual_of_aligned
-    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
-    (hfree : ¬ containsC4 (Fin 49) G)
-    (E : Equiv.Perm (Fin 49))
-    (haligned : ThreeHighDistOneB1ScoutAlignedLabeling G E)
-    (h324 : (orderFortyNineRelabeledGraph G E).Adj 3 24)
-    (h325 : (orderFortyNineRelabeledGraph G E).Adj 3 25)
-    (li ri ai bi : Fin 8)
-    (h18 : (orderFortyNineRelabeledGraph G E).Adj 18
-      (orderFortyNineThreeHighB1AdaptiveCandidates li))
-    (h20 : (orderFortyNineRelabeledGraph G E).Adj 20
-      (orderFortyNineThreeHighB1AdaptiveCandidates ri))
-    (h21 : (orderFortyNineRelabeledGraph G E).Adj 21
-      (orderFortyNineThreeHighB1AdaptiveCandidates ai))
-    (h22 : (orderFortyNineRelabeledGraph G E).Adj 22
-      (orderFortyNineThreeHighB1AdaptiveCandidates bi)) :
-    orderFortyNineThreeHighB1AdaptiveFourthResidual li ri ai bi = true := by
-  let H := orderFortyNineRelabeledGraph G E
-  have hthird : orderFortyNineThreeHighB1AdaptiveResidual li ri = true :=
-    orderFortyNineThreeHighB1AdaptiveResidual_of_aligned
-      G hfree E haligned li ri h18 h20
-  apply orderFortyNineThreeHighB1AdaptiveFourthResidual_of_graph H
-    (orderFortyNineRelabeledGraph_not_containsC4 G E hfree)
-    li ri ai bi hthird
-  intro i j hij
-  unfold orderFortyNineThreeHighB1AdaptiveFourthAvailableEdge at hij
-  simp only [Bool.or_eq_true] at hij
-  rcases hij with hfixed | h18edge | h20edge | h21edge | h22edge
-  · exact orderFortyNineThreeHighB1AdaptiveFourthFixedEdges_of_aligned
-      G E haligned h324 h325 i j hfixed
-  · rcases h18edge with h | h <;> rcases h with ⟨rfl, rfl⟩
-    · exact h18
-    · exact H.adj_comm.mp h18
-  · rcases h20edge with h | h <;> rcases h with ⟨rfl, rfl⟩
-    · exact h20
-    · exact H.adj_comm.mp h20
-  · rcases h21edge with h | h <;> rcases h with ⟨rfl, rfl⟩
-    · exact h21
-    · exact H.adj_comm.mp h21
-  · rcases h22edge with h | h <;> rcases h with ⟨rfl, rfl⟩
-    · exact h22
-    · exact H.adj_comm.mp h22
-
 end Erdos85
