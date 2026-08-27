@@ -19,6 +19,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import os
+import re
 from pathlib import Path
 
 
@@ -28,6 +29,7 @@ def compact_lrat(source: Path, num_original: int, destination: Path) -> tuple[in
     last_add = num_original
     seen_add = False
     mapping: dict[int, int] = {}
+    previous_original_id = num_original
     output_lines = 0
     source_hash = hashlib.sha256()
     temporary = destination.with_name(f".{destination.name}.tmp.{os.getpid()}")
@@ -45,10 +47,30 @@ def compact_lrat(source: Path, num_original: int, destination: Path) -> tuple[in
         with source.open("rb") as src, temporary.open("w", encoding="ascii") as dst:
             for line_number, raw in enumerate(src, 1):
                 source_hash.update(raw)
-                try:
-                    text = raw.decode("ascii")
-                except UnicodeDecodeError as error:
-                    raise ValueError(f"{source}:{line_number}: non-ASCII LRAT input") from error
+                if not raw.isascii():
+                    raise ValueError(f"{source}:{line_number}: non-ASCII LRAT input")
+                # drat-trim can emit a single multi-gigabyte deletion before its
+                # first addition.  It is intentionally dropped, so avoid
+                # splitting that line into millions of short Python strings.
+                if not seen_add:
+                    deletion = re.match(rb"\s*(\S+)\s+d(?:\s|$)", raw)
+                    if deletion is not None:
+                        if re.search(rb"(?:^|\s)0\s*$", raw) is None:
+                            raise ValueError(
+                                f"{source}:{line_number}: unterminated deletion"
+                            )
+                        try:
+                            action_id = int(deletion.group(1))
+                        except ValueError as error:
+                            raise ValueError(
+                                f"{source}:{line_number}: malformed deletion"
+                            ) from error
+                        if action_id <= 0:
+                            raise ValueError(
+                                f"{source}:{line_number}: nonpositive deletion identifier"
+                            )
+                        continue
+                text = raw.decode("ascii")
                 tokens = text.split()
                 if not tokens:
                     continue
@@ -56,9 +78,29 @@ def compact_lrat(source: Path, num_original: int, destination: Path) -> tuple[in
                 if len(tokens) >= 2 and tokens[1] == "d":
                     if tokens[-1] != "0":
                         raise ValueError(f"{source}:{line_number}: unterminated deletion")
+                    try:
+                        action_id = int(tokens[0])
+                    except ValueError as error:
+                        raise ValueError(
+                            f"{source}:{line_number}: malformed deletion"
+                        ) from error
+                    if action_id <= 0:
+                        raise ValueError(
+                            f"{source}:{line_number}: nonpositive deletion identifier"
+                        )
                     if not seen_add:
                         continue
-                    identifiers = [mapped(int(token)) for token in tokens[2:-1]]
+                    try:
+                        deleted = [int(token) for token in tokens[2:-1]]
+                    except ValueError as error:
+                        raise ValueError(
+                            f"{source}:{line_number}: malformed deletion"
+                        ) from error
+                    if any(identifier <= 0 for identifier in deleted):
+                        raise ValueError(
+                            f"{source}:{line_number}: nonpositive deletion identifier"
+                        )
+                    identifiers = [mapped(identifier) for identifier in deleted]
                     body = " ".join(map(str, identifiers))
                     dst.write(f"{last_add} d {body} 0\n")
                     output_lines += 1
@@ -74,6 +116,18 @@ def compact_lrat(source: Path, num_original: int, destination: Path) -> tuple[in
                     raise ValueError(f"{source}:{line_number}: unterminated addition")
                 literals = rest[:first_zero]
                 hints = rest[first_zero + 1 : -1]
+                if original_id < first_derived:
+                    raise ValueError(
+                        f"{source}:{line_number}: derived identifier {original_id} "
+                        f"precedes {first_derived}"
+                    )
+                if original_id <= previous_original_id:
+                    raise ValueError(
+                        f"{source}:{line_number}: non-increasing derived identifier "
+                        f"{original_id}"
+                    )
+                if any(hint == 0 for hint in hints):
+                    raise ValueError(f"{source}:{line_number}: zero proof hint")
                 mapped_hints = [
                     -mapped(-hint) if hint < 0 else mapped(hint) for hint in hints
                 ]
@@ -82,6 +136,7 @@ def compact_lrat(source: Path, num_original: int, destination: Path) -> tuple[in
                         f"{source}:{line_number}: duplicate derived identifier {original_id}"
                     )
                 mapping[original_id] = next_id
+                previous_original_id = original_id
                 body = literals + [0] + mapped_hints + [0]
                 dst.write(f"{next_id} {' '.join(map(str, body))}\n")
                 last_add = next_id
