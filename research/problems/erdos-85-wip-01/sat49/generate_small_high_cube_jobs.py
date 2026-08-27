@@ -145,11 +145,14 @@ def find_job(manifest: dict[str, object], job_id: str) -> tuple[dict, dict]:
     cells = manifest.get("cells")
     if not isinstance(cells, dict):
         raise ValueError("manifest has no cell mapping")
+    matches = []
     for cell in cells.values():
         for job in cell["jobs"]:
             if job["id"] == job_id:
-                return cell, job
-    raise ValueError(f"unknown job id: {job_id}")
+                matches.append((cell, job))
+    if len(matches) != 1:
+        raise ValueError(f"unknown or duplicated job id: {job_id}")
+    return matches[0]
 
 
 def materialize(manifest_path: Path, job_id: str, output: Path) -> None:

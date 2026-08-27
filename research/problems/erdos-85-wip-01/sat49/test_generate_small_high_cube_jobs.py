@@ -62,6 +62,61 @@ class SmallHighCubeJobsTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "declares 2 clauses"):
                 MODULE.inspect_dimacs(path)
 
+    def test_rejects_unknown_and_duplicated_job_ids(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_name:
+            root = Path(temporary_name)
+            bases = root / "bases"
+            bases.mkdir()
+            for filename in MODULE.DEFAULT_FILENAMES.values():
+                (bases / filename).write_text("p cnf 300 1\n1 0\n")
+            manifest_path = root / "manifest.json"
+            MODULE.write_manifest(bases, manifest_path)
+            with self.assertRaisesRegex(ValueError, "unknown or duplicated"):
+                MODULE.materialize(manifest_path, "missing", root / "out.cnf")
+
+            manifest = json.loads(manifest_path.read_text())
+            duplicate = dict(manifest["cells"]["h3_b1"]["jobs"][0])
+            manifest["cells"]["h3_c1"]["jobs"].append(duplicate)
+            manifest_path.write_text(json.dumps(manifest))
+            with self.assertRaisesRegex(ValueError, "unknown or duplicated"):
+                MODULE.materialize(manifest_path, duplicate["id"], root / "out.cnf")
+
+    def test_rejects_base_hash_tamper_and_preserves_output(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_name:
+            root = Path(temporary_name)
+            bases = root / "bases"
+            bases.mkdir()
+            for filename in MODULE.DEFAULT_FILENAMES.values():
+                (bases / filename).write_text("p cnf 300 1\n1 0\n")
+            manifest_path = root / "manifest.json"
+            MODULE.write_manifest(bases, manifest_path)
+            output = root / "out.cnf"
+            output.write_text("preserve me\n")
+            (bases / "b1.lean-emitted.cnf").write_text(
+                "p cnf 300 1\n1 0\nc tampered\n"
+            )
+            with self.assertRaisesRegex(ValueError, "base CNF hash mismatch"):
+                MODULE.materialize(manifest_path, "h3_b1.cube-0-0", output)
+            self.assertEqual(output.read_text(), "preserve me\n")
+
+    def test_metadata_tamper_fails_atomically(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_name:
+            root = Path(temporary_name)
+            bases = root / "bases"
+            bases.mkdir()
+            for filename in MODULE.DEFAULT_FILENAMES.values():
+                (bases / filename).write_text("p cnf 300 1\n1 0\n")
+            manifest_path = root / "manifest.json"
+            MODULE.write_manifest(bases, manifest_path)
+            manifest = json.loads(manifest_path.read_text())
+            manifest["cells"]["h3_b1"]["base_clauses"] = 2
+            manifest_path.write_text(json.dumps(manifest))
+            output = root / "out.cnf"
+            output.write_text("preserve me\n")
+            with self.assertRaisesRegex(ValueError, "declares 4 clauses"):
+                MODULE.materialize(manifest_path, "h3_b1.cube-0-0", output)
+            self.assertEqual(output.read_text(), "preserve me\n")
+
 
 if __name__ == "__main__":
     unittest.main()
