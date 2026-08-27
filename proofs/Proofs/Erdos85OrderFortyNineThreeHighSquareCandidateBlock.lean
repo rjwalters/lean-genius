@@ -70,7 +70,7 @@ theorem orderFortyNine_threeHigh_squareCandidate_reindex_eq_blocks
       orderFortyNineHighVertices, orderFortyNineThreeHighRootBlock,
       orderFortyNineOnes, Matrix.fromBlocks, finSumFinEquiv,
       FriendshipTheoremOQ01.onesMatrix, Matrix.one_apply,
-      Matrix.ofNat_apply, Matrix.diagonal, hi8, hD, heq] <;>
+      Matrix.ofNat_apply, Matrix.diagonal, hi8, hD, heq] ;
       split_ifs <;> ring
   · have hi8 : G.degree (Fin.castAdd 46 i) = 8 :=
       (hhigh _).2 (by simp)
@@ -114,7 +114,7 @@ theorem orderFortyNine_threeHigh_squareCandidate_reindex_eq_blocks
       orderFortyNineOrdinaryDefectL, orderFortyNineOrdinaryVertex,
       Matrix.fromBlocks, finSumFinEquiv,
       FriendshipTheoremOQ01.onesMatrix, Matrix.one_apply,
-      Matrix.ofNat_apply, Matrix.diagonal, hi7, heq] <;>
+      Matrix.ofNat_apply, Matrix.diagonal, hi7, heq] ;
       split_ifs <;> ring
 
 /-- Graph-level Schur formula for the canonical three-high labeling. -/
@@ -139,6 +139,52 @@ theorem orderFortyNine_threeHigh_squareCandidate_det_eq_fortyNine_mul_T
   rw [hdet]
   exact orderFortyNine_threeHigh_block_det_eq_fortyNine_mul_T_of_isUnit
     (orderFortyNineOrdinaryDefectL G) hL
+
+/-- Necessary arithmetic condition on the canonical ordinary defect block:
+its Schur expression is forty-nine times an integer square. -/
+theorem orderFortyNine_threeHigh_defect_T_eq_fortyNine_mul_intSquare
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x, 7 ≤ G.degree x)
+    (hcover : ∀ {u v}, G.Adj u v → G.degree u = 7 ∨ G.degree v = 7)
+    (hhigh : ∀ x : Fin 49, G.degree x = 8 ↔ x.val < 3)
+    (hL : IsUnit (orderFortyNineOrdinaryDefectL G).det) :
+    ∃ q : ℤ,
+      10 * (orderFortyNineOrdinaryDefectL G).det +
+          7 * dotProduct orderFortyNineOneVector
+            ((orderFortyNineOrdinaryDefectL G).adjugate.mulVec
+              orderFortyNineOneVector) =
+        49 * (q : ℚ) ^ 2 := by
+  have hzero8 : G.degree (0 : Fin 49) = 8 :=
+    (hhigh 0).2 (by decide)
+  have hzeroHigh : (0 : Fin 49) ∈ squareOrderHighVertices G 7 := by
+    simp [squareOrderHighVertices, hzero8]
+  have hhighCard : (squareOrderHighVertices G 7).card = 3 := by
+    have heq : squareOrderHighVertices G 7 =
+        (Finset.univ.filter fun x : Fin 49 => x.val < 3) := by
+      ext x
+      simp [squareOrderHighVertices, hhigh x]
+    rw [heq]
+    native_decide
+  rcases orderFortyNine_fortyNine_dvd_det_adjMatrix_of_three_high
+      G hfree hmin hcover (by decide) hzeroHigh hhighCard with ⟨q, hq⟩
+  have hcand : (orderFortyNineSquareCandidate G).det =
+      (G.adjMatrix ℤ).det * (G.adjMatrix ℤ).det := by
+    rw [← Matrix.det_mul,
+      orderFortyNine_adjMatrix_sq_eq_six_add_high_add_ones_sub_defect
+        G hfree hmin (by decide)]
+    rfl
+  have hmap := (Int.castRingHom ℚ).map_det
+    (orderFortyNineSquareCandidate G)
+  have hschur := orderFortyNine_threeHigh_squareCandidate_det_eq_fortyNine_mul_T
+    G hfree hmin hhigh hL
+  refine ⟨q, ?_⟩
+  rw [← hmap] at hschur
+  rw [hcand, hq] at hschur
+  norm_num [Int.castRingHom] at hschur
+  nlinarith
 
 end
 
