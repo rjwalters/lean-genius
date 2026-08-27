@@ -28,10 +28,34 @@ from analyze_small_high_adaptive_sixth_units import (
     manifest_jobs,
     read_dimacs,
 )
-from audit_order49_defect_determinant import determinant_expression
+from audit_order49_defect_determinant import defect_matrices, determinant_expression
 
 
 ORDINARY = tuple(range(3, 49))
+
+
+def rank_mod_prime(matrix: list[list[int]], prime: int) -> int:
+    rows = [[entry % prime for entry in row] for row in matrix]
+    rank = 0
+    for column in range(len(rows[0])):
+        pivot = next(
+            (row for row in range(rank, len(rows)) if rows[row][column]), None
+        )
+        if pivot is None:
+            continue
+        rows[rank], rows[pivot] = rows[pivot], rows[rank]
+        inverse = pow(rows[rank][column], -1, prime)
+        rows[rank] = [(inverse * entry) % prime for entry in rows[rank]]
+        for row in range(len(rows)):
+            if row == rank or not rows[row][column]:
+                continue
+            scale = rows[row][column]
+            rows[row] = [
+                (left - scale * right) % prime
+                for left, right in zip(rows[row], rows[rank])
+            ]
+        rank += 1
+    return rank
 
 
 def edge(u: int, v: int) -> tuple[int, int]:
@@ -174,6 +198,7 @@ def main() -> int:
     counts: Counter[str] = Counter()
     residues: Counter[int] = Counter()
     ungrounded_patterns: Counter[tuple[int, ...]] = Counter()
+    mod_seven_nullities: Counter[tuple[int, bool]] = Counter()
     for job_id in job_ids:
         state = propagated_graph(clauses, occurrences, base_units, jobs[job_id])
         blocked: list[frozenset[tuple[int, int]]] = []
@@ -201,6 +226,9 @@ def main() -> int:
             if nx.is_connected(defect):
                 counts["connected"] += 1
             value = determinant_expression(defect)
+            lap, _bordered = defect_matrices(defect)
+            nullity = len(lap) - rank_mod_prime(lap, 7)
+            mod_seven_nullities[(nullity, value % 49 == 0)] += 1
             residues[value % 49] += 1
             if value % 49:
                 continue
@@ -212,6 +240,7 @@ def main() -> int:
     print("jobs", len(job_ids), "completions", args.completions, dict(counts))
     print("residues_mod_49", dict(sorted(residues.items())))
     print("ungrounded_component_sizes", dict(sorted(ungrounded_patterns.items())))
+    print("mod7_nullity_by_mod49", dict(sorted(mod_seven_nullities.items())))
     return 0
 
 
