@@ -74,16 +74,24 @@ def orderFortyNineThreeHighB1AdaptiveSixthWitness
       | w :: w' :: _ => some (i, j, w, w')
       | _ => none
 
-/-- The four high-`2` selector indices that avoid a forced C4 at vertices
-`24` and `25`. -/
-def orderFortyNineThreeHighB1AdaptiveSixthLiveIndex (i : Fin 8) : Bool :=
-  i = 3 || i = 5 || i = 6 || i = 7
+/-- The one high-`2` selector excluded by the position of index `2` in a
+live fifth parent.  Exactly one of `ri`, `ai`, `bi`, and `ci` is `2`. -/
+def orderFortyNineThreeHighB1AdaptiveSixthForbiddenIndex
+    (ri ai bi _ci : Fin 8) : Fin 8 :=
+  if ri = 2 then 4 else if ai = 2 then 5 else if bi = 2 then 6 else 7
+
+/-- The state-dependent four-element high-`2` selector set that avoids a
+forced C4 at vertices `24` and `25`. -/
+def orderFortyNineThreeHighB1AdaptiveSixthLiveIndex
+    (ri ai bi ci i : Fin 8) : Bool :=
+  (i = 3 || i = 4 || i = 5 || i = 6 || i = 7) &&
+    i != orderFortyNineThreeHighB1AdaptiveSixthForbiddenIndex ri ai bi ci
 
 def orderFortyNineThreeHighB1AdaptiveSixthResidual
     (li ri ai bi ci di ei : Fin 8) : Bool :=
   orderFortyNineThreeHighB1AdaptiveFifthResidual li ri ai bi ci &&
-    orderFortyNineThreeHighB1AdaptiveSixthLiveIndex di &&
-    orderFortyNineThreeHighB1AdaptiveSixthLiveIndex ei && di != ei
+    orderFortyNineThreeHighB1AdaptiveSixthLiveIndex ri ai bi ci di &&
+    orderFortyNineThreeHighB1AdaptiveSixthLiveIndex ri ai bi ci ei && di != ei
 
 /-- Every fifth residual cell has exactly twelve sixth children. -/
 theorem orderFortyNineThreeHighB1AdaptiveSixthResidual_card_twelve
@@ -94,7 +102,7 @@ theorem orderFortyNineThreeHighB1AdaptiveSixthResidual_card_twelve
       orderFortyNineThreeHighB1AdaptiveSixthResidual
         li ri ai bi ci p.1 p.2).card = 12 := by
   simp only [orderFortyNineThreeHighB1AdaptiveSixthResidual, hfifth]
-  native_decide
+  native_decide +revert
 
 theorem orderFortyNineThreeHighB1AdaptiveSixthStructurallyDead_count :
     64 * 64 - 768 = 3328 := by

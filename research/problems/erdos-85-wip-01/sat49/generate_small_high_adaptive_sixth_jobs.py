@@ -13,7 +13,7 @@ from pathlib import Path
 
 SIXTH_LEFT = (206, 249, 717, 746, 774, 801, 827, 852)
 SIXTH_RIGHT = (207, 250, 718, 747, 775, 802, 828, 853)
-SIXTH_LIVE = frozenset((3, 5, 6, 7))
+SIXTH_POOL = frozenset((3, 4, 5, 6, 7))
 STRUCTURAL_THEOREMS = (
     "Erdos85.orderFortyNineThreeHighB1AdaptiveFifthResidual_exists_of_aligned",
     "Erdos85.orderFortyNineThreeHighB1AdaptiveSixthResidual_exists_of_aligned",
@@ -56,12 +56,36 @@ def inspect_dimacs(path: Path) -> tuple[int, int]:
     return header
 
 
-def sixth_residual(di: int, ei: int) -> bool:
-    """The twelve ordered distinct pairs from the four live indices."""
-    return di in SIXTH_LIVE and ei in SIXTH_LIVE and di != ei
+def forbidden_index(ri: int, ai: int, bi: int, ci: int) -> int:
+    """Excluded high-2 index, determined by the position of fifth index 2."""
+    if ri == 2:
+        return 4
+    if ai == 2:
+        return 5
+    if bi == 2:
+        return 6
+    if ci == 2:
+        return 7
+    raise ValueError("fifth residual has no distinguished index 2")
 
 
-def sixth_jobs(parent_id: str) -> list[dict[str, object]]:
+def sixth_residual(
+    ri: int, ai: int, bi: int, ci: int, di: int, ei: int
+) -> bool:
+    """Ordered distinct pairs from the state-dependent four-index set."""
+    forbidden = forbidden_index(ri, ai, bi, ci)
+    return (
+        di in SIXTH_POOL
+        and ei in SIXTH_POOL
+        and di != forbidden
+        and ei != forbidden
+        and di != ei
+    )
+
+
+def sixth_jobs(
+    parent_id: str, ri: int, ai: int, bi: int, ci: int
+) -> list[dict[str, object]]:
     # Alignment supplies one selector at each of vertices 24 and 25.  The
     # graph consumer forces their ordered pair into this exact residue, so no
     # negative cover job is needed.
@@ -75,7 +99,7 @@ def sixth_jobs(parent_id: str) -> list[dict[str, object]]:
         }
         for di in range(8)
         for ei in range(8)
-        if sixth_residual(di, ei)
+        if sixth_residual(ri, ai, bi, ci, di, ei)
     ]
 
 
@@ -123,6 +147,11 @@ def write_manifest(parent_path: Path, output: Path) -> None:
         fifth_id = str(fifth_job["id"])
         if not fifth_id.startswith(f"{fifth_parent_id}.fifth.cube-"):
             raise ValueError(f"malformed fifth job id: {fifth_id}")
+        ri = parent_leaf["third_right_index"]
+        ai = parent_leaf["fourth_left_index"]
+        bi = parent_leaf["fourth_right_index"]
+        ci = fifth_job["selector_index"]
+        forbidden = forbidden_index(ri, ai, bi, ci)
         leaves[fifth_id] = {
             "cell": "h3_b1",
             "base": str(base.resolve()),
@@ -134,10 +163,11 @@ def write_manifest(parent_path: Path, output: Path) -> None:
             "fourth_left_index": parent_leaf["fourth_left_index"],
             "fourth_right_index": parent_leaf["fourth_right_index"],
             "fifth_selector_index": fifth_job["selector_index"],
+            "sixth_forbidden_index": forbidden,
             "parent_units": parent_units,
             "sixth_left_selectors": list(SIXTH_LEFT),
             "sixth_right_selectors": list(SIXTH_RIGHT),
-            "jobs": sixth_jobs(fifth_id),
+            "jobs": sixth_jobs(fifth_id, ri, ai, bi, ci),
         }
 
     positive = sum(len(leaf["jobs"]) for leaf in leaves.values())
@@ -155,6 +185,14 @@ def write_manifest(parent_path: Path, output: Path) -> None:
         raise AssertionError("duplicate adaptive sixth job id")
     if len(unit_sets) != len(set(unit_sets)):
         raise AssertionError("duplicate adaptive sixth unit assignment")
+    forbidden_counts = {
+        i: sum(leaf["sixth_forbidden_index"] == i for leaf in leaves.values())
+        for i in (4, 5, 6, 7)
+    }
+    if forbidden_counts != {4: 16, 5: 16, 6: 16, 7: 16}:
+        raise AssertionError(
+            f"adaptive sixth forbidden-index mismatch: {forbidden_counts}"
+        )
 
     manifest = {
         "schema": "erdos85-small-high-adaptive-sixth-jobs-v1",
@@ -164,7 +202,10 @@ def write_manifest(parent_path: Path, output: Path) -> None:
         "structural_theorems": list(STRUCTURAL_THEOREMS),
         "sixth_left_selectors": list(SIXTH_LEFT),
         "sixth_right_selectors": list(SIXTH_RIGHT),
-        "sixth_live_indices": sorted(SIXTH_LIVE),
+        "sixth_selector_pool": sorted(SIXTH_POOL),
+        "forbidden_index_counts": {
+            str(i): forbidden_counts[i] for i in (4, 5, 6, 7)
+        },
         "live_fifth_cells": len(leaves),
         "children_per_fifth_cell": 12,
         "positive_residual_jobs": positive,
