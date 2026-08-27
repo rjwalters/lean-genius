@@ -42,7 +42,7 @@ def receipt(verdict: str = "UNSAT", **changes: str) -> str:
         })
     else:
         common.update({"rc": "10", "reproduce_rc": "10", "model": "VERIFIED",
-                       "model_verifier_sha256": SHA})
+                       "model_sha256": SHA, "model_verifier_sha256": SHA})
     common.update(changes)
     metadata = " ".join(f"{key}={value}" for key, value in common.items())
     return ("2026-08-27T17:00:00Z "
@@ -195,6 +195,25 @@ class TerminalLedgerTests(unittest.TestCase):
                 solved_cnf_sha256=hashlib.sha256(cnf.read_bytes()).hexdigest()
             ))
             with self.assertRaisesRegex(ReceiptError, "requires all LRAT forms"):
+                validate_artifacts(parsed, cnf)
+
+    def test_sat_artifact_verification_binds_model(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cnf = root / "job.cnf"
+            model = root / "model.out"
+            cnf.write_bytes(b"p cnf 1 1\n1 0\n")
+            model.write_bytes(b"s SATISFIABLE\nv 1 0\n")
+            parsed = parse(receipt(
+                "SAT", solved_cnf_sha256=hashlib.sha256(cnf.read_bytes()).hexdigest(),
+                cnf_bytes=str(cnf.stat().st_size),
+                model_sha256=hashlib.sha256(model.read_bytes()).hexdigest(),
+            ))
+            validate_artifacts(parsed, cnf, model=model)
+            model.write_bytes(b"s SATISFIABLE\nv -1 0\n")
+            with self.assertRaisesRegex(ReceiptError, "model artifact"):
+                validate_artifacts(parsed, cnf, model=model)
+            with self.assertRaisesRegex(ReceiptError, "requires the model"):
                 validate_artifacts(parsed, cnf)
 
 

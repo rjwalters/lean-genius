@@ -44,7 +44,7 @@ UNSAT = {
     "compact_lrat_gz_sha256", "compact_lrat_gz_bytes", "upload",
     "remote_sha256",
 }
-SAT = {"reproduce_rc", "model", "model_verifier_sha256"}
+SAT = {"reproduce_rc", "model", "model_sha256", "model_verifier_sha256"}
 HASH_FIELDS = {
     key for key in COMMON | UNSAT | SAT
     if key.endswith("_sha256") or key == "remote_sha256"
@@ -112,7 +112,8 @@ def file_identity(path: Path) -> tuple[str, int]:
 def validate_artifacts(receipt: dict[str, str], solved_cnf: Path,
                        raw_lrat: Path | None = None,
                        compact_lrat: Path | None = None,
-                       compact_lrat_gz: Path | None = None) -> None:
+                       compact_lrat_gz: Path | None = None,
+                       model: Path | None = None) -> None:
     cnf_sha, cnf_bytes = file_identity(solved_cnf)
     if (cnf_sha != receipt["solved_cnf_sha256"] or
             cnf_bytes != int(receipt["cnf_bytes"])):
@@ -121,7 +122,14 @@ def validate_artifacts(receipt: dict[str, str], solved_cnf: Path,
     if receipt["verdict"] != "UNSAT":
         if any(path is not None for path in proof_paths):
             raise ReceiptError("SAT receipt cannot bind LRAT artifacts")
+        if model is None:
+            raise ReceiptError("SAT artifact verification requires the model")
+        model_sha, _ = file_identity(model)
+        if model_sha != receipt["model_sha256"]:
+            raise ReceiptError("SAT model artifact identity mismatch")
         return
+    if model is not None:
+        raise ReceiptError("UNSAT receipt cannot bind a SAT model")
     if any(path is None for path in proof_paths):
         raise ReceiptError("UNSAT artifact verification requires all LRAT forms")
     assert raw_lrat is not None and compact_lrat is not None
@@ -260,6 +268,7 @@ def main() -> int:
     parser.add_argument("--raw-lrat", type=Path)
     parser.add_argument("--compact-lrat", type=Path)
     parser.add_argument("--compact-lrat-gz", type=Path)
+    parser.add_argument("--model", type=Path)
     args = parser.parse_args()
     lines = args.receipt.read_text().splitlines()
     if len(lines) != 1:
@@ -277,10 +286,10 @@ def main() -> int:
     result = parse(lines[0], expected, manifest_sha)
     proof_args = (args.raw_lrat, args.compact_lrat, args.compact_lrat_gz)
     if args.solved_cnf is None:
-        if any(path is not None for path in proof_args):
-            parser.error("LRAT artifact flags require --solved-cnf")
+        if any(path is not None for path in proof_args) or args.model is not None:
+            parser.error("artifact flags require --solved-cnf")
     else:
-        validate_artifacts(result, args.solved_cnf, *proof_args)
+        validate_artifacts(result, args.solved_cnf, *proof_args, model=args.model)
     print(f"TERMINAL RECEIPT VERIFIED {result['job']} {result['verdict']}")
     return 0
 
