@@ -244,6 +244,29 @@ def main() -> int:
             for literal, count in sorted(derived_counts.items())
             if abs(literal) <= 1176 and count == len(jobs)
         ],
+        "mixed_polarity_derived_variables": [
+            {
+                "variable": variable,
+                "edge": edge_endpoints(variable),
+                "positive_jobs": derived_counts[variable],
+                "negative_jobs": derived_counts[-variable],
+                "covered_jobs": (
+                    derived_counts[variable] + derived_counts[-variable]
+                ),
+            }
+            for variable in sorted(
+                (
+                    variable
+                    for variable in range(1, variables + 1)
+                    if derived_counts[variable] and derived_counts[-variable]
+                ),
+                key=lambda variable: (
+                    -(derived_counts[variable] + derived_counts[-variable]),
+                    -min(derived_counts[variable], derived_counts[-variable]),
+                    variable,
+                ),
+            )[: args.top]
+        ],
         "probes": probes,
         "tracked_derived_job_ids": {
             str(literal): job_ids
