@@ -265,6 +265,9 @@ def main() -> int:
     normalized_residual_three_adic: Counter[tuple[int, int] | str] = Counter()
     ordinary_adjacency_square_inertia: Counter[int] = Counter()
     ordinary_adjacency_square_determinants: Counter[tuple[str, bool]] = Counter()
+    pairpoint_adjacency_profiles: Counter[
+        tuple[tuple[str, str, str], int, tuple[tuple[int, int], ...]]
+    ] = Counter()
     for job_id in job_ids:
         state = propagated_graph(clauses, occurrences, base_units, jobs[job_id])
         blocked: list[frozenset[tuple[int, int]]] = []
@@ -292,6 +295,26 @@ def main() -> int:
                 {u for u in ORDINARY if edge(root, u) in positive}
                 for root in range(3)
             ]
+            pairpoints = [
+                next(iter(root_neighborhoods[left] & root_neighborhoods[right]))
+                for left, right in ((0, 1), (0, 2), (1, 2))
+            ]
+            pairpoint_states = tuple(
+                "1" if edge(pairpoints[left], pairpoints[right]) in positive else
+                "0" if edge(pairpoints[left], pairpoints[right]) in _negative else
+                "?"
+                for left, right in ((0, 1), (0, 2), (1, 2))
+            )
+            known_pairpoint_edges = pairpoint_states.count("1")
+            inferred_pairpoint_o_incidence = 6 + 2 * known_pairpoint_edges
+            inferred_o_profile = tuple(sorted((
+                (4, 25 - inferred_pairpoint_o_incidence),
+                (5, inferred_pairpoint_o_incidence),
+            )))
+            pairpoint_adjacency_profiles[
+                (pairpoint_states, 50 + inferred_pairpoint_o_incidence // 2,
+                 inferred_o_profile)
+            ] += 1
             balances = [
                 tuple(
                     sum(defect.has_edge(v - 3, u - 3) for u in neighborhood)
@@ -423,6 +446,9 @@ def main() -> int:
     ))
     print("ordinary_adjacency_square_det_class_eq_residual", dict(
         ordinary_adjacency_square_determinants
+    ))
+    print("pairpoint_states_inferred_C_empty_edges_degrees", dict(
+        pairpoint_adjacency_profiles
     ))
     return 0
 
