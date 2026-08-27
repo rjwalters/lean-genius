@@ -45,4 +45,24 @@ theorem orderFortyNineThreeHighB1AdaptiveFixedEdges_of_aligned
   all_goals rcases h with h | h <;> rcases h with ⟨rfl, rfl⟩ <;>
     first | assumption | exact (H.adj_comm _ _).2 (by assumption)
 
+/-- Fully graph-facing third-level pruning: an aligned `b1` graph realizing
+the two selected adaptive edges must be one of the sixteen residual cubes. -/
+theorem orderFortyNineThreeHighB1AdaptiveResidual_of_aligned
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (E : Equiv.Perm (Fin 49))
+    (haligned : ThreeHighDistOneB1ScoutAlignedLabeling G E)
+    (li ri : Fin 8)
+    (hleft : (orderFortyNineRelabeledGraph G E).Adj 18
+      (orderFortyNineThreeHighB1AdaptiveCandidates li))
+    (hright : (orderFortyNineRelabeledGraph G E).Adj 20
+      (orderFortyNineThreeHighB1AdaptiveCandidates ri)) :
+    orderFortyNineThreeHighB1AdaptiveResidual li ri = true := by
+  apply orderFortyNineThreeHighB1AdaptiveResidual_of_graph
+    (orderFortyNineRelabeledGraph G E)
+    (orderFortyNineRelabeledGraph_not_containsC4 G E hfree) li ri
+  · exact orderFortyNineThreeHighB1AdaptiveFixedEdges_of_aligned G E haligned
+  · exact hleft
+  · exact hright
+
 end Erdos85
