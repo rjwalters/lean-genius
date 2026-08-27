@@ -264,7 +264,7 @@ def main() -> int:
     normalized_residual_mod_sixteen: Counter[int | str] = Counter()
     normalized_residual_three_adic: Counter[tuple[int, int] | str] = Counter()
     ordinary_adjacency_square_inertia: Counter[int] = Counter()
-    ordinary_adjacency_square_determinants: Counter[tuple[bool, bool]] = Counter()
+    ordinary_adjacency_square_determinants: Counter[tuple[str, bool]] = Counter()
     for job_id in job_ids:
         state = propagated_graph(clauses, occurrences, base_units, jobs[job_id])
         blocked: list[frozenset[tuple[int, int]]] = []
@@ -381,13 +381,15 @@ def main() -> int:
                 normalized_residual_three_adic[
                     (normalized_residual % 3, valuation)
                 ] += 1
-                determinant_is_square = (
-                    adjacency_square_determinant >= 0
-                    and math.isqrt(adjacency_square_determinant) ** 2
-                        == adjacency_square_determinant
+                determinant_class = (
+                    "zero" if adjacency_square_determinant == 0 else
+                    "positive_square" if adjacency_square_determinant > 0
+                        and math.isqrt(adjacency_square_determinant) ** 2
+                            == adjacency_square_determinant else
+                    "nonsquare"
                 )
                 ordinary_adjacency_square_determinants[
-                    (determinant_is_square,
+                    (determinant_class,
                      adjacency_square_determinant == normalized_residual)
                 ] += 1
             else:
@@ -419,7 +421,7 @@ def main() -> int:
     print("ordinary_adjacency_square_negative_eigenvalues", dict(
         ordinary_adjacency_square_inertia
     ))
-    print("ordinary_adjacency_square_det_square_eq_residual", dict(
+    print("ordinary_adjacency_square_det_class_eq_residual", dict(
         ordinary_adjacency_square_determinants
     ))
     return 0
