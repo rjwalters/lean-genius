@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 
 import json
+import gzip
+import hashlib
 import tempfile
 import unittest
 from pathlib import Path
 
-from validate_sat49_terminal_ledger import ReceiptError, manifest_identity, parse
+from validate_sat49_terminal_ledger import (
+    ReceiptError, manifest_identity, parse, validate_artifacts,
+)
 
 
 SHA = "a" * 64
@@ -145,6 +149,50 @@ class TerminalLedgerTests(unittest.TestCase):
             }))
             with self.assertRaisesRegex(ReceiptError, "duplicate job ids"):
                 manifest_identity(path)
+
+    def test_artifacts_are_independently_hashed_and_gzip_bound(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cnf = root / "job.cnf"
+            raw_lrat = root / "raw.lrat"
+            compact = root / "compact.lrat"
+            compressed = root / "compact.lrat.gz"
+            cnf.write_bytes(b"p cnf 1 1\n1 0\n")
+            raw_lrat.write_bytes(b"2 0 1 0\n")
+            compact.write_bytes(b"2 0 1 0\n")
+            with gzip.open(compressed, "wb") as stream:
+                stream.write(compact.read_bytes())
+
+            def identity(path: Path) -> tuple[str, str]:
+                data = path.read_bytes()
+                return hashlib.sha256(data).hexdigest(), str(len(data))
+
+            cnf_sha, cnf_bytes = identity(cnf)
+            raw_sha, raw_bytes = identity(raw_lrat)
+            compact_sha, compact_bytes = identity(compact)
+            gz_sha, gz_bytes = identity(compressed)
+            parsed = parse(receipt(
+                solved_cnf_sha256=cnf_sha, cnf_bytes=cnf_bytes,
+                raw_lrat_sha256=raw_sha, raw_lrat_bytes=raw_bytes,
+                compact_lrat_sha256=compact_sha,
+                compact_lrat_bytes=compact_bytes,
+                compact_lrat_gz_sha256=gz_sha,
+                compact_lrat_gz_bytes=gz_bytes, remote_sha256=gz_sha,
+            ))
+            validate_artifacts(parsed, cnf, raw_lrat, compact, compressed)
+            compact.write_bytes(b"different\n")
+            with self.assertRaisesRegex(ReceiptError, "compact_lrat_sha256"):
+                validate_artifacts(parsed, cnf, raw_lrat, compact, compressed)
+
+    def test_unsat_artifact_verification_is_all_or_none(self):
+        with tempfile.TemporaryDirectory() as directory:
+            cnf = Path(directory) / "job.cnf"
+            cnf.write_bytes(b"x" * 100)
+            parsed = parse(receipt(
+                solved_cnf_sha256=hashlib.sha256(cnf.read_bytes()).hexdigest()
+            ))
+            with self.assertRaisesRegex(ReceiptError, "requires all LRAT forms"):
+                validate_artifacts(parsed, cnf)
 
 
 if __name__ == "__main__":

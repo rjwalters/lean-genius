@@ -10,6 +10,7 @@ model.  It deliberately rejects legacy UNKNOWN, deferred, and partial rows.
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
 import re
@@ -90,6 +91,53 @@ def manifest_identity(path: Path) -> tuple[set[str], str]:
     if not job_ids:
         raise ReceiptError("job manifest contains no jobs")
     return set(job_ids), digest
+
+
+def file_identity(path: Path) -> tuple[str, int]:
+    digest = hashlib.sha256()
+    size = 0
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1 << 20), b""):
+            digest.update(chunk)
+            size += len(chunk)
+    return digest.hexdigest(), size
+
+
+def validate_artifacts(receipt: dict[str, str], solved_cnf: Path,
+                       raw_lrat: Path | None = None,
+                       compact_lrat: Path | None = None,
+                       compact_lrat_gz: Path | None = None) -> None:
+    cnf_sha, cnf_bytes = file_identity(solved_cnf)
+    if (cnf_sha != receipt["solved_cnf_sha256"] or
+            cnf_bytes != int(receipt["cnf_bytes"])):
+        raise ReceiptError("solved CNF artifact identity mismatch")
+    proof_paths = (raw_lrat, compact_lrat, compact_lrat_gz)
+    if receipt["verdict"] != "UNSAT":
+        if any(path is not None for path in proof_paths):
+            raise ReceiptError("SAT receipt cannot bind LRAT artifacts")
+        return
+    if any(path is None for path in proof_paths):
+        raise ReceiptError("UNSAT artifact verification requires all LRAT forms")
+    assert raw_lrat is not None and compact_lrat is not None
+    assert compact_lrat_gz is not None
+    checks = (
+        (raw_lrat, "raw_lrat_sha256", "raw_lrat_bytes"),
+        (compact_lrat, "compact_lrat_sha256", "compact_lrat_bytes"),
+        (compact_lrat_gz, "compact_lrat_gz_sha256", "compact_lrat_gz_bytes"),
+    )
+    for path, sha_key, bytes_key in checks:
+        digest, size = file_identity(path)
+        if digest != receipt[sha_key] or size != int(receipt[bytes_key]):
+            raise ReceiptError(f"artifact identity mismatch for {sha_key}")
+    decompressed = hashlib.sha256()
+    try:
+        with gzip.open(compact_lrat_gz, "rb") as stream:
+            for chunk in iter(lambda: stream.read(1 << 20), b""):
+                decompressed.update(chunk)
+    except (OSError, EOFError) as error:
+        raise ReceiptError("invalid compact LRAT gzip artifact") from error
+    if decompressed.hexdigest() != receipt["compact_lrat_sha256"]:
+        raise ReceiptError("compact gzip content differs from compact LRAT")
 
 
 def parse(line: str, expected_jobs: set[str] | None = None,
@@ -201,6 +249,10 @@ def main() -> int:
     parser.add_argument("receipt", type=Path)
     parser.add_argument("--expected-job")
     parser.add_argument("--manifest", type=Path)
+    parser.add_argument("--solved-cnf", type=Path)
+    parser.add_argument("--raw-lrat", type=Path)
+    parser.add_argument("--compact-lrat", type=Path)
+    parser.add_argument("--compact-lrat-gz", type=Path)
     args = parser.parse_args()
     lines = args.receipt.read_text().splitlines()
     if len(lines) != 1:
@@ -213,6 +265,12 @@ def main() -> int:
         if not expected:
             parser.error("--expected-job is absent from --manifest")
     result = parse(lines[0], expected, manifest_sha)
+    proof_args = (args.raw_lrat, args.compact_lrat, args.compact_lrat_gz)
+    if args.solved_cnf is None:
+        if any(path is not None for path in proof_args):
+            parser.error("LRAT artifact flags require --solved-cnf")
+    else:
+        validate_artifacts(result, args.solved_cnf, *proof_args)
     print(f"TERMINAL RECEIPT VERIFIED {result['job']} {result['verdict']}")
     return 0
 
