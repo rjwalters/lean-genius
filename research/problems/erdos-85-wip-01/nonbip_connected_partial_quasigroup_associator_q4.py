@@ -74,10 +74,15 @@ def analyze(adjacency: list[int]) -> tuple:
 
 
 def main() -> None:
+    global Q, N, ROOT_NEIGHBORS
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--q", type=int, default=4)
     parser.add_argument("--models", type=int, default=256)
     parser.add_argument("--timeout-ms", type=int, default=120_000)
     args = parser.parse_args()
+    Q = args.q
+    N = Q * Q
+    ROOT_NEIGHBORS = set(range(1, Q + 1))
 
     solver = Solver()
     solver.set(timeout=args.timeout_ms, random_seed=850081)
@@ -111,7 +116,7 @@ def main() -> None:
         profiles[analyze(graph_from_model(variables, model))] += 1
         solver.add(Or([variable != model.eval(variable) for variable in variables.values()]))
 
-    print(f"bounded_models={args.models}; profiles={len(profiles)}")
+    print(f"q={Q}; bounded_models={args.models}; profiles={len(profiles)}")
     for (vertices, propagation, target_mismatch), count in profiles.items():
         print(f"profile_count={count}; associator_mod4_defect_edge_mismatches={propagation}; target_t_mismatches={target_mismatch}")
         for item, multiplicity in vertices:

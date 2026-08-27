@@ -70,3 +70,9 @@ associator witnesses for a defect edge `xy` whose unpaired terms evaluate to
 that proposed pairing on the same 256 controls before attempting a general
 proof.  Absent such an operation, this route remains calibrated but open and
 should not accumulate higher associator moments.
+
+The verifier also accepts `--q` for deliberately bounded cross-checks.  The
+q=3 square-order constraint is UNSAT before enumeration, while a one-model
+q=5 search reached the 120-second solver cap with `unknown`.  Thus neither
+supplies cross-degree evidence for the displayed q=4 residues, and the q=5
+search should not be expanded into a census.
