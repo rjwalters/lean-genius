@@ -1,5 +1,6 @@
 import Proofs.Erdos85OrderFortyNineAutomaticDefectNonsingular
 import Proofs.Erdos85OrderFortyNineDefectEigenvectors
+import Proofs.Erdos85EigenfamilyCharpolyFactor
 
 /-! # Canonical mod-seven kernel vectors of the ordinary defect block -/
 
@@ -298,6 +299,105 @@ theorem orderFortyNineTwoHighRowDifferenceFamilyModSeven_mem_kernel
       exact orderFortyNineOrdinaryDefectLModSeven_mulVec_highRowDifference_eq_zero
         G hfree hmin hhigh ((hhigh 1).2 (by decide)) ((hhigh 2).2 (by decide))
 
+def orderFortyNineOrdinaryDefectLComplex
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj] :
+    Matrix (Fin 46) (Fin 46) ℂ :=
+  (Int.castRingHom ℂ).mapMatrix (orderFortyNineOrdinaryDefectLInt G)
+
+def orderFortyNineOrdinaryHighRowDifferenceComplex
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    (x z : Fin 49) : Fin 46 → ℂ :=
+  fun i => (orderFortyNineOrdinaryHighRowDifference G x z i : ℂ)
+
+def orderFortyNineTwoHighRowDifferenceFamilyComplex
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj] : Bool → (Fin 46 → ℂ)
+  | false => orderFortyNineOrdinaryHighRowDifferenceComplex G 0 2
+  | true => orderFortyNineOrdinaryHighRowDifferenceComplex G 1 2
+
+theorem orderFortyNineOrdinaryDefectLComplex_mulVec_highRowDifference
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x, 7 ≤ G.degree x)
+    (hhigh : ∀ y : Fin 49, G.degree y = 8 ↔ y.val < 3)
+    {x z : Fin 49} (hx : G.degree x = 8) (hz : G.degree z = 8) :
+    (orderFortyNineOrdinaryDefectLComplex G).mulVec
+        (orderFortyNineOrdinaryHighRowDifferenceComplex G x z) =
+      (7 : ℂ) • orderFortyNineOrdinaryHighRowDifferenceComplex G x z := by
+  have hint := orderFortyNineOrdinaryDefectLInt_mulVec_highRowDifference
+    G hfree hmin hhigh hx hz
+  funext i
+  have hi := congrFun hint i
+  have hi' := congrArg (Int.castRingHom ℂ) hi
+  simp [orderFortyNineOrdinaryDefectLComplex,
+    orderFortyNineOrdinaryHighRowDifferenceComplex,
+    Matrix.mulVec, dotProduct, RingHom.mapMatrix_apply] at hi' ⊢
+  exact hi'
+
+theorem orderFortyNineTwoHighRowDifferenceFamilyComplex_linearIndependent
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x, 7 ≤ G.degree x)
+    (hhigh : ∀ y : Fin 49, G.degree y = 8 ↔ y.val < 3) :
+    LinearIndependent ℂ (orderFortyNineTwoHighRowDifferenceFamilyComplex G) := by
+  have h0 : G.degree (0 : Fin 49) = 8 := (hhigh 0).2 (by decide)
+  have h1 : G.degree (1 : Fin 49) = 8 := (hhigh 1).2 (by decide)
+  have h2 : G.degree (2 : Fin 49) = 8 := (hhigh 2).2 (by decide)
+  obtain ⟨j0, hj00, hj01, hj02⟩ :=
+    orderFortyNine_exists_ordinary_neighbor_exclusive_of_three_high
+      G hfree hmin hhigh h0 h1 h2 (by decide) (by decide)
+  obtain ⟨j1, hj11, hj10, hj12⟩ :=
+    orderFortyNine_exists_ordinary_neighbor_exclusive_of_three_high
+      G hfree hmin hhigh h1 h0 h2 (by decide) (by decide)
+  rw [Fintype.linearIndependent_iff]
+  intro g hg i
+  rw [Fintype.sum_bool] at hg
+  have hj0 := congrFun hg j0
+  have hj1 := congrFun hg j1
+  simp [orderFortyNineTwoHighRowDifferenceFamilyComplex,
+    orderFortyNineOrdinaryHighRowDifferenceComplex,
+    orderFortyNineOrdinaryHighRowDifference, orderFortyNineHighRowDifference,
+    SimpleGraph.adjMatrix_apply, hj00, hj01, hj02,
+    Pi.smul_apply, smul_eq_mul] at hj0
+  simp [orderFortyNineTwoHighRowDifferenceFamilyComplex,
+    orderFortyNineOrdinaryHighRowDifferenceComplex,
+    orderFortyNineOrdinaryHighRowDifference, orderFortyNineHighRowDifference,
+    SimpleGraph.adjMatrix_apply, hj11, hj10, hj12,
+    Pi.smul_apply, smul_eq_mul] at hj1
+  cases i with
+  | false => exact hj0
+  | true => exact hj1
+
+theorem orderFortyNineOrdinaryDefectLComplex_seven_factor_sq_dvd_charpoly
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x, 7 ≤ G.degree x)
+    (hhigh : ∀ y : Fin 49, G.degree y = 8 ↔ y.val < 3) :
+    (Polynomial.X - Polynomial.C (7 : ℂ)) ^ 2 ∣
+      (orderFortyNineOrdinaryDefectLComplex G).charpoly := by
+  let f : Fin 2 → Fin 46 → ℂ :=
+    orderFortyNineTwoHighRowDifferenceFamilyComplex G ∘ finTwoEquiv
+  apply matrix_charpoly_linearFactor_pow_dvd_of_eigenfamily
+    (orderFortyNineOrdinaryDefectLComplex G) 7 2 f
+  · intro i
+    dsimp [f]
+    cases finTwoEquiv i with
+    | false =>
+        exact orderFortyNineOrdinaryDefectLComplex_mulVec_highRowDifference
+          G hfree hmin hhigh ((hhigh 0).2 (by decide)) ((hhigh 2).2 (by decide))
+    | true =>
+        exact orderFortyNineOrdinaryDefectLComplex_mulVec_highRowDifference
+          G hfree hmin hhigh ((hhigh 1).2 (by decide)) ((hhigh 2).2 (by decide))
+  · exact (orderFortyNineTwoHighRowDifferenceFamilyComplex_linearIndependent
+      G hfree hmin hhigh).comp _ finTwoEquiv.injective
+
 end
 
 end Erdos85
@@ -307,3 +407,4 @@ end Erdos85
 #print axioms Erdos85.orderFortyNine_two_ordinaryHighRowDifferencesModSeven_independent
 #print axioms Erdos85.orderFortyNineTwoHighRowDifferenceFamilyModSeven_linearIndependent
 #print axioms Erdos85.orderFortyNineTwoHighRowDifferenceFamilyModSeven_mem_kernel
+#print axioms Erdos85.orderFortyNineOrdinaryDefectLComplex_seven_factor_sq_dvd_charpoly
