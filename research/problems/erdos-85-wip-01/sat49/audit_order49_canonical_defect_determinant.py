@@ -86,6 +86,7 @@ def defect_smt(
     graph: nx.Graph, blocked: list[frozenset[tuple[int, int]]],
     ungrounded_components: int, min_ungrounded_size: int,
     enforce_high_kernel: bool, enforce_high_eigenvectors: bool,
+    enforce_high_affine: bool,
 ) -> tuple[str, list[tuple[int, int]]]:
     positive, negative = signed_edges(graph)
     pairs = [(u, v) for u in ORDINARY for v in ORDINARY if u < v]
@@ -134,6 +135,19 @@ def defect_smt(
                     lines.append(f"(assert (= {expression} {7 * vector[u]}))")
                 else:
                     lines.append(f"(assert (= (mod {expression} 7) 0))")
+    if enforce_high_affine:
+        for root in range(3):
+            incidence = {
+                u: int(edge(root, u) in positive) for u in ORDINARY
+            }
+            for u in ORDINARY:
+                terms = [
+                    f"(ite d_{min(u, v)}_{max(u, v)} 1 0)"
+                    for v in ORDINARY if v != u and incidence[v]
+                ]
+                lines.append(
+                    f"(assert (= (+ {' '.join(terms)}) {1 - incidence[u]}))"
+                )
     for component in range(ungrounded_components):
         lines.append("(assert (or " + " ".join(
             f"s_{component}_{u}" for u in ORDINARY
@@ -169,10 +183,12 @@ def solve_defect(
     graph: nx.Graph, blocked: list[frozenset[tuple[int, int]]], timeout: int,
     ungrounded_components: int, min_ungrounded_size: int,
     enforce_high_kernel: bool, enforce_high_eigenvectors: bool,
+    enforce_high_affine: bool,
 ) -> tuple[nx.Graph, frozenset[tuple[int, int]]] | None:
     smt, pairs = defect_smt(
         graph, blocked, ungrounded_components, min_ungrounded_size,
         enforce_high_kernel, enforce_high_eigenvectors,
+        enforce_high_affine,
     )
     completed = subprocess.run(
         ["z3", "-in", f"-T:{timeout}"], input=smt, text=True,
@@ -207,6 +223,7 @@ def main() -> int:
     parser.add_argument("--min-ungrounded-size", type=int, default=0)
     parser.add_argument("--enforce-high-kernel", action="store_true")
     parser.add_argument("--enforce-high-eigenvectors", action="store_true")
+    parser.add_argument("--enforce-high-affine", action="store_true")
     parser.add_argument("--print-values", action="store_true")
     args = parser.parse_args()
     if args.ungrounded_components < 0:
@@ -251,6 +268,7 @@ def main() -> int:
                     state, blocked, args.timeout, ungrounded_components,
                     args.min_ungrounded_size, args.enforce_high_kernel,
                     args.enforce_high_eigenvectors,
+                    args.enforce_high_affine,
                 )
             except RuntimeError as error:
                 if str(error) != "timeout":
