@@ -256,6 +256,87 @@ theorem false_of_binarySquare_oneComponent_localTriangle_modFour_propagation_mod
   exact triangleFreeDegree_modEight_eq_of_localTriangleEdges_modFour_eq
     G hfree hreg (htriProp huv)
 
+/-- The second terminal input also has a rooted-triangle form.  When
+`8 ∣ q`, the local identities `deg_K(y) + 2 t_y = q`, summed over the
+`q` ambient neighbors of `x`, turn
+`sum_{y in N(x)} t_y ≡ 2 (mod 4)` into
+`sum_{y in N(x)} deg_K(y) ≡ 4 (mod 8)`. -/
+theorem triangleFreeDegree_neighborMass_modEight_eq_four_of_localTriangleMass_modFour_eq_two
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ}
+    (hreg : ∀ z, G.degree z = q) (hq : q % 8 = 0) (x : V)
+    (htriMass : (∑ y ∈ G.neighborFinset x,
+      (G.induce (G.neighborSet y)).edgeFinset.card) % 4 = 2) :
+    ((G.adjMatrix ℕ).mulVec
+      (fun y => (triangleFreeEdgeGraph G).degree y) x) % 8 = 4 := by
+  have hpoint : ∀ y : V,
+      (triangleFreeEdgeGraph G).degree y +
+        2 * (G.induce (G.neighborSet y)).edgeFinset.card = q := by
+    intro y
+    have hy := card_triangleFreeNeighbors_add_two_mul_localEdges G hfree y
+    have hycard : (triangleFreeNeighbors G y).card =
+        (triangleFreeEdgeGraph G).degree y := by
+      rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+        triangleFreeEdgeGraph_neighborFinset]
+    rwa [hycard, hreg y] at hy
+  have hsum :
+      (∑ y ∈ G.neighborFinset x,
+          (triangleFreeEdgeGraph G).degree y) +
+        2 * (∑ y ∈ G.neighborFinset x,
+          (G.induce (G.neighborSet y)).edgeFinset.card) = q * q := by
+    calc
+      (∑ y ∈ G.neighborFinset x,
+          (triangleFreeEdgeGraph G).degree y) +
+          2 * (∑ y ∈ G.neighborFinset x,
+            (G.induce (G.neighborSet y)).edgeFinset.card) =
+          ∑ y ∈ G.neighborFinset x,
+            ((triangleFreeEdgeGraph G).degree y +
+              2 * (G.induce (G.neighborSet y)).edgeFinset.card) := by
+                simp only [Finset.sum_add_distrib, Finset.mul_sum]
+      _ = ∑ _y ∈ G.neighborFinset x, q := by
+            apply Finset.sum_congr rfl
+            intro y _
+            exact hpoint y
+      _ = q * q := by
+            simp [G.card_neighborFinset_eq_degree, hreg x]
+  have hqq : (q * q) % 8 = 0 := by
+    rw [Nat.mul_mod, hq]
+  rw [SimpleGraph.adjMatrix_mulVec_apply]
+  omega
+
+/-- Fully rooted sharp terminal.  Both remaining graph inputs are now
+congruences for the local triangle count `t_x`: it is preserved modulo four
+on defect edges, and its ambient-neighborhood sum is two modulo four. -/
+theorem false_of_binarySquare_oneComponent_rootedTriangle_modFour_terminal
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {k : ℕ} (hk : 3 ≤ k)
+    (hreg : ∀ x, G.degree x = 2 ^ k)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 1)
+    (htriProp : ∀ ⦃x y⦄, (secondOrderDefectGraph G).Adj x y →
+      (G.induce (G.neighborSet x)).edgeFinset.card % 4 =
+        (G.induce (G.neighborSet y)).edgeFinset.card % 4)
+    (htriMass : ∀ x, (∑ y ∈ G.neighborFinset x,
+      (G.induce (G.neighborSet y)).edgeFinset.card) % 4 = 2)
+    (x : V) : False := by
+  have hq : (2 ^ k) % 8 = 0 := by
+    apply Nat.dvd_iff_mod_eq_zero.mp
+    have hdvd : 2 ^ 3 ∣ 2 ^ k := Nat.pow_dvd_pow 2 hk
+    norm_num at hdvd
+    exact hdvd
+  apply false_of_binarySquare_oneComponent_localTriangle_modFour_propagation_modEight
+    G hfree hk hreg hcount htriProp _ x
+  intro y
+  exact
+    triangleFreeDegree_neighborMass_modEight_eq_four_of_localTriangleMass_modFour_eq_two
+      G hfree hreg hq y (htriMass y)
+
 end
 
 end Erdos85
@@ -271,3 +352,7 @@ end Erdos85
   Erdos85.triangleFreeDegree_modEight_eq_of_localTriangleEdges_modFour_eq
 #print axioms
   Erdos85.false_of_binarySquare_oneComponent_localTriangle_modFour_propagation_modEight
+#print axioms
+  Erdos85.triangleFreeDegree_neighborMass_modEight_eq_four_of_localTriangleMass_modFour_eq_two
+#print axioms
+  Erdos85.false_of_binarySquare_oneComponent_rootedTriangle_modFour_terminal
