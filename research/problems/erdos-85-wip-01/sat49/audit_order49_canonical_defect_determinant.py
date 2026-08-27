@@ -48,7 +48,7 @@ def signed_edges(graph: nx.Graph) -> tuple[set[tuple[int, int]], set[tuple[int, 
 
 def defect_smt(
     graph: nx.Graph, blocked: list[frozenset[tuple[int, int]]],
-    require_ungrounded_component: bool,
+    ungrounded_components: int,
 ) -> tuple[str, list[tuple[int, int]]]:
     positive, negative = signed_edges(graph)
     pairs = [(u, v) for u in ORDINARY for v in ORDINARY if u < v]
@@ -56,8 +56,10 @@ def defect_smt(
         "(set-logic QF_LIA)",
     ]
     lines.extend(f"(declare-const d_{u}_{v} Bool)" for u, v in pairs)
-    if require_ungrounded_component:
-        lines.extend(f"(declare-const s_{u} Bool)" for u in ORDINARY)
+    for component in range(ungrounded_components):
+        lines.extend(
+            f"(declare-const s_{component}_{u} Bool)" for u in ORDINARY
+        )
 
     for u, v in pairs:
         witnesses = [w for w in range(49) if w not in (u, v)]
@@ -75,13 +77,23 @@ def defect_smt(
             if v != u
         ]
         lines.append(f"(assert (= (+ {' '.join(terms)}) {target}))")
-        if require_ungrounded_component and high_incidence:
-            lines.append(f"(assert (not s_{u}))")
-    if require_ungrounded_component:
-        lines.append("(assert (or " + " ".join(f"s_{u}" for u in ORDINARY) + "))")
+        if high_incidence:
+            for component in range(ungrounded_components):
+                lines.append(f"(assert (not s_{component}_{u}))")
+    for component in range(ungrounded_components):
+        lines.append("(assert (or " + " ".join(
+            f"s_{component}_{u}" for u in ORDINARY
+        ) + "))")
         for u, v in pairs:
             # A selected union of components has no defect edge across its cut.
-            lines.append(f"(assert (or (= s_{u} s_{v}) (not d_{u}_{v})))")
+            lines.append(
+                f"(assert (or (= s_{component}_{u} s_{component}_{v}) "
+                f"(not d_{u}_{v})))"
+            )
+    for left in range(ungrounded_components):
+        for right in range(left + 1, ungrounded_components):
+            for u in ORDINARY:
+                lines.append(f"(assert (not (and s_{left}_{u} s_{right}_{u})))")
     for previous in blocked:
         difference = [
             f"(not d_{u}_{v})" if (u, v) in previous else f"d_{u}_{v}"
@@ -97,9 +109,9 @@ def defect_smt(
 
 def solve_defect(
     graph: nx.Graph, blocked: list[frozenset[tuple[int, int]]], timeout: int,
-    require_ungrounded_component: bool,
+    ungrounded_components: int,
 ) -> tuple[nx.Graph, frozenset[tuple[int, int]]] | None:
-    smt, pairs = defect_smt(graph, blocked, require_ungrounded_component)
+    smt, pairs = defect_smt(graph, blocked, ungrounded_components)
     completed = subprocess.run(
         ["z3", "-in", f"-T:{timeout}"], input=smt, text=True,
         capture_output=True, check=False,
@@ -129,7 +141,13 @@ def main() -> int:
     parser.add_argument("--completions", type=int, default=1)
     parser.add_argument("--timeout", type=int, default=30)
     parser.add_argument("--require-ungrounded-component", action="store_true")
+    parser.add_argument("--ungrounded-components", type=int, default=0)
     args = parser.parse_args()
+    if args.ungrounded_components < 0:
+        parser.error("--ungrounded-components must be nonnegative")
+    ungrounded_components = max(
+        args.ungrounded_components, int(args.require_ungrounded_component)
+    )
 
     manifest = json.loads(args.manifest.read_text())
     orbit_report = json.loads(args.orbits.read_text())
@@ -151,7 +169,7 @@ def main() -> int:
         blocked: list[frozenset[tuple[int, int]]] = []
         for _ in range(args.completions):
             solved = solve_defect(
-                state, blocked, args.timeout, args.require_ungrounded_component
+                state, blocked, args.timeout, ungrounded_components
             )
             if solved is None:
                 counts["unsat"] += 1
