@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 
+import json
+import tempfile
 import unittest
+from pathlib import Path
 
-from validate_sat49_terminal_ledger import ReceiptError, parse
+from validate_sat49_terminal_ledger import ReceiptError, manifest_identity, parse
 
 
 SHA = "a" * 64
@@ -91,6 +94,44 @@ class TerminalLedgerTests(unittest.TestCase):
             parse(receipt(lean_image_digest="latest"))
         with self.assertRaisesRegex(ReceiptError, "UTC"):
             parse(receipt().replace("2026-08-27T17:00:00Z", "2026-08-27T17:00:00"))
+
+    def test_loads_each_manifest_layer_and_binds_its_hash(self):
+        job = "h3_b1.cube-0-0.nested.cube-0-0.third.cube-7-7"
+        schemas = (
+            ("erdos85-small-high-cube-jobs-v1", "cells"),
+            ("erdos85-small-high-nested-cube-jobs-v1", "leaves"),
+            ("erdos85-small-high-third-cube-jobs-v1", "leaves"),
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            for index, (schema, group_key) in enumerate(schemas):
+                path = Path(directory) / f"manifest-{index}.json"
+                path.write_text(json.dumps({
+                    "schema": schema,
+                    group_key: {"group": {"jobs": [{"id": job}]}},
+                }))
+                jobs, digest = manifest_identity(path)
+                self.assertEqual(jobs, {job})
+                self.assertEqual(
+                    parse(receipt(manifest_sha256=digest), jobs, digest)["job"], job
+                )
+                with self.assertRaisesRegex(ReceiptError, "does not bind"):
+                    parse(receipt(), jobs, digest)
+
+    def test_rejects_malformed_or_duplicate_manifest_jobs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "manifest.json"
+            path.write_text(json.dumps({"schema": "wrong", "cells": {}}))
+            with self.assertRaisesRegex(ReceiptError, "unsupported job manifest"):
+                manifest_identity(path)
+            path.write_text(json.dumps({
+                "schema": "erdos85-small-high-cube-jobs-v1",
+                "cells": {
+                    "a": {"jobs": [{"id": "same"}]},
+                    "b": {"jobs": [{"id": "same"}]},
+                },
+            }))
+            with self.assertRaisesRegex(ReceiptError, "duplicate job ids"):
+                manifest_identity(path)
 
 
 if __name__ == "__main__":

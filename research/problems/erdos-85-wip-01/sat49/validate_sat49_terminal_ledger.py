@@ -10,6 +10,8 @@ model.  It deliberately rejects legacy UNKNOWN, deferred, and partial rows.
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
 import re
 from datetime import datetime
 from pathlib import Path
@@ -59,7 +61,39 @@ class ReceiptError(ValueError):
     pass
 
 
-def parse(line: str, expected_jobs: set[str] | None = None) -> dict[str, str]:
+def manifest_identity(path: Path) -> tuple[set[str], str]:
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    try:
+        manifest = json.loads(path.read_text())
+    except (json.JSONDecodeError, UnicodeDecodeError) as error:
+        raise ReceiptError(f"invalid manifest JSON: {path}") from error
+    schema = manifest.get("schema")
+    if schema == "erdos85-small-high-cube-jobs-v1":
+        groups = manifest.get("cells")
+    elif schema in {"erdos85-small-high-nested-cube-jobs-v1",
+                    "erdos85-small-high-third-cube-jobs-v1"}:
+        groups = manifest.get("leaves")
+    else:
+        raise ReceiptError(f"unsupported job manifest schema: {schema}")
+    if not isinstance(groups, dict) or not groups:
+        raise ReceiptError("job manifest has no nonempty cell/leaf mapping")
+    job_ids = []
+    for group in groups.values():
+        if not isinstance(group, dict) or not isinstance(group.get("jobs"), list):
+            raise ReceiptError("job manifest group has no job list")
+        for job in group["jobs"]:
+            if not isinstance(job, dict) or not isinstance(job.get("id"), str):
+                raise ReceiptError("job manifest contains a malformed job record")
+            job_ids.append(job["id"])
+    if len(set(job_ids)) != len(job_ids):
+        raise ReceiptError("job manifest contains duplicate job ids")
+    if not job_ids:
+        raise ReceiptError("job manifest contains no jobs")
+    return set(job_ids), digest
+
+
+def parse(line: str, expected_jobs: set[str] | None = None,
+          expected_manifest_sha256: str | None = None) -> dict[str, str]:
     fields = line.split()
     if len(fields) < 4:
         raise ReceiptError("terminal receipt is too short")
@@ -105,6 +139,9 @@ def parse(line: str, expected_jobs: set[str] | None = None) -> dict[str, str]:
             f"job requires generator_kind={expected_generator}, got "
             f"{metadata['generator_kind']}"
         )
+    if (expected_manifest_sha256 is not None and
+            metadata["manifest_sha256"] != expected_manifest_sha256):
+        raise ReceiptError("receipt does not bind the supplied job manifest")
     for key in HASH_FIELDS & set(metadata):
         if SHA256_RE.fullmatch(metadata[key]) is None:
             raise ReceiptError(f"invalid SHA256 in {key}")
@@ -152,12 +189,19 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("receipt", type=Path)
     parser.add_argument("--expected-job")
+    parser.add_argument("--manifest", type=Path)
     args = parser.parse_args()
     lines = args.receipt.read_text().splitlines()
     if len(lines) != 1:
         parser.error("receipt must contain exactly one line")
     expected = {args.expected_job} if args.expected_job else None
-    result = parse(lines[0], expected)
+    manifest_sha = None
+    if args.manifest is not None:
+        manifest_jobs, manifest_sha = manifest_identity(args.manifest)
+        expected = manifest_jobs if expected is None else expected & manifest_jobs
+        if not expected:
+            parser.error("--expected-job is absent from --manifest")
+    result = parse(lines[0], expected, manifest_sha)
     print(f"TERMINAL RECEIPT VERIFIED {result['job']} {result['verdict']}")
     return 0
 
