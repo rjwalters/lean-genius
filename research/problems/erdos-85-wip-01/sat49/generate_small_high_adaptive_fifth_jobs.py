@@ -18,6 +18,7 @@ FOURTH_RIGHT = (160, 247, 520, 555, 589, 622, 654, 685)
 FIFTH = (161, 248, 521, 556, 590, 623, 655, 686)
 STRUCTURAL_THEOREMS = (
     "Erdos85.orderFortyNineThreeHighB1AdaptiveFourthResidual_of_aligned",
+    "Erdos85.orderFortyNineThreeHighB1AdaptiveFifthResidual_exists_of_aligned",
     "Erdos85.orderFortyNineThreeHighB1AdaptiveFifthResidual_of_graph",
     "Erdos85.orderFortyNineThreeHighB1AdaptiveFifthResidual_count",
     "Erdos85.orderFortyNineThreeHighB1AdaptiveFifthDeadParent_count",
@@ -124,13 +125,9 @@ def fourth_residual_parents() -> list[tuple[int, int, int, int]]:
 def fifth_jobs(
     parent_id: str, li: int, ri: int, ai: int, bi: int
 ) -> list[dict[str, object]]:
-    jobs: list[dict[str, object]] = [
-        {
-            "id": f"{parent_id}.fifth.cover",
-            "kind": "cover",
-            "units": [-literal for literal in FIFTH],
-        },
-    ]
+    # The aligned-labeling partition theorem proves that one selector must be
+    # present, so no negative cover job is needed for any fourth parent.
+    jobs: list[dict[str, object]] = []
     for ci, literal in enumerate(FIFTH):
         if not fifth_residual(li, ri, ai, bi, ci):
             continue
@@ -219,7 +216,7 @@ def write_manifest(parent_path: Path, output: Path) -> None:
         fifth_dead_parent(li, ri, ai, bi)
         for li, ri, ai, bi in fourth_residual_parents()
     )
-    if (len(leaves), positive, covers, dead_parents) != (80, 64, 80, 16):
+    if (len(leaves), positive, covers, dead_parents) != (80, 64, 0, 16):
         raise AssertionError(
             "adaptive fifth census mismatch: "
             f"{(len(leaves), positive, covers, dead_parents)}"
