@@ -27,7 +27,7 @@ JOB_RE = re.compile(
 )
 
 COMMON = {
-    "schema", "mode", "rc", "solve_s", "solve_peak_rss_kb", "cap_s",
+    "schema", "provenance", "mode", "rc", "solve_s", "solve_peak_rss_kb", "cap_s",
     "generator_kind", "generator_sha256", "manifest_sha256",
     "emitted_cnf_sha256", "solved_cnf_sha256", "cnf_bytes", "maxvar",
     "kissat_sha256",
@@ -128,6 +128,8 @@ def parse(line: str, expected_jobs: set[str] | None = None,
         raise ReceiptError(f"missing terminal metadata: {sorted(missing)}")
     if metadata["schema"] != SCHEMA:
         raise ReceiptError(f"unsupported terminal schema: {metadata['schema']}")
+    if metadata["provenance"] not in {"fresh", "legacy-migration"}:
+        raise ReceiptError(f"invalid provenance: {metadata['provenance']}")
     if metadata["mode"] not in {"quick", "slow"}:
         raise ReceiptError(f"invalid mode: {metadata['mode']}")
     if metadata["generator_kind"] not in {"root", "nested", "third"}:
@@ -158,6 +160,13 @@ def parse(line: str, expected_jobs: set[str] | None = None,
         raise ReceiptError("invalid Lean image digest")
     if int(metadata["solve_s"]) > int(metadata["cap_s"]) + 60:
         raise ReceiptError("solve time exceeds cap plus shutdown allowance")
+    if metadata["provenance"] == "fresh" and int(metadata["solve_peak_rss_kb"]) <= 0:
+        raise ReceiptError("fresh receipt requires positive solve_peak_rss_kb")
+    if (metadata["provenance"] == "legacy-migration" and
+            int(metadata["solve_peak_rss_kb"]) != 0):
+        raise ReceiptError(
+            "legacy migration must mark unavailable solve peak RSS as zero"
+        )
 
     if verdict == "UNSAT":
         if int(metadata["rc"]) != 20:
@@ -177,6 +186,8 @@ def parse(line: str, expected_jobs: set[str] | None = None,
             if int(metadata[key]) <= 0:
                 raise ReceiptError(f"UNSAT receipt requires positive {key}")
     else:
+        if metadata["provenance"] != "fresh":
+            raise ReceiptError("SAT receipt cannot use legacy-migration provenance")
         if int(metadata["rc"]) != 10 or int(metadata["reproduce_rc"]) != 10:
             raise ReceiptError("SAT receipt requires initial and reproduction rc=10")
         if metadata["model"] != "VERIFIED":

@@ -13,7 +13,8 @@ SHA = "a" * 64
 
 def receipt(verdict: str = "UNSAT", **changes: str) -> str:
     common = {
-        "schema": "erdos85-sat49-terminal-v1", "mode": "slow", "rc": "20",
+        "schema": "erdos85-sat49-terminal-v1", "provenance": "fresh",
+        "mode": "slow", "rc": "20",
         "solve_s": "900", "solve_peak_rss_kb": "1000", "cap_s": "900",
         "generator_kind": "third", "generator_sha256": SHA,
         "manifest_sha256": SHA, "emitted_cnf_sha256": SHA,
@@ -80,6 +81,18 @@ class TerminalLedgerTests(unittest.TestCase):
             parse(receipt("SAT", reproduce_rc="20"))
         with self.assertRaisesRegex(ReceiptError, "model=VERIFIED"):
             parse(receipt("SAT", model="FAIL"))
+        with self.assertRaisesRegex(ReceiptError, "cannot use legacy-migration"):
+            parse(receipt("SAT", provenance="legacy-migration",
+                          solve_peak_rss_kb="0"))
+
+    def test_migration_provenance_is_explicit_and_unsat_only(self):
+        migrated = parse(receipt(provenance="legacy-migration",
+                                 solve_peak_rss_kb="0"))
+        self.assertEqual(migrated["provenance"], "legacy-migration")
+        with self.assertRaisesRegex(ReceiptError, "positive solve_peak_rss_kb"):
+            parse(receipt(solve_peak_rss_kb="0"))
+        with self.assertRaisesRegex(ReceiptError, "unavailable solve peak RSS"):
+            parse(receipt(provenance="legacy-migration", solve_peak_rss_kb="1"))
 
     def test_rejects_bad_hash_integer_mode_and_timestamp(self):
         with self.assertRaisesRegex(ReceiptError, "invalid SHA256"):
