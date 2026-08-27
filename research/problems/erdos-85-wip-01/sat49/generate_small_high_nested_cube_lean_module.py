@@ -8,14 +8,14 @@ import json
 import os
 from pathlib import Path
 
-from generate_small_high_cube_jobs import sha256
+from generate_small_high_cube_jobs import jobs_for, sha256
 from generate_small_high_cube_lean_module import (
     CELL_LEAN,
     cnf_expression,
     lean_stem,
     payload_path,
 )
-from generate_small_high_nested_cube_jobs import SELECTORS
+from generate_small_high_nested_cube_jobs import SELECTORS, nested_jobs
 from generate_small_high_third_cube_jobs import LEFT as THIRD_LEFT
 from generate_small_high_third_cube_jobs import RIGHT as THIRD_RIGHT
 from generate_small_high_third_cube_jobs import third_jobs
@@ -52,8 +52,8 @@ def load_and_validate(parent_path: Path, nested_path: Path,
     seen = set()
     for cell_name, cell in cells.items():
         jobs = cell.get("jobs")
-        if not isinstance(jobs, list) or len(jobs) != 58:
-            raise ValueError(f"{cell_name}: expected 58 parent jobs")
+        if jobs != jobs_for(cell_name):
+            raise ValueError(f"{cell_name}: malformed or incomplete parent grid")
         for job in jobs:
             job_id = job.get("id")
             if not isinstance(job_id, str) or job_id in parent_lookup:
@@ -65,23 +65,18 @@ def load_and_validate(parent_path: Path, nested_path: Path,
         cell_name, parent_job = parent_lookup[parent_id]
         if parent_job.get("kind") != "cube" or leaf.get("cell") != cell_name:
             raise ValueError(f"nested leaf/parent mismatch: {parent_id}")
+        parent_cell = cells[cell_name]
+        inherited = ("base", "base_sha256", "variables", "base_clauses")
+        if (leaf.get("parent_units") != parent_job.get("units") or
+                any(leaf.get(key) != parent_cell.get(key) for key in inherited)):
+            raise ValueError(f"nested leaf metadata mismatch: {parent_id}")
         expected_left, expected_right = SELECTORS[cell_name]
         if (leaf.get("left") != list(expected_left) or
                 leaf.get("right") != list(expected_right)):
             raise ValueError(f"nested selector mismatch: {parent_id}")
         jobs = leaf.get("jobs")
-        expected_count = 2 + len(expected_left) * len(expected_right)
-        if not isinstance(jobs, list) or len(jobs) != expected_count:
-            raise ValueError(f"{parent_id}: expected {expected_count} nested jobs")
-        kinds = [job.get("kind") for job in jobs]
-        if kinds.count("cover-left") != 1 or kinds.count("cover-right") != 1:
-            raise ValueError(f"{parent_id}: malformed nested covers")
-        cubes = {(job.get("left_index"), job.get("right_index"))
-                 for job in jobs if job.get("kind") == "cube"}
-        expected_cubes = {(li, ri) for li in range(len(expected_left))
-                          for ri in range(len(expected_right))}
-        if cubes != expected_cubes:
-            raise ValueError(f"{parent_id}: incomplete nested grid")
+        if jobs != nested_jobs(parent_id, expected_left, expected_right):
+            raise ValueError(f"{parent_id}: malformed or incomplete nested grid")
         for job in jobs:
             job_id = job.get("id")
             if not isinstance(job_id, str) or job_id in seen:
