@@ -261,6 +261,7 @@ def main() -> int:
     ] = Counter()
     empty_block_profiles: Counter[tuple[int, tuple[tuple[int, int], ...]]] = Counter()
     normalized_residual_mod_sixteen: Counter[int | str] = Counter()
+    normalized_residual_three_adic: Counter[tuple[int, int] | str] = Counter()
     for job_id in job_ids:
         state = propagated_graph(clauses, occurrences, base_units, jobs[job_id])
         blocked: list[frozenset[tuple[int, int]]] = []
@@ -347,9 +348,19 @@ def main() -> int:
             counts["divisible_by_49"] += 1
             quotient = value // 49
             if quotient % (46 * 46) == 0:
-                normalized_residual_mod_sixteen[(quotient // (46 * 46)) % 16] += 1
+                normalized_residual = quotient // (46 * 46)
+                normalized_residual_mod_sixteen[normalized_residual % 16] += 1
+                valuation = 0
+                residual_part = abs(normalized_residual)
+                while residual_part and residual_part % 3 == 0:
+                    valuation += 1
+                    residual_part //= 3
+                normalized_residual_three_adic[
+                    (normalized_residual % 3, valuation)
+                ] += 1
             else:
                 normalized_residual_mod_sixteen["nonintegral"] += 1
+                normalized_residual_three_adic["nonintegral"] += 1
             if quotient >= 0 and math.isqrt(quotient) ** 2 == quotient:
                 counts["forty_nine_times_square"] += 1
             else:
@@ -372,6 +383,7 @@ def main() -> int:
     print("root_defect_balance_profiles", dict(sorted(root_defect_balance_profiles.items())))
     print("empty_block_profiles", dict(sorted(empty_block_profiles.items())))
     print("normalized_residual_mod16", dict(normalized_residual_mod_sixteen))
+    print("normalized_residual_mod3_valuation", dict(normalized_residual_three_adic))
     return 0
 
 
