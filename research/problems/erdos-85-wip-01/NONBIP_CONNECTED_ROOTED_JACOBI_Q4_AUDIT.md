@@ -76,3 +76,33 @@ real and exactly located at the fifth coefficient, but the proposed mechanism
 is circular.  A two-root Dodgson identity would only help if it independently
 forces equality of these fifth coefficients across a defect edge; that is the
 next distinct question, not a consequence established here.
+
+## Two-root Dodgson follow-up
+
+Let `P = det(zI-A)`, let `P_x` and `P_{xy}` be the one- and two-vertex
+principal deletions, and let `C_{xy}` be the signed off-diagonal cofactor.
+Desnanot--Jacobi says
+
+```text
+P_x P_y - P P_{xy} = C_{xy}^2.
+```
+
+After division by `P^2`, this is exactly the complementary-minor identity
+
+```text
+R_xx R_yy - P_{xy}/P = R_xy^2,
+```
+
+for `R=(zI-A)^{-1}`.  It is an identity, not an additional constraint.  More
+importantly for propagation, every term is symmetric under `x <-> y`:
+coefficient comparison sees sums/products of the rooted coefficients, never
+`b_5(x)-b_5(y)` with a sign.  On a defect edge, `(A^2)_{xy}=0` merely removes
+one early coefficient of the off-diagonal resolvent; it does not break this
+symmetry or determine the remaining `R_xy` walk coefficients.
+
+Thus raw Dodgson/Pluecker expansion cannot independently prove
+`b_5(x)=b_5(y)`.  Such a proof would need an extra input that already controls
+the pair-specific off-diagonal cofactor (or the discriminant of the unordered
+pair).  The determinant identity itself supplies neither.  Consequently the
+two-root variant is also cut as a standalone mechanism; attaching a genuinely
+new coherent/Hadamard constraint would be a different proposal.
