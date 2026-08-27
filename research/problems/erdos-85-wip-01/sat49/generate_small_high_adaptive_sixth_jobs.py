@@ -17,7 +17,7 @@ SIXTH_POOL = frozenset((3, 4, 5, 6, 7))
 STRUCTURAL_THEOREMS = (
     "Erdos85.orderFortyNineThreeHighB1AdaptiveFifthResidual_exists_of_aligned",
     "Erdos85.orderFortyNineThreeHighB1AdaptiveSixthResidual_exists_of_aligned",
-    "Erdos85.orderFortyNineThreeHighB1AdaptiveSixthResidual_of_graph",
+    "Erdos85.orderFortyNineThreeHighB1AdaptiveSixthFastResidual_of_graph",
     "Erdos85.orderFortyNineThreeHighB1AdaptiveSixthResidual_card_twelve",
 )
 
