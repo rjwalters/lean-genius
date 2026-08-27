@@ -1,4 +1,5 @@
 import Proofs.Erdos85TriangleFreeNeighborhoodCut
+import Proofs.Erdos85LocalTriangleParity
 
 /-!
 # Defect propagation plus a local mod-eight terminal
@@ -200,6 +201,61 @@ theorem false_of_binarySquare_oneComponent_triangleFreeDegree_residuePropagation
     false_of_defect_preconnected_triangleFreeDegree_residuePropagation_modEight
       G hreg hq hpre hprop hresidue x
 
+/-- At a fixed ambient degree, congruence modulo four of the rooted local
+triangle counts implies congruence modulo eight of the triangle-free-edge
+degrees.  This is the arithmetic bridge
+`deg_K(x) + 2 t_x = q`. -/
+theorem triangleFreeDegree_modEight_eq_of_localTriangleEdges_modFour_eq
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G) {q : ℕ}
+    (hreg : ∀ z, G.degree z = q) {x y : V}
+    (htri : (G.induce (G.neighborSet x)).edgeFinset.card % 4 =
+      (G.induce (G.neighborSet y)).edgeFinset.card % 4) :
+    (triangleFreeEdgeGraph G).degree x % 8 =
+      (triangleFreeEdgeGraph G).degree y % 8 := by
+  have hx := card_triangleFreeNeighbors_add_two_mul_localEdges G hfree x
+  have hy := card_triangleFreeNeighbors_add_two_mul_localEdges G hfree y
+  have hxcard : (triangleFreeNeighbors G x).card =
+      (triangleFreeEdgeGraph G).degree x := by
+    rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+      triangleFreeEdgeGraph_neighborFinset]
+  have hycard : (triangleFreeNeighbors G y).card =
+      (triangleFreeEdgeGraph G).degree y := by
+    rw [← (triangleFreeEdgeGraph G).card_neighborFinset_eq_degree,
+      triangleFreeEdgeGraph_neighborFinset]
+  rw [hxcard, hreg x] at hx
+  rw [hycard, hreg y] at hy
+  omega
+
+/-- Sharp binary-square terminal in rooted-triangle language.  The first
+graph input need only preserve the number of local triangle edges modulo
+four along defect edges; exact triangle-degree propagation is unnecessary. -/
+theorem false_of_binarySquare_oneComponent_localTriangle_modFour_propagation_modEight
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (secondOrderDefectGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    [Fintype (secondOrderDefectGraph G).ConnectedComponent]
+    (hfree : ¬ containsC4 V G) {k : ℕ} (hk : 3 ≤ k)
+    (hreg : ∀ x, G.degree x = 2 ^ k)
+    (hcount : Fintype.card
+      (secondOrderDefectGraph G).ConnectedComponent = 1)
+    (htriProp : ∀ ⦃x y⦄, (secondOrderDefectGraph G).Adj x y →
+      (G.induce (G.neighborSet x)).edgeFinset.card % 4 =
+        (G.induce (G.neighborSet y)).edgeFinset.card % 4)
+    (hresidue : ∀ x,
+      ((G.adjMatrix ℕ).mulVec
+        (fun y => (triangleFreeEdgeGraph G).degree y) x) % 8 = 4)
+    (x : V) : False := by
+  apply
+    false_of_binarySquare_oneComponent_triangleFreeDegree_residuePropagation_modEight
+      G hk hreg hcount _ hresidue x
+  intro u v huv
+  exact triangleFreeDegree_modEight_eq_of_localTriangleEdges_modFour_eq
+    G hfree hreg (htriProp huv)
+
 end
 
 end Erdos85
@@ -211,3 +267,7 @@ end Erdos85
   Erdos85.false_of_defect_preconnected_triangleFreeDegree_residuePropagation_modEight
 #print axioms
   Erdos85.false_of_binarySquare_oneComponent_triangleFreeDegree_residuePropagation_modEight
+#print axioms
+  Erdos85.triangleFreeDegree_modEight_eq_of_localTriangleEdges_modFour_eq
+#print axioms
+  Erdos85.false_of_binarySquare_oneComponent_localTriangle_modFour_propagation_modEight
