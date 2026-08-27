@@ -259,6 +259,8 @@ def main() -> int:
     root_defect_balance_profiles: Counter[
         tuple[bool, tuple[tuple[int, int], ...]]
     ] = Counter()
+    empty_block_profiles: Counter[tuple[int, tuple[tuple[int, int], ...]]] = Counter()
+    normalized_residual_mod_sixteen: Counter[int | str] = Counter()
     for job_id in job_ids:
         state = propagated_graph(clauses, occurrences, base_units, jobs[job_id])
         blocked: list[frozenset[tuple[int, int]]] = []
@@ -297,6 +299,16 @@ def main() -> int:
             balanced = balances[0] == balances[1] == balances[2]
             profile = tuple(sorted(Counter(balances[0]).items()))
             root_defect_balance_profiles[(balanced, profile)] += 1
+            empty = {
+                v for v in ORDINARY
+                if not any(v in neighborhood for neighborhood in root_neighborhoods)
+            }
+            empty_degrees = Counter(
+                sum(defect.has_edge(v - 3, u - 3) for u in empty)
+                for v in empty
+            )
+            empty_edges = defect.subgraph({v - 3 for v in empty}).number_of_edges()
+            empty_block_profiles[(empty_edges, tuple(sorted(empty_degrees.items())))] += 1
             ungrounded = sorted(
                 len(component)
                 for component in nx.connected_components(defect)
@@ -334,6 +346,10 @@ def main() -> int:
                 continue
             counts["divisible_by_49"] += 1
             quotient = value // 49
+            if quotient % (46 * 46) == 0:
+                normalized_residual_mod_sixteen[(quotient // (46 * 46)) % 16] += 1
+            else:
+                normalized_residual_mod_sixteen["nonintegral"] += 1
             if quotient >= 0 and math.isqrt(quotient) ** 2 == quotient:
                 counts["forty_nine_times_square"] += 1
             else:
@@ -354,6 +370,8 @@ def main() -> int:
     print("lifted_nullity_detL_mod49_K_mod7", dict(sorted(lifted_forest_terms.items())))
     print("quotient_first_nonresidue_prime", dict(quotient_nonresidue_primes))
     print("root_defect_balance_profiles", dict(sorted(root_defect_balance_profiles.items())))
+    print("empty_block_profiles", dict(sorted(empty_block_profiles.items())))
+    print("normalized_residual_mod16", dict(normalized_residual_mod_sixteen))
     return 0
 
 
