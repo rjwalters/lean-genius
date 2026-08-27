@@ -29,6 +29,7 @@ from analyze_small_high_adaptive_sixth_units import (
     read_dimacs,
 )
 from audit_order49_defect_determinant import defect_matrices, determinant_expression
+from audit_h16_circulant_tree_squares import bareiss_determinant
 
 
 ORDINARY = tuple(range(3, 49))
@@ -229,6 +230,7 @@ def main() -> int:
     mod_seven_kernel_signatures: Counter[
         tuple[int, bool, tuple[tuple[int, int], ...]]
     ] = Counter()
+    lifted_forest_terms: Counter[tuple[int, int, int]] = Counter()
     for job_id in job_ids:
         state = propagated_graph(clauses, occurrences, base_units, jobs[job_id])
         blocked: list[frozenset[tuple[int, int]]] = []
@@ -271,6 +273,11 @@ def main() -> int:
                 for vector in kernel
             )
             mod_seven_kernel_signatures[(nullity, value % 49 == 0, signature)] += 1
+            if value % 49 == 0:
+                _lap, bordered = defect_matrices(defect)
+                det_lap = bareiss_determinant(lap)
+                forest_green = -bareiss_determinant(bordered)
+                lifted_forest_terms[(nullity, det_lap % 49, forest_green % 7)] += 1
             residues[value % 49] += 1
             if value % 49:
                 continue
@@ -286,6 +293,7 @@ def main() -> int:
     print("mod7_kernel_support_sum_by_mod49", dict(
         sorted(mod_seven_kernel_signatures.items())
     ))
+    print("lifted_nullity_detL_mod49_K_mod7", dict(sorted(lifted_forest_terms.items())))
     return 0
 
 
