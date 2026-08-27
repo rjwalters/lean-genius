@@ -73,4 +73,22 @@ theorem orderFortyNineSignedState_semantic_transport
     orderFortyNineRelabeledGraph_minDegree G E d hdegree,
     orderFortyNineRealizesRelabeledSignedEdgeState G S E hreal⟩
 
+/-- Convenient orbit-consumer form: an explicit equality from the relabeled
+source state to a target state transports an admissible realization directly
+to that target. -/
+theorem orderFortyNineSignedState_semantic_transport_to
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    (S T : OrderFortyNineSignedEdgeState)
+    (E : Equiv.Perm (Fin 49)) (d : Nat)
+    (hstate : orderFortyNineRelabeledSignedEdgeState S E = T)
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hdegree : ∀ v, d ≤ G.degree v)
+    (hreal : OrderFortyNineRealizesSignedEdgeState G S) :
+    ¬ containsC4 (Fin 49) (orderFortyNineRelabeledGraph G E) ∧
+      (∀ i, d ≤ (orderFortyNineRelabeledGraph G E).degree i) ∧
+      OrderFortyNineRealizesSignedEdgeState
+        (orderFortyNineRelabeledGraph G E) T := by
+  simpa [hstate] using orderFortyNineSignedState_semantic_transport
+    G S E d hfree hdegree hreal
+
 end Erdos85
