@@ -7,10 +7,10 @@ namespace Erdos85
 
 open Matrix
 
-private def orderFortyNineOnes (m n : Type*) : Matrix m n ℚ :=
+def orderFortyNineOnes (m n : Type*) : Matrix m n ℚ :=
   fun _ _ => 1
 
-private def orderFortyNineThreeHighRootBlock : Matrix (Fin 3) (Fin 3) ℚ :=
+def orderFortyNineThreeHighRootBlock : Matrix (Fin 3) (Fin 3) ℚ :=
   (7 : ℚ) • (1 : Matrix (Fin 3) (Fin 3) ℚ) +
     orderFortyNineOnes (Fin 3) (Fin 3)
 
@@ -62,7 +62,7 @@ theorem orderFortyNine_threeHigh_block_det_schur
   simp [orderFortyNineOnes]
   ring
 
-private def orderFortyNineOneVector : Fin 46 → ℚ := fun _ => 1
+def orderFortyNineOneVector : Fin 46 → ℚ := fun _ => 1
 
 private theorem orderFortyNineOnes_eq_rankOne :
     orderFortyNineOnes (Fin 46) (Fin 46) =
