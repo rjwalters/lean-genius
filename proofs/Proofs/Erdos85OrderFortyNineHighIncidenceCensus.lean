@@ -218,6 +218,41 @@ theorem orderFortyNine_highIncidence_profile_of_nine_high
   have hn3 : n3 ≤ 4 := by omega
   interval_cases n3 <;> omega
 
+/-- At three high vertices there are exactly two possible incidence
+profiles, according as the three pairwise common neighbors are distinct or
+coincide in one triple neighbor. -/
+theorem orderFortyNine_highIncidence_profile_of_three_high
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 V G)
+    (hmin : ∀ x : V, 7 ≤ G.degree x)
+    (hcard : Fintype.card V = 49)
+    (hHigh : (orderFortyNineHighVertices G).card = 3) :
+    let n := orderFortyNineHighIncidenceCount G
+    (n 0 = 25 ∧ n 1 = 18 ∧ n 2 = 3 ∧ n 3 = 0) ∨
+      (n 0 = 24 ∧ n 1 = 21 ∧ n 2 = 0 ∧ n 3 = 1) := by
+  dsimp only
+  let n0 := orderFortyNineHighIncidenceCount G 0
+  let n1 := orderFortyNineHighIncidenceCount G 1
+  let n2 := orderFortyNineHighIncidenceCount G 2
+  let n3 := orderFortyNineHighIncidenceCount G 3
+  change (n0 = 25 ∧ n1 = 18 ∧ n2 = 3 ∧ n3 = 0) ∨
+    (n0 = 24 ∧ n1 = 21 ∧ n2 = 0 ∧ n3 = 1)
+  have hcensus := orderFortyNine_highIncidence_census
+    G hfree hmin hcard
+  change n0 + n1 + n2 + n3 =
+      49 - (orderFortyNineHighVertices G).card ∧
+    n1 + 2 * n2 + 3 * n3 =
+      8 * (orderFortyNineHighVertices G).card ∧
+    n1 + 4 * n2 + 9 * n3 =
+      (orderFortyNineHighVertices G).card *
+        ((orderFortyNineHighVertices G).card + 7) at hcensus
+  rw [hHigh] at hcensus
+  have hn3 : n3 ≤ 1 := by omega
+  interval_cases n3 <;> omega
+
 /-- Around a fixed high vertex, the high-incidence counts of its eight
 neighbors sum to `h + 7`.  The diagonal high contributes eight, while each
 other high contributes its unique common neighbor with the root. -/
