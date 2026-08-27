@@ -150,9 +150,160 @@ theorem orderFortyNineOrdinaryDefectLModSeven_mulVec_highRowDifference_eq_zero
   rw [hseven, zero_mul] at hi'
   exact hi'
 
+private theorem orderFortyNine_exists_ordinary_neighbor_exclusive_of_three_high
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x, 7 ≤ G.degree x)
+    (hhigh : ∀ y : Fin 49, G.degree y = 8 ↔ y.val < 3)
+    {a b c : Fin 49}
+    (ha : G.degree a = 8) (hb : G.degree b = 8) (hc : G.degree c = 8)
+    (hab : a ≠ b) (hac : a ≠ c) :
+    ∃ j : Fin 46, G.Adj a (orderFortyNineOrdinaryVertex j) ∧
+      ¬ G.Adj b (orderFortyNineOrdinaryVertex j) ∧
+      ¬ G.Adj c (orderFortyNineOrdinaryVertex j) := by
+  let Na := G.neighborFinset a
+  let Nb := G.neighborFinset b
+  let Nc := G.neighborFinset c
+  let B := (Na ∩ Nb) ∪ (Na ∩ Nc)
+  have hNa : Na.card = 8 := by
+    dsimp [Na]
+    exact ha
+  have habCard : (Na ∩ Nb).card = 1 := by
+    dsimp [Na, Nb]
+    exact orderFortyNine_card_common_degreeEight_eq_one
+      G hfree hmin (by decide) ha hb hab
+  have hacCard : (Na ∩ Nc).card = 1 := by
+    dsimp [Na, Nc]
+    exact orderFortyNine_card_common_degreeEight_eq_one
+      G hfree hmin (by decide) ha hc hac
+  have hB : B.card ≤ 2 := by
+    calc
+      B.card ≤ (Na ∩ Nb).card + (Na ∩ Nc).card := by
+        dsimp [B]
+        exact Finset.card_union_le _ _
+      _ = 2 := by rw [habCard, hacCard]
+  have hex : ∃ y ∈ Na, y ∉ B := by
+    by_contra hnone
+    push_neg at hnone
+    have hsub : Na ⊆ B := fun y hy => hnone y hy
+    have := Finset.card_le_card hsub
+    omega
+  obtain ⟨y, hya, hyB⟩ := hex
+  have hyb : y ∉ Nb := by
+    intro hy
+    apply hyB
+    exact Finset.mem_union_left _ (Finset.mem_inter.mpr ⟨hya, hy⟩)
+  have hyc : y ∉ Nc := by
+    intro hy
+    apply hyB
+    exact Finset.mem_union_right _ (Finset.mem_inter.mpr ⟨hya, hy⟩)
+  have hay : G.Adj a y := by simpa [Na, SimpleGraph.mem_neighborFinset] using hya
+  have hby : ¬ G.Adj b y := by simpa [Nb, SimpleGraph.mem_neighborFinset] using hyb
+  have hcy : ¬ G.Adj c y := by simpa [Nc, SimpleGraph.mem_neighborFinset] using hyc
+  have hy7 : G.degree y = 7 := by
+    rcases orderFortyNine_degree_eq_seven_or_eight
+        G hfree hmin (by decide) y with h | h
+    · exact h
+    · exact False.elim ((orderFortyNine_not_adj_degreeEight_degreeEight
+        G hfree hmin (by decide) ha h) hay)
+  have hyge : 3 ≤ y.val := by
+    by_contra hlt
+    have hylt : y.val < 3 := by omega
+    have hy8 : G.degree y = 8 := (hhigh y).2 hylt
+    omega
+  let j : Fin 46 := ⟨y.val - 3, by omega⟩
+  have hj : orderFortyNineOrdinaryVertex j = y := by
+    apply Fin.ext
+    simp [orderFortyNineOrdinaryVertex, j]
+    omega
+  exact ⟨j, by simpa [hj] using hay, by simpa [hj] using hby,
+    by simpa [hj] using hcy⟩
+
+/-- The two canonical high-row differences are independent modulo seven.
+This is the concrete two-dimensional kernel certificate used by the order-49
+terminal. -/
+theorem orderFortyNine_two_ordinaryHighRowDifferencesModSeven_independent
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x, 7 ≤ G.degree x)
+    (hhigh : ∀ y : Fin 49, G.degree y = 8 ↔ y.val < 3)
+    (α β : ZMod 7)
+    (hlin : α • orderFortyNineOrdinaryHighRowDifferenceModSeven G 0 2 +
+        β • orderFortyNineOrdinaryHighRowDifferenceModSeven G 1 2 = 0) :
+    α = 0 ∧ β = 0 := by
+  have h0 : G.degree (0 : Fin 49) = 8 := (hhigh 0).2 (by decide)
+  have h1 : G.degree (1 : Fin 49) = 8 := (hhigh 1).2 (by decide)
+  have h2 : G.degree (2 : Fin 49) = 8 := (hhigh 2).2 (by decide)
+  obtain ⟨j0, hj00, hj01, hj02⟩ :=
+    orderFortyNine_exists_ordinary_neighbor_exclusive_of_three_high
+      G hfree hmin hhigh h0 h1 h2 (by decide) (by decide)
+  obtain ⟨j1, hj11, hj10, hj12⟩ :=
+    orderFortyNine_exists_ordinary_neighbor_exclusive_of_three_high
+      G hfree hmin hhigh h1 h0 h2 (by decide) (by decide)
+  have hj0 := congrFun hlin j0
+  have hj1 := congrFun hlin j1
+  simp [orderFortyNineOrdinaryHighRowDifferenceModSeven,
+    orderFortyNineOrdinaryHighRowDifference, orderFortyNineHighRowDifference,
+    SimpleGraph.adjMatrix_apply, hj00, hj01, hj02,
+    Pi.smul_apply, smul_eq_mul] at hj0
+  simp [orderFortyNineOrdinaryHighRowDifferenceModSeven,
+    orderFortyNineOrdinaryHighRowDifference, orderFortyNineHighRowDifference,
+    SimpleGraph.adjMatrix_apply, hj11, hj10, hj12,
+    Pi.smul_apply, smul_eq_mul] at hj1
+  exact ⟨hj0, hj1⟩
+
+def orderFortyNineTwoHighRowDifferenceFamilyModSeven
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj] :
+    Bool → (Fin 46 → ZMod 7)
+  | false => orderFortyNineOrdinaryHighRowDifferenceModSeven G 0 2
+  | true => orderFortyNineOrdinaryHighRowDifferenceModSeven G 1 2
+
+theorem orderFortyNineTwoHighRowDifferenceFamilyModSeven_linearIndependent
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x, 7 ≤ G.degree x)
+    (hhigh : ∀ y : Fin 49, G.degree y = 8 ↔ y.val < 3) :
+    LinearIndependent (ZMod 7)
+      (orderFortyNineTwoHighRowDifferenceFamilyModSeven G) := by
+  rw [Fintype.linearIndependent_iff]
+  intro g hg i
+  rw [Fintype.sum_bool] at hg
+  have hcoeff := orderFortyNine_two_ordinaryHighRowDifferencesModSeven_independent
+    G hfree hmin hhigh (g false) (g true) (by
+      simpa [orderFortyNineTwoHighRowDifferenceFamilyModSeven, add_comm] using hg)
+  cases i with
+  | false => exact hcoeff.1
+  | true => exact hcoeff.2
+
+theorem orderFortyNineTwoHighRowDifferenceFamilyModSeven_mem_kernel
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x, 7 ≤ G.degree x)
+    (hhigh : ∀ y : Fin 49, G.degree y = 8 ↔ y.val < 3) (b : Bool) :
+    (orderFortyNineOrdinaryDefectLModSeven G).mulVec
+        (orderFortyNineTwoHighRowDifferenceFamilyModSeven G b) = 0 := by
+  cases b with
+  | false =>
+      exact orderFortyNineOrdinaryDefectLModSeven_mulVec_highRowDifference_eq_zero
+        G hfree hmin hhigh ((hhigh 0).2 (by decide)) ((hhigh 2).2 (by decide))
+  | true =>
+      exact orderFortyNineOrdinaryDefectLModSeven_mulVec_highRowDifference_eq_zero
+        G hfree hmin hhigh ((hhigh 1).2 (by decide)) ((hhigh 2).2 (by decide))
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.orderFortyNineOrdinaryDefectLInt_mulVec_highRowDifference
 #print axioms Erdos85.orderFortyNineOrdinaryDefectLModSeven_mulVec_highRowDifference_eq_zero
+#print axioms Erdos85.orderFortyNine_two_ordinaryHighRowDifferencesModSeven_independent
+#print axioms Erdos85.orderFortyNineTwoHighRowDifferenceFamilyModSeven_linearIndependent
+#print axioms Erdos85.orderFortyNineTwoHighRowDifferenceFamilyModSeven_mem_kernel
