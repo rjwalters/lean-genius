@@ -239,6 +239,9 @@ def main() -> int:
     ] = Counter()
     lifted_forest_terms: Counter[tuple[int, int, int]] = Counter()
     quotient_nonresidue_primes: Counter[int | str] = Counter()
+    root_defect_balance_profiles: Counter[
+        tuple[bool, tuple[tuple[int, int], ...]]
+    ] = Counter()
     for job_id in job_ids:
         state = propagated_graph(clauses, occurrences, base_units, jobs[job_id])
         blocked: list[frozenset[tuple[int, int]]] = []
@@ -261,6 +264,21 @@ def main() -> int:
             blocked.append(signature)
             counts["sat"] += 1
             positive, _negative = signed_edges(state)
+            root_neighborhoods = [
+                {u for u in ORDINARY if edge(root, u) in positive}
+                for root in range(3)
+            ]
+            balances = [
+                tuple(
+                    sum(defect.has_edge(v - 3, u - 3) for u in neighborhood)
+                    + int(v in neighborhood)
+                    for v in ORDINARY
+                )
+                for neighborhood in root_neighborhoods
+            ]
+            balanced = balances[0] == balances[1] == balances[2]
+            profile = tuple(sorted(Counter(balances[0]).items()))
+            root_defect_balance_profiles[(balanced, profile)] += 1
             ungrounded = sorted(
                 len(component)
                 for component in nx.connected_components(defect)
@@ -317,6 +335,7 @@ def main() -> int:
     ))
     print("lifted_nullity_detL_mod49_K_mod7", dict(sorted(lifted_forest_terms.items())))
     print("quotient_first_nonresidue_prime", dict(quotient_nonresidue_primes))
+    print("root_defect_balance_profiles", dict(sorted(root_defect_balance_profiles.items())))
     return 0
 
 
