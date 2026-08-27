@@ -127,12 +127,15 @@ class TerminalLedgerTests(unittest.TestCase):
                     group_key: {"group": {"jobs": [{"id": job}]}},
                 }))
                 jobs, digest = manifest_identity(path)
+                self.assertEqual(manifest_identity(path, digest), (jobs, digest))
                 self.assertEqual(jobs, {job})
                 self.assertEqual(
                     parse(receipt(manifest_sha256=digest), jobs, digest)["job"], job
                 )
                 with self.assertRaisesRegex(ReceiptError, "does not bind"):
                     parse(receipt(), jobs, digest)
+                with self.assertRaisesRegex(ReceiptError, "preflight pin"):
+                    manifest_identity(path, "b" * 64)
 
     def test_rejects_malformed_or_duplicate_manifest_jobs(self):
         with tempfile.TemporaryDirectory() as directory:

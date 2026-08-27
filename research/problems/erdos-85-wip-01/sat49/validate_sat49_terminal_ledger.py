@@ -62,8 +62,14 @@ class ReceiptError(ValueError):
     pass
 
 
-def manifest_identity(path: Path) -> tuple[set[str], str]:
+def manifest_identity(path: Path, expected_sha256: str | None = None
+                      ) -> tuple[set[str], str]:
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    if expected_sha256 is not None:
+        if SHA256_RE.fullmatch(expected_sha256) is None:
+            raise ReceiptError("invalid expected manifest SHA256")
+        if digest != expected_sha256:
+            raise ReceiptError("supplied job manifest differs from its preflight pin")
     try:
         manifest = json.loads(path.read_text())
     except (json.JSONDecodeError, UnicodeDecodeError) as error:
@@ -249,6 +255,7 @@ def main() -> int:
     parser.add_argument("receipt", type=Path)
     parser.add_argument("--expected-job")
     parser.add_argument("--manifest", type=Path)
+    parser.add_argument("--expected-manifest-sha256")
     parser.add_argument("--solved-cnf", type=Path)
     parser.add_argument("--raw-lrat", type=Path)
     parser.add_argument("--compact-lrat", type=Path)
@@ -260,10 +267,13 @@ def main() -> int:
     expected = {args.expected_job} if args.expected_job else None
     manifest_sha = None
     if args.manifest is not None:
-        manifest_jobs, manifest_sha = manifest_identity(args.manifest)
+        manifest_jobs, manifest_sha = manifest_identity(
+            args.manifest, args.expected_manifest_sha256)
         expected = manifest_jobs if expected is None else expected & manifest_jobs
         if not expected:
             parser.error("--expected-job is absent from --manifest")
+    elif args.expected_manifest_sha256 is not None:
+        parser.error("--expected-manifest-sha256 requires --manifest")
     result = parse(lines[0], expected, manifest_sha)
     proof_args = (args.raw_lrat, args.compact_lrat, args.compact_lrat_gz)
     if args.solved_cnf is None:
