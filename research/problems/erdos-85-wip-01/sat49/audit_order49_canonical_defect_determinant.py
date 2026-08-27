@@ -48,7 +48,7 @@ def signed_edges(graph: nx.Graph) -> tuple[set[tuple[int, int]], set[tuple[int, 
 
 def defect_smt(
     graph: nx.Graph, blocked: list[frozenset[tuple[int, int]]],
-    ungrounded_components: int,
+    ungrounded_components: int, min_ungrounded_size: int,
 ) -> tuple[str, list[tuple[int, int]]]:
     positive, negative = signed_edges(graph)
     pairs = [(u, v) for u in ORDINARY for v in ORDINARY if u < v]
@@ -84,6 +84,10 @@ def defect_smt(
         lines.append("(assert (or " + " ".join(
             f"s_{component}_{u}" for u in ORDINARY
         ) + "))")
+        if min_ungrounded_size:
+            lines.append("(assert (>= (+ " + " ".join(
+                f"(ite s_{component}_{u} 1 0)" for u in ORDINARY
+            ) + f") {min_ungrounded_size}))")
         for u, v in pairs:
             # A selected union of components has no defect edge across its cut.
             lines.append(
@@ -109,9 +113,11 @@ def defect_smt(
 
 def solve_defect(
     graph: nx.Graph, blocked: list[frozenset[tuple[int, int]]], timeout: int,
-    ungrounded_components: int,
+    ungrounded_components: int, min_ungrounded_size: int,
 ) -> tuple[nx.Graph, frozenset[tuple[int, int]]] | None:
-    smt, pairs = defect_smt(graph, blocked, ungrounded_components)
+    smt, pairs = defect_smt(
+        graph, blocked, ungrounded_components, min_ungrounded_size
+    )
     completed = subprocess.run(
         ["z3", "-in", f"-T:{timeout}"], input=smt, text=True,
         capture_output=True, check=False,
@@ -142,9 +148,12 @@ def main() -> int:
     parser.add_argument("--timeout", type=int, default=30)
     parser.add_argument("--require-ungrounded-component", action="store_true")
     parser.add_argument("--ungrounded-components", type=int, default=0)
+    parser.add_argument("--min-ungrounded-size", type=int, default=0)
     args = parser.parse_args()
     if args.ungrounded_components < 0:
         parser.error("--ungrounded-components must be nonnegative")
+    if args.min_ungrounded_size < 0:
+        parser.error("--min-ungrounded-size must be nonnegative")
     ungrounded_components = max(
         args.ungrounded_components, int(args.require_ungrounded_component)
     )
@@ -164,12 +173,14 @@ def main() -> int:
 
     counts: Counter[str] = Counter()
     residues: Counter[int] = Counter()
+    ungrounded_patterns: Counter[tuple[int, ...]] = Counter()
     for job_id in job_ids:
         state = propagated_graph(clauses, occurrences, base_units, jobs[job_id])
         blocked: list[frozenset[tuple[int, int]]] = []
         for _ in range(args.completions):
             solved = solve_defect(
-                state, blocked, args.timeout, ungrounded_components
+                state, blocked, args.timeout, ungrounded_components,
+                args.min_ungrounded_size,
             )
             if solved is None:
                 counts["unsat"] += 1
@@ -177,6 +188,16 @@ def main() -> int:
             defect, signature = solved
             blocked.append(signature)
             counts["sat"] += 1
+            positive, _negative = signed_edges(state)
+            ungrounded = sorted(
+                len(component)
+                for component in nx.connected_components(defect)
+                if all(
+                    not any(edge(root, vertex + 3) in positive for root in range(3))
+                    for vertex in component
+                )
+            )
+            ungrounded_patterns[tuple(ungrounded)] += 1
             if nx.is_connected(defect):
                 counts["connected"] += 1
             value = determinant_expression(defect)
@@ -190,6 +211,7 @@ def main() -> int:
 
     print("jobs", len(job_ids), "completions", args.completions, dict(counts))
     print("residues_mod_49", dict(sorted(residues.items())))
+    print("ungrounded_component_sizes", dict(sorted(ungrounded_patterns.items())))
     return 0
 
 
