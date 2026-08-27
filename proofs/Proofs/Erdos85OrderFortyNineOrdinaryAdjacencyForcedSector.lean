@@ -92,9 +92,61 @@ theorem orderFortyNineOrdinaryAdjInt_mulVec_highSupportCount
   apply Eq.trans (Finset.sum_congr rfl fun h _ => congrFun (heq h) i)
   simp
 
+/-- The ordinary row sum is the original degree seven minus the number of
+high neighbors: `C·1 = 7·1-s`. -/
+theorem orderFortyNineOrdinaryAdjInt_mulVec_one
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x, 7 ≤ G.degree x)
+    (hhigh : ∀ y : Fin 49, G.degree y = 8 ↔ y.val < 3) :
+    (orderFortyNineOrdinaryAdjInt G).mulVec (fun _ => 1) =
+      fun i => 7 - orderFortyNineOrdinaryHighSupportCountInt G i := by
+  funext i
+  have hi7 : G.degree (orderFortyNineOrdinaryVertex i) = 7 := by
+    rcases orderFortyNine_degree_eq_seven_or_eight G hfree hmin (by decide)
+        (orderFortyNineOrdinaryVertex i) with hi | hi
+    · exact hi
+    · have := (hhigh _).1 hi
+      simp [orderFortyNineOrdinaryVertex] at this
+  have hfull : (G.adjMatrix ℤ).mulVec (fun _ => 1)
+      (orderFortyNineOrdinaryVertex i) = 7 := by
+    rw [SimpleGraph.adjMatrix_mulVec_apply]
+    simp [hi7]
+  simp only [Matrix.mulVec, dotProduct, mul_one] at hfull ⊢
+  rw [Fin.sum_univ_succ, Fin.sum_univ_succ, Fin.sum_univ_succ] at hfull
+  have he1 : (Fin.succ 0 : Fin 49) = 1 := by decide
+  have he2 : ((Fin.succ 0).succ : Fin 49) = 2 := by decide
+  rw [he1, he2] at hfull
+  have hsucc (j : Fin 46) :
+      j.succ.succ.succ = orderFortyNineOrdinaryVertex j := by
+    apply Fin.ext
+    simp [orderFortyNineOrdinaryVertex]
+    omega
+  simp_rw [hsucc] at hfull
+  simp only [orderFortyNineOrdinaryAdjInt,
+    orderFortyNineOrdinaryHighSupportCountInt]
+  simp_rw [show ∀ h : Fin 3,
+      G.adjMatrix ℤ (Fin.castAdd 46 h) (orderFortyNineOrdinaryVertex i) =
+        G.adjMatrix ℤ (orderFortyNineOrdinaryVertex i) (Fin.castAdd 46 h) by
+    intro h
+    simp [SimpleGraph.adjMatrix_apply, G.adj_comm]]
+  have hs3 : (∑ h : Fin 3,
+      G.adjMatrix ℤ (orderFortyNineOrdinaryVertex i) (Fin.castAdd 46 h)) =
+      G.adjMatrix ℤ (orderFortyNineOrdinaryVertex i) 0 +
+      G.adjMatrix ℤ (orderFortyNineOrdinaryVertex i) 1 +
+      G.adjMatrix ℤ (orderFortyNineOrdinaryVertex i) 2 := by
+    rw [Fin.sum_univ_succ, Fin.sum_univ_succ, Fin.sum_univ_succ]
+    simp
+    ring
+  rw [hs3]
+  omega
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.orderFortyNineOrdinaryAdjInt_mulVec_highIncidence
 #print axioms Erdos85.orderFortyNineOrdinaryAdjInt_mulVec_highSupportCount
+#print axioms Erdos85.orderFortyNineOrdinaryAdjInt_mulVec_one
