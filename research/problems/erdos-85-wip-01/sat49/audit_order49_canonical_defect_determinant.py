@@ -20,6 +20,7 @@ from collections import Counter
 from pathlib import Path
 
 import networkx as nx
+import numpy as np
 
 from analyze_small_high_adaptive_sixth_orbits import propagated_graph
 from analyze_small_high_adaptive_sixth_root_partitions import canonical_job_ids
@@ -262,6 +263,8 @@ def main() -> int:
     empty_block_profiles: Counter[tuple[int, tuple[tuple[int, int], ...]]] = Counter()
     normalized_residual_mod_sixteen: Counter[int | str] = Counter()
     normalized_residual_three_adic: Counter[tuple[int, int] | str] = Counter()
+    ordinary_adjacency_square_inertia: Counter[int] = Counter()
+    ordinary_adjacency_square_determinants: Counter[tuple[bool, bool]] = Counter()
     for job_id in job_ids:
         state = propagated_graph(clauses, occurrences, base_units, jobs[job_id])
         blocked: list[frozenset[tuple[int, int]]] = []
@@ -310,6 +313,26 @@ def main() -> int:
             )
             empty_edges = defect.subgraph({v - 3 for v in empty}).number_of_edges()
             empty_block_profiles[(empty_edges, tuple(sorted(empty_degrees.items())))] += 1
+            incidence_matrix = np.array([
+                [int(v in neighborhood) for neighborhood in root_neighborhoods]
+                for v in ORDINARY
+            ], dtype=float)
+            defect_matrix = nx.to_numpy_array(
+                defect, nodelist=range(len(ORDINARY)), dtype=float
+            )
+            adjacency_square = (
+                6 * np.eye(len(ORDINARY))
+                + np.ones((len(ORDINARY), len(ORDINARY)))
+                - incidence_matrix @ incidence_matrix.T
+                - defect_matrix
+            )
+            eigenvalues = np.linalg.eigvalsh(adjacency_square)
+            ordinary_adjacency_square_inertia[
+                int(np.count_nonzero(eigenvalues < -1e-8))
+            ] += 1
+            adjacency_square_determinant = bareiss_determinant(
+                adjacency_square.astype(int).tolist()
+            )
             ungrounded = sorted(
                 len(component)
                 for component in nx.connected_components(defect)
@@ -358,6 +381,15 @@ def main() -> int:
                 normalized_residual_three_adic[
                     (normalized_residual % 3, valuation)
                 ] += 1
+                determinant_is_square = (
+                    adjacency_square_determinant >= 0
+                    and math.isqrt(adjacency_square_determinant) ** 2
+                        == adjacency_square_determinant
+                )
+                ordinary_adjacency_square_determinants[
+                    (determinant_is_square,
+                     adjacency_square_determinant == normalized_residual)
+                ] += 1
             else:
                 normalized_residual_mod_sixteen["nonintegral"] += 1
                 normalized_residual_three_adic["nonintegral"] += 1
@@ -384,6 +416,12 @@ def main() -> int:
     print("empty_block_profiles", dict(sorted(empty_block_profiles.items())))
     print("normalized_residual_mod16", dict(normalized_residual_mod_sixteen))
     print("normalized_residual_mod3_valuation", dict(normalized_residual_three_adic))
+    print("ordinary_adjacency_square_negative_eigenvalues", dict(
+        ordinary_adjacency_square_inertia
+    ))
+    print("ordinary_adjacency_square_det_square_eq_residual", dict(
+        ordinary_adjacency_square_determinants
+    ))
     return 0
 
 
