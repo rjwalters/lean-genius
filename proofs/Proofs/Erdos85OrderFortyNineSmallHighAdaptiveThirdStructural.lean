@@ -30,13 +30,12 @@ def orderFortyNineThreeHighB1AdaptiveResidual (li ri : Fin 8) : Bool :=
 matchings, and the parent units.  Only the subset used by the C4 witnesses is
 listed. -/
 def orderFortyNineThreeHighB1AdaptiveFixedEdge (i j : Fin 49) : Bool :=
-  let pairs : List (Nat × Nat) :=
-    [(0, 3), (0, 4), (2, 3), (2, 4), (2, 5), (2, 13),
+  let pairs : List (Fin 49 × Fin 49) :=
+    [(0, 3), (0, 4), (2, 4), (2, 5),
      (2, 18), (2, 19), (2, 20), (3, 4), (3, 12), (4, 18),
      (5, 13), (5, 19)]
   pairs.any fun ab =>
-    (i.val = ab.1 && j.val = ab.2) ||
-      (i.val = ab.2 && j.val = ab.1)
+    (i = ab.1 && j = ab.2) || (i = ab.2 && j = ab.1)
 
 /-- Edges available in one adaptive positive cube: fixed edges plus its two
 selector edges. -/
