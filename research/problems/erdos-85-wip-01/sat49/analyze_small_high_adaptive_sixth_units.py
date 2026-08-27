@@ -244,6 +244,11 @@ def main() -> int:
             for literal, count in sorted(derived_counts.items())
             if abs(literal) <= 1176 and count == len(jobs)
         ],
+        "shared_derived_auxiliary_literals": sorted(
+            literal
+            for literal, count in derived_counts.items()
+            if abs(literal) > 1176 and count == len(jobs)
+        ),
         "mixed_polarity_derived_variables": [
             {
                 "variable": variable,
