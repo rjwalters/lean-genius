@@ -18,15 +18,14 @@ open SimpleGraph
 witnesses. -/
 def orderFortyNineThreeHighB1AdaptiveFourthFixedEdge
     (i j : Fin 49) : Bool :=
-  let pairs : List (Nat × Nat) :=
+  let pairs : List (Fin 49 × Fin 49) :=
     [(0, 3), (0, 4), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11),
      (1, 3), (1, 5), (1, 12), (1, 13), (1, 14), (1, 15), (1, 16), (1, 17),
      (2, 4), (2, 5), (2, 18), (2, 19), (2, 20), (2, 21), (2, 22), (2, 23),
      (3, 4), (3, 12), (3, 24), (3, 25), (4, 18), (5, 13), (5, 19),
      (6, 7), (8, 9), (10, 11), (14, 15), (16, 17), (20, 21), (22, 23)]
   pairs.any fun ab =>
-    (i.val = ab.1 && j.val = ab.2) ||
-      (i.val = ab.2 && j.val = ab.1)
+    (i = ab.1 && j = ab.2) || (i = ab.2 && j = ab.1)
 
 /-- Forced edges in one live third cell and one positive fourth child. -/
 def orderFortyNineThreeHighB1AdaptiveFourthAvailableEdge
