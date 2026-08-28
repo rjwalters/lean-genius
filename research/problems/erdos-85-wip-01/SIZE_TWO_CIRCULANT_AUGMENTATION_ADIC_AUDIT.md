@@ -194,6 +194,9 @@ The two via difference multisets are the disjoint four-sets
 which partition `Z_8`.  A direct exhaustive calibration finds 32 labeled
 triples `(A_00,A_01,A_11)` satisfying the equation.  Thus the circulant ansatz
 contains, rather than accidentally excludes, the small binary exception.
+The dependency-free verifier
+`verify_q4_circulant_two_set_difference_system.py` checks the full search,
+the count, and the displayed witness.
 
 ## Honest next statement
 
