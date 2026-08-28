@@ -4,9 +4,11 @@ import Mathlib.Util.AssertNoSorry
 # Exact dependency-cone discovery for the Erdős-85 drop audit
 
 `#erdos85_dependency_cone target` prints one machine-readable line for every
-theorem in the target's transitive declaration cone whose defining module is an
-Erdős-85 proof module.  The companion Python driver turns this inventory into
-literal `#print axioms` commands and checks the disclosed axiom families.
+theorem in the target's transitive declaration cone whose defining module is a
+project `Proofs.*` module.  The companion Python driver turns this inventory
+into literal `#print axioms` commands and checks the disclosed axiom families.
+The wider project prefix is intentional: a non-Erdős helper used by the final
+theorem is still part of mandate 1318's dependency cone.
 -/
 
 open Lean Elab Command
@@ -24,8 +26,8 @@ private def declarationModule? (env : Environment)
   let index ← env.getModuleIdxFor? name
   modules.get? index
 
-private def isErdos85Module (moduleName : Name) : Bool :=
-  moduleName.toString.startsWith "Proofs.Erdos85"
+private def isProjectProofModule (moduleName : Name) : Bool :=
+  moduleName.toString.startsWith "Proofs."
 
 private def declarationExprs (info : ConstantInfo) : Array Expr :=
   match info with
@@ -58,7 +60,7 @@ partial def walk (name : Name) (modules : Std.HashMap ModuleIdx Name) :
   modify fun state => { state with visited := state.visited.insert name }
   let env ← getEnv
   let some moduleName := declarationModule? env modules name | return
-  unless isErdos85Module moduleName do return
+  unless isProjectProofModule moduleName do return
   let some info := env.find? name | return
   let direct := directConstants info
   if info.isTheorem then
