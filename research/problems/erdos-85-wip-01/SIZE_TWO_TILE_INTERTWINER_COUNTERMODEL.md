@@ -18,7 +18,11 @@ For `g in G`, let `P_g` be the translation permutation matrix.  The `2q`
 matrices `P_g` have disjoint supports and sum to `J`; every one commutes with
 the circulant adjacency matrix of `D`.
 
-Partition `G` arbitrarily into `q/2` four-sets `Q_e` and put
+Partition `G` into the consecutive four-sets
+
+`Q_e={4e,4e+1,4e+2,4e+3}`
+
+and put
 
 `Y_e=sum_(g in Q_e) P_g`.
 
@@ -37,10 +41,23 @@ Thus any number of copies of `D` admit reciprocal partitions of every
 complete bipartite component pair into `q/2` disjoint four-regular integral
 fractional isomorphisms.  The construction is uniform in binary `q`.
 
+Moreover, every tile already has a local two-factor square root of the same
+shape as an intermediate route product:
+
+```text
+Y_e = (P_0+P_1)(P_(4e)+P_(4e+2)).
+```
+
+Both factors are zero--one matrices with row and column sum two, and their
+product is zero--one because the four resulting translations are distinct.
+Thus even a theorem which classifies one tile together with its labeled
+`K_2,2` rectangle factorization cannot close the branch.
+
 The dependency-free verifier
 `verify_size_two_tile_intertwiner_countermodel.py` checks the construction at
 `q=8,16,32`, including simplicity, degree, connectivity/nonbip witnesses,
 zero--one supports, the `J` partition, commutation, and reciprocal transpose.
+It also verifies the displayed two-factor factorization for every tile.
 
 ## Consequence
 
@@ -62,7 +79,9 @@ The actual graph has the additional coherent factorization
 
 by the **same** reciprocal two-regular blocks across every ordered triple,
 with symmetric diagonal cycle blocks and the within-component Gram leaves.
-The Cayley construction above does not supply those square roots.  Therefore
-the next terminal must use factor compatibility among at least three tiles;
-classifying sparse fractional-isomorphism partitions without their `X`
-factors is another relaxation and should be stopped.
+The Cayley construction supplies square roots **tile by tile**, but it does
+not reuse one common block `X_ce` consistently as the other endpoint `d`
+varies.  Therefore the next terminal must use factor compatibility among at
+least three tiles; classifying sparse fractional-isomorphism partitions, or
+their individual rectangle factorizations, is another relaxation and should
+be stopped.

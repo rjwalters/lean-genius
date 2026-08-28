@@ -55,6 +55,22 @@ def verify(q):
         assert matmul(defect, tile) == matmul(tile, defect)
         assert transpose(tile) == reverse
 
+    # Each consecutive four-shift tile is itself the product of two
+    # zero-one 2-regular matrices.  This verifies local rectangle
+    # factorization, but makes no claim that the factors can be reused
+    # coherently across different endpoint pairs.
+    first_factor = add([translations[0], translations[1]])
+    for group, tile in zip(groups, tiles):
+        start = group[0]
+        second_factor = add(
+            [translations[start], translations[(start + 2) % n]]
+        )
+        for factor in (first_factor, second_factor):
+            assert all(value in (0, 1) for row in factor for value in row)
+            assert all(sum(row) == 2 for row in factor)
+            assert all(sum(factor[i][j] for i in range(n)) == 2 for j in range(n))
+        assert matmul(first_factor, second_factor) == tile
+
 
 def main():
     for q in (8, 16, 32):
