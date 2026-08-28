@@ -192,7 +192,14 @@ def validate(theorems: list[ConeTheorem], allowlist: dict) -> tuple[list[dict], 
     native_axiom = re.compile(allowlist["native_axiom_regex"])
     errors: list[str] = []
     roots: list[dict] = []
+    transitive_native_axioms: set[str] = set()
+    attributed_native_axioms: set[str] = set()
     for theorem in theorems:
+        transitive_native_axioms.update(
+            axiom
+            for axiom in theorem.transitive_axioms
+            if native_axiom.fullmatch(axiom) is not None
+        )
         unexpected = sorted(
             axiom for axiom in set(theorem.transitive_axioms)
             if axiom not in allowed_axioms and native_axiom.fullmatch(axiom) is None
@@ -208,6 +215,8 @@ def validate(theorems: list[ConeTheorem], allowlist: dict) -> tuple[list[dict], 
                     f"{theorem.name}: direct native root {direct_axiom} "
                     "is not in a disclosed family"
                 )
+            else:
+                attributed_native_axioms.add(direct_axiom)
             roots.append(
                 {
                     "theorem": theorem.name,
@@ -216,6 +225,12 @@ def validate(theorems: list[ConeTheorem], allowlist: dict) -> tuple[list[dict], 
                     "family": family,
                 }
             )
+    unattributed = sorted(transitive_native_axioms - attributed_native_axioms)
+    if unattributed:
+        errors.append(
+            "native roots occur transitively without a directly classified "
+            f"project-theorem owner: {unattributed}"
+        )
     return roots, errors
 
 
