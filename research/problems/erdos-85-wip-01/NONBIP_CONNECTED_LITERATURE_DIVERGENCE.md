@@ -1222,3 +1222,58 @@ at that point their hypothesis is the original ambient completion gap.
 link, but naming it does not create a smaller theorem.  The inverse lane is
 stopped, and none of the new literature-backed mechanisms supplies a chain
 to NONBIP-CONNECTED from the currently banked hypotheses.
+
+## Nonlinear location divergence #106: prerequisite cuts
+
+After the canonical Eulerian non-A transport `K` had been isolated, round
+`#106` asked for nonlinear, genuinely `k`-dependent ways to locate it.
+The first probes cut four attractive routes before theorem work.
+
+### Dart completion is not canonical
+
+Eulerianity of `K` and `K 1_S = T 1_S` give only vertexwise parity.
+They do not pair the broken `T`-darts with incident `K`-ports. At a
+degree-four `K` vertex there are three transition pairings, all compatible
+with those hypotheses and with the scalar edge rule (21). Thus a completed
+two-involution map depends on gauge choices unless the individual
+cross-neighborhood matching supplies an additional labelled port map.
+Matching parity alone does not.
+
+### The first Bockstein is symmetric, not alternating
+
+For `u in ker(A mod 2)`, the divided image
+
+    beta(u) = [A u~/2] in coker(A mod 2)
+
+is well-defined: changing the integral lift by `2w` adds `Aw`. The linking
+
+    b(u,v) = u~^T A v~/2  (mod 2)
+
+is lift-independent and symmetric on the binary kernel, but
+
+    b(u,u) = |E_A(supp u)|  (mod 2),
+
+which need not vanish. Hence looplessness does not make this form
+alternating, so an anisotropic kernel shore is not contradictory. Also
+`beta(1)=(q/2)1=0` already for `q>=4`; a genuine `k`-level mechanism would
+need the full 2-adic filtration, not iteration of this first map.
+
+### The proposed bicycle implication is false
+
+The equation `(K+T)1_S=0` says only that `K triangle T` has even
+vertexwise incidence against one cut. It does not put that edge set in the
+ambient binary bicycle space. An Eulerian cycle wholly inside one shore
+already satisfies the displayed equation with small weight, so no
+`2q`-divisibility conclusion follows without a new incidence-code theorem.
+
+### Unsigned mod-four boundary is compatible with Eulerianity
+
+The suggested lift `boundary(kappa) = 2 1_S (mod 4)` is not incompatible
+with an Eulerian graph: an ordinary cycle has unsigned degree two at every
+vertex. Eulerianity controls the boundary modulo two, not modulo four.
+Thus the proposed higher-matching lift needs a different signed or
+2-adically filtered boundary before it can be terminal.
+
+These are interface cuts, not counterexamples to stronger constructions
+that retain the labelled matching edges or the complete 2-adic filtration.
+They explain precisely which information such a construction must add.
