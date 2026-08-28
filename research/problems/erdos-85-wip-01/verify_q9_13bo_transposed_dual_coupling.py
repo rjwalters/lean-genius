@@ -180,6 +180,20 @@ def main():
                                 for forced in better_forced
                             ),
                             "block_size": len(system["blocks"][source]),
+                            "pool_collision_degree": sum(
+                                bool(system["blocks"][source]
+                                     & system["blocks"][other])
+                                for other in certificate_pool
+                                if other != source
+                            ),
+                            "meets_target_block": bool(
+                                system["blocks"][source]
+                                & system["blocks"][target]
+                            ),
+                            "meets_better_block": bool(
+                                system["blocks"][source]
+                                & system["blocks"][better]
+                            ),
                             "local_packing_count": len(families[source]),
                             "local_forced_card": len(
                                 local[source]["forced_neighbors"]

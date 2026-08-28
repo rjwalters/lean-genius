@@ -6511,3 +6511,21 @@ orientation, not a terminal.  The missing statement remains relational:
 one of a small family of pair/triple rows couples through a common residual
 source.  It cannot be replaced by choosing the extremum of a single local
 score.                                                        (13bod'''b)
+
+The bounded relational follow-up also reaches a boundary.  The verifier now
+prints each dirty pool's internal block-collision degree and whether an atom's
+block meets the `w` or `z` block.  These data do not separate coupling atoms:
+in `(10,40)` every atom has the same pool-collision degree, including the
+decoy; in `(18,22)` all three atoms have collision degree zero, while only
+one couples.  Across the dirty pools, decoys occur with endpoint-incidence
+patterns `neither`, `w only`, `z only`, and `both`, and genuine coupling
+atoms occur in the same patterns.  Thus neither an extremal collision degree
+nor an endpoint-incidence class supplies a canonical selector.
+
+This is the goal-36 stopping point for the certificate-pool micro-lane.  The
+pool localization `(13bod'''a)` is the durable positive evidence, but its
+consumer still needs information outside the contracted certificate:
+individual packing/exchange geometry at a common residual source, or an
+actual residual-A symmetry theorem.  Further feature engineering on the
+nineteen stored rows would be a census, not a path to the universal B.3
+terminal.                                                       (13bod'''c)
