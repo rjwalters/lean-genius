@@ -139,8 +139,31 @@ theorem symmetricFractionalCover_degree_le_capacity
     (∑ v : V, alpha v * degreeDemand v) ≤ _ := hmain
     _ ≤ ∑ i : I, weight i * capacity i := hcapSum
 
+/-- Strictly insufficient total cover capacity is impossible. -/
+theorem false_of_symmetricFractionalCover_capacity_lt_degree
+    {V I : Type*} [Fintype V] [Fintype I] [DecidableEq V]
+    (x : V → V → ℚ) (degreeDemand : V → ℚ)
+    (center : I → V) (row : I → V → ℚ)
+    (capacity weight : I → ℚ) (alpha : V → ℚ)
+    (hsymm : ∀ v w, x v w = x w v)
+    (hnonneg : ∀ v w, 0 ≤ x v w)
+    (hdegree : ∀ v, (∑ w : V, x v w) = degreeDemand v)
+    (hweight : ∀ i, 0 ≤ weight i)
+    (hcap : ∀ i, (∑ w : V, row i w * x (center i) w) ≤ capacity i)
+    (hcover : ∀ v w,
+      alpha v + alpha w ≤
+        centeredCoverCoefficient center weight row v w +
+        centeredCoverCoefficient center weight row w v)
+    (hstrict : (∑ i : I, weight i * capacity i) <
+      ∑ v : V, alpha v * degreeDemand v) : False := by
+  have hle := symmetricFractionalCover_degree_le_capacity
+    x degreeDemand center row capacity weight alpha hsymm hnonneg
+    hdegree hweight hcap hcover
+  exact (not_lt_of_ge hle) hstrict
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.symmetricFractionalCover_degree_le_capacity
+#print axioms Erdos85.false_of_symmetricFractionalCover_capacity_lt_degree
