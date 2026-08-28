@@ -39,6 +39,7 @@ ODD_PRIMES = (3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47)
 
 def residual_square_root_trace_possible(
     adjacency_square: list[list[int]], target_trace: int = -7,
+    print_factor: bool = False,
 ) -> tuple[bool, str, tuple[int, ...]]:
     """Test the exact rational characteristic-polynomial square-root law.
 
@@ -73,6 +74,15 @@ def residual_square_root_trace_possible(
         partner_exponent = factor_powers.get(partner)
         if partner == factor:
             if exponent % 2:
+                if print_factor:
+                    _content_mod_two, factors_mod_two = sp.factor_list(
+                        factor.as_expr(), t, modulus=2
+                    )
+                    print("odd_self_factor_coefficients", factor.all_coeffs())
+                    print("odd_self_factor_mod2_degree_exponents", [
+                        (sp.Poly(mod_factor, t, modulus=2).degree(), mod_exponent)
+                        for mod_factor, mod_exponent in factors_mod_two
+                    ])
                 return (
                     False,
                     f"odd_self_factor_degree_{factor.degree()}_exp_{exponent}",
@@ -295,6 +305,7 @@ def main() -> int:
     parser.add_argument("--enforce-high-eigenvectors", action="store_true")
     parser.add_argument("--enforce-high-affine", action="store_true")
     parser.add_argument("--audit-square-root-charpoly", action="store_true")
+    parser.add_argument("--print-square-root-factor", action="store_true")
     parser.add_argument("--print-values", action="store_true")
     args = parser.parse_args()
     if args.ungrounded_components < 0:
@@ -432,7 +443,8 @@ def main() -> int:
             if args.audit_square_root_charpoly:
                 square_root_charpoly_profiles[
                     residual_square_root_trace_possible(
-                        adjacency_square.astype(int).tolist()
+                        adjacency_square.astype(int).tolist(),
+                        print_factor=args.print_square_root_factor,
                     )
                 ] += 1
             ungrounded = sorted(
