@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import itertools
+from collections import Counter
 
 import z3
 
@@ -99,6 +100,7 @@ def add_full_ordinary_graph(
     *, enforce_shared_high_c4: bool = True,
     enforce_disjoint_support_c4: bool = True,
     disjoint_support_categories: set[tuple[int, int]] | None = None,
+    support_one_codes: set[int] | None = None,
 ) -> dict[tuple[int, int], z3.BoolRef]:
     edges = {
         (x, y): z3.Bool(f"edge_{x}_{y}")
@@ -137,6 +139,11 @@ def add_full_ordinary_graph(
                 and category not in disjoint_support_categories
             ):
                 continue
+            if not shared_high and category == (0, 1) and support_one_codes is not None:
+                one = x if support(x) == 1 else y
+                one_code = next(h for h, code in enumerate(CODES) if one in code)
+                if one_code not in support_one_codes:
+                    continue
             bound = 1 - shared_high
             common = [z3.And(edge(x, z), edge(y, z)) for z in range(46)]
             solver.add(z3.PbLe([(term, 1) for term in common], bound))
@@ -165,6 +172,10 @@ def main() -> int:
     parser.add_argument("--diagnose-owner-completions", action="store_true")
     parser.add_argument("--minimize-support01-violations", action="store_true")
     parser.add_argument("--support01-unsat-core", action="store_true")
+    parser.add_argument(
+        "--completion-support01-codes",
+        help="complete using only support-0/support-1 C4 bounds for these comma-separated code indices",
+    )
     parser.add_argument("--write-dimacs")
     args = parser.parse_args()
 
@@ -185,12 +196,28 @@ def main() -> int:
                 for h in range(3)
             ]
             stages = [("full", True, True)]
+            if args.completion_support01_codes:
+                selected_codes = {
+                    int(value) for value in args.completion_support01_codes.split(",")
+                }
+                if not selected_codes <= {0, 1, 2}:
+                    parser.error("--completion-support01-codes entries must lie in {0,1,2}")
+                stages = [
+                    ("only01selected", False, True, {(0, 1)}, selected_codes)
+                ]
             if args.diagnose_owner_completions:
                 stages = [
                     ("degree", False, False),
                     ("shared", True, False),
                     ("plus00", True, True, {(0, 0)}),
                     ("plus01", True, True, {(0, 1)}),
+                    ("plus01c0", True, True, {(0, 1)}, {0}),
+                    ("plus01c1", True, True, {(0, 1)}, {1}),
+                    ("plus01c2", True, True, {(0, 1)}, {2}),
+                    ("plus01c01", True, True, {(0, 1)}, {0, 1}),
+                    ("plus01c02", True, True, {(0, 1)}, {0, 2}),
+                    ("plus01c12", True, True, {(0, 1)}, {1, 2}),
+                    ("only01c01", False, True, {(0, 1)}, {0, 1}),
                     ("plus02", True, True, {(0, 2)}),
                     ("plus11", True, True, {(1, 1)}),
                     ("plus12", True, True, {(1, 2)}),
@@ -205,6 +232,7 @@ def main() -> int:
                     enforce_shared_high_c4=shared_c4,
                     enforce_disjoint_support_c4=disjoint_c4,
                     disjoint_support_categories=(categories[0] if categories else None),
+                    support_one_codes=(categories[1] if len(categories) > 1 else None),
                 )
                 for h in range(3):
                     for v in range(46):
@@ -303,7 +331,7 @@ def main() -> int:
                 if opt_result == z3.sat:
                     opt_value = str(optimizer.model().eval(objective))
                 print(f"owner_completion_{sample} support01_min={opt_result}:{opt_value}")
-            if args.support01_unsat_core and sample == 0:
+            if args.support01_unsat_core:
                 core_solver, core_owner = build_solver()
                 core_edges = add_full_ordinary_graph(
                     core_solver, core_owner,
@@ -341,8 +369,21 @@ def main() -> int:
                 core = []
                 if core_result == z3.unsat:
                     core = [tag_pairs[str(tag)] for tag in core_solver.unsat_core()]
+                zero_degrees = Counter()
+                one_degrees = Counter()
+                one_code_degrees = Counter()
+                for x, y in core:
+                    zero, one = (x, y) if support(x) == 0 else (y, x)
+                    zero_degrees[zero] += 1
+                    one_degrees[one] += 1
+                    one_code = next(h for h, code in enumerate(CODES) if one in code)
+                    one_code_degrees[one_code] += 1
                 print(
-                    f"support01_core result={core_result} size={len(core)} pairs={core}"
+                    f"support01_core_{sample} result={core_result} size={len(core)} "
+                    f"zero_degrees={sorted(zero_degrees.values(), reverse=True)} "
+                    f"one_degrees={sorted(one_degrees.values(), reverse=True)} "
+                    f"one_code_edges={tuple(one_code_degrees[h] for h in range(3))} "
+                    f"pairs={core}"
                 )
             solver.add(z3.Or(*(
                 owner[h][v] != values[h][v]
