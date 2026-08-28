@@ -95,7 +95,10 @@ def build_solver() -> tuple[z3.Solver, list[list[z3.IntNumRef]]]:
 
 
 def add_full_ordinary_graph(
-    solver: z3.Solver, owner: list[list[z3.IntNumRef]]
+    solver: z3.Solver, owner: list[list[z3.IntNumRef]],
+    *, enforce_shared_high_c4: bool = True,
+    enforce_disjoint_support_c4: bool = True,
+    disjoint_support_categories: set[tuple[int, int]] | None = None,
 ) -> dict[tuple[int, int], z3.BoolRef]:
     edges = {
         (x, y): z3.Bool(f"edge_{x}_{y}")
@@ -123,6 +126,17 @@ def add_full_ordinary_graph(
     for x in range(46):
         for y in range(x + 1, 46):
             shared_high = sum(x in code and y in code for code in CODES)
+            if shared_high and not enforce_shared_high_c4:
+                continue
+            if not shared_high and not enforce_disjoint_support_c4:
+                continue
+            category = tuple(sorted((support(x), support(y))))
+            if (
+                not shared_high
+                and disjoint_support_categories is not None
+                and category not in disjoint_support_categories
+            ):
+                continue
             bound = 1 - shared_high
             common = [z3.And(edge(x, z), edge(y, z)) for z in range(46)]
             solver.add(z3.PbLe([(term, 1) for term in common], bound))
@@ -148,6 +162,9 @@ def main() -> int:
     parser.add_argument("--full-ordinary", action="store_true")
     parser.add_argument("--sample-owner-completions", type=int, default=0)
     parser.add_argument("--completion-timeout-ms", type=int, default=10_000)
+    parser.add_argument("--diagnose-owner-completions", action="store_true")
+    parser.add_argument("--minimize-support01-violations", action="store_true")
+    parser.add_argument("--support01-unsat-core", action="store_true")
     parser.add_argument("--write-dimacs")
     args = parser.parse_args()
 
@@ -167,16 +184,166 @@ def main() -> int:
                 [model.eval(owner[h][v]).as_long() for v in range(46)]
                 for h in range(3)
             ]
-            completion, completion_owner = build_solver()
-            add_full_ordinary_graph(completion, completion_owner)
-            for h in range(3):
-                for v in range(46):
-                    completion.add(completion_owner[h][v] == values[h][v])
-            completion.set(timeout=args.completion_timeout_ms)
-            completion_result = completion.check()
+            stages = [("full", True, True)]
+            if args.diagnose_owner_completions:
+                stages = [
+                    ("degree", False, False),
+                    ("shared", True, False),
+                    ("plus00", True, True, {(0, 0)}),
+                    ("plus01", True, True, {(0, 1)}),
+                    ("plus02", True, True, {(0, 2)}),
+                    ("plus11", True, True, {(1, 1)}),
+                    ("plus12", True, True, {(1, 2)}),
+                    ("full", True, True),
+                ]
+            stage_results = []
+            for stage_data in stages:
+                stage, shared_c4, disjoint_c4, *categories = stage_data
+                completion, completion_owner = build_solver()
+                stage_edges = add_full_ordinary_graph(
+                    completion, completion_owner,
+                    enforce_shared_high_c4=shared_c4,
+                    enforce_disjoint_support_c4=disjoint_c4,
+                    disjoint_support_categories=(categories[0] if categories else None),
+                )
+                for h in range(3):
+                    for v in range(46):
+                        completion.add(completion_owner[h][v] == values[h][v])
+                completion.set(timeout=args.completion_timeout_ms)
+                stage_result = completion.check()
+                stage_results.append((stage, stage_result))
+                if (
+                    args.diagnose_owner_completions
+                    and stage == "shared" and stage_result == z3.sat
+                ):
+                    stage_model = completion.model()
+                    common_counts = []
+                    for x in range(46):
+                        for y in range(x + 1, 46):
+                            if tuple(sorted((support(x), support(y)))) != (0, 1):
+                                continue
+                            count = 0
+                            for z in range(46):
+                                if z in (x, y):
+                                    continue
+                                left = stage_edges[min(x, z), max(x, z)]
+                                right = stage_edges[min(y, z), max(y, z)]
+                                if z3.is_true(stage_model.eval(z3.And(left, right))):
+                                    count += 1
+                            common_counts.append(count)
+                    print(
+                        f"owner_completion_{sample} shared_support01_mass="
+                        f"{sum(common_counts)} violations="
+                        f"{sum(count > 1 for count in common_counts)} max="
+                        f"{max(common_counts)}"
+                    )
+            completion_result = stage_results[-1][1]
             key = str(completion_result)
             outcomes[key] = outcomes.get(key, 0) + 1
-            print(f"owner_completion_{sample} {completion_result}")
+            print(
+                f"owner_completion_{sample} "
+                + " ".join(f"{stage}={result}" for stage, result in stage_results)
+            )
+            if args.minimize_support01_violations:
+                optimizer = z3.Optimize()
+                opt_owner = [
+                    [z3.Int(f"opt_owner_{h}_{v}") for v in range(46)]
+                    for h in range(3)
+                ]
+                # Reuse the base constraints by substituting the separately
+                # named owner variables, then add degrees and shared-high C4.
+                base, base_owner = build_solver()
+                substitution = [
+                    (base_owner[h][v], opt_owner[h][v])
+                    for h in range(3) for v in range(46)
+                ]
+                optimizer.add(*(z3.substitute(a, *substitution) for a in base.assertions()))
+                edge_solver = z3.Solver()
+                edge_owner = [
+                    [z3.Int(f"edge_owner_{h}_{v}") for v in range(46)]
+                    for h in range(3)
+                ]
+                edge_vars = add_full_ordinary_graph(
+                    edge_solver, edge_owner,
+                    enforce_shared_high_c4=True,
+                    enforce_disjoint_support_c4=False,
+                )
+                edge_substitution = [
+                    (edge_owner[h][v], opt_owner[h][v])
+                    for h in range(3) for v in range(46)
+                ]
+                optimizer.add(*(
+                    z3.substitute(a, *edge_substitution)
+                    for a in edge_solver.assertions()
+                ))
+                for h in range(3):
+                    for v in range(46):
+                        optimizer.add(opt_owner[h][v] == values[h][v])
+
+                def opt_edge(x: int, y: int) -> z3.BoolRef:
+                    if x == y:
+                        return z3.BoolVal(False)
+                    return edge_vars[min(x, y), max(x, y)]
+
+                violations = []
+                for x in range(46):
+                    for y in range(x + 1, 46):
+                        if tuple(sorted((support(x), support(y)))) != (0, 1):
+                            continue
+                        common = [
+                            z3.And(opt_edge(x, z), opt_edge(y, z))
+                            for z in range(46)
+                        ]
+                        violations.append(z3.PbGe([(term, 1) for term in common], 2))
+                objective = z3.Sum(*(z3.If(term, 1, 0) for term in violations))
+                optimizer.minimize(objective)
+                optimizer.set(timeout=args.completion_timeout_ms)
+                opt_result = optimizer.check()
+                opt_value = "?"
+                if opt_result == z3.sat:
+                    opt_value = str(optimizer.model().eval(objective))
+                print(f"owner_completion_{sample} support01_min={opt_result}:{opt_value}")
+            if args.support01_unsat_core and sample == 0:
+                core_solver, core_owner = build_solver()
+                core_edges = add_full_ordinary_graph(
+                    core_solver, core_owner,
+                    enforce_shared_high_c4=True,
+                    enforce_disjoint_support_c4=False,
+                )
+                for h in range(3):
+                    for v in range(46):
+                        core_solver.add(core_owner[h][v] == values[h][v])
+
+                def core_edge(x: int, y: int) -> z3.BoolRef:
+                    if x == y:
+                        return z3.BoolVal(False)
+                    return core_edges[min(x, y), max(x, y)]
+
+                tags = []
+                tag_pairs = {}
+                for x in range(46):
+                    for y in range(x + 1, 46):
+                        if tuple(sorted((support(x), support(y)))) != (0, 1):
+                            continue
+                        tag = z3.Bool(f"support01_{x}_{y}")
+                        common = [
+                            z3.And(core_edge(x, z), core_edge(y, z))
+                            for z in range(46)
+                        ]
+                        core_solver.add(z3.Implies(
+                            tag, z3.PbLe([(term, 1) for term in common], 1)
+                        ))
+                        tags.append(tag)
+                        tag_pairs[str(tag)] = (x, y)
+                core_solver.set(timeout=args.completion_timeout_ms)
+                core_solver.set("smt.core.minimize", True)
+                core_result = core_solver.check(*tags)
+                core = []
+                if core_result == z3.unsat:
+                    core = [tag_pairs[str(tag)] for tag in core_solver.unsat_core()]
+                print(
+                    f"support01_core result={core_result} size={len(core)} pairs={core}"
+                )
             solver.add(z3.Or(*(
                 owner[h][v] != values[h][v]
                 for h in range(3) for v in range(46)
