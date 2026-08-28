@@ -149,3 +149,44 @@ matching inside each shore.  Its defect complement is thereby connected.
 The unresolved construction question is whether that shore trade can be
 made simultaneously in every affine direction pair at general binary
 order; the untraded model is now decisively excluded.
+
+### Exact coherence of the `q=4` shore trade
+
+The local trade normal form is compatible across the two selector colors,
+but only by giving up symmetry before the trade.  This was checked by a
+complete small enumeration from the formalized `sixteenRegular` edge list.
+
+Each selector has four balanced cuts attaining its maximum cut `12` out of
+`16`.  For each cut, delete the four internal selector edges and reassign
+their four ambient labels to the four missing cross-shore edges.  There are
+
+```text
+4 * 4! = 96
+```
+
+labeled `K_(4,4)` completions per selector.  Among the `96^2` pairs of
+completions, exactly `16` retain the cross-star law: every ground vertex of
+the first selector and every ground vertex of the second selector are
+incident with exactly one common ambient label.  Equivalently, the completed
+edge bijection remains an ordinary coherent affine ODC.
+
+For all `16` coherent completions, however, the assembled ambient incidence
+matrix has
+
+```text
+diagonal ones                         0,
+asymmetric unordered vertex pairs   16.
+```
+
+No completion is symmetric.  This is the finite shadow of the polarity
+calculation above: the split incidence can be symmetric only by accepting
+absolute points, while a loopless split labeling pays a reciprocity defect.
+The `sixteenRegular` shore trades repair all sixteen asymmetric pairs while
+turning both selector complements connected.
+
+Thus `q=4` is not merely componentwise close to the affine model; it is a
+genuine coherent deformation of it.  The sharpened general question is
+quantitative and simultaneous: can `q/2` coherent shore trades repair the
+unavoidable loop/asymmetry defect of binary biaffine incidence while
+preserving every intermediate-factor tiling?  Neither ordinary ODC
+existence nor the absolute-point count alone answers that traded problem.
