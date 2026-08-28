@@ -52,6 +52,30 @@ matrices, complete designs, or highly symmetric point-subspace designs; no
 general theorem found supplies the required higher-2-adic obstruction for
 an arbitrary regular uniform packing with a prescribed leave.
 
+### The canonical Hoffman cocliques are real but nonterminal
+
+The post-reveal Hoffman candidate does have its proposed equality witness.
+If `x` lies outside `C`, then the `q` blocks
+
+`{N_A(y) intersect C : y in N_A(x)}`
+
+are pairwise disjoint: an intersection point would be a second common
+neighbor of two vertices already sharing `x`.  Their total size is `qm`, so
+they partition `C`.  Equivalently `N_A(x)` is a `q`-coclique in the proper
+owner graph, attaining its Hoffman bound.  Moreover every block belongs to
+exactly `q-m` such exterior parallel classes.
+
+This does not manufacture a global q-coloring of the owner graph.  The
+parallel classes reuse blocks, and two classes meet in zero or one block
+according to the original common-neighbor relation between their indexing
+vertices.  In other words their intersection graph reconstructs the same
+ambient `A^2`/defect relation; it does not force the leave to split into
+cliques or become disconnected.  The literature on resolvable packings
+contains abundant constructions with prescribed regular leaves, so Hoffman
+equality plus resolvability is not itself an obstruction.  A terminal would
+need an additional incompatibility among these multiply-used parallel
+classes.
+
 ## 2. Bottom-eigenspace fusion is coordinate rank-nullity
 
 For the proper owner
@@ -108,6 +132,7 @@ The packing/leave dictionary is retained as the only positive structural
 reframe from the round.  The tested consumers are cut:
 
 - F2 rank or spanning-tree parity alone;
+- Hoffman equality / existence of exterior parallel classes alone;
 - bottom-eigenspace dimension fusion;
 - multiplicity-one cyclotomic fourth/sixth moments.
 
