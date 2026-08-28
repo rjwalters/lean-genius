@@ -36,6 +36,10 @@ def main():
     certificate_noncoupling_sizes = []
     singleton_pool_count = 0
     clean_pool_count = 0
+    minimum_block_selector_count = 0
+    minimum_block_pool_sizes = []
+    minimum_block_noncoupling_sizes = []
+    dirty_pool_records = []
     counterexamples = []
     pattern = "research/problems/erdos-85-wip-01/q9_branch4*.json"
     for filename in sorted(glob.glob(pattern)):
@@ -146,6 +150,42 @@ def main():
                 )
                 singleton_pool_count += len(certificate_pool) == 1
                 clean_pool_count += certificate_pool <= coupling_sources
+                minimum_block_size = min(
+                    len(system["blocks"][source])
+                    for source in certificate_pool
+                )
+                minimum_block_pool = {
+                    source for source in certificate_pool
+                    if len(system["blocks"][source]) == minimum_block_size
+                }
+                minimum_block_selector_count += bool(
+                    coupling_sources & minimum_block_pool
+                )
+                minimum_block_pool_sizes.append(len(minimum_block_pool))
+                minimum_block_noncoupling_sizes.append(
+                    len(minimum_block_pool - coupling_sources)
+                )
+                if not certificate_pool <= coupling_sources:
+                    dirty_pool_records.append({
+                        "file": filename.rsplit("/", 1)[-1],
+                        "target": target,
+                        "better": better,
+                        "atoms": [{
+                            "row": source,
+                            "couples": source in coupling_sources,
+                            "tight": source in tight,
+                            "forced_conflicts": sum(
+                                bool(system["blocks"][source]
+                                     & system["blocks"][forced])
+                                for forced in better_forced
+                            ),
+                            "block_size": len(system["blocks"][source]),
+                            "local_packing_count": len(families[source]),
+                            "local_forced_card": len(
+                                local[source]["forced_neighbors"]
+                            ),
+                        } for source in sorted(certificate_pool)],
+                    })
                 witnesses = coupling_sources & tight
                 forced_star_sources = {
                     source for source in coupling_sources
@@ -199,6 +239,16 @@ def main():
         f"singleton certificate pools={singleton_pool_count}; "
         f"all-atoms-couple pools={clean_pool_count}"
     )
+    print(
+        "minimum-block-size selector couples="
+        f"{minimum_block_selector_count}/{total}; pool sizes="
+        f"{min(minimum_block_pool_sizes)}..{max(minimum_block_pool_sizes)}; "
+        "decoys="
+        f"{min(minimum_block_noncoupling_sizes)}.."
+        f"{max(minimum_block_noncoupling_sizes)}"
+    )
+    for record in dirty_pool_records:
+        print("dirty-pool", record)
     assert full_certificate_located == total
     if counterexamples:
         print("transposed-dual tight-source conjecture: REFUTED")

@@ -6494,3 +6494,20 @@ among at most six residual rows selected by the full dual certificate, one
 must admit a joint packing or one-swap with `w,z`.  Generic complementary
 slackness proves only the tight-candidate horn, while the forced-star horn
 must use the unique conflict point and the exact outer column geometry.
+
+The first intrinsic-selector probe cuts the obvious scalar shortcuts.  The
+seven pools containing decoys are printed with block size, tight/forced-star
+type, forced-conflict multiplicity, and local packing count.  Tightness alone
+selects a decoy in `(w,z)=(10,40)`; maximum forced-conflict multiplicity
+selects a decoy in the `(10,43)` pool; maximum local packing count selects a
+decoy in `(23,13)`, while minimum local packing count selects one in
+`(10,43)`.  Thus no one of those certificate-local scalars identifies the
+coupling source.
+
+Restricting to minimum block size—pair rows before triple rows—does survive
+all nineteen cases, but only modestly sharpens the pool: its size is still
+one through five and it may still contain two decoys.  This is useful
+orientation, not a terminal.  The missing statement remains relational:
+one of a small family of pair/triple rows couples through a common residual
+source.  It cannot be replaced by choosing the extremum of a single local
+score.                                                        (13bod'''b)
