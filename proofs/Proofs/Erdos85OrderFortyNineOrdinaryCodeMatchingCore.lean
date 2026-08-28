@@ -1,4 +1,5 @@
 import Proofs.Erdos85OrderFortyNineOrdinaryAdjacencyConnected
+import Proofs.Erdos85OrderFortyNineOrdinaryCodePartitionIntersection
 
 /-!
 # Matching cores of the three ordinary perfect codes
@@ -96,6 +97,38 @@ theorem orderFortyNineOrdinaryHighCode_neighbor_inter_card_eq_one
   rw [hbool] at hsum
   exact_mod_cast hsum
 
+/-- The concrete high code satisfies the abstract open-code interface used by
+the two-partition intersection grid. -/
+theorem orderFortyNineOrdinaryHighCode_isOpenCode
+    (G : SimpleGraph (Fin 49)) [DecidableRel G.Adj]
+    [DecidableRel (antipodalGraph G).Adj]
+    [DecidableRel (triangleFreeEdgeGraph G).Adj]
+    (hfree : ¬ containsC4 (Fin 49) G)
+    (hmin : ∀ x, 7 ≤ G.degree x)
+    (hhigh : ∀ y : Fin 49, G.degree y = 8 ↔ y.val < 3)
+    {h : Fin 49} (hh : G.degree h = 8) :
+    IsOpenCode (orderFortyNineOrdinaryGraph G)
+      (orderFortyNineOrdinaryHighCode G h : Set (Fin 46)) := by
+  intro z
+  obtain ⟨a, ha⟩ := Finset.card_eq_one.mp
+    (orderFortyNineOrdinaryHighCode_neighbor_inter_card_eq_one
+      G hfree hmin hhigh hh z)
+  have haMem : a ∈
+      (orderFortyNineOrdinaryGraph G).neighborFinset z ∩
+        orderFortyNineOrdinaryHighCode G h := by
+    simp [ha]
+  have haParts := Finset.mem_inter.mp haMem
+  refine ⟨a, ⟨haParts.2, ?_⟩, ?_⟩
+  · simpa [SimpleGraph.mem_neighborFinset] using haParts.1
+  · intro b hb
+    have hbMem : b ∈
+        (orderFortyNineOrdinaryGraph G).neighborFinset z ∩
+          orderFortyNineOrdinaryHighCode G h := by
+      exact Finset.mem_inter.mpr
+        ⟨(by simpa [SimpleGraph.mem_neighborFinset] using hb.2), hb.1⟩
+    rw [ha] at hbMem
+    simpa using hbMem
+
 /-- Abstract matching dichotomy for two marked vertices in an open perfect
 code.  In the non-edge branch their unique code-neighbors are necessarily
 distinct and different from the opposite marked vertex. -/
@@ -178,5 +211,6 @@ end
 end Erdos85
 
 #print axioms Erdos85.orderFortyNineOrdinaryHighCode_neighbor_inter_card_eq_one
+#print axioms Erdos85.orderFortyNineOrdinaryHighCode_isOpenCode
 #print axioms Erdos85.openPerfectCode_marked_pair_dichotomy
 #print axioms Erdos85.orderFortyNineOrdinaryHighCode_pair_dichotomy
