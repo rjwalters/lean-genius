@@ -174,6 +174,35 @@ Any further positional argument must retain an individual square ledger,
 the complete difference distribution, or the two-port Fourier data; it
 must not rebank their difference as a new invariant.
 
+## Primitive Fourier two-port shadow
+
+Let `z` be a primitive q-th root. In the standard two-dimensional
+representation of `D_q`, a mixed factor has
+
+    F_ce = [[z^u, z^v], [z^(-v), z^(-u)]]
+         = [z^u, z^(-v)]ᵀ [1, z^(v-u)].
+
+The first-moment law leaves one binary lift
+
+    v_ce-u_ce = P_e + (q/2) ε_ce  (mod q).
+
+Thus each ordered factor chooses one of two orthogonal ports at its target;
+reciprocity makes the transpose bit control its source port. A product
+through `e` vanishes exactly on a port mismatch. Splitting `(F²)_cd=0`
+into its four port cells yields the necessary no-singleton condition:
+away from the at most two cells occupied by diagonal terms,
+
+    {e ∉ {c,d} : ε_ce=ε_de, ε_ec=α, ε_ed=β}
+
+cannot have cardinality one.
+
+This binary shadow has a uniform escape. Set every off-diagonal
+`ε_ce=0`. For each `c≠d`, all `r-2` intermediate colors occupy the one
+cell `(0,0)`; because `r=q/2≥4`, that cell has at least two terms and all
+other cells are empty. Hence port incidence without the actual complex
+coefficients is nonterminal. A deeper coefficient census would remain
+inside the unnormalized development ansatz and is not pursued here.
+
 ## Honest stopping point
 
 The classification and congruences above apply only after assuming one
