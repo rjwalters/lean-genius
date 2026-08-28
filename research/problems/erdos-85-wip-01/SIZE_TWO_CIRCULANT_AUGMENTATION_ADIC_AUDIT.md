@@ -132,6 +132,51 @@ record precisely what the first lift adds beyond the order-two support:
 (M1) sees common odd-separation neighbors, while (M2) also sees their unit
 orientations and their incidence with the next dyadic stratum.
 
+### No nontrivial clique component in the odd-separation graph
+
+The mixed equations do give a q-generic structural exclusion.  Let `H` be
+the simple color graph in which `c--e` means `alpha_ce=1`.  Then:
+
+> No connected component of `H` is a clique of order at least three.
+
+To prove this, suppose `S` is such a clique component and let `s=|S|`.  For
+distinct `c,d in S`, the valuation-two columns are exactly
+`S\{c,d}`: every other vertex of `S` is a common `H`-neighbor, while a color
+outside `S` has separation valuation at least two from both `c` and `d`.
+Equation (M1) first forces `s-2` even.  Hence an odd clique component is
+already impossible.
+
+Now let `s` be even.  Define
+
+```text
+L_c=sum_(e in S, e!=c) lambda_ce,
+epsilon_c=1 if alpha_cc=2, and 0 otherwise.
+```
+
+At degree three, the ordinary clique columns contribute
+
+```text
+sum_(e in S\{c,d}) (lambda_ce+lambda_ed)
+  = L_c+L_d+lambda_cd+lambda_dc
+  = L_c+L_d+1,
+```
+
+using reciprocity.  No outside column contributes below degree four.  The
+endpoint columns contribute `epsilon_c+epsilon_d`.  Thus (M2) becomes
+
+```text
+(L_c+epsilon_c)+(L_d+epsilon_d)=1
+```
+
+for every distinct pair in `S`.  Three binary values cannot be pairwise
+different, so this is impossible once `s>=3`.
+
+This strictly generalizes the complete odd-separation pattern excluded
+below: the rest of the color graph and all diagonal valuations may be mixed.
+At `r=4`, it removes the `K_4` support stratum; the remaining possible
+odd-separation support shapes are empty, one edge, a perfect matching, or a
+four-cycle (up to isomorphism).
+
 ## Uniform escape from the valuation layer
 
 The tropical condition is not an obstruction.  Assign
