@@ -111,3 +111,75 @@ matrix
 satisfies it. Any contradiction must retain the actual rotation positions
 inside the two cosets, rather than only reflection counts or determinant
 signs.
+
+## Positional first moment in the all-mixed branch
+
+The only reflection-type escape with no zero entries in `U` has every
+off-diagonal two-set mixed. Use
+
+    A_ce = {r^(u_ce), r^(v_ce)s}       (c ≠ e),
+    A_cc = {r^(a_c)s, r^(b_c)s}.
+
+Reciprocity gives `u_ec=-u_ce` and `v_ec=v_ce`. Put
+
+    A_c = a_c+b_c,
+    U_c = Σ_(e≠c) u_ce,
+    V_c = Σ_(e≠c) v_ce,
+    P_c = A_c+U_c+V_c.
+
+For fixed distinct endpoints `c,d`, sum the rotation exponents in all via
+tiles. The via-`c` contribution is `A_c-2v_cd`, the via-`d` contribution
+is `2v_cd-A_d`, and the other contributions are
+
+    (u_ce-u_de) + (v_ce-v_de).
+
+Because these exponents partition `Z/qZ`, their sum is `q/2` modulo `q`.
+The reflection exponents give the second equation:
+
+    P_c-P_d-2u_cd = q/2  (mod q),
+    P_c+P_d-2v_cd = q/2  (mod q).
+
+Hence all `P_c` have one parity and
+
+    v_cd-u_cd = P_d  (mod q/2).
+
+The mixed separation is synchronized by the target color. Equivalently,
+if `z_cc=A_c` and `z_cd=u_cd+v_cd` for `c≠d`, then
+
+    z_cd = P_c  (mod q/2),
+    A_c  = 2P_c (mod q/2).
+
+The last identity follows by summing the `r-1` off-diagonal entries in
+row `c`, where `r=q/2`.
+
+## Square-difference audit
+
+For powers of two `q≥4`, the sum of the squares of all residues modulo
+`q` is again `q/2`. Subtracting the rotation-square ledger from the
+reflection-square ledger and dividing the resulting factor two gives
+
+    Σ_e z_ce z_de = 2 z_cd z_dc  (mod q/2),    c ≠ d.
+
+This looks like a new second-moment constraint but is a tautology after
+the first moment. Indeed the two endpoint terms on the left contribute
+`4P_cP_d`, the `r-2` other terms contribute `(r-2)P_cP_d`, and therefore
+
+    Σ_e z_ce z_de
+      = (r+2)P_cP_d
+      = 2P_cP_d
+      = 2z_cd z_dc                 (mod r).
+
+Thus subtracting the two square ledgers cannot advance the obstruction.
+Any further positional argument must retain an individual square ledger,
+the complete difference distribution, or the two-port Fourier data; it
+must not rebank their difference as a new invariant.
+
+## Honest stopping point
+
+The classification and congruences above apply only after assuming one
+common regular group development. No banked theorem normalizes the full
+all-size-two graph branch to such a group action. They cut and classify a
+countermodel ansatz, but they are not a chain to
+`ThreeSizeTwoViaTripleExclusionPrinciple`. Continuing deeper inside the
+dihedral ansatz without such a normalization would be hill climbing, so
+this lane stops here.
