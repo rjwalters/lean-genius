@@ -101,6 +101,7 @@ def add_full_ordinary_graph(
     enforce_disjoint_support_c4: bool = True,
     disjoint_support_categories: set[tuple[int, int]] | None = None,
     support_one_codes: set[int] | None = None,
+    support01_owner_coincidence: bool | None = None,
 ) -> dict[tuple[int, int], z3.BoolRef]:
     edges = {
         (x, y): z3.Bool(f"edge_{x}_{y}")
@@ -146,7 +147,14 @@ def add_full_ordinary_graph(
                     continue
             bound = 1 - shared_high
             common = [z3.And(edge(x, z), edge(y, z)) for z in range(46)]
-            solver.add(z3.PbLe([(term, 1) for term in common], bound))
+            constraint = z3.PbLe([(term, 1) for term in common], bound)
+            if not shared_high and category == (0, 1) and support01_owner_coincidence is not None:
+                same_owner = z3.Or(*(
+                    owner[h][x] == owner[h][y] for h in range(3)
+                ))
+                guard = same_owner if support01_owner_coincidence else z3.Not(same_owner)
+                constraint = z3.Implies(guard, constraint)
+            solver.add(constraint)
     return edges
 
 
@@ -218,12 +226,16 @@ def main() -> int:
                     ("plus01c02", True, True, {(0, 1)}, {0, 2}),
                     ("plus01c12", True, True, {(0, 1)}, {1, 2}),
                     ("only01c01", False, True, {(0, 1)}, {0, 1}),
+                    ("only01same", False, True, {(0, 1)}, {0, 1}, True),
+                    ("only01different", False, True, {(0, 1)}, {0, 1}, False),
                     ("plus02", True, True, {(0, 2)}),
                     ("plus11", True, True, {(1, 1)}),
                     ("plus12", True, True, {(1, 2)}),
                     ("full", True, True),
                 ]
             stage_results = []
+            shared_stage_model = None
+            shared_stage_edges = None
             for stage_data in stages:
                 stage, shared_c4, disjoint_c4, *categories = stage_data
                 completion, completion_owner = build_solver()
@@ -233,6 +245,7 @@ def main() -> int:
                     enforce_disjoint_support_c4=disjoint_c4,
                     disjoint_support_categories=(categories[0] if categories else None),
                     support_one_codes=(categories[1] if len(categories) > 1 else None),
+                    support01_owner_coincidence=(categories[2] if len(categories) > 2 else None),
                 )
                 for h in range(3):
                     for v in range(46):
@@ -245,6 +258,8 @@ def main() -> int:
                     and stage == "shared" and stage_result == z3.sat
                 ):
                     stage_model = completion.model()
+                    shared_stage_model = stage_model
+                    shared_stage_edges = stage_edges
                     common_counts = []
                     for x in range(46):
                         for y in range(x + 1, 46):
@@ -378,12 +393,60 @@ def main() -> int:
                     one_degrees[one] += 1
                     one_code = next(h for h, code in enumerate(CODES) if one in code)
                     one_code_degrees[one_code] += 1
+                decoded_core = []
+                pairpoint_cells = {}
+                for vertex in range(46):
+                    pairpoint_cells[vertex] = tuple(sorted({
+                        value
+                        for value in (values[h][vertex] for h in range(3))
+                        if value in (PAIR01, PAIR02, PAIR12)
+                    }))
+                p_vertices = {
+                    vertex for vertex in range(46) if pairpoint_cells[vertex]
+                }
+                for x, y in core:
+                    zero, one = (x, y) if support(x) == 0 else (y, x)
+                    kz = None
+                    ell = None
+                    if shared_stage_model is not None and shared_stage_edges is not None:
+                        def stage_edge(a: int, b: int) -> z3.BoolRef:
+                            if a == b:
+                                return z3.BoolVal(False)
+                            return shared_stage_edges[min(a, b), max(a, b)]
+                        kz = sum(
+                            z3.is_true(shared_stage_model.eval(stage_edge(zero, w)))
+                            for w in p_vertices
+                        )
+                        ell = sum(
+                            z3.is_true(shared_stage_model.eval(stage_edge(one, w)))
+                            for w in p_vertices
+                        )
+                    decoded_core.append({
+                        "pair": (zero, one),
+                        "k_l_model": (kz, ell),
+                        "zero_owners": tuple(values[h][zero] for h in range(3)),
+                        "one_owners": tuple(values[h][one] for h in range(3)),
+                        "zero_pairpoint_cells": pairpoint_cells[zero],
+                        "one_pairpoint_cells": pairpoint_cells[one],
+                        "equal_owner_codes": tuple(
+                            h for h in range(3) if values[h][zero] == values[h][one]
+                        ),
+                    })
+                signature_counts = Counter(
+                    (
+                        len(item["zero_pairpoint_cells"]),
+                        len(item["one_pairpoint_cells"]),
+                        len(item["equal_owner_codes"]),
+                    )
+                    for item in decoded_core
+                )
                 print(
                     f"support01_core_{sample} result={core_result} size={len(core)} "
                     f"zero_degrees={sorted(zero_degrees.values(), reverse=True)} "
                     f"one_degrees={sorted(one_degrees.values(), reverse=True)} "
                     f"one_code_edges={tuple(one_code_degrees[h] for h in range(3))} "
-                    f"pairs={core}"
+                    f"signatures={sorted(signature_counts.items())} "
+                    f"decoded={decoded_core}"
                 )
             solver.add(z3.Or(*(
                 owner[h][v] != values[h][v]
