@@ -196,6 +196,26 @@ individual selector admits the split-to-nonbip trade is false already at the
 control; the obstruction, if true, lives in compatibility among at least
 three direction pairs.
 
+### Scope: this is a restricted trade lane
+
+Nothing currently proves that an arbitrary size-two selector in an A-REG
+counterexample admits this minimal split completion.  In fact the shore-trade
+normal form is a strong eigenline hypothesis.  If `s` is `+1` on one shore
+and `-1` on the other, deleting one cross perfect matching from `K_q,q` and
+adding one perfect matching inside each shore gives
+
+```text
+H_C s = -(q-2)s,
+D[C] s = (q-3)s.
+```
+
+Thus a theorem excluding coherent affine shore trades closes only this
+full-support signed-eigenline sublane unless one separately proves that the
+intermediate-factor tiling forces every selector into the normal form.  The
+q4 completion is a sharp calibration and construction guide, not evidence
+for that missing q-generic reduction.  The no-eigenline sector remains
+outside the affine-trade model.
+
 ### Exact coherence of the `q=4` shore trade
 
 The local trade normal form is compatible across the two selector colors,
