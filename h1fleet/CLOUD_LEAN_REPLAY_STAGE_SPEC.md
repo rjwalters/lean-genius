@@ -99,9 +99,10 @@ For each inventory tag, perform this transaction:
    upload source, full log, compressed `.olean`, and receipt to staging keys.
 8. HEAD/read back each uploaded object and verify its recorded length and
    SHA-256.  Only then publish the accepted receipt/ledger line atomically.
-9. Only after the accepted receipt is durable, self-copy the input certificate
-   at the same key with tag `replay=consumed` to reset its lifecycle clock as
-   specified in section 6.  Then release the claim and delete local tag scratch.
+9. Only after the accepted receipt is durable, add tag `replay=consumed` to the
+   input certificate with `PutObjectTagging`, read the tags back, and record the
+   result as specified in section 6.  Then release the claim and delete local
+   tag scratch.
 
 Suggested durable layout:
 
@@ -131,8 +132,8 @@ Each accepted JSON receipt must include at least:
 - source-scan result, complete axiom-audit result, and explicit
   `sorryAx=false`;
 - upload read-back results;
-- certificate self-copy result: post-copy ETag/last-modified, object tags, and
-  byte-identity verification;
+- certificate tagging result: pre/post ETag and last-modified identity, complete
+  object tags, tagging request id, and tag read-back verification;
 - worker instance id, AMI/image digest, AZ, worker hash, and receipt signature or
   keyed integrity mechanism selected at sign-off.
 
@@ -166,25 +167,27 @@ any expected tag lacks an accepted receipt.
 
 ## 6. Certificate lifecycle: Glacier Instant Retrieval
 
-The operator ruling is: certificates stay Standard until Lean replay consumes
-them; nothing is deleted.  Configure a lifecycle rule scoped to prefix
-`sat49/campaign-20260825/h1/` **and** object tag `replay=consumed`, transitioning
-to `GLACIER_IR` after seven days.
+The operator ruling, restated in room message 35784, is: certificates stay
+Standard until Lean replay consumes them; nothing is deleted.  Configure a
+lifecycle rule scoped to prefix `sat49/campaign-20260825/h1/` **and** object tag
+`replay=consumed`, transitioning to `GLACIER_IR` when both conditions hold:
 
-Tagging alone does not reset object age.  Therefore the replay transaction must
-self-copy the certificate to the same key and replace/add the tag, creating a
-new Last-Modified time from which the seven-day transition is measured.  Because
-bucket versioning is off, guard this mutation carefully:
+1. the object carries `replay=consumed`; and
+2. the object is at least seven days past its original creation time.
 
-- use a conditional copy against the pre-replay ETag;
-- preserve encryption, content type/encoding, and all existing metadata/tags;
-- use managed multipart copy if the object exceeds the single-copy size limit;
-- verify post-copy content length and SHA-256 against the pre-copy object;
-- publish the copy result in the accepted receipt;
-- never self-copy before the `.olean` and audit receipt pass upload read-back.
+Tagging does not reset object age, and the approved contract deliberately does
+not self-copy.  Consequently an object replayed after day seven may transition
+as soon as it is tagged.  This is accepted: the safety invariant is that no
+unconsumed certificate is archived, while Glacier Instant Retrieval remains
+immediately readable for a later re-check.
 
-If the conditional copy or byte-identity check fails, quarantine the lifecycle
-step and leave the object in Standard.  Never transition an unconsumed object.
+The worker must preserve all existing tags while adding `replay=consumed`, use
+no metadata/object-byte mutation, verify by HEAD that ETag, content length, and
+last-modified are unchanged, read back the full tag set, and publish that result
+in the accepted receipt.  If tagging or read-back fails, quarantine the
+lifecycle step and leave the object in Standard.  Never tag before the `.olean`
+and audit receipt pass upload read-back, and never transition an unconsumed
+object.
 
 ## 7. Capacity and storage estimate
 
@@ -219,21 +222,16 @@ manifest and approve the dollar estimate.  Required gates are:
 - IAM least privilege tested.  The SAT fleet's `Erdos85CertUploader` role is
   insufficient.  The replay role needs ListBucket; GetObject and
   GetObjectTagging on H1 inputs; GetObject/PutObject on replay outputs;
-  PutObjectTagging on H1 inputs; and permission for a conditional same-key
-  CopyObject on H1 inputs, with no delete anywhere;
+  and PutObjectTagging on H1 inputs, with no H1 PutObject and no delete anywhere;
 - lifecycle rule inspected in dry-run/config output;
-- one real tag completes the full upload/read-back/self-copy transaction;
+- one real tag completes the full upload/read-back/tag/read-back transaction;
 - its receipt is independently validated and the certificate remains readable;
 - concurrency and disk alarms are live.
 
-As of the draft correction, the provisioned `Erdos85CertReplay` profile is
-reported to have ListBucket, GetObject/GetObjectTagging, H1 PutObjectTagging,
-and replay-prefix PutObject, but not H1-prefix PutObject.  S3 same-key
-`CopyObject` authorization requires destination `s3:PutObject`; tagging alone
-cannot reset Last-Modified.  Therefore the profile is not sufficient for the
-section 6 seven-days-after-consumption contract until the narrowly scoped
-same-key copy permission is added, or the operator explicitly changes that
-lifecycle contract.
+The provisioned `Erdos85CertReplay` profile matches this contract: ListBucket;
+GetObject/GetObjectTagging on `sat49/campaign-20260825/*`; PutObjectTagging on
+H1 inputs; PutObject limited to H1 replay outputs and freight; and no delete.
+Do not widen it to PutObject on H1 certificate keys.
 
 On systemic failure: stop new claims, preserve logs/receipts/quarantine, leave
 certificates in Standard, and keep the EBS volume for diagnosis.  Never delete
