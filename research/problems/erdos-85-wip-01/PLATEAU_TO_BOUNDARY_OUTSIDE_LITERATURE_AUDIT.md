@@ -201,3 +201,34 @@ exploit the special C4-linear neighborhood hyperedges and prove an exact
 equitable `k+1` edge coloring despite repeated edges, or first construct a
 deletion set with uniform loss and `o(k)` multiplicities. Neither property
 is part of the current plateau-core interface.
+
+### Exact-Delta coloring via balanced hypergraphs is also unavailable
+
+Balanced hypergraphs have the exact edge-coloring property
+`chi'(H)=Delta(H)`, so at first sight they avoid the asymptotic color
+surplus above (Berge--Las Vergnas, *Sur un théorème du type König pour
+hypergraphes*, 1970,
+https://doi.org/10.1111/j.1749-6632.1970.tb56451.x). The occurrence
+hypergraph is not forced to be balanced.
+If the survivor graph contains an induced six-cycle
+
+    v_1-w_12-v_2-w_23-v_3-w_31-v_1,
+
+then the three occurrence hyperedges based at `v_1,v_2,v_3` form a strong
+odd Berge cycle through the ground points `w_12,w_23,w_31`: consecutive
+hyperedges meet at the displayed point, and inducedness ensures none of
+the three contains all three cycle points. This is precisely a forbidden
+balanced-hypergraph submatrix. `C4`-freeness does not forbid induced
+six-cycles (the cycle `C6` itself is the smallest control), so balancedness
+cannot be derived from the plateau interface.
+
+Moreover `chi'=k+1`, even if available, supplies `k+1` matchings but does
+not by itself force every color class to contain exactly `d` occurrences.
+The total average is `d`, yet a proper edge coloring may have unequal
+class sizes. The compensated surgery needs exact equality because each
+new edgeless-gadget vertex must have degree `d`. Thus this route would
+still need an equitable recoloring theorem after balancedness.
+
+The balanced-hypergraph theorem therefore identifies another possible
+extra hypothesis—absence of strong odd neighborhood cycles—but neither
+that hypothesis nor exact equitability is currently forced.
