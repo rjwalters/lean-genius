@@ -31,6 +31,7 @@ DEFAULT_PROOFS = ROOT / "proofs"
 DEFAULT_ALLOWLIST = (
     ROOT / "research/problems/erdos-85-wip-01/drop_axiom_allowlist.json"
 )
+FOUNDATIONAL_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
 
 
 @dataclass(frozen=True)
@@ -135,10 +136,28 @@ def load_allowlist(path: Path) -> dict:
         raise ValueError(f"allowlist missing keys: {', '.join(missing)}")
     if data["schema"] != 1:
         raise ValueError(f"unsupported allowlist schema {data['schema']!r}")
+    if not isinstance(data["allowed_axioms"], list) or not all(
+        isinstance(axiom, str) for axiom in data["allowed_axioms"]
+    ):
+        raise ValueError("allowed_axioms must be a list of strings")
+    allowed_axioms = set(data["allowed_axioms"])
+    if len(allowed_axioms) != len(data["allowed_axioms"]):
+        raise ValueError("allowed_axioms contains duplicates")
+    if allowed_axioms != FOUNDATIONAL_AXIOMS:
+        raise ValueError(
+            "allowed_axioms must be exactly the foundational set "
+            f"{sorted(FOUNDATIONAL_AXIOMS)!r}, got {sorted(allowed_axioms)!r}"
+        )
     re.compile(data["native_axiom_regex"])
+    family_ids: set[str] = set()
     for family in data["native_families"]:
         if not {"id", "module_regex", "declaration_regex"} <= family.keys():
             raise ValueError(f"malformed native family: {family!r}")
+        if not isinstance(family["id"], str) or not family["id"]:
+            raise ValueError(f"native family has invalid id: {family!r}")
+        if family["id"] in family_ids:
+            raise ValueError(f"duplicate native family id: {family['id']!r}")
+        family_ids.add(family["id"])
         re.compile(family["module_regex"])
         re.compile(family["declaration_regex"])
     return data
@@ -250,12 +269,24 @@ def main() -> int:
         axiom_log_path.write_text(result.stdout, encoding="utf-8")
         if result.returncode != 0:
             errors.append(f"literal #print axioms pass failed with rc={result.returncode}")
-        begin_count = result.stdout.count("ERDOS85_AXIOM_BEGIN\t")
-        end_count = result.stdout.count("ERDOS85_AXIOM_END\t")
-        if begin_count != len(theorems) or end_count != len(theorems):
+        observed_delimiters = [
+            line
+            for line in result.stdout.splitlines()
+            if line.startswith("ERDOS85_AXIOM_BEGIN\t")
+            or line.startswith("ERDOS85_AXIOM_END\t")
+        ]
+        expected_delimiters = [
+            delimiter
+            for theorem in theorems
+            for delimiter in (
+                f"ERDOS85_AXIOM_BEGIN\t{theorem.name}",
+                f"ERDOS85_AXIOM_END\t{theorem.name}",
+            )
+        ]
+        if observed_delimiters != expected_delimiters:
             errors.append(
-                "literal output delimiter mismatch: "
-                f"begin={begin_count}, end={end_count}, expected={len(theorems)}"
+                "literal output delimiter sequence mismatch: "
+                f"observed={observed_delimiters!r}, expected={expected_delimiters!r}"
             )
 
     receipt = {
