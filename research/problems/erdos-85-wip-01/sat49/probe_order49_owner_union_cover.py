@@ -7,7 +7,7 @@ import argparse
 
 import numpy as np
 import z3
-from scipy.optimize import linprog
+from scipy.optimize import Bounds, LinearConstraint, milp
 
 from extract_order49_two_color_farkas import primal_matrices
 from probe_order49_three_open_code_holonomy import (
@@ -22,34 +22,70 @@ def best_union_cover(owner: list[list[int]], selected: tuple[int, int]):
     zeros = [name[1] for name in degree_names]
     zero_index = {z: i for i, z in enumerate(zeros)}
     groups = [[u for u in CODES[h] if support(u) == 1] for h in selected]
-    best = None
-    for left_mask in range(1 << len(groups[0])):
-        left = {u for i, u in enumerate(groups[0]) if left_mask >> i & 1}
-        for right_mask in range(1 << len(groups[1])):
-            right = {u for i, u in enumerate(groups[1]) if right_mask >> i & 1}
-            alpha = np.asarray([
-                int(owner[selected[0]][z] in left or owner[selected[1]][z] in right)
-                for z in zeros
-            ])
-            if not alpha.any():
-                continue
-            edge_demand = np.asarray([
-                alpha[zero_index[v]] + alpha[zero_index[w]] for v, w in pairs
-            ])
-            result = linprog(
-                capacity, A_ub=-cover.T, b_ub=-edge_demand,
-                bounds=(0, None), method="highs",
-            )
-            if result.success:
-                degree_total = int(alpha @ demand)
-                candidate = (
-                    degree_total - float(result.fun), tuple(sorted(left)),
-                    tuple(sorted(right)), int(alpha.sum()), degree_total,
-                    float(result.fun), int(np.sum(result.x > 1e-8)),
-                )
-                if best is None or candidate[0] > best[0] + 1e-8:
-                    best = candidate
-    return best
+    owner_bits = groups[0] + groups[1]
+    bit_index = {u: i for i, u in enumerate(owner_bits)}
+    bit_count, alpha_count, row_count = len(owner_bits), len(zeros), len(capacity)
+    alpha_offset = bit_count
+    row_offset = bit_count + alpha_count
+    variable_count = row_offset + row_count
+    rows, lower, upper = [], [], []
+
+    def constraint(entries, lo=-np.inf, hi=np.inf):
+        row = np.zeros(variable_count)
+        for index, coefficient in entries:
+            row[index] += coefficient
+        rows.append(row)
+        lower.append(lo)
+        upper.append(hi)
+
+    # alpha_z is exactly the disjunction of its selected-color owner bits.
+    for zi, z in enumerate(zeros):
+        incident = []
+        for h in selected:
+            owner_value = owner[h][z]
+            if owner_value in bit_index:
+                incident.append(bit_index[owner_value])
+        for bit in incident:
+            constraint(((alpha_offset + zi, 1), (bit, -1)), lo=0)
+        constraint(
+            [(alpha_offset + zi, 1)] + [(bit, -1) for bit in incident], hi=0
+        )
+
+    # The weighted cap rows cover alpha at both endpoints of every edge.
+    for pair_index, (v, w) in enumerate(pairs):
+        entries = [
+            (alpha_offset + zero_index[v], 1),
+            (alpha_offset + zero_index[w], 1),
+        ]
+        entries.extend(
+            (row_offset + i, -cover[i, pair_index]) for i in range(row_count)
+            if cover[i, pair_index]
+        )
+        constraint(entries, hi=0)
+
+    objective = np.r_[np.zeros(bit_count), -demand, capacity]
+    result = milp(
+        objective,
+        integrality=np.r_[np.ones(bit_count + alpha_count), np.zeros(row_count)],
+        bounds=Bounds(
+            np.zeros(variable_count),
+            np.r_[np.ones(bit_count + alpha_count), np.full(row_count, np.inf)],
+        ),
+        constraints=LinearConstraint(np.asarray(rows), lower, upper),
+    )
+    if not result.success:
+        return None
+    bit_values = result.x[:bit_count]
+    alpha = result.x[alpha_offset:row_offset]
+    weights = result.x[row_offset:]
+    left = tuple(u for u in groups[0] if bit_values[bit_index[u]] > 0.5)
+    right = tuple(u for u in groups[1] if bit_values[bit_index[u]] > 0.5)
+    degree_total = int(round(alpha @ demand))
+    capacity_total = float(weights @ capacity)
+    return (
+        degree_total - capacity_total, left, right, int(round(alpha.sum())),
+        degree_total, capacity_total, int(np.sum(weights > 1e-8)),
+    )
 
 
 def main() -> int:
