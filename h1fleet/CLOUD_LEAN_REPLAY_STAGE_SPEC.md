@@ -98,11 +98,18 @@ For each inventory tag, perform this transaction:
 7. Compress the `.olean` with pinned `zstd -1`, hash the compressed bytes, and
    upload source, full log, compressed `.olean`, and receipt to staging keys.
 8. HEAD/read back each uploaded object and verify its recorded length and
-   SHA-256.  Only then publish the accepted receipt/ledger line atomically.
-9. Only after the accepted receipt is durable, add tag `replay=consumed` to the
-   input certificate with `PutObjectTagging`, read the tags back, and record the
-   result as specified in section 6.  Then release the claim and delete local
-   tag scratch.
+   SHA-256.  Only then publish an immutable replay-ready record.  This phase-one
+   record proves that the `.olean` and audit artifacts are durable, but is not
+   an accepted receipt and must not appear in the accepted ledger.
+9. Only after the replay-ready record is durable, add tag `replay=consumed` to
+   the input certificate with `PutObjectTagging`, read the tags back, and verify
+   the unchanged object identity as specified in section 6.
+10. Atomically publish the final immutable receipt, including both the
+    replay-ready record identity and the lifecycle-tagging evidence, and then
+    publish the accepted ledger line.  Release the claim and delete local tag
+    scratch only after both final objects read back correctly.  A crash or
+    tagging failure after phase one resumes from the replay-ready record; it
+    must not recompile the leaf or call the tag accepted.
 
 Suggested durable layout:
 
@@ -110,6 +117,7 @@ Suggested durable layout:
 sat49/campaign-20260825/h1-replay/oleans/<tag>.olean.zst
 sat49/campaign-20260825/h1-replay/sources/<tag>.lean.zst
 sat49/campaign-20260825/h1-replay/logs/<tag>.log.zst
+sat49/campaign-20260825/h1-replay/replay-ready/<tag>.json
 sat49/campaign-20260825/h1-replay/receipts/<tag>.json
 sat49/campaign-20260825/h1-replay/ledger/<tag>.accepted
 sat49/campaign-20260825/h1-replay/quarantine/<tag>/...
@@ -122,7 +130,7 @@ Small receipts, ledgers, manifests, and logs remain in S3 Standard.
 Each accepted JSON receipt must include at least:
 
 - schema version, tag, table serialization/hash, CNF hash, and inventory hash;
-- certificate key, pre-copy ETag, gzip bytes/SHA-256, compact bytes/SHA-256;
+- certificate key, input ETag, gzip bytes/SHA-256, compact bytes/SHA-256;
 - generator/template/repository/toolchain/base-overlay identities;
 - generated module name and source bytes/SHA-256;
 - exact compile command, sanitized environment, start/end timestamps, exit code,
@@ -131,14 +139,16 @@ Each accepted JSON receipt must include at least:
 - log key/hash, source key/hash, compressed-olean key/hash;
 - source-scan result, complete axiom-audit result, and explicit
   `sorryAx=false`;
-- upload read-back results;
+- upload read-back results and the immutable replay-ready record key/hash;
 - certificate tagging result: pre/post ETag and last-modified identity, complete
   object tags, tagging request id, and tag read-back verification;
 - worker instance id, AMI/image digest, AZ, worker hash, and receipt signature or
   keyed integrity mechanism selected at sign-off.
 
 Acceptance is a validator decision over this schema, not merely Lean exit zero.
-Receipts are immutable once accepted; corrections use a new schema/run prefix.
+Replay-ready records and final receipts are immutable once published;
+corrections use a new schema/run prefix.  A replay-ready record alone is not
+acceptance and is excluded from every completion count.
 
 ## 5. Aggregate and completion gates
 
