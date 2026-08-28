@@ -127,12 +127,15 @@ def render_axiom_source(module: str, theorems: list[ConeTheorem]) -> str:
 
 def load_allowlist(path: Path) -> dict:
     data = json.loads(path.read_text(encoding="utf-8"))
-    required = {"schema", "allowed_axioms", "native_axiom", "native_families"}
+    required = {
+        "schema", "allowed_axioms", "native_axiom_regex", "native_families"
+    }
     missing = sorted(required - data.keys())
     if missing:
         raise ValueError(f"allowlist missing keys: {', '.join(missing)}")
     if data["schema"] != 1:
         raise ValueError(f"unsupported allowlist schema {data['schema']!r}")
+    re.compile(data["native_axiom_regex"])
     for family in data["native_families"]:
         if not {"id", "module_regex", "declaration_regex"} <= family.keys():
             raise ValueError(f"malformed native family: {family!r}")
@@ -155,21 +158,32 @@ def classify_native_root(theorem: ConeTheorem, families: list[dict]) -> str | No
 
 def validate(theorems: list[ConeTheorem], allowlist: dict) -> tuple[list[dict], list[str]]:
     allowed_axioms = set(allowlist["allowed_axioms"])
-    native_axiom = allowlist["native_axiom"]
+    native_axiom = re.compile(allowlist["native_axiom_regex"])
     errors: list[str] = []
     roots: list[dict] = []
     for theorem in theorems:
-        unexpected = sorted(set(theorem.transitive_axioms) - allowed_axioms)
+        unexpected = sorted(
+            axiom for axiom in set(theorem.transitive_axioms)
+            if axiom not in allowed_axioms and native_axiom.fullmatch(axiom) is None
+        )
         if unexpected:
             errors.append(f"{theorem.name}: unexpected axioms {unexpected}")
-        if native_axiom in theorem.direct_axioms:
+        for direct_axiom in theorem.direct_axioms:
+            if native_axiom.fullmatch(direct_axiom) is None:
+                continue
             family = classify_native_root(theorem, allowlist["native_families"])
             if family is None:
                 errors.append(
-                    f"{theorem.name}: direct {native_axiom} root is not in a disclosed family"
+                    f"{theorem.name}: direct native root {direct_axiom} "
+                    "is not in a disclosed family"
                 )
             roots.append(
-                {"theorem": theorem.name, "module": theorem.module, "family": family}
+                {
+                    "theorem": theorem.name,
+                    "module": theorem.module,
+                    "axiom": direct_axiom,
+                    "family": family,
+                }
             )
     return roots, errors
 
