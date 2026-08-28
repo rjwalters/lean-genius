@@ -150,6 +150,63 @@ the half-degree term pointwise.  This is a positive calibration of (5), but
 also a warning: the second bit need not vanish, be component-blind, or be
 determined by beta alone.
 
+## Final-bit consumer probes
+
+At the final level `j=k-1`, put `q=2^k` and let `Delta` be the off-diagonal
+support of `delta_j`.  The ambient-edge color of this graph is exact.  For
+an A-edge `xy`, C4-freeness gives
+
+```text
+(A^3)_(x,y)=2q-1,
+B_(x,y)=2q-1  if xy is in T,
+B_(x,y)=2q    otherwise.
+```
+
+It follows that `Delta intersect A=T`.  Hence
+
+```text
+K* = Delta triangle T
+```
+
+is canonically disjoint from A.  Off A, its edges locate precisely the
+middle final-bit range of the cross-neighborhood matching count.  This is a
+real k-scaled color relation, but the two proposed consumers of it both
+fail before reaching the root.
+
+First, there is no generic high-matching degree bound.  The following
+q-generic partial linear-space star is C4-free.  Take a point `y` with
+neighborhood `U={u_a}`, take `q-1` defect neighbors `x_i` with pairwise
+disjoint neighborhoods `V_i={v_(i,a)}`, and add
+
+```text
+y--u_a,       x_i--v_(i,a),       u_a--v_(i,a)
+```
+
+for every `i,a`.  Every cross graph between `N_A(y)=U` and
+`N_A(x_i)=V_i` is a perfect matching, simultaneously for all `q-1` defect
+spokes.  No two vertices acquire two common neighbors.  Thus a vertex may
+have `q-1` final-bit/high-matching defect spokes; two consecutive such
+spokes also force neither a common neighbor nor affine closure.  This cuts
+both the proposed `deg_(K*) <= q/2` packing consumer and the proposed
+two-edge threshold-propagation consumer.
+
+Second, the q=4 control gives `K*` degrees `5^8 2^8`; its odd-degree vector
+is one defect-component indicator and happens to lie in `ker_F2 A`.
+Promoting that calibration to `A w=0` at `8|q` would still not be terminal.
+Connectedness of D does **not** imply that the binary kernel of A is the
+constant line.  For even `w`, the square identity gives only
+
+```text
+A w=0  implies  D w=w  over F2,
+```
+
+and connected graphs can have nonconstant eigenvalue-one vectors in
+characteristic two.  This is exactly the inference already cut by the
+Pfaffian/Plucker kernel audit.  A successful odd-degree consumer would have
+to prove the much stronger statement that `w` is D-component-constant (or
+directly supplies a forbidden D-cut), not merely that it lies in the
+binary A-kernel.
+
 ## Bounded verdict
 
 Equations (3b) and (5) are strictly finer than the completed F2 transport
@@ -170,4 +227,8 @@ sum_(y in S) floor((A^3+A^2)_xy/2) mod 2              (6)
 using the first nonzero stopping digit (or the proper nonconstant final
 digit in the final-layer subtree), and then couple that constraint to
 connectedness of D.  Until such a consumer is named, (3)--(5) should remain
-an audited interface rather than a standalone Lean wrapper.
+an audited interface rather than a standalone Lean wrapper.  Divergence
+round 93 supplied no such consumer: the matching-capacity routes are cut by
+the simultaneous-perfect-matching star above, and the odd-degree route
+stops at the false kernel-to-component inference.  The tower lane is
+therefore stopped under goal 36 rather than extended by further identities.
