@@ -195,6 +195,16 @@ def main() -> None:
     assert len(k_edges & d_edges) == 8
     assert len(k_edges - d_edges) == 32
 
+    # A tempting K-location statement would make the D/non-D label on every
+    # K-edge a vertex coboundary, equivalently every K-cycle would contain an
+    # even number of D-edges.  The q=4 control falsifies that statement: this
+    # K-triangle contains exactly one D-edge.  Any viable location theorem
+    # must therefore use a genuinely k>=3 refinement (for example a mod-four
+    # or Bockstein correction), not self-polarity and C4-freeness alone.
+    odd_d_triangle = {(0, 11), (11, 15), (0, 15)}
+    assert odd_d_triangle <= k_edges
+    assert odd_d_triangle & d_edges == {(0, 15)}
+
     # Goal-#36 semipartial-geometry calibration.  One proposed completion
     # route asks for a two-valued 0/t law for A^3 on nonincident point-line
     # pairs.  The exact fixed-free q=4 control has three positive values
