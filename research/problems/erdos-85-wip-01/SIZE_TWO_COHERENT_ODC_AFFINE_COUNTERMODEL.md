@@ -71,3 +71,81 @@ Therefore none of the following can prove the principle alone:
 
 The honest remaining target is a self-indexed coherent-ODC obstruction, not
 an ordinary ODC-composition theorem.
+
+## Binary obstruction to loopless affine self-indexing
+
+The missing self-indexing cannot be added to the Desarguesian affine model
+while its selector graphs remain the split `K_{q,q}` graphs.  The reason is
+an absolute-point calculation for the associated biaffine plane.
+
+Delete one parallel class from `AG(2,q)`.  The retained incidence structure
+has the `q^2` affine points and the `q^2` nonvertical affine lines; this is a
+biaffine plane (a type-C elliptic semiplane).  A common ambient labeling that
+makes its point--line incidence matrix symmetric is a polarity of this
+biaffine plane.  The unique projective closure lets us represent it by a
+projective correlation preserving the retained point and line sets.
+
+Use homogeneous point coordinates
+
+```text
+u = (x,y,1)
+```
+
+and choose line coordinates so that the retained nonvertical lines are
+exactly those whose `y`-coefficient is nonzero.  If `M` represents the
+correlation, that coefficient in `M u` must be nonzero for every affine
+pair `(x,y)`.  A linear function of `(x,y,1)` with no zero on `F_q^2` must
+have zero `x`- and `y`-coefficients and a nonzero constant coefficient.
+After scaling coordinates, and using that a polarity has a symmetric matrix,
+`M` therefore has the form
+
+```text
+M = [[a,0,b],
+     [0,0,c],
+     [b,c,d]],
+```
+
+with
+
+```text
+det(M) = -a c^2.
+```
+
+Nondegeneracy forces `a,c != 0`.  An affine point is absolute precisely when
+
+```text
+u^T M u = a x^2 + 2b x + 2c y + d = 0.             (A)
+```
+
+For binary `q`, equation (A) reduces to
+
+```text
+a x^2 + d = 0.
+```
+
+The Frobenius map `x |-> x^2` is a bijection of `F_q`, so there is exactly
+one solution for `x` and every `y` is then free.  Thus every such polarity
+has exactly `q` affine absolute points.
+
+In the symmetric incidence graph those absolute points are diagonal ones,
+i.e. loops.  Consequently:
+
+> **No Desarguesian binary biaffine polarity is loopless.**  The coherent
+> affine `K_{q,q}` selector model cannot satisfy the simple-graph diagonal
+> condition for any binary `q`.
+
+This sharpens the scope of the affine countermodel.  It still proves that
+ordinary coherent ODC data are feasible, but it cannot be promoted to the
+ambient graph merely by choosing a clever symmetric labeling.  Any affine
+countermodel lane must change the selector incidences themselves through a
+coherent trade that removes all `q` absolute incidences while preserving the
+mutual cross products.
+
+For calibration, each selector graph in the formalized `q=4`
+`sixteenRegular` exception is exactly four edge replacements from a best
+split model: relative to a suitable balanced shore partition it is obtained from
+`K_{4,4}` by deleting one cross perfect matching and adding a perfect
+matching inside each shore.  Its defect complement is thereby connected.
+The unresolved construction question is whether that shore trade can be
+made simultaneously in every affine direction pair at general binary
+order; the untraded model is now decisively excluded.
