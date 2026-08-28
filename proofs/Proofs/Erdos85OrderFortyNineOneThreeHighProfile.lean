@@ -34,31 +34,12 @@ theorem orderFortyNine_highIncidence_profile_of_one_high
   rw [hHigh] at hp
   omega
 
-/-- At three highs, either there is no triple block or there is the unique
-triple containing all three highs. -/
-theorem orderFortyNine_highIncidence_profile_of_three_high
-    {V : Type*} [Fintype V] [DecidableEq V]
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    [DecidableRel (antipodalGraph G).Adj]
-    [DecidableRel (triangleFreeEdgeGraph G).Adj]
-    (hfree : ¬ containsC4 V G)
-    (hmin : ∀ x : V, 7 ≤ G.degree x)
-    (hcard : Fintype.card V = 49)
-    (hHigh : (orderFortyNineHighVertices G).card = 3) :
-    let n := orderFortyNineHighIncidenceCount G
-    (n 0 = 25 ∧ n 1 = 18 ∧ n 2 = 3 ∧ n 3 = 0) ∨
-    (n 0 = 24 ∧ n 1 = 21 ∧ n 2 = 0 ∧ n 3 = 1) := by
-  dsimp only
-  let n := orderFortyNineHighIncidenceCount G
-  change (n 0 = 25 ∧ n 1 = 18 ∧ n 2 = 3 ∧ n 3 = 0) ∨
-    (n 0 = 24 ∧ n 1 = 21 ∧ n 2 = 0 ∧ n 3 = 1)
-  have hp := orderFortyNine_highIncidence_general_profile
-    G hfree hmin hcard
-  dsimp only at hp
-  dsimp [n] at *
-  rw [hHigh] at hp
-  have ht : orderFortyNineHighIncidenceCount G 3 ≤ 1 := by omega
-  interval_cases orderFortyNineHighIncidenceCount G 3 <;> omega
+/- The three-high profile theorem formerly declared here was superseded by the
+statement-identical `orderFortyNine_highIncidence_profile_of_three_high` in
+`Erdos85OrderFortyNineHighIncidenceCensus` (736d58e95a), which all consumers
+import.  The duplicate declaration broke whole-library builds
+(`lake build lratreplay`, 2026-08-28) and was removed; the one-high profile
+above remains this module's unique content. -/
 
 end
 
