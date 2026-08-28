@@ -32,6 +32,10 @@ def main():
     total = 0
     located = 0
     full_certificate_located = 0
+    certificate_pool_sizes = []
+    certificate_noncoupling_sizes = []
+    singleton_pool_count = 0
+    clean_pool_count = 0
     counterexamples = []
     pattern = "research/problems/erdos-85-wip-01/q9_branch4*.json"
     for filename in sorted(glob.glob(pattern)):
@@ -124,6 +128,24 @@ def main():
                     if sum(weights.get(point, 0)
                            for point in system["blocks"][source]) == scale
                 }
+                forced_star_atoms = {
+                    source for source in range(N)
+                    if tuple(sorted((source, better))) in edges
+                    and source in better_possible
+                    and source not in better_forced
+                    and any(system["blocks"][source]
+                            & system["blocks"][forced]
+                            for forced in better_forced)
+                }
+                certificate_pool = record["residual"] & (
+                    tight | forced_star_atoms
+                )
+                certificate_pool_sizes.append(len(certificate_pool))
+                certificate_noncoupling_sizes.append(
+                    len(certificate_pool - coupling_sources)
+                )
+                singleton_pool_count += len(certificate_pool) == 1
+                clean_pool_count += certificate_pool <= coupling_sources
                 witnesses = coupling_sources & tight
                 forced_star_sources = {
                     source for source in coupling_sources
@@ -132,6 +154,7 @@ def main():
                 }
                 if witnesses or forced_star_sources:
                     full_certificate_located += 1
+                assert certificate_pool & coupling_sources
                 if witnesses:
                     located += 1
                 else:
@@ -165,6 +188,17 @@ def main():
     print(f"canonical boundary rows={total}")
     print(f"dual-located couplings={located}")
     print(f"full-certificate-located couplings={full_certificate_located}")
+    print(
+        "certificate-pool sizes="
+        f"{min(certificate_pool_sizes)}..{max(certificate_pool_sizes)}; "
+        "noncoupling atoms="
+        f"{min(certificate_noncoupling_sizes)}.."
+        f"{max(certificate_noncoupling_sizes)}"
+    )
+    print(
+        f"singleton certificate pools={singleton_pool_count}; "
+        f"all-atoms-couple pools={clean_pool_count}"
+    )
     assert full_certificate_located == total
     if counterexamples:
         print("transposed-dual tight-source conjecture: REFUTED")

@@ -6468,3 +6468,29 @@ remaining P2 mechanism, however: transpose the *whole* forced-star plus
 point-cover certificate, rather than complementary slackness of the LP
 summand alone. Thus divergence-64 P2 is not closed; its fractional-only
 form is refuted and its exact two-horn refinement `(13bod''')` remains live.
+
+The refinement can be stated without first knowing a coupling witness.  For
+each canonical descent `w -> z`, define its **full-certificate pool** to be
+the residual sources of `w` which are either tight candidates in `z`'s
+fractional point cover or possible eligible `z`-edges excluded from that LP
+by collision with a forced incoming row.  This set is computed entirely from
+the contracted certificate and the two local packing families.  The verifier
+checks the genuinely directional assertion
+
+```text
+fullCertificatePool(w,z) intersects couplingSources(w,z) != empty.
+                                                               (13bod'''a)
+```
+
+on all nineteen canonical rows.  Pool sizes range from one to six.  Twelve
+pools contain only genuine joint/one-swap coupling sources; the other seven
+contain at most two noncoupling atoms, and one pool is a forced singleton.
+Thus `(13bod'''a)` is not the circular statement that a previously chosen
+coupling source can be classified after the fact.  It is a small-set
+localization conjecture with an independently defined left-hand side.
+
+It remains evidence rather than proof.  The sharp missing lemma is now:
+among at most six residual rows selected by the full dual certificate, one
+must admit a joint packing or one-swap with `w,z`.  Generic complementary
+slackness proves only the tight-candidate horn, while the forced-star horn
+must use the unique conflict point and the exact outer column geometry.
