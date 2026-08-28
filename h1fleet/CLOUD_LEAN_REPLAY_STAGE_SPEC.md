@@ -29,6 +29,13 @@ The stage may launch only after an editor-approved replay freight manifest pins:
 - the S3 bucket, campaign prefix, instance role, instance type, EBS shape, and
   concurrency.
 
+Freight freeze also depends on the authoritative coverage reconciliation in
+`h1fleet/coverage/`.  It must prove that the replay universe is exactly the
+Lean-proven 13,351 capacity rows and preserve the explanation of the 190
+compact-inventory-only, pre-capacity rows in the separate 13,541-row file.
+Unknown tags, capacity-only omissions, or unexplained universe differences are
+hard blockers.
+
 Certificate input for tag `<tag>` is exactly:
 
 ```text
@@ -46,9 +53,12 @@ a hard quarantine, never a best-effort replay.
 
 Use a dedicated memory-optimized replay node in `us-east-1`, adjacent to the S3
 bucket, with at least 4 TB of fast working EBS.  The measured 122-module run used
-5–7.5 GiB per Lean process, so a 128 GiB node starts at `P=16`; raise concurrency
-only after observing peak RSS and retaining at least 20% memory headroom.  Set
-`maxHeartbeats 0` in the generated source as required by the audited bank.
+5–7.5 GiB per Lean process on the M-series host, but that is sizing evidence,
+not a cloud concurrency setting.  The cloud node starts with one production
+large-leaf replay.  Its measured peak RSS, CPU time, wall time, EBS throughput,
+and ARM64/x86 throughput determine the approved concurrency and wall-clock
+projection, retaining at least 20% memory headroom.  Set `maxHeartbeats 0` in
+the generated source as required by the audited bank.
 
 On boot:
 
@@ -138,9 +148,13 @@ stage.  Overall completion additionally requires:
    every intended inventory tag and no unknown tags;
 2. re-derivation of every source/certificate/CNF/olean hash referenced by the
    receipts;
-3. generation and cold compilation of the aggregate bank against the complete
-   uncompressed leaf-olean set on EBS;
-4. an aggregate `#print axioms` audit with no `sorryAx` and no undisclosed axiom;
+3. hierarchical aggregation of the complete leaf set: deterministic per-profile
+   or approximately 128-leaf sub-banks, then one or more bank-of-banks layers,
+   culminating in the top H1 bank.  A single 13,351-import module is forbidden;
+   the 122-module pilot does not justify that elaboration shape;
+4. cold compilation and literal `#print axioms` auditing of every aggregate
+   node at every layer, with no `sorryAx` and no undisclosed axiom; the top
+   module is the completion target;
 5. an independent review of counts, failures/quarantine, receipt schema,
    aggregate hashes, and axiom classification;
 6. an EBS snapshot (or an independently tested restore of every zstd olean)
@@ -188,12 +202,13 @@ compressed sizes/hashes.  Provision at least 4 TB working EBS because aggregate
 compilation needs the simultaneous uncompressed leaf set plus the 9–12 GB base
 overlay and scratch/headroom.  Alert at 70% and stop claims at 85% utilization.
 
-At the observed roughly three minutes per leaf and memory-limited `P=16–18`,
-10,848 leaves project to about 36–41 hours on one replay node.  The launch spec
-must price the editor-approved instance, EBS, snapshot, S3 PUT/storage, and
-expected retry margin before spend.  Do not assume the SAT fleet's c7g shape is
-appropriate: the replay stage must benchmark one real large leaf and size from
-measured RSS and ARM64 Lean throughput.
+The host pilot's roughly three minutes per leaf and 5–7.5 GiB RSS suggest—but
+do not establish—about 36–41 hours for 10,848 leaves at `P=16–18`.  Do not use
+that estimate for launch approval.  The launch spec must first benchmark one
+real large leaf on the proposed replay shape, then rederive concurrency, wall
+time, and the dollar estimate from measured cloud RSS and throughput.  Price
+the editor-approved instance, EBS, snapshot, S3 PUT/storage, and expected retry
+margin before spend.  Do not assume the SAT fleet's c7g shape is appropriate.
 
 ## 8. Launch gates and rollback
 
@@ -201,14 +216,25 @@ Before launch, editor sign-off must resolve all `TBD` identities in the freight
 manifest and approve the dollar estimate.  Required gates are:
 
 - exact-production cold preflight accepted;
-- IAM least privilege tested (read H1 certificates; write only replay prefixes;
-  conditional self-copy/tag on H1 inputs; no delete permission);
+- IAM least privilege tested.  The SAT fleet's `Erdos85CertUploader` role is
+  insufficient.  The replay role needs ListBucket; GetObject and
+  GetObjectTagging on H1 inputs; GetObject/PutObject on replay outputs;
+  PutObjectTagging on H1 inputs; and permission for a conditional same-key
+  CopyObject on H1 inputs, with no delete anywhere;
 - lifecycle rule inspected in dry-run/config output;
 - one real tag completes the full upload/read-back/self-copy transaction;
 - its receipt is independently validated and the certificate remains readable;
 - concurrency and disk alarms are live.
 
+As of the draft correction, the provisioned `Erdos85CertReplay` profile is
+reported to have ListBucket, GetObject/GetObjectTagging, H1 PutObjectTagging,
+and replay-prefix PutObject, but not H1-prefix PutObject.  S3 same-key
+`CopyObject` authorization requires destination `s3:PutObject`; tagging alone
+cannot reset Last-Modified.  Therefore the profile is not sufficient for the
+section 6 seven-days-after-consumption contract until the narrowly scoped
+same-key copy permission is added, or the operator explicitly changes that
+lifecycle contract.
+
 On systemic failure: stop new claims, preserve logs/receipts/quarantine, leave
 certificates in Standard, and keep the EBS volume for diagnosis.  Never delete
 source certificates or accepted replay artifacts as part of automatic cleanup.
-
