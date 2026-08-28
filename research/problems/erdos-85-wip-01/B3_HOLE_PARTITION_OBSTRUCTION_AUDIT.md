@@ -6434,3 +6434,37 @@ the descent.  Together with the refutations of P1 and P3 above, this closes
 all three immediate mechanisms from divergence round 64.  A future proof
 must add a transport between tight dual candidates and coupling sources; the
 existing point-cover dual alone does not contain it.                 (13bod'')
+
+**Correction/refinement.** The preceding verdict applies to the fractional
+point-cover summand alone, not to the full contracted certificate. The
+strict rank certificate has two parts: forced incoming rows are paid at unit
+cost first, and only candidates compatible with every forced row enter the
+point-cover LP. Diagnostics added to the same verifier show that every one
+of the four missed coupling sources is a possible eligible edge for `z`, but
+is excluded because its block meets a forced incoming block. The exact
+conflicts are
+
+```text
+(10,40): x=27 conflicts forced 15; x=29 conflicts 9;
+         x=45 conflicts 15 and 20;
+(15,19): x=34,43 conflict forced 25;
+(15,25): x=27 conflicts forced 15;
+(18,22): x=44 conflicts forced 18.
+```
+
+Consequently the corrected full-certificate statement survives on all
+nineteen canonical rows:
+
+```text
+some verified coupling source x is either
+  a tight candidate in z's fractional point cover, or
+  excluded from that cover by intersection with a forced incoming row.
+                                                               (13bod''')
+```
+
+The split is `15+4`. This is still corpus evidence, not a theorem, and the
+second horn does not yet explain score descent. It materially narrows the
+remaining P2 mechanism, however: transpose the *whole* forced-star plus
+point-cover certificate, rather than complementary slackness of the LP
+summand alone. Thus divergence-64 P2 is not closed; its fractional-only
+form is refuted and its exact two-horn refinement `(13bod''')` remains live.

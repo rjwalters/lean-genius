@@ -31,6 +31,7 @@ def summary(family):
 def main():
     total = 0
     located = 0
+    full_certificate_located = 0
     counterexamples = []
     pattern = "research/problems/erdos-85-wip-01/q9_branch4*.json"
     for filename in sorted(glob.glob(pattern)):
@@ -124,19 +125,47 @@ def main():
                            for point in system["blocks"][source]) == scale
                 }
                 witnesses = coupling_sources & tight
+                forced_star_sources = {
+                    source for source in coupling_sources
+                    if any(system["blocks"][source] & system["blocks"][forced]
+                           for forced in better_forced)
+                }
+                if witnesses or forced_star_sources:
+                    full_certificate_located += 1
                 if witnesses:
                     located += 1
                 else:
+                    source_diagnostics = {}
+                    for source in sorted(coupling_sources):
+                        source_diagnostics[source] = {
+                            "candidate": source in better_candidates,
+                            "edge": tuple(sorted((source, better))) in edges,
+                            "possible": source in better_possible,
+                            "forced": source in better_forced,
+                            "conflicts_forced": sorted(
+                                forced for forced in better_forced
+                                if system["blocks"][source]
+                                & system["blocks"][forced]
+                            ),
+                            "cover_weight": sum(
+                                weights.get(point, 0)
+                                for point in system["blocks"][source]
+                            ),
+                            "scale": scale,
+                        }
                     counterexamples.append({
                         "file": filename.rsplit("/", 1)[-1],
                         "target": target,
                         "better": better,
                         "coupling_sources": sorted(coupling_sources),
                         "tight_candidates": sorted(tight),
+                        "coupling_diagnostics": source_diagnostics,
                     })
 
     print(f"canonical boundary rows={total}")
     print(f"dual-located couplings={located}")
+    print(f"full-certificate-located couplings={full_certificate_located}")
+    assert full_certificate_located == total
     if counterexamples:
         print("transposed-dual tight-source conjecture: REFUTED")
         for item in counterexamples:
