@@ -114,6 +114,32 @@ def extract_certificate(owner_values: list[list[int]], selected_codes: set[int])
     print(f"cap_terms {[(ub_names[i], round(lam[i], 8)) for i in range(m_ub) if lam[i] > threshold]}")
     print(f"upper_terms {[(pairs[i], round(upper[i], 8)) for i in range(n) if upper[i] > threshold]}")
     print(f"lower_terms {[(pairs[i], round(lower[i], 8)) for i in range(n) if lower[i] > threshold]}")
+    pairpoints = {0, 1, 2}
+    def descriptor(v: int):
+        owners = tuple(owner_values[h][v] for h in range(3))
+        return {
+            "v": v,
+            "support": support(v),
+            "owners": owners,
+            "pairpoint_owners": tuple(sorted(set(owners) & pairpoints)),
+        }
+    selected_degree_vertices = [i for i in range(m_eq) if abs(y[i]) > threshold]
+    selected_cap_vertices = sorted({
+        ub_names[i][2] for i in range(m_ub) if lam[i] > threshold
+    })
+    print(f"degree_descriptors {[descriptor(eq_names[i][1]) for i in selected_degree_vertices]}")
+    print(f"cap_owner_descriptors {[descriptor(v) for v in selected_cap_vertices]}")
+    selected = sorted(selected_codes)
+    groups = [
+        tuple(v for v in CODES[h] if support(v) == 1) for h in selected
+    ]
+    realized = {
+        (owner_values[selected[0]][v], owner_values[selected[1]][v])
+        for v in range(46)
+        if not (set(owner_values[h][v] for h in selected) & pairpoints)
+    }
+    holes = [(a, b) for a in groups[0] for b in groups[1] if (a, b) not in realized]
+    print(f"two_color_holes {holes}")
 
 
 def main() -> int:
