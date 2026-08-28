@@ -6398,3 +6398,39 @@ an exact corpus counterexample at the proposed restricted domain.  P1 of
 divergence round 64 is therefore **cut at its first inequality**; any
 transport proof must use directed boundary incidence or the transposed dual,
 not lattice uncrossing of interval ranks.                            (13bod')
+
+The literal transposed-dual source-recovery conjecture is also false.  The
+verifier
+
+```text
+python3 research/problems/erdos-85-wip-01/
+  verify_q9_13bo_transposed_dual_coupling.py
+```
+
+takes every canonical minimum-score boundary row `z` from `(13bo)`, computes
+its exact strict fractional point-cover certificate, and asks whether one of
+the already-verified joint/one-swap coupling sources for `w,z` is a tight
+candidate constraint in that cover.  This is the direct complementary-
+slackness form of divergence-64 P2: transposing the cover should locate the
+same residual source that supplies coupling.
+
+It succeeds on fifteen of the nineteen canonical boundary rows and fails on
+four.  The failures are exact and named:
+
+```text
+exceptional_price_support:       w=10, z=40,
+  coupling {27,29,45}, tight {35,39,44};
+fixed_and_joint_selector:        w=15, z=19,
+  coupling {34,43}, tight {1,14,20,44};
+fixed_and_joint_selector:        w=15, z=25,
+  coupling {27}, tight {0,26,28,37};
+no_single_special_witness:       w=18, z=22,
+  coupling {44}, tight {16,26,30,32,36,40}.
+```
+
+In each case the two sets are disjoint.  Thus strict dual support and
+complementary slackness do not recover the same-source coupling required by
+the descent.  Together with the refutations of P1 and P3 above, this closes
+all three immediate mechanisms from divergence round 64.  A future proof
+must add a transport between tight dual candidates and coupling sources; the
+existing point-cover dual alone does not contain it.                 (13bod'')
