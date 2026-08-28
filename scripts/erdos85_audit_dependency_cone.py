@@ -2,7 +2,7 @@
 """Audit the exact Lean declaration cone of an Erdős-85 drop theorem.
 
 The driver asks Lean itself for the transitive declaration graph, restricts the
-reported theorem inventory to Proofs.Erdos85* modules, emits literal
+reported theorem inventory to project ``Proofs.*`` modules, emits literal
 ``#print axioms`` commands for every theorem, and checks all transitive axioms
 and direct native-decision roots against a reviewed JSON allowlist.
 

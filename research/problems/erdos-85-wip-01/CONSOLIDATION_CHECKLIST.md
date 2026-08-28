@@ -80,7 +80,9 @@ python3 scripts/erdos85_audit_dependency_cone.py \
   `minDegreeForC4_fortyNine_lt_fortyEight` with explicit hypotheses and not the
   conditional small-high socket.
 - [ ] Review and freeze `drop_axiom_allowlist.json` at the completing commit.
-  Every direct `Lean.ofReduceBool` root must match exactly one disclosed family.
+  Every generated native root of the form
+  `..._native.native_decide.ax_*` must match exactly one disclosed family, and
+  every other non-foundational root must be rejected.
 - [ ] Run the audit from the clean-checkout build.  Require `status=PASS`, zero
   undisclosed axioms, zero `sorryAx`, and no output delimiter mismatch.
 - [ ] Paste `print-axioms.log` verbatim into the squad room in bounded chunks;
@@ -92,8 +94,11 @@ python3 scripts/erdos85_audit_dependency_cone.py \
   the dependency-cone receipt.
 
 The allowed foundational axioms are exactly `propext`, `Classical.choice`, and
-`Quot.sound`.  `Lean.ofReduceBool` is permitted only through the enumerated,
-reviewed families in the JSON allowlist.  Any other axiom is a release blocker.
+`Quot.sound`.  Lean 4.31 reports each permitted `native_decide` hook as a
+declaration-specific generated root (`..._native.native_decide.ax_*`), not as a
+shared `Lean.ofReduceBool` axiom.  Each such root is permitted only when its
+owning theorem matches exactly one enumerated, reviewed family in the JSON
+allowlist.  Any other axiom is a release blocker.
 
 ## 4. Independent clean re-verification
 
@@ -152,4 +157,3 @@ certificate; CNF/LRAT/olean hash divergence; an unmatched manifest hypothesis;
 an undisclosed axiom/native root; `sorryAx`; a failed cold build or LRAT replay;
 an unexplained inventory mismatch; a dirty completing checkout; a tag target
 different from the audited merge; or absent operator authorization.
-

@@ -3,8 +3,7 @@
   "allowed_axioms": [
     "propext",
     "Classical.choice",
-    "Quot.sound",
-    "Lean.ofReduceBool"
+    "Quot.sound"
   ],
   "native_axiom_regex": ".*\\._native\\.native_decide\\.ax_[0-9_]+",
   "native_families": [
