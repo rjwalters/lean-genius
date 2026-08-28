@@ -79,6 +79,27 @@ claimed from the same positivity argument.  A useful arithmetic lift must
 therefore compare the reconstructed rational kernel with the binary or
 `Z/4` kernel and retain the corresponding Bockstein/Smith defect.
 
+There is a sharp warning at `Z/4`: the naive common-kernel equality is false.
+Every tile has row and column sum four, so
+
+```text
+1 in intersection_d ker((Y_e^(c,d))^T mod 4).
+```
+
+But every factor has row and column sum two, hence
+
+```text
+X_ce^T 1 = 2 1 != 0 mod 4.
+```
+
+Thus the constant vector is an explicit element of the left side which is
+not in the proposed factor kernel.  In the characteristic-zero converse,
+positivity turned `Q_e u=0` into `u=0`; modulo four this step fails already
+on constants because `Q_e 1=2q 1=0 mod 4`.  Conceptually, a product of two
+degree-two factors erases the constant Bockstein (`2*2=4`).  Any `Z/4`
+consumer must retain divided images or marked integral lifts; it cannot
+obtain the factor Bockstein from common tile kernels alone.
+
 The result is an interface, not a contradiction.  It is empty when a factor
 is invertible, which can happen for a disconnected two-regular bipartite
 factor whose cycle half-lengths are all odd.  When a cross factor is one
