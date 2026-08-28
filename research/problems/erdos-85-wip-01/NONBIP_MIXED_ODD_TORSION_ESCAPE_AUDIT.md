@@ -25,9 +25,9 @@ the exterior owner factors `B_E`.
 
 ## 2. Exact common-kernel theorem
 
-Fix an odd prime `p`.  Since `p` does not divide `|C|=2q`, every nonconstant
-class in `ker(L_C mod p)` has a unique representative `v` with
-`sum_C v=0`.
+Fix an odd prime `p` and `a>=1`, and work over `R=Z/p^a`.  Since `p` does not
+divide `|C|=2q`, every class modulo constants has a unique representative
+`v` with `sum_C v=0`.
 
 > **Size-two odd-torsion escape.**  If `v != 0`, then at least one exterior
 > block satisfies `B_E v != 0`.
@@ -51,11 +51,12 @@ vertices, while every connected component of a `q`-regular simple graph has
 at least `q+1` vertices, so two components would require more than `2q`
 vertices.
 
-Thus either `Kv=0`, or `H_C` is bipartite and `Kv` is a full-support
-alternating vector.  The second case is impossible.  A connected bipartite
-`q`-regular graph on `2q` vertices has two shores of size `q` and must be
-`K_{q,q}`.  Its complement on distinct vertices is `K_q disjointUnion K_q`,
-whereas `D[C]` is connected by definition.  Hence `Kv=0`.
+The graph is also nonbipartite.  A connected bipartite `q`-regular graph on
+`2q` vertices has two shores of size `q` and must be `K_{q,q}`.  Its
+complement on distinct vertices is `K_q disjointUnion K_q`, whereas `D[C]`
+is connected by definition.  Along an incidence-kernel edge the values are
+negatives; transport around an odd cycle gives `2(Kv)_x=0`.  Since `2` is a
+unit in `R`, connectedness gives `Kv=0`.
 
 Now all blocks, including `K`, kill `v` itself.  Repeating the same
 owner-incidence argument forces `v=0`, a contradiction.
@@ -85,6 +86,30 @@ same sum equation instead forces `p | m_E`.  Consequently:
 > `m_E tau_E`: either in `tau_E`, through a nonconstant critical class, or
 > directly in the normalized weight `m_E`.
 
+There is a stronger valuation form.  Let
+
+`U_E={x in (Z/p^a)^E : sum_E x=0}`.
+
+The same proof gives an injection at every depth:
+
+```text
+ker(L_C|U_C mod p^a)
+  --> directSum_(E != C) ker(L_E|U_E mod p^a).
+```
+
+On the integral root lattice `1_E^perp`, the determinant of `L_E` is
+`|E| tau_E=q m_E tau_E`.  Once `a` is at least every relevant Smith
+exponent, taking cardinalities in the injection yields
+
+> `v_p(tau_C) <= sum_(E != C) v_p(m_E tau_E)`.                 (P)
+
+This handles constant targets automatically: when a constant vector belongs
+to `U_E mod p`, its contribution is precisely part of the factor `m_E` in
+the root-lattice determinant.  In the all-weight-two branch every `m_E` is
+an odd-prime unit, so (P) is a polygon inequality among the local tree
+valuations.  With exactly two weight-two components it forces equality in
+both directions, explaining the primewise equality in the `q=4` control.
+
 For the exact `q=4` control, each internal block is `C_8` adjacency and the
 cross block is injective on its two-dimensional zero space over every odd
 prime.  At `p=7` it also maps the full two-dimensional nonconstant critical
@@ -95,7 +120,8 @@ audit.
 
 This is the first support-sensitive propagation theorem in the mixed
 nonbipartite branch.  It rules out an odd prime supported on exactly one
-factor `m_C tau_C` when that component has normalized weight two.
+factor `m_C tau_C` when that component has normalized weight two, and (P)
+controls its full valuation rather than only its first mod-`p` layer.
 
 It is not yet a square-class terminal.  Nonzero propagation does not prove
 that the induced critical-group maps are isomorphisms, nor that the sum of
