@@ -15,14 +15,17 @@ from probe_order49_three_open_code_holonomy import (
 )
 
 
-def best_union_cover(owner: list[list[int]], selected: tuple[int, int]):
+def best_union_cover(
+    owner: list[list[int]], selected: tuple[int, int],
+    alpha_codes: tuple[int, ...] = (0, 1, 2),
+):
     _, demand, cover, capacity, pairs, degree_names, _ = primal_matrices(
         owner, set(selected)
     )
     zeros = [name[1] for name in degree_names]
     zero_index = {z: i for i, z in enumerate(zeros)}
-    groups = [[u for u in CODES[h] if support(u) == 1] for h in selected]
-    owner_bits = groups[0] + groups[1]
+    groups = [[u for u in CODES[h] if support(u) == 1] for h in alpha_codes]
+    owner_bits = [u for group in groups for u in group]
     bit_index = {u: i for i, u in enumerate(owner_bits)}
     bit_count, alpha_count, row_count = len(owner_bits), len(zeros), len(capacity)
     alpha_offset = bit_count
@@ -41,7 +44,7 @@ def best_union_cover(owner: list[list[int]], selected: tuple[int, int]):
     # alpha_z is exactly the disjunction of its selected-color owner bits.
     for zi, z in enumerate(zeros):
         incident = []
-        for h in selected:
+        for h in alpha_codes:
             owner_value = owner[h][z]
             if owner_value in bit_index:
                 incident.append(bit_index[owner_value])
@@ -78,12 +81,14 @@ def best_union_cover(owner: list[list[int]], selected: tuple[int, int]):
     bit_values = result.x[:bit_count]
     alpha = result.x[alpha_offset:row_offset]
     weights = result.x[row_offset:]
-    left = tuple(u for u in groups[0] if bit_values[bit_index[u]] > 0.5)
-    right = tuple(u for u in groups[1] if bit_values[bit_index[u]] > 0.5)
+    subsets = tuple(
+        tuple(u for u in group if bit_values[bit_index[u]] > 0.5)
+        for group in groups
+    )
     degree_total = int(round(alpha @ demand))
     capacity_total = float(weights @ capacity)
     return (
-        degree_total - capacity_total, left, right, int(round(alpha.sum())),
+        degree_total - capacity_total, subsets, int(round(alpha.sum())),
         degree_total, capacity_total, int(np.sum(weights > 1e-8)),
     )
 
@@ -92,10 +97,12 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--samples", type=int, default=2)
     parser.add_argument("--codes", default="0,1")
+    parser.add_argument("--alpha-codes", default="0,1,2")
     parser.add_argument("--profile", choices=("000", "001"), required=True)
     parser.add_argument("--require", action="store_true")
     args = parser.parse_args()
     selected = tuple(int(value) for value in args.codes.split(","))
+    alpha_codes = tuple(int(value) for value in args.alpha_codes.split(","))
 
     solver, variables = build_solver()
     edges = (
@@ -113,7 +120,7 @@ def main() -> int:
             break
         model = solver.model()
         owner = [[model.eval(variables[h][v]).as_long() for v in range(46)] for h in range(3)]
-        best = best_union_cover(owner, selected)
+        best = best_union_cover(owner, selected, alpha_codes)
         print(f"sample={sample} profile={args.profile} best={best}")
         if args.require and (best is None or best[0] <= 1e-8):
             raise RuntimeError("no deficient row/column-union cover")
