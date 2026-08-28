@@ -82,6 +82,56 @@ The weight matrix is symmetric by reciprocity.  On the diagonal its entries
 come from separation `2s_c`, so they are at least two (and are powers of
 two).  This is an exact ultrametric shadow of the strong difference system.
 
+### Mixed valuation equations through degree three
+
+The first two coefficient laws can be stated without a uniformity
+assumption.  Put
+
+```text
+N_1(c)={e : alpha_ce=1},
+N_2(c)={e : alpha_ce=2},
+```
+
+and, for `e in N_1(c)`, write
+
+```text
+f_ce=t(1+lambda_ce t+O(t^2)).
+```
+
+For fixed `c!=d`, the valuation-two summands in (1) are indexed exactly by
+
+```text
+M_cd=N_1(c) intersect N_1(d).
+```
+
+The `t^2` coefficient therefore gives
+
+```text
+|M_cd|=0 mod 2.                                      (M1)
+```
+
+Equivalently, the simple color graph of odd-separation off-diagonal blocks
+has adjacency square diagonal over `F_2`.
+
+At degree three, a valuation-two term contributes its next unit coefficient,
+while every term with valuation pattern `(1,2)` or `(2,1)` contributes its
+leading coefficient one.  Thus
+
+```text
+sum_(e in M_cd) (lambda_ce+lambda_ed)
+ + |N_1(c) intersect N_2(d)|
+ + |N_2(c) intersect N_1(d)| = 0 mod 2.              (M2)
+```
+
+The orientation `lambda_ed` is the one occurring after reciprocity in the
+group-ring product.  Formula (M2) includes endpoint columns automatically
+when the relevant diagonal inverse pair has valuation two.
+
+These are exact mixed-stratum sieves, not a general contradiction.  They
+record precisely what the first lift adds beyond the order-two support:
+(M1) sees common odd-separation neighbors, while (M2) also sees their unit
+orientations and their incidence with the next dyadic stratum.
+
 ## Uniform escape from the valuation layer
 
 The tropical condition is not an obstruction.  Assign
