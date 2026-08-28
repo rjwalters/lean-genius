@@ -71,9 +71,27 @@ way the lift can see structure absent in the q=4 calibration: not through
 beta alone, but through the first surviving higher digit, or through the
 proper final digit in the final-layer subtree.
 
-For `j>1`, equation (3b) is best kept as a divided integer row-sum identity.
-Expanding it into the binary support H introduces carries from all lower
-entrywise digits of B; equation (5) below is the explicit `j=1` instance.
+The carry can be written exactly.  For fixed `x,S`, define the entrywise
+`j`-th digit and lower-digit carry
+
+```text
+delta_j(x,y) = floor(B_xy/2^j) mod 2,
+kappa_j(x,S) = (sum_(y in S) (B_xy mod 2^j))/2^j mod 2. (3c)
+```
+
+The numerator defining `kappa_j` is divisible by `2^j`: subtracting the
+sum of the entrywise quotients from the divisible row sum in (3b) proves
+this directly.  Euclidean division entry by entry then turns (3b) into
+
+```text
+kappa_j(x,S) + sum_(y in S) delta_j(x,y)
+  = ((A^2+A) gamma_j)_x                         (mod 2). (3d)
+```
+
+Thus the higher location problem has two named pieces, not an unspecified
+error term: the carry of the lower transport digits and the located `j`-th
+digit.  At `j=1`, `B_xy mod 2` is the H-edge indicator, so `kappa_1` is
+exactly half the H-incidence into S; equation (5) below is this instance.
 
 ## Graph-facing decomposition
 
@@ -143,7 +161,7 @@ identity (3b), whose useful input is the stopping digit `gamma_j`.
 
 It is not yet a terminal.  The q=4 calibration shows that the residual
 matching digit can pay the entire half-degree demand.  A successful consumer
-must constrain the located row sums
+must constrain the carry/digit pair (3c), beginning with the located row sums
 
 ```text
 sum_(y in S) floor((A^3+A^2)_xy/2) mod 2              (6)
