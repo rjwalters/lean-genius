@@ -69,6 +69,52 @@ A(x,z) and A(z,y).
 The uniqueness of `z` inside a fixed `e` is exactly the statement that
 `X_ce X_ed` is zero--one; uniqueness of `e` is disjointness of the supports.
 
+## Every tile is a sparse defect intertwiner
+
+The ambient matrices also satisfy `AD=DA`: the matrix `A` commutes with
+`A^2`, it commutes with `J` by regularity, and
+`D=(q-1)I+J-A^2`.  Since `D` is block diagonal on its connected components,
+
+```text
+D_c X_cd = X_cd D_d.                                  (2)
+```
+
+Consequently every intermediate four-factor
+
+```text
+Y_e^(c,d) := X_ce X_ed
+```
+
+separately satisfies
+
+```text
+D_c Y_e^(c,d) = Y_e^(c,d) D_d.                        (3)
+```
+
+Thus (1) is more than a partition into regular supports.  For each ordered
+component pair `(c,d)`, it partitions `K_(2q,2q)` into `q/2` disjoint
+four-regular **integral fractional isomorphisms** between the two connected
+`(q-1)`-regular defect graphs.  Entrywise, (3) is the colored boundary law
+
+```text
+number of Y_e-edges from N_(D_c)(x) to y
+  = number of Y_e-edges from x to N_(D_d)(y).
+```
+
+The tiles are reciprocal as well:
+
+```text
+(Y_e^(c,d))^T = Y_e^(d,c).
+```
+
+On every nonprincipal `lambda`-eigenspace of `D_d`, each tile maps into the
+`lambda`-eigenspace of `D_c`, while their sum is zero because `J` kills that
+space.  The spectral sum alone is the already-known transport tautology;
+the new usable datum is that the summands are disjoint zero--one
+four-factors.  This is the exact support-sensitive refinement needed by any
+attempt to extend classical constant-intersection group-divisible polarity
+arguments to the variable relation `D_c`.
+
 ## ODC interpretation
 
 Fix a selector color `c`.  Its selector graph `H_c` has ground set `C_c`
@@ -99,5 +145,7 @@ The remaining non-arithmetic terminal can now be stated narrowly:
 
 Promising consumers are a support-level Latin-rectangle obstruction, a
 coherent multi-color trade rigidity theorem, or an equality classification
-of the mutually placed star-clique geometries.  Spectral ranks and raw
-determinants forget the support partition and have already been audited.
+of the mutually placed star-clique geometries.  Equivalently, classify
+partitions of `J` by reciprocal four-regular intertwiners as in (3).  Spectral
+ranks and raw determinants forget the support partition and have already
+been audited.
