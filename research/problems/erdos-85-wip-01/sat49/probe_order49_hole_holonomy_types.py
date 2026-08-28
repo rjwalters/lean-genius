@@ -74,11 +74,39 @@ def sparse_dual_shape(owner: list[list[int]]) -> tuple:
     )
 
 
+def force_identity_holonomy(solver: z3.Solver, variables: list[list[z3.ArithRef]]) -> None:
+    """Force the three five-hole matchings to form five tripartite triangles."""
+    singletons = [tuple(u for u in CODES[h] if support(u) == 1) for h in range(3)]
+
+    def hole(h: int, u: int, k: int, v: int) -> z3.BoolRef:
+        realized = z3.Or(*(
+            z3.And(variables[h][point] == u, variables[k][point] == v)
+            for point in range(46)
+        ))
+        return z3.Not(realized)
+
+    for u in singletons[0]:
+        for v in singletons[1]:
+            for w in singletons[2]:
+                hole01 = hole(0, u, 1, v)
+                hole02 = hole(0, u, 2, w)
+                hole12 = hole(1, v, 2, w)
+                solver.add(
+                    z3.Implies(z3.And(hole01, hole02), hole12),
+                    z3.Implies(z3.And(hole01, hole12), hole02),
+                    z3.Implies(z3.And(hole02, hole12), hole01),
+                )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--samples", type=int, default=128)
     parser.add_argument("--profile", choices=("000", "001"), required=True)
     parser.add_argument("--dual", action="store_true")
+    parser.add_argument(
+        "--force-identity", action="store_true",
+        help="force the hole holonomy to be five tripartite triangles",
+    )
     args = parser.parse_args()
 
     solver, variables = build_solver()
@@ -91,6 +119,8 @@ def main() -> int:
         solver.add(*(z3.Not(edge) for edge in matching_edges))
     else:
         solver.add(z3.Not(matching_edges[0]), matching_edges[1], z3.Not(matching_edges[2]))
+    if args.force_identity:
+        force_identity_holonomy(solver, variables)
 
     representatives: list[nx.Graph] = []
     counts = Counter()
@@ -114,7 +144,10 @@ def main() -> int:
             variables[h][v] != owner[h][v]
             for h in range(3) for v in range(46)
         )))
-    print(f"profile={args.profile} sampled={sum(counts.values())} types={len(representatives)}")
+    print(
+        f"profile={args.profile} force_identity={args.force_identity} "
+        f"sampled={sum(counts.values())} types={len(representatives)}"
+    )
     for kind in sorted(counts):
         print(f"type={kind} count={counts[kind]} signature={signatures[kind]}")
         if args.dual:
