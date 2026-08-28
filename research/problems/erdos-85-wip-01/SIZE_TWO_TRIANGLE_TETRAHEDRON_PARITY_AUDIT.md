@@ -126,3 +126,31 @@ partition **all** cells, not only the cross A-edges counted above.  Equivalently
 one must either realize the ledger by reciprocal blocks or find the first
 pointwise rectangle/transposition obstruction.  No further aggregate
 triangle congruence is justified by the current data.
+
+## 5. Cyclic local blocks still allow odd trace
+
+Even some pointwise-looking strengthenings do not yet reach the simultaneous
+partition.  At the correct `q=8` component size there exist three zero--one
+matrices `X_01,X_12,X_20` of order sixteen such that:
+
+- every matrix has row and column sum two;
+- every associated bipartite graph is connected, hence is one `C_32`;
+- each of `X_01 X_12`, `X_12 X_20`, and `X_20 X_01` is zero--one and
+  four-regular; but
+- `tr(X_01 X_12 X_20)=7` is odd.
+
+The dependency-free verifier `verify_q8_cyclic_odd_triangle_local.py` stores
+the three explicit row-support lists and checks all of these assertions,
+including the transpose-reversed trace required by reciprocal orientation.
+
+Thus neither cyclicity of all three restricted owner factors nor zero--one
+pair products imply that
+
+`|supp(X_ie X_ek) intersect supp(X_ik)|`
+
+is even.  What remains untested by this local countermodel is exactly the
+global datum isolated above: for every fixed endpoint pair, all four via
+products must be disjoint and sum to `J`, with the same blocks participating
+reciprocally in every other endpoint pair and with symmetric self-indexed
+diagonal factors.  Any parity consumer must use that simultaneous completion,
+not one triangle of cyclic blocks at a time.
