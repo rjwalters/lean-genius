@@ -152,3 +152,52 @@ remains the genuinely order-increasing delete-`k`/add-`k+1` compatible-selector
 theorem already isolated in the repository.
 
 No Lean wrapper is recommended from this audit.
+
+## Global selector allocation as hypergraph edge coloring
+
+The growing-deletion-set regime has an exact coloring dictionary that is
+different from the raw Hajnal--Szemeredi conflict-graph gate. For each old
+survivor vertex `v`, let `l(v)` be the number of degree-loss occurrences
+that must be assigned to new selectors. Make a ground point `p_v` and one
+ground point for every survivor vertex `w`. Replace each of the `l(v)`
+occurrences by a hyperedge
+
+    E_(v,i) = {p_v} union N_survivor(v).
+
+Two occurrence hyperedges intersect exactly when they come from the same
+old vertex or their old vertices have a common survivor neighbor. Thus a
+proper edge coloring of this multihypergraph is precisely a compatible
+selector allocation; the required surgery asks for exactly `k+1` colors,
+each containing exactly `d` occurrences.
+
+The closest theorem is Pippenger--Spencer's asymptotic chromatic-index
+theorem for uniform, almost-regular hypergraphs with maximum pair-codegree
+`o(Delta)`:
+
+N. Pippenger and J. H. Spencer, *Asymptotic behavior of the chromatic
+index for hypergraphs*, Journal of Combinatorial Theory A 51 (1989),
+24--42, https://doi.org/10.1016/0097-3165(89)90074-5.
+
+This does not supply Goal #7. The occurrence hypergraph is generally
+nonuniform because `|E_(v,i)|=1+deg_survivor(v)`. More importantly,
+the `l(v)` copies are identical. For two distinct points
+`w_1,w_2 in N_survivor(v)`, C4-freeness makes `v` their unique possible
+common old neighbor, but their pair-codegree is still exactly `l(v)`.
+The plateau interface does not bound `max_v l(v)=o(k)` in the required
+growing regime `k` comparable to `d`; a survivor may be adjacent to many
+deleted roots. Hence the small-codegree hypothesis is not available.
+Near-regularity of the ground-point degrees is also absent.
+
+Even after imposing extra hypotheses to enter an asymptotic regime, the
+conclusion `chi' = Delta+o(Delta)` has an uncontrolled surplus. The
+surgery needs exactly `k+1` colors and exact class size `d`; one additional
+color changes the number of new vertices and loses the order-`m+1`
+terminal. Pippenger--Spencer partitions almost all classes almost
+perfectly, not all `d(k+1)` occurrences into exact `d`-sets.
+
+Therefore hypergraph edge coloring is a faithful global reformulation but
+not an outside theorem closing the bridge. A useful theorem would have to
+exploit the special C4-linear neighborhood hyperedges and prove an exact
+equitable `k+1` edge coloring despite repeated edges, or first construct a
+deletion set with uniform loss and `o(k)` multiplicities. Neither property
+is part of the current plateau-core interface.
