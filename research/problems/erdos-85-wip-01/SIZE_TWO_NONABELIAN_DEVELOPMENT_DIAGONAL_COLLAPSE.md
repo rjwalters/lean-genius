@@ -73,3 +73,41 @@ developments. Within regular group developments, it leaves the exact
 dihedral two-reflection branch, which needs a faithful construction or
 obstruction. It supplies a classification/collapse, not the missing
 ternary packing contradiction.
+
+## First quotient of the dihedral survivor
+
+There is a useful exact necessary condition before retaining rotation
+positions. Write `Ref` for the reflection coset in `D_q`, put
+
+    t_ce = |A_ce ∩ Ref| ∈ {0,1,2},
+    u_ce = t_ce - 1 ∈ {-1,0,1}.
+
+For two two-sets `A_ce,A_de`, the number of reflection-type formal products
+in `A_ce A_de⁻¹` is
+
+    t_ce(2-t_de) + (2-t_ce)t_de
+      = 2(1-u_ce u_de).
+
+Tile binaryness makes the four formal products distinct. For fixed
+distinct endpoint colors `c,d`, the `r=q/2` via tiles partition all of
+`D_q`, which has exactly `q` reflections. Consequently
+
+    Σ_e u_ce u_de = 0    for c ≠ d.
+
+Inversion preserves the rotation/reflection cosets, so reciprocity makes
+`U=(u_ce)` symmetric. In the two-reflection diagonal branch, `u_cc=1`.
+Thus the reflection-type quotient of any coherent dihedral development is
+a symmetric `{-1,0,1}` matrix with diagonal one and pairwise orthogonal
+rows.
+
+This quotient is not itself terminal. At `r=4` the symmetric Hadamard
+matrix
+
+    [ 1  1  1  1 ]
+    [ 1  1 -1 -1 ]
+    [ 1 -1  1 -1 ]
+    [ 1 -1 -1  1 ]
+
+satisfies it. Any contradiction must retain the actual rotation positions
+inside the two cosets, rather than only reflection counts or determinant
+signs.
