@@ -95,7 +95,7 @@ def discover(proofs_dir: Path, module: str, target: str) -> tuple[list[ConeTheor
     if result.returncode != 0:
         raise RuntimeError(f"dependency discovery failed (rc={result.returncode})\n{result.stdout}")
     theorems: list[ConeTheorem] = []
-    summary_seen = False
+    summaries: list[tuple[str, int]] = []
     for line in result.stdout.splitlines():
         if line.startswith("ERDOS85_CONE\t"):
             fields = line.split("\t")
@@ -105,9 +105,21 @@ def discover(proofs_dir: Path, module: str, target: str) -> tuple[list[ConeTheor
             transitive = tuple(filter(None, fields[4].split(",")))
             theorems.append(ConeTheorem(fields[1], fields[2], direct, transitive))
         elif line.startswith("ERDOS85_CONE_SUMMARY\t"):
-            summary_seen = True
-    if not summary_seen or not theorems:
+            fields = line.split("\t")
+            if len(fields) != 3:
+                raise RuntimeError(f"malformed discovery summary: {line}")
+            try:
+                summary_count = int(fields[2])
+            except ValueError as error:
+                raise RuntimeError(f"malformed discovery summary count: {line}") from error
+            summaries.append((fields[1], summary_count))
+    if not theorems:
         raise RuntimeError(f"Lean returned no dependency inventory\n{result.stdout}")
+    if summaries != [(target, len(theorems))]:
+        raise RuntimeError(
+            "Lean dependency summary mismatch: "
+            f"observed={summaries!r}, expected={[(target, len(theorems))]!r}"
+        )
     unique = {theorem.name: theorem for theorem in theorems}
     if len(unique) != len(theorems):
         raise RuntimeError("Lean dependency inventory contains duplicate theorem names")
