@@ -431,6 +431,7 @@ def main() -> int:
     ] = Counter()
     square_root_mod_prime_obstructions: Counter[tuple[str, ...]] = Counter()
     normalized_residual_three_adic: Counter[tuple[int, int] | str] = Counter()
+    normalized_residual_values: set[int] = set()
     ordinary_adjacency_square_inertia: Counter[int] = Counter()
     ordinary_adjacency_square_determinants: Counter[tuple[str, bool]] = Counter()
     pairpoint_adjacency_profiles: Counter[
@@ -577,6 +578,7 @@ def main() -> int:
             quotient = value // 49
             if quotient % (46 * 46) == 0:
                 normalized_residual = quotient // (46 * 46)
+                normalized_residual_values.add(normalized_residual)
                 normalized_residual_mod_sixteen[normalized_residual % 16] += 1
                 valuation = 0
                 residual_part = abs(normalized_residual)
@@ -629,6 +631,7 @@ def main() -> int:
             square_root_mod_prime_obstructions
         ))
     print("normalized_residual_mod3_valuation", dict(normalized_residual_three_adic))
+    print("normalized_residual_distinct", len(normalized_residual_values))
     print("ordinary_adjacency_square_negative_eigenvalues", dict(
         ordinary_adjacency_square_inertia
     ))
