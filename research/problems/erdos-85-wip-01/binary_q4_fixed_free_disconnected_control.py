@@ -251,12 +251,91 @@ def main() -> None:
         )
         assert sum(1 for x, y in k_edges if (x in shore) != (y in shore)) == 32
 
+    # Exact Z/4 Bockstein calibration.  Put B=A^2(A+I), let M_H be its
+    # entrywise parity support, and write B=M_H+2R.  For a binary A-kernel
+    # shore S and beta=A 1_S/2 (mod 2), division of B 1_S by two gives
+    #
+    #   (M_H 1_S)/2 + R 1_S = (A^2+A) beta              (mod 2).
+    #
+    # In this control beta is the all-one vector for BOTH complementary
+    # component shores, and the right side is zero.  Nevertheless the two
+    # summands on the left are each exactly 1_S.  Thus the divided polynomial
+    # identity is valid, but neither the graph half-cut nor the even-lift
+    # residual is determined by beta: complementary shores have the same beta
+    # and complementary summand vectors.  Any k>=3 Bockstein location theorem
+    # therefore needs input beyond beta itself.
+    def matrix_multiply(
+        left: list[list[int]], right: list[list[int]],
+    ) -> list[list[int]]:
+        return [
+            [sum(left[x][z] * right[z][y] for z in range(N))
+             for y in range(N)]
+            for x in range(N)
+        ]
+
+    a_matrix = [[int(y in a[x]) for y in range(N)] for x in range(N)]
+    identity = [[int(x == y) for y in range(N)] for x in range(N)]
+    a_plus_identity = [
+        [a_matrix[x][y] + identity[x][y] for y in range(N)]
+        for x in range(N)
+    ]
+    a_sq = matrix_multiply(a_matrix, a_matrix)
+    b_matrix = matrix_multiply(a_sq, a_plus_identity)
+    h_matrix = [[value % 2 for value in row] for row in b_matrix]
+    assert all(h_matrix[x][x] == 0 for x in range(N))
+    assert {
+        (x, y) for x in range(N) for y in range(x + 1, N)
+        if h_matrix[x][y]
+    } == h_edges
+    residual = [
+        [(b_matrix[x][y] - h_matrix[x][y]) // 2 for y in range(N)]
+        for x in range(N)
+    ]
+
+    bockstein_vectors = []
+    for shore in d_components:
+        indicator = [int(x in shore) for x in range(N)]
+        beta = [
+            sum(a_matrix[x][y] * indicator[y] for y in range(N)) // 2 % 2
+            for x in range(N)
+        ]
+        rhs = [
+            sum((a_sq[x][y] + a_matrix[x][y]) * beta[y]
+                for y in range(N)) % 2
+            for x in range(N)
+        ]
+        graph_half_cut = [
+            sum(h_matrix[x][y] * indicator[y] for y in range(N)) // 2 % 2
+            for x in range(N)
+        ]
+        residual_shore = [
+            sum(residual[x][y] * indicator[y] for y in range(N)) % 2
+            for x in range(N)
+        ]
+        assert beta == [1] * N
+        assert rhs == [0] * N
+        assert graph_half_cut == indicator
+        assert residual_shore == indicator
+        assert [
+            (graph_half_cut[x] + residual_shore[x]) % 2
+            for x in range(N)
+        ] == rhs
+        bockstein_vectors.append((beta, graph_half_cut, residual_shore))
+    assert bockstein_vectors[0][0] == bockstein_vectors[1][0]
+    assert all(
+        bockstein_vectors[0][1][x] + bockstein_vectors[1][1][x] == 1
+        and bockstein_vectors[0][2][x] + bockstein_vectors[1][2][x] == 1
+        for x in range(N)
+    )
+
     print("verified: symmetric loopless 4-regular C4-free A on 16 vertices")
     print("trace(A) = 0; D components = [8, 8]; T is one C8")
     print("size-two owners: selector triangles/open wedges = 8/24 each; "
           "edge codegrees 2^24 3^24; owner-defect routes 0^24 1^24")
     print("incidence bottleneck: row energies 6^16, total 96 > q^3=64")
     print("Baer transport: |Omega|=40, |H|=48, |K|=40; K degrees 4^8 6^8")
+    print("Bockstein calibration: complementary shores share beta=1, but "
+          "both half-cut and residual vectors equal their shore indicators")
     print("semipartial calibration: A^3 nonedge values 2^20 3^48 4^20; D^2=0 on D")
 
 
