@@ -9,7 +9,15 @@ import numpy as np
 import z3
 from scipy.optimize import linprog
 
-from probe_order49_three_open_code_holonomy import CODES, build_solver, degree, support
+from probe_order49_three_open_code_holonomy import (
+    CODES,
+    PAIR01,
+    PAIR02,
+    PAIR12,
+    build_solver,
+    degree,
+    support,
+)
 
 
 def primal_matrices(owner_values: list[list[int]], selected_codes: set[int]):
@@ -67,44 +75,49 @@ def primal_matrices(owner_values: list[list[int]], selected_codes: set[int]):
     )
 
 
-def extract_certificate(owner_values: list[list[int]], selected_codes: set[int]):
+def extract_certificate(
+    owner_values: list[list[int]], selected_codes: set[int], *, sparse: bool = False
+):
     aeq, beq, aub, bub, pairs, eq_names, ub_names = primal_matrices(
         owner_values, selected_codes
     )
     m_eq, n = aeq.shape
     m_ub = aub.shape[0]
-    # Nonnegative variables are y+, y-, lambda, upper-bound, lower-bound.
-    total = 2 * m_eq + m_ub + 2 * n
+    # Nonnegative variables are y+, y-, lambda and, for an exact coefficient
+    # cancellation, upper- and lower-bound multipliers.  The sparse mode only
+    # asks for a nonnegative residual coefficient, absorbing it with x >= 0.
+    total = 2 * m_eq + m_ub + (0 if sparse else 2 * n)
     coefficient_equalities = np.zeros((n, total))
     coefficient_equalities[:, :m_eq] = aeq.T
     coefficient_equalities[:, m_eq : 2 * m_eq] = -aeq.T
     coefficient_equalities[:, 2 * m_eq : 2 * m_eq + m_ub] = aub.T
     upper_offset = 2 * m_eq + m_ub
     lower_offset = upper_offset + n
-    coefficient_equalities[:, upper_offset : upper_offset + n] = np.eye(n)
-    coefficient_equalities[:, lower_offset : lower_offset + n] = -np.eye(n)
+    if not sparse:
+        coefficient_equalities[:, upper_offset : upper_offset + n] = np.eye(n)
+        coefficient_equalities[:, lower_offset : lower_offset + n] = -np.eye(n)
 
     rhs_row = np.zeros(total)
     rhs_row[:m_eq] = beq
     rhs_row[m_eq : 2 * m_eq] = -beq
     rhs_row[2 * m_eq : 2 * m_eq + m_ub] = bub
-    rhs_row[upper_offset : upper_offset + n] = 1
+    if not sparse:
+        rhs_row[upper_offset : upper_offset + n] = 1
     result = linprog(
         np.ones(total),
-        A_ub=np.asarray([rhs_row]),
-        b_ub=np.asarray([-1.0]),
-        A_eq=coefficient_equalities,
-        b_eq=np.zeros(n),
-        bounds=(0, None),
-        method="highs-ds",
+        A_ub=(-coefficient_equalities if sparse else np.asarray([rhs_row])),
+        b_ub=(np.zeros(n) if sparse else np.asarray([-1.0])),
+        A_eq=(np.asarray([rhs_row]) if sparse else coefficient_equalities),
+        b_eq=(np.asarray([-1.0]) if sparse else np.zeros(n)),
+        bounds=(0, None), method=("highs" if sparse else "highs-ds"),
     )
     if not result.success:
         raise RuntimeError(f"dual certificate LP failed: {result.message}")
     vector = result.x
     y = vector[:m_eq] - vector[m_eq : 2 * m_eq]
     lam = vector[2 * m_eq : 2 * m_eq + m_ub]
-    upper = vector[upper_offset : upper_offset + n]
-    lower = vector[lower_offset : lower_offset + n]
+    upper = np.zeros(n) if sparse else vector[upper_offset : upper_offset + n]
+    lower = np.zeros(n) if sparse else vector[lower_offset : lower_offset + n]
     residual = aeq.T @ y + aub.T @ lam + upper - lower
     rhs = beq @ y + bub @ lam + upper.sum()
     threshold = 1e-8
@@ -145,10 +158,28 @@ def extract_certificate(owner_values: list[list[int]], selected_codes: set[int])
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--codes", default="0,1")
+    parser.add_argument(
+        "--profile", choices=("any", "000", "001"), default="any",
+        help="restrict the pairpoint root-matching profile (001 is canonical)",
+    )
     parser.add_argument("--samples", type=int, default=1)
+    parser.add_argument(
+        "--sparse", action="store_true",
+        help="use nonnegative residuals rather than explicit bound multipliers",
+    )
     args = parser.parse_args()
     selected_codes = {int(value) for value in args.codes.split(",")}
     owners, variables = build_solver()
+    matching_edges = (
+        variables[0][PAIR01] == PAIR02,
+        variables[1][PAIR01] == PAIR12,
+        variables[2][PAIR02] == PAIR12,
+    )
+    if args.profile == "000":
+        owners.add(*(z3.Not(edge) for edge in matching_edges))
+    elif args.profile == "001":
+        # The three one-edge branches are color-isomorphic; choose the last.
+        owners.add(z3.Not(matching_edges[0]), z3.Not(matching_edges[1]), matching_edges[2])
     for sample in range(args.samples):
         if owners.check() != z3.sat:
             raise RuntimeError("owner model unexpectedly unavailable")
@@ -158,7 +189,7 @@ def main() -> int:
             for h in range(3)
         ]
         print(f"sample {sample}")
-        extract_certificate(values, selected_codes)
+        extract_certificate(values, selected_codes, sparse=args.sparse)
         owners.add(z3.Or(*(
             variables[h][v] != values[h][v]
             for h in range(3) for v in range(46)
