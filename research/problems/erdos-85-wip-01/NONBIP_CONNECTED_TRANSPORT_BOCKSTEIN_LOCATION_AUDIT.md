@@ -43,6 +43,38 @@ This is the coefficient Bockstein that the earlier triangle-incidence audit
 did not have: it comes from an actual divisible integer matrix-vector
 product, so there is no choice of lift and no homological ambiguity.
 
+## The whole dyadic tower
+
+The calculation is not confined to the first half-occupancy digit.  Suppose
+at any level `j>=1` that every line occupancy is divisible by `2^j`, and
+define its integer quotient and next binary digit by
+
+```text
+A s = 2^j c_j,             gamma_j = c_j mod 2.        (3a)
+```
+
+The same integer calculation gives
+
+```text
+B s = 2^j (A^2+A)c_j,
+(B s / 2^j) mod 2 = (A^2+A) gamma_j.                  (3b)
+```
+
+The support of `gamma_j` is exactly
+`dyadicOccupancySupport G S j`.  The existing stopping package proves that
+at the first nonzero level `1<=j<k` this support is nonempty and even, and
+is unchanged when S is replaced by its complement.  At the final level
+`j=k-1`, the connected-defect theorem
+`c4Free_binarySquare_finalDyadicSupport_ne_univ` additionally makes it
+proper, so `gamma_j` is genuinely nonconstant there.  This is the precise
+way the lift can see structure absent in the q=4 calibration: not through
+beta alone, but through the first surviving higher digit, or through the
+proper final digit in the final-layer subtree.
+
+For `j>1`, equation (3b) is best kept as a divided integer row-sum identity.
+Expanding it into the binary support H introduces carries from all lower
+entrywise digits of B; equation (5) below is the explicit `j=1` instance.
+
 ## Graph-facing decomposition
 
 Let `H` be the odd support of B.  The completed direct-transport package
@@ -102,10 +134,12 @@ determined by beta alone.
 
 ## Bounded verdict
 
-Equation (5) is strictly finer than the completed F2 transport package and
-is the first exact self-indexed mod-four location law for K.  It also names
-where `k>=3` can enter: at `4|q`, beta is complement-invariant; dyadic
-stopping supplies a nonconstant higher occupancy layer before the q scale.
+Equations (3b) and (5) are strictly finer than the completed F2 transport
+package and give the first exact self-indexed dyadic location law for K.  The
+q=4 probe `889616792d` decisively falsifies the **beta-only** location
+terminal: complementary component shores have the same beta but
+complementary half-cut and residual vectors.  It does not falsify the tower
+identity (3b), whose useful input is the stopping digit `gamma_j`.
 
 It is not yet a terminal.  The q=4 calibration shows that the residual
 matching digit can pay the entire half-degree demand.  A successful consumer
@@ -115,6 +149,7 @@ must constrain the located row sums
 sum_(y in S) floor((A^3+A^2)_xy/2) mod 2              (6)
 ```
 
-using the first nonconstant dyadic layer, and then couple that constraint to
+using the first nonzero stopping digit (or the proper nonconstant final
+digit in the final-layer subtree), and then couple that constraint to
 connectedness of D.  Until such a consumer is named, (3)--(5) should remain
 an audited interface rather than a standalone Lean wrapper.
