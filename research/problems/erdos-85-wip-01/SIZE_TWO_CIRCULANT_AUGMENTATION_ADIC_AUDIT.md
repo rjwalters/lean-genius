@@ -106,16 +106,74 @@ pattern also clears the order-two character equations: the off-diagonal
 Fourier entries vanish while the diagonal entries are `+/-2`.
 
 Therefore neither the dyadic separation weights, their minimum-pairing law,
-nor the order-two character quotient can exclude the circulant system.  Any
-surviving augmentation proof must compute higher unit coefficients of
+nor the order-two character quotient alone can exclude the circulant system.
+The first higher unit coefficient, however, already eliminates this uniform
+escape as soon as there are three colors.
+
+### The first lifted coefficient kills the uniform pattern
+
+Assume the displayed pattern: every off-diagonal separation is odd and every
+diagonal separation has valuation exactly two.  For `c!=e`, write
+
+```text
+f_ce = t (1 + lambda_ce t + O(t^2)),
+```
+
+with `lambda_ce in F_2`.  If `f_ce=x^a+x^b`, reciprocity gives
+
+```text
+f_ec=f_ce^*=x^(-a-b)f_ce.
+```
+
+Since `a-b` is odd, `a+b` is odd, and
+`x^(-a-b)=1+t+O(t^2)`.  Hence
+
+```text
+lambda_ec=lambda_ce+1.                                (5)
+```
+
+Put `L_c=sum_(e!=c) lambda_ce`.  In the row-pair equation for `c!=d`,
+the `r-2` ordinary columns have valuation two.  Their leading coefficients
+cancel because `r` is even.  The two endpoint columns have valuation three
+and leading coefficient one each, so they also cancel.  The remaining
+coefficient of `t^3` is
+
+```text
+sum_(e!=c,d) (lambda_ce+lambda_ed)
+  = L_c+L_d+lambda_cd+lambda_dc
+  = L_c+L_d+1,                                        (6)
+```
+
+where the even value of `r-2` and (5) were used to convert the column sum to
+a row sum.  The right side `t^(n-1)` has zero `t^3` coefficient for `n>=8`,
+so (6) forces
+
+```text
+L_c+L_d=1                 for every c!=d.              (7)
+```
+
+Three binary values cannot be pairwise distinct: from the equations for
+`(c,d)` and `(c,e)` one gets `L_d=L_e`, contradicting the equation for
+`(d,e)`.  Thus:
+
+> A symmetric circulant strong-difference system with at least three colors
+> cannot have every off-diagonal two-set of odd separation and every
+> diagonal inverse pair of separation `2 mod 4`.
+
+This is the first genuine obstruction from the lifted augmentation
+filtration.  It explains the `q=4` calibration sharply: two colors can
+satisfy (7), whereas every binary `q>=8` has `r=q/2>=4`.
+
+It does **not** eliminate mixed valuation patterns.  A general surviving
+augmentation proof must compute higher unit coefficients of
 
 ```text
 t^(-alpha(delta)) (1+(1+t)^delta),
 ```
 
-and show that their simultaneous cancellations are incompatible with
-reciprocity and the diagonal inverse pairs.  Calling the valuation pattern an
-ultrametric obstruction without this lifted calculation would overstate it.
+and propagate them through the strata of entries attaining each minimum.
+Calling the valuation pattern alone an ultrametric obstruction would still
+overstate the result.
 
 ## `q=4` calibration
 
@@ -145,8 +203,9 @@ The remaining restricted target is a lifted group-ring theorem:
 > `Z[Z_(2^(k+1))]` with inverse-pair diagonal can have every distinct-row
 > inner product equal to the all-ones group-ring element.
 
-The present audit proves the exact valuation input but also proves that its
-first tropical consequence is insufficient.  A next probe should either
-derive and test the first nontrivial unit-coefficient identity, or construct a
-q-generic symmetric strong-difference array.  It should not repeat the
-valuation-only layer.
+The present audit proves the exact valuation input, shows that its first
+tropical consequence is insufficient, and then uses the first lifted unit
+coefficient to kill the uniform minimal-valuation escape.  A next probe should
+stratify mixed dyadic separations and ask whether the same row-sum obstruction
+propagates inside a minimum-weight class, or construct a q-generic symmetric
+strong-difference array.  It should not repeat the valuation-only layer.
