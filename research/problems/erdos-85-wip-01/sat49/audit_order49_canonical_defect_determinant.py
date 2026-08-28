@@ -39,7 +39,7 @@ ODD_PRIMES = (3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47)
 
 def residual_square_root_trace_possible(
     adjacency_square: list[list[int]], target_trace: int = -7,
-) -> tuple[bool, tuple[int, ...]]:
+) -> tuple[bool, str, tuple[int, ...]]:
     """Test the exact rational characteristic-polynomial square-root law.
 
     After removing the forced zero/quadratic sector, a true ordinary
@@ -59,7 +59,7 @@ def residual_square_root_trace_possible(
     forced = sp.Poly(x**2 * (x**2 - 43*x + 9), x)
     residual, remainder = sp.div(characteristic, forced)
     if remainder.as_expr() != 0:
-        return False, ()
+        return False, "forced_factor_missing", ()
     even_lift = sp.Poly(residual.as_expr().subs(x, t**2), t)
     _content, factors = sp.factor_list(even_lift)
     factor_powers = {sp.Poly(factor, t).monic(): exponent for factor, exponent in factors}
@@ -73,7 +73,11 @@ def residual_square_root_trace_possible(
         partner_exponent = factor_powers.get(partner)
         if partner == factor:
             if exponent % 2:
-                return False, tuple(sorted(traces))
+                return (
+                    False,
+                    f"odd_self_factor_degree_{factor.degree()}_exp_{exponent}",
+                    tuple(sorted(traces)),
+                )
             copies = exponent // 2
             coefficient = int(factor.all_coeffs()[1]) if factor.degree() else 0
             contribution = -copies * coefficient
@@ -81,7 +85,12 @@ def residual_square_root_trace_possible(
             visited.add(factor)
             continue
         if partner_exponent != exponent:
-            return False, tuple(sorted(traces))
+            return (
+                False,
+                f"partner_mismatch_degree_{factor.degree()}"
+                f"_exp_{exponent}_partner_exp_{partner_exponent}",
+                tuple(sorted(traces)),
+            )
         coefficient = int(factor.all_coeffs()[1]) if factor.degree() else 0
         contribution = -exponent * coefficient
         traces = {
@@ -90,7 +99,11 @@ def residual_square_root_trace_possible(
         }
         visited.update((factor, partner))
     possible = tuple(sorted(traces))
-    return target_trace in traces, possible
+    return (
+        target_trace in traces,
+        "success" if target_trace in traces else "trace_mismatch",
+        possible,
+    )
 
 
 def nullspace_mod_prime(matrix: list[list[int]], prime: int) -> list[list[int]]:
@@ -319,7 +332,9 @@ def main() -> int:
     ] = Counter()
     empty_block_profiles: Counter[tuple[int, tuple[tuple[int, int], ...]]] = Counter()
     normalized_residual_mod_sixteen: Counter[int | str] = Counter()
-    square_root_charpoly_profiles: Counter[tuple[bool, tuple[int, ...]]] = Counter()
+    square_root_charpoly_profiles: Counter[
+        tuple[bool, str, tuple[int, ...]]
+    ] = Counter()
     normalized_residual_three_adic: Counter[tuple[int, int] | str] = Counter()
     ordinary_adjacency_square_inertia: Counter[int] = Counter()
     ordinary_adjacency_square_determinants: Counter[tuple[str, bool]] = Counter()
