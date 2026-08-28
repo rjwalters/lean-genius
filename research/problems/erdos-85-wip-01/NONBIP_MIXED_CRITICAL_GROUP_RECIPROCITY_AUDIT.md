@@ -93,6 +93,41 @@ on a specified primary quotient, or compute the global discriminant/Hasse
 class including the nonsingular complement.  Self-adjointness and the square
 identity alone recover only the already-banked global product-square law.
 
+### A zero-diagonal two-block countermodel
+
+The failure persists after retaining the proposed two-component block-square
+shape and a zero diagonal.  Over `F_3`, take three-dimensional component
+spaces and put
+
+```text
+P = 0,
+Q = matrix with its only nonzero entry Q_(3,1)=1,
+R = adjacency matrix of the single edge 2--3,
+X = [[P,Q],[Q^T,R]].
+```
+
+Then `X` is symmetric with zero diagonal, and direct multiplication gives
+
+```text
+P Q + Q R = 0,
+X^2 = diag(L_1,L_2),
+L_1 = Q Q^T       = diag(0,0,1),
+L_2 = Q^T Q + R^2 = I_3.
+```
+
+Thus exactly one diagonal square block is singular, even at a prime
+`p == 3 mod 4`.  The mechanism is the one relevant to the real problem: the
+rank-deficient reciprocal cross block kills the singular sector.  If `Q`
+were invertible, the intertwining `L_1 Q = Q L_2` would propagate
+singularity, but that hypothesis is unavailable.  In the faithful `q=4`
+control the off-diagonal component block itself has rank seven rather than
+eight (and its centered restriction is also rank-deficient).
+
+The example still omits `0/1` biregularity and prescribed support.  It
+therefore sharpens, rather than replaces, the surviving target: prove that
+the actual graph support prevents every reciprocal block from annihilating a
+nonconstant odd-primary Laplacian kernel.
+
 ## 4. Disposition
 
 - Retain `L_C B_CD=B_CD L_D` and the induced reciprocal critical-group maps as
