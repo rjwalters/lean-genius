@@ -146,11 +146,58 @@ def main() -> int:
     parser.add_argument("--print-model", action="store_true")
     parser.add_argument("--all-profiles", action="store_true")
     parser.add_argument("--full-ordinary", action="store_true")
+    parser.add_argument("--sample-owner-completions", type=int, default=0)
+    parser.add_argument("--completion-timeout-ms", type=int, default=10_000)
+    parser.add_argument("--write-dimacs")
     args = parser.parse_args()
 
     solver, owner = build_solver()
+    if args.sample_owner_completions < 0:
+        parser.error("--sample-owner-completions must be nonnegative")
+    if args.sample_owner_completions:
+        solver.set(timeout=args.timeout_ms)
+        outcomes: dict[str, int] = {}
+        for sample in range(args.sample_owner_completions):
+            result = solver.check()
+            if result != z3.sat:
+                outcomes[str(result)] = outcomes.get(str(result), 0) + 1
+                break
+            model = solver.model()
+            values = [
+                [model.eval(owner[h][v]).as_long() for v in range(46)]
+                for h in range(3)
+            ]
+            completion, completion_owner = build_solver()
+            add_full_ordinary_graph(completion, completion_owner)
+            for h in range(3):
+                for v in range(46):
+                    completion.add(completion_owner[h][v] == values[h][v])
+            completion.set(timeout=args.completion_timeout_ms)
+            completion_result = completion.check()
+            key = str(completion_result)
+            outcomes[key] = outcomes.get(key, 0) + 1
+            print(f"owner_completion_{sample} {completion_result}")
+            solver.add(z3.Or(*(
+                owner[h][v] != values[h][v]
+                for h in range(3) for v in range(46)
+            )))
+        print(f"owner_completion_outcomes {outcomes}")
+        return 0
     if args.full_ordinary:
         add_full_ordinary_graph(solver, owner)
+    if args.write_dimacs:
+        goal = z3.Goal()
+        goal.add(*solver.assertions())
+        pipeline = z3.Then(
+            "simplify", "solve-eqs", "lia2card", "card2bv", "bit-blast", "tseitin-cnf"
+        )
+        subgoals = pipeline(goal)
+        if len(subgoals) != 1:
+            raise RuntimeError(f"CNF pipeline returned {len(subgoals)} subgoals")
+        with open(args.write_dimacs, "w", encoding="ascii") as handle:
+            handle.write(subgoals[0].dimacs())
+        print(f"wrote_dimacs {args.write_dimacs}")
+        return 0
     solver.set(timeout=args.timeout_ms)
     bit_formulas = [
         zero_pattern_bit_formula(owner, h, k, root)
