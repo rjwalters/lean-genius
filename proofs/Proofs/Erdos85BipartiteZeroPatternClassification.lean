@@ -1,4 +1,4 @@
-import Mathlib.Data.Finset.Card
+import Proofs.Erdos85OrderFortyNineOrdinaryCodePartitionIntersection
 
 /-!
 # The two `(2,1^6)` bipartite zero-pattern types
@@ -185,8 +185,43 @@ theorem bipartite_degree_two_one_pattern_dichotomy
       rw [hrowPair]
       simp
 
+/-- In the three-code geometry, the two nonshared pairpoints belonging to the
+third code have disjoint open neighborhoods.  This is the structural reason
+the distinguished entry of every pairwise zero-pattern is present. -/
+theorem thirdOpenCode_nonshared_pairpoint_cells_disjoint
+    {V : Type*} {H : SimpleGraph V} {C : Set V}
+    (hC : IsOpenCode H C) {p q : V}
+    (hp : p ∈ C) (hq : q ∈ C) (hpq : p ≠ q) :
+    Disjoint (H.neighborSet p) (H.neighborSet q) :=
+  hC.disjoint_neighborSet hp hq hpq
+
+/-- Once the distinguished zero is supplied by the third-code lemma, only
+the `P4` branch of the `(2,1^6)` classification remains. -/
+theorem bipartite_degree_two_one_pattern_forced_P4
+    {L R : Type*} [Fintype L] [Fintype R]
+    [DecidableEq L] [DecidableEq R]
+    (Z : L → R → Prop) [DecidableRel Z]
+    (a0 : L) (b0 : R)
+    (hrow0 : (bipartiteRow Z a0).card = 2)
+    (hrow1 : ∀ a, a ≠ a0 → (bipartiteRow Z a).card = 1)
+    (hcol0 : (bipartiteColumn Z b0).card = 2)
+    (hcol1 : ∀ b, b ≠ b0 → (bipartiteColumn Z b).card = 1)
+    (hz : Z a0 b0) :
+    ∃ a1 b1,
+      a1 ≠ a0 ∧ b1 ≠ b0 ∧
+      bipartiteRow Z a0 = {b0, b1} ∧
+      bipartiteColumn Z b0 = {a0, a1} ∧
+      bipartiteRow Z a1 = {b0} ∧
+      bipartiteColumn Z b1 = {a0} := by
+  rcases bipartite_degree_two_one_pattern_dichotomy
+    Z a0 b0 hrow0 hrow1 hcol0 hcol1 with hP4 | hP3
+  · exact hP4.2
+  · exact (hP3.1 hz).elim
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.bipartite_degree_two_one_pattern_dichotomy
+#print axioms Erdos85.thirdOpenCode_nonshared_pairpoint_cells_disjoint
+#print axioms Erdos85.bipartite_degree_two_one_pattern_forced_P4
