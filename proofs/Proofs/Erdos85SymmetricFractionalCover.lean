@@ -161,9 +161,44 @@ theorem false_of_symmetricFractionalCover_capacity_lt_degree
     hdegree hweight hcap hcover
   exact (not_lt_of_ge hle) hstrict
 
+/-- Graph-facing specialization: the symmetric nonnegative matrix and its
+degree equations are supplied automatically by an adjacency matrix. -/
+theorem false_of_graph_symmetricFractionalCover
+    {V I : Type*} [Fintype V] [Fintype I] [DecidableEq V]
+    (H : SimpleGraph V) [DecidableRel H.Adj]
+    (center : I → V) (row : I → V → ℚ)
+    (capacity weight : I → ℚ) (alpha : V → ℚ)
+    (hweight : ∀ i, 0 ≤ weight i)
+    (hcap : ∀ i,
+      (∑ w : V, row i w * H.adjMatrix ℚ (center i) w) ≤ capacity i)
+    (hcover : ∀ v w,
+      alpha v + alpha w ≤
+        centeredCoverCoefficient center weight row v w +
+        centeredCoverCoefficient center weight row w v)
+    (hstrict : (∑ i : I, weight i * capacity i) <
+      ∑ v : V, alpha v * (H.degree v : ℚ)) : False := by
+  have hsymm (v w : V) : H.adjMatrix ℚ v w = H.adjMatrix ℚ w v := by
+    simp [SimpleGraph.adjMatrix_apply, H.adj_comm]
+  have hnonneg (v w : V) : 0 ≤ H.adjMatrix ℚ v w := by
+    by_cases hvw : H.Adj v w <;>
+      simp [SimpleGraph.adjMatrix_apply, hvw]
+  have hdegree (v : V) :
+      (∑ w : V, H.adjMatrix ℚ v w) = (H.degree v : ℚ) := by
+    simp only [SimpleGraph.adjMatrix_apply, Finset.sum_boole]
+    norm_cast
+    rw [← H.card_neighborFinset_eq_degree]
+    congr 1
+    ext w
+    simp [SimpleGraph.mem_neighborFinset]
+  exact false_of_symmetricFractionalCover_capacity_lt_degree
+    (fun v w => H.adjMatrix ℚ v w) (fun v => (H.degree v : ℚ))
+    center row capacity weight alpha hsymm hnonneg hdegree
+    hweight hcap hcover hstrict
+
 end
 
 end Erdos85
 
 #print axioms Erdos85.symmetricFractionalCover_degree_le_capacity
 #print axioms Erdos85.false_of_symmetricFractionalCover_capacity_lt_degree
+#print axioms Erdos85.false_of_graph_symmetricFractionalCover
