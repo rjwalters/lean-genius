@@ -69,6 +69,50 @@ Thus the individual tiles remember the singular flags of their common
 factors even though the factors themselves have been eliminated from the
 bare four-regular support partition.
 
+## Full shore-Gram reconstruction
+
+The same argument recovers more than the kernel.  For fixed `c,e`, form the
+positive-semidefinite tile correlation
+
+```text
+K_ce = sum_d Y_e^(c,d) (Y_e^(c,d))^T.
+```
+
+Expanding the reused factors and using (1) gives
+
+```text
+K_ce
+  = X_ce (sum_d X_ed X_de) X_ec
+  = X_ce Q_e X_ec.                                    (4)
+```
+
+The defect intertwiner `D_c X_ce = X_ce D_e`, together with the constant
+row and column sums, also intertwines the within Grams:
+
+```text
+Q_c X_ce = X_ce Q_e.
+```
+
+Consequently
+
+```text
+K_ce = Q_c (X_ce X_ec),
+X_ce X_ec = Q_c^(-1) K_ce.                             (5)
+```
+
+The inverse exists by positivity.  Transposing the construction, or using
+the corresponding correlation with the sources varied, likewise recovers
+the other shore Gram `X_ec X_ce`.
+
+For a zero-one two-regular bipartite factor, these two Grams are `2I` plus
+the two shore cycle graphs of its incidence components.  Hence the complete
+individual tile family determines, on the original labeled shores, all
+incidence-component partitions and cycle lengths of the reused factor.  What
+it does not determine from (5) alone is the phase/reflection matching between
+equal-length source and target cycles.  That is the precise residual gauge a
+future consumer must control; replacing (5) by kernel dimension alone throws
+away information that the tiles actually retain.
+
 ## Cycle interpretation and scope
 
 Over `F_2`, a two-regular bipartite factor has one kernel direction for each
