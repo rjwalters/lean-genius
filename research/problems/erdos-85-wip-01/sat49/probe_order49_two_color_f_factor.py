@@ -204,6 +204,57 @@ def scipy_symmetric_lp_completion(
     return "feasible", fractional, None
 
 
+def balanced_directed_lp_completion(
+    owner_values: list[list[int]], selected_codes: set[int],
+    row_codes: set[int], transpose_codes: set[int],
+) -> str:
+    """Transportation relaxation with row/column degrees and chosen cap sides."""
+    import numpy as np
+    from scipy.optimize import linprog
+    from extract_order49_two_color_farkas import primal_matrices
+
+    _, demands, symmetric_caps, capacities, pairs, degree_names, cap_names = (
+        primal_matrices(owner_values, selected_codes)
+    )
+    zeros = [name[1] for name in degree_names]
+    arcs = [(v, w) for v in zeros for w in zeros if v != w]
+    arc_index = {arc: i for i, arc in enumerate(arcs)}
+    pair_index = {pair: i for i, pair in enumerate(pairs)}
+    equalities = []
+    for incoming in (False, True):
+        for z in zeros:
+            row = np.zeros(len(arcs))
+            for w in zeros:
+                if w != z:
+                    row[arc_index[(w, z) if incoming else (z, w)]] = 1
+            equalities.append(row)
+
+    inequalities, rhs = [], []
+    for i, (_, z, u) in enumerate(cap_names):
+        owner_code = next(h for h in selected_codes if u in CODES[h])
+        for transpose, active_codes in (
+            (False, row_codes), (True, transpose_codes)
+        ):
+            if owner_code not in active_codes:
+                continue
+            row = np.zeros(len(arcs))
+            for w in zeros:
+                if w != z:
+                    coefficient = symmetric_caps[
+                        i, pair_index[(min(z, w), max(z, w))]
+                    ]
+                    row[arc_index[(w, z) if transpose else (z, w)]] = coefficient
+            inequalities.append(row)
+            rhs.append(capacities[i])
+    result = linprog(
+        np.zeros(len(arcs)), A_eq=np.asarray(equalities),
+        b_eq=np.concatenate((demands, demands)),
+        A_ub=np.asarray(inequalities), b_ub=np.asarray(rhs),
+        bounds=(0, None), method="highs",
+    )
+    return "feasible" if result.success else "infeasible"
+
+
 def global_two_color_dual_gap(
     owner_values: list[list[int]], selected_codes: set[int]
 ) -> tuple[int, int, int, tuple[tuple[int, int], ...]]:
@@ -253,12 +304,21 @@ def main() -> int:
     parser.add_argument("--lp", action="store_true")
     parser.add_argument("--lp-no-upper", action="store_true")
     parser.add_argument("--lp-dual", action="store_true")
+    parser.add_argument("--balanced-lp", action="store_true")
+    parser.add_argument("--row-codes", default="0,1")
+    parser.add_argument("--transpose-codes", default="")
     args = parser.parse_args()
     if args.samples < 0:
         parser.error("--samples must be nonnegative")
     selected_codes = {int(value) for value in args.codes.split(",")}
     if len(selected_codes) != 2 or not selected_codes <= {0, 1, 2}:
         parser.error("--codes must select two distinct indices from {0,1,2}")
+    requested_cap_codes = {
+        int(value) for raw in (args.row_codes, args.transpose_codes)
+        for value in raw.split(",") if value
+    }
+    if not requested_cap_codes <= selected_codes:
+        parser.error("row/transpose cap codes must be selected by --codes")
 
     owners, owner_variables = build_solver()
     owners.set(timeout=args.timeout_ms)
@@ -282,7 +342,14 @@ def main() -> int:
             global_two_color_dual_gap(values, selected_codes)
         )
         fractional = None
-        if args.lp:
+        if args.balanced_lp:
+            row_codes = {int(v) for v in args.row_codes.split(",") if v}
+            transpose_codes = {int(v) for v in args.transpose_codes.split(",") if v}
+            result = balanced_directed_lp_completion(
+                values, selected_codes, row_codes, transpose_codes
+            )
+            certificate = None
+        elif args.lp:
             result, fractional, certificate = scipy_symmetric_lp_completion(
                 values, selected_codes, upper_bound=not args.lp_no_upper,
                 extract_dual=args.lp_dual,
@@ -294,7 +361,7 @@ def main() -> int:
         outcomes[str(result)] = outcomes.get(str(result), 0) + 1
         suffix = f" fractional={fractional}" if fractional is not None else ""
         print(
-            f"{'lp' if args.lp else 'directed'}_completion_{sample} "
+            f"{'balanced_lp' if args.balanced_lp else ('lp' if args.lp else 'directed')}_completion_{sample} "
             f"profile={matching_profile} global_dual="
             f"({global_demand},{global_capacity},{global_gap},{t_profile}) "
             f"{result}{suffix}"
@@ -305,7 +372,8 @@ def main() -> int:
             owner_variables[h][v] != values[h][v]
             for h in range(3) for v in range(46)
         )))
-    print(f"{'lp' if args.lp else 'directed'}_completion_outcomes {outcomes}")
+    mode = "balanced_lp" if args.balanced_lp else ("lp" if args.lp else "directed")
+    print(f"{mode}_completion_outcomes {outcomes}")
     return 0
 
 
