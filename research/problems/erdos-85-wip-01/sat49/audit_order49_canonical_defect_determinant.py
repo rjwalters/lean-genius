@@ -116,6 +116,87 @@ def residual_square_root_trace_possible(
     )
 
 
+def residual_square_root_mod_prime_obstructions(
+    adjacency_square: list[list[int]], target_trace: int = -7,
+    primes: tuple[int, ...] = (3, 5, 7, 11, 13),
+    detailed: bool = False,
+) -> tuple[str, ...]:
+    """Return primes forbidding a residual square-root charpoly of given trace."""
+    import sympy as sp
+
+    x, t = sp.symbols("x t")
+    characteristic = sp.Poly(sp.Matrix(adjacency_square).charpoly(x).as_expr(), x)
+    residual, remainder = sp.div(
+        characteristic, sp.Poly(x**2 * (x**2 - 43*x + 9), x)
+    )
+    if remainder.as_expr() != 0:
+        return tuple(
+            f"{prime}:forced_factor_missing" if detailed else str(prime)
+            for prime in primes
+        )
+    even_lift = residual.as_expr().subs(x, t**2)
+    obstructing: list[str] = []
+    for prime in primes:
+        _content, factors = sp.factor_list(even_lift, t, modulus=prime)
+        powers = {
+            sp.Poly(factor, t, modulus=prime).monic(): exponent
+            for factor, exponent in factors
+        }
+        traces = {0}
+        possible = True
+        failure = ""
+        visited = set()
+        for factor, exponent in powers.items():
+            if factor in visited:
+                continue
+            partner = sp.Poly(
+                factor.as_expr().subs(t, -t), t, modulus=prime
+            ).monic()
+            partner_exponent = powers.get(partner)
+            coefficient = int(factor.all_coeffs()[1]) % prime
+            if partner == factor:
+                if exponent % 2:
+                    possible = False
+                    coefficient_tag = ""
+                    if prime == 13 and factor.degree() <= 4:
+                        coefficient_tag = "_coeff_" + ",".join(
+                            str(int(value) % prime) for value in factor.all_coeffs()
+                        )
+                    failure = (
+                        f"odd_self_degree_{factor.degree()}_exp_{exponent}"
+                        f"{coefficient_tag}"
+                    )
+                    break
+                contribution = (-(exponent // 2) * coefficient) % prime
+                traces = {(value + contribution) % prime for value in traces}
+                visited.add(factor)
+                continue
+            if partner_exponent != exponent:
+                possible = False
+                failure = (
+                    f"partner_mismatch_degree_{factor.degree()}"
+                    f"_exp_{exponent}_partner_exp_{partner_exponent}"
+                )
+                break
+            contributions = {
+                ((2 * copies - exponent) * (-coefficient)) % prime
+                for copies in range(exponent + 1)
+            }
+            traces = {
+                (value + contribution) % prime
+                for value in traces for contribution in contributions
+            }
+            visited.update((factor, partner))
+        if not possible:
+            obstructing.append(f"{prime}:{failure}" if detailed else str(prime))
+        elif target_trace % prime not in traces:
+            obstructing.append(
+                f"{prime}:trace_mismatch_possible_"
+                f"{','.join(map(str, sorted(traces)))}" if detailed else str(prime)
+            )
+    return tuple(obstructing)
+
+
 def nullspace_mod_prime(matrix: list[list[int]], prime: int) -> list[list[int]]:
     rows = [[entry % prime for entry in row] for row in matrix]
     rank = 0
@@ -306,6 +387,8 @@ def main() -> int:
     parser.add_argument("--enforce-high-affine", action="store_true")
     parser.add_argument("--audit-square-root-charpoly", action="store_true")
     parser.add_argument("--print-square-root-factor", action="store_true")
+    parser.add_argument("--audit-square-root-mod-primes", action="store_true")
+    parser.add_argument("--print-square-root-mod-reasons", action="store_true")
     parser.add_argument("--print-values", action="store_true")
     args = parser.parse_args()
     if args.ungrounded_components < 0:
@@ -346,6 +429,7 @@ def main() -> int:
     square_root_charpoly_profiles: Counter[
         tuple[bool, str, tuple[int, ...]]
     ] = Counter()
+    square_root_mod_prime_obstructions: Counter[tuple[str, ...]] = Counter()
     normalized_residual_three_adic: Counter[tuple[int, int] | str] = Counter()
     ordinary_adjacency_square_inertia: Counter[int] = Counter()
     ordinary_adjacency_square_determinants: Counter[tuple[str, bool]] = Counter()
@@ -447,6 +531,13 @@ def main() -> int:
                         print_factor=args.print_square_root_factor,
                     )
                 ] += 1
+            if args.audit_square_root_mod_primes:
+                square_root_mod_prime_obstructions[
+                    residual_square_root_mod_prime_obstructions(
+                        adjacency_square.astype(int).tolist(),
+                        detailed=args.print_square_root_mod_reasons,
+                    )
+                ] += 1
             ungrounded = sorted(
                 len(component)
                 for component in nx.connected_components(defect)
@@ -533,6 +624,10 @@ def main() -> int:
     print("normalized_residual_mod16", dict(normalized_residual_mod_sixteen))
     if args.audit_square_root_charpoly:
         print("square_root_charpoly_profiles", dict(square_root_charpoly_profiles))
+    if args.audit_square_root_mod_primes:
+        print("square_root_mod_prime_obstructions", dict(
+            square_root_mod_prime_obstructions
+        ))
     print("normalized_residual_mod3_valuation", dict(normalized_residual_three_adic))
     print("ordinary_adjacency_square_negative_eigenvalues", dict(
         ordinary_adjacency_square_inertia
