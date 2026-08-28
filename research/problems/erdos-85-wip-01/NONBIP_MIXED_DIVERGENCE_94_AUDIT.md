@@ -52,6 +52,33 @@ matrices, complete designs, or highly symmetric point-subspace designs; no
 general theorem found supplies the required higher-2-adic obstruction for
 an arbitrary regular uniform packing with a prescribed leave.
 
+In fact sol-3's post-round falsifier closes that hypothesis gap uniformly.
+For every even `q >= 8`, take the circulant graph `F` on `Z/(2q)` with
+connection differences
+
+`{±1, ±2, ..., ±(q/2)}`.
+
+It is q-regular and has exactly `q^2` edges.  Regard its vertex-edge
+incidence transpose as a `q^2 by 2q` matrix `N`; its rows have weight two,
+its columns have weight q, and it is a linear packing.  Its leave
+`D = complement(F)` is `(q-1)`-regular.  It is connected because difference
+`q-1` lies in `D` and is a unit modulo `2q`.  It is nonbipartite: with
+`a=q/2+1`, the vertices `0,a,2a` form a D-triangle, since the three reduced
+differences are `a,a,q-2`, all outside F's connection interval for `q>=8`.
+Finally the ordinary unsigned incidence identity is exactly
+
+`N^T N = qI + A(F) = L(D) + J`.
+
+Thus the full regular-packing/Gram/connected-nonbipartite-leave abstraction
+at `m=2` has models at every binary order in scope.  No higher-2-adic theorem
+using only that abstraction can close `NONBIP-MIXED`; a viable arithmetic
+route must restore the ambient self-indexing and complementary-component
+coupling that this edge-incidence construction omits.
+
+At `q=8`, the exact calibration has `Smith(N)=1^15,2`,
+`v2(det(N^T N))=21`, and `v2(tau(D))=13`, confirming directly that increasing
+the binary exponent creates no forbidden valuation pattern.
+
 ### The canonical Hoffman cocliques are real but nonterminal
 
 The post-reveal Hoffman candidate does have its proposed equality witness.
@@ -132,6 +159,8 @@ The packing/leave dictionary is retained as the only positive structural
 reframe from the round.  The tested consumers are cut:
 
 - F2 rank or spanning-tree parity alone;
+- every packing/Smith argument that uses only `N^T N=L(D)+J`, even at
+  `q=2^k`, by the q-generic circulant countermodel;
 - Hoffman equality / existence of exterior parallel classes alone;
 - bottom-eigenspace dimension fusion;
 - multiplicity-one cyclotomic fourth/sixth moments.
