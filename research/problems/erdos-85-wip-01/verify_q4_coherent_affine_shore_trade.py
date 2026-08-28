@@ -94,6 +94,7 @@ def main() -> None:
     trades = [best_split_trades(edges) for edges in actual]
 
     solutions = []
+    symmetric_repairs = 0
     for cut0, (shore0, removed0, added0) in enumerate(trades[0]):
         changed_rows0 = [row for row, edge in enumerate(actual[0]) if edge in added0]
         for cut1, (shore1, removed1, added1) in enumerate(trades[1]):
@@ -108,6 +109,19 @@ def main() -> None:
                         repaired1[row] = edge
                     if is_rectangle_partition(repaired0, repaired1):
                         solutions.append((cut0, cut1, shore0, shore1))
+                        repaired_matrix = [[0] * 16 for _ in range(16)]
+                        for ambient_row in range(16):
+                            for component, repaired_edges in zip(
+                                components, (repaired0, repaired1)
+                            ):
+                                for endpoint in repaired_edges[ambient_row]:
+                                    repaired_matrix[ambient_row][component[endpoint]] = 1
+                        if all(
+                            repaired_matrix[x][y] == repaired_matrix[y][x]
+                            for x in range(16)
+                            for y in range(16)
+                        ):
+                            symmetric_repairs += 1
 
     # There is exactly one coherent repair for every ordered pair of the four
     # maximizing shore cuts.
@@ -115,7 +129,11 @@ def main() -> None:
     assert {(cut0, cut1) for cut0, cut1, _, _ in solutions} == {
         (cut0, cut1) for cut0 in range(4) for cut1 in range(4)
     }
-    print("q4 coherent affine shore-trade verification: PASS (16 repairs)")
+    # The repaired split systems are coherent ODCs, but none is a symmetric
+    # ambient adjacency matrix.  The trade to sixteenRegular restores
+    # symmetry as well as connecting the selector defects.
+    assert symmetric_repairs == 0
+    print("q4 coherent affine shore-trade verification: PASS (16 repairs, 0 symmetric)")
 
 
 if __name__ == "__main__":

@@ -166,13 +166,23 @@ finds:
 
 ```text
 16 coherent repairs total,
-exactly one for every ordered pair of shore cuts.
+exactly one for every ordered pair of shore cuts,
+0 repaired split systems symmetric as ambient matrices.
 ```
 
 For every repair the paired row edges again partition all `8*8` cross cells
 into sixteen disjoint `K_2,2` rectangles.  Thus `sixteenRegular` is genuinely
 a **coherent simultaneous shore trade** of the split affine model, not merely
 two selectors that happen to be locally four edits from `K_4,4`.
+
+The zero symmetric-repair count is essential: it agrees with the polarity
+obstruction above.  Undoing the shore trades recovers a loopless coherent ODC
+labeling, but not a symmetric incidence labeling.  In the forward direction,
+the q4 trade simultaneously makes the selectors nonbipartite **and restores
+ambient symmetry**.  Therefore the scalable obstruction is sharper than
+compatibility of the rectangle partitions alone: it must prevent three or
+more direction-pair trades from satisfying their reciprocal transpose laws
+at the same time.
 
 The dependency-free verifier
 `verify_q4_coherent_affine_shore_trade.py` reconstructs the formalized graph,
