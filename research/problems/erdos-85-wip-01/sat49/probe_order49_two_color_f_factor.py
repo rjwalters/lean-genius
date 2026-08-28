@@ -204,6 +204,47 @@ def scipy_symmetric_lp_completion(
     return "feasible", fractional, None
 
 
+def global_two_color_dual_gap(
+    owner_values: list[list[int]], selected_codes: set[int]
+) -> tuple[int, int, int, tuple[tuple[int, int], ...]]:
+    """All-cap unit dual: return demand, capacity, gap, and t-distribution."""
+    zero_vertices = [v for v in range(46) if support(v) == 0]
+    selected_one = {
+        u for h in selected_codes for u in CODES[h] if support(u) == 1
+    }
+
+    def fixed_edge(v: int, w: int) -> bool:
+        if v == w:
+            return False
+        endpoint = v if support(v) else w
+        other = w if endpoint == v else v
+        h = next(index for index, code in enumerate(CODES) if endpoint in code)
+        return owner_values[h][other] == endpoint
+
+    t_values = {
+        z: sum(fixed_edge(z, u) for u in selected_one)
+        for z in zero_vertices
+    }
+    residual_degree = {
+        z: degree(z) - sum(
+            fixed_edge(z, w) for w in range(46) if support(w) > 0
+        )
+        for z in zero_vertices
+    }
+    demand = sum(t_values[z] * residual_degree[z] for z in zero_vertices)
+    capacity = 0
+    for z in zero_vertices:
+        for u in selected_one:
+            fixed_common = sum(
+                fixed_edge(z, w) and fixed_edge(u, w)
+                for w in range(46) if support(w) > 0
+            )
+            capacity += 1 - fixed_common
+    from collections import Counter
+    profile = tuple(sorted(Counter(t_values.values()).items()))
+    return demand, capacity, capacity - demand, profile
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--samples", type=int, default=16)
@@ -237,6 +278,9 @@ def main() -> int:
             int(values[1][PAIR01] == PAIR12),
             int(values[2][PAIR02] == PAIR12),
         )
+        global_demand, global_capacity, global_gap, t_profile = (
+            global_two_color_dual_gap(values, selected_codes)
+        )
         fractional = None
         if args.lp:
             result, fractional, certificate = scipy_symmetric_lp_completion(
@@ -251,7 +295,9 @@ def main() -> int:
         suffix = f" fractional={fractional}" if fractional is not None else ""
         print(
             f"{'lp' if args.lp else 'directed'}_completion_{sample} "
-            f"profile={matching_profile} {result}{suffix}"
+            f"profile={matching_profile} global_dual="
+            f"({global_demand},{global_capacity},{global_gap},{t_profile}) "
+            f"{result}{suffix}"
         )
         if args.lp and certificate is not None:
             print(f"lp_dual_{sample} {certificate}")
