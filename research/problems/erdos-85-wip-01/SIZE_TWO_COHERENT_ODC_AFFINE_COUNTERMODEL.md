@@ -150,6 +150,42 @@ The unresolved construction question is whether that shore trade can be
 made simultaneously in every affine direction pair at general binary
 order; the untraded model is now decisively excluded.
 
+## Exact `q=4` coherent-trade normal form
+
+The last calibration can be strengthened from a local edit-distance
+statement to a simultaneous one.  For each of the two selectors in
+`sixteenRegular`, there are exactly four balanced shore cuts with twelve of
+the sixteen selector edges crossing.  Relative to any such cut, the selector
+is obtained from `K_4,4` by deleting a cross perfect matching and adding a
+perfect matching inside each shore.
+
+Replace the four added edges by the four deleted edges, retaining the ambient
+row labels.  There are `4!` possible label assignments in each selector.  An
+exact enumeration over the four shore cuts on each side and both assignments
+finds:
+
+```text
+16 coherent repairs total,
+exactly one for every ordered pair of shore cuts.
+```
+
+For every repair the paired row edges again partition all `8*8` cross cells
+into sixteen disjoint `K_2,2` rectangles.  Thus `sixteenRegular` is genuinely
+a **coherent simultaneous shore trade** of the split affine model, not merely
+two selectors that happen to be locally four edits from `K_4,4`.
+
+The dependency-free verifier
+`verify_q4_coherent_affine_shore_trade.py` reconstructs the formalized graph,
+its defect components, all maximizing cuts, and all `4!^2` assignments.  It
+asserts the sixteen-repair classification exactly.
+
+This makes the scalable question sharper.  A terminal must show that the
+binary biaffine model's `q` absolute incidences cannot be removed by a family
+of mutually coherent shore trades when `q>=8`.  Merely proving that each
+individual selector admits the split-to-nonbip trade is false already at the
+control; the obstruction, if true, lives in compatibility among at least
+three direction pairs.
+
 ### Exact coherence of the `q=4` shore trade
 
 The local trade normal form is compatible across the two selector colors,
