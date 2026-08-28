@@ -206,6 +206,42 @@ theorem orderFortyNineOrdinaryHighCode_pair_dichotomy
       G hfree hmin hhigh hh)
     hp hq hpq
 
+/-- Among the three edges joining three pairpoints of three open codes, at
+most one can occur.  Any two such edges share a pairpoint; their other
+endpoints both belong to the remaining code, contradicting its unique-owner
+property. -/
+theorem threeOpenCodes_pairpoint_edges_atMostOne
+    {V : Type*} (H : SimpleGraph V)
+    {A B C : Set V}
+    (hA : IsOpenCode H A) (hB : IsOpenCode H B) (hC : IsOpenCode H C)
+    {pAB pAC pBC : V}
+    (hpAB_A : pAB ∈ A) (hpAB_B : pAB ∈ B)
+    (hpAC_A : pAC ∈ A) (hpAC_C : pAC ∈ C)
+    (hpBC_B : pBC ∈ B) (hpBC_C : pBC ∈ C)
+    (hneAB_AC : pAB ≠ pAC)
+    (hneAB_BC : pAB ≠ pBC)
+    (hneAC_BC : pAC ≠ pBC) :
+    ¬ ((H.Adj pAB pAC ∧ H.Adj pAB pBC) ∨
+       (H.Adj pAB pAC ∧ H.Adj pAC pBC) ∨
+       (H.Adj pAB pBC ∧ H.Adj pAC pBC)) := by
+  intro hedges
+  rcases hedges with hAtC | hAtB | hAtA
+  · obtain ⟨owner, howner, hunique⟩ := hC pAB
+    have hAC : pAC = owner := hunique pAC ⟨hpAC_C, hAtC.1⟩
+    have hBC : pBC = owner := hunique pBC ⟨hpBC_C, hAtC.2⟩
+    exact hneAC_BC (hAC.trans hBC.symm)
+  · obtain ⟨owner, howner, hunique⟩ := hB pAC
+    have hAB : pAB = owner := hunique pAB
+      ⟨hpAB_B, (H.adj_comm pAB pAC).mp hAtB.1⟩
+    have hBC : pBC = owner := hunique pBC ⟨hpBC_B, hAtB.2⟩
+    exact hneAB_BC (hAB.trans hBC.symm)
+  · obtain ⟨owner, howner, hunique⟩ := hA pBC
+    have hAB : pAB = owner := hunique pAB
+      ⟨hpAB_A, (H.adj_comm pAB pBC).mp hAtA.1⟩
+    have hAC : pAC = owner := hunique pAC
+      ⟨hpAC_A, (H.adj_comm pAC pBC).mp hAtA.2⟩
+    exact hneAB_AC (hAB.trans hAC.symm)
+
 end
 
 end Erdos85
@@ -214,3 +250,4 @@ end Erdos85
 #print axioms Erdos85.orderFortyNineOrdinaryHighCode_isOpenCode
 #print axioms Erdos85.openPerfectCode_marked_pair_dichotomy
 #print axioms Erdos85.orderFortyNineOrdinaryHighCode_pair_dichotomy
+#print axioms Erdos85.threeOpenCodes_pairpoint_edges_atMostOne
