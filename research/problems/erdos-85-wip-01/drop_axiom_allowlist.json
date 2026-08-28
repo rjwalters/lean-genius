@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "allowed_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound",
+    "Lean.ofReduceBool"
+  ],
+  "native_axiom": "Lean.ofReduceBool",
+  "native_families": [
+    {
+      "id": "order-48-witness",
+      "module_regex": "Proofs\\.Erdos85Boza48Witness",
+      "declaration_regex": "Erdos85\\..*"
+    },
+    {
+      "id": "h1-certificate-and-inventory",
+      "module_regex": "Proofs\\.Erdos85(OrderFortyNineOneHigh.*|H1.*)",
+      "declaration_regex": "Erdos85\\..*"
+    },
+    {
+      "id": "h3-certificate-and-canonicalization",
+      "module_regex": "Proofs\\.Erdos85OrderFortyNine(ThreeHigh.*|SmallHigh.*Three.*|SmallHighCubeGridTerminal)",
+      "declaration_regex": "Erdos85\\..*"
+    },
+    {
+      "id": "h5-certificate-and-canonicalization",
+      "module_regex": "Proofs\\.Erdos85OrderFortyNine(FiveHigh.*|SmallHigh.*Five.*|SmallHighCubeGridTerminal)",
+      "declaration_regex": "Erdos85\\..*"
+    },
+    {
+      "id": "h7-certificate-and-canonicalization",
+      "module_regex": "Proofs\\.Erdos85OrderFortyNine(SevenHigh.*|T[0-7].*|SmallHigh.*Seven.*|SmallHighCubeGridTerminal)",
+      "declaration_regex": "Erdos85\\..*"
+    },
+    {
+      "id": "finite-drop-assembly",
+      "module_regex": "Proofs\\.Erdos85(OrderFortyNine(StrataCapstone|DropFrontier|SmallHighDropFrontier|PartitionedCanonicalDropFrontier)|FiniteDropCapstone|FiniteDropWitnesses)",
+      "declaration_regex": "Erdos85\\..*"
+    }
+  ]
+}

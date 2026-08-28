@@ -345,31 +345,45 @@ bipartite when `4 ∣ q`
 all-non-bipartite connected-or-mixed node A-REG-NONBIP; the post-inverse
 divergence found no surviving terminal (room msgs 31962–31964).
 
-### The 48-to-49 campaign: one conditional finite drop
+### The 48-to-49 campaign: certificate production is live
 
-The existence and lower-bound jaws are checked, and Lean already contains
-the complete final socket.  Given exclusion of the one-high and seven-high
-strata and five canonical h3/h5 LRAT checks,
-`minDegreeForC4_fortyEight_fortyNine_exact_of_smallHighLratChecks` proves
-`f(48)=8 ∧ f(49)=7`; its corollary
-`minDegreeForC4_fortyNine_lt_fortyEight_of_smallHighLratChecks` proves the
-strict drop.  The graph-normalization consumer is
-`not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighLratChecks`.
+The existence and degree-six lower-bound jaws are checked.  The graph-to-CNF
+consumer
+`not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighCubeBaseUnsat`
+assembles one-, three-, five-, and seven-high exclusions into nonexistence of a
+degree-seven witness at order 49.  The order-theoretic capstone then turns the
+48-vertex degree-seven witness and this nonexistence result into
+`f(48)=8 ∧ f(49)=7` and the strict inequality `f(49)<f(48)`.  The unconditional
+composition of those inputs has not yet landed, so the repository still does
+**not** contain a completed finite-drop theorem.
 
-Those hypotheses have **not all landed**, so this is not yet a decided
-drop.  Under operator goal #39, the local host is running the thirteen-cell
-campaign: four three-high scout cells, three five-high cells, and six cubes
-of the remaining seven-high t0 case (room msgs 31965–31966 and the pre-fire
-manifest, msg 31994).  These thirteen cells do not include the one-high
-exclusion: the final H1 aggregation still requires all 13,351 capacity rows,
-of which only 493 have Lean-accepted certificates and 12,858 remain pending
-(independent audits, room msgs 32010 and 32016).  Thus this spend cannot by
-itself decide the drop unless H1 is closed separately.  Tier A
-expands the seven h3/h5 cells into 406 checked cube jobs.  Because those
-checks produce base-CNF `Unsat` values while the older final socket accepts
-monolithic `LRAT.check` witnesses, the room identified and claimed a narrow
-cube-grid-to-semantic terminal before reporting any solver verdict as a
-drop (room msgs 31971–31974).
+As of 28 August 2026, the H1 campaign has moved from host-only grinding to a
+four-node fleet-v2 design.  The first real fleet artifact,
+`107bcf9caf9e92f8`, returned `UNSAT` with solver code 20; `drat-trim` verified
+it, compaction succeeded, and the compact certificate uploaded.  The first
+node is producing, while three siblings are being relaunched with the corrected
+preflight/ERR-trap handling.  The authoritative H1 capacity universe is 13,351
+rows: 2,503 all-even rows and a Lean-proved 10,848-row complement.  A separate
+13,541-row compact inventory is under provenance reconciliation and is not
+silently treated as 190 additional pending capacity jobs.
+
+Certificate arrival is only the first half of H1 closure.  A separate resumable
+Lean replay stage must consume each compact LRAT in a self-contained external
+overlay, emit a hashed `.olean` and audit receipt, and mark the source object
+`replay=consumed`; that marker drives the approved seven-day transition to
+Glacier Instant Retrieval.  The measured 122-module pilot produced 30.8 GB of
+raw leaf oleans, so this replay is now a calendar pole in its own right.  In
+parallel, the drop-socket lane is keeping the H1 aggregate generator current
+and will run the prepared Tier-A 396-job restart and H7 232-leaf queue as host
+cores become available (operator goal #43, room msg 35750).
+
+No fleet ledger estimate is promoted here to a proof count.  Final status will
+come from a bijection between the Lean-proven inventory, durable certificate
+objects, replay receipts, and the hypotheses of the composed socket.  Mandate
+1318 additionally requires a clean-checkout build, full LRAT replay, and a
+literal dependency-cone axiom audit before the completing merge or
+`erdos85-drop-v1` tag.  Until all of those gates pass, the honest status remains
+“campaign in flight,” not “drop proved.”
 
 ### The 63-to-64 campaign: useful finite evidence, still open
 
