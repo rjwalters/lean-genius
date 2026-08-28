@@ -30,6 +30,40 @@ def hole_graph(owner: list[list[int]]) -> nx.Graph:
     return graph
 
 
+def owner_incidence_graph(owner: list[list[int]]) -> nx.Graph:
+    """Colored incidence graph of the singleton-owner partial Latin table."""
+    graph = nx.Graph()
+    for h in range(3):
+        for u in CODES[h]:
+            if support(u) == 1:
+                graph.add_node(("owner", h, u), kind=f"owner{h}")
+    cell = 0
+    for point in range(46):
+        triple = tuple(owner[h][point] for h in range(3))
+        if all(support(u) == 1 for u in triple):
+            cell_node = ("cell", cell)
+            graph.add_node(cell_node, kind="cell")
+            for h, u in enumerate(triple):
+                graph.add_edge(cell_node, ("owner", h, u))
+            cell += 1
+    return graph
+
+
+def exact_colored_kind(
+    graph: nx.Graph,
+    representatives: dict[str, list[tuple[int, nx.Graph]]],
+    next_kind: int,
+) -> tuple[int, int, str]:
+    """Classify exactly, using a WL hash only to bucket comparisons."""
+    digest = nx.weisfeiler_lehman_graph_hash(graph, node_attr="kind")
+    node_match = nx.algorithms.isomorphism.categorical_node_match("kind", None)
+    for kind, representative in representatives.setdefault(digest, []):
+        if nx.is_isomorphic(graph, representative, node_match=node_match):
+            return kind, next_kind, digest
+    representatives[digest].append((next_kind, graph.copy()))
+    return next_kind, next_kind + 1, digest
+
+
 def component_signature(graph: nx.Graph) -> tuple:
     components = []
     for vertices in nx.connected_components(graph):
@@ -107,6 +141,10 @@ def main() -> int:
         "--force-identity", action="store_true",
         help="force the hole holonomy to be five tripartite triangles",
     )
+    parser.add_argument(
+        "--full-table", action="store_true",
+        help="classify the full 31-cell singleton-owner incidence graph",
+    )
     args = parser.parse_args()
 
     solver, variables = build_solver()
@@ -126,6 +164,12 @@ def main() -> int:
     counts = Counter()
     signatures = {}
     dual_shapes = Counter()
+    full_representatives: dict[str, list[tuple[int, nx.Graph]]] = {}
+    next_full_kind = 0
+    full_counts = Counter()
+    cross_counts = Counter()
+    full_hashes = {}
+    full_cells = {}
     for sample in range(args.samples):
         if solver.check() != z3.sat:
             break
@@ -138,6 +182,17 @@ def main() -> int:
         kind = classify(graph, representatives)
         counts[kind] += 1
         signatures[kind] = component_signature(graph)
+        if args.full_table:
+            incidence = owner_incidence_graph(owner)
+            full_kind, next_full_kind, digest = exact_colored_kind(
+                incidence, full_representatives, next_full_kind
+            )
+            full_counts[full_kind] += 1
+            cross_counts[(kind, full_kind)] += 1
+            full_hashes[full_kind] = digest
+            full_cells[full_kind] = sum(
+                1 for _, data in incidence.nodes(data=True) if data["kind"] == "cell"
+            )
         if args.dual:
             dual_shapes[(kind, sparse_dual_shape(owner))] += 1
         solver.add(z3.Or(*(
@@ -154,6 +209,19 @@ def main() -> int:
             for (dual_kind, shape), count in sorted(dual_shapes.items(), key=str):
                 if dual_kind == kind:
                     print(f"  dual_count={count} shape={shape}")
+    if args.full_table:
+        print(f"full_table_types={len(full_counts)}")
+        for full_kind in sorted(full_counts):
+            hole_kinds = tuple(sorted(
+                (hole_kind, count)
+                for (hole_kind, table_kind), count in cross_counts.items()
+                if table_kind == full_kind
+            ))
+            print(
+                f"full_type={full_kind} count={full_counts[full_kind]} "
+                f"cells={full_cells[full_kind]} wl={full_hashes[full_kind]} "
+                f"hole_types={hole_kinds}"
+            )
     return 0
 
 
