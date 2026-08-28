@@ -79,6 +79,23 @@ At `q=8`, the exact calibration has `Smith(N)=1^15,2`,
 `v2(det(N^T N))=21`, and `v2(tau(D))=13`, confirming directly that increasing
 the binary exponent creates no forbidden valuation pattern.
 
+The same control already admits one self-indexed diagonal cycle.  Among the
+edge-points of `F`, select
+
+`e_i = {i-1,i+1}` for i in `Z/(2q)`.
+
+These are `2q` distinct difference-two edges.  Identify block vertex `i`
+with the ambient point label `e_i`.  The corresponding square submatrix of
+`N` is symmetric: row `e_i` is incident with precisely the two columns
+`i-1,i+1`.  It is therefore the adjacency matrix of the Hamilton cycle
+`C_(2q)` on the selected labels.  Thus an unlabeled-packing defect is not the
+only reason the countermodel survives: it realizes the correct symmetric
+cycle-incidence block for one size-two component as well.  What remains
+absent is simultaneous self-indexing of the complementary components and a
+single symmetric ambient adjacency matrix coupling all of them.  Any viable
+packing consumer must use that multi-component reciprocity, not merely add
+one diagonal owner cycle.
+
 ### The canonical Hoffman cocliques are real but nonterminal
 
 The post-reveal Hoffman candidate does have its proposed equality witness.
