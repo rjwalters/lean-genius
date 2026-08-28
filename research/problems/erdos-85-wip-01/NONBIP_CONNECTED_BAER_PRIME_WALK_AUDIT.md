@@ -103,6 +103,35 @@ tr(A D^2)
   = 2 * sum_{xy in E(A)} |N_D(x) intersect N_D(y)|.   (5)
 ```
 
+This first case already has a stronger C4-sensitive reduction in Lean.
+Write `D=C+T`, where `C` is the antipodal graph (nonpairs with no common
+ambient neighbor) and `T` is the graph of ambient edges lying in no
+triangle.  The theorem
+
+```text
+trace_adj_mul_secondOrderDefect_sq_eq_antipodal_sq
+```
+
+in `Erdos85DefectSecondMixedMoment.lean` proves
+
+```text
+tr(A D^2) = tr(A C^2)
+          = 2 * sum_z e_A(N_C(z)).                      (6)
+```
+
+Indeed the three other color words `ACT`, `ATC`, and `ATT` vanish: an
+ambient edge cannot close a triangle with an antipodal edge and a
+triangle-free edge, nor with two triangle-free edges.  Thus when `p=5`,
+the prime-walk residue is the exact antipodal-service congruence
+
+```text
+2 * sum_z e_A(N_C(z)) = -1 (mod 5).                    (7)
+```
+
+This is the first genuinely independent consumer interface.  Re-expanding
+`D` or recomputing the fifth moment cannot contradict (7); one needs a new
+restriction on the ambient edges induced inside antipodal neighborhoods.
+
 Equation (4) therefore asks a location question in the same spirit as the
 canonical transport `K`: defect-walk endpoints must land on ambient edges
 with a prescribed nonzero prime residue.  Unlike determinant or ordinary
@@ -114,7 +143,11 @@ The exact calculation does **not** yet close `NONBIP-CONNECTED`.  None of the
 banked connectedness, C4-free, Eulerian-transport, or dyadic-shore theorems
 forces the left side of (4) to vanish modulo `p`.  For `p>=7` it is a higher
 mixed walk count with no current local capacity bound; for `p=5`, (5) is
-concrete but applies only when `4 | k`.
+concrete, reduces further to the antipodal service count (6), but applies
+only when `4 | k`.  The earlier `H7_R_MOD5_CONSUMER_AUDIT.md` independently
+warns against treating this residue as a mask- or moment-only obstruction:
+its next input also had to be a genuinely C4-sensitive restriction on the
+same overlap statistic.
 
 Therefore no Lean wrapper should be opened yet: (4) follows formally from
 the same square identity until a graph-facing consumer proves an incompatible
