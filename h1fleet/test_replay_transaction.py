@@ -16,8 +16,8 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 from replay_common import (
-    LocalObjectStore, ReplayError, SCHEMA, canonical_json, sha256_bytes, sha256_file,
-    validate_command_receipts,
+    LocalObjectStore, ReplayError, SCHEMA, canonical_json, load_manifest,
+    sha256_bytes, sha256_file, validate_command_receipts,
 )
 from audit_replay_leaf import parse_axioms
 from build_replay_manifest import publish_validated_manifest
@@ -482,6 +482,42 @@ class ReplayTransactionTest(unittest.TestCase):
         with self.assertRaises(ReplayError):
             publish_validated_manifest(output, canonical_json({"schema": SCHEMA}))
         self.assertFalse(output.exists())
+
+    def test_manifest_execution_controls_are_exact_before_publication(self) -> None:
+        original = json.loads(self.manifest.read_text())
+        mutations = (
+            ("queue_sha256", None, "missing string fields"),
+            ("queue_sha256", "not-a-sha", "lowercase SHA-256"),
+            ("expected_jobs", True, "positive integer"),
+            ("expected_jobs", 0, "positive integer"),
+            ("expected_jobs", -1, "positive integer"),
+            ("expected_jobs", "1", "positive integer"),
+            ("max_parallelism", True, "positive integer"),
+            ("max_parallelism", 0, "positive integer"),
+            ("max_parallelism", -1, "positive integer"),
+            ("max_parallelism", "1", "positive integer"),
+            ("single_dispatcher", False, "must be true"),
+            ("single_dispatcher", "true", "must be true"),
+            ("claim_ttl_seconds", True, "integer >= 60"),
+            ("claim_ttl_seconds", -1, "integer >= 60"),
+            ("claim_ttl_seconds", "60", "integer >= 60"),
+        )
+        for index, (field, value, message) in enumerate(mutations):
+            manifest = dict(original)
+            if value is None:
+                del manifest[field]
+            else:
+                manifest[field] = value
+            candidate = self.root / f"invalid-manifest-{index}.json"
+            candidate.write_bytes(canonical_json(manifest))
+            with self.subTest(field=field, value=value), self.assertRaisesRegex(
+                ReplayError, message
+            ):
+                load_manifest(candidate)
+            output = self.root / f"must-not-publish-{index}.json"
+            with self.assertRaisesRegex(ReplayError, message):
+                publish_validated_manifest(output, candidate.read_bytes())
+            self.assertFalse(output.exists())
 
 
 if __name__ == "__main__":

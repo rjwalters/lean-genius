@@ -105,6 +105,7 @@ def load_manifest(path: Path) -> dict[str, Any]:
         "instance_role", "s3_bucket",
         "aws_region",
         "receipt_integrity_scheme", "receipt_integrity_key_id",
+        "queue_sha256",
     )
     missing = [
         key for key in required_strings
@@ -120,8 +121,17 @@ def load_manifest(path: Path) -> dict[str, Any]:
         "validator_sha256",
         "receipt_schema_sha256", "aggregate_generator_sha256",
         "axiom_auditor_sha256", "common_sha256", "dispatcher_sha256",
+        "queue_sha256",
     ):
         require_sha(value[key], f"manifest.{key}")
+    expected_jobs = value.get("expected_jobs")
+    if type(expected_jobs) is not int or expected_jobs <= 0:
+        raise ReplayError("manifest.expected_jobs must be a positive integer")
+    maximum_parallelism = value.get("max_parallelism")
+    if type(maximum_parallelism) is not int or maximum_parallelism <= 0:
+        raise ReplayError("manifest.max_parallelism must be a positive integer")
+    if value.get("single_dispatcher") is not True:
+        raise ReplayError("manifest.single_dispatcher must be true")
     prefix = value["campaign_prefix"]
     if prefix.startswith("/") or ".." in prefix.split("/") or not prefix.endswith("/"):
         raise ReplayError("campaign_prefix must be normalized, relative, and end in /")
@@ -152,7 +162,7 @@ def load_manifest(path: Path) -> dict[str, Any]:
     ):
         raise ReplayError("manifest.environment_allowlist must be an uppercase variable-name list")
     ttl = value.get("claim_ttl_seconds", 86400)
-    if not isinstance(ttl, int) or ttl < 60:
+    if type(ttl) is not int or ttl < 60:
         raise ReplayError("manifest.claim_ttl_seconds must be an integer >= 60")
     return value
 
