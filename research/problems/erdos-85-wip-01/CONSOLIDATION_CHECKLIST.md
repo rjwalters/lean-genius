@@ -24,6 +24,14 @@ Canonical targets, fixed by the operator:
   states `minDegreeForC4 49 < minDegreeForC4 48`.
 - [ ] The editor names the exact final module and fully-qualified theorem that
   replace the audit command placeholders below.
+- [ ] The editor selects the replay receipt's keyed-integrity mechanism, key
+  identity, and verification contract.  Until a signer and independent
+  cryptographic verifier are implemented and reviewed, the replay worker must
+  remain fail-closed for every production backend; local transaction tests do
+  not satisfy this gate.
+- [ ] Test the selected signer and independent verifier end to end against the
+  exact production image and pinned key identity, including signature failure
+  on a one-byte payload mutation and a wrong-key mutation.
 - [ ] Freeze new mathematical lanes and record the integration commit, dirty
   status, Lean version, Lake manifest hash, and certificate-manifest hashes.
 - [ ] Confirm every active worktree owner has pushed or explicitly abandoned
@@ -36,6 +44,19 @@ Canonical targets, fixed by the operator:
   universe (2,503 all-even plus 10,848 complement).  Reconcile the separate
   13,541-row compact inventory and explain its 190 extra tags; never silently
   treat them as pending H1 capacity jobs.
+- [ ] H1 replay: freeze the exact 13,351-row queue only after the coverage
+  bijection, production identity formats, clean/tracked-file freight freeze,
+  and all manifest hashes pass validation.  Run the prescribed exact-image
+  real `P=1` large-leaf transaction: durable artifact read-back and immutable
+  replay-ready first, then lifecycle tagging with unchanged certificate
+  identity, then cryptographically verified final receipt and ledger.  Obtain
+  editor approval of measured RSS, throughput, concurrency, EBS shape, retry
+  margin, and total dollar estimate before any scaled launch.
+- [ ] Before the real replay transaction, independently inspect and test the
+  least-privilege replay role (no delete and no H1 certificate `PutObject`),
+  the prefix-and-`replay=consumed` Glacier-IR lifecycle rule, disk/concurrency
+  alarms, and the single-dispatcher claim policy.  Preserve the dry-run/config
+  evidence and editor approval.
 - [ ] H3: match every accepted scout/cube leaf to the exact semantic consumer
   and its discharging commit.
 - [ ] H5: match every accepted variable-high leaf to the exact semantic
@@ -60,6 +81,26 @@ Canonical targets, fixed by the operator:
   byte-exact CNF; archive command, tool hashes, return code, and complete log.
 - [ ] Validate every cloud Lean replay receipt, raw/compressed `.olean` hash,
   source hash, axiom audit, and `replay=consumed` lifecycle transaction.
+- [ ] Require each accepted replay receipt to pass the complete §4 schema and
+  cryptographic-integrity verifier.  A local-store receipt, replay-ready object,
+  lifecycle tag alone, unsigned/TBD receipt, or mechanics-only test result
+  contributes **zero** accepted leaves.
+- [ ] Reconcile exactly one cryptographically accepted receipt per intended H1
+  tag and no unknown receipts.  Independently reload and byte-hash the bound
+  immutable replay-ready record, all artifacts, the input certificate, and the
+  terminal ledger; exercise the missing-ledger recovery path without rewriting
+  the receipt.
+- [ ] Build the deterministic hierarchical H1 aggregate: leaf banks of direct
+  fan-in at most 128, profile dispatch layers with no direct leaf imports above
+  the bank layer, and a top module with exactly five profile imports.  Prove a
+  full `(profile, local-index, tag, theorem, module)` bijection with the 13,351
+  accepted leaves and bind the aggregate layout manifest and its own hash.
+- [ ] Cold-compile and literally audit `#print axioms` for every aggregate node
+  at every layer, ending at the top H1 bank.  A hand-written or syntax-only
+  smoke module is not completion evidence unless it is byte-bound to generated
+  output.
+- [ ] Retain the replay EBS snapshot, or independently restore and hash every
+  compressed `.olean`, until the complete aggregate/import audit has passed.
 - [ ] Confirm certificates are retained (Standard or Glacier Instant Retrieval
   according to the post-replay lifecycle); nothing required for reproducibility
   has been deleted.
@@ -113,6 +154,11 @@ allowlist.  Any other axiom is a release blocker.
   checker and reconcile its tag/hash set with the socket table.
 - [ ] Restore a sample of zstd-compressed cloud `.olean`s from durable storage,
   verify both compressed/raw hashes, and import them in an isolated overlay.
+- [ ] Independently reproduce the real `P=1` receipt with the pinned AMI,
+  container image, IMDSv2 instance identity, AWS CLI, overlay, generator,
+  checker, zstd, receipt schema, and cryptographic key identities; verify that
+  no placeholder (`TBD`, `UNKNOWN`, or local-test identity) entered the frozen
+  freight manifest.
 - [ ] Run the repository's relevant Python tests/generator self-checks and
   record exact commands/results.
 - [ ] Obtain independent reviewer approval for Lean build, certificate replay,
