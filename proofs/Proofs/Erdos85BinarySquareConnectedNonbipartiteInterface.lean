@@ -1,4 +1,5 @@
 import Proofs.Erdos85BinarySquareRegularCapstone
+import Proofs.Erdos85BinarySquareAllOddBipartitePartsExclusion
 
 /-! # The connected nonbipartite binary-square interface
 
@@ -27,6 +28,37 @@ def BinarySquareConnectedNonbipartiteExclusion : Prop :=
       ¬ (secondOrderDefectGraph G).IsBipartite →
       False
 
+/-- The uniform closed reduction that justifies the `nonbipartite` hypothesis
+in the branch socket: every defect component of a binary-square regular
+candidate admits no two-colouring of its induced edges. -/
+theorem binarySquare_twoPow_regular_no_bipartite_defectComponent
+    {k : ℕ} (hk : 3 ≤ k)
+    (G : SimpleGraph (Fin (2 ^ k * 2 ^ k))) [DecidableRel G.Adj]
+    (hfree : ¬ containsC4 (Fin (2 ^ k * 2 ^ k)) G)
+    (hreg : ∀ x, G.degree x = 2 ^ k)
+    (c : (secondOrderDefectGraph G).ConnectedComponent) :
+    ¬ ∃ col : Fin (2 ^ k * 2 ^ k) → Bool,
+      ∀ x y, x ∈ c.supp → y ∈ c.supp →
+        (secondOrderDefectGraph G).Adj x y → col x ≠ col y := by
+  classical
+  intro hbip
+  obtain ⟨col, hcol⟩ := hbip
+  obtain ⟨m, hm, _hsum⟩ :=
+    binarySquare_regular_exists_defectComponent_partition
+      G hfree (q := 2 ^ k) (by
+        calc
+          3 ≤ 2 ^ 3 := by norm_num
+          _ ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) hk)
+      hreg (by simp)
+  have hq4 : 4 ∣ 2 ^ k := by
+    simpa using Nat.pow_dvd_pow 2 (show 2 ≤ k by omega)
+  exact binarySquare_regular_no_bipartite_defectComponent
+    G hfree (q := 2 ^ k) (by
+      calc
+        3 ≤ 2 ^ 3 := by norm_num
+        _ ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) hk)
+    hq4 hreg (by simp) m hm c col hcol
+
 /-- The full regular exclusion implies its connected nonbipartite subcase.
 No converse is asserted here: closing Branch A also needs the already-developed
 reductions that route every regular candidate into this subcase. -/
@@ -39,3 +71,4 @@ theorem binarySquareConnectedNonbipartiteExclusion_of_regularExclusion
 end Erdos85
 
 #print axioms Erdos85.binarySquareConnectedNonbipartiteExclusion_of_regularExclusion
+#print axioms Erdos85.binarySquare_twoPow_regular_no_bipartite_defectComponent
