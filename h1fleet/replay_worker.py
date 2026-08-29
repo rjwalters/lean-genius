@@ -50,9 +50,9 @@ def validate_job(job: dict[str, Any], tag_argument: str) -> dict[str, Any]:
         raise ReplayError("job.table_serialization must be a nonempty string")
     if sha256_bytes(job["table_serialization"].encode()) != job["table_sha256"]:
         raise ReplayError("job table serialization/hash mismatch")
-    expected_suffix = f"h1/{tag}.compact.lrat.gz"
-    if not job["certificate_key"].endswith(expected_suffix):
-        raise ReplayError(f"certificate key must end in {expected_suffix}")
+    expected_key = f"sat49/campaign-20260825/h1/{tag}.compact.lrat.gz"
+    if job["certificate_key"] != expected_key:
+        raise ReplayError(f"certificate key must equal {expected_key}")
     return job
 
 

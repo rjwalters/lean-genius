@@ -251,6 +251,22 @@ class ReplayTransactionTest(unittest.TestCase):
         with self.assertRaisesRegex(ReplayError, "duplicate profile/local-index slots"):
             load_queue(duplicate_slots)
 
+    def test_job_rejects_noncanonical_certificate_prefix(self) -> None:
+        job = json.loads(self.job.read_text())
+        self.assertIs(validate_job(job, self.tag), job)
+        for prefix in (
+            "attacker-copy/h1/",
+            "../h1/",
+            "/sat49/campaign-20260825/h1/",
+            "sat49/campaign-20260825/extra/h1/",
+        ):
+            malformed = dict(job)
+            malformed["certificate_key"] = f"{prefix}{self.tag}.compact.lrat.gz"
+            with self.subTest(prefix=prefix), self.assertRaisesRegex(
+                ReplayError, "certificate key must equal"
+            ):
+                validate_job(malformed, self.tag)
+
     def test_literal_axiom_report_parser(self) -> None:
         output = (
             "noise\naxioms Erdos85.h1V2P0I00003Checked : "
