@@ -26,7 +26,8 @@ from pathlib import Path
 from typing import Any
 
 from replay_common import (
-    NATIVE_AXIOM_PATTERN, READY_SCHEMA, RECEIPT_SCHEMA, AwsCliObjectStore, LocalObjectStore, ObjectStore,
+    NATIVE_AXIOM_PATTERN, READY_SCHEMA, RECEIPT_SCHEMA, AwsCliObjectStore,
+    LocalObjectStore, ObjectInfo, ObjectStore,
     ReplayError,
     atomic_write, canonical_json, expand_command, info_record, load_json,
     load_manifest, require_sha, require_tag, run_command, sha256_bytes,
@@ -180,6 +181,34 @@ def try_load_remote_json(store: ObjectStore, key: str, destination: Path) -> dic
             return None
         raise
     return load_json(destination)
+
+
+def try_load_remote_json_with_info(
+    store: ObjectStore, key: str, destination: Path,
+) -> tuple[dict[str, Any], ObjectInfo] | None:
+    try:
+        info = store.download(key, destination)
+    except ReplayError as error:
+        if str(error).startswith("missing object:"):
+            return None
+        raise
+    return load_json(destination), info
+
+
+STABLE_OBJECT_FIELDS = (
+    "key", "size", "sha256", "etag", "last_modified", "version_id",
+    "metadata", "tags",
+)
+
+
+def require_stable_object_identity(
+    label: str, expected: object, actual: ObjectInfo,
+) -> None:
+    if not isinstance(expected, dict):
+        raise ReplayError(f"{label} object identity is malformed")
+    for field in STABLE_OBJECT_FIELDS:
+        if expected.get(field) != getattr(actual, field):
+            raise ReplayError(f"{label} object identity mismatch at {field}")
 
 
 def validate_ready(ready: dict[str, Any], manifest: dict[str, Any], job: dict[str, Any],
@@ -503,23 +532,37 @@ def validate_existing_receipt(store: ObjectStore, manifest: dict[str, Any],
         or integrity.get("key_id") != manifest["receipt_integrity_key_id"]
     ):
         raise ReplayError("existing receipt integrity declaration mismatch")
-    if integrity["scheme"] != "local-test-unkeyed" and not isinstance(integrity.get("value"), str):
+    if integrity["scheme"] == "local-test-unkeyed":
+        if integrity != {
+            "scheme": "local-test-unkeyed", "key_id": "local-test", "value": None,
+        }:
+            raise ReplayError("existing local receipt integrity declaration is malformed")
+    elif not isinstance(integrity.get("value"), str) or not integrity["value"]:
         raise ReplayError("existing receipt lacks keyed integrity evidence")
     prefix = manifest["campaign_prefix"]
-    ready = try_load_remote_json(
+    loaded_ready = try_load_remote_json_with_info(
         store, ready_key(prefix, job["tag"]), work / "accepted-ready.json"
     )
-    if ready is None:
+    if loaded_ready is None:
         raise ReplayError("accepted receipt lacks replay-ready record")
+    ready, ready_info = loaded_ready
     validate_ready(ready, manifest, job, store)
     if receipt.get("replay_ready_sha256") != sha256_bytes(canonical_json(ready)):
         raise ReplayError("accepted receipt has wrong replay-ready hash")
-    if receipt.get("artifacts") != ready.get("artifacts"):
-        raise ReplayError("accepted receipt artifacts differ from replay-ready")
-    if receipt.get("axiom_audit") != ready.get("axiom_audit"):
-        raise ReplayError("accepted receipt audit differs from replay-ready")
-    if receipt.get("certificate_before_tagging") != ready.get("certificate"):
-        raise ReplayError("accepted receipt pre-tag identity differs from replay-ready")
+    for field in (
+        "job_identity", "build_identity", "module", "compact_lrat", "source_raw",
+        "olean_raw", "commands", "work_root", "worker_runtime", "artifacts",
+        "axiom_audit",
+    ):
+        if receipt.get(field) != ready.get(field):
+            raise ReplayError(f"accepted receipt {field} differs from replay-ready")
+    for field in ("certificate", "certificate_before_tagging"):
+        if receipt.get(field) != ready.get("certificate"):
+            raise ReplayError(f"accepted receipt {field} differs from replay-ready")
+    require_stable_object_identity(
+        "accepted receipt replay-ready", receipt.get("replay_ready"), ready_info)
+    if receipt["replay_ready"].get("sha256") != receipt["replay_ready_sha256"]:
+        raise ReplayError("accepted receipt replay-ready hashes differ")
     operation = receipt.get("tagging_operation")
     expected_kind = {
         "performed": "put-object-tagging",
@@ -530,6 +573,8 @@ def validate_existing_receipt(store: ObjectStore, manifest: dict[str, Any],
     after = receipt.get("certificate_after_tagging")
     if not isinstance(after, dict):
         raise ReplayError("accepted receipt lacks certificate tagging record")
+    if receipt["tagging_request_id"] != after.get("tagging_request_id"):
+        raise ReplayError("accepted receipt tagging request identifiers differ")
     with tempfile.TemporaryDirectory() as temporary:
         certificate = store.download(
             job["certificate_key"], Path(temporary) / "accepted-certificate")
@@ -538,17 +583,18 @@ def validate_existing_receipt(store: ObjectStore, manifest: dict[str, Any],
     original_tags = ready["certificate"].get("tags")
     if not isinstance(original_tags, dict) or certificate.tags != dict(original_tags, replay="consumed"):
         raise ReplayError("accepted certificate tags differ from preserved ready evidence")
-    if (certificate.etag, certificate.size, certificate.sha256, certificate.last_modified,
-        certificate.version_id) != (
-        after.get("etag"), after.get("size"), after.get("sha256"), after.get("last_modified"),
-        after.get("version_id")
-    ):
-        raise ReplayError("accepted certificate identity no longer matches receipt")
+    require_stable_object_identity(
+        "accepted receipt certificate-after-tagging", after, certificate)
     ledger = try_load_remote_json(
         store, ledger_key(prefix, job["tag"]), work / "accepted-ledger.json"
     )
     if ledger is None:
         return False
+    expected_ledger_fields = {
+        "schema", "tag", "receipt_key", "receipt_sha256", "manifest_sha256", "accepted",
+    }
+    if set(ledger) != expected_ledger_fields or ledger.get("schema") != "erdos85-h1-replay-ledger-v1":
+        raise ReplayError("terminal ledger schema is malformed")
     receipt_info = store.head(receipt_key(prefix, job["tag"]))
     if ledger.get("accepted") is not True or ledger.get("tag") != job["tag"]:
         raise ReplayError("terminal ledger is malformed")

@@ -24,7 +24,9 @@ from replay_common import (
 )
 from audit_replay_leaf import parse_axioms
 from build_replay_manifest import publish_validated_manifest
-from replay_worker import validate_job, validate_production_manifest
+from replay_worker import (
+    validate_existing_receipt, validate_job, validate_production_manifest,
+)
 from run_replay_queue import load_queue
 import validate_replay_receipt as replay_receipt_validator
 from validate_replay_receipt import validate_production_backend_binding
@@ -162,6 +164,27 @@ class ReplayTransactionTest(unittest.TestCase):
         meta["tags"] = tags
         meta.pop("tagging_request_id", None)
         meta_path.write_bytes(canonical_json(meta))
+
+    def rewrite_store_json(self, key: str, value: dict) -> bytes:
+        encoded = canonical_json(value)
+        object_path = self.store.objects / key
+        meta_path = self.store.meta / f"{key}.json"
+        object_path.write_bytes(encoded)
+        meta = json.loads(meta_path.read_text())
+        digest = sha256_bytes(encoded)
+        meta.update(size=len(encoded), sha256=digest, etag=digest)
+        meta_path.write_bytes(canonical_json(meta))
+        return encoded
+
+    def rewrite_receipt_and_rebind_ledger(self, receipt: dict) -> tuple[bytes, bytes]:
+        prefix = "sat49/campaign-20260825/h1-replay/"
+        receipt_key = f"{prefix}receipts/{self.tag}.json"
+        receipt_bytes = self.rewrite_store_json(receipt_key, receipt)
+        ledger_key = f"{prefix}ledger/{self.tag}.accepted"
+        ledger = json.loads((self.store.objects / ledger_key).read_text())
+        ledger["receipt_sha256"] = sha256_bytes(receipt_bytes)
+        ledger_bytes = self.rewrite_store_json(ledger_key, ledger)
+        return receipt_bytes, ledger_bytes
 
     def test_success_resume_and_independent_validation(self) -> None:
         first = self.worker()
@@ -427,6 +450,101 @@ class ReplayTransactionTest(unittest.TestCase):
         self.assertEqual(resumed.returncode, 0, resumed.stderr)
         self.assertIn("RECOVERED_LEDGER", resumed.stdout)
         self.assertEqual(sha256_file(self.receipt_path()), receipt_sha)
+
+    def test_resume_rejects_each_inconsistent_receipt_duplicate(self) -> None:
+        self.assertEqual(self.worker().returncode, 0)
+        prefix = "sat49/campaign-20260825/h1-replay/"
+        receipt_key = f"{prefix}receipts/{self.tag}.json"
+        ledger_key = f"{prefix}ledger/{self.tag}.accepted"
+        paths = (
+            self.store.objects / receipt_key, self.store.meta / f"{receipt_key}.json",
+            self.store.objects / ledger_key, self.store.meta / f"{ledger_key}.json",
+        )
+        originals = [path.read_bytes() for path in paths]
+        duplicate_fields = (
+            "job_identity", "build_identity", "module", "compact_lrat",
+            "source_raw", "olean_raw", "commands", "work_root",
+            "worker_runtime", "artifacts", "axiom_audit", "certificate",
+            "certificate_before_tagging",
+        )
+        for field in duplicate_fields:
+            receipt = json.loads(originals[0])
+            receipt[field] = "evil"
+            receipt_bytes, ledger_bytes = self.rewrite_receipt_and_rebind_ledger(receipt)
+            with self.subTest(field=field):
+                result = self.worker()
+                self.assertEqual(result.returncode, 2)
+                self.assertIn(field, result.stderr)
+                self.assertEqual(paths[0].read_bytes(), receipt_bytes)
+                self.assertEqual(paths[2].read_bytes(), ledger_bytes)
+                self.assertEqual(self.store.head(self.certificate_key).tags.get("replay"), "consumed")
+            for path, original in zip(paths, originals):
+                path.write_bytes(original)
+
+    def test_resume_rejects_ready_tagging_and_local_integrity_inconsistency(self) -> None:
+        self.assertEqual(self.worker().returncode, 0)
+        prefix = "sat49/campaign-20260825/h1-replay/"
+        receipt_key = f"{prefix}receipts/{self.tag}.json"
+        ledger_key = f"{prefix}ledger/{self.tag}.accepted"
+        paths = (
+            self.store.objects / receipt_key, self.store.meta / f"{receipt_key}.json",
+            self.store.objects / ledger_key, self.store.meta / f"{ledger_key}.json",
+        )
+        originals = [path.read_bytes() for path in paths]
+        mutations = (
+            ("replay-ready", lambda r: r["replay_ready"].__setitem__("etag", "evil")),
+            ("tagging request", lambda r: r.__setitem__("tagging_request_id", "evil")),
+            ("certificate-after-tagging", lambda r: r["certificate_after_tagging"]["metadata"].__setitem__("evil", "x")),
+            ("certificate-after-tagging", lambda r: r["certificate_after_tagging"]["tags"].__setitem__("replay", "evil")),
+            ("local receipt integrity", lambda r: r["integrity"].__setitem__("value", "evil")),
+            ("local receipt integrity", lambda r: r["integrity"].__setitem__("extra", True)),
+        )
+        for message, mutate in mutations:
+            receipt = json.loads(originals[0])
+            mutate(receipt)
+            self.rewrite_receipt_and_rebind_ledger(receipt)
+            with self.subTest(message=message):
+                result = self.worker()
+                self.assertEqual(result.returncode, 2)
+                self.assertIn(message, result.stderr)
+            for path, original in zip(paths, originals):
+                path.write_bytes(original)
+
+    def test_resume_rejects_nonlocal_empty_integrity_value(self) -> None:
+        self.assertEqual(self.worker().returncode, 0)
+        manifest = json.loads(self.manifest.read_text())
+        manifest["manifest_sha256"] = sha256_file(self.manifest)
+        manifest["receipt_integrity_scheme"] = "future-keyed-scheme"
+        manifest["receipt_integrity_key_id"] = "future-key"
+        job = json.loads(self.job.read_text())
+        job["job_sha256"] = sha256_file(self.job)
+        receipt = json.loads(self.receipt_path().read_text())
+        receipt["integrity"] = {
+            "scheme": "future-keyed-scheme", "key_id": "future-key", "value": "",
+        }
+        with self.assertRaisesRegex(ReplayError, "lacks keyed integrity evidence"):
+            validate_existing_receipt(self.store, manifest, job, receipt, self.state / "direct")
+
+    def test_resume_requires_exact_ledger_schema(self) -> None:
+        self.assertEqual(self.worker().returncode, 0)
+        ledger_key = f"sat49/campaign-20260825/h1-replay/ledger/{self.tag}.accepted"
+        object_path = self.store.objects / ledger_key
+        meta_path = self.store.meta / f"{ledger_key}.json"
+        originals = (object_path.read_bytes(), meta_path.read_bytes())
+        mutations = (
+            lambda value: value.__setitem__("schema", "evil"),
+            lambda value: value.pop("receipt_key"),
+            lambda value: value.__setitem__("unknown", True),
+        )
+        for mutate in mutations:
+            ledger = json.loads(originals[0])
+            mutate(ledger)
+            self.rewrite_store_json(ledger_key, ledger)
+            result = self.worker()
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("terminal ledger schema", result.stderr)
+            object_path.write_bytes(originals[0])
+            meta_path.write_bytes(originals[1])
 
     def test_e_changed_input_and_lost_tag_fail_closed(self) -> None:
         self.assertEqual(self.worker().returncode, 0)
