@@ -4,8 +4,10 @@
 Only packed LRATs whose source compacts already passed direct Lean replay may
 be emitted.  Every packed payload is hash/size checked before source emission.
 Operational orbit tags are checked as provenance but never occur in the table
-type.  By default each generated theorem is indexed by ``(profile,
-localIndex)`` into ``oneHighInventoryTables``.  A terminal campaign may also
+type.  By default each generated theorem is indexed by the capacity ordinal
+``(profile, localIndex)`` into ``oneHighCapacityInventoryTables``.  Historical
+raw-inventory indexes require the explicit ``--legacy-raw-inventory`` escape
+hatch and cannot be consumed by the capacity aggregate.  A terminal campaign may also
 supply its ordered jobs manifest and terminal table-list definition; emitted
 tables then use the corresponding terminal-local index, making an ordered
 checked bank definitionally cover that consumer inventory.
@@ -24,6 +26,8 @@ from pathlib import Path
 
 
 PROFILE_NAMES = ("BBBB", "ABBB", "AABB", "AAAB", "AAAA")
+CAPACITY_PROFILE_COUNTS = (1485, 3617, 4717, 2693, 839)
+RAW_PROFILE_COUNTS = (1536, 3662, 4801, 2700, 842)
 EXPECTED_COLUMNS = (
     "orbit",
     "profile",
@@ -96,7 +100,9 @@ def worker_tag(values: tuple[int, ...]) -> str:
     return hashlib.sha1(json.dumps(sorted(table.items())).encode()).hexdigest()[:16]
 
 
-def read_inventory(path: Path) -> list[list[str]]:
+def read_inventory(
+    path: Path, expected_counts: tuple[int, ...] = CAPACITY_PROFILE_COUNTS
+) -> list[list[str]]:
     profiles: list[list[str]] = [[] for _ in PROFILE_NAMES]
     for line_number, line in enumerate(path.read_text().splitlines(), 1):
         if not line:
@@ -108,8 +114,7 @@ def read_inventory(path: Path) -> list[list[str]]:
         if profile not in range(5) or len(values) != 24:
             raise ValueError(f"{path}:{line_number}: malformed inventory row")
         profiles[profile].append(worker_tag(tuple(values)))
-    expected = (1536, 3662, 4801, 2700, 842)
-    if tuple(map(len, profiles)) != expected:
+    if tuple(map(len, profiles)) != expected_counts:
         raise ValueError(f"unexpected inventory profile counts: {tuple(map(len, profiles))}")
     return profiles
 
@@ -219,7 +224,7 @@ def validate_row(
 
 def lean_source(
     row: IndexRow, payload: Path, terminal: TerminalTableTarget | None = None,
-    include_path_expr: str | None = None,
+    include_path_expr: str | None = None, legacy_raw_inventory: bool = False,
 ) -> str:
     stem = f"h1V2P{row.profile}I{row.local_index:05d}"
     path_expr = include_path_expr or json.dumps(str(payload))
@@ -229,6 +234,10 @@ def lean_source(
         if terminal and terminal.profile_indexed
         else terminal.definition if terminal else ""
     )
+    inventory_definition = (
+        "oneHighInventoryTables" if legacy_raw_inventory
+        else "oneHighCapacityInventoryTables"
+    )
     table_source = (
         f"  (oneHighInventoryTables ({row.profile} : Fin 5)).get\n"
         f"    ⟨{row.local_index}, by native_decide⟩"
@@ -236,7 +245,7 @@ def lean_source(
         f"  {terminal_table_expr}.get\n"
         f"    ⟨{terminal.index}, by native_decide⟩"
         if terminal
-        else f"  (oneHighInventoryTables ({row.profile} : Fin 5)).get\n"
+        else f"  ({inventory_definition} ({row.profile} : Fin 5)).get\n"
              f"    ⟨{row.local_index}, by native_decide⟩"
     )
     terminal_metadata = (
@@ -331,15 +340,17 @@ def atomic_write(path: Path, text: str) -> None:
 
 
 def main() -> int:
-    script = Path(__file__).resolve()
-    repo = script.parents[4]
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--index", type=Path, required=True)
     parser.add_argument("--cert-root", type=Path, required=True)
+    parser.add_argument("--inventory", type=Path, required=True)
     parser.add_argument(
-        "--inventory",
-        type=Path,
-        default=repo / "proofs/Proofs/Certificates/h1_orbit_inventory.compact",
+        "--legacy-raw-inventory",
+        action="store_true",
+        help=(
+            "accept the historical 13,541-row raw census and emit raw-list "
+            "stubs; these are intentionally incompatible with the capacity aggregate"
+        ),
     )
     parser.add_argument("--output-dir", type=Path)
     parser.add_argument(
@@ -437,13 +448,20 @@ def main() -> int:
         parser.error("--terminal-intersection requires the three terminal options")
     if args.terminal_raw_inventory_table and not all(terminal_options):
         parser.error("--terminal-raw-inventory-table requires the three terminal options")
+    if args.terminal_raw_inventory_table and not args.legacy_raw_inventory:
+        parser.error("--terminal-raw-inventory-table requires --legacy-raw-inventory")
     lean_name = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*")
     if args.terminal_module and not lean_name.fullmatch(args.terminal_module):
         parser.error("--terminal-module is not a qualified Lean identifier")
     if args.terminal_table_def and not lean_name.fullmatch(args.terminal_table_def):
         parser.error("--terminal-table-def is not a qualified Lean identifier")
 
-    profiles = read_inventory(args.inventory)
+    expected_counts = (
+        RAW_PROFILE_COUNTS
+        if args.legacy_raw_inventory
+        else CAPACITY_PROFILE_COUNTS
+    )
+    profiles = read_inventory(args.inventory, expected_counts)
     rows = read_index(args.index)
     selected = rows if args.all else [row for row in rows if row.orbit in args.orbit]
     if not args.all and not args.terminal_intersection and len(selected) != len(set(args.orbit)):
@@ -543,7 +561,10 @@ def main() -> int:
         )
         atomic_write(
             destination,
-            lean_source(row, payload, terminal, include_path_expr),
+            lean_source(
+                row, payload, terminal, include_path_expr,
+                legacy_raw_inventory=args.legacy_raw_inventory,
+            ),
         )
         terminal_field = f"\tterminalIndex={terminal.index}" if terminal else ""
         print(
@@ -568,6 +589,9 @@ def main() -> int:
     if args.manifest_output is not None:
         receipt = {
             "schema": "erdos85-h1-v2-lean-stub-batch-v1",
+            "inventory_kind": "raw-legacy" if args.legacy_raw_inventory else "capacity",
+            "inventory": str(args.inventory.resolve()),
+            "inventory_sha256": sha256(args.inventory),
             "index": str(args.index.resolve()),
             "index_sha256": sha256(args.index),
             "cert_root": str(args.cert_root.resolve()),
