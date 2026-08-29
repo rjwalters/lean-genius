@@ -73,6 +73,19 @@ On boot:
 4. Write `bootstrap.ok` only after that exact preflight passes.  No worker may
    start before it exists.
 
+Exactly one dispatcher may schedule a campaign prefix.  This must be enforced,
+not merely asserted by `single_dispatcher=true`: either an external control
+plane guarantees one live dispatcher, or the dispatcher holds an atomic
+owner/token lease that it renews conditionally throughout the run.  Losing or
+failing to renew that lease must stop new scheduling and fail the run before a
+success record is published; cleanup may release only the exact owner/token it
+acquired.  A fixed-TTL claim is insufficient unless the runtime is itself
+fail-stopped before expiry.  In particular, a manifest field that merely names
+an "approved maximum" does not bound a hung compiler or worker.  Exercise live
+competitor rejection, renewal loss, abnormal-exit cleanup, stale recovery, and
+owner-safe release before the real transaction.  No `START` record or per-tag
+claim may be written until campaign-level exclusion is established.
+
 Each tag gets isolated `work/<tag>/`, `logs/<tag>.log`, and output paths.  Workers
 must never write into the read-only base overlay.  A tag is resumable from its
 accepted receipt; a stale in-progress claim is recoverable, while a failed tag
@@ -236,6 +249,8 @@ manifest and approve the dollar estimate.  Required gates are:
 - lifecycle rule inspected in dry-run/config output;
 - one real tag completes the full upload/read-back/tag/read-back transaction;
 - its receipt is independently validated and the certificate remains readable;
+- campaign-level single-dispatcher exclusion passes the lease/control-plane
+  race and failure tests in section 2;
 - concurrency and disk alarms are live.
 
 The provisioned `Erdos85CertReplay` profile matches this contract: ListBucket;

@@ -26,8 +26,10 @@ unless an operator runs the worker with the production backend explicitly.
 - `run_replay_queue.py`: single-node resumable dispatcher.  It validates the
   sorted unique JSONL queue, queue/worker hashes, expected count, manifest
   concurrency ceiling, and explicit `--execute YES` latch.  Initial launch is
-  restricted to a single dispatcher; distributed lease stealing is not
-  implemented or silently simulated.
+  intended for a single dispatcher, but the current code only checks the
+  manifest assertion `single_dispatcher=true`; it does **not** enforce
+  campaign-wide exclusion.  Distributed lease stealing and renewable
+  campaign ownership are not implemented or silently simulated.
 - `build_replay_manifest.py`: freezes a reviewed draft against a clean commit,
   queue, and every executable script hash.
 - `test_replay_transaction.py`: complete local-store tests of acceptance,
@@ -86,4 +88,11 @@ Before production use, freeze the real 13,351-row coverage-derived queue and
 draft manifest, provide the copied-overlay/generator/toolchain identities and
 commands, obtain editor review, run one real P=1 leaf, independently validate
 its receipt, then derive concurrency/cost from the measured RSS and throughput.
-No second dispatcher or cloud scaling is authorized by this implementation.
+Before even that P=1 transaction, satisfy the specification's single-dispatcher
+gate with an externally enforced exclusive control or a reviewed atomic
+owner/token lease.  A renewable lease must stop scheduling on renewal loss,
+bound the number and lifetime of active workers, and release only its own
+owner/token; a fixed TTL or declared maximum runtime is not sufficient for a
+hung worker.  Exercise live-competitor rejection, renewal loss, abnormal-exit
+cleanup, stale recovery, and owner-safe release.  No second dispatcher or cloud
+scaling is authorized by this implementation.
