@@ -1,4 +1,6 @@
 import importlib.util
+import copy
+import json
 import sys
 import tempfile
 import unittest
@@ -12,6 +14,7 @@ SPEC = importlib.util.spec_from_file_location(
     "h1_aggregate", HERE / "generate_h1_v2_lean_aggregate.py")
 MOD = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
+sys.modules[SPEC.name] = MOD
 SPEC.loader.exec_module(MOD)
 ROW = MOD.IndexRow(
     "0000000000000000", 0, 0, *("0" * 64 for _ in range(3)),
@@ -34,29 +37,144 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "not stub_ready"):
             MOD.validate_complete([replace(rows[0], stub_ready=False)] + rows[1:], profiles)
 
-    def test_render_has_ordered_dispatch_and_final_h1_endpoint(self):
-        rows = [replace(ROW, profile=profile) for profile in range(5)]
-        rendered = MOD.aggregate_source(rows, "Proofs.Generated.H1")
-        self.assertEqual(rendered.count("import Proofs.Generated.H1."), 5)
-        self.assertIn("· exact h1V2P3I00000Checked", rendered)
-        self.assertEqual(rendered.count("_checkedAt"), 10)
-        self.assertNotIn("native_decide", rendered)
-        self.assertEqual(rendered.count("  interval_cases i"), 5)
-        self.assertEqual(rendered.count("set_option maxHeartbeats 0 in"), 10)
-        self.assertEqual(rendered.count("set_option maxRecDepth 1000000 in"), 10)
-        self.assertEqual(rendered.count(" at hi"), 5)
-        self.assertIn(
-            "orderFortyNineStratumExcluded_one_of_completeV2Certificates",
-            rendered)
-        self.assertIn("· exact h1V2InventoryProfile4_checked", rendered)
-
-    def test_render_chunks_use_nested_boundary_dispatch(self):
+    def test_partition_has_bounded_leaf_imports(self):
         rows = [replace(ROW, local_index=index) for index in range(5)]
-        rendered = MOD.aggregate_source(rows, "Proofs.Generated.H1", 2)
+        banks = MOD.partition_banks(rows, 2)[0]
+        self.assertEqual([len(bank.rows) for bank in banks], [2, 2, 1])
+        for bank in banks:
+            rendered = MOD.bank_source(bank, "Proofs.Generated.H1")
+            self.assertEqual(
+                rendered.count("import Proofs.Generated.H1.Erdos85H1V2Cert"),
+                len(bank.rows),
+            )
+            self.assertLessEqual(len(bank.rows), 2)
+            self.assertIn("  interval_cases i", rendered)
+            self.assertNotIn("orderFortyNineStratumExcluded", rendered)
+
+    def test_profile_dispatch_imports_banks_not_leaves(self):
+        rows = [replace(ROW, local_index=index) for index in range(5)]
+        banks = MOD.partition_banks(rows, 2)[0]
+        rendered = MOD.profile_source(0, banks, "Proofs.Generated.H1Aggregate")
+        self.assertEqual(rendered.count("import Proofs.Generated.H1Aggregate."), 3)
+        self.assertNotIn("Erdos85H1V2Cert", rendered)
         self.assertIn("by_cases h : i < 2", rendered)
         self.assertIn("  · by_cases h : i < 4", rendered)
-        self.assertIn("    · exact h1V2InventoryProfile0Chunk001", rendered)
-        self.assertIn("    · exact h1V2InventoryProfile0Chunk002", rendered)
+        self.assertIn("    · exact h1V2InventoryProfile0Bank001", rendered)
+        self.assertIn("h1V2InventoryProfile0Bank002_checkedAt", rendered)
+        self.assertIn("h1V2InventoryProfile0_checked", rendered)
+
+    def test_top_imports_only_five_profiles(self):
+        rendered = MOD.top_source("Proofs.Generated.H1Aggregate")
+        self.assertEqual(rendered.count("import Proofs.Generated.H1Aggregate."), 5)
+        self.assertNotIn("Erdos85H1V2Cert", rendered)
+        self.assertNotIn("Bank", rendered)
+        self.assertIn(
+            "orderFortyNineStratumExcluded_one_of_completeV2Certificates",
+            rendered,
+        )
+        self.assertIn("· exact h1V2InventoryProfile4_checked", rendered)
+
+    def test_write_hierarchy_emits_manifest_and_no_monolith(self):
+        rows = [
+            replace(ROW, profile=profile, local_index=index)
+            for profile in range(5)
+            for index in range(3)
+        ]
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            written = MOD.write_hierarchy(
+                rows, root, "Proofs.Generated.H1", "Proofs.Generated.H1Aggregate", 2,
+                inventory_identity={"sha256": "1" * 64},
+                index_identity={"sha256": "2" * 64},
+            )
+            self.assertEqual(len(written), 18)
+            manifest = json.loads((root / "aggregate-layout.json").read_text())
+            self.assertEqual(manifest["leaf_count"], 15)
+            self.assertEqual(manifest["profile_bank_counts"], [2, 2, 2, 2, 2])
+            self.assertEqual(
+                manifest["top_module"],
+                "Proofs.Generated.H1Aggregate.Erdos85H1V2Complete",
+            )
+            self.assertEqual(manifest["inputs"]["inventory"]["sha256"], "1" * 64)
+            self.assertEqual(manifest["inputs"]["index"]["sha256"], "2" * 64)
+            self.assertEqual(len(manifest["modules"]), 16)
+            self.assertTrue(all(len(module["source_sha256"]) == 64
+                                for module in manifest["modules"]))
+            self.assertTrue(all(module["source_bytes"] > 0
+                                for module in manifest["modules"]))
+            leaf_banks = [module for module in manifest["modules"]
+                          if module["kind"] == "leaf-bank"]
+            upper = [module for module in manifest["modules"]
+                     if module["kind"] != "leaf-bank"]
+            self.assertTrue(all(module["direct_import_count"] <= 2
+                                for module in leaf_banks))
+            self.assertEqual(
+                sorted((member["profile"], member["local_index"])
+                       for module in leaf_banks for member in module["members"]),
+                [(profile, index) for profile in range(5) for index in range(3)],
+            )
+            self.assertTrue(all(not module["members"] for module in upper))
+            self.assertTrue(all("Erdos85H1V2Cert" not in imported
+                                for module in upper
+                                for imported in module["direct_imports"]))
+            self.assertEqual(manifest["modules"][-1]["direct_import_count"], 5)
+            recorded_hash = (root / "aggregate-layout.sha256").read_text().split()[0]
+            self.assertEqual(
+                recorded_hash,
+                __import__("hashlib").sha256(
+                    (root / "aggregate-layout.json").read_bytes()
+                ).hexdigest(),
+            )
+            top = (root / "Erdos85H1V2Complete.lean").read_text()
+            self.assertEqual(top.count("\nimport "), 4)
+            first = {path.name: path.read_bytes() for path in written}
+            rerun = MOD.write_hierarchy(
+                rows, root, "Proofs.Generated.H1", "Proofs.Generated.H1Aggregate", 2,
+                inventory_identity={"sha256": "1" * 64},
+                index_identity={"sha256": "2" * 64},
+            )
+            self.assertEqual(first, {path.name: path.read_bytes() for path in rerun})
+            sources = {
+                module["file"]: (root / module["file"]).read_text()
+                for module in manifest["modules"]
+            }
+            MOD.validate_layout_manifest(manifest, rows, sources)
+            tampered = copy.deepcopy(manifest)
+            tampered["modules"][0]["members"][0] = dict(
+                tampered["modules"][0]["members"][1]
+            )
+            with self.assertRaisesRegex(ValueError, "leaf module"):
+                MOD.validate_layout_manifest(tampered, rows, sources)
+            mutations = (
+                (("modules", 0, "source_sha256"), "f" * 64, "source identity"),
+                (("modules", 0, "members", 0, "module"), "Wrong.Leaf", "leaf module"),
+                (("modules", 0, "members", 0, "theorem"), "Wrong.theorem", "leaf theorem"),
+                (("modules", 0, "theorem"), "Erdos85.wrong", "theorem/source"),
+                (("leaf_members_sha256",), "f" * 64, "leaf-members hash"),
+                (("top_module",), "Wrong.Top", "top-module"),
+            )
+            for keys, value, error in mutations:
+                with self.subTest(keys=keys):
+                    corrupt = copy.deepcopy(manifest)
+                    target = corrupt
+                    for key in keys[:-1]:
+                        target = target[key]
+                    target[keys[-1]] = value
+                    with self.assertRaisesRegex(ValueError, error):
+                        MOD.validate_layout_manifest(corrupt, rows, sources)
+
+    def test_write_hierarchy_rejects_stale_generated_modules(self):
+        rows = [replace(ROW, profile=profile) for profile in range(5)]
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            (root / "Erdos85H1V2Profile0Bank999.lean").write_text("stale\n")
+            with self.assertRaisesRegex(ValueError, "stale generated modules"):
+                MOD.write_hierarchy(
+                    rows, root, "Proofs.Generated.H1",
+                    "Proofs.Generated.H1Aggregate", 128,
+                    inventory_identity={"sha256": "1" * 64},
+                    index_identity={"sha256": "2" * 64},
+                )
 
     def test_stub_sources_must_exist_with_exact_entry(self):
         with tempfile.TemporaryDirectory() as raw:
