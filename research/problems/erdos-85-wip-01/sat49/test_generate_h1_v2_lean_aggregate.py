@@ -22,13 +22,25 @@ ROW = MOD.IndexRow(
 )
 
 
+def capacity_profiles():
+    return [
+        [f"{profile:01x}{index:015x}" for index in range(count)]
+        for profile, count in enumerate(MOD.CAPACITY_PROFILE_COUNTS)
+    ]
+
+
+def capacity_rows():
+    return [
+        replace(ROW, orbit=tag, profile=profile, local_index=local_index)
+        for profile, tags in enumerate(capacity_profiles())
+        for local_index, tag in enumerate(tags)
+    ]
+
+
 class GenerateH1V2LeanAggregateTest(unittest.TestCase):
     def test_complete_coverage_validation(self):
-        profiles = [[f"{profile:016x}"] for profile in range(5)]
-        rows = [
-            replace(ROW, orbit=profiles[profile][0], profile=profile)
-            for profile in range(5)
-        ]
+        profiles = capacity_profiles()
+        rows = capacity_rows()
         MOD.validate_complete(rows, profiles)
         with self.assertRaisesRegex(ValueError, "requires all"):
             MOD.validate_complete(rows[:-1], profiles)
@@ -50,6 +62,8 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
             self.assertLessEqual(len(bank.rows), 2)
             self.assertIn("  interval_cases i", rendered)
             self.assertNotIn("orderFortyNineStratumExcluded", rendered)
+            self.assertIn("oneHighCapacityInventoryTables", rendered)
+            self.assertNotIn("((oneHighInventoryTables", rendered)
         for invalid in (True, 0, 129):
             with self.subTest(invalid=invalid), self.assertRaisesRegex(
                     ValueError, "integer in 1..128"):
@@ -66,6 +80,8 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
         self.assertIn("    · exact h1V2InventoryProfile0Bank001", rendered)
         self.assertIn("h1V2InventoryProfile0Bank002_checkedAt", rendered)
         self.assertIn("h1V2InventoryProfile0_checked", rendered)
+        self.assertIn("oneHighCapacityInventoryTables", rendered)
+        self.assertNotIn("((oneHighInventoryTables", rendered)
 
     def test_top_imports_only_five_profiles(self):
         rendered = MOD.top_source("Proofs.Generated.H1Aggregate")
@@ -73,35 +89,41 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
         self.assertNotIn("Erdos85H1V2Cert", rendered)
         self.assertNotIn("Bank", rendered)
         self.assertIn(
-            "orderFortyNineStratumExcluded_one_of_completeV2Certificates",
+            "orderFortyNineStratumExcluded_one_of_completeV2CapacityCertificates",
+            rendered,
+        )
+        self.assertIn(
+            "orderFortyNineStratumExcluded_one_of_capacityInventory_checked",
             rendered,
         )
         self.assertIn("· exact h1V2InventoryProfile4_checked", rendered)
 
     def test_write_hierarchy_emits_manifest_and_no_monolith(self):
-        rows = [
-            replace(ROW, profile=profile, local_index=index)
-            for profile in range(5)
-            for index in range(3)
-        ]
+        rows = capacity_rows()
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
             written = MOD.write_hierarchy(
-                rows, root, "Proofs.Generated.H1", "Proofs.Generated.H1Aggregate", 2,
+                rows, root, "Proofs.Generated.H1", "Proofs.Generated.H1Aggregate", 128,
                 inventory_identity={"sha256": "1" * 64},
                 index_identity={"sha256": "2" * 64},
             )
-            self.assertEqual(len(written), 18)
+            self.assertEqual(len(written), 115)
             manifest = json.loads((root / "aggregate-layout.json").read_text())
-            self.assertEqual(manifest["leaf_count"], 15)
-            self.assertEqual(manifest["profile_bank_counts"], [2, 2, 2, 2, 2])
+            self.assertEqual(manifest["leaf_count"], 13351)
+            self.assertEqual(manifest["profile_bank_counts"], [12, 29, 37, 22, 7])
+            self.assertEqual(manifest["inventory_contract"], {
+                "table_definition": "Erdos85.oneHighCapacityInventoryTables",
+                "profile_length_theorems": list(MOD.CAPACITY_LENGTH_THEOREMS),
+                "profile_counts": [1485, 3617, 4717, 2693, 839],
+                "total_count": 13351,
+            })
             self.assertEqual(
                 manifest["top_module"],
                 "Proofs.Generated.H1Aggregate.Erdos85H1V2Complete",
             )
             self.assertEqual(manifest["inputs"]["inventory"]["sha256"], "1" * 64)
             self.assertEqual(manifest["inputs"]["index"]["sha256"], "2" * 64)
-            self.assertEqual(len(manifest["modules"]), 16)
+            self.assertEqual(len(manifest["modules"]), 113)
             self.assertTrue(all(len(module["source_sha256"]) == 64
                                 for module in manifest["modules"]))
             self.assertTrue(all(module["source_bytes"] > 0
@@ -110,12 +132,14 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
                           if module["kind"] == "leaf-bank"]
             upper = [module for module in manifest["modules"]
                      if module["kind"] != "leaf-bank"]
-            self.assertTrue(all(module["direct_import_count"] <= 2
+            self.assertTrue(all(module["direct_import_count"] <= 128
                                 for module in leaf_banks))
             self.assertEqual(
                 sorted((member["profile"], member["local_index"])
                        for module in leaf_banks for member in module["members"]),
-                [(profile, index) for profile in range(5) for index in range(3)],
+                [(profile, index)
+                 for profile, count in enumerate(MOD.CAPACITY_PROFILE_COUNTS)
+                 for index in range(count)],
             )
             self.assertTrue(all(not module["members"] for module in upper))
             self.assertTrue(all("Erdos85H1V2Cert" not in imported
@@ -133,7 +157,7 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
             self.assertEqual(top.count("\nimport "), 4)
             first = {path.name: path.read_bytes() for path in written}
             rerun = MOD.write_hierarchy(
-                rows, root, "Proofs.Generated.H1", "Proofs.Generated.H1Aggregate", 2,
+                rows, root, "Proofs.Generated.H1", "Proofs.Generated.H1Aggregate", 128,
                 inventory_identity={"sha256": "1" * 64},
                 index_identity={"sha256": "2" * 64},
             )
@@ -152,18 +176,20 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
             mutations = (
                 (("bank_size",), True, "bank_size"),
                 (("bank_size",), 129, "bank_size"),
-                (("leaf_count",), 14, "leaf_count"),
-                (("profile_bank_counts",), [2, 2, 2, 2, 1], "profile_bank_counts"),
+                (("leaf_count",), 13350, "leaf_count"),
+                (("profile_bank_counts",), [12, 29, 37, 22, 6], "profile_bank_counts"),
+                (("inventory_contract", "total_count"), 13541,
+                 "capacity inventory contract"),
                 (("modules", 0, "source_bytes"), 0, "source identity"),
                 (("modules", 0, "source_sha256"), "f" * 64, "source identity"),
                 (("modules", 0, "members", 0, "module"), "Wrong.Leaf", "leaf module"),
                 (("modules", 0, "members", 0, "theorem"), "Wrong.theorem", "leaf theorem"),
                 (("modules", 0, "kind"), "profile-bank", "module kind"),
                 (("modules", 0, "theorem"), "Erdos85.wrong", "deterministic theorem"),
-                (("modules", 2, "theorem"),
+                (("modules", 12, "theorem"),
                  "Erdos85.h1V2InventoryProfile0_checkedAt",
                  "deterministic theorem"),
-                (("modules", 2, "direct_imports"), [], "closed import topology"),
+                (("modules", 12, "direct_imports"), [], "closed import topology"),
                 (("modules", -1, "direct_imports"), [], "closed import topology"),
                 (("leaf_members_sha256",), "f" * 64, "leaf-members hash"),
                 (("top_module",), "Wrong.Top", "top-module"),
@@ -178,11 +204,11 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
                     with self.assertRaisesRegex(ValueError, error):
                         MOD.validate_layout_manifest(corrupt, rows, sources)
             missing_module = copy.deepcopy(manifest)
-            del missing_module["modules"][2]
+            del missing_module["modules"][12]
             with self.assertRaisesRegex(ValueError, "module-file set"):
                 MOD.validate_layout_manifest(missing_module, rows, sources)
             missing_source = dict(sources)
-            del missing_source[manifest["modules"][2]["file"]]
+            del missing_source[manifest["modules"][12]["file"]]
             with self.assertRaisesRegex(ValueError, "source module-file set"):
                 MOD.validate_layout_manifest(manifest, rows, missing_source)
             extra_source = dict(sources)
@@ -191,7 +217,7 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
                 MOD.validate_layout_manifest(manifest, rows, extra_source)
 
     def test_write_hierarchy_rejects_stale_generated_modules(self):
-        rows = [replace(ROW, profile=profile) for profile in range(5)]
+        rows = capacity_rows()
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
             (root / "Erdos85H1V2Profile0Bank999.lean").write_text("stale\n")
@@ -214,12 +240,26 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
                 MOD.validate_stub_sources([ROW], root)
             path.write_text(
                 "def h1V2P0I00000Table : OneHighMissTable :=\n"
-                "  (oneHighInventoryTables (0 : Fin 5)).get\n"
+                "  (oneHighCapacityInventoryTables (0 : Fin 5)).get\n"
                 "    ⟨0, by native_decide⟩\n"
                 "theorem h1V2P0I00000Checked : True := True.intro\n"
                 "def h1V2P0I00000Entry : OneHighFamilyV2CheckedEntry 0 := x\n"
             )
             MOD.validate_stub_sources([ROW], root)
+
+    def test_raw_inventory_stub_is_rejected(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            path = root / "Erdos85H1V2CertP0I00000.lean"
+            path.write_text(
+                "def h1V2P0I00000Table : OneHighMissTable :=\n"
+                "  (oneHighInventoryTables (0 : Fin 5)).get\n"
+                "    ⟨0, by native_decide⟩\n"
+                "theorem h1V2P0I00000Checked : True := True.intro\n"
+                "def h1V2P0I00000Entry : OneHighFamilyV2CheckedEntry 0 := x\n"
+            )
+            with self.assertRaisesRegex(ValueError, "wrong declarations"):
+                MOD.validate_stub_sources([ROW], root)
 
     def test_terminal_table_stub_is_rejected(self):
         with tempfile.TemporaryDirectory() as raw:

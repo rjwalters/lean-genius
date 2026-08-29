@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Emit a hierarchical checked-bank aggregate for exact-v2 H1 certificates."""
+"""Emit a hierarchical checked-bank aggregate for the capacity-filtered H1 certificates."""
 
 from __future__ import annotations
 
@@ -10,11 +10,17 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
-from generate_h1_v2_lean_stubs import IndexRow, atomic_write, read_index, read_inventory
+from generate_h1_v2_lean_stubs import IndexRow, atomic_write, read_index, worker_tag
 
 
 LEAN_MODULE = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*")
 PROFILE_WORDS = ("zero", "one", "two", "three", "four")
+CAPACITY_PROFILE_COUNTS = (1485, 3617, 4717, 2693, 839)
+CAPACITY_TABLE_DEFINITION = "Erdos85.oneHighCapacityInventoryTables"
+CAPACITY_LENGTH_THEOREMS = tuple(
+    f"Erdos85.oneHighCapacityInventoryTables_length_{word}"
+    for word in PROFILE_WORDS
+)
 DEFAULT_BANK_SIZE = 128
 
 
@@ -33,7 +39,32 @@ class Bank:
         return f"h1V2InventoryProfile{self.profile}Bank{self.index:03d}_checkedAt"
 
 
+def read_capacity_inventory(path: Path) -> list[list[str]]:
+    profiles: list[list[str]] = [[] for _ in PROFILE_WORDS]
+    for line_number, line in enumerate(path.read_text().splitlines(), 1):
+        if not line:
+            continue
+        try:
+            profile, *values = map(int, line.split())
+        except ValueError as error:
+            raise ValueError(f"{path}:{line_number}: non-integer inventory row") from error
+        if profile not in range(len(PROFILE_WORDS)) or len(values) != 24:
+            raise ValueError(f"{path}:{line_number}: malformed inventory row")
+        profiles[profile].append(worker_tag(tuple(values)))
+    if tuple(map(len, profiles)) != CAPACITY_PROFILE_COUNTS:
+        raise ValueError(
+            "aggregate inventory is not the authoritative capacity census: "
+            f"expected {CAPACITY_PROFILE_COUNTS}, found {tuple(map(len, profiles))}"
+        )
+    return profiles
+
+
 def validate_complete(rows: list[IndexRow], profiles: list[list[str]]) -> None:
+    if tuple(map(len, profiles)) != CAPACITY_PROFILE_COUNTS:
+        raise ValueError(
+            "aggregate inventory is not the authoritative capacity census: "
+            f"expected {CAPACITY_PROFILE_COUNTS}, found {tuple(map(len, profiles))}"
+        )
     expected = sum(map(len, profiles))
     if len(rows) != expected:
         raise ValueError(
@@ -54,6 +85,19 @@ def validate_complete(rows: list[IndexRow], profiles: list[list[str]]) -> None:
             cursor += 1
 
 
+def validate_capacity_shape(rows: list[IndexRow]) -> None:
+    expected = [
+        (profile, local_index)
+        for profile, count in enumerate(CAPACITY_PROFILE_COUNTS)
+        for local_index in range(count)
+    ]
+    actual = [(row.profile, row.local_index) for row in rows]
+    if actual != expected:
+        raise ValueError(
+            "aggregate rows do not exactly enumerate the 13,351 capacity ordinals"
+        )
+
+
 def stub_stem(row: IndexRow) -> str:
     return f"h1V2P{row.profile}I{row.local_index:05d}"
 
@@ -66,13 +110,13 @@ def validate_stub_sources(rows: list[IndexRow], stub_dir: Path) -> None:
             raise ValueError(f"missing generated Lean stub: {path}")
         source = path.read_text()
         stem = stub_stem(row)
-        raw_table_definition = (
+        capacity_table_definition = (
             f"def {stem}Table : OneHighMissTable :=\n"
-            f"  (oneHighInventoryTables ({row.profile} : Fin 5)).get\n"
+            f"  (oneHighCapacityInventoryTables ({row.profile} : Fin 5)).get\n"
             f"    ⟨{row.local_index}, by native_decide⟩"
         )
         declarations = (
-            raw_table_definition,
+            capacity_table_definition,
             f"theorem {stem}Checked :",
             f"def {stem}Entry : OneHighFamilyV2CheckedEntry {row.profile}",
         )
@@ -111,9 +155,9 @@ def bank_source(bank: Bank, stub_module_prefix: str) -> str:
         f"theorem {bank.theorem}",
         f"    (i : Nat) (hlo : {lo} ≤ i) (hhi : i < {hi}) :",
         f"    OneHighFamilyV2CheckedUnsat {bank.profile}",
-        f"      ((oneHighInventoryTables ({bank.profile} : Fin 5)).get",
+        f"      ((oneHighCapacityInventoryTables ({bank.profile} : Fin 5)).get",
         "        ⟨i, by",
-        f"          rw [oneHighInventoryTables_length_{PROFILE_WORDS[bank.profile]}]",
+        f"          rw [oneHighCapacityInventoryTables_length_{PROFILE_WORDS[bank.profile]}]",
         "          omega⟩) := by", "  interval_cases i",
     ]
     lines.extend(f"  · exact {stub_stem(row)}Checked" for row in rows)
@@ -148,19 +192,22 @@ def profile_source(profile: int, banks: list[Bank], aggregate_module_prefix: str
         "", "/-! GENERATED exact-v2 H1 profile bank. -/", "", "namespace Erdos85", "",
         "set_option maxHeartbeats 0 in", "set_option maxRecDepth 1000000 in",
         f"theorem h1V2InventoryProfile{profile}_checkedAt",
-        f"    (i : Fin (oneHighInventoryTables ({profile} : Fin 5)).length) :",
+        f"    (i : Fin (oneHighCapacityInventoryTables ({profile} : Fin 5)).length) :",
         f"    OneHighFamilyV2CheckedUnsat {profile}",
-        f"      ((oneHighInventoryTables ({profile} : Fin 5)).get i) := by",
+        f"      ((oneHighCapacityInventoryTables ({profile} : Fin 5)).get i) := by",
         "  rcases i with ⟨i, hi⟩",
-        f"  rw [oneHighInventoryTables_length_{PROFILE_WORDS[profile]}] at hi",
+        f"  rw [oneHighCapacityInventoryTables_length_{PROFILE_WORDS[profile]}] at hi",
     ]
     lines.extend(_dispatch_lines(profile, banks))
     lines.extend([
         "", f"theorem h1V2InventoryProfile{profile}_checked :",
-        f"    ∀ table ∈ oneHighInventoryTables ({profile} : Fin 5),",
+        f"    ∀ table ∈ oneHighCapacityInventoryTables ({profile} : Fin 5),",
         f"      OneHighFamilyV2CheckedUnsat {profile} table :=",
-        "  oneHighFamilyV2Checked_of_inventory_get",
-        f"    ({profile} : Fin 5) h1V2InventoryProfile{profile}_checkedAt",
+        "  by",
+        "    intro table htable",
+        "    obtain ⟨i, hi⟩ := List.get_of_mem htable",
+        "    rw [← hi]",
+        f"    exact h1V2InventoryProfile{profile}_checkedAt i",
         "", "end Erdos85", "",
     ])
     return "\n".join(lines)
@@ -174,9 +221,9 @@ def top_source(aggregate_module_prefix: str) -> str:
     lines = imports + [
         "", "/-! GENERATED complete exact-v2 H1 checked-certificate dispatch. -/", "",
         "namespace Erdos85", "",
-        "theorem orderFortyNineStratumExcluded_one_of_completeV2Certificates :",
+        "theorem orderFortyNineStratumExcluded_one_of_completeV2CapacityCertificates :",
         "    OrderFortyNineStratumExcluded 1 := by",
-        "  apply orderFortyNineStratumExcluded_one_of_inventory_checked",
+        "  apply orderFortyNineStratumExcluded_one_of_capacityInventory_checked",
         "  intro profile", "  fin_cases profile",
     ]
     lines.extend(
@@ -198,6 +245,15 @@ def file_identity(path: Path) -> dict[str, object]:
 
 def validate_layout_manifest(manifest: dict[str, object], rows: list[IndexRow],
                              source_by_file: dict[str, str]) -> None:
+    validate_capacity_shape(rows)
+    expected_contract = {
+        "table_definition": CAPACITY_TABLE_DEFINITION,
+        "profile_length_theorems": list(CAPACITY_LENGTH_THEOREMS),
+        "profile_counts": list(CAPACITY_PROFILE_COUNTS),
+        "total_count": sum(CAPACITY_PROFILE_COUNTS),
+    }
+    if manifest.get("inventory_contract") != expected_contract:
+        raise ValueError("aggregate manifest capacity inventory contract mismatch")
     bank_size = manifest.get("bank_size")
     if type(bank_size) is not int or not 1 <= bank_size <= DEFAULT_BANK_SIZE:
         raise ValueError("aggregate manifest bank_size must be an integer in 1..128")
@@ -233,7 +289,7 @@ def validate_layout_manifest(manifest: dict[str, object], rows: list[IndexRow],
         )
     expected_by_file["Erdos85H1V2Complete.lean"] = (
         "top-bank",
-        "Erdos85.orderFortyNineStratumExcluded_one_of_completeV2Certificates",
+        "Erdos85.orderFortyNineStratumExcluded_one_of_completeV2CapacityCertificates",
         [
             f"{aggregate_prefix}.Erdos85H1V2Profile{profile}"
             for profile in range(len(PROFILE_WORDS))
@@ -312,6 +368,7 @@ def write_hierarchy(rows: list[IndexRow], output_dir: Path,
                     stub_module_prefix: str, aggregate_module_prefix: str,
                     bank_size: int, *, inventory_identity: dict[str, object],
                     index_identity: dict[str, object]) -> list[Path]:
+    validate_capacity_shape(rows)
     banks_by_profile = partition_banks(rows, bank_size)
     rendered: list[tuple[Path, str]] = []
     module_records: list[dict[str, object]] = []
@@ -364,7 +421,7 @@ def write_hierarchy(rows: list[IndexRow], output_dir: Path,
         "module": f"{aggregate_module_prefix}.Erdos85H1V2Complete",
         "kind": "top-bank",
         "theorem": (
-            "Erdos85.orderFortyNineStratumExcluded_one_of_completeV2Certificates"
+            "Erdos85.orderFortyNineStratumExcluded_one_of_completeV2CapacityCertificates"
         ),
         "direct_imports": [
             f"{aggregate_module_prefix}.Erdos85H1V2Profile{profile}"
@@ -404,6 +461,12 @@ def write_hierarchy(rows: list[IndexRow], output_dir: Path,
         "leaf_count": len(rows),
         "leaf_members_sha256": hashlib.sha256(members_bytes).hexdigest(),
         "inputs": {"inventory": inventory_identity, "index": index_identity},
+        "inventory_contract": {
+            "table_definition": CAPACITY_TABLE_DEFINITION,
+            "profile_length_theorems": list(CAPACITY_LENGTH_THEOREMS),
+            "profile_counts": list(CAPACITY_PROFILE_COUNTS),
+            "total_count": sum(CAPACITY_PROFILE_COUNTS),
+        },
         "prefixes": {
             "leaf_modules": stub_module_prefix,
             "aggregate_modules": aggregate_module_prefix,
@@ -437,7 +500,7 @@ def main() -> int:
             parser.error(f"--{option.replace('_', '-')} must be a qualified Lean identifier")
     if not 1 <= args.bank_size <= DEFAULT_BANK_SIZE:
         parser.error("--bank-size must be in 1..128")
-    profiles = read_inventory(args.inventory)
+    profiles = read_capacity_inventory(args.inventory)
     rows = read_index(args.index)
     validate_complete(rows, profiles)
     validate_stub_sources(rows, args.stub_dir)
