@@ -10,6 +10,7 @@ import sys
 import tempfile
 import time
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -17,7 +18,7 @@ sys.path.insert(0, str(HERE))
 
 from replay_common import (
     LocalObjectStore, NATIVE_AXIOM_PATTERN, ReplayError, SCHEMA, canonical_json, load_manifest,
-    sha256_bytes, sha256_file, validate_command_receipts,
+    run_command, sha256_bytes, sha256_file, validate_command_receipts,
 )
 from audit_replay_leaf import parse_axioms
 from build_replay_manifest import publish_validated_manifest
@@ -407,15 +408,84 @@ class ReplayTransactionTest(unittest.TestCase):
         self.assertFalse(__import__("replay_common")._argv_matches_template(
             ["tool", "evil-A", "evil-B"], ["tool", "{work}", "{work}"]
         ))
-        self.assertEqual(self.worker().returncode, 0)
+        manifest = json.loads(self.manifest.read_text())
+        allowed_environment = ["ERDOS85_PRESENT_TEST", "ERDOS85_MISSING_TEST"]
+        manifest["environment_allowlist"] = allowed_environment
+        self.manifest.write_bytes(canonical_json(manifest))
+        with patch.dict(__import__("os").environ, {"ERDOS85_PRESENT_TEST": "present"}):
+            self.assertEqual(self.worker().returncode, 0)
         ready_path = self.store.objects / (
             f"sat49/campaign-20260825/h1-replay/replay-ready/{self.tag}.json"
         )
         commands = json.loads(ready_path.read_text())["commands"]
+        self.assertEqual(commands["compile"]["environment"]["ERDOS85_PRESENT_TEST"], "present")
+        self.assertIsNone(commands["compile"]["environment"]["ERDOS85_MISSING_TEST"])
+        del commands["compile"]["environment"]["ERDOS85_MISSING_TEST"]
+        with self.assertRaisesRegex(ReplayError, "exact allowlist"):
+            validate_command_receipts(commands, allowed_environment)
+        commands = json.loads(ready_path.read_text())["commands"]
         commands["compile"]["wall_seconds"] = float("nan")
         commands["compile"]["peak_rss_kib"] = True
         with self.assertRaises(ReplayError):
-            validate_command_receipts(commands, [], json.loads(self.manifest.read_text())["commands"])
+            validate_command_receipts(
+                commands, allowed_environment,
+                json.loads(self.manifest.read_text())["commands"],
+            )
+
+    def test_command_runs_with_exact_recorded_environment(self) -> None:
+        observed = self.root / "observed-environment.json"
+        names = (
+            "ERDOS85_ALLOWED_TEST", "ERDOS85_MISSING_TEST", "PATH",
+            "PYTHONPATH", "LEAN_PATH", "LD_PRELOAD",
+        )
+        program = (
+            "import json,os,sys; names=json.loads(sys.argv[2]); "
+            "json.dump({k:os.environ.get(k) for k in names}, open(sys.argv[1], 'w'))"
+        )
+        poison = {
+            "ERDOS85_ALLOWED_TEST": "exact-value",
+            "PATH": "poison-path",
+            "PYTHONPATH": "poison-python",
+            "LEAN_PATH": "poison-lean",
+            "LD_PRELOAD": "poison-loader",
+        }
+        with patch.dict(__import__("os").environ, poison, clear=False):
+            result = run_command(
+                [sys.executable, "-c", program, str(observed), json.dumps(names)], self.root,
+                self.root / "environment-command.log",
+                ["ERDOS85_ALLOWED_TEST", "ERDOS85_MISSING_TEST"],
+            )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.environment, {
+            "ERDOS85_ALLOWED_TEST": "exact-value",
+            "ERDOS85_MISSING_TEST": None,
+        })
+        self.assertEqual(json.loads(observed.read_text()), {
+            "ERDOS85_ALLOWED_TEST": "exact-value",
+            "ERDOS85_MISSING_TEST": None,
+            "PATH": None,
+            "PYTHONPATH": None,
+            "LEAN_PATH": None,
+            "LD_PRELOAD": None,
+        })
+
+    def test_manifest_rejects_relative_tools_and_duplicate_environment(self) -> None:
+        original = json.loads(self.manifest.read_text())
+        duplicate = dict(original, environment_allowlist=["LEAN_PATH", "LEAN_PATH"])
+        duplicate_path = self.root / "duplicate-environment.json"
+        duplicate_path.write_bytes(canonical_json(duplicate))
+        with self.assertRaisesRegex(ReplayError, "must not contain duplicates"):
+            load_manifest(duplicate_path)
+
+        for name in ("generate", "compile", "axiom_audit", "zstd"):
+            manifest = json.loads(self.manifest.read_text())
+            manifest["commands"][name][0] = "relative-tool"
+            candidate = self.root / f"relative-{name}.json"
+            candidate.write_bytes(canonical_json(manifest))
+            with self.subTest(name=name), self.assertRaisesRegex(
+                ReplayError, f"commands.{name} executable must be absolute"
+            ):
+                load_manifest(candidate)
 
     def test_validator_rejects_each_mutated_section_four_identity(self) -> None:
         self.assertEqual(self.worker().returncode, 0)

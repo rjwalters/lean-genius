@@ -143,6 +143,8 @@ def load_manifest(path: Path) -> dict[str, Any]:
         command = commands.get(name)
         if not isinstance(command, list) or not command or not all(isinstance(x, str) for x in command):
             raise ReplayError(f"manifest.commands.{name} must be a nonempty string list")
+        if not Path(command[0]).is_absolute():
+            raise ReplayError(f"manifest.commands.{name} executable must be absolute")
     allowed = value.get("allowed_axioms")
     if allowed != list(FOUNDATIONAL_AXIOMS):
         raise ReplayError(
@@ -165,6 +167,8 @@ def load_manifest(path: Path) -> dict[str, Any]:
         for name in environment
     ):
         raise ReplayError("manifest.environment_allowlist must be an uppercase variable-name list")
+    if len(environment) != len(set(environment)):
+        raise ReplayError("manifest.environment_allowlist must not contain duplicates")
     ttl = value.get("claim_ttl_seconds", 86400)
     if type(ttl) is not int or ttl < 60:
         raise ReplayError("manifest.claim_ttl_seconds must be an integer >= 60")
@@ -254,9 +258,9 @@ def validate_command_receipts(receipts: Any, environment_allowlist: list[str],
         for field in ("stdout_sha256", "stderr_sha256"):
             require_sha(receipt.get(field), f"command receipt {name}.{field}")
         environment = receipt.get("environment")
-        if not isinstance(environment, dict) or not set(environment) <= allowed_environment:
-            raise ReplayError(f"command receipt {name} environment is not sanitized")
-        if not all(isinstance(key, str) and isinstance(value, str)
+        if not isinstance(environment, dict) or set(environment) != allowed_environment:
+            raise ReplayError(f"command receipt {name} environment does not record the exact allowlist")
+        if not all(isinstance(key, str) and (value is None or isinstance(value, str))
                    for key, value in environment.items()):
             raise ReplayError(f"command receipt {name} environment is malformed")
 
@@ -270,26 +274,31 @@ class CommandResult:
     user_cpu_seconds: float
     system_cpu_seconds: float
     peak_rss_kib: int
-    environment: dict[str, str]
+    environment: dict[str, str | None]
 
 
 def run_command(command: list[str], cwd: Path, log: Path,
                 environment_allowlist: list[str] | None = None) -> CommandResult:
+    recorded_environment = {
+        key: os.environ.get(key) for key in (environment_allowlist or [])
+    }
+    child_environment = {
+        key: value for key, value in recorded_environment.items() if value is not None
+    }
     with tempfile.TemporaryDirectory() as temporary:
         stdout_path = Path(temporary) / "stdout"
         stderr_path = Path(temporary) / "stderr"
         with stdout_path.open("wb") as stdout_stream, stderr_path.open("wb") as stderr_stream:
             process = subprocess.Popen(
-                command, cwd=cwd, stdout=stdout_stream, stderr=stderr_stream)
+                command, cwd=cwd, stdout=stdout_stream, stderr=stderr_stream,
+                env=child_environment,
+            )
             _, status, usage = os.wait4(process.pid, 0)
             process.returncode = os.waitstatus_to_exitcode(status)
         stdout = stdout_path.read_text(errors="replace")
         stderr = stderr_path.read_text(errors="replace")
     # Linux reports KiB and Darwin bytes for ru_maxrss.
     peak_rss_kib = int(usage.ru_maxrss // 1024 if sys.platform == "darwin" else usage.ru_maxrss)
-    environment = {
-        key: os.environ[key] for key in (environment_allowlist or []) if key in os.environ
-    }
     record = {
         "argv": command,
         "returncode": process.returncode,
@@ -298,7 +307,7 @@ def run_command(command: list[str], cwd: Path, log: Path,
         "user_cpu_seconds": usage.ru_utime,
         "system_cpu_seconds": usage.ru_stime,
         "peak_rss_kib": peak_rss_kib,
-        "environment": environment,
+        "environment": recorded_environment,
     }
     with log.open("ab") as stream:
         stream.write(canonical_json(record))
@@ -307,7 +316,7 @@ def run_command(command: list[str], cwd: Path, log: Path,
     return CommandResult(
         command, process.returncode, stdout, stderr,
         usage.ru_utime, usage.ru_stime,
-        peak_rss_kib, environment,
+        peak_rss_kib, recorded_environment,
     )
 
 
