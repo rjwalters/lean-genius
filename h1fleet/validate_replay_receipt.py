@@ -15,7 +15,19 @@ from replay_common import (
     load_manifest, require_sha, require_tag, sha256_bytes, sha256_file,
     validate_command_receipts,
 )
-from replay_worker import receipt_command_bindings
+from replay_worker import (
+    receipt_command_bindings, validate_aws_cli, validate_production_manifest,
+)
+
+
+def validate_production_backend_binding(
+    manifest: dict[str, object], s3_bucket: str, aws: str,
+) -> None:
+    """Bind independent validation to the frozen production backend."""
+    validate_production_manifest(manifest)
+    if s3_bucket != manifest["s3_bucket"]:
+        raise ReplayError("S3 bucket differs from frozen manifest")
+    validate_aws_cli(aws, str(manifest["aws_cli_identity"]))
 
 
 def validate(args: argparse.Namespace) -> None:
@@ -66,11 +78,11 @@ def validate(args: argparse.Namespace) -> None:
     if not isinstance(after.get("tags"), dict) or after["tags"].get("replay") != "consumed":
         raise ReplayError("receipt does not prove replay=consumed")
 
-    store: ObjectStore = (
-        LocalObjectStore(args.object_store_root)
-        if args.object_store_root is not None
-        else AwsCliObjectStore(args.s3_bucket, args.aws)
-    )
+    if args.object_store_root is not None:
+        store: ObjectStore = LocalObjectStore(args.object_store_root)
+    else:
+        validate_production_backend_binding(manifest, args.s3_bucket, args.aws)
+        store = AwsCliObjectStore(args.s3_bucket, args.aws)
     with tempfile.TemporaryDirectory() as temporary:
         actual_certificate = store.download(before["key"], Path(temporary) / "certificate")
     if (actual_certificate.sha256, actual_certificate.size, actual_certificate.etag,
@@ -233,7 +245,7 @@ def main() -> int:
     args = parser.parse_args()
     try:
         validate(args)
-    except ReplayError as error:
+    except (OSError, ReplayError) as error:
         print(f"INVALID: {error}", file=sys.stderr)
         return 2
     print("VALID")

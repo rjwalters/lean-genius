@@ -21,6 +21,7 @@ from replay_common import (
 )
 from audit_replay_leaf import parse_axioms
 from build_replay_manifest import publish_validated_manifest
+from validate_replay_receipt import validate_production_backend_binding
 
 
 WORKER = HERE / "replay_worker.py"
@@ -299,6 +300,26 @@ class ReplayTransactionTest(unittest.TestCase):
         ], text=True, capture_output=True, check=False)
         self.assertEqual(result.returncode, 2)
         self.assertIn("production manifest contains unresolved or malformed identities", result.stderr)
+
+    def test_validator_rejects_backend_not_bound_to_frozen_manifest(self) -> None:
+        manifest = json.loads(self.manifest.read_text())
+        # Isolate the binding check from production-format and CLI checks: a
+        # mismatched bucket must never reach either the CLI or object store.
+        from unittest.mock import patch
+        with patch("validate_replay_receipt.validate_production_manifest"), patch(
+            "validate_replay_receipt.validate_aws_cli"
+        ) as validate_cli:
+            with self.assertRaisesRegex(ReplayError, "S3 bucket differs from frozen manifest"):
+                validate_production_backend_binding(manifest, "attacker-copy", "aws")
+            validate_cli.assert_not_called()
+
+        with self.assertRaises(OSError):
+            # The helper also proves the configured CLI identity before any
+            # production object is accepted.
+            with patch("validate_replay_receipt.validate_production_manifest"), patch(
+                "validate_replay_receipt.validate_aws_cli", side_effect=OSError("missing CLI")
+            ):
+                validate_production_backend_binding(manifest, manifest["s3_bucket"], "missing")
 
     def test_command_receipt_rejects_repeated_placeholder_and_nonfinite_metrics(self) -> None:
         with self.assertRaises(ReplayError):
