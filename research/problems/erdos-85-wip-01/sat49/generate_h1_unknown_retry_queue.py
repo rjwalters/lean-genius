@@ -70,7 +70,8 @@ def select_unknowns(coverage: Path, jobs: dict[str, tuple[int, str, int, str]]) 
         reader = csv.DictReader(stream, delimiter="\t")
         required = {
             "tag", "profile", "family", "local_index", "status",
-            "certified_s3", "fleet_claim", "fleet_verdict",
+            "certified_s3", "fleet_v2_claim", "fleet_v2_verdict",
+            "fleet_v3_claim", "fleet_v3_verdict",
         }
         if not reader.fieldnames or not required.issubset(reader.fieldnames):
             raise ValueError(f"{coverage}: missing required coverage columns")
@@ -81,7 +82,10 @@ def select_unknowns(coverage: Path, jobs: dict[str, tuple[int, str, int, str]]) 
             seen.add(tag)
             is_retry = (
                 row["status"] == "pending" and row["certified_s3"] == "0"
-                and row["fleet_claim"] == "1" and row["fleet_verdict"] == "UNKNOWN"
+                and row["fleet_v2_claim"] == "1"
+                and row["fleet_v2_verdict"] == "UNKNOWN"
+                and row["fleet_v3_claim"] == "0"
+                and row["fleet_v3_verdict"] == ""
             )
             if is_retry:
                 if tag not in jobs:
@@ -121,7 +125,8 @@ def main() -> int:
         "profile_counts": [counts[index] for index in range(5)],
         "selection": {
             "status": "pending", "certified_s3": "0",
-            "fleet_claim": "1", "fleet_verdict": "UNKNOWN",
+            "fleet_v2_claim": "1", "fleet_v2_verdict": "UNKNOWN",
+            "fleet_v3_claim": "0", "fleet_v3_verdict": "",
         },
     }
     atomic_write(

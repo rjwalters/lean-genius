@@ -9,7 +9,7 @@ from generate_h1_unknown_retry_queue import read_jobs, select_unknowns
 
 HEADER = (
     "tag\tprofile\tfamily\tlocal_index\tstatus\tcertified_s3\t"
-    "fleet_claim\tfleet_verdict\n"
+    "fleet_v2_claim\tfleet_v2_verdict\tfleet_v3_claim\tfleet_v3_verdict\n"
 )
 
 
@@ -26,9 +26,9 @@ class UnknownRetryQueueTest(unittest.TestCase):
             coverage = root / "coverage.tsv"
             coverage.write_text(
                 HEADER
-                + "0000000000000001\t0\tBBBB\t7\tpending\t0\t1\tUNKNOWN\n"
-                + "0000000000000002\t1\tABBB\t9\tcertified-in-S3\t1\t1\tUNSAT\n"
-                + "0000000000000003\t2\tAABB\t11\tpending\t0\t0\t\n"
+                + "0000000000000001\t0\tBBBB\t7\tpending\t0\t1\tUNKNOWN\t0\t\n"
+                + "0000000000000002\t1\tABBB\t9\tcertified-in-S3\t1\t1\tUNSAT\t0\t\n"
+                + "0000000000000003\t2\tAABB\t11\tpending\t0\t0\t\t0\t\n"
             )
             self.assertEqual(
                 select_unknowns(coverage, read_jobs(jobs)),
@@ -42,7 +42,7 @@ class UnknownRetryQueueTest(unittest.TestCase):
             jobs.write_text("0000000000000001\t0\tBBBB\t7\n")
             coverage = root / "coverage.tsv"
             coverage.write_text(
-                HEADER + "0000000000000001\t0\tBBBB\t8\tpending\t0\t1\tUNKNOWN\n"
+                HEADER + "0000000000000001\t0\tBBBB\t8\tpending\t0\t1\tUNKNOWN\t0\t\n"
             )
             with self.assertRaisesRegex(ValueError, "identity mismatch"):
                 select_unknowns(coverage, read_jobs(jobs))
@@ -58,17 +58,31 @@ class UnknownRetryQueueTest(unittest.TestCase):
             coverage = root / "coverage.tsv"
             coverage.write_text(
                 HEADER
-                + "0000000000000001\t0\tBBBB\t7\tpending\t0\t0\t\n"
-                + "0000000000000002\t1\tABBB\t9\tcertified-in-S3\t1\t0\t\n"
+                + "0000000000000001\t0\tBBBB\t7\tpending\t0\t0\t\t0\t\n"
+                + "0000000000000002\t1\tABBB\t9\tcertified-in-S3\t1\t0\t\t0\t\n"
             )
             self.assertEqual(select_unknowns(coverage, read_jobs(jobs)), [])
             coverage.write_text(
                 HEADER
-                + "0000000000000001\t0\tBBBB\t7\tpending\t0\t0\t\n"
-                + "0000000000000002\t1\tABBB\t9\tpending\t0\t1\tUNKNOWN\n"
+                + "0000000000000001\t0\tBBBB\t7\tpending\t0\t0\t\t0\t\n"
+                + "0000000000000002\t1\tABBB\t9\tpending\t0\t1\tUNKNOWN\t0\t\n"
             )
             with self.assertRaisesRegex(ValueError, "retry tag absent from jobs"):
                 select_unknowns(coverage, read_jobs(jobs))
+
+    def test_v3_claim_or_verdict_blocks_same_cap_retry(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            jobs = root / "jobs.tsv"
+            jobs.write_text("0000000000000001\t0\tBBBB\t7\n")
+            coverage = root / "coverage.tsv"
+            for v3_claim, v3_verdict in (("1", ""), ("1", "UNKNOWN")):
+                coverage.write_text(
+                    HEADER
+                    + "0000000000000001\t0\tBBBB\t7\tpending\t0\t1\tUNKNOWN\t"
+                    + v3_claim + "\t" + v3_verdict + "\n"
+                )
+                self.assertEqual(select_unknowns(coverage, read_jobs(jobs)), [])
 
 
 if __name__ == "__main__":
