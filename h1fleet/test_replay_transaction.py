@@ -21,6 +21,8 @@ from replay_common import (
 )
 from audit_replay_leaf import parse_axioms
 from build_replay_manifest import publish_validated_manifest
+from replay_worker import validate_job
+from run_replay_queue import load_queue
 from validate_replay_receipt import validate_production_backend_binding
 
 
@@ -202,6 +204,52 @@ class ReplayTransactionTest(unittest.TestCase):
         end = json.loads((self.state / "dispatch" / "END.json").read_text())
         self.assertEqual((end["accepted"], end["failed"]), (1, 0))
         self.assertTrue(self.receipt_path().is_file())
+
+    def test_malformed_queue_row_is_rejected_before_start_or_freeze(self) -> None:
+        malformed = json.loads(self.queue.read_text())
+        del malformed["cnf_sha256"]
+        self.queue.write_bytes(canonical_json(malformed))
+        manifest = json.loads(self.manifest.read_text())
+        manifest["queue_sha256"] = sha256_file(self.queue)
+        self.manifest.write_bytes(canonical_json(manifest))
+
+        dispatched = subprocess.run([
+            sys.executable, str(DISPATCHER), "--manifest", str(self.manifest),
+            "--queue", str(self.queue), "--state-dir", str(self.state),
+            "--parallelism", "1", "--execute", "YES",
+            "--object-store-root", str(self.store_root),
+        ], text=True, capture_output=True, check=False)
+        self.assertEqual(dispatched.returncode, 2)
+        self.assertIn("job.cnf_sha256", dispatched.stderr)
+        self.assertFalse((self.state / "dispatch" / "START.json").exists())
+
+        frozen = self.root / "must-not-freeze.json"
+        freeze = subprocess.run([
+            sys.executable, str(MANIFEST_BUILDER), "--draft", str(self.manifest),
+            "--queue", str(self.queue), "--repo", str(HERE.parent),
+            "--output", str(frozen),
+        ], text=True, capture_output=True, check=False)
+        self.assertEqual(freeze.returncode, 2)
+        self.assertIn("job.cnf_sha256", freeze.stderr)
+        self.assertFalse(frozen.exists())
+
+    def test_queue_rejects_boolean_indices_and_duplicate_slots(self) -> None:
+        job = json.loads(self.job.read_text())
+        for field in ("profile", "local_index"):
+            malformed = dict(job)
+            malformed[field] = True
+            with self.subTest(field=field), self.assertRaises(ReplayError):
+                validate_job(malformed, self.tag)
+
+        second = dict(job)
+        second["tag"] = "1123456789abcdef"
+        second["certificate_key"] = (
+            "sat49/campaign-20260825/h1/1123456789abcdef.compact.lrat.gz"
+        )
+        duplicate_slots = self.root / "duplicate-slots.jsonl"
+        duplicate_slots.write_bytes(canonical_json(job) + canonical_json(second))
+        with self.assertRaisesRegex(ReplayError, "duplicate profile/local-index slots"):
+            load_queue(duplicate_slots)
 
     def test_literal_axiom_report_parser(self) -> None:
         output = (

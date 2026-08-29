@@ -40,9 +40,9 @@ def validate_job(job: dict[str, Any], tag_argument: str) -> dict[str, Any]:
         raise ReplayError(f"job tag {tag} does not match requested tag {tag_argument}")
     for key in ("certificate_gzip_sha256", "compact_lrat_sha256", "cnf_sha256", "table_sha256"):
         require_sha(job.get(key), f"job.{key}")
-    if not isinstance(job.get("profile"), int) or job["profile"] not in range(5):
+    if type(job.get("profile")) is not int or job["profile"] not in range(5):
         raise ReplayError("job.profile must be in 0..4")
-    if not isinstance(job.get("local_index"), int) or job["local_index"] < 0:
+    if type(job.get("local_index")) is not int or job["local_index"] < 0:
         raise ReplayError("job.local_index must be a natural number")
     if not isinstance(job.get("certificate_key"), str) or not job["certificate_key"]:
         raise ReplayError("job.certificate_key must be nonempty")

@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import Any
 
 from replay_common import ReplayError, atomic_write, canonical_json, load_manifest, require_tag, sha256_file
+from replay_worker import validate_job
 
 
 HERE = Path(__file__).resolve().parent
@@ -37,13 +38,19 @@ def load_queue(path: Path) -> list[dict[str, Any]]:
             raise ReplayError(f"{path}:{line_number}: malformed JSON") from error
         if not isinstance(job, dict):
             raise ReplayError(f"{path}:{line_number}: job must be an object")
-        require_tag(job.get("tag"))
-        jobs.append(job)
+        tag = require_tag(job.get("tag"))
+        try:
+            jobs.append(validate_job(job, tag))
+        except ReplayError as error:
+            raise ReplayError(f"{path}:{line_number}: {error}") from error
     tags = [job["tag"] for job in jobs]
     if len(tags) != len(set(tags)):
         raise ReplayError("queue contains duplicate tags")
     if tags != sorted(tags):
         raise ReplayError("queue must be sorted by tag")
+    slots = [(job["profile"], job["local_index"]) for job in jobs]
+    if len(slots) != len(set(slots)):
+        raise ReplayError("queue contains duplicate profile/local-index slots")
     if not jobs:
         raise ReplayError("queue is empty")
     return jobs
