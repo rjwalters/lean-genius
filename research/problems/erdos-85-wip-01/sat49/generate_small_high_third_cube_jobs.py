@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import tempfile
 from pathlib import Path
 
@@ -17,6 +18,10 @@ from generate_small_high_cube_jobs import inspect_dimacs, sha256
 LEFT = (164, 208, 293, 334, 374, 413, 451, 488)
 RIGHT = (165, 209, 294, 335, 375, 414, 452, 489)
 SUPPORTED_CELLS = {"h3_b1", "h3_c1"}
+JOB_ID = re.compile(
+    r"h3_(?:b1|c1)\.cube-[0-7]-[0-7]\.nested\.cube-[0-7]-[0-7]"
+    r"\.third\.(?:cover-(?:left|right)|cube-[0-7]-[0-7])"
+)
 
 
 def third_jobs(parent_id: str) -> list[dict[str, object]]:
@@ -176,6 +181,77 @@ def materialize(manifest_path: Path, job_id: str, output: Path) -> None:
         temporary.unlink(missing_ok=True)
 
 
+def write_queue(manifest_path: Path, output: Path, receipt: Path) -> None:
+    """Export the manifest's exact child order with a deterministic receipt."""
+    manifest = json.loads(manifest_path.read_text())
+    if manifest.get("schema") != "erdos85-small-high-third-cube-jobs-v1":
+        raise ValueError(f"unsupported manifest schema: {manifest_path}")
+    parent_path = Path(manifest["parent_manifest"])
+    if sha256(parent_path) != manifest["parent_manifest_sha256"]:
+        raise ValueError(f"parent manifest hash mismatch: {parent_path}")
+    hard_path_text = manifest.get("hard_jobs")
+    if hard_path_text is not None:
+        hard_path = Path(hard_path_text)
+        if sha256(hard_path) != manifest.get("hard_jobs_sha256"):
+            raise ValueError(f"hard-job file hash mismatch: {hard_path}")
+
+    ids: list[str] = []
+    kinds: dict[str, int] = {"cube": 0, "cover-left": 0, "cover-right": 0}
+    leaves = manifest.get("leaves")
+    if not isinstance(leaves, dict):
+        raise ValueError("third-level manifest leaves must be an object")
+    for parent_id, leaf in leaves.items():
+        if not isinstance(parent_id, str) or not isinstance(leaf, dict):
+            raise ValueError("invalid third-level leaf entry")
+        jobs = leaf.get("jobs")
+        if not isinstance(jobs, list):
+            raise ValueError(f"invalid jobs for third-level leaf: {parent_id}")
+        for job in jobs:
+            if not isinstance(job, dict):
+                raise ValueError(f"invalid job for third-level leaf: {parent_id}")
+            job_id, kind = job.get("id"), job.get("kind")
+            if (not isinstance(job_id, str) or
+                    not job_id.startswith(parent_id + ".third.") or
+                    JOB_ID.fullmatch(job_id) is None):
+                raise ValueError(f"invalid third-level job id: {job_id}")
+            if kind not in kinds:
+                raise ValueError(f"invalid third-level job kind: {kind}")
+            ids.append(job_id)
+            kinds[kind] += 1
+    if len(ids) != len(set(ids)):
+        raise ValueError("third-level manifest contains duplicate job ids")
+    expected_leaves = manifest.get("hard_nested_cube_jobs")
+    expected_cubes = manifest.get("positive_cube_jobs")
+    expected_covers = manifest.get("negative_cover_jobs")
+    if (expected_leaves != len(leaves) or expected_cubes != kinds["cube"] or
+            expected_covers != kinds["cover-left"] + kinds["cover-right"] or
+            kinds["cover-left"] != len(leaves) or
+            kinds["cover-right"] != len(leaves)):
+        raise ValueError("third-level manifest count metadata mismatch")
+
+    output.parent.mkdir(parents=True, exist_ok=True)
+    queue_text = "".join(f"{job_id}\n" for job_id in ids)
+    queue_tmp = output.with_name(f".{output.name}.{os.getpid()}.tmp")
+    queue_tmp.write_text(queue_text)
+    os.replace(queue_tmp, output)
+    receipt_data = {
+        "schema": "erdos85-small-high-third-queue-receipt-v1",
+        "manifest": str(manifest_path.resolve()),
+        "manifest_sha256": sha256(manifest_path),
+        "parent_manifest_sha256": manifest["parent_manifest_sha256"],
+        "hard_jobs_sha256": manifest.get("hard_jobs_sha256"),
+        "queue": str(output.resolve()),
+        "queue_sha256": sha256(output),
+        "jobs": len(ids),
+        "positive_cube_jobs": kinds["cube"],
+        "negative_cover_jobs": kinds["cover-left"] + kinds["cover-right"],
+    }
+    receipt.parent.mkdir(parents=True, exist_ok=True)
+    receipt_tmp = receipt.with_name(f".{receipt.name}.{os.getpid()}.tmp")
+    receipt_tmp.write_text(json.dumps(receipt_data, indent=2, sort_keys=True) + "\n")
+    os.replace(receipt_tmp, receipt)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -187,13 +263,20 @@ def main() -> int:
     materialize_parser.add_argument("--manifest", type=Path, required=True)
     materialize_parser.add_argument("--job", required=True)
     materialize_parser.add_argument("--output", type=Path, required=True)
+    queue_parser = subparsers.add_parser("queue")
+    queue_parser.add_argument("--manifest", type=Path, required=True)
+    queue_parser.add_argument("--output", type=Path, required=True)
+    queue_parser.add_argument("--receipt", type=Path, required=True)
     args = parser.parse_args()
     if args.command == "manifest":
         write_manifest(args.parent_manifest.resolve(),
                        args.hard_jobs.resolve() if args.hard_jobs else None,
                        args.output.resolve())
-    else:
+    elif args.command == "materialize":
         materialize(args.manifest.resolve(), args.job, args.output.resolve())
+    else:
+        write_queue(args.manifest.resolve(), args.output.resolve(),
+                    args.receipt.resolve())
     print(f"WROTE {args.output.resolve()}")
     return 0
 

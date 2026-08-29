@@ -164,6 +164,53 @@ class SmallHighThirdCubeJobsTest(unittest.TestCase):
                     root / "out.cnf",
                 )
 
+    def test_queue_receipt_binds_exact_manifest_order(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_name:
+            root = Path(temporary_name)
+            parent, hard, manifest = self.fixture(root)
+            hard.write_text(json.dumps([
+                "h3_b1.cube-0-0.nested.cube-0-1",
+                "h3_b1.cube-0-0.nested.cube-0-0",
+            ]))
+            third.write_manifest(parent, hard, manifest)
+            queue, receipt = root / "queue.txt", root / "queue.receipt.json"
+            third.write_queue(manifest, queue, receipt)
+            ids = queue.read_text().splitlines()
+            self.assertEqual(len(ids), 132)
+            self.assertEqual(
+                ids[0],
+                "h3_b1.cube-0-0.nested.cube-0-0.third.cover-left",
+            )
+            self.assertEqual(
+                ids[66],
+                "h3_b1.cube-0-0.nested.cube-0-1.third.cover-left",
+            )
+            data = json.loads(receipt.read_text())
+            self.assertEqual(data["schema"],
+                             "erdos85-small-high-third-queue-receipt-v1")
+            self.assertEqual(data["manifest_sha256"], third.sha256(manifest))
+            self.assertEqual(data["queue_sha256"], third.sha256(queue))
+            self.assertEqual(data["jobs"], 132)
+            self.assertEqual(data["positive_cube_jobs"], 128)
+            self.assertEqual(data["negative_cover_jobs"], 4)
+
+    def test_queue_rejects_tampered_dependencies_and_metadata(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_name:
+            root = Path(temporary_name)
+            parent, hard, manifest = self.fixture(root)
+            third.write_manifest(parent, hard, manifest)
+            hard.write_text("tampered\n")
+            with self.assertRaisesRegex(ValueError, "hard-job file hash mismatch"):
+                third.write_queue(manifest, root / "queue", root / "receipt")
+
+            parent, hard, manifest = self.fixture(root)
+            third.write_manifest(parent, hard, manifest)
+            data = json.loads(manifest.read_text())
+            data["positive_cube_jobs"] += 1
+            manifest.write_text(json.dumps(data))
+            with self.assertRaisesRegex(ValueError, "count metadata mismatch"):
+                third.write_queue(manifest, root / "queue", root / "receipt")
+
 
 if __name__ == "__main__":
     unittest.main()
