@@ -7,8 +7,11 @@ import hashlib
 import json
 import os
 import re
+import resource
 import subprocess
 import tempfile
+import time
+import uuid
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Protocol
@@ -120,6 +123,15 @@ def load_manifest(path: Path) -> dict[str, Any]:
             re.compile(pattern)
         except re.error as error:
             raise ReplayError(f"invalid axiom pattern {pattern!r}: {error}") from error
+    environment = value.get("environment_allowlist", [])
+    if not isinstance(environment, list) or not all(
+        isinstance(name, str) and re.fullmatch(r"[A-Z][A-Z0-9_]{0,127}", name)
+        for name in environment
+    ):
+        raise ReplayError("manifest.environment_allowlist must be an uppercase variable-name list")
+    ttl = value.get("claim_ttl_seconds", 86400)
+    if not isinstance(ttl, int) or ttl < 60:
+        raise ReplayError("manifest.claim_ttl_seconds must be an integer >= 60")
     return value
 
 
@@ -142,32 +154,51 @@ class CommandResult:
     returncode: int
     stdout: str
     stderr: str
+    user_cpu_seconds: float
+    system_cpu_seconds: float
+    peak_rss_kib: int
+    environment: dict[str, str]
 
 
-def run_command(command: list[str], cwd: Path, log: Path) -> CommandResult:
+def run_command(command: list[str], cwd: Path, log: Path,
+                environment_allowlist: list[str] | None = None) -> CommandResult:
+    before = resource.getrusage(resource.RUSAGE_CHILDREN)
     completed = subprocess.run(command, cwd=cwd, text=True, capture_output=True, check=False)
+    after = resource.getrusage(resource.RUSAGE_CHILDREN)
+    environment = {
+        key: os.environ[key] for key in (environment_allowlist or []) if key in os.environ
+    }
     record = {
         "argv": command,
         "returncode": completed.returncode,
         "stdout": completed.stdout,
         "stderr": completed.stderr,
+        "user_cpu_seconds": after.ru_utime - before.ru_utime,
+        "system_cpu_seconds": after.ru_stime - before.ru_stime,
+        "peak_rss_kib": after.ru_maxrss,
+        "environment": environment,
     }
     with log.open("ab") as stream:
         stream.write(canonical_json(record))
         stream.flush()
         os.fsync(stream.fileno())
-    return CommandResult(command, completed.returncode, completed.stdout, completed.stderr)
+    return CommandResult(
+        command, completed.returncode, completed.stdout, completed.stderr,
+        after.ru_utime - before.ru_utime, after.ru_stime - before.ru_stime,
+        after.ru_maxrss, environment,
+    )
 
 
 @dataclass(frozen=True)
 class ObjectInfo:
     key: str
     size: int
-    sha256: str
+    sha256: str | None
     etag: str
     last_modified: str
     metadata: dict[str, str]
     tags: dict[str, str]
+    tagging_request_id: str | None = None
 
 
 class ObjectStore(Protocol):
@@ -176,6 +207,8 @@ class ObjectStore(Protocol):
     def put_immutable(self, key: str, source: Path, metadata: dict[str, str]) -> ObjectInfo: ...
     def put_bytes_immutable(self, key: str, value: bytes, metadata: dict[str, str]) -> ObjectInfo: ...
     def add_tag_preserving(self, key: str, name: str, value: str) -> ObjectInfo: ...
+    def acquire_claim(self, key: str, owner: str, now: float, ttl_seconds: int) -> str: ...
+    def release_claim(self, key: str, owner: str, token: str, now: float) -> None: ...
 
 
 class LocalObjectStore:
@@ -216,6 +249,7 @@ class LocalObjectStore:
         return ObjectInfo(
             key, path.stat().st_size, digest, meta["etag"], meta["last_modified"],
             dict(meta.get("metadata", {})), dict(meta.get("tags", {})),
+            meta.get("tagging_request_id"),
         )
 
     def download(self, key: str, destination: Path) -> ObjectInfo:
@@ -252,6 +286,7 @@ class LocalObjectStore:
         tags = dict(meta.get("tags", {}))
         tags[name] = value
         meta["tags"] = tags
+        meta["tagging_request_id"] = f"local-put-tagging-{uuid.uuid4()}"
         atomic_write(meta_path, canonical_json(meta))
         after = self.head(key)
         if (after.etag, after.size, after.sha256, after.last_modified) != (
@@ -259,6 +294,60 @@ class LocalObjectStore:
         ):
             raise ReplayError(f"tagging changed object identity: {key}")
         return after
+
+    def acquire_claim(self, key: str, owner: str, now: float, ttl_seconds: int) -> str:
+        object_path, meta_path = self._paths(key)
+        object_path.parent.mkdir(parents=True, exist_ok=True)
+        meta_path.parent.mkdir(parents=True, exist_ok=True)
+        token = str(uuid.uuid4())
+        record = canonical_json({"owner": owner, "token": token, "expires_unix": now + ttl_seconds})
+        try:
+            descriptor = os.open(object_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        except FileExistsError:
+            current = load_json(object_path)
+            if current.get("expires_unix", now + 1) > now:
+                raise ReplayError(f"live replay claim exists: {key}")
+            # Local replacement is serialized by an adjacent O_EXCL lock.
+            lock = object_path.with_suffix(object_path.suffix + ".lock")
+            try:
+                lock_fd = os.open(lock, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+            except FileExistsError as error:
+                raise ReplayError(f"claim recovery is already in progress: {key}") from error
+            try:
+                os.close(lock_fd)
+                current = load_json(object_path)
+                if current.get("expires_unix", now + 1) > now:
+                    raise ReplayError(f"live replay claim exists: {key}")
+                atomic_write(object_path, record)
+            finally:
+                lock.unlink(missing_ok=True)
+        else:
+            with os.fdopen(descriptor, "wb") as stream:
+                stream.write(record)
+                stream.flush()
+                os.fsync(stream.fileno())
+        digest = sha256_bytes(record)
+        atomic_write(meta_path, canonical_json({
+            "size": len(record), "sha256": digest, "etag": digest,
+            "last_modified": f"local-claim-{now}", "metadata": {}, "tags": {},
+        }))
+        return token
+
+    def release_claim(self, key: str, owner: str, token: str, now: float) -> None:
+        object_path, _ = self._paths(key)
+        current = load_json(object_path)
+        if current.get("owner") != owner or current.get("token") != token:
+            raise ReplayError(f"replay claim ownership mismatch: {key}")
+        current["expires_unix"] = now
+        current["released"] = True
+        value = canonical_json(current)
+        atomic_write(object_path, value)
+        _, meta_path = self._paths(key)
+        digest = sha256_bytes(value)
+        atomic_write(meta_path, canonical_json({
+            "size": len(value), "sha256": digest, "etag": digest,
+            "last_modified": f"local-claim-{now}", "metadata": {}, "tags": {},
+        }))
 
 
 class AwsCliObjectStore:
@@ -288,6 +377,25 @@ class AwsCliObjectStore:
             raise ReplayError("aws JSON result is not an object")
         return value
 
+    def _json_with_request_id(self, arguments: list[str]) -> tuple[dict[str, Any], str]:
+        completed = subprocess.run(
+            [self.aws, *arguments, "--output", "json", "--debug"], text=True,
+            capture_output=True, check=False,
+        )
+        if completed.returncode != 0:
+            raise ReplayError(f"aws {' '.join(arguments[:2])} failed: {completed.stderr.strip()}")
+        try:
+            value = json.loads(completed.stdout or "{}")
+        except json.JSONDecodeError as error:
+            raise ReplayError("aws returned malformed JSON") from error
+        matches = re.findall(
+            r"(?i)[\"']?x-amz-request-id[\"']?\s*[:=]\s*[\"']?([A-Za-z0-9+/=_-]+)",
+            completed.stderr,
+        )
+        if not isinstance(value, dict) or not matches:
+            raise ReplayError("aws response lacks JSON object or x-amz-request-id")
+        return value, matches[-1]
+
     def _head_or_none(self, key: str) -> ObjectInfo | None:
         completed = subprocess.run([
             self.aws, "s3api", "head-object", "--bucket", self.bucket,
@@ -302,7 +410,7 @@ class AwsCliObjectStore:
             head = json.loads(completed.stdout)
         except json.JSONDecodeError as error:
             raise ReplayError(f"S3 HEAD returned malformed JSON for {key}") from error
-        tags_result = self._json([
+        tags_result, tagging_request_id = self._json_with_request_id([
             "s3api", "get-object-tagging", "--bucket", self.bucket, "--key", key,
         ])
         tags = {
@@ -314,11 +422,13 @@ class AwsCliObjectStore:
             str(name): str(value) for name, value in dict(head.get("Metadata", {})).items()
         }
         digest = metadata.get("sha256")
-        require_sha(digest, f"S3 metadata sha256 for {key}")
+        if digest is not None:
+            require_sha(digest, f"S3 metadata sha256 for {key}")
         return ObjectInfo(
             key=key, size=int(head["ContentLength"]), sha256=digest,
             etag=str(head["ETag"]).strip('"'),
             last_modified=str(head["LastModified"]), metadata=metadata, tags=tags,
+            tagging_request_id=tagging_request_id,
         )
 
     def head(self, key: str) -> ObjectInfo:
@@ -336,14 +446,20 @@ class AwsCliObjectStore:
         ], text=True, capture_output=True, check=False)
         if completed.returncode != 0:
             raise ReplayError(f"S3 GET failed for {key}: {completed.stderr.strip()}")
-        if destination.stat().st_size != before.size or sha256_file(destination) != before.sha256:
+        downloaded_sha = sha256_file(destination)
+        if destination.stat().st_size != before.size or (
+            before.sha256 is not None and downloaded_sha != before.sha256
+        ):
             raise ReplayError(f"S3 GET read-back mismatch: {key}")
         after = self.head(key)
-        if (after.etag, after.size, after.sha256, after.last_modified) != (
-            before.etag, before.size, before.sha256, before.last_modified
+        if (after.etag, after.size, after.last_modified) != (
+            before.etag, before.size, before.last_modified
         ):
             raise ReplayError(f"S3 object changed during download: {key}")
-        return after
+        return ObjectInfo(
+            after.key, after.size, downloaded_sha, after.etag, after.last_modified,
+            after.metadata, after.tags, after.tagging_request_id,
+        )
 
     def put_immutable(self, key: str, source: Path, metadata: dict[str, str]) -> ObjectInfo:
         digest = sha256_file(source)
@@ -379,10 +495,13 @@ class AwsCliObjectStore:
         tags = dict(before.tags)
         tags[name] = value
         tag_set = [{"Key": key_name, "Value": tag_value} for key_name, tag_value in sorted(tags.items())]
-        self._json([
-            "s3api", "put-object-tagging", "--bucket", self.bucket, "--key", key,
+        completed = subprocess.run([
+            self.aws, "s3api", "put-object-tagging", "--bucket", self.bucket, "--key", key,
             "--tagging", json.dumps({"TagSet": tag_set}, separators=(",", ":")),
-        ])
+            "--output", "json", "--debug",
+        ], text=True, capture_output=True, check=False)
+        if completed.returncode != 0:
+            raise ReplayError(f"S3 tagging failed for {key}: {completed.stderr.strip()}")
         after = self.head(key)
         if after.tags != tags:
             raise ReplayError(f"S3 tag read-back mismatch: {key}")
@@ -390,12 +509,79 @@ class AwsCliObjectStore:
             before.etag, before.size, before.sha256, before.last_modified
         ):
             raise ReplayError(f"S3 tagging changed object identity: {key}")
-        return after
+        matches = re.findall(
+            r"(?i)[\"']?x-amz-request-id[\"']?\s*[:=]\s*[\"']?([A-Za-z0-9+/=_-]+)",
+            completed.stderr,
+        )
+        if not matches:
+            raise ReplayError("S3 tagging response lacks x-amz-request-id")
+        request_id = matches[-1]
+        return ObjectInfo(
+            after.key, after.size, after.sha256, after.etag, after.last_modified,
+            after.metadata, after.tags, request_id,
+        )
+
+    def acquire_claim(self, key: str, owner: str, now: float, ttl_seconds: int) -> str:
+        token = str(uuid.uuid4())
+        value = canonical_json({"owner": owner, "token": token, "expires_unix": now + ttl_seconds})
+        with tempfile.TemporaryDirectory() as temporary:
+            source = Path(temporary) / "claim.json"
+            source.write_bytes(value)
+            completed = subprocess.run([
+                self.aws, "s3api", "put-object", "--bucket", self.bucket, "--key", key,
+                "--body", str(source), "--metadata", f"sha256={sha256_bytes(value)}",
+                "--if-none-match", "*", "--output", "json",
+            ], text=True, capture_output=True, check=False)
+        if completed.returncode == 0:
+            return token
+        current = self._head_or_none(key)
+        if current is None:
+            raise ReplayError(f"claim creation failed: {completed.stderr.strip()}")
+        with tempfile.TemporaryDirectory() as temporary:
+            target = Path(temporary) / "claim.json"
+            self.download(key, target)
+            claim = load_json(target)
+            if claim.get("expires_unix", now + 1) > now:
+                raise ReplayError(f"live replay claim exists: {key}")
+            source = Path(temporary) / "replacement.json"
+            source.write_bytes(value)
+            replaced = subprocess.run([
+                self.aws, "s3api", "put-object", "--bucket", self.bucket, "--key", key,
+                "--body", str(source), "--metadata", f"sha256={sha256_bytes(value)}",
+                "--if-match", current.etag, "--output", "json",
+            ], text=True, capture_output=True, check=False)
+        if replaced.returncode != 0:
+            raise ReplayError(f"stale claim replacement failed: {replaced.stderr.strip()}")
+        return token
+
+    def release_claim(self, key: str, owner: str, token: str, now: float) -> None:
+        current = self.head(key)
+        with tempfile.TemporaryDirectory() as temporary:
+            downloaded = Path(temporary) / "claim.json"
+            self.download(key, downloaded)
+            claim = load_json(downloaded)
+            if claim.get("owner") != owner or claim.get("token") != token:
+                raise ReplayError(f"replay claim ownership mismatch: {key}")
+            claim["expires_unix"] = now
+            claim["released"] = True
+            value = canonical_json(claim)
+            replacement = Path(temporary) / "released.json"
+            replacement.write_bytes(value)
+            completed = subprocess.run([
+                self.aws, "s3api", "put-object", "--bucket", self.bucket, "--key", key,
+                "--body", str(replacement), "--metadata", f"sha256={sha256_bytes(value)}",
+                "--if-match", current.etag, "--output", "json",
+            ], text=True, capture_output=True, check=False)
+        if completed.returncode != 0:
+            raise ReplayError(f"claim release failed: {completed.stderr.strip()}")
 
 
 def info_record(info: ObjectInfo) -> dict[str, Any]:
-    return {
+    record = {
         "key": info.key, "size": info.size, "sha256": info.sha256,
         "etag": info.etag, "last_modified": info.last_modified,
         "metadata": info.metadata, "tags": info.tags,
     }
+    if info.tagging_request_id is not None:
+        record["tagging_request_id"] = info.tagging_request_id
+    return record

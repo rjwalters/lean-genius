@@ -16,6 +16,9 @@ import re
 import shutil
 import sys
 import time
+import uuid
+import tempfile
+from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
@@ -79,9 +82,10 @@ def command_values(work: Path, job: dict[str, Any]) -> dict[str, str]:
     }
 
 
-def require_command_ok(name: str, command: list[str], work: Path, log: Path) -> dict[str, Any]:
+def require_command_ok(name: str, command: list[str], work: Path, log: Path,
+                       environment_allowlist: list[str]) -> dict[str, Any]:
     started = time.time()
-    result = run_command(command, work, log)
+    result = run_command(command, work, log, environment_allowlist)
     finished = time.time()
     if result.returncode != 0:
         raise ReplayError(f"{name} failed with rc={result.returncode}")
@@ -89,6 +93,10 @@ def require_command_ok(name: str, command: list[str], work: Path, log: Path) -> 
         "argv": result.argv, "returncode": result.returncode,
         "started_unix": started, "finished_unix": finished,
         "wall_seconds": finished - started,
+        "user_cpu_seconds": result.user_cpu_seconds,
+        "system_cpu_seconds": result.system_cpu_seconds,
+        "peak_rss_kib": result.peak_rss_kib,
+        "environment": result.environment,
         "stdout_sha256": sha256_bytes(result.stdout.encode()),
         "stderr_sha256": sha256_bytes(result.stderr.encode()),
     }
@@ -156,6 +164,20 @@ def validate_ready(ready: dict[str, Any], manifest: dict[str, Any], job: dict[st
         actual = store.head(expected.get("key", ""))
         if actual.sha256 != expected.get("sha256") or actual.size != expected.get("size"):
             raise ReplayError(f"replay-ready {label} read-back mismatch")
+    expected_certificate = ready.get("certificate")
+    if not isinstance(expected_certificate, dict):
+        raise ReplayError("replay-ready certificate record is malformed")
+    with tempfile.TemporaryDirectory() as temporary:
+        actual = store.download(job["certificate_key"], Path(temporary) / "certificate")
+    for field in ("key", "size", "sha256", "etag", "last_modified"):
+        if getattr(actual, field) != expected_certificate.get(field):
+            raise ReplayError(f"live certificate differs from replay-ready at {field}")
+    original_tags = expected_certificate.get("tags")
+    if not isinstance(original_tags, dict):
+        raise ReplayError("replay-ready certificate tags are malformed")
+    allowed_tags = dict(original_tags, replay="consumed")
+    if actual.tags not in (original_tags, allowed_tags):
+        raise ReplayError("live certificate tags differ from replay-ready evidence")
 
 
 def compile_ready(store: ObjectStore, manifest: dict[str, Any], job: dict[str, Any],
@@ -167,6 +189,8 @@ def compile_ready(store: ObjectStore, manifest: dict[str, Any], job: dict[str, A
     certificate = store.download(job["certificate_key"], gzip_path)
     if certificate.sha256 != job["certificate_gzip_sha256"]:
         raise ReplayError("certificate gzip SHA-256 mismatch")
+    if "replay" in certificate.tags:
+        raise ReplayError("certificate already has a replay lifecycle tag without ready evidence")
     compact = Path(values["compact_lrat"])
     try:
         with gzip.open(gzip_path, "rb") as source, compact.open("wb") as destination:
@@ -178,9 +202,11 @@ def compile_ready(store: ObjectStore, manifest: dict[str, Any], job: dict[str, A
     validate_compact_lrat(compact)
 
     commands = manifest["commands"]
+    environment_allowlist = manifest.get("environment_allowlist", [])
     command_receipts = {
         "generate": require_command_ok(
-            "generate", expand_command(commands["generate"], values), work, log),
+            "generate", expand_command(commands["generate"], values), work, log,
+            environment_allowlist),
     }
     source = Path(values["source"])
     if not source.is_file() or source.stat().st_size == 0:
@@ -194,12 +220,14 @@ def compile_ready(store: ObjectStore, manifest: dict[str, Any], job: dict[str, A
         with source.open("a") as stream:
             stream.write(axiom_directive)
     command_receipts["compile"] = require_command_ok(
-        "compile", expand_command(commands["compile"], values), work, log)
+        "compile", expand_command(commands["compile"], values), work, log,
+        environment_allowlist)
     olean = Path(values["olean"])
     if not olean.is_file() or olean.stat().st_size == 0:
         raise ReplayError("compiler did not produce a nonempty olean")
     command_receipts["axiom_audit"] = require_command_ok(
-        "axiom_audit", expand_command(commands["axiom_audit"], values), work, log)
+        "axiom_audit", expand_command(commands["axiom_audit"], values), work, log,
+        environment_allowlist)
     audit = validate_audit(
         Path(values["audit_json"]), set(manifest["allowed_axioms"]),
         manifest.get("allowed_axiom_patterns", []),
@@ -210,7 +238,8 @@ def compile_ready(store: ObjectStore, manifest: dict[str, Any], job: dict[str, A
         destination = work / f"{label}.zst"
         zstd_values = dict(values, input=str(source_path), output=str(destination))
         command_receipts[f"zstd_{label}"] = require_command_ok(
-            f"zstd_{label}", expand_command(commands["zstd"], zstd_values), work, log)
+            f"zstd_{label}", expand_command(commands["zstd"], zstd_values), work, log,
+            environment_allowlist)
         if not destination.is_file() or destination.stat().st_size == 0:
             raise ReplayError(f"zstd did not produce {label} output")
         compressed[label] = destination
@@ -244,8 +273,26 @@ def compile_ready(store: ObjectStore, manifest: dict[str, Any], job: dict[str, A
 def finish_transaction(store: ObjectStore, manifest: dict[str, Any], job: dict[str, Any],
                        ready: dict[str, Any]) -> dict[str, Any]:
     validate_ready(ready, manifest, job, store)
-    before = store.head(job["certificate_key"])
-    after = store.add_tag_preserving(job["certificate_key"], "replay", "consumed")
+    expected_before = ready["certificate"]
+    with tempfile.TemporaryDirectory() as temporary:
+        before = store.download(job["certificate_key"], Path(temporary) / "certificate-before")
+    if before.tags.get("replay") == "consumed":
+        after = before
+        tagging_operation = "already_present"
+        tagging_request_kind = "get-object-tagging-readback"
+        tagging_request_id = before.tagging_request_id
+    else:
+        if before.tags != expected_before.get("tags"):
+            raise ReplayError("certificate tags changed before lifecycle tagging")
+        tagged = store.add_tag_preserving(job["certificate_key"], "replay", "consumed")
+        with tempfile.TemporaryDirectory() as temporary:
+            after = store.download(job["certificate_key"], Path(temporary) / "certificate-after")
+        after = replace(after, tagging_request_id=tagged.tagging_request_id)
+        tagging_operation = "performed"
+        tagging_request_kind = "put-object-tagging"
+        tagging_request_id = after.tagging_request_id
+    if not tagging_request_id:
+        raise ReplayError("lifecycle tagging lacks a request identifier")
     if after.tags.get("replay") != "consumed":
         raise ReplayError("consumed tag read-back failed")
     identity = ("etag", "size", "sha256", "last_modified")
@@ -256,8 +303,11 @@ def finish_transaction(store: ObjectStore, manifest: dict[str, Any], job: dict[s
         "manifest_sha256": manifest["manifest_sha256"],
         "job_sha256": job["job_sha256"],
         "replay_ready_sha256": sha256_bytes(canonical_json(ready)),
-        "certificate_before_tagging": info_record(before),
+        "certificate_before_tagging": expected_before,
         "certificate_after_tagging": info_record(after),
+        "tagging_operation": tagging_operation,
+        "tagging_request_kind": tagging_request_kind,
+        "tagging_request_id": tagging_request_id,
         "artifacts": ready["artifacts"], "axiom_audit": ready["axiom_audit"],
     }
     prefix = manifest["campaign_prefix"]
@@ -275,7 +325,7 @@ def finish_transaction(store: ObjectStore, manifest: dict[str, Any], job: dict[s
 
 def validate_existing_receipt(store: ObjectStore, manifest: dict[str, Any],
                               job: dict[str, Any], receipt: dict[str, Any],
-                              work: Path) -> None:
+                              work: Path) -> bool:
     if receipt.get("schema") != RECEIPT_SCHEMA or receipt.get("accepted") is not True:
         raise ReplayError("existing receipt is not validly accepted")
     if receipt.get("tag") != job["tag"]:
@@ -284,6 +334,8 @@ def validate_existing_receipt(store: ObjectStore, manifest: dict[str, Any],
         raise ReplayError("existing receipt belongs to another manifest")
     if receipt.get("job_sha256") != job["job_sha256"]:
         raise ReplayError("existing receipt belongs to another job record")
+    if not isinstance(receipt.get("tagging_request_id"), str) or not receipt["tagging_request_id"]:
+        raise ReplayError("existing receipt lacks tagging request id")
     prefix = manifest["campaign_prefix"]
     ready = try_load_remote_json(
         store, ready_key(prefix, job["tag"]), work / "accepted-ready.json"
@@ -293,12 +345,28 @@ def validate_existing_receipt(store: ObjectStore, manifest: dict[str, Any],
     validate_ready(ready, manifest, job, store)
     if receipt.get("replay_ready_sha256") != sha256_bytes(canonical_json(ready)):
         raise ReplayError("accepted receipt has wrong replay-ready hash")
+    if receipt.get("artifacts") != ready.get("artifacts"):
+        raise ReplayError("accepted receipt artifacts differ from replay-ready")
+    if receipt.get("axiom_audit") != ready.get("axiom_audit"):
+        raise ReplayError("accepted receipt audit differs from replay-ready")
+    if receipt.get("certificate_before_tagging") != ready.get("certificate"):
+        raise ReplayError("accepted receipt pre-tag identity differs from replay-ready")
+    operation = receipt.get("tagging_operation")
+    expected_kind = {
+        "performed": "put-object-tagging",
+        "already_present": "get-object-tagging-readback",
+    }.get(operation)
+    if expected_kind is None or receipt.get("tagging_request_kind") != expected_kind:
+        raise ReplayError("accepted receipt tagging operation is malformed")
     after = receipt.get("certificate_after_tagging")
     if not isinstance(after, dict):
         raise ReplayError("accepted receipt lacks certificate tagging record")
     certificate = store.head(job["certificate_key"])
     if certificate.tags.get("replay") != "consumed":
         raise ReplayError("accepted certificate has lost replay=consumed")
+    original_tags = ready["certificate"].get("tags")
+    if not isinstance(original_tags, dict) or certificate.tags != dict(original_tags, replay="consumed"):
+        raise ReplayError("accepted certificate tags differ from preserved ready evidence")
     if (certificate.etag, certificate.size, certificate.sha256, certificate.last_modified) != (
         after.get("etag"), after.get("size"), after.get("sha256"), after.get("last_modified")
     ):
@@ -306,8 +374,30 @@ def validate_existing_receipt(store: ObjectStore, manifest: dict[str, Any],
     ledger = try_load_remote_json(
         store, ledger_key(prefix, job["tag"]), work / "accepted-ledger.json"
     )
-    if not isinstance(ledger, dict) or ledger.get("accepted") is not True:
-        raise ReplayError("accepted receipt lacks valid terminal ledger")
+    if ledger is None:
+        return False
+    receipt_info = store.head(receipt_key(prefix, job["tag"]))
+    if ledger.get("accepted") is not True or ledger.get("tag") != job["tag"]:
+        raise ReplayError("terminal ledger is malformed")
+    if ledger.get("receipt_key") != receipt_info.key or ledger.get("receipt_sha256") != receipt_info.sha256:
+        raise ReplayError("terminal ledger does not bind the live receipt")
+    if ledger.get("manifest_sha256") != manifest["manifest_sha256"]:
+        raise ReplayError("terminal ledger manifest mismatch")
+    return True
+
+
+def publish_ledger(store: ObjectStore, manifest: dict[str, Any], job: dict[str, Any]) -> None:
+    prefix = manifest["campaign_prefix"]
+    receipt_info = store.head(receipt_key(prefix, job["tag"]))
+    if receipt_info.sha256 is None:
+        raise ReplayError("receipt object lacks SHA-256 metadata")
+    ledger = {
+        "schema": "erdos85-h1-replay-ledger-v1", "tag": job["tag"],
+        "receipt_key": receipt_info.key, "receipt_sha256": receipt_info.sha256,
+        "manifest_sha256": manifest["manifest_sha256"], "accepted": True,
+    }
+    metadata = {"tag": job["tag"], "manifest-sha256": manifest["manifest_sha256"]}
+    store.put_bytes_immutable(ledger_key(prefix, job["tag"]), canonical_json(ledger), metadata)
 
 
 def main() -> int:
@@ -337,19 +427,30 @@ def main() -> int:
         )
         prefix = manifest["campaign_prefix"]
 
-        accepted = try_load_remote_json(store, receipt_key(prefix, tag), work / "existing-receipt.json")
-        if accepted is not None:
-            validate_existing_receipt(store, manifest, job, accepted, work)
-            print(f"ALREADY_ACCEPTED tag={tag}")
-            return 0
+        claim_key = artifact_key(prefix, "claims", tag, "json")
+        owner = str(uuid.uuid4())
+        claim_token = store.acquire_claim(
+            claim_key, owner, time.time(), manifest.get("claim_ttl_seconds", 86400))
+        try:
+            accepted = try_load_remote_json(store, receipt_key(prefix, tag), work / "existing-receipt.json")
+            if accepted is not None:
+                complete = validate_existing_receipt(store, manifest, job, accepted, work)
+                if not complete:
+                    publish_ledger(store, manifest, job)
+                    print(f"RECOVERED_LEDGER tag={tag}")
+                else:
+                    print(f"ALREADY_ACCEPTED tag={tag}")
+                return 0
 
-        ready = try_load_remote_json(store, ready_key(prefix, tag), work / "existing-ready.json")
-        if ready is None:
-            ready = compile_ready(store, manifest, job, work)
-        receipt = finish_transaction(store, manifest, job, ready)
-        atomic_write(work / "accepted-receipt.json", canonical_json(receipt))
-        print(f"ACCEPTED tag={tag}")
-        return 0
+            ready = try_load_remote_json(store, ready_key(prefix, tag), work / "existing-ready.json")
+            if ready is None:
+                ready = compile_ready(store, manifest, job, work)
+            receipt = finish_transaction(store, manifest, job, ready)
+            atomic_write(work / "accepted-receipt.json", canonical_json(receipt))
+            print(f"ACCEPTED tag={tag}")
+            return 0
+        finally:
+            store.release_claim(claim_key, owner, claim_token, time.time())
     except ReplayError as error:
         print(f"REPLAY_ERROR: {error}", file=sys.stderr)
         return 2

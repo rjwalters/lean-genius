@@ -8,6 +8,7 @@ import json
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -109,6 +110,17 @@ class ReplayTransactionTest(unittest.TestCase):
             f"sat49/campaign-20260825/h1-replay/receipts/{self.tag}.json"
         )
 
+    def remove_object(self, key: str) -> None:
+        (self.store.objects / key).unlink(missing_ok=True)
+        (self.store.meta / f"{key}.json").unlink(missing_ok=True)
+
+    def set_certificate_tags(self, tags: dict[str, str]) -> None:
+        meta_path = self.store.meta / f"{self.certificate_key}.json"
+        meta = json.loads(meta_path.read_text())
+        meta["tags"] = tags
+        meta.pop("tagging_request_id", None)
+        meta_path.write_bytes(canonical_json(meta))
+
     def test_success_resume_and_independent_validation(self) -> None:
         first = self.worker()
         self.assertEqual(first.returncode, 0, first.stderr)
@@ -171,6 +183,63 @@ class ReplayTransactionTest(unittest.TestCase):
             "propext", "Classical.choice", "Quot.sound",
             "Erdos85.h1V2P0I00003Check._native.native_decide.ax_1",
         ])
+
+    def test_resume_b_ready_without_consumed_tag_skips_compile(self) -> None:
+        self.assertEqual(self.worker().returncode, 0)
+        prefix = "sat49/campaign-20260825/h1-replay/"
+        self.remove_object(f"{prefix}receipts/{self.tag}.json")
+        self.remove_object(f"{prefix}ledger/{self.tag}.accepted")
+        self.set_certificate_tags({})
+        (self.state / "work" / self.tag / "emit-evil").write_text("1")
+        resumed = self.worker()
+        self.assertEqual(resumed.returncode, 0, resumed.stderr)
+        self.assertIn("ACCEPTED", resumed.stdout)
+
+    def test_resume_c_consumed_tag_without_receipt_does_not_retag(self) -> None:
+        self.assertEqual(self.worker().returncode, 0)
+        prefix = "sat49/campaign-20260825/h1-replay/"
+        request_id = self.store.head(self.certificate_key).tagging_request_id
+        self.remove_object(f"{prefix}receipts/{self.tag}.json")
+        self.remove_object(f"{prefix}ledger/{self.tag}.accepted")
+        resumed = self.worker()
+        self.assertEqual(resumed.returncode, 0, resumed.stderr)
+        receipt = json.loads(self.receipt_path().read_text())
+        self.assertEqual(receipt["tagging_operation"], "already_present")
+        self.assertEqual(receipt["tagging_request_id"], request_id)
+        self.assertEqual(self.store.head(self.certificate_key).tagging_request_id, request_id)
+
+    def test_resume_d_receipt_without_ledger_publishes_only_ledger(self) -> None:
+        self.assertEqual(self.worker().returncode, 0)
+        prefix = "sat49/campaign-20260825/h1-replay/"
+        receipt_sha = sha256_file(self.receipt_path())
+        self.remove_object(f"{prefix}ledger/{self.tag}.accepted")
+        resumed = self.worker()
+        self.assertEqual(resumed.returncode, 0, resumed.stderr)
+        self.assertIn("RECOVERED_LEDGER", resumed.stdout)
+        self.assertEqual(sha256_file(self.receipt_path()), receipt_sha)
+
+    def test_e_changed_input_and_lost_tag_fail_closed(self) -> None:
+        self.assertEqual(self.worker().returncode, 0)
+        certificate_path = self.store.objects / self.certificate_key
+        original = certificate_path.read_bytes()
+        certificate_path.write_bytes(original + b"changed")
+        changed = self.worker()
+        self.assertEqual(changed.returncode, 2)
+        self.assertIn("integrity mismatch", changed.stderr)
+        certificate_path.write_bytes(original)
+        self.set_certificate_tags({})
+        lost = self.worker()
+        self.assertEqual(lost.returncode, 2)
+        self.assertIn("lost replay=consumed", lost.stderr)
+
+    def test_live_claim_rejected_and_stale_claim_recovered(self) -> None:
+        key = f"sat49/campaign-20260825/h1-replay/claims/{self.tag}.json"
+        token = self.store.acquire_claim(key, "first", time.time(), 60)
+        with self.assertRaisesRegex(Exception, "live replay claim"):
+            self.store.acquire_claim(key, "second", time.time(), 60)
+        self.store.release_claim(key, "first", token, time.time() - 1)
+        recovered = self.store.acquire_claim(key, "second", time.time(), 60)
+        self.assertTrue(recovered)
 
 
 if __name__ == "__main__":

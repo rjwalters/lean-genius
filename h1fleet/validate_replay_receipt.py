@@ -26,6 +26,16 @@ def validate(args: argparse.Namespace) -> None:
         raise ReplayError("receipt manifest SHA mismatch")
     require_sha(receipt.get("job_sha256"), "receipt.job_sha256")
     require_sha(receipt.get("replay_ready_sha256"), "receipt.replay_ready_sha256")
+    if not isinstance(receipt.get("tagging_request_id"), str) or not receipt["tagging_request_id"]:
+        raise ReplayError("receipt lacks tagging request id")
+    if receipt.get("tagging_operation") not in ("performed", "already_present"):
+        raise ReplayError("receipt has invalid tagging operation")
+    expected_request_kind = {
+        "performed": "put-object-tagging",
+        "already_present": "get-object-tagging-readback",
+    }[receipt["tagging_operation"]]
+    if receipt.get("tagging_request_kind") != expected_request_kind:
+        raise ReplayError("receipt has invalid tagging request kind")
     audit = receipt.get("axiom_audit")
     if not isinstance(audit, dict) or audit.get("sorry_ax") is not False or audit.get("source_scan") != "PASS":
         raise ReplayError("receipt axiom/source audit is not accepted")
@@ -85,6 +95,30 @@ def validate(args: argparse.Namespace) -> None:
         ready_path.unlink(missing_ok=True)
     if sha256_bytes(canonical_json(ready)) != receipt["replay_ready_sha256"]:
         raise ReplayError("replay-ready record hash mismatch")
+    if ready.get("artifacts") != receipt.get("artifacts"):
+        raise ReplayError("receipt artifacts differ from replay-ready evidence")
+    if ready.get("certificate") != before:
+        raise ReplayError("receipt pre-tag identity differs from replay-ready evidence")
+
+    receipt_key = f"{prefix}receipts/{tag}.json"
+    receipt_info = store.head(receipt_key)
+    if receipt_info.sha256 != sha256_file(args.receipt):
+        raise ReplayError("supplied receipt differs from immutable live receipt")
+    ledger_key = f"{prefix}ledger/{tag}.accepted"
+    ledger_path = args.receipt.parent / f".{tag}.ledger.validation.json"
+    try:
+        store.download(ledger_key, ledger_path)
+        ledger = load_json(ledger_path)
+    finally:
+        ledger_path.unlink(missing_ok=True)
+    if (
+        ledger.get("accepted") is not True
+        or ledger.get("tag") != tag
+        or ledger.get("receipt_key") != receipt_key
+        or ledger.get("receipt_sha256") != receipt_info.sha256
+        or ledger.get("manifest_sha256") != manifest_sha
+    ):
+        raise ReplayError("terminal ledger does not bind the accepted receipt")
 
 
 def main() -> int:
