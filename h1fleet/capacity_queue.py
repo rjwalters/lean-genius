@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import csv
+import hashlib
+import json
 from pathlib import Path
 from typing import Any
 
@@ -12,6 +14,13 @@ from replay_common import ReplayError, load_json, require_sha, require_tag, sha2
 
 PROFILE_NAMES = ("BBBB", "ABBB", "AABB", "AAAB", "AAAA")
 CAPACITY_PROFILE_COUNTS = (1485, 3617, 4717, 2693, 839)
+MATE = (1, 0, 3, 2, 5, 4, 7, 6)
+TABLE_PAIRS = tuple(
+    (left, right)
+    for left in range(8)
+    for right in range(left + 1, 8)
+    if MATE[left] != right
+)
 
 
 def load_capacity_index(path: Path) -> dict[str, tuple[int, int]]:
@@ -87,3 +96,35 @@ def validate_queue_capacity(
             raise ReplayError("capacity index does not exactly enumerate all capacity ordinals")
         if {job["tag"] for job in jobs} != set(capacity):
             raise ReplayError("complete replay queue does not exactly cover the capacity index")
+
+
+def table_serialization_tag(serialization: str) -> str:
+    try:
+        records = json.loads(serialization)
+    except json.JSONDecodeError as error:
+        raise ReplayError("job table_serialization is not JSON") from error
+    if not isinstance(records, list):
+        raise ReplayError("job table_serialization must be a JSON list")
+    table: dict[tuple[int, int], int] = {}
+    for record in records:
+        if (
+            not isinstance(record, list) or len(record) != 2
+            or not isinstance(record[0], list) or len(record[0]) != 2
+            or any(type(endpoint) is not int for endpoint in record[0])
+            or type(record[1]) is not int or record[1] <= 0
+        ):
+            raise ReplayError("job table_serialization has a malformed table entry")
+        pair = tuple(record[0])
+        if pair not in TABLE_PAIRS or pair in table:
+            raise ReplayError("job table_serialization has an invalid or duplicate pair")
+        table[pair] = record[1]
+    payload = json.dumps(sorted(table.items())).encode()
+    return hashlib.sha1(payload).hexdigest()[:16]
+
+
+def validate_queue_tables(jobs: list[dict[str, Any]]) -> None:
+    for job in jobs:
+        if table_serialization_tag(job["table_serialization"]) != job["tag"]:
+            raise ReplayError(
+                f"queue table serialization does not hash to tag {job['tag']}"
+            )

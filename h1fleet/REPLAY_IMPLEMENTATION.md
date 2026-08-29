@@ -37,7 +37,9 @@ unless an operator runs the worker with the production backend explicitly.
   `--require-complete-capacity-queue`, which requires the exact 13,351 tags and
   all five contiguous capacity-ordinal ranges.
 - `capacity_queue.py`: validates the capacity-reindex receipt and the exact
-  queue tag-to-`(profile, local_index)` binding before a manifest can freeze.
+  queue tag-to-`(profile, local_index)` binding before a manifest can freeze;
+  it also parses each sparse JSON table serialization and recomputes its orbit
+  tag, so the free-form job field cannot silently describe another table.
 - `test_replay_transaction.py`: complete local-store tests of acceptance,
   idempotent resume, dispatcher execution, corrupt-certificate rejection,
   undisclosed-axiom rejection, and literal axiom parsing.

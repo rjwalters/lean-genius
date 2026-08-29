@@ -25,7 +25,8 @@ from replay_common import (
 from audit_replay_leaf import parse_axioms
 from build_replay_manifest import publish_validated_manifest
 from capacity_queue import (
-    CAPACITY_PROFILE_COUNTS, load_capacity_index, validate_queue_capacity,
+    CAPACITY_PROFILE_COUNTS, load_capacity_index, table_serialization_tag,
+    validate_queue_capacity, validate_queue_tables,
 )
 from replay_worker import (
     validate_existing_receipt, validate_job, validate_production_manifest,
@@ -422,6 +423,15 @@ class ReplayTransactionTest(unittest.TestCase):
         validate_queue_capacity(jobs, capacity, require_complete=True)
         with self.assertRaisesRegex(ReplayError, "does not exactly cover"):
             validate_queue_capacity(jobs[:-1], capacity, require_complete=True)
+
+    def test_queue_table_serialization_is_bound_to_tag(self) -> None:
+        serialization = json.dumps([[[0, 2], 3], [[1, 3], 1]])
+        tag = table_serialization_tag(serialization)
+        validate_queue_tables([{"tag": tag, "table_serialization": serialization}])
+        with self.assertRaisesRegex(ReplayError, "does not hash to tag"):
+            validate_queue_tables([{
+                "tag": "ffffffffffffffff", "table_serialization": serialization,
+            }])
 
     def test_job_rejects_noncanonical_certificate_prefix(self) -> None:
         job = json.loads(self.job.read_text())

@@ -10,7 +10,8 @@ import tempfile
 from pathlib import Path
 
 from capacity_queue import (
-    load_capacity_index, validate_queue_capacity, validate_reindex_receipt,
+    load_capacity_index, validate_queue_capacity, validate_queue_tables,
+    validate_reindex_receipt,
 )
 from replay_common import ReplayError, SCHEMA, atomic_write, canonical_json, load_json, load_manifest, sha256_file
 from run_replay_queue import load_queue
@@ -90,6 +91,7 @@ def main() -> int:
         ):
             raise ReplayError("complete replay freeze requires a complete reindex receipt")
         validate_queue_capacity(jobs, capacity, args.require_complete_capacity_queue)
+        validate_queue_tables(jobs)
         status = git_value(repo, "status", "--porcelain")
         if status:
             raise ReplayError("repository must be clean before manifest freeze")
