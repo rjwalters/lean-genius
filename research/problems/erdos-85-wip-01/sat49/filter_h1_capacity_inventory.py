@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from collections import Counter
 from pathlib import Path
 
@@ -71,6 +72,14 @@ def main() -> None:
     )
     parser.add_argument("--results", type=Path)
     parser.add_argument(
+        "--retained-output",
+        type=Path,
+        help=(
+            "atomically write the authoritative 13,351-row capacity compact "
+            "inventory in Lean filter order"
+        ),
+    )
+    parser.add_argument(
         "--summary-only",
         action="store_true",
         help="suppress the removed-tag TSV rows",
@@ -80,6 +89,7 @@ def main() -> None:
 
     totals = Counter()
     retained = Counter()
+    retained_lines: list[str] = []
     removed: list[tuple[int, str, str]] = []
     for line_number, raw in enumerate(args.inventory.read_text().splitlines(), 1):
         fields = raw.split()
@@ -93,6 +103,7 @@ def main() -> None:
         totals[profile] += 1
         if has_cross_miss_capacity(values):
             retained[profile] += 1
+            retained_lines.append(raw + "\n")
         else:
             removed.append((profile, tag, latest.get(tag, "MISSING")))
 
@@ -104,6 +115,18 @@ def main() -> None:
         raise ValueError(f"unexpected retained counts: {actual_retained}")
     if len(removed) != 190:
         raise ValueError(f"expected 190 removed rows, found {len(removed)}")
+
+    if args.retained_output:
+        args.retained_output.parent.mkdir(parents=True, exist_ok=True)
+        temporary = args.retained_output.with_name(
+            f".{args.retained_output.name}.tmp.{os.getpid()}"
+        )
+        try:
+            temporary.write_text("".join(retained_lines))
+            os.replace(temporary, args.retained_output)
+        finally:
+            if temporary.exists():
+                temporary.unlink()
 
     if not args.summary_only:
         print("profile\ttag\tlatest_status")
