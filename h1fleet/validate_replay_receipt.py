@@ -13,7 +13,9 @@ from replay_common import (
     RECEIPT_SCHEMA, AwsCliObjectStore, LocalObjectStore, ObjectStore, ReplayError,
     canonical_json, load_json,
     load_manifest, require_sha, require_tag, sha256_bytes, sha256_file,
+    validate_command_receipts,
 )
+from replay_worker import receipt_command_bindings
 
 
 def validate(args: argparse.Namespace) -> None:
@@ -59,6 +61,8 @@ def validate(args: argparse.Namespace) -> None:
     for field in ("key", "size", "sha256", "etag", "last_modified"):
         if before.get(field) != after.get(field):
             raise ReplayError(f"certificate identity changed at field {field}")
+    if before.get("version_id") != after.get("version_id"):
+        raise ReplayError("certificate identity changed at field version_id")
     if not isinstance(after.get("tags"), dict) or after["tags"].get("replay") != "consumed":
         raise ReplayError("receipt does not prove replay=consumed")
 
@@ -70,8 +74,9 @@ def validate(args: argparse.Namespace) -> None:
     with tempfile.TemporaryDirectory() as temporary:
         actual_certificate = store.download(before["key"], Path(temporary) / "certificate")
     if (actual_certificate.sha256, actual_certificate.size, actual_certificate.etag,
-        actual_certificate.last_modified) != (
-        before["sha256"], before["size"], before["etag"], before["last_modified"]
+        actual_certificate.last_modified, actual_certificate.version_id) != (
+        before["sha256"], before["size"], before["etag"], before["last_modified"],
+        before.get("version_id")
     ):
         raise ReplayError("live certificate identity differs from receipt")
     if actual_certificate.tags.get("replay") != "consumed":
@@ -99,8 +104,87 @@ def validate(args: argparse.Namespace) -> None:
         raise ReplayError("replay-ready record hash mismatch")
     if ready.get("artifacts") != receipt.get("artifacts"):
         raise ReplayError("receipt artifacts differ from replay-ready evidence")
+    for field in (
+        "job_identity", "build_identity", "module", "compact_lrat", "source_raw",
+        "olean_raw", "commands", "work_root", "worker_runtime",
+    ):
+        if receipt.get(field) != ready.get(field):
+            raise ReplayError(f"receipt {field} differs from replay-ready evidence")
+    job_identity = ready.get("job_identity")
+    if not isinstance(job_identity, dict):
+        raise ReplayError("replay-ready job identity is malformed")
+    serialization = job_identity.get("table_serialization")
+    if not isinstance(serialization, str) or sha256_bytes(serialization.encode()) != job_identity.get("table_sha256"):
+        raise ReplayError("replay-ready table serialization/hash mismatch")
+    if (
+        job_identity.get("inventory_sha256") != manifest["inventory_sha256"]
+        or job_identity.get("coverage_sha256") != manifest["coverage_sha256"]
+    ):
+        raise ReplayError("replay-ready inventory/coverage identity mismatch")
+    expected_build = {
+        key: manifest[key] for key in (
+            "repository_commit", "toolchain_identity", "overlay_sha256",
+            "generator_sha256", "template_sha256", "cnf_emitter_sha256", "worker_sha256",
+            "validator_sha256", "receipt_schema_sha256",
+            "aggregate_generator_sha256", "axiom_auditor_sha256",
+            "common_sha256", "dispatcher_sha256", "zstd_identity",
+        )
+    }
+    if ready.get("build_identity") != expected_build:
+        raise ReplayError("replay-ready build identity differs from manifest")
+    worker_runtime = ready.get("worker_runtime")
+    if not isinstance(worker_runtime, dict) or (
+        worker_runtime.get("instance_type") != manifest["worker_instance_type"]
+        or worker_runtime.get("ami_id") != manifest["worker_ami_id"]
+        or worker_runtime.get("container_image_digest") != manifest["worker_image_digest"]
+        or (worker_runtime.get("region") != manifest["aws_region"]
+            and worker_runtime.get("identity_source") != "local-test-backend")
+    ):
+        raise ReplayError("replay-ready worker runtime differs from manifest")
+    if args.object_store_root is not None:
+        if (
+            worker_runtime.get("identity_source") != "local-test-backend"
+            or worker_runtime.get("container_image_digest_source") != "local-test-backend"
+        ):
+            raise ReplayError("local worker runtime source labels mismatch")
+    elif (
+        worker_runtime.get("identity_source") != "aws-imdsv2-instance-identity-document"
+        or worker_runtime.get("container_image_digest_source")
+        != "freight-manifest-assertion-bootstrap-verified"
+        or not isinstance(worker_runtime.get("availability_zone"), str)
+        or re.fullmatch(re.escape(worker_runtime.get("region", "")) + r"[a-z]",
+                        worker_runtime["availability_zone"]) is None
+    ):
+        raise ReplayError("production worker runtime provenance is malformed")
+    work_root = ready.get("work_root")
+    if not isinstance(work_root, str) or work_root != str(Path(work_root).resolve()):
+        raise ReplayError("replay-ready work root is not absolute and normalized")
+    command_job = {
+        "tag": tag, "profile": job_identity.get("profile"),
+        "local_index": job_identity.get("local_index"),
+    }
+    if not isinstance(command_job["profile"], int) or not isinstance(command_job["local_index"], int):
+        raise ReplayError("replay-ready profile/local index is malformed")
+    validate_command_receipts(
+        ready.get("commands"), manifest.get("environment_allowlist", []),
+        manifest["commands"], receipt_command_bindings(Path(work_root), command_job),
+    )
     if ready.get("certificate") != before:
         raise ReplayError("receipt pre-tag identity differs from replay-ready evidence")
+    integrity = receipt.get("integrity")
+    if args.object_store_root is not None:
+        if integrity != {
+            "scheme": "local-test-unkeyed", "key_id": "local-test", "value": None,
+        }:
+            raise ReplayError("local receipt has unexpected integrity declaration")
+    elif (
+        not isinstance(integrity, dict)
+        or integrity.get("scheme") != manifest["receipt_integrity_scheme"]
+        or integrity.get("key_id") != manifest["receipt_integrity_key_id"]
+        or not isinstance(integrity.get("value"), str)
+        or not integrity["value"]
+    ):
+        raise ReplayError("production receipt lacks selected keyed integrity evidence")
     native_prefix = ready.get("native_axiom_prefix")
     if not isinstance(native_prefix, str) or not native_prefix.startswith("Erdos85.h1V2P"):
         raise ReplayError("replay-ready lacks native axiom ownership prefix")
@@ -115,6 +199,12 @@ def validate(args: argparse.Namespace) -> None:
     receipt_info = store.head(receipt_key)
     if receipt_info.sha256 != sha256_file(args.receipt):
         raise ReplayError("supplied receipt differs from immutable live receipt")
+    replay_ready_info = receipt.get("replay_ready")
+    if not isinstance(replay_ready_info, dict) or (
+        replay_ready_info.get("key") != ready_key
+        or replay_ready_info.get("sha256") != receipt["replay_ready_sha256"]
+    ):
+        raise ReplayError("receipt lacks immutable replay-ready object identity")
     ledger_key = f"{prefix}ledger/{tag}.accepted"
     ledger_path = args.receipt.parent / f".{tag}.ledger.validation.json"
     try:

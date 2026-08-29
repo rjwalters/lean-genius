@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import re
 import subprocess
@@ -12,6 +13,7 @@ import sys
 import tempfile
 import time
 import uuid
+import string
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Protocol
@@ -32,7 +34,12 @@ class ReplayError(RuntimeError):
 
 
 def canonical_json(value: Any) -> bytes:
-    return (json.dumps(value, sort_keys=True, separators=(",", ":")) + "\n").encode()
+    try:
+        encoded = json.dumps(
+            value, sort_keys=True, separators=(",", ":"), allow_nan=False)
+    except (TypeError, ValueError) as error:
+        raise ReplayError(f"value is not canonical JSON: {error}") from error
+    return (encoded + "\n").encode()
 
 
 def sha256_bytes(value: bytes) -> str:
@@ -89,19 +96,30 @@ def load_manifest(path: Path) -> dict[str, Any]:
     required_strings = (
         "schema", "campaign_prefix", "repository_commit", "inventory_sha256",
         "coverage_sha256", "toolchain_identity", "overlay_sha256",
-        "generator_sha256", "template_sha256", "worker_sha256",
+        "generator_sha256", "template_sha256", "cnf_emitter_sha256", "worker_sha256",
         "validator_sha256", "zstd_identity",
+        "receipt_schema_sha256", "aggregate_generator_sha256",
+        "axiom_auditor_sha256", "common_sha256", "dispatcher_sha256",
         "aws_cli_identity",
+        "worker_image_digest", "worker_ami_id", "worker_instance_type", "ebs_shape",
+        "instance_role", "s3_bucket",
+        "aws_region",
+        "receipt_integrity_scheme", "receipt_integrity_key_id",
     )
-    missing = [key for key in required_strings if not isinstance(value.get(key), str)]
+    missing = [
+        key for key in required_strings
+        if not isinstance(value.get(key), str) or not value[key].strip()
+    ]
     if missing:
         raise ReplayError(f"manifest missing string fields: {missing}")
     if value["schema"] != SCHEMA:
         raise ReplayError(f"unsupported manifest schema: {value['schema']!r}")
     for key in (
         "inventory_sha256", "coverage_sha256", "overlay_sha256",
-        "generator_sha256", "template_sha256", "worker_sha256",
+        "generator_sha256", "template_sha256", "cnf_emitter_sha256", "worker_sha256",
         "validator_sha256",
+        "receipt_schema_sha256", "aggregate_generator_sha256",
+        "axiom_auditor_sha256", "common_sha256", "dispatcher_sha256",
     ):
         require_sha(value[key], f"manifest.{key}")
     prefix = value["campaign_prefix"]
@@ -150,6 +168,83 @@ def expand_command(command: list[str], values: dict[str, str]) -> list[str]:
             raise ReplayError(f"unexpanded command placeholder in {expanded!r}")
         result.append(expanded)
     return result
+
+
+def _argv_matches_template(argv: list[str], template: list[str],
+                           expected_bindings: dict[str, str] | None = None) -> bool:
+    if len(argv) != len(template):
+        return False
+    formatter = string.Formatter()
+    bindings: dict[str, str] = dict(expected_bindings or {})
+    for actual, expected in zip(argv, template):
+        pattern = ""
+        argument_fields: set[str] = set()
+        try:
+            for literal, field, format_spec, conversion in formatter.parse(expected):
+                pattern += re.escape(literal)
+                if field is not None:
+                    if format_spec or conversion:
+                        return False
+                    if field in bindings:
+                        pattern += re.escape(bindings[field])
+                    elif field in argument_fields:
+                        pattern += f"(?P={field})"
+                    else:
+                        pattern += f"(?P<{field}>.+)"
+                        argument_fields.add(field)
+        except ValueError:
+            return False
+        match = re.fullmatch(pattern, actual)
+        if match is None:
+            return False
+        bindings.update({key: value for key, value in match.groupdict().items() if value is not None})
+    return True
+
+
+def validate_command_receipts(receipts: Any, environment_allowlist: list[str],
+                              command_templates: dict[str, list[str]] | None = None,
+                              command_bindings: dict[str, dict[str, str]] | None = None) -> None:
+    expected = {"generate", "compile", "axiom_audit", "zstd_source", "zstd_log", "zstd_olean"}
+    if not isinstance(receipts, dict) or set(receipts) != expected:
+        raise ReplayError("command receipt set mismatch")
+    allowed_environment = set(environment_allowlist)
+    for name, receipt in receipts.items():
+        if not isinstance(receipt, dict) or receipt.get("returncode") != 0:
+            raise ReplayError(f"command receipt {name} is not successful")
+        if not isinstance(receipt.get("argv"), list) or not receipt["argv"] or not all(
+            isinstance(argument, str) for argument in receipt["argv"]
+        ):
+            raise ReplayError(f"command receipt {name} argv is malformed")
+        if command_templates is not None:
+            template_name = "zstd" if name.startswith("zstd_") else name
+            template = command_templates.get(template_name)
+            bindings = None if command_bindings is None else command_bindings.get(name)
+            if not isinstance(template, list) or not _argv_matches_template(
+                receipt["argv"], template, bindings
+            ):
+                raise ReplayError(f"command receipt {name} argv differs from manifest template")
+        for field in ("started_unix", "finished_unix", "wall_seconds",
+                      "user_cpu_seconds", "system_cpu_seconds"):
+            value = receipt.get(field)
+            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0:
+                raise ReplayError(f"command receipt {name}.{field} is malformed")
+        if receipt["finished_unix"] < receipt["started_unix"]:
+            raise ReplayError(f"command receipt {name} timestamps are reversed")
+        delta = receipt["finished_unix"] - receipt["started_unix"]
+        if abs(receipt["wall_seconds"] - delta) > max(0.05, 0.05 * delta):
+            raise ReplayError(f"command receipt {name}.wall_seconds disagrees with timestamps")
+        if (isinstance(receipt.get("peak_rss_kib"), bool)
+                or not isinstance(receipt.get("peak_rss_kib"), int)
+                or receipt["peak_rss_kib"] <= 0):
+            raise ReplayError(f"command receipt {name}.peak_rss_kib is malformed")
+        for field in ("stdout_sha256", "stderr_sha256"):
+            require_sha(receipt.get(field), f"command receipt {name}.{field}")
+        environment = receipt.get("environment")
+        if not isinstance(environment, dict) or not set(environment) <= allowed_environment:
+            raise ReplayError(f"command receipt {name} environment is not sanitized")
+        if not all(isinstance(key, str) and isinstance(value, str)
+                   for key, value in environment.items()):
+            raise ReplayError(f"command receipt {name} environment is malformed")
 
 
 @dataclass(frozen=True)
@@ -212,6 +307,7 @@ class ObjectInfo:
     metadata: dict[str, str]
     tags: dict[str, str]
     tagging_request_id: str | None = None
+    version_id: str | None = None
 
 
 class ObjectStore(Protocol):
@@ -266,7 +362,7 @@ class LocalObjectStore:
         return ObjectInfo(
             key, path.stat().st_size, visible_digest, meta["etag"], meta["last_modified"],
             dict(meta.get("metadata", {})), dict(meta.get("tags", {})),
-            meta.get("tagging_request_id"),
+            meta.get("tagging_request_id"), meta.get("version_id"),
         )
 
     def download(self, key: str, destination: Path) -> ObjectInfo:
@@ -278,7 +374,7 @@ class LocalObjectStore:
             raise ReplayError(f"download read-back mismatch: {key}")
         return ObjectInfo(
             info.key, info.size, downloaded_sha, info.etag, info.last_modified,
-            info.metadata, info.tags, info.tagging_request_id,
+            info.metadata, info.tags, info.tagging_request_id, info.version_id,
         )
 
     def put_immutable(self, key: str, source: Path, metadata: dict[str, str]) -> ObjectInfo:
@@ -310,8 +406,8 @@ class LocalObjectStore:
         meta["tagging_request_id"] = f"local-put-tagging-{uuid.uuid4()}"
         atomic_write(meta_path, canonical_json(meta))
         after = self.head(key)
-        if (after.etag, after.size, after.sha256, after.last_modified) != (
-            before.etag, before.size, before.sha256, before.last_modified
+        if (after.etag, after.size, after.sha256, after.last_modified, after.version_id) != (
+            before.etag, before.size, before.sha256, before.last_modified, before.version_id
         ):
             raise ReplayError(f"tagging changed object identity: {key}")
         return after
@@ -450,6 +546,7 @@ class AwsCliObjectStore:
             etag=str(head["ETag"]).strip('"'),
             last_modified=str(head["LastModified"]), metadata=metadata, tags=tags,
             tagging_request_id=tagging_request_id,
+            version_id=str(head["VersionId"]) if head.get("VersionId") is not None else None,
         )
 
     def head(self, key: str) -> ObjectInfo:
@@ -461,10 +558,14 @@ class AwsCliObjectStore:
     def download(self, key: str, destination: Path) -> ObjectInfo:
         before = self.head(key)
         destination.parent.mkdir(parents=True, exist_ok=True)
-        completed = subprocess.run([
+        arguments = [
             self.aws, "s3api", "get-object", "--bucket", self.bucket,
-            "--key", key, str(destination), "--output", "json",
-        ], text=True, capture_output=True, check=False)
+            "--key", key,
+        ]
+        if before.version_id is not None:
+            arguments.extend(["--version-id", before.version_id])
+        arguments.extend([str(destination), "--output", "json"])
+        completed = subprocess.run(arguments, text=True, capture_output=True, check=False)
         if completed.returncode != 0:
             raise ReplayError(f"S3 GET failed for {key}: {completed.stderr.strip()}")
         downloaded_sha = sha256_file(destination)
@@ -473,13 +574,13 @@ class AwsCliObjectStore:
         ):
             raise ReplayError(f"S3 GET read-back mismatch: {key}")
         after = self.head(key)
-        if (after.etag, after.size, after.last_modified) != (
-            before.etag, before.size, before.last_modified
+        if (after.etag, after.size, after.last_modified, after.version_id) != (
+            before.etag, before.size, before.last_modified, before.version_id
         ):
             raise ReplayError(f"S3 object changed during download: {key}")
         return ObjectInfo(
             after.key, after.size, downloaded_sha, after.etag, after.last_modified,
-            after.metadata, after.tags, after.tagging_request_id,
+            after.metadata, after.tags, after.tagging_request_id, after.version_id,
         )
 
     def put_immutable(self, key: str, source: Path, metadata: dict[str, str]) -> ObjectInfo:
@@ -516,18 +617,21 @@ class AwsCliObjectStore:
         tags = dict(before.tags)
         tags[name] = value
         tag_set = [{"Key": key_name, "Value": tag_value} for key_name, tag_value in sorted(tags.items())]
-        completed = subprocess.run([
+        arguments = [
             self.aws, "s3api", "put-object-tagging", "--bucket", self.bucket, "--key", key,
             "--tagging", json.dumps({"TagSet": tag_set}, separators=(",", ":")),
-            "--output", "json", "--debug",
-        ], text=True, capture_output=True, check=False)
+        ]
+        if before.version_id is not None:
+            arguments.extend(["--version-id", before.version_id])
+        arguments.extend(["--output", "json", "--debug"])
+        completed = subprocess.run(arguments, text=True, capture_output=True, check=False)
         if completed.returncode != 0:
             raise ReplayError(f"S3 tagging failed for {key}: {completed.stderr.strip()}")
         after = self.head(key)
         if after.tags != tags:
             raise ReplayError(f"S3 tag read-back mismatch: {key}")
-        if (after.etag, after.size, after.sha256, after.last_modified) != (
-            before.etag, before.size, before.sha256, before.last_modified
+        if (after.etag, after.size, after.sha256, after.last_modified, after.version_id) != (
+            before.etag, before.size, before.sha256, before.last_modified, before.version_id
         ):
             raise ReplayError(f"S3 tagging changed object identity: {key}")
         matches = re.findall(
@@ -539,7 +643,7 @@ class AwsCliObjectStore:
         request_id = matches[-1]
         return ObjectInfo(
             after.key, after.size, after.sha256, after.etag, after.last_modified,
-            after.metadata, after.tags, request_id,
+            after.metadata, after.tags, request_id, after.version_id,
         )
 
     def acquire_claim(self, key: str, owner: str, now: float, ttl_seconds: int) -> str:
@@ -605,4 +709,6 @@ def info_record(info: ObjectInfo) -> dict[str, Any]:
     }
     if info.tagging_request_id is not None:
         record["tagging_request_id"] = info.tagging_request_id
+    if info.version_id is not None:
+        record["version_id"] = info.version_id
     return record
