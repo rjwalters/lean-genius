@@ -103,7 +103,8 @@ def require_command_ok(name: str, command: list[str], work: Path, log: Path,
     }
 
 
-def validate_audit(path: Path, allowed: set[str], patterns: list[str]) -> dict[str, Any]:
+def validate_audit(path: Path, allowed: set[str], patterns: list[str],
+                   native_axiom_prefix: str) -> dict[str, Any]:
     audit = load_json(path)
     if audit.get("schema") != "erdos85-h1-replay-axiom-audit-v1":
         raise ReplayError("axiom audit has wrong schema")
@@ -119,6 +120,12 @@ def validate_audit(path: Path, allowed: set[str], patterns: list[str]) -> dict[s
     )
     if unexpected:
         raise ReplayError(f"undisclosed axioms: {unexpected}")
+    foreign_native = [
+        axiom for axiom in axioms if axiom not in allowed
+        and not axiom.startswith(native_axiom_prefix)
+    ]
+    if foreign_native:
+        raise ReplayError(f"native axioms belong to another leaf: {foreign_native}")
     return audit
 
 
@@ -156,6 +163,12 @@ def validate_ready(ready: dict[str, Any], manifest: dict[str, Any], job: dict[st
         raise ReplayError("replay-ready manifest mismatch")
     if ready.get("job_sha256") != job["job_sha256"]:
         raise ReplayError("replay-ready job mismatch")
+    expected_native_prefix = (
+        f"Erdos85.h1V2P{job['profile']}I{job['local_index']:05d}Check."
+        "_native.native_decide.ax_"
+    )
+    if ready.get("native_axiom_prefix") != expected_native_prefix:
+        raise ReplayError("replay-ready native axiom ownership mismatch")
     artifacts = ready.get("artifacts")
     if not isinstance(artifacts, dict) or set(artifacts) != {"source", "log", "olean"}:
         raise ReplayError("replay-ready artifact set mismatch")
@@ -229,9 +242,12 @@ def compile_ready(store: ObjectStore, manifest: dict[str, Any], job: dict[str, A
     command_receipts["axiom_audit"] = require_command_ok(
         "axiom_audit", expand_command(commands["axiom_audit"], values), work, log,
         environment_allowlist)
+    native_axiom_prefix = (
+        f"Erdos85.{values['stem']}Check._native.native_decide.ax_"
+    )
     audit = validate_audit(
         Path(values["audit_json"]), set(manifest["allowed_axioms"]),
-        manifest.get("allowed_axiom_patterns", []),
+        manifest.get("allowed_axiom_patterns", []), native_axiom_prefix,
     )
 
     compressed: dict[str, Path] = {}
@@ -264,6 +280,7 @@ def compile_ready(store: ObjectStore, manifest: dict[str, Any], job: dict[str, A
         "compact_lrat_sha256": sha256_file(compact),
         "source_raw": {"size": source.stat().st_size, "sha256": sha256_file(source)},
         "olean_raw": {"size": olean.stat().st_size, "sha256": sha256_file(olean)},
+        "native_axiom_prefix": native_axiom_prefix,
         "axiom_audit": audit, "commands": command_receipts, "artifacts": artifacts,
     }
     store.put_bytes_immutable(

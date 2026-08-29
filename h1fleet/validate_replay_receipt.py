@@ -101,6 +101,15 @@ def validate(args: argparse.Namespace) -> None:
         raise ReplayError("receipt artifacts differ from replay-ready evidence")
     if ready.get("certificate") != before:
         raise ReplayError("receipt pre-tag identity differs from replay-ready evidence")
+    native_prefix = ready.get("native_axiom_prefix")
+    if not isinstance(native_prefix, str) or not native_prefix.startswith("Erdos85.h1V2P"):
+        raise ReplayError("replay-ready lacks native axiom ownership prefix")
+    foreign_native = [
+        axiom for axiom in axioms if axiom not in set(manifest["allowed_axioms"])
+        and not axiom.startswith(native_prefix)
+    ]
+    if foreign_native:
+        raise ReplayError("receipt contains a native axiom owned by another leaf")
 
     receipt_key = f"{prefix}receipts/{tag}.json"
     receipt_info = store.head(receipt_key)

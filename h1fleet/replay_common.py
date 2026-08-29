@@ -7,7 +7,6 @@ import hashlib
 import json
 import os
 import re
-import resource
 import subprocess
 import sys
 import tempfile
@@ -24,7 +23,7 @@ SCHEMA = "erdos85-h1-replay-manifest-v1"
 READY_SCHEMA = "erdos85-h1-replay-ready-v1"
 RECEIPT_SCHEMA = "erdos85-h1-replay-receipt-v1"
 NATIVE_AXIOM_PATTERN = (
-    r"^Erdos85\.h1V2P[0-4]I[0-9]{5}Check\._native\.native_decide\.ax_[0-9]+$"
+    r"^Erdos85\.h1V2P[0-4]I[0-9]{5}Check\._native\.native_decide\.ax_[0-9_]+$"
 )
 
 
@@ -167,43 +166,28 @@ class CommandResult:
 
 def run_command(command: list[str], cwd: Path, log: Path,
                 environment_allowlist: list[str] | None = None) -> CommandResult:
-    before = resource.getrusage(resource.RUSAGE_CHILDREN)
     with tempfile.TemporaryDirectory() as temporary:
-        metrics = Path(temporary) / "time.txt"
-        time_arguments = (["/usr/bin/time", "-l", "-o", str(metrics)] if sys.platform == "darwin" else
-                          ["/usr/bin/time", "-v", "-o", str(metrics)])
-        completed = subprocess.run(
-            [*time_arguments, *command], cwd=cwd, text=True,
-            capture_output=True, check=False,
-        )
-        try:
-            metrics_text = metrics.read_text()
-        except OSError as error:
-            raise ReplayError(f"cannot read per-command resource metrics: {error}") from error
-    match = re.search(
-        r"(?im)^\s*(?:Maximum resident set size \(kbytes\):\s*|([0-9]+)\s+maximum resident set size\s*$)",
-        metrics_text,
-    )
-    if sys.platform == "darwin":
-        if match is None or match.group(1) is None:
-            raise ReplayError("cannot parse command peak RSS from BSD time")
-        peak_rss_kib = int(match.group(1)) // 1024
-    else:
-        linux_match = re.search(r"(?im)^\s*Maximum resident set size \(kbytes\):\s*([0-9]+)\s*$", metrics_text)
-        if linux_match is None:
-            raise ReplayError("cannot parse command peak RSS from GNU time")
-        peak_rss_kib = int(linux_match.group(1))
-    after = resource.getrusage(resource.RUSAGE_CHILDREN)
+        stdout_path = Path(temporary) / "stdout"
+        stderr_path = Path(temporary) / "stderr"
+        with stdout_path.open("wb") as stdout_stream, stderr_path.open("wb") as stderr_stream:
+            process = subprocess.Popen(
+                command, cwd=cwd, stdout=stdout_stream, stderr=stderr_stream)
+            _, status, usage = os.wait4(process.pid, 0)
+            process.returncode = os.waitstatus_to_exitcode(status)
+        stdout = stdout_path.read_text(errors="replace")
+        stderr = stderr_path.read_text(errors="replace")
+    # Linux reports KiB and Darwin bytes for ru_maxrss.
+    peak_rss_kib = int(usage.ru_maxrss // 1024 if sys.platform == "darwin" else usage.ru_maxrss)
     environment = {
         key: os.environ[key] for key in (environment_allowlist or []) if key in os.environ
     }
     record = {
         "argv": command,
-        "returncode": completed.returncode,
-        "stdout": completed.stdout,
-        "stderr": completed.stderr,
-        "user_cpu_seconds": after.ru_utime - before.ru_utime,
-        "system_cpu_seconds": after.ru_stime - before.ru_stime,
+        "returncode": process.returncode,
+        "stdout": stdout,
+        "stderr": stderr,
+        "user_cpu_seconds": usage.ru_utime,
+        "system_cpu_seconds": usage.ru_stime,
         "peak_rss_kib": peak_rss_kib,
         "environment": environment,
     }
@@ -212,8 +196,8 @@ def run_command(command: list[str], cwd: Path, log: Path,
         stream.flush()
         os.fsync(stream.fileno())
     return CommandResult(
-        command, completed.returncode, completed.stdout, completed.stderr,
-        after.ru_utime - before.ru_utime, after.ru_stime - before.ru_stime,
+        command, process.returncode, stdout, stderr,
+        usage.ru_utime, usage.ru_stime,
         peak_rss_kib, environment,
     )
 
