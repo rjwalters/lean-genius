@@ -81,8 +81,8 @@ def validate_stub_sources(rows: list[IndexRow], stub_dir: Path) -> None:
 
 
 def partition_banks(rows: list[IndexRow], bank_size: int) -> list[list[Bank]]:
-    if bank_size <= 0:
-        raise ValueError("bank_size must be positive")
+    if type(bank_size) is not int or not 1 <= bank_size <= DEFAULT_BANK_SIZE:
+        raise ValueError("bank_size must be an integer in 1..128")
     by_profile: list[list[IndexRow]] = [[] for _ in PROFILE_WORDS]
     for row in rows:
         by_profile[row.profile].append(row)
@@ -198,20 +198,66 @@ def file_identity(path: Path) -> dict[str, object]:
 
 def validate_layout_manifest(manifest: dict[str, object], rows: list[IndexRow],
                              source_by_file: dict[str, str]) -> None:
+    bank_size = manifest.get("bank_size")
+    if type(bank_size) is not int or not 1 <= bank_size <= DEFAULT_BANK_SIZE:
+        raise ValueError("aggregate manifest bank_size must be an integer in 1..128")
+    if manifest.get("leaf_count") != len(rows):
+        raise ValueError("aggregate manifest leaf_count mismatch")
+    banks_by_profile = partition_banks(rows, bank_size)
+    expected_profile_counts = [len(banks) for banks in banks_by_profile]
+    if manifest.get("profile_bank_counts") != expected_profile_counts:
+        raise ValueError("aggregate manifest profile_bank_counts mismatch")
     modules = manifest["modules"]
     if not isinstance(modules, list):
         raise ValueError("aggregate manifest modules must be a list")
     files = [module["file"] for module in modules]
     if len(files) != len(set(files)):
         raise ValueError("aggregate manifest has duplicate module files")
+    expected_by_file: dict[str, tuple[str, str, list[str]]] = {}
+    aggregate_prefix = manifest["prefixes"]["aggregate_modules"]
+    leaf_prefix = manifest["prefixes"]["leaf_modules"]
+    for profile, banks in enumerate(banks_by_profile):
+        for bank in banks:
+            expected_by_file[f"{bank.stem}.lean"] = (
+                "leaf-bank",
+                f"Erdos85.{bank.theorem}",
+                [
+                    f"{leaf_prefix}.Erdos85H1V2CertP{row.profile}I{row.local_index:05d}"
+                    for row in bank.rows
+                ],
+            )
+        expected_by_file[f"Erdos85H1V2Profile{profile}.lean"] = (
+            "profile-bank",
+            f"Erdos85.h1V2InventoryProfile{profile}_checked",
+            [f"{aggregate_prefix}.{bank.stem}" for bank in banks],
+        )
+    expected_by_file["Erdos85H1V2Complete.lean"] = (
+        "top-bank",
+        "Erdos85.orderFortyNineStratumExcluded_one_of_completeV2Certificates",
+        [
+            f"{aggregate_prefix}.Erdos85H1V2Profile{profile}"
+            for profile in range(len(PROFILE_WORDS))
+        ],
+    )
+    if set(files) != set(expected_by_file):
+        raise ValueError("aggregate manifest module-file set mismatch")
+    if set(source_by_file) != set(expected_by_file):
+        raise ValueError("aggregate source module-file set mismatch")
     leaf_members: list[tuple[int, int, str]] = []
     for module in modules:
+        expected_kind, expected_theorem, expected_imports = expected_by_file[module["file"]]
+        if module["kind"] != expected_kind:
+            raise ValueError(f"{module['file']}: deterministic module kind mismatch")
+        if module["theorem"] != expected_theorem:
+            raise ValueError(f"{module['file']}: deterministic theorem mismatch")
+        if module["direct_imports"] != expected_imports:
+            raise ValueError(f"{module['file']}: closed import topology mismatch")
         source = source_by_file[module["file"]]
         source_bytes = source.encode()
         if module["source_bytes"] != len(source_bytes) or module["source_sha256"] != hashlib.sha256(source_bytes).hexdigest():
             raise ValueError(f"{module['file']}: manifest/source identity mismatch")
         expected_module = (
-            f"{manifest['prefixes']['aggregate_modules']}."
+            f"{aggregate_prefix}."
             f"{Path(module['file']).stem}"
         )
         if module["module"] != expected_module:
@@ -226,11 +272,11 @@ def validate_layout_manifest(manifest: dict[str, object], rows: list[IndexRow],
         if len(imports) != module["direct_import_count"]:
             raise ValueError(f"{module['file']}: direct import count mismatch")
         if module["kind"] == "leaf-bank":
-            if len(imports) > manifest["bank_size"]:
+            if len(imports) > bank_size:
                 raise ValueError(f"{module['file']}: leaf fan-in exceeds bank size")
             for member, imported in zip(module["members"], imports, strict=True):
                 leaf_module = (
-                    f"{manifest['prefixes']['leaf_modules']}."
+                    f"{leaf_prefix}."
                     f"Erdos85H1V2CertP{member['profile']}I{member['local_index']:05d}"
                 )
                 leaf_theorem = (
@@ -389,8 +435,8 @@ def main() -> int:
     for option in ("stub_module_prefix", "aggregate_module_prefix"):
         if not LEAN_MODULE.fullmatch(getattr(args, option)):
             parser.error(f"--{option.replace('_', '-')} must be a qualified Lean identifier")
-    if args.bank_size <= 0:
-        parser.error("--bank-size must be positive")
+    if not 1 <= args.bank_size <= DEFAULT_BANK_SIZE:
+        parser.error("--bank-size must be in 1..128")
     profiles = read_inventory(args.inventory)
     rows = read_index(args.index)
     validate_complete(rows, profiles)

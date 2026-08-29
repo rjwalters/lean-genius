@@ -50,6 +50,10 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
             self.assertLessEqual(len(bank.rows), 2)
             self.assertIn("  interval_cases i", rendered)
             self.assertNotIn("orderFortyNineStratumExcluded", rendered)
+        for invalid in (True, 0, 129):
+            with self.subTest(invalid=invalid), self.assertRaisesRegex(
+                    ValueError, "integer in 1..128"):
+                MOD.partition_banks(rows, invalid)
 
     def test_profile_dispatch_imports_banks_not_leaves(self):
         rows = [replace(ROW, local_index=index) for index in range(5)]
@@ -146,10 +150,21 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "leaf module"):
                 MOD.validate_layout_manifest(tampered, rows, sources)
             mutations = (
+                (("bank_size",), True, "bank_size"),
+                (("bank_size",), 129, "bank_size"),
+                (("leaf_count",), 14, "leaf_count"),
+                (("profile_bank_counts",), [2, 2, 2, 2, 1], "profile_bank_counts"),
+                (("modules", 0, "source_bytes"), 0, "source identity"),
                 (("modules", 0, "source_sha256"), "f" * 64, "source identity"),
                 (("modules", 0, "members", 0, "module"), "Wrong.Leaf", "leaf module"),
                 (("modules", 0, "members", 0, "theorem"), "Wrong.theorem", "leaf theorem"),
-                (("modules", 0, "theorem"), "Erdos85.wrong", "theorem/source"),
+                (("modules", 0, "kind"), "profile-bank", "module kind"),
+                (("modules", 0, "theorem"), "Erdos85.wrong", "deterministic theorem"),
+                (("modules", 2, "theorem"),
+                 "Erdos85.h1V2InventoryProfile0_checkedAt",
+                 "deterministic theorem"),
+                (("modules", 2, "direct_imports"), [], "closed import topology"),
+                (("modules", -1, "direct_imports"), [], "closed import topology"),
                 (("leaf_members_sha256",), "f" * 64, "leaf-members hash"),
                 (("top_module",), "Wrong.Top", "top-module"),
             )
@@ -162,6 +177,18 @@ class GenerateH1V2LeanAggregateTest(unittest.TestCase):
                     target[keys[-1]] = value
                     with self.assertRaisesRegex(ValueError, error):
                         MOD.validate_layout_manifest(corrupt, rows, sources)
+            missing_module = copy.deepcopy(manifest)
+            del missing_module["modules"][2]
+            with self.assertRaisesRegex(ValueError, "module-file set"):
+                MOD.validate_layout_manifest(missing_module, rows, sources)
+            missing_source = dict(sources)
+            del missing_source[manifest["modules"][2]["file"]]
+            with self.assertRaisesRegex(ValueError, "source module-file set"):
+                MOD.validate_layout_manifest(manifest, rows, missing_source)
+            extra_source = dict(sources)
+            extra_source["Erdos85H1V2Profile9.lean"] = "theorem wrong : True := True.intro\n"
+            with self.assertRaisesRegex(ValueError, "source module-file set"):
+                MOD.validate_layout_manifest(manifest, rows, extra_source)
 
     def test_write_hierarchy_rejects_stale_generated_modules(self):
         rows = [replace(ROW, profile=profile) for profile in range(5)]
