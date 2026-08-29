@@ -38,8 +38,10 @@ def load_capacity_index(path: Path) -> dict[str, tuple[int, int]]:
                 local_index = int(row["localIndex"])
             except (ReplayError, ValueError) as error:
                 raise ReplayError(f"{path}:{line_number}: malformed capacity key") from error
-            if local_index < 0:
-                raise ReplayError(f"{path}:{line_number}: negative capacity ordinal")
+            if local_index not in range(CAPACITY_PROFILE_COUNTS[profile]):
+                raise ReplayError(
+                    f"{path}:{line_number}: capacity ordinal outside profile range"
+                )
             slot = (profile, local_index)
             if tag in result or slot in slots:
                 raise ReplayError(f"{path}:{line_number}: duplicate capacity tag or slot")
@@ -65,6 +67,13 @@ def validate_reindex_receipt(
     emitted = receipt.get("emitted_rows")
     if type(emitted) is not int or emitted <= 0:
         raise ReplayError("capacity reindex receipt emitted_rows is invalid")
+    dropped = receipt.get("dropped_outside_capacity_tags")
+    if (
+        not isinstance(dropped, list)
+        or not all(isinstance(tag, str) and require_tag(tag) == tag for tag in dropped)
+        or dropped != sorted(set(dropped))
+    ):
+        raise ReplayError("capacity reindex receipt dropped-tag list is malformed")
     return receipt
 
 

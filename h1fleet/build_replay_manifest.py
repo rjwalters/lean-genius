@@ -85,6 +85,9 @@ def main() -> int:
         )
         if reindex_receipt.get("emitted_rows") != len(capacity):
             raise ReplayError("capacity reindex receipt row count mismatch")
+        dropped = set(reindex_receipt["dropped_outside_capacity_tags"])
+        if dropped.intersection(capacity):
+            raise ReplayError("capacity reindex receipt drops an emitted capacity tag")
         if (
             args.require_complete_capacity_queue
             and reindex_receipt.get("require_complete") is not True

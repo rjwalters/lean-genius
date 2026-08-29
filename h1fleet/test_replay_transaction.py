@@ -108,6 +108,7 @@ class ReplayTransactionTest(unittest.TestCase):
             "inventory_sha256": ZERO_SHA,
             "output_sha256": sha256_file(self.capacity_index),
             "emitted_rows": 1,
+            "dropped_outside_capacity_tags": [],
             "require_complete": False,
         }))
         self.manifest = self.root / "manifest.json"
@@ -407,6 +408,14 @@ class ReplayTransactionTest(unittest.TestCase):
         wrong = [dict(jobs[0], local_index=0)]
         with self.assertRaisesRegex(ReplayError, "expected capacity slot"):
             validate_queue_capacity(wrong, capacity, require_complete=False)
+
+    def test_partial_capacity_index_rejects_out_of_range_ordinal(self) -> None:
+        self.capacity_index.write_text(
+            "orbit\tprofile\tlocalIndex\n"
+            f"{self.tag}\tBBBB\t{CAPACITY_PROFILE_COUNTS[0]}\n"
+        )
+        with self.assertRaisesRegex(ReplayError, "outside profile range"):
+            load_capacity_index(self.capacity_index)
 
     def test_complete_capacity_queue_requires_exact_13351_enumeration(self) -> None:
         capacity = {}
