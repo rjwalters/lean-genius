@@ -78,6 +78,19 @@ The one-part subcase has an especially sharp equivalent formulation:
 > its defect graph `D` is not connected, since
 > `dim ker(A) = numberOfComponents(D) − 1` (outline v2.64, §A.5.3(x)).
 
+The formal branch socket is
+`BinarySquareConnectedNonbipartiteExclusion`.  Its nonbipartite hypothesis
+is now discharged literally for every regular binary-square candidate by
+`binarySquare_twoPow_regular_defectGraph_not_bipartite` (with the stronger
+per-component coloring exclusion
+`binarySquare_twoPow_regular_no_bipartite_defectComponent`).  Its connected
+hypothesis is different: there is currently no uniform Lean theorem routing
+all disconnected or articulated defect graphs into this socket.  Such a
+routing is closed only in the separate `q = 9` B.3 analysis.  Thus the
+connected socket and the mixed nonbipartite partitions are sibling open
+cases for binary `q`; connectivity must not be cited as a proved uniform
+reduction.
+
 This formulation includes all graph hypotheses; proving singularity from
 generic regularity or spectrum alone would not suffice.  The campaign's
 current mathematical frontier is the implication from the full symmetric
