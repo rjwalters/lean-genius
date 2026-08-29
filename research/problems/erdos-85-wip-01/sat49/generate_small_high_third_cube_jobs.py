@@ -252,6 +252,41 @@ def write_queue(manifest_path: Path, output: Path, receipt: Path) -> None:
     os.replace(receipt_tmp, receipt)
 
 
+def validate_queue_receipt(receipt_path: Path) -> None:
+    receipt = json.loads(receipt_path.read_text())
+    expected_keys = {
+        "schema", "manifest", "manifest_sha256", "parent_manifest_sha256",
+        "hard_jobs_sha256", "queue", "queue_sha256", "jobs",
+        "positive_cube_jobs", "negative_cover_jobs",
+    }
+    if not isinstance(receipt, dict) or set(receipt) != expected_keys:
+        raise ValueError("invalid third-level queue receipt fields")
+    if receipt.get("schema") != "erdos85-small-high-third-queue-receipt-v1":
+        raise ValueError("invalid third-level queue receipt schema")
+    manifest_text, queue_text = receipt.get("manifest"), receipt.get("queue")
+    if not isinstance(manifest_text, str) or not isinstance(queue_text, str):
+        raise ValueError("invalid third-level queue receipt paths")
+    manifest_path, queue_path = Path(manifest_text), Path(queue_text)
+    if (not manifest_path.is_absolute() or not queue_path.is_absolute() or
+            not manifest_path.is_file() or not queue_path.is_file()):
+        raise ValueError("third-level queue receipt dependencies are unavailable")
+    if sha256(manifest_path) != receipt.get("manifest_sha256"):
+        raise ValueError("third-level queue manifest hash mismatch")
+    if sha256(queue_path) != receipt.get("queue_sha256"):
+        raise ValueError("third-level queue hash mismatch")
+    with tempfile.TemporaryDirectory() as temporary_name:
+        temporary = Path(temporary_name)
+        expected_queue = temporary / "queue.txt"
+        expected_receipt = temporary / "receipt.json"
+        write_queue(manifest_path, expected_queue, expected_receipt)
+        regenerated = json.loads(expected_receipt.read_text())
+        bound_fields = expected_keys - {"schema", "manifest", "queue"}
+        if any(receipt.get(key) != regenerated.get(key) for key in bound_fields):
+            raise ValueError("third-level queue receipt metadata mismatch")
+        if queue_path.read_bytes() != expected_queue.read_bytes():
+            raise ValueError("third-level queue order/content mismatch")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -267,6 +302,8 @@ def main() -> int:
     queue_parser.add_argument("--manifest", type=Path, required=True)
     queue_parser.add_argument("--output", type=Path, required=True)
     queue_parser.add_argument("--receipt", type=Path, required=True)
+    validate_parser = subparsers.add_parser("validate-queue")
+    validate_parser.add_argument("--receipt", type=Path, required=True)
     args = parser.parse_args()
     if args.command == "manifest":
         write_manifest(args.parent_manifest.resolve(),
@@ -274,9 +311,13 @@ def main() -> int:
                        args.output.resolve())
     elif args.command == "materialize":
         materialize(args.manifest.resolve(), args.job, args.output.resolve())
-    else:
+    elif args.command == "queue":
         write_queue(args.manifest.resolve(), args.output.resolve(),
                     args.receipt.resolve())
+    else:
+        validate_queue_receipt(args.receipt.resolve())
+        print(f"VALID {args.receipt.resolve()}")
+        return 0
     print(f"WROTE {args.output.resolve()}")
     return 0
 

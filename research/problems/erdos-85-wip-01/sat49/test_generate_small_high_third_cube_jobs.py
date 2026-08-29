@@ -193,6 +193,7 @@ class SmallHighThirdCubeJobsTest(unittest.TestCase):
             self.assertEqual(data["jobs"], 132)
             self.assertEqual(data["positive_cube_jobs"], 128)
             self.assertEqual(data["negative_cover_jobs"], 4)
+            third.validate_queue_receipt(receipt)
 
     def test_queue_rejects_tampered_dependencies_and_metadata(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_name:
@@ -210,6 +211,31 @@ class SmallHighThirdCubeJobsTest(unittest.TestCase):
             manifest.write_text(json.dumps(data))
             with self.assertRaisesRegex(ValueError, "count metadata mismatch"):
                 third.write_queue(manifest, root / "queue", root / "receipt")
+
+    def test_queue_validator_rejects_queue_and_receipt_tampering(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_name:
+            root = Path(temporary_name)
+            parent, hard, manifest = self.fixture(root)
+            third.write_manifest(parent, hard, manifest)
+            queue, receipt = root / "queue.txt", root / "queue.receipt.json"
+            third.write_queue(manifest, queue, receipt)
+            queue.write_text(queue.read_text() + "extra\n")
+            with self.assertRaisesRegex(ValueError, "queue hash mismatch"):
+                third.validate_queue_receipt(receipt)
+
+            third.write_queue(manifest, queue, receipt)
+            data = json.loads(receipt.read_text())
+            data["jobs"] += 1
+            receipt.write_text(json.dumps(data))
+            with self.assertRaisesRegex(ValueError, "metadata mismatch"):
+                third.validate_queue_receipt(receipt)
+
+            third.write_queue(manifest, queue, receipt)
+            data = json.loads(receipt.read_text())
+            data["unexpected"] = True
+            receipt.write_text(json.dumps(data))
+            with self.assertRaisesRegex(ValueError, "receipt fields"):
+                third.validate_queue_receipt(receipt)
 
 
 if __name__ == "__main__":
