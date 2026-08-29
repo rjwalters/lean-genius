@@ -372,8 +372,13 @@ Lean replay stage must consume each compact LRAT in a self-contained external
 overlay, emit a hashed `.olean` and audit receipt, and mark the source object
 `replay=consumed`; that marker drives the approved seven-day transition to
 Glacier Instant Retrieval.  The measured 122-module pilot produced 30.8 GB of
-raw leaf oleans, so this replay is now a calendar pole in its own right.  In
-parallel, the drop-socket lane is keeping the H1 aggregate generator current
+raw leaf oleans, so this replay is now a calendar pole in its own right.  The
+resumable two-phase transaction, independent receipt validator, and freight
+freezer are banked and locally tested, but every production path remains
+deliberately disabled until an editor-selected keyed-integrity mechanism is
+implemented and verified.  Thus the implementation checkpoint is not a launch
+approval and no replay receipt yet counts toward H1 closure.  In parallel, the
+drop-socket lane is keeping the H1 aggregate generator current
 and will run the prepared Tier-A 396-job restart and H7 232-leaf queue as host
 cores become available (operator goal #43, room msg 35750).
 
