@@ -9,6 +9,9 @@ import sys
 import tempfile
 from pathlib import Path
 
+from capacity_queue import (
+    load_capacity_index, validate_queue_capacity, validate_reindex_receipt,
+)
 from replay_common import ReplayError, SCHEMA, atomic_write, canonical_json, load_json, load_manifest, sha256_file
 from run_replay_queue import load_queue
 
@@ -55,6 +58,9 @@ def main() -> int:
     parser.add_argument("--queue", type=Path, required=True)
     parser.add_argument("--repo", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--capacity-index", type=Path, required=True)
+    parser.add_argument("--capacity-reindex-receipt", type=Path, required=True)
+    parser.add_argument("--require-complete-capacity-queue", action="store_true")
     args = parser.parse_args()
     try:
         repo = args.repo.resolve()
@@ -71,6 +77,19 @@ def main() -> int:
         if manifest.get("schema") != SCHEMA:
             raise ReplayError("draft has wrong replay manifest schema")
         jobs = load_queue(args.queue)
+        capacity = load_capacity_index(args.capacity_index)
+        reindex_receipt = validate_reindex_receipt(
+            args.capacity_reindex_receipt, args.capacity_index,
+            manifest.get("inventory_sha256", ""),
+        )
+        if reindex_receipt.get("emitted_rows") != len(capacity):
+            raise ReplayError("capacity reindex receipt row count mismatch")
+        if (
+            args.require_complete_capacity_queue
+            and reindex_receipt.get("require_complete") is not True
+        ):
+            raise ReplayError("complete replay freeze requires a complete reindex receipt")
+        validate_queue_capacity(jobs, capacity, args.require_complete_capacity_queue)
         status = git_value(repo, "status", "--porcelain")
         if status:
             raise ReplayError("repository must be clean before manifest freeze")
@@ -79,11 +98,25 @@ def main() -> int:
             repo / "research/problems/erdos-85-wip-01/sat49/"
             "generate_h1_v2_lean_aggregate.py"
         )
+        stub_generator = (
+            repo / "research/problems/erdos-85-wip-01/sat49/"
+            "generate_h1_v2_lean_stubs.py"
+        )
+        capacity_exporter = (
+            repo / "research/problems/erdos-85-wip-01/sat49/"
+            "filter_h1_capacity_inventory.py"
+        )
+        capacity_reindexer = (
+            repo / "research/problems/erdos-85-wip-01/sat49/"
+            "reindex_h1_v2_capacity_certificates.py"
+        )
         hashed_paths = (
             HERE / "replay_worker.py", HERE / "validate_replay_receipt.py",
             HERE / "run_replay_queue.py", HERE / "audit_replay_leaf.py",
             HERE / "replay_common.py", HERE / "CLOUD_LEAN_REPLAY_STAGE_SPEC.md",
             aggregate_generator,
+            HERE / "capacity_queue.py", stub_generator,
+            capacity_exporter, capacity_reindexer,
         )
         for path in hashed_paths:
             require_tracked_at_head(repo, path)
@@ -97,6 +130,13 @@ def main() -> int:
             "common_sha256": sha256_file(HERE / "replay_common.py"),
             "receipt_schema_sha256": sha256_file(HERE / "CLOUD_LEAN_REPLAY_STAGE_SPEC.md"),
             "aggregate_generator_sha256": sha256_file(aggregate_generator),
+            "stub_generator_sha256": sha256_file(stub_generator),
+            "capacity_exporter_sha256": sha256_file(capacity_exporter),
+            "capacity_reindexer_sha256": sha256_file(capacity_reindexer),
+            "capacity_queue_validator_sha256": sha256_file(HERE / "capacity_queue.py"),
+            "capacity_index_sha256": sha256_file(args.capacity_index),
+            "capacity_reindex_receipt_sha256": sha256_file(args.capacity_reindex_receipt),
+            "complete_capacity_queue": args.require_complete_capacity_queue,
             "single_dispatcher": True,
         })
         value = canonical_json(manifest)

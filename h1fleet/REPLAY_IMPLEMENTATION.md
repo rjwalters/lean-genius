@@ -31,7 +31,13 @@ unless an operator runs the worker with the production backend explicitly.
   campaign-wide exclusion.  Distributed lease stealing and renewable
   campaign ownership are not implemented or silently simulated.
 - `build_replay_manifest.py`: freezes a reviewed draft against a clean commit,
-  queue, and every executable script hash.
+  queue, receipted capacity index, and every executable script hash.  It proves
+  every queued tag is assigned its Lean capacity ordinal rather than a raw or
+  family-local operational index.  Final freezes use
+  `--require-complete-capacity-queue`, which requires the exact 13,351 tags and
+  all five contiguous capacity-ordinal ranges.
+- `capacity_queue.py`: validates the capacity-reindex receipt and the exact
+  queue tag-to-`(profile, local_index)` binding before a manifest can freeze.
 - `test_replay_transaction.py`: complete local-store tests of acceptance,
   idempotent resume, dispatcher execution, corrupt-certificate rejection,
   undisclosed-axiom rejection, and literal axiom parsing.
@@ -84,8 +90,9 @@ is accepted only when bound to the current manifest.  Collisions fail closed.
 
 ## Remaining launch gates
 
-Before production use, freeze the real 13,351-row coverage-derived queue and
-draft manifest, provide the copied-overlay/generator/toolchain identities and
+Before production use, build and receipt the 13,351-row capacity-reindexed
+certificate index, derive the replay queue from those capacity ordinals, and
+freeze it with `--require-complete-capacity-queue`.  Provide the copied-overlay/generator/toolchain identities and
 commands, obtain editor review, run one real P=1 leaf, independently validate
 its receipt, then derive concurrency/cost from the measured RSS and throughput.
 Before even that P=1 transaction, satisfy the specification's single-dispatcher

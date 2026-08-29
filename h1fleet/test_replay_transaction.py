@@ -24,6 +24,9 @@ from replay_common import (
 )
 from audit_replay_leaf import parse_axioms
 from build_replay_manifest import publish_validated_manifest
+from capacity_queue import (
+    CAPACITY_PROFILE_COUNTS, load_capacity_index, validate_queue_capacity,
+)
 from replay_worker import (
     validate_existing_receipt, validate_job, validate_production_manifest,
 )
@@ -93,6 +96,19 @@ class ReplayTransactionTest(unittest.TestCase):
         }))
         self.queue = self.root / "queue.jsonl"
         self.queue.write_bytes(self.job.read_bytes())
+        self.capacity_index = self.root / "capacity-index.tsv"
+        self.capacity_index.write_text(
+            "orbit\tprofile\tlocalIndex\n"
+            f"{self.tag}\tBBBB\t3\n"
+        )
+        self.capacity_reindex_receipt = self.root / "capacity-reindex-receipt.json"
+        self.capacity_reindex_receipt.write_bytes(canonical_json({
+            "schema": "erdos85-h1-v2-capacity-reindex-v1",
+            "inventory_sha256": ZERO_SHA,
+            "output_sha256": sha256_file(self.capacity_index),
+            "emitted_rows": 1,
+            "require_complete": False,
+        }))
         self.manifest = self.root / "manifest.json"
         self.manifest.write_bytes(canonical_json({
             "schema": SCHEMA,
@@ -105,6 +121,12 @@ class ReplayTransactionTest(unittest.TestCase):
             "validator_sha256": "6" * 64, "zstd_identity": "copy-test",
             "receipt_schema_sha256": "8" * 64,
             "aggregate_generator_sha256": "9" * 64,
+            "stub_generator_sha256": "e" * 64,
+            "capacity_exporter_sha256": "f" * 64,
+            "capacity_reindexer_sha256": "0" * 64,
+            "capacity_queue_validator_sha256": "1" * 64,
+            "capacity_index_sha256": "2" * 64,
+            "capacity_reindex_receipt_sha256": "3" * 64,
             "axiom_auditor_sha256": "a" * 64, "common_sha256": "b" * 64,
             "dispatcher_sha256": "c" * 64,
             "aws_cli_identity": "local-backend-not-used",
@@ -117,6 +139,7 @@ class ReplayTransactionTest(unittest.TestCase):
             "receipt_integrity_key_id": "local-test",
             "queue_sha256": sha256_file(self.queue), "expected_jobs": 1,
             "max_parallelism": 1, "single_dispatcher": True,
+            "complete_capacity_queue": False,
             "allowed_axioms": ["propext", "Classical.choice", "Quot.sound"],
             "commands": {
                 "generate": [sys.executable, str(self.helper), "generate", "{source}"],
@@ -351,6 +374,8 @@ class ReplayTransactionTest(unittest.TestCase):
             sys.executable, str(MANIFEST_BUILDER), "--draft", str(self.manifest),
             "--queue", str(self.queue), "--repo", str(HERE.parent),
             "--output", str(frozen),
+            "--capacity-index", str(self.capacity_index),
+            "--capacity-reindex-receipt", str(self.capacity_reindex_receipt),
         ], text=True, capture_output=True, check=False)
         self.assertEqual(freeze.returncode, 2)
         self.assertIn("missing=['cnf_sha256']", freeze.stderr)
@@ -373,6 +398,30 @@ class ReplayTransactionTest(unittest.TestCase):
         duplicate_slots.write_bytes(canonical_json(job) + canonical_json(second))
         with self.assertRaisesRegex(ReplayError, "duplicate profile/local-index slots"):
             load_queue(duplicate_slots)
+
+    def test_queue_capacity_binding_rejects_family_local_index(self) -> None:
+        jobs = load_queue(self.queue)
+        capacity = load_capacity_index(self.capacity_index)
+        validate_queue_capacity(jobs, capacity, require_complete=False)
+        wrong = [dict(jobs[0], local_index=0)]
+        with self.assertRaisesRegex(ReplayError, "expected capacity slot"):
+            validate_queue_capacity(wrong, capacity, require_complete=False)
+
+    def test_complete_capacity_queue_requires_exact_13351_enumeration(self) -> None:
+        capacity = {}
+        jobs = []
+        serial = 0
+        for profile, count in enumerate(CAPACITY_PROFILE_COUNTS):
+            for local_index in range(count):
+                tag = f"{serial:016x}"
+                capacity[tag] = (profile, local_index)
+                jobs.append({
+                    "tag": tag, "profile": profile, "local_index": local_index,
+                })
+                serial += 1
+        validate_queue_capacity(jobs, capacity, require_complete=True)
+        with self.assertRaisesRegex(ReplayError, "does not exactly cover"):
+            validate_queue_capacity(jobs[:-1], capacity, require_complete=True)
 
     def test_job_rejects_noncanonical_certificate_prefix(self) -> None:
         job = json.loads(self.job.read_text())
@@ -760,6 +809,8 @@ class ReplayTransactionTest(unittest.TestCase):
             sys.executable, str(MANIFEST_BUILDER), "--draft", str(self.manifest),
             "--queue", str(self.queue), "--repo", str(other),
             "--output", str(self.root / "frozen.json"),
+            "--capacity-index", str(self.capacity_index),
+            "--capacity-reindex-receipt", str(self.capacity_reindex_receipt),
         ], text=True, capture_output=True, check=False)
         self.assertEqual(result.returncode, 2)
         self.assertIn("worktree containing replay scripts", result.stderr)

@@ -191,6 +191,9 @@ def validate(args: argparse.Namespace) -> None:
             "generator_sha256", "template_sha256", "cnf_emitter_sha256", "worker_sha256",
             "validator_sha256", "receipt_schema_sha256",
             "aggregate_generator_sha256", "axiom_auditor_sha256",
+            "stub_generator_sha256", "capacity_exporter_sha256",
+            "capacity_reindexer_sha256", "capacity_queue_validator_sha256",
+            "capacity_index_sha256", "capacity_reindex_receipt_sha256",
             "common_sha256", "dispatcher_sha256", "zstd_identity",
         )
     }

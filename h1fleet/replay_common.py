@@ -100,6 +100,9 @@ def load_manifest(path: Path) -> dict[str, Any]:
         "generator_sha256", "template_sha256", "cnf_emitter_sha256", "worker_sha256",
         "validator_sha256", "zstd_identity",
         "receipt_schema_sha256", "aggregate_generator_sha256",
+        "stub_generator_sha256", "capacity_exporter_sha256",
+        "capacity_reindexer_sha256", "capacity_queue_validator_sha256",
+        "capacity_index_sha256", "capacity_reindex_receipt_sha256",
         "axiom_auditor_sha256", "common_sha256", "dispatcher_sha256",
         "aws_cli_identity",
         "worker_image_digest", "worker_ami_id", "worker_instance_type", "ebs_shape",
@@ -121,6 +124,9 @@ def load_manifest(path: Path) -> dict[str, Any]:
         "generator_sha256", "template_sha256", "cnf_emitter_sha256", "worker_sha256",
         "validator_sha256",
         "receipt_schema_sha256", "aggregate_generator_sha256",
+        "stub_generator_sha256", "capacity_exporter_sha256",
+        "capacity_reindexer_sha256", "capacity_queue_validator_sha256",
+        "capacity_index_sha256", "capacity_reindex_receipt_sha256",
         "axiom_auditor_sha256", "common_sha256", "dispatcher_sha256",
         "queue_sha256",
     ):
@@ -133,6 +139,8 @@ def load_manifest(path: Path) -> dict[str, Any]:
         raise ReplayError("manifest.max_parallelism must be a positive integer")
     if value.get("single_dispatcher") is not True:
         raise ReplayError("manifest.single_dispatcher must be true")
+    if type(value.get("complete_capacity_queue")) is not bool:
+        raise ReplayError("manifest.complete_capacity_queue must be boolean")
     prefix = value["campaign_prefix"]
     if prefix.startswith("/") or ".." in prefix.split("/") or not prefix.endswith("/"):
         raise ReplayError("campaign_prefix must be normalized, relative, and end in /")
