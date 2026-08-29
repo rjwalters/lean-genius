@@ -62,6 +62,17 @@ class CapacityReindexTest(unittest.TestCase):
                     require_complete=True,
                 )
 
+    def test_duplicate_outside_capacity_tag_is_rejected(self) -> None:
+        with TemporaryDirectory() as directory:
+            first_path = Path(directory) / "first.tsv"
+            second_path = Path(directory) / "second.tsv"
+            first_path.write_text(render_index([ROW]))
+            second_path.write_text(render_index([ROW]))
+            with self.assertRaisesRegex(ValueError, "duplicate certificate orbit"):
+                reindex_rows(
+                    [first_path, second_path], {}, drop_outside_capacity=True
+                )
+
 
 if __name__ == "__main__":
     unittest.main()

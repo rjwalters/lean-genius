@@ -11,6 +11,7 @@ and aggregate generators.
 from __future__ import annotations
 
 import argparse
+import json
 from dataclasses import replace
 from pathlib import Path
 
@@ -21,6 +22,7 @@ from generate_h1_v2_lean_stubs import (
     IndexRow,
     atomic_write,
     read_index,
+    sha256,
 )
 
 
@@ -38,11 +40,13 @@ def reindex_rows(
     drop_outside_capacity: bool = False, require_complete: bool = False,
 ) -> list[IndexRow]:
     by_tag: dict[str, IndexRow] = {}
+    seen_tags: set[str] = set()
     outside: list[str] = []
     for path in indexes:
         for row in read_index(path):
-            if row.orbit in by_tag:
+            if row.orbit in seen_tags:
                 raise ValueError(f"duplicate certificate orbit across indexes: {row.orbit}")
+            seen_tags.add(row.orbit)
             key = capacity_keys.get(row.orbit)
             if key is None:
                 outside.append(row.orbit)
@@ -101,6 +105,10 @@ def main() -> int:
     parser.add_argument("--inventory", type=Path, required=True)
     parser.add_argument("--index", type=Path, action="append", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--receipt-output", type=Path,
+        help="atomically record the input/output hashes and exact dropped-tag set",
+    )
     parser.add_argument("--drop-outside-capacity", action="store_true")
     parser.add_argument("--require-complete", action="store_true")
     args = parser.parse_args()
@@ -111,6 +119,32 @@ def main() -> int:
         args.index, keys, args.drop_outside_capacity, args.require_complete
     )
     atomic_write(args.output, render_index(rows))
+    if args.receipt_output:
+        emitted_tags = {row.orbit for row in rows}
+        input_tags = {
+            row.orbit
+            for path in args.index
+            for row in read_index(path)
+        }
+        receipt = {
+            "schema": "erdos85-h1-v2-capacity-reindex-v1",
+            "inventory": str(args.inventory.resolve()),
+            "inventory_sha256": sha256(args.inventory),
+            "indexes": [
+                {"path": str(path.resolve()), "sha256": sha256(path)}
+                for path in args.index
+            ],
+            "output": str(args.output.resolve()),
+            "output_sha256": sha256(args.output),
+            "capacity_total": len(keys),
+            "emitted_rows": len(rows),
+            "dropped_outside_capacity_tags": sorted(input_tags - emitted_tags),
+            "require_complete": args.require_complete,
+        }
+        atomic_write(
+            args.receipt_output,
+            json.dumps(receipt, indent=2, sort_keys=True) + "\n",
+        )
     print(f"rows={len(rows)} capacity_total={len(keys)} output={args.output}")
     return 0
 
