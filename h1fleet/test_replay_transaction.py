@@ -220,7 +220,7 @@ class ReplayTransactionTest(unittest.TestCase):
             "--object-store-root", str(self.store_root),
         ], text=True, capture_output=True, check=False)
         self.assertEqual(dispatched.returncode, 2)
-        self.assertIn("job.cnf_sha256", dispatched.stderr)
+        self.assertIn("missing=['cnf_sha256']", dispatched.stderr)
         self.assertFalse((self.state / "dispatch" / "START.json").exists())
 
         frozen = self.root / "must-not-freeze.json"
@@ -230,7 +230,7 @@ class ReplayTransactionTest(unittest.TestCase):
             "--output", str(frozen),
         ], text=True, capture_output=True, check=False)
         self.assertEqual(freeze.returncode, 2)
-        self.assertIn("job.cnf_sha256", freeze.stderr)
+        self.assertIn("missing=['cnf_sha256']", freeze.stderr)
         self.assertFalse(frozen.exists())
 
     def test_queue_rejects_boolean_indices_and_duplicate_slots(self) -> None:
@@ -266,6 +266,22 @@ class ReplayTransactionTest(unittest.TestCase):
                 ReplayError, "certificate key must equal"
             ):
                 validate_job(malformed, self.tag)
+
+    def test_job_rejects_unknown_fields(self) -> None:
+        job = json.loads(self.job.read_text())
+        job["ignored_but_hashed"] = "not part of semantic job identity"
+        with self.assertRaisesRegex(ReplayError, "unknown=.*ignored_but_hashed"):
+            validate_job(job, self.tag)
+        unknown = self.root / "unknown-field.jsonl"
+        unknown.write_bytes(canonical_json(job))
+        with self.assertRaisesRegex(ReplayError, "unknown=.*ignored_but_hashed"):
+            load_queue(unknown)
+        del job["cnf_sha256"]
+        with self.assertRaisesRegex(
+            ReplayError,
+            r"missing=\['cnf_sha256'\], unknown=\['ignored_but_hashed'\]",
+        ):
+            validate_job(job, self.tag)
 
     def test_literal_axiom_report_parser(self) -> None:
         output = (

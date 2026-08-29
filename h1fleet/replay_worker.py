@@ -35,6 +35,17 @@ from replay_common import (
 
 
 def validate_job(job: dict[str, Any], tag_argument: str) -> dict[str, Any]:
+    expected_fields = {
+        "tag", "profile", "local_index", "certificate_key",
+        "certificate_gzip_sha256", "compact_lrat_sha256", "cnf_sha256",
+        "table_serialization", "table_sha256",
+    }
+    if set(job) != expected_fields:
+        raise ReplayError(
+            "job fields differ from exact schema: "
+            f"missing={sorted(expected_fields - set(job))}, "
+            f"unknown={sorted(set(job) - expected_fields)}"
+        )
     tag = require_tag(job.get("tag"))
     if tag != require_tag(tag_argument):
         raise ReplayError(f"job tag {tag} does not match requested tag {tag_argument}")
