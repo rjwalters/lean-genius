@@ -252,7 +252,11 @@ def write_queue(manifest_path: Path, output: Path, receipt: Path) -> None:
     os.replace(receipt_tmp, receipt)
 
 
-def validate_queue_receipt(receipt_path: Path) -> None:
+def validate_queue_receipt(receipt_path: Path, expected_receipt_sha256: str) -> None:
+    if re.fullmatch(r"[0-9a-f]{64}", expected_receipt_sha256) is None:
+        raise ValueError("expected receipt SHA-256 must be 64 lowercase hex digits")
+    if sha256(receipt_path) != expected_receipt_sha256:
+        raise ValueError("third-level queue receipt hash mismatch")
     receipt = json.loads(receipt_path.read_text())
     expected_keys = {
         "schema", "manifest", "manifest_sha256", "parent_manifest_sha256",
@@ -304,6 +308,7 @@ def main() -> int:
     queue_parser.add_argument("--receipt", type=Path, required=True)
     validate_parser = subparsers.add_parser("validate-queue")
     validate_parser.add_argument("--receipt", type=Path, required=True)
+    validate_parser.add_argument("--expected-receipt-sha256", required=True)
     args = parser.parse_args()
     if args.command == "manifest":
         write_manifest(args.parent_manifest.resolve(),
@@ -315,7 +320,8 @@ def main() -> int:
         write_queue(args.manifest.resolve(), args.output.resolve(),
                     args.receipt.resolve())
     else:
-        validate_queue_receipt(args.receipt.resolve())
+        validate_queue_receipt(args.receipt.resolve(),
+                               args.expected_receipt_sha256)
         print(f"VALID {args.receipt.resolve()}")
         return 0
     print(f"WROTE {args.output.resolve()}")
