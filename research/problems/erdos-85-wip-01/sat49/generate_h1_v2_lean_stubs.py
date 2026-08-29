@@ -226,6 +226,10 @@ def lean_source(
     row: IndexRow, payload: Path, terminal: TerminalTableTarget | None = None,
     include_path_expr: str | None = None, legacy_raw_inventory: bool = False,
 ) -> str:
+    if terminal and terminal.raw_inventory_table and not legacy_raw_inventory:
+        raise ValueError(
+            "raw terminal table emission requires legacy_raw_inventory=True"
+        )
     stem = f"h1V2P{row.profile}I{row.local_index:05d}"
     path_expr = include_path_expr or json.dumps(str(payload))
     terminal_import = f"import {terminal.module}\n" if terminal else ""

@@ -12,6 +12,7 @@ from generate_h1_v2_lean_stubs import (
     RAW_PROFILE_COUNTS,
     EXPECTED_COLUMNS,
     IndexRow,
+    TerminalTableTarget,
     lean_source,
     main,
     read_inventory,
@@ -45,6 +46,12 @@ class StubCapacityContractTest(unittest.TestCase):
         )
         self.assertIn("(oneHighInventoryTables (2 : Fin 5)).get", source)
         self.assertNotIn("oneHighCapacityInventoryTables", source)
+
+    def test_programmatic_raw_terminal_cannot_bypass_legacy_gate(self) -> None:
+        terminal = TerminalTableTarget("Proofs.Inventory", "Erdos85.tables", 17,
+                                       raw_inventory_table=True)
+        with self.assertRaisesRegex(ValueError, "requires legacy_raw_inventory"):
+            lean_source(ROW, Path("proof.lrat.lz4p7"), terminal=terminal)
 
     def test_inventory_count_contract_is_selected_explicitly(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
