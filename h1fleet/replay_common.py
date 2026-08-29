@@ -27,6 +27,7 @@ RECEIPT_SCHEMA = "erdos85-h1-replay-receipt-v1"
 NATIVE_AXIOM_PATTERN = (
     r"^Erdos85\.h1V2P[0-4]I[0-9]{5}Check\._native\.native_decide\.ax_[0-9_]+$"
 )
+FOUNDATIONAL_AXIOMS = ("propext", "Classical.choice", "Quot.sound")
 
 
 class ReplayError(RuntimeError):
@@ -143,14 +144,17 @@ def load_manifest(path: Path) -> dict[str, Any]:
         if not isinstance(command, list) or not command or not all(isinstance(x, str) for x in command):
             raise ReplayError(f"manifest.commands.{name} must be a nonempty string list")
     allowed = value.get("allowed_axioms")
-    if not isinstance(allowed, list) or not all(isinstance(x, str) for x in allowed):
-        raise ReplayError("manifest.allowed_axioms must be a string list")
+    if allowed != list(FOUNDATIONAL_AXIOMS):
+        raise ReplayError(
+            "manifest.allowed_axioms must equal the canonical foundational list"
+        )
     patterns = value.get("allowed_axiom_patterns", [])
-    if not isinstance(patterns, list) or not all(isinstance(x, str) for x in patterns):
-        raise ReplayError("manifest.allowed_axiom_patterns must be a string list")
+    if patterns not in ([], [NATIVE_AXIOM_PATTERN]):
+        raise ReplayError(
+            "manifest.allowed_axiom_patterns must be empty or the singleton "
+            "reviewed native leaf-root pattern"
+        )
     for pattern in patterns:
-        if pattern != NATIVE_AXIOM_PATTERN:
-            raise ReplayError("manifest axiom patterns must use the reviewed native leaf-root pattern")
         try:
             re.compile(pattern)
         except re.error as error:

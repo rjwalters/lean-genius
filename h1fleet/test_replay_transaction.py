@@ -16,12 +16,12 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 from replay_common import (
-    LocalObjectStore, ReplayError, SCHEMA, canonical_json, load_manifest,
+    LocalObjectStore, NATIVE_AXIOM_PATTERN, ReplayError, SCHEMA, canonical_json, load_manifest,
     sha256_bytes, sha256_file, validate_command_receipts,
 )
 from audit_replay_leaf import parse_axioms
 from build_replay_manifest import publish_validated_manifest
-from replay_worker import validate_job
+from replay_worker import validate_job, validate_production_manifest
 from run_replay_queue import load_queue
 from validate_replay_receipt import validate_production_backend_binding
 
@@ -518,6 +518,43 @@ class ReplayTransactionTest(unittest.TestCase):
             with self.assertRaisesRegex(ReplayError, message):
                 publish_validated_manifest(output, candidate.read_bytes())
             self.assertFalse(output.exists())
+
+    def test_manifest_axiom_allowlist_is_exact_before_publication(self) -> None:
+        original = json.loads(self.manifest.read_text())
+        self.assertEqual(load_manifest(self.manifest).get("allowed_axiom_patterns", []), [])
+        mutations = (
+            ["propext", "Classical.choice", "Quot.sound", "evil.axiom"],
+            ["propext", "Classical.choice"],
+            ["propext", "Classical.choice", "Quot.sound", "Quot.sound"],
+            ["Classical.choice", "propext", "Quot.sound"],
+        )
+        for index, allowed in enumerate(mutations):
+            manifest = dict(original, allowed_axioms=allowed)
+            candidate = self.root / f"bad-allowlist-{index}.json"
+            candidate.write_bytes(canonical_json(manifest))
+            output = self.root / f"must-not-publish-allowlist-{index}.json"
+            with self.assertRaisesRegex(ReplayError, "canonical foundational list"):
+                publish_validated_manifest(output, candidate.read_bytes())
+            self.assertFalse(output.exists())
+
+        for index, patterns in enumerate((
+            ["evil\\..*"],
+            [NATIVE_AXIOM_PATTERN, NATIVE_AXIOM_PATTERN],
+            [NATIVE_AXIOM_PATTERN, "evil\\..*"],
+        )):
+            manifest = dict(original, allowed_axiom_patterns=patterns)
+            candidate = self.root / f"bad-patterns-{index}.json"
+            candidate.write_bytes(canonical_json(manifest))
+            with self.assertRaisesRegex(ReplayError, "singleton reviewed"):
+                load_manifest(candidate)
+
+        # Local mechanics may omit native roots; production may not.
+        with self.assertRaisesRegex(ReplayError, "allowed_axiom_patterns"):
+            validate_production_manifest(original)
+        production = dict(original, allowed_axiom_patterns=[NATIVE_AXIOM_PATTERN])
+        loaded = self.root / "native-pattern.json"
+        loaded.write_bytes(canonical_json(production))
+        self.assertEqual(load_manifest(loaded)["allowed_axiom_patterns"], [NATIVE_AXIOM_PATTERN])
 
 
 if __name__ == "__main__":

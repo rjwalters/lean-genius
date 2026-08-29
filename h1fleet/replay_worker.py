@@ -26,7 +26,7 @@ from pathlib import Path
 from typing import Any
 
 from replay_common import (
-    READY_SCHEMA, RECEIPT_SCHEMA, AwsCliObjectStore, LocalObjectStore, ObjectStore,
+    NATIVE_AXIOM_PATTERN, READY_SCHEMA, RECEIPT_SCHEMA, AwsCliObjectStore, LocalObjectStore, ObjectStore,
     ReplayError,
     atomic_write, canonical_json, expand_command, info_record, load_json,
     load_manifest, require_sha, require_tag, run_command, sha256_bytes,
@@ -656,6 +656,8 @@ def validate_production_manifest(manifest: dict[str, Any]) -> None:
         "s3_bucket": r"[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]",
     }
     bad.extend(key for key, pattern in formats.items() if re.fullmatch(pattern, manifest[key]) is None)
+    if manifest.get("allowed_axiom_patterns") != [NATIVE_AXIOM_PATTERN]:
+        bad.append("allowed_axiom_patterns")
     if bad:
         raise ReplayError(f"production manifest contains unresolved or malformed identities: {sorted(set(bad))}")
 
