@@ -10,6 +10,8 @@ import sys
 import tempfile
 import time
 import unittest
+from dataclasses import replace
+from types import SimpleNamespace
 from unittest.mock import patch
 from pathlib import Path
 
@@ -24,6 +26,7 @@ from audit_replay_leaf import parse_axioms
 from build_replay_manifest import publish_validated_manifest
 from replay_worker import validate_job, validate_production_manifest
 from run_replay_queue import load_queue
+import validate_replay_receipt as replay_receipt_validator
 from validate_replay_receipt import validate_production_backend_binding
 
 
@@ -143,6 +146,12 @@ class ReplayTransactionTest(unittest.TestCase):
             "--object-store-root", str(self.store_root),
         ], text=True, capture_output=True, check=False)
 
+    def validator_args(self, receipt: Path | None = None) -> SimpleNamespace:
+        return SimpleNamespace(
+            manifest=self.manifest, receipt=receipt or self.receipt_path(),
+            object_store_root=self.store_root, s3_bucket=None, aws="aws",
+        )
+
     def remove_object(self, key: str) -> None:
         (self.store.objects / key).unlink(missing_ok=True)
         (self.store.meta / f"{key}.json").unlink(missing_ok=True)
@@ -173,6 +182,96 @@ class ReplayTransactionTest(unittest.TestCase):
         self.assertEqual(second.returncode, 0, second.stderr)
         self.assertIn("ALREADY_ACCEPTED", second.stdout)
         self.assertEqual(sha256_file(receipt), receipt_sha)
+
+    def test_validator_gets_live_receipt_ready_and_all_artifacts(self) -> None:
+        self.assertEqual(self.worker().returncode, 0)
+        downloads: list[str] = []
+        base = self.store
+
+        class RecordingStore:
+            def download(self, key, destination):
+                downloads.append(key)
+                return base.download(key, destination)
+
+            def head(self, key):
+                return base.head(key)
+
+        with patch.object(
+            replay_receipt_validator, "LocalObjectStore",
+            return_value=RecordingStore(),
+        ):
+            replay_receipt_validator.validate(self.validator_args())
+        prefix = "sat49/campaign-20260825/h1-replay/"
+        self.assertTrue({
+            f"{prefix}receipts/{self.tag}.json",
+            f"{prefix}replay-ready/{self.tag}.json",
+            f"{prefix}sources/{self.tag}.lean.zst",
+            f"{prefix}logs/{self.tag}.log.zst",
+            f"{prefix}oleans/{self.tag}.olean.zst",
+            f"{prefix}ledger/{self.tag}.accepted",
+        } <= set(downloads))
+
+    def test_validator_rehashes_artifact_bytes_despite_forged_head(self) -> None:
+        self.assertEqual(self.worker().returncode, 0)
+        prefix = "sat49/campaign-20260825/h1-replay/"
+        target = f"{prefix}sources/{self.tag}.lean.zst"
+        base = self.store
+
+        class ForgedArtifactStore:
+            def download(self, key, destination):
+                if key == target:
+                    info = base.head(key)
+                    destination.write_bytes(b"forged bytes behind matching HEAD metadata")
+                    return info
+                return base.download(key, destination)
+
+            def head(self, key):
+                return base.head(key)
+
+        with patch.object(
+            replay_receipt_validator, "LocalObjectStore",
+            return_value=ForgedArtifactStore(),
+        ), self.assertRaisesRegex(ReplayError, "downloaded source bytes differ"):
+            replay_receipt_validator.validate(self.validator_args())
+
+    def test_validator_rejects_supplied_live_receipt_byte_divergence(self) -> None:
+        self.assertEqual(self.worker().returncode, 0)
+        supplied = self.root / "divergent-receipt.json"
+        supplied.write_bytes(self.receipt_path().read_bytes() + b"\n")
+        with self.assertRaisesRegex(ReplayError, "supplied receipt bytes differ"):
+            replay_receipt_validator.validate(self.validator_args(supplied))
+
+    def test_ledger_binds_downloaded_receipt_not_forged_head_sha(self) -> None:
+        self.assertEqual(self.worker().returncode, 0)
+        prefix = "sat49/campaign-20260825/h1-replay/"
+        receipt_key = f"{prefix}receipts/{self.tag}.json"
+        ledger_key = f"{prefix}ledger/{self.tag}.accepted"
+        forged_sha = "f" * 64
+        ledger_path = self.store.objects / ledger_key
+        ledger = json.loads(ledger_path.read_text())
+        ledger["receipt_sha256"] = forged_sha
+        ledger_bytes = canonical_json(ledger)
+        ledger_path.write_bytes(ledger_bytes)
+        ledger_meta_path = self.store.meta / f"{ledger_key}.json"
+        ledger_meta = json.loads(ledger_meta_path.read_text())
+        ledger_digest = sha256_bytes(ledger_bytes)
+        ledger_meta.update(size=len(ledger_bytes), sha256=ledger_digest, etag=ledger_digest)
+        ledger_meta_path.write_bytes(canonical_json(ledger_meta))
+        base = self.store
+
+        class ForgedHeadStore:
+            def download(self, key, destination):
+                return base.download(key, destination)
+
+            def head(self, key):
+                info = base.head(key)
+                return replace(info, sha256=forged_sha) if key == receipt_key else info
+
+        with patch.object(
+            replay_receipt_validator, "LocalObjectStore",
+            return_value=ForgedHeadStore(),
+        ), self.assertRaisesRegex(ReplayError, "terminal ledger"):
+            replay_receipt_validator.validate(self.validator_args())
 
     def test_undisclosed_axiom_never_tags_or_accepts(self) -> None:
         work = self.state / "work" / self.tag

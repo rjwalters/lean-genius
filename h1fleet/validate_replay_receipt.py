@@ -10,14 +10,35 @@ import tempfile
 from pathlib import Path
 
 from replay_common import (
-    RECEIPT_SCHEMA, AwsCliObjectStore, LocalObjectStore, ObjectStore, ReplayError,
+    RECEIPT_SCHEMA, AwsCliObjectStore, LocalObjectStore, ObjectInfo, ObjectStore, ReplayError,
     canonical_json, load_json,
     load_manifest, require_sha, require_tag, sha256_bytes, sha256_file,
     validate_command_receipts,
 )
 from replay_worker import (
-    receipt_command_bindings, validate_aws_cli, validate_production_manifest,
+    artifact_key, ledger_key, ready_key, receipt_command_bindings, receipt_key,
+    validate_aws_cli, validate_production_manifest,
 )
+
+
+STABLE_OBJECT_FIELDS = (
+    "key", "size", "sha256", "etag", "last_modified", "version_id",
+    "metadata", "tags",
+)
+
+
+def validate_downloaded_identity(
+    label: str, expected: object, actual: ObjectInfo, downloaded: Path,
+) -> None:
+    """Compare recorded stable identity and independently rehash GET bytes."""
+    if not isinstance(expected, dict):
+        raise ReplayError(f"receipt {label} object identity is malformed")
+    downloaded_sha = sha256_file(downloaded)
+    if downloaded.stat().st_size != actual.size or downloaded_sha != actual.sha256:
+        raise ReplayError(f"downloaded {label} bytes differ from returned object identity")
+    for field in STABLE_OBJECT_FIELDS:
+        if expected.get(field) != getattr(actual, field):
+            raise ReplayError(f"live {label} differs from receipt at {field}")
 
 
 def validate_production_backend_binding(
@@ -33,6 +54,8 @@ def validate_production_backend_binding(
 def validate(args: argparse.Namespace) -> None:
     manifest = load_manifest(args.manifest)
     manifest_sha = sha256_file(args.manifest)
+    supplied_receipt_bytes = args.receipt.read_bytes()
+    supplied_receipt_sha = sha256_bytes(supplied_receipt_bytes)
     receipt = load_json(args.receipt)
     if receipt.get("schema") != RECEIPT_SCHEMA or receipt.get("accepted") is not True:
         raise ReplayError("receipt is not an accepted replay-v1 receipt")
@@ -83,6 +106,27 @@ def validate(args: argparse.Namespace) -> None:
     else:
         validate_production_backend_binding(manifest, args.s3_bucket, args.aws)
         store = AwsCliObjectStore(args.s3_bucket, args.aws)
+    prefix = manifest["campaign_prefix"]
+    live_receipt_key = receipt_key(prefix, tag)
+    with tempfile.TemporaryDirectory() as temporary:
+        live_receipt_path = Path(temporary) / "receipt.json"
+        live_receipt = store.download(live_receipt_key, live_receipt_path)
+        live_receipt_bytes = live_receipt_path.read_bytes()
+        live_receipt_sha = sha256_file(live_receipt_path)
+    if live_receipt_bytes != supplied_receipt_bytes or (
+        live_receipt.key != live_receipt_key
+        or live_receipt.size != len(supplied_receipt_bytes)
+        or live_receipt.sha256 != supplied_receipt_sha
+        or live_receipt_sha != supplied_receipt_sha
+    ):
+        raise ReplayError("supplied receipt bytes differ from immutable live receipt")
+    if (
+        live_receipt.metadata.get("tag") != tag
+        or live_receipt.metadata.get("manifest-sha256") != manifest_sha
+        or ("sha256" in live_receipt.metadata
+            and live_receipt.metadata["sha256"] != live_receipt_sha)
+    ):
+        raise ReplayError("live receipt metadata binding is malformed")
     with tempfile.TemporaryDirectory() as temporary:
         actual_certificate = store.download(before["key"], Path(temporary) / "certificate")
     if (actual_certificate.sha256, actual_certificate.size, actual_certificate.etag,
@@ -97,21 +141,29 @@ def validate(args: argparse.Namespace) -> None:
     artifacts = receipt.get("artifacts")
     if not isinstance(artifacts, dict) or set(artifacts) != {"source", "log", "olean"}:
         raise ReplayError("receipt artifact set is malformed")
-    for label, expected in artifacts.items():
-        if not isinstance(expected, dict):
-            raise ReplayError(f"receipt {label} artifact is malformed")
-        actual = store.head(expected.get("key", ""))
-        if actual.sha256 != expected.get("sha256") or actual.size != expected.get("size"):
-            raise ReplayError(f"live {label} artifact differs from receipt")
+    artifact_locations = {
+        "source": artifact_key(prefix, "sources", tag, "lean.zst"),
+        "log": artifact_key(prefix, "logs", tag, "log.zst"),
+        "olean": artifact_key(prefix, "oleans", tag, "olean.zst"),
+    }
+    with tempfile.TemporaryDirectory() as temporary:
+        for label, expected in artifacts.items():
+            if not isinstance(expected, dict) or expected.get("key") != artifact_locations[label]:
+                raise ReplayError(f"receipt {label} artifact key is not canonical")
+            destination = Path(temporary) / f"{label}.zst"
+            actual = store.download(artifact_locations[label], destination)
+            validate_downloaded_identity(label, expected, actual, destination)
 
-    prefix = manifest["campaign_prefix"]
-    ready_key = f"{prefix}replay-ready/{tag}.json"
-    ready_path = args.receipt.parent / f".{tag}.ready.validation.json"
-    try:
-        store.download(ready_key, ready_path)
+    live_ready_key = ready_key(prefix, tag)
+    replay_ready_info = receipt.get("replay_ready")
+    if not isinstance(replay_ready_info, dict) or replay_ready_info.get("key") != live_ready_key:
+        raise ReplayError("receipt lacks immutable replay-ready object identity")
+    with tempfile.TemporaryDirectory() as temporary:
+        ready_path = Path(temporary) / "replay-ready.json"
+        ready_info = store.download(live_ready_key, ready_path)
+        validate_downloaded_identity(
+            "replay-ready", replay_ready_info, ready_info, ready_path)
         ready = load_json(ready_path)
-    finally:
-        ready_path.unlink(missing_ok=True)
     if sha256_bytes(canonical_json(ready)) != receipt["replay_ready_sha256"]:
         raise ReplayError("replay-ready record hash mismatch")
     if ready.get("artifacts") != receipt.get("artifacts"):
@@ -207,28 +259,18 @@ def validate(args: argparse.Namespace) -> None:
     if foreign_native:
         raise ReplayError("receipt contains a native axiom owned by another leaf")
 
-    receipt_key = f"{prefix}receipts/{tag}.json"
-    receipt_info = store.head(receipt_key)
-    if receipt_info.sha256 != sha256_file(args.receipt):
-        raise ReplayError("supplied receipt differs from immutable live receipt")
-    replay_ready_info = receipt.get("replay_ready")
-    if not isinstance(replay_ready_info, dict) or (
-        replay_ready_info.get("key") != ready_key
-        or replay_ready_info.get("sha256") != receipt["replay_ready_sha256"]
-    ):
-        raise ReplayError("receipt lacks immutable replay-ready object identity")
-    ledger_key = f"{prefix}ledger/{tag}.accepted"
-    ledger_path = args.receipt.parent / f".{tag}.ledger.validation.json"
-    try:
-        store.download(ledger_key, ledger_path)
+    if replay_ready_info.get("sha256") != receipt["replay_ready_sha256"]:
+        raise ReplayError("receipt replay-ready object hash mismatch")
+    live_ledger_key = ledger_key(prefix, tag)
+    with tempfile.TemporaryDirectory() as temporary:
+        ledger_path = Path(temporary) / "accepted-ledger.json"
+        store.download(live_ledger_key, ledger_path)
         ledger = load_json(ledger_path)
-    finally:
-        ledger_path.unlink(missing_ok=True)
     if (
         ledger.get("accepted") is not True
         or ledger.get("tag") != tag
-        or ledger.get("receipt_key") != receipt_key
-        or ledger.get("receipt_sha256") != receipt_info.sha256
+        or ledger.get("receipt_key") != live_receipt_key
+        or ledger.get("receipt_sha256") != live_receipt_sha
         or ledger.get("manifest_sha256") != manifest_sha
     ):
         raise ReplayError("terminal ledger does not bind the accepted receipt")
