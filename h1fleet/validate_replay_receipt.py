@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import re
 import sys
+import tempfile
 from pathlib import Path
 
 from replay_common import (
@@ -66,7 +67,8 @@ def validate(args: argparse.Namespace) -> None:
         if args.object_store_root is not None
         else AwsCliObjectStore(args.s3_bucket, args.aws)
     )
-    actual_certificate = store.head(before["key"])
+    with tempfile.TemporaryDirectory() as temporary:
+        actual_certificate = store.download(before["key"], Path(temporary) / "certificate")
     if (actual_certificate.sha256, actual_certificate.size, actual_certificate.etag,
         actual_certificate.last_modified) != (
         before["sha256"], before["size"], before["etag"], before["last_modified"]

@@ -63,7 +63,8 @@ class ReplayTransactionTest(unittest.TestCase):
         certificate.write_bytes(compressed)
         self.store.put_immutable(
             self.certificate_key, certificate,
-            {"cnf-sha256": "2" * 64, "tag": self.tag},
+            {"cnf-sha256": "2" * 64, "tag": self.tag,
+             "simulate-head-without-sha256": "true"},
         )
         self.job = self.root / "job.json"
         self.job.write_bytes(canonical_json({
@@ -84,6 +85,7 @@ class ReplayTransactionTest(unittest.TestCase):
             "overlay_sha256": "2" * 64, "generator_sha256": "3" * 64,
             "template_sha256": "4" * 64, "worker_sha256": sha256_file(WORKER),
             "validator_sha256": "6" * 64, "zstd_identity": "copy-test",
+            "aws_cli_identity": "local-backend-not-used",
             "queue_sha256": sha256_file(self.queue), "expected_jobs": 1,
             "max_parallelism": 1, "single_dispatcher": True,
             "allowed_axioms": ["propext", "Classical.choice", "Quot.sound"],

@@ -9,6 +9,7 @@ import os
 import re
 import resource
 import subprocess
+import sys
 import tempfile
 import time
 import uuid
@@ -22,6 +23,9 @@ SHA_RE = re.compile(r"[0-9a-f]{64}")
 SCHEMA = "erdos85-h1-replay-manifest-v1"
 READY_SCHEMA = "erdos85-h1-replay-ready-v1"
 RECEIPT_SCHEMA = "erdos85-h1-replay-receipt-v1"
+NATIVE_AXIOM_PATTERN = (
+    r"^Erdos85\.h1V2P[0-4]I[0-9]{5}Check\._native\.native_decide\.ax_[0-9]+$"
+)
 
 
 class ReplayError(RuntimeError):
@@ -88,6 +92,7 @@ def load_manifest(path: Path) -> dict[str, Any]:
         "coverage_sha256", "toolchain_identity", "overlay_sha256",
         "generator_sha256", "template_sha256", "worker_sha256",
         "validator_sha256", "zstd_identity",
+        "aws_cli_identity",
     )
     missing = [key for key in required_strings if not isinstance(value.get(key), str)]
     if missing:
@@ -117,8 +122,8 @@ def load_manifest(path: Path) -> dict[str, Any]:
     if not isinstance(patterns, list) or not all(isinstance(x, str) for x in patterns):
         raise ReplayError("manifest.allowed_axiom_patterns must be a string list")
     for pattern in patterns:
-        if pattern in (".*", ".+") or len(pattern) > 512:
-            raise ReplayError("manifest contains an overbroad axiom pattern")
+        if pattern != NATIVE_AXIOM_PATTERN:
+            raise ReplayError("manifest axiom patterns must use the reviewed native leaf-root pattern")
         try:
             re.compile(pattern)
         except re.error as error:
@@ -163,7 +168,31 @@ class CommandResult:
 def run_command(command: list[str], cwd: Path, log: Path,
                 environment_allowlist: list[str] | None = None) -> CommandResult:
     before = resource.getrusage(resource.RUSAGE_CHILDREN)
-    completed = subprocess.run(command, cwd=cwd, text=True, capture_output=True, check=False)
+    with tempfile.TemporaryDirectory() as temporary:
+        metrics = Path(temporary) / "time.txt"
+        time_arguments = (["/usr/bin/time", "-l", "-o", str(metrics)] if sys.platform == "darwin" else
+                          ["/usr/bin/time", "-v", "-o", str(metrics)])
+        completed = subprocess.run(
+            [*time_arguments, *command], cwd=cwd, text=True,
+            capture_output=True, check=False,
+        )
+        try:
+            metrics_text = metrics.read_text()
+        except OSError as error:
+            raise ReplayError(f"cannot read per-command resource metrics: {error}") from error
+    match = re.search(
+        r"(?im)^\s*(?:Maximum resident set size \(kbytes\):\s*|([0-9]+)\s+maximum resident set size\s*$)",
+        metrics_text,
+    )
+    if sys.platform == "darwin":
+        if match is None or match.group(1) is None:
+            raise ReplayError("cannot parse command peak RSS from BSD time")
+        peak_rss_kib = int(match.group(1)) // 1024
+    else:
+        linux_match = re.search(r"(?im)^\s*Maximum resident set size \(kbytes\):\s*([0-9]+)\s*$", metrics_text)
+        if linux_match is None:
+            raise ReplayError("cannot parse command peak RSS from GNU time")
+        peak_rss_kib = int(linux_match.group(1))
     after = resource.getrusage(resource.RUSAGE_CHILDREN)
     environment = {
         key: os.environ[key] for key in (environment_allowlist or []) if key in os.environ
@@ -175,7 +204,7 @@ def run_command(command: list[str], cwd: Path, log: Path,
         "stderr": completed.stderr,
         "user_cpu_seconds": after.ru_utime - before.ru_utime,
         "system_cpu_seconds": after.ru_stime - before.ru_stime,
-        "peak_rss_kib": after.ru_maxrss,
+        "peak_rss_kib": peak_rss_kib,
         "environment": environment,
     }
     with log.open("ab") as stream:
@@ -185,7 +214,7 @@ def run_command(command: list[str], cwd: Path, log: Path,
     return CommandResult(
         command, completed.returncode, completed.stdout, completed.stderr,
         after.ru_utime - before.ru_utime, after.ru_stime - before.ru_stime,
-        after.ru_maxrss, environment,
+        peak_rss_kib, environment,
     )
 
 
@@ -246,8 +275,12 @@ class LocalObjectStore:
         digest = sha256_file(path)
         if meta.get("sha256") != digest or meta.get("size") != path.stat().st_size:
             raise ReplayError(f"stored object integrity mismatch: {key}")
+        visible_digest = (
+            None if meta.get("metadata", {}).get("simulate-head-without-sha256") == "true"
+            else digest
+        )
         return ObjectInfo(
-            key, path.stat().st_size, digest, meta["etag"], meta["last_modified"],
+            key, path.stat().st_size, visible_digest, meta["etag"], meta["last_modified"],
             dict(meta.get("metadata", {})), dict(meta.get("tags", {})),
             meta.get("tagging_request_id"),
         )
@@ -256,9 +289,13 @@ class LocalObjectStore:
         info = self.head(key)
         source, _ = self._read(key)
         atomic_write(destination, source.read_bytes())
-        if sha256_file(destination) != info.sha256:
+        downloaded_sha = sha256_file(destination)
+        if info.sha256 is not None and downloaded_sha != info.sha256:
             raise ReplayError(f"download read-back mismatch: {key}")
-        return info
+        return ObjectInfo(
+            info.key, info.size, downloaded_sha, info.etag, info.last_modified,
+            info.metadata, info.tags, info.tagging_request_id,
+        )
 
     def put_immutable(self, key: str, source: Path, metadata: dict[str, str]) -> ObjectInfo:
         return self.put_bytes_immutable(key, source.read_bytes(), metadata)

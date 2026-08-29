@@ -14,6 +14,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import sys
 import time
 import uuid
@@ -361,7 +362,9 @@ def validate_existing_receipt(store: ObjectStore, manifest: dict[str, Any],
     after = receipt.get("certificate_after_tagging")
     if not isinstance(after, dict):
         raise ReplayError("accepted receipt lacks certificate tagging record")
-    certificate = store.head(job["certificate_key"])
+    with tempfile.TemporaryDirectory() as temporary:
+        certificate = store.download(
+            job["certificate_key"], Path(temporary) / "accepted-certificate")
     if certificate.tags.get("replay") != "consumed":
         raise ReplayError("accepted certificate has lost replay=consumed")
     original_tags = ready["certificate"].get("tags")
@@ -400,6 +403,24 @@ def publish_ledger(store: ObjectStore, manifest: dict[str, Any], job: dict[str, 
     store.put_bytes_immutable(ledger_key(prefix, job["tag"]), canonical_json(ledger), metadata)
 
 
+def validate_aws_cli(executable: str, expected_identity: str) -> None:
+    version = subprocess.run(
+        [executable, "--version"], text=True, capture_output=True, check=False)
+    identity = (version.stdout + version.stderr).strip()
+    if version.returncode != 0 or identity != expected_identity:
+        raise ReplayError(
+            f"AWS CLI identity mismatch: expected {expected_identity!r}, got {identity!r}")
+    help_result = subprocess.run(
+        [executable, "s3api", "put-object", "help"], text=True,
+        capture_output=True, check=False, env=dict(os.environ, AWS_PAGER=""),
+    )
+    help_text = help_result.stdout + help_result.stderr
+    if help_result.returncode != 0 or not all(
+        option in help_text for option in ("--if-match", "--if-none-match")
+    ):
+        raise ReplayError("pinned AWS CLI lacks conditional put-object flags")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, required=True)
@@ -420,11 +441,11 @@ def main() -> int:
         tag = job["tag"]
         work = args.state_dir.resolve() / "work" / tag
         work.mkdir(parents=True, exist_ok=True)
-        store: ObjectStore = (
-            LocalObjectStore(args.object_store_root)
-            if args.object_store_root is not None
-            else AwsCliObjectStore(args.s3_bucket, args.aws)
-        )
+        if args.object_store_root is not None:
+            store: ObjectStore = LocalObjectStore(args.object_store_root)
+        else:
+            validate_aws_cli(args.aws, manifest["aws_cli_identity"])
+            store = AwsCliObjectStore(args.s3_bucket, args.aws)
         prefix = manifest["campaign_prefix"]
 
         claim_key = artifact_key(prefix, "claims", tag, "json")
