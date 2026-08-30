@@ -17,6 +17,7 @@ PARENT_SHA = "e298e181f67e2f50d88fa61f71516cb86af31948e26413894bb3b147f51020c6"
 BASE_SHA = "8bc9b8f15b7f03194f39d208b2c0015e6039e0aac759ccfce0b6415724130eb0"
 SCHEMA = "erdos85-h7-fleet-portable-freight-v1"
 TOOLS = (
+    "build_h7_fleet_freight.py",
     "check_h7_t0_by_empty_graph.py",
     "check_h7_t0_canonical_compact.py",
     "check_h7_t0_canonical_completion.py",
@@ -29,6 +30,7 @@ TOOLS = (
     "probe_h7_t0_quotient_scale.py",
     "compact_h1_v2_lrat.py",
     "verify_dimacs_model.py",
+    "validate_h7_fleet_freight.py",
 )
 
 

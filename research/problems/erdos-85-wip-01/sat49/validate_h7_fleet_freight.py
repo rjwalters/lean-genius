@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -12,6 +13,7 @@ import tempfile
 from collections import Counter
 from pathlib import Path, PurePosixPath
 
+sys.dont_write_bytecode = True
 import build_h7_fleet_freight as freight
 
 
@@ -98,7 +100,8 @@ def validate(root: Path, materialize: bool) -> str:
                        "--tree-spec", str(root / row["spec"]),
                        "--base", str(root / "base.cnf"), "--leaf", CANARY,
                        "--output", str(output)]
-            result = subprocess.run(command, stdout=subprocess.PIPE,
+            environment = {**os.environ, "PYTHONDONTWRITEBYTECODE": "1"}
+            result = subprocess.run(command, env=environment, stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT, text=True)
             require(result.returncode == 0 and output.is_file(),
                     f"canary materialization failed: {result.stdout.strip()}")
