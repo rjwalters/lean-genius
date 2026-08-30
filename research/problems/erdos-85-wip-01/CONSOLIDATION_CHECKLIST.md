@@ -5,6 +5,26 @@ created early.**  This is the execution checklist for operator mandate 1318 and
 goal #43.  A checked box requires the named durable evidence; verbal success or
 an idle process is not evidence.
 
+Current evidence snapshot (2026-08-30 09:00 PDT; no boxes discharged):
+
+- integration tip is `7763e294de`; the capacity-index/replay provenance chain
+  and hierarchical aggregate generator are reviewed and banked, but neither is
+  final campaign evidence until the complete accepted receipt set is generated
+  and cold-audited;
+- the editor reports 7,922 H1 certificates (59%) waiting for replay-stage
+  consumption (squad message 36408); the exact 13,351-row completion universe
+  is therefore still incomplete;
+- replay consumption is assigned to sol-2 and replay review gates/checklist
+  maintenance to sol-3.  The assignment does not select a keyed-integrity
+  mechanism or establish campaign-wide dispatcher exclusion: production replay
+  remains fail-closed until those explicit gates below have durable evidence;
+- the four-parent H3/H5 split launch is separately authorized under queue
+  receipt `666538b014b717efb27a16f10dbcc3d61c5eb04487b1ca02cfc3dd34b7ebb332`;
+  this is solver-fleet work, not a discharged H3/H5 semantic socket; and
+- the named frozen path `sat49/compact_action_manifest.txt` is still absent.
+  The existing four-row file under `proofs/Proofs/Certificates/` describes old
+  H9 `t2`/`t3` certificates and must not be copied as H3/H5/H7 evidence.
+
 Canonical targets, fixed by the operator:
 
 - reader-facing page: <https://leangenius.org/proof/erdos-85>;
