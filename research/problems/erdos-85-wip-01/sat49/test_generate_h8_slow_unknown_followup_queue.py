@@ -63,6 +63,26 @@ class FollowupQueueTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "authentication mismatch"):
                 MOD.parse_marker(marker, "cube_F6_t14.adaptive.leaf-000", 60, "q", "w", "c")
 
+    def test_build_rejects_untyped_cap_before_reading_files(self) -> None:
+        missing = Path("does-not-exist")
+        arguments = dict(
+            job="cube_F6_t14.adaptive.leaf-000", marker=missing,
+            old_manifest=missing, new_manifest=missing, new_spec=missing,
+            source_queue=missing, source_worker=missing,
+            cadical_sha="a" * 64)
+        for cap in ("60", True, 0, 86401):
+            with self.assertRaisesRegex(ValueError, "invalid solve cap"):
+                MOD.build_queue(**arguments, cap=cap)
+
+    def test_build_rejects_invalid_solver_digest_before_reading_files(self) -> None:
+        missing = Path("does-not-exist")
+        with self.assertRaisesRegex(ValueError, "invalid CaDiCaL digest"):
+            MOD.build_queue(
+                job="cube_F6_t14.adaptive.leaf-000", marker=missing,
+                old_manifest=missing, new_manifest=missing, new_spec=missing,
+                source_queue=missing, source_worker=missing,
+                cadical_sha="A" * 64, cap=60)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -49,6 +49,9 @@ def parse_marker(path: Path, job: str, cap: int, queue_sha: str,
 def build_queue(*, job: str, marker: Path, old_manifest: Path,
                 new_manifest: Path, new_spec: Path, source_queue: Path,
                 source_worker: Path, cadical_sha: str, cap: int) -> dict:
+    require(type(cap) is int and 1 <= cap <= 86400, "invalid solve cap")
+    require(re.fullmatch(r"[0-9a-f]{64}", cadical_sha) is not None,
+            "invalid CaDiCaL digest")
     match = JOB_RE.fullmatch(job)
     require(match is not None, "source job must be an exact depth-3 H7 leaf")
     old_path = match.group(1)
@@ -129,9 +132,6 @@ def main() -> None:
     parser.add_argument("--cap", type=int, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    require(re.fullmatch(r"[0-9a-f]{64}", args.cadical_sha256) is not None,
-            "invalid CaDiCaL digest")
-    require(1 <= args.cap <= 86400, "invalid solve cap")
     queue = build_queue(
         job=args.job, marker=args.marker.resolve(),
         old_manifest=args.old_manifest.resolve(),
