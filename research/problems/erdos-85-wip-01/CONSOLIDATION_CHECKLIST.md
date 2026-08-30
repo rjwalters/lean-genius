@@ -5,12 +5,12 @@ created early.**  This is the execution checklist for operator mandate 1318 and
 goal #43.  A checked box requires the named durable evidence; verbal success or
 an idle process is not evidence.
 
-Current evidence snapshot (2026-08-30 09:00 PDT; no boxes discharged):
+Current evidence snapshot (2026-08-30 09:08 PDT; no boxes discharged):
 
-- integration tip is `7763e294de`; the capacity-index/replay provenance chain
-  and hierarchical aggregate generator are reviewed and banked, but neither is
-  final campaign evidence until the complete accepted receipt set is generated
-  and cold-audited;
+- the reviewed Branch-A consolidation lineage ends at `7763e294de`; the
+  capacity-index/replay provenance chain and hierarchical aggregate generator
+  are also reviewed and banked, but neither is final campaign evidence until
+  the complete accepted receipt set is generated and cold-audited;
 - the editor reports 7,922 H1 certificates (59%) waiting for replay-stage
   consumption (squad message 36408); the exact 13,351-row completion universe
   is therefore still incomplete;
@@ -18,9 +18,17 @@ Current evidence snapshot (2026-08-30 09:00 PDT; no boxes discharged):
   maintenance to sol-3.  The assignment does not select a keyed-integrity
   mechanism or establish campaign-wide dispatcher exclusion: production replay
   remains fail-closed until those explicit gates below have durable evidence;
-- the four-parent H3/H5 split launch is separately authorized under queue
-  receipt `666538b014b717efb27a16f10dbcc3d61c5eb04487b1ca02cfc3dd34b7ebb332`;
-  this is solver-fleet work, not a discharged H3/H5 semantic socket; and
+- the four-parent H3/H5 split launched at 2026-08-30 09:07 PDT under queue
+  receipt `666538b014b717efb27a16f10dbcc3d61c5eb04487b1ca02cfc3dd34b7ebb332`,
+  queue `a992dbb7474c2dd7e83b62d087733f42402facc62e9924b210b2d285a6b31879`,
+  and worker
+  `1e4f19c7485c1a3114759abbdca3de2221632245c688f297ec9eff8dde914dc1`,
+  with durable START ledger; legacy 0-3 shutdown receipt
+  `041a1a2a5ea0e62b01e1435156441c8a0c956e13fac4ecb677f2ab8a4dfbf8c2`
+  and recoverable parent-0 archive receipt
+  `f1470b12e17775ea979da6148bf032bb9edfc65b222db44dcbe76956cfd8dfde`
+  were independently rehashed after squad message 36430.  This is solver-fleet
+  execution, not a discharged H3/H5 semantic socket; and
 - the named frozen path `sat49/compact_action_manifest.txt` is still absent.
   The existing four-row file under `proofs/Proofs/Certificates/` describes old
   H9 `t2`/`t3` certificates and must not be copied as H3/H5/H7 evidence.
