@@ -8,6 +8,7 @@ import hashlib
 import json
 import os
 import re
+import stat
 from pathlib import Path
 
 
@@ -19,13 +20,31 @@ def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def stable_read(path: Path) -> bytes:
+    before = path.stat()
+    with path.open("rb") as stream:
+        opened_before = os.fstat(stream.fileno())
+        data = stream.read()
+        opened_after = os.fstat(stream.fileno())
+    after = path.stat()
+    identity = lambda value: (
+        value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns
+    )
+    if not stat.S_ISREG(opened_before.st_mode) or not (
+        identity(before) == identity(opened_before)
+        == identity(opened_after) == identity(after)
+    ):
+        raise ValueError(f"{path}: input changed while being read")
+    return data
+
+
 def atomic_write(path: Path, data: bytes, mode: int) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(f".{path.name}.tmp.{os.getpid()}")
     try:
         temporary.write_bytes(data)
         temporary.chmod(mode)
-        os.replace(temporary, path)
+        os.link(temporary, path)
     finally:
         temporary.unlink(missing_ok=True)
 
@@ -54,8 +73,15 @@ def derive_worker(source: bytes) -> bytes:
 """
     collision_safe_picker = """  while IFS=$'\\t' read -r tag prof fam idx; do
     # The retry queue is immutable, but a certificate can land after its
-    # coverage snapshot.  Never claim or recompute an already-certified tag.
-    aws s3api head-object --bucket \"$B\" --key \"$PFX/h1/$tag.compact.lrat.gz\" >/dev/null 2>&1 && continue
+    # coverage snapshot.  Proceed only after an explicit NotFound response;
+    # permission, network, throttle, and service errors quarantine the lane.
+    if aws s3api head-object --bucket \"$B\" --key \"$PFX/h1/$tag.compact.lrat.gz\" > /dev/null 2> \"/opt/h1/head-object.$SLOT.err\"; then
+      continue
+    elif ! grep -Eq '^An error occurred \\((404|NotFound|NoSuchKey)\\) when calling the HeadObject operation:' \"/opt/h1/head-object.$SLOT.err\"; then
+      log \"CERT-PRECHECK-FAIL tag=$tag; indeterminate object state, stopping slot\"
+      echo \"tag=$tag certificate-precheck-fail\" > /opt/h1/slot.$SLOT.failed
+      exit 1
+    fi
     grep -qx \"$tag\" /opt/h1/ledger.$SLOT && continue
 """
     text = replace_once(text, picker, collision_safe_picker, "job picker insertion point")
@@ -82,7 +108,12 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--receipt-output", type=Path, required=True)
     args = parser.parse_args()
-    source = args.source.read_bytes()
+    if args.output == args.receipt_output:
+        raise ValueError("output and receipt output must be distinct")
+    for output_path in (args.output, args.receipt_output):
+        if output_path.exists():
+            raise FileExistsError(f"refusing to replace existing output: {output_path}")
+    source = stable_read(args.source)
     output = derive_worker(source)
     atomic_write(args.output, output, 0o755)
     receipt = {
@@ -93,6 +124,7 @@ def main() -> int:
         "metadata_namespace": "h1-fleet-v3",
         "existing_certificate_precheck": True,
         "certificate_publication": "put-object-if-none-match-star",
+        "certificate_publication_race": "stop-quarantined-no-overwrite",
     }
     atomic_write(
         args.receipt_output,

@@ -3,8 +3,10 @@
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
-from generate_h1_unknown_retry_queue import read_jobs, select_unknowns
+import generate_h1_unknown_retry_queue as queue_module
+from generate_h1_unknown_retry_queue import atomic_write, read_jobs, select_unknowns
 
 
 HEADER = (
@@ -14,6 +16,28 @@ HEADER = (
 
 
 class UnknownRetryQueueTest(unittest.TestCase):
+    def test_output_publication_is_create_only(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "queue.tsv"
+            atomic_write(output, b"first\n")
+            with self.assertRaises(FileExistsError):
+                atomic_write(output, b"replacement\n")
+            self.assertEqual(output.read_bytes(), b"first\n")
+
+    def test_input_change_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "jobs.tsv"
+            source.write_bytes(b"snapshot")
+            first = source.stat()
+            changed = mock.Mock(**{
+                name: getattr(first, name)
+                for name in ("st_dev", "st_ino", "st_size", "st_mtime_ns", "st_mode")
+            })
+            changed.st_mtime_ns += 1
+            with mock.patch.object(queue_module.os, "fstat", side_effect=[first, changed]):
+                with self.assertRaisesRegex(ValueError, "changed while being read"):
+                    queue_module.stable_read(source)
+
     def test_selects_only_exact_bounded_unknown_contract(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -83,6 +107,19 @@ class UnknownRetryQueueTest(unittest.TestCase):
                     + v3_claim + "\t" + v3_verdict + "\n"
                 )
                 self.assertEqual(select_unknowns(coverage, read_jobs(jobs)), [])
+
+    def test_present_canonical_key_is_not_an_ordinary_corrupt_key_repair(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            jobs = root / "jobs.tsv"
+            jobs.write_text("0000000000000001\t0\tBBBB\t7\n")
+            coverage = root / "coverage.tsv"
+            coverage.write_text(
+                HEADER
+                + "0000000000000001\t0\tBBBB\t7\tcertified-in-S3\t1\t1\t"
+                + "UNKNOWN\t0\t\n"
+            )
+            self.assertEqual(select_unknowns(coverage, read_jobs(jobs)), [])
 
 
 if __name__ == "__main__":

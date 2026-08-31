@@ -4,7 +4,9 @@
 The v2 workers intentionally never revisit a tag once its ledger or claim
 exists.  This tool preserves that immutable evidence and derives a separate
 queue containing exactly pending, uncertified, claimed rows whose fleet verdict
-is UNKNOWN.
+is UNKNOWN.  A canonical key classified as present is outside this ordinary
+retry lane even if later audit finds it corrupt; preserving and superseding
+such an object requires the separately reviewed repair namespace.
 """
 
 from __future__ import annotations
@@ -12,9 +14,11 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import io
 import json
 import os
 import re
+import stat
 from collections import Counter
 from pathlib import Path
 
@@ -23,12 +27,27 @@ TAG_RE = re.compile(r"[0-9a-f]{16}")
 PROFILE_NAMES = ("BBBB", "ABBB", "AABB", "AAAB", "AAAA")
 
 
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
+def sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def stable_read(path: Path) -> bytes:
+    """Read one regular-file snapshot and reject path replacement during the read."""
+    before = path.stat()
     with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1 << 20), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+        opened_before = os.fstat(stream.fileno())
+        data = stream.read()
+        opened_after = os.fstat(stream.fileno())
+    after = path.stat()
+    identity = lambda value: (
+        value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns
+    )
+    if not stat.S_ISREG(opened_before.st_mode) or not (
+        identity(before) == identity(opened_before)
+        == identity(opened_after) == identity(after)
+    ):
+        raise ValueError(f"{path}: input changed while being read")
+    return data
 
 
 def atomic_write(path: Path, data: bytes) -> None:
@@ -36,14 +55,20 @@ def atomic_write(path: Path, data: bytes) -> None:
     temporary = path.with_name(f".{path.name}.tmp.{os.getpid()}")
     try:
         temporary.write_bytes(data)
-        os.replace(temporary, path)
+        # link(2) is an atomic create-only publication: it fails if the final
+        # name already exists and therefore cannot silently replace evidence.
+        os.link(temporary, path)
     finally:
         temporary.unlink(missing_ok=True)
 
 
-def read_jobs(path: Path) -> dict[str, tuple[int, str, int, str]]:
+def read_jobs_bytes(path: Path, data: bytes) -> dict[str, tuple[int, str, int, str]]:
     jobs = {}
-    for line_number, raw in enumerate(path.read_text().splitlines(), 1):
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError as error:
+        raise ValueError(f"{path}: jobs are not UTF-8") from error
+    for line_number, raw in enumerate(text.splitlines(), 1):
         fields = raw.split("\t")
         if len(fields) != 4 or not TAG_RE.fullmatch(fields[0]):
             raise ValueError(f"{path}:{line_number}: malformed four-field job")
@@ -63,10 +88,20 @@ def read_jobs(path: Path) -> dict[str, tuple[int, str, int, str]]:
     return jobs
 
 
-def select_unknowns(coverage: Path, jobs: dict[str, tuple[int, str, int, str]]) -> list[str]:
+def read_jobs(path: Path) -> dict[str, tuple[int, str, int, str]]:
+    return read_jobs_bytes(path, stable_read(path))
+
+
+def select_unknowns_bytes(
+    coverage: Path, data: bytes, jobs: dict[str, tuple[int, str, int, str]]
+) -> list[str]:
     selected: list[str] = []
     seen: set[str] = set()
-    with coverage.open(newline="") as stream:
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError as error:
+        raise ValueError(f"{coverage}: coverage is not UTF-8") from error
+    with io.StringIO(text, newline="") as stream:
         reader = csv.DictReader(stream, delimiter="\t")
         required = {
             "tag", "profile", "family", "local_index", "status",
@@ -105,6 +140,12 @@ def select_unknowns(coverage: Path, jobs: dict[str, tuple[int, str, int, str]]) 
     return sorted(selected)
 
 
+def select_unknowns(
+    coverage: Path, jobs: dict[str, tuple[int, str, int, str]]
+) -> list[str]:
+    return select_unknowns_bytes(coverage, stable_read(coverage), jobs)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--coverage", type=Path, required=True)
@@ -112,15 +153,23 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--receipt-output", type=Path, required=True)
     args = parser.parse_args()
-    jobs = read_jobs(args.jobs)
-    rows = select_unknowns(args.coverage, jobs)
-    atomic_write(args.output, ("\n".join(rows) + "\n").encode())
+    if args.output == args.receipt_output:
+        raise ValueError("output and receipt output must be distinct")
+    for output in (args.output, args.receipt_output):
+        if output.exists():
+            raise FileExistsError(f"refusing to replace existing output: {output}")
+    jobs_data = stable_read(args.jobs)
+    coverage_data = stable_read(args.coverage)
+    jobs = read_jobs_bytes(args.jobs, jobs_data)
+    rows = select_unknowns_bytes(args.coverage, coverage_data, jobs)
+    output_data = ("\n".join(rows) + "\n").encode()
+    atomic_write(args.output, output_data)
     counts = Counter(int(row.split("\t", 2)[1]) for row in rows)
     receipt = {
         "schema": "erdos85-h1-unknown-retry-queue-v1",
-        "coverage_sha256": sha256(args.coverage),
-        "jobs_sha256": sha256(args.jobs),
-        "output_sha256": sha256(args.output),
+        "coverage_sha256": sha256_bytes(coverage_data),
+        "jobs_sha256": sha256_bytes(jobs_data),
+        "output_sha256": sha256_bytes(output_data),
         "rows": len(rows),
         "profile_counts": [counts[index] for index in range(5)],
         "selection": {
