@@ -5,17 +5,17 @@ created early.**  This is the execution checklist for operator mandate 1318 and
 goal #43.  A checked box requires the named durable evidence; verbal success or
 an idle process is not evidence.
 
-Current evidence snapshot (2026-08-30 17:48 PDT; only the replay-contract
+Current evidence snapshot (2026-08-30 18:08 PDT; only the replay-contract
 selection and exact-image implementation/test boxes below are discharged):
 
 - the reviewed Branch-A consolidation lineage ends at `7763e294de`; the
   capacity-index/replay provenance chain and hierarchical aggregate generator
   are also reviewed and banked, but neither is final campaign evidence until
   the complete accepted receipt set is generated and cold-audited;
-- the latest authoritative H1 reconciliation reports 9,478 certified, 174
-  in-flight, and 3,699 pending out of 13,351 (squad messages 36674 and 36676),
-  with 10,622 claims, 10,445 ledgers, 1,335 `UNKNOWN` rows lacking a
-  certificate, no reported anomalies, and zero CNF divergence in the 27-row
+- the latest authoritative H1 reconciliation reports 9,532 certified, 175
+  in-flight, and 3,644 pending out of 13,351 (squad message 36781), with
+  10,689 claims, 10,513 ledgers, 1,347 `UNKNOWN` rows lacking a certificate,
+  no reported anomalies, and zero CNF divergence in the 28-row
   spot check.  The completion universe is therefore still incomplete;
 - replay consumption is assigned to sol-2 and replay review gates/checklist
   maintenance to sol-3.  Goal #44 selected a single-writer, canonical-JSON,
@@ -52,9 +52,11 @@ selection and exact-image implementation/test boxes below are discharged):
 - H1 capacity-certificate reindex provenance hardening is reviewed and banked
   at `0a00f06c1f`: it hashes the bytes actually parsed, rejects input drift and
   aliases, and uses fresh output/receipt paths.  The exact three-way replay
-  queue builder is reviewed and banked at `cb59663c67`; its receipt and builder
-  hash still require reviewed integration into the final replay manifest
-  before freeze;
+  queue builder is reviewed and banked at `cb59663c67`; reviewed manifest
+  integration at `1088fff6a8` hashes the actual terminal index and binds the
+  queue-builder source, queue-build receipt, terminal index, queue, capacity
+  index, and inventory identities.  This is freeze-readiness implementation,
+  not a frozen production manifest or replay result;
 - the final-generator import cycle is removed at `43258b97d3` by extracting
   the six reusable conditional theorems to `Erdos85FiniteDropCore`; this is
   generation readiness only, not an unconditional theorem; and
