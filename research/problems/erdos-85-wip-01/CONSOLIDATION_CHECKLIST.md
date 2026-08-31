@@ -5,8 +5,8 @@ created early.**  This is the execution checklist for operator mandate 1318 and
 goal #43.  A checked box requires the named durable evidence; verbal success or
 an idle process is not evidence.
 
-Current evidence snapshot (2026-08-30 17:24 PDT; only the replay-contract
-selection box below is discharged):
+Current evidence snapshot (2026-08-30 17:26 PDT; only the replay-contract
+selection and exact-image implementation/test boxes below are discharged):
 
 - the reviewed Branch-A consolidation lineage ends at `7763e294de`; the
   capacity-index/replay provenance chain and hierarchical aggregate generator
@@ -67,11 +67,16 @@ Canonical targets, fixed by the operator:
   publication via conditional `PutObject If-None-Match:*`, and apply
   `replay=consumed` only after `.olean` construction and literal axiom audit.
   Do not implement KMS signing or a distributed lease for this campaign.
-- [ ] Implement and independently review that selected contract end to end in
+- [x] Implement and independently review that selected contract end to end in
   the exact production image.  Require strict canonical schema/type checks,
   payload SHA-256 mutation failure, create-only collision GET-and-verify,
   single-writer resume behavior, and consumed-tag ordering after successful
-  `.olean` construction plus literal `#print axioms` audit.
+  `.olean` construction plus literal `#print axioms` audit.  Evidence: reviewed
+  implementation `779463f6cb` (#1155) and an independent read-only run of all
+  41 tests plus six-module in-memory compilation in
+  `lean4-arm64@sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6`
+  on 2026-08-30.  This is implementation evidence only, not the real S3 P=1
+  transaction required below.
 - [ ] Freeze new mathematical lanes and record the integration commit, dirty
   status, Lean version, Lake manifest hash, and certificate-manifest hashes.
 - [ ] Confirm every active worktree owner has pushed or explicitly abandoned
