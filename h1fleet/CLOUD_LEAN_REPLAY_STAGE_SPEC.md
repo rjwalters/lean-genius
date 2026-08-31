@@ -256,10 +256,16 @@ manifest and approve the dollar estimate.  Required gates are:
 - the host-local single-writer lock rejects a live competing dispatcher;
 - concurrency and disk alarms are live.
 
-The provisioned `Erdos85CertReplay` profile matches this contract: ListBucket;
-GetObject/GetObjectTagging on `sat49/campaign-20260825/*`; PutObjectTagging on
-H1 inputs; PutObject limited to H1 replay outputs and freight; and no delete.
-Do not widen it to PutObject on H1 certificate keys.
+The `Erdos85CertReplay` role exists, but that fact alone does not establish this
+contract.  The 2026-08-30 read-only audit could inspect its EC2-only trust
+policy but was denied `iam:ListRolePolicies`, `iam:ListAttachedRolePolicies`,
+`iam:GetInstanceProfile`, and `s3:GetLifecycleConfiguration`; no exact local
+policy or deployment receipt was found.  Treat both the least-privilege policy
+and lifecycle rule as **unverified** until an authorized reviewer supplies and
+tests the exact policy/configuration evidence.  The accepted policy must grant
+ListBucket; GetObject/GetObjectTagging on `sat49/campaign-20260825/*`;
+PutObjectTagging on H1 inputs; and PutObject limited to H1 replay outputs and
+freight, with no delete.  Do not widen it to PutObject on H1 certificate keys.
 
 On systemic failure: stop new scheduling, preserve logs/receipts/quarantine, leave
 certificates in Standard, and keep the EBS volume for diagnosis.  Never delete
