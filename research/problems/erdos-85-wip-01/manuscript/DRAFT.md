@@ -13,8 +13,9 @@ drop” wording inherits the same final evidence gate.
 
 ## Abstract
 
-Let `f(n) = minDegreeForC4 n`, the largest minimum degree of a simple
-`C₄`-free graph on `n` vertices. We report two complementary results. First,
+Let `f(n) = minDegreeForC4 n`, the minimum threshold such that every simple
+graph on `n` vertices with minimum degree at least `f(n)` contains a `C₄`.
+We report two complementary results. First,
 we report the determination of the adjacent values, with the final evidence
 gate still pending at this draft revision:
 
