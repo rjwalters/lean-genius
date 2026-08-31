@@ -6,7 +6,10 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from generate_h1_v2_lean_stubs import IndexRow
-from reindex_h1_v2_capacity_certificates import reindex_rows, render_index, row_fields
+from reindex_h1_v2_capacity_certificates import (
+    reindex_loaded_rows, reindex_rows, render_index, require_unchanged,
+    require_distinct_paths, require_fresh_outputs, row_fields, sha256,
+)
 
 
 ROW = IndexRow(
@@ -72,6 +75,58 @@ class CapacityReindexTest(unittest.TestCase):
                 reindex_rows(
                     [first_path, second_path], {}, drop_outside_capacity=True
                 )
+
+    def test_loaded_rows_are_reused_without_rereading_inputs(self) -> None:
+        rows = reindex_loaded_rows(
+            [[ROW]], {ROW.orbit: (2, 17)}, require_complete=True,
+        )
+        self.assertEqual(rows, [replace(ROW, local_index=17)])
+
+    def test_input_drift_is_rejected(self) -> None:
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "index.tsv"
+            path.write_text(render_index([ROW]))
+            expected = sha256(path)
+            require_unchanged([path], [expected])
+            path.write_text(render_index([replace(ROW, compact_bytes=9)]))
+            with self.assertRaisesRegex(ValueError, "input changed"):
+                require_unchanged([path], [expected])
+
+    def test_input_output_and_receipt_aliases_are_rejected(self) -> None:
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            inventory = root / "inventory"
+            index = root / "index"
+            output = root / "output"
+            receipt = root / "receipt"
+            require_distinct_paths([inventory, index], output, receipt)
+            cases = (
+                ([inventory, inventory], output, receipt),
+                ([inventory, index], inventory, receipt),
+                ([inventory, index], output, index),
+                ([inventory, index], output, output),
+            )
+            for inputs, candidate_output, candidate_receipt in cases:
+                with self.subTest(
+                    output=candidate_output, receipt=candidate_receipt,
+                ), self.assertRaisesRegex(ValueError, "paths alias"):
+                    require_distinct_paths(
+                        inputs, candidate_output, candidate_receipt,
+                    )
+
+    def test_outputs_must_be_fresh(self) -> None:
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            output = root / "output"
+            receipt = root / "receipt"
+            require_fresh_outputs(output, receipt)
+            for existing, other in ((output, receipt), (receipt, output)):
+                existing.write_text("stale")
+                with self.subTest(existing=existing), self.assertRaisesRegex(
+                    ValueError, "must not already exist",
+                ):
+                    require_fresh_outputs(output, receipt)
+                existing.unlink()
 
 
 if __name__ == "__main__":

@@ -39,11 +39,21 @@ def reindex_rows(
     indexes: list[Path], capacity_keys: dict[str, tuple[int, int]],
     drop_outside_capacity: bool = False, require_complete: bool = False,
 ) -> list[IndexRow]:
+    return reindex_loaded_rows(
+        [read_index(path) for path in indexes], capacity_keys,
+        drop_outside_capacity, require_complete,
+    )
+
+
+def reindex_loaded_rows(
+    indexes: list[list[IndexRow]], capacity_keys: dict[str, tuple[int, int]],
+    drop_outside_capacity: bool = False, require_complete: bool = False,
+) -> list[IndexRow]:
     by_tag: dict[str, IndexRow] = {}
     seen_tags: set[str] = set()
     outside: list[str] = []
-    for path in indexes:
-        for row in read_index(path):
+    for index in indexes:
+        for row in index:
             if row.orbit in seen_tags:
                 raise ValueError(f"duplicate certificate orbit across indexes: {row.orbit}")
             seen_tags.add(row.orbit)
@@ -70,6 +80,39 @@ def reindex_rows(
                 f"capacity certificate index is incomplete: {len(missing)} missing row(s)"
             )
     return sorted(by_tag.values(), key=lambda row: (row.profile, row.local_index))
+
+
+def require_unchanged(paths: list[Path], expected_hashes: list[str]) -> None:
+    if len(paths) != len(expected_hashes):
+        raise ValueError("internal input/hash cardinality mismatch")
+    changed = [
+        str(path.resolve())
+        for path, expected in zip(paths, expected_hashes, strict=True)
+        if sha256(path) != expected
+    ]
+    if changed:
+        raise ValueError(f"reindex input changed during freeze: {changed}")
+
+
+def require_distinct_paths(
+    inputs: list[Path], output: Path, receipt_output: Path | None,
+) -> None:
+    labeled = [("input", path.resolve()) for path in inputs]
+    labeled.append(("output", output.resolve()))
+    if receipt_output is not None:
+        labeled.append(("receipt output", receipt_output.resolve()))
+    seen: dict[Path, str] = {}
+    for label, path in labeled:
+        previous = seen.get(path)
+        if previous is not None:
+            raise ValueError(f"reindex paths alias: {previous} and {label}: {path}")
+        seen[path] = label
+
+
+def require_fresh_outputs(output: Path, receipt_output: Path | None) -> None:
+    for label, path in (("output", output), ("receipt output", receipt_output)):
+        if path is not None and (path.exists() or path.is_symlink()):
+            raise ValueError(f"reindex {label} must not already exist: {path.resolve()}")
 
 
 def row_fields(row: IndexRow) -> list[str]:
@@ -112,27 +155,39 @@ def main() -> int:
     parser.add_argument("--drop-outside-capacity", action="store_true")
     parser.add_argument("--require-complete", action="store_true")
     args = parser.parse_args()
+    inputs = [args.inventory, *args.index]
+    require_distinct_paths(inputs, args.output, args.receipt_output)
+    require_fresh_outputs(args.output, args.receipt_output)
+    input_hashes = [sha256(path) for path in inputs]
     keys = capacity_key_map(args.inventory)
     if len(keys) != sum(CAPACITY_PROFILE_COUNTS):
         raise ValueError("capacity inventory contains duplicate orbit tags")
-    rows = reindex_rows(
-        args.index, keys, args.drop_outside_capacity, args.require_complete
+    loaded_indexes = [read_index(path) for path in args.index]
+    # These hashes bind the bytes just parsed, rather than a later reread that
+    # may have raced an external ledger/index update.
+    require_unchanged(inputs, input_hashes)
+    rows = reindex_loaded_rows(
+        loaded_indexes, keys, args.drop_outside_capacity, args.require_complete
     )
     atomic_write(args.output, render_index(rows))
+    # Refuse a successful freeze if an input changed while output was emitted.
+    require_unchanged(inputs, input_hashes)
     if args.receipt_output:
         emitted_tags = {row.orbit for row in rows}
         input_tags = {
             row.orbit
-            for path in args.index
-            for row in read_index(path)
+            for index in loaded_indexes
+            for row in index
         }
         receipt = {
             "schema": "erdos85-h1-v2-capacity-reindex-v1",
             "inventory": str(args.inventory.resolve()),
-            "inventory_sha256": sha256(args.inventory),
+            "inventory_sha256": input_hashes[0],
             "indexes": [
-                {"path": str(path.resolve()), "sha256": sha256(path)}
-                for path in args.index
+                {"path": str(path.resolve()), "sha256": digest}
+                for path, digest in zip(
+                    args.index, input_hashes[1:], strict=True
+                )
             ],
             "output": str(args.output.resolve()),
             "output_sha256": sha256(args.output),
