@@ -6,6 +6,7 @@ import json
 import os
 import tempfile
 import unittest
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest import mock
 
@@ -123,6 +124,99 @@ class RootControllerTest(unittest.TestCase):
             after, entries_after = MODULE.legacy_snapshot(root, [job])
             self.assertEqual(entries, entries_after)
             self.assertNotEqual(before, after)
+
+    def test_h7_state_requires_inactive_preserved_canonical_state(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            path = Path(name) / "h7.json"
+            state = {
+                "schema": MODULE.H7_STATE_SCHEMA,
+                "captured_at": "2099-01-01T00:00:00Z",
+                "active": False,
+                "preservation_complete": True,
+                "free_bytes": MODULE.FREE_FLOOR_BYTES + 10**9,
+                "guard_floor_bytes": 105 * 1024**3,
+                "artifact_receipt_sha256": "a" * 64,
+            }
+            path.write_bytes(MODULE.canonical_json(state))
+            digest = MODULE.sha256_file(path)
+            self.assertFalse(MODULE.validate_h7_state(path, digest)["active"])
+            state["active"] = True
+            path.write_bytes(MODULE.canonical_json(state))
+            digest = MODULE.sha256_file(path)
+            with self.assertRaisesRegex(ValueError, "active"):
+                MODULE.validate_h7_state(path, digest)
+
+    def test_operator_authorization_is_exact_pinned_and_unexpired(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            path = Path(name) / "authorization.json"
+            prepared_sha = "c" * 64
+            prepared = {"h7_state_sha256": "d" * 64, "parallelism": 1}
+            authorization = {
+                "schema": MODULE.AUTHORIZATION_SCHEMA,
+                "authorized": True,
+                "authorized_by": "operator",
+                "authorization_id": "reviewed-test",
+                "prepared_receipt_sha256": prepared_sha,
+                "h7_state_sha256": prepared["h7_state_sha256"],
+                "work_root": str(MODULE.WORK_ROOT),
+                "mode": "quick",
+                "cap_seconds": MODULE.CAP_SECONDS,
+                "parallelism": 1,
+                "free_floor_bytes": MODULE.FREE_FLOOR_BYTES,
+                "expires_at": (datetime.now(timezone.utc) + timedelta(hours=1)
+                               ).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            }
+            path.write_bytes(MODULE.canonical_json(authorization))
+            digest = MODULE.sha256_file(path)
+            with self.assertRaisesRegex(ValueError, "not enabled"):
+                MODULE.validate_authorization(path, digest, prepared_sha, prepared)
+            with mock.patch.object(
+                    MODULE, "APPROVED_OPERATOR_AUTHORIZATION_SHA256", digest):
+                MODULE.validate_authorization(path, digest, prepared_sha, prepared)
+                authorization["authorized_by"] = "agent"
+                path.write_bytes(MODULE.canonical_json(authorization))
+                wrong_digest = MODULE.sha256_file(path)
+                with self.assertRaisesRegex(ValueError, "approved immutable hash"):
+                    MODULE.validate_authorization(
+                        path, wrong_digest, prepared_sha, prepared)
+
+    def test_namespace_reservation_is_create_only_and_resume_exact(self) -> None:
+        with tempfile.TemporaryDirectory() as name:
+            work_root = Path(name) / "fresh"
+            marker = {"schema": "test", "value": "bound"}
+            with mock.patch.object(MODULE, "WORK_ROOT", work_root):
+                MODULE.reserve_or_validate_namespace(marker, False)
+                self.assertEqual((work_root / "lineage.json").read_bytes(),
+                                 MODULE.canonical_json(marker))
+                MODULE.reserve_or_validate_namespace(marker, True)
+                with self.assertRaisesRegex(ValueError, "initial launch"):
+                    MODULE.reserve_or_validate_namespace(marker, False)
+                (work_root / "lineage.json").write_bytes(b"wrong\n")
+                with self.assertRaisesRegex(ValueError, "exact existing"):
+                    MODULE.reserve_or_validate_namespace(marker, True)
+
+    def test_floor_stops_before_scheduling_any_job(self) -> None:
+        usage = mock.Mock(free=MODULE.FREE_FLOOR_BYTES)
+        with tempfile.TemporaryDirectory() as name, \
+             mock.patch.object(MODULE, "WORK_ROOT", Path(name) / "fresh"), \
+             mock.patch.object(MODULE.shutil, "disk_usage", return_value=usage), \
+             mock.patch.object(MODULE.subprocess, "run") as run:
+            self.assertEqual(MODULE.launch_jobs(Path("worker"), ["job"], 1),
+                             (0, 0, True))
+            run.assert_not_called()
+
+    def test_floor_reserves_budget_for_every_running_job(self) -> None:
+        usage = mock.Mock(
+            free=MODULE.FREE_FLOOR_BYTES + 2 * MODULE.PER_JOB_BUDGET_BYTES)
+        result = mock.Mock(returncode=0)
+        with tempfile.TemporaryDirectory() as name, \
+             mock.patch.object(MODULE, "WORK_ROOT", Path(name) / "fresh"), \
+             mock.patch.object(MODULE.shutil, "disk_usage", return_value=usage), \
+             mock.patch.object(MODULE.subprocess, "run", return_value=result) as run:
+            completed, failures, stopped = MODULE.launch_jobs(
+                Path("worker"), [f"job-{i}" for i in range(4)], 4)
+            self.assertEqual((completed, failures, stopped), (2, 0, True))
+            self.assertEqual(run.call_count, 2)
 
 
 if __name__ == "__main__":

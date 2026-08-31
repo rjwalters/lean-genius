@@ -11,12 +11,17 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
+import fcntl
 import hashlib
 import json
 import os
+import re
+import shutil
 import stat
 import subprocess
+import sys
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -42,6 +47,19 @@ WORK_ROOT = Path(
     "campaign-20260825.noindex/tierA-root-dff2402069-fa078767")
 SCHEMA = "erdos85-tierA-root-composed-preflight-v1"
 LINEAGE_SCHEMA = "erdos85-tierA-root-lineage-v1"
+APPROVED_COMPOSED_PREFLIGHT_SHA256 = (
+    "f2a954d78435dfa52d9537a0eaaf5a1d65da451c4824c40da6e6453c19987388")
+PREPARED_SCHEMA = "erdos85-tierA-root-launch-prepared-v1"
+AUTHORIZATION_SCHEMA = "erdos85-tierA-root-launch-authorization-v1"
+H7_STATE_SCHEMA = "erdos85-h7-launch-coexistence-state-v1"
+FREE_FLOOR_BYTES = 120 * 1024**3
+PER_JOB_BUDGET_BYTES = 600 * 1024**2
+CAP_SECONDS = 120
+SHA_RE = re.compile(r"[0-9a-f]{64}")
+COMMIT_RE = re.compile(r"[0-9a-f]{40}")
+# Deliberately disabled.  Only a later, separately reviewed operator-auth commit
+# may replace None with the exact canonical authorization artifact hash.
+APPROVED_OPERATOR_AUTHORIZATION_SHA256: str | None = None
 
 
 def canonical_json(value: object) -> bytes:
@@ -176,6 +194,297 @@ def lineage_marker(commit: str, source: str, controller_sha256: str) -> dict[str
     }
 
 
+def utc() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def validate_h7_state(path: Path, expected_sha256: str) -> dict:
+    if SHA_RE.fullmatch(expected_sha256) is None:
+        raise ValueError("H7 state pin is not canonical SHA-256")
+    state = load_canonical_pinned(path, expected_sha256, "H7 state")
+    expected_fields = {
+        "schema", "captured_at", "active", "preservation_complete",
+        "free_bytes", "guard_floor_bytes", "artifact_receipt_sha256",
+    }
+    if set(state) != expected_fields or state.get("schema") != H7_STATE_SCHEMA:
+        raise ValueError("H7 state schema mismatch")
+    if state.get("active") is not False or state.get("preservation_complete") is not True:
+        raise ValueError("H7 is active or its preservation is incomplete")
+    if (type(state.get("free_bytes")) is not int or
+            type(state.get("guard_floor_bytes")) is not int or
+            state["guard_floor_bytes"] < 105 * 1024**3 or
+            SHA_RE.fullmatch(str(state.get("artifact_receipt_sha256"))) is None):
+        raise ValueError("H7 state resource/provenance fields are malformed")
+    return state
+
+
+def validate_composed_preflight(path: Path) -> dict:
+    receipt = load_canonical_pinned(
+        path, APPROVED_COMPOSED_PREFLIGHT_SHA256, "composed preflight receipt")
+    if (receipt.get("schema") != SCHEMA or
+            receipt.get("launch_capability") is not False or
+            receipt.get("jobs") != 406 or
+            receipt.get("worker_receipt_sha256") != WORKER_RECEIPT_SHA256 or
+            receipt.get("queue_receipt_sha256") != QUEUE_RECEIPT_SHA256 or
+            receipt.get("queue_sha256") != QUEUE_SHA256 or
+            receipt.get("work_root") != str(WORK_ROOT) or
+            receipt.get("work_root_absent_before_and_after") is not True):
+        raise ValueError("composed preflight receipt content mismatch")
+    return receipt
+
+
+def prepare_launch(composed_receipt: Path, h7_state_path: Path,
+                   expected_h7_state_sha256: str, output: Path, parallelism: int,
+                   repo: Path = REPO, controller: Path = CONTROLLER) -> dict[str, object]:
+    if not 1 <= parallelism <= 4:
+        raise ValueError("launch parallelism must be between 1 and 4")
+    if os.path.lexists(WORK_ROOT):
+        raise ValueError("fresh work root is already occupied")
+    if os.path.lexists(output):
+        raise FileExistsError(f"refusing to replace existing output: {output}")
+    legacy_root = WORK_ROOT.parent / "tierA"
+    reject_protected_output(output, (WORK_ROOT, legacy_root))
+    composed = validate_composed_preflight(composed_receipt)
+    h7_state = validate_h7_state(h7_state_path, expected_h7_state_sha256)
+    commit, source = require_clean_controller(repo, controller)
+    controller_sha = sha256_file(controller)
+    free = shutil.disk_usage(WORK_ROOT.parent).free
+    required = FREE_FLOOR_BYTES + parallelism * PER_JOB_BUDGET_BYTES
+    if free < required or h7_state["free_bytes"] < required:
+        raise ValueError("insufficient measured free space for bounded launch")
+    receipt: dict[str, object] = {
+        "schema": PREPARED_SCHEMA,
+        "git_commit": commit,
+        "controller_source": source,
+        "controller_sha256": controller_sha,
+        "composed_preflight_receipt": str(composed_receipt.resolve()),
+        "composed_preflight_receipt_sha256": APPROVED_COMPOSED_PREFLIGHT_SHA256,
+        "h7_state": str(h7_state_path.resolve()),
+        "h7_state_sha256": expected_h7_state_sha256,
+        "h7_artifact_receipt_sha256": h7_state["artifact_receipt_sha256"],
+        "worker_receipt_sha256": WORKER_RECEIPT_SHA256,
+        "queue_receipt_sha256": QUEUE_RECEIPT_SHA256,
+        "queue_sha256": QUEUE_SHA256,
+        "work_root": str(WORK_ROOT),
+        "mode": "quick",
+        "cap_seconds": CAP_SECONDS,
+        "parallelism": parallelism,
+        "free_floor_bytes": FREE_FLOOR_BYTES,
+        "per_job_budget_bytes": PER_JOB_BUDGET_BYTES,
+        "required_prestart_free_bytes": required,
+        "observed_free_bytes": free,
+        "jobs": composed["jobs"],
+        "namespace_reserved": False,
+        "launch_executed": False,
+        "authorization_required": True,
+    }
+    final_commit, final_source = require_clean_controller(repo, controller)
+    if (final_commit, final_source) != (commit, source):
+        raise ValueError("controller provenance changed during launch preparation")
+    if os.path.lexists(WORK_ROOT):
+        raise ValueError("launch preparation created the reserved namespace")
+    publish_create_only(canonical_json(receipt), output)
+    return receipt
+
+
+def validate_authorization(path: Path, expected_sha256: str,
+                           prepared_sha256: str, prepared: dict) -> dict:
+    if APPROVED_OPERATOR_AUTHORIZATION_SHA256 is None:
+        raise ValueError("operator authorization is not enabled in this build")
+    if expected_sha256 != APPROVED_OPERATOR_AUTHORIZATION_SHA256:
+        raise ValueError("authorization pin is not the approved immutable hash")
+    if SHA_RE.fullmatch(expected_sha256) is None:
+        raise ValueError("authorization pin is not canonical SHA-256")
+    authorization = load_canonical_pinned(
+        path, expected_sha256, "operator authorization")
+    expected_fields = {
+        "schema", "authorized", "authorized_by", "authorization_id",
+        "prepared_receipt_sha256", "h7_state_sha256", "work_root", "mode",
+        "cap_seconds", "parallelism", "free_floor_bytes", "expires_at",
+    }
+    if set(authorization) != expected_fields:
+        raise ValueError("operator authorization has unexpected fields")
+    if (authorization.get("schema") != AUTHORIZATION_SCHEMA or
+            authorization.get("authorized") is not True or
+            authorization.get("authorized_by") != "operator" or
+            not isinstance(authorization.get("authorization_id"), str) or
+            not authorization["authorization_id"] or
+            authorization.get("prepared_receipt_sha256") != prepared_sha256 or
+            authorization.get("h7_state_sha256") != prepared.get("h7_state_sha256") or
+            authorization.get("work_root") != str(WORK_ROOT) or
+            authorization.get("mode") != "quick" or
+            authorization.get("cap_seconds") != CAP_SECONDS or
+            authorization.get("parallelism") != prepared.get("parallelism") or
+            authorization.get("free_floor_bytes") != FREE_FLOOR_BYTES or
+            not isinstance(authorization.get("expires_at"), str)):
+        raise ValueError("operator authorization content mismatch")
+    try:
+        expires = datetime.fromisoformat(
+            authorization["expires_at"].replace("Z", "+00:00"))
+    except ValueError as error:
+        raise ValueError("operator authorization expiry is malformed") from error
+    if expires.tzinfo is None or expires <= datetime.now(timezone.utc):
+        raise ValueError("operator authorization has expired")
+    return authorization
+
+
+def reserve_or_validate_namespace(marker: dict[str, str], resume: bool) -> None:
+    marker_raw = canonical_json(marker)
+    marker_path = WORK_ROOT / "lineage.json"
+    if resume:
+        if not WORK_ROOT.is_dir() or marker_path.read_bytes() != marker_raw:
+            raise ValueError("resume requires the exact existing lineage marker")
+        return
+    if os.path.lexists(WORK_ROOT):
+        raise ValueError("initial launch requires a lexically absent work root")
+    os.mkdir(WORK_ROOT)
+    try:
+        fd = os.open(marker_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        with os.fdopen(fd, "wb") as stream:
+            stream.write(marker_raw)
+            stream.flush()
+            os.fsync(stream.fileno())
+        directory_fd = os.open(WORK_ROOT, os.O_RDONLY)
+        try:
+            os.fsync(directory_fd)
+        finally:
+            os.close(directory_fd)
+    except BaseException:
+        # Reservation is durable evidence once mkdir succeeds.  Never delete it.
+        raise
+
+
+def launch_jobs(worker: Path, jobs: list[str], parallelism: int) -> tuple[int, int, bool]:
+    environment = {
+        key: os.environ[key]
+        for key in ("PATH", "HOME", "TMPDIR", "USER", "LOGNAME", "SHELL")
+        if key in os.environ
+    }
+    environment.update({
+        "MODE": "quick",
+        "TIERA_CAP": str(CAP_SECONDS),
+        "TIERA_MIN_FREE_KB": str(FREE_FLOOR_BYTES // 1024),
+    })
+
+    def run(job: str) -> tuple[str, int]:
+        result = subprocess.run([sys.executable, os.fspath(worker), job], env=environment)
+        return job, result.returncode
+
+    pending = iter(jobs)
+    running: set[concurrent.futures.Future[tuple[str, int]]] = set()
+    completed = failures = 0
+    floor_stop = False
+    with concurrent.futures.ThreadPoolExecutor(max_workers=parallelism) as pool:
+        exhausted = False
+        while running or not exhausted:
+            while len(running) < parallelism and not exhausted and not floor_stop:
+                free = shutil.disk_usage(WORK_ROOT.parent).free
+                required = (
+                    FREE_FLOOR_BYTES + (len(running) + 1) * PER_JOB_BUDGET_BYTES)
+                if free < required:
+                    floor_stop = True
+                    break
+                try:
+                    job = next(pending)
+                except StopIteration:
+                    exhausted = True
+                    break
+                running.add(pool.submit(run, job))
+            if not running:
+                break
+            done, running = concurrent.futures.wait(
+                running, return_when=concurrent.futures.FIRST_COMPLETED)
+            for future in done:
+                _, returncode = future.result()
+                completed += 1
+                failures += int(returncode != 0)
+    return completed, failures, floor_stop
+
+
+def run_authorized(prepared_path: Path, expected_prepared_sha256: str,
+                   authorization_path: Path, expected_authorization_sha256: str,
+                   queue_receipt_path: Path, worker_receipt_path: Path,
+                   worker: Path, resume: bool,
+                   repo: Path = REPO, controller: Path = CONTROLLER) -> int:
+    if SHA_RE.fullmatch(expected_prepared_sha256) is None:
+        raise ValueError("prepared receipt pin is not canonical SHA-256")
+    prepared = load_canonical_pinned(
+        prepared_path, expected_prepared_sha256, "prepared launch receipt")
+    if (prepared.get("schema") != PREPARED_SCHEMA or
+            prepared.get("composed_preflight_receipt_sha256") !=
+            APPROVED_COMPOSED_PREFLIGHT_SHA256 or
+            prepared.get("worker_receipt_sha256") != WORKER_RECEIPT_SHA256 or
+            prepared.get("queue_receipt_sha256") != QUEUE_RECEIPT_SHA256 or
+            prepared.get("queue_sha256") != QUEUE_SHA256 or
+            prepared.get("work_root") != str(WORK_ROOT) or
+            prepared.get("mode") != "quick" or
+            prepared.get("cap_seconds") != CAP_SECONDS or
+            prepared.get("free_floor_bytes") != FREE_FLOOR_BYTES or
+            prepared.get("per_job_budget_bytes") != PER_JOB_BUDGET_BYTES or
+            prepared.get("namespace_reserved") is not False or
+            prepared.get("launch_executed") is not False or
+            prepared.get("authorization_required") is not True or
+            type(prepared.get("parallelism")) is not int or
+            not 1 <= prepared["parallelism"] <= 4):
+        raise ValueError("prepared launch receipt content mismatch")
+    commit, source = require_clean_controller(repo, controller)
+    controller_sha = sha256_file(controller)
+    if (prepared.get("git_commit") != commit or
+            prepared.get("controller_source") != source or
+            prepared.get("controller_sha256") != controller_sha):
+        raise ValueError("prepared receipt does not bind the live controller")
+    validate_authorization(
+        authorization_path, expected_authorization_sha256,
+        expected_prepared_sha256, prepared)
+    h7_state = validate_h7_state(
+        Path(prepared["h7_state"]), prepared["h7_state_sha256"])
+    try:
+        captured = datetime.fromisoformat(
+            h7_state["captured_at"].replace("Z", "+00:00"))
+    except (AttributeError, ValueError) as error:
+        raise ValueError("H7 state capture time is malformed") from error
+    if captured.tzinfo is None:
+        raise ValueError("H7 coexistence state is stale")
+    age = (datetime.now(timezone.utc) - captured).total_seconds()
+    if age > 600 or age < -60:
+        raise ValueError("H7 coexistence state is stale")
+    jobs, _, _ = validate_inputs(queue_receipt_path, worker_receipt_path, worker)
+    parallelism = prepared["parallelism"]
+    required = FREE_FLOOR_BYTES + parallelism * PER_JOB_BUDGET_BYTES
+    if shutil.disk_usage(WORK_ROOT.parent).free < required:
+        raise ValueError("insufficient free space before namespace reservation")
+    marker = lineage_marker(commit, source, controller_sha)
+    if not resume:
+        # Re-run the complete inert gate under the launch controller before state change.
+        run_worker_preflights(worker, jobs, parallelism)
+        if os.path.lexists(WORK_ROOT):
+            raise ValueError("prelaunch validation changed the reserved namespace")
+    if shutil.disk_usage(WORK_ROOT.parent).free < required:
+        raise ValueError("insufficient free space immediately before reservation/resume")
+    reserve_or_validate_namespace(marker, resume)
+    events = WORK_ROOT / "controller.events"
+    with events.open("a+") as stream:
+        fcntl.flock(stream.fileno(), fcntl.LOCK_EX)
+        stream.write(
+            f"{utc()} START resume={int(resume)} authorization_sha256="
+            f"{expected_authorization_sha256} prepared_sha256="
+            f"{expected_prepared_sha256} P={parallelism} mode=quick cap_s={CAP_SECONDS}\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    completed, failures, floor_stop = launch_jobs(worker, jobs, parallelism)
+    with events.open("a+") as stream:
+        fcntl.flock(stream.fileno(), fcntl.LOCK_EX)
+        stream.write(
+            f"{utc()} END completed={completed} failures={failures} "
+            f"floor_stop={int(floor_stop)}\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    if floor_stop:
+        print("STOPPED: free-space floor reached; exact-marker resume required")
+        return 2
+    return 1 if failures else 0
+
+
 def run_worker_preflights(worker: Path, jobs: list[str], parallelism: int) -> str:
     if not 1 <= parallelism <= 8:
         raise ValueError("parallelism must be between 1 and 8")
@@ -294,17 +603,46 @@ def preflight(queue_receipt_path: Path, worker_receipt_path: Path,
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--queue-receipt", type=Path, required=True)
-    parser.add_argument("--worker-receipt", type=Path, required=True)
-    parser.add_argument("--worker", type=Path, required=True)
-    parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--parallelism", type=int, default=4)
+    commands = parser.add_subparsers(dest="command", required=True)
+    preflight_parser = commands.add_parser("preflight")
+    preflight_parser.add_argument("--queue-receipt", type=Path, required=True)
+    preflight_parser.add_argument("--worker-receipt", type=Path, required=True)
+    preflight_parser.add_argument("--worker", type=Path, required=True)
+    preflight_parser.add_argument("--output", type=Path, required=True)
+    preflight_parser.add_argument("--parallelism", type=int, default=4)
+    prepare_parser = commands.add_parser("prepare")
+    prepare_parser.add_argument("--composed-receipt", type=Path, required=True)
+    prepare_parser.add_argument("--h7-state", type=Path, required=True)
+    prepare_parser.add_argument("--expected-h7-state-sha256", required=True)
+    prepare_parser.add_argument("--output", type=Path, required=True)
+    prepare_parser.add_argument("--parallelism", type=int, default=1)
+    run_parser = commands.add_parser("run")
+    run_parser.add_argument("--prepared-receipt", type=Path, required=True)
+    run_parser.add_argument("--expected-prepared-receipt-sha256", required=True)
+    run_parser.add_argument("--authorization", type=Path, required=True)
+    run_parser.add_argument("--expected-authorization-sha256", required=True)
+    run_parser.add_argument("--queue-receipt", type=Path, required=True)
+    run_parser.add_argument("--worker-receipt", type=Path, required=True)
+    run_parser.add_argument("--worker", type=Path, required=True)
+    run_parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
-    receipt = preflight(
+    if args.command == "preflight":
+        receipt = preflight(
+            args.queue_receipt.resolve(), args.worker_receipt.resolve(),
+            args.worker.resolve(), args.output.resolve(), args.parallelism)
+        print(canonical_json(receipt).decode(), end="")
+        return 0
+    if args.command == "prepare":
+        receipt = prepare_launch(
+            args.composed_receipt.resolve(), args.h7_state.resolve(),
+            args.expected_h7_state_sha256, args.output.resolve(), args.parallelism)
+        print(canonical_json(receipt).decode(), end="")
+        return 0
+    return run_authorized(
+        args.prepared_receipt.resolve(), args.expected_prepared_receipt_sha256,
+        args.authorization.resolve(), args.expected_authorization_sha256,
         args.queue_receipt.resolve(), args.worker_receipt.resolve(),
-        args.worker.resolve(), args.output.resolve(), args.parallelism)
-    print(canonical_json(receipt).decode(), end="")
-    return 0
+        args.worker.resolve(), args.resume)
 
 
 if __name__ == "__main__":
