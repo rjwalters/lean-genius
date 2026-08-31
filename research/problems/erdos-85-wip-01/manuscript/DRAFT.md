@@ -100,9 +100,10 @@ Lean elaboration or exact certificate replay.
 
 ## 0. Mathematical status: one uniform axiom remains
 
-Let `f(n) = minDegreeForC4 n`, the largest minimum degree of a simple
-`C₄`-free graph on `n` vertices.  Erdős Problem 85 asks whether `f` is
-eventually nondecreasing.  The formal reduction is complete: the negation is
+Let `f(n) = minDegreeForC4 n`, the minimum threshold such that every simple
+graph on `n` vertices with minimum degree at least `f(n)` contains a `C₄`.
+Erdős Problem 85 asks whether `f` is eventually nondecreasing.  The formal
+reduction is complete: the negation is
 equivalent to the existence of arbitrarily late strict drops
 (`erdos85Negation_iff_not_question`), and a `q`-regular witness on `q²−1`
 vertices together with nonexistence at `(q²,q)` produces such a drop
