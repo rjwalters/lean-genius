@@ -461,6 +461,8 @@ non-isomorphic to the Afzaly–McKay record, providing a second realization at
 the same extremal parameters. This comparison is reproducible computation
 rather than a Lean theorem; its script and graph6 inputs must be included in
 the release artifact and cited separately from the generated Lean endpoint.
+They are archived in `sat49/verify_boza48_nonisomorphism.py` and
+`sat49/data/`.
 
 The campaign's operational scale explains the hybrid proof architecture. The
 authoritative H1 capacity universe contains 13,351 rows, while the higher
