@@ -13,8 +13,9 @@ from capacity_queue import (
     load_capacity_index, validate_queue_capacity, validate_queue_tables,
     validate_reindex_receipt,
 )
-from replay_common import ReplayError, SCHEMA, atomic_write, canonical_json, load_json, load_manifest, sha256_file
+from replay_common import ReplayError, SCHEMA, atomic_write, canonical_json, load_json, load_manifest, require_sha, sha256_file
 from run_replay_queue import load_queue
+from build_replay_queue import SCHEMA as QUEUE_BUILD_SCHEMA
 
 
 HERE = Path(__file__).resolve().parent
@@ -53,6 +54,38 @@ def publish_validated_manifest(output: Path, value: bytes) -> None:
     atomic_write(output, value)
 
 
+def validate_queue_build_receipt(
+    receipt: dict, queue: Path, capacity_index: Path, terminal_index: Path,
+    inventory_sha256: str,
+    expected_jobs: int, require_complete: bool,
+) -> str:
+    expected_fields = {
+        "schema", "inventory_sha256", "certificate_index_sha256",
+        "terminal_index_sha256", "output_sha256", "emitted_jobs",
+        "require_complete",
+    }
+    if set(receipt) != expected_fields:
+        raise ReplayError("queue-build receipt fields differ from exact schema")
+    if receipt.get("schema") != QUEUE_BUILD_SCHEMA:
+        raise ReplayError("queue-build receipt has wrong schema")
+    for key in ("inventory_sha256", "certificate_index_sha256",
+                "terminal_index_sha256", "output_sha256"):
+        require_sha(receipt.get(key), f"queue-build receipt.{key}")
+    if receipt["output_sha256"] != sha256_file(queue):
+        raise ReplayError("queue-build receipt output hash mismatch")
+    if receipt["certificate_index_sha256"] != sha256_file(capacity_index):
+        raise ReplayError("queue-build receipt capacity-index hash mismatch")
+    if receipt["terminal_index_sha256"] != sha256_file(terminal_index):
+        raise ReplayError("queue-build receipt terminal-index hash mismatch")
+    if receipt["inventory_sha256"] != inventory_sha256:
+        raise ReplayError("queue-build receipt inventory hash mismatch")
+    if receipt.get("emitted_jobs") != expected_jobs:
+        raise ReplayError("queue-build receipt job count mismatch")
+    if receipt.get("require_complete") is not require_complete:
+        raise ReplayError("queue-build receipt completeness mismatch")
+    return receipt["terminal_index_sha256"]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--draft", type=Path, required=True)
@@ -61,6 +94,8 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--capacity-index", type=Path, required=True)
     parser.add_argument("--capacity-reindex-receipt", type=Path, required=True)
+    parser.add_argument("--queue-build-receipt", type=Path, required=True)
+    parser.add_argument("--terminal-index", type=Path, required=True)
     parser.add_argument("--require-complete-capacity-queue", action="store_true")
     args = parser.parse_args()
     try:
@@ -78,6 +113,12 @@ def main() -> int:
         if manifest.get("schema") != SCHEMA:
             raise ReplayError("draft has wrong replay manifest schema")
         jobs = load_queue(args.queue)
+        queue_build_receipt = load_json(args.queue_build_receipt)
+        terminal_index_sha256 = validate_queue_build_receipt(
+            queue_build_receipt, args.queue, args.capacity_index, args.terminal_index,
+            manifest.get("inventory_sha256", ""), len(jobs),
+            args.require_complete_capacity_queue,
+        )
         capacity = load_capacity_index(args.capacity_index)
         reindex_receipt = validate_reindex_receipt(
             args.capacity_reindex_receipt, args.capacity_index,
@@ -115,6 +156,7 @@ def main() -> int:
             repo / "research/problems/erdos-85-wip-01/sat49/"
             "reindex_h1_v2_capacity_certificates.py"
         )
+        queue_builder = HERE / "build_replay_queue.py"
         hashed_paths = (
             HERE / "replay_worker.py", HERE / "validate_replay_receipt.py",
             HERE / "run_replay_queue.py", HERE / "audit_replay_leaf.py",
@@ -122,6 +164,7 @@ def main() -> int:
             aggregate_generator,
             HERE / "capacity_queue.py", stub_generator,
             capacity_exporter, capacity_reindexer,
+            queue_builder,
         )
         for path in hashed_paths:
             require_tracked_at_head(repo, path)
@@ -139,6 +182,9 @@ def main() -> int:
             "capacity_exporter_sha256": sha256_file(capacity_exporter),
             "capacity_reindexer_sha256": sha256_file(capacity_reindexer),
             "capacity_queue_validator_sha256": sha256_file(HERE / "capacity_queue.py"),
+            "queue_builder_sha256": sha256_file(queue_builder),
+            "queue_build_receipt_sha256": sha256_file(args.queue_build_receipt),
+            "terminal_index_sha256": terminal_index_sha256,
             "capacity_index_sha256": sha256_file(args.capacity_index),
             "capacity_reindex_receipt_sha256": sha256_file(args.capacity_reindex_receipt),
             "complete_capacity_queue": args.require_complete_capacity_queue,

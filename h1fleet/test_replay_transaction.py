@@ -25,7 +25,7 @@ from replay_common import (
     validate_command_receipts, validate_receipt_integrity,
 )
 from audit_replay_leaf import parse_axioms
-from build_replay_manifest import publish_validated_manifest
+from build_replay_manifest import publish_validated_manifest, validate_queue_build_receipt
 from capacity_queue import (
     CAPACITY_PROFILE_COUNTS, load_capacity_index, table_serialization_tag,
     validate_queue_capacity, validate_queue_tables,
@@ -114,6 +114,19 @@ class ReplayTransactionTest(unittest.TestCase):
             "dropped_outside_capacity_tags": [],
             "require_complete": False,
         }))
+        self.queue_build_receipt = self.root / "queue-build-receipt.json"
+        self.terminal_index = self.root / "terminal-index.tsv"
+        self.terminal_index.write_text("reviewed terminal index fixture\n")
+        terminal_index_sha = sha256_file(self.terminal_index)
+        self.queue_build_receipt.write_bytes(canonical_json({
+            "schema": "erdos85-h1-replay-queue-build-v1",
+            "inventory_sha256": ZERO_SHA,
+            "certificate_index_sha256": sha256_file(self.capacity_index),
+            "terminal_index_sha256": terminal_index_sha,
+            "output_sha256": sha256_file(self.queue),
+            "emitted_jobs": 1,
+            "require_complete": False,
+        }))
         self.manifest = self.root / "manifest.json"
         self.manifest.write_bytes(canonical_json({
             "schema": SCHEMA,
@@ -130,6 +143,9 @@ class ReplayTransactionTest(unittest.TestCase):
             "capacity_exporter_sha256": "f" * 64,
             "capacity_reindexer_sha256": "0" * 64,
             "capacity_queue_validator_sha256": "1" * 64,
+            "queue_builder_sha256": "4" * 64,
+            "queue_build_receipt_sha256": "5" * 64,
+            "terminal_index_sha256": terminal_index_sha,
             "capacity_index_sha256": "2" * 64,
             "capacity_reindex_receipt_sha256": "3" * 64,
             "axiom_auditor_sha256": "a" * 64, "common_sha256": "b" * 64,
@@ -430,8 +446,10 @@ class ReplayTransactionTest(unittest.TestCase):
             "--output", str(frozen),
             "--capacity-index", str(self.capacity_index),
             "--capacity-reindex-receipt", str(self.capacity_reindex_receipt),
+            "--queue-build-receipt", str(self.queue_build_receipt),
+            "--terminal-index", str(self.terminal_index),
         ], text=True, capture_output=True, check=False)
-        self.assertEqual(freeze.returncode, 2)
+        self.assertEqual(freeze.returncode, 2, freeze.stderr)
         self.assertIn("missing=['cnf_sha256']", freeze.stderr)
         self.assertFalse(frozen.exists())
 
@@ -796,7 +814,7 @@ class ReplayTransactionTest(unittest.TestCase):
             "--job", str(self.job), "--tag", self.tag,
             "--state-dir", str(self.state), "--s3-bucket", "local-test",
         ], text=True, capture_output=True, check=False)
-        self.assertEqual(result.returncode, 2)
+        self.assertEqual(result.returncode, 2, result.stderr)
         self.assertIn("receipt integrity contract must be canonical JSON SHA-256", result.stderr)
 
     def test_validator_rejects_backend_not_bound_to_frozen_manifest(self) -> None:
@@ -962,6 +980,8 @@ class ReplayTransactionTest(unittest.TestCase):
             "--output", str(self.root / "frozen.json"),
             "--capacity-index", str(self.capacity_index),
             "--capacity-reindex-receipt", str(self.capacity_reindex_receipt),
+            "--queue-build-receipt", str(self.queue_build_receipt),
+            "--terminal-index", str(self.terminal_index),
         ], text=True, capture_output=True, check=False)
         self.assertEqual(result.returncode, 2)
         self.assertIn("worktree containing replay scripts", result.stderr)
@@ -971,6 +991,37 @@ class ReplayTransactionTest(unittest.TestCase):
         with self.assertRaises(ReplayError):
             publish_validated_manifest(output, canonical_json({"schema": SCHEMA}))
         self.assertFalse(output.exists())
+
+    def test_queue_build_receipt_is_exact_and_fully_bound(self) -> None:
+        original = json.loads(self.queue_build_receipt.read_text())
+        self.assertEqual(validate_queue_build_receipt(
+            original, self.queue, self.capacity_index, self.terminal_index,
+            ZERO_SHA, 1, False,
+        ), sha256_file(self.terminal_index))
+        mutations = (
+            lambda r: r.__setitem__("extra", "x"),
+            lambda r: r.__setitem__("schema", "old"),
+            lambda r: r.__setitem__("output_sha256", "f" * 64),
+            lambda r: r.__setitem__("certificate_index_sha256", "f" * 64),
+            lambda r: r.__setitem__("inventory_sha256", "f" * 64),
+            lambda r: r.__setitem__("emitted_jobs", 2),
+            lambda r: r.__setitem__("require_complete", True),
+        )
+        for mutation in mutations:
+            receipt = dict(original)
+            mutation(receipt)
+            with self.assertRaises(ReplayError):
+                validate_queue_build_receipt(
+                    receipt, self.queue, self.capacity_index, self.terminal_index,
+                    ZERO_SHA, 1, False,
+                )
+        original_terminal = self.terminal_index.read_bytes()
+        self.terminal_index.write_bytes(original_terminal + b"changed")
+        with self.assertRaisesRegex(ReplayError, "terminal-index hash mismatch"):
+            validate_queue_build_receipt(
+                original, self.queue, self.capacity_index, self.terminal_index,
+                ZERO_SHA, 1, False,
+            )
 
     def test_manifest_execution_controls_are_exact_before_publication(self) -> None:
         original = json.loads(self.manifest.read_text())
