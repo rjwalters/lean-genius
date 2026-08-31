@@ -36,6 +36,8 @@ from capacity_queue import (
 )
 from replay_worker import (
     command_values, validate_existing_receipt, validate_job,
+    validate_production_compile_contract,
+    validate_production_environment,
     validate_production_manifest,
 )
 import replay_worker as replay_worker_module
@@ -197,6 +199,42 @@ class ReplayTransactionTest(unittest.TestCase):
             Path(first["compact_lrat"]).name,
             Path(second["compact_lrat"]).name,
         )
+
+    def test_production_compile_contract_is_direct_offline_lean(self) -> None:
+        compile_command = [
+            "/usr/bin/docker", "run", "--rm", "--network", "none",
+            "--mount", "type=bind,src=/opt/replay/repo,dst=/opt/replay/repo,readonly",
+            "--mount", "type=bind,src=/opt/replay/state,dst=/opt/replay/state",
+            "--mount", "type=bind,src=/opt/replay/overlay,dst=/opt/replay/overlay,readonly",
+            "--env", "LEAN_PATH=/opt/replay/overlay", "lean4-arm64:v4.31.0",
+            "/root/.elan/bin/lean", "-R", "{work}", "-o", "{olean}", "{source}",
+        ]
+        manifest = {
+            "commands": {"compile": compile_command},
+            "environment_allowlist": ["HOME", "LEAN_PATH"],
+        }
+        validate_production_compile_contract(manifest)
+        mutations = []
+        for extra in ("--network", "host", "--env", "LEAN_PATH=evil", "--entrypoint", "/bin/sh"):
+            mutations.append({"commands": {"compile": compile_command + [extra]},
+                              "environment_allowlist": ["HOME", "LEAN_PATH"]})
+        mutations.extend((
+            {"commands": {"compile": ["/root/.elan/bin/lake" if value == "/root/.elan/bin/lean"
+                                        else value for value in compile_command]},
+             "environment_allowlist": ["HOME", "LEAN_PATH"]},
+            {"commands": {"compile": compile_command}, "environment_allowlist": ["HOME"]},
+            {"commands": {"compile": ["LEAN_PATH=evil" if value.startswith("LEAN_PATH=") else value
+                                        for value in compile_command]},
+             "environment_allowlist": ["HOME", "LEAN_PATH"]},
+        ))
+        for mutation in mutations:
+            with self.subTest(mutation=mutation), self.assertRaises(ReplayError):
+                validate_production_compile_contract(mutation)
+        with patch.dict(__import__("os").environ, {"LEAN_PATH": "/opt/replay/overlay"}):
+            validate_production_environment()
+        with patch.dict(__import__("os").environ, {"LEAN_PATH": "poison"}):
+            with self.assertRaisesRegex(ReplayError, "frozen overlay root"):
+                validate_production_environment()
 
     def worker(self) -> subprocess.CompletedProcess[str]:
         return subprocess.run([

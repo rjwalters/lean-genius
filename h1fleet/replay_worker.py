@@ -716,6 +716,31 @@ def validate_production_manifest(manifest: dict[str, Any]) -> None:
         bad.append("allowed_axiom_patterns")
     if bad:
         raise ReplayError(f"production manifest contains unresolved or malformed identities: {sorted(set(bad))}")
+    validate_production_compile_contract(manifest)
+
+
+def validate_production_compile_contract(manifest: dict[str, Any]) -> None:
+    """Require the reviewed offline, self-contained Docker/Lean invocation."""
+    command = manifest.get("commands", {}).get("compile")
+    environment = manifest.get("environment_allowlist")
+    expected = [
+        "/usr/bin/docker", "run", "--rm", "--network", "none",
+        "--mount", "type=bind,src=/opt/replay/repo,dst=/opt/replay/repo,readonly",
+        "--mount", "type=bind,src=/opt/replay/state,dst=/opt/replay/state",
+        "--mount", "type=bind,src=/opt/replay/overlay,dst=/opt/replay/overlay,readonly",
+        "--env", "LEAN_PATH=/opt/replay/overlay",
+        "lean4-arm64:v4.31.0", "/root/.elan/bin/lean",
+        "-R", "{work}", "-o", "{olean}", "{source}",
+    ]
+    if command != expected:
+        raise ReplayError("production compile command differs from exact offline Lean template")
+    if environment != ["HOME", "LEAN_PATH"]:
+        raise ReplayError("production environment identity must be exactly HOME and LEAN_PATH")
+
+
+def validate_production_environment() -> None:
+    if os.environ.get("LEAN_PATH") != "/opt/replay/overlay":
+        raise ReplayError("production LEAN_PATH must equal the frozen overlay root")
 
 
 def main() -> int:
@@ -751,6 +776,7 @@ def main() -> int:
             }
         else:
             validate_production_manifest(manifest)
+            validate_production_environment()
             if args.s3_bucket != manifest["s3_bucket"]:
                 raise ReplayError("S3 bucket differs from frozen manifest")
             validate_aws_cli(args.aws, manifest["aws_cli_identity"])

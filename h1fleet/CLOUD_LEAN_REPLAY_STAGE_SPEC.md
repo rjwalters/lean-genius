@@ -63,10 +63,13 @@ the generated source as required by the audited bank.
 On boot:
 
 1. Verify the freight archive and every manifest entry before execution.
-2. Materialize a read-only, self-contained base overlay on local EBS.  Copy
-   imported `.olean`s; do not symlink to a mutable checkout or shared Lake
-   output.  The prior replay showed that mutable symlinks can turn unrelated
-   builds into false import failures.
+2. Materialize a read-only, self-contained base overlay on local EBS.  The
+   overlay is one collision-checked import root containing both project
+   `.olean`s and every transitive package `.olean` (including Mathlib), with an
+   exact relative-path/byte-count/SHA-256 manifest.  A project-only Lake build
+   directory is incomplete freight.  Do not symlink to a mutable checkout or
+   shared Lake output; the prior replay showed that mutable symlinks can turn
+   unrelated builds into false import failures.
 3. Run a cold preflight on one known certificate with the exact production
    generator and compile command.  Require source generation, Lean exit zero,
    nonempty `.olean`, receipt validation, and the expected axiom classification.
@@ -97,8 +100,11 @@ For each inventory tag, perform this transaction:
 2. Download and validate the compact LRAT as in section 1.
 3. Generate one deterministic Lean source module from the authoritative table,
    Lean-exact CNF identity, and compact LRAT.  Record its bytes and SHA-256.
-4. Cold-compile with the pinned Lean 4.31 toolchain against a private copy-on-
-   write view of the verified external overlay.  Capture the complete command,
+4. Cold-compile with the pinned Lean 4.31 toolchain against the verified
+   external overlay.  Invoke `lean` directly under an explicit frozen
+   `LEAN_PATH`; never invoke Lake, perform a package checkout, or enable the
+   network.  The repository mount is read-only and the worker writes only its
+   isolated tag directory.  Capture the complete command, `LEAN_PATH` in the
    environment allowlist, wall/CPU time, peak RSS, stdout, stderr, and exit code.
 5. Require exit zero and a nonempty `.olean`; hash the raw `.olean`.
 6. Run the same source scan and axiom audit used for the 122-module bank.  The
