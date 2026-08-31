@@ -34,10 +34,14 @@ def render_index(rows):
 
 
 def fixture(root: Path):
+    root=root.resolve()
     repo = root / "repo"; repo.mkdir()
+    subprocess.run(["git","init","-q"],cwd=repo,check=True)
     output = repo / MOD.SOURCE_REPO_PATH; output.parent.mkdir(parents=True)
-    aggregate_root = root / "aggregate"; aggregate_root.mkdir()
-    leaf_root = root / "leaves"; leaf_root.mkdir()
+    aggregate_root = MOD.module_path(repo,"Proofs.Generated.H1Aggregate.Erdos85H1V2Complete").parent
+    aggregate_root.mkdir(parents=True)
+    leaf_root = MOD.module_path(repo,"Proofs.Generated.H1Leaves.Placeholder").parent
+    leaf_root.mkdir(parents=True)
     inventory = root / "capacity.compact"; inventory.write_text("synthetic identity\n")
     rows = []
     ordinal = 0
@@ -104,7 +108,20 @@ class H1PostAggregateAdapterTest(unittest.TestCase):
 
     def test_schema_source_and_toctou_drift_fail_closed(self):
         with tempfile.TemporaryDirectory() as directory:
-            args,output=fixture(Path(directory))
+            root=Path(directory).resolve(); args,output=fixture(root)
+            with self.assertRaises((ValueError,subprocess.CalledProcessError)):
+                MOD.validate(root,*args[1:])
+            repo_link=root/"repo-link"; repo_link.symlink_to(args[0],target_is_directory=True)
+            with self.assertRaisesRegex(ValueError,"repo must"):
+                MOD.validate(repo_link,*args[1:])
+            aggregate_link=root/"aggregate-link"; aggregate_link.symlink_to(args[3],target_is_directory=True)
+            with self.assertRaisesRegex(ValueError,"aggregate source root"):
+                MOD.validate(*args[:3],aggregate_link,*args[4:])
+            leaf_parent=MOD.module_path(args[0],"Proofs.Generated.H1Leaves.Placeholder").parent
+            external=root/"external-leaves"; leaf_parent.rename(external); leaf_parent.symlink_to(external,target_is_directory=True)
+            with self.assertRaisesRegex(ValueError,"canonical real path|traverses a symlink"):
+                MOD.validate(*args)
+            leaf_parent.unlink(); external.rename(leaf_parent)
             reindex=json.loads(args[6].read_text()); source_index=Path(reindex["indexes"][0]["path"])
             source_raw=source_index.read_bytes(); source_index.unlink()
             with self.assertRaisesRegex(ValueError,"source index"):
@@ -117,6 +134,19 @@ class H1PostAggregateAdapterTest(unittest.TestCase):
                 MOD.validate(*alias_args)
             args[6].write_bytes(reindex_raw)
             leaf_index=args[8]; original=leaf_index.read_bytes(); value=json.loads(original)
+            escaped=root/"escaped.lean"; escaped.write_text("theorem h1V2P0I00000Checked : True := trivial\n")
+            value["modules"][0]["source_path"]=str(escaped); value["modules"][0]["source_sha256"]=MOD.sha256(escaped)
+            value["modules"][0]["source_bytes"]=escaped.stat().st_size; leaf_index.write_bytes(MOD.canonical(value))
+            escaped_args=(*args[:9],MOD.sha256(leaf_index))
+            with self.assertRaisesRegex(ValueError,"leaf module identity mismatch"):
+                MOD.validate(*escaped_args)
+            value=json.loads(original); value["modules"][1]["source_path"]=value["modules"][0]["source_path"]
+            value["modules"][1]["source_sha256"]=value["modules"][0]["source_sha256"]
+            value["modules"][1]["source_bytes"]=value["modules"][0]["source_bytes"]
+            leaf_index.write_bytes(MOD.canonical(value)); alias_leaf_args=(*args[:9],MOD.sha256(leaf_index))
+            with self.assertRaisesRegex(ValueError,"leaf module identity mismatch"):
+                MOD.validate(*alias_leaf_args)
+            leaf_index.write_bytes(original); value=json.loads(original)
             value["leaf_count"]=13350; leaf_index.write_bytes(MOD.canonical(value))
             bad_args=(*args[:9],MOD.sha256(leaf_index))
             with self.assertRaisesRegex(ValueError,"leaf module index header"):

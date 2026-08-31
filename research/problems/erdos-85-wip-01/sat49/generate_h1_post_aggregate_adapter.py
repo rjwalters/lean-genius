@@ -9,6 +9,7 @@ import importlib.util
 import json
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -90,6 +91,22 @@ def file_identity(path: Path) -> dict[str, object]:
     return {"path": str(path), "bytes": path.stat().st_size, "sha256": sha256(path)}
 
 
+def module_path(repo: Path, module: str) -> Path:
+    if LEAN_MODULE.fullmatch(module) is None:
+        raise ValueError("invalid qualified module path")
+    return repo / "proofs" / Path(*module.split(".")).with_suffix(".lean")
+
+
+def require_repo_path(repo: Path, path: Path, label: str) -> None:
+    if not path.is_absolute() or path!=path.resolve(): raise ValueError(f"{label} is not canonical real path")
+    try: parts=path.relative_to(repo).parts
+    except ValueError as error: raise ValueError(f"{label} escapes repo") from error
+    current=repo
+    for part in parts:
+        current=current/part
+        if current.is_symlink(): raise ValueError(f"{label} traverses a symlink")
+
+
 def render(top_module: str) -> str:
     if LEAN_MODULE.fullmatch(top_module) is None:
         raise ValueError("layout top module is not a qualified Lean module")
@@ -107,8 +124,11 @@ def validate(repo: Path, layout_path: Path, layout_sha256: str,
              aggregate_root: Path, index_path: Path, index_sha256: str,
              reindex_path: Path, reindex_sha256: str,
              leaf_index_path: Path, leaf_index_sha256: str) -> tuple[str, dict, list[Path]]:
-    if not repo.is_absolute() or repo.is_symlink() or not repo.is_dir():
+    if not repo.is_absolute() or repo.is_symlink() or not repo.is_dir() or repo!=repo.resolve():
         raise ValueError("repo must be an absolute real directory")
+    top=subprocess.run(["git","rev-parse","--show-toplevel"],cwd=repo,check=True,
+                       text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout.strip()
+    if Path(top)!=repo: raise ValueError("repo is not the canonical git root")
     if not aggregate_root.is_absolute() or aggregate_root.is_symlink() or not aggregate_root.is_dir():
         raise ValueError("aggregate source root must be an absolute real directory")
     layout = read_pretty(layout_path, layout_sha256, "aggregate layout")
@@ -165,6 +185,13 @@ def validate(repo: Path, layout_path: Path, layout_sha256: str,
     modules = layout.get("modules")
     if not isinstance(modules, list):
         raise ValueError("aggregate layout modules missing")
+    aggregate_prefix=layout.get("prefixes",{}).get("aggregate_modules")
+    expected_aggregate_root=repo/"proofs"/Path(*aggregate_prefix.split("."))
+    if aggregate_root!=expected_aggregate_root:
+        raise ValueError("aggregate root is not the canonical repo module directory")
+    require_repo_path(repo,aggregate_root,"aggregate root")
+    if layout_path!=aggregate_root/"aggregate-layout.json":
+        raise ValueError("aggregate layout is outside its canonical source root")
     source_by_file: dict[str, str] = {}
     aggregate_paths: list[Path] = []
     aggregate_identities = []
@@ -174,13 +201,15 @@ def validate(repo: Path, layout_path: Path, layout_sha256: str,
         if (not isinstance(record, dict) or set(record) != module_fields
                 or not isinstance(record.get("file"), str)):
             raise ValueError("aggregate layout module record malformed")
-        path = aggregate_root / record["file"]
+        path = module_path(repo,record["module"])
+        if path!=aggregate_root/record["file"]: raise ValueError(f"{record['file']}: noncanonical module path")
         require_file(path, str(record.get("source_sha256")), record["file"])
         if path.stat().st_size != record.get("source_bytes"):
             raise ValueError(f"{record['file']}: source byte count mismatch")
         source_by_file[record["file"]] = path.read_text()
         aggregate_paths.append(path)
-        aggregate_identities.append(file_identity(path))
+        aggregate_identities.append({"repo_path":str(path.relative_to(repo)),
+            "bytes":path.stat().st_size,"sha256":sha256(path)})
     actual_names = {path.name for path in aggregate_root.iterdir() if path.is_file() and path.suffix == ".lean"}
     if actual_names != {record["file"] for record in modules}:
         raise ValueError("aggregate source root has a stale/missing Lean module")
@@ -211,10 +240,11 @@ def validate(repo: Path, layout_path: Path, layout_sha256: str,
         expected_module = f"{layout['prefixes']['leaf_modules']}.Erdos85H1V2CertP{row.profile}I{row.local_index:05d}"
         path = Path(entry["source_path"])
         theorem = f"h1V2P{row.profile}I{row.local_index:05d}Checked"
-        if (entry["source_module"] != expected_module
-                or path.name != expected_module.split(".")[-1] + ".lean"
+        expected_path=module_path(repo,expected_module)
+        if (entry["source_module"] != expected_module or path!=expected_path
                 or path in seen_leaf_paths):
             raise ValueError(f"{row.orbit}: leaf module identity mismatch")
+        require_repo_path(repo,path,f"{row.orbit} leaf source")
         require_file(path, entry["source_sha256"], f"{row.orbit} leaf source")
         if path.stat().st_size != entry["source_bytes"]:
             raise ValueError(f"{row.orbit}: leaf source byte count mismatch")
@@ -230,9 +260,11 @@ def validate(repo: Path, layout_path: Path, layout_sha256: str,
         "capacity_reindex_receipt_path": str(reindex_path),
         "capacity_reindex_receipt_sha256": reindex_sha256,
         "input_top_module": top["module"], "input_top_path": str(aggregate_root / top["file"]),
+        "input_top_repo_path":str((aggregate_root/top["file"]).relative_to(repo)),
         "input_top_sha256": top["source_sha256"], "input_top_theorem": INPUT_THEOREM,
         "leaf_count": len(rows), "leaf_module_index_path": str(leaf_index_path),
         "leaf_module_index_sha256": leaf_index_sha256,
+        "repo":str(repo),
     }
     return render(top["module"]), receipt_core, [layout_path, index_path, inventory_path,
                                                    *source_index_paths, reindex_path,
