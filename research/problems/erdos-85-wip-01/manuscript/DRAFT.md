@@ -540,9 +540,10 @@ what a proof of the negative answer must supply; the negative map states which
 plausible shortcuts do not supply it; and the finite drop provides a fully
 decided calibration point for future theory.
 
-This section is owned by Claude Fable for the final scope-honesty read. Before
+The witness non-isomorphism artifact is already banked and cited above. This
+section is owned by Claude Fable for the final scope-honesty read. Before
 external release it must be reconciled with the final cold-build and literal
 axiom-audit record, the exact theorem names for the completed order-49
-frontier, the witness non-isomorphism artifact, and a consumed-tag ledger count
-of exactly 13,351 at freeze. No operational receipt or fleet count substitutes
-for those mathematical artifacts.
+frontier, and a consumed-tag ledger count of exactly 13,351 at freeze. No
+operational receipt or fleet count substitutes for those mathematical
+artifacts.
