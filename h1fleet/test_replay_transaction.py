@@ -20,6 +20,7 @@ sys.path.insert(0, str(HERE))
 
 from replay_common import (
     AwsCliObjectStore, LocalObjectStore, NATIVE_AXIOM_PATTERN, ObjectInfo,
+    PRODUCTION_COMPILE_COMMAND, PRODUCTION_ENVIRONMENT_ALLOWLIST,
     RECEIPT_INTEGRITY_SCHEME, ReplayError, SCHEMA, canonical_json, load_manifest,
     run_command, seal_receipt_integrity, sha256_bytes, sha256_file,
     validate_command_receipts, validate_receipt_integrity,
@@ -77,7 +78,7 @@ else:
 class ReplayTransactionTest(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
-        self.root = Path(self.temporary.name)
+        self.root = Path(self.temporary.name).resolve()
         self.store_root = self.root / "store"
         self.store = LocalObjectStore(self.store_root)
         self.state = self.root / "state"
@@ -140,7 +141,13 @@ class ReplayTransactionTest(unittest.TestCase):
             "campaign_prefix": "sat49/campaign-20260825/h1-replay/",
             "repository_commit": "test-commit", "inventory_sha256": ZERO_SHA,
             "coverage_sha256": "1" * 64, "toolchain_identity": "lean-test",
-            "overlay_sha256": "2" * 64, "generator_sha256": "3" * 64,
+            "overlay_builder_sha256": "2" * 64,
+            "overlay_project_manifest_sha256": "3" * 64,
+            "overlay_build_receipt_sha256": "4" * 64,
+            "overlay_manifest_sha256": "5" * 64,
+            "overlay_identity_sha256": "6" * 64,
+            "overlay_archive_sha256": "7" * 64,
+            "generator_sha256": "3" * 64,
             "template_sha256": "4" * 64, "cnf_emitter_sha256": "d" * 64,
             "worker_sha256": sha256_file(WORKER),
             "validator_sha256": "6" * 64, "zstd_identity": "copy-test",
@@ -175,6 +182,52 @@ class ReplayTransactionTest(unittest.TestCase):
                 "axiom_audit": [sys.executable, str(self.helper), "audit", "{audit_json}"],
                 "zstd": [sys.executable, str(self.helper), "zstd", "{input}", "{output}"],
             },
+        }))
+        self.overlay_project_manifest = self.root / "project-overlay.sha256.tsv"
+        self.overlay_project_manifest.write_text("1" * 64 + "\tFoo.olean\n")
+        overlay_entries = [{"bytes": 5, "path": "Foo.olean", "sha256": "1" * 64}]
+        overlay_identity = sha256_bytes(canonical_json(overlay_entries))
+        self.overlay_manifest = self.root / "overlay-manifest.json"
+        self.overlay_manifest.write_bytes(canonical_json({
+            "entry_count": 1, "entries": overlay_entries,
+            "identity_sha256": overlay_identity,
+            "included_extensions": [".olean"],
+            "schema": manifest_builder.OVERLAY_SCHEMA,
+        }))
+        self.overlay_archive = self.root / "complete-overlay.tar.zst"
+        self.overlay_archive.write_bytes(b"archive-fixture")
+        self.overlay_receipt = self.root / "overlay-receipt.json"
+        source_commit = subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=HERE.parent, text=True,
+            capture_output=True, check=True,
+        ).stdout.strip()
+        self.overlay_receipt.write_bytes(canonical_json({
+            "control_files": [
+                {"blob_oid": str(index) * 40, "bytes": 1, "path": path,
+                 "sha256": str(index) * 64}
+                for index, path in enumerate((
+                    "proofs/lean-toolchain", "proofs/lakefile.toml",
+                    "proofs/lake-manifest.json"), 1)
+            ],
+            "entry_count": 1,
+            "git_path": "/usr/bin/git", "git_sha256": "8" * 64,
+            "manifest_path": "manifest.json",
+            "manifest_sha256": sha256_file(self.overlay_manifest),
+            "overlay_identity_sha256": overlay_identity,
+            "packages": [{
+                "build_root": "/tmp/pkg/.lake/build/lib/lean",
+                "facade": "/tmp/repo/proofs/.lake/packages/pkg",
+                "head": "9" * 40, "manifest_url": "https://github.com/x/pkg",
+                "name": "pkg", "normalized_remote": "github.com/x/pkg",
+                "rev": "9" * 40,
+            }],
+            "producer_path": str(HERE / "build_replay_overlay.py"),
+            "producer_sha256": sha256_file(HERE / "build_replay_overlay.py"),
+            "project_manifest_path": str(self.overlay_project_manifest),
+            "project_manifest_sha256": sha256_file(self.overlay_project_manifest),
+            "project_root": "/tmp/project", "repo": "/tmp/repo",
+            "schema": manifest_builder.OVERLAY_RECEIPT_SCHEMA,
+            "source_commit": source_commit,
         }))
 
     def tearDown(self) -> None:
@@ -511,6 +564,10 @@ class ReplayTransactionTest(unittest.TestCase):
             "--capacity-reindex-receipt", str(self.capacity_reindex_receipt),
             "--queue-build-receipt", str(self.queue_build_receipt),
             "--terminal-index", str(self.terminal_index),
+            "--overlay-build-receipt", str(self.overlay_receipt),
+            "--overlay-manifest", str(self.overlay_manifest),
+            "--overlay-archive", str(self.overlay_archive),
+            "--overlay-project-manifest", str(self.overlay_project_manifest),
         ], text=True, capture_output=True, check=False)
         self.assertEqual(freeze.returncode, 2, freeze.stderr)
         self.assertIn("missing=['cnf_sha256']", freeze.stderr)
@@ -1019,6 +1076,13 @@ class ReplayTransactionTest(unittest.TestCase):
         )
         for mutation in mutations:
             reject(mutation)
+        for field in (
+            "overlay_builder_sha256", "overlay_project_manifest_sha256",
+            "overlay_build_receipt_sha256", "overlay_manifest_sha256",
+            "overlay_identity_sha256", "overlay_archive_sha256",
+        ):
+            reject(lambda receipt, field=field:
+                   receipt["build_identity"].__setitem__(field, "e" * 64))
 
         certificate_meta = self.store.meta / f"{self.certificate_key}.json"
         original_certificate_meta = certificate_meta.read_bytes()
@@ -1045,6 +1109,10 @@ class ReplayTransactionTest(unittest.TestCase):
             "--capacity-reindex-receipt", str(self.capacity_reindex_receipt),
             "--queue-build-receipt", str(self.queue_build_receipt),
             "--terminal-index", str(self.terminal_index),
+            "--overlay-build-receipt", str(self.overlay_receipt),
+            "--overlay-manifest", str(self.overlay_manifest),
+            "--overlay-archive", str(self.overlay_archive),
+            "--overlay-project-manifest", str(self.overlay_project_manifest),
         ], text=True, capture_output=True, check=False)
         self.assertEqual(result.returncode, 2)
         self.assertIn("worktree containing replay scripts", result.stderr)
@@ -1053,6 +1121,8 @@ class ReplayTransactionTest(unittest.TestCase):
         manifest = json.loads(self.manifest.read_text())
         manifest["generator_sha256"] = "4a3e3488" + "0" * 56
         manifest["template_sha256"] = "4a3e3488" + "1" * 56
+        manifest["commands"]["compile"] = PRODUCTION_COMPILE_COMMAND
+        manifest["environment_allowlist"] = PRODUCTION_ENVIRONMENT_ALLOWLIST
         self.manifest.write_bytes(canonical_json(manifest))
         output = self.root / "frozen.json"
         real_git_value = manifest_builder.git_value
@@ -1069,6 +1139,10 @@ class ReplayTransactionTest(unittest.TestCase):
             "--capacity-reindex-receipt", str(self.capacity_reindex_receipt),
             "--queue-build-receipt", str(self.queue_build_receipt),
             "--terminal-index", str(self.terminal_index),
+            "--overlay-build-receipt", str(self.overlay_receipt),
+            "--overlay-manifest", str(self.overlay_manifest),
+            "--overlay-archive", str(self.overlay_archive),
+            "--overlay-project-manifest", str(self.overlay_project_manifest),
         ]
         with patch.object(manifest_builder, "git_value", side_effect=clean_git_value), \
              patch.object(manifest_builder, "validate_queue_tables"), \
@@ -1078,11 +1152,108 @@ class ReplayTransactionTest(unittest.TestCase):
         expected = sha256_file(HERE / "generate_replay_leaf.py")
         self.assertEqual(frozen["generator_sha256"], expected)
         self.assertEqual(frozen["template_sha256"], expected)
+        self.assertNotIn("overlay_sha256", frozen)
+        self.assertEqual(frozen["overlay_builder_sha256"],
+                         sha256_file(HERE / "build_replay_overlay.py"))
+        self.assertEqual(frozen["overlay_project_manifest_sha256"],
+                         sha256_file(self.overlay_project_manifest))
+        self.assertEqual(frozen["overlay_build_receipt_sha256"],
+                         sha256_file(self.overlay_receipt))
+        self.assertEqual(frozen["overlay_manifest_sha256"],
+                         sha256_file(self.overlay_manifest))
+        self.assertEqual(frozen["overlay_archive_sha256"],
+                         sha256_file(self.overlay_archive))
+
+    def test_overlay_freight_chain_rejects_each_wrong_crosslink(self) -> None:
+        arguments = dict(
+            receipt_path=self.overlay_receipt,
+            manifest_path=self.overlay_manifest,
+            archive_path=self.overlay_archive,
+            project_manifest_path=self.overlay_project_manifest,
+            builder_path=HERE / "build_replay_overlay.py",
+            source_commit=json.loads(self.overlay_receipt.read_text())["source_commit"],
+        )
+        fields = manifest_builder.validate_overlay_freight(**arguments)
+        self.assertEqual(set(fields), {
+            "overlay_builder_sha256", "overlay_project_manifest_sha256",
+            "overlay_build_receipt_sha256", "overlay_manifest_sha256",
+            "overlay_identity_sha256", "overlay_archive_sha256",
+        })
+        original = self.overlay_receipt.read_bytes()
+        for field in (
+            "producer_sha256", "project_manifest_sha256", "manifest_sha256",
+            "overlay_identity_sha256", "source_commit", "entry_count",
+        ):
+            receipt = json.loads(original)
+            receipt[field] = 2 if field == "entry_count" else (
+                "f" * 40 if field == "source_commit" else "f" * 64)
+            self.overlay_receipt.write_bytes(canonical_json(receipt))
+            with self.subTest(field=field), self.assertRaisesRegex(
+                ReplayError, "crosslink mismatch"
+            ):
+                manifest_builder.validate_overlay_freight(**arguments)
+        self.overlay_receipt.write_bytes(original)
+        archive_before = fields["overlay_archive_sha256"]
+        self.overlay_archive.write_bytes(b"different-archive-fixture")
+        changed = manifest_builder.validate_overlay_freight(**arguments)
+        self.assertNotEqual(changed["overlay_archive_sha256"], archive_before)
+
+    def test_freezer_rejects_stale_lake_compile_contract(self) -> None:
+        output = self.root / "stale-contract-must-not-freeze.json"
+        real_git_value = manifest_builder.git_value
+
+        def clean_git_value(repo, *arguments):
+            if arguments == ("status", "--porcelain"):
+                return ""
+            return real_git_value(repo, *arguments)
+
+        argv = [
+            str(MANIFEST_BUILDER), "--draft", str(self.manifest),
+            "--queue", str(self.queue), "--repo", str(HERE.parent),
+            "--output", str(output), "--capacity-index", str(self.capacity_index),
+            "--capacity-reindex-receipt", str(self.capacity_reindex_receipt),
+            "--queue-build-receipt", str(self.queue_build_receipt),
+            "--terminal-index", str(self.terminal_index),
+            "--overlay-build-receipt", str(self.overlay_receipt),
+            "--overlay-manifest", str(self.overlay_manifest),
+            "--overlay-archive", str(self.overlay_archive),
+            "--overlay-project-manifest", str(self.overlay_project_manifest),
+        ]
+        with patch.object(manifest_builder, "git_value", side_effect=clean_git_value), \
+             patch.object(manifest_builder, "validate_queue_tables"), \
+             patch.object(sys, "argv", argv):
+            self.assertEqual(manifest_builder.main(), 2)
+        self.assertFalse(output.exists())
+
+    def test_manifest_rejects_ambiguous_legacy_overlay_identity(self) -> None:
+        manifest = json.loads(self.manifest.read_text())
+        manifest["overlay_sha256"] = "f" * 64
+        candidate = self.root / "legacy-overlay.json"
+        candidate.write_bytes(canonical_json(manifest))
+        with self.assertRaisesRegex(ReplayError, "ambiguous legacy"):
+            load_manifest(candidate)
 
     def test_invalid_manifest_is_rejected_before_publication(self) -> None:
         output = self.root / "must-not-exist.json"
         with self.assertRaises(ReplayError):
             publish_validated_manifest(output, canonical_json({"schema": SCHEMA}))
+        self.assertFalse(output.exists())
+
+    def test_manifest_publication_is_atomic_create_only(self) -> None:
+        value = self.manifest.read_bytes()
+        output = self.root / "create-only-manifest.json"
+        sentinel = b"competing-manifest\n"
+        output.write_bytes(sentinel)
+        with self.assertRaises(FileExistsError):
+            publish_validated_manifest(output, value)
+        self.assertEqual(output.read_bytes(), sentinel)
+        output.unlink()
+
+        def fail_before_link():
+            raise ReplayError("input drift")
+
+        with self.assertRaisesRegex(ReplayError, "input drift"):
+            publish_validated_manifest(output, value, fail_before_link)
         self.assertFalse(output.exists())
 
     def test_queue_build_receipt_is_exact_and_fully_bound(self) -> None:

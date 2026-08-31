@@ -189,7 +189,10 @@ def validate(args: argparse.Namespace) -> None:
         raise ReplayError("replay-ready inventory/coverage identity mismatch")
     expected_build = {
         key: manifest[key] for key in (
-            "repository_commit", "toolchain_identity", "overlay_sha256",
+            "repository_commit", "toolchain_identity",
+            "overlay_builder_sha256", "overlay_project_manifest_sha256",
+            "overlay_build_receipt_sha256", "overlay_manifest_sha256",
+            "overlay_identity_sha256", "overlay_archive_sha256",
             "generator_sha256", "template_sha256", "cnf_emitter_sha256", "worker_sha256",
             "validator_sha256", "receipt_schema_sha256",
             "aggregate_generator_sha256", "axiom_auditor_sha256",

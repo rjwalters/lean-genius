@@ -28,6 +28,16 @@ NATIVE_AXIOM_PATTERN = (
 )
 FOUNDATIONAL_AXIOMS = ("propext", "Classical.choice", "Quot.sound")
 RECEIPT_INTEGRITY_SCHEME = "canonical-json-sha256-v1"
+PRODUCTION_COMPILE_COMMAND = [
+    "/usr/bin/docker", "run", "--rm", "--network", "none",
+    "--mount", "type=bind,src=/opt/replay/repo,dst=/opt/replay/repo,readonly",
+    "--mount", "type=bind,src=/opt/replay/state,dst=/opt/replay/state",
+    "--mount", "type=bind,src=/opt/replay/overlay,dst=/opt/replay/overlay,readonly",
+    "--env", "LEAN_PATH=/opt/replay/overlay",
+    "lean4-arm64:v4.31.0", "/root/.elan/bin/lean",
+    "-R", "{work}", "-o", "{olean}", "{source}",
+]
+PRODUCTION_ENVIRONMENT_ALLOWLIST = ["HOME", "LEAN_PATH"]
 RECEIPT_FIELDS = {
     "schema", "accepted", "tag", "manifest_sha256", "job_sha256",
     "replay_ready_sha256", "job_identity", "build_identity", "module",
@@ -165,7 +175,10 @@ def load_manifest(path: Path) -> dict[str, Any]:
     value = load_json(path)
     required_strings = (
         "schema", "campaign_prefix", "repository_commit", "inventory_sha256",
-        "coverage_sha256", "toolchain_identity", "overlay_sha256",
+        "coverage_sha256", "toolchain_identity",
+        "overlay_builder_sha256", "overlay_project_manifest_sha256",
+        "overlay_build_receipt_sha256", "overlay_manifest_sha256",
+        "overlay_identity_sha256", "overlay_archive_sha256",
         "generator_sha256", "template_sha256", "cnf_emitter_sha256", "worker_sha256",
         "validator_sha256", "zstd_identity",
         "receipt_schema_sha256", "aggregate_generator_sha256",
@@ -190,8 +203,13 @@ def load_manifest(path: Path) -> dict[str, Any]:
         raise ReplayError(f"manifest missing string fields: {missing}")
     if value["schema"] != SCHEMA:
         raise ReplayError(f"unsupported manifest schema: {value['schema']!r}")
+    if "overlay_sha256" in value:
+        raise ReplayError("manifest contains ambiguous legacy overlay_sha256")
     for key in (
-        "inventory_sha256", "coverage_sha256", "overlay_sha256",
+        "inventory_sha256", "coverage_sha256",
+        "overlay_builder_sha256", "overlay_project_manifest_sha256",
+        "overlay_build_receipt_sha256", "overlay_manifest_sha256",
+        "overlay_identity_sha256", "overlay_archive_sha256",
         "generator_sha256", "template_sha256", "cnf_emitter_sha256", "worker_sha256",
         "validator_sha256",
         "receipt_schema_sha256", "aggregate_generator_sha256",
@@ -260,6 +278,16 @@ def load_manifest(path: Path) -> dict[str, Any]:
     if "claim_ttl_seconds" in value or "receipt_integrity_key_id" in value:
         raise ReplayError("manifest contains obsolete lease or keyed-integrity fields")
     return value
+
+
+def validate_production_compile_fields(manifest: dict[str, Any]) -> None:
+    """Reject manifests that cannot realize the reviewed offline Lean command."""
+    if manifest.get("commands", {}).get("compile") != PRODUCTION_COMPILE_COMMAND:
+        raise ReplayError(
+            "production compile command differs from exact offline Lean template")
+    if manifest.get("environment_allowlist") != PRODUCTION_ENVIRONMENT_ALLOWLIST:
+        raise ReplayError(
+            "production environment identity must be exactly HOME and LEAN_PATH")
 
 
 def expand_command(command: list[str], values: dict[str, str]) -> list[str]:

@@ -33,6 +33,7 @@ from replay_common import (
     load_manifest, require_sha, require_tag, run_command, sha256_bytes,
     sha256_file, seal_receipt_integrity, validate_command_receipts,
     validate_receipt_fields, validate_receipt_integrity,
+    validate_production_compile_fields,
 )
 
 
@@ -240,7 +241,10 @@ def validate_ready(ready: dict[str, Any], manifest: dict[str, Any], job: dict[st
         raise ReplayError("replay-ready inventory/table/CNF identity mismatch")
     expected_build_identity = {
         key: manifest[key] for key in (
-            "repository_commit", "toolchain_identity", "overlay_sha256",
+            "repository_commit", "toolchain_identity",
+            "overlay_builder_sha256", "overlay_project_manifest_sha256",
+            "overlay_build_receipt_sha256", "overlay_manifest_sha256",
+            "overlay_identity_sha256", "overlay_archive_sha256",
             "generator_sha256", "template_sha256", "cnf_emitter_sha256", "worker_sha256",
             "validator_sha256", "receipt_schema_sha256",
             "aggregate_generator_sha256", "axiom_auditor_sha256",
@@ -431,7 +435,10 @@ def compile_ready(store: ObjectStore, manifest: dict[str, Any], job: dict[str, A
         },
         "build_identity": {
             key: manifest[key] for key in (
-                "repository_commit", "toolchain_identity", "overlay_sha256",
+                "repository_commit", "toolchain_identity",
+                "overlay_builder_sha256", "overlay_project_manifest_sha256",
+                "overlay_build_receipt_sha256", "overlay_manifest_sha256",
+                "overlay_identity_sha256", "overlay_archive_sha256",
                 "generator_sha256", "template_sha256", "cnf_emitter_sha256", "worker_sha256",
                 "validator_sha256", "receipt_schema_sha256",
                 "aggregate_generator_sha256", "axiom_auditor_sha256",
@@ -695,7 +702,10 @@ def validate_production_manifest(manifest: dict[str, Any]) -> None:
         or "local-test" in manifest[key].lower()
     ]
     hash_fields = (
-        "inventory_sha256", "coverage_sha256", "overlay_sha256", "generator_sha256",
+        "inventory_sha256", "coverage_sha256",
+        "overlay_builder_sha256", "overlay_project_manifest_sha256",
+        "overlay_build_receipt_sha256", "overlay_manifest_sha256",
+        "overlay_identity_sha256", "overlay_archive_sha256", "generator_sha256",
         "template_sha256", "cnf_emitter_sha256", "worker_sha256", "validator_sha256",
         "receipt_schema_sha256", "aggregate_generator_sha256", "axiom_auditor_sha256",
         "stub_generator_sha256", "capacity_exporter_sha256",
@@ -721,21 +731,7 @@ def validate_production_manifest(manifest: dict[str, Any]) -> None:
 
 def validate_production_compile_contract(manifest: dict[str, Any]) -> None:
     """Require the reviewed offline, self-contained Docker/Lean invocation."""
-    command = manifest.get("commands", {}).get("compile")
-    environment = manifest.get("environment_allowlist")
-    expected = [
-        "/usr/bin/docker", "run", "--rm", "--network", "none",
-        "--mount", "type=bind,src=/opt/replay/repo,dst=/opt/replay/repo,readonly",
-        "--mount", "type=bind,src=/opt/replay/state,dst=/opt/replay/state",
-        "--mount", "type=bind,src=/opt/replay/overlay,dst=/opt/replay/overlay,readonly",
-        "--env", "LEAN_PATH=/opt/replay/overlay",
-        "lean4-arm64:v4.31.0", "/root/.elan/bin/lean",
-        "-R", "{work}", "-o", "{olean}", "{source}",
-    ]
-    if command != expected:
-        raise ReplayError("production compile command differs from exact offline Lean template")
-    if environment != ["HOME", "LEAN_PATH"]:
-        raise ReplayError("production environment identity must be exactly HOME and LEAN_PATH")
+    validate_production_compile_fields(manifest)
 
 
 def validate_production_environment() -> None:
