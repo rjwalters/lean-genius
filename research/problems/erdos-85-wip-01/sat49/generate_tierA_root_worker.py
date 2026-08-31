@@ -204,6 +204,13 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--receipt-output", type=Path, required=True)
     args = parser.parse_args()
+    # Freeze every CLI spelling against the invocation cwd before any validation
+    # or embedding.  The derived worker may run from an unrelated campaign cwd.
+    args.source_worker = args.source_worker.resolve()
+    args.root_generator = args.root_generator.resolve()
+    args.root_manifest = args.root_manifest.resolve()
+    args.output = args.output.resolve()
+    args.receipt_output = args.receipt_output.resolve()
     for value in (
         args.expected_root_generator_sha256,
         args.expected_root_manifest_sha256,
@@ -230,9 +237,9 @@ def main() -> int:
     receipt = {
         "schema": SCHEMA,
         "source_worker_sha256": sha256_bytes(source),
-        "root_generator_path": str(args.root_generator.resolve()),
+        "root_generator_path": str(args.root_generator),
         "root_generator_sha256": args.expected_root_generator_sha256,
-        "root_manifest_path": str(args.root_manifest.resolve()),
+        "root_manifest_path": str(args.root_manifest),
         "root_manifest_sha256": args.expected_root_manifest_sha256,
         "freight_receipt_sha256": args.expected_freight_receipt_sha256,
         "output_worker_sha256": sha256_bytes(worker),

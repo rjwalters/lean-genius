@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 
 import hashlib
+import os
+import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import generate_tierA_root_worker as module
 
@@ -113,6 +116,48 @@ class RootWorkerTest(unittest.TestCase):
             path.write_bytes(b"replacement")
             module.unlink_if_same_file(path, identity)
             self.assertEqual(path.read_bytes(), b"replacement")
+
+    def test_relative_cli_generator_is_embedded_and_receipted_absolute(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            source = root / "source.py"
+            generator = root / "generator.py"
+            manifest = root / "manifest.json"
+            source.write_text(TEMPLATE)
+            generator.write_bytes(b"generator")
+            cells = {str(cell): {"jobs": [
+                {"id": f"j{cell * 58 + offset}"} for offset in range(58)]}
+                for cell in range(7)}
+            manifest_data = {
+                "schema": "erdos85-small-high-cube-jobs-v1",
+                "freight_receipt_sha256": module.APPROVED_FREIGHT_RECEIPT_SHA256,
+                "positive_cube_jobs": 392, "negative_cover_jobs": 14, "cells": cells,
+            }
+            manifest.write_text(__import__("json").dumps(manifest_data))
+            output, receipt = root / "worker.py", root / "receipt.json"
+            argv = ["generate", "--source-worker", "source.py",
+                    "--root-generator", "generator.py",
+                    "--expected-root-generator-sha256", module.sha256_file(generator),
+                    "--root-manifest", "manifest.json",
+                    "--expected-root-manifest-sha256", module.sha256_file(manifest),
+                    "--expected-freight-receipt-sha256", module.APPROVED_FREIGHT_RECEIPT_SHA256,
+                    "--output", "worker.py", "--receipt-output", "receipt.json"]
+            old_cwd = Path.cwd()
+            try:
+                os.chdir(root)
+                with mock.patch.object(sys, "argv", argv), \
+                     mock.patch.object(module, "SOURCE_WORKER_SHA256", module.sha256_file(source)), \
+                     mock.patch.object(module, "APPROVED_ROOT_GENERATOR_SHA256", module.sha256_file(generator)), \
+                     mock.patch.object(module, "APPROVED_ROOT_MANIFEST_SHA256", module.sha256_file(manifest)), \
+                     mock.patch.object(module, "git_identity", side_effect=[(root, "generator.py", "a" * 40),
+                                                                            (root, "worker-generator.py", "a" * 40)]):
+                    self.assertEqual(module.main(), 0)
+            finally:
+                os.chdir(old_cwd)
+            receipt_data = __import__("json").loads(receipt.read_text())
+            self.assertEqual(receipt_data["root_generator_path"], str(generator.resolve()))
+            self.assertIn(f'Path("{generator.resolve()}")', output.read_text())
+            self.assertIn(f'Path("{manifest.resolve()}")', output.read_text())
 
 
 if __name__ == "__main__":
