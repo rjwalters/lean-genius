@@ -13,6 +13,11 @@
       "declaration_regex": "Erdos85\\..*"
     },
     {
+      "id": "order-49-degree-six-witness",
+      "module_regex": "Proofs\\.Erdos85OrderFortyNineDegreeSixWitness",
+      "declaration_regex": "Erdos85\\.orderFortyNineDegreeSixGraph(?:\\._proof_2|_common_le_one|_degree_ge)"
+    },
+    {
       "id": "h1-certificate-and-inventory",
       "module_regex": "Proofs\\.Erdos85(OrderFortyNineOneHigh.*|H1.*)",
       "declaration_regex": "Erdos85\\..*"

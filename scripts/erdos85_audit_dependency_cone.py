@@ -138,6 +138,18 @@ def render_axiom_source(module: str, theorems: list[ConeTheorem]) -> str:
     return "\n".join(lines)
 
 
+def literal_nameable(theorem: ConeTheorem) -> bool:
+    """Whether Lean command syntax can name this imported declaration.
+
+    Imported `_private.<module>.<index>...` constants are environment names,
+    not surface identifiers: even guillemet quoting cannot make `#print axioms`
+    resolve them from another module.  They remain in the discovered cone and
+    its `collectAxioms` validation, but the literal pass must use the public
+    declarations that transitively own them.
+    """
+    return not theorem.name.startswith("_private.")
+
+
 def load_allowlist(path: Path) -> dict:
     data = json.loads(path.read_text(encoding="utf-8"))
     required = {
@@ -290,8 +302,10 @@ def main() -> int:
     inventory_path.write_text(json.dumps(inventory, indent=2) + "\n", encoding="utf-8")
 
     axiom_log_path: Path | None = None
+    literal_theorems = [theorem for theorem in theorems if literal_nameable(theorem)]
+    private_theorems = [theorem for theorem in theorems if not literal_nameable(theorem)]
     if not args.inventory_only:
-        result = run_lean(proofs_dir, render_axiom_source(args.module, theorems))
+        result = run_lean(proofs_dir, render_axiom_source(args.module, literal_theorems))
         axiom_log_path = output_dir / "print-axioms.log"
         axiom_log_path.write_text(result.stdout, encoding="utf-8")
         if result.returncode != 0:
@@ -304,7 +318,7 @@ def main() -> int:
         ]
         expected_delimiters = [
             delimiter
-            for theorem in theorems
+            for theorem in literal_theorems
             for delimiter in (
                 f"ERDOS85_AXIOM_BEGIN\t{theorem.name}",
                 f"ERDOS85_AXIOM_END\t{theorem.name}",
@@ -321,6 +335,9 @@ def main() -> int:
         "status": "PASS" if not errors else "FAIL",
         "target": args.target,
         "theorem_count": len(theorems),
+        "literal_theorem_count": len(literal_theorems),
+        "private_environment_theorem_count": len(private_theorems),
+        "private_environment_theorems": [theorem.name for theorem in private_theorems],
         "native_root_count": len(native_roots),
         "native_family_counts": {
             family["id"]: sum(root["family"] == family["id"] for root in native_roots)
