@@ -5,20 +5,22 @@ created early.**  This is the execution checklist for operator mandate 1318 and
 goal #43.  A checked box requires the named durable evidence; verbal success or
 an idle process is not evidence.
 
-Current evidence snapshot (2026-08-30 17:10 PDT; only the replay-contract
+Current evidence snapshot (2026-08-30 17:24 PDT; only the replay-contract
 selection box below is discharged):
 
 - the reviewed Branch-A consolidation lineage ends at `7763e294de`; the
   capacity-index/replay provenance chain and hierarchical aggregate generator
   are also reviewed and banked, but neither is final campaign evidence until
   the complete accepted receipt set is generated and cold-audited;
-- the latest authoritative H1 reconciliation reports 9,297 certified, 175
-  in-flight, and 3,879 pending out of 13,351 (squad messages 36498--36499); the
+- the latest authoritative H1 reconciliation reports 9,411 certified, 175
+  in-flight, and 3,765 pending out of 13,351 (squad messages 36534 and 36537); the
   completion universe is therefore still incomplete;
 - replay consumption is assigned to sol-2 and replay review gates/checklist
   maintenance to sol-3.  Goal #44 selected a single-writer, canonical-JSON,
   plain-SHA-256 receipt contract with create-only publication and no KMS or
-  distributed lease.  Implementation and directed review remain open;
+  distributed lease.  Its v2 implementation is reviewed and banked at
+  `779463f6cb` (#1155; 41/41 independent tests), but the exact-image real P=1
+  transaction and production evidence remain open;
 - the four-parent H3/H5 split completed with durable END at 2026-08-30
   11:17 PDT: all 264 unique jobs terminated with zero failures, comprising nine
   fresh validated UNSAT ledgers and 255 reviewed QUICK-UNKNOWN markers.  It ran
