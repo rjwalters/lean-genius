@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 import importlib.util
+import hashlib
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -15,6 +17,42 @@ SPEC.loader.exec_module(MODULE)
 
 
 class SmallHighCubeJobsTest(unittest.TestCase):
+    def freight_receipt(self, bases: Path) -> Path:
+        commit = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=MODULE.REPO, text=True).strip()
+        builder_bytes = subprocess.check_output(
+            ["git", "show", f"{commit}:{MODULE.FREIGHT_BUILDER_SOURCE}"],
+            cwd=MODULE.REPO)
+        emitter_bytes = subprocess.check_output(
+            ["git", "show", f"{commit}:{MODULE.EMITTER_SOURCE}"], cwd=MODULE.REPO)
+        rows = []
+        for cell, filename in MODULE.DEFAULT_FILENAMES.items():
+            path = bases / filename
+            variables, clauses = MODULE.inspect_dimacs(path)
+            maximum = max(abs(int(value)) for line in path.read_text().splitlines()
+                          if line and not line.startswith(("c", "p"))
+                          for value in line.split()[:-1])
+            rows.append({
+                "cell": cell, "path": filename, "sha256": MODULE.sha256(path),
+                "bytes": path.stat().st_size, "variables": variables,
+                "clauses": clauses, "max_literal": maximum,
+            })
+        receipt = {
+            "schema": MODULE.FREIGHT_SCHEMA, "git_commit": commit,
+            "freight_builder_source": MODULE.FREIGHT_BUILDER_SOURCE,
+            "freight_builder_sha256": hashlib.sha256(builder_bytes).hexdigest(),
+            "emitter_source": MODULE.EMITTER_SOURCE,
+            "emitter_sha256": hashlib.sha256(emitter_bytes).hexdigest(),
+            "emitter_build_command": [
+                "lake", "build", "Proofs.Erdos85OrderFortyNineSmallHighCnfEmit"],
+            "emitter_command": ["lake", "env", "lean", "--run",
+                                "/repo/" + MODULE.EMITTER_SOURCE, "<cell>"],
+            "lean_version": "Lean fixture", "cells": rows,
+        }
+        path = bases / "receipt.json"
+        path.write_bytes(MODULE.canonical_json(receipt))
+        return path
+
     def test_manifest_and_materialization(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_name:
             root = Path(temporary_name)
@@ -25,14 +63,16 @@ class SmallHighCubeJobsTest(unittest.TestCase):
                     "c fixture\np cnf 300 2\n1 0\n-2 0\n"
                 )
             manifest_path = root / "manifest.json"
-            MODULE.write_manifest(bases, manifest_path)
+            receipt_path = self.freight_receipt(bases)
+            MODULE.write_manifest(
+                bases, receipt_path, MODULE.sha256(receipt_path), manifest_path)
             manifest = json.loads(manifest_path.read_text())
             self.assertEqual(manifest["positive_cube_jobs"], 392)
             self.assertEqual(manifest["negative_cover_jobs"], 14)
             self.assertEqual(len(manifest["cells"]), 7)
             self.assertEqual(
                 manifest["cells"]["h3_b1"]["base"],
-                str((bases / "b1.lean-emitted.cnf").resolve()),
+                str((bases / "h3_b1.cnf").resolve()),
             )
             self.assertTrue(all(
                 len(cell["jobs"]) == 58
@@ -76,6 +116,40 @@ class SmallHighCubeJobsTest(unittest.TestCase):
                     with self.assertRaisesRegex(ValueError, message):
                         MODULE.inspect_dimacs(path)
 
+    def test_freight_receipt_is_canonical_and_binds_actual_bases(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_name:
+            bases = Path(temporary_name)
+            for filename in MODULE.DEFAULT_FILENAMES.values():
+                (bases / filename).write_text("p cnf 300 1\n1 0\n")
+            receipt_path = self.freight_receipt(bases)
+            with self.assertRaisesRegex(ValueError, "external pin"):
+                MODULE.load_freight_receipt(bases, receipt_path, "0" * 64)
+            receipt = json.loads(receipt_path.read_text())
+            receipt["cells"][0]["sha256"] = "f" * 64
+            receipt_path.write_bytes(MODULE.canonical_json(receipt))
+            with self.assertRaisesRegex(ValueError, "does not bind actual base"):
+                MODULE.load_freight_receipt(
+                    bases, receipt_path, MODULE.sha256(receipt_path))
+            receipt["cells"][0]["sha256"] = MODULE.sha256(
+                bases / MODULE.DEFAULT_FILENAMES["h3_b1"])
+            receipt_path.write_text(json.dumps(receipt, indent=2) + "\n")
+            with self.assertRaisesRegex(ValueError, "not canonical"):
+                MODULE.load_freight_receipt(
+                    bases, receipt_path, MODULE.sha256(receipt_path))
+            original = self.freight_receipt(bases).read_bytes()
+            for key, value, message in (
+                ("emitter_source", "proofs/Proofs/Wrong.lean", "wrong emitter source"),
+                ("emitter_sha256", "f" * 64, "differs from commit bytes"),
+                ("git_commit", "0" * 40, "commit/source is unavailable"),
+            ):
+                with self.subTest(key=key):
+                    mutated = json.loads(original)
+                    mutated[key] = value
+                    receipt_path.write_bytes(MODULE.canonical_json(mutated))
+                    with self.assertRaisesRegex(ValueError, message):
+                        MODULE.load_freight_receipt(
+                            bases, receipt_path, MODULE.sha256(receipt_path))
+
     def test_rejects_unknown_and_duplicated_job_ids(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_name:
             root = Path(temporary_name)
@@ -84,7 +158,8 @@ class SmallHighCubeJobsTest(unittest.TestCase):
             for filename in MODULE.DEFAULT_FILENAMES.values():
                 (bases / filename).write_text("p cnf 300 1\n1 0\n")
             manifest_path = root / "manifest.json"
-            MODULE.write_manifest(bases, manifest_path)
+            receipt = self.freight_receipt(bases)
+            MODULE.write_manifest(bases, receipt, MODULE.sha256(receipt), manifest_path)
             with self.assertRaisesRegex(ValueError, "unknown or duplicated"):
                 MODULE.materialize(manifest_path, "missing", root / "out.cnf")
 
@@ -103,10 +178,11 @@ class SmallHighCubeJobsTest(unittest.TestCase):
             for filename in MODULE.DEFAULT_FILENAMES.values():
                 (bases / filename).write_text("p cnf 300 1\n1 0\n")
             manifest_path = root / "manifest.json"
-            MODULE.write_manifest(bases, manifest_path)
+            receipt = self.freight_receipt(bases)
+            MODULE.write_manifest(bases, receipt, MODULE.sha256(receipt), manifest_path)
             output = root / "out.cnf"
             output.write_text("preserve me\n")
-            (bases / "b1.lean-emitted.cnf").write_text(
+            (bases / "h3_b1.cnf").write_text(
                 "p cnf 300 1\n1 0\nc tampered\n"
             )
             with self.assertRaisesRegex(ValueError, "base CNF hash mismatch"):
@@ -121,7 +197,8 @@ class SmallHighCubeJobsTest(unittest.TestCase):
             for filename in MODULE.DEFAULT_FILENAMES.values():
                 (bases / filename).write_text("p cnf 300 1\n1 0\n")
             manifest_path = root / "manifest.json"
-            MODULE.write_manifest(bases, manifest_path)
+            receipt = self.freight_receipt(bases)
+            MODULE.write_manifest(bases, receipt, MODULE.sha256(receipt), manifest_path)
             manifest = json.loads(manifest_path.read_text())
             manifest["cells"]["h3_b1"]["base_clauses"] = 2
             manifest_path.write_text(json.dumps(manifest))
