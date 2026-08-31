@@ -102,6 +102,39 @@ class SmallHighCubeJobsTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "declares 2 clauses"):
                 MODULE.inspect_dimacs(path)
 
+    def test_manifest_publication_is_create_only(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_name:
+            root = Path(temporary_name)
+            bases = root / "bases"
+            bases.mkdir()
+            for filename in MODULE.DEFAULT_FILENAMES.values():
+                (bases / filename).write_text("p cnf 300 1\n1 0\n")
+            receipt = self.freight_receipt(bases)
+            output = root / "manifest.json"
+            output.write_bytes(b"preserve manifest\n")
+            with self.assertRaisesRegex(FileExistsError, "refusing to replace"):
+                MODULE.write_manifest(
+                    bases, receipt, MODULE.sha256(receipt), output)
+            self.assertEqual(output.read_bytes(), b"preserve manifest\n")
+            self.assertEqual(list(root.glob(".manifest.json.*.tmp")), [])
+
+    def test_materialization_publication_is_create_only(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_name:
+            root = Path(temporary_name)
+            bases = root / "bases"
+            bases.mkdir()
+            for filename in MODULE.DEFAULT_FILENAMES.values():
+                (bases / filename).write_text("p cnf 300 1\n1 0\n")
+            receipt = self.freight_receipt(bases)
+            manifest = root / "manifest.json"
+            MODULE.write_manifest(bases, receipt, MODULE.sha256(receipt), manifest)
+            output = root / "cube.cnf"
+            output.write_bytes(b"preserve cube\n")
+            with self.assertRaisesRegex(FileExistsError, "refusing to replace"):
+                MODULE.materialize(manifest, "h3_b1.cube-0-0", output)
+            self.assertEqual(output.read_bytes(), b"preserve cube\n")
+            self.assertEqual(list(root.glob(".cube.cnf.*.tmp")), [])
+
     def test_rejects_literal_beyond_declared_variable_top(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_name:
             root = Path(temporary_name)

@@ -208,6 +208,14 @@ def jobs_for(cell: str) -> list[dict[str, object]]:
     return jobs
 
 
+def publish_create_only(temporary: Path, output: Path) -> None:
+    """Atomically publish a staged file without replacing existing evidence."""
+    try:
+        os.link(temporary, output)
+    except FileExistsError as error:
+        raise FileExistsError(f"refusing to replace existing output: {output}") from error
+
+
 def write_manifest(base_dir: Path, freight_receipt: Path,
                    expected_freight_receipt_sha256: str, output: Path) -> None:
     freight = load_freight_receipt(
@@ -248,9 +256,16 @@ def write_manifest(base_dir: Path, freight_receipt: Path,
         "cells": cells,
     }
     output.parent.mkdir(parents=True, exist_ok=True)
-    temporary = output.with_name(f".{output.name}.{os.getpid()}.tmp")
-    temporary.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
-    os.replace(temporary, output)
+    fd, temporary_name = tempfile.mkstemp(
+        prefix=f".{output.name}.", suffix=".tmp", dir=output.parent
+    )
+    temporary = Path(temporary_name)
+    try:
+        with os.fdopen(fd, "w") as target:
+            target.write(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+        publish_create_only(temporary, output)
+    finally:
+        temporary.unlink(missing_ok=True)
 
 
 def find_job(manifest: dict[str, object], job_id: str) -> tuple[dict, dict]:
@@ -304,7 +319,7 @@ def materialize(manifest_path: Path, job_id: str, output: Path) -> None:
             cell["variables"], cell["base_clauses"] + len(units)
         ):
             raise AssertionError("materialized DIMACS metadata mismatch")
-        os.replace(temporary, output)
+        publish_create_only(temporary, output)
     finally:
         temporary.unlink(missing_ok=True)
 
