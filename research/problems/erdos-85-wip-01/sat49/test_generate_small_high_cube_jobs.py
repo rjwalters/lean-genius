@@ -62,6 +62,20 @@ class SmallHighCubeJobsTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "declares 2 clauses"):
                 MODULE.inspect_dimacs(path)
 
+    def test_rejects_literal_beyond_declared_variable_top(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_name:
+            root = Path(temporary_name)
+            for name, contents, message in (
+                ("high.cnf", "p cnf 3 1\n4 0\n", "exceeds variable header"),
+                ("zero.cnf", "p cnf 3 1\n1 0 0\n", "unterminated clause"),
+                ("early.cnf", "1 0\np cnf 3 1\n", "precedes header"),
+            ):
+                with self.subTest(name=name):
+                    path = root / name
+                    path.write_text(contents)
+                    with self.assertRaisesRegex(ValueError, message):
+                        MODULE.inspect_dimacs(path)
+
     def test_rejects_unknown_and_duplicated_job_ids(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_name:
             root = Path(temporary_name)

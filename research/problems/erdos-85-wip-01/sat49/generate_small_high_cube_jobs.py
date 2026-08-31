@@ -70,9 +70,23 @@ def inspect_dimacs(path: Path) -> tuple[int, int]:
                         fields[:2] != [b"p", b"cnf"]):
                     raise ValueError(f"{path}:{line_number}: malformed header")
                 header = (int(fields[2]), int(fields[3]))
+                if header[0] < 0 or header[1] < 0:
+                    raise ValueError(f"{path}:{line_number}: negative header value")
                 continue
-            if not line.endswith(b" 0") and line != b"0":
+            if header is None:
+                raise ValueError(f"{path}:{line_number}: clause precedes header")
+            try:
+                literals = [int(field) for field in line.split()]
+            except ValueError as error:
+                raise ValueError(
+                    f"{path}:{line_number}: non-integer clause field"
+                ) from error
+            if not literals or literals[-1] != 0 or 0 in literals[:-1]:
                 raise ValueError(f"{path}:{line_number}: unterminated clause")
+            if any(abs(literal) > header[0] for literal in literals[:-1]):
+                raise ValueError(
+                    f"{path}:{line_number}: literal exceeds variable header"
+                )
             actual += 1
     if header is None:
         raise ValueError(f"{path}: missing DIMACS header")
