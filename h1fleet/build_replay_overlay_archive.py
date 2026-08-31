@@ -89,7 +89,7 @@ def validate_publication(publication):
                    or not Path(x["build_root"]).is_absolute()
                    or Path(x["build_root"])!=Path(x["build_root"]).resolve(strict=False)
                    or not Path(x["facade"]).is_absolute()
-                   or Path(x["facade"])!=Path(x["facade"]).resolve(strict=False)
+                   or Path(x["facade"])!=Path(receipt.get("repo", ""))/"proofs/.lake/packages"/x["name"]
                    for x in packages)
             or len({x.get("name") for x in packages})!=len(packages)
             or len({x.get("normalized_remote") for x in packages})!=len(packages)

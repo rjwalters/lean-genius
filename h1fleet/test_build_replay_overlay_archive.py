@@ -109,12 +109,25 @@ class OverlayArchiveTest(unittest.TestCase):
           lambda r:r["packages"].append(dict(r["packages"][0],name="duplicate-remote")),
           lambda r:r.__setitem__("project_root","relative"),
           lambda r:r.__setitem__("project_root","/a/../b"),
-          lambda r:r["packages"][0].__setitem__("build_root","/a/../b"))
+          lambda r:r["packages"][0].__setitem__("build_root","/a/../b"),
+          lambda r:r["packages"][0].__setitem__("facade","/repo/proofs/.lake/packages/wrong"),
+          lambda r:r["packages"][0].__setitem__("facade","/repo/proofs/.lake/packages/../mathlib"),
+          lambda r:r.__setitem__("repo","/other-repo"))
         for mutate in mutations:
             with self.subTest(mutate=mutate),tempfile.TemporaryDirectory() as directory:
                 root=Path(directory).resolve(); pub=publication(root); path=pub/"receipt.json"
                 receipt=json.loads(path.read_text()); mutate(receipt); path.write_bytes(MOD.canonical(receipt))
                 with self.assertRaisesRegex(MOD.ArchiveError,"receipt exact contract"):
                     MOD.build(pub,root/"out.zst",ZSTD,ZSTD_SHA)
+
+    def test_logical_symlink_package_facade_is_admitted(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory).resolve(); pub=publication(root); repo=root/"repo"; target=root/"package"
+            target.mkdir(); facade=repo/"proofs/.lake/packages/mathlib"; facade.parent.mkdir(parents=True)
+            facade.symlink_to(target,target_is_directory=True)
+            path=pub/"receipt.json"; receipt=json.loads(path.read_text()); receipt["repo"]=str(repo)
+            receipt["packages"][0]["facade"]=str(facade); path.write_bytes(MOD.canonical(receipt))
+            result=MOD.build(pub,root/"out.zst",ZSTD,ZSTD_SHA)
+            self.assertEqual(result["entry_count"],1)
 
 if __name__=="__main__": unittest.main()
