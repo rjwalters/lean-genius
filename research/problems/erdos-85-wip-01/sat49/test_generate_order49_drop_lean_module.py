@@ -33,6 +33,12 @@ class GenerateOrder49DropLeanModuleTest(unittest.TestCase):
             "minDegreeForC4_fortyNine_lt_fortyEight_of_generatedCertificates",
             rendered)
 
+    def test_generated_capstone_dependency_does_not_import_capstone(self):
+        witnesses = (HERE.parents[3] / "proofs/Proofs/"
+                     "Erdos85FiniteDropWitnesses.lean").read_text()
+        self.assertIn("import Proofs.Erdos85FiniteDropCore", witnesses)
+        self.assertNotIn("import Proofs.Erdos85FiniteDropCapstone", witnesses)
+
 
 if __name__ == "__main__":
     unittest.main()

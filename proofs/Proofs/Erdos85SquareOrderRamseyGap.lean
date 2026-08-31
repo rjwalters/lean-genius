@@ -1,4 +1,4 @@
-import Proofs.Erdos85FiniteDropCapstone
+import Proofs.Erdos85FiniteDropCore
 import Proofs.Erdos85EvenPlaneOrderExistence
 
 /-!

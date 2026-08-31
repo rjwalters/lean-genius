@@ -1,4 +1,4 @@
-import Proofs.Erdos85FiniteDropCapstone
+import Proofs.Erdos85FiniteDropCore
 
 /-!
 # Plane-order criterion for a negative solution of Erdős 85
