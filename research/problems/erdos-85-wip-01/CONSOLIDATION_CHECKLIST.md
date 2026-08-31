@@ -5,21 +5,29 @@ created early.**  This is the execution checklist for operator mandate 1318 and
 goal #43.  A checked box requires the named durable evidence; verbal success or
 an idle process is not evidence.
 
-Current evidence snapshot (2026-08-30 19:26 PDT; only the replay-contract
+Current evidence snapshot (2026-08-30 20:32 PDT; only the replay-contract
 selection and exact-image implementation/test boxes below are discharged):
 
 - the reviewed Branch-A consolidation lineage ends at `7763e294de`; the
   capacity-index/replay provenance chain and hierarchical aggregate generator
   are also reviewed and banked, but neither is final campaign evidence until
   the complete accepted receipt set is generated and cold-audited;
-- the latest authoritative H1 reconciliation reports 9,744 certified, 173
-  in-flight, and 3,434 pending out of 13,351 (squad message 37015), with
-  10,930 claims, 10,753 ledgers, 1,378 `UNKNOWN` rows lacking a certificate,
+- the latest authoritative H1 reconciliation reports 9,914 certified, 185
+  in-flight, and 3,252 pending out of 13,351, with 11,136 claims, 10,909
+  ledgers, 1,402 `UNKNOWN` rows lacking a certificate, and 409 host ledgers;
   no reported anomalies, and zero CNF divergence in the 30-row spot check.
-  The raw `counts.json` and `coverage.tsv` hashes are respectively
-  `8f5a7a73e4a02f798da75dc32bd004c682ef5a37a6990d354ae1e279aaae9d10`
-  and `5a8a4c0981a6b4b3253a7a38a90a79abe9c6617314aa44d3a28104e0cd3b26a2`.
-  The completion universe is therefore still incomplete;
+  The retained create-only audit is
+  `/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/audits/h1-coverage-20260831T025450Z-455486a7.noindex`
+  with canonical receipt SHA-256
+  `52711b2c74d8d199c4faae3d14ffa37baf4cb556cc3dacfe7bccee01c7a50d59`.
+  Its `counts.json`, `coverage.tsv`, and `inventory_universe_diff.tsv` hashes
+  are respectively
+  `7cb941d4f3756ae09674bdc867fd954cb73810cc7b2a44818cb55dd8650b5af0`,
+  `8bd802c7ae552efc5105f9448db8131cf38c02d67f97bcc315e9688d1a0f94c8`,
+  and `79b902eed01cd1b16233ec263f2ab229b74d275b329003bc558cab987b6cd043`.
+  The receipt proves the three named live coverage outputs were byte-identical
+  before and after the isolated S3 reconciliation.  The completion universe
+  is therefore still incomplete;
 - replay consumption is assigned to sol-2 and replay review gates/checklist
   maintenance to sol-3.  Goal #44 selected a single-writer, canonical-JSON,
   plain-SHA-256 receipt contract with create-only publication and no KMS or
