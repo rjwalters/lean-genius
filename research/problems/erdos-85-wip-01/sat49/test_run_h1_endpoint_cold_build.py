@@ -1,6 +1,7 @@
 import hashlib
 import importlib.util
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -25,6 +26,15 @@ def fixture(root):
                  "leaf_module_index", "producer"):
         path = upstream / name; path.write_text(name + "\n"); upstream_paths[name] = path
     upstream_paths["producer"].write_bytes((HERE / "finalize_h1_leaf_module_evidence.py").read_bytes())
+    aggregate_layout = {"bank_size": 64, "inputs": {}, "inventory_contract": {}, "leaf_count": 13351,
+        "leaf_members_sha256": "8" * 64, "modules": [{"direct_import_count": 1,
+        "direct_imports": ["Proofs.Generated.Leaf"], "file": "Aggregate.lean", "kind": "top-bank",
+        "members": [], "module": "Proofs.Generated.Aggregate", "source_bytes": 1,
+        "source_sha256": "9" * 64, "theorem": "Erdos85.aggregate"}], "prefixes": {},
+        "profile_bank_counts": [1, 1, 1, 1, 1], "schema": "erdos85-h1-v2-aggregate-layout-v1",
+        "top_module": "Proofs.Generated.Aggregate"}
+    upstream_paths["aggregate_layout"].write_bytes(
+        (json.dumps(aggregate_layout, indent=2, sort_keys=True) + "\n").encode())
     identity = {"blob_oid": "c" * 40, "bytes": len(source_raw), "repo_path": MOD.SOURCE,
                 "sha256": hashlib.sha256(source_raw).hexdigest()}
     row = {"capacity_local_index": 0, "leaf_blob_oid": "d" * 40,
@@ -85,6 +95,8 @@ def fixture(root):
              "empty_olean": False, "bad_lean": False, "bad_lake": False, "bad_hashes": False,
              "source_bad": False, "source_drift": False, "inherited_lake": False, "zero_metrics": False,
              "missing_control": False, "control_drift": False, "bad_control_oid": False}
+    state.update({"missing_generated": False, "extra_generated": False, "symlink_generated": False,
+                  "fifo_generated": False})
     def runner(kind, argv, cwd, environment, stdout, stderr):
         stdout.write_bytes(b""); stderr.write_bytes(b"")
         checkout = root / "stage-placeholder"
@@ -117,6 +129,14 @@ def fixture(root):
         elif kind == "build" and not state["missing_olean"]:
             target = checkout / "proofs" / MOD.OLEAN; target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(b"" if state["empty_olean"] else b"olean\n")
+            generated = target.parent
+            if not state["missing_generated"]: (generated / "Leaf.olean").write_bytes(b"leaf olean\n")
+            (generated / "Leaf.ilean").write_bytes(b"leaf ilean\n")
+            (generated / "Aggregate.olean").write_bytes(b"aggregate olean\n")
+            if state["extra_generated"]: (generated / "Unrelated.olean").write_bytes(b"extra\n")
+            if state["symlink_generated"]:
+                (generated / "Leaf.olean").unlink(missing_ok=True); (generated / "Leaf.olean").symlink_to("Aggregate.olean")
+            if state["fifo_generated"]: os.mkfifo(generated / "Pipe.olean")
             if state["source_drift"]:
                 (checkout / MOD.SOURCE).write_bytes(b"drift\n")
             if state["control_drift"]: (checkout / MOD.CONTROL_PATHS[0]).write_text("rehashed spoof\n")
@@ -144,6 +164,14 @@ class ColdBuildTest(unittest.TestCase):
             self.assertIn("--network=none", build["argv"]); self.assertIn("--read-only", build["argv"])
             self.assertIn("--pull=never", build["argv"])
             self.assertEqual([item["path"] for item in receipt["reviewed_control_files"]], list(MOD.CONTROL_PATHS))
+            retained = receipt["retained_generated_artifacts"]
+            self.assertEqual([row["build_path"] for row in retained], sorted(row["build_path"] for row in retained))
+            self.assertTrue(any(row["build_path"].endswith("Leaf.ilean") for row in retained))
+            self.assertTrue(all(MOD.sha(out / row["artifact_path"]) == row["sha256"] for row in retained))
+            endpoint_rows = [row for row in retained if row["build_path"] == MOD.OLEAN]
+            self.assertEqual(len(endpoint_rows), 1)
+            self.assertEqual(receipt["target_generated_artifact_path"], endpoint_rows[0]["artifact_path"])
+            self.assertEqual(receipt["target_olean_sha256"], endpoint_rows[0]["sha256"])
             self.assertEqual(build["argv"][-3:], ["lake", "build", MOD.MODULE])
             self.assertEqual(build["environment"], {})
             self.assertTrue((out / "logs/build.stdout").is_file())
@@ -159,6 +187,10 @@ class ColdBuildTest(unittest.TestCase):
                  ("missing-control", "missing_control", "lake-manifest.json"),
                  ("control-oid", "bad_control_oid", "control file Git identity"),
                  ("control-drift", "control_drift", "lean-toolchain.*hash mismatch"),
+                 ("missing-generated", "missing_generated", "compiled Generated olean cone"),
+                 ("extra-generated", "extra_generated", "unexpected compiled Generated artifact"),
+                 ("symlink-generated", "symlink_generated", "Generated artifact tree file"),
+                 ("fifo-generated", "fifo_generated", "Generated artifact tree file"),
                  ("metrics", "zero_metrics", "malformed metrics"))
         for name, key, message in cases:
             with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
@@ -229,11 +261,40 @@ class ColdBuildTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); args, _, _ = fixture(root)
             def mutate_olean():
-                matches = list(root.glob(".h1-cold-build-stage.*/checkout/proofs/.lake/build/lib/lean/Proofs/Generated/*.olean"))
+                matches = list(root.glob(".h1-cold-build-stage.*/checkout/proofs/.lake/build/lib/lean/Proofs/Generated/Erdos85OrderFortyNineOneHighCertificates.olean"))
                 assert len(matches) == 1; matches[0].write_bytes(b"drift\n")
             args["before_receipt"] = mutate_olean
             with self.assertRaisesRegex(ValueError, "target olean drift"): MOD.build(**args)
             self.assertFalse(args["output"].exists())
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); args, _, _ = fixture(root)
+            def mutate_leaf():
+                matches = list(root.glob(".h1-cold-build-stage.*/checkout/proofs/.lake/build/lib/lean/Proofs/Generated/Leaf.olean"))
+                assert len(matches) == 1; matches[0].write_bytes(b"drift\n")
+            args["before_receipt"] = mutate_leaf
+            with self.assertRaisesRegex(ValueError, "Generated artifact drift"): MOD.build(**args)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); args, _, _ = fixture(root); real_copy = MOD.shutil.copyfile
+            def corrupt_generated_copy(source, destination):
+                result = real_copy(source, destination)
+                if "artifacts/generated/" in str(destination): Path(destination).write_bytes(b"corrupt\n")
+                return result
+            with mock.patch.object(MOD.shutil, "copyfile", side_effect=corrupt_generated_copy):
+                with self.assertRaisesRegex(ValueError, "retained Generated artifact copy"): MOD.build(**args)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); args, _, _ = fixture(root)
+            def add_source_artifact():
+                matches = list(root.glob(".h1-cold-build-stage.*/checkout/proofs/.lake/build/lib/lean/Proofs/Generated"))
+                assert len(matches) == 1; (matches[0] / "Late.olean").write_bytes(b"late\n")
+            args["before_receipt"] = add_source_artifact
+            with self.assertRaisesRegex(ValueError, "source artifact set drift"): MOD.build(**args)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); args, _, _ = fixture(root)
+            def add_retained_artifact():
+                matches = list(root.glob(".h1-cold-build-stage.*/publication/artifacts/generated/Proofs/Generated"))
+                assert len(matches) == 1; (matches[0] / "Late.olean").write_bytes(b"late\n")
+            args["before_receipt"] = add_retained_artifact
+            with self.assertRaisesRegex(ValueError, "retained Generated artifact set drift"): MOD.build(**args)
 
 
 def mutate_json_arg(args, path, pin_key, key, value):

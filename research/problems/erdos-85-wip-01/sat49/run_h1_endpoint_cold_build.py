@@ -81,6 +81,15 @@ def read_json(path, pin, label):
     return value
 
 
+def read_pretty_json(path, pin, label):
+    require(path, pin, label)
+    raw = path.read_bytes(); value = json.loads(raw)
+    if (not isinstance(value, dict)
+            or raw != (json.dumps(value, indent=2, sort_keys=True) + "\n").encode("utf-8")):
+        raise ValueError(f"{label} must be canonical pretty JSON")
+    return value
+
+
 def relative(value, label):
     if not isinstance(value, str) or not value or "\\" in value:
         raise ValueError(f"{label} must be relative")
@@ -146,6 +155,27 @@ def fsync_tree(root):
         fd = os.open(directory, os.O_RDONLY)
         try: os.fsync(fd)
         finally: os.close(fd)
+
+
+def scan_generated(root, base, path_key):
+    safe(root, "Generated artifact root", kind="dir")
+    rows = []
+    for current, directories, files in os.walk(root, followlinks=False):
+        parent = Path(current)
+        for name in directories:
+            path = parent / name
+            if path.is_symlink() or not path.is_dir():
+                raise ValueError("Generated artifact tree contains special/aliased directory")
+        for name in files:
+            path = parent / name
+            safe(path, "Generated artifact tree file")
+            rel = PurePosixPath(path.relative_to(base).as_posix())
+            if rel.suffix not in (".olean", ".ilean"):
+                continue
+            if path.stat().st_size <= 0: raise ValueError("compiled Generated artifact is empty")
+            rows.append({path_key: rel.as_posix(), "bytes": path.stat().st_size, "sha256": sha(path)})
+    rows.sort(key=lambda row: row[path_key])
+    return rows
 
 
 def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
@@ -231,6 +261,27 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
     relative(evidence["aggregate_layout_source_identity"]["repo_path"],
              "aggregate layout committed path")
     captured.append(evidence_path)
+    layout_path = Path(post["aggregate_layout_path"])
+    layout = read_pretty_json(layout_path, post["aggregate_layout_sha256"], "aggregate layout")
+    layout_fields = {"bank_size", "inputs", "inventory_contract", "leaf_count", "leaf_members_sha256",
+        "modules", "prefixes", "profile_bank_counts", "schema", "top_module"}
+    layout_module_fields = {"direct_import_count", "direct_imports", "file", "kind", "members", "module",
+                            "source_bytes", "source_sha256", "theorem"}
+    if (set(layout) != layout_fields or layout.get("schema") != "erdos85-h1-v2-aggregate-layout-v1"
+            or layout.get("leaf_count") != post["leaf_count"] or not isinstance(layout.get("modules"), list)
+            or not layout["modules"] or any(not isinstance(item, dict) or set(item) != layout_module_fields
+                                             for item in layout["modules"])):
+        raise ValueError("aggregate layout contract mismatch")
+    generated_sources = [row["leaf_repo_path"] for row in evidence["rows"]]
+    for item in layout["modules"]:
+        generated_sources.append("proofs/" + "/".join(item["module"].split(".")) + ".lean")
+    generated_sources.append(SOURCE)
+    expected_oleans = set()
+    for source_path in generated_sources:
+        source_rel = relative(source_path, "generated source path")
+        if source_rel.parts[:3] != ("proofs", "Proofs", "Generated") or source_rel.suffix != ".lean":
+            raise ValueError("generated source path is outside exact Generated Lean namespace")
+        expected_oleans.add(PurePosixPath(".lake/build/lib/lean", *source_rel.parts[1:]).with_suffix(".olean"))
     cache = read_json(cache_manifest, cache_manifest_sha256, "dependency-cache manifest")
     if set(cache) != {"entries", "identity_sha256", "root", "schema"} or cache.get("schema") != CACHE_SCHEMA:
         raise ValueError("dependency-cache manifest schema mismatch")
@@ -329,6 +380,18 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
             raise ValueError("committed source tree changed during build")
         safe(target, "target olean")
         if target.stat().st_size <= 0: raise ValueError("target olean is empty")
+        generated_root = lake_root / "build/lib/lean/Proofs/Generated"
+        safe(generated_root, "compiled Generated root", kind="dir")
+        source_rows = scan_generated(generated_root, proofs, "build_path")
+        observed_oleans = set()
+        for row in source_rows:
+            rel = PurePosixPath(row["build_path"])
+            corresponding_olean = rel.with_suffix(".olean")
+            if corresponding_olean not in expected_oleans:
+                raise ValueError("unexpected compiled Generated artifact")
+            if rel.suffix == ".olean": observed_oleans.add(rel)
+        if observed_oleans != expected_oleans:
+            raise ValueError("compiled Generated olean cone mismatch")
         tool_lines = (logs / "tool_hashes.stdout").read_text().splitlines()
         if len(tool_lines) != 2 or any(re.fullmatch(r"[0-9a-f]{64}  /root/\.elan/bin/(lean|lake)", line) is None
                                       for line in tool_lines):
@@ -342,16 +405,34 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
             shutil.copyfile(path, destination)
         retained_olean = publication / "artifacts" / "endpoint.olean"
         retained_olean.parent.mkdir(); shutil.copyfile(target, retained_olean)
+        compiled_rows = []
+        for row in source_rows:
+            rel = PurePosixPath(row["build_path"]); source_path = proofs / Path(*rel.parts)
+            source_bytes, source_sha = row["bytes"], row["sha256"]
+            artifact_rel = PurePosixPath("artifacts/generated", *rel.parts[4:])
+            destination = publication / Path(*artifact_rel.parts); destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source_path, destination); safe(destination, "retained Generated artifact")
+            if (sha(source_path) != source_sha or source_path.stat().st_size != source_bytes
+                    or sha(destination) != source_sha or destination.stat().st_size != source_bytes):
+                raise ValueError("retained Generated artifact copy mismatch")
+            compiled_rows.append({"artifact_path": artifact_rel.as_posix(), "build_path": rel.as_posix(),
+                                  "bytes": source_bytes, "sha256": source_sha})
+        endpoint_rows = [row for row in compiled_rows if row["build_path"] == OLEAN]
+        if (len(endpoint_rows) != 1 or endpoint_rows[0]["bytes"] != target.stat().st_size
+                or endpoint_rows[0]["sha256"] != sha(target)):
+            raise ValueError("generated endpoint/target olean crosslink mismatch")
         receipt = {"cache_identity_sha256": cache_identity, "cache_manifest_path": str(cache_manifest),
             "cache_manifest_sha256": cache_manifest_sha256, "commands": records,
             "endpoint_module": MODULE, "endpoint_source_path": SOURCE,
             "endpoint_source_sha256": post["endpoint_source_sha256"], "endpoint_theorem": THEOREM,
             "generated_tree_identity_sha256": post["generated_tree_identity_sha256"], "image": IMAGE,
+            "retained_generated_artifacts": compiled_rows,
             "post_module_receipt_path": str(post_receipt), "post_module_receipt_sha256": post_receipt_sha256,
             "producer_path": str(producer), "producer_sha256": pins[str(producer)], "resource_policy": policy,
             "reviewed_control_files": control_identities,
             "review_id": review_id, "schema": SCHEMA, "source_commit": source_commit,
             "target_olean_build_path": OLEAN, "target_olean_bytes": target.stat().st_size,
+            "target_generated_artifact_path": endpoint_rows[0]["artifact_path"],
             "target_olean_path": "artifacts/endpoint.olean",
             "target_olean_sha256": sha(target), "toolchain_path": str(toolchain),
             "toolchain_sha256": toolchain_sha256}
@@ -372,6 +453,22 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
         if sha(retained_olean) != receipt["target_olean_sha256"] \
                 or retained_olean.stat().st_size != receipt["target_olean_bytes"]:
             raise ValueError("retained target olean drift before receipt")
+        for row in compiled_rows:
+            source_path = proofs / Path(*PurePosixPath(row["build_path"]).parts)
+            retained = publication / Path(*PurePosixPath(row["artifact_path"]).parts)
+            for path in (source_path, retained):
+                require(path, row["sha256"], "Generated artifact drift before receipt")
+                if path.stat().st_size != row["bytes"]: raise ValueError("Generated artifact byte drift")
+        final_source_rows = scan_generated(generated_root, proofs, "build_path")
+        expected_source_rows = [{key: row[key] for key in ("build_path", "bytes", "sha256")}
+                                for row in compiled_rows]
+        if final_source_rows != expected_source_rows:
+            raise ValueError("Generated source artifact set drift before receipt")
+        retained_rows = scan_generated(publication / "artifacts/generated", publication, "artifact_path")
+        expected_retained_rows = [{key: row[key] for key in ("artifact_path", "bytes", "sha256")}
+                                  for row in compiled_rows]
+        if retained_rows != expected_retained_rows:
+            raise ValueError("retained Generated artifact set drift before receipt")
         for record in records.values():
             for stream in ("stdout", "stderr"):
                 retained = publication / record[f"{stream}_path"]
