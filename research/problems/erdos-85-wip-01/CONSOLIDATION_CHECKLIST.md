@@ -5,16 +5,18 @@ created early.**  This is the execution checklist for operator mandate 1318 and
 goal #43.  A checked box requires the named durable evidence; verbal success or
 an idle process is not evidence.
 
-Current evidence snapshot (2026-08-30 17:26 PDT; only the replay-contract
+Current evidence snapshot (2026-08-30 17:48 PDT; only the replay-contract
 selection and exact-image implementation/test boxes below are discharged):
 
 - the reviewed Branch-A consolidation lineage ends at `7763e294de`; the
   capacity-index/replay provenance chain and hierarchical aggregate generator
   are also reviewed and banked, but neither is final campaign evidence until
   the complete accepted receipt set is generated and cold-audited;
-- the latest authoritative H1 reconciliation reports 9,411 certified, 175
-  in-flight, and 3,765 pending out of 13,351 (squad messages 36534 and 36537); the
-  completion universe is therefore still incomplete;
+- the latest authoritative H1 reconciliation reports 9,478 certified, 174
+  in-flight, and 3,699 pending out of 13,351 (squad messages 36674 and 36676),
+  with 10,622 claims, 10,445 ledgers, 1,335 `UNKNOWN` rows lacking a
+  certificate, no reported anomalies, and zero CNF divergence in the 27-row
+  spot check.  The completion universe is therefore still incomplete;
 - replay consumption is assigned to sol-2 and replay review gates/checklist
   maintenance to sol-3.  Goal #44 selected a single-writer, canonical-JSON,
   plain-SHA-256 receipt contract with create-only publication and no KMS or
@@ -35,9 +37,27 @@ selection and exact-image implementation/test boxes below are discharged):
   `f1470b12e17775ea979da6148bf032bb9edfc65b222db44dcbe76956cfd8dfde`
   were independently rehashed after squad message 36430.  The completed quick
   pass is solver-fleet evidence, not a discharged H3/H5 semantic socket;
+- the exact H3/H5 semantic consumer requires seven base-UNSAT hypotheses
+  (`H3 {b1,c1,c2,dist2}` and `H5 {t0,t1,t2}`), each backed by a 58-leaf cover
+  and positive-grid bank, for 406 accepted LRAT leaves total.  The quick pass's
+  nine UNSAT jobs do not complete any such bank, so semantic discharge remains
+  0/4 H3 bases and 0/3 H5 bases (squad message 36728);
 - H7 host execution is live at P=1 under the 105-GiB preservation floor; the
   first leaf ended SLOW-UNKNOWN and the second is active.  Goal #44 directs
-  eventual fleet handoff after H1 v2 drains, so no H7 socket is discharged; and
+  eventual fleet handoff after H1 v2 drains, so no H7 socket is discharged;
+- the socket-table validator and evidence-hash binding are reviewed and banked
+  at `a4f1dfd2f8` and `fce07ec80d`; they enforce the exact hypothesis/row
+  bijection and bind the raw TSV, frozen manifest, and canonical identity set,
+  but cannot discharge sockets before their real campaign evidence exists;
+- H1 capacity-certificate reindex provenance hardening is reviewed and banked
+  at `0a00f06c1f`: it hashes the bytes actually parsed, rejects input drift and
+  aliases, and uses fresh output/receipt paths.  The exact three-way replay
+  queue builder is reviewed and banked at `cb59663c67`; its receipt and builder
+  hash still require reviewed integration into the final replay manifest
+  before freeze;
+- the final-generator import cycle is removed at `43258b97d3` by extracting
+  the six reusable conditional theorems to `Erdos85FiniteDropCore`; this is
+  generation readiness only, not an unconditional theorem; and
 - the named frozen path `sat49/compact_action_manifest.txt` is still absent.
   The existing four-row file under `proofs/Proofs/Certificates/` describes old
   H9 `t2`/`t3` certificates and must not be copied as H3/H5/H7 evidence.
