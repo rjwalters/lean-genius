@@ -22,14 +22,16 @@ unless an operator runs the worker with the production backend explicitly.
   The worker independently applies the manifest's exact and regex allowlist.
 - `validate_replay_receipt.py`: independently re-HEADs the certificate and all
   artifacts, checks the ready-record hash, lifecycle evidence, source scan,
-  axiom classification, and manifest binding.
+  axiom classification, canonical receipt SHA-256, and manifest binding.
 - `run_replay_queue.py`: single-node resumable dispatcher.  It validates the
   sorted unique JSONL queue, queue/worker hashes, expected count, manifest
-  concurrency ceiling, and explicit `--execute YES` latch.  Initial launch is
-  intended for a single dispatcher, but the current code only checks the
-  manifest assertion `single_dispatcher=true`; it does **not** enforce
-  campaign-wide exclusion.  Distributed lease stealing and renewable
-  campaign ownership are not implemented or silently simulated.
+  concurrency ceiling, explicit `--execute YES` latch, and a nonblocking
+  host-local lock at the manifest-bound absolute path, held for the full
+  dispatcher lifetime and recorded in build/`START`/`END` receipts.  A
+  competing process fails before `START` even if it supplies another state
+  directory.  Goal #44
+  deliberately selected this single-writer contract; there is no distributed
+  lease or multi-writer failover.
 - `build_replay_manifest.py`: freezes a reviewed draft against a clean commit,
   queue, receipted capacity index, and every executable script hash.  It proves
   every queued tag is assigned its Lean capacity ordinal rather than a raw or
@@ -88,20 +90,19 @@ compile + audit
 
 A replay-ready record is deliberately not acceptance.  A crash after it
 resumes at lifecycle tagging and does not recompile.  An existing final receipt
-is accepted only when bound to the current manifest.  Collisions fail closed.
+is accepted only when bound to the current manifest and its
+`canonical-json-sha256-v1` digest verifies.  Immutable create collisions GET
+and verify the winner; divergent bytes fail closed.  Receipts are bookkeeping
+evidence, while the final cold build and literal axiom audit remain the proof
+trust root.
 
 ## Remaining launch gates
 
 Before production use, build and receipt the 13,351-row capacity-reindexed
 certificate index, derive the replay queue from those capacity ordinals, and
 freeze it with `--require-complete-capacity-queue`.  Provide the copied-overlay/generator/toolchain identities and
-commands, obtain editor review, run one real P=1 leaf, independently validate
-its receipt, then derive concurrency/cost from the measured RSS and throughput.
-Before even that P=1 transaction, satisfy the specification's single-dispatcher
-gate with an externally enforced exclusive control or a reviewed atomic
-owner/token lease.  A renewable lease must stop scheduling on renewal loss,
-bound the number and lifetime of active workers, and release only its own
-owner/token; a fixed TTL or declared maximum runtime is not sufficient for a
-hung worker.  Exercise live-competitor rejection, renewal loss, abnormal-exit
-cleanup, stale recovery, and owner-safe release.  No second dispatcher or cloud
-scaling is authorized by this implementation.
+commands, obtain directed review, run one real P=1 leaf, independently validate
+its receipt, then derive concurrency/cost from measured RSS and throughput.
+Use exactly one dispatcher and one reviewed state directory; exercise live
+competitor rejection before P=1.  No second dispatcher or cloud scaling is
+authorized by this implementation.

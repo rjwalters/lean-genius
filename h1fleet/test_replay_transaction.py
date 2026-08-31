@@ -19,8 +19,10 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
 from replay_common import (
-    LocalObjectStore, NATIVE_AXIOM_PATTERN, ReplayError, SCHEMA, canonical_json, load_manifest,
-    run_command, sha256_bytes, sha256_file, validate_command_receipts,
+    AwsCliObjectStore, LocalObjectStore, NATIVE_AXIOM_PATTERN, ObjectInfo,
+    RECEIPT_INTEGRITY_SCHEME, ReplayError, SCHEMA, canonical_json, load_manifest,
+    run_command, seal_receipt_integrity, sha256_bytes, sha256_file,
+    validate_command_receipts, validate_receipt_integrity,
 )
 from audit_replay_leaf import parse_axioms
 from build_replay_manifest import publish_validated_manifest
@@ -31,7 +33,8 @@ from capacity_queue import (
 from replay_worker import (
     validate_existing_receipt, validate_job, validate_production_manifest,
 )
-from run_replay_queue import load_queue
+import replay_worker as replay_worker_module
+from run_replay_queue import acquire_single_writer_lock, load_queue
 import validate_replay_receipt as replay_receipt_validator
 from validate_replay_receipt import validate_production_backend_binding
 
@@ -137,8 +140,8 @@ class ReplayTransactionTest(unittest.TestCase):
             "worker_instance_type": "local-test", "ebs_shape": "local-test",
             "instance_role": "local-test", "s3_bucket": "local-test",
             "aws_region": "local-test",
-            "receipt_integrity_scheme": "local-test-unkeyed",
-            "receipt_integrity_key_id": "local-test",
+            "receipt_integrity_scheme": RECEIPT_INTEGRITY_SCHEME,
+            "single_writer_lock_path": str((self.root / "single-writer.lock").resolve()),
             "queue_sha256": sha256_file(self.queue), "expected_jobs": 1,
             "max_parallelism": 1, "single_dispatcher": True,
             "complete_capacity_queue": False,
@@ -201,9 +204,13 @@ class ReplayTransactionTest(unittest.TestCase):
         meta_path.write_bytes(canonical_json(meta))
         return encoded
 
-    def rewrite_receipt_and_rebind_ledger(self, receipt: dict) -> tuple[bytes, bytes]:
+    def rewrite_receipt_and_rebind_ledger(
+        self, receipt: dict, *, reseal: bool = True,
+    ) -> tuple[bytes, bytes]:
         prefix = "sat49/campaign-20260825/h1-replay/"
         receipt_key = f"{prefix}receipts/{self.tag}.json"
+        if reseal:
+            seal_receipt_integrity(receipt)
         receipt_bytes = self.rewrite_store_json(receipt_key, receipt)
         ledger_key = f"{prefix}ledger/{self.tag}.accepted"
         ledger = json.loads((self.store.objects / ledger_key).read_text())
@@ -330,6 +337,51 @@ class ReplayTransactionTest(unittest.TestCase):
         self.assertIn("undisclosed axioms", result.stderr)
         self.assertNotIn("replay", self.store.head(self.certificate_key).tags)
         self.assertFalse(self.receipt_path().exists())
+
+    def test_every_pre_tag_publication_boundary_leaves_certificate_unconsumed(self) -> None:
+        manifest = load_manifest(self.manifest)
+        manifest["manifest_sha256"] = sha256_file(self.manifest)
+        job = validate_job(json.loads(self.job.read_text()), self.tag)
+        job["job_sha256"] = sha256_file(self.job)
+        worker_runtime = {
+            "instance_id": "local-test", "availability_zone": "local-test",
+            "region": "local-test", "instance_type": manifest["worker_instance_type"],
+            "ami_id": manifest["worker_ami_id"],
+            "container_image_digest": manifest["worker_image_digest"],
+            "container_image_digest_source": "local-test-backend",
+            "identity_source": "local-test-backend",
+        }
+        boundaries = ("/sources/", "/logs/", "/oleans/", "/replay-ready/")
+        for boundary in boundaries:
+            class FailingStore(LocalObjectStore):
+                def put_immutable(self, key, source, metadata):
+                    if boundary in f"/{key}":
+                        raise ReplayError(f"injected boundary failure {boundary}")
+                    return super().put_immutable(key, source, metadata)
+
+                def put_bytes_immutable(self, key, value, metadata):
+                    if boundary in f"/{key}":
+                        raise ReplayError(f"injected boundary failure {boundary}")
+                    return super().put_bytes_immutable(key, value, metadata)
+
+            isolated_root = self.root / f"boundary-{boundary.strip('/')}"
+            isolated = FailingStore(isolated_root)
+            certificate = self.root / f"certificate-{boundary.strip('/')}"
+            certificate.write_bytes((self.store.objects / self.certificate_key).read_bytes())
+            isolated.put_immutable(
+                self.certificate_key, certificate,
+                {"cnf-sha256": "2" * 64, "tag": self.tag,
+                 "simulate-head-without-sha256": "true"},
+            )
+            with self.subTest(boundary=boundary), self.assertRaisesRegex(
+                ReplayError, "injected boundary failure"
+            ):
+                work = self.root / f"work-{boundary.strip('/')}"
+                work.mkdir()
+                replay_worker_module.compile_ready(
+                    isolated, manifest, job, work, worker_runtime,
+                )
+            self.assertNotIn("replay", isolated.head(self.certificate_key).tags)
 
     def test_corrupt_certificate_is_rejected_before_generation(self) -> None:
         job = json.loads(self.job.read_text())
@@ -549,7 +601,7 @@ class ReplayTransactionTest(unittest.TestCase):
             for path, original in zip(paths, originals):
                 path.write_bytes(original)
 
-    def test_resume_rejects_ready_tagging_and_local_integrity_inconsistency(self) -> None:
+    def test_resume_rejects_ready_tagging_and_receipt_integrity_inconsistency(self) -> None:
         self.assertEqual(self.worker().returncode, 0)
         prefix = "sat49/campaign-20260825/h1-replay/"
         receipt_key = f"{prefix}receipts/{self.tag}.json"
@@ -560,17 +612,17 @@ class ReplayTransactionTest(unittest.TestCase):
         )
         originals = [path.read_bytes() for path in paths]
         mutations = (
-            ("replay-ready", lambda r: r["replay_ready"].__setitem__("etag", "evil")),
-            ("tagging request", lambda r: r.__setitem__("tagging_request_id", "evil")),
-            ("certificate-after-tagging", lambda r: r["certificate_after_tagging"]["metadata"].__setitem__("evil", "x")),
-            ("certificate-after-tagging", lambda r: r["certificate_after_tagging"]["tags"].__setitem__("replay", "evil")),
-            ("local receipt integrity", lambda r: r["integrity"].__setitem__("value", "evil")),
-            ("local receipt integrity", lambda r: r["integrity"].__setitem__("extra", True)),
+            ("replay-ready", True, lambda r: r["replay_ready"].__setitem__("etag", "evil")),
+            ("tagging request", True, lambda r: r.__setitem__("tagging_request_id", "evil")),
+            ("certificate-after-tagging", True, lambda r: r["certificate_after_tagging"]["metadata"].__setitem__("evil", "x")),
+            ("certificate-after-tagging", True, lambda r: r["certificate_after_tagging"]["tags"].__setitem__("replay", "evil")),
+            ("canonical SHA-256 integrity", False, lambda r: r["integrity"].__setitem__("receipt_sha256", "e" * 64)),
+            ("integrity declaration", False, lambda r: r["integrity"].__setitem__("extra", True)),
         )
-        for message, mutate in mutations:
+        for message, reseal, mutate in mutations:
             receipt = json.loads(originals[0])
             mutate(receipt)
-            self.rewrite_receipt_and_rebind_ledger(receipt)
+            self.rewrite_receipt_and_rebind_ledger(receipt, reseal=reseal)
             with self.subTest(message=message):
                 result = self.worker()
                 self.assertEqual(result.returncode, 2)
@@ -578,20 +630,110 @@ class ReplayTransactionTest(unittest.TestCase):
             for path, original in zip(paths, originals):
                 path.write_bytes(original)
 
-    def test_resume_rejects_nonlocal_empty_integrity_value(self) -> None:
+    def test_receipt_integrity_is_canonical_plain_sha256(self) -> None:
         self.assertEqual(self.worker().returncode, 0)
-        manifest = json.loads(self.manifest.read_text())
-        manifest["manifest_sha256"] = sha256_file(self.manifest)
-        manifest["receipt_integrity_scheme"] = "future-keyed-scheme"
-        manifest["receipt_integrity_key_id"] = "future-key"
-        job = json.loads(self.job.read_text())
-        job["job_sha256"] = sha256_file(self.job)
         receipt = json.loads(self.receipt_path().read_text())
-        receipt["integrity"] = {
-            "scheme": "future-keyed-scheme", "key_id": "future-key", "value": "",
-        }
-        with self.assertRaisesRegex(ReplayError, "lacks keyed integrity evidence"):
-            validate_existing_receipt(self.store, manifest, job, receipt, self.state / "direct")
+        validate_receipt_integrity(receipt)
+        self.assertEqual(receipt["integrity"]["scheme"], RECEIPT_INTEGRITY_SCHEME)
+        self.assertRegex(receipt["integrity"]["receipt_sha256"], r"^[0-9a-f]{64}$")
+        changed = json.loads(self.receipt_path().read_text())
+        changed["accepted"] = False
+        with self.assertRaisesRegex(ReplayError, "canonical SHA-256 integrity mismatch"):
+            validate_receipt_integrity(changed)
+        self.assertFalse(any("/claims/" in path.as_posix() for path in self.store.objects.rglob("*")))
+
+    def test_resume_and_validator_reject_resealed_extra_receipt_field(self) -> None:
+        self.assertEqual(self.worker().returncode, 0)
+        receipt = json.loads(self.receipt_path().read_text())
+        receipt["extra"] = "self-consistent-attacker-field"
+        tbs = json.loads(json.dumps(receipt))
+        del tbs["integrity"]["receipt_sha256"]
+        receipt["integrity"]["receipt_sha256"] = sha256_bytes(canonical_json(tbs))
+        self.rewrite_receipt_and_rebind_ledger(receipt, reseal=False)
+        resumed = self.worker()
+        self.assertEqual(resumed.returncode, 2)
+        self.assertIn("receipt fields differ from exact schema", resumed.stderr)
+        checked = self.validate_receipt()
+        self.assertEqual(checked.returncode, 2)
+        self.assertIn("receipt fields differ from exact schema", checked.stderr)
+
+    def test_json_contract_rejects_duplicates_floats_and_v1_schema(self) -> None:
+        duplicate = self.root / "duplicate.json"
+        duplicate.write_text('{"schema":"x","schema":"y"}\n')
+        with self.assertRaisesRegex(ReplayError, "duplicate JSON key"):
+            load_manifest(duplicate)
+        floating = self.root / "floating.json"
+        floating.write_text('{"value":1.5}\n')
+        with self.assertRaisesRegex(ReplayError, "floats are forbidden"):
+            __import__("replay_common").load_json(floating)
+        old = json.loads(self.manifest.read_text())
+        old["schema"] = "erdos85-h1-replay-manifest-v1"
+        old_path = self.root / "old-manifest.json"
+        old_path.write_bytes(canonical_json(old))
+        with self.assertRaisesRegex(ReplayError, "unsupported manifest schema"):
+            load_manifest(old_path)
+
+    def test_dispatcher_single_writer_lock_rejects_competitor(self) -> None:
+        first_state = self.root / "dispatcher-a"
+        second_state = self.root / "dispatcher-b"
+        self.assertNotEqual(first_state.resolve(), second_state.resolve())
+        lock_path = Path(json.loads(self.manifest.read_text())["single_writer_lock_path"])
+        first = acquire_single_writer_lock(lock_path)
+        try:
+            with self.assertRaisesRegex(ReplayError, "single-writer lock"):
+                acquire_single_writer_lock(lock_path)
+            competitor = subprocess.run([
+                sys.executable, str(DISPATCHER), "--manifest", str(self.manifest),
+                "--queue", str(self.queue), "--state-dir", str(second_state),
+                "--parallelism", "1", "--execute", "YES",
+                "--object-store-root", str(self.store_root),
+            ], text=True, capture_output=True, check=False)
+            self.assertEqual(competitor.returncode, 2)
+            self.assertIn("single-writer lock", competitor.stderr)
+            self.assertFalse((second_state / "dispatch" / "START.json").exists())
+        finally:
+            first.close()
+        second = acquire_single_writer_lock(lock_path)
+        second.close()
+
+    def test_s3_create_only_collision_gets_and_accepts_identical_winner(self) -> None:
+        source = self.root / "immutable-source"
+        source.write_bytes(b"winner")
+        digest = sha256_file(source)
+        metadata = {"tag": self.tag}
+        winner = ObjectInfo(
+            key="prefix/object", size=source.stat().st_size, sha256=digest,
+            etag="etag", last_modified="now",
+            metadata={"tag": self.tag, "sha256": digest}, tags={},
+        )
+        store = AwsCliObjectStore("example-bucket")
+        failed_put = subprocess.CompletedProcess([], 1, "", "precondition failed")
+        with patch.object(store, "_head_or_none", return_value=winner), patch.object(
+            store, "download", return_value=winner
+        ) as download, patch("replay_common.subprocess.run") as run:
+            self.assertEqual(store.put_immutable("prefix/object", source, metadata), winner)
+            download.assert_called_once()
+            run.assert_not_called()
+
+        with patch.object(store, "_head_or_none", side_effect=[None, winner]), patch(
+            "replay_common.subprocess.run", return_value=failed_put
+        ), patch.object(store, "download", return_value=winner) as download:
+            self.assertEqual(store.put_immutable("prefix/object", source, metadata), winner)
+            download.assert_called_once()
+
+        divergent = replace(winner, sha256="f" * 64)
+        with patch.object(store, "_head_or_none", side_effect=[None, divergent]), patch(
+            "replay_common.subprocess.run", return_value=failed_put
+        ), patch.object(store, "download", return_value=divergent), self.assertRaisesRegex(
+            ReplayError, "immutable S3 collision"
+        ):
+            store.put_immutable("prefix/object", source, metadata)
+
+        lying = replace(winner, metadata={"tag": self.tag, "sha256": "f" * 64})
+        with patch.object(store, "_head_or_none", return_value=winner), patch.object(
+            store, "download", return_value=lying
+        ), self.assertRaisesRegex(ReplayError, "immutable S3 collision"):
+            store.put_immutable("prefix/object", source, metadata)
 
     def test_resume_requires_exact_ledger_schema(self) -> None:
         self.assertEqual(self.worker().returncode, 0)
@@ -628,15 +770,6 @@ class ReplayTransactionTest(unittest.TestCase):
         self.assertEqual(lost.returncode, 2)
         self.assertIn("lost replay=consumed", lost.stderr)
 
-    def test_live_claim_rejected_and_stale_claim_recovered(self) -> None:
-        key = f"sat49/campaign-20260825/h1-replay/claims/{self.tag}.json"
-        token = self.store.acquire_claim(key, "first", time.time(), 60)
-        with self.assertRaisesRegex(Exception, "live replay claim"):
-            self.store.acquire_claim(key, "second", time.time(), 60)
-        self.store.release_claim(key, "first", token, time.time() - 1)
-        recovered = self.store.acquire_claim(key, "second", time.time(), 60)
-        self.assertTrue(recovered)
-
     def test_receipt_contains_and_validator_enforces_section_four_fields(self) -> None:
         self.assertEqual(self.worker().returncode, 0)
         receipt = json.loads(self.receipt_path().read_text())
@@ -654,10 +787,9 @@ class ReplayTransactionTest(unittest.TestCase):
         self.assertGreater(receipt["commands"]["compile"]["peak_rss_kib"], 0)
         self.assertEqual(receipt["replay_ready"]["sha256"], receipt["replay_ready_sha256"])
 
-    def test_production_launch_fails_while_integrity_selection_is_tbd(self) -> None:
+    def test_manifest_rejects_retired_keyed_integrity_contract(self) -> None:
         manifest = json.loads(self.manifest.read_text())
         manifest["receipt_integrity_scheme"] = "TBD"
-        manifest["receipt_integrity_key_id"] = "TBD"
         self.manifest.write_bytes(canonical_json(manifest))
         result = subprocess.run([
             sys.executable, str(WORKER), "--manifest", str(self.manifest),
@@ -665,7 +797,7 @@ class ReplayTransactionTest(unittest.TestCase):
             "--state-dir", str(self.state), "--s3-bucket", "local-test",
         ], text=True, capture_output=True, check=False)
         self.assertEqual(result.returncode, 2)
-        self.assertIn("production manifest contains unresolved or malformed identities", result.stderr)
+        self.assertIn("receipt integrity contract must be canonical JSON SHA-256", result.stderr)
 
     def test_validator_rejects_backend_not_bound_to_frozen_manifest(self) -> None:
         manifest = json.loads(self.manifest.read_text())
@@ -709,7 +841,7 @@ class ReplayTransactionTest(unittest.TestCase):
         with self.assertRaisesRegex(ReplayError, "exact allowlist"):
             validate_command_receipts(commands, allowed_environment)
         commands = json.loads(ready_path.read_text())["commands"]
-        commands["compile"]["wall_seconds"] = float("nan")
+        commands["compile"]["wall_ns"] = -1
         commands["compile"]["peak_rss_kib"] = True
         with self.assertRaises(ReplayError):
             validate_command_receipts(
@@ -799,7 +931,7 @@ class ReplayTransactionTest(unittest.TestCase):
             lambda r: r["build_identity"].__setitem__("repository_commit", "evil"),
             lambda r: r["job_identity"].__setitem__("table_serialization", "evil"),
             lambda r: r["commands"]["compile"]["argv"].append("evil"),
-            lambda r: r["commands"]["compile"].__setitem__("wall_seconds", float("nan")),
+            lambda r: r["commands"]["compile"].__setitem__("wall_ns", -1),
             lambda r: r["worker_runtime"].__setitem__("ami_id", "ami-evil"),
             lambda r: r["replay_ready"].__setitem__("sha256", "e" * 64),
             lambda r: r["integrity"].__setitem__("scheme", "evil"),
@@ -855,9 +987,8 @@ class ReplayTransactionTest(unittest.TestCase):
             ("max_parallelism", "1", "positive integer"),
             ("single_dispatcher", False, "must be true"),
             ("single_dispatcher", "true", "must be true"),
-            ("claim_ttl_seconds", True, "integer >= 60"),
-            ("claim_ttl_seconds", -1, "integer >= 60"),
-            ("claim_ttl_seconds", "60", "integer >= 60"),
+            ("receipt_integrity_key_id", "obsolete", "obsolete lease or keyed-integrity"),
+            ("claim_ttl_seconds", 60, "obsolete lease or keyed-integrity"),
         )
         for index, (field, value, message) in enumerate(mutations):
             manifest = dict(original)

@@ -13,7 +13,7 @@ from replay_common import (
     RECEIPT_SCHEMA, AwsCliObjectStore, LocalObjectStore, ObjectInfo, ObjectStore, ReplayError,
     canonical_json, load_json,
     load_manifest, require_sha, require_tag, sha256_bytes, sha256_file,
-    validate_command_receipts,
+    validate_command_receipts, validate_receipt_fields, validate_receipt_integrity,
 )
 from replay_worker import (
     artifact_key, ledger_key, ready_key, receipt_command_bindings, receipt_key,
@@ -57,8 +57,10 @@ def validate(args: argparse.Namespace) -> None:
     supplied_receipt_bytes = args.receipt.read_bytes()
     supplied_receipt_sha = sha256_bytes(supplied_receipt_bytes)
     receipt = load_json(args.receipt)
+    validate_receipt_fields(receipt)
     if receipt.get("schema") != RECEIPT_SCHEMA or receipt.get("accepted") is not True:
-        raise ReplayError("receipt is not an accepted replay-v1 receipt")
+        raise ReplayError("receipt is not an accepted replay-v2 receipt")
+    validate_receipt_integrity(receipt)
     tag = require_tag(receipt.get("tag"))
     if receipt.get("manifest_sha256") != manifest_sha:
         raise ReplayError("receipt manifest SHA mismatch")
@@ -195,6 +197,7 @@ def validate(args: argparse.Namespace) -> None:
             "capacity_reindexer_sha256", "capacity_queue_validator_sha256",
             "capacity_index_sha256", "capacity_reindex_receipt_sha256",
             "common_sha256", "dispatcher_sha256", "zstd_identity",
+            "single_writer_lock_path",
         )
     }
     if ready.get("build_identity") != expected_build:
@@ -238,20 +241,6 @@ def validate(args: argparse.Namespace) -> None:
     )
     if ready.get("certificate") != before:
         raise ReplayError("receipt pre-tag identity differs from replay-ready evidence")
-    integrity = receipt.get("integrity")
-    if args.object_store_root is not None:
-        if integrity != {
-            "scheme": "local-test-unkeyed", "key_id": "local-test", "value": None,
-        }:
-            raise ReplayError("local receipt has unexpected integrity declaration")
-    elif (
-        not isinstance(integrity, dict)
-        or integrity.get("scheme") != manifest["receipt_integrity_scheme"]
-        or integrity.get("key_id") != manifest["receipt_integrity_key_id"]
-        or not isinstance(integrity.get("value"), str)
-        or not integrity["value"]
-    ):
-        raise ReplayError("production receipt lacks selected keyed integrity evidence")
     native_prefix = ready.get("native_axiom_prefix")
     if not isinstance(native_prefix, str) or not native_prefix.startswith("Erdos85.h1V2P"):
         raise ReplayError("replay-ready lacks native axiom ownership prefix")
@@ -270,7 +259,9 @@ def validate(args: argparse.Namespace) -> None:
         store.download(live_ledger_key, ledger_path)
         ledger = load_json(ledger_path)
     if (
-        ledger.get("accepted") is not True
+        set(ledger) != {"schema", "tag", "receipt_key", "receipt_sha256", "manifest_sha256", "accepted"}
+        or ledger.get("schema") != "erdos85-h1-replay-ledger-v2"
+        or ledger.get("accepted") is not True
         or ledger.get("tag") != tag
         or ledger.get("receipt_key") != live_receipt_key
         or ledger.get("receipt_sha256") != live_receipt_sha

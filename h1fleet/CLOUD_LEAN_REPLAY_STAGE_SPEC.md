@@ -1,6 +1,6 @@
 # H1 cloud Lean replay stage specification
 
-Status: **DRAFT — editor sign-off required before launch or cloud spend**
+Status: **REPLAY CONTRACT SELECTED — production execution remains review-gated**
 
 This stage consumes the compact LRAT objects produced by the H1 SAT fleet and
 turns each one into an independently cold-compiled Lean module.  It is a
@@ -73,30 +73,27 @@ On boot:
 4. Write `bootstrap.ok` only after that exact preflight passes.  No worker may
    start before it exists.
 
-Exactly one dispatcher may schedule a campaign prefix.  This must be enforced,
-not merely asserted by `single_dispatcher=true`: either an external control
-plane guarantees one live dispatcher, or the dispatcher holds an atomic
-owner/token lease that it renews conditionally throughout the run.  Losing or
-failing to renew that lease must stop new scheduling and fail the run before a
-success record is published; cleanup may release only the exact owner/token it
-acquired.  A fixed-TTL claim is insufficient unless the runtime is itself
-fail-stopped before expiry.  In particular, a manifest field that merely names
-an "approved maximum" does not bound a hung compiler or worker.  Exercise live
-competitor rejection, renewal loss, abnormal-exit cleanup, stale recovery, and
-owner-safe release before the real transaction.  No `START` record or per-tag
-claim may be written until campaign-level exclusion is established.
+Exactly one dispatcher process may schedule a campaign prefix.  Goal #44 chose
+the single-writer contract: one reviewed node and state directory, with
+parallelism only beneath that dispatcher.  The dispatcher holds a nonblocking
+host-local file lock at the exact normalized absolute path frozen in the
+manifest and duplicated into build receipts and `START`/`END`.  It refuses a
+live competitor—even one choosing another CLI state directory—before writing
+`START` or scheduling any tag.  There is deliberately no KMS key,
+distributed lease, or multi-writer failover protocol in this campaign.
 
 Each tag gets isolated `work/<tag>/`, `logs/<tag>.log`, and output paths.  Workers
 must never write into the read-only base overlay.  A tag is resumable from its
-accepted receipt; a stale in-progress claim is recoverable, while a failed tag
-is quarantined and blocks aggregate completion.
+accepted receipt, replay-ready record, or interrupted local work directory;
+a failed tag is quarantined and blocks aggregate completion.  No S3
+claim/expiry/takeover protocol participates in this single-writer contract.
 
 ## 3. Per-tag replay transaction
 
 For each inventory tag, perform this transaction:
 
-1. Atomically claim the tag in the replay namespace and re-check that no valid
-   accepted receipt already exists.
+1. Re-check whether a valid immutable accepted receipt already exists.  The
+   process-lifetime dispatcher lock is the sole scheduling exclusion.
 2. Download and validate the compact LRAT as in section 1.
 3. Generate one deterministic Lean source module from the authoritative table,
    Lean-exact CNF identity, and compact LRAT.  Record its bytes and SHA-256.
@@ -119,8 +116,8 @@ For each inventory tag, perform this transaction:
    the unchanged object identity as specified in section 6.
 10. Atomically publish the final immutable receipt, including both the
     replay-ready record identity and the lifecycle-tagging evidence, and then
-    publish the accepted ledger line.  Release the claim and delete local tag
-    scratch only after both final objects read back correctly.  A crash or
+    publish the accepted ledger line.  Delete local tag scratch only after both
+    final objects read back correctly.  A crash or
     tagging failure after phase one resumes from the replay-ready record; it
     must not recompile the leaf or call the tag accepted.
 
@@ -155,8 +152,15 @@ Each accepted JSON receipt must include at least:
 - upload read-back results and the immutable replay-ready record key/hash;
 - certificate tagging result: pre/post ETag and last-modified identity, complete
   object tags, tagging request id, and tag read-back verification;
-- worker instance id, AMI/image digest, AZ, worker hash, and receipt signature or
-  keyed integrity mechanism selected at sign-off.
+- worker instance id, AMI/image digest, AZ, and worker hash;
+- an exact two-field integrity declaration using
+  `canonical-json-sha256-v1` and `receipt_sha256`, computed over the complete
+  canonical receipt with the self-hash field omitted.
+
+Receipts are operational bookkeeping, not the proof trust root.  Their plain
+SHA-256 catches corruption and binds resume state; it is not an authenticity
+signature.  The trust gate remains the final clean cold integration build and
+literal axiom audit required by mandate 1318.
 
 Acceptance is a validator decision over this schema, not merely Lean exit zero.
 Replay-ready records and final receipts are immutable once published;
@@ -226,7 +230,7 @@ The measured zstd ratios were 0.2826 at level 1, 0.2894 at level 3, and 0.2504 a
 level 9.  Use level 1 for streaming throughput, while receipts preserve raw and
 compressed sizes/hashes.  Provision at least 4 TB working EBS because aggregate
 compilation needs the simultaneous uncompressed leaf set plus the 9–12 GB base
-overlay and scratch/headroom.  Alert at 70% and stop claims at 85% utilization.
+overlay and scratch/headroom.  Alert at 70% and stop scheduling at 85% utilization.
 
 The host pilot's roughly three minutes per leaf and 5–7.5 GiB RSS suggest—but
 do not establish—about 36–41 hours for 10,848 leaves at `P=16–18`.  Do not use
@@ -249,8 +253,7 @@ manifest and approve the dollar estimate.  Required gates are:
 - lifecycle rule inspected in dry-run/config output;
 - one real tag completes the full upload/read-back/tag/read-back transaction;
 - its receipt is independently validated and the certificate remains readable;
-- campaign-level single-dispatcher exclusion passes the lease/control-plane
-  race and failure tests in section 2;
+- the host-local single-writer lock rejects a live competing dispatcher;
 - concurrency and disk alarms are live.
 
 The provisioned `Erdos85CertReplay` profile matches this contract: ListBucket;
@@ -258,6 +261,6 @@ GetObject/GetObjectTagging on `sat49/campaign-20260825/*`; PutObjectTagging on
 H1 inputs; PutObject limited to H1 replay outputs and freight; and no delete.
 Do not widen it to PutObject on H1 certificate keys.
 
-On systemic failure: stop new claims, preserve logs/receipts/quarantine, leave
+On systemic failure: stop new scheduling, preserve logs/receipts/quarantine, leave
 certificates in Standard, and keep the EBS volume for diagnosis.  Never delete
 source certificates or accepted replay artifacts as part of automatic cleanup.

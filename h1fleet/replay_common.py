@@ -3,15 +3,14 @@
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
-import math
 import os
 import re
 import subprocess
 import sys
 import tempfile
-import time
 import uuid
 import string
 from dataclasses import dataclass
@@ -21,13 +20,23 @@ from typing import Any, Protocol
 
 TAG_RE = re.compile(r"[0-9a-f]{16}")
 SHA_RE = re.compile(r"[0-9a-f]{64}")
-SCHEMA = "erdos85-h1-replay-manifest-v1"
-READY_SCHEMA = "erdos85-h1-replay-ready-v1"
-RECEIPT_SCHEMA = "erdos85-h1-replay-receipt-v1"
+SCHEMA = "erdos85-h1-replay-manifest-v2"
+READY_SCHEMA = "erdos85-h1-replay-ready-v2"
+RECEIPT_SCHEMA = "erdos85-h1-replay-receipt-v2"
 NATIVE_AXIOM_PATTERN = (
     r"^Erdos85\.h1V2P[0-4]I[0-9]{5}Check\._native\.native_decide\.ax_[0-9_]+$"
 )
 FOUNDATIONAL_AXIOMS = ("propext", "Classical.choice", "Quot.sound")
+RECEIPT_INTEGRITY_SCHEME = "canonical-json-sha256-v1"
+RECEIPT_FIELDS = {
+    "schema", "accepted", "tag", "manifest_sha256", "job_sha256",
+    "replay_ready_sha256", "job_identity", "build_identity", "module",
+    "certificate", "compact_lrat", "source_raw", "olean_raw", "commands",
+    "work_root", "worker_runtime", "certificate_before_tagging",
+    "certificate_after_tagging", "tagging_operation", "tagging_request_kind",
+    "tagging_request_id", "integrity", "artifacts", "axiom_audit",
+    "replay_ready",
+}
 
 
 class ReplayError(RuntimeError):
@@ -35,6 +44,19 @@ class ReplayError(RuntimeError):
 
 
 def canonical_json(value: Any) -> bytes:
+    def reject_floats(item: Any) -> None:
+        if isinstance(item, float):
+            raise ReplayError("canonical JSON contract forbids floats")
+        if isinstance(item, dict):
+            for key, child in item.items():
+                if not isinstance(key, str):
+                    raise ReplayError("canonical JSON object keys must be strings")
+                reject_floats(child)
+        elif isinstance(item, (list, tuple)):
+            for child in item:
+                reject_floats(child)
+
+    reject_floats(value)
     try:
         encoded = json.dumps(
             value, sort_keys=True, separators=(",", ":"), allow_nan=False)
@@ -53,6 +75,40 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: stream.read(1 << 20), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def receipt_integrity_sha256(receipt: dict[str, Any]) -> str:
+    """Hash the exact canonical receipt with its self-hash field omitted."""
+    candidate = copy.deepcopy(receipt)
+    validate_receipt_fields(candidate)
+    integrity = candidate.get("integrity")
+    if not isinstance(integrity, dict) or set(integrity) != {"scheme", "receipt_sha256"}:
+        raise ReplayError("receipt integrity declaration is malformed")
+    if integrity.get("scheme") != RECEIPT_INTEGRITY_SCHEME:
+        raise ReplayError("receipt integrity contract mismatch")
+    del integrity["receipt_sha256"]
+    return sha256_bytes(canonical_json(candidate))
+
+
+def validate_receipt_fields(receipt: dict[str, Any]) -> None:
+    if set(receipt) != RECEIPT_FIELDS:
+        raise ReplayError("receipt fields differ from exact schema")
+
+
+def seal_receipt_integrity(receipt: dict[str, Any]) -> None:
+    integrity = receipt.get("integrity")
+    if not isinstance(integrity, dict):
+        raise ReplayError("receipt integrity declaration is malformed")
+    integrity["receipt_sha256"] = receipt_integrity_sha256(receipt)
+
+
+def validate_receipt_integrity(receipt: dict[str, Any]) -> None:
+    integrity = receipt.get("integrity")
+    if not isinstance(integrity, dict) or not isinstance(integrity.get("receipt_sha256"), str):
+        raise ReplayError("receipt lacks canonical SHA-256 integrity evidence")
+    require_sha(integrity["receipt_sha256"], "receipt.integrity.receipt_sha256")
+    if integrity["receipt_sha256"] != receipt_integrity_sha256(receipt):
+        raise ReplayError("receipt canonical SHA-256 integrity mismatch")
 
 
 def atomic_write(path: Path, value: bytes) -> None:
@@ -83,9 +139,22 @@ def require_tag(value: Any) -> str:
 
 
 def load_json(path: Path) -> dict[str, Any]:
+    def exact_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+        result: dict[str, Any] = {}
+        for key, item in pairs:
+            if key in result:
+                raise ReplayError(f"duplicate JSON key {key!r}")
+            result[key] = item
+        return result
+
+    def reject_float(value: str) -> Any:
+        raise ReplayError(f"JSON floats are forbidden: {value}")
+
     try:
-        value = json.loads(path.read_text())
-    except (OSError, json.JSONDecodeError) as error:
+        value = json.loads(
+            path.read_text(), object_pairs_hook=exact_object, parse_float=reject_float,
+        )
+    except (OSError, json.JSONDecodeError, ReplayError) as error:
         raise ReplayError(f"cannot read JSON {path}: {error}") from error
     if not isinstance(value, dict):
         raise ReplayError(f"{path}: top-level JSON must be an object")
@@ -108,7 +177,7 @@ def load_manifest(path: Path) -> dict[str, Any]:
         "worker_image_digest", "worker_ami_id", "worker_instance_type", "ebs_shape",
         "instance_role", "s3_bucket",
         "aws_region",
-        "receipt_integrity_scheme", "receipt_integrity_key_id",
+        "receipt_integrity_scheme", "single_writer_lock_path",
         "queue_sha256",
     )
     missing = [
@@ -139,6 +208,13 @@ def load_manifest(path: Path) -> dict[str, Any]:
         raise ReplayError("manifest.max_parallelism must be a positive integer")
     if value.get("single_dispatcher") is not True:
         raise ReplayError("manifest.single_dispatcher must be true")
+    if (
+        value["receipt_integrity_scheme"] != RECEIPT_INTEGRITY_SCHEME
+    ):
+        raise ReplayError("manifest receipt integrity contract must be canonical JSON SHA-256")
+    lock_path = Path(value["single_writer_lock_path"])
+    if not lock_path.is_absolute() or lock_path != lock_path.resolve():
+        raise ReplayError("manifest.single_writer_lock_path must be absolute and normalized")
     if type(value.get("complete_capacity_queue")) is not bool:
         raise ReplayError("manifest.complete_capacity_queue must be boolean")
     prefix = value["campaign_prefix"]
@@ -177,9 +253,8 @@ def load_manifest(path: Path) -> dict[str, Any]:
         raise ReplayError("manifest.environment_allowlist must be an uppercase variable-name list")
     if len(environment) != len(set(environment)):
         raise ReplayError("manifest.environment_allowlist must not contain duplicates")
-    ttl = value.get("claim_ttl_seconds", 86400)
-    if type(ttl) is not int or ttl < 60:
-        raise ReplayError("manifest.claim_ttl_seconds must be an integer >= 60")
+    if "claim_ttl_seconds" in value or "receipt_integrity_key_id" in value:
+        raise ReplayError("manifest contains obsolete lease or keyed-integrity fields")
     return value
 
 
@@ -237,6 +312,13 @@ def validate_command_receipts(receipts: Any, environment_allowlist: list[str],
     for name, receipt in receipts.items():
         if not isinstance(receipt, dict) or receipt.get("returncode") != 0:
             raise ReplayError(f"command receipt {name} is not successful")
+        expected_fields = {
+            "argv", "returncode", "started_unix_ns", "finished_unix_ns", "wall_ns",
+            "user_cpu_ns", "system_cpu_ns", "peak_rss_kib", "environment",
+            "stdout_sha256", "stderr_sha256",
+        }
+        if set(receipt) != expected_fields:
+            raise ReplayError(f"command receipt {name} fields differ from exact schema")
         if not isinstance(receipt.get("argv"), list) or not receipt["argv"] or not all(
             isinstance(argument, str) for argument in receipt["argv"]
         ):
@@ -249,16 +331,16 @@ def validate_command_receipts(receipts: Any, environment_allowlist: list[str],
                 receipt["argv"], template, bindings
             ):
                 raise ReplayError(f"command receipt {name} argv differs from manifest template")
-        for field in ("started_unix", "finished_unix", "wall_seconds",
-                      "user_cpu_seconds", "system_cpu_seconds"):
+        for field in ("started_unix_ns", "finished_unix_ns", "wall_ns",
+                      "user_cpu_ns", "system_cpu_ns"):
             value = receipt.get(field)
-            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0:
+            if type(value) is not int or value < 0:
                 raise ReplayError(f"command receipt {name}.{field} is malformed")
-        if receipt["finished_unix"] < receipt["started_unix"]:
+        if receipt["finished_unix_ns"] < receipt["started_unix_ns"]:
             raise ReplayError(f"command receipt {name} timestamps are reversed")
-        delta = receipt["finished_unix"] - receipt["started_unix"]
-        if abs(receipt["wall_seconds"] - delta) > max(0.05, 0.05 * delta):
-            raise ReplayError(f"command receipt {name}.wall_seconds disagrees with timestamps")
+        delta = receipt["finished_unix_ns"] - receipt["started_unix_ns"]
+        if receipt["wall_ns"] != delta:
+            raise ReplayError(f"command receipt {name}.wall_ns disagrees with timestamps")
         if (isinstance(receipt.get("peak_rss_kib"), bool)
                 or not isinstance(receipt.get("peak_rss_kib"), int)
                 or receipt["peak_rss_kib"] <= 0):
@@ -312,8 +394,8 @@ def run_command(command: list[str], cwd: Path, log: Path,
         "returncode": process.returncode,
         "stdout": stdout,
         "stderr": stderr,
-        "user_cpu_seconds": usage.ru_utime,
-        "system_cpu_seconds": usage.ru_stime,
+        "user_cpu_ns": round(usage.ru_utime * 1_000_000_000),
+        "system_cpu_ns": round(usage.ru_stime * 1_000_000_000),
         "peak_rss_kib": peak_rss_kib,
         "environment": recorded_environment,
     }
@@ -347,8 +429,6 @@ class ObjectStore(Protocol):
     def put_immutable(self, key: str, source: Path, metadata: dict[str, str]) -> ObjectInfo: ...
     def put_bytes_immutable(self, key: str, value: bytes, metadata: dict[str, str]) -> ObjectInfo: ...
     def add_tag_preserving(self, key: str, name: str, value: str) -> ObjectInfo: ...
-    def acquire_claim(self, key: str, owner: str, now: float, ttl_seconds: int) -> str: ...
-    def release_claim(self, key: str, owner: str, token: str, now: float) -> None: ...
 
 
 class LocalObjectStore:
@@ -442,61 +522,6 @@ class LocalObjectStore:
         ):
             raise ReplayError(f"tagging changed object identity: {key}")
         return after
-
-    def acquire_claim(self, key: str, owner: str, now: float, ttl_seconds: int) -> str:
-        object_path, meta_path = self._paths(key)
-        object_path.parent.mkdir(parents=True, exist_ok=True)
-        meta_path.parent.mkdir(parents=True, exist_ok=True)
-        token = str(uuid.uuid4())
-        record = canonical_json({"owner": owner, "token": token, "expires_unix": now + ttl_seconds})
-        try:
-            descriptor = os.open(object_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
-        except FileExistsError:
-            current = load_json(object_path)
-            if current.get("expires_unix", now + 1) > now:
-                raise ReplayError(f"live replay claim exists: {key}")
-            # Local replacement is serialized by an adjacent O_EXCL lock.
-            lock = object_path.with_suffix(object_path.suffix + ".lock")
-            try:
-                lock_fd = os.open(lock, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
-            except FileExistsError as error:
-                raise ReplayError(f"claim recovery is already in progress: {key}") from error
-            try:
-                os.close(lock_fd)
-                current = load_json(object_path)
-                if current.get("expires_unix", now + 1) > now:
-                    raise ReplayError(f"live replay claim exists: {key}")
-                atomic_write(object_path, record)
-            finally:
-                lock.unlink(missing_ok=True)
-        else:
-            with os.fdopen(descriptor, "wb") as stream:
-                stream.write(record)
-                stream.flush()
-                os.fsync(stream.fileno())
-        digest = sha256_bytes(record)
-        atomic_write(meta_path, canonical_json({
-            "size": len(record), "sha256": digest, "etag": digest,
-            "last_modified": f"local-claim-{now}", "metadata": {}, "tags": {},
-        }))
-        return token
-
-    def release_claim(self, key: str, owner: str, token: str, now: float) -> None:
-        object_path, _ = self._paths(key)
-        current = load_json(object_path)
-        if current.get("owner") != owner or current.get("token") != token:
-            raise ReplayError(f"replay claim ownership mismatch: {key}")
-        current["expires_unix"] = now
-        current["released"] = True
-        value = canonical_json(current)
-        atomic_write(object_path, value)
-        _, meta_path = self._paths(key)
-        digest = sha256_bytes(value)
-        atomic_write(meta_path, canonical_json({
-            "size": len(value), "sha256": digest, "etag": digest,
-            "last_modified": f"local-claim-{now}", "metadata": {}, "tags": {},
-        }))
-
 
 class AwsCliObjectStore:
     """Least-privilege S3 adapter used only by an explicitly launched worker."""
@@ -617,11 +642,25 @@ class AwsCliObjectStore:
     def put_immutable(self, key: str, source: Path, metadata: dict[str, str]) -> ObjectInfo:
         digest = sha256_file(source)
         complete_metadata = dict(metadata, sha256=digest)
+
+        def validate_winner(candidate: ObjectInfo) -> ObjectInfo:
+            with tempfile.TemporaryDirectory() as temporary:
+                downloaded = self.download(
+                    key, Path(temporary) / "immutable-winner-readback")
+            if (
+                downloaded.size != source.stat().st_size
+                or downloaded.sha256 != digest
+                or downloaded.metadata != complete_metadata
+                or candidate.etag != downloaded.etag
+                or candidate.last_modified != downloaded.last_modified
+                or candidate.version_id != downloaded.version_id
+            ):
+                raise ReplayError(f"immutable S3 collision: {key}")
+            return downloaded
+
         current = self._head_or_none(key)
         if current is not None:
-            if current.sha256 != digest or any(current.metadata.get(k) != v for k, v in complete_metadata.items()):
-                raise ReplayError(f"immutable S3 collision: {key}")
-            return current
+            return validate_winner(current)
         metadata_argument = ",".join(f"{name}={value}" for name, value in sorted(complete_metadata.items()))
         completed = subprocess.run([
             self.aws, "s3api", "put-object", "--bucket", self.bucket,
@@ -629,6 +668,9 @@ class AwsCliObjectStore:
             "--if-none-match", "*", "--output", "json",
         ], text=True, capture_output=True, check=False)
         if completed.returncode != 0:
+            winner = self._head_or_none(key)
+            if winner is not None:
+                return validate_winner(winner)
             raise ReplayError(f"immutable S3 PUT failed for {key}: {completed.stderr.strip()}")
         uploaded = self.head(key)
         if uploaded.sha256 != digest or uploaded.size != source.stat().st_size:
@@ -676,61 +718,6 @@ class AwsCliObjectStore:
             after.key, after.size, after.sha256, after.etag, after.last_modified,
             after.metadata, after.tags, request_id, after.version_id,
         )
-
-    def acquire_claim(self, key: str, owner: str, now: float, ttl_seconds: int) -> str:
-        token = str(uuid.uuid4())
-        value = canonical_json({"owner": owner, "token": token, "expires_unix": now + ttl_seconds})
-        with tempfile.TemporaryDirectory() as temporary:
-            source = Path(temporary) / "claim.json"
-            source.write_bytes(value)
-            completed = subprocess.run([
-                self.aws, "s3api", "put-object", "--bucket", self.bucket, "--key", key,
-                "--body", str(source), "--metadata", f"sha256={sha256_bytes(value)}",
-                "--if-none-match", "*", "--output", "json",
-            ], text=True, capture_output=True, check=False)
-        if completed.returncode == 0:
-            return token
-        current = self._head_or_none(key)
-        if current is None:
-            raise ReplayError(f"claim creation failed: {completed.stderr.strip()}")
-        with tempfile.TemporaryDirectory() as temporary:
-            target = Path(temporary) / "claim.json"
-            self.download(key, target)
-            claim = load_json(target)
-            if claim.get("expires_unix", now + 1) > now:
-                raise ReplayError(f"live replay claim exists: {key}")
-            source = Path(temporary) / "replacement.json"
-            source.write_bytes(value)
-            replaced = subprocess.run([
-                self.aws, "s3api", "put-object", "--bucket", self.bucket, "--key", key,
-                "--body", str(source), "--metadata", f"sha256={sha256_bytes(value)}",
-                "--if-match", current.etag, "--output", "json",
-            ], text=True, capture_output=True, check=False)
-        if replaced.returncode != 0:
-            raise ReplayError(f"stale claim replacement failed: {replaced.stderr.strip()}")
-        return token
-
-    def release_claim(self, key: str, owner: str, token: str, now: float) -> None:
-        current = self.head(key)
-        with tempfile.TemporaryDirectory() as temporary:
-            downloaded = Path(temporary) / "claim.json"
-            self.download(key, downloaded)
-            claim = load_json(downloaded)
-            if claim.get("owner") != owner or claim.get("token") != token:
-                raise ReplayError(f"replay claim ownership mismatch: {key}")
-            claim["expires_unix"] = now
-            claim["released"] = True
-            value = canonical_json(claim)
-            replacement = Path(temporary) / "released.json"
-            replacement.write_bytes(value)
-            completed = subprocess.run([
-                self.aws, "s3api", "put-object", "--bucket", self.bucket, "--key", key,
-                "--body", str(replacement), "--metadata", f"sha256={sha256_bytes(value)}",
-                "--if-match", current.etag, "--output", "json",
-            ], text=True, capture_output=True, check=False)
-        if completed.returncode != 0:
-            raise ReplayError(f"claim release failed: {completed.stderr.strip()}")
-
 
 def info_record(info: ObjectInfo) -> dict[str, Any]:
     record = {

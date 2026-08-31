@@ -2,15 +2,16 @@
 """Dispatch a manifest-bound H1 replay queue on one dedicated node.
 
 The initial production benchmark is deliberately single-node and P=1.  This
-dispatcher may raise local concurrency after the measured benchmark, but does
-not implement distributed lease stealing.  Multiple dispatchers against the
-same replay prefix are therefore forbidden by the launch manifest.
+dispatcher may raise local concurrency after the measured benchmark.  Goal #44
+selected a manifest-bound host-local lock rather than distributed leasing;
+another dispatcher fails before scheduling even with a different state dir.
 """
 
 from __future__ import annotations
 
 import argparse
 import concurrent.futures
+import fcntl
 import json
 import os
 import subprocess
@@ -25,6 +26,24 @@ from replay_worker import validate_job
 
 HERE = Path(__file__).resolve().parent
 WORKER = HERE / "replay_worker.py"
+
+
+def acquire_single_writer_lock(lock_path: Path):
+    """Hold a host-local exclusive lock for the complete dispatcher lifetime."""
+    lock_path = lock_path.resolve()
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    handle = lock_path.open("a+", encoding="utf-8")
+    try:
+        fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError as error:
+        handle.close()
+        raise ReplayError("another replay dispatcher holds the single-writer lock") from error
+    handle.seek(0)
+    handle.truncate()
+    handle.write(json.dumps({"pid": os.getpid(), "acquired_unix_ns": time.time_ns()}, sort_keys=True) + "\n")
+    handle.flush()
+    os.fsync(handle.fileno())
+    return handle
 
 
 def load_queue(path: Path) -> list[dict[str, Any]]:
@@ -71,14 +90,14 @@ def run_job(args: argparse.Namespace, job: dict[str, Any], queue_sha: str,
         command.extend(["--object-store-root", str(args.object_store_root)])
     else:
         command.extend(["--s3-bucket", args.s3_bucket, "--aws", args.aws])
-    started = time.time()
+    started = time.time_ns()
     completed = subprocess.run(command, text=True, capture_output=True, check=False)
-    finished = time.time()
+    finished = time.time_ns()
     receipt = {
-        "schema": "erdos85-h1-replay-dispatch-v1", "tag": tag,
+        "schema": "erdos85-h1-replay-dispatch-v2", "tag": tag,
         "queue_sha256": queue_sha, "worker_sha256": worker_sha,
-        "started_unix": started, "finished_unix": finished,
-        "wall_seconds": finished - started, "returncode": completed.returncode,
+        "started_unix_ns": started, "finished_unix_ns": finished,
+        "wall_ns": finished - started, "returncode": completed.returncode,
         "stdout": completed.stdout, "stderr": completed.stderr,
     }
     destination = args.state_dir / "dispatch" / (
@@ -101,6 +120,7 @@ def main() -> int:
     backend.add_argument("--s3-bucket")
     parser.add_argument("--aws", default="aws")
     args = parser.parse_args()
+    lock_handle = None
     try:
         manifest = load_manifest(args.manifest)
         jobs = load_queue(args.queue)
@@ -126,12 +146,15 @@ def main() -> int:
             raise ReplayError("worker SHA-256 differs from manifest")
         if manifest.get("single_dispatcher") is not True:
             raise ReplayError("manifest must explicitly require single_dispatcher=true")
+        lock_path = Path(manifest["single_writer_lock_path"])
+        lock_handle = acquire_single_writer_lock(lock_path)
 
         start_record = {
-            "schema": "erdos85-h1-replay-dispatch-start-v1",
+            "schema": "erdos85-h1-replay-dispatch-start-v2",
             "manifest_sha256": sha256_file(args.manifest), "queue_sha256": queue_sha,
             "worker_sha256": worker_sha, "jobs": len(jobs),
-            "parallelism": args.parallelism, "pid": os.getpid(), "started_unix": time.time(),
+            "parallelism": args.parallelism, "pid": os.getpid(),
+            "single_writer_lock_path": str(lock_path), "started_unix_ns": time.time_ns(),
         }
         atomic_write(args.state_dir / "dispatch" / "START.json", canonical_json(start_record))
         results: list[dict[str, Any]] = []
@@ -141,12 +164,12 @@ def main() -> int:
                 results.append(future.result())
         failed = [result for result in results if result["returncode"] != 0]
         end_record = {
-            "schema": "erdos85-h1-replay-dispatch-end-v1",
+            "schema": "erdos85-h1-replay-dispatch-end-v2",
             "manifest_sha256": start_record["manifest_sha256"],
             "queue_sha256": queue_sha, "worker_sha256": worker_sha,
             "jobs": len(jobs), "accepted": len(jobs) - len(failed),
             "failed": len(failed), "failed_tags": sorted(result["tag"] for result in failed),
-            "finished_unix": time.time(),
+            "single_writer_lock_path": str(lock_path), "finished_unix_ns": time.time_ns(),
         }
         atomic_write(args.state_dir / "dispatch" / "END.json", canonical_json(end_record))
         print(json.dumps(end_record, sort_keys=True))
@@ -154,6 +177,10 @@ def main() -> int:
     except (OSError, ReplayError) as error:
         print(f"DISPATCH_ERROR: {error}", file=sys.stderr)
         return 2
+    finally:
+        if lock_handle is not None:
+            fcntl.flock(lock_handle.fileno(), fcntl.LOCK_UN)
+            lock_handle.close()
 
 
 if __name__ == "__main__":

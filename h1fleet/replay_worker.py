@@ -17,7 +17,6 @@ import shutil
 import subprocess
 import sys
 import time
-import uuid
 import tempfile
 from dataclasses import replace
 import urllib.error
@@ -27,11 +26,13 @@ from typing import Any
 
 from replay_common import (
     NATIVE_AXIOM_PATTERN, READY_SCHEMA, RECEIPT_SCHEMA, AwsCliObjectStore,
+    RECEIPT_INTEGRITY_SCHEME,
     LocalObjectStore, ObjectInfo, ObjectStore,
     ReplayError,
     atomic_write, canonical_json, expand_command, info_record, load_json,
     load_manifest, require_sha, require_tag, run_command, sha256_bytes,
-    sha256_file, validate_command_receipts,
+    sha256_file, seal_receipt_integrity, validate_command_receipts,
+    validate_receipt_fields, validate_receipt_integrity,
 )
 
 
@@ -113,17 +114,17 @@ def receipt_command_bindings(work: Path, job: dict[str, Any]) -> dict[str, dict[
 
 def require_command_ok(name: str, command: list[str], work: Path, log: Path,
                        environment_allowlist: list[str]) -> dict[str, Any]:
-    started = time.time()
+    started = time.time_ns()
     result = run_command(command, work, log, environment_allowlist)
-    finished = time.time()
+    finished = time.time_ns()
     if result.returncode != 0:
         raise ReplayError(f"{name} failed with rc={result.returncode}")
     return {
         "argv": result.argv, "returncode": result.returncode,
-        "started_unix": started, "finished_unix": finished,
-        "wall_seconds": finished - started,
-        "user_cpu_seconds": result.user_cpu_seconds,
-        "system_cpu_seconds": result.system_cpu_seconds,
+        "started_unix_ns": started, "finished_unix_ns": finished,
+        "wall_ns": finished - started,
+        "user_cpu_ns": round(result.user_cpu_seconds * 1_000_000_000),
+        "system_cpu_ns": round(result.system_cpu_seconds * 1_000_000_000),
         "peak_rss_kib": result.peak_rss_kib,
         "environment": result.environment,
         "stdout_sha256": sha256_bytes(result.stdout.encode()),
@@ -213,6 +214,14 @@ def require_stable_object_identity(
 
 def validate_ready(ready: dict[str, Any], manifest: dict[str, Any], job: dict[str, Any],
                    store: ObjectStore) -> None:
+    expected_fields = {
+        "schema", "tag", "manifest_sha256", "job_sha256", "job_identity",
+        "build_identity", "worker_runtime", "module", "work_root", "certificate",
+        "compact_lrat", "source_raw", "olean_raw", "native_axiom_prefix",
+        "axiom_audit", "commands", "artifacts",
+    }
+    if set(ready) != expected_fields:
+        raise ReplayError("replay-ready fields differ from exact schema")
     if ready.get("schema") != READY_SCHEMA or ready.get("tag") != job["tag"]:
         raise ReplayError("replay-ready identity mismatch")
     if ready.get("manifest_sha256") != manifest["manifest_sha256"]:
@@ -238,6 +247,7 @@ def validate_ready(ready: dict[str, Any], manifest: dict[str, Any], job: dict[st
             "capacity_reindexer_sha256", "capacity_queue_validator_sha256",
             "capacity_index_sha256", "capacity_reindex_receipt_sha256",
             "common_sha256", "dispatcher_sha256", "zstd_identity",
+            "single_writer_lock_path",
         )
     }
     if ready.get("build_identity") != expected_build_identity:
@@ -428,6 +438,7 @@ def compile_ready(store: ObjectStore, manifest: dict[str, Any], job: dict[str, A
                 "capacity_reindexer_sha256", "capacity_queue_validator_sha256",
                 "capacity_index_sha256", "capacity_reindex_receipt_sha256",
                 "common_sha256", "dispatcher_sha256", "zstd_identity",
+                "single_writer_lock_path",
             )
         },
         "worker_runtime": worker_runtime,
@@ -496,9 +507,8 @@ def finish_transaction(store: ObjectStore, manifest: dict[str, Any], job: dict[s
         "tagging_request_kind": tagging_request_kind,
         "tagging_request_id": tagging_request_id,
         "integrity": {
-            "scheme": manifest["receipt_integrity_scheme"],
-            "key_id": manifest["receipt_integrity_key_id"],
-            "value": None,
+            "scheme": RECEIPT_INTEGRITY_SCHEME,
+            "receipt_sha256": None,
         },
         "artifacts": ready["artifacts"], "axiom_audit": ready["axiom_audit"],
     }
@@ -507,11 +517,12 @@ def finish_transaction(store: ObjectStore, manifest: dict[str, Any], job: dict[s
     if ready_info.sha256 != receipt["replay_ready_sha256"]:
         raise ReplayError("immutable replay-ready object differs from validated record")
     receipt["replay_ready"] = info_record(ready_info)
+    seal_receipt_integrity(receipt)
     metadata = {"tag": job["tag"], "manifest-sha256": manifest["manifest_sha256"]}
     receipt_info = store.put_bytes_immutable(
         receipt_key(prefix, job["tag"]), canonical_json(receipt), metadata)
     ledger = {
-        "schema": "erdos85-h1-replay-ledger-v1", "tag": job["tag"],
+        "schema": "erdos85-h1-replay-ledger-v2", "tag": job["tag"],
         "receipt_key": receipt_info.key, "receipt_sha256": receipt_info.sha256,
         "manifest_sha256": manifest["manifest_sha256"], "accepted": True,
     }
@@ -522,6 +533,7 @@ def finish_transaction(store: ObjectStore, manifest: dict[str, Any], job: dict[s
 def validate_existing_receipt(store: ObjectStore, manifest: dict[str, Any],
                               job: dict[str, Any], receipt: dict[str, Any],
                               work: Path) -> bool:
+    validate_receipt_fields(receipt)
     if receipt.get("schema") != RECEIPT_SCHEMA or receipt.get("accepted") is not True:
         raise ReplayError("existing receipt is not validly accepted")
     if receipt.get("tag") != job["tag"]:
@@ -532,19 +544,7 @@ def validate_existing_receipt(store: ObjectStore, manifest: dict[str, Any],
         raise ReplayError("existing receipt belongs to another job record")
     if not isinstance(receipt.get("tagging_request_id"), str) or not receipt["tagging_request_id"]:
         raise ReplayError("existing receipt lacks tagging request id")
-    integrity = receipt.get("integrity")
-    if not isinstance(integrity, dict) or (
-        integrity.get("scheme") != manifest["receipt_integrity_scheme"]
-        or integrity.get("key_id") != manifest["receipt_integrity_key_id"]
-    ):
-        raise ReplayError("existing receipt integrity declaration mismatch")
-    if integrity["scheme"] == "local-test-unkeyed":
-        if integrity != {
-            "scheme": "local-test-unkeyed", "key_id": "local-test", "value": None,
-        }:
-            raise ReplayError("existing local receipt integrity declaration is malformed")
-    elif not isinstance(integrity.get("value"), str) or not integrity["value"]:
-        raise ReplayError("existing receipt lacks keyed integrity evidence")
+    validate_receipt_integrity(receipt)
     prefix = manifest["campaign_prefix"]
     loaded_ready = try_load_remote_json_with_info(
         store, ready_key(prefix, job["tag"]), work / "accepted-ready.json"
@@ -599,7 +599,7 @@ def validate_existing_receipt(store: ObjectStore, manifest: dict[str, Any],
     expected_ledger_fields = {
         "schema", "tag", "receipt_key", "receipt_sha256", "manifest_sha256", "accepted",
     }
-    if set(ledger) != expected_ledger_fields or ledger.get("schema") != "erdos85-h1-replay-ledger-v1":
+    if set(ledger) != expected_ledger_fields or ledger.get("schema") != "erdos85-h1-replay-ledger-v2":
         raise ReplayError("terminal ledger schema is malformed")
     receipt_info = store.head(receipt_key(prefix, job["tag"]))
     if ledger.get("accepted") is not True or ledger.get("tag") != job["tag"]:
@@ -617,7 +617,7 @@ def publish_ledger(store: ObjectStore, manifest: dict[str, Any], job: dict[str, 
     if receipt_info.sha256 is None:
         raise ReplayError("receipt object lacks SHA-256 metadata")
     ledger = {
-        "schema": "erdos85-h1-replay-ledger-v1", "tag": job["tag"],
+        "schema": "erdos85-h1-replay-ledger-v2", "tag": job["tag"],
         "receipt_key": receipt_info.key, "receipt_sha256": receipt_info.sha256,
         "manifest_sha256": manifest["manifest_sha256"], "accepted": True,
     }
@@ -686,7 +686,7 @@ def validate_production_manifest(manifest: dict[str, Any]) -> None:
         "repository_commit", "toolchain_identity", "zstd_identity", "aws_cli_identity",
         "worker_image_digest", "worker_ami_id", "worker_instance_type", "ebs_shape",
         "instance_role", "s3_bucket", "aws_region", "receipt_integrity_scheme",
-        "receipt_integrity_key_id",
+        "single_writer_lock_path",
     )
     bad = [
         key for key in launch_fields
@@ -752,41 +752,28 @@ def main() -> int:
             validate_production_manifest(manifest)
             if args.s3_bucket != manifest["s3_bucket"]:
                 raise ReplayError("S3 bucket differs from frozen manifest")
-            if manifest["receipt_integrity_scheme"] in (
-                "TBD", "local-test-unkeyed",
-            ):
-                raise ReplayError("editor-selected keyed receipt integrity is unresolved")
-            raise ReplayError(
-                f"unsupported receipt integrity scheme: {manifest['receipt_integrity_scheme']!r}")
             validate_aws_cli(args.aws, manifest["aws_cli_identity"])
             worker_runtime = load_imds_worker_runtime(manifest)
             store = AwsCliObjectStore(args.s3_bucket, args.aws)
         prefix = manifest["campaign_prefix"]
 
-        claim_key = artifact_key(prefix, "claims", tag, "json")
-        owner = str(uuid.uuid4())
-        claim_token = store.acquire_claim(
-            claim_key, owner, time.time(), manifest.get("claim_ttl_seconds", 86400))
-        try:
-            accepted = try_load_remote_json(store, receipt_key(prefix, tag), work / "existing-receipt.json")
-            if accepted is not None:
-                complete = validate_existing_receipt(store, manifest, job, accepted, work)
-                if not complete:
-                    publish_ledger(store, manifest, job)
-                    print(f"RECOVERED_LEDGER tag={tag}")
-                else:
-                    print(f"ALREADY_ACCEPTED tag={tag}")
-                return 0
-
-            ready = try_load_remote_json(store, ready_key(prefix, tag), work / "existing-ready.json")
-            if ready is None:
-                ready = compile_ready(store, manifest, job, work, worker_runtime)
-            receipt = finish_transaction(store, manifest, job, ready)
-            atomic_write(work / "accepted-receipt.json", canonical_json(receipt))
-            print(f"ACCEPTED tag={tag}")
+        accepted = try_load_remote_json(store, receipt_key(prefix, tag), work / "existing-receipt.json")
+        if accepted is not None:
+            complete = validate_existing_receipt(store, manifest, job, accepted, work)
+            if not complete:
+                publish_ledger(store, manifest, job)
+                print(f"RECOVERED_LEDGER tag={tag}")
+            else:
+                print(f"ALREADY_ACCEPTED tag={tag}")
             return 0
-        finally:
-            store.release_claim(claim_key, owner, claim_token, time.time())
+
+        ready = try_load_remote_json(store, ready_key(prefix, tag), work / "existing-ready.json")
+        if ready is None:
+            ready = compile_ready(store, manifest, job, work, worker_runtime)
+        receipt = finish_transaction(store, manifest, job, ready)
+        atomic_write(work / "accepted-receipt.json", canonical_json(receipt))
+        print(f"ACCEPTED tag={tag}")
+        return 0
     except ReplayError as error:
         print(f"REPLAY_ERROR: {error}", file=sys.stderr)
         return 2
