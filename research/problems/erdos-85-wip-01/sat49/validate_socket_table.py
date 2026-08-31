@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -40,6 +41,36 @@ FORBIDDEN = re.compile(r"(?:^|[^A-Za-z])(TBD|UNKNOWN|TODO|NONE|N/A)(?:$|[^A-Za-z
 
 class SocketTableError(ValueError):
     pass
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1 << 20), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def evidence_receipt(table_path: Path, expected_path: Path, count: int) -> str:
+    table_sha = sha256_file(table_path)
+    expected_sha = sha256_file(expected_path)
+    identity = {
+        "expected_manifest_sha256": expected_sha,
+        "schema": "erdos85-sat49-socket-table-v1",
+        "socket_count": count,
+        "table_fields": list(FIELDS),
+        "table_sha256": table_sha,
+    }
+    encoded = json.dumps(
+        identity, ensure_ascii=True, allow_nan=False,
+        separators=(",", ":"), sort_keys=True,
+    ).encode("ascii")
+    identity_sha = hashlib.sha256(encoded).hexdigest()
+    return (
+        f"PASS schema={identity['schema']} sockets={count} "
+        f"table_sha256={table_sha} expected_manifest_sha256={expected_sha} "
+        f"identity_sha256={identity_sha}"
+    )
 
 
 def _read_expected(path: Path) -> dict[str, list[str]]:
@@ -166,7 +197,7 @@ def main() -> int:
         count = validate(args.table, args.expected_hypotheses)
     except (OSError, SocketTableError) as exc:
         parser.error(str(exc))
-    print(f"PASS sockets={count} table={args.table.resolve()}")
+    print(evidence_receipt(args.table, args.expected_hypotheses, count))
     return 0
 
 

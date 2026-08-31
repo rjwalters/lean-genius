@@ -59,6 +59,24 @@ class ValidateSocketTableTest(unittest.TestCase):
     def test_accepts_exact_bijection(self):
         self.write()
         self.assertEqual(MOD.validate(self.table, self.expected), 2)
+        receipt = MOD.evidence_receipt(self.table, self.expected, 2)
+        self.assertRegex(
+            receipt,
+            r"^PASS schema=erdos85-sat49-socket-table-v1 sockets=2 "
+            r"table_sha256=[0-9a-f]{64} expected_manifest_sha256=[0-9a-f]{64} "
+            r"identity_sha256=[0-9a-f]{64}$",
+        )
+
+    def test_receipt_hashes_exact_input_bytes(self):
+        self.write()
+        before = MOD.evidence_receipt(self.table, self.expected, 2)
+        self.table.write_bytes(self.table.read_bytes() + b"\n")
+        after_table = MOD.evidence_receipt(self.table, self.expected, 2)
+        self.assertNotEqual(before, after_table)
+        self.table.write_bytes(self.table.read_bytes()[:-1])
+        self.expected.write_bytes(self.expected.read_bytes() + b" ")
+        after_expected = MOD.evidence_receipt(self.table, self.expected, 2)
+        self.assertNotEqual(before, after_expected)
 
     def test_rejects_missing_unknown_and_duplicate_hypotheses(self):
         for rows in ([self.rows[0]],
