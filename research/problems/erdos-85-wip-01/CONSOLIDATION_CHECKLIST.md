@@ -5,18 +5,21 @@ created early.**  This is the execution checklist for operator mandate 1318 and
 goal #43.  A checked box requires the named durable evidence; verbal success or
 an idle process is not evidence.
 
-Current evidence snapshot (2026-08-30 18:08 PDT; only the replay-contract
+Current evidence snapshot (2026-08-30 19:26 PDT; only the replay-contract
 selection and exact-image implementation/test boxes below are discharged):
 
 - the reviewed Branch-A consolidation lineage ends at `7763e294de`; the
   capacity-index/replay provenance chain and hierarchical aggregate generator
   are also reviewed and banked, but neither is final campaign evidence until
   the complete accepted receipt set is generated and cold-audited;
-- the latest authoritative H1 reconciliation reports 9,532 certified, 175
-  in-flight, and 3,644 pending out of 13,351 (squad message 36781), with
-  10,689 claims, 10,513 ledgers, 1,347 `UNKNOWN` rows lacking a certificate,
-  no reported anomalies, and zero CNF divergence in the 28-row
-  spot check.  The completion universe is therefore still incomplete;
+- the latest authoritative H1 reconciliation reports 9,744 certified, 173
+  in-flight, and 3,434 pending out of 13,351 (squad message 37015), with
+  10,930 claims, 10,753 ledgers, 1,378 `UNKNOWN` rows lacking a certificate,
+  no reported anomalies, and zero CNF divergence in the 30-row spot check.
+  The raw `counts.json` and `coverage.tsv` hashes are respectively
+  `8f5a7a73e4a02f798da75dc32bd004c682ef5a37a6990d354ae1e279aaae9d10`
+  and `5a8a4c0981a6b4b3253a7a38a90a79abe9c6617314aa44d3a28104e0cd3b26a2`.
+  The completion universe is therefore still incomplete;
 - replay consumption is assigned to sol-2 and replay review gates/checklist
   maintenance to sol-3.  Goal #44 selected a single-writer, canonical-JSON,
   plain-SHA-256 receipt contract with create-only publication and no KMS or
@@ -42,8 +45,11 @@ selection and exact-image implementation/test boxes below are discharged):
   and positive-grid bank, for 406 accepted LRAT leaves total.  The quick pass's
   nine UNSAT jobs do not complete any such bank, so semantic discharge remains
   0/4 H3 bases and 0/3 H5 bases (squad message 36728);
-- H7 host execution is live at P=1 under the 105-GiB preservation floor; the
-  first leaf ended SLOW-UNKNOWN and the second is active.  Goal #44 directs
+- H7 host execution is live at P=1 under the 105-GiB preservation floor.  Its
+  exact 232-leaf queue has two authenticated `SLOW-UNKNOWN` leaves (`000` and
+  `001`), leaf `010` active, 229 untouched, and zero terminal receipts (squad
+  message 37018).  Both unknown leaves have independently reviewed, staged
+  two-child H8 splits, but neither follow-up is launched.  Goal #44 directs
   eventual fleet handoff after H1 v2 drains, so no H7 socket is discharged;
 - the socket-table validator and evidence-hash binding are reviewed and banked
   at `a4f1dfd2f8` and `fce07ec80d`; they enforce the exact hypothesis/row
