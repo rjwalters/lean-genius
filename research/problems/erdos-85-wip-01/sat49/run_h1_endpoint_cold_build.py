@@ -21,6 +21,9 @@ POST_SCHEMA = "erdos85-h1-leaf-module-evidence-receipt-v1"
 EVIDENCE_SCHEMA = "erdos85-h1-committed-leaf-evidence-v1"
 POST_PRODUCER_SHA256 = "170d81727b9d0c612c4a0af9507b751aea4011f52f129efb46bdde39a9b96d70"
 CACHE_SCHEMA = "erdos85-h1-offline-dependency-cache-v1"
+CACHE_RECEIPT_SCHEMA = "erdos85-h1-offline-dependency-cache-snapshot-receipt-v1"
+CACHE_PRODUCER_PATH = "research/problems/erdos-85-wip-01/sat49/snapshot_h1_offline_dependency_cache.py"
+CACHE_PRODUCER_SHA256 = "931a663376508e3937f8b370eafc04e8750d5a413154246dbd1c31364372dd17"
 TOOLCHAIN_SCHEMA = "erdos85-h1-endpoint-cold-build-toolchain-v1"
 IMAGE = "lean4-arm64@sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6"
 MODULE = "Proofs.Generated.Erdos85OrderFortyNineOneHighCertificates"
@@ -28,6 +31,9 @@ THEOREM = "Erdos85.orderFortyNineStratumExcluded_one_of_generatedCertificates"
 SOURCE = "proofs/Proofs/Generated/Erdos85OrderFortyNineOneHighCertificates.lean"
 OLEAN = ".lake/build/lib/lean/Proofs/Generated/Erdos85OrderFortyNineOneHighCertificates.olean"
 CONTROL_PATHS = ("proofs/lean-toolchain", "proofs/lakefile.toml", "proofs/lake-manifest.json")
+LAKE_MANIFEST_FIELDS = {"fixedToolchain", "lakeDir", "name", "packages", "packagesDir", "version"}
+LAKE_PACKAGE_FIELDS = {"configFile", "inherited", "inputRev", "manifestFile", "name", "rev",
+                       "scope", "subDir", "type", "url"}
 SHA = re.compile(r"[0-9a-f]{64}")
 COMMIT = re.compile(r"[0-9a-f]{40}")
 TAG = re.compile(r"[0-9a-f]{16}")
@@ -101,6 +107,17 @@ def relative(value, label):
     return path
 
 
+def normalize_url(value):
+    if not isinstance(value, str):
+        raise ValueError("package remote URL malformed")
+    match = re.fullmatch(
+        r"(?:https://github\.com/|git@github\.com:)([^/]+)/([^/]+?)(?:\.git)?/?", value
+    )
+    if match is None:
+        raise ValueError("package remote URL is not canonical GitHub remote")
+    return f"github.com/{match.group(1).lower()}/{match.group(2).lower()}"
+
+
 def command(runner, kind, argv, cwd, stdout, stderr):
     result = runner(kind, argv, cwd, {}, stdout, stderr)
     fields = {"cumulative_children_maxrss_kb", "rc", "system_ns", "user_ns", "wall_ns"}
@@ -130,6 +147,10 @@ def templates():
         "control_commit_oids": ["{git}", "-C", "{checkout}", "rev-parse",
             *["{commit}:" + path for path in CONTROL_PATHS]],
         "control_worktree_oids": ["{git}", "-C", "{checkout}", "hash-object", "--", *CONTROL_PATHS],
+        "cache_producer_commit_oid": ["{git}", "-C", "{checkout}", "rev-parse",
+                                      "{commit}:" + CACHE_PRODUCER_PATH],
+        "cache_producer_worktree_oid": ["{git}", "-C", "{checkout}", "hash-object", "--",
+                                        CACHE_PRODUCER_PATH],
         "status_after": ["{git}", "-C", "{checkout}", "status", "--porcelain=v1", "--untracked-files=all"],
         "tool_hashes": [*container[:-1], "--entrypoint", "/usr/bin/sha256sum", "{image}",
                         "/root/.elan/bin/lean", "/root/.elan/bin/lake"],
@@ -179,7 +200,8 @@ def scan_generated(root, base, path_key):
 
 
 def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
-          cache_manifest, cache_manifest_sha256, toolchain, toolchain_sha256,
+          cache_receipt, cache_receipt_sha256, cache_manifest, cache_manifest_sha256,
+          toolchain, toolchain_sha256,
           output, runner, before_receipt=None):
     producer = Path(__file__).resolve()
     safe(repo, "repository", kind="dir")
@@ -282,10 +304,72 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
         if source_rel.parts[:3] != ("proofs", "Proofs", "Generated") or source_rel.suffix != ".lean":
             raise ValueError("generated source path is outside exact Generated Lean namespace")
         expected_oleans.add(PurePosixPath(".lake/build/lib/lean", *source_rel.parts[1:]).with_suffix(".olean"))
+    cache_snapshot = read_json(cache_receipt, cache_receipt_sha256,
+                               "dependency-cache snapshot receipt")
+    cache_receipt_fields = {"cache_manifest_path", "cache_manifest_sha256", "control_files",
+        "entry_count", "git_path", "git_sha256", "package_count", "packages",
+        "producer_path", "producer_sha256", "repo", "schema", "source_commit"}
+    cache_producer = repo / Path(*PurePosixPath(CACHE_PRODUCER_PATH).parts)
+    if (set(cache_snapshot) != cache_receipt_fields
+            or cache_snapshot.get("schema") != CACHE_RECEIPT_SCHEMA
+            or cache_snapshot.get("source_commit") != source_commit
+            or cache_snapshot.get("repo") != str(repo)
+            or cache_snapshot.get("producer_path") != str(cache_producer)
+            or cache_snapshot.get("producer_sha256") != CACHE_PRODUCER_SHA256
+            or cache_snapshot.get("cache_manifest_sha256") != cache_manifest_sha256
+            or type(cache_snapshot.get("entry_count")) is not int
+            or cache_snapshot["entry_count"] < 0
+            or type(cache_snapshot.get("package_count")) is not int
+            or cache_snapshot["package_count"] < 0):
+        raise ValueError("dependency-cache snapshot receipt contract mismatch")
+    require(cache_producer, CACHE_PRODUCER_SHA256, "dependency-cache snapshot producer")
+    cache_manifest_rel = relative(cache_snapshot["cache_manifest_path"],
+                                  "dependency-cache snapshot manifest path")
+    if cache_manifest_rel.as_posix() != "cache-manifest.json":
+        raise ValueError("dependency-cache snapshot manifest path mismatch")
+    resolved_cache_manifest = cache_receipt.parent / Path(*cache_manifest_rel.parts)
+    if cache_manifest != resolved_cache_manifest:
+        raise ValueError("dependency-cache manifest path differs from snapshot receipt")
+    controls = cache_snapshot["control_files"]
+    if (not isinstance(controls, list) or len(controls) != len(CONTROL_PATHS)
+            or [item.get("path") if isinstance(item, dict) else None for item in controls]
+               != list(CONTROL_PATHS)):
+        raise ValueError("dependency-cache snapshot control identities malformed")
+    for item in controls:
+        if (set(item) != {"blob_oid", "bytes", "path", "sha256"}
+                or COMMIT.fullmatch(str(item["blob_oid"])) is None
+                or type(item["bytes"]) is not int or item["bytes"] <= 0
+                or SHA.fullmatch(str(item["sha256"])) is None):
+            raise ValueError("dependency-cache snapshot control identities malformed")
+    packages = cache_snapshot["packages"]
+    package_fields = {"head", "manifest_url", "name", "normalized_remote", "path", "rev",
+                      "source_identity_sha256"}
+    if (not isinstance(packages, list) or len(packages) != cache_snapshot["package_count"]):
+        raise ValueError("dependency-cache snapshot package identities malformed")
+    package_names, normalized_remotes = set(), set()
+    for item in packages:
+        if (not isinstance(item, dict) or set(item) != package_fields
+                or not isinstance(item["name"], str)
+                or re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]*", item["name"]) is None
+                or item["name"] in package_names
+                or COMMIT.fullmatch(str(item["head"])) is None or item["head"] != item["rev"]
+                or SHA.fullmatch(str(item["source_identity_sha256"])) is None
+                or not all(isinstance(item[key], str) and item[key]
+                           for key in ("manifest_url", "normalized_remote", "path"))):
+            raise ValueError("dependency-cache snapshot package identities malformed")
+        expected_package_path = repo / "proofs/.lake/packages" / item["name"]
+        if (item["path"] != str(expected_package_path)
+                or item["normalized_remote"] != normalize_url(item["manifest_url"])
+                or item["normalized_remote"] in normalized_remotes):
+            raise ValueError("dependency-cache snapshot package identities malformed")
+        package_names.add(item["name"])
+        normalized_remotes.add(item["normalized_remote"])
     cache = read_json(cache_manifest, cache_manifest_sha256, "dependency-cache manifest")
     if set(cache) != {"entries", "identity_sha256", "root", "schema"} or cache.get("schema") != CACHE_SCHEMA:
         raise ValueError("dependency-cache manifest schema mismatch")
     cache_root = Path(cache["root"]); safe(cache_root, "dependency-cache root", kind="dir")
+    if cache_root != cache_receipt.parent / "cache":
+        raise ValueError("dependency-cache root differs from snapshot receipt")
     if not isinstance(cache.get("entries"), list): raise ValueError("cache entries malformed")
     entries, seen = [], set()
     for item in cache["entries"]:
@@ -305,6 +389,19 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
     if [item["path"] for item in cache["entries"]] != sorted(item["path"] for item in cache["entries"]):
         raise ValueError("cache entries are not in canonical path order")
     if cache_identity != cache["identity_sha256"]: raise ValueError("cache identity mismatch")
+    if cache_snapshot["entry_count"] != len(cache["entries"]):
+        raise ValueError("dependency-cache snapshot entry count mismatch")
+    observed_package_names = {PurePosixPath(item["path"]).parts[2] for item in cache["entries"]
+        if PurePosixPath(item["path"]).parts[:2] == (".lake", "packages")
+        and len(PurePosixPath(item["path"]).parts) >= 3}
+    if observed_package_names != package_names:
+        raise ValueError("dependency-cache snapshot package set mismatch")
+    for package in packages:
+        package_entries = [item for item in cache["entries"]
+            if PurePosixPath(item["path"]).parts[:3] == (".lake", "packages", package["name"])]
+        expected_identity = hashlib.sha256(canonical(package_entries)).hexdigest()
+        if not package_entries or package["source_identity_sha256"] != expected_identity:
+            raise ValueError("dependency-cache snapshot package source identity mismatch")
     tools = read_json(toolchain, toolchain_sha256, "cold-build toolchain")
     tool_fields = {"command_identity_derivation", "command_templates", "container_runtime_path",
                    "container_runtime_sha256", "git_path", "git_sha256", "image", "resource_policy", "schema"}
@@ -317,9 +414,13 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
     git = Path(tools["git_path"]); runtime = Path(tools["container_runtime_path"])
     require(git, tools["git_sha256"], "git executable")
     require(runtime, tools["container_runtime_sha256"], "container runtime")
-    captured.extend((cache_manifest, toolchain, git, runtime))
+    if (cache_snapshot["git_path"] != str(git)
+            or cache_snapshot["git_sha256"] != tools["git_sha256"]):
+        raise ValueError("dependency-cache snapshot Git identity mismatch")
+    captured.extend((cache_receipt, cache_producer, cache_manifest, toolchain, git, runtime))
     pins = {str(producer): sha(producer), str(post_receipt): post_receipt_sha256,
-            str(evidence_path): post["evidence_sha256"], str(cache_manifest): cache_manifest_sha256,
+            str(evidence_path): post["evidence_sha256"], str(cache_receipt): cache_receipt_sha256,
+            str(cache_producer): CACHE_PRODUCER_SHA256, str(cache_manifest): cache_manifest_sha256,
             str(toolchain): toolchain_sha256, str(git): tools["git_sha256"],
             str(runtime): tools["container_runtime_sha256"]}
     for path_key, pin_key in (("adapter_receipt_path", "adapter_receipt_sha256"),
@@ -343,6 +444,7 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
         safe(checkout, "fresh checkout", kind="dir"); safe(checkout / ".git", "fresh checkout git dir", kind="dir")
         invoke("checkout", stage); invoke("head", stage); invoke("status", stage)
         invoke("control_commit_oids", stage); invoke("control_worktree_oids", stage)
+        invoke("cache_producer_commit_oid", stage); invoke("cache_producer_worktree_oid", stage)
         if (logs / "head.stdout").read_text() != source_commit + "\n" or (logs / "status.stdout").read_bytes() != b"":
             raise ValueError("fresh checkout identity/status mismatch")
         commit_oids = (logs / "control_commit_oids.stdout").read_text().splitlines()
@@ -356,6 +458,42 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
             if path.stat().st_size <= 0: raise ValueError(f"reviewed {repo_path} is empty")
             control_identities.append({"blob_oid": blob_oid, "bytes": path.stat().st_size,
                                        "path": repo_path, "sha256": sha(path)})
+        if control_identities != controls:
+            raise ValueError("dependency-cache snapshot control identity mismatch")
+        cache_producer_commit_oids = (logs / "cache_producer_commit_oid.stdout").read_text().splitlines()
+        cache_producer_worktree_oids = (logs / "cache_producer_worktree_oid.stdout").read_text().splitlines()
+        if (len(cache_producer_commit_oids) != 1
+                or cache_producer_commit_oids != cache_producer_worktree_oids
+                or COMMIT.fullmatch(cache_producer_commit_oids[0]) is None):
+            raise ValueError("dependency-cache snapshot producer Git identity mismatch")
+        checkout_cache_producer = checkout / Path(*PurePosixPath(CACHE_PRODUCER_PATH).parts)
+        require(checkout_cache_producer, CACHE_PRODUCER_SHA256,
+                "committed dependency-cache snapshot producer")
+        cache_producer_identity = {"blob_oid": cache_producer_commit_oids[0],
+            "bytes": checkout_cache_producer.stat().st_size, "path": CACHE_PRODUCER_PATH,
+            "sha256": CACHE_PRODUCER_SHA256}
+        manifest_path = checkout / "proofs/lake-manifest.json"
+        try:
+            lake_manifest = json.loads(manifest_path.read_bytes())
+        except (OSError, json.JSONDecodeError) as error:
+            raise ValueError("committed Lake manifest malformed") from error
+        manifest_packages = lake_manifest.get("packages") if isinstance(lake_manifest, dict) else None
+        if (not isinstance(lake_manifest, dict) or set(lake_manifest) != LAKE_MANIFEST_FIELDS
+                or lake_manifest.get("version") != "1.2.0"
+                or lake_manifest.get("packagesDir") != ".lake/packages"
+                or lake_manifest.get("lakeDir") != ".lake" or lake_manifest.get("name") != "proofs"
+                or not isinstance(manifest_packages, list)
+                or any(not isinstance(item, dict) or set(item) != LAKE_PACKAGE_FIELDS
+                       or item.get("type") != "git" or item.get("subDir") is not None
+                       or COMMIT.fullmatch(str(item.get("rev"))) is None
+                       for item in manifest_packages)):
+            raise ValueError("committed Lake manifest schema mismatch")
+        expected_package_provenance = [(item["name"], item["rev"], item["url"])
+                                       for item in manifest_packages]
+        observed_package_provenance = [(item["name"], item["rev"], item["manifest_url"])
+                                       for item in packages]
+        if observed_package_provenance != expected_package_provenance:
+            raise ValueError("dependency-cache snapshot package manifest provenance mismatch")
         source = checkout / Path(*PurePosixPath(SOURCE).parts)
         require(source, post["endpoint_source_sha256"], "committed endpoint source")
         source_raw = source.read_bytes().lower()
@@ -423,6 +561,10 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
             raise ValueError("generated endpoint/target olean crosslink mismatch")
         receipt = {"cache_identity_sha256": cache_identity, "cache_manifest_path": str(cache_manifest),
             "cache_manifest_sha256": cache_manifest_sha256, "commands": records,
+            "cache_snapshot_producer_sha256": CACHE_PRODUCER_SHA256,
+            "cache_snapshot_producer_identity": cache_producer_identity,
+            "cache_snapshot_receipt_path": str(cache_receipt),
+            "cache_snapshot_receipt_sha256": cache_receipt_sha256,
             "endpoint_module": MODULE, "endpoint_source_path": SOURCE,
             "endpoint_source_sha256": post["endpoint_source_sha256"], "endpoint_theorem": THEOREM,
             "generated_tree_identity_sha256": post["generated_tree_identity_sha256"], "image": IMAGE,
@@ -442,6 +584,10 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
         for path, pin in pins.items():
             try: require(Path(path), pin, "captured input")
             except ValueError as error: raise ValueError("input drift before receipt") from error
+        require(checkout_cache_producer, cache_producer_identity["sha256"],
+                "committed dependency-cache snapshot producer drift before receipt")
+        if checkout_cache_producer.stat().st_size != cache_producer_identity["bytes"]:
+            raise ValueError("committed dependency-cache snapshot producer drift before receipt")
         safe(repo, "repository", kind="dir"); safe(output.parent, "output parent", kind="dir")
         require(source, post["endpoint_source_sha256"], "committed endpoint source")
         for identity in control_identities:
@@ -494,7 +640,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", type=Path, required=True); parser.add_argument("--source-commit", required=True)
     parser.add_argument("--review-id", required=True)
-    for name in ("post-receipt", "cache-manifest", "toolchain"):
+    for name in ("post-receipt", "cache-receipt", "cache-manifest", "toolchain"):
         parser.add_argument(f"--{name}", type=Path, required=True); parser.add_argument(f"--{name}-sha256", required=True)
     parser.add_argument("--output", type=Path, required=True); args = parser.parse_args()
     def runner(kind, argv, cwd, environment, stdout, stderr):
@@ -509,6 +655,7 @@ def main():
                 "wall_ns": max(1, time.monotonic_ns()-started)}
     build(repo=args.repo, source_commit=args.source_commit, review_id=args.review_id,
           post_receipt=args.post_receipt, post_receipt_sha256=args.post_receipt_sha256,
+          cache_receipt=args.cache_receipt, cache_receipt_sha256=args.cache_receipt_sha256,
           cache_manifest=args.cache_manifest, cache_manifest_sha256=args.cache_manifest_sha256,
           toolchain=args.toolchain, toolchain_sha256=args.toolchain_sha256,
           output=args.output, runner=runner)

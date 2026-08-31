@@ -79,11 +79,45 @@ def fixture(root):
     post_pin = write(post, post_value)
     cache_root = root / "cache"; entry = cache_root / ".lake/packages/mathlib/.ready"
     entry.parent.mkdir(parents=True); entry.write_text("ready\n")
-    entries = [{"bytes": entry.stat().st_size, "path": ".lake/packages/mathlib/.ready", "sha256": MOD.sha(entry)}]
-    cache = root / "cache.json"; cache_pin = write(cache, {"entries": entries,
+    second_entry = cache_root / ".lake/packages/batteries/.ready"
+    second_entry.parent.mkdir(parents=True); second_entry.write_text("battery\n")
+    entries = sorted([{"bytes": path.stat().st_size,
+        "path": path.relative_to(cache_root).as_posix(), "sha256": MOD.sha(path)}
+        for path in (entry, second_entry)], key=lambda item: item["path"])
+    cache = root / "cache-manifest.json"; cache_pin = write(cache, {"entries": entries,
         "identity_sha256": hashlib.sha256(MOD.canonical(entries)).hexdigest(), "root": str(cache_root),
         "schema": MOD.CACHE_SCHEMA})
     git = root / "git"; git.write_text("fake git\n"); runtime = root / "runtime"; runtime.write_text("fake runtime\n")
+    cache_producer = repo / MOD.CACHE_PRODUCER_PATH
+    cache_producer.parent.mkdir(parents=True, exist_ok=True)
+    cache_producer.write_bytes((HERE / "snapshot_h1_offline_dependency_cache.py").read_bytes())
+    assert MOD.sha(cache_producer) == MOD.CACHE_PRODUCER_SHA256
+    lake_package = {"configFile": None, "inherited": False, "inputRev": None,
+        "manifestFile": None, "name": "mathlib", "rev": "f" * 40, "scope": "",
+        "subDir": None, "type": "git", "url": "https://github.com/leanprover-community/mathlib4"}
+    batteries_package = {**lake_package, "name": "batteries", "rev": "6" * 40,
+        "url": "git@github.com:leanprover-community/batteries.git"}
+    lake_manifest = {"fixedToolchain": None, "lakeDir": ".lake", "name": "proofs",
+        "packages": [lake_package, batteries_package], "packagesDir": ".lake/packages", "version": "1.2.0"}
+    control_raw = {path: (MOD.canonical(lake_manifest) if path.endswith("lake-manifest.json")
+                          else (path + "\n").encode()) for path in MOD.CONTROL_PATHS}
+    controls = [{"blob_oid": oid * 40, "bytes": len(control_raw[path]), "path": path,
+                 "sha256": hashlib.sha256(control_raw[path]).hexdigest()}
+                for path, oid in zip(MOD.CONTROL_PATHS, ("c", "d", "e"), strict=True)]
+    packages = []
+    for package in lake_manifest["packages"]:
+        package_entries = [item for item in entries if item["path"].split("/")[2] == package["name"]]
+        packages.append({"head": package["rev"], "manifest_url": package["url"],
+            "name": package["name"], "normalized_remote": MOD.normalize_url(package["url"]),
+            "path": str(repo / "proofs/.lake/packages" / package["name"]), "rev": package["rev"],
+            "source_identity_sha256": hashlib.sha256(MOD.canonical(package_entries)).hexdigest()})
+    cache_receipt = root / "cache-receipt.json"
+    cache_receipt_pin = write(cache_receipt, {"cache_manifest_path": cache.name,
+        "cache_manifest_sha256": cache_pin, "control_files": controls, "entry_count": len(entries),
+        "git_path": str(git), "git_sha256": MOD.sha(git), "package_count": len(packages),
+        "packages": packages, "producer_path": str(cache_producer),
+        "producer_sha256": MOD.CACHE_PRODUCER_SHA256, "repo": str(repo),
+        "schema": MOD.CACHE_RECEIPT_SCHEMA, "source_commit": commit})
     tools = {"command_identity_derivation": "sha256(canonical-json({argv,cwd,environment,kind}))",
         "command_templates": MOD.templates(), "container_runtime_path": str(runtime),
         "container_runtime_sha256": MOD.sha(runtime), "git_path": str(git), "git_sha256": MOD.sha(git),
@@ -96,7 +130,8 @@ def fixture(root):
              "source_bad": False, "source_drift": False, "inherited_lake": False, "zero_metrics": False,
              "missing_control": False, "control_drift": False, "bad_control_oid": False}
     state.update({"missing_generated": False, "extra_generated": False, "symlink_generated": False,
-                  "fifo_generated": False})
+                  "fifo_generated": False, "missing_cache_producer": False,
+                  "bad_cache_producer_commit_oid": False, "cache_producer_drift": False})
     def runner(kind, argv, cwd, environment, stdout, stderr):
         stdout.write_bytes(b""); stderr.write_bytes(b"")
         checkout = root / "stage-placeholder"
@@ -111,8 +146,14 @@ def fixture(root):
             source = checkout / MOD.SOURCE; source.parent.mkdir(parents=True)
             source.write_bytes(b"sorry\n" if state["source_bad"] else source_raw)
             for control in MOD.CONTROL_PATHS:
-                path = checkout / control; path.parent.mkdir(parents=True, exist_ok=True); path.write_text(control + "\n")
+                path = checkout / control; path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(control_raw[control])
             if state["missing_control"]: (checkout / MOD.CONTROL_PATHS[-1]).unlink()
+            if not state["missing_cache_producer"]:
+                target_producer = checkout / MOD.CACHE_PRODUCER_PATH
+                target_producer.parent.mkdir(parents=True, exist_ok=True)
+                target_producer.write_bytes((b"drift\n" if state["cache_producer_drift"]
+                                             else cache_producer.read_bytes()))
             if state["inherited_lake"]:
                 inherited = checkout / "proofs/.lake/inherited"; inherited.parent.mkdir(parents=True); inherited.write_text("bad\n")
         elif kind == "head": stdout.write_text(("f" * 40 if state["wrong_head"] else commit) + "\n")
@@ -120,6 +161,10 @@ def fixture(root):
             oids = ["c" * 40, "d" * 40, "e" * 40]
             if kind == "control_worktree_oids" and state["bad_control_oid"]: oids[0] = "f" * 40
             stdout.write_text("\n".join(oids) + "\n")
+        elif kind == "cache_producer_commit_oid":
+            stdout.write_text(("9" if state["bad_cache_producer_commit_oid"] else "8") * 40 + "\n")
+        elif kind == "cache_producer_worktree_oid":
+            stdout.write_text(("9" if state["cache_producer_drift"] else "8") * 40 + "\n")
         elif kind in ("status", "status_after"):
             stdout.write_text(" M bad\n" if state["dirty"] or (kind == "status_after" and state["source_drift"]) else "")
         elif kind == "tool_hashes": stdout.write_text("bad\n" if state["bad_hashes"] else
@@ -145,10 +190,13 @@ def fixture(root):
             "rc": state["build_rc"] if kind == "build" else 0,
             "system_ns": 1, "user_ns": 1, "wall_ns": metric}
     args = {"repo": repo, "source_commit": commit, "review_id": review, "post_receipt": post,
-        "post_receipt_sha256": post_pin, "cache_manifest": cache, "cache_manifest_sha256": cache_pin,
+        "post_receipt_sha256": post_pin, "cache_receipt": cache_receipt,
+        "cache_receipt_sha256": cache_receipt_pin,
+        "cache_manifest": cache, "cache_manifest_sha256": cache_pin,
         "toolchain": toolchain, "toolchain_sha256": toolchain_pin, "output": root / "out", "runner": runner}
-    return args, state, {"post": post, "evidence": evidence, "cache": cache, "entry": entry, "git": git, "runtime": runtime,
-                         "toolchain": toolchain}
+    return args, state, {"post": post, "evidence": evidence, "cache": cache,
+        "cache_receipt": cache_receipt, "cache_producer": cache_producer, "entry": entry,
+        "git": git, "runtime": runtime, "toolchain": toolchain}
 
 
 class ColdBuildTest(unittest.TestCase):
@@ -157,6 +205,8 @@ class ColdBuildTest(unittest.TestCase):
             root = Path(directory); args, _, _ = fixture(root); receipt = MOD.build(**args); out = args["output"]
             self.assertEqual(receipt["schema"], MOD.SCHEMA)
             self.assertEqual(receipt["source_commit"], "a" * 40)
+            self.assertEqual(receipt["cache_snapshot_receipt_sha256"], args["cache_receipt_sha256"])
+            self.assertEqual(receipt["cache_snapshot_producer_sha256"], MOD.CACHE_PRODUCER_SHA256)
             self.assertEqual(receipt["target_olean_sha256"], hashlib.sha256(b"olean\n").hexdigest())
             self.assertEqual(MOD.sha(out / receipt["target_olean_path"]), receipt["target_olean_sha256"])
             self.assertEqual(receipt["target_olean_build_path"], MOD.OLEAN)
@@ -187,6 +237,9 @@ class ColdBuildTest(unittest.TestCase):
                  ("missing-control", "missing_control", "lake-manifest.json"),
                  ("control-oid", "bad_control_oid", "control file Git identity"),
                  ("control-drift", "control_drift", "lean-toolchain.*hash mismatch"),
+                 ("missing-cache-producer", "missing_cache_producer", "snapshot producer"),
+                 ("cache-producer-commit-oid", "bad_cache_producer_commit_oid", "producer Git identity"),
+                 ("cache-producer-drift", "cache_producer_drift", "producer Git identity"),
                  ("missing-generated", "missing_generated", "compiled Generated olean cone"),
                  ("extra-generated", "extra_generated", "unexpected compiled Generated artifact"),
                  ("symlink-generated", "symlink_generated", "Generated artifact tree file"),
@@ -207,7 +260,7 @@ class ColdBuildTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); args, _, paths = fixture(root)
             cache = json.loads(paths["cache"].read_text()); cache["entries"][0]["path"] = "../bad"
-            args["cache_manifest_sha256"] = write(paths["cache"], cache)
+            repin_cache(args, paths, cache)
             with self.assertRaisesRegex(ValueError, "cache entry"): MOD.build(**args)
         for suffix in ("Leaf.olean", "Aggregate.ilean"):
             with self.subTest(generated_cache=suffix), tempfile.TemporaryDirectory() as directory:
@@ -215,7 +268,7 @@ class ColdBuildTest(unittest.TestCase):
                 cache = json.loads(paths["cache"].read_text())
                 cache["entries"][0]["path"] = ".lake/build/lib/lean/Proofs/Generated/" + suffix
                 cache["identity_sha256"] = hashlib.sha256(MOD.canonical(cache["entries"])).hexdigest()
-                args["cache_manifest_sha256"] = write(paths["cache"], cache)
+                repin_cache(args, paths, cache)
                 with self.assertRaisesRegex(ValueError, "generated-tree Lean artifact"): MOD.build(**args)
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); args, _, paths = fixture(root)
@@ -260,6 +313,15 @@ class ColdBuildTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "container runtime"): MOD.build(**args)
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); args, _, _ = fixture(root)
+            def mutate_checkout_cache_producer():
+                matches = list(root.glob(".h1-cold-build-stage.*/checkout/" + MOD.CACHE_PRODUCER_PATH))
+                assert len(matches) == 1; matches[0].write_bytes(b"late drift\n")
+            args["before_receipt"] = mutate_checkout_cache_producer
+            with self.assertRaisesRegex(ValueError, "snapshot producer drift before receipt"):
+                MOD.build(**args)
+            self.assertFalse(args["output"].exists())
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); args, _, _ = fixture(root)
             def mutate_olean():
                 matches = list(root.glob(".h1-cold-build-stage.*/checkout/proofs/.lake/build/lib/lean/Proofs/Generated/Erdos85OrderFortyNineOneHighCertificates.olean"))
                 assert len(matches) == 1; matches[0].write_bytes(b"drift\n")
@@ -296,6 +358,59 @@ class ColdBuildTest(unittest.TestCase):
             args["before_receipt"] = add_retained_artifact
             with self.assertRaisesRegex(ValueError, "retained Generated artifact set drift"): MOD.build(**args)
 
+    def test_cache_snapshot_receipt_provenance_and_toctou_adversaries(self):
+        cases = (
+            ("schema", lambda value: value.__setitem__("schema", "spoof"), "receipt contract"),
+            ("producer-path", lambda value: value.__setitem__("producer_path", "/tmp/spoof"),
+             "receipt contract"),
+            ("producer-sha", lambda value: value.__setitem__("producer_sha256", "0" * 64),
+             "receipt contract"),
+            ("commit", lambda value: value.__setitem__("source_commit", "0" * 40),
+             "receipt contract"),
+            ("control", lambda value: value["control_files"][0].__setitem__("sha256", "0" * 64),
+             "control identity mismatch"),
+            ("entry-count", lambda value: value.__setitem__("entry_count", 3), "entry count"),
+            ("package-count", lambda value: value.__setitem__("package_count", 3), "package identities"),
+            ("package-row", lambda value: value["packages"][0].pop("source_identity_sha256"),
+             "package identities"),
+            ("package-source", lambda value: value["packages"][0].__setitem__(
+                "source_identity_sha256", "0" * 64), "package source identity"),
+            ("package-order", lambda value: value["packages"].reverse(), "manifest provenance"),
+            ("package-rev", forge_package_rev, "manifest provenance"),
+            ("package-url", forge_package_url, "manifest provenance"),
+            ("manifest-crosslink", lambda value: value.__setitem__("cache_manifest_sha256", "0" * 64),
+             "receipt contract"),
+            ("path-escape", lambda value: value.__setitem__("cache_manifest_path", "../cache.json"),
+             "manifest path"),
+            ("git", lambda value: value.__setitem__("git_sha256", "0" * 64), "Git identity"),
+        )
+        for name, mutate, message in cases:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory); args, _, paths = fixture(root)
+                mutate_cache_receipt(args, paths, mutate)
+                with self.assertRaisesRegex(ValueError, message): MOD.build(**args)
+                self.assertFalse(args["output"].exists())
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); args, _, paths = fixture(root)
+            paths["cache_receipt"].unlink()
+            with self.assertRaisesRegex(ValueError, "snapshot receipt"): MOD.build(**args)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); args, _, paths = fixture(root)
+            other = root / "caller-cache.json"; other.write_bytes(paths["cache"].read_bytes())
+            args["cache_manifest"] = other
+            with self.assertRaisesRegex(ValueError, "differs from snapshot receipt"): MOD.build(**args)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); args, _, paths = fixture(root)
+            cache = json.loads(paths["cache"].read_text()); cache["root"] = str(paths["cache"].parent)
+            repin_cache(args, paths, cache)
+            with self.assertRaisesRegex(ValueError, "root differs from snapshot receipt"): MOD.build(**args)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); args, _, paths = fixture(root)
+            original = paths["cache_receipt"].read_bytes()
+            args["before_receipt"] = lambda: paths["cache_receipt"].write_bytes(original + b"x")
+            with self.assertRaisesRegex(ValueError, "input drift"): MOD.build(**args)
+            self.assertFalse(args["output"].exists())
+
 
 def mutate_json_arg(args, path, pin_key, key, value):
     document = json.loads(path.read_text()); document[key] = value; args[pin_key] = write(path, document)
@@ -304,6 +419,29 @@ def mutate_json_arg(args, path, pin_key, key, value):
 def mutate_template(args, path, kind):
     document = json.loads(path.read_text()); document["command_templates"][kind] = ["wrong"]
     args["toolchain_sha256"] = write(path, document)
+
+
+def repin_cache(args, paths, document):
+    args["cache_manifest_sha256"] = write(paths["cache"], document)
+    receipt = json.loads(paths["cache_receipt"].read_text())
+    receipt["cache_manifest_sha256"] = args["cache_manifest_sha256"]
+    args["cache_receipt_sha256"] = write(paths["cache_receipt"], receipt)
+
+
+def mutate_cache_receipt(args, paths, mutate):
+    receipt = json.loads(paths["cache_receipt"].read_text())
+    mutate(receipt)
+    args["cache_receipt_sha256"] = write(paths["cache_receipt"], receipt)
+
+
+def forge_package_rev(receipt):
+    receipt["packages"][0]["head"] = "5" * 40
+    receipt["packages"][0]["rev"] = "5" * 40
+
+
+def forge_package_url(receipt):
+    receipt["packages"][0]["manifest_url"] = "https://github.com/example/mathlib4"
+    receipt["packages"][0]["normalized_remote"] = "github.com/example/mathlib4"
 
 
 if __name__ == "__main__": unittest.main()
