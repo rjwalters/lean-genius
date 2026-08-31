@@ -18,6 +18,7 @@ AUDIT_SCHEMA="erdos85-h1-capacity-replay-audit-v1"
 REPLAY_SCHEMA="erdos85-h1-capacity-replay-evidence-v1"
 REINDEX_SCHEMA="erdos85-h1-v2-capacity-reindex-v1"
 LEAF_SCHEMA="erdos85-h1-leaf-module-index-v1"
+MATERIALIZATION_SCHEMA="erdos85-h1-replay-leaf-materialization-v1"
 LAYOUT_SCHEMA="erdos85-h1-v2-aggregate-layout-v1"
 ADAPTER_SCHEMA="erdos85-h1-post-aggregate-adapter-generation-v1"
 EVIDENCE_SCHEMA="erdos85-h1-committed-leaf-evidence-v1"
@@ -140,6 +141,7 @@ def exact_fields(value,fields,label):
 
 def validate(repo,reviewed_commit,review_id,bank_receipt,bank_pin,reindex_receipt,reindex_pin,
              layout_path,layout_pin,adapter_receipt,adapter_pin,leaf_index_path,leaf_pin,
+             materialization_path,materialization_pin,
              profile_counts):
     require_path(repo,"repo","dir"); git_root(repo)
     if COMMIT.fullmatch(reviewed_commit) is None or REVIEW.fullmatch(review_id) is None:
@@ -213,6 +215,26 @@ def validate(repo,reviewed_commit,review_id,bank_receipt,bank_pin,reindex_receip
     if leaf["schema"]!=LEAF_SCHEMA or leaf["capacity_index_sha256"]!=reindex["output_sha256"] \
             or leaf["leaf_count"]!=total or len(leaf["modules"])!=total:
         raise ValueError("leaf module index mismatch")
+    materialization=read_json(materialization_path,materialization_pin,"replay leaf materialization")
+    materialization_fields={"capacity_index_sha256","leaf_count","manifest_sha256","module_prefix",
+      "profile_counts","queue_sha256","recompilable_from_tree","rows","schema"}
+    materialization_row_fields={"certificate_gzip_bytes","certificate_gzip_sha256","certificate_key",
+      "compact_lrat_bytes","compact_lrat_path","compact_lrat_sha256","local_index","module",
+      "olean_artifact_key","olean_bytes","olean_path","olean_sha256","orbit","profile",
+      "recompilable_from_tree","replay_ready_key","replay_ready_sha256","receipt_key",
+      "receipt_sha256","source_artifact_key","source_bytes","source_path","source_sha256","theorem"}
+    exact_fields(materialization,materialization_fields,"replay leaf materialization")
+    if (materialization["schema"]!=MATERIALIZATION_SCHEMA
+            or materialization["capacity_index_sha256"]!=reindex["output_sha256"]
+            or materialization["leaf_count"]!=total
+            or materialization["profile_counts"]!=list(profile_counts)
+            or materialization["recompilable_from_tree"] is not True
+            or not isinstance(materialization["rows"],list) or len(materialization["rows"])!=total
+            or any(not isinstance(item,dict) or set(item)!=materialization_row_fields
+                   for item in materialization["rows"])
+            or any(SHA256.fullmatch(str(materialization.get(key))) is None
+                   for key in ("manifest_sha256","queue_sha256"))):
+        raise ValueError("replay leaf materialization contract mismatch")
     layout=read_json(layout_path,layout_pin,"aggregate layout",pretty=True)
     layout_fields={"bank_size","inputs","inventory_contract","leaf_count","leaf_members_sha256","modules",
                    "prefixes","profile_bank_counts","schema","top_module"}
@@ -255,7 +277,13 @@ def validate(repo,reviewed_commit,review_id,bank_receipt,bank_pin,reindex_receip
     leaf_fields={"local_index","orbit","packed_lrat_sha256","profile","source_bytes","source_module",
                  "source_path","source_sha256"}
     evidence_rows=[]
-    for index,(row,payload_row,audit_row,module) in enumerate(zip(rows,payload["rows"],audit["rows"],leaf["modules"],strict=True)):
+    if materialization["module_prefix"]!=layout.get("prefixes",{}).get("leaf_modules"):
+        raise ValueError("replay leaf materialization module prefix mismatch")
+    materialization_pins={}; compact_paths=set(); olean_paths=set(); artifact_keys={key:set() for key in
+      ("receipt_key","replay_ready_key","source_artifact_key","olean_artifact_key")}
+    campaign_prefix=None
+    for index,(row,payload_row,audit_row,module,materialized) in enumerate(zip(
+            rows,payload["rows"],audit["rows"],leaf["modules"],materialization["rows"],strict=True)):
         exact_fields(module,leaf_fields,"leaf module row")
         coordinate=(row["tag"],row["profile"],row["local_index"],row["packed_sha256"])
         if ((payload_row.get("tag"),payload_row.get("profile"),payload_row.get("capacity_local_index"),
@@ -312,8 +340,65 @@ def validate(repo,reviewed_commit,review_id,bank_receipt,bank_pin,reindex_receip
         source=Path(module["source_path"]); repo_path=relative(repo,source,"leaf source")
         require_file(source,module["source_sha256"],"leaf source")
         if source.stat().st_size!=module["source_bytes"]: raise ValueError("leaf source byte mismatch")
+        expected_theorem=f"Erdos85.h1V2P{row['profile']}I{row['local_index']:05d}Checked"
+        if ((materialized["orbit"],materialized["profile"],materialized["local_index"],
+             materialized["module"],materialized["source_path"],materialized["source_sha256"],
+             materialized["source_bytes"],materialized["theorem"],materialized["compact_lrat_sha256"])
+            !=(row["tag"],row["profile"],row["local_index"],module["source_module"],str(source),
+               module["source_sha256"],module["source_bytes"],expected_theorem,row["compact_sha256"])
+            or materialized["recompilable_from_tree"] is not True):
+            raise ValueError("ordered materialization/leaf source crosslink mismatch")
+        if ((materialized["certificate_key"],materialized["certificate_gzip_sha256"],
+             materialized["certificate_gzip_bytes"],materialized["compact_lrat_bytes"])
+            !=(payload_row["s3_key"],payload_row["gzip_sha256"],payload_row["gzip_bytes"],
+               payload_row["compact_bytes"])):
+            raise ValueError("ordered materialization/certificate payload crosslink mismatch")
+        compact=Path(materialized["compact_lrat_path"]); olean=Path(materialized["olean_path"])
+        require_file(compact,materialized["compact_lrat_sha256"],"materialized compact LRAT")
+        require_file(olean,materialized["olean_sha256"],"materialized olean")
+        tag=row["tag"]
+        key_suffixes={"receipt_key":f"receipts/{tag}.json",
+          "replay_ready_key":f"replay-ready/{tag}.json",
+          "source_artifact_key":f"sources/{tag}.lean.zst",
+          "olean_artifact_key":f"oleans/{tag}.olean.zst"}
+        prefixes=[]
+        for key,suffix in key_suffixes.items():
+            value=materialized[key]
+            if not isinstance(value,str) or not value.endswith(suffix):
+                raise ValueError("materialized artifact key/tag mismatch")
+            prefixes.append(value[:-len(suffix)])
+            if value in artifact_keys[key]: raise ValueError("materialized artifact key collision")
+            artifact_keys[key].add(value)
+        if len(set(prefixes))!=1 or not prefixes[0] or not prefixes[0].endswith("/"):
+            raise ValueError("materialized artifact campaign prefix mismatch")
+        if campaign_prefix is None: campaign_prefix=prefixes[0]
+        elif prefixes[0]!=campaign_prefix: raise ValueError("materialized artifact campaign prefix mismatch")
+        if (compact.stat().st_size!=materialized["compact_lrat_bytes"]
+                or olean.stat().st_size!=materialized["olean_bytes"]
+                or compact.parent!=source.parent
+                or compact.name!=f"Erdos85H1V2CertP{row['profile']}I{row['local_index']:05d}.compact.lrat"
+                or olean.name!=f"Erdos85H1V2CertP{row['profile']}I{row['local_index']:05d}.olean"
+                or any(SHA256.fullmatch(str(materialized[key])) is None for key in
+                       ("certificate_gzip_sha256","compact_lrat_sha256","olean_sha256",
+                        "replay_ready_sha256","receipt_sha256","source_sha256"))
+                or any(not isinstance(materialized[key],str) or not materialized[key] for key in
+                       ("certificate_key","olean_artifact_key","replay_ready_key","receipt_key",
+                        "source_artifact_key"))):
+            raise ValueError("materialized compact/olean/receipt identity mismatch")
+        compact_resolved=compact.resolve(); olean_resolved=olean.resolve()
+        if compact_resolved in compact_paths: raise ValueError("materialized compact path collision")
+        if olean_resolved in olean_paths: raise ValueError("materialized olean path collision")
+        compact_paths.add(compact_resolved); olean_paths.add(olean_resolved)
+        materialization_pins.update({str(compact):materialized["compact_lrat_sha256"],
+                                     str(olean):materialized["olean_sha256"]})
         source_paths.append(repo_path); source_records.append((source,module))
         evidence_rows.append({"capacity_local_index":row["local_index"],"ledger_path":payload_row["ledger_path"],
+          "compact_lrat_sha256":materialized["compact_lrat_sha256"],
+          "materialized_olean_sha256":materialized["olean_sha256"],
+          "replay_ready_key":materialized["replay_ready_key"],
+          "replay_ready_sha256":materialized["replay_ready_sha256"],
+          "replay_receipt_key":materialized["receipt_key"],
+          "replay_receipt_sha256":materialized["receipt_sha256"],
           "ledger_sha256":payload_row["ledger_sha256"],"leaf_repo_path":repo_path,
           "packed_path":payload_row["packed_lz4_path"],"packed_sha256":row["packed_sha256"],
           "profile":row["profile"],"replay_evidence_path":audit_row["replay_evidence_path"],
@@ -366,7 +451,8 @@ def validate(repo,reviewed_commit,review_id,bank_receipt,bank_pin,reindex_receip
       str(toolchain):bank["toolchain_sha256"],str(reindex_receipt):reindex_pin,
       str(index_path):reindex["output_sha256"],str(inventory_path):reindex["inventory_sha256"],
       str(layout_path):layout_pin,str(adapter_receipt):adapter_pin,str(generator_path):adapter["generator_sha256"],
-      str(leaf_index_path):leaf_pin,**nested_pins}
+      str(leaf_index_path):leaf_pin,str(materialization_path):materialization_pin,
+      **nested_pins,**materialization_pins}
     pins.update({str(path):item["sha256"] for path,item in
                  ((Path(source["path"]),source) for source in source_indexes)})
     pins.update({str(repo/path):identity_by_path[path]["sha256"] for path in source_paths})
@@ -379,6 +465,8 @@ def validate(repo,reviewed_commit,review_id,bank_receipt,bank_pin,reindex_receip
       "endpoint_source_sha256":identity_by_path[adapter_repo_path]["sha256"],
       "endpoint_theorem":adapter["output_theorem"],
       "leaf_count":total,"leaf_module_index_path":str(leaf_index_path),"leaf_module_index_sha256":leaf_pin,
+      "materialization_evidence_path":str(materialization_path),
+      "materialization_evidence_sha256":materialization_pin,
       "profile_counts":list(profile_counts),"repo":str(repo),"review_id":review_id,
       "reviewed_commit":reviewed_commit}
     return evidence,receipt_core,pins
@@ -415,13 +503,14 @@ def main():
     parser.add_argument("--repo",type=Path,required=True); parser.add_argument("--reviewed-commit",required=True)
     parser.add_argument("--review-id",required=True)
     for name in ("bank-receipt","capacity-reindex-receipt","aggregate-layout","adapter-receipt",
-                 "leaf-module-index"):
+                 "leaf-module-index","materialization-evidence"):
         parser.add_argument(f"--{name}",type=Path,required=True); parser.add_argument(f"--{name}-sha256",required=True)
     parser.add_argument("--output",type=Path,required=True); args=parser.parse_args()
     evidence,core,pins=validate(args.repo,args.reviewed_commit,args.review_id,args.bank_receipt,
       args.bank_receipt_sha256,args.capacity_reindex_receipt,args.capacity_reindex_receipt_sha256,
       args.aggregate_layout,args.aggregate_layout_sha256,args.adapter_receipt,args.adapter_receipt_sha256,
-      args.leaf_module_index,args.leaf_module_index_sha256,(1485,3617,4717,2693,839))
+      args.leaf_module_index,args.leaf_module_index_sha256,args.materialization_evidence,
+      args.materialization_evidence_sha256,(1485,3617,4717,2693,839))
     publish(args.output,evidence,core,pins)
     print(f"WROTE {args.output} leaves={core['leaf_count']} commit={args.reviewed_commit}")
 

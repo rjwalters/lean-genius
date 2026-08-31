@@ -192,6 +192,11 @@ class SevenBaseDropGeneratorTest(unittest.TestCase):
             path.write_text(json.dumps(document))
             return MOD.load_and_validate(path.resolve(), runner=fake_git)
 
+    def test_axiom_auditor_producer_pin_matches_disk(self):
+        producer = HERE / "audit_h1_endpoint_axioms.py"
+        self.assertEqual(hashlib.sha256(producer.read_bytes()).hexdigest(),
+                         MOD.AXIOM_PRODUCER_SHA256)
+
     def test_exact_nine_input_composition_shape(self):
         with tempfile.TemporaryDirectory() as directory:
             rows = self.load(valid_document(directory), directory)

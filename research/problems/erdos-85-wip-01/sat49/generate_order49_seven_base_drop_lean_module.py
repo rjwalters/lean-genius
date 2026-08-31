@@ -42,7 +42,7 @@ FINAL_RECEIPT_SCHEMA = "erdos85-h1-wrapper-endpoint-receipt-v1"
 FINALIZER_PRODUCER_PATH = "research/problems/erdos-85-wip-01/sat49/finalize_h1_wrapper_endpoint_receipt.py"
 # Banked finalizer identity. Keeping the optional type lets the test suite prove
 # that production use fails closed if a future transition clears the pin.
-FINALIZER_PRODUCER_SHA256: str | None = "21514e3f43fcd797d8a724633a329c5fe1b91068ab5aa83d1600509269167ff4"
+FINALIZER_PRODUCER_SHA256: str | None = "79a6ad2a3c2e407b6ad3ae9c02a63c5fabcc99093e6bbbfc1911b8944ebebc3c"
 CELL_RECEIPT_SCHEMA = "erdos85-small-high-cell-aggregate-v1"
 CELL_INDEX_SCHEMA = "erdos85-small-high-cell-aggregate-index-v1"
 FORBIDDEN_MODULE_PARTS = ("SmallHighDropFrontier", "PartitionedCanonicalDropFrontier")
@@ -60,7 +60,7 @@ PROFILE_COUNTS = [1485, 3617, 4717, 2693, 839]
 TERMINAL_COUNTS = {"certified": 13351, "fleet_in_flight": 0, "pending": 0, "status_total": 13351}
 OID = re.compile(r"[0-9a-f]{40}")
 H1_IMAGE = "lean4-arm64@sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6"
-AXIOM_PRODUCER_SHA256 = "3014e81a3a056c88e44811f4f76032b3537e0c36622c1607d29c72979872035e"
+AXIOM_PRODUCER_SHA256 = "0a7942f00d80282906343e6ec5b5197a54a99cf157ac512f7a3239545c470e49"
 UPSTREAM_SCHEMAS = {"axiom": "erdos85-h1-endpoint-axiom-audit-v1",
     "cache_manifest": "erdos85-h1-offline-dependency-cache-v1",
     "cache_snapshot": "erdos85-h1-offline-dependency-cache-snapshot-receipt-v1",
@@ -76,6 +76,7 @@ RETAINED_FIELDS = {
         "cache_snapshot_producer_identity", "cache_snapshot_producer_sha256", "cache_snapshot_receipt_path",
         "cache_snapshot_receipt_sha256", "commands", "endpoint_module", "endpoint_source_path",
         "endpoint_source_sha256", "endpoint_theorem", "generated_tree_identity_sha256", "image",
+        "materialization_evidence_path", "materialization_evidence_sha256",
         "post_module_receipt_path", "post_module_receipt_sha256", "producer_path", "producer_sha256",
         "resource_policy", "retained_generated_artifacts", "review_id", "reviewed_control_files", "schema",
         "source_commit", "target_generated_artifact_path", "target_olean_build_path", "target_olean_bytes",
@@ -89,6 +90,7 @@ RETAINED_FIELDS = {
         "capacity_reindex_receipt_sha256", "commit_object_oid", "endpoint_module", "endpoint_source_path",
         "endpoint_source_sha256", "endpoint_theorem", "evidence_path", "evidence_sha256",
         "generated_tree_identity_sha256", "leaf_count", "leaf_module_index_path", "leaf_module_index_sha256",
+        "materialization_evidence_path", "materialization_evidence_sha256",
         "producer_path", "producer_sha256", "profile_counts", "repo", "review_id", "reviewed_commit", "schema"},
     "bank": {"all_even_manifest_path", "all_even_manifest_sha256", "capacity_inventory_path",
         "capacity_inventory_sha256", "compact_universe_path", "compact_universe_sha256",

@@ -18,7 +18,7 @@ AUDITOR_SHA256="18d1c214488080842f192e91d020e041de5c193eb16694df5f38082dd7aad7d4
 HELPER="proofs/Proofs/Erdos85DependencyConeAudit.lean"
 HELPER_SHA256="45a67200c939f65d1d10d6fe32b42a71085e6fcc8172d6621c4283114058c326"
 COLD_PRODUCER="research/problems/erdos-85-wip-01/sat49/run_h1_endpoint_cold_build.py"
-COLD_PRODUCER_SHA256="b75f853462378a0e08939b45a8d6900ec6742ca15e25fd9f7cb46495f8c921d8"
+COLD_PRODUCER_SHA256="1c94f59bcd9024cbb61555391bbd08f577d7f0790dbcb43d3950bed64c99a1c1"
 SNAPSHOT_PRODUCER="research/problems/erdos-85-wip-01/sat49/snapshot_h1_offline_dependency_cache.py"
 SNAPSHOT_PRODUCER_SHA256="931a663376508e3937f8b370eafc04e8750d5a413154246dbd1c31364372dd17"
 CACHE_RECEIPT_SCHEMA="erdos85-h1-offline-dependency-cache-snapshot-receipt-v1"
@@ -119,6 +119,7 @@ def build(repo,cold_receipt,cold_pin,output,runner,before_receipt=None):
  cold=read_json(cold_receipt,cold_pin,"cold receipt")
  cold_fields={"cache_identity_sha256","cache_manifest_path","cache_manifest_sha256","commands","endpoint_module",
   "endpoint_source_path","endpoint_source_sha256","endpoint_theorem","generated_tree_identity_sha256","image",
+  "materialization_evidence_path","materialization_evidence_sha256",
   "post_module_receipt_path","post_module_receipt_sha256","producer_path","producer_sha256","resource_policy",
   "review_id","reviewed_control_files","retained_generated_artifacts","schema","source_commit",
   "target_generated_artifact_path","target_olean_build_path","target_olean_bytes","target_olean_path",

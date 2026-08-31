@@ -45,7 +45,7 @@ def fixture(root):
    "lratreplay_sha256":"2"*64,"schema":MOD.REPLAY_SCHEMA,"table_path":table_rel,
    "table_sha256":table_sha,"tag":tag})
   payload_rows.append({"binary_bytes":1,"binary_lrat_sha256":digest(("b"+tag).encode()),
-   "capacity_local_index":0,"cnf_sha256":cnf_sha,"compact_bytes":1,"compact_lrat_sha256":compact_sha,
+   "capacity_local_index":0,"cnf_sha256":cnf_sha,"compact_bytes":len(("c"+tag).encode()),"compact_lrat_sha256":compact_sha,
    "gzip_bytes":1,"gzip_sha256":digest(("g"+tag).encode()),"ledger_namespace":"v3",
    "ledger_path":ledger_rel,"ledger_sha256":ledger_sha,"lrat_actions":1,"lz4_frame_bytes":1,
    "lz4_frame_sha256":digest(("f"+tag).encode()),"packed_lz4_bytes":len(packed),
@@ -93,15 +93,34 @@ def fixture(root):
   "dropped_outside_capacity_tags":[],"emitted_rows":2,"indexes":[{"path":str(reindex_source),"sha256":reindex_source_pin}],
   "inventory":str(capacity),"inventory_sha256":MOD.sha(capacity),"output":str(index_path),
   "output_sha256":index_pin,"require_complete":True,"schema":MOD.REINDEX_SCHEMA},True)
- leaf_modules=[]
+ leaf_modules=[]; materialization_rows=[]; olean_root=root/"oleans"
  for row in payload_rows:
   module=f"Proofs.Generated.LeafP{row['profile']}I00000"; path=repo/"proofs"/Path(*module.split(".")).with_suffix(".lean")
   raw=(f"namespace Erdos85\ntheorem h1V2P{row['profile']}I00000Checked : True := by trivial\nend Erdos85\n").encode()
   source_sha=write(path,raw); leaf_modules.append({"local_index":0,"orbit":row["tag"],
    "packed_lrat_sha256":row["packed_lz4_sha256"],"profile":row["profile"],"source_bytes":len(raw),
    "source_module":module,"source_path":str(path),"source_sha256":source_sha})
+  proof=path.parent/f"Erdos85H1V2CertP{row['profile']}I00000.compact.lrat"
+  proof_raw=("c"+row["tag"]).encode(); proof_sha=write(proof,proof_raw)
+  olean=olean_root/f"Erdos85H1V2CertP{row['profile']}I00000.olean"; olean_raw=("olean "+row["tag"]+"\n").encode()
+  olean_sha=write(olean,olean_raw)
+  materialization_rows.append({"certificate_gzip_bytes":row["gzip_bytes"],
+   "certificate_gzip_sha256":row["gzip_sha256"],"certificate_key":row["s3_key"],
+   "compact_lrat_bytes":len(proof_raw),
+   "compact_lrat_path":str(proof),"compact_lrat_sha256":proof_sha,"local_index":0,"module":module,
+   "olean_artifact_key":f"campaign/oleans/{row['tag']}.olean.zst","olean_bytes":len(olean_raw),
+   "olean_path":str(olean),"olean_sha256":olean_sha,"orbit":row["tag"],"profile":row["profile"],
+   "recompilable_from_tree":True,"replay_ready_key":f"campaign/replay-ready/{row['tag']}.json",
+   "replay_ready_sha256":"a"*64,"receipt_key":f"campaign/receipts/{row['tag']}.json",
+   "receipt_sha256":"b"*64,"source_artifact_key":f"campaign/sources/{row['tag']}.lean.zst",
+   "source_bytes":len(raw),"source_path":str(path),"source_sha256":source_sha,
+   "theorem":f"Erdos85.h1V2P{row['profile']}I00000Checked"})
  leaf_index=root/"leaf-index.json"; leaf_pin=write_json(leaf_index,{"capacity_index_sha256":index_pin,
   "leaf_count":2,"modules":leaf_modules,"schema":MOD.LEAF_SCHEMA})
+ materialization=root/"materialization.json"; materialization_pin=write_json(materialization,{
+  "capacity_index_sha256":index_pin,"leaf_count":2,"manifest_sha256":"c"*64,
+  "module_prefix":"Proofs.Generated","profile_counts":list(counts),"queue_sha256":"d"*64,
+  "recompilable_from_tree":True,"rows":materialization_rows,"schema":MOD.MATERIALIZATION_SCHEMA})
  aggregate_module="Proofs.Generated.Aggregate"; aggregate_path=repo/"proofs/Proofs/Generated/Aggregate.lean"
  aggregate_raw=b"import Proofs.Generated.LeafP0I00000\nimport Proofs.Generated.LeafP1I00000\ntheorem aggregate : True := by trivial\n"
  aggregate_sha=write(aggregate_path,aggregate_raw)
@@ -133,11 +152,17 @@ def fixture(root):
   "output_path":str(adapter_path),"output_sha256":adapter_sha,"output_source_module":"Proofs.Generated.Endpoint",
   "output_theorem":"Erdos85.endpoint","repo":str(repo),"schema":MOD.ADAPTER_SCHEMA}
  adapter=root/"adapter.json"; adapter_pin=write_json(adapter,adapter_fields)
- subprocess.run(["git","add","."],cwd=repo,check=True); subprocess.run(["git","commit","-qm","fixture"],cwd=repo,check=True)
+ tracked=[*[Path(item["source_path"]).relative_to(repo).as_posix() for item in leaf_modules],
+  aggregate_path.relative_to(repo).as_posix(),layout.relative_to(repo).as_posix(),
+  adapter_path.relative_to(repo).as_posix(),generator_path.relative_to(repo).as_posix()]
+ subprocess.run(["git","add","--",*tracked],cwd=repo,check=True)
+ subprocess.run(["git","commit","-qm","fixture"],cwd=repo,check=True)
  commit=subprocess.run(["git","rev-parse","HEAD"],cwd=repo,check=True,text=True,stdout=subprocess.PIPE).stdout.strip()
  args=[repo,commit,"1246",bank_receipt,bank_pin,reindex,reindex_pin,layout,layout_pin,adapter,adapter_pin,
-       leaf_index,leaf_pin,counts]
- return args,{"repo":repo,"bank":bank,"payload":payload,"adapter_path":adapter_path,"leaf":Path(leaf_modules[0]["source_path"])}
+       leaf_index,leaf_pin,materialization,materialization_pin,counts]
+ return args,{"repo":repo,"bank":bank,"payload":payload,"adapter_path":adapter_path,
+  "leaf":Path(leaf_modules[0]["source_path"]),"materialization":materialization,
+  "materialization_rows":materialization_rows}
 
 def run(root,data,output=None):
  evidence,core,pins=MOD.validate(*data[0]); MOD.publish(output or root.resolve()/"out",evidence,core,pins)
@@ -152,8 +177,16 @@ class FinalizeH1EvidenceTest(unittest.TestCase):
    self.assertEqual(receipt["evidence_path"],"leaf-evidence.json")
    self.assertEqual(receipt["endpoint_source_path"],"proofs/Proofs/Generated/Endpoint.lean")
    self.assertEqual(receipt["endpoint_source_sha256"],MOD.sha(data[1]["adapter_path"]))
+   self.assertEqual(receipt["materialization_evidence_sha256"],data[0][14])
    self.assertEqual(len(evidence["rows"]),2); self.assertTrue(all(len(row["leaf_blob_oid"])==40 for row in evidence["rows"]))
+   self.assertTrue(all("materialized_olean_sha256" in row and "replay_receipt_sha256" in row
+                       and "replay_ready_sha256" in row for row in evidence["rows"]))
    self.assertEqual(receipt["evidence_sha256"],MOD.sha(out/"leaf-evidence.json"))
+   for row in data[1]["materialization_rows"]:
+    compact=Path(row["compact_lrat_path"]); rel=compact.relative_to(data[1]["repo"]).as_posix()
+    self.assertEqual(subprocess.run(["git","cat-file","-e",f"{data[0][1]}:{rel}"],
+                                    cwd=data[1]["repo"],stdout=subprocess.DEVNULL,
+                                    stderr=subprocess.DEVNULL).returncode,128)
    with self.assertRaisesRegex(ValueError,"output must be an absent"): run(root,data)
 
  def test_commit_blob_and_crosslink_adversaries_fail(self):
@@ -170,6 +203,14 @@ class FinalizeH1EvidenceTest(unittest.TestCase):
    ("command-log",mutate_command_log,"replay stdout hash mismatch"),
    ("layout-schema",mutate_layout_schema,"aggregate layout module schema"),
    ("payload-crosslink",mutate_payload_crosslink,"ordered bank/module crosslink"),
+   ("materialization-order",mutate_materialization_order,"ordered materialization/leaf"),
+   ("materialized-olean",mutate_materialized_olean,"materialized olean.*hash"),
+   ("materialization-receipt-swap",lambda d:swap_materialization_pair(d,"receipt_key","receipt_sha256"),"artifact key/tag"),
+   ("materialization-ready-swap",lambda d:swap_materialization_pair(d,"replay_ready_key","replay_ready_sha256"),"artifact key/tag"),
+   ("materialization-certificate-swap",swap_materialized_certificate,"certificate payload crosslink"),
+   ("materialization-olean-swap",swap_materialized_olean_pair,"ordered materialization/leaf|olean.*identity|path collision"),
+   ("duplicate-olean",duplicate_materialized_olean,"olean path collision|olean.*identity"),
+   ("wrong-olean-name",wrong_materialized_olean_name,"compact/olean/receipt identity"),
    ("sorry",commit_sorry,"sorry/admit"))
   for name,mutate,message in cases:
    with self.subTest(name=name),tempfile.TemporaryDirectory() as directory:
@@ -251,6 +292,7 @@ def rehashed_uncommitted_leaf(data):
  value["modules"][0]["source_bytes"]=leaf.stat().st_size; data[0][12]=write_json(leaf_index,value)
  adapter=data[0][9]; av=json.loads(adapter.read_text()); av["leaf_module_index_sha256"]=data[0][12]
  data[0][10]=write_json(adapter,av)
+ refresh_materialization_source(data)
 
 def commit_sorry(data):
  repo=data[1]["repo"]; leaf=data[1]["leaf"]; leaf.write_text("theorem bad : True := by sorry\n")
@@ -258,7 +300,49 @@ def commit_sorry(data):
  value["modules"][0]["source_bytes"]=leaf.stat().st_size; data[0][12]=write_json(leaf_index,value)
  adapter=data[0][9]; av=json.loads(adapter.read_text()); av["leaf_module_index_sha256"]=data[0][12]
  data[0][10]=write_json(adapter,av)
+ refresh_materialization_source(data)
  subprocess.run(["git","add","."],cwd=repo,check=True); subprocess.run(["git","commit","-qm","sorry"],cwd=repo,check=True)
  data[0][1]=subprocess.run(["git","rev-parse","HEAD"],cwd=repo,text=True,stdout=subprocess.PIPE,check=True).stdout.strip()
+
+def refresh_materialization_source(data):
+ leaf=data[1]["leaf"]; path=data[0][13]; value=json.loads(path.read_text())
+ value["rows"][0]["source_sha256"]=MOD.sha(leaf)
+ value["rows"][0]["source_bytes"]=leaf.stat().st_size
+ data[0][14]=write_json(path,value)
+
+def mutate_materialization_order(data):
+ path=data[0][13]; value=json.loads(path.read_text()); value["rows"].reverse()
+ data[0][14]=write_json(path,value)
+
+def mutate_materialized_olean(data):
+ Path(data[1]["materialization_rows"][0]["olean_path"]).write_bytes(b"changed\n")
+
+def swap_materialization_pair(data,path_key,sha_key):
+ path=data[0][13]; value=json.loads(path.read_text())
+ for key in (path_key,sha_key): value["rows"][0][key],value["rows"][1][key]=value["rows"][1][key],value["rows"][0][key]
+ data[0][14]=write_json(path,value)
+
+def swap_materialized_olean_pair(data):
+ path=data[0][13]; value=json.loads(path.read_text())
+ for key in ("olean_path","olean_sha256","olean_bytes"):
+  value["rows"][0][key],value["rows"][1][key]=value["rows"][1][key],value["rows"][0][key]
+ data[0][14]=write_json(path,value)
+
+def swap_materialized_certificate(data):
+ path=data[0][13]; value=json.loads(path.read_text())
+ for key in ("certificate_key","certificate_gzip_sha256","certificate_gzip_bytes","compact_lrat_bytes"):
+  value["rows"][0][key],value["rows"][1][key]=value["rows"][1][key],value["rows"][0][key]
+ data[0][14]=write_json(path,value)
+
+def duplicate_materialized_olean(data):
+ path=data[0][13]; value=json.loads(path.read_text())
+ for key in ("olean_path","olean_sha256","olean_bytes"):
+  value["rows"][1][key]=value["rows"][0][key]
+ data[0][14]=write_json(path,value)
+
+def wrong_materialized_olean_name(data):
+ path=data[0][13]; value=json.loads(path.read_text()); old=Path(value["rows"][0]["olean_path"])
+ wrong=old.with_name("wrong.olean"); old.rename(wrong); value["rows"][0]["olean_path"]=str(wrong)
+ data[0][14]=write_json(path,value)
 
 if __name__=="__main__": unittest.main()

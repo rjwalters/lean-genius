@@ -390,10 +390,8 @@ class FinalizeH1WrapperEndpointReceiptTest(unittest.TestCase):
    real=artifact.with_suffix(".real"); artifact.rename(real); artifact.symlink_to(real)
    with self.assertRaisesRegex(ValueError,"compiled artifact"): MOD.build(**args)
 
- def test_toctou_extra_special_and_retry_fail_closed(self):
-  callbacks=("extra","directory","fifo","hardlink","input","replace")
-  for kind in callbacks:
-   with self.subTest(kind=kind),tempfile.TemporaryDirectory() as directory:
+ def assert_toctou_kind(self,kind):
+   with tempfile.TemporaryDirectory() as directory:
     root=Path(directory); args,_,paths=fixture(root)
     original=paths["axiom"].read_bytes()
     def mutate(kind=kind):
@@ -414,6 +412,15 @@ class FinalizeH1WrapperEndpointReceiptTest(unittest.TestCase):
     args["before_receipt"]=mutate
     with self.assertRaisesRegex(ValueError,r"input drift|input replacement|evidence tree|final evidence"): MOD.build(**args)
     self.assertFalse(args["output"].exists())
+
+ def test_toctou_extra_fail_closed(self): self.assert_toctou_kind("extra")
+ def test_toctou_directory_fail_closed(self): self.assert_toctou_kind("directory")
+ def test_toctou_fifo_fail_closed(self): self.assert_toctou_kind("fifo")
+ def test_toctou_hardlink_fail_closed(self): self.assert_toctou_kind("hardlink")
+ def test_toctou_input_fail_closed(self): self.assert_toctou_kind("input")
+ def test_toctou_replace_fail_closed(self): self.assert_toctou_kind("replace")
+
+ def test_output_race_fail_closed(self):
   with tempfile.TemporaryDirectory() as directory:
    root=Path(directory); args,_,_=fixture(root)
    def race(): args["output"].mkdir()

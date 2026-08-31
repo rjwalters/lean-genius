@@ -23,7 +23,7 @@ def fixture(root):
     upstream = root / "upstream"; upstream.mkdir()
     upstream_paths = {}
     for name in ("adapter_receipt", "aggregate_layout", "bank_receipt", "capacity_reindex_receipt",
-                 "leaf_module_index", "producer"):
+                 "leaf_module_index", "materialization_evidence", "producer"):
         path = upstream / name; path.write_text(name + "\n"); upstream_paths[name] = path
     upstream_paths["producer"].write_bytes((HERE / "finalize_h1_leaf_module_evidence.py").read_bytes())
     aggregate_layout = {"bank_size": 64, "inputs": {}, "inventory_contract": {}, "leaf_count": 13351,
@@ -38,6 +38,9 @@ def fixture(root):
     identity = {"blob_oid": "c" * 40, "bytes": len(source_raw), "repo_path": MOD.SOURCE,
                 "sha256": hashlib.sha256(source_raw).hexdigest()}
     row = {"capacity_local_index": 0, "leaf_blob_oid": "d" * 40,
+        "compact_lrat_sha256": "0" * 64, "materialized_olean_sha256": "f" * 64,
+        "replay_ready_key": "ready/leaf.json", "replay_ready_sha256": "a" * 64,
+        "replay_receipt_key": "receipts/leaf.json", "replay_receipt_sha256": "b" * 64,
         "leaf_repo_path": "proofs/Proofs/Generated/Leaf.lean", "leaf_source_bytes": 1,
         "leaf_source_sha256": "1" * 64, "ledger_path": "ledgers/leaf.line",
         "ledger_sha256": "2" * 64, "packed_path": "packed/leaf.lz4", "packed_sha256": "3" * 64,
@@ -73,6 +76,8 @@ def fixture(root):
         "generated_tree_identity_sha256": "b" * 64, "leaf_count": 13351,
         "leaf_module_index_path": str(upstream_paths["leaf_module_index"]),
         "leaf_module_index_sha256": MOD.sha(upstream_paths["leaf_module_index"]),
+        "materialization_evidence_path": str(upstream_paths["materialization_evidence"]),
+        "materialization_evidence_sha256": MOD.sha(upstream_paths["materialization_evidence"]),
         "producer_path": str(upstream_paths["producer"]), "producer_sha256": MOD.sha(upstream_paths["producer"]),
         "profile_counts": [1485, 3617, 4717, 2693, 839], "repo": str(repo), "review_id": review,
         "reviewed_commit": commit, "schema": MOD.POST_SCHEMA}
@@ -207,6 +212,8 @@ class ColdBuildTest(unittest.TestCase):
             self.assertEqual(receipt["source_commit"], "a" * 40)
             self.assertEqual(receipt["cache_snapshot_receipt_sha256"], args["cache_receipt_sha256"])
             self.assertEqual(receipt["cache_snapshot_producer_sha256"], MOD.CACHE_PRODUCER_SHA256)
+            self.assertEqual(receipt["materialization_evidence_sha256"],
+                             MOD.sha(Path(receipt["materialization_evidence_path"])))
             self.assertEqual(receipt["target_olean_sha256"], hashlib.sha256(b"olean\n").hexdigest())
             self.assertEqual(MOD.sha(out / receipt["target_olean_path"]), receipt["target_olean_sha256"])
             self.assertEqual(receipt["target_olean_build_path"], MOD.OLEAN)
@@ -257,6 +264,11 @@ class ColdBuildTest(unittest.TestCase):
             post = json.loads(paths["post"].read_text()); post["leaf_count"] = 2
             args["post_receipt_sha256"] = write(paths["post"], post)
             with self.assertRaisesRegex(ValueError, "post-module receipt"): MOD.build(**args)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); args, _, paths = fixture(root)
+            Path(json.loads(paths["post"].read_text())["materialization_evidence_path"]).write_text("drift\n")
+            with self.assertRaisesRegex(ValueError, "materialization_evidence_path.*mismatch"):
+                MOD.build(**args)
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); args, _, paths = fixture(root)
             cache = json.loads(paths["cache"].read_text()); cache["entries"][0]["path"] = "../bad"

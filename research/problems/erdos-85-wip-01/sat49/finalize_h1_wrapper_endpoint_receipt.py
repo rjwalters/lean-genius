@@ -25,13 +25,13 @@ LAYOUT_SCHEMA="erdos85-h1-v2-aggregate-layout-v1"
 ADAPTER_SCHEMA="erdos85-h1-post-aggregate-adapter-generation-v1"
 LEAF_SCHEMA="erdos85-h1-leaf-module-index-v1"
 AXIOM_PRODUCER="research/problems/erdos-85-wip-01/sat49/audit_h1_endpoint_axioms.py"
-AXIOM_PRODUCER_SHA256="3014e81a3a056c88e44811f4f76032b3537e0c36622c1607d29c72979872035e"
+AXIOM_PRODUCER_SHA256="0a7942f00d80282906343e6ec5b5197a54a99cf157ac512f7a3239545c470e49"
 COLD_PRODUCER="research/problems/erdos-85-wip-01/sat49/run_h1_endpoint_cold_build.py"
-COLD_PRODUCER_SHA256="b75f853462378a0e08939b45a8d6900ec6742ca15e25fd9f7cb46495f8c921d8"
+COLD_PRODUCER_SHA256="1c94f59bcd9024cbb61555391bbd08f577d7f0790dbcb43d3950bed64c99a1c1"
 CACHE_PRODUCER="research/problems/erdos-85-wip-01/sat49/snapshot_h1_offline_dependency_cache.py"
 CACHE_PRODUCER_SHA256="931a663376508e3937f8b370eafc04e8750d5a413154246dbd1c31364372dd17"
 POST_PRODUCER="research/problems/erdos-85-wip-01/sat49/finalize_h1_leaf_module_evidence.py"
-POST_PRODUCER_SHA256="170d81727b9d0c612c4a0af9507b751aea4011f52f129efb46bdde39a9b96d70"
+POST_PRODUCER_SHA256="fcdf7e29ac095f1a5a91fc9b115685c8295e858e05cb491fe91f06f6c266c1c4"
 FINAL_PRODUCER="research/problems/erdos-85-wip-01/sat49/finalize_h1_wrapper_endpoint_receipt.py"
 BANK_PRODUCER="research/problems/erdos-85-wip-01/sat49/materialize_h1_capacity_payload_bank.py"
 BANK_PRODUCER_SHA256="fab1267f7fda2108652e6373ac7b2e1fd409ae9290044adec2ab97395ab93cab"
@@ -303,7 +303,8 @@ def build(repo,axiom_receipt,axiom_pin,output,runner,before_receipt=None,before_
  cold_fields={"cache_identity_sha256","cache_manifest_path","cache_manifest_sha256","cache_snapshot_producer_identity",
   "cache_snapshot_producer_sha256","cache_snapshot_receipt_path","cache_snapshot_receipt_sha256","commands",
   "endpoint_module","endpoint_source_path","endpoint_source_sha256","endpoint_theorem","generated_tree_identity_sha256",
-  "image","post_module_receipt_path","post_module_receipt_sha256","producer_path","producer_sha256","resource_policy",
+  "image","materialization_evidence_path","materialization_evidence_sha256",
+  "post_module_receipt_path","post_module_receipt_sha256","producer_path","producer_sha256","resource_policy",
   "retained_generated_artifacts","review_id","reviewed_control_files","schema","source_commit",
   "target_generated_artifact_path","target_olean_build_path","target_olean_bytes","target_olean_path",
   "target_olean_sha256","toolchain_path","toolchain_sha256"}
@@ -446,7 +447,8 @@ def build(repo,axiom_receipt,axiom_pin,output,runner,before_receipt=None,before_
   "bank_receipt_path","bank_receipt_sha256","capacity_reindex_receipt_path","capacity_reindex_receipt_sha256",
   "commit_object_oid","endpoint_module","endpoint_source_path","endpoint_source_sha256","endpoint_theorem",
   "evidence_path","evidence_sha256","generated_tree_identity_sha256","leaf_count","leaf_module_index_path",
-  "leaf_module_index_sha256","producer_path","producer_sha256","profile_counts","repo","review_id","reviewed_commit","schema"}
+  "leaf_module_index_sha256","materialization_evidence_path","materialization_evidence_sha256",
+  "producer_path","producer_sha256","profile_counts","repo","review_id","reviewed_commit","schema"}
  if (set(post)!=post_fields or post.get("schema")!=POST_SCHEMA or post.get("reviewed_commit")!=source_commit
   or post.get("commit_object_oid")!=source_commit or post.get("repo")!=str(repo)
   or post.get("producer_path")!=str(repo/POST_PRODUCER) or post.get("producer_sha256")!=POST_PRODUCER_SHA256
@@ -454,13 +456,16 @@ def build(repo,axiom_receipt,axiom_pin,output,runner,before_receipt=None,before_
   or post.get("endpoint_source_sha256")!=cold.get("endpoint_source_sha256") or post.get("leaf_count")!=13351
   or post.get("profile_counts")!=PROFILE_COUNTS or post.get("review_id")!=cold.get("review_id")
   or post.get("generated_tree_identity_sha256")!=cold.get("generated_tree_identity_sha256")
+  or post.get("materialization_evidence_path")!=cold.get("materialization_evidence_path")
+  or post.get("materialization_evidence_sha256")!=cold.get("materialization_evidence_sha256")
   or cold.get("reviewed_control_files")!=controls):
   raise ValueError("post-module receipt crosslink mismatch")
  if sum(post["profile_counts"])!=post["leaf_count"]: raise ValueError("post-module profile sum mismatch")
  pins[str(post_path)]=cold["post_module_receipt_sha256"]
  for path_key,pin_key in (("adapter_receipt_path","adapter_receipt_sha256"),("aggregate_layout_path","aggregate_layout_sha256"),
   ("bank_receipt_path","bank_receipt_sha256"),("capacity_reindex_receipt_path","capacity_reindex_receipt_sha256"),
-  ("leaf_module_index_path","leaf_module_index_sha256"),("producer_path","producer_sha256")):
+  ("leaf_module_index_path","leaf_module_index_sha256"),
+  ("materialization_evidence_path","materialization_evidence_sha256"),("producer_path","producer_sha256")):
   path=Path(post[path_key]); require(path,post[pin_key],f"post {path_key}"); pins[str(path)]=post[pin_key]
  evidence_path=child(post_path.parent,post["evidence_path"],"post evidence")
  evidence=read_json(evidence_path,post["evidence_sha256"],"post evidence")
@@ -474,8 +479,10 @@ def build(repo,axiom_receipt,axiom_pin,output,runner,before_receipt=None,before_
   or not isinstance(evidence.get("rows"),list) or len(evidence["rows"])!=13351):
   raise ValueError("terminal capacity evidence mismatch")
  pins[str(evidence_path)]=post["evidence_sha256"]
- evidence_row_fields={"capacity_local_index","leaf_blob_oid","leaf_repo_path","leaf_source_bytes","leaf_source_sha256",
+ evidence_row_fields={"capacity_local_index","compact_lrat_sha256","leaf_blob_oid","leaf_repo_path","leaf_source_bytes","leaf_source_sha256",
   "ledger_path","ledger_sha256","packed_path","packed_sha256","profile","replay_evidence_path","replay_evidence_sha256","tag"}
+ evidence_row_fields.update({"materialized_olean_sha256","replay_ready_key","replay_ready_sha256",
+                             "replay_receipt_key","replay_receipt_sha256"})
  observed_profiles=[[] for _ in PROFILE_COUNTS]; tags=set()
  for row in evidence["rows"]:
   if (not isinstance(row,dict) or set(row)!=evidence_row_fields or type(row["profile"]) is not int

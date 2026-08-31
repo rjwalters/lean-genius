@@ -19,7 +19,7 @@ from pathlib import Path, PurePosixPath
 SCHEMA = "erdos85-h1-endpoint-cold-build-v1"
 POST_SCHEMA = "erdos85-h1-leaf-module-evidence-receipt-v1"
 EVIDENCE_SCHEMA = "erdos85-h1-committed-leaf-evidence-v1"
-POST_PRODUCER_SHA256 = "170d81727b9d0c612c4a0af9507b751aea4011f52f129efb46bdde39a9b96d70"
+POST_PRODUCER_SHA256 = "fcdf7e29ac095f1a5a91fc9b115685c8295e858e05cb491fe91f06f6c266c1c4"
 CACHE_SCHEMA = "erdos85-h1-offline-dependency-cache-v1"
 CACHE_RECEIPT_SCHEMA = "erdos85-h1-offline-dependency-cache-snapshot-receipt-v1"
 CACHE_PRODUCER_PATH = "research/problems/erdos-85-wip-01/sat49/snapshot_h1_offline_dependency_cache.py"
@@ -215,10 +215,12 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
         "endpoint_module", "endpoint_source_path", "endpoint_source_sha256", "endpoint_theorem",
         "evidence_path", "evidence_sha256", "generated_tree_identity_sha256", "leaf_count",
         "leaf_module_index_path", "leaf_module_index_sha256", "producer_path", "producer_sha256",
+        "materialization_evidence_path", "materialization_evidence_sha256",
         "profile_counts", "repo", "review_id", "reviewed_commit", "schema"}
     post_hashes = ("adapter_receipt_sha256", "aggregate_layout_sha256", "bank_receipt_sha256",
         "capacity_reindex_receipt_sha256", "endpoint_source_sha256", "evidence_sha256",
         "generated_tree_identity_sha256", "leaf_module_index_sha256", "producer_sha256")
+    post_hashes = (*post_hashes, "materialization_evidence_sha256")
     if (set(post) != post_fields or post.get("schema") != POST_SCHEMA
             or post.get("reviewed_commit") != source_commit or post.get("commit_object_oid") != source_commit
             or post.get("review_id") != review_id or post.get("repo") != str(repo)
@@ -235,6 +237,7 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
             ("bank_receipt_path", "bank_receipt_sha256"),
             ("capacity_reindex_receipt_path", "capacity_reindex_receipt_sha256"),
             ("leaf_module_index_path", "leaf_module_index_sha256"),
+            ("materialization_evidence_path", "materialization_evidence_sha256"),
             ("producer_path", "producer_sha256")):
         path = Path(post[path_key]); require(path, post[pin_key], f"post-module {path_key}"); captured.append(path)
     evidence_rel = relative(post["evidence_path"], "post-module evidence path")
@@ -245,6 +248,8 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
         "leaf_tree_identity_sha256", "profile_counts", "review_id", "reviewed_commit", "rows", "schema"}
     identity_fields = {"blob_oid", "bytes", "repo_path", "sha256"}
     row_fields = {"capacity_local_index", "leaf_blob_oid", "leaf_repo_path", "leaf_source_bytes",
+        "compact_lrat_sha256", "materialized_olean_sha256", "replay_ready_key",
+        "replay_ready_sha256", "replay_receipt_key", "replay_receipt_sha256",
         "leaf_source_sha256", "ledger_path", "ledger_sha256", "packed_path", "packed_sha256",
         "profile", "replay_evidence_path", "replay_evidence_sha256", "tag"}
     identities = (evidence.get("adapter_source_identity"), evidence.get("aggregate_layout_source_identity"))
@@ -275,7 +280,11 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
                 or COMMIT.fullmatch(str(row.get("leaf_blob_oid"))) is None
                 or type(row.get("leaf_source_bytes")) is not int or row["leaf_source_bytes"] <= 0
                 or any(SHA.fullmatch(str(row.get(key))) is None for key in
-                       ("leaf_source_sha256", "ledger_sha256", "packed_sha256", "replay_evidence_sha256"))
+                       ("compact_lrat_sha256", "leaf_source_sha256", "ledger_sha256",
+                        "materialized_olean_sha256", "packed_sha256", "replay_evidence_sha256",
+                        "replay_ready_sha256", "replay_receipt_sha256"))
+                or any(not isinstance(row.get(key),str) or not row[key] for key in
+                       ("replay_ready_key","replay_receipt_key"))
                 or TAG.fullmatch(str(row.get("tag"))) is None or row["tag"] in tags):
             raise ValueError("post-module evidence ordered row contract mismatch")
         for key in path_keys: relative(row.get(key), f"post-module evidence row {key}")
@@ -426,7 +435,9 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
     for path_key, pin_key in (("adapter_receipt_path", "adapter_receipt_sha256"),
             ("aggregate_layout_path", "aggregate_layout_sha256"), ("bank_receipt_path", "bank_receipt_sha256"),
             ("capacity_reindex_receipt_path", "capacity_reindex_receipt_sha256"),
-            ("leaf_module_index_path", "leaf_module_index_sha256"), ("producer_path", "producer_sha256")):
+            ("leaf_module_index_path", "leaf_module_index_sha256"),
+            ("materialization_evidence_path", "materialization_evidence_sha256"),
+            ("producer_path", "producer_sha256")):
         pins[str(Path(post[path_key]))] = post[pin_key]
     for cache_source, item in entries: pins[str(cache_source)] = item["sha256"]
     stage = Path(tempfile.mkdtemp(prefix=".h1-cold-build-stage.", dir=output.parent))
@@ -568,6 +579,8 @@ def build(*, repo, source_commit, review_id, post_receipt, post_receipt_sha256,
             "endpoint_module": MODULE, "endpoint_source_path": SOURCE,
             "endpoint_source_sha256": post["endpoint_source_sha256"], "endpoint_theorem": THEOREM,
             "generated_tree_identity_sha256": post["generated_tree_identity_sha256"], "image": IMAGE,
+            "materialization_evidence_path": post["materialization_evidence_path"],
+            "materialization_evidence_sha256": post["materialization_evidence_sha256"],
             "retained_generated_artifacts": compiled_rows,
             "post_module_receipt_path": str(post_receipt), "post_module_receipt_sha256": post_receipt_sha256,
             "producer_path": str(producer), "producer_sha256": pins[str(producer)], "resource_policy": policy,
