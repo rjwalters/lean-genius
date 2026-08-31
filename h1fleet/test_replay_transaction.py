@@ -25,7 +25,11 @@ from replay_common import (
     validate_command_receipts, validate_receipt_integrity,
 )
 from audit_replay_leaf import parse_axioms
-from build_replay_manifest import publish_validated_manifest, validate_queue_build_receipt
+from build_replay_manifest import (
+    generator_identity_fields, publish_validated_manifest,
+    validate_queue_build_receipt,
+)
+import build_replay_manifest as manifest_builder
 from capacity_queue import (
     CAPACITY_PROFILE_COUNTS, load_capacity_index, table_serialization_tag,
     validate_queue_capacity, validate_queue_tables,
@@ -1006,6 +1010,36 @@ class ReplayTransactionTest(unittest.TestCase):
         ], text=True, capture_output=True, check=False)
         self.assertEqual(result.returncode, 2)
         self.assertIn("worktree containing replay scripts", result.stderr)
+
+    def test_manifest_freezer_replaces_stale_generator_and_template_pins(self) -> None:
+        manifest = json.loads(self.manifest.read_text())
+        manifest["generator_sha256"] = "4a3e3488" + "0" * 56
+        manifest["template_sha256"] = "4a3e3488" + "1" * 56
+        self.manifest.write_bytes(canonical_json(manifest))
+        output = self.root / "frozen.json"
+        real_git_value = manifest_builder.git_value
+
+        def clean_git_value(repo, *arguments):
+            if arguments == ("status", "--porcelain"):
+                return ""
+            return real_git_value(repo, *arguments)
+
+        argv = [
+            str(MANIFEST_BUILDER), "--draft", str(self.manifest),
+            "--queue", str(self.queue), "--repo", str(HERE.parent),
+            "--output", str(output), "--capacity-index", str(self.capacity_index),
+            "--capacity-reindex-receipt", str(self.capacity_reindex_receipt),
+            "--queue-build-receipt", str(self.queue_build_receipt),
+            "--terminal-index", str(self.terminal_index),
+        ]
+        with patch.object(manifest_builder, "git_value", side_effect=clean_git_value), \
+             patch.object(manifest_builder, "validate_queue_tables"), \
+             patch.object(sys, "argv", argv):
+            self.assertEqual(manifest_builder.main(), 0)
+        frozen = json.loads(output.read_text())
+        expected = sha256_file(HERE / "generate_replay_leaf.py")
+        self.assertEqual(frozen["generator_sha256"], expected)
+        self.assertEqual(frozen["template_sha256"], expected)
 
     def test_invalid_manifest_is_rejected_before_publication(self) -> None:
         output = self.root / "must-not-exist.json"

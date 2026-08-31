@@ -42,6 +42,18 @@ def require_tracked_at_head(repo: Path, path: Path) -> None:
         git_value(repo, *arguments)
 
 
+def generator_identity_fields(generator: Path) -> dict[str, str]:
+    """Bind both legacy source-format fields to the executable generator.
+
+    Replay leaves have no separate template file: ``generate_replay_leaf.py``
+    both renders the template and drives its create-only publication.  Keeping
+    this mapping in the freezer prevents stale draft pins from surviving a
+    successful freeze.
+    """
+    identity = sha256_file(generator)
+    return {"generator_sha256": identity, "template_sha256": identity}
+
+
 def validate_manifest_bytes(value: bytes) -> None:
     with tempfile.TemporaryDirectory() as temporary:
         candidate = Path(temporary) / "candidate.json"
@@ -157,7 +169,9 @@ def main() -> int:
             "reindex_h1_v2_capacity_certificates.py"
         )
         queue_builder = HERE / "build_replay_queue.py"
+        replay_generator = HERE / "generate_replay_leaf.py"
         hashed_paths = (
+            replay_generator,
             HERE / "replay_worker.py", HERE / "validate_replay_receipt.py",
             HERE / "run_replay_queue.py", HERE / "audit_replay_leaf.py",
             HERE / "replay_common.py", HERE / "CLOUD_LEAN_REPLAY_STAGE_SPEC.md",
@@ -171,6 +185,7 @@ def main() -> int:
         manifest.update({
             "repository_commit": head,
             "queue_sha256": sha256_file(args.queue), "expected_jobs": len(jobs),
+            **generator_identity_fields(replay_generator),
             "worker_sha256": sha256_file(HERE / "replay_worker.py"),
             "validator_sha256": sha256_file(HERE / "validate_replay_receipt.py"),
             "dispatcher_sha256": sha256_file(HERE / "run_replay_queue.py"),
