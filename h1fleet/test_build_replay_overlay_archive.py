@@ -1,4 +1,4 @@
-import hashlib, importlib.util, json, os, shutil, subprocess, tarfile, tempfile, unittest
+import hashlib, importlib.util, json, os, shlex, shutil, subprocess, tarfile, tempfile, unittest
 from pathlib import Path
 from unittest import mock
 
@@ -60,6 +60,21 @@ class OverlayArchiveTest(unittest.TestCase):
                 MOD.build(pub,final_race,ZSTD,ZSTD_SHA,before_result=replace_at_result)
             self.assertEqual(final_race.read_bytes(),replacement)
 
+    def test_streaming_peak_layout_has_no_materialized_tar(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory).resolve(); pub=publication(root); archive=root/"out.tar.zst"
+            observations=[]
+            def source_tar_gone(stage,tar_path,compressed):
+                observations.append((tar_path.exists(),sorted(path.name for path in stage.iterdir())))
+                self.assertFalse(tar_path.exists()); self.assertEqual(list(stage.iterdir()),[compressed])
+            MOD.build(pub,archive,ZSTD,ZSTD_SHA,after_source_tar_unlink=source_tar_gone)
+            def no_decompressed_tar(stage,extracted):
+                observations.append((any(path.suffix==".tar" for path in stage.iterdir()),
+                                     sorted(path.name for path in stage.iterdir())))
+                self.assertEqual(list(stage.iterdir()),[extracted])
+            MOD.unpack_verify(archive,ZSTD,ZSTD_SHA,layout_check=no_decompressed_tar)
+            self.assertEqual([item[0] for item in observations],[False,False])
+
     def test_publication_tamper_missing_extra_and_legacy_fail(self):
         mutations=(
           lambda p:(p/"overlay/Mathlib/Test.olean").write_bytes(b"bad"),
@@ -89,6 +104,32 @@ class OverlayArchiveTest(unittest.TestCase):
             root=Path(directory).resolve(); pub=publication(root); archive=root/"out.zst"; MOD.build(pub,archive,ZSTD,ZSTD_SHA)
             archive.write_bytes(archive.read_bytes()[:-1]+b"x")
             with self.assertRaises(MOD.ArchiveError): MOD.unpack_verify(archive,ZSTD,ZSTD_SHA)
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory).resolve(); pub=publication(root); archive=root/"out.zst"; MOD.build(pub,archive,ZSTD,ZSTD_SHA)
+            archive.write_bytes(archive.read_bytes()[:max(1,archive.stat().st_size//2)])
+            with self.assertRaises((MOD.ArchiveError,tarfile.TarError)):
+                MOD.unpack_verify(archive,ZSTD,ZSTD_SHA)
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory).resolve(); pub=publication(root); tar=root/"late.tar"; archive=root/"late.tar.zst"
+            MOD.write_tar(pub,tar)
+            with tarfile.open(tar,"a",format=tarfile.GNU_FORMAT) as stream:
+                info=tarfile.TarInfo("../late"); info.uid=info.gid=0; info.uname=info.gname=""
+                info.mtime=0; info.mode=0o644; info.size=1; stream.addfile(info,__import__("io").BytesIO(b"x"))
+            subprocess.run([str(ZSTD),*MOD.ZSTD_COMPRESS,str(tar),"-o",str(archive)],check=True)
+            real_popen=subprocess.Popen; processes=[]
+            def capture(*args,**kwargs):
+                process=real_popen(*args,**kwargs); processes.append(process); return process
+            with mock.patch.object(MOD.subprocess,"Popen",side_effect=capture):
+                with self.assertRaisesRegex(MOD.ArchiveError,"metadata/path/link"):
+                    MOD.unpack_verify(archive,ZSTD,ZSTD_SHA)
+            self.assertEqual(len(processes),1); self.assertIsNotNone(processes[0].poll())
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory).resolve(); pub=publication(root); archive=root/"out.zst"; MOD.build(pub,archive,ZSTD,ZSTD_SHA)
+            noisy=root/"noisy-zstd"; noisy.write_text(
+                "#!/bin/sh\n"+shlex.quote(str(ZSTD))+" \"$@\"\nprintf warning >&2\n")
+            noisy.chmod(0o755)
+            with self.assertRaisesRegex(MOD.ArchiveError,"command failed/malformed"):
+                MOD.unpack_verify(archive,noisy,MOD.sha256_file(noisy))
 
     def test_source_symlink_hardlink_and_special_fail(self):
         for kind in ("symlink","hardlink","fifo"):

@@ -18,7 +18,7 @@ RECEIPT_FIELDS = {"control_files","entry_count","git_path","git_sha256","manifes
 CONTROL_FIELDS = {"blob_oid","bytes","path","sha256"}
 PACKAGE_FIELDS = {"build_root","facade","head","manifest_url","name","normalized_remote","rev"}
 ZSTD_COMPRESS = ("-q","-19","--threads=1","--no-progress","-f")
-ZSTD_DECOMPRESS = ("-d","-q","--no-progress","-f")
+ZSTD_DECOMPRESS = ("-d","-q","--no-progress","-c")
 
 class ArchiveError(ValueError): pass
 
@@ -129,32 +129,55 @@ def run(argv,label):
     result=subprocess.run(argv,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     if result.returncode!=0 or result.stdout or result.stderr: raise ArchiveError(f"{label} command failed/malformed")
 
+def fsync_dir(path):
+    fd=os.open(path,os.O_RDONLY)
+    try: os.fsync(fd)
+    finally: os.close(fd)
+
 def expected_member_names(publication): return [name for name,_,_ in source_members(publication)]
 
-def unpack_verify(archive,zstd_path,zstd_sha256):
+def unpack_verify(archive,zstd_path,zstd_sha256,layout_check=None):
     require(archive,sha256_file(archive),"archive"); require(zstd_path,zstd_sha256,"zstd")
     with tempfile.TemporaryDirectory(prefix=".h1-overlay-archive-verify-",dir=archive.parent) as raw:
-        root=Path(raw); tar_path=root/"archive.tar"; extracted=root/"publication"; extracted.mkdir()
-        run([str(zstd_path),*ZSTD_DECOMPRESS,str(archive),"-o",str(tar_path)],"zstd decompress")
-        with tarfile.open(tar_path,"r:") as stream:
-            members=stream.getmembers(); names=[]
-            for member in members:
-                pure=PurePosixPath(member.name)
-                if (not member.name or "\\" in member.name or pure.is_absolute()
-                        or pure.as_posix()!=member.name or any(x in ("",".","..") for x in pure.parts)
-                        or member.uid!=0 or member.gid!=0 or member.uname!="" or member.gname!=""
-                        or member.mtime!=0 or member.mode!=(0o755 if member.isdir() else 0o644)
-                        or not (member.isdir() or member.isreg()) or member.linkname):
-                    raise ArchiveError("archive member metadata/path/link contract mismatch")
-                if member.name in names: raise ArchiveError("archive duplicate member")
-                names.append(member.name); destination=extracted.joinpath(*pure.parts)
-                if member.isdir(): destination.mkdir(parents=True,exist_ok=False)
-                else:
-                    destination.parent.mkdir(parents=True,exist_ok=True); source=stream.extractfile(member)
-                    if source is None: raise ArchiveError("archive regular member missing payload")
-                    with destination.open("xb") as output:
-                        while block:=source.read(1<<20): output.write(block)
-            if names!=sorted(names): raise ArchiveError("archive member order mismatch")
+        root=Path(raw); extracted=root/"publication"; extracted.mkdir(); names=[]
+        if layout_check: layout_check(root,extracted)
+        with tempfile.TemporaryFile() as stderr:
+            process=subprocess.Popen([str(zstd_path),*ZSTD_DECOMPRESS,str(archive)],
+                stdout=subprocess.PIPE,stderr=stderr)
+            assert process.stdout is not None
+            try:
+                with tarfile.open(fileobj=process.stdout,mode="r|") as stream:
+                    for member in stream:
+                        pure=PurePosixPath(member.name)
+                        if (not member.name or "\\" in member.name or pure.is_absolute()
+                                or pure.as_posix()!=member.name or any(x in ("",".","..") for x in pure.parts)
+                                or member.uid!=0 or member.gid!=0 or member.uname!="" or member.gname!=""
+                                or member.mtime!=0 or member.mode!=(0o755 if member.isdir() else 0o644)
+                                or not (member.isdir() or member.isreg()) or member.linkname):
+                            raise ArchiveError("archive member metadata/path/link contract mismatch")
+                        if member.name in names: raise ArchiveError("archive duplicate member")
+                        names.append(member.name); destination=extracted.joinpath(*pure.parts)
+                        if member.isdir(): destination.mkdir(parents=True,exist_ok=False)
+                        else:
+                            destination.parent.mkdir(parents=True,exist_ok=True); source=stream.extractfile(member)
+                            if source is None: raise ArchiveError("archive regular member missing payload")
+                            with destination.open("xb") as output:
+                                while block:=source.read(1<<20): output.write(block)
+                if names!=sorted(names): raise ArchiveError("archive member order mismatch")
+            except tarfile.TarError as error:
+                process.stdout.close(); process.terminate()
+                try: process.wait(timeout=5)
+                except subprocess.TimeoutExpired: process.kill(); process.wait()
+                raise ArchiveError(f"archive stream malformed: {error}") from error
+            except BaseException:
+                process.stdout.close(); process.terminate()
+                try: process.wait(timeout=5)
+                except subprocess.TimeoutExpired: process.kill(); process.wait()
+                raise
+            finally:
+                process.stdout.close()
+            returncode=process.wait(); stderr.seek(0); diagnostics=stderr.read()
+            if returncode!=0 or diagnostics: raise ArchiveError("zstd decompress command failed/malformed")
         identity=validate_publication(extracted)
         if names!=expected_member_names(extracted): raise ArchiveError("archive member census mismatch")
         return identity
@@ -167,7 +190,8 @@ def result_identity(identity,archive,zstd_path,zstd_sha256,archive_bytes=None,ar
       "zstd_argv":[str(zstd_path),*ZSTD_COMPRESS,"{tar}","-o","{archive}"],
       "schema":ARCHIVE_SCHEMA,"zstd_path":str(zstd_path),"zstd_sha256":zstd_sha256}
 
-def build(publication,output,zstd_path,zstd_sha256,before_link=None,after_link=None,before_result=None):
+def build(publication,output,zstd_path,zstd_sha256,before_link=None,after_link=None,before_result=None,
+          after_source_tar_unlink=None):
     safe(output,"archive output",absent=True); require(zstd_path,zstd_sha256,"zstd")
     identity=validate_publication(publication)
     source_pins={str(path):sha256_file(path) for _,path,is_dir in source_members(publication) if not is_dir}
@@ -175,6 +199,9 @@ def build(publication,output,zstd_path,zstd_sha256,before_link=None,after_link=N
         stage=Path(raw); tar_path=stage/"publication.tar"; compressed=stage/"publication.tar.zst"
         write_tar(publication,tar_path)
         argv=[str(zstd_path),*ZSTD_COMPRESS,str(tar_path),"-o",str(compressed)]; run(argv,"zstd compress")
+        with compressed.open("rb") as stream: os.fsync(stream.fileno())
+        tar_path.unlink(); fsync_dir(stage)
+        if after_source_tar_unlink: after_source_tar_unlink(stage,tar_path,compressed)
         for text,pin in source_pins.items(): require(Path(text),pin,"publication input drift")
         if validate_publication(publication)!=identity: raise ArchiveError("publication identity drift")
         if unpack_verify(compressed,zstd_path,zstd_sha256)!=identity: raise ArchiveError("archive readback identity mismatch")
@@ -187,9 +214,7 @@ def build(publication,output,zstd_path,zstd_sha256,before_link=None,after_link=N
         if validate_publication(publication)!=identity: raise ArchiveError("publication identity drift")
         try: os.link(compressed,output)
         except FileExistsError as error: raise ArchiveError("archive output appeared") from error
-        fd=os.open(output.parent,os.O_RDONLY)
-        try: os.fsync(fd)
-        finally: os.close(fd)
+        fsync_dir(output.parent)
         if after_link: after_link()
         try:
             def owned():
@@ -208,9 +233,7 @@ def build(publication,output,zstd_path,zstd_sha256,before_link=None,after_link=N
             try:
                 if output.exists() and os.path.samestat(output.stat(),compressed.stat()): output.unlink()
             finally:
-                fd=os.open(output.parent,os.O_RDONLY)
-                try: os.fsync(fd)
-                finally: os.close(fd)
+                fsync_dir(output.parent)
             raise
         return result
 
