@@ -91,11 +91,12 @@ def validate_compact_lrat(path: Path) -> None:
 
 def command_values(work: Path, job: dict[str, Any]) -> dict[str, str]:
     stem = f"h1V2P{job['profile']}I{job['local_index']:05d}"
+    module = f"Erdos85H1V2CertP{job['profile']}I{job['local_index']:05d}"
     return {
         "tag": job["tag"], "profile": str(job["profile"]),
         "local_index": str(job["local_index"]), "stem": stem,
-        "module": f"Erdos85H1V2CertP{job['profile']}I{job['local_index']:05d}",
-        "work": str(work), "compact_lrat": str(work / "certificate.compact.lrat"),
+        "module": module,
+        "work": str(work), "compact_lrat": str(work / f"{module}.compact.lrat"),
         "source": str(work / "module.lean"), "olean": str(work / "module.olean"),
         "audit_json": str(work / "axiom-audit.json"),
         "log": str(work / "worker.log"),

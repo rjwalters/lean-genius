@@ -15,6 +15,10 @@ TAG_RE = re.compile(r"[0-9a-f]{16}")
 PROFILE_COUNTS = (1485, 3617, 4717, 2693, 839)
 
 
+def compact_basename(profile: int, local_index: int) -> str:
+    return f"Erdos85H1V2CertP{profile}I{local_index:05d}.compact.lrat"
+
+
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -34,6 +38,9 @@ def render(*, tag: str, profile: int, local_index: int,
     proof_path = compact_lrat.resolve()
     if not proof_path.is_file():
         raise ValueError("compact LRAT must be an existing regular file")
+    expected_basename = compact_basename(profile, local_index)
+    if proof_path.name != expected_basename:
+        raise ValueError(f"compact LRAT basename must equal {expected_basename}")
     compact_lrat_sha256 = sha256_file(proof_path)
     stem = f"h1V2P{profile}I{local_index:05d}"
     return f'''import Proofs.Erdos85OneHighV2CertificateAggregation
@@ -57,7 +64,7 @@ def {stem}Table : OneHighMissTable :=
 
 private def {stem}RawProof : Array LRAT.IntAction :=
   parseOrderFortyNineLratProof
-    (include_str {json.dumps(str(proof_path))})
+    (include_str {json.dumps(expected_basename)})
 
 private def {stem}Proof : Array LRAT.IntAction :=
   (prepareLratProof
@@ -112,6 +119,11 @@ def write_fresh(path: Path, value: str) -> None:
         raise
 
 
+def require_colocated(compact_lrat: Path, source: Path) -> None:
+    if compact_lrat.resolve().parent != source.resolve().parent:
+        raise ValueError("compact LRAT and generated source must share one directory")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--tag", required=True)
@@ -120,6 +132,7 @@ def main() -> int:
     parser.add_argument("--compact-lrat", required=True, type=Path)
     parser.add_argument("--source", required=True, type=Path)
     args = parser.parse_args()
+    require_colocated(args.compact_lrat, args.source)
     source = render(
         tag=args.tag, profile=args.profile, local_index=args.local_index,
         compact_lrat=args.compact_lrat,

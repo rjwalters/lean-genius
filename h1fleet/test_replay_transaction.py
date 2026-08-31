@@ -31,7 +31,8 @@ from capacity_queue import (
     validate_queue_capacity, validate_queue_tables,
 )
 from replay_worker import (
-    validate_existing_receipt, validate_job, validate_production_manifest,
+    command_values, validate_existing_receipt, validate_job,
+    validate_production_manifest,
 )
 import replay_worker as replay_worker_module
 from run_replay_queue import acquire_single_writer_lock, load_queue
@@ -172,6 +173,26 @@ class ReplayTransactionTest(unittest.TestCase):
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
+
+    def test_command_values_use_unique_canonical_compact_basename(self) -> None:
+        first = command_values(self.state / "first", {
+            "tag": self.tag, "profile": 0, "local_index": 3,
+        })
+        second = command_values(self.state / "second", {
+            "tag": "fedcba9876543210", "profile": 0, "local_index": 4,
+        })
+        self.assertEqual(
+            Path(first["compact_lrat"]).name,
+            "Erdos85H1V2CertP0I00003.compact.lrat",
+        )
+        self.assertEqual(
+            Path(second["compact_lrat"]).name,
+            "Erdos85H1V2CertP0I00004.compact.lrat",
+        )
+        self.assertNotEqual(
+            Path(first["compact_lrat"]).name,
+            Path(second["compact_lrat"]).name,
+        )
 
     def worker(self) -> subprocess.CompletedProcess[str]:
         return subprocess.run([
