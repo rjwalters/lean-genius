@@ -109,17 +109,52 @@ def file_identity(path: Path) -> tuple[str, int]:
     return digest.hexdigest(), size
 
 
+def validate_compact_artifacts(receipt: dict[str, str], solved_cnf: Path,
+                               compact_lrat_gz: Path) -> None:
+    """Validate the retained compact proof without claiming raw-LRAT replay.
+
+    Root workers retain the uploaded compact gzip but not the raw LRAT or the
+    intermediate uncompressed compact file.  This deliberately narrower gate
+    binds a rematerialized solved CNF, the retained gzip bytes, and the
+    streamed decompressed compact identity/size recorded by an already parsed
+    UNSAT terminal receipt.  Independent LRAT replay remains the caller's next
+    step; this function does not reproduce or attest the raw-LRAT stages.
+    """
+    if receipt.get("verdict") != "UNSAT":
+        raise ReceiptError("compact artifact verification requires UNSAT")
+    cnf_sha, cnf_bytes = file_identity(solved_cnf)
+    if (cnf_sha != receipt["solved_cnf_sha256"] or
+            cnf_bytes != int(receipt["cnf_bytes"])):
+        raise ReceiptError("solved CNF artifact identity mismatch")
+    gzip_sha, gzip_bytes = file_identity(compact_lrat_gz)
+    if (gzip_sha != receipt["compact_lrat_gz_sha256"] or
+            gzip_bytes != int(receipt["compact_lrat_gz_bytes"])):
+        raise ReceiptError("compact gzip artifact identity mismatch")
+    compact_digest = hashlib.sha256()
+    compact_bytes = 0
+    try:
+        with gzip.open(compact_lrat_gz, "rb") as stream:
+            for chunk in iter(lambda: stream.read(1 << 20), b""):
+                compact_digest.update(chunk)
+                compact_bytes += len(chunk)
+    except (OSError, EOFError) as error:
+        raise ReceiptError("invalid compact LRAT gzip artifact") from error
+    if (compact_digest.hexdigest() != receipt["compact_lrat_sha256"] or
+            compact_bytes != int(receipt["compact_lrat_bytes"])):
+        raise ReceiptError("streamed compact LRAT identity mismatch")
+
+
 def validate_artifacts(receipt: dict[str, str], solved_cnf: Path,
                        raw_lrat: Path | None = None,
                        compact_lrat: Path | None = None,
                        compact_lrat_gz: Path | None = None,
                        model: Path | None = None) -> None:
-    cnf_sha, cnf_bytes = file_identity(solved_cnf)
-    if (cnf_sha != receipt["solved_cnf_sha256"] or
-            cnf_bytes != int(receipt["cnf_bytes"])):
-        raise ReceiptError("solved CNF artifact identity mismatch")
     proof_paths = (raw_lrat, compact_lrat, compact_lrat_gz)
     if receipt["verdict"] != "UNSAT":
+        cnf_sha, cnf_bytes = file_identity(solved_cnf)
+        if (cnf_sha != receipt["solved_cnf_sha256"] or
+                cnf_bytes != int(receipt["cnf_bytes"])):
+            raise ReceiptError("solved CNF artifact identity mismatch")
         if any(path is not None for path in proof_paths):
             raise ReceiptError("SAT receipt cannot bind LRAT artifacts")
         if model is None:
@@ -134,24 +169,15 @@ def validate_artifacts(receipt: dict[str, str], solved_cnf: Path,
         raise ReceiptError("UNSAT artifact verification requires all LRAT forms")
     assert raw_lrat is not None and compact_lrat is not None
     assert compact_lrat_gz is not None
+    validate_compact_artifacts(receipt, solved_cnf, compact_lrat_gz)
     checks = (
         (raw_lrat, "raw_lrat_sha256", "raw_lrat_bytes"),
         (compact_lrat, "compact_lrat_sha256", "compact_lrat_bytes"),
-        (compact_lrat_gz, "compact_lrat_gz_sha256", "compact_lrat_gz_bytes"),
     )
     for path, sha_key, bytes_key in checks:
         digest, size = file_identity(path)
         if digest != receipt[sha_key] or size != int(receipt[bytes_key]):
             raise ReceiptError(f"artifact identity mismatch for {sha_key}")
-    decompressed = hashlib.sha256()
-    try:
-        with gzip.open(compact_lrat_gz, "rb") as stream:
-            for chunk in iter(lambda: stream.read(1 << 20), b""):
-                decompressed.update(chunk)
-    except (OSError, EOFError) as error:
-        raise ReceiptError("invalid compact LRAT gzip artifact") from error
-    if decompressed.hexdigest() != receipt["compact_lrat_sha256"]:
-        raise ReceiptError("compact gzip content differs from compact LRAT")
 
 
 def parse(line: str, expected_jobs: set[str] | None = None,

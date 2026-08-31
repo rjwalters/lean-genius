@@ -9,6 +9,7 @@ from pathlib import Path
 
 from validate_sat49_terminal_ledger import (
     ReceiptError, manifest_identity, parse, validate_artifacts,
+    validate_compact_artifacts,
 )
 
 
@@ -196,6 +197,78 @@ class TerminalLedgerTests(unittest.TestCase):
             ))
             with self.assertRaisesRegex(ReceiptError, "requires all LRAT forms"):
                 validate_artifacts(parsed, cnf)
+
+    def test_compact_artifacts_bind_cnf_gzip_and_streamed_payload_only(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cnf = root / "job.cnf"
+            compressed = root / "compact.lrat.gz"
+            compact = b"2 0 1 0\n"
+            cnf.write_bytes(b"p cnf 1 1\n1 0\n")
+            with gzip.open(compressed, "wb") as stream:
+                stream.write(compact)
+            parsed = parse(receipt(
+                solved_cnf_sha256=hashlib.sha256(cnf.read_bytes()).hexdigest(),
+                cnf_bytes=str(cnf.stat().st_size),
+                compact_lrat_sha256=hashlib.sha256(compact).hexdigest(),
+                compact_lrat_bytes=str(len(compact)),
+                compact_lrat_gz_sha256=hashlib.sha256(
+                    compressed.read_bytes()).hexdigest(),
+                compact_lrat_gz_bytes=str(compressed.stat().st_size),
+                remote_sha256=hashlib.sha256(compressed.read_bytes()).hexdigest(),
+                # These raw fields are intentionally unrelated: this narrower
+                # validator must make no raw-LRAT reproduction claim.
+                raw_lrat_sha256="b" * 64, raw_lrat_bytes="123",
+            ))
+            validate_compact_artifacts(parsed, cnf, compressed)
+
+            cnf.write_bytes(b"p cnf 1 1\n-1 0\n")
+            with self.assertRaisesRegex(ReceiptError, "solved CNF"):
+                validate_compact_artifacts(parsed, cnf, compressed)
+
+    def test_compact_artifacts_reject_gzip_and_streamed_identity_drift(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cnf = root / "job.cnf"
+            compressed = root / "compact.lrat.gz"
+            cnf.write_bytes(b"p cnf 1 1\n1 0\n")
+            with gzip.open(compressed, "wb") as stream:
+                stream.write(b"different\n")
+            gz_sha = hashlib.sha256(compressed.read_bytes()).hexdigest()
+            parsed = parse(receipt(
+                solved_cnf_sha256=hashlib.sha256(cnf.read_bytes()).hexdigest(),
+                cnf_bytes=str(cnf.stat().st_size),
+                compact_lrat_sha256=hashlib.sha256(b"expected\n").hexdigest(),
+                compact_lrat_bytes=str(len(b"expected\n")),
+                compact_lrat_gz_sha256=gz_sha,
+                compact_lrat_gz_bytes=str(compressed.stat().st_size),
+                remote_sha256=gz_sha,
+            ))
+            with self.assertRaisesRegex(ReceiptError, "streamed compact LRAT"):
+                validate_compact_artifacts(parsed, cnf, compressed)
+            compressed.write_bytes(b"not gzip")
+            with self.assertRaisesRegex(ReceiptError, "compact gzip artifact identity"):
+                validate_compact_artifacts(parsed, cnf, compressed)
+            bad_sha = hashlib.sha256(compressed.read_bytes()).hexdigest()
+            malformed = parse(receipt(
+                solved_cnf_sha256=hashlib.sha256(cnf.read_bytes()).hexdigest(),
+                cnf_bytes=str(cnf.stat().st_size),
+                compact_lrat_gz_sha256=bad_sha,
+                compact_lrat_gz_bytes=str(compressed.stat().st_size),
+                remote_sha256=bad_sha,
+            ))
+            with self.assertRaisesRegex(ReceiptError, "invalid compact LRAT gzip"):
+                validate_compact_artifacts(malformed, cnf, compressed)
+
+    def test_compact_artifacts_reject_sat_receipt(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cnf = root / "job.cnf"
+            compressed = root / "compact.lrat.gz"
+            cnf.write_bytes(b"x")
+            compressed.write_bytes(b"x")
+            with self.assertRaisesRegex(ReceiptError, "requires UNSAT"):
+                validate_compact_artifacts(parse(receipt("SAT")), cnf, compressed)
 
     def test_sat_artifact_verification_binds_model(self):
         with tempfile.TemporaryDirectory() as directory:
