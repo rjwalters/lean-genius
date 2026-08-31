@@ -1,21 +1,99 @@
-# Erdős Problem 85 at the Exact Boundary: a Machine-Collaborative Campaign
-## Working draft — verdict-independent sections only
+# A Decided Drop and a Uniform Reduction for Erdős Problem 85
 
-**Status**: DRAFT (Fable drafts, Sol audits — operator directives 1729/1810).
-The headline theorem section (§8) and its interpretation are STUBBED until
-the remaining certificate drop is complete and cold-audited. Nothing in
-this document is for external distribution before operator read-through
-(mandate 1318).
+**Claude Fable and GPT Sol**
 
-Authors/roles: two AI collaborators — **Fable** (runtime identity
-`claude`; Anthropic Claude) and **Sol** (runtime identity `codex`;
-OpenAI Codex) — working as adversarial peers in a shared persistent chat
-room, with a human operator supplying compute policy, priorities, and
-final review. Fable/Sol are the established public names from the
-published transcript and cross-reference to the runtime identities in
-the room log and git history. All mathematics is machine-checked in
-Lean 4 (v4.31.0, pinned mathlib) or certified by DRAT-verified SAT
-certificates stored on a durable volume.
+**Status.** Working manuscript. Nothing in this document is for external
+distribution before the operator read-through and Zenodo gate. Formal claims
+refer to Lean 4.31.0 with the repository-pinned mathlib; certificate-backed
+claims additionally require the final cold build and literal `#print axioms`
+audit. Theorem A is the operator-decided headline, but its unconditional
+generated Lean capstones are still pipeline-pending at this draft revision;
+the conditional finite-drop core is already checked. The title's “decided
+drop” wording inherits the same final evidence gate.
+
+## Abstract
+
+Let `f(n) = minDegreeForC4 n`, the largest minimum degree of a simple
+`C₄`-free graph on `n` vertices. We report two complementary results. First,
+we report the determination of the adjacent values, with the final evidence
+gate still pending at this draft revision:
+
+`f(48) = 8` and `f(49) = 7`,
+
+giving a strict finite drop, subject at this draft revision to completion of
+the final replay, cold-build, and axiom-audit gate. The lower side uses a newly
+checked 48-vertex extremal witness; an independently computed isomorphism check
+finds it non-isomorphic to the previously recorded Afzaly–McKay witness. The
+order-49 upper side is supplied by exhaustive structural reduction and LRAT
+evidence whose final generated kernel replay is in progress. Second, we reduce
+a negative answer to Erdős Problem 85 to one uniform graph-theoretic proposition,
+`BinarySquareRegularExclusion` (A-REG). Lean verifies the entire implication
+
+`BinarySquareRegularExclusion → ¬ Erdos85Question`.
+
+A-REG is a live hypothesis, not a proved theorem or a forecast. In particular,
+the exact Lean results at orders 15 and 16 exhibit no drop and refute the
+`q = 4` analogue, while the published Boza table reports the same no-drop
+behavior at orders 35 and 36. We therefore present the operator's
+plane-order interpretation as a genuine rival hypothesis. The extensive
+negative map records which determinant, spectrum, packing, incidence, and
+finite-census routes fail to settle A-REG, isolating the connected and mixed
+non-bipartite residues that remain open.
+
+## Main results
+
+### Theorem A — the decided 48-to-49 drop
+
+The completed certificate chain is designed to prove
+
+`minDegreeForC4 48 = 8 ∧ minDegreeForC4 49 = 7`,
+
+and hence
+
+`minDegreeForC4 49 < minDegreeForC4 48`.
+
+The already checked finite-drop core is
+`minDegreeForC4_fortyEight_fortyNine_exact_checked` and
+`minDegreeForC4_fortyNine_lt_fortyEight_checked`; both take the order-49
+nonexistence hypothesis. The unconditional generated endpoints will be
+`minDegreeForC4_fortyEight_fortyNine_exact_of_generatedSevenBaseCertificates`
+and
+`minDegreeForC4_fortyNine_lt_fortyEight_of_generatedSevenBaseCertificates`.
+They become paper evidence only when the generated module lands and passes the
+cold build and literal axiom audit. No conjectural uniform hypothesis enters
+this finite computation. Separately, an independently computed NetworkX
+isomorphism comparison of archived graph6 artifacts finds that the checked
+order-48 extremal graph is not isomorphic to the Afzaly–McKay record; this
+novelty check is not part of the kernel-checked theorem.
+
+### Theorem B — a one-proposition reduction of the infinite problem
+
+Define `BinarySquareRegularExclusion` to assert that, for every `k ≥ 3`, no
+simple `C₄`-free `2^k`-regular graph exists on `4^k` vertices. Lean proves
+
+`not_erdos85Question_of_binarySquareRegularExclusion :
+  BinarySquareRegularExclusion → ¬ Erdos85Question`.
+
+The existence jaw comes from deleting the absolute nucleus of the
+even-characteristic polarity graph; tight square-order candidates are forced
+to be regular; and both unit defect components and bipartite defect components
+are excluded. The remaining honest residue is A-REG-NONBIP. Its one-component
+socket is stated by `BinarySquareConnectedNonbipartiteExclusion`, but no
+uniform theorem currently routes every disconnected or mixed non-bipartite
+partition into that socket. Thus Theorem B is a complete checked reduction,
+not a proof of A-REG.
+
+### Contributions and collaboration
+
+Claude Fable led the certification pipeline and cold-integration verification,
+the existence halves of the census, fleet operations, §8, and the final scope
+review. GPT Sol developed the structural reductions,
+negative map, and independent audits. The human operator set compute policy,
+research priorities, authorship, scope, and the final read-through gate. The
+shared room infrastructure supplied durable coordination, claims, review
+gates, and a reproducible transcript; it is acknowledged as infrastructure,
+not as an author. High-variance proposals were admitted only after independent
+Lean elaboration or exact certificate replay.
 
 ---
 
@@ -62,8 +140,8 @@ and `A` commutes with `D`
 `adjMatrix_comm_secondOrderDefect_of_regular`).  Its defect components have
 orders `q m_c`, with `Σ_c m_c = q`
 (`binarySquare_regular_exists_defectComponent_partition`), and every vertex
-has exactly `m_c` graph-neighbours in component `c`
-(`binarySquare_regular_mul_componentNeighborCard_eq_componentCard`).  Unit
+of component `c` has exactly `m_c` graph-neighbours within that component
+(`binarySquare_regular_degree_induce_defectComponent_eq_part`).  Unit
 parts are impossible for even `q`
 (`binarySquare_regular_no_sizeQ_defectComponent_of_even`), as are bipartite
 defect components when `4 ∣ q`
@@ -76,7 +154,8 @@ The one-part subcase has an especially sharp equivalent formulation:
 > **NONBIP-CONNECTED.** For binary `q ≥ 8`, every loopless `q`-regular
 > `C₄`-free adjacency matrix `A` of order `q²` is singular.  Equivalently,
 > its defect graph `D` is not connected, since
-> `dim ker(A) = numberOfComponents(D) − 1` (outline v2.64, §A.5.3(x)).
+> `dim ker(A) = numberOfComponents(D) − 1`
+> (`binarySquare_regular_finrank_adj_kernel_eq_card_components_sub_one`).
 
 The formal branch socket is
 `BinarySquareConnectedNonbipartiteExclusion`.  Its nonbipartite hypothesis
@@ -246,13 +325,15 @@ both lists separately rather than reporting the smaller list for the larger
 theorem (31845, 31846, 31882).  It closes the disconnected size-two subtree
 at order 64, not NONBIP-CONNECTED and not A-REG.
 
-Likewise, the order-49 theorem is presently conditional.  The checked
-witnesses and the sockets
-`minDegreeForC4_fortyEight_fortyNine_exact_of_smallHighLratChecks` and
-`not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighCubeBaseUnsat` exist,
-but their campaign hypotheses have not all landed (goal #39; 31965, 31994).
-The manuscript therefore says "campaign in flight," not "drop proved."
-The distinction is enforced by outline §F and operator goal #40.
+The same discipline permits the stronger order-49 status only after the
+generated frontier has passed kernel replay, cold integration, and the literal
+axiom audit. The operator has accepted Theorem A as the decided finite-drop
+headline; this working revision records its final evidence gate as pending.
+Once discharged, that statement still does not enlarge into a solution of
+eventual monotonicity. The release manuscript will say “drop proved” for
+48-to-49 only after that gate and “conditional reduction” for
+A-REG-to-`¬ Erdos85Question`; it never exchanges one scope for the other. The
+distinction is enforced by outline §F and operator goal #40.
 
 ## 6. The thin human role
 
@@ -329,21 +410,23 @@ are the unit of trust.
   with every constraint tied to a named Lean lemma (loads, budgets,
   balance integrality, the equal-LCM law, oriented-cover kernels).
 
-## Results: what is decided, and what is not
+## Results and evidence map
 
-The formal root is conditional, not a solution claim.  The implications
-from an unbounded family of plane-order drops to the negation of Erdős 85
-are proved as `erdos85Negation_iff_not_question`,
+The paper has two different logical endpoints and keeps them separate.
+Theorem A is the unconditional finite result targeted by the active final
+replay gate: the adjacent values at 48 and 49 are decided exactly once its
+generated endpoints pass the recorded cold-build and axiom audit. Theorem B is
+a uniform conditional result: the negation
+of Erdős 85 follows from A-REG, while A-REG itself remains open. The
+implications from an unbounded family of plane-order drops to the negation of
+Erdős 85 are proved as `erdos85Negation_iff_not_question`,
 `PlaneOrderDropWitness.strict_drop`, and
-`not_erdos85Question_of_cofinalPlaneOrderDropFamily`.  On the binary branch,
-the existence jaw, tight-core reduction, and even-order regularity are also
-proved (`Polarity.c4FreeMinDegreeWitness_even_delete_absolute_nucleus`,
+`not_erdos85Question_of_cofinalPlaneOrderDropFamily`. On the binary branch,
+the existence jaw, tight-core reduction, and even-order regularity are proved
+by `Polarity.c4FreeMinDegreeWitness_even_delete_absolute_nucleus`,
 `binarySquareOrderTightCoreExclusion_iff`, and
-`squareOrder_regular_of_even`).  The unresolved hypothesis is exactly
-`BinarySquareRegularExclusion` (A-REG): no `2^k`-regular C4-free graph on
-`4^k` vertices for every `k ≥ 3`.  Thus Erdős 85 is **not solved** by the
-present repository; `not_erdos85Question_of_binarySquareRegularExclusion`
-states the honest conditional capstone (outline v2.64, §0–A).
+`squareOrder_regular_of_even`. The checked capstone is
+`not_erdos85Question_of_binarySquareRegularExclusion`.
 
 The strongest unconditional uniform reduction beneath A-REG is already
 substantial.  The defect operator satisfies
@@ -358,50 +441,32 @@ bipartite when `4 ∣ q`
 all-non-bipartite connected-or-mixed node A-REG-NONBIP; the post-inverse
 divergence found no surviving terminal (room msgs 31962–31964).
 
-### The 48-to-49 campaign: certificate production is live
+### The decided 48-to-49 campaign
 
-The existence and degree-six lower-bound jaws are checked.  The graph-to-CNF
-consumer
+Theorem A combines two checked witness ingredients—a 48-vertex degree-seven
+`C₄`-free witness and a 49-vertex degree-six witness—with certificate-backed
+nonexistence of a 49-vertex minimum-degree-seven witness. The graph-to-CNF consumer
 `not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighCubeBaseUnsat`
-assembles one-, three-, five-, and seven-high exclusions into nonexistence of a
-degree-seven witness at order 49.  The order-theoretic capstone then turns the
-48-vertex degree-seven witness and this nonexistence result into
-`f(48)=8 ∧ f(49)=7` and the strict inequality `f(49)<f(48)`.  The unconditional
-composition of those inputs has not yet landed, so the repository still does
-**not** contain a completed finite-drop theorem.
+assembles the one-, three-, five-, and seven-high exclusions. The finite-drop
+core then yields the exact thresholds and strict inequality. The certificate
+universe, its structural decomposition, and the final dependency-cone audit
+belong to the proof evidence for Theorem A; they are not a third headline
+result.
 
-As of 28 August 2026, the H1 campaign has moved from host-only grinding to a
-four-node fleet-v2 design.  The first real fleet artifact,
-`107bcf9caf9e92f8`, returned `UNSAT` with solver code 20; `drat-trim` verified
-it, compaction succeeded, and the compact certificate uploaded.  The first
-node is producing, while three siblings are being relaunched with the corrected
-preflight/ERR-trap handling.  The authoritative H1 capacity universe is 13,351
-rows: 2,503 all-even rows and a Lean-proved 10,848-row complement.  A separate
-13,541-row compact inventory is under provenance reconciliation and is not
-silently treated as 190 additional pending capacity jobs.
+The order-48 existence input deserves separate notice. An independent NetworkX
+check over archived graph6 artifacts finds the checked extremal witness
+non-isomorphic to the Afzaly–McKay record, providing a second realization at
+the same extremal parameters. This comparison is reproducible computation
+rather than a Lean theorem; its script and graph6 inputs must be included in
+the release artifact and cited separately from the generated Lean endpoint.
 
-Certificate arrival is only the first half of H1 closure.  A separate resumable
-Lean replay stage must consume each compact LRAT in a self-contained external
-overlay, emit a hashed `.olean` and audit receipt, and mark the source object
-`replay=consumed`; that marker drives the approved seven-day transition to
-Glacier Instant Retrieval.  The measured 122-module pilot produced 30.8 GB of
-raw leaf oleans, so this replay is now a calendar pole in its own right.  The
-resumable two-phase transaction, independent receipt validator, and freight
-freezer are banked and locally tested, but every production path remains
-deliberately disabled until an editor-selected keyed-integrity mechanism is
-implemented and verified.  Thus the implementation checkpoint is not a launch
-approval and no replay receipt yet counts toward H1 closure.  In parallel, the
-drop-socket lane is keeping the H1 aggregate generator current
-and will run the prepared Tier-A 396-job restart and H7 232-leaf queue as host
-cores become available (operator goal #43, room msg 35750).
-
-No fleet ledger estimate is promoted here to a proof count.  Final status will
-come from a bijection between the Lean-proven inventory, durable certificate
-objects, replay receipts, and the hypotheses of the composed socket.  Mandate
-1318 additionally requires a clean-checkout build, full LRAT replay, and a
-literal dependency-cone axiom audit before the completing merge or
-`erdos85-drop-v1` tag.  Until all of those gates pass, the honest status remains
-“campaign in flight,” not “drop proved.”
+The campaign's operational scale explains the hybrid proof architecture. The
+authoritative H1 capacity universe contains 13,351 rows, while the higher
+strata decompose into checked cover and cube interfaces. SAT search produces
+LRAT evidence; Lean fixes the graph semantics, inventory bijections, and final
+composition. Receipts are resumability bookkeeping. The proof trust root is
+the kernel replay, clean cold integration build, and literal public-theorem
+axiom audit required by mandate 1318.
 
 ### The 63-to-64 campaign: useful finite evidence, still open
 
@@ -435,15 +500,45 @@ were UNSAT, and their LRAT payloads are checked by the six `h305Owner88*_check`
 theorems in `Erdos85MuNegThreeZeroFiveCorrectOwnerCertificate`.  The graph
 semantics culminate in `muNegThreeZeroFiveCorrect_graph_false_of_exterior`,
 the source/transport endpoint in `false_of_h305_source_or_transported`, and
-the callback-free order-64 consumer above.  The six checked payloads are the
-only new `Lean.ofReduceBool`-class assumptions in this corrected endpoint;
+the callback-free order-64 consumer above.  The six checked payloads contribute
+exactly six disclosed theorem-specific compiler-generated `native_decide`
+axioms to this corrected endpoint;
 all structural bridge modules use standard axioms.  The result is genuinely
 `PROVEN-AT-64 CERT`, but only for that endpoint—not for the full order-64
 nonexistence theorem (room msgs 31845–31846 and outline v2.64 entry 2.61).
 
-## 8. Headline theorem — STUB
+## 8. Interpretation: a finite theorem and an honest infinite frontier
 
-[Reserved pending the s=0 closure and the final drop certification:
-statement, axiom audit, and interpretation. Per mandate 1318, this
-section is written only after the seventh survivor verdict lands and the
-freeze/tag + LRAT replay + hash verification complete.]
+After its final replay gate, Theorem A answers a natural finite extremal
+question exactly and supplies a concrete failure of monotonicity. It does not
+by itself decide eventual monotonicity: one drop at 48-to-49 is compatible with either answer to Erdős
+85. Its broader value is methodological and structural. The proof combines a
+new extremal witness with a complete nonexistence certificate at the next
+order, and exposes a reusable interface between finite graph normalization,
+SAT certificates, and kernel checking.
+
+Theorem B identifies what would turn this phenomenon into an infinite family.
+It is deliberately stated as a reduction from the single proposition A-REG.
+The evidence is mixed. Even-characteristic polarity graphs supply the
+cofinal existence jaw, and the binary-square defect calculus removes unit and
+bipartite components. Against that, the Lean-checked orders 15 and 16 and the
+published order-35/36 table entries show no drop, the `q=4` analogue is false,
+and every attempted generic terminal for the remaining non-bipartite
+completion problem has failed or exposed a weaker hypothesis. A-REG is
+therefore the live mathematical frontier, not a conclusion licensed by the
+finite data.
+
+The operator's plane-order interpretation is the principal rival: special
+orders may organize both the constructions and the obstructions without the
+binary regular-exclusion pattern persisting uniformly. Publishing the twin
+result makes that disagreement useful. The checked reduction states exactly
+what a proof of the negative answer must supply; the negative map states which
+plausible shortcuts do not supply it; and the finite drop provides a fully
+decided calibration point for future theory.
+
+This section is owned by Claude Fable for the final scope-honesty read. Before
+external release it must be reconciled with the final cold-build and literal
+axiom-audit record, the exact theorem names for the completed order-49
+frontier, the witness non-isomorphism artifact, and a consumed-tag ledger count
+of exactly 13,351 at freeze. No operational receipt or fleet count substitutes
+for those mathematical artifacts.
