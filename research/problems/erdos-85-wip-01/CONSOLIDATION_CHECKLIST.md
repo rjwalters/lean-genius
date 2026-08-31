@@ -5,20 +5,24 @@ created early.**  This is the execution checklist for operator mandate 1318 and
 goal #43.  A checked box requires the named durable evidence; verbal success or
 an idle process is not evidence.
 
-Current evidence snapshot (2026-08-30 09:08 PDT; no boxes discharged):
+Current evidence snapshot (2026-08-30 17:10 PDT; only the replay-contract
+selection box below is discharged):
 
 - the reviewed Branch-A consolidation lineage ends at `7763e294de`; the
   capacity-index/replay provenance chain and hierarchical aggregate generator
   are also reviewed and banked, but neither is final campaign evidence until
   the complete accepted receipt set is generated and cold-audited;
-- the editor reports 7,922 H1 certificates (59%) waiting for replay-stage
-  consumption (squad message 36408); the exact 13,351-row completion universe
-  is therefore still incomplete;
+- the latest authoritative H1 reconciliation reports 9,297 certified, 175
+  in-flight, and 3,879 pending out of 13,351 (squad messages 36498--36499); the
+  completion universe is therefore still incomplete;
 - replay consumption is assigned to sol-2 and replay review gates/checklist
-  maintenance to sol-3.  The assignment does not select a keyed-integrity
-  mechanism or establish campaign-wide dispatcher exclusion: production replay
-  remains fail-closed until those explicit gates below have durable evidence;
-- the four-parent H3/H5 split launched at 2026-08-30 09:07 PDT under queue
+  maintenance to sol-3.  Goal #44 selected a single-writer, canonical-JSON,
+  plain-SHA-256 receipt contract with create-only publication and no KMS or
+  distributed lease.  Implementation and directed review remain open;
+- the four-parent H3/H5 split completed with durable END at 2026-08-30
+  11:17 PDT: all 264 unique jobs terminated with zero failures, comprising nine
+  fresh validated UNSAT ledgers and 255 reviewed QUICK-UNKNOWN markers.  It ran
+  under queue
   receipt `666538b014b717efb27a16f10dbcc3d61c5eb04487b1ca02cfc3dd34b7ebb332`,
   queue `a992dbb7474c2dd7e83b62d087733f42402facc62e9924b210b2d285a6b31879`,
   and worker
@@ -27,8 +31,11 @@ Current evidence snapshot (2026-08-30 09:08 PDT; no boxes discharged):
   `041a1a2a5ea0e62b01e1435156441c8a0c956e13fac4ecb677f2ab8a4dfbf8c2`
   and recoverable parent-0 archive receipt
   `f1470b12e17775ea979da6148bf032bb9edfc65b222db44dcbe76956cfd8dfde`
-  were independently rehashed after squad message 36430.  This is solver-fleet
-  execution, not a discharged H3/H5 semantic socket; and
+  were independently rehashed after squad message 36430.  The completed quick
+  pass is solver-fleet evidence, not a discharged H3/H5 semantic socket;
+- H7 host execution is live at P=1 under the 105-GiB preservation floor; the
+  first leaf ended SLOW-UNKNOWN and the second is active.  Goal #44 directs
+  eventual fleet handoff after H1 v2 drains, so no H7 socket is discharged; and
 - the named frozen path `sat49/compact_action_manifest.txt` is still absent.
   The existing four-row file under `proofs/Proofs/Certificates/` describes old
   H9 `t2`/`t3` certificates and must not be copied as H3/H5/H7 evidence.
@@ -52,14 +59,17 @@ Canonical targets, fixed by the operator:
   states `minDegreeForC4 49 < minDegreeForC4 48`.
 - [ ] The editor names the exact final module and fully-qualified theorem that
   replace the audit command placeholders below.
-- [ ] The editor selects the replay receipt's keyed-integrity mechanism, key
-  identity, and verification contract.  Until a signer and independent
-  cryptographic verifier are implemented and reviewed, the replay worker must
-  remain fail-closed for every production backend; local transaction tests do
-  not satisfy this gate.
-- [ ] Test the selected signer and independent verifier end to end against the
-  exact production image and pinned key identity, including signature failure
-  on a one-byte payload mutation and a wrong-key mutation.
+- [x] The editor selected the replay receipt contract in goal #44 (squad
+  message 36482): receipts are operational bookkeeping outside the trust chain;
+  use one single writer, canonical JSON with plain SHA-256, create-only
+  publication via conditional `PutObject If-None-Match:*`, and apply
+  `replay=consumed` only after `.olean` construction and literal axiom audit.
+  Do not implement KMS signing or a distributed lease for this campaign.
+- [ ] Implement and independently review that selected contract end to end in
+  the exact production image.  Require strict canonical schema/type checks,
+  payload SHA-256 mutation failure, create-only collision GET-and-verify,
+  single-writer resume behavior, and consumed-tag ordering after successful
+  `.olean` construction plus literal `#print axioms` audit.
 - [ ] Freeze new mathematical lanes and record the integration commit, dirty
   status, Lean version, Lake manifest hash, and certificate-manifest hashes.
 - [ ] Confirm every active worktree owner has pushed or explicitly abandoned
@@ -77,13 +87,13 @@ Canonical targets, fixed by the operator:
   and all manifest hashes pass validation.  Run the prescribed exact-image
   real `P=1` large-leaf transaction: durable artifact read-back and immutable
   replay-ready first, then lifecycle tagging with unchanged certificate
-  identity, then cryptographically verified final receipt and ledger.  Obtain
+  identity, then schema/hash-verified final receipt and ledger.  Obtain
   editor approval of measured RSS, throughput, concurrency, EBS shape, retry
   margin, and total dollar estimate before any scaled launch.
 - [ ] Before the real replay transaction, independently inspect and test the
   least-privilege replay role (no delete and no H1 certificate `PutObject`),
   the prefix-and-`replay=consumed` Glacier-IR lifecycle rule, disk/concurrency
-  alarms, and the single-dispatcher claim policy.  Preserve the dry-run/config
+  alarms, and the single-writer process/exclusion policy.  Preserve the dry-run/config
   evidence and editor approval.
 - [ ] H3: match every accepted scout/cube leaf to the exact semantic consumer
   and its discharging commit.
@@ -109,11 +119,11 @@ Canonical targets, fixed by the operator:
   byte-exact CNF; archive command, tool hashes, return code, and complete log.
 - [ ] Validate every cloud Lean replay receipt, raw/compressed `.olean` hash,
   source hash, axiom audit, and `replay=consumed` lifecycle transaction.
-- [ ] Require each accepted replay receipt to pass the complete §4 schema and
-  cryptographic-integrity verifier.  A local-store receipt, replay-ready object,
-  lifecycle tag alone, unsigned/TBD receipt, or mechanics-only test result
-  contributes **zero** accepted leaves.
-- [ ] Reconcile exactly one cryptographically accepted receipt per intended H1
+- [ ] Require each accepted replay receipt to pass the complete §4 schema,
+  canonical-JSON, and payload/object SHA-256 verifier selected by goal #44.  A
+  local-store receipt, replay-ready object, lifecycle tag alone, malformed/TBD
+  receipt, or mechanics-only test result contributes **zero** accepted leaves.
+- [ ] Reconcile exactly one accepted receipt per intended H1
   tag and no unknown receipts.  Independently reload and byte-hash the bound
   immutable replay-ready record, all artifacts, the input certificate, and the
   terminal ledger; exercise the missing-ledger recovery path without rewriting
@@ -184,7 +194,7 @@ allowlist.  Any other axiom is a release blocker.
   verify both compressed/raw hashes, and import them in an isolated overlay.
 - [ ] Independently reproduce the real `P=1` receipt with the pinned AMI,
   container image, IMDSv2 instance identity, AWS CLI, overlay, generator,
-  checker, zstd, receipt schema, and cryptographic key identities; verify that
+  checker, zstd, receipt schema, and canonicalization/hash identities; verify that
   no placeholder (`TBD`, `UNKNOWN`, or local-test identity) entered the frozen
   freight manifest.
 - [ ] Run the repository's relevant Python tests/generator self-checks and
