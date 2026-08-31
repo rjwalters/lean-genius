@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -15,12 +16,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-SCHEMA = "erdos85-h1-coverage-audit-snapshot-v1"
+SCHEMA = "erdos85-h1-coverage-audit-snapshot-v2"
 OUTPUTS = ("counts.json", "coverage.tsv", "inventory_universe_diff.tsv")
 LIVE_RELATIVE = Path("h1fleet/coverage")
-STATUS_KEYS = {"certified-in-S3", "fleet-in-flight", "pending"}
+STATUS_KEYS = {"certificate-key-conflict", "certified-in-S3", "fleet-in-flight",
+               "host-ledgered-UNSAT-not-uploaded", "pending"}
 UNKNOWN_KEYS = {"certified_s3", "fleet_v2_claim", "fleet_v2_ledger",
                 "fleet_v3_claim", "fleet_v3_ledger", "host_ledger"}
+TAG_RE = re.compile(r"[0-9a-f]{16}")
 
 
 def sha256(path: Path) -> str:
@@ -61,6 +64,8 @@ def is_within(path: Path, parent: Path) -> bool:
 def validate_summary(counts: dict) -> dict:
     required = {
         "anomalies", "capacity_inventory_total", "capacity_only_error",
+        "certificate_key_conflict_count", "certificate_key_conflict_tags",
+        "certificate_key_present_tags", "certificate_ledger_valid_tags",
         "certified_s3_tags", "cnf_sha_comparable_count",
         "cnf_sha_divergent_count", "cnf_sha_divergent_tags",
         "compact_inventory_total", "compact_only_pre_capacity",
@@ -71,6 +76,8 @@ def validate_summary(counts: dict) -> dict:
         raise ValueError("reconciler counts schema is incomplete")
     statuses = counts["status_counts"]
     integer_fields = ("capacity_inventory_total", "capacity_only_error",
+        "certificate_key_conflict_count", "certificate_key_present_tags",
+        "certificate_ledger_valid_tags",
         "certified_s3_tags", "cnf_sha_comparable_count",
         "cnf_sha_divergent_count", "compact_inventory_total",
         "compact_only_pre_capacity", "fleet_claim_tags", "fleet_ledger_rows",
@@ -85,18 +92,34 @@ def validate_summary(counts: dict) -> dict:
     if (not isinstance(unknown, dict) or set(unknown) != UNKNOWN_KEYS
             or any(value != [] for value in unknown.values())):
         raise ValueError("reconciler unknown-tag partition is malformed")
-    if (counts["capacity_inventory_total"] != 13_351
+    conflicts = counts["certificate_key_conflict_tags"]
+    expected_anomalies = ({"certificate-key-present-without-valid-upload-ledger":
+                           counts["certificate_key_conflict_count"]}
+                          if counts["certificate_key_conflict_count"] else {})
+    if (not isinstance(conflicts, list)
+            or len(conflicts) != counts["certificate_key_conflict_count"]
+            or conflicts != sorted(set(conflicts))
+            or any(not isinstance(tag, str) or not TAG_RE.fullmatch(tag) for tag in conflicts)
+            or counts["certificate_key_present_tags"] != (
+                counts["certified_s3_tags"] + counts["certificate_key_conflict_count"])
+            or counts["certificate_ledger_valid_tags"] != counts["certified_s3_tags"]
+            or statuses["certificate-key-conflict"] != counts["certificate_key_conflict_count"]
+            or counts["anomalies"] != expected_anomalies
+            or counts["capacity_inventory_total"] != 13_351
             or counts["status_total"] != 13_351
             or sum(statuses.values()) != 13_351
             or counts["compact_inventory_total"] != 13_541
             or counts["compact_only_pre_capacity"] != 190
             or counts["capacity_only_error"] != 0
-            or counts["anomalies"] != {}
             or counts["cnf_sha_divergent_count"] != 0
             or counts["cnf_sha_divergent_tags"] != []):
         raise ValueError("H1 reconciliation integrity gate failed")
     return {
         "anomalies": counts["anomalies"],
+        "certificate_key_conflict_count": counts["certificate_key_conflict_count"],
+        "certificate_key_conflict_tags": conflicts,
+        "certificate_key_present": counts["certificate_key_present_tags"],
+        "certificate_ledger_valid": counts["certificate_ledger_valid_tags"],
         "certified": statuses.get("certified-in-S3", 0),
         "cnf_sha_comparable_count": counts["cnf_sha_comparable_count"],
         "cnf_sha_divergent_count": counts["cnf_sha_divergent_count"],

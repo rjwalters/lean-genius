@@ -25,12 +25,16 @@ a = p.parse_args()
 out = a.campaign / "h1fleet/coverage"; out.mkdir(parents=True)
 counts = {
  "anomalies": {}, "capacity_inventory_total": 13351, "capacity_only_error": 0,
+ "certificate_key_conflict_count": 0, "certificate_key_conflict_tags": [],
+ "certificate_key_present_tags": 9804, "certificate_ledger_valid_tags": 9804,
  "certified_s3_tags": 9804, "cnf_sha_comparable_count": 30,
  "cnf_sha_divergent_count": 0, "cnf_sha_divergent_tags": [],
  "compact_inventory_total": 13541, "compact_only_pre_capacity": 190,
  "fleet_claim_tags": 11006, "fleet_ledger_rows": 10830,
  "fleet_unknown_without_cert": 1391, "host_ledger_rows": 409,
- "status_counts": {"certified-in-S3": 9804, "fleet-in-flight": 176, "pending": 3371},
+ "status_counts": {"certificate-key-conflict": 0, "certified-in-S3": 9804,
+                   "fleet-in-flight": 176, "host-ledgered-UNSAT-not-uploaded": 0,
+                   "pending": 3371},
  "status_total": 13351,
  "unknown_tags": {"certified_s3": [], "fleet_v2_claim": [], "fleet_v2_ledger": [],
                   "fleet_v3_claim": [], "fleet_v3_ledger": [], "host_ledger": []}}
@@ -119,6 +123,40 @@ class H1CoverageAuditSnapshotTest(unittest.TestCase):
                 with self.subTest(kind=kind), self.assertRaises(ValueError):
                     MOD.publish_snapshot(**values, timestamp="2026-08-31T02:47:00Z")
                 self.assertFalse(values["output"].exists())
+
+    def test_publishes_recognized_key_conflict_as_nonterminal_audit(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); (root / "audits").mkdir()
+            values = self.fixture(root)
+            conflict = FAKE_RECONCILER.replace(
+                '"anomalies": {}',
+                '"anomalies": {"certificate-key-present-without-valid-upload-ledger": 1}')
+            conflict = conflict.replace(
+                '"certificate_key_conflict_count": 0, "certificate_key_conflict_tags": [],',
+                '"certificate_key_conflict_count": 1, "certificate_key_conflict_tags": ["e6f717d2e69cc8e0"],')
+            conflict = conflict.replace('"certificate_ledger_valid_tags": 9804',
+                                        '"certificate_ledger_valid_tags": 9803')
+            conflict = conflict.replace('"certified_s3_tags": 9804',
+                                        '"certified_s3_tags": 9803')
+            conflict = conflict.replace('"certificate-key-conflict": 0, "certified-in-S3": 9804',
+                                        '"certificate-key-conflict": 1, "certified-in-S3": 9803')
+            values["reconciler"].write_text(conflict)
+            values["reconciler_sha256"] = MOD.sha256(values["reconciler"])
+            receipt = MOD.publish_snapshot(**values, timestamp="2026-08-31T02:47:00Z")
+            self.assertEqual(receipt["summary"]["certificate_key_conflict_count"], 1)
+            self.assertEqual(receipt["summary"]["certified"], 9803)
+            counts = json.loads((values["output"] / "counts.json").read_text())
+            counts["certificate_key_conflict_tags"] = ["NOT-A-CANONICAL-TAG"]
+            with self.assertRaisesRegex(ValueError, "integrity gate"):
+                MOD.validate_summary(counts)
+            counts["certificate_key_conflict_tags"] = ["ffffffffffffffff", "0000000000000000"]
+            counts["certificate_key_conflict_count"] = 2
+            counts["certificate_key_present_tags"] = 9805
+            counts["status_counts"]["certificate-key-conflict"] = 2
+            counts["status_counts"]["pending"] = 3370
+            counts["anomalies"]["certificate-key-present-without-valid-upload-ledger"] = 2
+            with self.assertRaisesRegex(ValueError, "integrity gate"):
+                MOD.validate_summary(counts)
 
 
 if __name__ == "__main__":
