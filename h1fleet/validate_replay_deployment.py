@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate offline IAM-simulation and S3-lifecycle evidence for H1 replay.
+"""Validate offline IAM, lifecycle, manifest, and bootstrap evidence for H1 replay.
 
 This tool makes no AWS calls.  An authorized operator must capture the complete
 JSON outputs first.  A candidate PASS is evidence about those byte-exact inputs
@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 
 
@@ -28,6 +29,43 @@ APPROVAL_NOTICE = (
     "candidate_only=true launch_gate_discharged=false "
     "pending_editor_approval=freight-prefix+lifecycle-rule-id"
 )
+OVERLAY_OBJECTS = (
+    "complete-overlay.tar.zst",
+    "complete-overlay-manifest.json",
+    "complete-overlay-receipt.json",
+    "complete-overlay-project.sha256.tsv",
+)
+OVERLAY_HASH_VARIABLES = {
+    "overlay_builder_sha256": "OVERLAY_BUILDER_SHA",
+    "overlay_project_manifest_sha256": "OVERLAY_PROJECT_MANIFEST_SHA",
+    "overlay_build_receipt_sha256": "OVERLAY_RECEIPT_SHA",
+    "overlay_manifest_sha256": "OVERLAY_MANIFEST_SHA",
+    "overlay_identity_sha256": "OVERLAY_IDENTITY_SHA",
+    "overlay_archive_sha256": "OVERLAY_ARCHIVE_SHA",
+}
+OVERLAY_HASH_TARGETS = {
+    "OVERLAY_BUILDER_SHA": "$ROOT/repo/h1fleet/build_replay_overlay.py",
+    "OVERLAY_PROJECT_MANIFEST_SHA": "$ROOT/freight/complete-overlay-project.sha256.tsv",
+    "OVERLAY_RECEIPT_SHA": "$ROOT/freight/complete-overlay-receipt.json",
+    "OVERLAY_MANIFEST_SHA": "$ROOT/freight/complete-overlay-manifest.json",
+    "OVERLAY_ARCHIVE_SHA": "$ROOT/freight/complete-overlay.tar.zst",
+}
+OVERLAY_CROSSLINK_ASSERTIONS = (
+    "assert receipt['producer_sha256'] == manifest['overlay_builder_sha256']",
+    "assert receipt['project_manifest_sha256'] == manifest['overlay_project_manifest_sha256']",
+    "assert receipt['manifest_sha256'] == manifest['overlay_manifest_sha256']",
+    "assert receipt['overlay_identity_sha256'] == manifest['overlay_identity_sha256']",
+    "assert overlay['identity_sha256'] == manifest['overlay_identity_sha256']",
+)
+PRODUCTION_COMPILE_COMMAND = [
+    "/usr/bin/docker", "run", "--rm", "--network", "none",
+    "--mount", "type=bind,src=/opt/replay/repo,dst=/opt/replay/repo,readonly",
+    "--mount", "type=bind,src=/opt/replay/state,dst=/opt/replay/state",
+    "--mount", "type=bind,src=/opt/replay/overlay,dst=/opt/replay/overlay,readonly",
+    "--env", "LEAN_PATH=/opt/replay/overlay",
+    "lean4-arm64:v4.31.0", "/root/.elan/bin/lean",
+    "-R", "{work}", "-o", "{olean}", "{source}",
+]
 
 
 class DeploymentEvidenceError(ValueError):
@@ -149,11 +187,13 @@ def _prefixes_overlap(left: str, right: str) -> bool:
     return left.startswith(right) or right.startswith(left)
 
 
-def evidence_hashes(iam_path: Path, lifecycle_path: Path,
-                    identity: dict[str, str]) -> tuple[str, str, str]:
+def evidence_hashes(iam_path: Path, lifecycle_path: Path, manifest_path: Path,
+                    bootstrap_path: Path, identity: dict[str, str]) -> tuple[str, ...]:
     return (
         hashlib.sha256(iam_path.read_bytes()).hexdigest(),
         hashlib.sha256(lifecycle_path.read_bytes()).hexdigest(),
+        hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+        hashlib.sha256(bootstrap_path.read_bytes()).hexdigest(),
         hashlib.sha256(json.dumps(
             identity, sort_keys=True, separators=(",", ":")).encode()).hexdigest(),
     )
@@ -194,6 +234,141 @@ def validate_lifecycle(document: object, input_prefix: str, rule_id: str) -> int
     return len(document["Rules"])
 
 
+def validate_bootstrap_realization(manifest: object, bootstrap: str) -> int:
+    """Statically admit only the reviewed combined-overlay bootstrap shape."""
+    if not isinstance(manifest, dict):
+        raise DeploymentEvidenceError("replay manifest draft must be an object")
+    if manifest.get("commands", {}).get("compile") != PRODUCTION_COMPILE_COMMAND:
+        raise DeploymentEvidenceError("manifest compile command is not exact direct offline Lean")
+    if manifest.get("environment_allowlist") != ["HOME", "LEAN_PATH"]:
+        raise DeploymentEvidenceError("manifest environment allowlist is not exact")
+    if "overlay_sha256" in manifest:
+        raise DeploymentEvidenceError("manifest uses ambiguous legacy overlay identity")
+    hashes: dict[str, str] = {}
+    for field in OVERLAY_HASH_VARIABLES:
+        value = manifest.get(field)
+        if not isinstance(value, str) or re.fullmatch(r"[0-9a-f]{64}", value) is None:
+            raise DeploymentEvidenceError(f"manifest.{field} is not a lowercase SHA-256")
+        hashes[field] = value
+    active_bootstrap = "\n".join(
+        line for line in bootstrap.splitlines()
+        if not line.lstrip().startswith("#")
+    )
+
+    forbidden = (
+        "overlay-oleans", "proofs/.lake/build/lib/lean",
+        "/root/.elan/bin/lake", " lake env lean",
+    )
+    for token in forbidden:
+        if token in bootstrap:
+            raise DeploymentEvidenceError(f"bootstrap retains forbidden legacy token {token!r}")
+    if re.search(
+        r"complete-overlay\.tar\.zst[\s\S]{0,256}tar\s+-C\s+\"\$ROOT/repo(?:/|\")",
+        active_bootstrap,
+    ) is not None or re.search(
+        r"overlay-publication/overlay[^\n]*(?:repo/proofs|\$ROOT/repo)",
+        active_bootstrap,
+    ) is not None:
+        raise DeploymentEvidenceError(
+            "combined overlay may not be extracted or moved into the repository")
+    for name in OVERLAY_OBJECTS:
+        if active_bootstrap.count(name) < 2:
+            raise DeploymentEvidenceError(
+                f"bootstrap does not download and verify exact object {name}")
+    normalized = " ".join(active_bootstrap.split())
+    exact_download = (
+        f"for name in {' '.join(OVERLAY_OBJECTS)}; do "
+        "/usr/local/bin/aws s3api get-object --bucket \"$BUCKET\" "
+        "--key \"$PREFIX/freight/p1/$name\" \"$ROOT/freight/$name\" "
+        "--output json done"
+    )
+    if exact_download not in normalized:
+        raise DeploymentEvidenceError(
+            "bootstrap combined-overlay download loop/mapping is not exact")
+    for index, (field, variable) in enumerate(OVERLAY_HASH_VARIABLES.items(), 2):
+        assignment = re.compile(
+            rf"(?m)^{re.escape(variable)}={re.escape(hashes[field])}$")
+        if assignment.search(active_bootstrap) is None:
+            raise DeploymentEvidenceError(
+                f"bootstrap {variable} does not equal manifest.{field}")
+        if active_bootstrap.count(variable) < 2:
+            raise DeploymentEvidenceError(f"bootstrap never verifies {variable}")
+        if f"assert manifest['{field}'] == sys.argv[{index}]" not in active_bootstrap:
+            raise DeploymentEvidenceError(
+                f"bootstrap manifest readback omits {field}")
+
+    invocation = r"python3\s+-\s+\"\$ROOT/manifest\.json\""
+    for variable in OVERLAY_HASH_VARIABLES.values():
+        invocation += rf"\s+\"\${re.escape(variable)}\""
+    invocation += r"\s+<<'PY'"
+    if re.search(invocation, active_bootstrap) is None:
+        raise DeploymentEvidenceError(
+            "bootstrap manifest readback argument order is not exact")
+    for assertion in OVERLAY_CROSSLINK_ASSERTIONS:
+        if assertion not in active_bootstrap:
+            raise DeploymentEvidenceError(
+                f"bootstrap omits overlay receipt crosslink {assertion!r}")
+    for variable, target in OVERLAY_HASH_TARGETS.items():
+        if f'"${variable}" "{target}"' not in active_bootstrap:
+            raise DeploymentEvidenceError(
+                f"bootstrap hash verification target for {variable} is not exact")
+
+    required = (
+        'mkdir -p "$ROOT/overlay-publication"',
+        'tar -C "$ROOT/overlay-publication" -xf -',
+        '/usr/bin/python3 "$ROOT/repo/h1fleet/build_replay_overlay.py" --verify '
+        '"$ROOT/overlay-publication"',
+        'mv "$ROOT/overlay-publication/overlay" "$ROOT/overlay"',
+        "export LEAN_PATH=/opt/replay/overlay",
+        'test "$LEAN_PATH" = /opt/replay/overlay',
+        "sha256sum -c -",
+        'cmp -s "$ROOT/overlay-publication/manifest.json" '
+        '"$ROOT/freight/complete-overlay-manifest.json"',
+        'cmp -s "$ROOT/overlay-publication/receipt.json" '
+        '"$ROOT/freight/complete-overlay-receipt.json"',
+        "import json, sys",
+        "manifest = json.load(open(sys.argv[1]))",
+        "receipt = json.load(open('/opt/replay/freight/complete-overlay-receipt.json'))",
+        "overlay = json.load(open('/opt/replay/freight/complete-overlay-manifest.json'))",
+        "mkdir -p /etc/systemd/system/erdos85-replay.service.d",
+        "cat > /etc/systemd/system/erdos85-replay.service.d/environment.conf <<'EOF'",
+        "[Service]",
+        "Environment=HOME=/root",
+        "Environment=LEAN_PATH=/opt/replay/overlay",
+        "systemctl daemon-reload",
+        "systemctl start erdos85-replay.service",
+        'test "$(systemctl show erdos85-replay.service --property Environment --value)" '
+        '= "HOME=/root LEAN_PATH=/opt/replay/overlay"',
+        'test ! -e "$ROOT/repo/proofs/.lake/packages"',
+    )
+    for fragment in required:
+        if fragment not in active_bootstrap:
+            raise DeploymentEvidenceError(
+                f"bootstrap lacks required realization fragment {fragment!r}")
+    for exact_line, label in (
+        ("ROOT=/opt/replay", "root"),
+        ("export LEAN_PATH=/opt/replay/overlay", "ambient LEAN_PATH"),
+        ('test "$LEAN_PATH" = /opt/replay/overlay', "LEAN_PATH assertion"),
+    ):
+        if re.search(rf"(?m)^{re.escape(exact_line)}$", active_bootstrap) is None:
+            raise DeploymentEvidenceError(f"bootstrap {label} line is not exact")
+    service_sequence = (
+        "systemctl daemon-reload systemctl start erdos85-replay.service "
+        'test "$(systemctl show erdos85-replay.service --property Environment --value)" '
+        '= "HOME=/root LEAN_PATH=/opt/replay/overlay"'
+    )
+    if service_sequence not in normalized:
+        raise DeploymentEvidenceError(
+            "bootstrap service daemon-reload/start/environment-check ordering is not exact")
+    package_assertion = 'test ! -e "$ROOT/repo/proofs/.lake/packages"'
+    if active_bootstrap.count(".lake/packages") != 1 or re.search(
+            rf"(?m)^{re.escape(package_assertion)}$", active_bootstrap) is None:
+        raise DeploymentEvidenceError(
+            "bootstrap package-cache absence assertion is not exact")
+    return (len(OVERLAY_HASH_VARIABLES) + len(OVERLAY_OBJECTS) + len(required)
+            + len(OVERLAY_CROSSLINK_ASSERTIONS) + len(OVERLAY_HASH_TARGETS) + 7)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--iam-simulation", type=Path, required=True)
@@ -203,6 +378,8 @@ def main() -> int:
     parser.add_argument("--output-prefix", required=True)
     parser.add_argument("--freight-prefix", required=True)
     parser.add_argument("--lifecycle-rule-id", required=True)
+    parser.add_argument("--manifest-draft", type=Path, required=True)
+    parser.add_argument("--bootstrap", type=Path, required=True)
     args = parser.parse_args()
     try:
         identity = validate_identity(
@@ -213,14 +390,18 @@ def main() -> int:
                               args.freight_prefix)
         rules = validate_lifecycle(_load(args.lifecycle), args.input_prefix,
                                    args.lifecycle_rule_id)
+        bootstrap_checks = validate_bootstrap_realization(
+            _load(args.manifest_draft), args.bootstrap.read_text())
     except (OSError, DeploymentEvidenceError) as exc:
         parser.error(str(exc))
-    iam_sha, lifecycle_sha, identity_sha = evidence_hashes(
-        args.iam_simulation, args.lifecycle, identity)
+    iam_sha, lifecycle_sha, manifest_sha, bootstrap_sha, identity_sha = evidence_hashes(
+        args.iam_simulation, args.lifecycle, args.manifest_draft, args.bootstrap, identity)
     print(f"CANDIDATE_PASS {APPROVAL_NOTICE} "
           f"evidence_scope=sentinel-actions+lifecycle "
           f"iam_checks={checks} lifecycle_rules={rules} "
+          f"bootstrap_checks={bootstrap_checks} "
           f"iam_sha256={iam_sha} lifecycle_sha256={lifecycle_sha} "
+          f"manifest_draft_sha256={manifest_sha} bootstrap_sha256={bootstrap_sha} "
           f"deployment_identity_sha256={identity_sha}")
     return 0
 
