@@ -15,13 +15,32 @@ import generate_h1_conflict_readback_queue as mod
 HEADER = "\t".join(mod.COVERAGE_COLUMNS) + "\n"
 
 
-def coverage_rows(count: int = 8) -> bytes:
-    rows = []
+def capacity_fixture(count: int = 8) -> tuple[bytes, list[dict]]:
+    lines, entries = [], []
+    locals_ = [0] * 5
     for index in range(count):
         profile = index % 5
+        quotient = index
+        values = []
+        for _ in mod.capacity.TABLE_PAIRS:
+            values.append(quotient % 5)
+            quotient //= 5
+        tag = mod.capacity.worker_tag(tuple(values))
+        entries.append({"tag": tag, "profile": profile,
+                        "local_index": locals_[profile], "values": values})
+        locals_[profile] += 1
+        lines.append(" ".join(map(str, (profile, *values))) + "\n")
+    return "".join(lines).encode(), entries
+
+
+def coverage_rows(count: int = 8) -> bytes:
+    rows = []
+    _, entries = capacity_fixture(count)
+    for index, entry in enumerate(entries):
+        profile = entry["profile"]
         values = {
-            "tag": f"{index + 1:016x}", "profile": str(profile),
-            "family": mod.PROFILE_NAMES[profile], "local_index": str(index),
+            "tag": entry["tag"], "profile": str(profile),
+            "family": mod.PROFILE_NAMES[profile], "local_index": str(900 + index),
             "inventory_source": "all_even_capacity", "status": "certificate-key-conflict",
             "certificate_key_present": "1", "certificate_ledger_valid": "0",
             "certificate_key_conflict": "1", "certified_s3": "0",
@@ -33,7 +52,9 @@ def coverage_rows(count: int = 8) -> bytes:
 
 
 def audit_receipt(coverage: bytes, count: int = 8) -> bytes:
-    tags = [f"{index + 1:016x}" for index in range(count)]
+    tags = sorted(row["tag"] for row in
+                  __import__("csv").DictReader(io.StringIO(coverage.decode()), delimiter="\t")
+                  if row["status"] == "certificate-key-conflict")
     empty_identity = {"bytes": 0, "sha256": mod.sha256_bytes(b"")}
     return mod.canonical({
         "aws": {"bucket": "bucket", "profile": "read-only", "s3_prefix": "prefix"},
@@ -73,18 +94,30 @@ class ConflictReadbackQueueTest(unittest.TestCase):
             coverage = coverage_rows()
             coverage_path = root / "coverage.tsv"; coverage_path.write_bytes(coverage)
             audit_path = root / "audit.json"; audit_path.write_bytes(audit_receipt(coverage))
+            inventory_data, entries = capacity_fixture()
+            inventory = root / "capacity.compact"; inventory.write_bytes(inventory_data)
             output, receipt = root / "queue.jsonl", root / "queue-receipt.json"
             argv = ["generator", "--audit-receipt", str(audit_path),
                     "--audit-receipt-sha256", mod.sha256_bytes(audit_path.read_bytes()),
-                    "--coverage", str(coverage_path), "--output", str(output),
+                    "--coverage", str(coverage_path),
+                    "--capacity-inventory", str(inventory),
+                    "--capacity-inventory-sha256", mod.sha256_bytes(inventory_data),
+                    "--output", str(output),
                     "--receipt-output", str(receipt)]
-            with mock.patch.object(sys, "argv", argv), contextlib.redirect_stdout(io.StringIO()):
+            counts = tuple(sum(entry["profile"] == profile for entry in entries)
+                           for profile in range(5))
+            with (mock.patch.object(sys, "argv", argv),
+                  mock.patch.object(mod, "EXPECTED_COUNTS", counts),
+                  mock.patch.object(mod, "EXPECTED_TOTAL", len(entries)),
+                  contextlib.redirect_stdout(io.StringIO())):
                 self.assertEqual(mod.main(), 0)
             jobs = [json.loads(line) for line in output.read_text().splitlines()]
             record = json.loads(receipt.read_text())
             self.assertEqual(len(jobs), 8)
             self.assertEqual(record["schema"], mod.QUEUE_SCHEMA)
             self.assertEqual(record["rows"], 8)
+            self.assertEqual(record["capacity_inventory_sha256"],
+                             mod.sha256_bytes(inventory_data))
             self.assertEqual(record["output_sha256"], mod.sha256_bytes(output.read_bytes()))
             self.assertEqual(receipt.read_bytes(), mod.canonical(record))
             with mock.patch.object(sys, "argv", argv), self.assertRaises(FileExistsError):
@@ -96,9 +129,19 @@ class ConflictReadbackQueueTest(unittest.TestCase):
         tags, summary = mod.parse_audit_receipt(
             Path("receipt.json"), audit, mod.sha256_bytes(audit), coverage)
         jobs = mod.parse_coverage(Path("coverage.tsv"), coverage, tags, summary)
+        inventory, entries = capacity_fixture()
+        counts = tuple(sum(entry["profile"] == profile for entry in entries)
+                       for profile in range(5))
+        with mock.patch.object(mod, "EXPECTED_COUNTS", counts), \
+                mock.patch.object(mod, "EXPECTED_TOTAL", len(entries)):
+            jobs = mod.reconcile_capacity(Path("capacity.compact"), inventory, jobs)
         self.assertEqual(len(jobs), 8)
         self.assertEqual([job["tag"] for job in jobs], tags)
-        self.assertEqual([job["profile"] for job in jobs], [0, 1, 2, 3, 4, 0, 1, 2])
+        expected = {entry["tag"]: entry for entry in entries}
+        self.assertEqual([job["profile"] for job in jobs],
+                         [expected[tag]["profile"] for tag in tags])
+        self.assertEqual([job["local_index"] for job in jobs],
+                         [expected[tag]["local_index"] for tag in tags])
         for job in jobs:
             mod.validate_certificate_key(job["tag"], job["certificate_key"])
             self.assertEqual(json.loads(mod.canonical(job)), job)
@@ -174,11 +217,14 @@ class ConflictReadbackQueueTest(unittest.TestCase):
         audit = audit_receipt(coverage)
         tags, summary = mod.parse_audit_receipt(
             Path("receipt.json"), audit, mod.sha256_bytes(audit), coverage)
+        parsed = list(__import__("csv").DictReader(
+            io.StringIO(coverage.decode()), delimiter="\t"))
         replacements = (
             ("certificate-key-conflict\t1\t0\t1\t0", "pending\t1\t0\t1\t0"),
             ("\t1\t0\t1\t0\t", "\t1\t1\t1\t0\t"),
-            ("\t0\tBBBB\t0\t", "\t0\tABBB\t0\t"),
-            ("0000000000000002", "0000000000000001"),
+            (f"\t{parsed[0]['profile']}\t{parsed[0]['family']}\t{parsed[0]['local_index']}\t",
+             f"\t{parsed[0]['profile']}\tABBB\t{parsed[0]['local_index']}\t"),
+            (parsed[1]["tag"], parsed[0]["tag"]),
         )
         for old, new in replacements:
             changed = coverage.decode().replace(old, new, 1).encode()
@@ -226,10 +272,15 @@ class ConflictReadbackQueueTest(unittest.TestCase):
                 coverage = coverage_rows()
                 coverage_path = root / "coverage.tsv"; coverage_path.write_bytes(coverage)
                 audit_path = root / "audit.json"; audit_path.write_bytes(audit_receipt(coverage))
+                inventory_data, entries = capacity_fixture()
+                inventory = root / "capacity.compact"; inventory.write_bytes(inventory_data)
                 output, receipt = root / "queue.jsonl", root / "queue-receipt.json"
                 argv = ["generator", "--audit-receipt", str(audit_path),
                         "--audit-receipt-sha256", mod.sha256_bytes(audit_path.read_bytes()),
-                        "--coverage", str(coverage_path), "--output", str(output),
+                        "--coverage", str(coverage_path),
+                        "--capacity-inventory", str(inventory),
+                        "--capacity-inventory-sha256", mod.sha256_bytes(inventory_data),
+                        "--output", str(output),
                         "--receipt-output", str(receipt)]
                 if phase == "queue":
                     original = mod.parse_coverage
@@ -247,7 +298,11 @@ class ConflictReadbackQueueTest(unittest.TestCase):
                         if calls == 1:
                             audit_path.write_bytes(audit_path.read_bytes() + b"\n")
                     patches = mock.patch.object(mod, "create_only", side_effect=mutate_after_queue)
+                counts = tuple(sum(entry["profile"] == profile for entry in entries)
+                               for profile in range(5))
                 with (mock.patch.object(sys, "argv", argv), patches,
+                      mock.patch.object(mod, "EXPECTED_COUNTS", counts),
+                      mock.patch.object(mod, "EXPECTED_TOTAL", len(entries)),
                       self.assertRaisesRegex(ValueError, "changed before output publication")):
                     mod.main()
                 self.assertFalse(receipt.exists())

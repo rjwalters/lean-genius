@@ -20,6 +20,8 @@ import stat
 from collections import Counter
 from pathlib import Path
 
+import filter_h1_capacity_inventory as capacity
+
 
 AUDIT_SCHEMA = "erdos85-h1-coverage-audit-snapshot-v2"
 QUEUE_SCHEMA = "erdos85-h1-conflict-readback-queue-v1"
@@ -51,6 +53,8 @@ STATUSES = {
     "certificate-key-conflict", "certified-in-S3", "fleet-in-flight",
     "host-ledgered-UNSAT-not-uploaded", "pending",
 }
+EXPECTED_COUNTS = (1485, 3617, 4717, 2693, 839)
+EXPECTED_TOTAL = 13_351
 
 
 def canonical(value: object) -> bytes:
@@ -257,11 +261,48 @@ def parse_coverage(path: Path, data: bytes, expected_tags: list[str],
     return selected
 
 
+def reconcile_capacity(path: Path, data: bytes,
+                       selected: list[dict[str, object]]) -> list[dict[str, object]]:
+    """Replace coverage-source indices with canonical capacity-queue coordinates."""
+    try:
+        lines = data.decode("ascii").splitlines()
+    except UnicodeDecodeError as error:
+        raise ValueError(f"{path}: capacity inventory is not ASCII") from error
+    rows: dict[str, tuple[int, int]] = {}
+    locals_ = [0] * 5
+    for number, raw in enumerate(lines, 1):
+        try:
+            profile, *values = map(int, raw.split())
+        except ValueError as error:
+            raise ValueError(f"{path}:{number}: malformed capacity row") from error
+        if (profile not in range(5) or len(values) != len(capacity.TABLE_PAIRS)
+                or any(value not in range(5) for value in values)):
+            raise ValueError(f"{path}:{number}: malformed capacity row")
+        tag = capacity.worker_tag(tuple(values))
+        if tag in rows:
+            raise ValueError(f"{path}: duplicate capacity tag")
+        rows[tag] = (profile, locals_[profile])
+        locals_[profile] += 1
+    if tuple(locals_) != EXPECTED_COUNTS or len(rows) != EXPECTED_TOTAL:
+        raise ValueError(f"{path}: capacity inventory census mismatch")
+    reconciled = []
+    for job in selected:
+        coordinate = rows.get(str(job["tag"]))
+        if coordinate is None or coordinate[0] != job["profile"]:
+            raise ValueError(f"{job['tag']}: coverage/capacity profile mismatch")
+        profile, local_index = coordinate
+        reconciled.append({**job, "family": PROFILE_NAMES[profile],
+                           "local_index": local_index, "profile": profile})
+    return reconciled
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--audit-receipt", type=Path, required=True)
     parser.add_argument("--audit-receipt-sha256", required=True)
     parser.add_argument("--coverage", type=Path, required=True)
+    parser.add_argument("--capacity-inventory", type=Path, required=True)
+    parser.add_argument("--capacity-inventory-sha256", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--receipt-output", type=Path, required=True)
     args = parser.parse_args()
@@ -272,17 +313,25 @@ def main() -> int:
             raise FileExistsError(f"refusing to replace existing output: {output}")
     coverage_data, coverage_identity = stable_snapshot(args.coverage)
     audit_data, audit_identity = stable_snapshot(args.audit_receipt)
+    capacity_data, capacity_identity = stable_snapshot(args.capacity_inventory)
+    if (not re.fullmatch(r"[0-9a-f]{64}", args.capacity_inventory_sha256)
+            or sha256_bytes(capacity_data) != args.capacity_inventory_sha256):
+        raise ValueError(f"{args.capacity_inventory}: capacity inventory SHA-256 mismatch")
     expected_tags, summary = parse_audit_receipt(
         args.audit_receipt, audit_data, args.audit_receipt_sha256, coverage_data)
-    jobs = parse_coverage(args.coverage, coverage_data, expected_tags, summary)
+    jobs = reconcile_capacity(
+        args.capacity_inventory, capacity_data,
+        parse_coverage(args.coverage, coverage_data, expected_tags, summary))
     output_data = b"".join(canonical(job) for job in jobs)
     revalidate(args.coverage, coverage_identity)
     revalidate(args.audit_receipt, audit_identity)
+    revalidate(args.capacity_inventory, capacity_identity)
     create_only(args.output, output_data)
     counts = Counter(job["profile"] for job in jobs)
     receipt = {
         "audit_receipt_sha256": sha256_bytes(audit_data),
         "certificate_prefix": CERTIFICATE_PREFIX,
+        "capacity_inventory_sha256": sha256_bytes(capacity_data),
         "conflict_tags": expected_tags,
         "coverage_sha256": sha256_bytes(coverage_data),
         "output_sha256": sha256_bytes(output_data),
@@ -293,6 +342,7 @@ def main() -> int:
     }
     revalidate(args.coverage, coverage_identity)
     revalidate(args.audit_receipt, audit_identity)
+    revalidate(args.capacity_inventory, capacity_identity)
     create_only(args.receipt_output, canonical(receipt))
     print(canonical(receipt).decode("ascii"), end="")
     return 0

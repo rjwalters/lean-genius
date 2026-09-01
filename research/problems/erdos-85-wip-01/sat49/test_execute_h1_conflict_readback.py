@@ -66,6 +66,11 @@ class ExecuteConflictReadbackTest(unittest.TestCase):
         rejected = self.run_execute(FakeStore(compressed()), FakeValidator(accepted=False))[0]
         self.assertEqual((rejected["classification"], rejected["failure_stage"]),
                          ("canonical-invalid", "semantic-replay"))
+        rejected_rc_one = self.run_execute(
+            FakeStore(compressed()), FakeValidator(accepted=False, rc=1))[0]
+        self.assertEqual((rejected_rc_one["classification"],
+                          rejected_rc_one["failure_stage"]),
+                         ("canonical-invalid", "semantic-replay"))
         missing = self.run_execute(FakeStore(None), FakeValidator())[0]
         self.assertEqual(missing, {"classification": "canonical-missing", "job": job(),
             "job_sha256": mod.sha256_bytes(mod.canonical(job())),
@@ -78,10 +83,32 @@ class ExecuteConflictReadbackTest(unittest.TestCase):
             self.assertEqual(result["classification"], "canonical-invalid")
             self.assertEqual(result["failure_stage"], "gzip-or-compact-syntax")
 
+    def test_compact_syntax_accepts_deletions_and_rejects_malformed_lines(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            valid = root / "valid.lrat"
+            valid.write_text(
+                "610405 -184 -201 -501 0 1 4568 0\n"
+                "610405 d 4568 0\n"
+                "610406 0 610405 0\n"
+            )
+            mod.validate_compact_syntax(valid)
+            for index, contents in enumerate((
+                "1 d\n2 0 1 0\n",
+                "1 d not-an-id 0\n2 0 1 0\n",
+                "1 d 7\n2 0 1 0\n",
+                "1 x 7 0\n2 0 1 0\n",
+            )):
+                malformed = root / f"malformed-{index}.lrat"
+                malformed.write_text(contents)
+                with self.subTest(contents=contents), self.assertRaises(ValueError):
+                    mod.validate_compact_syntax(malformed)
+
     def test_indeterminate_store_runtime_and_identity_fail_without_result(self):
         for store, validator in (
             (FakeStore(compressed(), mismatch=True), FakeValidator()),
             (FakeStore(compressed(), error=mod.AuditError("network")), FakeValidator()),
+            (FakeStore(compressed()), FakeValidator(accepted=None, rc=1)),
             (FakeStore(compressed()), FakeValidator(rc=137)),
             (FakeStore(compressed()), FakeValidator(malformed=True)),
         ):
@@ -101,13 +128,14 @@ class ExecuteConflictReadbackTest(unittest.TestCase):
                                 "s3_prefix": "sat49/campaign-20260825"},
                        "schema": mod.queue_format.AUDIT_SCHEMA}
         audit_data = mod.canonical(audit_value)
+        inventory_data = ("0 " + " ".join("0" for _ in values) + "\n").encode()
         receipt = {"audit_receipt_sha256": mod.sha256_bytes(audit_data),
+            "capacity_inventory_sha256": mod.sha256_bytes(inventory_data),
             "certificate_prefix": mod.queue_format.CERTIFICATE_PREFIX,
             "conflict_tags": [tag], "coverage_sha256": "e" * 64,
             "output_sha256": mod.sha256_bytes(queue_data), "profile_counts": [1, 0, 0, 0, 0],
             "rows": 1, "schema": mod.queue_format.QUEUE_SCHEMA,
             "selection_status": "certificate-key-conflict"}
-        inventory_data = ("0 " + " ".join("0" for _ in values) + "\n").encode()
         snap = lambda data: mod.Snapshot(data, (1, 2, len(data), 3), mod.sha256_bytes(data))
         with mock.patch.object(mod, "EXPECTED_COUNTS", (1, 0, 0, 0, 0)), \
                 mock.patch.object(mod, "EXPECTED_TOTAL", 1):
@@ -198,12 +226,15 @@ class ExecuteConflictReadbackTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory, \
                 mock.patch.object(mod.subprocess, "run", side_effect=fake_run):
             root = Path(directory); compact = root / "proof.lrat"; compact.write_text("1 0 0\n")
-            validator = mod.LocalValidator(Path("/docker"), mod.IMAGE)
+            validator = mod.LocalValidator(Path("/docker"), mod.IMAGE, mod.CACHE_VOLUME)
             validator.preflight()
             evidence = validator.validate(item, {"values": values}, compact, root)
         self.assertTrue(evidence["replay_accepted"])
         self.assertEqual(evidence["cnf_sha256"], mod.sha256_bytes(b"p cnf 1 1\n1 0\n"))
         self.assertTrue(all("--network=none" in call for call in calls))
+        self.assertTrue(all(
+            ["-v", f"{mod.CACHE_VOLUME}:/cache:ro"] == call[4:6]
+            for call in calls))
         self.assertTrue(any("/cache/bin/lratreplay" in call for call in calls))
         self.assertIn("/usr/bin/sha256sum", calls[0])
         self.assertIn("/usr/bin/sha256sum", calls[1])

@@ -25,9 +25,10 @@ SCHEMA = "erdos85-h1-conflict-readback-audit-v1"
 V2CNF_SHA256 = "4bd9604c6d670ad65a8ca332a26dbf35132418634a3b0678c177c8b2cfff4bf6"
 LRATREPLAY_SHA256 = "37aad1d5c64a75fcb68e1ea587b2080b06c157a19c883b01d145b28b891c428c"
 IMAGE = "lean4-arm64@sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6"
+CACHE_VOLUME = "lean-mathlib-cache"
 INVENTORY_SHA256 = "81d515472be48a43806f9c1c7343b4b715c98fe5a02a82e2b76244c1b015fd1b"
 CAPACITY_FILTER_SHA256 = "a0f75f34d74cb8e3d48310b8f2e7b9544bba690110c0256c03f1b78bc9745e81"
-QUEUE_FORMAT_SHA256 = "b9ee5c86a12c5dd8ef66e36887fd8f40592c9edf422b832cc80364bd5ea8b4fe"
+QUEUE_FORMAT_SHA256 = "5acf5ba65a4d3ea3f1f2aa603b102aa762ebbf91b1b2365645cb0af9060e7636"
 EXPECTED_COUNTS = (1485, 3617, 4717, 2693, 839)
 EXPECTED_TOTAL = 13_351
 SHA_RE = re.compile(r"[0-9a-f]{64}")
@@ -133,13 +134,15 @@ def parse_inputs(queue: Snapshot, queue_receipt: Snapshot, audit: Snapshot,
     receipt = canonical_object(queue_receipt.data, "queue receipt")
     expected_receipt_keys = {
         "audit_receipt_sha256", "certificate_prefix", "conflict_tags",
-        "coverage_sha256", "output_sha256", "profile_counts", "rows",
+        "capacity_inventory_sha256", "coverage_sha256", "output_sha256",
+        "profile_counts", "rows",
         "schema", "selection_status",
     }
     if (set(receipt) != expected_receipt_keys
             or receipt["schema"] != queue_format.QUEUE_SCHEMA
             or receipt["output_sha256"] != sha256_bytes(queue.data)
             or receipt["audit_receipt_sha256"] != sha256_bytes(audit.data)
+            or receipt["capacity_inventory_sha256"] != sha256_bytes(inventory.data)
             or receipt["certificate_prefix"] != queue_format.CERTIFICATE_PREFIX
             or receipt["selection_status"] != "certificate-key-conflict"):
         raise AuditError("queue receipt crosslink mismatch")
@@ -213,13 +216,18 @@ def validate_compact_syntax(path: Path) -> None:
                 tokens = line.split()
                 if not tokens:
                     continue
+                deletion = len(tokens) >= 2 and tokens[1] == "d"
+                numeric_tokens = [tokens[0], *tokens[2:]] if deletion else tokens
                 try:
-                    [int(token) for token in tokens]
+                    [int(token) for token in numeric_tokens]
                 except ValueError as error:
                     raise ValueError(f"line {number} is not integral") from error
+                if deletion and len(tokens) < 3:
+                    raise ValueError(f"deletion line {number} is malformed")
                 if tokens[-1] != "0":
                     raise ValueError(f"line {number} lacks terminal zero")
-                final = tokens
+                if not deletion:
+                    final = tokens
     except UnicodeError as error:
         raise ValueError("compact LRAT is not ASCII") from error
     if final is None:
@@ -286,8 +294,17 @@ def execute(*, jobs: list[dict], inventory: dict[str, dict], store: ReadOnlyStor
         base = {"compact_bytes": compact_bytes, "compact_lrat_sha256": compact_sha,
                 "job": job, "job_sha256": sha256_bytes(canonical(job)),
                 "object": compressed_record, "validation": validation}
+        if validation["replay_rc"] == 1 and validation["replay_accepted"] is False:
+            results.append({"classification": "canonical-invalid",
+                            "failure_stage": "semantic-replay", "reason": "LRAT rejected",
+                            **base})
+            continue
         if validation["replay_rc"] != 0:
-            raise AuditError(f"{tag}: replay runtime failed indeterminately")
+            raise AuditError(
+                f"{tag}: replay runtime failed indeterminately "
+                f"rc={validation['replay_rc']} "
+                f"stdout_sha256={validation['replay_stdout_sha256']} "
+                f"stderr_sha256={validation['replay_stderr_sha256']}")
         if validation["replay_accepted"] is True:
             results.append({"classification": "canonical-valid", **base})
         elif validation["replay_accepted"] is False:
@@ -358,8 +375,11 @@ class AwsCliReadOnlyStore:
 
 
 class LocalValidator:
-    def __init__(self, docker: Path, image: str):
-        self.docker, self.image = docker, image
+    def __init__(self, docker: Path, image: str, cache_volume: str):
+        self.docker, self.image, self.cache_volume = docker, image, cache_volume
+
+    def cache_mount(self) -> list[str]:
+        return ["-v", f"{self.cache_volume}:/cache:ro"]
 
     def validate(self, job: dict, inventory: dict, compact: Path, work: Path) -> dict:
         table_object = [[[left, right], value] for (left, right), value in
@@ -369,7 +389,8 @@ class LocalValidator:
             raise AuditError(f"{job['tag']}: canonical table/tag mismatch")
         table = work / "table.json"; table.write_bytes(table_data)
         cnf = work / "orbit.cnf"
-        base = [str(self.docker), "run", "--rm", "--network=none", "-v",
+        base = [str(self.docker), "run", "--rm", "--network=none",
+                *self.cache_mount(), "-v",
                 f"{work}:/data:ro", "--entrypoint", "/cache/bin/v2cnf", self.image]
         with cnf.open("wb") as output:
             emit = subprocess.run([*base, "emit", str(job["profile"]), "/data/table.json"],
@@ -393,12 +414,14 @@ class LocalValidator:
             raise AuditError(f"{job['tag']}: v2cnf check failed")
         if int(match.group(1)) != int(header[3]):
             raise AuditError(f"{job['tag']}: CNF header/check clause mismatch")
-        command = [str(self.docker), "run", "--rm", "--network=none", "-v",
+        command = [str(self.docker), "run", "--rm", "--network=none",
+                   *self.cache_mount(), "-v",
                    f"{work}:/data:ro", "--entrypoint", "/cache/bin/lratreplay",
                    self.image, "/data/orbit.cnf", "/data/proof.lrat"]
         replay = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         lines = replay.stdout.splitlines()
-        accepted = lines[-1:] == ["LRAT accepted: true"]
+        accepted = (True if lines[-1:] == ["LRAT accepted: true"] else
+                    False if lines[-1:] == ["LRAT accepted: false"] else None)
         return {"cnf_bytes": cnf.stat().st_size, "cnf_clauses": int(match.group(1)),
                 "cnf_sha256": sha256_file(cnf), "replay_accepted": accepted,
                 "replay_rc": replay.returncode,
@@ -410,7 +433,8 @@ class LocalValidator:
         for path, expected in (("/cache/bin/v2cnf", V2CNF_SHA256),
                                ("/cache/bin/lratreplay", LRATREPLAY_SHA256)):
             result = subprocess.run(
-                [str(self.docker), "run", "--rm", "--network=none", "--entrypoint",
+                [str(self.docker), "run", "--rm", "--network=none",
+                 *self.cache_mount(), "--entrypoint",
                  "/usr/bin/sha256sum", self.image, path],
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             if result.returncode or result.stdout.split() != [expected, path]:
@@ -462,6 +486,7 @@ def main() -> int:
     parser.add_argument("--bucket", required=True)
     parser.add_argument("--s3-prefix", required=True)
     parser.add_argument("--image", default=IMAGE)
+    parser.add_argument("--cache-volume", required=True)
     parser.add_argument("--lratreplay-sha256", default=LRATREPLAY_SHA256)
     parser.add_argument("--executor-sha256", required=True)
     parser.add_argument("--capacity-filter-sha256", required=True)
@@ -487,7 +512,8 @@ def main() -> int:
     helper_snapshots = {name: snapshot(path, helper_pins[name], name)
                         for name, path in helper_paths.items()}
     if (pins["capacity-inventory"] != INVENTORY_SHA256
-            or args.image != IMAGE or args.lratreplay_sha256 != LRATREPLAY_SHA256):
+            or args.image != IMAGE or args.cache_volume != CACHE_VOLUME
+            or args.lratreplay_sha256 != LRATREPLAY_SHA256):
         raise AuditError("trusted H1 tool/input pin mismatch")
     if helper_pins != {"capacity-filter": CAPACITY_FILTER_SHA256,
                        "queue-format": QUEUE_FORMAT_SHA256}:
@@ -501,7 +527,7 @@ def main() -> int:
                "s3_prefix": args.s3_prefix} or args.s3_prefix != "sat49/campaign-20260825":
         raise AuditError("explicit AWS coordinates differ from pinned audit")
     store = AwsCliReadOnlyStore(args.aws, aws["profile"], aws["bucket"])
-    validator = LocalValidator(args.docker, args.image)
+    validator = LocalValidator(args.docker, args.image, args.cache_volume)
     validator.preflight()
     with tempfile.TemporaryDirectory(prefix=".h1-conflict-readback-", dir=args.output.parent) as raw:
         results = execute(jobs=jobs, inventory=inventory, store=store,
@@ -513,7 +539,8 @@ def main() -> int:
         revalidate(path, helper_snapshots[name], name)
     receipt = {"aws": aws, "executor_sha256": args.executor_sha256,
                "helper_sha256": helper_pins,
-               "image": args.image, "input_paths": {name: str(path) for name, path in paths.items()},
+               "image": args.image, "cache_volume": args.cache_volume,
+               "input_paths": {name: str(path) for name, path in paths.items()},
                "inputs": pins,
                "lratreplay_sha256": args.lratreplay_sha256, "results": results,
                "schema": SCHEMA,
