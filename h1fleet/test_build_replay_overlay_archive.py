@@ -13,7 +13,7 @@ def publication(root):
     target=overlay/"Mathlib/Test.olean"; target.write_bytes(b"olean\n")
     entries=[{"bytes":target.stat().st_size,"path":"Mathlib/Test.olean","sha256":MOD.sha256_file(target)}]
     manifest={"entry_count":1,"entries":entries,"identity_sha256":hashlib.sha256(MOD.canonical(entries)).hexdigest(),
-      "included_extensions":[".olean"],"schema":MOD.OVERLAY.SCHEMA}
+      "included_extensions":[".ir",".olean",".olean.private",".olean.server"],"schema":MOD.OVERLAY.SCHEMA}
     (pub/"manifest.json").write_bytes(MOD.canonical(manifest)); control=[]
     for index,path in enumerate(MOD.OVERLAY.CONTROL_PATHS):
         control.append({"blob_oid":str(index+1)*40,"bytes":1,"path":path,"sha256":str(index+1)*64})

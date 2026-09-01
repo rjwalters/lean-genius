@@ -27,6 +27,7 @@ from build_replay_queue import SCHEMA as QUEUE_BUILD_SCHEMA
 HERE = Path(__file__).resolve().parent
 OVERLAY_SCHEMA = "erdos85-h1-replay-complete-olean-overlay-v1"
 OVERLAY_RECEIPT_SCHEMA = "erdos85-h1-replay-complete-olean-overlay-receipt-v1"
+OVERLAY_IMPORT_EXTENSIONS = [".ir", ".olean", ".olean.private", ".olean.server"]
 OVERLAY_RECEIPT_FIELDS = {
     "control_files", "entry_count", "git_path", "git_sha256",
     "manifest_path", "manifest_sha256", "overlay_identity_sha256",
@@ -102,7 +103,7 @@ def validate_overlay_freight(
     entries = overlay_manifest.get("entries")
     if (
         overlay_manifest.get("schema") != OVERLAY_SCHEMA
-        or overlay_manifest.get("included_extensions") != [".olean"]
+        or overlay_manifest.get("included_extensions") != OVERLAY_IMPORT_EXTENSIONS
         or not isinstance(entries, list) or not entries
         or overlay_manifest.get("entry_count") != len(entries)
     ):
@@ -116,7 +117,7 @@ def validate_overlay_freight(
         if (
             not isinstance(path, str) or not path or path.startswith("/")
             or "\\" in path or any(part in ("", ".", "..") for part in path.split("/"))
-            or not path.endswith(".olean")
+            or not any(path.endswith(extension) for extension in OVERLAY_IMPORT_EXTENSIONS)
             or type(row.get("bytes")) is not int or row["bytes"] <= 0
         ):
             raise ReplayError("overlay manifest row is malformed")

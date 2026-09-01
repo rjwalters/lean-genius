@@ -191,7 +191,7 @@ class ReplayTransactionTest(unittest.TestCase):
         self.overlay_manifest.write_bytes(canonical_json({
             "entry_count": 1, "entries": overlay_entries,
             "identity_sha256": overlay_identity,
-            "included_extensions": [".olean"],
+            "included_extensions": [".ir", ".olean", ".olean.private", ".olean.server"],
             "schema": manifest_builder.OVERLAY_SCHEMA,
         }))
         self.overlay_archive = self.root / "complete-overlay.tar.zst"

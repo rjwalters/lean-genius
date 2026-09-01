@@ -7,6 +7,7 @@ from typing import Callable
 
 SCHEMA="erdos85-h1-replay-complete-olean-overlay-v1"
 RECEIPT_SCHEMA="erdos85-h1-replay-complete-olean-overlay-receipt-v1"
+IMPORT_EXTENSIONS=(".ir",".olean",".olean.private",".olean.server")
 CONTROL_PATHS=("proofs/lean-toolchain","proofs/lakefile.toml","proofs/lake-manifest.json")
 MANIFEST_FIELDS={"fixedToolchain","lakeDir","name","packages","packagesDir","version"}
 PACKAGE_FIELDS={"configFile","inherited","inputRev","manifestFile","name","rev","scope","subDir","type","url"}
@@ -71,13 +72,22 @@ def scan(root,origin,selected=None):
    stat=path.stat(); inode=(stat.st_dev,stat.st_ino)
    if stat.st_nlink!=1 or inode in inodes: raise OverlayError(f"{origin} hardlink/alias")
    inodes.add(inode); relative=path.relative_to(root).as_posix(); rel(relative,f"{origin} entry")
-   # `.ilean` is deliberately excluded: Lean imports only `.olean` artifacts.
-   if path.suffix!=".olean" or selected is not None and relative not in selected: continue
+   # Lean 4.31 splits importable module data among `.olean`, `.olean.server`, and
+   # `.olean.private`; the loader only discovers `.private` after `.server` exists.
+   # Direct compilation also imports interpreter data from `.ir`.
+   # `.ilean`, traces, and build hashes are not import inputs.
+   if not any(relative.endswith(extension) for extension in IMPORT_EXTENSIONS): continue
+   selected_path=relative
+   if selected is not None and (relative.endswith(".olean.private") or relative.endswith(".olean.server")):
+    selected_path=relative.rsplit(".",1)[0]
+   elif selected is not None and relative.endswith(".ir"):
+    selected_path=relative.removesuffix(".ir")+".olean"
+   if selected is not None and selected_path not in selected: continue
    digest=sha256_file(path)
-   if selected is not None and selected[relative]!=digest: raise OverlayError(f"project overlay hash mismatch: {relative}")
+   if selected is not None and relative in selected and selected[relative]!=digest: raise OverlayError(f"project overlay hash mismatch: {relative}")
    rows.append({"bytes":stat.st_size,"origin":origin,"path":relative,"sha256":digest,"source":str(path)})
  rows.sort(key=lambda row:row["path"])
- if selected is not None and [row["path"] for row in rows]!=sorted(selected): raise OverlayError("project overlay census missing entries")
+ if selected is not None and not set(selected).issubset(row["path"] for row in rows): raise OverlayError("project overlay census missing entries")
  return rows
 def fsync_tree(root):
  for path in root.rglob("*"):
@@ -90,7 +100,7 @@ def fsync_tree(root):
 def verify_tree(root,manifest):
  entries=manifest.get("entries")
  if (set(manifest)!={"entry_count","entries","identity_sha256","included_extensions","schema"}
-  or manifest.get("schema")!=SCHEMA or manifest.get("included_extensions")!=[".olean"]
+ or manifest.get("schema")!=SCHEMA or manifest.get("included_extensions")!=list(IMPORT_EXTENSIONS)
   or not isinstance(entries,list) or manifest.get("entry_count")!=len(entries)
   or manifest.get("identity_sha256")!=hashlib.sha256(canonical(entries)).hexdigest()): raise OverlayError("overlay manifest exact schema mismatch")
  actual=[]
@@ -99,8 +109,9 @@ def verify_tree(root,manifest):
   if any((base/name).is_symlink() for name in dirs): raise OverlayError("overlay directory symlink")
   for name in files:
    path=base/name
-   if path.is_symlink() or not path.is_file() or path.suffix!=".olean": raise OverlayError("overlay non-olean/special file")
-   actual.append(path.relative_to(root).as_posix())
+   relative=path.relative_to(root).as_posix()
+   if path.is_symlink() or not path.is_file() or not any(relative.endswith(extension) for extension in IMPORT_EXTENSIONS): raise OverlayError("overlay non-import-data/special file")
+   actual.append(relative)
  expected=[]
  for row in entries:
   if not isinstance(row,dict) or set(row)!={"bytes","path","sha256"} or SHA.fullmatch(str(row.get("sha256"))) is None: raise OverlayError("overlay row malformed")
@@ -147,7 +158,7 @@ def build(*,repo,source_commit,project_root,project_manifest,project_manifest_sh
   for row in rows:
    destination=overlay/row["path"]; destination.parent.mkdir(parents=True,exist_ok=True); shutil.copyfile(row["source"],destination); require(destination,row["sha256"],"copied entry")
    if destination.stat().st_size!=row["bytes"]: raise OverlayError("copied byte mismatch")
-  output_rows=[{k:x[k] for k in ("bytes","path","sha256")} for x in rows]; identity=hashlib.sha256(canonical(output_rows)).hexdigest(); manifest_value={"entry_count":len(rows),"entries":output_rows,"identity_sha256":identity,"included_extensions":[".olean"],"schema":SCHEMA}; manifest_raw=canonical(manifest_value); (stage/"manifest.json").write_bytes(manifest_raw)
+  output_rows=[{k:x[k] for k in ("bytes","path","sha256")} for x in rows]; identity=hashlib.sha256(canonical(output_rows)).hexdigest(); manifest_value={"entry_count":len(rows),"entries":output_rows,"identity_sha256":identity,"included_extensions":list(IMPORT_EXTENSIONS),"schema":SCHEMA}; manifest_raw=canonical(manifest_value); (stage/"manifest.json").write_bytes(manifest_raw)
   if before_receipt: before_receipt()
   for path,pin in pins.items(): require(Path(path),pin,"input drift")
   final=scan(project_root,"project",selection)

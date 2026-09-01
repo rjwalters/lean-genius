@@ -7,7 +7,7 @@ COMMIT="a"*40; REV="b"*40; OID="c"*40
 class OverlayTests(unittest.TestCase):
  def fixture(self,base):
   repo=base/"repo"; proofs=repo/"proofs"; package=proofs/".lake/packages/dep"; root=package/".lake/build/lib/lean"; project=base/"project"
-  root.mkdir(parents=True); project.mkdir(); (root/"Dep.olean").write_bytes(b"dep"); (project/"Project.olean").write_bytes(b"project")
+  root.mkdir(parents=True); project.mkdir(); (root/"Dep.ir").write_bytes(b"dep-ir"); (root/"Dep.olean").write_bytes(b"dep"); (root/"Dep.olean.private").write_bytes(b"dep-private"); (root/"Dep.olean.server").write_bytes(b"dep-server"); (project/"Project.ir").write_bytes(b"project-ir"); (project/"Project.olean").write_bytes(b"project"); (project/"Project.olean.private").write_bytes(b"project-private"); (project/"Project.olean.server").write_bytes(b"project-server")
   (proofs/"lean-toolchain").write_text("leanprover/lean4:v4.31.0\n"); (proofs/"lakefile.toml").write_text('name="proofs"\n')
   record={key:None for key in target.PACKAGE_FIELDS}; record.update({"name":"dep","type":"git","rev":REV,"subDir":None,"url":"https://github.com/example/dep"})
   manifest={key:None for key in target.MANIFEST_FIELDS}; manifest.update({"fixedToolchain":False,"lakeDir":".lake","name":"proofs","packages":[record],"packagesDir":".lake/packages","version":"1.2.0"})
@@ -27,7 +27,14 @@ class OverlayTests(unittest.TestCase):
   return output,project
  def test_authenticated_atomic_build_and_verify(self):
   with tempfile.TemporaryDirectory() as raw:
-   output,_=self.build(Path(raw).resolve()); self.assertEqual(target.verify(output),2)
+   output,_=self.build(Path(raw).resolve()); self.assertEqual(target.verify(output),8)
+   self.assertEqual(json.loads((output/"manifest.json").read_text())["included_extensions"],[".ir",".olean",".olean.private",".olean.server"])
+   self.assertEqual((output/"overlay/Dep.ir").read_bytes(),b"dep-ir")
+   self.assertEqual((output/"overlay/Dep.olean.private").read_bytes(),b"dep-private")
+   self.assertEqual((output/"overlay/Dep.olean.server").read_bytes(),b"dep-server")
+   self.assertEqual((output/"overlay/Project.olean.private").read_bytes(),b"project-private")
+   self.assertEqual((output/"overlay/Project.olean.server").read_bytes(),b"project-server")
+   self.assertEqual((output/"overlay/Project.ir").read_bytes(),b"project-ir")
    receipt=json.loads((output/"receipt.json").read_text()); self.assertEqual(receipt["packages"][0]["rev"],REV); self.assertEqual(receipt["schema"],target.RECEIPT_SCHEMA)
  def test_tamper_missing_extra_and_hardlink_rejected(self):
   for mutation in ("tamper","missing","extra"):
