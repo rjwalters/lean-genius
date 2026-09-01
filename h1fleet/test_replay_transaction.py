@@ -36,7 +36,7 @@ from capacity_queue import (
     validate_queue_capacity, validate_queue_tables,
 )
 from replay_worker import (
-    command_values, validate_existing_receipt, validate_job,
+    command_values, validate_compact_lrat, validate_existing_receipt, validate_job,
     validate_production_compile_contract,
     validate_production_environment,
     validate_production_manifest,
@@ -229,6 +229,26 @@ class ReplayTransactionTest(unittest.TestCase):
             "schema": manifest_builder.OVERLAY_RECEIPT_SCHEMA,
             "source_commit": source_commit,
         }))
+
+    def test_compact_lrat_accepts_deletion_lines(self) -> None:
+        certificate = self.root / "with-deletions.compact.lrat"
+        certificate.write_text(
+            "610405 -184 -201 -501 0 1 4568 0\n"
+            "610405 d 4568 0\n"
+            "610406 0 610405 0\n"
+        )
+        validate_compact_lrat(certificate)
+
+    def test_compact_lrat_rejects_malformed_deletion_lines(self) -> None:
+        for index, contents in enumerate((
+            "1 d\n2 0 1 0\n",
+            "1 d not-an-id 0\n2 0 1 0\n",
+            "1 d 7\n2 0 1 0\n",
+        )):
+            certificate = self.root / f"bad-deletion-{index}.compact.lrat"
+            certificate.write_text(contents)
+            with self.subTest(contents=contents), self.assertRaises(ReplayError):
+                validate_compact_lrat(certificate)
 
     def tearDown(self) -> None:
         self.temporary.cleanup()

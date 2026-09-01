@@ -77,13 +77,18 @@ def validate_compact_lrat(path: Path) -> None:
             tokens = line.split()
             if not tokens:
                 continue
+            deletion = len(tokens) >= 2 and tokens[1] == "d"
+            numeric_tokens = [tokens[0], *tokens[2:]] if deletion else tokens
             try:
-                [int(token) for token in tokens]
+                [int(token) for token in numeric_tokens]
             except ValueError as error:
                 raise ReplayError(f"compact LRAT line {line_number} is not integral") from error
+            if deletion and len(tokens) < 3:
+                raise ReplayError(f"compact LRAT deletion line {line_number} is malformed")
             if tokens[-1] != "0":
                 raise ReplayError(f"compact LRAT line {line_number} lacks terminal zero")
-            final_tokens = tokens
+            if not deletion:
+                final_tokens = tokens
     if final_tokens is None:
         raise ReplayError("compact LRAT is empty")
     if len(final_tokens) < 3 or final_tokens[1] != "0":
