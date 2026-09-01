@@ -25,6 +25,7 @@ from pathlib import Path
 
 TAG_RE = re.compile(r"[0-9a-f]{16}")
 PROFILE_NAMES = ("BBBB", "ABBB", "AABB", "AAAB", "AAAA")
+V2_CLAIM_PREFIX = "sat49/campaign-20260825/h1-fleet-v2/claims/"
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -92,9 +93,29 @@ def read_jobs(path: Path) -> dict[str, tuple[int, str, int, str]]:
     return read_jobs_bytes(path, stable_read(path))
 
 
+def read_orphan_tags_bytes(path: Path, data: bytes) -> set[str]:
+    try:
+        lines = data.decode("ascii").splitlines()
+    except UnicodeDecodeError as error:
+        raise ValueError(f"{path}: orphan claim evidence is not ASCII") from error
+    tags = []
+    for line_number, raw in enumerate(lines, 1):
+        if not raw.startswith(V2_CLAIM_PREFIX):
+            raise ValueError(f"{path}:{line_number}: wrong orphan claim prefix")
+        tag = raw[len(V2_CLAIM_PREFIX):]
+        if not TAG_RE.fullmatch(tag):
+            raise ValueError(f"{path}:{line_number}: malformed orphan claim key")
+        tags.append(tag)
+    if not tags or tags != sorted(set(tags)):
+        raise ValueError(f"{path}: orphan claim keys must be nonempty, unique, and sorted")
+    return set(tags)
+
+
 def select_unknowns_bytes(
-    coverage: Path, data: bytes, jobs: dict[str, tuple[int, str, int, str]]
+    coverage: Path, data: bytes, jobs: dict[str, tuple[int, str, int, str]],
+    orphan_tags: set[str] | None = None,
 ) -> list[str]:
+    orphan_tags = orphan_tags or set()
     selected: list[str] = []
     seen: set[str] = set()
     try:
@@ -122,7 +143,16 @@ def select_unknowns_bytes(
                 and row["fleet_v3_claim"] == "0"
                 and row["fleet_v3_verdict"] == ""
             )
-            if is_retry:
+            is_orphan = tag in orphan_tags
+            if is_orphan and not (
+                row["status"] == "pending" and row["certified_s3"] == "0"
+                and row["fleet_v2_claim"] == "0" and row["fleet_v2_verdict"] == ""
+                and row["fleet_v3_claim"] == "0" and row["fleet_v3_verdict"] == ""
+            ):
+                raise ValueError(
+                    f"{coverage}:{line_number}: orphan tag has acquired terminal or claim evidence"
+                )
+            if is_retry or is_orphan:
                 if tag not in jobs:
                     raise ValueError(f"{coverage}:{line_number}: retry tag absent from jobs")
                 profile, family, local_index, raw_job = jobs[tag]
@@ -137,6 +167,9 @@ def select_unknowns_bytes(
     unknown_jobs = jobs.keys() - seen
     if unknown_jobs:
         raise ValueError(f"jobs contain {len(unknown_jobs)} tag(s) absent from coverage")
+    missing_orphans = orphan_tags - seen
+    if missing_orphans:
+        raise ValueError(f"orphan evidence has {len(missing_orphans)} tag(s) absent from coverage")
     return sorted(selected)
 
 
@@ -150,6 +183,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--coverage", type=Path, required=True)
     parser.add_argument("--jobs", type=Path, required=True)
+    parser.add_argument("--orphan-claims", type=Path, required=True)
+    parser.add_argument("--orphan-claims-sha256", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--receipt-output", type=Path, required=True)
     args = parser.parse_args()
@@ -160,22 +195,38 @@ def main() -> int:
             raise FileExistsError(f"refusing to replace existing output: {output}")
     jobs_data = stable_read(args.jobs)
     coverage_data = stable_read(args.coverage)
+    orphan_data = stable_read(args.orphan_claims)
+    if (not re.fullmatch(r"[0-9a-f]{64}", args.orphan_claims_sha256)
+            or sha256_bytes(orphan_data) != args.orphan_claims_sha256):
+        raise ValueError(f"{args.orphan_claims}: orphan claim evidence SHA-256 mismatch")
     jobs = read_jobs_bytes(args.jobs, jobs_data)
-    rows = select_unknowns_bytes(args.coverage, coverage_data, jobs)
+    orphan_tags = read_orphan_tags_bytes(args.orphan_claims, orphan_data)
+    rows = select_unknowns_bytes(args.coverage, coverage_data, jobs, orphan_tags)
     output_data = ("\n".join(rows) + "\n").encode()
     atomic_write(args.output, output_data)
     counts = Counter(int(row.split("\t", 2)[1]) for row in rows)
+    orphan_counts = Counter(jobs[tag][0] for tag in orphan_tags)
     receipt = {
-        "schema": "erdos85-h1-unknown-retry-queue-v1",
+        "schema": "erdos85-h1-v3-final-retry-queue-v2",
         "coverage_sha256": sha256_bytes(coverage_data),
         "jobs_sha256": sha256_bytes(jobs_data),
+        "orphan_claims_sha256": sha256_bytes(orphan_data),
         "output_sha256": sha256_bytes(output_data),
         "rows": len(rows),
+        "unknown_rows": len(rows) - len(orphan_tags),
+        "orphan_rows": len(orphan_tags),
         "profile_counts": [counts[index] for index in range(5)],
-        "selection": {
+        "orphan_profile_counts": [orphan_counts[index] for index in range(5)],
+        "unknown_selection": {
             "status": "pending", "certified_s3": "0",
             "fleet_v2_claim": "1", "fleet_v2_verdict": "UNKNOWN",
             "fleet_v3_claim": "0", "fleet_v3_verdict": "",
+        },
+        "orphan_selection": {
+            "status": "pending", "certified_s3": "0",
+            "fleet_v2_claim": "0", "fleet_v2_verdict": "",
+            "fleet_v3_claim": "0", "fleet_v3_verdict": "",
+            "evidence_key_prefix": V2_CLAIM_PREFIX,
         },
     }
     atomic_write(

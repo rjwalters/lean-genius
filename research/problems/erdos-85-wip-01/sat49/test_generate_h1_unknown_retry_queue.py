@@ -6,7 +6,14 @@ from pathlib import Path
 from unittest import mock
 
 import generate_h1_unknown_retry_queue as queue_module
-from generate_h1_unknown_retry_queue import atomic_write, read_jobs, select_unknowns
+from generate_h1_unknown_retry_queue import (
+    V2_CLAIM_PREFIX,
+    atomic_write,
+    read_jobs,
+    read_orphan_tags_bytes,
+    select_unknowns,
+    select_unknowns_bytes,
+)
 
 
 HEADER = (
@@ -120,6 +127,45 @@ class UnknownRetryQueueTest(unittest.TestCase):
                 + "UNKNOWN\t0\t\n"
             )
             self.assertEqual(select_unknowns(coverage, read_jobs(jobs)), [])
+
+    def test_pinned_orphan_claim_is_requeued_only_in_exact_pending_state(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            tag = "0000000000000001"
+            jobs_path = root / "jobs.tsv"
+            jobs_path.write_text(f"{tag}\t0\tBBBB\t7\n")
+            jobs = read_jobs(jobs_path)
+            evidence_path = root / "orphans.txt"
+            evidence = f"{V2_CLAIM_PREFIX}{tag}\n".encode()
+            self.assertEqual(read_orphan_tags_bytes(evidence_path, evidence), {tag})
+            coverage = (
+                HEADER + f"{tag}\t0\tBBBB\t7\tpending\t0\t0\t\t0\t\n"
+            ).encode()
+            self.assertEqual(
+                select_unknowns_bytes(Path("coverage.tsv"), coverage, jobs, {tag}),
+                [f"{tag}\t0\tBBBB\t7"],
+            )
+            changed = coverage.replace(b"\tpending\t0\t0\t", b"\tcertified-in-S3\t1\t0\t")
+            with self.assertRaisesRegex(ValueError, "acquired terminal or claim evidence"):
+                select_unknowns_bytes(Path("coverage.tsv"), changed, jobs, {tag})
+
+    def test_orphan_evidence_format_and_universe_fail_closed(self) -> None:
+        path = Path("orphans.txt")
+        with self.assertRaisesRegex(ValueError, "unique, and sorted"):
+            read_orphan_tags_bytes(
+                path,
+                (f"{V2_CLAIM_PREFIX}0000000000000002\n"
+                 f"{V2_CLAIM_PREFIX}0000000000000001\n").encode(),
+            )
+        with self.assertRaisesRegex(ValueError, "wrong orphan claim prefix"):
+            read_orphan_tags_bytes(path, b"wrong/0000000000000001\n")
+        jobs = {"0000000000000001": (0, "BBBB", 7, "0000000000000001\t0\tBBBB\t7")}
+        coverage = (
+            HEADER + "0000000000000001\t0\tBBBB\t7\tpending\t0\t0\t\t0\t\n"
+        ).encode()
+        with self.assertRaisesRegex(ValueError, "absent from coverage"):
+            select_unknowns_bytes(Path("coverage.tsv"), coverage, jobs,
+                                  {"0000000000000002"})
 
 
 if __name__ == "__main__":
