@@ -111,3 +111,33 @@ primals rather than from floating dual supports.  The surviving localization
 target must quantify over an exceptional row and *arbitrary* two regular
 rows.  This is a strict correction to the lane name, not evidence against the
 broader support-three target.
+
+## Conditional-premise solver boundary
+
+The existing `q9_hole_fiber_negation_smt.py` can test a stronger premise than
+failure at only the maximum-load point: simultaneous failure of the full
+fiber certificate at all six exceptional-hole incidences, together with the
+exact exceptional-hole partitions.  The seed-free command
+
+```text
+python3 q9_hole_fiber_negation_smt.py --branch 3 \
+  --exact-hole-partition --timeout-seconds 120
+```
+
+returned `UNKNOWN` by timeout after 120.486 seconds.  This is no evidence of
+SAT or UNSAT.  Pinning each of
+`q9_branch3_integral_selector_counterexample.json`,
+`q9_joint_no_strict_three_tight_fixture.json`, and
+`q9_no_strict_replay_seed17.json` with `--witness` returned `UNSAT` in
+0.477--0.561 seconds after construction.  Thus these three hard fixtures do
+not witness even this stronger conditional premise and must not be used as
+CEGIS starting models for it.
+
+A monolithic encoding of feasibility of all 552 partial systems would add
+about `552 * 382 = 210864` real edge variables and over 420000 row-capacity
+constraints at the representative fixture's dimensions, before the outer
+design constraints.  The practical countermodel route is therefore CEGIS:
+enumerate a premise-satisfying outer, freeze it, run the exact LP auditor, and
+block it only if some partial obstruction remains.  That route is currently
+gated by producing the first premise-satisfying outer; the seed-free result
+above did not do so.
