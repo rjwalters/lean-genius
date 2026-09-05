@@ -175,6 +175,37 @@ for every exterior component of weight `n`,
 |supp(y)| = sum_f y_f = 3n.                             (9)
 ```
 
+This support has an exact three-fiber localization.  Label the defect
+triangle `Q={c_0,c_1,c_2}` and put
+
+```text
+S_i = N_B(c_i) subset F.
+```
+
+The three sets are pairwise disjoint (a point in an intersection would be a
+common `G`-neighbor of a defect pair), each has cardinality `n`, and their
+union is `supp(y)`.  Because `C` has weight two, every `f in S_i` has
+exactly one other `B`-neighbor `r_f != c_i`.  The same common-neighbor
+observation gives `r_f notin N_D(c_i)`.  Reading the `(c_i,f)` entry of
+`D_C B=B D_F` therefore gives
+
+```text
+deg_D_F(f,S_i) = 0.                                    (10)
+```
+
+For `j != i`, the triangle edge says `c_i in N_D(c_j)`.  The same entrywise
+identity, now at `(c_j,f)`, counts the two `B`-neighbors of `f` which lie in
+`N_D(c_j)` and yields
+
+```text
+1 <= deg_D_F(f,S_j) <= 2.                              (11)
+```
+
+Thus the carrier does not merely have forced size: `D_F` induces on it a
+tripartite graph with independent parts of size `n`, and every vertex has
+between one and two neighbors in each of the other two parts.  Equations
+(10)--(11) are the first spatial consumer of the exact intertwiner.
+
 For `[6,2]` at order 64, orienting from the weight-two component therefore
 forces a binary exterior carrier of support `18`.  More generally this is
 uniform for binary `q>=8`, with support `3(q-2)` in `[q-2,2]`; it is not an
