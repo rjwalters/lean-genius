@@ -182,3 +182,79 @@ The next computational move should translate the pseudo-Boolean model to
 CNF for the campaign solver stack, or add a quotient of the three fixed
 carrier parts before increasing runtime.  A long run of the same generic Z3
 encoding is not justified by the present result.
+
+## The first omitted case: an exact C5 carrier normal form
+
+Suppose instead that the 40-shore contains an induced defect cycle
+`Q=(c_0,...,c_4)`.  Put
+
+```text
+S_i = N_G(c_i) intersect F,
+```
+
+where the exterior 24-shore has weight three.  Each `S_i` has size three and
+consecutive sets are disjoint.  Since an independent set in `C5` has size at
+most two, no exterior label belongs to three of the `S_i`.  Moreover labels
+in two different nonconsecutive intersections are distinct: otherwise that
+label would belong to at least three cycle selectors.
+
+Let `d` be the number of the five noncycle pairs of `Q` whose unique common
+neighbor lies in `F`.  Equivalently,
+
+```text
+d = sum_i |S_i intersect S_(i+2)|.                       (7)
+```
+
+The carrier `y=B^T 1_Q` therefore has the exact coordinate profile
+
+```text
+2^d, 1^(15-2d), 0^(9+d),              0 <= d <= 5.       (8)
+```
+
+In particular
+
+```text
+|supp(y)| = 15-d,
+|supp(y mod 2)| = 15-2d.                                (9)
+```
+
+This recovers the general support lower bound but retains the actual five
+possible doubled labels.
+
+There is also a self-indexed restriction invisible in the norm.  Let
+`h_i=1` when the defect-cycle edge `c_i c_(i+1)` is also an ambient `G` edge,
+and put
+
+```text
+a = sum_i h_i h_(i+1),
+```
+
+the number of consecutive pairs of ambient edges on the defect cycle.  If
+`h_i=h_(i+1)=1`, then `c_(i+1)` is already the unique common neighbor of
+`c_i,c_(i+2)`.  C4-freeness forbids an exterior common neighbor for that
+same pair.  The five length-two positions give five distinct noncycle pairs,
+so
+
+```text
+d <= 5-a,
+|supp(y)| >= 10+a,
+|supp(y mod 2)| >= 5+2a.                               (10)
+```
+
+Thus long runs of triangle-free ambient edges force the C5 carrier toward a
+binary 15-set even though the exterior weight is only three.  This does not
+close the C5 subcase: when the ambient edges on the cycle form a matching,
+`a=0` and every value `0<=d<=5` survives this ledger.  It does reduce a C5
+probe to a cyclic five-bit ambient-edge word plus a subset of the five
+permitted doubled-label positions, rather than arbitrary exterior selector
+sets.  The next encoding should quotient by the dihedral action on precisely
+this finite normal form while retaining (5)--(6).
+
+`enumerate_nonbip_mixed_53_c5_carrier_orbits.py` performs that quotient
+without graph-search heuristics.  It verifies 573 valid labeled `(h,r)`
+forms and exactly 78 simultaneous dihedral orbits, in 36 coarse
+`(#H-edges,a,d)` strata.  The canonical representative list has SHA-256
+`82ae3fed44176ee0d14e513cc3ff7fb976d72d24f777b437aa793eedb56f733e`.
+The reflection action deliberately uses different offsets for edge labels
+`h_i={i,i+1}` and chord labels `r_i={i,i+2}`; treating them as identical
+cyclic words gives the wrong orbit count.
