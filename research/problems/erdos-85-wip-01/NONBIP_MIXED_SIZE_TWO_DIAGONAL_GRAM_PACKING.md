@@ -269,6 +269,32 @@ The current laws do not fix `w` exactly, but they force it into an interval
 of constant width six around a quadratic main term.  At `q=8`, `n=6`, this
 already forces between 12 and 18 rainbow-star centers.
 
+### Near-complete partial Latin square
+
+Associate to every rainbow center `v` its unique leaf triple
+
+```text
+(f_0(v),f_1(v),f_2(v)) in S_0 x S_1 x S_2.
+```
+
+Every two-coordinate projection is injective.  Indeed, if two distinct
+centers had the same leaves in (say) `S_0` and `S_1`, that leaf pair would
+have two common ambient neighbors, forming a forbidden C4.  The centers are
+therefore the entries of a partial Latin square of order `n`: no ordered
+pair in any two shores occurs in two triples.  Its deficiency from the
+`n^2` maximum satisfies
+
+```text
+n^2-w <= 4n.                                             (20)
+```
+
+This is useful structure, but generic partial-Latin-square completion does
+not give a terminal.  Sparse-filled completion theorems address the opposite
+density regime, and completing this near-full partial square would only
+produce a Latin square, not a contradiction.  The load-bearing extra data
+are that every triple is centered by an actual vertex of `F` and carries the
+companion/owner constraints above.
+
 At the `[6,2]` value `n=6`, there is already freedom at the exact Venn-ledger
 level.  Take an abstract 48-label universe with
 
