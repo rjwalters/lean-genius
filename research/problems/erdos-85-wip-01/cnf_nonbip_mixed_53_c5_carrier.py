@@ -91,12 +91,41 @@ def verify_model(cnf, values: dict[int, bool], h: tuple[int, ...],
                                        for f in range(LARGE, ORDER)), reverse=True)}
 
 
+def manifest_report() -> dict[str, object]:
+    rows = []
+    for orbit_index in range(len(representatives())):
+        cnf, h, r, _ = build(orbit_index)
+        payload = dimacs(cnf)
+        rows.append({
+            "orbit_index": orbit_index, "h": h, "r": r,
+            "variables": cnf.next_var - 1, "clauses": len(cnf.clauses),
+            "bytes": len(payload), "sha256": hashlib.sha256(payload).hexdigest(),
+        })
+    raw = json.dumps(rows, sort_keys=True, separators=(",", ":")).encode()
+    return {
+        "orbits": len(rows),
+        "variable_counts": sorted({row["variables"] for row in rows}),
+        "clause_counts": sorted({row["clauses"] for row in rows}),
+        "byte_range": [min(row["bytes"] for row in rows),
+                       max(row["bytes"] for row in rows)],
+        "manifest_sha256": hashlib.sha256(raw).hexdigest(),
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--orbit-index", type=int, required=True)
+    choice = parser.add_mutually_exclusive_group(required=True)
+    choice.add_argument("--orbit-index", type=int)
+    choice.add_argument("--manifest", action="store_true")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--verify-model", type=Path)
     args = parser.parse_args()
+    if args.manifest:
+        if args.output is not None or args.verify_model is not None:
+            parser.error("--manifest cannot be combined with output/model options")
+        print(json.dumps(manifest_report(), sort_keys=True))
+        return
+    assert args.orbit_index is not None
     cnf, h, r, fibers = build(args.orbit_index)
     payload = dimacs(cnf)
     reps = representatives()
