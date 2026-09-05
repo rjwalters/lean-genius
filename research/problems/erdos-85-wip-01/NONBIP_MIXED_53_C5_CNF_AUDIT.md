@@ -86,3 +86,25 @@ run had 30613 conflicts and 303302111 propagations.  Raw conflict count is
 not a comparable hardness score after changing the encoding; this result
 establishes only that the layer emits and solves without an immediate
 terminal.
+
+The requested like-for-like all-orbit comparison then ran Kissat 4.0.4 with
+`--time=3` on every strengthened case, at concurrency three.  All 78 again
+returned exit code zero and `s UNKNOWN`.  The exact table is
+`c5_kissat_intertwiner_triage_3s.tsv` (79 lines including its header,
+SHA-256 `6d32acc7698a7ff9ad1d8168434f0662c8f527c8c9c5ec625df58fa512d15fe8`).
+Its aggregate diagnostics were:
+
+```text
+conflicts:     min 651, mean 901.41, max 2002
+decisions:     mean 78511.81
+propagations:  mean 54101015.63
+```
+
+For comparison, the unstrengthened three-second means were 6868.88
+conflicts, 127286.05 decisions, and 73881764.67 propagations.  These counts
+do not establish that either encoding is easier: preprocessing and each
+conflict have materially different clause costs.  The only logical result
+of the comparison is that neither encoding decided any orbit at the stated
+bound.  Per the bounded-probe contract, this propagation experiment stops
+here rather than converting UNKNOWN into a feasibility claim or an
+unjustified longer campaign.
