@@ -65,9 +65,11 @@ The surviving target is narrower and graph-derived:
 
 > **Support-three residual separator target.**  For the parameterized
 > symmetric C4-free residual relation with the exact regular/exceptional row
-> demands and its outer block partitions, infeasibility of the global
-> covering-degree system is witnessed by at most three row equations with a
-> nonnegative separator.
+> demands and its outer block partitions, **conditional on failure of the
+> maximum-load full-fiber horn and the resulting exact exceptional-hole
+> partition**, infeasibility of the global covering-degree system is witnessed
+> by one exceptional and at most two regular row equations with a nonnegative
+> separator.
 
 This target is q-generic in the relevant sense: it mentions no enumeration of
 the two order-nine triple classes.  The elementary truncation argument already
@@ -80,6 +82,13 @@ Consequently the next admissible move is a Helly/facet argument for the
 down-monotone covering-degree projection, using symmetry and C4-free caps.  A
 finite proof that merely checks simultaneous agreement of the two order-nine
 classes does not meet the transfer criterion and should not be formalized.
+
+The unfiltered random-outer scans are regression tests for the conclusion,
+not tests of this conditional implication: they do not encode the negation of
+the full-fiber horn.  A decisive computational attack must jointly impose that
+negation, the exact exceptional-hole partition, global infeasibility, and
+feasibility of all 552 partial systems.  Merely accumulating more unrestricted
+seeds cannot discharge the theorem.
 
 ## Direct class-support falsification
 
