@@ -82,8 +82,18 @@ def derive_worker(source: bytes) -> bytes:
     if aws s3api head-object --bucket \"$B\" --key \"$PFX/h1/$tag.compact.lrat.gz\" > /dev/null 2> \"/opt/h1/head-object.$SLOT.err\"; then
       continue
     elif ! grep -Eq '__HEAD_NOT_FOUND_RE__' \"/opt/h1/head-object.$SLOT.err\"; then
-      log \"CERT-PRECHECK-FAIL tag=$tag; indeterminate object state, stopping slot\"
-      echo \"tag=$tag certificate-precheck-fail\" > /opt/h1/slot.$SLOT.failed
+      # Publish an immediate, explicit off-box marker.  A fail-closed HEAD
+      # permission/transport error must never resemble an exhausted queue
+      # while the supervisor is still waiting to upload its first heartbeat.
+      HEAD_ERROR=$(head -c 512 \"/opt/h1/head-object.$SLOT.err\" | tr '\\n' ' ')
+      HEAD_FAILURE=/opt/h1/head-precheck.$SLOT.failure.line
+      HEAD_FAILURE_KEY=\"$PFX/$META/failures/$tag.head-precheck.$NODE.$SLOT.line\"
+      printf '%s %s HEAD-PRECHECK-FAIL node=%s slot=%s error=%s\\n' \\
+        \"$(date -u +%FT%TZ)\" \"$tag\" \"$NODE\" \"$SLOT\" \"$HEAD_ERROR\" > \"$HEAD_FAILURE\"
+      aws s3api put-object --bucket \"$B\" --key \"$HEAD_FAILURE_KEY\" \\
+        --body \"$HEAD_FAILURE\" --if-none-match '*' > /dev/null 2>&1 || true
+      log \"CERT-PRECHECK-FAIL tag=$tag marker=$HEAD_FAILURE_KEY; indeterminate object state, stopping slot\"
+      echo \"tag=$tag head-precheck-fail marker=$HEAD_FAILURE_KEY\" > /opt/h1/slot.$SLOT.failed
       exit 1
     fi
     grep -qx \"$tag\" /opt/h1/ledger.$SLOT && continue
