@@ -24,6 +24,7 @@ STATUS_KEYS = {"certificate-key-conflict", "certified-in-S3", "fleet-in-flight",
 UNKNOWN_KEYS = {"certified_s3", "fleet_v2_claim", "fleet_v2_ledger",
                 "fleet_v3_claim", "fleet_v3_ledger", "host_ledger"}
 TAG_RE = re.compile(r"[0-9a-f]{16}")
+SHA_RE = re.compile(r"[0-9a-f]{64}")
 
 
 def sha256(path: Path) -> str:
@@ -66,6 +67,9 @@ def validate_summary(counts: dict) -> dict:
         "anomalies", "capacity_inventory_total", "capacity_only_error",
         "certificate_key_conflict_count", "certificate_key_conflict_tags",
         "certificate_key_present_tags", "certificate_ledger_valid_tags",
+        "certificate_readback_valid_tags", "certificate_ledger_valid_present_tags",
+        "certificate_readback_valid_present_tags",
+        "certificate_ledger_readback_valid_present_overlap_tags", "conflict_audit_sha256",
         "certified_s3_tags", "cnf_sha_comparable_count",
         "cnf_sha_divergent_count", "cnf_sha_divergent_tags",
         "compact_inventory_total", "compact_only_pre_capacity",
@@ -77,7 +81,9 @@ def validate_summary(counts: dict) -> dict:
     statuses = counts["status_counts"]
     integer_fields = ("capacity_inventory_total", "capacity_only_error",
         "certificate_key_conflict_count", "certificate_key_present_tags",
-        "certificate_ledger_valid_tags",
+        "certificate_ledger_valid_tags", "certificate_readback_valid_tags",
+        "certificate_ledger_valid_present_tags", "certificate_readback_valid_present_tags",
+        "certificate_ledger_readback_valid_present_overlap_tags",
         "certified_s3_tags", "cnf_sha_comparable_count",
         "cnf_sha_divergent_count", "compact_inventory_total",
         "compact_only_pre_capacity", "fleet_claim_tags", "fleet_ledger_rows",
@@ -102,7 +108,20 @@ def validate_summary(counts: dict) -> dict:
             or any(not isinstance(tag, str) or not TAG_RE.fullmatch(tag) for tag in conflicts)
             or counts["certificate_key_present_tags"] != (
                 counts["certified_s3_tags"] + counts["certificate_key_conflict_count"])
-            or counts["certificate_ledger_valid_tags"] != counts["certified_s3_tags"]
+            or counts["certificate_ledger_valid_present_tags"]
+                + counts["certificate_readback_valid_present_tags"]
+                - counts["certificate_ledger_readback_valid_present_overlap_tags"]
+                != counts["certified_s3_tags"]
+            or counts["certificate_ledger_valid_present_tags"]
+                > counts["certificate_ledger_valid_tags"]
+            or counts["certificate_readback_valid_present_tags"]
+                > counts["certificate_readback_valid_tags"]
+            or counts["certificate_ledger_readback_valid_present_overlap_tags"]
+                > min(counts["certificate_ledger_valid_present_tags"],
+                      counts["certificate_readback_valid_present_tags"])
+            or not isinstance(counts["conflict_audit_sha256"], str)
+            or (counts["conflict_audit_sha256"] != ""
+                and SHA_RE.fullmatch(counts["conflict_audit_sha256"]) is None)
             or statuses["certificate-key-conflict"] != counts["certificate_key_conflict_count"]
             or counts["anomalies"] != expected_anomalies
             or counts["capacity_inventory_total"] != 13_351
@@ -120,6 +139,12 @@ def validate_summary(counts: dict) -> dict:
         "certificate_key_conflict_tags": conflicts,
         "certificate_key_present": counts["certificate_key_present_tags"],
         "certificate_ledger_valid": counts["certificate_ledger_valid_tags"],
+        "certificate_readback_valid": counts["certificate_readback_valid_tags"],
+        "certificate_ledger_valid_present": counts["certificate_ledger_valid_present_tags"],
+        "certificate_readback_valid_present": counts["certificate_readback_valid_present_tags"],
+        "certificate_ledger_readback_valid_present_overlap":
+            counts["certificate_ledger_readback_valid_present_overlap_tags"],
+        "conflict_audit_sha256": counts["conflict_audit_sha256"],
         "certified": statuses.get("certified-in-S3", 0),
         "cnf_sha_comparable_count": counts["cnf_sha_comparable_count"],
         "cnf_sha_divergent_count": counts["cnf_sha_divergent_count"],
@@ -165,7 +190,9 @@ def publish_snapshot(*, campaign: Path, reconciler: Path,
                      reconciler_sha256: str, all_even_manifest: Path,
                      complement_manifest: Path, compact_inventory: Path,
                      aws_profile: str, bucket: str, s3_prefix: str,
-                     output: Path, timestamp: str | None = None) -> dict:
+                     output: Path, conflict_audit: Path | None = None,
+                     conflict_audit_sha256: str | None = None,
+                     timestamp: str | None = None) -> dict:
     if not campaign.is_absolute() or campaign.is_symlink() or not campaign.is_dir():
         raise ValueError("campaign must be an absolute non-symlink directory")
     for path, label in ((reconciler, "reconciler"),
@@ -183,6 +210,13 @@ def publish_snapshot(*, campaign: Path, reconciler: Path,
         raise ValueError("audit output must be outside the live campaign")
     if not aws_profile or not bucket or not s3_prefix:
         raise ValueError("AWS profile/bucket/prefix must be nonempty")
+    if (conflict_audit is None) != (conflict_audit_sha256 is None):
+        raise ValueError("conflict audit path and SHA-256 must be supplied together")
+    if conflict_audit is not None:
+        regular_absolute(conflict_audit, "conflict audit")
+        if SHA_RE.fullmatch(conflict_audit_sha256) is None \
+                or sha256(conflict_audit) != conflict_audit_sha256:
+            raise ValueError("conflict audit hash mismatch")
     if all_even_manifest != campaign / "h1grind/all_even_manifest.tsv":
         raise ValueError("all-even manifest is not the canonical campaign input")
     if complement_manifest != campaign / "h1grind/complement_manifest.tsv":
@@ -198,6 +232,8 @@ def publish_snapshot(*, campaign: Path, reconciler: Path,
         "publisher": sha256(publisher),
         "reconciler": sha256(reconciler),
     }
+    if conflict_audit is not None:
+        captured["conflict_audit"] = sha256(conflict_audit)
     if captured["reconciler"] != reconciler_sha256:
         raise ValueError("reconciler changed before staging")
     staging = Path(tempfile.mkdtemp(prefix=".h1-audit-stage.", dir=output.parent))
@@ -210,13 +246,22 @@ def publish_snapshot(*, campaign: Path, reconciler: Path,
         staged_compact = staged_tools / "h1_orbit_inventory.compact"
         staged_reconciler.write_bytes(reconciler.read_bytes())
         staged_compact.write_bytes(compact_inventory.read_bytes())
+        staged_conflict = None
+        if conflict_audit is not None:
+            staged_conflict = staged_tools / "conflict-readback-audit.json"
+            staged_conflict.write_bytes(conflict_audit.read_bytes())
         if (sha256(staged_reconciler) != captured["reconciler"]
                 or sha256(staged_compact) != captured["compact_inventory"]):
             raise ValueError("pinned tool/input changed while staging")
+        if staged_conflict is not None and sha256(staged_conflict) != captured["conflict_audit"]:
+            raise ValueError("pinned conflict audit changed while staging")
         command = [sys.executable, str(staged_reconciler), "--campaign", str(mirror),
                    "--aws-profile", aws_profile, "--bucket", bucket,
                    "--s3-prefix", s3_prefix,
                    "--compact-inventory", str(staged_compact)]
+        if staged_conflict is not None:
+            command += ["--conflict-audit", str(staged_conflict),
+                        "--conflict-audit-sha256", conflict_audit_sha256]
         result = subprocess.run(command, stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT, text=True)
         if result.returncode:
@@ -235,6 +280,8 @@ def publish_snapshot(*, campaign: Path, reconciler: Path,
             "publisher": sha256(publisher),
             "reconciler": sha256(reconciler),
         }
+        if conflict_audit is not None:
+            originals_after["conflict_audit"] = sha256(conflict_audit)
         if originals_after != captured:
             raise ValueError("a pinned original changed during reconciliation")
 
@@ -261,6 +308,8 @@ def publish_snapshot(*, campaign: Path, reconciler: Path,
                 "publisher_sha256": captured["publisher"],
                 "reconciler": str(reconciler),
                 "reconciler_sha256": reconciler_sha256,
+                "conflict_audit": str(conflict_audit) if conflict_audit is not None else None,
+                "conflict_audit_sha256": conflict_audit_sha256,
             },
             "live_campaign": str(campaign),
             "host_ledger_snapshot": host_ledgers,
@@ -296,6 +345,8 @@ def main() -> int:
     parser.add_argument("--all-even-manifest", type=Path, required=True)
     parser.add_argument("--complement-manifest", type=Path, required=True)
     parser.add_argument("--compact-inventory", type=Path, required=True)
+    parser.add_argument("--conflict-audit", type=Path)
+    parser.add_argument("--conflict-audit-sha256")
     parser.add_argument("--aws-profile", required=True)
     parser.add_argument("--bucket", required=True)
     parser.add_argument("--s3-prefix", required=True)
@@ -307,6 +358,8 @@ def main() -> int:
         all_even_manifest=args.all_even_manifest,
         complement_manifest=args.complement_manifest,
         compact_inventory=args.compact_inventory,
+        conflict_audit=args.conflict_audit,
+        conflict_audit_sha256=args.conflict_audit_sha256,
         aws_profile=args.aws_profile, bucket=args.bucket,
         s3_prefix=args.s3_prefix, output=args.output)
     print(f"WROTE {args.output} receipt_sha256={sha256(args.output / 'receipt.json')} "

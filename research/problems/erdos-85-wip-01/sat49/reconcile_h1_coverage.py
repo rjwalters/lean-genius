@@ -429,6 +429,14 @@ def reconcile(inventory: list[InventoryRow], host: dict[str, LedgerRow],
             any(row and row.is_verified_uploaded_unsat() for row in
                 (host.get(tag), v2_rows.get(tag), v3_rows.get(tag))) for tag in by_tag),
         "certificate_readback_valid_tags": len(readback_valid),
+        "certificate_ledger_valid_present_tags": sum(
+            tag in key_present and any(row and row.is_verified_uploaded_unsat() for row in
+                (host.get(tag), v2_rows.get(tag), v3_rows.get(tag))) for tag in by_tag),
+        "certificate_readback_valid_present_tags": len(readback_valid & key_present),
+        "certificate_ledger_readback_valid_present_overlap_tags": sum(
+            tag in key_present and tag in readback_valid
+            and any(row and row.is_verified_uploaded_unsat() for row in
+                    (host.get(tag), v2_rows.get(tag), v3_rows.get(tag))) for tag in by_tag),
         "certified_s3_tags": counts["certified-in-S3"],
         "cnf_sha_comparable_count": comparable,
         "cnf_sha_divergent_count": len(divergent),

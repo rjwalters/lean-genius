@@ -99,6 +99,19 @@ class ReconcileCoverageTests(unittest.TestCase):
         self.assertEqual(rows[tag]["certified_s3"], "1")
         self.assertEqual(rows[tag]["certificate_key_conflict"], "0")
         self.assertEqual(summary["certificate_readback_valid_tags"], 1)
+        self.assertEqual(summary["certificate_readback_valid_present_tags"], 1)
+        self.assertEqual(summary["certificate_ledger_valid_present_tags"], 0)
+        self.assertEqual(summary["certificate_ledger_readback_valid_present_overlap_tags"], 0)
+        overlap_rows, overlap, _ = self.reconcile(
+            v2={tag: ledger(tag)}, keys=(tag,), readback_valid=(tag,))
+        self.assertEqual(overlap_rows[tag]["certified_s3"], "1")
+        self.assertEqual(overlap["certificate_ledger_valid_present_tags"], 1)
+        self.assertEqual(overlap["certificate_readback_valid_present_tags"], 1)
+        self.assertEqual(overlap["certificate_ledger_readback_valid_present_overlap_tags"], 1)
+        absent_rows, absent, _ = self.reconcile(readback_valid=(tag,))
+        self.assertEqual(absent_rows[tag]["certified_s3"], "0")
+        self.assertEqual(absent["certificate_readback_valid_tags"], 1)
+        self.assertEqual(absent["certificate_readback_valid_present_tags"], 0)
         with self.assertRaisesRegex(RuntimeError, "outside capacity inventory"):
             self.reconcile(readback_valid=("ffffffffffffffff",))
 

@@ -15,18 +15,23 @@ SPEC.loader.exec_module(MOD)
 
 
 FAKE_RECONCILER = r'''#!/usr/bin/env python3
-import argparse, json
+import argparse, hashlib, json
 from pathlib import Path
 p = argparse.ArgumentParser()
 p.add_argument("--campaign", type=Path, required=True)
 p.add_argument("--aws-profile"); p.add_argument("--bucket"); p.add_argument("--s3-prefix")
 p.add_argument("--compact-inventory")
+p.add_argument("--conflict-audit"); p.add_argument("--conflict-audit-sha256")
 a = p.parse_args()
 out = a.campaign / "h1fleet/coverage"; out.mkdir(parents=True)
 counts = {
  "anomalies": {}, "capacity_inventory_total": 13351, "capacity_only_error": 0,
  "certificate_key_conflict_count": 0, "certificate_key_conflict_tags": [],
  "certificate_key_present_tags": 9804, "certificate_ledger_valid_tags": 9804,
+ "certificate_readback_valid_tags": 0, "conflict_audit_sha256": "",
+ "certificate_ledger_valid_present_tags": 9804,
+ "certificate_readback_valid_present_tags": 0,
+ "certificate_ledger_readback_valid_present_overlap_tags": 0,
  "certified_s3_tags": 9804, "cnf_sha_comparable_count": 30,
  "cnf_sha_divergent_count": 0, "cnf_sha_divergent_tags": [],
  "compact_inventory_total": 13541, "compact_only_pre_capacity": 190,
@@ -38,6 +43,13 @@ counts = {
  "status_total": 13351,
  "unknown_tags": {"certified_s3": [], "fleet_v2_claim": [], "fleet_v2_ledger": [],
                   "fleet_v3_claim": [], "fleet_v3_ledger": [], "host_ledger": []}}
+if a.conflict_audit:
+    raw = Path(a.conflict_audit).read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == a.conflict_audit_sha256
+    counts["certificate_readback_valid_tags"] = 1
+    counts["certificate_readback_valid_present_tags"] = 1
+    counts["certificate_ledger_readback_valid_present_overlap_tags"] = 1
+    counts["conflict_audit_sha256"] = a.conflict_audit_sha256
 (out / "counts.json").write_text(json.dumps(counts, sort_keys=True) + "\n")
 (out / "coverage.tsv").write_text("tag\tstatus\nabc\tpending\n")
 (out / "inventory_universe_diff.tsv").write_text("tag\trelation\nabc\tboth\n")
@@ -86,6 +98,28 @@ class H1CoverageAuditSnapshotTest(unittest.TestCase):
                 self.assertEqual(MOD.sha256(output / name), identity["sha256"])
             with self.assertRaises(ValueError):
                 MOD.publish_snapshot(**values, timestamp="2026-08-31T02:48:00Z")
+
+    def test_publishes_pinned_conflict_readback_provenance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); (root / "audits").mkdir()
+            values = self.fixture(root)
+            conflict = (root / "conflict-audit.json").resolve()
+            conflict.write_bytes(b'{"audit":"pinned"}\n')
+            values["conflict_audit"] = conflict
+            values["conflict_audit_sha256"] = MOD.sha256(conflict)
+            receipt = MOD.publish_snapshot(**values, timestamp="2026-08-31T02:47:00Z")
+            self.assertEqual(receipt["summary"]["certificate_readback_valid"], 1)
+            self.assertEqual(receipt["summary"]["certificate_ledger_valid"], 9804)
+            self.assertEqual(receipt["summary"]["certificate_ledger_readback_valid_present_overlap"], 1)
+            self.assertEqual(receipt["summary"]["conflict_audit_sha256"], MOD.sha256(conflict))
+            self.assertEqual(receipt["inputs"]["conflict_audit"], str(conflict))
+            self.assertEqual(receipt["inputs"]["conflict_audit_sha256"], MOD.sha256(conflict))
+            bad = self.fixture(root / "bad")
+            bad["output"].parent.mkdir(parents=True)
+            bad["conflict_audit"] = conflict
+            bad["conflict_audit_sha256"] = "0" * 64
+            with self.assertRaisesRegex(ValueError, "conflict audit hash mismatch"):
+                MOD.publish_snapshot(**bad)
 
     def test_rejects_pin_symlink_inside_campaign_and_integrity_failure(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -136,6 +170,8 @@ class H1CoverageAuditSnapshotTest(unittest.TestCase):
                 '"certificate_key_conflict_count": 1, "certificate_key_conflict_tags": ["e6f717d2e69cc8e0"],')
             conflict = conflict.replace('"certificate_ledger_valid_tags": 9804',
                                         '"certificate_ledger_valid_tags": 9803')
+            conflict = conflict.replace('"certificate_ledger_valid_present_tags": 9804',
+                                        '"certificate_ledger_valid_present_tags": 9803')
             conflict = conflict.replace('"certified_s3_tags": 9804',
                                         '"certified_s3_tags": 9803')
             conflict = conflict.replace('"certificate-key-conflict": 0, "certified-in-S3": 9804',
