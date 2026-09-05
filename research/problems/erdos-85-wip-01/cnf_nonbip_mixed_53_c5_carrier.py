@@ -48,12 +48,12 @@ def exterior_sets(r: tuple[int, ...]) -> list[set[int]]:
     return sets
 
 
-def build(orbit_index: int):
+def build(orbit_index: int, defect_intertwiner: bool = False):
     reps = representatives()
     if not 0 <= orbit_index < len(reps):
         raise ValueError(f"orbit index must lie in 0..{len(reps)-1}")
     h, r = reps[orbit_index]
-    cnf = build_core()
+    cnf = build_core(defect_intertwiner)
     fibers = exterior_sets(r)
 
     # The named vertices 0..4 induce a C5 in the defect graph.
@@ -91,10 +91,10 @@ def verify_model(cnf, values: dict[int, bool], h: tuple[int, ...],
                                        for f in range(LARGE, ORDER)), reverse=True)}
 
 
-def manifest_report() -> dict[str, object]:
+def manifest_report(defect_intertwiner: bool = False) -> dict[str, object]:
     rows = []
     for orbit_index in range(len(representatives())):
-        cnf, h, r, _ = build(orbit_index)
+        cnf, h, r, _ = build(orbit_index, defect_intertwiner)
         payload = dimacs(cnf)
         rows.append({
             "orbit_index": orbit_index, "h": h, "r": r,
@@ -109,6 +109,7 @@ def manifest_report() -> dict[str, object]:
         "byte_range": [min(row["bytes"] for row in rows),
                        max(row["bytes"] for row in rows)],
         "manifest_sha256": hashlib.sha256(raw).hexdigest(),
+        "defect_intertwiner": defect_intertwiner,
     }
 
 
@@ -119,18 +120,20 @@ def main() -> None:
     choice.add_argument("--manifest", action="store_true")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--verify-model", type=Path)
+    parser.add_argument("--defect-intertwiner", action="store_true")
     args = parser.parse_args()
     if args.manifest:
         if args.output is not None or args.verify_model is not None:
             parser.error("--manifest cannot be combined with output/model options")
-        print(json.dumps(manifest_report(), sort_keys=True))
+        print(json.dumps(manifest_report(args.defect_intertwiner), sort_keys=True))
         return
     assert args.orbit_index is not None
-    cnf, h, r, fibers = build(args.orbit_index)
+    cnf, h, r, fibers = build(args.orbit_index, args.defect_intertwiner)
     payload = dimacs(cnf)
     reps = representatives()
     report: dict[str, object] = {
         "orbit_index": args.orbit_index,
+        "defect_intertwiner": args.defect_intertwiner,
         "orbit_count": len(reps),
         "h": h,
         "r": r,

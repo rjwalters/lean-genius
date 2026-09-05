@@ -75,19 +75,35 @@ class CNF:
             for x in xs:
                 self.add(x)
             return
+        prev = self.thresholds(xs, target + 1, *name)
+        self.add(prev[target])
+        self.add(-prev[target + 1])
+
+    def thresholds(self, xs: list[int], upto: int,
+                   *name: object) -> dict[int, int]:
+        """Exact Tseitin variables for `count(xs) >= j`, `1 <= j <= upto`."""
         prev: dict[int, int] = {}
         for i, x in enumerate(xs):
             curr: dict[int, int] = {1: x if 1 not in prev else
                 self.or_gate(prev[1], x, *name, i, "ge", 1)}
-            for j in range(2, min(target + 1, i + 1) + 1):
+            for j in range(2, min(upto, i + 1) + 1):
                 if j - 1 not in prev:
                     continue
                 both = self.and_gate(prev[j - 1], x, *name, i, "both", j)
                 curr[j] = (both if j not in prev else
                     self.or_gate(prev[j], both, *name, i, "ge", j))
             prev = curr
-        self.add(prev[target])
-        self.add(-prev[target + 1])
+        return prev
+
+    def equal_cardinality_at_most_three(
+            self, left: list[int], right: list[int], *name: object) -> None:
+        """Equate counts when the right side is semantically bounded by 3."""
+        lhs = self.thresholds(left, 4, *name, "left")
+        rhs = self.thresholds(right, 3, *name, "right")
+        self.add(-lhs[4])
+        for j in range(1, 4):
+            self.add(-lhs[j], rhs[j])
+            self.add(lhs[j], -rhs[j])
 
 
 def edge_var(cnf: CNF, u: int, v: int) -> int:
@@ -100,7 +116,7 @@ def defect_var(cnf: CNF, u: int, v: int) -> int:
     return cnf.var("d", min(u, v), max(u, v))
 
 
-def build_core() -> CNF:
+def build_core(defect_intertwiner: bool = False) -> CNF:
     """Shared full-graph interface before choosing a named odd cycle."""
     cnf = CNF()
 
@@ -143,12 +159,27 @@ def build_core() -> CNF:
                 defect_var(cnf, u, v) for v in shore if v != u
             ], Q - 1, "defect-degree", u)
 
+    if defect_intertwiner:
+        # Redundant exact block identity D_C B = B D_F.  The right count is
+        # at most three because every C-row has exactly three F-neighbors.
+        for c in range(LARGE):
+            for f in range(LARGE, ORDER):
+                left = [cnf.and_gate(
+                    defect_var(cnf, c, r), edge_var(cnf, r, f),
+                    "intertwiner", c, f, "left-term", r)
+                    for r in range(LARGE) if r != c]
+                right = [cnf.and_gate(
+                    edge_var(cnf, c, g), defect_var(cnf, f, g),
+                    "intertwiner", c, f, "right-term", g)
+                    for g in range(LARGE, ORDER) if g != f]
+                cnf.equal_cardinality_at_most_three(
+                    left, right, "intertwiner", c, f)
     return cnf
 
 
-def build(triangle_ambient_edges: int) -> CNF:
+def build(triangle_ambient_edges: int, defect_intertwiner: bool = False) -> CNF:
     assert triangle_ambient_edges in (0, 1)
-    cnf = build_core()
+    cnf = build_core(defect_intertwiner)
 
     # Displayed large-shore defect triangle and canonical ambient orbits.
     for u, v in ((0, 1), (1, 2), (0, 2)):
@@ -238,6 +269,13 @@ def verify_core(cnf: CNF, values: dict[int, bool]):
     assert all(sum(defect[min(u, v), max(u, v)]
                    for v in shore if v != u) == Q - 1
                for shore in (range(LARGE), range(LARGE, ORDER)) for u in shore)
+    assert all(
+        sum(defect[min(c, r), max(c, r)] and f in sets[r]
+            for r in range(LARGE) if r != c)
+        == sum(g in sets[c] and defect[min(f, g), max(f, g)]
+               for g in range(LARGE, ORDER) if g != f)
+        for c in range(LARGE) for f in range(LARGE, ORDER)
+    )
     return sets, common, defect
 
 
@@ -269,13 +307,15 @@ def verify_model(cnf: CNF, values: dict[int, bool], triangle_case: int) -> dict[
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--triangle-ambient-edges", type=int, choices=(0, 1), required=True)
+    parser.add_argument("--defect-intertwiner", action="store_true")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--verify-model", type=Path)
     args = parser.parse_args()
-    cnf = build(args.triangle_ambient_edges)
+    cnf = build(args.triangle_ambient_edges, args.defect_intertwiner)
     payload = dimacs(cnf)
     report: dict[str, object] = {
         "triangle_ambient_edges": args.triangle_ambient_edges,
+        "defect_intertwiner": args.defect_intertwiner,
         "variables": cnf.next_var - 1,
         "clauses": len(cnf.clauses),
         "sha256": hashlib.sha256(payload).hexdigest(),

@@ -50,3 +50,39 @@ choice is either to deepen selected strata uniformly or first add sound
 owner/Gram propagation.  The latter is preferable if the new consequences
 can be expressed without importing assumptions absent from the `[5,3]`
 displayed-C5 interface.
+
+## Optional exact defect-intertwiner propagation
+
+The size-two companion/owner lemmas cannot be imported here: in `[5,3]` an
+exterior column has five large-shore neighbors, not a unique companion.  The
+q-generic identity which does apply is
+
+```text
+D_C B = B D_F.
+```
+
+Both CNF emitters now accept `--defect-intertwiner`.  For every one of the
+960 cross cells `(c,f)`, the optional layer forms the two AND-term lists and
+equates their integer cardinalities.  The right side is at most three by the
+already encoded cross degree of `c`; exact threshold variables equate levels
+one through three and forbid level four on the left.  This is redundant
+propagation implied by the full regular/codegree/defect interface, not a new
+model assumption.
+
+The equality gadget was exhaustively checked on every assignment of four
+left and three right inputs: all 128 cases agreed with equality of their
+Hamming weights.  Default emission remains byte-identical to the reviewed
+CNFs.  On C5 orbit zero, the optional layer gives
+
+```text
+variables  721600
+clauses    2228295
+sha256     964ba54ed266c8c3e25c5392c14e697ad57b99874e8c5ace5cf1b45016f60fe3
+```
+
+A ten-second Kissat smoke run remained `UNKNOWN`, with 9865 conflicts,
+291520 decisions, and 287951923 propagations.  The unstrengthened ten-second
+run had 30613 conflicts and 303302111 propagations.  Raw conflict count is
+not a comparable hardness score after changing the encoding; this result
+establishes only that the layer emits and solves without an immediate
+terminal.
