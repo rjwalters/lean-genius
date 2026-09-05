@@ -224,6 +224,67 @@ exception is paid for by a defect edge, an internal distance-two pair, or
 one of the already bounded hole intersections on the same fixed
 six-vertex configuration.
 
+In fact both remaining terms collapse.  First, the triple hole intersection
+is empty.  If `v in U_0 intersect U_1 intersect U_2`, then
+`deg_H_F(v,S_i)=0` for every `i`.  Evaluating `H_C B+B H_F=J` at `(c_i,v)`
+would therefore give
+
+```text
+|N_B(v) intersect W_i|=1                 for i=0,1,2.
+```
+
+The sets `W_i` are pairwise disjoint, while the selector `N_B(v)` has only
+two points.  This is impossible, so
+
+```text
+u=0.                                                       (10d)
+```
+
+For the finite `W` ledger, let `K=H_C^2-2I`; off the diagonal it is the
+zero-one relation of having an internal ambient common neighbor.  It is
+two-regular, and the diagonal Gram partition (10a) is the matrix identity
+
+```text
+L+D_C+K=J-I.
+```
+
+All three relations commute: `H_C` commutes with `D_C`, hence with `K`, and
+the displayed partition then gives commutation with `L`.  For `i<j`, let
+`d_ij` and `h_ij` count respectively the `D_C`- and `K`-edges across
+`W_i x W_j`.  Since `c_i c_j` is a `D_C`-edge and hence not a `K`-edge,
+
+```text
+d_ij=(H_C D_C H_C)_(c_i,c_j)=2+(D_C K)_(c_i,c_j),
+h_ij=(H_C K H_C)_(c_i,c_j)=(K^2)_(c_i,c_j).             (10e)
+```
+
+The companion-location identity also has an exact relation-algebra form.
+Because `R_i=N_L(c_i)`, its three classes relative to `c_j` show that
+`delta_ij=(L D_C)_(c_i,c_j)` and `p_ij=(L^2)_(c_i,c_j)`.
+Equivalently, multiplying the partition by `L` or `K` gives
+
+```text
+gamma_ij=(L K)_(c_i,c_j)
+        =2-(D_C K)_(c_i,c_j)-(K^2)_(c_i,c_j).           (10f)
+```
+
+Thus `d_ij+h_ij+gamma_ij=4`.  The four pairs in
+`W_i x W_j` partition among `D_C,K,L`, so the number of `L`-edges in that
+block is exactly `gamma_ij`.  Summing the three blocks yields
+
+```text
+e_W=gamma_01+gamma_02+gamma_12.                         (10g)
+```
+
+Substitution of (10d)--(10g) into (9) removes every internal exception:
+
+```text
+E(L[X]) = {rainbow selector edges}.                     (10h)
+```
+
+Every selector edge wholly inside `X` is therefore the center of a unique
+rainbow triple; all non-rainbow selector edges touch `W`.
+
 ## Exact endpoint--companion routing
 
 The selector restriction also has a pointwise form.  Fix `f in S_i`, with
@@ -389,8 +450,8 @@ Latin square.  It concentrates all their selector edges inside `X` and
 nearly saturates the `B`-capacity there.
 
 It is not yet a contradiction.  But the unresolved selector freedom has
-collapsed to the finite `D_C/H_C^2/L` partition on `W` and at most twelve
-exceptional edges in `L[X]`.  A terminal must show that none of these
-constant-sized exception patterns is compatible with the companion/owner
+collapsed to the finite `D_C/K/L` partition on `W`, while `L[X]` is exactly
+the rainbow selector graph.  A terminal must show that this exact
+self-indexed rainbow realization is incompatible with the companion/owner
 labels and the three near-saturated partial-Latin projections.  The raw
 incidence capacity alone still has nonnegative slack.
