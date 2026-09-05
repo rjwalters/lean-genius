@@ -216,6 +216,15 @@ between chromatic number, maximal clique and minimal degree of a graph*,
 Discrete Mathematics 8 (1974), 205--218, Theorem 1.1 / Lemma 1.2 and Remark
 1.6.  The invoked `r=3` consequence is that a triangle-free graph on `N`
 vertices with minimum degree strictly greater than `2N/5` is bipartite.
+This consequence is not left as an external axiom: the pinned Mathlib theorem
+`SimpleGraph.colorable_of_cliqueFree_lt_minDegree` yields the cold-built,
+standard-axiom Lean specialization
+
+```text
+not_cliqueFree_three_of_card_two_mul_regular_not_bipartite
+```
+
+in `Erdos85BinarySquareSizeTwoDefectTriangle.lean`.
 
 ## Disposition
 
