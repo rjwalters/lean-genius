@@ -192,12 +192,12 @@ edges touch the fixed six-vertex set `W`.
 
 ## Exact endpoint--companion routing
 
-The selector restriction also has a pointwise form.  Fix `f in S_i), with
+The selector restriction also has a pointwise form.  Fix `f in S_i`, with
 companion `r_f`, and `a in X`.  Evaluating
 `H_C B+B H_F=J` at `(a,f)` gives
 
 ```text
-(B H_F)_(a,f)=1-1_{H_C(a,r_f)}.                         (10)
+(B H_F)_(a,f)=1-1_{H_C(a,r_f)}.                         (11)
 ```
 
 Indeed, the two `B`-neighbors of `f` are `c_i,r_f`, and membership
@@ -214,11 +214,11 @@ are in exact bijection with such endpoint--leaf routings through exterior
 centers.
 
 Let `R_i={r_f:f in S_i}`, and let `e_H(X,R_i)` denote the oriented
-`H_C` incidence count from the labels in `R_i` into `X).  There are
+`H_C` incidence count from the labels in `R_i` into `X`.  There are
 therefore exactly
 
 ```text
-2n(n-1)-e_H(X,R_i)                                      (11)
+2n(n-1)-e_H(X,R_i)                                      (12)
 ```
 
 endpoint--leaf routings for fiber `i`.  Every rainbow center contributes
@@ -226,21 +226,21 @@ both selector endpoints, hence exactly `2w` of them.  The non-rainbow
 remainder is
 
 ```text
-6n-2 sum_{a<b} gamma_ab+2u-e_H(X,R_i).                  (12)
+6n-2 sum_{a<b} gamma_ab+2u-e_H(X,R_i).                  (13)
 ```
 
 Since every companion has `H_C`-degree two,
-`e_H(X,R_i)=2n-e_H(W,R_i)`; equivalently (12) is
+`e_H(X,R_i)=2n-e_H(W,R_i)`; equivalently (13) is
 
 ```text
-4n-2 sum_{a<b} gamma_ab+2u+e_H(W,R_i).                  (13)
+4n-2 sum_{a<b} gamma_ab+2u+e_H(W,R_i).                  (14)
 ```
 
 For a rainbow center with leaves `f_i` and selector endpoints `a,b`,
-(10) in particular forces `a,b` to avoid the `H_C`-neighborhood of
+(11) in particular forces `a,b` to avoid the `H_C`-neighborhood of
 each of its three companions.  Thus the remaining exceptional selector
 patterns must also realize the exact finite `W x R_i` incidence ledgers
-(13), rather than merely the edge counts (8)--(9).
+(14), rather than merely the edge counts (9)--(10).
 
 ## Disposition
 
