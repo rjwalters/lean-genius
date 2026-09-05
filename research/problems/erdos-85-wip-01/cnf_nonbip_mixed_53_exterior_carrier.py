@@ -100,8 +100,8 @@ def defect_var(cnf: CNF, u: int, v: int) -> int:
     return cnf.var("d", min(u, v), max(u, v))
 
 
-def build(triangle_ambient_edges: int) -> CNF:
-    assert triangle_ambient_edges in (0, 1)
+def build_core() -> CNF:
+    """Shared full-graph interface before choosing a named odd cycle."""
     cnf = CNF()
 
     # Allocate semantic edge variables first in a stable lexicographic block.
@@ -142,6 +142,13 @@ def build(triangle_ambient_edges: int) -> CNF:
             cnf.exactly([
                 defect_var(cnf, u, v) for v in shore if v != u
             ], Q - 1, "defect-degree", u)
+
+    return cnf
+
+
+def build(triangle_ambient_edges: int) -> CNF:
+    assert triangle_ambient_edges in (0, 1)
+    cnf = build_core()
 
     # Displayed large-shore defect triangle and canonical ambient orbits.
     for u, v in ((0, 1), (1, 2), (0, 2)):
@@ -201,8 +208,8 @@ def parse_kissat_model(path: Path) -> dict[int, bool]:
     return values
 
 
-def verify_model(cnf: CNF, values: dict[int, bool], triangle_case: int) -> dict[str, object]:
-    """Recompute every semantic condition from ambient edges only."""
+def verify_core(cnf: CNF, values: dict[int, bool]):
+    """Verify the CNF and reconstruct the shared graph semantics."""
     expected_vars = set(range(1, cnf.next_var))
     if set(values) != expected_vars:
         missing = sorted(expected_vars - set(values))
@@ -231,6 +238,12 @@ def verify_model(cnf: CNF, values: dict[int, bool], triangle_case: int) -> dict[
     assert all(sum(defect[min(u, v), max(u, v)]
                    for v in shore if v != u) == Q - 1
                for shore in (range(LARGE), range(LARGE, ORDER)) for u in shore)
+    return sets, common, defect
+
+
+def verify_model(cnf: CNF, values: dict[int, bool], triangle_case: int) -> dict[str, object]:
+    """Recompute every triangle-instance condition from ambient edges only."""
+    sets, _, defect = verify_core(cnf, values)
     assert all(defect[pair] for pair in ((0, 1), (1, 2), (0, 2)))
     expected_triangle = {(0, 1)} if triangle_case else set()
     assert {pair for pair in ((0, 1), (0, 2), (1, 2))
