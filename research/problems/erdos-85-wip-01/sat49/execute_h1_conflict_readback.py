@@ -31,6 +31,8 @@ CAPACITY_FILTER_SHA256 = "a0f75f34d74cb8e3d48310b8f2e7b9544bba690110c0256c03f1b7
 QUEUE_FORMAT_SHA256 = "5acf5ba65a4d3ea3f1f2aa603b102aa762ebbf91b1b2365645cb0af9060e7636"
 EXPECTED_COUNTS = (1485, 3617, 4717, 2693, 839)
 EXPECTED_TOTAL = 13_351
+AWS_REGION = "us-east-1"
+AWS_AUTH_MODES = ("profile", "instance-role")
 SHA_RE = re.compile(r"[0-9a-f]{64}")
 HEAD_MISSING_RE = re.compile(
     r"^An error occurred \((?:404|NotFound|NoSuchKey)\) when calling the HeadObject operation:"
@@ -317,15 +319,35 @@ def execute(*, jobs: list[dict], inventory: dict[str, dict], store: ReadOnlyStor
 
 
 class AwsCliReadOnlyStore:
-    def __init__(self, aws: Path, profile: str, bucket: str):
+    def __init__(self, aws: Path, profile: str, bucket: str,
+                 auth_mode: str = "profile", region: str = AWS_REGION):
+        if auth_mode not in AWS_AUTH_MODES or region != AWS_REGION:
+            raise AuditError("unsupported AWS authentication coordinates")
         self.aws, self.profile, self.bucket = aws, profile, bucket
+        self.auth_mode, self.region = auth_mode, region
+
+    def _environment(self) -> dict[str, str]:
+        environment = {key: value for key, value in os.environ.items()
+                       if not key.startswith("AWS_")}
+        environment.update({"AWS_PAGER": "", "AWS_REGION": self.region,
+                            "AWS_DEFAULT_REGION": self.region})
+        if self.auth_mode == "profile":
+            environment.update({"AWS_PROFILE": self.profile,
+                                "AWS_EC2_METADATA_DISABLED": "true"})
+        else:
+            environment.update({"AWS_CONFIG_FILE": "/dev/null",
+                                "AWS_SHARED_CREDENTIALS_FILE": "/dev/null",
+                                "AWS_EC2_METADATA_DISABLED": "false"})
+            for name in ("NO_PROXY", "no_proxy"):
+                values = [value for value in environment.get(name, "").split(",") if value]
+                if "169.254.169.254" not in values:
+                    values.append("169.254.169.254")
+                environment[name] = ",".join(values)
+        return environment
 
     def _run(self, arguments: list[str]) -> subprocess.CompletedProcess:
-        environment = os.environ.copy()
-        environment.update({"AWS_PROFILE": self.profile, "AWS_PAGER": "",
-                            "AWS_EC2_METADATA_DISABLED": "true"})
         return subprocess.run([str(self.aws), *arguments], stdout=subprocess.PIPE,
-                              stderr=subprocess.PIPE, text=True, env=environment)
+                              stderr=subprocess.PIPE, text=True, env=self._environment())
 
     def _head(self, key: str, version: str | None = None) -> dict:
         arguments = ["s3api", "head-object", "--bucket", self.bucket, "--key", key,
@@ -483,6 +505,8 @@ def main() -> int:
     parser.add_argument("--docker-version", required=True)
     parser.add_argument("--aws-version", required=True)
     parser.add_argument("--aws-profile", required=True)
+    parser.add_argument("--aws-auth-mode", choices=AWS_AUTH_MODES, required=True)
+    parser.add_argument("--aws-region", required=True)
     parser.add_argument("--bucket", required=True)
     parser.add_argument("--s3-prefix", required=True)
     parser.add_argument("--image", default=IMAGE)
@@ -524,9 +548,11 @@ def main() -> int:
         snapshots["queue"], snapshots["queue-receipt"], snapshots["audit-receipt"],
         snapshots["capacity-inventory"])
     if aws != {"bucket": args.bucket, "profile": args.aws_profile,
-               "s3_prefix": args.s3_prefix} or args.s3_prefix != "sat49/campaign-20260825":
+               "s3_prefix": args.s3_prefix} or args.s3_prefix != "sat49/campaign-20260825" \
+            or args.aws_region != AWS_REGION:
         raise AuditError("explicit AWS coordinates differ from pinned audit")
-    store = AwsCliReadOnlyStore(args.aws, aws["profile"], aws["bucket"])
+    store = AwsCliReadOnlyStore(args.aws, aws["profile"], aws["bucket"],
+                                args.aws_auth_mode, args.aws_region)
     validator = LocalValidator(args.docker, args.image, args.cache_volume)
     validator.preflight()
     with tempfile.TemporaryDirectory(prefix=".h1-conflict-readback-", dir=args.output.parent) as raw:
@@ -537,7 +563,9 @@ def main() -> int:
     revalidate(executor_path, executor_snapshot, "executor")
     for name, path in helper_paths.items():
         revalidate(path, helper_snapshots[name], name)
-    receipt = {"aws": aws, "executor_sha256": args.executor_sha256,
+    receipt = {"aws": aws,
+               "aws_auth": {"mode": args.aws_auth_mode, "region": args.aws_region},
+               "executor_sha256": args.executor_sha256,
                "helper_sha256": helper_pins,
                "image": args.image, "cache_volume": args.cache_volume,
                "input_paths": {name: str(path) for name, path in paths.items()},

@@ -206,6 +206,32 @@ class ExecuteConflictReadbackTest(unittest.TestCase):
         with mock.patch.object(store, "_run", side_effect=responses), self.assertRaises(mod.AuditError):
             store.download(job()["certificate_key"], destination)
 
+    def test_aws_authentication_environments_are_explicit_and_sealed(self):
+        hostile = {"AWS_ACCESS_KEY_ID": "leak", "AWS_SECRET_ACCESS_KEY": "leak",
+                   "AWS_SESSION_TOKEN": "leak", "AWS_PROFILE": "wrong",
+                   "NO_PROXY": "localhost"}
+        with mock.patch.dict(mod.os.environ, hostile, clear=True):
+            profile = mod.AwsCliReadOnlyStore(Path("/aws"), "audit-profile", "bucket")
+            profile_env = profile._environment()
+            role = mod.AwsCliReadOnlyStore(
+                Path("/aws"), "audit-profile", "bucket", "instance-role", "us-east-1")
+            role_env = role._environment()
+        self.assertEqual(profile_env["AWS_PROFILE"], "audit-profile")
+        self.assertEqual(profile_env["AWS_EC2_METADATA_DISABLED"], "true")
+        self.assertNotIn("AWS_ACCESS_KEY_ID", profile_env)
+        self.assertNotIn("AWS_SECRET_ACCESS_KEY", profile_env)
+        self.assertNotIn("AWS_SESSION_TOKEN", profile_env)
+        self.assertNotIn("AWS_PROFILE", role_env)
+        self.assertEqual(role_env["AWS_EC2_METADATA_DISABLED"], "false")
+        self.assertEqual(role_env["AWS_SHARED_CREDENTIALS_FILE"], "/dev/null")
+        self.assertEqual(role_env["AWS_CONFIG_FILE"], "/dev/null")
+        self.assertEqual(role_env["AWS_REGION"], "us-east-1")
+        self.assertIn("169.254.169.254", role_env["NO_PROXY"].split(","))
+        with self.assertRaises(mod.AuditError):
+            mod.AwsCliReadOnlyStore(Path("/aws"), "p", "b", "ambient")
+        with self.assertRaises(mod.AuditError):
+            mod.AwsCliReadOnlyStore(Path("/aws"), "p", "b", "instance-role", "us-west-2")
+
     def test_local_validator_uses_exact_offline_container_contract_and_pins(self):
         values = (0,) * len(mod.capacity.TABLE_PAIRS)
         tag = mod.capacity.worker_tag(values)
