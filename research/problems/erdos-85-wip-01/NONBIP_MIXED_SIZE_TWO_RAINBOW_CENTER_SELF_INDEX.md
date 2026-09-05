@@ -314,6 +314,28 @@ The first term consists of selector edges of common centers in `F`; the
 second consists of the distinct neighborhood pairs `N_H_C(r)` for
 `r in R_i intersect R_j`.
 
+Using `gamma_ij=n-delta_ij-p_ij`, equation (16) simplifies to
+
+```text
+|E(A_i intersect A_j)|=n^2-n-delta_ij,
+|E(A_i) \ E(A_j)|=2n+delta_ij.                         (16a)
+```
+
+Moreover, `A_i` contains no edge wholly inside `W_j`.  Such an edge
+would equal the target selector of `c_j`; selector injectivity would force
+`c_j` to be an ambient neighbor of some `f in S_i`, contrary to the
+disjointness of the carrier fibers.  The two vertices of `W_j` both have
+`A_i`-degree `n`, whereas they are isolated in `A_j`.  Thus exactly
+`2n` edges of `A_i\A_j` touch `W_j`, and the remaining
+
+```text
+delta_ij
+```
+
+lie wholly in `C\(W_i union W_j)`.  Pairwise disagreement away from the
+four forced hole vertices is exactly the companion-defect count, not merely
+an `O(n)` error.
+
 Put
 
 ```text
@@ -329,6 +351,24 @@ The same center split at the triple intersection is exact:
 Here the `w` edges are rainbow selectors with centers in `F`, while the
 `t` edges are the `H_C`-neighborhood pairs of common companions in
 `C`; the two classes cannot collide by target-selector injectivity.
+
+Each `R_i` is exactly the `L`-neighborhood of `c_i`: the companion
+map supplies `n` distinct such neighbors and both sets have cardinality
+`n`.  Hence `p_ij=(L^2)_(c_i,c_j)`, and `t` is the common
+`L`-neighborhood size of the defect triangle.  Also every `R_i` avoids
+the three triangle labels, so the three `n`-sets lie in the common
+`2n+1` point universe `C\Q`.  Inclusion-exclusion gives
+
+```text
+3n-(p_01+p_02+p_12)+t
+  = |R_0 union R_1 union R_2| <= 2n+1,
+t <= p_01+p_02+p_12+1-n,                               (17a)
+p_01+p_02+p_12 >= n-1.                                 (17b)
+```
+
+The slack in (17a) is exactly the number of nontriangle labels unused by
+all three companion systems.
+
 Consequently, for every `i`,
 
 ```text
