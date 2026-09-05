@@ -14,6 +14,10 @@ from pathlib import Path
 
 KNOWN_V2_SHA256 = "c762e8bccefc596e889c4be91ee2dba545d54c6748dd1841e1ff75c2249f34fb"
 SHA256_RE = re.compile(r"[0-9a-f]{64}")
+HEAD_NOT_FOUND_RE = (
+    r"^(aws: \[ERROR\]: )?An error occurred "
+    r"\((404|NotFound|NoSuchKey)\) when calling the HeadObject operation:"
+)
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -77,13 +81,13 @@ def derive_worker(source: bytes) -> bytes:
     # permission, network, throttle, and service errors quarantine the lane.
     if aws s3api head-object --bucket \"$B\" --key \"$PFX/h1/$tag.compact.lrat.gz\" > /dev/null 2> \"/opt/h1/head-object.$SLOT.err\"; then
       continue
-    elif ! grep -Eq '^An error occurred \\((404|NotFound|NoSuchKey)\\) when calling the HeadObject operation:' \"/opt/h1/head-object.$SLOT.err\"; then
+    elif ! grep -Eq '__HEAD_NOT_FOUND_RE__' \"/opt/h1/head-object.$SLOT.err\"; then
       log \"CERT-PRECHECK-FAIL tag=$tag; indeterminate object state, stopping slot\"
       echo \"tag=$tag certificate-precheck-fail\" > /opt/h1/slot.$SLOT.failed
       exit 1
     fi
     grep -qx \"$tag\" /opt/h1/ledger.$SLOT && continue
-"""
+""".replace("__HEAD_NOT_FOUND_RE__", HEAD_NOT_FOUND_RE)
     text = replace_once(text, picker, collision_safe_picker, "job picker insertion point")
     old_upload = (
         "aws s3 cp --only-show-errors $W/orbit.compact.lrat.gz "

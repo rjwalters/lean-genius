@@ -6,7 +6,12 @@ from pathlib import Path
 from unittest import mock
 
 import generate_h1_v3_retry_worker as worker_module
-from generate_h1_v3_retry_worker import KNOWN_V2_SHA256, atomic_write, derive_worker
+from generate_h1_v3_retry_worker import (
+    HEAD_NOT_FOUND_RE,
+    KNOWN_V2_SHA256,
+    atomic_write,
+    derive_worker,
+)
 
 
 V2_TEMPLATE = """#!/bin/bash
@@ -44,6 +49,21 @@ class V3RetryWorkerTest(unittest.TestCase):
         self.assertIn("--if-none-match '*'", output)
         self.assertNotIn("h1-fleet-v2", output)
         self.assertNotIn("s3 cp --only-show-errors $W/orbit.compact.lrat.gz", output)
+
+    def test_head_not_found_accepts_both_aws_cli_error_formats(self) -> None:
+        legacy = "An error occurred (404) when calling the HeadObject operation: Not Found"
+        current = (
+            "aws: [ERROR]: An error occurred (404) when calling the "
+            "HeadObject operation: Not Found"
+        )
+        self.assertRegex(legacy, HEAD_NOT_FOUND_RE)
+        self.assertRegex(current, HEAD_NOT_FOUND_RE)
+        self.assertNotRegex(
+            "aws: [ERROR]: An error occurred (403) when calling the "
+            "HeadObject operation: Forbidden",
+            HEAD_NOT_FOUND_RE,
+        )
+        self.assertNotRegex("Could not connect to the endpoint URL", HEAD_NOT_FOUND_RE)
 
     def test_output_publication_is_create_only(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
