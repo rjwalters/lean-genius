@@ -175,6 +175,56 @@ Thus the pairwise hole intersections are not free: they are paid for by the
 defect incidence of one companion system against the opposite triangle
 vertex and by overlap of the two companion systems.
 
+## The remaining triple term is a rainbow-star count
+
+Put
+
+```text
+w=|T_0 intersect T_1 intersect T_2|.
+```
+
+The pointwise caps (4) give the exact expression
+
+```text
+w = sum_{v in F} product_i deg_H_F(v,S_i).               (13)
+```
+
+Thus `w` counts exterior labels which have exactly one `H_F`-neighbor in
+each carrier fiber: centers of rainbow three-leaf ambient stars.  For every
+such center, each pair of its three leaves has that same `F`-owned common
+neighbor.  This is an exact owner interpretation, but the identities above
+do not determine its value.
+
+Indeed, inclusion-exclusion gives
+
+```text
+|U_0 intersect U_1 intersect U_2|
+  = n(n-1) - sum_{i<j}(delta_ij+p_ij) - w.               (14)
+```
+
+At the `[6,2]` value `n=6`, there is already freedom at the exact Venn-ledger
+level.  Take an abstract 48-label universe with
+
+```text
+|T_i|=36,                  |T_i intersect T_j|=27
+```
+
+for every pair.  This fixes `delta_ij+p_ij=3` in (10).  For each
+`w in {18,19,20,21}`, the seven nonempty Venn cells and the outside cell can
+have sizes
+
+```text
+triple:       w
+each pair only: 27-w
+each single only: w-18
+outside all T_i: 21-w.
+```
+
+All are nonnegative and give the same universe size, one-way sizes, and
+two-way intersections.  Hence (3), (10), and (14) do not fix `w`.  These are
+set-system ledgers, not realized ambient graphs; they cut only a terminal
+based on the current cardinality and pair-intersection data alone.
+
 ## Disposition
 
 The diagonal Gram identity upgrades the carrier to three near-partitions of
@@ -183,6 +233,8 @@ genuine spatial constraint and is uniform in binary `q>=8`.
 
 It does not alone contradict `[q-2,2]`: the hole cardinalities, pairwise
 intersection law, and parity conditions `a_i = n (mod 2)` still admit many
-integer ledgers.  A terminal must control the triple intersection of the
-`U_i`, or constrain `delta_ji` and `p_ij` by the remaining owner laws.  No
-finite-order census is promoted by this audit.
+integer ledgers, and the explicit Venn family shows that the remaining
+rainbow-star count is free at this interface.  A terminal must constrain
+those rainbow stars through the graph incidence itself, or constrain
+`delta_ji` and `p_ij` by the remaining owner laws.  No finite-order census is
+promoted by this audit.
