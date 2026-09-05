@@ -243,8 +243,7 @@ w = sum_{v in F} product_i deg_H_F(v,S_i).               (16)
 Thus `w` counts exterior labels which have exactly one `H_F`-neighbor in
 each carrier fiber: centers of rainbow three-leaf ambient stars.  For every
 such center, each pair of its three leaves has that same `F`-owned common
-neighbor.  This is an exact owner interpretation, but the identities above
-do not determine its value.
+neighbor.  This is an exact owner interpretation.
 
 Indeed, inclusion-exclusion gives
 
@@ -252,6 +251,23 @@ Indeed, inclusion-exclusion gives
 |U_0 intersect U_1 intersect U_2|
   = n(n-1) - sum_{i<j}(delta_ij+p_ij) - w.               (17)
 ```
+
+Put `gamma_ij=|U_i intersect U_j|` and
+`u=|U_0 intersect U_1 intersect U_2|`.  Equations (13)--(14) turn (17) into
+
+```text
+w=n(n-4)+gamma_01+gamma_02+gamma_12-u.                  (18)
+```
+
+Here `0<=gamma_ij<=2` and `u<=min gamma_ij`.  Therefore
+
+```text
+n(n-4) <= w <= n(n-4)+6.                                (19)
+```
+
+The current laws do not fix `w` exactly, but they force it into an interval
+of constant width six around a quadratic main term.  At `q=8`, `n=6`, this
+already forces between 12 and 18 rainbow-star centers.
 
 At the `[6,2]` value `n=6`, there is already freedom at the exact Venn-ledger
 level.  Take an abstract 48-label universe with
@@ -272,7 +288,8 @@ outside all T_i: 18-w.
 ```
 
 All are nonnegative and give the same universe size, one-way sizes, and
-two-way intersections.  Hence (3), (10), (14), and (17) do not fix `w`.
+two-way intersections.  Hence even the saturated pair-hole value does not
+fix `w`: the examples realize `w=16,17,18` inside the forced range (19).
 These are
 set-system ledgers, not realized ambient graphs; they cut only a terminal
 based on the current cardinality and pair-intersection data alone.
@@ -284,10 +301,10 @@ The diagonal Gram identity upgrades the carrier to three near-partitions of
 intersections (3)--(15).  This is a
 genuine spatial constraint and is uniform in binary `q>=8`.
 
-It does not alone contradict `[q-2,2]`: the hole cardinalities, pairwise
-intersection law, and parity conditions `a_i = n (mod 2)` still admit many
-integer ledgers, and the explicit Venn family shows that the remaining
-rainbow-star count is free at this interface.  A terminal must constrain
-those rainbow stars through the graph incidence itself, or constrain
-`delta_ji` and `p_ij` by the remaining owner laws.  No finite-order census is
-promoted by this audit.
+It does not alone contradict `[q-2,2]`: the explicit Venn family shows that
+the remaining rainbow-star count is not uniquely fixed.  But (19) is much
+stronger than scalar freedom: it forces quadratically many such stars with
+only constant additive uncertainty.  A terminal must exploit collisions
+among those rainbow stars through the graph incidence itself, or further
+constrain the three degree-two `C`-shore closing sets.  No finite-order
+census is promoted by this audit.
