@@ -319,6 +319,12 @@ shows more: if the nonnegative slack in (22) is `s_i(f)`, then
 sum_{f in S_i} s_i(f)=gamma_jk-u <= 2.                  (23)
 ```
 
+Pointwise, `s_i(f)` is exactly
+`|N_H_F(f) intersect U_j intersect U_k|`: it is the complement of the
+union of the two sets in (21) inside `N_H_F(f)`.  The packing cap makes the
+sum multiplicity-free, identifying these exceptional centers with
+`T_i intersect U_j intersect U_k`, of size `gamma_jk-u`.
+
 Thus, in every carrier fiber, all but at most two rows attain their
 pointwise minimum.  The partial Latin square is not merely dense on
 average: its row deviations from the owner-labelled lower profile have
