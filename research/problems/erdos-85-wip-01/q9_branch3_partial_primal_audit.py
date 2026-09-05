@@ -129,6 +129,10 @@ def audit(system: dict) -> dict:
     }
     infeasible = [record for record in records
                   if not record["partial_primal_feasible"]]
+    class_pair_histogram = Counter(
+        tuple(row // 8 for row in record["regular_rows"])
+        for record in infeasible
+    )
     covering_mismatches = [
         record for record in records
         if record["partial_primal_feasible"]
@@ -163,6 +167,10 @@ def audit(system: dict) -> dict:
         "nonzero_row_support_histogram": dict(sorted(Counter(
             len(record["row_prices"]) for record in infeasible
         ).items())),
+        "parallel_class_pair_histogram": {
+            f"{first},{second}": count
+            for (first, second), count in sorted(class_pair_histogram.items())
+        },
         "infeasible_supports": infeasible,
     }
 

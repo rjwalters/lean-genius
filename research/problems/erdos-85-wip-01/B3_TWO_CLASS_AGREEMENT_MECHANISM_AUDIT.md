@@ -1,7 +1,8 @@
 # B.3 two-class agreement mechanism: outside-theorem audit
 
-Status: **CUT as an imported rainbow-matching route; retained only as a
-graph-derived certificate target.**  This note audits the outside-first route
+Status: **CUT, both as an imported rainbow-matching route and as a literal
+two-class mechanism; retained only as a graph-derived certificate target.**
+This note audits the outside-first route
 requested at the current B.3 boundary.  It does not promote corpus evidence to
 a theorem and does not revive (13f), (13t), or (13bn).
 
@@ -79,3 +80,25 @@ Consequently the next admissible move is a Helly/facet argument for the
 down-monotone covering-degree projection, using symmetry and C4-free caps.  A
 finite proof that merely checks simultaneous agreement of the two order-nine
 classes does not meet the transfer criterion and should not be formalized.
+
+## Direct class-support falsification
+
+The phrase "two-class agreement" also fails as a description of the actual
+small certificates.  The 24 regular triple rows form three parallel classes
+`0..7`, `8..15`, and `16..23`.  A complete partial-primal census records the
+parallel-class pair of every exceptional-plus-two-regular obstruction.
+
+The durable seed-116 outer has exactly one such obstruction,
+`{25,0,21}`.  Its regular rows have class pair `(0,2)`, so the certificate
+does not use class 1 at all.  Fresh seeds 133--138 supply same-class as well as
+cross-class obstructions; seeds 133, 134, 136, and 137 realize all six
+unordered class-pair types.  Therefore neither "one row from each
+non-diagonal class" nor even "two distinct regular classes" is a necessary
+certificate shape.
+
+`q9_branch3_partial_primal_audit.py` now reports this as
+`parallel_class_pair_histogram`, derived from the exact infeasible partial
+primals rather than from floating dual supports.  The surviving localization
+target must quantify over an exceptional row and *arbitrary* two regular
+rows.  This is a strict correction to the lane name, not evidence against the
+broader support-three target.
