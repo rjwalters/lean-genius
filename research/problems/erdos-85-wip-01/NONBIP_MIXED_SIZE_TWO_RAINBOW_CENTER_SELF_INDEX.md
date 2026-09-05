@@ -190,6 +190,40 @@ The non-rainbow part inside the large set `X` is therefore bounded by an
 absolute constant, independent of `q`.  All remaining non-rainbow selector
 edges touch the fixed six-vertex set `W`.
 
+The first diagonal Gram block makes this finite freedom more explicit.  For
+distinct `x,y in C`, its off-diagonal entry is
+
+```text
+1_{L(x,y)}+(H_C^2)_(x,y)=1-1_{D_C(x,y)}.               (10a)
+```
+
+Thus exactly one of the following holds: `xy` is a defect edge, `x,y` have
+an internal ambient common neighbor, or `xy` is a selector edge.  In
+particular, the endpoints of every rainbow selector edge are nonadjacent in
+`D_C` and have no common `H_C`-neighbor, in addition to the six-label
+anticompleteness in (3).
+
+There are twelve unordered pairs across the three `2 x 2` blocks
+`W_i x W_j`.  Let `d_W` count the `D_C`-edges among those pairs and let
+`h_W` count the pairs having an internal ambient common neighbor.  Summing
+(10a) on precisely those twelve pairs gives
+
+```text
+e_W=12-d_W-h_W.                                        (10b)
+```
+
+Consequently the exact exceptional count (9) is
+
+```text
+|E(L[X]) \\ {rainbow edges}|
+  =12-d_W-h_W-(gamma_01+gamma_02+gamma_12)+u.           (10c)
+```
+
+So the apparent twelve-edge freedom is not arbitrary: every missing
+exception is paid for by a defect edge, an internal distance-two pair, or
+one of the already bounded hole intersections on the same fixed
+six-vertex configuration.
+
 ## Exact endpoint--companion routing
 
 The selector restriction also has a pointwise form.  Fix `f in S_i`, with
@@ -250,8 +284,8 @@ Latin square.  It concentrates all their selector edges inside `X` and
 nearly saturates the `B`-capacity there.
 
 It is not yet a contradiction.  But the unresolved selector freedom has
-collapsed to the finite graph `L[W]` and at most twelve exceptional edges in
-`L[X]`.  A terminal must show that none of these constant-sized exception
-patterns is compatible with the companion/owner labels and the three
-near-saturated partial-Latin projections.  The raw incidence capacity alone
-still has nonnegative slack.
+collapsed to the finite `D_C/H_C^2/L` partition on `W` and at most twelve
+exceptional edges in `L[X]`.  A terminal must show that none of these
+constant-sized exception patterns is compatible with the companion/owner
+labels and the three near-saturated partial-Latin projections.  The raw
+incidence capacity alone still has nonnegative slack.
