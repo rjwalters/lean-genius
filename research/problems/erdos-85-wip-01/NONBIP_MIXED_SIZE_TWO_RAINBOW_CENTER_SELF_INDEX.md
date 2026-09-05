@@ -53,6 +53,48 @@ Thus the center of every partial-Latin entry is not an arbitrary exterior
 label: its self-indexed two-point selector is an edge entirely inside the
 fixed `2(n-1)`-set `X`.
 
+## Every center edge avoids its companion triple
+
+Let a rainbow center `v` have leaf `f_i in S_i`, and write the leaf selector
+as
+
+```text
+N_B(f_i)={c_i,r_i}.
+```
+
+The three companions `r_0,r_1,r_2` are pairwise distinct.  If `r_i=r_j`,
+then the two distinct leaves `f_i,f_j` would share both `r_i` and their
+rainbow center `v` as ambient common neighbors, producing a C4.  No `r_i`
+lies in `Q`, since that would put `f_i` in a second, disjoint carrier fiber.
+Thus the six labels
+
+```text
+c_0,c_1,c_2,r_0,r_1,r_2
+```
+
+are distinct.
+
+Write the center selector as `N_B(v)={a,b}`.  Evaluate
+`H_C B+B H_F=J` at `(a,f_i)`.  The `B H_F` term already contains the witness
+`v`, because `B(a,v)=H_F(v,f_i)=1`; the full entry is one, so this witness is
+unique and the `H_C B` term vanishes.  Since the two `B`-neighbors of `f_i`
+are `c_i,r_i`,
+
+```text
+not H_C(a,c_i),       not H_C(a,r_i).
+```
+
+The same argument applies to `b` and to all three leaves.  Consequently the
+selector edge of every rainbow center is `H_C`-anticomplete to its entire
+six-label triangle/companion set:
+
+```text
+{a,b} x {c_0,c_1,c_2,r_0,r_1,r_2} contains no H_C edge. (3)
+```
+
+The avoidance of the triangle labels recovers (2); avoidance of the three
+center-dependent companions is new owner-labelled information.
+
 ## Exact capacity ledger
 
 Every point of `X` has cross degree `n`, so the total `B`-incidence capacity
@@ -66,7 +108,7 @@ The `w` rainbow centers use exactly two of these incidences each by (2).
 Consequently the non-rainbow labels use exactly
 
 ```text
-2n(n-1)-2w                                                 (3)
+2n(n-1)-2w                                                 (4)
 ```
 
 incidences from `X`.  Writing
@@ -82,10 +124,10 @@ the banked formula
 w=n(n-4)+gamma_01+gamma_02+gamma_12-u
 ```
 
-turns (3) into
+turns (4) into
 
 ```text
-6n-2(gamma_01+gamma_02+gamma_12)+2u <= 6n.              (4)
+6n-2(gamma_01+gamma_02+gamma_12)+2u <= 6n.              (5)
 ```
 
 All `6n` incidences from the six rows in `W` go to non-rainbow labels,
@@ -95,7 +137,7 @@ their two-point selectors as follows:
 ```text
 rainbow centers:      exactly 2w incidences, all from X;
 non-rainbow labels:   exactly 6n incidences from W,
-                      and the quantity (4) from X.       (5)
+                      and the quantity (5) from X.       (6)
 ```
 
 In particular, only `O(n)` of the `X`-incidence capacity remains outside
@@ -109,14 +151,14 @@ would make their two exterior labels common neighbors of the same pair in
 `n`-regular selector graph `L` on `C`, with
 
 ```text
-|E(L)|=|F|=qn=n(n+2).                                    (6)
+|E(L)|=|F|=qn=n(n+2).                                    (7)
 ```
 
 Rainbow labels are edges of `L[X]`.  From the exact formula for `w`, the
 total number of non-rainbow selector edges is
 
 ```text
-|E(L)|-w=6n-(gamma_01+gamma_02+gamma_12)+u.              (7)
+|E(L)|-w=6n-(gamma_01+gamma_02+gamma_12)+u.              (8)
 ```
 
 Let `e_W=|E(L[W])|`.  The degree sum on the six vertices of `W` is `6n`, so
@@ -126,11 +168,11 @@ the number of selector edges with at least one endpoint in `W` is
 6n-e_W.
 ```
 
-All these edges are non-rainbow by (2).  Subtracting them from (7) shows
+All these edges are non-rainbow by (2).  Subtracting them from (8) shows
 that the non-rainbow selector edges lying entirely in `X` number exactly
 
 ```text
-e_W-(gamma_01+gamma_02+gamma_12)+u.                      (8)
+e_W-(gamma_01+gamma_02+gamma_12)+u.                      (9)
 ```
 
 Write `W_i=N_H_C(c_i)`, so `W` is the disjoint union of three two-sets.
@@ -141,12 +183,64 @@ three `2 x 2` blocks and
 
 ```text
 e_W <= 12,
-0 <= |E(L[X]) \\ {rainbow edges}| <= 12.                 (9)
+0 <= |E(L[X]) \\ {rainbow edges}| <= 12.                (10)
 ```
 
 The non-rainbow part inside the large set `X` is therefore bounded by an
 absolute constant, independent of `q`.  All remaining non-rainbow selector
 edges touch the fixed six-vertex set `W`.
+
+## Exact endpoint--companion routing
+
+The selector restriction also has a pointwise form.  Fix `f in S_i), with
+companion `r_f`, and `a in X`.  Evaluating
+`H_C B+B H_F=J` at `(a,f)` gives
+
+```text
+(B H_F)_(a,f)=1-1_{H_C(a,r_f)}.                         (10)
+```
+
+Indeed, the two `B`-neighbors of `f` are `c_i,r_f`, and membership
+`a in X` excludes `H_C(a,c_i)`.  The remaining term counts exterior
+labels `v` for which `a` is a selector endpoint and `f` is an
+`H_F`-neighbor.  Its value is at most one, also directly by C4-freeness.
+Consequently the non-`H_C` ordered pairs
+
+```text
+(a,r_f),       a in X, f in S_i
+```
+
+are in exact bijection with such endpoint--leaf routings through exterior
+centers.
+
+Let `R_i={r_f:f in S_i}`, and let `e_H(X,R_i)` denote the oriented
+`H_C` incidence count from the labels in `R_i` into `X).  There are
+therefore exactly
+
+```text
+2n(n-1)-e_H(X,R_i)                                      (11)
+```
+
+endpoint--leaf routings for fiber `i`.  Every rainbow center contributes
+both selector endpoints, hence exactly `2w` of them.  The non-rainbow
+remainder is
+
+```text
+6n-2 sum_{a<b} gamma_ab+2u-e_H(X,R_i).                  (12)
+```
+
+Since every companion has `H_C`-degree two,
+`e_H(X,R_i)=2n-e_H(W,R_i)`; equivalently (12) is
+
+```text
+4n-2 sum_{a<b} gamma_ab+2u+e_H(W,R_i).                  (13)
+```
+
+For a rainbow center with leaves `f_i` and selector endpoints `a,b`,
+(10) in particular forces `a,b` to avoid the `H_C`-neighborhood of
+each of its three companions.  Thus the remaining exceptional selector
+patterns must also realize the exact finite `W x R_i` incidence ledgers
+(13), rather than merely the edge counts (8)--(9).
 
 ## Disposition
 
