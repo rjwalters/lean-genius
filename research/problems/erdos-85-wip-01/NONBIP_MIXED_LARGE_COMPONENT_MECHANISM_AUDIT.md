@@ -147,6 +147,36 @@ C4) or an impossible permutation on one of the labeled center fibres.
 Without that consumer, (6) is another exact interface and should not yet be
 atomized in Lean.
 
+### An internal self-indexing relaxation is also insufficient
+
+The phrase "use self-indexing" still hides a second gap.  The durable
+countermodel checked by
+`verify_nonbip_mixed_internal_self_index_countermodel.py` has `q=8`,
+`m_i=3`, and 24 labels.  Its formal internal selector graph `K` is a simple cubic
+graph with maximum pair codegree one.  Its formal defect graph `D` is
+7-regular, connected, and contains a triangle.  For every `D`-edge `xy`,
+the internal selectors `N_K(x)` and `N_K(y)` are disjoint.  Thus it satisfies
+the exact self-indexed internal consequences
+
+```text
+y in N_K(x) <-> x in N_K(y),
+|N_K(x)| = 3,
+|N_K(x) intersect N_K(y)| <= 1,
+D.Adj x y -> Disjoint (N_K(x)) (N_K(y)),
+```
+
+while already containing the shortest odd defect cycle.  The verifier checks
+all pairs and all defect edges directly and prints a canonical model digest.
+
+This is a relaxation countermodel only.  It does not realize a full ambient
+`G`, simultaneous exterior-owner rectangles, the owner-matrix cross law, or
+the canonical Baer operator `K = Omega triangle (D minus T)`.  It cuts an
+odd-cycle argument using only the enumerated internal diagonal-selector
+axioms.  A surviving mechanism must couple that self-indexed block to at
+least one exterior component through the labeled full/punctured rectangles.
+That simultaneous coupling -- not oddness, connectivity, self-indexing, or
+rectangle routing separately -- is the precise remaining target.
+
 Thus any successful argument must use where the closures lie relative to
 the self-indexed component `C_i` and its connected nonbipartite defect graph.
 Scalar triangle totals, like the earlier scalar cross-block budgets, are
