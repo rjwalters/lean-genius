@@ -32,6 +32,26 @@ theorem not_cliqueFree_three_of_card_two_mul_regular_not_bipartite
   rw [hreg.minDegree_eq, hcard]
   omega
 
+/-- Binary-square adapter to
+`not_cliqueFree_three_of_card_two_mul_regular_not_bipartite`: a normalized
+weight-two component at `q=2^k`, `k>=3`, contains a triangle whenever its
+defect block is nonbipartite. -/
+theorem not_cliqueFree_three_of_card_two_mul_twoPow_regular_not_bipartite
+    {V : Type*} [Fintype V]
+    (D : SimpleGraph V) [DecidableRel D.Adj]
+    {k : ℕ} (hk : 3 ≤ k)
+    (hcard : Fintype.card V = 2 * 2 ^ k)
+    (hreg : D.IsRegularOfDegree (2 ^ k - 1))
+    (hnb : ¬ D.IsBipartite) :
+    ¬ D.CliqueFree 3 := by
+  apply not_cliqueFree_three_of_card_two_mul_regular_not_bipartite
+    D (2 ^ k) (by
+      calc
+        6 ≤ 2 ^ 3 := by norm_num
+        _ ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) hk)
+    hcard hreg hnb
+
 end Erdos85
 
 #print axioms Erdos85.not_cliqueFree_three_of_card_two_mul_regular_not_bipartite
+#print axioms Erdos85.not_cliqueFree_three_of_card_two_mul_twoPow_regular_not_bipartite
