@@ -133,3 +133,52 @@ SAT at that interface would cut the entire block-linear odd-cycle route and
 force a three-block or owner-resolved argument.  UNSAT with a small core
 would identify the first credible consumer of the exterior carrier.  No Lean
 atomization is warranted before that test.
+
+## First faithful triangle-subcase probe: unresolved, not evidence of feasibility
+
+`probe_nonbip_mixed_53_exterior_carrier.py` implements the first layer of
+that test directly on the full 64 by 64 symmetric ambient adjacency matrix.
+It retains:
+
+- internal/cross degrees `(5,3)` on the 40-shore and `(3,5)` on the
+  24-shore;
+- the global common-neighbor-at-most-one condition;
+- exactly one common neighbor for every one of the 960 cross-shore pairs;
+- named internal defect relations of exact degree seven; and
+- a displayed defect triangle in the 40-shore, including its three
+  size-three exterior carrier parts and their forced cross-part defect hits.
+
+Conditional on the displayed defect triangle, the only component hypothesis
+omitted is connectivity of the two named internal defect graphs.  Thus UNSAT
+would cut this triangle subcase, while SAT would require inspecting whether
+its shores split into smaller defect components.  It is not a relaxation of
+the whole `[5,3]` branch: neither a 7-regular graph on 40 vertices nor one on
+24 vertices crosses the Andrasfai--Erdos--Sos `2N/5` threshold, so
+nonbipartiteness does not force a triangle here.  Triangle-free nonbipartite
+components, beginning with an induced `C5`, are not encoded.
+
+Ambient edges on a defect triangle form a matching, since two incident
+ambient edges would make their opposite endpoints share the triangle vertex.
+Up to triangle symmetry there are therefore exactly two cases: no ambient
+triangle edge, or one.  Pairwise disjointness of the three ambient
+neighborhoods then permits the verifier's complete canonical fixing of all
+three neighborhood sets within each shore.  Thus the two commands
+
+```text
+python3 probe_nonbip_mixed_53_exterior_carrier.py \
+  --timeout-seconds 180 --triangle-ambient-edges 0
+python3 probe_nonbip_mixed_53_exterior_carrier.py \
+  --timeout-seconds 180 --triangle-ambient-edges 1
+```
+
+exhaust the displayed-defect-triangle subcase modulo label symmetry.  Z3
+returns `unknown` with reason `timeout` on both cases at 180 seconds, even
+after the redundant seven-regular defect and carrier-propagation constraints
+are exposed.  The earlier unfixed encoding also timed out.  This is an honest
+UNKNOWN: it is neither a SAT countermodel nor evidence for UNSAT, and says
+nothing about the omitted `C5`-or-longer subcases.
+
+The next computational move should translate the pseudo-Boolean model to
+CNF for the campaign solver stack, or add a quotient of the three fixed
+carrier parts before increasing runtime.  A long run of the same generic Z3
+encoding is not justified by the present result.
