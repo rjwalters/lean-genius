@@ -276,6 +276,71 @@ each of its three companions.  Thus the remaining exceptional selector
 patterns must also realize the exact finite `W x R_i` incidence ledgers
 (14), rather than merely the edge counts (9)--(10).
 
+## Three almost-coincident matching unions
+
+The banked selector-star perfect-matching theorem packages the same
+structure globally.  For `f in S_i`, let `M_f` be the perfect matching
+of `C` formed by the two-point `C`-selectors of all ambient neighbors of
+`f`.  Its two neighbors in `C` are `c_i,r_f`, so `M_f` contains the
+two selector pairs
+
+```text
+W_i=N_H_C(c_i),       N_H_C(r_f).
+```
+
+For distinct `f,f' in S_i`, the matchings intersect exactly in `W_i`.
+Indeed, equality of two target-`C` selector edges identifies their ambient
+centers by selector injectivity; that center must then be the unique common
+neighbor `c_i` of `f,f'`.  After deleting `W_i`, the `n` matchings
+in this family are therefore pairwise edge-disjoint one-factors of
+`C\W_i`.  Let `A_i` be their union.  Then
+
+```text
+deg_A_i(x)=n for x outside W_i,       deg_A_i(x)=0 for x in W_i,
+|E(A_i)|=n(n+1).                                         (15)
+```
+
+The intersections of these three dense factors retain the two possible
+shores of their unique ambient center.  Selector injectivity and the
+one-neighbor caps give
+
+```text
+|E(A_i intersect A_j)|
+  = |T_i intersect T_j| + p_ij
+  = n^2-2n+gamma_ij+p_ij.                               (16)
+```
+
+The first term consists of selector edges of common centers in `F`; the
+second consists of the distinct neighborhood pairs `N_H_C(r)` for
+`r in R_i intersect R_j`.
+
+Put
+
+```text
+t=|R_0 intersect R_1 intersect R_2|.
+```
+
+The same center split at the triple intersection is exact:
+
+```text
+|E(A_0 intersect A_1 intersect A_2)|=w+t.               (17)
+```
+
+Here the `w` edges are rainbow selectors with centers in `F`, while the
+`t` edges are the `H_C`-neighborhood pairs of common companions in
+`C`; the two classes cannot collide by target-selector injectivity.
+Consequently, for every `i`,
+
+```text
+|E(A_i) \ E(A_0 intersect A_1 intersect A_2)|
+  =5n-(gamma_01+gamma_02+gamma_12)+u-t.                 (18)
+```
+
+Thus three explicitly factorized `n`-regular graphs with different
+two-vertex holes agree outside only `O(n)` edges.  The new scalar `t`
+records precisely the common-companion part that is invisible in the
+rainbow-star count.
+
 ## Disposition
 
 This is the first constraint which uses the rainbow centers as the actual
