@@ -34,8 +34,8 @@ COVERAGE_COLUMNS = (
     "fleet_v2_claim", "fleet_v2_cnf_sha256", "fleet_v2_verdict",
     "fleet_v3_claim", "fleet_v3_cnf_sha256", "fleet_v3_verdict",
 )
-CONFLICT_AUDIT_SCHEMA = "erdos85-h1-conflict-readback-audit-v1"
-CONFLICT_EXECUTOR_SHA256 = "98cacdb8c00dd0c99b4fb3116496b37e7628a5425673243f02ae6ddbaeabacb8"
+CONFLICT_AUDIT_SCHEMA = "erdos85-h1-conflict-readback-audit-v2"
+CONFLICT_EXECUTOR_SHA256 = "e8db3e080a4a0afa70419dd1c6e0cd31e9d85a566d80c3c07d95cdce47ea2701"
 CONFLICT_HELPER_SHA256 = {
     "capacity-filter": "a0f75f34d74cb8e3d48310b8f2e7b9544bba690110c0256c03f1b78bc9745e81",
     "queue-format": "5acf5ba65a4d3ea3f1f2aa603b102aa762ebbf91b1b2365645cb0af9060e7636",
@@ -46,7 +46,15 @@ CONFLICT_INPUT_SHA256 = {
     "queue": "b7eba5dabf8a860c5af7015032203f38608ca9750182da06a2bbf0fe12d77380",
     "queue-receipt": "88665dcb8a2bb25890dd6d14fc17df4b7ad39b9d449690ae6dd8ff0600ffc86a",
 }
-CONFLICT_IMAGE = "lean4-arm64@sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6"
+CONFLICT_IMAGE_IDENTITY = {
+    "runtime_tag": "lean4-arm64:v4.31.0",
+    "runtime_config_id": (
+        "sha256:39a805ad21da2e79dbd2e446c1333e4cdb975e44d401af95a29f7ca6b5a2995e"),
+    "reviewed_oci_digest": (
+        "lean4-arm64@sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6"),
+    "evidence_receipt_sha256": (
+        "429eeeaee64b5e46989a2b929edcd093b12c93528bfa08010e9e1e598869582c"),
+}
 CONFLICT_CACHE_VOLUME = "lean-mathlib-cache"
 CONFLICT_LRATREPLAY_SHA256 = "37aad1d5c64a75fcb68e1ea587b2080b06c157a19c883b01d145b28b891c428c"
 CONFLICT_V2CNF_SHA256 = "4bd9604c6d670ad65a8ca332a26dbf35132418634a3b0678c177c8b2cfff4bf6"
@@ -252,7 +260,7 @@ def read_conflict_audit(path: Path, expected_sha256: str, bucket: str,
     canonical = (json.dumps(value, ensure_ascii=True, allow_nan=False, sort_keys=True,
                             separators=(",", ":")) + "\n").encode("ascii")
     required = {"aws", "aws_auth", "cache_volume", "executor_sha256", "helper_sha256",
-                "image", "input_paths", "inputs", "lratreplay_sha256", "results", "schema",
+                "image_identity", "input_paths", "inputs", "lratreplay_sha256", "results", "schema",
                 "summary", "tool_versions", "v2cnf_sha256"}
     if (not isinstance(value, dict) or raw != canonical or set(value) != required
             or value.get("schema") != CONFLICT_AUDIT_SCHEMA
@@ -261,7 +269,7 @@ def read_conflict_audit(path: Path, expected_sha256: str, bucket: str,
             or value.get("aws_auth") != {"mode": "instance-role", "region": "us-east-1"}
             or value.get("executor_sha256") != CONFLICT_EXECUTOR_SHA256
             or value.get("helper_sha256") != CONFLICT_HELPER_SHA256
-            or value.get("image") != CONFLICT_IMAGE
+            or value.get("image_identity") != CONFLICT_IMAGE_IDENTITY
             or value.get("cache_volume") != CONFLICT_CACHE_VOLUME
             or value.get("lratreplay_sha256") != CONFLICT_LRATREPLAY_SHA256
             or value.get("v2cnf_sha256") != CONFLICT_V2CNF_SHA256

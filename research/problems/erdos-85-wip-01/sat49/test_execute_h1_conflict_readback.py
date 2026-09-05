@@ -239,6 +239,9 @@ class ExecuteConflictReadbackTest(unittest.TestCase):
         calls = []
         def fake_run(argv, **kwargs):
             calls.append(argv)
+            if argv[1:3] == ["image", "inspect"]:
+                return mock.Mock(
+                    returncode=0, stdout=mod.IMAGE_CONFIG_ID + "\n", stderr="")
             if "/usr/bin/sha256sum" in argv:
                 target = argv[-1]
                 digest = mod.V2CNF_SHA256 if target.endswith("v2cnf") else mod.LRATREPLAY_SHA256
@@ -257,13 +260,43 @@ class ExecuteConflictReadbackTest(unittest.TestCase):
             evidence = validator.validate(item, {"values": values}, compact, root)
         self.assertTrue(evidence["replay_accepted"])
         self.assertEqual(evidence["cnf_sha256"], mod.sha256_bytes(b"p cnf 1 1\n1 0\n"))
-        self.assertTrue(all("--network=none" in call for call in calls))
+        self.assertTrue(all("--network=none" in call for call in calls[1:]))
         self.assertTrue(all(
             ["-v", f"{mod.CACHE_VOLUME}:/cache:ro"] == call[4:6]
-            for call in calls))
+            for call in calls[1:]))
         self.assertTrue(any("/cache/bin/lratreplay" in call for call in calls))
-        self.assertIn("/usr/bin/sha256sum", calls[0])
+        self.assertEqual(calls[0], [
+            "/docker", "image", "inspect", mod.IMAGE,
+            "--format", "{{.Id}}"])
         self.assertIn("/usr/bin/sha256sum", calls[1])
+        self.assertIn("/usr/bin/sha256sum", calls[2])
+
+    def test_local_validator_rejects_missing_or_wrong_runtime_image_config(self):
+        validator = mod.LocalValidator(Path("/docker"), mod.IMAGE, mod.CACHE_VOLUME)
+        for result in (
+            mock.Mock(returncode=1, stdout="", stderr="missing"),
+            mock.Mock(returncode=0, stdout="sha256:" + "0" * 64 + "\n", stderr=""),
+        ):
+            with self.subTest(result=result), \
+                    mock.patch.object(mod.subprocess, "run", return_value=result), \
+                    self.assertRaisesRegex(mod.AuditError, "runtime image config"):
+                validator.preflight()
+
+    def test_image_identity_requires_reviewed_bridge_receipt(self):
+        exact = (mod.IMAGE, mod.IMAGE_CONFIG_ID, mod.REVIEWED_IMAGE_OCI_DIGEST,
+                 mod.IMAGE_EVIDENCE_RECEIPT_SHA256)
+        self.assertEqual(mod.image_identity(*exact), {
+            "runtime_tag": mod.IMAGE,
+            "runtime_config_id": mod.IMAGE_CONFIG_ID,
+            "reviewed_oci_digest": mod.REVIEWED_IMAGE_OCI_DIGEST,
+            "evidence_receipt_sha256": mod.IMAGE_EVIDENCE_RECEIPT_SHA256,
+        })
+        for index in range(len(exact)):
+            changed = list(exact)
+            changed[index] = "drift"
+            with self.subTest(index=index), self.assertRaisesRegex(
+                    mod.AuditError, "image identity or evidence bridge"):
+                mod.image_identity(*changed)
 
 
 if __name__ == "__main__":

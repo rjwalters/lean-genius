@@ -21,10 +21,16 @@ import filter_h1_capacity_inventory as capacity
 import generate_h1_conflict_readback_queue as queue_format
 
 
-SCHEMA = "erdos85-h1-conflict-readback-audit-v1"
+SCHEMA = "erdos85-h1-conflict-readback-audit-v2"
 V2CNF_SHA256 = "4bd9604c6d670ad65a8ca332a26dbf35132418634a3b0678c177c8b2cfff4bf6"
 LRATREPLAY_SHA256 = "37aad1d5c64a75fcb68e1ea587b2080b06c157a19c883b01d145b28b891c428c"
-IMAGE = "lean4-arm64@sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6"
+IMAGE = "lean4-arm64:v4.31.0"
+REVIEWED_IMAGE_OCI_DIGEST = (
+    "lean4-arm64@sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6")
+IMAGE_CONFIG_ID = (
+    "sha256:39a805ad21da2e79dbd2e446c1333e4cdb975e44d401af95a29f7ca6b5a2995e")
+IMAGE_EVIDENCE_RECEIPT_SHA256 = (
+    "429eeeaee64b5e46989a2b929edcd093b12c93528bfa08010e9e1e598869582c")
 CACHE_VOLUME = "lean-mathlib-cache"
 INVENTORY_SHA256 = "81d515472be48a43806f9c1c7343b4b715c98fe5a02a82e2b76244c1b015fd1b"
 CAPACITY_FILTER_SHA256 = "a0f75f34d74cb8e3d48310b8f2e7b9544bba690110c0256c03f1b78bc9745e81"
@@ -452,6 +458,12 @@ class LocalValidator:
                 "table_sha256": sha256_bytes(table_data), "v2cnf_check": marker}
 
     def preflight(self) -> None:
+        identity = subprocess.run(
+            [str(self.docker), "image", "inspect", self.image,
+             "--format", "{{.Id}}"],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        if identity.returncode or identity.stdout.strip() != IMAGE_CONFIG_ID:
+            raise AuditError("runtime image config pin mismatch")
         for path, expected in (("/cache/bin/v2cnf", V2CNF_SHA256),
                                ("/cache/bin/lratreplay", LRATREPLAY_SHA256)):
             result = subprocess.run(
@@ -461,6 +473,25 @@ class LocalValidator:
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             if result.returncode or result.stdout.split() != [expected, path]:
                 raise AuditError(f"in-container {Path(path).name} pin mismatch")
+
+
+def image_identity(image: str, config_id: str, reviewed_oci_digest: str,
+                   evidence_receipt_sha256: str) -> dict[str, str]:
+    identity = {
+        "runtime_tag": image,
+        "runtime_config_id": config_id,
+        "reviewed_oci_digest": reviewed_oci_digest,
+        "evidence_receipt_sha256": evidence_receipt_sha256,
+    }
+    expected = {
+        "runtime_tag": IMAGE,
+        "runtime_config_id": IMAGE_CONFIG_ID,
+        "reviewed_oci_digest": REVIEWED_IMAGE_OCI_DIGEST,
+        "evidence_receipt_sha256": IMAGE_EVIDENCE_RECEIPT_SHA256,
+    }
+    if identity != expected:
+        raise AuditError("trusted image identity or evidence bridge pin mismatch")
+    return identity
 
 
 def create_only(path: Path, data: bytes) -> None:
@@ -510,6 +541,11 @@ def main() -> int:
     parser.add_argument("--bucket", required=True)
     parser.add_argument("--s3-prefix", required=True)
     parser.add_argument("--image", default=IMAGE)
+    parser.add_argument("--reviewed-image-oci-digest",
+                        default=REVIEWED_IMAGE_OCI_DIGEST)
+    parser.add_argument("--image-config-id", default=IMAGE_CONFIG_ID)
+    parser.add_argument("--image-evidence-receipt-sha256",
+                        default=IMAGE_EVIDENCE_RECEIPT_SHA256)
     parser.add_argument("--cache-volume", required=True)
     parser.add_argument("--lratreplay-sha256", default=LRATREPLAY_SHA256)
     parser.add_argument("--executor-sha256", required=True)
@@ -535,8 +571,11 @@ def main() -> int:
                    "queue-format": args.queue_format_sha256}
     helper_snapshots = {name: snapshot(path, helper_pins[name], name)
                         for name, path in helper_paths.items()}
+    trusted_image_identity = image_identity(
+        args.image, args.image_config_id, args.reviewed_image_oci_digest,
+        args.image_evidence_receipt_sha256)
     if (pins["capacity-inventory"] != INVENTORY_SHA256
-            or args.image != IMAGE or args.cache_volume != CACHE_VOLUME
+            or args.cache_volume != CACHE_VOLUME
             or args.lratreplay_sha256 != LRATREPLAY_SHA256):
         raise AuditError("trusted H1 tool/input pin mismatch")
     if helper_pins != {"capacity-filter": CAPACITY_FILTER_SHA256,
@@ -567,7 +606,8 @@ def main() -> int:
                "aws_auth": {"mode": args.aws_auth_mode, "region": args.aws_region},
                "executor_sha256": args.executor_sha256,
                "helper_sha256": helper_pins,
-               "image": args.image, "cache_volume": args.cache_volume,
+               "image_identity": trusted_image_identity,
+               "cache_volume": args.cache_volume,
                "input_paths": {name: str(path) for name, path in paths.items()},
                "inputs": pins,
                "lratreplay_sha256": args.lratreplay_sha256, "results": results,

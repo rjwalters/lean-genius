@@ -146,7 +146,7 @@ class ReconcileCoverageTests(unittest.TestCase):
                  "cache_volume": MOD.CONFLICT_CACHE_VOLUME,
                  "executor_sha256": MOD.CONFLICT_EXECUTOR_SHA256,
                  "helper_sha256": MOD.CONFLICT_HELPER_SHA256,
-                 "image": MOD.CONFLICT_IMAGE, "input_paths": {},
+                 "image_identity": MOD.CONFLICT_IMAGE_IDENTITY, "input_paths": {},
                  "inputs": {**MOD.CONFLICT_INPUT_SHA256, "aws": "a" * 64,
                             "docker": "b" * 64},
                  "lratreplay_sha256": MOD.CONFLICT_LRATREPLAY_SHA256,
@@ -163,6 +163,8 @@ class ReconcileCoverageTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "SHA-256 mismatch"):
                 MOD.read_conflict_audit(path, "0" * 64, "bucket", "sat49/campaign-20260825")
             for changed in (
+                {**audit, "image_identity": {
+                    **audit["image_identity"], "evidence_receipt_sha256": "0" * 64}},
                 {**audit, "summary": {**audit["summary"], "canonical-valid": 2}},
                 {**audit, "results": [*results, results[0]]},
                 {**audit, "results": [{**results[0], "job": {
