@@ -175,6 +175,47 @@ Thus the pairwise hole intersections are not free: they are paid for by the
 defect incidence of one companion system against the opposite triangle
 vertex and by overlap of the two companion systems.
 
+### Component location inside the mixed-owner closing count
+
+Let `O_C,O_F` be the owner graphs of the two defect components and define
+
+```text
+Gamma_ji = {f in S_i : O_C(c_j,r_f)}.
+```
+
+Every companion `r_f` lies in `C` and satisfies `O_F(c_i,r_f)`: its unique
+`F`-center is `f`.  Relative to `c_j`, the owner/defect partition gives
+exactly one of
+
+```text
+D_C(c_j,r_f),       O_F(c_j,r_f),       O_C(c_j,r_f).
+```
+
+The first class has size `delta_ji`; companion injectivity identifies the
+second class with `R_i intersect R_j`, of size `p_ij`.  Therefore
+
+```text
+|Gamma_ji|=n-delta_ji-p_ij=|U_i intersect U_j|.          (13)
+```
+
+This is a cardinality identity, not a literal equality of sets: the hole
+intersection lies in `F`, whereas the map `f |-> r_f` bijects `Gamma_ji`
+with the `C`-shore middle vertices in an `O_F`-then-`O_C` two-step closing
+from `c_i` to `c_j`.
+
+The banked pointwise mixed-owner closing theorem gives `2n` such middles in
+all of `C union F`, because `c_i c_j` is a defect edge and the component
+weights are `n` and `2`.  Consequently the complementary `F`-shore middle
+count is exactly
+
+```text
+2n-|Gamma_ji|=n+delta_ji+p_ij.                           (14)
+```
+
+No existing theorem located in the corpus bounds either shore separately;
+the owner product fixes only their sum.  An independent one-shore bound is
+therefore a precise remaining component-location gap.
+
 ## The remaining triple term is a rainbow-star count
 
 Put
@@ -186,7 +227,7 @@ w=|T_0 intersect T_1 intersect T_2|.
 The pointwise caps (4) give the exact expression
 
 ```text
-w = sum_{v in F} product_i deg_H_F(v,S_i).               (13)
+w = sum_{v in F} product_i deg_H_F(v,S_i).               (15)
 ```
 
 Thus `w` counts exterior labels which have exactly one `H_F`-neighbor in
@@ -199,7 +240,7 @@ Indeed, inclusion-exclusion gives
 
 ```text
 |U_0 intersect U_1 intersect U_2|
-  = n(n-1) - sum_{i<j}(delta_ij+p_ij) - w.               (14)
+  = n(n-1) - sum_{i<j}(delta_ij+p_ij) - w.               (16)
 ```
 
 At the `[6,2]` value `n=6`, there is already freedom at the exact Venn-ledger
@@ -221,7 +262,7 @@ outside all T_i: 21-w.
 ```
 
 All are nonnegative and give the same universe size, one-way sizes, and
-two-way intersections.  Hence (3), (10), and (14) do not fix `w`.  These are
+two-way intersections.  Hence (3), (10), and (16) do not fix `w`.  These are
 set-system ledgers, not realized ambient graphs; they cut only a terminal
 based on the current cardinality and pair-intersection data alone.
 
