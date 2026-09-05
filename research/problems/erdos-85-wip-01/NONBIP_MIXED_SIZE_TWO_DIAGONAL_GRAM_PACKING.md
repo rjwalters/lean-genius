@@ -288,6 +288,42 @@ pair in any two shores occurs in two triples.  Its deficiency from the
 n^2-w <= 4n.                                             (20)
 ```
 
+This near-completeness is also pointwise.  Fix distinct `i,j,k` and
+`f in S_i`, and write
+
+```text
+g_j(f)=1_{O_C(c_j,r_f)}.
+```
+
+The three-way `D_C/O_F/O_C` partition of `(c_j,r_f)` says that the defect
+indicator plus the companion-overlap indicator is `1-g_j(f)`.  The rowwise
+version of the diagonal Gram calculation therefore gives
+
+```text
+|N_H_F(f) intersect T_j|=n-2+g_j(f).                    (21)
+```
+
+Inside the `n`-set `N_H_F(f)`, the centers which extend `f` to a rainbow
+triple are exactly `N_H_F(f) intersect T_j intersect T_k`.  Two-set
+inclusion-exclusion in that neighborhood and (21) give
+
+```text
+deg_L(f) >= n-4+g_j(f)+g_k(f).                          (22)
+```
+
+Summing (22) over `S_i` contributes
+`n(n-4)+gamma_ji+gamma_ki`.  Comparison with the exact global value (18)
+shows more: if the nonnegative slack in (22) is `s_i(f)`, then
+
+```text
+sum_{f in S_i} s_i(f)=gamma_jk-u <= 2.                  (23)
+```
+
+Thus, in every carrier fiber, all but at most two rows attain their
+pointwise minimum.  The partial Latin square is not merely dense on
+average: its row deviations from the owner-labelled lower profile have
+total mass at most two.
+
 This is useful structure, but generic partial-Latin-square completion does
 not give a terminal.  Sparse-filled completion theorems address the opposite
 density regime, and completing this near-full partial square would only
