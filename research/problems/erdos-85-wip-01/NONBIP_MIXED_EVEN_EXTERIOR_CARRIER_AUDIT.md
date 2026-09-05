@@ -3,7 +3,8 @@
 Node: `A.5.3 / A-REG-NONBIP / NONBIP-MIXED`, the even-weight
 two-component siblings `[6,2]` and `[4,4]` at `q=8`.
 
-Status: exact norm/Bockstein identity; scalar mod-4 route cut.
+Status: exact norm/Bockstein identity; scalar mod-4 route cut; a surviving
+q-generic support consequence for a size-two nonbipartite component.
 
 ## Setup
 
@@ -134,13 +135,67 @@ full simultaneous transport equations.  They do prove that no conclusion
 about `e_F(Q) mod 2` follows from carrier weight, coordinate bounds, and
 `||B^T x||^2` alone.
 
+## A vector-support consequence survives the scalar cut
+
+Let `o(y) = #{f : y_f is odd}`.  For every nonnegative integer `t`,
+
+```text
+t <= (t mod 2) + 2 choose(t,2).
+```
+
+Summing over the coordinates of `y`, then using (1), (4), and the fact that
+all `F`-owned pairs inside an induced `D_C`-cycle are non-cycle pairs, gives
+
+```text
+n ell <= o(y) + 2 e_F(Q)
+      <= o(y) + ell(ell-3),
+```
+
+and hence
+
+```text
+o(y) >= ell (n-ell+3).                                  (8)
+```
+
+Thus `y mod 2` is forced nonzero whenever `ell<n+3`.  Unlike (5), this is
+vector information: it measures how many exterior coordinates survive,
+not a residue of their norm.
+
+There is a useful q-generic specialization to a nonbipartite component of
+weight two.  Such a component has `2q` vertices and its defect graph is
+`(q-1)`-regular.  For `q>=8`, `q-1 > 2(2q)/5`.  The triangle-free
+minimum-degree theorem of Andrasfai--Erdos--Sos therefore implies that a
+nonbipartite `D_C` contains a triangle.  Every exterior vertex has at most
+one `G`-neighbor on this defect triangle: two such neighbors would give a
+common neighbor to a pair joined in `D_C`, contradicting the owner/defect
+partition.  Consequently every coordinate of `y=B^T x` is zero or one and,
+for every exterior component of weight `n`,
+
+```text
+|supp(y)| = sum_f y_f = 3n.                             (9)
+```
+
+For `[6,2]` at order 64, orienting from the weight-two component therefore
+forces a binary exterior carrier of support `18`.  More generally this is
+uniform for binary `q>=8`, with support `3(q-2)` in `[q-2,2]`; it is not an
+order-64 enumeration.
+
+Literature input: B. Andrasfai, P. Erdos, and V. T. Sos, *On the connection
+between chromatic number, maximal clique and minimal degree of a graph*,
+Discrete Mathematics 8 (1974), 205--218, Theorem 1.1 / Lemma 1.2 and Remark
+1.6.  The invoked `r=3` consequence is that a triangle-free graph on `N`
+vertices with minimum degree strictly greater than `2N/5` is bipartite.
+
 ## Disposition
 
 The proposed mod-4/8 norm route reduces exactly to owner-edge parity and is
 cut at that interface.  This agrees with the earlier instruction to stop if
 the Bockstein contains no information beyond the owner census.
 
-The even-weight strata require a genuinely vector-valued second layer: use
+The support bound (8), and especially the binary carrier (9), are the
+surviving first vector layer.  They are not yet a contradiction: a consumer
+must use where that support lies.  The even-weight strata therefore require
+a genuinely vector-valued second layer: use
 the exact equation `D_F y=B^T D_Cx` (or its integral lift) together with
 `H_Fy+B^TH_Cx=1`, rather than another scalar moment of `y`.  In particular,
 the odd-total shortcut available for `[5,3]` has no even-weight analogue in
