@@ -23,6 +23,8 @@ class ValidateReplayDeploymentTest(unittest.TestCase):
         value = {
             "commands": {"compile": list(MOD.PRODUCTION_COMPILE_COMMAND)},
             "environment_allowlist": ["HOME", "LEAN_PATH"],
+            "worker_image_digest": (
+                "lean4-arm64@sha256:" + "a" * 64),
         }
         for index, field in enumerate(MOD.OVERLAY_HASH_VARIABLES, 1):
             value[field] = format(index, "x") * 64
@@ -42,6 +44,19 @@ class ValidateReplayDeploymentTest(unittest.TestCase):
         return f'''#!/usr/bin/env bash
 set -euo pipefail
 ROOT=/opt/replay
+APT_MIRROR_SOURCE={MOD.APT_MIRROR_SOURCE}
+APT_MIRROR_TARGET={MOD.APT_MIRROR_TARGET}
+APT_RETRIES={MOD.APT_RETRIES}
+export AWS_RETRY_MODE={MOD.AWS_RETRY_MODE}
+export AWS_MAX_ATTEMPTS={MOD.AWS_MAX_ATTEMPTS}
+sed -i "s|$APT_MIRROR_SOURCE|$APT_MIRROR_TARGET|g" /etc/apt/sources.list.d/ubuntu.sources
+apt-get -o Acquire::Retries="$APT_RETRIES" update
+apt-get -o Acquire::Retries="$APT_RETRIES" install -y zstd
+IMAGE_DIGEST={manifest['worker_image_digest']}
+IMAGE_CONFIG_ID=sha256:{'a' * 64}
+zstd -dc "$ROOT/freight/lean4-arm64-a5ca.docker.tar.zst" | docker load
+LOADED_CONFIG_ID=$(docker image inspect lean4-arm64:v4.31.0 --format '{{{{.Id}}}}')
+test "$LOADED_CONFIG_ID" = "$IMAGE_CONFIG_ID"
 {assignments}
 for name in {objects}; do
   /usr/local/bin/aws s3api get-object --bucket "$BUCKET" --key "$PREFIX/freight/p1/$name" "$ROOT/freight/$name" --output json
@@ -69,15 +84,75 @@ EOF
 systemctl daemon-reload
 systemctl start erdos85-replay.service
 test "$(systemctl show erdos85-replay.service --property Environment --value)" = "HOME=/root LEAN_PATH=/opt/replay/overlay"
-python3 - "$ROOT/manifest.json" "$OVERLAY_BUILDER_SHA" "$OVERLAY_PROJECT_MANIFEST_SHA" "$OVERLAY_RECEIPT_SHA" "$OVERLAY_MANIFEST_SHA" "$OVERLAY_IDENTITY_SHA" "$OVERLAY_ARCHIVE_SHA" <<'PY'
+python3 - "$ROOT/manifest.json" "$OVERLAY_BUILDER_SHA" "$OVERLAY_PROJECT_MANIFEST_SHA" "$OVERLAY_RECEIPT_SHA" "$OVERLAY_MANIFEST_SHA" "$OVERLAY_IDENTITY_SHA" "$OVERLAY_ARCHIVE_SHA" "$IMAGE_DIGEST" <<'PY'
 import json, sys
 manifest = json.load(open(sys.argv[1]))
 receipt = json.load(open('/opt/replay/freight/complete-overlay-receipt.json'))
 overlay = json.load(open('/opt/replay/freight/complete-overlay-manifest.json'))
 {reads}
+assert manifest['worker_image_digest'] == sys.argv[8]
 {chr(10).join(MOD.OVERLAY_CROSSLINK_ASSERTIONS)}
 PY
 '''
+
+    def test_bootstrap_rejects_missing_launch_safety_contract(self):
+        original = self.bootstrap()
+        fragments = (
+            f"APT_MIRROR_SOURCE={MOD.APT_MIRROR_SOURCE}",
+            f"APT_MIRROR_TARGET={MOD.APT_MIRROR_TARGET}",
+            f"APT_RETRIES={MOD.APT_RETRIES}",
+            f"export AWS_RETRY_MODE={MOD.AWS_RETRY_MODE}",
+            f"export AWS_MAX_ATTEMPTS={MOD.AWS_MAX_ATTEMPTS}",
+            'sed -i "s|$APT_MIRROR_SOURCE|$APT_MIRROR_TARGET|g"',
+            'apt-get -o Acquire::Retries="$APT_RETRIES" update',
+            'apt-get -o Acquire::Retries="$APT_RETRIES" install',
+            f"IMAGE_DIGEST={self.manifest()['worker_image_digest']}",
+            f"IMAGE_CONFIG_ID=sha256:{'a' * 64}",
+            "LOADED_CONFIG_ID=$(docker image inspect lean4-arm64:v4.31.0 --format '{{.Id}}')",
+            'test "$LOADED_CONFIG_ID" = "$IMAGE_CONFIG_ID"',
+            "assert manifest['worker_image_digest'] == sys.argv[8]",
+        )
+        for fragment in fragments:
+            with self.subTest(fragment=fragment), self.assertRaisesRegex(
+                    MOD.DeploymentEvidenceError, "launch-safety"):
+                MOD.validate_bootstrap_realization(
+                    self.manifest(), original.replace(fragment, "omitted", 1))
+
+    def test_bootstrap_rejects_image_identity_kind_drift(self):
+        manifest = self.manifest()
+        manifest["worker_image_digest"] = "sha256:" + "a" * 64
+        with self.assertRaisesRegex(
+                MOD.DeploymentEvidenceError, "named repository digest"):
+            MOD.validate_bootstrap_realization(manifest, self.bootstrap())
+
+    def test_bootstrap_rejects_launch_safety_ordering_drift(self):
+        original = self.bootstrap()
+        service_before_image = original.replace(
+            "systemctl start erdos85-replay.service\n", "", 1)
+        inspect_line = (
+            "LOADED_CONFIG_ID=$(docker image inspect lean4-arm64:v4.31.0 "
+            "--format '{{.Id}}')\n")
+        service_before_image = service_before_image.replace(
+            inspect_line,
+            "systemctl start erdos85-replay.service\n"
+            + inspect_line, 1)
+        cases = (
+            original.replace(
+                'sed -i "s|$APT_MIRROR_SOURCE|$APT_MIRROR_TARGET|g" '
+                "/etc/apt/sources.list.d/ubuntu.sources\n",
+                "", 1) +
+            '\nsed -i "s|$APT_MIRROR_SOURCE|$APT_MIRROR_TARGET|g" '
+            "/etc/apt/sources.list.d/ubuntu.sources\n",
+            original.replace(
+                'zstd -dc "$ROOT/freight/lean4-arm64-a5ca.docker.tar.zst" | docker load\n',
+                "", 1) +
+            '\nzstd -dc "$ROOT/freight/lean4-arm64-a5ca.docker.tar.zst" | docker load\n',
+            service_before_image,
+        )
+        for changed in cases:
+            with self.assertRaisesRegex(
+                    MOD.DeploymentEvidenceError, "launch-safety ordering"):
+                MOD.validate_bootstrap_realization(self.manifest(), changed)
 
     def iam(self):
         bucket_arn = "arn:aws:s3:::" + self.bucket
@@ -127,7 +202,7 @@ PY
             self.lifecycle(), self.input_prefix,
             MOD.LIFECYCLE_RULE_ID), 1)
         self.assertEqual(MOD.validate_bootstrap_realization(
-            self.manifest(), self.bootstrap()), 49)
+            self.manifest(), self.bootstrap()), 63)
 
     def test_bootstrap_rejects_manifest_identity_and_compile_drift(self):
         cases = []

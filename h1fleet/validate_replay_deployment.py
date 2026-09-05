@@ -57,6 +57,11 @@ OVERLAY_CROSSLINK_ASSERTIONS = (
     "assert receipt['overlay_identity_sha256'] == manifest['overlay_identity_sha256']",
     "assert overlay['identity_sha256'] == manifest['overlay_identity_sha256']",
 )
+APT_MIRROR_SOURCE = "us-east-1.ec2.ports.ubuntu.com"
+APT_MIRROR_TARGET = "ports.ubuntu.com"
+APT_RETRIES = "5"
+AWS_RETRY_MODE = "standard"
+AWS_MAX_ATTEMPTS = "5"
 PRODUCTION_COMPILE_COMMAND = [
     "/usr/bin/docker", "run", "--rm", "--network", "none",
     "--mount", "type=bind,src=/opt/replay/repo,dst=/opt/replay/repo,readonly",
@@ -250,6 +255,12 @@ def validate_bootstrap_realization(manifest: object, bootstrap: str) -> int:
         if not isinstance(value, str) or re.fullmatch(r"[0-9a-f]{64}", value) is None:
             raise DeploymentEvidenceError(f"manifest.{field} is not a lowercase SHA-256")
         hashes[field] = value
+    image_digest = manifest.get("worker_image_digest")
+    if (not isinstance(image_digest, str) or re.fullmatch(
+            r"[^@\s]+@sha256:[0-9a-f]{64}", image_digest) is None):
+        raise DeploymentEvidenceError(
+            "manifest.worker_image_digest is not a named repository digest")
+    image_config_id = "sha256:" + image_digest.rsplit("@sha256:", 1)[1]
     active_bootstrap = "\n".join(
         line for line in bootstrap.splitlines()
         if not line.lstrip().startswith("#")
@@ -276,6 +287,32 @@ def validate_bootstrap_realization(manifest: object, bootstrap: str) -> int:
             raise DeploymentEvidenceError(
                 f"bootstrap does not download and verify exact object {name}")
     normalized = " ".join(active_bootstrap.split())
+    bootstrap_safety = (
+        f"APT_MIRROR_SOURCE={APT_MIRROR_SOURCE}",
+        f"APT_MIRROR_TARGET={APT_MIRROR_TARGET}",
+        f"APT_RETRIES={APT_RETRIES}",
+        f"export AWS_RETRY_MODE={AWS_RETRY_MODE}",
+        f"export AWS_MAX_ATTEMPTS={AWS_MAX_ATTEMPTS}",
+        'sed -i "s|$APT_MIRROR_SOURCE|$APT_MIRROR_TARGET|g" '
+        "/etc/apt/sources.list.d/ubuntu.sources",
+        'apt-get -o Acquire::Retries="$APT_RETRIES" update',
+        'apt-get -o Acquire::Retries="$APT_RETRIES" install',
+        f"IMAGE_DIGEST={image_digest}",
+        f"IMAGE_CONFIG_ID={image_config_id}",
+        "LOADED_CONFIG_ID=$(docker image inspect lean4-arm64:v4.31.0 --format '{{.Id}}')",
+        'test "$LOADED_CONFIG_ID" = "$IMAGE_CONFIG_ID"',
+        "assert manifest['worker_image_digest'] == sys.argv[8]",
+    )
+    for fragment in bootstrap_safety:
+        if fragment not in active_bootstrap:
+            raise DeploymentEvidenceError(
+                f"bootstrap omits launch-safety contract {fragment!r}")
+    if re.search(
+        r"python3\s+-\s+\"\$ROOT/manifest\.json\"[^\n]*\s+\"\$IMAGE_DIGEST\"\s+<<'PY'",
+        active_bootstrap,
+    ) is None:
+        raise DeploymentEvidenceError(
+            "bootstrap manifest readback omits repository digest argument")
     exact_download = (
         f"for name in {' '.join(OVERLAY_OBJECTS)}; do "
         "/usr/local/bin/aws s3api get-object --bucket \"$BUCKET\" "
@@ -285,6 +322,30 @@ def validate_bootstrap_realization(manifest: object, bootstrap: str) -> int:
     if exact_download not in normalized:
         raise DeploymentEvidenceError(
             "bootstrap combined-overlay download loop/mapping is not exact")
+    safety_order = (
+        ("APT_MIRROR_SOURCE=", 'sed -i "s|$APT_MIRROR_SOURCE|'),
+        ('sed -i "s|$APT_MIRROR_SOURCE|',
+         'apt-get -o Acquire::Retries="$APT_RETRIES" update'),
+        ('apt-get -o Acquire::Retries="$APT_RETRIES" update',
+         'apt-get -o Acquire::Retries="$APT_RETRIES" install'),
+        (f"export AWS_MAX_ATTEMPTS={AWS_MAX_ATTEMPTS}",
+         "/usr/local/bin/aws s3api"),
+        ("docker load", "LOADED_CONFIG_ID=$(docker image inspect lean4-arm64:v4.31.0"),
+        (f"IMAGE_CONFIG_ID={image_config_id}",
+         "LOADED_CONFIG_ID=$(docker image inspect lean4-arm64:v4.31.0"),
+    )
+    for earlier, later in safety_order:
+        if (earlier not in active_bootstrap or later not in active_bootstrap
+                or active_bootstrap.index(earlier) >= active_bootstrap.index(later)):
+            raise DeploymentEvidenceError(
+                f"bootstrap launch-safety ordering is invalid: {earlier!r} before {later!r}")
+    image_loads = re.findall(
+        r'(?m)^zstd -dc "\$ROOT/freight/[^"\n]+\.docker\.tar\.zst" \| docker load$',
+        active_bootstrap,
+    )
+    if len(image_loads) != 1:
+        raise DeploymentEvidenceError(
+            "bootstrap must load exactly one pinned Docker-save freight archive")
     for index, (field, variable) in enumerate(OVERLAY_HASH_VARIABLES.items(), 2):
         assignment = re.compile(
             rf"(?m)^{re.escape(variable)}={re.escape(hashes[field])}$")
@@ -300,6 +361,7 @@ def validate_bootstrap_realization(manifest: object, bootstrap: str) -> int:
     invocation = r"python3\s+-\s+\"\$ROOT/manifest\.json\""
     for variable in OVERLAY_HASH_VARIABLES.values():
         invocation += rf"\s+\"\${re.escape(variable)}\""
+    invocation += r"\s+\"\$IMAGE_DIGEST\""
     invocation += r"\s+<<'PY'"
     if re.search(invocation, active_bootstrap) is None:
         raise DeploymentEvidenceError(
@@ -345,6 +407,14 @@ def validate_bootstrap_realization(manifest: object, bootstrap: str) -> int:
         if fragment not in active_bootstrap:
             raise DeploymentEvidenceError(
                 f"bootstrap lacks required realization fragment {fragment!r}")
+    service_start = "systemctl start erdos85-replay.service"
+    for image_check in (
+        "LOADED_CONFIG_ID=$(docker image inspect lean4-arm64:v4.31.0",
+        'test "$LOADED_CONFIG_ID" = "$IMAGE_CONFIG_ID"',
+    ):
+        if active_bootstrap.index(image_check) >= active_bootstrap.index(service_start):
+            raise DeploymentEvidenceError(
+                "bootstrap launch-safety ordering requires image verification before service start")
     for exact_line, label in (
         ("ROOT=/opt/replay", "root"),
         ("export LEAN_PATH=/opt/replay/overlay", "ambient LEAN_PATH"),
@@ -366,7 +436,8 @@ def validate_bootstrap_realization(manifest: object, bootstrap: str) -> int:
         raise DeploymentEvidenceError(
             "bootstrap package-cache absence assertion is not exact")
     return (len(OVERLAY_HASH_VARIABLES) + len(OVERLAY_OBJECTS) + len(required)
-            + len(OVERLAY_CROSSLINK_ASSERTIONS) + len(OVERLAY_HASH_TARGETS) + 7)
+            + len(OVERLAY_CROSSLINK_ASSERTIONS) + len(OVERLAY_HASH_TARGETS)
+            + len(bootstrap_safety) + 8)
 
 
 def main() -> int:
