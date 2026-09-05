@@ -101,6 +101,53 @@ non-rainbow labels:   exactly 6n incidences from W,
 In particular, only `O(n)` of the `X`-incidence capacity remains outside
 the quadratically large rainbow-center family.
 
+## The selector graph leaves only twelve internal exceptions
+
+Distinct columns of `B` give distinct two-subsets of `C`: equal columns
+would make their two exterior labels common neighbors of the same pair in
+`C`, producing a C4.  Thus all exterior labels are the edges of a simple
+`n`-regular selector graph `L` on `C`, with
+
+```text
+|E(L)|=|F|=qn=n(n+2).                                    (6)
+```
+
+Rainbow labels are edges of `L[X]`.  From the exact formula for `w`, the
+total number of non-rainbow selector edges is
+
+```text
+|E(L)|-w=6n-(gamma_01+gamma_02+gamma_12)+u.              (7)
+```
+
+Let `e_W=|E(L[W])|`.  The degree sum on the six vertices of `W` is `6n`, so
+the number of selector edges with at least one endpoint in `W` is
+
+```text
+6n-e_W.
+```
+
+All these edges are non-rainbow by (2).  Subtracting them from (7) shows
+that the non-rainbow selector edges lying entirely in `X` number exactly
+
+```text
+e_W-(gamma_01+gamma_02+gamma_12)+u.                      (8)
+```
+
+Write `W_i=N_H_C(c_i)`, so `W` is the disjoint union of three two-sets.
+Each `W_i` is independent in `L`: its two vertices already share `c_i` as
+an ambient neighbor in `C`, and an exterior selector edge between them would
+supply a second common neighbor.  Hence `L[W]` has edges only across the
+three `2 x 2` blocks and
+
+```text
+e_W <= 12,
+0 <= |E(L[X]) \\ {rainbow edges}| <= 12.                 (9)
+```
+
+The non-rainbow part inside the large set `X` is therefore bounded by an
+absolute constant, independent of `q`.  All remaining non-rainbow selector
+edges touch the fixed six-vertex set `W`.
+
 ## Disposition
 
 This is the first constraint which uses the rainbow centers as the actual
@@ -108,9 +155,9 @@ self-indexed exterior labels rather than merely as entries of a partial
 Latin square.  It concentrates all their selector edges inside `X` and
 nearly saturates the `B`-capacity there.
 
-It is not yet a contradiction.  The remaining load-bearing question is
-whether a C4-free degree-`n` selector graph on `C`, together with the six
-excluded rows `W` and the companion/owner labels of the three fibers, can
-support `w>=n(n-4)` distinct center edges inside `X`.  A proof must exploit
-edge collisions or the owner colors of those selector edges; the raw
-incidence capacity (4) has nonnegative slack.
+It is not yet a contradiction.  But the unresolved selector freedom has
+collapsed to the finite graph `L[W]` and at most twelve exceptional edges in
+`L[X]`.  A terminal must show that none of these constant-sized exception
+patterns is compatible with the companion/owner labels and the three
+near-saturated partial-Latin projections.  The raw incidence capacity alone
+still has nonnegative slack.
