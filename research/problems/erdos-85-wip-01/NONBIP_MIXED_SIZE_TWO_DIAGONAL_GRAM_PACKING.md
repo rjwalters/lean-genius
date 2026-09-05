@@ -203,18 +203,28 @@ intersection lies in `F`, whereas the map `f |-> r_f` bijects `Gamma_ji`
 with the `C`-shore middle vertices in an `O_F`-then-`O_C` two-step closing
 from `c_i` to `c_j`.
 
+The banked restricted-owner degree theorem supplies an independent
+one-shore bound.  On the weight-two source component `C`, the owner color
+`O_C` has restricted degree `2(2-1)=2`.  Every middle in the image of
+`Gamma_ji` is an `O_C|C`-neighbor of `c_j`, so
+
+```text
+|U_i intersect U_j|=|Gamma_ji| <= 2,
+n-2 <= delta_ji+p_ij <= n.                              (14)
+```
+
 The banked pointwise mixed-owner closing theorem gives `2n` such middles in
 all of `C union F`, because `c_i c_j` is a defect edge and the component
 weights are `n` and `2`.  Consequently the complementary `F`-shore middle
 count is exactly
 
 ```text
-2n-|Gamma_ji|=n+delta_ji+p_ij.                           (14)
+2n-|Gamma_ji|=n+delta_ji+p_ij >= 2n-2.                  (15)
 ```
 
-No existing theorem located in the corpus bounds either shore separately;
-the owner product fixes only their sum.  An independent one-shore bound is
-therefore a precise remaining component-location gap.
+Thus almost all mixed-owner closings lie on the large shore: at most two lie
+in `C`, and at least `2n-2` lie in `F`.  This is q-generic, not an order-64
+census.
 
 ## The remaining triple term is a rainbow-star count
 
@@ -227,7 +237,7 @@ w=|T_0 intersect T_1 intersect T_2|.
 The pointwise caps (4) give the exact expression
 
 ```text
-w = sum_{v in F} product_i deg_H_F(v,S_i).               (15)
+w = sum_{v in F} product_i deg_H_F(v,S_i).               (16)
 ```
 
 Thus `w` counts exterior labels which have exactly one `H_F`-neighbor in
@@ -240,36 +250,38 @@ Indeed, inclusion-exclusion gives
 
 ```text
 |U_0 intersect U_1 intersect U_2|
-  = n(n-1) - sum_{i<j}(delta_ij+p_ij) - w.               (16)
+  = n(n-1) - sum_{i<j}(delta_ij+p_ij) - w.               (17)
 ```
 
 At the `[6,2]` value `n=6`, there is already freedom at the exact Venn-ledger
 level.  Take an abstract 48-label universe with
 
 ```text
-|T_i|=36,                  |T_i intersect T_j|=27
+|T_i|=36,                  |T_i intersect T_j|=26
 ```
 
-for every pair.  This fixes `delta_ij+p_ij=3` in (10).  For each
-`w in {18,19,20,21}`, the seven nonempty Venn cells and the outside cell can
-have sizes
+for every pair.  This fixes `delta_ij+p_ij=4` and saturates the new bound
+`|U_i intersect U_j|=2`.  For each `w in {16,17,18}`, the seven nonempty
+Venn cells and the outside cell can have sizes
 
 ```text
 triple:       w
-each pair only: 27-w
-each single only: w-18
-outside all T_i: 21-w.
+each pair only: 26-w
+each single only: w-16
+outside all T_i: 18-w.
 ```
 
 All are nonnegative and give the same universe size, one-way sizes, and
-two-way intersections.  Hence (3), (10), and (16) do not fix `w`.  These are
+two-way intersections.  Hence (3), (10), (14), and (17) do not fix `w`.
+These are
 set-system ledgers, not realized ambient graphs; they cut only a terminal
 based on the current cardinality and pair-intersection data alone.
 
 ## Disposition
 
 The diagonal Gram identity upgrades the carrier to three near-partitions of
-`F` by disjoint ambient neighborhoods, with exact holes (3)--(12).  This is a
+`F` by disjoint ambient neighborhoods, with exact holes and pairwise
+intersections (3)--(15).  This is a
 genuine spatial constraint and is uniform in binary `q>=8`.
 
 It does not alone contradict `[q-2,2]`: the hole cardinalities, pairwise
