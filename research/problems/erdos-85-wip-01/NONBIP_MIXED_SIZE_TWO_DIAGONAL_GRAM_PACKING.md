@@ -112,14 +112,69 @@ The right side is nonnegative.  This couples the small integer owner ledger
 to an actual family of size-`2n` subsets of the exterior component; the
 parameters are no longer merely scalar edge counts.
 
+## Pairwise hole intersections
+
+The diagonal Gram identity also determines the pairwise intersections of
+the holes.  Let
+
+```text
+R_i = {r_f : f in S_i},
+delta_ji = #{f in S_i : D_C(c_j,r_f)},
+p_ij = |R_i intersect R_j|.
+```
+
+Companion injectivity gives `|R_i|=n`.  For `i != j`, the defect intertwiner
+calculation from the first carrier audit refines to
+
+```text
+e_D_F(S_i,S_j)=n+delta_ji.                               (8)
+```
+
+Symmetry of the left side also proves `delta_ji=delta_ij`.
+
+Write `T_i=F\\U_i`, the `n^2` labels covered by the disjoint neighborhood
+family of `S_i`.  Because each label has at most one `H_F`-neighbor in each
+fiber, common covered labels are counted without multiplicity:
+
+```text
+|T_i intersect T_j|
+  = sum_{f in S_i, g in S_j} (H_F^2)_(f,g).              (9)
+```
+
+For a cross-fiber pair `(f,g)`, its two `B`-neighbor sets can meet only when
+`r_f=r_g`: neither companion can be the other triangle vertex, since the
+`S_i` are disjoint.  Hence the sum of `(B^T B)_(f,g)` over the cross block is
+exactly `p_ij`.  Summing the off-diagonal entries of (1) gives
+
+```text
+|T_i intersect T_j|=n^2-(n+delta_ji)-p_ij.              (10)
+```
+
+Finally inclusion-exclusion with `|F|=qn`, `|T_i|=|T_j|=n^2`, and `q-n=2`
+yields the exact hole-intersection law
+
+```text
+|U_i intersect U_j|=n-delta_ji-p_ij.                    (11)
+```
+
+In particular
+
+```text
+delta_ji+p_ij <= n.                                     (12)
+```
+
+Thus the pairwise hole intersections are not free: they are paid for by the
+defect incidence of one companion system against the opposite triangle
+vertex and by overlap of the two companion systems.
+
 ## Disposition
 
 The diagonal Gram identity upgrades the carrier to three near-partitions of
-`F` by disjoint ambient neighborhoods, with exact holes (3)--(7).  This is a
+`F` by disjoint ambient neighborhoods, with exact holes (3)--(12).  This is a
 genuine spatial constraint and is uniform in binary `q>=8`.
 
-It does not alone contradict `[q-2,2]`: the hole cardinalities and the parity
-conditions `a_i = n (mod 2)` admit many integer ledgers.  A terminal must
-control intersections among the three hole sets `U_i`, or combine their
-near-partitions with the defect cross-degrees between the `S_i`.  No finite
-order census is promoted by this audit.
+It does not alone contradict `[q-2,2]`: the hole cardinalities, pairwise
+intersection law, and parity conditions `a_i = n (mod 2)` still admit many
+integer ledgers.  A terminal must control the triple intersection of the
+`U_i`, or constrain `delta_ji` and `p_ij` by the remaining owner laws.  No
+finite-order census is promoted by this audit.
