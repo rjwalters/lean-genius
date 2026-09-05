@@ -124,7 +124,15 @@ p_ij = |R_i intersect R_j|.
 ```
 
 Companion injectivity gives `|R_i|=n`.  For `i != j`, the defect intertwiner
-calculation from the first carrier audit refines to
+calculation from the first carrier audit refines pointwise, for `f in S_i`,
+to
+
+```text
+deg_D_F(f,S_j)=1+1_{D_C(c_j,r_f)}.
+```
+
+Summing over the single shore `S_i` counts each undirected cross edge once
+(one endpoint is prescribed in `S_i`), so there is no factor two and
 
 ```text
 e_D_F(S_i,S_j)=n+delta_ji.                               (8)
