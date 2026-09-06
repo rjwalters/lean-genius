@@ -53,6 +53,24 @@ Thus the center of every partial-Latin entry is not an arbitrary exterior
 label: its self-indexed two-point selector is an edge entirely inside the
 fixed `2(n-1)`-set `X`.
 
+There is a pointwise converse, which gives the cleanest form of the
+selector restriction. For every exterior label `v` and every `i`, the
+same block equation gives
+
+```text
+deg_H_F(v,S_i)=1-|N_B(v) intersect W_i|.                  (2a)
+```
+
+Its nonnegative left side forces the intersection on the right to have
+size at most one. Thus `U_i` is exactly the set of selector edges touching
+`W_i`, and `T_i` is the set avoiding `W_i`. A two-endpoint edge cannot
+touch all three disjoint `W_i`, so `u=0`; the intersection `U_i intersect
+U_j` consists exactly of the selector edges across `W_i x W_j`.
+Consequently `e_W=sum gamma_ij` and the rainbow edges are exactly `L[X]`.
+The longer matrix derivation (10d)--(10h) below independently recovers
+these identities. The pointwise observation is due to Sol3's selector-star
+synthesis.
+
 ## Every center edge avoids its companion triple
 
 Let a rainbow center `v` have leaf `f_i in S_i`, and write the leaf selector
@@ -143,7 +161,7 @@ non-rainbow labels:   exactly 6n incidences from W,
 In particular, only `O(n)` of the `X`-incidence capacity remains outside
 the quadratically large rainbow-center family.
 
-## The selector graph leaves only twelve internal exceptions
+## The selector graph: from twelve possible exceptions to none
 
 Distinct columns of `B` give distinct two-subsets of `C`: equal columns
 would make their two exterior labels common neighbors of the same pair in
@@ -450,8 +468,16 @@ Latin square.  It concentrates all their selector edges inside `X` and
 nearly saturates the `B`-capacity there.
 
 It is not yet a contradiction.  But the unresolved selector freedom has
-collapsed to the finite `D_C/K/L` partition on `W`, while `L[X]` is exactly
-the rainbow selector graph.  A terminal must show that this exact
+been localized: `L[X]` is exactly the rainbow selector graph, and the
+cross-block counts on `W` are fixed by the hole intersections. A terminal
+must show that this exact
 self-indexed rainbow realization is incompatible with the companion/owner
 labels and the three near-saturated partial-Latin projections.  The raw
 incidence capacity alone still has nonnegative slack.
+
+`NONBIP_MIXED_SIZE_TWO_TRIPLE_COMPANION_AUDIT.md` makes the limitation
+concrete: a cyclic C-shore construction satisfies the diagonal Gram
+partition, commutation, all companion scalar counts, and these W-edge
+counts for every even `q>=8`. It does not construct the exterior graph.
+The remaining force must come from simultaneous exterior compatibility,
+not those C-shore counts alone.
