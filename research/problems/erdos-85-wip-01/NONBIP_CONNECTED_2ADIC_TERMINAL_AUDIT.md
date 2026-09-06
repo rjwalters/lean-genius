@@ -29,7 +29,7 @@ tau(D) is a square,
 v_2(det(A)) = 2k + v_2(tau(D))/2 >= 2k.
 ```
 
-The spanning-tree identity uses connectedness. The valuation lower bound
+The positive spanning-tree interpretation uses connectedness. The valuation lower bound
 itself has a more elementary explanation that does not require C4-freeness
 or a defect graph.
 
