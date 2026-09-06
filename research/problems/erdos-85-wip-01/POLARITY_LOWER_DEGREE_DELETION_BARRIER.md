@@ -313,3 +313,70 @@ This is an exact finite control and a prose coordinate argument, not a new
 Lean theorem or a general A-REG result. Its PG(2,7) realization lies outside
 the same-order q=4 exclusion above. An unrestricted field-representation
 theorem for arbitrary A-REG candidates remains unproved.
+
+
+## Characteristic-zero embeddings are impossible for q>=6
+
+There is a separate uniform obstruction to field representability. For any
+integer q>=6, no collection of N=q² distinct points and N distinct lines
+in PG(2,F), with F of characteristic zero, can have every designated point
+incident with at least q of the designated lines. In particular no weak
+incidence embedding of an A-REG candidate exists over such a field. This
+argument does not require symmetric incidence or exact column degrees.
+
+First work over the complex numbers. Let t_r count all intersection points
+of multiplicity exactly r in the arrangement of N designated lines,
+including intersection points outside the designated point set. The primary
+source is [Hirzebruch, *Singularities of algebraic surfaces and characteristic
+numbers* (1986), Section 6, page 148, equation (9)](https://hirzebruch.mpim-bonn.mpg.de/id/eprint/79/1/74_Singularities%20of%20algebraic%20surfaces.pdf).
+It proves
+
+    t_2 + (3/4)t_3 >= N + sum_{r>=5} (2r-9)t_r
+
+provided t_N=t_{N-1}=t_{N-2}=0. We will use its weaker consequence
+
+    t_2 + t_3 >= N + sum_{r>=5} (r-4)t_r.              (4)
+
+The exceptional high-concurrency cases are excluded directly. If r lines
+meet at X, choose a designated point Y different from X. At most one of
+those r lines contains Y. Since Y lies on at least q designated lines,
+there must be at least q-1 lines outside the pencil. Thus
+
+    r <= N-q+1 <= N-5,
+
+which verifies the source hypotheses.
+
+Each of the N designated points has multiplicity at least q, and they
+are distinct. The line-pair identity counts every pair exactly once:
+
+    sum_{r>=2} binom(r,2)t_r = binom(N,2).
+
+The designated points therefore consume at least N*binom(q,2) pairs.
+None is a double or triple point, so the remaining pair budget implies
+
+    t_2 + t_3 <= binom(N,2) - N*binom(q,2)
+              = N(q-1)/2.
+
+On the other hand, the designated points alone contribute at least
+N(q-4) to the sum in (4), and all other terms in that sum are nonnegative.
+Consequently (4) implies
+
+    N(q-1)/2 >= N + N(q-4) = N(q-3),
+
+hence q<=5, contradicting q>=6. Extra incidences only increase the
+multiplicities, so preserving nonincidences was never assumed.
+
+For an arbitrary characteristic-zero field, the finitely many homogeneous
+coordinates of a putative realization generate a finitely generated
+extension of the rationals. Such a field embeds into the complex numbers:
+choose algebraically independent images of a finite transcendence basis,
+then extend across the finite algebraic extension. This preserves all
+incidences and the nonzero minors witnessing distinct points and lines,
+reducing to the contradiction above.
+
+This is a prose consequence of the cited complex-geometric theorem, not a
+Lean formalization or an unrestricted A-REG nonexistence theorem. It rules
+out characteristic-zero coordinatization uniformly, but does not supply
+coordinatization, exclude positive-characteristic fields, or apply to
+arbitrary non-Desarguesian planes. The q4 characteristic-seven control above
+is consistent with this obstruction and is outside its degree range.
