@@ -106,3 +106,49 @@ No connected-deficiency hypothesis is encoded.  In particular, this probe
 does not establish the q-generic NONBIP-CONNECTED terminal; its useful output
 is a sharply local candidate whose two identities can now be attacked
 combinatorially or falsified at larger parameters.
+
+## Saturated triangle neighborhoods do not force the proposed triangle sum
+
+Follow-up, 2026-09-06, Sol1. This is a uniform partial-graph control, not a
+regular square-order graph or a counterexample to A-REG.
+
+For binary q>=16 put s=q-2 and f=q/2-2. Take a root triangle u0,u1,u2
+and three disjoint classes C0,C1,C2, each indexed by Z/s. Join ui to all
+of Ci. Begin with s² outside vertices corresponding to the Latin triples
+`(a,b,a+b mod s)`, each adjacent to its three class entries. The f triples
+`(i,i,2i)`, `0<=i<f`, are disjoint in each coordinate. Replace each of
+these outside vertices by three vertices corresponding to its three pairs.
+Add three isolated outside vertices. In each class, pair up the vertices
+not covered by the selected triples and add this matching. There are
+`s-f=q/2` such vertices per class, an even number.
+
+The vertex count is `3+3s+s²+2f+3=q²`. Each selected class vertex has
+outside degree s+1 and one root neighbor. Each unselected class vertex has
+outside degree s, one root neighbor and one matching neighbor. Thus all
+roots and class vertices have degree q. Every outside vertex has degree
+zero, two, or three; no outside-outside edges are added.
+
+The partial graph is C4-free. Two different Latin triples share at most
+one entry; replacing a triple by its three pairs preserves this property.
+Each outside vertex meets each class at most once. Within a class, the
+only edges form a matching, and between classes there are no edges.
+These facts also exclude a second common neighbor for any pair involving
+a root or class vertex. The triangles through ui are precisely the root
+triangle and those formed with the matching inside Ci. Consequently
+
+```text
+t_ui = 1 + (s-f)/2 = q/4+1,
+t_u0+t_u1+t_u2 = 3q/4+3 < q+1.
+```
+
+An exact q=16 construction checked all 32,640 unordered vertex pairs for
+codegree at most one and all 45 root/class degrees for equality to 16.
+Its degree counts are `{16:45, 2:18, 3:190, 0:3}` and its three root
+triangle degrees are `(5,5,5)`, giving 15 rather than the proposed 17.
+This is a direct construction check, not an enumeration of candidate graphs.
+
+Therefore a proof of the proposed triangle-sum identity T2 must use more
+than C4-freeness, square order, and saturation of the entire triangle
+neighborhood. The outside degree equations and their global compatibility
+are absent here. No completion is claimed or searched for; the weaker
+weighted-neighbor terminal At=((q²+2)/3)1 remains a separate open target.
