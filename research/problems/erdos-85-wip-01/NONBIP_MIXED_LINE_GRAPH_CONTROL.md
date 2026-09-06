@@ -57,6 +57,45 @@ For the unsigned vertex-edge incidence matrix B of either simple root,
 two distinct edges share at most one endpoint. Positivity of B^T B proves
 the asserted least-eigenvalue bound without a classification theorem.
 
+## The ambient equation excludes this particular cyclic root for q>=32
+
+The distinction from ambient realizability can be made explicit. Suppose a
+component of an actual defect graph is L(H), and let B be the unsigned
+vertex-edge incidence matrix of H, padded with zero columns at vertices
+outside this defect component. Let d be the root-degree vector and
+Q=B B^T. The star at any root vertex is a clique of D. Distinct vertices
+of a D-clique have no common A-neighbor, so X=B A is a binary matrix,
+with row sums q d. From the ambient square identity one obtains
+
+```text
+X X^T = (q+1)Q - Q² + d d^T.
+```
+
+Indeed, on this component `D=B^T B-2I`, so
+`B D B^T=Q²-2Q`. For distinct nonadjacent root vertices u,v,
+`Q_uv=0` and `(Q²)_uv=|N_H(u) intersection N_H(v)|`. Applying the
+preceding identity to the binary complement Y=J-X, with q² columns,
+gives the necessary entrywise inequality
+
+```text
+0 <= (Y Y^T)_uv
+   = (q-d_u)(q-d_v) - |N_H(u) intersection N_H(v)|.    (1)
+```
+
+In our H1, two consecutive right vertices have 2c common left neighbors
+when r>=4: their two shared starting indices each have c clones. Their
+degrees are q-2. Equation (1) would require
+
+```text
+2(q-2)/3 <= 4,
+```
+
+which fails for q>=32. Thus the particular D constructed here cannot be
+the defect graph of an ambient A at any odd exponent k>=5. This confirms
+its intended role as a control against defect-only reasoning. It does not
+exclude other biregular roots with different codegrees, and is not a
+mixed-branch terminal. No conclusion from (1) is claimed at q=8.
+
 ## Verification and scope
 
 An exact finite root check at q=32 and q=128 verified edge uniqueness,
@@ -65,11 +104,10 @@ edge count. The resulting component orders are (480,544) and
 (8064,8320), respectively. The construction above proves the whole
 odd-exponent family; these finite checks are only calibration.
 
-This D is not asserted to admit a symmetric binary zero-diagonal matrix A
-with `A^2=(q-1)I+J-D`, nor even a real square root satisfying all ambient
-constraints. In particular, its component sizes and least eigenvalue do
-not establish the required self-indexed neighborhood incidences. The
-construction closes only the attempt to use the connected root-divisibility
-argument unchanged in the mixed branch. Further work must use an actual
-constraint linking A to these line-graph components; no additional
-defect-only classification or Lean wrapper is proposed here.
+The construction closes the attempt to use the connected root-divisibility
+argument unchanged in the mixed branch. Equation (1) additionally excludes
+this specific construction from ambient realization for k>=5. Neither
+result proves general nonexistence of A or supplies a real square root
+satisfying its other constraints. A general line-graph terminal would have
+to exclude every possible root, including those satisfying (1); that step
+remains missing. This bounded check stops here, with no Lean wrapper.
