@@ -43,6 +43,15 @@ class SquareRootTraceTests(unittest.TestCase):
         self.assertFalse(possible)
         self.assertEqual(reason, "odd_self_factor_degree_2_exp_1")
 
+    def test_mixed_copies_of_quadratic_factors(self):
+        block = sp.Matrix([[3, 1], [1, 0]])
+        root, square = self.squared_with_residual(block, -block, -7)
+        self.assertEqual(sp.trace(root), 0)
+        possible, reason, traces = residual_square_root_trace_possible(square)
+        self.assertTrue(possible)
+        self.assertEqual(reason, "success")
+        self.assertEqual(traces, (-13, -7, -1, 1, 7, 13))
+
 
 if __name__ == "__main__":
     unittest.main()
