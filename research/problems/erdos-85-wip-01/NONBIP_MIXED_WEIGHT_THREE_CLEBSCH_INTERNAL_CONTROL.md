@@ -221,8 +221,20 @@ consumer, with no assumed energy bound:
   column sum 3, `Hs=-3s`, and `Ds=3s`, deriving the contradiction 144<208.
 
 The module compiles with no `sorry` and only `propext`, `Classical.choice`,
-and `Quot.sound`. The concrete definitions of H,D and the Clebsch character
-geometry, including the widened quotient-family argument, remain the
-prose/checker inputs above; the numerical corollary keeps those eigenvector
-hypotheses explicit. This is not a Lean exclusion of arbitrary Clebsch
-commutants or of the entire weight-three branch.
+and `Quot.sound`.
+
+The concrete adapter
+`proofs/Proofs/Erdos85ClebschConcreteGramExclusion.lean` now removes the
+eigenvector hypotheses for the explicit candidate. It defines the exact
+48-by-48 matrices `clebschConcreteInternal` and `clebschConcreteDefect`
+using the `3*x+i` indexing above. `clebschConcrete_sign_data` kernel-checks
+the least-bit character, its balance, and both eigenvector equations via
+`decide`. `clebschConcrete_no_incidence` then proves that no integer
+48-by-208 B with column sums3 has the concrete required Gram. Its only
+inputs are B, those column sums, and the stated Gram identity. Both new
+theorems have only the same standard axioms; no `sorry` or `native_decide`
+is used.
+
+The widened quotient-family character argument and the arbitrary-H
+equitability reduction remain prose/checker results. This is not a Lean
+exclusion of arbitrary Clebsch commutants or the entire weight-three branch.
