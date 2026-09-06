@@ -29,8 +29,31 @@ tau(D) is a square,
 v_2(det(A)) = 2k + v_2(tau(D))/2 >= 2k.
 ```
 
-This is the exact load-bearing consequence of connectedness in the 2-adic
-route.  It is stronger than merely reducing `A` modulo two.
+The spanning-tree identity uses connectedness. The valuation lower bound
+itself has a more elementary explanation that does not require C4-freeness
+or a defect graph.
+
+Indeed, let A be any symmetric integral matrix of order n with constant
+row sum q. Let C be its leading (n-1)-square principal submatrix and let P
+have columns `e_1,...,e_(n-1),1`. This is a unimodular matrix, and
+
+```text
+P^T A P = [ C       q 1 ]
+          [ q 1^T  n q ],
+det(A) = n q det(C) - q² 1^T adj(C) 1.
+```
+
+The block determinant identity holds even when C is singular. Thus whenever
+q divides n, q² divides det(A). In particular n=q² gives this divisibility
+without any graph assumptions. For nonzero determinant and q=2^k, it
+already implies `v_2(det(A))>=2k`.
+
+Consequently the proposed strict upper bound below cannot come from
+regularity alone. Within the stated graph class it is equivalent to
+excluding every nonsingular A, since any such A automatically violates
+that upper bound. This observation does not refute the conjecture (the
+class could be empty); it identifies where its entire unresolved content
+lies. No additional determinant-divisibility wrapper is supplied here.
 
 ## Why mod-two rank does not close the node
 
