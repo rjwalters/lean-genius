@@ -110,3 +110,34 @@ acts in an order-`q` deficit window after projective completion, while the
 uncompleted model is order `q^2` away.  Therefore Reiman equality, standard
 entropy refinements, and current polarity-stability reconstruction cannot
 force either rooted triangle congruence.
+
+## Updated affine completion theorem: the hypothesis cannot be repaired cheaply
+
+The November 2025 version of Grace--Metsch--Van de Voorde,
+[A Completion Result for Partial Affine and Inversive Spaces](https://arxiv.org/html/2505.23995v2),
+proves completion for partial affine planes of order q>=19 with more than
+q²−sqrt(q) lines, provided parallelism is an equivalence relation.
+
+Our q² distinct neighborhood blocks are q-subsets with pair intersections
+at most one, so they form a partial affine plane of order q. Distinct blocks
+N_A(u),N_A(v) are disjoint exactly when D_uv=1. Thus the required equivalence
+relation is exactly the condition that D be a disjoint union of cliques.
+Since D is (q−1)-regular, these would all be K_q components, a stratum already
+excluded for the remaining binary A-REG candidates. The improved numerical
+threshold therefore does not by itself make the theorem applicable.
+
+Nor can deletion of fewer than sqrt(q) neighborhood blocks fix this. More
+generally, suppose D has no K_q component and deleting a set S of s vertices
+leaves a disjoint union of cliques. Each remaining clique has size at most
+q−1: a q-clique would use all its vertices' D-degrees and already be a
+component of the original D. Every remaining vertex consequently has at
+least one neighbor in S. Counting the cut gives
+
+    q²−s <= e_D(S,V\S) <= s(q−1), hence s>=q.
+
+This elementary bound applies to disconnected D as well; it uses neither
+vertex-connectivity nor an unproved completion hypothesis. Deleting enough
+blocks to obtain parallelism would leave at most q²−q lines, below this
+completion theorem's threshold. This excludes this direct application and
+its small-deletion repair, not every possible geometric transformation or
+A-REG itself. The argument is prose, not a new Lean theorem.
