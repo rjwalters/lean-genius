@@ -18,13 +18,14 @@ are arbitrary. No new edges between surviving old vertices are added.
 then
 
 ```text
-q <= k³ + 4k² + 5k.                                  (T)
+q <= 3k² + 5k.                                       (T)
 ```
 
 For k=0 no such repair exists. Thus no fixed number of deleted vertices
 can repair this source graph to order q² for unbounded q. This is not an
-exclusion of arbitrary graphs at order q², repairs adding old-old edges,
-or repairs whose deleted set grows with q.
+exclusion of arbitrary graphs at order q² or repairs whose deleted set
+grows with q. A further bound for inserted old-old edges appears below.
+The local overlap improvement is due to Sol1's independent review.
 
 ## Degree and overlap budgets
 
@@ -74,29 +75,38 @@ meets the affine line `omega(x,n)=1` in at most one point. Every other
 n has a unique core common neighbor z with y. It cannot belong to K,
 because y is external. Thus either yz or nz must be in R.
 
-There are at most r removed neighbors z of y, by (1). Each such z is a
+There are exactly s_y removed neighbors z of y, by (1). Each such z is a
 survivor, hence z!=x, and `|L_x intersect N_core(z)|<=1` by core
-C4-freeness. These account for at most r possible n. If instead nz is
-removed, n is an R-incident vertex of P, hence in E; there are at most
-`binom(r,2)` such n. Counting the union of these possibilities gives
+C4-freeness. These account for at most s_y possible n. To bound the
+remaining n, use the **local** overlap budget at gadget vertex i:
 
 ```text
-|A_i intersect L_x| <= M := 1+r+binom(r,2).
+sum_(v in A_i) (s_v-1) <= k.
+```
+
+Each of the other k new vertices shares at most one old neighbor with i.
+The vertex y already consumes s_y-1 of this budget. If nz is removed,
+n is an R-incident vertex of P and has s_n>=2. Since y is external,
+these n are distinct from y, and there are at most k-s_y+1 of them.
+Counting the union of possibilities therefore gives
+
+```text
+|A_i intersect L_x| <= 1+s_y+(k-s_y+1) = k+2.
 ```
 
 Since P is contained in the union of the k sets L_x,
 
 ```text
-|A_i\P| >= q-k-kM.                                  (4)
+|A_i\P| >= q-k-k(k+2).                               (4)
 ```
 
 If two selectors contain external vertices, (4) counts at least
-`2(q-k-kM)` external new-old incidences. By (1), the total number of
+`2(q-k-k(k+2))` external new-old incidences. By (1), the total number of
 these incidences is `sum_external d_R(v)<=2|R|`. Using (2),
 
 ```text
-2(q-k-kM) <= q+k(k-1),
-q <= k²+k+2kM = k³+4k²+5k.                           (5)
+2(q-k-k(k+2)) <= q+k(k-1),
+q <= k²+k+2k(k+2) = 3k²+5k.                          (5)
 ```
 
 Thus, if (T) fails, at most one new vertex has external old neighbors.
@@ -119,17 +129,60 @@ But the total R-degree on P is bounded using (3):
 
 ```text
 |R| <= sum_(v in P) d_R(v)
-    <= sum_(v in E) s_v
-    <= 2 sum_(v in E) binom(s_v,2)
-    <= r(r-1)=k(k+1).
+    <= sum_(v in E) (s_v-1)
+    <= sum_(v in E) binom(s_v,2)
+    <= k(k+1)/2.
 ```
 
-The lower bound in (2) now gives `q<=3k(k+1)`. For k>=1 this is
-strictly smaller than `k³+4k²+5k`, a contradiction. This proves (T).
+Here d_K(v)>=1 on P justifies d_R(v)<=s_v-1. The lower bound in (2)
+now gives `q<=2k(k+1)`. For k>=1 this is strictly smaller than
+`3k²+5k`, a contradiction. This proves (T).
 
 For k=0, (1) forces R to be a matching of q/2 edges, all endpoints
 attached to the sole new vertex. Each matching edge's core triangle
 survives on its other two edges, immediately producing a C4.
+
+## Allowing inserted edges between surviving old vertices
+
+Sol3's complementary path argument treats this additional operation.
+Suppose ell>0 old-old nonedges are inserted, besides the deletions and
+new gadget above. Then any q-regular C4-free repair satisfies
+
+```text
+q <= 2ell+k²+3k+2.                                  (I)
+```
+
+Choose an inserted nonedge uv of the original core. For each a in N(u),
+there is a unique common neighbor b of a,v, unless a is proportional
+to v. The intersection `N(u) intersect F*v` has one point when
+omega(u,v)!=0 and none otherwise. Thus there are q-1 or q paths
+`u-a-b-v` in the core. All are simple: uv is a nonedge, excluding a=v
+and b=u, and adjacency excludes a=b.
+
+These paths are edge-disjoint. Distinct paths have distinct a and
+distinct b by C4-freeness. A shared undirected middle edge in opposite
+orientations would put two distinct vertices in N(u) intersect N(v),
+which is impossible. End edges cannot coincide with middle edges because
+all interiors exclude u,v. Each vertex occurs internally at most once
+as a and at most once as b.
+
+Deleting k vertices destroys at most 2k of these paths. Each remaining
+path, together with the inserted uv, would create a C4, and each removed
+old edge destroys at most one path. Therefore `|R|>=q-1-2k`.
+The degree identity now becomes
+
+```text
+|R|=q/2+e_K-e_J+ell <= q/2+k(k-1)/2+ell.
+```
+
+Combining proves (I). This argument does not apply the earlier selector
+equation (1) after old-old insertions; it uses the amended total budget.
+
+Consequently, for fixed k and ell, neither case can scale to unbounded q:
+ell=0 is covered by (T) (or the k=0 triangle argument), and ell>0 by (I).
+In particular, a family with bounded inserted old-old edges would need
+the number of deleted vertices to grow at least on the order of sqrt(q).
+No claim excludes repairs whose edit counts grow with q.
 
 ## Verification and limit of the result
 
@@ -139,7 +192,7 @@ also checks the core triangle identity on all 2,040 edges at q=16; the
 uniform proof does not depend on that finite check. The polynomial
 identities and comparisons in (5) were checked with exact arithmetic.
 
-No classification of large selectors beyond (4) is assumed. The theorem
-allows both shared selectors and arbitrary edges within the new gadget.
-It shows a necessary growth of the repair size, not the existence or
-nonexistence of repairs above the bound. The general A-REG gap remains.
+No classification of large selectors beyond (4) is assumed. Both bounds
+allow shared selectors and arbitrary edges within the new gadget.
+They show necessary growth of the repair size, not existence or
+nonexistence of repairs above the bounds. The general A-REG gap remains.

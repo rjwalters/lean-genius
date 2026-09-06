@@ -18,9 +18,10 @@ unrelated q-regular graphs on q² vertices.
 
 The subsequent `POLARITY_BOUNDED_SURGERY_OBSTRUCTION.md` extends the
 construction-side exclusion: deleting k vertices and adding k+1, while
-only removing survivor edges, requires `q<=k³+4k²+5k`. Thus bounded-size
-repairs cannot scale to unbounded q. The present k=1 argument has the
-sharper threshold q>=8.
+only removing survivor edges, requires `q<=3k²+5k`. If ell>0 old-old
+edges are inserted, it instead requires `q<=2ell+k²+3k+2`. Thus bounded
+edit counts cannot scale to unbounded q. The present k=1 argument has
+the sharper threshold q>=8 when no old-old edges are inserted.
 
 ## Affine symplectic coordinates
 
