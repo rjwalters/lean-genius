@@ -6,8 +6,10 @@ import Proofs.Erdos85BinarySquareRegularParity
 At order 64 (`q = 8`), let `c` be a size-two defect component (16 vertices)
 carrying a `±1`-valued vector `v` (zero off `c`) which is an eigenvector of the
 internal ambient 2-factor `H = A[c]` with eigenvalue `−2` and of the defect
-graph `D` with eigenvalue `μ = 1`.  Connected bipartite `H` supplies such a
-joint eigenline by commutation and negative-eigenline rigidity.  For a
+graph `D` with eigenvalue `μ = 1`. Connected bipartite `H` supplies a
+joint eigenline by commutation and negative-eigenline rigidity, but does
+not force its defect eigenvalue to be `1`; that value is a separate
+hypothesis here. For a
 disconnected union of even cycles, commutation only preserves the whole
 multi-dimensional `−2` eigenspace; producing a global `±1` joint eigenvector
 is a separate hypothesis, exactly as reflected in the theorem statement.
@@ -21,8 +23,9 @@ a vertex `z` of `c` with `v z = 1` shows `z` has exactly one neighbour with
 graph of minimum degree `≥ 2` on four vertices — which contains a `C₄`.
 
 So `μ = 1` is impossible whenever the displayed signed joint eigenvector has
-been produced.  In particular this kills the connected-internal branch at
-`q = 8`; disconnected even-cycle factors still require a production argument.
+been produced. This kills the `μ = 1` subcase of the connected-internal
+branch at `q = 8`, not its other joint eigenvalues or a general-`q` branch.
+Disconnected even-cycle factors still require a production argument.
 -/
 
 open SimpleGraph Matrix
