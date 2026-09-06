@@ -41,6 +41,8 @@ def check():
             assert (b in d[a]) == (a in d[b])
             assert (b in h[a]) == (a in h[b])
             assert len(h[a] & d[b]) == len(d[a] & h[b])
+            # Exact polynomial recovering the three-point fiber partition.
+            assert len(d[a] & d[b]) + 6 * (b in d[a]) - 6 == 9 * (a//3 == b//3)
             if a != b:
                 assert len(h[a] & h[b]) <= (0 if b in d[a] else 1)
             if b in d[a]:
