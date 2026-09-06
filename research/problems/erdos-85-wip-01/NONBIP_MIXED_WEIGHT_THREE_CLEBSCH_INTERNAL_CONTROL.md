@@ -173,8 +173,56 @@ family, independently of the fiber edges. This does not classify
 all cubic H commuting with the Clebsch blow-up D. The original explicit
 H was only one member; the stronger family conclusion is still at q16.
 
+## Equitability follows, but translation invariance does not
+
+For an arbitrary simple cubic H commuting with this fixed D, the partition
+into the sixteen three-point fibers is automatically equitable. This does
+not require that H was built using base translations.
+
+Let E=I16 tensor J3, the matrix with an all-ones block on each fiber. The
+base Clebsch identity C^2=3I-2C+2J gives the exact identity
+
+```text
+D^2+6D-6J48=9E.
+```
+
+Regularity and symmetry make H commute with J48; commutation with D then
+makes H commute with E. In the (x,y) fiber block, the entries of HE are
+the row sums of H[x,y], whereas the entries of EH are its column sums.
+Equality for every pair of fiber labels forces all those row and column
+sums to be one common integer Q[x,y]. Thus Q is symmetric, nonnegative,
+and has every row sum3. Summing HD=DH over fiber blocks gives QC=CQ.
+The checker verifies the displayed polynomial identity entry by entry.
+
+Consequently the missing hypothesis in the excluded quotient family is
+translation invariance of Q, not equitability. No proof here forces an
+arbitrary cubic integer commutant Q into that family. A bounded20-second
+necessary-condition quotient probe returned UNKNOWN and supplies no
+classification or nonexistence evidence. The fixed-D arbitrary-H problem
+remains open; no further quotient enumeration is justified by that timeout.
+
 Run the standard-library checker:
 
 ```sh
 python3 research/problems/erdos-85-wip-01/check_weight_three_clebsch_internal.py
 ```
+
+## Lean signed-Gram consumer
+
+`proofs/Proofs/Erdos85OddColumnSignedGram.lean` supplies the direct algebraic
+consumer, with no assumed energy bound:
+
+- `oddColumn_signedGram_lower_bound` proves the sign-vector Gram lower
+  bound from odd integer column sums (binary entries are unnecessary).
+- `oddColumn_gram_jointSign_false` derives the Gram energy from the actual
+  identity `BB^T=(q-1)I+J-D-H^2` and a balanced joint sign eigenvector,
+  then contradicts the lower bound when the parameter inequality holds.
+- `clebsch_signedGram_no_incidence` specializes to 48 rows, 208 columns,
+  column sum 3, `Hs=-3s`, and `Ds=3s`, deriving the contradiction 144<208.
+
+The module compiles with no `sorry` and only `propext`, `Classical.choice`,
+and `Quot.sound`. The concrete definitions of H,D and the Clebsch character
+geometry, including the widened quotient-family argument, remain the
+prose/checker inputs above; the numerical corollary keeps those eigenvector
+hypotheses explicit. This is not a Lean exclusion of arbitrary Clebsch
+commutants or of the entire weight-three branch.
