@@ -39,7 +39,7 @@ independent vertices and each edge by a complete bipartite graph. The
 result has order 21, degree 6, and odd girth 7. This is not an ambient
 C4-free graph or a realized defect component.
 
-The literature states the general implication
+For nonbipartite graphs, the literature states the implication
 `delta > 2N/(2g+1)` implies an odd cycle shorter than `2g+1`:
 Freddie Illingworth, *The chromatic profile of locally colourable graphs*,
 [Lemma 2.1, pp. 7–8](https://discovery.ucl.ac.uk/id/eprint/10197002/1/min_deg_stab_accepted.pdf),
