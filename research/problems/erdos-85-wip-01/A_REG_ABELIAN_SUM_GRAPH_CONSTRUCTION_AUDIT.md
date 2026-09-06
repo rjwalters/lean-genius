@@ -56,6 +56,38 @@ four class is excluded, uniformly in q.
 Also, a group with exactly two cyclic factors, both of order at least four,
 has m=h=4. Equation (2) becomes (q-6)²+12<=0, so this class is excluded.
 
+## The equality m=q is excluded by relative-difference-set theory
+
+Suppose m=q. The q(q-1) distinct ordered nonzero differences of S avoid
+T, and `|G\T|=q²-q=q(q-1)`. Hence they cover every element of G\T
+exactly once. In the standard convention, S is an abelian `(q,q,q,1)`
+relative difference set with forbidden subgroup T.
+
+Ganley's even-order classification, stated as Theorem 1.1 in
+[Zhou, *(2^n,2^n,2^n,1)-relative difference sets and their representations*,
+arXiv:1211.2942v2, PDF p.2](https://arxiv.org/pdf/1211.2942), forces
+`G` to be isomorphic to `(Z/4)^k` when q=2^k. Zhou attributes this
+case to Ganley, *On a paper of P. Dembowski and T. G. Ostrom*,
+Arch. Math. 27 (1976), 93–98, and cites
+[Jungnickel, *On a theorem of Ganley*, Graphs Combin. 3 (1987),
+141–143](https://link.springer.com/article/10.1007/BF01788537), for a
+shorter proof. Jungnickel's publisher abstract also states this classification.
+The source theorem is used here as a published result, not claimed
+Lean-formalized or reproved in this audit.
+
+In that group T=2G. Since S has at most one point in each T-coset and
+has q points, it meets every T-coset, including T itself. This contradicts
+S intersect 2G being empty. Thus m=q is impossible. Both m and q are
+powers of two, so the earlier m<=q improves uniformly to
+
+```text
+m <= q/2.
+```
+
+Together with (2), a surviving class must satisfy
+`sqrt(q)<m<=q/2`. This still leaves growing-rank, higher-exponent
+parameters; it does not exclude every abelian sum graph.
+
 ## Stop condition and remaining gap
 
 These exclusions do not cover all abelian 2-groups. For example the
