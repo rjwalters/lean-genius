@@ -36,6 +36,11 @@ def internal(q):
             reached.add(y)
             todo.append(y)
     assert len(reached) == order
+    for a in range(q):
+        code = {a, a+q, a+2*q}
+        assert len(code) == 3
+        for v in range(order):
+            assert len(d[v] & code) == 1 - int(v in code)
     cycle = [0, q + 1, 2 * q + 2, 3, q + 4]
     assert len(set(cycle)) == 5
     for i, j in combinations(range(5), 2):
@@ -97,6 +102,13 @@ def main():
     print(f"PASS: q16 C Gram, triangle-free connected D, HD=DH; {checked} ambient pairs")
     print(f"Partial graph degrees: {dict(sorted(degrees.items()))}; no exterior completion claimed")
     print(f"Cross-parity certificate at C vertex {witness}: labels={selected}, demands={demands}, sum=11 (odd)")
+    code = {0, q, 2*q}
+    principal_hd = sum(len(h[x] & d[z]) for x in code for z in code)
+    internal_directed = sum(len(h[x] & code) for x in code)
+    assert internal_directed % 2 == 0
+    assert principal_hd == 9 - internal_directed
+    assert principal_hd % 2 == 1
+    print("Perfect-code certificate: D*1_{0,16,32}=1-1_{0,16,32}; principal HD sum is odd")
 
 
 if __name__ == "__main__":

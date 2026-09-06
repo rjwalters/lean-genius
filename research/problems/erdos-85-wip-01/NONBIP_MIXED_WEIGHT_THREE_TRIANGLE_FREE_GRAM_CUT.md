@@ -2,10 +2,12 @@
 
 Node: `A.5.3 / A-REG-NONBIP / NONBIP-MIXED / [q-3,3]`.
 
-Status: explicit countermodel to an internal-only obstruction, followed by
-a uniform parity exclusion of its symmetric integral cross completion.
-Internal construction for even `q>=8`; full small-shore Gram construction
-at `q=16`. No Lean theorem is claimed. The general weight-three branch is open.
+Status: the fixed interval defect D is excluded for EVERY cubic commuting
+internal H by its odd perfect code, uniformly for even `q>=8`. This
+supersedes the reflection-family restriction below. The earlier internal
+countermodel and q16 partial Gram graph remain valid. The general
+weight-three branch is open: arbitrary defect graphs are not classified
+into this interval family or shown to admit odd perfect codes.
 
 ## The proposed obstruction and its failure
 
@@ -193,4 +195,66 @@ decomposition of B, nonnegativity of T, or connected D_F is used.
 If an H already violates the small-shore C4 cap then the Gram premise
 fails earlier; the parity argument covers every member admitting that
 premise. An arbitrary cubic commuting H has not been classified into this
-family, so the general triangle-free weight-three branch remains open.
+family. The following argument removes that classification requirement
+for the fixed interval D; arbitrary triangle-free D remain open.
+
+## Odd perfect code: the fixed D excludes every cubic commuting H
+
+The parity condition (P) is not compatible with ANY simple cubic H
+commuting with this D. This uniform argument was found independently by
+Sols 1 and 2 while considering its three-point fibers.
+
+Let `P={0,q,2q}`. The set P is independent in D. Every point outside P
+has exactly one D-neighbor in P: its three differences to P occupy the
+same nonzero position in the three consecutive intervals of length q,
+exactly one of which is `(q,2q)`. Hence
+
+```text
+D 1_P = 1_C - 1_P.                                  (C)
+```
+
+This is an efficient dominating set, also called a perfect code. The
+same identity holds for each translated fiber `{i,i+q,i+2q}`.
+
+Since `HD=DH` and H,D are symmetric, HD is symmetric. If (P) holds,
+its diagonal is even, and therefore its principal sum over P is even.
+On the other hand, (C) and cubic regularity give
+
+```text
+sum_(x,z in P) (HD)(x,z)
+  = sum_(x in P) sum_y H(x,y) (1 - 1_P(y))
+  = 3*|P| - sum_(x,y in P) H(x,y)
+  = 9 - 2|E(H[P])|,
+```
+
+which is odd. Contradiction. No description of H by reflections,
+internal C4 cap, choice of B, exterior Gram, or connected D_F is used
+after the necessary even-diagonal condition is supplied.
+
+Thus this D cannot be the weight-three defect component of a binary
+square-order regular C4-free graph. In a full graph the condition (P)
+is also immediate from `AD=(q-1)A+qJ-A^3`: its diagonal is
+`q-(A^3)(x,x)`, even
+for even q, and the C diagonal equals that of HD because D has no
+edges between components.
+
+More generally, replace cubic degree by any odd m and the three-point
+set by any odd-cardinality independent perfect code. The principal sum
+is then `m|P|-2|E(H[P])|`, still odd. A defect component of weight m
+has internal ambient degree m. Since D has degree q-1, every exact
+perfect code in a component of order mq has size m. Consequently an
+odd-weight component of a full binary-square graph cannot admit a
+perfect code. Existence of such a code in arbitrary odd-weight defect
+components remains an additional, unproved hypothesis.
+
+The checker verifies (C) for every q-spaced fiber in its formula samples.
+The bounded arbitrary-H solver returned UNKNOWN at 45 seconds; the
+exclusion is the mathematical argument above, not a solver certificate.
+
+The generic principal-sum terminal is now Lean-checked as
+`Erdos85.odd_defect_perfectCode_false` in
+`proofs/Proofs/Erdos85OddDefectPerfectCodeObstruction.lean` (Sol1;
+independent review #1408). It compiles with only `propext`,
+`Classical.choice`, and `Quot.sound`. The exact code equation and even
+product diagonal remain explicit hypotheses; this module does not yet
+formalize the cyclic-coordinate code or full-completion adapter above.
