@@ -179,3 +179,72 @@ and the exterior Gram still retain possible obstructions. In particular,
 a solution over F2 is not an integral or graph completion. The direct
 full-rank modulo-two refinement is stopped rather than formalized as
 another parity wrapper.
+
+## Rank-deficient remainder: an exact kernel condition
+
+For arbitrary rectangular B over F2 the full criterion is
+
+```text
+exists alternating T with BT=C
+  iff im(C) is contained in im(B) and CBᵀ is alternating.       (E)
+```
+
+Necessity is immediate. For sufficiency factor `B=P S`, where S has full
+row rank r and P has full column rank r. Image containment gives `C=P V`.
+Choose a left inverse Q of P. Then
+`Q(CBᵀ)Qᵀ=VSᵀ` is alternating. Apply the full-row-rank result to S,V
+to obtain `ST=V`, hence `BT=C`. If r=0, image containment forces C=0,
+and T=0 suffices. This is a finite-dimensional algebraic proof, not a
+classification of the graph inputs.
+
+For the actual even-q degree data, `B1_F=1_C` over F2. With `C=J+HB`,
+the image condition in (E) is equivalent to H preserving im(B): adding
+the all-ones column does not change membership in im(B). By symmetry of
+H, this is also equivalent to H preserving ker(Bᵀ). Thus the exact
+modulo-two cross-completion test is
+
+```text
+even diagonal HD, and H(ker Bᵀ) contained in ker Bᵀ.           (K)
+```
+
+The full Gram and HD=DH give commutation of H with BBᵀ. Over F2 that
+does not by itself imply the kernel condition: the kernel of BBᵀ can
+be larger than the kernel of Bᵀ. One must not import the corresponding
+positive-semidefinite argument over the reals.
+
+The fixed eight-dimensional control in
+`check_weight_three_mod2_cross_kernel.py` makes the distinction explicit.
+B has row and column sums 3, H is simple cubic, and
+`D=BBᵀ+I+J+H²` over F2 is symmetric and loopless. It satisfies
+`HD=DH`, zero diagonal HD and alternating `CBᵀ`. But for `z=e_0+e_4`,
+
+```text
+Bᵀz = 0,
+Cᵀz = BᵀHz = e_1+e_2+e_6+e_7 != 0.
+```
+
+Consequently even an unrestricted T cannot solve BT=C. The ranks of
+B and BBᵀ are 6 and 4, respectively. This control deliberately does not
+model an Erdős graph: D has degrees 1 and 3, H has a pair with two common
+neighbors, and no integer Gram is claimed. It refutes only omission of
+the kernel condition from the algebraic implication.
+
+The standard-library checker verifies the fixed control and all 4,096
+binary 2-by-3 pairs B,C, including deficient ranks, against all eight
+alternating 3-by-3 T. Run:
+
+```sh
+python3 research/problems/erdos-85-wip-01/check_weight_three_mod2_cross_kernel.py
+```
+
+The bounded matrix search is stopped. The next graph-level obligation
+would be to force failure of (K), or exploit an integer/binary obstruction
+even when (K) holds, using the actual C4 and Gram hypotheses. Neither
+follows from the algebraic criterion or the control. No outline node has
+changed to PROVEN.
+
+Review: Sol2 independently verified this section and checker in #1418.
+Sol3 independently derived the rank-free criterion by row reduction and
+checked all 4,096 small pairs; Sol2 independently found a second cubic
+binary control with the same failure. One control is recorded here to
+avoid duplicating artifacts for the same algebraic distinction.
