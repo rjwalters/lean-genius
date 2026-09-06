@@ -68,6 +68,21 @@ def distances(adj, start):
     return dist
 
 
+
+def rank_mod_two(rows):
+    """Exact row reduction on bit-packed rows over F2."""
+    pivots = {}
+    for row in rows:
+        value = row
+        while value:
+            pivot = value.bit_length() - 1
+            if pivot not in pivots:
+                pivots[pivot] = value
+                break
+            value ^= pivots[pivot]
+    return len(pivots)
+
+
 def verify():
     q = 6
     n = q*q
@@ -78,6 +93,13 @@ def verify():
         assert all(0 <= v < n and v != u and u in a[v] for v in row)
     pairs = list(combinations(range(n), 2))
     assert max(len(a[u] & a[v]) for u, v in pairs) == 1
+    # Squaring need not double individual Smith invariant exponents:
+    # it can change the count of invariant factors divisible by two.
+    packed_a = [sum(1 << v for v in row) for row in a]
+    packed_square = [sum((len(a[u] & a[v]) % 2) << v for v in range(n))
+                     for u in range(n)]
+    assert rank_mod_two(packed_a) == 32
+    assert rank_mod_two(packed_square) == 28
     triangles = [(u, v, w) for u, v, w in combinations(range(n), 3)
                  if v in a[u] and w in a[u] & a[v]]
     t = [sum(u in tri for tri in triangles) for u in range(n)]
@@ -108,6 +130,7 @@ def verify():
     assert min(t[u]+t[v] for u, v in pairs if v in a[u] and a[u] & a[v]) == q//2+1
     print("verified: simple 6-regular C4-free graph on 36 vertices")
     print("D connected nonbipartite; distance-three E connected")
+    print("F2 ranks: A=32, A²=28; individual Smith exponents do not double")
     print("triangle degrees:", dict(sorted(Counter(t).items())))
     print("triangle sums:", dict(sorted(triangle_sums.items())))
     print("At values:", dict(sorted(at.items())))

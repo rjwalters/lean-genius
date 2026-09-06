@@ -50,9 +50,21 @@ nullity_F2(A) <= v_2(det(A)).
 
 It gives no upper bound on the exponents of those invariant factors.  Thus
 even an exact computation of `nullity_F2(A)` cannot conflict with the lower
-bound `v_2(det(A)) >= 2k`.  Passing from `A` to `A^2 = L_D + J` doubles the
-same Smith exponents and does not reverse this inequality.  Plain F2 rank is
-therefore a loss certificate, not a terminal.
+bound `v_2(det(A)) >= 2k`. Passing from `A` to `A^2 = L_D + J`
+doubles the **total determinant valuation**, not necessarily the individual
+Smith exponents. Matrix squaring is not compatible with independent
+unimodular row and column changes used to obtain Smith normal form. Plain
+F2 rank still gives only a lower bound, not the required terminal.
+
+A graph-level check makes this distinction concrete. For the actual q=6
+HoG H36 graph, the offline [verifier](verify_boza_h36_triangle_control.py)
+computes F2 ranks 32 for A and 28 for A². Thus there are respectively 4
+and 8 even Smith invariant factors. Doubling each individual exponent
+would preserve that count, so it cannot describe A². This example is
+nonsingular over Q: its defect D is connected and A²=L_D+J is positive
+definite. It refutes the generic Smith-squaring claim even for an actual
+regular C4-free square-order adjacency matrix. It does not test the
+binary-degree upper-bound conjecture below; that conjecture remains open.
 
 The banked generic tools in `Erdos85TwoAdicDeterminant.lean` have the same
 orientation: mod-two kernels or even transformed rows prove additional
