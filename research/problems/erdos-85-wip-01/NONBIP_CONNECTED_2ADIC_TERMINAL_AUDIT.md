@@ -188,3 +188,69 @@ the zero-diagonal requirement, for example through its trace/Sachs data;
 the full Gram Hasse invariants alone lose that information. This finite
 control does not settle cofinal q, mixed defect, or A-REG, and is not a
 Lean formalization.
+
+## A modulo-two square-root obstruction for cyclic defects
+
+Date: 2026-09-06. This is a uniform exclusion of a specified defect class,
+not a proof that the remaining defects belong to that class.
+
+**Proposition.** Let `q=2^k`, `k>=2`, and `n=q²`. Suppose D is a simple
+circulant graph on `Z/nZ` of degree `q-1`, with connection set
+
+    {n/2} union {a,n-a : a in R},   R subset {1,...,n/2-1}.
+
+If R contains an odd number of odd integers, then
+`M=(q-1)I+J-D` has no symmetric zero-diagonal square root over `F_2`.
+In particular, it cannot be the square of an A-REG adjacency matrix over
+the integers. There is no assumption that a putative square root is
+circulant or preserves any automorphism of D.
+
+First, an elementary matrix obstruction: if an `n` by `n` matrix M over
+`F_2`, with even `n>2`, is nilpotent and has nullity two, it has no
+alternating square root B. Indeed, `B²=M` makes B nilpotent. Alternating
+matrices have even rank, so B has positive even nullity. The containment
+`ker B subset ker B²`, together with `dim ker B²=2`, gives
+`ker B=ker B²`. This equality propagates to every power: if `B^(j+1)v=0`,
+then `B^(j-1)v` belongs to `ker B²=ker B`, so `B^j v=0`.
+Nilpotence would therefore give `ker B` equal to the whole space,
+contradicting its dimension two. A symmetric zero-diagonal matrix over
+`F_2` is alternating, so this obstruction applies.
+
+To prove the proposition, identify circulant matrices over `F_2` with
+multiplication operators in
+
+    F_2[X]/(X^n-1) = F_2[z]/(z^n),   z=X+1.
+
+The polynomial for M is
+
+    m(X)=1+(1+X+...+X^(n-1))+X^(n/2)
+         + sum_(a in R) (X^a+X^(n-a)).
+
+The all-ones polynomial becomes `z^(n-1)`. The constant coefficient of
+`m(1+z)` is zero, since its augmentation is `1+(q-1)=0`. Its linear
+coefficient is zero: each paired exponent sums to n, and n/2 is even.
+Because `4` divides n/2 and `n-1>2`, the coefficient of `z²` is
+
+    sum_(a in R) [binom(a,2)+binom(n-a,2)]
+      = sum_(a in R) a = 1   in F_2.
+
+Here the binomial congruence follows by reducing a modulo four and using
+`4|n`. Thus `m(1+z)=z² u(z)`, where u has constant coefficient one and
+is a unit in the truncated polynomial ring. Multiplication by m is
+nilpotent, and its kernel has dimension two, exactly as multiplication
+by `z²`. The matrix obstruction finishes the proof.
+
+For the preceding q=8 looped control, take `R={22,26,27}`. Exactly one
+representative is odd, so this excludes every alternating square root
+of its M modulo two. It does not contradict the displayed looped root,
+whose diagonal is nonzero. Independent bitset elimination also gives
+`rank(A^j mod 2)=64-j` for `1<=j<=64` for that displayed root, in
+particular `rank M=62` and `M^32=0`; these finite computations are a
+cross-check, not a premise of the uniform proof.
+
+The remaining scope gap is explicit. D need not be circulant, and even
+parity of the odd representatives does not satisfy the proposition.
+For example, the degree-seven circulant with representatives `{1,2,3}`
+and antipodal shift 32 has valuation four, not two, at `X=1`.
+This note does not assert that such a defect admits an A-REG root. No
+general connected or mixed branch is closed, and no Lean proof is claimed.
