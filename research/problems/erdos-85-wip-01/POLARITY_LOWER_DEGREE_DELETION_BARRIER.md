@@ -380,3 +380,57 @@ out characteristic-zero coordinatization uniformly, but does not supply
 coordinatization, exclude positive-characteristic fields, or apply to
 arbitrary non-Desarguesian planes. The q4 characteristic-seven control above
 is consistent with this obstruction and is outside its degree range.
+
+
+## Large characteristic and prime-field embeddings
+
+There are absolute constants C_0,Q such that, for q>=Q, a weak incidence
+embedding of a q-regular graph on q² vertices into PG(2,F) in positive
+characteristic p requires
+
+    p < C_0 q^(22/15).                                 (5)
+
+The source is [Stevens--de Zeeuw, *An improved point-line incidence bound
+over arbitrary fields*, arXiv:1609.06284v4, Theorem 3](https://arxiv.org/pdf/1609.06284).
+For m affine points and n affine lines with m^(7/8)<n<m^(8/7), their theorem
+gives I=O(m^(11/15)n^(11/15)), provided m^(-2)n^13 is sufficiently small
+compared with p^15. The constants here are absolute; no explicit numerical
+value of Q is claimed.
+
+To use this affine statement, first extend F to the infinite field F(t),
+which preserves characteristic, points, lines, and incidences. Over an
+infinite field there is a projective line avoiding the finitely many
+selected points and distinct from every selected line. Take it as the line
+at infinity. All q² selected points and q² selected lines then lie in the
+affine chart, and their at least q³ incidences are unchanged. Extending the
+field is legitimate because the cited theorem is over arbitrary fields;
+its size restriction is on characteristic, not field cardinality.
+
+Put m=n=q². The characteristic condition is satisfied whenever
+p>=C_0 q^(22/15), for a suitable absolute C_0, because
+
+    m^(-2)n^13 = q^22.
+
+The incidence estimate would then imply
+
+    q³ <= C q^(44/15),  hence q^(1/15) <= C.
+
+This fails for all sufficiently large q. Increasing Q if necessary proves
+(5). Symmetry and C4-freeness are not used in this incidence estimate;
+extra incidences can only increase the required lower bound q³.
+
+For sufficiently large binary q=2^k, this excludes embeddings into every
+prime-field plane PG(2,p), regardless of p. Indeed, if p<q, that plane has
+fewer than q² points. Equality p=q is impossible for binary q>=8 because q
+is not prime. If q<p<=(q-2)², the earlier incidence-mixing exclusion applies.
+If p>(q-2)², then p>=C_0 q^(22/15) for all sufficiently large q, since
+(q-2)²/q^(22/15) tends to infinity. This last range contradicts (5).
+
+This is a uniform asymptotic exclusion of prime-field realizations, not an
+explicit small-degree result or a Lean formalization. In combination with
+the preceding section, any field realization of a sufficiently large binary
+A-REG candidate must use positive characteristic p<C_0 q^(22/15), and it
+cannot be realized over its prime field. Extension fields can still have
+arbitrarily large cardinality at such a characteristic. Neither the
+existence of any representation nor the exclusion of these extension-field
+or non-Desarguesian cases follows.
