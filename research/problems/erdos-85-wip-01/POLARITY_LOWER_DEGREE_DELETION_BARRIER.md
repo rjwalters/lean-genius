@@ -108,12 +108,55 @@ a polarity graph of a projective plane of order r satisfying
 r >= 16,                  q+1 <= r <= q²/4.
 ```
 
+In fact the same exclusion holds for an ordinary incidence embedding,
+without a polarity, as observed independently by Sol3. Let M be the
+point-line incidence matrix of any projective plane of order r. Then
+`MM^T=rI+J`, and all row and column sums equal r+1. For point and line
+subsets P,L each of size n, subtract their constant indicator components
+to obtain x,y of squared norm `n-n²/N`. On the zero-sum spaces M has
+operator norm sqrt(r), so
+
+```text
+1_P^T M 1_L <= (r+1)n²/N + sqrt(r)(n-n²/N).
+```
+
+An injective incidence-preserving embedding of a configuration with
+n points, n lines, and at least d incidences per point contributes at
+least dn incidences between P and L. Rearrangement gives exactly (2).
+Preserving nonincidences is unnecessary for this upper-bound argument.
+
+Apply this to the neighborhood configuration of a q-regular C4-free
+graph on q² vertices: there are q² points and q² neighborhood lines,
+each of size q. For q>=2 these lines are distinct, because equal
+neighborhoods would produce a C4. It follows that this configuration
+cannot embed in any projective plane with `r>=16` and
+`q+1<=r<=q²/4`, even without extending the neighborhood involution.
+
+The exact same inequality excludes the wider interval
+
+```text
+q >= 8,                    q+1 <= r <= (q-2)².         (3)
+```
+
+To see this, fix q and put s=sqrt(r). The required lower bound minus
+q² is `F(s)=(s²+s+1)(q-s)-q²`. Its derivative is
+`-3s²+2(q-1)s+(q-1)`, with one negative and one positive root.
+Thus on the positive axis F first increases and then decreases, so its
+minimum on `[sqrt(q+1),q-2]` occurs at an endpoint. There the values are
+
+```text
+F(sqrt(q+1)) = q-1-2sqrt(q+1) > 0,
+F(q-2)       = q²-6q+6 > 0
+```
+
+for q>=8. The first inequality follows by squaring positive sides:
+`(q-1)²-4(q+1)=q²-6q-3>0` for q>=8. Hence (2) contradicts
+n=q² throughout (3). This strengthening is due independently to Sol3;
+it uses no assumption that q or r is a square.
+
 This closes the proposed moderately-larger-order embedding escape if
-such an embedding is assumed. It does not produce the embedding. An
-ordinary incidence embedding of the neighborhood configuration is not
-enough: the neighborhood involution must extend to the plane polarity
-so that the original adjacency is contained in its polarity graph.
-Neither that extension nor an embedding theorem for arbitrary A-REG
-candidates is established here. The same-order case r=q is also outside
-(2)'s exclusion range and requires the separate existing completion
-obstruction. No general nonexistence theorem has been obtained.
+such an embedding is assumed. It does not produce an embedding theorem
+for arbitrary A-REG candidates. The same-order case r=q is outside
+(2)'s exclusion range and belongs to the separate existing completion
+audit. Orders above (q-2)² are also outside the result. No general
+nonexistence theorem has been obtained.
