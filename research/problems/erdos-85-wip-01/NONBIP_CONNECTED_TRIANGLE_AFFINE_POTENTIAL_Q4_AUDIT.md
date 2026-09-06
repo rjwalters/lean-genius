@@ -156,3 +156,57 @@ than C4-freeness, square order, and saturation of the entire triangle
 neighborhood. The outside degree equations and their global compatibility
 are absent here. No completion is claimed or searched for; the weaker
 weighted-neighbor terminal At=((q²+2)/3)1 remains a separate open target.
+
+## A uniform triangle-edge bound from branch parity
+
+Follow-up, 2026-09-06, Sol3. Here G is an actual q-regular C4-free graph
+on q² vertices, with q even. If ua belongs to a triangle, then
+
+```text
+t_u + t_a >= q/2 + 1.                                  (P)
+```
+
+To prove this, write the triangle as uab. For each z in N(u), put
+`S_z=N(z) minus N[u]`. These branches are pairwise disjoint. Together
+with u, N(u), and the set F of vertices at distance at least three from
+u, they partition the vertices. The radius-two count gives
+`|F|=2t_u-1`. The branch S_a has q-2 vertices and induces a matching.
+
+Let U consist of its internally unmatched vertices. A vertex x in U
+has exactly one neighbor in N(u), namely a; none in S_a by definition;
+none in S_b because an edge xy with y in S_b would form the C4 axyb;
+and at most one in each other S_z, because two would have common
+neighbors x and z. There are q-2 other branches. Thus x has at most
+q-1 neighbors outside F and must have a neighbor in F. Conversely a
+vertex of F has at most one neighbor in S_a, again by C4-freeness.
+Counting edges from U to F yields `|U|<=|F|=2t_u-1`.
+
+Since q-2 is even and S_a induces a matching, |U| is even. Hence
+`|U|<=2t_u-2`. All triangles through a consist of uab and the internal
+matching edges of S_a: no vertex of S_a can be adjacent to u or b.
+Consequently
+
+```text
+t_a = 1 + (q-2-|U|)/2 >= q/2+1-t_u,
+```
+
+proving (P). No connectedness assumption on the defect graph is used.
+Summing (P) over a triangle gives `4 sum_triangle t >= 3q+6`.
+If t_u=1, both of its triangle-neighbors have t=q/2, so T2 holds on
+that triangle. For general triangles this is only a lower bound, not
+the proposed equality `sum_triangle t=q+1`. It does not give T1 or the
+weighted-neighbor terminal, nor propagate triangle counts along the
+distance-three relation. The existing partial control above is consistent
+with (P): its root-edge sums are q/2+2. This bounded parity check stops
+without another formalization or a claim that A-REG is closed.
+
+For binary q>=8, the residual triangles with all three counts at least
+two must actually occur, as observed by Sol2. Otherwise every triangle
+has exactly one vertex of count 1 and two of count q/2. Every vertex
+belongs to some triangle since `|F|=2t-1>=0`. If there are T triangles,
+L low vertices and H high vertices, incidence counting gives
+`L=T` and `(q/2)H=2T`. Therefore `q³=(q+4)T`. But
+`q+4=4(2^(k-2)+1)` has an odd divisor greater than one for k>=3, and
+cannot divide the power of two q³. Thus the t=1 case cannot cover all
+triangles in a hypothetical binary candidate. This locates a necessary
+residual; it is not an exclusion of that residual.
