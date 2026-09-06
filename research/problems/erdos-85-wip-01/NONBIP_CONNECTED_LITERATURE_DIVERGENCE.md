@@ -1036,7 +1036,7 @@ the standard infinite family there: delete from a projective plane of order
 `q` a flag, the pencil through its point, and all points on its line.  The
 result has type `(q^2)_q`.  A modern reference is Abreu--Funk--Labbate--
 Napolitano, *Deletions, extensions, and reductions of elliptic semiplanes*,
-Innovations in Incidence Geometry 11 (2010), 139--169,
+Innovations in Incidence Geometry 11 (2010), 139--155,
 doi:10.2140/iig.2010.11.139.
 
 This identification does not classify our object.  An elliptic semiplane is
@@ -1068,6 +1068,41 @@ No cited theorem proves `(CFG1)`; assuming the elliptic-semiplane parallel
 axiom would assume its conclusion.  The configuration-language route is
 therefore **stopped at the parallel-axiom gate**, while providing useful
 search terminology for any future polarity-specific attack.
+
+#### Small-excess cage check (2026-09-06): two further scope barriers
+
+The Levi graph of the target configuration has `2q²` vertices, degree q,
+and girth six. Absence of four-cycles follows from linearity. For q>=3,
+girth at least eight would require at least
+`2(1+(q-1)+(q-1)²+(q-1)³)>2q²` vertices by the Moore bound, so its
+girth is exactly six. Its excess in the graph-theoretic convention is
+
+```text
+2q² - M(q,6) = 2q² - 2(q²-q+1) = 2(q-1).
+```
+
+This is twice the configuration deficiency. It is not within the
+`e<=k-2` hypothesis of the Biggs--Ito result quoted as Theorem 1.1 in
+[Filipovski, *On the non-existence of antipodal cages of even girth*,
+LAA 546 (2018), 261--273](https://doi.org/10.1016/j.laa.2018.02.010).
+That theorem concerns cages and concludes bipartiteness and diameter
+`g/2+1`; it is not a plane-embedding theorem. Here `2(q-1)>q-2`.
+
+There is also a direct failure of its minimality hypothesis. For every
+prime-power q the type-L configuration above has `q²-1` points and lines.
+Its Levi graph has degree q, girth six and only `2(q²-1)` vertices.
+Thus the target's `2q²`-vertex Levi graph is not a `(q,6)`-cage, regardless
+of whether the target admits its required polarity. Cage minimality is
+among all graphs of the degree and girth, not only among graphs carrying
+the desired polarity.
+
+The type-L construction and the distinct type-C flag construction are
+given on pages 140--141 of the
+[2010 primary paper](https://msp.org/iig/2010/11-1/iig-v11-n1-p07-p.pdf).
+Neither asserts that an arbitrary flag-diagonal configuration embeds in
+a projective plane. This check therefore stops the small-excess cage
+import as well as retaining the earlier parallel-axiom gap; it supplies
+no new A-REG exclusion.
 
 ### Three-block alternating radical: one extra vector, no extra equation
 
