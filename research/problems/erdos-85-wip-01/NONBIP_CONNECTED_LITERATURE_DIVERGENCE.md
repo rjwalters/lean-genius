@@ -1332,3 +1332,65 @@ Thus the proposed higher-matching lift needs a different signed or
 These are interface cuts, not counterexamples to stronger constructions
 that retain the labelled matching edges or the complete 2-adic filtration.
 They explain precisely which information such a construction must add.
+
+## Fractional automorphisms do not supply the missing symmetry
+
+Date: 2026-09-06. Node: A-REG / NONBIP-CONNECTED. Bounded probe stopped;
+the proposed passage from a commuting stochastic matrix to actual graph
+symmetries requires an additional hypothesis that fails for A itself.
+
+The source framework is [*Automorphisms of graphs*, Section 7,
+pages 12–13](https://maths.qmul.ac.uk/~leonard/designtheory.org/library/preprints/auts.pdf).
+A graph with adjacency A is compact if every doubly stochastic matrix
+commuting with A is a convex combination of its automorphism matrices.
+For a regular graph, A/q is such a doubly stochastic matrix. The source
+notes that a decomposition would use automorphisms sending every vertex
+to a neighbor. Here C4-freeness rules out every such automorphism as soon
+as the degree is at least three.
+
+Indeed suppose sigma is an automorphism with v adjacent to sigma(v) for
+every vertex v. For an edge uv, the four edges
+
+    u--v--sigma(v)--sigma(u)--u
+
+exist. Simplicity rules out fixed vertices, and injectivity rules out
+sigma(u)=sigma(v). Thus the four vertices are distinct unless
+v=sigma(u) or v=sigma^{-1}(u). C4-freeness consequently gives
+
+    N(u) contained in {sigma(u), sigma^{-1}(u)},
+
+so every vertex has degree at most two. In particular, for every simple
+q-regular C4-free graph with q>=3, A/q cannot be a convex combination of
+automorphism matrices: entrywise nonnegativity would force each positively
+weighted permutation to have its support inside A, contrary to this argument.
+Such a graph is not compact. This obstruction does not require square order,
+binary degree, or connected defect; it is not an A-REG nonexistence theorem.
+
+For the original defect proposal, A/q also commutes with D. Compactness of
+D, if proved, would yield permutations preserving D, hence preserving
+A²=(q-1)I+J-D. It would not by itself show that they preserve the chosen
+square root A. A proof of both compactness of D and this additional
+A-preservation property would give a contradiction by the argument above;
+neither property has been established for arbitrary A-REG candidates.
+Ordinary Birkhoff decomposition only gives permutations, without either
+commutation property. No symmetry reduction follows from AD=DA alone.
+
+The gap is realized by the existing actual q=4 control, not just by an
+abstract possibility. The fixed certificate
+`verify_binary_q4_defect_automorphism_average.py` gives eight permutations
+sigma_i with permutation matrices P_i, each preserving D and sending every
+vertex to an A-neighbor, such that
+
+    sum_{i=1}^8 P_i = 2A,  hence (1/8) sum_{i=1}^8 P_i = A/4.
+
+None preserves A. The standard-library verifier rechecks the graph's degree
+and C4-freeness, all eight bijections and preservation conditions, and every
+entry of the displayed sum; it does not rely on enumerating automorphisms.
+Thus even this specific convex decomposition over Aut(D) does not give
+the required A-symmetries. The example has q=4 and defect components [8,8];
+it does not prove D compact or refute an additional q>=8/connected-defect
+hypothesis. It refutes the proposed unconditional D-to-A preservation step.
+
+Both squad peers independently checked the four-vertex and convex-support
+arguments. This records the complete obstruction to the proposed shortcut;
+no Lean wrapper or claim of a new root-level exclusion is made.
