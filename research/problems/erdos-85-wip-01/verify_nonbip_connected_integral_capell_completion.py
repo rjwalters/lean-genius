@@ -2,6 +2,8 @@
 """Verify a uniform integral factor ledger for NONBIP-CONNECTED.
 
 This is a spectral/characteristic-polynomial control, not a graph.
+The cubic completion fails triangle-trace parity; the older rational-root
+completion passes that necessary condition. Neither is a graph witness.
 """
 
 from __future__ import annotations
@@ -117,9 +119,46 @@ def verify_uniform_cubic_completion() -> None:
             print(f"q={Q} cubic_completion_half_counts={counts}")
 
 
+def verify_graph_parity_scope() -> None:
+    """Separate the advertised defect moments from extra graph constraints."""
+    x = sp.symbols("x")
+    g = sp.Poly(x**2 + 2*x - 1, x)
+    h = sp.Poly(x**3 - 3*x + 1, x)
+    # Exact Newton sums, computed by multiplication in each quotient ring.
+    def power_trace(poly: sp.Poly, power: int) -> sp.Expr:
+        degree = poly.degree()
+        multiplication = sp.zeros(degree)
+        for column in range(degree):
+            remainder = sp.rem(sp.Poly(x**(column+1), x), poly)
+            for row in range(degree):
+                multiplication[row, column] = remainder.nth(row)
+        return sp.trace(multiplication**power)
+
+    assert power_trace(g, 3) == -14
+    assert power_trace(h, 3) == -3
+    cubic_trace = sp.expand(q**3 + q/2 * power_trace(g, 3)
+                            + power_trace(h, 3))
+    older_trace = sp.expand(q**3 + (q/2-2) * power_trace(g, 3) - 4**3)
+    assert cubic_trace == q**3 - 7*q - 3
+    assert older_trace == q**3 - 7*q - 36
+    # Mod 2, paired-root factors are squares. In the cubic completion the
+    # remaining principal factor x times h has derivative 1, not zero.
+    assert sp.Poly(sp.diff(x*h.as_expr(), x), x, modulus=2).as_expr() == 1
+    # In the older completion the principal and -4 factors reduce to x²;
+    # g and g(-x) coincide mod 2 and their total multiplicity q/2 is even.
+    assert sp.Poly(g.as_expr()-g.as_expr().subs(x, -x), x, modulus=2).is_zero
+    for k in range(4, 21):
+        Q = 2**k
+        assert int(cubic_trace.subs(q, Q)) % 2 == 1
+        assert int(older_trace.subs(q, Q)) % 6 == 0
+    print("scope: cubic completion fails graph triangle-trace parity")
+    print("scope: rational-root completion passes this parity test only")
+
+
 if __name__ == "__main__":
     verify_symbolically()
     verify_uniform_cubic_completion()
+    verify_graph_parity_scope()
     for Q in (16, 32, 64, 128, 256):
         verify_at(Q)
-    print("verified: uniform integral Capell completions survive")
+    print("verified: both completions pass the stated defect-moment tests")
