@@ -254,3 +254,62 @@ when arbitrary edges of the host may be discarded. The missing root
 input is still an embedding or extension theorem for arbitrary A-REG
 candidates. The stability theorem does not supply that input by itself,
 and no unrestricted A-REG nonexistence conclusion follows.
+
+## Actual binary control: field characteristic is forced to be seven
+
+The actual q=4 graph stored in
+`binary_q4_fixed_free_disconnected_control.py` admits an ordinary incidence
+embedding into PG(2,F) **if and only if the field F has characteristic 7**.
+In characteristic 7 the embedding even preserves nonincidences. Thus binary
+graph degree does not force a characteristic-two coordinatization, even when
+the ambient field size is unrestricted. This control has defect components
+of sizes 8 and 8: it does not refute a conjecture restricted to q>=8 or to
+connected defect, and it says nothing about non-Desarguesian planes.
+
+Here is a direct coordinate proof, independently reproducible with
+`python3 research/problems/erdos-85-wip-01/verify_binary_q4_projective_embedding.py`.
+Write P_i for row points and L_j for column lines. The four points with
+labels 1,3,8,9 form a projective frame: their six pair-lines have distinct
+original column labels 10,5,0,7,2,6. This forces every three of the four
+points to be noncollinear, even if extra incidences are permitted. Normalize
+
+    P_1=(1,0,0), P_3=(0,1,0), P_8=(0,0,1), P_9=(1,1,1).
+
+Repeatedly join two known points on an original column, or intersect two
+known original lines incident with a row point. The verifier specifies a
+deterministic sequence of 28 such steps and prints each input pair and output
+vector. Every cross product has integer coordinate gcd 1. Consequently it
+stays nonzero in every characteristic, and no division or exceptional-prime
+assumption is used. Each step is forced in any putative embedding; all 16
+points and 16 lines are reached.
+
+In particular the forced vectors include
+
+    P_6=(-5,-4,-2),  L_9=(1,1,-1).
+
+The original graph requires P_6 incident with L_9, while their dot product
+is -7. Thus the field must have characteristic 7. The verifier checks that
+the other nonzero required-incidence residuals are also +/-7. Conversely,
+reducing all forced coordinates modulo 7 gives 16 distinct projective points
+and 16 distinct projective lines. All 256 dot products agree exactly with
+the original adjacency matrix: zero precisely at its 1-entries. This is a
+strong embedding in PG(2,7), hence in PG(2,F) for every characteristic-seven
+field, proving both directions.
+
+There is also a shorter characteristic-two obstruction. The frame's three
+diagonal points are P_0,P_2,P_4, supported by the six triples
+
+    L_0: {1,2,9}; L_2: {0,3,9}; L_5: {0,1,8};
+    L_6: {4,8,9}; L_7: {2,3,8}; L_10: {1,3,4}.
+
+In characteristic two the diagonal points of a projective frame have
+coordinates (1,0,1),(0,1,1),(1,1,0), which sum to zero, so they are collinear.
+But distinct original columns L_9 and L_1 contain {0,2} and {0,4}, respectively,
+forbidding that collinearity. This uses original columns, not artificially
+added pair-lines; weakening an embedding to allow extra incidences does not
+remove the obstruction.
+
+This is an exact finite control and a prose coordinate argument, not a new
+Lean theorem or a general A-REG result. Its PG(2,7) realization lies outside
+the same-order q=4 exclusion above. An unrestricted field-representation
+theorem for arbitrary A-REG candidates remains unproved.
