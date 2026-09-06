@@ -111,3 +111,29 @@ The honest new bridge is therefore:
 
 This target is weaker than proving T1 and T2 separately and, unlike their
 global arithmetic corollary, closes every binary exponent class at once.
+
+## Actual connected-defect even-degree counterexample (2026-09-06)
+
+The intended binary-degree restriction is essential to any attempted proof
+of this bridge. Boza's [arXiv:2409.12770v2, Section 3, Lemma 9](https://arxiv.org/pdf/2409.12770v2)
+identifies H36 as [House of Graphs 56942](https://houseofgraphs.org/graphs/56942).
+The offline [verifier](verify_boza_h36_triangle_control.py) stores the API's
+adjacency list and independently checks simplicity, degree 6 at all 36
+vertices, and at most one common neighbor for all 630 distinct vertex pairs.
+Thus this is an actual regular C4-free graph at square order, not a reduced
+spectral or fractional control.
+
+Its defect D is connected and nonbipartite. Its distance-three graph
+E = D minus A is also connected. Triangle degrees are 2 at 12 vertices and
+3 at 24 vertices; each of D and E has 30 edges joining unequal triangle
+degrees. Its 32 triangles have degree sums 6 (once), 8 (21 times), and
+9 (10 times), so none satisfies T2's value q+1=7. The entries of At are
+14, 15, 16, 17, and 18, so AT fails as well (its proposed value is 38/3).
+The proved triangle-edge bound t_u+t_v >= q/2+1 still holds on every
+triangle edge.
+
+Consequently, even degree, square order, connected nonbipartite D, and
+connected E do not imply T2, AT, D-harmonic triangle degree, or constancy of
+triangle degree on distance-three components. Any binary-q proof must use
+an additional restriction not satisfied at q=6. This does not refute the
+binary-q bridge, supply an unbounded graph family, or resolve Erdős 85.
