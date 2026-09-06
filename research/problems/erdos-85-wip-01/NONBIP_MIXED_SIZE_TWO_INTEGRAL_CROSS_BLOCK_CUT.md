@@ -70,6 +70,25 @@ codegree above one. Incident selector pairs have codegree zero, exactly as
 the cross-block matching law requires. The uncontrolled disjoint-selector
 pairs are therefore the precise failure, not an error in local matching.
 
+## The local transition-cycle condition also holds
+
+Keep only T-edges whose selector labels share a C-endpoint. On each parity
+shore, these edges form a 2-factor J on the 96 same-parity selector labels:
+each selector has one such neighbor through each of its two endpoints.
+Opposite-parity selectors have no J-neighbors. The checker verifies the
+degrees and traverses every component. On each parity shore the complete
+list of J-cycle lengths is
+
+```text
+8, 8, 16, 32, 32.
+```
+
+Thus every J-cycle has length at least five, even though the full T has
+the explicit four-cycle above. The proposed transition-system condition
+alone does not exclude this witness. A successful use of that 2-factor
+must also constrain its interaction with T-edges between disjoint
+selectors; no claim is made that those interactions are feasible.
+
 ## Consequence for the blossom relaxation
 
 Let `T'` be the reflection of T and set `S=(T+T')/2`. Both summands satisfy

@@ -64,10 +64,33 @@ def check(model: dict) -> dict:
     # Incident selectors have no common T-neighbor, as the matching law implies.
     assert all(not (set(edges[i]) & set(edges[j])) or not (t[i] & t[j])
                for i, j in combinations(range(len(edges)), 2))
+    # The incident-selector transition 2-factors also have no short cycles.
+    transition = [{j for j in t[i] if set(e) & set(edges[j])}
+                  for i, e in enumerate(edges)]
+    cycle_lengths = []
+    for parity in (0, 1):
+        remaining = {i for i, e in enumerate(edges) if e[0] % 2 == e[1] % 2 == parity}
+        lengths = []
+        while remaining:
+            seed = min(remaining)
+            seen, pending = {seed}, [seed]
+            while pending:
+                vertex = pending.pop()
+                assert len(transition[vertex]) == 2
+                for other in transition[vertex] - seen:
+                    seen.add(other)
+                    pending.append(other)
+            assert seen <= remaining
+            remaining -= seen
+            lengths.append(len(seen))
+        assert sorted(lengths) == [8, 8, 16, 32, 32]
+        cycle_lengths.append(sorted(lengths))
+    assert all(not transition[i] for i, e in enumerate(edges) if e[0] % 2 != e[1] % 2)
     return dict(q=q, labels=len(edges), translation_orbits=len(model["translation_orbits"]),
                 exact_cross_entries=size * len(edges), integral=True, symmetric=True,
                 column_perfect_matchings=True, exterior_gram_diagonal=True,
                 max_codegree=max(codegrees), exterior_common_neighbor_cap=False,
+                transition_cycle_lengths=cycle_lengths,
                 explicit_c4=model["c4"])
 
 
