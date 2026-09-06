@@ -1217,9 +1217,18 @@ Because `q` is a power of two and `|E(H)|=q^2`, a connected nonregular `H`
 would be bipartite biregular with both degrees dividing `q^2`; the only two
 powers of two summing to `q+1` are `1` and `q`.  Hence `H` is a union of
 `q`-edge stars and `D` is a union of `K_q` components.  This closes the pure
-line-graph subcase conditionally on (E1).  Cocktail-party attachments in a
-generalized line graph would still require separate degree bookkeeping, so
-(E1) is not by itself a fully checked terminal.
+line-graph subcase conditionally on (E1). A regular root graph H is
+impossible, since its edge-degree sum would be even whereas q+1 is odd.
+
+**Correction, 2026-09-06:** the remaining generalized-line-graph case is
+also closed. [Brouwer--Haemers, *Spectra of Graphs*, Theorem 8.4.1(ii)--(iii),
+printed pp.111--112](https://homepages.cwi.nl/~aeb/math/ipm/ipm.pdf)
+states that a connected regular generalized line graph is an ordinary
+line graph or a cocktail-party graph, and that the exceptional root-system
+graphs have at most 36 vertices. Here q>=8 gives q²>=64, excluding the
+exceptions. A cocktail-party graph has even degree, excluding degree q-1.
+Thus (E1) really is a complete conditional contradiction for connected D;
+the unproved step is obtaining (E1), not classifying its regular cases.
 
 There is no available bridge to (E1).  It already fails on the exact q=4
 fixed-free incidence control.  The weaker Woo--Neumaier threshold
@@ -1239,8 +1248,19 @@ Thus neither threshold follows from connected regularity, corrected
 determinant squareness, or the paired characteristic polynomial.  An
 incidence-specific proof of a Ramanujan-strength bound would be a new main
 theorem, not a known consequence to import.  The least-eigenvalue route is
-therefore **CUT at its premise**; even beyond that premise, only its pure
-line-graph subcase has been checked to the terminal.
+therefore **CUT at its premise**, with the conditional terminal now checked
+in all cases by the correction above. This is a prose application of a
+published classification, not a new Lean theorem.
+
+Allowing a plane of order q+1 does not avoid this obstruction. In any
+incidence embedding retaining the old q²-by-q² block A, let X record the
+new columns on the old rows. The plane row Gram matrix restricts to
+`(q+1)I+J`; subtracting `AAᵀ=(q-1)I+J-D` gives `XXᵀ=2I+D`.
+Positive semidefiniteness would imply (E1), so a connected-defect candidate
+cannot embed in a plane of order q+1 either. This does not prove that an
+embedding exists. The stronger, independent incidence-mixing obstruction
+in `POLARITY_LOWER_DEGREE_DELETION_BARRIER.md` treats a whole interval of
+larger plane orders without requiring connected defect.
 
 The other candidates reduce as follows.  Ihara factorization splits into
 the `+A` and `-A` polarity sectors and reproduces the known spectral pairing.
