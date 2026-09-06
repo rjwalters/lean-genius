@@ -281,3 +281,34 @@ This closes the nonabelian and all-loops variants of this construction
 escape. It does not exclude the remaining abelian Sidon class or general
 A-REG graphs. Ordinary Cayley graphs (x^{-1}y in S), twisted product
 relations, and non-group constructions are outside this reduction.
+
+## Full symmetric Jacobian generating sets do not supply the residual
+
+The outside-first follow-up checked Forey--Fresan--Kowalski--Wigderson,
+[Jacobian graphs, Introduction and Theorem 1.2](https://arxiv.org/html/2603.13198v1).
+For a generalized Jacobian of dimension two and a curve of genus one or
+two, the full generating set S is **symmetric Sidon**, with S=a-S for a
+center a. The theorem asserts K2,3-freeness, not C4-freeness. Loops are
+allowed in its graph convention.
+
+Symmetry is an exact obstruction here, independent of field-size estimates.
+If S=a-S and |S|>=3, choose x in S and y outside {x,a-x}. Then
+
+    x+(a-x) = y+(a-y) = a
+
+is a nontrivial additive quadruple, so S is not a strong Sidon set.
+Diagonal pairs are allowed in this argument. This distinction is also
+explicit in Forey--Fresan--Kowalski,
+[Sidon sets in algebraic geometry, Theorem 1 and Remark 2(1)](https://people.math.ethz.ch/~kowalski/algebraic-sidon-sets.pdf).
+
+Consequently, the full generating set cannot give a simple q-regular
+C4-free graph of order q^2 for binary q>=4. Indeed, the preceding
+regularity reduction excludes the all-squares case; the remaining case
+has |S|=q, avoids 2G, and forces strong Sidon, contradicting symmetry.
+Replacing S by S+u does not help: its center becomes a+2u.
+
+This excludes the full-set construction in that theorem, not arbitrary
+subsets of the curve image, altered adjacency, or other generalized
+Jacobians. The remaining abelian Sidon range is still open. No theorem
+representing arbitrary A-REG graphs by Jacobian graphs is available here,
+and no Lean wrapper or general nonexistence claim follows.
