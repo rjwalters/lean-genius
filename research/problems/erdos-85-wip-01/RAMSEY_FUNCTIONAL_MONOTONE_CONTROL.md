@@ -22,8 +22,9 @@ The known binary q-regular C4-free graph on q²-1 vertices additionally
 gives R(q²-q-1)>=q², equivalently h(q²-1)>=q+1.
 The test below concerns these numerical inequalities and witness bounds.
 It does not encode every finite Ramsey value or every graph-theoretic
-constraint. In particular, its Corollary 3 comparison is eventual, not
-an assertion at the exceptional small inputs 2 and 5.
+constraint. The initial model misses Corollary 3 at inputs 2 and 5;
+the finite repair below removes both exceptions while retaining eventual
+monotonicity and all the binary witness bounds.
 
 ## Explicit model and inverse relation
 
@@ -116,16 +117,51 @@ in their Ramsey formulation. Nevertheless the model has no drop at any
 square, or anywhere else. The numerical data being tested do not prohibit
 the next square-order witness; excluding it requires an additional input.
 
+## A finite repair satisfies the full stated inequality ranges
+
+Define Rhat to equal R* except for `Rhat(2)=4` and `Rhat(5)=8`.
+Define muhat to equal mu* except for `muhat(4)=1` and `muhat(8)=2`,
+and put hhat=muhat+1. The inverse threshold relation remains exact:
+raising `N-mu(N)` at N=4 from 2 to 3 changes precisely the threshold
+for s=2 from 5 to 4; raising it at N=8 from 5 to 6 changes precisely
+the threshold for s=5 from 9 to 8. The function hhat is monotone for
+every N>=4, so this repair still answers the numerical eventual-monotonicity
+question positively.
+
+The increment bound survives: around the modified arguments the Rhat
+values are `(4,4,6)` at s=1,2,3 and `(7,8,10)` at s=4,5,6. All other
+increments are unchanged. The two Corollary 3 failures now become
+equalities; its full s>=2 range holds. Other upper bounds can only improve
+under this pointwise decrease. Binary anchors q>=4 are unchanged.
+
+The dichotomy can change only when its first argument a is 2 or 5:
+decreasing R(a+b) otherwise only helps the second horn. For a=2, the
+new first horn fails exactly for b>=3. At b=3, `Rhat(5)=8=2+2b`;
+for b>=4 the old first horn already fails and the original proof applies.
+For a=5, the new first horn fails exactly for b>=4. At b=4,
+`Rhat(9)=13=5+2b`; for b>=5 the old proof again applies.
+
+Both corollaries now follow directly from this repaired dichotomy. For
+Corollary 7 set `a=2s-Rhat(s)+1` and `b=Rhat(s)-s-1`. When a is
+positive, b>=1, `a+b=s`, and `a+2b=Rhat(s)-1`. The second horn is
+false, forcing `Rhat(a)>=s`. For Corollary 8 set a=s and
+`b=Rhat(s)-s+1`; the first horn is false, and the second is exactly
+the desired bound. Thus Rhat satisfies every listed functional inequality
+at its stated range, while hhat is eventually monotone.
+
 ## Verification and stopping point
 
 An independent integer-arithmetic calibration checked the inverse relation
 through N=500; both corollaries and increment/upper bounds through s=2000;
 the dichotomy for all 250,000 pairs 1<=a,b<=500; and square anchors through
-q=1000. The proof above supplies the uniform result, not those checks.
+q=1000. The repaired model was also checked for all 250,000 dichotomy
+pairs and for the inverse, corollaries, increment bound and full-range
+Corollary 3 on the same bounded domains. The proof above supplies the
+uniform result, not those checks.
 
 This is a scalar countermodel to an implication from the listed numerical
 inputs. It is not a C4-free graph family and does not assert that the true
-Ramsey function equals R*. It also does not claim to match the known finite
+Ramsey function equals R* or Rhat. It also does not claim to match the known finite
 table. The functional shortcut stops here: a new structural restriction,
 or a genuinely stronger numerical theorem that this model violates, is
 needed before it can force infinitely many drops. No Lean wrapper or
