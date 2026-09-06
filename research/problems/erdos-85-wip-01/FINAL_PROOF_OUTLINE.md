@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.65 — 2026-09-06 (consistency correction: the order-49 and order-64 drops remain conditional; active working rules reflect goal #38's lifted order-64 park. No mathematical node status changed).**
+**Version 2.66 — 2026-09-06 (corrected blind-sector multiplicity and trace scope; the pure-blind case with fully sign-paired residuals fails dimension parity. A-REG remains open).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -300,16 +300,24 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   is holding off on a Lean file until one of those has a closing
   inequality.
 
-  **(vii) THE SURVIVOR IS NOW ONE QUESTION, and every spectral route to it is
-  closed** (divergence round #1, sol-1 and Fable independently, 08:34–08:37Z).
+  **(vii) THE BLIND-SECTOR MULTIPLICITY QUESTION** (divergence round #1,
+  sol-1 and Fable independently, 08:34–08:37Z; trace scope corrected
+  2026-09-06).
 
   *The reduction, and it is clean.* At `q = s²` the canonical survivor was
   posed as the joint kernel `W₋ = ker(D + I) ∩ ker(A + sI)`. The stacked
   system is REDUNDANT: `Av = −s·v` forces `v ⊥ 𝟙` (since `−s ≠ q`), and then
   `Dv = ((q−1)I + J − A²)v = −v` follows automatically. So
-  **`W₋ = ker(A + sI)`**, `W₊ ⊕ W₋ = ker(D + I) ∩ 𝟙^⊥`, and the survivor
-  exists **iff `mult_D(−1) ≥ √q`**. One multiplicity question, no joint
-  system.
+  **`W₋ = ker(A + sI)`** and `W₊ ⊕ W₋ = ker(D + I) ∩ 𝟙^⊥`.
+  This removes the redundant joint system, but does not determine signs.
+  Write `m± = dim W±`, `m = m+ + m−`, and let `R` be the trace on all
+  other nonprincipal sectors. Then `s(m− − m+) = q + R`. When `R=0`,
+  necessarily `m ≥ s` and `m ≡ s (mod 2)`; these conditions permit a sign
+  allocation, not a graph realization. If those other sectors are fully
+  sign-paired, their dimension is even, so `q² = 1 + m + 2r` forces `m`
+  odd, whereas `s` is even. That narrower pure-blind case is impossible.
+  Trace-zero unpaired sectors are not covered by this parity argument.
+  See `NONBIP_CONNECTED_MULTIPLICITY_AUDIT.md` for the exact scope.
 
   *And it cannot be answered spectrally.* Both independent submissions
   produced objects whose multiplicity is enormous under every spectral
@@ -323,8 +331,9 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
 
   *The consequence is a direction, and it is the most useful sentence on this
   node:* **any terminal must use the fact that `A` is entrywise 0/1 —
-  incidence, nonlinearly.** Proving `mult_D(−1) < √q` from binary
-  realizability would be a design-level theorem, not a spectral sublemma.
+  incidence, nonlinearly.** A bound `mult_D(−1) < √q` from binary
+  realizability would exclude trace `−q` on that sector alone; it would not
+  exclude trace shared with other sectors. No such bound is proved.
 
   *Corroborating control (sol-1, 08:32Z).* For `q = s²` take
   `g(X) = (X+s)^s`: monic, integral, degree `s`, root trace `−s² = −q`, every
@@ -599,9 +608,10 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
     trace-zero by the already-banked trace-escape interface, so it
     disappears. This narrows odd-`k` designated carriers to other
     square-in-`ℚ(μ)` sectors but does NOT close them.
-  - **even `k ≥ 4`** — the survivor remains, and this is exactly the open
-    `mult_D(−1)` problem of (vii), with `q = 4` as its realized disconnected
-    control.
+  - **even `k ≥ 4`** — the blind sector can contribute nonzero trace,
+    possibly shared with other sectors. Its exact sign budget is given in
+    (vii); multiplicity alone is not an equivalent formulation of A-REG.
+    The fully sign-paired pure-blind case is excluded by dimension parity.
 
   *Operator note:* the suggested `q = 8` Diophantine endpoint falls under the
   A.5.2 order-64 park (goal #30), and the owner correctly declined to pursue
@@ -1231,6 +1241,14 @@ Does not count (goes to the ledger, not here):
    hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.66** (2026-09-06, codex-sol-3): corrected (vii)'s unsupported
+  multiplicity-only equivalence. Recorded the full trace equation and
+  excluded the narrower pure-blind, fully sign-paired residual case by
+  dimension parity. Clarified the even-exponent summary in (xii). This
+  supersedes the v2.28 equivalence recorded below; mixed trace carriers
+  and zero-trace unpaired residuals remain outside this argument. Prose
+  audit only; no Lean theorem or A-REG node status is promoted.
 
 - **2.65** (2026-09-06, codex-sol-1): consistency correction only.
   Removed the stale claim that closing order 64 would give a *second*

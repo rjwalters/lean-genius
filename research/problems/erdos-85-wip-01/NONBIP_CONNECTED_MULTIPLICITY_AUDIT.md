@@ -64,7 +64,7 @@ The C4-free spectral-radius bounds also control eigenvalue magnitude, not
 multiplicity.  They are already subsumed here by the banked strict bound
 `theta^2 < 2(q-1)` used to prove (1).
 
-## Odd closed-walk congruences do not kill the even blind escape
+## Formal odd closed-walk congruences pass; dimension parity does not
 
 Assume the residual sectors are sign-paired and the even-`k` blind sector
 has trace `-q`.  Its contribution to every odd moment is
@@ -82,8 +82,9 @@ tr(A^(2s+1)) = q^(s+1)(q^s - 1).                     (4)
 For an odd prime `ell=2s+1`, rotation of closed walks requires divisibility
 by `ell`.  But even `k` makes `q` a square modulo every odd prime not
 dividing `q`, and Euler's criterion gives `q^s = 1 (mod ell)`.  Hence (4)
-automatically satisfies the prime closed-walk congruence.  Higher odd-trace
-wrappers cannot close this escape.
+automatically satisfies the prime closed-walk congruence. This verifies
+only that formal moment test. The assumed fully sign-paired residual
+spectrum is nevertheless impossible by the dimension argument below.
 
 ## Viable missing statement
 
@@ -107,3 +108,56 @@ dimension route remains plausible only as a new ambient-coordinate theorem
 at the `sqrt(q)` scale.  This is genuinely different from the unsupported
 CUBE-UPPER axiom and is not refuted by the disconnected `q=4` energy
 control, but no such bound is currently banked.
+
+## Correction: multiplicity does not determine the sign budget (2026-09-06)
+
+For even exponent, put `q=s²`, so `s` is an even integer. Let
+`m±=mult_A(±s)`, `m=m+ + m−=mult_D(−1)`, and let `R` denote the
+trace on all nonprincipal sectors other than this blind sector. The exact
+trace-zero equation is
+
+```text
+0 = q + s(m+ − m−) + R,
+s(m− − m+) = q + R.
+```
+
+For the particular case `R=0`, a choice of nonnegative integer multiplicities exists exactly when
+`m>=s` and `m≡s (mod 2)`, with `m−=(m+s)/2` and `m+=(m−s)/2`.
+This is a sign-allocation criterion, not an existence theorem for an
+ambient graph. Merely having a nonzero negative eigenspace is also not
+equivalent to `m>=s`.
+
+There is a further obstruction to the fully sign-paired residual case
+assumed in the formal odd-moment calculation above. Connected `D` makes
+`A²=L_D+J` positive definite, so `A` has no zero eigenvalue. The principal
+eigenvalue has multiplicity one, and every remaining nonzero sign pair contributes
+an even dimension, say `2r`. Hence
+
+```text
+q² = 1 + m + 2r.
+```
+
+Since `q²` is even, `m` is odd. But `R=0` forces `m≡s≡0 (mod 2)`.
+This is a contradiction. No C4-free counting or connected-defect
+multiplicity estimate is needed for this narrower case.
+
+The distinction between **trace zero** and **sign paired** is essential.
+An unpaired odd-dimensional sector can have trace zero and avoid this
+dimension argument; sectors with nonzero `R` change the sign budget
+altogether. The existing older integral Capell completion is not excluded:
+its non-blind sectors need not have zero total trace. Neither this correction
+nor the formal odd-moment calculation supplies an A-REG terminal. The
+remaining designated-factor dimension conjecture above stays unproved.
+
+The stored actual `q=4` graph illustrates why the connectedness/zero-mode
+scope matters: its adjacency characteristic polynomial is
+
+```text
+x (x−4) (x+2)² (x²−2)² (x⁴−8x²+14)².
+```
+
+The blind sector has dimension two and trace `−4`; the other nonprincipal
+sectors have trace zero, but their dimension is thirteen, including the
+single zero eigenvalue. Its defect is disconnected, so it does not satisfy
+the invertibility hypothesis above. The parity argument does not reject
+this actual graph.
