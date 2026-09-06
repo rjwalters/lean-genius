@@ -40,6 +40,15 @@ def internal(q):
     assert len(set(cycle)) == 5
     for i, j in combinations(range(5), 2):
         assert (cycle[j] in d[cycle[i]]) == ((j - i) in (1, 4))
+    # Uniform parity obstruction to a symmetric integral cross completion.
+    witness = q // 2 + 1
+    assert len(h[witness] & d[witness]) == 1
+    # Check the one-reflection identity for every odd parameter. Linearity
+    # then yields the three-reflection family certificate in the audit.
+    for s in range(1, order, 2):
+        for x in range(order):
+            points = [x, (x + q//2) % order, (x + q) % order]
+            assert sum((s-v) % order in d[v] for v in points) == 1
     return h, d
 
 
@@ -77,8 +86,17 @@ def main():
         checked += 1
     degrees = Counter(map(len, ambient))
     assert degrees == {16: 48, 3: 208}
+    witness = 9
+    selected = sorted(b[witness])
+    demands = [1 - len(h[witness] & blocks[f]) for f in selected]
+    assert len(selected) == 13
+    assert set(demands) <= {0, 1}
+    assert sum(demands) == 11
+    # If BT=J-HB, this sum is sum(T[g,f] for g,f in selected).
+    # Symmetric integer T with zero diagonal makes that sum even.
     print(f"PASS: q16 C Gram, triangle-free connected D, HD=DH; {checked} ambient pairs")
     print(f"Partial graph degrees: {dict(sorted(degrees.items()))}; no exterior completion claimed")
+    print(f"Cross-parity certificate at C vertex {witness}: labels={selected}, demands={demands}, sum=11 (odd)")
 
 
 if __name__ == "__main__":

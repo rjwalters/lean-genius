@@ -2,9 +2,10 @@
 
 Node: `A.5.3 / A-REG-NONBIP / NONBIP-MIXED / [q-3,3]`.
 
-Status: explicit countermodel to an internal-only obstruction. Uniform
-internal construction for even `q>=8`; full small-shore Gram construction
-at `q=16`. No exterior completion or Lean theorem is claimed.
+Status: explicit countermodel to an internal-only obstruction, followed by
+a uniform parity exclusion of its symmetric integral cross completion.
+Internal construction for even `q>=8`; full small-shore Gram construction
+at `q=16`. No Lean theorem is claimed. The general weight-three branch is open.
 
 ## The proposed obstruction and its failure
 
@@ -100,7 +101,96 @@ partial graph C is not asserted to be an actual defect component of a
 regular ambient graph. The uniform H,D construction is stronger in q
 than the B construction, which is asserted only at q16.
 
-The internal-only obstruction is therefore stopped. A successful argument
-must couple this data to the same exterior labels via the cross equation,
-the exterior Gram, and the required connected defect component. No
-order-64 enumeration or search was used.
+The internal-only obstruction is therefore stopped. The following coupled
+argument DOES exclude this candidate, using the cross equation alone.
+No order-64 enumeration or search was used.
+
+## Symmetric cross completion is impossible: an exact parity certificate
+
+Suppose B is any zero-one matrix of row degree `n=q-3` satisfying the
+displayed C Gram, and suppose an integer symmetric zero-diagonal matrix T
+satisfies `HB+BT=J`. No positivity, exterior Gram, or connectedness of D_F
+is needed in this argument.
+
+For a point x, put `S=N_B(x)` and sum the cross equation over columns
+`f in S`. The contribution of BT is
+
+```text
+sum_(f,g in S) T(g,f),
+```
+
+an even integer: off-diagonal entries pair and diagonal entries vanish.
+The contribution of HB is
+
+```text
+sum_(y in N_H(x)) |N_B(y) intersect N_B(x)|
+  = 3 - |N_H(x) intersect N_D(x)| - (H^3)(x,x).
+```
+
+The equality uses the off-diagonal C Gram and looplessness of H.
+Every closed three-walk in a simple graph pairs with its reverse, so
+`(H^3)(x,x)` is even (here it is zero since H is bipartite).
+Since `n` is odd, the cross equation therefore forces
+
+```text
+|N_H(x) intersect N_D(x)| even.                       (P)
+```
+
+For our uniform model take `x=q/2+1`. The three H-neighbor differences,
+in the order of reflection parameters 1,3,7, are
+
+```text
+2q-1, 2q+1, 2q+5   modulo 3q.
+```
+
+For `q>=8` these are distinct representatives below `3q`, and exactly
+the first lies strictly between q and 2q. The intersection in (P) has
+size ONE. This is a contradiction, uniform in every even `q>=8`,
+conditional only on the specified H,D and small-shore Gram for B.
+
+At q16 the witness is x=9. Its 13 B-neighbors have total residual demand
+`sum_(f in S) (1-(HB)(9,f)) = 13-2 = 11`. The checker prints their exact
+indices and the thirteen zero-one demands. Thus the failure has a direct
+certificate: an odd number would have to equal twice an integer edge
+weight in T[S]. Independent signed integer columns can solve BT=J-HB
+(B has Smith diagonal `1` repeated 47 times and `3`), but reciprocal
+zero-diagonal integer columns cannot. The parity certificate itself
+does not depend on the Smith computation.
+
+This strengthens the stopping point for THIS candidate: no symmetric
+integral cross completion exists at all. The earlier partial-graph
+construction remains valid; its degree deficits cannot be filled while
+retaining the required cross law.
+
+## The entire three-odd-reflection family is excluded
+
+Sol1 observed that choosing different reflection parameters cannot repair
+the parity failure. Keep this D on `Z/(3q)`, and let H be the sum of ANY
+three distinct odd-parameter reflections. If the small-shore Gram and
+symmetric integral cross equation hold, the same argument forces (P).
+
+For any x, consider the three points
+
+```text
+x, x+q/2, x+q.
+```
+
+For a fixed odd reflection parameter s, their three reflected-neighbor
+differences are `s-2x`, `s-2x-q`, `s-2x-2q` modulo `3q`. They occupy
+the same position in the three consecutive intervals of length q.
+All are odd, whereas the interval boundaries `0,q,2q` are even, so
+EXACTLY ONE difference is in `(q,2q)`. Summing over the three reflections
+therefore yields
+
+```text
+d_HD(x) + d_HD(x+q/2) + d_HD(x+q) = 3,
+where d_HD(v)=|N_H(v) intersect N_D(v)|.
+```
+
+Three even integers cannot sum to 3. This excludes the whole family,
+not merely the displayed reflection triple. No particular difference
+decomposition of B, nonnegativity of T, or connected D_F is used.
+If an H already violates the small-shore C4 cap then the Gram premise
+fails earlier; the parity argument covers every member admitting that
+premise. An arbitrary cubic commuting H has not been classified into this
+family, so the general triangle-free weight-three branch remains open.
