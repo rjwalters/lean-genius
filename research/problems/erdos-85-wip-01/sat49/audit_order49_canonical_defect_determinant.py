@@ -49,9 +49,10 @@ def residual_square_root_trace_possible(
         charpoly(C_res)(t) charpoly(C_res)(-t)
           = charpoly((C_res)^2)(t^2).
 
-    Factoring the right side over Q reduces existence to choosing one factor
-    from every +/- orbit.  The returned traces are all traces obtainable by
-    those choices; a true completion must contain ``target_trace``.
+    Factoring the right side over Q reduces existence to distributing copies
+    between the two factors in every +/- orbit. The returned traces are all
+    traces obtainable by those choices; a true completion must contain
+    ``target_trace``.
     """
     import sympy as sp
 
@@ -102,10 +103,13 @@ def residual_square_root_trace_possible(
                 tuple(sorted(traces)),
             )
         coefficient = int(factor.all_coeffs()[1]) if factor.degree() else 0
-        contribution = -exponent * coefficient
+        contributions = {
+            -(2 * copies - exponent) * coefficient
+            for copies in range(exponent + 1)
+        }
         traces = {
-            value + sign * contribution
-            for value in traces for sign in (-1, 1)
+            value + contribution
+            for value in traces for contribution in contributions
         }
         visited.update((factor, partner))
     possible = tuple(sorted(traces))
