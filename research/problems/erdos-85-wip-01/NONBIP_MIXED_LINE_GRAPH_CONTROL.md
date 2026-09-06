@@ -96,6 +96,22 @@ its intended role as a control against defect-only reasoning. It does not
 exclude other biregular roots with different codegrees, and is not a
 mixed-branch terminal. No conclusion from (1) is claimed at q=8.
 
+The remaining root class is nonempty, as independently observed by Sol2.
+In any root with these part sizes and degrees, the average codegree of
+two right vertices is `(q-2)*2/(r-1)=4`. Thus the bound forces every such
+codegree to equal 4. Write r=4^j, which is possible for odd k. Take the
+points of the affine space over F4 as right vertices. For each affine
+line, which has four points, take two copies of each of its four
+three-point subsets as left vertices, adjacent to their three entries.
+Each pair of points lies on one line and in two of its three-point
+subsets, hence has codegree 4. Each point lies on (r-1)/3 lines and in
+six copied subsets per line, giving degree 2(r-1)=q-2. This is a simple
+bipartite root (the copied subsets are distinct left vertices), connected
+because every right pair has a common neighbor. It has the same edge
+count as H1 and passes the right-pair bound exactly. This replacement
+shows why the cyclic-root exclusion cannot close the root class; no
+ambient realization of the replacement is claimed.
+
 ## Verification and scope
 
 An exact finite root check at q=32 and q=128 verified edge uniqueness,
