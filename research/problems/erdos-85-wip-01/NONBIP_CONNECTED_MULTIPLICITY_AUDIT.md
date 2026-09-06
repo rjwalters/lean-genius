@@ -129,8 +129,10 @@ equivalent to `m>=s`.
 
 There is a further obstruction to the fully sign-paired residual case
 assumed in the formal odd-moment calculation above. Connected `D` makes
-`A²=L_D+J` positive definite, so `A` has no zero eigenvalue. The principal
-eigenvalue has multiplicity one, and every remaining nonzero sign pair contributes
+`A²=L_D+J` positive definite, so `A` has no zero eigenvalue. On `1`
+perpendicular, the eigenvalues of `A²=L_D` are at most `2(q−1)<q²`.
+Together with `A1=q1`, this makes the principal eigenvalue simple. Every
+remaining nonzero sign pair contributes
 an even dimension, say `2r`. Hence
 
 ```text
