@@ -16,6 +16,12 @@ edge then excludes that split. This closes the previously open residual
 in this audit (2026-09-06). It does not exclude larger surgeries or
 unrelated q-regular graphs on q² vertices.
 
+The subsequent `POLARITY_BOUNDED_SURGERY_OBSTRUCTION.md` extends the
+construction-side exclusion: deleting k vertices and adding k+1, while
+only removing survivor edges, requires `q<=k³+4k²+5k`. Thus bounded-size
+repairs cannot scale to unbounded q. The present k=1 argument has the
+sharper threshold q>=8.
+
 ## Affine symplectic coordinates
 
 Take the absolute line to be
