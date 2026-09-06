@@ -91,6 +91,44 @@ supply that link. The size-two characteristic-two quotient audit concerns
 a different, degenerate invariant subspace and does not prove or refute
 this closed-neighborhood rank condition.
 
+## Triangle-free control: neither odd rank nor a perfect code is forced
+
+The parameter-only implication fails even after imposing triangle-freeness.
+`check_weight_three_triangle_free_even_rank.py` constructs a connected,
+triangle-free, 15-regular D on 48 vertices with
+
+```text
+rank_F2(D+I) = 46,
+```
+
+and induced five-cycle `(0,17,34,3,22)`. It begins with the interval
+graph on Z48 (steps17 through31, closed-neighborhood rank33), then applies
+nine recorded degree-preserving switches. A tuple `(a,b,c,d)` deletes
+edges `ab,cd` and inserts `ac,bd`. The checker verifies every deletion,
+insertion, degree, triangle condition, and connectivity after every switch.
+The final rank is computed by exact bit Gaussian elimination.
+
+No perfect code exists in this D. Closed neighborhoods have size16,
+so any perfect code would have size3; the checker also tests all such
+triples directly and finds none. This independently confirms the perfect-code
+failure without using Batal's rank theorem. It is a verification of one
+explicit counterexample, not an enumeration of graphs or a nonexistence
+claim about ambient graphs.
+
+Run the standard-library verifier:
+
+```sh
+python3 research/problems/erdos-85-wip-01/check_weight_three_triangle_free_even_rank.py
+```
+
+Thus a connected nonbipartite weight-three defect graph with no triangles
+need not have odd closed-neighborhood rank or an exact perfect code.
+The counterexample has no supplied cubic commuting H, incidence B, or
+ambient completion. The new rank obstruction remains valid, but its
+missing odd-rank premise cannot follow from degree, order, connectedness,
+nonbipartiteness, and triangle-freeness alone. This stops that proposed
+extension of the interval-family terminal.
+
 ```python
 steps = {24} | {s % 48 for j in (1, 2, 3, 4, 5, 6, 8) for s in (j, -j)}
 assert len(steps) == 15 and 0 not in steps
