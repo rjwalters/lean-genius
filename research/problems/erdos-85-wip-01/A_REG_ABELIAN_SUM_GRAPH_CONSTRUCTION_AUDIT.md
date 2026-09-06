@@ -182,3 +182,30 @@ It does not exclude mixed defect components, other admissible profiles,
 or other abelian group parameters. The scalar/autocorrelation exclusion
 route is stopped at its explicit uniform survivor; no realization search
 or additional Lean wrapper follows from this calculation.
+
+## Inverse-theorem literature: the missing implication is conjectural
+
+Sol1's follow-up checked [Eberhard--Manners, *The apparent structure of
+dense Sidon sets*, Section 5](https://arxiv.org/pdf/2107.05744), published
+in Electronic Journal of Combinatorics 30(1) (2023), P1.33. Their strong
+Sidon convention agrees with the one here. Conjecture 5.1 proposes an
+equivariant projective-plane completion with only o(|G|) added points and
+lines. Conjecture 5.2, for dense maximal Sidon sets, instead proposes that
+the missing differences, including zero, form a union of O(1) subgroups.
+Neither statement is supplied as a theorem. A bounded union of subgroups
+is also weaker than the single subgroup required for the RDS argument.
+
+There is a concrete warning against dropping hypotheses: the set
+`S={0,1,4,6}` in Z/16 has twelve distinct ordered nonzero differences,
+namely `+/-1,...,+/-6`. Its missing-difference set including zero is
+`{0,7,8,9}`, which is not a subgroup since `7+7=14` is absent. Thus exact
+square-root size alone does not imply a subgroup leave. This finite
+example meets 2G, so it is not a loopless sum-graph candidate and does not
+refute either asymptotic conjecture. Direct enumeration of its twelve
+differences verifies the stated control; no graph census is involved.
+
+The targeted inverse search stops here. What is missing is a proved
+completion or subgroup-rigidity implication under the actual loopless
+Sidon hypotheses. Even excluding every such sum graph would leave the
+separate, unproved passage from arbitrary A-REG graphs to this construction
+class. No new Lean theorem or general A-REG exclusion is asserted.
