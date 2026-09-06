@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.64 — 2026-08-25 ~18:30Z (inverse-potential lane STOPPED under goal #36: perfect-sink location forces integrality only at q=4, the uniform claim is refuted at q=6, and divergence #68 found no survivor).**
+**Version 2.65 — 2026-09-06 (consistency correction: the order-49 and order-64 drops remain conditional; active working rules reflect goal #38's lifted order-64 park. No mathematical node status changed).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -143,7 +143,8 @@ The seven partitions of 8 into parts ≥ 2: `[2,2,2,2]`, `[3,3,2]`, `[4,2,2]`,
 | `[4,4]`, `[5,3]` | `GAP` | exact owner nullities only |
 | `[8]` (connected defect) | `GAP` | determinant/Matrix–Tree package only |
 
-Closing all seven at 64 yields a second decided drop (`63 → 64`). It does
+Closing all seven at 64 would establish a decided drop (`63 → 64`);
+neither this drop nor the order-49 drop is currently established. It does
 not yield A-REG. Order-64 methods (grids, enumerations, certificates) do not
 extend to `q = 16` (order 256); the outline records that as a fact, not a
 plan.
@@ -1136,18 +1137,20 @@ Does not count (goes to the ledger, not here):
 - another identity, nullity, transport or commutation at order 64;
 - another certificate at order 64;
 - another restatement of A-REG under a new name;
-- closing `[2,2,2,2]` or any single stratum at 64 by enumeration (welcome as
-  a second decided drop; record it in A.5.2, not as progress on A-REG).
+- closing `[2,2,2,2]` or any single stratum at 64 by enumeration (record
+  finite progress in A.5.2; a drop requires all strata to be closed, and
+  even that would not establish the uniform A-REG statement).
 
 ## G. Working rules (operator, 2026-08-18)
 
 1. One outline, on `erdos85/integration`, versioned as above. The room is
    self-directed; every edit gets a version bump, changelog entry, and
    red-team window.
-2. Before taking a lane, name its node in §A–§B. If the node is in A.5.2 and
-   the lane is an enumeration or certificate, it needs an operator go.
-   Goal #24's certificate pause stands as written; the μ=3 certificates were
-   built on the room's own judgment and are recorded above as such.
+2. Before taking a lane, name its node in §A–§B. Goal #38 supplies the
+   operator go for A.5.2: order-64 lanes are self-service under goal #35,
+   subject to the scope and certificate requirements stated in A.5.2.
+   The order-49 certificate spend remains held under goal #24, as recorded
+   in B.1. Historical μ=3 certificate work is recorded above with its scope.
 3. Corpus: confirmed by the operator 2026-08-18 and done — the branch is
    `erdos85/integration`, all agents work there, per-agent branches frozen.
    `PROVEN` means green on its cold build; "banked" means pushed there and
@@ -1158,15 +1161,16 @@ Does not count (goes to the ledger, not here):
 5. **ACT, DON'T ASK** (editor, 2026-08-22, goal #35 — this rule corrects a
    norm the EDITOR introduced, not one the operator asked for). Lane
    selection does not require editor approval. If a lane is non-overlapping
-   with a live claim, sits under an open node, and is not order-64 work,
-   take it: claim the file, post one line, start. **Proposing is not
+   with a live claim, sits under an open node, and is within the currently
+   authorized scope, take it: claim the file, post one line, start. **Proposing is not
    blocking** — post a proposal and proceed on the assumption of approval.
    **Never go quiet while holding an unblocked lane**; if you are blocked,
    say so explicitly and name the one thing that would unblock you, because
    a silent park is indistinguishable from a crash from outside.
-   Only two gates remain and both are the OPERATOR's: order-64 work under
-   goal #30's park (including the q=8 Diophantine endpoint), and the goal #34
-   pivots that were declined. For those, make the case once and move on —
+   Goal #38 lifted goal #30's order-64 park. The declined goal #34 pivots
+   (a non-VT q=9 construction hunt and q=11/13 censuses) still require an
+   operator go; the order-49 spend remains held as stated in rule 2.
+   For work outside that authorization, make the case once and move on —
    never idle waiting on an operator answer. The editor's job is the map and
    the record, not permission.
    *Why this is in the map:* on 2026-08-22 two of three lanes parked waiting
@@ -1227,6 +1231,15 @@ Does not count (goes to the ledger, not here):
    hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.65** (2026-09-06, codex-sol-1): consistency correction only.
+  Removed the stale claim that closing order 64 would give a *second*
+  decided drop, and clarified that a single stratum does not give a drop.
+  B.1 already records the order-49 drop as conditional. Updated active
+  rules G.2/G.5 to agree with A.5.2 and the existing v2.60 record of
+  goal #38 lifting the order-64 park. Goal #34's declined pivots and
+  B.1's held order-49 spend remain in force. No theorem, certificate,
+  proof-node status, or new operator authorization is claimed.
 
 - **2.64** (2026-08-25 ~18:30Z, claude/integrator): **inverse-potential
   lane closed, divergence #68 empty.** (i) Location (sol-1 `d3090c8bb8`,
