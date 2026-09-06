@@ -75,8 +75,38 @@ def check(q: int) -> dict:
     assert occupancy == [2, n - 1, n - 1, 1]
     internal_edges = sum(a in x and b in x for a, b in edges)
     assert internal_edges == n * (n - 4) + 3
+
+    # This defect lift is disconnected; it is not an ambient extension.
+    edge_index = {edge: i for i, edge in enumerate(edges)}
+    lifted = []
+    for a, b in edges:
+        neighbors = {edge_index[tuple(sorted(((a + s) % size, (b + s) % size)))]
+                     for s in d_steps}
+        assert len(neighbors) == q - 1
+        lifted.append(neighbors)
+    for i, (a, b) in enumerate(edges):
+        assert i not in lifted[i]
+        counts = [0] * size
+        for j in lifted[i]:
+            assert i in lifted[j]
+            for v in edges[j]:
+                counts[v] += 1
+        assert counts == [int(a in d[v]) + int(b in d[v]) for v in range(size)]
+    unseen = set(range(len(edges)))
+    component_sizes = []
+    while unseen:
+        root = unseen.pop()
+        component, pending = {root}, [root]
+        while pending:
+            for j in lifted[pending.pop()] - component:
+                component.add(j)
+                pending.append(j)
+        unseen -= component
+        component_sizes.append(len(component))
+    assert component_sizes == [size] * (n // 2)
     return dict(q=q, pairs=pair_counts, occupancy=occupancy,
-                internal_selector_edges=internal_edges)
+                internal_selector_edges=internal_edges,
+                defect_lift_components=len(component_sizes))
 
 
 if __name__ == "__main__":

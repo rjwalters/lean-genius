@@ -149,24 +149,57 @@ their sizes are `2n`, their pair intersections are the three gamma values,
 and their triple intersection is empty. These are edge-star sets, not
 neighborhood holes of a constructed exterior graph.
 
+## The defect intertwiner has a separate disconnected lift
+
+There is also a uniform zero-one symmetric solution of the defect
+intertwiner alone. Translation by any `d in D` permutes the selector edges.
+Let `P_d` denote its permutation matrix on `C` and `Ptilde_d` its permutation
+matrix on `E(L)`. Equivariance of incidence gives
+
+```text
+B Ptilde_d = P_d B.
+```
+
+Set `Dtilde_F=sum_{d in D} Ptilde_d`. The translation action on `E(L)`
+is free: a nonzero translation fixing a two-set must exchange its points,
+so the translation would be `q` and the edge would be antipodal. But
+antipodal pairs are excluded from `L`. Thus the sum is zero-one with zero
+diagonal. Inverse closure gives symmetry, and its degree is `q-1`.
+Summing the equivariance identities proves
+
+```text
+B Dtilde_F = D B.                                         (9)
+```
+
+This lift has exactly `n/2` connected components of order `2q`, one for
+each unsigned L-difference. Each component is a copy of `D`, since the
+translation action is free and the allowed shifts generate `C`.
+In particular the lift is **not** the required connected defect component
+on `F`, and is not claimed to be compatible with any `H_F`. It cuts only
+an obstruction based on the defect intertwiner, its symmetry, integrality,
+and degree without that connectedness or the joint Gram relation.
+
 ## Verification and the exact remaining gap
 
 `check_size_two_triple_companion.py` builds adjacency lists and the actual
 incidence rows of `B`, checks (4)--(5) entrywise, checks connectivity and
 the triangle, and independently computes the companion ledger, cross-block
-counts, and (8). The default checks are `q=8,10,12,16,32,64`; these are
+counts, and (8). It also constructs the translation lift, checks every
+column of (9), and verifies the sizes of all its components. The default
+checks are `q=8,10,12,16,32,64`; these are
 regressions for the uniform construction (3), not an enumeration of
 ambient candidates and not a Lean proof.
 
-Nothing here supplies `H_F` or `D_F`. In particular it does not check
+Nothing here supplies `H_F` or a connected `D_F` compatible with it. In
+particular it does not check the simultaneous system
 
 ```text
 H B + B H_F = J,
 D B = B D_F,
-H_F^2 + B^T B = (q-1)I + J - D_F.                        (9)
+H_F^2 + B^T B = (q-1)I + J - D_F.                       (10)
 ```
 
-The definition of formal holes cannot substitute for (9). Nor does (8)
+The definition of formal holes cannot substitute for (10). Nor does (8)
 produce rainbow triples, their proper edge colorings, or the simultaneous
 perfect matchings with prescribed companion pairs. Those are additional
 exterior compatibility conditions.
@@ -174,5 +207,5 @@ exterior compatibility conditions.
 Disposition: cut a terminal using only triple-companion occupancies,
 C-shore commutation, the diagonal Gram partition, or the six-label edge
 counts. This construction satisfies them at every binary `q>=8`.
-Continue at (9) and its simultaneous matching/owner-label consequences;
+Continue at (10) and its simultaneous matching/owner-label consequences;
 the A-REG-NONBIP node remains open.
