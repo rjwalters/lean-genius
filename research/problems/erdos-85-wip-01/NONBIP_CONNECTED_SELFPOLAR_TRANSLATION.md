@@ -134,7 +134,7 @@ Regularity forces `D=q K_q`. This is already excluded for binary q>=8 by
 `Erdos85BinarySquareRegularParity.lean`.
 
 In fact the second promotion axiom alone suffices. Since
-`A³=qJ-A-AD` and every column of D has q-1 ones, for `A[x,y]=0` we have
+`A³=(q-1)A+qJ-AD` and every column of D has q-1 ones, for `A[x,y]=0` we have
 `A³[x,y]=q-(AD)[x,y]>=1`. Thus its proposed `0`-or-alpha law has no zero
 case: every nonincident point-line pair has exactly alpha collinear points.
 Fix a point x. There are q(q-1) points collinear with x, each incident with
