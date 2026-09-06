@@ -47,8 +47,12 @@ For binary `q=2^k`, divisibility by nine holds exactly when
 class begins with the genuine exceptional control `q=4`; among the intended
 `k>=3` cases, proving both identities would immediately close four of the
 six exponent classes, leaving only `k = 5 (mod 6)` (and later members of
-`k = 2 (mod 6)`) for a further terminal.  Thus the affine route is not by
-itself yet a uniform proof even if both identities are established.
+`k = 2 (mod 6)`) for a further terminal. This global divisibility argument
+alone does not cover every exponent. The later
+`NONBIP_CONNECTED_TRIANGLE_DEGREE_KERNEL_AUDIT.md` supplies the uniform
+connected-defect consumer: the two identities imply
+`At=((q²+2)/3)1`, which forces a nonzero kernel vector of A. The unresolved
+step is proving the identities (or that weaker weighted-neighbor identity).
 
 ## Bounded verification
 
