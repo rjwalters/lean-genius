@@ -248,3 +248,54 @@ Sol3 independently derived the rank-free criterion by row reduction and
 checked all 4,096 small pairs; Sol2 independently found a second cubic
 binary control with the same failure. One control is recorded here to
 avoid duplicating artifacts for the same algebraic distinction.
+
+## Odd-prime controls retain symmetry, zero diagonal and degree
+
+A complementary bounded check uses the ACTUAL q=16 interval H,B, not
+the eight-dimensional algebraic control. For each of p=3,5,7,11,
+`check_weight_three_odd_prime_cross.py` constructs a matrix T over Fp with
+
+```text
+Tᵀ=T, diag(T)=0, BT=J-HB, T1_F=13·1_F.
+```
+
+The degree equation is imposed explicitly, including in characteristic
+three, where it cannot be recovered by dividing a column-sum equation
+by three. Write `A=[B;1_Fᵀ]` and `C=[J-HB;13·1_Fᵀ]`. The construction
+selects independent rows S,V of A,C, and a right inverse R of S. The
+initial symmetric solution is
+
+```text
+T₀=RV+VᵀRᵀ-R(VSᵀ)Rᵀ.
+```
+
+The checker verifies all rows of `AT₀=C`, not only the selected rows.
+If K is a basis matrix for ker(A), adding `K X Kᵀ` for symmetric X
+preserves this equation. In a coordinate basis where the free rows of
+K form an identity matrix, diagonal entries of X first correct those
+free coordinates of T₀. Offdiagonal entries of X then affect only the
+pivot-coordinate diagonals, with vectors `2 K_if K_ig`. These vectors
+span all 48 pivot coordinates for each of the four listed primes.
+Solving that 48-dimensional linear system corrects the remaining diagonal.
+The augmented matrix has rank 48 and kernel dimension 160 in each case.
+
+Every resulting T is checked entrywise for all displayed equations. The
+same script independently checks the integer C Gram of its reconstructed
+H,B before reducing modulo a prime. It uses exact modular arithmetic with
+NumPy integer arrays. Run:
+
+```sh
+python3 research/problems/erdos-85-wip-01/check_weight_three_odd_prime_cross.py
+```
+
+This supplies no binary T, no integral lift and no exterior Gram. The
+interval example is already excluded modulo two. The four controls show
+that these odd-prime cross tests alone do not exclude even that example;
+they are not a statement about every odd prime or every carrier.
+In particular the modulo-three residue criterion in
+`NONBIP_MIXED_WEIGHT_THREE_RESIDUE_COMPLETION_EXCLUSION.md` cannot discard
+its nonnegative integer counting step and exterior Gram. A residue of
+one becomes a lower bound of one only for the relevant nonnegative
+integer counts, and the total mass then forces equality. That argument
+has more input than a solution of the cross equations over F3.
+No extension of the prime list or separate formalization is planned.
