@@ -437,6 +437,21 @@ integers: `4 | q`, while powers of two alternate modulo `12` between `8`
 and `4`, which directly clears the denominators `4,6,12`.  The cubic contributes zero adjacency trace, so the main quadratic
 half alone pays `-q`.  Symbolic expansion again gives dimension `q^2`,
 `tr D=0`, and `tr D^2=q^2(q-1)`.  The verifier checks both this uniform
-completion and the independent rational-root completion above.  The cubic
-version is the primary countermodel; the rational-root version is retained
-as an independent cross-check of the same boundary.
+completion and the independent rational-root completion above.
+
+**Graph-parity scope correction, 2026-09-06.** The cubic version is a
+countermodel only to the listed integral-factor and defect-moment tests.
+It fails an elementary additional graph constraint: Newton sums give
+`sum roots(g)^3=-14` and `sum roots(g3)^3=-3`, hence
+`tr A^3=q^3-7q-3`, which is odd. For an adjacency matrix this trace must
+equal six times the number of triangles. Equivalently, modulo two its
+remaining factors include `x*g3(x)` with derivative 1, while all other
+factors are squares; the resulting characteristic polynomial is not a
+square modulo two as required for a zero-diagonal symmetric matrix of
+even order. The verifier now checks and reports this failure explicitly.
+
+The rational-root completion has instead `tr A^3=q^3-7q-36`, divisible
+by six, and its characteristic polynomial reduces to a square modulo two.
+It therefore remains the relevant control if those two graph-parity tests
+are added, still only for q>=16 and still without graph realizability.
+Neither completion establishes compatibility with all graph constraints.
