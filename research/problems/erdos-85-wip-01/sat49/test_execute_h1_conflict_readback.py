@@ -206,6 +206,30 @@ class ExecuteConflictReadbackTest(unittest.TestCase):
         with mock.patch.object(store, "_run", side_effect=responses), self.assertRaises(mod.AuditError):
             store.download(job()["certificate_key"], destination)
 
+    def test_aws_head_error_formats_preserve_missing_vs_indeterminate(self):
+        store = mod.AwsCliReadOnlyStore(Path("/aws"), "profile", "bucket")
+        for prefix in ("", "aws: [ERROR]: "):
+            for code in ("404", "NotFound", "NoSuchKey", "403", "AccessDenied", "500"):
+                with self.subTest(prefix=prefix, code=code):
+                    response = mock.Mock(returncode=1, stdout="", stderr=(
+                        f"{prefix}An error occurred ({code}) when calling the "
+                        "HeadObject operation: service message"))
+                    expected = (mod.ObjectMissing if code in
+                                ("404", "NotFound", "NoSuchKey") else mod.AuditError)
+                    with mock.patch.object(store, "_run", return_value=response), \
+                            self.assertRaises(expected):
+                        store._head("certificate")
+        for message in (
+            "Could not connect to the endpoint URL",
+            "aws: [ERROR]: An error occurred (404) when calling the GetObject operation:",
+            "diagnostic: An error occurred (404) when calling the HeadObject operation:",
+        ):
+            with self.subTest(message=message):
+                response = mock.Mock(returncode=1, stdout="", stderr=message)
+                with mock.patch.object(store, "_run", return_value=response), \
+                        self.assertRaises(mod.AuditError):
+                    store._head("certificate")
+
     def test_aws_authentication_environments_are_explicit_and_sealed(self):
         hostile = {"AWS_ACCESS_KEY_ID": "leak", "AWS_SECRET_ACCESS_KEY": "leak",
                    "AWS_SESSION_TOKEN": "leak", "AWS_PROFILE": "wrong",

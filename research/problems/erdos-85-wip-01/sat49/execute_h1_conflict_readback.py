@@ -41,7 +41,8 @@ AWS_REGION = "us-east-1"
 AWS_AUTH_MODES = ("profile", "instance-role")
 SHA_RE = re.compile(r"[0-9a-f]{64}")
 HEAD_MISSING_RE = re.compile(
-    r"^An error occurred \((?:404|NotFound|NoSuchKey)\) when calling the HeadObject operation:"
+    r"^(?:aws: \[ERROR\]: )?An error occurred "
+    r"\((?:404|NotFound|NoSuchKey)\) when calling the HeadObject operation:"
 )
 
 
