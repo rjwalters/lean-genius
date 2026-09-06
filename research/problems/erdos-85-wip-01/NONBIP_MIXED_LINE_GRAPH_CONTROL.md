@@ -112,6 +112,38 @@ count as H1 and passes the right-pair bound exactly. This replacement
 shows why the cyclic-root exclusion cannot close the root class; no
 ambient realization of the replacement is claimed.
 
+## Root-star completion and the embedding theorem's missing hypothesis
+
+Suppose, conditionally, that an actual ambient A has D equal to a disjoint
+union of ordinary line graphs of simple roots. Discard isolated root
+vertices, which do not change the line graphs. Take B to be the unsigned
+incidence matrix of their disjoint union. Adjoin its root stars as new
+lines to the q² old neighborhood lines. Then
+
+```text
+A² + B^T B = (q+1)I + J.
+```
+
+Off-diagonal entries say every pair of old points lies on exactly one
+line; diagonal entries say each point lies on q+2 lines. In the actual
+A-REG setting no D-component is K_q. Thus no root has a degree-one
+vertex: regularity of its line graph would force that connected root to
+be a q-edge star. All new lines therefore have at least two points.
+For every root edge uv, `deg(u)+deg(v)=q+1`, so new lines have at most
+q-1 points. They are distinct from the q-point old lines, and distinct
+root stars cannot coincide in a simple root when their sizes are at least
+two. Hence this really is a linear space on q² points, with maximum line
+size q and constant point degree q+2.
+
+The close-looking [Grundhöfer--Stroppel--Van Maldeghem, *Confluence Graphs
+of Unitals*, arXiv:2311.11693v2, Theorem 1.7](https://arxiv.org/pdf/2311.11693)
+requires q² points and bounds BOTH line sizes and point degrees by q+1.
+Our construction violates the latter bound at every point. Removing a
+root-star line loses the pairs it uniquely covers, so it also loses the
+linear-space hypothesis. The theorem therefore supplies no completion
+or contradiction here. This route stops at the additional point-degree
+allowance; no stronger embedding theorem is assumed.
+
 ## Verification and scope
 
 An exact finite root check at q=32 and q=128 verified edge uniqueness,
