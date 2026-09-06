@@ -455,3 +455,65 @@ by six, and its characteristic polynomial reduces to a square modulo two.
 It therefore remains the relevant control if those two graph-parity tests
 are added, still only for q>=16 and still without graph realizability.
 Neither completion establishes compatibility with all graph constraints.
+
+### Integer regular-matrix obstruction to the older Capell completion
+
+**Scope correction, 2026-09-06.** The older rational-root completion passes
+the listed moment and parity tests, but cannot be the spectrum of an
+integer symmetric matrix A with `A1=q1` and simple eigenvalue q. This
+uses the integer projector identity behind the Hoffman polynomial; it
+does not require zero diagonal or C4-freeness.
+
+For any integer polynomial h that annihilates every nonprincipal
+eigenspace, symmetry and simplicity of q give
+
+```text
+h(A) = h(q) J/n.
+```
+
+The left side has integer entries. Consequently `n` must divide `h(q)`.
+This is the usual Hoffman-polynomial construction before normalizing
+its value to obtain J; see Monzillo and Penjic,
+[On Hoffman polynomials](https://arxiv.org/abs/2403.00652).
+The displayed identity also proves the needed divisibility directly.
+
+For the older completion above, take
+
+```text
+h(x) = (x+4)(x²+2x-1)(x²-2x-1)(x²-1)
+       (x²-(2q-3))(x²-q)(x²-q-1)(x²-q+1).
+```
+
+Its factors cover every nonprincipal adjacency root in that ledger.
+The possible repeated root at q=16 causes no problem: h need not be
+square-free or minimal. At `q=2^k`, k>=4, all evaluated factors are
+odd except `q+4` and `q²-q`. Their 2-adic valuations are two and k,
+respectively. Hence
+
+```text
+v2(h(q)) = k+2 < 2k = v2(q²),
+```
+
+contradicting the necessary divisibility. The verifier checks the
+factor parity and these exact valuations, and verifies the projector
+identity on the actual q4 adjacency matrix as a positive calibration.
+
+The defect spectrum independently fails the same test. Its nonprincipal
+roots are annihilated by
+
+```text
+h_D(x) = (x-q+17)(x-q+2)(x+q-2)(x+1)(x+2)x
+         ((x-q+4)²-8).
+```
+
+At `x=q-1` this has valuation `k+4<2k` for k>=5. For q=16,
+the roots q-17 and -1 coincide; removing one duplicate factor x+1
+gives valuation four, again below eight. Thus no integer symmetric
+(q-1)-regular matrix D with simple principal eigenvalue realizes this
+defect spectrum either. The verifier checks this collision explicitly.
+
+This excludes this particular complete spectral ledger uniformly; it
+does not exclude the Capell factor itself, other complete spectra, or
+all connected defects. Earlier conclusions about the insufficiency of
+the explicitly listed moment/parity tests remain valid. No A-REG
+terminal or designated-dimension upper bound follows from this check.

@@ -4,11 +4,15 @@
 This is a spectral/characteristic-polynomial control, not a graph.
 The cubic completion fails triangle-trace parity; the older rational-root
 completion passes that necessary condition. Neither is a graph witness.
+The older completion fails the integer regular-matrix Hoffman divisibility
+condition, uniformly for binary q >= 16.
 """
 
 from __future__ import annotations
 
 import sympy as sp
+import runpy
+from pathlib import Path
 
 
 q = sp.symbols("q", integer=True, positive=True)
@@ -155,10 +159,68 @@ def verify_graph_parity_scope() -> None:
     print("scope: rational-root completion passes this parity test only")
 
 
+def verify_hoffman_divisibility_obstruction() -> None:
+    """Annihilator evaluation rejects the older ledger as an integer matrix.
+
+    If A is symmetric integral, A1=q1, and q is simple, any integral h
+    annihilating its other eigenspaces has h(A)=h(q)J/n. Thus n divides
+    h(q). Repeated factors in h do not affect the validity of this test.
+    """
+    x = sp.symbols("x")
+    odd_factors = [
+        x**2 + 2*x - 1, x**2 - 2*x - 1, x**2 - 1,
+        x**2 - (2*q - 3), x**2 - q - 1, x**2 - q + 1,
+    ]
+    h = (x + 4) * (x**2 - q) * sp.prod(odd_factors)
+    # Every other factor evaluates to an odd integer at even q.
+    for factor in odd_factors:
+        value = sp.Poly(factor.subs(x, q), q)
+        assert int(value.TC()) % 2 == 1
+    for k in range(4, 21):
+        Q = 2**k
+        value = int(h.subs({x: Q, q: Q}))
+        valuation = (abs(value) & -abs(value)).bit_length() - 1
+        assert valuation == k + 2 < 2*k
+        assert value % (Q*Q) != 0
+
+    # The defect spectrum independently fails the same regular-matrix test.
+    defect_h = ((x-q+17)*(x-q+2)*(x+q-2)*(x+1)*(x+2)*x
+                * ((x-q+4)**2-8))
+    for k in range(4, 21):
+        Q = 2**k
+        # At q16 the q-17 and -1 roots coincide; keep only one copy.
+        reduced = sp.Poly(defect_h.subs(q, Q), x).sqf_part()
+        value = int(reduced.eval(Q-1))
+        valuation = (abs(value) & -abs(value)).bit_length() - 1
+        assert valuation == (4 if Q == 16 else k+4)
+        assert valuation < 2*k
+
+    # Positive calibration: the actual q4 graph must satisfy the identity,
+    # even though its defect is disconnected and its adjacency is singular.
+    control = runpy.run_path(str(Path(__file__).with_name(
+        "binary_q4_fixed_free_disconnected_control.py")))
+    A = sp.zeros(16)
+    for u, v in control["A_EDGES"]:
+        A[u, v] = A[v, u] = 1
+    minimal = A.charpoly(x).as_poly().sqf_part()
+    h4, remainder = sp.div(minimal, sp.Poly(x - 4, x))
+    assert remainder.is_zero
+    scale = int(h4.eval(4))
+    assert scale % 16 == 0
+    h4_A = sp.zeros(16)
+    for coefficient in h4.all_coeffs():
+        h4_A = h4_A*A + coefficient*sp.eye(16)
+    assert h4_A == (scale // 16)*sp.ones(16)
+    print("scope: older completion fails Hoffman divisibility: v2(h(q))=k+2<2k")
+    print("scope: its defect spectrum also fails integer regular realization")
+    print("verified: actual q4 graph satisfies the integer projector identity")
+
+
 if __name__ == "__main__":
     verify_symbolically()
     verify_uniform_cubic_completion()
     verify_graph_parity_scope()
+    verify_hoffman_divisibility_obstruction()
     for Q in (16, 32, 64, 128, 256):
         verify_at(Q)
     print("verified: both completions pass the stated defect-moment tests")
