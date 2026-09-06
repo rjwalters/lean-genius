@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.66 — 2026-09-06 (corrected blind-sector multiplicity and trace scope; the pure-blind case with fully sign-paired residuals fails dimension parity. A-REG remains open).**
+**Version 2.67 — 2026-09-06 (scoped the spectral-route limitations to the conditions actually tested; recorded the two integer-matrix control exclusions. A-REG remains open).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -319,30 +319,37 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   Trace-zero unpaired sectors are not covered by this parity argument.
   See `NONBIP_CONNECTED_MULTIPLICITY_AUDIT.md` for the exact scope.
 
-  *And it cannot be answered spectrally.* Both independent submissions
-  produced objects whose multiplicity is enormous under every spectral
-  hypothesis on the table: sol-1's connected clique-blowup `D = H[K_s]`,
-  which has a real (non-0/1) square root, reaches `mult_D(−1) = s³(s−1)`;
-  Fable's moment-feasibility model permits `dim W₋ ≈ q²/2`. The `ER_q`
-  comparison seals it — order `q²+q+1` carries `±√q` multiplicities
-  `q(q+1)/2`, so nothing spectral distinguishes order `q²` at all.
-  **CLOSED: the signed/PSD route, the joint-system route, and
-  minimum-rank / zero-forcing.**
+  *The tested spectral relaxations do not bound this multiplicity.*
+  Sol-1's connected clique-blowup `D = H[K_s]`, which has a real
+  (non-0/1) square root, reaches `mult_D(−1) = s³(s−1)`; Fable's
+  moment-feasibility model permits `dim W₋ ≈ q²/2`. The `ER_q` comparison
+  at the different order `q²+q+1` also has large `±√q` multiplicities.
+  These controls reject the proposed arguments from those relaxed inputs.
+  **CLOSED at their audited scope: the signed/PSD route, the redundant
+  joint-system route, and minimum-rank / zero-forcing.** They do not prove
+  that every spectral or integer-matrix argument is unavailable.
 
-  *The consequence is a direction, and it is the most useful sentence on this
-  node:* **any terminal must use the fact that `A` is entrywise 0/1 —
-  incidence, nonlinearly.** A bound `mult_D(−1) < √q` from binary
-  realizability would exclude trace `−q` on that sector alone; it would not
-  exclude trace shared with other sectors. No such bound is proved.
+  **Exact matrix realizability remains the missing condition.** Incidence
+  constraints are one possible route; integrality and zero diagonal can
+  also impose restrictions absent from the relaxed controls. The older
+  complete Capell ledger fails integer regular-matrix Hoffman divisibility
+  (`ceea46101f`, `NONBIP_CONNECTED_ENDGAME_AUDIT.md`); the newer q16
+  unpaired ledger fails the odd-power mod4 congruence (`b7d7671333`,
+  `NONBIP_CONNECTED_ODD_POWER_MOD4_AUDIT.md`). These are prose proofs with
+  executable verifiers, not Lean theorems or an all-spectra exclusion.
+  They preserve the earlier limited moment/parity checks and do not
+  reopen those already-refuted arguments. A bound `mult_D(−1) < √q`
+  would exclude trace `−q` on that sector alone, not trace shared with
+  other sectors. No such bound or uniform A-REG terminal is proved.
 
   *Corroborating control (sol-1, 08:32Z).* For `q = s²` take
   `g(X) = (X+s)^s`: monic, integral, degree `s`, root trace `−s² = −q`, every
   root with `θ² = q` (`μ = −1`). It satisfies the real-root, spectral-radius,
   Cauchy and mod-2-square interfaces simultaneously. It need not be
-  graph-realizable — that is the point. **No theorem about the designated
-  polynomial's coefficients alone can kill the canonical survivor**, so
-  further Newton/congruence wrappers are not the missing currency and should
-  not be built.
+  graph-realizable. **Those listed factor-only tests do not exclude it.**
+  The example does not establish a full admissible spectrum or an integer
+  adjacency matrix. Further wrappers of the same tests add no terminal;
+  a new constraint must be checked against its exact hypotheses.
 
   **(viii) THE THEOREM THE NODE NEEDS NOW HAS A NAME AND A LITERATURE
   ANCHOR** (Fable, 09:30Z, offered explicitly as a framing rather than a lane
@@ -1241,6 +1248,13 @@ Does not count (goes to the ledger, not here):
    hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.67** (2026-09-06, codex-sol-3): narrowed (vii)'s categorical claims
+  against all spectral methods to the relaxed conditions actually tested.
+  Recorded the banked Hoffman and odd-power exclusions of two particular
+  complete spectra, while preserving their valid limited-control roles.
+  Neither the old real-root examples nor these new exclusions settle
+  general integer-matrix realizability. No proof-node or Lean status changed.
 
 - **2.66** (2026-09-06, codex-sol-3): corrected (vii)'s unsupported
   multiplicity-only equivalence. Recorded the full trace equation and
