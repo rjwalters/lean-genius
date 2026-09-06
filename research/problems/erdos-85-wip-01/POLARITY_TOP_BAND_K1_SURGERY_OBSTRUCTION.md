@@ -1,4 +1,4 @@
-# Even-polarity top-band `k=1`: reduction to a pure selector split
+# Even-polarity top-band `k=1`: no delete-one/add-two repair
 
 ## Scope
 
@@ -9,12 +9,12 @@ formalized as `Polarity.evenCore K`: delete the absolute line and its nucleus
 from the orthogonal-polarity graph.  It is a `q`-regular C4-free graph on
 `q^2-1` vertices, where `q=|K|`.
 
-The result does **not** prove that this core has no tight delete-one/add-two
-repair.  It proves that for `q>=8` every such repair is forced into one of two
-very asymmetric residual forms.  This corrects an initially tempting but
-false inference from the mixed-selector count: a selector may consist almost
-entirely of the deleted root's neighborhood, in which case that count has no
-leverage.
+For `q>=8` this core has **no** tight delete-one/add-two repair preserving
+q-regularity and C4-freeness. The mixed-selector count reduces a possible
+repair to a pure selector split; the triangle through each removed matching
+edge then excludes that split. This closes the previously open residual
+in this audit (2026-09-06). It does not exclude larger surgeries or
+unrelated q-regular graphs on q² vertices.
 
 ## Affine symplectic coordinates
 
@@ -59,8 +59,10 @@ let `A_i` be the old-neighbor selector of `w_i`.  If the result is
 2|R| = q-2f.                                            (3)
 ```
 
-C4-freeness gives `|A_0 intersect A_1|<=1` for `f=0` and makes the selectors
-disjoint for `f=1`.  Consequently `deg_R(n)<=1` on `L_x`,
+C4-freeness gives `|A_0 intersect A_1|<=1` for **both** values of f.
+The earlier version incorrectly asserted disjointness when f=1; a single
+shared neighbor only forms a triangle with the gadget edge. The weaker
+bound is sufficient below. Consequently `deg_R(n)<=1` on `L_x`,
 `deg_R(y)<=2` off `L_x`, and at most one vertex has multiplicity two.
 
 If an external vertex `y` has `R`-degree two, it is the unique common selector
@@ -129,40 +131,56 @@ determine the remaining possibilities.
   A_1 = V(R).
   ```
 
-  The unresolved condition is that this second
-  selector (the `q` external endpoints when `a=0`, or the exceptional
-  root-neighbor plus `q-1` external endpoints when `a=1`) has no
-  common-neighbor conflict after the matching edges are removed.  Thus the
-  residual includes both the external-matching and one-cross-endpoint forms.
-  When `a=0`, the pure split `A_0=L_x`, `A_1=V(R)` is exactly Card #15
-  evidence 105's `k=0`-equivalent matching extension.  It is refuted on both
-  `d=4` controls but remains open q-generically at the top-band excess
-  `e=q-4`; the low-excess orientation estimates are vacuous here.
+  In particular every endpoint of every R-edge belongs to A_1, including
+  the possible shared root-neighbor when a=1.
 
-* If `f=1`, the selectors are disjoint, so (2) forces `a=0` and makes `R` an
-  external matching of `(q-2)/2` edges.  After swapping indices,
+* If `f=1`, R is a matching of `(q-2)/2` edges with a root-neighbor
+  endpoints, where a is 0 or 1. After swapping indices,
 
   ```text
   A_0 is a (q-1)-subset of L_x,
-  A_1 is the remaining point of L_x together with V(R).
+  A_1 is the remaining point of L_x together with V(R),
+  |A_1 intersect L_x| = 1+a.
   ```
 
-  Every external endpoint must be safe with that one exceptional root
-  neighbor, and the external endpoints must be mutually safe after removal.
+  The possible root-neighbor endpoint of R lies in both selectors; the
+  root-neighbor omitted from A_0 is not R-incident, by (2). Again, all
+  endpoints of every R-edge belong to A_1.
 
-Therefore:
+## The matching-edge triangle closes both residuals
 
-> **Polarity top-band tight-k1 reduction.**  Let `K` be a finite field of
+If uv is an edge of the characteristic-two core, then `z=u+v` is a
+nonzero vertex distinct from u and v, and
+
+```text
+omega(u,z)=omega(u,u+v)=1,
+omega(v,z)=omega(v,u+v)=1.
+```
+
+Thus uv lies in the triangle uvz. Take any edge uv of the matching R.
+Both endpoints lie in A_1. If z is not the deleted root x, the edges uz
+and vz survive: neither can lie in R because R is a matching already
+containing uv. Then `w1-u-z-v-w1` is a C4, contradiction. Therefore
+every R-edge must have `u+v=x`. But this implies
+`omega(x,u)=omega(x,v)=1`, so **both** its endpoints lie in L_x.
+
+The residual forms have at most one R-endpoint in L_x in total. Hence R
+has no edge. This contradicts `|R|=(q-2f)/2>0` for q>=8.
+
+We obtain:
+
+> **Polarity top-band tight-k1 exclusion.** Let `K` be a finite field of
 > characteristic two, `q=|K|`, and `q>=8`.  Any tight delete-one/add-two
-> compensated repair of `Polarity.evenCore K` is, up to exchanging the new
-> vertices, one of the two pure/near-pure external-matching forms above.
+> compensated repair of `Polarity.evenCore K` fails q-regularity or
+> C4-freeness. Survivor edges may be removed arbitrarily; both choices of
+> the edge between the two new vertices are covered.
 
-This is sharper than the general exact-boundary estimate `q<=18` for mixed
-selectors because it uses the location of the unique polarity common
-neighbor.  It does not decide whether either residual external-matching form
-exists.  In particular, the first form is the external-matching
-conflict-coloring target already isolated in
-`COMPENSATED_SURGERY_SCALING_AUDIT.md`.
+The same triangle observation rules out delete-zero/add-one repair by
+removing a matching from this core: regularity forces a matching of q/2
+edges whose endpoints all attach to the new vertex, and the old triangle
+vertex is never deleted. This addresses the polarity-core specialization
+of the external-matching target in `COMPENSATED_SURGERY_SCALING_AUDIT.md`,
+not that target for arbitrary source graphs or larger deleted sets.
 
 ## Formalization status
 
