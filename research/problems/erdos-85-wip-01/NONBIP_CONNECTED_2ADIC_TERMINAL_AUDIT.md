@@ -254,3 +254,49 @@ For example, the degree-seven circulant with representatives `{1,2,3}`
 and antipodal shift 32 has valuation four, not two, at `X=1`.
 This note does not assert that such a defect admits an A-REG root. No
 general connected or mixed branch is closed, and no Lean proof is claimed.
+
+## Every permitted even-degree characteristic polynomial occurs modulo two
+
+Follow-up, 2026-09-06, Sol1; independent proof and small-order enumeration
+checked by Sol2. This concerns characteristic coefficients alone, not the
+prescribed square `A²=(q−1)I+J−D`.
+
+For every `m>=1` and every monic `f` of degree `m−1` over `F_2`, there is a
+symmetric zero-diagonal `2m` by `2m` matrix A with `A1=0` and
+
+    charpoly(A) = x² f(x)².
+
+These are exactly the possible shapes: the determinant expansion pairs
+permutations containing longer cycles with their reversals, leaving only
+matching terms. Thus the characteristic polynomial of an even-order
+alternating matrix is a square. The additional equation `A1=0` forces its
+constant coefficient to vanish, hence divisibility by `x²`.
+
+For sufficiency, equip `V=F_2^(2m)` with the standard dot product. The plane
+`E=span{1,e_last}` has nonsingular Gram matrix `[[0,1],[1,1]]`. Its orthogonal
+complement W consists of even-weight vectors with last coordinate zero;
+the restricted form is alternating and nondegenerate. Choose a hyperbolic
+basis of W with Gram matrix `J=[[0,I],[I,0]]`. If T is a companion matrix of
+f, put `C=diag(T,Tᵀ)` on W and zero on E. Then
+
+    JC = [[0,Tᵀ],[T,0]]
+
+is symmetric with zero diagonal. Consequently the transferred operator A
+is selfadjoint and satisfies `vᵀAv=0` for every v. In standard coordinates
+this says precisely `Aᵀ=A` and `diag A=0`. It kills 1, and its characteristic
+polynomial is `x² charpoly(T) charpoly(Tᵀ)=x²f²`. The case m=1 is the zero
+matrix of order two.
+
+The standard-library verifier `verify_even_degree_charpoly_mod2.py` checks
+all 63 permitted polynomials at orders 2,4,6,8,10,12. It constructs the
+matrices by change of basis, then independently computes their
+characteristic polynomials using matching parity. It also checks symmetry,
+zero diagonal, and every degree's parity.
+
+**Scope:** interpreted as 0/1 adjacency matrices, these are simple graphs
+with even degrees. The construction has an isolated last vertex. It does
+not preserve connectedness, C4-freeness, exact regular degree, or a specified
+D. Therefore it closes only attempts to extract further coefficient
+restrictions modulo two from symmetry, zero diagonal, and even degrees
+alone. It neither supplies an A-REG graph nor dismisses stronger integral
+matrix or growing-precision arguments. No Lean status is promoted.
