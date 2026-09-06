@@ -127,3 +127,64 @@ its equivalent nondivisibility statement.  Until such a bounded-exponent
 argument is found, further kernel-dimension and determinant-divisibility
 lemmas move in the wrong direction and should not be banked as progress
 toward A-REG.
+
+## Full quadratic-form invariants still need the zero diagonal
+
+Date: 2026-09-06. The following exact control has binary q=8 and connected,
+non-bipartite defect. It passes the entire rational quadratic-form test,
+not just determinant-square or 2-adic tests. It has six loops, so it is
+**not** a simple-graph counterexample to A-REG.
+
+[Buratti--Stinson, *New Results on Modular Golomb Rulers, Optical
+Orthogonal Codes and Related Structures*, arXiv:2007.01908v2,
+Table 1, the row for v=57,64,68 and k=8](https://arxiv.org/pdf/2007.01908)
+provides the modular Golomb ruler
+
+    S = {0,4,5,17,19,25,28,35} in Z/64Z.
+
+All 56 nonzero ordered differences are distinct. Define the symmetric
+zero-one matrix `A[x,y]=1` exactly when `x+y` belongs to S modulo 64.
+It has row sum 8, and its square has diagonal 8 and off-diagonal entries
+at most 1. The missing differences are
+
+    T = {22,26,27,32,37,38,42}.
+
+Consequently `A²=7I+J-D`, where D is the Cayley graph on Z/64Z with
+connection set T. D is simple and 7-regular. Its step-27 edges form a
+Hamiltonian cycle, proving connectedness. The cycle
+`0,27,54,12,38,0` has length five, proving non-bipartiteness.
+
+The exact determinant is
+
+    det(A) = 490601813190770188069153280 != 0.
+
+Thus, for `M=7I+J-D=A²`, the rational invertible matrix `A^{-1}` gives
+
+    (A^{-1})^T M A^{-1} = I_64.
+
+M is positive definite and has the same determinant square class and
+every local Hasse invariant as I_64. No calculation of separate Hilbert
+symbols is needed: the displayed rational congruence proves all of them
+simultaneously. This is stronger than a mere nonsymmetric Gram factor:
+A itself is a symmetric zero-one square root with constant row sum.
+
+The missing A-REG requirement is exact and visible. Its diagonal ones
+occur at `0,2,14,32,34,46`, so `trace(A)=6`. Removing those loops gives
+a simple C4-free graph with six vertices of degree 7 and 58 of degree 8,
+not the required minimum-degree-8 witness. This control addresses only
+the Gram quadratic-form test; it supplies no zero-trace square root and
+does not refute the separate trace-escape condition.
+
+The standard-library verifier
+`verify_binary_q8_looped_gram_control.py` checks every difference, all matrix
+entries of the square identity, the connectivity and odd-cycle certificates,
+the six loops, and the determinant by fraction-free exact elimination.
+It is a check of a published finite construction, not a graph search.
+
+Therefore an arithmetic terminal based on rational congruence of
+`(q-1)I+J-D` to the identity cannot exclude all connected non-bipartite
+defects at binary-square parameters. Any successful refinement must retain
+the zero-diagonal requirement, for example through its trace/Sachs data;
+the full Gram Hasse invariants alone lose that information. This finite
+control does not settle cofinal q, mixed defect, or A-REG, and is not a
+Lean formalization.
