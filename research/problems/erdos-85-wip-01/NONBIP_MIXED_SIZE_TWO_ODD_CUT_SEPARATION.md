@@ -8,6 +8,13 @@ of another fractional witness satisfying all matching inequalities, or of
 an integral exterior extension. It identifies constraints missing from the
 current witnesses and gives the next bounded test.
 
+Update: that next test is now settled at q=16 by the independently reviewed
+integral reciprocal witness in
+`NONBIP_MIXED_SIZE_TWO_INTEGRAL_CROSS_BLOCK_CUT.md`. The certificates below
+remain valid for the older fractional witnesses, but the stronger joint
+matching relaxation is feasible at q=16. Its off-diagonal Gram/C4
+condition remains the unresolved requirement.
+
 ## The necessary inequality
 
 Use `F=E(L)`, `H`, `B`, and the symmetric fractional exterior matrix T from
@@ -85,14 +92,23 @@ Theis, [*Odd Minimum Cut Sets and b-Matchings Revisited*](https://arxiv.org/abs/
 The saved certificates need only direct summation, so their validity does
 not depend on trusting the separation algorithm or its implementation.
 
-The next test is the **joint** symmetric linear relaxation with each
+The proposed next test was the **joint** symmetric linear relaxation with each
 column constrained by these matching inequalities, adding violated cuts
 and their symmetry translates. The existing fractional witnesses cannot
 settle that stronger interface. Conversely, the independent integral
 columns of `NONBIP_MIXED_SIZE_TWO_COLUMN_MATCHING_CUT.md` do not settle it
 either: those columns fail reciprocity.
 
-No conclusion about feasibility of the strengthened system has yet been
-drawn. In particular these finite separations are not a uniform
-nonexistence theorem, a solution of the exterior C4 condition, or a
-closure of A-REG-NONBIP.
+The integral reciprocal q=16 witness now settles that test affirmatively
+at this parameter. Averaging it with its reflection gives a dihedrally
+invariant symmetric cross block whose columns are averages of two actual
+perfect matchings. All odd-cut inequalities therefore hold, without
+enumerating odd sets. The independent review checked every cross-block
+entry and the actual column matchings. A cutting-plane rerun is unnecessary.
+
+That witness has an explicit exterior four-cycle, so it fails the
+off-diagonal Gram/common-neighbor cap. These finite separations and the
+replacement witness provide neither a uniform nonexistence theorem nor
+an ambient construction or closure of A-REG-NONBIP. Continue with the
+disjoint-selector common-neighbor cap, rather than more matching-polytope
+constraints at q=16.
