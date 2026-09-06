@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exact feasibility audit through quartic H16 square sectors.
+"""Exact feasibility audit with one quartic H16 square sector.
 
 Quartic candidates are generated from their first four integer power sums.
 Newton identities recover the monic polynomial of ``alpha``; its recurrence
@@ -11,7 +11,8 @@ square sectors.
 
 Each quartic type is combined with every reachable rational/quadratic/cubic
 state under the H16 trace, cubic-color, moment, parity, and Cauchy constraints.
-No state survives.
+No state survives in this scope. Combinations containing two or more
+quartic sectors are not covered by this audit.
 """
 
 from __future__ import annotations
