@@ -64,6 +64,29 @@ def check(model: dict) -> dict:
     # Incident selectors have no common T-neighbor, as the matching law implies.
     assert all(not (set(edges[i]) & set(edges[j])) or not (t[i] & t[j])
                for i, j in combinations(range(len(edges)), 2))
+    # Direct defect-triangle projection tests cannot see these opposite pairs.
+    def cross_defect_count(i, j):
+        return sum((a - b) % size in d_steps for a in edges[i] for b in edges[j])
+
+    histogram = [0] * 5
+    unseen_cycle_pairs = 0
+    for i, j in combinations(range(len(edges)), 2):
+        common = t[i] & t[j]
+        if len(common) <= 1:
+            continue
+        r = cross_defect_count(i, j)
+        histogram[r] += 1
+        if r == 0:
+            unseen_cycle_pairs += sum(cross_defect_count(a, b) == 0
+                                      for a, b in combinations(common, 2))
+    assert histogram == [1312, 672, 1056, 736, 1136]
+    # Each four-cycle is counted once for each of its two opposite pairs.
+    assert unseen_cycle_pairs == 2 * 720
+    unseen = [index[e] for e in ((0, 4), (20, 24), (2, 14), (0, 28))]
+    assert len(set(unseen)) == 4
+    assert all(unseen[(j + 1) % 4] in t[unseen[j]] for j in range(4))
+    assert cross_defect_count(unseen[0], unseen[2]) == 0
+    assert cross_defect_count(unseen[1], unseen[3]) == 0
     # The incident-selector transition 2-factors also have no short cycles.
     transition = [{j for j in t[i] if set(e) & set(edges[j])}
                   for i, e in enumerate(edges)]
@@ -91,7 +114,9 @@ def check(model: dict) -> dict:
                 column_perfect_matchings=True, exterior_gram_diagonal=True,
                 max_codegree=max(codegrees), exterior_common_neighbor_cap=False,
                 transition_cycle_lengths=cycle_lengths,
-                explicit_c4=model["c4"])
+                explicit_c4=model["c4"],
+                collision_pairs_by_cross_defect_count=histogram,
+                cycles_unseen_by_direct_triangle_projections=unseen_cycle_pairs // 2)
 
 
 if __name__ == "__main__":

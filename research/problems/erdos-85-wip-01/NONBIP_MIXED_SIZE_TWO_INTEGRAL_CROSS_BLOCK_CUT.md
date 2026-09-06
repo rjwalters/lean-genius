@@ -89,6 +89,49 @@ alone does not exclude this witness. A successful use of that 2-factor
 must also constrain its interaction with T-edges between disjoint
 selectors; no claim is made that those interactions are feasible.
 
+## Coverage of defect-triangle projection tests
+
+The all-triangles probe asks whether checking two-coordinate injectivity
+for every defect-triangle rainbow system directly checks every exterior
+four-cycle. It does not.
+
+If selector leaves f,g occur in different fibers of a defect triangle,
+some endpoint of f and some endpoint of g are joined by D. Therefore a
+collision between f,g with no cross-D edge cannot be detected as a repeated
+two-coordinate projection for any defect triangle. A four-cycle has two
+opposite pairs, so both orientations must be checked before concluding
+that this test misses the cycle.
+
+The verified witness contains the four-cycle
+
+```
+{0,4} — {20,24} — {2,14} — {0,28} — {0,4}.
+```
+
+Neither opposite pair has a cross-D edge. All its endpoints are even,
+and the only even D-difference is 16, which occurs in neither opposite
+cross-pair. Consequently this four-cycle has no direct defect-triangle
+two-leaf projection in either orientation.
+
+The checker independently counts the 4,912 violating selector pairs by
+their number r of cross-D edges:
+
+| r | 0 | 1 | 2 | 3 | 4 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Pairs of codegree >1 | 1312 | 672 | 1056 | 736 | 1136 |
+
+Among all four-cycles, 720 have r=0 at both opposite pairs. This number
+counts cycles, not merely violating pairs; the checker counts each cycle
+twice, once for each opposite pair, then divides by two.
+
+This establishes a **direct-coverage gap**, not a counterexample to the
+conjunction of all triangle-projection constraints: the witness also
+violates other, triangle-visible constraints. An argument that triangle
+constraints *indirectly imply* the remaining cap could still work, but
+would need that additional implication. Simply averaging the directly
+tested collisions does not supply it. This bounded coverage probe stops
+here; the count is not a uniform nonexistence theorem.
+
 ## Consequence for the blossom relaxation
 
 Let `T'` be the reflection of T and set `S=(T+T')/2`. Both summands satisfy
