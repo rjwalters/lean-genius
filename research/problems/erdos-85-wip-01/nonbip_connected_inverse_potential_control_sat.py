@@ -85,6 +85,9 @@ def main() -> None:
             pair for pair, variable in edge_var.items()
             if is_true(model.eval(variable))
         ]
+        # Preserve every witness, including singular models, before the
+        # potentially expensive exact rank/inverse diagnostics.
+        print("SAT model", index, "edges =", edges, flush=True)
         matrix = sympy.zeros(n)
         for i, j in edges:
             matrix[i, j] = matrix[j, i] = 1
@@ -104,7 +107,6 @@ def main() -> None:
             print("rank =", rank, "root_degree_T =", root_degree_t)
             print("positive sinks =", positive_sinks)
             print("x_root =", x[root], "x =", list(x))
-            print("edges =", edges)
             if not p8:
                 print("P8 COUNTERMODEL")
                 return
