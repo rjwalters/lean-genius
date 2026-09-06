@@ -98,29 +98,47 @@ two formulas isolate the exact promotion gap and make it independently
 checkable.  Any future semipartial route must prove at least one genuinely new
 entrywise uniformity statement rather than another moment identity.
 
-#### Terminal audit: promotion alone is insufficient
+#### Corrected terminal audit: promotion suffices at square order
 
-There is a second, more serious hypothesis gap after promotion.  The absolute
-point bound in Debroey--Thas Theorem 3.2 explicitly begins with the assumption
-that the polarity has a nonzero number of absolute points.  Our polarity is
-defined by the symmetric incidence matrix `A`, whose diagonal is identically
-zero, so its absolute-point count is exactly zero.
+Correction, 2026-09-06: the previous version correctly noted that the
+Debroey--Thas absolute-point bound assumes a nonzero absolute-point count,
+but incorrectly concluded that semipartial promotion is insufficient here.
+The special square-order parameters provide a different terminal.
 
-This is not a removable technicality.  Debroey and Thas's Example 2.1 starts
-from a Moore graph of valency `r` and girth five on `1+r²` vertices and takes
-the neighborhood sets as lines.  The resulting incidence matrix is the
-loopless graph adjacency matrix itself.  It therefore gives a symmetric
-semipartial geometry with a natural polarity having no absolute points; the
-pentagon, Petersen graph, and Hoffman--Singleton graph supply concrete
-examples.
+A semipartial geometry has a strongly regular collinearity graph; see
+[Abreu, Funk, Krčadinac, and Labbate, *Strongly regular configurations*,
+Section 3](https://arxiv.org/html/2104.04880v2). Here is the direct count.
+Write `alpha` for the positive value in the nonincident point-line law.
+For two collinear points x,y, their common line contributes `q-2` common
+collinear points. Each of the other `q-1` lines through x contributes
+`alpha-1`: y is not on that line and is collinear with x on it, so the
+intersection count is positive and hence alpha. These contributions are
+disjoint by partial linearity. Thus adjacent pairs in C have the constant
+codegree `q-2+(q-1)(alpha-1)`. The other semipartial axiom gives constant
+codegree for nonadjacent pairs. Consequently C, and its complement D, are
+strongly regular (allowing the imprimitive cases).
 
-Accordingly, even proofs of both entrywise uniformity statements above would
-not by themselves contradict our zero diagonal.  The route becomes terminal
-only if supplemented by a new, parameter-specific theorem forcing an absolute
-point for a `(q²)_q` semipartial geometry (or otherwise ruling out the
-zero-absolute branch).  No such theorem was found in the cited paper.  The
-semipartial-promotion probe should therefore be cut as a direct endgame rather
-than promoted to a standing axiom.
+A connected strongly regular D on q² vertices of degree q-1 would have
+diameter at most two. Its radius-two count would imply
+
+```text
+q² <= 1+(q-1)+(q-1)(q-2) = q²-2q+2,
+```
+
+which is impossible for q>1. If D is disconnected, its nonadjacent
+codegree is zero because vertices in different components have no common
+neighbor. Every component must then be a clique: a shortest path between
+nonadjacent vertices in a component would contain a distance-two pair.
+Regularity forces `D=q K_q`. This is already excluded for binary q>=8 by
+`binarySquare_regular_not_allUnit_of_two_pow` in
+`Erdos85BinarySquareRegularParity.lean`.
+
+Therefore proving both displayed semipartial axioms would suffice to
+close the remaining square-order branch; no separate absolute-point bound
+is needed. Neither axiom is presently proved. This correction restores the
+conditional implication, not a proof of promotion or any change in A-REG
+status. Generic fixed-point-free semipartial examples at other orders do
+not refute this square-order argument. No new Lean theorem is claimed.
 
 ### Extension to a projective plane
 
@@ -213,10 +231,10 @@ No ready-made theorem found in the searched configuration, polarity, or
 partial-plane literature rules out connected `D`.  The Moore defect-one route
 is a useful neighboring terminal, but its necessary graph inclusion `D <= G`
 is refuted pointwise by the established even triangle-free-degree law.
-Semipartial promotion also fails the terminal audit: classical fixed-point-free
-semipartial polarities exist, and the available absolute-point bound assumes
-the nonzero conclusion it would need to prove here.  Completion is useful
-mainly as a warning: the standard realizations exist, but their deficiency
+Semipartial promotion would be terminal at these square-order parameters by
+the strongly regular defect argument above, but both promotion axioms remain
+unproved. The generic absolute-point bound alone is inapplicable. Completion
+is useful mainly as a warning: the standard realizations exist, but their deficiency
 graph is maximally disconnected.  A viable configuration-theoretic endgame
 must therefore use the special `(q²)_q` parameters and self-polar labeling more
 strongly than either generic completion or generic semipartial theory does.
