@@ -28,6 +28,26 @@ Applying the preceding identity gives
 No C4-freeness, connectedness, nonnegativity, or evenness of q is needed
 for (1). In particular, every regular simple graph satisfies it.
 
+## Classical provenance in the graph case
+
+This graph obstruction is a specialization of Harary and Schwenk,
+[The spectral approach to determining the number of walks in a graph](https://msp.org/pjm/1979/80-2/pjm-v80-n2-p15-s.pdf),
+Pacific Journal of Mathematics 80(2), 443–449 (1979), Corollary 5a,
+page 448. Burnside counting of closed walks under rotation and reversal
+gives, for walk length N>=3,
+
+    sum_(d|N) phi(N/d) tr(A^d) ≡ 0                         (mod 2N), N odd;
+    sum_(d|N) phi(N/d) tr(A^d) + (N/2) 1ᵀA^(N/2)1 ≡ 0   (mod 2N), N even.
+
+Here phi is Euler's totient. For N=6 in a q-regular graph, this becomes
+
+    2 tr(A) + 2 tr(A²) + tr(A³) + tr(A⁶) + 3nq³ ≡ 0 (mod 12).
+
+Since tr(A)=0 and nq=tr(A²) is even, reduction modulo four recovers
+the m=3 case of (1). Thus the candidate rejection below is an application
+of a classical graph invariant, not a new invariant class. The direct
+matrix proof above additionally covers signed integer weights.
+
 ## The candidate and its rejection
 
 The q16 unpaired control was
