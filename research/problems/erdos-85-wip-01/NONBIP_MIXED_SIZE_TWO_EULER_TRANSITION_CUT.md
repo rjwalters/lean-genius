@@ -80,7 +80,8 @@ It is C4-free. Classify a putative four-cycle by its number of C-points:
 
 - Four C-points would give a four-cycle in H, whose length is `2q>4`.
 - Three C-points and one exterior label would require an L-edge joining
-  the ends of a three-edge H-path. That difference is `±3`, excluded from L.
+  the ends of a two-edge H-path. Its endpoints are distinct, so their
+  difference is `±2`, excluded from L by the K relation.
 - Two C-points alternating with two exterior labels would require two
   distinct selectors with the same two endpoints. With the C-points
   consecutive instead, their H-edge changes parity, whereas an exterior
