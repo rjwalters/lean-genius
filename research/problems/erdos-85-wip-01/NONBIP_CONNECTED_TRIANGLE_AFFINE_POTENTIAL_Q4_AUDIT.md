@@ -300,3 +300,55 @@ are nilpotent modulo two (the reduced characteristic polynomial is x^16).
 The recent labelled q4 samples could not have falsified those properties.
 None of the classification steps establishes their analogues for q>=8:
 there triangle degrees can exceed two and K need not be 2-regular.
+
+## Boundary of the calibration: intermediate triangle counts are necessary
+
+For every `q=2^k`, `k>=3`, an actual simple q-regular C4-free graph on
+q² vertices must have a vertex with `2<=t_x<=q/2-1`. This statement does
+not require connected defect. It excludes the two-level hypothesis
+`t_x in {1,q/2}`; it does not establish A-REG or bound the number of
+intermediate vertices. The argument below is a prose proof, not Lean.
+
+Suppose the two-level hypothesis holds, and put `U={t=1}`, `S={t=q/2}`.
+These sets partition all vertices because `1<=t_x<=q/2`.
+The set U is nonempty: otherwise triangle incidence counting would give
+`3T=q³/2`, impossible since q is a power of two.
+Bound (P) forbids a triangle edge between two U vertices. Every U vertex
+therefore has exactly two S-neighbors, the other vertices of its unique
+triangle. All its other q-2 edges are triangle-free. Conversely, S has
+no triangle-free incident edges. Thus `A[U]=K[U]` is (q-2)-regular with
+girth at least five, and S is nonempty. The girth-five Moore count gives
+
+```text
+|U| >= (q-2)²+1,          |S| <= 4q-5.                 (B1)
+```
+
+At an S vertex, each U-neighbor belongs to a distinct incident triangle,
+since a triangle cannot have two U vertices. Hence it has at most q/2
+U-neighbors, so `A[S]` has minimum degree at least q/2. A C4-free graph
+of minimum degree d has at least `d²-d+1` vertices: for a vertex of
+degree r, its neighborhood is a matching and radius-two counting gives
+at least `1+(d-1)r` vertices. Therefore
+
+```text
+|S| >= q²/4-q/2+1.                                  (B2)
+```
+
+For q>=32, (B1) and (B2) contradict each other, since
+`q²/4-9q/2+6>0`.
+
+For q=16, (B1) gives `|S|<=59` and `A[S]` has minimum degree eight.
+If an S vertex had degree r>=9 within S, the same radius-two count
+would give `|S|>=1+7r>=64`. Thus `A[S]` is exactly 8-regular, and
+every S vertex has eight U-neighbors. Counting cross edges gives
+`2|U|=8|S|`, hence `256=|U|+|S|=5|S|`, impossible.
+
+Finally, for q=8 both allowed triangle counts, one and four, are one
+modulo three. Their sum over 64 vertices is one modulo three, whereas
+it equals `3T`. More generally this same congruence excludes the
+two-level hypothesis for every odd exponent k.
+
+This completes the restricted-class exclusion for all binary q>=8.
+It explains why the q4 classification cannot extend with only its two
+triangle counts. The remaining graphs with intermediate counts are
+still unexcluded; no additional classification lane follows from this proof.
