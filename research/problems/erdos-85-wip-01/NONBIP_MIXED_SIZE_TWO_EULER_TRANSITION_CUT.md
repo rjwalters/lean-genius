@@ -126,3 +126,35 @@ the completed cross block.
 Cut a proposed exclusion based only on the forced triangle transitions
 and C4-freeness of this partial layer. Retain the simultaneous placement
 of the missing disjoint-selector edges as the actual unsolved problem.
+
+## Every individual exterior star can also be completed at q=16
+
+The saved binary partial graph passes a stronger local test. For each of
+its 224 exterior labels e, separately, there is an explicit set of new
+edges incident to e that raises its degree to 16 and leaves the entire
+256-vertex graph C4-free. Every C-point keeps degree16, and all other
+exterior vertices remain below16. The completed column at e is an actual
+perfect matching on its required C-support.
+
+`size_two_euler_star_completions_q16.json` stores all 224 choices as lists
+of selector labels. `check_size_two_euler_star_completions.py` rebuilds the
+same Euler baseline for every choice and verifies all 32,640 unordered
+vertex pairs in each resulting graph: 7,311,360 common-neighbor checks in
+total. It also verifies degree16 at e and every C-point, degree at most16
+everywhere, and the exact completed matching column. The verifier uses
+only the standard library and the saved Euler tour; it needs no optimizer.
+
+Discovery used bounded binary linear feasibility problems, one per e.
+Candidate edges were individually C4-safe. The selected neighbors cover
+the remaining C-points exactly once, and pairs of selected new neighbors
+with an old common neighbor were forbidden. These pair constraints matter:
+several individually safe additions can create a four-cycle together.
+The independent verifier checks the resulting whole graphs directly,
+without trusting these discovery constraints or numerical solver output.
+
+These are **224 separate completions of the same baseline**, not one
+common completion. Superimposing the stars is neither verified nor
+asserted to work. The result rules out a one-vertex obstruction for this
+particular q=16 partial graph; it is not uniform in q and does not rule
+out conflicts among completions at different vertices. Stop this local
+star probe here and retain that simultaneous compatibility problem.
