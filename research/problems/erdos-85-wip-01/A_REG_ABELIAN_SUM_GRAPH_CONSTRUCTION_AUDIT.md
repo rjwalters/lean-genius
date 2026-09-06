@@ -209,3 +209,75 @@ completion or subgroup-rigidity implication under the actual loopless
 Sidon hypotheses. Even excluding every such sum graph would leave the
 separate, unproved passage from arbitrary A-REG graphs to this construction
 class. No new Lean theorem or general A-REG exclusion is asserted.
+
+## Nonabelian product-sum graphs reduce to this class
+
+The outside-first screen included Byrne--Tait,
+[New constructions and bounds for nonabelian Sidon sets with applications to Turán-type problems](https://doi.org/10.4153/S0008414X26102314)
+(2026), whose nonabelian Sidon constructions concern directed extremal
+problems. They do not automatically supply an undirected product-sum graph.
+The following direct argument explains the obstruction; it is not a theorem
+attributed to that paper.
+
+Let G be any group and S a subset. Define the simple graph by
+
+    x adjacent to y iff x != y and xy belongs to S.
+
+Assume this relation is symmetric and the graph is C4-free and connected.
+Then **G is abelian**, regardless of whether the raw product relation has
+loops.
+
+First, symmetry makes S invariant under conjugation. Indeed, for s in S
+and any x, apply symmetry to x and x^{-1}s to obtain x^{-1}sx in S.
+If those two vertices coincide, s=x² and the desired conjugate is s itself.
+Thus every inner automorphism acts on the simple graph.
+
+For s,t in S put g=s t^{-1}. If g=1 then s=t. Otherwise, when t is
+neither 1 nor g, t is a common neighbor of 1 and g: both t and gt=s
+belong to S. Conjugation by g fixes 1 and g, so it preserves their common
+neighbors. C4-freeness permits at most one such neighbor, forcing
+
+    g t g^{-1} = t.
+
+If t is 1 or g, this equality holds immediately as well. Consequently
+s=gt commutes with t. All elements of S therefore commute pairwise, and
+H=<S> is abelian. Every neighbor y of x in H satisfies y=x^{-1}s in H.
+The component containing 1 is contained in H, so connectedness gives G=H.
+Equivalently, noncommuting s,t would explicitly create a C4 on
+1,t,g,g t g^{-1}; noncommutation ensures that these four vertices are distinct.
+
+For an A-REG candidate, connectedness is automatic. In a q-regular
+C4-free graph each component has at least q(q-1)+1 vertices: the q sets
+N(y) minus {x}, y in N(x), are pairwise disjoint and each has q-1 elements.
+Two such components require more than q² vertices. Thus a q-regular
+C4-free product-sum graph on a group of order q² must be abelian.
+
+There is one further issue before applying the preceding Sidon audit.
+The degree at x is |S|-1[x² in S]. Regular degree q therefore has exactly
+two possibilities: |S|=q and no square lies in S, or |S|=q+1 and every
+square lies in S. For binary q>=4 the second possibility is impossible.
+Now write the abelian group additively; its order is a power of two.
+
+If 2G is nontrivial, choose a nonzero involution z in 2G. Since 2G is
+contained in S, every pair x,x+z is an edge. Translation by z preserves
+all edges because 2z=0. Any other edge xy would give the C4
+
+    x, y, y+z, x+z, x.
+
+Hence C4-freeness forces degree at most one. If 2G is trivial, the group
+is elementary abelian and the product-sum graph is an ordinary Cayley
+graph with connection set S minus {0}. Two distinct nonzero connections
+s,t give the C4 0,s,s+t,t, so degree is again at most one.
+
+Therefore every binary square-order q-regular C4-free graph from this
+entire product-sum construction has an abelian ambient group, |S|=q,
+and S disjoint from 2G. With no deleted loops, C4-freeness implies that
+every nonzero ordered difference in S is unique: representations g=s-t
+correspond to common neighbors t of 0 and g. These are exactly the
+hypotheses of the preceding abelian audit, including its remaining range
+sqrt(q)<|G[2]|<=q/2.
+
+This closes the nonabelian and all-loops variants of this construction
+escape. It does not exclude the remaining abelian Sidon class or general
+A-REG graphs. Ordinary Cayley graphs (x^{-1}y in S), twisted product
+relations, and non-group constructions are outside this reduction.
