@@ -1,0 +1,28 @@
+--- a/Code/generateRGGraphsNoGPlus1Cycle.c
++++ b/Code/generateRGGraphsNoGPlus1Cycle.c
+@@ -128,6 +128,7 @@
+  ************************************************************************************/
+ typedef struct SPLAYNODE {
+     graph* canonForm;
++    int numberOfVertices;
+     struct SPLAYNODE *left, *right, *parent;
+ } SPLAYNODE;
+ 
+@@ -145,7 +146,7 @@
+ 
+ #define PRESENT(p) {(*isPresent) = true;}
+ 
+-#define NOT_PRESENT(p) {p->canonForm = gCan; (*isPresent) = false;}
++#define NOT_PRESENT(p) {p->canonForm = gCan; p->numberOfVertices = numberOfVertices; (*isPresent) = false;}
+ 
+ #define LOOKUP_ARGS , graph gCan[], int numberOfVertices
+ 
+@@ -270,6 +271,8 @@
+ 
+ //  Splaynode contains the canonical form of a graph checked earlier.
+ int compareSplayNodeToGraph(SPLAYNODE* p, graph gCan[], int numberOfVertices) {
++    if (p->numberOfVertices != numberOfVertices)
++        return (p->numberOfVertices > numberOfVertices) ? 1 : -1;
+     return memcmp(p->canonForm, gCan, numberOfVertices * sizeof(graph));
+ }
+ 
