@@ -210,3 +210,93 @@ L low vertices and H high vertices, incidence counting gives
 cannot divide the power of two q³. Thus the t=1 case cannot cover all
 triangles in a hypothetical binary candidate. This locates a necessary
 residual; it is not an exclusion of that residual.
+
+## Complete q=4 calibration: one isomorphism type (2026-09-06)
+
+This is a prose classification of actual simple 4-regular C4-free graphs
+on 16 vertices, not a result for `q>=8` or a Lean theorem. It replaces
+sampling evidence for the q4 triangle identities with a complete argument.
+Use the uniform triangle-edge bound (P) proved above, with no assumption
+that the defect is connected.
+
+Write `t_x` for the number of triangles at x, `K` for the triangle-free
+edges, and `U={x:t_x=1}`, `S={x:t_x=2}`. The radius-two count gives
+`2t_x-1>=0`, and the neighborhood matching gives `t_x<=2`; hence these
+sets partition the vertices. Since `deg_K(x)=4-2t_x`, K is 2-regular on U
+and isolated on S. Put `m=|U|=|E(K)|` and let T be the number of triangles.
+Each edge belongs to at most one triangle, so `32=m+3T`.
+Bound (P) says that a triangle edge cannot join two vertices of U.
+Thus each triangle meets U at most once, while every U vertex lies in
+one triangle. Consequently `m<=T`, so `m<=8` and `m=2 (mod 3)`.
+The graph K has neither triangles nor 4-cycles. Its nonempty cycle
+components therefore force `m=5` or `m=8`.
+
+**The five-cycle is impossible.** Suppose `m=5` and label its vertices
+`c_0,...,c_4` cyclically. An outside vertex cannot meet consecutive cycle
+vertices, since their K-edge is triangle-free; nor can it meet vertices
+at cyclic distance two, by C4-freeness. Thus it meets at most one cycle
+vertex. Each c_i has two outside neighbors, forming its unique triangle;
+call this adjacent pair P_i. The five pairs are disjoint, leaving one
+outside vertex z. Vertex z has no cycle neighbor and hence four neighbors
+among the ten pair vertices.
+
+There are no cross edges between P_i and P_(i+1), since such an edge would
+complete a C4 through c_i,c_(i+1). Between any two distinct pairs there
+is at most one cross edge: two sharing an endpoint form a C4 through
+the other pair's cycle vertex, while two disjoint cross edges form a C4
+using the two pair edges. Only five unordered pairs of blocks are
+nonconsecutive, so there are at most five cross edges in total.
+But the ten pair vertices each have three neighbors outside the cycle.
+Their outside degree sum is 30: the five internal pair edges contribute
+10, z's edges contribute 4, and pair-cross edges must contribute the
+remaining 16. This requires eight cross edges, a contradiction.
+
+Therefore `m=T=8`, K is one C8 plus eight isolated vertices, and each
+triangle contains exactly one U vertex and two S vertices. In particular
+all triangles satisfy `sum t=5`. A U vertex has two K-neighbors of
+triangle degree one and two triangle-neighbors of degree two, giving
+`(At)_x=6`. An S vertex lies in two triangles, each contributing one
+neighbor of each type, again giving six. Hence
+
+```text
+At = 6·1,       A(2t−3·1)=0.
+```
+
+The latter vector is nonzero. Since connected D would make
+`A²=L_D+J` positive definite, no such q4 graph has connected defect.
+
+**The adjacency graph is uniquely determined.** Every S vertex has
+two S-neighbors, one from each of its triangles. The induced graph on S
+has no triangles and no C4, so it is a C8. Label it s_i, with indices
+modulo eight. Its eight edges are in bijection with U: write u_i for
+the unique triangle vertex attached to `{s_i,s_(i+1)}`.
+
+The two U-neighbors of u_i cannot have index difference ±1 from i,
+which would give a common S-neighbor and contradict the K-edge being
+triangle-free. Difference ±2 would give a C4 using an S-edge.
+The only possible differences are therefore ±3 or 4. If an antipodal
+edge u_i u_(i+4) occurred, u_i's other U-neighbor would have index i±3.
+Those two U-neighbors have consecutive indices and share an S-neighbor,
+creating a C4 through u_i. Thus the antipodal option is impossible,
+and the complete adjacency rule is
+
+```text
+N(u_i) = {u_(i−3), u_(i+3), s_i, s_(i+1)},
+N(s_i) = {s_(i−1), s_(i+1), u_(i−1), u_i}.
+```
+
+The stored graph in `binary_q4_fixed_free_disconnected_control.py`
+realizes this rule. An exact row-by-row comparison uses S order
+`[0,1,4,12,14,15,7,2]` and U order `[5,10,6,11,13,8,3,9]`.
+Thus every graph under these q4 hypotheses is isomorphic to that verified
+control. Its characteristic polynomial, independently recomputed, is
+
+```text
+x(x−4)(x+2)²(x²−2)²(x⁴−8x²+14)².
+```
+
+In particular all these q4 graphs have rank 15 over the rationals and
+are nilpotent modulo two (the reduced characteristic polynomial is x^16).
+The recent labelled q4 samples could not have falsified those properties.
+None of the classification steps establishes their analogues for q>=8:
+there triangle degrees can exceed two and K need not be 2-regular.
