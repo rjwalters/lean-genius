@@ -141,6 +141,14 @@ Fix a point x. There are q(q-1) points collinear with x, each incident with
 q-1 lines not through x. There are q(q-1) lines not through x, so counting
 these incidences gives `alpha=q-1`.
 
+For even q this is already a contradiction: x is not incident with its
+own indexed line because A has zero diagonal, while `A³[x,x]=2t_x` is
+even, being twice the number of triangles through x. The law would make
+it equal to the odd number q-1. Thus the nonincident cubic uniformity
+premise is impossible for every even q, without a binary-power or
+connected-defect assumption. This shorter parity terminal was independently
+identified during squad review.
+
 If x,y are noncollinear, each of the q lines through y then contains q-1
 points collinear with x. The lines meet only at y, which is not collinear
 with x, so x,y have q(q-1) common neighbors in C: their C-neighborhoods
