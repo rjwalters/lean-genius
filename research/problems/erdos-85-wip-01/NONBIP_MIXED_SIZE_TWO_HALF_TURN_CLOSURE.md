@@ -3,9 +3,11 @@
 Node: `A.5.3 / A-REG-NONBIP / NONBIP-MIXED / [q-2,2]`.
 
 Status: uniform mathematical exclusion of half-turn-invariant completions
-of the fixed cyclic carrier with connected exterior defect. This is a
-proof audit, not a Lean theorem. Arbitrary completions need not preserve
-the carrier's half-turn, so the general node remains open.
+of the fixed cyclic carrier with connected exterior defect. The generic
+selector-budget implication is formalized in Lean as described below;
+the carrier-specific instantiation remains a proof audit. Arbitrary
+completions need not preserve the carrier's half-turn, so the general
+node remains open.
 
 ## Hypotheses
 
@@ -147,3 +149,30 @@ cross block, but destroys the integral common-neighbor cap. A search
 with that symmetry can therefore miss every completion of the intended
 connected exterior type. The fixed carrier itself is not a classification
 of all size-two carriers, and A-REG-NONBIP remains open.
+
+## Lean-checked abstract implication
+
+`Proofs/Erdos85SelectorHalfTurnDefectClosure.lean` formalizes:
+
+- `c4Free_fixedFree_involution_no_commonNeighbor`: a free involutive
+  adjacency-preserving map in a C4-free graph leaves each vertex and its
+  mate without a common neighbor;
+- `selector_budget_halfTurn_no_defect_boundary`: the exact selector-row
+  budgets and defect dictionary imply no defect edge crosses Z;
+- `selector_budget_halfTurn_defect_not_connected`: nonempty proper Z
+  then contradicts connectedness of the defect graph.
+
+The hypotheses are explicit. To instantiate them in the carrier, the Lean
+incidence row `B x` is the finite set of selector edges containing x,
+`P e` is the parity class of a same-parity selector e, Z is the cycle-edge
+selector set, and `mate=tau`. The row budget is equation (4), expressed as
+the cardinality of the intersection of a defect-neighbor set with an
+incidence row. Every mixed-parity selector meets `P e`, giving `hcross`.
+The Gram equation gives `hdefect`, the equivalence between a defect edge
+and distinct selectors having neither a shared C-point nor a common
+T-neighbor. Free action, selector disjointness, and preservation of the
+complement of Z are the geometric observations above.
+
+The module proves the implication from these hypotheses; it does not
+instantiate ZMod coordinates or derive the budgets from the carrier
+matrix equations in Lean, and it does not infer the symmetry hypothesis.
