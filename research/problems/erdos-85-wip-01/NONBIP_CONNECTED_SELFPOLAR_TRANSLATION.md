@@ -133,12 +133,28 @@ Regularity forces `D=q K_q`. This is already excluded for binary q>=8 by
 `binarySquare_regular_not_allUnit_of_two_pow` in
 `Erdos85BinarySquareRegularParity.lean`.
 
-Therefore proving both displayed semipartial axioms would suffice to
-close the remaining square-order branch; no separate absolute-point bound
-is needed. Neither axiom is presently proved. This correction restores the
-conditional implication, not a proof of promotion or any change in A-REG
-status. Generic fixed-point-free semipartial examples at other orders do
-not refute this square-order argument. No new Lean theorem is claimed.
+In fact the second promotion axiom alone suffices. Since
+`A³=qJ-A-AD` and every column of D has q-1 ones, for `A[x,y]=0` we have
+`A³[x,y]=q-(AD)[x,y]>=1`. Thus its proposed `0`-or-alpha law has no zero
+case: every nonincident point-line pair has exactly alpha collinear points.
+Fix a point x. There are q(q-1) points collinear with x, each incident with
+q-1 lines not through x. There are q(q-1) lines not through x, so counting
+these incidences gives `alpha=q-1`.
+
+If x,y are noncollinear, each of the q lines through y then contains q-1
+points collinear with x. The lines meet only at y, which is not collinear
+with x, so x,y have q(q-1) common neighbors in C: their C-neighborhoods
+are equal. Hence noncollinearity, with equality added, is an equivalence
+relation. Its classes have size q because D has degree q-1, giving
+`D=q K_q` directly. This supplies a terminal from the nonincident cubic
+uniformity premise alone; the separate defect-edge codegree premise is
+not needed.
+
+No such cubic uniformity is presently proved. This correction restores
+the conditional implication, not a proof of promotion or any change in
+A-REG status. Generic fixed-point-free semipartial examples at other
+orders do not refute this square-order argument. No new Lean theorem is
+claimed.
 
 ### Extension to a projective plane
 
@@ -232,8 +248,8 @@ partial-plane literature rules out connected `D`.  The Moore defect-one route
 is a useful neighboring terminal, but its necessary graph inclusion `D <= G`
 is refuted pointwise by the established even triangle-free-degree law.
 Semipartial promotion would be terminal at these square-order parameters by
-the strongly regular defect argument above, but both promotion axioms remain
-unproved. The generic absolute-point bound alone is inapplicable. Completion
+the argument above; indeed the nonincident cubic uniformity premise alone
+suffices, but remains unproved. The generic absolute-point bound alone is inapplicable. Completion
 is useful mainly as a warning: the standard realizations exist, but their deficiency
 graph is maximally disconnected.  A viable configuration-theoretic endgame
 must therefore use the special `(q²)_q` parameters and self-polar labeling more
