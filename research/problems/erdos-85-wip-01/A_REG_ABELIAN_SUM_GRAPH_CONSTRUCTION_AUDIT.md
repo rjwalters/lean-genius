@@ -69,3 +69,84 @@ claimed. Stop this bounded check here rather than enumerate the survivors.
 Independent review: Sol1, squad #1423 PASS, checked the primary source,
 both capacity inequalities, all three class exclusions, and the remaining
 scope. This is a prose result, not a Lean theorem.
+
+## Quotient autocorrelations: a survivor with a forced mixed defect
+
+Follow-up by Sol2, with Sol3's independent uniform survivor calculation.
+This tests the full doubling-quotient counts, not Sidon sets or groups.
+Assume h=m, so all involutions lie in 2G. Index the coset multiplicities
+by the elementary abelian quotient Q=G/2G. For each nonzero t in Q,
+ordered differences in its coset number
+
+```text
+R(t) = sum_(a in Q) c_a*c_(a+t) <= |2G| = q²/m.        (3)
+```
+
+### Exact profile at q=16, m=h=8
+
+Here c_0=0, sum c_a=16, and sum c_a²<=40. All seven nonidentity
+counts are positive: with only six occupied cosets, Cauchy would give
+sum c_a²>=256/6>40. Put d_a=c_a-2 on the seven nonzero cosets.
+Then sum d_a=2 and sum d_a²<=4. The only multisets are
+
+| Nonzero-coset counts | Outcome |
+|---|---|
+| two 3s and five 2s | fails (3) |
+| one 4 and six 2s | survives (3) |
+| three 3s, one 1, and three 2s | fails (3) |
+
+For the first profile, the shift joining the two 3-locations has
+autocorrelation 34, exceeding 32. For the third, subtract the constant
+vector 2 on all eight cosets. The deviation vector has value -2 at 0,
+-1 at the 1-location b, and +1 at the three 3-locations. Its sum is zero.
+At shift b the ordered 0,b pair contributes 4 to its autocorrelation;
+all other contributions are nonnegative. Thus R(b)>=32+4>32.
+
+For the remaining profile, with c_a=4 at a nonzero a,
+
+```text
+R(a)=24,              R(t)=32 for t!=0,a.
+```
+
+An exact standard-library check of all 168 labeled profiles above leaves
+precisely the seven choices for the 4-location. The three-case argument
+proves completeness; the finite arithmetic is only a verification.
+
+### Why these counts cannot exclude the whole growing-rank class
+
+For every q=2m with m>=8 and h=m, the same profile
+
+```text
+c_0=0, c_a=4, c_t=2 for all t!=0,a
+```
+
+has total q, squared mass 4m+8<=5m=q²/m+q-h, and
+`R(a)=4m-8`, `R(t)=4m` for every other nonzero t. Thus it passes
+both the scalar and full quotient-autocorrelation inequalities uniformly.
+This is only a multiplicity profile, not a Sidon construction. It is
+not asserted to classify all profiles when q>16.
+
+There is nevertheless a consequence for any actual realization of this
+profile. Every coset t+2G with t!=0,a is saturated by the distinct
+ordered differences. The defect graph of the sum graph is the Cayley
+graph whose connection set is the nonzero differences absent from S-S:
+off the diagonal, A² has entry one exactly at represented differences.
+All its connection elements therefore lie in
+
+```text
+L = pi^(-1)({0,a}),       |L|=2|2G|=4q,
+```
+
+where pi:G->Q. Since Q has exponent two, L is a subgroup. Every defect
+component is contained in an L-coset, hence has at most 4q vertices.
+For q>=16 the defect is necessarily disconnected. At q=16, m=h=8 this
+consequence covers every admissible profile by the classification above;
+for larger q it applies only to the displayed profile.
+
+Every T-coset is also a clique in the defect graph, because all nonzero
+involutions are missing differences. Here |T|=m>=8, so the defect is
+nonbipartite. This directs that construction family into NONBIP-MIXED if realized.
+It does not exclude mixed defect components, other admissible profiles,
+or other abelian group parameters. The scalar/autocorrelation exclusion
+route is stopped at its explicit uniform survivor; no realization search
+or additional Lean wrapper follows from this calculation.
