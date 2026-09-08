@@ -297,3 +297,50 @@ This fails for q>=9, hence for binary q>=16. The triangle hypergraph must
 then contain a Berge 5-cycle. At q=8 the bound is only 63<=64 and gives
 no exclusion. Thus the source's girth-greater-than-five hypothesis also
 fails in this case; this is not an exclusion of the saturated candidate.
+
+### Biregular girth-ten cages: exact hypotheses still missing (2026-09-08)
+
+Primary sources checked:
+
+- Araujo-Pardo, Ramos-Rivera and Jajcay,
+  [Bipartite Biregular Cages and Block Designs](https://arxiv.org/html/1907.11568),
+  introduction and generalized-polygon correspondence.
+- Araujo-Pardo, Kiss and Szőnyi,
+  [A little more about bipartite biregular cages, block designs and generalized polygons](https://arxiv.org/html/2310.12137),
+  Definition 1 and Section 2.
+
+These bounds require constant degree on each side of the incidence graph.
+The first paper also reports the earlier small-excess exclusion for
+unequal degrees at least three, girth at least ten not divisible by four,
+and excess at most four. The second develops divisibility improvements
+under the same biregularity requirement. This is not a theorem about a
+mixed-rank incidence graph or an almost-regular point side.
+
+For the saturated candidate `d_x ∈ {0,2}`, put `r=q/2`. Keeping all
+triangle blocks and triangle-free edges gives block degrees 3 and 2, and
+point degrees `r+d_x/2`. Dropping the size-two blocks instead gives block
+degree 3 but point degrees `r-d_x/2 ∈ {r,r-1}`. Neither construction is
+known to meet the sources' biregularity hypotheses. All `d_x=0` is already
+impossible for binary q by the triangle-incidence divisibility `3 ∣ q³/2`.
+All `d_x=2` would give a biregular graph of degrees `(3,s)`, `s=r-1`.
+Even that special case lies outside the reported small-excess result:
+the source's edge-rooted Moore expression at girth ten is
+`B(3,s;10)=10s²-11s+5`, whereas the incidence graph would have
+`q²(1+s/3)` vertices. Its excess over that bound would be
+`(4s³-10s²+61s-3)/3`, at least 66 for `s>=3`, not at most four.
+At q=8 the degrees are equal, also outside the unequal-degree result.
+The first source's stronger bounds do not change which Moore expression
+defines the small-excess theorem being cited.
+
+Our elementary bound that does survive this loss of regularity is too
+weak: a linear triple system of Berge girth at least five and minimum
+point degree `s` has at least
+
+    1 + 2s + 4s(s-1) = 4s²-2s+1
+
+points, by counting the first two triangle layers at a point. At
+`s=r-1` this is `q²-5q+7`, below the candidate order `q²`.
+The source's stronger regular conclusions cannot be substituted for this
+bound without a new transfer theorem. The general A-REG candidate need
+not even satisfy the saturated hypothesis. This bounded source check
+therefore supplies no uniform exclusion and no new Lean obligation.
