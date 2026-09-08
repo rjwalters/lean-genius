@@ -3,10 +3,15 @@
 2026-09-08, Sol3, building on Sol1's three local fifth-moment types.
 Prose and exact rational computation, not Lean-formalized.
 
-**This constructs diagonal spectral measures only.** It does not construct
+**The original construction supplies diagonal spectral measures only.** It does not construct
 orthogonal projectors, off-diagonal entries, an integer matrix, or a graph.
 It does not resolve A-REG or Erdős 85. Its purpose is to test the additional
 local integrality requirement left open by the global-filter control.
+
+**Subsequent rank-one audit:** the original measures below are incompatible
+with a rational +4 projector. The final section records that rejection and
+a replacement preserving the local tests while realizing the two simple
+eigenvalue projectors. It still does not realize the full spectrum by a graph.
 
 Set q=1024, t=32, n=q² and use precisely the spectrum in
 `UNBOUNDED_SPECTRAL_FILTER_CONTROL.md`. There are nine types of vertices,
@@ -146,3 +151,68 @@ The missing requirement is compatibility of these diagonal measures with
 common orthogonal spectral projectors and the entrywise adjacency rules.
 Independent local measures do not impose either. Extending this same local
 integer-moment test to more lengths cannot reject the present control.
+
+## Rank-one rejection of the original measures, and a constrained repair
+
+Sol1 subsequently found a concrete incompatibility in the original nine
+types. The eigenvalue +4 has multiplicity one. A rational symmetric matrix
+has a rational eigenvector x for that eigenvalue, so its projector is
+xxᵀ/(xᵀx). Ratios of nonzero diagonal entries must therefore be rational
+squares. The original weights at vertices 0 and 32256 have ratio
+93649/93652 in lowest terms; its numerator is strictly between 306² and
+307². Thus the original measures cannot come from a rational matrix. This
+does not retract their explicitly scoped local-moment properties.
+
+Sol3's replacement below retains those local properties and supplies both
+the principal projector and the +4 projector as mutually orthogonal
+rational matrices. **It does not supply the remaining projectors or A.**
+
+Let p(Y)=(Y-4)(Y-8)g(Y), and put
+
+    alpha=(q+4)p(q²)/n = 1239124170524768939097751680,
+    beta=8p(16),  beta/n=-749385.
+
+The polynomial (X+4)p(X²) is zero on every residual eigenvalue except +4.
+Consequently, prescribing the +4 weight as rho/n is exactly the equation
+
+    o2-12o1+32o0 + 4(e2-12e1+32e0) = alpha+rho*beta/n,
+
+where e_i=L(Y^i g) and o_i=L(XY^i g). This also explains why a flat
+projector diagonal 1/n fails: alpha+beta/n is odd, while the polynomial has
+even constant term and all positive local moments must be even.
+
+Instead take an integer vector x having magnitude 5 on half the vertices
+and magnitude 6 on half. Its squared norm is 61n/2, and its projector
+diagonals are respectively
+
+    50/(61n), 72/(61n).
+
+For both rho=50/61 and rho=72/61, alpha+rho*beta/n is an even integer
+(61 divides 749385). Round only e0,e1,e2,o0,o1 to their adjacent even
+integers, and derive o2 from the displayed relation. The replacement
+verifier checks all 3*2*32 choices exactly: every measure remains
+nonnegative and has the specified +4 weight, the same local moments0..5,
+and the sixth defect-triangle range. Since all six resulting coordinates
+are even integers, the same monic-basis/Hoffman/degree13 recurrence proves
+all-length even integrality, and the same principal dominance proves
+nonnegativity at every length.
+
+Assign magnitude 5 to vertices [0,n/2), magnitude 6 to the rest, and use
+the same initial-segment rounding for the first five coordinates. Together
+with the two parent boundaries, these cuts give nine populations:
+
+    (96,5),(8072,5),(24088,5),(268544,5),(223488,5),
+    (81792,6),(230528,6),(35840,6),(176128,6).
+
+Each pair records population and magnitude. All populations are even,
+so choose half the signs positive and half negative within each type.
+Then xᵀ1=0, and xxᵀ/(61n/2) and J/n are actual orthogonal rational
+rank-one projectors with the desired diagonals. No n-by-n expansion is
+needed to verify these identities.
+
+The aggregate of rho is n, so the derived sixth coordinate has its original
+aggregate, as do the first five rounded coordinates. Thus all W and Z
+aggregates remain exact. Run `python3 verify_q1024_rank_one_control.py` to
+check the historical rejection and the replacement's finite certificates.
+This repairs the particular rank-one obstruction, while compatibility of
+the remaining projectors and the graph's entrywise rules stays open.
