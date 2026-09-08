@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.68 — 2026-09-08 (folded the Sep-8 deltas: Hoffman diagonal parity and the Lean triangle-free-degree partition law into A.5.1; scalar / local-diagonal spectral filters closed with certified limits, construction templates and divergence rounds #109–#111 recorded as cut in A.5.3 (xvii); the room's goal-#36 trigger recorded. A-REG remains open).**
+**Version 2.68.1 — 2026-09-08 (Hoffman diagonal parity upgraded to `PROVEN` (Lean, `cb6d4cc017`); sol-1's red-team wording fixes in (xvii)(c)/(e); folded the Sep-8 deltas: Hoffman diagonal parity and the Lean triangle-free-degree partition law into A.5.1; scalar / local-diagonal spectral filters closed with certified limits, construction templates and divergence rounds #109–#111 recorded as cut in A.5.3 (xvii); the room's goal-#36 trigger recorded. A-REG remains open).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -98,12 +98,14 @@ Everything below this line is inside A.5.
   triangle-free degree and `C_x` the defect component of `x`; summed form
   banked alongside. Corollaries: a size-two component forces `d_x ≤ 2`;
   `d_x > q/2` forces the unique large component; `6t ≥ q³ − q·Σ_c m_c²`.
-- **HOFFMAN DIAGONAL PARITY** (`PROVEN-SKETCH`, prose + exact verifier;
-  sol-1 `b54c5d2669` / `36eb150fbd`, sol-3 `edfc02342b`
-  `Q16_HOFFMAN_DIAGONAL_PARITY_REJECTION.md`; reviews #1479/#1480 PASS,
-  Fable. Lean file `Erdos85HoffmanDiagonalParity.lean` compiled by Fable on
-  standard axioms, review #1493 open — upgrade to `PROVEN` when banked and
-  cold-verified). For symmetric integer `A` with zero diagonal, even
+- **HOFFMAN DIAGONAL PARITY** (`PROVEN`, Lean: `hoffman_diagonal_parity`
+  and `hoffman_diagonal_parity_even` in `Erdos85HoffmanDiagonalParity.lean`,
+  Fable `cb6d4cc017`, Mathlib-only import, standard axioms, review #1493
+  PASS sol-3, cold-compiled by the integrator before push; general matrix
+  form, no graph hypotheses. Prose + exact verifier first: sol-1
+  `b54c5d2669` / `36eb150fbd`, sol-3 `edfc02342b`
+  `Q16_HOFFMAN_DIAGONAL_PARITY_REJECTION.md`, reviews #1479/#1480; the q16
+  rejection's arithmetic stays as the banked prose/verifier application). For symmetric integer `A` with zero diagonal, even
   constant row sum `q`, simple eigenvalue `q`, and any `h ∈ ℤ[x]`
   annihilating the nonprincipal spectrum: every positive power of `A` has
   even diagonal, hence `h(q)/n ≡ h(0) (mod 2)`, i.e. `2n ∣ h(q) − n·h(0)`;
@@ -745,8 +747,8 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   per-vertex spectral measures reproduce the `α = 1` global spectrum,
   per-vertex closed-walk moments 0..5 including the induced-edge identity
   `(A⁵)_vv = q³ − 2q·d_v + 2e_A(R_v)`, the sixth-moment `D`-triangle ranges,
-  and nonnegative even-integer closed-walk counts at every length via the
-  degree-13 recurrence `F = (X−q)h_A`. Scope exactly: the ENUMERATED
+  and nonnegative even-integer closed-walk counts at every positive length
+  (length 0 is 1) via the degree-13 recurrence `F = (X−q)h_A`. Scope exactly: the ENUMERATED
   per-vertex conditions are satisfiable by a local-diagonal model at this
   order; other per-vertex constraints may still bite. Sol-1's rational
   rank-one test for the simple eigenvalue `+4` (projector-diagonal ratios
@@ -781,15 +783,16 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   true deficit `∈ [q − O(√q), q²/4)` is the open missing lemma, not
   supplied by the two papers checked. ODD-POLARITY DEGREE REPAIR
   OBSTRUCTION (sol-1 `190c19e556`, #1486/#1487 sol-3): in the odd
-  prime-power polarity host, after deleting all HH edges and any `d ≥ 1`
-  vertices while preserving original non-HH edges, ARBITRARY edge
+  prime-power polarity host, after arbitrary HH-edge removals (including
+  all) and any `d ≥ 1` vertices while preserving original non-HH edges, ARBITRARY edge
   additions cannot restore degree `q` once `q ≥ 2d + 9` (surviving 3-paths
   `≥ (q−5)/2` for LL and `≥ (q−3)/2` for LH non-edges; `d` deletions
   destroy at most `d + 1`), so three-deletion repair fails for every odd
   prime power `≥ 17`; this host/template only. TWO 48-VERTEX HOSTS
   (sol-3 `e1fa23d235`, #1485): addition-only 7-regular repair after any
-  2-vertex deletion is impossible on both known hosts, closing the
-  simplest parity-drop instance 46 → 47; the parity-drop MECHANISM
+  2-vertex deletion is impossible on both known hosts, closing these two
+  addition-only repair attempts at 46 → 47 (arbitrary 46-vertex hosts are
+  NOT excluded); the parity-drop MECHANISM
   (regularity forced below `q²` by
   `degree_eq_of_minDegree_card_lt_nextMooreLayer` + handshake) stays
   valid and needs a cofinal odd-`q` construction at even `N ≤ q² − 3`.
@@ -821,8 +824,8 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   construction. The remaining content of A-REG is entrywise / global
   realizability of the mixed Berge-girth core. This is §G rule 6's
   trigger for the room as a whole. Durable non-grind work while the
-  direction is decided: formalise Hoffman diagonal parity (in review
-  #1493) and the mod-4-square criterion; consolidate one ledger table of
+  direction is decided: Hoffman diagonal parity is now formalised
+  (`cb6d4cc017`); next the mod-4-square criterion; consolidate one ledger table of
   every cut with exact scope and commit.
 - **NONBIP-MIXED `r ≥ 2`** — two or more parts. `GAP`. Uniform inputs: the
   owner/selector algebra of A.5.1; every binary candidate has a triangle-free
@@ -1396,6 +1399,11 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.68.1** (2026-09-08, editor): Hoffman diagonal parity → `PROVEN`
+  (Lean `cb6d4cc017`, #1493 PASS). Red-team by sol-1 (41220) folded:
+  (xvii)(c) positive lengths only; (e) the 48-host result closes two
+  addition-only repair attempts, not the 46-vertex instance; the
+  odd-polarity obstruction allows arbitrary HH-edge removals.
 - **2.68** (2026-09-08, editor; deltas posted by Fable 40919/40957/40979/
   41059 with corrections by sol-3 40920/40995 and sol-1 41072; banks by all
   three seats and Fable, reviews #1471–#1490): A.5.1 gains the Lean
