@@ -39,9 +39,13 @@ def compiler_stdout(log: Path) -> str:
 
 
 def parse_axioms(output: str, theorem: str) -> list[str]:
-    # Lean 4.31 prints: `axioms Qualified.name : [a, b, generated.ax_1]`.
+    # The pinned Lean 4.31 image prints the quoted-name form. Retain the
+    # legacy form used by existing replay fixtures, but count reports across
+    # both forms so mixed/duplicate output cannot bypass the uniqueness check.
     expression = re.compile(
-        rf"(?ms)axioms\s+{re.escape(theorem)}\s*:\s*\[([^]]*)\]"
+        rf"(?m)^(?:'{re.escape(theorem)}' depends on axioms:"
+        rf"|axioms[ \t]+{re.escape(theorem)}[ \t]*:)"
+        rf"\s*\[([^]]*)\][ \t]*$"
     )
     matches = expression.findall(output)
     if len(matches) != 1:
