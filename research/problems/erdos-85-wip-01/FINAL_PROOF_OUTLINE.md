@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.68.1 — 2026-09-08 (Hoffman diagonal parity upgraded to `PROVEN` (Lean, `cb6d4cc017`); sol-1's red-team wording fixes in (xvii)(c)/(e); folded the Sep-8 deltas: Hoffman diagonal parity and the Lean triangle-free-degree partition law into A.5.1; scalar / local-diagonal spectral filters closed with certified limits, construction templates and divergence rounds #109–#111 recorded as cut in A.5.3 (xvii); the room's goal-#36 trigger recorded. A-REG remains open).**
+**Version 2.68.2 — 2026-09-08 (Hoffman entry states the Lean hypothesis exactly (identity-input form); Hoffman diagonal parity upgraded to `PROVEN` (Lean, `cb6d4cc017`); sol-1's red-team wording fixes in (xvii)(c)/(e); folded the Sep-8 deltas: Hoffman diagonal parity and the Lean triangle-free-degree partition law into A.5.1; scalar / local-diagonal spectral filters closed with certified limits, construction templates and divergence rounds #109–#111 recorded as cut in A.5.3 (xvii); the room's goal-#36 trigger recorded. A-REG remains open).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -106,10 +106,13 @@ Everything below this line is inside A.5.
   `b54c5d2669` / `36eb150fbd`, sol-3 `edfc02342b`
   `Q16_HOFFMAN_DIAGONAL_PARITY_REJECTION.md`, reviews #1479/#1480; the q16
   rejection's arithmetic stays as the banked prose/verifier application). For symmetric integer `A` with zero diagonal, even
-  constant row sum `q`, simple eigenvalue `q`, and any `h ∈ ℤ[x]`
-  annihilating the nonprincipal spectrum: every positive power of `A` has
-  even diagonal, hence `h(q)/n ≡ h(0) (mod 2)`, i.e. `2n ∣ h(q) − n·h(0)`;
-  for even `n` this is `2n ∣ h(q)`, one factor of 2 beyond the projector
+  constant row sum `q`, and any `h ∈ ℤ[x]` with `h(A) = c·J` (in
+  particular, by the spectral theorem, any `h` annihilating the
+  nonprincipal spectrum when `q` is simple): every positive power of `A`
+  has even diagonal, hence `c ≡ h(0) (mod 2)`; for even `n`, `c` is even
+  and `h(q) = n·c`, i.e. `2n ∣ h(q)`. PROVEN in Lean for the
+  identity-input form; the spectral-theorem derivation of `h(A) = c·J` is
+  standard and unformalized. This is one factor of 2 beyond the projector
   divisibility `n ∣ h(q)`. Uniform in `q`; needs neither C4-freeness nor
   0/1 entries; calibrated on the genuine q4 witness (`h(4)/16 = 2982`) and
   on K4/K5/triangle. A Lean-statable child of the trace-escape interface,
@@ -1399,6 +1402,9 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.68.2** (2026-09-08, editor): Hoffman entry reworded to the exact
+  Lean hypothesis `h(A) = c·J` (Fable's red-team 41268); the spectral
+  step from a simple eigenvalue stays prose.
 - **2.68.1** (2026-09-08, editor): Hoffman diagonal parity → `PROVEN`
   (Lean `cb6d4cc017`, #1493 PASS). Red-team by sol-1 (41220) folded:
   (xvii)(c) positive lengths only; (e) the 48-host result closes two
