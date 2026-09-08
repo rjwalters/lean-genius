@@ -232,3 +232,68 @@ still need an equitable recoloring theorem after balancedness.
 The balanced-hypergraph theorem therefore identifies another possible
 extra hypothesis—absence of strong odd neighborhood cycles—but neither
 that hypothesis nor exact equitability is currently forced.
+
+## Square-order candidates necessarily have too many 5-cycles for sparse removal
+
+2026-09-08, sol-1; follow-up to divergence 111. This is a prose
+source-transfer audit, not a new A-REG exclusion or Lean theorem.
+
+Conlon--Fox--Sudakov--Zhao, [Theorems 1.1--1.2](https://arxiv.org/html/2004.10180),
+require `o(n^(5/2))` copies of C5. Their hypergraph girth consequence
+requires girth strictly greater than five, whereas the mixed triangle/edge
+system in the current candidate only forbids Berge cycles of lengths
+three and four. More decisively, the graph removal hypothesis cannot hold
+for an unbounded family of square-order regular candidates.
+
+Let A be a q-regular C4-free adjacency matrix on n=q² vertices, q>=3.
+The banked identity `A²=(q-1)I+J-D`, with D (q-1)-regular, implies
+`|lambda|<=sqrt(2(q-1))` for every eigenvalue on the orthogonal complement
+of the all-one vector. This also excludes a second principal eigenvector.
+Consequently
+
+    |tr(A^5)-q^5| <= (q²-1)[2(q-1)]^(5/2).
+
+Let t be the number of triangles and c5 the number of unoriented simple
+5-cycles. The exact closed-walk identity is
+
+    tr(A^5) = 10c5 + 30(q-1)t
+            = 10c5 + 5(q-1)tr(A^3).
+
+For completeness, a nonsimple closed walk of length five has a triangle
+as its only cyclic support. There are 30 such walks supported on each
+triangle alone. Each of the 3(q-2) edges leaving that triangle supplies
+10 walks using that edge as a backtrack. No exterior vertex meets two
+triangle vertices, by C4-freeness. These contributions give 30(q-1)t;
+each simple 5-cycle contributes its ten rooted oriented walks.
+
+Every neighborhood is a matching, so `tr(A^3)=6t<=q³`. Hence
+
+    |10c5-q^5| <= (q²-1)[2(q-1)]^(5/2) + 5(q-1)q³,
+    c5 = q^5/10 + O(q^(9/2)) ~ n^(5/2)/10.
+
+Thus the required little-o hypothesis is false for any such unbounded
+family. This does not contradict the source theorem or exclude candidate
+graphs; it prevents using that theorem directly as the missing structural
+step. Stronger hypotheses on particular subsets would need a separate
+argument.
+
+Independent finite calibration: exact matrix powers and direct simple
+cycle enumeration on the stored q4 graph give `(tr A³,tr A⁵,c5)=(48,960,24)`;
+on Boza H36 they give `(192,7680,288)`. Both satisfy the exact identity.
+These checks calibrate the walk formula, not its asymptotic conclusion.
+
+There is also a finite-threshold check for the saturated case
+`d_u in {0,2}` (sol-3, independently checked by Claude and sol-1).
+Its triangle hypergraph is linear, has Berge-girth at least five, and
+has minimum degree `r=q/2-1`. If it had no Berge 5-cycle, an edge-rooted
+breadth-first count would give three root vertices, at least `6(r-1)`
+vertices in the next layer, and at least `12(r-1)²` in the following
+layer. A collision would create a Berge cycle of length at most five.
+Therefore
+
+    q² >= 3[1+2(r-1)+4(r-1)²] = 3q²-21q+39.
+
+This fails for q>=9, hence for binary q>=16. The triangle hypergraph must
+then contain a Berge 5-cycle. At q=8 the bound is only 63<=64 and gives
+no exclusion. Thus the source's girth-greater-than-five hypothesis also
+fails in this case; this is not an exclusion of the saturated candidate.
