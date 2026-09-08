@@ -109,6 +109,38 @@ docker() { printf '%s' "$FAKE_IMAGE_ID"; return "$FAKE_STATUS"; }
                 self.assertEqual(identity["loaded_image_id"], observed)
                 self.assertEqual(identity["loaded_image_id_kind"], kind)
 
+    def test_manifest_tool_identities_require_exact_match(self):
+        block = self.generated.split(
+            'python3 - "$ROOT/freight/manifest.json"', 1)[1]
+        program = block.split("<<'PY'\n", 1)[1].split('\nPY\n', 1)[0]
+        aws_identity = ('aws-cli/2.36.34 Python/3.14.6 '
+                        'Linux/6.17.0-1019-aws exe/aarch64.ubuntu.24')
+        zstd_identity = '*** Zstandard CLI (64-bit) v1.5.5, by Yann Collet ***'
+        manifest = {
+            'aws_cli_identity': aws_identity, 'zstd_identity': zstd_identity,
+            'worker_image_digest': 'lean4-arm64@' + OCI,
+            'repository_commit': '4c7cbb515934254e0795916001617150587559f5',
+            'worker_ami_id': 'ami-02c4144237becae44',
+            'worker_instance_type': 'r7g.2xlarge', 'aws_region': 'us-east-1',
+            'queue_sha256': '7feaf4cc4cf4c390beb0fc8ec245603ee855a42c9d5345504199ae76b851e3d9',
+            'overlay_archive_sha256': '2c7f6868e86a6ace0eb3f451977a4d65bd4c333d4611a00001d91672b6d17460',
+        }
+        with tempfile.TemporaryDirectory() as root:
+            path = Path(root) / 'manifest.json'
+            cases = (
+                ({}, True),
+                ({'aws_cli_identity': 'aws-cli/2.36.34 Python/3.13.11 Linux/aarch64'}, False),
+                ({'zstd_identity': 'zstd 1.5.5'}, False),
+            )
+            for changes, accepted in cases:
+                with self.subTest(changes=changes):
+                    path.write_text(json.dumps(manifest | changes))
+                    result = subprocess.run(
+                        [sys.executable, '-', str(path), aws_identity,
+                         zstd_identity, 'lean4-arm64@' + OCI],
+                        input=program, text=True, capture_output=True, timeout=10)
+                    self.assertEqual(result.returncode == 0, accepted, result.stderr)
+
     def test_cli_create_only_and_receipt(self):
         with tempfile.TemporaryDirectory() as root:
             output = Path(root) / "bootstrap.sh"
