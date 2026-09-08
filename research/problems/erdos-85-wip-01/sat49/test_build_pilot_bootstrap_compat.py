@@ -110,14 +110,14 @@ docker() { printf '%s' "$FAKE_IMAGE_ID"; return "$FAKE_STATUS"; }
                 self.assertEqual(identity["loaded_image_id_kind"], kind)
 
     def test_manifest_tool_identities_require_exact_match(self):
-        block = self.generated.split(
-            'python3 - "$ROOT/freight/manifest.json"', 1)[1]
-        program = block.split("<<'PY'\n", 1)[1].split('\nPY\n', 1)[0]
         aws_identity = ('aws-cli/2.36.34 Python/3.14.6 '
                         'Linux/6.17.0-1019-aws exe/aarch64.ubuntu.24')
         zstd_identity = '*** Zstandard CLI (64-bit) v1.5.5, by Yann Collet ***'
+        docker_identity = 'Docker version 29.1.3, build 29.1.3-0ubuntu3~24.04.2'
+        python_identity = 'Python 3.12.3'
         manifest = {
             'aws_cli_identity': aws_identity, 'zstd_identity': zstd_identity,
+            'docker_identity': docker_identity, 'python_identity': python_identity,
             'worker_image_digest': 'lean4-arm64@' + OCI,
             'repository_commit': '4c7cbb515934254e0795916001617150587559f5',
             'worker_ami_id': 'ami-02c4144237becae44',
@@ -132,14 +132,40 @@ docker() { printf '%s' "$FAKE_IMAGE_ID"; return "$FAKE_STATUS"; }
                 ({'aws_cli_identity': 'aws-cli/2.36.34 Python/3.13.11 Linux/aarch64'}, False),
                 ({'zstd_identity': 'zstd 1.5.5'}, False),
             )
-            for changes, accepted in cases:
-                with self.subTest(changes=changes):
-                    path.write_text(json.dumps(manifest | changes))
-                    result = subprocess.run(
-                        [sys.executable, '-', str(path), aws_identity,
-                         zstd_identity, 'lean4-arm64@' + OCI],
-                        input=program, text=True, capture_output=True, timeout=10)
-                    self.assertEqual(result.returncode == 0, accepted, result.stderr)
+            for full in (False, True):
+                generated = MOD.render(self.original, full_tool_identities=full).decode()
+                block = generated.split('python3 - "$ROOT/freight/manifest.json"', 1)[1]
+                program = block.split("<<'PY'\n", 1)[1].split('\nPY\n', 1)[0]
+                extended = cases + (
+                    ({'docker_identity': 'Docker version 29.1.3'}, not full),
+                    ({'python_identity': 'Python 3.12.3 altered'}, not full),
+                )
+                for changes, accepted in extended:
+                    with self.subTest(full=full, changes=changes):
+                        path.write_text(json.dumps(manifest | changes))
+                        result = subprocess.run(
+                            [sys.executable, '-', str(path), aws_identity,
+                             zstd_identity, 'lean4-arm64@' + OCI,
+                             docker_identity, python_identity],
+                            input=program, text=True, capture_output=True, timeout=10)
+                        self.assertEqual(result.returncode == 0, accepted, result.stderr)
+
+    def test_full_tool_identity_cli_mode(self):
+        with tempfile.TemporaryDirectory() as root:
+            output = Path(root) / 'full.sh'
+            result = subprocess.run(
+                [sys.executable, str(HERE / 'build_pilot_bootstrap_compat.py'),
+                 '--output', str(output), '--full-tool-identities'],
+                capture_output=True, text=True, timeout=10)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            receipt = json.loads(result.stdout)
+            self.assertTrue(receipt['full_tool_identities'])
+            self.assertEqual(output.read_bytes(),
+                             MOD.render(self.original, full_tool_identities=True))
+            self.assertIn('"$DOCKER_ID" "$PYTHON_ID"', output.read_text())
+            syntax = subprocess.run(['bash', '-n', str(output)],
+                                    capture_output=True, text=True, timeout=10)
+            self.assertEqual(syntax.returncode, 0, syntax.stderr)
 
     def test_cli_create_only_and_receipt(self):
         with tempfile.TemporaryDirectory() as root:

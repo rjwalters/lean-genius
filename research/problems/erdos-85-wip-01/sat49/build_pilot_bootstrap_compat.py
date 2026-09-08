@@ -24,7 +24,7 @@ def replace_once(text, old, new):
     return text.replace(old, new, 1)
 
 
-def render(source: bytes) -> bytes:
+def render(source: bytes, *, full_tool_identities: bool = False) -> bytes:
     if hashlib.sha256(source).hexdigest() != BASE_SHA:
         raise ValueError("reviewed bootstrap SHA mismatch")
     text = source.decode("utf-8")
@@ -78,6 +78,15 @@ printf 'loaded image identity kind=%s id=%s\\n' "$LOADED_IMAGE_ID_KIND" "$LOADED
                         'PHASE=running-dispatcher\n'
                         '# The production worker validates this inherited environment.\n'
                         'export LEAN_PATH="$ROOT/overlay"\n')
+    if full_tool_identities:
+        text = replace_once(text,
+                            '  "$IMAGE_OCI_DIGEST" <<\'PY\'\n',
+                            '  "$IMAGE_OCI_DIGEST" "$DOCKER_ID" "$PYTHON_ID" <<\'PY\'\n')
+        text = replace_once(text,
+                            'assert manifest["zstd_identity"] == sys.argv[3]\n',
+                            'assert manifest["zstd_identity"] == sys.argv[3]\n'
+                            'assert manifest["docker_identity"] == sys.argv[5]\n'
+                            'assert manifest["python_identity"] == sys.argv[6]\n')
     if "LOADED_CONFIG_ID" in text:
         raise ValueError("ambiguous legacy loaded-config field remains")
     return text.encode("utf-8")
@@ -87,8 +96,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=DEFAULT_SOURCE)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--full-tool-identities", action="store_true",
+                        help="require exact Docker/Python pins in the new manifest")
     args = parser.parse_args()
-    output = render(args.source.read_bytes())
+    output = render(args.source.read_bytes(), full_tool_identities=args.full_tool_identities)
     # Exclusive creation protects previously reviewed or uploaded artifacts.
     with args.output.open("xb") as stream:
         stream.write(output)
@@ -102,6 +113,7 @@ def main():
         "output_path": str(args.output.resolve()),
         "output_sha256": hashlib.sha256(output).hexdigest(),
         "output_bytes": len(output),
+        "full_tool_identities": args.full_tool_identities,
         "freight_review_required": True,
     }, sort_keys=True))
 
