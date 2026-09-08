@@ -22,6 +22,14 @@ assert SPEC.loader is not None
 SPEC.loader.exec_module(MOD)
 CONFIG = "sha256:39a805ad21da2e79dbd2e446c1333e4cdb975e44d401af95a29f7ca6b5a2995e"
 OCI = "sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6"
+REFREEZE = {
+    'schema': 'erdos85-pilot-bootstrap-refreeze-v1',
+    'freight_prefix': 'sat49/campaign-20260825/h1-replay/freight/pilot-new',
+    'repository_commit': 'abcdef0123456789abcdef0123456789abcdef01',
+    'repo_archive': 'repo-new.tar.zst',
+    'overlay_archive': 'overlay-new.tar.zst',
+    **{key: hashlib.sha256(key.encode()).hexdigest() for key in MOD.REFREEZE_HASHES},
+}
 
 
 class PilotBootstrapCompatTest(unittest.TestCase):
@@ -44,6 +52,62 @@ class PilotBootstrapCompatTest(unittest.TestCase):
                                 capture_output=True, text=True, timeout=10)
         self.assertEqual(syntax.returncode, 0, syntax.stderr)
         self.assertEqual(MOD.render(self.original), self.generated.encode())
+        self.assertEqual(hashlib.sha256(self.generated.encode()).hexdigest(),
+                         '3790ccaf4329c42a4d5e525262fc5be1669d9648ef09a0d2130d71491662cf81')
+
+    def test_refreeze_updates_all_bound_references(self):
+        generated = MOD.render(self.original, full_tool_identities=True,
+                               refreeze=REFREEZE).decode()
+        for field, variable in MOD.REFREEZE_HASHES.items():
+            self.assertIn(f'{variable}={REFREEZE[field]}\n', generated)
+        self.assertIn(f'FREIGHT_PREFIX="{REFREEZE["freight_prefix"]}"', generated)
+        for field in ('repository_commit', 'overlay_archive_sha256'):
+            self.assertIn(f'assert manifest["{field}"] == "{REFREEZE[field]}"', generated)
+        self.assertEqual(generated.count(REFREEZE['repo_archive']), 3)
+        self.assertEqual(generated.count(REFREEZE['overlay_archive']), 4)
+        self.assertNotIn('repo-4c7cbb5159.tar.zst', generated)
+        self.assertNotIn('complete-overlay-4c7cbb5159-import-data.tar.zst', generated)
+        self.assertIn('assert manifest["aws_cli_identity"] == sys.argv[2]', generated)
+        self.assertIn('assert manifest["docker_identity"] == sys.argv[5]', generated)
+        syntax = subprocess.run(['bash', '-n'], input=generated,
+                                capture_output=True, text=True, timeout=10)
+        self.assertEqual(syntax.returncode, 0, syntax.stderr)
+
+    def test_refreeze_rejects_incomplete_or_unsafe_pin_sets(self):
+        invalid = [None, [], {}, REFREEZE | {'unknown': 'value'},
+                   {k: v for k, v in REFREEZE.items() if k != 'manifest_sha256'},
+                   REFREEZE | {'repo_archive': REFREEZE['overlay_archive']}]
+        for field, bad in (
+            ('schema', 'unsupported'), ('manifest_sha256', 'not-a-hash'),
+            ('repository_commit', 'abc'), ('repo_archive', '../repo.tar.zst'),
+            ('overlay_archive', 'overlay\n.tar.zst'),
+            ('freight_prefix', 'prefix/$(id)'), ('freight_prefix', 'prefix/../key'),
+            ('repo_archive_sha256', 12),
+        ):
+            invalid.append(REFREEZE | {field: bad})
+        for pins in invalid:
+            with self.subTest(pins=pins), self.assertRaises(ValueError):
+                MOD.apply_refreeze(self.generated, pins)
+        with self.assertRaisesRegex(ValueError, 'full tool identity'):
+            MOD.render(self.original, refreeze=REFREEZE)
+
+    def test_refreeze_cli_binds_exact_input_bytes(self):
+        with tempfile.TemporaryDirectory() as root:
+            pins = Path(root) / 'pins.json'
+            output = Path(root) / 'bootstrap.sh'
+            pins.write_text(json.dumps(REFREEZE, indent=2) + '\n')
+            command = [sys.executable, str(HERE / 'build_pilot_bootstrap_compat.py'),
+                       '--output', str(output), '--refreeze', str(pins)]
+            rejected = subprocess.run(command, capture_output=True, text=True, timeout=10)
+            self.assertNotEqual(rejected.returncode, 0)
+            self.assertFalse(output.exists())
+            command.append('--full-tool-identities')
+            result = subprocess.run(command, capture_output=True, text=True, timeout=10)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            receipt = json.loads(result.stdout)
+            self.assertEqual(receipt['refreeze_sha256'], hashlib.sha256(pins.read_bytes()).hexdigest())
+            self.assertEqual(output.read_bytes(), MOD.render(
+                self.original, full_tool_identities=True, refreeze=REFREEZE))
 
     def test_modified_original_rejected(self):
         for source in (self.original + b"\n", self.original.replace(

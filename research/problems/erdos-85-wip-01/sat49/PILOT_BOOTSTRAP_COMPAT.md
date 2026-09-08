@@ -110,3 +110,36 @@ Terminal evidence remains under
 `sat49/campaign-20260825/h1-replay/bootstrap-terminal/i-0ec622c891fb46325.*`;
 the failed worker ran for 546539234 ns. This is preflight evidence, not an
 accepted certificate or a completed finite exclusion.
+
+## Preparing a new frozen handoff
+
+The generator's `--full-tool-identities` mode requires exact
+`docker_identity` and `python_identity` manifest fields, in addition to
+the existing exact AWS/zstd checks. Default rendering still reproduces
+the earlier 11898-byte script. This mode alone does not update freight.
+
+For a new freight set, pass `--refreeze pins.json` together with
+`--full-tool-identities`. The JSON object must contain exactly:
+
+- `schema`: `erdos85-pilot-bootstrap-refreeze-v1`;
+- `freight_prefix`: the full S3 key prefix inside the existing bucket;
+- `repository_commit`: the full 40-character lowercase commit hash;
+- `repo_archive` and `overlay_archive`: distinct `.tar.zst` basenames;
+- `repo_archive_sha256`, `overlay_archive_sha256`, `manifest_sha256`,
+  `overlay_manifest_sha256`, `overlay_receipt_sha256`, and
+  `overlay_identity_sha256`: 64-character lowercase hashes.
+
+The generator updates the shell hash assignments, archive references,
+and embedded repository/overlay manifest assertions together. Queue,
+image, image-evidence, AWS ZIP, and worker platform pins are preserved.
+The new prefix must contain the complete referenced freight set,
+including those preserved artifacts. No upload or copy is performed by
+this command. The build receipt records the exact input file's SHA-256
+as `refreeze_sha256`; output remains create-only and requires its own
+review. These syntax and consistency checks do not authenticate the
+referenced artifacts: their actual hashes must be verified in the freight
+handoff, followed by the full-payload replay and receipt validation.
+
+The input mechanism is tested locally. The new pilot's final pin file and
+launch script are pending the completed archive/manifest handoff; no
+launch-ready output is asserted here.
