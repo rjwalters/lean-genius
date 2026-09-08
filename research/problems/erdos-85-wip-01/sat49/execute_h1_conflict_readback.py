@@ -12,6 +12,7 @@ import re
 import shutil
 import stat
 import subprocess
+import sys
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
@@ -463,8 +464,19 @@ class LocalValidator:
             [str(self.docker), "image", "inspect", self.image,
              "--format", "{{.Id}}"],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        if identity.returncode or identity.stdout.strip() != IMAGE_CONFIG_ID:
-            raise AuditError("runtime image config pin mismatch")
+        # Classic Docker reports the config digest; the containerd store
+        # reports the OCI target digest. Both are pinned by the reviewed
+        # evidence bridge. Do not substitute the observed OCI ID for the
+        # config pin in the receipt's image_identity mapping.
+        observed_id = identity.stdout.strip()
+        identity_kinds = {
+            IMAGE_CONFIG_ID: "config",
+            REVIEWED_IMAGE_OCI_DIGEST.split("@", 1)[1]: "oci-target",
+        }
+        if identity.returncode or observed_id not in identity_kinds:
+            raise AuditError("runtime image identity pin mismatch")
+        print(f"runtime image identity: kind={identity_kinds[observed_id]} "
+              f"id={observed_id}", file=sys.stderr)
         for path, expected in (("/cache/bin/v2cnf", V2CNF_SHA256),
                                ("/cache/bin/lratreplay", LRATREPLAY_SHA256)):
             result = subprocess.run(

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import gzip
+import io
 import json
 import os
 import tempfile
@@ -295,16 +296,56 @@ class ExecuteConflictReadbackTest(unittest.TestCase):
         self.assertIn("/usr/bin/sha256sum", calls[1])
         self.assertIn("/usr/bin/sha256sum", calls[2])
 
-    def test_local_validator_rejects_missing_or_wrong_runtime_image_config(self):
+    def test_local_validator_accepts_both_reviewed_image_identities(self):
+        for observed, kind in (
+            (mod.IMAGE_CONFIG_ID, "config"),
+            (mod.REVIEWED_IMAGE_OCI_DIGEST.split("@", 1)[1], "oci-target"),
+        ):
+            responses = [
+                mock.Mock(returncode=0, stdout=observed + "\n", stderr=""),
+                mock.Mock(returncode=0, stdout=mod.V2CNF_SHA256 + "  /cache/bin/v2cnf\n"),
+                mock.Mock(returncode=0, stdout=mod.LRATREPLAY_SHA256 + "  /cache/bin/lratreplay\n"),
+            ]
+            with self.subTest(kind=kind), \
+                    mock.patch.object(mod.subprocess, "run", side_effect=responses) as run, \
+                    mock.patch.object(mod.sys, "stderr", new_callable=io.StringIO) as log:
+                validator = mod.LocalValidator(Path("/docker"), mod.IMAGE, mod.CACHE_VOLUME)
+                validator.preflight()
+                self.assertEqual(run.call_count, 3)
+                self.assertIn(f"kind={kind} id={observed}", log.getvalue())
+                self.assertEqual(run.call_args_list[1].args[0][-1], "/cache/bin/v2cnf")
+                self.assertEqual(run.call_args_list[2].args[0][-1], "/cache/bin/lratreplay")
+
+    def test_oci_identity_still_requires_both_tool_hashes(self):
+        for failing_tool in ("v2cnf", "lratreplay"):
+            responses = [mock.Mock(returncode=0,
+                                  stdout=mod.REVIEWED_IMAGE_OCI_DIGEST.split("@", 1)[1])]
+            for tool, digest in (("v2cnf", mod.V2CNF_SHA256),
+                                 ("lratreplay", mod.LRATREPLAY_SHA256)):
+                if tool == failing_tool:
+                    digest = "0" * 64
+                responses.append(mock.Mock(returncode=0,
+                                           stdout=f"{digest}  /cache/bin/{tool}\n"))
+            with self.subTest(tool=failing_tool), \
+                    mock.patch.object(mod.subprocess, "run", side_effect=responses), \
+                    mock.patch.object(mod.sys, "stderr", new_callable=io.StringIO), \
+                    self.assertRaisesRegex(mod.AuditError, f"in-container {failing_tool} pin"):
+                mod.LocalValidator(Path("/docker"), mod.IMAGE, mod.CACHE_VOLUME).preflight()
+
+    def test_local_validator_rejects_missing_or_wrong_runtime_image_identity(self):
         validator = mod.LocalValidator(Path("/docker"), mod.IMAGE, mod.CACHE_VOLUME)
         for result in (
             mock.Mock(returncode=1, stdout="", stderr="missing"),
             mock.Mock(returncode=0, stdout="sha256:" + "0" * 64 + "\n", stderr=""),
+            mock.Mock(returncode=0, stdout=mod.REVIEWED_IMAGE_OCI_DIGEST, stderr=""),
+            mock.Mock(returncode=0, stdout=mod.IMAGE_CONFIG_ID + "\nextra", stderr=""),
+            mock.Mock(returncode=1, stdout=mod.IMAGE_CONFIG_ID, stderr="failed"),
         ):
             with self.subTest(result=result), \
-                    mock.patch.object(mod.subprocess, "run", return_value=result), \
-                    self.assertRaisesRegex(mod.AuditError, "runtime image config"):
+                    mock.patch.object(mod.subprocess, "run", return_value=result) as run, \
+                    self.assertRaisesRegex(mod.AuditError, "runtime image identity"):
                 validator.preflight()
+            self.assertEqual(run.call_count, 1)
 
     def test_image_identity_requires_reviewed_bridge_receipt(self):
         exact = (mod.IMAGE, mod.IMAGE_CONFIG_ID, mod.REVIEWED_IMAGE_OCI_DIGEST,

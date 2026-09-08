@@ -35,7 +35,7 @@ COVERAGE_COLUMNS = (
     "fleet_v3_claim", "fleet_v3_cnf_sha256", "fleet_v3_verdict",
 )
 CONFLICT_AUDIT_SCHEMA = "erdos85-h1-conflict-readback-audit-v2"
-CONFLICT_EXECUTOR_SHA256 = "e8db3e080a4a0afa70419dd1c6e0cd31e9d85a566d80c3c07d95cdce47ea2701"
+CONFLICT_EXECUTOR_SHA256 = "5eb4eecb981f1ee8ed57fe6ae0ee7802e0678255e938cccc3508ea8e6d95ed05"
 CONFLICT_HELPER_SHA256 = {
     "capacity-filter": "a0f75f34d74cb8e3d48310b8f2e7b9544bba690110c0256c03f1b78bc9745e81",
     "queue-format": "5acf5ba65a4d3ea3f1f2aa603b102aa762ebbf91b1b2365645cb0af9060e7636",
