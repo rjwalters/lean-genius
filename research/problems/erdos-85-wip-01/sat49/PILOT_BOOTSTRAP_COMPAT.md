@@ -75,3 +75,38 @@ All ten compatibility tests, `bash -n`, and `shellcheck` pass. This remains
 a local tested repair: no new upload, worker launch, or accepted replay is
 claimed. The launch owner must record the new script identity in the
 reviewed handoff rather than reuse the earlier output hash.
+
+## Pilot 7: frozen AWS identity remains inconsistent
+
+Pilot `i-0ec622c891fb46325` reached the dispatcher but accepted zero leaves.
+Its failed-dispatch record reports, before compilation:
+
+```text
+expected: aws-cli/2.36.34 Python/3.13.11 Linux/aarch64
+observed: aws-cli/2.36.34 Python/3.14.6 Linux/6.17.0-1019-aws exe/aarch64.ubuntu.24
+```
+
+The actual EC2 UserData was independently retrieved read-only on 2026-09-08:
+12009 bytes, SHA-256
+`736176305d14a27c4eea7cf36fe24c6f97bed60c4ff831fd644b85a4e97d71c1`.
+It retains the pinned AWS ZIP hash
+`2b9d9305db94af64baee48106f54b6652ede5732494c0ba61ae305720ac72505`
+and installer. However, its pre-dispatch checks compare only AWS version,
+Linux and architecture substrings, and a zstd version substring. They no
+longer compare the observed identities with the frozen manifest fields.
+The worker still requires exact equality with `manifest.aws_cli_identity`,
+so the relaxed bootstrap check merely postpones this failure.
+
+This launch copy is distinct from the generated 11898-byte script above,
+which preserves both exact manifest identity checks. The latter would stop
+at its earlier gate with the same inconsistent freight. A subsequent launch
+needs a reviewed manifest consistent with the installed tools (or tools
+matching the existing manifest); changing the manifest requires recording
+its new hash throughout the handoff. No worker identity check is relaxed by
+this repair. The separate parser and native-axiom findings concern later
+gates, not the cause of this pilot's failure.
+
+Terminal evidence remains under
+`sat49/campaign-20260825/h1-replay/bootstrap-terminal/i-0ec622c891fb46325.*`;
+the failed worker ran for 546539234 ns. This is preflight evidence, not an
+accepted certificate or a completed finite exclusion.
