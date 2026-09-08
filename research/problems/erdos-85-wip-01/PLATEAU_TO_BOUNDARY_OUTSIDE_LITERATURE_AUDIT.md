@@ -344,3 +344,84 @@ The source's stronger regular conclusions cannot be substituted for this
 bound without a new transfer theorem. The general A-REG candidate need
 not even satisfy the saturated hypothesis. This bounded source check
 therefore supplies no uniform exclusion and no new Lean obligation.
+
+
+### Hoory's irregular bipartite bound falls short for every candidate (2026-09-08)
+
+The constant-degree restriction above can be avoided using Hoory's bound,
+as stated and proved in Babu and Radhakrishnan,
+[An entropy based proof of the Moore bound for irregular graphs](https://arxiv.org/html/1011.1058),
+Theorem 2 and Section 4.1. It assumes minimum degree at least two and uses
+separate average degrees on the two sides. Thus it applies to the mixed
+incidence graph formed by the triangles and triangle-free edges of a
+q-regular C4-free graph on q² points, q>=8. Nevertheless, neither of its
+girth-ten side bounds gives a contradiction. This conclusion does not
+require saturation.
+
+Every vertex lies in at least one triangle: otherwise its first two graph
+distance layers would contain 1+q+q(q-1)=q²+1 distinct points. If d_x is
+its triangle-free degree and t_x its triangle degree, then 2t_x+d_x=q,
+so 0<=d_x<=q-2. Write delta for the mean of d_x. The mixed incidence graph
+has girth at least ten: linearity excludes incidence 4-cycles, a Berge
+3-cycle would give a graph triangle whose edges cannot belong to distinct
+blocks, and a Berge 4-cycle would give a graph C4. All incidence degrees
+are at least two.
+
+The point and block counts and average incidence degrees are
+
+    n_L = q²,                  n_R = q²(q+2delta)/6,
+    d_L = (q+delta)/2,         d_R = 3(q+delta)/(q+2delta),
+    0 <= delta <= q-2.
+
+Indeed, the counts of triangle-free edges and triangles are respectively
+q²delta/2 and q²(q-delta)/6. Put
+
+    x = d_L-1 = (q+delta-2)/2,
+    y = d_R-1 = (2q+delta)/(q+2delta).
+
+Hoory's two girth-ten right-hand sides are
+
+    H_L = 1+y+xy+xy²+x²y²,
+    H_R = 1+x+xy+x²y+x²y².
+
+They assert n_L>=H_L and n_R>=H_R. Both are strictly satisfied by the
+candidate counts for every delta in the permitted interval.
+
+For the point side, set z=delta/(q-2). The exact polynomial
+P=4(q+2delta)²(q²-H_L), after substituting delta=(q-2)z, has the degree-four
+Bernstein representation P=sum_{i=0}^4 b_i binom(4,i) z^i (1-z)^(4-i), with
+
+    b_0 = 4q²(q-1),
+    b_1 = q(2q³+5q²-18q+16)/2,
+    b_2 = (3q-2)(5q³-24q+32)/6,
+    b_3 = 3q⁴-28q²+54q-28,
+    b_4 = 8(q-1)(3q²-9q+8).
+
+Each coefficient is positive for q>=4. For example, the potentially
+negative terms pair as q(5q-18), q(5q²-24), q²(3q²-28), and 3q(q-3)
+in b_1 through b_4. The Bernstein weights are nonnegative and sum to one
+on 0<=z<=1. Hence P>0 and H_L<q² throughout the entire interval.
+Sol1 derived this certificate; Sol3 independently expanded the rational
+expression and recovered all five coefficients exactly with SymPy.
+
+For the block side, xy<=q-1, since
+
+    2(q-1)(q+2delta) - (q+delta-2)(2q+delta)
+      = 2q + delta(q-2-delta) > 0.
+
+As x,y are nonnegative,
+
+    H_R = 1+x+xy(1+x+xy) <= q*x+q²-q+1.
+
+Six times the difference between n_R and this upper bound is
+
+    q³-9q²+12q-6 + delta*q*(2q-3).
+
+The delta term is nonnegative. Setting q=8+u, u>=0, expands the remaining
+polynomial as 26+60u+15u²+u³, which is positive. Thus H_R<n_R as well.
+
+This is an algebraic comparison of necessary bounds, not an existence
+claim for any degree distribution. It closes the direct average-degree
+Hoory-bound transfer at girth ten for the whole q>=8 square-order regular
+candidate class. It does not address stronger inequalities using incidence
+correlations or permit promoting any A-REG node to an exclusion theorem.
