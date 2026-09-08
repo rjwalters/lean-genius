@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.67 — 2026-09-06 (scoped the spectral-route limitations to the conditions actually tested; recorded the two integer-matrix control exclusions. A-REG remains open).**
+**Version 2.68 — 2026-09-08 (folded the Sep-8 deltas: Hoffman diagonal parity and the Lean triangle-free-degree partition law into A.5.1; scalar / local-diagonal spectral filters closed with certified limits, construction templates and divergence rounds #109–#111 recorded as cut in A.5.3 (xvii); the room's goal-#36 trigger recorded. A-REG remains open).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -91,6 +91,28 @@ Everything below this line is inside A.5.
   integration-built, axioms exactly `[propext, Classical.choice,
   Quot.sound]`). This closes the bipartite half of A-REG for every `k` by
   one argument that lifts. It is the only part of A-REG proven that way.
+- **Triangle-free-degree partition law** (`PROVEN`, Lean, Fable
+  `8c25aab838`, review #1489 sol-1; standard axioms; cold-compiled on the
+  tip): `binarySquare_regular_mul_triangleFreeDegree_le_componentCard` —
+  `q·d_x ≤ |C_x|`, i.e. `d_x ≤ m_{C_x}` for every vertex, where `d_x` is the
+  triangle-free degree and `C_x` the defect component of `x`; summed form
+  banked alongside. Corollaries: a size-two component forces `d_x ≤ 2`;
+  `d_x > q/2` forces the unique large component; `6t ≥ q³ − q·Σ_c m_c²`.
+- **HOFFMAN DIAGONAL PARITY** (`PROVEN-SKETCH`, prose + exact verifier;
+  sol-1 `b54c5d2669` / `36eb150fbd`, sol-3 `edfc02342b`
+  `Q16_HOFFMAN_DIAGONAL_PARITY_REJECTION.md`; reviews #1479/#1480 PASS,
+  Fable. Lean file `Erdos85HoffmanDiagonalParity.lean` compiled by Fable on
+  standard axioms, review #1493 open — upgrade to `PROVEN` when banked and
+  cold-verified). For symmetric integer `A` with zero diagonal, even
+  constant row sum `q`, simple eigenvalue `q`, and any `h ∈ ℤ[x]`
+  annihilating the nonprincipal spectrum: every positive power of `A` has
+  even diagonal, hence `h(q)/n ≡ h(0) (mod 2)`, i.e. `2n ∣ h(q) − n·h(0)`;
+  for even `n` this is `2n ∣ h(q)`, one factor of 2 beyond the projector
+  divisibility `n ∣ h(q)`. Uniform in `q`; needs neither C4-freeness nor
+  0/1 entries; calibrated on the genuine q4 witness (`h(4)/16 = 2982`) and
+  on K4/K5/triangle. A Lean-statable child of the trace-escape interface,
+  not a uniform exclusion. First application: A.5.3 (xvii)(a). Prior
+  spectral ledgers should be re-screened against `2n ∣ h(q)`.
 - Owner/selector algebra, centered-owner ranks and nullities, cross-block
   identities `HB + BC = J`, `BC² = (q−2m)J + H²B`, cyclic first/second
   moments, signed-eigenline range and support laws — all uniform, none a
@@ -684,6 +706,124 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   of (xii)'s parity split. Owner's caveat, kept verbatim in spirit: the
   report explicitly notes that **residual-sector energy remains
   uncontrolled**, so this sharpens the bound without closing it.
+  **(xvii) 2026-09-08 — SCALAR AND LOCAL-DIAGONAL SPECTRAL FILTERS CLOSED
+  WITH CERTIFIED LIMITS; DIVERGENCE ROUNDS #109–#111 ALL CUT; the room
+  declares goal #36's trigger.** Every item is `PROVEN-SKETCH` or
+  `CLOSED-NEGATIVE` with its exact scope; no node status changes.
+
+  *(a) The q16 formal spectrum is DEAD by Hoffman diagonal parity*
+  (sol-3 `edfc02342b`, #1480). `{16; −4⁴; −2²; 4; ±√2³; ±√14⁹⁹; ±√22²²}`
+  had passed low moments, the residual window, complete mod-4
+  primitive-cycle integrality/positivity (`551923e34d`, `fb13eeb3e1`) and
+  `n ∣ h(q)`; it fails `2n ∣ h(q)` because `h(16)/256 = 242,721,765` is
+  odd. Sol-1's earlier q16 ledger (`b7d7671333`) has valuation 11 and
+  passes the new test, so it stays dead only by its own odd-power mod-4
+  obstruction. The mod-4-square criterion for all-length primitive
+  nonbacktracking integrality (sol-1 `551923e34d`, #1477; Harary–Schwenk
+  all-length equivalence) and the nonbacktracking positivity control
+  (sol-3 `fb13eeb3e1`, #1476) are recorded as filters, not exclusions.
+
+  *(b) SCALAR-FILTER LIMITATION, every binary `k ≥ 10`* (sol-3
+  `UNBOUNDED_SPECTRAL_FILTER_CONTROL.md` + verifier `b5c915ac1a`; sol-1
+  closed multiplicity formulas; #1481 PASS). For `q = α·t²`, `t = 2^j ≥
+  32`, `α ∈ {1,2}` there is an explicit FORMAL spectrum — rational roots
+  `q, −4^(q/4), −2², +4` and paired squares `4, 8, q−αt, q, q+αt` with
+  closed-form positive integer multiplicities — satisfying ALL of: moments
+  `tr A⁰..A⁴` of a `q`-regular C4-free graph on `q²` vertices (`tr A³ =
+  q³ − 16q + 48`), the residual window `|θ|² ≤ 2(q−1)`, complete
+  primitive-cycle integrality and positivity, the mod-4-square test for
+  the induced `D`, both minimal Hoffman divisibilities, AND Hoffman
+  diagonal parity (valuation `2k + 9 + v₂(α)` against the required
+  `2k + 1`). Consequence: the named GLOBAL scalar filters cannot close
+  A-REG at any `k ≥ 10` by themselves; the missing link is entrywise /
+  local realizability. A limitation statement about the filters — not a
+  construction, not evidence for existence.
+
+  *(c) LOCAL-DIAGONAL COUNTERMODEL at `q = 1024`* (sol-3
+  `Q1024_LOCAL_WALK_CONTROL.md` + verifier `6863506846`, #1482; then
+  `38a856f7a1`, #1483). Nine integer vertex populations with exact
+  per-vertex spectral measures reproduce the `α = 1` global spectrum,
+  per-vertex closed-walk moments 0..5 including the induced-edge identity
+  `(A⁵)_vv = q³ − 2q·d_v + 2e_A(R_v)`, the sixth-moment `D`-triangle ranges,
+  and nonnegative even-integer closed-walk counts at every length via the
+  degree-13 recurrence `F = (X−q)h_A`. Scope exactly: the ENUMERATED
+  per-vertex conditions are satisfiable by a local-diagonal model at this
+  order; other per-vertex constraints may still bite. Sol-1's rational
+  rank-one test for the simple eigenvalue `+4` (projector-diagonal ratios
+  must be rational squares; primitive eigenvector norm `S` with `2S ∣
+  h̃(4)`) REJECTS the original nine-type measures (ratio `93649/93652`) and
+  the flat `±1` eigenvector (`h̃(4)/n` odd); a two-level `±5/±6`
+  replacement with `S = 61n/2` (`v₂ = 19`, the maximum allowed) survives
+  the `+4` coupling only — no other projector, no graph. Lane STOPPED by
+  its owner (41003): it establishes limits of named filters, not a chain
+  to A-REG.
+
+  *(d) Construction templates cut, Sep 6–8.* Genuine C4-free
+  min-degree-`q` witnesses exist for every `N = q²+1 .. q²+q+1`, uniform
+  even prime powers, with an exactly `q`-regular endpoint at `q²+1`
+  (sol-1 `BINARY_POST_SQUARE_INTERVAL_CONSTRUCTION.md` `9b30c9b488`,
+  #1471) — so the post-square interval is not where missing witnesses
+  hide. Deleting ANY vertex from that endpoint admits no C4-free repair by
+  edges among its deficient neighbours (sol-1 `2d48a5307e`, #1472).
+  Elementary-abelian Cayley 2-lifts: a C4-free lift forces the base
+  connection set Sidon AND sum-free, impossible at `q²` (sol-3
+  `9bbc8286a7`). Round #109 (sol-1 lead): symmetry-only and cover
+  classification routes stopped absent a theorem forcing their hypotheses;
+  the affine-pole subclass is already excluded by A.5.1's size-`q` law.
+
+  *(e) Divergence round #110, all CUT* (Fable's cut vote 41010; entries
+  by all three seats). EXACT-EXTREMAL CLASSIFICATION (Fable
+  `EXTREMAL_NUMBER_ROUTE_CUT.md` `de9ea55197`, #1484): `ex(q², C4) > q³/2`
+  for all large `q` (Tait–Timmons Thm 1.1 with loops cancelled exactly),
+  certified at `q = 8, 16, 32, 64` with margins 2, 14, 33, 107 — an A-REG
+  graph is not extremal, so Füredi / FKNW / McCuaig do not apply and
+  FKNW's method has no iterable step; NEAR-extremal stability over the
+  true deficit `∈ [q − O(√q), q²/4)` is the open missing lemma, not
+  supplied by the two papers checked. ODD-POLARITY DEGREE REPAIR
+  OBSTRUCTION (sol-1 `190c19e556`, #1486/#1487 sol-3): in the odd
+  prime-power polarity host, after deleting all HH edges and any `d ≥ 1`
+  vertices while preserving original non-HH edges, ARBITRARY edge
+  additions cannot restore degree `q` once `q ≥ 2d + 9` (surviving 3-paths
+  `≥ (q−5)/2` for LL and `≥ (q−3)/2` for LH non-edges; `d` deletions
+  destroy at most `d + 1`), so three-deletion repair fails for every odd
+  prime power `≥ 17`; this host/template only. TWO 48-VERTEX HOSTS
+  (sol-3 `e1fa23d235`, #1485): addition-only 7-regular repair after any
+  2-vertex deletion is impossible on both known hosts, closing the
+  simplest parity-drop instance 46 → 47; the parity-drop MECHANISM
+  (regularity forced below `q²` by
+  `degree_eq_of_minDegree_card_lt_nextMooreLayer` + handshake) stays
+  valid and needs a cofinal odd-`q` construction at even `N ≤ q² − 3`.
+  EFH / Bannai–Ito analogue: `D` is a polynomial in `A`, no extra
+  relation to feed the bookkeeping — withdrawn.
+
+  *(f) Divergence round #111, all CUT.* EVEN-POLARITY ODD-DEGREE
+  EXTENSION (sol-3 `497edac194`, #1488): for every even prime power
+  `q ≥ 4`, preserving `P` or `P` minus its nucleus and only adding
+  vertices/edges cannot give C4-free min-degree `q + 1` below `(q+1)²`.
+  Same-order incidence completion self-cut (`XXᵀ = I + D` forces
+  `D = q·K_q`, the `m = 1` case). Regular-Turán source pieces too large.
+  The saturated triangle core is correctly a MIXED 2/3-uniform
+  Berge-girth-`≥ 5` hypergraph (not regular triples); its first bound
+  closes back onto the distance-layer identity; the L1 partition law in
+  A.5.1 is its Lean-checked piece; L2 mutual-antipode remains a
+  conjecture (one-sided prism only; q4 UNSAT, q6 unknown at 25 s).
+  OUTSIDE TRANSFER (sol-1 `2b72ba7af7`, #1490): CFSZ's little-`o` premise
+  fails for any unbounded square-order regular family (`10·C₅ = tr A⁵ −
+  5(q−1)·tr A³`, `c₅ ~ q⁵/10`); the edge-rooted BFS shows the saturated
+  binary `q ≥ 16` triangle hypergraph must contain a Berge 5-cycle (q8
+  not concluded). Source-transfer limits, not candidate exclusions.
+
+  *(g) STATE OF THE NODE (room consensus 41140–41143, put to the operator
+  once per #35(4)).* The scalar-spectral, local-diagonal,
+  extremal-structure and fixed-host-repair families are closed with
+  certified limits; every tried construction template for the odd half is
+  cut; no bank has a chain to A-REG or to a cofinal odd-degree
+  construction. The remaining content of A-REG is entrywise / global
+  realizability of the mixed Berge-girth core. This is §G rule 6's
+  trigger for the room as a whole. Durable non-grind work while the
+  direction is decided: formalise Hoffman diagonal parity (in review
+  #1493) and the mod-4-square criterion; consolidate one ledger table of
+  every cut with exact scope and commit.
 - **NONBIP-MIXED `r ≥ 2`** — two or more parts. `GAP`. Uniform inputs: the
   owner/selector algebra of A.5.1; every binary candidate has a triangle-free
   edge (`binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty`).
@@ -907,6 +1047,13 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
 Operator ruling (goal #23): odd primes remain the primary *theory* of where
 drops occur; Branch A is where the *proof* is closest. Decisive next datum on
 B is existence or nonexistence at `q = 9`.
+
+**Editor note (2026-09-08, v2.68).** Two construction-side results bear on
+B.2 without changing its label: the odd-polarity degree-repair obstruction
+(A.5.3 (xvii)(e), `190c19e556`) removes restricted repairs of the
+prime-power polarity host for all odd `q ≥ 17`, and the two 48-vertex hosts
+admit no addition-only repair after any two deletions (`e1fa23d235`). The
+parity-drop mechanism at even `N ≤ q² − 3` remains valid and unfed.
 
 **Editor note (2026-08-22, goal #32) — this ruling now has evidence pointing
 at it.** B.2 and B.3 are the two complementary halves of `q = 9` and are not
@@ -1248,6 +1395,21 @@ Does not count (goes to the ledger, not here):
    hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.68** (2026-09-08, editor; deltas posted by Fable 40919/40957/40979/
+  41059 with corrections by sol-3 40920/40995 and sol-1 41072; banks by all
+  three seats and Fable, reviews #1471–#1490): A.5.1 gains the Lean
+  triangle-free-degree partition law (`8c25aab838`, `PROVEN`) and Hoffman
+  diagonal parity (`PROVEN-SKETCH`, Lean in review #1493). New A.5.3
+  (xvii): q16 formal spectrum killed by diagonal parity; scalar filters
+  shown unable to close A-REG at any `k ≥ 10`; local-diagonal countermodel
+  at `q = 1024` with the rank-one rejection and its scope; construction
+  templates cut (post-square interval witnesses `9b30c9b488`, endpoint
+  repair, Cayley 2-lifts); divergence rounds #109–#111 recorded as cut
+  with exact scopes (extremal classification, odd/even polarity repairs,
+  48-host repairs, EFH analogue, regular-Turán, CFSZ transfer). Records
+  the room's goal-#36 trigger for the node. B gains a one-paragraph note.
+  No proof-node status changes; A-REG remains open.
 
 - **2.67** (2026-09-06, codex-sol-3): narrowed (vii)'s categorical claims
   against all spectral methods to the relaxed conditions actually tested.
