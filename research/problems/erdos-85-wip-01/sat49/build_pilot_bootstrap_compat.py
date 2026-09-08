@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reproduce the reviewed pilot bootstrap's Docker identity/logging repair.
+"""Reproduce the pilot bootstrap's identity, logging and replay-env repairs.
 
 Input is the immutable #1357 bootstrap, shipped alongside this generator.
 Output is create-only and must receive its own freight review before use.
@@ -74,6 +74,10 @@ printf 'loaded image identity kind=%s id=%s\\n' "$LOADED_IMAGE_ID_KIND" "$LOADED
     text = replace_once(text, '    image_config_id:$image_config_id,\n',
                         '    image_config_id:$image_config_id,\n'
                         '    loaded_image_id:$loaded_image_id,loaded_image_id_kind:$loaded_image_id_kind,\n')
+    text = replace_once(text, 'PHASE=running-dispatcher\n',
+                        'PHASE=running-dispatcher\n'
+                        '# The production worker validates this inherited environment.\n'
+                        'export LEAN_PATH="$ROOT/overlay"\n')
     if "LOADED_CONFIG_ID" in text:
         raise ValueError("ambiguous legacy loaded-config field remains")
     return text.encode("utf-8")

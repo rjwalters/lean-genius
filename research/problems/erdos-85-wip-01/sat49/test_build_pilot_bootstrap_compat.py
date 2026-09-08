@@ -127,6 +127,48 @@ docker() { printf '%s' "$FAKE_IMAGE_ID"; return "$FAKE_STATUS"; }
             self.assertNotEqual(result.returncode, 0)
             self.assertEqual(output.read_bytes(), b"existing reviewed artifact")
 
+    def test_dispatcher_and_child_inherit_frozen_overlay(self):
+        # Reproduce the production preflight failure with a real subprocess
+        # boundary, without downloading freight or running Docker/AWS.
+        preamble = 'export DEBIAN_FRONTEND=noninteractive HOME=/root AWS_PAGER='
+        self.assertIn(preamble, self.original.decode().splitlines())
+        self.assertIn(preamble, self.generated.splitlines())
+        original_exports = {line for line in self.original.decode().splitlines()
+                            if line.startswith('export ')}
+        generated_exports = {line for line in self.generated.splitlines()
+                             if line.startswith('export ')}
+        self.assertEqual(generated_exports - original_exports,
+                         {'export LEAN_PATH="$ROOT/overlay"'})
+        self.assertFalse(original_exports - generated_exports)
+        with tempfile.TemporaryDirectory(prefix="pilot env ") as root:
+            dispatcher = Path(root) / "repo/h1fleet/run_replay_queue.py"
+            dispatcher.parent.mkdir(parents=True)
+            dispatcher.write_text("""import os, subprocess, sys
+if os.environ.get('LEAN_PATH') != os.environ['EXPECTED_OVERLAY']:
+    sys.exit(91)
+if os.environ.get('HOME') != '/root':
+    sys.exit(92)
+subprocess.run([sys.executable, '-c',
+               'import os, json; print(json.dumps([os.environ["HOME"], os.environ["LEAN_PATH"]]))'], check=True)
+sys.exit(int(os.environ['FAKE_RETURN_CODE']))
+""")
+            def dispatch(text, initial, status):
+                block = "PHASE=running-dispatcher\n" + text.split(
+                    "PHASE=running-dispatcher\n", 1)[1]
+                block = block.replace("/usr/bin/python3", shlex.quote(sys.executable))
+                return self.run_shell(
+                    "set -euo pipefail\n" + preamble + "\n" + initial + block,
+                    ROOT=root, BUCKET="fixture", EXPECTED_OVERLAY=root + "/overlay",
+                    FAKE_RETURN_CODE=str(status))
+            for initial in ("unset LEAN_PATH\n", "export LEAN_PATH=/wrong\n"):
+                with self.subTest(initial=initial):
+                    self.assertEqual(dispatch(self.original.decode(), initial, 0).returncode, 91)
+                    for status in (0, 23):
+                        result = dispatch(self.generated, initial, status)
+                        self.assertEqual(result.returncode, status, result.stderr)
+                        self.assertEqual(json.loads(result.stdout),
+                                         ['/root', root + '/overlay'])
+
     def test_finish_drains_log_before_upload_and_preserves_exit_status(self):
         # Execute only the EXIT handler and its logging setup. Every absolute
         # external command/path in that block is redirected to a temp fixture.
