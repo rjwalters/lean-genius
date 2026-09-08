@@ -11,7 +11,7 @@ from pathlib import Path
 
 from replay_common import (
     RECEIPT_SCHEMA, AwsCliObjectStore, LocalObjectStore, ObjectInfo, ObjectStore, ReplayError,
-    canonical_json, load_json,
+    canonical_json, load_json, native_axiom_ownership_prefix,
     load_manifest, require_sha, require_tag, sha256_bytes, sha256_file,
     validate_command_receipts, validate_receipt_fields, validate_receipt_integrity,
 )
@@ -172,7 +172,7 @@ def validate(args: argparse.Namespace) -> None:
         raise ReplayError("receipt artifacts differ from replay-ready evidence")
     for field in (
         "job_identity", "build_identity", "module", "compact_lrat", "source_raw",
-        "olean_raw", "commands", "work_root", "worker_runtime",
+        "olean_raw", "commands", "work_root", "worker_runtime", "axiom_audit",
     ):
         if receipt.get(field) != ready.get(field):
             raise ReplayError(f"receipt {field} differs from replay-ready evidence")
@@ -245,8 +245,10 @@ def validate(args: argparse.Namespace) -> None:
     if ready.get("certificate") != before:
         raise ReplayError("receipt pre-tag identity differs from replay-ready evidence")
     native_prefix = ready.get("native_axiom_prefix")
-    if not isinstance(native_prefix, str) or not native_prefix.startswith("Erdos85.h1V2P"):
-        raise ReplayError("replay-ready lacks native axiom ownership prefix")
+    expected_native_prefix = native_axiom_ownership_prefix(
+        manifest, command_job["profile"], command_job["local_index"])
+    if native_prefix != expected_native_prefix:
+        raise ReplayError("replay-ready native axiom ownership prefix mismatch")
     foreign_native = [
         axiom for axiom in axioms if axiom not in set(manifest["allowed_axioms"])
         and not axiom.startswith(native_prefix)

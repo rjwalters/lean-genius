@@ -26,6 +26,12 @@ RECEIPT_SCHEMA = "erdos85-h1-replay-receipt-v2"
 NATIVE_AXIOM_PATTERN = (
     r"^Erdos85\.h1V2P[0-4]I[0-9]{5}Check\._native\.native_decide\.ax_[0-9_]+$"
 )
+# Explicit opt-in for the three native obligations in generate_replay_leaf.py.
+# Retain the older Check-only contract byte-for-byte for frozen manifests.
+GENERATED_LEAF_AXIOM_PATTERN = (
+    r"^Erdos85\.h1V2P[0-4]I[0-9]{5}(?:Table|Nonzero|Check)"
+    r"\._native\.native_decide\.ax_[0-9]+(?:_[0-9]+)*$"
+)
 FOUNDATIONAL_AXIOMS = ("propext", "Classical.choice", "Quot.sound")
 RECEIPT_INTEGRITY_SCHEME = "canonical-json-sha256-v1"
 PRODUCTION_COMPILE_COMMAND = [
@@ -257,10 +263,10 @@ def load_manifest(path: Path) -> dict[str, Any]:
             "manifest.allowed_axioms must equal the canonical foundational list"
         )
     patterns = value.get("allowed_axiom_patterns", [])
-    if patterns not in ([], [NATIVE_AXIOM_PATTERN]):
+    if patterns not in ([], [NATIVE_AXIOM_PATTERN], [GENERATED_LEAF_AXIOM_PATTERN]):
         raise ReplayError(
             "manifest.allowed_axiom_patterns must be empty or the singleton "
-            "reviewed native leaf-root pattern"
+            "reviewed Check-only or generated-leaf native pattern"
         )
     for pattern in patterns:
         try:
@@ -278,6 +284,19 @@ def load_manifest(path: Path) -> dict[str, Any]:
     if "claim_ttl_seconds" in value or "receipt_integrity_key_id" in value:
         raise ReplayError("manifest contains obsolete lease or keyed-integrity fields")
     return value
+
+
+def native_axiom_ownership_prefix(manifest: dict[str, Any], profile: int,
+                                 local_index: int) -> str:
+    """Bind the manifest-selected native roles to exactly one capacity leaf.
+
+    The full axiom regex must also be checked: this prefix supplies ownership,
+    while the selected regex supplies the permitted roles and name grammar.
+    """
+    stem = f"Erdos85.h1V2P{profile}I{local_index:05d}"
+    if manifest.get("allowed_axiom_patterns", []) == [GENERATED_LEAF_AXIOM_PATTERN]:
+        return stem
+    return stem + "Check._native.native_decide.ax_"
 
 
 def validate_production_compile_fields(manifest: dict[str, Any]) -> None:

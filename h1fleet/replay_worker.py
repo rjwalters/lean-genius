@@ -25,9 +25,10 @@ from pathlib import Path
 from typing import Any
 
 from replay_common import (
-    NATIVE_AXIOM_PATTERN, READY_SCHEMA, RECEIPT_SCHEMA, AwsCliObjectStore,
+    NATIVE_AXIOM_PATTERN, GENERATED_LEAF_AXIOM_PATTERN,
+    READY_SCHEMA, RECEIPT_SCHEMA, AwsCliObjectStore,
     RECEIPT_INTEGRITY_SCHEME,
-    LocalObjectStore, ObjectInfo, ObjectStore,
+    LocalObjectStore, ObjectInfo, ObjectStore, native_axiom_ownership_prefix,
     ReplayError,
     atomic_write, canonical_json, expand_command, info_record, load_json,
     load_manifest, require_sha, require_tag, run_command, sha256_bytes,
@@ -141,7 +142,13 @@ def require_command_ok(name: str, command: list[str], work: Path, log: Path,
 
 def validate_audit(path: Path, allowed: set[str], patterns: list[str],
                    native_axiom_prefix: str) -> dict[str, Any]:
-    audit = load_json(path)
+    return validate_audit_record(load_json(path), allowed, patterns, native_axiom_prefix)
+
+
+def validate_audit_record(audit: Any, allowed: set[str], patterns: list[str],
+                          native_axiom_prefix: str) -> dict[str, Any]:
+    if not isinstance(audit, dict):
+        raise ReplayError("axiom audit is malformed")
     if audit.get("schema") != "erdos85-h1-replay-axiom-audit-v1":
         raise ReplayError("axiom audit has wrong schema")
     if audit.get("sorry_ax") is not False or audit.get("source_scan") != "PASS":
@@ -316,12 +323,13 @@ def validate_ready(ready: dict[str, Any], manifest: dict[str, Any], job: dict[st
         ready.get("commands"), manifest.get("environment_allowlist", []),
         manifest["commands"], receipt_command_bindings(Path(work_root), job),
     )
-    expected_native_prefix = (
-        f"Erdos85.h1V2P{job['profile']}I{job['local_index']:05d}Check."
-        "_native.native_decide.ax_"
-    )
+    expected_native_prefix = native_axiom_ownership_prefix(
+        manifest, job["profile"], job["local_index"])
     if ready.get("native_axiom_prefix") != expected_native_prefix:
         raise ReplayError("replay-ready native axiom ownership mismatch")
+    validate_audit_record(
+        ready.get("axiom_audit"), set(manifest["allowed_axioms"]),
+        manifest.get("allowed_axiom_patterns", []), expected_native_prefix)
     artifacts = ready.get("artifacts")
     if not isinstance(artifacts, dict) or set(artifacts) != {"source", "log", "olean"}:
         raise ReplayError("replay-ready artifact set mismatch")
@@ -397,9 +405,8 @@ def compile_ready(store: ObjectStore, manifest: dict[str, Any], job: dict[str, A
     command_receipts["axiom_audit"] = require_command_ok(
         "axiom_audit", expand_command(commands["axiom_audit"], values), work, log,
         environment_allowlist)
-    native_axiom_prefix = (
-        f"Erdos85.{values['stem']}Check._native.native_decide.ax_"
-    )
+    native_axiom_prefix = native_axiom_ownership_prefix(
+        manifest, job["profile"], job["local_index"])
     audit = validate_audit(
         Path(values["audit_json"]), set(manifest["allowed_axioms"]),
         manifest.get("allowed_axiom_patterns", []), native_axiom_prefix,
@@ -727,7 +734,8 @@ def validate_production_manifest(manifest: dict[str, Any]) -> None:
         "s3_bucket": r"[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]",
     }
     bad.extend(key for key, pattern in formats.items() if re.fullmatch(pattern, manifest[key]) is None)
-    if manifest.get("allowed_axiom_patterns") != [NATIVE_AXIOM_PATTERN]:
+    if manifest.get("allowed_axiom_patterns") not in (
+            [NATIVE_AXIOM_PATTERN], [GENERATED_LEAF_AXIOM_PATTERN]):
         bad.append("allowed_axiom_patterns")
     if bad:
         raise ReplayError(f"production manifest contains unresolved or malformed identities: {sorted(set(bad))}")
