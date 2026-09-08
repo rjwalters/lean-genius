@@ -72,6 +72,35 @@ This is honest:
 - B′ is exactly the anti-cascade/anti-escape principle Tao identifies as the core obstruction
 - Any unconditional proof must, in some form, establish B′
 
+### Act 6: The Forced Counterexample (September 2026)
+
+On 2026-09-08 OpenAI announced a Lean-certified finite-time blowup for 3D Navier-Stokes
+**with a smooth, compactly supported force** and zero initial data, for every viscosity, with
+bounded kinetic energy — Fefferman's breakdown alternatives (C)/(D). The unforced
+alternatives (A)/(B), which this entry is about, remain open.
+
+We ran the construction through our enstrophy variables (`analysis/openai-forced-blowup-2026.md`):
+
+| Ours | On the OpenAI core (τ = T*−t, 0 < h < 1/100) |
+|------|------------------------------------------------|
+| Ω, blowup exponent | τ^{−1−h}, α = 1 + h — Type II, barely |
+| E | τ^{−1/2−3h} — above Leray's floor τ^{−1/2} |
+| core radius vs R_diff | √τ vs τ^{1/2+h/2}: ratio Re_θ^{1/2} → ∞ |
+| β = S/(ΩE) | τ^{h} = (T−t)^{α−1} → 0 (our `eff_beta_vanishes`, realized) |
+| NSAxioms | 4 of 5 hold; only `spectral_gap` fails |
+| Bubble Persistence B′ | satisfied — a single bubble, no cascade, no escape |
+
+**Two lessons.** First, forcing is invisible in the enstrophy budget
+(|∫ω·curl f| ≲ E^{1/2} ≪ E′), so no argument built only from scalar enstrophy inequalities
+can tell forced from unforced; f = 0 has to enter through the momentum equation. Second, we
+found an error of our own: v3 read dE/dt ≤ CE³ as an *upper* bound E ≲ τ^{−1/2}. It is Leray's
+*lower* bound. That upper bound was the engine of Step 3 (B′ ⇒ Type I), and the OpenAI flow —
+B′ satisfied, Type II — is the witness that Step 3 cannot be repaired without using f = 0.
+Step 3 is withdrawn.
+
+The construction is not a stability result and is not yet peer reviewed; its credit is
+disputed (Córdoba–Martínez-Zoroa, Alpöge–Buckmaster). We record, we do not adjudicate.
+
 ---
 
 ## What We Learned
@@ -107,10 +136,11 @@ it's a logical consequence of assembling all known tools.
 
 | Aspect | Status |
 |--------|--------|
-| Original Twitter proof | ❌ Flawed (assumes θ ≥ c) |
-| Conditional theorem B′ → regularity | ✓ Proven |
-| Bubble Persistence (B′) | ◐ Hypothesis (minimal, unproven) |
-| Millennium Prize Problem | ⬜ Open |
+| Original Twitter proof | ❌ Flawed (assumes θ ≥ c; equivalently, bounded local Reynolds number at R_diff) |
+| Conditional theorem B′ → regularity | ◐ Step 3 (B′ ⇒ Type I) withdrawn 2026-09-08; unforced tail (Barker-Prange + ESŠ) stands |
+| Bubble Persistence (B′) | ◐ Hypothesis — satisfied by OpenAI's forced Type II singularity, so not sufficient on its own |
+| Millennium Prize — forced breakdown (C)/(D) | ◐ Claimed by OpenAI (2026-09-08), Lean-certified, under community review |
+| Millennium Prize — unforced regularity (A)/(B) | ⬜ Open |
 
 ---
 

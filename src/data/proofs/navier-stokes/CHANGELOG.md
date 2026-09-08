@@ -4,6 +4,42 @@ This document tracks the evolution of our analysis of the Navier-Stokes regulari
 
 ---
 
+## v5 - OpenAI Forced Blowup + Enstrophy Erratum (2026-09-08)
+
+**Status:** CONDITIONAL (Step 3 withdrawn); external result recorded
+
+**Summary:** OpenAI announced a Lean-certified finite-time blowup for 3D Navier-Stokes with
+a smooth, compactly supported force and zero initial velocity, for every ν > 0, on ℝ³ and 𝕋³,
+with bounded kinetic energy — Clay alternatives (C)/(D). The unforced alternatives (A)/(B)
+remain open. We evaluated the construction against our enstrophy framework.
+
+### Key Findings
+
+1. **Dictionary** (τ = T*−t, 0 < h < 1/100): Ω ≍ τ^{−1−h} (α = 1+h, barely Type II),
+   E ≍ τ^{−1/2−3h}, P ≍ S ≍ τ^{−3/2−3h}, R_diff ≍ τ^{1/2+h/2}, core radius ℓ_r ≍ τ^{1/2},
+   ℓ_r/R_diff = Re_θ^{1/2} → ∞, β = S/(ΩE) ≍ τ^{h} = (T−t)^{α−1} → 0.
+2. **NSAxioms test:** four of five fields hold (theta_bound exactly saturated); only
+   `spectral_gap` (νP ≥ cΩE — bounded local Reynolds number at the diffusion scale) fails.
+   "Eventual stability" S ≤ νP never arrives because νP/(ΩE) decays at the same rate as β.
+3. **Forcing is invisible in the enstrophy budget:** |∫ω·curl f| ≲ E^{1/2} ≪ E′. Scalar
+   enstrophy inequalities cannot distinguish forced from unforced; f = 0 must enter through
+   the momentum equation.
+4. **ERRATUM:** v3 read dE/dt ≤ CE³ as an upper bound E ≲ τ^{−1/2}. It is Leray's lower
+   bound E ≥ cτ^{−1/2}. Step 3 of the conditional theorem (B′ ⇒ Type I) is withdrawn; the
+   OpenAI flow satisfies B′ and is Type II.
+5. **Not a stability result**, not peer reviewed, statement alignment under human review,
+   credit disputed (Córdoba–Martínez-Zoroa, Alpöge–Buckmaster). Recorded, not adjudicated.
+
+### Files
+
+- `analysis/openai-forced-blowup-2026.md` - Main analysis (new)
+- `analysis/conditional-regularity-theorem.md` - Erratum header, Step 3 withdrawn
+- `analysis/enstrophy-type-ii-exclusion.md` - Erratum header, marked refuted
+- `papers/INDEX.md` - OpenAI paper + lineage added
+- `meta.json`, `annotations.source.json` - v5 status, NSAxioms annotation corrected
+
+---
+
 ## v3 - Conditional Regularity Theorem (2025-12-22, Session 6)
 
 **Status:** CONDITIONAL THEOREM FORMULATED

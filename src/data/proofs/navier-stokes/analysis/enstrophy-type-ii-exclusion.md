@@ -1,7 +1,17 @@
 # Enstrophy Constraint and Type II Exclusion
 
 **Date:** 2025-12-22
-**Status:** EXPLORATORY - needs verification
+**Status:** EXPLORATORY — **REFUTED 2026-09-08** (direction error in Step 2; see
+`openai-forced-blowup-2026.md`)
+
+> **Erratum (2026-09-08).** Step 2 reads the cubic inequality dE/dt ≤ CE³ as an upper
+> bound "E(t) ≤ C(T*−t)^{−1/2}". The correct consequence is Leray's lower bound
+> E(t) ≥ c(T*−t)^{−1/2}; the "Type II contradiction" in Steps 5–6 therefore does not
+> exist. OpenAI's forced construction realizes the scenario this note tried to exclude:
+> α = 1+h, E ≍ (T*−t)^{−1/2−3h} (above Leray's floor), core radius ℓ_r ≍ √(T*−t) with
+> ℓ_r/R_diff = Re_θ^{1/2} → ∞ — i.e. the flow satisfies "L > R_diff" (Step 4) and is
+> Type II, exactly the pair Step 5 claimed impossible. The "Fragile Link" section below
+> already flagged that the ODE gives only a minimum enstrophy size.
 
 ---
 

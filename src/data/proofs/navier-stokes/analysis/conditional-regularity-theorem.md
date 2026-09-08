@@ -1,7 +1,16 @@
 # A Scale-Bridging Conditional Regularity Criterion for Navier-Stokes
 
 **Date:** 2025-12-22
-**Status:** THEOREM FORMULATED
+**Status:** THEOREM FORMULATED — **Step 3 WITHDRAWN 2026-09-08** (see erratum below and
+`openai-forced-blowup-2026.md`)
+
+> **Erratum (2026-09-08).** Step 2 below states the cubic enstrophy inequality
+> dE/dt ≤ CE³ gives an *upper* bound E ≤ C(T*−t)^{−1/2}. It does not: integrating from a
+> blowup time gives Leray's *lower* bound E ≥ c(T*−t)^{−1/2}, and no upper bound follows.
+> Step 3 used the upper bound to force Type I from B′, so Step 3 does not go through.
+> OpenAI's September 2026 forced blowup is an explicit witness: it satisfies B′ at every
+> dyadic scale in [R_diff, √(T*−t)] and blows up at the Type II rate α = 1+h. The unforced
+> ingredients (Steps 1, 4, 5) stand; B′ ⇒ Type I is open.
 
 ---
 

@@ -2,9 +2,17 @@
   "id": "navier-stokes-regularity",
   "title": "Global Regularity for Navier-Stokes",
   "slug": "navier-stokes",
-  "description": "A conditional regularity theorem for the Navier-Stokes Millennium Prize Problem. We identify the precise structural obstruction (scale-bridging concentration) and formulate the minimal Bubble Persistence hypothesis B′ under which all known tools close: B′ → Type I → ESŠ → regularity.",
-  "currentVersion": "v4",
+  "description": "A conditional regularity analysis for the Navier-Stokes Millennium Prize Problem. We identify the precise structural obstruction (scale-bridging concentration), formulate the minimal Bubble Persistence hypothesis B′, and — as of v5 (September 2026) — test the framework against OpenAI's Lean-certified forced finite-time blowup (Clay alternatives (C)/(D)): the forced singularity satisfies B′, is barely Type II, and falsifies exactly one of our five structure-encoded hypotheses (spectral gap at the diffusion scale). The unforced problem (A)/(B) remains open.",
+  "currentVersion": "v5",
   "versionHistory": [
+    {
+      "version": "v5",
+      "name": "OpenAI forced blowup (C)/(D) + enstrophy erratum",
+      "date": "2026-09-08",
+      "status": "conditional",
+      "file": "analysis/openai-forced-blowup-2026.md",
+      "summary": "OpenAI (2026-09-08) announced a Lean-certified finite-time blowup for 3D Navier-Stokes with smooth compactly supported FORCING and zero initial data, claiming Clay alternatives (C)/(D); the unforced alternatives (A)/(B) remain open. Evaluated on our enstrophy variables the flow is a barely-Type-II singularity (α = 1+h, h < 1/100) that satisfies Bubble Persistence B′, saturates the theta_bound field, and violates exactly one NSAxioms field (spectral_gap: bounded local Reynolds number at the diffusion scale). Erratum: v3 used the cubic enstrophy ODE as an UPPER bound E ≲ (T*-t)^{-1/2}; it is Leray's LOWER bound. Step 3 of the v3 conditional theorem is withdrawn."
+    },
     {
       "version": "v4",
       "name": "Conditional 3D + Proven 2D",
@@ -43,19 +51,21 @@
     "authorHandle": "@davidmbudden",
     "sourceUrl": "https://x.com/davidmbudden/status/2002627726877069805",
     "date": "2025-12-20",
-    "revisionDate": "2026-02-12",
+    "revisionDate": "2026-09-08",
     "status": "axiomatized",
     "tags": [
+      "K-ball-concentration",
       "PDE",
       "fluid-dynamics",
+      "forced-blowup",
       "millennium-problem",
-      "regularity",
-      "K-ball-concentration"
+      "openai-2026",
+      "regularity"
     ],
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 6,
-    "assumptions": "6 assumptions: 5 structure-encoded assumptions in NSAxioms (Type II exponent, spectral gap, theta dynamics, blowup rate, BKM criterion) plus `Lean.ofReduceBool`. There are 0 Lean `axiom` declarations, but (a) the 3D regularity theorem is conditional on the NSAxioms structure (5 fields encoding physical hypotheses: Type II exponent, spectral gap, theta dynamics, blowup rate, and BKM criterion) — these structure fields are mathematically equivalent to axiom declarations, so the assumptions were reorganized, not eliminated; and (b) the credited hyperdissipation-hierarchy theorems (lions_3d, lions_2d, critical_at_lions_is_zero, standard_ns_gap, standard_2d_gap) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this is counted in meta.axiomCount. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted. The 2D global existence theorem (Ladyzhenskaya 1969) is genuinely unconditional and uses no native_decide. The Millennium Prize problem remains unsolved.",
+    "assumptions": "6 assumptions: 5 structure-encoded assumptions in NSAxioms (Type II exponent, spectral gap, theta dynamics, blowup rate, BKM criterion) plus `Lean.ofReduceBool`. There are 0 Lean `axiom` declarations, but (a) the 3D regularity theorem is conditional on the NSAxioms structure (5 fields encoding physical hypotheses: Type II exponent, spectral gap, theta dynamics, blowup rate, and BKM criterion) — these structure fields are mathematically equivalent to axiom declarations, so the assumptions were reorganized, not eliminated; and (b) the credited hyperdissipation-hierarchy theorems (lions_3d, lions_2d, critical_at_lions_is_zero, standard_ns_gap, standard_2d_gap) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this is counted in meta.axiomCount. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted. The 2D global existence theorem (Ladyzhenskaya 1969) is genuinely unconditional and uses no native_decide. The unforced Millennium alternatives (A)/(B) remain unsolved; OpenAI's September 2026 Lean-certified construction claims the FORCED breakdown alternatives (C)/(D) and is under community review (see analysis/openai-forced-blowup-2026.md).",
     "mathlibDependencies": [
       {
         "theorem": "Real",
@@ -79,7 +89,7 @@
   },
   "objection": {
     "verdict": "CONDITIONAL 3D + PROVEN 2D",
-    "summary": "We identify the precise structural obstruction to ruling out Type II blowup: the SCALE MISMATCH between the parabolic scale √(T*-t) where Barker-Prange gives concentration, and the diffusion scale R_diff = √(ν/Ω) where the proof needs it. The Bubble Persistence hypothesis B′ bridges this gap.",
+    "summary": "We identify the precise structural obstruction to ruling out Type II blowup: the SCALE MISMATCH between the parabolic scale √(T*-t) where Barker-Prange gives concentration, and the diffusion scale R_diff = √(ν/Ω) where the proof needs it. The Bubble Persistence hypothesis B′ bridges this gap. V5 (2026-09-08): OpenAI's forced Lean-certified blowup satisfies B′ and is Type II (α = 1+h), so B′ alone does not bridge the gap; the v3 enstrophy upper bound was an error (it is Leray's lower bound). Step 3 withdrawn; see analysis/openai-forced-blowup-2026.md.",
     "coreIssue": "THE SCALE MISMATCH PROBLEM:\n\n• For Type I blowup: R_diff ≈ √(T*-t), so scales match and proof closes\n• For Type II blowup: R_diff << √(T*-t), creating a gap the smoothing lemma cannot bridge\n\nV3 FORMULATION (Bubble Persistence B′):\nConcentration A(r) = (1/r)∫|∇u|² ≥ ε must persist across all DYADIC radii r ∈ {2⁻ᵏ : R_diff ≤ 2⁻ᵏ ≤ c√(T*-t)}.\n\nThis is the MINIMAL hypothesis that:\n1. Glues CKN ε-regularity to enstrophy ODE\n2. Forces Type I rates via scale comparison\n3. Enables ESŠ backward uniqueness to exclude blowup\n\nThe hypothesis rules out exactly what Tao identifies as the core obstruction: cascade/escape mechanisms.",
     "thetaKRefactor": {
       "motivation": "CKN shows singular sets have dimension ≤ 1, so 'few' bad points in spacetime. But this doesn't prevent enstrophy from spreading across MANY small balls, each with vanishing ratio θ → 0. The fix: track the TOTAL enstrophy captured by K balls.",
@@ -101,7 +111,7 @@
     "detailedAnalysis": {
       "whatIsGenuinelyProven": [
         "CKN ε-regularity: A(r) + C(r) + D(r) ≥ ε₀ at singular points (CKN 1982)",
-        "Enstrophy ODE: dE/dt ≤ CE³ limits growth to E ~ (T*-t)^{-1/2} (standard energy methods)",
+        "Enstrophy ODE: dE/dt ≤ CE³ gives Leray's LOWER bound E ≥ c(T*-t)^{-1/2} at a blowup — the minimum enstrophy needed to blow up, NOT an upper bound (v5 erratum; v3 had the direction reversed)",
         "Type I concentration: ‖u‖_{L³} ≥ γ at scale √(T*-t) (Barker-Prange 2020)",
         "Backward uniqueness: Type I blowups excluded via ESŠ 2003",
         "Type II dynamics: β = (T-t)^{α-1} → 0 for α > 1",
@@ -110,7 +120,23 @@
       ],
       "theActualGap": "V3 FINDING: The gap is SCALE-BRIDGING CONCENTRATION. CKN gives concentration at singular points. Barker-Prange gives concentration at √(T*-t) for Type I. But for Type II, R_diff << √(T*-t). The smoothing lemma cannot reach the diffusion scale. Bubble Persistence (B′) is the minimal hypothesis that bridges this gap.",
       "whyTheGapIsHard": "B′ rules out exactly what Tao identifies as the core obstruction:\n• Multi-bubble proliferation: enstrophy fragmenting into many small centers\n• Escape to infinity: concentration drifting away from blowup point\n• Diffuse cascades: energy spreading across disjoint scales without persistence\n\nThese cannot be ruled out by CKN + enstrophy ODE alone.",
-      "literatureContext": "V3 SYNTHESIS: CKN 1982 (ε-regularity), Barker-Prange 2020 (Type I concentration), Seregin 2025 (Type II exclusion via LPS), ESŠ 2003 (backward uniqueness). Our B′ is strictly weaker than Seregin's LPS condition. See analysis/conditional-regularity-theorem.md."
+      "literatureContext": "V3 SYNTHESIS: CKN 1982 (ε-regularity), Barker-Prange 2020 (Type I concentration), Seregin 2025 (Type II exclusion via LPS), ESŠ 2003 (backward uniqueness). Our B′ is strictly weaker than Seregin's LPS condition. See analysis/conditional-regularity-theorem.md.",
+      "v5ForcedBlowupTest": {
+        "source": "OpenAI, Finite time blowup for Navier–Stokes (2026-09-08); Lean certificates at github.com/openai/NavierStokesAndEuler (0 sorries; propext/Classical.choice/Quot.sound only; review status self-assessed)",
+        "claim": "For every ν > 0: smooth compactly supported force, zero initial velocity, bounded kinetic energy, ‖u‖_∞ → ∞ as t ↑ 1. Clay alternatives (C) on ℝ³ and (D) on 𝕋³. Alternatives (A)/(B) with f = 0 are NOT addressed.",
+        "scalings": "τ = 1-t, 0 < h < 1/100: ℓ_r ≍ τ^{1/2}, ℓ_z ≍ τ^{1/2-h}, |u_θ|,|u_z| ≍ τ^{-1/2-h}, Re_θ ≍ τ^{-h} → ∞, Re_r = O(1), E_core ≍ τ^{1/2-3h}, D_core ≍ τ^{-1/2-3h}",
+        "inOurVariables": "Ω ≍ τ^{-1-h} (α = 1+h), E ≍ τ^{-1/2-3h}, P ≍ τ^{-3/2-3h}, S ≍ τ^{-3/2-3h}, R_diff ≍ τ^{1/2+h/2}, ℓ_r/R_diff = Re_θ^{1/2} → ∞, β = S/(ΩE) ≍ τ^{h} = (T-t)^{α-1} → 0",
+        "nsAxiomsVerdict": {
+          "typeII_gt_one": "holds (α = 1+h)",
+          "spectral_gap": "FAILS — νP/(ΩE) ≍ τ^{h} → 0; the core is not at the diffusion scale",
+          "theta_bound": "holds, exactly saturated",
+          "blowup_rate": "holds",
+          "bkm": "holds (E unbounded, hypothesis vacuous)"
+        },
+        "bubblePersistence": "SATISFIED — A(r) = r^{-1}∫_{Q_r}|∇u|² ≍ r⁴τ^{-2-2h} ≥ 1 for all dyadic r ∈ [R_diff, √τ]; a single bubble at a single point",
+        "lesson": "Forcing does not enter the enstrophy budget at leading order, so forcing-insensitive scalar arguments cannot prove B′ ⇒ Type I. Any unforced proof must use f = 0 through the momentum equation.",
+        "whatIsNotClaimed": "Not a stability result; not peer reviewed; statement-to-Clay-text alignment still under human review; credit disputed with Alpöge–Buckmaster and Córdoba–Martínez-Zoroa lineage."
+      }
     },
     "promisingDirections": [
       {
@@ -158,7 +184,7 @@
     "historicalContext": "The Navier-Stokes equations, formulated by Claude-Louis Navier (1822) and George Gabriel Stokes (1845), describe the motion of viscous fluids. In 2000, the Clay Mathematics Institute designated the Navier-Stokes existence and smoothness problem as one of seven Millennium Prize Problems, offering $1 million for its resolution.\n\nThe question: given smooth initial conditions, do solutions to the 3D incompressible Navier-Stokes equations remain smooth for all time, or can singularities (blowup) develop? This remains one of the great unsolved problems in mathematics.",
     "problemStatement": "The 3D incompressible Navier-Stokes equations are:\n\n$$\\partial_t u + (u \\cdot \\nabla)u = -\\nabla p + \\nu \\Delta u$$\n$$\\nabla \\cdot u = 0$$\n\nwhere $u$ is velocity, $p$ is pressure, and $\\nu > 0$ is viscosity. The global regularity problem asks: given smooth initial data, does a unique smooth solution exist for all time?",
     "text": "A conditional regularity theorem for the Navier-Stokes Millennium Prize Problem. We identify the precise structural obstruction (scale-bridging concentration) and formulate the minimal Bubble Persistence hypothesis B′ under which all known tools close: B′ → Type I → ESŠ → regularity.",
-    "proofStrategy": "V3 CONDITIONAL THEOREM (Bubble Persistence → Regularity):\n\n1. CKN ε-regularity: A(r) + C(r) + D(r) ≥ ε₀ at singular points [PROVEN - CKN 1982]\n2. Enstrophy ODE: dE/dt ≤ CE³ limits growth to E ~ (T*-t)^{-1/2} [PROVEN]\n3. Scale bridge via B′: Concentration persists from R_diff to √(T*-t) [HYPOTHESIS]\n4. Type I concentration: ‖u‖_{L³} ≥ γ at scale √(T*-t) [PROVEN - Barker-Prange 2020]\n5. Backward uniqueness: Type I blowups excluded [PROVEN - ESŠ 2003]\n\nTHE SCALE MISMATCH:\n• Type I: R_diff ≈ √(T*-t), scales match, proof closes\n• Type II: R_diff << √(T*-t), gap requires B′ to bridge\n\nB′ is the MINIMAL hypothesis that glues all proven steps together.",
+    "proofStrategy": "V3 CONDITIONAL THEOREM (Bubble Persistence → Regularity):\n\n1. CKN ε-regularity: A(r) + C(r) + D(r) ≥ ε₀ at singular points [PROVEN - CKN 1982]\n2. Enstrophy ODE: dE/dt ≤ CE³ gives Leray's LOWER bound E ≥ c(T*-t)^{-1/2} [PROVEN; v3 misread this as an upper bound — see v5 erratum]\n3. Scale bridge via B′: Concentration persists from R_diff to √(T*-t) [HYPOTHESIS]\n4. Type I concentration: ‖u‖_{L³} ≥ γ at scale √(T*-t) [PROVEN - Barker-Prange 2020]\n5. Backward uniqueness: Type I blowups excluded [PROVEN - ESŠ 2003]\n\nTHE SCALE MISMATCH:\n• Type I: R_diff ≈ √(T*-t), scales match, proof closes\n• Type II: R_diff << √(T*-t), gap requires B′ to bridge\n\nB′ is the MINIMAL hypothesis that glues all proven steps together.\n\nV5 (2026-09-08): Step 3 (B′ ⇒ Type I) is WITHDRAWN. It relied on the wrong direction of the enstrophy bound, and OpenAI's forced construction is an explicit witness: it satisfies B′ at every dyadic scale in [R_diff, √(T*-t)] and still blows up at the Type II rate α = 1+h. What survives is the unforced tail (Barker-Prange + ESŠ) and B′ as an open hypothesis.",
     "keyInsights": [
       "V3: The gap is SCALE-BRIDGING CONCENTRATION, not θ ≥ c directly",
       "Bubble Persistence B′ is the minimal hypothesis bridging the scale mismatch",
@@ -166,7 +192,12 @@
       "B′ is strictly weaker than Seregin's LPS condition (2025)",
       "For Type I, the proof closes without B′ (Barker-Prange + ESŠ)",
       "The diagnostic value: any unconditional proof MUST rule out failure of B′",
-      "The conditional theorem: B′ → Type I only → ESŠ → regularity"
+      "V5: OpenAI's September 2026 forced blowup (Clay (C)/(D), Lean-certified, under review) is a barely-Type-II singularity, α = 1+h with h < 1/100, whose core sits at the parabolic scale √(T*-t), Re_θ^{1/2} = τ^{-h/2} times wider than the diffusion scale R_diff",
+      "V5: Evaluated on E, P, S, Ω the forced flow satisfies four of the five NSAxioms fields and falsifies exactly one — spectral_gap (νP ≥ cΩE), i.e. bounded local Reynolds number at R_diff; theta_bound is exactly saturated (β ≍ (T-t)^{α-1})",
+      "V5: The force is invisible in the enstrophy budget (|∫ω·curl f| ≲ E^{1/2} ≪ E′), so no argument built only from scalar enstrophy inequalities can distinguish forced from unforced — f = 0 must enter through the momentum equation",
+      "V5 ERRATUM: dE/dt ≤ CE³ yields Leray's lower bound E ≥ c(T*-t)^{-1/2}, not an upper bound; the OpenAI flow has E ≍ τ^{-1/2-3h}, above the floor by τ^{-3h}",
+      "V5: The forced flow satisfies Bubble Persistence B′ (single bubble, no cascade, no escape) yet is Type II — so B′ ⇒ Type I cannot be proved by forcing-insensitive arguments; v3 Step 3 is withdrawn",
+      "V5: The unforced Clay alternatives (A)/(B) remain open; only the forced breakdown alternatives (C)/(D) are claimed"
     ],
     "prerequisites": [
       "Partial differential equations: Navier-Stokes equations, weak solutions, regularity theory",
@@ -235,14 +266,17 @@
     }
   ],
   "conclusion": {
-    "summary": "V3 CONCLUSION: We identify the precise structural obstruction to ruling out Type II blowup — the SCALE MISMATCH between the parabolic scale √(T*-t) and the diffusion scale R_diff = √(ν/Ω). The Bubble Persistence hypothesis B′ is the MINIMAL condition bridging this gap.\n\nThe conditional theorem is:\n• CKN ε-regularity (PROVEN)\n• Enstrophy ODE bound (PROVEN)\n• Scale bridge via B′ (HYPOTHESIS)\n• Type I concentration (PROVEN for Type I)\n• Backward uniqueness (PROVEN)\n\nResult: B′ → Type I only → ESŠ → regularity",
-    "implications": "**Theoretical Significance**: WHAT V3 REVEALS:\n\n1. DIAGNOSTIC VALUE: This is not 'just conditional.' Any unconditional proof MUST rule out failure of B′ (cascade/escape mechanisms).\n\n2. MINIMAL HYPOTHESIS: B′ is strictly weaker than Seregin's LPS condition but still captures the essential anti-escape requirement.\n\n3.\n\nSCALE INVARIANCE: The quantity A(r) = (1/r)∫|∇u|² is scale-invariant under NS scaling, making B′ a structural condition.\n\n4. COMPARISON:\n   • Barker-Prange: Type I only (scales match)\n   • Seregin: LPS condition (stronger than B′)\n   • Our B′: Minimal scale-bridging (weaker, more tractable?)\n\n5. MILLENNIUM PRIZE: Still UNSOLVED. We've clarified what it would take to solve it.",
+    "summary": "V3 CONCLUSION: We identify the precise structural obstruction to ruling out Type II blowup — the SCALE MISMATCH between the parabolic scale √(T*-t) and the diffusion scale R_diff = √(ν/Ω). The Bubble Persistence hypothesis B′ is the MINIMAL condition bridging this gap.\n\nThe conditional theorem is:\n• CKN ε-regularity (PROVEN)\n• Enstrophy ODE bound — Leray LOWER bound (PROVEN; v3 direction error corrected in v5)\n• Scale bridge via B′ (HYPOTHESIS)\n• Type I concentration (PROVEN for Type I)\n• Backward uniqueness (PROVEN)\n\nResult (v3): B′ → Type I only → ESŠ → regularity\n\nV5 (2026-09-08): Step 3 (B′ → Type I) WITHDRAWN. OpenAI's Lean-certified forced blowup (Clay (C)/(D)) satisfies B′ and is Type II with α = 1+h; it violates exactly one NSAxioms field (spectral_gap). Unforced (A)/(B) remain open.",
+    "implications": "**Theoretical Significance**: WHAT V3 REVEALS:\n\n1. DIAGNOSTIC VALUE: This is not 'just conditional.' Any unconditional proof MUST rule out failure of B′ (cascade/escape mechanisms).\n\n2. MINIMAL HYPOTHESIS: B′ is strictly weaker than Seregin's LPS condition but still captures the essential anti-escape requirement.\n\n3.\n\nSCALE INVARIANCE: The quantity A(r) = (1/r)∫|∇u|² is scale-invariant under NS scaling, making B′ a structural condition.\n\n4. COMPARISON:\n   • Barker-Prange: Type I only (scales match)\n   • Seregin: LPS condition (stronger than B′)\n   • Our B′: Minimal scale-bridging (weaker, more tractable?)\n\n5. MILLENNIUM PRIZE: the FORCED breakdown alternatives (C)/(D) are claimed by OpenAI (September 2026, Lean-certified, under community review). The UNFORCED alternatives (A)/(B) — the question this entry is about — remain open.\n\n6. V5 CALIBRATION: the forced singularity is a calibrated test case at the edge of every classical constraint (α = 1+h, enstrophy τ^{-3h} above Leray's floor, L³ norm diverging like τ^{-4h/3}, Re_r = O(1), Re_θ = τ^{-h}). Of our five structure-encoded hypotheses only spectral_gap (bounded local Reynolds number at R_diff) is falsified by it; theta_bound is saturated; the β → 0 Type II dynamics proved in Lean is genuinely realized.",
     "openQuestions": [
       "Can B′ be proven in restricted settings (axisymmetric, periodic, finite energy)?",
       "Can B′ be weakened to finitely many dyadic scales?",
       "What do numerical simulations say about concentration across scales?",
       "What is the minimal LPS-type condition for Euler limit triviality?",
-      "Is there a Carleman-type argument that forces B′?"
+      "Is there a Carleman-type argument that forces B′?",
+      "Can spectral_gap (νP ≥ cΩE, i.e. bounded local Reynolds number at the diffusion scale) be derived from f = 0 in the axisymmetric class where OpenAI's leading profile lives?",
+      "Does the OpenAI core satisfy a forced analogue of Seregin's LPS condition, and is LPS the right forced/unforced discriminator?",
+      "Is h → 0 an obstruction: does any unforced solution have bounded angular Reynolds number Re_θ near a putative singularity?"
     ]
   },
   "references": [
@@ -315,6 +349,53 @@
       "year": "2000",
       "venue": "Clay Mathematics Institute",
       "note": "Official Millennium Prize problem statement for Navier-Stokes existence and smoothness ($1M prize)"
+    },
+    {
+      "authors": "OpenAI",
+      "title": "Finite time blowup for Navier–Stokes",
+      "year": "2026",
+      "venue": "Preprint, 165 pp., with Lean 4 certificates (github.com/openai/NavierStokesAndEuler)",
+      "url": "https://cdn.openai.com/pdf/32d9f210-8b73-45e0-91bc-82a30aef8a9a/navier-stokes.pdf",
+      "note": "Theorem 1.1: for every ν > 0, a smooth compactly supported force and zero initial datum with bounded kinetic energy and ‖u‖_∞ → ∞ as t ↑ 1; Clay alternatives (C)/(D). Evaluated against our enstrophy framework in analysis/openai-forced-blowup-2026.md — it satisfies B′, is Type II with α = 1+h, and violates only the spectral_gap field"
+    },
+    {
+      "authors": "OpenAI",
+      "title": "On the Navier–Stokes Millennium Prize Problem",
+      "year": "2026",
+      "venue": "OpenAI announcement, 2026-09-08",
+      "url": "https://openai.com/index/navier-stokes-solution/",
+      "note": "Announcement of the forced blowup; the unforced alternatives (A)/(B) are not addressed"
+    },
+    {
+      "authors": "Córdoba, D.; Martínez-Zoroa, L.",
+      "title": "Finite time singularities for the forced 3D incompressible Euler equations via successive amplification of concentrated vortex layers",
+      "year": "2024",
+      "venue": "arXiv:2410.22920",
+      "url": "https://arxiv.org/abs/2410.22920",
+      "note": "The amplification-across-scales strategy with a controlled smooth force that the OpenAI construction descends from"
+    },
+    {
+      "authors": "Alpöge, L.; Buckmaster, T.",
+      "title": "Finite time blowup with smooth forcing for IPM, Boussinesq, and 3D Euler (three preprints with Lean formalizations)",
+      "year": "2026",
+      "venue": "Preprints, September 2026",
+      "note": "Independent forced-blowup constructions announced days before OpenAI's; discussed by Tao (2026-09-07); subject of a credit dispute we record but do not adjudicate"
+    },
+    {
+      "authors": "Tao, T.",
+      "title": "Finite time blowup with smooth forcing term for the incompressible porous medium, Boussinesq, and incompressible Euler equations",
+      "year": "2026",
+      "venue": "Blog post, 2026-09-07",
+      "url": "https://terrytao.wordpress.com/2026/09/07/finite-time-blowup-with-smooth-forcing-term-for-the-incompressible-porous-medium-boussinesq-and-incompressible-euler-equations/",
+      "note": "Exposition of the Córdoba–Martínez-Zoroa / Alpöge–Buckmaster mechanism; notes it 'has a high likelihood of also extending to Navier–Stokes' and that forcing is what makes it tractable"
+    },
+    {
+      "authors": "Fefferman, C.",
+      "title": "Existence and smoothness of the Navier–Stokes equation",
+      "year": "2000",
+      "venue": "Clay Mathematics Institute problem description",
+      "url": "https://www.claymath.org/wp-content/uploads/2022/06/navierstokes.pdf",
+      "note": "Defines the four alternatives: (A)/(B) global regularity with f = 0 on ℝ³/𝕋³, (C)/(D) breakdown allowing a smooth force. OpenAI claims (C)/(D)"
     }
   ],
   "crossReferences": [
