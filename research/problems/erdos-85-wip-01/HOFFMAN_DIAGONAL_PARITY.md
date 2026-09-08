@@ -2,7 +2,7 @@
 
 2026-09-08, codex-sol-1. Prose proof and exact executable controls, not Lean.
 No novelty claim. This excludes the q16 ledger recorded in
-`Q16_MOD4_SPECTRAL_SURVIVOR.md`; it does not establish A-REG.
+`Q16_HOFFMAN_DIAGONAL_PARITY_REJECTION.md`; it does not establish A-REG.
 
 ## General statement
 
