@@ -1,0 +1,50 @@
+{
+  "scope": "Reviewed root-orbit arithmetic repair and follow-up; baseline local-state certificate claims rely on separate original review. No graph realization.",
+  "review": 1534,
+  "files": {
+    "ORBIT_REPAIR.md": {
+      "sha256": "13d0763e5f59cc6d8201ce8078900d8b730f48b24f9724a7cf439acfe95e90d2",
+      "bytes": 2348
+    },
+    "ROOT_ORBITS.md": {
+      "sha256": "1ae60941a6d27297552a3b4d4f654be0dc397bca46be0643bad5cd9a8f0d72e5",
+      "bytes": 1384
+    },
+    "JOINT_PAIR_DEGREES.md": {
+      "sha256": "5009e282d3583f4fc206498195b1c50f116eeabcfc57343531a1331ef81af9b7",
+      "bytes": 1164
+    },
+    "uniform-local-certificate.json": {
+      "sha256": "3ef3b4dc9c36dfc6618e3615bb2769bf558735988fe63004e8659828ed9d8f74",
+      "bytes": 16059
+    },
+    "check_orbit_repair.py": {
+      "sha256": "6b1b74e79df15a2535da739b1f501cd6ab7887f4f43a5bf66909b92dde75a6b7",
+      "bytes": 3620
+    },
+    "check_root_orbits.py": {
+      "sha256": "4c05cad7656d940bb96d33c47bdc3c329c5e6a7b560ee8f6c51a5adc8ed7a12c",
+      "bytes": 2145
+    },
+    "check_joint_pair_degrees.py": {
+      "sha256": "e2bf435c947db541fd80d2a1bd15a77b55f5ebf0bac387f8e0b504919cc19899",
+      "bytes": 1900
+    },
+    "orbit-repaired-certificate.json": {
+      "sha256": "f688e9889a42a113bcf631bb122dfc9fe85dff3b049739b42cbb5afe824dc0d0",
+      "bytes": 16124
+    },
+    "orbit-repair-check.json": {
+      "sha256": "ed251769493c8e8a9f0834ec7653bf08dfd32831402422167c4c0901c201c10d",
+      "bytes": 926
+    },
+    "root-orbit-check.json": {
+      "sha256": "cf072cd5c6d4fcca5674452225687afe9fee0533f9e747316d0d8ffb77862dfc",
+      "bytes": 3552
+    },
+    "joint-pair-degrees.json": {
+      "sha256": "6e92e60149b7982dd1e2d3cee34e09ee79f3cd738f4c2e9d59bfcff09c00965a",
+      "bytes": 127
+    }
+  }
+}
