@@ -15,6 +15,8 @@
 .claude/skills/repo/.install-local.json
 .claude/projects/
 .claude/worktrees/
+# Codex agent worktrees (same role as .claude/worktrees/ and .loom/worktrees/)
+.codex/worktrees/
 aristotle-results/llm-mapping-cache.json
 *.token
 
@@ -39,14 +41,10 @@ aristotle-results/llm-mapping-cache.json
 # host-local dev symlink to the loom-tools package source (see #43675)
 loom-tools
 research/*.pid
-research/*.log
-proofs/err.log
-scripts/enricher/*.log
 scripts/enricher/logs/
 
 # ── Build artifacts / caches ───────────────────────────────────────────
 .lake
-.lake/
 .build-cache/
 .erdos-cache/
 .wrangler/
@@ -113,9 +111,6 @@ proofs/data/knuth/tour-finder/Cargo.lock
 proofs/data/knuth/tour-finder/target/
 
 # Research runtime leftovers
-research/stub-claims/
-# Retired daemon-stop sentinel; the live signal is .loom/signals/stop-lean-daemon
-research/lean-stop-daemon
 proofs/Proofs/*.bak
 proofs/Proofs/*.lean.bak
 proofs/Proofs/*.backup
@@ -174,6 +169,4 @@ __pycache__/
 .loom/logs/
 # <<< loom-managed <<<
 
-# Repo Skills machine-local install metadata (absolute source path + timestamp)
-.claude/skills/repo/.install-local.json
 .squad/

@@ -54,7 +54,7 @@ npx tsx .lean/scripts/extract-problems.ts
 # research/problems/goldbach-weak/problem.md
 
 # Start the OODA loop
-/researcher
+/lean-research
 ```
 
 ### Option 3: Check Status
@@ -81,7 +81,10 @@ Problems are automatically extracted from the proof gallery:
 | **Hilbert** | 21 | Hilbert's 23 Problems |
 | **GitHub issues** | on demand | Human-filed problems tagged `research:queued` (see below) |
 
-**Total**: 427+ extractable open problems
+**Total**: the per-source counts above are an early snapshot and drift as the
+gallery grows — the live candidate pool (`.lean/state/candidate-pool.json`)
+currently holds ~4,200 candidates, and `research/problems/` tracks ~2,700
+worked problems.
 
 ### GitHub-issue intake (`research:queued`)
 
@@ -144,7 +147,7 @@ OBSERVE → ORIENT → DECIDE → ACT → VERIFY → LEARN
 
 ### Primary Role
 
-**Researcher** (`/researcher`): Drives the main OODA loop. Reads state, decides what phase to execute, performs the work, updates state.
+**Researcher** (`/lean-research`): Drives the main OODA loop. Reads state, decides what phase to execute, performs the work, updates state.
 
 ### Supporting Roles
 
@@ -152,8 +155,8 @@ OBSERVE → ORIENT → DECIDE → ACT → VERIFY → LEARN
 |------|---------|-----------|
 | **Scout** (`/lean-scout`) | Structured gallery, technique, and literature survey | ORIENT phase (auto-invoked by Researcher) |
 | **Seeker** (`/lean-seeker`) | Selects next research problem from candidate pool | Between research iterations (daemon-managed) |
-| **Adversary** (`/adversary`) | Attack proofs | VERIFY phase |
-| **Chronicler** (`/chronicler`) | Document learnings, update technique index | LEARN phase |
+| **Adversary** (no dedicated command — performed by the Researcher) | Attack proofs | VERIFY phase |
+| **Chronicler** (no dedicated command — performed by the Researcher) | Document learnings, update technique index | LEARN phase |
 
 ## Autonomous OODA Loop
 
@@ -181,8 +184,8 @@ Seeker selects next problem (loop repeats)
 ### Starting the Autonomous Loop
 
 ```bash
-# Start the full mathematical team with seeker
-/lean-daemon start --seeker 1 --researcher 1
+# Start the full mathematical team with seeker (see also: /lean)
+./scripts/lean/launch.sh start --seeker 1 --researcher 1
 
 # Or start individual agents
 /lean-seeker                    # Select next problem
@@ -263,9 +266,9 @@ research/
 │
 ├── knowledge/                # Cross-problem insights
 │   ├── technique-index.json  # Which techniques used on which problems
-│   ├── synthesis-report.md   # Auto-generated cross-problem report
 │   ├── patterns.md           # Cross-problem patterns
-│   └── techniques.md         # General learnings
+│   ├── tactics.md            # Tactic-level learnings
+│   └── theorems.md           # Reusable theorem catalog
 │
 └── problems/                 # Active research
     └── {problem-slug}/

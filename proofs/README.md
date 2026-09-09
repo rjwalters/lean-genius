@@ -9,6 +9,10 @@ Lean 4 mathematical proofs with Mathlib, integrated into the LeanGenius monorepo
 | ✅ Verified | Compiles without sorry/axioms |
 | ⚠️ WIP | Contains sorry or custom axioms |
 
+> The lists below cover only the original core proofs. The project now holds
+> 6,000+ Lean files (including 2,000+ Erdős problem formalizations); per-proof
+> status is tracked in the gallery metadata under `src/data/proofs/`.
+
 ### Verified Proofs
 - `Sqrt2.lean` - Basic √2 properties
 - `Sqrt2Irrational.lean` - √2 is irrational
@@ -68,10 +72,11 @@ This will:
      sorry
    ```
 
-2. Add import to `Proofs.lean`:
-   ```lean
-   import Proofs.MyTheorem
-   ```
+2. No import registration is needed — `lakefile.toml` uses
+   `globs = ["Proofs", "Proofs.*"]`, so every file under `Proofs/` is picked up
+   automatically. Do **not** add `import Proofs.MyTheorem` to `Proofs.lean`
+   (see the note at the top of that file — per-file imports there caused
+   constant merge conflicts).
 
 3. Build:
    ```bash
@@ -104,8 +109,14 @@ proofs/
 │   ├── Sqrt2Irrational.lean  # ✅ Verified
 │   ├── NavierStokes.lean     # ⚠️ WIP (axioms)
 │   └── ...
+├── bin/                 # Safety wrapper blocking direct `lake build`
+├── data/                # Supporting data (e.g. Knuth tour extraction)
 └── scripts/
     ├── setup.sh
+    ├── docker-build.sh          # REQUIRED build path (memory-limited)
+    ├── build-safe-subset.sh
+    ├── activate-safety.sh
+    ├── DOCKER-BUILD-RUNBOOK.md
     └── extract-proof-info.sh
 ```
 
