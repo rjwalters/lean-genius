@@ -425,3 +425,55 @@ claim for any degree distribution. It closes the direct average-degree
 Hoory-bound transfer at girth ten for the whole q>=8 square-order regular
 candidate class. It does not address stronger inequalities using incidence
 correlations or permit promoting any A-REG node to an exclusion theorem.
+
+### Retaining the degree-distribution entropy does not close the gap (2026-09-09)
+
+The preceding calculation uses the average-degree form of Hoory's bound.
+There is a stronger version available directly from the proof of
+[Babu–Radhakrishnan, Lemma 4.3, section 4.2](https://arxiv.org/html/1011.1058):
+stop before the last Jensen inequality. For each incidence side define
+`rho = exp(sum_v deg(v) log(deg(v)-1) / |E|)`. Stationarity of the uniform
+directed-edge non-returning walk gives the same girth-ten polynomials
+`H_L=1+y+xy+xy²+x²y²`, `H_R=1+x+xy+x²y+x²y²`, now with
+`x=rho_L`, `y=rho_R`. This strengthening is an inference from the displayed
+entropy calculation, not the statement of their average-degree theorem.
+
+Even this refinement cannot exclude every binary square-order candidate
+using degree data alone. Take `q=2^k` for any odd `k>=5` and the formal
+constant profile `d_v=2` (two edges outside triangles at each vertex).
+There are `q²` point vertices, `q²` two-point blocks, and
+`q²(q-2)/6` three-point blocks. The last count is an integer because
+`q=2 mod 3`. Every point has incidence degree `(q+2)/2`, so
+
+```text
+x = q/2,
+y = 2^((q-2)/(q+2)),
+n_L = q²,
+n_R = q²(q+4)/6.
+```
+
+These are compatible integer degree counts, not an asserted incidence
+graph or an ambient C4-free graph. They suffice to test whether the scalar
+entropy bounds themselves contradict the degree data. Put `b=xy`. Since
+`log 2 >= 2/3` (integrate the convex function `1/t` on `[1,2]`) and
+`exp(-a) <= 1/(1+a)` for `a>=0`,
+
+```text
+b = q exp(-4 log(2)/(q+2))
+  <= q(q+2)/(q+14/3) < q-2                 (q>14).
+```
+
+Together with `y<=2`, positivity of the polynomial coefficients gives
+
+```text
+H_L < 1+2+(q-2)+2(q-2)+(q-2)² = q²-q+1 < n_L,
+H_R < 1+q/2+(q-2)+(q/2)(q-2)+(q-2)²
+    = 3q²/2-7q/2+3 < n_R.
+```
+
+For the last inequality the gap is
+`q²(q-5)/6 + 7q/2 - 3 > 0` for `q>=16`. Thus the full degree-distribution
+entropy refinement still leaves an unbounded binary subsequence. This
+does not rule out excluding other profiles or using correlations between
+neighboring blocks; it rules out this scalar refinement as a uniform
+A-REG terminal by itself. No new Lean lemma or graph construction is claimed.
