@@ -1,0 +1,392 @@
+{
+ "q": 16,
+ "n": 256,
+ "S": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  128,
+  249,
+  250,
+  251,
+  252,
+  253,
+  254,
+  255
+ ],
+ "M_definition": "M = (q-1)I + J - D16 = 15I + J - D16",
+ "positive_definite_via_minors": true,
+ "detM": "1077244481712816330312043788454595455272051750594880473217315551140373498721924999775490243991102727719874058511635832434754347458835254526301753896115584078301764268324017976254842994853563813107421061882454306372125997834019246671927320330310204487553970229021498353178173071242451577215123456",
+ "v2_detM": 76,
+ "detM_over_1024_is_square": true,
+ "sqrt_detM_over_1024": "32434496514863186597477179063520619642689812786502269854827219441116640344021955396090811061164632619223247549401909750670162647959419435758911488",
+ "detM_odd_part": "14257212004041219701452881406324901910106533337994159261703090988339286946231180167321173679085845536559521089156986573107902314497957884823050468789235770460275841586789691893310732218851016265920738018547113254714236502321999716946186489682667944643388919294602640253121",
+ "detM_odd_part_mod8": 1,
+ "detM_odd_part_factorint_limit1e6": {
+  "7": 8,
+  "769": 2,
+  "1663": 2,
+  "40193": 2,
+  "34687": 2,
+  "13183": 2,
+  "66907551837267960072877778466729507105672199892764419986023842112847527120633087446254196931260693272339178449279": 2
+ },
+ "detM_odd_part_factorint_note": "sympy.factorint(limit=1e6); large cofactors may be composite",
+ "det_circulant_cyclotomic_crosscheck": true,
+ "jordan_M": [
+  {
+   "scale": 0,
+   "rank": 248,
+   "type": "II",
+   "det_mod8": 1,
+   "sign": "+",
+   "symbol": "1^+248_II"
+  },
+  {
+   "scale": 6,
+   "rank": 1,
+   "type": "I",
+   "det_mod8": 7,
+   "sign": "+",
+   "oddity": 7,
+   "diag_mod8_multiset": {
+    "1": 0,
+    "3": 0,
+    "5": 0,
+    "7": 1
+   },
+   "det_from_diagonalisation_mod8": 7,
+   "symbol": "64^+1_7"
+  },
+  {
+   "scale": 9,
+   "rank": 6,
+   "type": "II",
+   "det_mod8": 7,
+   "sign": "+",
+   "symbol": "512^+6_II"
+  },
+  {
+   "scale": 16,
+   "rank": 1,
+   "type": "I",
+   "det_mod8": 1,
+   "sign": "+",
+   "oddity": 1,
+   "diag_mod8_multiset": {
+    "1": 1,
+    "3": 0,
+    "5": 0,
+    "7": 0
+   },
+   "det_from_diagonalisation_mod8": 1,
+   "symbol": "65536^+1_1"
+  }
+ ],
+ "jordan_M_symbol": "1^+248_II 64^+1_7 512^+6_II 65536^+1_1",
+ "overlattice": {
+  "steps": 38,
+  "index_log2": 38,
+  "unimodular": true,
+  "odd": true,
+  "log": [
+   {
+    "step": 0,
+    "move": "adjoin e/2 at scale 16",
+    "prec": 214
+   },
+   {
+    "step": 1,
+    "move": "adjoin e/2 at scale 14",
+    "prec": 212
+   },
+   {
+    "step": 2,
+    "move": "adjoin e/2 at scale 12",
+    "prec": 210
+   },
+   {
+    "step": 3,
+    "move": "adjoin e/2 at scale 10",
+    "prec": 208
+   },
+   {
+    "step": 4,
+    "move": "adjoin e/2 at scale 9",
+    "prec": 206
+   },
+   {
+    "step": 5,
+    "move": "adjoin e/2 at scale 9",
+    "prec": 204
+   },
+   {
+    "step": 6,
+    "move": "adjoin e/2 at scale 9",
+    "prec": 202
+   },
+   {
+    "step": 7,
+    "move": "adjoin e/2 at scale 8",
+    "prec": 200
+   },
+   {
+    "step": 8,
+    "move": "adjoin e/2 at scale 8",
+    "prec": 198
+   },
+   {
+    "step": 9,
+    "move": "adjoin e/2 at scale 8",
+    "prec": 196
+   },
+   {
+    "step": 10,
+    "move": "adjoin e/2 at scale 8",
+    "prec": 194
+   },
+   {
+    "step": 11,
+    "move": "adjoin e/2 at scale 8",
+    "prec": 192
+   },
+   {
+    "step": 12,
+    "move": "adjoin e/2 at scale 8",
+    "prec": 190
+   },
+   {
+    "step": 13,
+    "move": "adjoin e/2 at scale 7",
+    "prec": 188
+   },
+   {
+    "step": 14,
+    "move": "adjoin e/2 at scale 7",
+    "prec": 186
+   },
+   {
+    "step": 15,
+    "move": "adjoin e/2 at scale 6",
+    "prec": 184
+   },
+   {
+    "step": 16,
+    "move": "adjoin e/2 at scale 6",
+    "prec": 182
+   },
+   {
+    "step": 17,
+    "move": "adjoin e/2 at scale 6",
+    "prec": 180
+   },
+   {
+    "step": 18,
+    "move": "adjoin e/2 at scale 6",
+    "prec": 178
+   },
+   {
+    "step": 19,
+    "move": "adjoin e/2 at scale 6",
+    "prec": 176
+   },
+   {
+    "step": 20,
+    "move": "adjoin e/2 at scale 6",
+    "prec": 174
+   },
+   {
+    "step": 21,
+    "move": "adjoin e/2 at scale 5",
+    "prec": 172
+   },
+   {
+    "step": 22,
+    "move": "adjoin e/2 at scale 5",
+    "prec": 170
+   },
+   {
+    "step": 23,
+    "move": "adjoin e/2 at scale 4",
+    "prec": 168
+   },
+   {
+    "step": 24,
+    "move": "adjoin e/2 at scale 4",
+    "prec": 166
+   },
+   {
+    "step": 25,
+    "move": "adjoin e/2 at scale 4",
+    "prec": 164
+   },
+   {
+    "step": 26,
+    "move": "adjoin e/2 at scale 4",
+    "prec": 162
+   },
+   {
+    "step": 27,
+    "move": "adjoin e/2 at scale 4",
+    "prec": 160
+   },
+   {
+    "step": 28,
+    "move": "adjoin e/2 at scale 4",
+    "prec": 158
+   },
+   {
+    "step": 29,
+    "move": "adjoin e/2 at scale 3",
+    "prec": 156
+   },
+   {
+    "step": 30,
+    "move": "adjoin e/2 at scale 3",
+    "prec": 154
+   },
+   {
+    "step": 31,
+    "move": "adjoin e/2 at scale 2",
+    "prec": 152
+   },
+   {
+    "step": 32,
+    "move": "adjoin e/2 at scale 2",
+    "prec": 150
+   },
+   {
+    "step": 33,
+    "move": "adjoin e/2 at scale 2",
+    "prec": 148
+   },
+   {
+    "step": 34,
+    "move": "adjoin e/2 at scale 2",
+    "prec": 146
+   },
+   {
+    "step": 35,
+    "move": "adjoin e/2 at scale 2",
+    "prec": 144
+   },
+   {
+    "step": 36,
+    "move": "adjoin e/2 at scale 2",
+    "prec": 142
+   },
+   {
+    "step": 37,
+    "move": "adjoin (e+e')/2 (two scale-1 rank-1 blocks)",
+    "prec": 140
+   }
+  ],
+  "prec": 140,
+  "symbol": "1^+256_0",
+  "jordan": [
+   {
+    "scale": 0,
+    "rank": 256,
+    "type": "I",
+    "det_mod8": 1,
+    "sign": "+",
+    "oddity": 0,
+    "diag_mod8_multiset": {
+     "1": 75,
+     "3": 61,
+     "5": 61,
+     "7": 59
+    },
+    "det_from_diagonalisation_mod8": 1,
+    "symbol": "1^+256_0"
+   }
+  ]
+ },
+ "hasse_invariants_M": {
+  "2": 1,
+  "7": 1,
+  "769": 1,
+  "1663": -1,
+  "13183": -1,
+  "34687": -1,
+  "40193": 1,
+  "66907551837267960072877778466729507105672199892764419986023842112847527120633087446254196931260693272339178449279": -1
+ },
+ "hasse_real": 1,
+ "hasse_primes_tested_note": "Places tested: infinity, 2, and every odd prime factor returned by sympy.factorint(limit=1e6) of the odd part of det M (primality of the large cofactor recorded in crosschecks). At odd p not dividing det M the form is p-unimodular, hence c_p(M) = +1 = c_p(I_n).",
+ "detM_is_rational_square": true,
+ "hasse_product_over_tested_places": 1,
+ "time_s": 30.6,
+ "crosschecks": {
+  "c2_from_jordan_symbol_of_M": 1,
+  "c_p_from_padic_jordan": {
+   "7": 1,
+   "7_valuations": {
+    "0": 248,
+    "1": 8
+   },
+   "769": 1,
+   "769_valuations": {
+    "0": 254,
+    "1": 2
+   },
+   "1663": -1,
+   "1663_valuations": {
+    "0": 254,
+    "1": 2
+   },
+   "40193": 1,
+   "40193_valuations": {
+    "0": 254,
+    "1": 2
+   },
+   "34687": -1,
+   "34687_valuations": {
+    "0": 254,
+    "1": 2
+   },
+   "13183": -1,
+   "13183_valuations": {
+    "0": 254,
+    "1": 2
+   },
+   "66907551837267960072877778466729507105672199892764419986023842112847527120633087446254196931260693272339178449279": -1,
+   "66907551837267960072877778466729507105672199892764419986023842112847527120633087446254196931260693272339178449279_valuations": {
+    "0": 254,
+    "1": 2
+   }
+  },
+  "hasse_after_random_congruence": {
+   "2": 1,
+   "7": 1,
+   "769": 1,
+   "1663": -1,
+   "40193": 1,
+   "34687": -1,
+   "13183": -1,
+   "66907551837267960072877778466729507105672199892764419986023842112847527120633087446254196931260693272339178449279": -1
+  },
+  "hasse_at_primes_not_dividing_det": {
+   "3": 1,
+   "5": 1,
+   "11": 1,
+   "13": 1,
+   "19": 1,
+   "23": 1
+  },
+  "factor_primality": {
+   "7": true,
+   "769": true,
+   "1663": true,
+   "40193": true,
+   "34687": true,
+   "13183": true,
+   "66907551837267960072877778466729507105672199892764419986023842112847527120633087446254196931260693272339178449279": false
+  }
+ },
+ "script_sha256": "c89c08a1389e549d1ce0268db2714bb9531a3d583d894a8982cf5f4b4473e9e8"
+}
