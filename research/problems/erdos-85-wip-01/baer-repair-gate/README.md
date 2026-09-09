@@ -2,7 +2,8 @@
 
 [ODD_DDG_GATE.md](ODD_DDG_GATE.md) proves that no simple odd-regular graph
 of degree at least3 admits equal groups with zero common neighbors within
-a group and one common neighbor across groups. Equivalently, its graph of
+a group and one common neighbor across groups. Equivalently, for an
+odd-regular **C4-free** graph of degree at least3, its graph of
 zero-common-neighbor pairs cannot be a disjoint union of cliques. This is
 a uniform prose theorem, independently accepted in squad review1547.
 
