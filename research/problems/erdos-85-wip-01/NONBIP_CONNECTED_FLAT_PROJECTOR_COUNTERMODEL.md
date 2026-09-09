@@ -6,8 +6,10 @@ Status: **the specified low-moment flat-projector rank argument is cut**.
 The single-sector leverage audit asks whether coupling spectral sectors
 through `diag(A)=0` and `diag(A^2)=q` can supply the missing dimension bound.
 This construction exhibits a flat sector of dimension `q` and trace `2-q`
-under those low-moment conditions. It does not instantiate a single
-designated primary factor carrying the full trace `-q`.
+under those low-moment conditions. Including the separate `-2` root gives
+a flat sector of dimension `q+1` and trace `-q`. The designated-polynomial
+interface permits such a union of primary factors; rational and graph
+realizability remain separate requirements.
 
 For binary `q>=8`, the order `n=q^2` admits a Sylvester Hadamard matrix.  Normalize
 its columns to an orthonormal basis, with the first column equal to
@@ -34,7 +36,7 @@ Moreover the selected `q`-dimensional projector has constant leverage
 2(q-1)m^2 <= q^2
 ```
 
-The last scalar inequality holds for every `q>=2`; the spectral construction
+The failure of this inequality at `m=q` holds for every `q>=2`; the spectral construction
 and verifier here use binary `q>=8`.  The executable check is
 
 ```text
@@ -47,9 +49,11 @@ and it does not impose the off-diagonal common-neighbor mask in the square
 identity.  That distinction is the result.  Even an actual orthogonal
 projector system satisfying regularity and both forced diagonal moments
 pointwise permits a selected sector with `m=q`. These conditions do not
-bound every such sector at the target scale. This is neither a counterexample
-to a bound with the additional exact designated-trace hypothesis nor to
-every additional constraint on diagonal entries of powers.
+bound every such sector at the target scale. The bundled sector also has
+trace `-q` and dimension `q+1`, so requiring this trace alone does not repair
+the relaxed real-matrix argument. This does not establish a rational or
+integer ambient realization, or rule out every additional constraint on
+diagonal entries of powers.
 
 An off-diagonal identity coupling spectral sectors through the same zero-one
 incidence entries is one possible successor. The construction makes every
@@ -60,9 +64,14 @@ does not make those values valid local graph-walk counts.
 
 The selected sector has one root `+1` and `q-1` roots `-1`, hence trace
 `2-q`. Adding the separate `-2` root gives trace `-q` on a sector of dimension
-`q+1`, but that combines two distinct defect eigenvalues. It does not supply
-one primary factor with that trace. The original designated-factor language
-therefore overstated the interface matched by this control.
+`q+1`, with constant leverage `(q+1)/q^2`. This combines two defect eigenvalues,
+which is allowed: `Erdos85DesignatedPrimaryTrace.lean` explicitly permits a
+designated polynomial to bundle primary factors, and
+`Erdos85ConnectedDesignatedFactorGrowth.lean` does not require it to be
+irreducible. Thus the original `q`-dimensional label needs correction, but
+the bundled sector does meet the trace condition in this real relaxation.
+It must not be confused with a realization satisfying the full rational
+ambient hypotheses of the Lean theorem.
 
 At `q=8`, the displayed real spectral ledger gives exactly
 
