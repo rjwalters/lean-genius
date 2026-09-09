@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Test the canonical cross-star parity voltage on q=4 controls.
 
-For a defect edge xy, N_A(x) and N_A(y) are disjoint and the ambient edges
-between them form a matching.  Its cardinality is (A^3)[x,y].  Reduce this
+For a defect edge xy, N_A(x) and N_A(y) are disjoint. Their cross edges form
+a partial matching if xy is not an ambient edge, and a double-star with
+2q-1 edges otherwise. The edge count is (A^3)[x,y]. Reduce this
 cardinality modulo two as a Z/2 voltage on D.  A vertex potential (and hence a
 split double cover capable of propagating rooted data) exists exactly when the
 signed defect graph is balanced: every D-cycle has zero voltage sum.

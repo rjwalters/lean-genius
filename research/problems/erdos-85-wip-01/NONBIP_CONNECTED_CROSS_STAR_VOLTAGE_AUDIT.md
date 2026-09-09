@@ -3,8 +3,12 @@
 ## Candidate
 
 For a defect edge xy, the ambient neighborhoods `N_A(x)` and `N_A(y)` are
-disjoint.  C4-freeness makes the ambient edges between the two stars a
-matching.  Its cardinality is exactly the length-three walk count
+disjoint. If x and y are not adjacent in A, C4-freeness makes the ambient
+edges between the two stars a partial matching. If x and y are adjacent,
+the cross-star graph is instead a double-star: its centers are y in N_A(x)
+and x in N_A(y), with exactly `2q-1` edges. Any additional edge from
+`N_A(x)\{y}` to `N_A(y)\{x}` would complete a C4 through x and y.
+In either case its edge count is exactly the length-three walk count
 
 ```text
 m_xy = e_A(N_A(x),N_A(y)) = (A^3)_{xy}.
@@ -22,7 +26,7 @@ vertex potential to compare with rooted triangle data.
 
 ## Full q=4 calibration
 
-`nonbip_connected_cross_star_voltage_q4.py` checks all 256 labelled models.
+`nonbip_connected_cross_star_voltage_q4.py` checks a bounded sample of 256 labelled models.
 The voltage is balanced in every model, but its potential does not track
 triangle parity.  Each model has two eight-vertex defect components:
 
@@ -42,6 +46,10 @@ defect-edge profiles are
 (1,1,1,7,1), 8.
 ```
 
+The value 7 is the double-star edge count `2q-1`, not a matching size or
+matrix rank. The script computes edge counts directly, so this distinction
+does not change its reported voltages.
+
 The cover balance is therefore real calibration, but it produces a new shore
 unrelated to the already-constant rooted triangle class.
 
@@ -50,22 +58,23 @@ unrelated to the already-constant rooted triangle class.
 One might retain `m_xy mod4` rather than parity.  A voltage on an undirected
 edge must change sign when its orientation is reversed.  Without a canonical
 orientation or ordering of the two stars, relabeling invariance requires
-`v_xy=-v_xy`; over Z/4 this restricts values to 0 or2.  The observed matching
-sizes 3 and7 are odd, so raw `m_xy mod4` cannot define an ordering-free Z/4
+`v_xy=-v_xy`; over Z/4 this restricts values to 0 or2.  The observed edge
+counts 3 and7 are odd, so raw `m_xy mod4` cannot define an ordering-free Z/4
 voltage.  Choosing vertex labels supplies an artificial orientation and no
 graph invariant.
 
-More detailed matching placement also has no canonical sign: the two stars
-are unlabeled q-sets and a partial matching has only its size as an invariant
-under independent star permutations.  Extracting a permutation sign requires
-the missing coordinate/geometry structure.
+For nonadjacent roots, more detailed matching placement has no canonical
+sign under independent permutations of the two unlabeled stars. For adjacent
+roots, the distinguished centers give a double-star, not a bijection between
+the remaining leaves. Neither structure supplies a permutation sign without
+additional coordinate data.
 
 ## Verdict
 
 The canonical Z/2 cross-star voltage is **cut as a propagation mechanism**.
 It may be balanced, but its potential varies inside constant-t defect
 components and therefore cannot force `t_x=t_y mod4` or the rooted mass
-congruence.  There is no natural Z/4 refinement when odd cross-star matching
-sizes occur.  Reopening the voltage idea requires an independently constructed
+congruence. Raw odd cross-star edge counts do not give an ordering-free Z/4
+voltage. Reopening this voltage idea requires an independently constructed
 orientation or coordinate system on every star, which is additional finite
 geometry rather than a consequence of the current graph axioms.

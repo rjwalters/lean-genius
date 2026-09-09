@@ -75,14 +75,20 @@ setting, canonically a signed coordinate permutation) would transport (5).
 Such an isometry is strictly stronger than an isomorphism of the incidence
 modules.
 
-For a defect edge `xD y`, the ambient edges between `N_A(x)` and `N_A(y)`
-give only a partial matching.  It canonically identifies the matched
-coordinates, but supplies no bijection on the unmatched coordinates and no
-isometry between all external branch supports.  The full q=4 calibration has
-cross-star matching ranks `2,3,4,7`, so the deficiency is real and variable,
-not a dimension count that square order fills.  Completing the partial
-matching requires arbitrary extra pairs; the determinant or signed unit class
-of such a completion is therefore additional coordinate data.
+For a defect edge `xD y` with `x` and `y` nonadjacent in A, the ambient edges
+between `N_A(x)` and `N_A(y)` give a partial matching. This identifies the
+matched coordinates but supplies no prescribed bijection on any unmatched
+coordinates or isometry between all external branch supports.
+If `xA y` also holds, the cross-star graph is instead a double-star with
+centers y and x and `2q-1` edges: any edge between the other leaves would
+complete a C4 through x and y. This also gives no leaf bijection.
+
+The bounded q=4 calibration records cross-star **edge counts** `2,3,4,7`,
+not matching ranks: 7 occurs for the adjacent-root double-star; the other
+values occur for nonadjacent-root partial matchings. Thus square order does
+not supply a full coordinate transport. Completing a deficient partial
+matching or pairing double-star leaves requires additional data; the
+determinant or signed unit class of that choice is not already prescribed.
 
 Nor can one compare only the matched restriction: deleting the unmatched
 columns changes the row norms by uncontrolled, root-dependent amounts.  Its
@@ -94,8 +100,8 @@ triangle statistic that the proposed transport was meant to propagate.
 The determinant observation (2) is exact and potentially useful, but it does
 not descend to Smith, Fitting, cokernel, modular-rank, or compound-minor data:
 all those invariants are already trivial by the unit transversal minor.  The
-cross-star matching is only partial and therefore supplies no canonical
-metric isometry capable of transporting the Gram determinant.  The proposed
+cross-star structure is a partial matching or a double-star and supplies no
+canonical metric isometry between the full external branch supports. The proposed
 integral determinant/Fitting route is cut under the current graph axioms.
 
 A successor must independently construct full star coordinates or an
