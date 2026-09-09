@@ -1,7 +1,7 @@
 # NONBIP-CONNECTED defect-gradient energy audit
 
 Date: 27 August 2026. Node: `A-REG-NONBIP / NONBIP-CONNECTED [q]`.
-Status: exact reduction and trace-route cut; no propagation theorem claimed.
+Status: exact energy identity; evaluation from the available traces is missing.
 
 ## Target and exact energy
 
@@ -13,8 +13,8 @@ k_x = deg_{A intersection D}(x) = (AD)_{xx} = q - 2 t_x,
 K   = diag(k).
 ```
 
-At square order `D` is `(q-1)`-regular.  The desired defect-edge
-propagation of triangle degree is exactly
+At square order `D` is `(q-1)`-regular. Exact integer-valued constancy
+of triangle degree along defect edges is equivalent to
 
 ```text
 DK = KD.
@@ -38,7 +38,8 @@ Because `k=q1-2t`, the same quantity is
 
 Thus (E) vanishes if and only if `t`, equivalently `k`, is constant on
 every defect component.  Connectedness would then make it globally
-constant.
+constant. This is stronger than propagation only modulo four: a nonzero
+difference divisible by four contributes positive energy in (E).
 
 ## Why the ordinary trace/moment ledger cannot evaluate (E)
 
@@ -48,14 +49,21 @@ The square-order identity
 A^2 = (q-1)I + J - D
 ```
 
-makes every *ordinary* word in `A,D,J` reducible to spectral moments of
-`D`.  It does not recover `K`: the operation
+reduces even powers of `A` to expressions in `D` and `J`. Because
+`A,D,J` commute and `AJ=qJ`, an ordinary polynomial expression reduces to
+`p(D) + A r(D) + cJ`. Odd-`A` terms retain the mixed traces
+`tr(A r(D))`; these depend on square-root signs and are not determined by
+the spectrum of `D` alone. This reduction does not supply a formula for
+`K`: the operation
 
 ```text
 K = diag(diag(AD)) = I HadamardProduct (AD)
 ```
 
-is a Schur/diagonal extraction, outside that ordinary adjacency algebra.
+is a Schur/diagonal extraction, not an operation supplied by ordinary
+polynomial closure. In special configurations its result may nevertheless
+belong to the ordinary algebra; no contrary universal assertion is needed
+here.
 Both terms in (E) retain new rooted information:
 
 * `tr(K^2 D^2)=(q-1) sum k_x^2` needs the second moment of the diagonal of
@@ -63,15 +71,15 @@ Both terms in (E) retain new rooted information:
 * `tr(KDKD)=2 sum_{D-edge} k_x k_y` needs the defect-edge correlation of
   that diagonal.
 
-Even knowing `sum k_x = tr(AD)`, all ordinary traces through any fixed
-degree, and regularity of `D` leaves these two Schur moments undetermined.
-The commutation `AD=DA` does not imply that `diag(AD)` commutes with `D`.
-
-Consequently a proof that merely expands higher ordinary traces, or rewrites
-`(AD)^m` using `A^2=(q-1)I+J-D`, cannot force (E) to vanish.  It must add a
-genuinely Hadamard/coherent identity controlling at least one of the two
-displayed rooted moments.  This is precisely the missing input identified
-by divergence #77's coherent-closure probe.
+The displayed polynomial reductions and `sum k_x = tr(AD)` do not
+evaluate either rooted moment. In particular, the commutation `AD=DA`
+does not by itself imply that the diagonal extraction of `AD` commutes
+with `D`. The calculation above supplies an exact target for a further
+identity, but does not prove that every possible trace or spectral
+argument is incapable of evaluating it under the full graph hypotheses.
+Any proposed evaluation must justify the passage from ordinary mixed
+traces to these rooted quantities, rather than replace the latter by
+`tr((AD)^2)` or an ordinary word with different indices.
 
 ## Relation to the stronger weighted-neighbor terminal
 
@@ -89,10 +97,10 @@ proof needs a second structural or arithmetic terminal.
 
 ## Verdict
 
-The defect-gradient energy is the exact nonnegative propagation invariant,
-but it is not an ordinary trace consequence.  The pure spectral/moment
-version of this route is cut.  A future reopening must name a Schur-product
-or coherent-configuration identity that evaluates one of
-`sum k_x^2` or `sum_{D-edge} k_x k_y`, and must also state the post-propagation
-terminal.  Merely banking higher polynomial moments does not advance this
-node.
+The defect-gradient energy is an exact nonnegative invariant for exact
+componentwise constancy. The available ordinary polynomial reductions
+do not evaluate it; no energy-zero theorem is established. A reopening
+needs a justified relation controlling the two rooted moments (or their
+difference), together with the post-propagation terminal. This audit
+does not exclude all future spectral arguments or reduce the modulo-four
+propagation target to energy zero.
