@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.69.2 — 2026-09-09 (Fable's red-team of (xviii) folded; rounds #114/#115 recorded; goal #46 deliberate brainstorming cycle, divergence round #113: 36 leads, all probes closed negative with certified scopes; the common-neighbour partial operation banked as an axiom-free Lean dictionary (A.5.1); interval circulant defects excluded for every binary q ≥ 4 and the explicit q=16 circulant killed by Hasse–Minkowski (A.5.3 (xviii)); conflict freight v6 and the replay pilot recorded in §F. A-REG remains open; the room has declared goal #36's trigger and the operator holds the direction decision).**
+**Version 2.69.3 — 2026-09-09 (partial-operation endpoint and row-image hypotheses made explicit; Fable's red-team of (xviii) folded; rounds #114/#115 recorded; goal #46 deliberate brainstorming cycle, divergence round #113: 36 leads, all probes closed negative with certified scopes; the common-neighbour partial operation banked as an axiom-free Lean dictionary (A.5.1); interval circulant defects excluded for every binary q ≥ 4 and the explicit q=16 circulant killed by Hasse–Minkowski (A.5.3 (xviii)); conflict freight v6 and the replay pilot recorded in §F. A-REG remains open; the room has declared goal #36's trigger and the operator holds the direction decision).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -102,15 +102,18 @@ Everything below this line is inside A.5.
   Lean, sol-3 `9249283ebf` / merge `df4d71eb56`,
   `Erdos85PartialCentralReconstruction.lean`, nine declarations of which
   seven audited theorems carry NO axioms;
-  review #1535 Fable, cold-compiled at the committed path). For a C4-free
-  graph define `x∘y` := the unique common neighbour when it exists. The
-  operation is commutative, irreflexive, undefined exactly on defect
-  pairs, and satisfies the conditional CENTRAL law
+  review #1535 Fable, cold-compiled at the committed path). For distinct
+  vertices `x,y` of a C4-free graph, define `x∘y` as their unique common
+  neighbour when it exists; leave all diagonal products undefined.
+  The operation is commutative, its defined outputs differ from both
+  inputs, and among distinct inputs it is undefined exactly on defect
+  pairs. It satisfies the conditional CENTRAL law
   `(x∘y)∘(y∘z) = y` whenever both inner products exist and differ
   (Knuth 1970 / Evans 1967: exact central groupoids are precisely the
   `A² = J` digraphs of order `m²`). Conversely any commutative partial
-  operation with these properties and ≥ 2 row-image values reconstructs a
-  simple C4-free graph via row images. Exact commutativity is incompatible
+  operation with these properties and at least two values in every
+  nonempty row image reconstructs a simple C4-free graph via row images;
+  empty rows, corresponding to isolated vertices, are allowed. Exact commutativity is incompatible
   with the exact central law (`a∘b = b∘a ⇒ a = b`). This is a faithful
   reformulation, not a weakening: imposing `q`-sized images on `q²`
   elements returns the original node (see (xviii)(b)).
@@ -1541,6 +1544,12 @@ uploads > 5 GiB); post-drain multipart pass planned; boxes on hold until the
    hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.69.3** (2026-09-09, codex-sol-3): A.5.1 explicitly distinguishes
+  undefined diagonal inputs from output avoidance and restricts the
+  two-value condition to nonempty row images, matching the Lean `Laws`
+  fields `noDiagonal`, `avoidLeft`, and `rich`. Documentation correction
+  only; no theorem, axiom audit, or proof-node status changed.
 
 - **2.69.2** (2026-09-09, editor): Fable's red-team (42214) folded —
   r = 4 circulant scope narrowed to the three screens it passed; rounds
