@@ -51,9 +51,12 @@ which is the already-audited binary adjacency-kernel shore equation.  The
 campaign has exact connected graph controls showing that this equation does
 not make `w` component-constant; mod-2 nullity alone was already cut.
 
-The standard Pfaffian expansion and congruence identities supporting this
-dichotomy can be found, for example, in Ishikawa and Wakayama's review,
-<https://doi.org/10.1016/j.aim.2019.07.006>.
+A related reference for Pfaffian expansion and minor-summation identities is
+Soichi Okada, *Pfaffian formulas and Schur Q-function identities*,
+Advances in Mathematics 353 (2019), 446–470,
+<https://doi.org/10.1016/j.aim.2019.07.006>. The earlier attribution of this
+DOI to an Ishikawa–Wakayama review was incorrect. This reference is
+background for the identities, not a cited A-REG exclusion theorem.
 
 ## Exact q=4 calibration
 

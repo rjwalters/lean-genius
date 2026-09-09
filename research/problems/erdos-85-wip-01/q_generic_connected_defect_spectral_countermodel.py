@@ -22,8 +22,10 @@ from the principal root q^2 and the simple root 4, every irreducible factor
 has nonsquare absolute constant term.  Hence its eigenvalue lambda is not a
 square in Q(lambda): otherwise its field norm would be a square.  The sign
 involution therefore makes that whole sector contribute zero to the trace
-of any rational square root.  The only possible traces are q-2 and q+2,
-not zero, so these two D_q do not admit an adjacency-matrix square root.
+of any rational square root. The possible traces lie in {−q−2,−q+2,
+q−2,q+2}; requiring the incidence normalization A1=q1 restricts them to
+q−2,q+2. None is zero, so these two D_q do not admit an adjacency-matrix
+square root.
 
 This trace refinement is deliberately asserted only for q=4,8.  The exact
 SymPy calculation below is a finite regression of both statements.  q=16
@@ -90,7 +92,7 @@ def verify(q: int) -> None:
             assert math.isqrt(norm) ** 2 != norm
             assert exponent % 2 == 0
             residual_norms.append(norm)
-        trace_candidates = (q - 2, q + 2)
+        trace_candidates = (-q - 2, -q + 2, q - 2, q + 2)
         assert all(candidate != 0 for candidate in trace_candidates)
         trace_suffix = (
             f" residual_norms={residual_norms} "

@@ -66,17 +66,20 @@ pairing in these Smith coordinates and checks an explicit Lagrangian:
 
 Thus this connected nonbipartite `D` satisfies the full metabolic
 discriminant-form consequence while failing even to have the needed rational
-square root.  The full Smith/linking invariant does not recover incidence
-placement and cannot close `NONBIP-CONNECTED` by itself.
+square root.  In this control, metabolicity does not certify the existence of the
+required incidence square root. Because `q=4` is outside the remaining
+binary branch `q=2^k`, `k>=3`, this example does not refute a stronger
+theorem restricted to that branch.
 
 ## Scope cut
 
-The convergent round-71 proposals based on critical groups, primitive
-2-adic embeddings, and the discriminant form are cut at the graph-only
-level.  A stronger invariant would have to retain the actual 0/1 square
-root, such as Plucker relations among its Pfaffian cofactors or the
-self-indexed owner map.  Merely strengthening `tau(D) is a square` to
-`disc(L_D+J) is metabolic` is still insufficient.
+The bounded control separates metabolicity from the required rational
+trace-zero square root at `q=4`. It blocks an implication from metabolicity
+alone that is claimed uniformly including this order. It does not establish
+that every critical-group or discriminant-form obstruction for binary
+`q>=8` is unavailable. A successor needs a new condition or a theorem with
+its exact order hypotheses, potentially using the actual 0/1 square root
+or the self-indexed owner map. No such theorem is supplied by this audit.
 
 Reference for Smith groups and graph Laplacians: D. Lorenzini, *Smith normal
 form and Laplacians*, Journal of Combinatorial Theory B 98 (2008),
