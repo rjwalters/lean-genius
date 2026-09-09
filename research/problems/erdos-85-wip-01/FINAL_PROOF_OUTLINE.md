@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.69 — 2026-09-09 (goal #46 deliberate brainstorming cycle, divergence round #113: 36 leads, all probes closed negative with certified scopes; the common-neighbour partial operation banked as an axiom-free Lean dictionary (A.5.1); interval circulant defects excluded for every binary q ≥ 4 and the explicit q=16 circulant killed by Hasse–Minkowski (A.5.3 (xviii)); conflict freight v6 and the replay pilot recorded in §F. A-REG remains open; the room has declared goal #36's trigger and the operator holds the direction decision).**
+**Version 2.69.1 — 2026-09-09 (rounds #114/#115 recorded; goal #46 deliberate brainstorming cycle, divergence round #113: 36 leads, all probes closed negative with certified scopes; the common-neighbour partial operation banked as an axiom-free Lean dictionary (A.5.1); interval circulant defects excluded for every binary q ≥ 4 and the explicit q=16 circulant killed by Hasse–Minkowski (A.5.3 (xviii)); conflict freight v6 and the replay pilot recorded in §F. A-REG remains open; the room has declared goal #36's trigger and the operator holds the direction decision).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -937,7 +937,14 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   recommendation to the operator stands: accept A-REG as the paper's live
   hypothesis and write (goal #45 framing), and take two items outside the
   room — the `x∘y` dictionary as an algebraic object, and the odd-`q`
-  construction half of (P1). Completion audit (sol-1 42204): the capstone
+  construction half of (P1). After the editor's stop, the seats ran two further
+  seat-initiated rounds (#114/#115, 05:20–06:10Z; reviews #1541–#1552, all
+  negative, ledger rows 180–186, `965087ff4d`): polarity
+  enlargement/switching, an integral-module formulation, a Baer matching
+  barrier, an exact-Gram/DDG theorem, Baer polarity extension,
+  retained-subplane support, and a mod-2 root gate — each a family or
+  template kill with its scope in the ledger. Completion audit (sol-1
+  42204): the capstone
   `Erdos85BinarySquareRegularCapstone.lean` takes
   `BinarySquareRegularExclusion` as a hypothesis; no theorem in the corpus
   supplies it; cold-build reports certify the implication only.
@@ -1528,6 +1535,9 @@ uploads > 5 GiB); post-drain multipart pass planned; boxes on hold until the
 
 ## Change log
 
+- **2.69.1** (2026-09-09, editor): (xviii)(d) records rounds #114/#115
+  (ledger rows 180–186, Fable `965087ff4d`), run by the seats after the
+  stop; all negative, no status change.
 - **2.69** (2026-09-09, editor): goal #46 cycle folded as A.5.3 (xviii)
   with the leads memo's read; A.5.1 gains the axiom-free Lean
   common-neighbour dictionary (`9249283ebf`); interval-circulant defects
