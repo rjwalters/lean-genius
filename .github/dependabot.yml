@@ -1,0 +1,49 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels: ["tier:maintenance"]
+    groups:
+      github-actions:
+        patterns: ["*"]
+        update-types: ["major", "minor", "patch"]
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels: ["tier:maintenance"]
+    groups:
+      npm-minor-patch:
+        patterns: ["*"]
+        # Risk-bearing deps stay ungrouped so each bump is its own reviewable PR:
+        # playwright (browser binary), better-sqlite3 (native, Node-version coupled),
+        # drizzle-orm / drizzle-kit (D1 schema migrations).
+        exclude-patterns: ["playwright", "better-sqlite3", "drizzle-orm", "drizzle-kit"]
+        update-types: ["minor", "patch"]
+    # Majors are deliberately ungrouped: one reviewable PR each.
+
+  - package-ecosystem: "npm"
+    directory: "/mcp-servers/aristotle"
+    schedule:
+      interval: "weekly"
+    labels: ["tier:maintenance"]
+    groups:
+      aristotle-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    labels: ["tier:maintenance"]
+    groups:
+      submodules:
+        patterns: ["*"]
+
+# Not configured on purpose:
+# - docker (proofs/Dockerfile): ubuntu:22.04 is pinned for Lean toolchain reproducibility.
+# - cargo (proofs/data/knuth/tour-finder): never built here, no lockfile.
