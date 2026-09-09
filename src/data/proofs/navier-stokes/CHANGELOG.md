@@ -59,6 +59,7 @@ assumed components. CKN + enstrophy ODE cannot give θ ≥ c without anti-escape
 2. **CKN + Enstrophy Cannot Give θ ≥ c**
    - CKN gives: local concentration ≥ ε₀ at singular points (ABSOLUTE bound)
    - Enstrophy ODE: dE/dt ≤ CE³ limits E ~ (T*-t)^{-1/2} (GLOBAL timing)
+     **[ERROR — corrected in v5: this is Leray's LOWER bound, not a ceiling]**
    - Neither prevents enstrophy from "escaping" to other regions
    - θ = E_loc/E_total is NOT bounded by these alone
 

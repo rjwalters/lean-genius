@@ -65,10 +65,11 @@ We formulated the **minimal hypothesis** that would fix the proof:
 **Hypothesis B′ (Bubble Persistence):**
 Concentration persists across dyadic scales from R_diff to √(T*-t).
 
-**Theorem:** B′ → Type I only → regularity
+**Theorem (as stated in v3; first arrow withdrawn in v5):** B′ → Type I only → regularity
 
-This is honest:
-- All steps except B′ are proven (CKN, enstrophy ODE, Barker-Prange, ESŠ)
+This was meant to be honest:
+- All steps except B′ were believed proven (CKN, enstrophy ODE, Barker-Prange, ESŠ) —
+  but the enstrophy ODE step was used in the wrong direction (see Act 6)
 - B′ is exactly the anti-cascade/anti-escape principle Tao identifies as the core obstruction
 - Any unconditional proof must, in some form, establish B′
 

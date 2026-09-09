@@ -32,19 +32,17 @@ dE/dt ≤ C E³
 
 This is the cubic enstrophy inequality.
 
-### Step 2: Maximum Enstrophy Growth Rate
+### Step 2: Minimum Enstrophy Growth Rate (corrected 2026-09-08)
 
-Integrating dE/dt ≤ CE³:
+Integrating dE/dt ≤ CE³ *forward* gives the local-existence bound
+E(t) ≤ E₀ / √(1 - 2CE₀²t); integrating *backward from a blowup time* T* gives
 ```
-E(t) ≤ E₀ / √(1 - 2CE₀²t)
-```
-
-If blowup occurs at T*, then as t → T*:
-```
-E(t) ≤ C(T* - t)^{-1/2}
+E(t) ≥ c(T* - t)^{-1/2}
 ```
 
-**This is the TYPE I RATE for enstrophy!**
+**This is Leray's LOWER bound.** The original text had E ≤ C(T*-t)^{-1/2}, an upper
+bound the cubic inequality does not provide. Everything downstream that used the
+upper bound (Steps 5-6) is void.
 
 ### Step 3: Stretching vs Dissipation Balance
 
@@ -86,7 +84,8 @@ L > √(ν/Ω) = R_diff
 
 For Type II blowup with Ω ~ (T*-t)^{-α} where α > 1:
 
-From Step 2: E ~ (T*-t)^{-1/2} (at most)
+From Step 2 (as originally, wrongly, read): E ~ (T*-t)^{-1/2} (at most) — **false**; Step 2
+only gives E ≥ c(T*-t)^{-1/2}, so the derivation below has no force
 
 From E ~ Ω² L³:
 ```
@@ -261,7 +260,7 @@ Without this condition, Type II is NOT excluded by Seregin's argument.
 ### Potential Connection
 
 The enstrophy inequality dE/dt ≤ CE³ is ALWAYS satisfied by NS solutions.
-It gives E ~ (T*-t)^{-1/2} at worst.
+It gives E ≥ c(T*-t)^{-1/2} — a floor, not a ceiling (corrected 2026-09-08).
 
 If this forces L < R_diff for Type II (as our heuristic suggests), then:
 - Type II would violate the blowup requirement L > R_diff

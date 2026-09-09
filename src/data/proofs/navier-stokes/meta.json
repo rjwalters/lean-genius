@@ -115,7 +115,7 @@
         "Type I concentration: ‖u‖_{L³} ≥ γ at scale √(T*-t) (Barker-Prange 2020)",
         "Backward uniqueness: Type I blowups excluded via ESŠ 2003",
         "Type II dynamics: β = (T-t)^{α-1} → 0 for α > 1",
-        "Conditional theorem: B′ → Type I → ESŠ → regularity (v3)",
+        "Conditional theorem: B′ → Type I → ESŠ → regularity (v3) — first arrow WITHDRAWN in v5; only the classical Type I → ESŠ → regularity tail stands",
         "Tropical rigidity theorem: IF crossing with τ ≤ 0.1, THEN θ > 0.99"
       ],
       "theActualGap": "V3 FINDING: The gap is SCALE-BRIDGING CONCENTRATION. CKN gives concentration at singular points. Barker-Prange gives concentration at √(T*-t) for Type I. But for Type II, R_diff << √(T*-t). The smoothing lemma cannot reach the diffusion scale. Bubble Persistence (B′) is the minimal hypothesis that bridges this gap.",
@@ -187,7 +187,7 @@
     "proofStrategy": "V3 CONDITIONAL THEOREM (Bubble Persistence → Regularity):\n\n1. CKN ε-regularity: A(r) + C(r) + D(r) ≥ ε₀ at singular points [PROVEN - CKN 1982]\n2. Enstrophy ODE: dE/dt ≤ CE³ gives Leray's LOWER bound E ≥ c(T*-t)^{-1/2} [PROVEN; v3 misread this as an upper bound — see v5 erratum]\n3. Scale bridge via B′: Concentration persists from R_diff to √(T*-t) [HYPOTHESIS]\n4. Type I concentration: ‖u‖_{L³} ≥ γ at scale √(T*-t) [PROVEN - Barker-Prange 2020]\n5. Backward uniqueness: Type I blowups excluded [PROVEN - ESŠ 2003]\n\nTHE SCALE MISMATCH:\n• Type I: R_diff ≈ √(T*-t), scales match, proof closes\n• Type II: R_diff << √(T*-t), gap requires B′ to bridge\n\nB′ is the MINIMAL hypothesis that glues all proven steps together.\n\nV5 (2026-09-08): Step 3 (B′ ⇒ Type I) is WITHDRAWN. It relied on the wrong direction of the enstrophy bound, and OpenAI's forced construction is an explicit witness: it satisfies B′ at every dyadic scale in [R_diff, √(T*-t)] and still blows up at the Type II rate α = 1+h. What survives is the unforced tail (Barker-Prange + ESŠ) and B′ as an open hypothesis.",
     "keyInsights": [
       "V3: The gap is SCALE-BRIDGING CONCENTRATION, not θ ≥ c directly",
-      "Bubble Persistence B′ is the minimal hypothesis bridging the scale mismatch",
+      "Bubble Persistence B′ was proposed as the minimal hypothesis bridging the scale mismatch; v5 shows it is NOT sufficient (OpenAI's forced Type II flow satisfies it)",
       "B′ rules out exactly what Tao identifies as the core obstruction: cascade/escape",
       "B′ is strictly weaker than Seregin's LPS condition (2025)",
       "For Type I, the proof closes without B′ (Barker-Prange + ESŠ)",
@@ -501,7 +501,7 @@
     {
       "name": "conditional_regularity_3d",
       "type": "conditional",
-      "description": "3D conditional regularity: NSAxioms (5 physical hypotheses) → no finite-time blowup. The chain: B′ → Type I → ESŠ → regularity"
+      "description": "3D conditional regularity: NSAxioms (5 structure-encoded hypotheses) → no finite-time blowup. This Lean theorem stands. The prose chain B′ → Type I → ESŠ → regularity (v3) is withdrawn at its first arrow (v5, 2026-09-08): OpenAI's forced Type II singularity satisfies B′ and violates only the spectral_gap field."
     },
     {
       "name": "global_existence_2d",

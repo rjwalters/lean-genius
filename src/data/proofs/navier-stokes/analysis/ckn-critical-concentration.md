@@ -109,7 +109,8 @@ For Type II: √(ν/Ω) << √(T*-t).
 At scale r, if singular: (1/r)∫_{Q_r}|∇u|² ≥ ε₃
 
 ### From enstrophy ODE:
-Global bound: E(t) ≤ C(T*-t)^{-1/2}
+Lower bound at a blowup time: E(t) ≥ c(T*-t)^{-1/2} (Leray). **Not** an upper bound —
+corrected 2026-09-08; the original line read E(t) ≤ C(T*-t)^{-1/2}
 
 ### Combining:
 At the diffusion scale R = √(ν/Ω):
@@ -167,7 +168,8 @@ This is an **anti-escape** or **localization** statement.
 2. Anti-escape gives E_total ≤ E_loc/θ₀
 3. So E_total ≤ ε₃/(θ₀ R)
 4. Enstrophy ODE: dE/dt ≤ CE³
-5. Solve: E ~ (T*-t)^{-1/2} at worst
+5. Solve: E ≥ c(T*-t)^{-1/2} — a lower bound, so step 6 below does not follow
+   (corrected 2026-09-08)
 6. With R = √(ν/Ω), get constraint on Ω
 7. Show Ω ~ (T*-t)^{-1} (Type I)
 
@@ -222,7 +224,8 @@ For Type I, this IS the diffusion scale, so anti-escape is proven.
 
 3. **The right formulation is conditional:**
    - State anti-escape as a hypothesis (physically motivated)
-   - Prove: anti-escape ⟹ Type I only ⟹ regularity
+   - Prove: anti-escape ⟹ Type I only ⟹ regularity — the first implication was
+     withdrawn 2026-09-08 (OpenAI's forced flow satisfies B′ and is Type II)
 
 ---
 
@@ -280,10 +283,10 @@ Then:
 
 **Proof sketch:**
 1. Anti-escape + CKN gives: concentration at some ball B_R with critical norms ≥ ε₀
-2. Enstrophy ODE gives: E ~ (T*-t)^{-1/2} at worst
-3. For Type II (Ω ~ (T*-t)^{-α}, α > 1), the concentration scale implied by
-   enstrophy bound contradicts the anti-escape hypothesis
-4. Therefore blowup must be Type I
+2. Enstrophy ODE gives: E ≥ c(T*-t)^{-1/2} (lower bound only — corrected 2026-09-08)
+3. ~~For Type II the concentration scale implied by the enstrophy bound contradicts
+   anti-escape~~ — void, there is no upper bound to contradict
+4. ~~Therefore blowup must be Type I~~ — withdrawn
 5. Type I + Barker-Prange concentration + ESŠ backward uniqueness ⟹ regularity
 
 ---

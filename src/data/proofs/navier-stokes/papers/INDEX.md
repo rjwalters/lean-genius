@@ -225,7 +225,7 @@ does α > 1 impose on concentration structure?
 | Paper | What It Proves | Role in Chain |
 |-------|---------------|---------------|
 | CKN 1982 | ε-regularity: A(r)+C(r)+D(r) ≥ ε₀ at singular points | Step 1 |
-| Standard | Enstrophy ODE: dE/dt ≤ CE³ | Step 2 |
+| Leray 1934 | Enstrophy ODE: dE/dt ≤ CE³ ⇒ E ≥ c(T*-t)^{-1/2} (LOWER bound) | Step 2 |
 | Barker-Prange 2020 | Type I concentration at √(T*-t) | Step 4 |
 | ESŠ 2003 | Backward uniqueness excludes Type I | Step 5 |
 | Seregin 2025 | Type II exclusion via LPS condition | Comparison |
@@ -248,7 +248,8 @@ does α > 1 impose on concentration structure?
 
 This is:
 - **Strictly weaker** than Seregin's LPS condition
-- **Exactly what bridges** the scale gap for Type II
+- ~~Exactly what bridges the scale gap for Type II~~ — withdrawn 2026-09-08: OpenAI's
+  forced Type II flow satisfies B′
 - **Rules out** cascade/escape mechanisms (Tao's core obstruction)
 
 ### Comparison of Anti-Escape Hypotheses
