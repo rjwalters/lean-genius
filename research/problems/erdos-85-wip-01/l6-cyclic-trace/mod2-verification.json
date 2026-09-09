@@ -1,0 +1,156 @@
+{
+  "status": "PASS",
+  "scope": "finite regressions of the uniform prose proof",
+  "cases": [
+    {
+      "q": 4,
+      "strata": [
+        {
+          "order": 8,
+          "quotient_degree": 4,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        },
+        {
+          "order": 16,
+          "quotient_degree": 8,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        }
+      ],
+      "trace_case": "even k"
+    },
+    {
+      "q": 8,
+      "strata": [
+        {
+          "order": 16,
+          "quotient_degree": 8,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        },
+        {
+          "order": 32,
+          "quotient_degree": 16,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        },
+        {
+          "order": 64,
+          "quotient_degree": 32,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        }
+      ],
+      "trace_case": "odd k"
+    },
+    {
+      "q": 16,
+      "strata": [
+        {
+          "order": 32,
+          "quotient_degree": 16,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        },
+        {
+          "order": 64,
+          "quotient_degree": 32,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        },
+        {
+          "order": 128,
+          "quotient_degree": 64,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        },
+        {
+          "order": 256,
+          "quotient_degree": 128,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        }
+      ],
+      "trace_case": "even k"
+    },
+    {
+      "q": 32,
+      "strata": [
+        {
+          "order": 64,
+          "quotient_degree": 32,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        },
+        {
+          "order": 128,
+          "quotient_degree": 64,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        },
+        {
+          "order": 256,
+          "quotient_degree": 128,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        },
+        {
+          "order": 512,
+          "quotient_degree": 256,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        },
+        {
+          "order": 1024,
+          "quotient_degree": 512,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        }
+      ],
+      "trace_case": "odd k"
+    },
+    {
+      "q": 64,
+      "strata": [
+        {
+          "order": 128,
+          "quotient_degree": 64,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        },
+        {
+          "order": 256,
+          "quotient_degree": 128,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        },
+        {
+          "order": 512,
+          "quotient_degree": 256,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        },
+        {
+          "order": 1024,
+          "quotient_degree": 512,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        },
+        {
+          "order": 2048,
+          "quotient_degree": 1024,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        },
+        {
+          "order": 4096,
+          "quotient_degree": 2048,
+          "coefficient_X": 1,
+          "outside_square_image": true
+        }
+      ],
+      "trace_case": "even k"
+    }
+  ]
+}

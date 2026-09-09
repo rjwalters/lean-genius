@@ -1,0 +1,80 @@
+{
+  "status": "PASS",
+  "scope": "interval circulant defects at q=16,64 only",
+  "cases": [
+    {
+      "q": 16,
+      "q_eigenvalue_multiplicity": 7,
+      "higher_strata": [
+        {
+          "order": 32,
+          "real_degree": 8,
+          "prime": 11,
+          "norm_residue": 7
+        },
+        {
+          "order": 64,
+          "real_degree": 16,
+          "prime": 11,
+          "norm_residue": 6
+        },
+        {
+          "order": 128,
+          "real_degree": 32,
+          "prime": 17,
+          "norm_residue": 11
+        },
+        {
+          "order": 256,
+          "real_degree": 64,
+          "prime": 7,
+          "norm_residue": 3
+        }
+      ],
+      "trace_obstruction": true
+    },
+    {
+      "q": 64,
+      "q_eigenvalue_multiplicity": 31,
+      "higher_strata": [
+        {
+          "order": 128,
+          "real_degree": 32,
+          "prime": 5,
+          "norm_residue": 2
+        },
+        {
+          "order": 256,
+          "real_degree": 64,
+          "prime": 11,
+          "norm_residue": 7
+        },
+        {
+          "order": 512,
+          "real_degree": 128,
+          "prime": 17,
+          "norm_residue": 14
+        },
+        {
+          "order": 1024,
+          "real_degree": 256,
+          "prime": 11,
+          "norm_residue": 2
+        },
+        {
+          "order": 2048,
+          "real_degree": 512,
+          "prime": 11,
+          "norm_residue": 8
+        },
+        {
+          "order": 4096,
+          "real_degree": 1024,
+          "prime": 19,
+          "norm_residue": 2
+        }
+      ],
+      "trace_obstruction": true
+    }
+  ]
+}
