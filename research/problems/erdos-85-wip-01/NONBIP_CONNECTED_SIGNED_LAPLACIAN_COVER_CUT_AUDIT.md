@@ -59,14 +59,18 @@ diagonal; it cannot repair a deficit of one.
 
 ## Verdict and scope
 
-The genuine nonnegative-weight Laplacian/two-sheet-cover route is cut even
-on the smallest exact control.  Therefore the ordinary positive
-matrix-tree theorem cannot supply the desired cofactor cancellation through
-this representation.
+The proposed nonnegative-weight Laplacian/two-sheet representation fails
+on this exact `q=4` control. It therefore cannot be asserted uniformly over
+orders including `q=4`. For the remaining binary branch `q>=8`, the audit
+establishes the necessary condition `3t_v>=q` but supplies no graph in that
+branch violating it. Thus the control does not rule out a representation
+proved under additional `q>=8` hypotheses, and no such representation is
+established here.
 
 This does **not** cut arbitrary signed determinant or forest expansions of
 the indefinite matrix `M`: those permit cancellation without realizing
 `-M` as a positive Laplacian.  It also does not weaken the target
-`H^T adj(M)1=0`.  It only rules out the proposed positive-cover mechanism;
-the surviving cofactor route must remain genuinely indefinite or use a
-pre-expansion algebraic identity.
+`H^T adj(M)1=0`.  It rules out the unqualified positive-cover construction at the displayed
+control. A successor must either justify the missing diagonal-dominance
+condition and the full representation, or use a different determinant
+argument.

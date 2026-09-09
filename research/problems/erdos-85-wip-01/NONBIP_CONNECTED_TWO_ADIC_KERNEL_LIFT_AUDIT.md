@@ -57,11 +57,13 @@ still fails.
 
 ## Verdict
 
-**Cut.**  Constant-vector Hensel lifting is strictly stronger than proving
-`A` singular and is false on a faithful self-indexed C4-free control.  The
-special hypothesis `k >= 3` cannot repair an infinite induction merely by
-providing one additional initial factor of two; each subsequent obstruction
-again pairs against the full uncontrolled binary kernel.  Do not formalize a
-recursive lifting theorem or run a q=8 search.  A viable 2-adic successor would
-need a new theorem controlling the complete kernel and every residual, not an
-owner-parity restatement of the lift equation.
+The displayed constant-vector lifting branch fails on the faithful
+`q=4` control even though the desired rational singularity holds there.
+Thus this sufficient lifting mechanism is stronger than singularity.
+Because `q=4` is outside the remaining branch `k>=3`, the example does not
+rule out a lifting theorem with those additional hypotheses. Increasing
+`k` initializes more powers of two; the exact lift equation still requires
+control of the full binary kernel at every later stage. The current audit
+supplies no such induction. A proposed successor must explain how the
+additional hypotheses control every residual, rather than infer that from
+the initial divisibility or merely restate the lift equation.

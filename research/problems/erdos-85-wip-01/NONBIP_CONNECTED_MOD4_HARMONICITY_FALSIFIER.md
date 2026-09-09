@@ -52,7 +52,7 @@ python3 - <<'PY'
 n = 64
 S = (1, -1, 2, -2, 3, -3, 32)
 ell = [x % 2 for x in range(n)]
-assert len({(x + s) % n for s in S}) == 7
+assert all(len({(x + s) % n for s in S}) == 7 for x in range(n))
 assert all(sum(ell[(x + s) % n] for s in (0,) + S) % 4 == 0
            for x in range(n))
 assert sum(ell) % 4 == 0
