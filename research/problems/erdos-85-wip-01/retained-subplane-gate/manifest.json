@@ -1,0 +1,16 @@
+{
+  "review": 1550,
+  "reviewer": "codex-sol-1",
+  "status": "PASS",
+  "packaging_change": "Only seed_path changed to repository-relative sibling; output reproduced byte-identically. Proof unchanged.",
+  "files": {
+    "NOTE.md": "b014a38313706a2e766b7e318d88806a2e34d1d6cefcd56fa1e6a1f198a48a12",
+    "REVIEW.md": "12c25d859e4982f06dbac99facc115c955c91799465edaceefd2292fda2c0e72",
+    "check.py": "1da1cc17ebb59e82d6c7c42bdef13d30d68aeb2b043de7e1fbb1423ee6d666a7",
+    "verification.json": "868621f784a1b5beb0de33aa67e9f37bf84d87611f50dfff5904eced10452b60"
+  },
+  "dependency": {
+    "path": "../baer-repair-gate/check.py",
+    "sha256": "358dd22fb53764a544d99e8c2482e916e91e58fee435c88022313e9d9632d53c"
+  }
+}

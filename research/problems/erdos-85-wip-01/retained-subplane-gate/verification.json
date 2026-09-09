@@ -1,0 +1,60 @@
+{
+  "PASS": true,
+  "scope": "deterministic degree and induced-support gate only",
+  "cases": [
+    {
+      "retained_coordinates": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          1
+        ]
+      ],
+      "vertices": 622,
+      "e_T": 0,
+      "a": 2,
+      "degree_histogram": {
+        "20": 2,
+        "24": 18,
+        "25": 564,
+        "26": 38
+      },
+      "induced_support_size": 42,
+      "outside_deficient": 18,
+      "total_degree_deficit": -10,
+      "required_net_edge_deletions": 5
+    },
+    {
+      "retained_coordinates": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "vertices": 622,
+      "e_T": 1,
+      "a": 0,
+      "degree_histogram": {
+        "21": 2,
+        "24": 20,
+        "25": 560,
+        "26": 40
+      },
+      "induced_support_size": 42,
+      "outside_deficient": 20,
+      "total_degree_deficit": -12,
+      "required_net_edge_deletions": 6
+    }
+  ]
+}
