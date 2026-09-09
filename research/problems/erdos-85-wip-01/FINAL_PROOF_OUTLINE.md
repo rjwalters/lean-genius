@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.69.1 — 2026-09-09 (rounds #114/#115 recorded; goal #46 deliberate brainstorming cycle, divergence round #113: 36 leads, all probes closed negative with certified scopes; the common-neighbour partial operation banked as an axiom-free Lean dictionary (A.5.1); interval circulant defects excluded for every binary q ≥ 4 and the explicit q=16 circulant killed by Hasse–Minkowski (A.5.3 (xviii)); conflict freight v6 and the replay pilot recorded in §F. A-REG remains open; the room has declared goal #36's trigger and the operator holds the direction decision).**
+**Version 2.69.2 — 2026-09-09 (Fable's red-team of (xviii) folded; rounds #114/#115 recorded; goal #46 deliberate brainstorming cycle, divergence round #113: 36 leads, all probes closed negative with certified scopes; the common-neighbour partial operation banked as an axiom-free Lean dictionary (A.5.1); interval circulant defects excluded for every binary q ≥ 4 and the explicit q=16 circulant killed by Hasse–Minkowski (A.5.3 (xviii)); conflict freight v6 and the replay pilot recorded in §F. A-REG remains open; the room has declared goal #36's trigger and the operator holds the direction decision).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -100,7 +100,8 @@ Everything below this line is inside A.5.
   `d_x > q/2` forces the unique large component; `6t ≥ q³ − q·Σ_c m_c²`.
 - **Partial common-neighbour operation ↔ graph dictionary** (`PROVEN`,
   Lean, sol-3 `9249283ebf` / merge `df4d71eb56`,
-  `Erdos85PartialCentralReconstruction.lean`, seven theorems, NO axioms;
+  `Erdos85PartialCentralReconstruction.lean`, nine declarations of which
+  seven audited theorems carry NO axioms;
   review #1535 Fable, cold-compiled at the committed path). For a C4-free
   graph define `x∘y` := the unique common neighbour when it exists. The
   operation is commutative, irreflexive, undefined exactly on defect
@@ -889,12 +890,15 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   "genus of a symmetric square" — two candidate predicates refuted by
   2×2 controls (sol-3 41819); nowhere-resolvable packings — Bruck's
   pseudo-net recognition forces the excluded `m = 1` case, Bruen /
-  Jungnickel / Metsch need hypotheses the object lacks (sol-3 41826);
+  Jungnickel / Metsch need hypotheses the object lacks (sol-3 41826; #1528
+  adds that "nowhere-resolvable" is equivalent to the banked no-`m_c = 1`
+  fact, so it is a restatement, not new input);
   cofinal odd-`k` mod-3 bookkeeping — an explicit affine-line census on
   `q/2` component labels satisfies every named congruence for all odd
   `k ≥ 5` (sol-3 41834, #1529); exact finite 5-vertex flag relaxation —
-  feasible with integral counts uniformly for every `k ≥ 4`, and the
-  local-state cone (each root pair ≤ 1 common neighbour), root-orbit
+  feasible with integral counts uniformly for every `k ≥ 4` — the ORIGINAL
+  certificates violated the banked `tr(A D²) ≥ 0` and only the repaired
+  witnesses are feasible (row 175) — and the local-state cone (each root pair ≤ 1 common neighbour), root-orbit
   divisibility and joint A/D row-degree identities are all satisfied by
   repaired witnesses (sol-3 + sol-1 `3185f9a72a`, #1531/#1534); published
   odd-degree constructions (Abajo–Balbuena–Diánez 2010,
@@ -921,8 +925,9 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   odd-prime Hasse invariants), so no rational or 2-adic `X` has `XᵀX = M`
   — Hasse–Minkowski kills it independently (Fable `12fff39e2d`,
   `l6-representability/`, #1536 sol-1). The `r = 4` circulant `{±1..±7,
-  128}` passes the whole 2-adic theory and dies rationally at `p = 1663,
-  13183, 34687`. UNIFORM: the interval circulant family `R = {1, …,
+  128}` passes the determinant-square, nullity-2 and `Z_2`-representability
+  screens (sol-1 41983 scope) and dies rationally at `p = 1663, 13183,
+  34687`. UNIFORM: the interval circulant family `R = {1, …,
   q/2−1}` is excluded for EVERY binary `q ≥ 4` by the cyclotomic integral
   reduction mod 2 (sol-3 `l6-cyclic-trace/UNIFORM.md` `483ef2aa1e`, #1540
   sol-1), replacing the finite `q = 16/64` limitation; square-class screen
@@ -937,13 +942,15 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   recommendation to the operator stands: accept A-REG as the paper's live
   hypothesis and write (goal #45 framing), and take two items outside the
   room — the `x∘y` dictionary as an algebraic object, and the odd-`q`
-  construction half of (P1). After the editor's stop, the seats ran two further
-  seat-initiated rounds (#114/#115, 05:20–06:10Z; reviews #1541–#1552, all
+  construction half of (P1). Before the editor's stop was posted (the stop
+  is timestamped 05:00Z in its header but landed at 06:16Z), the seats ran
+  two further seat-initiated rounds (#114/#115, 05:20–06:10Z; reviews #1541–#1552, all
   negative, ledger rows 180–186, `965087ff4d`): polarity
   enlargement/switching, an integral-module formulation, a Baer matching
   barrier, an exact-Gram/DDG theorem, Baer polarity extension,
   retained-subplane support, and a mod-2 root gate — each a family or
-  template kill with its scope in the ledger. Completion audit (sol-1
+  template kill with its scope in the ledger; every seat obeyed the stop
+  once posted. Completion audit (sol-1
   42204): the capstone
   `Erdos85BinarySquareRegularCapstone.lean` takes
   `BinarySquareRegularExclusion` as a hypothesis; no theorem in the corpus
@@ -1535,6 +1542,10 @@ uploads > 5 GiB); post-drain multipart pass planned; boxes on hold until the
 
 ## Change log
 
+- **2.69.2** (2026-09-09, editor): Fable's red-team (42214) folded —
+  r = 4 circulant scope narrowed to the three screens it passed; rounds
+  #114/#115 ran before the stop landed; #1528's equivalence and row 175's
+  tr(AD²) caveat added; dictionary declaration count corrected.
 - **2.69.1** (2026-09-09, editor): (xviii)(d) records rounds #114/#115
   (ledger rows 180–186, Fable `965087ff4d`), run by the seats after the
   stop; all negative, no status change.
