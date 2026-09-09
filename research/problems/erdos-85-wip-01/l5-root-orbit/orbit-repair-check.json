@@ -1,0 +1,51 @@
+{
+  "results": [
+    {
+      "d": 2,
+      "q_min": 32,
+      "state_count": 23,
+      "residues_mod720": [
+        32,
+        128,
+        272,
+        368,
+        512,
+        608
+      ],
+      "moment_preserving_shift": true,
+      "nonnegative": "PASS",
+      "orbit_invariance": "PASS",
+      "stabilizer_divisibility": "PASS"
+    },
+    {
+      "d": 4,
+      "q_min": 16,
+      "state_count": 23,
+      "residues_mod720": [
+        16,
+        64,
+        256,
+        304,
+        496,
+        544
+      ],
+      "moment_preserving_shift": true,
+      "nonnegative": "PASS",
+      "orbit_invariance": "PASS",
+      "stabilizer_divisibility": "PASS"
+    }
+  ],
+  "shift": [
+    -2,
+    2,
+    2,
+    -2,
+    2,
+    -2,
+    -2,
+    2,
+    0
+  ],
+  "source_sha256": "3ef3b4dc9c36dfc6618e3615bb2769bf558735988fe63004e8659828ed9d8f74",
+  "scope": "Repairs root-permutation arithmetic only; no coherent graph assembly."
+}
