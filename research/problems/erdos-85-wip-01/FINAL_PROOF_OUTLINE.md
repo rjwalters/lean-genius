@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.68.3 — 2026-09-09 (mod-4 square criterion PROVEN in Lean `6ca43e97ec`; Hoory and cage source transfers recorded as cut; Hoffman entry states the Lean hypothesis exactly (identity-input form); Hoffman diagonal parity upgraded to `PROVEN` (Lean, `cb6d4cc017`); sol-1's red-team wording fixes in (xvii)(c)/(e); folded the Sep-8 deltas: Hoffman diagonal parity and the Lean triangle-free-degree partition law into A.5.1; scalar / local-diagonal spectral filters closed with certified limits, construction templates and divergence rounds #109–#111 recorded as cut in A.5.3 (xvii); the room's goal-#36 trigger recorded. A-REG remains open).**
+**Version 2.69 — 2026-09-09 (goal #46 deliberate brainstorming cycle, divergence round #113: 36 leads, all probes closed negative with certified scopes; the common-neighbour partial operation banked as an axiom-free Lean dictionary (A.5.1); interval circulant defects excluded for every binary q ≥ 4 and the explicit q=16 circulant killed by Hasse–Minkowski (A.5.3 (xviii)); conflict freight v6 and the replay pilot recorded in §F. A-REG remains open; the room has declared goal #36's trigger and the operator holds the direction decision).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -98,6 +98,21 @@ Everything below this line is inside A.5.
   triangle-free degree and `C_x` the defect component of `x`; summed form
   banked alongside. Corollaries: a size-two component forces `d_x ≤ 2`;
   `d_x > q/2` forces the unique large component; `6t ≥ q³ − q·Σ_c m_c²`.
+- **Partial common-neighbour operation ↔ graph dictionary** (`PROVEN`,
+  Lean, sol-3 `9249283ebf` / merge `df4d71eb56`,
+  `Erdos85PartialCentralReconstruction.lean`, seven theorems, NO axioms;
+  review #1535 Fable, cold-compiled at the committed path). For a C4-free
+  graph define `x∘y` := the unique common neighbour when it exists. The
+  operation is commutative, irreflexive, undefined exactly on defect
+  pairs, and satisfies the conditional CENTRAL law
+  `(x∘y)∘(y∘z) = y` whenever both inner products exist and differ
+  (Knuth 1970 / Evans 1967: exact central groupoids are precisely the
+  `A² = J` digraphs of order `m²`). Conversely any commutative partial
+  operation with these properties and ≥ 2 row-image values reconstructs a
+  simple C4-free graph via row images. Exact commutativity is incompatible
+  with the exact central law (`a∘b = b∘a ⇒ a = b`). This is a faithful
+  reformulation, not a weakening: imposing `q`-sized images on `q²`
+  elements returns the original node (see (xviii)(b)).
 - **HOFFMAN DIAGONAL PARITY** (`PROVEN`, Lean: `hoffman_diagonal_parity`
   and `hoffman_diagonal_parity_even` in `Erdos85HoffmanDiagonalParity.lean`,
   Fable `cb6d4cc017`, Mathlib-only import, standard axioms, review #1493
@@ -851,6 +866,81 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   direction is decided: Hoffman diagonal parity is now formalised
   (`cb6d4cc017`); next the mod-4-square criterion; consolidate one ledger table of
   every cut with exact scope and commit.
+  **(xviii) 2026-09-09 — GOAL #46 DELIBERATE BRAINSTORMING CYCLE
+  (divergence round #113), ALL PROBES CLOSED NEGATIVE.** Operator
+  direction after the room declared §G rule 6's trigger (41140): a
+  structured wide search rather than "accept A-REG and write". Three seats
+  submitted 36 leads (31 distinct) with forced diversity over object, tool,
+  target and outside-first; Fable clustered them against the cuts ledger
+  (`CUTS_LEDGER_DRAFT.md`, rows 172–179 record this cycle); both Sol votes
+  cut 23 on criterion (iv) alone — no NECESSARY inequality could be stated
+  whose failure would be a bounded falsifier. Root interface fact settled
+  first (P1, Fable 41732, sol-3 concurring): the Lean root
+  `CofinalPlaneOrderDropFamily` consumes ANY unbounded set of exponents,
+  and the parity-drop route needs NO square-order nonexistence (sol-1
+  41736): a cofinal odd-`d` family of `d`-regular C4-free graphs on even
+  `N ∈ [d²−d+1, d²−3]` refutes E85 outright. Editor scope ruling: that
+  route is admitted for source checks and bounded probes; goal #34's
+  decline of the non-VT `q = 9` hunt stands.
+
+  *(a) Gates run and closed, each `CLOSED-NEGATIVE` at its stated scope:*
+  fixed-shore trade bound `z ≤ q−1` REFUTED by a uniform `z = q` XOR trade
+  satisfying every extracted constraint (sol-1 `d1f380b00c`, #1532);
+  "genus of a symmetric square" — two candidate predicates refuted by
+  2×2 controls (sol-3 41819); nowhere-resolvable packings — Bruck's
+  pseudo-net recognition forces the excluded `m = 1` case, Bruen /
+  Jungnickel / Metsch need hypotheses the object lacks (sol-3 41826);
+  cofinal odd-`k` mod-3 bookkeeping — an explicit affine-line census on
+  `q/2` component labels satisfies every named congruence for all odd
+  `k ≥ 5` (sol-3 41834, #1529); exact finite 5-vertex flag relaxation —
+  feasible with integral counts uniformly for every `k ≥ 4`, and the
+  local-state cone (each root pair ≤ 1 common neighbour), root-orbit
+  divisibility and joint A/D row-degree identities are all satisfied by
+  repaired witnesses (sol-3 + sol-1 `3185f9a72a`, #1531/#1534); published
+  odd-degree constructions (Abajo–Balbuena–Diánez 2010,
+  Abreu–Balbuena–Labbate 2010) keep girth ≥ 5 hence `N ≥ d²+1` — cannot
+  land in the parity band (sol-3 41822, #1527); no 4-regular C4-free graph
+  on 16 vertices is vertex-transitive (`t(v) ∈ {1,2}`, transitivity would
+  force `3 ∣ t`; sol-2, #1533), so the `q = 16` Cayley search is
+  unmotivated.
+
+  *(b) The convergent lead, closed as a route.* All three seats
+  independently proposed the common-neighbour operation as the object.
+  Its dictionary is now `PROVEN` (A.5.1). Stability toward exact central
+  groupoids fails: a padded commutative 256-table from the `q = 16` even
+  core satisfies the law on `(q²−1)q(q−1)³ + q⁴` of `q⁶` triples (failure
+  `< 3/q`) yet is at normalized distance `≥ (1−1/q²)/2` from every exact
+  central groupoid (sol-3 `PARTIAL_CENTRAL_OPERATION_AUDIT.md`, #1535).
+
+  *(c) ARITHMETIC KILLS THAT STRENGTHEN WITH q — the cycle's one positive
+  yield, `PROVEN-SKETCH` with exact verifiers.* The explicit `q = 16`
+  circulant defect `D16` on `Z/256` (steps `{128, ±1, ±2, ±4, ±6, ±8,
+  ±10, ±12}`) has no alternating square root by the entrywise mod-2
+  obstruction (2ADIC_TERMINAL §A, sol-3 41946) AND `M = 15I + J − D16` is
+  not rationally congruent to `I_256` (`c_2 = −1` plus six certified
+  odd-prime Hasse invariants), so no rational or 2-adic `X` has `XᵀX = M`
+  — Hasse–Minkowski kills it independently (Fable `12fff39e2d`,
+  `l6-representability/`, #1536 sol-1). The `r = 4` circulant `{±1..±7,
+  128}` passes the whole 2-adic theory and dies rationally at `p = 1663,
+  13183, 34687`. UNIFORM: the interval circulant family `R = {1, …,
+  q/2−1}` is excluded for EVERY binary `q ≥ 4` by the cyclotomic integral
+  reduction mod 2 (sol-3 `l6-cyclic-trace/UNIFORM.md` `483ef2aa1e`, #1540
+  sol-1), replacing the finite `q = 16/64` limitation; square-class screen
+  for circulants with `r = 4s²` odd representatives banked alongside
+  (#1537). Missing link, stated at the reviewer's request: no
+  arbitrary-defect or arbitrary-circulant reduction exists — these kill
+  named families, not the node.
+
+  *(d) STATE OF THE NODE after the cycle (editor memo 41846/41847, all
+  three seats stopped 42038/42039/42198).* Every slate item is a bound, a
+  source check or a family kill; none is a mechanism. The editor's
+  recommendation to the operator stands: accept A-REG as the paper's live
+  hypothesis and write (goal #45 framing), and take two items outside the
+  room — the `x∘y` dictionary as an algebraic object, and the odd-`q`
+  construction half of (P1). Completion audit (sol-1 42204): the capstone
+  `Erdos85BinarySquareRegularCapstone.lean` takes
+  `BinarySquareRegularExclusion` as a hypothesis; no theorem in the corpus
+  supplies it; cold-build reports certify the implication only.
 - **NONBIP-MIXED `r ≥ 2`** — two or more parts. `GAP`. Uniform inputs: the
   owner/selector algebra of A.5.1; every binary candidate has a triangle-free
   edge (`binarySquare_regular_triangleFreeEdge_edgeFinset_nonempty`).
@@ -1332,6 +1422,21 @@ Does not count (goes to the ledger, not here):
   finite progress in A.5.2; a drop requires all strata to be closed, and
   even that would not establish the uniform A-REG statement).
 
+
+**Certificate replay stack, first end-to-end production runs (2026-09-08/09,
+editor + all seats; goal #44).** The H1 replay pilot consumed certificate
+`000202d67bf3c583` on EC2 (pilot-8, `i-0f15c5ecdb401b32e`, accepted 1/0,
+tagged `replay=consumed`, 984 s compile; standalone production validator
+VALID on a second box) after eight pilots exposed six reviewed-artifact
+defects; conflict freight v6 classified the three conflict certificates
+canonical-valid 3 / 0 / 0 in the cloud (`i-0b8bcc6dbb30ef053`, double
+audited #1538). Standing precondition for any replay launch: a local
+full-gate dry run of the frozen worker. The 11,954-certificate queue is
+NOT launched; sizing (~3,300 box-hours single-writer) is an operator
+decision. Producer fleet v3: 49 of 72 slots dead (trim OOM; single-PUT
+uploads > 5 GiB); post-drain multipart pass planned; boxes on hold until the
+16 quarantined LRATs are re-uploaded.
+
 ## G. Working rules (operator, 2026-08-18)
 
 1. One outline, on `erdos85/integration`, versioned as above. The room is
@@ -1422,6 +1527,14 @@ Does not count (goes to the ledger, not here):
    hours, and the rate itself was what made it invisible.
 
 ## Change log
+
+- **2.69** (2026-09-09, editor): goal #46 cycle folded as A.5.3 (xviii)
+  with the leads memo's read; A.5.1 gains the axiom-free Lean
+  common-neighbour dictionary (`9249283ebf`); interval-circulant defects
+  excluded uniformly and D16 killed by Hasse–Minkowski recorded as
+  family kills, not node changes; §F gains the replay-stack record (pilot-8,
+  conflict v6). Cuts ledger rows 172–179. No proof-node status changes;
+  A-REG remains open; direction decision with the operator.
 
 - **2.68.3** (2026-09-09, editor): (vii) gains the Lean mod-4 square
   criterion `6ca43e97ec` (Fable's delta 41455); (xvii)(f) gains the cage
