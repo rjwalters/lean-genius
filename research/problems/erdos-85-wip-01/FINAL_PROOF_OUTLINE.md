@@ -1,6 +1,6 @@
 # Final proof outline: Erdős 85 is false
 
-**Version 2.68.2 — 2026-09-08 (Hoffman entry states the Lean hypothesis exactly (identity-input form); Hoffman diagonal parity upgraded to `PROVEN` (Lean, `cb6d4cc017`); sol-1's red-team wording fixes in (xvii)(c)/(e); folded the Sep-8 deltas: Hoffman diagonal parity and the Lean triangle-free-degree partition law into A.5.1; scalar / local-diagonal spectral filters closed with certified limits, construction templates and divergence rounds #109–#111 recorded as cut in A.5.3 (xvii); the room's goal-#36 trigger recorded. A-REG remains open).**
+**Version 2.68.3 — 2026-09-09 (mod-4 square criterion PROVEN in Lean `6ca43e97ec`; Hoory and cage source transfers recorded as cut; Hoffman entry states the Lean hypothesis exactly (identity-input form); Hoffman diagonal parity upgraded to `PROVEN` (Lean, `cb6d4cc017`); sol-1's red-team wording fixes in (xvii)(c)/(e); folded the Sep-8 deltas: Hoffman diagonal parity and the Lean triangle-free-degree partition law into A.5.1; scalar / local-diagonal spectral filters closed with certified limits, construction templates and divergence rounds #109–#111 recorded as cut in A.5.3 (xvii); the room's goal-#36 trigger recorded. A-REG remains open).**
 
 As of v2.5, `PROVEN` means **green on a cold build of `erdos85/integration`**.
 The v2.2 baseline was tip `e304275e85` (1,645/1,649 modules; audit logs in
@@ -364,6 +364,20 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   unpaired ledger fails the odd-power mod4 congruence (`b7d7671333`,
   `NONBIP_CONNECTED_ODD_POWER_MOD4_AUDIT.md`). These are prose proofs with
   executable verifiers, not Lean theorems or an all-spectra exclusion.
+  **Lean bank (2026-09-09, Fable `6ca43e97ec`, review #1507 PASS sol-1):**
+  the finite mod-4 square criterion of
+  `NONBACKTRACKING_INTEGRALITY_MOD4.md` is now `PROVEN` — for
+  `P ∈ ℤ⟦X⟧` with `P(0) = 1`, `P` is a square in `ℤ⟦X⟧` iff
+  `P ≡ R² (mod 4)` coefficientwise, `R = Σ_j (p_{2j} mod 2) X^j`; for a
+  polynomial only coefficients `0..deg P` need checking
+  (`Erdos85IntegerSeriesSquareModFour`, `sq_iff_modEq_four`,
+  `sq_iff_modEq_four_of_polynomial`; Mathlib-only, standard axioms). The
+  reduction from all-length primitive-cycle integrality to squareness
+  (Euler expansion + Ihara substitution) remains prose with executable
+  checks. A screening tool, not an exclusion: the surviving q1024 /
+  local-diagonal controls already satisfy `P ≡ 1 (mod 4)`
+  (`UNBOUNDED_SPECTRAL_FILTER_CONTROL.md`), and no A-REG spectrum is newly
+  excluded.
   They preserve the earlier limited moment/parity checks and do not
   reopen those already-refuted arguments. A bound `mult_D(−1) < √q`
   would exclude trace `−q` on that sector alone, not trace shared with
@@ -817,7 +831,14 @@ A-REG itself. Its children, by shape (a completeness split, not a theorem):
   fails for any unbounded square-order regular family (`10·C₅ = tr A⁵ −
   5(q−1)·tr A³`, `c₅ ~ q⁵/10`); the edge-rooted BFS shows the saturated
   binary `q ≥ 16` triangle hypergraph must contain a Berge 5-cycle (q8
-  not concluded). Source-transfer limits, not candidate exclusions.
+  not concluded). CAGE SOURCES (sol-1 `6f53d6efd2`, #1496 sol-3): the
+  biregular girth-10 cage bounds need exact side-degree / small-excess
+  hypotheses that do not transfer — even the all-`d=2` special case exceeds
+  the source Moore bound by `≥ 66`, not `≤ 4`. HOORY (sol-3 `825937c07f`,
+  #1500 sol-1; Bernstein certificates by sol-1): both girth-10
+  average-degree side bounds lie strictly below the counts for every
+  `q ≥ 8` square-order regular candidate, with no saturation assumption.
+  All three are source-transfer limits, not candidate exclusions.
 
   *(g) STATE OF THE NODE (room consensus 41140–41143, put to the operator
   once per #35(4)).* The scalar-spectral, local-diagonal,
@@ -1402,6 +1423,10 @@ Does not count (goes to the ledger, not here):
 
 ## Change log
 
+- **2.68.3** (2026-09-09, editor): (vii) gains the Lean mod-4 square
+  criterion `6ca43e97ec` (Fable's delta 41455); (xvii)(f) gains the cage
+  (`6f53d6efd2`) and Hoory (`825937c07f`) source-transfer cuts. No node
+  status change.
 - **2.68.2** (2026-09-08, editor): Hoffman entry reworded to the exact
   Lean hypothesis `h(A) = c·J` (Fable's red-team 41268); the spectral
   step from a simple eigenvalue stays prose.
