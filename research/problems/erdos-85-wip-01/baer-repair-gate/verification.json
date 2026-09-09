@@ -1,0 +1,23 @@
+{
+  "q": 25,
+  "subfield_order": 5,
+  "vertices": 620,
+  "deficits": 20,
+  "degree_histogram": {
+    "24": 20,
+    "25": 600
+  },
+  "deficit_pair_length3_histogram": {
+    "22": 120,
+    "23": 60,
+    "24": 10
+  },
+  "conjugate_matching_edges": 10,
+  "conjugate_matching_paths": 240,
+  "max_deletion_path_load": 2,
+  "universal_matching_deletion_lower_bound": 110,
+  "conjugate_matching_deletion_lower_bound": 120,
+  "adjacency_sha256": "1e9ab950d01731d4394c681960153605af5823d48d1e25ef2ed3515886b64489",
+  "PASS": true,
+  "scope": "deterministic seed and necessary deletion bounds; no repaired graph"
+}
