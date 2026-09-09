@@ -1,0 +1,33 @@
+{
+  "kind": "deterministic construction regression; uniform proof in CONTROL.md",
+  "results": [
+    {
+      "q": 16,
+      "n": 256,
+      "defect_degree": 15,
+      "components": 1,
+      "triangle": [
+        0,
+        128,
+        1
+      ],
+      "root_integer_degree_min": 2,
+      "root_integer_degree_max": 242,
+      "symmetric_alternating_root_mod2": true
+    },
+    {
+      "q": 32,
+      "n": 1024,
+      "defect_degree": 31,
+      "components": 1,
+      "triangle": [
+        0,
+        512,
+        1
+      ],
+      "root_integer_degree_min": 2,
+      "root_integer_degree_max": 994,
+      "symmetric_alternating_root_mod2": true
+    }
+  ]
+}
