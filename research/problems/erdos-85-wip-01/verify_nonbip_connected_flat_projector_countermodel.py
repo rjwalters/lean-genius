@@ -54,7 +54,7 @@ def check(q: int) -> None:
     assert np.max(np.abs(np.diag(square) - q)) < 1e-7
     assert np.max(np.abs(adjacency_relaxation @ ones - q * ones)) < 1e-7
 
-    # Every eigenvector is flat, so the q-dimensional designated projector
+    # Every eigenvector is flat, so the selected q-dimensional projector
     # has leverage q/n=1/q at every coordinate.
     designated = basis[:, 1 : q + 1] @ basis[:, 1 : q + 1].T
     assert np.max(np.abs(np.diag(designated) - 1 / q)) < 1e-8
@@ -67,7 +67,7 @@ def check(q: int) -> None:
         axis=0,
     )
     print(
-        f"q={q} n={n} designated_rank={q} "
+        f"q={q} n={n} selected_sector_rank={q} "
         f"max_diag_A={np.max(np.abs(np.diag(adjacency_relaxation))):.3e} "
         f"max_diag_A2_error={np.max(np.abs(np.diag(square)-q)):.3e} "
         f"max_row_error={np.max(np.abs(adjacency_relaxation @ ones-q*ones)):.3e} "
@@ -81,7 +81,8 @@ def main() -> None:
     args = parser.parse_args()
     for q in args.q:
         check(q)
-    print("verified: flat projectors satisfy all diagonal moments but violate terminal rank scale")
+    print("verified: flat projectors satisfy the specified first two diagonal moments; "
+          "selected-sector rank exceeds the numerical target scale")
 
 
 if __name__ == "__main__":
