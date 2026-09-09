@@ -50,6 +50,11 @@ def apply_refreeze(text: str, pins: dict) -> str:
             raise ValueError(f"invalid refreeze {field}")
     if pins["repo_archive"] == pins["overlay_archive"]:
         raise ValueError("repo and overlay archive names must differ")
+    # The frozen worker checks conditional-put support through AWS help,
+    # which requires a manpage renderer even when AWS_PAGER is empty.
+    text = replace_once(text,
+                        '  ca-certificates curl docker.io jq unzip zstd\n',
+                        '  ca-certificates curl docker.io groff-base jq unzip zstd\n')
     for field, variable in REFREEZE_HASHES.items():
         old = re.findall(rf"^{variable}=([0-9a-f]{{64}})$", text, re.MULTILINE)
         if len(old) != 1:

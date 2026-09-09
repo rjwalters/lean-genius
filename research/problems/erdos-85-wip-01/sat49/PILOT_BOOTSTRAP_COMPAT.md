@@ -140,6 +140,17 @@ review. These syntax and consistency checks do not authenticate the
 referenced artifacts: their actual hashes must be verified in the freight
 handoff, followed by the full-payload replay and receipt validation.
 
-The input mechanism is tested locally. The new pilot's final pin file and
-launch script are pending the completed archive/manifest handoff; no
+The input mechanism is tested locally. A generated candidate still needs
+artifact-specific review and a full local replay before launch; no
 launch-ready output is asserted here.
+
+The first full local replay then exposed a missing runtime dependency:
+`aws s3api put-object help` exited 255 with no stdout because neither
+`groff` nor `mandoc` was available. Refreeze mode now explicitly installs
+`groff-base`, which the frozen worker's help-based capability check needs.
+The historical default and identity-only mode retain their earlier bytes.
+With `groff-base` installed in the distinct local host image, the actual
+help command subsequently exited zero and its 65699-byte stdout contained
+both exact `--if-match` and `--if-none-match` strings required by the worker.
+This dependency repair does not relax the capability check or establish
+that the remaining replay gates pass; the local run must exercise them.

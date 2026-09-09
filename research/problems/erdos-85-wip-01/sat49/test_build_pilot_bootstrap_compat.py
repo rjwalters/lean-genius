@@ -91,6 +91,17 @@ class PilotBootstrapCompatTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'full tool identity'):
             MOD.render(self.original, refreeze=REFREEZE)
 
+    def test_refreeze_installs_aws_help_renderer(self):
+        for refreeze, expected in ((None, False), (REFREEZE, True)):
+            generated = MOD.render(self.original, full_tool_identities=True,
+                                   refreeze=refreeze).decode()
+            block = 'apt-get -o Acquire::Retries=5 install' + generated.split(
+                'apt-get -o Acquire::Retries=5 install', 1)[1].split('\nsystemctl', 1)[0]
+            result = self.run_shell('apt-get() { printf "%s\\n" "$@"; }\n' + block)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.stdout.splitlines().count('groff-base'), int(expected))
+            self.assertIn('--no-install-recommends', result.stdout.splitlines())
+
     def test_refreeze_cli_binds_exact_input_bytes(self):
         with tempfile.TemporaryDirectory() as root:
             pins = Path(root) / 'pins.json'
