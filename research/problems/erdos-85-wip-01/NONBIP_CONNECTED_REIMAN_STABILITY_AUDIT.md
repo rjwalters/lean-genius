@@ -1,7 +1,7 @@
 # NONBIP-CONNECTED Reiman/stability equality audit
 
 Date: 2026-08-26.  Node: `A-REG-NONBIP / NONBIP-CONNECTED [q]`.
-Status: **global extremal-equality mechanism cut**.
+Status: **the displayed Reiman equality argument and direct stability imports do not apply**.
 
 ## Question
 
@@ -12,7 +12,7 @@ geometry and make the connected defect graph impossible.
 
 The relevant modern stability result is He--Ma--Yang,
 [Some exact results on 4-cycles: stability and
-supersaturation](https://arxiv.org/abs/1912.00986).  At `q^2+q+1` vertices it
+supersaturation](https://arxiv.org/abs/1912.00986).  For sufficiently large even `q`, at `q^2+q+1` vertices it
 reconstructs a unique polarity graph when the edge count is within order `q`
 of the extremal value.  Firke--Kosek--Nash--Williford,
 [Extremal Graphs Without 4-Cycles](https://arxiv.org/abs/1201.4912), treats the
@@ -80,9 +80,9 @@ q(q+1)^2/2 - q^3/2 = q^2 + q/2.                      (5)
 
 He--Ma--Yang's reconstruction window has deficit only order `q` (their
 sharpened threshold is one half `q`, up to a lower-order term).  The deficit
-in (5) is order `q^2`.  Reaching that window requires adding essentially the
-missing point/line incidences of a plane; constructing those incidences is
-the proposed completion theorem itself, not a consequence of stability.
+in (5) is order `q^2`.  Reaching that window requires adding order `q^2` edges while preserving
+C4-freeness. Constructing those additional edges is a separate extension
+problem; the stability theorem does not supply the extension.
 
 ## Why self-polarity does not repair the count
 
@@ -94,12 +94,15 @@ data are already exactly
 A A^T = (q-1)I + J - D.
 ```
 
-They do not see whether a uniquely covered pair is also an A-edge, which is
-the triangle information `t_x`.  Consequently any entropy, Jensen, or
-Cauchy--Schwarz refinement using only the same one- and two-row marginals
-reduces to (2)--(3).  A stability successor would need a new theorem using
-the placement of the polarity incidences inside those pairs; generic
-C4-free stability and symmetric-configuration deficiency do not supply it.
+The scalar count in (1) discards whether a uniquely covered pair is also
+an A-edge, which contributes to the triangle information `t_x`. Repeating
+that count through degree-only Jensen or Cauchy--Schwarz gives the same
+slack. This is not a proof that every inequality using labelled row or
+pair-intersection data reduces to (2)--(3): the full matrix identity retains
+the placement of the defect pairs. No universal entropy or marginal-data
+obstruction is established here. Applying a stability result after adding
+incidences would require a separate construction preserving C4-freeness;
+the scalar slack calculation supplies no such construction.
 
 ## Verdict
 
@@ -107,9 +110,11 @@ The square-order model has macroscopic, exactly evaluated extremal slack:
 pair-count slack `|E(D)|=Theta(q^3)` and edge-bound slack `Theta(q^2)`.
 Connectedness merely connects the slack graph.  Published polarity stability
 acts in an order-`q` deficit window after projective completion, while the
-uncompleted model is order `q^2` away.  Therefore Reiman equality, standard
-entropy refinements, and current polarity-stability reconstruction cannot
-force either rooted triangle congruence.
+uncompleted model is order `q^2` away. Thus Reiman equality and the stated
+direct application of polarity stability supply neither rooted triangle
+congruence. This cuts these
+applications, not every possible extremal or entropy argument retaining
+additional incidence data.
 
 ## Updated affine completion theorem: the hypothesis cannot be repaired cheaply
 
