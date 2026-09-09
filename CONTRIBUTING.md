@@ -40,6 +40,13 @@ Lean Genius maintains a gallery of formalized mathematical proofs in Lean 4, alo
    ```
    This creates `research/db/knowledge.db` from the SQL dump files.
 
+   > **Currently broken:** `research/db/schema.sql` (and the `research/db/data/`
+   > dumps) were deleted from `main` in dc9fdffa30 (#37576), so `db:rebuild` exits
+   > with "schema not found". The file is recoverable with
+   > `git show dc9fdffa30^:research/db/schema.sql`; restoring it is tracked in the
+   > Known-Gaps Ledger in `.lean/roles/COMMON.md`. Agents that need the database
+   > use the local, gitignored `knowledge.db` in the main checkout.
+
 5. **Build proofs** (optional, only if modifying Lean files):
    ```bash
    ./proofs/scripts/docker-build.sh Proofs.YourProof
@@ -104,7 +111,7 @@ gh pr create --title "Research: <topic>" --body "Summary of findings..."
 | `src/data/research/problems/*.json` | Problem definitions, current knowledge | Yes |
 | `.lean/state/candidate-pool.json` | Problem registry and status | No (gitignored; lives in the main checkout) |
 | `research/db/data/*.sql` | Historical sessions, detailed records | No (gitignored; dir may not exist) |
-| `research/db/schema.sql` | Database schema | Yes |
+| `research/db/schema.sql` | Database schema | **No — missing.** Deleted in dc9fdffa30 (#37576); recoverable from history, not yet restored |
 | `research/db/knowledge.db` | Local SQLite database | No (gitignored) |
 
 ### Database Workflow
@@ -115,7 +122,7 @@ The SQLite database is a **local working copy** rebuilt from SQL dump files:
 SQL files (tracked) ──db:rebuild──> Local DB (gitignored) ──db:export──> SQL files
 ```
 
-- `pnpm db:rebuild` - Create local DB from SQL files (run after clone/pull)
+- `pnpm db:rebuild` - Create local DB from SQL files (run after clone/pull) — *fails until `schema.sql` is restored, see above*
 - `pnpm db:export` - Export DB changes to SQL files (run before commit)
 
 ### Contributor Attribution
