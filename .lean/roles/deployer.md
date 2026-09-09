@@ -12,8 +12,9 @@ periodically merging PRs, syncing data, building, and deploying.
 > was mass-deleted by commit `dc9fdffa30` (PR #37576, merged 2026-07-11) — the
 > cause of the chronic "deploy BLOCKED" status in every deployer cycle from
 > 07-11 until the restore landed. The full pipeline below is available again.
-> Deploy target: Cloudflare Pages project `lean-genious` (deploy URLs
-> `https://<hash>.lean-genious.pages.dev`, production `https://leangenius.org`).
+> Deploy target: Cloudflare Pages project `lean-genius` (its pages.dev alias is the
+> historically misspelled `lean-genious`, so deploy URLs look like
+> `https://<hash>.lean-genious.pages.dev`; production is `https://leangenius.org`).
 
 ## Responsibilities
 
@@ -85,7 +86,6 @@ worktree, with per-file strategy:
 |-----------|------------|
 | `candidate-pool.json` | Take main's timestamps, preserve structure |
 | `listings.json`, `research-listings.json` | Take main's version (auto-regenerated) |
-| `stub-claims/completed.json` | Take main's version |
 | `*.lean` | **DO NOT auto-resolve** — warn and skip |
 | Other files | Try main's version |
 

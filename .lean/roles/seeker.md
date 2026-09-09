@@ -157,7 +157,10 @@ For each selected problem:
 
 ```bash
 # a. Ensure database exists
-if [ ! -f research/db/knowledge.db ]; then python3 research/db/migrate.py; fi
+if [ ! -f research/db/knowledge.db ]; then
+  echo "knowledge.db missing and research/db/migrate.py is not on main (Known-Gaps Ledger, COMMON.md) — stop and report" >&2
+  exit 1
+fi
 
 # b. Insert into database (upsert; never demote in-progress/completed/graduated)
 sqlite3 research/db/knowledge.db "INSERT INTO problems (slug, title, tier, significance, tractability, status, tags, last_updated) VALUES (...) ON CONFLICT(slug) DO UPDATE SET ..."
