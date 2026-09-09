@@ -49,6 +49,14 @@ AUDIT_SUMMARY_KEYS = {
     "fleet_in_flight", "fleet_ledger_rows", "fleet_unknown_without_cert",
     "host_ledger_rows", "pending", "status_total", "unknown_tags",
 }
+READBACK_SUMMARY_KEYS = AUDIT_SUMMARY_KEYS | {
+    "certificate_ledger_valid_present", "certificate_readback_valid",
+    "certificate_readback_valid_present",
+    "certificate_ledger_readback_valid_present_overlap", "conflict_audit_sha256",
+}
+READBACK_COVERAGE_COLUMNS = (
+    *COVERAGE_COLUMNS[:8], "certificate_readback_valid", *COVERAGE_COLUMNS[8:],
+)
 STATUSES = {
     "certificate-key-conflict", "certified-in-S3", "fleet-in-flight",
     "host-ledgered-UNSAT-not-uploaded", "pending",
@@ -152,13 +160,29 @@ def parse_audit_receipt(path: Path, data: bytes, expected_sha256: str,
             or coverage.get("bytes") != len(coverage_data)):
         raise ValueError(f"{path}: coverage identity mismatch")
     summary = receipt.get("summary")
-    if not isinstance(summary, dict) or set(summary) != AUDIT_SUMMARY_KEYS:
+    if not isinstance(summary, dict) or set(summary) not in (
+            AUDIT_SUMMARY_KEYS, READBACK_SUMMARY_KEYS):
         raise ValueError(f"{path}: malformed audit summary")
-    integer_summary = AUDIT_SUMMARY_KEYS - {
-        "anomalies", "certificate_key_conflict_tags", "unknown_tags"}
+    integer_summary = set(summary) - {
+        "anomalies", "certificate_key_conflict_tags", "unknown_tags",
+        "conflict_audit_sha256"}
     if any(type(summary[name]) is not int or summary[name] < 0
            for name in integer_summary):
         raise ValueError(f"{path}: malformed audit summary counts")
+    if set(summary) == READBACK_SUMMARY_KEYS:
+        audit_sha = summary["conflict_audit_sha256"]
+        ledger = summary["certificate_ledger_valid_present"]
+        readback = summary["certificate_readback_valid_present"]
+        overlap = summary["certificate_ledger_readback_valid_present_overlap"]
+        if (not isinstance(audit_sha, str)
+                or (audit_sha != "" and not re.fullmatch(r"[0-9a-f]{64}", audit_sha))
+                or ledger > summary["certificate_ledger_valid"]
+                or readback > summary["certificate_readback_valid"]
+                or overlap > min(ledger, readback)
+                or summary["certified"] != ledger + readback - overlap
+                or summary["certified"] > summary["certificate_key_present"]
+                or (audit_sha == "" and (summary["certificate_readback_valid"] or overlap))):
+            raise ValueError(f"{path}: inconsistent readback audit summary")
     tags = summary.get("certificate_key_conflict_tags")
     count = summary.get("certificate_key_conflict_count")
     total = summary.get("status_total")
@@ -185,9 +209,12 @@ def parse_coverage(path: Path, data: bytes, expected_tags: list[str],
         raise ValueError(f"{path}: coverage is not UTF-8") from error
     selected = []
     seen = set()
+    readback_schema = set(summary) == READBACK_SUMMARY_KEYS
+    certificate_counts: Counter[str] = Counter()
     with io.StringIO(text, newline="") as stream:
         reader = csv.DictReader(stream, delimiter="\t")
-        if reader.fieldnames != list(COVERAGE_COLUMNS):
+        expected_columns = READBACK_COVERAGE_COLUMNS if readback_schema else COVERAGE_COLUMNS
+        if reader.fieldnames != list(expected_columns):
             raise ValueError(f"{path}: coverage header is not exact v2 schema")
         for line_number, row in enumerate(reader, 2):
             tag = row["tag"]
@@ -207,12 +234,33 @@ def parse_coverage(path: Path, data: bytes, expected_tags: list[str],
                         "certificate_key_present", "certificate_ledger_valid",
                         "certificate_key_conflict", "certified_s3"))):
                 raise ValueError(f"{path}:{line_number}: invalid status or certificate flags")
+            if readback_schema:
+                if row["certificate_readback_valid"] not in {"0", "1"}:
+                    raise ValueError(f"{path}:{line_number}: invalid readback flag")
+                present = row["certificate_key_present"] == "1"
+                ledger = row["certificate_ledger_valid"] == "1"
+                readback = row["certificate_readback_valid"] == "1"
+                certified = present and (ledger or readback)
+                if (row["certified_s3"] == "1") != certified:
+                    raise ValueError(f"{path}:{line_number}: inconsistent certified union")
+                for name, flag in {
+                    "certificate_key_present": present,
+                    "certificate_ledger_valid": ledger,
+                    "certificate_readback_valid": readback,
+                    "certificate_ledger_valid_present": present and ledger,
+                    "certificate_readback_valid_present": present and readback,
+                    "certificate_ledger_readback_valid_present_overlap": present and ledger and readback,
+                    "certified": certified,
+                }.items():
+                    certificate_counts[name] += int(flag)
             if row["status"] == "certificate-key-conflict":
                 if (row["certificate_key_present"] != "1"
                         or row["certificate_ledger_valid"] != "0"
                         or row["certificate_key_conflict"] != "1"
                         or row["certified_s3"] != "0"):
                     raise ValueError(f"{path}:{line_number}: inconsistent conflict flags")
+                if readback_schema and row["certificate_readback_valid"] != "0":
+                    raise ValueError(f"{path}:{line_number}: conflict already readback-valid")
                 key = certificate_key(tag)
                 validate_certificate_key(tag, key)
                 selected.append({
@@ -226,6 +274,9 @@ def parse_coverage(path: Path, data: bytes, expected_tags: list[str],
                 raise ValueError(f"{path}:{line_number}: conflict flag/status mismatch")
     if len(seen) != summary["status_total"]:
         raise ValueError(f"{path}: coverage row count differs from audit receipt")
+    if readback_schema and any(summary[name] != count
+                               for name, count in certificate_counts.items()):
+        raise ValueError(f"{path}: certificate flag counts differ from audit summary")
     selected.sort(key=lambda job: job["tag"])
     actual_tags = [job["tag"] for job in selected]
     if actual_tags != expected_tags:

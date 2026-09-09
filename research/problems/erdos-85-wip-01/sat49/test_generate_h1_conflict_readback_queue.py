@@ -88,6 +88,71 @@ def audit_receipt(coverage: bytes, count: int = 8) -> bytes:
 
 
 class ConflictReadbackQueueTest(unittest.TestCase):
+    def readback_fixture(self, certified: bool = False) -> tuple[bytes, dict]:
+        import csv
+        rows = list(csv.DictReader(io.StringIO(coverage_rows().decode()), delimiter="\t"))
+        for row in rows:
+            row["certificate_readback_valid"] = "0"
+        if certified:
+            rows[0].update(status="certified-in-S3", certificate_readback_valid="1",
+                           certificate_key_conflict="0", certified_s3="1")
+        coverage = ("\t".join(mod.READBACK_COVERAGE_COLUMNS) + "\n" + "".join(
+            "\t".join(row[name] for name in mod.READBACK_COVERAGE_COLUMNS) + "\n"
+            for row in rows)).encode()
+        audit = json.loads(audit_receipt(coverage, 7 if certified else 8))
+        audit["summary"].update(
+            status_total=8, certificate_key_present=8, certified=int(certified),
+            certificate_ledger_valid_present=0, certificate_readback_valid=int(certified),
+            certificate_readback_valid_present=int(certified),
+            certificate_ledger_readback_valid_present_overlap=0,
+            conflict_audit_sha256="a" * 64 if certified else "")
+        return coverage, audit
+
+    def test_current_readback_schema_selects_only_unvalidated_conflicts(self) -> None:
+        for certified in (False, True):
+            with self.subTest(certified=certified):
+                coverage, audit = self.readback_fixture(certified)
+                data = mod.canonical(audit)
+                tags, summary = mod.parse_audit_receipt(
+                    Path("audit"), data, mod.sha256_bytes(data), coverage)
+                jobs = mod.parse_coverage(Path("coverage"), coverage, tags, summary)
+                self.assertEqual(len(jobs), 7 if certified else 8)
+                self.assertEqual([job["tag"] for job in jobs], tags)
+
+    def test_current_summary_rejects_partial_unknown_and_inconsistent_fields(self) -> None:
+        coverage, base = self.readback_fixture()
+        mutations = [
+            lambda d: d.pop("certificate_readback_valid"),
+            lambda d: d.update(unreviewed_field=0),
+            lambda d: d.update(certificate_readback_valid=True),
+            lambda d: d.update(conflict_audit_sha256="bad"),
+            lambda d: d.update(certificate_readback_valid=1),
+            lambda d: d.update(certificate_ledger_readback_valid_present_overlap=1),
+            lambda d: d.update(certified=1),
+        ]
+        for mutation in mutations:
+            audit = json.loads(json.dumps(base))
+            mutation(audit["summary"])
+            data = mod.canonical(audit)
+            with self.subTest(summary=audit["summary"]), self.assertRaises(ValueError):
+                mod.parse_audit_receipt(Path("audit"), data, mod.sha256_bytes(data), coverage)
+
+    def test_current_coverage_requires_matching_schema_and_flag_census(self) -> None:
+        coverage, audit = self.readback_fixture()
+        summary = audit["summary"]
+        tags = summary["certificate_key_conflict_tags"]
+        with self.assertRaises(ValueError):
+            mod.parse_coverage(Path("legacy"), coverage_rows(), tags, summary)
+        wrong_counts = dict(summary, certificate_ledger_valid=1)
+        with self.assertRaisesRegex(ValueError, "flag counts"):
+            mod.parse_coverage(Path("coverage"), coverage, tags, wrong_counts)
+        lines = coverage.decode().splitlines()
+        fields = lines[1].split("\t")
+        fields[mod.READBACK_COVERAGE_COLUMNS.index("certificate_readback_valid")] = "1"
+        lines[1] = "\t".join(fields)
+        with self.assertRaises(ValueError):
+            mod.parse_coverage(Path("coverage"), ("\n".join(lines)+"\n").encode(), tags, summary)
+
     def test_main_writes_canonical_create_only_queue_and_receipt(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -35,16 +35,16 @@ COVERAGE_COLUMNS = (
     "fleet_v3_claim", "fleet_v3_cnf_sha256", "fleet_v3_verdict",
 )
 CONFLICT_AUDIT_SCHEMA = "erdos85-h1-conflict-readback-audit-v2"
-CONFLICT_EXECUTOR_SHA256 = "5eb4eecb981f1ee8ed57fe6ae0ee7802e0678255e938cccc3508ea8e6d95ed05"
+CONFLICT_EXECUTOR_SHA256 = "df0a0ba965295ff5b7b2ac407315b835eeb7552bda52e284e7bd99ea85a51c17"
 CONFLICT_HELPER_SHA256 = {
     "capacity-filter": "a0f75f34d74cb8e3d48310b8f2e7b9544bba690110c0256c03f1b78bc9745e81",
-    "queue-format": "5acf5ba65a4d3ea3f1f2aa603b102aa762ebbf91b1b2365645cb0af9060e7636",
+    "queue-format": "52d4a51b914ed30fe8426cabfaf3212c4e42f365d0ad46d264b1e1bbcab76340",
 }
 CONFLICT_INPUT_SHA256 = {
-    "audit-receipt": "d03a41d327b8a059b6a516a254789814a2f608d3024114b82701fa2683ba1995",
+    "audit-receipt": "b8da3bae5025824134cd3db8b126cd3881b675c0a017802974029a2b869fe852",
     "capacity-inventory": "81d515472be48a43806f9c1c7343b4b715c98fe5a02a82e2b76244c1b015fd1b",
     "queue": "b7eba5dabf8a860c5af7015032203f38608ca9750182da06a2bbf0fe12d77380",
-    "queue-receipt": "88665dcb8a2bb25890dd6d14fc17df4b7ad39b9d449690ae6dd8ff0600ffc86a",
+    "queue-receipt": "ed732221661cfdb7860d4ccf7d3b4a17eee1df9827451c05d0dd3b089fef9a48",
 }
 CONFLICT_IMAGE_IDENTITY = {
     "runtime_tag": "lean4-arm64:v4.31.0",
