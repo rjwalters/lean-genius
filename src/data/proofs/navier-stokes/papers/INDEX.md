@@ -225,7 +225,7 @@ does α > 1 impose on concentration structure?
 | Paper | What It Proves | Role in Chain |
 |-------|---------------|---------------|
 | CKN 1982 | ε-regularity: A(r)+C(r)+D(r) ≥ ε₀ at singular points | Step 1 |
-| Standard | Enstrophy ODE: dE/dt ≤ CE³ | Step 2 |
+| Leray 1934 | Enstrophy ODE: dE/dt ≤ CE³ ⇒ E ≥ c(T*-t)^{-1/2} (LOWER bound) | Step 2 |
 | Barker-Prange 2020 | Type I concentration at √(T*-t) | Step 4 |
 | ESŠ 2003 | Backward uniqueness excludes Type I | Step 5 |
 | Seregin 2025 | Type II exclusion via LPS condition | Comparison |
@@ -248,7 +248,8 @@ does α > 1 impose on concentration structure?
 
 This is:
 - **Strictly weaker** than Seregin's LPS condition
-- **Exactly what bridges** the scale gap for Type II
+- ~~Exactly what bridges the scale gap for Type II~~ — withdrawn 2026-09-08: OpenAI's
+  forced Type II flow satisfies B′
 - **Rules out** cascade/escape mechanisms (Tao's core obstruction)
 
 ### Comparison of Anti-Escape Hypotheses
@@ -266,8 +267,38 @@ This is:
 
 ---
 
+## V5 Addendum: OpenAI Forced Blowup (September 2026)
+
+### 7. OpenAI 2026 - Finite Time Blowup for Navier–Stokes
+**File:** not archived locally (2.8 MB); fetch from the source URL
+**Source:** https://cdn.openai.com/pdf/32d9f210-8b73-45e0-91bc-82a30aef8a9a/navier-stokes.pdf
+**Lean certificates:** https://github.com/openai/NavierStokesAndEuler (Lean v4.34.0-rc2, 0 sorries, standard axioms only, review "self-assessed")
+**Announced:** 2026-09-08
+
+**Summary:** For every ν > 0, a smooth compactly supported force and zero initial velocity
+produce a smooth solution on [0,1) with bounded kinetic energy and ‖u‖_∞ → ∞ as t ↑ 1, on
+ℝ³ (Theorem 1.1) and 𝕋³ (Corollary 10.6). Claims Clay alternatives (C)/(D). Unforced (A)/(B)
+not addressed.
+
+**Mechanism:** axisymmetric self-similar core (ℓ_r ≍ τ^{1/2}, ℓ_z ≍ τ^{1/2−h}, speeds τ^{−1/2−h},
+Re_θ ≍ τ^{−h} → ∞, Re_r = O(1)); oscillatory pulses in an annulus supply the missing mean
+momentum flux; the residual is defined to be the force and is shown to extend smoothly
+through t = 1.
+
+**Relevance to our framework:** ⭐⭐⭐⭐⭐ CRITICAL — a concrete forced Type II singularity
+(α = 1+h) that satisfies Bubble Persistence B′ and violates exactly one NSAxioms field
+(`spectral_gap`). See `../analysis/openai-forced-blowup-2026.md`.
+
+**Lineage (not downloaded):**
+- Córdoba, Martínez-Zoroa — forced 3D Euler singularities, arXiv:2410.22920
+- Córdoba, Martínez-Zoroa, Zheng — hypodissipative NS with forcing
+- Alpöge, Buckmaster — forced IPM / Boussinesq / Euler with Lean (Sept 2026)
+- Tao's exposition (2026-09-07): https://terrytao.wordpress.com/2026/09/07/finite-time-blowup-with-smooth-forcing-term-for-the-incompressible-porous-medium-boussinesq-and-incompressible-euler-equations/
+
+---
+
 ## Notes
 
-Last updated: 2025-12-22
-Version: v3 (Conditional Regularity Theorem)
+Last updated: 2026-09-08
+Version: v5 (OpenAI forced blowup + enstrophy erratum)
 Main theorem: analysis/conditional-regularity-theorem.md

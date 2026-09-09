@@ -263,7 +263,7 @@
     },
     "type": "insight",
     "title": "Type II Implies Eventual Stability",
-    "content": "The heart of Part VI: for Type II scenarios, there exists $t_0 < T$ such that for all $t > t_0$, we have $S(t) \\leq \\nu P(t)$. Stretching is dominated by dissipation near the potential blowup time! This is the stability that prevents blowup.",
+    "content": "The heart of Part VI: for Type II scenarios, there exists $t_0 < T$ such that for all $t > t_0$, we have $S(t) \\leq \\nu P(t)$. Stretching is dominated by dissipation near the potential blowup time! This is the stability that prevents blowup. Caveat (v5, 2026-09): this conclusion needs the spectral gap field. In OpenAI's forced blowup β → 0 like (T-t)^{h} but νP/(ΩE) decays at the same rate, so S/νP stays a fixed ratio above 1 and stability never arrives; enstrophy grows like (T-t)^{-1/2-3h}.",
     "mathContext": "The proof chains: $(T-t)^{\\alpha-1} < c_d/(2C_\\beta)$ implies $S \\leq (c_d/2)\\Omega E \\leq (\\nu P)/2 \\leq \\nu P$. Dissipation wins.",
     "significance": "key",
     "prerequisites": [
@@ -304,7 +304,7 @@
     },
     "type": "insight",
     "title": "Type II Blowup is Impossible",
-    "content": "The culmination of Part VI: Type II blowup cannot occur. The proof: eventual stability gives bounded $E$, BKM criterion converts bounded $E$ to bounded $\\Omega$, but blowup means $\\Omega \\to \\infty$. Contradiction. Combined with ESS (no Type I), **all blowup is impossible**.",
+    "content": "The culmination of Part VI: Type II blowup cannot occur. The proof: eventual stability gives bounded $E$, BKM criterion converts bounded $E$ to bounded $\\Omega$, but blowup means $\\Omega \\to \\infty$. Contradiction. Combined with ESS (no Type I), **all blowup is impossible**. **Scope (v5):** this is conditional on all five `NSAxioms` fields. A smooth forced solution can violate `spectral_gap` while blowing up at a Type II rate — OpenAI's September 2026 construction does exactly that — so the conclusion is a theorem about the hypotheses, not an unconditional exclusion.",
     "mathContext": "This is a proof by contradiction. Assume blowup occurs at time $T$. Then $\\Omega(t) \\to \\infty$ as $t \\to T$. But we proved $\\Omega(t) \\leq C$ for all $t < T$. This contradiction rules out blowup entirely.",
     "significance": "key",
     "prerequisites": [
@@ -326,8 +326,8 @@
     },
     "type": "definition",
     "title": "The Five Physical Axioms",
-    "content": "The proof organizes NS physics into five axioms: (1) ESS gives $\\alpha > 1$; (2) Spectral gap gives $\\nu P \\geq c \\Omega E$; (3) $\\theta$ dynamics gives the $\\beta$ bound; (4) Type II rate bounds $\\Omega$; (5) BKM connects $E$ to $\\Omega$. Each axiom is verified from the Navier-Stokes equations.",
-    "mathContext": "These axioms are not assumptions but consequences of NS physics. The theorem `navier_stokes_regularity` shows: any solution satisfying these axioms cannot blow up.",
+    "content": "The proof organizes NS physics into five axioms: (1) ESS gives $\\alpha > 1$; (2) Spectral gap gives $\\nu P \\geq c \\Omega E$; (3) $\\theta$ dynamics gives the $\\beta$ bound; (4) Type II rate bounds $\\Omega$; (5) BKM connects $E$ to $\\Omega$. These are structure-encoded assumptions, not consequences of the equations: OpenAI's September 2026 forced finite-time blowup (Clay alternatives (C)/(D), Lean-certified) is a smooth solution with a smooth bounded force that satisfies four of the five fields and violates the spectral gap (its vortex core sits Re_θ^{1/2} → ∞ diffusion scales wide). Any derivation of the spectral gap must use f = 0 essentially.",
+    "mathContext": "These fields are hypotheses. The theorem `navier_stokes_regularity` shows: any solution whose scalar functionals satisfy all five cannot blow up. Tested on OpenAI's forced singularity (α = 1+h): typeII_gt_one ✓, spectral_gap ✗ (νP/(ΩE) ≍ (T-t)^{h} → 0), theta_bound ✓ saturated, blowup_rate ✓, bkm ✓ (vacuous). See analysis/openai-forced-blowup-2026.md.",
     "significance": "key",
     "prerequisites": [
       "ann-ess-theorem",

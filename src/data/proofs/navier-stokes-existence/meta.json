@@ -69,8 +69,8 @@
     "definitionCount": 366
   },
   "overview": {
-    "historicalContext": "**Navier-Stokes Existence and Smoothness (Millennium Prize Problem)**\n\nThe Navier-Stokes equations describe fluid motion: $\\partial_t u + (u \\cdot \\nabla)u = \\nu\\Delta u - \\nabla p + f$ with $\\nabla \\cdot u = 0$. The Millennium Prize asks whether smooth solutions exist globally in 3D. Leray (1934) proved weak solutions exist; Ladyzhenskaya (1962/1969) solved the 2D case; Caffarelli-Kohn-Nirenberg (1982) showed the 3D singular set has Hausdorff dimension at most 1. The 3D problem remains open after 90+ years.\n\nThis formalization is the largest single proof file in the gallery at 20,000+ lines across 110 parts, containing 1200+ definitions/theorems with 0 sorries. The 3D conditional result uses the NSAxioms structure (5 structure-encoded assumptions).",
-    "problemStatement": "**Millennium Prize Problem**: In 3D, prove existence and smoothness of solutions to the Navier-Stokes equations for all smooth initial data, or provide a counterexample showing finite-time blowup.\n\n**2D Result (PROVEN)**: Global existence and uniqueness holds because vortex stretching vanishes and enstrophy is bounded.\n\n**3D Conditional Result (PROVEN)**: Under the NSAxioms structure (physical hypotheses), global regularity follows from Type I exclusion (ESS theorem) and Type II exclusion (stability analysis).",
+    "historicalContext": "**Navier-Stokes Existence and Smoothness (Millennium Prize Problem)**\n\nThe Navier-Stokes equations describe fluid motion: $\\partial_t u + (u \\cdot \\nabla)u = \\nu\\Delta u - \\nabla p + f$ with $\\nabla \\cdot u = 0$. The Millennium Prize asks whether smooth solutions exist globally in 3D. Leray (1934) proved weak solutions exist; Ladyzhenskaya (1962/1969) solved the 2D case; Caffarelli-Kohn-Nirenberg (1982) showed the 3D singular set has Hausdorff dimension at most 1. The 3D problem remains open after 90+ years.\n\nThis formalization is the largest single proof file in the gallery at 20,000+ lines across 110 parts, containing 1200+ definitions/theorems with 0 sorries. The 3D conditional result uses the NSAxioms structure (5 structure-encoded assumptions).\n\n**September 2026 development.** OpenAI announced a Lean-certified construction (github.com/openai/NavierStokesAndEuler; 0 sorries, standard axioms only) of finite-time blowup for 3D Navier-Stokes **with a smooth, compactly supported external force** and zero initial velocity, for every viscosity, on both ℝ³ and 𝕋³, with uniformly bounded kinetic energy. This targets Clay alternatives (C)/(D), the *breakdown* alternatives that allow a force. The unforced alternatives (A)/(B) — the question Part LVI of this file states — remain open. The result is under community review and its priority is disputed (Córdoba–Martínez-Zoroa, Alpöge–Buckmaster). The sibling entry navier-stokes evaluates the construction against the enstrophy framework: it is a barely-Type-II singularity (α = 1+h, h < 1/100) that violates exactly one of the five NSAxioms fields (spectral_gap).",
+    "problemStatement": "**Millennium Prize Problem** (Fefferman's four alternatives): (A)/(B) prove global existence and smoothness on ℝ³ / 𝕋³ for all smooth data **with no external force**, or (C)/(D) exhibit smooth data and a smooth force for which no global smooth bounded-energy solution exists. As of September 2026 OpenAI claims (C)/(D) via a forced construction; (A)/(B) remain open.\n\n**2D Result (PROVEN)**: Global existence and uniqueness holds because vortex stretching vanishes and enstrophy is bounded.\n\n**3D Conditional Result (PROVEN)**: Under the NSAxioms structure (physical hypotheses), global regularity follows from Type I exclusion (ESS theorem) and Type II exclusion (stability analysis).",
     "text": "Comprehensive formalization of the Navier-Stokes existence and smoothness problem (Millennium Prize). Includes complete 2D global existence proof (no axioms), 3D conditional regularity via NSAxioms structure (5 structure-encoded assumptions), and 110 parts covering the full landscape of NS theory: ancient solutions, ESS theorem, CKN partial regularity, Leray-Hopf theory, Serrin regularity, BKM criterion, weak-strong uniqueness, Kolmogorov turbulence, Onsager conjecture, convex integration, Fujita-Kato mild solutions, helicity, Liouville theorems, Tao barrier, Koch-Tataru, backward uniqueness, geometric regularity, profile decomposition, global attractors, determining modes, and exact turbulence results. 20,000+ lines, 1200+ definitions/theorems, 0 sorries, 5 structure-encoded assumptions (NSAxioms).",
     "proofStrategy": "The formalization has two main threads:\n\n**2D (Complete)**: The scalar vorticity equation has no stretching term, so enstrophy $\\int|\\omega|^2$ satisfies $E' = -2\\nu P \\leq 0$. This gives global bounds, preventing blowup.\n\n**3D (Conditional)**: Blowup is classified as Type I ($\\|u\\| \\sim (T-t)^{-1/2}$) or Type II (faster). Type I is excluded by the ESS theorem (bounded ancient solutions are zero via Liouville). Type II is excluded by stability analysis ($\\beta_{\\text{eff}} \\to 0$). Together: no blowup is possible under the NSAxioms hypotheses.\n\nThe file also develops extensive supporting theory across 40 parts.",
     "keyInsights": [
@@ -226,7 +226,9 @@
       "Can the NSAxioms hypotheses be proved from first principles to resolve the Millennium Problem?",
       "Can the CKN partial regularity be extended to show the singular set is empty?",
       "Can the Liouville critical exponent gap (9/2 vs 3) be closed?",
-      "Can the stochastic NS formalization be connected to Hairer's regularity structures?"
+      "Can the stochastic NS formalization be connected to Hairer's regularity structures?",
+      "Part LVI documents only the unforced alternatives (A)/(B); can the forced breakdown alternatives (C)/(D) — now claimed by OpenAI's September 2026 Lean-certified construction — be stated in this file against the Formal Conjectures reference definitions?",
+      "Which NSAxioms fields does OpenAI's forced singularity violate? (Answer recorded in the navier-stokes entry: only spectral_gap.)"
     ]
   },
   "leanFile": {
@@ -287,6 +289,30 @@
       "year": "2001",
       "venue": "American Mathematical Society, Chelsea Publishing",
       "note": "Standard reference for existence and uniqueness theory of Navier-Stokes equations"
+    },
+    {
+      "authors": "OpenAI",
+      "title": "Finite time blowup for Navier–Stokes",
+      "year": "2026",
+      "venue": "Preprint with Lean 4 certificates (github.com/openai/NavierStokesAndEuler)",
+      "url": "https://cdn.openai.com/pdf/32d9f210-8b73-45e0-91bc-82a30aef8a9a/navier-stokes.pdf",
+      "note": "Forced finite-time blowup for every ν > 0 with zero initial velocity and bounded energy on ℝ³ and 𝕋³ — Clay alternatives (C)/(D). Unforced (A)/(B) not addressed"
+    },
+    {
+      "authors": "Fefferman, C.",
+      "title": "Existence and smoothness of the Navier–Stokes equation",
+      "year": "2000",
+      "venue": "Clay Mathematics Institute problem description",
+      "url": "https://www.claymath.org/wp-content/uploads/2022/06/navierstokes.pdf",
+      "note": "Official statement with four alternatives (A)–(D); this file's Part LVI states (A)/(B)"
+    },
+    {
+      "authors": "Tao, T.",
+      "title": "Finite time blowup with smooth forcing term for the incompressible porous medium, Boussinesq, and incompressible Euler equations",
+      "year": "2026",
+      "venue": "Blog post, 2026-09-07",
+      "url": "https://terrytao.wordpress.com/2026/09/07/finite-time-blowup-with-smooth-forcing-term-for-the-incompressible-porous-medium-boussinesq-and-incompressible-euler-equations/",
+      "note": "Context for the forced-blowup mechanism (Córdoba–Martínez-Zoroa, Alpöge–Buckmaster) that the Navier-Stokes construction extends"
     }
   ],
   "crossReferences": [
