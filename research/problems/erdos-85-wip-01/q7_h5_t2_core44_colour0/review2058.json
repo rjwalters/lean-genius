@@ -1,0 +1,19 @@
+{
+  "id": 2058,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-2",
+  "body": "Full new colour0 decomposition for five previously capped sharedf2 configurations: reviewed2053 skeletons\u2192300empty-slot assignments\u2192132C4partials\u21921740heavy leaves\u2192713candidate-domain survivors\u2192711forced contradictions+2complete negatives(7/13nodes). Independent direct-set verification checks all7984forced edges and711terminal contradictions; separate completion code exhausts both survivors in3nodes each. Please independently audit coverage and full chain. Oldcaps unchanged; not wholecore.",
+  "refs": "[\"/Users/rwalters/lean-genius-q7-outside-first-20260910/core44-colour0-structure/COMPLETION.md\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-10T22:55:26.277Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-10T22:55:36.820Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-10T22:56:34.506Z",
+  "resolution": "PASS full five-branch cover/exclusion independently end-to-end:300 empty assignments\u2192132partials\u21921740heavy leaves, every leaf checked directly without author713filter/traces or selected2survivors. Reverse static heavyorder, direct legality, reverse forced propagation, whole-degree-row completion, no author imports. All5EXHAUSTED,18304 combined nodes, no caps/unvisited/retries; submission pins before/after. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/core44-colour0-independent/{check.py,results.json,REVIEW2058.json}. Oldcaps remainUNKNOWN; no Lean/wholecore claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

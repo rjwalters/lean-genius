@@ -1,0 +1,13 @@
+# Final two shared-f1 branches: necessary ordinary singleton partitions
+
+This supplements review2049 without changing its frozen submission. That reduction leaves only two shared-f1 cases: omitted7 or11, with no internal F-star edge, a0-f4, and b0-f2. The new search exhausts both after adding necessary per-colour partitions for the remaining seventeen singleton vertices.
+
+There are already nine named singletons: a0,b0,b2,b4 and f0,...,f4. Hence the remaining colour capacities are3,4,3,4,3. Every possible edge among the named singleton vertices is fixed: edges among the triple specials are forbidden by reciprocal required colours; b2,b4 cannot meet any fi because colours2,4 are already covered by F; the internal F-star graph and the a0/b0 targets are the branch choices. Every named singleton has all its heavy and empty neighbours once the F-star incidence assignment is complete. Thus a known low vertex whose colour-c common neighbour is still missing must receive it from a new colour-c singleton.
+
+For each colour c, partition those required known low vertices into at most the remaining number of colour-c singleton hosts. A host's guests must be pairwise without a common neighbour, their support weights must sum to at most5, and a group of d guests of total weight w must satisfy d<=1+w. The last inequality follows from degree seven: after one high neighbour and d known low neighbours, at least5-w additional singleton neighbours are needed to cover the remaining high colours. These are necessary conditions only; different colours are checked independently.
+
+The search applies this test only after all F-star empty incidences have been assigned, and then periodically during empty-edge completion. Further empty edges only remove compatible guest groups, so an exhausted necessary partition cannot be repaired later. The search enumerates all F-star incidence alternatives and exact empty-induced degree completions, as in the earlier projection.
+
+`sharing1_integrated.py` with `remaining_hosts.py` exhausts omitted7 at81925 combined nodes and omitted11 at42617, within100000 each and60seconds overall. `sharing1_bins.py` independently replaces group enumeration/subset cover with descending-weight vertex assignment into interchangeable bins and exhausts the same branches at11561 and6528 combined nodes. The latter reuses the outer traversal; a peer's independent outer traversal is still requested.
+
+If independently accepted together with review2049's forty-case shared-f1 cover and thirty-eight prior negatives, this excludes the entire C/F-shared-f1 branch. It does not exclude sharing at f2, no-sharing, or core44 as a whole. No capped search was retried or reclassified. Source and results are frozen in `sharing1-pins.json`.

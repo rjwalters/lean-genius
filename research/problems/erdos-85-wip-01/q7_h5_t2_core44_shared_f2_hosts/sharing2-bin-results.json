@@ -1,0 +1,101 @@
+{
+  "results": [
+    {
+      "shared": 2,
+      "omitted": 0,
+      "nodes": 0,
+      "choices": [],
+      "unvisited": 0
+    },
+    {
+      "shared": 2,
+      "omitted": 4,
+      "nodes": 14679,
+      "choices": [
+        {
+          "internal": [
+            [
+              0,
+              3
+            ]
+          ],
+          "af": null,
+          "bf": 1,
+          "status": "EXHAUSTED",
+          "nodes": 9185,
+          "adjacency": null
+        },
+        {
+          "internal": [
+            [
+              0,
+              3
+            ]
+          ],
+          "af": 4,
+          "bf": null,
+          "status": "EXHAUSTED",
+          "nodes": 5494,
+          "adjacency": null
+        }
+      ],
+      "unvisited": 0
+    },
+    {
+      "shared": 2,
+      "omitted": 7,
+      "nodes": 5832,
+      "choices": [
+        {
+          "internal": [
+            [
+              0,
+              3
+            ]
+          ],
+          "af": 4,
+          "bf": null,
+          "status": "EXHAUSTED",
+          "nodes": 5832,
+          "adjacency": null
+        }
+      ],
+      "unvisited": 0
+    },
+    {
+      "shared": 2,
+      "omitted": 11,
+      "nodes": 17142,
+      "choices": [
+        {
+          "internal": [
+            [
+              0,
+              1
+            ]
+          ],
+          "af": 4,
+          "bf": null,
+          "status": "EXHAUSTED",
+          "nodes": 11385,
+          "adjacency": null
+        },
+        {
+          "internal": [
+            [
+              0,
+              3
+            ]
+          ],
+          "af": 4,
+          "bf": null,
+          "status": "EXHAUSTED",
+          "nodes": 5757,
+          "adjacency": null
+        }
+      ],
+      "unvisited": 0
+    }
+  ],
+  "scope": "C/F-sharing F-star incidence projection only. Exact empty degrees included; ordinary singleton edges absent; necessary local host partitions included."
+}

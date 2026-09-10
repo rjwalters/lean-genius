@@ -1,0 +1,35 @@
+{
+  "results": [
+    {
+      "shared": 1,
+      "omitted": 7,
+      "nodes": 81925,
+      "choices": [
+        {
+          "internal": [],
+          "af": 4,
+          "bf": 2,
+          "status": "EXHAUSTED",
+          "adjacency": null
+        }
+      ],
+      "unvisited": 0
+    },
+    {
+      "shared": 1,
+      "omitted": 11,
+      "nodes": 42617,
+      "choices": [
+        {
+          "internal": [],
+          "af": 4,
+          "bf": 2,
+          "status": "EXHAUSTED",
+          "adjacency": null
+        }
+      ],
+      "unvisited": 0
+    }
+  ],
+  "scope": "C/F-sharing F-star incidence projection only. Exact empty degrees included; ordinary singleton edges absent; necessary local host partitions included."
+}

@@ -1,0 +1,67 @@
+{
+  "review": 2058,
+  "status": "PASS",
+  "scope": "All five exact colour0-labelled shared-f2 configurations excluded at mathematical plus independently checked finite-computation level. Prior capped receipts remain UNKNOWN. No Lean or wholecore exclusion.",
+  "method": "Independent complete empty slot enumeration, reverse static heavy requests, direct legality, reverse forced propagation, whole degree row branching; no author search imports",
+  "nodes": 18304,
+  "seconds": 2.06319975014776,
+  "results": [
+    {
+      "omitted": 4,
+      "internal": [],
+      "status": "EXHAUSTED",
+      "nodes": 4117,
+      "empty_assignments": 60,
+      "empty_survivors": 28,
+      "heavy_leaves": 392,
+      "solutions": 0
+    },
+    {
+      "omitted": 4,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "status": "EXHAUSTED",
+      "nodes": 2958,
+      "empty_assignments": 60,
+      "empty_survivors": 28,
+      "heavy_leaves": 284,
+      "solutions": 0
+    },
+    {
+      "omitted": 7,
+      "internal": [],
+      "status": "EXHAUSTED",
+      "nodes": 3461,
+      "empty_assignments": 60,
+      "empty_survivors": 24,
+      "heavy_leaves": 336,
+      "solutions": 0
+    },
+    {
+      "omitted": 11,
+      "internal": [],
+      "status": "EXHAUSTED",
+      "nodes": 4259,
+      "empty_assignments": 60,
+      "empty_survivors": 28,
+      "heavy_leaves": 392,
+      "solutions": 0
+    },
+    {
+      "omitted": 0,
+      "internal": [],
+      "status": "EXHAUSTED",
+      "nodes": 3509,
+      "empty_assignments": 60,
+      "empty_survivors": 24,
+      "heavy_leaves": 336,
+      "solutions": 0
+    }
+  ],
+  "coverage": "Reviewed2053 provides complete49vertex naming for exactly these five branches. The five uncovered high0 empty slots exhaust60 pair/permutation assignments each. All remaining heavy requests are C1,D3,D4,E3,E4 and use named singleton vertices35..48. Independent static reverse request enumeration yields1740 heavy-complete leaves. Checker processes all1740 directly, without relying on author713-domain filter, trace receipts, or two selected surviving graphs. Each low vertex must have degree7 and cover each high colour once. Direct candidate legality uses degree capacity, reciprocal high-colour nonduplication and common-neighbour C4 constraints. Zero domains reject; singleton colour domains and saturated degree domains force an edge. All forced choices preserve every completion. Remaining cases branch exhaustively over a whole missing degree row, distinct from author colour branching. All49 high incidences stay fixed. No author search code imported.",
+  "validation": "All submission pins checked before and after. Exact300 empty assignments,132 C4 partials and1740 heavy leaves match. All5 domains exhaust under one100000-total-node/60-second cap, no retries or unvisited cases."
+}

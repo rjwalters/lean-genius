@@ -1,0 +1,87 @@
+{
+  "review": 2051,
+  "status": "PASS",
+  "scope": "Five exact shared-f2 branches exhausted by independent necessary-relaxation traversal. Other five author caps remain UNKNOWN. No entire shared-f2 or core44 exclusion.",
+  "nodes": 210139,
+  "seconds": 1.3134433750528842,
+  "results": [
+    {
+      "omitted": 4,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": null,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 51470,
+      "complete_stars": 52,
+      "host_calls": 147
+    },
+    {
+      "omitted": 4,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 31068,
+      "complete_stars": 52,
+      "host_calls": 73
+    },
+    {
+      "omitted": 7,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 36534,
+      "complete_stars": 71,
+      "host_calls": 87
+    },
+    {
+      "omitted": 11,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 4,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 53454,
+      "complete_stars": 172,
+      "host_calls": 199
+    },
+    {
+      "omitted": 11,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 37613,
+      "complete_stars": 70,
+      "host_calls": 84
+    }
+  ],
+  "method": "Adapted previously reviewed static-order verifier from sol1 review2052; independently reconstructs each32vertex skeleton. Full pairwise C4 checks, static F-star order with shared f2 empty degree3 and others2; whole empty rows; exact-degree guest subset partitions at every empty node. No author search imports. Source pins checked before and after.",
+  "necessity": "Missing colour requests must be met by remaining singleton hosts because all possible represented singleton edges, heavy incidences, and F-star empty incidences are fixed before testing. Guests sharing a host cannot already share another neighbour. Their weights sum at most5. Degree7 requires d-w<=1. Aggregate sum(1-weight) equals remaining host count for every colour (asserted at every test), forcing all nonempty bins to satisfy equality and use exactly that count. Future empty edges cannot remove existing conflicts or change missing high-colour requests. Cross-colour constraints omitted, so rejection is a necessary-condition exclusion.",
+  "caps": "100000 combined nodes per branch; 60s total; all five exhaustive within limits. No author-capped branch visited and no retry."
+}
