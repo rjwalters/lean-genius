@@ -1,0 +1,46 @@
+{
+  "files": {
+    "proposed-fix-checks.json": {
+      "sha256": "3014f304e25b0dfdc33353c4becbd5b96013bdba89ad24209053d15ace54b580",
+      "bytes": 541
+    },
+    "reproduction.json": {
+      "sha256": "501a0031289734ef83ed79cd4f65bab8d5796cd7e5856b27a0e23e6ce5e88c2c",
+      "bytes": 522
+    },
+    "accepted-validator-source.py": {
+      "sha256": "5117b82af749789e90010b1c5dc93074005980b20495d5b358bd9f19935b811b",
+      "bytes": 3310
+    },
+    "clause-framing.cnf": {
+      "sha256": "df6447daa4441b01123ebff15079a2faf079d5fa5d9ae4532b9b5093b5b45843",
+      "bytes": 18
+    },
+    "README.md": {
+      "sha256": "92c6d0d1dc76eea386162c6833ab10e10d4d6683338bac52813163e7e624de1c",
+      "bytes": 2477
+    },
+    "production-validator-result.json": {
+      "sha256": "6cb61199b6f6ee394eda899185fc4ab08c7f73890fa0c2a9cb25ee34dd16688d",
+      "bytes": 283
+    },
+    "proposed-framing-fix.patch": {
+      "sha256": "e53665b33245868b823a640e60165422711ed4e9d44fbea2d060d2b137360989",
+      "bytes": 523
+    },
+    "production_reproduction.py": {
+      "sha256": "bbd977b13535a01fa469910a354bfb36f25988be5aed4c3ffa25d3b2bbd10892",
+      "bytes": 1316
+    },
+    "production-reproduction.json": {
+      "sha256": "5718d5b7d50286ce4d961bdb45883108f96c7cd29966506b0c424f86373844b9",
+      "bytes": 1047
+    },
+    "fixed-validator-verification.json": {
+      "sha256": "dac01c64bbc492b1c98a34e29a3915133838bab1da3dc9d915c4f4d9c7810750",
+      "bytes": 765
+    }
+  },
+  "solver_launched": false,
+  "scope": "Historical failing input validation and independent fixed-validator regression evidence."
+}

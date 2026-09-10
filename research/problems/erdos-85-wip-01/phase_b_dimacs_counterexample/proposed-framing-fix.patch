@@ -1,0 +1,11 @@
+--- a/sat49/materialize_verdict_input.py
++++ b/sat49/materialize_verdict_input.py
+@@ -41,6 +41,8 @@
+                 continue
+             if header is None:
+                 raise ValueError("Clause data precedes DIMACS header")
++            if tokens[-1] != b"0" or b"0" in tokens[:-1]:
++                raise ValueError("Expected one clause per line with one final zero")
+             for token in tokens:
+                 if not INTEGER.fullmatch(token):
+                     raise ValueError("Invalid DIMACS literal")

@@ -1,0 +1,29 @@
+{
+  "validator_sha256": "8dcbf61099353fc8e664274efbe71f927020ed0f2f22a115404757fd02861940",
+  "unit_suite": "7 tests PASS",
+  "results": [
+    {
+      "case": "toy",
+      "accepted": false,
+      "error": "Require one clause per line, ASCII spaces and one final zero",
+      "result": null
+    },
+    {
+      "case": "production_altered",
+      "accepted": false,
+      "error": "Require one clause per line, ASCII spaces and one final zero",
+      "result": null
+    },
+    {
+      "case": "production_original",
+      "accepted": true,
+      "error": null,
+      "result": {
+        "variables": 40944,
+        "clauses": 610424,
+        "bytes": 12454143,
+        "sha256": "63ba3e99aa19f2ad56784f704afee5569808af699cd88d31a8ca54634e2e6f69"
+      }
+    }
+  ]
+}

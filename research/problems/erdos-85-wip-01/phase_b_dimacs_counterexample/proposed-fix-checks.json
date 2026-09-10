@@ -1,0 +1,23 @@
+{
+  "scope": "Proposed patch tested in private module; owner source not modified.",
+  "results": [
+    {
+      "case": "minimal",
+      "accepted": false,
+      "expected": false,
+      "error": "Expected one clause per line with one final zero"
+    },
+    {
+      "case": "production_mutated",
+      "accepted": false,
+      "expected": false,
+      "error": "Expected one clause per line with one final zero"
+    },
+    {
+      "case": "production_original",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    }
+  ]
+}

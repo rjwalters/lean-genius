@@ -1,0 +1,25 @@
+{
+  "source_sha256": "5117b82af749789e90010b1c5dc93074005980b20495d5b358bd9f19935b811b",
+  "legacy_comparator_clauses": [
+    [
+      1
+    ],
+    [
+      2
+    ]
+  ],
+  "actual_dimacs_clauses": [
+    [
+      1,
+      2
+    ],
+    []
+  ],
+  "accepted": {
+    "variables": 2,
+    "clauses": 2,
+    "bytes": 18,
+    "sha256": "df6447daa4441b01123ebff15079a2faf079d5fa5d9ae4532b9b5093b5b45843"
+  },
+  "finding": "Same header and clause count do not repair line-based parser mismatch; actual formula contains empty clause."
+}

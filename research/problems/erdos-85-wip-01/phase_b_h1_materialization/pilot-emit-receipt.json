@@ -1,0 +1,20 @@
+{
+  "tag": "003597af8a184e9f",
+  "profile": "2",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "--run",
+    "Proofs/Erdos85OneHighV2CnfEmit.lean",
+    "emit",
+    "2",
+    "/tmp/erdos85-sol1-phase-b-inventory/pilot-table.json"
+  ],
+  "rc": "TIMEOUT",
+  "seconds": 120.0233477090951,
+  "bytes": 0,
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "expected_ledger_sha256": "63ba3e99aa19f2ad56784f704afee5569808af699cd88d31a8ca54634e2e6f69",
+  "matches_ledger": false
+}

@@ -1,0 +1,569 @@
+{
+  "local_sources": {
+    "Proofs.Erdos85OneHighV2CnfEmit": {
+      "path": "proofs/Proofs/Erdos85OneHighV2CnfEmit.lean",
+      "sha256": "00522d33a62ceff5f64815f1441aa893dbd384b36c2bb0dbc922842fdb848ec6"
+    },
+    "Proofs.Erdos85OneHighV2Cnf": {
+      "path": "proofs/Proofs/Erdos85OneHighV2Cnf.lean",
+      "sha256": "9165b02d57a38d84202606d4940f4e83e5393ad0edc1cc687105e97370a6bb3d"
+    },
+    "Proofs.Erdos85OneHighOrbitCnf": {
+      "path": "proofs/Proofs/Erdos85OneHighOrbitCnf.lean",
+      "sha256": "b39f1f0e8d12d59cba11b2e5221dd69f10ac8c63f342275e3c3d8fb5a62cb4eb"
+    },
+    "Proofs.Erdos85OneHighFamilyCnfSatisfaction": {
+      "path": "proofs/Proofs/Erdos85OneHighFamilyCnfSatisfaction.lean",
+      "sha256": "571fbe5498e4080f0624d95812a60d78781697e7e4a1a8c31303815999510760"
+    },
+    "Proofs.Erdos85DimacsSatBridge": {
+      "path": "proofs/Proofs/Erdos85DimacsSatBridge.lean",
+      "sha256": "f89e835358f53a17913e3658399f4f56e9c02ce21458b80b7b931df8935d9dc2"
+    },
+    "Proofs.Erdos85OrderFortyNineDegreeBlocksNonzero": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineDegreeBlocksNonzero.lean",
+      "sha256": "d5e6ccb2b17adf1b49bb93556ec6cc92fd987b6572af7cfb1adfa43e144aa985"
+    },
+    "Proofs.Erdos85OrderFortyNineDegreeBlocks": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineDegreeBlocks.lean",
+      "sha256": "5993f77f8f22d3b0979e42910ff8918fdbdadcd5e3d194ad44f699b922bb3505"
+    },
+    "Proofs.Erdos85OrderFortyNineDimacsRows": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineDimacsRows.lean",
+      "sha256": "fbaa9bd9c21943aa9b822ac069ccf243b2e934be37f2e28d1eb5285fb99e9ea3"
+    },
+    "Proofs.Erdos85SequentialCounterReification": {
+      "path": "proofs/Proofs/Erdos85SequentialCounterReification.lean",
+      "sha256": "dd7ab6c1263180b33e89d6447615453ccf33cb3e5042eb3de4c9744a5cb4b61c"
+    },
+    "Proofs.Erdos85SequentialCounterClauses": {
+      "path": "proofs/Proofs/Erdos85SequentialCounterClauses.lean",
+      "sha256": "95668862f4f134b26b9a1a141ef7aae15559b73d04036a31c543692b731d26cd"
+    },
+    "Proofs.Erdos85SequentialCounter": {
+      "path": "proofs/Proofs/Erdos85SequentialCounter.lean",
+      "sha256": "213563e0fd24b642d95e18c7479153a60b987a69fb9985aceccb98c22e8d319d"
+    },
+    "Proofs.Erdos85SequentialCounterGenerator": {
+      "path": "proofs/Proofs/Erdos85SequentialCounterGenerator.lean",
+      "sha256": "420c3b52df27cd8b05c2acde831e311787c406c1a523b85b5f5eb4be17990e99"
+    },
+    "Proofs.Erdos85OrderFortyNineBooleanTerminal": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineBooleanTerminal.lean",
+      "sha256": "d3f566e0dd75633c3a20abcecebb92f04485d0ed9cdb600e576f5462a4639690"
+    },
+    "Proofs.Erdos85OrderFortyNineSupportPartitions": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineSupportPartitions.lean",
+      "sha256": "771f375897d78392cb328b6475894fafcdd9a99cfa6a5530a6dcaf479ae52897"
+    },
+    "Proofs.Erdos85OrderFortyNineOneThreeHighProfile": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineOneThreeHighProfile.lean",
+      "sha256": "aad7983815f2b235c23c6415cc78682a7342ba23e88887cac61cd35fa24f9885"
+    },
+    "Proofs.Erdos85OrderFortyNineGeneralHighProfile": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineGeneralHighProfile.lean",
+      "sha256": "69bbc8f48720ce60b6cf8f4432a78971b4fea31dd0f202015074598a8ff21c2b"
+    },
+    "Proofs.Erdos85OrderFortyNinePBDClassification": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNinePBDClassification.lean",
+      "sha256": "838fc8df481e94de442aaa2a6e7278d694e350372231aa1ca2a40392998c2786"
+    },
+    "Proofs.Erdos85OrderFortyNineOddIncidence": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineOddIncidence.lean",
+      "sha256": "ef4e4131560f8fca8e1813c4cf371b0aca1730b2a1393474a0a30e9acb28693a"
+    },
+    "Proofs.Erdos85OrderFortyNineLowNeighborhoodPartition": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineLowNeighborhoodPartition.lean",
+      "sha256": "87bfcf2b2bd880bee6481dff5f8e5365a2b9245d1124a1b171fc9de20390439f"
+    },
+    "Proofs.Erdos85OrderFortyNineDefectWeightedIncidence": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineDefectWeightedIncidence.lean",
+      "sha256": "021713d05f85ad041b9b444cc8226c54226c6717025a04fbe38d4f810fc3d5b3"
+    },
+    "Proofs.Erdos85BranchDeficitSymmetry": {
+      "path": "proofs/Proofs/Erdos85BranchDeficitSymmetry.lean",
+      "sha256": "ebb5c841ae9dffaa5c2558d2963782b40197e369feb61a5b48050b7ee98410a9"
+    },
+    "Proofs.Erdos85CleanHighBranchObstruction": {
+      "path": "proofs/Proofs/Erdos85CleanHighBranchObstruction.lean",
+      "sha256": "70de743bab1c1c5bf4f45fe4bdd291eb487ad6f261173f48371bfe1bf00ec776"
+    },
+    "Proofs.Erdos85CommonNeighborPigeonhole": {
+      "path": "proofs/Proofs/Erdos85CommonNeighborPigeonhole.lean",
+      "sha256": "e60db1a57e80de84ccddc21bebf52dca7e063a2b66851a36d99ad0a3f0d253a9"
+    },
+    "Proofs.Erdos85Problem": {
+      "path": "proofs/Proofs/Erdos85Problem.lean",
+      "sha256": "ac93ab677ff54606330a179d764418e4e317d477aba5cce604a5d3e6de48ed95"
+    },
+    "Proofs.Erdos85HighRootZeroSlack": {
+      "path": "proofs/Proofs/Erdos85HighRootZeroSlack.lean",
+      "sha256": "51fa135122ff02c5438d118e57680b78a273c733f2350a7041d4a1f5e4fa22a6"
+    },
+    "Proofs.Erdos85OrderFortyNineHighBranchGeometry": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineHighBranchGeometry.lean",
+      "sha256": "bdbd004eca4d5b84acb3a9a3ad0ad4deef2270452711263503440c584ccfba9d"
+    },
+    "Proofs.Erdos85OrderFortyNineLowTriangleIncidence": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineLowTriangleIncidence.lean",
+      "sha256": "0376fb8e6b136dac71ed1c041062bbbd5f595d54190eeb49166f5618893fd94f"
+    },
+    "Proofs.Erdos85OrderFortyNineLowTriangles": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineLowTriangles.lean",
+      "sha256": "93d31d7addd3bb0aa151dc088f097fac648bb95516a6fd9beb05139826bad28e"
+    },
+    "Proofs.Erdos85OrderFortyNineHighPartnerBound": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineHighPartnerBound.lean",
+      "sha256": "cfd871293d0446e03e24cbecac9e2510201452bc53e9fdc4e7be7bb19a26f1cb"
+    },
+    "Proofs.Erdos85OrderFortyNineDefectPerfectCodes": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineDefectPerfectCodes.lean",
+      "sha256": "5a961053733d6411a9b41c826db572f7d69a098337e4887c973ad9589978fece"
+    },
+    "Proofs.Erdos85ComponentLocalObstruction": {
+      "path": "proofs/Proofs/Erdos85ComponentLocalObstruction.lean",
+      "sha256": "2975c624564e75a0202d736a0ff094f86e42dc10b452b56f1b01b9c2258b428a"
+    },
+    "Proofs.Erdos85ComponentwiseNonextension": {
+      "path": "proofs/Proofs/Erdos85ComponentwiseNonextension.lean",
+      "sha256": "c785a2a63e4fc9423232a4694136a7e848a9dfa08b6bba82bc2fe8626885fafc"
+    },
+    "Proofs.Erdos85QuadraticPlateauComponents": {
+      "path": "proofs/Proofs/Erdos85QuadraticPlateauComponents.lean",
+      "sha256": "9782b04fea7e6541d74c99a4353f46667afa67befb539023a27cf1b66470180a"
+    },
+    "Proofs.Erdos85QuadraticConductor": {
+      "path": "proofs/Proofs/Erdos85QuadraticConductor.lean",
+      "sha256": "5de95a8cde0d6a4d64a65a58d419acf4980ea024ee4f470f9b7abe354d4ca22e"
+    },
+    "Proofs.Erdos85RamseyPlateau": {
+      "path": "proofs/Proofs/Erdos85RamseyPlateau.lean",
+      "sha256": "97ec7b7b9a51be73fb9591d5a1dce40a9c69d06213d0b5a0f4efb59810f1c6bc"
+    },
+    "Proofs.Erdos85LayeredWitness": {
+      "path": "proofs/Proofs/Erdos85LayeredWitness.lean",
+      "sha256": "093bedececb58f0be538191b5f48db7c26654830c8ac7c8d0329967a9c290a5f"
+    },
+    "Proofs.Erdos85MinimalWitness": {
+      "path": "proofs/Proofs/Erdos85MinimalWitness.lean",
+      "sha256": "8d2f14ec835a147f442ce4b807f92cd2af6ca0970592d2b2ec01c8b983904d8c"
+    },
+    "Proofs.Erdos85SecondOrderStructure": {
+      "path": "proofs/Proofs/Erdos85SecondOrderStructure.lean",
+      "sha256": "aeb70eb982bfbe278104e9b303bb864c6827bba05c91d65255c529da3ffff867"
+    },
+    "Proofs.Erdos85EvenAntipodalQuotient": {
+      "path": "proofs/Proofs/Erdos85EvenAntipodalQuotient.lean",
+      "sha256": "a16a244f8b0d7bb375c02d8a44bd32351c45bbb2c795aaa727b4a0be3c573a88"
+    },
+    "Proofs.Erdos85EvenFirstOrderAntipodal": {
+      "path": "proofs/Proofs/Erdos85EvenFirstOrderAntipodal.lean",
+      "sha256": "a51bb972d04fe2cdf5092e891bc581709a9005f027b18102dfdbe170b3adedd4"
+    },
+    "Proofs.Erdos85FiniteSigningClosure": {
+      "path": "proofs/Proofs/Erdos85FiniteSigningClosure.lean",
+      "sha256": "51f32a09b125694c7f43a38db719489825b333a45d9fb8df9f7db26fd348ec56"
+    },
+    "Proofs.Erdos85SRGLocalCycle": {
+      "path": "proofs/Proofs/Erdos85SRGLocalCycle.lean",
+      "sha256": "4d8f6bf12096f840a4e7f7b9e581694a2c86054881e7c0ab4a8d9bd61274a4a5"
+    },
+    "Proofs.Erdos85LocalCycleSAT": {
+      "path": "proofs/Proofs/Erdos85LocalCycleSAT.lean",
+      "sha256": "9d98d1f9a7811367491a8f9e5a9584b6466561116ca222cfccd79294063cab8c"
+    },
+    "Proofs.Erdos85SignedSRGBridge": {
+      "path": "proofs/Proofs/Erdos85SignedSRGBridge.lean",
+      "sha256": "91070cc9e45e95542f69ede38bfc804113b15510aa79173d9f2e18051461ef80"
+    },
+    "Proofs.Erdos85SignedSRGSAT": {
+      "path": "proofs/Proofs/Erdos85SignedSRGSAT.lean",
+      "sha256": "b09c295499e3bee695f5f1e9900a1b2ec62e3485ac903ec99ea34c0877eda520"
+    },
+    "Proofs.Erdos85SignedSRGObstruction": {
+      "path": "proofs/Proofs/Erdos85SignedSRGObstruction.lean",
+      "sha256": "84bbdd03482f583d40359633a74c90f1915e95596b4b4d07db2dfe49d69e0398"
+    },
+    "Proofs.Erdos85ThirtyTwoQuotient": {
+      "path": "proofs/Proofs/Erdos85ThirtyTwoQuotient.lean",
+      "sha256": "635b37dc591647ddf18f42c199ffff22ea171904d40adb125a64945ced5ae106"
+    },
+    "Proofs.Erdos85ThirtyTwo": {
+      "path": "proofs/Proofs/Erdos85ThirtyTwo.lean",
+      "sha256": "518e5484abc3b30cab3d404ad57b7ec8594c664e686e2ce1b001e1e8c3ad668a"
+    },
+    "Proofs.Erdos85DistanceLayers": {
+      "path": "proofs/Proofs/Erdos85DistanceLayers.lean",
+      "sha256": "299d4261d62000a23a34b369682a6bb6c1e6af1c79505785154c3195a14d76a7"
+    },
+    "Proofs.Erdos85RepairSet": {
+      "path": "proofs/Proofs/Erdos85RepairSet.lean",
+      "sha256": "018289be8ed501f603b58275126bda01b0300d63d5fd0d888f7b2287794bc1a0"
+    },
+    "Proofs.Erdos85DeletePair": {
+      "path": "proofs/Proofs/Erdos85DeletePair.lean",
+      "sha256": "7123f409aa6385a6e6e1b383b228b90bc41ecdbd273e715895f0b7484fd5eefa"
+    },
+    "Proofs.Erdos85PairedWitness": {
+      "path": "proofs/Proofs/Erdos85PairedWitness.lean",
+      "sha256": "34b141900122d0f41c7eed1dac46c16f1436fb8650e1e00f3e65447e16b4fcf2"
+    },
+    "Proofs.Erdos85Extension": {
+      "path": "proofs/Proofs/Erdos85Extension.lean",
+      "sha256": "ef2d97ff115fa54b7f3040cd422ecaa58a94bac3da31608153c16b13ebe9a6aa"
+    },
+    "Proofs.Erdos85VertexDeletion": {
+      "path": "proofs/Proofs/Erdos85VertexDeletion.lean",
+      "sha256": "6e90a168d30aa92a212efb01aaf52aba50e2276f6032a0f76a7334e4953a6845"
+    },
+    "Proofs.Erdos85Relabel": {
+      "path": "proofs/Proofs/Erdos85Relabel.lean",
+      "sha256": "53ea2ddb34b984163f41db8f91aeffc88b428297bd2dff40710e3e5458980e00"
+    },
+    "Proofs.Erdos85GadgetExtension": {
+      "path": "proofs/Proofs/Erdos85GadgetExtension.lean",
+      "sha256": "45fe94f3d806d387722f36fd6cadeef3587a3ce7e646f21f9fec8573c2c605a9"
+    },
+    "Proofs.Erdos85Problem14": {
+      "path": "proofs/Proofs/Erdos85Problem14.lean",
+      "sha256": "b720b5518bdb32ca53b442916c7c2918f391875a220d75f63dad794803305dc1"
+    },
+    "Proofs.Erdos85OddFirstOrderSpectral": {
+      "path": "proofs/Proofs/Erdos85OddFirstOrderSpectral.lean",
+      "sha256": "b41e4958e2fa814cb0b49505f5dbd56b153932478f35ecf4f2af6972f05aa6d5"
+    },
+    "Proofs.Erdos85MooreFriendship": {
+      "path": "proofs/Proofs/Erdos85MooreFriendship.lean",
+      "sha256": "3880597db9ac1f4b468ffc7bb97d9a443396b528eba25ab6f432dc19937f44cb"
+    },
+    "Proofs.FriendshipTheoremOQ01": {
+      "path": "proofs/Proofs/FriendshipTheoremOQ01.lean",
+      "sha256": "2826eff9fa628fefa10f435b1a10899a46df5941cfa1860d5563a38fbf316498"
+    },
+    "Proofs.Erdos85ProblemConflict": {
+      "path": "proofs/Proofs/Erdos85ProblemConflict.lean",
+      "sha256": "d7633cb3eef0e6abddc967a03b9aac6a8af4020d9458c1c92cb201e5e5d68ccc"
+    },
+    "Proofs.Erdos85Ramsey": {
+      "path": "proofs/Proofs/Erdos85Ramsey.lean",
+      "sha256": "a2e0c8b07ff09a6e78708cfe6eb727a14be01822a71c2bc2e8ad54d213040177"
+    },
+    "Proofs.Erdos85CofinalLowerBound": {
+      "path": "proofs/Proofs/Erdos85CofinalLowerBound.lean",
+      "sha256": "7825fee33904d5f8b97f4d289493d252afbc2485df23415eed5016c4a2ee06ea"
+    },
+    "Proofs.Erdos85PolarityBand": {
+      "path": "proofs/Proofs/Erdos85PolarityBand.lean",
+      "sha256": "dc31b2e4880873d6930c01e920492a5a195c7b9cc247abcf02328935d6f43002"
+    },
+    "Proofs.Erdos85IteratedDeletion": {
+      "path": "proofs/Proofs/Erdos85IteratedDeletion.lean",
+      "sha256": "49ccbb783bf24bf9a89d81755f82ea77b8b3f7afddd23b3dea3967821d0334cf"
+    },
+    "Proofs.Erdos85PolarityAbsolute": {
+      "path": "proofs/Proofs/Erdos85PolarityAbsolute.lean",
+      "sha256": "f23ba89cca17cc8a8d1ee5287ff42751f6081d9a5efe98cf030e5fa1624c13e3"
+    },
+    "Proofs.Erdos85PolarityDeletion": {
+      "path": "proofs/Proofs/Erdos85PolarityDeletion.lean",
+      "sha256": "bb6de1fb7e8856e672341c98053d86aa48b5b171e53f469ebeaf444ba0da54e6"
+    },
+    "Proofs.Erdos85PolarityFamily": {
+      "path": "proofs/Proofs/Erdos85PolarityFamily.lean",
+      "sha256": "7633c28397ddd3277c0de9f16be5ed1ea0eda5c23454e9a1f015f23e7e1e11d0"
+    },
+    "Proofs.Erdos85PolarityDegree": {
+      "path": "proofs/Proofs/Erdos85PolarityDegree.lean",
+      "sha256": "5e987677b5934630ee1ea97401d64ff207cfbef38677e303e4838c3486a7f23d"
+    },
+    "Proofs.Erdos85Polarity": {
+      "path": "proofs/Proofs/Erdos85Polarity.lean",
+      "sha256": "27a8e3a5297e938b206c4248e531183b61d538844768032eb37bf992dc44eee1"
+    },
+    "Proofs.Erdos85TightWitness": {
+      "path": "proofs/Proofs/Erdos85TightWitness.lean",
+      "sha256": "163ed0643f97b66d227f7fdf3aba41811d78fc447859fa2842413818b1a46908"
+    },
+    "Proofs.Erdos85ParabolaSidonRuler": {
+      "path": "proofs/Proofs/Erdos85ParabolaSidonRuler.lean",
+      "sha256": "a95d4832b61a374f41f52ec61f2aa5382af14839f2fcdc63aeec9391d287b29e"
+    },
+    "Proofs.Erdos85SidonNoWrap": {
+      "path": "proofs/Proofs/Erdos85SidonNoWrap.lean",
+      "sha256": "64d27ff5730ca0a293c4c5e32fb93c6989e1a0ff1b353b5f81a371d814505110"
+    },
+    "Proofs.Erdos85DifferenceSidonCayley": {
+      "path": "proofs/Proofs/Erdos85DifferenceSidonCayley.lean",
+      "sha256": "74f57c891c7093a35c30921864fdc7124c2649fd65f1d50c67a332ba48f3beb5"
+    },
+    "Proofs.Erdos85ConflictComponents": {
+      "path": "proofs/Proofs/Erdos85ConflictComponents.lean",
+      "sha256": "14e3cbfbaafcc74e8656b8f95531e9777a455a04555bec210d9d53e3c2d03aa4"
+    },
+    "Proofs.Erdos85BoundaryConnectedClean": {
+      "path": "proofs/Proofs/Erdos85BoundaryConnectedClean.lean",
+      "sha256": "87017af0477fef5e7e57a0ff44d0b9968aabdf8f035d1298b156dfa8e825c0f9"
+    },
+    "Proofs.Erdos85BoundaryConnected": {
+      "path": "proofs/Proofs/Erdos85BoundaryConnected.lean",
+      "sha256": "9473e8f12f8d970ef7fc5f7f68d41d4c0ccf1ac82461e7470a4196371723fe7d"
+    },
+    "Proofs.Erdos85ComponentFactorization": {
+      "path": "proofs/Proofs/Erdos85ComponentFactorization.lean",
+      "sha256": "5248258c91416d745a6f2ba9b87ffa50f9d4ed27863c666f0393b0c6da02295d"
+    },
+    "Proofs.RationalCanonicalFormExists": {
+      "path": "proofs/Proofs/RationalCanonicalFormExists.lean",
+      "sha256": "eb47b8607e8c037d4ffd04ace6fafc982a498954f12ac86111f05f4f9d512171"
+    },
+    "Proofs.Erdos85CycleGraphIso": {
+      "path": "proofs/Proofs/Erdos85CycleGraphIso.lean",
+      "sha256": "77816d2679fa38361c429c45b71472dd615da17f97043e9dc9671314ec898e12"
+    },
+    "Proofs.Erdos85CycleResolvent": {
+      "path": "proofs/Proofs/Erdos85CycleResolvent.lean",
+      "sha256": "9b042eff8c1182c0dfc8d607c01a5217fe79004600ed868821d676ac51cb30ae"
+    },
+    "Proofs.Erdos85SecondOrderEvenDefect": {
+      "path": "proofs/Proofs/Erdos85SecondOrderEvenDefect.lean",
+      "sha256": "b904db2a0f435366a44bd228f7a0942a9985f34b7fc754c2d51cdbfb6a640411"
+    },
+    "Proofs.Erdos85ControlledDeletion": {
+      "path": "proofs/Proofs/Erdos85ControlledDeletion.lean",
+      "sha256": "eac7de1b9b2bcb439faee93a1bce01ecef6f0f6dd1f54e918b47df3dff053c35"
+    },
+    "Proofs.Erdos85OrderFortyNineDefectEigenvectors": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineDefectEigenvectors.lean",
+      "sha256": "7b8a73c0edea2043e303f4dff47d52cec5367a7cc8c710ea1bb6d4b2e0048d5c"
+    },
+    "Proofs.Erdos85OrderFortyNineDefectIncidence": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineDefectIncidence.lean",
+      "sha256": "31b17b9df337009c5b3cda6541189b994a65605a9bbfc5f1ba65dbf82da25a5a"
+    },
+    "Proofs.Erdos85AlternatingFourthMoment": {
+      "path": "proofs/Proofs/Erdos85AlternatingFourthMoment.lean",
+      "sha256": "f138c4df7a7c2e497e7af78f6357422258236c1950dec402719771461dad0d38"
+    },
+    "Proofs.Erdos85C4FreeFourthMoment": {
+      "path": "proofs/Proofs/Erdos85C4FreeFourthMoment.lean",
+      "sha256": "d929299be9a49ff7f3f076a485132150c61879b4295eb0a5934ed2165005c7e6"
+    },
+    "Proofs.Erdos85ExcessThreeSectorCount": {
+      "path": "proofs/Proofs/Erdos85ExcessThreeSectorCount.lean",
+      "sha256": "56889da7d37a253ea3a720fd29641f28b559cdaa0a4b9dfbc1aff55f2d1c1d3c"
+    },
+    "Proofs.Erdos85PositiveExcessLocalParity": {
+      "path": "proofs/Proofs/Erdos85PositiveExcessLocalParity.lean",
+      "sha256": "a50917bb2eb3a4e55a1f8d144f1eadff55e14a6c4d2527f9a2e9638a94571c6c"
+    },
+    "Proofs.Erdos85PositiveExcessOne": {
+      "path": "proofs/Proofs/Erdos85PositiveExcessOne.lean",
+      "sha256": "d7ae3e872e4204ddd4485f1529418f6b969fab7852c6927198aa8512291dcca5"
+    },
+    "Proofs.Erdos85NonneighborReduction": {
+      "path": "proofs/Proofs/Erdos85NonneighborReduction.lean",
+      "sha256": "480b8a692d8c4226e325ba1c8157d4d59f3ea1bc0daf06bff76abfeadfb511ef"
+    },
+    "Proofs.Erdos85SecondOrderColorTrace": {
+      "path": "proofs/Proofs/Erdos85SecondOrderColorTrace.lean",
+      "sha256": "aaabe7bf06679b13419d0495d49d6dd863be4c140d137a41ce39114eba844c26"
+    },
+    "Proofs.Erdos85GlobalCycleFactorization": {
+      "path": "proofs/Proofs/Erdos85GlobalCycleFactorization.lean",
+      "sha256": "81dc8c9771e1e8e99f829a6d3f5b06d333102c9ab251f6695e4435f0e6ef6cce"
+    },
+    "Proofs.Erdos85ComponentCycleCharpoly": {
+      "path": "proofs/Proofs/Erdos85ComponentCycleCharpoly.lean",
+      "sha256": "575efad705b5679276d41a59edb9c64c6492e8eff6cd47a300593072fc8aebaf"
+    },
+    "Proofs.Erdos85CycleCharpoly": {
+      "path": "proofs/Proofs/Erdos85CycleCharpoly.lean",
+      "sha256": "400656b786f0b0f0b116e36fb958c9459ae179ec61c90710490cdd8477ff1671"
+    },
+    "Proofs.Erdos85PathCharpoly": {
+      "path": "proofs/Proofs/Erdos85PathCharpoly.lean",
+      "sha256": "51d4f71a89bc6b3486409d9ddd9cf9f690a97ff198fb4a6665e06630fce29c66"
+    },
+    "Proofs.Erdos85ExcessDefectRegular": {
+      "path": "proofs/Proofs/Erdos85ExcessDefectRegular.lean",
+      "sha256": "10955361271be1d18e002c640946e0718064ac52f14a7bcaf63d0b8daa94c55a"
+    },
+    "Proofs.Erdos85NonregularDefectOperator": {
+      "path": "proofs/Proofs/Erdos85NonregularDefectOperator.lean",
+      "sha256": "ae1845a726b195ffe2b5c97e949f2be78d594eb0490d6e90af4b52f7c7239e02"
+    },
+    "Proofs.Erdos85ConflictDegreeAccounting": {
+      "path": "proofs/Proofs/Erdos85ConflictDegreeAccounting.lean",
+      "sha256": "d2eeac311a6e84df7d56fa427b6e72d0e5e85d7220aac909051c7e0a8b27ad06"
+    },
+    "Proofs.Erdos85ConflictRegular": {
+      "path": "proofs/Proofs/Erdos85ConflictRegular.lean",
+      "sha256": "47b46c54e3f410a777ac9556149b2503ac8ec0f3fc9bf64cbdcabe9a465fc7ed"
+    },
+    "Proofs.Erdos85OrderFortyNineIncidence": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineIncidence.lean",
+      "sha256": "b869108778237546ab733a6a05aa12fbfaead3c4dc77d38472db6f9f5c3140a9"
+    },
+    "Proofs.Erdos85OrderFortyNineStratification": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineStratification.lean",
+      "sha256": "6ef1941e748ea93e200337e77d31d801c4e96f4fb0161989ea2defe3894a685c"
+    },
+    "Proofs.Erdos85DegreeExcessStratification": {
+      "path": "proofs/Proofs/Erdos85DegreeExcessStratification.lean",
+      "sha256": "56e1d99c47c37df15ffb82de92f89b5541016c870b5be40e406aaa0330e6c710"
+    },
+    "Proofs.Erdos85GadgetCounting": {
+      "path": "proofs/Proofs/Erdos85GadgetCounting.lean",
+      "sha256": "a2e5013330a590d247a606e3d7e0ad00e4f7d5d45960b0b76c81df3ed7716443"
+    },
+    "Proofs.Erdos85ConflictDefectDuality": {
+      "path": "proofs/Proofs/Erdos85ConflictDefectDuality.lean",
+      "sha256": "92cb5bb49a4fed64a2907502a268c0854cfe1f2c1886db5f89bcaeb42b3af868"
+    },
+    "Proofs.Erdos85OrderFortyNineHighIncidenceCensus": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineHighIncidenceCensus.lean",
+      "sha256": "e949ee0ce4adecf6f2b257d31c24e80f17b21fb258086297e55f12ab4390ca12"
+    },
+    "Proofs.Erdos85OrderFortyNineLocalEdgePartition": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineLocalEdgePartition.lean",
+      "sha256": "5cbdf7a4e429bd34c68de1318e891997fdc726d77230c0735de446c254c56cb9"
+    },
+    "Proofs.Erdos85LocalTriangleParity": {
+      "path": "proofs/Proofs/Erdos85LocalTriangleParity.lean",
+      "sha256": "91622d8552f5f93a002113306cdac4694745e8172b6cfe66b8a4f0880be77445"
+    },
+    "Proofs.Erdos85OrderFortyNineCnfSegments": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineCnfSegments.lean",
+      "sha256": "c6f42e82240cc17a4b0dacdbc267a11e97eb76a3c4f01ad8132b80ba7d5d7935"
+    },
+    "Proofs.Erdos85OrderFortyNinePartitionClauses": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNinePartitionClauses.lean",
+      "sha256": "f88b773b663a31920752d112f65b3d9473d68a3e384be2403c38d3d955eb0f9d"
+    },
+    "Proofs.Erdos85OrderFortyNineC4Clauses": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineC4Clauses.lean",
+      "sha256": "2e45f5bf451d6f232931b9bc0fe7e1750aa1a721f472d81e19909913ad80e7f6"
+    },
+    "Proofs.Erdos85OrderFortyNineFixedClauses": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineFixedClauses.lean",
+      "sha256": "a9cb33dc4cc6763689b49e3aa28e1f8e21341d13419347db0c63e1ea77c8da01"
+    },
+    "Proofs.Erdos85OneHighFamilyCnfGenerator": {
+      "path": "proofs/Proofs/Erdos85OneHighFamilyCnfGenerator.lean",
+      "sha256": "cfcd65631bfe99bf085895c0066bbf8a3965767d063872f45d016d2138222c0e"
+    },
+    "Proofs.Erdos85OneHighFamilyCnfSemantics": {
+      "path": "proofs/Proofs/Erdos85OneHighFamilyCnfSemantics.lean",
+      "sha256": "6af28cddeccff652e9cc3b701d70a8292d52c8e4e3f3bb513d605dde265998d1"
+    },
+    "Proofs.Erdos85OneHighCanonicalMate": {
+      "path": "proofs/Proofs/Erdos85OneHighCanonicalMate.lean",
+      "sha256": "79e895bd0b9a71ca05ee50765e986ebfbf68612a3323b465291318b55824609d"
+    },
+    "Proofs.Erdos85OrderFortyNineOneHighOverlap": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineOneHighOverlap.lean",
+      "sha256": "c36af9820736a936802f377cba091a0b25c82be007ffcb49634b0f543e1a22e7"
+    },
+    "Proofs.Erdos85OrderFortyNineSquareRoot": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineSquareRoot.lean",
+      "sha256": "dfb58d639f567a5db945d70ea67aba7695e72ec97e890a068c88912fbd460be0"
+    },
+    "Proofs.Erdos85AlternatingParity": {
+      "path": "proofs/Proofs/Erdos85AlternatingParity.lean",
+      "sha256": "31151c576ad1e930ff9a3e679cb4f0c6d34d2cb9bcae7c3e5ff1a5e0adc3d13b"
+    },
+    "Proofs.Erdos85SquareOrderHighRootKernel": {
+      "path": "proofs/Proofs/Erdos85SquareOrderHighRootKernel.lean",
+      "sha256": "798ab908cb815f4b25f89432212922ece36b41f011a26e4d784d7e14e30f4e43"
+    },
+    "Proofs.Erdos85MinimumSectorAssemblyInterface": {
+      "path": "proofs/Proofs/Erdos85MinimumSectorAssemblyInterface.lean",
+      "sha256": "e5c76d5730bbaaf28a1d282f88ddb7f1bac6dbcc27645645cb574ee88e7f1869"
+    },
+    "Proofs.Erdos85BoundaryQuotientDivisibility": {
+      "path": "proofs/Proofs/Erdos85BoundaryQuotientDivisibility.lean",
+      "sha256": "098aecc80011ba6104f10c5b22e86e2700a3e117a645fb0b420ed44f48400e97"
+    },
+    "Proofs.Erdos85ComponentPeriodicityBound": {
+      "path": "proofs/Proofs/Erdos85ComponentPeriodicityBound.lean",
+      "sha256": "db1c7cdf156c4a60884938dd1ca9e5e8ed994785d57056aa542d5ceab48d93c4"
+    },
+    "Proofs.Erdos85SecondOrderQuotient": {
+      "path": "proofs/Proofs/Erdos85SecondOrderQuotient.lean",
+      "sha256": "7e892e3230fd73b3eab65720284a6986efe4b10803a184ebbe91cb3aa4247514"
+    },
+    "Proofs.Erdos85DefectCycleBlock": {
+      "path": "proofs/Proofs/Erdos85DefectCycleBlock.lean",
+      "sha256": "16ab211ff147e86567b7bdd9e12c1f307c2f301edf1343000451cdf9a5e47447"
+    },
+    "Proofs.Erdos85CycleIntertwinerPeriodicity": {
+      "path": "proofs/Proofs/Erdos85CycleIntertwinerPeriodicity.lean",
+      "sha256": "f1356b327f6f4a1123126dea2f9a081a163052f93986a1b875de690f1bea8f5b"
+    },
+    "Proofs.Erdos85BoundaryQuotientIrreducible": {
+      "path": "proofs/Proofs/Erdos85BoundaryQuotientIrreducible.lean",
+      "sha256": "c8bad1cb91d18fe462f2120b6cf465ebfca5013681ec68f611e66e900f25967d"
+    },
+    "Proofs.Erdos85PairedBlockRigidity": {
+      "path": "proofs/Proofs/Erdos85PairedBlockRigidity.lean",
+      "sha256": "c97dec1e90b44efa0b28c5455b79ce94fd5f4ec0a1c0be86b7aa2c28d1d57d00"
+    },
+    "Proofs.Erdos85OrderFortyNineOuterDefect": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineOuterDefect.lean",
+      "sha256": "8a1762f6072648a823c4230593ad2f2f87e8fa0bfd392d56b61c8e9707799a58"
+    },
+    "Proofs.Erdos85SquareOrderOuterGraph": {
+      "path": "proofs/Proofs/Erdos85SquareOrderOuterGraph.lean",
+      "sha256": "bc6673cdec44511b0f6a7f753b465fe33d144c0e42ebf239954e70f696fa17a2"
+    },
+    "Proofs.Erdos85OrderFortyNineDistOnePinning": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineDistOnePinning.lean",
+      "sha256": "6fbead1cf0ac4c1fdf25f52d3e1b66cf7e1051614b1964064d6847b7269de010"
+    },
+    "Proofs.Erdos85OrderFortyNineDistTwoPinning": {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineDistTwoPinning.lean",
+      "sha256": "3bbe0441b9cbccb887f202cd2a1b1d609b378081d52e53f62d3bf9478436e83c"
+    },
+    "Proofs.Erdos85ExteriorDefectDecomposition": {
+      "path": "proofs/Proofs/Erdos85ExteriorDefectDecomposition.lean",
+      "sha256": "b3118914dda45482ee4b57fd881a70c235335d8defa2646a1fee0197c613fcb6"
+    }
+  },
+  "external_imports": [
+    "Archive.Wiedijk100Theorems.FriendshipGraphs",
+    "Batteries.Data.BitVec.Lemmas",
+    "Mathlib",
+    "Mathlib.Combinatorics.SimpleGraph.AdjMatrix",
+    "Mathlib.Combinatorics.SimpleGraph.Basic",
+    "Mathlib.Combinatorics.SimpleGraph.DegreeSum",
+    "Mathlib.Combinatorics.SimpleGraph.DeleteEdges",
+    "Mathlib.Combinatorics.SimpleGraph.Finite",
+    "Mathlib.Combinatorics.SimpleGraph.LapMatrix",
+    "Mathlib.Combinatorics.SimpleGraph.Sum",
+    "Mathlib.Combinatorics.SimpleGraph.Triangle.Basic",
+    "Mathlib.Data.Fintype.Card",
+    "Mathlib.Data.List.NodupEquivFin",
+    "Mathlib.Data.Rat.Lemmas",
+    "Mathlib.Data.Set.Card",
+    "Mathlib.Data.ZMod.Basic",
+    "Mathlib.FieldTheory.ChevalleyWarning",
+    "Mathlib.FieldTheory.Finite.Basic",
+    "Mathlib.FieldTheory.Finite.GaloisField",
+    "Mathlib.GroupTheory.OrderOfElement",
+    "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+    "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+    "Mathlib.LinearAlgebra.Matrix.Gershgorin",
+    "Mathlib.LinearAlgebra.Matrix.SchurComplement",
+    "Mathlib.LinearAlgebra.Matrix.ToLinearEquiv",
+    "Mathlib.LinearAlgebra.Matrix.Trace",
+    "Mathlib.LinearAlgebra.Projectivization.Cardinality",
+    "Mathlib.NumberTheory.Bertrand",
+    "Mathlib.RingTheory.Polynomial.Chebyshev",
+    "Mathlib.RingTheory.UniqueFactorizationDomain.Finsupp",
+    "Mathlib.Tactic",
+    "Std.Tactic.BVDecide.LRAT"
+  ],
+  "lean_toolchain": "leanprover/lean4:v4.31.0",
+  "lake_manifest_sha256": "f243fb1348183fbb95612c9c97beea1620651a55441b3e78fbc6bc3bfd26da01",
+  "scope": "Source identity only; no new build of import closure."
+}
