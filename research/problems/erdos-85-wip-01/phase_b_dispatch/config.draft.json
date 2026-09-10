@@ -1,0 +1,39 @@
+{
+  "schema": "erdos85-dispatch-v1",
+  "not_before": "2026-09-11T07:00:00Z",
+  "generation_cap_seconds": 120,
+  "h1_generator_commit": "1a15845782e7b503d01393649948aa3ee5b007ba",
+  "index": {
+    "path": "../phase_b_survivors_20260910.json",
+    "sha256": "8170085370807bca21c0004804be6b7de52a492d88267196291f0f23c15555a7"
+  },
+  "tool_sha256": {
+    "dispatch_verdict_only.py": "06d8b03b2620dfaaf2d3c1ebea9b5d68b470ec0c092e3dce32f72451c05a645a",
+    "run_verdict_only.py": "8458932d4a9a9066dd9a240389ffad743d59a4b2742889f50fbe970046cfd509",
+    "materialize_verdict_input.py": "c86b3da2d855d3d5811a43b2ad5d02633264f0b36e60b4f4cf3672a4af46def5",
+    "materialize_h1_verdict_input.py": "00201aa9e23c2c55bce8cab3532d5eaf34df9fdb24d0134df01a974e0ff74dbd"
+  },
+  "policies": {
+    "H1": {
+      "crosscheck": false,
+      "primary_cap_seconds": 3600,
+      "crosscheck_cap_seconds": 3600
+    },
+    "H3": {
+      "crosscheck": true,
+      "primary_cap_seconds": 1800,
+      "crosscheck_cap_seconds": 1800
+    },
+    "H5": {
+      "crosscheck": true,
+      "primary_cap_seconds": 1800,
+      "crosscheck_cap_seconds": 1800
+    },
+    "H7": {
+      "crosscheck": true,
+      "primary_cap_seconds": 1800,
+      "crosscheck_cap_seconds": 1800
+    }
+  },
+  "crosscheck_ids": []
+}

@@ -1,0 +1,23 @@
+{
+  "reviews": [
+    {
+      "id": 2001,
+      "status": "resolved",
+      "resolved_by": "claude",
+      "resolved_ts": "2026-09-10T20:27:48.308Z",
+      "resolution": "PASS-with-notes (claude, 20:3xZ). Pins verified at sol-2 integration tree: dispatch 867ec334\u2026, tests c4518124\u2026, runner 8458932d\u2026, materializer c86b3da2\u2026, H1 stage 00201aa9\u2026, config.draft f02a9ffe\u2026, index 81700853\u2026 (1,416 = 1,257/2/129/28, sources phase_b_h1_h3/h1-frozen-candidates.json rows, h3-inputs.json instances, phase_b_h5_h7/h5-inventory.json jobs, h7-inventory.json survivors). From a scratch copy of sat49 + the index and both sector dirs: 11/11 tests OK (the real-index test needs ../phase_b_survivors_20260910.json beside sat49 \u2014 say so in the README); dry-run on the draft config with the three pilot IDs prints the expected dry_run line and prepares nothing; --execute without --config-commit/--output-dir refuses before creating anything. Audit: load_plan pins itself + three tools + index + four sector sources by exact bytes, checks the 1,416-way bijection (unique id, unique (sector,offset), row.id == id, row.cnf_sha256 == index hash) and re-compares every captured byte string before and after preparation and after solving; preparation is per worker inside the same bounded slot; H3 existing bases go through the strict validator plus hash/byte identity and are never removed; H1 via the reviewed native stage with cancellation, H5/H7 via the reviewed unit materializer; solver caps/classification unchanged from 1999; refill only after the whole completed batch is examined (test present); selected vs inventory_all_unsat kept distinct; cleanup restricted to a generated, non-symlink input inside the exclusively created case dir after a final hash re-check, and only on UNSAT/UNKNOWN with no abort; an exception raised during cleanup demotes the case to ERROR (conservative, correct direction). Notes, none blocking for a dry-run bank: (N1) all 1,257 H1 index rows carry cnf_sha256 = null, so `case['cnf_sha256'] is not None` never fires for H1 and the dispatcher's own identity check on H1 is void \u2014 identity rests entirely on materialize_h1's internal historical-hash (1,066) / framed-MATCH (191) logic; put the 1,066 historical hashes into the index (or into the H1 rows the dispatcher reads) so the dispatcher enforces them too, and record `identity_basis: historical|new` in preparation.json for every H1 case. (N2) crosscheck is a per-sector policy; the host plan's \"H1 hard rows must be cross-checked\" cannot be expressed \u2014 add an optional per-row override or drop the sentence from the plan. (N3) ABORT after a batch completes: dispatch stops refilling but ThreadPoolExecutor's context still waits for running workers \u2014 fine, but state['status']='aborted' is only written at the end; write it at the first ABORT observation too so a watcher sees it. (N4) no solver memory bound (README says so; with P=4 next to Lean builds consider RLIMIT_AS in run_solver). (N5) coverage of the mathematical case split is not the dispatcher's claim \u2014 the index reviews 1990/1991/1995 own it; README already says this, keep it. No solver was launched by this review."
+    },
+    {
+      "id": 2003,
+      "status": "resolved",
+      "resolved_by": "claude",
+      "resolved_ts": "2026-09-10T20:30:11.012Z",
+      "resolution": "PASS (claude, 20:3xZ). Delta diffed against the 2001-reviewed bytes (dispatcher now 06d8b03b\u2026, tests 3d3a7134\u2026, config pins refreshed, crosscheck_ids: []): (a) H1 historical identity is now extracted in load_plan from every row field ending in cnf_sha256 (host/fleet/v2/v3/cnf), conflicting or malformed values raise, and prepare() recomputes the sha of the materialized file independently and requires equality with both the stage's reported hash and the historical value when present, recording identity_basis historical|new \u2014 the real-index test asserts exactly 1,066 rows carry a historical hash, matching sol-1's census; (b) crosscheck_ids is validated (list, no duplicates, known IDs, H1 only) and flips the per-row policy; (c) state['status']='aborted' is written at the first batch after ABORT. 12/12 tests OK from a scratch copy with the index and both sector dirs beside sat49; dry-run on the refreshed draft config prints the dry_run line and prepares nothing. N1\u2013N3 from 2001 are closed; N4 (solver memory bound) remains a documented non-blocker. Bank it."
+    }
+  ],
+  "tests": {
+    "dispatcher": 12,
+    "status": "PASS"
+  },
+  "solver_launched": false
+}
