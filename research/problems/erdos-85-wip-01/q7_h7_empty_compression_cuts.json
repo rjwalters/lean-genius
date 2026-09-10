@@ -1,0 +1,1378 @@
+{
+  "scope": "fixed-psi7 a9 endpoint necessary compressed quadratic condition only",
+  "polynomial": [
+    223,
+    -10,
+    -25
+  ],
+  "shapes": [
+    {
+      "shape": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "allowed": [
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "cases": [
+        {
+          "mask": 0,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 1,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 2,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 3,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 4,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 5,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 6,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 7,
+          "status": "excluded",
+          "vector": [
+            5,
+            5,
+            5,
+            3,
+            3,
+            3,
+            1
+          ],
+          "quadratic_value": -4235
+        },
+        {
+          "mask": 8,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 9,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 10,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 11,
+          "status": "excluded",
+          "vector": [
+            -5,
+            -5,
+            -4,
+            -4,
+            -3,
+            -2,
+            -3
+          ],
+          "quadratic_value": -2448
+        },
+        {
+          "mask": 12,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 13,
+          "status": "excluded",
+          "vector": [
+            5,
+            4,
+            5,
+            4,
+            2,
+            3,
+            3
+          ],
+          "quadratic_value": -2448
+        },
+        {
+          "mask": 14,
+          "status": "excluded",
+          "vector": [
+            4,
+            5,
+            5,
+            3,
+            3,
+            3,
+            2
+          ],
+          "quadratic_value": -315
+        },
+        {
+          "mask": 15,
+          "status": "excluded",
+          "vector": [
+            5,
+            4,
+            4,
+            4,
+            3,
+            3,
+            2
+          ],
+          "quadratic_value": -6775
+        },
+        {
+          "mask": 16,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 17,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 18,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 19,
+          "status": "excluded",
+          "vector": [
+            -5,
+            -5,
+            -4,
+            -3,
+            -4,
+            -2,
+            -3
+          ],
+          "quadratic_value": -2448
+        },
+        {
+          "mask": 20,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 21,
+          "status": "excluded",
+          "vector": [
+            5,
+            4,
+            5,
+            3,
+            3,
+            3,
+            2
+          ],
+          "quadratic_value": -315
+        },
+        {
+          "mask": 22,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -5,
+            -5,
+            -2,
+            -4,
+            -3,
+            -3
+          ],
+          "quadratic_value": -2448
+        },
+        {
+          "mask": 23,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -5,
+            -4,
+            -3,
+            -4,
+            -3,
+            -2
+          ],
+          "quadratic_value": -6775
+        },
+        {
+          "mask": 24,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 25,
+          "status": "excluded",
+          "vector": [
+            -5,
+            -4,
+            -4,
+            -4,
+            -3,
+            -2,
+            -4
+          ],
+          "quadratic_value": -808
+        },
+        {
+          "mask": 26,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -5,
+            -4,
+            -3,
+            -4,
+            -2,
+            -4
+          ],
+          "quadratic_value": -808
+        },
+        {
+          "mask": 27,
+          "status": "excluded",
+          "vector": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            2,
+            4
+          ],
+          "quadratic_value": -7468
+        },
+        {
+          "mask": 28,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 29,
+          "status": "excluded",
+          "vector": [
+            5,
+            4,
+            4,
+            4,
+            3,
+            3,
+            3
+          ],
+          "quadratic_value": -5368
+        },
+        {
+          "mask": 30,
+          "status": "excluded",
+          "vector": [
+            4,
+            5,
+            4,
+            3,
+            4,
+            3,
+            3
+          ],
+          "quadratic_value": -5368
+        },
+        {
+          "mask": 31,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -4,
+            -4,
+            -4,
+            -4,
+            -3,
+            -3
+          ],
+          "quadratic_value": -11828
+        },
+        {
+          "mask": 32,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 33,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 34,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 35,
+          "status": "excluded",
+          "vector": [
+            5,
+            5,
+            4,
+            3,
+            3,
+            3,
+            2
+          ],
+          "quadratic_value": -315
+        },
+        {
+          "mask": 36,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 37,
+          "status": "excluded",
+          "vector": [
+            -5,
+            -4,
+            -5,
+            -3,
+            -2,
+            -4,
+            -3
+          ],
+          "quadratic_value": -2448
+        },
+        {
+          "mask": 38,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -5,
+            -5,
+            -2,
+            -3,
+            -4,
+            -3
+          ],
+          "quadratic_value": -2448
+        },
+        {
+          "mask": 39,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -4,
+            -5,
+            -3,
+            -3,
+            -4,
+            -2
+          ],
+          "quadratic_value": -6775
+        },
+        {
+          "mask": 40,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 41,
+          "status": "excluded",
+          "vector": [
+            -5,
+            -4,
+            -4,
+            -4,
+            -2,
+            -3,
+            -4
+          ],
+          "quadratic_value": -808
+        },
+        {
+          "mask": 42,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 43,
+          "status": "excluded",
+          "vector": [
+            5,
+            4,
+            4,
+            4,
+            3,
+            3,
+            3
+          ],
+          "quadratic_value": -5368
+        },
+        {
+          "mask": 44,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -4,
+            -5,
+            -3,
+            -2,
+            -4,
+            -4
+          ],
+          "quadratic_value": -808
+        },
+        {
+          "mask": 45,
+          "status": "excluded",
+          "vector": [
+            4,
+            4,
+            4,
+            4,
+            2,
+            4,
+            4
+          ],
+          "quadratic_value": -7468
+        },
+        {
+          "mask": 46,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -4,
+            -5,
+            -3,
+            -3,
+            -4,
+            -3
+          ],
+          "quadratic_value": -5368
+        },
+        {
+          "mask": 47,
+          "status": "excluded",
+          "vector": [
+            4,
+            4,
+            4,
+            4,
+            3,
+            4,
+            3
+          ],
+          "quadratic_value": -11828
+        },
+        {
+          "mask": 48,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 49,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 50,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -5,
+            -4,
+            -2,
+            -4,
+            -3,
+            -4
+          ],
+          "quadratic_value": -808
+        },
+        {
+          "mask": 51,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -5,
+            -4,
+            -3,
+            -4,
+            -3,
+            -3
+          ],
+          "quadratic_value": -5368
+        },
+        {
+          "mask": 52,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -4,
+            -5,
+            -2,
+            -3,
+            -4,
+            -4
+          ],
+          "quadratic_value": -808
+        },
+        {
+          "mask": 53,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -4,
+            -5,
+            -3,
+            -3,
+            -4,
+            -3
+          ],
+          "quadratic_value": -5368
+        },
+        {
+          "mask": 54,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -4,
+            -4,
+            -2,
+            -4,
+            -4,
+            -4
+          ],
+          "quadratic_value": -7468
+        },
+        {
+          "mask": 55,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -4,
+            -4,
+            -3,
+            -4,
+            -4,
+            -3
+          ],
+          "quadratic_value": -11828
+        },
+        {
+          "mask": 56,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 57,
+          "status": "excluded",
+          "vector": [
+            5,
+            4,
+            4,
+            4,
+            3,
+            3,
+            4
+          ],
+          "quadratic_value": -5687
+        },
+        {
+          "mask": 58,
+          "status": "excluded",
+          "vector": [
+            4,
+            5,
+            4,
+            3,
+            4,
+            3,
+            4
+          ],
+          "quadratic_value": -5687
+        },
+        {
+          "mask": 59,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -4,
+            -3,
+            -4,
+            -4,
+            -3,
+            -4
+          ],
+          "quadratic_value": -11828
+        },
+        {
+          "mask": 60,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -4,
+            -5,
+            -3,
+            -3,
+            -4,
+            -4
+          ],
+          "quadratic_value": -5687
+        },
+        {
+          "mask": 61,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -3,
+            -4,
+            -4,
+            -3,
+            -4,
+            -4
+          ],
+          "quadratic_value": -11828
+        },
+        {
+          "mask": 62,
+          "status": "excluded",
+          "vector": [
+            3,
+            4,
+            4,
+            3,
+            4,
+            4,
+            4
+          ],
+          "quadratic_value": -11828
+        },
+        {
+          "mask": 63,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -4,
+            -4,
+            -4,
+            -4,
+            -4,
+            -4
+          ],
+          "quadratic_value": -19952
+        }
+      ]
+    },
+    {
+      "shape": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "allowed": [
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          4,
+          5
+        ]
+      ],
+      "cases": [
+        {
+          "mask": 0,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 1,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 2,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 3,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 4,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 5,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 6,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 7,
+          "status": "excluded",
+          "vector": [
+            -5,
+            -5,
+            -2,
+            -5,
+            -3,
+            -3,
+            -3
+          ],
+          "quadratic_value": -1588
+        },
+        {
+          "mask": 8,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 9,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 10,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 11,
+          "status": "excluded",
+          "vector": [
+            5,
+            4,
+            4,
+            4,
+            3,
+            3,
+            1
+          ],
+          "quadratic_value": -1108
+        },
+        {
+          "mask": 12,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 13,
+          "status": "excluded",
+          "vector": [
+            -5,
+            -4,
+            -3,
+            -5,
+            -2,
+            -4,
+            -3
+          ],
+          "quadratic_value": -1448
+        },
+        {
+          "mask": 14,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 15,
+          "status": "excluded",
+          "vector": [
+            -5,
+            -4,
+            -3,
+            -4,
+            -3,
+            -3,
+            -3
+          ],
+          "quadratic_value": -5435
+        },
+        {
+          "mask": 16,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 17,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 18,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 19,
+          "status": "excluded",
+          "vector": [
+            49,
+            39,
+            37,
+            47,
+            33,
+            24,
+            29
+          ],
+          "quadratic_value": -27772
+        },
+        {
+          "mask": 20,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 21,
+          "status": "excluded",
+          "vector": [
+            -5,
+            -4,
+            -3,
+            -5,
+            -2,
+            -3,
+            -4
+          ],
+          "quadratic_value": -2048
+        },
+        {
+          "mask": 22,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 23,
+          "status": "excluded",
+          "vector": [
+            -5,
+            -4,
+            -3,
+            -4,
+            -3,
+            -2,
+            -4
+          ],
+          "quadratic_value": -6175
+        },
+        {
+          "mask": 24,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 25,
+          "status": "excluded",
+          "vector": [
+            -5,
+            -3,
+            -4,
+            -5,
+            -2,
+            -4,
+            -3
+          ],
+          "quadratic_value": -2048
+        },
+        {
+          "mask": 26,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 27,
+          "status": "excluded",
+          "vector": [
+            5,
+            4,
+            4,
+            4,
+            3,
+            3,
+            3
+          ],
+          "quadratic_value": -5368
+        },
+        {
+          "mask": 28,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 29,
+          "status": "excluded",
+          "vector": [
+            4,
+            4,
+            4,
+            4,
+            2,
+            4,
+            4
+          ],
+          "quadratic_value": -7468
+        },
+        {
+          "mask": 30,
+          "status": "excluded",
+          "vector": [
+            4,
+            5,
+            4,
+            3,
+            3,
+            4,
+            4
+          ],
+          "quadratic_value": -4687
+        },
+        {
+          "mask": 31,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -4,
+            -4,
+            -4,
+            -3,
+            -3,
+            -4
+          ],
+          "quadratic_value": -11828
+        },
+        {
+          "mask": 32,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 33,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 34,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 35,
+          "status": "excluded",
+          "vector": [
+            5,
+            4,
+            2,
+            5,
+            4,
+            4,
+            2
+          ],
+          "quadratic_value": -2088
+        },
+        {
+          "mask": 36,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 37,
+          "status": "excluded",
+          "vector": [
+            4,
+            3,
+            1,
+            5,
+            3,
+            4,
+            4
+          ],
+          "quadratic_value": -1108
+        },
+        {
+          "mask": 38,
+          "status": "excluded",
+          "vector": [
+            -33,
+            -45,
+            -15,
+            -37,
+            -44,
+            -43,
+            -38
+          ],
+          "quadratic_value": -51115
+        },
+        {
+          "mask": 39,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -4,
+            -2,
+            -4,
+            -4,
+            -4,
+            -3
+          ],
+          "quadratic_value": -7235
+        },
+        {
+          "mask": 40,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 41,
+          "status": "excluded",
+          "vector": [
+            5,
+            3,
+            3,
+            5,
+            3,
+            5,
+            2
+          ],
+          "quadratic_value": -1588
+        },
+        {
+          "mask": 42,
+          "status": "excluded",
+          "vector": [
+            -37,
+            -43,
+            -38,
+            -33,
+            -44,
+            -45,
+            -15
+          ],
+          "quadratic_value": -51115
+        },
+        {
+          "mask": 43,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -4,
+            -3,
+            -4,
+            -4,
+            -4,
+            -2
+          ],
+          "quadratic_value": -7235
+        },
+        {
+          "mask": 44,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 45,
+          "status": "excluded",
+          "vector": [
+            4,
+            3,
+            3,
+            5,
+            3,
+            4,
+            3
+          ],
+          "quadratic_value": -5435
+        },
+        {
+          "mask": 46,
+          "status": "excluded",
+          "vector": [
+            -3,
+            -4,
+            -3,
+            -3,
+            -4,
+            -4,
+            -3
+          ],
+          "quadratic_value": -4648
+        },
+        {
+          "mask": 47,
+          "status": "excluded",
+          "vector": [
+            4,
+            4,
+            3,
+            4,
+            4,
+            4,
+            3
+          ],
+          "quadratic_value": -12428
+        },
+        {
+          "mask": 48,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 49,
+          "status": "excluded",
+          "vector": [
+            47,
+            24,
+            29,
+            49,
+            33,
+            39,
+            37
+          ],
+          "quadratic_value": -27772
+        },
+        {
+          "mask": 50,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 51,
+          "status": "excluded",
+          "vector": [
+            4,
+            4,
+            3,
+            4,
+            4,
+            4,
+            3
+          ],
+          "quadratic_value": -4928
+        },
+        {
+          "mask": 52,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 53,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -3,
+            -3,
+            -5,
+            -3,
+            -4,
+            -4
+          ],
+          "quadratic_value": -5368
+        },
+        {
+          "mask": 54,
+          "status": "excluded",
+          "vector": [
+            -3,
+            -4,
+            -3,
+            -3,
+            -4,
+            -4,
+            -4
+          ],
+          "quadratic_value": -3995
+        },
+        {
+          "mask": 55,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -4,
+            -3,
+            -4,
+            -4,
+            -3,
+            -4
+          ],
+          "quadratic_value": -11628
+        },
+        {
+          "mask": 56,
+          "status": "positive_definite"
+        },
+        {
+          "mask": 57,
+          "status": "excluded",
+          "vector": [
+            4,
+            2,
+            4,
+            5,
+            3,
+            4,
+            3
+          ],
+          "quadratic_value": -6175
+        },
+        {
+          "mask": 58,
+          "status": "excluded",
+          "vector": [
+            -3,
+            -4,
+            -4,
+            -3,
+            -4,
+            -4,
+            -3
+          ],
+          "quadratic_value": -3995
+        },
+        {
+          "mask": 59,
+          "status": "excluded",
+          "vector": [
+            4,
+            3,
+            4,
+            4,
+            4,
+            4,
+            3
+          ],
+          "quadratic_value": -11628
+        },
+        {
+          "mask": 60,
+          "status": "excluded",
+          "vector": [
+            -3,
+            -4,
+            -4,
+            -4,
+            -3,
+            -5,
+            -4
+          ],
+          "quadratic_value": -4687
+        },
+        {
+          "mask": 61,
+          "status": "excluded",
+          "vector": [
+            4,
+            3,
+            4,
+            4,
+            3,
+            4,
+            4
+          ],
+          "quadratic_value": -11828
+        },
+        {
+          "mask": 62,
+          "status": "excluded",
+          "vector": [
+            3,
+            4,
+            4,
+            3,
+            4,
+            4,
+            4
+          ],
+          "quadratic_value": -11028
+        },
+        {
+          "mask": 63,
+          "status": "excluded",
+          "vector": [
+            -4,
+            -4,
+            -4,
+            -4,
+            -4,
+            -4,
+            -4
+          ],
+          "quadratic_value": -19952
+        }
+      ]
+    }
+  ]
+}
