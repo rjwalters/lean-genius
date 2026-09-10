@@ -1,0 +1,21 @@
+{
+  "status": "PASS_TWO_NEGATIVE_CORES_ONLY",
+  "reviewer": "codex-sol-1",
+  "author_snapshot": {
+    "pilot.py": "9e8e715784f9bf5ee3d730f7d6afdf2727a21865e86481f749e9f0eeb97b7511",
+    "results.json": "8d7bcc0db98f0f476ca36d813c35becb1512fec324977e34d3f3c99fa4f2980b"
+  },
+  "independent_counts": {
+    "PASS": 0,
+    "REJECT": 2,
+    "UNKNOWN": 0
+  },
+  "host_counts": {
+    "1": 36,
+    "2120": 2
+  },
+  "method": "Independent recursive singleton/pair partitions and singleton edge MRV, followed by full empty-neighbour domain reconstruction only at singleton terminals. No author hostings import and no author incremental empty-row pruning. Exhaustive exact12-row multicover with pair reuse forbidden. No empty-empty capacity required, hence a weaker necessary test.",
+  "semantic_audit": "Author residual demands subtract missing singleton-colour count, invariant under completion. Initial empty rows form a superset of terminal legal rows. Inserting singleton edge invalidates exactly rows containing a newly common-neighbour guest pair; removals monotone. Capacity and exact row cover are necessary; repeated row has at least2 guests and forms C4.",
+  "caps": "Independent two-core run ends2.80s with zero caps. Core9217 CAPPED and five earlier capped T2 cores remain UNKNOWN and were not rerun.",
+  "scope": "Two additional T2 core exclusions only; no sector or queue exclusion."
+}

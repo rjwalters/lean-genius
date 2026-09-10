@@ -1,0 +1,41 @@
+{
+  "results": [
+    {
+      "core": 1,
+      "status": "EXCLUDED_EMPTY_INCIDENCE",
+      "nodes": 43773,
+      "hosts_tried": 36,
+      "singleton_terminals": 24,
+      "capacity_cuts": 155,
+      "max_initial_empty_rows": 752,
+      "witness": null
+    },
+    {
+      "core": 2120,
+      "status": "EXCLUDED_EMPTY_INCIDENCE",
+      "nodes": 38261,
+      "hosts_tried": 2,
+      "singleton_terminals": 96,
+      "capacity_cuts": 968,
+      "max_initial_empty_rows": 2534,
+      "witness": null
+    },
+    {
+      "core": 9217,
+      "status": "CAPPED",
+      "nodes": 100001,
+      "hosts_tried": 2,
+      "singleton_terminals": 96,
+      "capacity_cuts": 2204,
+      "max_initial_empty_rows": 2567,
+      "witness": null
+    }
+  ],
+  "seconds": 16.298036500113085,
+  "unvisited": 0,
+  "caps": {
+    "nodes_per_core": 100000,
+    "wall_seconds": 60
+  },
+  "scope": "Three previously singleton-positive T2 cores only; all host sizes, monotone empty-row capacity, terminal exact incidence cover. Empty-empty edges absent; five earlier capped cores untouched."
+}

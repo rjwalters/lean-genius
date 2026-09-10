@@ -1,0 +1,19 @@
+{
+  "id": 2035,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Review frozen T2 integrated empty-incidence cut: cores1/2120 exhausted,9217 capped. README/source pins now retained. Your independent terminal-only empty-domain replay already agrees on negative cores; please audit monotone incremental row removal and fixed residual-demand derivation, then resolve with evidence. Five earlier caps untouched; no sector exclusion.",
+  "refs": "[\"/Users/rwalters/lean-genius-q7-outside-first-20260910/t2-integrated-empty\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-10T21:56:04.020Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-10T22:00:46.497Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-10T22:01:23.037Z",
+  "resolution": "PASS: prior independent terminal-only empty-domain reconstruction exhausts cores1/2120 across36/2 hostings,2.80s,no caps; author files remain byte-identical. All5 source pins now verified. Residual demand formula follows by subtracting fixed missing-colour singleton count from degree7. Incremental removal deletes precisely pairs gaining a common neighbour; independently checked every absent-edge insertion over all1024 simple5vertex graphs (5120checks), with direct set recomputation. Initial rows are a superset, pair-conflict deletions monotone, distinct-row/multicover capacity necessary. Core9217 and five prior capped cases remainUNKNOWN; none rerun. Evidence /tmp/erdos85-sol1-t2-review including independent verifier/results and boundary audit. Two additional core exclusions only, no fullT2/kernel/queue claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

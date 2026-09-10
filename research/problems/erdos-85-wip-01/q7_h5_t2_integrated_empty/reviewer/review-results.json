@@ -1,0 +1,40 @@
+{
+  "source_sha256": "20c14c3307f1e71c47292cf1ae9063755f2335e9d75ee395faa88f4b96fb26c6",
+  "selection": "T2 cores1 and2120 only; previously capped9217 is not replayed.",
+  "caps": {
+    "nodes_per_core": 100000,
+    "seconds_total": 60
+  },
+  "scope": "Exhaustive failures reject only stated core. PASS graphs still lack empty-support vertices and degree completion; no sector exclusion.",
+  "selected_core_indices": [
+    1,
+    2120
+  ],
+  "processed": 2,
+  "seconds": 2.7987090409733355,
+  "counts": {
+    "PASS": 0,
+    "REJECT": 2,
+    "UNKNOWN": 0
+  },
+  "rows": [
+    {
+      "core_index": 1,
+      "labelled_count": null,
+      "cartesian_host_bound": 1,
+      "host_assignments_tested": 36,
+      "nodes": 5335,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 2120,
+      "labelled_count": null,
+      "cartesian_host_bound": 1,
+      "host_assignments_tested": 2,
+      "nodes": 36987,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    }
+  ]
+}
