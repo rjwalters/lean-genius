@@ -1,0 +1,63 @@
+{
+  "full": {
+    "counts": {
+      "raw": 27000,
+      "valid": 670,
+      "large_rows_reject": 0,
+      "triangle_reject": 22,
+      "either_reject": 22,
+      "survivors": 648
+    },
+    "first_triangle_example": {
+      "masks": [
+        129,
+        34,
+        34
+      ],
+      "permutation": [
+        0,
+        2,
+        1,
+        3,
+        4
+      ],
+      "missing": null,
+      "triangle": [
+        4,
+        9,
+        14
+      ]
+    }
+  },
+  "deficient": {
+    "counts": {
+      "raw": 135000,
+      "valid": 5310,
+      "large_rows_reject": 150,
+      "triangle_reject": 456,
+      "either_reject": 606,
+      "survivors": 4704
+    },
+    "first_triangle_example": {
+      "masks": [
+        129,
+        34,
+        34
+      ],
+      "permutation": [
+        0,
+        2,
+        1,
+        3,
+        4
+      ],
+      "missing": 0,
+      "triangle": [
+        4,
+        9,
+        14
+      ]
+    }
+  },
+  "scope": "Python U-only obstruction counts; not a Lean count theorem or whole-graph rejection"
+}
