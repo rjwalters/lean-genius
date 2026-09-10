@@ -72,3 +72,14 @@ the43-class enumeration. Thirteen classes remain at T=3, and no whole H7
 sector, actual graph, or fixed residual polynomial is excluded. In
 particular the previously retained psi7 has T=13, so these endpoint cuts
 do not exclude it.
+
+## Actual triangle-free-empty implication in Lean
+
+`Erdos85OrderFortyNineSevenHighT0TriangleFreeEmptyBound.lean` proves
+`sevenHigh_t0_no_empty_triangle_four_low_triangles` directly for an actual
+H7/T0 graph. Each all-low triangle contains at most two empty vertices,
+otherwise its three vertices pull back to an induced-empty triangle.
+Actual empty coverage then yields7<=2T and henceT>=4. This formal implication
+has no empty-edge-count or residual-spectrum premise. Source and public build
+pass with standard axioms; review1662 passed.
+It does not formalize the43-class enumeration.
