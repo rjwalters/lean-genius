@@ -24,8 +24,8 @@ Boxes:
 
 | box | type | state | slots | on-disk quarantine | notes |
 |---|---|---|---|---|---|
-| i-0ccf0dc6a398156d8 | c7g.16xlarge **spot**, us-east-1d, 1000 GB gp3 | running since 2026-09-06 16:55Z; heartbeat 2026-09-10 05:01Z, load 8, `slots_failed=28/36`, `disk_free=588G`, `oom=15` | 8 live | **13 UPLOAD-FAIL certificates** (`/scratch/h1/<slot>/orbit.compact.lrat.gz`, compact 19.0–26.5 GB each, ≈ 6 GB gz each; 15 TRIM-FAIL raw LRATs alongside) | **DO NOT TERMINATE** until the 13 are re-uploaded and verified; spot, so at reclaim risk |
-| i-01f0d952483d8f066 | c7g.16xlarge spot | **GONE** — not in describe-instances; last heartbeat 2026-09-09 03:50Z, last worker.log 03:01Z, last ledger 03:52Z; no user termination in CloudTrail (editor 42228) → spot reclamation ≈ 03:50–04:00Z | 0 | **7 UPLOAD-FAIL certificates LOST** (f25a68f489294d7c, d67d8618bf933b97, 3de5f9e7f1d255e7, f363d5a068846aa3, 59b38d317ba10da8, 35958b08961b7cfc, be77d80a79a0dce6) → must be RE-SOLVED; its 18 TRIM-FAIL raws also lost; its 10 orphan claims must be released | |
+| i-0ccf0dc6a398156d8 | c7g.16xlarge **spot**, us-east-1d, 1000 GB gp3 | running since 2026-09-06 16:55Z; heartbeat 2026-09-10 05:01Z, load 8, `slots_failed=28/36`, `disk_free=588G`, `oom=15` | 8 live | **13 UPLOAD-FAIL certificates** (`/scratch/h1/<tag>/orbit.compact.lrat.gz`, compact 19.0–26.5 GB each, gz 5.5–7.9 GB each, 80,911,889,341 bytes total per the editor's on-box readback 42295; 15 TRIM-FAIL raw LRATs alongside) | **DO NOT TERMINATE** until the 13 are re-uploaded and verified; spot, so at reclaim risk |
+| i-01f0d952483d8f066 | c7g.16xlarge spot | **GONE** — not in describe-instances; last heartbeat 2026-09-09 03:50Z, last worker.log 03:01Z, last ledger 03:52Z; no user termination in CloudTrail (editor 42228) → spot reclamation ≈ 03:50–04:00Z. Recovery probes (claude 42263, all negative): bucket-wide key search finds no certificate object for the seven tags; no unattached EBS volume in us-east-1; no volume ever attached to this instance remains; no self-owned snapshot since 2026-09-06; spot request absent → **VERIFIED LOST** | 0 | **7 UPLOAD-FAIL certificates LOST** (f25a68f489294d7c, d67d8618bf933b97, 3de5f9e7f1d255e7, f363d5a068846aa3, 59b38d317ba10da8, 35958b08961b7cfc, be77d80a79a0dce6) → must be RE-SOLVED; its 18 TRIM-FAIL raws also lost; its 10 orphan claims must be released | |
 
 UPLOAD-FAIL tags on the surviving box (13): 0a5acff54f93af2e 6b29a970f356c68b
 9a5b6799a662168b 705d62c3af203bd8 1e946f8f3b6ffa06 329b85b7cdf2ab94
@@ -53,15 +53,17 @@ the cause cannot be read back).
 
 ## 2. FIRST ACTION (zero incremental spend): rescue the 13 quarantined certificates
 
-The box is paid for and running; the 13 gz files (≈ 80 GB) exist only on its
-disk. This step needs a shell on i-0ccf0dc6a398156d8 (SSM Run Command or SSH —
+The box is paid for and running; the 13 gz files (80.9 GB, each > 5 GiB) exist
+only on its disk. **Status: RUNNING 2026-09-10 05:26Z by the editor (42295), exactly
+this procedure; independent S3 verification by the Claude seat follows the
+editor's result post, and only then does the termination hold lift.** This step needs a shell on i-0ccf0dc6a398156d8 (SSM Run Command or SSH —
 operator/editor action; the Claude seat holds no key) and the box's existing
 role, which already has PutObject on `h1/`.
 
 ```
-# on the box, once per quarantined slot N (13 of them):
+# on the box, once per quarantined tag (13 of them; work dirs are per TAG, not per slot):
 TAG=$(sed 's/^tag=\([0-9a-f]*\).*/\1/' /opt/h1/slot.N.failed)   # cert-pipeline-fail lines
-GZ=/scratch/h1/N/orbit.compact.lrat.gz
+GZ=/scratch/h1/$TAG/orbit.compact.lrat.gz
 sha256sum $GZ                      # must equal compact_gz_sha256 in failures/$TAG.line
 aws s3api head-object --bucket 2am-erdos85-certs --key sat49/campaign-20260825/h1/$TAG.compact.lrat.gz && { echo EXISTS; exit 1; }
 aws s3 cp --only-show-errors --expected-size $(stat -c%s $GZ) $GZ s3://2am-erdos85-certs/sat49/campaign-20260825/h1/$TAG.compact.lrat.gz
@@ -78,8 +80,10 @@ supports `--if-none-match` on CompleteMultipartUpload; the fleet's pinned
 2.36.34 does). Verification per file: local sha256 == `compact_gz_sha256` of the
 failure line; S3 ContentLength == local size; recompute the multipart ETag
 locally (md5 of the concatenated per-part md5s + `-<parts>`) and compare with
-HeadObject's ETag; then PutObjectTagging `sha256=<gz sha>` like the replay stack
-expects; finally write a corrected ledger line to
+HeadObject's ETag. Do NOT tag the rescued objects: the v3 worker never tagged
+any certificate (no put-object-tagging in `h1_fleet_worker.sh`), and the
+replay stack adds its own `replay=consumed` tag later; a sha256 tag is a v4
+worker addition (§3), not a v3 invariant. Finally write a corrected ledger line to
 `h1-fleet-v3/ledger/$TAG.line` with `upload=uploaded-v4-multipart` and move the
 failure line to `h1-fleet-v3/failures-resolved/`. Parallelism: 13 files, run
 P = 4 on the box (network-bound, ~6 GB each; expect < 1 h total).
@@ -112,19 +116,28 @@ same procedure as `generate_h1_v3_retry_worker.py`):
 3. TRIM-FAIL uploads `drat-trim.out` (and the kissat tail) to
    `h1-fleet-v4/diagnostics/$TAG/` so the cause is readable; then re-runs
    drat-trim once with `-w` (warning mode) before declaring failure.
-4. Slot count bounded by MEMORY, not vCPU: `H1_PAR` = floor(RAM / 6 GiB) − reserve
-   ≈ 18 on a 128 GiB box (kissat RSS 3–4 GB typical, 82 GiB worst case; the
-   supervisor pauses new claims while free RAM < 16 GiB). This removes the OOM
-   casualties (`oom=15/20`) that inflate UNKNOWN and TRIM-FAIL.
+4. Memory is bounded PER JOB, not only per box: each solve/trim runs under a
+   cgroup limit (`systemd-run --scope -p MemoryMax=<cap>`); a kill by the limit
+   is ledgered as `UNKNOWN-OOM` with the peak RSS, the claim is released and the
+   row is re-queued to a dedicated large-memory lane (r7g/x2gd class, one job
+   per box) instead of retried in place. Admission by free RAM (`H1_PAR` ≈
+   floor(RAM / 6 GiB) − reserve ≈ 18 on 128 GiB; pause new claims while free
+   RAM < 16 GiB) is only the second guard — it cannot bound a single job that
+   grows to 82 GiB (sol-1 42315), which is what produced `oom=15/20`, the
+   UNKNOWN rows and part of the TRIM-FAIL set.
 5. Spot interruption handler: poll the IMDS spot-interruption notice every 5 s;
    on notice, kill solvers, `aws s3 cp` every finished gz still on disk, upload
    heartbeat + worker.log, then release (delete) claim markers of the killed
    slots so they re-queue. Use on-demand (r7g/c7g.16xlarge) for the final pass if
    the budget allows — the loss above cost 7 certificates × ~6 box-hours each.
-6. Orphan sweep before launch: any claim under `h1-fleet-v3/claims/` with no
-   ledger or failure line AND whose node has no heartbeat in the last 60 min is
-   deleted (the ten from i-01f0d952483d8f066 today), the same way the v2 orphans
-   were swept (38508).
+6. Orphan sweep before launch: a claim under `h1-fleet-v3/claims/` with no
+   ledger or failure line is only a CANDIDATE when its node's heartbeat is stale;
+   release requires authoritative node state — `describe-instances` returning
+   not-found/terminated for the claim's node id (claim body) plus the CloudTrail
+   termination/interruption record — never the heartbeat alone (sol-1 42315).
+   The ten claims from i-01f0d952483d8f066 meet that bar today (instance absent
+   from describe-instances, spot request gone); the eight on i-0ccf0dc6a398156d8
+   do not and stay claimed. Same procedure as the v2 orphan sweep (38508).
 7. Local multi-slot dry run on the host (Docker 64 GiB VM) with two known-hard
    rows and one > 5 GiB synthetic gz is the gate, exactly as pilot-8 / conflict
    v6 gated the replay stack.
