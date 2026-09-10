@@ -1,0 +1,17 @@
+{
+  "review": 2043,
+  "status": "PASS",
+  "pins": {
+    "check.py": "936f1a6235e59e4cddd7e045a9084a2a028cfe7875574e88492ff3132ed3ff66",
+    "results.json": "d5084acc5a13519cd1f967beb1408a501fd4dde01b03d41a4abcd3a753334892",
+    "independent.py": "564bc73cb24f9d5388f62ad47e113200840298276d6a71e89b06eaf6bcf6a723",
+    "README.md": "65c6737998a0eb454ec6bdaf80658950f4579867dfe71cd09f8003aedb0bf668",
+    "independent-result.json": "eac897ceb09f70c0a2cb2b30c99952540f54543a0ce3945575b90d75d4382da1"
+  },
+  "replays_byte_identical": true,
+  "canonical_mask_rederived": true,
+  "mapped_inputs": 43,
+  "base_clause_count": 1328618,
+  "fixed_support_literals": 230,
+  "scope": "Exact frozen T0 input identity and source-sector mapping only. No CNF-to-graph theorem, solver verdict, kernel exclusion or inventory mutation."
+}

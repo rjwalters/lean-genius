@@ -1,0 +1,1 @@
+Review 2043 PASS: exact mapping of 43 frozen T0 inputs, independently replayed with matching hashes, sizes, IDs and canonical masks. The original README and pins preserve the author submission. Current review is recorded in review-result.json and REVIEW2043.json. This is input identity evidence only, not a solver verdict, CNF-to-graph theorem, Lean proof or queue change.
