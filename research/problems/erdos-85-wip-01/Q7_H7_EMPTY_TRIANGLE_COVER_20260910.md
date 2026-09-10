@@ -107,3 +107,11 @@ corollary applies to the three independent claw leaves and the disjoint
 known triangle. The source and public build pass with standard axioms;
 independent review1651 passed. An actual H7 shape-map bridge is not
 claimed by that generic file.
+
+`Erdos85OrderFortyNineEmptyTriangleCover.lean` now connects those counting
+lemmas to actual order49 graphs. It constructs an induced-low three-clique
+through each empty-support vertex using the preexisting all-low triangle
+theorem, then supplies both counting bounds without an extra triangle-cover
+premise. Source and public build pass with standard axioms; review1653
+passed. Constructing the shape-specific independent set and known triangle
+family remains a separate step.
