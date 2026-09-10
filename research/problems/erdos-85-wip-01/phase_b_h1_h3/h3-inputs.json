@@ -1,0 +1,36 @@
+{
+  "schema": "erdos85-phase-b-input-inventory-v1",
+  "scope": "Two canonical support-profile roots. Existing file hashes and clause counts checked against retained generation manifest; current source inspected but no regeneration this pass. Caps pending host plan.",
+  "instances": [
+    {
+      "id": "h3_t0_canonical",
+      "sector": "H3",
+      "cnf_path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/small-high-canonical-audit/h3_t0.base.cnf",
+      "cnf_sha256": "03db81d188dc330673b3be0fbb81a1254cb5c14b676f7dc9c4ad44950898541b",
+      "bytes": 29197952,
+      "variables": 29500,
+      "clauses": 1328183,
+      "generator_path": "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/sat49/generate_small_high_canonical_cnfs.py",
+      "generator_sha256": "e3b0a99d033b37beeff001355d9ba9864798858ac5b421fc629529038eff51b4",
+      "generator_commit": "ecd4d3ec203753d1a6cb9967c0497b78d1d37969",
+      "regenerated_this_pass": false,
+      "cross_check": true,
+      "cap_seconds": null
+    },
+    {
+      "id": "h3_t1_canonical",
+      "sector": "H3",
+      "cnf_path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/small-high-canonical-audit/h3_t1.base.cnf",
+      "cnf_sha256": "db6e30ad7583317af975d5be49a3ed6ed3b2f7e327a6c98d75434180fa59ea5a",
+      "bytes": 29197952,
+      "variables": 29500,
+      "clauses": 1328183,
+      "generator_path": "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/sat49/generate_small_high_canonical_cnfs.py",
+      "generator_sha256": "e3b0a99d033b37beeff001355d9ba9864798858ac5b421fc629529038eff51b4",
+      "generator_commit": "ecd4d3ec203753d1a6cb9967c0497b78d1d37969",
+      "regenerated_this_pass": false,
+      "cross_check": true,
+      "cap_seconds": null
+    }
+  ]
+}

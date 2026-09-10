@@ -1,0 +1,57 @@
+{
+  "files": {
+    "refresh.py": {
+      "sha256": "a31d8b15b64fb21e51865d3d41a6d40260b4a4c576a60a08895a9659744ee3c3",
+      "bytes": 2705
+    },
+    "freeze.py": {
+      "sha256": "ee74f63314bbfec26c828e95347d3fb5a34fe7f12495477b7f354a3825129d71",
+      "bytes": 4021
+    },
+    "h1-refresh-summary.json": {
+      "sha256": "f7e09262612f47bd08ba19730a3ee8a16eb245414b37ce1f121d5a47ab45d146",
+      "bytes": 577
+    },
+    "h1-fresh-ledgers.json": {
+      "sha256": "1dbacbd2c291e8e34cc7d2f969452dce31b111f2917548350411be3cd7112a84",
+      "bytes": 560356
+    },
+    "h1-object-list.json": {
+      "sha256": "46cffbfa9355e312ad550508bd5354248a156f963aed9418c873107cbfc30e7d",
+      "bytes": 4097027
+    },
+    "h1-frozen-candidates.json": {
+      "sha256": "c10965a5d9473107169badf4996b73da13edc522cf344c4bcdb45e1a05e7d16b",
+      "bytes": 1657207
+    },
+    "h3-inputs.json": {
+      "sha256": "092010615104e466569dd473c3f2c17c76c9c81d73a7e638c9c8b3475b3cded7",
+      "bytes": 1856
+    },
+    "h1-cnf-paths-by-tag.json": {
+      "sha256": "4ee09973756fd99e616cdf23995d437799e982084a066f8391126c121dd19785",
+      "bytes": 233532
+    }
+  },
+  "h1_generators": [
+    {
+      "path": "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/proofs/Proofs/Erdos85OneHighV2CnfEmit.lean",
+      "sha256": "00522d33a62ceff5f64815f1441aa893dbd384b36c2bb0dbc922842fdb848ec6",
+      "last_source_commit": "1a15845782e7b503d01393649948aa3ee5b007ba"
+    },
+    {
+      "path": "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/proofs/Proofs/Erdos85OneHighV2Cnf.lean",
+      "sha256": "9165b02d57a38d84202606d4940f4e83e5393ad0edc1cc687105e97370a6bb3d",
+      "last_source_commit": "7ba8e52d8149ae869598529fe006585166cf1747"
+    }
+  ],
+  "launch_ready": false,
+  "limitations": [
+    "Prior11954 screened rows use retained Sep08 ledger validity plus fresh positive-size object presence; no fresh byte readback.",
+    "Fresh140 success rows have validated status, nonempty hashes and sizes; no certificate readback.",
+    "Three historical object conflicts retained in1257 candidates.",
+    "Only222 candidate tags have named local CNFs; file names do not prove canonical equivalence.",
+    "H3 retained generator manifest hashes match; no current-source regeneration.",
+    "No solver or cloud compute launched."
+  ]
+}
