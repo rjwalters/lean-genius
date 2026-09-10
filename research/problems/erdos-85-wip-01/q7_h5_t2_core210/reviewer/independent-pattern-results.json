@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "core": 210,
+  "heavy_empty_demands": [
+    1,
+    1,
+    2,
+    2,
+    2,
+    2
+  ],
+  "empty_degrees": [
+    4,
+    4,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    2,
+    2
+  ],
+  "unique_pattern_up_to_empty_labels": true,
+  "reason": "Every pair of heavy vertices already has a common neighbour in full11vertex graph, so no empty can host two. Degree demand fixes multiplicities; unassigned rows have no heavy guest."
+}

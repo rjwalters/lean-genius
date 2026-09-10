@@ -1,0 +1,19 @@
+{
+  "results": [
+    {
+      "core": 210,
+      "pattern": 0,
+      "status": "EXHAUSTED",
+      "nodes": 23489,
+      "adjacency": null
+    }
+  ],
+  "seconds": 2.328782832948491,
+  "visited": 1,
+  "total_patterns": 1,
+  "caps": {
+    "nodes_per_pattern": 100000,
+    "wall_seconds": 60
+  },
+  "scope": "Core210: all empty-induced graph completions under necessary local singleton-host partitions. No twin normalization; no singleton cap retried."
+}

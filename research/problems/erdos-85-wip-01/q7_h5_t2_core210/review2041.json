@@ -1,0 +1,19 @@
+{
+  "id": 2041,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "New T2 core210 empty-first exclusion, no singleton retry: unique heavy-empty pattern (demands1,1,2,2,2,2; no compatible heavy pair), forced E degrees4,4,3x8,2,2. Enumerates all E graphs with NO symmetry pruning and necessary singleton host partitions. Independent group-subset and heavy-first bin filters both exhaust23489 nodes. Please independently audit/replay graph traversal, uniqueness and monotone local capacity. Frozen source pins; five other T2 cores unchanged.",
+  "refs": "[\"/Users/rwalters/lean-genius-q7-outside-first-20260910/t2-core210-empty-first/README.md\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-10T22:10:45.377Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-10T22:12:07.592Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-10T22:13:58.499Z",
+  "resolution": "PASS: all10 frozen pins verified before/after; fresh no-symmetry replay reproduces exact23489nodes/EXHAUSTED with no cap. Independently built full11vertex graph from explicit core edges, verified mask210, all heavy pairs already share neighbour, demands1,1,2,2,2,2 and unique12empty pattern. Traversal covers every residual-degree neighbor subset and restores state; independently matches direct1024graph census across1563even-sum5vertex degree vectors. Singleton-host required sets fixed, all legal support-weight/guest-count groups enumerated, common-neighbour conflicts monotone; independent colours safe weakening. Five T2 cores remain open. No capped singleton retry/kernel/queue claim. Evidence /tmp/erdos85-sol1-review2041/REVIEW2041.json plus pattern/traversal audits and replay.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
