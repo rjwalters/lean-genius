@@ -1,0 +1,2759 @@
+{
+  "expected": 98,
+  "audited": 98,
+  "all_expected_present": true,
+  "byte_matches": 98,
+  "paired_verified": 95,
+  "without_paired_verified": [
+    "2c22b4969bc68443",
+    "a78d2764b4914a80",
+    "c60116d55d32f668"
+  ],
+  "verified_mode_sets": {
+    "MONO": 95,
+    "NONE": 3
+  },
+  "manifest_sha256": "c10965a5d9473107169badf4996b73da13edc522cf344c4bcdb45e1a05e7d16b",
+  "comparison_results_sha256": "ab8b76d41e33b37e5258776fc8e831297dbf4a23fd92021a6bd60e0062115596",
+  "solver_launched": false,
+  "proof_replay_performed": false,
+  "automatic_exclusions": 0,
+  "scope": "Input bytes rehashed; recorded historical verdict and table independently re-read. Proof file paths and sizes are historical metadata only. MONO and CUBE25 are distinct; no proof validity or cube-cover claim.",
+  "results": [
+    {
+      "tag": "050c8ae009c19043",
+      "profile": 0,
+      "canonical_sha256": "dd629ab18bb67d7ed5649e4366c365fbb035493c91fb2537b958b7d0eff0fc5f",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/050c8ae009c19043.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "01a819a2334f8057f4bd4af054504495b68447adb89495d5e57a3d1e39641df8",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/050c8ae009c19043.v2.drat.gz",
+              "bytes": 73973635
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "058ffdc7b4e84e30",
+      "profile": 0,
+      "canonical_sha256": "a0d5fd29f7d7916e80d318dd2ea78e3dba7146383d1119b55a44b81938b5c77d",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/058ffdc7b4e84e30.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "e10d37a48064287b571025ad0dbc7779baf0d4e23b29cd7db0b56bcb33e7220a",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/058ffdc7b4e84e30.v2.drat",
+              "bytes": 766649751
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/058ffdc7b4e84e30.v2.drat.gz",
+              "bytes": 223704877
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "05b33a6de7aaa520",
+      "profile": 0,
+      "canonical_sha256": "10f5749b3f86acfa15f0c6d37668561a0c3e2e232e1b721b9a9c19739368f541",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/05b33a6de7aaa520.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "8354d35ab22e2bd2c81adde8e3ebf727506b7f928c5de330dcf4bf4b592e0d23",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/05b33a6de7aaa520.v2.drat",
+              "bytes": 236656289
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/05b33a6de7aaa520.v2.drat.gz",
+              "bytes": 68123366
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "06965a1a7bd94410",
+      "profile": 0,
+      "canonical_sha256": "63f9f506a68457247ad6b1ad9ef3d7d40a5e3d4b202503d28f3168c72c4d9dd4",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/06965a1a7bd94410.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "780d40350cd3b2597e50296894a9ef2795dd3afbf5a9f4f6ced2a2c18bef890c",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/06965a1a7bd94410.v2.drat",
+              "bytes": 586212138
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/06965a1a7bd94410.v2.drat.gz",
+              "bytes": 170346857
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "096bba0bcaf1e953",
+      "profile": 0,
+      "canonical_sha256": "8edaf17f3314a08e30561c44536dd51603960ab8bb21e1c899c044be4900fe86",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/096bba0bcaf1e953.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "0c2b43e07c938303baa2db8a9d7a0a71a671f72eed90b3c053d065f78f00e402",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/096bba0bcaf1e953.v2.drat",
+              "bytes": 510823729
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/096bba0bcaf1e953.v2.drat.gz",
+              "bytes": 148847247
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "09c7600162e4a5f3",
+      "profile": 0,
+      "canonical_sha256": "ef5836f6f7ad1d49c8f17718ae8090cd6288a2fe6ac09d796d7a4ea61a260420",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/09c7600162e4a5f3.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "eaafbe64292d63971482e320e3e867990434fddd3c8ca85049e3950630010f4f",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/09c7600162e4a5f3.v2.drat.gz",
+              "bytes": 115579408
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "0a5c7e9682e74fcf",
+      "profile": 0,
+      "canonical_sha256": "ab22d9dd680ac40e4a48e2ce918afdc7d37964452ab45b2cc8a799f4c47fae5d",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet1/0a5c7e9682e74fcf.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet1/0a5c7e9682e74fcf.v2.drat.gz",
+              "bytes": 318319761
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-54-211-142-73/0a5c7e9682e74fcf.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "292bb89135d5159a27c5cfb48a50ecd2afb113e318d3ffc3226bff9af87110c4",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-54-211-142-73/0a5c7e9682e74fcf.v2.drat.gz",
+              "bytes": 318319761
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "0c4be381b3bbd7aa",
+      "profile": 0,
+      "canonical_sha256": "e136e3ec903f8e3166e62de911d1df3aaf98bc8560e673d34d9bb715d9fcde18",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/0c4be381b3bbd7aa.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "db9302f6d8964b5861472fa8d87a39ec006b5407b25b4b5a9c1da2bc86ed2141",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/0c4be381b3bbd7aa.v2.drat",
+              "bytes": 827132484
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/0c4be381b3bbd7aa.v2.drat.gz",
+              "bytes": 242482282
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "0f15bd88e1c24a26",
+      "profile": 0,
+      "canonical_sha256": "aedeb3837227c8570962c790dad305fe807a07a2c80d6dd8a05ffb3b05302903",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/0f15bd88e1c24a26.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "1d9c1b54a4c754a7528c0180aed9a259758d85478e2019d41d2ef08e0c9e52ac",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/0f15bd88e1c24a26.v2.drat",
+              "bytes": 254810402
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/0f15bd88e1c24a26.v2.drat.gz",
+              "bytes": 74647104
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "11e12e79ceed19f8",
+      "profile": 0,
+      "canonical_sha256": "ed39b63f8dc1377cd9d6d2d26bcbf142e3813cb129ee30409ed1115d6e7a620d",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/11e12e79ceed19f8.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "49ce0f9bfb5a2dc18e71a8b7df7a8e3523207aad24e62a7c8f49b4fbf621244c",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/11e12e79ceed19f8.v2.drat",
+              "bytes": 454448982
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/11e12e79ceed19f8.v2.drat.gz",
+              "bytes": 131266626
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "0f1a95a8dfaf17d4",
+      "profile": 0,
+      "canonical_sha256": "622df538a389e5c0ac3035c387a815130b4e8cc22ab563735bf226e15ec63574",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/0f1a95a8dfaf17d4.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "92aa5d4c4969253f0294947955ad319ea0cbf8dffd23f6ffda8fb71d9568e517",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/0f1a95a8dfaf17d4.v2.drat",
+              "bytes": 308966933
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/0f1a95a8dfaf17d4.v2.drat.gz",
+              "bytes": 90071591
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "13ff1db611d58a47",
+      "profile": 0,
+      "canonical_sha256": "c60aa18d800380d02510fc09f48c79a293c52976fac9256272667fd0e7a4de7e",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/13ff1db611d58a47.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "84a9057883b9879d698e4ccd93a79ce91985e61d120b687501f3baf6221972e8",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/13ff1db611d58a47.v2.drat.gz",
+              "bytes": 218045681
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/13ff1db611d58a47.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/13ff1db611d58a47.v2.drat.gz",
+              "bytes": 218045681
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "13ba48474f6ade75",
+      "profile": 0,
+      "canonical_sha256": "0a10c001301d6271edeed0f1e663702aed52ddab5750bcf87d68dca723e85090",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/13ba48474f6ade75.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "e1890a9f5bd7e8b3b21d4f56a0d1e363a9a69d031cf55ee6793709956f254be8",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/13ba48474f6ade75.v2.drat.gz",
+              "bytes": 91587737
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/13ba48474f6ade75.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/13ba48474f6ade75.v2.drat.gz",
+              "bytes": 91587737
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "16d6a07f947825ba",
+      "profile": 0,
+      "canonical_sha256": "6bacf2fe6b67e5300521aa33e8571931fd62665e502a28ce6e19017043e6fe2c",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/16d6a07f947825ba.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "3cf0428426c536408f2ebfdf0c1e03e311ea42c5fb0d71448e459bb484d2f1b0",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/16d6a07f947825ba.v2.drat",
+              "bytes": 983076502
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/16d6a07f947825ba.v2.drat.gz",
+              "bytes": 281409307
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "15323c66ee731e64",
+      "profile": 0,
+      "canonical_sha256": "3ec57137580767ab960cec2873147772d0afaaefd718541a033bf5faa791d943",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/15323c66ee731e64.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "1b435e587fc9bef30e1fdf2b18d5bfdbac8c1ac7c05917c3761066df87cdf805",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/15323c66ee731e64.v2.drat.gz",
+              "bytes": 46776640
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/15323c66ee731e64.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/15323c66ee731e64.v2.drat",
+              "bytes": 163985127
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/15323c66ee731e64.v2.drat.gz",
+              "bytes": 46776640
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "175bb1ac2988e083",
+      "profile": 0,
+      "canonical_sha256": "04b2ae91e372d55ad5e377001904ff9b6e5bc50b55d833173b4db206b04ba8f1",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/175bb1ac2988e083.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "c7d694a86ae096974ec441e8d454efa3f3e650ceebd8ddbcfaab3b7152e1cb35",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/175bb1ac2988e083.v2.drat",
+              "bytes": 482189540
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/175bb1ac2988e083.v2.drat.gz",
+              "bytes": 138998400
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "18e43ade1dbf7681",
+      "profile": 0,
+      "canonical_sha256": "ca378fb2893981a864a374254bf0f70a65345378076814085abfa1ef8c62cabe",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/18e43ade1dbf7681.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "7554186770eaa9013330863e2ccdff15d1ec23d06e4ea2a696faf4b19c67d8fb",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/18e43ade1dbf7681.v2.drat",
+              "bytes": 705334125
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/18e43ade1dbf7681.v2.drat.gz",
+              "bytes": 205436205
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "1b3cbdc4c6da4358",
+      "profile": 0,
+      "canonical_sha256": "c0c9661c1c802efed4e4e32764cb4b8ac6c6223a41f28c9bb3155931c30d4a83",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/1b3cbdc4c6da4358.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "8a53668cdba5291a65de907098e688f5f55f61cb9c81be5e8cfdf0169e727ff8",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/1b3cbdc4c6da4358.v2.drat",
+              "bytes": 554610119
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/1b3cbdc4c6da4358.v2.drat.gz",
+              "bytes": 162616869
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "1e0cddae75a672a7",
+      "profile": 0,
+      "canonical_sha256": "3cbc57eb573e3ed4acaa930544afbb2c1ae33993ab390da6d54103c876722029",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/1e0cddae75a672a7.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "fe9cc58c0c76f464290b1bb345748506bae7cacb209878059dfee1069c3480ad",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/1e0cddae75a672a7.v2.drat.gz",
+              "bytes": 198533815
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/1e0cddae75a672a7.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/1e0cddae75a672a7.v2.drat.gz",
+              "bytes": 198533815
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "1eaa49471143b9b1",
+      "profile": 0,
+      "canonical_sha256": "034578761b64d2bf1c3f69bc9064656d703fb12be080c84b23bbc50b05247816",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/1eaa49471143b9b1.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "189cf8ad6689cdff1678834294aac06af5b30a39566c64a1c7b9f2d099073029",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/1eaa49471143b9b1.v2.drat",
+              "bytes": 736337311
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/1eaa49471143b9b1.v2.drat.gz",
+              "bytes": 213124521
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "2c22b4969bc68443",
+      "profile": 0,
+      "canonical_sha256": "b6d0d1a3f46cca7a67d7daaadf49f0641a1b50650228b07537d21371c307bf7d",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet3/2c22b4969bc68443.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet3/2c22b4969bc68443.v2.drat.gz",
+              "bytes": 123735117
+            }
+          ]
+        }
+      ],
+      "paired_verified": false,
+      "verified_modes": []
+    },
+    {
+      "tag": "2caebdc55ff6279a",
+      "profile": 0,
+      "canonical_sha256": "4692d21ce8f76cfe63ad66d1131af956a0aebaf27ef3bb49fdf4cb512de7c201",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/2caebdc55ff6279a.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "195dc61171e4b8a5af68ddbaa4cde019461a5d6aa5168a8f8c999ca90be12bed",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/2caebdc55ff6279a.v2.drat",
+              "bytes": 416347389
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/2caebdc55ff6279a.v2.drat.gz",
+              "bytes": 120752371
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "2cda46b732a42272",
+      "profile": 0,
+      "canonical_sha256": "1b617d03b82effad32da6377ec65e34963d59d7c992f13b091d6741f6b2f567b",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/2cda46b732a42272.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "6c9fa1d72d1942b60ec0b83aed45ff9224f0c9ca869d7f41814fba44a40560a4",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/2cda46b732a42272.v2.drat.gz",
+              "bytes": 113518125
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/2cda46b732a42272.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/2cda46b732a42272.v2.drat.gz",
+              "bytes": 113518125
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "3254e4bfa8c9c3fa",
+      "profile": 0,
+      "canonical_sha256": "13891a003e650a16b7713dd29a7525b33264a69786604a9c04e4bb087269850f",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/3254e4bfa8c9c3fa.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "854f4a1cae27069dd54cbb4da8bf45b542a1b9721c11a1f582995c32d79d6d82",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/3254e4bfa8c9c3fa.v2.drat",
+              "bytes": 267057827
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/3254e4bfa8c9c3fa.v2.drat.gz",
+              "bytes": 76987228
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "2f0e55a0396d6a79",
+      "profile": 0,
+      "canonical_sha256": "0f17976de16fc0bfa919c0608d3ab29518d609a4859e1ea20e59658a022667f6",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/2f0e55a0396d6a79.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "f42c2e90072ee2110ed6a9f4b3a7724815c2da47f456addaf6c9ebb2c6045cd0",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/2f0e55a0396d6a79.v2.drat",
+              "bytes": 515363059
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/2f0e55a0396d6a79.v2.drat.gz",
+              "bytes": 152671472
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "3406c0bd7fbb83ab",
+      "profile": 0,
+      "canonical_sha256": "0f9afd1bc1f1e66b2e34f71d333dd8981d33399c65f365296dfcc8d5f51e25b0",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/3406c0bd7fbb83ab.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "c139b6ed3f3b49bbf20698181b2eb7d5e9d5f06ddcf1806fd33996f8f85c9d8c",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/3406c0bd7fbb83ab.v2.drat",
+              "bytes": 830379518
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/3406c0bd7fbb83ab.v2.drat.gz",
+              "bytes": 247709207
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "341ef82248614b93",
+      "profile": 0,
+      "canonical_sha256": "0a098f99aab5f3a2d44f198af9adb503ff50580d78d84a0fb2c0253c6dc2b0bc",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet3/341ef82248614b93.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet3/341ef82248614b93.v2.drat.gz",
+              "bytes": 220842842
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-44-199-204-4/341ef82248614b93.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "793286dd22c31cd3e14a3c4bad9b49c47a9f427bc7e8f60d64689a76215c9198",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-44-199-204-4/341ef82248614b93.v2.drat.gz",
+              "bytes": 220842842
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "35e3246ce0973db4",
+      "profile": 0,
+      "canonical_sha256": "7ee60d990d842c14efe050778cda61416b3ef0db3b4c9ef4fbbcf40c2a30d6c0",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/35e3246ce0973db4.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "a3e957b54cf74f096e02cf16e91608c3aca33809c655a4a5439c4b070dcbcc2a",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/35e3246ce0973db4.v2.drat",
+              "bytes": 872702492
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/35e3246ce0973db4.v2.drat.gz",
+              "bytes": 253843420
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "35c284aad6ba17cf",
+      "profile": 0,
+      "canonical_sha256": "fb1e9f9c374dc99523a849243d5085a3c87e20baa4f22524b2653dca6e1bd659",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/35c284aad6ba17cf.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "a517844485d3b6ae81de4ddb4ec146c319ad77b6fc4058b9302dc9c6bb95671e",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/35c284aad6ba17cf.v2.drat.gz",
+              "bytes": 31399720
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/35c284aad6ba17cf.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/35c284aad6ba17cf.v2.drat.gz",
+              "bytes": 31399720
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "399e0ec0a6e44d42",
+      "profile": 0,
+      "canonical_sha256": "2ce80fc55130f6509506eb69669bc05894c537e11373b1a7b7e6cf620e8130d0",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/399e0ec0a6e44d42.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "6dacc5e2e68242cdbfcf3df5977a32b136f725e1fed9e01f47df5d40fba695dc",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/399e0ec0a6e44d42.v2.drat.gz",
+              "bytes": 52055743
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "3f9d4c8822282802",
+      "profile": 0,
+      "canonical_sha256": "641d6eb3f0084f5fee9f77407cb487b2dc825f5a33700fe68d50ffdf308b09d1",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/3f9d4c8822282802.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "35ad2f0fa056df77e6fafb849f5d6de3102cafc746f594c32a1a170aea6bd776",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/3f9d4c8822282802.v2.drat",
+              "bytes": 696780255
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/3f9d4c8822282802.v2.drat.gz",
+              "bytes": 201682924
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "4ca1057cd7ff1848",
+      "profile": 0,
+      "canonical_sha256": "0c54e80fb80a6e81d1b9c98d0bd8591b3ce92c0d6e6becf85d053e15b411f72a",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet1/4ca1057cd7ff1848.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet1/4ca1057cd7ff1848.v2.drat.gz",
+              "bytes": 151951959
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-54-211-142-73/4ca1057cd7ff1848.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "ad8ca3ee4ce054cc10d65727a0301a4ea4612b5460d45a132ba04e9ef8a8498e",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-54-211-142-73/4ca1057cd7ff1848.v2.drat.gz",
+              "bytes": 151951959
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "4ad2e9bfd88c40df",
+      "profile": 0,
+      "canonical_sha256": "c6cc629ccee09b5a3aa0bea0fa33871f6f7990732feaf762a42a33be90acc579",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/4ad2e9bfd88c40df.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "6a257b34b3a4583877e8c38560495febf9cb46831f590f7090911dc47882b54a",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/4ad2e9bfd88c40df.v2.drat",
+              "bytes": 1013120299
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/4ad2e9bfd88c40df.v2.drat.gz",
+              "bytes": 293140702
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "4f8c77620fd809e0",
+      "profile": 0,
+      "canonical_sha256": "b277c9ff7c2fafc2dea161c4cdf7ac93abda3ddf724c87f1e81d924fde94bcba",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/4f8c77620fd809e0.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "76db634b477ceef6c8af7acf6e74903df177edf05f20f2ebe4389a1743ead588",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/4f8c77620fd809e0.v2.drat.gz",
+              "bytes": 239496684
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/4f8c77620fd809e0.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/4f8c77620fd809e0.v2.drat",
+              "bytes": 818552233
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "4d1d540ee07b63b8",
+      "profile": 0,
+      "canonical_sha256": "cdd0cf0b2212cb34e354db2e4c8a1f673bb2840fadc64314b32f72d66bf17a91",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/4d1d540ee07b63b8.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "0da3fca4d2a74c98d60cab291f8a53678aadfbe6e72f09b3553fcb28c476679c",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/4d1d540ee07b63b8.v2.drat",
+              "bytes": 739070655
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/4d1d540ee07b63b8.v2.drat.gz",
+              "bytes": 218654707
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "50e25c86511ed1e7",
+      "profile": 0,
+      "canonical_sha256": "1b8413ce9083e8467078450324b0077381e21a8ed1d3498690f2644ed3d7b9c2",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/50e25c86511ed1e7.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "31523fabead62f35f72a6e34ad3e3cdf3182338f45010faaa8ca71a9232aa019",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/50e25c86511ed1e7.v2.drat.gz",
+              "bytes": 126849128
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "55f77d6ea8efaae6",
+      "profile": 0,
+      "canonical_sha256": "695d32cd026e6da8d87877b1e12634f55d402fd990c57ff0e9a152af5fb7f191",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet1/55f77d6ea8efaae6.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet1/55f77d6ea8efaae6.v2.drat",
+              "bytes": 519334768
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet1/55f77d6ea8efaae6.v2.drat.gz",
+              "bytes": 151371693
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-54-211-142-73/55f77d6ea8efaae6.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "09bc25d73bd65a78f22ec7612cf9dbbd20c7dccb508896fe021ce61d94b3c69d",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-54-211-142-73/55f77d6ea8efaae6.v2.drat.gz",
+              "bytes": 151371693
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "56091c722daa72c1",
+      "profile": 0,
+      "canonical_sha256": "7ec05738cf260713e9570fe77cbe3adf14c816642a7c5a2df3752af0d922d2c3",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/56091c722daa72c1.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "a70e350a7f04bcc81330d92df11f3325cfd7f42346bd4b3b3f689851068813c6",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/56091c722daa72c1.v2.drat",
+              "bytes": 337065351
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/56091c722daa72c1.v2.drat.gz",
+              "bytes": 97213751
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "5699eb7ae2367a82",
+      "profile": 0,
+      "canonical_sha256": "3426cf68337bf8ad00261659ddad5a52e4dca28af47bcc319bbe68d44269dc62",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/5699eb7ae2367a82.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "a29367932fe3635a545691b1f920f2bd27e31a6d37e25de5a4b3a08f1ad77b63",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/5699eb7ae2367a82.v2.drat",
+              "bytes": 633406339
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/5699eb7ae2367a82.v2.drat.gz",
+              "bytes": 182443148
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "579a19b4b3d03c21",
+      "profile": 0,
+      "canonical_sha256": "05511a81a0b7447806971e7829adf82305a133568673a14e8f73d901555c8d01",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet1/579a19b4b3d03c21.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet1/579a19b4b3d03c21.v2.drat",
+              "bytes": 878045706
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-54-211-142-73/579a19b4b3d03c21.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "76c5953b8c5d19925fc6f4113641cee955e144254af77f58df9ff0c3dbaad2a1",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-54-211-142-73/579a19b4b3d03c21.v2.drat.gz",
+              "bytes": 259569457
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "56a11a5d30775403",
+      "profile": 0,
+      "canonical_sha256": "553a8258b634228d8839c98b462b18117c07e011d74069dc69d00595fa1c8075",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/56a11a5d30775403.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "e2b8aa540acdf1fc3fa3a84608b16c6e1dcf5208a35227561fa6bc1d585853a0",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/56a11a5d30775403.v2.drat.gz",
+              "bytes": 102849458
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "59ce2cc349119099",
+      "profile": 0,
+      "canonical_sha256": "0ff750bd77efd7831e2e6556318c361e7f33cdd48a3694d19260c3a013e97f22",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/59ce2cc349119099.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "6de56637743c957f9b332dd9ea79f7b68126e84c82a26428b2fb7057c1e4242c",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/59ce2cc349119099.v2.drat",
+              "bytes": 346848673
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/59ce2cc349119099.v2.drat.gz",
+              "bytes": 101535496
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "5fb60ba52089a11b",
+      "profile": 0,
+      "canonical_sha256": "68cbc6ea556064cd9ee69877dd0b452cc4bb770dafeb81d07fcb4e6f47295936",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet1/5fb60ba52089a11b.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet1/5fb60ba52089a11b.v2.drat.gz",
+              "bytes": 277616208
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-54-211-142-73/5fb60ba52089a11b.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "2f4d74a94dfa955c34d5e82a8ec54273e9570ff65cb1fdda615dc54e4934dd23",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-54-211-142-73/5fb60ba52089a11b.v2.drat.gz",
+              "bytes": 277616208
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "5fc4225ac8f37d0e",
+      "profile": 0,
+      "canonical_sha256": "9696fd0aa502171ae5d8740a7f73c3493e83affb7abaa285c908894fa3fdde8a",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/5fc4225ac8f37d0e.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "34608e8d2d0a24122cfc637c8a969aa7d1ca4ecf28fa6833b9f6cebac9959c9a",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/5fc4225ac8f37d0e.v2.drat",
+              "bytes": 809954169
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/5fc4225ac8f37d0e.v2.drat.gz",
+              "bytes": 237497793
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "5fb953fd7aeb7c1a",
+      "profile": 0,
+      "canonical_sha256": "ca718471d9aa29cd1123881706f2724618843f37e61fb0ee84085790de1d934d",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/5fb953fd7aeb7c1a.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "4a23d76bd3ac265f029c2048b5c4de6a8475645f03e166949f4eea580508ad63",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/5fb953fd7aeb7c1a.v2.drat",
+              "bytes": 451946411
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/5fb953fd7aeb7c1a.v2.drat.gz",
+              "bytes": 128911850
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "61ef351f6b98c3c9",
+      "profile": 0,
+      "canonical_sha256": "f4d01ebf35201facefb4346440e3f5219539eabe13f88f0b57c682ad9d9e678e",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/61ef351f6b98c3c9.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "b7f09b1331c23386658e4fa5437b771178ab33728afbb2079253fa2c10716ea5",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/61ef351f6b98c3c9.v2.drat",
+              "bytes": 313730929
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/61ef351f6b98c3c9.v2.drat.gz",
+              "bytes": 89417209
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "6093d3d324c1d4d7",
+      "profile": 0,
+      "canonical_sha256": "fff1063b2738dc1dbba859de47869566deb0febe6c5d608fbd37df5d5dca779b",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/6093d3d324c1d4d7.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "dcd13b0d6cc888ba2c55b82ce3d0647e920721c6948248b7ae8a61bddea5d094",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/6093d3d324c1d4d7.v2.drat",
+              "bytes": 505853388
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/6093d3d324c1d4d7.v2.drat.gz",
+              "bytes": 145956464
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "64ad5d71530a74cb",
+      "profile": 0,
+      "canonical_sha256": "2fbe92ef69c34c8a3644c6d38b87b9529b36c161573c477a69fdc71b654f41ac",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/64ad5d71530a74cb.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "00d33b6f96a65aa9b005f41359cf16e2264e4b170817c14342b27462e1e30a52",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/64ad5d71530a74cb.v2.drat.gz",
+              "bytes": 233728075
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/64ad5d71530a74cb.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/64ad5d71530a74cb.v2.drat",
+              "bytes": 799238303
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "63250ef8e44408fb",
+      "profile": 0,
+      "canonical_sha256": "b5db3f1b7e47d10a76364ca263825eb616bafa215916846b2b6fba7df3c2656c",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/63250ef8e44408fb.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "8afa800fc71bf8a5d2e2f4fec12175c6e51e59ef2f0a010db17ce0b5b0981f0f",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/63250ef8e44408fb.v2.drat.gz",
+              "bytes": 73806997
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "6a0f08fc0ef15328",
+      "profile": 0,
+      "canonical_sha256": "f85724aa98b54acd4e4f8af87c0ea1779aa727c65f29cccb2babb93eed2a7dcb",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/6a0f08fc0ef15328.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "3bf58175e92bc9ea17f287890868399b2afb634fa050071505f78245ad668e85",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/6a0f08fc0ef15328.v2.drat",
+              "bytes": 537117123
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/6a0f08fc0ef15328.v2.drat.gz",
+              "bytes": 159906722
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "7179dc8fd9fc92e2",
+      "profile": 0,
+      "canonical_sha256": "8ede2d583f2e2aa8e27c2c3d487caef62974804e6cb0a2539e81e127900ed826",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/7179dc8fd9fc92e2.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "a1a372d00c0cb5748bf1217749b988d738aab769052b8210f9c6dad7d12779a2",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/7179dc8fd9fc92e2.v2.drat",
+              "bytes": 637851749
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/7179dc8fd9fc92e2.v2.drat.gz",
+              "bytes": 186150872
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "7270de1d28b4d05c",
+      "profile": 0,
+      "canonical_sha256": "ee52ee44d82a2cf067cc8b846405c754f938a9d91ba5924a34d6f82273274e4b",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/7270de1d28b4d05c.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "3dd4e79d90cc6a40b7f830e49725eb12e969439bbd3318a90e98e574dcbcfd2d",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/7270de1d28b4d05c.v2.drat",
+              "bytes": 488157907
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/7270de1d28b4d05c.v2.drat.gz",
+              "bytes": 143528880
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "7aa9b079313a0cc2",
+      "profile": 0,
+      "canonical_sha256": "c3f7e692b6752e02bc27806e0e1332ea84e7073e07526e7cb36ddd8a65f1beee",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/7aa9b079313a0cc2.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "e94faa8493544b9a75f2cf88518071ae737e64e3b86fe1fc2c648cf036f90a99",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/7aa9b079313a0cc2.v2.drat.gz",
+              "bytes": 64760075
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "7cf654d3ff0883b0",
+      "profile": 0,
+      "canonical_sha256": "19b247534f0ab954e37e133f974dfae4a0a06e1d87ceb449fc967f2f6f0aa1cc",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/7cf654d3ff0883b0.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "0afa8dd1f3a26f5d94a2934ed973deab197040d6676ed00b4f91bd56478c785f",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/7cf654d3ff0883b0.v2.drat",
+              "bytes": 628595945
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/7cf654d3ff0883b0.v2.drat.gz",
+              "bytes": 185652321
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "7ce6b96f5a1beb9d",
+      "profile": 0,
+      "canonical_sha256": "343f9fc94113a03d7c749a5a17042b8b56241775ee8175ac07a528897028fd64",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/7ce6b96f5a1beb9d.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "1520a42be11c90d4b25ce0295d2fa7615e0340234396e523bc2696207a9c4339",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/7ce6b96f5a1beb9d.v2.drat",
+              "bytes": 1154960899
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/7ce6b96f5a1beb9d.v2.drat.gz",
+              "bytes": 342077345
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "7ee316f50004ef94",
+      "profile": 0,
+      "canonical_sha256": "c0906e5ba38192b7e8454f9c14cc1db771052277c1e49a370c30689d460ab246",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/7ee316f50004ef94.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "70ef5bd2f1116ff4c0b7932a8e171e9fa7c6ca1c743fb5c0e6910ab5cc9d771a",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/7ee316f50004ef94.v2.drat",
+              "bytes": 996049203
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/7ee316f50004ef94.v2.drat.gz",
+              "bytes": 293168572
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "803a06900c3ac1ed",
+      "profile": 0,
+      "canonical_sha256": "f2511e6798edfd3cfdd57f423c363cecb51e7c4d35d3502f7ac1b45467391678",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/803a06900c3ac1ed.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "2127613eb36ccd5dfa20a5472cf776b85e6ec6ecf8c0197c4fa9b089d2badcb4",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/803a06900c3ac1ed.v2.drat.gz",
+              "bytes": 16957299
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "803caaed653bc936",
+      "profile": 0,
+      "canonical_sha256": "7ab4a3da0042dc9e6b54dd0ce34f8ac9240abe18d6c133794f0366e8c33a221d",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet1/803caaed653bc936.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet1/803caaed653bc936.v2.drat",
+              "bytes": 364181965
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet1/803caaed653bc936.v2.drat.gz",
+              "bytes": 106143420
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-54-211-142-73/803caaed653bc936.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "b6d27a086f4f50f047312dbe74f835b10ea288d35a7e9ef3d9bfd0fad024fa12",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-54-211-142-73/803caaed653bc936.v2.drat.gz",
+              "bytes": 106143420
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "86bf1417d706b24f",
+      "profile": 0,
+      "canonical_sha256": "5c48ec7fe50986dc95b9b8b29ca0d28b73938be60eed77abe2b0f41c43bebd97",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/86bf1417d706b24f.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "568798607f4262f912367cc95b3327bc76e6ae0af3682acbfb053a021e702d22",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/86bf1417d706b24f.v2.drat.gz",
+              "bytes": 143808947
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/86bf1417d706b24f.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/86bf1417d706b24f.v2.drat",
+              "bytes": 501089537
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/86bf1417d706b24f.v2.drat.gz",
+              "bytes": 143808947
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "92e24b869970a410",
+      "profile": 0,
+      "canonical_sha256": "612fd6ef32028acefe8ff72edf144ab2ee972e6ee7e37c4823562c64b663abea",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/92e24b869970a410.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "95422c41d7b262124cf1db960b9de11df9ebd1355c942926a2dcc23746b116fe",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/92e24b869970a410.v2.drat",
+              "bytes": 832243845
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/92e24b869970a410.v2.drat.gz",
+              "bytes": 244684433
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "902288239786f6c8",
+      "profile": 0,
+      "canonical_sha256": "edc86acfeb2e0de0138a2fb0d9cc0b5fcbc4ac7d7002853c340041fed33ba4a0",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet3/902288239786f6c8.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet3/902288239786f6c8.v2.drat",
+              "bytes": 687291449
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-44-199-204-4/902288239786f6c8.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "40b70e90484ce015e2c7bbf24d906d92bb026236d19411705aeda34cafb60e83",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-44-199-204-4/902288239786f6c8.v2.drat.gz",
+              "bytes": 203187875
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "9c14ed1b8f4a6508",
+      "profile": 0,
+      "canonical_sha256": "bfe86ef7e06214f5bba0654d88576021156f5d40ad4f5ecfa6862dd0f1521ac1",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/9c14ed1b8f4a6508.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "a57d68832f9e2c49c9edb101d77285e59d40ad0bceced4dd11f559a00aa689ae",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/9c14ed1b8f4a6508.v2.drat",
+              "bytes": 542071929
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/9c14ed1b8f4a6508.v2.drat.gz",
+              "bytes": 158036240
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "97c6c04e2f35b6bb",
+      "profile": 0,
+      "canonical_sha256": "eb48e5c8b7864586f374bbc0893698cafb23c2b3727e662eecea80426a589fea",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/97c6c04e2f35b6bb.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "63b117bb9eb8d497ffd06e25ec947bf06008cb72d79a7da80f4dd1800a518e3b",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/97c6c04e2f35b6bb.v2.drat",
+              "bytes": 511862418
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/97c6c04e2f35b6bb.v2.drat.gz",
+              "bytes": 149623924
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "9c3c487d9ef4f812",
+      "profile": 0,
+      "canonical_sha256": "bc8283dc51c77c8bff3f9f10da8beb5daffdc641962caed54f86c7a2de7b62e1",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-44-199-204-4/9c3c487d9ef4f812.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "0f818a825dcfc73e6db3b20555fe91bb6ece4af1802541c2cdc25befde6ae871",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-44-199-204-4/9c3c487d9ef4f812.v2.drat.gz",
+              "bytes": 166023441
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "9e2e97a76667d75f",
+      "profile": 0,
+      "canonical_sha256": "d5323da600e376e029f714a8ca8c25033cd1c81a99aff2535d6ef9400b46b09d",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/9e2e97a76667d75f.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "acf4f531bb9149e4d54f209d12710d407acce2ad7f36a2d77a8f0d6141364ef7",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/9e2e97a76667d75f.v2.drat",
+              "bytes": 548922036
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/9e2e97a76667d75f.v2.drat.gz",
+              "bytes": 160659351
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "a77833c93e3405f8",
+      "profile": 0,
+      "canonical_sha256": "5a73ae6e0ba0b8fa5ba733e0d3c3ebb6be4e2f489a98829e71df8c264853ce3d",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/a77833c93e3405f8.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "f25f9dc2ed93fa68fd214564317e18838cc121a6da43017ee772c6065e063868",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/a77833c93e3405f8.v2.drat.gz",
+              "bytes": 104787861
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "a78d2764b4914a80",
+      "profile": 0,
+      "canonical_sha256": "e4c1bc718607f15ac7796f89dd43a0ebd66804340684386dbbb95a2e2788d84a",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet3/a78d2764b4914a80.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet3/a78d2764b4914a80.v2.drat.gz",
+              "bytes": 119444278
+            }
+          ]
+        }
+      ],
+      "paired_verified": false,
+      "verified_modes": []
+    },
+    {
+      "tag": "ac7167e310fe007b",
+      "profile": 0,
+      "canonical_sha256": "5f6e97fa7890380b0c0f19ca003bd56c0b24583c861c742b2ef7cb34cef5f0ec",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/ac7167e310fe007b.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "96cd925e64bc7ef72a32476523e4285e5060523305b5bd0a4f9b3573b4aa3b34",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/ac7167e310fe007b.v2.drat.gz",
+              "bytes": 170276325
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "b1aa470cb10a0f4a",
+      "profile": 0,
+      "canonical_sha256": "5595a73e0d63d057942a61cfa1256bd61d47715566722a12c5bd97fea6c82e93",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet3/b1aa470cb10a0f4a.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": []
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-44-199-204-4/b1aa470cb10a0f4a.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "a5e2fdae612f6dc8a996d6cc51a9e007b19a44dbf758a854dc322718c41cd124",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-44-199-204-4/b1aa470cb10a0f4a.v2.drat.gz",
+              "bytes": 259670535
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "b2b19e71d279f92a",
+      "profile": 0,
+      "canonical_sha256": "c113079b6d56734158d0a2ee4782ccee58efcadf67763d05b22bb541c9c759d3",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/b2b19e71d279f92a.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "afce648ab1c5b4f1e102d1076ff71bcc828cba1deddbb65dea05abecb793c437",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/b2b19e71d279f92a.v2.drat.gz",
+              "bytes": 121461916
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/b2b19e71d279f92a.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/b2b19e71d279f92a.v2.drat.gz",
+              "bytes": 121461916
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "b515f2f6f89447a8",
+      "profile": 0,
+      "canonical_sha256": "ff7ee456ce1e0cfb9a051f058aa31d4d4a665e7458852e3ec531734ea3278fb8",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/b515f2f6f89447a8.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "4bdd99284909f7fc193c1f357433c922389d3293a294217af7f7daef9c8ecc3a",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/b515f2f6f89447a8.v2.drat.gz",
+              "bytes": 198688778
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "b79d934c20ea7c2a",
+      "profile": 0,
+      "canonical_sha256": "941d2577c5434032208ee90f21855edd28fdc030ee3f2ac8c7b1963c4adf5f27",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-44-199-204-4/b79d934c20ea7c2a.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "aae0ad0ceef1c88ddf95201ab98bacfa478be7c2435efceb773cf58db8f2cf47",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-44-199-204-4/b79d934c20ea7c2a.v2.drat.gz",
+              "bytes": 79587734
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "b647301779568a1a",
+      "profile": 0,
+      "canonical_sha256": "31e25e094efaa557ce575afaa2c9e49cf1ab0fa6ab0bb8a4a38b90213398679a",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/b647301779568a1a.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "bb16bc324a4d34cfd724b0e9ce2c275e5cc7363abcea1ac75592aa9314a54ae7",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/b647301779568a1a.v2.drat.gz",
+              "bytes": 52278815
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "b953a73b0e372480",
+      "profile": 0,
+      "canonical_sha256": "07d61f0f4afb98a4925bcc9f0833cdf7da7fdc5ac905c5298586bb65e0c6eaa2",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/b953a73b0e372480.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "9d29f5b5ac855bebcab865a944d50b2baabb47e2331b4e695cb6f5d50a8c2894",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/b953a73b0e372480.v2.drat",
+              "bytes": 230195719
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/b953a73b0e372480.v2.drat.gz",
+              "bytes": 66348121
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "b8fa929ded877f2e",
+      "profile": 0,
+      "canonical_sha256": "4311adfa0d0b22f26efd583e40d486a0421bedf6864cf55308355a06f3c3fc96",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/b8fa929ded877f2e.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "5296cd3357ece7419aaba52c33c17c7d96eb6d970b3e8515b764aab6c38b26eb",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/b8fa929ded877f2e.v2.drat",
+              "bytes": 798957601
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/b8fa929ded877f2e.v2.drat.gz",
+              "bytes": 233785803
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "bc73358c583890cd",
+      "profile": 0,
+      "canonical_sha256": "100a2d909dc0ee4a1bd3ce87d1490993c9e91f81f64368a189f909520fb97489",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/bc73358c583890cd.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "f09cd62ffc65b77e84cf1cbdefb12483b3129696ba13b14975a402a251340f7c",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/bc73358c583890cd.v2.drat",
+              "bytes": 677682339
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/bc73358c583890cd.v2.drat.gz",
+              "bytes": 200862565
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "c4a4b92150835bc3",
+      "profile": 0,
+      "canonical_sha256": "08139b07dd54158e7f74e74c6ccc0712fa580a4c8679b8d6caf48737a0349261",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/c4a4b92150835bc3.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "19c6392afd4fd0f9fd811050cb08204b1cb521183fe0d76e3d4d3726e8d47969",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/c4a4b92150835bc3.v2.drat.gz",
+              "bytes": 98309265
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "cd91fc344fa62a12",
+      "profile": 0,
+      "canonical_sha256": "d5f9314c99b72901d604831f9899e8d655a7ec38fc14e17fc8a3e21936193f79",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-44-199-204-4/cd91fc344fa62a12.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "0eeb3688aecbae560596c982badb53a86578ed23d4b25e35d142ce2a772872b5",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-44-199-204-4/cd91fc344fa62a12.v2.drat.gz",
+              "bytes": 173535689
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "c60116d55d32f668",
+      "profile": 0,
+      "canonical_sha256": "fdf7fee3627974f9045d4a2bd08368afed65cb5048b5fe11373a6a31722c250f",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet8/c60116d55d32f668.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet8/c60116d55d32f668.v2.drat",
+              "bytes": 452792585
+            }
+          ]
+        }
+      ],
+      "paired_verified": false,
+      "verified_modes": []
+    },
+    {
+      "tag": "cec9e33d5b126f00",
+      "profile": 0,
+      "canonical_sha256": "2ac2ff0e74b984af6eb71dc8a7f4bb9eba64e34af76bc30637cceacc9e693a8d",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/cec9e33d5b126f00.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "591dfa8a28527735b44cafb0be432d1d0e07d5927bb11b6fe91966f6a0fbfaec",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/cec9e33d5b126f00.v2.drat.gz",
+              "bytes": 192326468
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/cec9e33d5b126f00.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/cec9e33d5b126f00.v2.drat.gz",
+              "bytes": 192326468
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "ceef63d4bce2901d",
+      "profile": 0,
+      "canonical_sha256": "0fbc078f2709a9f1221a0412cd675ee6b9ccb5db67d471c4e1c43efa528c0a2a",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/ceef63d4bce2901d.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "82a244c7261943886b219a12bf0140a86bbe4b2a5a298df4f50c2a3f6a300433",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/ceef63d4bce2901d.v2.drat.gz",
+              "bytes": 195657964
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "cf0b53914e729513",
+      "profile": 0,
+      "canonical_sha256": "769424d5d7a198447a8ba18bce273a00fa736c07b921c3aec80b21f6ff1b5788",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/cf0b53914e729513.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "cefb0dceec1504d4a625943d318d54c78a421b8a1eb559a411370ddf2da91557",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/cf0b53914e729513.v2.drat",
+              "bytes": 570431071
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/cf0b53914e729513.v2.drat.gz",
+              "bytes": 169005827
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "dc265cde47b76250",
+      "profile": 0,
+      "canonical_sha256": "775a8eb800d03d0785ffc80293cc802e422d2e267d6f0aa616979f725518ad27",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/dc265cde47b76250.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "a14b29b0df2ad54a531f9488ca90195bd3a638c9fdacd563680984cdaa3295b7",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/dc265cde47b76250.v2.drat",
+              "bytes": 1117880725
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/dc265cde47b76250.v2.drat.gz",
+              "bytes": 327091498
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "dd2a353591b82de9",
+      "profile": 0,
+      "canonical_sha256": "255040415e77f62053fc29d404f691ffd02f244243d12e809d48634e37bee690",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/dd2a353591b82de9.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "1ba175340f8c9d4490c6b128be9fc8a0e4d9eb4f980bd520ad33e798bf7706b3",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/dd2a353591b82de9.v2.drat",
+              "bytes": 550324637
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/dd2a353591b82de9.v2.drat.gz",
+              "bytes": 161421358
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "dc5b7dd826fbc82d",
+      "profile": 0,
+      "canonical_sha256": "249642404eb7f6d67ffd44b1e71d3ca9bae09bdc74ea990c54957198e14f19a6",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/dc5b7dd826fbc82d.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "0464a794a7702a6d2f3a503fee9222407a0f3dd3b1215a56758051c86da60f43",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/dc5b7dd826fbc82d.v2.drat",
+              "bytes": 812422059
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/dc5b7dd826fbc82d.v2.drat.gz",
+              "bytes": 240015437
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "e849040925e548cc",
+      "profile": 0,
+      "canonical_sha256": "f4d303bc947ff6834add65721f36f935cbff735c838b51875eb53753c8624829",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet1/e849040925e548cc.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet1/e849040925e548cc.v2.drat.gz",
+              "bytes": 116560199
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-54-211-142-73/e849040925e548cc.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "0e0e75151b5d324bab49f7baf4872c5320f71295d3da6f39e40120de4c6c9416",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-54-211-142-73/e849040925e548cc.v2.drat.gz",
+              "bytes": 116560199
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "dde56c15b712e8f4",
+      "profile": 0,
+      "canonical_sha256": "a366a5655d94724d139f53137135724f3706a34981cdae9f92ff166d5d0700bd",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/dde56c15b712e8f4.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "14fb85ec68261524ea77486812a3c42d64cc275c8e079e0c5744599d2d9cead4",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/dde56c15b712e8f4.v2.drat.gz",
+              "bytes": 141586672
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "e8b2595fd103f042",
+      "profile": 0,
+      "canonical_sha256": "7562cf3a1963f86a8e6b11d064bd2327c8a97614589fa60b3bfe736f32fcbeae",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/e8b2595fd103f042.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "97bac87b4ab66c75d2b531aed5bbb943340f244e3c6ae0c51651ac0775e53d6e",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/e8b2595fd103f042.v2.drat.gz",
+              "bytes": 133582938
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "ea51dab0cb28b3b0",
+      "profile": 0,
+      "canonical_sha256": "2c5fe4acbd48f9b2a20ba8db54531592997fadca241bd06a9dad10e524385145",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/ea51dab0cb28b3b0.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "d48c68a8580ebc1e8e9c4ce073ae091c07d46f49b6915adbcc3573b11e1b8362",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/ea51dab0cb28b3b0.v2.drat",
+              "bytes": 867716678
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/ea51dab0cb28b3b0.v2.drat.gz",
+              "bytes": 258142578
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "ebdc5e749c127971",
+      "profile": 0,
+      "canonical_sha256": "ed0f9b1f4ba4a3a1b5b69d0aa3066bd88ed9877c9576336f1563f28dbcbfc9a2",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/ebdc5e749c127971.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "c648b8359136cb0aae08606a2faf55ee8019944513ecad7317e8476c9f5a310d",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/ebdc5e749c127971.v2.drat.gz",
+              "bytes": 38005931
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "eea59a47105c38ec",
+      "profile": 0,
+      "canonical_sha256": "a35c501324a94c7e1d706a0b174d31b98588c33374f7ed03848d9c93e57e7ffe",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/eea59a47105c38ec.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "1d99e571752a389456d989cfc6285ff194ec98a8abab884734812d8e1adc0607",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/eea59a47105c38ec.v2.drat",
+              "bytes": 836777361
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/eea59a47105c38ec.v2.drat.gz",
+              "bytes": 243284830
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "f45dca0206f97dbd",
+      "profile": 0,
+      "canonical_sha256": "dfa65edcf883ec2023d51137419a167586cdf18c266f4dd784ab19519f47a1ab",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/f45dca0206f97dbd.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "31fda11c2b2a7029d3740ebf323e0c45365d51450cf6129e0f6d43a8de47cc2e",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/f45dca0206f97dbd.v2.drat",
+              "bytes": 464996362
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/f45dca0206f97dbd.v2.drat.gz",
+              "bytes": 135986531
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "f453c90d2c0fb485",
+      "profile": 0,
+      "canonical_sha256": "cdeba9a5c6854cdc43281daaa218fa16b4d8621ac465c0cc23623fb1b5415a39",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/f453c90d2c0fb485.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "4f7332a7b9631f37ccdf6b88749982b9dd81933a8e66dad660e6f26250ba89ac",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/f453c90d2c0fb485.v2.drat.gz",
+              "bytes": 128306097
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "f6f020ca788662fc",
+      "profile": 0,
+      "canonical_sha256": "8297880bf046cd0e2bd2cde6fe3243e819c30dce1db00834323ec1d89c3822d6",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/f6f020ca788662fc.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "23c58d3e656554d42b93b0bb1c23829258dac9a99cc0f075882237c94153d9c4",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/f6f020ca788662fc.v2.drat",
+              "bytes": 744230070
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/f6f020ca788662fc.v2.drat.gz",
+              "bytes": 217285983
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "f7da138edf386e74",
+      "profile": 0,
+      "canonical_sha256": "23234664238e8dca7649462a6bb4d7065cb3ba13cc5303f3f8e9cf37062a3223",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/f7da138edf386e74.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "7295cedde1cb5a10262a9c0f979521bbe88b1ef071a59b7f660d5a58fabe17e4",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-35-153-202-46/f7da138edf386e74.v2.drat.gz",
+              "bytes": 79573429
+            }
+          ]
+        },
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/f7da138edf386e74.v2.cnf",
+          "verified_verdict_and_table": false,
+          "mode": null,
+          "verdict_sha256": null,
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/f7da138edf386e74.v2.drat",
+              "bytes": 282665120
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/fleet2/f7da138edf386e74.v2.drat.gz",
+              "bytes": 79573429
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "f7e1d45069e7ade7",
+      "profile": 0,
+      "canonical_sha256": "979a41da9a3222164f7102ce6e6b83fc916f8ee8a56c5f4c239630b600039e21",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/f7e1d45069e7ade7.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "65a5bc3d793a8ac4b2b60fc29162cf574a5c7e71f09c1901cef5cc4c81d1a14e",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/f7e1d45069e7ade7.v2.drat",
+              "bytes": 827568829
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/f7e1d45069e7ade7.v2.drat.gz",
+              "bytes": 241501492
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "f8ad3e11da8577dd",
+      "profile": 0,
+      "canonical_sha256": "9c90863a5587e4cc3948d9f31f2f2de17359405672b486f31a96945f4f57a80c",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/f8ad3e11da8577dd.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "02a72f556ad7cf3eec8952d0506eb0374f4305b5e71572d5874635e134541a27",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/f8ad3e11da8577dd.v2.drat",
+              "bytes": 516872630
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/spot1/bbbb-orbits/f8ad3e11da8577dd.v2.drat.gz",
+              "bytes": 153322598
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    },
+    {
+      "tag": "f941d236ef297d1d",
+      "profile": 0,
+      "canonical_sha256": "dfd7486f0cf690427c9e37363c48b01101aeea439f25c255b78a912b0368c0c3",
+      "matches": [
+        {
+          "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/f941d236ef297d1d.v2.cnf",
+          "verified_verdict_and_table": true,
+          "mode": "MONO",
+          "verdict_sha256": "255fd8ab71040d93d38a703fcc735e82e88650c46f3a0afad093da6548c680b6",
+          "proof_files": [
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/f941d236ef297d1d.v2.drat",
+              "bytes": 345109533
+            },
+            {
+              "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/coordinator/bbbb-orbits/f941d236ef297d1d.v2.drat.gz",
+              "bytes": 98355982
+            }
+          ]
+        }
+      ],
+      "paired_verified": true,
+      "verified_modes": [
+        "MONO"
+      ]
+    }
+  ]
+}
