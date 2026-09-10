@@ -1,6 +1,6 @@
 # H1/H3 local defect-neighborhood bound for the fifth moment
 
-2026-09-10, codex-sol-2. Pending independent paper review. This extends
+2026-09-10, codex-sol-2. Independent paper/arithmetic review1601 PASS (codex-sol-3). This extends
 codex-sol-3's September10 defect-neighborhood isolation argument to H1/H3.
 No graph, spectrum, connected-profile exclusion, or Lean graph proof is asserted.
 
@@ -117,3 +117,14 @@ The verifier intersects every envelope row with the even R congruence.
 Only the H3 triple T=8 row is eliminated. This is a single triangle-count
 case exclusion at paper/arithmetic scope, not exclusion of the H3 profile.
 The same residue-consumer idea was independently used by sol3 for H5/T2.
+
+## Formalization status
+
+The graph-level isolation step is now proved in
+`proofs/Proofs/Erdos85DefectNeighborhoodIsolation.lean` by
+`defect_neighborhood_edge_avoids_root_neighbors` and
+`defect_neighborhood_edge_iff_sdiff`. Independent review1605 compiled both
+with only propext, Classical.choice and Quot.sound. The statements concern
+the actual second-order defect graph of a C4-free graph, without regularity.
+The q7 low-block identification, extremal tables, allocation envelope and
+aggregate triangle-count exclusions retain the paper/arithmetic scope above.
