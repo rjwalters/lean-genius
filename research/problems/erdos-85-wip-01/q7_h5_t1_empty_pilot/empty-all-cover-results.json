@@ -1,0 +1,101 @@
+{
+  "input_sha256": "2f6e3a1f7edbbf9aece4dbd9e905ba13f4521825c13c5b7b96ce67bd079aab47",
+  "caps": {
+    "nodes_per_partial": 100000,
+    "seconds_total": 60
+  },
+  "seconds": 0.0031519581098109484,
+  "scope": "Fixed saved singleton completions only; alternate completions still open. All covers and their empty-empty completions checked within caps.",
+  "rows": [
+    {
+      "core_index": 27,
+      "status": "REJECT_FIXED_PARTIAL",
+      "nodes": 1,
+      "selected_domains": null,
+      "covers_tested": 0,
+      "empty_edge_nodes": 0,
+      "capacity_failures": 0
+    },
+    {
+      "core_index": 177,
+      "status": "REJECT_FIXED_PARTIAL",
+      "nodes": 11,
+      "selected_domains": null,
+      "covers_tested": 0,
+      "empty_edge_nodes": 0,
+      "capacity_failures": 0
+    },
+    {
+      "core_index": 173,
+      "status": "REJECT_FIXED_PARTIAL",
+      "nodes": 1,
+      "selected_domains": null,
+      "covers_tested": 0,
+      "empty_edge_nodes": 0,
+      "capacity_failures": 0
+    },
+    {
+      "core_index": 210,
+      "status": "REJECT_FIXED_PARTIAL",
+      "nodes": 1,
+      "selected_domains": null,
+      "covers_tested": 0,
+      "empty_edge_nodes": 0,
+      "capacity_failures": 0
+    },
+    {
+      "core_index": 119,
+      "status": "REJECT_FIXED_PARTIAL",
+      "nodes": 14,
+      "selected_domains": null,
+      "covers_tested": 1,
+      "empty_edge_nodes": 1,
+      "capacity_failures": 1
+    },
+    {
+      "core_index": 227,
+      "status": "REJECT_FIXED_PARTIAL",
+      "nodes": 14,
+      "selected_domains": null,
+      "covers_tested": 1,
+      "empty_edge_nodes": 1,
+      "capacity_failures": 1
+    },
+    {
+      "core_index": 229,
+      "status": "REJECT_FIXED_PARTIAL",
+      "nodes": 1,
+      "selected_domains": null,
+      "covers_tested": 0,
+      "empty_edge_nodes": 0,
+      "capacity_failures": 0
+    },
+    {
+      "core_index": 105,
+      "status": "REJECT_FIXED_PARTIAL",
+      "nodes": 15,
+      "selected_domains": null,
+      "covers_tested": 1,
+      "empty_edge_nodes": 1,
+      "capacity_failures": 1
+    },
+    {
+      "core_index": 223,
+      "status": "REJECT_FIXED_PARTIAL",
+      "nodes": 1,
+      "selected_domains": null,
+      "covers_tested": 0,
+      "empty_edge_nodes": 0,
+      "capacity_failures": 0
+    },
+    {
+      "core_index": 184,
+      "status": "REJECT_FIXED_PARTIAL",
+      "nodes": 10,
+      "selected_domains": null,
+      "covers_tested": 0,
+      "empty_edge_nodes": 0,
+      "capacity_failures": 0
+    }
+  ]
+}

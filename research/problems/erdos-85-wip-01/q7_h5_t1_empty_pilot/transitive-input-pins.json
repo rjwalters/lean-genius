@@ -1,0 +1,49 @@
+{
+  "scope": "Exact transitive local inputs used by final T1 search; supplements frozen review2032 without modifying its files.",
+  "files": {
+    "q7_h5_t1_heavy_core/census.py": {
+      "bytes": 3524,
+      "sha256": "28f69182fa20f71c3e8784cca92cf53ea3aea1cd26fe1b95fdfea30b4ca695e8"
+    },
+    "q7_h5_t1_heavy_core/results.json": {
+      "bytes": 94787,
+      "sha256": "7f8225058c65fc538a149d54d0d417b81d6a5604f58acf6436397efb7e3c7809"
+    },
+    "q7_h5_t1_heavy_core/joint.py": {
+      "bytes": 3283,
+      "sha256": "7335f4687bfd1afc15fd8e61178324398ea35867fd098773cec29fb00ec74081"
+    },
+    "q7_h5_t1_heavy_core/joint-results.json": {
+      "bytes": 962268,
+      "sha256": "333af71499d8d3b7d2b92a15ae6b78cb9a4887dcc80b2109e5b8fa102684c1b8"
+    },
+    "q7_h5_t1_heavy_core/singleton.py": {
+      "bytes": 4266,
+      "sha256": "3d9de9aba40ab592899ce91e77ffa3f37edf80a45b17a1d1b6b527a18d4d96b4"
+    },
+    "q7_h5_t1_heavy_core/singleton-results.json": {
+      "bytes": 16904,
+      "sha256": "70156703e3631f16c6a2693481f8f36669c9852db53abdcef66461113f2ac564"
+    },
+    "q7_h5_t1_heavy_core/singleton-tail.py": {
+      "bytes": 4276,
+      "sha256": "dbe36cfec093c33734b4637c82b214e99d1612e2a0f090a04d188bb217a6dbf4"
+    },
+    "q7_h5_t1_heavy_core/singleton-tail-results.json": {
+      "bytes": 79848,
+      "sha256": "61a1690053389ace26f2f08ee95e73b73f6d93278c5cec89ab2aa55c9f694e0b"
+    },
+    "q7_h5_t1_empty_pilot/singleton-empty.py": {
+      "bytes": 4590,
+      "sha256": "1094ef1c66725783d67e71c549a036e36e5f6e6385496a6010ec47d7ee011a37"
+    },
+    "q7_h5_t1_empty_pilot/empty_capacity.py": {
+      "bytes": 1828,
+      "sha256": "015d5dc3dc1c8f093e2566c6699f5794a5672787ae1cacd3c6da386657cde765"
+    },
+    "q7_h5_t1_empty_pilot/singleton-empty-results.json": {
+      "bytes": 2948,
+      "sha256": "5648c581946b6b0d2747cf428d79cdf50cf4296bd4db22f8621bf0b7f1a7d7be"
+    }
+  }
+}

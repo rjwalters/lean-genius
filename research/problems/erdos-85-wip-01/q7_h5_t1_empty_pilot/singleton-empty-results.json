@@ -1,0 +1,120 @@
+{
+  "source_sha256": "7f8225058c65fc538a149d54d0d417b81d6a5604f58acf6436397efb7e3c7809",
+  "selection": "Ten singleton-layer survivors; all alternative singleton completions with necessary empty-neighbour and empty-degree capacity filter.",
+  "caps": {
+    "nodes_per_core": 100000,
+    "seconds_total": 60
+  },
+  "scope": "Exhaustive failures reject only stated core. PASS means a singleton completion admits an empty-neighbour cover passing necessary empty-degree capacity, not a full graph. Caps mean UNKNOWN.",
+  "selected_core_indices": [
+    27,
+    177,
+    173,
+    210,
+    119,
+    227,
+    229,
+    105,
+    223,
+    184
+  ],
+  "processed": 10,
+  "seconds": 4.1917876249644905,
+  "counts": {
+    "PASS": 0,
+    "REJECT": 10,
+    "UNKNOWN": 0
+  },
+  "rows": [
+    {
+      "core_index": 27,
+      "labelled_count": 6,
+      "cartesian_host_bound": 1,
+      "host_assignments_tested": 1,
+      "nodes": 223,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 177,
+      "labelled_count": 12,
+      "cartesian_host_bound": 2,
+      "host_assignments_tested": 2,
+      "nodes": 1340,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 173,
+      "labelled_count": 12,
+      "cartesian_host_bound": 8,
+      "host_assignments_tested": 6,
+      "nodes": 316,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 210,
+      "labelled_count": 12,
+      "cartesian_host_bound": 12,
+      "host_assignments_tested": 10,
+      "nodes": 4609,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 119,
+      "labelled_count": 12,
+      "cartesian_host_bound": 16,
+      "host_assignments_tested": 12,
+      "nodes": 1062,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 227,
+      "labelled_count": 12,
+      "cartesian_host_bound": 24,
+      "host_assignments_tested": 14,
+      "nodes": 3584,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 229,
+      "labelled_count": 12,
+      "cartesian_host_bound": 24,
+      "host_assignments_tested": 20,
+      "nodes": 3342,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 105,
+      "labelled_count": 12,
+      "cartesian_host_bound": 40,
+      "host_assignments_tested": 15,
+      "nodes": 1681,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 223,
+      "labelled_count": 6,
+      "cartesian_host_bound": 128,
+      "host_assignments_tested": 72,
+      "nodes": 29968,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 184,
+      "labelled_count": 6,
+      "cartesian_host_bound": 1792,
+      "host_assignments_tested": 207,
+      "nodes": 8351,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    }
+  ]
+}

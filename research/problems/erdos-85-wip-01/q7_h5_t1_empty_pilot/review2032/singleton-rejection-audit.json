@@ -1,0 +1,71 @@
+{
+  "results": [
+    {
+      "core": 27,
+      "status": "INDEPENDENTLY_EXHAUSTED",
+      "host_assignments": 1,
+      "nodes": 44
+    },
+    {
+      "core": 177,
+      "status": "INDEPENDENTLY_EXHAUSTED",
+      "host_assignments": 2,
+      "nodes": 6000
+    },
+    {
+      "core": 173,
+      "status": "INDEPENDENTLY_EXHAUSTED",
+      "host_assignments": 6,
+      "nodes": 443
+    },
+    {
+      "core": 210,
+      "status": "INDEPENDENTLY_EXHAUSTED",
+      "host_assignments": 10,
+      "nodes": 7253
+    },
+    {
+      "core": 119,
+      "status": "INDEPENDENTLY_EXHAUSTED",
+      "host_assignments": 12,
+      "nodes": 579
+    },
+    {
+      "core": 227,
+      "status": "INDEPENDENTLY_EXHAUSTED",
+      "host_assignments": 14,
+      "nodes": 4789
+    },
+    {
+      "core": 229,
+      "status": "INDEPENDENTLY_EXHAUSTED",
+      "host_assignments": 20,
+      "nodes": 9600
+    },
+    {
+      "core": 105,
+      "status": "INDEPENDENTLY_EXHAUSTED",
+      "host_assignments": 15,
+      "nodes": 2928
+    },
+    {
+      "core": 223,
+      "status": "INDEPENDENTLY_EXHAUSTED",
+      "host_assignments": 72,
+      "nodes": 176452
+    },
+    {
+      "core": 184,
+      "status": "INDEPENDENTLY_EXHAUSTED",
+      "host_assignments": 207,
+      "nodes": 8877
+    }
+  ],
+  "empty_stats": {
+    "singleton_completions": 51,
+    "cover_nodes": 500,
+    "full_covers": 19,
+    "partner_capacity_rejections": 19,
+    "max_rows": 33
+  }
+}

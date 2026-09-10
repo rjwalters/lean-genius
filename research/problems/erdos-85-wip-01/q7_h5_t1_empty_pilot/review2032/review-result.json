@@ -1,0 +1,36 @@
+{
+  "review": 2032,
+  "status": "PASS",
+  "remaining_cores": 0,
+  "independent_empty_cores": 10,
+  "independent_host_assignments": 359,
+  "empty_stats": {
+    "singleton_completions": 51,
+    "cover_nodes": 500,
+    "full_covers": 19,
+    "partner_capacity_rejections": 19,
+    "max_rows": 33
+  },
+  "chain": {
+    "heavy_domain": 249,
+    "joint_feasible": 211,
+    "singleton_exhausted": 201,
+    "remaining_empty_exhausted": 10,
+    "remaining": 0,
+    "independent_joint_exact_set": true,
+    "disjoint_complete_chain": true,
+    "author_replay_identical_rows": true,
+    "scope": "Conditional on reviewed H5/T1 support census and block identities: finite-computation exclusion of T1, not a Lean theorem or global H5 exclusion."
+  },
+  "implementation_note": "Independent whole-colour-block singleton search; support-type products; row-at-a-time multicover; direct hypothetical-edge common-neighbour scans. Memo keys retain chosen rows because final partner capacity depends on them.",
+  "scope": "Finite-computation H5/T1 exclusion under reviewed graph reductions. No kernel theorem, full H5 exclusion, or automatic Phase B queue mutation.",
+  "reviewer_files": {
+    "independent-replay.log": "150bf81859afcd506f505cce387422df1f6e78c83898e14c631b34a7396d9f39",
+    "chain-audit.json": "fe74d76dd406f90fbacc6ca42c5c29bdfde7619f05bcd508efaa4a4217ef9c60",
+    "check_chain.py": "67e97c093d17748be6e1f8905536a608f40e4f2af96323a4dbced8adb5a224da",
+    "singleton-rejection-audit.json": "42ea88f8121ae35012ea7b111ae809c80e09562061b357d2ba91bf2b5f7fa16e",
+    "joint_function.py": "bd9319b88ede9ea86269991a53272abeb447bc65511192ccdf8af53dbd32dae0",
+    "independent_empty.py": "970310d82cef2ff29201fabf32882dadb74e66c757f62f7db468dcf3646d2d73",
+    "check_rejections.py": "6f7f7ac10266c5990ffb74bc58173734879cb9f5c7ae65c7b76d7a83f28d3c31"
+  }
+}

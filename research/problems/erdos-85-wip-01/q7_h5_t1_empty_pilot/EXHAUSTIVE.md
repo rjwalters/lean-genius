@@ -1,0 +1,9 @@
+# H5/T1 all-singleton-completion empty-capacity filter
+
+Author result, pending independent review: all10 remaining core classes reject, no caps,4.19seconds. Unlike the fixed-witness pilot, singleton-empty.py enumerates ALL host partitions and ALL singleton completions; it invokes empty_capacity.feasible at every singleton-complete leaf. It changes singleton.py only by selecting the ten surviving classes and adding this necessary filter plus output/scope metadata.
+
+For a completed singleton layer, every remaining neighbour of a nonempty low vertex is empty. Its demand is7 minus current total degree. Each empty vertex's nonempty neighbours partition five high colours by BC=J. Enumerate all such support partitions, requiring positive demand and no existing common neighbour between guests. Every partition has at least two guests, so it cannot repeat among empty vertices (that would create C4). Select exactly13 partitions satisfying all vertex demands with no repeated guest pair.
+
+At a completed cover, construct its49vertex partial graph and require each empty vertex to have at least7-current_degree possible empty neighbours. A pair is possible only if adding its edge creates no C4, i.e. no length-three path currently connects it. This is a necessary condition only; allowing mutually incompatible possible partners can only weaken it. Empty labels are interchangeable, so arbitrary consecutive labels preserve completeness.
+
+Caps are shared with the singleton search:100000nodes/core and60seconds globally; failure at a cap propagates UNKNOWN. No cap was hit. Original reviewed singleton/core inputs are unchanged. For reproduction place the scripts beside results.json, joint-results.json, singleton-results.json and singleton-tail-results.json from q7_h5_t1_heavy_core, and run singleton-empty.py. No full graph was produced, no Lean exclusion exists, and no Phase B queue was altered. Independent review must establish completeness before a sector claim.
