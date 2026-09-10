@@ -87,3 +87,27 @@ capacities on U plus the number of F edges avoiding U. Both the inequality
 and its contradiction corollary pass source/public Lean builds with only
 standard axioms. The actual H7 outside-pair graph construction and the
 finite certificate enumeration are not formalized by this generic file.
+
+`Erdos85ExteriorPairDegreeCapacity.lean` reuses the existing exterior-pair
+graph definition and proves both the routed-witness degree bound and the
+prohibition on an inside common neighbor (review1669 PASS).
+`Erdos85OrderFortyNineSevenHighT0ExteriorPairCapacity.lean` discharges the
+routing and two-neighbor premises in the actual H7/T0 graph: an outside
+common neighbor has at least two empty neighbors, so the quotient capacity
+and nonempty support force it into the singleton class. The resulting
+actual inequality is degree_X(u)+2*n_E(u)<=7. Both sources and public builds
+pass with standard axioms; actual-wrapper review1670 passed. The finite certificate bridge remains separate.
+
+`Erdos85OrderFortyNineSevenHighT0ExteriorPairLowerBound.lean` supplies the
+actual total-edge inequality35<=4a+|X| (review1672 PASS), using the singleton
+census14 and the directed incidence equation I10+4a=49. Its generic
+injection dependency is `Erdos85ExteriorPairEdgeLowerBound.lean`
+(review1671 PASS). Source and public builds pass with standard axioms.
+
+`Erdos85OrderFortyNineSevenHighT0ExteriorCapacityInequality.lean` combines
+these graph-side bounds for every subset U of the actual empty fiber.
+It defines the allowed graph F by absence of an inside common neighbor
+and proves35<=4a+sum_U(7-2*n_E)+|F edges avoiding U|. Source and public build
+pass with standard axioms; review1675 passed.
+The43-class enumeration, numerical representative certificates, and their
+isomorphism transfer are not certified by that theorem.
