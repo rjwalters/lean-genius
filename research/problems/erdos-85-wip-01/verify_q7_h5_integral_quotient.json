@@ -1,0 +1,46 @@
+{
+  "scope": "Arithmetic certificate; graph reduction remains paper",
+  "sympy_version": "1.14.0",
+  "g": "64*a - 50",
+  "j": "100*a - 60",
+  "linear_solution": {
+    "alpha": "-7*beta + 10*delta",
+    "gamma": "-beta/2"
+  },
+  "integral_cross_entries": [
+    [
+      0,
+      0,
+      0,
+      0
+    ]
+  ],
+  "rational_negative_control": {
+    "alpha": "3/2",
+    "beta": "1/2",
+    "gamma": "-1/4",
+    "delta": "1/2"
+  },
+  "profiles": [
+    {
+      "triples": 1,
+      "core_support_counts": [
+        9,
+        3,
+        7,
+        1
+      ]
+    },
+    {
+      "triples": 2,
+      "core_support_counts": [
+        8,
+        6,
+        4,
+        2
+      ]
+    }
+  ],
+  "C4free_minimum_degree6_requires_order_at_least": 31,
+  "proposed_closed_C_subset_order": 24
+}

@@ -1,0 +1,116 @@
+# H5: integral Perron quotient excludes12+12+20 — 2026-09-10
+
+Owner: codex-sol-3. **Paper review1588 PASS (codex-sol-2).** The argument below
+excludes the remaining disconnected defect pattern for H5/T1 and H5/T2.
+Together with the reviewed component classification it forces D connected
+in all three H5 incidence profiles. This does not exclude H5 itself.
+
+## Exact graph assumptions
+
+Use the actual C4-free order49, minimum-degree7 graph and low blocks B,C,D
+of [the reviewed H5/H7 setup](Q7_H5_H7_SQUEEZE_20260910.md). For h=5 put
+F=Q(a), a²-7a+5=0 with a>6, z=a1-t>0, and rho=a-1.
+Then Dz=rho*z, Cz=az, CD=DC, C1=7·1-t, and Ct=5·1.
+
+Suppose D has components S1,S2,S3 of orders12,12,20. Each of S1,S2 has
+two empty-support vertices and ten singleton-support vertices. The third
+has support counts(10-tau,3tau,10-3tau,tau), with tau=1 or2. In particular
+**every component contains vertices with t=0 and t=1**. This premise is
+essential to the coefficient-integrality step below.
+
+Let z_i be z restricted to S_i and extended by zero. Perron's theorem on
+each connected component shows that the rho-eigenspace of D is precisely
+span_F(z1,z2,z3). Since C commutes with D, this space is C-invariant.
+Write its matrix in that basis as M=(m_ij), so
+
+    (Cz_j)|S_i = m_ij z_i,   m_ij in F.
+
+## Neighbor counts force integral coefficients
+
+Fix i,j and write m_ij=alpha+beta*a with alpha,beta rational. For v in S_i
+define the nonnegative integers
+
+    p_v=sum_(w in S_j) C_vw,
+    q_v=sum_(w in S_j) C_vw t_w.
+
+The equation a p_v-q_v=(alpha+beta*a)(a-t_v), reduced using a²=7a-5,
+gives by irrational coefficient comparison
+
+    p_v=alpha+7beta-beta*t_v,
+    q_v=alpha*t_v+5beta.
+
+Choose vertices v0,v1 in S_i with t=0,1. Then beta=p_v0-p_v1 is an
+integer, and alpha=p_v0-7beta is an integer. Also 0<=q_v0<=5 because
+Ct=5·1 and all summands are nonnegative. Hence beta is0 or1. Finally
+p_v0<=7 since v0 has exactly seven low neighbors, so
+
+    alpha,beta in Z,  beta in {0,1},  alpha+7beta<=7.
+
+These are constraints on the actual graph counts. They do not follow merely
+from the existence of a selfadjoint operator over F.
+
+## Weighted symmetry forces the cross-component entries to vanish
+
+The disjoint component vectors have squared norms
+
+    <z1,z1>=<z2,z2>=g=12a²-20a+10=64a-50,
+    <z3,z3>=j=20a²-40a+40=100a-60.
+
+Fix i=1 or2. Write m_i3=alpha+beta*a and m_3i=gamma+delta*a.
+Selfadjointness of C gives g*m_i3=j*m_3i. Comparing coefficients yields
+
+    64alpha+398beta=100gamma+640delta,
+    50alpha+320beta=60gamma+500delta.
+
+Solving the two linear equations gives
+
+    gamma=-beta/2,   alpha=10delta-7beta.
+
+Since gamma is integral and beta is0 or1, beta=0 and gamma=0. The bound
+alpha+7beta<=7 now becomes10delta<=7. Since delta is0 or1, delta=0 and
+alpha=0. Thus m_i3=m_3i=0 for both i=1,2.
+
+For v in S1 union S2, (Cz3)_v=0 is a sum of nonnegative adjacency entries
+times strictly positive z3 coordinates. Therefore there is no C edge from
+S1 union S2 to S3.
+
+## Contradiction without an additional connectivity theorem
+
+The induced graph C[S1 union S2] has24 vertices. Every vertex there has
+t=0 or1 and retains all of its C-neighbors, so its degree is7-t>=6.
+It is C4-free as an induced subgraph of the original graph. Fix any vertex.
+Its at least six neighbors each supply at least five non-returning two-step
+walks. C4-freeness makes their at least30 endpoints distinct and different
+from the starting vertex. This requires at least31 vertices, contradicting24.
+
+Thus12+12+20 is impossible. This argument strengthens the scalar conic
+test: the same pattern's two-dimensional conic has an exact F-solution,
+as recorded in the setup worksheet, but that solution does not satisfy the
+integral neighbor-count conditions of the actual graph.
+
+## Verification scope
+
+`verify_q7_h5_integral_quotient.py` verifies the support moments, field
+identities, exact linear solution, and exhaustive bounded integral cross-entry
+possibilities. It also demonstrates that dropping integrality admits a
+nonzero feasible coefficient tuple, so that premise cannot be omitted.
+The graph-to-Perron-space and count-comparison steps are paper proofs.
+The separate Lean scalar lemma, when compiled and reviewed, covers the
+integer coefficient implication only, not the complete graph argument.
+
+`Proofs/Erdos85H5IntegralPerronQuotient.lean` compiled successfully; its
+scalar theorem reports only propext, Classical.choice, and Quot.sound.
+Independent compile review1590 is pending. Paper review1588 separately
+checked the graph reduction and reran the exact verifier in a private folder.
+
+## Connected H5 defect is also non-bipartite
+
+This consequence uses the same field-norm mechanism recorded in the reviewed
+[component parity note](Q7_BIPARTITE_COMPONENT_PAIR_PARITY_20260910.md).
+If the now-connected D were bipartite, its -rho eigenspace would be a
+one-dimensional F-space generated by the sign-twisted positive vector z.
+It lies in K, because -rho is absent from span(im B^T,1). It is C-invariant,
+so C acts on it by a scalar lambda in F satisfying lambda²=6+rho=a+5.
+But Norm_(F/Q)(a+5)=65 is not a rational square, impossible for lambda².
+Thus D is non-bipartite. Perron's strict bound off its positive eigenline
+gives the residual bounds (7-sqrt29)/2 < theta² < (17+sqrt29)/2.
