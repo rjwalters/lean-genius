@@ -1,0 +1,34 @@
+{
+  "status": "PASS; independent review1981 and fresh full portable checker run passed",
+  "scope": "U20/R14 subset-capacity exclusion; no coverage tree required",
+  "stages": [
+    [
+      "U20Data"
+    ],
+    [
+      "U20Coordinates",
+      "U20DomainReasons"
+    ],
+    [
+      "U20Inputs"
+    ],
+    [
+      "U20Hall"
+    ]
+  ],
+  "source_sha256": {
+    "U20Data.lean": "f0ef99f3d62d904fe8c2c4a9c3070925494ab3ddc0c8c39d8a46d263e0f2e68d",
+    "U20Coordinates.lean": "56f7fdb5ea74a212a6616be9dc7ece247190f938d1b0d2753ec8d1e8176bb308",
+    "U20DomainReasons.lean": "1cea5b8fd7708573d0fb9971d1423d8bfa807e3791598049f3696c2ef0408745",
+    "U20Inputs.lean": "aedca411837d630233402628e4f00dd8f151de74793cd6593d1264ddd98348e2",
+    "U20Hall.lean": "f82ecf7501859268307fae2e8bc3e58e0b7ba96adc58e20a92da662aefa7d27c"
+  },
+  "expected_exports": {
+    "U20Data": 0,
+    "U20Coordinates": 2,
+    "U20DomainReasons": 1,
+    "U20Inputs": 2,
+    "U20Hall": 4
+  },
+  "total_exports": 9
+}

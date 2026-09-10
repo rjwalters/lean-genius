@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "modules": 5,
+  "exports": 9,
+  "entries": [
+    {
+      "module": "U20Data",
+      "source_sha256": "f0ef99f3d62d904fe8c2c4a9c3070925494ab3ddc0c8c39d8a46d263e0f2e68d",
+      "exports": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "U20Coordinates",
+      "source_sha256": "56f7fdb5ea74a212a6616be9dc7ece247190f938d1b0d2753ec8d1e8176bb308",
+      "exports": 2,
+      "log_sha256": "c58b5138e03d9204d800483576819efb94d3c2b418b84a4eba61a5ed0c053f50"
+    },
+    {
+      "module": "U20DomainReasons",
+      "source_sha256": "1cea5b8fd7708573d0fb9971d1423d8bfa807e3791598049f3696c2ef0408745",
+      "exports": 1,
+      "log_sha256": "1aea0e770fc014e2d5e3cb2f4dcecbe6ef6d0dcf493032b849df3dea3e957045"
+    },
+    {
+      "module": "U20Inputs",
+      "source_sha256": "aedca411837d630233402628e4f00dd8f151de74793cd6593d1264ddd98348e2",
+      "exports": 2,
+      "log_sha256": "72d39854f1eeaf258229be9fecfff67364047c0b465ad03caf372c6c7ab56d0d"
+    },
+    {
+      "module": "U20Hall",
+      "source_sha256": "f82ecf7501859268307fae2e8bc3e58e0b7ba96adc58e20a92da662aefa7d27c",
+      "exports": 4,
+      "log_sha256": "bd36faf7a7ee9893716f5c96d849b33715c8fed73ee653799c62922203a8f183"
+    }
+  ]
+}
