@@ -6,7 +6,7 @@ Each worker prepares one case, runs Kissat, then any required CaDiCaL check.
 The worker count covers the entire preparation/solve pipeline. No queue-wide
 CNF generation occurs. The default is a dry run and one worker.
 
-The draft configuration pins all four tool sources, the 1,416-case combined
+The draft configuration pins all five tool sources, the 1,416-case combined
 index and (transitively) its four sector manifests. Execution requires all
 captured bytes to equal one exact committed ancestor of both local HEAD and
 `origin/erdos85/integration`. One captured snapshot supplies parsing, bank
@@ -77,3 +77,7 @@ manifest directories beside `sat49`; run tests from the repository tree.
 The four preparation pilots used the review-2001 source pins preserved here;
 the final H1 follow-up pilot is recorded separately. No acceptance or solver
 result is inferred from these preparation-only checks.
+
+The optional historical-evidence configuration is documented in
+`../phase_b_historical_overlay/README.md`. The normal draft retains the full
+1,416-case queue; historical and fresh outcomes remain separate.

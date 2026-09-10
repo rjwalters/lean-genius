@@ -1,0 +1,35 @@
+[
+  {
+    "mode": "dry_run",
+    "inventory_cases": 1416,
+    "selected_cases": 1416,
+    "not_before": "2026-09-11T07:00:00Z",
+    "workers": 1,
+    "historical_evidence_cases": 0,
+    "input_preparation": "per worker; no input generated or solver launched",
+    "historical_skipped_count": 0,
+    "config": "phase_b_dispatch/config.draft.json"
+  },
+  {
+    "mode": "dry_run",
+    "inventory_cases": 1416,
+    "selected_cases": 1321,
+    "not_before": "2026-09-11T07:00:00Z",
+    "workers": 1,
+    "historical_evidence_cases": 95,
+    "input_preparation": "per worker; no input generated or solver launched",
+    "historical_skipped_count": 95,
+    "config": "phase_b_historical_overlay/config.draft.json"
+  },
+  {
+    "mode": "dry_run",
+    "inventory_cases": 1416,
+    "selected_cases": 1,
+    "not_before": "2026-09-11T07:00:00Z",
+    "workers": 1,
+    "historical_evidence_cases": 95,
+    "input_preparation": "per worker; no input generated or solver launched",
+    "historical_skipped_count": 94,
+    "config": "phase_b_historical_overlay/config.draft.json"
+  }
+]

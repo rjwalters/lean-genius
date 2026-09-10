@@ -19,10 +19,12 @@ import os
 import run_verdict_only as runner
 import materialize_verdict_input as units
 import materialize_h1_verdict_input as h1
+import historical_verdict_overlay as history
 
 COUNTS = {'H1': 1257, 'H3': 2, 'H5': 129, 'H7': 28}
 TOOLS = ('dispatch_verdict_only.py', 'run_verdict_only.py',
-         'materialize_verdict_input.py', 'materialize_h1_verdict_input.py')
+         'materialize_verdict_input.py', 'materialize_h1_verdict_input.py',
+         'historical_verdict_overlay.py')
 UNSAT = {'UNSAT_PRIMARY', 'UNSAT_CROSSCHECKED'}
 STOP = {'ERROR', 'SAT_CANDIDATE', 'DISAGREEMENT'}
 RESERVE = 8 * 1024**3
@@ -106,7 +108,14 @@ def load_plan(path):
         raise ValueError('Incomplete source bijection')
     if not set(overrides) <= seen:
         raise ValueError('Unknown crosscheck ID')
-    return {'config': config, 'raw': raw, 'index': index, 'sources': sources,
+    historical = []
+    if 'historical_overlay' in config:
+        ref = config['historical_overlay']
+        overlay_path = (path.parent / ref['path']).resolve()
+        frozen_raw = next(raw for source_path, raw in captured if source_path == sources['H1']['path'])
+        historical, evidence = history.load_overlay(overlay_path, ref['sha256'], frozen_raw)
+        captured.extend(evidence)
+    return {'historical': historical, 'config': config, 'raw': raw, 'index': index, 'sources': sources,
             'captured': captured, 'cases': cases}
 
 
@@ -237,14 +246,21 @@ def main():
     parser.add_argument('--cadical', type=Path, default=Path('/opt/homebrew/bin/cadical'))
     args = parser.parse_args()
     plan = load_plan(args.config.resolve()); config = plan['config']; cases = plan['cases']
+    historical = plan['historical']
+    historical_ids = {row['id'] for row in historical}
+    # Explicitly selected historical rows may be re-solved for calibration.
     if args.case_id:
         selected = set(args.case_id)
         if len(selected) != len(args.case_id) or not selected <= {c['id'] for c in cases}:
             parser.error('Duplicate or unknown case ID')
         cases = [c for c in cases if c['id'] in selected]
+    else:
+        cases = [c for c in cases if c['id'] not in historical_ids or c['policy']['crosscheck']]
     if not args.execute:
         print(json.dumps({'mode': 'dry_run', 'inventory_cases': 1416, 'selected_cases': len(cases),
                           'not_before': config['not_before'], 'workers': args.workers,
+                          'historical_evidence_cases': len(historical),
+                          'historical_skipped': sorted(historical_ids - {c['id'] for c in cases}),
                           'input_preparation': 'per worker; no input generated or solver launched'}))
         return 0
     if not args.config_commit or not args.output_dir:
@@ -266,7 +282,9 @@ def main():
              'config_sha256': hashlib.sha256(plan['raw']).hexdigest(), 'config_commit': args.config_commit,
              'index_sha256': config['index']['sha256'], 'inventory_cases': 1416,
              'selected_cases': [c['id'] for c in cases], 'workers': args.workers,
-             'solvers': identities, 'proof_logging': False, 'results': []}
+             'solvers': identities, 'proof_logging': False, 'results': [],
+             'historical_evidence': historical,
+             'historical_skipped': sorted(historical_ids - {c['id'] for c in cases})}
     runner.write_json(output / 'results.json', state)
     with runner.cancellation_handlers():
         dispatch(cases, lambda c: run_prepared_case(c, plan, output, args.kissat.resolve(), args.cadical.resolve()),
