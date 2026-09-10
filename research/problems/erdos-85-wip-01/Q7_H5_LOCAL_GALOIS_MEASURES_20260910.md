@@ -1,0 +1,103 @@
+# Exact H5 local measures respecting quadratic conjugation — 2026-09-10
+
+Owner: codex-sol-2. Independent review pending.
+
+The fixed H5 polynomial from the independently reviewed
+[integer controls](Q7_H5_H7_INTEGER_SPECTRAL_CONTROLS_20260910.md) admits the
+local measures below for each of its three support censuses. The retained
+verifier uses exact rational arithmetic, without an optimizer. This checks
+local moments and global multiplicities, not a graph or a common matrix.
+
+The polynomial is
+
+    (x-3)^2(x+3)^2(x²-6)^8(x²-3)^2
+    (x²+x-7)^4(x²+x-4)^2(x²+x-3).
+
+It has T=19 all-low triangles, mixed overlap R=16 and tr(D³)=18. Consequently
+the local triangle-incidence, overlap and defect-triangle-incidence totals
+are respectively57,16,9. There are8,8,9 groups in the witnesses for triple
+support count0,1,2. Their support censuses are
+
+    (14,20,10,0), (13,23,7,1), (12,26,4,2).
+
+## Exact local targets
+
+Write t for high support size, tau for the all-low local triangle count,
+r for the local mixed overlap (CD²)vv, and delta for the number of defect
+triangles through the vertex, so (D³)vv=2delta. On the two-dimensional
+quotient U=[1,t], set
+
+    Q=[[7,5],[-1,0]], G=U' U=[[44,40],[40,60]],
+    qk=[1,t] Q^k G^-1 [1,t]', z=t(5-t)/35.
+
+Here z is the diagonal of the zero-C projector coming from high differences.
+The residual moments m0,...,m6 are
+
+    m0=1-q0-z, m1=-q1, m2=7-t-q2,
+    m3=2tau-q3, m4=(7-t)(13-t)-5-q4,
+    m5=r+12m3-36m1-q3+2q2-q1,
+    m6=216m0-108m2+18m4+q3-3q2+3q1-q0-z-2delta.
+
+The fourth moment uses C4-freeness of C: its diagonal is d² plus the sum
+of neighbor degrees minus d, with d=7-t and Ct=5. The fifth and sixth
+identities use D=6I-C² on the residual space, D=C-I on U, and D=-I on the
+zero-C space. Thus the sixth target includes the zero-mode term -z.
+
+Each group meets the local conditions
+
+    indicator(t=0)<=tau<=3-t,
+    r even, 0<=r<=2 ex(C4,t+2tau-1),
+    0<=delta<=choose(6-t,2),
+
+where the already reviewed small extremal table is0,0,1,3,4,6 for orders0..5.
+The verifier checks every moment0..6, integer census, and all three totals.
+These formulas remain paper-level graph identifications; this artifact is
+an exact arithmetic measure verification, not a Lean formalization.
+
+## Conjugate weights rather than independent irrational nodes
+
+For a quadratic x²+b x+c, let Delta=b²-4c and lambda±=(-b±sqrt(Delta))/2.
+Choose a positive rational rho with rho²<Delta. The witness gives two
+nonnegative rational coefficients u,v, interpreted as masses on two
+rational moment columns
+
+    column±(k)=(lambda+^k+lambda-^k
+                 ±rho*(lambda+^k-lambda-^k)/sqrt(Delta))/2.
+
+The actual eigenvalue weights are
+
+    w+ = (u+v)/2 + rho*(v-u)/(2sqrt(Delta)),
+    w- = (u+v)/2 - rho*(v-u)/(2sqrt(Delta)).
+
+They are conjugate in Q(sqrt(Delta)) and nonnegative. If u+v>0, both are
+strictly positive, since rho<sqrt(Delta). Thus one conjugate weight cannot
+vanish alone. All column moments are rational, obtained by the quadratic
+recurrence; the verifier never relies on numerical roots. The two columns
+for a factor of multiplicity m each have total coefficient m across the
+44 low vertices. This makes each actual eigenvalue's global weight exactly
+m. Linear-factor columns have their specified integral eigenvalues.
+
+Weights in the JSON are group totals. Dividing by the positive group count
+assigns a measure to each vertex of that type. No individual label or edge
+is assigned by doing this.
+
+## Scope and bounded discovery
+
+A numerical screen examined243 possible local types;111 passed. Three
+bounded integer allocation calls (three-second limits) found allocations
+with the scalar totals, and three more checked global multiplicities.
+Replacing each quadratic pair by the rational columns above gave three
+further bounded calls. For their positive-count groups, an LP support was
+reconstructed by exact rational Gaussian elimination; all equalities and
+nonnegativity were verified exactly. The retained verifier checks only the
+three fixed witnesses and has no SciPy dependency or search step.
+
+These witnesses show that the specified diagonal tests, even with quadratic
+conjugation and exact global multiplicities, do not reject this fixed H5
+polynomial in any support profile. They do not impose off-diagonal
+projectors, rank or orthogonality of projector matrices, a common symmetric
+integer C/D representation, the residual lattice, 0/1 entries, or the
+actual support-edge incidences. They check no local moments beyond degree6
+and no additional mixed local walk conditions. In particular the simple
+quadratic factor has not been realized as two rank-one projectors.
+No graph existence or complete H5 profile exclusion follows.
