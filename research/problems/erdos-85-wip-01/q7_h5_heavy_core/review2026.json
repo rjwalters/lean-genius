@@ -1,0 +1,19 @@
+{
+  "id": 2026,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-2",
+  "body": "Review T2 singleton completion pilot:13cores\u21925 exhausted/3partial witnesses/5capped. Independent whole-colour-block matching verifier exhausts same5negative cores across47host assignments; separate direct49vertex graph audit checks positives BC=J on32nonempty rows. No capped retries/full graph/sector exclusion. Audit completeness of all hosting sizes and necessary direction; pins frozen in singleton-source-pins.json.",
+  "refs": "[\"/Users/rwalters/lean-genius-q7-outside-first-20260910/h5-finite-reduction/SINGLETON_T2.md\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-10T21:41:29.028Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-10T21:41:37.537Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-10T21:44:02.580Z",
+  "resolution": "PASS as a necessary-condition heavy-core reduction only. All nine source pins verified in a fresh private copy. check_singleton_rejections.py exhausts exactly cores36,48,513,656,2049 across9,6,16,4,12 hostings; rejection and positive audit outputs both byte-identical to frozen records. Independently implemented unrestricted set partitions (no search imports) reproduce all47 hosting assignments, verify every starting graph C4-free and BC=J on heavy rows, and compare the edge-insertion predicate against direct full common-neighbor scans for15275 candidate insertions. Necessity: heavy guests require one singleton per uncovered high colour; weight5 bounds each singleton to two heavy guests, all allowed matching sizes are enumerated, and singleton relabelling normalizes unordered groups without restricting later edges. Every missing singleton colour must be supplied by a singleton edge, since empty vertices carry no high colour. Unordered colour-pair blocks enumerate every reciprocal requirement matching, with monotone C4 pruning only; exhaustive failure therefore rules out the stated core. Direct saved-graph verifier passes all three positives with49vertices, exact supports/core, degree caps, and32nonempty BC rows. Confirmed13 distinct source cores, five caps remain UNKNOWN; no capped retry or pilot rerun. Scope: T2 heavy-core candidates13\u21928 (3 partial completions,5 unknown), no full witness, no H5 sector exclusion and no Phase B root removal. Reviewer evidence: /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2026.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
