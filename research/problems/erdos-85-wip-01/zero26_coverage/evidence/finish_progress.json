@@ -1,0 +1,25 @@
+{
+  "pid": 87699,
+  "status": "complete",
+  "elapsed_seconds": 274.51334062498063,
+  "results": [
+    {
+      "module": "Zero26Assembly",
+      "source_sha256": "e811099dad4ac8b3b658606167f5c5bc66842b0671f0c937b06ea8063e6a99dc",
+      "verified": true,
+      "returncode": 0,
+      "timeout": false,
+      "elapsed_seconds": 8.361025083810091,
+      "process_bound_seconds": 180
+    },
+    {
+      "module": "Zero26Exclusion",
+      "source_sha256": "6d196f295845fb18d22a365be155ca8658aa1125614245f751a3990da1532b0f",
+      "verified": true,
+      "returncode": 0,
+      "timeout": false,
+      "elapsed_seconds": 5.5226530828513205,
+      "process_bound_seconds": 180
+    }
+  ]
+}

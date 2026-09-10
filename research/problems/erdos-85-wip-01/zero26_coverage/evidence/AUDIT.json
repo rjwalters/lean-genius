@@ -1,0 +1,296 @@
+{
+  "status": "complete",
+  "scope": "U26/R14 only; broader problem open",
+  "modules": 41,
+  "exports": 45,
+  "missing": [],
+  "results": [
+    {
+      "name": "Zero26Data",
+      "exports": 0,
+      "source_sha256": "bb3993844a766e08459071dc65e2ba5a82bf53dabeec40eeb2f451741421870b",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt_sha256": "ef4fc4b7e6ac37b90e3b8fe7c980bed32e03c4663d5f7a7d038d02e2739ab253"
+    },
+    {
+      "name": "Zero26Inputs",
+      "exports": 5,
+      "source_sha256": "213e4cd6cc7665067845a86bf25d72208236f3bf045b10edabb1ffc677ddad88",
+      "log_sha256": "48aea1bedd6a744de50dbe7769eab71a6764ba1085ae502aeb6cd2b381431ff7",
+      "receipt_sha256": "d8548f76a15f01299d7a9d0668fd0faead85cf5db6b4ce7d6a21da1bcd4d9fe3"
+    },
+    {
+      "name": "Zero26Structure",
+      "exports": 1,
+      "source_sha256": "caef8d3e134f3bb5f20cde7d6268b74bb0d650bff46dfe54fe8bf483057579d0",
+      "log_sha256": "f41aa217a57c624be57b093b7a9b5c6908a2de7c9b26cb7f4b8ea8e9ce7417e8",
+      "receipt_sha256": "851858491ce8d7ca1e6296850438cdd05b18677195ae0ccd07a8e61e8b76ec05"
+    },
+    {
+      "name": "Zero26Shard0",
+      "exports": 1,
+      "source_sha256": "bf7657301471d108894ab4bada7670aa854b0eb76395ddec32c1b25b81e2bef0",
+      "log_sha256": "0adf5429d96b8fc64ecb293da15386bf53268e8f8a8fde984992334998879f68",
+      "receipt_sha256": "4ef09e21958bda94384d1729c828131c223d42ebdc35aa381f9c8bcb9522e9a2"
+    },
+    {
+      "name": "Zero26Shard1",
+      "exports": 1,
+      "source_sha256": "0da914cd4dd7f64426f47f3e711da426a62abf49745f70b4eab11f83004ed9b2",
+      "log_sha256": "690b69ec5d4d546a1115078cc49cb1cc8d1335c8f9978bfec70582b9c8839d55",
+      "receipt_sha256": "65a11768a9aa44b4cc5408fe4f96f6793b52aba4934fb8c89e069acd9b133c45"
+    },
+    {
+      "name": "Zero26Shard2",
+      "exports": 1,
+      "source_sha256": "9ec6ddea8f67d4f83ddc86b9fbca32e22132e8585e9d092c953a86ac3d231a1f",
+      "log_sha256": "c97e5f5a683e074e1c5030bc8fbc737745c8ad90c36ecd93b9a299bec859e865",
+      "receipt_sha256": "90d851655ae298c52a0bdc4403c16fc1bee3084ed740c096cedcc7fe88744522"
+    },
+    {
+      "name": "Zero26Shard3",
+      "exports": 1,
+      "source_sha256": "f2496d241ea496cce3ed353905f31f767d89d54e548076489a17d433ede88755",
+      "log_sha256": "bda556a8a47d76cd3c5b7c4b93ed306693ce93c8b0191b32ccd65a62e06502bb",
+      "receipt_sha256": "5aa3c692b3d66b904dc4d1fa6002090f68c6b3105e10ba661617a5f46feac43f"
+    },
+    {
+      "name": "Zero26Shard4",
+      "exports": 1,
+      "source_sha256": "85b13ac4ec8f60c4ae5a2b66dca09db7d05ea17321dd2ba8c2a427c5d169899e",
+      "log_sha256": "10a7eb00ad5d302920e1327743f51adc29da90ea0d8f1b97e9626cbecd6f4f66",
+      "receipt_sha256": "d5408cc14117e84c9836a7f355eec0361b43382aa0ffcf4f4f6898a7ef653063"
+    },
+    {
+      "name": "Zero26Shard5",
+      "exports": 1,
+      "source_sha256": "bc3b520f8a8fd838557152731fc9c0121644aaf6404a57c5be8ead37444bc9b7",
+      "log_sha256": "22360700ee03a7f93c8c399508ae7481119894b9b5838360561190e26d372914",
+      "receipt_sha256": "bad9f08c541dc3546836d0df52f8c05e326d92b913796d607934300589d9ff3e"
+    },
+    {
+      "name": "Zero26Shard6",
+      "exports": 1,
+      "source_sha256": "51c32716fc7752c1c4438216837c1d4dd7116669d565a56211022e0e97618589",
+      "log_sha256": "493f8da19f131e618f564444eee7f76f06fac158a2531c303df9e37fd961d3d5",
+      "receipt_sha256": "c3964bdde061481e793e93c03629e3af2c1a4708909c80e345d8541908da413a"
+    },
+    {
+      "name": "Zero26Shard7",
+      "exports": 1,
+      "source_sha256": "c80415aa29cb7190a440f4280b25ceb33facb9e8c5414f27b4c6fd1229bd62d5",
+      "log_sha256": "7bc947fc0e6bb70011057c7674b988a6ab9a75679d1178b98066f48ccbb3ff14",
+      "receipt_sha256": "095a4273aaa643845d054536854468731e89bc4fbefe797c3dc9674a1a714ca7"
+    },
+    {
+      "name": "Zero26Shard8",
+      "exports": 1,
+      "source_sha256": "f92263e5d78f03d54fbd468ea159412142a197087632773d992047d6c041ee1c",
+      "log_sha256": "12a2901ab2218b6da0e7823140acab2c7c077b34d39cb634f1360c193cae389a",
+      "receipt_sha256": "2a824f09317adc7cbb9d1be0621e9af60bdfbcd542d1564df7f07086f57a6071"
+    },
+    {
+      "name": "Zero26Shard9",
+      "exports": 1,
+      "source_sha256": "060071f493653aa8a8a7c6ae1f549fad6767a45dc575856a2a03948f77dc7444",
+      "log_sha256": "f855f077fb311eb513d4c39a1ad89518f09661c4af6d4753b5b661a76b4ec94a",
+      "receipt_sha256": "61d1babb04a7e3147615b94abe40f7e2eb53edbb376754653922fd29b8ec31a0"
+    },
+    {
+      "name": "Zero26Shard10",
+      "exports": 1,
+      "source_sha256": "9683796383204f3873005c3acfaedf38222971783fabbb29af568df1c4e6bd1c",
+      "log_sha256": "25091a0fa8b837954ba14624510e2f081d0bd29b3a08e561d7607289ea736a29",
+      "receipt_sha256": "a59c35c7c18f44e3e8305ddfb388e696fe63cef3c168ec155f014eaf604b8359"
+    },
+    {
+      "name": "Zero26Shard11",
+      "exports": 1,
+      "source_sha256": "d26ece9c1cc2869aa9fa3c6d8379eccc8527b98dd774f8b7e47dc8489eb33961",
+      "log_sha256": "1aca3eacb38987e4adf73b99f13cbbad62a5ec7c7a1a50edc4256aeaff3d9058",
+      "receipt_sha256": "cc22e03b8d8fc442910d0d156d5061351e2579c66d745353420691285d1077b6"
+    },
+    {
+      "name": "Zero26Shard12",
+      "exports": 1,
+      "source_sha256": "a9edacbb97e42f05b3293d15872d691314d98dcb0e909e0815d2f0da2e3372e4",
+      "log_sha256": "b8cd630214ece795cdee3b50844bbbee7766e1c1133fe38eb66ef53e81243e05",
+      "receipt_sha256": "ce61743888c5391c95d4cfa158c6a959e6991e942b9fe1e4d50678d89549b584"
+    },
+    {
+      "name": "Zero26Shard13",
+      "exports": 1,
+      "source_sha256": "9c961501cdc8b2e494d25acfe101dd198b71474c23f9795acf4bb3e2ae7b044d",
+      "log_sha256": "878a10df4f2b9028353cf890f207725dc96348a0fc69a43cc852af609618a503",
+      "receipt_sha256": "051235a4b433106284917202e0ff5d824deef73662b3483ed5448a199a81525a"
+    },
+    {
+      "name": "Zero26Shard14",
+      "exports": 1,
+      "source_sha256": "9c53bdd4bfaa364ea9f43bec444f6b239813a0cb013f69420e0370afddff5f65",
+      "log_sha256": "4ab5140801a45c3b1bb12bd5f2bc500ef4150a87327a1a2b7589ecfbde8084e0",
+      "receipt_sha256": "6cdf185457c28d546560c38fc487bcf119b318661febdfce033e1ab2ceb6e0d7"
+    },
+    {
+      "name": "Zero26Shard15",
+      "exports": 1,
+      "source_sha256": "722075bd28c35bea76b652a065132dd5dde5129ab78443813b842b56c91472c0",
+      "log_sha256": "9638340602422afac36270ad2171f969f6c013edd5b71ee36f94215d19ccb078",
+      "receipt_sha256": "d6bdb8eaf80dc9f73e377eb5036a9ba9987a69769fe66d0b1287f8d274d2701e"
+    },
+    {
+      "name": "Zero26Shard16",
+      "exports": 1,
+      "source_sha256": "fb03f62ba22c51fcb1b8e88a7fe818314225cf4258a78f72a36885cefc72fd07",
+      "log_sha256": "ce5b2c53e2b3c55b3f64c01a86d7222ee5363c7bafd0dca35d3ea02a38d4ef1a",
+      "receipt_sha256": "cfe68de9c0fb6cb2a93419fcf7e998ed246c04740b47be0ed6e387ead0c6bd08"
+    },
+    {
+      "name": "Zero26Shard17",
+      "exports": 1,
+      "source_sha256": "d76cef58418b6969744f56ea97a32650219d62ccf6b232d4c0d73b58614eb8a0",
+      "log_sha256": "200086ec15908126513b333b7702d62885881c75ec5f1c1bb2155ccad1b502a9",
+      "receipt_sha256": "586fb7569517e0bd6908824b0968e5adef14ea27e78e8666a41b235bc6011242"
+    },
+    {
+      "name": "Zero26Shard18",
+      "exports": 1,
+      "source_sha256": "f2d331decfd87a271f5ce3d207d91d7750dcb0b00cdb351f94a046b999de8ee6",
+      "log_sha256": "281ee368ac6644d44da8dd6c4b0c0fb3d570553208c8715c55b2af29b472b52f",
+      "receipt_sha256": "e5baf59a0324b91d49bb5f213c175ad6fb780151e7e02a94ea6106da66f1f78c"
+    },
+    {
+      "name": "Zero26Shard19",
+      "exports": 1,
+      "source_sha256": "5a3d8ab8191be86e57ddd866036a2364c7d2a1bab28b469ac00ada34a3701d84",
+      "log_sha256": "765f7e8b37a9c2315597819fba622149102b7a74d3d423df421c2e6cc9340b35",
+      "receipt_sha256": "c7cce44aeb8847927e1dbfe87b4003c098e6f786a14ab7177f90081e9d2cb29f"
+    },
+    {
+      "name": "Zero26Shard20",
+      "exports": 1,
+      "source_sha256": "5e6579000f09c0d3da923a6cf12d09af3ed9dd17ee8339ca07de473935c7daec",
+      "log_sha256": "ed442e97f7d96df82cbf37df0622349a29128a6c8bb605bbf9f36313a3175a27",
+      "receipt_sha256": "c1f5a094c809f9031654e37ae13a060bf941d3fd67b3d3602d252f5db94e3f90"
+    },
+    {
+      "name": "Zero26Shard21",
+      "exports": 1,
+      "source_sha256": "433a9ee51830fa9f4666ea6aec67442b095bdbb887b695375cfa55b48a2bb2c6",
+      "log_sha256": "b7a7b0429a211e741b3f1f18903e2b598adc422dc20a5cb0c84e05538dd696fc",
+      "receipt_sha256": "ee08dcefccd6fbab9ae4a75780dad80c502ff9a6ffd3d32b94ec24fc280507d8"
+    },
+    {
+      "name": "Zero26Shard22",
+      "exports": 1,
+      "source_sha256": "b3ef119f5d6cab91966c8ffed0a4d79b37c95ed61b6aae3ba64e9e2c1927058b",
+      "log_sha256": "a4cabc08c979bd469c4d463aa9d45e99a779c337fa4acf76a025b07da1740e75",
+      "receipt_sha256": "4b9c77e46fca47e452e94b9e16a4d84cd739a048486a1fea35eb55967b85ad7c"
+    },
+    {
+      "name": "Zero26Shard23",
+      "exports": 1,
+      "source_sha256": "47984d713ae011944938d368285411cadef7ff98edc1e06f38b3c6dfbbff12dd",
+      "log_sha256": "c640fa961d3c4c3750b23c518f42efc7134deb941bd3e03de2ef04e8d4b2e1c3",
+      "receipt_sha256": "1053decd644506eb75e50d3bf58c2ba5308343669a1b729831bac169d2e6b790"
+    },
+    {
+      "name": "Zero26Shard24",
+      "exports": 1,
+      "source_sha256": "02903df1ac014ffef63747718c7f0f662e8f987403fea1d13aa525bee3f52f5e",
+      "log_sha256": "9e8da03f6a1219253d4c3a161c727809d1c85a58333c0907ffba4d5872182b74",
+      "receipt_sha256": "94d706b744a632dcf780502ea5b7a0cb044104c3389cf398d742de4c93c876e6"
+    },
+    {
+      "name": "Zero26Shard25",
+      "exports": 1,
+      "source_sha256": "8722f44a3efc95e6d0faa886e01f57d05b61641e0bcedb3b423c01c6e4367f61",
+      "log_sha256": "95acf82cdd3b114e588504504a610bab375fe415297dda7b7669da5ed8f5c2a5",
+      "receipt_sha256": "56d929c074b6f4600132ca8819a310422ea6265abaad4ff199112a3aabc9bfb8"
+    },
+    {
+      "name": "Zero26Shard26",
+      "exports": 1,
+      "source_sha256": "8a5b6f241ab714f84ace10fb57e12584080573c0b45f464178dead7683a01cf1",
+      "log_sha256": "84b7d356c314d24ce57266f162b00d3755bc4553d05b3244014288ca09b2d910",
+      "receipt_sha256": "d5d2bbda6db8528c695d32fe89f5be48a44442bc5cfc460f1706625137afec2e"
+    },
+    {
+      "name": "Zero26Shard27",
+      "exports": 1,
+      "source_sha256": "ac447cc3a652f41fb9be6459157f4bcdcc9efab86ff9515aa5a3850ea80a0654",
+      "log_sha256": "f7dac7ca0db08b9464c83dcd138eae6a99e43f864e68881b6cf1925bd45c1aca",
+      "receipt_sha256": "9c69510c9b70ce42ede7ad15cf9b7e762653ccd286cecd1ad671bc250ed7839a"
+    },
+    {
+      "name": "Zero26Shard28",
+      "exports": 1,
+      "source_sha256": "3af17a99615a13196b3220e34e413822e7483bae5bb3c31f95ef6dda815b23e9",
+      "log_sha256": "d056ccefddeb9cf8295871f84aea9b226b7e85ab5f3d26dfa42911f5c8684cf0",
+      "receipt_sha256": "07682799f5a2aaa7c98cd35ebccad1b54e5162940beb1ec5827962684cfc8d31"
+    },
+    {
+      "name": "Zero26Shard29",
+      "exports": 1,
+      "source_sha256": "b3bae78139139913f746017c4d51e1a31c0920e6b7e8e8b8573a1acaaf3f85b8",
+      "log_sha256": "5f12b0bdda6b0168ce1ed78258f51687d9d755fe5d6a961ca58cc3cdca02b6ff",
+      "receipt_sha256": "107a798b7776f284b3628948c5de27ca7ea4fe99e790a9b90d2274894c1a3d74"
+    },
+    {
+      "name": "Zero26Shard30",
+      "exports": 1,
+      "source_sha256": "0cf29d147a420c69c7431dd3609f7c33675b606bc725b555f2fd54ef237464c4",
+      "log_sha256": "95d9b4ffaed8e67020f1e30c7ac14c974a487b717909d5b7b56f27951fd51397",
+      "receipt_sha256": "518c218030587adcb1059dd34b69356948261c97c031b78c330853f7603d44da"
+    },
+    {
+      "name": "Zero26Shard31",
+      "exports": 1,
+      "source_sha256": "0d6d378ac550d2df2529bfeb4818e027919c5a3e933b34151870feaf3bc026bd",
+      "log_sha256": "e89ff22d36a146ab4b1d5cc0d7b1a04c28a826b58c2dcb326b2299449401d98a",
+      "receipt_sha256": "3180590e1f9b4741f1a4f3af0aa36bfc8f24215256cf1388b1ebb6d70dfa6b62"
+    },
+    {
+      "name": "Zero26Shard32",
+      "exports": 1,
+      "source_sha256": "eb5c164f56432d8351ced2544df39cec70276efbc010c81ef5095db1986ea990",
+      "log_sha256": "5388f75003722c60c883d8dd83cac3611454f73fa0fbb637a03143b591f5c0fa",
+      "receipt_sha256": "5c2f892d6feaf4689624d68854c0f9eaac75c2ee8f26f3e78f8606d2495ac465"
+    },
+    {
+      "name": "Zero26Shard33",
+      "exports": 1,
+      "source_sha256": "dcabbedb76191fd4a370501ee8aa721f051b589173fe899fb663d2d8814114a8",
+      "log_sha256": "4a3b1e50d5444e7f6fee88cbfccf7a1139a21da6eff851861aa2dafc794df9c2",
+      "receipt_sha256": "726f7693176e242c0fde4ea74fda181462f78b7392c8ed3332a055c821898868"
+    },
+    {
+      "name": "Zero26Shard34",
+      "exports": 1,
+      "source_sha256": "d655f15ce9d31096095187aad883a8728a5b6f301cfa9d20e9c16998704d075b",
+      "log_sha256": "bd66367c9461a9495da062baa775ee5b47ca39079fda8d21581888d719f49e83",
+      "receipt_sha256": "59bc0f8daead07746915d1d51cd104a56350c7c1f2777ce6c44c75a70a6c90c4"
+    },
+    {
+      "name": "Zero26Shard35",
+      "exports": 1,
+      "source_sha256": "593a1cdc426d6e445ba57f825a0ec70ca2a04929a8200bce92f39692d73e6e2e",
+      "log_sha256": "bce7feff1e3cf5a440094b3bcc28a616794ddac55ff9c3ca14755107278aa5aa",
+      "receipt_sha256": "09c9b5b5eae5a2f564ff03bfd0584c1bb2ad24696f6ddafd6a97e11112b551b1"
+    },
+    {
+      "name": "Zero26Assembly",
+      "exports": 1,
+      "source_sha256": "e811099dad4ac8b3b658606167f5c5bc66842b0671f0c937b06ea8063e6a99dc",
+      "log_sha256": "8d1a81e17b5f35c9d30218d9b5522a50d7cedc375b2a0d921307cad2aedb0776",
+      "receipt_sha256": "e4d07bda34716886b280cee9b6d4d6d038337fc496f886a1f06db3ff56eb1de3"
+    },
+    {
+      "name": "Zero26Exclusion",
+      "exports": 2,
+      "source_sha256": "6d196f295845fb18d22a365be155ca8658aa1125614245f751a3990da1532b0f",
+      "log_sha256": "364fab7b373d3848a0ab95e91b9245f62e61fb08e91390ced7a2da0b7adc4733",
+      "receipt_sha256": "d8c2ff2714faaa16f05a8ad4d7e4c832687cc7f49b10aa0655f7c65a3b753b04"
+    }
+  ]
+}
