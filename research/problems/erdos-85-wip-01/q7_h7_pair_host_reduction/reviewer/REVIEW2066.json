@@ -1,0 +1,105 @@
+{
+  "status": "PASS",
+  "audits": [
+    {
+      "twins_adjacent": true,
+      "offsets": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "local_pair_counts": [
+        [
+          1,
+          2,
+          3
+        ],
+        [
+          1,
+          2,
+          3
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ]
+      ]
+    },
+    {
+      "twins_adjacent": false,
+      "offsets": [
+        0,
+        0,
+        2,
+        2,
+        1,
+        1,
+        1,
+        1
+      ],
+      "local_pair_counts": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          2
+        ]
+      ]
+    }
+  ],
+  "scope": "Universal necessary pair-host parametrization and exact singleton/empty naming; two sample partial graphs only, no colouring census or H7 exclusion",
+  "method": "Direct support/degree reconstruction, independent local matching-subset enumeration and full49 graph checks"
+}

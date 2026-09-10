@@ -1,0 +1,43 @@
+{
+  "status": "PASS",
+  "method": "Bounded compositions and explicit wreath-product invariants, without permutation canonicalization: unordered S defects and P-pair defect sums; crossed S/P arm pairs and remaining pair sums",
+  "audits": [
+    {
+      "twins_adjacent": true,
+      "profiles": 70,
+      "orbits": 7,
+      "orbit_sizes": [
+        2,
+        6,
+        6,
+        8,
+        12,
+        12,
+        24
+      ]
+    },
+    {
+      "twins_adjacent": false,
+      "profiles": 70,
+      "orbits": 15,
+      "orbit_sizes": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        4,
+        4,
+        4,
+        4,
+        4,
+        8,
+        8,
+        8,
+        8,
+        8
+      ]
+    }
+  ],
+  "scope": "Complete necessary count-profile quotient only; no profile realizability or exclusion"
+}

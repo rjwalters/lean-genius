@@ -1,0 +1,1 @@
+Independent review2064 PASS. Original pending-review wording and script paths are preserved as historical evidence; this exported verdict supersedes that wording. Necessary H7 reduction only: no full graph, profile exclusion, class exclusion, Lean proof or queue change.
