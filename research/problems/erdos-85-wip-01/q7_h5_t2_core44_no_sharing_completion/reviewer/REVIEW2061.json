@@ -1,0 +1,60 @@
+{
+  "review": 2061,
+  "status": "PASS",
+  "scope": "All eight complete normalized no-sharing af3/bf2 domains have no completion. Together with2055 and2056 this excludes no-sharing at mathematical plus independently checked finite-computation level; no sharing/wholecore/Lean claim from this package alone.",
+  "nodes": 7323,
+  "seconds": 1.818464957876131,
+  "results": [
+    {
+      "f3_d3_edge": false,
+      "omitted": 4,
+      "status": "EXHAUSTED",
+      "nodes": 408
+    },
+    {
+      "f3_d3_edge": false,
+      "omitted": 7,
+      "status": "EXHAUSTED",
+      "nodes": 294
+    },
+    {
+      "f3_d3_edge": false,
+      "omitted": 11,
+      "status": "EXHAUSTED",
+      "nodes": 559
+    },
+    {
+      "f3_d3_edge": false,
+      "omitted": 0,
+      "status": "EXHAUSTED",
+      "nodes": 541
+    },
+    {
+      "f3_d3_edge": true,
+      "omitted": 4,
+      "status": "EXHAUSTED",
+      "nodes": 1539
+    },
+    {
+      "f3_d3_edge": true,
+      "omitted": 7,
+      "status": "EXHAUSTED",
+      "nodes": 607
+    },
+    {
+      "f3_d3_edge": true,
+      "omitted": 11,
+      "status": "EXHAUSTED",
+      "nodes": 2321
+    },
+    {
+      "f3_d3_edge": true,
+      "omitted": 0,
+      "status": "EXHAUSTED",
+      "nodes": 1054
+    }
+  ],
+  "coverage": "Independently constructed every37vertex graph by named heavy supports, heavy adjacency, all heavy-singleton guests, fixed af3/bf2/F-star edges and own-colour matchings. Exact adjacency equality with each submitted canonical graph checked. Independently added each distinguished-empty pattern directly from incidence definitions and omitted value, rather than importing author mapping; all eight initial49vertex graphs agree exactly. Review2054 own-colour normalization moves only heavy-free singletons. Review2046 empty normalization moves only empties while fixing named specials/heavies. These actions commute, so their2x4 product covers every full graph in the domain.",
+  "search": "Starts at independently reconstructed INITIAL graphs. Reverse-order degree and high-colour propagation with direct common-neighbour legality. Whole residual degree-row branching, different from author mixed colour/degree chooser. Every missing colour must be supplied once; too few legal candidates reject and singleton/saturated candidate requirements force edges. Row subsets exhaust all completions. No author code imports, forced states or selected survivors used. All cases exhaust under100000 total operations and60seconds, no caps or retries.",
+  "validation": "Seven author pins checked before/after. All high degrees8 and directC4 verified on each initial graph. Exact8cases visited. This is independent computation, not Lean compilation."
+}

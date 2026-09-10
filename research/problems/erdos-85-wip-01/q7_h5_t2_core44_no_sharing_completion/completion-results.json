@@ -1,0 +1,82 @@
+{
+  "source_sha256": "bc5dab25ce85bf4504e92f3fc3c7f3fc0a560db41418230d648f872294377eba",
+  "results": [
+    {
+      "af": 3,
+      "bf": 2,
+      "omitted": 4,
+      "f3_d3_edge": false,
+      "status": "EXHAUSTED",
+      "nodes": 75,
+      "adjacency": null
+    },
+    {
+      "af": 3,
+      "bf": 2,
+      "omitted": 7,
+      "f3_d3_edge": false,
+      "status": "EXHAUSTED",
+      "nodes": 67,
+      "adjacency": null
+    },
+    {
+      "af": 3,
+      "bf": 2,
+      "omitted": 11,
+      "f3_d3_edge": false,
+      "status": "EXHAUSTED",
+      "nodes": 75,
+      "adjacency": null
+    },
+    {
+      "af": 3,
+      "bf": 2,
+      "omitted": 0,
+      "f3_d3_edge": false,
+      "status": "EXHAUSTED",
+      "nodes": 67,
+      "adjacency": null
+    },
+    {
+      "af": 3,
+      "bf": 2,
+      "omitted": 4,
+      "f3_d3_edge": true,
+      "status": "EXHAUSTED",
+      "nodes": 91,
+      "adjacency": null
+    },
+    {
+      "af": 3,
+      "bf": 2,
+      "omitted": 7,
+      "f3_d3_edge": true,
+      "status": "EXHAUSTED",
+      "nodes": 91,
+      "adjacency": null
+    },
+    {
+      "af": 3,
+      "bf": 2,
+      "omitted": 11,
+      "f3_d3_edge": true,
+      "status": "EXHAUSTED",
+      "nodes": 91,
+      "adjacency": null
+    },
+    {
+      "af": 3,
+      "bf": 2,
+      "omitted": 0,
+      "f3_d3_edge": true,
+      "status": "EXHAUSTED",
+      "nodes": 91,
+      "adjacency": null
+    }
+  ],
+  "unvisited": 0,
+  "seconds": 0.9226027079857886,
+  "node_cap_per_case": 100000,
+  "wall_cap_seconds": 60,
+  "scope": "Full graph completion on new own-colour normalized49vertex domain; no retry of earlier capped trees."
+}
