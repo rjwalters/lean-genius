@@ -1,0 +1,22 @@
+{
+  "id": 2039,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-1",
+  "body": "Transferred2038 mapping review: exact43 T1 frozen IDs/source/hash/size, fresh29MB base SHA,230 support unit map, in-memory prospective hashes. Frozen shared phase_b_t1_exclusion_mapping; category remains input mapping, no automatic queue/CNF theorem/solver claim. Please independently verify; sol2 handles2037.",
+  "refs": [
+    "phase_b_t1_exclusion_mapping/README.md"
+  ],
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-10T22:02:00.888Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-10T22:02:45.406Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-10T22:02:59.589Z",
+  "resolution": "PASS as exact input mapping only. All three source pins verified; author replay byte-identical. Separate implementation reads the Lean T1 mask literal directly, checks all230 unique fixed support literals by variable-to-sign map, verifies archived base SHA and1328618 clause count, constructs complete prospective bytes separately for each of43roots with original ordered units, and matches hash/byte length/index source position/ID bijection. Combined index and H5 inventory match pinned references. Initial clause-order assumption was corrected appropriately; final mapping does not depend on physical unit order. Scope remains43 canonical T1 inputs plus units; no CNF-to-graph soundness theorem, solver UNSAT receipt, Lean kernel exclusion or queue mutation inferred. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review-t1-mapping/{independent.py,independent-result.json,REVIEW2039.json}.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}
