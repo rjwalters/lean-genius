@@ -1,0 +1,9 @@
+# Separate verification of thirteen T0 empty-layer negatives
+
+All thirteen negatives from review 2034 independently exhaust. Their 9,389 hosting-assignment counts match the author case by case; the block search uses 15,787 nodes and finishes below its 60-second total verification cap. The author's one capped core 5774048758818 is explicitly absent from this verification domain and remains unknown.
+
+verify.py adapts the separately implemented whole-colour-block singleton matcher used in review 2026, enumerating all compatible heavy-host matchings of every size. Unlike the author's individual-edge MRV recursion, it builds complete matching options for each unordered colour pair and combines them with incremental C4 checks. At each singleton completion it calls the new independent_empty.py, which imports no author helper.
+
+The new empty checker enumerates choices of one guest per high colour by Cartesian product, deduplicates the resulting support partitions, and checks that guests have no common neighbor in the existing graph. It enumerates empty covers by binary include/exclude decisions on complete rows, instead of the author's demand-pivot combination branching. Residual demands, row count fourteen, and pair reuse are enforced. At complete covers, every candidate empty edge is inserted and checked by all 1,176 direct common-neighbor counts; an empty vertex must have enough individually legal partners for its residual degree. No claim of simultaneous empty-edge realization is made.
+
+All thirteen must exhaust for this verification result. An observation or wall cap would produce VERIFICATION_CAPPED rather than an exclusion. Run python3 verify.py in this directory to reproduce independent-results.json. This verifies a necessary-condition computational result only, not a Lean theorem or a complete T0 sector exclusion.

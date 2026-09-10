@@ -1,0 +1,28 @@
+{
+  "core": 5774048758818,
+  "eligible_pairs": [
+    [
+      0,
+      9
+    ],
+    [
+      1,
+      6
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      3,
+      7
+    ],
+    [
+      5,
+      8
+    ]
+  ],
+  "required_incidence": 20,
+  "upper_bound": 19,
+  "scope": "BC=J forces one singleton and two empty neighbours per heavy. Each empty has at most two heavy guests; each compatible pair appears at most once. Excludes all completions, without retrying capped search."
+}

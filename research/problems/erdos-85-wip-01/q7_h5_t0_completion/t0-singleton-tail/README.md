@@ -1,0 +1,9 @@
+# T0 singleton-layer census: remaining 731 cores
+
+This supplements the first 30 cases in review 2031 with the disjoint remaining 731 of the 761 reviewed joint-host-compatible T0 cores. Selection uses exactly the same all-host Cartesian-domain ordering. The algorithm, per-core 100,000-node cap and total 60-second wall cap are unchanged. All 731 cases finish in 10.31 seconds: 717 exhaustive singleton-layer negatives and 14 partial witnesses, no caps or unvisited cases. Combined with the first 30, this provisionally leaves 14 of 761 heavy cores open.
+
+The separate whole-colour-block verifier exhausts all 717 negatives across 49,323 complete host assignments, with 185,422 search nodes. Its host counts match the author on every rejected core. The direct graph verifier checks all 14 positive 49-vertex graphs: exact support masks and heavy core, high degrees eight, low degrees at most seven, no C4, and BC=J on all 30 nonempty-support low vertices. Fourteen empty vertices remain isolated.
+
+This is a necessary singleton-layer reduction only. Positive graphs are incomplete, and all alternative singleton completions of a surviving core remain possible. No H5 sector or Phase B root is removed. No capped case was rerun. The reviewed T2 algorithms were adapted only to source and selection/output metadata; they preserve every hosting size and every reciprocal singleton-edge completion consistent with C4-freeness.
+
+The first30 and this tail are disjoint and cover exactly the host-positive domain, as checked in combined.json. PINS.json records this package; the first30 package remains unchanged in ../t0-singleton-pilot. Run singleton_completion.py, check_singleton_rejections.py, and verify_singleton_witnesses.py from this directory to reproduce their respective outputs. These are computational results, not Lean theorems.

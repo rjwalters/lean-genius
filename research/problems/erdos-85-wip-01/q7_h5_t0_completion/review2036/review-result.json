@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "core": 5774048758818,
+  "source_sha256": "194cc84103217a95ba841bdcb640af6a70f9348d94ce4b302a58a0a3c8dc788f",
+  "pins_verified": {
+    "audit.py": "98cf49d0f5eeed71736b56a1da9045e702849df95a37b6036488daad1acf1d99",
+    "result.json": "3518faa1ea800c68c38c1a779eb1966f2148da216a8c1e6ec665359de4896039",
+    "README.md": "1e4a840f7fbb2eaaa15e31bda00a94fe7a23c41f5d6ba664ad8a6021fd9886bf"
+  },
+  "method": "Construct two explicit cycles and full15vertex support graph independently; encode cycle edges back to source core; common-neighbour checks use full graph rather than separate support/adjacency predicates.",
+  "compatible_pairs": [
+    [
+      0,
+      9
+    ],
+    [
+      1,
+      6
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      3,
+      7
+    ],
+    [
+      5,
+      8
+    ]
+  ],
+  "required_incidence": 20,
+  "upper_bound": 19,
+  "proof": "BC=J forces one singleton neighbour for each heavy, leaving two empty neighbours. An empty can host at most two size2 supports, and double-host pairs inject into five eligible pairs by C4-freeness. Thus20<=14+5=19, contradiction.",
+  "scope": "All completions of this one heavy core excluded under reviewed T0 premises; no search replay, no kernel/globalT0 claim."
+}

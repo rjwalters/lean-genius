@@ -1,0 +1,83 @@
+{
+  "core": 5774048758818,
+  "source_sha256": "194cc84103217a95ba841bdcb640af6a70f9348d94ce4b302a58a0a3c8dc788f",
+  "heavy_edges": [
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      6
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      2,
+      7
+    ],
+    [
+      3,
+      9
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      5,
+      9
+    ],
+    [
+      6,
+      8
+    ],
+    [
+      7,
+      8
+    ]
+  ],
+  "missing_singleton_colours": [
+    2,
+    3,
+    4,
+    1,
+    4,
+    0,
+    3,
+    1,
+    0,
+    2
+  ],
+  "compatible_heavy_pairs": [
+    [
+      0,
+      9
+    ],
+    [
+      1,
+      6
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      3,
+      7
+    ],
+    [
+      5,
+      8
+    ]
+  ],
+  "required_heavy_empty_incidence": 20,
+  "available_heavy_empty_incidence_upper_bound": 19,
+  "scope": "Finite exact core audit plus necessary incidence inequality; independent review pending; no capped search rerun"
+}

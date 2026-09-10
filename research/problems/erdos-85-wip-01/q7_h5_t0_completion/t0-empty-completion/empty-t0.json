@@ -1,0 +1,122 @@
+{
+  "source_sha256": "194cc84103217a95ba841bdcb640af6a70f9348d94ce4b302a58a0a3c8dc788f",
+  "results": [
+    {
+      "core": 38864457730,
+      "status": "EXCLUDED_EMPTY_NECESSITY",
+      "nodes": 370,
+      "hosts_tried": 18,
+      "host_candidates": 18,
+      "witness": null
+    },
+    {
+      "core": 5774048758818,
+      "status": "CAPPED",
+      "nodes": 100001,
+      "hosts_tried": 25,
+      "host_candidates": 25,
+      "witness": null
+    },
+    {
+      "core": 38671651072,
+      "status": "EXCLUDED_EMPTY_NECESSITY",
+      "nodes": 219,
+      "hosts_tried": 16,
+      "host_candidates": 16,
+      "witness": null
+    },
+    {
+      "core": 111744664578,
+      "status": "EXCLUDED_EMPTY_NECESSITY",
+      "nodes": 646,
+      "hosts_tried": 72,
+      "host_candidates": 72,
+      "witness": null
+    },
+    {
+      "core": 6511689745,
+      "status": "EXCLUDED_EMPTY_NECESSITY",
+      "nodes": 93,
+      "hosts_tried": 40,
+      "host_candidates": 40,
+      "witness": null
+    },
+    {
+      "core": 38925369601,
+      "status": "EXCLUDED_EMPTY_NECESSITY",
+      "nodes": 512,
+      "hosts_tried": 105,
+      "host_candidates": 105,
+      "witness": null
+    },
+    {
+      "core": 6478168192,
+      "status": "EXCLUDED_EMPTY_NECESSITY",
+      "nodes": 293,
+      "hosts_tried": 108,
+      "host_candidates": 108,
+      "witness": null
+    },
+    {
+      "core": 39196303364,
+      "status": "EXCLUDED_EMPTY_NECESSITY",
+      "nodes": 187,
+      "hosts_tried": 96,
+      "host_candidates": 96,
+      "witness": null
+    },
+    {
+      "core": 1344340000,
+      "status": "EXCLUDED_EMPTY_NECESSITY",
+      "nodes": 310,
+      "hosts_tried": 136,
+      "host_candidates": 136,
+      "witness": null
+    },
+    {
+      "core": 6719279106,
+      "status": "EXCLUDED_EMPTY_NECESSITY",
+      "nodes": 599,
+      "hosts_tried": 306,
+      "host_candidates": 306,
+      "witness": null
+    },
+    {
+      "core": 38925303820,
+      "status": "EXCLUDED_EMPTY_NECESSITY",
+      "nodes": 3308,
+      "hosts_tried": 1444,
+      "host_candidates": 1444,
+      "witness": null
+    },
+    {
+      "core": 17255384072,
+      "status": "EXCLUDED_EMPTY_NECESSITY",
+      "nodes": 500,
+      "hosts_tried": 156,
+      "host_candidates": 156,
+      "witness": null
+    },
+    {
+      "core": 38663099520,
+      "status": "EXCLUDED_EMPTY_NECESSITY",
+      "nodes": 2290,
+      "hosts_tried": 1239,
+      "host_candidates": 1239,
+      "witness": null
+    },
+    {
+      "core": 38931529729,
+      "status": "EXCLUDED_EMPTY_NECESSITY",
+      "nodes": 5674,
+      "hosts_tried": 5653,
+      "host_candidates": 5653,
+      "witness": null
+    }
+  ],
+  "unvisited": 0,
+  "seconds": 9.121720416937023,
+  "per_core_node_cap": 100000,
+  "wall_cap_seconds": 60,
+  "scope": "All alternative singleton completions tested with exact empty-neighborhood cover and necessary empty-edge partner capacity. Positive means necessary conditions only, not full graph; exclusions provisional pending independent review."
+}

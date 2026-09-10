@@ -1,0 +1,38 @@
+{
+  "core_count": 1665,
+  "host_excluded": 904,
+  "host_positive": 761,
+  "singleton_excluded": 747,
+  "singleton_positive": 14,
+  "empty_excluded": 13,
+  "preserved_search_unknown": [
+    5774048758818
+  ],
+  "independent_counting_argument_core": 5774048758818,
+  "uncovered_domain": [],
+  "review_dependencies": [
+    2022,
+    2025,
+    2031,
+    2033,
+    2034,
+    2036
+  ],
+  "pins": {
+    "t0-singleton-pilot/PINS.json": "14bd467ba42beac915b7eebcaaa6b9037e326aa29a081c1e586e9ba4721c1314",
+    "t0-singleton-tail/PINS.json": "7a4cf79bccbabfe32c0afd38526cd6fe870f2a452280953398df824f83003a43",
+    "t0-empty-completion/PINS.json": "848300706aca98601f682d69d2411a672cbd61c94d9e7b07d935a0a71d854f7d",
+    "t0-independent-empty/PINS.json": "27607c3d9a0477d680676c7617add5c7937c17721e6bed7f3a3e165395d2f7bf",
+    "t0-final-capacity/PINS.json": "677ef4e723f3f7147f0d9001f677ace73205efd2d80e4a00e135f2a68c740b05",
+    "t0-singleton-pilot/core-t0.json": "194cc84103217a95ba841bdcb640af6a70f9348d94ce4b302a58a0a3c8dc788f",
+    "t0-singleton-pilot/hosts-t0.json": "24e81c329ee7d1bb4eb40122a5c2e9b3c0a29ae37169b1c7fe40972f658754f8",
+    "t0-singleton-pilot/singleton-t0.json": "53e10b7bf3bebc833b0deb95e96a5bd9c94687b35b5198ec3daff6fef0c7542e",
+    "t0-singleton-pilot/singleton-rejection-audit.json": "2d72633c2f3869de6424e02a42450d2c5831e76b4d0077d0ad45c17c6679bd62",
+    "t0-singleton-tail/singleton-t0.json": "28d8aa54d6eaa5badc56793f68e0e5c03d90275bb7f39a0133fd6afe211dbb6d",
+    "t0-singleton-tail/singleton-rejection-audit.json": "270ce29555519f06ade873c05d95c0e924c86c12c2c9112c50e74a587f30c23b",
+    "t0-empty-completion/empty-t0.json": "85f8c18ade5508cd44a52669ab92ed3be195f3d7035230a1f8d94bd71e4731b3",
+    "t0-independent-empty/independent-results.json": "5b217273f83485e5890766ee327f0f8e1e53f882e63ac1b6d7af5fe28d9bd3ab",
+    "t0-final-capacity/result.json": "3518faa1ea800c68c38c1a779eb1966f2148da216a8c1e6ec665359de4896039"
+  },
+  "scope": "Exact-set chain and frozen identity validation only. Empty uncovered domain is conditional on mathematical validity of every exclusion; pending reviews are not approved by this audit. No kernel theorem or queue mutation."
+}
