@@ -1,0 +1,17 @@
+test_disagreement_uses_cadical_sat_log (test_check_retained_sat_candidate.HandoffTests.test_disagreement_uses_cadical_sat_log) ... ok
+test_graph_rejection_preserves_evidence (test_check_retained_sat_candidate.HandoffTests.test_graph_rejection_preserves_evidence) ... ok
+test_log_tampering_rejected_before_decoder (test_check_retained_sat_candidate.HandoffTests.test_log_tampering_rejected_before_decoder) ... ok
+test_mutation_during_decode_rejected (test_check_retained_sat_candidate.HandoffTests.test_mutation_during_decode_rejected) ... ok
+test_profiles_are_not_inferred_from_arbitrary_numbers (test_check_retained_sat_candidate.HandoffTests.test_profiles_are_not_inferred_from_arbitrary_numbers) ... ok
+test_real_decoder_rejects_toy_encoding (test_check_retained_sat_candidate.HandoffTests.test_real_decoder_rejects_toy_encoding) ... ok
+test_receipt_disagreement_rejected (test_check_retained_sat_candidate.HandoffTests.test_receipt_disagreement_rejected) ... ok
+test_routes_bound_bytes (test_check_retained_sat_candidate.HandoffTests.test_routes_bound_bytes) ... ok
+test_cnf_mutation_during_decoder_rejected (test_independent_handoff.IndependentTests.test_cnf_mutation_during_decoder_rejected) ... ok
+test_consistent_receipts_cannot_override_historical_source (test_independent_handoff.IndependentTests.test_consistent_receipts_cannot_override_historical_source) ... ok
+test_different_model_report_from_decoder_rejected (test_independent_handoff.IndependentTests.test_different_model_report_from_decoder_rejected) ... ok
+test_small_high_routing (test_independent_handoff.IndependentTests.test_small_high_routing) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.085s
+
+OK

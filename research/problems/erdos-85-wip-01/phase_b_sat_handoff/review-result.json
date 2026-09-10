@@ -1,0 +1,17 @@
+{
+  "verdict": "PASS",
+  "original_tests": 8,
+  "independent_tests": 4,
+  "scope": "Receipt routing and mutation checks; mocked positive graph routing only, no real positive49 graph or solver",
+  "pins": {
+    "verify_small_high_sat_graph.py": "6c42243b4563395af13f8a158398b03d00516f1006112d5cb281b7448abd02b7",
+    "verify_dimacs_model.py": "7c808e61fa832db956daa92797ed5e98a5e13b84e2ad1e07d26d7e56a3d6a549",
+    "check_retained_sat_candidate.py": "7f900d4f629bebc5f7125d26030bd7f9a7a4e4792612c8ab84f406cf36869b4c",
+    "README.md": "e5a97e907de2ef0c7f0a1c466d753ec69a17248a771afee2580376fa0ef63303",
+    "verify_h1_sat_graph.py": "1a9e080ca019639a4ec86f20752c5aae57a718c7a0e544c9feac46085556042c",
+    "test_check_retained_sat_candidate.py": "6cebdd9b6dac9829ef5efc6f93f84fb8350be5080bed2145f8533583e995ba69",
+    "tests.log": "2d06eafc8be1e6aa9723e5da3840f85c394769af1d7db9d5779235066057741c",
+    "test_independent_handoff.py": "1dbe6e59c8f4ccb7dad8051283429f02cb63e9c7768a183c7d978f7eb55c7724",
+    "RECEIPT.json": "d91ad0ee40ffd2a683f45ca912af25a69a9940fcc8accb61e83ca546f4f774cd"
+  }
+}
