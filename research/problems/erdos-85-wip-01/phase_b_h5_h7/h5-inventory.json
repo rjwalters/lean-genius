@@ -1,0 +1,2561 @@
+{
+  "schema": "erdos85-phase-b-h5-inventory-v1",
+  "manifest": {
+    "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/cube_jobs_manifest.live-38b15d484b.json",
+    "sha256": "05381a1cf5e80eb480b6e78c4a8dada2573c1cf2f0c55d9ac0bcc4367e3bca76",
+    "bytes": 87558
+  },
+  "historical_metadata": {
+    "path": "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/closure-inventory-evidence/small-high-root-metadata.json",
+    "sha256": "b1782b9a71ceead4a13577edbe90111ac8aa30af596f590bf8219dc15bef5dd4",
+    "bytes": 285844
+  },
+  "historical_checked_utc": "2026-09-10T05:19:40.198341+00:00",
+  "generator": {
+    "path": "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/sat49/generate_small_high_cube_jobs.py",
+    "sha256": "a845cb9f6bf1d6046c58aefe9cd6cdd66e80e0fd3670629ba650e9578fe5cb7e",
+    "bytes": 15603,
+    "last_change_commit": "1241c1ae0af05cd3145de755dcac4b74e082c750"
+  },
+  "manifest_generator_sha256": "bc3c4650a4c0f6a9d495c02bc85b2f0cbd5b9effe69a829ded9ebe4254d6938c",
+  "freight_lean_commit": "38b15d484b22d205476baba9f4898c9ffc91044d",
+  "bases": {
+    "h5_t0": {
+      "base": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/small-high-base-freight-38b15d484b/h5_t0.cnf",
+      "base_clauses": 1328618,
+      "base_sha256": "02ccdc18e983558a6480f2b5e6c8f6b0cacb21e88fa02abcff5c4f3f6fecebf9",
+      "left": [
+        231,
+        232,
+        233,
+        240,
+        241,
+        242,
+        243
+      ],
+      "right": [
+        231,
+        276,
+        277,
+        278,
+        286,
+        287,
+        288,
+        289
+      ],
+      "variables": 29632,
+      "hash_verified_now": true
+    },
+    "h5_t1": {
+      "base": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/small-high-base-freight-38b15d484b/h5_t1.cnf",
+      "base_clauses": 1328618,
+      "base_sha256": "078a3618db3a70ed7e720eacd53196808e064118e54fcd6237dd557e6e2a51e5",
+      "left": [
+        231,
+        232,
+        238,
+        239,
+        240,
+        241,
+        242
+      ],
+      "right": [
+        231,
+        275,
+        276,
+        285,
+        286,
+        287,
+        288,
+        289
+      ],
+      "variables": 29632,
+      "hash_verified_now": true
+    },
+    "h5_t2": {
+      "base": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/small-high-base-freight-38b15d484b/h5_t2.cnf",
+      "base_clauses": 1328618,
+      "base_sha256": "186f6e20e055792ef7b7eb19ce44aa66cd2137252058a5a1acaa4e3f5eacc5df",
+      "left": [
+        231,
+        236,
+        237,
+        238,
+        239,
+        240,
+        241
+      ],
+      "right": [
+        231,
+        274,
+        275,
+        284,
+        285,
+        286,
+        287,
+        288
+      ],
+      "variables": 29632,
+      "hash_verified_now": true
+    }
+  },
+  "jobs": [
+    {
+      "id": "h5_t0.cube-0-0",
+      "kind": "cube",
+      "left_index": 0,
+      "right_index": 0,
+      "units": [
+        231,
+        231
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "53f4016cdd79ac869cfe0cb948b144e5457d1199a66e3ba014818954ae7e302d",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-1-1",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 1,
+      "units": [
+        232,
+        276
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "e48ee164aeee0cc963a529efab504129e525bd683b570eb4863ebf84b36ac0f0",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-1-2",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 2,
+      "units": [
+        232,
+        277
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "50d9f1d0ff44c9ba89c9161e92a03ca7e0cfd67fffd2b597b5da4ff4dd01568a",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-1-3",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 3,
+      "units": [
+        232,
+        278
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "fad09a6df9a84b245bb24ebe88f0d931c52bde4e571b12669c267e5c09dc5281",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-1-4",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 4,
+      "units": [
+        232,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "77bd2eb2cb09c09b7ad633376e62ffa7eb13732bc85cb14bfccf049ba330c21a",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-1-5",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 5,
+      "units": [
+        232,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "097ef9f054db982ab6ae9180279b81c0ec925c35bba45d4814e185c3e8f764f5",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-1-6",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 6,
+      "units": [
+        232,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "674d5132fef4b1105c20af6700a5c36ec76c3a5fe984fee3507694cb757195f9",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-1-7",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 7,
+      "units": [
+        232,
+        289
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "b6abfc94f6ff285370a9c2a73e9e25830b51bf648caa26e9910a6d270592f930",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-2-1",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 1,
+      "units": [
+        233,
+        276
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "070ef1396c0f18fbb37ae231dcbef4f1c7d8cbe2c84588de1f50784eecf5c684",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-2-2",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 2,
+      "units": [
+        233,
+        277
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "16804fdbba8e6a50ec29634391aaca9b84da413d837576bff23afad833203d82",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-2-3",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 3,
+      "units": [
+        233,
+        278
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "dec1cbcc6e4a3b12fb3b2b87bbec4ad469cc691f48371d25a2c3dee938ae5c55",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-2-4",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 4,
+      "units": [
+        233,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "4a0110d0c72eb90414c7ded166c0acc0c19411622beecc812b63b1df5aff11ea",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-2-5",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 5,
+      "units": [
+        233,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "208a398fb63c9ebc2d19025d81b51dd1b74e080133e3087efb4683bb2671b907",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-2-6",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 6,
+      "units": [
+        233,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "25210fea46ac77034bfcda1e4376554c841571ff63e57cb3f1ba7fad7a4cfc88",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-2-7",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 7,
+      "units": [
+        233,
+        289
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "22c27ee83bba132f1b0ce723e9f6cebd16450bfddfdb7718f667e64dfb1440aa",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-3-1",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 1,
+      "units": [
+        240,
+        276
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "2b17a17ee261e9eb6f74107fd6849b7297e832dee0d4e5d7038eeebee34d3a3d",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-3-2",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 2,
+      "units": [
+        240,
+        277
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "b6271fd409c4ddec63c5d413515328908cd01abae3346151f475568ea22c9fd7",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-3-3",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 3,
+      "units": [
+        240,
+        278
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "6c2e73d9b414251edbdcb40da5cd76637e6573b3f6ea4041d23fa1cab14431c3",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-3-4",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 4,
+      "units": [
+        240,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "b9fdf3b6559df695347c5eed678a79af759369ccb31063b197a94d02aa07d7c2",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-3-5",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 5,
+      "units": [
+        240,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "3e90c427c51a8f0798b4c0d662d63da8577c3411e2539a3540b04cf96be64f60",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-3-6",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 6,
+      "units": [
+        240,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "f31c344993e4a88d0bb8bb10efdf2c60764b771b5df06b87333860d55a0b5694",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-3-7",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 7,
+      "units": [
+        240,
+        289
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "6a9c72c2c604cc091a5d83b7bc91240c84cd7b135de19dc65a28dde35e717b50",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-4-1",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 1,
+      "units": [
+        241,
+        276
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "1d7708d1a3cf35400ddf4990e3af469999349544e34bbd33ba83162021666130",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-4-2",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 2,
+      "units": [
+        241,
+        277
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "f65b7c6a86203a8fbd37e52ffaa830b96cdbb8d3cf0a7db5aaab499827888a36",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-4-3",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 3,
+      "units": [
+        241,
+        278
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "143a1b120aab1a0461f11350ed3ffbbb651d4c361389c33049f3a51b2f48a2ee",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-4-4",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 4,
+      "units": [
+        241,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "c608691fe0b795f11516aa6c1d4b83f94f8e78f0470d98c8ec73d82c01d1c345",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-4-5",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 5,
+      "units": [
+        241,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "205416c9d017fa24c90384a062a40c7ccab5dc0b2e7ec522a3d6ec9633fbf61a",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-4-6",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 6,
+      "units": [
+        241,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "8fbfcaebd258da7a2a2d2155d93d30fbff09dc29167b2d147a267da35aa877fd",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-4-7",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 7,
+      "units": [
+        241,
+        289
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "1ba9693ed536c5a7e36a381fcf483a2098d425c841864464ef358b32efcd72ae",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-5-1",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 1,
+      "units": [
+        242,
+        276
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "84f02abfd52119b94f3d5a773cab69d3f9d5e7916011c48183bd6b9e64ee84a9",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-5-2",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 2,
+      "units": [
+        242,
+        277
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "29e37e4c7d4e794d46fe46f8a831f6b98722acc8ec0cceb80ccf67d610ab75a5",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-5-3",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 3,
+      "units": [
+        242,
+        278
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "7f756078f0f4c8eb2f0f95bddfec24000b840868de565e1632165cdaaf58ba4c",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-5-4",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 4,
+      "units": [
+        242,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "a03305709a7173587545303370fd5a6ec576163d93ae02f9e8519627b9cfb487",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-5-5",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 5,
+      "units": [
+        242,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "8c5d6c6c769dc40d84fe985c7486650e11ced8e58c85030ec5d1533ed73dbf9d",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-5-6",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 6,
+      "units": [
+        242,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "9ebac28e01504ef16f6e563cec1bbfbb239124352ea6de0009192851a24ba200",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-5-7",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 7,
+      "units": [
+        242,
+        289
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "cba4d58a267622a104fb22d6de968638b10503247401abf21011e7bc21307260",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-6-1",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 1,
+      "units": [
+        243,
+        276
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "fd2f49d54476d6ab226568b229a210d52196bfb2d867b235ae4483d5149ffffe",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-6-2",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 2,
+      "units": [
+        243,
+        277
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "aba159d8be0fb754c714002a4610ffbd7d3600c24f39657235ae3040df6ab9cb",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-6-3",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 3,
+      "units": [
+        243,
+        278
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "d763aaa1e57aa1b67f9315e8bafb7530c8d57e30c7e96f01b742cfc0eb0d721e",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-6-4",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 4,
+      "units": [
+        243,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "c1e36725e01b414a88338c4875aa4bae3bd007133a6874a13dfbeec1366dd2cc",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-6-5",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 5,
+      "units": [
+        243,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "7a7d978a4c18191a68577f19c672a087fc2d6695aad66d81c8369c072ffe6a45",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-6-6",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 6,
+      "units": [
+        243,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "55f8835c60e6f5ce550008af2497634c7380d1eb3578b9714e9badc561a4ae1b",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t0.cube-6-7",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 7,
+      "units": [
+        243,
+        289
+      ],
+      "sector": "H5",
+      "cell": "h5_t0",
+      "cnf_sha256": "9a5b54efa0614a2eb7bd3d40f5a1657c5619dcaf6b85e58727fa7e8b8a451114",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-0-0",
+      "kind": "cube",
+      "left_index": 0,
+      "right_index": 0,
+      "units": [
+        231,
+        231
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "cee9474a4e775de0258bb1d9f819849d3851f2fb059f78761d952877fac92b43",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-1-1",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 1,
+      "units": [
+        232,
+        275
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "82f416957cfe6ab0f98de1438d0986729624c7b62098f9acacb91e56cdfd2205",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-1-2",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 2,
+      "units": [
+        232,
+        276
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "8b7fd9e2515d1713845057e7293c2cfbdb72d37e9c0a01686377b619116000c5",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-1-3",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 3,
+      "units": [
+        232,
+        285
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "f34b1ea4fe028bf2a10b1e9973706334b27cd2f3dc8458b35df6964118de0946",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-1-4",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 4,
+      "units": [
+        232,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "f63f0837d3adda7912e68dae4b83c5b7d638ad310a557630a45f4daa1310d55e",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-1-5",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 5,
+      "units": [
+        232,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "d554aa08d90f2cb748eb0aad2c50855da675229f136cb655ac498439929ae504",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-1-6",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 6,
+      "units": [
+        232,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "fb11557ef2123ae4bc12583199379c7a91dcfc02dc8b3fd1ab0574097ed00ad4",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-1-7",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 7,
+      "units": [
+        232,
+        289
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "da026e99824e4deddc888cd9176076b29870b76bdf3f958e9c2360de220879ad",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-2-1",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 1,
+      "units": [
+        238,
+        275
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "32fa170eeb62e104137bac0c7081f3290789097e537a42e5923581dceae75631",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-2-2",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 2,
+      "units": [
+        238,
+        276
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "57eb47f04785b7e115f1fc697c072dbc38dd1fa413d578d7e04149e1461e49e5",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-2-3",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 3,
+      "units": [
+        238,
+        285
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "6b5740d63c2665d8401e9ab62bba6ca60fd58407d9e3001079c8b0c4ac9043d4",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-2-4",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 4,
+      "units": [
+        238,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "b799b4ab817d54f18e318a457f3b2122307e9ccee1e5b3f5cfec6ee77a16ef95",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-2-5",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 5,
+      "units": [
+        238,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "1bc21cc36ad8d308d4ead975f8ad435d897adcea752c057605d6fec52f360ac4",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-2-6",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 6,
+      "units": [
+        238,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "12de07c0eff5828b2d5125d4e1ae7ec775c657cea4d8d1d28aecbcf530c26d48",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-2-7",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 7,
+      "units": [
+        238,
+        289
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "724eeb2f32d1fdb7be5dead33a30a1cece1fa6383ac4726af8c0d44f24854fd6",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-3-1",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 1,
+      "units": [
+        239,
+        275
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "36c1e80eda83349a60e3195e5ba945548817eb3d333b5daf2b47e9b7edf502e8",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-3-2",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 2,
+      "units": [
+        239,
+        276
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "204e3c2c68975539523732d64d0bfd0c1d036f4315ffd4d189e641a39b1a0bab",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-3-3",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 3,
+      "units": [
+        239,
+        285
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "49e7472718c99900790cdfb1b6e168f259a7fca91d313b8323128f7126bad57d",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-3-4",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 4,
+      "units": [
+        239,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "9a42924c3fe4f47effac4bd51a02a7152264c75c54dd80da5c9381c950ce7d8f",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-3-5",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 5,
+      "units": [
+        239,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "245ac848a82b753e20d925a989cc427bc0bd7c41b41561008b09d4d47fedd83e",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-3-6",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 6,
+      "units": [
+        239,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "8fb3cde2ac0271495f25f276f2f537898a56de8086db227638e3aabdb8c26b3c",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-3-7",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 7,
+      "units": [
+        239,
+        289
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "b2f207fa0cbb5820d46259068a5e94ffec4b1f8a1c283c0a4d6aaa64bda517d2",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-4-1",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 1,
+      "units": [
+        240,
+        275
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "ecdab497287fdc3c4cd373be9c8714159c9d20b1c3fafedf7c067325cb6b54b0",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-4-2",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 2,
+      "units": [
+        240,
+        276
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "bb618aa45472acc8e296c403169c3869ef90d4cb09c05379865ea934892821aa",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-4-3",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 3,
+      "units": [
+        240,
+        285
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "36a1740848b575cd657006ae97dfdf18c0347f4014e9731959361a097d810d3b",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-4-4",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 4,
+      "units": [
+        240,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "ea58f7320fca2295352268300616fed3407fc914b48aa267756c68ce68b59861",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-4-5",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 5,
+      "units": [
+        240,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "cc1da6b1c795787afa760725095eb9b7d24e5bab65f8c10c75be0d48fecc1d34",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-4-6",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 6,
+      "units": [
+        240,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "befb282a3fcd404cfc5a02a414945c770cca8e1ab54efb08016cfcfa62b287b8",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-4-7",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 7,
+      "units": [
+        240,
+        289
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "d532ec5437834551358d70835515d88aa61b4138c8de715c89e74b43edcca499",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-5-1",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 1,
+      "units": [
+        241,
+        275
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "257eec793fb32ad07f48d2f84e3b6b5e72e9eb3e0c4a8ee04854eaf544dcfd78",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-5-2",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 2,
+      "units": [
+        241,
+        276
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "f7e45a44a3dc37029df494c7ada872a395dedbb18200ae71132dd048fb4236c3",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-5-3",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 3,
+      "units": [
+        241,
+        285
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "cb08d9b568764f4d312d6ca81055f1b985b2ede2f38204e06b229af824b678fe",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-5-4",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 4,
+      "units": [
+        241,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "696dadfb1209e22ef1ccb0b98cb1061038517dae254b55317f8ca93a963a2dd6",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-5-5",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 5,
+      "units": [
+        241,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "5783b9d055187cb055893166c988cfb783938a64b138e646299b7577ecc1fbe1",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-5-6",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 6,
+      "units": [
+        241,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "687143ab3bf0fdec9500390d4ee1e7aff1466e5c3d648dd54fea96a0e0b6945f",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-5-7",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 7,
+      "units": [
+        241,
+        289
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "8a29febd5cca1ee753f852276f8372fd9a2f453d8b3ba0156c69d01e2af30b54",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-6-1",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 1,
+      "units": [
+        242,
+        275
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "05cdf8ea57506892b2ea18d426d3a4512f10dc1c10af314ff7b4174999ca1bdc",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-6-2",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 2,
+      "units": [
+        242,
+        276
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "4b532d42f9462693c7fe40d2fc35a116ee19d91690c5cc04ee0dffa7d913803c",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-6-3",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 3,
+      "units": [
+        242,
+        285
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "500835ceca89989150f37be9f21dddd23571931664c4c1c3040e46a8e5bc161b",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-6-4",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 4,
+      "units": [
+        242,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "b444946c8321d54a058cf6bd97569fa6bd5a9fdb83927087bc2e601985ec63b3",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-6-5",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 5,
+      "units": [
+        242,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "e3d0137632d8e7882327b4ec71403bb5bdf8b63ea21686a3e2c848529ff5e2cf",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-6-6",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 6,
+      "units": [
+        242,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "20bf52a2211dc8346e923ca3ff89857b14319645185b0fac970ae2cab1cbc1ed",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t1.cube-6-7",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 7,
+      "units": [
+        242,
+        289
+      ],
+      "sector": "H5",
+      "cell": "h5_t1",
+      "cnf_sha256": "c5056459c863ee8417bd1fcd3e6b78cc78b57acd68caf0ebc361bd8e24f2cc26",
+      "cnf_bytes": 29206131,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-0-0",
+      "kind": "cube",
+      "left_index": 0,
+      "right_index": 0,
+      "units": [
+        231,
+        231
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "69dd50dc10bb940742c11f8440653fce2db153055f479ed6d6c83b283358efcd",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-1-1",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 1,
+      "units": [
+        236,
+        274
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "1cc2955f2a5bd8531763c8b3757691d492e77aa7f66c780c50343a789563db70",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-1-2",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 2,
+      "units": [
+        236,
+        275
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "50d69b727a5ee2e825aa2ce3f6ad3c34aca8fea0f221989f0662def3f5d69fa4",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-1-3",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 3,
+      "units": [
+        236,
+        284
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "96531f561296cab39ba588729a543cb62d445f8913dad068ef53883880627a48",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-1-4",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 4,
+      "units": [
+        236,
+        285
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "94ec9b1618c08becbcb78a4ef2b880d6a024be5f7226c9563825e75c5dae614d",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-1-5",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 5,
+      "units": [
+        236,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "5be92fc08542f42ac6bf6824c356ba490efdde2c6bec5fc2f476a17e6989026a",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-1-6",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 6,
+      "units": [
+        236,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "7d9afd6970d345cf6afa97b5f813b290e4e1f2d9ed1ff54b5edbab1e2587226c",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-1-7",
+      "kind": "cube",
+      "left_index": 1,
+      "right_index": 7,
+      "units": [
+        236,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "ce6799cc22db54905459931a9872b07bc79875601cee6f277447d12a8f158c20",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-2-1",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 1,
+      "units": [
+        237,
+        274
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "4702c53d68405bb8e6826b673a264d12d1be903c6eaf7c22790fb72e8a491e95",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-2-2",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 2,
+      "units": [
+        237,
+        275
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "0e20c9df9ff023aa723448a9e8df6bb7da095375fe3071740b5137c68edb8e52",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-2-3",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 3,
+      "units": [
+        237,
+        284
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "5364e8f10fe9190da765991ebb2d4e6c72198fdc60cb33975d69662722eb4db1",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-2-4",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 4,
+      "units": [
+        237,
+        285
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "8a614c00002c52531a480d5207d72fb98fd03d50653728448f22542e548f08c5",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-2-5",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 5,
+      "units": [
+        237,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "d2c8e50adceef1c50de7c8c4443d57124fa8d75a02ffd20f924bbcb413cc0909",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-2-6",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 6,
+      "units": [
+        237,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "0d9223d30de6bf51ca086a764a03ce6109d49decfc32559aa164138ab51025cc",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-2-7",
+      "kind": "cube",
+      "left_index": 2,
+      "right_index": 7,
+      "units": [
+        237,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "8a5afc684e8ce672cfd791f187d248b5210d34ef64ed99ba2ddca642dcdd85bc",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-3-1",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 1,
+      "units": [
+        238,
+        274
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "8adf1ec9a43a3cfeef69e1e57b97e7b1577d210d9ae30207fe86987afffa5985",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-3-2",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 2,
+      "units": [
+        238,
+        275
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "64387491aff90eda536c6d17a9a9848f3a6df7cf51241180c0c01b13f6ac6fca",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-3-3",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 3,
+      "units": [
+        238,
+        284
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "31efa3786d306b6a8005b4aaae8880d1006d5528dc7aae1a1a523c332f6cab34",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-3-4",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 4,
+      "units": [
+        238,
+        285
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "1ec5eb9c342ca588014c3543769586eeea6b6889056a03bd23e23594ae1ef1d5",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-3-5",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 5,
+      "units": [
+        238,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "02a704fcee83ab9e0081f0a4dcfa160448782451268c4abdf6772292d8c9021d",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-3-6",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 6,
+      "units": [
+        238,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "40f1bfc709bee25ca29b6887651bc3d0d6e4a594d53a65870158f2937eb213e2",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-3-7",
+      "kind": "cube",
+      "left_index": 3,
+      "right_index": 7,
+      "units": [
+        238,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "6df940552c62070333e9e769efcac77f08d06b939d0292df5f171e818981a7c2",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-4-1",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 1,
+      "units": [
+        239,
+        274
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "ff41f8c49451017b666d93356044ad2cb2203e32af06e54dedbe7bbe3e31ee98",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-4-2",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 2,
+      "units": [
+        239,
+        275
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "10ba388beaef22b611b6a930e021579da0fc086af18b0d728b7be5cc5104cd61",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-4-3",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 3,
+      "units": [
+        239,
+        284
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "238cddb3e914259abe5cb3ce5eaae8a2485dbe479de0fc1a1fae721bacde6f85",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-4-4",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 4,
+      "units": [
+        239,
+        285
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "c691532da8735250a042a7a4e60399eb468c52dcc791b04d77373530193895e5",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-4-5",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 5,
+      "units": [
+        239,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "dc436ef7b52cb2a02b2faf67156accc266c7f55745f9033fe82a595cdbd3fdbc",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-4-6",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 6,
+      "units": [
+        239,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "3860f9d694021a7daee2790ad4cf9d3518377ef55811dd135ca95eb4959783db",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-4-7",
+      "kind": "cube",
+      "left_index": 4,
+      "right_index": 7,
+      "units": [
+        239,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "4d5adcdbd39f706d3941c370275d5dc0e7ebcee444ce3573f483f31eb6d3be49",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-5-1",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 1,
+      "units": [
+        240,
+        274
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "13f96cad8423c8a9928762a6ecbea19bf1ed21040da7dc5ce049350f7707da93",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-5-2",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 2,
+      "units": [
+        240,
+        275
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "568d8d1814de6d98458a0181aa34a5939eb645b358597442a917e31e198712e1",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-5-3",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 3,
+      "units": [
+        240,
+        284
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "727df05fe644a9c49232caa46586f7247968a959f94d2352b5e35689c4946f62",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-5-4",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 4,
+      "units": [
+        240,
+        285
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "80c25e85ba9ab0f6d99b124df21dfd323d4cbcf26813baea04631fc9feab90d3",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-5-5",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 5,
+      "units": [
+        240,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "a3b7afd11678b1a1bd62da114122d6bfbbce84856c88f9d42dae3b314be89732",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-5-6",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 6,
+      "units": [
+        240,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "8f93443ffdc22d74d5131e0b64e348c55cffb31c381b5913dda44cb2a98dd651",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-5-7",
+      "kind": "cube",
+      "left_index": 5,
+      "right_index": 7,
+      "units": [
+        240,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "030f4bd05b3c05bd4ac18ff3da22602840b979562cfd3ec0732c1ffd7914bf19",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-6-1",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 1,
+      "units": [
+        241,
+        274
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "25dd63650fd816ff3f8137a1388559ce0a27f8b4f4db961c1d4f3c57609ea810",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-6-2",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 2,
+      "units": [
+        241,
+        275
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "f7778f6815920f3d8107e9e2b49966d2c2fd96536316e785080b8a4c2b1c2c68",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-6-3",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 3,
+      "units": [
+        241,
+        284
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "49fcad892eb78cef4d784c1479e389d8fdd340b0377d8f9a04de58eba543380c",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-6-4",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 4,
+      "units": [
+        241,
+        285
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "ffd5df00eff2d317f37b350aae4972b18c80387f4c5da3c2071cd53cf7ea1969",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-6-5",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 5,
+      "units": [
+        241,
+        286
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "828e41915f12f60198bc0c8169f159b26d0c00420f6071ebcb69665503785713",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-6-6",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 6,
+      "units": [
+        241,
+        287
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "608995b0b7ea41ba202c3c58607aaba3da4ee7acbe070501a7d7416e6cb2e1ab",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    },
+    {
+      "id": "h5_t2.cube-6-7",
+      "kind": "cube",
+      "left_index": 6,
+      "right_index": 7,
+      "units": [
+        241,
+        288
+      ],
+      "sector": "H5",
+      "cell": "h5_t2",
+      "cnf_sha256": "dc23659c9faa07b5027cb983a904dcfb19f787ac07dc39595b56ede02e4fc1d6",
+      "cnf_bytes": 29206149,
+      "variables": 29632,
+      "clauses": 1328620,
+      "input_hash_status": "freshly derived from hash-verified base and exact emitter bytes",
+      "cnf_path": null,
+      "requires_materialization": true
+    }
+  ],
+  "counts": {
+    "all_roots": 174,
+    "historical_direct_certificates": 45,
+    "conservative_candidates": 129
+  },
+  "scope": "Historical conservative remainder; no claim of fresh absence of later solver results."
+}
