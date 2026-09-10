@@ -2,10 +2,11 @@
   "files": {
     "research/problems/erdos-85-wip-01/phase_b_h1_cube25_cover/check.py": "bd99ca4d34f777929527268cc20710cfa391f09f14d9dabe4596edc7646d2c46",
     "research/problems/erdos-85-wip-01/phase_b_h1_cube25_cover/results.json": "0c3645e0332eb78b886cc8774fb2f530e3fccc9af784549214f546af5b7c20a7",
-    "research/problems/erdos-85-wip-01/phase_b_h1_cube25_cover/README.md": "17e3177ccff4bb714cc0f32476d5c1c747fc3997572920f19e88d5eea03edede",
+    "research/problems/erdos-85-wip-01/phase_b_h1_cube25_cover/README.md": "162792dcaa455bb9a631e97f65f0c98ee4f2d86df595610cf9d6210a01118313",
     "research/problems/erdos-85-wip-01/phase_b_h1_cube25_cover/binding-results.json": "18e79a1bcf833e65423e32ff940893020a42ff2c351789ea656d9712c0d14a9c",
     "research/problems/erdos-85-wip-01/phase_b_h1_cube25_cover/binding.py": "54857839489eaa2460858fc1fab61c05eb8466fe66da8a0c5cfe2c7a2b6f973f",
-    "proofs/Proofs/Erdos85OneHighCube25GraphCover.lean": "0545952e9388bc40e72d4913ee3ef827890b5a1dfe6d795be3b12c30f7cf82af"
+    "proofs/Proofs/Erdos85OneHighCube25GraphCover.lean": "0545952e9388bc40e72d4913ee3ef827890b5a1dfe6d795be3b12c30f7cf82af",
+    "research/problems/erdos-85-wip-01/phase_b_h1_cube25_cover/review2019.json": "9761aafc35328f5bd5ae56f03fd1598f5796efb77a071c7d59840a3ff22e141c"
   },
   "lean_command": [
     "lake",
@@ -21,5 +22,5 @@
   ],
   "solver_launched": false,
   "proof_replayed": false,
-  "independent_review": "Pending squad review 2018; compiler and empirical checks completed, no independent PASS claimed."
+  "independent_review": "2019 PASS_WITH_COMPILATION_LIMITATION: proof inspection and18actual prefix bindings independently passed; fresh reviewer compilation blocked before elaboration by deleted project cache."
 }

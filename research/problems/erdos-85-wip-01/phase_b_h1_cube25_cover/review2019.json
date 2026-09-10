@@ -1,0 +1,10 @@
+{
+  "verdict": "PASS_WITH_COMPILATION_LIMITATION",
+  "source_review": "The two instantiations of unmatched_not_misses_farBlock use positions4 in blocks0/1 and far blocks2/3; existential extraction is direct. Hypotheses retained, no cube UNSAT conclusion.",
+  "source_sha256": "0545952e9388bc40e72d4913ee3ef827890b5a1dfe6d795be3b12c30f7cf82af",
+  "independent_actual_prefixes": 18,
+  "binding_results_byte_equal": true,
+  "compilation": "Author pre-cleanup compile0/standard3axioms recorded; independent compile stopped at missing .lake before theorem elaboration. Matching9package cache restored, own-project oleans absent; no dependency rebuild launched.",
+  "solver_launched": false,
+  "proof_replayed": false
+}
