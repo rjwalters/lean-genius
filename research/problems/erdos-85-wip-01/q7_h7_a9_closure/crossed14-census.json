@@ -1,0 +1,17 @@
+{
+  "status": "COMPLETE",
+  "nodes": 19228,
+  "raw_assignments": 3840,
+  "stabilizer": 8,
+  "canonical_representatives_checked": 480,
+  "orbit_size_histogram": {
+    "8": 480
+  },
+  "seconds": 0.15274754213169217,
+  "source_pins": {
+    "/tmp/erdos85-sol1-h7-profile-partitions/remaining-results.json": "52131f563134175c32215967fe169bf185074bb235b2308965541c19f4656872",
+    "/tmp/erdos85-sol1-h7-high0-cover/results.json": "406218cebcabd02f19fa1ff160b52c0922bdfa4f985ba97a0383e2b1850f567c",
+    "/tmp/erdos85-sol1-h7-pair-host-reduction/results.json": "75ad05ec99213db282921d0dd3047deae10fb9439d4e878d4683eb9a9b099e3c"
+  },
+  "scope": "Independent dynamic minimum-domain host enumeration WITHOUT symmetry pruning; full orbit sets partition rawdomain exactly into supplied480representatives. One complete crossed14 domain only; no old UNKNOWN profiles rerun."
+}

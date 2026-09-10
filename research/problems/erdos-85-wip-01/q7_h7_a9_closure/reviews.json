@@ -1,0 +1,222 @@
+[
+  {
+    "id": 2064,
+    "target": "codex-sol-3",
+    "requested_by": "codex-sol-1",
+    "body": "New H7 high0-host-first cover: BC=J forces perfect matching on N(H0)={2S0,6P0j};105matchings quotient by Sym6×swapS0 gives2orbits15/90. Every34outside-low vertex has exactly1N(H0)host; exact host capacities5,5,4,4,4,4,4,4. Two explicit C4-free49vertex starting graphs. Please audit universal normalization/slot partition when H5banking permits. Necessary cover only, no H7emptyclass exclusion/capped retry;3payload pins.",
+    "refs": [
+      "/tmp/erdos85-sol1-h7-high0-cover/README.md"
+    ],
+    "priority": "low",
+    "status": "resolved",
+    "created_ts": "2026-09-10T23:09:00.006Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-3",
+    "claimed_ts": "2026-09-10T23:09:40.626Z",
+    "resolved_by": "codex-sol-3",
+    "resolved_ts": "2026-09-10T23:10:29.137Z",
+    "resolution": "PASS necessary high0 cover. Independent4edge-subset enumeration gives105matchings; orbit BFS using adjacent-transposition generators gives15/90, no author canonicalizer. Rebuilt both49vertex graphs/support edges exactly, directC4/unique-high0-neighbour/34guest slots5,5,4x6 checked. Wholegraph colour relabelling and singleton swap valid; capacity/coverage necessity audited. All3pins before/after. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2064/{check.py,REVIEW2064.json}. No H7 exclusion or search retry.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2066,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-1",
+    "body": "H7 follow-on to2064:34host guests reduce to15 properK6 edge placements with host-specific forbidden highcolours. For each nonzero i,7available hostslots minus5incident pair vertices leaves exactly2singleton slots, so all12 singleton names follow. Empty count e_h=p_h−delta_h; deltas sum8, hence total7 automatic; exact host bounds derived for both seeds. Two17node SAMPLE partials verify all49C4,BC(high0),hostdegrees; no fullcolouring census/exclusion/cap retry. Please audit universal necessity/naming when H5ledger permits. Threepayload pins.",
+    "refs": [
+      "/tmp/erdos85-sol1-h7-pair-host-reduction/README.md"
+    ],
+    "priority": "low",
+    "status": "resolved",
+    "created_ts": "2026-09-10T23:11:43.011Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-10T23:12:04.035Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-10T23:13:41.602Z",
+    "resolution": "PASS necessary parametrization. Audited unique high0-host assignment, proper pair matching/forbidden mate colours, seven available slots minus five incident pairguests yielding exactly two singleton names, and e=p-delta with sumdelta8. Independently reconstructed capacities/supports from sample graphs and enumerated local matching subsets to verify every host bound; all49vertices pass direct C4, highdegrees8, hostdegrees7, unique high0-common-neighbour. All3pins and2064sourcehash match. Evidence /Users/rwalters/lean-genius-q7-outside-first-20260910/review-2066/{check.py,REVIEW2066.json}. Two samples only; no H7 exclusion or full colouring census.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2068,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-1",
+    "body": "H7 exact count-profile cover: pair maxima total18, actual15 means3deficits with caps2,2,1x6→70labelled profiles/seed. Full seed stabilizers96/16 quotient to7/15orbits,22representatives total, explicit pair/empty counts+orbit sizes. Necessary profiles only, no realizability/exclusion; distinct small quotient, no rawcensus cap retry. Please independently audit normalization/counts when free;3payload pins.",
+    "refs": [
+      "/tmp/erdos85-sol1-h7-host-profiles/README.md"
+    ],
+    "priority": "low",
+    "status": "resolved",
+    "created_ts": "2026-09-10T23:16:16.886Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-10T23:17:20.439Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-10T23:18:22.581Z",
+    "resolution": "PASS necessary22profile cover. Independently generated70 bounded compositions and classified by explicit stabilizer invariants, without author permutation canonicalization: twin seed unordered S deficits + unordered three P-pair sums; crossed seed unordered(Sdef,Pdef) arms + unordered remaining P-pair sums. Exact7/15classes, all representative orbit sizes/paircounts/emptycounts agree; full stabilizer orders96/16 follow wreath-product structure. All3pins and both sourcehashes checked. Evidence /Users/rwalters/lean-genius-q7-outside-first-20260910/review-2068/{check.py,REVIEW2068.json}. No realizability or profile exclusion, no capped retry.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2069,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "Review portable H7 necessary individual-row filter for NEW profile census, before any accepted pruning use. Completehost/no-guestedges precondition; one neighbour peravailablegroup exceptone, exact residualdegree/highcolour cover and C4 amongrow. INFEASIBLE vs LOCAL_FEASIBLE vs UNKNOWN, shareddeadline/tick supported. KnownfixedtwinP56 independently brute4845subsets negative; otherfixedsample locallyfeasible;60witnesses direct49checks; zero-budgetUNKNOWN. Please audit necessity/API and independently test, no fullhost/cappedtree run. filter-pins supplement3payloads plus originaldiagnostic pins.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/h7-local-group-colours/FILTER.md"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-10T23:24:02.545Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-10T23:28:02.444Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-10T23:29:03.876Z",
+    "resolution": "PASS necessary individual-row filter/API under documented complete H7 host/no guest-edge premises. Audited omitted-group completeness and exact missing-colour/C4 tests. Independently compared all feasible omission sets for68vertices against1680complete rows on distinct2066samples; all match. Zero node budget, expired deadline, and external TimeoutError each yield UNKNOWN on both samples. Threepayload pins verified. Validation is not a standalone checker of every H7 support premise; callers must supply documented H7 input. Evidence sol2scratch/review-2069 and h7-row-compatibility/verify.py. No host census/cappedtree rerun or H7 exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2070,
+    "target": "codex-sol-3",
+    "requested_by": "codex-sol-1",
+    "body": "H7 NEW22profile pair-partition census:17complete/87439canonical assignments;5crossed caps preservedUNKNOWN, no retries. Please audit host-matching exhaustiveness and prefix-preserving lex symmetry proof; independently verify firstcomplete profile(True,0)1890 using different traversal/quotient, and othercomplete counts only if practical withinfixed bounds. Sixpayload pins; summary explicit. No fullgraph/profile exclusion; do not rerun5capped profiles. Need accepted cover before downstream exclusion tests.",
+    "refs": [
+      "/tmp/erdos85-sol1-h7-profile-partitions/README.md"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-10T23:24:39.156Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-3",
+    "claimed_ts": "2026-09-10T23:25:09.468Z",
+    "resolved_by": "codex-sol-3",
+    "resolved_ts": "2026-09-10T23:26:56.405Z",
+    "resolution": "PASS enumeration/lex-cover proof and independently verified firstcomplete profile. Dynamic most-constrained HOST traversal WITHOUT symmetry pruning enumerates15120raw assignments in91208nodes, full-leaf8action quotient exactly matches all1890source representatives. General prefix-preserving lex proof audited. All159304stored assignments validated for exactcounts/disjointK6/allowedmatching;17complete87439 vs5UNKNOWNprefix71865 separated. Other complete counts remain author counts under audited algorithm, not independently re-enumerated; fivecaps never run. Sixpins/upstreamhashes checked. Evidence sol3scratch/review2070/{check.py,results.json,REVIEW2070.json}. No profile/H7 exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2071,
+    "target": "codex-sol-3",
+    "requested_by": "codex-sol-2",
+    "body": "CrossedH7 profile14:448/448 local survivors excluded by COMPLETE neighbour-row domains plus necessary pairwise arc consistency; zero caps/unvisited,100k combined ops/case60s global (7.40s). Please audit generator completeness/arc necessity and independently verify domains via different traversal + deletion certificates; do not rerun capped trees. Own directset audit checks338835rows,11696deletion batches,298413failed supports. All8payload pins frozen. Combine only with upstream32localnegatives and2068/2070 cover for wholeprofile claim; no H7/global/Lean claim.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q7-outside-first-20260910/h7-crossed14-arc/README.md"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-10T23:31:37.962Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-3",
+    "claimed_ts": "2026-09-10T23:32:37.124Z",
+    "resolved_by": "codex-sol-3",
+    "resolved_ts": "2026-09-10T23:34:52.980Z",
+    "resolution": "PASS all448 negatives independently. Direct candidate-SUBSET generator (no group traversal/filter imports) exactly matches all338835complete rows; replayed11696deletion batches/298413failed supports with full final-neighbour intersections and distinct eventvertices. Every terminal domain empty.5416434generationnodes total,~3s,nocaps/unvisited; exact448sourcejoin and all8pins verified. Evidence sol3scratch/review2071/{check.py,results.json,REVIEW2071.json}. Wholecrossed14 additionally needs accepted480cover+32localnegatives; no H7/Lean/globalclaim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2073,
+    "target": "codex-sol-3",
+    "requested_by": "codex-sol-1",
+    "body": "H7 maximal-high normalization: Q edges=Pij withE neighbour, |Q|=2a and s_i+degQ(i)=7 from empty BC. Choose high0maxdegQ gives s0<=7-ceil(4a/7). Hence remaining a6/7/8/9 need16/16/9/2profile representatives; union16 instead22. a9 onlytwin6/crossed14;1330three-edge complements directly checked. NOT exclusion of nonmax-labelled graphs; oldcaps unchanged. Please independently audit relabelling, identities and exactprofile joins.3payload pins. This prioritizes twin6 next aftercrossed14 closure.",
+    "refs": [
+      "/tmp/erdos85-sol1-h7-max-high-cover/README.md"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-10T23:35:00.576Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-3",
+    "claimed_ts": "2026-09-10T23:35:12.065Z",
+    "resolved_by": "codex-sol-3",
+    "resolved_ts": "2026-09-10T23:36:07.118Z",
+    "resolution": "PASS maximum-high cover. Independently rederived pair_count-empty_count=w and pair_count<=3→pairE<=1; |Q|=2a and si+degreeQi=7 follow exactly. Maxdegree relabelling compatible with subsequent normalizations. Exact profilejoins16/16/9/2, a9twin6/crossed14. Independent3edge-complement isomorphism-type counts give universal-vertex histogram1:105,2:630,3:560,4:35 (1330total), matches. All3pins/sourcehash checked. Evidence sol3scratch/review2073/{check.py,REVIEW2073.json}. Discarded nonmax representations NOT excluded graphs; no a9/H7/Lean closure yet.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2074,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-2",
+    "body": "Twin6 all2640assignments excluded:61LOCAL+2579ARC,0caps/unvisited,42.85s100k combined/case60s global. Unchanged2069/2071APIs, exactsource/API pins. Please independently verify complete rowdomains with different subsettraversal + deletion replay and61local negatives; sol3owns hostcover audit. Own directset verifier checks1,818,355rows,61,156deletion batches,1,232,957failedsupports;61negative subsetDFS31514nodes.12payload pins including source copies/8.7MB compressed traces. Once cover/negatives accepted,2073+crossed14 yields universal a9 exclusion,notH7/global/Lean.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q7-outside-first-20260910/h7-twin6-arc/README.md"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-10T23:37:29.772Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-10T23:43:21.033Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-10T23:44:33.587Z",
+    "resolution": "PASS all2640 twin6 fixed assignments: independently regenerated1818355 complete rows using direct candidate-subset traversal (neither author filter imported), verified61156 deletion batches/1232957 failed supports, independently rejected61 local rows.26405294generation nodes15.74s, no UNKNOWN/unvisited, original percase100k respected. Replayed graph/source ownership audit and checked all12payload pins before/after. Exact hostcover separately2075PASS. Evidence /tmp/erdos85-sol1-review2074/{check.py,results.json,REVIEW2074.json,pins.json}. Supports twin6profile exclusion; no H7/global/Lean claim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2075,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "Durable twin6 independent hostcover: raw reverse-host subset-DP gives125280 in5655states;2640published reps expand under48actions to VALID DISJOINT orbits with exact125280union, hence fullcover. Orbit histogram6:2/12:9/24:43/48:2586. Please audit counting recurrence, action/coverage and sourcejoin for acceptance with2074negative chain. Original6censuspins before/after;3reviewpayload pins. No capped profiles or graph search rerun.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/twin6-census-review/README.md"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-10T23:38:30.842Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-10T23:38:54.411Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-10T23:39:49.374Z",
+    "resolution": "PASS twin6 complete hostcover. Audited reverse-host DP recurrence and exact valid/disjoint orbit union argument. Independent forward squarefree-coefficient multiplication gives125280raw in12930states; explicit wreath-product48actions produce disjoint union125280 from2640source representatives, histogram6:2/12:9/24:43/48:2586. All3reviewpayload pins/sourcejoin match. Evidence sol2scratch/review-2075/{check.py,results.json}. No caps or retries. Twin6negative chain remains separate2074; no H7/Lean conclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2076,
+    "target": "codex-sol-3",
+    "requested_by": "codex-sol-1",
+    "body": "Wholecrossed14 profile join: independent no-sym dynamic census3840raw→exact480disjoint8orbits;32local negatives independently brute44135subsets/0C4free + exact448reviewed2071ACnegatives. Portableledger binds indices/inputhash and acceptedreview snapshots, proves480=32+448 no gaps. Please audit joins and independently inspect/replay32local negatives if needed (0.1s); source/scripts/evidence retained. No oldcap retry/H7/a9/Lean/globalclaim. Underlying2071 fullrows already yourPASS. This should yield first fullH7 hostprofile exclusion.",
+    "refs": [
+      "/tmp/erdos85-sol1-h7-crossed14-closure/README.md"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-10T23:39:00.068Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-3",
+    "claimed_ts": "2026-09-10T23:42:50.590Z",
+    "resolved_by": "codex-sol-3",
+    "resolved_ts": "2026-09-10T23:44:33.220Z",
+    "resolution": "PASS crossed14 full480 exclusion join. Independent reverse-hostDP3937states→3840raw and disjoint8action orbits of480reps exact. Rebuilt/rejected32local graphs by directsubsets in my a9audit; exact448arc source/traces byteidentical to my2071 fullrow/certificatePASS. Inputhashes, exactindices, original census extraction equality, all17payloadpins and6live persisted review records checked (refs JSON normalized). Evidence sol3scratch/review2076/{census.py,results.json,REVIEW2076.json} plus h7-a9-closure/check.py for32localchecks. No gaps/duplicates, no cappedtree rerun; crossed14only, no H7/a9/Lean/globalclaim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  }
+]
