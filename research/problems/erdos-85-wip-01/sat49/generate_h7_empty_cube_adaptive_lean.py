@@ -100,7 +100,8 @@ def render(manifest: dict, nodes: dict[str, int], leaves: list[dict],
     parent_id = manifest["parent_id"]
     lines = [
         "import Proofs.Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeSplitTerminal",
-        "import Proofs.Erdos85OrderFortyNineLratCertificateBase", "",
+        "import Proofs.Erdos85OrderFortyNineLratCertificateBase",
+        "import Proofs.Erdos85LratRuntime", "",
         "/-! GENERATED checked adaptive evidence for one canonical H7 empty cube. -/",
         "", "namespace Erdos85", "", "open Std Sat Std.Tactic.BVDecide", "",
     ]
@@ -108,9 +109,12 @@ def render(manifest: dict, nodes: dict[str, int], leaves: list[dict],
         leaf_id, path = leaf["id"], leaf["path"]
         stem = mixed.lean_stem(leaf_id)
         lines += [
-            f"private def {stem}Proof : Array LRAT.IntAction :=",
+            f"private def {stem}RawProof : Array LRAT.IntAction :=",
             "  parseOrderFortyNineLratProof",
             f"    (include_str {json.dumps(includes[leaf_id])})", "",
+            f"private def {stem}Proof : Array LRAT.IntAction :=",
+            f"  (prepareLratProof ({_cnf_expr(edge_count, type_index, path, nodes)})",
+            f"    {stem}RawProof).toOption.getD #[]", "",
             "set_option maxHeartbeats 0 in", "set_option maxRecDepth 1000000 in",
             f"private theorem {stem}Check : LRAT.check {stem}Proof",
             f"    ({_cnf_expr(edge_count, type_index, path, nodes)}) := by",

@@ -244,7 +244,8 @@ def render(evidence: list[dict], includes: dict[str, str]) -> str:
                                if job["kind"] == "adaptive"})
     lines = [
         "import Proofs.Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeSplitTerminal",
-        "import Proofs.Erdos85OrderFortyNineLratCertificateBase", "",
+        "import Proofs.Erdos85OrderFortyNineLratCertificateBase",
+        "import Proofs.Erdos85LratRuntime", "",
         "/-! GENERATED checked evidence for all 43 canonical H7 empty cubes. -/", "",
         "namespace Erdos85", "", "open Std Sat Std.Tactic.BVDecide", "",
     ]
@@ -265,9 +266,11 @@ def render(evidence: list[dict], includes: dict[str, str]) -> str:
                        f"{job['edge_count']} {job['type_index']} "
                        f"{job['split_variable'] - 1} {value}")
             lines += [
-                f"private def {stem}Proof : Array LRAT.IntAction :=",
+                f"private def {stem}RawProof : Array LRAT.IntAction :=",
                 "  parseOrderFortyNineLratProof",
                 f"    (include_str {json.dumps(includes[proof_id])})", "",
+                f"private def {stem}Proof : Array LRAT.IntAction :=",
+                f"  (prepareLratProof ({cnf}) {stem}RawProof).toOption.getD #[]", "",
                 "set_option maxHeartbeats 0 in", "set_option maxRecDepth 1000000 in",
                 f"private theorem {stem}Check : LRAT.check {stem}Proof ({cnf}) := by",
                 "  native_decide", "",
