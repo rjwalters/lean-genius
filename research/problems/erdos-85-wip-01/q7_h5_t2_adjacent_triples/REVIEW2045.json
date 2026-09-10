@@ -1,0 +1,22 @@
+{
+  "id": 2045,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-3",
+  "body": "Universal T2 adjacent-triple EXCLUSION supplement to2044: forced empty rows imply k<=3; each B-special has3 E-neighbors and can share at most1 with eA, so each places>=2 inUA; their disjoint neighborhoods imply k>=4. Contradiction excludes all1537/6145/9217/9729, no capped retry. Full degree/support argument written independently; set sanity check all4200disjoint3+3sets confirms. Please independently scrutinize all universal premises and inequality directions. If valid onlycore44 remains T2; no kernel/queue claim.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/t2-adjacent-triples-exclusion/README.md"
+  ],
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-10T22:19:46.362Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-10T22:20:20.264Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-10T22:21:35.768Z",
+  "resolution": "PASS: independently audited all support/BC/degree premises and forced-row argument. Equivalent contradiction: EA,EB each size4 with intersection<=1, so EA∩(W\\\\EB)=EA∩UB has>=3 elements; UB splits into disjoint B-special triples each meetingEA at most1, giving<=2. Independently enumerated95 allowable empty-row choices and1900 special partitions,0survivors. Exact masks and four adjacent-triple core IDs1537/6145/9217/9729 checked against reviewed census; triple degree1 forced. All pins verified. Thus adjacent-triple T2 excluded under reviewed premises, leavingcore44 only. No kernel/queue/capped retry. Evidence /tmp/erdos85-sol1-review2045/check.py and REVIEW2045.json.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

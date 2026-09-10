@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "source_pins": {
+    "check.py": "9614f67348db0defb01f549946752d491b3cd297a5687a0dde9e17a96e0d07a4",
+    "result.json": "dd3af9f68a66cc5328e420d1fef39a9c485e33dd5f622b8f1aa3de88494ba567",
+    "README.md": "6e6dca1588412d94b848246e966fe15ee0d91fbce97f5d8930476809b54adf64"
+  },
+  "canonical_core_sha256": "831c6e0cd3dc240acb9f9190b02ff26f3247f0d0c1a1fbf8417f950be43fbc61",
+  "empty_row_pairs_checked": 95,
+  "special_partitions_checked": 1900,
+  "survivors": 0,
+  "argument": "Forced rows EA and EB each have size4 and intersect in at most1, so EA meets W\\EB=UB in at least3. But UB is the disjoint union of the two B-special neighbourhoods, each meeting EA in at most1; hence at most2. Contradiction.",
+  "premise_audit": "Adjacent triples force one-heavy neighbours; each triple has two special singletons and one empty. Specials have exactly one heavy, two singletons, three empties. Own-side empty-special edges repeat a high colour and opposite-side edges close a length3path; special empty sets lie in W and are disjoint within each side. Triple empty rows have degree4 and are forced complements.",
+  "scope": "All adjacent-triple T2 graphs excluded under reviewed support/BC/degree premises, covering four remaining core IDs. Core44 remains open. No kernel theorem, queue change or cap retry."
+}
