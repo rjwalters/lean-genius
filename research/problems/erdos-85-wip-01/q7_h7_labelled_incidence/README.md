@@ -1,0 +1,9 @@
+# Bounded H7 labelled incidence pilot
+
+The earlier universal singleton-capacity test leaves 28 empty-graph classes. This pilot assigns actual high labels and twin singleton identities to empty-to-low incidences. It finds 26 partial witnesses and reaches the 100,000-node cap on masks 6808 and 39441 (both six-edge empty graphs). No class is exhausted or excluded. The pilot stops here; the Phase B queue is unchanged.
+
+For empty vertex v of empty degree d, the established ledger requires d pair-support neighbors and 7−2d singleton neighbors. BC=J means the pair neighbors form a matching of d high-label pairs, with singleton neighbors covering exactly the remaining labels. Each pair-support vertex has at most one empty neighbor. Each singleton has at most two; if it has two, they cannot already have a common empty neighbor, and no other singleton can share that same empty pair. These are the constraints searched. High labels and the two copies of each singleton are interchangeable for the initial normalizations.
+
+The search is intentionally partial: no edges among singleton/pair vertices are assigned, and their remaining degrees are not fulfilled. Saved witnesses contain 49 vertices with high degrees eight, empty degrees seven, the prescribed high supports, and no C4. This shows the tested incidence condition cannot exclude those 26 classes; it is not a graph of minimum degree seven. The two capped classes remain unknown, not nonexistence results.
+
+`python3 pilot.py --cap 100000 --seconds 1 --output NEW.json` reproduces the bounded search. `python3 verify_witnesses.py` separately checks the saved edge lists using adjacency-matrix common-neighbor counts, without importing the search. Input is the existing universal singleton-capacity JSON; no solver, network, proof replay or Lean build runs.
