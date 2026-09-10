@@ -1,0 +1,842 @@
+{
+  "checked_utc": "2026-09-10T05:22:03.893695+00:00",
+  "scope": "Local payload/ledger metadata only. Eight nested payloads are cover files; no nested positive payloads or third-level payloads were found in these manifest-indexed paths. Different ledger schemas are not treated as accepted checks.",
+  "all_136_missing_roots_in_nested_manifest": true,
+  "manifest_counts": {
+    "nested_manifest.json": {
+      "parents": 136,
+      "children": 8632,
+      "local_gz": 8,
+      "ledger": 8,
+      "sha256": "7ca5dde323c5eb011cfc4c66fec9bc90d2332ed0fff611fa003bec4bf519b86f",
+      "parent_manifest_sha256": "86edc38a9f0aeee0c3d19bb863685b1f9784acae3f24f988e6ea67a6e2e3e8f4"
+    },
+    "pilot_four_third_manifest.json": {
+      "parents": 256,
+      "children": 16896,
+      "local_gz": 0,
+      "ledger": 9,
+      "sha256": "4fb05db998f8366f93b09507bf6046ae64b05cee4a20dc2682f169b1e922d8db",
+      "parent_manifest_sha256": "0024461fb946d5c262dd06b7b07a24cff9752ea8ca02dc8a1f3d60ce850d7d8f"
+    }
+  },
+  "missing_roots_with_complete_metadata_tree": [],
+  "rows": [
+    {
+      "root": "h3_b1.cube-0-0",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 2
+    },
+    {
+      "root": "h3_c1.cube-1-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 2
+    },
+    {
+      "root": "h3_c1.cube-1-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 2
+    },
+    {
+      "root": "h3_c1.cube-1-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 2
+    },
+    {
+      "root": "h3_c1.cube-1-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h3_c2.cube-0-0",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h3_dist2.cube-0-0",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-0-0",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-1-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-1-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-1-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-1-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-1-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-1-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-1-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-2-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-2-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-2-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-2-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-2-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-2-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-2-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-3-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-3-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-3-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-3-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-3-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-3-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-3-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-4-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-4-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-4-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-4-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-4-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-4-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-4-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-5-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-5-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-5-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-5-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-5-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-5-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-5-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-6-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-6-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-6-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-6-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-6-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-6-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t0.cube-6-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-0-0",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-1-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-1-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-1-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-1-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-1-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-1-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-1-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-2-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-2-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-2-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-2-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-2-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-2-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-2-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-3-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-3-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-3-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-3-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-3-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-3-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-3-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-4-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-4-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-4-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-4-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-4-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-4-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-4-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-5-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-5-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-5-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-5-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-5-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-5-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-5-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-6-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-6-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-6-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-6-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-6-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-6-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t1.cube-6-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 58,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-0-0",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-1-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-1-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-1-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-1-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-1-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-1-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-1-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-2-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-2-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-2-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-2-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-2-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-2-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-2-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-3-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-3-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-3-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-3-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-3-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-3-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-3-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-4-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-4-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-4-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-4-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-4-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-4-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-4-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-5-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-5-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-5-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-5-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-5-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-5-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-5-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-6-1",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-6-2",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-6-3",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-6-4",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-6-5",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-6-6",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    },
+    {
+      "root": "h5_t2.cube-6-7",
+      "metadata_tree_complete": false,
+      "immediate_child_count": 66,
+      "immediate_children_with_local_file": 0
+    }
+  ]
+}

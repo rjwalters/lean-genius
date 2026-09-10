@@ -1,0 +1,16 @@
+[
+  {
+    "queue": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/h7adaptive-missing29/h8-followups/queue.leaf-000.json",
+    "returncode": 1,
+    "output": "Traceback (most recent call last):\n  File \"/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/sat49/validate_h8_slow_unknown_followup_queue.py\", line 83, in <module>\n    if __name__==\"__main__\": main()\n                             ~~~~^^\n  File \"/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/sat49/validate_h8_slow_unknown_followup_queue.py\", line 81, in main\n    result=validate_and_receipt(queue,a.receipt.absolute()); print(f\"H8 FOLLOWUP QUEUE VERIFIED jobs=2 receipt_sha256={queues.sha256(a.receipt.absolute())}\")\n  File \"/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/sat49/validate_h8_slow_unknown_followup_queue.py\", line 64, in validate_and_receipt\n    require(all(isinstance(pre_queue.get(prefix),str) for prefix in prefixes),\"H8 queue input paths missing\")\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/sat49/validate_h8_slow_unknown_followup_queue.py\", line 13, in require\n    if not ok: raise ValueError(message)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: H8 queue input paths missing\n",
+    "receipt_created": false,
+    "jobs_directory_exists": false
+  },
+  {
+    "queue": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/h7adaptive-missing29/h8-followups/queue.leaf-001.json",
+    "returncode": 1,
+    "output": "Traceback (most recent call last):\n  File \"/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/sat49/validate_h8_slow_unknown_followup_queue.py\", line 83, in <module>\n    if __name__==\"__main__\": main()\n                             ~~~~^^\n  File \"/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/sat49/validate_h8_slow_unknown_followup_queue.py\", line 81, in main\n    result=validate_and_receipt(queue,a.receipt.absolute()); print(f\"H8 FOLLOWUP QUEUE VERIFIED jobs=2 receipt_sha256={queues.sha256(a.receipt.absolute())}\")\n  File \"/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/sat49/validate_h8_slow_unknown_followup_queue.py\", line 64, in validate_and_receipt\n    require(all(isinstance(pre_queue.get(prefix),str) for prefix in prefixes),\"H8 queue input paths missing\")\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/sat49/validate_h8_slow_unknown_followup_queue.py\", line 13, in require\n    if not ok: raise ValueError(message)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: H8 queue input paths missing\n",
+    "receipt_created": false,
+    "jobs_directory_exists": false
+  }
+]

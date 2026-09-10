@@ -1,0 +1,96 @@
+{
+  "scope": "read-only local manifest and terminal-marker census; not proof replay or liveness",
+  "queue": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/h7adaptive-missing29/queue.json",
+  "queue_sha256": "3af3c6b13648328f29f488e1143e194cdf8c608df461cab81c45f7d72cbcdedb",
+  "parent_manifest_sha256": "e298e181f67e2f50d88fa61f71516cb86af31948e26413894bb3b147f51020c6",
+  "parent_count": 29,
+  "leaf_count": 232,
+  "verified_spec_manifest_files": 58,
+  "marker_counts": {
+    "unknown.line": 4,
+    "failure.line": 1,
+    "no terminal marker": 227
+  },
+  "terminal_records": [
+    {
+      "id": "cube_F6_t14.adaptive.leaf-000",
+      "markers": {
+        "unknown.line": "2026-08-30T22:19:41Z cube_F6_t14.adaptive.leaf-000 SLOW-UNKNOWN schema=erdos85-h7-adaptive-unknown-v1 rc=0 cap_s=14400 queue_sha256=3af3c6b13648328f29f488e1143e194cdf8c608df461cab81c45f7d72cbcdedb cadical_sha256=601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa worker_sha256=32ac95f0cc0fd2a035f359070dd7125013f88c7f69084cf8b88cba6b60b7ac01"
+      }
+    },
+    {
+      "id": "cube_F6_t14.adaptive.leaf-001",
+      "markers": {
+        "unknown.line": "2026-08-31T02:19:45Z cube_F6_t14.adaptive.leaf-001 SLOW-UNKNOWN schema=erdos85-h7-adaptive-unknown-v1 rc=0 cap_s=14400 queue_sha256=3af3c6b13648328f29f488e1143e194cdf8c608df461cab81c45f7d72cbcdedb cadical_sha256=601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa worker_sha256=32ac95f0cc0fd2a035f359070dd7125013f88c7f69084cf8b88cba6b60b7ac01"
+      }
+    },
+    {
+      "id": "cube_F6_t14.adaptive.leaf-010",
+      "markers": {
+        "unknown.line": "2026-08-31T06:19:48Z cube_F6_t14.adaptive.leaf-010 SLOW-UNKNOWN schema=erdos85-h7-adaptive-unknown-v1 rc=0 cap_s=14400 queue_sha256=3af3c6b13648328f29f488e1143e194cdf8c608df461cab81c45f7d72cbcdedb cadical_sha256=601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa worker_sha256=32ac95f0cc0fd2a035f359070dd7125013f88c7f69084cf8b88cba6b60b7ac01"
+      }
+    },
+    {
+      "id": "cube_F6_t14.adaptive.leaf-011",
+      "markers": {
+        "unknown.line": "2026-08-31T10:19:52Z cube_F6_t14.adaptive.leaf-011 SLOW-UNKNOWN schema=erdos85-h7-adaptive-unknown-v1 rc=0 cap_s=14400 queue_sha256=3af3c6b13648328f29f488e1143e194cdf8c608df461cab81c45f7d72cbcdedb cadical_sha256=601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa worker_sha256=32ac95f0cc0fd2a035f359070dd7125013f88c7f69084cf8b88cba6b60b7ac01"
+      }
+    },
+    {
+      "id": "cube_F6_t14.adaptive.leaf-100",
+      "markers": {
+        "failure.line": "2026-08-31T11:40:33Z cube_F6_t14.adaptive.leaf-100 NONTERMINAL-FAIL stage=solve-nonterminal rc=-15"
+      }
+    }
+  ],
+  "followup_queues": [
+    {
+      "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/h7adaptive-missing29/h8-followups/queue.leaf-000.json",
+      "sha256": "e9787f6797df976398e402e6b61364fe3fecbf1e2c43b2299fc5b305cd4d4f8a",
+      "keys": [
+        "base_sha256",
+        "cadical_sha256",
+        "cap_s",
+        "job_count",
+        "jobs",
+        "parent_manifest_sha256",
+        "schema",
+        "source_job",
+        "source_queue",
+        "source_queue_sha256",
+        "source_unknown_marker",
+        "source_unknown_marker_sha256",
+        "source_worker",
+        "source_worker_sha256",
+        "split_variable"
+      ],
+      "summary": {
+        "job_count": 2
+      }
+    },
+    {
+      "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/h7adaptive-missing29/h8-followups/queue.leaf-001.json",
+      "sha256": "a0145e59aa99f2c23123c3af0a762f7010ac928e359055b4a36d2a17c2eb8458",
+      "keys": [
+        "base_sha256",
+        "cadical_sha256",
+        "cap_s",
+        "job_count",
+        "jobs",
+        "parent_manifest_sha256",
+        "schema",
+        "source_job",
+        "source_queue",
+        "source_queue_sha256",
+        "source_unknown_marker",
+        "source_unknown_marker_sha256",
+        "source_worker",
+        "source_worker_sha256",
+        "split_variable"
+      ],
+      "summary": {
+        "job_count": 2
+      }
+    }
+  ]
+}

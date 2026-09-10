@@ -1,0 +1,21 @@
+{
+  "checked_utc": "2026-09-10T05:41:59.303120+00:00",
+  "inventory_sha256": "aa6872ab672adbd7c2cc1068c146fd334800d83312add4da8d8878d4a3d5d02e",
+  "snapshot_manifest_sha256": "ca927a5909de5ddabb45744543d2b15099425b80b0830d7cda5e1a8e1379c9aa",
+  "scope": "H3/H5 root/nested metadata accounting and H7 portable identity/partition; H1 new exact-set reconciliation not independently audited in this review",
+  "result": "PASS within scope",
+  "checks": [
+    "portable verify_snapshot.py PASS",
+    "four H7 peer records byte-identical to original Sol3 readbacks",
+    "406 unique roots; 274 ledgers; 270 local proof paths; 136 missing = 7 H3 + 129 H5",
+    "all root acceptance fields null",
+    "136 nested parent IDs equal direct-root gap, no complete metadata tree",
+    "five approved root/queue/worker lineage files freshly SHA256 matched"
+  ],
+  "limitations": [
+    "No new proof payload replay, Lean compilation, S3 reads or liveness checks",
+    "Nested large child totals taken from attributed snapshot; not all descendant filesystem paths re-enumerated",
+    "H1 additions and future anomaly addendum require separate review",
+    "Verifier authenticates listed portable files against supplied manifest; does not independently authenticate manifest provenance or prove LRAT validity"
+  ]
+}

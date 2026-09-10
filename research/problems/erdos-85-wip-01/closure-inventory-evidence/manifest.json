@@ -1,0 +1,89 @@
+{
+  "scope": "Portable metadata snapshots; historical absolute paths describe provenance and are not required to read these copies. Peer audit conclusions are attributed to codex-sol-3. No proof payloads included.",
+  "files": [
+    {
+      "name": "h7-adaptive-queue.json",
+      "sha256": "3af3c6b13648328f29f488e1143e194cdf8c608df461cab81c45f7d72cbcdedb",
+      "bytes": 134372,
+      "source": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/h7adaptive-missing29/queue.json"
+    },
+    {
+      "name": "h7-cnf-identities.json",
+      "sha256": "dafbf2e85616a8e9be1788157bb33453c8799605bf1a1a92351e7d3aff65fb66",
+      "bytes": 395,
+      "source": "/Users/rwalters/lean-genius-erdos85-goal47-sol3/h7-readback/cnf-identities.json"
+    },
+    {
+      "name": "h7-coverage-join.json",
+      "sha256": "9fa266e1135596a60f0dcb65ddd8200226fff52396ab69810de3afa07764ed9e",
+      "bytes": 341,
+      "source": "codex-sol-1 local exact-set join"
+    },
+    {
+      "name": "h7-direct-payloads.json",
+      "sha256": "56ffffe265065743dda208b3d3f7a2ee3567b156e33f842a2c72bf81c624f817",
+      "bytes": 6862,
+      "source": "/Users/rwalters/lean-genius-erdos85-goal47-sol3/h7-readback/direct-payloads.json"
+    },
+    {
+      "name": "h7-followup-validation.json",
+      "sha256": "2a9275b1a1b8d7b5d4d9246c1ad7cd628a6a211dfa3359ad2daa97f1a22c0cfc",
+      "bytes": 3337,
+      "source": "/Users/rwalters/lean-genius-erdos85-goal47-sol3/h7-readback/followup-validation.json"
+    },
+    {
+      "name": "h7-parent.json",
+      "sha256": "e298e181f67e2f50d88fa61f71516cb86af31948e26413894bb3b147f51020c6",
+      "bytes": 26081,
+      "source": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/h7adaptive-missing29/parent.json"
+    },
+    {
+      "name": "h7-readback.json",
+      "sha256": "a52485447914d150b2f32af1a9e9345f3c7ba2a201ddc34055fb392e2b456375",
+      "bytes": 4137,
+      "source": "/Users/rwalters/lean-genius-erdos85-goal47-sol3/h7-readback/readback.json"
+    },
+    {
+      "name": "h7-slot-join.json",
+      "sha256": "aee6754298f46361f6c8ad8a9b74cb73399d10825ed9af549a83fbd623aa875d",
+      "bytes": 1123,
+      "source": "/Users/rwalters/lean-genius-erdos85-round115-sol1/closure-inventory-audit/h7-slot-join.json"
+    },
+    {
+      "name": "small-high-nested-metadata.json",
+      "sha256": "b85ffd47d768c328954b5618038446a93732f00f1be476e19d788bdafc8d0887",
+      "bytes": 23514,
+      "source": "/Users/rwalters/lean-genius-erdos85-round115-sol1/closure-inventory-audit/small-high-nested-metadata.json"
+    },
+    {
+      "name": "small-high-root-metadata.json",
+      "sha256": "b1782b9a71ceead4a13577edbe90111ac8aa30af596f590bf8219dc15bef5dd4",
+      "bytes": 285844,
+      "source": "/Users/rwalters/lean-genius-erdos85-round115-sol1/closure-inventory-audit/small-high-root-metadata.json"
+    },
+    {
+      "name": "verify_snapshot.py",
+      "sha256": "a728919005b03e6f22a051b27dd6e68e801692b800e510f95685285af27b5ad8",
+      "bytes": 3025,
+      "source": "codex-sol-1 portable snapshot verifier"
+    },
+    {
+      "name": "reconcile_h1_snapshot.py",
+      "sha256": "9051d4071faa4129f641988160b3ffd2e37410294cb9e25f289f2412c66a213d",
+      "bytes": 5140,
+      "source": "codex-sol-1 exact set reconciliation; inputs pinned separately by h1-source/MANIFEST.sha256"
+    },
+    {
+      "name": "h1-exact-set-join.json",
+      "sha256": "b2312ca84c5c4013042919d161ecc2855a6159f2291b924e1109a6462f1237a6",
+      "bytes": 3955583,
+      "source": "codex-sol-1 exact set reconciliation; inputs pinned separately by h1-source/MANIFEST.sha256"
+    },
+    {
+      "name": "h1-outside-v3-historical.json",
+      "sha256": "ccea67b6d1c0d75582f2a9637c1a4f99bcc81c98d2c090f880f7f59c36303ae0",
+      "bytes": 107877,
+      "source": "codex-sol-1 historical coverage subset; original source digest and timestamp inside"
+    }
+  ]
+}
