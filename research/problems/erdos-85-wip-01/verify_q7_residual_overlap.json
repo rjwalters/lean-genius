@@ -1,0 +1,81 @@
+{
+  "scope": "Integral kernel basis and formal eigenvector identities only; residual characteristic-polynomial implication is paper proof",
+  "profiles": [
+    {
+      "h": 1,
+      "triple_count": 0,
+      "prime": 5,
+      "eigenvalue": 1,
+      "exact_kernel_lattice_determinant": 320,
+      "mod7_kernel_lower_bound": 0,
+      "residual_constant_divisor": 1,
+      "adjacency_determinant_divisor": 48,
+      "vector_coefficients": [
+        1,
+        -6
+      ],
+      "unimodular_minor": 1,
+      "kernel_rank": 46,
+      "orthogonality_vector": [
+        0,
+        -40
+      ],
+      "eigenvector_error_coefficients": [
+        0,
+        5
+      ]
+    },
+    {
+      "h": 3,
+      "triple_count": 0,
+      "prime": 67,
+      "eigenvalue": 18,
+      "exact_kernel_lattice_determinant": 13132,
+      "mod7_kernel_lower_bound": 2,
+      "residual_constant_divisor": 49,
+      "adjacency_determinant_divisor": 110446,
+      "vector_coefficients": [
+        12,
+        -23
+      ],
+      "unimodular_minor": 1,
+      "kernel_rank": 42,
+      "orthogonality_vector": [
+        0,
+        -134,
+        -134,
+        -134
+      ],
+      "eigenvector_error_coefficients": [
+        -201,
+        402
+      ]
+    },
+    {
+      "h": 3,
+      "triple_count": 1,
+      "prime": 67,
+      "eigenvalue": 18,
+      "exact_kernel_lattice_determinant": 13132,
+      "mod7_kernel_lower_bound": 2,
+      "residual_constant_divisor": 49,
+      "adjacency_determinant_divisor": 110446,
+      "vector_coefficients": [
+        12,
+        -23
+      ],
+      "unimodular_minor": 1,
+      "kernel_rank": 42,
+      "orthogonality_vector": [
+        0,
+        -134,
+        -134,
+        -134
+      ],
+      "eigenvector_error_coefficients": [
+        -201,
+        402
+      ]
+    }
+  ]
+}
