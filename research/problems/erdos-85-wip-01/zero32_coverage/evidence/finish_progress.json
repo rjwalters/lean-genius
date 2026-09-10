@@ -1,0 +1,25 @@
+{
+  "pid": 35304,
+  "status": "complete",
+  "elapsed_seconds": 341.9948852499947,
+  "results": [
+    {
+      "module": "Zero32Assembly",
+      "source_sha256": "2110296c8ec3fbe057efc87bc16926b4cae3243e645d54bc4050d1b941155f41",
+      "verified": true,
+      "returncode": 0,
+      "timeout": false,
+      "elapsed_seconds": 5.912288957973942,
+      "process_bound_seconds": 180
+    },
+    {
+      "module": "Zero32Exclusion",
+      "source_sha256": "d38aa5544d80a4470a8a1fe381f7527266e3cb19b80455fd13c90fe26a520d2d",
+      "verified": true,
+      "returncode": 0,
+      "timeout": false,
+      "elapsed_seconds": 5.339997084112838,
+      "process_bound_seconds": 180
+    }
+  ]
+}

@@ -1,0 +1,296 @@
+{
+  "status": "complete",
+  "scope": "U32/R14 only; broader problem open",
+  "modules": 41,
+  "exports": 45,
+  "missing": [],
+  "results": [
+    {
+      "name": "Zero32Data",
+      "exports": 0,
+      "source_sha256": "6a944fe982826e36e5f2977366db9800526125b8da12e4c18167790ad9921322",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "receipt_sha256": "c7dfa95f694a2d081a7b42bb49a554d434bf7cdb2273da9905849735859c90c9"
+    },
+    {
+      "name": "Zero32Inputs",
+      "exports": 5,
+      "source_sha256": "effe09007390f96dd88fc50db142d68c63f69a69d1e1b84d5338a8b8041a5e04",
+      "log_sha256": "1173189170162a33e408124970e66ae91dea416242b85df30fe61229867cb262",
+      "receipt_sha256": "e2d9f21e0144d706fe2dd42818f10e27ab0e6988e2193b5ab4405430330a5369"
+    },
+    {
+      "name": "Zero32Structure",
+      "exports": 1,
+      "source_sha256": "727bfde04b2dbb046a967c287593e285b776c5b4b0c3bcc9a34c1f89a3236782",
+      "log_sha256": "661c1a3f0ecc3972ea4c37fa2f2cbc28a7237d0f8505e507a9548e318ab83ddd",
+      "receipt_sha256": "70e287f3426cf1136a0bcdc3c41754e7ee0b75e0dfa1b4c2647959c56d1b07c1"
+    },
+    {
+      "name": "Zero32Shard0",
+      "exports": 1,
+      "source_sha256": "39eef07fbe4b2c97f59a2efd860be2fa1014ebfb4625b58fa1b69aca8964af5a",
+      "log_sha256": "66f99cf45c571551c67be21cb55494c079bcd165234211eefa5b5fe7626279ef",
+      "receipt_sha256": "423cbf97f091de094326b7d892ed5368357c72f2843c22f9c780a168a94b1946"
+    },
+    {
+      "name": "Zero32Shard1",
+      "exports": 1,
+      "source_sha256": "c737d482abc01d7964a023df9165dcfa778ae1f6956823f2706add8dd12832cd",
+      "log_sha256": "62384c696640298067844a9946b9671731b3d73a958dafd51f5dbff123ad5709",
+      "receipt_sha256": "eb1396ef7a9bbdf058a67e90f1861fff7e7aea7ce44b76758a301807b623ea91"
+    },
+    {
+      "name": "Zero32Shard2",
+      "exports": 1,
+      "source_sha256": "0ca40c123689c17fcf9a29e8852d33e78dffe7881edf982f15378b28b3dd5fc7",
+      "log_sha256": "da53630db5f30898c967d4bcfd6ad85a11097c1dc7d01574ca6f95f48ef6ea3e",
+      "receipt_sha256": "49389c968ffb5c58bbaccd1389cd49c98c8c5d38e95981fe4270e0a8783938ec"
+    },
+    {
+      "name": "Zero32Shard3",
+      "exports": 1,
+      "source_sha256": "da2e7926da03407fe6f468bc22d6cf62e30e5e253dede0e04b5149dbfab2ac7f",
+      "log_sha256": "6f0b0a8cbcb5926db87518bcdc013802862ce2c059fc50315deeca5601a087b7",
+      "receipt_sha256": "e28ba7d65d23a80e29876d571a4806edb6f359dd4b425622da5f91375f34703e"
+    },
+    {
+      "name": "Zero32Shard4",
+      "exports": 1,
+      "source_sha256": "0e768e427588a50fb12670a1581712ddeb89aa5b2f7e0770ef9599ed9e8e56ff",
+      "log_sha256": "b988398e8a7b8622fbfcc4beb1c1617646717a1bd1f4d017778edd4d82c86dd0",
+      "receipt_sha256": "3a0eb5cd06012c52cb3691b8c99c489478201feaf167c87ddea2537fee4e15df"
+    },
+    {
+      "name": "Zero32Shard5",
+      "exports": 1,
+      "source_sha256": "c0ea516f644b40292cb2232ad6ecb496015e4332a624b9b8417f0088dbdf48ee",
+      "log_sha256": "a022126e5962abe4448b864b0d37f2356bf671e3a903d82aa96d500b5a583088",
+      "receipt_sha256": "83432fc2715dc3ac49e7104c4017da15db49ee2e5dab7ed3d92163883d1805f2"
+    },
+    {
+      "name": "Zero32Shard6",
+      "exports": 1,
+      "source_sha256": "3628bdeddd4eca60faedd81e04a35e50c648dcd6d5b4de2574d92b92403c64cc",
+      "log_sha256": "aef25e89595bdfab12478138fedc46498bdca15c0cac700f6298f43a64ddaea1",
+      "receipt_sha256": "a58ddf1cf6f5f231ab502a7ba65366b9c36defb2aefbe17f4de4de987ebc3c89"
+    },
+    {
+      "name": "Zero32Shard7",
+      "exports": 1,
+      "source_sha256": "2ce34a7922ccd0b2bcfea0d8b000f6d50caa00435da20b950e77ddf369bd7815",
+      "log_sha256": "5e4a5f6214f976900532e5bc818a28ea936aa9377315dd65601575af24f7e326",
+      "receipt_sha256": "ac4453b90af475e47113d78962c9f4d14ae540eec1a6f38de6aa28fb64a34c4e"
+    },
+    {
+      "name": "Zero32Shard8",
+      "exports": 1,
+      "source_sha256": "1f1cc007d9e02eb9b480eeaa338207974e6f9370d298d0d06296894f4926695e",
+      "log_sha256": "63bd49741b0f0c3d841b93e5344ca931cc1c0807f047bb86f78d96386c447b4b",
+      "receipt_sha256": "aa2632848d1f576f019dcef7a75334ae5472fc9e3c5ab28a39a86ca91b9f0e32"
+    },
+    {
+      "name": "Zero32Shard9",
+      "exports": 1,
+      "source_sha256": "ef2ca6d2e9f2c4773b7c5924752f3716081a42f614420af7c7b728eeff5f6176",
+      "log_sha256": "b88de32e96088893470feab538a818d64ae21e50faacd46b3955676b16ba0629",
+      "receipt_sha256": "619446bd893ff295b31228fd80d8728fa0a93074aefca7edbc5665d5e3322e2e"
+    },
+    {
+      "name": "Zero32Shard10",
+      "exports": 1,
+      "source_sha256": "52c9a7c81cf77dd1bddd4bfd870820b0eb0354f5ac994d0bfe905ac3fb4529b4",
+      "log_sha256": "9745a7bd56d45ba8e327f4bdbbaa3ae1c835112682c107b328b96e15a4fb32b4",
+      "receipt_sha256": "36e70e796dcbb38dfa2d0c317f7ad8efadfa219faab713f201ec52b32ba71ae4"
+    },
+    {
+      "name": "Zero32Shard11",
+      "exports": 1,
+      "source_sha256": "fd96d5824115499a8632c454d444f373f43c15ae83be7643e14a9be96912d604",
+      "log_sha256": "8584047c3608556f0f6c0d68ae446378c98fd30197b8d9f862c4f06ef7cc9d54",
+      "receipt_sha256": "750fb0d38f9d1bb68077f12511b5e1a636d39967e4de608d598bd6308fbdf613"
+    },
+    {
+      "name": "Zero32Shard12",
+      "exports": 1,
+      "source_sha256": "d7960f39ba58f8c043353f4b263927a3635f223c2cba8aeca581173e28786d6c",
+      "log_sha256": "2495fb053c9d9b7ab2f688fc5ce4c75933a477d6562b1dbea9c9754612a65402",
+      "receipt_sha256": "a309b7881ab42f1fdc783d04d5418affe1166b3ae87f5f95af770cb494095c35"
+    },
+    {
+      "name": "Zero32Shard13",
+      "exports": 1,
+      "source_sha256": "dfa3421d8bcb8a9b66a5eaf34e223e7e01aca7971a8e9d25d999b8b20a3d0bc0",
+      "log_sha256": "a867b00170b110124dc2d3cf24cb67cdd04d328ab6eb17b406cb71d043e8cd60",
+      "receipt_sha256": "c75cffa9ec7233111abdf4b69e86d28b43f64b6ec6a9efb6ff6f46e50d687f4b"
+    },
+    {
+      "name": "Zero32Shard14",
+      "exports": 1,
+      "source_sha256": "e2ce23de40768c658d03cccdea49aaf0cb7f5529be79cf29fbb17d7f3d1a3896",
+      "log_sha256": "a1ded8d0677d21bffc0041cf969fed945f7402e803a103b1892460f907f66327",
+      "receipt_sha256": "da1649b707263ccdaa08832847ce9c2cb090dc6f71ecaaf4c35f1f676e5c1f49"
+    },
+    {
+      "name": "Zero32Shard15",
+      "exports": 1,
+      "source_sha256": "a029285bb7544fc5bf4070140ff50cb73dc83bebe2d7f4dbe06d43b6d3f14784",
+      "log_sha256": "23f15b7cb4717cbd6c1d10f282108688df16eb0dbd6e7242891c03fbaeb527a8",
+      "receipt_sha256": "3a84254ff12e6f75e23f650a5bb28fa64bc07ae981a64f596d29388eb0752e4c"
+    },
+    {
+      "name": "Zero32Shard16",
+      "exports": 1,
+      "source_sha256": "251233b48552c2e8a5d91f20c57b4be1080c0e3e00f0366347d64e803bad68fb",
+      "log_sha256": "052477fa131f561bc85ec1680a7f9b81a412d56d489566e2a99e1802da8f5733",
+      "receipt_sha256": "deab0fd1d8fd6cc2b205b668332f4bf5eda63ad2ddccb09a4087aa31c1d0d8b8"
+    },
+    {
+      "name": "Zero32Shard17",
+      "exports": 1,
+      "source_sha256": "2348920332a84c4443d0bf5216774e8272780bdb10989d687dfd6e2ffe9c2a90",
+      "log_sha256": "ae9a65f149147a484c029ea8be322b9ad480c975e75f88964ddcc9676ced52bb",
+      "receipt_sha256": "0a1c82488503efd939b854fbeaad4fce8a2d8906e4d4d7dae8b488a3b669d278"
+    },
+    {
+      "name": "Zero32Shard18",
+      "exports": 1,
+      "source_sha256": "652babf660dc308d959993b191358b649da3118b86777c8476a2b33df91cfd90",
+      "log_sha256": "0dd25c01f1d3de4d13d408460f7d3ea068bb89dc19fde5c9871ea2c9f5af7c91",
+      "receipt_sha256": "8d45877c4f3c2fede19aa27ce775423be8c502c5b8e15be432fc9e2efcca2750"
+    },
+    {
+      "name": "Zero32Shard19",
+      "exports": 1,
+      "source_sha256": "7a2de213342b20625b7cd2eb487a0adde89431c02c57c949de13e4d5c788474f",
+      "log_sha256": "c0b6c450c41e94aa6b72cfcf68afbfc3576675fb1a07ddc9087c26633533f951",
+      "receipt_sha256": "0fa227a583fc1ef302d989e92cc640e9f4ac05738a30e4cd7ffbb1cf2b0f79da"
+    },
+    {
+      "name": "Zero32Shard20",
+      "exports": 1,
+      "source_sha256": "98e7beae5546cfbc06c8b7ad2c521b864080063e09fe7dee3563a274c6b58d7e",
+      "log_sha256": "df6903f1ecf700736d3fec65db5a0977d0317ffad2a8a56a4978b4a1e8be2f0c",
+      "receipt_sha256": "198b70b3cc5ddfa5a13574a0ef5b7964dbaef50801323ff4ac27da431f0fe6a2"
+    },
+    {
+      "name": "Zero32Shard21",
+      "exports": 1,
+      "source_sha256": "b54a2dffc6dc3a2cba2f447d5aff8f06b3f9ec6dcd170d619b6e7b2d373d4880",
+      "log_sha256": "d0c0857f884de4095b9ae97156a0a195e08dce48c60181746f7e95a08d4ff2f2",
+      "receipt_sha256": "cedc1c9cb3098bb9e32277e7f2b7f03295744536b294fd284035d58d7ccf3293"
+    },
+    {
+      "name": "Zero32Shard22",
+      "exports": 1,
+      "source_sha256": "9f69dbd06f7b818820c4dff86c9c0dd3a29f4072c3ec5ff97ca2ce4d372e9993",
+      "log_sha256": "13c28f97d6040c3395b283c8d31f84d287982954433a236a665827dc0b6d4126",
+      "receipt_sha256": "228c77654b2c2cccfc7e3b7f71f35ae24e7a688e64fbf19e4df100928d726d3d"
+    },
+    {
+      "name": "Zero32Shard23",
+      "exports": 1,
+      "source_sha256": "3740db8e6aa06dd7951090c694b84049df91fae81feb8858b670b788fa94faae",
+      "log_sha256": "51d66e318920eb7fdf4f85d459970befb44501cffce75b259da5ea4787bca169",
+      "receipt_sha256": "e435c32176b86f18a40e4a6fceb2fc877a5e1d66edd2faadb668e772a3422c9e"
+    },
+    {
+      "name": "Zero32Shard24",
+      "exports": 1,
+      "source_sha256": "058d77e9fcdefaf9305d91647bb9af9e4e3580450ccb4c6ba48e2c61883fe854",
+      "log_sha256": "1ebc2150b0e532a167d90a617595816f90dfcf32ba2f8bb9f5e4dcbb310ce0da",
+      "receipt_sha256": "9d86154fa57edc1df3f8bbb59c38aa37833c96a164157cb777fbb0e5fde865f1"
+    },
+    {
+      "name": "Zero32Shard25",
+      "exports": 1,
+      "source_sha256": "50f3d8ae12f48cb322f69a95957cadecdb9648a4aca96564e4bb47ab4425e287",
+      "log_sha256": "4042c43f76936a80d4734fc48975ac90233a37c5b19e49b2270aab6b605f30c5",
+      "receipt_sha256": "000d48d0ad0b205ead33dc9d6407d2939f5ebbc85dba42a1f7eb758f6a6ca28a"
+    },
+    {
+      "name": "Zero32Shard26",
+      "exports": 1,
+      "source_sha256": "49ec0eb579c284dfcab6a5d36e104301f798bcc67ab60251b7df67fc65606a09",
+      "log_sha256": "26b6ecf31f3b74189299f32a45b1f94ecb1259ba39f425d8a6549f2b76271c54",
+      "receipt_sha256": "7bac98f852a8d72488239fef7258027580f2022cd542057e5983eea3f642730e"
+    },
+    {
+      "name": "Zero32Shard27",
+      "exports": 1,
+      "source_sha256": "356b5d5c2dee7d99e9cab55d7057e886ac9f76c47ce737a4d2084b047e2341ee",
+      "log_sha256": "601da8110f28e249970ba6c8fbd4b68e1dd38573745dd8374997e4d3315c6faa",
+      "receipt_sha256": "6dc9ec6ffc569115f4154426eb241ec6097cb65ec93590d6e02531f575fcbe85"
+    },
+    {
+      "name": "Zero32Shard28",
+      "exports": 1,
+      "source_sha256": "566d1f1e4802fd9770ffa77d9e08b0f30da51f0b9bdbfa3db126781eed7e1475",
+      "log_sha256": "b0318ce2ec71c786562a0abd19582eaf3563a8672806f248a074f35563d426ba",
+      "receipt_sha256": "02f25d7c653a21e8daf9544face1d63a3a67ce9b8560b244b931261b61cd35f7"
+    },
+    {
+      "name": "Zero32Shard29",
+      "exports": 1,
+      "source_sha256": "66fea477a65fa764064369de7add8d165a211703440287960af26392fd1300ea",
+      "log_sha256": "6f39b56fd1d68180a229cdbde540140275895b48ccdd8607ec43e2bc4b318db8",
+      "receipt_sha256": "8fefdd0d0e6704a643a8e34801eeb331ebf0daa8c0c4bf7fab493635a1f9090d"
+    },
+    {
+      "name": "Zero32Shard30",
+      "exports": 1,
+      "source_sha256": "85cd237363464c3fc3f811d9381431e3eee6103cdd27803b87fe3d0222daa08a",
+      "log_sha256": "642b670929eef8d139492bb22ba622e2da0bc0e9af87500f7a4be561ab2e1b64",
+      "receipt_sha256": "bc8ae50a392209ed8efd93593da309f3e48b1e12ee4bf80ecfd4559b33c4bf7c"
+    },
+    {
+      "name": "Zero32Shard31",
+      "exports": 1,
+      "source_sha256": "335842297143579e129f047860ada766346c7054222ff80c8ab602cf519a902b",
+      "log_sha256": "55ef92dc5c073da5ba2669c88d6a9a5a83e742963d9de6048432d7f18a12e193",
+      "receipt_sha256": "02c75ca0170c39489d3aa551ba8d75f40ee0aea6e4524f92f6070c0b27845c6e"
+    },
+    {
+      "name": "Zero32Shard32",
+      "exports": 1,
+      "source_sha256": "f3f371d5e634be75ae97709c9cfbf56b749121746334102d9d7721b9f3934cc2",
+      "log_sha256": "0c54e332c834c6a4c30939ab433b99e55967901b0d8ec7c8424b9222d8354b61",
+      "receipt_sha256": "92ea577e017a6524796b299daf0895e39b9372137824c9bb83bdda4565983ad0"
+    },
+    {
+      "name": "Zero32Shard33",
+      "exports": 1,
+      "source_sha256": "87461312ae9b7db62978a2e276829447de1e19e8ac4665da9404fb61ee1c0b4c",
+      "log_sha256": "e8acc30b005daaf83d5cd7618089532a893309ba3956301f8ed1aba14a029f72",
+      "receipt_sha256": "d8390d286ce210a2c25e7024b5bca22c679eff71215b1ff06a18563b57efa5a1"
+    },
+    {
+      "name": "Zero32Shard34",
+      "exports": 1,
+      "source_sha256": "cda585830239e622f2f96b79c785ae6cc2589cefd121e515665efc7eba9021ca",
+      "log_sha256": "1250debf4ab2c6cd5038f12f28741288ba4aa9fd277de4fe1a460abd80eafa4a",
+      "receipt_sha256": "3b079d257d09278c5470a7d17a57ce32e6d65130d3a3c89b3333f0af2c16fe5d"
+    },
+    {
+      "name": "Zero32Shard35",
+      "exports": 1,
+      "source_sha256": "f02547af0baf003e276cb5c422ce5d13dd5f489c65b7af89aadcc5d3e36532bf",
+      "log_sha256": "2614a782c338e469182aff1c15daa20b49c021c57c8ebabbffb880416d057388",
+      "receipt_sha256": "4ef489a8cd955ea62d8b1435e6cf7677c8e1f939207cb2493fc120e41b32b7d3"
+    },
+    {
+      "name": "Zero32Assembly",
+      "exports": 1,
+      "source_sha256": "2110296c8ec3fbe057efc87bc16926b4cae3243e645d54bc4050d1b941155f41",
+      "log_sha256": "5fec01b2ee140398ea4a1e58243ec22448ff4f44918024a583b63cfa2c129450",
+      "receipt_sha256": "3d7f1a10b6fdb43ee988c0308571b1cb338f2ca2dcb069ca929c13174dd73ae3"
+    },
+    {
+      "name": "Zero32Exclusion",
+      "exports": 2,
+      "source_sha256": "d38aa5544d80a4470a8a1fe381f7527266e3cb19b80455fd13c90fe26a520d2d",
+      "log_sha256": "dba87335af6d0ac8e6023dc1a33c186d60375d19ed57f64b177a53416e4ee183",
+      "receipt_sha256": "31d136a2c8abed39b45762ca9b2bf0fdc37c5696dad447902c52652089a10258"
+    }
+  ]
+}
