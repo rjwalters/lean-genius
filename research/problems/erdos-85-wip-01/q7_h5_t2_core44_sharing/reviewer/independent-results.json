@@ -1,0 +1,916 @@
+{
+  "method": "Static F-star order, direct full32vertex C4 tests on every added subset, residual E degrees rederived from support masks; no author code imports or early empty capacity pruning.",
+  "seconds": 46.71749187493697,
+  "results": [
+    {
+      "omitted": 4,
+      "shared": 1,
+      "internal": [],
+      "af": 3,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 299,
+      "complete_star_assignments": 36
+    },
+    {
+      "omitted": 4,
+      "shared": 1,
+      "internal": [],
+      "af": 4,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 849,
+      "complete_star_assignments": 181
+    },
+    {
+      "omitted": 4,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": null,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 514,
+      "complete_star_assignments": 89
+    },
+    {
+      "omitted": 4,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 3,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 135,
+      "complete_star_assignments": 16
+    },
+    {
+      "omitted": 4,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 3,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 134,
+      "complete_star_assignments": 16
+    },
+    {
+      "omitted": 4,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 4,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 565,
+      "complete_star_assignments": 89
+    },
+    {
+      "omitted": 4,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 4,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 425,
+      "complete_star_assignments": 89
+    },
+    {
+      "omitted": 4,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": null,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 562,
+      "complete_star_assignments": 53
+    },
+    {
+      "omitted": 4,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 402,
+      "complete_star_assignments": 53
+    },
+    {
+      "omitted": 4,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 371,
+      "complete_star_assignments": 53
+    },
+    {
+      "omitted": 7,
+      "shared": 1,
+      "internal": [],
+      "af": 3,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 281,
+      "complete_star_assignments": 30
+    },
+    {
+      "omitted": 7,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": null,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 425,
+      "complete_star_assignments": 115
+    },
+    {
+      "omitted": 7,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 3,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 129,
+      "complete_star_assignments": 17
+    },
+    {
+      "omitted": 7,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 3,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 129,
+      "complete_star_assignments": 17
+    },
+    {
+      "omitted": 7,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 4,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 417,
+      "complete_star_assignments": 115
+    },
+    {
+      "omitted": 7,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 4,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 413,
+      "complete_star_assignments": 115
+    },
+    {
+      "omitted": 7,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": null,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 554,
+      "complete_star_assignments": 68
+    },
+    {
+      "omitted": 7,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 473,
+      "complete_star_assignments": 68
+    },
+    {
+      "omitted": 7,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 416,
+      "complete_star_assignments": 68
+    },
+    {
+      "omitted": 11,
+      "shared": 1,
+      "internal": [],
+      "af": 3,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 262,
+      "complete_star_assignments": 25
+    },
+    {
+      "omitted": 11,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": null,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 349,
+      "complete_star_assignments": 82
+    },
+    {
+      "omitted": 11,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 3,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 125,
+      "complete_star_assignments": 14
+    },
+    {
+      "omitted": 11,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 3,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 125,
+      "complete_star_assignments": 14
+    },
+    {
+      "omitted": 11,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 4,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 349,
+      "complete_star_assignments": 82
+    },
+    {
+      "omitted": 11,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 4,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 347,
+      "complete_star_assignments": 82
+    },
+    {
+      "omitted": 11,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": null,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 488,
+      "complete_star_assignments": 62
+    },
+    {
+      "omitted": 11,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 452,
+      "complete_star_assignments": 62
+    },
+    {
+      "omitted": 11,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 402,
+      "complete_star_assignments": 62
+    },
+    {
+      "omitted": 0,
+      "shared": 1,
+      "internal": [],
+      "af": 3,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 414,
+      "complete_star_assignments": 102
+    },
+    {
+      "omitted": 0,
+      "shared": 1,
+      "internal": [],
+      "af": 4,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 550,
+      "complete_star_assignments": 89
+    },
+    {
+      "omitted": 0,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": null,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 454,
+      "complete_star_assignments": 107
+    },
+    {
+      "omitted": 0,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 3,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 280,
+      "complete_star_assignments": 62
+    },
+    {
+      "omitted": 0,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 3,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 215,
+      "complete_star_assignments": 62
+    },
+    {
+      "omitted": 0,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 4,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 303,
+      "complete_star_assignments": 54
+    },
+    {
+      "omitted": 0,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 4,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 256,
+      "complete_star_assignments": 54
+    },
+    {
+      "omitted": 0,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": null,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 773,
+      "complete_star_assignments": 126
+    },
+    {
+      "omitted": 0,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 302,
+      "complete_star_assignments": 37
+    },
+    {
+      "omitted": 0,
+      "shared": 1,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": 2,
+      "status": "EXHAUSTED",
+      "nodes": 273,
+      "complete_star_assignments": 37
+    },
+    {
+      "omitted": 4,
+      "shared": 2,
+      "internal": [],
+      "af": 3,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 230,
+      "complete_star_assignments": 24
+    },
+    {
+      "omitted": 4,
+      "shared": 2,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 3,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 217,
+      "complete_star_assignments": 24
+    },
+    {
+      "omitted": 4,
+      "shared": 2,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 445,
+      "complete_star_assignments": 52
+    },
+    {
+      "omitted": 4,
+      "shared": 2,
+      "internal": [
+        [
+          1,
+          3
+        ]
+      ],
+      "af": 3,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 45,
+      "complete_star_assignments": 3
+    },
+    {
+      "omitted": 4,
+      "shared": 2,
+      "internal": [
+        [
+          1,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 274,
+      "complete_star_assignments": 34
+    },
+    {
+      "omitted": 7,
+      "shared": 2,
+      "internal": [],
+      "af": 3,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 223,
+      "complete_star_assignments": 24
+    },
+    {
+      "omitted": 7,
+      "shared": 2,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 3,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 227,
+      "complete_star_assignments": 24
+    },
+    {
+      "omitted": 7,
+      "shared": 2,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 4,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 1008,
+      "complete_star_assignments": 199
+    },
+    {
+      "omitted": 7,
+      "shared": 2,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": null,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 763,
+      "complete_star_assignments": 71
+    },
+    {
+      "omitted": 7,
+      "shared": 2,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 459,
+      "complete_star_assignments": 71
+    },
+    {
+      "omitted": 7,
+      "shared": 2,
+      "internal": [
+        [
+          1,
+          3
+        ]
+      ],
+      "af": 3,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 51,
+      "complete_star_assignments": 3
+    },
+    {
+      "omitted": 7,
+      "shared": 2,
+      "internal": [
+        [
+          1,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 290,
+      "complete_star_assignments": 42
+    },
+    {
+      "omitted": 11,
+      "shared": 2,
+      "internal": [],
+      "af": 3,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 236,
+      "complete_star_assignments": 22
+    },
+    {
+      "omitted": 11,
+      "shared": 2,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 3,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 231,
+      "complete_star_assignments": 22
+    },
+    {
+      "omitted": 11,
+      "shared": 2,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": null,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 786,
+      "complete_star_assignments": 70
+    },
+    {
+      "omitted": 11,
+      "shared": 2,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 464,
+      "complete_star_assignments": 70
+    },
+    {
+      "omitted": 11,
+      "shared": 2,
+      "internal": [
+        [
+          1,
+          3
+        ]
+      ],
+      "af": 3,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 48,
+      "complete_star_assignments": 3
+    },
+    {
+      "omitted": 11,
+      "shared": 2,
+      "internal": [
+        [
+          1,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 298,
+      "complete_star_assignments": 36
+    },
+    {
+      "omitted": 0,
+      "shared": 2,
+      "internal": [],
+      "af": 3,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 376,
+      "complete_star_assignments": 90
+    },
+    {
+      "omitted": 0,
+      "shared": 2,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 3,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 366,
+      "complete_star_assignments": 90
+    },
+    {
+      "omitted": 0,
+      "shared": 2,
+      "internal": [
+        [
+          0,
+          1
+        ]
+      ],
+      "af": 4,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 761,
+      "complete_star_assignments": 121
+    },
+    {
+      "omitted": 0,
+      "shared": 2,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": null,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 1234,
+      "complete_star_assignments": 129
+    },
+    {
+      "omitted": 0,
+      "shared": 2,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": null,
+      "status": "EXHAUSTED",
+      "nodes": 392,
+      "complete_star_assignments": 56
+    },
+    {
+      "omitted": 0,
+      "shared": 2,
+      "internal": [
+        [
+          0,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 400,
+      "complete_star_assignments": 56
+    },
+    {
+      "omitted": 0,
+      "shared": 2,
+      "internal": [
+        [
+          1,
+          3
+        ]
+      ],
+      "af": 3,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 50,
+      "complete_star_assignments": 9
+    },
+    {
+      "omitted": 0,
+      "shared": 2,
+      "internal": [
+        [
+          1,
+          3
+        ]
+      ],
+      "af": 4,
+      "bf": 1,
+      "status": "EXHAUSTED",
+      "nodes": 202,
+      "complete_star_assignments": 24
+    }
+  ]
+}

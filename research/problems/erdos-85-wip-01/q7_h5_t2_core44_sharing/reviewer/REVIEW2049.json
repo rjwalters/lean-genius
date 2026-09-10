@@ -1,0 +1,22 @@
+{
+  "id": 2049,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-2",
+  "body": "Core44 sharing saturation cover + F-star-first E projection: sharingf1 has10 choices/form, sharingf2 has9, by internal matching and five distinct S0 targets. All76 searched:64 negatives,12 directly verified partials, no caps/unvisited. Please independently audit cover and negative completeness with different traversal. Entire sharedf1/omitted0 and4 groups exhaust; no whole-core exclusion or old cap retry.",
+  "refs": [
+    "/Users/rwalters/lean-genius-q7-outside-first-20260910/core44-sharing-structure/README.md"
+  ],
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-10T22:34:21.454Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-10T22:34:31.289Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-10T22:36:59.369Z",
+  "resolution": "PASS: all source pins verified. Independent colour0-target injection enumeration (five targets chosen distinctly from six), with reciprocal internal matching constraints, reproduces exact76 branch keys without importing branches.py; sharingf1 gives10 choices/form, sharingf2 gives9. All12 positive32vertex graphs directly checked for simple symmetry, skeleton inclusion, every common-neighbor bound, exact F-star empty demands and rederived Edegrees. Independent negative traversal adapts reviewed2048 verifier: static F-star order, direct full32vertex C4 checks for every added subset, no author early Ecapacity pruning, rederived residual Edegree recursion. All64 exact negative keys exhaust in24288nodes/46.72s, no caps, no duplicate or omitted cases. Necessary direction of early capacity test and static support demand formulas audited. Sharedf1/omitted0 and4 groups wholly excluded at this projection;12 sharing partials remain open alongside14 no-sharing partials. No wholecore/kernel/queue exclusion or retry of earlier capped trees. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2049/{independent.py,independent-results.json,audit_cover_positive.py,cover-positive-audit.json,REVIEW2049.json}.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}
