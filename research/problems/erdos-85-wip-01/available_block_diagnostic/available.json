@@ -1,0 +1,14 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "--run",
+    "/tmp/erdos85-sol1-available-prefix-profile.lean"
+  ],
+  "deadline_seconds": 30,
+  "deadline_exceeded": false,
+  "exit_code": 0,
+  "wall_seconds": 14.539959749905393,
+  "output": "starting root/factored/available-block-deficit bounded outer DFS; prefix_limit=5000; terminal_family_search=disabled\nprogress stats=#[1000, 273, 453, 109, 0, 0, 74]\nprogress stats=#[2000, 440, 800, 266, 0, 0, 312]\nprogress stats=#[3000, 597, 1177, 407, 0, 0, 548]\nprogress stats=#[4000, 826, 1561, 565, 0, 0, 687]\nprogress stats=#[5000, 986, 1928, 729, 0, 0, 904]\nprogress stats=#[5000, 986, 1928, 729, 0, 0, 904]\nprogress stats=#[5000, 986, 1928, 729, 0, 0, 904]\nprogress stats=#[5000, 986, 1928, 729, 0, 0, 904]\nprogress stats=#[5000, 986, 1928, 729, 0, 0, 904]\nprogress stats=#[5000, 986, 1928, 729, 0, 0, 904]\nprogress stats=#[5000, 986, 1928, 729, 0, 0, 904]\nprogress stats=#[5000, 986, 1928, 729, 0, 0, 904]\nprogress stats=#[5000, 986, 1928, 729, 0, 0, 904]\nprogress stats=#[5000, 986, 1928, 729, 0, 0, 904]\nstats[attempt,capacity_fail,deficit_fail,c4_fail,leaf,degree_valid_leaf,external_fail]=#[5000, 986, 1928, 729, 0, 0, 904]\ndepth_attempts=#[1, 3, 2, 6, 39, 20, 83, 311, 936, 3599, 0, 0, 0, 0, 0]; elapsed_ms=8260\n"
+}
