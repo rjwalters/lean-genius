@@ -1,0 +1,133 @@
+{
+  "scope": "Inspected source inventory only; historical probes not rerun and not exhaustive",
+  "sources": [
+    {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineIntegralResidual.lean",
+      "sha256": "8190e0f6aee6452d237f1fe6a9202ac364b7e236310a68372acc1d1a0b5f8862",
+      "bytes": 4713,
+      "declarations": [
+        "exists_monic_integral_orderFortyNineSeven_residualCharpoly"
+      ]
+    },
+    {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineResidualRootMoments.lean",
+      "sha256": "484c95f0ee4d2ad2d3cb5c885944a2f19a90aae26431fe07f18a6e0391b8e730",
+      "bytes": 3943,
+      "declarations": [
+        "exists_orderFortyNineSeven_residualCharpoly_rootMoments"
+      ]
+    },
+    {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineResidualCoefficients.lean",
+      "sha256": "f4c3e756c3c813e1f9d618afcdbb71d4c8ca2fa7132e483263781a20c8f85327",
+      "bytes": 4778,
+      "declarations": [
+        "exists_orderFortyNineSeven_residualCharpoly_coefficients",
+        "orderFortyNineSeven_residual_coefficient_cases"
+      ]
+    },
+    {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineResidualMomentHighCountExclusion.lean",
+      "sha256": "f4145099302d69266f6e7552d908d1de8a267d01ba196895a17bff91f47e5d1a",
+      "bytes": 3696,
+      "declarations": [
+        "orderFortyNine_high_card_ne_nineteen",
+        "orderFortyNine_high_card_ne_twentyOne"
+      ]
+    },
+    {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineResidualMomentLargeHighExclusion.lean",
+      "sha256": "32825a186bd115c41aedd5deb3d625a174cb6af76a3629e66be5c508bac749b9",
+      "bytes": 3739,
+      "declarations": [
+        "remaining_root_squares_cauchy",
+        "residual_moment_cauchy_of_distinguished_root",
+        "false_of_orderFortyNine_h19_residualMoment_bounds",
+        "false_of_orderFortyNine_h21_residualMoment_bounds",
+        "false_of_orderFortyNine_h19_or_h21_residualMoment_bounds"
+      ]
+    },
+    {
+      "path": "proofs/Proofs/Erdos85RootedFifthWalkDefectNeighborhood.lean",
+      "sha256": "a63bae9d3302bffb7ea5c14b27886b4ca45511c2a01d7fa5d6849af4f47e697d",
+      "bytes": 11577,
+      "declarations": [
+        "defect_adj_defect_diagonal_eq_two_mul_induced_edges",
+        "binarySquare_regular_fifthWalk_diagonal_eq_defectNeighborhood_edges",
+        "binarySquare_regular_fifthWalk_diagonal_modEight_interface"
+      ]
+    },
+    {
+      "path": "proofs/Proofs/Erdos85ExteriorDefectDecomposition.lean",
+      "sha256": "b3118914dda45482ee4b57fd881a70c235335d8defa2646a1fee0197c613fcb6",
+      "bytes": 6336,
+      "declarations": [
+        "finsetExteriorVertex",
+        "finsetExteriorGraph",
+        "secondOrderDefectGraph_adj_iff_card_common_eq_zero",
+        "finsetExterior_secondOrderDefect_adj_iff"
+      ]
+    },
+    {
+      "path": "proofs/Proofs/Erdos85SquareOrderLowTriangleDefectIdentity.lean",
+      "sha256": "9a462f43f2dbc96a7b1fa213e1f6fcd97cb4ccfe8963def22f340f8f7f766e15",
+      "bytes": 1930,
+      "declarations": [
+        "squareOrder_low_antipodal_add_highIncidence_add_one_eq_two_mul_localEdges"
+      ]
+    },
+    {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineDefectModSevenKernel.lean",
+      "sha256": "cebcc34b25ff4489fb23b64837e36aa571ff69f676c613791cf6df67ddd6b70f",
+      "bytes": 18799,
+      "declarations": [
+        "orderFortyNineOrdinaryDefectLInt",
+        "orderFortyNineOrdinaryHighRowDifference",
+        "orderFortyNineOrdinaryDefectLInt_mulVec_highRowDifference",
+        "orderFortyNineOrdinaryDefectLModSeven",
+        "orderFortyNineOrdinaryHighRowDifferenceModSeven",
+        "orderFortyNineOrdinaryDefectLModSeven_mulVec_highRowDifference_eq_zero",
+        "orderFortyNine_two_ordinaryHighRowDifferencesModSeven_independent",
+        "orderFortyNineTwoHighRowDifferenceFamilyModSeven",
+        "orderFortyNineTwoHighRowDifferenceFamilyModSeven_linearIndependent",
+        "orderFortyNineTwoHighRowDifferenceFamilyModSeven_mem_kernel",
+        "orderFortyNineOrdinaryDefectLComplex",
+        "orderFortyNineOrdinaryHighRowDifferenceComplex",
+        "orderFortyNineTwoHighRowDifferenceFamilyComplex",
+        "orderFortyNineOrdinaryDefectLComplex_mulVec_highRowDifference",
+        "orderFortyNineTwoHighRowDifferenceFamilyComplex_linearIndependent",
+        "orderFortyNineOrdinaryDefectLComplex_seven_factor_sq_dvd_charpoly"
+      ]
+    },
+    {
+      "path": "research/problems/erdos-85-wip-01/H7_FIFTH_MOMENT_PIVOT_AUDIT.md",
+      "sha256": "6475a2df3b143e73da2a8cb470aa685dc7ebc7b997e85da9a2529a3ffac19086",
+      "bytes": 4087
+    },
+    {
+      "path": "research/problems/erdos-85-wip-01/H7_BLOCK_SPECTRAL_DECOMPOSITION_AUDIT.md",
+      "sha256": "b039ac7d4956b1f0a18444fcd77fba8d0abc49fc80e1984f853f60c30d8205ec",
+      "bytes": 4174
+    },
+    {
+      "path": "research/problems/erdos-85-wip-01/H7_FINITE_FIELD_RANK_AUDIT.md",
+      "sha256": "7b2923c3d92c9e9218153413c536e086da0de49e04daa76e96ee4108149a421d",
+      "bytes": 2871
+    },
+    {
+      "path": "research/problems/erdos-85-wip-01/H7_CHARACTERISTIC_SQUARE_MODULE_AUDIT.md",
+      "sha256": "3e5fbf683011e18f47f128409799c79c30f345b694fdfe3fc099aeb87a3f607a",
+      "bytes": 2280
+    },
+    {
+      "path": "research/problems/erdos-85-wip-01/H7_R_MOD5_CONSUMER_AUDIT.md",
+      "sha256": "3c2ce05df1a66c31e733726b761d75528a4179d60359a9aec08693cf52185aa2",
+      "bytes": 2678
+    },
+    {
+      "path": "research/problems/erdos-85-wip-01/H7_POLYNOMIAL_CALCULUS_AUDIT.md",
+      "sha256": "982523c1ca02545dc777a9c9a9cc58bd49f452b4796d65cb429c4889ac4b1c3e",
+      "bytes": 2991
+    }
+  ]
+}

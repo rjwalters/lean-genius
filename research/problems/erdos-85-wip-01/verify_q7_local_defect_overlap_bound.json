@@ -1,0 +1,1021 @@
+{
+  "scope": "Small graphs plus necessary local-state relaxation; no q7 realization",
+  "residual_fifth_moment": "R + 72*T + 269*h - 4116",
+  "fifth_coefficients": {
+    "5": "-(R - 828*T - 150709)/5",
+    "7": "-(R - 698*T - 116991)/5"
+  },
+  "small_extremal": [
+    {
+      "order": 0,
+      "max_edges": 0,
+      "maximizing_graph_edges": [],
+      "C4free_labeled_graph_count": 1
+    },
+    {
+      "order": 1,
+      "max_edges": 0,
+      "maximizing_graph_edges": [],
+      "C4free_labeled_graph_count": 1
+    },
+    {
+      "order": 2,
+      "max_edges": 1,
+      "maximizing_graph_edges": [
+        [
+          0,
+          1
+        ]
+      ],
+      "C4free_labeled_graph_count": 2
+    },
+    {
+      "order": 3,
+      "max_edges": 3,
+      "maximizing_graph_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "C4free_labeled_graph_count": 8
+    },
+    {
+      "order": 4,
+      "max_edges": 4,
+      "maximizing_graph_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "C4free_labeled_graph_count": 54
+    },
+    {
+      "order": 5,
+      "max_edges": 6,
+      "maximizing_graph_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "C4free_labeled_graph_count": 548
+    }
+  ],
+  "local_states": [
+    {
+      "t": 0,
+      "tau": 1,
+      "common_CD_neighbors": 5,
+      "remaining_vertices": 1,
+      "local_edge_bound": 0
+    },
+    {
+      "t": 0,
+      "tau": 2,
+      "common_CD_neighbors": 3,
+      "remaining_vertices": 3,
+      "local_edge_bound": 3
+    },
+    {
+      "t": 0,
+      "tau": 3,
+      "common_CD_neighbors": 1,
+      "remaining_vertices": 5,
+      "local_edge_bound": 6
+    },
+    {
+      "t": 1,
+      "tau": 0,
+      "common_CD_neighbors": 5,
+      "remaining_vertices": 0,
+      "local_edge_bound": 0
+    },
+    {
+      "t": 1,
+      "tau": 1,
+      "common_CD_neighbors": 3,
+      "remaining_vertices": 2,
+      "local_edge_bound": 1
+    },
+    {
+      "t": 1,
+      "tau": 2,
+      "common_CD_neighbors": 1,
+      "remaining_vertices": 4,
+      "local_edge_bound": 4
+    },
+    {
+      "t": 2,
+      "tau": 0,
+      "common_CD_neighbors": 3,
+      "remaining_vertices": 1,
+      "local_edge_bound": 0
+    },
+    {
+      "t": 2,
+      "tau": 1,
+      "common_CD_neighbors": 1,
+      "remaining_vertices": 3,
+      "local_edge_bound": 3
+    },
+    {
+      "t": 3,
+      "tau": 0,
+      "common_CD_neighbors": 1,
+      "remaining_vertices": 2,
+      "local_edge_bound": 1
+    }
+  ],
+  "profiles": [
+    {
+      "h": 5,
+      "profile": "T0",
+      "support_counts": [
+        14,
+        20,
+        10,
+        0
+      ],
+      "triangle_rows": [
+        {
+          "T": 5,
+          "R_upper_bound": 6,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 4,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 1
+        },
+        {
+          "T": 6,
+          "R_upper_bound": 24,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 22,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 3
+        },
+        {
+          "T": 7,
+          "R_upper_bound": 42,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 40,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 5
+        },
+        {
+          "T": 8,
+          "R_upper_bound": 60,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 58,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 6
+        },
+        {
+          "T": 9,
+          "R_upper_bound": 78,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 76,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 8
+        },
+        {
+          "T": 10,
+          "R_upper_bound": 96,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 94,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 10
+        },
+        {
+          "T": 11,
+          "R_upper_bound": 114,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 112,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 12
+        },
+        {
+          "T": 12,
+          "R_upper_bound": 132,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 130,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 14
+        },
+        {
+          "T": 13,
+          "R_upper_bound": 150,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 148,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 15
+        },
+        {
+          "T": 14,
+          "R_upper_bound": 168,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 166,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 17
+        },
+        {
+          "T": 15,
+          "R_upper_bound": 186,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 184,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 19
+        },
+        {
+          "T": 16,
+          "R_upper_bound": 204,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 202,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 21
+        },
+        {
+          "T": 17,
+          "R_upper_bound": 222,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 220,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 23
+        },
+        {
+          "T": 18,
+          "R_upper_bound": 236,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 228,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 23
+        },
+        {
+          "T": 19,
+          "R_upper_bound": 246,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 246,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 25
+        },
+        {
+          "T": 20,
+          "R_upper_bound": 260,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 254,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 26
+        },
+        {
+          "T": 21,
+          "R_upper_bound": 270,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 262,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 27
+        },
+        {
+          "T": 22,
+          "R_upper_bound": 284,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 280,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 29
+        },
+        {
+          "T": 23,
+          "R_upper_bound": 294,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 288,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 29
+        },
+        {
+          "T": 24,
+          "R_upper_bound": 308,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 306,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 31
+        },
+        {
+          "T": 25,
+          "R_upper_bound": 318,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 314,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 32
+        },
+        {
+          "T": 26,
+          "R_upper_bound": 332,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 332,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 34
+        },
+        {
+          "T": 27,
+          "R_upper_bound": 342,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 340,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 35
+        },
+        {
+          "T": 28,
+          "R_upper_bound": 356,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 348,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 35
+        },
+        {
+          "T": 29,
+          "R_upper_bound": 366,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 366,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 37
+        },
+        {
+          "T": 30,
+          "R_upper_bound": 380,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 374,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 38
+        }
+      ]
+    },
+    {
+      "h": 5,
+      "profile": "T1",
+      "support_counts": [
+        13,
+        23,
+        7,
+        1
+      ],
+      "triangle_rows": [
+        {
+          "T": 5,
+          "R_upper_bound": 14,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 14,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 2
+        },
+        {
+          "T": 6,
+          "R_upper_bound": 32,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 32,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 4
+        },
+        {
+          "T": 7,
+          "R_upper_bound": 50,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 50,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 6
+        },
+        {
+          "T": 8,
+          "R_upper_bound": 68,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 68,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 7
+        },
+        {
+          "T": 9,
+          "R_upper_bound": 86,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 86,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 9
+        },
+        {
+          "T": 10,
+          "R_upper_bound": 104,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 104,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 11
+        },
+        {
+          "T": 11,
+          "R_upper_bound": 122,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 122,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 13
+        },
+        {
+          "T": 12,
+          "R_upper_bound": 140,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 140,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 15
+        },
+        {
+          "T": 13,
+          "R_upper_bound": 158,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 158,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 16
+        },
+        {
+          "T": 14,
+          "R_upper_bound": 176,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 176,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 18
+        },
+        {
+          "T": 15,
+          "R_upper_bound": 194,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 194,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 20
+        },
+        {
+          "T": 16,
+          "R_upper_bound": 208,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 202,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 21
+        },
+        {
+          "T": 17,
+          "R_upper_bound": 218,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 210,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 22
+        },
+        {
+          "T": 18,
+          "R_upper_bound": 232,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 228,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 23
+        },
+        {
+          "T": 19,
+          "R_upper_bound": 242,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 236,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 24
+        },
+        {
+          "T": 20,
+          "R_upper_bound": 256,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 254,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 26
+        },
+        {
+          "T": 21,
+          "R_upper_bound": 266,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 262,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 27
+        },
+        {
+          "T": 22,
+          "R_upper_bound": 280,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 280,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 29
+        },
+        {
+          "T": 23,
+          "R_upper_bound": 290,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 288,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 29
+        },
+        {
+          "T": 24,
+          "R_upper_bound": 304,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 296,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 30
+        },
+        {
+          "T": 25,
+          "R_upper_bound": 314,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 314,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 32
+        },
+        {
+          "T": 26,
+          "R_upper_bound": 328,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 322,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 33
+        },
+        {
+          "T": 27,
+          "R_upper_bound": 338,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 330,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 34
+        },
+        {
+          "T": 28,
+          "R_upper_bound": 352,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 348,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 35
+        },
+        {
+          "T": 29,
+          "R_upper_bound": 362,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 356,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 36
+        },
+        {
+          "T": 30,
+          "R_upper_bound": 376,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 374,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 38
+        }
+      ]
+    },
+    {
+      "h": 5,
+      "profile": "T2",
+      "support_counts": [
+        12,
+        26,
+        4,
+        2
+      ],
+      "triangle_rows": [
+        {
+          "T": 4,
+          "R_upper_bound": 4,
+          "even_Newton_residue_min": null,
+          "even_Newton_residue_max": null,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 0
+        },
+        {
+          "T": 5,
+          "R_upper_bound": 22,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 14,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 2
+        },
+        {
+          "T": 6,
+          "R_upper_bound": 40,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 32,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 4
+        },
+        {
+          "T": 7,
+          "R_upper_bound": 58,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 50,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 6
+        },
+        {
+          "T": 8,
+          "R_upper_bound": 76,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 68,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 7
+        },
+        {
+          "T": 9,
+          "R_upper_bound": 94,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 86,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 9
+        },
+        {
+          "T": 10,
+          "R_upper_bound": 112,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 104,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 11
+        },
+        {
+          "T": 11,
+          "R_upper_bound": 130,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 122,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 13
+        },
+        {
+          "T": 12,
+          "R_upper_bound": 148,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 140,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 15
+        },
+        {
+          "T": 13,
+          "R_upper_bound": 166,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 158,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 16
+        },
+        {
+          "T": 14,
+          "R_upper_bound": 180,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 176,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 18
+        },
+        {
+          "T": 15,
+          "R_upper_bound": 190,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 184,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 19
+        },
+        {
+          "T": 16,
+          "R_upper_bound": 204,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 202,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 21
+        },
+        {
+          "T": 17,
+          "R_upper_bound": 214,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 210,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 22
+        },
+        {
+          "T": 18,
+          "R_upper_bound": 228,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 228,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 23
+        },
+        {
+          "T": 19,
+          "R_upper_bound": 238,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 236,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 24
+        },
+        {
+          "T": 20,
+          "R_upper_bound": 252,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 244,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 25
+        },
+        {
+          "T": 21,
+          "R_upper_bound": 262,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 262,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 27
+        },
+        {
+          "T": 22,
+          "R_upper_bound": 276,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 270,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 28
+        },
+        {
+          "T": 23,
+          "R_upper_bound": 286,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 278,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 28
+        },
+        {
+          "T": 24,
+          "R_upper_bound": 300,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 296,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 30
+        },
+        {
+          "T": 25,
+          "R_upper_bound": 310,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 304,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 31
+        },
+        {
+          "T": 26,
+          "R_upper_bound": 324,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 322,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 33
+        },
+        {
+          "T": 27,
+          "R_upper_bound": 334,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 330,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 34
+        },
+        {
+          "T": 28,
+          "R_upper_bound": 348,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 348,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 35
+        },
+        {
+          "T": 29,
+          "R_upper_bound": 358,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 356,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 36
+        },
+        {
+          "T": 30,
+          "R_upper_bound": 372,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 364,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 37
+        }
+      ]
+    },
+    {
+      "h": 7,
+      "profile": "T0",
+      "support_counts": [
+        7,
+        14,
+        21,
+        0
+      ],
+      "triangle_rows": [
+        {
+          "T": 3,
+          "R_upper_bound": 12,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 10,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 2
+        },
+        {
+          "T": 4,
+          "R_upper_bound": 30,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 28,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 3
+        },
+        {
+          "T": 5,
+          "R_upper_bound": 48,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 46,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 5
+        },
+        {
+          "T": 6,
+          "R_upper_bound": 66,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 64,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 7
+        },
+        {
+          "T": 7,
+          "R_upper_bound": 84,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 82,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 9
+        },
+        {
+          "T": 8,
+          "R_upper_bound": 102,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 100,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 11
+        },
+        {
+          "T": 9,
+          "R_upper_bound": 120,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 118,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 12
+        },
+        {
+          "T": 10,
+          "R_upper_bound": 138,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 136,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 14
+        },
+        {
+          "T": 11,
+          "R_upper_bound": 156,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 154,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 16
+        },
+        {
+          "T": 12,
+          "R_upper_bound": 174,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 172,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 18
+        },
+        {
+          "T": 13,
+          "R_upper_bound": 192,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 190,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 20
+        },
+        {
+          "T": 14,
+          "R_upper_bound": 210,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 208,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 21
+        },
+        {
+          "T": 15,
+          "R_upper_bound": 220,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 216,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 22
+        },
+        {
+          "T": 16,
+          "R_upper_bound": 234,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 234,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 24
+        },
+        {
+          "T": 17,
+          "R_upper_bound": 244,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 242,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 25
+        },
+        {
+          "T": 18,
+          "R_upper_bound": 258,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 250,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 26
+        },
+        {
+          "T": 19,
+          "R_upper_bound": 268,
+          "even_Newton_residue_min": 8,
+          "even_Newton_residue_max": 268,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 27
+        },
+        {
+          "T": 20,
+          "R_upper_bound": 282,
+          "even_Newton_residue_min": 6,
+          "even_Newton_residue_max": 276,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 28
+        },
+        {
+          "T": 21,
+          "R_upper_bound": 292,
+          "even_Newton_residue_min": 4,
+          "even_Newton_residue_max": 284,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 29
+        },
+        {
+          "T": 22,
+          "R_upper_bound": 306,
+          "even_Newton_residue_min": 2,
+          "even_Newton_residue_max": 302,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 31
+        },
+        {
+          "T": 23,
+          "R_upper_bound": 316,
+          "even_Newton_residue_min": 0,
+          "even_Newton_residue_max": 310,
+          "even_Newton_residue_step": 10,
+          "even_Newton_residue_count": 32
+        }
+      ]
+    }
+  ]
+}

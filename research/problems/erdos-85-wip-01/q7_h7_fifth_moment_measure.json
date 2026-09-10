@@ -1,0 +1,35 @@
+{
+  "scope": "Rational moment measure only, not an integral spectrum or graph",
+  "T": 10,
+  "R": 96,
+  "positive_mass": 17,
+  "nodes": [
+    "-11/10",
+    "-13/5",
+    "-59/20",
+    "39/20",
+    "9/4",
+    "13/5",
+    "13/4"
+  ],
+  "weights": [
+    "3389244920924/2048324824615",
+    "83275336960071/10075543731890",
+    "527897392845603/74559023615986",
+    "18484610783436/1871172407351",
+    "34978517299891/10075543731890",
+    "70127132353437/26196413702914",
+    "9101144517243/9355862036755"
+  ],
+  "moments": [
+    "34",
+    "-7",
+    "203",
+    "-136",
+    "1379",
+    "-1417"
+  ],
+  "exact_equations_verified": true,
+  "discovery": "SciPy HiGHS on rational grid, then independent exact SymPy reconstruction; solver infeasibility was not used as evidence",
+  "R_upper_bound": 138
+}
