@@ -1,0 +1,25 @@
+{
+  "files": {
+    "Pruning.lean": "0854db8aa4463eef1fa1bd64a94c56a14abecf53e4e4c29dc5d699ccb6dae4ed",
+    "indices.json": "8511cfd6c4c24da751f58d39b45d8edcae06f6c685c84a9b68fe192608b54983",
+    "check.py": "7fbb21c4d4289041655c9806737e17b74d7f96779d63333a9b3a2b5a88337229",
+    "README.md": "6aa01f89ac62e541551efc2fa2a1d6f983a998ac24bc28867a44427367b736fa",
+    "check.log": "4abc411ff48ceb0388ac3aeca4eedd6da2ae884ae1b7e7c01e374ec4d45884bd"
+  },
+  "compile": {
+    "exit_code": 0,
+    "exports": 12,
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "command": "LEAN_PATH=<verified deficient shard build> lake env lean ../research/problems/erdos-85-wip-01/deficient_orbit_pruning/Pruning.lean"
+  },
+  "dependency": {
+    "source": "Deficient_3_3_0.lean",
+    "sha256": "8bf129063d301fe6225f0f506ac0e89a87251fff75be4338002f95acffa7f378"
+  },
+  "scope": "Representative pruning only; no full deficient coverage or remaining false-search proof",
+  "wrapper": "Added after direct successful compile; independent reviewer requested to exercise it."
+}
