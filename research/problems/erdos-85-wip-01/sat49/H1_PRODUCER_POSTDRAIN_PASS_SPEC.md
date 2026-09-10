@@ -24,7 +24,7 @@ Boxes:
 
 | box | type | state | slots | on-disk quarantine | notes |
 |---|---|---|---|---|---|
-| i-0ccf0dc6a398156d8 | c7g.16xlarge **spot**, us-east-1d, 1000 GB gp3 | running since 2026-09-06 16:55Z; heartbeat 2026-09-10 05:01Z, load 8, `slots_failed=28/36`, `disk_free=588G`, `oom=15` | 8 live | **13 UPLOAD-FAIL certificates** (`/scratch/h1/<slot>/orbit.compact.lrat.gz`, compact 19.0–26.5 GB each, ≈ 6 GB gz each; 15 TRIM-FAIL raw LRATs alongside) | **DO NOT TERMINATE** until the 13 are re-uploaded and verified; spot, so at reclaim risk |
+| i-0ccf0dc6a398156d8 | c7g.16xlarge **spot**, us-east-1d, 1000 GB gp3 | running since 2026-09-06 16:55Z; heartbeat 2026-09-10 05:01Z, load 8, `slots_failed=28/36`, `disk_free=588G`, `oom=15` | 8 live | **13 UPLOAD-FAIL certificates** (`/scratch/h1/<tag>/orbit.compact.lrat.gz`, compact 19.0–26.5 GB each, gz 5.5–7.9 GB each, 80,911,889,341 bytes total per the editor's on-box readback 42295; 15 TRIM-FAIL raw LRATs alongside) | **DO NOT TERMINATE** until the 13 are re-uploaded and verified; spot, so at reclaim risk |
 | i-01f0d952483d8f066 | c7g.16xlarge spot | **GONE** — not in describe-instances; last heartbeat 2026-09-09 03:50Z, last worker.log 03:01Z, last ledger 03:52Z; no user termination in CloudTrail (editor 42228) → spot reclamation ≈ 03:50–04:00Z | 0 | **7 UPLOAD-FAIL certificates LOST** (f25a68f489294d7c, d67d8618bf933b97, 3de5f9e7f1d255e7, f363d5a068846aa3, 59b38d317ba10da8, 35958b08961b7cfc, be77d80a79a0dce6) → must be RE-SOLVED; its 18 TRIM-FAIL raws also lost; its 10 orphan claims must be released | |
 
 UPLOAD-FAIL tags on the surviving box (13): 0a5acff54f93af2e 6b29a970f356c68b
@@ -53,15 +53,17 @@ the cause cannot be read back).
 
 ## 2. FIRST ACTION (zero incremental spend): rescue the 13 quarantined certificates
 
-The box is paid for and running; the 13 gz files (≈ 80 GB) exist only on its
-disk. This step needs a shell on i-0ccf0dc6a398156d8 (SSM Run Command or SSH —
+The box is paid for and running; the 13 gz files (80.9 GB, each > 5 GiB) exist
+only on its disk. **Status: RUNNING 2026-09-10 05:26Z by the editor (42295), exactly
+this procedure; independent S3 verification by the Claude seat follows the
+editor's result post, and only then does the termination hold lift.** This step needs a shell on i-0ccf0dc6a398156d8 (SSM Run Command or SSH —
 operator/editor action; the Claude seat holds no key) and the box's existing
 role, which already has PutObject on `h1/`.
 
 ```
-# on the box, once per quarantined slot N (13 of them):
+# on the box, once per quarantined tag (13 of them; work dirs are per TAG, not per slot):
 TAG=$(sed 's/^tag=\([0-9a-f]*\).*/\1/' /opt/h1/slot.N.failed)   # cert-pipeline-fail lines
-GZ=/scratch/h1/N/orbit.compact.lrat.gz
+GZ=/scratch/h1/$TAG/orbit.compact.lrat.gz
 sha256sum $GZ                      # must equal compact_gz_sha256 in failures/$TAG.line
 aws s3api head-object --bucket 2am-erdos85-certs --key sat49/campaign-20260825/h1/$TAG.compact.lrat.gz && { echo EXISTS; exit 1; }
 aws s3 cp --only-show-errors --expected-size $(stat -c%s $GZ) $GZ s3://2am-erdos85-certs/sat49/campaign-20260825/h1/$TAG.compact.lrat.gz
@@ -78,8 +80,10 @@ supports `--if-none-match` on CompleteMultipartUpload; the fleet's pinned
 2.36.34 does). Verification per file: local sha256 == `compact_gz_sha256` of the
 failure line; S3 ContentLength == local size; recompute the multipart ETag
 locally (md5 of the concatenated per-part md5s + `-<parts>`) and compare with
-HeadObject's ETag; then PutObjectTagging `sha256=<gz sha>` like the replay stack
-expects; finally write a corrected ledger line to
+HeadObject's ETag. Do NOT tag the rescued objects: the v3 worker never tagged
+any certificate (no put-object-tagging in `h1_fleet_worker.sh`), and the
+replay stack adds its own `replay=consumed` tag later; a sha256 tag is a v4
+worker addition (§3), not a v3 invariant. Finally write a corrected ledger line to
 `h1-fleet-v3/ledger/$TAG.line` with `upload=uploaded-v4-multipart` and move the
 failure line to `h1-fleet-v3/failures-resolved/`. Parallelism: 13 files, run
 P = 4 on the box (network-bound, ~6 GB each; expect < 1 h total).
