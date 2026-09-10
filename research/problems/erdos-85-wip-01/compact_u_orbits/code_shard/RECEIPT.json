@@ -1,0 +1,18 @@
+{
+  "source_compile_exit_code": 0,
+  "renderer_byte_reproduction": true,
+  "permutations": 120,
+  "cycle_entries": 108,
+  "orbit_entries": 12,
+  "scope": "full masks 129/66/66, arbitrary Fin 5 permutation",
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "sha256": {
+    "Shard.lean": "23ed151bf78b27eaae5e1222cfd5c268adf9141ace340479f9460d8493c5b6c1",
+    "render.py": "8b8e8a195dce0b4d3ce910efb0b293fe83428164797cfe57a634afa2c198a727",
+    "compile.log": "93c96ac6fe11230a3a6337a3ebdf8c084121ebf1eb753b8b024213ef98343857"
+  }
+}
