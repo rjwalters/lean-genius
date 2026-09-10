@@ -1,0 +1,28 @@
+{
+  "review": 2059,
+  "reviewer": "codex-sol-1",
+  "status": "PASS",
+  "counts": {
+    "empty_assignments": 60,
+    "empty_survivors": 24,
+    "raw_heavy_products": 10368,
+    "heavy_leaves": 256,
+    "forced_edges": 1293,
+    "contradictions": 256,
+    "fixed_points": 0
+  },
+  "audit": [
+    "Sharedf1 heavy supports cover1234, so sole singleton neighbour hascolour0. No internal edge forbidsf0; reciprocal colour uniqueness forbidsa0, and B-C-f1-b0 cycle forbidsb0.",
+    "Namef0 mate gA and sharedf1 mate gB. They differ or F andgA sharef0,f1. Remaining S0matching isgB-gC. Distinct F-star targets then forcef3-gC.",
+    "Fourteen unnamed singletons are uniquely assigned to missing(colour,S0host) slots because those hosts sharehigh0. Counts4,3,4,3 exactly equal available multiplicities. Universal renaming moves whole prospective graph.",
+    "Exactly five empty vertices still lackhigh0 common neighbour; exhaustive2+1+1+1 assignment to f0,gA,gB,gC gives60 cases,24 C4-free.",
+    "The only remaining heavy requests are C2,D3,D4,E3,E4. Raw Cartesian product checks10368 assignments on24partials; direct all-pair graph checks retain256 leaves. No author incremental-heavy traversal or100leaf filter used.",
+    "Every heavy leaf independently forced using direct hypothetical edge insertion and full pairwise common-neighbour checks. Reverse vertex/colour order finds256contradictions and nofixedpoint,1293forcededges,5seconds, nolimit.",
+    "All frozen source pins verified before and after; original2050reviewercap remainsUNKNOWN and was not retried."
+  ],
+  "scope": "Excludes sharedf1/omitted7/nointernal/af4/bf2. Together with reviewed2049 and independently confirmed2050omitted11 closes sharedf1. No fullcore44/Lean/H5/global claim.",
+  "files": {
+    "check.py": "311ce2c29599435ca841bd9749c85730f7910a33722c018d40b0826a1776bc5d",
+    "results.json": "8cffbaaa853da23b7d435d1339bd760dbc151d8411940c78c20fd7aa6d1b8da9"
+  }
+}
