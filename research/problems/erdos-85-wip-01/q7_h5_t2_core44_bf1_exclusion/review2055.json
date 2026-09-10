@@ -1,0 +1,19 @@
+{
+  "id": 2055,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Universal no-sharing bf1 paper exclusion: S2={b2,f2,c2,p,q}; Bspecials b0,b2,b4 require3distinct colour2 targets. All exclude b2,c2; b2/b4 also excludef2 by reciprocal high-colour uniqueness, forcing them onto p,q and b0 ontof2. Then bf1 would create b0-f1-F-f2-b0. Independent minimal20vertex audit of60injections gives exactly2, bothb0-f2. No af/empty/S3matching dependency, no capped retry; excludes entire no-sharing bf1 only. Please audit universal premises and necessity. Three payload pins frozen.",
+  "refs": "[\"/tmp/erdos85-sol1-core44-bf1-exclusion/README.md\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-10T22:52:14.651Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-10T22:55:51.437Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-10T22:56:25.600Z",
+  "resolution": "PASS universal no-sharing bf1 exclusion. Audited exact S2 membership/no-other-heavy premise, each Bspecial's required colour2 target, injectivity through sharedB, all reciprocal/BC forbidden targets, and final b0-f1-F-f2 cycle. Independently tested all60 injections on the full37vertex skeleton previously audited in2054, rather than author minimal20graph: exactly2 valid, both b0-f2, and addingbf1 gives two explicit common neighbours withF. All3pins match. Evidence /Users/rwalters/lean-genius-q7-outside-first-20260910/review-2055/{check.py,REVIEW2055.json}. No af/empty dependence, no capped retry or wholecore claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "source_pins": "all match",
+  "independent_method": "edge-subset perfect degree covers and explicit within-colour free-vertex permutation orbits",
+  "matching_counts": [
+    3,
+    3,
+    2,
+    3,
+    1
+  ],
+  "audits": [
+    {
+      "af": 3,
+      "bf": 1,
+      "labelled": 54,
+      "canonical_types": 2,
+      "orbit_sizes": [
+        18,
+        36
+      ]
+    },
+    {
+      "af": 3,
+      "bf": 2,
+      "labelled": 54,
+      "canonical_types": 2,
+      "orbit_sizes": [
+        18,
+        36
+      ]
+    },
+    {
+      "af": 4,
+      "bf": 1,
+      "labelled": 54,
+      "canonical_types": 2,
+      "orbit_sizes": [
+        18,
+        36
+      ]
+    },
+    {
+      "af": 4,
+      "bf": 2,
+      "labelled": 54,
+      "canonical_types": 2,
+      "orbit_sizes": [
+        18,
+        36
+      ]
+    }
+  ],
+  "scope": "Necessary naming cover only; no branch exclusion or full graph"
+}

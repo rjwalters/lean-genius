@@ -1,0 +1,32 @@
+{
+  "allowed_targets": {
+    "b0": [
+      "f2",
+      "p",
+      "q"
+    ],
+    "b2": [
+      "p",
+      "q"
+    ],
+    "b4": [
+      "p",
+      "q"
+    ]
+  },
+  "injective_assignments_examined": 60,
+  "valid_assignments": [
+    {
+      "b0": "f2",
+      "b2": "p",
+      "b4": "q"
+    },
+    {
+      "b0": "f2",
+      "b2": "q",
+      "b4": "p"
+    }
+  ],
+  "bf1_conflict": "b0-f1-F-f2-b0",
+  "scope": "No-C/F-sharing core44 forces b0-f2; excludes bf1 universally. Tiny direct minimal graph check supplements the paper proof; no completion search or Lean theorem."
+}

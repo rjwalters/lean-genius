@@ -1,0 +1,167 @@
+{
+  "status": "PASS",
+  "scope": "Exact T2 heavy-core census and reviewed reduction accounting only; no new core44 exclusion or Lean proof.",
+  "direct_graphs_examined": 32768,
+  "labelled": 52,
+  "automorphisms": 8,
+  "canonical_cores": [
+    1,
+    36,
+    44,
+    48,
+    210,
+    513,
+    656,
+    1537,
+    2049,
+    2120,
+    6145,
+    9217,
+    9729
+  ],
+  "stages": [
+    {
+      "review": 2026,
+      "before": [
+        1,
+        36,
+        44,
+        48,
+        210,
+        513,
+        656,
+        1537,
+        2049,
+        2120,
+        6145,
+        9217,
+        9729
+      ],
+      "excluded": [
+        36,
+        48,
+        513,
+        656,
+        2049
+      ],
+      "after": [
+        1,
+        44,
+        210,
+        1537,
+        2120,
+        6145,
+        9217,
+        9729
+      ],
+      "review_file": "q7_h5_heavy_core/review2026.json"
+    },
+    {
+      "review": 2035,
+      "before": [
+        1,
+        44,
+        210,
+        1537,
+        2120,
+        6145,
+        9217,
+        9729
+      ],
+      "excluded": [
+        1,
+        2120
+      ],
+      "after": [
+        44,
+        210,
+        1537,
+        6145,
+        9217,
+        9729
+      ],
+      "review_file": "q7_h5_t2_integrated_empty/review2035.json"
+    },
+    {
+      "review": 2041,
+      "before": [
+        44,
+        210,
+        1537,
+        6145,
+        9217,
+        9729
+      ],
+      "excluded": [
+        210
+      ],
+      "after": [
+        44,
+        1537,
+        6145,
+        9217,
+        9729
+      ],
+      "review_file": "q7_h5_t2_core210/review2041.json"
+    },
+    {
+      "review": 2045,
+      "before": [
+        44,
+        1537,
+        6145,
+        9217,
+        9729
+      ],
+      "excluded": [
+        1537,
+        6145,
+        9217,
+        9729
+      ],
+      "after": [
+        44
+      ],
+      "review_file": "q7_h5_t2_adjacent_triples/REVIEW2045.json"
+    }
+  ],
+  "remaining": [
+    44
+  ],
+  "historical_caps_preserved": true,
+  "source_pins": {
+    "q7_h5_heavy_core/core-t2.json": "831c6e0cd3dc240acb9f9190b02ff26f3247f0d0c1a1fbf8417f950be43fbc61",
+    "q7_h5_heavy_core/singleton-t2.json": "66296156f5d3a39fe9fd08d7892cee75f2522e0eb6d2af0f337d9cbb17fb229c",
+    "q7_h5_t2_integrated_empty/results.json": "8d7bcc0db98f0f476ca36d813c35becb1512fec324977e34d3f3c99fa4f2980b",
+    "q7_h5_t2_core210/search-results.json": "8e6ed7ce2beb689971fd568484043a942dcafe9f71123443bcd38bd9670be0f8",
+    "q7_h5_t2_adjacent_triples/result.json": "dd3af9f68a66cc5328e420d1fef39a9c485e33dd5f622b8f1aa3de88494ba567",
+    "q7_h5_heavy_core/review2026.json": "967b767314d574b4abd021b4938c0e9b57eabcf121ea37e20f501e0b8892957a",
+    "q7_h5_t2_integrated_empty/review2035.json": "a5778e3a2d16d3850c799721e98b221496950a026121354b6cea56e18ab530bc",
+    "q7_h5_t2_core210/review2041.json": "de861106d649887f255373154842bd27ad8d29415f7b7763da364ee4976f4e6e",
+    "q7_h5_t2_adjacent_triples/REVIEW2045.json": "edf814d77433b38e1d9ae807ed1a4f707e9f2abfd3e5519ff580282a96574e5b",
+    "q7_h5_heavy_core/singleton-source-pins.json": "34047fded6aadd2116ae28414c461dab3332a79e3199a0901bf15f82411daf58",
+    "q7_h5_heavy_core/SINGLETON_T2.md": "dd36fc52eb3ec775b6f31201d677ed20db3020e0e0550cb906bf77157862b939",
+    "q7_h5_heavy_core/singleton_completion.py": "fdab7a16765af7961eb139610c3c2dae735ac3e706649fd3a5ee0a5092cf7bf0",
+    "q7_h5_heavy_core/check_singleton_rejections.py": "2f4e860a840f2240f33b193d50bbd236b6c858c4e71a8e5fe5caf6f3a81da682",
+    "q7_h5_heavy_core/singleton-rejection-audit.json": "eeecc9c80bc5c98fbacf54db6f0ff781eefdce868e76b43af4ddee196d9db8b1",
+    "q7_h5_heavy_core/verify_singleton_witnesses.py": "53b347a7e891f82e4f204802f67d702f4d3d2fd6a17253783b8d12da3cdc3ab4",
+    "q7_h5_heavy_core/singleton-witness-audit.json": "d9ab8a0febd3fc64a47ec815a7abf2d04e6960d70de206c846adaa9af602a7d8",
+    "q7_h5_heavy_core/host_pilot.py": "0042897f55b60649804a41eb56c9003286fe119feac3d7521e5b9c7a123580f2",
+    "q7_h5_t2_integrated_empty/source-pins.json": "1e6afc1af4cab07bf59cf2f2909cb951dd00a9c3bdfab087cce2ed69b4e549f1",
+    "q7_h5_t2_integrated_empty/pilot.py": "9e8e715784f9bf5ee3d730f7d6afdf2727a21865e86481f749e9f0eeb97b7511",
+    "q7_h5_t2_integrated_empty/README.md": "627d8413acd133a3ad3ad34b890f3c1f0b62b4c6055545b889f7b2d249abe273",
+    "q7_h5_t2_core210/source-pins.json": "66c239b3e927ef26862b5103fa50fecd434dab6d17d69742e9ae874710bfba55",
+    "q7_h5_t2_core210/README.md": "e155db06a1573df9e341470f513a7baaf2889cb014fc2229c7b92b451d355ae1",
+    "q7_h5_t2_core210/core210-pattern.json": "b8178f58010e64933c3e2cf781e961cbc06cca29f530a2cf75e1d944672821ce",
+    "q7_h5_t2_core210/host_constraint.py": "bc5c74b4b323ec721ea2961a322f962fbd62b8333fa07af38c2b44c3841dafc0",
+    "q7_h5_t2_core210/host_constraint_bins.py": "3819e139fbd15e356391a67cc8d357ed025a7dcaee7276522950172e04f40e11",
+    "q7_h5_t2_core210/pattern-audit.json": "85c933746f6e8129ff6063bcd8a17d2140572a1b1bccd5d59a63b599bb7b8498",
+    "q7_h5_t2_core210/pattern_audit.py": "8fa30838585ce88a3159ffdeeef6f45b7d62ce3ba420a3f7b3089ae9720fbc88",
+    "q7_h5_t2_core210/search.py": "b051dbab0001e8ca56bb577fb96326ca2fe7bb9ba9cadc83f464b894165e8c37",
+    "q7_h5_t2_core210/verification-results.json": "e8b51eb30ad1a8dea9ce4ff6190b6957bd9de8764bf9c41355e58cc6b9af52a9",
+    "q7_h5_t2_core210/verify_search.py": "c43161009eabcccd180edb83556a9fbe406ad0f7dcbb05aaf44cde0c520599a4",
+    "q7_h5_t2_adjacent_triples/pins.json": "0f3127e490c5edcaf18cfed8febcc203108342c1778caac86491f2bb582f09ae",
+    "q7_h5_t2_adjacent_triples/check.py": "9614f67348db0defb01f549946752d491b3cd297a5687a0dde9e17a96e0d07a4",
+    "q7_h5_t2_adjacent_triples/README.md": "6e6dca1588412d94b848246e966fe15ee0d91fbce97f5d8930476809b54adf64"
+  }
+}

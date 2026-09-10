@@ -1,0 +1,1 @@
+Independent review2062 PASS confirms all13 canonical cores and the exact disjoint12-core reduction, leaving44. Original README pending-review wording is historical and superseded by the exported review. This package does not itself exclude44.

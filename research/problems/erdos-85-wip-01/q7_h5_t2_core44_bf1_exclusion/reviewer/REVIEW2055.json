@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "method": "All60 target injections checked on independently audited full37vertex skeleton, without author minimal-graph imports",
+  "valid_assignments": [
+    [
+      "f2",
+      "g2a",
+      "g2b"
+    ],
+    [
+      "f2",
+      "g2b",
+      "g2a"
+    ]
+  ],
+  "semantic_audit": "B/C/F support and no-sharing class counts; reciprocal colour exclusions; distinct targets forced by commonB; b0-f1 incompatible with forcedb0-f2",
+  "scope": "Universal no-sharing bf1 exclusion only; no empty pattern or af restriction"
+}
