@@ -1,0 +1,60 @@
+{
+  "scope": "Exact arithmetic and explicit incidence Gram witnesses only; no C completion and no exclusion",
+  "results": [
+    {
+      "h": 1,
+      "cubic": "x**3 - 7*x**2 - 7*x + 48",
+      "residual_degree": 46,
+      "residual_p1": -7,
+      "residual_p2": 281,
+      "residual_p3": "6*T-322",
+      "residual_p4": 1961,
+      "determinant_divisor": 48,
+      "support_profiles": [
+        {
+          "triple_count": 0,
+          "ambient_dimension": 48,
+          "low_span_gram_determinant": 320,
+          "support_size_counts": {
+            "0": 40,
+            "1": 8
+          }
+        }
+      ]
+    },
+    {
+      "h": 3,
+      "cubic": "x**3 - 7*x**2 - 7*x + 46",
+      "residual_degree": 42,
+      "residual_p1": -7,
+      "residual_p2": 255,
+      "residual_p3": "6*T-280",
+      "residual_p4": 1767,
+      "determinant_divisor": 2254,
+      "support_profiles": [
+        {
+          "triple_count": 0,
+          "ambient_dimension": 46,
+          "low_span_gram_determinant": 13132,
+          "support_size_counts": {
+            "0": 25,
+            "1": 18,
+            "2": 3,
+            "3": 0
+          }
+        },
+        {
+          "triple_count": 1,
+          "ambient_dimension": 46,
+          "low_span_gram_determinant": 13132,
+          "support_size_counts": {
+            "0": 24,
+            "1": 21,
+            "2": 0,
+            "3": 1
+          }
+        }
+      ]
+    }
+  ]
+}
