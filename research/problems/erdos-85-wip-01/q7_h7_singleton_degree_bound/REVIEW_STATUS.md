@@ -1,0 +1,1 @@
+Review2042 PASS: independent degree-histogram enumeration verifies all four forbidden distributions and the general counting argument. No whole-class exclusion or Lean theorem. Original frozen README is retained unchanged.
