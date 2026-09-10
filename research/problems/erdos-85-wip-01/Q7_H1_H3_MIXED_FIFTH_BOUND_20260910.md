@@ -120,11 +120,33 @@ The same residue-consumer idea was independently used by sol3 for H5/T2.
 
 ## Formalization status
 
-The graph-level isolation step is now proved in
-`proofs/Proofs/Erdos85DefectNeighborhoodIsolation.lean` by
-`defect_neighborhood_edge_avoids_root_neighbors` and
-`defect_neighborhood_edge_iff_sdiff`. Independent review1605 compiled both
-with only propext, Classical.choice and Quot.sound. The statements concern
-the actual second-order defect graph of a C4-free graph, without regularity.
-The q7 low-block identification, extremal tables, allocation envelope and
-aggregate triangle-count exclusions retain the paper/arithmetic scope above.
+The minimum-incidence contradiction now has a complete actual-graph Lean
+proof in `proofs/Proofs/Erdos85OrderFortyNineMinimalTriangleExclusion.lean`
+(commit `ce591243aa`; independent review1620 PASS). Its three theorems
+compile without `sorry` and depend only on propext, Classical.choice and
+Quot.sound. The specialized H3 theorem assumes C4-freeness, minimum degree7,
+order49, three high vertices, and24 empty supports; it concludes that the
+sum of all-low local triangle incidences is not24. The H5 specialization
+likewise excludes incidence sum12 with five highs and12 empty supports.
+The existing incidence census derives the necessary triple-support counts;
+they are not additional assumptions in the specialized theorems.
+
+The proof composes independently reviewed actual-graph results:
+
+- `Erdos85OrderFortyNineSurvivorTriangleLedger.lean` (review1617): equality
+  in the empty-support incidence bound forces local minima, and the mixed
+  defect trace is at most twice the triple-support count.
+- `Erdos85OrderFortyNineCubicLowTriangleTrace.lean` (review1619):
+  tr(A^3)=24h+2S, where S is the existing all-low local incidence sum.
+- `Erdos85OrderFortyNineMixedDefectTrace.lean` (review1618): actual graph
+  degree and mixed-weight identities yield tr(A^5)=12691+261h+12tr(A^3)+R;
+  divisibility of the fifth trace gives R=S+h+4 modulo5.
+
+The trace cyclic identity identifies the two placements of the defect
+matrix used by the sparse bound and the fifth-trace ledger. Thus no
+unproved numerical trace premise remains in the minimum-incidence
+contradiction. The graph-level exclusion is stated using incidence S,
+without introducing a second formal representation of global triangles.
+The general allocation envelope, extremal table and spectral-polynomial
+consumers above retain their paper/arithmetic scope. No complete H3 or H5
+profile is excluded by this result.
