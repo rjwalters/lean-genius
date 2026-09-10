@@ -18,7 +18,7 @@ are the objects named in each line. Nothing was launched, mutated or deleted.
 | v3 failure lines | 53 = **20 UPLOAD-FAIL** (trim VERIFIED, compact ok) + **33 TRIM-FAIL** (drat-trim did not verify; `raw_lrat_bytes=0`; `drat-trim.out` NOT uploaded, cause undetermined) | `h1-fleet-v3/failures/` |
 | claimed rows with no ledger/failure line | 18 = **8 live slots on i-0ccf0dc6a398156d8** (claims 2026-09-09 18:11–21:57Z) + **10 ORPHANS from the lost box i-01f0d952483d8f066** (claims 2026-09-08 16:41–20:05Z) | claim bodies (= node id) + timestamps; `v3state/inflight_attrib.txt` |
 | v3 rows never claimed | 1,031 = 1,698 − 667 | arithmetic |
-| rows outside the v3 queue still uncertified | 207 = 1,331 − (1,031 + 20 + 33 + 22 + 18) — needs the inventory owner's reconciliation (v2 quarantine / host-grind leftovers / queue definition) | arithmetic; **open item for `DROP_CLOSURE_INVENTORY.md`** |
+| rows outside the v3 queue still uncertified | **178** (sol-1 exact set join, review 1564 reproduced by claude: 13,351 capacity − 12,054 listed objects = 1,297 gaps = 1,119 inside v3 + 178 outside; my earlier arithmetic remainder 207 used the older 12,020 count). All 178 join to `all_even_capacity` in `h1fleet/coverage/coverage.tsv`: 177 were pending, one (`e6f717d2e69cc8e0`) was a 39-byte empty gzip mislabelled certified → back to PENDING, so the re-solve set is **8** (7 lost + e6f717). After the rescue of the 13: 12,063 objects, **1,288** gaps | `closure-inventory-evidence/reconcile_h1_snapshot.py` (PASS), `h1-exact-set-join.json` |
 
 Boxes:
 
@@ -52,6 +52,22 @@ be OOM casualties (raw DRAT 4.5–15.7 GB; drat-trim.out was never uploaded, so
 the cause cannot be read back).
 
 ## 2. FIRST ACTION (zero incremental spend): rescue the 13 quarantined certificates
+
+**STATUS 2026-09-10 05:41Z: DONE AND VERIFIED.** Editor ran the procedure below on
+i-0ccf0dc6a398156d8 (room 42295/42343/42382): 13/13 uploaded as multipart (256 MB
+parts, P=4, 80,911,889,341 bytes in 11 min), in-region streamed readback sha256 ==
+failure-line `compact_gz_sha256` for all 13. Independent read-only S3 check by claude
+(42473, records in `probes`/`rescue13` scratch): all 13 keys present under `h1/`,
+21–30 parts each, sizes sum exactly 80,911,889,341; `ledger/<tag>.line` written for
+all 13 and byte-identical to the failure line except `upload=uploaded-v4-multipart-rescue`.
+sol-1's join (42429): 4 of the 13 already had objects in the 05:32Z listing, 9 are new
+→ 12,063 objects, 1,288 gaps. **Deviation from the plan:** `h1-fleet-v3/failures-resolved/`
+does NOT exist in the bucket and the 13 original failure lines are still in `failures/`;
+any consumer classifying from `failures/` must also read `ledger/` (or it re-counts
+these 13 as open UPLOAD-FAIL). The termination hold on i-0ccf0dc6a398156d8 is released
+from the producer lane; its 15 TRIM-FAIL raws are lost when it goes (already re-solve).
+
+Procedure as specified (kept for the record):
 
 The box is paid for and running; the 13 gz files (80.9 GB, each > 5 GiB) exist
 only on its disk. **Status: RUNNING 2026-09-10 05:26Z by the editor (42295), exactly
@@ -99,7 +115,7 @@ other seven.
 Work list (from §1): 7 lost UPLOAD-FAIL rows (re-solve), 33 TRIM-FAIL rows
 (re-solve with diagnostics), 22 UNKNOWN-at-cap rows (finer Lean split or a
 longer cap — decision for the inventory), 10 orphan claims (release, re-queue),
-1,031 never-claimed v3 rows, and whatever the 207-row reconciliation adds.
+1,031 never-claimed v3 rows, the 177 pending rows outside v3, and e6f717d2e69cc8e0 (§1: 178 outside-v3 rows, all reconciled by sol-1).
 Queue ≈ 1,100 rows plus the 22 hard ones.
 
 Worker delta v3 → v4 (generate from the audited v3 worker, sha
@@ -169,7 +185,8 @@ classified but not Lean-consumed.
 
 ## 5. Open items handed to the inventory (sol-1)
 
-- Reconcile the 207 uncertified rows outside the v3 queue (§1).
+- ~~Reconcile the 207 uncertified rows outside the v3 queue~~ DONE: 178 exact (sol-1, review 1564); see §1.
+- Replay-side disk budget (review 1561 note): the replay adapter's full GET readback of a large certificate lands in `TMPDIR`; workers must point `TMPDIR` at `/scratch` and budget object + one `part_size` + one readback copy per concurrent large object.
 - Decide UNKNOWN-at-cap policy (22 rows): finer checked split vs longer cap.
 - TRIM-FAIL cause (33 rows): unknown until v4 uploads diagnostics; budget them
   as re-solves.
