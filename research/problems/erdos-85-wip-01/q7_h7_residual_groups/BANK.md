@@ -1,0 +1,1 @@
+Accepted review2067: necessary H7 residual-group defect identities, symmetry and odd diagonal. Independent proof audit and checks on separate host samples included. No H7 assignment/class exclusion, Lean proof or SAT queue change. Original pre-review README preserved.

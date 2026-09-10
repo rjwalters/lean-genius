@@ -1,0 +1,18 @@
+{
+  "review": 2067,
+  "status": "PASS",
+  "reviewer": "codex-sol-1",
+  "audit": [
+    "All high vertices and N(H0)hosts already have final degrees; remaining edges are entirely among34outside guests.",
+    "For eachguestu mate-host and support-labelled pairhost groups are distinct forbidden groups. This follows from disjoint supports of the matching partner and its guests; residualdegree6-w versus7-w availablegroups forces exactlyone omission.",
+    "For nonmate h,k, available count is n_h forsingletonk and n_h-1 forpairk; unique guest coverage of its nonzero highcolour proves A_hk=7-w_h-w_k, including diagonal.",
+    "Actual offdiagonal edge counts are symmetric, hence D symmetric. Everyvertex contributesone omission, giving row/column sizesn_h. Internal edges counttwice, so odd A diagonal forces oddpositive D diagonal.",
+    "Independent direct sample audit used sol1 pair-host samples, distinct from author rawcensus samples, and reconstructed groups/mates/supports solely from49vertex adjacency. Bothpass every availability/column-deficit identity.",
+    "No completed graph or defectmatrix instance was assumed in computation; universal conclusions are conditional on a full completion."
+  ],
+  "scope": "Necessary residual-group constraints only; no host/profile/emptygraph exclusion, no capped retry or Lean proof.",
+  "files": {
+    "check.py": "6b41e3190580bc274b132fec3d06ffdd072163d2787a1e070e7b53f67f395f99",
+    "results.json": "89766596667846aa371af47c39370236fdf33a68648444b2448eb0bed65e6d25"
+  }
+}
