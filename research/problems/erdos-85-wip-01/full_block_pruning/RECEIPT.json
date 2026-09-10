@@ -1,0 +1,19 @@
+{
+  "compile_exit_code": 0,
+  "wrapper_exercised": true,
+  "dependency_exports": 17,
+  "reduction_exports": 5,
+  "axioms": "propext, Classical.choice, Quot.sound or subset",
+  "sha256": {
+    "check.py": "865d905856343c8abc74636305d957b54681fa50c4e0748bd1ccdd9def19117b",
+    "compile.log": "e3fd69768e108fd125483773d354d90a873c787efcf4ede50a8fe1d5a53f4582",
+    "README.md": "46471be2f5e95c3ae780a371b6b626cafa9ac8a7e54e683a9df3c19f7aa441af",
+    "Reduction.lean": "a24ddb491107a93138f8c328bd3f89acfbb77de2011a8e11364da7ab65ad880d"
+  },
+  "dependency_sha256": {
+    "full_orbit_transport/Transport.lean": "97380e9f83da623865cff06428368d1fd20f07a45bc2c42f6e02f9e2e6bebe44",
+    "full_orbit_pruning/Pruning.lean": "8f3b04ba385c0794033047e3077ed56d606b40f8c59aa17d23b7fbdc9db8825e",
+    "full_block_orbits/Certificate.lean": "e86619944bbdf83fd475651b09a59383072b5b59092be43914f3b1a201ad31fb"
+  },
+  "scope": "Actual full branch restricted to276 remaining pairs, all false-search obligations explicit and unproved"
+}
