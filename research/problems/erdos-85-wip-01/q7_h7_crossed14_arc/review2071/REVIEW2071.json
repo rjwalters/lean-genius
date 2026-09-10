@@ -1,0 +1,15 @@
+{
+  "review": 2071,
+  "status": "PASS",
+  "scope": "All448specified crossed14 local-survivor graphs excluded. Wholeprofile additionally requires independently accepted480input cover and32local negatives. No H7/global/Lean closure.",
+  "verified_assignments": 448,
+  "complete_rows": 338835,
+  "deletion_batches": 11696,
+  "failed_supports": 298413,
+  "nodes": 5416434,
+  "seconds": 2.9926949590444565,
+  "method": "Independent direct candidate-subset complete row enumeration, exact row-set comparison; sequential deletion replay using full final neighbour intersections. No author generator/filter imports.",
+  "completeness": "Individually legal outside candidates determined directly from existing graph. Increasing vertex-subset enumeration uses exact residualdegree, exact missinghighcolour union, and pairwise old common-neighbour compatibility; no host-group traversal, symmetry pruning or author imports. Exact complete row sets matched for all15232outside vertices, including duplicate checks.",
+  "arc_necessity": "For distinct outsideu/v, reciprocal adjacency must agree and full final neighbour sets intersect atmostonce. Sequential deletion of a row unsupported at v preserves every global completion. Every removed row was in the current domain, every comparison uses current opposing rows, event vertices are checked distinct, and each terminal specified domain is empty.",
+  "input_and_limits": "All8payload pins checked before/after; frozen input hash equals receipt source hash; exact448source indices cover all and only LOCAL_FEASIBLE entries. Every independent case stayswithin100000generationnodes and60seconds overall; no caps/unvisited. Reran terminal verifier once after adding explicit distinct-event-vertices certificate validation; no capped graph search rerun."
+}

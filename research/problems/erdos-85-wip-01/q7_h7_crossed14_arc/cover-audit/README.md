@@ -1,0 +1,5 @@
+# Independent crossed14 cover and graph join
+
+Dynamic most-constrained host traversal, without symmetry pruning, completes18566nodes and3840raw assignments. Independent explicit automorphisms fix colours1,2 and act on the two unordered matched pairs{3,4},{5,6}; all eight actions preserve the crossed seed and profile. Their full-leaf quotient exactly matches480published representatives. This is a fresh independent verification of an already complete domain, not a retry of a capped one.
+
+Every graph reconstructed from pair assignments, directly missing high-colour host slots, and residual host degrees. All448positive local-filter adjacency arrays match exactly. The32negative assignments independently have no valid complete row, by increasing-index candidate-subset traversal with direct common-neighbour conflicts and final high-colour incidence tests;8231nodes total, no caps. Combined with review2071 for all448AC negatives, this proves the crossed14 profile excluded under the reviewed high0 host/profile premises, at the paper/finite-computation level only. It does not establish H7 exclusion or any Lean theorem.

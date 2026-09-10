@@ -1,0 +1,11 @@
+# Twin-adjacent H7 profile6 exclusion
+
+Single bounded pass on all2640canonical host assignments of twin6. The exact count profile is paircounts[2,1,2,2,2,2,2,2] and emptycounts[1,0,1,1,1,1,1,1]. All2640 are rejected:61 by individual-row feasibility and2579 by complete-row arc consistency. Zero UNKNOWN/unvisited,66,082,861combined operations,42.85seconds. Budget100000combined local/generation/compatibility operations perassignment and60seconds global. No retries or solver.
+
+The host-partition enumerator and symmetry cover are reviewed2070 (independent full recount there was for a different profile). The local-row API is reviewed2069 and the unchanged full-row/AC API independently reviewed2071 on crossed14. This run uses exact byte copies, pinned with both input sources. The runner reconstructs graph labels from directly missing high-colour incidences and residual host degrees. Every input is validated before filtering. All graph arrays and negative certificates are retained.
+
+The completeness argument is the same as2071: each outside vertex needs a complete row of residual degree6 minus support weight; at most one neighbour per host group; exact missing-high-colour union. Skip-or-one-per-group enumeration covers every legal row and completes before arc deletion. Pairwise rows must agree on uv and have at most one common final neighbour. Removing unsupported rows preserves every possible global completion; empty domain excludes that fixed host assignment. UNKNOWN is never treated as negative.
+
+verify.py imports neither filter. It checks source pair ownership, high/host incidences and graph validity, independently enumerates the61 negative rows by increasing candidate subsets, verifies soundness of every retained row, and replays every deletion using direct final-neighbour intersections. Independent domain-completeness verification and host-cover review are requested separately.
+
+Under reviewed2073 maximal-high normalization, every H7 graph with9empty-empty edges has either twin6 or crossed14 at a suitable high vertex. Thus this package and crossed14 together exclude a9 once their complete cover/negative joins are accepted. This does not exclude H7 with6,7,8empty-empty edges, and is not a Lean theorem or an Erdős85 solution.

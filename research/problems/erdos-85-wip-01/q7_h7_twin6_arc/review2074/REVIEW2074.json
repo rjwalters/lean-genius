@@ -1,0 +1,25 @@
+{
+  "review": 2074,
+  "verdict": "PASS",
+  "scope": "All twin6 2640 fixed host assignments excluded: 61 local and 2579 arc. Complete host orbit cover separately reviewed 2075. Not H7/global/Lean closure.",
+  "method": "Adapted independently written review2071 candidate-subset enumeration, importing neither author filter. Recomputed exact complete row domains for every arc case and independently searched all local-negative rows; sequential full-neighbour intersection replay. Also replayed author source-ownership and graph-validity checker.",
+  "verified_assignments": 2640,
+  "complete_rows": 1818355,
+  "deletion_batches": 61156,
+  "failed_supports": 1232957,
+  "generation_nodes": 26405294,
+  "unknown": 0,
+  "source_pins": {
+    "arc_filter.py": "924ef0f9ded38bb5c2befe59570e2ed77ee6921542321c5a678de02a0f7e7f95",
+    "summary.json": "f9508533910204fbfcebb5a5c0a16639a19d43d0fe126035c15f09a4382c1d7d",
+    "run.py": "82f62b3f6387251a175c83c7c2311a5df3ed74b3e3752092805f8b7c37257e58",
+    "local_filter.py": "b2db79822c2be45dee5b17d545dab87037d766d8ddf777fe6bf751c8c5fb4ca2",
+    "profile-source.json": "52131f563134175c32215967fe169bf185074bb235b2308965541c19f4656872",
+    "seed-source.json": "406218cebcabd02f19fa1ff160b52c0922bdfa4f985ba97a0383e2b1850f567c",
+    "README.md": "dcecd0dd7175d7c9e3136ef7e50c84d87848fbe61d8271db289249a9664864b6",
+    "results.json.gz": "f7e18d5f3fcbd5ccddcfd14c4137e6417e3273eabfc846686a0317113381d52d",
+    "input-pins.json": "eb46a19d00ce74b3ab1e6793c3075b930d6d465b47a58de2df53b8dd6545ccee",
+    "verification.json": "e4f360a3b6812070fe55e8a814f1de2af2e48a961b4c702741ca92a31a420922",
+    "verify.py": "731074e2ecbe704922e66f9128562268b5e500e67d8321ddbce662273ab69bc8"
+  }
+}
