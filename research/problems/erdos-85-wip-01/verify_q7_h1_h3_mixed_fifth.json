@@ -1,0 +1,675 @@
+{
+  "scope": "Necessary local allocation envelope only; maximizing allocations need not be graph realizable",
+  "ex_C4_orders_0_through_5": [
+    0,
+    0,
+    1,
+    3,
+    4,
+    6
+  ],
+  "profiles": {
+    "H1": {
+      "h": 1,
+      "census": [
+        40,
+        8,
+        0,
+        0
+      ],
+      "bounds": [
+        {
+          "T": 18,
+          "R_upper": 60,
+          "p5_lower": -2551,
+          "p5_upper": -2491
+        },
+        {
+          "T": 19,
+          "R_upper": 78,
+          "p5_lower": -2479,
+          "p5_upper": -2401
+        },
+        {
+          "T": 20,
+          "R_upper": 96,
+          "p5_lower": -2407,
+          "p5_upper": -2311
+        },
+        {
+          "T": 21,
+          "R_upper": 114,
+          "p5_lower": -2335,
+          "p5_upper": -2221
+        },
+        {
+          "T": 22,
+          "R_upper": 132,
+          "p5_lower": -2263,
+          "p5_upper": -2131
+        },
+        {
+          "T": 23,
+          "R_upper": 150,
+          "p5_lower": -2191,
+          "p5_upper": -2041
+        },
+        {
+          "T": 24,
+          "R_upper": 168,
+          "p5_lower": -2119,
+          "p5_upper": -1951
+        },
+        {
+          "T": 25,
+          "R_upper": 186,
+          "p5_lower": -2047,
+          "p5_upper": -1861
+        },
+        {
+          "T": 26,
+          "R_upper": 204,
+          "p5_lower": -1975,
+          "p5_upper": -1771
+        },
+        {
+          "T": 27,
+          "R_upper": 222,
+          "p5_lower": -1903,
+          "p5_upper": -1681
+        },
+        {
+          "T": 28,
+          "R_upper": 240,
+          "p5_lower": -1831,
+          "p5_upper": -1591
+        },
+        {
+          "T": 29,
+          "R_upper": 258,
+          "p5_lower": -1759,
+          "p5_upper": -1501
+        },
+        {
+          "T": 30,
+          "R_upper": 276,
+          "p5_lower": -1687,
+          "p5_upper": -1411
+        },
+        {
+          "T": 31,
+          "R_upper": 294,
+          "p5_lower": -1615,
+          "p5_upper": -1321
+        },
+        {
+          "T": 32,
+          "R_upper": 312,
+          "p5_lower": -1543,
+          "p5_upper": -1231
+        },
+        {
+          "T": 33,
+          "R_upper": 330,
+          "p5_lower": -1471,
+          "p5_upper": -1141
+        },
+        {
+          "T": 34,
+          "R_upper": 348,
+          "p5_lower": -1399,
+          "p5_upper": -1051
+        },
+        {
+          "T": 35,
+          "R_upper": 366,
+          "p5_lower": -1327,
+          "p5_upper": -961
+        },
+        {
+          "T": 36,
+          "R_upper": 384,
+          "p5_lower": -1255,
+          "p5_upper": -871
+        },
+        {
+          "T": 37,
+          "R_upper": 402,
+          "p5_lower": -1183,
+          "p5_upper": -781
+        },
+        {
+          "T": 38,
+          "R_upper": 420,
+          "p5_lower": -1111,
+          "p5_upper": -691
+        },
+        {
+          "T": 39,
+          "R_upper": 438,
+          "p5_lower": -1039,
+          "p5_upper": -601
+        },
+        {
+          "T": 40,
+          "R_upper": 456,
+          "p5_lower": -967,
+          "p5_upper": -511
+        },
+        {
+          "T": 41,
+          "R_upper": 474,
+          "p5_lower": -895,
+          "p5_upper": -421
+        },
+        {
+          "T": 42,
+          "R_upper": 492,
+          "p5_lower": -823,
+          "p5_upper": -331
+        },
+        {
+          "T": 43,
+          "R_upper": 510,
+          "p5_lower": -751,
+          "p5_upper": -241
+        },
+        {
+          "T": 44,
+          "R_upper": 528,
+          "p5_lower": -679,
+          "p5_upper": -151
+        },
+        {
+          "T": 45,
+          "R_upper": 538,
+          "p5_lower": -607,
+          "p5_upper": -69
+        }
+      ]
+    },
+    "H3_pair": {
+      "h": 3,
+      "census": [
+        25,
+        18,
+        3,
+        0
+      ],
+      "bounds": [
+        {
+          "T": 9,
+          "R_upper": 12,
+          "p5_lower": -2661,
+          "p5_upper": -2649
+        },
+        {
+          "T": 10,
+          "R_upper": 30,
+          "p5_lower": -2589,
+          "p5_upper": -2559
+        },
+        {
+          "T": 11,
+          "R_upper": 48,
+          "p5_lower": -2517,
+          "p5_upper": -2469
+        },
+        {
+          "T": 12,
+          "R_upper": 66,
+          "p5_lower": -2445,
+          "p5_upper": -2379
+        },
+        {
+          "T": 13,
+          "R_upper": 84,
+          "p5_lower": -2373,
+          "p5_upper": -2289
+        },
+        {
+          "T": 14,
+          "R_upper": 102,
+          "p5_lower": -2301,
+          "p5_upper": -2199
+        },
+        {
+          "T": 15,
+          "R_upper": 120,
+          "p5_lower": -2229,
+          "p5_upper": -2109
+        },
+        {
+          "T": 16,
+          "R_upper": 138,
+          "p5_lower": -2157,
+          "p5_upper": -2019
+        },
+        {
+          "T": 17,
+          "R_upper": 156,
+          "p5_lower": -2085,
+          "p5_upper": -1929
+        },
+        {
+          "T": 18,
+          "R_upper": 174,
+          "p5_lower": -2013,
+          "p5_upper": -1839
+        },
+        {
+          "T": 19,
+          "R_upper": 192,
+          "p5_lower": -1941,
+          "p5_upper": -1749
+        },
+        {
+          "T": 20,
+          "R_upper": 210,
+          "p5_lower": -1869,
+          "p5_upper": -1659
+        },
+        {
+          "T": 21,
+          "R_upper": 228,
+          "p5_lower": -1797,
+          "p5_upper": -1569
+        },
+        {
+          "T": 22,
+          "R_upper": 246,
+          "p5_lower": -1725,
+          "p5_upper": -1479
+        },
+        {
+          "T": 23,
+          "R_upper": 264,
+          "p5_lower": -1653,
+          "p5_upper": -1389
+        },
+        {
+          "T": 24,
+          "R_upper": 282,
+          "p5_lower": -1581,
+          "p5_upper": -1299
+        },
+        {
+          "T": 25,
+          "R_upper": 300,
+          "p5_lower": -1509,
+          "p5_upper": -1209
+        },
+        {
+          "T": 26,
+          "R_upper": 318,
+          "p5_lower": -1437,
+          "p5_upper": -1119
+        },
+        {
+          "T": 27,
+          "R_upper": 328,
+          "p5_lower": -1365,
+          "p5_upper": -1037
+        },
+        {
+          "T": 28,
+          "R_upper": 342,
+          "p5_lower": -1293,
+          "p5_upper": -951
+        },
+        {
+          "T": 29,
+          "R_upper": 352,
+          "p5_lower": -1221,
+          "p5_upper": -869
+        },
+        {
+          "T": 30,
+          "R_upper": 366,
+          "p5_lower": -1149,
+          "p5_upper": -783
+        },
+        {
+          "T": 31,
+          "R_upper": 376,
+          "p5_lower": -1077,
+          "p5_upper": -701
+        },
+        {
+          "T": 32,
+          "R_upper": 390,
+          "p5_lower": -1005,
+          "p5_upper": -615
+        },
+        {
+          "T": 33,
+          "R_upper": 400,
+          "p5_lower": -933,
+          "p5_upper": -533
+        },
+        {
+          "T": 34,
+          "R_upper": 414,
+          "p5_lower": -861,
+          "p5_upper": -447
+        },
+        {
+          "T": 35,
+          "R_upper": 424,
+          "p5_lower": -789,
+          "p5_upper": -365
+        },
+        {
+          "T": 36,
+          "R_upper": 438,
+          "p5_lower": -717,
+          "p5_upper": -279
+        },
+        {
+          "T": 37,
+          "R_upper": 448,
+          "p5_lower": -645,
+          "p5_upper": -197
+        },
+        {
+          "T": 38,
+          "R_upper": 462,
+          "p5_lower": -573,
+          "p5_upper": -111
+        }
+      ]
+    },
+    "H3_triple": {
+      "h": 3,
+      "census": [
+        24,
+        21,
+        0,
+        1
+      ],
+      "bounds": [
+        {
+          "T": 8,
+          "R_upper": 2,
+          "p5_lower": -2733,
+          "p5_upper": -2731
+        },
+        {
+          "T": 9,
+          "R_upper": 20,
+          "p5_lower": -2661,
+          "p5_upper": -2641
+        },
+        {
+          "T": 10,
+          "R_upper": 38,
+          "p5_lower": -2589,
+          "p5_upper": -2551
+        },
+        {
+          "T": 11,
+          "R_upper": 56,
+          "p5_lower": -2517,
+          "p5_upper": -2461
+        },
+        {
+          "T": 12,
+          "R_upper": 74,
+          "p5_lower": -2445,
+          "p5_upper": -2371
+        },
+        {
+          "T": 13,
+          "R_upper": 92,
+          "p5_lower": -2373,
+          "p5_upper": -2281
+        },
+        {
+          "T": 14,
+          "R_upper": 110,
+          "p5_lower": -2301,
+          "p5_upper": -2191
+        },
+        {
+          "T": 15,
+          "R_upper": 128,
+          "p5_lower": -2229,
+          "p5_upper": -2101
+        },
+        {
+          "T": 16,
+          "R_upper": 146,
+          "p5_lower": -2157,
+          "p5_upper": -2011
+        },
+        {
+          "T": 17,
+          "R_upper": 164,
+          "p5_lower": -2085,
+          "p5_upper": -1921
+        },
+        {
+          "T": 18,
+          "R_upper": 182,
+          "p5_lower": -2013,
+          "p5_upper": -1831
+        },
+        {
+          "T": 19,
+          "R_upper": 200,
+          "p5_lower": -1941,
+          "p5_upper": -1741
+        },
+        {
+          "T": 20,
+          "R_upper": 218,
+          "p5_lower": -1869,
+          "p5_upper": -1651
+        },
+        {
+          "T": 21,
+          "R_upper": 236,
+          "p5_lower": -1797,
+          "p5_upper": -1561
+        },
+        {
+          "T": 22,
+          "R_upper": 254,
+          "p5_lower": -1725,
+          "p5_upper": -1471
+        },
+        {
+          "T": 23,
+          "R_upper": 272,
+          "p5_lower": -1653,
+          "p5_upper": -1381
+        },
+        {
+          "T": 24,
+          "R_upper": 290,
+          "p5_lower": -1581,
+          "p5_upper": -1291
+        },
+        {
+          "T": 25,
+          "R_upper": 300,
+          "p5_lower": -1509,
+          "p5_upper": -1209
+        },
+        {
+          "T": 26,
+          "R_upper": 314,
+          "p5_lower": -1437,
+          "p5_upper": -1123
+        },
+        {
+          "T": 27,
+          "R_upper": 324,
+          "p5_lower": -1365,
+          "p5_upper": -1041
+        },
+        {
+          "T": 28,
+          "R_upper": 338,
+          "p5_lower": -1293,
+          "p5_upper": -955
+        },
+        {
+          "T": 29,
+          "R_upper": 348,
+          "p5_lower": -1221,
+          "p5_upper": -873
+        },
+        {
+          "T": 30,
+          "R_upper": 362,
+          "p5_lower": -1149,
+          "p5_upper": -787
+        },
+        {
+          "T": 31,
+          "R_upper": 372,
+          "p5_lower": -1077,
+          "p5_upper": -705
+        },
+        {
+          "T": 32,
+          "R_upper": 386,
+          "p5_lower": -1005,
+          "p5_upper": -619
+        },
+        {
+          "T": 33,
+          "R_upper": 396,
+          "p5_lower": -933,
+          "p5_upper": -537
+        },
+        {
+          "T": 34,
+          "R_upper": 410,
+          "p5_lower": -861,
+          "p5_upper": -451
+        },
+        {
+          "T": 35,
+          "R_upper": 420,
+          "p5_lower": -789,
+          "p5_upper": -369
+        },
+        {
+          "T": 36,
+          "R_upper": 434,
+          "p5_lower": -717,
+          "p5_upper": -283
+        },
+        {
+          "T": 37,
+          "R_upper": 444,
+          "p5_lower": -645,
+          "p5_upper": -201
+        },
+        {
+          "T": 38,
+          "R_upper": 458,
+          "p5_lower": -573,
+          "p5_upper": -115
+        }
+      ]
+    }
+  },
+  "h1_spectral_relaxation_check": {
+    "scope": "Sol1 explicit spectral relaxation; no integer matrix/graph assertion",
+    "monic_factors_descending_and_multiplicities": [
+      [
+        [
+          1,
+          3
+        ],
+        1
+      ],
+      [
+        [
+          1,
+          1
+        ],
+        1
+      ],
+      [
+        [
+          1,
+          -2,
+          -4
+        ],
+        2
+      ],
+      [
+        [
+          1,
+          0,
+          -8
+        ],
+        3
+      ],
+      [
+        [
+          1,
+          0,
+          -7
+        ],
+        3
+      ],
+      [
+        [
+          1,
+          0,
+          -6
+        ],
+        6
+      ],
+      [
+        [
+          1,
+          0,
+          -5
+        ],
+        2
+      ],
+      [
+        [
+          1,
+          1,
+          -7
+        ],
+        1
+      ],
+      [
+        [
+          1,
+          1,
+          -5
+        ],
+        4
+      ],
+      [
+        [
+          1,
+          2,
+          -1
+        ],
+        1
+      ]
+    ],
+    "power_sums_0_through_5": [
+      46,
+      -7,
+      281,
+      -64,
+      1961,
+      -507
+    ],
+    "T": 43,
+    "R": 244,
+    "R_upper": 510,
+    "passes_mixed_bound": true
+  }
+}
