@@ -1,0 +1,138 @@
+{
+  "scope": "Host preparation only; no Phase B SAT instance launched",
+  "files": {
+    "PHASE_B_HOST_PLAN_20260910.md": "b53312c7ce71972f27065b16d6ff257ed82576a8f3569dbdb0f0467314043737",
+    "PHASE_B_SURVIVORS_20260910.md": "38014955c4cad9320cd55781730f30da0ce4782a9307936202839260551bdaa7",
+    "phase_b_survivors_20260910.json": "8170085370807bca21c0004804be6b7de52a492d88267196291f0f23c15555a7",
+    "sat49/run_verdict_only.py": "8458932d4a9a9066dd9a240389ffad743d59a4b2742889f50fbe970046cfd509",
+    "sat49/test_run_verdict_only.py": "ed0fe3fb330b25710ffe2542d09a975284d4cec920321c1d433df9b277be4216",
+    "sat49/materialize_verdict_input.py": "c86b3da2d855d3d5811a43b2ad5d02633264f0b36e60b4f4cf3672a4af46def5",
+    "sat49/test_materialize_verdict_input.py": "ca52dd69a1e8723c616addeda59ab29751bf8248209ab04e4e80f44bf84b3d63"
+  },
+  "reviews": [
+    1989,
+    1994,
+    1995,
+    1996,
+    1997,
+    1999
+  ],
+  "tests": {
+    "verdict_fake_process_tests": 14,
+    "materializer_tests": 11,
+    "status": "PASS"
+  },
+  "materialization_pilots": [
+    {
+      "status": "materialized",
+      "cnf_path": "/Users/rwalters/lean-genius-q7-outside-first-20260910/phase-b-host-plan/materializer-pilot/h5.cnf",
+      "cnf_sha256": "53f4016cdd79ac869cfe0cb948b144e5457d1199a66e3ba014818954ae7e302d",
+      "cnf_bytes": 29206113,
+      "variables": 29632,
+      "clauses": 1328620,
+      "base_sha256": "02ccdc18e983558a6480f2b5e6c8f6b0cacb21e88fa02abcff5c4f3f6fecebf9",
+      "units": [
+        231,
+        231
+      ],
+      "output_created_exclusively": true,
+      "id": "h5_t0.cube-0-0",
+      "sector": "H5",
+      "manifest_sha256": "2400037fffb87f39a6ea2abc0588c148afce15c4686d87e7fa89ffa09c9a0d6d",
+      "generator": {
+        "path": "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/sat49/generate_small_high_cube_jobs.py",
+        "sha256": "a845cb9f6bf1d6046c58aefe9cd6cdd66e80e0fd3670629ba650e9578fe5cb7e",
+        "bytes": 15603,
+        "last_change_commit": "1241c1ae0af05cd3145de755dcac4b74e082c750"
+      },
+      "seconds": 3.0374957090243697
+    },
+    {
+      "status": "materialized",
+      "cnf_path": "/Users/rwalters/lean-genius-q7-outside-first-20260910/phase-b-host-plan/materializer-pilot/h7.cnf",
+      "cnf_sha256": "9ba7a01f108ba63db914dd1e89d2ce8aa32e52d1fb81e712e6851136354fbc21",
+      "cnf_bytes": 15151828,
+      "variables": 17633,
+      "clauses": 720825,
+      "base_sha256": "8bc9b8f15b7f03194f39d208b2c0015e6039e0aac759ccfce0b6415724130eb0",
+      "units": [
+        1,
+        2,
+        3,
+        -4,
+        -5,
+        -6,
+        42,
+        -43,
+        -44,
+        -45,
+        -46,
+        -82,
+        -83,
+        -84,
+        -85,
+        121,
+        -122,
+        -123,
+        -159,
+        -160,
+        196
+      ],
+      "output_created_exclusively": true,
+      "id": "cube_F6_t5",
+      "sector": "H7",
+      "manifest_sha256": "3374800ce9a9a246679b44bc1823598670ec95fbd15ad8bd4dcc2bbd411826d1",
+      "generator": {
+        "path": "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/sat49/generate_h7_empty_cube_manifest.py",
+        "sha256": "3a0c5d4a6b6feedb9bb3ebf33d112de8659652d5b4d8225a6269e8e0f62cba9c",
+        "bytes": 6285,
+        "last_change_commit": "10d21dedc2e84b9bd9207669f5644c17d18ba83c"
+      },
+      "seconds": 1.5741909579373896
+    }
+  ],
+  "h3_strict_framing": {
+    "source_sha256": "c86b3da2d855d3d5811a43b2ad5d02633264f0b36e60b4f4cf3672a4af46def5",
+    "results": [
+      {
+        "id": "h3_t0_canonical",
+        "seconds": 1.3219292908906937,
+        "variables": 29500,
+        "clauses": 1328183,
+        "bytes": 29197952,
+        "sha256": "03db81d188dc330673b3be0fbb81a1254cb5c14b676f7dc9c4ad44950898541b"
+      },
+      {
+        "id": "h3_t1_canonical",
+        "seconds": 1.2796968331094831,
+        "variables": 29500,
+        "clauses": 1328183,
+        "bytes": 29197952,
+        "sha256": "db6e30ad7583317af975d5be49a3ed6ed3b2f7e327a6c98d75434180fa59ea5a"
+      }
+    ]
+  },
+  "framing_regression": {
+    "validator_sha256": "8dcbf61099353fc8e664274efbe71f927020ed0f2f22a115404757fd02861940",
+    "original_accepted": {
+      "variables": 40944,
+      "clauses": 610424,
+      "bytes": 12454143,
+      "sha256": "63ba3e99aa19f2ad56784f704afee5569808af699cd88d31a8ca54634e2e6f69"
+    },
+    "counterexample_rejected": "Require one clause per line, ASCII spaces and one final zero"
+  },
+  "limitations": [
+    "Combined1416 index is not an executable inventory.",
+    "End-to-end just-in-time dispatcher still needs integration with the separate H1 stage.",
+    "No generator environment rebuild or solver-level global exclusion claimed."
+  ],
+  "review_outcomes": {
+    "1989": "PASS with notes",
+    "1994": "Counterexample confirmed and fixed",
+    "1995": "PASS after prose correction",
+    "1996": "PASS",
+    "1997": "CHANGES REQUIRED; corrected and rechecked in 1999",
+    "1999": "PASS: immutable inventory snapshot and completed-batch stop regressions"
+  }
+}
