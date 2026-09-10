@@ -1,0 +1,23 @@
+{
+  "source_exit_code": 0,
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "fixed_masks": [
+    129,
+    66,
+    66
+  ],
+  "coded_permutations": 120,
+  "explicit_cycle_entries": 108,
+  "orbit_entries": 12,
+  "portable_renderer_reproduces_compiled_source": true,
+  "scope": "One full-U mask-pair shard only; arbitrary-permutation coding completeness and all other mask pairs remain unproved",
+  "sha256": {
+    "Prototype.lean": "bf9fa942bbf29bbfdca7d996fdca6bfc1ad46ec469159d0cb017ff56f465301c",
+    "Decoder.lean.inc": "9d188ae8b68167919733962d2be8688fab0b74634bdfa7b4e1ccedcd40a12745",
+    "render.py": "29b7d65a324989c2bb59d3cc2ac06bf08d34c2f4993b6be5d553ada3cd80311a"
+  }
+}
