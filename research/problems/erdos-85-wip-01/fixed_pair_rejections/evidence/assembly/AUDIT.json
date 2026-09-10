@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "entries": [
+    {
+      "module": "Symmetry",
+      "source_sha256": "98517ff26b53cc50115e6d721bc4d82902aaf8f433af97eaaee206811e5d7244",
+      "log_sha256": "b6b48a09dcb37bbb08b2328cf80020694812f86b56754eee772d86c32907df6f",
+      "exports": 5
+    },
+    {
+      "module": "Coordinates",
+      "source_sha256": "57ab26a02f54347b7ae202a6a8692b0ca46c084c0b367599a403f28217f7919e",
+      "log_sha256": "8a630fee82a695ab174504f5c5d98755638af90d26712c599c90b01c541801c8",
+      "exports": 2
+    },
+    {
+      "module": "AllRejections",
+      "source_sha256": "a26677a121888ae2290d8301ed20461e1b84b03d109b928cbc018c7424bdb441",
+      "log_sha256": "4debc15229a61f940282f62bbf1bc3fabcedd8568beeedc8b1ae1301a249f354",
+      "exports": 1
+    },
+    {
+      "module": "OrderedLeaves",
+      "source_sha256": "7f0f60abcb4ea068316490704ec6531cf2a567910486274e5446f74ae78ccf9e",
+      "log_sha256": "d3de2c1dc1d5c2941c8a9dfbafed8c15dba80b8b3e985e66b993318afac2cf20",
+      "exports": 2
+    }
+  ],
+  "modules": 4,
+  "exports": 10
+}
