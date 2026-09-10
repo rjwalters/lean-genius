@@ -1,0 +1,5 @@
+# H7 fixed-incidence local completion test
+
+The26 saved positive empty-incidence witnesses have highs0..6, empties7..13, singletons14..27 and pairs28..48. For each nonempty vertex, remaining degree is7 minus current total degree. Its remaining nonempty neighbours must partition all7 high colours by BC=J, because currently it has no nonempty low neighbours. Enumerate all support partitions with exactly that many neighbours; candidates must permit adding the vertex-edge without C4, and chosen guests must have no existing common neighbour. The smallest uncovered colour orders the enumeration without losing choices.
+
+Result:13 of26 fixed partials fail at least one local vertex condition;13pass every local test. This is neither a full graph completion nor an empty-graph class exclusion. Different empty-to-nonempty incidence assignments remain possible for every class. Capped masks6808 and39441 were not tested or retried. Runtime0.025seconds. Sources/results are author evidence, independent review pending. No SAT, Lean build, queue change or certificate replay.

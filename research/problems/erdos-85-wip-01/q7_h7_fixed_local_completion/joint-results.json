@@ -1,0 +1,96 @@
+{
+  "input_sha256": "18ed541a40451bb9e000411b7b468c3e28d99b3b576c06666e29356d30049e28",
+  "selected": 13,
+  "processed": 13,
+  "seconds": 1.858672833070159,
+  "caps": {
+    "nodes_per_fixed_graph": 100000,
+    "seconds_total": 60
+  },
+  "scope": "Fixed saved incidence assignments only; no whole-class exclusion and no retry of capped original incidence trees.",
+  "counts": {
+    "FULL_GRAPH": 0,
+    "REJECT_FIXED_INCIDENCE": 13,
+    "UNKNOWN": 0
+  },
+  "rows": [
+    {
+      "empty_mask": 39457,
+      "status": "REJECT_FIXED_INCIDENCE",
+      "nodes": 246,
+      "full_edges": null
+    },
+    {
+      "empty_mask": 39473,
+      "status": "REJECT_FIXED_INCIDENCE",
+      "nodes": 406,
+      "full_edges": null
+    },
+    {
+      "empty_mask": 39524,
+      "status": "REJECT_FIXED_INCIDENCE",
+      "nodes": 91,
+      "full_edges": null
+    },
+    {
+      "empty_mask": 42100,
+      "status": "REJECT_FIXED_INCIDENCE",
+      "nodes": 132,
+      "full_edges": null
+    },
+    {
+      "empty_mask": 44336,
+      "status": "REJECT_FIXED_INCIDENCE",
+      "nodes": 368,
+      "full_edges": null
+    },
+    {
+      "empty_mask": 39537,
+      "status": "REJECT_FIXED_INCIDENCE",
+      "nodes": 84,
+      "full_edges": null
+    },
+    {
+      "empty_mask": 39540,
+      "status": "REJECT_FIXED_INCIDENCE",
+      "nodes": 154,
+      "full_edges": null
+    },
+    {
+      "empty_mask": 42232,
+      "status": "REJECT_FIXED_INCIDENCE",
+      "nodes": 238,
+      "full_edges": null
+    },
+    {
+      "empty_mask": 42418,
+      "status": "REJECT_FIXED_INCIDENCE",
+      "nodes": 65,
+      "full_edges": null
+    },
+    {
+      "empty_mask": 43814,
+      "status": "REJECT_FIXED_INCIDENCE",
+      "nodes": 30,
+      "full_edges": null
+    },
+    {
+      "empty_mask": 44337,
+      "status": "REJECT_FIXED_INCIDENCE",
+      "nodes": 23,
+      "full_edges": null
+    },
+    {
+      "empty_mask": 44280,
+      "status": "REJECT_FIXED_INCIDENCE",
+      "nodes": 32,
+      "full_edges": null
+    },
+    {
+      "empty_mask": 44466,
+      "status": "REJECT_FIXED_INCIDENCE",
+      "nodes": 44,
+      "full_edges": null
+    }
+  ]
+}

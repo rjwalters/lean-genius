@@ -1,0 +1,5 @@
+# Joint completion of the13 locally surviving fixed H7 assignments
+
+Each remaining edge joins two nonempty low vertices. For each vertex, maintain uncovered high colours and residual degree. An edge vw is legal only if support(w) is a subset of v's uncovered colours and reciprocally for w, degree remains at most7, and no existing length-three path joins endpoints. Choose an uncovered incidence with the fewest candidates and exhaust every candidate, undoing graph and colour changes on backtracking. Remaining support weights1or2 impose residual_degree <= missing_colour_count <= 2*residual_degree.
+
+All13 cases exhaust in1.86seconds, no cap and no full graph. Combined with13 local failures, all26 saved positive incidence witnesses cannot extend. This excludes only the exact saved assignments; alternate empty-to-low incidences in every class remain unresolved. Original capped masks6808/39441 were not tested or retried. The initial witness sources and local-test bytes are unchanged. Author evidence pending independent review.

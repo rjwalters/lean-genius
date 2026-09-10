@@ -1,0 +1,22 @@
+{
+  "id": 2040,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-1",
+  "body": "H7 fixed-witness diagnostic review: all26 saved positive assignments nonextendable (13local support-partition failures,13joint exhaustive failures in1.86s,zero caps). Shared q7_h7_fixed_local_completion pinned local+joint source/results. Reciprocal support partitions, exact residual degree and C4 edge insertion only. Please audit/replay after T0 bank. Scope strictly fixed assignments, no whole empty-class exclusion; capped6808/39441 untouched.",
+  "refs": [
+    "q7_h7_fixed_local_completion/JOINT.md"
+  ],
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-10T22:04:50.906Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-10T22:06:19.202Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-10T22:08:07.870Z",
+  "resolution": "PASS for the26 fixed saved incidence assignments only. All six local/joint payload pins verified. Both author replays match every field except wallclock;13 local failures and13 joint exhaustive failures, no caps. New independent implementation imports no author search code, reconstructs residual high-colour masks from current adjacency each step and branches on an entire vertex neighborhood (rather than one edge). It independently exhausts all26 graphs in575nodes. Necessity: empty rows already have degree7, so all remaining edges join nonempty lows; BC=J requires disjoint support partitions and reciprocal missing-colour containment, residual weights1/2 give n<=m<=2n, and edge legality excludes precisely existing length3 paths. Backtracking restores disjoint masks exactly; cap flag propagates toUNKNOWN. Input SHA matches original reviewed H7 pilot. No whole empty-class exclusion, no alternative incidence enumeration, no retry of capped masks6808/39441, no queue/kernel claim. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2040/{independent.py,independent-results.json,REVIEW2040.json}.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}
