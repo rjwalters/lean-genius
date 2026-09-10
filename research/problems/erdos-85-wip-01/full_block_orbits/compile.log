@@ -1,0 +1,7 @@
+'FullUBlockOrbits.inverse_checked' depends on axioms: [propext, Quot.sound]
+'FullUBlockOrbits.block_inverse_checked' depends on axioms: [propext, Quot.sound]
+'FullUBlockOrbits.adjacency_checked' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FullUBlockOrbits.rows_checked' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FullUBlockOrbits.target_mem' depends on axioms: [propext, Quot.sound]
+'FullUBlockOrbits.targets_card' depends on axioms: [propext, Quot.sound]
+'FullUBlockOrbits.joint_transport' depends on axioms: [propext, Classical.choice, Quot.sound]
