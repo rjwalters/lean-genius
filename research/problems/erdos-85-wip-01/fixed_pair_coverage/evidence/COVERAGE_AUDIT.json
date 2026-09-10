@@ -1,0 +1,261 @@
+{
+  "status": "complete",
+  "scope": "Coverage certificate only; separate table rejections and final exclusion must compile too.",
+  "verified_modules": 42,
+  "exports": 43,
+  "missing": [],
+  "results": [
+    {
+      "name": "LiteralData",
+      "exports": 0,
+      "evidence": "literal_data_independent.json",
+      "evidence_sha256": "d5b944058e78afe4693bdf7d3d12c24b2f033d1cdcbe1fdeb340530986832819"
+    },
+    {
+      "name": "CoverageCoordinates",
+      "exports": 2,
+      "receipt_sha256": "135a5c61db365a6e8b0d3e66a3008058f277faa54bce01d941e82430a7925cfb",
+      "log_sha256": "8c3caf733540cd5f723855fb2b25d3803e5e7464aaee1bdc64f4ac8ba43a9c70"
+    },
+    {
+      "name": "DomainReasons",
+      "exports": 1,
+      "receipt_sha256": "3c98a1dc826877a47a554f3cb39de08448e59b9ecdd0896360e4e61f43c34a7f",
+      "log_sha256": "e9fb785baf129944783ef0d322b166ea7b19cdaeb3ccee7a1a5dfc2a2f08d1a5"
+    },
+    {
+      "name": "CoverageAssemblyStructure",
+      "exports": 1,
+      "receipt_sha256": "6b43006e85db6fdea98470b077695279af353cd668002458bf8552a964ba1f68",
+      "log_sha256": "41d9fa5794236437df76f1885259f8eee5442d05fb6cb02440214b03b1ab0ee8"
+    },
+    {
+      "name": "Inputs",
+      "exports": 2,
+      "receipt_sha256": "2ce52d4e8ed8e2239a52fc26d91a0de1c24083a49324308a9d44cfed290ce86b",
+      "log_sha256": "7ffc35383dbda5d0c5ad14544cf97e931e0ade8c9c8b7b5a0a177b87ec59cd08"
+    },
+    {
+      "name": "LiteralDataPilot",
+      "exports": 1,
+      "receipt_sha256": "db541fb23b8ccccd2fa3599e546e0efd198142b7e8a3b49b75eea7e6c176fa87",
+      "log_sha256": "f20333fd6296141e576f3234750b6935313d8b1dc5d8ccd65b97ccfc9c63189f"
+    },
+    {
+      "name": "LeafPilot",
+      "exports": 1,
+      "receipt_sha256": "e3c5d6335519d1d6398f439f93e9d95fff63ce9dfbcd591490b6265aca7f42bd",
+      "log_sha256": "1419035708d0efa3da346714fe6bad36d460f5f6746386d989d3f605c3939f6c"
+    },
+    {
+      "name": "CoverageShard0",
+      "exports": 1,
+      "receipt_sha256": "50c949ad39294a5953197c08f4cead306048cd547345cece04ce02dd486d89a5",
+      "log_sha256": "73003a110197c4105e438f4743ac8aca8f43159b15e283471d736adf3c0483c3"
+    },
+    {
+      "name": "CoverageShard1",
+      "exports": 1,
+      "receipt_sha256": "ce2c20552821a86afac78b82c591b9595eb3d281088c884986bfe385ddafe5b5",
+      "log_sha256": "64732e5aaeb7348c61e399a61f11de3a93fe95e8dec6c63997921703f2f5fb17"
+    },
+    {
+      "name": "CoverageShard2",
+      "exports": 1,
+      "receipt_sha256": "e09479ee9368b2cdd9a60da9f2cd5d824baa8c72907b9746045c411a0bc650b2",
+      "log_sha256": "f45976dba8befca4a01a3a9987dce3742a872d72bd45c469f64bcb6c4c1d2fbe"
+    },
+    {
+      "name": "CoverageShard3",
+      "exports": 1,
+      "receipt_sha256": "5b8d18dac5692f8413f0e90908aab34e6d188dbb255af50bb682c5b8279e09d7",
+      "log_sha256": "775e32b5b71b4a07bffc40057d68a7738566e361f62ab38ba2b6fc413ec859ce"
+    },
+    {
+      "name": "CoverageShard4",
+      "exports": 1,
+      "receipt_sha256": "cbc88bb2017b138e507be872a3c54c3d14c44d71bef2a2a9ea98103dbc4638db",
+      "log_sha256": "8a95d623544f4935cb65f3470f0e1841c17c858ee58a8c8037682656e282c507"
+    },
+    {
+      "name": "CoverageShard5",
+      "exports": 1,
+      "receipt_sha256": "7a99de5532f6432ed004d48d325ffa92b18c41dbf83ea1f6dac61d96a94873ea",
+      "log_sha256": "5da82430c0577b24ed54d7a5d4510f9f59941ca6aab270e983c7361f900e519c"
+    },
+    {
+      "name": "CoverageShard6",
+      "exports": 1,
+      "receipt_sha256": "2e232d06f8a4d12a8b44ef73624c509dfc6a1f37267326dcff1f96e072be1918",
+      "log_sha256": "8e1b42eb93160e63f3ad3f2613ee1561b5d23229f20788e668ef52b8231fefa5"
+    },
+    {
+      "name": "CoverageShard7",
+      "exports": 1,
+      "receipt_sha256": "dfc783cbcc4298b04679f376823721ca294fdeb6f735b3299514cdabd9c7e17e",
+      "log_sha256": "0bcd240472d7433ed3d8139a9c28bb5aaf665853803ce2a84bc32a72a01637f7"
+    },
+    {
+      "name": "CoverageShard8",
+      "exports": 1,
+      "receipt_sha256": "c28078640a9718cee08569c14341d96204170e19e28c50f508ee7efff616153b",
+      "log_sha256": "f6e1ba0f4d78fddaf61da87b70fe2b87ab88e353b042cda40d3c3f609a52294b"
+    },
+    {
+      "name": "CoverageShard9",
+      "exports": 1,
+      "receipt_sha256": "0feb11da553e686714f4a098c52856045afda69c78656f8a3d2cc24d566b9072",
+      "log_sha256": "f10e1b28f3c0f809c0c11981059d3e19a75b0b3b5c333dcf9f25cbb3132f908f"
+    },
+    {
+      "name": "CoverageShard10",
+      "exports": 1,
+      "receipt_sha256": "9e990c1792e8e5a8994703225e3e799ec08bd7ecb2225efd7b85412066b86753",
+      "log_sha256": "3bb1126293c78f2fb3d2f055160c32e3b87a5bb24b7f08ed73b12d36e433c42a"
+    },
+    {
+      "name": "CoverageShard11",
+      "exports": 1,
+      "receipt_sha256": "7f6c8d35ba157a988381ef9bb933f0d2fdf7fdac67f46638aa4edce8d0af7b04",
+      "log_sha256": "7f8518eb1e492f3b9d6e9561b89751dd7db48554c12141e368a2e7bfc2c030f1"
+    },
+    {
+      "name": "CoverageShard12",
+      "exports": 1,
+      "receipt_sha256": "053bb6672ec5bdbd62de48a3fa18dffaa8a114d43ffded334599db53b6b2789b",
+      "log_sha256": "d84c76d7d99336681d9a8dcaabfb2f2ba89c7f0f5297ce34ccc81d90cf9c1cfa"
+    },
+    {
+      "name": "CoverageShard13",
+      "exports": 1,
+      "receipt_sha256": "47a66c7bef9f8d415da5a363728b1aed61afe01163c728268865a6742a7bf305",
+      "log_sha256": "b3328e83591a7957f069c120d7ca62cdaa081d696c410f573e6d1f0b46224cf9"
+    },
+    {
+      "name": "CoverageShard14",
+      "exports": 1,
+      "receipt_sha256": "3e5bf0506d2185d391b91ca4d742e6f451e5cd7df9bebf6f3af1ec37ae397309",
+      "log_sha256": "1b7a8fdc2a946608b5967a164cc7139b8626d5070742a2b298149576e2719186"
+    },
+    {
+      "name": "CoverageShard15",
+      "exports": 1,
+      "receipt_sha256": "1d377dfaa5fa263833422c521e3752489444b1f6a195d36c173f8eaccf20f87f",
+      "log_sha256": "dea36d4fa3cf5ac7b79c298523d1be0e80dea21b5a71fd6415d9b557ee7e198c"
+    },
+    {
+      "name": "CoverageShard17",
+      "exports": 1,
+      "receipt_sha256": "f05929c6212e65c940bbd7889d20e7bae000412eb034b0791c595dce14ebac8f",
+      "log_sha256": "4e4defc7066cb7bf90c122be83c038df9635f58c05fcdc4a02462d5be44e39c2"
+    },
+    {
+      "name": "CoverageShard18",
+      "exports": 1,
+      "receipt_sha256": "ff3daebc5b185497e16ab48dde5cfc17b8d2ebb7681e34f96cd7a1eec371e8af",
+      "log_sha256": "9a38d63049d7024361dc4b3d426dc69c87269db95940f843189073ad64ee926a"
+    },
+    {
+      "name": "CoverageShard19",
+      "exports": 1,
+      "receipt_sha256": "cc8b43b1a8d4b29165fd7ca32436bee6f66e0e4518c8340a8198fbed712c2366",
+      "log_sha256": "5591d01735d3044eefdf686e52ea3bc5007a8dc20c3aca4887a40d58017d59ee"
+    },
+    {
+      "name": "CoverageShard20",
+      "exports": 1,
+      "receipt_sha256": "b6e4a4a7e7b58763e759e1ad916fa1c862bdb17d9244dbd748b0b3bce2be743a",
+      "log_sha256": "6db6bdf6222bf180c68a71e20c93d9543c2ff11ec4378ea4de9043ac53421927"
+    },
+    {
+      "name": "CoverageShard21",
+      "exports": 1,
+      "receipt_sha256": "34d3cdc8507672f9028f1b04d794c7aac6ebb74a0281734c61f70cd91eddc71b",
+      "log_sha256": "5697b2f8c4e194707008e07ad7f6f6db89de749955ee3b0263ba84641e2cf60d"
+    },
+    {
+      "name": "CoverageShard22",
+      "exports": 1,
+      "receipt_sha256": "1e22f1703d37c03547789a776096215d71644ae682fee00066f6874da3693caa",
+      "log_sha256": "c1d7c6d62b565ab1034093431723c34fc9fa1b1a4c85ed75d71c983b5306e976"
+    },
+    {
+      "name": "CoverageShard23",
+      "exports": 1,
+      "receipt_sha256": "0cdd72f6c463d7c1b69be89cc487269ce86adc3517acbee7c14bf5b0e77d68b3",
+      "log_sha256": "1d575a57bf9fe0695a4a23272dbd19dc8766757259b96950acdc8447faead53d"
+    },
+    {
+      "name": "CoverageShard24",
+      "exports": 1,
+      "receipt_sha256": "cab190e325e382686fe8b15a10e5d2e89740f7e799f421daa810af7d1ed51112",
+      "log_sha256": "892ebd37f046f72d1ce0550d9818b1fd5f6e65c0400befad7fafcffbeff15bc9"
+    },
+    {
+      "name": "CoverageShard25",
+      "exports": 1,
+      "receipt_sha256": "17e5167339e368515d57f260e6202a2c03805ea9e5408b0426e286afbe2548ff",
+      "log_sha256": "9815ad50829342eade74144d5d70699ae97d2c4a966b890644d8859e7f9c7bf1"
+    },
+    {
+      "name": "CoverageShard26",
+      "exports": 1,
+      "receipt_sha256": "60debf6726f52528dfabb7c4460a205cce55948f585253f905a61cf7ac961639",
+      "log_sha256": "f55dda4db7053b54e8b8c1628a05d8c5e4262b48ba623db80e8b2d627c18599e"
+    },
+    {
+      "name": "CoverageShard27",
+      "exports": 1,
+      "receipt_sha256": "fa68675233dc8592c2bb00a9be92db82d6c7f695519bfa74eca5326eade8c92c",
+      "log_sha256": "c8fb33bd469d9c0d1a7139126abf32e502fa59631513531dc98acf73f50a4026"
+    },
+    {
+      "name": "CoverageShard28",
+      "exports": 1,
+      "receipt_sha256": "470793f8dd1a4bb9b33a153d1fde5ac818012680957e1991b30e46cc24b457d5",
+      "log_sha256": "f9bb7a73a49a29b01a1986b09201ebc150b6ffe48edac8a71c2a91488fdbc460"
+    },
+    {
+      "name": "CoverageShard29",
+      "exports": 1,
+      "receipt_sha256": "3ce687c33e83a210922203777e6dab2deb9491de094ab6ec7df78340826dfc01",
+      "log_sha256": "8047a0b3a520d263e0a16582fd03e4934cbbf4934280216c2ab64d6cdb640c8d"
+    },
+    {
+      "name": "CoverageShard30",
+      "exports": 1,
+      "receipt_sha256": "c68c7e7af206cdf59b0c5b95942bbc8f19098fcb6568b19b1c2e5f6e0484f9ac",
+      "log_sha256": "69c1f95615fafe4093d7fdee021da104833dadc068d7d58c2d79371fa57cf851"
+    },
+    {
+      "name": "CoverageShard32",
+      "exports": 1,
+      "receipt_sha256": "b2e66f96e21f070125cc4c66211fcb0f35ac707ae3d2678c22826ffeeb851cd8",
+      "log_sha256": "ab6725d72765759c8ccfe3bc3067bbb59e381d036bc23c013bf7b6e740dc056f"
+    },
+    {
+      "name": "CoverageShard33",
+      "exports": 1,
+      "receipt_sha256": "6bd0a4903d8fb56765dc435a322d3df2b73b9ee2df2af26b3971dfc0dd268ea6",
+      "log_sha256": "1583f9860362e3c0f8230d8af3dc33922a5e36c8f70d5ceb1a7c124a72bb5f9f"
+    },
+    {
+      "name": "CoverageShard34",
+      "exports": 1,
+      "receipt_sha256": "fd7df46fa6cc309031fd45c90f72c0a08f518faeb9cf7795c6bb091bc5f5e6e6",
+      "log_sha256": "5b5bb43f2efc11f9f397ba36fadc44ce2926d93c47beca5a7ff39c76e5e03fd5"
+    },
+    {
+      "name": "CoverageShard35",
+      "exports": 1,
+      "receipt_sha256": "c02a9496db411d5c432540217b6704eeafef76c97f87e8e90fcf30e0aa7df802",
+      "log_sha256": "ed985eacaa2cde44b159539b6a1c989ed08699f27ba4abfde67b3c8dbc9d3ba3"
+    },
+    {
+      "name": "CoverageAssembly",
+      "exports": 1,
+      "receipt_sha256": "585f1cb11645623a9435d469d85dbc77c88a01137265af3f821b2e387fa22f3f",
+      "log_sha256": "fb6aa3ddf86d62af9f20bdc7e8727571bf9e360ede27ab12d2d8b6dfdd3bd0eb"
+    }
+  ]
+}

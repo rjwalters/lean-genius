@@ -1,0 +1,269 @@
+{
+  "status": "All listed sources kernel checked in retained staged builds; portable full checker not rerun",
+  "scope": "Full U compact(6,6,15), R representative14: column coverage only; table rejection is a separate dependency.",
+  "stages": [
+    [
+      "LiteralData"
+    ],
+    [
+      "CoverageCoordinates",
+      "DomainReasons",
+      "CoverageAssemblyStructure"
+    ],
+    [
+      "Inputs",
+      "LiteralDataPilot",
+      "LeafPilot",
+      "CoverageShard0",
+      "CoverageShard1",
+      "CoverageShard2",
+      "CoverageShard3",
+      "CoverageShard4",
+      "CoverageShard5",
+      "CoverageShard6",
+      "CoverageShard7",
+      "CoverageShard8",
+      "CoverageShard9",
+      "CoverageShard10",
+      "CoverageShard11",
+      "CoverageShard12",
+      "CoverageShard13",
+      "CoverageShard14",
+      "CoverageShard15",
+      "CoverageShard17",
+      "CoverageShard18",
+      "CoverageShard19",
+      "CoverageShard20",
+      "CoverageShard21",
+      "CoverageShard22",
+      "CoverageShard23",
+      "CoverageShard24",
+      "CoverageShard25",
+      "CoverageShard26",
+      "CoverageShard27",
+      "CoverageShard28",
+      "CoverageShard29",
+      "CoverageShard30",
+      "CoverageShard32",
+      "CoverageShard33",
+      "CoverageShard34",
+      "CoverageShard35"
+    ],
+    [
+      "CoverageAssembly"
+    ]
+  ],
+  "modules": [
+    {
+      "name": "LiteralData",
+      "sha256": "451bcb416e6abdab2b54fc097d923993e4102ec1f7a1ae27af5d0778959d726e",
+      "expected_exports": 0
+    },
+    {
+      "name": "CoverageCoordinates",
+      "sha256": "3b8434179802a1886f6fedc8b57a00fb86c1c487223a691c2a0b7c0a26380969",
+      "expected_exports": 2
+    },
+    {
+      "name": "DomainReasons",
+      "sha256": "44e1ba65290df617c2beef238732dd5c752103d6b43d6339d505394d2e76bf5f",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageAssemblyStructure",
+      "sha256": "96207dfce0bbfdf725912ce43d6bcbc17f97f13225043d301cf49be876797dc3",
+      "expected_exports": 1
+    },
+    {
+      "name": "Inputs",
+      "sha256": "498d802be991e39bb8fcf0953f58d3c6a155c7f93cc2d324cf4ec2b1aafb02f3",
+      "expected_exports": 2
+    },
+    {
+      "name": "LiteralDataPilot",
+      "sha256": "07fc55d94f281fe88e3dcc9b5c31cf3a48109e175ce1e7493d2561064a873fde",
+      "expected_exports": 1
+    },
+    {
+      "name": "LeafPilot",
+      "sha256": "cf9c168b6d807a8b22785faf6aa540f53f46404d522efc35d8c801671ad2ae53",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard0",
+      "sha256": "c7c4cdc76f2e153212bccf128bcc8b71bfaefc248fa654b43a4613941df21cad",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard1",
+      "sha256": "c65c5a93c88f5d1766d029bd4174cf47ab062b6913c31da3f56b0dc3bb5324e0",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard2",
+      "sha256": "b47b043914ca7c7065a4e583d3a9e281e397b08f5caa26fda1fb2e1e7db5fcbb",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard3",
+      "sha256": "a2316c6ff1b03b816dffcb30fcef61776d3b7218f3d566aee9a9b9660dba8c80",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard4",
+      "sha256": "95cf9b45729e10109fcbbcc7d460a80b96034e6e14e86d1f909f60dfd8bc3fed",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard5",
+      "sha256": "66c5a8c74c6a9a759fa3be3b95aa7dc285d9a9f5edd2ac3bea575a2272bf89cc",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard6",
+      "sha256": "62bd0ef38d121e98cd6f41b659e82beb7a7fe6a082e85914b1b019cb63e7eccb",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard7",
+      "sha256": "3d682658435678cc850d56bb7f00b76d8fd31021f4fea7f9f306bcd4eb82ecc4",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard8",
+      "sha256": "af11ed7d2d4155173e0f7fb773aeac03ff6630fedde91d4e973c9ca57cc74fc6",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard9",
+      "sha256": "761709dd5d19590752de6712f0475ebe51da99e24cc40383bc5b29558702d5f9",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard10",
+      "sha256": "0d817627c9e74edd2ce54c2ce8bf29da82587cc114e4fd9e4598b69560b37e52",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard11",
+      "sha256": "7d6c0f8a094174d987cb14cc97ed15bd54065ad77634edf75269b583f09f7790",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard12",
+      "sha256": "07c865f49f26a865ae4ec6570c5762dd3aacb45cc902bd695b4d300b5dfaf157",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard13",
+      "sha256": "1981bcdb807918c4c60493d18c2efa990cc66f8407d58053e03728d1cfc563d7",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard14",
+      "sha256": "80596393cb7f1dfc996829105341fc3a5b6a8f1b304245e2680ea93f782e2253",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard15",
+      "sha256": "c3e8d79dbb6731b5b5275b2564b42a7e2029e402f1d53359162b3d9d920db5d3",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard17",
+      "sha256": "bbfd402c3a62394d614d8bccae22fe96dacbbcc74877ceeaa7f5a7a02c00a930",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard18",
+      "sha256": "e9c0e0eb2c3d7c3528309a4db2581654ea661f0802d5ce519dc14e7c9e698d76",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard19",
+      "sha256": "0cd1df64c0ba57ed70116b04ad49428bbdaf554e1cc699977ad9c8d1f6c2de94",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard20",
+      "sha256": "5338499f2d4d37d4ce476cb2ce8e5b995059e9dab87ed37391af133578a165f4",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard21",
+      "sha256": "e8b0e958815f2917bde9f85d1ae262964f083427ea71b3285f0ac2db9c48dfa0",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard22",
+      "sha256": "d99f8835a3fc02b1243d4883ca198dfbcf956162d5316514a4711205aa862286",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard23",
+      "sha256": "42f390ab4d5c82e2093e6784bbf7fcf7ff017debd569bea0662cb84e7b05b7ab",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard24",
+      "sha256": "f2c15ac2909558bf0a63d19d14a74fae70fe45c31252e5844da0ddce7a161857",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard25",
+      "sha256": "3d205f05644fb6f7f711e16d859b35052e12926323277b382cb8f045f16187d6",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard26",
+      "sha256": "c07cb08d6e919481bbbcb6514c2c291afe7c3ab3cfff5a6f294a048fc14a353e",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard27",
+      "sha256": "2224bd2e382bfcea3cba579b0707860d27344776305a4f598ebb30c1b32b8120",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard28",
+      "sha256": "11963c79cb49e5ec0ef4de19ce4a65ad8916a696b7784ea62d80748de589c978",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard29",
+      "sha256": "578fc9cb9857bcfaf80ed0fc93538bb73aa5c65ba8178bef39a1516728370b91",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard30",
+      "sha256": "0a97e3dc7874364f1b17d7233f68a4302857e20e3253d4f92881c62f5696dcfb",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard32",
+      "sha256": "fa2e181279f2884dea9fd194967d1d03eb3aef1b7a3da030d65f8b1b2fe0fd59",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard33",
+      "sha256": "60ea3f16d527f89e6dd8bd5a8caa4e3cfa936cc00771687b81e2d2fc08413977",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard34",
+      "sha256": "331dd2be7b1fd94fa4e232addcf77d5d186a530dc09f45244886e23ba6012061",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageShard35",
+      "sha256": "3711a0e4a56cd0166b504115047a8bd784c07900870de56ee95d68096446c34f",
+      "expected_exports": 1
+    },
+    {
+      "name": "CoverageAssembly",
+      "sha256": "082c06ba5d641afb47f7aa751f0e9e5dc305038972ef16d89521f56909587460",
+      "expected_exports": 1
+    }
+  ],
+  "expected_exports": 43
+}

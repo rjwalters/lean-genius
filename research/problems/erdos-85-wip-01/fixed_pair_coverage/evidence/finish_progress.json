@@ -1,0 +1,25 @@
+{
+  "pid": 31519,
+  "status": "complete",
+  "elapsed_seconds": 505.9557084168773,
+  "results": [
+    {
+      "module": "CoverageAssembly",
+      "source_sha256": "082c06ba5d641afb47f7aa751f0e9e5dc305038972ef16d89521f56909587460",
+      "verified": true,
+      "returncode": 0,
+      "timeout": false,
+      "elapsed_seconds": 5.194821958895773,
+      "process_bound_seconds": 180
+    },
+    {
+      "module": "FixedPairExclusion",
+      "source_sha256": "7938bab9df4f96970e7fe5719cb33f1a2c699da1df5fe0639e182030bca17e70",
+      "verified": true,
+      "returncode": 0,
+      "timeout": false,
+      "elapsed_seconds": 8.122034333879128,
+      "process_bound_seconds": 180
+    }
+  ]
+}
