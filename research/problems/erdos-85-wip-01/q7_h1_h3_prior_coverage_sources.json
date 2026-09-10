@@ -1,0 +1,153 @@
+{
+  "scope": "Selected-source coverage only, not exhaustive repository search",
+  "sources": [
+    {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineIntegralResidual.lean",
+      "sha256": "8190e0f6aee6452d237f1fe6a9202ac364b7e236310a68372acc1d1a0b5f8862",
+      "declarations": [
+        "theorem exists_monic_integral_orderFortyNineSeven_residualCharpoly"
+      ],
+      "scope": "Inspected source; this manifest is not a fresh compilation/axiom audit"
+    },
+    {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineResidualThirdParity.lean",
+      "sha256": "607ca56e7619529a27edda7f289e7589a9c6eb8f6f5260bb711144b200d30a03",
+      "declarations": [
+        "theorem exists_monic_integral_orderFortyNineSeven_residualCharpoly_thirdParity"
+      ],
+      "scope": "Inspected source; this manifest is not a fresh compilation/axiom audit"
+    },
+    {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineLowTriangles.lean",
+      "sha256": "93d31d7addd3bb0aa151dc088f097fac648bb95516a6fd9beb05139826bad28e",
+      "declarations": [
+        "theorem orderFortyNine_external_add_one_eq_localNeighborhoodDegreeSum_of_all_neighbors_low",
+        "theorem orderFortyNine_localNeighborhoodDegreeSum_pos_of_all_neighbors_low",
+        "theorem orderFortyNine_antipodalNeighbors_card_odd_of_all_neighbors_low",
+        "theorem orderFortyNine_exists_allLow_triangle_of_highNeighborCount_zero"
+      ],
+      "scope": "Inspected source; this manifest is not a fresh compilation/axiom audit"
+    },
+    {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineLowTriangleIncidence.lean",
+      "sha256": "0376fb8e6b136dac71ed1c041062bbbd5f595d54190eeb49166f5618893fd94f",
+      "declarations": [
+        "theorem orderFortyNine_disjoint_highNeighbors_of_allLow_triangle_edge",
+        "theorem orderFortyNine_pairwiseDisjoint_highNeighbors_of_allLow_triangle",
+        "theorem orderFortyNine_sum_highNeighborCount_allLow_triangle_le"
+      ],
+      "scope": "Inspected source; this manifest is not a fresh compilation/axiom audit"
+    },
+    {
+      "path": "proofs/Proofs/Erdos85SquareOrderLowTriangleDefectIdentity.lean",
+      "sha256": "9a462f43f2dbc96a7b1fa213e1f6fcd97cb4ccfe8963def22f340f8f7f766e15",
+      "declarations": [
+        "theorem squareOrder_low_antipodal_add_highIncidence_add_one_eq_two_mul_localEdges"
+      ],
+      "scope": "Inspected source; this manifest is not a fresh compilation/axiom audit"
+    },
+    {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineHighDeterminantDivisibility.lean",
+      "sha256": "c0bdbfbfba87b3f9ffdf23d644e222ffed9f61f6307bad90916b04b8cafc2106",
+      "declarations": [
+        "theorem orderFortyNine_fortyNine_dvd_det_adjMatrix_of_three_high",
+        "theorem eq_fortyNine_mul_sq_of_fortyNine_mul_eq_sq"
+      ],
+      "scope": "Inspected source; this manifest is not a fresh compilation/axiom audit"
+    },
+    {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineThreeHighSchurDeterminant.lean",
+      "sha256": "733ce4044f1b70cd0b91383d2c367f79d669646d06f6faa12f42284de13b4ec3",
+      "declarations": [
+        "def orderFortyNineOnes (m n : Type*) : Matrix m n \u211a :=",
+        "def orderFortyNineThreeHighRootBlock : Matrix (Fin 3) (Fin 3) \u211a :=",
+        "theorem orderFortyNine_threeHigh_block_det_schur",
+        "def orderFortyNineOneVector : Fin 46 \u2192 \u211a := fun _ => 1",
+        "theorem orderFortyNine_rankOne_det_expansion_of_isUnit",
+        "theorem orderFortyNine_threeHigh_block_det_eq_fortyNine_mul_T_of_isUnit"
+      ],
+      "scope": "Inspected source; this manifest is not a fresh compilation/axiom audit"
+    },
+    {
+      "path": "proofs/Proofs/Erdos85OneHighDeterminantReduction.lean",
+      "sha256": "11e4b0d5a359cdbb8194c67459493ee4fc8c2bab8bb539b4cf194ab64cb2ed03",
+      "declarations": [
+        "theorem det_oneHighBlock_eq_2304_mul_det"
+      ],
+      "scope": "Inspected source; this manifest is not a fresh compilation/axiom audit"
+    },
+    {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineAutomaticDefectNonsingular.lean",
+      "sha256": "39c9aa1d5200de09414ed244d20de96a81c422c992d1571f350551d46ebc1d9b",
+      "declarations": [
+        "theorem orderFortyNineOrdinaryDefectGraph_degree_le_full",
+        "theorem orderFortyNineOrdinaryDefectGraph_degree_le_six",
+        "theorem orderFortyNineOrdinary_highNeighborCount_eq_zero_of_defectDegree_six",
+        "theorem orderFortyNineOrdinaryDefectGraph_grounded",
+        "theorem orderFortyNineOrdinaryDefectL_isUnit",
+        "theorem orderFortyNine_threeHigh_defect_T_eq_fortyNine_mul_intSquare_auto"
+      ],
+      "scope": "Inspected source; this manifest is not a fresh compilation/axiom audit"
+    },
+    {
+      "path": "proofs/Proofs/Erdos85OrderFortyNineDefectModSevenKernel.lean",
+      "sha256": "cebcc34b25ff4489fb23b64837e36aa571ff69f676c613791cf6df67ddd6b70f",
+      "declarations": [
+        "def orderFortyNineOrdinaryDefectLInt",
+        "def orderFortyNineOrdinaryHighRowDifference",
+        "theorem orderFortyNineOrdinaryDefectLInt_mulVec_highRowDifference",
+        "def orderFortyNineOrdinaryDefectLModSeven",
+        "def orderFortyNineOrdinaryHighRowDifferenceModSeven",
+        "theorem orderFortyNineOrdinaryDefectLModSeven_mulVec_highRowDifference_eq_zero",
+        "theorem orderFortyNine_two_ordinaryHighRowDifferencesModSeven_independent",
+        "def orderFortyNineTwoHighRowDifferenceFamilyModSeven",
+        "theorem orderFortyNineTwoHighRowDifferenceFamilyModSeven_linearIndependent",
+        "theorem orderFortyNineTwoHighRowDifferenceFamilyModSeven_mem_kernel",
+        "def orderFortyNineOrdinaryDefectLComplex",
+        "def orderFortyNineOrdinaryHighRowDifferenceComplex",
+        "def orderFortyNineTwoHighRowDifferenceFamilyComplex",
+        "theorem orderFortyNineOrdinaryDefectLComplex_mulVec_highRowDifference",
+        "theorem orderFortyNineTwoHighRowDifferenceFamilyComplex_linearIndependent",
+        "theorem orderFortyNineOrdinaryDefectLComplex_seven_factor_sq_dvd_charpoly"
+      ],
+      "scope": "Inspected source; this manifest is not a fresh compilation/axiom audit"
+    },
+    {
+      "path": "proofs/Proofs/Erdos85HoffmanDiagonalParity.lean",
+      "sha256": "c97c25f40c47a06a4a9772438ea8391a88c4b7ca4c2cc100ce0a38261d7bcd54",
+      "declarations": [
+        "theorem zmod2_mul_self (x : ZMod 2) : x * x = x := by",
+        "theorem zmod2_add_self (x : ZMod 2) : x + x = 0 := by",
+        "theorem dotProduct_mulVec_self_eq_zero (A : Matrix V V (ZMod 2))",
+        "theorem diag_pow_eq_zero (A : Matrix V V (ZMod 2))",
+        "theorem aeval_diag_eq_coeff_zero (A : Matrix V V (ZMod 2))",
+        "theorem hoffman_diagonal_parity [Nonempty V] (A : Matrix V V \u2124)",
+        "theorem aeval_mulVec_one (A : Matrix V V \u2124) {q : \u2124}",
+        "theorem hoffman_diagonal_parity_even [Nonempty V] (A : Matrix V V \u2124)"
+      ],
+      "scope": "Inspected source; this manifest is not a fresh compilation/axiom audit"
+    },
+    {
+      "path": "proofs/Proofs/Erdos85IntegerSeriesSquareModFour.lean",
+      "sha256": "f3c3a0bacad453c5dadb6d8ac480a10d5ceb51689dd115196e18e61d42754c6d",
+      "declarations": [
+        "def sqrtAux (z : \u2115 \u2192 \u2124) : \u2115 \u2192 \u2124",
+        "theorem sqrtAux_zero (z : \u2115 \u2192 \u2124) : sqrtAux z 0 = 0 := by",
+        "theorem sqrtAux_succ (z : \u2115 \u2192 \u2124) (n : \u2115) :",
+        "theorem mk_sqrtAux_add_sq (z : \u2115 \u2192 \u2124) (hz : z 0 = 0) :",
+        "theorem exists_one_add_two_mul_sq (Z : \u2124\u27e6X\u27e7) (hZ : constantCoeff Z = 0) :",
+        "theorem coeff_evenReduction (P : \u2124\u27e6X\u27e7) (j : \u2115) :",
+        "theorem zmod2_add_self (x : ZMod 2) : x + x = 0 := by",
+        "theorem zmod2_mul_self (x : ZMod 2) : x * x = x := by",
+        "theorem coeff_two_mul_sq_zmod2 (B : (ZMod 2)\u27e6X\u27e7) (j : \u2115) :",
+        "theorem coeff_two_mul_sq_modEq (H : \u2124\u27e6X\u27e7) (j : \u2115) :",
+        "theorem modEq_four_of_sq (H : \u2124\u27e6X\u27e7) (n : \u2115) :",
+        "theorem sq_of_modEq_four (P : \u2124\u27e6X\u27e7) (hP : constantCoeff P = 1)",
+        "theorem sq_iff_modEq_four (P : \u2124\u27e6X\u27e7) (hP : constantCoeff P = 1) :",
+        "theorem coeff_evenReduction_sq_eq_zero (p : Polynomial \u2124) {n : \u2115} (hn : p.natDegree < n) :",
+        "theorem sq_iff_modEq_four_of_polynomial (p : Polynomial \u2124) (hp : p.coeff 0 = 1) :"
+      ],
+      "scope": "Inspected source; this manifest is not a fresh compilation/axiom audit"
+    }
+  ]
+}
