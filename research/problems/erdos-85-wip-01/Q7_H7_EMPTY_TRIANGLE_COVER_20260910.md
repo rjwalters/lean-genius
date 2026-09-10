@@ -115,3 +115,17 @@ theorem, then supplies both counting bounds without an extra triangle-cover
 premise. Source and public build pass with standard axioms; review1653
 passed. Constructing the shape-specific independent set and known triangle
 family remains a separate step.
+
+## Actual unique-triangle endpoint in Lean
+
+`Erdos85OrderFortyNineSevenHighT0UniqueTriangleBound.lean` proves
+`sevenHigh_t0_unique_empty_triangle_four_low_triangles`: an actual order49
+C4-free minimum-degree7 graph with seven high vertices, zero triple-support
+vertices, nine empty edges, and exactly one induced-empty triangle has at
+least four all-low triangles. The empty census and degree bound instantiate
+the generic unique-triangle structure theorem (review1655 PASS). Its three
+degree2 vertices and known triangle are explicitly embedded into the low
+graph, where actual empty coverage supplies the count. No shape isomorphism
+or additional covering hypothesis remains. Source and public build pass with
+standard axioms; review1657 passed. The result
+does not exclude all H7 graphs or address the two-triangle endpoint.
