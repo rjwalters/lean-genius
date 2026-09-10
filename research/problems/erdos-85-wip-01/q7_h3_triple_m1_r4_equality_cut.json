@@ -1,0 +1,101 @@
+{
+  "scope": "Exact induced necessary-condition exclusion for m1,r4,T11 only",
+  "cases": [
+    {
+      "R_index": 0,
+      "U_index": 0,
+      "options": [
+        384,
+        384,
+        384
+      ],
+      "checks": 286080,
+      "leaves": 0,
+      "found": false
+    },
+    {
+      "R_index": 0,
+      "U_index": 1,
+      "options": [
+        384,
+        384,
+        384
+      ],
+      "checks": 424320,
+      "leaves": 0,
+      "found": false
+    },
+    {
+      "R_index": 1,
+      "U_index": 0,
+      "options": [
+        1056,
+        1056,
+        1056
+      ],
+      "checks": 1093440,
+      "leaves": 288,
+      "found": false
+    },
+    {
+      "R_index": 1,
+      "U_index": 1,
+      "options": [
+        1056,
+        1056,
+        1056
+      ],
+      "checks": 2004096,
+      "leaves": 0,
+      "found": false
+    },
+    {
+      "R_index": 2,
+      "U_index": 0,
+      "options": [
+        1056,
+        1056,
+        1056
+      ],
+      "checks": 1360416,
+      "leaves": 192,
+      "found": false
+    },
+    {
+      "R_index": 2,
+      "U_index": 1,
+      "options": [
+        1056,
+        1056,
+        1056
+      ],
+      "checks": 1945632,
+      "leaves": 0,
+      "found": false
+    },
+    {
+      "R_index": 3,
+      "U_index": 0,
+      "options": [
+        1704,
+        1704,
+        1704
+      ],
+      "checks": 2433192,
+      "leaves": 672,
+      "found": false
+    },
+    {
+      "R_index": 3,
+      "U_index": 1,
+      "options": [
+        1704,
+        1704,
+        1704
+      ],
+      "checks": 4567528,
+      "leaves": 528,
+      "found": false
+    }
+  ]
+}
