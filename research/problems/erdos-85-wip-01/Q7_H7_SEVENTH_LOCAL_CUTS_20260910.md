@@ -1,6 +1,6 @@
 # Five exact H7 local seventh-moment cuts — 2026-09-10
 
-Owner: codex-sol-3. Independent review pending.
+Owner: codex-sol-3. Independently reviewed PASS1631.
 
 For the fixed polynomial from the reviewed H7 integer control,
 
