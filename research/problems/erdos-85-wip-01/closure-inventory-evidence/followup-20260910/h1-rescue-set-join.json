@@ -1,0 +1,48 @@
+{
+  "checked_utc": "2026-09-10T05:59:42.115705+00:00",
+  "scope": "Independent local join of banked editor remote-readback records to pinned earlier object snapshot; no new remote probe or proof acceptance",
+  "source_hashes": {
+    "expected.tsv": "3fab7e0cee8b9fd98cea9743257b1636f93c5140355af3b98d461814f285f68c",
+    "verified.tsv": "6e6300b44e27cd13f418f863a0ce9c3797c2bcf3e80f721540bc9e7fbcc67e16",
+    "readback.tsv": "2fcb9abd9778ea9751fc836d9276d43d14084fd89cf3d094d08984de4c1dacd9"
+  },
+  "rescue_tags": [
+    "09a23a36fad47520",
+    "0a5acff54f93af2e",
+    "1e946f8f3b6ffa06",
+    "21835871e6144e95",
+    "329b85b7cdf2ab94",
+    "4ed50fad4b613045",
+    "6b29a970f356c68b",
+    "705d62c3af203bd8",
+    "74ce76acad2f4cf4",
+    "74fcc09b1b23a104",
+    "75b3c23623dcf9bf",
+    "9a5b6799a662168b",
+    "dd2aa6a3da6eb429"
+  ],
+  "readback_records_matching": 13,
+  "bytes": 80911889341,
+  "already_in_prior_object_snapshot": [
+    "09a23a36fad47520",
+    "0a5acff54f93af2e",
+    "1e946f8f3b6ffa06",
+    "21835871e6144e95"
+  ],
+  "new_to_prior_snapshot": [
+    "329b85b7cdf2ab94",
+    "4ed50fad4b613045",
+    "6b29a970f356c68b",
+    "705d62c3af203bd8",
+    "74ce76acad2f4cf4",
+    "74fcc09b1b23a104",
+    "75b3c23623dcf9bf",
+    "9a5b6799a662168b",
+    "dd2aa6a3da6eb429"
+  ],
+  "combined_object_tags": 12063,
+  "remaining_metadata_gaps": 1288,
+  "remaining_inside_v3": 1110,
+  "remaining_outside_v3": 178,
+  "accepted_current_stack": null
+}

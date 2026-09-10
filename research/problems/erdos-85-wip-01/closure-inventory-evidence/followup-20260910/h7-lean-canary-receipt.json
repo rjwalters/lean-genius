@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "-R",
+    "/Users/rwalters/lean-genius-erdos85-goal47-sol3/h7-direct-replay",
+    "-o",
+    "/Users/rwalters/lean-genius-erdos85-goal47-sol3/h7-direct-replay/H7DirectCanary.olean",
+    "/Users/rwalters/lean-genius-erdos85-goal47-sol3/h7-direct-replay/H7DirectCanary.lean"
+  ],
+  "cwd": "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/proofs",
+  "checked_utc": "2026-09-10T05:51:42.742328+00:00",
+  "exit_code": null,
+  "timeout": true,
+  "elapsed_s": 120.02292050002143,
+  "stdout": "None",
+  "stderr": "None",
+  "source_sha256": "177470735c08a681dab1e029dfe009c7f3b47e78539175effd294a62126d923a",
+  "scope": "Single H7 evidence constructor against existing local compiled imports; no cold-source rebuild or complete H7 closure"
+}

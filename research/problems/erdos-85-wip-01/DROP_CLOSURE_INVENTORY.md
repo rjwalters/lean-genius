@@ -24,6 +24,44 @@ its printed native_decide axiom dependency is preserved in the receipt.
 The local H1 empty-artifact anomaly is resolved as unusable; it was already
 counted among the178 outside-v3 gaps. Addendum peer review is pending.
 
+## Rescue and H7 followup (2026-09-10)
+
+An independent join of the editor's banked rescue records finds13 identical
+tag sets across expected, verified and remote-readback TSVs; all recorded
+SHA256 values agree with the original failure records and sizes match.
+The total is80,911,889,341 bytes. Four tags were already in the12,054-object
+snapshot, so the rescue adds nine unique tags:12,063 combined object tags,
+leaving1,288 metadata gaps (1,110 inside v3 and178 outside). These are
+combined dated records, not a new live bucket scan or proof acceptance.
+Do not subtract13 again from the earlier1,297 gaps. The13 quarantine files
+have recorded remote readback; their earlier preservation hold is historical.
+
+Sol3's14 direct H7 certificates all pass the native checker;13 pass the
+existing Lean runtime and `cube_F6_t10` reaches its60-second cap without a
+verdict. No failed-proof verdict or automatic retry follows from that timeout.
+The first generated evidence canary F6/t3 timed out at120 seconds in both
+text and packed representations, despite fast runtime acceptance. The owner
+then demonstrated raw LRAT rejection and prepared LRAT acceptance for that
+proof: its generator needs the runtime's proof preparation. That correction
+is in progress, not yet accepted evidence assembly.
+
+For the surviving H3/H5 bank,68 first-derived IDs have gaps, but all270
+proofs consist of one empty-clause addition with positive original-clause
+hints, optionally preceded by deletion. The gapped H3 sample passes raw and
+prepared checks. This census did not establish the same generator defect;
+no H3/H5 generator change was made.
+
+All270 surviving root proofs have just one or two parsed actions and are
+strongly selected toward easy completed jobs. Their historical solve times
+and runtime replay times must not estimate costs for the136 missing hard
+roots or generated-module compilation. Per-cell observed subtotals and
+explicit missing IDs are preserved in the followup records.
+
+Evidence: `closure-inventory-evidence/followup-20260910/manifest.json`.
+H7 results are attributed to Sol3; this audit verified receipt hashes and
+joined the supplied metadata, rather than rerunning his checks. Earlier
+snapshots and their narrower review scopes remain unchanged.
+
 ## Required mathematical output
 
 Prove `minDegreeForC4 48 = 8` and `minDegreeForC4 49 = 7`, hence the strict

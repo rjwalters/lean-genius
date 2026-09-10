@@ -1,0 +1,44 @@
+{
+  "scope": "Pinned existing local checker executables on exact H7 cube CNF and surviving proof; no binary rebuild equivalence, generated theorem, Lean kernel acceptance or S3 validation",
+  "job": "cube_F6_t9",
+  "checked_utc": "2026-09-10T05:47:17.364733+00:00",
+  "parent_sha256": "e298e181f67e2f50d88fa61f71516cb86af31948e26413894bb3b147f51020c6",
+  "cnf_sha256": "f0860969b6e67242e05bb323e6bed0a39cc2a4a67728914b4e5f0fa872890345",
+  "lrat_gz_sha256": "1381090585c34c196d405c61511d6af3acb442e344c063806b4c08451773c3d6",
+  "lrat_sha256": "ec3f560a6581d1e06b4aeed663754d6dc1da6093225241ebd74c852fc878854c",
+  "lrat_bytes": 17653644,
+  "runs": [
+    {
+      "name": "native",
+      "binary": "/Volumes/Stripe/lean-genius/tools/drat-trim/lrat-check",
+      "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea",
+      "argv": [
+        "/Volumes/Stripe/lean-genius/tools/drat-trim/lrat-check",
+        "/Users/rwalters/lean-genius-erdos85-goal47-sol3/h7-direct-replay/jobs/cube_F6_t9/job.cnf",
+        "/Users/rwalters/lean-genius-erdos85-goal47-sol3/h7-direct-replay/jobs/cube_F6_t9/job.lrat"
+      ],
+      "exit_code": 0,
+      "timeout": false,
+      "elapsed_s": 0.39607779192738235,
+      "stdout": "c parsed a formula with 17633 variables and 720825 clauses\nc VERIFIED\nc allocated 1024 4865568 892669\nc Added clauses = 786058.  Deleted clauses = 785965.  Max live clauses = 720825\nc verification time = 0.39 secs\n",
+      "stderr": "",
+      "checker_reported_accepted": true
+    },
+    {
+      "name": "lean",
+      "binary": "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/proofs/.lake/build/bin/lratreplay",
+      "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921",
+      "argv": [
+        "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/proofs/.lake/build/bin/lratreplay",
+        "/Users/rwalters/lean-genius-erdos85-goal47-sol3/h7-direct-replay/jobs/cube_F6_t9/job.cnf",
+        "/Users/rwalters/lean-genius-erdos85-goal47-sol3/h7-direct-replay/jobs/cube_F6_t9/job.lrat"
+      ],
+      "exit_code": 0,
+      "timeout": false,
+      "elapsed_s": 1.52267533284612,
+      "stdout": "CNF clauses: 720825; padded clauses: 720825; LRAT actions: 100256\nCNF literals: 17633; proof maximum literal: 3955; padded literals: 17633\nLRAT accepted: true\n",
+      "stderr": "",
+      "checker_reported_accepted": true
+    }
+  ]
+}

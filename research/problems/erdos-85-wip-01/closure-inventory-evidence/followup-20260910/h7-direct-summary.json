@@ -1,0 +1,304 @@
+{
+  "scope": "Exact local H7 direct proof/CNF identity plus pinned existing executable replay; no generated-theorem bank or cold-source rebuild, S3 validation, complete H7 coverage or finite-drop closure",
+  "checked_utc": "2026-09-10T05:51:45.662750+00:00",
+  "direct_certificates": 14,
+  "native_pass": 14,
+  "lean_runtime_pass": 13,
+  "lean_runtime_timeout": 1,
+  "rows": [
+    {
+      "job": "cube_F6_t3",
+      "receipt": "receipt.json",
+      "receipt_sha256": "c5cae3fb87942df4cda96392a138ce74e81e7aae3fe224922cb3e1c14945e0cc",
+      "cnf_sha256": "9888baa68559a7784a52f7e1fbc210f260db1d6989563d948a077e46bf08c769",
+      "lrat_sha256": "23d9263d6e76d12f22d48ab5c3312de96ed68020da298b1af888a37cd190662c",
+      "checks": {
+        "native": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 0.25646699988283217,
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea"
+        },
+        "lean": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 1.2458464589435607,
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921"
+        }
+      }
+    },
+    {
+      "job": "cube_F6_t0",
+      "receipt": "jobs/cube_F6_t0/receipt.json",
+      "receipt_sha256": "9ecbcd1f8c85eca2ae0f3aa24dbfe5cdd941fa9c59129f4d59abb996686b6de2",
+      "cnf_sha256": "4912420b85bae0433a18ab27a6666f843dd871a29e98c4f8a700d61115257ba7",
+      "lrat_sha256": "6b7455c076a7ea5cb73a88e9234e54e33a310f68867161e1a294263f1cedc604",
+      "checks": {
+        "native": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 0.638336000032723,
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea"
+        },
+        "lean": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 2.0654266248457134,
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921"
+        }
+      }
+    },
+    {
+      "job": "cube_F6_t1",
+      "receipt": "jobs/cube_F6_t1/receipt.json",
+      "receipt_sha256": "09a69e8015167317b4390fa0df4f4550bcff2b819c21c330e424835199e5d4de",
+      "cnf_sha256": "527a030379e907618a3a503bb184f1bd102f1ec54000075ae5faa1e55328e9f7",
+      "lrat_sha256": "63689f2f23c67f4652a554cc09b0b22e71b12ed4618bfa78cb930a9e010b67bb",
+      "checks": {
+        "native": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 1.4875984590034932,
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea"
+        },
+        "lean": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 2.4316086671315134,
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921"
+        }
+      }
+    },
+    {
+      "job": "cube_F6_t10",
+      "receipt": "jobs/cube_F6_t10/receipt.json",
+      "receipt_sha256": "7f0d873eb2574139e21e283b6283c5c84e21f9ba36f8c2ab6c1a4a4de437d86b",
+      "cnf_sha256": "91d37589a646162a64e085ff3c7d900051a4c1a8b48c767035e5d9e2656c9295",
+      "lrat_sha256": "402da34e20ac175c8357c55c3e20e28597de621b6618d320bd8163967b937110",
+      "checks": {
+        "native": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 26.99206908303313,
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea"
+        },
+        "lean": {
+          "passed": false,
+          "timeout": true,
+          "elapsed_s": 60.16999741597101,
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921"
+        }
+      }
+    },
+    {
+      "job": "cube_F6_t11",
+      "receipt": "jobs/cube_F6_t11/receipt.json",
+      "receipt_sha256": "03df57b856baca46a2a873dd73b7736611bff7e0a09cd9e2601eb3a404f8d2bb",
+      "cnf_sha256": "176e9bd349aa60d428b6e93d5bc381b1a26d47368b998bd226e3a6f833c272ba",
+      "lrat_sha256": "b2b4381dd5294f052534f7c9e4f3fdb88331a96ebf254dc9649ba5b65e5320a4",
+      "checks": {
+        "native": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 0.6035124168265611,
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea"
+        },
+        "lean": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 1.9655343340709805,
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921"
+        }
+      }
+    },
+    {
+      "job": "cube_F6_t12",
+      "receipt": "jobs/cube_F6_t12/receipt.json",
+      "receipt_sha256": "065c38199e21b31f82931b4f40674fad64eba21cf770ff3a394d86a6c1ecff93",
+      "cnf_sha256": "61c1a3e98a51fdfba8bab6cc3843abfa77cb0dad2f831feb866ab9d97392815b",
+      "lrat_sha256": "4da27989582c50f3622818b634997f384a4f196079266a3d6ed552ba76e87121",
+      "checks": {
+        "native": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 0.9285924579016864,
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea"
+        },
+        "lean": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 2.826901625143364,
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921"
+        }
+      }
+    },
+    {
+      "job": "cube_F6_t13",
+      "receipt": "jobs/cube_F6_t13/receipt.json",
+      "receipt_sha256": "58840fb27327aa515f554dc5ce8d036437cc2fd856b9715a7c6699a1560b6185",
+      "cnf_sha256": "a22a04f0722e7f49dcb229ca8bd8d0f8983c2c5961e480deaddf22e4d58a7855",
+      "lrat_sha256": "f06fc5d7b4917127c184a534b488179e65a14618cba013b42a1bf1c27ad9b5c3",
+      "checks": {
+        "native": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 0.26031108293682337,
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea"
+        },
+        "lean": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 1.236982790986076,
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921"
+        }
+      }
+    },
+    {
+      "job": "cube_F6_t4",
+      "receipt": "jobs/cube_F6_t4/receipt.json",
+      "receipt_sha256": "e8cf88db8c2c5bc44e641c76be76d2c1275e41df620cdeb5fb8e9c6b17fee2f4",
+      "cnf_sha256": "553a3d8730bf7c2c9747ab9baa1fe54b55582c0b25e1d654ab248033a2a7d268",
+      "lrat_sha256": "4e402132b9a4a91e9a66eb483300fef84ebe3f082fef9213bd71d16069478a06",
+      "checks": {
+        "native": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 0.6639394168742001,
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea"
+        },
+        "lean": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 2.065341250039637,
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921"
+        }
+      }
+    },
+    {
+      "job": "cube_F6_t6",
+      "receipt": "jobs/cube_F6_t6/receipt.json",
+      "receipt_sha256": "3009b81ecda7646e44f27e151137c63de4328de56e6445d32741aa42f79517f8",
+      "cnf_sha256": "7fddb9fa8b6363d93ccf6817c2ae25d7d95a1f534bd66dbfef4f1d4b2433fba1",
+      "lrat_sha256": "e5b4c4ef9ac59caa2fd06c56ac3286b4c6c3b35fe0a609fa2f04b21a29409e15",
+      "checks": {
+        "native": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 4.590957458131015,
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea"
+        },
+        "lean": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 11.198650167090818,
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921"
+        }
+      }
+    },
+    {
+      "job": "cube_F6_t7",
+      "receipt": "jobs/cube_F6_t7/receipt.json",
+      "receipt_sha256": "3b8e53efc977b079d75b01cce5f5ad9575e920b2776cba56c19417b08df92134",
+      "cnf_sha256": "72e553658d8ce5ae807fdd26b064d05a407a89ff27f8b7cab48cf6279c8a9d74",
+      "lrat_sha256": "6acbb8aa96989bda126253058ad7d2afe55c25796e87db4ee4d1e018bbf675b2",
+      "checks": {
+        "native": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 12.045223959023133,
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea"
+        },
+        "lean": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 28.52084054192528,
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921"
+        }
+      }
+    },
+    {
+      "job": "cube_F6_t9",
+      "receipt": "jobs/cube_F6_t9/receipt.json",
+      "receipt_sha256": "731852f6e99af888f670e82ef5c462a90667efd912520ea5b693dc77c4b0ab07",
+      "cnf_sha256": "f0860969b6e67242e05bb323e6bed0a39cc2a4a67728914b4e5f0fa872890345",
+      "lrat_sha256": "ec3f560a6581d1e06b4aeed663754d6dc1da6093225241ebd74c852fc878854c",
+      "checks": {
+        "native": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 0.39607779192738235,
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea"
+        },
+        "lean": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 1.52267533284612,
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921"
+        }
+      }
+    },
+    {
+      "job": "cube_F7_t1",
+      "receipt": "jobs/cube_F7_t1/receipt.json",
+      "receipt_sha256": "2cab6edc40bb80e5977758c17906cb71ecad3566ecc82422bff2eea4f00e24d4",
+      "cnf_sha256": "a766e7f05534b19000b3a4c4196e2dd68488f1eff6dc006551ed39ff80cc0b58",
+      "lrat_sha256": "20c80747d7b98b19123a7033be0ca4a7626017f609da014006ef8a2594a68dfa",
+      "checks": {
+        "native": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 3.9862528750672936,
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea"
+        },
+        "lean": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 10.760457542026415,
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921"
+        }
+      }
+    },
+    {
+      "job": "cube_F7_t12",
+      "receipt": "jobs/cube_F7_t12/receipt.json",
+      "receipt_sha256": "31a8cfeece8479792a960b5f62e63cb83529b6751cfef02d37ec973c9dc599ce",
+      "cnf_sha256": "8489b3cc3770331812015b384e206fb4f475e42c1d1076db275e51e931699bf5",
+      "lrat_sha256": "de63461c733f8f7ac407c6a552a434aac00eaf7c845e2b201ce9b8a1e169ec4b",
+      "checks": {
+        "native": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 4.803774500032887,
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea"
+        },
+        "lean": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 17.2848389998544,
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921"
+        }
+      }
+    },
+    {
+      "job": "cube_F7_t7",
+      "receipt": "jobs/cube_F7_t7/receipt.json",
+      "receipt_sha256": "e7063e2537d3167dd412b769bb6a733ac6b240407b19a5796bc7fca0eb8eccb7",
+      "cnf_sha256": "fdbd3dad77d033125b1b3a1ad8294de8728110faadacb6286e92caff1d19280b",
+      "lrat_sha256": "d57c9c7ac9a298c25bae6e2da76a33f97345c396d31246919ffcda408ff3cc3f",
+      "checks": {
+        "native": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 3.4495390420779586,
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea"
+        },
+        "lean": {
+          "passed": true,
+          "timeout": false,
+          "elapsed_s": 10.720949874958023,
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921"
+        }
+      }
+    }
+  ]
+}
