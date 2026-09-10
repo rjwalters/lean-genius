@@ -3,7 +3,13 @@ import Proofs.Erdos85OrderFortyNineDefectForcedSector
 
 /-! The shifted ordinary defect matrix is nonsingular for an actual order49
 C4-free graph with minimum degree7 and exactly the three labeled high vertices.
-This is not a nonexistence theorem or a full adjacency determinant theorem. -/
+This is not a nonexistence theorem or a full adjacency determinant theorem.
+
+Provenance: the H3 nonsingularity conclusion already follows from
+`orderFortyNineOrdinaryDefectL_isUnit` in
+`Erdos85OrderFortyNineAutomaticDefectNonsingular.lean` (over ℚ, via groundedness).
+The present wrapper is an alternative real-valued application of the general
+weighted lemma, not a new H3 restriction. -/
 
 open SimpleGraph
 namespace Erdos85
