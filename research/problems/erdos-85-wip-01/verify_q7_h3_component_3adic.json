@@ -1,0 +1,46 @@
+{
+  "scope": "Exact field-form arithmetic and finite primitive-conic obstructions; graph-to-form and local embeddings are paper arguments",
+  "minimal_polynomial": "a**2 - 7*a + 3",
+  "partitions": [
+    {
+      "sizes": [
+        12,
+        12,
+        22
+      ],
+      "norms": [
+        "72*a - 30",
+        "72*a - 30",
+        "130*a - 48"
+      ],
+      "total_norm": "274*a - 108",
+      "diagonal_ratio": "222148*a - 101676",
+      "prime": 3,
+      "hensel_root_mod_p2": 4,
+      "b_mod_p2": 3,
+      "delta_mod_p2": 1,
+      "primitive_solutions": [],
+      "triples_checked": 729
+    },
+    {
+      "sizes": [
+        10,
+        12,
+        24
+      ],
+      "norms": [
+        "58*a - 18",
+        "72*a - 30",
+        "144*a - 60"
+      ],
+      "total_norm": "274*a - 108",
+      "diagonal_ratio": "200096*a - 91464",
+      "prime": 7,
+      "hensel_root_mod_p2": 16,
+      "b_mod_p2": 40,
+      "delta_mod_p2": 42,
+      "primitive_solutions": [],
+      "triples_checked": 117649
+    }
+  ]
+}
