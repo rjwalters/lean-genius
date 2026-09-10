@@ -1,0 +1,551 @@
+{
+  "scope": "Python proposals only",
+  "pairs": [
+    {
+      "pair": [
+        20,
+        3
+      ],
+      "compact": [
+        9,
+        9,
+        16
+      ],
+      "r_code": [
+        0,
+        1,
+        1,
+        true
+      ],
+      "domain_sizes": [
+        1,
+        36,
+        8,
+        8,
+        8,
+        8,
+        36,
+        36
+      ],
+      "empty_column": null,
+      "witness": {
+        "mask": 24295,
+        "demand": 11,
+        "caps": [
+          0,
+          2,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "pair": [
+        20,
+        14
+      ],
+      "compact": [
+        9,
+        9,
+        16
+      ],
+      "r_code": [
+        1,
+        1,
+        1,
+        false
+      ],
+      "domain_sizes": [
+        1,
+        36,
+        36,
+        36,
+        8,
+        8,
+        8,
+        8
+      ],
+      "empty_column": null,
+      "witness": {
+        "mask": 24295,
+        "demand": 11,
+        "caps": [
+          0,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "pair": [
+        20,
+        15
+      ],
+      "compact": [
+        9,
+        9,
+        16
+      ],
+      "r_code": [
+        1,
+        1,
+        2,
+        false
+      ],
+      "domain_sizes": [
+        15,
+        15,
+        36,
+        36,
+        8,
+        8,
+        8,
+        8
+      ],
+      "empty_column": null,
+      "witness": {
+        "mask": 24295,
+        "demand": 11,
+        "caps": [
+          1,
+          1,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "pair": [
+        20,
+        16
+      ],
+      "compact": [
+        9,
+        9,
+        16
+      ],
+      "r_code": [
+        1,
+        1,
+        3,
+        false
+      ],
+      "domain_sizes": [
+        15,
+        36,
+        15,
+        36,
+        8,
+        8,
+        8,
+        8
+      ],
+      "empty_column": null,
+      "witness": {
+        "mask": 24295,
+        "demand": 11,
+        "caps": [
+          1,
+          2,
+          1,
+          2,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "pair": [
+        26,
+        3
+      ],
+      "compact": [
+        9,
+        9,
+        82
+      ],
+      "r_code": [
+        0,
+        1,
+        1,
+        true
+      ],
+      "domain_sizes": [
+        1,
+        36,
+        4,
+        4,
+        4,
+        4,
+        36,
+        36
+      ],
+      "empty_column": null,
+      "witness": {
+        "mask": 1186,
+        "demand": 4,
+        "caps": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "pair": [
+        26,
+        6
+      ],
+      "compact": [
+        9,
+        9,
+        82
+      ],
+      "r_code": [
+        0,
+        1,
+        3,
+        true
+      ],
+      "domain_sizes": [
+        15,
+        36,
+        36,
+        4,
+        4,
+        4,
+        36,
+        36
+      ],
+      "empty_column": null,
+      "witness": {
+        "mask": 30631,
+        "demand": 13,
+        "caps": [
+          1,
+          2,
+          2,
+          1,
+          1,
+          1,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "pair": [
+        26,
+        8
+      ],
+      "compact": [
+        9,
+        9,
+        82
+      ],
+      "r_code": [
+        0,
+        3,
+        3,
+        true
+      ],
+      "domain_sizes": [
+        36,
+        36,
+        15,
+        4,
+        4,
+        4,
+        36,
+        36
+      ],
+      "empty_column": null,
+      "witness": {
+        "mask": 30631,
+        "demand": 13,
+        "caps": [
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "pair": [
+        26,
+        12
+      ],
+      "compact": [
+        9,
+        9,
+        82
+      ],
+      "r_code": [
+        1,
+        0,
+        1,
+        true
+      ],
+      "domain_sizes": [
+        15,
+        36,
+        36,
+        36,
+        4,
+        4,
+        4,
+        36
+      ],
+      "empty_column": null,
+      "witness": {
+        "mask": 30631,
+        "demand": 13,
+        "caps": [
+          1,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "pair": [
+        26,
+        14
+      ],
+      "compact": [
+        9,
+        9,
+        82
+      ],
+      "r_code": [
+        1,
+        1,
+        1,
+        false
+      ],
+      "domain_sizes": [
+        1,
+        36,
+        36,
+        36,
+        4,
+        4,
+        4,
+        4
+      ],
+      "empty_column": null,
+      "witness": {
+        "mask": 1186,
+        "demand": 4,
+        "caps": [
+          0,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "pair": [
+        26,
+        15
+      ],
+      "compact": [
+        9,
+        9,
+        82
+      ],
+      "r_code": [
+        1,
+        1,
+        2,
+        false
+      ],
+      "domain_sizes": [
+        15,
+        15,
+        36,
+        36,
+        4,
+        4,
+        4,
+        4
+      ],
+      "empty_column": null,
+      "witness": {
+        "mask": 1703,
+        "demand": 7,
+        "caps": [
+          1,
+          1,
+          2,
+          2,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "pair": [
+        26,
+        16
+      ],
+      "compact": [
+        9,
+        9,
+        82
+      ],
+      "r_code": [
+        1,
+        1,
+        3,
+        false
+      ],
+      "domain_sizes": [
+        15,
+        36,
+        15,
+        36,
+        4,
+        4,
+        4,
+        4
+      ],
+      "empty_column": null,
+      "witness": {
+        "mask": 1703,
+        "demand": 7,
+        "caps": [
+          1,
+          2,
+          1,
+          2,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "pair": [
+        26,
+        17
+      ],
+      "compact": [
+        9,
+        9,
+        82
+      ],
+      "r_code": [
+        1,
+        1,
+        5,
+        false
+      ],
+      "domain_sizes": [
+        15,
+        36,
+        36,
+        36,
+        36,
+        4,
+        4,
+        4
+      ],
+      "empty_column": null,
+      "witness": {
+        "mask": 30631,
+        "demand": 13,
+        "caps": [
+          1,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "pair": [
+        26,
+        18
+      ],
+      "compact": [
+        9,
+        9,
+        82
+      ],
+      "r_code": [
+        1,
+        5,
+        5,
+        false
+      ],
+      "domain_sizes": [
+        36,
+        36,
+        36,
+        36,
+        15,
+        4,
+        4,
+        4
+      ],
+      "empty_column": null,
+      "witness": {
+        "mask": 30631,
+        "demand": 13,
+        "caps": [
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    }
+  ]
+}

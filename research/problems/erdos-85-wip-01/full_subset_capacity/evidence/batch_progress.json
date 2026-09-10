@@ -1,0 +1,448 @@
+{
+  "pid": 50690,
+  "status": "complete",
+  "elapsed_seconds": 137.235636375146,
+  "results": [
+    {
+      "pair": [
+        20,
+        14
+      ],
+      "verified": true,
+      "modules": [
+        {
+          "module": "SubsetPair20_14Data",
+          "source_sha256": "4bdf7c118c79b0e980f9621c14291f71c035ee23a49eee1e5532f56ab46d1e31",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 7.232846540864557,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair20_14Inputs",
+          "source_sha256": "2594a936525008f6e3c8d07376e7c9d4a8da836a6dd576472a3a84ae9d5c0126",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 9.068489332916215,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair20_14Exclusion",
+          "source_sha256": "c754c00c5e32e4ef61315591313115ab6e69eabc5e340ef681a2c39f808eea7b",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 6.113813542062417,
+          "process_bound_seconds": 120
+        }
+      ]
+    },
+    {
+      "pair": [
+        20,
+        15
+      ],
+      "verified": true,
+      "modules": [
+        {
+          "module": "SubsetPair20_15Data",
+          "source_sha256": "762bd61520ecbeb8d622a622675f36edb7d2890b99ad9b0e03a11002a07cd4d2",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 7.202651917003095,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair20_15Inputs",
+          "source_sha256": "4aea92af6d049331c477831986c8bedb0d115889c73a13e4f61b4a2ddaaa84b4",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 9.190841666189954,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair20_15Exclusion",
+          "source_sha256": "e64f46800a3a4f46a85c932351f53e5dc65b8ea6dd37d259dc1542baf072b240",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 6.012242208002135,
+          "process_bound_seconds": 120
+        }
+      ]
+    },
+    {
+      "pair": [
+        20,
+        16
+      ],
+      "verified": true,
+      "modules": [
+        {
+          "module": "SubsetPair20_16Data",
+          "source_sha256": "843672dff1d642e6a56a15970b22e1ea368142ce4d6dc128a380c8cce2d08e29",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 5.959694167133421,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair20_16Inputs",
+          "source_sha256": "fd5dbb2fd0bccaa1597a75915e15b9e2ab5cccc4bc2d8929c14320df4b756c6f",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 8.689390958053991,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair20_16Exclusion",
+          "source_sha256": "70047c8a3531fe76308e100e811ab0a33301b4115bd28e3df35fa46d1082dd5d",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 5.9781390419229865,
+          "process_bound_seconds": 120
+        }
+      ]
+    },
+    {
+      "pair": [
+        26,
+        3
+      ],
+      "verified": true,
+      "modules": [
+        {
+          "module": "SubsetPair26_3Data",
+          "source_sha256": "5743d3a59ba4d424281c29cf8522a95c56bbec2f027e71ca8a48a1688d647a0b",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 5.939873999916017,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_3Inputs",
+          "source_sha256": "5eeb8fc8ae8fe6174159f13b4210ac30d0d56b5bc4f24478d7c688c1b0fa9296",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 8.636830874951556,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_3Exclusion",
+          "source_sha256": "62966a3c89ef3a68722d143be41652a2eb87270358d470bc5a96609c12a27140",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 6.0406398749910295,
+          "process_bound_seconds": 120
+        }
+      ]
+    },
+    {
+      "pair": [
+        26,
+        6
+      ],
+      "verified": true,
+      "modules": [
+        {
+          "module": "SubsetPair26_6Data",
+          "source_sha256": "4eae5bf2337cc2a5dd640a0c17bf13c3629cf8e7b8078b224e079444ef9efc8c",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 6.229982582852244,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_6Inputs",
+          "source_sha256": "65fa39e0d23e0af56f8b4be2a093d85edbfac0495a7f2eba19141781c9133b27",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 8.426425749901682,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_6Exclusion",
+          "source_sha256": "106c862c2729af37e20d19e920fe05dc69deeb38a1e3b280fdb699b069de5b69",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 5.412693541962653,
+          "process_bound_seconds": 120
+        }
+      ]
+    },
+    {
+      "pair": [
+        26,
+        8
+      ],
+      "verified": true,
+      "modules": [
+        {
+          "module": "SubsetPair26_8Data",
+          "source_sha256": "74a2244a753b37464c459c72533ed005a53d63366365beac9250c0288bb064fc",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 6.256401875056326,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_8Inputs",
+          "source_sha256": "ec138ecd6d6af059dcd2317dd076637c581b2e713f13f3a9f997facf5812c7f8",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 8.396878333995119,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_8Exclusion",
+          "source_sha256": "fc0586d6a6a0fc90f9724451b917aeb24a72f1f7c7fee9fa7c4d8142d3fd1e24",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 5.436192166060209,
+          "process_bound_seconds": 120
+        }
+      ]
+    },
+    {
+      "pair": [
+        26,
+        12
+      ],
+      "verified": true,
+      "modules": [
+        {
+          "module": "SubsetPair26_12Data",
+          "source_sha256": "d1f2e8df082c8ac838c1a0d87d17bf205b2cb503160daec8269ba9ac6788c6ae",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 6.169739166973159,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_12Inputs",
+          "source_sha256": "3d4c85b816d573f71148c103b4dffa8208f6e8b5fe626433c94968f1a690c8d9",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 8.77835337514989,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_12Exclusion",
+          "source_sha256": "a4fe6bc748ecf6700a5217ffae717479d443d284beaca220a135f2a230178188",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 6.743825791170821,
+          "process_bound_seconds": 120
+        }
+      ]
+    },
+    {
+      "pair": [
+        26,
+        14
+      ],
+      "verified": true,
+      "modules": [
+        {
+          "module": "SubsetPair26_14Data",
+          "source_sha256": "f630513c0063f85f99d17ee8565fcf597cc0f1505688ad78bc465a685c74aa8e",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 6.110178790986538,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_14Inputs",
+          "source_sha256": "3e2ba4c84bb8cbc22c812465c8bf72ab83a7db1f37953897033f05b1308eac97",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 8.743520207935944,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_14Exclusion",
+          "source_sha256": "74ecd2f03ff378517085642fb153dbd300554288b231dd099f49911cb3b70310",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 6.852172042010352,
+          "process_bound_seconds": 120
+        }
+      ]
+    },
+    {
+      "pair": [
+        26,
+        16
+      ],
+      "verified": true,
+      "modules": [
+        {
+          "module": "SubsetPair26_16Data",
+          "source_sha256": "feff1c5f184ff9e0c1463f03f2db09d1cc16c9c305bcf2d4d108c5e5514bf2be",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 5.9162337919697165,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_16Inputs",
+          "source_sha256": "ea29524d9dcea59b02bd8290284c45023f51eea98ff1412f141dfa13c673f757",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 8.665424084058031,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_16Exclusion",
+          "source_sha256": "ff5c99653a5bd8a756f91e3588232fc2d692f1f72041c3e286b8d8028025edac",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 6.015717208152637,
+          "process_bound_seconds": 120
+        }
+      ]
+    },
+    {
+      "pair": [
+        26,
+        15
+      ],
+      "verified": true,
+      "modules": [
+        {
+          "module": "SubsetPair26_15Data",
+          "source_sha256": "06aaa938a40db94a23af1db880d3e540834ded85137f43eadf4349059d0d3489",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 5.960338209057227,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_15Inputs",
+          "source_sha256": "5083fbde9b2e547cda58cde8a0f571c44e393ac2f94b2b8719431ddba1de4dcd",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 8.584264707984403,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_15Exclusion",
+          "source_sha256": "e9f6964104a134fe68aca83d0de9d68deab3200103da1e88593016e12e82a154",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 6.049997083144262,
+          "process_bound_seconds": 120
+        }
+      ]
+    },
+    {
+      "pair": [
+        26,
+        18
+      ],
+      "verified": true,
+      "modules": [
+        {
+          "module": "SubsetPair26_18Data",
+          "source_sha256": "a802647eb613d2ccd8aa9929c119671c8100c78a624a9db2bb51cf9e68e19e57",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 7.185900625074282,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_18Inputs",
+          "source_sha256": "130ed265454f8633e5641620293a7aaa1ab1a650b2d2da1f1eb80d145e1934dc",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 10.95027850009501,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_18Exclusion",
+          "source_sha256": "b09ae86384abecd2347af64630758bb18aa0624bca3a45e3fff6aec2a7a1ef81",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 7.425811417168006,
+          "process_bound_seconds": 120
+        }
+      ]
+    },
+    {
+      "pair": [
+        26,
+        17
+      ],
+      "verified": true,
+      "modules": [
+        {
+          "module": "SubsetPair26_17Data",
+          "source_sha256": "372135936d28835a15758a5f18ea4a151f02547e5fd2a3484b06777a17206b93",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 7.250771334161982,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_17Inputs",
+          "source_sha256": "0cf07c6547b970e76b8926bd1ca73969151f25b39e50ba3da5b7974a21538796",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 10.89184245816432,
+          "process_bound_seconds": 120
+        },
+        {
+          "module": "SubsetPair26_17Exclusion",
+          "source_sha256": "3f513dbdeb37f3a2adfe1287716bf512b87ab63c075d4b9a14174095a938a492",
+          "verified": true,
+          "returncode": 0,
+          "timeout": false,
+          "elapsed_seconds": 7.445130624808371,
+          "process_bound_seconds": 120
+        }
+      ]
+    }
+  ],
+  "assembly": {
+    "module": "SubsetCapacityBatch",
+    "source_sha256": "35fee6206b3d64b36c2e50caaf894c46cee90fef5ba274f49ca7f86d535b36e2",
+    "verified": true,
+    "returncode": 0,
+    "timeout": false,
+    "elapsed_seconds": 4.576839625136927,
+    "process_bound_seconds": 120
+  }
+}
