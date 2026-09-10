@@ -6,10 +6,13 @@
 distribution before the operator read-through and Zenodo gate. Formal claims
 refer to Lean 4.31.0 with the repository-pinned mathlib; certificate-backed
 claims additionally require the final cold build and literal `#print axioms`
-audit. Theorem A is the operator-decided headline, but its unconditional
-generated Lean capstones are still pipeline-pending at this draft revision;
-the conditional finite-drop core is already checked. The title's “decided
-drop” wording inherits the same final evidence gate.
+audit. **[Certificate closure pending.]** Theorem A is stated below in its
+intended final form, but its unconditional generated Lean capstones are not
+yet established at this draft revision. The conditional finite-drop core is
+already checked. Every claim of a decided drop in this internal draft is
+subject to this marker. Delete the marker only after the entire certificate
+chain, final cold build, and public-theorem axiom audit pass. No external
+posting or Zenodo release precedes that closure and operator read-through.
 
 ## Abstract
 
@@ -26,7 +29,7 @@ the final replay, cold-build, and axiom-audit gate. The lower side uses a newly
 checked 48-vertex extremal witness; an independently computed isomorphism check
 finds it non-isomorphic to the previously recorded Afzaly–McKay witness. The
 order-49 upper side is supplied by exhaustive structural reduction and LRAT
-evidence whose final generated kernel replay is in progress. Second, we reduce
+evidence whose final generated kernel replay is pending. Second, we reduce
 a negative answer to Erdős Problem 85 to one uniform graph-theoretic proposition,
 `BinarySquareRegularExclusion` (A-REG). Lean verifies the entire implication
 
@@ -43,15 +46,19 @@ non-bipartite residues that remain open.
 
 ## Main results
 
-### Theorem A — the decided 48-to-49 drop
+### Theorem A — the 48-to-49 drop
 
-The completed certificate chain is designed to prove
+**[Certificate closure pending.]** The adjacent thresholds satisfy
 
 `minDegreeForC4 48 = 8 ∧ minDegreeForC4 49 = 7`,
 
 and hence
 
 `minDegreeForC4 49 < minDegreeForC4 48`.
+
+The bracket marks an unfinished proof, not an additional hypothesis of the
+intended finite theorem. It remains in this internal draft until the checks
+below are complete.
 
 The already checked finite-drop core is
 `minDegreeForC4_fortyEight_fortyNine_exact_checked` and
@@ -66,6 +73,47 @@ this finite computation. Separately, an independently computed NetworkX
 isomorphism comparison of archived graph6 artifacts finds that the checked
 order-48 extremal graph is not isomorphic to the Afzaly–McKay record; this
 novelty check is not part of the kernel-checked theorem.
+
+### Proof obligations for Theorem A
+
+The mathematical dependency chain is independent of how the computation is
+scheduled. The checked witness module `Erdos85FiniteDropWitnesses.lean`
+supplies `boza48_degreeSeven_witness` and
+`orderFortyNine_degreeSix_witness`. Its exact-value theorem still takes
+`hno49 : ¬ C4FreeMinDegreeWitness 49 7`. No completed-certificate count by
+itself supplies this hypothesis.
+
+The source-level consumer
+`not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighLratChecks` in
+`Erdos85OrderFortyNineSmallHighVerifiedFrontier.lean` requires four inputs:
+
+| Sector | Required input to this consumer |
+|---|---|
+| H1 | `OrderFortyNineStratumExcluded 1` |
+| H3 | Checked LRAT proofs for both representative indices `index ≤ 1` |
+| H5 | Checked LRAT proofs for all three representative indices `index ≤ 2` |
+| H7 | `OrderFortyNineStratumExcluded 7` |
+
+For H3 and H5, the checked formulas are precisely
+`orderFortyNineGeneratedCanonicalSatCnf` applied to
+`threeHighRepresentativeMasks` or `fiveHighRepresentativeMasks`. This is an
+interface description, not a claim that five monolithic certificates are
+available or that five jobs suffice. The finer cube route instead supplies
+seven base-CNF `Unsat` proofs to
+`not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighCubeBaseUnsat`
+in `Erdos85OrderFortyNineSmallHighCubeGridTerminal.lean`. It reaches the same
+`hno49` conclusion without constructing the five existential LRAT arrays of
+the older consumer. The finite-drop core accepts either route. H1 capacity
+rows still need the full row-to-stratum assembly; H7 needs its own exclusion
+theorem.
+
+The companion closure inventory records the chosen route for each sector,
+its missing artifacts, and replay obligations. Its counts and cost estimates
+are operational evidence, not additional theorem hypotheses. Final closure
+requires the exact cover and semantic bridges, all necessary certificate
+replays, the generated aggregate, and a cold build with literal axiom audits
+of the two public exact-value/drop endpoints. Each missing stage remains a
+proof obligation even if every earlier solver result is UNSAT.
 
 ### Theorem B — a one-proposition reduction of the infinite problem
 
@@ -185,14 +233,17 @@ The search did not merely fail to finish several familiar approaches; it
 produced exact countermodels or reductions showing why they do not close the
 remaining node.
 
-- Determinant and Smith-normal-form arguments collapse to
-  `det(A)² = q⁴ τ(D)`.  They show that the spanning-tree count of connected
-  `D` is a square but do not force singularity; the uniform elimination is
-  recorded at outline §A.5.3(i), commit `0ed91c72d6`.
-- Spectrum-only and scalar moment inequalities are compatible with exact
-  real spectral controls.  The uniform countermodel preserves the required
-  even moments while allowing every odd trace obstruction to fail
-  (outline §C/D, commit `f6ee2ed421`; divergence #66).
+- The identity `det(A)² = q⁴ τ(D)` makes a square spanning-tree count
+  necessary when `D` is connected. Controls show that this condition alone
+  does not force singularity (outline §A.5.3(i), `0ed91c72d6`). This does
+  not exclude stronger integral or local arithmetic tests: later examples
+  fail precisely such tests.
+- Real spectral controls satisfy the particular scalar conditions recorded
+  in their reports (`f6ee2ed421`; divergence #66). They do not establish
+  integral adjacency realizability or compatibility with every odd-trace
+  condition. Later Hoffman-diagonal and odd-power arguments reject
+  particular proposed spectra; these rejections and the remaining scope
+  are recorded in outline versions 2.66–2.69.3.
 - Generic packing, Hall, code-LP and fractional-transversal statements omit
   the completion of all rows to one symmetric adjacency matrix.  The
   strongest faithful self-polar partial interface already has an exact
@@ -209,6 +260,52 @@ remaining node.
   spectral controls.  The ten-route audit and its no-survivor verdict are
   banked in `NONBIP_CONNECTED_LITERATURE_DIVERGENCE.md` at `cf2243a6e8`
   (room msgs 31957 and 31962).
+
+The subsequent cycle produced several further boundaries with independently
+reviewed scope (`CUTS_LEDGER_DRAFT.md`, rows 172–186):
+
+- A core-Lean partial common-neighbour reconstruction identifies the exact
+  graph problem in operation form. A separate prose construction, checked
+  at finite field examples, refutes same-carrier Hamming stability based
+  only on the total central law's failure rate. It does not refute every
+  possible additional operation identity
+  (`PARTIAL_CENTRAL_OPERATION_AUDIT.md`).
+- The interval circulant defect family with steps
+  `{q²/2, ±1, …, ±(q/2−1)}` is excluded for every binary `q ≥ 4` by a
+  reviewed cyclotomic argument (`l6-cyclic-trace/UNIFORM.md`). Specific
+  order-256 defects also fail rational congruence to the identity form,
+  as witnessed by local Hasse invariants (`l6-representability/`). The
+  recorded D16 additionally fails the mod-2 alternating-root test; the
+  interval `r = 4` example passes the 2-adic representability test but
+  fails at odd primes. These are family exclusions, with no reduction of
+  arbitrary defect graphs to those families.
+- No proper divisible design graph has odd degree `k ≥ 3` and
+  common-neighbour parameters `λ₁ = 0, λ₂ = 1`. Reviewed geometric
+  arguments also rule out loopless polarities preserving the
+  Baer-deleted incidence structure. Matching-repair and retained-pencil bounds rule out stated
+  support and deletion budgets. None excludes arbitrary global repairs
+  (`baer-repair-gate/`, `BAER_POLARITY_EXTENSION.md`,
+  `retained-subplane-gate/`).
+- Explicit regular connected nonbipartite defect graphs pass the full
+  alternating symmetric square-root test over `F₂`, but the same family
+  fails the determinant-square condition uniformly. This separates the
+  two necessary tests; it supplies no survivor of their conjunction
+  (`mod2-root-gate/`).
+
+- The stated five-vertex flag relaxation is feasible uniformly for binary
+  `q ≥ 16` after repairing the original witnesses to satisfy
+  `tr(A D²) ≥ 0`; this includes the listed 23 identities and eight Gram
+  families, not every possible five-vertex constraint (ledger row 175).
+  The aggregate mod-3 census is feasible for every odd exponent `k ≥ 5`
+  (row 174), and the projected fixed-shore bound `z ≤ q−1` is refuted by
+  a uniform `z = q` construction (row 176). The specified enlargement of
+  an even-order polarity graph to degree `q+1` on `(q+1)²−3` vertices
+  requires at least `q²/4` old-edge deletions for `q ≥ 16` (row 180);
+  it excludes repairs with only linearly many deletions, not all repairs.
+
+The algebraic and geometric arguments in these reports are reviewed prose
+unless a named Lean result is explicitly identified. Their computational
+checks are evidence for their stated examples, not universal certificates.
 
 These are scope statements, not impossibility theorems about every future
 variant.  They say exactly which advertised hypotheses were too weak and
@@ -404,10 +501,12 @@ are the unit of trust.
   manifest on durable storage; and resumable per-verdict queues.  A SAT
   result becomes mathematical evidence only after a semantic bridge proves
   that every graph in the stated stratum satisfies the exact checked CNF.
-  The order-49 campaign currently uses the checked-grid interface
-  `orderFortyNineSmallHigh_unsat_of_checkedCubeGrid`; its 406 jobs are seven
-  7-by-8 positive-cube grids plus fourteen negative-cover checks, not five
-  monolithic LRAT files (room msgs 31965 and 31971).
+  One recorded order-49 decomposition uses the checked-grid interface
+  `orderFortyNineSmallHigh_unsat_of_checkedCubeGrid`: 406 jobs comprising
+  seven 7-by-8 positive-cube grids and fourteen negative-cover checks
+  (room msgs 31965 and 31971). This historical decomposition is not a
+  current pending-job count; the closure inventory must reconcile it with
+  later covers and completed artifacts.
 - **Census tooling**: exhaustive B&B sweeps over partition/atom spaces
   with every constraint tied to a named Lean lemma (loads, budgets,
   balance integrality, the equal-LCM law, oriented-cover kernels).
