@@ -1,0 +1,222 @@
+{
+  "review": 2073,
+  "status": "PASS",
+  "cases": [
+    {
+      "a": 6,
+      "minimum_max_degree": 4,
+      "keys": [
+        [
+          true,
+          2
+        ],
+        [
+          true,
+          3
+        ],
+        [
+          true,
+          4
+        ],
+        [
+          true,
+          5
+        ],
+        [
+          true,
+          6
+        ],
+        [
+          false,
+          4
+        ],
+        [
+          false,
+          5
+        ],
+        [
+          false,
+          6
+        ],
+        [
+          false,
+          7
+        ],
+        [
+          false,
+          8
+        ],
+        [
+          false,
+          9
+        ],
+        [
+          false,
+          10
+        ],
+        [
+          false,
+          11
+        ],
+        [
+          false,
+          12
+        ],
+        [
+          false,
+          13
+        ],
+        [
+          false,
+          14
+        ]
+      ]
+    },
+    {
+      "a": 7,
+      "minimum_max_degree": 4,
+      "keys": [
+        [
+          true,
+          2
+        ],
+        [
+          true,
+          3
+        ],
+        [
+          true,
+          4
+        ],
+        [
+          true,
+          5
+        ],
+        [
+          true,
+          6
+        ],
+        [
+          false,
+          4
+        ],
+        [
+          false,
+          5
+        ],
+        [
+          false,
+          6
+        ],
+        [
+          false,
+          7
+        ],
+        [
+          false,
+          8
+        ],
+        [
+          false,
+          9
+        ],
+        [
+          false,
+          10
+        ],
+        [
+          false,
+          11
+        ],
+        [
+          false,
+          12
+        ],
+        [
+          false,
+          13
+        ],
+        [
+          false,
+          14
+        ]
+      ]
+    },
+    {
+      "a": 8,
+      "minimum_max_degree": 5,
+      "keys": [
+        [
+          true,
+          4
+        ],
+        [
+          true,
+          5
+        ],
+        [
+          true,
+          6
+        ],
+        [
+          false,
+          9
+        ],
+        [
+          false,
+          10
+        ],
+        [
+          false,
+          11
+        ],
+        [
+          false,
+          12
+        ],
+        [
+          false,
+          13
+        ],
+        [
+          false,
+          14
+        ]
+      ]
+    },
+    {
+      "a": 9,
+      "minimum_max_degree": 6,
+      "keys": [
+        [
+          true,
+          6
+        ],
+        [
+          false,
+          14
+        ]
+      ]
+    }
+  ],
+  "complement_type_counts": {
+    "triangle": 35,
+    "star": 140,
+    "path4": 420,
+    "wedge_plus_edge": 630,
+    "matching3": 105
+  },
+  "universal_vertex_histogram": {
+    "4": 35,
+    "3": 560,
+    "2": 630,
+    "1": 105
+  },
+  "pins": {
+    "check.py": "fb69a592e201b1e1f1be5fbfa5f33dd16f229ce6e83e7efa6a2754584a6dd06e",
+    "results.json": "42e2c950c60f00be02711be4ed03053f987832c677cbe0d68e99006506a626f5",
+    "README.md": "08e0192d2c11f0759e461c5342e2bc2b8521c9ff6dd6b25b4c628023c79db550"
+  },
+  "semantic_audit": "For lowvertex supportweightw, low degree7-w and BC weight sum7 give pair_count-empty_count=w. At a pairvertex, pairneighbours have mutually disjoint2colour supports, so pair_count<=3 and empty_count<=1. At an emptyvertex pair_count=empty_count. Consequently Q has exactly2aedges. Empty/high BC summed atcolour i yields singleton_empty_incidence_i+degreeQ_i=7. Maximum-degree choice of high0 gives the mean bound. Wholegraph colour relabelling followed by the reviewed high0 stabilizer preserves this choice and singleton-host incidence sum. The retained profiles cover chosen representations; discarded representations are not graph exclusions.",
+  "scope": "Necessary maximal-high cover only. At a9 onlytwin6/crossed14 required; eliminating both remains a separate proof join. No H7/Lean/global closure or capped receipt change."
+}

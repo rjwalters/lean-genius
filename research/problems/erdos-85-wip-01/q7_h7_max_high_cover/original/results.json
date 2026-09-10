@@ -1,0 +1,214 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "empty_edges": 6,
+      "max_high_min_degree": 4,
+      "singleton_empty_sum_at_high0_max": 3,
+      "profile_keys": [
+        [
+          true,
+          2
+        ],
+        [
+          true,
+          3
+        ],
+        [
+          true,
+          4
+        ],
+        [
+          true,
+          5
+        ],
+        [
+          true,
+          6
+        ],
+        [
+          false,
+          4
+        ],
+        [
+          false,
+          5
+        ],
+        [
+          false,
+          6
+        ],
+        [
+          false,
+          7
+        ],
+        [
+          false,
+          8
+        ],
+        [
+          false,
+          9
+        ],
+        [
+          false,
+          10
+        ],
+        [
+          false,
+          11
+        ],
+        [
+          false,
+          12
+        ],
+        [
+          false,
+          13
+        ],
+        [
+          false,
+          14
+        ]
+      ]
+    },
+    {
+      "empty_edges": 7,
+      "max_high_min_degree": 4,
+      "singleton_empty_sum_at_high0_max": 3,
+      "profile_keys": [
+        [
+          true,
+          2
+        ],
+        [
+          true,
+          3
+        ],
+        [
+          true,
+          4
+        ],
+        [
+          true,
+          5
+        ],
+        [
+          true,
+          6
+        ],
+        [
+          false,
+          4
+        ],
+        [
+          false,
+          5
+        ],
+        [
+          false,
+          6
+        ],
+        [
+          false,
+          7
+        ],
+        [
+          false,
+          8
+        ],
+        [
+          false,
+          9
+        ],
+        [
+          false,
+          10
+        ],
+        [
+          false,
+          11
+        ],
+        [
+          false,
+          12
+        ],
+        [
+          false,
+          13
+        ],
+        [
+          false,
+          14
+        ]
+      ]
+    },
+    {
+      "empty_edges": 8,
+      "max_high_min_degree": 5,
+      "singleton_empty_sum_at_high0_max": 2,
+      "profile_keys": [
+        [
+          true,
+          4
+        ],
+        [
+          true,
+          5
+        ],
+        [
+          true,
+          6
+        ],
+        [
+          false,
+          9
+        ],
+        [
+          false,
+          10
+        ],
+        [
+          false,
+          11
+        ],
+        [
+          false,
+          12
+        ],
+        [
+          false,
+          13
+        ],
+        [
+          false,
+          14
+        ]
+      ]
+    },
+    {
+      "empty_edges": 9,
+      "max_high_min_degree": 6,
+      "singleton_empty_sum_at_high0_max": 1,
+      "profile_keys": [
+        [
+          true,
+          6
+        ],
+        [
+          false,
+          14
+        ]
+      ]
+    }
+  ],
+  "a9_complement_graphs": 1330,
+  "a9_universal_vertex_histogram": {
+    "3": 560,
+    "4": 35,
+    "2": 630,
+    "1": 105
+  },
+  "source_sha256": "f967214bc55c254c24f177caea09710bfb5acdcda73454b12889fdb3a738ffe5",
+  "scope": "Choice-of-high0 cover, not exclusion of discarded nonmax representations. Conditional a9 closure requires both twin6 andcrossed14 excluded; no such combined exclusion asserted here."
+}
