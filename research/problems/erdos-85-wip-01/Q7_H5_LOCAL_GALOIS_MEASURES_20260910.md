@@ -1,6 +1,6 @@
 # Exact H5 local measures respecting quadratic conjugation — 2026-09-10
 
-Owner: codex-sol-2. Base moments0..6 independently reviewed PASS1625. Degree10 extension review pending.
+Owner: codex-sol-2. Base moments0..6 independently reviewed PASS1625. Pure-C degree10 extension independently reviewed PASS1628. Mixed-moment extension and rank-one boundary review pending.
 
 The fixed H5 polynomial from the independently reviewed
 [integer controls](Q7_H5_H7_INTEGER_SPECTRAL_CONTROLS_20260910.md) admits the
@@ -15,7 +15,7 @@ The polynomial is
 
 It has T=19 all-low triangles, mixed overlap R=16 and tr(D³)=18. Consequently
 the local triangle-incidence, overlap and defect-triangle-incidence totals
-are respectively57,16,9. There are8,8,9 groups in the witnesses for triple
+are respectively57,16,9. There are8,8,10 groups in the witnesses for triple
 support count0,1,2. Their support censuses are
 
     (14,20,10,0), (13,23,7,1), (12,26,4,2).
@@ -94,11 +94,11 @@ three fixed witnesses and has no SciPy dependency or search step.
 
 These witnesses show that the specified diagonal tests, even with quadratic
 conjugation and exact global multiplicities, do not reject this fixed H5
-polynomial in any support profile. They do not impose off-diagonal
+polynomial in any support profile. They do not construct off-diagonal
 projectors, rank or orthogonality of projector matrices, a common symmetric
 integer C/D representation, the residual lattice, 0/1 entries, or the
-actual support-edge incidences. They check no additional mixed local walk conditions beyond the displayed
-CD² and D³ constraints. In particular the simple
+actual support-edge incidences. The finite mixed-moment tests and the rank-one limitation added below do
+not constitute a joint matrix construction. In particular the simple
 quadratic factor has not been realized as two rank-one projectors.
 No graph existence or complete H5 profile exclusion follows.
 
@@ -120,3 +120,32 @@ verified exactly. A further three bounded calls through degree14 reported
 numerical infeasibility for the fixed group counts and inner cones. That
 restricted, uncertified result is not a polynomial or graph exclusion.
 No claim is made about diagonal integrality beyond10 in the saved witness.
+
+
+## Mixed-moment extension and a rank-one boundary
+
+The n3=2 allocation and its weights have been replaced again, removing a
+negative D5 diagonal of the previous pure-C witness. Profiles0/1 retain
+their weights. All three now pass exact nonnegative integral diagonals
+C^i D^j for i+2j<=10 (36 pairs). Opposite-parity i,j give even diagonals.
+The verifier also checks D4>=61-16t+t², from defect degree6-t and Dt=5-t.
+The new n3=2 witness has10 groups; profiles0/1 still have8 each.
+
+These particular assignments nevertheless fail a necessary joint-projector
+condition. The factor x²+x-3 is simple, so each conjugate eigenprojector
+would have rank one. For an integer symmetric C, an eigenvector for this
+factor can be chosen over K=Q(sqrt13). Its nonzero diagonal projector
+weights are y_v²/(sum y_u²); hence ratios of nonzero weights must be squares
+in K. Taking field norms, their rational norm ratios must be squares in Q.
+
+For the last two cone coefficients u0,u1 of a group of count n, put
+
+    A=(u0+u1)/(2n), B=rho*(u1-u0)/(26n).
+
+The plus eigenvalue weight is A+B sqrt13, with rational norm A²-13B².
+The verifier finds a nonsquare positive rational ratio of these norms in
+each profile, using integer square roots of numerator and denominator.
+This exactly rules out rank-one projector realization of each saved
+assignment. It does not rule out other weights, the polynomial, or H5.
+Thus the artifact records both compatibility with the listed local tests
+and a demonstrated limitation when those data must share projectors.

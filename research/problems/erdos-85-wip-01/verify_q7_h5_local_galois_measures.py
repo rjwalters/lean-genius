@@ -1,6 +1,7 @@
 """Exact fixed-polynomial local measures; no optimization or graph assertion."""
 from fractions import Fraction as F
 import json
+from math import comb, isqrt
 from pathlib import Path
 import sympy as s
 
@@ -30,10 +31,11 @@ for cs,mult in factors:
   assert pair_r[0]==pair_r[1]
 assert position==len(w['columns'])==12
 Q=s.Matrix([[7,5],[-1,0]]);gram=s.Matrix([[44,40],[40,60]])
+assert w['checked_mixed_weighted_degree']==10
 seen=set()
 for profile in w['results']:
  n3=profile['n3'];assert n3 in range(3) and n3 not in seen;seen.add(n3)
- census=[0]*4;totals=[0]*3;mass=[F(0)]*12
+ census=[0]*4;totals=[0]*3;mass=[F(0)]*12;norms=[]
  for group in profile['groups']:
   t,tau,R,delta,count=[group[k] for k in ['t','tau','R','delta','count']]
   assert all(type(v) is int for v in [t,tau,R,delta,count])
@@ -57,12 +59,29 @@ for profile in w['results']:
    if k>0:
     parity=0 if k%2 else int((v*Q**(k//2)*s.Matrix([1,0]))[0])%2
     assert full.numerator%2==parity
+  residual=[a/count for a in moments]
+  for j in range(6):
+   for i in range(11-2*j):
+    mixed=sum(comb(j,k)*6**(j-k)*(-1)**k*residual[i+2*k] for k in range(j+1))
+    mixed+=F((v*Q**i*(Q-s.eye(2))**j*gram.inv()*v.T)[0])
+    if i==0:mixed+=(-1)**j*z
+    assert mixed.denominator==1 and mixed>=0
+    if i%2!=j%2:assert mixed.numerator%2==0
+    if (i,j)==(0,4):assert mixed>=61-16*t+t*t
+  # Simple x²+x-3 factor: necessary norm-square ratios for rank-one projectors.
+  u0,u1=weights[-2:];rho=F(w['columns'][-1]['r'])
+  A=(u0+u1)/(2*count);B=rho*(u1-u0)/(26*count)
+  norm=A*A-13*B*B
+  if norm:norms.append(norm)
   census[t]+=count
   totals=[a+count*b for a,b in zip(totals,[tau,R,delta])]
   mass=[a+b for a,b in zip(mass,weights)]
  assert census==[14-n3,20+3*n3,10-3*n3,n3]
  assert totals==[3*w['T'],w['R'],3*w['defect_triangles']]
  assert mass==multiplicities
- print('PASS exact H5 profile',n3,': local moments0..6, conjugate nonnegative weights, integer census, global multiplicities, per-vertex full-C integrality/parity through10')
+ assert norms
+ ratios=[n/norms[0] for n in norms[1:]]
+ assert any(isqrt(a.numerator)**2!=a.numerator or isqrt(a.denominator)**2!=a.denominator for a in ratios)
+ print('PASS exact H5 profile',n3,': local moments0..6, conjugate nonnegative weights, integer census, global multiplicities, per-vertex C parity and mixed nonnegative integers through weighted degree10; saved weights fail simple-projector norm-square test')
 assert seen=={0,1,2}
 print('No joint symmetric operator, off-diagonal projector, lattice realization, or graph is constructed.')
