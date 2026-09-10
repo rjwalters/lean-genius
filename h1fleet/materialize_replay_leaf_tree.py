@@ -263,7 +263,13 @@ def materialize(
                 source_output = source_stage / f"{module_name}.lean"
                 olean_output = olean_stage / f"{module_name}.olean"
                 atomic_write(source_output, source_raw.read_bytes())
-                atomic_write(olean_output, olean_raw.read_bytes())
+                # The tree is private staging until all rows validate. Stream large
+                # Lean artifacts rather than allocating the entire olean in RAM.
+                with olean_raw.open("rb") as source_stream, olean_output.open("xb") as output_stream:
+                    shutil.copyfileobj(source_stream, output_stream, length=1024 * 1024)
+                    output_stream.flush()
+                    os.fsync(output_stream.fileno())
+                require_raw(olean_output, receipt.get("olean_raw"), f"{tag} staged olean")
                 final_source = source_dir / source_output.name
                 final_olean = olean_dir / olean_output.name
                 source_module = f"{module_prefix}.{module_name}"

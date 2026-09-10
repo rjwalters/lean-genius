@@ -21,7 +21,9 @@ from replay_common import (
     require_sha, sha256_file, validate_production_compile_fields,
 )
 from run_replay_queue import load_queue
-from build_replay_queue import SCHEMA as QUEUE_BUILD_SCHEMA
+from build_replay_queue import (
+    SCHEMA as QUEUE_BUILD_SCHEMA, build as rebuild_queue, keyed, read_tsv,
+)
 
 
 HERE = Path(__file__).resolve().parent
@@ -264,6 +266,7 @@ def validate_queue_build_receipt(
     receipt: dict, queue: Path, capacity_index: Path, terminal_index: Path,
     inventory_sha256: str,
     expected_jobs: int, require_complete: bool,
+    certificate_index: Path | None = None,
 ) -> str:
     expected_fields = {
         "schema", "inventory_sha256", "certificate_index_sha256",
@@ -279,8 +282,8 @@ def validate_queue_build_receipt(
         require_sha(receipt.get(key), f"queue-build receipt.{key}")
     if receipt["output_sha256"] != sha256_file(queue):
         raise ReplayError("queue-build receipt output hash mismatch")
-    if receipt["certificate_index_sha256"] != sha256_file(capacity_index):
-        raise ReplayError("queue-build receipt capacity-index hash mismatch")
+    if receipt["certificate_index_sha256"] != sha256_file(certificate_index or capacity_index):
+        raise ReplayError("queue-build receipt certificate-index hash mismatch")
     if receipt["terminal_index_sha256"] != sha256_file(terminal_index):
         raise ReplayError("queue-build receipt terminal-index hash mismatch")
     if receipt["inventory_sha256"] != inventory_sha256:
@@ -290,6 +293,32 @@ def validate_queue_build_receipt(
     if receipt.get("require_complete") is not require_complete:
         raise ReplayError("queue-build receipt completeness mismatch")
     return receipt["terminal_index_sha256"]
+
+
+def validate_shard_queue_inputs(
+    *, inventory: Path, certificate_index: Path, capacity_index: Path,
+    terminal_index: Path, queue: Path, receipt: dict, inventory_sha256: str,
+    require_complete: bool,
+) -> None:
+    """Rebuild a shard without changing the common capacity ordinals or rows."""
+    inventory_bytes = inventory.read_bytes()
+    if hashlib.sha256(inventory_bytes).hexdigest() != inventory_sha256:
+        raise ReplayError("shard inventory hash mismatch")
+    certificate_bytes = certificate_index.read_bytes()
+    full_fields, full_rows = read_tsv(capacity_index.read_bytes(), "capacity index")
+    shard_fields, shard_rows = read_tsv(certificate_bytes, "shard certificate index")
+    if shard_fields != full_fields:
+        raise ReplayError("shard certificate columns differ from capacity index")
+    full = keyed(full_rows, "capacity index")
+    shard = keyed(shard_rows, "shard certificate index")
+    if not shard or any(tag not in full or row != full[tag] for tag, row in shard.items()):
+        raise ReplayError("shard certificate rows are not an exact capacity subset")
+    rebuilt, rebuilt_receipt = rebuild_queue(
+        inventory_bytes, certificate_bytes, terminal_index.read_bytes(),
+        require_complete=require_complete,
+    )
+    if rebuilt != queue.read_bytes() or canonical_json(rebuilt_receipt) != canonical_json(receipt):
+        raise ReplayError("shard queue or receipt differs from independent reconstruction")
 
 
 def main() -> int:
@@ -302,6 +331,8 @@ def main() -> int:
     parser.add_argument("--capacity-reindex-receipt", type=Path, required=True)
     parser.add_argument("--queue-build-receipt", type=Path, required=True)
     parser.add_argument("--terminal-index", type=Path, required=True)
+    parser.add_argument("--queue-certificate-index", type=Path)
+    parser.add_argument("--inventory", type=Path)
     parser.add_argument("--overlay-build-receipt", type=Path, required=True)
     parser.add_argument("--overlay-manifest", type=Path, required=True)
     parser.add_argument("--overlay-archive", type=Path, required=True)
@@ -309,6 +340,14 @@ def main() -> int:
     parser.add_argument("--require-complete-capacity-queue", action="store_true")
     args = parser.parse_args()
     try:
+        if (args.inventory is None) != (args.queue_certificate_index is None):
+            raise ReplayError("--inventory and --queue-certificate-index must be supplied together")
+        input_paths = [args.draft, args.queue, args.capacity_index,
+                       args.capacity_reindex_receipt, args.queue_build_receipt,
+                       args.terminal_index]
+        if args.inventory is not None:
+            input_paths.extend([args.inventory, args.queue_certificate_index])
+        input_hashes = {path: sha256_file(path) for path in input_paths}
         repo = args.repo.resolve()
         script_repo = Path(git_value(HERE, "rev-parse", "--show-toplevel")).resolve()
         if repo != script_repo:
@@ -328,7 +367,16 @@ def main() -> int:
             queue_build_receipt, args.queue, args.capacity_index, args.terminal_index,
             manifest.get("inventory_sha256", ""), len(jobs),
             args.require_complete_capacity_queue,
+            certificate_index=args.queue_certificate_index,
         )
+        if args.inventory is not None:
+            validate_shard_queue_inputs(
+                inventory=args.inventory, certificate_index=args.queue_certificate_index,
+                capacity_index=args.capacity_index, terminal_index=args.terminal_index,
+                queue=args.queue, receipt=queue_build_receipt,
+                inventory_sha256=manifest.get("inventory_sha256", ""),
+                require_complete=args.require_complete_capacity_queue,
+            )
         capacity = load_capacity_index(args.capacity_index)
         reindex_receipt = validate_reindex_receipt(
             args.capacity_reindex_receipt, args.capacity_index,
@@ -373,7 +421,8 @@ def main() -> int:
             replay_generator, overlay_builder,
             HERE / "replay_worker.py", HERE / "validate_replay_receipt.py",
             HERE / "run_replay_queue.py", HERE / "audit_replay_leaf.py",
-            HERE / "replay_common.py", HERE / "CLOUD_LEAN_REPLAY_STAGE_SPEC.md",
+            HERE / "replay_common.py", HERE / "s3_multipart.py",
+            HERE / "CLOUD_LEAN_REPLAY_STAGE_SPEC.md",
             aggregate_generator,
             HERE / "capacity_queue.py", stub_generator,
             capacity_exporter, capacity_reindexer,
@@ -398,6 +447,7 @@ def main() -> int:
             "dispatcher_sha256": sha256_file(HERE / "run_replay_queue.py"),
             "axiom_auditor_sha256": sha256_file(HERE / "audit_replay_leaf.py"),
             "common_sha256": sha256_file(HERE / "replay_common.py"),
+            "s3_multipart_sha256": sha256_file(HERE / "s3_multipart.py"),
             "receipt_schema_sha256": sha256_file(HERE / "CLOUD_LEAN_REPLAY_STAGE_SPEC.md"),
             "aggregate_generator_sha256": sha256_file(aggregate_generator),
             "stub_generator_sha256": sha256_file(stub_generator),
@@ -413,11 +463,16 @@ def main() -> int:
             "single_dispatcher": True,
             **overlay_fields,
         })
+        # Always replace draft values; legacy queues use the capacity index itself.
+        manifest["queue_certificate_index_sha256"] = sha256_file(
+            args.queue_certificate_index or args.capacity_index)
         manifest.pop("overlay_sha256", None)
         validate_production_compile_fields(manifest)
         value = canonical_json(manifest)
         validate_manifest_bytes(value)
         def revalidate_before_link() -> None:
+            if any(sha256_file(path) != digest for path, digest in input_hashes.items()):
+                raise ReplayError("queue freeze inputs changed during validation")
             if validate_overlay_freight(
                 receipt_path=args.overlay_build_receipt,
                 manifest_path=args.overlay_manifest,
