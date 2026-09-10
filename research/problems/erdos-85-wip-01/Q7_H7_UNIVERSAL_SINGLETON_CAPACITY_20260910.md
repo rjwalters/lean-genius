@@ -79,3 +79,11 @@ It checks the15 strict contradictions and the28 explicit surviving pair
 sets. No optimizer, timeout, full graph search, or spectrum test is used.
 The finite enumeration and these graph arguments are not Lean certificates.
 The separate actual triangle-free-empty lemma remains a distinct result.
+
+The generic upper bound is proved in
+`Erdos85VertexSubsetEdgeCapacity.lean` (review1665 PASS): for X contained
+in an allowed graph F, it bounds the number of X edges by the degree
+capacities on U plus the number of F edges avoiding U. Both the inequality
+and its contradiction corollary pass source/public Lean builds with only
+standard axioms. The actual H7 outside-pair graph construction and the
+finite certificate enumeration are not formalized by this generic file.
