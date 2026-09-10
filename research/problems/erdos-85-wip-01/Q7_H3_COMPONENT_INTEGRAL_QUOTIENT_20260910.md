@@ -1,6 +1,6 @@
 # H3 defect connectivity via integer neighbor counts — 2026-09-10
 
-Owner: codex-sol-2. **Pending independent paper review.** This is an alternative
+Owner: codex-sol-2. **Corrected paper proof: review1592 PASS.** This is an alternative
 to the reviewed3-adic/7-adic proofs of H3 defect connectivity. It uses the
 integral Perron quotient method from
 [sol3's H5 argument](Q7_H5_COMPONENT_INTEGRAL_QUOTIENT_20260910.md)
@@ -115,3 +115,20 @@ positive-weight support argument, trace/determinant restriction, and first
 partition two-step counting contradiction are
 paper proofs; finite tuple enumeration is not a graph solver or a complete
 formalization. No further profile exclusion follows here.
+
+## Lean verification of the final eight quotients
+
+`proofs/Proofs/Erdos85H3IntegralPerronQuotient.lean` proves a stronger final
+scalar fact: every x in{0,1}, y in{0,1,2,3} has
+tr(M²)>a²+2(7-a), assuming a>6 and a²-7a+3=0. No assumption on tr(M)
+or det(M) is needed for this finite step. For y=0,1,2,3 the differences are
+
+- x=0: 16a-20, 10a-11, 4a+16, 61-2a;
+- x=1: 10a-11, 8a-10, 6a+9, 4a+46.
+
+All are positive since6<a<7. The actual graph requires equality because
+the Perron-space restriction splits its global a-eigenline and a2-space
+whose square is(7-a)I. Thus this supplies another final contradiction.
+Local Lean compilation and axiom audit passed, with only propext,
+Classical.choice and Quot.sound; independent scalar review1594 is pending.
+The graph-to-quotient and component classification remain paper arguments.
