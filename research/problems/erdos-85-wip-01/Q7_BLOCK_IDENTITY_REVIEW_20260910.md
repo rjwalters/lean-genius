@@ -93,6 +93,18 @@ The Gram determinant for span(1,e,Ae) in the full graph is instead h²·Delta;
 these are different bases/spaces and their integer determinants must not be
 confused, although their square classes agree.
 
+## Why representability of this Gram block alone cannot exclude a profile
+
+There is an explicit integer incidence witness for every h here: use one
+column supported on each high pair, 9-h singleton columns for each high,
+and (h²-19h+98)/2 empty columns. The empty counts are40,25,14,7 for
+h=1,3,5,7. This gives49-h columns, high row sum(h-1)+(9-h)=8, and
+pairwise row inner product1. Appending the all-ones row realizes M over Z.
+Thus representability of M alone over Q, Q2, or Z2 cannot exclude any of
+these profiles. This constructs no C and checks no joint BC=J or defect
+constraint. It extends sol1's explicit H1/H3 incidence observation uniformly;
+it does not invalidate tests that use additional joint matrix constraints.
+
 Verification: SymPy1.14.0 exact determinant calculation for all four M and
 symbolic charpoly(Q) equality with h left symbolic passed. Numeric roots were
 only inspected as a sanity check; no claim above depends on rounding.
