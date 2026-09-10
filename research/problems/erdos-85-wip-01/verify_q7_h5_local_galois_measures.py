@@ -6,6 +6,7 @@ import sympy as s
 
 base=Path(__file__).parent
 w=json.loads((base/'q7_h5_local_galois_measures.json').read_text())
+assert w['checked_integer_diagonal_degree']==10
 assert (w['h'],w['T'],w['R'],w['defect_triangles'])==(5,19,16,3)
 factors=[([1,-3],2),([1,3],2),([1,0,-6],8),([1,0,-3],2),([1,1,-7],4),([1,1,-4],2),([1,1,-3],1)]
 columns=[];multiplicities=[];position=0
@@ -13,18 +14,18 @@ for cs,mult in factors:
  if len(cs)==2:
   desc=w['columns'][position];position+=1
   assert desc=={'factor':cs,'sign':0}
-  columns.append([F(-cs[1])**k for k in range(7)]);multiplicities.append(mult)
+  columns.append([F(-cs[1])**k for k in range(11)]);multiplicities.append(mult)
  else:
   b,c=cs[1:];disc=b*b-4*c
   sums=[F(2),F(-b)];diff=[F(0),F(1)]
-  for k in range(2,7):
+  for k in range(2,11):
    sums.append(-b*sums[-1]-c*sums[-2]);diff.append(-b*diff[-1]-c*diff[-2])
   pair_r=[]
   for sign in [-1,1]:
    desc=w['columns'][position];position+=1
    assert desc['factor']==cs and desc['sign']==sign
    r=F(desc['r']);assert 0<r*r<disc;pair_r.append(r)
-   columns.append([(sums[k]+sign*r*diff[k])/2 for k in range(7)])
+   columns.append([(sums[k]+sign*r*diff[k])/2 for k in range(11)])
    multiplicities.append(mult)
   assert pair_r[0]==pair_r[1]
 assert position==len(w['columns'])==12
@@ -41,21 +42,27 @@ for profile in w['results']:
   assert R%2==0 and 0<=R<=2*[0,0,1,3,4,6][survivors]
   assert 0<=delta<=(6-t)*(5-t)//2
   v=s.Matrix([[1,t]])
-  q=[F((v*Q**k*gram.inv()*v.T)[0]) for k in range(7)]
+  q=[F((v*Q**k*gram.inv()*v.T)[0]) for k in range(11)]
   z=F(t*(5-t),35)
   target=[1-q[0]-z,-q[1],7-t-q[2],2*tau-q[3],(7-t)*(13-t)-5-q[4]]
   target.append(R+12*target[3]-36*target[1]-q[3]+2*q[2]-q[1])
   target.append(216*target[0]-108*target[2]+18*target[4]+q[3]-3*q[2]+3*q[1]-q[0]-z-2*delta)
   weights=list(map(F,group['cone_weights']))
   assert len(weights)==12 and all(v>=0 for v in weights)
-  moments=[sum(a*col[k] for a,col in zip(weights,columns)) for k in range(7)]
-  assert moments==[count*v for v in target]
+  moments=[sum(a*col[k] for a,col in zip(weights,columns)) for k in range(11)]
+  assert moments[:7]==[count*v for v in target]
+  for k in range(11):
+   full= moments[k]/count + q[k] + (z if k==0 else 0)
+   assert full.denominator==1 and full>=0
+   if k>0:
+    parity=0 if k%2 else int((v*Q**(k//2)*s.Matrix([1,0]))[0])%2
+    assert full.numerator%2==parity
   census[t]+=count
   totals=[a+count*b for a,b in zip(totals,[tau,R,delta])]
   mass=[a+b for a,b in zip(mass,weights)]
  assert census==[14-n3,20+3*n3,10-3*n3,n3]
  assert totals==[3*w['T'],w['R'],3*w['defect_triangles']]
  assert mass==multiplicities
- print('PASS exact H5 profile',n3,': local moments0..6, conjugate nonnegative weights, integer census, global multiplicities')
+ print('PASS exact H5 profile',n3,': local moments0..6, conjugate nonnegative weights, integer census, global multiplicities, per-vertex full-C integrality/parity through10')
 assert seen=={0,1,2}
 print('No joint symmetric operator, off-diagonal projector, lattice realization, or graph is constructed.')

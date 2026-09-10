@@ -1,6 +1,6 @@
 # Exact H5 local measures respecting quadratic conjugation — 2026-09-10
 
-Owner: codex-sol-2. Independent review pending.
+Owner: codex-sol-2. Base moments0..6 independently reviewed PASS1625. Degree10 extension review pending.
 
 The fixed H5 polynomial from the independently reviewed
 [integer controls](Q7_H5_H7_INTEGER_SPECTRAL_CONTROLS_20260910.md) admits the
@@ -97,7 +97,26 @@ conjugation and exact global multiplicities, do not reject this fixed H5
 polynomial in any support profile. They do not impose off-diagonal
 projectors, rank or orthogonality of projector matrices, a common symmetric
 integer C/D representation, the residual lattice, 0/1 entries, or the
-actual support-edge incidences. They check no local moments beyond degree6
-and no additional mixed local walk conditions. In particular the simple
+actual support-edge incidences. They check no additional mixed local walk conditions beyond the displayed
+CD² and D³ constraints. In particular the simple
 quadratic factor has not been realized as two rank-one projectors.
 No graph existence or complete H5 profile exclusion follows.
+
+
+## Degree10 diagonal integrality extension
+
+The saved weights have been replaced by exact rational solutions that also
+make every individual vertex's full-C diagonal moments0..10 nonnegative
+integers. For k>0 odd, the diagonal is even. For k=2j it has parity
+(C^j 1)v=[1,t] Q^j [1,0]'. This follows from the characteristic-two diagonal
+identities for symmetric adjacency matrices. The verifier checks these
+conditions directly, dividing group weights by their integer count. It
+retains all earlier moment targets, census totals and global multiplicities.
+
+The original degree6 witnesses failed higher integrality; they were only
+claimed at degree6. Three bounded calls with degree7/8 conditions and three
+with degree7..10 conditions produced new supports, each reconstructed and
+verified exactly. A further three bounded calls through degree14 reported
+numerical infeasibility for the fixed group counts and inner cones. That
+restricted, uncertified result is not a polynomial or graph exclusion.
+No claim is made about diagonal integrality beyond10 in the saved witness.
