@@ -13,6 +13,7 @@ import sys
 import tempfile
 import uuid
 import string
+import stat
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Protocol
@@ -493,6 +494,9 @@ class LocalObjectStore:
 
     Object bytes live below ``objects/`` and metadata below ``meta/``.  The
     immutable-put and tag semantics intentionally mirror the production gates.
+    Object and metadata publication are separate filesystem operations: a crash
+    between them leaves an incomplete key that fails closed on retry. This
+    test backend does not promise recovery from arbitrary upload interruptions.
     """
 
     def __init__(self, root: Path):
@@ -533,36 +537,90 @@ class LocalObjectStore:
             meta.get("tagging_request_id"), meta.get("version_id"),
         )
 
+    @staticmethod
+    def _stage_copy(source: Path, directory: Path) -> tuple[Path, int, str]:
+        """Stage stable bytes in bounded memory; caller chooses publication mode."""
+        directory.mkdir(parents=True, exist_ok=True)
+        temporary = None
+        def identity(value):
+            return (value.st_dev, value.st_ino, value.st_size,
+                    value.st_mtime_ns, value.st_ctime_ns)
+        try:
+            with source.open("rb") as stream:
+                before = os.fstat(stream.fileno())
+                if not stat.S_ISREG(before.st_mode):
+                    raise ReplayError("local copy source is not a regular file")
+                pinned = identity(before)
+                if identity(source.stat()) != pinned:
+                    raise ReplayError("local copy source changed before reading")
+                digest = hashlib.sha256()
+                size = 0
+                with tempfile.NamedTemporaryFile(dir=directory, prefix=".copy-",
+                                                 delete=False) as output:
+                    temporary = Path(output.name)
+                    while chunk := stream.read(1 << 20):
+                        output.write(chunk)
+                        digest.update(chunk)
+                        size += len(chunk)
+                    output.flush()
+                    os.fsync(output.fileno())
+                if (identity(os.fstat(stream.fileno())) != pinned or
+                        identity(source.stat()) != pinned or size != before.st_size):
+                    raise ReplayError("local copy source changed during reading")
+                return temporary, size, digest.hexdigest()
+        except BaseException:
+            if temporary is not None:
+                temporary.unlink(missing_ok=True)
+            raise
+
     def download(self, key: str, destination: Path) -> ObjectInfo:
         info = self.head(key)
-        source, _ = self._read(key)
-        atomic_write(destination, source.read_bytes())
-        downloaded_sha = sha256_file(destination)
-        if info.sha256 is not None and downloaded_sha != info.sha256:
-            raise ReplayError(f"download read-back mismatch: {key}")
+        source, meta = self._read(key)
+        temporary, size, digest = self._stage_copy(source, destination.parent)
+        try:
+            if (size != info.size or digest != meta["sha256"] or digest != info.etag or
+                    (info.sha256 is not None and digest != info.sha256)):
+                raise ReplayError(f"download read-back mismatch: {key}")
+            os.replace(temporary, destination)
+        finally:
+            temporary.unlink(missing_ok=True)
         return ObjectInfo(
-            info.key, info.size, downloaded_sha, info.etag, info.last_modified,
+            info.key, size, digest, info.etag, info.last_modified,
             info.metadata, info.tags, info.tagging_request_id, info.version_id,
         )
 
     def put_immutable(self, key: str, source: Path, metadata: dict[str, str]) -> ObjectInfo:
-        return self.put_bytes_immutable(key, source.read_bytes(), metadata)
-
-    def put_bytes_immutable(self, key: str, value: bytes, metadata: dict[str, str]) -> ObjectInfo:
         object_path, meta_path = self._paths(key)
-        digest = sha256_bytes(value)
-        if object_path.exists() or meta_path.exists():
+        temporary, size, digest = self._stage_copy(source, object_path.parent)
+        def existing():
             current = self.head(key)
-            if current.sha256 != digest or current.metadata != metadata:
+            # A simulated missing HEAD digest still requires actual-byte identity.
+            if (sha256_file(object_path) != digest or current.size != size or
+                    current.metadata != metadata):
                 raise ReplayError(f"immutable object collision: {key}")
             return current
-        atomic_write(object_path, value)
-        record = {
-            "size": len(value), "sha256": digest, "etag": digest,
-            "last_modified": "local-immutable-v1", "metadata": metadata, "tags": {},
-        }
-        atomic_write(meta_path, canonical_json(record))
-        return self.head(key)
+        try:
+            if object_path.exists() or meta_path.exists():
+                return existing()
+            try:
+                # Atomic no-replace publication, including competing publishers.
+                os.link(temporary, object_path)
+            except FileExistsError:
+                return existing()
+            record = {
+                "size": size, "sha256": digest, "etag": digest,
+                "last_modified": "local-immutable-v1", "metadata": metadata, "tags": {},
+            }
+            atomic_write(meta_path, canonical_json(record))
+            return self.head(key)
+        finally:
+            temporary.unlink(missing_ok=True)
+
+    def put_bytes_immutable(self, key: str, value: bytes, metadata: dict[str, str]) -> ObjectInfo:
+        with tempfile.TemporaryDirectory(dir=self.root) as temporary:
+            source = Path(temporary) / "value"
+            source.write_bytes(value)
+            return self.put_immutable(key, source, metadata)
 
     def add_tag_preserving(self, key: str, name: str, value: str) -> ObjectInfo:
         before = self.head(key)
