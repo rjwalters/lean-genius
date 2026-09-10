@@ -1,0 +1,26 @@
+[
+  {
+    "input": "singleton-results.json",
+    "sha256": "70156703e3631f16c6a2693481f8f36669c9852db53abdcef66461113f2ac564",
+    "checked_positive_core_indices": [
+      27,
+      177
+    ],
+    "status": "PASS"
+  },
+  {
+    "input": "singleton-tail-results.json",
+    "sha256": "61a1690053389ace26f2f08ee95e73b73f6d93278c5cec89ab2aa55c9f694e0b",
+    "checked_positive_core_indices": [
+      173,
+      210,
+      119,
+      227,
+      229,
+      105,
+      223,
+      184
+    ],
+    "status": "PASS"
+  }
+]

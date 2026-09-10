@@ -1,0 +1,5086 @@
+{
+  "source_sha256": "7f8225058c65fc538a149d54d0d417b81d6a5604f58acf6436397efb7e3c7809",
+  "selection": "Remaining181 joint survivors sorted by Cartesian host domain bound; stable input order breaks ties.",
+  "caps": {
+    "nodes_per_core": 100000,
+    "seconds_total": 60
+  },
+  "scope": "Exhaustive failures reject only stated core. PASS graphs still lack empty-support vertices and degree completion; no sector exclusion.",
+  "selected_core_indices": [
+    213,
+    234,
+    107,
+    144,
+    228,
+    24,
+    32,
+    89,
+    111,
+    118,
+    121,
+    173,
+    196,
+    197,
+    218,
+    233,
+    166,
+    210,
+    226,
+    37,
+    87,
+    117,
+    119,
+    168,
+    174,
+    224,
+    225,
+    106,
+    214,
+    215,
+    216,
+    217,
+    22,
+    33,
+    81,
+    116,
+    18,
+    78,
+    110,
+    163,
+    203,
+    227,
+    229,
+    114,
+    127,
+    9,
+    12,
+    57,
+    90,
+    157,
+    158,
+    176,
+    128,
+    129,
+    175,
+    179,
+    16,
+    104,
+    105,
+    20,
+    115,
+    139,
+    143,
+    167,
+    180,
+    25,
+    190,
+    209,
+    7,
+    28,
+    39,
+    86,
+    161,
+    172,
+    97,
+    134,
+    194,
+    23,
+    60,
+    71,
+    109,
+    125,
+    165,
+    137,
+    154,
+    17,
+    83,
+    101,
+    113,
+    126,
+    153,
+    191,
+    199,
+    205,
+    211,
+    34,
+    178,
+    186,
+    223,
+    50,
+    84,
+    185,
+    206,
+    31,
+    77,
+    151,
+    14,
+    69,
+    88,
+    98,
+    200,
+    202,
+    189,
+    96,
+    132,
+    201,
+    221,
+    56,
+    70,
+    66,
+    142,
+    156,
+    162,
+    171,
+    80,
+    26,
+    193,
+    95,
+    141,
+    160,
+    170,
+    64,
+    124,
+    152,
+    187,
+    222,
+    94,
+    100,
+    63,
+    36,
+    155,
+    195,
+    76,
+    149,
+    5,
+    6,
+    8,
+    49,
+    99,
+    21,
+    10,
+    136,
+    138,
+    150,
+    13,
+    19,
+    103,
+    123,
+    65,
+    59,
+    58,
+    93,
+    102,
+    133,
+    15,
+    146,
+    184,
+    74,
+    147,
+    62,
+    131,
+    183,
+    182,
+    55,
+    92,
+    188,
+    48,
+    45,
+    53,
+    148,
+    61
+  ],
+  "processed": 181,
+  "seconds": 12.882566000102088,
+  "counts": {
+    "PASS": 8,
+    "REJECT": 173,
+    "UNKNOWN": 0
+  },
+  "rows": [
+    {
+      "core_index": 213,
+      "labelled_count": 12,
+      "cartesian_host_bound": 4,
+      "host_assignments_tested": 3,
+      "nodes": 6626,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 234,
+      "labelled_count": 12,
+      "cartesian_host_bound": 4,
+      "host_assignments_tested": 3,
+      "nodes": 7085,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 107,
+      "labelled_count": 12,
+      "cartesian_host_bound": 6,
+      "host_assignments_tested": 2,
+      "nodes": 13,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 144,
+      "labelled_count": 12,
+      "cartesian_host_bound": 6,
+      "host_assignments_tested": 5,
+      "nodes": 241,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 228,
+      "labelled_count": 12,
+      "cartesian_host_bound": 6,
+      "host_assignments_tested": 2,
+      "nodes": 1267,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 24,
+      "labelled_count": 12,
+      "cartesian_host_bound": 8,
+      "host_assignments_tested": 4,
+      "nodes": 182,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 32,
+      "labelled_count": 6,
+      "cartesian_host_bound": 8,
+      "host_assignments_tested": 6,
+      "nodes": 21,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 89,
+      "labelled_count": 12,
+      "cartesian_host_bound": 8,
+      "host_assignments_tested": 4,
+      "nodes": 26,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 111,
+      "labelled_count": 12,
+      "cartesian_host_bound": 8,
+      "host_assignments_tested": 6,
+      "nodes": 651,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 118,
+      "labelled_count": 12,
+      "cartesian_host_bound": 8,
+      "host_assignments_tested": 6,
+      "nodes": 1910,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 121,
+      "labelled_count": 12,
+      "cartesian_host_bound": 8,
+      "host_assignments_tested": 8,
+      "nodes": 300,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 173,
+      "labelled_count": 12,
+      "cartesian_host_bound": 8,
+      "host_assignments_tested": 4,
+      "nodes": 174,
+      "status": "PASS",
+      "partial_graph_edges": [
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          0,
+          13
+        ],
+        [
+          0,
+          14
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          16
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          1,
+          18
+        ],
+        [
+          1,
+          19
+        ],
+        [
+          1,
+          20
+        ],
+        [
+          1,
+          21
+        ],
+        [
+          1,
+          22
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          10
+        ],
+        [
+          2,
+          11
+        ],
+        [
+          2,
+          23
+        ],
+        [
+          2,
+          24
+        ],
+        [
+          2,
+          25
+        ],
+        [
+          2,
+          26
+        ],
+        [
+          2,
+          27
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          3,
+          12
+        ],
+        [
+          3,
+          28
+        ],
+        [
+          3,
+          29
+        ],
+        [
+          3,
+          30
+        ],
+        [
+          3,
+          31
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          4,
+          11
+        ],
+        [
+          4,
+          12
+        ],
+        [
+          4,
+          32
+        ],
+        [
+          4,
+          33
+        ],
+        [
+          4,
+          34
+        ],
+        [
+          4,
+          35
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          5,
+          18
+        ],
+        [
+          5,
+          23
+        ],
+        [
+          5,
+          32
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          7,
+          9
+        ],
+        [
+          7,
+          13
+        ],
+        [
+          7,
+          24
+        ],
+        [
+          7,
+          28
+        ],
+        [
+          8,
+          9
+        ],
+        [
+          8,
+          14
+        ],
+        [
+          8,
+          25
+        ],
+        [
+          8,
+          29
+        ],
+        [
+          9,
+          26
+        ],
+        [
+          10,
+          11
+        ],
+        [
+          10,
+          13
+        ],
+        [
+          10,
+          19
+        ],
+        [
+          10,
+          30
+        ],
+        [
+          11,
+          14
+        ],
+        [
+          11,
+          20
+        ],
+        [
+          11,
+          33
+        ],
+        [
+          12,
+          21
+        ],
+        [
+          12,
+          27
+        ],
+        [
+          12,
+          34
+        ],
+        [
+          13,
+          19
+        ],
+        [
+          14,
+          15
+        ],
+        [
+          15,
+          21
+        ],
+        [
+          15,
+          26
+        ],
+        [
+          15,
+          30
+        ],
+        [
+          15,
+          35
+        ],
+        [
+          16,
+          17
+        ],
+        [
+          16,
+          20
+        ],
+        [
+          16,
+          25
+        ],
+        [
+          16,
+          31
+        ],
+        [
+          16,
+          34
+        ],
+        [
+          17,
+          22
+        ],
+        [
+          17,
+          27
+        ],
+        [
+          17,
+          29
+        ],
+        [
+          17,
+          33
+        ],
+        [
+          18,
+          30
+        ],
+        [
+          18,
+          33
+        ],
+        [
+          19,
+          22
+        ],
+        [
+          19,
+          34
+        ],
+        [
+          20,
+          21
+        ],
+        [
+          20,
+          31
+        ],
+        [
+          21,
+          24
+        ],
+        [
+          22,
+          27
+        ],
+        [
+          22,
+          28
+        ],
+        [
+          22,
+          35
+        ],
+        [
+          23,
+          29
+        ],
+        [
+          23,
+          34
+        ],
+        [
+          24,
+          25
+        ],
+        [
+          24,
+          28
+        ],
+        [
+          25,
+          35
+        ],
+        [
+          26,
+          27
+        ],
+        [
+          26,
+          31
+        ],
+        [
+          28,
+          31
+        ],
+        [
+          29,
+          33
+        ],
+        [
+          30,
+          35
+        ],
+        [
+          31,
+          32
+        ],
+        [
+          32,
+          35
+        ]
+      ]
+    },
+    {
+      "core_index": 196,
+      "labelled_count": 12,
+      "cartesian_host_bound": 8,
+      "host_assignments_tested": 4,
+      "nodes": 119,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 197,
+      "labelled_count": 12,
+      "cartesian_host_bound": 8,
+      "host_assignments_tested": 6,
+      "nodes": 456,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 218,
+      "labelled_count": 6,
+      "cartesian_host_bound": 8,
+      "host_assignments_tested": 8,
+      "nodes": 5894,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 233,
+      "labelled_count": 6,
+      "cartesian_host_bound": 8,
+      "host_assignments_tested": 6,
+      "nodes": 3762,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 166,
+      "labelled_count": 12,
+      "cartesian_host_bound": 12,
+      "host_assignments_tested": 7,
+      "nodes": 421,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 210,
+      "labelled_count": 12,
+      "cartesian_host_bound": 12,
+      "host_assignments_tested": 3,
+      "nodes": 536,
+      "status": "PASS",
+      "partial_graph_edges": [
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          0,
+          13
+        ],
+        [
+          0,
+          14
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          16
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          1,
+          18
+        ],
+        [
+          1,
+          19
+        ],
+        [
+          1,
+          20
+        ],
+        [
+          1,
+          21
+        ],
+        [
+          1,
+          22
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          10
+        ],
+        [
+          2,
+          11
+        ],
+        [
+          2,
+          23
+        ],
+        [
+          2,
+          24
+        ],
+        [
+          2,
+          25
+        ],
+        [
+          2,
+          26
+        ],
+        [
+          2,
+          27
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          3,
+          12
+        ],
+        [
+          3,
+          28
+        ],
+        [
+          3,
+          29
+        ],
+        [
+          3,
+          30
+        ],
+        [
+          3,
+          31
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          4,
+          11
+        ],
+        [
+          4,
+          12
+        ],
+        [
+          4,
+          32
+        ],
+        [
+          4,
+          33
+        ],
+        [
+          4,
+          34
+        ],
+        [
+          4,
+          35
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          5,
+          9
+        ],
+        [
+          5,
+          23
+        ],
+        [
+          6,
+          28
+        ],
+        [
+          6,
+          32
+        ],
+        [
+          7,
+          10
+        ],
+        [
+          7,
+          13
+        ],
+        [
+          7,
+          18
+        ],
+        [
+          7,
+          33
+        ],
+        [
+          8,
+          12
+        ],
+        [
+          8,
+          14
+        ],
+        [
+          8,
+          19
+        ],
+        [
+          8,
+          24
+        ],
+        [
+          9,
+          29
+        ],
+        [
+          9,
+          34
+        ],
+        [
+          10,
+          18
+        ],
+        [
+          10,
+          25
+        ],
+        [
+          10,
+          30
+        ],
+        [
+          11,
+          12
+        ],
+        [
+          11,
+          15
+        ],
+        [
+          11,
+          20
+        ],
+        [
+          11,
+          26
+        ],
+        [
+          12,
+          16
+        ],
+        [
+          13,
+          22
+        ],
+        [
+          13,
+          27
+        ],
+        [
+          13,
+          29
+        ],
+        [
+          14,
+          15
+        ],
+        [
+          14,
+          24
+        ],
+        [
+          14,
+          35
+        ],
+        [
+          15,
+          20
+        ],
+        [
+          15,
+          31
+        ],
+        [
+          16,
+          17
+        ],
+        [
+          16,
+          21
+        ],
+        [
+          16,
+          25
+        ],
+        [
+          17,
+          19
+        ],
+        [
+          17,
+          26
+        ],
+        [
+          17,
+          30
+        ],
+        [
+          17,
+          34
+        ],
+        [
+          18,
+          20
+        ],
+        [
+          19,
+          26
+        ],
+        [
+          19,
+          32
+        ],
+        [
+          20,
+          28
+        ],
+        [
+          21,
+          22
+        ],
+        [
+          21,
+          25
+        ],
+        [
+          21,
+          31
+        ],
+        [
+          21,
+          33
+        ],
+        [
+          22,
+          27
+        ],
+        [
+          22,
+          30
+        ],
+        [
+          22,
+          35
+        ],
+        [
+          23,
+          31
+        ],
+        [
+          23,
+          35
+        ],
+        [
+          24,
+          27
+        ],
+        [
+          24,
+          33
+        ],
+        [
+          25,
+          32
+        ],
+        [
+          26,
+          29
+        ],
+        [
+          27,
+          28
+        ],
+        [
+          27,
+          34
+        ],
+        [
+          28,
+          34
+        ],
+        [
+          29,
+          31
+        ],
+        [
+          30,
+          35
+        ],
+        [
+          31,
+          33
+        ],
+        [
+          32,
+          35
+        ]
+      ]
+    },
+    {
+      "core_index": 226,
+      "labelled_count": 12,
+      "cartesian_host_bound": 12,
+      "host_assignments_tested": 4,
+      "nodes": 239,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 37,
+      "labelled_count": 6,
+      "cartesian_host_bound": 16,
+      "host_assignments_tested": 9,
+      "nodes": 360,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 87,
+      "labelled_count": 12,
+      "cartesian_host_bound": 16,
+      "host_assignments_tested": 8,
+      "nodes": 79,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 117,
+      "labelled_count": 12,
+      "cartesian_host_bound": 16,
+      "host_assignments_tested": 12,
+      "nodes": 68,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 119,
+      "labelled_count": 12,
+      "cartesian_host_bound": 16,
+      "host_assignments_tested": 3,
+      "nodes": 101,
+      "status": "PASS",
+      "partial_graph_edges": [
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          0,
+          13
+        ],
+        [
+          0,
+          14
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          16
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          1,
+          18
+        ],
+        [
+          1,
+          19
+        ],
+        [
+          1,
+          20
+        ],
+        [
+          1,
+          21
+        ],
+        [
+          1,
+          22
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          10
+        ],
+        [
+          2,
+          11
+        ],
+        [
+          2,
+          23
+        ],
+        [
+          2,
+          24
+        ],
+        [
+          2,
+          25
+        ],
+        [
+          2,
+          26
+        ],
+        [
+          2,
+          27
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          3,
+          12
+        ],
+        [
+          3,
+          28
+        ],
+        [
+          3,
+          29
+        ],
+        [
+          3,
+          30
+        ],
+        [
+          3,
+          31
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          4,
+          11
+        ],
+        [
+          4,
+          12
+        ],
+        [
+          4,
+          32
+        ],
+        [
+          4,
+          33
+        ],
+        [
+          4,
+          34
+        ],
+        [
+          4,
+          35
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          5,
+          18
+        ],
+        [
+          5,
+          23
+        ],
+        [
+          5,
+          32
+        ],
+        [
+          6,
+          28
+        ],
+        [
+          6,
+          33
+        ],
+        [
+          7,
+          8
+        ],
+        [
+          7,
+          11
+        ],
+        [
+          7,
+          13
+        ],
+        [
+          8,
+          10
+        ],
+        [
+          8,
+          19
+        ],
+        [
+          9,
+          12
+        ],
+        [
+          9,
+          14
+        ],
+        [
+          9,
+          20
+        ],
+        [
+          9,
+          24
+        ],
+        [
+          10,
+          15
+        ],
+        [
+          10,
+          25
+        ],
+        [
+          10,
+          34
+        ],
+        [
+          11,
+          21
+        ],
+        [
+          11,
+          26
+        ],
+        [
+          11,
+          29
+        ],
+        [
+          12,
+          16
+        ],
+        [
+          12,
+          23
+        ],
+        [
+          12,
+          30
+        ],
+        [
+          13,
+          22
+        ],
+        [
+          13,
+          25
+        ],
+        [
+          13,
+          31
+        ],
+        [
+          14,
+          17
+        ],
+        [
+          14,
+          24
+        ],
+        [
+          14,
+          29
+        ],
+        [
+          15,
+          16
+        ],
+        [
+          15,
+          20
+        ],
+        [
+          15,
+          34
+        ],
+        [
+          16,
+          21
+        ],
+        [
+          16,
+          27
+        ],
+        [
+          17,
+          19
+        ],
+        [
+          17,
+          26
+        ],
+        [
+          17,
+          30
+        ],
+        [
+          17,
+          35
+        ],
+        [
+          18,
+          29
+        ],
+        [
+          18,
+          34
+        ],
+        [
+          19,
+          27
+        ],
+        [
+          19,
+          35
+        ],
+        [
+          20,
+          26
+        ],
+        [
+          20,
+          31
+        ],
+        [
+          21,
+          22
+        ],
+        [
+          21,
+          28
+        ],
+        [
+          22,
+          25
+        ],
+        [
+          22,
+          30
+        ],
+        [
+          22,
+          33
+        ],
+        [
+          24,
+          27
+        ],
+        [
+          24,
+          28
+        ],
+        [
+          25,
+          35
+        ],
+        [
+          26,
+          30
+        ],
+        [
+          27,
+          31
+        ],
+        [
+          27,
+          33
+        ],
+        [
+          28,
+          35
+        ],
+        [
+          29,
+          31
+        ],
+        [
+          31,
+          32
+        ],
+        [
+          32,
+          35
+        ],
+        [
+          33,
+          34
+        ]
+      ]
+    },
+    {
+      "core_index": 168,
+      "labelled_count": 12,
+      "cartesian_host_bound": 16,
+      "host_assignments_tested": 8,
+      "nodes": 258,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 174,
+      "labelled_count": 6,
+      "cartesian_host_bound": 16,
+      "host_assignments_tested": 4,
+      "nodes": 68,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 224,
+      "labelled_count": 6,
+      "cartesian_host_bound": 16,
+      "host_assignments_tested": 16,
+      "nodes": 1764,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 225,
+      "labelled_count": 12,
+      "cartesian_host_bound": 16,
+      "host_assignments_tested": 16,
+      "nodes": 8974,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 106,
+      "labelled_count": 12,
+      "cartesian_host_bound": 18,
+      "host_assignments_tested": 9,
+      "nodes": 65,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 214,
+      "labelled_count": 6,
+      "cartesian_host_bound": 18,
+      "host_assignments_tested": 16,
+      "nodes": 1994,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 215,
+      "labelled_count": 12,
+      "cartesian_host_bound": 18,
+      "host_assignments_tested": 16,
+      "nodes": 6891,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 216,
+      "labelled_count": 6,
+      "cartesian_host_bound": 18,
+      "host_assignments_tested": 16,
+      "nodes": 1215,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 217,
+      "labelled_count": 12,
+      "cartesian_host_bound": 18,
+      "host_assignments_tested": 16,
+      "nodes": 2001,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 22,
+      "labelled_count": 12,
+      "cartesian_host_bound": 20,
+      "host_assignments_tested": 6,
+      "nodes": 60,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 33,
+      "labelled_count": 6,
+      "cartesian_host_bound": 20,
+      "host_assignments_tested": 13,
+      "nodes": 981,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 81,
+      "labelled_count": 12,
+      "cartesian_host_bound": 20,
+      "host_assignments_tested": 5,
+      "nodes": 40,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 116,
+      "labelled_count": 12,
+      "cartesian_host_bound": 20,
+      "host_assignments_tested": 11,
+      "nodes": 178,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 18,
+      "labelled_count": 12,
+      "cartesian_host_bound": 24,
+      "host_assignments_tested": 10,
+      "nodes": 647,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 78,
+      "labelled_count": 12,
+      "cartesian_host_bound": 24,
+      "host_assignments_tested": 8,
+      "nodes": 82,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 110,
+      "labelled_count": 12,
+      "cartesian_host_bound": 24,
+      "host_assignments_tested": 20,
+      "nodes": 1025,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 163,
+      "labelled_count": 12,
+      "cartesian_host_bound": 24,
+      "host_assignments_tested": 6,
+      "nodes": 65,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 203,
+      "labelled_count": 12,
+      "cartesian_host_bound": 24,
+      "host_assignments_tested": 11,
+      "nodes": 4753,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 227,
+      "labelled_count": 12,
+      "cartesian_host_bound": 24,
+      "host_assignments_tested": 13,
+      "nodes": 2272,
+      "status": "PASS",
+      "partial_graph_edges": [
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          0,
+          13
+        ],
+        [
+          0,
+          14
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          16
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          1,
+          18
+        ],
+        [
+          1,
+          19
+        ],
+        [
+          1,
+          20
+        ],
+        [
+          1,
+          21
+        ],
+        [
+          1,
+          22
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          10
+        ],
+        [
+          2,
+          11
+        ],
+        [
+          2,
+          23
+        ],
+        [
+          2,
+          24
+        ],
+        [
+          2,
+          25
+        ],
+        [
+          2,
+          26
+        ],
+        [
+          2,
+          27
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          3,
+          12
+        ],
+        [
+          3,
+          28
+        ],
+        [
+          3,
+          29
+        ],
+        [
+          3,
+          30
+        ],
+        [
+          3,
+          31
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          4,
+          11
+        ],
+        [
+          4,
+          12
+        ],
+        [
+          4,
+          32
+        ],
+        [
+          4,
+          33
+        ],
+        [
+          4,
+          34
+        ],
+        [
+          4,
+          35
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          5,
+          9
+        ],
+        [
+          5,
+          23
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          7,
+          11
+        ],
+        [
+          7,
+          13
+        ],
+        [
+          7,
+          18
+        ],
+        [
+          7,
+          28
+        ],
+        [
+          8,
+          13
+        ],
+        [
+          8,
+          19
+        ],
+        [
+          8,
+          24
+        ],
+        [
+          8,
+          29
+        ],
+        [
+          8,
+          32
+        ],
+        [
+          9,
+          30
+        ],
+        [
+          9,
+          33
+        ],
+        [
+          10,
+          11
+        ],
+        [
+          10,
+          14
+        ],
+        [
+          10,
+          20
+        ],
+        [
+          10,
+          31
+        ],
+        [
+          11,
+          19
+        ],
+        [
+          12,
+          21
+        ],
+        [
+          12,
+          25
+        ],
+        [
+          12,
+          34
+        ],
+        [
+          13,
+          24
+        ],
+        [
+          14,
+          15
+        ],
+        [
+          14,
+          21
+        ],
+        [
+          14,
+          32
+        ],
+        [
+          15,
+          22
+        ],
+        [
+          15,
+          25
+        ],
+        [
+          15,
+          29
+        ],
+        [
+          15,
+          33
+        ],
+        [
+          16,
+          17
+        ],
+        [
+          16,
+          19
+        ],
+        [
+          16,
+          27
+        ],
+        [
+          16,
+          31
+        ],
+        [
+          16,
+          35
+        ],
+        [
+          17,
+          20
+        ],
+        [
+          17,
+          26
+        ],
+        [
+          17,
+          30
+        ],
+        [
+          17,
+          34
+        ],
+        [
+          18,
+          21
+        ],
+        [
+          18,
+          26
+        ],
+        [
+          18,
+          31
+        ],
+        [
+          20,
+          22
+        ],
+        [
+          20,
+          34
+        ],
+        [
+          21,
+          27
+        ],
+        [
+          22,
+          25
+        ],
+        [
+          22,
+          28
+        ],
+        [
+          22,
+          35
+        ],
+        [
+          23,
+          29
+        ],
+        [
+          23,
+          35
+        ],
+        [
+          24,
+          27
+        ],
+        [
+          24,
+          34
+        ],
+        [
+          25,
+          26
+        ],
+        [
+          26,
+          30
+        ],
+        [
+          26,
+          32
+        ],
+        [
+          27,
+          28
+        ],
+        [
+          27,
+          33
+        ],
+        [
+          28,
+          30
+        ],
+        [
+          29,
+          33
+        ],
+        [
+          31,
+          35
+        ],
+        [
+          32,
+          35
+        ]
+      ]
+    },
+    {
+      "core_index": 229,
+      "labelled_count": 12,
+      "cartesian_host_bound": 24,
+      "host_assignments_tested": 1,
+      "nodes": 66,
+      "status": "PASS",
+      "partial_graph_edges": [
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          0,
+          13
+        ],
+        [
+          0,
+          14
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          16
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          1,
+          18
+        ],
+        [
+          1,
+          19
+        ],
+        [
+          1,
+          20
+        ],
+        [
+          1,
+          21
+        ],
+        [
+          1,
+          22
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          10
+        ],
+        [
+          2,
+          11
+        ],
+        [
+          2,
+          23
+        ],
+        [
+          2,
+          24
+        ],
+        [
+          2,
+          25
+        ],
+        [
+          2,
+          26
+        ],
+        [
+          2,
+          27
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          3,
+          12
+        ],
+        [
+          3,
+          28
+        ],
+        [
+          3,
+          29
+        ],
+        [
+          3,
+          30
+        ],
+        [
+          3,
+          31
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          4,
+          11
+        ],
+        [
+          4,
+          12
+        ],
+        [
+          4,
+          32
+        ],
+        [
+          4,
+          33
+        ],
+        [
+          4,
+          34
+        ],
+        [
+          4,
+          35
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          5,
+          9
+        ],
+        [
+          5,
+          23
+        ],
+        [
+          6,
+          28
+        ],
+        [
+          6,
+          32
+        ],
+        [
+          7,
+          11
+        ],
+        [
+          7,
+          13
+        ],
+        [
+          7,
+          18
+        ],
+        [
+          7,
+          29
+        ],
+        [
+          8,
+          12
+        ],
+        [
+          8,
+          14
+        ],
+        [
+          8,
+          19
+        ],
+        [
+          8,
+          24
+        ],
+        [
+          9,
+          30
+        ],
+        [
+          9,
+          33
+        ],
+        [
+          10,
+          11
+        ],
+        [
+          10,
+          15
+        ],
+        [
+          10,
+          20
+        ],
+        [
+          10,
+          31
+        ],
+        [
+          11,
+          21
+        ],
+        [
+          12,
+          16
+        ],
+        [
+          12,
+          25
+        ],
+        [
+          12,
+          34
+        ],
+        [
+          13,
+          22
+        ],
+        [
+          13,
+          27
+        ],
+        [
+          13,
+          31
+        ],
+        [
+          14,
+          15
+        ],
+        [
+          14,
+          24
+        ],
+        [
+          14,
+          33
+        ],
+        [
+          15,
+          20
+        ],
+        [
+          15,
+          34
+        ],
+        [
+          16,
+          17
+        ],
+        [
+          16,
+          21
+        ],
+        [
+          16,
+          25
+        ],
+        [
+          17,
+          19
+        ],
+        [
+          17,
+          26
+        ],
+        [
+          17,
+          30
+        ],
+        [
+          17,
+          35
+        ],
+        [
+          18,
+          20
+        ],
+        [
+          18,
+          25
+        ],
+        [
+          18,
+          29
+        ],
+        [
+          19,
+          27
+        ],
+        [
+          19,
+          35
+        ],
+        [
+          20,
+          32
+        ],
+        [
+          21,
+          22
+        ],
+        [
+          21,
+          28
+        ],
+        [
+          22,
+          26
+        ],
+        [
+          22,
+          31
+        ],
+        [
+          22,
+          34
+        ],
+        [
+          23,
+          29
+        ],
+        [
+          23,
+          35
+        ],
+        [
+          24,
+          26
+        ],
+        [
+          24,
+          32
+        ],
+        [
+          25,
+          27
+        ],
+        [
+          26,
+          30
+        ],
+        [
+          26,
+          34
+        ],
+        [
+          27,
+          28
+        ],
+        [
+          27,
+          33
+        ],
+        [
+          28,
+          33
+        ],
+        [
+          29,
+          30
+        ],
+        [
+          31,
+          35
+        ],
+        [
+          32,
+          35
+        ]
+      ]
+    },
+    {
+      "core_index": 114,
+      "labelled_count": 12,
+      "cartesian_host_bound": 30,
+      "host_assignments_tested": 21,
+      "nodes": 612,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 127,
+      "labelled_count": 12,
+      "cartesian_host_bound": 30,
+      "host_assignments_tested": 21,
+      "nodes": 234,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 9,
+      "labelled_count": 6,
+      "cartesian_host_bound": 32,
+      "host_assignments_tested": 4,
+      "nodes": 51,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 12,
+      "labelled_count": 12,
+      "cartesian_host_bound": 32,
+      "host_assignments_tested": 8,
+      "nodes": 86,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 57,
+      "labelled_count": 12,
+      "cartesian_host_bound": 32,
+      "host_assignments_tested": 4,
+      "nodes": 60,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 90,
+      "labelled_count": 12,
+      "cartesian_host_bound": 32,
+      "host_assignments_tested": 6,
+      "nodes": 77,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 157,
+      "labelled_count": 12,
+      "cartesian_host_bound": 32,
+      "host_assignments_tested": 24,
+      "nodes": 1495,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 158,
+      "labelled_count": 12,
+      "cartesian_host_bound": 32,
+      "host_assignments_tested": 16,
+      "nodes": 86,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 176,
+      "labelled_count": 12,
+      "cartesian_host_bound": 32,
+      "host_assignments_tested": 16,
+      "nodes": 635,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 128,
+      "labelled_count": 12,
+      "cartesian_host_bound": 36,
+      "host_assignments_tested": 8,
+      "nodes": 87,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 129,
+      "labelled_count": 12,
+      "cartesian_host_bound": 36,
+      "host_assignments_tested": 14,
+      "nodes": 308,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 175,
+      "labelled_count": 6,
+      "cartesian_host_bound": 36,
+      "host_assignments_tested": 27,
+      "nodes": 292,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 179,
+      "labelled_count": 6,
+      "cartesian_host_bound": 36,
+      "host_assignments_tested": 14,
+      "nodes": 1326,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 16,
+      "labelled_count": 12,
+      "cartesian_host_bound": 40,
+      "host_assignments_tested": 8,
+      "nodes": 42,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 104,
+      "labelled_count": 12,
+      "cartesian_host_bound": 40,
+      "host_assignments_tested": 8,
+      "nodes": 83,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 105,
+      "labelled_count": 12,
+      "cartesian_host_bound": 40,
+      "host_assignments_tested": 12,
+      "nodes": 1149,
+      "status": "PASS",
+      "partial_graph_edges": [
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          0,
+          13
+        ],
+        [
+          0,
+          14
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          16
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          1,
+          18
+        ],
+        [
+          1,
+          19
+        ],
+        [
+          1,
+          20
+        ],
+        [
+          1,
+          21
+        ],
+        [
+          1,
+          22
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          10
+        ],
+        [
+          2,
+          11
+        ],
+        [
+          2,
+          23
+        ],
+        [
+          2,
+          24
+        ],
+        [
+          2,
+          25
+        ],
+        [
+          2,
+          26
+        ],
+        [
+          2,
+          27
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          3,
+          12
+        ],
+        [
+          3,
+          28
+        ],
+        [
+          3,
+          29
+        ],
+        [
+          3,
+          30
+        ],
+        [
+          3,
+          31
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          4,
+          11
+        ],
+        [
+          4,
+          12
+        ],
+        [
+          4,
+          32
+        ],
+        [
+          4,
+          33
+        ],
+        [
+          4,
+          34
+        ],
+        [
+          4,
+          35
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          5,
+          18
+        ],
+        [
+          5,
+          23
+        ],
+        [
+          5,
+          32
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          7,
+          9
+        ],
+        [
+          7,
+          13
+        ],
+        [
+          7,
+          24
+        ],
+        [
+          7,
+          28
+        ],
+        [
+          8,
+          9
+        ],
+        [
+          8,
+          14
+        ],
+        [
+          8,
+          25
+        ],
+        [
+          8,
+          29
+        ],
+        [
+          9,
+          26
+        ],
+        [
+          10,
+          15
+        ],
+        [
+          10,
+          19
+        ],
+        [
+          10,
+          26
+        ],
+        [
+          10,
+          28
+        ],
+        [
+          10,
+          33
+        ],
+        [
+          11,
+          12
+        ],
+        [
+          11,
+          16
+        ],
+        [
+          11,
+          20
+        ],
+        [
+          11,
+          27
+        ],
+        [
+          12,
+          21
+        ],
+        [
+          13,
+          19
+        ],
+        [
+          13,
+          27
+        ],
+        [
+          13,
+          31
+        ],
+        [
+          14,
+          17
+        ],
+        [
+          14,
+          25
+        ],
+        [
+          14,
+          33
+        ],
+        [
+          15,
+          16
+        ],
+        [
+          15,
+          21
+        ],
+        [
+          15,
+          35
+        ],
+        [
+          16,
+          20
+        ],
+        [
+          16,
+          29
+        ],
+        [
+          17,
+          22
+        ],
+        [
+          17,
+          26
+        ],
+        [
+          17,
+          30
+        ],
+        [
+          17,
+          34
+        ],
+        [
+          18,
+          31
+        ],
+        [
+          18,
+          35
+        ],
+        [
+          19,
+          20
+        ],
+        [
+          19,
+          33
+        ],
+        [
+          20,
+          30
+        ],
+        [
+          21,
+          22
+        ],
+        [
+          21,
+          24
+        ],
+        [
+          22,
+          27
+        ],
+        [
+          22,
+          28
+        ],
+        [
+          22,
+          34
+        ],
+        [
+          23,
+          29
+        ],
+        [
+          23,
+          34
+        ],
+        [
+          24,
+          25
+        ],
+        [
+          24,
+          30
+        ],
+        [
+          25,
+          35
+        ],
+        [
+          27,
+          31
+        ],
+        [
+          29,
+          34
+        ],
+        [
+          30,
+          31
+        ],
+        [
+          30,
+          32
+        ],
+        [
+          31,
+          35
+        ],
+        [
+          32,
+          33
+        ],
+        [
+          34,
+          35
+        ]
+      ]
+    },
+    {
+      "core_index": 20,
+      "labelled_count": 12,
+      "cartesian_host_bound": 48,
+      "host_assignments_tested": 17,
+      "nodes": 67,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 115,
+      "labelled_count": 12,
+      "cartesian_host_bound": 48,
+      "host_assignments_tested": 20,
+      "nodes": 144,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 139,
+      "labelled_count": 12,
+      "cartesian_host_bound": 48,
+      "host_assignments_tested": 24,
+      "nodes": 376,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 143,
+      "labelled_count": 12,
+      "cartesian_host_bound": 48,
+      "host_assignments_tested": 16,
+      "nodes": 178,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 167,
+      "labelled_count": 12,
+      "cartesian_host_bound": 48,
+      "host_assignments_tested": 30,
+      "nodes": 2432,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 180,
+      "labelled_count": 6,
+      "cartesian_host_bound": 48,
+      "host_assignments_tested": 24,
+      "nodes": 1076,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 25,
+      "labelled_count": 12,
+      "cartesian_host_bound": 60,
+      "host_assignments_tested": 11,
+      "nodes": 74,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 190,
+      "labelled_count": 12,
+      "cartesian_host_bound": 60,
+      "host_assignments_tested": 18,
+      "nodes": 302,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 209,
+      "labelled_count": 12,
+      "cartesian_host_bound": 60,
+      "host_assignments_tested": 25,
+      "nodes": 549,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 7,
+      "labelled_count": 6,
+      "cartesian_host_bound": 64,
+      "host_assignments_tested": 16,
+      "nodes": 295,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 28,
+      "labelled_count": 3,
+      "cartesian_host_bound": 64,
+      "host_assignments_tested": 64,
+      "nodes": 1451,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 39,
+      "labelled_count": 1,
+      "cartesian_host_bound": 64,
+      "host_assignments_tested": 64,
+      "nodes": 880,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 86,
+      "labelled_count": 12,
+      "cartesian_host_bound": 64,
+      "host_assignments_tested": 20,
+      "nodes": 144,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 161,
+      "labelled_count": 6,
+      "cartesian_host_bound": 64,
+      "host_assignments_tested": 20,
+      "nodes": 134,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 172,
+      "labelled_count": 12,
+      "cartesian_host_bound": 64,
+      "host_assignments_tested": 16,
+      "nodes": 129,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 97,
+      "labelled_count": 12,
+      "cartesian_host_bound": 72,
+      "host_assignments_tested": 8,
+      "nodes": 143,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 134,
+      "labelled_count": 12,
+      "cartesian_host_bound": 72,
+      "host_assignments_tested": 30,
+      "nodes": 218,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 194,
+      "labelled_count": 12,
+      "cartesian_host_bound": 90,
+      "host_assignments_tested": 20,
+      "nodes": 916,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 23,
+      "labelled_count": 12,
+      "cartesian_host_bound": 96,
+      "host_assignments_tested": 9,
+      "nodes": 61,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 60,
+      "labelled_count": 12,
+      "cartesian_host_bound": 96,
+      "host_assignments_tested": 33,
+      "nodes": 194,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 71,
+      "labelled_count": 12,
+      "cartesian_host_bound": 96,
+      "host_assignments_tested": 8,
+      "nodes": 38,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 109,
+      "labelled_count": 12,
+      "cartesian_host_bound": 96,
+      "host_assignments_tested": 80,
+      "nodes": 570,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 125,
+      "labelled_count": 12,
+      "cartesian_host_bound": 96,
+      "host_assignments_tested": 34,
+      "nodes": 233,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 165,
+      "labelled_count": 12,
+      "cartesian_host_bound": 96,
+      "host_assignments_tested": 14,
+      "nodes": 123,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 137,
+      "labelled_count": 12,
+      "cartesian_host_bound": 100,
+      "host_assignments_tested": 27,
+      "nodes": 232,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 154,
+      "labelled_count": 12,
+      "cartesian_host_bound": 100,
+      "host_assignments_tested": 36,
+      "nodes": 331,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 17,
+      "labelled_count": 12,
+      "cartesian_host_bound": 120,
+      "host_assignments_tested": 34,
+      "nodes": 125,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 83,
+      "labelled_count": 12,
+      "cartesian_host_bound": 120,
+      "host_assignments_tested": 42,
+      "nodes": 303,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 101,
+      "labelled_count": 12,
+      "cartesian_host_bound": 120,
+      "host_assignments_tested": 40,
+      "nodes": 230,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 113,
+      "labelled_count": 12,
+      "cartesian_host_bound": 120,
+      "host_assignments_tested": 84,
+      "nodes": 423,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 126,
+      "labelled_count": 12,
+      "cartesian_host_bound": 120,
+      "host_assignments_tested": 84,
+      "nodes": 419,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 153,
+      "labelled_count": 12,
+      "cartesian_host_bound": 120,
+      "host_assignments_tested": 15,
+      "nodes": 184,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 191,
+      "labelled_count": 12,
+      "cartesian_host_bound": 120,
+      "host_assignments_tested": 49,
+      "nodes": 12487,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 199,
+      "labelled_count": 12,
+      "cartesian_host_bound": 120,
+      "host_assignments_tested": 4,
+      "nodes": 161,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 205,
+      "labelled_count": 12,
+      "cartesian_host_bound": 120,
+      "host_assignments_tested": 44,
+      "nodes": 967,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 211,
+      "labelled_count": 12,
+      "cartesian_host_bound": 120,
+      "host_assignments_tested": 50,
+      "nodes": 10840,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 34,
+      "labelled_count": 2,
+      "cartesian_host_bound": 125,
+      "host_assignments_tested": 76,
+      "nodes": 540,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 178,
+      "labelled_count": 6,
+      "cartesian_host_bound": 128,
+      "host_assignments_tested": 8,
+      "nodes": 66,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 186,
+      "labelled_count": 12,
+      "cartesian_host_bound": 128,
+      "host_assignments_tested": 20,
+      "nodes": 628,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 223,
+      "labelled_count": 6,
+      "cartesian_host_bound": 128,
+      "host_assignments_tested": 1,
+      "nodes": 47,
+      "status": "PASS",
+      "partial_graph_edges": [
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          0,
+          13
+        ],
+        [
+          0,
+          14
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          16
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          1,
+          18
+        ],
+        [
+          1,
+          19
+        ],
+        [
+          1,
+          20
+        ],
+        [
+          1,
+          21
+        ],
+        [
+          1,
+          22
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          10
+        ],
+        [
+          2,
+          11
+        ],
+        [
+          2,
+          23
+        ],
+        [
+          2,
+          24
+        ],
+        [
+          2,
+          25
+        ],
+        [
+          2,
+          26
+        ],
+        [
+          2,
+          27
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          3,
+          12
+        ],
+        [
+          3,
+          28
+        ],
+        [
+          3,
+          29
+        ],
+        [
+          3,
+          30
+        ],
+        [
+          3,
+          31
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          4,
+          11
+        ],
+        [
+          4,
+          12
+        ],
+        [
+          4,
+          32
+        ],
+        [
+          4,
+          33
+        ],
+        [
+          4,
+          34
+        ],
+        [
+          4,
+          35
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          5,
+          9
+        ],
+        [
+          5,
+          23
+        ],
+        [
+          6,
+          28
+        ],
+        [
+          6,
+          32
+        ],
+        [
+          7,
+          12
+        ],
+        [
+          7,
+          13
+        ],
+        [
+          7,
+          18
+        ],
+        [
+          7,
+          24
+        ],
+        [
+          8,
+          12
+        ],
+        [
+          8,
+          14
+        ],
+        [
+          8,
+          19
+        ],
+        [
+          8,
+          25
+        ],
+        [
+          9,
+          29
+        ],
+        [
+          9,
+          33
+        ],
+        [
+          10,
+          11
+        ],
+        [
+          10,
+          15
+        ],
+        [
+          10,
+          20
+        ],
+        [
+          10,
+          30
+        ],
+        [
+          11,
+          16
+        ],
+        [
+          11,
+          21
+        ],
+        [
+          11,
+          34
+        ],
+        [
+          12,
+          26
+        ],
+        [
+          13,
+          19
+        ],
+        [
+          13,
+          27
+        ],
+        [
+          13,
+          31
+        ],
+        [
+          14,
+          15
+        ],
+        [
+          14,
+          25
+        ],
+        [
+          14,
+          34
+        ],
+        [
+          15,
+          20
+        ],
+        [
+          15,
+          33
+        ],
+        [
+          16,
+          17
+        ],
+        [
+          16,
+          21
+        ],
+        [
+          16,
+          29
+        ],
+        [
+          17,
+          22
+        ],
+        [
+          17,
+          26
+        ],
+        [
+          17,
+          30
+        ],
+        [
+          17,
+          35
+        ],
+        [
+          18,
+          21
+        ],
+        [
+          18,
+          24
+        ],
+        [
+          18,
+          30
+        ],
+        [
+          19,
+          27
+        ],
+        [
+          19,
+          35
+        ],
+        [
+          20,
+          22
+        ],
+        [
+          20,
+          32
+        ],
+        [
+          21,
+          28
+        ],
+        [
+          22,
+          26
+        ],
+        [
+          22,
+          31
+        ],
+        [
+          22,
+          34
+        ],
+        [
+          23,
+          31
+        ],
+        [
+          23,
+          35
+        ],
+        [
+          24,
+          25
+        ],
+        [
+          24,
+          29
+        ],
+        [
+          25,
+          32
+        ],
+        [
+          26,
+          27
+        ],
+        [
+          27,
+          28
+        ],
+        [
+          27,
+          33
+        ],
+        [
+          28,
+          33
+        ],
+        [
+          29,
+          31
+        ],
+        [
+          30,
+          35
+        ],
+        [
+          31,
+          34
+        ],
+        [
+          32,
+          35
+        ]
+      ]
+    },
+    {
+      "core_index": 50,
+      "labelled_count": 12,
+      "cartesian_host_bound": 144,
+      "host_assignments_tested": 15,
+      "nodes": 135,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 84,
+      "labelled_count": 12,
+      "cartesian_host_bound": 144,
+      "host_assignments_tested": 16,
+      "nodes": 69,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 185,
+      "labelled_count": 6,
+      "cartesian_host_bound": 144,
+      "host_assignments_tested": 3,
+      "nodes": 125,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 206,
+      "labelled_count": 12,
+      "cartesian_host_bound": 150,
+      "host_assignments_tested": 63,
+      "nodes": 7033,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 31,
+      "labelled_count": 6,
+      "cartesian_host_bound": 180,
+      "host_assignments_tested": 104,
+      "nodes": 314,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 77,
+      "labelled_count": 12,
+      "cartesian_host_bound": 192,
+      "host_assignments_tested": 33,
+      "nodes": 275,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 151,
+      "labelled_count": 12,
+      "cartesian_host_bound": 192,
+      "host_assignments_tested": 45,
+      "nodes": 472,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 14,
+      "labelled_count": 6,
+      "cartesian_host_bound": 200,
+      "host_assignments_tested": 28,
+      "nodes": 80,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 69,
+      "labelled_count": 12,
+      "cartesian_host_bound": 216,
+      "host_assignments_tested": 55,
+      "nodes": 337,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 88,
+      "labelled_count": 12,
+      "cartesian_host_bound": 240,
+      "host_assignments_tested": 45,
+      "nodes": 368,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 98,
+      "labelled_count": 12,
+      "cartesian_host_bound": 240,
+      "host_assignments_tested": 60,
+      "nodes": 390,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 200,
+      "labelled_count": 12,
+      "cartesian_host_bound": 240,
+      "host_assignments_tested": 68,
+      "nodes": 2431,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 202,
+      "labelled_count": 12,
+      "cartesian_host_bound": 240,
+      "host_assignments_tested": 30,
+      "nodes": 611,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 189,
+      "labelled_count": 12,
+      "cartesian_host_bound": 243,
+      "host_assignments_tested": 55,
+      "nodes": 786,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 96,
+      "labelled_count": 12,
+      "cartesian_host_bound": 300,
+      "host_assignments_tested": 2,
+      "nodes": 22,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 132,
+      "labelled_count": 12,
+      "cartesian_host_bound": 300,
+      "host_assignments_tested": 55,
+      "nodes": 335,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 201,
+      "labelled_count": 12,
+      "cartesian_host_bound": 300,
+      "host_assignments_tested": 44,
+      "nodes": 1838,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 221,
+      "labelled_count": 12,
+      "cartesian_host_bound": 300,
+      "host_assignments_tested": 124,
+      "nodes": 4585,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 56,
+      "labelled_count": 12,
+      "cartesian_host_bound": 336,
+      "host_assignments_tested": 2,
+      "nodes": 22,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 70,
+      "labelled_count": 12,
+      "cartesian_host_bound": 336,
+      "host_assignments_tested": 22,
+      "nodes": 147,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 66,
+      "labelled_count": 12,
+      "cartesian_host_bound": 378,
+      "host_assignments_tested": 32,
+      "nodes": 204,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 142,
+      "labelled_count": 6,
+      "cartesian_host_bound": 384,
+      "host_assignments_tested": 216,
+      "nodes": 1228,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 156,
+      "labelled_count": 12,
+      "cartesian_host_bound": 384,
+      "host_assignments_tested": 102,
+      "nodes": 488,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 162,
+      "labelled_count": 6,
+      "cartesian_host_bound": 384,
+      "host_assignments_tested": 216,
+      "nodes": 780,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 171,
+      "labelled_count": 6,
+      "cartesian_host_bound": 384,
+      "host_assignments_tested": 216,
+      "nodes": 922,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 80,
+      "labelled_count": 12,
+      "cartesian_host_bound": 400,
+      "host_assignments_tested": 23,
+      "nodes": 70,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 26,
+      "labelled_count": 6,
+      "cartesian_host_bound": 405,
+      "host_assignments_tested": 73,
+      "nodes": 1126,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 193,
+      "labelled_count": 12,
+      "cartesian_host_bound": 420,
+      "host_assignments_tested": 89,
+      "nodes": 986,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 95,
+      "labelled_count": 12,
+      "cartesian_host_bound": 432,
+      "host_assignments_tested": 25,
+      "nodes": 138,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 141,
+      "labelled_count": 6,
+      "cartesian_host_bound": 448,
+      "host_assignments_tested": 32,
+      "nodes": 117,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 160,
+      "labelled_count": 6,
+      "cartesian_host_bound": 448,
+      "host_assignments_tested": 32,
+      "nodes": 245,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 170,
+      "labelled_count": 6,
+      "cartesian_host_bound": 448,
+      "host_assignments_tested": 32,
+      "nodes": 114,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 64,
+      "labelled_count": 12,
+      "cartesian_host_bound": 480,
+      "host_assignments_tested": 117,
+      "nodes": 805,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 124,
+      "labelled_count": 12,
+      "cartesian_host_bound": 480,
+      "host_assignments_tested": 51,
+      "nodes": 340,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 152,
+      "labelled_count": 12,
+      "cartesian_host_bound": 480,
+      "host_assignments_tested": 3,
+      "nodes": 39,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 187,
+      "labelled_count": 12,
+      "cartesian_host_bound": 500,
+      "host_assignments_tested": 4,
+      "nodes": 40,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 222,
+      "labelled_count": 12,
+      "cartesian_host_bound": 500,
+      "host_assignments_tested": 51,
+      "nodes": 1093,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 94,
+      "labelled_count": 12,
+      "cartesian_host_bound": 504,
+      "host_assignments_tested": 155,
+      "nodes": 1411,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 100,
+      "labelled_count": 12,
+      "cartesian_host_bound": 525,
+      "host_assignments_tested": 48,
+      "nodes": 195,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 63,
+      "labelled_count": 12,
+      "cartesian_host_bound": 540,
+      "host_assignments_tested": 180,
+      "nodes": 781,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 36,
+      "labelled_count": 3,
+      "cartesian_host_bound": 576,
+      "host_assignments_tested": 256,
+      "nodes": 812,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 155,
+      "labelled_count": 12,
+      "cartesian_host_bound": 600,
+      "host_assignments_tested": 267,
+      "nodes": 941,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 195,
+      "labelled_count": 12,
+      "cartesian_host_bound": 600,
+      "host_assignments_tested": 216,
+      "nodes": 5262,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 76,
+      "labelled_count": 12,
+      "cartesian_host_bound": 630,
+      "host_assignments_tested": 54,
+      "nodes": 157,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 149,
+      "labelled_count": 12,
+      "cartesian_host_bound": 630,
+      "host_assignments_tested": 174,
+      "nodes": 1698,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 5,
+      "labelled_count": 3,
+      "cartesian_host_bound": 704,
+      "host_assignments_tested": 38,
+      "nodes": 301,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 6,
+      "labelled_count": 3,
+      "cartesian_host_bound": 704,
+      "host_assignments_tested": 38,
+      "nodes": 124,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 8,
+      "labelled_count": 3,
+      "cartesian_host_bound": 704,
+      "host_assignments_tested": 38,
+      "nodes": 138,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 49,
+      "labelled_count": 12,
+      "cartesian_host_bound": 720,
+      "host_assignments_tested": 43,
+      "nodes": 184,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 99,
+      "labelled_count": 12,
+      "cartesian_host_bound": 735,
+      "host_assignments_tested": 65,
+      "nodes": 371,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 21,
+      "labelled_count": 6,
+      "cartesian_host_bound": 784,
+      "host_assignments_tested": 28,
+      "nodes": 243,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 10,
+      "labelled_count": 12,
+      "cartesian_host_bound": 882,
+      "host_assignments_tested": 62,
+      "nodes": 314,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 136,
+      "labelled_count": 12,
+      "cartesian_host_bound": 900,
+      "host_assignments_tested": 83,
+      "nodes": 562,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 138,
+      "labelled_count": 12,
+      "cartesian_host_bound": 960,
+      "host_assignments_tested": 444,
+      "nodes": 2168,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 150,
+      "labelled_count": 12,
+      "cartesian_host_bound": 972,
+      "host_assignments_tested": 46,
+      "nodes": 150,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 13,
+      "labelled_count": 6,
+      "cartesian_host_bound": 980,
+      "host_assignments_tested": 34,
+      "nodes": 150,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 19,
+      "labelled_count": 6,
+      "cartesian_host_bound": 980,
+      "host_assignments_tested": 34,
+      "nodes": 248,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 103,
+      "labelled_count": 12,
+      "cartesian_host_bound": 1008,
+      "host_assignments_tested": 129,
+      "nodes": 998,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 123,
+      "labelled_count": 12,
+      "cartesian_host_bound": 1050,
+      "host_assignments_tested": 56,
+      "nodes": 455,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 65,
+      "labelled_count": 12,
+      "cartesian_host_bound": 1176,
+      "host_assignments_tested": 53,
+      "nodes": 217,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 59,
+      "labelled_count": 12,
+      "cartesian_host_bound": 1280,
+      "host_assignments_tested": 6,
+      "nodes": 51,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 58,
+      "labelled_count": 12,
+      "cartesian_host_bound": 1470,
+      "host_assignments_tested": 81,
+      "nodes": 404,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 93,
+      "labelled_count": 12,
+      "cartesian_host_bound": 1512,
+      "host_assignments_tested": 108,
+      "nodes": 470,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 102,
+      "labelled_count": 12,
+      "cartesian_host_bound": 1568,
+      "host_assignments_tested": 60,
+      "nodes": 345,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 133,
+      "labelled_count": 12,
+      "cartesian_host_bound": 1600,
+      "host_assignments_tested": 612,
+      "nodes": 3683,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 15,
+      "labelled_count": 6,
+      "cartesian_host_bound": 1764,
+      "host_assignments_tested": 89,
+      "nodes": 412,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 146,
+      "labelled_count": 6,
+      "cartesian_host_bound": 1792,
+      "host_assignments_tested": 6,
+      "nodes": 54,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 184,
+      "labelled_count": 6,
+      "cartesian_host_bound": 1792,
+      "host_assignments_tested": 38,
+      "nodes": 1013,
+      "status": "PASS",
+      "partial_graph_edges": [
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          0,
+          13
+        ],
+        [
+          0,
+          14
+        ],
+        [
+          0,
+          15
+        ],
+        [
+          0,
+          16
+        ],
+        [
+          0,
+          17
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          1,
+          18
+        ],
+        [
+          1,
+          19
+        ],
+        [
+          1,
+          20
+        ],
+        [
+          1,
+          21
+        ],
+        [
+          1,
+          22
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          10
+        ],
+        [
+          2,
+          11
+        ],
+        [
+          2,
+          23
+        ],
+        [
+          2,
+          24
+        ],
+        [
+          2,
+          25
+        ],
+        [
+          2,
+          26
+        ],
+        [
+          2,
+          27
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          3,
+          10
+        ],
+        [
+          3,
+          12
+        ],
+        [
+          3,
+          28
+        ],
+        [
+          3,
+          29
+        ],
+        [
+          3,
+          30
+        ],
+        [
+          3,
+          31
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          4,
+          11
+        ],
+        [
+          4,
+          12
+        ],
+        [
+          4,
+          32
+        ],
+        [
+          4,
+          33
+        ],
+        [
+          4,
+          34
+        ],
+        [
+          4,
+          35
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          5,
+          9
+        ],
+        [
+          5,
+          23
+        ],
+        [
+          6,
+          28
+        ],
+        [
+          6,
+          32
+        ],
+        [
+          7,
+          12
+        ],
+        [
+          7,
+          13
+        ],
+        [
+          7,
+          18
+        ],
+        [
+          7,
+          24
+        ],
+        [
+          8,
+          12
+        ],
+        [
+          8,
+          14
+        ],
+        [
+          8,
+          19
+        ],
+        [
+          8,
+          25
+        ],
+        [
+          9,
+          29
+        ],
+        [
+          9,
+          33
+        ],
+        [
+          10,
+          15
+        ],
+        [
+          10,
+          20
+        ],
+        [
+          10,
+          24
+        ],
+        [
+          10,
+          29
+        ],
+        [
+          10,
+          34
+        ],
+        [
+          11,
+          16
+        ],
+        [
+          11,
+          21
+        ],
+        [
+          11,
+          25
+        ],
+        [
+          11,
+          30
+        ],
+        [
+          11,
+          32
+        ],
+        [
+          12,
+          26
+        ],
+        [
+          13,
+          22
+        ],
+        [
+          13,
+          25
+        ],
+        [
+          13,
+          31
+        ],
+        [
+          14,
+          16
+        ],
+        [
+          14,
+          27
+        ],
+        [
+          14,
+          34
+        ],
+        [
+          15,
+          17
+        ],
+        [
+          15,
+          20
+        ],
+        [
+          15,
+          33
+        ],
+        [
+          16,
+          21
+        ],
+        [
+          16,
+          29
+        ],
+        [
+          17,
+          19
+        ],
+        [
+          17,
+          26
+        ],
+        [
+          17,
+          30
+        ],
+        [
+          17,
+          35
+        ],
+        [
+          18,
+          20
+        ],
+        [
+          18,
+          27
+        ],
+        [
+          18,
+          30
+        ],
+        [
+          19,
+          24
+        ],
+        [
+          19,
+          35
+        ],
+        [
+          20,
+          32
+        ],
+        [
+          21,
+          22
+        ],
+        [
+          21,
+          28
+        ],
+        [
+          22,
+          26
+        ],
+        [
+          22,
+          31
+        ],
+        [
+          22,
+          34
+        ],
+        [
+          23,
+          31
+        ],
+        [
+          23,
+          35
+        ],
+        [
+          26,
+          27
+        ],
+        [
+          27,
+          28
+        ],
+        [
+          27,
+          33
+        ],
+        [
+          28,
+          35
+        ],
+        [
+          30,
+          31
+        ],
+        [
+          31,
+          33
+        ],
+        [
+          34,
+          35
+        ]
+      ]
+    },
+    {
+      "core_index": 74,
+      "labelled_count": 6,
+      "cartesian_host_bound": 1800,
+      "host_assignments_tested": 109,
+      "nodes": 408,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 147,
+      "labelled_count": 6,
+      "cartesian_host_bound": 1944,
+      "host_assignments_tested": 106,
+      "nodes": 390,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 62,
+      "labelled_count": 12,
+      "cartesian_host_bound": 1960,
+      "host_assignments_tested": 164,
+      "nodes": 910,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 131,
+      "labelled_count": 12,
+      "cartesian_host_bound": 2100,
+      "host_assignments_tested": 145,
+      "nodes": 758,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 183,
+      "labelled_count": 12,
+      "cartesian_host_bound": 2100,
+      "host_assignments_tested": 5,
+      "nodes": 80,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 182,
+      "labelled_count": 12,
+      "cartesian_host_bound": 2250,
+      "host_assignments_tested": 38,
+      "nodes": 313,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 55,
+      "labelled_count": 12,
+      "cartesian_host_bound": 2560,
+      "host_assignments_tested": 154,
+      "nodes": 610,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 92,
+      "labelled_count": 12,
+      "cartesian_host_bound": 2880,
+      "host_assignments_tested": 144,
+      "nodes": 604,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 188,
+      "labelled_count": 12,
+      "cartesian_host_bound": 3125,
+      "host_assignments_tested": 293,
+      "nodes": 4826,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 48,
+      "labelled_count": 12,
+      "cartesian_host_bound": 3360,
+      "host_assignments_tested": 5,
+      "nodes": 50,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 45,
+      "labelled_count": 12,
+      "cartesian_host_bound": 4200,
+      "host_assignments_tested": 88,
+      "nodes": 632,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 53,
+      "labelled_count": 12,
+      "cartesian_host_bound": 4200,
+      "host_assignments_tested": 200,
+      "nodes": 780,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 148,
+      "labelled_count": 12,
+      "cartesian_host_bound": 6615,
+      "host_assignments_tested": 223,
+      "nodes": 1045,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    },
+    {
+      "core_index": 61,
+      "labelled_count": 12,
+      "cartesian_host_bound": 8575,
+      "host_assignments_tested": 362,
+      "nodes": 1440,
+      "status": "REJECT",
+      "partial_graph_edges": null
+    }
+  ]
+}
