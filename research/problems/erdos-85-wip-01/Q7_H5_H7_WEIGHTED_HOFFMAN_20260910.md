@@ -129,5 +129,5 @@ of the eight coefficient controls. The full argument remains a paper proof.
 `Proofs/Erdos85NonregularDiagonalParity.lean` supplies the two matrix-power
 identities over ZMod2 without a row-sum assumption. Both lemmas compile and
 report only propext, Classical.choice, and Quot.sound; independent compile
-review1598 is pending. This formalizes the base matrix-power identities,
+review1598 passed with the same axiom reports. This formalizes the base matrix-power identities,
 not their coefficient-field extension or the Perron-projector argument.
