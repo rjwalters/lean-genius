@@ -43,6 +43,11 @@ for profile in profiles.values():
  for row in profile['bounds']:
   row['p5_lower']=72*row['T']-4116+269*h
   row['p5_upper']=row['p5_lower']+row['R_upper']
+  row['R_residue_mod5']=(3*row['T']+h+4)%5
+  allowed=[R for R in range(0,row['R_upper']+1,2) if R%5==row['R_residue_mod5']]
+  row['allowed_even_R_count']=len(allowed)
+  row['allowed_even_R_min']=min(allowed,default=None)
+assert [(name,row['T']) for name,p in profiles.items() for row in p['bounds'] if not row['allowed_even_R_count']]==[('H3_triple',8)]
 # Consume sol1's explicit degree<=2 spectral relaxation, without asserting a graph.
 factors=[([1,3],1),([1,1],1),([1,-2,-4],2),([1,0,-8],3),
          ([1,0,-7],3),([1,0,-6],6),([1,0,-5],2),([1,1,-7],1),

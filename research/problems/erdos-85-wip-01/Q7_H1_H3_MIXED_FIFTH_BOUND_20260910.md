@@ -98,3 +98,22 @@ independently computes their first five power sums by integer recurrences:
 This test does not eliminate that spectral relaxation. This artifact verifies
 only its power sums and the mixed bound, not every other claimed filter or
 any graph realization.
+
+## H3 triple profile cannot have exactly eight low triangles
+
+For a monic integer residual polynomial, Newton identities give p5=p1
+modulo5. Substitution in the mixed trace formula gives
+
+    R=3T+h+4 modulo5.
+
+Together with even nonnegative R, this sharpens the allocation envelope.
+For the H3 triple profile at T=8, all24 empty vertices have tau=1 and
+all other vertices have tau=0. The only possible local contribution is
+at the single support-size-three vertex, so R<=2. But the congruence gives
+R=1 modulo5, whose smallest nonnegative even representative is6. This is
+a contradiction. Hence the H3 triple profile requires9<=T<=38.
+
+The verifier intersects every envelope row with the even R congruence.
+Only the H3 triple T=8 row is eliminated. This is a single triangle-count
+case exclusion at paper/arithmetic scope, not exclusion of the H3 profile.
+The same residue-consumer idea was independently used by sol3 for H5/T2.
