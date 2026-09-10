@@ -1,0 +1,29 @@
+{
+  "job": "h5_t1.cube-0-1",
+  "scope": "existing local executable replay; no rebuild or generated theorem acceptance",
+  "started_utc": "2026-09-10T05:54:33.052338+00:00",
+  "cnf_sha256": "fa39c848af6c74ebb4e4559882b71d6a4b76f4fac4797bc6d00fb02a6466ea48",
+  "lrat_sha256": "508082950efbfecf0c149b2817f56e1f367c7912b6388d1aa6999a6f5c692935",
+  "compressed_sha256": "ee6c1c5efd21b24d7d3b85521e3efb8391d4ea7d5c909ee60d5f8bbac5e6e9b7",
+  "runs": [
+    {
+      "name": "native",
+      "binary": "/Volumes/Stripe/lean-genius/tools/drat-trim/lrat-check",
+      "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea",
+      "exit_code": 0,
+      "elapsed_s": 0.41426629200577736,
+      "stdout": "c parsed a formula with 29632 variables and 1328620 clauses\nc VERIFIED\nc allocated 1024 8968185 1500120\nc Added clauses = 1328621.  Deleted clauses = 1328615.  Max live clauses = 1328620\nc verification time = 0.41 secs\n",
+      "stderr": ""
+    },
+    {
+      "name": "lean",
+      "binary": "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/proofs/.lake/build/bin/lratreplay",
+      "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921",
+      "exit_code": 0,
+      "elapsed_s": 1.8940273749176413,
+      "stdout": "CNF clauses: 1328620; padded clauses: 1328620; LRAT actions: 2\nCNF literals: 29632; proof maximum literal: 0; padded literals: 29632\nLRAT accepted: true\n",
+      "stderr": ""
+    }
+  ],
+  "accepted_current_stack": null
+}

@@ -1,0 +1,322 @@
+{
+  "scope": "Existing local executable replay; no rebuild or generated theorem acceptance",
+  "updated_utc": "2026-09-10T05:44:31.262981+00:00",
+  "binaries": {
+    "native": "/Volumes/Stripe/lean-genius/tools/drat-trim/lrat-check",
+    "lean": "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/proofs/.lake/build/bin/lratreplay"
+  },
+  "rows": [
+    {
+      "job": "h3_b1.cover-right",
+      "cnf_sha256": "bcdfcacda219f70c714142cdbb1290072592237b1e14c6737b9da0420093c080",
+      "lrat_sha256": "14c18b094ef4347fee24d6d20e2c791dcc3f1872a0bb2488dabc9f647f62a384",
+      "runs": [
+        {
+          "name": "native",
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea",
+          "exit_code": 0,
+          "elapsed_s": 0.3387285419739783,
+          "stdout": "c parsed a formula with 29500 variables and 1328275 clauses\nc VERIFIED\nc allocated 1024 8965855 295000\nc Added clauses = 1328276.  Deleted clauses = 0.  Max live clauses = 1328276\nc verification time = 0.33 secs\n",
+          "stderr": ""
+        },
+        {
+          "name": "lean",
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921",
+          "exit_code": 0,
+          "elapsed_s": 1.7765571661293507,
+          "stdout": "CNF clauses: 1328275; padded clauses: 1328275; LRAT actions: 1\nCNF literals: 29500; proof maximum literal: 0; padded literals: 29500\nLRAT accepted: true\n",
+          "stderr": ""
+        }
+      ],
+      "accepted_current_stack": null
+    },
+    {
+      "job": "h3_c1.cover-left",
+      "cnf_sha256": "0cf86c6c16d6be3f18f7b475ff6e31730e6bcfd33c9c4ee14b94b3d8add18550",
+      "lrat_sha256": "1ab769886763850053c79d2342e5b7116d09441f3fe3440a57433ae5143f4573",
+      "runs": [
+        {
+          "name": "native",
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea",
+          "exit_code": 0,
+          "elapsed_s": 0.341515582986176,
+          "stdout": "c parsed a formula with 29500 variables and 1328274 clauses\nc VERIFIED\nc allocated 1024 8965849 295000\nc Added clauses = 1328275.  Deleted clauses = 0.  Max live clauses = 1328275\nc verification time = 0.34 secs\n",
+          "stderr": ""
+        },
+        {
+          "name": "lean",
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921",
+          "exit_code": 0,
+          "elapsed_s": 1.744053834117949,
+          "stdout": "CNF clauses: 1328274; padded clauses: 1328274; LRAT actions: 1\nCNF literals: 29500; proof maximum literal: 0; padded literals: 29500\nLRAT accepted: true\n",
+          "stderr": ""
+        }
+      ],
+      "accepted_current_stack": null
+    },
+    {
+      "job": "h3_c1.cover-right",
+      "cnf_sha256": "9c8ae3994f592402318c5efe97942f8e31fd4c989349acad27daa510747ecdca",
+      "lrat_sha256": "e110cb0ff4f17594763552108ee9a90ea39bae6dddf641057469738dbbecde8f",
+      "runs": [
+        {
+          "name": "native",
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea",
+          "exit_code": 0,
+          "elapsed_s": 0.41242537507787347,
+          "stdout": "c parsed a formula with 29500 variables and 1328275 clauses\nc VERIFIED\nc allocated 1024 8965855 1493437\nc Added clauses = 1328276.  Deleted clauses = 1328266.  Max live clauses = 1328275\nc verification time = 0.41 secs\n",
+          "stderr": ""
+        },
+        {
+          "name": "lean",
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921",
+          "exit_code": 0,
+          "elapsed_s": 1.825175458099693,
+          "stdout": "CNF clauses: 1328275; padded clauses: 1328275; LRAT actions: 2\nCNF literals: 29500; proof maximum literal: 0; padded literals: 29500\nLRAT accepted: true\n",
+          "stderr": ""
+        }
+      ],
+      "accepted_current_stack": null
+    },
+    {
+      "job": "h3_c2.cover-left",
+      "cnf_sha256": "90d2b0515df1d5c9e1ef9f118fe94de9d897e03bc95671fbb7a801288c01af35",
+      "lrat_sha256": "ca8b20169916245605c4a02ba98728cdc30c68cbf2f6a11a20ea5f1ad5c6c2ab",
+      "runs": [
+        {
+          "name": "native",
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea",
+          "exit_code": 0,
+          "elapsed_s": 0.34499741718173027,
+          "stdout": "c parsed a formula with 29500 variables and 1328274 clauses\nc VERIFIED\nc allocated 1024 8965849 295000\nc Added clauses = 1328275.  Deleted clauses = 0.  Max live clauses = 1328275\nc verification time = 0.34 secs\n",
+          "stderr": ""
+        },
+        {
+          "name": "lean",
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921",
+          "exit_code": 0,
+          "elapsed_s": 1.7584471660666168,
+          "stdout": "CNF clauses: 1328274; padded clauses: 1328274; LRAT actions: 1\nCNF literals: 29500; proof maximum literal: 0; padded literals: 29500\nLRAT accepted: true\n",
+          "stderr": ""
+        }
+      ],
+      "accepted_current_stack": null
+    },
+    {
+      "job": "h3_c2.cover-right",
+      "cnf_sha256": "82cb74b119e98dc044103dc159cd3a85b3d075134343391a21b4fbc71f6127e2",
+      "lrat_sha256": "14c18b094ef4347fee24d6d20e2c791dcc3f1872a0bb2488dabc9f647f62a384",
+      "runs": [
+        {
+          "name": "native",
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea",
+          "exit_code": 0,
+          "elapsed_s": 0.34308562497608364,
+          "stdout": "c parsed a formula with 29500 variables and 1328275 clauses\nc VERIFIED\nc allocated 1024 8965855 295000\nc Added clauses = 1328276.  Deleted clauses = 0.  Max live clauses = 1328276\nc verification time = 0.34 secs\n",
+          "stderr": ""
+        },
+        {
+          "name": "lean",
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921",
+          "exit_code": 0,
+          "elapsed_s": 1.7708441249560565,
+          "stdout": "CNF clauses: 1328275; padded clauses: 1328275; LRAT actions: 1\nCNF literals: 29500; proof maximum literal: 0; padded literals: 29500\nLRAT accepted: true\n",
+          "stderr": ""
+        }
+      ],
+      "accepted_current_stack": null
+    },
+    {
+      "job": "h3_dist2.cover-left",
+      "cnf_sha256": "9192a9c2fc6a94c7ca35aafe9e03742595fa0dba09f64ab588e5799cb2a9f50f",
+      "lrat_sha256": "0da13157673e5169684a8f95302493e5f2efa8d9d42d60ac71c664b494801abe",
+      "runs": [
+        {
+          "name": "native",
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea",
+          "exit_code": 0,
+          "elapsed_s": 0.34307291684672236,
+          "stdout": "c parsed a formula with 29500 variables and 1328298 clauses\nc VERIFIED\nc allocated 1024 8966011 295000\nc Added clauses = 1328299.  Deleted clauses = 0.  Max live clauses = 1328299\nc verification time = 0.34 secs\n",
+          "stderr": ""
+        },
+        {
+          "name": "lean",
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921",
+          "exit_code": 0,
+          "elapsed_s": 1.737178749870509,
+          "stdout": "CNF clauses: 1328298; padded clauses: 1328298; LRAT actions: 1\nCNF literals: 29500; proof maximum literal: 0; padded literals: 29500\nLRAT accepted: true\n",
+          "stderr": ""
+        }
+      ],
+      "accepted_current_stack": null
+    },
+    {
+      "job": "h3_dist2.cover-right",
+      "cnf_sha256": "e7f3daf675f518da53e276acc22494826689cf9e581c59e2b1d9af0d87506603",
+      "lrat_sha256": "f1294738ff7f5ea99ee8651c0c011df9029ee7f8bbfe66c1be7c4369969e28d8",
+      "runs": [
+        {
+          "name": "native",
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea",
+          "exit_code": 0,
+          "elapsed_s": 0.340520832920447,
+          "stdout": "c parsed a formula with 29500 variables and 1328299 clauses\nc VERIFIED\nc allocated 1024 8966017 295000\nc Added clauses = 1328300.  Deleted clauses = 0.  Max live clauses = 1328300\nc verification time = 0.34 secs\n",
+          "stderr": ""
+        },
+        {
+          "name": "lean",
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921",
+          "exit_code": 0,
+          "elapsed_s": 1.7334600838366896,
+          "stdout": "CNF clauses: 1328299; padded clauses: 1328299; LRAT actions: 1\nCNF literals: 29500; proof maximum literal: 0; padded literals: 29500\nLRAT accepted: true\n",
+          "stderr": ""
+        }
+      ],
+      "accepted_current_stack": null
+    },
+    {
+      "job": "h5_t0.cover-left",
+      "cnf_sha256": "57593e40777f70c570cb27df440a838d72cd23ce8ed79be4e866eb09c0da8ef4",
+      "lrat_sha256": "cb77ddc1fadd320cee445f7432b4f2acf348ffdd5e42e62d6de97024df246717",
+      "runs": [
+        {
+          "name": "native",
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea",
+          "exit_code": 0,
+          "elapsed_s": 0.4130561661440879,
+          "stdout": "c parsed a formula with 29632 variables and 1328625 clauses\nc VERIFIED\nc allocated 1024 8968218 1500120\nc Added clauses = 1328626.  Deleted clauses = 1328617.  Max live clauses = 1328625\nc verification time = 0.41 secs\n",
+          "stderr": ""
+        },
+        {
+          "name": "lean",
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921",
+          "exit_code": 0,
+          "elapsed_s": 1.7987498331349343,
+          "stdout": "CNF clauses: 1328625; padded clauses: 1328625; LRAT actions: 2\nCNF literals: 29632; proof maximum literal: 0; padded literals: 29632\nLRAT accepted: true\n",
+          "stderr": ""
+        }
+      ],
+      "accepted_current_stack": null
+    },
+    {
+      "job": "h5_t0.cover-right",
+      "cnf_sha256": "3cffb2510e35a16ceee3137ebf9de6272f898edf8ea68efc5e5f9f522ea10cff",
+      "lrat_sha256": "016e920ac525e3d1da91a6f1aae7319c5cd8a3ef39ef14f9461b8307d543e034",
+      "runs": [
+        {
+          "name": "native",
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea",
+          "exit_code": 0,
+          "elapsed_s": 0.41544750006869435,
+          "stdout": "c parsed a formula with 29632 variables and 1328626 clauses\nc VERIFIED\nc allocated 1024 8968225 1500120\nc Added clauses = 1328627.  Deleted clauses = 1328617.  Max live clauses = 1328626\nc verification time = 0.41 secs\n",
+          "stderr": ""
+        },
+        {
+          "name": "lean",
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921",
+          "exit_code": 0,
+          "elapsed_s": 1.9315656668040901,
+          "stdout": "CNF clauses: 1328626; padded clauses: 1328626; LRAT actions: 2\nCNF literals: 29632; proof maximum literal: 0; padded literals: 29632\nLRAT accepted: true\n",
+          "stderr": ""
+        }
+      ],
+      "accepted_current_stack": null
+    },
+    {
+      "job": "h5_t1.cover-left",
+      "cnf_sha256": "abd732115aee4421c6114b372510a58073202de41077dc52d4a763c40b5dd8e5",
+      "lrat_sha256": "42b78cdb1a3df9f1999f3613549f414e460f0db4c866dd97c10bafbe7162f409",
+      "runs": [
+        {
+          "name": "native",
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea",
+          "exit_code": 0,
+          "elapsed_s": 0.4155657079536468,
+          "stdout": "c parsed a formula with 29632 variables and 1328625 clauses\nc VERIFIED\nc allocated 1024 8968218 1500120\nc Added clauses = 1328626.  Deleted clauses = 1328617.  Max live clauses = 1328625\nc verification time = 0.41 secs\n",
+          "stderr": ""
+        },
+        {
+          "name": "lean",
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921",
+          "exit_code": 0,
+          "elapsed_s": 2.6222736248746514,
+          "stdout": "CNF clauses: 1328625; padded clauses: 1328625; LRAT actions: 2\nCNF literals: 29632; proof maximum literal: 0; padded literals: 29632\nLRAT accepted: true\n",
+          "stderr": ""
+        }
+      ],
+      "accepted_current_stack": null
+    },
+    {
+      "job": "h5_t1.cover-right",
+      "cnf_sha256": "41a2a0183555989fe9c208f8c0561d7e183c4af8e90ca25d006e6a1ed5b283ff",
+      "lrat_sha256": "4edb85a633e76157f5155ee9851f6dc96727f02d35532712c4af7389a503379b",
+      "runs": [
+        {
+          "name": "native",
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea",
+          "exit_code": 0,
+          "elapsed_s": 0.41820900002494454,
+          "stdout": "c parsed a formula with 29632 variables and 1328626 clauses\nc VERIFIED\nc allocated 1024 8968225 1500120\nc Added clauses = 1328627.  Deleted clauses = 1328617.  Max live clauses = 1328626\nc verification time = 0.41 secs\n",
+          "stderr": ""
+        },
+        {
+          "name": "lean",
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921",
+          "exit_code": 0,
+          "elapsed_s": 2.6440117079764605,
+          "stdout": "CNF clauses: 1328626; padded clauses: 1328626; LRAT actions: 2\nCNF literals: 29632; proof maximum literal: 0; padded literals: 29632\nLRAT accepted: true\n",
+          "stderr": ""
+        }
+      ],
+      "accepted_current_stack": null
+    },
+    {
+      "job": "h5_t2.cover-left",
+      "cnf_sha256": "89cddfd4570d7946e42ce2f64b3d593fa874d33763b6cb9c36f8f7ef456a4137",
+      "lrat_sha256": "f14d411ecee30af180ad590ba7465b14949800ff283ae558cfd69567ac6143d2",
+      "runs": [
+        {
+          "name": "native",
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea",
+          "exit_code": 0,
+          "elapsed_s": 0.4171874998137355,
+          "stdout": "c parsed a formula with 29632 variables and 1328625 clauses\nc VERIFIED\nc allocated 1024 8968218 1500120\nc Added clauses = 1328626.  Deleted clauses = 1328617.  Max live clauses = 1328625\nc verification time = 0.41 secs\n",
+          "stderr": ""
+        },
+        {
+          "name": "lean",
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921",
+          "exit_code": 0,
+          "elapsed_s": 1.7952954578213394,
+          "stdout": "CNF clauses: 1328625; padded clauses: 1328625; LRAT actions: 2\nCNF literals: 29632; proof maximum literal: 0; padded literals: 29632\nLRAT accepted: true\n",
+          "stderr": ""
+        }
+      ],
+      "accepted_current_stack": null
+    },
+    {
+      "job": "h5_t2.cover-right",
+      "cnf_sha256": "803994742b972c5499ebbd5bab505236acd5b3855a3c7c765d3f627eb2732cfa",
+      "lrat_sha256": "85ec744e49df54caa5f00ba573004686d7affaaff5f5129dde5b4c36bf7d900e",
+      "runs": [
+        {
+          "name": "native",
+          "binary_sha256": "bd7eb8052623525814a0a37502b47f05375d9d9dfaf96ddc2fcd858958517cea",
+          "exit_code": 0,
+          "elapsed_s": 0.4134306248743087,
+          "stdout": "c parsed a formula with 29632 variables and 1328626 clauses\nc VERIFIED\nc allocated 1024 8968225 1500120\nc Added clauses = 1328627.  Deleted clauses = 1328617.  Max live clauses = 1328626\nc verification time = 0.41 secs\n",
+          "stderr": ""
+        },
+        {
+          "name": "lean",
+          "binary_sha256": "d788911fa2dd728006380c9119cb4f93cc160e30134e13864a7b9e1116f28921",
+          "exit_code": 0,
+          "elapsed_s": 1.805636917008087,
+          "stdout": "CNF clauses: 1328626; padded clauses: 1328626; LRAT actions: 2\nCNF literals: 29632; proof maximum literal: 0; padded literals: 29632\nLRAT accepted: true\n",
+          "stderr": ""
+        }
+      ],
+      "accepted_current_stack": null
+    }
+  ]
+}

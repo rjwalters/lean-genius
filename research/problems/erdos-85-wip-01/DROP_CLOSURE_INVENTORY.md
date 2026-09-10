@@ -7,6 +7,23 @@ Status: SOURCE-AUDITED DRAFT; live fleet counts, artifact reconciliation,
 and cost estimates remain open. No solver or fleet launch authorized by
 this inventory. Preparation is at zero incremental spend until the funding gate.
 
+## Subsequent local replay addendum (2026-09-10)
+
+All270 surviving root candidates (256 positive cubes plus14 covers) now
+pass both pinned local checkers, with540 successful invocations and no
+missing, failed or timed-out receipts. The complete receipt audit joins
+current reconstructed CNF hashes, compressed/raw proof hashes, checker pins
+and explicit acceptance markers. All45 H5 header mismatches are reconciled.
+See `closure-inventory-evidence/local-replay-20260910/README.md`.
+
+This updates the baseline metadata-only status below. It does not establish
+remote durability, a rebuilt current-source certificate bank, or final grid
+assembly. The136 missing local direct-root proofs remain. One H3 cover has
+also compiled as a generated-CNF UNSAT theorem against existing imports;
+its printed native_decide axiom dependency is preserved in the receipt.
+The local H1 empty-artifact anomaly is resolved as unusable; it was already
+counted among the178 outside-v3 gaps. Addendum peer review is pending.
+
 ## Required mathematical output
 
 Prove `minDegreeForC4 48 = 8` and `minDegreeForC4 49 = 7`, hence the strict

@@ -1,0 +1,15 @@
+{
+  "exit_code": 0,
+  "stdout": "'Erdos85.localH3Cover_unsat' depends on axioms: [propext,\n Classical.choice,\n Quot.sound,\n localH3Cover_check._native.native_decide.ax_1_1]\n",
+  "stderr": "",
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "/Users/rwalters/lean-genius-erdos85-round115-sol1/closure-inventory-audit/h3-cover-theorem/LocalH3Cover.lean"
+  ],
+  "elapsed_s": 12.283089666860178,
+  "source_sha256": "5e097d386dfba926e6121c30c8c75bb15c6ca6555c167c91c091015982318343",
+  "checked_utc": "2026-09-10T05:51:35.074142+00:00",
+  "scope": "Private generated theorem against existing imports, no dependency-source rebuild audit"
+}
