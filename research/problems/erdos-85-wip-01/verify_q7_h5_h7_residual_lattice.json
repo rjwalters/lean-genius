@@ -1,0 +1,70 @@
+{
+  "scope": "Exact incidence/lattice data; no C/R construction or spectrum exclusion",
+  "profiles": [
+    {
+      "h": 5,
+      "triples": [],
+      "pivot_determinant": 1,
+      "kernel_rank": 38,
+      "exact_lattice_determinant": 499408,
+      "overlap_prime": 13,
+      "overlap_eigenvalue": 8,
+      "mod7_kernel_lower_bound": 4,
+      "residual_constant_divisor": 2401,
+      "adjacency_determinant_divisor": 253651244
+    },
+    {
+      "h": 5,
+      "triples": [
+        [
+          0,
+          1,
+          2
+        ]
+      ],
+      "pivot_determinant": 1,
+      "kernel_rank": 38,
+      "exact_lattice_determinant": 499408,
+      "overlap_prime": 13,
+      "overlap_eigenvalue": 8,
+      "mod7_kernel_lower_bound": 4,
+      "residual_constant_divisor": 2401,
+      "adjacency_determinant_divisor": 253651244
+    },
+    {
+      "h": 5,
+      "triples": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          3,
+          4
+        ]
+      ],
+      "pivot_determinant": 1,
+      "kernel_rank": 38,
+      "exact_lattice_determinant": 499408,
+      "overlap_prime": 13,
+      "overlap_eigenvalue": 8,
+      "mod7_kernel_lower_bound": 4,
+      "residual_constant_divisor": 2401,
+      "adjacency_determinant_divisor": 253651244
+    },
+    {
+      "h": 7,
+      "triples": [],
+      "pivot_determinant": 1,
+      "kernel_rank": 34,
+      "exact_lattice_determinant": 16470860,
+      "overlap_prime": 5,
+      "overlap_eigenvalue": 3,
+      "mod7_kernel_lower_bound": 6,
+      "residual_constant_divisor": 117649,
+      "adjacency_determinant_divisor": 581334062442
+    }
+  ]
+}

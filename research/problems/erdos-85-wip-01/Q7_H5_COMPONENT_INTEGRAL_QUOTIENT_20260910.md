@@ -95,12 +95,12 @@ identities, exact linear solution, and exhaustive bounded integral cross-entry
 possibilities. It also demonstrates that dropping integrality admits a
 nonzero feasible coefficient tuple, so that premise cannot be omitted.
 The graph-to-Perron-space and count-comparison steps are paper proofs.
-The separate Lean scalar lemma, when compiled and reviewed, covers the
+The separately compiled and reviewed Lean scalar lemma covers the
 integer coefficient implication only, not the complete graph argument.
 
 `Proofs/Erdos85H5IntegralPerronQuotient.lean` compiled successfully; its
 scalar theorem reports only propext, Classical.choice, and Quot.sound.
-Independent compile review1590 is pending. Paper review1588 separately
+Independent compile review1590 passed with the same axiom list. Paper review1588 separately
 checked the graph reduction and reran the exact verifier in a private folder.
 
 ## Connected H5 defect is also non-bipartite
