@@ -1,0 +1,17 @@
+# H3 adjacent-pair profile: exhaustive completion
+
+Status: primary standalone regeneration PASS; independent core review #1680 and full completion review #1681 PASS. The unchanged-source no-deadline independent replay reproduced every case record exactly.
+
+Under the universal H3 pair-profile reduction, the branch with one pair-pair edge has no completion in the exhaustive computation below. The input normalization is explained in `Q7_H3_PAIR_B1_CORE_REDUCTION_20260910.md`; its independent review #1680 passed. This is a paper and computational result, not a Lean theorem or a solution of Erdős 85. No triangle count or spectral polynomial is fixed.
+
+The standalone source regenerates all normalized nonempty cores directly, including the forbidden special-edge controls: 2,160 choices, 75 C4-free retained cores. It then enumerates all 48 host choices per core for the eight pair-adjacent empty vertices, giving 3,600 cases. The host choices are unordered within each pair vertex's empty neighborhood; relabeling those empty vertices shows coverage of all assignments.
+
+The remaining 17 empty vertices each choose a transversal singleton triple. Their demands are obtained by assigning 4 to each of five special singletons and 3 to each of thirteen ordinary singletons, then subtracting the eight marked-host incidences. The total remaining demand is 51. The recursive search enumerates every selection of eligible triples meeting these demands without reusing a singleton pair.
+
+The recursion and completeness arguments are those in `Q7_H3_PAIR_B0_FULL_EXCLUSION_20260910.md`: choose a positive-demand singleton, enumerate every subset of available incident triples of exactly that size, reject repeated pairs and negative demands, and recurse. At each complete incidence assignment, construct the full 49-vertex partial graph and assert final nonempty degrees and C4-freeness. The eight marked empty vertices require residual degree 5; the other seventeen require residual degree 4.
+
+Before full empty-edge search, apply only necessary admissible-degree and local-star gates. An edge is admissible if its endpoints are nonadjacent and there is no existing length-three path between them. A possible star must have enough admissible neighbors with pairwise disjoint existing neighborhoods. Then choose an active empty vertex, enumerate every admissible neighbor subset of its residual degree, insert each edge with a fresh C4 check, and recurse on residual demands. This exhausts all completions: a true completion supplies one of these subsets at every step, and inserting edges cannot remove an existing C4. The full successful leaf would assert all degrees and all common-neighbor bounds and retain its graph.
+
+There is no deadline, node cap, triangle cutoff, or optimizer in the retained verifier. Run `python3 verify_q7_h3_pair_b1_full_exclusion.py`; it writes `q7_h3_pair_b1_full_exclusion.json` and asserts all 3,600 cases completed without a graph.
+
+The primary standalone run completed 1,642,620 incidence recursion nodes, 36,780 incidence leaves, 254 empty-edge recursion nodes, and zero completed empty-edge leaves. All per-case fields agree exactly with the earlier separate diagnostic, which had no timeouts. The primary core generator also exactly reproduced the original core JSON. The retained completion source differs from the completed standalone only in its output filename. Independent reviews #1680 and #1681 confirmed the normalization, traversal completeness, and exact replay results.
