@@ -1,0 +1,26 @@
+{
+  "scope": "No-C/F-sharing branch only. All F-singletons require colours0/1/3; colour1/3 singleton classes have exactly5 vertices and demands saturate injectively. C4 makes the induced F-neighbour graph a matching.",
+  "possible_internal_edges": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      1,
+      3
+    ]
+  ],
+  "forced_internal_edges": [
+    [
+      1,
+      3
+    ]
+  ],
+  "colour0_targets": "Exactly the five colour0 singletons other than f0.",
+  "status": "NECESSARY_CONDITIONAL_LEMMA",
+  "not_claimed": "No exclusion of core44; shared f1/f2 branches and remaining edges unresolved."
+}

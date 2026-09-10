@@ -1,0 +1,71 @@
+{
+  "core": 44,
+  "edges": [
+    [
+      0,
+      3
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      1,
+      2
+    ]
+  ],
+  "heavy_empty_demands": [
+    1,
+    0,
+    2,
+    2,
+    2,
+    0
+  ],
+  "possible_second_heavy_for_F_singleton": [
+    2
+  ],
+  "C_uncovered_colours": [
+    1,
+    2
+  ],
+  "profiles": [
+    {
+      "C_F_shared_singleton_colour": null,
+      "F_singleton_empty_degrees": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "covered_empties": 10,
+      "uncovered_empties": 2
+    },
+    {
+      "C_F_shared_singleton_colour": 1,
+      "F_singleton_empty_degrees": [
+        2,
+        3,
+        2,
+        2,
+        2
+      ],
+      "covered_empties": 11,
+      "uncovered_empties": 1
+    },
+    {
+      "C_F_shared_singleton_colour": 2,
+      "F_singleton_empty_degrees": [
+        2,
+        2,
+        3,
+        2,
+        2
+      ],
+      "covered_empties": 11,
+      "uncovered_empties": 1
+    }
+  ],
+  "scope": "Necessary isolated-F star partition. Pairwise disjoint empty sets follow from commonF and C4. No exclusion or search."
+}

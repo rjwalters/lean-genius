@@ -1,0 +1,42 @@
+{
+  "profiles": [
+    {
+      "shared": null,
+      "empty_degrees": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "shared": 1,
+      "empty_degrees": [
+        2,
+        3,
+        2,
+        2,
+        2
+      ]
+    },
+    {
+      "shared": 2,
+      "empty_degrees": [
+        2,
+        2,
+        3,
+        2,
+        2
+      ]
+    }
+  ],
+  "all_internal_graphs_checked": 1024,
+  "unique_internal_graph": [
+    [
+      1,
+      3
+    ]
+  ],
+  "scope": "Conditional no-sharing saturation checked independently; sharing branches remain separate"
+}

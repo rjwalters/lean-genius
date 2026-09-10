@@ -1,0 +1,1 @@
+Review2047 PASS: isolated-F empty-neighborhood partition and no-sharing forced internal edge independently checked. No core44 exclusion, kernel theorem, search retry or queue change. Original pre-review files remain unchanged. Shared-target supplement is separate and not included in this reviewed bank.
