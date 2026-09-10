@@ -18,6 +18,9 @@ from pathlib import Path
 from typing import Any, Protocol
 
 
+# Conservative single-request limit; larger artifacts use conditional multipart.
+SINGLE_PUT_LIMIT = 5_000_000_000
+
 TAG_RE = re.compile(r"[0-9a-f]{16}")
 SHA_RE = re.compile(r"[0-9a-f]{64}")
 SCHEMA = "erdos85-h1-replay-manifest-v2"
@@ -228,6 +231,9 @@ def load_manifest(path: Path) -> dict[str, Any]:
         "queue_sha256",
     ):
         require_sha(value[key], f"manifest.{key}")
+    for key in ("s3_multipart_sha256", "queue_certificate_index_sha256"):
+        if key in value:
+            require_sha(value[key], f"manifest.{key}")
     expected_jobs = value.get("expected_jobs")
     if type(expected_jobs) is not int or expected_jobs <= 0:
         raise ReplayError("manifest.expected_jobs must be a positive integer")
@@ -691,15 +697,28 @@ class AwsCliObjectStore:
         )
 
     def put_immutable(self, key: str, source: Path, metadata: dict[str, str]) -> ObjectInfo:
+        before_source = source.stat()
+        source_identity = (before_source.st_dev, before_source.st_ino,
+                           before_source.st_size, before_source.st_mtime_ns,
+                           before_source.st_ctime_ns)
+        size = before_source.st_size
         digest = sha256_file(source)
         complete_metadata = dict(metadata, sha256=digest)
+
+        def validate_source() -> None:
+            current_source = source.stat()
+            if (current_source.st_dev, current_source.st_ino, current_source.st_size,
+                    current_source.st_mtime_ns, current_source.st_ctime_ns) != source_identity:
+                raise ReplayError(f"source changed during immutable publication: {key}")
+
+        validate_source()
 
         def validate_winner(candidate: ObjectInfo) -> ObjectInfo:
             with tempfile.TemporaryDirectory() as temporary:
                 downloaded = self.download(
                     key, Path(temporary) / "immutable-winner-readback")
             if (
-                downloaded.size != source.stat().st_size
+                downloaded.size != size
                 or downloaded.sha256 != digest
                 or downloaded.metadata != complete_metadata
                 or candidate.etag != downloaded.etag
@@ -707,12 +726,31 @@ class AwsCliObjectStore:
                 or candidate.version_id != downloaded.version_id
             ):
                 raise ReplayError(f"immutable S3 collision: {key}")
+            validate_source()
             return downloaded
 
         current = self._head_or_none(key)
         if current is not None:
             return validate_winner(current)
-        metadata_argument = ",".join(f"{name}={value}" for name, value in sorted(complete_metadata.items()))
+        if size > SINGLE_PUT_LIMIT:
+            # Loaded only by the new large-object path. The deployment freeze
+            # must bind this helper together with replay_common.py.
+            if __package__:
+                from .s3_multipart import conditional_multipart_upload, MultipartError
+            else:
+                from s3_multipart import conditional_multipart_upload, MultipartError
+            try:
+                conditional_multipart_upload(
+                    aws=self.aws, bucket=self.bucket, key=key, source=source,
+                    metadata=complete_metadata, expected_sha256=digest,
+                    expected_size=size)
+            except MultipartError as error:
+                # Surface cleanup/acknowledgement failures. A later explicit
+                # attempt authenticates a concurrent winner through the HEAD
+                # path above; never hide an abort failure as success.
+                raise ReplayError(f"immutable multipart publication failed: {key}: {error}") from error
+            return validate_winner(self.head(key))
+        metadata_argument = json.dumps(complete_metadata, sort_keys=True)
         completed = subprocess.run([
             self.aws, "s3api", "put-object", "--bucket", self.bucket,
             "--key", key, "--body", str(source), "--metadata", metadata_argument,
@@ -723,12 +761,7 @@ class AwsCliObjectStore:
             if winner is not None:
                 return validate_winner(winner)
             raise ReplayError(f"immutable S3 PUT failed for {key}: {completed.stderr.strip()}")
-        uploaded = self.head(key)
-        if uploaded.sha256 != digest or uploaded.size != source.stat().st_size:
-            raise ReplayError(f"S3 PUT HEAD read-back mismatch: {key}")
-        with tempfile.TemporaryDirectory() as temporary:
-            self.download(key, Path(temporary) / "readback")
-        return uploaded
+        return validate_winner(self.head(key))
 
     def put_bytes_immutable(self, key: str, value: bytes, metadata: dict[str, str]) -> ObjectInfo:
         with tempfile.TemporaryDirectory() as temporary:

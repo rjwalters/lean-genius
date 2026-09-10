@@ -203,6 +203,8 @@ def validate(args: argparse.Namespace) -> None:
             "single_writer_lock_path",
         )
     }
+    expected_build.update({key: manifest[key] for key in
+        ("s3_multipart_sha256", "queue_certificate_index_sha256") if key in manifest})
     if ready.get("build_identity") != expected_build:
         raise ReplayError("replay-ready build identity differs from manifest")
     worker_runtime = ready.get("worker_runtime")

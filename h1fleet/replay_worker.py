@@ -38,6 +38,24 @@ from replay_common import (
 )
 
 
+def verify_multipart_dependency(manifest: dict[str, Any], *, production: bool,
+                                helper: Path | None = None) -> None:
+    """Bind new execution to the uploader; archived receipts may omit this pin."""
+    expected = manifest.get("s3_multipart_sha256")
+    if expected is None:
+        if production:
+            raise ReplayError("S3 execution requires frozen s3_multipart_sha256")
+        return
+    require_sha(expected, "manifest.s3_multipart_sha256")
+    path = helper if helper is not None else Path(__file__).with_name("s3_multipart.py")
+    try:
+        actual = sha256_file(path)
+    except OSError as error:
+        raise ReplayError(f"cannot verify multipart dependency: {error}") from error
+    if actual != expected:
+        raise ReplayError("multipart dependency SHA-256 differs from manifest")
+
+
 def validate_job(job: dict[str, Any], tag_argument: str) -> dict[str, Any]:
     expected_fields = {
         "tag", "profile", "local_index", "certificate_key",
@@ -267,6 +285,8 @@ def validate_ready(ready: dict[str, Any], manifest: dict[str, Any], job: dict[st
             "single_writer_lock_path",
         )
     }
+    expected_build_identity.update({key: manifest[key] for key in
+        ("s3_multipart_sha256", "queue_certificate_index_sha256") if key in manifest})
     if ready.get("build_identity") != expected_build_identity:
         raise ReplayError("replay-ready build identity mismatch")
     worker_runtime = ready.get("worker_runtime")
@@ -460,7 +480,8 @@ def compile_ready(store: ObjectStore, manifest: dict[str, Any], job: dict[str, A
                 "common_sha256", "dispatcher_sha256", "zstd_identity",
                 "single_writer_lock_path",
             )
-        },
+        } | {key: manifest[key] for key in
+             ("s3_multipart_sha256", "queue_certificate_index_sha256") if key in manifest},
         "worker_runtime": worker_runtime,
         "module": {
             "name": values["module"], "theorem": f"Erdos85.{values['stem']}Checked",
@@ -767,6 +788,7 @@ def main() -> int:
     try:
         manifest = load_manifest(args.manifest)
         manifest["manifest_sha256"] = sha256_file(args.manifest)
+        verify_multipart_dependency(manifest, production=args.s3_bucket is not None)
         job = validate_job(load_json(args.job), args.tag)
         job["job_sha256"] = sha256_file(args.job)
         tag = job["tag"]
