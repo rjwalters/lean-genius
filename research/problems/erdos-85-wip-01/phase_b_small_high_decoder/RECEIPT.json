@@ -1,0 +1,51 @@
+{
+  "scope": "Decoder and input-binding validation only; no solver or graph witness",
+  "tests": 8,
+  "files": [
+    {
+      "path": "sat49/verify_small_high_sat_graph.py",
+      "sha256": "6c42243b4563395af13f8a158398b03d00516f1006112d5cb281b7448abd02b7",
+      "bytes": 7403
+    },
+    {
+      "path": "sat49/test_verify_small_high_sat_graph.py",
+      "sha256": "3e019d88dbf57ba534dade84ca8ef7cd38b4ec625ee9bb01d2a998406ac89e6b",
+      "bytes": 5099
+    },
+    {
+      "path": "sat49/verify_dimacs_model.py",
+      "sha256": "7c808e61fa832db956daa92797ed5e98a5e13b84e2ad1e07d26d7e56a3d6a549",
+      "bytes": 6226
+    },
+    {
+      "path": "phase_b_small_high_decoder/FIRST_AUDIT_FAILURE.md",
+      "sha256": "106a7e29a97711c1e112b6524bb57b9d9e80ccd22c89e5537567bda2dc9acf27",
+      "bytes": 656
+    },
+    {
+      "path": "phase_b_small_high_decoder/README.md",
+      "sha256": "00f50455dfef56010e8a07c6b36012f2dc45fa7ed74976d5a5ef09d6f7b71ee0",
+      "bytes": 3347
+    },
+    {
+      "path": "phase_b_small_high_decoder/REVIEW2002_PINS.json",
+      "sha256": "b83515da15b2cfc8c0dc005638a6932a48c0a1ebf19c6dc41fe29a6d4acb132a",
+      "bytes": 1534
+    },
+    {
+      "path": "phase_b_small_high_decoder/audit_retained_edge_numbering.py",
+      "sha256": "27d22c8838f8543f079e5dacc3da8e4628acc82602e89b1be7ff5315704e9cc5",
+      "bytes": 5260
+    },
+    {
+      "path": "phase_b_small_high_decoder/edge-numbering-audit.json",
+      "sha256": "231059ef18525c1036cdb6397fe514a767121ac43c9320c30fafc111f8c31ea7",
+      "bytes": 2274
+    },
+    {
+      "path": "phase_b_small_high_decoder/tests.log",
+      "sha256": "289ac12b7cbb4ba8e2987619bb69afe8a7ddcec3e39a576fb33f3b7fb0ade1c7",
+      "bytes": 1310
+    }
+  ]
+}

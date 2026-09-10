@@ -1,0 +1,54 @@
+{
+  "scope": "Actual H3/H5 fixed-unit and edge-ID prefix audit; H7 complete C4 block and all43 empty-cube unit maps. No SAT model or solver run.",
+  "h3_h5": [
+    {
+      "high_count": 3,
+      "profile": 0,
+      "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/small-high-canonical-audit/h3_t0.base.cnf",
+      "cnf_sha256": "03db81d188dc330673b3be0fbb81a1254cb5c14b676f7dc9c4ad44950898541b",
+      "fixed_units_checked": 141,
+      "c4_prefix_clauses_checked": 51888,
+      "edge_variables_bound": 1176
+    },
+    {
+      "high_count": 3,
+      "profile": 1,
+      "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/small-high-canonical-audit/h3_t1.base.cnf",
+      "cnf_sha256": "db6e30ad7583317af975d5be49a3ed6ed3b2f7e327a6c98d75434180fa59ea5a",
+      "fixed_units_checked": 141,
+      "c4_prefix_clauses_checked": 51888,
+      "edge_variables_bound": 1176
+    },
+    {
+      "high_count": 5,
+      "profile": 0,
+      "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/small-high-base-freight-38b15d484b/h5_t0.cnf",
+      "cnf_sha256": "02ccdc18e983558a6480f2b5e6c8f6b0cacb21e88fa02abcff5c4f3f6fecebf9",
+      "fixed_units_checked": 230,
+      "c4_prefix_clauses_checked": 51888,
+      "edge_variables_bound": 1176
+    },
+    {
+      "high_count": 5,
+      "profile": 1,
+      "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/small-high-base-freight-38b15d484b/h5_t1.cnf",
+      "cnf_sha256": "078a3618db3a70ed7e720eacd53196808e064118e54fcd6237dd557e6e2a51e5",
+      "fixed_units_checked": 230,
+      "c4_prefix_clauses_checked": 51888,
+      "edge_variables_bound": 1176
+    },
+    {
+      "high_count": 5,
+      "profile": 2,
+      "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/small-high-base-freight-38b15d484b/h5_t2.cnf",
+      "cnf_sha256": "186f6e20e055792ef7b7eb19ce44aa66cd2137252058a5a1acaa4e3f5eacc5df",
+      "fixed_units_checked": 230,
+      "c4_prefix_clauses_checked": 51888,
+      "edge_variables_bound": 1176
+    }
+  ],
+  "h7_cube_rows_checked": 43,
+  "h7_c4_clauses_checked": 687260,
+  "h7_edge_variables_bound": 861,
+  "h7_inventory_sha256": "3374800ce9a9a246679b44bc1823598670ec95fbd15ad8bd4dcc2bbd411826d1"
+}
