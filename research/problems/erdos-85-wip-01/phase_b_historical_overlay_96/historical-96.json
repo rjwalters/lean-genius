@@ -1,0 +1,43 @@
+{
+  "schema": "erdos85-h1-historical-verdict-overlay-v2",
+  "count": 96,
+  "frozen_manifest_sha256": "c10965a5d9473107169badf4996b73da13edc522cf344c4bcdb45e1a05e7d16b",
+  "base_overlay": {
+    "path": "../phase_b_historical_overlay/historical-95.json",
+    "sha256": "80fd7a2653f66912c45b8099d83c73bfbdc6005f90efa935d4d9a9f1ca298d98"
+  },
+  "extra_sources": {
+    "audit": {
+      "path": "../phase_b_h1_extra_local/extra-local-audit.json",
+      "sha256": "812fc68ef5a0169908fb42434173d845bb42e91856ca7ad8a78b4dc82b58747f"
+    },
+    "comparison": {
+      "path": "../phase_b_h1_extra_local/extra-local-result.json",
+      "sha256": "55db5e0afe90136a115ff9ee03a41bc1d447c4590eb7df900153f19bb61d9b68"
+    }
+  },
+  "extra_case": {
+    "id": "h1_4ee646ca0ec3e2f0",
+    "tag": "4ee646ca0ec3e2f0",
+    "profile": 1,
+    "cnf_sha256": "061a1aa2ac9a984079fc328b21923c930bc4c40dbf806deb690afec9c37cdeb5",
+    "historical_status": "historical_verified_unsat",
+    "evidence_format": "manifest_joined_mono",
+    "basis": "Byte-identical canonical CNF, local manifest table/profile and paired historical MONO verdict/trim-log joins; review2014",
+    "proof_replayed": false,
+    "evidence": [
+      {
+        "cnf_path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-profile1-all-even-reciprocal-5/lean-exact-solve/4ee646ca0ec3e2f0.v2.cnf",
+        "mode": "MONO",
+        "verdict_path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-profile1-all-even-reciprocal-5/lean-exact-solve/4ee646ca0ec3e2f0.v2.verdict",
+        "verdict_sha256": "8b0e699b5bb1260b0f900c219096fa25821957285bd8dea78086ff9053251e21",
+        "verdict": "4ee646ca0ec3e2f0 UNSAT 214.0s drat:VERIFIED mode:MONO arm:v2 lean-exact:MATCH profile:1\n",
+        "local_manifest_path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-profile1-all-even-reciprocal-5/manifest.tsv",
+        "local_manifest_sha256": "e2c4009a2a459c6bbe2d035b66c772948a9d19d414d9de2c616d3b5a92c4e684",
+        "trim_log_path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-profile1-all-even-reciprocal-5/lean-exact-solve/4ee646ca0ec3e2f0.drat-trim.log",
+        "trim_log_sha256": "32c5c408b5a6fecfb9760b09751d0e941f09e2c7d46fe76ace0dc30a8d2a3576"
+      }
+    ]
+  },
+  "scope": "Explicit96th historical row; no new proof replay or frozen-index mutation"
+}
