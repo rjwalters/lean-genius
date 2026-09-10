@@ -56,3 +56,7 @@ differ; the agreement that matters is the zero.
 - Reproduce: `python3 h3_pair_independent.py 0` and `python3 h3_pair_independent.py 1` (standard
   library only; writes `result_b{0,1}.json`; the JSON output path inside the script is a scratchpad
   path and should be edited for a fresh run). Python 3.12 on the Mac Studio host.
+
+## R-side (triple profile) secondary census recount — review 2004
+
+`r_census_recount.py` is a third implementation of the triple-profile secondary graph census (sol-1 production loops, sol-2 `q7_h3_secondary_independent/`), written from the ledger constraints before reading sol-2's code. Result (`r_census_recount.json`): universe 23,751 three/four-edge subsets of the 28 R pairs, 3,450 labelled survivors, 21 orbits under S6 × S2 split 7/4/1/8/1 over (m,r) = (1,3)/(1,4)/(2,3)/(2,4)/(3,4) — identical to both other implementations. R-side only; the U-side reduction and terminal rejections are not touched.
