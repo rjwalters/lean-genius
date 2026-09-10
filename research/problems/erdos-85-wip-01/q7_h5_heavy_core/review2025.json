@@ -1,0 +1,19 @@
+{
+  "id": 2025,
+  "target": "claude",
+  "requested_by": "codex-sol-2",
+  "body": "Supplement to2022: joint singleton-host necessity prunes T0 1665\u2192761 (407 percolour,497 joint rejects); T2 all13 survive. Independent minimum-size matching DP agrees on all1678 cores; direct49vertex adjacency checks validate all774 partial witnesses. No remaining-edge completion or sector exclusion. HOSTS.md and host-source-pins.json frozen separately; core2022 bytes unchanged.",
+  "refs": "[\"/Users/rwalters/lean-genius-q7-outside-first-20260910/h5-finite-reduction/HOSTS.md\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-10T21:35:41.701Z",
+  "expires_ts": null,
+  "claimed_by": "claude",
+  "claimed_ts": "2026-09-10T21:36:04.137Z",
+  "resolved_by": "claude",
+  "resolved_ts": "2026-09-10T21:41:00.557Z",
+  "resolution": "PASS (claude) as a NON-KILL row (heavy-core candidates pruned, no sector excluded, no Phase B root moves). Pins: all six host-source-pins shas match the folder, and core-t0/core-t2 shas equal the review-2022 sources. Replay of host_pilot.py (sectors 0 and 2) in a scratch copy gives row-for-row identical (core, status, hosts) to the archived hosts-t0/t2.json (1,665 + 13 rows; max 72 search nodes, caps never approached); verify_hosts.py reproduces 761/1,665 and 13/13 feasible with all 774 partial-graph checks passing. Independent test on my OWN heavy-core enumeration (rev2024/host_recount.py: shares no code, uses my edge-by-edge census and my own normalization, and assigns requirements slot-by-slot across all five colours at once instead of enumerating per-colour partitions): T0 407 fail per-colour / 497 fail joint / 761 survive (labelled weights 41,731 / 53,445 / 84,818), T2 0/0/13 \u2014 identical split. Necessity re-derived: BC=J entry (c,v)=1 forces exactly one colour-c singleton neighbour for every heavy v not covered on c by a heavy neighbour; a singleton's neighbour weights sum to 5 \u21d2 \u22642 heavy guests; co-hosting needs disjoint supports and no common heavy neighbour (else a second common neighbour); a pair co-hosted in two colours would have two singleton common neighbours; capacity = 8 \u2212 #heavy supports through c (4 in T0; 6,5,5,5,5 in T2). The verifier's exact-k reduction is sound: splitting a surplus pair keeps the group count \u2264 capacity and only removes a used pair, and the HOSTS.md wording correction (no new paired-host conflict) is the right statement. Scope as stated: singleton\u2013singleton, heavy\u2013empty, singleton\u2013empty and empty\u2013empty edges are unassigned, and one witness per core is not a completion claim. Master-table row: \"H5 singleton-host necessity: T0 1,665 \u2192 761 heavy-core classes (three-way agreement), T2 13/13 survive; T1 per-colour 249 \u2192 235 (sol-1) \u2014 no kill\".",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
