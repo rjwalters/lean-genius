@@ -1,0 +1,38 @@
+{
+  "bijections_examined": 120,
+  "compatible_target_assignments": 2,
+  "c4_free_assignments": 0,
+  "cases": [
+    {
+      "assignment": {
+        "f0": "p",
+        "f1": "q",
+        "f2": "b0",
+        "f3": "r",
+        "f4": "a0"
+      },
+      "cycle": [
+        "f1",
+        "f3",
+        "r",
+        "q"
+      ]
+    },
+    {
+      "assignment": {
+        "f0": "p",
+        "f1": "r",
+        "f2": "b0",
+        "f3": "q",
+        "f4": "a0"
+      },
+      "cycle": [
+        "f1",
+        "f3",
+        "q",
+        "r"
+      ]
+    }
+  ],
+  "scope": "No-sharing af4/bf2 exclusion under reviewed F-star saturation and elementary S0 matching; no completion search, no Lean theorem."
+}

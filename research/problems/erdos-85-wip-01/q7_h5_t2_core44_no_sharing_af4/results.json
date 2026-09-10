@@ -1,0 +1,211 @@
+{
+  "labelled_assignments": 6,
+  "C4_free_survivors": 0,
+  "results": [
+    {
+      "mate": "x",
+      "targets": [
+        "x",
+        "y",
+        "b0",
+        "z",
+        "a0"
+      ],
+      "forced_cycle": [
+        "f1",
+        "y",
+        "z",
+        "f3"
+      ],
+      "violations": [
+        [
+          "f1",
+          "z",
+          [
+            "f3",
+            "y"
+          ]
+        ],
+        [
+          "f3",
+          "y",
+          [
+            "f1",
+            "z"
+          ]
+        ]
+      ]
+    },
+    {
+      "mate": "x",
+      "targets": [
+        "x",
+        "z",
+        "b0",
+        "y",
+        "a0"
+      ],
+      "forced_cycle": [
+        "f1",
+        "z",
+        "y",
+        "f3"
+      ],
+      "violations": [
+        [
+          "f1",
+          "y",
+          [
+            "f3",
+            "z"
+          ]
+        ],
+        [
+          "f3",
+          "z",
+          [
+            "f1",
+            "y"
+          ]
+        ]
+      ]
+    },
+    {
+      "mate": "y",
+      "targets": [
+        "y",
+        "x",
+        "b0",
+        "z",
+        "a0"
+      ],
+      "forced_cycle": [
+        "f1",
+        "x",
+        "z",
+        "f3"
+      ],
+      "violations": [
+        [
+          "f1",
+          "z",
+          [
+            "f3",
+            "x"
+          ]
+        ],
+        [
+          "f3",
+          "x",
+          [
+            "f1",
+            "z"
+          ]
+        ]
+      ]
+    },
+    {
+      "mate": "y",
+      "targets": [
+        "y",
+        "z",
+        "b0",
+        "x",
+        "a0"
+      ],
+      "forced_cycle": [
+        "f1",
+        "z",
+        "x",
+        "f3"
+      ],
+      "violations": [
+        [
+          "f1",
+          "x",
+          [
+            "f3",
+            "z"
+          ]
+        ],
+        [
+          "f3",
+          "z",
+          [
+            "f1",
+            "x"
+          ]
+        ]
+      ]
+    },
+    {
+      "mate": "z",
+      "targets": [
+        "z",
+        "x",
+        "b0",
+        "y",
+        "a0"
+      ],
+      "forced_cycle": [
+        "f1",
+        "x",
+        "y",
+        "f3"
+      ],
+      "violations": [
+        [
+          "f1",
+          "y",
+          [
+            "f3",
+            "x"
+          ]
+        ],
+        [
+          "f3",
+          "x",
+          [
+            "f1",
+            "y"
+          ]
+        ]
+      ]
+    },
+    {
+      "mate": "z",
+      "targets": [
+        "z",
+        "y",
+        "b0",
+        "x",
+        "a0"
+      ],
+      "forced_cycle": [
+        "f1",
+        "y",
+        "x",
+        "f3"
+      ],
+      "violations": [
+        [
+          "f1",
+          "x",
+          [
+            "f3",
+            "y"
+          ]
+        ],
+        [
+          "f3",
+          "y",
+          [
+            "f1",
+            "x"
+          ]
+        ]
+      ]
+    }
+  ],
+  "scope": "No-sharing af4/bf2 universal projection; no completion search"
+}

@@ -1,0 +1,1 @@
+Accepted review2056: universal no-sharing af4/bf2 exclusion for all omitted patterns. Original submission preserved; review2056 supplies independent paper and finite audit. No wholecore, Lean, or SAT queue claim.
