@@ -1,0 +1,41 @@
+{
+  "tests": 26,
+  "scope": "Synthetic receipts plus pinned historical fixtures; no solver or proof replay",
+  "files": [
+    {
+      "path": "summarize_phase_b_verdicts.py",
+      "sha256": "7b3289c2f8a3ca5e8dcf9dc4b4552c3154ba20199ea04d5bf8a867655690aae0",
+      "bytes": 19217
+    },
+    {
+      "path": "reviewed_historical_snapshot.py",
+      "sha256": "6f5c5133f14c180397976f514b34f53ba97bbb0bfa3dd1cf247ab3f9b5c641e4",
+      "bytes": 3440
+    },
+    {
+      "path": "test_summarize_phase_b_verdicts.py",
+      "sha256": "5a6ba03fb25a85150ab4024c01f75c00fd9d3ece5159c709156116708d445ca4",
+      "bytes": 15004
+    },
+    {
+      "path": "test_reviewed_historical_snapshot.py",
+      "sha256": "8cd94ceb21299dc3ca4cf6eb6b6de13a98dcf5add033d3738b39a202dd51c3ff",
+      "bytes": 3497
+    },
+    {
+      "path": "test_overlay_integration.py",
+      "sha256": "793626f2bcadcc2f7cc617d9531ef09c26d2e5cdd39b8b6d68d97f8b9f11e464",
+      "bytes": 3514
+    },
+    {
+      "path": "README.md",
+      "sha256": "c8dbc3a76f7a0efff76cea1eb01d43af8d9eb10974285ccaa6a3beea685bb5ff",
+      "bytes": 2150
+    },
+    {
+      "path": "tests.log",
+      "sha256": "81bb4389f698033f761a194c5900699fb8cfee07ce06187a2462dbbd963a20df",
+      "bytes": 3756
+    }
+  ]
+}
