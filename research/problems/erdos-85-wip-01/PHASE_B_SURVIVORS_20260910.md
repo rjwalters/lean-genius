@@ -11,6 +11,14 @@ The machine-readable [combined index](phase_b_survivors_20260910.json) lists eve
 | H5 | 129 root cubes, 43 in each of t0/t1/t2 | Exact signed units and prospective hashes from three verified corrected 29,632-variable bases | Materialize one bounded root at a time; compare final byte count and SHA-256 before dispatch |
 | H7 | 28 empty-support class roots; counts 7/12/7/2 at 6/7/8/9 edges | Exact parent IDs, 21 signed units, explicit vertex maps, and prospective hashes from the verified compact base | Materialize bounded roots and verify final hashes; do not add the alternative 232 adaptive leaves |
 
+## Local DRAT, unreplayed
+
+| Evidence subset (already within H1) | Exact rows | Input identity and availability | Closure status |
+| --- | ---: | --- | --- |
+| Local CUBE25 DRAT archive identified by the editor | 45: 20 historically verified, 25 historically not verified | All 710 retained cube CNFs across 38 tags reconstruct to their frozen base hashes after removing two trailing units; 18 tags have all 25 input and proof filenames present | **Local DRAT, unreplayed.** No new closed cases; proof validity, cube-cover justification and missing files remain unresolved |
+
+The [45-row evidence package](phase_b_local_drat45/README.md) records exact tags, archive paths, hashes and limitations. These 45 tags have no overlap with the separately reviewed 95-case MONO historical overlay. Availability across directory copies is not a proof certificate; seven tags have no retained cube CNF in this scan. Counts above do not change the frozen 1,416-target index.
+
 ## Exact lists and provenance
 
 H1/H3 evidence is in [PHASE_B_H1_H3_INVENTORY_20260910.md](PHASE_B_H1_H3_INVENTORY_20260910.md), independently reviewed in **1990**. H5/H7 evidence is in [PHASE_B_H5_H7_INVENTORY_20260910.md](PHASE_B_H5_H7_INVENTORY_20260910.md), independently reviewed in **1991**. Those reviews checked input/set identity and stated limitations, not solver outcomes.
