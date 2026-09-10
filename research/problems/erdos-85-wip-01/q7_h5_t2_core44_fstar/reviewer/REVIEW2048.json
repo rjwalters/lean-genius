@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "review": 2048,
+  "reviewer": "codex-sol-1",
+  "negative_replay": {
+    "method": "Static F-star order, direct full32vertex C4 tests on every added subset, residual E degrees rederived from support masks; no author code imports or early empty capacity pruning.",
+    "seconds": 2.4434610828757286,
+    "results": [
+      {
+        "omitted": 11,
+        "af": 3,
+        "bf": 1,
+        "status": "EXHAUSTED",
+        "nodes": 355,
+        "complete_star_assignments": 65
+      },
+      {
+        "omitted": 0,
+        "af": 3,
+        "bf": 1,
+        "status": "EXHAUSTED",
+        "nodes": 742,
+        "complete_star_assignments": 130
+      }
+    ]
+  },
+  "positive_audit": "positive-results.json",
+  "proof_audit": "Reviewed four-pattern cover2046 and isolated-star saturation2047 imply exactly16 no-sharing branches. Incidence search enumerates every two-element empty set perfi; C4 pruning and empty-degree available-partner bound monotone. Independent negative replay uses static fi order and fullgraph C4 checks, omits early capacity bound, exhausts355/742nodes and65/130 complete star assignments. All14positives and exact16case partition independently checked.",
+  "scope": "Only omitted0/11 withaf3,bf1 excluded; other14necessary partials and both sharing branches remain unresolved. No core44/kernel/queue exclusion or old capped retry."
+}

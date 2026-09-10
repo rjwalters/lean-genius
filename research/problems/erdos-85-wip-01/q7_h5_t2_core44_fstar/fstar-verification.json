@@ -1,0 +1,17 @@
+{
+  "positive_graphs": 14,
+  "checks": "symmetry, C4, exact empty degrees, F-star identity/high/support/E counts, internal edge, forced special edges",
+  "negative_subcases": [
+    [
+      11,
+      3,
+      1
+    ],
+    [
+      0,
+      3,
+      1
+    ]
+  ],
+  "negative_scope": "Pending independent review; no-sharing branch only; no whole-core exclusion"
+}

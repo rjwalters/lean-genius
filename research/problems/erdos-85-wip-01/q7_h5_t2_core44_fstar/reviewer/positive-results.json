@@ -1,0 +1,95 @@
+{
+  "status": "PASS",
+  "verified_partials": [
+    [
+      4,
+      3,
+      1
+    ],
+    [
+      4,
+      3,
+      2
+    ],
+    [
+      4,
+      4,
+      1
+    ],
+    [
+      4,
+      4,
+      2
+    ],
+    [
+      7,
+      3,
+      1
+    ],
+    [
+      7,
+      3,
+      2
+    ],
+    [
+      7,
+      4,
+      1
+    ],
+    [
+      7,
+      4,
+      2
+    ],
+    [
+      11,
+      3,
+      2
+    ],
+    [
+      11,
+      4,
+      1
+    ],
+    [
+      11,
+      4,
+      2
+    ],
+    [
+      0,
+      3,
+      2
+    ],
+    [
+      0,
+      4,
+      1
+    ],
+    [
+      0,
+      4,
+      2
+    ]
+  ],
+  "exact_negative_branches": [
+    [
+      11,
+      3,
+      1
+    ],
+    [
+      0,
+      3,
+      1
+    ]
+  ],
+  "pins": {
+    "fstar_empty.py": "abb378e2258abaacd30773f314fbe370b92ea6ecfd9474193b88d71aa2b18c84",
+    "fstar-empty-results.json": "d2647aa01f8e1e78dc918e5efc29c74782ba9b568861220636ab5f044f8b11fc",
+    "four-pattern-results.json": "9c7ae72d16e0fb008fd89a02deb93efb26b2435f1cec2784baaec06d6d2fd178",
+    "fstar-verification.json": "7dfa66f6316302dd19be0101dbd123ebc06e9f1acac760e71724df59e454ff98",
+    "FSTAR.md": "e64ed936692636b036d71b0cb542baa4c1a42bd84c90804b83a75e070e5077b6"
+  },
+  "scope": "16case partition and14partial witnesses only; negative exhaustion verified separately, no full-core exclusion."
+}

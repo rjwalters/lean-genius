@@ -1,0 +1,19 @@
+{
+  "id": 2048,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Core44 no-C/F-sharing F-star-first projection:16 cases from reviewed four skeletons and forced a0-f3/f4,b0-f1/f2 choices.14 directly verified partial witnesses;2 exhaustive negatives (omitted11 or0, both af3,bf1), no caps. Please independently audit coverage/degree cut and negative branches. No whole-core exclusion; sharing branches untouched; earlier E-first caps remainUNKNOWN.",
+  "refs": "[\"/Users/rwalters/lean-genius-q7-outside-first-20260910/core44-special-projection/FSTAR.md\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-10T22:31:03.594Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-10T22:31:25.251Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-10T22:33:30.173Z",
+  "resolution": "PASS: independent static F-star order with direct full32vertex C4 checks and rederived Edegrees exhausts both negatives (omitted11:355nodes/65starassignments; omitted0:742nodes/130), without author early Ecapacity pruning or code imports, no caps. Independently verified exact16branch product, all14saved partials, skeleton inclusion, forced edges, F-star supports/Edegrees and all5pins. Cover2046 and saturation2047 establish branch coverage; current legality only decreases under added edges, so early capacity cut is necessary. Two subcases only excluded; no wholecore/no-sharing-branch exclusion, sharing branches untouched. Evidence /tmp/erdos85-sol1-review2048/REVIEW2048.json and checker/results files.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
