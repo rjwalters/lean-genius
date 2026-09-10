@@ -42,6 +42,37 @@ class HistoricalTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'not the reviewed'):
             self.load()
 
+    def use96(self):
+        path=ROOT/'phase_b_historical_overlay_96/historical-96.json'
+        raw=path.read_bytes();wrapper=json.loads(raw)
+        self.snapshots[hashlib.sha256(raw).hexdigest()]=raw
+        for ref in wrapper['extra_sources'].values():
+            data=(path.parent/ref['path']).read_bytes()
+            self.snapshots[hashlib.sha256(data).hexdigest()]=data
+        self.config['historical_overlay']['sha256']=history.APPROVED_OVERLAY96
+        self.state['historical_evidence'].append(wrapper['extra_case'])
+        self.state['historical_skipped']=sorted(r['id'] for r in self.state['historical_evidence'])
+        return wrapper
+
+    def test96_retains_old_provenance_and_separates_extra_format(self):
+        old=self.load();wrapper=self.use96();records=self.load()
+        self.assertEqual(len(records),96)
+        self.assertEqual({name:records[name] for name in old},old)
+        extra=records[wrapper['extra_case']['id']]
+        self.assertEqual(extra['evidence_format'],'manifest_joined_mono')
+        self.assertEqual(extra['audit_sha256'],wrapper['extra_sources']['audit']['sha256'])
+        self.assertEqual(extra['overlay_sha256'],history.APPROVED_OVERLAY96)
+
+    def test96_extra_dependency_and_root_row_are_required(self):
+        wrapper=self.use96();sha=wrapper['extra_sources']['comparison']['sha256']
+        raw=self.snapshots.pop(sha)
+        with self.assertRaisesRegex(ValueError,'Missing historical'):
+            self.load()
+        self.snapshots[sha]=raw
+        self.state['historical_evidence'].pop()
+        with self.assertRaisesRegex(ValueError,'differs from snapshot'):
+            self.load()
+
     def test_changed_or_missing_snapshots_refused(self):
         sha=self.overlay['sources']['audit']['sha256']
         raw=self.snapshots.pop(sha)

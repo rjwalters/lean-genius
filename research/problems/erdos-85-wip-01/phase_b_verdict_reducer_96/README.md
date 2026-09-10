@@ -1,0 +1,5 @@
+# Reviewed 96-case historical reducer extension
+
+This release adds only the exact historical-96 wrapper approved in review2017. The original95 allowlist remains supported. The original95 records keep identical provenance when read through the96 wrapper, so mixed old/new runs reconcile without duplicate histories or spurious disagreement. The extra case retains evidence_format manifest_joined_mono, its own reviewed audit/comparison hashes, and the wrapper hash. Unknown, incomplete and SAT-alarm behavior is unchanged; inherited historical evidence never sets the fresh cross-checked closure flag.
+
+Thirty tests pass, including mixed95/96 runs, missing extra dependencies, omitted root evidence and raw SAT on the96th case. The unchanged independent12-cell publication matrix also passes. All fixtures are synthetic run receipts around pinned data; no solver or proof replay ran. Source pins bind this release; the older phase_b_verdict_reducer/BANK_PINS.json remains the receipt for commit38eb0e5cb1.

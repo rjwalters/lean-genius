@@ -39,6 +39,45 @@ class IntegrationTests(unittest.TestCase):
         (self.run/'results.json').write_text(json.dumps(self.state))
         return reducer.summarize(self.index,self.index_sha,[self.run])
 
+    def use96(self):
+        config_path=ROOT/'phase_b_historical_overlay_96/config.draft.json'
+        raw=config_path.read_bytes();config=json.loads(raw)
+        wrapper_path=config_path.parent/config['historical_overlay']['path']
+        wrapper=json.loads(wrapper_path.read_text())
+        paths=[config_path,wrapper_path]+[wrapper_path.parent/ref['path'] for ref in wrapper['extra_sources'].values()]
+        for i,path in enumerate(paths):
+            (self.run/'snapshots'/f'extra-{i}-{path.name}').write_bytes(path.read_bytes())
+        self.state['config_sha256']=reducer.digest(raw)
+        self.state['historical_evidence'].append(wrapper['extra_case'])
+        self.state['historical_skipped']=sorted(r['id'] for r in self.state['historical_evidence'])
+        return wrapper['extra_case']['id']
+
+    def test_mixed95_96_runs_reconcile_without_duplicate_history(self):
+        self.summarize()
+        other=IntegrationTests()
+        other.setUp()
+        try:
+            other.use96();other.summarize()
+            result=reducer.summarize(self.index,self.index_sha,[self.run,other.run])
+            self.assertEqual(result['historical_evidence_cases'],96)
+            self.assertEqual(result['counts'],{'NOT_RUN':1320,'HISTORICAL_VERIFIED_UNSAT':96})
+            self.assertFalse(result['all_targets_crosschecked_unsat'])
+        finally:other.doCleanups()
+
+    def test_extra96_partial_sat_is_not_hidden_by_history(self):
+        name=self.use96()
+        self.state['historical_skipped'].remove(name)
+        self.state.update(selected_cases=[name],status='running')
+        self.state.pop('not_started')
+        log=self.run/name/'solve'/name/'cadical.log'
+        log.parent.mkdir(parents=True)
+        log.write_text('s SATISFIABLE\n')
+        result=self.summarize()
+        row=next(r for r in result['rows'] if r['id']==name)
+        self.assertEqual(row['status'],'DISAGREEMENT')
+        self.assertEqual(row['historical_evidence']['evidence_format'],'manifest_joined_mono')
+        self.assertFalse(result['all_targets_crosschecked_unsat'])
+
     def test_historical_only_does_not_claim_fresh_closure(self):
         result=self.summarize()
         self.assertEqual(result['counts'],{'NOT_RUN':1321,'HISTORICAL_VERIFIED_UNSAT':95})

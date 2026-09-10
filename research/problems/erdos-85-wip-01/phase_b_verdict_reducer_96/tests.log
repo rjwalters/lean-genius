@@ -1,0 +1,35 @@
+test_case_root_mismatch_refused (test_summarize_phase_b_verdicts.ReceiptTests.test_case_root_mismatch_refused) ... ok
+test_conflicting_attempts_retained (test_summarize_phase_b_verdicts.ReceiptTests.test_conflicting_attempts_retained) ... ok
+test_error_after_sat_cannot_be_overridden_by_unsat (test_summarize_phase_b_verdicts.ReceiptTests.test_error_after_sat_cannot_be_overridden_by_unsat) ... ok
+test_error_then_success_keeps_attempt (test_summarize_phase_b_verdicts.ReceiptTests.test_error_then_success_keeps_attempt) ... ok
+test_h1_historical_and_new_preparation (test_summarize_phase_b_verdicts.ReceiptTests.test_h1_historical_and_new_preparation) ... ok
+test_h5_h7_ordered_duplicate_units (test_summarize_phase_b_verdicts.ReceiptTests.test_h5_h7_ordered_duplicate_units) ... ok
+test_incomplete_and_not_started_differ (test_summarize_phase_b_verdicts.ReceiptTests.test_incomplete_and_not_started_differ) ... ok
+test_input_identity_conflict_blocks_closure (test_summarize_phase_b_verdicts.ReceiptTests.test_input_identity_conflict_blocks_closure) ... ok
+test_missing_snapshot_refused (test_summarize_phase_b_verdicts.ReceiptTests.test_missing_snapshot_refused) ... ok
+test_no_run_is_not_unsat (test_summarize_phase_b_verdicts.ReceiptTests.test_no_run_is_not_unsat) ... ok
+test_pilot_does_not_close_inventory (test_summarize_phase_b_verdicts.ReceiptTests.test_pilot_does_not_close_inventory) ... ok
+test_published_capped_sat_is_alarm_for_primary_and_secondary (test_summarize_phase_b_verdicts.ReceiptTests.test_published_capped_sat_is_alarm_for_primary_and_secondary) ... ok
+test_published_error_without_solve_field_retains_sat_log_alarm (test_summarize_phase_b_verdicts.ReceiptTests.test_published_error_without_solve_field_retains_sat_log_alarm) ... ok
+test_secondary_cap_after_unsat_is_unknown (test_summarize_phase_b_verdicts.ReceiptTests.test_secondary_cap_after_unsat_is_unknown) ... ok
+test_tampered_log_refused (test_summarize_phase_b_verdicts.ReceiptTests.test_tampered_log_refused) ... ok
+test_unpublished_sat_at_each_worker_boundary (test_summarize_phase_b_verdicts.ReceiptTests.test_unpublished_sat_at_each_worker_boundary) ... ok
+test_unpublished_unknown_blocks_previous_unsat_closure (test_summarize_phase_b_verdicts.ReceiptTests.test_unpublished_unknown_blocks_previous_unsat_closure) ... ok
+test96_extra_dependency_and_root_row_are_required (test_reviewed_historical_snapshot.HistoricalTests.test96_extra_dependency_and_root_row_are_required) ... ok
+test96_retains_old_provenance_and_separates_extra_format (test_reviewed_historical_snapshot.HistoricalTests.test96_retains_old_provenance_and_separates_extra_format) ... ok
+test_changed_or_missing_snapshots_refused (test_reviewed_historical_snapshot.HistoricalTests.test_changed_or_missing_snapshots_refused) ... ok
+test_exact_reviewed_set_and_explicit_resolve (test_reviewed_historical_snapshot.HistoricalTests.test_exact_reviewed_set_and_explicit_resolve) ... ok
+test_fresh_results_remain_distinct_and_conflicts_stop_closure (test_reviewed_historical_snapshot.HistoricalTests.test_fresh_results_remain_distinct_and_conflicts_stop_closure) ... ok
+test_root_cannot_add_or_omit_historical_rows (test_reviewed_historical_snapshot.HistoricalTests.test_root_cannot_add_or_omit_historical_rows) ... ok
+test_skipped_set_must_match_selection (test_reviewed_historical_snapshot.HistoricalTests.test_skipped_set_must_match_selection) ... ok
+test_unreviewed_overlay_refused (test_reviewed_historical_snapshot.HistoricalTests.test_unreviewed_overlay_refused) ... ok
+test_extra96_partial_sat_is_not_hidden_by_history (test_overlay_integration.IntegrationTests.test_extra96_partial_sat_is_not_hidden_by_history) ... ok
+test_historical_only_does_not_claim_fresh_closure (test_overlay_integration.IntegrationTests.test_historical_only_does_not_claim_fresh_closure) ... ok
+test_mixed95_96_runs_reconcile_without_duplicate_history (test_overlay_integration.IntegrationTests.test_mixed95_96_runs_reconcile_without_duplicate_history) ... ok
+test_reselected_historical_incomplete_stays_explicit (test_overlay_integration.IntegrationTests.test_reselected_historical_incomplete_stays_explicit) ... ok
+test_reselected_historical_partial_sat_stops_closure (test_overlay_integration.IntegrationTests.test_reselected_historical_partial_sat_stops_closure) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 0.318s
+
+OK

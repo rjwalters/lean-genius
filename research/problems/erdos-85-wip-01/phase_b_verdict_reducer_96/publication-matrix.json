@@ -1,0 +1,86 @@
+[
+  {
+    "stage": "published",
+    "solver": "kissat",
+    "status": "DISAGREEMENT",
+    "alarm": true,
+    "passes": true
+  },
+  {
+    "stage": "published",
+    "solver": "cadical",
+    "status": "DISAGREEMENT",
+    "alarm": true,
+    "passes": true
+  },
+  {
+    "stage": "wrapper",
+    "solver": "kissat",
+    "status": "DISAGREEMENT",
+    "alarm": true,
+    "passes": true
+  },
+  {
+    "stage": "wrapper",
+    "solver": "cadical",
+    "status": "DISAGREEMENT",
+    "alarm": true,
+    "passes": true
+  },
+  {
+    "stage": "solver",
+    "solver": "kissat",
+    "status": "DISAGREEMENT",
+    "alarm": true,
+    "passes": true
+  },
+  {
+    "stage": "solver",
+    "solver": "cadical",
+    "status": "DISAGREEMENT",
+    "alarm": true,
+    "passes": true
+  },
+  {
+    "stage": "log",
+    "solver": "kissat",
+    "status": "DISAGREEMENT",
+    "alarm": true,
+    "passes": true
+  },
+  {
+    "stage": "log",
+    "solver": "cadical",
+    "status": "DISAGREEMENT",
+    "alarm": true,
+    "passes": true
+  },
+  {
+    "stage": "unknown",
+    "solver": "kissat",
+    "status": "DISAGREEMENT",
+    "alarm": true,
+    "passes": true
+  },
+  {
+    "stage": "unknown",
+    "solver": "cadical",
+    "status": "DISAGREEMENT",
+    "alarm": true,
+    "passes": true
+  },
+  {
+    "stage": "error",
+    "solver": "kissat",
+    "status": "DISAGREEMENT",
+    "alarm": true,
+    "passes": true
+  },
+  {
+    "stage": "error",
+    "solver": "cadical",
+    "status": "DISAGREEMENT",
+    "alarm": true,
+    "passes": true
+  }
+]

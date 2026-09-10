@@ -1,0 +1,62 @@
+[
+  {
+    "case": "95/96 both orders and exact old provenance",
+    "passed": true
+  },
+  {
+    "case": "partial kissat UNKNOWN",
+    "status": "INCOMPLETE"
+  },
+  {
+    "case": "partial cadical UNKNOWN",
+    "status": "INCOMPLETE"
+  },
+  {
+    "case": "partial kissat SAT",
+    "status": "DISAGREEMENT"
+  },
+  {
+    "case": "partial cadical SAT",
+    "status": "DISAGREEMENT"
+  },
+  {
+    "case": "missing ../phase_b_historical_overlay/historical-95.json",
+    "rejected": true,
+    "reason": "Missing historical snapshot"
+  },
+  {
+    "case": "missing ../phase_b_h1_extra_local/extra-local-audit.json",
+    "rejected": true,
+    "reason": "Missing historical snapshot"
+  },
+  {
+    "case": "missing ../phase_b_h1_extra_local/extra-local-result.json",
+    "rejected": true,
+    "reason": "Missing historical snapshot"
+  },
+  {
+    "case": "missing ../phase_b_h1_historical_identity/independent-audit.json",
+    "rejected": true,
+    "reason": "Missing historical snapshot"
+  },
+  {
+    "case": "missing ../phase_b_h1_historical_identity/full-results.json",
+    "rejected": true,
+    "reason": "Missing historical snapshot"
+  },
+  {
+    "case": "omit-extra",
+    "rejected": true,
+    "reason": "Root historical evidence differs from snapshot"
+  },
+  {
+    "case": "alter-extra",
+    "rejected": true,
+    "reason": "Root historical evidence differs from snapshot"
+  },
+  {
+    "case": "skip-extra",
+    "rejected": true,
+    "reason": "Historical skipped IDs mismatch"
+  }
+]
