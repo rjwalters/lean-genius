@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "pins": "all match",
+  "canonical_graphs": "exact match under fixed vertex relabeling",
+  "labeled_distinguished_row_assignments": 2304,
+  "omitted_type_counts": {
+    "0": 576,
+    "4": 576,
+    "7": 576,
+    "11": 576
+  },
+  "author_positive_graphs": "all four direct checked against skeleton, C4 and derived empty degrees",
+  "scope": "Four-pattern cover and partial witnesses, no core exclusion or Lean claim"
+}
