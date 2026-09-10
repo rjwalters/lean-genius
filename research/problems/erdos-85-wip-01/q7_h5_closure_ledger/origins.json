@@ -1,0 +1,38 @@
+{
+  "t0-chain.json": {
+    "path": "research/problems/erdos-85-wip-01/q7_h5_t0_completion/chain-audit.json",
+    "sha256": "b687e393a7c2f5b2a9a5f0f340d8cd43ab720a4200c3d4b51a9e57b2485438ad"
+  },
+  "t1-chain.json": {
+    "path": "research/problems/erdos-85-wip-01/q7_h5_t1_empty_pilot/review2032/review-result.json",
+    "sha256": "39c063c78974821110584426c41d53016ee9d687e6530c8c96f0c63862f2147b"
+  },
+  "t2-chain.json": {
+    "path": "research/problems/erdos-85-wip-01/q7_h5_t2_chain_audit/results.json",
+    "sha256": "b9cc733d246596ea90410899c29b8960e720856f1a8fd02cb59a2f38aa37ac90"
+  },
+  "core44-chain.json": {
+    "path": "research/problems/erdos-85-wip-01/q7_h5_t2_core44_closure_audit/results.json",
+    "sha256": "6711e0c7ec03a3d4c73c73843102ed03cffc3df46b5df7cbbee7e55ba4c8b6ba"
+  },
+  "canonical-masks.lean": {
+    "path": "proofs/Proofs/Erdos85OrderFortyNineFiveHighCanonicalMasks.lean",
+    "sha256": "ebd772b1cfba065e3339cb3bf7567fbba8cdcc634045314791593d252c44812b"
+  },
+  "canonical-cover.lean": {
+    "path": "proofs/Proofs/Erdos85OrderFortyNineFiveHighCanonicalFiberCover.lean",
+    "sha256": "1066fc1ccc632976681357e2ab286c40315cb14b05f839024e39e6ed06429369"
+  },
+  "core-t0.json": {
+    "path": "research/problems/erdos-85-wip-01/q7_h5_heavy_core/core-t0.json",
+    "sha256": "194cc84103217a95ba841bdcb640af6a70f9348d94ce4b302a58a0a3c8dc788f"
+  },
+  "core-t1.json": {
+    "path": "research/problems/erdos-85-wip-01/q7_h5_heavy_core/core-t1.json",
+    "sha256": "abe5bdc3539e2b52923adadda7c968abe9e1b19206b3c1404773d10321433254"
+  },
+  "core-t2.json": {
+    "path": "research/problems/erdos-85-wip-01/q7_h5_heavy_core/core-t2.json",
+    "sha256": "831c6e0cd3dc240acb9f9190b02ff26f3247f0d0c1a1fbf8417f950be43fbc61"
+  }
+}

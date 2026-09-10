@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "triple_packings": 26,
+  "normal_forms": 3,
+  "families": [
+    {
+      "t": 0,
+      "support_counts": [
+        14,
+        20,
+        10,
+        0
+      ],
+      "heavy_cores": 1665
+    },
+    {
+      "t": 1,
+      "support_counts": [
+        13,
+        23,
+        7,
+        1
+      ],
+      "heavy_cores": 249
+    },
+    {
+      "t": 2,
+      "support_counts": [
+        12,
+        26,
+        4,
+        2
+      ],
+      "heavy_cores": 13
+    }
+  ],
+  "upstream_hashes_verified": 136,
+  "local_pins_verified": 15,
+  "review_snapshots_verified": [
+    2022,
+    2037,
+    2032,
+    2062,
+    2063
+  ],
+  "scope": "Outer H5 mathematical/finite-computation closure under accepted reduction/exclusion reviews; no Lean Boolean premises discharged, no queue/global result."
+}

@@ -1,0 +1,65 @@
+{
+  "status": "PAPER_AND_FINITE_COMPUTATION_H5_EXCLUDED",
+  "premises": "Reviewed q7/H5 graph/support/block reduction and accepted exclusion reviews; source-level Lean cover inspection only",
+  "families": [
+    {
+      "family": "T0",
+      "low_support_counts": [
+        14,
+        20,
+        10,
+        0
+      ],
+      "heavy_core_classes": 1665,
+      "canonical_49_masks_exact": true
+    },
+    {
+      "family": "T1",
+      "low_support_counts": [
+        13,
+        23,
+        7,
+        1
+      ],
+      "heavy_core_classes": 249,
+      "canonical_49_masks_exact": true
+    },
+    {
+      "family": "T2",
+      "low_support_counts": [
+        12,
+        26,
+        4,
+        2
+      ],
+      "heavy_core_classes": 13,
+      "canonical_49_masks_exact": true
+    }
+  ],
+  "triple_systems": {
+    "labelled": 26,
+    "by_size": [
+      1,
+      10,
+      15
+    ],
+    "canonical": 3
+  },
+  "family_reviews": {
+    "T0": [
+      2037
+    ],
+    "T1": [
+      2032
+    ],
+    "T2": [
+      2062,
+      2063
+    ]
+  },
+  "remaining_families": [],
+  "source_files": 136,
+  "formal_status": "Three canonical Boolean-exclusion premises remain undischarged in Lean; no fresh Lean compilation or kernel closure",
+  "campaign_status": "No SAT queue or historical cap status changed",
+  "global_status": "H1/H7 and general Erdos85 not resolved by this result"
+}
