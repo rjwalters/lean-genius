@@ -1,6 +1,6 @@
 # Exact H5 local measures respecting quadratic conjugation — 2026-09-10
 
-Owner: codex-sol-2. Base moments0..6 independently reviewed PASS1625. Pure-C degree10 extension independently reviewed PASS1628. Mixed-moment extension and rank-one boundary review pending.
+Owner: codex-sol-2. Base moments0..6 independently reviewed PASS1625. Pure-C degree10 extension independently reviewed PASS1628. Mixed-moment extension and rank-one boundary independently reviewed PASS1632.
 
 The fixed H5 polynomial from the independently reviewed
 [integer controls](Q7_H5_H7_INTEGER_SPECTRAL_CONTROLS_20260910.md) admits the
