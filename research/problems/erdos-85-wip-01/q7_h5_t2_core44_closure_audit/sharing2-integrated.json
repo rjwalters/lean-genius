@@ -1,0 +1,147 @@
+{
+  "results": [
+    {
+      "shared": 2,
+      "omitted": 0,
+      "nodes": 100001,
+      "choices": [
+        {
+          "internal": [],
+          "af": 4,
+          "bf": 1,
+          "status": "CAPPED",
+          "nodes": 100001,
+          "adjacency": null
+        }
+      ],
+      "unvisited": 0
+    },
+    {
+      "shared": 2,
+      "omitted": 4,
+      "nodes": 349515,
+      "choices": [
+        {
+          "internal": [],
+          "af": 4,
+          "bf": 1,
+          "status": "CAPPED",
+          "nodes": 100001,
+          "adjacency": null
+        },
+        {
+          "internal": [
+            [
+              0,
+              1
+            ]
+          ],
+          "af": 4,
+          "bf": null,
+          "status": "CAPPED",
+          "nodes": 100001,
+          "adjacency": null
+        },
+        {
+          "internal": [
+            [
+              0,
+              3
+            ]
+          ],
+          "af": null,
+          "bf": 1,
+          "status": "EXHAUSTED",
+          "nodes": 80309,
+          "adjacency": null
+        },
+        {
+          "internal": [
+            [
+              0,
+              3
+            ]
+          ],
+          "af": 4,
+          "bf": null,
+          "status": "EXHAUSTED",
+          "nodes": 69204,
+          "adjacency": null
+        }
+      ],
+      "unvisited": 0
+    },
+    {
+      "shared": 2,
+      "omitted": 7,
+      "nodes": 180054,
+      "choices": [
+        {
+          "internal": [],
+          "af": 4,
+          "bf": 1,
+          "status": "CAPPED",
+          "nodes": 100001,
+          "adjacency": null
+        },
+        {
+          "internal": [
+            [
+              0,
+              3
+            ]
+          ],
+          "af": 4,
+          "bf": null,
+          "status": "EXHAUSTED",
+          "nodes": 80053,
+          "adjacency": null
+        }
+      ],
+      "unvisited": 0
+    },
+    {
+      "shared": 2,
+      "omitted": 11,
+      "nodes": 252566,
+      "choices": [
+        {
+          "internal": [],
+          "af": 4,
+          "bf": 1,
+          "status": "CAPPED",
+          "nodes": 100001,
+          "adjacency": null
+        },
+        {
+          "internal": [
+            [
+              0,
+              1
+            ]
+          ],
+          "af": 4,
+          "bf": null,
+          "status": "EXHAUSTED",
+          "nodes": 90841,
+          "adjacency": null
+        },
+        {
+          "internal": [
+            [
+              0,
+              3
+            ]
+          ],
+          "af": 4,
+          "bf": null,
+          "status": "EXHAUSTED",
+          "nodes": 61724,
+          "adjacency": null
+        }
+      ],
+      "unvisited": 0
+    }
+  ],
+  "scope": "C/F-sharing F-star incidence projection only. Exact empty degrees included; ordinary singleton edges absent; necessary local host partitions included."
+}

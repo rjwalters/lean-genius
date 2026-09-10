@@ -1,0 +1,65 @@
+{
+  "results": [
+    {
+      "f3_d3_edge": false,
+      "omitted": 4,
+      "status": "EXHAUSTED",
+      "nodes": 408
+    },
+    {
+      "f3_d3_edge": false,
+      "omitted": 7,
+      "status": "EXHAUSTED",
+      "nodes": 294
+    },
+    {
+      "f3_d3_edge": false,
+      "omitted": 11,
+      "status": "EXHAUSTED",
+      "nodes": 559
+    },
+    {
+      "f3_d3_edge": false,
+      "omitted": 0,
+      "status": "EXHAUSTED",
+      "nodes": 541
+    },
+    {
+      "f3_d3_edge": true,
+      "omitted": 4,
+      "status": "EXHAUSTED",
+      "nodes": 1539
+    },
+    {
+      "f3_d3_edge": true,
+      "omitted": 7,
+      "status": "EXHAUSTED",
+      "nodes": 607
+    },
+    {
+      "f3_d3_edge": true,
+      "omitted": 11,
+      "status": "EXHAUSTED",
+      "nodes": 2321
+    },
+    {
+      "f3_d3_edge": true,
+      "omitted": 0,
+      "status": "EXHAUSTED",
+      "nodes": 1054
+    }
+  ],
+  "nodes": 7323,
+  "seconds": 1.818464957876131,
+  "unvisited": 0,
+  "pins": {
+    "canonical-source.json": "fff63a298c111a7c1247dd0443591368fa9aeee5512a18865cbed46cacba5295",
+    "four-pattern-source.json": "9c7ae72d16e0fb008fd89a02deb93efb26b2435f1cec2784baaec06d6d2fd178",
+    "check.py": "ddd1ff99c5354a432397c640928c7e978d3b51dba5a1f9e986cf406f7c9ccdca",
+    "results.json": "bc5dab25ce85bf4504e92f3fc3c7f3fc0a560db41418230d648f872294377eba",
+    "complete.py": "2f5eb7c4f9d5c632c77354dca37b2e3d3dbd4089e8e636c1a0337398b5678d07",
+    "completion-results.json": "0d51c5dcc21d8eaf99b2c2723dd4b64d26cb8e973f33cb6d30f26fe8935c97d0",
+    "README.md": "cb0f9bd264fde724e4ce6ff4880d78fd95bd83039040b723e3d61655f258fba6"
+  },
+  "method": "Independent name-based reconstruction of all heavy, singleton, own-colour and distinguished-empty edges; reverse forcing and whole-degree-row search from initial graphs, no author imports or forced-state inputs."
+}

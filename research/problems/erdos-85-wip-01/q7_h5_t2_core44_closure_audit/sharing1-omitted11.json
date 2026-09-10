@@ -1,0 +1,30 @@
+{
+  "results": [
+    {
+      "omitted": 7,
+      "status": "UNKNOWN",
+      "nodes": 100001,
+      "complete_stars": 177,
+      "host_calls": 213
+    },
+    {
+      "omitted": 11,
+      "status": "EXHAUSTED",
+      "nodes": 86883,
+      "complete_stars": 146,
+      "host_calls": 174
+    }
+  ],
+  "seconds": 0.7092246660031378,
+  "pins_verified": {
+    "SHARING1.md": "7737c408cf9d8b9e15afda21c77cf89d9ebe2e9c96fb431cd12f270525b9caaf",
+    "sharing1_integrated.py": "f71e6466ee14ed97c0579ecc7ed96e8ae1975b2613f27040455fb97f920a48d4",
+    "remaining_hosts.py": "a849d4248f6e88300608ee7b196d293bd088eafae5b368ab096870b936c431e4",
+    "sharing1-integrated-results.json": "125487b0839e1dfd01914fa700eb66875c15ba536b0e54e9020629baa6a41fee",
+    "sharing1_bins.py": "3eb7eee8a70cb89b1209f383703c725d4e4f8aaaddd34e3ed91cb7b0d3573007",
+    "remaining_host_bins.py": "d9f22a1824c998380277ec5de4a694b21a05b040ad6e251dbcb0ddebeb57946f",
+    "sharing1-bin-results.json": "61fc7275f807beecf8c52465424b0588b1d02dcb9f1be6226e27e7817c8722d7",
+    "branches.json": "a7e5d2cb6568c63e593122f8bc678ce1e9fdb68a9dd65ac50e9a1765165e82e1"
+  },
+  "method": "Independent static F-star order; full pairwise common-neighbour checks; first-guest subset partitions at every empty-graph node; no author imports."
+}
