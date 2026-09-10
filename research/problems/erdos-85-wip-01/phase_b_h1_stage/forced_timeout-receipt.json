@@ -1,0 +1,18 @@
+{
+  "id": "h1_0065921c8faf1109",
+  "sector": "H1",
+  "status": "ERROR",
+  "manifest_sha256": "c10965a5d9473107169badf4996b73da13edc522cf344c4bcdb45e1a05e7d16b",
+  "emitter_sha256": "4bd9604c6d670ad65a8ca332a26dbf35132418634a3b0678c177c8b2cfff4bf6",
+  "image_id": "sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6",
+  "expected_historical_sha256": "6614932f9a1d77e0cd33ec02102de41db96df0d4254f7d733ea725056a3bd7d7",
+  "receipt_path": "/private/tmp/erdos85-sol1-h1-stage-timeout/receipt.json",
+  "profile": 0,
+  "tag": "0065921c8faf1109",
+  "solver_launched": false,
+  "runner_sha256": "23bfef36699e3c0707525fd577eb0564e18997af45e770eb0b0a9fcb536f17a9",
+  "validator_sha256": "c86b3da2d855d3d5811a43b2ad5d02633264f0b36e60b4f4cf3672a4af46def5",
+  "table_sha256": "d2fd02fb2416233f2401a3dc8e27fc33779bdb57e01479c344465a1287f4b479",
+  "error": "TimeoutError: Input stage exceeded wall-time cap",
+  "container_absent": true
+}

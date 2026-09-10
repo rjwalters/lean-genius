@@ -1,0 +1,16 @@
+test_boolean_table_value_rejected (test_materialize_h1_verdict_input.InputTests.test_boolean_table_value_rejected) ... ok
+test_cancellation_terminates_child (test_materialize_h1_verdict_input.InputTests.test_cancellation_terminates_child) ... ok
+test_capture_both_streams (test_materialize_h1_verdict_input.InputTests.test_capture_both_streams) ... ok
+test_conflicting_historical_hashes (test_materialize_h1_verdict_input.InputTests.test_conflicting_historical_hashes) ... ok
+test_identity_and_table (test_materialize_h1_verdict_input.InputTests.test_identity_and_table) ... ok
+test_never_overwrite_existing_output (test_materialize_h1_verdict_input.InputTests.test_never_overwrite_existing_output) ... ok
+test_output_cap_not_written_past_bound (test_materialize_h1_verdict_input.InputTests.test_output_cap_not_written_past_bound) ... ok
+test_stderr_cap (test_materialize_h1_verdict_input.InputTests.test_stderr_cap) ... ok
+test_table_tag_mismatch (test_materialize_h1_verdict_input.InputTests.test_table_tag_mismatch) ... ok
+test_tampered_inventory_rejected (test_materialize_h1_verdict_input.InputTests.test_tampered_inventory_rejected) ... ok
+test_timeout_terminates_child (test_materialize_h1_verdict_input.InputTests.test_timeout_terminates_child) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.295s
+
+OK

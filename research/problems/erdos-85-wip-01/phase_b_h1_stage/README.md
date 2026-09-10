@@ -1,0 +1,13 @@
+# H1 per-case input stage
+
+`materialize_h1_verdict_input.materialize(manifest, manifest_sha256, case_id, output_dir, *, emitter, docker, timeout=120, cancelled=None)` returns id/tag/profile, actual CNF path/hash/bytes, historical expected hash, and receipt_path. Pass the dispatcher cancellation predicate, e.g. `ABORT.is_set`, as `cancelled`. The function generates one input and never runs a SAT solver.
+
+The stage pins the inventory bytes, table/tag/profile identity, historical native emitter and installed image. It checks any historical input hash, strict clause framing and native MATCH, source identities, table immutability and container absence before reporting success. Output directory creation is exclusive. It bounds emitted data at99,000,000bytes and stderr at1MiB, uses1CPU/8GiB, a host wall cap and an in-container timeout, and records errors before propagating failures. Retained inputs are never overwritten or deleted. The dispatcher owns eventual cleanup of its successfully consumed directory; this stage retains evidence on failure.
+
+The producer binary identity is historical provenance, not a rebuild from current Lean source. Rows without historical CNF hashes retain `expected_historical_sha256:null`; generation alone is no exclusion proof. Sources and unit tests are pinned in source-pins.json. Eleven tests cover identity tampering, conflicting hashes, byte caps, cancellation, timeout and overwrite prevention. Two actual input pilots match historical hashes, and a forced1s timeout returnedERROR with the container absent. The receipt-specific runner hashes disclose intermediate revisions; final optional-cancellation and cleanup-filter changes passed independent final-source review1998.
+
+No full-queue generation, solver run, new image, new worktree or file over100MB was created. The existing emitter is mounted read-only; each successful test input is approximately12.5MB and stays private.
+
+Independent review1998 passed final runner00201aa9 with validatorc86b3da2:11 tests, real profile0 input in21.84s with exact historical hash, fresh container-absence check, and a real cancellation preservingERROR evidence. The complete1257-row selector census also passes, with1066 historical hashes and191 requiring new identities. These checks establish input preparation only; they do not establish a solver verdict or graph exclusion.
+
+Integration dependency: the H1 stage imports `sat49/materialize_verdict_input.py`, reviewed atc86b3da2. The shared helper/harness bundle is maintained and banked separately by sol2. This commit does not by itself make the entire dispatch pipeline ready.

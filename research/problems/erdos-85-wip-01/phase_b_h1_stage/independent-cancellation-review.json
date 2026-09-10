@@ -1,0 +1,24 @@
+{
+  "cancelled_final_source": true,
+  "elapsed_seconds": 0.8769724580924958,
+  "failure_receipt": {
+    "id": "h1_003597af8a184e9f",
+    "sector": "H1",
+    "status": "ERROR",
+    "manifest_sha256": "c10965a5d9473107169badf4996b73da13edc522cf344c4bcdb45e1a05e7d16b",
+    "emitter_sha256": "4bd9604c6d670ad65a8ca332a26dbf35132418634a3b0678c177c8b2cfff4bf6",
+    "image_id": "sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6",
+    "expected_historical_sha256": "63ba3e99aa19f2ad56784f704afee5569808af699cd88d31a8ca54634e2e6f69",
+    "receipt_path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/phase_b_materializer_review/review1998/cancel-pilot/receipt.json",
+    "profile": 2,
+    "tag": "003597af8a184e9f",
+    "solver_launched": false,
+    "runner_sha256": "00201aa9e23c2c55bce8cab3532d5eaf34df9fdb24d0134df01a974e0ff74dbd",
+    "validator_sha256": "c86b3da2d855d3d5811a43b2ad5d02633264f0b36e60b4f4cf3672a4af46def5",
+    "table_sha256": "a6d1352e4d45286098970326f5d4a48c355cacbec0dad88474542c31bc0b2545",
+    "error": "InterruptedError: Input stage cancelled",
+    "container_absent": true
+  },
+  "success_container_freshly_absent": "erdos85-h1-input-63c73a7274494437923e0f87d608fc49",
+  "solver_launched": false
+}

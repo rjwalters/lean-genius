@@ -1,0 +1,54 @@
+{
+  "files": {
+    "sat49/materialize_h1_verdict_input.py": {
+      "sha256": "00201aa9e23c2c55bce8cab3532d5eaf34df9fdb24d0134df01a974e0ff74dbd",
+      "bytes": 10467
+    },
+    "sat49/test_materialize_h1_verdict_input.py": {
+      "sha256": "608f1b898fee7844d9c249422aa278ea8acb957b46b52f88ad4cb16bddcb61bf",
+      "bytes": 3697
+    },
+    "phase_b_h1_stage/README.md": {
+      "sha256": "ce5f174755b2ccaaf454f16dcfd1adefddabf54f53b2f81a282915f8e9ddf6a7",
+      "bytes": 2622
+    },
+    "phase_b_h1_stage/forced_timeout-receipt.json": {
+      "sha256": "827b3b55e8eb625df31d819ce46e2c46a8b29dc34fa690be9fd03293af53f4f3",
+      "bytes": 943
+    },
+    "phase_b_h1_stage/independent-cancellation-review.json": {
+      "sha256": "bf4c0d059ceaeac642cd7698283d889d741f6c491d062fb70e276471236843fc",
+      "bytes": 1244
+    },
+    "phase_b_h1_stage/independent-pilot-review.json": {
+      "sha256": "a143e011ed5caf2f09e0de775efb89da4aeaaf31eabb06047b419fef3cd16718",
+      "bytes": 4308
+    },
+    "phase_b_h1_stage/independent-source-pins.json": {
+      "sha256": "692bab44cee6ba6073d9b5bd94713b30682092eb2ff22393208a1591b9c7a886",
+      "bytes": 646
+    },
+    "phase_b_h1_stage/independent-tests.log": {
+      "sha256": "62de82e7b6905cddd6863b69a0b97cb709bc2ea2ed2368b8b9d6644c879ec341",
+      "bytes": 1359
+    },
+    "phase_b_h1_stage/initial-receipt.json": {
+      "sha256": "d98de37e33dc79bfe2af9bbab6ece99c360424e8f19f5920a1b1558afdd26387",
+      "bytes": 2587
+    },
+    "phase_b_h1_stage/native_timeout-receipt.json": {
+      "sha256": "e920a5c3ef9b6a19e66ad20a868405e4ff1aff94f3e30cf04634a21a8c2efdbb",
+      "bytes": 3068
+    },
+    "phase_b_h1_stage/selector-census.json": {
+      "sha256": "dff5399b4a93b5324ff7c0e47e1392e50c3063210394ac39cb7f60eb8cf8fe33",
+      "bytes": 307860
+    },
+    "phase_b_h1_stage/source-pins.json": {
+      "sha256": "692bab44cee6ba6073d9b5bd94713b30682092eb2ff22393208a1591b9c7a886",
+      "bytes": 646
+    }
+  },
+  "review": 1998,
+  "scope": "H1 single-case input stage and final-source independent validation; no solving."
+}
