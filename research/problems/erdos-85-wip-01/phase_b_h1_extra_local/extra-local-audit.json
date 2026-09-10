@@ -1,0 +1,37 @@
+{
+  "tag": "4ee646ca0ec3e2f0",
+  "profile": 1,
+  "canonical_sha256": "061a1aa2ac9a984079fc328b21923c930bc4c40dbf806deb690afec9c37cdeb5",
+  "variables": 41554,
+  "clauses": 611820,
+  "manifest_sha256": "c10965a5d9473107169badf4996b73da13edc522cf344c4bcdb45e1a05e7d16b",
+  "local_manifest_table_matches": true,
+  "paired_verdict_verified_mono": true,
+  "paired_drat_log_verified_matching_header": true,
+  "metadata": {
+    "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-profile1-all-even-reciprocal-5/manifest.tsv": {
+      "sha256": "e2c4009a2a459c6bbe2d035b66c772948a9d19d414d9de2c616d3b5a92c4e684",
+      "raw": "4ee646ca0ec3e2f0\t1\tABBB\t0 0 0 0 0 2 0 1 0 2 1 0 2 0 0 2 1 1 1 0 1 0 1 0\n528457773b2abef3\t1\tABBB\t0 0 0 0 0 2 0 1 1 1 1 0 0 2 0 2 2 0 1 0 1 0 1 0\n8d35c26cc42db606\t1\tABBB\t0 0 0 0 0 2 0 1 1 1 1 0 0 2 0 2 1 1 1 0 2 0 0 0\nb6eaecad0234c0d3\t1\tABBB\t0 0 0 0 0 2 0 1 0 1 2 0 4 0 0 0 0 1 1 1 0 0 1 1\nfa91192a322d685f\t1\tABBB\t0 0 0 0 0 2 0 1 0 1 1 1 4 0 0 0 0 1 1 1 0 0 2 0\n"
+    },
+    "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-profile1-all-even-reciprocal-5/queue.jsonl": {
+      "sha256": "5942b6194bc7c01ef981aebd8ae9bb1568f24aa157df02a88d88da375c181ce0",
+      "raw": "{\"(0, 7)\":2,\"(1, 3)\":1,\"(1, 5)\":2,\"(1, 6)\":1,\"(2, 4)\":2,\"(2, 7)\":2,\"(3, 4)\":1,\"(3, 5)\":1,\"(3, 6)\":1,\"(4, 6)\":1,\"(5, 6)\":1}\n{\"(0, 7)\":2,\"(1, 3)\":1,\"(1, 4)\":1,\"(1, 5)\":1,\"(1, 6)\":1,\"(2, 5)\":2,\"(2, 7)\":2,\"(3, 4)\":2,\"(3, 6)\":1,\"(4, 6)\":1,\"(5, 6)\":1}\n{\"(0, 7)\":2,\"(1, 3)\":1,\"(1, 4)\":1,\"(1, 5)\":1,\"(1, 6)\":1,\"(2, 5)\":2,\"(2, 7)\":2,\"(3, 4)\":1,\"(3, 5)\":1,\"(3, 6)\":1,\"(4, 6)\":2}\n{\"(0, 7)\":2,\"(1, 3)\":1,\"(1, 5)\":1,\"(1, 6)\":2,\"(2, 4)\":4,\"(3, 5)\":1,\"(3, 6)\":1,\"(3, 7)\":1,\"(5, 6)\":1,\"(5, 7)\":1}\n{\"(0, 7)\":2,\"(1, 3)\":1,\"(1, 5)\":1,\"(1, 6)\":1,\"(1, 7)\":1,\"(2, 4)\":4,\"(3, 5)\":1,\"(3, 6)\":1,\"(3, 7)\":1,\"(5, 6)\":2}\n"
+    },
+    "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-profile1-all-even-reciprocal-5/lean-exact-solve/4ee646ca0ec3e2f0.v2.verdict": {
+      "sha256": "8b0e699b5bb1260b0f900c219096fa25821957285bd8dea78086ff9053251e21",
+      "raw": "4ee646ca0ec3e2f0 UNSAT 214.0s drat:VERIFIED mode:MONO arm:v2 lean-exact:MATCH profile:1\n"
+    },
+    "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-profile1-all-even-reciprocal-5/lean-exact-solve/4ee646ca0ec3e2f0.drat-trim.log": {
+      "sha256": "32c5c408b5a6fecfb9760b09751d0e941f09e2c7d46fe76ace0dc30a8d2a3576",
+      "raw": "\nc parsing input formula with 41554 variables and 611820 clauses\n\nc finished parsing\n\nc detected empty clause; start verification via backward checking\n\nc 68997 of 611820 clauses in core                            \n\nc 2325275 of 4300361 lemmas in core using 77294473 resolution steps\n\nc 0 RAT lemmas in core; 1680620 redundant literals in core lemmas\n\ns VERIFIED\n\nc verification time: 312.468 seconds\n"
+    }
+  },
+  "existing_lrat": {
+    "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-profile1-all-even-reciprocal-5/v2-lrat/4ee646ca0ec3e2f0.v2.compact.lrat",
+    "bytes": 832982217,
+    "contents_checked": false
+  },
+  "proof_replayed": false,
+  "added_to_overlay": false,
+  "scope": "Additional historical evidence candidate outside original remote-sweeps98. Independent CNF rehash plus local manifest and paired verdict/log joins. Proof validity is historical, not freshly replayed; LRAT is existence/size only."
+}
