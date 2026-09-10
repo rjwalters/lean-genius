@@ -22,7 +22,7 @@ from typing import Any
 
 from replay_common import ReplayError, atomic_write, canonical_json, load_manifest, require_tag, sha256_file
 from replay_worker import validate_job
-from cleanup_replay_work import cleanup_accepted_work
+from cleanup_replay_work import cleanup_accepted_work, validate_cleanup_layout
 
 
 HERE = Path(__file__).resolve().parent
@@ -162,6 +162,7 @@ def main() -> int:
         if type(args.cleanup_enabled) is not bool:
             raise ReplayError("manifest cleanup_accepted_work must be boolean")
         if args.cleanup_enabled:
+            validate_cleanup_layout(args, manifest)
             if args.parallelism != 1:
                 raise ReplayError("validated scratch cleanup currently requires P=1")
             if manifest.get("cleanup_sha256") != sha256_file(HERE / "cleanup_replay_work.py"):

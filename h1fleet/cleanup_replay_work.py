@@ -37,11 +37,32 @@ def checked_directory(path: Path) -> Path:
     return path
 
 
+
+def validate_cleanup_layout(args: argparse.Namespace, manifest: dict) -> None:
+    """No durable evidence, controls or host lock may lie in any job scratch."""
+    state = args.state_dir.absolute()
+    work_root = state / 'work'
+    if state != state.resolve() or work_root != work_root.resolve():
+        raise ReplayError('cleanup state/work roots must be canonical, not symlinked')
+    protected = [args.manifest, Path(manifest['single_writer_lock_path']),
+                 state/'jobs', state/'dispatch', state/'cleanup']
+    if getattr(args, 'queue', None) is not None:
+        protected.append(args.queue)
+    if args.object_store_root is not None:
+        store = args.object_store_root
+        protected.extend([store, store/'objects', store/'meta'])
+    for path in protected:
+        resolved = path.resolve()
+        if resolved == work_root or work_root in resolved.parents:
+            raise ReplayError(f'protected cleanup input/store/lock lies inside scratch: {path}')
+
+
 def cleanup_accepted_work(args: argparse.Namespace, job: dict, dispatch: dict) -> dict:
     """Called under the dispatcher's host lock, after the worker has exited."""
     tag = require_tag(job.get('tag'))
     manifest = load_manifest(args.manifest)
     manifest_sha = sha256_file(args.manifest)
+    validate_cleanup_layout(args, manifest)
     if manifest.get('cleanup_accepted_work') is not True:
         raise ReplayError('cleanup is not enabled by the frozen manifest')
     if manifest.get('cleanup_sha256') != sha256_file(Path(__file__)):
@@ -100,6 +121,7 @@ def cleanup_accepted_work(args: argparse.Namespace, job: dict, dispatch: dict) -
             shutil.copyfileobj(inp, out, length=1024*1024)
             out.flush(); os.fsync(out.fileno())
         retained.append({'path': name, 'sha256': sha256_file(destination), 'bytes': destination.stat().st_size})
+    validate_cleanup_layout(args, manifest)
     checked_directory(work_root); checked_directory(work)
     if (work.stat().st_dev, work.stat().st_ino) != work_identity:
         raise ReplayError('cleanup scratch directory changed during validation')

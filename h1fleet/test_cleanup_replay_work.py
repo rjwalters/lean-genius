@@ -1,6 +1,7 @@
 import argparse
 import json
 import subprocess
+import shutil
 import sys
 import unittest
 from pathlib import Path
@@ -105,6 +106,56 @@ class CleanupTests(unittest.TestCase):
         self.assertTrue(work.exists())
         target.cleanup_accepted_work(self.args, self.job, self.dispatch)
         self.assertFalse(work.exists())
+
+    def test_nested_published_store_rejected_before_dispatch_and_preserved(self):
+        work = self.accepted()
+        nested = work/'published-store'
+        shutil.copytree(self.f.store_root, nested)
+        receipt = nested/'objects'/self.f.receipt_path().relative_to(self.f.store.objects)
+        before = sha256_file(receipt)
+        self.f.store_root = nested
+        result = self.dispatch_queue()
+        self.assertEqual(result.returncode, 2)
+        self.assertIn('protected cleanup', result.stderr)
+        self.assertEqual(sha256_file(receipt), before)
+        self.assertTrue(work.is_dir())
+        self.assertFalse((self.f.state/'dispatch'/'START.json').exists())
+        self.args.object_store_root = nested
+        with self.assertRaisesRegex(ReplayError, 'protected cleanup'):
+            target.cleanup_accepted_work(self.args, self.job, self.dispatch)
+        self.assertEqual(sha256_file(receipt), before)
+
+    def test_symlink_store_and_protected_control_paths_rejected(self):
+        work = self.accepted()
+        manifest = json.loads(self.f.manifest.read_text())
+        nested = work/'store'; nested.mkdir()
+        alias = self.f.root/'store-alias'; alias.symlink_to(nested, target_is_directory=True)
+        for store in (nested, alias):
+            with self.subTest(store=store):
+                args = argparse.Namespace(**vars(self.args)); args.object_store_root = store
+                with self.assertRaisesRegex(ReplayError, 'protected cleanup'):
+                    target.validate_cleanup_layout(args, manifest)
+        for field in ('manifest', 'queue', 'lock'):
+            args = argparse.Namespace(**vars(self.args)); current = dict(manifest)
+            path = work/(field+'.control'); path.write_text('must retain')
+            if field == 'lock': current['single_writer_lock_path'] = str(path)
+            else: setattr(args, field, path)
+            with self.subTest(field=field), self.assertRaisesRegex(ReplayError, 'protected cleanup'):
+                target.validate_cleanup_layout(args, current)
+            self.assertEqual(path.read_text(), 'must retain')
+
+    def test_layout_is_rechecked_after_independent_validation(self):
+        work = self.accepted()
+        actual_run = target.subprocess.run
+        def move_store_arg(*args, **kwargs):
+            result = actual_run(*args, **kwargs)
+            self.args.object_store_root = work/'late-store'
+            return result
+        with patch.object(target.subprocess, 'run', side_effect=move_store_arg):
+            with self.assertRaisesRegex(ReplayError, 'protected cleanup'):
+                target.cleanup_accepted_work(self.args, self.job, self.dispatch)
+        self.assertTrue(work.exists())
+        self.assertFalse(list((self.f.state/'cleanup').glob('*/cleanup.json')))
 
     def test_failure_stops_before_third_job_and_counts_skipped(self):
         jobs = [self.job]
