@@ -22,6 +22,7 @@ from typing import Any
 
 from replay_common import ReplayError, atomic_write, canonical_json, load_manifest, require_tag, sha256_file
 from replay_worker import validate_job
+from cleanup_replay_work import cleanup_accepted_work
 
 
 HERE = Path(__file__).resolve().parent
@@ -100,8 +101,19 @@ def run_job(args: argparse.Namespace, job: dict[str, Any], queue_sha: str,
         "wall_ns": finished - started, "returncode": completed.returncode,
         "stdout": completed.stdout, "stderr": completed.stderr,
     }
+    if completed.returncode == 0 and getattr(args, "cleanup_enabled", False):
+        receipt["worker_wall_ns"] = receipt["wall_ns"]
+        receipt["worker_finished_unix_ns"] = finished
+        try:
+            receipt["cleanup"] = cleanup_accepted_work(args, job, receipt)
+        except (OSError, ReplayError, subprocess.SubprocessError) as error:
+            receipt["worker_returncode"] = completed.returncode
+            receipt["returncode"] = 2
+            receipt["cleanup_error"] = str(error)
+        receipt["finished_unix_ns"] = time.time_ns()
+        receipt["wall_ns"] = receipt["finished_unix_ns"] - started
     destination = args.state_dir / "dispatch" / (
-        "accepted" if completed.returncode == 0 else "failed"
+        "accepted" if receipt["returncode"] == 0 else "failed"
     ) / f"{tag}.json"
     atomic_write(destination, canonical_json(receipt))
     return receipt
@@ -146,6 +158,16 @@ def main() -> int:
             raise ReplayError("worker SHA-256 differs from manifest")
         if manifest.get("single_dispatcher") is not True:
             raise ReplayError("manifest must explicitly require single_dispatcher=true")
+        args.cleanup_enabled = manifest.get("cleanup_accepted_work", False)
+        if type(args.cleanup_enabled) is not bool:
+            raise ReplayError("manifest cleanup_accepted_work must be boolean")
+        if args.cleanup_enabled:
+            if args.parallelism != 1:
+                raise ReplayError("validated scratch cleanup currently requires P=1")
+            if manifest.get("cleanup_sha256") != sha256_file(HERE / "cleanup_replay_work.py"):
+                raise ReplayError("cleanup helper SHA-256 differs from manifest")
+            if manifest.get("validator_sha256") != sha256_file(HERE / "validate_replay_receipt.py"):
+                raise ReplayError("cleanup validator SHA-256 differs from manifest")
         lock_path = Path(manifest["single_writer_lock_path"])
         lock_handle = acquire_single_writer_lock(lock_path)
 
@@ -158,16 +180,25 @@ def main() -> int:
         }
         atomic_write(args.state_dir / "dispatch" / "START.json", canonical_json(start_record))
         results: list[dict[str, Any]] = []
-        with concurrent.futures.ThreadPoolExecutor(max_workers=args.parallelism) as executor:
-            futures = [executor.submit(run_job, args, job, queue_sha, worker_sha) for job in jobs]
-            for future in concurrent.futures.as_completed(futures):
-                results.append(future.result())
+        if args.cleanup_enabled:
+            for job in jobs:
+                result = run_job(args, job, queue_sha, worker_sha)
+                results.append(result)
+                if result["returncode"] != 0:
+                    break
+        else:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=args.parallelism) as executor:
+                futures = [executor.submit(run_job, args, job, queue_sha, worker_sha) for job in jobs]
+                for future in concurrent.futures.as_completed(futures):
+                    results.append(future.result())
         failed = [result for result in results if result["returncode"] != 0]
         end_record = {
             "schema": "erdos85-h1-replay-dispatch-end-v2",
             "manifest_sha256": start_record["manifest_sha256"],
             "queue_sha256": queue_sha, "worker_sha256": worker_sha,
-            "jobs": len(jobs), "accepted": len(jobs) - len(failed),
+            "jobs": len(jobs), "scheduled": len(results),
+            "accepted": len(results) - len(failed),
+            "skipped_tags": sorted(set(job["tag"] for job in jobs) - set(result["tag"] for result in results)),
             "failed": len(failed), "failed_tags": sorted(result["tag"] for result in failed),
             "single_writer_lock_path": str(lock_path), "finished_unix_ns": time.time_ns(),
         }

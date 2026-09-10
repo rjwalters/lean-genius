@@ -343,6 +343,8 @@ def main() -> int:
     parser.add_argument("--leaf-index", type=Path, required=True)
     parser.add_argument("--evidence", type=Path, required=True)
     parser.add_argument("--module-prefix", required=True)
+    parser.add_argument("--allow-partial", action="store_true",
+                        help="materialize this shard only; not full H1 coverage")
     backend = parser.add_mutually_exclusive_group(required=True)
     backend.add_argument("--object-store-root", type=Path)
     backend.add_argument("--s3-bucket")
@@ -364,11 +366,14 @@ def main() -> int:
             validate_one=validate_replay_receipt,
             validator_backend={"object_store_root": args.object_store_root,
                                "s3_bucket": args.s3_bucket, "aws": args.aws},
+            require_complete=not args.allow_partial,
         )
     except (OSError, ValueError, ReplayError, subprocess.SubprocessError) as error:
         print(f"INVALID: {error}", file=sys.stderr)
         return 2
-    print(f"WROTE {args.leaf_index} leaves={sum(CAPACITY_PROFILE_COUNTS)}")
+    leaf_count = load_json(args.leaf_index)["leaf_count"]
+    print(f"WROTE {args.leaf_index} leaves={leaf_count} "
+          f"coverage={'partial' if args.allow_partial else 'complete'}")
     return 0
 
 
