@@ -1,0 +1,92 @@
+{
+  "scope": "Exact scalar systems and quotient trace/determinant only; graph reduction remains paper",
+  "sympy_version": "1.14.0",
+  "cross_entry_checks": [
+    {
+      "component_pair": "12/22",
+      "linear_solution": {
+        "alpha": "-12*beta + 21*delta",
+        "gamma": "-3*beta + 5*delta"
+      },
+      "allowed_cross_entries": [
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "component_pair": "10/24",
+      "linear_solution": {
+        "alpha": "2*beta - 6*delta",
+        "gamma": "7*beta/2 - 9*delta"
+      },
+      "allowed_cross_entries": [
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "component_pair": "10/12",
+      "linear_solution": {
+        "alpha": "2*beta - 3*delta",
+        "gamma": "7*beta - 9*delta"
+      },
+      "allowed_cross_entries": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          -1,
+          1,
+          -2,
+          1
+        ]
+      ]
+    }
+  ],
+  "remaining_12_24_cross_entries": [
+    [
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      2,
+      0,
+      1,
+      0
+    ],
+    [
+      4,
+      0,
+      2,
+      0
+    ],
+    [
+      6,
+      0,
+      3,
+      0
+    ]
+  ],
+  "trace_candidates": [
+    [
+      1,
+      1
+    ]
+  ],
+  "forced_determinant": "9 - 23*a",
+  "required_determinant": -3,
+  "contradiction": "Equality would force a=12/23, incompatible with a>6"
+}
