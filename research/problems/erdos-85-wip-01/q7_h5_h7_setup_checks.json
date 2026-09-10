@@ -1,0 +1,184 @@
+{
+  "scope": "exact setup checks; no graph exclusion or realizability test",
+  "sympy_version": "1.14.0",
+  "profiles": [
+    {
+      "h": 5,
+      "triples": [],
+      "support_counts": [
+        14,
+        20,
+        10,
+        0
+      ],
+      "gram_det": 499408,
+      "gram_square_class": 13,
+      "totals_m_T_U": [
+        44,
+        40,
+        60
+      ],
+      "triangle_interval": [
+        5,
+        30
+      ],
+      "component_arithmetic_conditional_on_paper_lemmas": [
+        [
+          {
+            "s": 8,
+            "k": 4,
+            "order": 44
+          }
+        ]
+      ]
+    },
+    {
+      "h": 5,
+      "triples": [
+        [
+          0,
+          1,
+          2
+        ]
+      ],
+      "support_counts": [
+        13,
+        23,
+        7,
+        1
+      ],
+      "gram_det": 499408,
+      "gram_square_class": 13,
+      "totals_m_T_U": [
+        44,
+        40,
+        60
+      ],
+      "triangle_interval": [
+        5,
+        30
+      ],
+      "component_arithmetic_conditional_on_paper_lemmas": [
+        [
+          {
+            "s": 8,
+            "k": 4,
+            "order": 44
+          }
+        ],
+        [
+          {
+            "s": 2,
+            "k": 0,
+            "order": 12
+          },
+          {
+            "s": 2,
+            "k": 0,
+            "order": 12
+          },
+          {
+            "s": 4,
+            "k": 4,
+            "order": 20
+          }
+        ]
+      ]
+    },
+    {
+      "h": 5,
+      "triples": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          3,
+          4
+        ]
+      ],
+      "support_counts": [
+        12,
+        26,
+        4,
+        2
+      ],
+      "gram_det": 499408,
+      "gram_square_class": 13,
+      "totals_m_T_U": [
+        44,
+        40,
+        60
+      ],
+      "triangle_interval": [
+        4,
+        30
+      ],
+      "component_arithmetic_conditional_on_paper_lemmas": [
+        [
+          {
+            "s": 8,
+            "k": 4,
+            "order": 44
+          }
+        ],
+        [
+          {
+            "s": 2,
+            "k": 0,
+            "order": 12
+          },
+          {
+            "s": 2,
+            "k": 0,
+            "order": 12
+          },
+          {
+            "s": 4,
+            "k": 4,
+            "order": 20
+          }
+        ]
+      ]
+    },
+    {
+      "h": 7,
+      "triples": [],
+      "support_counts": [
+        7,
+        14,
+        21,
+        0
+      ],
+      "gram_det": 16470860,
+      "gram_square_class": 35,
+      "totals_m_T_U": [
+        42,
+        56,
+        98
+      ],
+      "triangle_interval": [
+        3,
+        23
+      ],
+      "component_arithmetic_conditional_on_paper_lemmas": [
+        [
+          {
+            "s": 8,
+            "k": 6,
+            "order": 42
+          }
+        ]
+      ]
+    }
+  ],
+  "h5_component_conic": {
+    "delta": "129920*a - 104400",
+    "u": "a/2 - 9/4",
+    "v": "2*a/145 - 199/2320",
+    "identity_remainder": 0,
+    "scope": "Conic witness only; no graph/spectrum realization"
+  }
+}

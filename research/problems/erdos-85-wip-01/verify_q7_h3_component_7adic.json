@@ -1,0 +1,33 @@
+{
+  "scope": "Exact field-form arithmetic and primitive mod49 obstruction only; graph-to-form and Q7 embedding are paper proofs",
+  "minimal_polynomial": "a**2 - 7*a + 3",
+  "component_parameters": [
+    [
+      10,
+      2,
+      2
+    ],
+    [
+      12,
+      2,
+      0
+    ],
+    [
+      24,
+      4,
+      0
+    ]
+  ],
+  "norms": [
+    "58*a - 18",
+    "72*a - 30",
+    "144*a - 60"
+  ],
+  "total_norm": "274*a - 108",
+  "diagonal_ratio": "50024*a - 22866",
+  "hensel_root_mod49": 16,
+  "b_mod49": 40,
+  "delta_mod49": 35,
+  "triples_checked": 117649,
+  "primitive_solutions_mod49": []
+}

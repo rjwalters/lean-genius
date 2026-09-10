@@ -1,0 +1,20 @@
+{
+  "scope": "Exact algebra and polynomial controls only; no spectral or graph realizability",
+  "sympy_version": "1.14.0",
+  "controls": [
+    {
+      "h": 5,
+      "degree": 38,
+      "passing_polynomial_controls": 16,
+      "failing_same_parity_mutations": 16,
+      "W_mod2": "0"
+    },
+    {
+      "h": 7,
+      "degree": 34,
+      "passing_polynomial_controls": 16,
+      "failing_same_parity_mutations": 16,
+      "W_mod2": "u**5 + u**4 + u**2 + u"
+    }
+  ]
+}
