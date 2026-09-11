@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "assignments": 28908,
+  "counts": {
+    "INFEASIBLE_ROW": 28614,
+    "INFEASIBLE_ARC": 294
+  },
+  "domains": 38904,
+  "rows": 29258,
+  "batches": 484,
+  "failed_support_rows": 562,
+  "pins": 20,
+  "fixed_fixture_domains": 1155,
+  "fixed_fixture_rows": 2896,
+  "seconds": 0.6097722919657826,
+  "conclusion": "Entire a7 F=C7 subcase excluded by accepted2107/2110/2114 covering chain plus all checked residual endpoints. Other F,a6,H7,Lean/global remain open."
+}

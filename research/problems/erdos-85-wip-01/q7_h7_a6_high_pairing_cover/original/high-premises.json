@@ -1,0 +1,40 @@
+[
+  {
+    "id": 2118,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "Complete a6 E/S projection: all 54264 six-edge F subsets -> 31332 valid labelled / 19 F orbits; 26012 X subsets -> 2192 raw / 358 Aut(F) orbits. All 358 singleton completions terminal, 267 negative and 91 positive with 3284 labelled E/S graphs, 85134 states, maximum 8568. Independent fixed-ascending wholegraph path-collision traversal exactly reproduces all 3284 sets, 17.662s maximum 56903 states/base. Both original 100k/base 60s passes uncapped. Eight payload pins and live accepted premises. Please audit finite cover and singleton completeness. No high/P assignment or a6/global exclusion. Sol1 owns downstream extension.",
+    "refs": "[\"/Users/rwalters/lean-genius-erdos85-goal48-sol3/h7-a6-empty-singleton-projection/README.md\"]",
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T01:18:58.106Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T01:20:01.412Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T01:22:08.272Z",
+    "resolution": "PASS complete a6 E/S projection. Independent reversed-edge F enumeration with length-two collisions and explicit S7 orbits reproduces31332labelled/19Fclasses; complementary X-subset enumeration and AutF orbits reproduce2192raw/358classes. Different fixed core-first star traversal recovers exact3284solution sets on91positive/267negative bases,75698nodes,max9992,0.192s; cover0.408s,no caps. Audited generalized7-2d capacity,11double/3single hosts,naming quotient and degree/C4 conditions.8pins/livepremises verified. Evidence /Users/rwalters/lean-genius-q7-outside-first-20260910/review-2118. Complete projection only; high/P assignment and a6/H7/Lean/global remain open.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null
+  },
+  {
+    "id": 2119,
+    "target": "codex-sol-3",
+    "requested_by": "codex-sol-1",
+    "body": "A6 extension preparation before research use: canonical3mixed+4double/double high-pair cover,103950raw candidates, mixed nonedges only. Native bounded high-pairing enumerator tested against independent permutations/pair partitions on4combinatorial unit inputs including allowed adjacent double pairs; zero/expired guardsPASS. Also proof2113 singleton-host criterion extends to a6 (174templates), and assigning formerlyzero P host can only remove rows; exhaustive73728localhost algebra casesPASS. 8payloadpins/live2091/2096/2113. Please audit cover/code and monotone criterion. No a6 research inputs launched; projection2118 separate gate.",
+    "refs": "[\"/tmp/erdos85-sol1-h7-a6-high-api/CRITERION.md\"]",
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T01:21:03.979Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-3",
+    "claimed_ts": "2026-09-11T01:24:38.431Z",
+    "resolved_by": "codex-sol-3",
+    "resolved_ts": "2026-09-11T01:26:25.883Z",
+    "resolution": "PASS canonical high-pair cover and generalized monotone singleton criterion. Independently compiled native; largest-leaf pairing recursion matches exact sets on ten unit/graph fixtures including six relabelled adjacent-double cases,40 cap/deadline guards. Exhaustive73728 host cases and186368 refinements verify monotonicity. Independent full49 singleton-star tests on adjacent same-high a6 fixture reproduce182 domains/1372 rows through13 partial-host stages. Audited caller preconditions, mixed-only nonedge restriction, missing-colour matching proof and fixed native tree bound251582 preventing int overflow. Eight sourcepins/livepremises exact. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2119. API/criterion only; future driver needs exact2118 join and fixed budgets, no family exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null
+  }
+]

@@ -1,0 +1,65 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "kind": "unrestricted_existing_a6_fixture",
+      "nodes": 6914,
+      "solutions": 25,
+      "prunes": 26,
+      "coverage": {
+        "status": "COMPLETE",
+        "prefixes": 26,
+        "solutions": 25,
+        "coverage_proved": true,
+        "nodes": 164
+      }
+    },
+    {
+      "kind": "relabelled_fixed",
+      "index": 0,
+      "nodes": 478,
+      "solutions": 0,
+      "prunes": 1
+    },
+    {
+      "kind": "relabelled_fixed",
+      "index": 1,
+      "nodes": 639,
+      "solutions": 1,
+      "prunes": 0
+    },
+    {
+      "kind": "relabelled_fixed",
+      "index": 2,
+      "nodes": 477,
+      "solutions": 0,
+      "prunes": 1
+    },
+    {
+      "kind": "relabelled_fixed",
+      "index": 3,
+      "nodes": 601,
+      "solutions": 0,
+      "prunes": 1
+    },
+    {
+      "kind": "relabelled_fixed",
+      "index": 4,
+      "nodes": 525,
+      "solutions": 0,
+      "prunes": 1
+    },
+    {
+      "kind": "relabelled_fixed",
+      "index": 5,
+      "nodes": 585,
+      "solutions": 0,
+      "prunes": 1
+    }
+  ],
+  "prefixes_replayed": 59,
+  "survivor_singleton_domains": 728,
+  "structural_nodes": 203,
+  "seconds": 0.6743209580890834,
+  "scope": "One existing a6 fixture unrestricted traversal fully independently covered; six new high/low relabel fixed-host fixtures. All prefix endpoints direct49graph-star checked, all survivor singleton domains nonempty. UNKNOWN receipts preserve verified partial results without completeness. No family launch."
+}

@@ -1,0 +1,9 @@
+# Singleton-complete residual API for a6
+
+This adapts accepted Python API 2109 and native API 2111 to a6. Only the validators change: exactly three highs must have singleton empty-host counts [1,2] and four must have [2,2]. Same-high singleton edges are forbidden at the three mixed highs by 2096, and allowed at the four double/double highs. The remaining complete-star enumeration, subtraction of known neighbour colours, P-only additional singleton rows, arc traversal, atomic batches and UNKNOWN handling are unchanged. In particular a known same-high neighbour already covers the singleton's own high colour.
+
+The graph has 49 vertices, with highs at 0..6 and arbitrary low labels. High support multiplicities, complete empty degrees, pair vertices without assigned active-low edges, complete singleton degrees, C4-freeness and H/E saturation are all validated. Invalid a7 input is rejected by this a6-only interface. Native budgets range from zero through INT_MAX; the internal counter remains signed 64-bit. Research limits are not increased.
+
+The source fixture supplied by sol3 has an adjacent same-high double/double singleton pair and is retained with its construction provenance. The original plus eleven arbitrary high/low relabellings pass 96 exact full-object budget comparisons, 12 expired deadlines and 72 invalid-input rejections. A separate increasing-candidate-subset implementation regenerates all 420 complete domains and 2196 rows exactly, using 113362 nodes in 0.026 seconds. Both validators additionally reject an a7 fixture. The inherited UBSan counter-boundary test crosses INT_MAX and raises its limit exception without overflow.
+
+Run `sh build.sh` and `python3 test.py`. Compile `subsets.cpp` as a shared library for `python3 independent.py`. These are fixed-fixture tests only; no a6 family filter or a6 exclusion is claimed. Independent review is required before family use.

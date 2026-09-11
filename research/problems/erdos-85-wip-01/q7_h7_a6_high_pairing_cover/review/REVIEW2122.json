@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "cases": 3284,
+  "colourings": 818836,
+  "matching_DP_states": 1527438,
+  "max_DP_states": 587,
+  "max_author_nodes": 9456,
+  "direct_graph_fixtures": 3284,
+  "seconds": 4.3084616670385,
+  "scope": "Exact2118 source bytes and ordered3284case join; independent whole14vertex perfect-matching DP interleaves mixed/double pair choices. Count plus validity/canonical uniqueness proves every818836assignment. One direct28vertex high-graph C4 check per case. No P-host stage or full graph closure.",
+  "review": 2122,
+  "payload_pins": 18,
+  "premises": [
+    2118,
+    2119
+  ],
+  "audit": "The given output colours correspond bijectively to perfect matchings on the fourteen singleton vertices with core/core pairs forbidden, core/leaf pairs subject to mixed nonedge and disjoint neighborhoods, and leaf/leaf pairs subject to disjoint neighborhoods. Core high labels are fixed, remaining labels canonical by least leaf. The independent whole14vertex DP enumerates unordered matchings without the author mixed-first decomposition. Every output is valid and distinct, and matching counts agree casewise. Driver copies and verifies exact accepted sources before one launch marker, uses 100000 node calls with the remaining60second budget, and records every case once. All3284 cases terminal; no artifact stop or empty case. Pair-host and full residual stages remain unsearched."
+}

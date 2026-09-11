@@ -1,0 +1,73 @@
+{
+  "status": "PASS",
+  "fixtures": 12,
+  "comparisons": 96,
+  "expired": 12,
+  "invalid_rejections": 72,
+  "timings": {
+    "python": 0.020684750052168965,
+    "native": 0.0030891248025000095
+  },
+  "results": [
+    {
+      "index": 0,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2288
+    },
+    {
+      "index": 1,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2381
+    },
+    {
+      "index": 2,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2346
+    },
+    {
+      "index": 3,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2282
+    },
+    {
+      "index": 4,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2382
+    },
+    {
+      "index": 5,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2366
+    },
+    {
+      "index": 6,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2468
+    },
+    {
+      "index": 7,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2426
+    },
+    {
+      "index": 8,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2437
+    },
+    {
+      "index": 9,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2536
+    },
+    {
+      "index": 10,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2589
+    },
+    {
+      "index": 11,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2267
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+# Full residual rows after the singleton shortcut
+
+This driver is prepared for the surviving original assignment indices from the independently reviewed singleton-shortcut pass. It does not examine assignments that that pass left unvisited, and it retains their count in the final summary. It never retries a capped pass.
+
+`batch.cpp` reconstructs each 49-vertex graph from the accepted E/S graph, high pairing and seven matching masks, then invokes the exact native residual checker. That checker completes all 35 initial domains before applying arc consistency. Row-negative receipts retain the first empty vertex and operation count; their independent verification must reconstruct that complete row domain. Every other receipt preserves the native API's full JSON object, including incomplete domains/batches and full arc deletion evidence.
+
+Each partial graph has a fresh 100000-operation limit. One 60-second aggregate deadline covers the pass; the batch wrapper checks it before each graph and passes it to the checker. The output contains explicit visited and unvisited counts, as well as all UNKNOWN and ARC_FEASIBLE indices. ARC_FEASIBLE is not a complete-graph witness. Source and receipt order are checked against the original singleton-shortcut certificate string.
+
+The test converts the 33 old fixtures to the driver's canonical labels without using the new research family. All 165 exact reduced-receipt comparisons pass; 33 expired batches visit no graph, and 33 two-graph zero-budget batches correctly return two UNKNOWN results. Compile with `clang++ -std=c++17 -O2 -shared -fPIC batch.cpp -o batch.dylib`, then run `python3 test.py`.
+
+The guarded research entry point is `python3 run.py --source-review REVIEW_ID`. It requires live acceptance of 2110 (incidence coverage), 2111 (native residual API), and the supplied review of the singleton-shortcut pass. It verifies source manifests and native source identity before creating a no-retry launch marker. The single guarded research pass has now completed; launch.json and all receipts are retained.
+
+All 28,908 accepted singleton survivors were visited: 28,614 empty-row negatives and 294 arc negatives, with zero UNKNOWN or unvisited cases. The pass used 50,181,978 operations in 3.685 seconds. Independent increasing-candidate-subset enumeration verifies every selected empty row and every initial domain in all arc receipts: 38,904 domains, 29,258 rows, 9,064,772 nodes (maximum 6,936 per graph). Direct full-neighbour support checks replay all 484 deletion batches and 562 unsupported rows. Verification finishes in 1.620 seconds without caps. `subsets.cpp` and `verify.py` implement this independent check.

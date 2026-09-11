@@ -1,0 +1,73 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "kind": "unrestricted_existing_a6_fixture",
+      "nodes": 6914,
+      "solutions": 25,
+      "prunes": 26,
+      "coverage": {
+        "status": "COMPLETE",
+        "prefixes": 26,
+        "solutions": 25,
+        "coverage_proved": true,
+        "nodes": 164
+      }
+    },
+    {
+      "kind": "relabelled_fixed",
+      "index": 0,
+      "nodes": 478,
+      "solutions": 0,
+      "prunes": 1
+    },
+    {
+      "kind": "relabelled_fixed",
+      "index": 1,
+      "nodes": 639,
+      "solutions": 1,
+      "prunes": 0
+    },
+    {
+      "kind": "relabelled_fixed",
+      "index": 2,
+      "nodes": 477,
+      "solutions": 0,
+      "prunes": 1
+    },
+    {
+      "kind": "relabelled_fixed",
+      "index": 3,
+      "nodes": 601,
+      "solutions": 0,
+      "prunes": 1
+    },
+    {
+      "kind": "relabelled_fixed",
+      "index": 4,
+      "nodes": 525,
+      "solutions": 0,
+      "prunes": 1
+    },
+    {
+      "kind": "relabelled_fixed",
+      "index": 5,
+      "nodes": 585,
+      "solutions": 0,
+      "prunes": 1
+    }
+  ],
+  "prefixes_replayed": 59,
+  "survivor_singleton_domains": 728,
+  "structural_nodes": 203,
+  "seconds": 0.6743209580890834,
+  "scope": "PASS shared a6/a7 host API and one bounded unrestricted existing-fixture traversal. No F9 or a6 family pass was launched; caller still owns exact accepted input join and aggregate/no-retry budgets.",
+  "review": 2123,
+  "payload_pins": 15,
+  "premises": [
+    2113,
+    2119,
+    2120
+  ],
+  "audit": "Validated support multiset forces exactly seven empties,14singletons,21pair supports and forbids any initial P-low edge. E and S capacities plus high type counts force a6 or a7. C4 condition guarantees no repeated known high colour; missing() checks it again. Local least-colour perfect matching enumeration is exhaustive. Stable decreasing-F-degree empty order is fixed; host recursion assigns all local choices, discarding precisely repeatedP hosts. Every optimistic singleton prune has a fully checked empty domain by2119; tick occurs before a row test, so interruption cannot emit a false negative. Copy-by-value receipts retain only completed prefix checks; mutated live state at timeout is never emitted. Leaves are emitted only after depth7 singleton tests. Signed64 counter plus public INT_MAX cap avoids overflow, and wrapper rejects nonfinite/out-of-range durations. UNKNOWN makes no completion claim."
+}

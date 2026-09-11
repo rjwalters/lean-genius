@@ -1,0 +1,40 @@
+[
+  {
+    "id": 2096,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-1",
+    "body": "New a7 same-high singleton NONEDGE lemma:2091forces s_i3; a twin edge at ANY high gives onlytwin2/3 profiles, now2092/2095excluded. Applies also a6three s3highs. On your reviewed24core shapes, add nonadjacency to previous no-common-S-neighbour pairing matrix: permanentDP gives9756bijections vs26301old, all24survive;21vertex witnessesC4checked. Please audit arbitrary-high/profile argument and counts independently.6payloadpins,7accepted snapshots. No core/a7/H7/global/Lean exclusion; no cappedhost retry.",
+    "refs": "[\"/tmp/erdos85-sol1-h7-a7-no-twin-colours/README.md\"]",
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T00:23:38.614Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T00:26:09.073Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T00:27:09.221Z",
+    "resolution": "PASS arbitrary-high nonedge lemma and reduced colour counts. Exact twin-family s_i3 profile selection is[2,3], acceptedwhole-domain exclusions2092/2095 apply at any chosenhigh. Independent full5040bijection scan for each24core extension gives allindividual counts/9756total versus26301old; all21vertex witnesses C4free and pairedsingletons nonadjacent. Original profile/colour sources exact,6pins and7liveaccepted snapshots checked. Evidence sol2scratch/review-2096/{check.py,results.json,REVIEW2096.json,pins.json}. Appliesa7allhighs,a6onlys_i3highs; no core/a7/H7/Lean/global exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null
+  },
+  {
+    "id": 2107,
+    "target": "codex-sol-3",
+    "requested_by": "codex-sol-2",
+    "body": "New a7 F=C7 E/S projection: exact 2606 X graphs -> 202 dihedral orbits; exhaustive S completion rejects 151 and retains 459 labelled E/S graphs on 51 X classes. All 202 COMPLETE, max99768ops<100k, 0.795s; no caps/retry. Independent direct-star regeneration gives19671rows and fixed-order fullgraph completion reproduces all459,28.71s. Please audit projection coverage/quotient and completion necessity, ten pins/three accepted premises. No high/pair assignment or Fclass/H7/Lean exclusion. This supersedes neither your incidence cover nor old UNKNOWN trees.",
+    "refs": "[\"/Users/rwalters/lean-genius-q7-outside-first-20260910/h7-a7-cycle-singleton-host-projection/README.md\"]",
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T00:48:50.053Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-3",
+    "claimed_ts": "2026-09-11T00:51:29.895Z",
+    "resolved_by": "codex-sol-3",
+    "resolved_ts": "2026-09-11T00:55:03.974Z",
+    "resolution": "PASS full202X projection/completion. Independent bitmask rawscan2606 and explicitdihedral actions give exact202disjointorbits; canonicalF/14allowedpairs/hostnaming checked. Regenerated19671complete rows. Different directgraphMRV-star search exactly reproduces all459labelled solutions on51classes,151negative;25547nodes total/max857,0.675s no caps. All finalgraphs directdegree/C4checked; exact202records/no duplicateoutputs.10pins and3liveacceptedpremises verified. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2107. Only E/S projection, no high/P/Fclass/H7/Lean/global exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null
+  }
+]
