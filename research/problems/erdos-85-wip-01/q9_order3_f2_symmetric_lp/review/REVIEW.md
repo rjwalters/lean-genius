@@ -1,0 +1,7 @@
+# Independent review 2227 — PASS
+
+Verified all 122 source pins and both external input pins. Accepted review 2226 establishes the 117 representative orbits cover all 672 tables. Independently expanded each table and missing labels, decoded the symmetric y/z witnesses, and counted occupied two-step routes using the six-label attached adjacency graph rather than the producer's indicator formulas. All 117 witnesses satisfy all nonnegativity, degree, attached marginal, entry upper-bound, excess and row excess constraints by integer arithmetic (65,520 checks, about 0.048 seconds). No solver was called.
+
+The reduction is necessary: an actual quotient gives symmetric y=Q and z=max(Q-1,0); accepted 2219 gives at most one 2 per row. Relaxing integrality and the diagonal restriction cannot discard an actual graph. Accepted 2224 supplies the marginal inequalities, independently reconstructed here by neighbor intersections. Thus the producer's scope is correct: no tables excluded, no graph witnesses claimed.
+
+Additional diagnostics: 30 saved witnesses violate the actual diagonal 0/2 restriction, and all 117 violate at least one omitted off-diagonal Q²+h<=3 inequality. These observations concern only these saved witnesses, not infeasibility of their cases. Exactly three witnesses have common denominator 1. The original 60-second cap and 0.648-second run are preserved; verification did not rerun discovery.

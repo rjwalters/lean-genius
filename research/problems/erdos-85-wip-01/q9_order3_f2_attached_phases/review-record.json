@@ -1,0 +1,19 @@
+{
+  "id": 2230,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "F2 attached phase normalization: six orbit labels form paths plus optional4-cycle iff matched labels mapbijectively. Tree phases normalize0; cycle voltage0 forbidden3C4, +/-1 givesC12. Keep2 choices for specified generator. Direct full20-vertex check of all2916 shifts under original60s(.057s) gives2700 localC4free/216 rejected, exact perroot thirds. Please audit phase/gauge/coverage; no60-residual extension or wholegraph witness.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-order3-f2-attached-phases/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T05:25:56.958Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T05:27:11.587Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T05:28:29.378Z",
+  "resolution": "PASS. Full phase/gauge/cycle/fixed-vertex C4 proof audited; pins verified. Independent20-vertex bitsets across all2916 assignments match2700/216 and every root. Independent spanning-forest potential solver agrees assignmentwise with cyclic-zero-voltage C4 criterion; .048s under60s. Both nonzero choices retained, no generator inversion assumed. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2230. Local attached subgraph only.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

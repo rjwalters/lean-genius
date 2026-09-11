@@ -1,0 +1,275 @@
+{
+  "status": "COMPLETE",
+  "original_wall_cap": 60,
+  "seconds": 0.057026041904464364,
+  "rooted_matchings": 24,
+  "assignments": 2916,
+  "c4_free": 2700,
+  "c4": 216,
+  "records": [
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        0,
+        1,
+        -1
+      ],
+      "has_cycle": false,
+      "valid": 81,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        0,
+        2,
+        -1
+      ],
+      "has_cycle": false,
+      "valid": 81,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        1,
+        0,
+        -1
+      ],
+      "has_cycle": false,
+      "valid": 81,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        1,
+        2,
+        -1
+      ],
+      "has_cycle": false,
+      "valid": 81,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        2,
+        0,
+        -1
+      ],
+      "has_cycle": false,
+      "valid": 81,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        2,
+        1,
+        -1
+      ],
+      "has_cycle": false,
+      "valid": 81,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        0,
+        -1,
+        1
+      ],
+      "has_cycle": false,
+      "valid": 81,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        0,
+        -1,
+        2
+      ],
+      "has_cycle": false,
+      "valid": 81,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        1,
+        -1,
+        0
+      ],
+      "has_cycle": false,
+      "valid": 81,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        1,
+        -1,
+        2
+      ],
+      "has_cycle": false,
+      "valid": 81,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        2,
+        -1,
+        0
+      ],
+      "has_cycle": false,
+      "valid": 81,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        2,
+        -1,
+        1
+      ],
+      "has_cycle": false,
+      "valid": 81,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        -1,
+        0,
+        1
+      ],
+      "has_cycle": false,
+      "valid": 81,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        -1,
+        0,
+        2
+      ],
+      "has_cycle": false,
+      "valid": 81,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        -1,
+        1,
+        0
+      ],
+      "has_cycle": false,
+      "valid": 81,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        -1,
+        1,
+        2
+      ],
+      "has_cycle": true,
+      "valid": 54,
+      "c4": 27
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        -1,
+        2,
+        0
+      ],
+      "has_cycle": false,
+      "valid": 81,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 2,
+      "mapping": [
+        -1,
+        2,
+        1
+      ],
+      "has_cycle": true,
+      "valid": 54,
+      "c4": 27
+    },
+    {
+      "cross_orbits": 3,
+      "mapping": [
+        0,
+        1,
+        2
+      ],
+      "has_cycle": true,
+      "valid": 162,
+      "c4": 81
+    },
+    {
+      "cross_orbits": 3,
+      "mapping": [
+        0,
+        2,
+        1
+      ],
+      "has_cycle": true,
+      "valid": 162,
+      "c4": 81
+    },
+    {
+      "cross_orbits": 3,
+      "mapping": [
+        1,
+        0,
+        2
+      ],
+      "has_cycle": false,
+      "valid": 243,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 3,
+      "mapping": [
+        1,
+        2,
+        0
+      ],
+      "has_cycle": false,
+      "valid": 243,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 3,
+      "mapping": [
+        2,
+        0,
+        1
+      ],
+      "has_cycle": false,
+      "valid": 243,
+      "c4": 0
+    },
+    {
+      "cross_orbits": 3,
+      "mapping": [
+        2,
+        1,
+        0
+      ],
+      "has_cycle": false,
+      "valid": 243,
+      "c4": 0
+    }
+  ]
+}

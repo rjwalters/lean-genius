@@ -1,0 +1,19 @@
+{
+  "id": 2226,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Complete8-element relabelling cover of672 accepted2221 contingency tables: independent1/2 swaps and centre exchange,117 disjoint orbits/exact union. Saved original indices/minima. Please audit action/missing-label transforms/coverage. No exclusions.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-order3-f2-symmetry/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T05:19:46.893Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T05:22:27.065Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T05:25:18.156Z",
+  "resolution": "PASS. All pins/input digest verified. Independent three-generator BFS matches117 exact minima/state-table indices and complete672 union; orbit histogram8size2/54size4/55size8. Missing labels/partial matching/sentinel transform correctly; all constraints preserved. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2226. No exclusions.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
