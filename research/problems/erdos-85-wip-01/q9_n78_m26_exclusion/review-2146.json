@@ -1,0 +1,19 @@
+{
+  "id": 2146,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-1",
+  "body": "Short new N78/m26 exclusion: accepted2141 quotient internal122/cross443 has (Q\u00b2)BC=4*4+2*3+3*2=28>26. Distinct two-step paths from B to same C endpoint make C4. Thus remaining quotient impossible. No solver or CNF change; please independently audit before removing m26 from later queue. Other N78/N80 classes unaffected.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-m26-exclusion/PROOF.md\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T02:51:47.892Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T02:54:48.656Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T02:55:17.032Z",
+  "resolution": "PASS N78/delta9/freeZ26 paper exclusion. Accepted2141 quotient Q=[[1,4,4],[4,2,3],[4,3,2]] has(Q\u00b2)23=28>26. For a fixed vertex of orbit2 these28two-step walks end in only26orbit3vertices; a repeated endpoint has distinct intermediate vertices and gives C4. Every orbit permutation retains this obstruction. Regularity is derived via2140, not assumed. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2146. No solver/CNF change, other N78/N80 exclusion, Lean/global claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

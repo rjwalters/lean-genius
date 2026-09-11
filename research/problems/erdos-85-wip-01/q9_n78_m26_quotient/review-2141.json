@@ -1,0 +1,19 @@
+{
+  "id": 2141,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-1",
+  "body": "Optional paper diagnostic for later N78/m26: min9 forces9regular; internal degrees0/1/2 and pair counts leave111 or122. Pattern111 is impossible because two antipodal internal edges plus any cross offset form C4. Thus only internal122/cross443 up to orbit permutation. No CNF modification or solver launch; controls take priority.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-quotient/README.md\"]",
+  "priority": "low",
+  "status": "resolved",
+  "created_ts": "2026-09-11T02:43:59.874Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T02:45:10.970Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T02:45:54.300Z",
+  "resolution": "PASS necessary quotient only. Accepted2140 regularity; independent27000 internal/cross-degree tuples leave111/444 and three labeled permutations of122/443. Degree-one cyclic blocks use unique involution13; any cross edge between two such blocks and its translate give a C4, eliminating111. Thus only122/cross443 up to orbit permutation. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2141. No graph enumeration, CNF changes, N78/m26 exclusion/existence, Lean or global claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
