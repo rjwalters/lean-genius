@@ -1,0 +1,133 @@
+{
+ "dir": "/private/tmp/erdos85-sol1-q9-n80-m8",
+ "n": 80,
+ "m": 8,
+ "d": 9,
+ "cnf_sha256": "6320d7926bed1f79e4dc08ddeb9349f58ed725c18549acf11670c11d244c2b9b",
+ "sha_matches_map": true,
+ "sha_matches_ledger": true,
+ "orbit_count": 400,
+ "orbits_match_rederivation": true,
+ "nvars": 70117,
+ "nclauses": 239879,
+ "gate_count": 69716,
+ "every_nonprimary_has_gate": true,
+ "gates_topologically_ordered": true,
+ "degree_output_clauses": 10,
+ "c4_clauses": 30720,
+ "degree_outputs_equal_block_count": true,
+ "greedy_min_degrees": [
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  6,
+  6,
+  6,
+  6,
+  6,
+  6,
+  6,
+  6,
+  6,
+  6,
+  6,
+  6,
+  6,
+  6,
+  6
+ ],
+ "tests": 480,
+ "mismatches": 0,
+ "seconds": 35.0,
+ "by_tag": {
+  "dense p=0.3 (degree positive)": {
+   "n": 30,
+   "agree": 30,
+   "degree_ok": 30,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "dense p=0.4 (degree positive)": {
+   "n": 30,
+   "agree": 30,
+   "degree_ok": 30,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "dense p=0.5 (degree positive)": {
+   "n": 30,
+   "agree": 30,
+   "degree_ok": 30,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "random p=0.03": {
+   "n": 60,
+   "agree": 60,
+   "degree_ok": 0,
+   "c4_ok": 28,
+   "both_ok": 0
+  },
+  "random p=0.06": {
+   "n": 60,
+   "agree": 60,
+   "degree_ok": 0,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "random p=0.1": {
+   "n": 60,
+   "agree": 60,
+   "degree_ok": 0,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "random p=0.15": {
+   "n": 60,
+   "agree": 60,
+   "degree_ok": 15,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "random p=0.25": {
+   "n": 60,
+   "agree": 60,
+   "degree_ok": 59,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "greedy maximal C4-free": {
+   "n": 30,
+   "agree": 30,
+   "degree_ok": 0,
+   "c4_ok": 30,
+   "both_ok": 0
+  },
+  "greedy + one orbit": {
+   "n": 30,
+   "agree": 30,
+   "degree_ok": 0,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "greedy - one orbit": {
+   "n": 30,
+   "agree": 30,
+   "degree_ok": 0,
+   "c4_ok": 30,
+   "both_ok": 0
+  }
+ }
+}

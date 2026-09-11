@@ -1,0 +1,130 @@
+{
+ "dir": "n48",
+ "n": 48,
+ "m": 24,
+ "d": 7,
+ "cnf_sha256": "6c6e90a6a493e200fcefd6446559a47df2f2eccda72d09246483f57fdd7595ae",
+ "sha_matches_map": true,
+ "sha_matches_ledger": true,
+ "orbit_count": 48,
+ "orbits_match_rederivation": true,
+ "nvars": 3757,
+ "nclauses": 13047,
+ "gate_count": 3708,
+ "every_nonprimary_has_gate": true,
+ "gates_topologically_ordered": true,
+ "degree_output_clauses": 2,
+ "c4_clauses": 1920,
+ "degree_outputs_equal_block_count": true,
+ "greedy_min_degrees": [
+  4,
+  4,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  6,
+  6,
+  6,
+  7
+ ],
+ "tests": 321,
+ "mismatches": 0,
+ "seconds": 1.3,
+ "by_tag": {
+  "dense p=0.3 (degree positive)": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 17,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "dense p=0.4 (degree positive)": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 20,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "dense p=0.5 (degree positive)": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 20,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "solver witness model": {
+   "n": 1,
+   "agree": 1,
+   "degree_ok": 1,
+   "c4_ok": 1,
+   "both_ok": 1
+  },
+  "random p=0.03": {
+   "n": 40,
+   "agree": 40,
+   "degree_ok": 0,
+   "c4_ok": 30,
+   "both_ok": 0
+  },
+  "random p=0.06": {
+   "n": 40,
+   "agree": 40,
+   "degree_ok": 0,
+   "c4_ok": 25,
+   "both_ok": 0
+  },
+  "random p=0.1": {
+   "n": 40,
+   "agree": 40,
+   "degree_ok": 6,
+   "c4_ok": 9,
+   "both_ok": 0
+  },
+  "random p=0.15": {
+   "n": 40,
+   "agree": 40,
+   "degree_ok": 13,
+   "c4_ok": 3,
+   "both_ok": 0
+  },
+  "random p=0.25": {
+   "n": 40,
+   "agree": 40,
+   "degree_ok": 34,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "greedy maximal C4-free": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 1,
+   "c4_ok": 20,
+   "both_ok": 1
+  },
+  "greedy + one orbit": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 2,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "greedy - one orbit": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 0,
+   "c4_ok": 20,
+   "both_ok": 0
+  }
+ }
+}

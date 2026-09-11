@@ -1,0 +1,123 @@
+{
+ "dir": "/private/tmp/erdos85-sol1-q9-control63-m7-proposed",
+ "n": 63,
+ "m": 7,
+ "d": 8,
+ "cnf_sha256": "bcb604577a885476d7df5612c1ef5e9c48d2e2bb27cb7f5453468ac9ae27c5b6",
+ "sha_matches_map": true,
+ "sha_matches_ledger": null,
+ "orbit_count": 279,
+ "orbits_match_rederivation": true,
+ "nvars": 39337,
+ "nclauses": 134146,
+ "gate_count": 39057,
+ "every_nonprimary_has_gate": true,
+ "gates_topologically_ordered": true,
+ "degree_output_clauses": 9,
+ "c4_clauses": 16965,
+ "degree_outputs_equal_block_count": true,
+ "greedy_min_degrees": [
+  4,
+  4,
+  4,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5
+ ],
+ "tests": 320,
+ "mismatches": 0,
+ "seconds": 13.2,
+ "by_tag": {
+  "dense p=0.3 (degree positive)": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 20,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "dense p=0.4 (degree positive)": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 20,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "dense p=0.5 (degree positive)": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 20,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "random p=0.03": {
+   "n": 40,
+   "agree": 40,
+   "degree_ok": 0,
+   "c4_ok": 32,
+   "both_ok": 0
+  },
+  "random p=0.06": {
+   "n": 40,
+   "agree": 40,
+   "degree_ok": 0,
+   "c4_ok": 9,
+   "both_ok": 0
+  },
+  "random p=0.1": {
+   "n": 40,
+   "agree": 40,
+   "degree_ok": 0,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "random p=0.15": {
+   "n": 40,
+   "agree": 40,
+   "degree_ok": 0,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "random p=0.25": {
+   "n": 40,
+   "agree": 40,
+   "degree_ok": 39,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "greedy maximal C4-free": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 0,
+   "c4_ok": 20,
+   "both_ok": 0
+  },
+  "greedy + one orbit": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 0,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "greedy - one orbit": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 0,
+   "c4_ok": 20,
+   "both_ok": 0
+  }
+ }
+}

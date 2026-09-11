@@ -1,0 +1,113 @@
+{
+ "dir": "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n78-size-check",
+ "n": 78,
+ "m": 1,
+ "d": 9,
+ "cnf_sha256": "47f04c0a368313a73f6cbd04dbbd161a1f664372775853078424b30d69b7caa3",
+ "sha_matches_map": true,
+ "sha_matches_ledger": true,
+ "orbit_count": 3003,
+ "orbits_match_rederivation": true,
+ "nvars": 552163,
+ "nclauses": 1875784,
+ "gate_count": 549159,
+ "every_nonprimary_has_gate": true,
+ "gates_topologically_ordered": true,
+ "degree_output_clauses": 78,
+ "c4_clauses": 228228,
+ "degree_outputs_equal_block_count": true,
+ "greedy_min_degrees": [
+  4,
+  4,
+  4,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5,
+  5
+ ],
+ "tests": 160,
+ "mismatches": 0,
+ "seconds": 94.0,
+ "by_tag": {
+  "dense p=0.3 (degree positive)": {
+   "n": 10,
+   "agree": 10,
+   "degree_ok": 10,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "dense p=0.4 (degree positive)": {
+   "n": 10,
+   "agree": 10,
+   "degree_ok": 10,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "dense p=0.5 (degree positive)": {
+   "n": 10,
+   "agree": 10,
+   "degree_ok": 10,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "random p=0.03": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 0,
+   "c4_ok": 2,
+   "both_ok": 0
+  },
+  "random p=0.06": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 0,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "random p=0.1": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 0,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "random p=0.15": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 0,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "random p=0.25": {
+   "n": 20,
+   "agree": 20,
+   "degree_ok": 18,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "greedy maximal C4-free": {
+   "n": 10,
+   "agree": 10,
+   "degree_ok": 0,
+   "c4_ok": 10,
+   "both_ok": 0
+  },
+  "greedy + one orbit": {
+   "n": 10,
+   "agree": 10,
+   "degree_ok": 0,
+   "c4_ok": 0,
+   "both_ok": 0
+  },
+  "greedy - one orbit": {
+   "n": 10,
+   "agree": 10,
+   "degree_ok": 0,
+   "c4_ok": 10,
+   "both_ok": 0
+  }
+ }
+}
