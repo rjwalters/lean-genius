@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "author_payload_pins": 15,
+  "independent_compilation": true,
+  "tests": "120whole-object equalities across12fixtures (5newa6 plus7low-vertex relabels),12expireddeadlines,6invalidinputs; independentUBSan counter+deadline boundary test exit0.",
+  "source_audit": [
+    "Support-based active/empty validation matches2101 independent of lowvertex numbering.",
+    "Candidate and bucket ordering, least-colour recursion, selected-neighbour conflicts, all35complete domains and first empty-row selection match exactly.",
+    "Ascending arc pairs, support order, batcheddeletions and interruptedbatch preservation match. GenerationUNKNOWN excludesunfinisheddomain; arcUNKNOWNretainslastcommitteddomains.",
+    "JSON omitted/present fields agree bystage/status, integer masks retained exactly viactypesuint64 and integer-key recovery.",
+    "int64nodes safely covers acceptednative cap0..INT_MAX plusone; counterboundary testedwithoutgraphtraversal. Native intentionally accepts finiteint budgetrange whilePythonallowslargerints; researchbudget100000 unchanged.",
+    "Clock is monotonic with samePython epoch; existing2086FFI/string-lifetime pattern retained."
+  ],
+  "scope": "Native port equivalence in acceptedbudgetrange, validatedempty-first inputs. No new incidence-family or H7/Lean/global exclusion."
+}

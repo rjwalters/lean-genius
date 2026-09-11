@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "fixtures": [
+    {
+      "fixture": 0,
+      "rows": 1020,
+      "generation_nodes": 5459,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 5459
+    },
+    {
+      "fixture": 1,
+      "rows": 954,
+      "generation_nodes": 5371,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5525
+    }
+  ],
+  "independent_full_row_sets": 70,
+  "template_bounds": {
+    "4": 210,
+    "5": 840
+  },
+  "source_sha256": "edd6f33a998e6069cb4ded01ae25e420614128f5619f2ef426ad94e20eba8e95",
+  "synthetic_arc_cases": 4,
+  "seconds": 0.16151287499815226,
+  "scope": "API and complete-domain tests on two already reviewed fixed empty-first partial graphs; no full incidence-class census or exclusion."
+}

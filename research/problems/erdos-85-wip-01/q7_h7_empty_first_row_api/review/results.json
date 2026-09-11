@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "fixtures": [
+    {
+      "row_domains": 35,
+      "rows": 925,
+      "independent_nodes": 23157,
+      "api_nodes": 5558,
+      "status": "INFEASIBLE_ROW",
+      "deleted_rows_checked": 0
+    },
+    {
+      "row_domains": 35,
+      "rows": 953,
+      "independent_nodes": 23429,
+      "api_nodes": 5571,
+      "status": "INFEASIBLE_ROW",
+      "deleted_rows_checked": 0
+    },
+    {
+      "row_domains": 35,
+      "rows": 944,
+      "independent_nodes": 23341,
+      "api_nodes": 5538,
+      "status": "INFEASIBLE_ROW",
+      "deleted_rows_checked": 0
+    },
+    {
+      "row_domains": 35,
+      "rows": 939,
+      "independent_nodes": 23579,
+      "api_nodes": 5669,
+      "status": "INFEASIBLE_ROW",
+      "deleted_rows_checked": 0
+    },
+    {
+      "row_domains": 35,
+      "rows": 929,
+      "independent_nodes": 23575,
+      "api_nodes": 5625,
+      "status": "INFEASIBLE_ROW",
+      "deleted_rows_checked": 0
+    }
+  ],
+  "complete_row_domains": 175,
+  "rows": 4690,
+  "guard_checks": 10,
+  "invalid_selfloop_rejected": true,
+  "unfinished_arc_batch_preserved": true,
+  "seconds": 0.07580395904369652,
+  "pins": {
+    "README.md": "eaa4bf05ce1f52be0c9fe3a7d943d938ac44fab8d6f3c71f15ee8a7699d3eea4",
+    "filter.py": "47f47460f28f8f7b0eaa918a0837ebd929c473b70cd6f1b5898e849932169ab8",
+    "fixtures.json": "c17d4e085844e1eabe459dc04402d4e3f53830ef51136e3d6fe9e771f6cf4968",
+    "premises.json": "c5a9ee41c0fd0bff88d043b5cdb7366d52878be7e534f8ae4cf669522c129cd8",
+    "receipts.json": "7c7d89fe2fd5c4c6857d4fad5972464feb1269e232ea874f1f50abf5fbbe5d9b",
+    "results.json": "100a0457b58367e36794df3b39edd03a2bb5704e29c8db842e7307a8da6d0069",
+    "source-fixtures.json": "edd6f33a998e6069cb4ded01ae25e420614128f5619f2ef426ad94e20eba8e95",
+    "test.py": "bf80fb3f63376eeda2f6958058f0a6fc7a4c10dad973ff687cc2911a21b02b1b"
+  },
+  "scope": "Independent increasing-subset rows on5a6fixture partials, unlike author least-colour traversal; exact complete-domain equality and returned trace replay. No whole incidence-family or H7 exclusion."
+}

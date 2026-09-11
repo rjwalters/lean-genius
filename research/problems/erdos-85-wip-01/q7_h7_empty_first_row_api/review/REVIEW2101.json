@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "package_pins": 8,
+  "independent_fixture_tests": "Five different a6 fixture partials:175complete domains/4690rows; original a7 arc fixture:35domains/954rows plus8 unsupported-row deletions. Increasing-subset traversal, no author least-colour generator reuse.",
+  "guards": "12 zero/expired-deadline checks; invalid selfloop; synthetic interrupted arc batch preserves domains/events.",
+  "proof_audit": [
+    "Validated completeH/E and no unfinished-low edges force newedges within35nonempty lows. All old neighbours have zero high support, so every final row exactly partitions7high colours.",
+    "Supports of size1or2 and residual4or5 give unrestricted210/840row bounds. Least-uncovered-colour step uniquely enumerates every support partition; residual-colour bounds cannot remove a valid one.",
+    "Candidate-old-neighbour and selected-candidate immutable-neighbour disjointness exactly prevent star-created C4s; support overlap is forbidden by high saturation.",
+    "All35domains complete before negative row verdict. Recursive-limit exception discards unfinished domain, with UNKNOWN.",
+    "Arc uses reciprocal edge and full final-neighbour intersection<=1. Deletions collected before atomic application; exception preserves previous complete batches and UNKNOWN.",
+    "Input validation rejects asymmetric/looped/bad-support/bad-degree/unsaturated/C4 graphs; it needs no a-specific assumptions beyond enforced structure."
+  ],
+  "scope": "Reviewed necessary empty-first complete-row+AC API. Six fixed input graphs only; no full colouring or H7/Lean/global exclusion. Additional a6 fixtures produce row contradictions, not class exclusions."
+}

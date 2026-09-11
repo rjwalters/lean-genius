@@ -1,0 +1,973 @@
+{
+  "status": "PASS",
+  "independent_compilation": true,
+  "fixtures": 12,
+  "whole_object_equalities": 120,
+  "expired_deadlines": 12,
+  "invalid_inputs_rejected": 6,
+  "clock_delta": 5.830079317092896e-07,
+  "records": [
+    {
+      "fixture": 0,
+      "budget": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 0,
+      "budget": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 0,
+      "budget": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 0,
+      "budget": 500,
+      "nodes": 501,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 0,
+      "budget": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 0,
+      "budget": 2779,
+      "nodes": 2780,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 0,
+      "budget": 5557,
+      "nodes": 5558,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 0,
+      "budget": 5558,
+      "nodes": 5558,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 0,
+      "budget": 5559,
+      "nodes": 5558,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 0,
+      "budget": 100000,
+      "nodes": 5558,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 1,
+      "budget": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 1,
+      "budget": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 1,
+      "budget": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 1,
+      "budget": 500,
+      "nodes": 501,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 1,
+      "budget": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 1,
+      "budget": 2785,
+      "nodes": 2786,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 1,
+      "budget": 5570,
+      "nodes": 5571,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 1,
+      "budget": 5571,
+      "nodes": 5571,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 1,
+      "budget": 5572,
+      "nodes": 5571,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 1,
+      "budget": 100000,
+      "nodes": 5571,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 2,
+      "budget": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 2,
+      "budget": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 2,
+      "budget": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 2,
+      "budget": 500,
+      "nodes": 501,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 2,
+      "budget": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 2,
+      "budget": 2769,
+      "nodes": 2770,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 2,
+      "budget": 5537,
+      "nodes": 5538,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 2,
+      "budget": 5538,
+      "nodes": 5538,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 2,
+      "budget": 5539,
+      "nodes": 5538,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 2,
+      "budget": 100000,
+      "nodes": 5538,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 3,
+      "budget": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 3,
+      "budget": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 3,
+      "budget": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 3,
+      "budget": 500,
+      "nodes": 501,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 3,
+      "budget": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 3,
+      "budget": 2834,
+      "nodes": 2835,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 3,
+      "budget": 5668,
+      "nodes": 5669,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 3,
+      "budget": 5669,
+      "nodes": 5669,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 3,
+      "budget": 5670,
+      "nodes": 5669,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 3,
+      "budget": 100000,
+      "nodes": 5669,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 4,
+      "budget": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 4,
+      "budget": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 4,
+      "budget": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 4,
+      "budget": 500,
+      "nodes": 501,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 4,
+      "budget": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 4,
+      "budget": 2812,
+      "nodes": 2813,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 4,
+      "budget": 5624,
+      "nodes": 5625,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 4,
+      "budget": 5625,
+      "nodes": 5625,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 4,
+      "budget": 5626,
+      "nodes": 5625,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 4,
+      "budget": 100000,
+      "nodes": 5625,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 5,
+      "budget": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 5,
+      "budget": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 5,
+      "budget": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 5,
+      "budget": 500,
+      "nodes": 501,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 5,
+      "budget": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 5,
+      "budget": 2779,
+      "nodes": 2780,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 5,
+      "budget": 5557,
+      "nodes": 5558,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 5,
+      "budget": 5558,
+      "nodes": 5558,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 5,
+      "budget": 5559,
+      "nodes": 5558,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 5,
+      "budget": 100000,
+      "nodes": 5558,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 6,
+      "budget": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 6,
+      "budget": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 6,
+      "budget": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 6,
+      "budget": 500,
+      "nodes": 501,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 6,
+      "budget": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 6,
+      "budget": 2785,
+      "nodes": 2786,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 6,
+      "budget": 5570,
+      "nodes": 5571,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 6,
+      "budget": 5571,
+      "nodes": 5571,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 6,
+      "budget": 5572,
+      "nodes": 5571,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 6,
+      "budget": 100000,
+      "nodes": 5571,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 7,
+      "budget": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 7,
+      "budget": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 7,
+      "budget": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 7,
+      "budget": 500,
+      "nodes": 501,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 7,
+      "budget": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 7,
+      "budget": 2769,
+      "nodes": 2770,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 7,
+      "budget": 5537,
+      "nodes": 5538,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 7,
+      "budget": 5538,
+      "nodes": 5538,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 7,
+      "budget": 5539,
+      "nodes": 5538,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 7,
+      "budget": 100000,
+      "nodes": 5538,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 8,
+      "budget": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 8,
+      "budget": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 8,
+      "budget": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 8,
+      "budget": 500,
+      "nodes": 501,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 8,
+      "budget": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 8,
+      "budget": 2834,
+      "nodes": 2835,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 8,
+      "budget": 5668,
+      "nodes": 5669,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 8,
+      "budget": 5669,
+      "nodes": 5669,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 8,
+      "budget": 5670,
+      "nodes": 5669,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 8,
+      "budget": 100000,
+      "nodes": 5669,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 9,
+      "budget": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 9,
+      "budget": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 9,
+      "budget": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 9,
+      "budget": 500,
+      "nodes": 501,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 9,
+      "budget": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 9,
+      "budget": 2812,
+      "nodes": 2813,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 9,
+      "budget": 5624,
+      "nodes": 5625,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 9,
+      "budget": 5625,
+      "nodes": 5625,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 9,
+      "budget": 5626,
+      "nodes": 5625,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 9,
+      "budget": 100000,
+      "nodes": 5625,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 10,
+      "budget": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 10,
+      "budget": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 10,
+      "budget": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 10,
+      "budget": 500,
+      "nodes": 501,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 10,
+      "budget": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 10,
+      "budget": 2729,
+      "nodes": 2730,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 10,
+      "budget": 5458,
+      "nodes": 5459,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 10,
+      "budget": 5459,
+      "nodes": 5459,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 10,
+      "budget": 5460,
+      "nodes": 5459,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 10,
+      "budget": 100000,
+      "nodes": 5459,
+      "status": "INFEASIBLE_ROW",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "fixture": 11,
+      "budget": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 11,
+      "budget": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 11,
+      "budget": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 11,
+      "budget": 500,
+      "nodes": 501,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 11,
+      "budget": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 11,
+      "budget": 4716,
+      "nodes": 4717,
+      "status": "UNKNOWN",
+      "stage": "generation",
+      "events": 0
+    },
+    {
+      "fixture": 11,
+      "budget": 9432,
+      "nodes": 9433,
+      "status": "UNKNOWN",
+      "stage": "arc",
+      "events": 21
+    },
+    {
+      "fixture": 11,
+      "budget": 9433,
+      "nodes": 9433,
+      "status": "INFEASIBLE_ARC",
+      "stage": null,
+      "events": 22
+    },
+    {
+      "fixture": 11,
+      "budget": 9434,
+      "nodes": 9433,
+      "status": "INFEASIBLE_ARC",
+      "stage": null,
+      "events": 22
+    },
+    {
+      "fixture": 11,
+      "budget": 100000,
+      "nodes": 9433,
+      "status": "INFEASIBLE_ARC",
+      "stage": null,
+      "events": 22
+    }
+  ],
+  "source_sha256": "ec85cbd3cac1c82b97c7400c34135775829b97472f5a42ec333f78e402d65283",
+  "scope": "Five different a6fixtures plus seven arbitrary-low relabelled fixtures; exact node-boundary result equality. No family search or oldcappedcase retry."
+}

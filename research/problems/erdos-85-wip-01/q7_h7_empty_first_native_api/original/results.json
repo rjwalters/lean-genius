@@ -1,0 +1,1080 @@
+{
+  "status": "PASS",
+  "fixtures": 20,
+  "full_object_budget_comparisons": 178,
+  "expired_deadline_comparisons": 20,
+  "invalid_cases_per_api": 3,
+  "reference_full_seconds": 0.056592250941321254,
+  "native_full_seconds": 0.007330330088734627,
+  "comparisons": [
+    {
+      "fixture": 0,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 0,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 0,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 0,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 0,
+      "budget": 5458,
+      "status": "UNKNOWN",
+      "nodes": 5459
+    },
+    {
+      "fixture": 0,
+      "budget": 5459,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 5459
+    },
+    {
+      "fixture": 0,
+      "budget": 5460,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 5459
+    },
+    {
+      "fixture": 0,
+      "budget": 100000,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 5459
+    },
+    {
+      "fixture": 1,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 1,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 1,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 1,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 1,
+      "budget": 5371,
+      "status": "UNKNOWN",
+      "nodes": 5372
+    },
+    {
+      "fixture": 1,
+      "budget": 5372,
+      "status": "UNKNOWN",
+      "nodes": 5373
+    },
+    {
+      "fixture": 1,
+      "budget": 5524,
+      "status": "UNKNOWN",
+      "nodes": 5525
+    },
+    {
+      "fixture": 1,
+      "budget": 5525,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5525
+    },
+    {
+      "fixture": 1,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5525
+    },
+    {
+      "fixture": 2,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 2,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 2,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 2,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 2,
+      "budget": 5404,
+      "status": "UNKNOWN",
+      "nodes": 5405
+    },
+    {
+      "fixture": 2,
+      "budget": 5405,
+      "status": "UNKNOWN",
+      "nodes": 5406
+    },
+    {
+      "fixture": 2,
+      "budget": 5692,
+      "status": "UNKNOWN",
+      "nodes": 5693
+    },
+    {
+      "fixture": 2,
+      "budget": 5693,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5693
+    },
+    {
+      "fixture": 2,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5693
+    },
+    {
+      "fixture": 3,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 3,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 3,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 3,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 3,
+      "budget": 5383,
+      "status": "UNKNOWN",
+      "nodes": 5384
+    },
+    {
+      "fixture": 3,
+      "budget": 5384,
+      "status": "UNKNOWN",
+      "nodes": 5385
+    },
+    {
+      "fixture": 3,
+      "budget": 5761,
+      "status": "UNKNOWN",
+      "nodes": 5762
+    },
+    {
+      "fixture": 3,
+      "budget": 5762,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5762
+    },
+    {
+      "fixture": 3,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5762
+    },
+    {
+      "fixture": 4,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 4,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 4,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 4,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 4,
+      "budget": 5380,
+      "status": "UNKNOWN",
+      "nodes": 5381
+    },
+    {
+      "fixture": 4,
+      "budget": 5381,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 5381
+    },
+    {
+      "fixture": 4,
+      "budget": 5382,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 5381
+    },
+    {
+      "fixture": 4,
+      "budget": 100000,
+      "status": "INFEASIBLE_ROW",
+      "nodes": 5381
+    },
+    {
+      "fixture": 5,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 5,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 5,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 5,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 5,
+      "budget": 5441,
+      "status": "UNKNOWN",
+      "nodes": 5442
+    },
+    {
+      "fixture": 5,
+      "budget": 5442,
+      "status": "UNKNOWN",
+      "nodes": 5443
+    },
+    {
+      "fixture": 5,
+      "budget": 5968,
+      "status": "UNKNOWN",
+      "nodes": 5969
+    },
+    {
+      "fixture": 5,
+      "budget": 5969,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5969
+    },
+    {
+      "fixture": 5,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5969
+    },
+    {
+      "fixture": 6,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 6,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 6,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 6,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 6,
+      "budget": 5425,
+      "status": "UNKNOWN",
+      "nodes": 5426
+    },
+    {
+      "fixture": 6,
+      "budget": 5426,
+      "status": "UNKNOWN",
+      "nodes": 5427
+    },
+    {
+      "fixture": 6,
+      "budget": 5869,
+      "status": "UNKNOWN",
+      "nodes": 5870
+    },
+    {
+      "fixture": 6,
+      "budget": 5870,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5870
+    },
+    {
+      "fixture": 6,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5870
+    },
+    {
+      "fixture": 7,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 7,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 7,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 7,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 7,
+      "budget": 5433,
+      "status": "UNKNOWN",
+      "nodes": 5434
+    },
+    {
+      "fixture": 7,
+      "budget": 5434,
+      "status": "UNKNOWN",
+      "nodes": 5435
+    },
+    {
+      "fixture": 7,
+      "budget": 6597,
+      "status": "UNKNOWN",
+      "nodes": 6598
+    },
+    {
+      "fixture": 7,
+      "budget": 6598,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 6598
+    },
+    {
+      "fixture": 7,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 6598
+    },
+    {
+      "fixture": 8,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 8,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 8,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 8,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 8,
+      "budget": 5426,
+      "status": "UNKNOWN",
+      "nodes": 5427
+    },
+    {
+      "fixture": 8,
+      "budget": 5427,
+      "status": "UNKNOWN",
+      "nodes": 5428
+    },
+    {
+      "fixture": 8,
+      "budget": 5853,
+      "status": "UNKNOWN",
+      "nodes": 5854
+    },
+    {
+      "fixture": 8,
+      "budget": 5854,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5854
+    },
+    {
+      "fixture": 8,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5854
+    },
+    {
+      "fixture": 9,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 9,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 9,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 9,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 9,
+      "budget": 5405,
+      "status": "UNKNOWN",
+      "nodes": 5406
+    },
+    {
+      "fixture": 9,
+      "budget": 5406,
+      "status": "UNKNOWN",
+      "nodes": 5407
+    },
+    {
+      "fixture": 9,
+      "budget": 5691,
+      "status": "UNKNOWN",
+      "nodes": 5692
+    },
+    {
+      "fixture": 9,
+      "budget": 5692,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5692
+    },
+    {
+      "fixture": 9,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5692
+    },
+    {
+      "fixture": 10,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 10,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 10,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 10,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 10,
+      "budget": 5401,
+      "status": "UNKNOWN",
+      "nodes": 5402
+    },
+    {
+      "fixture": 10,
+      "budget": 5402,
+      "status": "UNKNOWN",
+      "nodes": 5403
+    },
+    {
+      "fixture": 10,
+      "budget": 5647,
+      "status": "UNKNOWN",
+      "nodes": 5648
+    },
+    {
+      "fixture": 10,
+      "budget": 5648,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5648
+    },
+    {
+      "fixture": 10,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5648
+    },
+    {
+      "fixture": 11,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 11,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 11,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 11,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 11,
+      "budget": 5376,
+      "status": "UNKNOWN",
+      "nodes": 5377
+    },
+    {
+      "fixture": 11,
+      "budget": 5377,
+      "status": "UNKNOWN",
+      "nodes": 5378
+    },
+    {
+      "fixture": 11,
+      "budget": 5632,
+      "status": "UNKNOWN",
+      "nodes": 5633
+    },
+    {
+      "fixture": 11,
+      "budget": 5633,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5633
+    },
+    {
+      "fixture": 11,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5633
+    },
+    {
+      "fixture": 12,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 12,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 12,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 12,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 12,
+      "budget": 5426,
+      "status": "UNKNOWN",
+      "nodes": 5427
+    },
+    {
+      "fixture": 12,
+      "budget": 5427,
+      "status": "UNKNOWN",
+      "nodes": 5428
+    },
+    {
+      "fixture": 12,
+      "budget": 5939,
+      "status": "UNKNOWN",
+      "nodes": 5940
+    },
+    {
+      "fixture": 12,
+      "budget": 5940,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5940
+    },
+    {
+      "fixture": 12,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5940
+    },
+    {
+      "fixture": 13,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 13,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 13,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 13,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 13,
+      "budget": 5407,
+      "status": "UNKNOWN",
+      "nodes": 5408
+    },
+    {
+      "fixture": 13,
+      "budget": 5408,
+      "status": "UNKNOWN",
+      "nodes": 5409
+    },
+    {
+      "fixture": 13,
+      "budget": 5797,
+      "status": "UNKNOWN",
+      "nodes": 5798
+    },
+    {
+      "fixture": 13,
+      "budget": 5798,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5798
+    },
+    {
+      "fixture": 13,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5798
+    },
+    {
+      "fixture": 14,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 14,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 14,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 14,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 14,
+      "budget": 5438,
+      "status": "UNKNOWN",
+      "nodes": 5439
+    },
+    {
+      "fixture": 14,
+      "budget": 5439,
+      "status": "UNKNOWN",
+      "nodes": 5440
+    },
+    {
+      "fixture": 14,
+      "budget": 6084,
+      "status": "UNKNOWN",
+      "nodes": 6085
+    },
+    {
+      "fixture": 14,
+      "budget": 6085,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 6085
+    },
+    {
+      "fixture": 14,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 6085
+    },
+    {
+      "fixture": 15,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 15,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 15,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 15,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 15,
+      "budget": 5438,
+      "status": "UNKNOWN",
+      "nodes": 5439
+    },
+    {
+      "fixture": 15,
+      "budget": 5439,
+      "status": "UNKNOWN",
+      "nodes": 5440
+    },
+    {
+      "fixture": 15,
+      "budget": 5524,
+      "status": "UNKNOWN",
+      "nodes": 5525
+    },
+    {
+      "fixture": 15,
+      "budget": 5525,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5525
+    },
+    {
+      "fixture": 15,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5525
+    },
+    {
+      "fixture": 16,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 16,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 16,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 16,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 16,
+      "budget": 5303,
+      "status": "UNKNOWN",
+      "nodes": 5304
+    },
+    {
+      "fixture": 16,
+      "budget": 5304,
+      "status": "UNKNOWN",
+      "nodes": 5305
+    },
+    {
+      "fixture": 16,
+      "budget": 5341,
+      "status": "UNKNOWN",
+      "nodes": 5342
+    },
+    {
+      "fixture": 16,
+      "budget": 5342,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5342
+    },
+    {
+      "fixture": 16,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5342
+    },
+    {
+      "fixture": 17,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 17,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 17,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 17,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 17,
+      "budget": 5381,
+      "status": "UNKNOWN",
+      "nodes": 5382
+    },
+    {
+      "fixture": 17,
+      "budget": 5382,
+      "status": "UNKNOWN",
+      "nodes": 5383
+    },
+    {
+      "fixture": 17,
+      "budget": 5502,
+      "status": "UNKNOWN",
+      "nodes": 5503
+    },
+    {
+      "fixture": 17,
+      "budget": 5503,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5503
+    },
+    {
+      "fixture": 17,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5503
+    },
+    {
+      "fixture": 18,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 18,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 18,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 18,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 18,
+      "budget": 5309,
+      "status": "UNKNOWN",
+      "nodes": 5310
+    },
+    {
+      "fixture": 18,
+      "budget": 5310,
+      "status": "UNKNOWN",
+      "nodes": 5311
+    },
+    {
+      "fixture": 18,
+      "budget": 5476,
+      "status": "UNKNOWN",
+      "nodes": 5477
+    },
+    {
+      "fixture": 18,
+      "budget": 5477,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5477
+    },
+    {
+      "fixture": 18,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5477
+    },
+    {
+      "fixture": 19,
+      "budget": 0,
+      "status": "UNKNOWN",
+      "nodes": 1
+    },
+    {
+      "fixture": 19,
+      "budget": 1,
+      "status": "UNKNOWN",
+      "nodes": 2
+    },
+    {
+      "fixture": 19,
+      "budget": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001
+    },
+    {
+      "fixture": 19,
+      "budget": 5000,
+      "status": "UNKNOWN",
+      "nodes": 5001
+    },
+    {
+      "fixture": 19,
+      "budget": 5370,
+      "status": "UNKNOWN",
+      "nodes": 5371
+    },
+    {
+      "fixture": 19,
+      "budget": 5371,
+      "status": "UNKNOWN",
+      "nodes": 5372
+    },
+    {
+      "fixture": 19,
+      "budget": 5599,
+      "status": "UNKNOWN",
+      "nodes": 5600
+    },
+    {
+      "fixture": 19,
+      "budget": 5600,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5600
+    },
+    {
+      "fixture": 19,
+      "budget": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 5600
+    }
+  ],
+  "scope": "Only already checked fixed partial graphs for native API equivalence; no new colouring/domain search."
+}

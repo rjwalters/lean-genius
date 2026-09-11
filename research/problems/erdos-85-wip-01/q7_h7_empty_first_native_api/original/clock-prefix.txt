@@ -1,0 +1,26 @@
+#include <algorithm>
+#include <array>
+#include <cstdint>
+#include <functional>
+#include <map>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
+#include <time.h>
+#ifdef __APPLE__
+#include <mach/mach_time.h>
+#endif
+using U=uint64_t;
+static int pc(U x){return __builtin_popcountll(x);}
+static std::vector<int> bits(U x){std::vector<int> v;while(x){int i=__builtin_ctzll(x);v.push_back(i);x&=x-1;}return v;}
+extern "C" double native_now(){
+#ifdef __APPLE__
+ static const mach_timebase_info_data_t scale=[](){mach_timebase_info_data_t s;mach_timebase_info(&s);return s;}();
+ return double(mach_absolute_time())*double(scale.numer)/double(scale.denom)*1e-9;
+#else
+ timespec t;clock_gettime(CLOCK_MONOTONIC,&t);return t.tv_sec+t.tv_nsec*1e-9;
+#endif
+}
+struct Limit{};
+struct Event{int u,v;std::vector<U> removed;};
