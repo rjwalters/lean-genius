@@ -1,0 +1,51 @@
+{
+  "status": "SINGLETON_POSITIVE_CONDITIONAL_ON_REVIEWED_GRAPH_PREMISES",
+  "excluded_zero_host_profiles": [
+    [
+      true,
+      4
+    ],
+    [
+      true,
+      6
+    ],
+    [
+      false,
+      9
+    ],
+    [
+      false,
+      10
+    ],
+    [
+      false,
+      11
+    ],
+    [
+      false,
+      14
+    ]
+  ],
+  "cases": [
+    {
+      "empty_edges": 6,
+      "singleton_empty_degree_2": 11,
+      "singleton_empty_degree_1": 3,
+      "singleton_empty_degree_0": 0
+    },
+    {
+      "empty_edges": 7,
+      "singleton_empty_degree_2": 7,
+      "singleton_empty_degree_1": 7,
+      "singleton_empty_degree_0": 0
+    },
+    {
+      "empty_edges": 8,
+      "singleton_empty_degree_2": 3,
+      "singleton_empty_degree_1": 11,
+      "singleton_empty_degree_0": 0
+    }
+  ],
+  "profile_source_sha256": "f967214bc55c254c24f177caea09710bfb5acdcda73454b12889fdb3a738ffe5",
+  "scope": "Every singleton has one or two empty neighbours in a remaining H7 graph. Six entire-profile exclusions are accepted premises; no full H7/Lean/global closure."
+}

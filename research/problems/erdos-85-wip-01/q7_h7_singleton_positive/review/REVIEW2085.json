@@ -1,0 +1,70 @@
+{
+  "status": "PASS",
+  "payload_pins": 7,
+  "endpoint_payload_pins": 84,
+  "live_reviews": 10,
+  "zero_host_profiles": [
+    [
+      true,
+      4
+    ],
+    [
+      true,
+      6
+    ],
+    [
+      false,
+      9
+    ],
+    [
+      false,
+      10
+    ],
+    [
+      false,
+      11
+    ],
+    [
+      false,
+      14
+    ]
+  ],
+  "singleton_types_empty_single_pair": [
+    [
+      0,
+      5,
+      1
+    ],
+    [
+      1,
+      3,
+      2
+    ],
+    [
+      2,
+      1,
+      3
+    ]
+  ],
+  "cases": {
+    "6": [
+      [
+        11,
+        3
+      ]
+    ],
+    "7": [
+      [
+        7,
+        7
+      ]
+    ],
+    "8": [
+      [
+        3,
+        11
+      ]
+    ]
+  },
+  "argument": "Arbitrary singleton high may be named high0; the matching normal form preserves its unordered two singleton hosts. All six zero-host profiles are entire-domain exclusions, with no maximal-high assumption. Together with degree/support identities this excludes empty-degree zero for every singleton. Scope: necessary H7 structure, not global or Lean closure."
+}
