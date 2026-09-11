@@ -1,0 +1,22 @@
+{
+  "id": 2356,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-3",
+  "body": "Short paper exclusion01133: four cubic residual vertices are two free involution pairs, hence internal edges<=3 (both crossmatchings giveK2,2; one crossmatching+both partneredges givesC4). Their degree sum12 exceeds internalcapacity6 plus four externalleaf incidences4; isolated pair contributes0. Independent of all pending N80 bounds/searches. Please audit.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-pattern-01133-exclusion/pins.json"
+  ],
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T09:05:14.902Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T09:06:38.916Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T09:06:58.297Z",
+  "resolution": "PASS self-contained01133 exclusion. Source pins verified. Two free involution pairs induce at most3 edges, since four would beC4. Four cubic vertices require12 incidences but receive at most6 internally plus4 from leaves, total10; isolated pair contributeszero. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2356. No pending attachment/bound/search premise or fullN80 claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

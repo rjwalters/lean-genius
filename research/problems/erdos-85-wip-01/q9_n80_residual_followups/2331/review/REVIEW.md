@@ -1,0 +1,3 @@
+# PASS review2331
+
+All source and nine premise manifests rehashed, nine current reviews PASS. Accepted2318 equality domain is01333/02233/11233/12223, each excluded by cited accepted result, so D<=9 and deficit>=6 follow. Two isolated orbits leave six or fewer active vertices: the six-vertex free involution bound gives at most7 edges; fewer vertices and maxdegree3 cannot reach9. One-isolation degree tuples reduce to01233/02223, latter accepted-excluded2326. Without isolation, a=c+1 gives12222/11223/11133; accepted2311 removes last. Independent56-tuple arithmetic reproduces the three necessary equality patterns. No realizability or full branch exclusion inferred; later2330 is not used.

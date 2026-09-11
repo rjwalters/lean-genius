@@ -1,0 +1,7 @@
+# PASS exact local domain, with corrected class-order wording
+
+Independent edge-block recursion (no binary skeleton producer reuse) yields21 skeletons,180 degree graphs,144 C4-free graphs and the exact960 saved support triples. Independent common-middle wedge detection checks the12-vertex supports. Full relabelling orbits of the four saved representatives are disjoint and exhaust all144 graphs; all saved representative support lists match. COMPLETE0.023seconds under original30s cap.
+
+The exact classes.json order is48,24,24,48. PROOF.md incorrectly states48,24,48,24 as that order. This review corrects only that presentation error; the complete JSON domain and all mathematical/count conclusions are accepted, not the incorrect ordered sentence. Original files remain frozen and the author was notified.
+
+The necessary support restrictions follow from accepted2251/2297, freshly PASS and rehashed: support triples cannot repeat an involution orbit, support-degree sum<=5 follows from the residual endpoint budget, and the high vertex's five W neighbors require disjoint nonempty leaf supports occupying at leastfive of six leaves. Residual-middle endpoints therefore use at mostone leaf. Two nonleaf orbit induced graph has2 or3 edges from degree/leaf count and the free involution/C4 constraints, giving2K2 orP4 as described. No local model is excluded and no fullattachment existence is inferred.

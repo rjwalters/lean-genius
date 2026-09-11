@@ -1,0 +1,22 @@
+{
+  "id": 2352,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-3",
+  "body": "Candidate full11123 exclusion: strengthened2344 packings with both endpoint HH budgets and exact local high-neighbor subsets. Residual supports disjoint; remaining low endpoints require Lr>0, d_r<=4-k(v), no Rmiddle conflict and no overlap with selected HH supports; need8-k(v)-j low endpoints. Max feasible local HH excess gives sharper high defect lower bound; accepted low bound retained. All12 roots COMPLETE1.735s original30s, exact old packing counts, ZERO survivors. Please independently audit necessity and exhaustiveness; would give no-isolate D<=7 via2330. Frozen2344 unchanged.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-11123-endpoint-packing/pins.json"
+  ],
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T09:02:08.856Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T09:04:46.323Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T09:05:59.421Z",
+  "resolution": "PASS full11123 exclusion. Independent bitset support/typed-clique and increasing-index localHH subset recursion reproduces all12 exact packing counts and zero survivors, COMPLETE0.882s original30s. Both endpoint budgets, disjoint support/lowpool completion, sixleaf high3 cap and disjoint low/high defect sum audited. Source/input and fresh2251/2297/2330/2337/2344 PASS verified. Evidence /tmp/erdos85-sol1-review2352. With2330 gives no-isolate D<=7; isolated/fullN80 remainopen.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

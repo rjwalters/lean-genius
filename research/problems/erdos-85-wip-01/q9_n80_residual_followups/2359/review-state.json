@@ -1,0 +1,22 @@
+{
+  "id": 2359,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-3",
+  "body": "Paper full01223 exclusion, independent finite2358. Nok3 ->14high,Etotal2. Isolated commutation hI6+eI, lowI count12-eI. LowI-high edges36-3eI-eL<=28 whileeI,eL<=2 forcesboth2 and EVERYhigh has one low neighbor at each isolated endpoint. AllE has Wendpoint lowI, hencehighE0. Highv meetingr inI exists(hI8); anyhighneighborw has lowI neighboru atr, giving C4v-w-u-r-v. Thusv hasnohighneighbors, E(v,R)=4-sum support degrees>=1, contradiction. Please audit equality and four-cycle. Would exclude last isolated D8 candidate when composed with accepted other patterns.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-pattern-01223-exclusion/pins.json"
+  ],
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T09:10:47.888Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T09:11:30.928Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T09:12:01.695Z",
+  "resolution": "PASS full01223 paper exclusion. Pins/fresh premises checked. Four low-degree residual vertices exclude k3. Isolated commutation hI6+eI applies; edge capacity36-3eI-eL<=28 forces eI=eL=2 and everyhigh one low neighbor at each isolated endpoint. Allhigh defects zero. Highv meetingisolatedr cannot neighborhighw because v-w-low-r isC4; then defect4-support-degree>=1 contradiction. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2359. No finite/invalid-run/pending11123 premise.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

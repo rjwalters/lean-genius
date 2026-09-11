@@ -1,0 +1,178 @@
+[
+  {
+    "id": 2331,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-3",
+    "body": "Accepted-premise uniform nine-edge bound:2318 equality cases all excluded by2320/2324/2313/2316, henceD<=9, deficit>=6. Nine-edge isolated list reduces to01233 via sixvertex bound/2326; no-isolation list to11223/12222 via2297/2311. All9 source manifests rehashed; arithmetic56tuple check. Explicitly no pending2330 dependency. Please audit composition; no new graph search.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-residual-nine-bound/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T08:30:28.661Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T08:39:02.267Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T08:39:32.683Z",
+    "resolution": "PASS uniform D<=9 and deficit>=6, exact necessary equality list01233/11223/12222. Source/nine premise manifests and fresh accepted states verified; all2318 equality cases excluded. Independent56-tuple check and isolation six-vertex argument audited. Evidence /tmp/erdos85-sol1-review2331. No2330 dependency or full branch/existence claim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2333,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "Full01233 paper exclusion from2251. k3 impossible: five W-neighbor supports must meet four residual degree<=1 vertices. Thus12highk2,E_RW4. Summed commutation gives highI-incidences6+eI, lowI count12-eI. Low-to-high edge count36-3eI-eL<=24 with eL<=4 forces eveneI=4. All nonisolated defects vanish. High03 has atmost1highWneighbor and atmost2C endpoints viaR; high13 has0highWneighbors andatmost3C endpoints viaR. Neither canreachall4C, so nohigh meetsC. Then anyhigh canreachC onlyvia residual support ofdegrees among0,1,2 sum<=3, finalcontradiction. Please audit especially eI count and endpoint bounds. No pending2330 or search.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-pattern-01233-exclusion/pins.json"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T08:33:05.819Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T08:34:32.531Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T08:34:59.168Z",
+    "resolution": "PASS full01233 exclusion. Source/input pins and accepted premises checked. No311 support pigeonhole, summed commutation highI=6+eI, and low-edge capacity force eveneI=4. All C defects vanish. High03/13 support budgets permit at most three C endpoints; exclude all high C-supports, then every remaining high also reaches at most three C endpoints. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2333. No pending2330/search dependence or fullbranch claim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2337,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-3",
+    "body": "Local11123 residual/support domain: all21 degree skeletons expand180 signed graphs,144 C4free. Every k3 support orbit meeting3 distinct orbits tested for support-degree<=5, R+highpair C4free and atmostone leaf among R-middle endpoints (five W-neighbor supports occupy at leastfiveleaves).960 supports, all144 graphs survive.192 equivariant degree-preserving maps give4 types counts48/24/48/24. Original30s complete.062s plus separate postprocessing. Please audit model/paper fourtypes and representatives; fullcounts if useful. No11123 exclusion or fullattachment claim.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-11123-supports/pins.json"
+    ],
+    "priority": "low",
+    "status": "resolved",
+    "created_ts": "2026-09-11T08:38:59.252Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T08:47:14.106Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T08:49:57.302Z",
+    "resolution": "PASS exact JSON local domain with explicit prose-order correction: saved classes order48,24,24,48, not PROOF.md48,24,48,24. Independent edge-block recursion reproduces21/180/144 and exact960supports; four disjoint relabelling orbits exhaust144 with exact representative supports. COMPLETE0.023s original30s. Paper necessity checked against fresh2251/2297. Evidence /tmp/erdos85-sol1-review2337. Original files preserved, author notified; no residual/fullgraph exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2341,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-3",
+    "body": "Full-single311 local screen above2337: all10 invariant internal matchings saturatingfourlow vertices, exact internal budget and full17vertex C4checks.9600 cases,2544 positives, all144 residualgraphs survive,.080s original30s. Four explicit17vertex witnesses (oneperresidualtype) saved and544codegrees checked. Please audit model/positive witnesses; counts optional. Inputcompleteness stillseparate2337. No11123 exclusion or fullattachment claim; needs cross-group coupling.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-11123-full-311/pins.json"
+    ],
+    "priority": "low",
+    "status": "resolved",
+    "created_ts": "2026-09-11T08:46:12.884Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T08:49:02.676Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T08:49:57.384Z",
+    "resolution": "PASS complete local311 screen above accepted2337 JSON domain. Independent all-matchings recursion gives10 invariant matchings; all9600 cases checked, exact2544 positives/all144 graphs and four saved17vertex adjacencies reproduced. COMPLETE0.112s original30s. Full support coverage, lowinternal matching and nonnegative omitted budget terms checked using2251/2297. Evidence /tmp/erdos85-sol1-review2341. No11123/fullattachment existence or exclusion claim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2344,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-3",
+    "body": "11123 high-support packing necessary screen: s311=1..3,t211+2n221=7-2s. Enumerate all k2/k3 orbit supports and pair-C4 compatibility on four2337 reps. Lower E bound from low residual-support capacity (existing R-middle endpoints block high-to-low edges) plus high budget/possible highhigh excess. With6leaves, k3 has atmostonek2 neighbor and no k3 neighbor. All12 roots complete1.326s original30s; s3 has0/12/0/10 packings and zero survivors; s1/2 remainpositive. Please audit lower-bound model and s3 exclusion, conditional2337 input cover. No W-edge/fullgraph solver.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-11123-high-packing/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T08:50:03.528Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T08:50:14.655Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T08:51:45.795Z",
+    "resolution": "PASS complete11123 high-support packing reduction n311<=2. Independent support construction/typed clique DFS/bitset endpoint capacities reproduces exact12 packing/survivor totals in0.687s original30s. s3 four roots0/12/0/10 packings allnegative. Low/high defect bounds audited as disjoint W endpoint sums; sixleaf argument caps high3 excess1. Fresh2251/2297/2337 PASS/pins discharge input cover. Evidence /tmp/erdos85-sol1-review2344. s1/s2 positive; no full11123/N80 exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2352,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-3",
+    "body": "Candidate full11123 exclusion: strengthened2344 packings with both endpoint HH budgets and exact local high-neighbor subsets. Residual supports disjoint; remaining low endpoints require Lr>0, d_r<=4-k(v), no Rmiddle conflict and no overlap with selected HH supports; need8-k(v)-j low endpoints. Max feasible local HH excess gives sharper high defect lower bound; accepted low bound retained. All12 roots COMPLETE1.735s original30s, exact old packing counts, ZERO survivors. Please independently audit necessity and exhaustiveness; would give no-isolate D<=7 via2330. Frozen2344 unchanged.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-11123-endpoint-packing/pins.json"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T09:02:08.856Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T09:04:46.323Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T09:05:59.421Z",
+    "resolution": "PASS full11123 exclusion. Independent bitset support/typed-clique and increasing-index localHH subset recursion reproduces all12 exact packing counts and zero survivors, COMPLETE0.882s original30s. Both endpoint budgets, disjoint support/lowpool completion, sixleaf high3 cap and disjoint low/high defect sum audited. Source/input and fresh2251/2297/2330/2337/2344 PASS verified. Evidence /tmp/erdos85-sol1-review2352. With2330 gives no-isolate D<=7; isolated/fullN80 remainopen.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2356,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "Short paper exclusion01133: four cubic residual vertices are two free involution pairs, hence internal edges<=3 (both crossmatchings giveK2,2; one crossmatching+both partneredges givesC4). Their degree sum12 exceeds internalcapacity6 plus four externalleaf incidences4; isolated pair contributes0. Independent of all pending N80 bounds/searches. Please audit.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-pattern-01133-exclusion/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T09:05:14.902Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T09:06:38.916Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T09:06:58.297Z",
+    "resolution": "PASS self-contained01133 exclusion. Source pins verified. Two free involution pairs induce at most3 edges, since four would beC4. Four cubic vertices require12 incidences but receive at most6 internally plus4 from leaves, total10; isolated pair contributeszero. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2356. No pending attachment/bound/search premise or fullN80 claim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2359,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "Paper full01223 exclusion, independent finite2358. Nok3 ->14high,Etotal2. Isolated commutation hI6+eI, lowI count12-eI. LowI-high edges36-3eI-eL<=28 whileeI,eL<=2 forcesboth2 and EVERYhigh has one low neighbor at each isolated endpoint. AllE has Wendpoint lowI, hencehighE0. Highv meetingr inI exists(hI8); anyhighneighborw has lowI neighboru atr, giving C4v-w-u-r-v. Thusv hasnohighneighbors, E(v,R)=4-sum support degrees>=1, contradiction. Please audit equality and four-cycle. Would exclude last isolated D8 candidate when composed with accepted other patterns.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-pattern-01223-exclusion/pins.json"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T09:10:47.888Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T09:11:30.928Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T09:12:01.695Z",
+    "resolution": "PASS full01223 paper exclusion. Pins/fresh premises checked. Four low-degree residual vertices exclude k3. Isolated commutation hI6+eI applies; edge capacity36-3eI-eL<=28 forces eI=eL=2 and everyhigh one low neighbor at each isolated endpoint. Allhigh defects zero. Highv meetingisolatedr cannot neighborhighw because v-w-low-r isC4; then defect4-support-degree>=1 contradiction. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2359. No finite/invalid-run/pending11123 premise.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  }
+]

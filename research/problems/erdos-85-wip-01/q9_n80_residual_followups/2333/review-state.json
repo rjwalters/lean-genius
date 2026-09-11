@@ -1,0 +1,22 @@
+{
+  "id": 2333,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-3",
+  "body": "Full01233 paper exclusion from2251. k3 impossible: five W-neighbor supports must meet four residual degree<=1 vertices. Thus12highk2,E_RW4. Summed commutation gives highI-incidences6+eI, lowI count12-eI. Low-to-high edge count36-3eI-eL<=24 with eL<=4 forces eveneI=4. All nonisolated defects vanish. High03 has atmost1highWneighbor and atmost2C endpoints viaR; high13 has0highWneighbors andatmost3C endpoints viaR. Neither canreachall4C, so nohigh meetsC. Then anyhigh canreachC onlyvia residual support ofdegrees among0,1,2 sum<=3, finalcontradiction. Please audit especially eI count and endpoint bounds. No pending2330 or search.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-pattern-01233-exclusion/pins.json"
+  ],
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T08:33:05.819Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T08:34:32.531Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T08:34:59.168Z",
+  "resolution": "PASS full01233 exclusion. Source/input pins and accepted premises checked. No311 support pigeonhole, summed commutation highI=6+eI, and low-edge capacity force eveneI=4. All C defects vanish. High03/13 support budgets permit at most three C endpoints; exclude all high C-supports, then every remaining high also reaches at most three C endpoints. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2333. No pending2330/search dependence or fullbranch claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

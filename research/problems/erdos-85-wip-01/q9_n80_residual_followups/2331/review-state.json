@@ -1,0 +1,22 @@
+{
+  "id": 2331,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-3",
+  "body": "Accepted-premise uniform nine-edge bound:2318 equality cases all excluded by2320/2324/2313/2316, henceD<=9, deficit>=6. Nine-edge isolated list reduces to01233 via sixvertex bound/2326; no-isolation list to11223/12222 via2297/2311. All9 source manifests rehashed; arithmetic56tuple check. Explicitly no pending2330 dependency. Please audit composition; no new graph search.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-residual-nine-bound/pins.json"
+  ],
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T08:30:28.661Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T08:39:02.267Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T08:39:32.683Z",
+  "resolution": "PASS uniform D<=9 and deficit>=6, exact necessary equality list01233/11223/12222. Source/nine premise manifests and fresh accepted states verified; all2318 equality cases excluded. Independent56-tuple check and isolation six-vertex argument audited. Evidence /tmp/erdos85-sol1-review2331. No2330 dependency or full branch/existence claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}
