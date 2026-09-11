@@ -1,0 +1,21 @@
+{
+  "review": 2081,
+  "status": "PASS",
+  "labelled_graphs": 4305,
+  "orbit_counts": {
+    "subdivided_star_plus_edge": 1260,
+    "star_plus_path3": 420,
+    "path5_plus_edge": 1260,
+    "path4_plus_path3": 1260,
+    "triangle_plus_two_edges": 105
+  },
+  "pins": {
+    "README.md": "c76e2b7d0090706b5c81b224ecbe410702cc2ec83f079a2b6ce0a75941dd61b2",
+    "check.py": "e580e63b109acc042f820f92a62db5f7b979cbe9a1ce517a7ee9d77219913926",
+    "results.json": "13522cd1de0f0b62da3080a3f0bfd4a81fee4ac0211d6d0a5a58b3e173af4e5d",
+    "reviews.json": "473f402a868c7b3257bb1a76351a39eb8142b63574f2a00c1b2f9d8b58234fd2"
+  },
+  "method": "Independent full S7 orbit generation from five explicit graphs; orbit sets disjoint and equal every five-edge/no-isolate/maxdegree3 graph. Compared each author representative to its explicit orbit, no component-signature classification imported.",
+  "semantic_audit": "BC and degree give pair_count-empty_count=w and pair_count<=3, yielding pairE<=1 and singletonE<=2. Consequently Q has2aedges and s_i+degQ_i=7. Whole twin6/crossed14 exclusions concern fixed-high profiles irrespective of a or max-degree choice, so every s_i=1 is impossible after those reviewed exclusions. Thus2<=s_i<=4 and1<=degR_i<=3. For a8 R has5edges, degree excess3, giving precisely the two degree sequences. Component classification and independent orbit equality exhaust all five shapes.",
+  "scope": "Necessary a8 auxiliary complement cover, no exclusion of any shape or remaining H7case; no Lean/global theorem or capped search."
+}

@@ -1,0 +1,138 @@
+{
+  "status": "PASS",
+  "labelled_5edge_graphs_checked": 20349,
+  "retained": 4305,
+  "classes": [
+    {
+      "component_signature": "[(2, 1, (1, 1)), (2, 1, (1, 1)), (3, 3, (2, 2, 2))]",
+      "labelled_count": 105,
+      "example_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          6
+        ]
+      ]
+    },
+    {
+      "component_signature": "[(2, 1, (1, 1)), (5, 4, (1, 1, 1, 2, 3))]",
+      "labelled_count": 1260,
+      "example_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          5,
+          6
+        ]
+      ]
+    },
+    {
+      "component_signature": "[(2, 1, (1, 1)), (5, 4, (1, 1, 2, 2, 2))]",
+      "labelled_count": 1260,
+      "example_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          5,
+          6
+        ]
+      ]
+    },
+    {
+      "component_signature": "[(3, 2, (1, 1, 2)), (4, 3, (1, 1, 1, 3))]",
+      "labelled_count": 420,
+      "example_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          4,
+          6
+        ]
+      ]
+    },
+    {
+      "component_signature": "[(3, 2, (1, 1, 2)), (4, 3, (1, 1, 2, 2))]",
+      "labelled_count": 1260,
+      "example_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          4,
+          6
+        ]
+      ]
+    }
+  ],
+  "scope": "Conditional a8 complement cover using reviewed exclusion of every s_i=1 host assignment and singleton empty degree<=2. No new host-assignment exclusion."
+}

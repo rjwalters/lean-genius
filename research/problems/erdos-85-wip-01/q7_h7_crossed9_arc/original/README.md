@@ -1,0 +1,11 @@
+# Crossed H7 profile9: complete exclusion submitted for review
+
+One bounded pass covers all1920 canonical assignments:430 local negatives and1490 complete-row arc negatives, with no UNKNOWN or unvisited cases. The pass used40,825,675 combined operations in27.42seconds, preserving100000 combined operations per assignment and60seconds overall. No retries or old capped domains were visited.
+
+The two filter APIs are byte copies from reviewed crossed10 and implement the established2069/2071 necessary conditions. Each graph is reconstructed from pair ownership, missing singleton colour incidences and residual host degrees. Complete neighbourhood domains are needed for sound arc pruning: candidate rows satisfy residual degree, exact high-colour incidence and C4 constraints. Unsupported rows may be deleted only when no remaining row at another vertex agrees on their mutual edge and respects the final common-neighbour bound. An empty domain proves infeasibility of that fixed host assignment. All adjacency arrays, initial domains and deletion traces are retained in results.json.gz.
+
+The separate verify.py imports neither filter. It checks all graph/source ownership, all1,189,400 rows for soundness,27,652 deletion batches and765,002 failed supports. It independently rejects all430 local-negative rows via candidate-subset traversal (120130 total nodes). Independent complete-domain review remains necessary; row soundness alone does not establish completeness.
+
+cover.py independently enumerates without symmetry pruning using dynamic most-constrained-host choices. It completes in19180nodes, obtains3840raw assignments, and proves the published1920 representatives have disjoint two-element orbits covering that entire set. It derives profile-preserving actions directly from the seed matching. The original completeprofile census record and its source hash are tied by source-join.json; the input record is an exact extraction, checked before freezing. The cover script retains historical upstream seed/reduction paths, whose hashes are recorded in cover-results.json.
+
+This package can exclude only crossedprofile9 once independently accepted. It does not close H7, change a6/7/8 empty-class counts, prove a Lean theorem or solve Erdős85. pins.json freezes every payload; input-pins.json preserves the pre-run source/API/runner receipts.

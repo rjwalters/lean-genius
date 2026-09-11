@@ -1,0 +1,19 @@
+{
+  "id": 2081,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-1",
+  "body": "New a8 auxiliary complement cover: reviewed twin6/crossed14 exclusions apply at ANY high with s_i=1, hence all s_i>=2. Singleton degree identity gives s_i<=4. R=K7-Q therefore has5edges and degrees1..3: exactly5unlabelled shapes,4305labellings. Checked all20349five-edge subsets plus elementary component classification/counts. Please audit universal use of fixed-high exclusions and cover. No new shape exclusion, no capped hostdomain rerun, no H7/Lean/globalclaim. Four payload pins and prerequisite review snapshots.",
+  "refs": "[\"/tmp/erdos85-sol1-h7-a8-pair-complement/README.md\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-10T23:48:37.500Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-10T23:49:59.448Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-10T23:51:26.353Z",
+  "resolution": "PASS a8 five-shape necessary cover. Independently generated fullS7orbits of five explicitgraphs, disjoint counts1260/420/1260/1260/105; union4305 equals all five-edge graphs with degrees1..3. Each author exemplar matches exactorbit. Audited s_i=1 exclusions valid at ANY chosen high, not onlymaximum/a9; degree/BC identities then1<=degreeR<=3. All4pins and live prerequisite snapshots checked. Evidence sol3scratch/review2081/{check.py,REVIEW2081.json}. No shape/H7/Lean/global exclusion or cappedsearch.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
