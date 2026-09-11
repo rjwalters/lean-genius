@@ -1,0 +1,5467 @@
+{
+  "status": "COMPLETE",
+  "original_cap_seconds": 30,
+  "seconds": 4.428298416081816,
+  "hashes": {
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-fixed-allocation/PROOF.md": "24daf48367d445e353d241c79712c537da67e56c5dda6b08c84dfb7cf3463f67",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-fixed-allocation/check.py": "0abccd84f04b881ec4c5f153f66358a02fe43e75b83f5534c043df3b78e18808",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-fixed-allocation/input-pins.json": "259f6d2ac7f49d6d8dd8da040c51b4af38c3119ad37649c951518d84d5020a25",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-fixed-allocation/model.py": "0f33261db628dbdbb68a23fbd4968d9c4b6f4eeed2f52b2f6cefa65494da6a96",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-fixed-allocation/models.json": "b277ce8d066664f2c43b3cab271f31c300e241d12a03909ae4babb15fb4a5c29",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-fixed-allocation/results.json": "4d812efb2f43665367462533aa31c279c1e7685d5b5a5ffee360c87175ef1e79",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-symmetry/pins.json": "2eb0402fe430110ee86615ee16d249b165628f9395d8e5822e3f6eeba1f8e828",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-symmetry/results.json": "0067cdfb506bc731271936e945f16f042d5e8bd73e362005989db9bc125d7d13",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-high-matchings/pins.json": "e1635f121d5d594eb55bf4c7a2d41ad5c1b9e16d92f621d1598f8f33487868cf",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-high-matchings/results.json": "86e9560cdac363815f75b66662bcf48f0a0aebd1fc6347da06edd6c4a053aab2",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-packing/results.json": "befd394c4ad63e32589c31749fc1f968fd55865f37555c2853ffb1b03f14c319",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-supports/results.json": "7517ec0cc905fb2a4da64329a70633ff49d6dcc346718f724b6eccedd1eae8d7"
+  },
+  "premises": [
+    {
+      "id": 2251,
+      "status": "resolved",
+      "resolution": "PASS. All4payload/3premise hashes; independent1392 identity cases and exact3 restricted tuples verified. Attached saturation, Efixed-neighbor localization, n311=1 cardinality and n311=2 commutation/divisibility contradictions audited. Companion2250 now independently PASS; its loop-count proof also read. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2251. Some residualdegree0/1/4/5 necessary in N80/F10 cubic-fixed branch; no fullcase exclusion."
+    },
+    {
+      "id": 2458,
+      "status": "resolved",
+      "resolution": "PASS standaloneD5 eight-action cover. Five payload hashes/fresh2295 checked. Paperforest/component/freeinvolution classification audited. Independent edgeorbit recursion coversall1151 candidates ->exact1041 savedgraphs, union-find confirmsforest. Full3840 tau-commuting maps giveexactdisjoint8 orbits120/240/240/120/240/60/20/1. COMPLETE0.038s original30s cap afterpre-enumeration optionalmanifest fix, no capretry. Evidence /tmp/erdos85-sol1-review2458. Residualonly/no pendingD6/global/Lean."
+    },
+    {
+      "id": 2460,
+      "status": "resolved",
+      "resolution": "PASS completeD5 eight-action support/pair domains. Six hashes/fresh2251/2458 andexactrepresentatives checked. Independent allk2/k3 subsets thennormalization, direct repeated-wedge partialgraph tests andendpointbudgets reproduceall17/24,18/29,19/34x3,20/40x3 domains. Every same/mixedpair outcome verified onfour-high graph. COMPLETE0.066s original30s cap. Evidence /tmp/erdos85-sol1-review2460. No forcedcubic shortcut/actionexclusion/fullpacking/global/Lean."
+    },
+    {
+      "id": 2463,
+      "status": "resolved",
+      "resolution": "PASS completeD5/s5 packing cover. Six hashes/fresh2251/2458/2460 checked. Independent residual-pair disjoint recursion (not producerclique graph) coversallfive-support choices; directcomplement Z/q, lowcounts andRRcomm reproduceevery stagecount andexact3856 support-index/q records. Final0/72/240/208/312/960/720/1344; class0 empty. COMPLETE0.094s original30s cap. Evidence /tmp/erdos85-sol1-review2463. Necessarypositives only/no fulls5/global/Lean."
+    },
+    {
+      "id": 2464,
+      "status": "resolved",
+      "resolution": "PASS all3856 D5/s5 aggregate models and nonmatching-shape exclusion.10 hashes/fresh2251/2458/2460/2463, exactsourcekeys checked. Independent Q/L reconstruction includes valid individual-parity lower bounds; everyoriginal inequality matched. Exact832 Farkas zero-coeff/negativeRHS and3024 rational witnesses verified. Classbridge72/240/208/312 allnegative;960/720/1344 matching positives (1553integral). COMPLETE13.218s original30s cap. Evidence /tmp/erdos85-sol1-review2464. Matching necessary, no realization/fullD5/global/Lean."
+    },
+    {
+      "id": 2467,
+      "status": "resolved",
+      "resolution": "PASS complete highmatching/Q-domain cover. Eight hashes/fresh2460/2463/2464 and all3024 source keys checked. Independent ordinary matchings filtered by tau give312; direct common-neighbor checks on partial20-vertex graphs verify allowed edges and every37408 matching. Q rows reconstructed via singleton-low endpoint choices; exact domains and forced column/low-capacity screens reproduceall30256 saved survivors. COMPLETE5.3273s original30s cap. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2467. Domain only/no joint/global/Lean."
+    },
+    {
+      "id": 2468,
+      "status": "resolved",
+      "resolution": "PASS exact43-representative symmetry cover. Eleven hashes/fresh2460/2463/2464/2467 checked. Independent all tau-centralizing permutations reproduce64/192/3840 residual automorphisms. Explicit member relabelings preserve support/high involution/q and transport every30256 matching/Q dictionary across3024 distinct roots. COMPLETE2.1846s original30s cap. Separate complete support-action/full-orbit closure check verifies32/9/2 exact orbits. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2468. Reduction only/no joint/global/Lean."
+    }
+  ],
+  "records": [
+    {
+      "root": 0,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 7,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 1,
+      "source_root": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-48/1507",
+      "terms": 79,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 2,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 3,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 4,
+      "source_root": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/93",
+      "terms": 30,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 5,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 6,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 7,
+      "source_root": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 8,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 9,
+      "source_root": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 10,
+      "source_root": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 11,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 12,
+      "source_root": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 13,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 14,
+      "source_root": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 15,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 16,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 17,
+      "source_root": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/79",
+      "terms": 60,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 18,
+      "source_root": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/93",
+      "terms": 30,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 19,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 20,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 21,
+      "source_root": 2,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/193",
+      "terms": 62,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 22,
+      "source_root": 2,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/29",
+      "terms": 37,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 23,
+      "source_root": 2,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/54",
+      "terms": 68,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 24,
+      "source_root": 2,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/74",
+      "terms": 69,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 25,
+      "source_root": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 26,
+      "source_root": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 27,
+      "source_root": 2,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/71",
+      "terms": 20,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 28,
+      "source_root": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 29,
+      "source_root": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 30,
+      "source_root": 2,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/12",
+      "terms": 13,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 31,
+      "source_root": 2,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/84",
+      "terms": 93,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 32,
+      "source_root": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 33,
+      "source_root": 6,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 34,
+      "source_root": 6,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-19/916",
+      "terms": 93,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 35,
+      "source_root": 6,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 36,
+      "source_root": 6,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/29",
+      "terms": 31,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 37,
+      "source_root": 6,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/91",
+      "terms": 57,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 38,
+      "source_root": 6,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/29",
+      "terms": 31,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 39,
+      "source_root": 6,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 40,
+      "source_root": 6,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 41,
+      "source_root": 6,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/39",
+      "terms": 39,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 42,
+      "source_root": 6,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 43,
+      "source_root": 6,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/45",
+      "terms": 63,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 44,
+      "source_root": 6,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/32",
+      "terms": 33,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 45,
+      "source_root": 6,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/32",
+      "terms": 33,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 46,
+      "source_root": 6,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/211",
+      "terms": 83,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 47,
+      "source_root": 6,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/33",
+      "terms": 33,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 48,
+      "source_root": 6,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 49,
+      "source_root": 6,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/33",
+      "terms": 33,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 50,
+      "source_root": 6,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 51,
+      "source_root": 8,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 6,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 52,
+      "source_root": 8,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/119",
+      "terms": 49,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 53,
+      "source_root": 8,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 54,
+      "source_root": 8,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/14",
+      "terms": 15,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 55,
+      "source_root": 8,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/71",
+      "terms": 20,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 56,
+      "source_root": 8,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 57,
+      "source_root": 8,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/14",
+      "terms": 15,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 58,
+      "source_root": 8,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/191",
+      "terms": 88,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 59,
+      "source_root": 8,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 60,
+      "source_root": 8,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 61,
+      "source_root": 10,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-21/827",
+      "terms": 74,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 62,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 63,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 64,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 4,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 65,
+      "source_root": 10,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/29",
+      "terms": 37,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 66,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 67,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 4,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 68,
+      "source_root": 10,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-5/163",
+      "terms": 82,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 69,
+      "source_root": 10,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/31",
+      "terms": 30,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 70,
+      "source_root": 10,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/31",
+      "terms": 30,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 71,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 72,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 5,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 73,
+      "source_root": 12,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/42",
+      "terms": 62,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 74,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 5,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 75,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 76,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 77,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 78,
+      "source_root": 12,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/14",
+      "terms": 15,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 79,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 80,
+      "source_root": 12,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/71",
+      "terms": 20,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 81,
+      "source_root": 12,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/14",
+      "terms": 15,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 82,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 83,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 84,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 85,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 86,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 87,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 13,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 88,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 65,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 89,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 26,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 90,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 18,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 91,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 7,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 92,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 93,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 9,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 94,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 9,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 95,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 96,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 97,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 98,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 9,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 99,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 100,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 101,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 18,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 102,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 17,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 103,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 9,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 104,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 105,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 106,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 11,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 107,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 108,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 109,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 13,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 110,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 86,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 111,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 112,
+      "source_root": 14,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 113,
+      "source_root": 16,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 114,
+      "source_root": 16,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-5/179",
+      "terms": 81,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 115,
+      "source_root": 16,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/74",
+      "terms": 63,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 116,
+      "source_root": 16,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 117,
+      "source_root": 16,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/26",
+      "terms": 27,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 118,
+      "source_root": 16,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 119,
+      "source_root": 16,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/41",
+      "terms": 41,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 120,
+      "source_root": 16,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 121,
+      "source_root": 16,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/65",
+      "terms": 56,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 122,
+      "source_root": 16,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 123,
+      "source_root": 16,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 124,
+      "source_root": 16,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 125,
+      "source_root": 16,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 126,
+      "source_root": 16,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/74",
+      "terms": 65,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 127,
+      "source_root": 16,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/71",
+      "terms": 49,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 128,
+      "source_root": 16,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 129,
+      "source_root": 16,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 130,
+      "source_root": 16,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/125",
+      "terms": 59,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 131,
+      "source_root": 16,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/71",
+      "terms": 49,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 132,
+      "source_root": 16,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 133,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 5,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 134,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 135,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 136,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 137,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 138,
+      "source_root": 17,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/346",
+      "terms": 81,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 139,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 140,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 141,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 142,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 143,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 144,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 145,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 14,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 146,
+      "source_root": 17,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/187",
+      "terms": 76,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 147,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 148,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 149,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 150,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 5,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 151,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 152,
+      "source_root": 17,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 153,
+      "source_root": 18,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 154,
+      "source_root": 18,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/257",
+      "terms": 51,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 155,
+      "source_root": 18,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-5/338",
+      "terms": 70,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 156,
+      "source_root": 18,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 157,
+      "source_root": 18,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 158,
+      "source_root": 18,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 159,
+      "source_root": 18,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 160,
+      "source_root": 18,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/26",
+      "terms": 27,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 161,
+      "source_root": 18,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 162,
+      "source_root": 18,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/31",
+      "terms": 55,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 163,
+      "source_root": 18,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/98",
+      "terms": 61,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 164,
+      "source_root": 18,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 165,
+      "source_root": 18,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/391",
+      "terms": 84,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 166,
+      "source_root": 18,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/29",
+      "terms": 30,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 167,
+      "source_root": 18,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/36",
+      "terms": 31,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 168,
+      "source_root": 18,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 169,
+      "source_root": 18,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/232",
+      "terms": 80,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 170,
+      "source_root": 18,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/36",
+      "terms": 31,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 171,
+      "source_root": 19,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 6,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 172,
+      "source_root": 19,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/595",
+      "terms": 84,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 173,
+      "source_root": 19,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 174,
+      "source_root": 19,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 175,
+      "source_root": 19,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 176,
+      "source_root": 19,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 177,
+      "source_root": 19,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 178,
+      "source_root": 19,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 179,
+      "source_root": 19,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 4,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 180,
+      "source_root": 19,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 181,
+      "source_root": 19,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 182,
+      "source_root": 19,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 183,
+      "source_root": 19,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/281",
+      "terms": 83,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 184,
+      "source_root": 19,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 185,
+      "source_root": 19,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 186,
+      "source_root": 19,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 187,
+      "source_root": 19,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 4,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 188,
+      "source_root": 19,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 189,
+      "source_root": 20,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 190,
+      "source_root": 20,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 191,
+      "source_root": 20,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/26",
+      "terms": 27,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 192,
+      "source_root": 20,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 193,
+      "source_root": 20,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/185",
+      "terms": 50,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 194,
+      "source_root": 20,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/37",
+      "terms": 38,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 195,
+      "source_root": 20,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 196,
+      "source_root": 20,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 197,
+      "source_root": 20,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 198,
+      "source_root": 20,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 199,
+      "source_root": 20,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/63",
+      "terms": 49,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 200,
+      "source_root": 20,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/233",
+      "terms": 72,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 201,
+      "source_root": 20,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 202,
+      "source_root": 20,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/63",
+      "terms": 49,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 203,
+      "source_root": 20,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 204,
+      "source_root": 22,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 205,
+      "source_root": 22,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 206,
+      "source_root": 22,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/28",
+      "terms": 29,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 207,
+      "source_root": 22,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/209",
+      "terms": 69,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 208,
+      "source_root": 22,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/28",
+      "terms": 29,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 209,
+      "source_root": 22,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/30",
+      "terms": 54,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 210,
+      "source_root": 22,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/95",
+      "terms": 89,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 211,
+      "source_root": 22,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/30",
+      "terms": 54,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 212,
+      "source_root": 22,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-99/2237",
+      "terms": 91,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 213,
+      "source_root": 22,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 214,
+      "source_root": 22,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/28",
+      "terms": 94,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 215,
+      "source_root": 22,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/53",
+      "terms": 51,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 216,
+      "source_root": 128,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 9,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 217,
+      "source_root": 128,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-48/1507",
+      "terms": 79,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 218,
+      "source_root": 128,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 219,
+      "source_root": 128,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/93",
+      "terms": 30,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 220,
+      "source_root": 128,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/202",
+      "terms": 66,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 221,
+      "source_root": 128,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 222,
+      "source_root": 128,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 223,
+      "source_root": 128,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 224,
+      "source_root": 128,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 225,
+      "source_root": 128,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/93",
+      "terms": 30,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 226,
+      "source_root": 128,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/79",
+      "terms": 60,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 227,
+      "source_root": 128,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 228,
+      "source_root": 128,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 229,
+      "source_root": 128,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 230,
+      "source_root": 128,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 231,
+      "source_root": 128,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/93",
+      "terms": 30,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 232,
+      "source_root": 128,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 233,
+      "source_root": 128,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 234,
+      "source_root": 128,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 235,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 8,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 236,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 237,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 238,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 239,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 240,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 241,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 242,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 8,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 243,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 244,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 245,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 246,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 247,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 248,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 45,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 249,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 250,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 251,
+      "source_root": 134,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 252,
+      "source_root": 136,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/205",
+      "terms": 90,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 253,
+      "source_root": 136,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 254,
+      "source_root": 136,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 255,
+      "source_root": 136,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/74",
+      "terms": 69,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 256,
+      "source_root": 136,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/87",
+      "terms": 97,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 257,
+      "source_root": 136,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/185",
+      "terms": 50,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 258,
+      "source_root": 136,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 259,
+      "source_root": 136,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 260,
+      "source_root": 136,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 261,
+      "source_root": 140,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/32",
+      "terms": 66,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 262,
+      "source_root": 140,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 263,
+      "source_root": 140,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 264,
+      "source_root": 140,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 4,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 265,
+      "source_root": 140,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 266,
+      "source_root": 140,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 267,
+      "source_root": 140,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 268,
+      "source_root": 140,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 269,
+      "source_root": 140,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/112",
+      "terms": 45,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 270,
+      "source_root": 140,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 271,
+      "source_root": 140,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 272,
+      "source_root": 140,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 273,
+      "source_root": 142,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 274,
+      "source_root": 142,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 4,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 275,
+      "source_root": 142,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 276,
+      "source_root": 142,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 277,
+      "source_root": 142,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 13,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 278,
+      "source_root": 142,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 4,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 279,
+      "source_root": 142,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 7,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 280,
+      "source_root": 142,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 281,
+      "source_root": 142,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 282,
+      "source_root": 142,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 283,
+      "source_root": 142,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 284,
+      "source_root": 142,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 28,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 285,
+      "source_root": 142,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 286,
+      "source_root": 142,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 287,
+      "source_root": 142,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 288,
+      "source_root": 142,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 6,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 289,
+      "source_root": 144,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 4,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 290,
+      "source_root": 144,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/41",
+      "terms": 85,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 291,
+      "source_root": 144,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/257",
+      "terms": 51,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 292,
+      "source_root": 144,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 293,
+      "source_root": 144,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 294,
+      "source_root": 144,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/73",
+      "terms": 61,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 295,
+      "source_root": 144,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 296,
+      "source_root": 144,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 297,
+      "source_root": 144,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/185",
+      "terms": 50,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 298,
+      "source_root": 144,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 299,
+      "source_root": 144,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/30",
+      "terms": 51,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 300,
+      "source_root": 144,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 301,
+      "source_root": 144,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/34",
+      "terms": 42,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 302,
+      "source_root": 144,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 303,
+      "source_root": 144,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 304,
+      "source_root": 144,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 305,
+      "source_root": 144,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 306,
+      "source_root": 144,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/97",
+      "terms": 62,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 307,
+      "source_root": 144,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 308,
+      "source_root": 144,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/125",
+      "terms": 59,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 309,
+      "source_root": 144,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/35",
+      "terms": 35,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 310,
+      "source_root": 144,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 311,
+      "source_root": 144,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 312,
+      "source_root": 145,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 313,
+      "source_root": 145,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/54",
+      "terms": 52,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 314,
+      "source_root": 145,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 315,
+      "source_root": 145,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-12/311",
+      "terms": 72,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 316,
+      "source_root": 145,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-8/241",
+      "terms": 90,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 317,
+      "source_root": 145,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/29",
+      "terms": 31,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 318,
+      "source_root": 145,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/119",
+      "terms": 72,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 319,
+      "source_root": 145,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-21/575",
+      "terms": 81,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 320,
+      "source_root": 145,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/157",
+      "terms": 77,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 321,
+      "source_root": 145,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 6,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 322,
+      "source_root": 145,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/78",
+      "terms": 65,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 323,
+      "source_root": 145,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/37",
+      "terms": 37,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 324,
+      "source_root": 145,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 325,
+      "source_root": 145,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/30",
+      "terms": 55,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 326,
+      "source_root": 145,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 327,
+      "source_root": 145,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-9/446",
+      "terms": 90,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 328,
+      "source_root": 145,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/105",
+      "terms": 57,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 329,
+      "source_root": 145,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 330,
+      "source_root": 304,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/135",
+      "terms": 83,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 331,
+      "source_root": 304,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/135",
+      "terms": 83,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 332,
+      "source_root": 304,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 333,
+      "source_root": 304,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 334,
+      "source_root": 304,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 335,
+      "source_root": 308,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/71",
+      "terms": 20,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 336,
+      "source_root": 308,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 337,
+      "source_root": 308,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-15/959",
+      "terms": 68,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 338,
+      "source_root": 308,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/42",
+      "terms": 38,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 339,
+      "source_root": 308,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/71",
+      "terms": 20,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 340,
+      "source_root": 308,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 341,
+      "source_root": 308,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/401",
+      "terms": 81,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 342,
+      "source_root": 308,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 343,
+      "source_root": 308,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/31",
+      "terms": 30,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 344,
+      "source_root": 308,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 345,
+      "source_root": 308,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 346,
+      "source_root": 308,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 347,
+      "source_root": 308,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 348,
+      "source_root": 309,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 5,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 349,
+      "source_root": 309,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/299",
+      "terms": 85,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 350,
+      "source_root": 309,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 351,
+      "source_root": 309,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 352,
+      "source_root": 309,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/36",
+      "terms": 36,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 353,
+      "source_root": 309,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 13,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 354,
+      "source_root": 309,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 355,
+      "source_root": 309,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 356,
+      "source_root": 309,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-9/577",
+      "terms": 85,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 357,
+      "source_root": 309,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 358,
+      "source_root": 309,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/89",
+      "terms": 71,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 359,
+      "source_root": 309,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-12/389",
+      "terms": 69,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 360,
+      "source_root": 309,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 361,
+      "source_root": 312,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 362,
+      "source_root": 312,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/71",
+      "terms": 20,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 363,
+      "source_root": 312,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 364,
+      "source_root": 312,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 365,
+      "source_root": 312,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 366,
+      "source_root": 312,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 367,
+      "source_root": 312,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 368,
+      "source_root": 312,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 369,
+      "source_root": 312,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 370,
+      "source_root": 312,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 371,
+      "source_root": 314,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/116",
+      "terms": 75,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 372,
+      "source_root": 314,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-3/116",
+      "terms": 75,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 373,
+      "source_root": 314,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/181",
+      "terms": 67,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 374,
+      "source_root": 314,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/31",
+      "terms": 30,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 375,
+      "source_root": 314,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/181",
+      "terms": 67,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 376,
+      "source_root": 314,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/31",
+      "terms": 30,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 377,
+      "source_root": 314,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 378,
+      "source_root": 314,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 379,
+      "source_root": 314,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 380,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 381,
+      "source_root": 316,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-12/1235",
+      "terms": 76,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 382,
+      "source_root": 316,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/367",
+      "terms": 81,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 383,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 384,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 385,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 386,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 387,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 388,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 389,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 390,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 391,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 392,
+      "source_root": 316,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/435",
+      "terms": 91,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 393,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 394,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 395,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 396,
+      "source_root": 316,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/75",
+      "terms": 71,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 397,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 398,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 399,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 400,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 401,
+      "source_root": 316,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/75",
+      "terms": 71,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 402,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 403,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 404,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 405,
+      "source_root": 316,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 406,
+      "source_root": 317,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 407,
+      "source_root": 317,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 408,
+      "source_root": 317,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 409,
+      "source_root": 317,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-12/647",
+      "terms": 62,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 410,
+      "source_root": 317,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/67",
+      "terms": 47,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 411,
+      "source_root": 317,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 412,
+      "source_root": 317,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/71",
+      "terms": 20,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 413,
+      "source_root": 317,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/355",
+      "terms": 68,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 414,
+      "source_root": 317,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/67",
+      "terms": 47,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 415,
+      "source_root": 317,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 416,
+      "source_root": 317,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 417,
+      "source_root": 317,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 418,
+      "source_root": 318,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 419,
+      "source_root": 318,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 420,
+      "source_root": 318,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 421,
+      "source_root": 318,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 422,
+      "source_root": 318,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/379",
+      "terms": 91,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 423,
+      "source_root": 318,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 424,
+      "source_root": 318,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/74",
+      "terms": 64,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 425,
+      "source_root": 318,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 426,
+      "source_root": 318,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 427,
+      "source_root": 318,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 428,
+      "source_root": 318,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 429,
+      "source_root": 318,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 430,
+      "source_root": 318,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 431,
+      "source_root": 319,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/71",
+      "terms": 20,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 432,
+      "source_root": 319,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 433,
+      "source_root": 319,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 434,
+      "source_root": 319,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/71",
+      "terms": 20,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 435,
+      "source_root": 319,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/237",
+      "terms": 80,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 436,
+      "source_root": 319,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/99",
+      "terms": 78,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 437,
+      "source_root": 319,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 438,
+      "source_root": 319,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 439,
+      "source_root": 319,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/47",
+      "terms": 71,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 440,
+      "source_root": 319,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/67",
+      "terms": 47,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 441,
+      "source_root": 319,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 442,
+      "source_root": 319,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 443,
+      "source_root": 319,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/62",
+      "terms": 49,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 444,
+      "source_root": 319,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/67",
+      "terms": 47,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 445,
+      "source_root": 319,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 446,
+      "source_root": 319,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 447,
+      "source_root": 338,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 448,
+      "source_root": 338,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/185",
+      "terms": 51,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 449,
+      "source_root": 338,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/71",
+      "terms": 20,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 450,
+      "source_root": 338,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 451,
+      "source_root": 338,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/31",
+      "terms": 30,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 452,
+      "source_root": 338,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 453,
+      "source_root": 338,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/185",
+      "terms": 51,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 454,
+      "source_root": 338,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 455,
+      "source_root": 338,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 456,
+      "source_root": 338,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 457,
+      "source_root": 338,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 458,
+      "source_root": 338,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 459,
+      "source_root": 338,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 460,
+      "source_root": 338,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/31",
+      "terms": 30,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 461,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 462,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 463,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 464,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 465,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 466,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 467,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 468,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 469,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 470,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 471,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 472,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 473,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 474,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 475,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 476,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 477,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 478,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 479,
+      "source_root": 342,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 480,
+      "source_root": 343,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-10/853",
+      "terms": 92,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 481,
+      "source_root": 343,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 482,
+      "source_root": 343,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 483,
+      "source_root": 343,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-18/1297",
+      "terms": 86,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 484,
+      "source_root": 343,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 485,
+      "source_root": 343,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 486,
+      "source_root": 343,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/71",
+      "terms": 20,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 487,
+      "source_root": 343,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/147",
+      "terms": 61,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 488,
+      "source_root": 343,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 489,
+      "source_root": 343,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/31",
+      "terms": 30,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 490,
+      "source_root": 343,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 491,
+      "source_root": 343,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 492,
+      "source_root": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/35",
+      "terms": 34,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 493,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 494,
+      "source_root": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/67",
+      "terms": 63,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 495,
+      "source_root": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/59",
+      "terms": 62,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 496,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 497,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 498,
+      "source_root": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/105",
+      "terms": 62,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 499,
+      "source_root": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-2/67",
+      "terms": 65,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 500,
+      "source_root": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 8,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 501,
+      "source_root": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 502,
+      "source_root": 2,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/257",
+      "terms": 81,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 503,
+      "source_root": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 504,
+      "source_root": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 505,
+      "source_root": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 506,
+      "source_root": 2,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/95",
+      "terms": 69,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 507,
+      "source_root": 2,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 508,
+      "source_root": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 509,
+      "source_root": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 510,
+      "source_root": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 511,
+      "source_root": 2,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/15",
+      "terms": 16,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 512,
+      "source_root": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 513,
+      "source_root": 4,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 9,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 514,
+      "source_root": 4,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-132/3029",
+      "terms": 95,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 515,
+      "source_root": 4,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/28",
+      "terms": 29,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 516,
+      "source_root": 4,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 517,
+      "source_root": 4,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/29",
+      "terms": 31,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 518,
+      "source_root": 4,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-4/239",
+      "terms": 88,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 519,
+      "source_root": 4,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 520,
+      "source_root": 4,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 521,
+      "source_root": 4,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/33",
+      "terms": 33,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 522,
+      "source_root": 4,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 523,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 39,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 524,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 5,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 525,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 526,
+      "source_root": 10,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-9/902",
+      "terms": 95,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 527,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 528,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 529,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 530,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 531,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 5,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 532,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 26,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 533,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 4,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 534,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 535,
+      "source_root": 10,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 5,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 536,
+      "source_root": 228,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-111/5225",
+      "terms": 98,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 537,
+      "source_root": 228,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/71",
+      "terms": 20,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 538,
+      "source_root": 228,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 539,
+      "source_root": 228,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 540,
+      "source_root": 228,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-111/5225",
+      "terms": 98,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 541,
+      "source_root": 228,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 542,
+      "source_root": 228,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 543,
+      "source_root": 228,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 544,
+      "source_root": 228,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 545,
+      "source_root": 230,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 546,
+      "source_root": 230,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 547,
+      "source_root": 230,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 548,
+      "source_root": 230,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 549,
+      "source_root": 230,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 550,
+      "source_root": 230,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 551,
+      "source_root": 232,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/233",
+      "terms": 66,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 552,
+      "source_root": 232,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/233",
+      "terms": 66,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 553,
+      "source_root": 232,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-6/71",
+      "terms": 20,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 554,
+      "source_root": 232,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/31",
+      "terms": 30,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 555,
+      "source_root": 232,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/31",
+      "terms": 30,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 556,
+      "source_root": 232,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 557,
+      "source_root": 232,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 558,
+      "source_root": 232,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 559,
+      "source_root": 233,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 560,
+      "source_root": 233,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/36",
+      "terms": 62,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 561,
+      "source_root": 233,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 562,
+      "source_root": 233,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 563,
+      "source_root": 233,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 564,
+      "source_root": 233,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 565,
+      "source_root": 233,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 566,
+      "source_root": 233,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 567,
+      "source_root": 233,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 10,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 568,
+      "source_root": 233,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 4,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 569,
+      "source_root": 233,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 570,
+      "source_root": 233,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 10,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 571,
+      "source_root": 233,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 572,
+      "source_root": 234,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 23,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 573,
+      "source_root": 234,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 574,
+      "source_root": 234,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "rhs": "-1/140",
+      "terms": 77,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 575,
+      "source_root": 234,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 21,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 576,
+      "source_root": 234,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 577,
+      "source_root": 234,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 578,
+      "source_root": 234,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 579,
+      "source_root": 234,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 23,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 580,
+      "source_root": 234,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 581,
+      "source_root": 234,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 582,
+      "source_root": 234,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 583,
+      "source_root": 234,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 10,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 584,
+      "source_root": 234,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 4,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 585,
+      "source_root": 234,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 10,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 586,
+      "source_root": 234,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 587,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 6,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 588,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 4,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 589,
+      "source_root": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 590,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 2,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 591,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 39,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 592,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 72,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 593,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 13,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 594,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 9,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 595,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 8,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 596,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 9,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 597,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 598,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 5,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 599,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": false,
+      "max_denominator": 3,
+      "variables": 100,
+      "constraints": 185
+    },
+    {
+      "root": 600,
+      "source_root": 12,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "integral": true,
+      "max_denominator": 1,
+      "variables": 100,
+      "constraints": 185
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+# Capacity between two low involution orbits
+
+Retain all44 models and exact low-involution equalities from the preceding stage. For two distinct low orbits{i,tau(i)} and{j,tau(j)}, an invariant graph can include the parallel matching, the crossed matching, or neither. Including both gives all four edges of K2,2 and hence a forbidden C4. Thus the values of representative edges(i,j) and(i,tau(j)) sum to at most1. Substitute forced values and absent-domain zeros into this inequality. It is valid for every actual invariant C4-free graph; it strengthens the fractional relaxation because binary equivariance alone is not being solved exactly.
+
+The complete original30-second construction adds9480 constraints to all44 models in0.528513 seconds. A separate original30-second certificate run completes in12.972189 seconds with3 exact rational Farkas contradictions and41 exact rational witnesses, no UNKNOWN or UNVISITED cases. Exact Fraction arithmetic checks every multiplier combination or every witness inequality. All41 witnesses are fractional and do not establish graph realizations.
+
+In particular root6, UNKNOWN in the preceding involution run, has an exact witness here in the stronger model. Its older UNKNOWN receipt remains preserved. Together with the previously reported3+47 edge-model exclusions, the current3 leave41 of the original94 propagated cases open, conditional on independent acceptance of the component models/certificates. Every model retains its original root/source identifiers and source assignment.
+
+The inactive labeling normalization is the one proved in the involution stage; no additional exchangeability or symmetry averaging is assumed. No previous capped enumeration is resumed. Low-graph completion, omitted center constraints, other counts and global Erdős85 remain unresolved. No Lean theorem is claimed.

@@ -1,0 +1,96 @@
+{
+  "status": "COMPLETE",
+  "original_cap_seconds": 30,
+  "seconds": 0.09372629201970994,
+  "hashes": {
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-packing/PROOF.md": "0c395c0878d8daad71a8a804e201d385a92bd8b39af86c3aaf409a5416cdf80e",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-packing/check.py": "8174f0698959f9d19acfda805f6267b2790bc783110b103b9f60344ba88f9b0a",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-packing/input-pins.json": "b0f51748bce70b497398d032ad42c13073d616feebc097d3a35f9537f2080164",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-packing/results.json": "befd394c4ad63e32589c31749fc1f968fd55865f37555c2853ffb1b03f14c319",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-supports/pins.json": "3045480d772e488820d0d2803956ff32605e7ed9ddcd8a418bac0b7cf3a64c7b",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-supports/results.json": "7517ec0cc905fb2a4da64329a70633ff49d6dcc346718f724b6eccedd1eae8d7"
+  },
+  "premises": [
+    {
+      "id": 2251,
+      "status": "resolved",
+      "resolution": "PASS. All4payload/3premise hashes; independent1392 identity cases and exact3 restricted tuples verified. Attached saturation, Efixed-neighbor localization, n311=1 cardinality and n311=2 commutation/divisibility contradictions audited. Companion2250 now independently PASS; its loop-count proof also read. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2251. Some residualdegree0/1/4/5 necessary in N80/F10 cubic-fixed branch; no fullcase exclusion."
+    },
+    {
+      "id": 2458,
+      "status": "resolved",
+      "resolution": "PASS standaloneD5 eight-action cover. Five payload hashes/fresh2295 checked. Paperforest/component/freeinvolution classification audited. Independent edgeorbit recursion coversall1151 candidates ->exact1041 savedgraphs, union-find confirmsforest. Full3840 tau-commuting maps giveexactdisjoint8 orbits120/240/240/120/240/60/20/1. COMPLETE0.038s original30s cap afterpre-enumeration optionalmanifest fix, no capretry. Evidence /tmp/erdos85-sol1-review2458. Residualonly/no pendingD6/global/Lean."
+    },
+    {
+      "id": 2460,
+      "status": "resolved",
+      "resolution": "PASS completeD5 eight-action support/pair domains. Six hashes/fresh2251/2458 andexactrepresentatives checked. Independent allk2/k3 subsets thennormalization, direct repeated-wedge partialgraph tests andendpointbudgets reproduceall17/24,18/29,19/34x3,20/40x3 domains. Every same/mixedpair outcome verified onfour-high graph. COMPLETE0.066s original30s cap. Evidence /tmp/erdos85-sol1-review2460. No forcedcubic shortcut/actionexclusion/fullpacking/global/Lean."
+    }
+  ],
+  "records": [
+    {
+      "class": 0,
+      "counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "class": 1,
+      "counts": [
+        72,
+        72,
+        72
+      ]
+    },
+    {
+      "class": 2,
+      "counts": [
+        336,
+        336,
+        240
+      ]
+    },
+    {
+      "class": 3,
+      "counts": [
+        336,
+        336,
+        208
+      ]
+    },
+    {
+      "class": 4,
+      "counts": [
+        336,
+        320,
+        312
+      ]
+    },
+    {
+      "class": 5,
+      "counts": [
+        1344,
+        1344,
+        960
+      ]
+    },
+    {
+      "class": 6,
+      "counts": [
+        1344,
+        1344,
+        720
+      ]
+    },
+    {
+      "class": 7,
+      "counts": [
+        1344,
+        1344,
+        1344
+      ]
+    }
+  ]
+}

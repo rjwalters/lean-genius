@@ -1,0 +1,277 @@
+{
+  "status": "COMPLETE",
+  "original_cap_seconds": 30,
+  "seconds": 0.03821899998001754,
+  "hashes": {
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-shapes/PROOF.md": "a84470ebbfe9cf172b509ac1796de65cf9ee48665bc3eab1761177de2ca58a69",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-shapes/actions.json": "77b22e06c77bfa4c0dc648b6dd1cdeb9cd41a623c7cd913e91813f68442705ae",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-shapes/check.py": "8ba64450f15142f50ed65369844609acd7670aa627bc0a5977c7e9c0b0a4731f",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-shapes/results.json": "edf2a615574c70ce9580fd9c387c377c1d7e414655c4a3c0c7137847a5e96916",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-shapes/verify-actions.py": "0a543dd5e50e7f1dda27fb79a5e66cccc298f46f513177a789a44a6d53db042a"
+  },
+  "premise": {
+    "id": 2295,
+    "status": "resolved",
+    "resolution": "PASS. Source/input pins verified. Attached two-step budget, disjoint isolated-neighbor sets and bounds I>=(9-d)(d-3), I<=9-d audited. Degree5 gives8>4; degree4 requires odd I=5, contrary to free-involution parity. Initial orbit bound d<=5 completes maxdegree3. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2295. With2251, isolation or a leaf is necessary; no full graph exclusion or finite search."
+  },
+  "tested": 1151,
+  "graphs": 1041,
+  "classes": [
+    {
+      "pattern": [
+        0,
+        0,
+        1,
+        1,
+        3
+      ],
+      "representative": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          5
+        ]
+      ],
+      "size": 120
+    },
+    {
+      "pattern": [
+        0,
+        0,
+        1,
+        2,
+        2
+      ],
+      "representative": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "size": 240
+    },
+    {
+      "pattern": [
+        0,
+        1,
+        1,
+        1,
+        2
+      ],
+      "representative": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          7
+        ]
+      ],
+      "size": 240
+    },
+    {
+      "pattern": [
+        0,
+        1,
+        1,
+        1,
+        2
+      ],
+      "representative": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          5
+        ]
+      ],
+      "size": 120
+    },
+    {
+      "pattern": [
+        0,
+        1,
+        1,
+        1,
+        2
+      ],
+      "representative": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          7
+        ]
+      ],
+      "size": 240
+    },
+    {
+      "pattern": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "representative": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          7,
+          9
+        ]
+      ],
+      "size": 60
+    },
+    {
+      "pattern": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "representative": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          7,
+          9
+        ]
+      ],
+      "size": 20
+    },
+    {
+      "pattern": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "representative": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "size": 1
+    }
+  ]
+}

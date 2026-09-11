@@ -1,0 +1,11 @@
+# Review 2483 — PASS strengthened models and partial exact results
+
+This review composes sol2's independent assist audit with a direct proof/code review by the assigned reviewer. Seventeen fresh payload/input/helper hashes verified; review2480 is freshly PASS. The assist audit source, certificate helper, exact receipt and evidence are pinned in checks.json. No complete audit domain was rerun merely to duplicate its receipt.
+
+The cut is necessary for binary graph edges: fixed-fixed middles contribute c, fixed-variable middles contribute their edge indicator, and each selected variable-variable middle contributes xy>=x+y-1. Dropping other nonnegative contributions preserves the lower bound on total common neighbors. C4-freeness bounds the total by one, yielding the stated upper bound. All coefficients on the saved left side are nonnegative, so the additional zero lower bound is harmless. Choosing a subset of paths using an approximate witness cannot invalidate this argument; no numerical threshold decides an exclusion.
+
+Read the full independent audit: it reconstructs the actual forced70-vertex adjacency and variable-edge maps from each source, checks every selected middle and every fixed-variable path, and verifies each coefficient/constant row. Its equality checks retain every earlier variable/bound/base constraint and all91 exact source keys. All121859 added cuts are verified, not merely counted. The pinned sparse Fraction routine checks all source indices, original bounds and constraints, nonnegative Farkas weights, complete coefficient cancellation and negative exact right sides.
+
+The assist audit completed in0.795530750 seconds under its original30-second cap:47 exact Farkas contradictions,24 rational witnesses and20 UNKNOWNs. Independently checked that the former UNKNOWN root46 has an exact negative right side-1/9 in this stronger model. Its older2480 UNKNOWN receipt is unchanged. This is a stronger-model exclusion, not a reclassification of the old computation. Overall result status remains INCOMPLETE.
+
+Combining the three prior2480 negatives with these47 leaves44 original cases open. No integral graph realization, all-case exclusion, solver retry or Lean theorem is asserted.

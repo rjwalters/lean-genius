@@ -1,0 +1,19 @@
+{
+  "id": 2500,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-3",
+  "body": "New complete high/high-constrained center chain, all29 uncapped2495 cases (NOT capped2497 restart). Exact311/311 groupadjacency/requiredlow-crossmatching table24819 pairs,12782 neither, COMPLETE0.396s. Enumerate all45 H[X] two-edge graphs +degreeidentity/groupdisjointness/allpairconstraints ->139 highassignments/136 afterlowcapacity filters,21cases COMPLETE0.099s. Forall136 enumerate EVERY111 partition andcenter lowmatching withallgroup-pair tests:706 localconfigs on13cases, all29/136 COMPLETE0.257s. Thus16 sourcecasesexcluded conditionalreview. All706 coverage/centercubic/C4 checked; notsimultaneous Wmatchings. Separate original30s caps; no global/Lean.",
+  "refs": "[\"/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-high-center-pairs/pins.json\",\"/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-high-center-assignments/pins.json\",\"/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-full-center-configurations/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T12:33:43.692Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T12:40:59.744Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T12:43:40.731Z",
+  "resolution": "PASS: independent Hall optional-endpoint matching verifies all24819 high/high pair entries; independent fixed-order high assignment cover139->136/21 cases; independent smallest-uncovered-orbit low cover plus all center matchings reproduces exact706 canonical configurations/13 cases. COMPLETE .150206/.170362/.781185s, separate original30s caps. All pinned hashes, fresh2478/2488/2492/2495/2497; only2497 paper identity used, capped search frozen. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2500/REVIEW.md. Necessary domain only/no global/Lean.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

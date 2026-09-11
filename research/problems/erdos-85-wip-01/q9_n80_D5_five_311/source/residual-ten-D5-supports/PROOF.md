@@ -1,0 +1,9 @@
+# Necessary attached high-support domains for the eight D5 actions
+
+Input: the standalone eight-action residual classification submitted as2458. This packet is conditional on that classification, not on any pending uniform D<=5 composition. The residual graph and its involution are explicit in every record.
+
+For each support size k=2 or3, enumerate every k-subset S of the ten residual vertices, identifying its tau image by choosing the lexicographically smaller representative. Append two distinct high vertices with supports S and tau(S). Require that the entire residual/high partial graph has at most one common neighbor for every pair of vertices. This also removes supports invariant under tau, since they would give the two high vertices at least two common neighbors. Require the necessary endpoint budget B=k+2-sum_{r in S}d_r>=0. These filters apply to every actual high support, so the saved orbit domain is complete as a necessary relaxation.
+
+For every two different same-size orbit choices, and every mixed-size pair, append all four corresponding high vertices and check the same common-neighbor condition. These recorded pairs are exactly the compatible pairs for the partial-incidence model. An actual packing must choose only such pairs. No unmodeled high-high or low edges can repair an existing common-neighbor violation.
+
+The eight high2/high3 domain sizes are17/24,18/29,19/34,19/34,19/34,20/40,20/40,20/40. The complete domain and pair calculation finished in0.082706 seconds under its original30-second cap. It does not transport the previous one-isolated-orbit forced-cubic-Q shortcut into the two-isolated-orbit cases. Individual domain membership or pair compatibility is not a full packing or graph realization. No residual class, N80, or global Erdős85 exclusion is claimed; no Lean theorem is claimed.

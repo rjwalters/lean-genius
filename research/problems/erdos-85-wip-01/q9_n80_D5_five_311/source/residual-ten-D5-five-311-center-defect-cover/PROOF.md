@@ -1,0 +1,7 @@
+# Center defect-degree constrained cover: capped partial result
+
+This new necessary cover model adds the separate paper identity degree_H(f,Y)=2-i_f+h_f for each high center f. Here i_f is determined by the chosen high-group option's inactive low pairs, and h_f by the fixed high matching. Options giving X-Y degree outside1..3 are removed, using the preceding center theorem that H[X] has only two edges. The chosen degree vector is retained in every memoization key. Low-group choices are pruned when their partial X-Y degrees exceed the vector, and complete abstract center graphs must realize the exact vector. All earlier high/low and low/low matching restrictions are retained.
+
+The run had one declared original30-second aggregate cap. It reached that cap at30.000084 seconds:15 cases COMPLETE,1 UNKNOWN and13 UNVISITED. Of the15 complete cases, root8 is excluded and14 have local witnesses. Root27 is the partially searched UNKNOWN. The remaining13 were not visited. Results are frozen and no unfinished case is an exclusion. This run must not be resumed or retried under a fresh cap.
+
+The source covers remain open wherever this result is UNKNOWN or UNVISITED. Even the14 positive witnesses are only local group/abstract-center realizations, not complete graphs. The separate degree identity remains a paper statement independent of the capped search. No global Erdős85 or Lean theorem is claimed.

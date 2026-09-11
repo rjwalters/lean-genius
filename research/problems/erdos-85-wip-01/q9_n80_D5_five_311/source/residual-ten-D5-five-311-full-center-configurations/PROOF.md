@@ -1,0 +1,7 @@
+# Complete local center configurations
+
+For every136 high assignment in the preceding complete stage, enumerate all partitions of the remaining15 low orbits into permitted111 triples. Enforce exactly one inactive111 pair, the exact five X-Y degrees fixed byH[X], high-neighbor intersection bounds, every311/111 pair list, and all111/111 adjacency/perfect-matching conditions. For every complete partition, enumerate all three matchings on the four degree-one low centers. Retain every center graph that is cubic, C4-free, and consistent with these pair domains. A deterministic most-constrained remaining orbit avoids duplicate partition orderings without omitting any partition.
+
+All29 root entries and136 high assignments complete in0.256623 seconds under the original30-second cap. The output has706 local center configurations on13 cases. Thus16 of the29 source cases have no such configuration. Each saved configuration includes the exact high assignment index, five low-option indices, and all15 center edges. These are all possible configurations for this necessary model, not one witness per case.
+
+Each group-pair matching is still a separate feasibility test. The706 configurations do not assert simultaneous matching choices or completed low edges. Stronger partial-graph propagation or other constraints must retain all706 alternatives before excluding a source case. No fullgraph solver, global Erdős85 result, Lean theorem, or capped-domain retry is used.

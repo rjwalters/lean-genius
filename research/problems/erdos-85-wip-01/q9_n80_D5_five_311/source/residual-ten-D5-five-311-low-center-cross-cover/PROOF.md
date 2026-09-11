@@ -1,0 +1,7 @@
+# Complete covers with all111/111 cross-group requirements
+
+Start from all29 positive cases of2495, retaining every original group option. For any two disjoint111 groups, center adjacency permits no forced W-cross edge. Center nonadjacency requires a perfect matching between their six low vertices, by seven-slot saturation. The pair test honors every forced cross edge, removes its endpoints and checks a complete matching on the remaining candidate graph. Its two-bit result records which center-adjacency values remain possible.
+
+The cover recursion retains every previous high/low compatibility, exact partition and center-counting condition. It now stores the actual selected low-option indices in its state, since those determine pair compatibility. The unique inactive-containing111 group has internal center degree0, so all its pairs must permit nonadjacency. Every other111 center has internal degree1, so at most one already-selected pair may force adjacency. At a complete cover, enumerate all three possible low-center matchings and every degree-compatible high-center two-edge graph, retaining only cubic C4-free center graphs satisfying all selected low-pair domains.
+
+The original30-second aggregate run completes all29 cases in3.270657 seconds. All29 have witnesses; no cases are excluded. They satisfy both high/low and low/low group requirements separately, but simultaneous edge choices and high/high group compatibility remain open. No old witness is treated as exhaustive, no graph realization or global/Lean result is claimed.

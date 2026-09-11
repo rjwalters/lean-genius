@@ -1,0 +1,802 @@
+{
+  "status": "COMPLETE",
+  "original_cap_seconds": 30,
+  "seconds": 10.245243208948523,
+  "hashes": {
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-low-edge-allocation/PROOF.md": "936b007e162da50066154c276e28bd2bada4b0eb0db68386cd6bd1c6639c57bb",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-low-edge-allocation/case-index.json": "a7d57b391840f191c7688fad62785e2ffd4ab0badc6a40c3621c55ea538f6ba1",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-low-edge-allocation/check.py": "07d57f6a13ef049d3570dfb3361103556a64d0d9104c8b03b1d7be8c0ea77046",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-low-edge-allocation/input-pins.json": "793ba3460b2f7d66e0227db7351300f1b84bdf196ad85da0f9721899f91be3ca",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-low-edge-allocation/model.py": "a6beb6df2d6397b987690c6d0dad69a4439800b9e9738bf9b51d9e60e6e375a2",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-low-edge-allocation/models.json": "318f4c305d1b9ffd0f094693912c240fbfe1c96331f61f67c0b1a0ea3a3f6af4",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-low-edge-allocation/results.json": "7f98d80878335e5779da71afbcdb5937d611e7d31e6cd1fa286fac4c8d36fa0a",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-low-propagation/pins.json": "86008ed0eb26c5b2d9e2e842778303ca45096cc19eba4f6b8a965c5a43845abf",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-low-propagation/results.json": "4aee71795e4bd07ac0bde01e175bce305154bed0a69f4b0a0260783053c57d61",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-low-edge-capacity/results.json": "7ff6d5b354ff692e4a43f01bc4c7a0efc383fd20f59d31ed61d28b9d74b9afeb",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-nonempty-joint/results.json": "722982e2f1fa2d61eabf9322532cab106c1ba72e4c5eed3c0d7d50ca5d6a2579",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-high-matchings/results.json": "86e9560cdac363815f75b66662bcf48f0a0aebd1fc6347da06edd6c4a053aab2",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-packing/results.json": "befd394c4ad63e32589c31749fc1f968fd55865f37555c2853ffb1b03f14c319",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-supports/results.json": "7517ec0cc905fb2a4da64329a70633ff49d6dcc346718f724b6eccedd1eae8d7"
+  },
+  "premises": [
+    {
+      "id": 2467,
+      "status": "resolved",
+      "resolution": "PASS complete highmatching/Q-domain cover. Eight hashes/fresh2460/2463/2464 and all3024 source keys checked. Independent ordinary matchings filtered by tau give312; direct common-neighbor checks on partial20-vertex graphs verify allowed edges and every37408 matching. Q rows reconstructed via singleton-low endpoint choices; exact domains and forced column/low-capacity screens reproduceall30256 saved survivors. COMPLETE5.3273s original30s cap. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2467. Domain only/no joint/global/Lean."
+    },
+    {
+      "id": 2469,
+      "status": "resolved",
+      "resolution": "PASS necessary fixed-matching reduction. Twelve hashes and fresh 2251/2458/2460/2463/2464/2467/2468 checked. Independently reconstructed all 601 source keys, direct-adjacency covered endpoints, bounds and all labeled constraints. Low-demand equality follows by counting high-low incidences; inactive-cell bound follows from two defects per low vertex with no high neighbor. Exact 202 Farkas contradictions and 399 rational witnesses (260 integral) verified. COMPLETE 4.428298416s original30s audit. Evidence /tmp/erdos85-sol1-review2469. No full subcase/global/Lean claim."
+    },
+    {
+      "id": 2473,
+      "status": "resolved",
+      "resolution": "PASS necessary integerQ/low-matrix reduction. Fifteen hashes/fresh2440/2460/2463/2467/2468/2469 checked. Direct-adjacency integer contractions independently cover all375 cases/1988387 products, reproducing1391 flow/216 parity positives COMPLETE0.948901084s original30s. Internal low-support handshake proves Lrr parity. Independent reverse-order bounded-degree recursion verifies57 negatives; all159 integer L witnesses across83 cases checked entrywise COMPLETE0.011485792s separate original30s. Evidence /tmp/erdos85-sol1-review2473. Single witnesses do not exhaust L domains; no fullcase/global/Lean."
+    },
+    {
+      "id": 2476,
+      "status": "resolved",
+      "resolution": "PASS necessary low-edge capacity/domain reduction. Ten hashes/fresh2460/2467/2473 checked. Independent every159 assignment/50 lowlabels, candidate edges via existing length-three paths, and unified required-vertex-first matching recursion cover all support blocks. Exact6 vertexcapacity+11 matching negatives and142 complete positive edge domains reproduced. COMPLETE0.1943s original30s cap. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2476. No saved L witness fixed, no simultaneouslowgraph/fullcase/global/Lean."
+    },
+    {
+      "id": 2478,
+      "status": "resolved",
+      "resolution": "PASS deterministic propagation. Ten hashes/fresh2473/2476 checked. Independent replay of all142 domains validates every capacity/support/C4 removal, every singleton/all-edges force, all final shortage data and exact remaining domains. Exact48 negatives/94 positives/1618 forcededges; COMPLETE0.1451s original30s cap. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2478. No branching/selectedL/fullgraph/global/Lean claim."
+    }
+  ],
+  "records": [
+    {
+      "root": 0,
+      "source_root": 75,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 530,
+      "conflicts": 2155
+    },
+    {
+      "root": 1,
+      "source_root": 77,
+      "source_assignment": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "variables": 536,
+      "conflicts": 2204
+    },
+    {
+      "root": 2,
+      "source_root": 85,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 543,
+      "conflicts": 2348
+    },
+    {
+      "root": 3,
+      "source_root": 95,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 524,
+      "conflicts": 2030
+    },
+    {
+      "root": 4,
+      "source_root": 106,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 504,
+      "conflicts": 2132
+    },
+    {
+      "root": 5,
+      "source_root": 107,
+      "source_assignment": 1,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 526,
+      "conflicts": 2032
+    },
+    {
+      "root": 6,
+      "source_root": 108,
+      "source_assignment": 1,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 514,
+      "conflicts": 2019
+    },
+    {
+      "root": 7,
+      "source_root": 111,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 508,
+      "conflicts": 2086
+    },
+    {
+      "root": 8,
+      "source_root": 111,
+      "source_assignment": 1,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 504,
+      "conflicts": 2032
+    },
+    {
+      "root": 9,
+      "source_root": 112,
+      "source_assignment": 1,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 546,
+      "conflicts": 2332
+    },
+    {
+      "root": 10,
+      "source_root": 136,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 504,
+      "conflicts": 2128
+    },
+    {
+      "root": 11,
+      "source_root": 249,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 513,
+      "conflicts": 2070
+    },
+    {
+      "root": 12,
+      "source_root": 249,
+      "source_assignment": 1,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 507,
+      "conflicts": 2006
+    },
+    {
+      "root": 13,
+      "source_root": 262,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 470,
+      "conflicts": 1963
+    },
+    {
+      "root": 14,
+      "source_root": 265,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 518,
+      "conflicts": 2214
+    },
+    {
+      "root": 15,
+      "source_root": 271,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 545,
+      "conflicts": 2086
+    },
+    {
+      "root": 16,
+      "source_root": 272,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 533,
+      "conflicts": 2190
+    },
+    {
+      "root": 17,
+      "source_root": 277,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 508,
+      "conflicts": 2116
+    },
+    {
+      "root": 18,
+      "source_root": 277,
+      "source_assignment": 1,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 506,
+      "conflicts": 2112
+    },
+    {
+      "root": 19,
+      "source_root": 277,
+      "source_assignment": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 508,
+      "conflicts": 2140
+    },
+    {
+      "root": 20,
+      "source_root": 278,
+      "source_assignment": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "variables": 514,
+      "conflicts": 2192
+    },
+    {
+      "root": 21,
+      "source_root": 282,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 528,
+      "conflicts": 2106
+    },
+    {
+      "root": 22,
+      "source_root": 282,
+      "source_assignment": 1,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 513,
+      "conflicts": 2081
+    },
+    {
+      "root": 23,
+      "source_root": 282,
+      "source_assignment": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 528,
+      "conflicts": 2102
+    },
+    {
+      "root": 24,
+      "source_root": 282,
+      "source_assignment": 3,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 511,
+      "conflicts": 2073
+    },
+    {
+      "root": 25,
+      "source_root": 283,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 528,
+      "conflicts": 2068
+    },
+    {
+      "root": 26,
+      "source_root": 284,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 484,
+      "conflicts": 2020
+    },
+    {
+      "root": 27,
+      "source_root": 287,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 535,
+      "conflicts": 1970
+    },
+    {
+      "root": 28,
+      "source_root": 288,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 521,
+      "conflicts": 2012
+    },
+    {
+      "root": 29,
+      "source_root": 288,
+      "source_assignment": 1,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 519,
+      "conflicts": 2006
+    },
+    {
+      "root": 30,
+      "source_root": 346,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 543,
+      "conflicts": 2056
+    },
+    {
+      "root": 31,
+      "source_root": 355,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 530,
+      "conflicts": 2112
+    },
+    {
+      "root": 32,
+      "source_root": 357,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 530,
+      "conflicts": 2110
+    },
+    {
+      "root": 33,
+      "source_root": 404,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 505,
+      "conflicts": 1838
+    },
+    {
+      "root": 34,
+      "source_root": 415,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 540,
+      "conflicts": 2211
+    },
+    {
+      "root": 35,
+      "source_root": 416,
+      "source_assignment": 0,
+      "status": "EXACT_FARKAS_CONTRADICTION",
+      "variables": 549,
+      "conflicts": 2129
+    },
+    {
+      "root": 36,
+      "source_root": 430,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 505,
+      "conflicts": 2032
+    },
+    {
+      "root": 37,
+      "source_root": 437,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 530,
+      "conflicts": 2273
+    },
+    {
+      "root": 38,
+      "source_root": 442,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 543,
+      "conflicts": 2058
+    },
+    {
+      "root": 39,
+      "source_root": 475,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 533,
+      "conflicts": 1950
+    },
+    {
+      "root": 40,
+      "source_root": 481,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 519,
+      "conflicts": 2168
+    },
+    {
+      "root": 41,
+      "source_root": 490,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 549,
+      "conflicts": 2129
+    },
+    {
+      "root": 42,
+      "source_root": 491,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 533,
+      "conflicts": 2184
+    },
+    {
+      "root": 43,
+      "source_root": 527,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 446,
+      "conflicts": 1834
+    },
+    {
+      "root": 44,
+      "source_root": 528,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 526,
+      "conflicts": 2192
+    },
+    {
+      "root": 45,
+      "source_root": 533,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 532,
+      "conflicts": 2154
+    },
+    {
+      "root": 46,
+      "source_root": 545,
+      "source_assignment": 0,
+      "status": "UNKNOWN",
+      "variables": 528,
+      "conflicts": 2090
+    },
+    {
+      "root": 47,
+      "source_root": 545,
+      "source_assignment": 1,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 526,
+      "conflicts": 2082
+    },
+    {
+      "root": 48,
+      "source_root": 545,
+      "source_assignment": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 517,
+      "conflicts": 2044
+    },
+    {
+      "root": 49,
+      "source_root": 545,
+      "source_assignment": 4,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 494,
+      "conflicts": 1981
+    },
+    {
+      "root": 50,
+      "source_root": 546,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 534,
+      "conflicts": 2176
+    },
+    {
+      "root": 51,
+      "source_root": 546,
+      "source_assignment": 1,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 520,
+      "conflicts": 2181
+    },
+    {
+      "root": 52,
+      "source_root": 546,
+      "source_assignment": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 519,
+      "conflicts": 2175
+    },
+    {
+      "root": 53,
+      "source_root": 546,
+      "source_assignment": 3,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 534,
+      "conflicts": 2194
+    },
+    {
+      "root": 54,
+      "source_root": 546,
+      "source_assignment": 4,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 530,
+      "conflicts": 2182
+    },
+    {
+      "root": 55,
+      "source_root": 547,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 534,
+      "conflicts": 2176
+    },
+    {
+      "root": 56,
+      "source_root": 547,
+      "source_assignment": 1,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 534,
+      "conflicts": 2194
+    },
+    {
+      "root": 57,
+      "source_root": 547,
+      "source_assignment": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 520,
+      "conflicts": 2181
+    },
+    {
+      "root": 58,
+      "source_root": 547,
+      "source_assignment": 3,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 519,
+      "conflicts": 2175
+    },
+    {
+      "root": 59,
+      "source_root": 547,
+      "source_assignment": 4,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 530,
+      "conflicts": 2182
+    },
+    {
+      "root": 60,
+      "source_root": 548,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 534,
+      "conflicts": 2274
+    },
+    {
+      "root": 61,
+      "source_root": 549,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 528,
+      "conflicts": 2090
+    },
+    {
+      "root": 62,
+      "source_root": 549,
+      "source_assignment": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 526,
+      "conflicts": 2082
+    },
+    {
+      "root": 63,
+      "source_root": 549,
+      "source_assignment": 3,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 517,
+      "conflicts": 2044
+    },
+    {
+      "root": 64,
+      "source_root": 549,
+      "source_assignment": 4,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 494,
+      "conflicts": 1981
+    },
+    {
+      "root": 65,
+      "source_root": 563,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 477,
+      "conflicts": 2117
+    },
+    {
+      "root": 66,
+      "source_root": 566,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 524,
+      "conflicts": 2126
+    },
+    {
+      "root": 67,
+      "source_root": 567,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 507,
+      "conflicts": 2061
+    },
+    {
+      "root": 68,
+      "source_root": 567,
+      "source_assignment": 1,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 505,
+      "conflicts": 2059
+    },
+    {
+      "root": 69,
+      "source_root": 571,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 386,
+      "conflicts": 1639
+    },
+    {
+      "root": 70,
+      "source_root": 571,
+      "source_assignment": 1,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 528,
+      "conflicts": 2140
+    },
+    {
+      "root": 71,
+      "source_root": 587,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 526,
+      "conflicts": 2042
+    },
+    {
+      "root": 72,
+      "source_root": 587,
+      "source_assignment": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 530,
+      "conflicts": 2082
+    },
+    {
+      "root": 73,
+      "source_root": 587,
+      "source_assignment": 3,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 520,
+      "conflicts": 2050
+    },
+    {
+      "root": 74,
+      "source_root": 587,
+      "source_assignment": 4,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 520,
+      "conflicts": 2056
+    },
+    {
+      "root": 75,
+      "source_root": 588,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 526,
+      "conflicts": 2042
+    },
+    {
+      "root": 76,
+      "source_root": 588,
+      "source_assignment": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 520,
+      "conflicts": 2050
+    },
+    {
+      "root": 77,
+      "source_root": 588,
+      "source_assignment": 3,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 520,
+      "conflicts": 2056
+    },
+    {
+      "root": 78,
+      "source_root": 588,
+      "source_assignment": 4,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 530,
+      "conflicts": 2082
+    },
+    {
+      "root": 79,
+      "source_root": 594,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 524,
+      "conflicts": 2008
+    },
+    {
+      "root": 80,
+      "source_root": 594,
+      "source_assignment": 1,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 524,
+      "conflicts": 2000
+    },
+    {
+      "root": 81,
+      "source_root": 594,
+      "source_assignment": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 522,
+      "conflicts": 1976
+    },
+    {
+      "root": 82,
+      "source_root": 596,
+      "source_assignment": 6,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 522,
+      "conflicts": 1976
+    },
+    {
+      "root": 83,
+      "source_root": 596,
+      "source_assignment": 7,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 524,
+      "conflicts": 2008
+    },
+    {
+      "root": 84,
+      "source_root": 596,
+      "source_assignment": 8,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 524,
+      "conflicts": 2000
+    },
+    {
+      "root": 85,
+      "source_root": 597,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 524,
+      "conflicts": 2008
+    },
+    {
+      "root": 86,
+      "source_root": 597,
+      "source_assignment": 1,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 522,
+      "conflicts": 1976
+    },
+    {
+      "root": 87,
+      "source_root": 597,
+      "source_assignment": 7,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 524,
+      "conflicts": 2000
+    },
+    {
+      "root": 88,
+      "source_root": 599,
+      "source_assignment": 0,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 524,
+      "conflicts": 2000
+    },
+    {
+      "root": 89,
+      "source_root": 599,
+      "source_assignment": 1,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 522,
+      "conflicts": 1976
+    },
+    {
+      "root": 90,
+      "source_root": 599,
+      "source_assignment": 2,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 524,
+      "conflicts": 2008
+    },
+    {
+      "root": 91,
+      "source_root": 600,
+      "source_assignment": 5,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 524,
+      "conflicts": 2000
+    },
+    {
+      "root": 92,
+      "source_root": 600,
+      "source_assignment": 6,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 522,
+      "conflicts": 1976
+    },
+    {
+      "root": 93,
+      "source_root": 600,
+      "source_assignment": 8,
+      "status": "EXACT_RATIONAL_WITNESS",
+      "variables": 524,
+      "conflicts": 2008
+    }
+  ]
+}

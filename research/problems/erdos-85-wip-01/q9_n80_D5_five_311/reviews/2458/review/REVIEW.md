@@ -1,0 +1,11 @@
+# Independent review2458
+
+PASS standalone five-edge residual action classification. Five pinned payload hashes checked; the standalone packet has no input-pins manifest. Fresh2295 supplies the optional application bound on residual maximum degree, but the classification states that assumption explicitly and needs no pendingD6 result.
+
+The forest proof is correct: any cycle uses at most five edges; C4 is forbidden, and an invariant odd cycle cannot carry the free involution. A distinct image triangle either uses at least six total edges or shares an edge, producing a C4. A distinct image five-cycle requires more than five total edges. Thus no cycle exists. The sorted orbit-degree possibilities are exactly the five listed partitions. The four nonisolated vertices of00023 would induce K4 minus an edge and hence a C4. The remaining forest component shapes and the possible free involutions on their component sets give the claimed1+1+3+3 action types. Leaf/exchanged-component identifications introduce no extra type; the finite equivariant orbit check independently verifies this point.
+
+The independent reviewer constructs edge orbits from all unordered vertex pairs and recursively selects orbits of total edge weight five, recovering all1,151 candidates. Maximum degree and repeated two-path endpoints leave exactly1,041 graphs, whose forests are independently checked with union-find. Exact equality with every saved labelled edge set and degree pattern is verified.
+
+All3,840 permutations commuting with the fixed involution are constructed by permuting its five pairs and independently swapping each pair. These are complete because a commuting permutation must map involution orbits to involution orbits. Applying every map to each saved representative gives exactly its saved class, with pairwise-disjoint classes covering all1,041 graphs. The orbit sizes are120,240,240,120,240,60,20,1.
+
+The first invocation stopped before timed enumeration because an optional input-pins file was absent; the manifest reader was corrected. The actual original30s aggregate enumeration/action audit is COMPLETE0.03822s. No capped domain was restarted. audit.py/results.json preserve complete counts, representatives, hashes and the explicit application premise. No attachments, graph realization, overall case exclusion or Lean formalization is claimed.

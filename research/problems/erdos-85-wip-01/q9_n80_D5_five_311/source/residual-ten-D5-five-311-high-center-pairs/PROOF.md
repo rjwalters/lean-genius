@@ -1,0 +1,5 @@
+# Complete311/311 group-pair domains
+
+Start from all29 uncapped cross-cover positives of2495; this input does not resume the capped2497 search. For every two labeled high centers and every pair of their group options, inspect both possible center-adjacency values. Overlapping groups are impossible. Adjacency is allowed only if there are no forced W-cross edges. Nonadjacency requires a cross matching covering the four lows on each side; high vertices are optional. Honor all forced cross edges, remove their endpoints, and exhaustively match remaining required lows on both sides using all possible edges. Every W vertex has at most one neighbor in a given fixed group, while lows require one in every nonadjacent group, so this test is necessary.
+
+Also record the separate2497 paper degree formula degH[X](f)=1+inactivePairs(f)-matchedHighBit(f) for each high-group option. All24819 option pairs across29 cases complete in0.395640 seconds under the original30-second cap;12782 admit neither center-adjacency value. This is a necessary domain, not simultaneous edge completion.

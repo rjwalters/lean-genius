@@ -1,0 +1,27 @@
+{
+  "hashes": 21,
+  "stages": [
+    {
+      "stage": 0,
+      "status": "COMPLETE",
+      "original_cap_seconds": 30,
+      "seconds": 1.2795435830485076,
+      "added_constraints": 11227,
+      "outcomes": {
+        "EXACT_RATIONAL_WITNESS": 43,
+        "UNKNOWN": 1
+      }
+    },
+    {
+      "stage": 1,
+      "status": "COMPLETE",
+      "original_cap_seconds": 30,
+      "seconds": 0.6083094161003828,
+      "added_constraints": 9480,
+      "outcomes": {
+        "EXACT_RATIONAL_WITNESS": 41,
+        "EXACT_FARKAS_CONTRADICTION": 3
+      }
+    }
+  ]
+}

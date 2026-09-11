@@ -1,0 +1,2306 @@
+{
+  "status": "COMPLETE",
+  "original_cap_seconds": 30,
+  "seconds": 0.9489010837860405,
+  "hashes": {
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-nonempty-joint/PROOF.md": "73f7280bcd9c6e4f0a4f52b2372ac4d83d5e7357a1e8cf3b847c1ab7a2095211",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-nonempty-joint/check.py": "214ce75d9034243adbcb31352e88d243bc0c0962b979d724da2601a21f6174c7",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-nonempty-joint/input-pins.json": "dcdc72d6f0968e95ff26523de82be7906fb56b2069d1e227e37464b334869237",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-nonempty-joint/results.json": "722982e2f1fa2d61eabf9322532cab106c1ba72e4c5eed3c0d7d50ca5d6a2579",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-fixed-allocation/pins.json": "e31b02e1e22c5f0d43ef8998d71a0876745fd43d7710d6cd12b905beb2152e6b",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-fixed-allocation/results.json": "4d812efb2f43665367462533aa31c279c1e7685d5b5a5ffee360c87175ef1e79",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-high-matchings/results.json": "86e9560cdac363815f75b66662bcf48f0a0aebd1fc6347da06edd6c4a053aab2",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-packing/results.json": "befd394c4ad63e32589c31749fc1f968fd55865f37555c2853ffb1b03f14c319",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-supports/results.json": "7517ec0cc905fb2a4da64329a70633ff49d6dcc346718f724b6eccedd1eae8d7",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-nonempty-low-integer/PROOF.md": "a8ae0f7d80b56fb510f31aead9191ade293886d084cd2e96e9a53c3237c69b65",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-nonempty-low-integer/check.py": "f741388a4132394eb5fed43f10447891ee247e6d36e14c4eac34a21ec7af0532",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-nonempty-low-integer/input-pins.json": "cd3a35a7d8943b267fd14317bcc8fc652ffbf3253e39109c490831c6a7399a0d",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-nonempty-low-integer/results.json": "92e41670b921ac78faff44ac995067f35cb8987c1b491da61e45fb300a9f117c",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-five-311-nonempty-joint/pins.json": "f77502d795381444a9184020e537ce9b6aa5c06dae039a63236588be6b4dafad",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-singleton-low-allocation-normal-form/pins.json": "70c20d93fea8d1f453c239e36c354d6ad3205a063ded318ad6f8644b6a196422"
+  },
+  "premises": [
+    {
+      "id": 2440,
+      "status": "resolved",
+      "resolution": "PASS aggregate singleton-low normal form. Signs independently derived via H_ij=min(Lij,Lji); fixed column/row totals, exact high-excess sum, symmetric cell bounds, forbidden entries and involution constraints audited. Diagonal construction sufficient only for stated aggregate model; counterexamples correct, no graphrealization claim. Independent19683 matrix check and examples COMPLETE0.097s original30s; hashes/fresh2251/2423 checked. Evidence /tmp/erdos85-sol1-review2440. No global/Lean claim."
+    },
+    {
+      "id": 2460,
+      "status": "resolved",
+      "resolution": "PASS completeD5 eight-action support/pair domains. Six hashes/fresh2251/2458 andexactrepresentatives checked. Independent allk2/k3 subsets thennormalization, direct repeated-wedge partialgraph tests andendpointbudgets reproduceall17/24,18/29,19/34x3,20/40x3 domains. Every same/mixedpair outcome verified onfour-high graph. COMPLETE0.066s original30s cap. Evidence /tmp/erdos85-sol1-review2460. No forcedcubic shortcut/actionexclusion/fullpacking/global/Lean."
+    },
+    {
+      "id": 2463,
+      "status": "resolved",
+      "resolution": "PASS completeD5/s5 packing cover. Six hashes/fresh2251/2458/2460 checked. Independent residual-pair disjoint recursion (not producerclique graph) coversallfive-support choices; directcomplement Z/q, lowcounts andRRcomm reproduceevery stagecount andexact3856 support-index/q records. Final0/72/240/208/312/960/720/1344; class0 empty. COMPLETE0.094s original30s cap. Evidence /tmp/erdos85-sol1-review2463. Necessarypositives only/no fulls5/global/Lean."
+    },
+    {
+      "id": 2467,
+      "status": "resolved",
+      "resolution": "PASS complete highmatching/Q-domain cover. Eight hashes/fresh2460/2463/2464 and all3024 source keys checked. Independent ordinary matchings filtered by tau give312; direct common-neighbor checks on partial20-vertex graphs verify allowed edges and every37408 matching. Q rows reconstructed via singleton-low endpoint choices; exact domains and forced column/low-capacity screens reproduceall30256 saved survivors. COMPLETE5.3273s original30s cap. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2467. Domain only/no joint/global/Lean."
+    },
+    {
+      "id": 2468,
+      "status": "resolved",
+      "resolution": "PASS exact43-representative symmetry cover. Eleven hashes/fresh2460/2463/2464/2467 checked. Independent all tau-centralizing permutations reproduce64/192/3840 residual automorphisms. Explicit member relabelings preserve support/high involution/q and transport every30256 matching/Q dictionary across3024 distinct roots. COMPLETE2.1846s original30s cap. Separate complete support-action/full-orbit closure check verifies32/9/2 exact orbits. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2468. Reduction only/no joint/global/Lean."
+    },
+    {
+      "id": 2469,
+      "status": "resolved",
+      "resolution": "PASS necessary fixed-matching reduction. Twelve hashes and fresh 2251/2458/2460/2463/2464/2467/2468 checked. Independently reconstructed all 601 source keys, direct-adjacency covered endpoints, bounds and all labeled constraints. Low-demand equality follows by counting high-low incidences; inactive-cell bound follows from two defects per low vertex with no high neighbor. Exact 202 Farkas contradictions and 399 rational witnesses (260 integral) verified. COMPLETE 4.428298416s original30s audit. Evidence /tmp/erdos85-sol1-review2469. No full subcase/global/Lean claim."
+    }
+  ],
+  "records": [
+    {
+      "root": 2,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 3,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 5,
+      "products": 2250,
+      "flow": 0,
+      "survivors": 0
+    },
+    {
+      "root": 6,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 8,
+      "products": 225,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 11,
+      "products": 1,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 13,
+      "products": 225,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 15,
+      "products": 3375,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 16,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 19,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 20,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 25,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 26,
+      "products": 15,
+      "flow": 5,
+      "survivors": 0
+    },
+    {
+      "root": 28,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 29,
+      "products": 15,
+      "flow": 5,
+      "survivors": 0
+    },
+    {
+      "root": 32,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 35,
+      "products": 9261,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 39,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 40,
+      "products": 441,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 42,
+      "products": 1,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 48,
+      "products": 9261,
+      "flow": 5,
+      "survivors": 0
+    },
+    {
+      "root": 50,
+      "products": 21,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 51,
+      "products": 1500,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 53,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 56,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 59,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 60,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 62,
+      "products": 1500,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 63,
+      "products": 100,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 64,
+      "products": 10,
+      "flow": 5,
+      "survivors": 0
+    },
+    {
+      "root": 66,
+      "products": 150,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 67,
+      "products": 10,
+      "flow": 5,
+      "survivors": 0
+    },
+    {
+      "root": 71,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 72,
+      "products": 1500,
+      "flow": 4,
+      "survivors": 0
+    },
+    {
+      "root": 74,
+      "products": 2250,
+      "flow": 5,
+      "survivors": 0
+    },
+    {
+      "root": 75,
+      "products": 10,
+      "flow": 10,
+      "survivors": 1
+    },
+    {
+      "root": 76,
+      "products": 1500,
+      "flow": 2,
+      "survivors": 1
+    },
+    {
+      "root": 77,
+      "products": 10,
+      "flow": 10,
+      "survivors": 1
+    },
+    {
+      "root": 79,
+      "products": 15,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 82,
+      "products": 15,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 83,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 84,
+      "products": 15,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 85,
+      "products": 10,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 87,
+      "products": 194481,
+      "flow": 6,
+      "survivors": 0
+    },
+    {
+      "root": 88,
+      "products": 9261,
+      "flow": 16,
+      "survivors": 0
+    },
+    {
+      "root": 89,
+      "products": 9261,
+      "flow": 9,
+      "survivors": 0
+    },
+    {
+      "root": 90,
+      "products": 441,
+      "flow": 9,
+      "survivors": 0
+    },
+    {
+      "root": 91,
+      "products": 9261,
+      "flow": 8,
+      "survivors": 0
+    },
+    {
+      "root": 92,
+      "products": 21,
+      "flow": 21,
+      "survivors": 1
+    },
+    {
+      "root": 93,
+      "products": 9261,
+      "flow": 15,
+      "survivors": 0
+    },
+    {
+      "root": 94,
+      "products": 441,
+      "flow": 9,
+      "survivors": 0
+    },
+    {
+      "root": 95,
+      "products": 21,
+      "flow": 21,
+      "survivors": 1
+    },
+    {
+      "root": 96,
+      "products": 9261,
+      "flow": 4,
+      "survivors": 0
+    },
+    {
+      "root": 97,
+      "products": 441,
+      "flow": 13,
+      "survivors": 0
+    },
+    {
+      "root": 98,
+      "products": 21,
+      "flow": 21,
+      "survivors": 0
+    },
+    {
+      "root": 99,
+      "products": 21,
+      "flow": 21,
+      "survivors": 0
+    },
+    {
+      "root": 100,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 101,
+      "products": 9261,
+      "flow": 5,
+      "survivors": 0
+    },
+    {
+      "root": 102,
+      "products": 441,
+      "flow": 49,
+      "survivors": 1
+    },
+    {
+      "root": 103,
+      "products": 21,
+      "flow": 21,
+      "survivors": 0
+    },
+    {
+      "root": 104,
+      "products": 21,
+      "flow": 21,
+      "survivors": 0
+    },
+    {
+      "root": 105,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 106,
+      "products": 9261,
+      "flow": 15,
+      "survivors": 1
+    },
+    {
+      "root": 107,
+      "products": 21,
+      "flow": 21,
+      "survivors": 2
+    },
+    {
+      "root": 108,
+      "products": 21,
+      "flow": 21,
+      "survivors": 2
+    },
+    {
+      "root": 109,
+      "products": 9261,
+      "flow": 17,
+      "survivors": 0
+    },
+    {
+      "root": 110,
+      "products": 441,
+      "flow": 17,
+      "survivors": 0
+    },
+    {
+      "root": 111,
+      "products": 21,
+      "flow": 21,
+      "survivors": 2
+    },
+    {
+      "root": 112,
+      "products": 21,
+      "flow": 21,
+      "survivors": 2
+    },
+    {
+      "root": 116,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 118,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 124,
+      "products": 1,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 125,
+      "products": 3375,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 129,
+      "products": 1,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 134,
+      "products": 194481,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 135,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 136,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 137,
+      "products": 441,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 139,
+      "products": 441,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 140,
+      "products": 9261,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 141,
+      "products": 441,
+      "flow": 4,
+      "survivors": 0
+    },
+    {
+      "root": 142,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 143,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 144,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 145,
+      "products": 9261,
+      "flow": 2,
+      "survivors": 1
+    },
+    {
+      "root": 147,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 148,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 149,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 150,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 151,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 152,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 156,
+      "products": 3375,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 157,
+      "products": 225,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 158,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 161,
+      "products": 150,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 164,
+      "products": 1,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 173,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 174,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 175,
+      "products": 441,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 176,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 177,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 178,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 179,
+      "products": 441,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 180,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 181,
+      "products": 21,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 182,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 184,
+      "products": 441,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 185,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 186,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 187,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 188,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 190,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 192,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 197,
+      "products": 3375,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 201,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 205,
+      "products": 9261,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 213,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 218,
+      "products": 2250,
+      "flow": 0,
+      "survivors": 0
+    },
+    {
+      "root": 221,
+      "products": 150,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 222,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 223,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 224,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 227,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 229,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 230,
+      "products": 3375,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 233,
+      "products": 1,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 234,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 236,
+      "products": 194481,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 237,
+      "products": 9261,
+      "flow": 4,
+      "survivors": 0
+    },
+    {
+      "root": 238,
+      "products": 9261,
+      "flow": 4,
+      "survivors": 0
+    },
+    {
+      "root": 239,
+      "products": 441,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 240,
+      "products": 9261,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 241,
+      "products": 21,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 242,
+      "products": 9261,
+      "flow": 10,
+      "survivors": 0
+    },
+    {
+      "root": 243,
+      "products": 441,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 244,
+      "products": 21,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 245,
+      "products": 9261,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 246,
+      "products": 21,
+      "flow": 4,
+      "survivors": 0
+    },
+    {
+      "root": 247,
+      "products": 21,
+      "flow": 4,
+      "survivors": 0
+    },
+    {
+      "root": 248,
+      "products": 9261,
+      "flow": 15,
+      "survivors": 0
+    },
+    {
+      "root": 249,
+      "products": 441,
+      "flow": 18,
+      "survivors": 2
+    },
+    {
+      "root": 250,
+      "products": 21,
+      "flow": 4,
+      "survivors": 0
+    },
+    {
+      "root": 251,
+      "products": 21,
+      "flow": 4,
+      "survivors": 0
+    },
+    {
+      "root": 253,
+      "products": 2250,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 254,
+      "products": 150,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 258,
+      "products": 15,
+      "flow": 5,
+      "survivors": 0
+    },
+    {
+      "root": 259,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 260,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 262,
+      "products": 2250,
+      "flow": 4,
+      "survivors": 1
+    },
+    {
+      "root": 263,
+      "products": 150,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 264,
+      "products": 2250,
+      "flow": 4,
+      "survivors": 0
+    },
+    {
+      "root": 265,
+      "products": 150,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 266,
+      "products": 10,
+      "flow": 10,
+      "survivors": 3
+    },
+    {
+      "root": 267,
+      "products": 10,
+      "flow": 10,
+      "survivors": 3
+    },
+    {
+      "root": 268,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 270,
+      "products": 15,
+      "flow": 2,
+      "survivors": 1
+    },
+    {
+      "root": 271,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 272,
+      "products": 10,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 274,
+      "products": 194481,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 275,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 276,
+      "products": 441,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 277,
+      "products": 9261,
+      "flow": 20,
+      "survivors": 3
+    },
+    {
+      "root": 278,
+      "products": 441,
+      "flow": 16,
+      "survivors": 1
+    },
+    {
+      "root": 279,
+      "products": 9261,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 280,
+      "products": 21,
+      "flow": 2,
+      "survivors": 1
+    },
+    {
+      "root": 281,
+      "products": 9261,
+      "flow": 6,
+      "survivors": 0
+    },
+    {
+      "root": 282,
+      "products": 21,
+      "flow": 11,
+      "survivors": 4
+    },
+    {
+      "root": 283,
+      "products": 21,
+      "flow": 3,
+      "survivors": 1
+    },
+    {
+      "root": 284,
+      "products": 9261,
+      "flow": 19,
+      "survivors": 1
+    },
+    {
+      "root": 285,
+      "products": 441,
+      "flow": 5,
+      "survivors": 0
+    },
+    {
+      "root": 286,
+      "products": 21,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 287,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 288,
+      "products": 21,
+      "flow": 11,
+      "survivors": 2
+    },
+    {
+      "root": 292,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 293,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 295,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 296,
+      "products": 150,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 298,
+      "products": 150,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 300,
+      "products": 3375,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 302,
+      "products": 225,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 303,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 305,
+      "products": 1,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 307,
+      "products": 1,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 310,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 314,
+      "products": 194481,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 321,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 324,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 326,
+      "products": 1,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 329,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 332,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 333,
+      "products": 15,
+      "flow": 5,
+      "survivors": 2
+    },
+    {
+      "root": 334,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 336,
+      "products": 150,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 340,
+      "products": 15,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 342,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 344,
+      "products": 150,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 345,
+      "products": 10,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 346,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 347,
+      "products": 15,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 350,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 351,
+      "products": 9261,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 353,
+      "products": 9261,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 354,
+      "products": 441,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 355,
+      "products": 21,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 357,
+      "products": 21,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 360,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 361,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 363,
+      "products": 225,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 364,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 365,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 366,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 367,
+      "products": 15,
+      "flow": 5,
+      "survivors": 0
+    },
+    {
+      "root": 368,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 369,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 370,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 377,
+      "products": 15,
+      "flow": 5,
+      "survivors": 0
+    },
+    {
+      "root": 378,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 379,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 383,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 384,
+      "products": 9261,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 385,
+      "products": 441,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 386,
+      "products": 9261,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 387,
+      "products": 441,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 388,
+      "products": 9261,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 389,
+      "products": 441,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 390,
+      "products": 441,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 391,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 393,
+      "products": 441,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 394,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 395,
+      "products": 9261,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 397,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 398,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 399,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 400,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 402,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 403,
+      "products": 21,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 404,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 405,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 406,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 407,
+      "products": 150,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 408,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 411,
+      "products": 10,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 415,
+      "products": 15,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 416,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 417,
+      "products": 15,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 419,
+      "products": 9261,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 420,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 421,
+      "products": 9261,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 423,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 425,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 426,
+      "products": 21,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 427,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 428,
+      "products": 9261,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 429,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 430,
+      "products": 21,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 432,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 433,
+      "products": 225,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 437,
+      "products": 150,
+      "flow": 2,
+      "survivors": 1
+    },
+    {
+      "root": 438,
+      "products": 15,
+      "flow": 2,
+      "survivors": 1
+    },
+    {
+      "root": 441,
+      "products": 10,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 442,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 445,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 446,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 447,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 450,
+      "products": 225,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 452,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 454,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 455,
+      "products": 15,
+      "flow": 5,
+      "survivors": 0
+    },
+    {
+      "root": 456,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 457,
+      "products": 15,
+      "flow": 5,
+      "survivors": 0
+    },
+    {
+      "root": 458,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 459,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 462,
+      "products": 194481,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 463,
+      "products": 9261,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 464,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 465,
+      "products": 441,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 466,
+      "products": 9261,
+      "flow": 2,
+      "survivors": 1
+    },
+    {
+      "root": 467,
+      "products": 441,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 468,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 469,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 470,
+      "products": 441,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 471,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 472,
+      "products": 441,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 473,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 474,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 475,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 476,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 477,
+      "products": 21,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 478,
+      "products": 21,
+      "flow": 2,
+      "survivors": 1
+    },
+    {
+      "root": 479,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 481,
+      "products": 150,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 482,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 484,
+      "products": 150,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 485,
+      "products": 10,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 488,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 490,
+      "products": 1,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 491,
+      "products": 15,
+      "flow": 2,
+      "survivors": 1
+    },
+    {
+      "root": 493,
+      "products": 1500,
+      "flow": 3,
+      "survivors": 1
+    },
+    {
+      "root": 496,
+      "products": 2250,
+      "flow": 4,
+      "survivors": 2
+    },
+    {
+      "root": 497,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 501,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 503,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 504,
+      "products": 2250,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 505,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 508,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 509,
+      "products": 3375,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 510,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 512,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 516,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 519,
+      "products": 21,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 520,
+      "products": 9261,
+      "flow": 5,
+      "survivors": 0
+    },
+    {
+      "root": 522,
+      "products": 21,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 524,
+      "products": 9261,
+      "flow": 2,
+      "survivors": 1
+    },
+    {
+      "root": 525,
+      "products": 9261,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 527,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 1
+    },
+    {
+      "root": 528,
+      "products": 21,
+      "flow": 2,
+      "survivors": 1
+    },
+    {
+      "root": 529,
+      "products": 9261,
+      "flow": 5,
+      "survivors": 1
+    },
+    {
+      "root": 530,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 531,
+      "products": 21,
+      "flow": 7,
+      "survivors": 2
+    },
+    {
+      "root": 532,
+      "products": 9261,
+      "flow": 6,
+      "survivors": 1
+    },
+    {
+      "root": 533,
+      "products": 21,
+      "flow": 6,
+      "survivors": 4
+    },
+    {
+      "root": 534,
+      "products": 21,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 535,
+      "products": 21,
+      "flow": 7,
+      "survivors": 2
+    },
+    {
+      "root": 538,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 539,
+      "products": 15,
+      "flow": 5,
+      "survivors": 2
+    },
+    {
+      "root": 541,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 542,
+      "products": 15,
+      "flow": 5,
+      "survivors": 2
+    },
+    {
+      "root": 543,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 544,
+      "products": 15,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 545,
+      "products": 10,
+      "flow": 10,
+      "survivors": 6
+    },
+    {
+      "root": 546,
+      "products": 10,
+      "flow": 10,
+      "survivors": 6
+    },
+    {
+      "root": 547,
+      "products": 10,
+      "flow": 10,
+      "survivors": 6
+    },
+    {
+      "root": 548,
+      "products": 10,
+      "flow": 10,
+      "survivors": 4
+    },
+    {
+      "root": 549,
+      "products": 10,
+      "flow": 10,
+      "survivors": 6
+    },
+    {
+      "root": 550,
+      "products": 10,
+      "flow": 10,
+      "survivors": 4
+    },
+    {
+      "root": 556,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 557,
+      "products": 10,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 558,
+      "products": 15,
+      "flow": 5,
+      "survivors": 0
+    },
+    {
+      "root": 561,
+      "products": 9261,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 562,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 563,
+      "products": 9261,
+      "flow": 20,
+      "survivors": 1
+    },
+    {
+      "root": 564,
+      "products": 21,
+      "flow": 3,
+      "survivors": 1
+    },
+    {
+      "root": 565,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 566,
+      "products": 21,
+      "flow": 2,
+      "survivors": 1
+    },
+    {
+      "root": 567,
+      "products": 21,
+      "flow": 7,
+      "survivors": 3
+    },
+    {
+      "root": 568,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 569,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 570,
+      "products": 21,
+      "flow": 7,
+      "survivors": 3
+    },
+    {
+      "root": 571,
+      "products": 21,
+      "flow": 6,
+      "survivors": 2
+    },
+    {
+      "root": 573,
+      "products": 9261,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 575,
+      "products": 9261,
+      "flow": 0,
+      "survivors": 0
+    },
+    {
+      "root": 576,
+      "products": 21,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 577,
+      "products": 9261,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 578,
+      "products": 21,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 579,
+      "products": 9261,
+      "flow": 7,
+      "survivors": 1
+    },
+    {
+      "root": 580,
+      "products": 9261,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 581,
+      "products": 21,
+      "flow": 1,
+      "survivors": 0
+    },
+    {
+      "root": 582,
+      "products": 21,
+      "flow": 2,
+      "survivors": 0
+    },
+    {
+      "root": 583,
+      "products": 21,
+      "flow": 7,
+      "survivors": 2
+    },
+    {
+      "root": 584,
+      "products": 9261,
+      "flow": 3,
+      "survivors": 0
+    },
+    {
+      "root": 585,
+      "products": 21,
+      "flow": 7,
+      "survivors": 2
+    },
+    {
+      "root": 586,
+      "products": 21,
+      "flow": 6,
+      "survivors": 4
+    },
+    {
+      "root": 587,
+      "products": 10,
+      "flow": 10,
+      "survivors": 6
+    },
+    {
+      "root": 588,
+      "products": 10,
+      "flow": 10,
+      "survivors": 6
+    },
+    {
+      "root": 589,
+      "products": 10,
+      "flow": 10,
+      "survivors": 4
+    },
+    {
+      "root": 591,
+      "products": 9261,
+      "flow": 6,
+      "survivors": 0
+    },
+    {
+      "root": 592,
+      "products": 9261,
+      "flow": 6,
+      "survivors": 0
+    },
+    {
+      "root": 593,
+      "products": 9261,
+      "flow": 6,
+      "survivors": 0
+    },
+    {
+      "root": 594,
+      "products": 21,
+      "flow": 21,
+      "survivors": 9
+    },
+    {
+      "root": 595,
+      "products": 9261,
+      "flow": 6,
+      "survivors": 0
+    },
+    {
+      "root": 596,
+      "products": 21,
+      "flow": 21,
+      "survivors": 9
+    },
+    {
+      "root": 597,
+      "products": 21,
+      "flow": 21,
+      "survivors": 9
+    },
+    {
+      "root": 598,
+      "products": 9261,
+      "flow": 6,
+      "survivors": 0
+    },
+    {
+      "root": 599,
+      "products": 21,
+      "flow": 21,
+      "survivors": 9
+    },
+    {
+      "root": 600,
+      "products": 21,
+      "flow": 21,
+      "survivors": 9
+    }
+  ]
+}
