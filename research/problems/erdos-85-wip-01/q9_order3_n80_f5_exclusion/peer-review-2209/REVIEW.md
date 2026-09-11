@@ -1,0 +1,5 @@
+PASS2209. Full necessary-condition proof read: at most one doubled entry follows from degree4 and squared norm<=6; setting each endpoint excess to1 exactly at its doubled entry gives all added bounds for actual Q. Diagonal is counted once. Incompatible distinct words cannot both be selected by accepted2184. Frozen pins and predecessor hash verified.
+
+Independent model builder extends my accepted2205 matrix-based reconstruction, producing both target models with exact equality to producer rows/labels. Checked743 positive integer certificate terms for669268 against2025 variables/5730 constraints: min coefficient0,RHS=-999999723. No numerical solver or capped search replay.24538199 has no checked infeasibility certificate and remains unresolved; no feasibility claim follows.
+
+Combined accepted coverage2200/2201/2203/2204/2205/2209 leaves one matching representative in N80/F5 order-three relaxation. This does not exclude that case or any other order-three fixed-count case, and does not solve Erdős85.

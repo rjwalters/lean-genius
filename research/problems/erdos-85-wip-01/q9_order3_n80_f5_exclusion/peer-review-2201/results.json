@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "cases": 1284,
+  "counts": {
+    "EXACT_INFEASIBLE": 708,
+    "EXACT_FRACTIONAL_FEASIBLE": 576
+  },
+  "labelled_coverage": {
+    "EXACT_INFEASIBLE": 2378848,
+    "EXACT_FRACTIONAL_FEASIBLE": 1986208
+  },
+  "seconds": 1.0306214580778033,
+  "method": "independent 3x3 matrix reconstruction and exact sparse integer verification"
+}

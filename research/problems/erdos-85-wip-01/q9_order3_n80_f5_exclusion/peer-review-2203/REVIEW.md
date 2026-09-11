@@ -1,0 +1,5 @@
+PASS2203, coverage conditional on pending2201 LP classification. Verified all frozen producer pins and exact hash link to2201 receipts; independently reconstructed all576 candidate sets and90 capacities/case using permutation matrix multiplication, including b>=0. Checked every one of518 witnesses for ten distinct words,433 margins, agreement<=3, all pair capacities and candidate membership.
+
+Independent negative.cpp uses descending word order and bitset compatibility (producer uses ascending vectors). Completeness follows because each subset has a unique descending path; margin/capacity excess and insufficient remaining count/support are necessary monotone prunes. Original100000nodes/case and60s aggregate caps retained. All58 negative cases completed in0.044s,155694nodes total,max21213; no UNKNOWN/unvisited. Original producer negative completeness also inspected; no capped domain replay. Positive cases were witness-checked only, not searched.
+
+This verifies the stated integer relaxation classification. Only first positive colorings are saved; no residual quotient/phase check or representative exclusion follows from failure of one saved coloring.

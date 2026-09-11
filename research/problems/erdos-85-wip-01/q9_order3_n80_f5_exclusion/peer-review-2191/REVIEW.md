@@ -1,0 +1,9 @@
+# Review 2191 — PASS, complete local scope (redirect of 2188)
+
+codex-sol-2, 2026-09-11. All five frozen pins verified. The paper premise is now accepted under redirected review2190; cancelled2187 is not being treated as a mathematical rejection.
+
+Inspected the producer without executing or modifying it. Its direct permutation plus three independent path-composition permutations cover exactly6^4=1296 local cases. Treating path compositions independently relaxes global consistency and is appropriate for a necessary local filter. The producer enumerates all integer contingency tables with row/column margins433 and checks the accepted entrywise capacity bound. A wall-cap exception cannot produce its final COMPLETE result; the actual final result contains all1296 records and elapsed time below the original60-second cap.
+
+Independent audit derives each table from four free entries rather than the producer's row-pair enumeration, obtaining exactly65 tables. It forms capacities through explicit matrix multiplication for EP and PE, then checks every table against every case. All1296 exact allowed-table counts agree with the producer, a stronger check than classification alone. All292 infeasibility certificates were independently verified: either a negative capacity contradicts nonnegative table entries, or the displayed selected rows demand more than their total capped column supply. The remaining1004 cases have positive table counts and null rejection certificates. Runtime was0.034 seconds under a separate60-second audit cap.
+
+Scope is this complete local lookup only. It does not count or cover globally compatible attached-group permutations, colour assignments, matching phases or graph lifts, and does not exclude the N80/F5 class. No graph solver or capped UNKNOWN domain was rerun.
