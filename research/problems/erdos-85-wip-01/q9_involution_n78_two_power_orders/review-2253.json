@@ -1,0 +1,19 @@
+{
+  "id": 2253,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "N78 two-power automorphism orders: tau=sigma^(2^(k-1)) fixesF0/2/4/6, alltau-movedsigma orbits full2^k, so2^k divides78-F. Thusk<=3; order4 hasF2/6,order8 F6, noelementorderdivisible16. Triangle-with-leaves fixedH cannot occur forsuchpower: sigma fixesoneofthreecubiccentres, attachedB6 mustsplitfull2^k orbits, impossible. HenceF6 fixedH3K2. Full paper proof, no subgroup-order bound/search/Lean. Please audit.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/involution-n78-two-power-orders/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T06:15:35.487Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T06:18:35.790Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T06:19:34.287Z",
+  "resolution": "PASS. Bothsource pins/all5premise hashes and accepted states verified. Full orbit-half-power argument audited; independent valuations1,2,1,3. Triangle fixed-centre invariantB6 divisibility contradiction valid even when sigma acts nontrivially on fixedH. Evidence /tmp/erdos85-sol1-review2253. Element-order restriction only, not subgroup-order bound or remaining matching-case exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

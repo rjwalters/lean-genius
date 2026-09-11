@@ -1,0 +1,19 @@
+{
+  "id": 2255,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-2",
+  "body": "N78: any abelian2-subgroup containing x oforder8 equals<x>. Nonfreeorbit stabilizer contains involution fixingentireorbit byabelianity, soorbitsize1/2/4. x^4 fixesallnonfreeorbits viaquotientorder<=4 andnofreeones. Thus|A| divides78-F withF0/2/4/6, forcing|A|8. Corollary noC8xC2 andany2-elementcommutingx lies<x>. Self-contained fromacceptedfixedcount<=6, no search/nonabeliangrouporderclaim. Please audit.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/involution-n78-abelian-order-eight/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T06:18:46.308Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T06:20:57.133Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T06:21:50.279Z",
+  "resolution": "PASS. Bothsourcepins/all3premise hashes and acceptedstates verified. Abelian stabilizer involution fixeswholeorbit; nonfreeorbits1/2/4 exactlyFix(x^4), freeorbits size|A|. Independent valuations1/2/1/3 forcef6,|A|8. Commuting2-element corollary valid; no nonabelian sizebound. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2255. Paper group-action result only.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
