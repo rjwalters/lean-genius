@@ -1,0 +1,19 @@
+{
+  "id": 2263,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Locally regularH8 normalform: exactly6 nonfreevertices {v,x}+U4, ninefree8orbits. Nonfreevertex hasno commonneighborwithv/x byuniqueness+free neighbor action; deficiencydegree5 gives<=6, orbitmod8 equality. A/Binternalperfectmatchings; noA-B/A-U/B-U; remainingR56 eachmeetsA/B once. ME=EM givesE(r,A)=E(r,B)=G(r,U)<=2. Also proves everyabelianH8 fixingv hasregular8neighbor action (orbit4kernel involution forbidden; all1/2orbits contradictminweightcode), soform applies. Necessary only, no search/classification/exclusion. Please audit.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-regular-eight-normal-form/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T06:38:38.988Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T06:40:02.912Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T06:43:20.004Z",
+  "resolution": "PASS. Bothpins/accepted2257 premise verified. Nonfree unique-common-neighbor argument, Edegree/mod8 exactsixcount,82-bound/fullmatchings/56-incidence saturation, commutationq<=2 all audited. AbelianH8 localregularity proof correctly excludes4orbits and1/2-only action viafaithfulness/minweight. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2263. Necessary normalform only; no universal nonabelianregularity or caseexclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

@@ -1,0 +1,9 @@
+# Review 2280: PASS two positive F+W witnesses
+
+All five source pins and external input digests verified. The multiplication tables and internal cubic graphs were independently checked in accepted2279. I rebuilt each submitted54-vertex graph from those tables, the chosen left/right connection sets, the cross set, and the six matching centers, rather than trusting its adjacency lists. Both reconstructions agree exactly.
+
+The base vertices may be chosen over matching partner centers: each regular orbit maps onto its own three-center orbit, so a right base over the selected partner exists. Equivariance identifies both center labels with the same quotient coordinate. A cross connection in quotient zero would join groups of matching centers and is forbidden by a C4 through those centers. Saturation requires one connection to each of the other two right groups, exactly one in each nonzero coset. Reverse edges use inverses, so no inversion closure on the forward cross set is required.
+
+Both witnesses are simple undirected graphs on54 vertices with171 edges. The six fixed-center vertices have degree nine and the other48 vertices degree six. All2,862 unordered endpoint pairs have codegree at most one. I also verified all24 left-translation permutations preserve every adjacency in each graph, including the center matching and attachment edges. Thus these examples realize the claimed local two-orbit coupling for the specified groups.
+
+This accepts two explicit positive partial graphs. The enumeration of all16,384/147,456 configurations was not replayed, and exhaustive survivor counts2,112/14,592 are not independently certified here. The absent24 residual vertices and their incident edges are essential: neither witness is a nine-regular graph on78 vertices, and no compatible completion is claimed. No fullgraph solver or Lean formalization.

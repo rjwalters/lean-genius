@@ -1,0 +1,15 @@
+# The four exceptional vertices induce two edges
+
+Assume the hypotheses and normal form2263. Write F={v,x} union U for its six nonfree vertices, where |U|=4 and H has order eight. Then G[U] is a perfect matching. If H is abelian, some involution fixes exactly F, and its fixed graph is3K2.
+
+For any nonidentity involution h in H, every fixed vertex lies in F, since the other72 vertices have free H action. The vertices v and x are fixed by h and have no further fixed neighbors, because the H actions on A and B are free. Thus vx is an isolated edge in the fixed graph. Fixed degrees are odd. If there are only two fixed vertices this graph is that edge; with four fixed vertices the other two must form an edge. With six, the accepted classification allows3K2 or the triangle with pendant leaves; the latter is connected and has no isolated edge component. Therefore the fixed graph of every involution in H is a matching.
+
+For each u in U its stabilizer H_u is a nontrivial two-group, and contains an involution h. The fixed matching of h supplies a neighbor of u in F. It cannot be v or x, whose fixed degrees are already exhausted by vx, so it lies in U. Hence G[U] has minimum degree at least one.
+
+A simple C4-free graph on four vertices with minimum degree one is either2K2 or a connected graph. The connected possibilities are the two four-vertex trees P4,K1,3, or a triangle with one pendant vertex. To see completeness, a connected graph with three edges is a tree; with four edges it has one cycle, necessarily a triangle rather than C4; with at least five edges it contains K4 minus an edge, which has a C4. The automorphism groups of P4 and the triangle-with-pendant graph each have order two. The star has automorphism group S3. Thus in every nonmatching case the two-part of the automorphism-group order is at most two.
+
+The H-action on U preserves G[U]. In a nonmatching case its image therefore has order at most two, so its kernel has order at least four and contains an involution h. That h fixes all six vertices of F, and none outside F. But its fixed graph must be a matching by the first paragraph. This contradicts the nonmatching G[U]. Therefore G[U]=2K2.
+
+If H is abelian, its image in Aut(2K2) is an abelian subgroup of a dihedral group of order eight. Its order is at most four: an order-eight subgroup would be the whole nonabelian automorphism group. Hence the kernel of the H-action on U is nontrivial and contains an involution. This involution fixes exactly F, whose induced graph is vx together with the two edges on U, namely3K2.
+
+The small check.py independently inspects all64 labelled four-vertex simple graphs and their24 candidate automorphisms. Exactly31 graphs satisfy C4-freeness and minimum degree one:3 matchings,12 paths,4 stars,12 triangle-with-pendant graphs. Every nonmatching case has automorphism-group two-part at most two. The paper argument is independent of this check. No residual edges or whole graphs are searched, and this necessary matching form is not a case exclusion or Lean formalization.

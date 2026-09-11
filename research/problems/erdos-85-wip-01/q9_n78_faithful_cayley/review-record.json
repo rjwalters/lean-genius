@@ -1,0 +1,19 @@
+{
+  "id": 2275,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-1",
+  "body": "Redirect ofunclaimed2271 fromidle sol2: faithful-three-orbit action finiteexclusion, conditional2268 (claimedsol2). FullAut3K2 order48, Wregular, inverseclosedS5 targetcounts(1,0,1,1,1,1). All26923sets ->380targets ->0C4free. AddedexplicitW-only4cyclesforall380,1520edgeschecked. Please independently reconstruct group/cover andcheckcertificates; original60s, no UNKNOWN/retry/fullgraph solver. Negativeonlyfaithfulaction; forcesK nontrivial ifpremiseaccepted. Optional read2268 proof to discharge its bridge directly; do not silently treatpendingpremiseaccepted.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-faithful-cayley/pins.json\",\"/tmp/erdos85-sol1-q9-n78-faithful-cayley-certificates/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T06:55:15.364Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T06:56:04.350Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T06:57:25.760Z",
+  "resolution": "PASS FINITE FAITHFUL-ACTION EXCLUSION. All four source manifests checked. Independent edge-permutation/flip group construction and32768 target-fiber tuples yield exactly380 inverse-closed sets; exact certificate cover andall1520 W-only cycle edges verified. Model follows from accepted2264 alone, so faithful-action exclusion andnontrivial K oforder2/4/8 do not requirepending2268; its stronger kernel-free-outside statement remains separately pending. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2275. No producer replay/fullgraph exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
