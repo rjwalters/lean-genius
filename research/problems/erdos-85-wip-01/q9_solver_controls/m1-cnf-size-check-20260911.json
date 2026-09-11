@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "instances": [
+    {
+      "n": 80,
+      "m": 1,
+      "minimum_degree": 9,
+      "edge_variables": 3160,
+      "total_variables": 593841,
+      "clauses": 2018601,
+      "bytes": 35843217,
+      "cnf_sha256": "c5591e61c0e7cff2349aa5fca9b004cae7e9d8ce116933af179a8bad0c00fc7d",
+      "generator_sha256": "cafc21951969ed93a88f7db2a3b649c38deb53af3d81d6da10caeac5a2aef4a4",
+      "map_sha256": "b153f1c105d0213a72627dcc16cafd9dd266bc6b5948d1b08563abcbce4e1536",
+      "status": "PASS_SIZE_AND_FORMAT",
+      "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n80-size-check"
+    },
+    {
+      "n": 78,
+      "m": 1,
+      "minimum_degree": 9,
+      "edge_variables": 3003,
+      "total_variables": 552163,
+      "clauses": 1875784,
+      "bytes": 33247682,
+      "cnf_sha256": "47f04c0a368313a73f6cbd04dbbd161a1f664372775853078424b30d69b7caa3",
+      "generator_sha256": "cafc21951969ed93a88f7db2a3b649c38deb53af3d81d6da10caeac5a2aef4a4",
+      "map_sha256": "b7681f5e6f2e4b6665289b1e0d5ad7a9ec6756a2ad45379ec812f353a036a24c",
+      "status": "PASS_SIZE_AND_FORMAT",
+      "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n78-size-check"
+    }
+  ],
+  "scope": "Exact accepted generator output, DIMACS/map/size verification only; no solver verdict"
+}

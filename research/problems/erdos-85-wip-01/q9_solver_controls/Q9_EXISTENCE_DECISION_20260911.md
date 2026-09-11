@@ -159,6 +159,39 @@ not graph witnesses or exclusions. Evidence is preserved in
 [the fixed-count proof](../q9_order3_fixed_counts/STATUS.md) and
 [the residual form](../q9_order3_tight_normal_form/STATUS.md).
 
+### Accepted N78 automorphism bound — snapshot 2026-09-11 16:43 UTC
+
+The [accepted review snapshot](symmetry-accepted-snapshot-20260911.json)
+records exact PASS scopes, review timestamps and hashes of the referenced
+artifacts. It separates in-flight reviews from the accepted global bound.
+
+Review2487 PASS strengthens the earlier review2408 bound: every hypothetical
+N78/minimum-degree9 witness has full automorphism-group order in
+**{1,2,3,4,6,8,12}**, hence at most12. This is a list of possible orders,
+not a divisibility-by12 statement. Review2408 supplies the order48 exclusion
+and preceding global order cover; review2487 excludes the full order16 case
+through the accepted fixed-center action, kernel and residual branches
+(2447,2438,2450,2479,2482,2477,2481,2484,2485 and their premise chains).
+Its independent assembly audit is at `/tmp/erdos85-sol1-review2487`.
+
+For the possible **full group of order12**, reviews2489/2494 give the group
+cover. Accepted2544 excludes C3×V4; accepted2555 excludes C12 and Dic12.
+Their scopes are full automorphism groups of these types, not unrestricted
+N78 nonexistence. S3×C2 and A4 closure packets remain pending, so the accepted
+bound stays12. Review2544's assembly audit is at
+`/tmp/erdos85-sol1-review2544`; review2555's is at
+`/tmp/erdos85-sol1-cyclic-composition-audit`.
+
+The terminal C8 subgroup packet2622, Q8 subgroup packet2611, and subsequent
+C4×C2 branch packets have **not been accepted** at this snapshot and are not
+used to strengthen the bound. The order12 composition likewise awaits its
+remaining reviews. Per editor messages50462/50463, new symmetry work stops;
+the accepted snapshot will be refreshed at the17:30 UTC cutoff as pending
+reviews finish. Every exclusion above is a reviewed paper/computational
+result; it is not presented as a Lean theorem or SAT UNSAT certificate.
+Asymmetric graphs and the surviving symmetry classes remain open. These
+restrictions alone do not establish that the order49 example is sporadic.
+
 ## Current verdict
 
 The N48 positive control succeeded and passed independent graph/model/map
