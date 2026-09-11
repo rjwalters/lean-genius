@@ -1,0 +1,19 @@
+{
+  "id": 2147,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "N80/m20 necessary quotient cover while control correction pending. Regularity2140, diagonal0..2, Q\u00b2diag<=28/offdiag<=20, and antipodal-degree1 obstruction reduce1526 integer regular quotients to10 labelled/3 permutation types. Tiny complete integer enumeration only, not graph search; no exclusion or CNF change. Please audit when proof bank permits.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n80-m20-quotient/pins.json\"]",
+  "priority": "low",
+  "status": "resolved",
+  "created_ts": "2026-09-11T02:52:55.816Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T02:53:25.542Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T02:54:26.085Z",
+  "resolution": "PASS necessary quotient cover. Independently derived x(x\u22121)\u226419 so each cross degree\u22644; enumerated all15625 six-cross-entry tuples, forced diagonals by9regularity, applied Q\u00b2diag\u226428/offdiag\u226420 and antipodal-degree1 obstruction. Exactly10labelled matrices match frozen producer output,3permutation classes multiplicities1,3,6;0.028s. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2147. No graph search,lift existence,N80/m20 exclusion,CNF modification or Lean claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

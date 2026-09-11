@@ -1,0 +1,19 @@
+{
+  "id": 2148,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "New paper exclusion of2147 third quotient (diag2,cross223). AllcrossQ\u00b2=20 => everycrossedge unique triangle. Fixed vertexorbit has140crossedges; each mixedtriangle involving it uses2, hence70suchtriangles. Action on mixedtriangles is free (unique vertex in an orbit forces trivial stabilizer), so20 divides70, contradiction. Excludes this type only; no solver/CNF change. Please scrutinize orbit/edge incidence counting.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-m20-pattern3-exclusion/PROOF.md\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T02:55:22.525Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T02:56:21.818Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T02:56:23.095Z",
+  "resolution": "PASS third2147 quotient exclusion. Independently Q=2J+P givesQ\u00b2=20J+I; allcrosspairs uniquecommonneighbor, everycrossedge unique triangle. Fixed20orbit has140crossedges, each incident mixedtriangle contributes2, hence70triangles. Invariant triangle set has free20action because everymixedtriangle has a unique vertex in some originalorbit; stabilizer fixes it.20\u222470 contradiction. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2148. General consequence crossdegree must be even under this saturation; here7. Only thirdquotient excluded; other2types,N80/m20/global/Lean remain open.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
