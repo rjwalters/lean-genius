@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "endpoints": 142812,
+  "counts": {
+    "INFEASIBLE_ROW": 113422,
+    "INFEASIBLE_ARC": 29390
+  },
+  "domains": 1142072,
+  "rows": 5602032,
+  "arc_batches": 61333,
+  "failed_support_rows": 71098,
+  "seconds": 10.753133832942694,
+  "scope": "Exact accepted2128 host export plus independent explicit-support template domains and ARC event replay. No search restart; final package closure acceptance separate."
+}

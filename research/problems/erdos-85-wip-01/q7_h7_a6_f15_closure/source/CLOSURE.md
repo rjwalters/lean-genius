@@ -1,0 +1,11 @@
+# Computational exclusion of the a6 F15 empty graph
+
+F15 is two disjoint triangles plus one isolated empty vertex, with edges01,05,15,23,24,34. Accepted2118 completely covers its five empty/singleton-host classes and410singleton-edge graphs. Accepted2122 covers59166canonical high assignments. Accepted2125 maps these by verified graph isomorphisms to4536representatives; high permutations extend uniquely to pair vertices through unordered high supports, and transport every residual edge.
+
+Accepted2128 covers all pair-empty host assignments on the4536representatives. The sole pass has131923certified empty-singleton prefixes and142812surviving leaves, with one completely negative high input. All calls were COMPLETE. The independent host audit proves the complete local matching/unique-P cover and validates every prefix and survivor domain. Thus every possible full F15 graph extends one of those142812leaves.
+
+The sole residual pass checked exactly those ordered leaves using accepted2126batching and accepted2120native row/arc logic. Every leaf is negative:113422empty complete row domains and29390arc-consistency contradictions. No UNKNOWN, retained or unvisited leaf remains. Original limits were100000operations per leaf and60seconds aggregate; total328306658operations and22.878seconds. launch.json prevents overwrite or retry. Full ARC evidence and compact ROW endpoints are retained in one gzip shard.
+
+verify.py independently checks exact host-mask export/source indices, regenerates1142072domains containing5602032rows by increasing-active-vertex recursion, and replays61333atomic removal batches with71098failed-support rows. Every removal lacks any compatible target row under edge reciprocity and the at-most-one-common-neighbor condition; the final indicated domain is empty. The independent traversal uses360076588subset states, maximum10524per graph,8.934seconds. It does not invoke the production residual search.
+
+This composes a computational/mathematical exclusion of the entire a6 F15 empty shape, pending independent peer acceptance of this final package. It does not exclude other a6 shapes, remaining a7 shapes, H7 as a whole, H1, or the global Erdős85 problem, and supplies no Lean kernel theorem. Historical capped domains and solver queues are unchanged.

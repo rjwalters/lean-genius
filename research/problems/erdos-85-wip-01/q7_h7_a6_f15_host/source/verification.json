@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "visited": 4536,
+  "counts": {
+    "COMPLETE": 4536
+  },
+  "unvisited": 0,
+  "unknown": [],
+  "negative_complete_highs": 1,
+  "prunes": 131923,
+  "survivors": 142812,
+  "structural_nodes": 834456,
+  "survivor_domains": 1999368,
+  "survivor_rows": 6331973,
+  "native_subset_nodes": 52802297,
+  "seconds": 3.8758843748364598,
+  "scope": "Independent structural coverage for COMPLETE receipts, exact saved prefix and survivor domain checks. UNKNOWN/unvisited preserved; no residual family check."
+}

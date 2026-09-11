@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "visited": 142812,
+  "unvisited": 0,
+  "counts": {
+    "INFEASIBLE_ROW": 113422,
+    "INFEASIBLE_ARC": 29390
+  },
+  "retained": [],
+  "domains": 1142072,
+  "rows": 5602032,
+  "arc_batches": 61333,
+  "failed_support_rows": 71098,
+  "independent_subset_nodes": 360076588,
+  "max_nodes_per_graph": 10524,
+  "seconds": 8.934042333858088,
+  "scope": "Exact accepted host-export/source join and independent complete row regeneration/atomic ARC replay. UNKNOWN/feasible/unvisited remain unresolved; no retry."
+}
