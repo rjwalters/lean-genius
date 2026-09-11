@@ -1,0 +1,7 @@
+# Independent review 2130: PASS
+
+All 18 final payload pins, high/quotient sources and live 2122/2123/2125 premises verified. The sole difference against prepared-pins is README.md, containing the final run narrative; executable code and input bytes match prelaunch pins. Final README hash is covered by final pins. The reviewer initial strict all-prepared-files check stopped on that narrative difference before graph enumeration; it was refined to explicitly record that difference, without a search retry.
+
+Independently reconstructed all 16,040 F12 input graphs from accepted F/X/S/high-support data, exact edges and C4 checks, covering 267,504 raw assignments under accepted 2125. Structural matching-option / unique-P prefix coverage: 2,793,964 nodes, maximum 364 per high. A separately compiled explicit high-support partition template checker verifies every one of 528,574 empty singleton prune endpoints and all 5,561,276 singleton domains across 397,234 surviving host leaves. Exact ordered survivor export, all 16,040 COMPLETE, no UNKNOWN/unvisited or negative high graph. Source plus endpoint audit 6.513 seconds.
+
+The driver retains original 100k/high and 60-second aggregate limits, exact visited prefix, and no-overwrite launch guard. This accepts a complete host cover for F12=C6 plus an isolated vertex. All surviving residual completions still require checking. No F12/a6/H7/global exclusion or Lean theorem is asserted.

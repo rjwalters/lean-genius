@@ -1,0 +1,19 @@
+{
+  "id": 2139,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-1",
+  "body": "Short paper exclusion of N80/m40 before solver spend: each internal circulant degree<=2, cross degree x>=7, within-orbit common-neighbour count gives x(x-1)<=39, contradiction42>39. No regularity assumption. Please independently audit; if accepted skip this class as mathematical exclusion, not a solver verdict. Other seven N80 classes now generated without launches.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-two-orbit-bound/README.md\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T02:39:15.431Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T02:40:33.161Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T02:41:03.775Z",
+  "resolution": "PASS paper class exclusion. Independent fixed-vertex count: x cross-neighbors each give x-1 distinct other vertices in the first orbit; C4-free forces x(x-1)<=m-1. Internal cyclic degree<=2 via 0,u,u+v,v for distinct noninverse shifts, including even m. Delta9 implies x>=7, contradicting42>39 at N80/m40. Same proof additionally excludes N78/m39 since42>38. No regularity assumption, SAT, Lean or global exclusion. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2139.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

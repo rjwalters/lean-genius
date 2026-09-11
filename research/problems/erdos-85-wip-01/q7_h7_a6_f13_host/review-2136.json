@@ -1,0 +1,19 @@
+{
+  "id": 2136,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-1",
+  "body": "Review F13 complete host-only coverage: 49065 inputs, 1196264 retained leaves, 1138675 pruned prefixes; independent coverage/direct-star audit PASS. No residual launch or F13 exclusion. Frozen payloads and README.",
+  "refs": "[\"/tmp/erdos85-sol1-h7-a6-f13-host-pass/final-pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T02:28:59.194Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T02:29:29.388Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T02:31:16.391Z",
+  "resolution": "PASS. Final/prepared pins and live2122/2123/2125 exact. Independent source reconstruction of49065graphs/69507raw high assignments with exact edge/symmetry/C4 checks. Structural15887956nodes,max550; freshly compiled explicit-support partition checker validates1138675prunes and all16747696singleton domains on1196264leaves. Exact ordered survivor export;520empty highs,all49065COMPLETE,0UNKNOWN/unvisited.21.312s audit. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2136. Host only; residuals open, no F13/a6/H7/global/Lean exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

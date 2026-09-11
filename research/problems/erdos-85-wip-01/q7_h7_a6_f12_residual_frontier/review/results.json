@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "negative_endpoints": 395763,
+  "unknown_preserved": 1,
+  "unvisited_preserved": 1470,
+  "counts": {
+    "INFEASIBLE_ROW": 334885,
+    "INFEASIBLE_ARC": 60878,
+    "UNKNOWN": 1
+  },
+  "domains": 2465615,
+  "rows": 12118963,
+  "arc_batches": 162129,
+  "failed_support_rows": 207743,
+  "seconds": 20.76765291695483,
+  "scope": "Exact accepted2130 ordered host prefix; independent explicit-support template domains and ARC event replay of negatives only. UNKNOWN and unvisited suffix preserved; no search restart or F12 exclusion."
+}

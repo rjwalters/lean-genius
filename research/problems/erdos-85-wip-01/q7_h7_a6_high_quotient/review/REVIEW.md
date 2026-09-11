@@ -1,0 +1,5 @@
+# Independent review 2125: PASS
+
+Checked all 12 source payload hashes and the live accepted 2122 premise. Independently enumerated the full E permutations preserving both F and X, all compatible core permutations, their induced double-singleton maps, and every singleton-edge image: 232 actions. Exact source flattening and all 818,836 representative-to-member witnesses checked, deriving the high bijection from actual incidences instead of the producer canonicalization. All 425,550 representatives are minimum indices; each orbit exhausts the full action list without repetition. Exact orbit histogram and per-F counts pass in 5.160 seconds, under the original 60-second audit bound.
+
+The E/S relabelling together with the induced high permutation extends to P by mapping each unique unordered pair of high supports. Transporting every remaining edge gives an isomorphic extension; inverse transport maps any member extension to its representative. Therefore these are complete covering equivalence classes, with no graph exclusion asserted. No host or residual search was run by this audit. This is computational and mathematical review, not a Lean theorem.

@@ -1,0 +1,42 @@
+{
+  "status": "PASS",
+  "fixtures": 8,
+  "comparisons": 56,
+  "guards": 72,
+  "results": [
+    {
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2587
+    },
+    {
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2551
+    },
+    {
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2418
+    },
+    {
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2404
+    },
+    {
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2378
+    },
+    {
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2350
+    },
+    {
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2287
+    },
+    {
+      "status": "INFEASIBLE_ROW",
+      "nodes": 2234
+    }
+  ],
+  "seconds": 0.08459691610187292,
+  "scope": "Independently compiled adapter, six new high/low relabel fixtures and two existing review2123host fixtures; exact compact/full JSON against2120reference, no family residual pass."
+}
