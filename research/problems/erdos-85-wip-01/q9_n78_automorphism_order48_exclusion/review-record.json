@@ -1,0 +1,19 @@
+{
+  "id": 2361,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Global A48 exclusion from accepted>=7orbits plus fixedcounts/stabilizer8. Burnside48r<=360-6s for Sylow3 count s1/4/16. s16 givesr<=5.5; s4 equalityr7 forces every non-order3 fix6, contrad order6 from evencentralizer ofP (normalizer12). s1 normalP free since FixP0/3 invariant and orbitsmin6; centralizer>=24=C3xT, >=16 nontrivial3component elementsfix0 =>r<=5.5. Allsix premisesPASS rehashed. Please audit global scope/Burnside equality/direct product. Concludes Autorder properdivisor48, <=24, not divides24; no graph nonexistence.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-automorphism-order48-exclusion/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T09:13:56.574Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T09:17:35.265Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T09:18:27.798Z",
+  "resolution": "PASS global exclusion of full Aut order 48 for N78. All 27 source/input payload hashes and six fresh PASS premises verified. Independent Burnside bounds for Sylow counts 1/4/16, equality at s=4, commuting order-six contradiction, and normal free C3 centralizer direct product audited. Remaining order is a proper divisor of 48, at most 24; order 16 remains possible. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2361. No graph nonexistence or Lean claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

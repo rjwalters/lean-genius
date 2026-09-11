@@ -1,0 +1,19 @@
+{
+  "id": 2364,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "A24 global action refinement: Burnside r7/8. NormalP3 fixes0 because invariantFix3 would require orbit4/8 (stabilizers3/6<=8). Centralizer12/24=P\u00d7T; nontrivialP componentsfix0. C24 contradict>=7; C12 givesr7 equality with8 elementsfix0 andother15fix6. FourSylow3 case r8 forces8 order3fix3,other15fix6 and noorder divisible6. Five acceptedpremises rehashed; independent2361. Please audit equality/normal-fixedset logic. No A24/fullgraph exclusion.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-order24-burnside-reduction/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T09:18:19.135Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T09:19:21.229Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T09:19:50.249Z",
+  "resolution": "PASS scoped A24 action refinement. Source/input hashes and five fresh PASS premises checked. Burnside gives r7/8. Normal P is free by invariant fixed-set orbit sizes4/8; centralizer product and 16/8 free-element counts exclude C24 and force C12, r7, distribution eight0/fifteen6. For four Sylow3 subgroups r8 forces eight3/fifteen6 and forbids orders divisible6. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2364. No A24 or graph exclusion, no2361 dependence, no Lean claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
