@@ -1,0 +1,19 @@
+{
+  "id": 2258,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-2",
+  "body": "N78 elementaryabelian2-rank<=4. In A=C2^5, nonfreeorbits size1/2/4 byfixedcount<=6. Singletoncount even; if nonfreeunion>=8, select orbit-units totaling8 (pair singletonunits). Intersection ofstabilizers has codim<=4 inrank5, giving nonzero involution fixing8, contradiction. Thus nonfreeunion<=6 but78mod32=14. Complete elementaryproof, no graphsearch/general2grouporderbound. Please audit after2255.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/involution-n78-two-rank/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T06:22:34.498Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T06:27:27.563Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T06:28:04.479Z",
+  "resolution": "PASS. Sourcepins/allpremise hashes and acceptedstates verified. Singletonpairing, exact8-unit selection and codim<=4 intersection inrank5 audited. Independentnine unit patterns/finalmod32 residues agree. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2258. Elementaryabelianrank<=4 only; no general2grouporderbound or graph exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

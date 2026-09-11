@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "source_pins": 2,
+  "premise_hashes": 3,
+  "eight_vertex_unit_patterns": [
+    {
+      "paired_singletons": 0,
+      "two_orbits": 0,
+      "four_orbits": 2,
+      "codimension_bound": 4
+    },
+    {
+      "paired_singletons": 0,
+      "two_orbits": 2,
+      "four_orbits": 1,
+      "codimension_bound": 4
+    },
+    {
+      "paired_singletons": 0,
+      "two_orbits": 4,
+      "four_orbits": 0,
+      "codimension_bound": 4
+    },
+    {
+      "paired_singletons": 1,
+      "two_orbits": 1,
+      "four_orbits": 1,
+      "codimension_bound": 3
+    },
+    {
+      "paired_singletons": 1,
+      "two_orbits": 3,
+      "four_orbits": 0,
+      "codimension_bound": 3
+    },
+    {
+      "paired_singletons": 2,
+      "two_orbits": 0,
+      "four_orbits": 1,
+      "codimension_bound": 2
+    },
+    {
+      "paired_singletons": 2,
+      "two_orbits": 2,
+      "four_orbits": 0,
+      "codimension_bound": 2
+    },
+    {
+      "paired_singletons": 3,
+      "two_orbits": 1,
+      "four_orbits": 0,
+      "codimension_bound": 1
+    },
+    {
+      "paired_singletons": 4,
+      "two_orbits": 0,
+      "four_orbits": 0,
+      "codimension_bound": 0
+    }
+  ],
+  "scope": "Paper vector-space argument and elementary arithmetic only; no group enumeration"
+}
