@@ -1,8 +1,9 @@
 # Q9 existence decision experiment — 2026-09-11
 
-IN PROGRESS. Owner of solver ledger: codex-sol-3. Operator scope: squad board39.
-Zero spend; local kissat; proof logging OFF. Two graph-control runs are terminal.
-No q9 instance has launched. The second-control specification needs correction.
+IN PROGRESS. Owner of solver ledger: codex-sol-3. Operator scope: squad board39,
+amended by editor messages50462/50463. As of2026-09-11 16:57 UTC, N80/m10
+and N80/m8 are RUNNING in the two host solver slots. Local kissat; proof logging
+OFF. No q9 verdict or graph witness has been reported.
 
 ## Known values
 
@@ -47,15 +48,22 @@ component for the repaired R72 lower-bound dependency and remaining citation gap
 | N48, delta>=7, m24 | 3757 / 13047 | SAT, 0.046s; independent review2142 PASS and registered |
 | N63, delta>=8, m21 | 11074 / 38347 | Interrupted UNKNOWN after377.202s; separately excluded by paper proofs2144/2145 |
 | N63, delta>=8, m63 | — | Impossible circulant control; no solver run |
+| N63, delta>=8, m7 | 39337 / 134146 | Authorized replacement; queued for next shared slot |
 
-The generator passed independent encoding review2138. The revised runner has
-eight passing software tests and accepted independent review2134. Tiny SAT,
-UNSAT and interrupted-process fixtures do not count as graph controls. Both
-actual positive controls require independent decoded-graph receipts before q9
-launches. N48 satisfies this condition; the specified N63 action orders are
-mathematically impossible. A correction to the explicit affine m7 control has
-been requested by the squad and is pending; it has not been substituted. The m7 affine diagnostic from sol1 is a construction/encoding test,
-not a substitute for the specified m21/m63 control.
+The generator passed independent encoding review2138. The original serialized
+runner passed eight software tests and independent review2134. The amended
+two-slot `runner_launch.py` is a separate revision: the author reports four
+focused process/concurrency checks, and sol-2 independently verified25 policy
+cases on copied ledger data. The latter checks do not claim a live-concurrency
+audit. Evidence is at
+`/Users/rwalters/lean-genius-q9-known-values-20260911/q9-runner-launch-policy-audit`.
+Tiny SAT, UNSAT and interrupted-process fixtures do not count as graph controls.
+The editor's
+50462/50463 amendment makes the independently verified N48 control sufficient
+for q9 launches. N63/m7 is authorized as a replacement calibration control,
+using the existing affine input. It runs in parallel at the next available
+shared solver slot and does not gate q9 launches. The old m21/m63 specification
+remains mathematically impossible; its historical UNKNOWN is preserved.
 
 ## Action classes and budgets
 
@@ -64,11 +72,12 @@ not a substitute for the specified m21/m63 control.
 | 80 | 40 | — | — | Paper exclusion, review2139 PASS |
 | 80 | 20 | — | — | Whole action class excluded: reviews2147–2149,2151 PASS |
 | 80 | 16 | — | — | Necessary-condition exclusion, reviews2152/2154/2155/2157/2158/2160 PASS |
-| 80 | 10 | 0 (planned) | 1h / 4h | Not launched |
-| 80 | 8 | 0 (planned) | 1h / 4h | Not launched |
+| 80 | 10 | 0 | 1h / 4h | RUNNING: run002, PID68975 |
+| 80 | 8 | 0 | 1h / 4h | RUNNING: run003, PID77447 |
 | 80 | 5 | 0 (planned) | 1h / 4h | Not launched |
 | 80 | 4 | 0 (planned) | 1h / 4h | Not launched |
 | 80 | 2 | 0 (planned) | 1h / 4h | Not launched |
+| 80 | 1 (no symmetry) | 0 (planned) | 1h / 4h | Authorized; not launched |
 | 79 | All | — | — | Universal exclusion; independent Lean review2165 PASS |
 | 78 | 39 | — | — | Paper exclusion, review2139 corollary |
 | 78 | 78 | — | — | Paper exclusion: circulant degree bound |
@@ -77,9 +86,12 @@ not a substitute for the specified m21/m63 control.
 | 78 | 6 | 0 (planned) | 1h / 4h | Not launched; scheduling follows N80 |
 | 78 | 3 | 0 (planned) | 1h / 4h | Not launched; scheduling follows N80 |
 | 78 | 2 | 0 (planned) | 1h / 4h | Not launched; scheduling follows N80 |
+| 78 | 1 (no symmetry) | 0 (planned) | 1h / 4h | Authorized; scheduling follows N80 |
 
 N78/m78 is a circulant and also fails the elementary degree bound; no solve is
-needed. Unexcluded listed m values remain eligible; m1 is not silently added.
+needed. The amended launch order is N80 m10,8,5,4,2,1, then N78 m6,3,2,1.
+The unsymmetrized m1 cases are explicitly authorized by50462. All ten inputs
+passed [byte-regeneration and edge-map preflight](launch_input_preflight/results.json).
 
 Accepted review2153 gives exactly two necessary N78/m13 quotient types (70
 labelled matrices), both with Q²=9I+12J. Review2161 excludes type A by
@@ -108,9 +120,14 @@ Any witness is saved as an adjacency list and independently checked by a
 second seat before the editor reports it to Robb. No cloud, q11/q13, or N81
 nonexistence campaign is authorized by this experiment. Phase B stays gated.
 
-Graph-solver time charged so far:377.247884959 seconds (about0.104791hours),
-including the interrupted control. Exact histories, caps, exit codes and hashes
-are in q9-solver-controls/ledger.json. No own solver remains live.
+Terminal graph-solver time is377.247884959 seconds (about0.104791hours),
+including the interrupted control. The two active runs additionally accrue
+wall time and reserve their full caps against the48-hour aggregate budget.
+The live ledger at `/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/ledger.json` is authoritative for statuses and accounting.
+Use `runner_launch.py`, which locks only ledger transactions and supports two
+slots; the old serialized `runner.py` must not be run concurrently.
+Independent live-start checks bind both processes to their exact preflight
+CNFs/maps, seed0,3600-second caps, and recorded runner/solver hashes.
 
 The m21 run was stopped only after accepted paper review2145 made its intended
 positive-control purpose impossible. The recorded solver result is UNKNOWN,
@@ -131,7 +148,7 @@ with independent reproduction. All relevant cases completed under original
 caps. This is a computational algebraic exclusion, not a SAT verdict or Lean
 theorem. The full evidence is in
 [the m16 closure](../q9_n80_m16_exclusion/STATUS.md). No graph solver was
-launched by this chain, and the positive-control correction is still pending.
+launched by this chain; the separate amended q9 launch campaign is now active.
 
 ## Formal checks and general symmetry restrictions
 
@@ -151,15 +168,22 @@ divisors only2,3 at N78, and only2,3,5 at N80. These restrictions do not
 exclude asymmetric witnesses or settle unrestricted existence.
 
 Accepted2176 restricts exact-order3 automorphisms to fixed counts0or3 at N78
-and2or5 at N80. The fixed set is independent, and each fixed vertex lies in
-three triangles. Accepted2179 gives a necessary residual form for N78/F3 and
-N80/F5: respectively48vertices of degree6 with three prescribed partitions,
-and30vertices of degree4 with five. These are unresolved residual problems,
-not graph witnesses or exclusions. Evidence is preserved in
-[the fixed-count proof](../q9_order3_fixed_counts/STATUS.md) and
+and initially2or5 at N80. Accepted2214 closes the entire N80/F5 case by a
+complete necessary-domain composition: its1284 cases partition as
+708+516+58+1+1, with no uncovered case. Therefore **every order3 automorphism
+at N80 fixes exactly2 vertices**. The fixed set is independent, and each
+fixed vertex lies in three triangles. This is a paper/computational symmetry
+restriction, not unrestricted N80 nonexistence or a Lean theorem. Its
+independent audit is at
+`/Users/rwalters/lean-genius-q9-known-values-20260911/review-2214`.
+
+The N78/F3 residual problem from2179 remains open:48 vertices of degree6
+with three prescribed partitions. The earlier N80/F5 residual form is now
+part of the excluded branch, not an open case. Foundational evidence remains
+in [the fixed-count proof](../q9_order3_fixed_counts/STATUS.md) and
 [the residual form](../q9_order3_tight_normal_form/STATUS.md).
 
-### Accepted N78 automorphism bound — snapshot 2026-09-11 16:43 UTC
+### Accepted N78 automorphism bound — snapshot 2026-09-11 16:50 UTC
 
 The [accepted review snapshot](symmetry-accepted-snapshot-20260911.json)
 records exact PASS scopes, review timestamps and hashes of the referenced
@@ -177,8 +201,11 @@ Its independent assembly audit is at `/tmp/erdos85-sol1-review2487`.
 For the possible **full group of order12**, reviews2489/2494 give the group
 cover. Accepted2544 excludes C3×V4; accepted2555 excludes C12 and Dic12.
 Their scopes are full automorphism groups of these types, not unrestricted
-N78 nonexistence. S3×C2 and A4 closure packets remain pending, so the accepted
-bound stays12. Review2544's assembly audit is at
+N78 nonexistence. Accepted2627 now excludes full S3×C2: its independently audited composition
+covers all fourteen profiles, using2553/2572/2577/2579/2583/2586/2588/2589.
+The audit is at `/Users/rwalters/lean-genius-q9-known-values-20260911/review-2627`.
+Only A4 remains among the full order12 group types; its closure is pending,
+so the accepted bound stays12. Review2544's assembly audit is at
 `/tmp/erdos85-sol1-review2544`; review2555's is at
 `/tmp/erdos85-sol1-cyclic-composition-audit`.
 
@@ -192,16 +219,25 @@ result; it is not presented as a Lean theorem or SAT UNSAT certificate.
 Asymmetric graphs and the surviving symmetry classes remain open. These
 restrictions alone do not establish that the order49 example is sporadic.
 
+The [amended launch archive](amended-launch/README.md) contains the exact
+runner/controller source, authorization, independent policy audit, input copies
+and timestamped live process/ledger snapshot. This snapshot is not a verdict.
+
 ## Current verdict
 
-The N48 positive control succeeded and passed independent graph/model/map
-validation. Both originally specified N63 action orders are mathematically
-excluded: m63 by the circulant bound and m21 by two independently reviewed
-Fourier arguments. The interrupted m21 solver remains recorded as UNKNOWN.
-A concrete replacement control using the known N63 affine graph with m7 is
-prepared by the generator owner but awaits correction of board39. No q9
-class has run; N79 and the two-orbit N80/m40,N78/m39 classes are excluded by
-separate reviewed arguments. N80/m20,m16 and N78/m26,m13 are also excluded
-by accepted necessary-condition proofs, with no graph solver runs. The remaining
-scheduled orders are10,8,5,4,2 at N80 and6,3,2 at N78. Nothing here establishes nonexistence on all
-N78/N80 graphs, sporadic behavior at49, or the full Erdős85 result.
+IN PROGRESS. N79 is excluded independently by literature and the accepted
+below-square odd-order theorem. The N48 positive control is independently
+verified. The corrected N63/m7 calibration is authorized and queued without
+blocking q9. N80/m10 and N80/m8 are live under their initial one-hour caps;
+the other eight scheduled q9 instances have not launched. Each terminal
+UNKNOWN permits only one four-hour requeue with identical CNF, map and seed,
+subject to the aggregate48-solver-hour and first-witness stop rules.
+
+The accepted symmetry exclusions restrict possible witnesses but do not
+settle unrestricted existence at N78 or N80. A solver report with proof
+logging off must be distinguished from an independently verified
+nonexistence certificate; any SAT output requires independent graph/model
+validation. Keep this deliverable IN PROGRESS until every scheduled instance
+has a verdict or its allowed requeue/budget has expired, or a verified witness
+ends the campaign. No conclusion that49 is sporadic or that Erdős85 is solved
+is justified by the current evidence.

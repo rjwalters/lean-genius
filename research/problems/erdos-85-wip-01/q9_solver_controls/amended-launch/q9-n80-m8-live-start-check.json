@@ -1,0 +1,25 @@
+{
+  "status": "VERIFIED_LIVE_START",
+  "verified_utc": "2026-09-11T16:56:30.823444+00:00",
+  "run_id": 3,
+  "n": 80,
+  "m": 8,
+  "pid": 77447,
+  "process_snapshot": "77447 00:51 /opt/homebrew/Cellar/kissat/4.0.4/bin/kissat --sat --strict --no-color --seed=0 --time=3600 /Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/003-N80-m8/input.cnf",
+  "cap_seconds": 3600,
+  "proof_logging": false,
+  "preflight": {
+    "n": 80,
+    "m": 8,
+    "status": "PASS",
+    "path": "/tmp/erdos85-sol1-q9-n80-m8",
+    "variables": 70117,
+    "clauses": 239879,
+    "edge_variables": 400,
+    "bytes": 3742039,
+    "cnf_sha256": "6320d7926bed1f79e4dc08ddeb9349f58ed725c18549acf11670c11d244c2b9b",
+    "map_sha256": "d9ee7f6b55d5009eabd090abeb05c446dc47ff116f3fdb48ceef7247c53a660e",
+    "generator_sha256": "cafc21951969ed93a88f7db2a3b649c38deb53af3d81d6da10caeac5a2aef4a4"
+  },
+  "scope": "Live-start and input binding only; no solver verdict"
+}

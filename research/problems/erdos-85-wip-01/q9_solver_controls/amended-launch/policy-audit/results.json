@@ -1,0 +1,161 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "name": "authorized-80-10",
+      "outcome": [
+        "q9",
+        3600
+      ]
+    },
+    {
+      "name": "authorized-80-8",
+      "outcome": [
+        "q9",
+        3600
+      ]
+    },
+    {
+      "name": "authorized-80-5",
+      "outcome": [
+        "q9",
+        3600
+      ]
+    },
+    {
+      "name": "authorized-80-4",
+      "outcome": [
+        "q9",
+        3600
+      ]
+    },
+    {
+      "name": "authorized-80-2",
+      "outcome": [
+        "q9",
+        3600
+      ]
+    },
+    {
+      "name": "authorized-80-1",
+      "outcome": [
+        "q9",
+        3600
+      ]
+    },
+    {
+      "name": "authorized-78-6",
+      "outcome": [
+        "q9",
+        3600
+      ]
+    },
+    {
+      "name": "authorized-78-3",
+      "outcome": [
+        "q9",
+        3600
+      ]
+    },
+    {
+      "name": "authorized-78-2",
+      "outcome": [
+        "q9",
+        3600
+      ]
+    },
+    {
+      "name": "authorized-78-1",
+      "outcome": [
+        "q9",
+        3600
+      ]
+    },
+    {
+      "name": "authorized-control7",
+      "outcome": [
+        "control",
+        3600
+      ]
+    },
+    {
+      "name": "outside-scope",
+      "outcome": "rejected",
+      "reason": "outside amended launch scope"
+    },
+    {
+      "name": "missing-control",
+      "outcome": "rejected",
+      "reason": "independent N48 positive control required"
+    },
+    {
+      "name": "both-slots-reserved",
+      "outcome": "rejected",
+      "reason": "two solver slots occupied; inspect existing handles"
+    },
+    {
+      "name": "one-slot-available",
+      "outcome": [
+        "q9",
+        3600
+      ]
+    },
+    {
+      "name": "duplicate-prepared",
+      "outcome": "rejected",
+      "reason": "instance already attempted"
+    },
+    {
+      "name": "exact-retry",
+      "outcome": [
+        "q9",
+        14400
+      ]
+    },
+    {
+      "name": "changed-map",
+      "outcome": "rejected",
+      "reason": "retry must preserve exact CNF, map and seed"
+    },
+    {
+      "name": "changed-cnf",
+      "outcome": "rejected",
+      "reason": "retry must preserve exact CNF, map and seed"
+    },
+    {
+      "name": "changed-seed",
+      "outcome": "rejected",
+      "reason": "retry must preserve exact CNF, map and seed"
+    },
+    {
+      "name": "second-retry",
+      "outcome": "rejected",
+      "reason": "one requeue only after terminal UNKNOWN"
+    },
+    {
+      "name": "terminal-sat",
+      "outcome": "rejected",
+      "reason": "first q9 SAT stop: independently verify the saved witness"
+    },
+    {
+      "name": "observed-sat-even-if-unknown",
+      "outcome": "rejected",
+      "reason": "first q9 SAT stop: independently verify the saved witness"
+    },
+    {
+      "name": "remaining-budget-truncation",
+      "outcome": [
+        "q9",
+        95
+      ]
+    },
+    {
+      "name": "reserved-budget-exhausted",
+      "outcome": "rejected",
+      "reason": "48 aggregate solver-hours exhausted or reserved"
+    }
+  ],
+  "runner_sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155",
+  "legacy_sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0",
+  "scope": "Pure policy on copied ledger only; no live concurrency stress, process lifecycle test, or solver verdict; launch not gated by this audit"
+}

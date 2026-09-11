@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "snapshot_utc": "2026-09-11T16:44:55.085622+00:00",
+  "snapshot_utc": "2026-09-11T17:02:37.129545+00:00",
   "purpose": "Accepted evidence snapshot for existing symmetry section; no new mathematical packet",
   "n78_accepted_full_group_orders": [
     1,
@@ -14,7 +14,8 @@
   "accepted_full_order12_group_exclusions": [
     "C3 x V4",
     "C12",
-    "Dic12"
+    "Dic12",
+    "S3 x C2"
   ],
   "accepted_reviews": [
     {
@@ -623,62 +624,188 @@
           "kind": "file"
         }
       ]
-    }
-  ],
-  "in_flight_reviews_not_used_for_global_bound": [
+    },
+    {
+      "id": 2553,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T14:11:45.072Z",
+      "resolution": "PASS. Fresh2489/2494/2257 and all packet/input hashes. Independent bitmask subgroups/full coset-set actions verify five stabilizer classes and fixed counts; abstract s/t exchange verified. Wider vertex-count arithmetic bounds reproduce14 profiles. Direct regular unordered-pair orbits give exactly2free; all ordered degree allocations violate capacity for both regular-outside profiles. TransitiveF6 attachment stabilizer argument forces4regularW and rejects d3. Three paper exclusions valid,11profiles remain; two-three nonregular outside retains triangle-leaf possibility. COMPLETE0.006894s original30. Evidence /tmp/erdos85-sol1-review2553. No fullS3xC2/global/Lean exclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s3-times-c2-orbit-cover/pins.json",
+          "exists": true,
+          "sha256": "a02e9d597bfa465e3e6af8e984b8b2cb5fe70b04f45a6efa5be6db3cc397b30d",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2572,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T14:46:52.382Z",
+      "resolution": "PASS composition. Five freshPASS2553/2559/2560/2564/2565, recursivelypinned payloads and independent stage-audit sourcehashes rebound. Exactall6 bz1profiles map toscope-correct acceptedexclusions; coversbothsame/mixedtwoR6 andbothfourR6distributions withfullmatchingchoices in2560. COMPLETE0.026516s original30. Thus centralFix(z) cannotbe transitive. Packetsevenprofile remainder correct relative statedpremises; neweraccepted2577 additionally excludes(0,0,0,1,6), leavingCURRENTsix profiles (threezfree/threetwo3). Evidence /tmp/erdos85-sol1-review2572. No fullS3/globalN78/Erd\u0151s85/Lean.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s3-transitive-fixed-composition/pins.json",
+          "exists": true,
+          "sha256": "1a4297ab169442b2d7f61da50d7924fccd5453f1131d26868a9b6c67ec897927",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2577,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T14:43:52.658Z",
+      "resolution": "PASS paper profile exclusion. Fresh2553/2554 and packet/input hashes only. Independent sixpoint stabilizers/fixedsets, all12 additionaledge C4certs, withinTpair nonfreeness, direct24free regularpairs andall176 degreeallocations checked COMPLETE0.000379s original30. Odd degree forcesv-zv edge whenFix(s)={v,zv}; ztranslate killsanyextraTedge. Regularoutside impliesuniqueTattachment, E[T]=K6 exhaustsdefectdegree, matchingquotient followswithoutTpointwisefixedbyz. Residual>=1+W>=2 freepairorbits exceedsavailable2. Excludesprofile(0,0,0,1,6) up toclassswap independently2575. Evidence /tmp/erdos85-sol1-review2577. OtherS3/fullgroup/global/Lean remain.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s3-central-free-one-six-exclusion/pins.json",
+          "exists": true,
+          "sha256": "f9928251cb7a69b35098decb43691a0e820b248e39cdbfa22948a84e17ae4e88",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2579,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T14:54:43.153Z",
+      "resolution": "PASS. Fresh accepted 2553/2554/2575 and recursive pinned hashes verified. Independent invariant perfect-matchings gives all 7 seeds; full unordered-pair orbit sets give 21 units and exactly 12 optional units. All 28672 masks covered, explicit negative degree/C4 certificates checked, all 115 positive induced graphs independently C4-free and degree-consistent. Separate full bitmask Cartesian allocation domains exactly match all 72875 records; direct common-middle endpoint sets reproduce all free-pair bounds and every allocation violates one. COMPLETE 0.367347s induced and 0.122527s allocation, each original 30s cap. Regular vertices meet each T at most once by nonfree pair stabilizers; incidence balance gives (9-di)/2, and common-middle uniqueness gives 12 pairs per shared regular orbit. Entire profile (0,0,0,3,5) excluded up to type swap. Evidence /tmp/erdos85-sol1-review2579/audit.py and result.json. No other profile, full group, global, or Lean exclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s3-central-free-three-six-domain/pins.json",
+          "exists": true,
+          "sha256": "0b0c43d5f31f3505854a8b5f5cfce9d87b495e1c181d59f75ee13f07cc460447",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2583,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T14:57:45.020Z",
+      "resolution": "PASS. Fresh accepted2580 and recursive current packet/input hashes. Stabilizer order2 acts freely on each regular orbit, so the two remaining T0 defect neighbors concentrate in one invariant regular orbit; equivariance makes that index uniform on T0, and 6/12 incidence balance gives reverse degree1. Independently reconstructed H at all18 vertices; built full known 8-orbit adjacency/defect quotient blocks with regular-regular entries explicitly unknown. Direct top3x3 products use no unknown entries. All1920 source allocations exactly covered, all5 indices each, all9600 residual matrices agree and are nonzero. Unequal orbit-size balance checked for every known entry. COMPLETE0.158240s original30. Therefore profile (0,0,1,2,5) excluded, conditional on accepted premises; no other profile/fullS3/global/Lean exclusion. Evidence /tmp/erdos85-sol1-review2583/audit.py and result.json.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s3-central-free-mixed-three-commutator/pins.json",
+          "exists": true,
+          "sha256": "f24a03515a87a581f3814b9afe85d39352dd290591274f7843b13dc7d91a58c6",
+          "kind": "file"
+        }
+      ]
+    },
     {
       "id": 2588,
       "status": "resolved",
+      "resolved_by": "codex-sol-1",
       "resolved_ts": "2026-09-11T16:44:11.171Z",
-      "resolution": "PASS. Fresh2553/2554/2567/2574 and recursive packet/input hashes. All five source allocations covered; point-image equivariant-map reconstruction proves unique six-to-three projections; full edge-orbit sets and3072 masks verified,37 induced graphs. Independently generated ordered common-middle pairs and every-vertex H rows, complete2825 regular subset tuples, exact defect numerators/quotients and stabilizer divisibility reproduce28 survivors. Full weak compositions independently enumerated as bounded integer tuples; direct known9-orbit block multiplication with unknown regular-regular entries left None rejects all140 combinations. Necessity valid: unique regular middle forces at most one neighbor in each nonregular orbit, and stabilizer-free regular action makes residual E degrees multiples of12/si. COMPLETE0.022735s induced,0.016109s allocation,0.001977s commutation, each original30. Evidence /tmp/erdos85-sol1-review2588/audit.py and result.json. Both (2,0,0,2,5) and (2,0,1,1,5) excluded; no remaining-profile/fullS3/global/Lean conclusion."
+      "resolution": "PASS. Fresh2553/2554/2567/2574 and recursive packet/input hashes. All five source allocations covered; point-image equivariant-map reconstruction proves unique six-to-three projections; full edge-orbit sets and3072 masks verified,37 induced graphs. Independently generated ordered common-middle pairs and every-vertex H rows, complete2825 regular subset tuples, exact defect numerators/quotients and stabilizer divisibility reproduce28 survivors. Full weak compositions independently enumerated as bounded integer tuples; direct known9-orbit block multiplication with unknown regular-regular entries left None rejects all140 combinations. Necessity valid: unique regular middle forces at most one neighbor in each nonregular orbit, and stabilizer-free regular action makes residual E degrees multiples of12/si. COMPLETE0.022735s induced,0.016109s allocation,0.001977s commutation, each original30. Evidence /tmp/erdos85-sol1-review2588/audit.py and result.json. Both (2,0,0,2,5) and (2,0,1,1,5) excluded; no remaining-profile/fullS3/global/Lean conclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s3-two-three-two-six-induced/pins.json",
+          "exists": true,
+          "sha256": "4a2ec9912aec2a1abfc39ea45d5e60020bc6ba4407fff9c81a82cedd7eade3d7",
+          "kind": "file"
+        }
+      ]
     },
     {
       "id": 2589,
-      "status": "claimed",
-      "resolved_ts": null,
-      "resolution": null
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T16:46:15.789Z",
+      "resolution": "PASS. Fresh2553/2554/2567/2574 and recursive hashes. All four source allocations, unique point-image equivariant projections, forced edges and32 edge-orbits checked. Independent binary-interval cover proves all188655 terminal prefixes partition each full2^32 subset domain; direct negative and positive checks leave3756 graphs. Full1248120 regular-index Cartesian tuples checked with explicit source/base/domain coverage and independently generated ordered common-middle pair sets. Every tuple has a certified negative defect numerator; zero survivors, so no additional degree/divisibility argument is needed for this exclusion. COMPLETE1.456006s induced and1.034870s allocation, each original30. Evidence /tmp/erdos85-sol1-review2589. Profile (2,0,2,2,4) excluded. Full S3xC2 composition remains a separate premise-coverage check; no global/Lean conclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s3-two-three-four-six-induced/pins.json",
+          "exists": true,
+          "sha256": "2fb7a2ac494cc25846fa16ab7282ba919daa067c401ac028b0cbc5308f283521",
+          "kind": "file"
+        }
+      ]
     },
     {
+      "id": 2627,
+      "status": "resolved",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T16:49:39.910Z",
+      "resolution": "PASS. Fresh11 accepted premise states and168 author/recursive payload hashes. Independent broad vertex-budget inventory solves regular multiplicity and yields exactly14profiles; explicit scope map covers six bz1 via2572, allregular two3 via2553, four centralfree via2577/2579/2583/2586, final three via2588/2589. Original cover and terminal papers inspected; matching/triangle allocation scopes retained. COMPLETE .031598s; no solver or capped domain replay. Evidence rootQ9/review-2627. Excludes fullAut S3xC2 only; A4/order12 bound/global/Lean remain open.",
+      "source_artifacts": [
+        {
+          "path": "/tmp/erdos85-sol1-s3-times-c2-composition/pins.json",
+          "exists": true,
+          "sha256": "18f420444ae28b4c904a65802fe65b927a841e280d3529ae3d0c3147b91a6941",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2214,
+      "status": "resolved",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T05:04:02.738Z",
+      "resolution": "PASS FULL N80/F5 subcase (paper/computational). Independent matrix input matches118 words/all capacities/edges. Row-necessity and inductive simultaneous-removal proof audited. Different recursive multiplicity enumeration exits0,.0063s/12221states, exact six removal sets35/12/20/30/20/1, empty fixed point under60s cap. All predecessor reviews/pins verified; exact disjoint1284 partition708+516+58+1+1, no uncovered case. Thus order3 atN80 must fix2 vertices using2176. No Lean/globalN80/Erdos85 closure. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2214.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-order3-local-row-propagation/pins.json",
+          "exists": true,
+          "kind": "file",
+          "sha256": "a02d25329013a93b0c92deaf2c0f0e14b106dbf37ac3609b866863697d25408a"
+        }
+      ]
+    }
+  ],
+  "source": "read-only .squad/squad.db review records; referenced artifact hashes taken at snapshot",
+  "limitations": "Top-level referenced artifacts hashed; premise-chain correctness rests on copied independent PASS review scopes. This snapshot is not a new recursive proof audit.",
+  "n80_order3_fixed_vertices": 2,
+  "additional_review_states_not_used_to_strengthen_global_bound": [
+    {
       "id": 2591,
-      "status": "pending",
-      "resolved_ts": null,
-      "resolution": null
+      "status": "resolved",
+      "resolved_ts": "2026-09-11T16:49:26.468Z",
+      "resolution": "PASS. Fresh2489/2257 and recursive packet/input hashes. Independent closure of two3-cycles reconstructs A4 and full coset-set actions. Perfect matchings enumerated as fixed-point-free involutive permutations give15 total/7 invariant seeds; all developments are equivariant perfect matchings with exact fixed-fiber restrictions. Every pair stabilizer and full18 edge-orbit partition checked,9 optional; within free12/cross free24. Triangle-leaf automorphisms obtained from all core permutations prove no free involution. The other V4 involution acts freely on Fix(s), forcing matching. Unique common middle in a regular orbit makes its generated endpoint pairs distinct and free;12 choose(m,2)<=12 forces m<=2, and at most one regular orbit may attain2. COMPLETE0.001145s original30. Evidence /tmp/erdos85-sol1-review2591. Necessary foundation only, no A4 profile/fullgroup/global/Lean exclusion."
     },
     {
       "id": 2592,
-      "status": "pending",
-      "resolved_ts": null,
-      "resolution": null
+      "status": "resolved",
+      "resolved_ts": "2026-09-11T16:51:14.783Z",
+      "resolution": "PASS. Fresh accepted2591 and recursive hashes. Full3584 induced masks checked, only seven forced matchings remain. Independent row construction by doubled-coordinate/one-position choices gives all35 multiplicity rows; all300125 tuples and exact capacity/defect certificates reproduce1680 survivors with D=2J-I and E_NR=0. All1680 explicit row/column transports verified, independent canonical keys give exactly2 incidence classes. Full weak compositions independently enumerated as bounded integer tuples; complete Cartesian symmetric joins reproduce6/4 regular-defect quotients, without relying on producer recursion. mY=Dm follows the NR commutation block with E_NR=0; no regular adjacency assumption enters. COMPLETE0.041179s induced,0.415486s incidence,0.018892s quotient, each original30. Evidence /tmp/erdos85-sol1-review2592. Complete necessary domains only; no profile exclusion, graph-existence/global/Lean claim."
     },
     {
       "id": 2593,
-      "status": "pending",
-      "resolved_ts": null,
-      "resolution": null
+      "status": "resolved",
+      "resolved_ts": "2026-09-11T16:52:43.140Z",
+      "resolution": "PASS. Fresh accepted2592 and recursive hashes. All1680 source transports reconstruct actual matching H with the same row permutation as m, yielding exactly8 pair classes with saved multiplicities. Independent stars-and-bars complete composition domains and full Cartesian symmetry joins reproduce empty classes3/6 and24 total Q matrices. Direct entire8-orbit adjacency quotient square verifies all implied Y entries, D and zero cross-defect blocks, then matches against the complete source Y lists;12 pairs survive. Full8-orbit commutation checked on every surviving pair. Exactly720 labelled sources excluded and960 remain. COMPLETE0.023474s original30. Evidence /tmp/erdos85-sol1-review2593. Necessary quotient reduction only; no full A4 profile or graph-existence/global/Lean conclusion."
     },
     {
       "id": 2595,
-      "status": "pending",
-      "resolved_ts": null,
-      "resolution": null
+      "status": "resolved",
+      "resolved_ts": "2026-09-11T16:55:37.000Z",
+      "resolution": "PASS. Fresh2591/2592/2593 and recursive hashes. Full matching-H compatibility covers10 cases; all37 domains/2475 raw tuples partition into248 group orbits, all developed C4 and pair-use checks give67 positives. Full160 packing products give80 pair-disjoint packings. Complete160 packed/Q cases and544 local queries checked: exact support/matching coverage, full candidates and35840 per-orbit subset rows. Independent breadth-first negative-prefix cover verifies every saved negative leaf; every positive witness directly covers the18-vertex target without overlap. Exactly80 negative/80 locally feasible cases. E_NR=0 and common-middle uniqueness justify the exact-cover necessity; right-translation normalization independently preserves each regular left action. COMPLETE0.010686s attachments,0.001022s packing,0.128346s local audit, each original30. Evidence /tmp/erdos85-sol1-review2595. Positive witnesses remain local existence only, never full future row domains. No profile/global/Lean exclusion."
     },
     {
       "id": 2597,
-      "status": "pending",
-      "resolved_ts": null,
-      "resolution": null
+      "status": "resolved",
+      "resolved_ts": "2026-09-11T16:57:25.932Z",
+      "resolution": "PASS. Fresh accepted2595 and recursive hashes. Independent breadth-first full row-domain enumeration verifies400 queries/all20096 exact-cover rows and all terminal prefixes; no prior positive witness substituted for domain. Group permutation multiplication independently confirms left development a->ab. Every row checked for internal inverse closure, then every saved C4 certified in its actually developed78-vertex forced partial graph;1056 positives independently C4-free. Complete80 outcome/400 query source coverage shows each outcome has at least one empty admissible-row domain. COMPLETE0.085719s row and0.225275s star audits, each original30. Evidence /tmp/erdos85-sol1-review2597/audit.py and result.json. Profile (0,3,0,5) excluded under accepted premises. No simultaneous fullgraph solver, otherA4/fullgroup/global/Lean exclusion."
     },
     {
       "id": 2599,
-      "status": "pending",
-      "resolved_ts": null,
-      "resolution": null
+      "status": "resolved",
+      "resolved_ts": "2026-09-11T16:59:05.943Z",
+      "resolution": "SCOPED PASS: complete induced structural cover only. Fresh2489/2207/2591 and recursive payload hashes. Independent group pair-orbit sets and all512 BB masks,3584 TT masks,64 BT masks verify B independent, T one of7 forced matchings, and7 complete local BT choices. All2401 combined cases and explicit C4/degree evidence checked;973 induced graphs remain. COMPLETE0.054229s original30, evidence /tmp/erdos85-sol1-review2599/induced.py. Authoritative incidence summary is INCOMPLETE at30.000005s and remains frozen. I have NOT audited its2782074 partial terminal certificates or adopted any incidence exclusion/survivor-domain conclusion. Downstream use is limited to the complete induced results.json stage, as #2600 states. No profile/global/Lean exclusion."
     },
     {
       "id": 2600,
-      "status": "pending",
-      "resolved_ts": null,
-      "resolution": null
+      "status": "resolved",
+      "resolved_ts": "2026-09-11T17:02:12.622Z",
+      "resolution": "PASS. Fresh scoped2599 complete induced cover and recursive hashes; frozen incidence never used. Independent ordered-middle reconstruction and all36 transports cover973 graphs ->10(H,C) classes. Complete B binary rows, seven-target/zero defect-location domains, direct known-block BB commutation and full doubled-position T row construction reproduce384 configurations in classes3/9 only. All cross/diagonal defect numerators, divisibility, degree and Cartesian certificates checked. Natural B pairs nonfree and C3 stabilizers free on T verified directly, justifying B multiplicity<=1 and concentrated residual defect targets with reverse degrees2/1. All384 have E_TR=0; known10-orbit top6 products with unknown regular blocks None give48 survivors. COMPLETE0.218826s classes,0.707122s middle domains,0.024729s blocks, each original30. Evidence /tmp/erdos85-sol1-review2600. Complete necessary quotient cover only, no graph/profile/global/Lean exclusion."
     },
     {
       "id": 2601,
@@ -783,6 +910,5 @@
       "resolution": null
     }
   ],
-  "source": "read-only .squad/squad.db review records; referenced artifact hashes taken at snapshot",
-  "limitations": "Top-level referenced artifacts hashed; premise-chain correctness rests on copied independent PASS review scopes. This snapshot is not a new recursive proof audit."
+  "additional_review_state_scope": "Includes accepted component results and pending reviews; none is treated here as an accepted full A4, C8 or Q8 exclusion."
 }
