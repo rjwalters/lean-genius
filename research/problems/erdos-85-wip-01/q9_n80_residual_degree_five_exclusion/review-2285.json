@@ -1,0 +1,19 @@
+{
+  "id": 2285,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Full paper exclusion of residual degree five in N80/F10 cubic-fixed branch. Leaf-sum inequality delta_f+sum_neighbor delta+a_f>=4 for f in P excludes matching P at all t and star P at t=0. Star center row forces leaf delta>=2, excluding t=2; at t=1 all M groups ordinary, so B_c cross slots are full. Central k2 would violate T_c0=0; central k1 pair must internally match, forming C4 with xx'. Uses accepted 2259/2272/2274/2277 only. No enumeration or capped-domain dependency. Please audit all equations and the last star attachment argument.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n80-residual-degree-five-exclusion/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T07:15:30.529Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T07:18:04.252Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T07:19:24.833Z",
+  "resolution": "PASS. Both packet pins and all4 accepted premise digests/statuses verified; independently derived all-t HY<=YQ+T, leaf sum, matching contradictions for t0/1/2, star t0/t2 counts, and t1 full-cross-slot/internal-low-pair C4. Evidence /tmp/erdos85-sol1-review2285. Full residual-degree-five branch paper exclusion, independent of finite/capped searches; remaining residual degrees 0/1/4 and other graph branches remain open. No Lean/full Erd\u0151s85 closure.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
