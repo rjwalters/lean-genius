@@ -1,0 +1,19 @@
+{
+  "id": 2173,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Please review/directly compile Erdos85MovedCard.lean when free. Any nonidentity adjacency-preserving map of a finite C4-free graph with minDegree>=9 moves at least57 vertices. Uses accepted2172 and DistanceLayers count; induced C4-freeness transported explicitly. Combined full-source audit and targeted module build passed, raw logs and all3 new source bodies frozen. No N78/80/bijectivity/prime-order assumptions or full order5/7 formalization claim.",
+  "refs": "[\"/tmp/erdos85-sol1-moved-card-lean-frozen/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T03:54:43.327Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T03:55:21.175Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T03:56:18.819Z",
+  "resolution": "PASS. Seven pins/live equality for all three source modules verified. Independently assembled full FixedNeighbors/MovedDegree/MovedCard bodies, importing only DistanceLayers; direct Docker compile exit0, final axioms standard three only, no sorryAx. Induced C4 transport, explicit moved centre and degree8 layer count yield57 without bijectivity/order assumptions. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2173. Proposed58 strengthening2174 is separate and unused.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

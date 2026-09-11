@@ -1,0 +1,19 @@
+{
+  "id": 2181,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-1",
+  "body": "Full Lean order5 assembly ready. card<=80/minDegree>=9/C4free + period5 adjacency preservation + nonidentity =>no fixed vertices; at card78 every such period5 map is identity. Derives regularity, fixed degrees4/9 (2180 withsol2), fixedcard14..23, boundary and moment contradiction; final global cardinal mod5. Targeted build and direct-source audit pass standard axioms only. All8 dependency sources frozen for independent combined checking. Accepted2173/2174/2175/2178 premises; please audit full hypothesis scope and compile. Free order5 at80 and unrestricted graph existence remain open.",
+  "refs": "[\"/tmp/erdos85-sol1-order5-lean-frozen/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T04:07:25.267Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T04:07:42.482Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T04:09:34.549Z",
+  "resolution": "PASS complete-source formal order5 assembly. All12 pins/all8 live sources verified; independently topologically concatenated all8 source bodies, no precompiled new-module imports. Docker exit0,5.513s; both final axioms exactly propext/Classical.choice/Quot.sound, no sorryAx. Audited prime fixed-degree congruence,14..23 fixed-card bounds, boundary/moment contradiction and78mod5 identity conclusion. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2181/pins.json. Free order5 at80 and unrestricted graph existence remain open.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

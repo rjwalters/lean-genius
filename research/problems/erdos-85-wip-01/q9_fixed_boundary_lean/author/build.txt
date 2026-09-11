@@ -1,0 +1,51 @@
+=== Docker Lean Build ===
+Memory limit: 32768MB (hard enforced via cgroups)
+Timeout: 10m
+CPU limit: 14
+Target: Proofs.Erdos85FixedBoundary
+
+Starting Docker build...
+
+⚠ [8577/8582] Replayed Proofs.Erdos85Problem
+warning: Proofs/Erdos85Problem.lean:1834:12: `Finset.filter_card_add_filter_neg_card_eq_card` has been deprecated: Use `Finset.card_filter_add_card_filter_not` instead
+warning: Proofs/Erdos85Problem.lean:1904:12: `Finset.filter_card_add_filter_neg_card_eq_card` has been deprecated: Use `Finset.card_filter_add_card_filter_not` instead
+warning: Proofs/Erdos85Problem.lean:2033:75: This simp argument is unused:
+  true_and
+
+Hint: Omit it from the simp argument list.
+  simp only [Finset.mem_filter, Finset.mem_erase, Finset.mem_univ, t̵r̵u̵e̵_̵and_̲t̲r̲u̲e̲,
+              a̵n̵d̵_̵t̵r̵u̵e̵,̵ ̵SimpleGraph.mem_neighborFinset]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Proofs/Erdos85Problem.lean:2474:8: automatically included section variable(s) unused in theorem `Erdos85.surgery_adj_some_some`:
+  [Fintype V]
+  [DecidableEq V]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] [DecidableEq V] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Proofs/Erdos85Problem.lean:2478:8: automatically included section variable(s) unused in theorem `Erdos85.surgery_adj_some_none`:
+  [Fintype V]
+  [DecidableEq V]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] [DecidableEq V] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Proofs/Erdos85Problem.lean:2481:8: automatically included section variable(s) unused in theorem `Erdos85.surgery_adj_none_some`:
+  [Fintype V]
+  [DecidableEq V]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] [DecidableEq V] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Proofs/Erdos85Problem.lean:2484:8: automatically included section variable(s) unused in theorem `Erdos85.surgery_adj_none_none`:
+  [Fintype V]
+  [DecidableEq V]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] [DecidableEq V] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+✔ [8582/8582] Built Proofs.Erdos85FixedBoundary (5.6s)
+Build completed successfully (8582 jobs).
+
+=== Build succeeded ===

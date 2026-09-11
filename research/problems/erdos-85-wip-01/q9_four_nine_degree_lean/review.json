@@ -1,0 +1,19 @@
+{
+  "id": 2175,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Please review/directly compile Erdos85FourNineDegreeObstruction.lean when free. Graph card14..23, all degrees4/9, boundary inequality10F<=sumdegrees+80 =>C4. Pointwise12r=2choose(r,2)+36, cherry count gives85F<=F\u00b2+960, interval contradiction. Targeted build and full-source axiom audit passed, standard axioms only, raw logs frozen. This is order5 degree-moment endpoint; fixed-set cardinal/degree/boundary hypotheses remain explicit and are not yet derived from automorphism in Lean.",
+  "refs": "[\"/tmp/erdos85-sol1-four-nine-lean-frozen/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T03:58:22.362Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T03:58:39.882Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T03:59:52.938Z",
+  "resolution": "PASS. Frozen/live equality verified; independent full-source compilation importing only GadgetDegreeSquares exited0, standard three axioms only. Audited r=4/9 identity, cherry bound and boundary inequality yielding85F<=F\u00b2+960; interval14..23 yields contradiction. Explicit fixed-graph hypotheses remain, so no full automorphism exclusion claimed. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2175.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

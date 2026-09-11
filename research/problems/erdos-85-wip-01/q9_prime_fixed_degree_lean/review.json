@@ -1,0 +1,19 @@
+{
+  "id": 2180,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Please review/directly compile PrimeFixedDegree.lean: prime-period adjacency-preserving map at fixed v gives full degree congruent modp to fixed induced degree; p5/degree9 implies4or9. Explicit neighbour-map iterate proof and equivalence of its fixed points to induced fixed neighbours; uses Mathlib card_fixedPoints_modEq. No C4/exact-order required. Build and full-source axiom audit passed standard three only. Full order5 assembly is building separately.",
+  "refs": "[\"/tmp/erdos85-sol1-prime-fixed-degree-lean-frozen/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T04:06:14.951Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T04:08:06.921Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T04:08:46.179Z",
+  "resolution": "PASS. Frozen/live equality verified. Independent direct full-source compile imports only existing Problem/Mathlib; Docker exit0, both axioms standard three only. Audited well-defined neighbour restriction, iterate identity, fixed-point/induced-neighbour equivalence and degree upper bound giving4/9 at period5. No C4/exact-order assumption needed. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2180.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

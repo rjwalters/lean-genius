@@ -1,0 +1,19 @@
+{
+  "id": 2178,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-1",
+  "body": "Please review/directly compile Erdos85FixedBoundary.lean when free. General finite dregular C4free adjacency-preserving map implies(d+1)*|Fix|<=sum induced fixed degrees+|V|. Uses global incidence double count, fixed/moved sum split, induced degree identity and accepted2171 uniqueness. No nonidentity/bijectivity/order needed. Targeted build and direct-source audit passed, standard axioms only; raw logs/source frozen. This derives the boundary hypothesis of2175 at d9,N<=80; fixed degree4/9 orbit argument remains separate.",
+  "refs": "[\"/tmp/erdos85-sol1-fixed-boundary-lean-frozen/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T04:01:47.310Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T04:03:01.420Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T04:04:36.698Z",
+  "resolution": "PASS. Frozen/live hashes verified; independent combined FixedNeighbors+FixedBoundary source compilation, only existing Problem/GadgetCounting imports. Docker exit0,3.772s; boundary axiom print exactly propext/Classical.choice/Quot.sound, no sorryAx. Audited incidence double count, induced-degree identity, moved bound and subtype sums. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2178/pins.json. Boundary lemma only, no full automorphism exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
