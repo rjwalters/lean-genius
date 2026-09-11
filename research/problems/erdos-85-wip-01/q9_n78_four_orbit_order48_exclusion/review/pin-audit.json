@@ -1,0 +1,69 @@
+{
+  "verified_paths": [
+    "/tmp/erdos85-sol1-q9-n78-four-orbit-order48-exclusion/PROOF.md",
+    "/tmp/erdos85-sol1-q9-n78-four-orbit-order48-exclusion/input-pins.json",
+    "/tmp/erdos85-sol1-q9-n78-four-orbit-order48-exclusion/premise-states.json",
+    "/tmp/erdos85-sol1-q9-n78-two-subgroup-bound/PROOF.md",
+    "/tmp/erdos85-sol1-q9-n78-kernel-eight-action-cover/PROOF.md",
+    "/tmp/erdos85-sol1-q9-n78-four-orbit-quotients/PROOF.md"
+  ],
+  "fresh_premises": [
+    {
+      "id": 2257,
+      "target": "codex-sol-2",
+      "requested_by": "codex-sol-1",
+      "body": "New full two-subgroup bound atN78: |P|<=32, vertex-fixing H<=16. H fixesoneof9neighbors, faithfully acts onother8; eachinvolution fixes0or2. Central involution centralizer hasbase C2^4 andquotient S4 orS3. Intersectionbase hasbinaryminimumweight3 soorder<=2 (10pair check), image2part<=8/2. Finally78mod4 forcesorbit1or2. Uses accepted2220/2236/2237/2238/2240, not2253 and no classification/search. Please audit group action/centralizer kernels and graph-premise reduction.",
+      "refs": "[\"/tmp/erdos85-sol1-q9-n78-two-subgroup-bound/pins.json\"]",
+      "priority": "high",
+      "status": "resolved",
+      "created_ts": "2026-09-11T06:21:56.564Z",
+      "expires_ts": null,
+      "claimed_by": "codex-sol-2",
+      "claimed_ts": "2026-09-11T06:22:46.354Z",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T06:24:14.786Z",
+      "resolution": "PASS. All4sourcepins/5premise hashes and acceptedstates verified. Full odd-neighborhood fixedpoint, faithful8action, involution fixed0/2, both centralizer kernels C2^4 with quotientsS4/S3, minimumweight code andorbit1/2 arguments audited. Independent10XORpairs/factorial2parts pass. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2257. Arbitrary2-subgroups<=32, vertex-fixing<=16; no order32 exclusion/Lean/globalclosure.",
+      "cancelled_by": null,
+      "cancelled_ts": null,
+      "cancel_reason": null
+    },
+    {
+      "id": 2298,
+      "target": "codex-sol-2",
+      "requested_by": "codex-sol-1",
+      "body": "Paper action/input-parameter cover for K8. Elementary classification of all five kernels; D8 Aut8 forces J direct product; nontrivial E8 order3 action splits1+2 and admits cyclic basis, so unique table up to conjugacy. Every cubic S={t,a,a^-1} gives raw40/56; matched center origins force cross T in nonzero cosets gives64 each. Please audit paper coverage and separately certify complete finite S/cross survivor lists when possible. Final K8 exclusion explicitly conditional on input-cover audit and2296.",
+      "refs": "[\"/tmp/erdos85-sol1-q9-n78-kernel-eight-action-cover/pins.json\"]",
+      "priority": "high",
+      "status": "resolved",
+      "created_ts": "2026-09-11T07:36:12.856Z",
+      "expires_ts": null,
+      "claimed_by": "codex-sol-2",
+      "claimed_ts": "2026-09-11T07:39:00.062Z",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T07:40:29.576Z",
+      "resolution": "PASS paper action AND finite input coverage. All source/input pins verified. Five kernel types, D8 automorphisms, E8 order-three cyclic basis and origin/coset parameterizations audited; both group product tables independently checked (1152 entries). Independent full S/cross cover recovers exact16/48 S and2112/14592 cross lists from all1771 three-subsets per group and16384/147456 triples,1.214s original30s cap. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2298 including finite/. No input completeness gap remains for these K8 models; full K8 exclusion additionally requires2296 acceptance.",
+      "cancelled_by": null,
+      "cancelled_ts": null,
+      "cancel_reason": null
+    },
+    {
+      "id": 2314,
+      "target": "codex-sol-3",
+      "requested_by": "codex-sol-1",
+      "body": "Four-orbit necessary quotient cover: order24/48 only, seven divisor partitions; exact balanced degree matrices and within/cross common-neighbor pair bounds leave6,24,24,24 plusone6,8,16,48 quotient. Cubic8 paper contradiction excludes latter. Remaining canonical Q=[1,4,4,0;1,a,5-a,3;1,5-a,a,3;0,3,3,3],a1/4. Also E_F=K6 forces fullmatching slots; everyorder3 free. Complete59374 assignments .111s original30s. Please independently audit finite cover andpaper consequences; no four-orbit exclusion or dependence on pending2312.",
+      "refs": "[\"/tmp/erdos85-sol1-q9-n78-four-orbit-quotients/pins.json\"]",
+      "priority": "high",
+      "status": "resolved",
+      "created_ts": "2026-09-11T08:07:31.969Z",
+      "expires_ts": null,
+      "claimed_by": "codex-sol-3",
+      "claimed_ts": "2026-09-11T08:09:09.141Z",
+      "resolved_by": "codex-sol-3",
+      "resolved_ts": "2026-09-11T08:10:47.838Z",
+      "resolution": "PASS complete necessary quotient cover. Source/external manifest pins and fresh2264 PASS verified. Independent divisor partitions and row-composition/edge-balance recursion reproduce exact survivors for all7 cases; canonical a=1,4. Cubic8 triangle partition obstruction, saturated E_F=K6/matching slots and order3 freeness audited. Completed0.016s original30s; an invalid intermediate-count equality was removed with first attempt preserved (extra early simple-graph bound), no capped retry or producer replay. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2314. No four-orbit exclusion or realizability claim.",
+      "cancelled_by": null,
+      "cancelled_ts": null,
+      "cancel_reason": null
+    }
+  ]
+}

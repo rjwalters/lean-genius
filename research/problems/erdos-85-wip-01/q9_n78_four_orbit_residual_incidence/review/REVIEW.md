@@ -1,0 +1,13 @@
+# Review2327: PASS complete saved-domain residual obstruction
+
+All source and five external input digests match. Fresh2314,2317,2319,2322,2325 are resolved PASS. In particular the full input-coupling coverage2325 is now discharged separately; the source's historical conditional wording is preserved.
+
+Regularity of R makes its W-neighborhoods left translates of a base set B. The degree quotient requires one vertex per center and three per attached copy. Left translation by the inverse label of any U neighbor transports a hypothetical residual vertex and its full neighborhood, placing that neighbor at U identity without changing the partial graph. Hence normalization covers every possible neighborhood.
+
+Existing common-neighbor compatibility is necessary because the new residual vertex supplies another common neighbor to every pair in B. For translates, each ordered pair(a,b) of distinct vertices of B in the same attached copy supplies a unique group element g=a*b^-1 with a=g*b. The number of pairs supplying g equals |B intersect gB|. Pairs in different attached copies contribute none, since the action preserves copies. Thus requiring every nonidentity directed difference to occur at most once is exactly the translate-intersection condition.
+
+The independent audit uses fixed center order, not the producer's sorted domains. It enforces compatibility against all prior choices and rejects repeated directed differences as soon as they occur, rather than waiting for a complete transversal to compare translates. Its only other pruning is the three-per-copy count. It therefore covers all normalized neighborhoods independently of the producer recursion.
+
+All1344 saved graphs were rebuilt from identity connection sets, independently composed S4 products, center labels and matching. Rebuilt adjacency lists match all inputs exactly, and all1923264 vertex-pair codegree checks pass. All576 group products and the inverse map match independently reconstructed permutations. Every root maps to the exact source root/configuration and is negative under the independent recursion. It visits6304 nodes, no survivors, and completes in0.313 seconds under its original30-second cap, exit0. No producer replay, capped retry or UNKNOWN occurs.
+
+This verifies every supplied partial graph's necessary residual obstruction. The fresh accepted group/action/coupling covers make the saved domain exhaustive for the order24 four-orbit case. Accepted2317 excludes order48, and2314 exhausts both orders. Thus these components together exclude four automorphism orbits at N78. They do not exclude five or more orbits or solve Erdős85. No residual internal edges, full graph solver or Lean theorem are claimed.

@@ -1,0 +1,89 @@
+{
+  "status": "COMPLETE",
+  "original_audit_cap_seconds": 30,
+  "seconds": 0.015097625087946653,
+  "partitions": [
+    {
+      "order": 24,
+      "sizes": [
+        6,
+        24,
+        24,
+        24
+      ],
+      "degree_matrices": 2163,
+      "survivors": 6
+    },
+    {
+      "order": 48,
+      "sizes": [
+        2,
+        4,
+        24,
+        48
+      ],
+      "degree_matrices": 0,
+      "survivors": 0
+    },
+    {
+      "order": 48,
+      "sizes": [
+        2,
+        12,
+        16,
+        48
+      ],
+      "degree_matrices": 14,
+      "survivors": 0
+    },
+    {
+      "order": 48,
+      "sizes": [
+        3,
+        3,
+        24,
+        48
+      ],
+      "degree_matrices": 8,
+      "survivors": 0
+    },
+    {
+      "order": 48,
+      "sizes": [
+        6,
+        8,
+        16,
+        48
+      ],
+      "degree_matrices": 54,
+      "survivors": 1
+    },
+    {
+      "order": 48,
+      "sizes": [
+        6,
+        12,
+        12,
+        48
+      ],
+      "degree_matrices": 311,
+      "survivors": 0
+    },
+    {
+      "order": 48,
+      "sizes": [
+        6,
+        24,
+        24,
+        24
+      ],
+      "degree_matrices": 2163,
+      "survivors": 6
+    }
+  ],
+  "canonical_parameters": [
+    1,
+    4
+  ],
+  "scope": "Complete necessary degree-quotient cover; cubic8 exclusion and matching consequences separately audited on paper."
+}

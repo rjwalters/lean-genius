@@ -1,0 +1,86 @@
+[
+  {
+    "id": 2264,
+    "status": "resolved",
+    "resolution": "PASS. Bothsource/4premise hashes and acceptedstates verified, including2182 explicit prime-support corollary. Independent divisor sums give unique6/24/48 triple; all3degree patterns andquotient weighted counts checked. Paper paircapacity andfullattached saturation audited. Evidence /tmp/erdos85-sol1-review2264. Autorder divides48, >=3orbits, necessary3orbit form only; no pointwisefixedinvolution or graph exclusion inferred.",
+    "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-automorphism-order-orbits/pins.json\"]"
+  },
+  {
+    "id": 2268,
+    "status": "resolved",
+    "resolution": "PASS. Bothpins/twoexternalpremise digests and accepted2263/2264 verified. RegularW action, intersection64/48>1 coveringallF, freenessoutsideF, deficiencyK6, conjugateR-stabilizer restriction and kernel/image orders independently audited. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2268 and audit-2265-2266-2268.py. Necessary action structure only; no faithful or three-orbit exclusion.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-three-orbit-stabilizers/pins.json\"]"
+  },
+  {
+    "id": 2275,
+    "status": "resolved",
+    "resolution": "PASS FINITE FAITHFUL-ACTION EXCLUSION. All four source manifests checked. Independent edge-permutation/flip group construction and32768 target-fiber tuples yield exactly380 inverse-closed sets; exact certificate cover andall1520 W-only cycle edges verified. Model follows from accepted2264 alone, so faithful-action exclusion andnontrivial K oforder2/4/8 do not requirepending2268; its stronger kernel-free-outside statement remains separately pending. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2275. No producer replay/fullgraph exclusion.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-faithful-cayley/pins.json\",\"/tmp/erdos85-sol1-q9-n78-faithful-cayley-certificates/pins.json\"]"
+  },
+  {
+    "id": 2278,
+    "status": "resolved",
+    "resolution": "PASS. Source/premise hashes checked; necessary K-freeness bridge independently proved fromaccepted2263/2264, leavingclaimed2268 untouched. Orbitcount/fixedpoint argument andcubic Cayley obstructions audited; independent C4xC2 generator-image enumeration gives8automorphisms. Excludes C8,C4xC2,Q8 kernels oforder8 only. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2278. No search/Lean/fullN78 exclusion.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-kernel-eight-lift/pins.json\"]"
+  },
+  {
+    "id": 2298,
+    "status": "resolved",
+    "resolution": "PASS paper action AND finite input coverage. All source/input pins verified. Five kernel types, D8 automorphisms, E8 order-three cyclic basis and origin/coset parameterizations audited; both group product tables independently checked (1152 entries). Independent full S/cross cover recovers exact16/48 S and2112/14592 cross lists from all1771 three-subsets per group and16384/147456 triples,1.214s original30s cap. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2298 including finite/. No input completeness gap remains for these K8 models; full K8 exclusion additionally requires2296 acceptance.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-kernel-eight-action-cover/pins.json\"]"
+  },
+  {
+    "id": 2296,
+    "status": "resolved",
+    "resolution": "PASS COMPLETE SAVED-DOMAIN EXCLUSION. Source/input pins verified. Independent full54vertex graph reconstruction, fixedgrouporder exhaustive transversals andincremental repeated directedquotient test rejectall16704 roots (2112/14592),3.373s originalreview30s. Model/normalization andquotient-overlap equivalence audited. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2296. Arbitrary-action S/cross cover remainsseparate; no producer replay/fullN78 exclusion.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-residual-orbit-incidence/pins.json\"]"
+  },
+  {
+    "id": 2300,
+    "status": "resolved",
+    "resolution": "PASS paper smaller-kernel reduction. All3pins/2externaldigests andaccepted2264/2268/2278 verified. J-freeness, orbitcounts, C6/C12/V4xC3/A4 list, connectioninversion/cosettotals andequaldiagonal2x2 degree matrix audited. Abeliana3 obstruction valid. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2300. No K2/K4 exclusion, solver, or Lean claim.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-small-kernel-lift/pins.json\"]"
+  },
+  {
+    "id": 2301,
+    "status": "resolved",
+    "resolution": "PASS. Source/input pins and accepted2264/2268 verified. Cyclic edge-image gives the even-flip plane and forbidden center-fixing residual stabilizer. Full S3 edge-image forces global-flip kernel; transposition-square and unique three-cycle lift arguments split B=S3xC2. Normal J12, freeness outsideF and quotient V4 actions on fourW/twoR orbits audited. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2301. Necessary K4 action restriction only, no enumeration or exclusion.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-kernel-four-image/pins.json\"]"
+  },
+  {
+    "id": 2302,
+    "status": "resolved",
+    "resolution": "PASS. All three source pins/two external digests and fresh accepted2268/2300/2301 verified; conditional2301 discharged. Faithful Sylow-three action proves AutA4=S4; centerless joint map is onto the order48 pullback. Trivial outer map contradicts nonabelian A/K; nontrivial map gives S4xC2 with standard J,K. Independent permutation sanity checks include6912 multiplication pairs. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2302. No graph exclusion or other K4 cases claimed.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-kernel-four-a4-extension/pins.json\"]"
+  },
+  {
+    "id": 2304,
+    "status": "resolved",
+    "resolution": "PASS finite obstruction and normalization, CONDITIONAL ON PENDING2302. Source/input pins verified;2301 accepted,2302 remains claimed. Core-free stabilizer/sign-twist/matching normalization audited. Independent2304 group products, all28672 fiber choices, exact320 inverse-closed certificate cover and1280 cycle edges verified in reconstructed54vertex graphs;0.029s original30s cap. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2304. Excludes nontrivial elementary K4 only once2302 is accepted; no producer replay or full graph claim.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-kernel-four-s4-cayley/pins.json\"]"
+  },
+  {
+    "id": 2305,
+    "status": "resolved",
+    "resolution": "PASS paper complete parameter cover. Six source/input pins and fresh2264/2268/2298/2300/2301 PASS verified. Characteristic N and Sylow complement, core H intersect character kernel, residual-stabilizer involution splitting P, beta/chi/epsilon multiplication, center matching and five Cayley fibers audited. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2305. No finite result or exclusion claimed;2307 independent finite audit ongoing.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-kernel-four-abelian-cover/pins.json\"]"
+  },
+  {
+    "id": 2307,
+    "status": "resolved",
+    "resolution": "PASS complete finite cover;2305 now accepted. Source/input pins verified. Independent generator-image automorphisms and index-two-subgroup characters reproduce240 parameters. Inversion-orbit exact covers reproduce all234336 inverseclosed sets, partitioned exactly by certificates/32 positives. All937216 certificate edges and45792 positive codegrees checked;0.946s original30s cap, exit0. Only189/203 survive and bothkerchi=C4. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2307. No cyclic-K4 exclusion or fullgraph claim.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-kernel-four-abelian-cayley/pins.json\"]"
+  },
+  {
+    "id": 2308,
+    "status": "resolved",
+    "resolution": "PASS complete32-candidate obstruction. Nine source/four input pins and fresh accepted2305/2307 verified. Reconstructed all160 domains from the32 source graphs; all640 base rejections and512 incompatible-pair certificates cover their full domains and check directly. Source graphs pass45792 codegrees. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2308. No cyclic-balance/translate/producer replay. Accepted2305/2307 now give abelian-J K4 exclusion;2302+2304 cover nonabelian J, so K4 is fully excluded in the three-orbit action.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-kernel-four-dihedral-incidence/pins.json\"]"
+  },
+  {
+    "id": 2309,
+    "status": "resolved",
+    "resolution": "PASS full K2 three-orbit exclusion. Pins/external proof digest and fresh2264/2268/2306 PASS verified. Central-z obstruction, involutive-lift normalization, symbolic braid identity, exponent-four argument and24-word normal form audited. Independent permutation products/cosets and inversion-orbit exact covers give exactly228 sets; all912 cycle edges checked in rebuilt54vertex graphs,0.018s original30s cap, exit0. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2309. No other orbit structures or fullgraph/Lean claim.",
+    "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-cayley/pins.json\"]"
+  }
+]

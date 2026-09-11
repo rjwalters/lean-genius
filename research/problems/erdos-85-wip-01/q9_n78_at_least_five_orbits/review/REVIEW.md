@@ -1,0 +1,1 @@
+PASS complete at-least-five-orbits composition. Fresh component states discharge2314 for2317 and all saved-domain qualifications in2327. Full group/action cover2319, independently complete finite2322/2325 and all1344 residual obstructions2327 exclude A24;2317 excludes A48. Quotient cover2314 exhausts four orbits, and2312 excludes fewer. No five-plus-orbit exclusion or Lean claim.

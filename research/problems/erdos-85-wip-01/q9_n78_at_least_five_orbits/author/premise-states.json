@@ -1,0 +1,44 @@
+[
+  {
+    "id": 2312,
+    "status": "resolved",
+    "resolution": "PASS complete three-orbit exclusion assembly. All14 component reviews freshly PASS and18 source/external pins verified. K8 input completeness2298 discharges2296 saved-domain scope;2302 discharges conditional2304;2305/2307 complete all32 inputs rejected2308;2309 supplies K2. Four kernel sizes exhaust2268. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2312. At least four automorphism orbits; no full Erd\u0151s85 closure or Lean claim.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-three-orbit-exclusion-final/pins.json\"]"
+  },
+  {
+    "id": 2314,
+    "status": "resolved",
+    "resolution": "PASS complete necessary quotient cover. Source/external manifest pins and fresh2264 PASS verified. Independent divisor partitions and row-composition/edge-balance recursion reproduce exact survivors for all7 cases; canonical a=1,4. Cubic8 triangle partition obstruction, saturated E_F=K6/matching slots and order3 freeness audited. Completed0.016s original30s; an invalid intermediate-count equality was removed with first attempt preserved (extra early simple-graph bound), no capped retry or producer replay. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2314. No four-orbit exclusion or realizability claim.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-four-orbit-quotients/pins.json\"]"
+  },
+  {
+    "id": 2317,
+    "status": "resolved",
+    "resolution": "PASS. Six pins and fresh2257/2298/2314 PASS checked. Transitive fiber stabilizers, exclusion of abelian/Q8 and central D8 stabilizers, reflection coset counts and distinct classes independently audited. Reflection fixes six vertices with adjacent cubic centers having no common neighbor, contradicting both accepted six-fixed types. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2317. Accepted2314 discharges conditional quotient premise: four-orbit case must have A24. No global closure.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-four-orbit-order48-exclusion/pins.json\"]"
+  },
+  {
+    "id": 2319,
+    "status": "resolved",
+    "resolution": "PASS complete paper group/action cover. Six source/external pins and fresh2278/2298/2314 PASS verified. Sylow3 action/kernel exhaustion, P8 automorphism restrictions and unique-involution exclusion audited. Independent character counts2/4/8/4/4 give22 normal-C3 models, plusS4/A4xC2. AllH4/normalizer involution cosets cover center action/matching; SU/SV/T inversion and residual translates checked. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2319. No enumeration outcome, four-orbit exclusion or pending2317 premise.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-four-orbit-order24-cover/pins.json\"]"
+  },
+  {
+    "id": 2322,
+    "status": "resolved",
+    "resolution": "PASS complete first-stage domain. All source/input pins and fresh2307/2319 PASS verified. Independent all-character cover and explicit products match24 tables; inversion-orbit cubic enumeration with direct pair codegrees matches all488 sets. Independently generated every H4 by <=2 generators and tested all15 six-point perfect matchings for equivariance: exact211 records, labels and partners match. Completed0.052s original30s. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2322. Accepted2319 discharges paper premise; no U/V or fullgraph exclusion.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-four-orbit-order24-parameters/pins.json\"]"
+  },
+  {
+    "id": 2325,
+    "status": "resolved",
+    "resolution": "PASS complete necessary coupling domain. All pins and fresh2314/2319/2322 PASS checked. Independent inverse-orbit internal-set enumeration and complementary cross-fiber cover reproduce all422 roots and515104 cross choices. Rebuilt2688 candidate54-vertex graphs and directly checked codegrees: exactly1344 positives, matching every saved adjacency list. Completed1.158s original30s. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2325. Includes all rejected cases in declared model; no residual/fullgraph closure.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-four-orbit-cross/pins.json\"]"
+  },
+  {
+    "id": 2327,
+    "status": "resolved",
+    "resolution": "PASS complete1344-root obstruction. Source/external pins and fresh2314/2317/2319/2322/2325 PASS verified; input coverage discharged. Independent S4 products and rebuilt54vertex graphs match all inputs/1923264 codegrees. Fixed-center DFS with incremental directed-left-quotient uniqueness checks exact translate condition:6304nodes, all1344 negative,0.313s original30s, exit0. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2327. Combined accepted covers exclude four orbits; no five-plus/global/Lean claim.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-four-orbit-residual-incidence/pins.json\"]"
+  }
+]
