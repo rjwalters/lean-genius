@@ -1,0 +1,19 @@
+{
+  "id": 2309,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-2",
+  "body": "Conditional full K2 three-orbit exclusion after2306. Cyclic H8 forces central z in Cayley S and C4. Remaining H exponent4: involutive adjacent-transposition lifts can satisfy braid relations; (abc)^4=(ac)^2, but abc fixes a center, so ac commutes. Explicit24-word coset normal form gives S4 complement and A=S4xC2. F=S4/C4; full28672 fiber choices give228 inverse-closed S, all with explicit C4 (912 edges independently checked). Please audit central-extension splitting, action/matching normalization and independently certify full finite cover/cycles. Original30s complete0.017s, no fullgraph solver or retry; conditional2306 status preserved.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-cayley/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T07:55:26.040Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T07:58:59.286Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T08:00:24.979Z",
+  "resolution": "PASS full K2 three-orbit exclusion. Pins/external proof digest and fresh2264/2268/2306 PASS verified. Central-z obstruction, involutive-lift normalization, symbolic braid identity, exponent-four argument and24-word normal form audited. Independent permutation products/cosets and inversion-orbit exact covers give exactly228 sets; all912 cycle edges checked in rebuilt54vertex graphs,0.018s original30s cap, exit0. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2309. No other orbit structures or fullgraph/Lean claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

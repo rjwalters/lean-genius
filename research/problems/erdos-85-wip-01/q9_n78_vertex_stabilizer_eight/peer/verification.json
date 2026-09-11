@@ -1,0 +1,38 @@
+[
+  {
+    "source": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-vertex-stabilizer-eight/PROOF.md",
+    "sha256": "c5b5cca589e22e0cebf9446e7b127ee5ea757e4f32f8552f90c2b1c1e96af892"
+  },
+  {
+    "source": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-vertex-stabilizer-eight/premises.json",
+    "sha256": "330c51dc0f97ad23b8a43c509290ece418efe3978b0cc67ea171e672b6e6c937"
+  },
+  {
+    "review": 2207,
+    "source": "/tmp/erdos85-sol1-q9-three-subgroup-bound/PROOF.md",
+    "sha256": "3ec2d6dcae61f97e82e97a8c84de458ce560e427d4c7163db0d6ba3dddb402f2",
+    "status": "resolved",
+    "resolution": "PASS. Full local stabilizer/edge-action proof audited against2176: neighbor stabilizers trivial; odd3-group edge stabilizers fix endpoints, hence order divides3. Global80 fixed-point congruence and78 orbit sizes give Sylow bounds. Abelian9 stabilizers cannot repeat3-orbits; independent orbit equations rule outC9 and forceC3xC3 profile2x3+8x9. All pins verified. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2207. Conditional symmetry restriction only."
+  },
+  {
+    "review": 2257,
+    "source": "/tmp/erdos85-sol1-q9-n78-two-subgroup-bound/PROOF.md",
+    "sha256": "07629e73941936bc34d48d93f7bf3a8fa1b5065c352a86ec7ccea3827b481bf5",
+    "status": "resolved",
+    "resolution": "PASS. All4sourcepins/5premise hashes and acceptedstates verified. Full odd-neighborhood fixedpoint, faithful8action, involution fixed0/2, both centralizer kernels C2^4 with quotientsS4/S3, minimumweight code andorbit1/2 arguments audited. Independent10XORpairs/factorial2parts pass. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2257. Arbitrary2-subgroups<=32, vertex-fixing<=16; no order32 exclusion/Lean/globalclosure."
+  },
+  {
+    "review": 2262,
+    "source": "/tmp/erdos85-sol1-q9-n78-stabilizer-sixteen-exclusion/PROOF.md",
+    "sha256": "9b6866705e9421fca0280d41e8a4b174483ca333db050cec78eba3c5aa373d93",
+    "status": "resolved",
+    "resolution": "PASS FULL H16 VERTEX-STABILIZER EXCLUSION. All3pins/4acceptedpremises verified. Independent localmatching82-bound, reflectionfixedtriangle+two distinctleaves, exact intersectionFixh/Fixz={v,x}, allrotationpower/fixedpoint andBurnside104/16 steps audited. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2262. Thusvertex2stabilizers<=8 andall2-subgroups<=16 atN78. Paper proof, no Lean/globalgraphclosure."
+  },
+  {
+    "review": 2264,
+    "source": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-automorphism-order-orbits/PROOF.md",
+    "sha256": "2dd24887aea74634693faa6df516d4d1cf07a5872b555672c99617760ba17c6a",
+    "status": "resolved",
+    "resolution": "PASS. Bothsource/4premise hashes and acceptedstates verified, including2182 explicit prime-support corollary. Independent divisor sums give unique6/24/48 triple; all3degree patterns andquotient weighted counts checked. Paper paircapacity andfullattached saturation audited. Evidence /tmp/erdos85-sol1-review2264. Autorder divides48, >=3orbits, necessary3orbit form only; no pointwisefixedinvolution or graph exclusion inferred."
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "id": 2315,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Repaired full N78 vertex-stabilizer bound<=8. H24 ruled out by kernel on an invariant N3 acting freely on remaining6. H12 forces central tau with fixed star4 (six-fixed option separately contradicted), H=S3xC2 and transitive B6. Its internal matching gives one involution class fixed6. Deficiency E(v)=T3+Z2, tau and that class swap Z, rho fixes Z. Burnside forces other involution class fixed4; its fixed set v,t,Z2 gives degree0 on Z since Fixrho independent, contradiction. Please audit especially the star4 case, group action and Burnside. Uses2207/2257/2262/2264, no finite search or earlier mistaken shortcut.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-vertex-stabilizer-eight/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T08:08:49.518Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T08:22:59.761Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T08:24:44.662Z",
+  "resolution": "PASS full vertex-stabilizer bound<=8. Packet/four premise pins and acceptedstates verified. Neighborhood3 kernel excludesH24; centraltau star4 handled explicitly; H12=S3xC2, B6 matching, two deficiency vertices and full Burnside inventory force m4 then fixed-degree-zero contradiction. Evidence /tmp/erdos85-sol1-review2315. No finite search or earlier discarded-star shortcut; globalN78 remains open.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

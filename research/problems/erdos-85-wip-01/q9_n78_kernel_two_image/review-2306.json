@@ -1,0 +1,19 @@
+{
+  "id": 2306,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Paper K2 image restriction: cyclic edge image makes residual stabilizer image global flip, so its conjugacy class has at most2 lifts and it fixes>=12 R vertices, contradicting2220. Full edge image gives even-flip kernel; zero parity graph has no fixed-free involutions, leaving determinant-positive twist. Cube-diagonal action identifies B=S4, oriented-axis stabilizers cyclicC4, and central K makes H=C8 or C4xC2. Uses only2220/2264/2268. Please audit conjugacy/fixed-point count, parity subgroup exhaustion and stabilizer conclusion. No extension enumeration or K2 exclusion.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-image/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T07:48:00.876Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T07:54:15.623Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T07:55:37.552Z",
+  "resolution": "PASS. Both packet/three premise pins and accepted2220/2264/2268 verified. Conjugacy/fixed-coset bound, edge/parity subgroup exhaustion, cube-diagonal faithfulS4 identification and cyclic point stabilizers audited. Independent signed-permutation check gives fixed-free involution counts1/0/6 and six cyclicC4 stabilizers. Evidence /tmp/erdos85-sol1-review2306. Necessary K2 restriction only; no extension/fullgraph exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

@@ -1,0 +1,68 @@
+[
+  {
+    "id": 2264,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-2",
+    "body": "N78 global Aut order divides48 fromaccepted2182/2207/2215/2262. Therefore>=3vertexorbits; equalityforces |Aut|48/orbits48,24,6. Equitabledegree e+8c+4d=9 leaves3possibilities; K6/C4 and24>15 cherrycapacity leaveF6matching, W48 uniqueFneighbors,R24none. Attachedcapacityforces W->R3,R->W6, same saturated3cellquotient as2245 withoutassumingF pointwiseinvolutionfixed. Full paper proof/no search/no threeorbit or globalexclusion. Please audit.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-automorphism-order-orbits/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T06:39:32.429Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T06:41:04.646Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T06:42:01.501Z",
+    "resolution": "PASS. Bothsource/4premise hashes and acceptedstates verified, including2182 explicit prime-support corollary. Independent divisor sums give unique6/24/48 triple; all3degree patterns andquotient weighted counts checked. Paper paircapacity andfullattached saturation audited. Evidence /tmp/erdos85-sol1-review2264. Autorder divides48, >=3orbits, necessary3orbit form only; no pointwisefixedinvolution or graph exclusion inferred.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2268,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-1",
+    "body": "Three-orbit bridge2264+2263: H=A_v order8 regularonbothattached8sets sinceW regularA. Eachy inF has |H intersect A_y|>=64/48>1, so2263 sixnonfreevertices exactlyF; HfreeoutsideF. HenceE_F=K6, noEcrosstooutside; RstabilizerL2 hasno conjugatecontainedH. KernelK ofAonF normal2group order1/2/4/8, nonidentityfixexactF, imageorder48/|K| inAut3K2. Faithfulcase imagefull48 wreath action. Necessary only, no pointwisefixedinvolution inferred ifK1. Please audit.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-three-orbit-stabilizers/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T06:44:27.602Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T06:46:06.333Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T07:08:36.211Z",
+    "resolution": "PASS. Bothpins/twoexternalpremise digests and accepted2263/2264 verified. RegularW action, intersection64/48>1 coveringallF, freenessoutsideF, deficiencyK6, conjugateR-stabilizer restriction and kernel/image orders independently audited. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2268 and audit-2265-2266-2268.py. Necessary action structure only; no faithful or three-orbit exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2306,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-2",
+    "body": "Paper K2 image restriction: cyclic edge image makes residual stabilizer image global flip, so its conjugacy class has at most2 lifts and it fixes>=12 R vertices, contradicting2220. Full edge image gives even-flip kernel; zero parity graph has no fixed-free involutions, leaving determinant-positive twist. Cube-diagonal action identifies B=S4, oriented-axis stabilizers cyclicC4, and central K makes H=C8 or C4xC2. Uses only2220/2264/2268. Please audit conjugacy/fixed-point count, parity subgroup exhaustion and stabilizer conclusion. No extension enumeration or K2 exclusion.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-image/pins.json"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T07:48:00.876Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T07:54:15.623Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T07:55:37.552Z",
+    "resolution": "PASS. Both packet/three premise pins and accepted2220/2264/2268 verified. Conjugacy/fixed-coset bound, edge/parity subgroup exhaustion, cube-diagonal faithfulS4 identification and cyclic point stabilizers audited. Independent signed-permutation check gives fixed-free involution counts1/0/6 and six cyclicC4 stabilizers. Evidence /tmp/erdos85-sol1-review2306. Necessary K2 restriction only; no extension/fullgraph exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  }
+]

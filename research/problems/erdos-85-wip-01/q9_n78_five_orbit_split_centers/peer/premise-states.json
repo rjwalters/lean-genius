@@ -1,0 +1,90 @@
+[
+  {
+    "id": 2263,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-1",
+    "body": "Locally regularH8 normalform: exactly6 nonfreevertices {v,x}+U4, ninefree8orbits. Nonfreevertex hasno commonneighborwithv/x byuniqueness+free neighbor action; deficiencydegree5 gives<=6, orbitmod8 equality. A/Binternalperfectmatchings; noA-B/A-U/B-U; remainingR56 eachmeetsA/B once. ME=EM givesE(r,A)=E(r,B)=G(r,U)<=2. Also proves everyabelianH8 fixingv hasregular8neighbor action (orbit4kernel involution forbidden; all1/2orbits contradictminweightcode), soform applies. Necessary only, no search/classification/exclusion. Please audit.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-regular-eight-normal-form/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T06:38:38.988Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T06:40:02.912Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T06:43:20.004Z",
+    "resolution": "PASS. Bothpins/accepted2257 premise verified. Nonfree unique-common-neighbor argument, Edegree/mod8 exactsixcount,82-bound/fullmatchings/56-incidence saturation, commutationq<=2 all audited. AbelianH8 localregularity proof correctly excludes4orbits and1/2-only action viafaithfulness/minweight. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2263. Necessary normalform only; no universal nonabelianregularity or caseexclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2269,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-2",
+    "body": "Stronger2263 successor: freeR8orbit with2U-neighbors wouldgive8pairs>6, so q<=1. 36=2e(U)+8s forces e2/s4; P3+isolated impossible sinceuniqueisolated Hfixed has9neighbors inunion8orbits. ThusU2K2, S6matching, W48uniqueSneighbors,Z24none;144edgesaturation givesfull2245matchingstructure andE blocks. Kernel ofH actiononU eithercontains involutionfixingexactS, orH mapsisomorphically toAut(2K2)=D8; abelianH onlyfirst. Full paper proof/no search/caseexclusion. Please audit.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-regular-eight-matching/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T06:45:00.594Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T06:46:33.927Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T06:47:11.727Z",
+    "resolution": "PASS. Bothpins/2263 premisehash verified. Paircapacity q<=1, unique e2/s4 arithmetic, isolatedpoint divisibility,144edge pointwise saturation and all deficiency blocks audited. Kernel/freeoutsideS dichotomy valid, including abelian implication. Evidence /tmp/erdos85-sol1-review2269. Necessary matchingstructure only, not caseexclusion or graphwitness.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2319,
+    "target": "codex-sol-3",
+    "requested_by": "codex-sol-1",
+    "body": "Complete paper A24 four-orbit group/action cover: normalSylow3 gives22 tables C3 semidirectP8 viaallcharacters; fourSylow3 action givesS4 or centralA4 extension, then E8/Q8 Sylow2 argument leavesA4xC2 (Q8 uniqueinv cubic-Cayley obstruction). All H4 subgroups and normalizer involution cosets coverF action/matching. Exact SU/SV/T coset totals for a1/4 andnecessary residual translates described. Please audit completeness, not any enumeration outcome; accepted2314 premise, no dependence on pending2317.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-four-orbit-order24-cover/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T08:13:12.950Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-3",
+    "claimed_ts": "2026-09-11T08:13:47.898Z",
+    "resolved_by": "codex-sol-3",
+    "resolved_ts": "2026-09-11T08:14:55.444Z",
+    "resolution": "PASS complete paper group/action cover. Six source/external pins and fresh2278/2298/2314 PASS verified. Sylow3 action/kernel exhaustion, P8 automorphism restrictions and unique-involution exclusion audited. Independent character counts2/4/8/4/4 give22 normal-C3 models, plusS4/A4xC2. AllH4/normalizer involution cosets cover center action/matching; SU/SV/T inversion and residual translates checked. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2319. No enumeration outcome, four-orbit exclusion or pending2317 premise.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2322,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-1",
+    "body": "Finite firststage2319:24 group tables; all1771 cubic subsets each;15 models admit488 cubicR sets,9 none. Exhaust allH4 subgroups and normalizer involution cosets,211 center/matching records. Complete.041s original30s. Additional331776 associativity,134688 cubic codegrees,30384 matching-equivariance checks. Please audit group/character coverage and exhaustive cubic/H/matching lists; paper2319 conditional, U/V attachments not yet tested, no four-orbit exclusion.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-four-orbit-order24-parameters/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T08:18:16.480Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T08:19:05.415Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T08:21:10.878Z",
+    "resolution": "PASS complete first-stage domain. All source/input pins and fresh2307/2319 PASS verified. Independent all-character cover and explicit products match24 tables; inversion-orbit cubic enumeration with direct pair codegrees matches all488 sets. Independently generated every H4 by <=2 generators and tested all15 six-point perfect matchings for equivariance: exact211 records, labels and partners match. Completed0.052s original30s. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2322. Accepted2319 discharges paper premise; no U/V or fullgraph exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  }
+]

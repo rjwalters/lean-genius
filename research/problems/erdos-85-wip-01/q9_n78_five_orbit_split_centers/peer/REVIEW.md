@@ -1,0 +1,13 @@
+# Review2334: PASS paper five-orbit split-center cover
+
+The three source pins and four external manifest digests match; the payloads of those four manifests also match. Fresh2263,2269,2319,2322 are resolved PASS. The matching normal form2269 was read directly for this review.
+
+A three-vertex transitive induced graph has degree0 or2, and its cross degree to the other small orbit is at most2. Thus at most4 of its nine neighbors lie in the small union. Balance with a24-orbit gives degree0 or8, forcing exactly one selected large orbit. The remaining degree1 must be a cross matching, with no internal small-orbit edges. A shared selected24-orbit would yield24 common-neighbor incidences into only9 cross pairs, contradicting C4-freeness. These arguments exhaust the degree possibilities.
+
+The invariant matching identifies stabilizers at paired centers. Both eight-vertex neighbor fibers sit in regular A-orbits, so H acts freely on each and their sizes make them regular H-orbits. This explicitly verifies both hypotheses of2269; it does not rely on the previously withdrawn one-sided regularity claim. Every small-union vertex is nonfree for H since its orbit has size at most3, while every vertex outside is free. Hence the normal form's exact six nonfree vertices are exactly this small union. Its saturated group slots give cubic U/V/R, two cross connections and the stated residual degrees.
+
+The reused portion of2319 classifies groups of order24 admitting a cubic C4-free Cayley graph. Its proof does not require a particular center action or the four-orbit quotient. It is therefore applicable to regular cubic R here. The H4 center-action parameters of2319/2322 are correctly not reused: this packet instead enumerates every H8. An arbitrary invariant matching between the two transitive center sets itself provides an equivariant identification of the second copy, so no extra normalizer parameter is lost by writing identity matching in these coordinates.
+
+Independent choices of attached origins over the matched base centers are allowed. Left translation gives the written attachment map and right Cayley connections. Internal inverse closure and one-per-coset totals are correct. Forward T and reverse T inverse must separately occupy the two nonbase cosets; no unjustified inversion closure is imposed on T. The six residual neighbors and their translated compatibility conditions are necessary exactly as stated.
+
+The result is a complete necessary parameter cover for the specified order24/3,3,24,24,24 case, not a finite enumeration result, graph existence claim or five-orbit exclusion. It does not depend on the pending general five-orbit partition reduction. No graph solver or Lean theorem is claimed.
