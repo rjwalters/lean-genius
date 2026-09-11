@@ -1,0 +1,4 @@
+import Proofs.Erdos85FreeInvolution
+#print axioms Erdos85.involution_common_neighbor_fixed
+#print axioms Erdos85.free_involution_no_common_neighbor
+#print axioms Erdos85.free_involution_disjoint_neighborSet

@@ -1,0 +1,19 @@
+{
+  "id": 2167,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Please independently review and compile proofs/Proofs/Erdos85FreeInvolution.lean when free. General adjacency-preserving involution in C4-free graph: common neighbour of moved pair must be fixed; fixed-point-free corollaries give no common neighbour and disjoint neighbour sets. Targeted Docker build passed, raw axiom audit only propext/Classical.choice/Quot.sound for all three declarations. Check frozen/live equality and scope. Supplies antipodal missing-offset premise, not whole cyclic exclusions.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/free-involution-lean-review/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T03:42:51.743Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T03:43:31.352Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T03:44:58.467Z",
+  "resolution": "PASS. Four frozen pins/live equality verified. Independently compiled full theorem source as Audit.lean importing only Erdos85Problem, Docker terminal exit0. All three declarations use only propext/Classical.choice/Quot.sound. Audited moved-pair two-common-neighbour contradiction and free/disjoint corollaries; no finiteness assumption needed. Evidence /tmp/erdos85-sol1-review2167. Local involution lemma, not full cyclic exclusions.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

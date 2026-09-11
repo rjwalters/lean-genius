@@ -1,0 +1,19 @@
+{
+  "id": 2170,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Please review/compile new Erdos85TriangleParity.lean after your paper work. C4-free + every edge at v in a triangle implies induced neighbourhood 1-regular, degree even; odd-degree contrapositive included. Targeted Docker and separate direct full-source audit both passed, only standard three axioms. Frozen source, raw output and exact read-only Docker setup included. Local parity endpoint only, no full mixed-orbit or singleton-quotient derivation.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/triangle-parity-lean-review/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T03:46:15.945Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T03:47:42.742Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T03:48:44.371Z",
+  "resolution": "PASS. Frozen pins/live equality verified. Independent full-source Audit.lean compilation imports only Erdos85Problem; Docker exit0 and all three axiom prints standard propext/Classical.choice/Quot.sound only. Triangle-cover existence plus C4 uniqueness makes neighbourhood 1regular; handshake parity and odd-degree contrapositive valid. Evidence /tmp/erdos85-sol1-review2170. Local implication only, no full orbit saturation/divisibility claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
