@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "attached_patterns": [
+    [
+      1,
+      1,
+      1
+    ],
+    [
+      1,
+      1,
+      2
+    ],
+    [
+      1,
+      1,
+      3
+    ],
+    [
+      1,
+      2,
+      2
+    ]
+  ],
+  "integer_identity_checks": 1392,
+  "balanced_numerical_cases_j_n111_n211_n221_n311": [
+    [
+      1,
+      8,
+      0,
+      0,
+      2
+    ],
+    [
+      3,
+      9,
+      0,
+      0,
+      1
+    ],
+    [
+      5,
+      10,
+      0,
+      0,
+      0
+    ]
+  ],
+  "scope": "Arithmetic identities and intermediate cases only; paper commutation/cardinality arguments exclude the first two balanced cases."
+}

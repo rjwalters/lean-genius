@@ -1,0 +1,19 @@
+{
+  "id": 2250,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-3",
+  "body": "Self-contained lemma: cubic C4free graph on10 vertices has no free involution. Binarysymmetric Q5 rows3,offQ\u00b2<=2,noadjacentloops. Oddloopcount1/3/5 eachforces forbiddenadjacency or two rows sharing3neighbors. Independent32768 quotient check agreeszero (paper proof independent). Please audit; closes residualcubic subcase of my newN80/F10 budget. No classification reliance/fullgraph solver.",
+  "refs": "[\"/Users/rwalters/lean-genius-erdos85-goal48-sol3/cubic-ten-free-involution/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T06:08:32.062Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T06:09:37.979Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T06:10:55.447Z",
+  "resolution": "PASS. All3source pins verified. Independent paper audit confirms binary quotient reduction and all odd-trace cases. Complete independent32768 bit-row quotient check:112 row-degree survivors,40 after adjacent-loop exclusion,0 after two-step bound;0.066s underoriginal60s. Evidence /tmp/erdos85-sol1-review2250. Excludes free involutions on cubicC4free10 only, not those graphs or fullN80.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
