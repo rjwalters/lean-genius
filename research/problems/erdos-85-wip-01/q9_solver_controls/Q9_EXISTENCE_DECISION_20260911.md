@@ -69,7 +69,7 @@ not a substitute for the specified m21/m63 control.
 | 80 | 5 | 0 (planned) | 1h / 4h | Not launched |
 | 80 | 4 | 0 (planned) | 1h / 4h | Not launched |
 | 80 | 2 | 0 (planned) | 1h / 4h | Not launched |
-| 79 | All | — | — | Literature exclusion, review2137 PASS |
+| 79 | All | — | — | Universal exclusion; independent Lean review2165 PASS |
 | 78 | 39 | — | — | Paper exclusion, review2139 corollary |
 | 78 | 78 | — | — | Paper exclusion: circulant degree bound |
 | 78 | 26 | — | — | Whole action class excluded: reviews2141,2146 PASS |
@@ -93,6 +93,12 @@ roots reached their original100000-row caps, leaving1998 saved candidates.
 Every root remains UNKNOWN, including roots with no retained matrix. This
 frontier neither excludes the action class nor supplies a complete quotient
 cover; it has not been restarted or expanded.
+
+N80/m8 likewise has an incomplete necessary quotient frontier (review2168):
+all13 roots reached100000-row caps, retaining24 matrices; none completed.
+Accepted2164 excludes the all-singleton quotient and supplies local cyclic
+constraints, but does not close the class. No capped search was replayed.
+
 
 The runner preserves UNKNOWN, binds each requeue to the exact CNF, variable
 map and seed, and permits at most one four-hour requeue after an initial
@@ -126,6 +132,23 @@ caps. This is a computational algebraic exclusion, not a SAT verdict or Lean
 theorem. The full evidence is in
 [the m16 closure](../q9_n80_m16_exclusion/STATUS.md). No graph solver was
 launched by this chain, and the positive-control correction is still pending.
+
+## Formal checks and general symmetry restrictions
+
+Independent direct-source Lean review2165 verifies the general odd-order
+below-square obstruction and its N79/minimum-degree9 specialization. The
+latter excludes N79 without a symmetry assumption. Its axiom audit contains
+only propext, Classical.choice and Quot.sound, with no sorryAx. The remaining
+finite action-class exclusions are separately reviewed paper/computational
+results, not fully formalized Lean theorems.
+
+Accepted2163 rules out automorphisms of prime order greater than9 for either
+N78 or N80. Accepted2166 rules out order5 automorphisms at N78 and shows
+that every order5 automorphism at N80 must be free. Accepted2169 rules out
+order7 automorphisms at either order, including those with fixed vertices.
+Thus the automorphism-group order of any hypothetical witness has prime
+divisors only2,3 at N78, and only2,3,5 at N80. These restrictions do not
+exclude asymmetric witnesses or settle unrestricted existence.
 
 ## Current verdict
 

@@ -1,0 +1,112 @@
+[
+  {
+    "id": 2140,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-3",
+    "body": "Please independently audit this short below-square regularity lemma: C4-free delta>=d implies N>=1+(d-1)deg(v), hence N<d² forces d-regularity. Consequences N78/N80 delta9 require exactly351/360edges; N79 impossible by parity. Generator remains generic minimum-degree; no added constraint before acceptance. No N81/global/Lean claim.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-below-square-regularity.md"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T02:43:40.106Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T02:44:06.459Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T02:44:28.611Z",
+    "resolution": "PASS. Independent nonbacktracking two-step endpoint count gives N>=1+(d-1)D, allowing triangles and explicitly excluding shared outside endpoints by C4. Strict N<d² therefore forces d-regularity for d>=2. At d9,N78/80 need351/360edges; N79 is globally impossible by odd degree sum711, independent of literature. N81 outside scope. Evidence /tmp/erdos85-sol1-review2140 with source pin and independent proof. No N78/N80 exclusion or Lean claim; generic encoding unchanged.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2153,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-3",
+    "body": "Complete N78/m13 necessary quotient cover: six13orbits, derived9regularity2140, internal0/2, Q²diag<=21/offdiag<=13. Full row norm forces cross<=3. All9sorted firstrow cases COMPLETE4452states,max1138,0.0044s;3matrices. Independent edge-entry recursion allowing0..4 and convex row completion bounds recovers70labelled matrices in759520states/.854s; two S6classes sizes10/60, both Q²=9I+12J. Please audit completeness/normalization before lift deductions. No graph/CNF/SAT or exclusion.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-n78-m13-quotient"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T03:05:35.098Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T03:06:02.897Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T03:07:08.973Z",
+    "resolution": "PASS necessary quotient cover. Frozen hashes and COMPLETE/no-unvisited status checked. Independent all-labelled dynamic row-domain join (cross0..4, forced diagonals, no first-row sorting or source imports) completes1496states/.146s and recovers exactly70matrices equal to all relabelled producer outputs, twoS6classes. Everymatrix Q²=9I+12J. Paper row bounds and symmetry normalization audited. Evidence /tmp/erdos85-sol1-review2153. No lift existence/N78 exclusion/CNF/solver/Lean result.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2161,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-3",
+    "body": "N78/m13 paper difference argument: typeA excluded because two degree3 ordered-difference sets complement at each row, but degree3 support contains triangles. TypeB internal ±shift classes each occur even times by summing within-orbit coefficients mod2; equal-shift orbits cannot have crossedge (C4), zero support is C6 with clique max2, hence exactly three distinct shift classes paired along one of two zero-cycle perfect matchings. Finite quotient-shape checker only; no graph/lift/SAT enumeration. Please audit after m16 final stage when free.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-n78-m13-difference-constraints/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T03:26:09.778Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T03:28:57.042Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T03:29:51.104Z",
+    "resolution": "PASS. Frozen hashes/live2140/2153 premises exact. Independently checked typeA degree3 support=two triangles; complementary difference sets cannot alternate on oddcycle, excludingA. ForB cross differences cancel in six-row coefficient sum mod2; doubling bijects shiftclasses, hence even multiplicities. Equalshift positivecross pair givesC4; zero support is connectedC6 with clique max2, so three distinct pairedclasses along exactlytwo perfectmatchings. Independent recursive matching check agrees. Evidence /tmp/erdos85-sol1-review2161. B remains open; no graph/lift/SAT/globalN78/Lean claim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2162,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "Paper local lemma potentially closes N78/m13 typeB: two Z13 orbits with internaldegree2 cannot have crossdegree3. Scale s=1, t=1..6. Equal shifts impossible; triple ordered differences distinct and avoid ±2,±2t,±(1+t),±(1-t). For t2/5/6 at most2 classes remain; t3/4 force{1,3,5}/{1,4,6}, neither admits signed sum0 mod13 required by a triple. Full five-case table plus independent1716 local26vertex checks PASS; no full78 lift/CNF/SAT run. TypeA argument2161 is with sol1, whose acceptance would complete class exclusion. Please independently audit lemma/proof before closure.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-n78-m13-typeb-exclusion/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T03:27:52.673Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T03:28:26.683Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T03:30:02.383Z",
+    "resolution": "PASS local lemma/typeB exclusion. Independently audited simultaneous scaling/sign normalization, equal-shift C4, distinct triple differences, forbidden ±2s/±2t/±(s±t), all5folded-class cases and signed-sum contradiction. Extra independent local26vertex validation saves explicit C4 witnesses for all1716cases,.019s, no full78lift/SAT. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2162. Accepted2153 typeB excluded; wholem13 additionally requires2161typeA. No otheraction/globalN78/Lean claim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2163,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-3",
+    "body": "Short strengthening of accepted m13 result: hypothetical N78/N80 delta9 graph is9regular and connected (each component>=73 by2140). Automorphism of primeorder p>9 fixing one vertex fixes all9 neighbours, then connectedness forces identity. Hence exact-order p automorphism acts freely and p|N. At80 no such prime; at78 only13, now excluded by2153/2161/2162. Thus no primeorder>9 automorphism (Aut order primes only2/3/5/7 via Cauchy). Please audit paper implication when free; no computation/search/global graph exclusion.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-large-prime-automorphisms/pins.json"
+    ],
+    "priority": "low",
+    "status": "resolved",
+    "created_ts": "2026-09-11T03:33:18.239Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T03:40:05.986Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T03:40:45.463Z",
+    "resolution": "PASS. Source hash verified, live accepted premises 2140/2153/2161/2162 checked. Independent component bound gives connectedness; prime-order permutation of nine neighbours propagates fixedness, so p>9 acts freely and divides N. Only p13 at N78 survives divisibility, excluded by the accepted m13 chain. Cauchy gives Aut-order prime support {2,3,5,7}. Evidence /tmp/erdos85-sol1-review2163. Conditional paper corollary, no global graph exclusion or Lean claim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  }
+]
