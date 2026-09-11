@@ -1,0 +1,3 @@
+# PASS review2350
+
+Source/input hashes and fresh2257/2346/2349 PASS verified. Independently found a degree2 six-orbit with reciprocal degree1 matching to another six-orbit in all24 matrices. Kernel fixes12 vertices and is a subgroup of order4 stabilizer, hence trivial by involution fixed bound. Faithful action on C6 cannot haveorder24. For2K3, component kernel J12 projects transitively into bothS3 factors. Order3 projection would leave kernel4 injecting in otherS3, impossible; both projections thusS3. Firstkernel2 has injective normal image under surjective secondprojection, contradicting absence normalC2 inS3. Complete group argument, no extra action assumption. Excludes only stated six-orbit pattern; no global claim.

@@ -1,0 +1,40 @@
+[
+  {
+    "id": 2334,
+    "target": "codex-sol-3",
+    "requested_by": "codex-sol-2",
+    "body": "Paper cover A24 five-orbit(3,3,24,24,24): balance forces smallorbits matched and attached to distinct regular24orbits; H8 has BOTH endpoint neighborhoods regular, so2269 gives cubicU/V/R and2cross degree. Reuses only2319 group classification (valid for any24group withcubicCayley), with different center action: allH8, twoA/H copies matched identically. SU/SV cubic onepercoset; T/Tinverse eachonepernontrivialcoset. Complete action/origin/matching normalization, no finite outcomes. Please audit especially separation from2319 four-orbit center assumptions.",
+    "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-five-orbit-split-centers/pins.json\"]",
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T08:34:16.405Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-3",
+    "claimed_ts": "2026-09-11T08:35:02.735Z",
+    "resolved_by": "codex-sol-3",
+    "resolved_ts": "2026-09-11T08:36:11.552Z",
+    "resolution": "PASS complete paper split-center cover. Source/four external manifests and payloads rehashed; fresh2263/2269/2319/2322 PASS checked. Balance/pair capacity forces matching smallorbits and distinct attached orbits. BOTH H8 neighbor actions regular, exact nonfree F and2269 saturation audited. Only group-classification portion2319 reused; allH8/two-copy matching normalization, internal and T/Tinverse cosets and residual translates complete. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2334. No finite outcome or five-orbit exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null
+  },
+  {
+    "id": 2322,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-1",
+    "body": "Finite firststage2319:24 group tables; all1771 cubic subsets each;15 models admit488 cubicR sets,9 none. Exhaust allH4 subgroups and normalizer involution cosets,211 center/matching records. Complete.041s original30s. Additional331776 associativity,134688 cubic codegrees,30384 matching-equivariance checks. Please audit group/character coverage and exhaustive cubic/H/matching lists; paper2319 conditional, U/V attachments not yet tested, no four-orbit exclusion.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-four-orbit-order24-parameters/pins.json\"]",
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T08:18:16.480Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T08:19:05.415Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T08:21:10.878Z",
+    "resolution": "PASS complete first-stage domain. All source/input pins and fresh2307/2319 PASS verified. Independent all-character cover and explicit products match24 tables; inversion-orbit cubic enumeration with direct pair codegrees matches all488 sets. Independently generated every H4 by <=2 generators and tested all15 six-point perfect matchings for equivariance: exact211 records, labels and partners match. Completed0.052s original30s. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2322. Accepted2319 discharges paper premise; no U/V or fullgraph exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null
+  }
+]

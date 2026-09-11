@@ -1,0 +1,94 @@
+{
+  "status": "PASS",
+  "verified_payloads": 80,
+  "fresh_pass_reviews": 13,
+  "five_orbit_cover": [
+    {
+      "order": 24,
+      "sizes": [
+        3,
+        3,
+        24,
+        24,
+        24
+      ],
+      "parity_valid": 6,
+      "disposition": "split centers"
+    },
+    {
+      "order": 24,
+      "sizes": [
+        6,
+        12,
+        12,
+        24,
+        24
+      ],
+      "parity_valid": 12,
+      "disposition": "eight single and four double"
+    },
+    {
+      "order": 48,
+      "sizes": [
+        6,
+        6,
+        6,
+        12,
+        48
+      ],
+      "parity_valid": 0,
+      "disposition": "no parity-valid quotient"
+    },
+    {
+      "order": 48,
+      "sizes": [
+        6,
+        8,
+        8,
+        8,
+        48
+      ],
+      "parity_valid": 10,
+      "disposition": "excluded by accepted Sylow3 incidence"
+    },
+    {
+      "order": 48,
+      "sizes": [
+        6,
+        8,
+        16,
+        24,
+        24
+      ],
+      "parity_valid": 2,
+      "disposition": "excluded by accepted Sylow3 incidence"
+    },
+    {
+      "order": 48,
+      "sizes": [
+        6,
+        12,
+        12,
+        24,
+        24
+      ],
+      "parity_valid": 12,
+      "disposition": "order48 exclusion"
+    },
+    {
+      "order": 48,
+      "sizes": [
+        6,
+        16,
+        16,
+        16,
+        24
+      ],
+      "parity_valid": 0,
+      "disposition": "no parity-valid quotient"
+    }
+  ],
+  "first_filter_inputs": 12928,
+  "second_filter_inputs": 896,
+  "second_survivors": 0
+}

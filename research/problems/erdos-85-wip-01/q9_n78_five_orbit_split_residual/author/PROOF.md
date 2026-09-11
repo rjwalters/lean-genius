@@ -1,0 +1,15 @@
+# All saved split-center partial graphs fail residual incidence
+
+The saved input domain is all22848 partial graphs from the split-center coupling packet submitted as2336. Its complete interpretation for order24 and orbit sizes3,3,24,24,24 uses accepted2334 and the separate independent acceptance of2336. This packet explicitly keeps that input-completeness dependency conditional.
+
+The required regular residual orbit R has six attached neighbors at each vertex, one over each of the six matching centers, with three neighbors in U and three in V. Choose any residual vertex and one of its U-neighbors. Translate the entire configuration by the inverse label of that U-neighbor, making the selected U vertex the identity. Left translation is an automorphism of the partial Cayley graph, and the residual vertex can be taken as the origin of its regular orbit. Thus every possible incidence has a representative whose base neighborhood B contains U1.
+
+Enumerate B by choosing one vertex from each of the five other center fibers, alongside U1. First remove any candidate already sharing a partial-graph neighbor with U1. During the enumeration, reject a pair of chosen attached vertices if they already share a neighbor: adding the residual vertex would give them a second common neighbor and form a C4.
+
+All other residual attached neighborhoods must be gB under left translation. For an ordered pair of distinct chosen vertices a,b in the same regular copy U or V, the unique group element sending a to b is b*a^-1. The condition |B intersect gB|<=1 for every nonidentity g is therefore equivalent to all such directed differences being distinct across both copies. The checker inserts both directed differences whenever adding a new vertex in the same copy as an earlier one. A repeated difference rejects that branch. In particular an involution difference repeats within its own pair and is correctly rejected. Pairs in different copies give no difference because the group action preserves the two copies.
+
+The depth-first search is complete over the five remaining fibers, with domain ordering only changing traversal order. Pair incompatibility and repeated differences persist when vertices are added, so each pruning condition is necessary and monotone. No residual internal edges are required for these obstructions and none can repair them.
+
+The original aggregate30-second run completed in1.856 seconds. It visited230016 recursion nodes and checked all22848 saved partial graphs. Every root is COMPLETE and has zero surviving base neighborhoods. There are no UNKNOWN or unvisited roots. The per-input receipts are in results.json; the producer and input manifests are pinned separately.
+
+This establishes an obstruction for the complete saved domain. Once2336 independently establishes that domain's completeness, it excludes the order24 five-orbit case3,3,24,24,24 by accepted2334. It does not exclude other five-orbit sizes, all N78 graphs, N80 or Erdős85. It is a finite necessary-incidence argument, not a full graph solver or Lean formalization.

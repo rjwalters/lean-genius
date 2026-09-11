@@ -1,0 +1,3 @@
+Complete action cover for the remaining A24 single-attachment five-orbit case. Central-involution fixed-point obstructions justify the15 group models independently of a cubic residual Cayley assumption. This packet does not include its later finite incidence stages.
+
+Independently accepted in Squad review 2343. Source and peer evidence are preserved byte for byte; original manifests retain their path semantics. The archive manifest hashes every payload file, including peer evidence without an original manifest. No capped UNKNOWN result is recast as a negative. This is not Lean formalization or a full Erdős85 solution.

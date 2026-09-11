@@ -1,0 +1,13 @@
+# Review2343: PASS complete single-attachment action cover
+
+All37 source/external digests match, including external manifest payloads. Fresh2257,2319,2322,2325,2335 are resolved PASS. The eight selected quotient matrices independently have the stated2/4 residual incidence split and internal/cross degrees a,5-a for a=1,2,3,4.
+
+The replacement for the cubic-Cayley premise is valid. A central element in a point stabilizer fixes every vertex of the transitive orbit: for x=g b, z x=g z b=x. Thus a central involution in a12-orbit stabilizer would fix at least12 vertices, violating the accepted fixed-point bound. This excludes abelian and unique-involution groups. The group-theoretic classification portion of2319 uses its cubic hypothesis only for precisely those exclusions, so the replacement suffices; no residual Cayley graph is presumed.
+
+The additional nine-table exclusion is independently verified rather than inferred from empty cubic lists. Every nonidentity involution in each of the nine omitted models was enumerated, and all456 commutation checks in their faithful regular permutation actions pass. The omitted model indices match the nine empty-cubic entries exactly. They cannot furnish a12-orbit stabilizer. Thus the remaining15 group tables and accepted exhaustive211 H4/matching records are sufficient for this different problem.
+
+The center-coset and matching proof applies to any transitive six-center action, including nonfaithful ones. Both regular attached origins can be selected over H. The internal/cross slot constraints and T inverse convention correctly extend the earlier domain to all four values of a; the shared-center indicator remains present for mixed U/V pairs because they attach to the same F orbit.
+
+After translating a chosen U-neighbor to identity, the B-stabilizer becomes some conjugate order-two subgroup, all of which are included by enumerating involutions. Its U-neighbors must be the complete regular L-orbit{1,l}; its four V-neighbors are two disjoint left-L pairs. Six distinct center labels are forced by C4-freeness and exhaust the center set. Since X is L-invariant, neighborhoods indexed by gL are well-defined. Comparing X and gX for every g outside L excludes exactly the forbidden overlaps between distinct B vertices; elements inside L should not be tested against the bound one. Larger stabilizers correctly cause rejection outside L.
+
+These are necessary coverage and incidence parameters only. They do not claim all such parameters occur, choose C or residual internal edges, or exclude the five-orbit case. No new full graph solver or Lean theorem is claimed.
