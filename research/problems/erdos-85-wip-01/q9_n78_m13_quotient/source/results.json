@@ -1,0 +1,303 @@
+{
+  "status": "COMPLETE",
+  "profile_count": 190,
+  "first_row_cases": 9,
+  "visited_cases": 9,
+  "unvisited_cases": 0,
+  "cases": [
+    {
+      "root_index": 0,
+      "diagonal": 0,
+      "cross": [
+        0,
+        2,
+        2,
+        2,
+        3
+      ],
+      "status": "COMPLETE",
+      "states": 32,
+      "retained": 0,
+      "global_start": 0
+    },
+    {
+      "root_index": 1,
+      "diagonal": 0,
+      "cross": [
+        1,
+        1,
+        1,
+        3,
+        3
+      ],
+      "status": "COMPLETE",
+      "states": 337,
+      "retained": 1,
+      "global_start": 0
+    },
+    {
+      "root_index": 2,
+      "diagonal": 0,
+      "cross": [
+        1,
+        1,
+        2,
+        2,
+        3
+      ],
+      "status": "COMPLETE",
+      "states": 365,
+      "retained": 0,
+      "global_start": 1
+    },
+    {
+      "root_index": 3,
+      "diagonal": 0,
+      "cross": [
+        1,
+        2,
+        2,
+        2,
+        2
+      ],
+      "status": "COMPLETE",
+      "states": 57,
+      "retained": 0,
+      "global_start": 1
+    },
+    {
+      "root_index": 4,
+      "diagonal": 2,
+      "cross": [
+        0,
+        0,
+        2,
+        2,
+        3
+      ],
+      "status": "COMPLETE",
+      "states": 370,
+      "retained": 2,
+      "global_start": 1
+    },
+    {
+      "root_index": 5,
+      "diagonal": 2,
+      "cross": [
+        0,
+        1,
+        1,
+        2,
+        3
+      ],
+      "status": "COMPLETE",
+      "states": 618,
+      "retained": 0,
+      "global_start": 3
+    },
+    {
+      "root_index": 6,
+      "diagonal": 2,
+      "cross": [
+        0,
+        1,
+        2,
+        2,
+        2
+      ],
+      "status": "COMPLETE",
+      "states": 837,
+      "retained": 0,
+      "global_start": 3
+    },
+    {
+      "root_index": 7,
+      "diagonal": 2,
+      "cross": [
+        1,
+        1,
+        1,
+        1,
+        3
+      ],
+      "status": "COMPLETE",
+      "states": 698,
+      "retained": 0,
+      "global_start": 3
+    },
+    {
+      "root_index": 8,
+      "diagonal": 2,
+      "cross": [
+        1,
+        1,
+        1,
+        2,
+        2
+      ],
+      "status": "COMPLETE",
+      "states": 1138,
+      "retained": 0,
+      "global_start": 3
+    }
+  ],
+  "retained": 3,
+  "seconds": 0.004401291953399777,
+  "limits": {
+    "states_per_first_row": 100000,
+    "aggregate_seconds": 60
+  },
+  "matrices": [
+    [
+      [
+        0,
+        1,
+        1,
+        1,
+        3,
+        3
+      ],
+      [
+        1,
+        0,
+        3,
+        3,
+        1,
+        1
+      ],
+      [
+        1,
+        3,
+        0,
+        3,
+        1,
+        1
+      ],
+      [
+        1,
+        3,
+        3,
+        0,
+        1,
+        1
+      ],
+      [
+        3,
+        1,
+        1,
+        1,
+        0,
+        3
+      ],
+      [
+        3,
+        1,
+        1,
+        1,
+        3,
+        0
+      ]
+    ],
+    [
+      [
+        2,
+        0,
+        0,
+        2,
+        2,
+        3
+      ],
+      [
+        0,
+        2,
+        2,
+        0,
+        3,
+        2
+      ],
+      [
+        0,
+        2,
+        2,
+        3,
+        0,
+        2
+      ],
+      [
+        2,
+        0,
+        3,
+        2,
+        2,
+        0
+      ],
+      [
+        2,
+        3,
+        0,
+        2,
+        2,
+        0
+      ],
+      [
+        3,
+        2,
+        2,
+        0,
+        0,
+        2
+      ]
+    ],
+    [
+      [
+        2,
+        0,
+        0,
+        2,
+        2,
+        3
+      ],
+      [
+        0,
+        2,
+        2,
+        3,
+        0,
+        2
+      ],
+      [
+        0,
+        2,
+        2,
+        0,
+        3,
+        2
+      ],
+      [
+        2,
+        3,
+        0,
+        2,
+        2,
+        0
+      ],
+      [
+        2,
+        0,
+        3,
+        2,
+        2,
+        0
+      ],
+      [
+        3,
+        2,
+        2,
+        0,
+        0,
+        2
+      ]
+    ]
+  ],
+  "scope": "necessary quotient matrices; no graph lift, CNF change, or solver verdict"
+}
