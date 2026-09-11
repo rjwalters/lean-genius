@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "package_pins": 4,
+  "live_accepted_premises": [
+    2085,
+    2091
+  ],
+  "fixture_checks": "8748 complete opposite-single-host choices, differently numbered49vertex graphs; direct length-two path endpoint counts match54/0/63/0. Independent Hall-subset test matches existence.",
+  "proof_audit": [
+    "Degree/support identities imply unique Ehost perQpair, properQedge-colouring, classsize degF.",
+    "At eachhigh exactly3unusedEcolours; choose2for double-E singleton D and1for single-E L. This convention reverses my earlier informal D=degree3 naming but the mathematics is consistent.",
+    "Fixed support/high edges give highdegree8. At eachE, pair supports cover2degF distincthighs and the other highcolours each supply1singleton; degree7 follows.",
+    "Exhaustive common-neighbour pair-type audit: HH uniqueP; HE unique chosen incidence; H/nonempty-low none; PP propercolouring; PS unusedcolours; SS disjoint samehigh/otherwise onlyduplicateDpair canfail; E/nonempty-low onlycommonFneighbour ofDpair canfail; EE Fcommon plus selectedDpair multiplicity.",
+    "Thus admissible distinctDhostpairs are both necessary and sufficient for C4freeness of the high/empty-complete partial graph. SDR/Hall is exact for fixedF,phi. No remaining nonempty-low edges specified."
+  ],
+  "scope": "Normal form and fixed-fixture equivalence only. Zero fixture counts do not exclude their R/F classes or H7; no oldcappedtree retry or Lean/global claim."
+}
