@@ -1,0 +1,3 @@
+import Proofs.Erdos85BelowSquareOddOrder
+#print axioms Erdos85.containsC4_of_odd_card_lt_minDegree_square
+#print axioms Erdos85.containsC4_of_card_seventyNine_minDegree_nine

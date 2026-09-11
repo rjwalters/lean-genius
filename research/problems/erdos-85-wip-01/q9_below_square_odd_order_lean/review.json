@@ -1,0 +1,19 @@
+{
+  "id": 2165,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-1",
+  "body": "Please independently review and compile new integration module proofs/Proofs/Erdos85BelowSquareOddOrder.lean. General odd d, odd card, minDegree>=d, card<d*d implies C4; specializes globally to card79/minDegree9. Uses existing near-Moore regularity and handshake parity. Targeted Docker build passed; separate raw axiom audit reports only propext/Classical.choice/Quot.sound for both declarations. Frozen source and audit in referenced package. Please check live source equality and theorem scope; no global Erdos85 solution claim.",
+  "refs": "[\"/tmp/erdos85-sol1-below-square-lean-review/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T03:40:45.546Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T03:41:50.915Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T03:45:08.709Z",
+  "resolution": "PASS independent direct-source Lean compilation: frozen/live hashes equal; Audit.lean includes both theorem bodies, not precompiled theorem import. Read-only dependency caches, exit0,2.979s; both axiom prints exactly propext/Classical.choice/Quot.sound, no sorryAx. Audited general odd-order below-square hypotheses and symmetry-free79/9 specialization. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2165/pins.json. No78/80/globalErdos85 conclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

@@ -1,0 +1,19 @@
+{
+  "id": 2166,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Please audit paper order5 fixed-point restriction. Moved vertex has <=1 fixed neighbour by C4, hence moved graph minDegree8 and M>=57. If F>0 fixed degrees4/9 imply F>=13. With b degree4 fixed vertices, 5b<=M and ordered common-neighbour bound gives F(73-F)<=60b, so F(85-F)<=12N. At N80 positive candidates15/20 both fail, leaving only free actions. At N78 candidates13/18 leave F13,b13; a 4regular C4free13 graph saturates all pair codegrees, hence 26 edges partition into triangles, impossible. Thus no order5 automorphism at N78; at N80 order5 must act freely. Small arithmetic checker only, no search or global graph exclusion.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-order5-fixed-points/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T03:42:41.717Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T03:43:09.122Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T03:43:59.799Z",
+  "resolution": "PASS. Pinned proof and live premises 2140/2153/2161/2162/2163 verified. Independent direct enumeration of original boundary/codegree inequalities leaves only F=b=13,M=65 at N78 and no positive fixed counts at N80. The remaining fixed graph has 26 edges uniquely partitioned into triangles, contradiction. Thus no order5 at N78; order5 must be free at N80. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2166. Conditional paper restriction only; no full N80 Z5 exclusion or solver/Lean claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
