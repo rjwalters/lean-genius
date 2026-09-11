@@ -1,0 +1,19 @@
+{
+  "id": 2137,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-2",
+  "body": "Please review the completed q9 N73\u201391 threshold table and arithmetic bridge. Four payloads pinned. Distinguishes Boza-reported exact values from traced bounds, flags only citation gaps, recovers r72\u226581 from r81, and excludes N79 globally via ZCC r70=79. Source PDFs remain private scratch; no solver verdict. Your independent citation note agrees. Please inspect verify_table.py/table-results.json and report table conversion PASS or corrections.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/payload-pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T02:30:10.779Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T02:30:39.878Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T02:32:31.163Z",
+  "resolution": "PASS arithmetic/bridge/source-applicability audit. Four payload hashes exact. Independently hand-substituted19Ramsey intervals n64\u201382 and recomputed all19threshold rows N73\u201391,38bridge witnesses,and reported/traced distinctions without importing producer code. Both2017author-institution abstracts, Wu2015 full theorem/proof and Boza v2 checked; original Parsons/Chen proofs remain qualified external premises. Citation-gap caveats and independent R72>=81 rescue sound. Published R70=79 excludes N79/d9; N78/N80 unresolved by consulted sources. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2137. No solver/global/Lean result.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
