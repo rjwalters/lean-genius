@@ -1,0 +1,27 @@
+{
+  "status": "COMPLETE",
+  "cases": [
+    {
+      "R_case": 0,
+      "total": 60801,
+      "visited": 60801,
+      "unvisited": 0,
+      "positive_colourings": 58847,
+      "negative_colourings": 1954,
+      "singleton_incidence_choices": 3194466,
+      "nodes": 6234450
+    },
+    {
+      "R_case": 1,
+      "total": 17922,
+      "visited": 17922,
+      "unvisited": 0,
+      "positive_colourings": 17199,
+      "negative_colourings": 723,
+      "singleton_incidence_choices": 926060,
+      "nodes": 1827321
+    }
+  ],
+  "seconds": 3.489916707854718,
+  "scope": "Exact singleton incidence lists on the accepted F=C7 propercolouring representatives. Propercolouring zeros only; no wholeR/F/H7 or remaininglowedge completion, no oldcappedhosttree retry. Any unvisited colourings remain unresolved."
+}

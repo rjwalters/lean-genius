@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "partitions": 191,
+      "colourings": 60801,
+      "labelled": 11869200
+    },
+    {
+      "partitions": 72,
+      "colourings": 17922,
+      "labelled": 11793600
+    }
+  ],
+  "pins": 6,
+  "seconds": 0.259122584015131,
+  "scope": "Independent bitmask cover compared under explicit high and block relabellings; exact representative/orbit equality. Only F=C7 proper colourings."
+}

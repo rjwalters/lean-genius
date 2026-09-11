@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "colourings": 60801,
+      "positive": 58847,
+      "solutions": 3194466
+    },
+    {
+      "colourings": 17922,
+      "positive": 17199,
+      "solutions": 926060
+    }
+  ],
+  "dp_states": 10006527,
+  "seconds": 9.836016749963164,
+  "scope": "All stored codes valid/unique, exact completeness by independent reverse-high weighted subsetDP on all78723fixed propercolourings. No remaininglowedges or fullH7 exclusion."
+}
