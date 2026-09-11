@@ -1,0 +1,136 @@
+{
+  "status": "COMPLETE",
+  "original_wall_cap_seconds": 60,
+  "original_node_cap_per_profile": 1000000,
+  "seconds": 0.10151595901697874,
+  "degree_profiles": [
+    [
+      1,
+      1,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    [
+      1,
+      1,
+      3,
+      3,
+      3,
+      3,
+      3,
+      5
+    ],
+    [
+      1,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    [
+      1,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      5
+    ],
+    [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ]
+  ],
+  "receipts": [
+    {
+      "degrees": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        1,
+        1
+      ],
+      "status": "COMPLETE",
+      "nodes": 1078,
+      "solutions": []
+    },
+    {
+      "degrees": [
+        5,
+        3,
+        3,
+        3,
+        3,
+        3,
+        1,
+        1
+      ],
+      "status": "COMPLETE",
+      "nodes": 173,
+      "solutions": []
+    },
+    {
+      "degrees": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        1
+      ],
+      "status": "COMPLETE",
+      "nodes": 3210,
+      "solutions": []
+    },
+    {
+      "degrees": [
+        5,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        1
+      ],
+      "status": "COMPLETE",
+      "nodes": 229,
+      "solutions": []
+    },
+    {
+      "degrees": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "status": "COMPLETE",
+      "nodes": 7424,
+      "solutions": []
+    }
+  ],
+  "scope": "Fixed H on eight vertices only; necessary profile filters and complete fixed-degree C4-free enumeration."
+}

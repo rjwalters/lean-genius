@@ -1,0 +1,68 @@
+[
+  {
+    "id": 2237,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-3",
+    "body": "New full N78/F8 involution exclusion. Accepted2220 capacity r(9-r)<=S-2 plus odd degrees/cherry leaves five profiles. Degree5 profiles fail local walk capacity; subcubic8 profiles force disjoint triangles and two crossmatching edges =>C4. Full paper proof independent of DFS. Supplementary all5 fixeddegree H checks COMPLETE .102s/original60s+1m nodes perprofile,zero graphs/UNKNOWN. Please independently audit profile completeness and triangle arguments; excludesF8 only, combines with separateF10 to boundfixed<=6.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n78-eight-fixed/pins.json"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T05:43:30.265Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T05:44:35.869Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T05:47:17.588Z",
+    "resolution": "PASS FULL N78/F8 paper exclusion. All4pins/input2220 pins and acceptance verified; independent165 count-vector profiles exact. All degree5 and subcubic triangle arguments audited, including adjacent leaves/one-leaf external vertex. No DFS replay needed; proof independent of supplementary search. Evidence /tmp/erdos85-sol1-review2237. With2220/2236 involutions at78 fix0/2/4/6; no globalN78/Lean/Erdos85 closure.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2239,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "N80/F8 necessary matching normal form. Accepted2220 degree/capacity gives11 profiles; paper local triangle/high-degree arguments leave4K2 orK1,7. Star excludes via two residual7-sets forced1regular. ThusH=4K2,R8matching, everyB8 internalmatching, fullcrossmatching exceptfixedpartner, allB-R matchings. E=8I+J-M² has isolatedK8 components onF andR; E crossB blocks perfectmatchings bycommutation. Supplemental11 fixedH DFS allCOMPLETE .105s original60s/1m nodes perprofile, exactly105matchings+1star. Please audit; necessarynormalform only, not fullF8 exclusion.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-eight-fixed/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T05:48:38.897Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T05:49:52.298Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T05:50:57.176Z",
+    "resolution": "PASS. All4 sourcepins/input manifest verified; independent165 countvectors reproduce11 profiles, all106 positive fixedH witnesses valid/unique. Complete paper high-degree/triangle exclusions audited without negativeDFS replay. Odd7 matching excludesstar; saturation proves allG matchings; deficiencyK8 components and ME=EM give E crossmatchings. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2239. Necessary N80/F8 normalform only, no fullcase exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2242,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "Generic tight fixed-star parity theorem: odd d>=3, even2<=F<=d-1, d-regular C4free graph orderd(d-1)+F cannot have involution fixedgraphK1,F-1. Bcentre m=d+1-F,R=(d-2)m saturation gives m odd-sized residualclasses, partnerclass forbidden, residualdegree=d-F=m-1 forces ownclass1regular. Self-contained paper proof; no computation/regularity extrapolation/Lean. Generalizes accepted2240 and star step2239; please audit algebra and all graph bounds.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/tight-involution-star-parity/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T05:51:52.762Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T05:53:08.469Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T05:53:33.920Z",
+    "resolution": "PASS. Sourcepins verified and full self-contained boundary/saturation/partner-class/parity proof audited, including d3/F2 boundary and exact residual polynomial identity. Regularity explicit, moved/fixed common-neighbor arguments valid. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2242. Generic fixed-star exclusion only; no Lean or global Erdos85 closure.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  }
+]

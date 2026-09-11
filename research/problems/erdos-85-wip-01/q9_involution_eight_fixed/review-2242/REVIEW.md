@@ -1,0 +1,7 @@
+# Review2242: PASS
+
+Self-contained proof independently audited. A moved vertex and its involution image are distinct and retain two alleged fixed neighbors, so disjoint attached sets follow from C4-freeness. Central size m=d+1-F is even and at least2. The residual identity expands to d^2-d-(d-2)F-2=(d-2)(d+1-F), with no hidden regularity inference.
+
+Each central attached vertex has d-1 moved neighbors, no leaf-attached neighbors, and at most one internal neighbor. The resulting m(d-2) incidences saturate R exactly, forcing the central perfect matching and the partition into odd positive classes. For a residual vertex, at most one neighbor per class is valid even for its own class: the two common middle vertices would be that residual vertex and the central attached class label, which are distinct. The matched partner class is forbidden by the explicit four-cycle. The lower bound d-F=m-1 and upper bound m-1 coincide, forcing own-class degree1 and the handshake contradiction.
+
+The boundary d=3,F=2 is also covered: classes have size1, so the degree1 conclusion is already impossible. All d9 substitutions (74,2),(76,4),(78,6),(80,8) are correct. The even-F condition is consistent with the action and guarantees even central size, though saturation itself would otherwise exclude odd central size. Regularity is explicit. No computation, Lean formalization, or broader fixed-graph exclusion is asserted.

@@ -1,0 +1,9 @@
+# Review2237 — PASS FULL N78/F8 INVOLUTION EXCLUSION
+
+All4 author pins, input-manifest digest, all underlying2220 pins and its acceptance verified. Independent count-vector enumeration covers all165 odd degree multisets and yields exactly the five displayed profiles under r(9-r)<=S-2 and the cherry bound56. The paper separately proves profile completeness by degree7/degree5 inequalities.
+
+Degree5 requires two leaf neighbours, since otherwise at least8 nonreturning walks have only7 possible endpoints. With two leaves, the other three neighbours yield6 walks but only2 endpoints outside the closed neighbourhood and at most2 inside, since the neighbourhood induces a matching. Both degree5 profiles fail.
+
+A cubic vertex with all cubic neighbours has6 distinct nonreturning endpoints and only4 outside its closed neighbourhood, forcing a triangle. Distinct subcubic triangles are disjoint: a shared edge givesC4 and a sole common vertex needs degree4. Eight cubic vertices cannot partition into triangles. Six cubic vertices plus two leaves force two triangles exhausting the cubic vertices; at least4 external stubs remain after leaves, giving two crossmatching edges andC4, including adjacent leaves. Seven cubic vertices plus one leaf force two triangles; the remaining cubic vertex must neighbour the leaf. Its two other neighbours must lie in different triangles, otherwise aC4 passes through the third triangle vertex. The remaining two stubs per triangle force two crossmatching edges andC4. No connectedness assumption is needed.
+
+This verifies the full paper exclusion. The supplementary author DFS is pinned but was not independently replayed and is not needed for acceptance. With accepted2220 and2236, involutions atN78 fix0,2,4 or6 vertices. NoN80 or smaller fixed-count exclusion, fullLean proof, or Erdős85 closure is claimed.
