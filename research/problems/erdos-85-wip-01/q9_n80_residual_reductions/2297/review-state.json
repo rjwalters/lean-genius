@@ -1,0 +1,22 @@
+{
+  "id": 2297,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-3",
+  "body": "No-isolation successor2295: exactattached capacity has nonnegative R(d-1)+W(k-1)<=2. AnyW neighbor ofanattachedvertex meetingcubicR mustk1. Thereforehighattachedv has>=5 Wneighbors whoseRneighbors arenoncubic andpairwisedisjoint; at least6noncubic Rvertices, soatmost2 cubicorbits. Highvexists by2251; leaforbitrequired. Also E(R,W)=4n311-2b. Paperonly, conditional2295, no search.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-no-isolates-cubic-count/pins.json"
+  ],
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T07:35:17.241Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T07:36:21.555Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T07:37:04.919Z",
+  "resolution": "PASS. Source/input pins verified;2295 now accepted. Exact nonnegative two-step budget, cubic-neighbor saturation, existence of a high attached vertex and disjoint noncubic endpoints independently audited. At least five noncubic vertices implies six by parity, hence at most two cubic orbits. Both deficit identities and required leaf orbit checked. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2297. Necessary no-isolation restriction only; no finite search or full branch closure.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

@@ -1,0 +1,15 @@
+# Three residual graph types for orbit degrees (2,2,3,3)
+
+Let X be a simple C4-free graph with a free involution on eight vertices, whose orbit degrees are2,2,3,3. Between two orbits there is either no edge or one of the two perfect matchings; all four cross edges would be a C4. Write a loop in the four-vertex orbit quotient for a partner edge. Cross edges contribute two edges to X and loops one, so the number l of loops is even because e(X)=10.
+
+Two looped quotient vertices cannot be adjacent: their partner edges and the intervening perfect matching would make a C4. Thus l=4 is impossible, since it would forbid every cross edge and could not supply degrees2,2,3,3. Therefore l=0 or2.
+
+If l=0, the quotient has degrees2,2,3,3 and is K4 minus the edge between its degree-two vertices. Its unique four-cycle must have odd matching parity, otherwise it lifts to two C4s. Equivalently, its two triangles have different matching parities. Swapping the two degree-two vertices exchanges the triangles. Relabelling the two vertices within individual involution orbits changes matching signs along incident edges; choosing a spanning tree makes every tree sign zero. The remaining signs are determined by the two cycle parities. Hence this case has one equivariant isomorphism type.
+
+If both loops were on the degree-two vertices, the cross degrees would be1,1,3,3. This is impossible for a simple four-vertex graph, since the two degree-three vertices both meet each of the other vertices. If both loops are on degree-three vertices, all cross degrees are two. The quotient cross graph is C4, with the looped vertices opposite. Its cycle parity must be odd, and spanning-tree relabelling gives one type.
+
+If one loop has degree two and the other degree three, the cross degrees are1,2,2,3. The quotient cross graph is a triangle with a pendant edge. The loop on a degree-two vertex is on the pendant vertex. The other loop is on a degree-two cross vertex of the triangle, since the remaining original degree-three vertex has cross degree three. The triangle must have even parity: odd parity together with the loop on that triangle gives a four-cycle in X. Spanning-tree relabelling then gives one type.
+
+These necessary parity conditions also suffice. The complete local check reconstructs all11664 invariant loop/matching assignments, retains the160 with the prescribed degrees, and tests every vertex-pair codegree. Exactly56 are C4-free. Canonicalization by all64 degree-preserving equivariant relabellings yields exactly the three types above, with labelled counts16,8,32 respectively. Explicit ten-edge representatives are saved in results.json. The original30-second run completed in0.017 seconds with no UNKNOWN.
+
+For the N80 residual equality pattern02233, add a disjoint isolated involution pair to each representative. Every such residual graph occurs in this list, but no attachment completion or full80-vertex graph is asserted. The result is a local classification, not an exclusion of02233. No full graph solver or Lean formalization is used.

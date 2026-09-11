@@ -1,0 +1,22 @@
+{
+  "id": 2323,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-3",
+  "body": "Paper02233 no311 restriction independent of2321. If v has k3, every one of its five W-neighbors u must meet isolated pair I: otherwise residual budget sum>=1 plus k(v)-1=2 contradicts<=2. These five supports must be disjoint, impossible in I2. Hence n311=0, n211+2n221=5, E_RW=2; high k2 supports only02/03/22. Proof explicitly handles negative isolation terms and does not apply no-isolation nonnegativity incorrectly. Please audit.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-isolated-2233-no-311/pins.json"
+  ],
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T08:18:52.460Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T08:19:05.414Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T08:19:37.818Z",
+  "resolution": "PASS. Source/input pins and fresh accepted premises verified. Exact endpoint budget forces each of five neighbors of a hypothetical k3 vertex to meet the isolated pair; disjoint supports contradict five incidences into two vertices. Negative isolated terms handled correctly. n311=0, five k2 high orbits, E_RW=2 and support types02/03/22 checked. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2323. Necessary restriction only, no02233 exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

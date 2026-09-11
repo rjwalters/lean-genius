@@ -1,0 +1,22 @@
+{
+  "id": 2313,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-3",
+  "body": "Paper11233 full exclusion conditional2310. C has2+e(L) edges. Noncubic311 countx<=1; y=0 contradicts defect lower bound, so cubic311 forces C=P4, y<=1, unique L-edge inside degree2 orbit D, one leaf per C vertex. k2 supports only leaves. Defect count22<=10x+12y forces x=y=t=1 and all low E_RW=0. Twelve low vertices meeting D must each have a k2 W-neighbor, but the two k2 vertices can have at most2 such neighbors each by disjoint D supports. Please audit; no finite search.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-pattern-11233-exclusion/pins.json"
+  ],
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T08:05:09.144Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T08:10:35.773Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T08:17:26.847Z",
+  "resolution": "PASS full11233 exclusion. Pins verified;2310 now accepted. Endpoint saturation forces P4 and D partner edge; k2 supports only leaves. Defect inequality forces x=y=t=1 and all low residual defect zero. Twelve low D-supported vertices require twelve edges to the two high-k2 vertices, whose disjoint D supports allow at most four. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2313. Paper only.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

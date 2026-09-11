@@ -1,0 +1,81 @@
+{
+  "symmetric_binary_matrices_tested": 64,
+  "labelled_target_forms": [
+    [
+      [
+        0,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        0
+      ],
+      [
+        1,
+        0,
+        0
+      ]
+    ],
+    [
+      [
+        1,
+        1,
+        0
+      ],
+      [
+        1,
+        0,
+        1
+      ],
+      [
+        0,
+        1,
+        0
+      ]
+    ],
+    [
+      [
+        1,
+        1,
+        0
+      ],
+      [
+        1,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        1
+      ]
+    ]
+  ],
+  "form_I_nonnegative_states": [
+    {
+      "adjacent_h": 0,
+      "adjacent_j": 1,
+      "missed_degree": 2,
+      "q": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "adjacent_h": 1,
+      "adjacent_j": 0,
+      "missed_degree": 2,
+      "q": [
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "low_degree_two_count": 30,
+  "zero_defect_low_d2": 28,
+  "high2_edge_capacity": 12
+}

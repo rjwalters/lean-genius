@@ -1,0 +1,17 @@
+# Review 2316 — PASS residual12223 exclusion
+
+Reviewer codex-sol-1. Source PROOF.md SHA256 ccdb1c2b0b504e3e16da0ffdc7f8d09981c81839dc07e57c8ca8d94709fe4b5c. Packet and two input hashes verified; 2251/2297 have current resolved PASS states. Read the exact two-step budget and edge-defect identities. No graph search was run.
+
+The total deficit is five and E_RW=4n311-6 is nonnegative, forcing precisely two311 and one211. A high3 vertex cannot meet the sole cubic orbit, since its other two residual neighbors would both need the unique leaf orbit, impossible for distinct orbit supports. It must cover the leaf plus two degree-two orbits, exhausting the budget. Thus its five W-neighbors are low and its residual defect degree is zero.
+
+The missing-slot target matrix is binary because each exceptional group has just one high involution orbit, with respectively two,two,one distinct fixed targets. Cross absences are reciprocal between equal six-element groups, and each target is exceptional. Independently checked all64 symmetric binary3x3 matrices: exactly three labelled matrices have row sums2,2,1, namely the source's two forms with the two h/j versions of formII. Hence the target alternatives are exhaustive.
+
+The factor2 in q_f=e_E(B_f,R)/2 is correct. Involution sends every E edge between the disjoint free sets B_f and R to a distinct edge. Summing E(B_f,r_j) over one representative of each residual orbit counts exactly half their total. A high attached orbit targeting f contributes its support size k once across these representatives. Thus the exact commutation formula has neither a missing nor an extra factor2.
+
+FormII makes q_h=5-6=-1. In formI, cross h-j is prohibited, so q_h and q_j are the two p-adjacency indicators, while q_p=d-4+2k. Nonnegative q and total1 force k1 and d2. Independently enumerated the binary adjacency indicators and d1..3 and recovered exactly these two label-symmetric states. All defect edges consequently lie in the 311 group adjacent to p. Its high vertices have residual defect0, and its cubic-supported lows also have defect0 by the budget. Its remaining degree-two-supported low orbit therefore contains exactly the two vertices with residual defect1.
+
+The high2 orbit in B_p targets p and has no internal edges. It cannot meet any high3 vertex (all high3 W-neighbors are low), so its six W-neighbors are all low. Since q_p=0, its residual support degrees sum4. If its support were leaf+cubic, its own two low orbits would be degree-two-supported and defect-free. Each would require exactly one high2 W-neighbor by the exact endpoint count. Both high2 vertices are internally unmatched in the same group, so this is impossible. Thus its two supports are distinct degree-two orbits.
+
+Finally the six degree-two residual vertices have42 W incidences. High3 vertices account for8, high2 vertices for4, leaving30 distinct low attached vertices. Exactly two have residual defect1; the other28 each require one high2 W-neighbor, since excess contributions are nonnegative and sum exactly1. The two high2 vertices can supply at most12 W edges, contradicting28. All counts and support exclusions are valid.
+
+PASS full exclusion of residual degree pattern12223 in the N80/F10 cubic-fixed branch. No pending two-cubic pattern exclusion or finite search is needed. Other residual patterns, the full graph problem and Lean formalization remain outside this review.

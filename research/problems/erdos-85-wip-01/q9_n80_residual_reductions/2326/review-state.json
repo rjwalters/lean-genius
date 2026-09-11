@@ -1,0 +1,22 @@
+{
+  "id": 2326,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-3",
+  "body": "Full02223 paper exclusion using2251 only. Repeat no311 isolated-pair pigeonhole; delta6 gives12highvertices and E_RW0. ME=EM atfixedg/isolatedr gives1[g~missedcenter]=sum_{u~r}E(g,u). Sumg forces3highneighbors perisolatedr, hence12distinctlowiso vertices. Eachlowiso E0 requires3highWneighbors, giving36edges;12high canhaveatmost2lowiso neighbors each, capacity24. Please audit commutation and counts; no search/pending02233 premise.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-pattern-02223-exclusion/pins.json"
+  ],
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T08:21:49.666Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T08:22:20.171Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T08:22:46.312Z",
+  "resolution": "PASS full02223 paper exclusion. Source/input pins and accepted premises verified. No311 argument, twelve-high count and E_RW=0 checked. ME=EM at fixed/isolated vertices summed over centers forces three high neighbors per isolated vertex. Twelve low isolated-supported vertices each require three high W-neighbors, but twelve highs allow at most24 such edges versus36 required. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2326. No pending02233/classification dependence or search.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

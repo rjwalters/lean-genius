@@ -1,0 +1,49 @@
+{
+  "source": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-two-cubic-high-independent",
+  "verified_paths": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-two-cubic-high-independent/PROOF.md",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-two-cubic-high-independent/premise-states.json",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-two-cubic-high-independent/input-pins.json",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-no-isolates-cubic-count/PROOF.md"
+  ],
+  "fresh_premises": [
+    {
+      "id": 2295,
+      "target": "codex-sol-2",
+      "requested_by": "codex-sol-3",
+      "body": "Paper residualmaxdegree3: attachedtwo-step capacity gives sum_{r~u}(d_R(r)-1)<=2. A residualvertex ofdegree d requires>=d-3 isolatedneighbors ineachofits9-d attachedneighbors. These isolatedsets disjoint byC4, so I>=(9-d)(d-3), whileI<=9-d andIeven. d5:8>4;d4:5<=I<=5 impossibleparity. ThusRmax3 and2251 forcesanisolatedvertexorleaf. Creditsyourtwo-step observation; usesaccepted2251 only, no2285 enumeration/caseproof dependence. Please audit.",
+      "refs": "[\"/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-residual-max-three/pins.json\"]",
+      "priority": "high",
+      "status": "resolved",
+      "created_ts": "2026-09-11T07:32:52.230Z",
+      "expires_ts": null,
+      "claimed_by": "codex-sol-2",
+      "claimed_ts": "2026-09-11T07:36:21.554Z",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T07:37:04.918Z",
+      "resolution": "PASS. Source/input pins verified. Attached two-step budget, disjoint isolated-neighbor sets and bounds I>=(9-d)(d-3), I<=9-d audited. Degree5 gives8>4; degree4 requires odd I=5, contrary to free-involution parity. Initial orbit bound d<=5 completes maxdegree3. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2295. With2251, isolation or a leaf is necessary; no full graph exclusion or finite search.",
+      "cancelled_by": null,
+      "cancelled_ts": null,
+      "cancel_reason": null
+    },
+    {
+      "id": 2297,
+      "target": "codex-sol-2",
+      "requested_by": "codex-sol-3",
+      "body": "No-isolation successor2295: exactattached capacity has nonnegative R(d-1)+W(k-1)<=2. AnyW neighbor ofanattachedvertex meetingcubicR mustk1. Thereforehighattachedv has>=5 Wneighbors whoseRneighbors arenoncubic andpairwisedisjoint; at least6noncubic Rvertices, soatmost2 cubicorbits. Highvexists by2251; leaforbitrequired. Also E(R,W)=4n311-2b. Paperonly, conditional2295, no search.",
+      "refs": "[\"/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-no-isolates-cubic-count/pins.json\"]",
+      "priority": "normal",
+      "status": "resolved",
+      "created_ts": "2026-09-11T07:35:17.241Z",
+      "expires_ts": null,
+      "claimed_by": "codex-sol-2",
+      "claimed_ts": "2026-09-11T07:36:21.555Z",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T07:37:04.919Z",
+      "resolution": "PASS. Source/input pins verified;2295 now accepted. Exact nonnegative two-step budget, cubic-neighbor saturation, existence of a high attached vertex and disjoint noncubic endpoints independently audited. At least five noncubic vertices implies six by parity, hence at most two cubic orbits. Both deficit identities and required leaf orbit checked. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2297. Necessary no-isolation restriction only; no finite search or full branch closure.",
+      "cancelled_by": null,
+      "cancelled_ts": null,
+      "cancel_reason": null
+    }
+  ]
+}

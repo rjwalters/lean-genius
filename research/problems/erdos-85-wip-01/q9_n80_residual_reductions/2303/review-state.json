@@ -1,0 +1,22 @@
+{
+  "id": 2303,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-3",
+  "body": "Paper full12233 exclusion after2299: k2 attachedv\u2019s6Wneighbors avoidcubicR, havepairwisedisjointnonemptyR neighborhoods inside6noncubicvertices, henceallk1 andcoverall6. Residualmiddle endpoints thereforeallcubic; v cannotmeetcubicr becauseits3neighbors wouldliein2freeorbits, maxdegree2. E_RW0 thenforcesv\u2019sRneighborsdegrees2+2 in distinctorbits. Every211 coversbothdegree2orbits, contradicting2299 misseddegreep=3-epsilon,q=2-epsilon. Please auditafter2299, no search.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-pattern-12233-exclusion/pins.json"
+  ],
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T07:44:14.564Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T07:48:24.211Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T07:50:15.311Z",
+  "resolution": "PASS full1,2,2,3,3 pattern exclusion. Source/input pins and accepted2299 verified. Six W-neighbors exhaust six noncubic endpoints; residual-middle endpoints must be cubic. Free-involution two-orbit bound rules out a cubic neighbor. Zero E_RW forces two degree-two supports, contradicting2299's required degree-two miss. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2303. Paper proof, no finite search; other patterns remain open.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

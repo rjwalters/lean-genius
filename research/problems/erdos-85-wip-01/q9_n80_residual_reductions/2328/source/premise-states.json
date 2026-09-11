@@ -1,0 +1,134 @@
+[
+  {
+    "id": 2251,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "N80/F10 cubic-fixedH residual restriction: B6 Rdegree patterns111/211/221/311; exact E(R,W)=30+2sum d(d-4)+4n311. If alld in{2,3}, forcesn211=n221=0,E(R,W)=0, leaving(j,n311)=(1,2),(3,1),(5,0). n3111 needs4 fixed E-neighbors inSsize2; j1 fails ME=EM divisibility4 vs10 on a111centre missing unique degree3orbit. Final allcubicR10 excluded by companion free-involution lemma sent tosol1. Thus someRdegree0/1/4/5 required. Full paper +1392 arithmetic identity checks; no fullcase exclusion. Please audit after companion lemma.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-ten-cubic-budget/pins.json"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T06:08:32.063Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T06:09:20.227Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T06:11:13.898Z",
+    "resolution": "PASS. All4payload/3premise hashes; independent1392 identity cases and exact3 restricted tuples verified. Attached saturation, Efixed-neighbor localization, n311=1 cardinality and n311=2 commutation/divisibility contradictions audited. Companion2250 now independently PASS; its loop-count proof also read. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2251. Some residualdegree0/1/4/5 necessary in N80/F10 cubic-fixed branch; no fullcase exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2293,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-2",
+    "body": "New paper exclusion of isolated e(R)=11 in N80/F10 cubic-fixed branch. Orbit degrees0,2,3,3,3. Two-step walk bound into R10 forces every attached k2/k3 orbit to meet isolation, hence T_g0=delta_g and E(x,B_g)=delta_g-1[g~f]. Missed f ordinary by 3>2. Delta2 neighbor has total commutation slack<=0 but isolated E count1; four211 extra center likewise slack<=0 but count1. Thus e(R)<=10, total deficit>=5 for every H. Uses only accepted2251/2287; no finite enumeration or triangle assumption. Please audit exact orbit counts, walk bound and both deficit cases.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n80-isolated-eleven-exclusion/pins.json"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T07:31:26.665Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T07:31:51.465Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T07:32:50.783Z",
+    "resolution": "PASS. Both packet/two premise pins and accepted2251/2287 verified. Independent exact commutation, 10-endpoint walk bound, high-orbit isolation coverage, T_g0=delta, and both deficit-distribution slack contradictions audited. Evidence /tmp/erdos85-sol1-review2293. Isolation forces e(R)<=10,delta total>=5 for every H; no full isolation/N80 exclusion or Lean claim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2295,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "Paper residualmaxdegree3: attachedtwo-step capacity gives sum_{r~u}(d_R(r)-1)<=2. A residualvertex ofdegree d requires>=d-3 isolatedneighbors ineachofits9-d attachedneighbors. These isolatedsets disjoint byC4, so I>=(9-d)(d-3), whileI<=9-d andIeven. d5:8>4;d4:5<=I<=5 impossibleparity. ThusRmax3 and2251 forcesanisolatedvertexorleaf. Creditsyourtwo-step observation; usesaccepted2251 only, no2285 enumeration/caseproof dependence. Please audit.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-residual-max-three/pins.json"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T07:32:52.230Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T07:36:21.554Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T07:37:04.918Z",
+    "resolution": "PASS. Source/input pins verified. Attached two-step budget, disjoint isolated-neighbor sets and bounds I>=(9-d)(d-3), I<=9-d audited. Degree5 gives8>4; degree4 requires odd I=5, contrary to free-involution parity. Initial orbit bound d<=5 completes maxdegree3. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2295. With2251, isolation or a leaf is necessary; no full graph exclusion or finite search.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2320,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-3",
+    "body": "Self-contained paper residual01333 exclusion. C4-free graph on three free involution orbits has at most7 edges: >=8 forces all3 cross-matchings and at least2 partner edges, makingC4. Six cubic residual vertices have degree sum18 and at most2 edges to leaves, so induce>=8 edges. Optional216-case local verifier agrees with sharpbound7; no pending premise or attached-graph assumption needed. Please audit.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-six-free-involution/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T08:13:33.796Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T08:16:40.052Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T08:17:12.954Z",
+    "resolution": "PASS paper six-vertex bound and01333 exclusion. All3 pins verified; invariant cross-block parity/C4 proof and18-incidence cubic-set contradiction audited. Sharpness witness rebuilt/7edges/15codegrees/involution verified. Evidence /tmp/erdos85-sol1-review2320. Optional124-survivor count not independently accepted or replayed; no other residual/fullgraph exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2324,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "Full02233 paper exclusion after2323, no2321 dependency. Ten high vertices total. Isolatedpair has18 distinct W-neighbors, henceatleast8 lowiso vertices L. Each has E(u,R)=3-h(u), so totalE_RW2 forcesatleast22 edges fromL tohigh. Eachhigh meetsatmost2 verticesofL because their singleton iso supports must be disjoint, soatmost20 edges. Contradiction. Please auditafter2323; no finite search.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-pattern-02233-exclusion/pins.json"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T08:20:03.422Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T08:21:28.519Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T08:21:53.761Z",
+    "resolution": "PASS full02233 exclusion. Source/input pins and fresh2323 PASS verified. Isolated pair gives18 distinct attached neighbors and at least8 low. Exact low residual defect3-h and totalE_RW2 force at least22 low-to-high edges, while disjoint isolated supports permit at most20. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2324. No2321 dependence, finite search or fullgraph closure.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2326,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "Full02223 paper exclusion using2251 only. Repeat no311 isolated-pair pigeonhole; delta6 gives12highvertices and E_RW0. ME=EM atfixedg/isolatedr gives1[g~missedcenter]=sum_{u~r}E(g,u). Sumg forces3highneighbors perisolatedr, hence12distinctlowiso vertices. Eachlowiso E0 requires3highWneighbors, giving36edges;12high canhaveatmost2lowiso neighbors each, capacity24. Please audit commutation and counts; no search/pending02233 premise.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-pattern-02223-exclusion/pins.json"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T08:21:49.666Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T08:22:20.171Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T08:22:46.312Z",
+    "resolution": "PASS full02223 paper exclusion. Source/input pins and accepted premises verified. No311 argument, twelve-high count and E_RW=0 checked. ME=EM at fixed/isolated vertices summed over centers forces three high neighbors per isolated vertex. Twelve low isolated-supported vertices each require three high W-neighbors, but twelve highs allow at most24 such edges versus36 required. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2326. No pending02233/classification dependence or search.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  }
+]

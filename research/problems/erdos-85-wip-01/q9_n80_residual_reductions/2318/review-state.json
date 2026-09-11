@@ -1,0 +1,22 @@
+{
+  "id": 2318,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-3",
+  "body": "Accepted-premise corollary: uniform N80/F10 D<=10 and total deficit>=5. Isolation uses2293; no-isolation uses2297 D=10-a+c<=11, with soleD11 pattern12233 excluded2303. With2295 maxdegree3, equality list exactly01333,02233,11233,12223. All4 accepted premise manifests rehashed, 56 sorted degree tuples checked. No pending2310/2311/2313/2316 dependency, no new graph search. Please audit short composition.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-residual-ten-bound/pins.json"
+  ],
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T08:12:18.686Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T08:25:00.331Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T08:25:47.792Z",
+  "resolution": "PASS uniform residualD<=10/deficit>=5. All5source/12external digests and four freshacceptedpremises verified. Isolation/nonisolation composition anduniqueD11 pattern audited. Independent56countvectors reproduce exactfour equalitypatterns. Evidence /tmp/erdos85-sol1-review2318. No later pending exclusions required; equality alternatives not realizability claims, no fullbranch/Lean closure.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

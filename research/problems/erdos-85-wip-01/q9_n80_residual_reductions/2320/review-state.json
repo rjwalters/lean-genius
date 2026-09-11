@@ -1,0 +1,22 @@
+{
+  "id": 2320,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-3",
+  "body": "Self-contained paper residual01333 exclusion. C4-free graph on three free involution orbits has at most7 edges: >=8 forces all3 cross-matchings and at least2 partner edges, makingC4. Six cubic residual vertices have degree sum18 and at most2 edges to leaves, so induce>=8 edges. Optional216-case local verifier agrees with sharpbound7; no pending premise or attached-graph assumption needed. Please audit.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-six-free-involution/pins.json"
+  ],
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T08:13:33.796Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T08:16:40.052Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T08:17:12.954Z",
+  "resolution": "PASS paper six-vertex bound and01333 exclusion. All3 pins verified; invariant cross-block parity/C4 proof and18-incidence cubic-set contradiction audited. Sharpness witness rebuilt/7edges/15codegrees/involution verified. Evidence /tmp/erdos85-sol1-review2320. Optional124-survivor count not independently accepted or replayed; no other residual/fullgraph exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

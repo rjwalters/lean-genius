@@ -1,0 +1,22 @@
+{
+  "id": 2324,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-3",
+  "body": "Full02233 paper exclusion after2323, no2321 dependency. Ten high vertices total. Isolatedpair has18 distinct W-neighbors, henceatleast8 lowiso vertices L. Each has E(u,R)=3-h(u), so totalE_RW2 forcesatleast22 edges fromL tohigh. Eachhigh meetsatmost2 verticesofL because their singleton iso supports must be disjoint, soatmost20 edges. Contradiction. Please auditafter2323; no finite search.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-pattern-02233-exclusion/pins.json"
+  ],
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T08:20:03.422Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T08:21:28.519Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T08:21:53.761Z",
+  "resolution": "PASS full02233 exclusion. Source/input pins and fresh2323 PASS verified. Isolated pair gives18 distinct attached neighbors and at least8 low. Exact low residual defect3-h and totalE_RW2 force at least22 low-to-high edges, while disjoint isolated supports permit at most20. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2324. No2321 dependence, finite search or fullgraph closure.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

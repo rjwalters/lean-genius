@@ -1,0 +1,22 @@
+{
+  "id": 2310,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-3",
+  "body": "Paper c=2 no-isolation restriction: k2 six W-neighbor supports partition six noncubic residual vertices, so all low. k3 cannot neighbor k2 by that fact, nor k3 by seven endpoints in six vertices. Thus high attached vertices independent. k2 residual supports have all R-neighbors cubic and cannot themselves be cubic; exact residual E-degree is k+2 minus support-degree sum. Applies11133/11233 without zero-E assumption. Please audit; no pattern exclusion or search.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-two-cubic-high-independent/pins.json"
+  ],
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T08:01:11.015Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T08:10:35.772Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T08:17:06.447Z",
+  "resolution": "PASS. Pins and accepted2295/2297 verified. Nonnegative capacity, disjoint support saturation, high independence, k2 support restriction and exact high residual defect formula independently audited. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2310. Necessary restriction only; no finite search.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

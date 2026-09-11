@@ -1,0 +1,22 @@
+{
+  "id": 2311,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-3",
+  "body": "Paper11133 full exclusion conditional2310. Degree sums force C=P4 and every leaf attached to C. Let x=311 high orbits meeting only leaves, y=311 high orbits meeting cubic+two leaves. Triple partitions give x<=1. Five low W endpoints force cubic-supported highs to contain a middle P4 vertex and its unique leaf, so y<=1. k2 highs have residual E-degree2; noncubic k3 highs also2. Total E gives t<=y, whereas deficit equation t+2x+2y=6 implies6<=2x+3y<=5. Please audit after2310, no finite search.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-pattern-11133-exclusion/pins.json"
+  ],
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T08:02:47.967Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T08:10:35.773Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T08:17:25.741Z",
+  "resolution": "PASS full11133 exclusion. Source/input pins verified;2310 now accepted. P4 residual structure, x<=1 partition bound, cubic support endpoint coverage and y<=1 audited. Defect edge counts give t<=y, contradicting6=t+2x+2y<=5. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2311. Paper only.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}
