@@ -1,0 +1,26 @@
+{
+  "pins_verified": 9,
+  "sources": {
+    "Erdos85OrderSevenSmallFixedSet.lean": "c46b2a3ff02db78548c919966c2a7c57435baf86b11a235c2e50780cb7fc819b",
+    "Erdos85AttachedNeighborSets.lean": "563172b252b15b0be075b1808e65f694714825891d679c19d7bfaa0db226c7d2",
+    "Erdos85OrderSevenFixedGraph.lean": "d1b63366d9b75e76a14181cecb6d1713a8fcc503d441f32a12e67fcb40af44c0",
+    "Erdos85AttachedMovedBound.lean": "870e9053f54e043cf70be2724418ad5a035831f7ff727282c86c72607417fc21",
+    "Erdos85AttachedPrimeOrbit.lean": "437233415a4c85ec5b4504ad890a1f7a7dbbc2ffe6b07dbc48f787565a44194f"
+  },
+  "order": [
+    "Erdos85AttachedPrimeOrbit",
+    "Erdos85OrderSevenFixedGraph",
+    "Erdos85AttachedNeighborSets",
+    "Erdos85AttachedMovedBound",
+    "Erdos85OrderSevenSmallFixedSet"
+  ],
+  "external_imports": [
+    "import Proofs.Erdos85FixedBoundary",
+    "import Proofs.Erdos85FixedNeighbors",
+    "import Proofs.Erdos85GadgetCounting",
+    "import Proofs.Erdos85MovedCard",
+    "import Proofs.Erdos85PrimeFixedDegree",
+    "import Proofs.Erdos85PrimeOrbitMatching",
+    "import Proofs.Erdos85TwoNineDegreeReduction"
+  ]
+}

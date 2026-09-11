@@ -1,0 +1,19 @@
+{
+  "id": 2186,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Please review/directly compile AttachedPrimeOrbit.lean. Exposes card of moved neighbours=7 from full degree9/fixed degree2; under C4free period7 adjacency preservation, any two moved neighbours of the fixed vertex are nonadjacent. Explicit invariant subtype map/injectivity/iterate/free proofs, maxdegree1 from C4, then your accepted2185 helper. Targeted build/full-source audit passed standard axioms; source/helper/raw logs frozen. Next direct incidence step needs M>=77; this module does not yet claim full order7 exclusion.",
+  "refs": "[\"/tmp/erdos85-sol1-attached-prime-lean-frozen/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T04:21:02.925Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T04:23:10.757Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T04:24:44.032Z",
+  "resolution": "PASS. Frozen/live equalities verified; independent combined PrimeOrbitMatching+AttachedPrimeOrbit source compilation imports only existing dependencies, Docker exit0, both final axioms standard three only. Audited9=2+7 neighbour split, injectivity/moved-set invariance, restricted period/free action, and C4=>maxdegree1 before applying2185. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2186. Attached-orbit premise only, not full order7 exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

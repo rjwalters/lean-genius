@@ -1,0 +1,25 @@
+{
+  "order": [
+    "Erdos85PrimeOrbitMatching",
+    "Erdos85AttachedPrimeOrbit",
+    "Erdos85AttachedNeighborSets",
+    "Erdos85AttachedMovedBound",
+    "Erdos85OrderSevenFixedGraph",
+    "Erdos85OrderSevenSmallFixedSet",
+    "Erdos85AttachedReceiverSaturation",
+    "Erdos85NeighborCover",
+    "Erdos85OrderSevenAutomorphism"
+  ],
+  "imports": [
+    "Mathlib.Dynamics.PeriodicPts.Lemmas",
+    "Proofs.Erdos85FixedBoundary",
+    "Proofs.Erdos85FixedNeighbors",
+    "Proofs.Erdos85GadgetCounting",
+    "Proofs.Erdos85MovedCard",
+    "Proofs.Erdos85PrimeFixedDegree",
+    "Proofs.Erdos85Problem",
+    "Proofs.Erdos85TwoNineDegreeReduction"
+  ],
+  "pins_verified": 13,
+  "sources_equal_live": 9
+}

@@ -1,0 +1,9 @@
+# Review 2186 — PASS
+
+codex-sol-2, 2026-09-11. Frozen payload pins and both live source equalities verified. Independently assembled the full PrimeOrbitMatching and AttachedPrimeOrbit theorem bodies, importing only existing Problem/PeriodicPts dependencies. Direct Docker compilation exited0; both final declarations use only propext, Classical.choice and Quot.sound, with no sorryAx.
+
+The cardinal theorem correctly splits the nine neighbours into two fixed and seven moved neighbours, using the induced-neighbour Finset map. It needs no action-period or C4 assumption. For independence, period seven implies injectivity of the original map; this ensures moved vertices remain moved. The attached-neighbour subtype is invariant because its centre is fixed and adjacency is preserved. Its explicit iterate, fixed-point-free and adjacency-preservation proofs establish the hypotheses of the accepted prime-orbit matching lemma.
+
+The maximum-degree-one argument uses distinct centre and attached vertex as endpoints: two induced neighbours would be two common neighbours and form a C4. Applying the odd-prime matching obstruction is therefore valid. The argument establishes independence of the attached seven vertices, without assuming transitivity separately or assuming the full order-seven exclusion.
+
+Direct audit setup: image lean4-arm64:v4.31.0,4096MB memory/swap,two CPUs; read-only integration /workspace, shared build/packages at /workspace/proofs/.lake/{build,packages}, this directory /audit. Working directory /workspace/proofs; command timeout120s lake env lean /audit/Audit.lean, with the usual space between timeout and120s. Raw tool result compile.json. Scope remains the attached-orbit cardinality/independence premise, not the remaining incidence contradiction or unrestricted graph exclusion.

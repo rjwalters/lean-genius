@@ -1,0 +1,28 @@
+{
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=4096m",
+    "--memory-swap=4096m",
+    "--cpus=2",
+    "-v",
+    "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration:/workspace:ro",
+    "-v",
+    "lean-mathlib-cache:/workspace/proofs/.lake/build:ro",
+    "-v",
+    "lean-mathlib-packages:/workspace/proofs/.lake/packages:ro",
+    "-v",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/review-2196:/audit:ro",
+    "-w",
+    "/workspace/proofs",
+    "lean4-arm64:v4.31.0",
+    "/bin/bash",
+    "-c",
+    "timeout 120s lake env lean /audit/FinalAudit.lean"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 12.404789959080517,
+  "stdout": "'Erdos85.exists_attached_neighbor_of_moved_card_seventySeven' depends on axioms: [propext, Classical.choice, Quot.sound]\n'Erdos85.no_nonidentity_period_seven_of_card_seventyEight_or_eighty' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+  "stderr": ""
+}

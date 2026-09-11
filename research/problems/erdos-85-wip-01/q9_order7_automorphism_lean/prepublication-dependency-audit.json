@@ -1,0 +1,223 @@
+{
+  "Erdos85OrderSevenAutomorphism": {
+    "sha256": "6970b6f36422422bdb1ccacc2767e05c0f6f41cffbb9cd7d5daa7c85b611d5c6",
+    "committed": false,
+    "imports": [
+      "Erdos85OrderSevenSmallFixedSet",
+      "Erdos85AttachedReceiverSaturation",
+      "Erdos85NeighborCover"
+    ]
+  },
+  "Erdos85NeighborCover": {
+    "sha256": "281e7317d20cade03d68f130e1cd8107e059ae5af0d43f3a5126d9436492e870",
+    "committed": true,
+    "imports": [
+      "Erdos85Problem"
+    ]
+  },
+  "Erdos85Problem": {
+    "sha256": "ac93ab677ff54606330a179d764418e4e317d477aba5cce604a5d3e6de48ed95",
+    "committed": true,
+    "imports": []
+  },
+  "Erdos85AttachedReceiverSaturation": {
+    "sha256": "b6ef5f36ada0e50064ecd9ffc5f9faad3c0a494691759e285bdf66d60791bef0",
+    "committed": false,
+    "imports": [
+      "Erdos85AttachedMovedBound"
+    ]
+  },
+  "Erdos85AttachedMovedBound": {
+    "sha256": "870e9053f54e043cf70be2724418ad5a035831f7ff727282c86c72607417fc21",
+    "committed": false,
+    "imports": [
+      "Erdos85AttachedNeighborSets",
+      "Erdos85GadgetCounting"
+    ]
+  },
+  "Erdos85GadgetCounting": {
+    "sha256": "a2e5013330a590d247a606e3d7e0ad00e4f7d5d45960b0b76c81df3ed7716443",
+    "committed": true,
+    "imports": [
+      "Erdos85GadgetExtension"
+    ]
+  },
+  "Erdos85GadgetExtension": {
+    "sha256": "45fe94f3d806d387722f36fd6cadeef3587a3ce7e646f21f9fec8573c2c605a9",
+    "committed": true,
+    "imports": [
+      "Erdos85Extension"
+    ]
+  },
+  "Erdos85Extension": {
+    "sha256": "ef2d97ff115fa54b7f3040cd422ecaa58a94bac3da31608153c16b13ebe9a6aa",
+    "committed": true,
+    "imports": [
+      "Erdos85Problem"
+    ]
+  },
+  "Erdos85AttachedNeighborSets": {
+    "sha256": "563172b252b15b0be075b1808e65f694714825891d679c19d7bfaa0db226c7d2",
+    "committed": false,
+    "imports": [
+      "Erdos85AttachedPrimeOrbit",
+      "Erdos85FixedNeighbors"
+    ]
+  },
+  "Erdos85FixedNeighbors": {
+    "sha256": "335aceba603c1bec33e96627d16a95eca325404203e0b619f5edda767d5300ab",
+    "committed": true,
+    "imports": [
+      "Erdos85Problem"
+    ]
+  },
+  "Erdos85AttachedPrimeOrbit": {
+    "sha256": "437233415a4c85ec5b4504ad890a1f7a7dbbc2ffe6b07dbc48f787565a44194f",
+    "committed": false,
+    "imports": [
+      "Erdos85PrimeOrbitMatching"
+    ]
+  },
+  "Erdos85PrimeOrbitMatching": {
+    "sha256": "b926b1cbcc01d1a9ffaaa68c36b052ffa2c5d20b5ce42bb6638143bee8a07c72",
+    "committed": true,
+    "imports": [
+      "Erdos85Problem"
+    ]
+  },
+  "Erdos85OrderSevenSmallFixedSet": {
+    "sha256": "c46b2a3ff02db78548c919966c2a7c57435baf86b11a235c2e50780cb7fc819b",
+    "committed": false,
+    "imports": [
+      "Erdos85AttachedMovedBound",
+      "Erdos85OrderSevenFixedGraph"
+    ]
+  },
+  "Erdos85OrderSevenFixedGraph": {
+    "sha256": "d1b63366d9b75e76a14181cecb6d1713a8fcc503d441f32a12e67fcb40af44c0",
+    "committed": true,
+    "imports": [
+      "Erdos85PrimeFixedDegree",
+      "Erdos85FixedBoundary",
+      "Erdos85MovedCard",
+      "Erdos85TwoNineDegreeReduction"
+    ]
+  },
+  "Erdos85TwoNineDegreeReduction": {
+    "sha256": "bebfcf3d20e91e27b95f0418ecbf4669392305747b21f64d202f096e02541d54",
+    "committed": true,
+    "imports": [
+      "Erdos85GadgetDegreeSquares"
+    ]
+  },
+  "Erdos85GadgetDegreeSquares": {
+    "sha256": "09fe1462689286deb562fd31a0256ec08df805a65349b175b71a8d02d39e2f33",
+    "committed": true,
+    "imports": [
+      "Erdos85GadgetMultiplicity"
+    ]
+  },
+  "Erdos85GadgetMultiplicity": {
+    "sha256": "e61534a0769af91fb123944cbbd05008a9c2f3ed57782744820af2635c4e3ba2",
+    "committed": true,
+    "imports": [
+      "Erdos85CompensatedGadget"
+    ]
+  },
+  "Erdos85CompensatedGadget": {
+    "sha256": "9959abf8e774f44eacf3d49c25e413ef5fc6088cb824448e73880c7d9a09ef0d",
+    "committed": true,
+    "imports": [
+      "Erdos85DeleteGadget",
+      "Erdos85GadgetCounting"
+    ]
+  },
+  "Erdos85DeleteGadget": {
+    "sha256": "9f8db014fb6c3b82cf0a5deedcb03cc8547467d52e37627e869dc7df3aae6908",
+    "committed": true,
+    "imports": [
+      "Erdos85ControlledDeletion",
+      "Erdos85GadgetExtension"
+    ]
+  },
+  "Erdos85ControlledDeletion": {
+    "sha256": "eac7de1b9b2bcb439faee93a1bce01ecef6f0f6dd1f54e918b47df3dff053c35",
+    "committed": true,
+    "imports": [
+      "Erdos85Relabel"
+    ]
+  },
+  "Erdos85Relabel": {
+    "sha256": "53ea2ddb34b984163f41db8f91aeffc88b428297bd2dff40710e3e5458980e00",
+    "committed": true,
+    "imports": [
+      "Erdos85Problem"
+    ]
+  },
+  "Erdos85MovedCard": {
+    "sha256": "5bc607e22ad6580ed5f4f22fbdfaf251b39af3e6e4bf93025a276cc947766953",
+    "committed": true,
+    "imports": [
+      "Erdos85MovedDegree",
+      "Erdos85DistanceLayers"
+    ]
+  },
+  "Erdos85DistanceLayers": {
+    "sha256": "299d4261d62000a23a34b369682a6bb6c1e6af1c79505785154c3195a14d76a7",
+    "committed": true,
+    "imports": [
+      "Erdos85RepairSet"
+    ]
+  },
+  "Erdos85RepairSet": {
+    "sha256": "018289be8ed501f603b58275126bda01b0300d63d5fd0d888f7b2287794bc1a0",
+    "committed": true,
+    "imports": [
+      "Erdos85DeletePair"
+    ]
+  },
+  "Erdos85DeletePair": {
+    "sha256": "7123f409aa6385a6e6e1b383b228b90bc41ecdbd273e715895f0b7484fd5eefa",
+    "committed": true,
+    "imports": [
+      "Erdos85VertexDeletion",
+      "Erdos85PairedWitness"
+    ]
+  },
+  "Erdos85PairedWitness": {
+    "sha256": "34b141900122d0f41c7eed1dac46c16f1436fb8650e1e00f3e65447e16b4fcf2",
+    "committed": true,
+    "imports": [
+      "Erdos85Extension"
+    ]
+  },
+  "Erdos85VertexDeletion": {
+    "sha256": "6e90a168d30aa92a212efb01aaf52aba50e2276f6032a0f76a7334e4953a6845",
+    "committed": true,
+    "imports": [
+      "Erdos85Relabel"
+    ]
+  },
+  "Erdos85MovedDegree": {
+    "sha256": "015fa643d0495045f255749932f25ae8e5a89c36edc6ebf77060aaeb410389ea",
+    "committed": true,
+    "imports": [
+      "Erdos85FixedNeighbors"
+    ]
+  },
+  "Erdos85FixedBoundary": {
+    "sha256": "886f601c8f7dc384903656198b30abe430cf095048100a8ece2c9e51347ba2ca",
+    "committed": true,
+    "imports": [
+      "Erdos85FixedNeighbors",
+      "Erdos85GadgetCounting"
+    ]
+  },
+  "Erdos85PrimeFixedDegree": {
+    "sha256": "eb7c00b04e38b617f5694bc8209f91214339c0958a9c854f20b149ef7e8de0f5",
+    "committed": true,
+    "imports": [
+      "Erdos85Problem"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": 2182,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Short paper group corollary of accepted2166: N78 Aut order not divisible5. At N80 every5-subgroup has trivial vertex stabilizers, since nontrivial stabilizer contains order5 by Cauchy; all orbits have subgroup order, which divides80, hence subgroup order<=5. Thus Sylow5 order<=5 and25 does not divide|Aut|. Combined2163/2169 prime support gives2^a3^b at78 and2^a3^b5^e,e<=1 at80. Please audit when free; no graph exclusion/Lean/search claim, and mixed cyclic10/20 actions not excluded by this corollary.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-five-subgroup-bound/pins.json\"]",
+  "priority": "low",
+  "status": "resolved",
+  "created_ts": "2026-09-11T04:10:43.550Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T04:11:51.189Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T04:12:16.352Z",
+  "resolution": "PASS. Source pin and live2163/2166/2169 verified. Any nontrivial point stabilizer in a5-subgroup has an order5 element by Cauchy, contradicting2166 at80; thus orbits have full subgroup order dividing80, so Sylow5 order<=5. At78 Cauchy excludes factor5 entirely. Prime factorizations and mixed-action limitations correct. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2182. Paper corollary only, no graph/Lean exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

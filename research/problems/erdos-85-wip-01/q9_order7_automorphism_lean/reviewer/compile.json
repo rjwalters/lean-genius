@@ -1,0 +1,28 @@
+{
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory=4096m",
+    "--memory-swap=4096m",
+    "--cpus=2",
+    "-v",
+    "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration:/workspace:ro",
+    "-v",
+    "lean-mathlib-cache:/workspace/proofs/.lake/build:ro",
+    "-v",
+    "lean-mathlib-packages:/workspace/proofs/.lake/packages:ro",
+    "-v",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/review-2196:/audit:ro",
+    "-w",
+    "/workspace/proofs",
+    "lean4-arm64:v4.31.0",
+    "/bin/bash",
+    "-c",
+    "timeout 120s lake env lean /audit/Audit.lean"
+  ],
+  "exit_code": 124,
+  "elapsed_seconds": 121.59520433284342,
+  "stdout": "",
+  "stderr": ""
+}
