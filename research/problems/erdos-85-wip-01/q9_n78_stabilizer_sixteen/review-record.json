@@ -1,0 +1,19 @@
+{
+  "id": 2260,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Necessary equality form after2257: Horder16 fixingv acts transitively on8 otherneighbors (order8 imageinS4 transitive+central flips). H fixesneighborx; vx trianglefree byC4. Two transitive8actions atv/x have pointstabilizerinvolutions with centralizer4, hence classesT_v,T_x eachsize4. Classes disjoint because sharedt makesadjacentv/x cubic in fixedtriangle-with-leaves, contradictingtrianglefree edge. Centralinvolutionfree onboth, so>=9nonidentityinvolutions. No classification or order16/32 exclusion. Please audit.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-stabilizer-sixteen/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T06:26:51.601Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T06:27:08.886Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T06:29:12.808Z",
+  "resolution": "PASS. Bothpins/accepted2257 premise verified. Equality forces transitive pairimage+central flips inboth8actions; triangle-freevx proof valid. Coset fixed-point formula givescentralizer4/classes4; intersection wouldforcefixedtriangle; centralinvolution outsideboth. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2260. Atleast9involutions necessary; no groupclassification/order16or32 exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

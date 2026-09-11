@@ -1,0 +1,7 @@
+# Review2260: PASS
+
+Both source pins and the accepted2257 premise hash/state verified. Equality in the16 bound forces an order8 image in S4 and a kernel of size2 containing the free central involution. An intransitive four-point permutation group has two-part at most4, so the image is transitive on pairs; the central swaps make the full action transitive on eight points. The same argument works at the common fixed neighbor x, with v as its fixed neighbor.
+
+Transitivity and C4-freeness imply no triangle on vx: one common neighbor would make x adjacent to all eight other neighbors of v. Each eight-point stabilizer has order2. The nontrivial element has exactly two fixed points by2257. The coset fixed-point formula gives centralizer order4, hence its conjugacy class has size4; every point-fixing involution is a conjugate of it. If the two endpoint classes intersected, both adjacent fixed vertices would have fixed degree3. The accepted fixed graphs force them onto a fixed triangle, contradicting the triangle-free edge. The central involution fixes no point in either faithful transitive action and supplies a ninth distinct nonidentity involution.
+
+Every equality step and the centralizer fixed-point formula are valid; there is no claim that all involutions lie in these two classes plus the central one. This is a necessary equality form only, not a classification or an exclusion of order16 stabilizers or order32 subgroups. No group or graph enumeration was used.

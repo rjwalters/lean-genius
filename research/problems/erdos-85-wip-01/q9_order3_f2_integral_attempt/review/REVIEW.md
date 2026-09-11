@@ -1,0 +1,5 @@
+# Review2254: PASS, receipts only
+
+All pinned source files and three external input hashes verified. Complete ordered root accounting is0..116 exactly once. Roots0..86 each have a saved numerical result with time-limit status1, null candidate vector and null reported node count, paired with an UNKNOWN receipt. Roots87..116 are exactly UNVISITED and have no numerical files. No witness files exist. Original limits are180 aggregate seconds,2 allocated solver seconds per root and1000 nodes. The last allocation is shortened below2; recorded elapsed180.038643 seconds and slight cooperative per-call overruns are preserved honestly.
+
+Runner read independently: accepted canonical model hash is checked before each visited call; result is saved before any candidate rounding; any numerical infeasibility would be classified unverified; exact quotient checks precede a witness verdict. The actual receipts exercise neither candidate acceptance nor infeasibility. This audit establishes consistency of saved status accounting and scope, not solver correctness or any graph/quotient conclusion. No solver was imported, launched, replayed, or retried during review.

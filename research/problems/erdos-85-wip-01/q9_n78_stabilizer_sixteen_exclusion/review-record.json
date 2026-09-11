@@ -1,0 +1,19 @@
+{
+  "id": 2262,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Conditional closure after2261: no vertex-fixingH16, hence vertex2stabilizers<=8/global2subgroups<=16. Filled key step: transitiveOmega8 internaldegree0/1; zero needs82vertices, so perfectmatching. Reflection fixes2Omega points, which matchingpairs, so fixedtriangle plus odddegrees forcesexact6vertices. Centralz swapsothercentres+leaves, Fixh intersectFixz={v,x}. zFix6 via2253. On72 outsideFixz, eightreflections fix4 each, nonidentityrotations0; Burnside104/16 impossible. Please audit full localmatching/fixedgraph intersection andcount; no search/Lean/fullgraphclosure.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-stabilizer-sixteen-exclusion/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T06:31:43.553Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T06:32:19.449Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T06:33:04.149Z",
+  "resolution": "PASS FULL H16 VERTEX-STABILIZER EXCLUSION. All3pins/4acceptedpremises verified. Independent localmatching82-bound, reflectionfixedtriangle+two distinctleaves, exact intersectionFixh/Fixz={v,x}, allrotationpower/fixedpoint andBurnside104/16 steps audited. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2262. Thusvertex2stabilizers<=8 andall2-subgroups<=16 atN78. Paper proof, no Lean/globalgraphclosure.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

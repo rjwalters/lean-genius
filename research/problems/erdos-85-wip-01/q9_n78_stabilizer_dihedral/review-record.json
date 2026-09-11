@@ -1,0 +1,19 @@
+{
+  "id": 2261,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Stronger conditional followup2260: equalityH16 is dihedral16. Pick noncommutingt inT_v,s inT_x (centralizer4 cannotcontainwholeTx+identity). r=ts order4or8. If4, K=<t,s>=D8 index2normal; its5involutions split t/r\u00b2t inTv,s/r\u00b2s inTx,centralr\u00b2 centralizer>=8 notTv. Thus normalK containsatmost2 ofthe4-elementHclassTv, contradiction. So r8 generatesD16=H. No classification/search. Please review after2260.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-stabilizer-dihedral/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T06:29:03.601Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T06:31:29.395Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T06:31:59.879Z",
+  "resolution": "PASS. Bothpins/accepted2260 premise verified. Noncommuting pair, reduceddihedralwords/cardinality, order4/8 dichotomy, index2normality and two-conjugate-pair/centralizer contradiction audited. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2261. EqualityH16 isdihedral16; notyet occurrence exclusion; no classification/search/Lean.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
