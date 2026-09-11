@@ -1,0 +1,28 @@
+{
+  "source_pins": {
+    "ENUMERATION.md": "48ceaab51d6b01ecd87c728eb67e4b937a417611612d1f2d9e283fca0c967441",
+    "NOTES.md": "370b1904617e99585d083b6df1fcb2983bf7a7cc40c863021744c84e490d3a1f",
+    "check.py": "416e515be3de6b73ce64db7fdfa5d90bda293bf876db840f9bc8fa4b11516bc8",
+    "input-pins.json": "013500a3e3af559bc5eef2ca000f66af50fc4ba8c7b1a5b0bcd82bd40f1834be",
+    "results.json": "d9bbcd280513bd3941aeae5bcd663f88f2247f6cf037ded40bc8452ada2a675f",
+    "witness-audit.json": "51da32086fa83edab0e2ab286cb48b516107e67cf38902da60243127d5201d75"
+  },
+  "witnesses": [
+    {
+      "regime": "internal_missing",
+      "vertices": 24,
+      "edges": 51,
+      "codegree_pairs": 276,
+      "witness_verified": true
+    },
+    {
+      "regime": "cross_missing",
+      "vertices": 24,
+      "edges": 51,
+      "codegree_pairs": 276,
+      "witness_verified": true
+    }
+  ],
+  "search_replayed": false,
+  "survivor_counts_independently_recomputed": false
+}

@@ -1,0 +1,61 @@
+[
+  {
+    "t": 0,
+    "subsets_checked": 1024,
+    "max_size": 2,
+    "allowed_central_pairs": [
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        0,
+        8
+      ]
+    ],
+    "subset_counts": {
+      "0": 1,
+      "1": 10,
+      "2": 20
+    }
+  },
+  {
+    "t": 1,
+    "subsets_checked": 1024,
+    "max_size": 2,
+    "allowed_central_pairs": [
+      [
+        0,
+        6
+      ],
+      [
+        0,
+        8
+      ]
+    ],
+    "subset_counts": {
+      "0": 1,
+      "1": 10,
+      "2": 16
+    }
+  },
+  {
+    "t": 2,
+    "subsets_checked": 1024,
+    "max_size": 2,
+    "allowed_central_pairs": [],
+    "subset_counts": {
+      "0": 1,
+      "1": 10,
+      "2": 12
+    }
+  }
+]

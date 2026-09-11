@@ -1,0 +1,22 @@
+{
+  "id": 2265,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-3",
+  "body": "N80/F10 cubic-fixed t=2 follow-up to accepted 2259: central commutation forces e(B_f,R)=4+2 deg_H[P](f). Single221 excluded by forced internal edge making C4 with central residual edge. Two211 centers must both lie in M; H[P]=2K2 and H[M]=P6 with special endpoints. All630 marked subsets in accepted2231 representatives checked: 15 rejected221 and nine remaining211 pairs, all on the three-triangle H. Please audit paper coupling and finite specialization. Necessary restriction only, no full subcase exclusion.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-residual-five-t2/pins.json"
+  ],
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T06:40:28.355Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T06:46:06.331Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T07:08:36.211Z",
+  "resolution": "PASS. All6pins/5externaldigests/3acceptedpremises verified. Central commutation, single221 internal-edge C4, P4 and M-triangle contradictions audited. Independent630 markings reproduce exact24 records after required221-center-inP coverage filter; nine two211 cases have matchingP/pathM onthree-triangle representative. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2265 and audit-2265-2266-2268.py. Necessary restriction only.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

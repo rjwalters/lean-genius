@@ -1,0 +1,22 @@
+{
+  "id": 2272,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-3",
+  "body": "All t=0/1/2 degree-five shapes: central commutation gives deg_P(f)=1+delta_f-T_f with0<=T_f<=delta_f, since E_FW hasdelta freeorbits andcentralvertex cannotmeetbothmembers. Thus P4 dominatesH, outsideP deg_P<=2. Paper gives H[P]star withM2regular, or H[P]2K2 withM=P6. All630 marked H/P tests leave15star+9matching/path cases; totalcentralcorrection4-2t. Uses accepted2231/2251/2259 only, independent of pending2265/2270. Please audit necessary restriction; no t0/1 exclusion.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-degree-five-centers/pins.json"
+  ],
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T06:50:14.157Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T06:51:24.435Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T06:52:45.688Z",
+  "resolution": "PASS. All6pins/6externaldigests/3acceptedpremises verified. Exact commutation degP=1+delta-T andTbound, P4/triangle C4 exclusions, correction4-2t audited. Independent630markedcases exactlymatch24records:15stars+9matching/P6, bygraph10/4/1 and0/0/9. Evidence /tmp/erdos85-sol1-review2272. Necessary allt restriction, no t0/1 or fullgraph exclusion; independent ofpending2265/2270.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

@@ -1,0 +1,406 @@
+{
+  "marked_pairs_checked": 630,
+  "counts": {
+    "0_triangles_one221": 10,
+    "2_triangles_one221": 4,
+    "3_triangles_two211": 9,
+    "3_triangles_one221": 1
+  },
+  "retained": [
+    {
+      "graph_index": 0,
+      "P": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "special": [
+        0
+      ],
+      "kind": "one221"
+    },
+    {
+      "graph_index": 0,
+      "P": [
+        0,
+        1,
+        4,
+        7
+      ],
+      "special": [
+        1
+      ],
+      "kind": "one221"
+    },
+    {
+      "graph_index": 0,
+      "P": [
+        0,
+        2,
+        5,
+        8
+      ],
+      "special": [
+        2
+      ],
+      "kind": "one221"
+    },
+    {
+      "graph_index": 0,
+      "P": [
+        0,
+        3,
+        6,
+        9
+      ],
+      "special": [
+        3
+      ],
+      "kind": "one221"
+    },
+    {
+      "graph_index": 0,
+      "P": [
+        1,
+        4,
+        5,
+        9
+      ],
+      "special": [
+        4
+      ],
+      "kind": "one221"
+    },
+    {
+      "graph_index": 0,
+      "P": [
+        1,
+        6,
+        7,
+        8
+      ],
+      "special": [
+        7
+      ],
+      "kind": "one221"
+    },
+    {
+      "graph_index": 0,
+      "P": [
+        2,
+        4,
+        5,
+        6
+      ],
+      "special": [
+        5
+      ],
+      "kind": "one221"
+    },
+    {
+      "graph_index": 0,
+      "P": [
+        2,
+        7,
+        8,
+        9
+      ],
+      "special": [
+        8
+      ],
+      "kind": "one221"
+    },
+    {
+      "graph_index": 0,
+      "P": [
+        3,
+        4,
+        8,
+        9
+      ],
+      "special": [
+        9
+      ],
+      "kind": "one221"
+    },
+    {
+      "graph_index": 0,
+      "P": [
+        3,
+        5,
+        6,
+        7
+      ],
+      "special": [
+        6
+      ],
+      "kind": "one221"
+    },
+    {
+      "graph_index": 1,
+      "P": [
+        0,
+        3,
+        6,
+        9
+      ],
+      "special": [
+        3
+      ],
+      "kind": "one221"
+    },
+    {
+      "graph_index": 1,
+      "P": [
+        1,
+        4,
+        7,
+        9
+      ],
+      "special": [
+        4
+      ],
+      "kind": "one221"
+    },
+    {
+      "graph_index": 1,
+      "P": [
+        2,
+        5,
+        8,
+        9
+      ],
+      "special": [
+        5
+      ],
+      "kind": "one221"
+    },
+    {
+      "graph_index": 1,
+      "P": [
+        3,
+        4,
+        5,
+        9
+      ],
+      "special": [
+        9
+      ],
+      "kind": "one221"
+    },
+    {
+      "graph_index": 2,
+      "P": [
+        0,
+        1,
+        7,
+        8
+      ],
+      "special": [
+        2,
+        3
+      ],
+      "kind": "two211",
+      "M_path": [
+        2,
+        5,
+        9,
+        4,
+        6,
+        3
+      ]
+    },
+    {
+      "graph_index": 2,
+      "P": [
+        0,
+        3,
+        4,
+        9
+      ],
+      "special": [
+        1,
+        6
+      ],
+      "kind": "two211",
+      "M_path": [
+        1,
+        2,
+        5,
+        8,
+        7,
+        6
+      ]
+    },
+    {
+      "graph_index": 2,
+      "P": [
+        0,
+        3,
+        5,
+        9
+      ],
+      "special": [
+        2,
+        8
+      ],
+      "kind": "two211",
+      "M_path": [
+        2,
+        1,
+        4,
+        6,
+        7,
+        8
+      ]
+    },
+    {
+      "graph_index": 2,
+      "P": [
+        0,
+        3,
+        8,
+        9
+      ],
+      "special": [
+        5,
+        7
+      ],
+      "kind": "two211",
+      "M_path": [
+        5,
+        2,
+        1,
+        4,
+        6,
+        7
+      ]
+    },
+    {
+      "graph_index": 2,
+      "P": [
+        1,
+        2,
+        7,
+        8
+      ],
+      "special": [
+        0,
+        5
+      ],
+      "kind": "two211",
+      "M_path": [
+        0,
+        3,
+        6,
+        4,
+        9,
+        5
+      ]
+    },
+    {
+      "graph_index": 2,
+      "P": [
+        1,
+        4,
+        6,
+        9
+      ],
+      "special": [
+        4
+      ],
+      "kind": "one221"
+    },
+    {
+      "graph_index": 2,
+      "P": [
+        1,
+        4,
+        7,
+        8
+      ],
+      "special": [
+        6,
+        9
+      ],
+      "kind": "two211",
+      "M_path": [
+        6,
+        3,
+        0,
+        2,
+        5,
+        9
+      ]
+    },
+    {
+      "graph_index": 2,
+      "P": [
+        2,
+        3,
+        5,
+        6
+      ],
+      "special": [
+        0,
+        7
+      ],
+      "kind": "two211",
+      "M_path": [
+        0,
+        1,
+        4,
+        9,
+        8,
+        7
+      ]
+    },
+    {
+      "graph_index": 2,
+      "P": [
+        2,
+        4,
+        5,
+        6
+      ],
+      "special": [
+        1,
+        9
+      ],
+      "kind": "two211",
+      "M_path": [
+        1,
+        0,
+        3,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "graph_index": 2,
+      "P": [
+        2,
+        5,
+        6,
+        7
+      ],
+      "special": [
+        3,
+        8
+      ],
+      "kind": "two211",
+      "M_path": [
+        3,
+        0,
+        1,
+        4,
+        9,
+        8
+      ]
+    }
+  ],
+  "surviving_marked_pairs": 9,
+  "scope": "Necessary fixed-graph restriction only"
+}

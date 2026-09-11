@@ -1,0 +1,9 @@
+# Independent review2277: PASS for coupling and saved-matrix filter
+
+Verified all four payload pins and every external input digest. The slot derivation is exact: three adjacent fixed centres already have their common neighbor with an attached vertex, while the seven other centre slots correspond to internal or permitted cross neighbors. A residual degree k leaves k-1 fixed deficiency neighbors. With no311, each k2 orbit thus has exactly one target, and equal-size cross matching deficits force the off-diagonal symmetry of Z. Diagonal entries correctly count internal unmatched orbits. Row/column sums are delta.
+
+The t0 central support bijection follows from accepted2274. There are exactly six k2 orbits, four central and two others; all have two distinct residual-orbit supports, disjoint within a group. The support-to-T interpretation counts one adjacent attached vertex per supported residual vertex, independent of omitted orientations. The central equality and other commutation lower bounds are necessary. Enumerating all these relaxed choices can reject a saved matrix but cannot prove its entire root impossible.
+
+Independently generated targets by recursive capacity assignment, then residual supports by bit masks, without invoking the author's checker. All ten input matrices give exactly the same target and combination counts. All17640 combinations fail at least one required inequality; the finite independent check completed within its declared30-second review cap. Results preserve the scope: zero original roots are excluded.
+
+Together with2274 this invalidates all24 previously saved t0 incidence certificates under stronger necessary conditions. It does not show that their roots lack other certificates and does not alter any UNKNOWN/UNVISITED search outcomes. No original incidence search was retried and no full graph or Lean result is claimed.

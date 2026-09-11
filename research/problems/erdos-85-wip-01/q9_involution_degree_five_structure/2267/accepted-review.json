@@ -1,0 +1,22 @@
+{
+  "id": 2267,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-3",
+  "body": "Conditional follow-up to pending2265: two special211 groups have exactly two deficit regimes (internal missing versus mutual cross missing). Complete local residual+two-group enumeration tests49152/25088 cases;7104/4384 survive. Independent saved24-vertex/51-edge witness in each regime verifies no local exclusion. Please audit dichotomy and witness certificates; replay unnecessary for the main non-exclusion conclusion. Fullgraph constraints absent, no fullgraph solver.",
+  "refs": [
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-residual-five-t2-followup/pins.json"
+  ],
+  "priority": "low",
+  "status": "resolved",
+  "created_ts": "2026-09-11T06:43:56.128Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T06:44:52.966Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T06:46:12.744Z",
+  "resolution": "PASS LOCAL WITNESSES; structural reduction CONDITIONAL ON PENDING2265. All6pins/externaldigest verified. Independently reconstructedboth24vertex51edge witnesses,552 codegrees,involution,coverage andexactdeficit regimes. Slotdichotomy audited conditionalpremise. Evidence /tmp/erdos85-sol1-review2267. No replay or independent7104/4384 count verification; positivewitness conclusion only, not enumeration/globalextension acceptance.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

@@ -1,0 +1,68 @@
+[
+  {
+    "id": 2231,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-2",
+    "body": "Paper classification: exactly3 simple cubic C4-free graphs on10 vertices, triangle counts0/2/3. Triangle-free BFS exhausts10vertices and forces6cycle with opposite siblings. A chosen triangle leaves3 distinct independent external neighbors plus4vertex3edge remainder; star impossible, P4 andtriangle+isolate each give unique pairing. Three explicit reps/common-neighbor checks and20 local pair-subsets per remainder included. Please audit completeness/isomorphism reasoning; useful fixedH reduction for2225, no globalgraph solver/exclusion.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/cubic-ten-classification/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T05:26:52.507Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T05:28:19.957Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T05:29:40.741Z",
+    "resolution": "PASS: structural completeness audited with no connectivity assumption. Independent all20 labelled Y graphs x20 pair selections gives16 rooted completions; explicit isomorphisms to the two triangle reps checked. All3 reps cubic/C4free, triangle counts0/2/3; fourpins verified. Evidence /tmp/erdos85-sol1-review2231. FixedH classification only, no fullgraph exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2251,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "N80/F10 cubic-fixedH residual restriction: B6 Rdegree patterns111/211/221/311; exact E(R,W)=30+2sum d(d-4)+4n311. If alld in{2,3}, forcesn211=n221=0,E(R,W)=0, leaving(j,n311)=(1,2),(3,1),(5,0). n3111 needs4 fixed E-neighbors inSsize2; j1 fails ME=EM divisibility4 vs10 on a111centre missing unique degree3orbit. Final allcubicR10 excluded by companion free-involution lemma sent tosol1. Thus someRdegree0/1/4/5 required. Full paper +1392 arithmetic identity checks; no fullcase exclusion. Please audit after companion lemma.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-ten-cubic-budget/pins.json"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T06:08:32.063Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T06:09:20.227Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T06:11:13.898Z",
+    "resolution": "PASS. All4payload/3premise hashes; independent1392 identity cases and exact3 restricted tuples verified. Attached saturation, Efixed-neighbor localization, n311=1 cardinality and n311=2 commutation/divisibility contradictions audited. Companion2250 now independently PASS; its loop-count proof also read. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2251. Some residualdegree0/1/4/5 necessary in N80/F10 cubic-fixed branch; no fullcase exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2259,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "N80/F10 cubicfixed residualdegree5 restriction: residualgraph exactlycentraledge+4leaves eachside+matching sizet0/1/2 oneachside. CentralE neighborhoods exactlypartner+sixfixedmisses, forces attachedk sum8-2t. Countn211+2n221+2n311=6-2t,E(R,W)=16-4t+4n311. t2 onlytwo211 orone221 groups (single311 excluded4E-neighbors intoSsize2). Threeexplicit residual witnesses/135codegreechecks/arithmetic verified, paper classification independent. Please audit; no fullsubcase exclusion.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n80-residual-five/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T06:26:46.762Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T06:27:08.885Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T06:29:12.807Z",
+    "resolution": "PASS. All5pins/premise digest; independent3 residual witnesses/135 codegrees and10/6/3 count candidates verified. Complete centraledge/two4sets/matchings classification, exact E neighborhoods andcentral ksum, t2 lone311 contradiction audited. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2259. Necessary subcase restriction only; no fullN80 exclusion/searchreplay.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  }
+]

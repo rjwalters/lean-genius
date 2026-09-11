@@ -1,0 +1,9 @@
+# Independent review2272: PASS
+
+All six source pins, six external input digests, and three accepted premise states verified. Rebuilt all three cubic C4-free fixed graphs and checked every one of their210 four-subsets independently. All630 marked cases give exactly the submitted24 retained records, with star/matching counts(10,0),(4,0),(1,9). Independently checked connectivity of every asserted residual P6.
+
+The graph derivation is sound. The fixed E block has degree three, missed residual orbits contribute twice their number, so the attached E-neighbors form exactly delta free involution orbits. A residual vertex cannot meet both members of one such orbit, since its involution mate would share both attached neighbors. Thus0<=T<=delta. At(f,x), the two sides of adjacency/deficiency commutation count fixed neighbors in M and T plus the missed-orbit count respectively; this proves deg_P=1+delta-T. Outside P the missed central orbit forcesdelta<=1. Cubicity and|P|=4 give total P-degree twelve and the two stated excess-degree patterns.
+
+Audited both paper exclusions used to classify the patterns. In an induced P4, an interior vertex has only one M-neighbor; the next two M vertices cannot use that interior label or either neighboring P label, leaving the same far endpoint label and a C4. In the matching case a triangle in M needs three distinct P labels, two of which are matched, again creating a C4. With the remaining M degree sequence, absence of cycles forcesP6. The star case gives a two-regular six-vertex remainder, henceC6 or2K3. Finally summing the exact commutation equation gives total correction4-2t as stated.
+
+Necessary restrictions verified for all three t values. This does not exclude t0/t1, accept pending2265/2270, or verify a full graph extension. No graph search or Lean formalization was performed in this review.

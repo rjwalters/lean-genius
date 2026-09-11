@@ -1,0 +1,74 @@
+{
+  "source_pins": {
+    "PROOF.md": "2abeb2ab6d33d98f5e67533cc1374a743a488f8555bed58e5312175b5e79289e",
+    "check.py": "a140473379fbdb1b608d9f0469a81208e9e64efcddb60758d91fa7f32f968b40",
+    "input-pins.json": "f10fd222a86c599be6c1c64d197090cac4756a87c9e727f739e44e9cad825ec4",
+    "results.json": "566151826a16c25011945ea5b39e034c485bd088d3af517d01679114bba9d08b",
+    "saved-witness-filter.json": "88f26196e68ed3ec10b08d628349f52d989aedb66c09cb98624dc673814b9156"
+  },
+  "local_subset_checks": 3072,
+  "local_results": [
+    {
+      "t": 0,
+      "subsets_checked": 1024,
+      "max_size": 2,
+      "allowed_central_pairs": [
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          8
+        ]
+      ],
+      "subset_counts": {
+        "0": 1,
+        "1": 10,
+        "2": 20
+      }
+    },
+    {
+      "t": 1,
+      "subsets_checked": 1024,
+      "max_size": 2,
+      "allowed_central_pairs": [
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          8
+        ]
+      ],
+      "subset_counts": {
+        "0": 1,
+        "1": 10,
+        "2": 16
+      }
+    },
+    {
+      "t": 2,
+      "subsets_checked": 1024,
+      "max_size": 2,
+      "allowed_central_pairs": [],
+      "subset_counts": {
+        "0": 1,
+        "1": 10,
+        "2": 12
+      }
+    }
+  ],
+  "saved_witnesses_filtered": 24,
+  "rejected_certificates_only": 14,
+  "roots_excluded": 0
+}
