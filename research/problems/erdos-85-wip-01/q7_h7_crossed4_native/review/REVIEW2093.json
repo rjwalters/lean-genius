@@ -1,0 +1,54 @@
+{
+  "review": 2093,
+  "status": "PASS",
+  "scope": "Crossed4 whole profile excluded; no wholea6/a7/H7/global/Lean closure.",
+  "counts": {
+    "local": 401,
+    "arc": 3379
+  },
+  "complete_rows": 2796423,
+  "deletion_batches": 45575,
+  "failed_supports": 1219393,
+  "source_pins": {
+    "README.md": "596b6f43aae057ad6740e40fe274d6cb04939d14e000047a5efe9a1a40a84a0d",
+    "build.sh": "cc5462a97dbc63850767658687203a22fc011f9b94b739bbc5cf42590f181006",
+    "census-results.json": "2561c4a59c61e7656eeb92c74ef4af4c99455f29d92ae65d3d75baad7cd138a2",
+    "cover.py": "c32ba8951c06fdc8047d942dbd39d938a32e31d738bfd9bd60537719efe7a179",
+    "filter.cpp": "b0128564867d6e825919b561449f6df9305e22046cec8d687fd247d623ef09a5",
+    "filter.dylib": "16efd88dc4e120bb439ee82c79c3f117728742c7afde0069cbe23dd5dfac96c1",
+    "input-pins.json": "a4658b91f294f9679d4914f6600a4a5b11f31ffccedd48518fa67723956cf69c",
+    "local_filter.py": "b2db79822c2be45dee5b17d545dab87037d766d8ddf777fe6bf751c8c5fb4ca2",
+    "native-api-pins.json": "c6ba4eb6bf842135e34ede4390f9ffe30db685f9b10583d15dfb755d631b2af4",
+    "native.py": "a3b59d3b39d90706c1ad147bae6fb75ac0dea69d72f01da09caa0ef8cb8ad0e5",
+    "profile-source.json": "9eead59c72c959cdf7f96943cca5c573b8541256499dd3efdaf201fd603ce0c3",
+    "results.json.gz": "c6061d88ad3027150143a3440020a3ffc4f7121894523f65ad52280bbb4aa78f",
+    "run.py": "fe2ed71b6afb02fe266d5ca8c85ed61352ae1191224b332e75f32940f228f448",
+    "seed-source.json": "406218cebcabd02f19fa1ff160b52c0922bdfa4f985ba97a0383e2b1850f567c",
+    "source-join.json": "f20045ebcd59fa99e25b9cbe950c5a2c1b111c3481bcbf723ce32f38b19e30e5",
+    "summary.json": "e7fb32f6ef96b90fa34537bab80aad2c865ca04bb27966b9d9187d273f4d9cdd",
+    "verification.json": "5ba2c029754419b2805bc436d371721793fa615a9e2534fa2bf2190272c6b00f",
+    "verify.py": "e97cb775ac0ecbe18def413b612ce802577528ba575d982cc97184296373658a"
+  },
+  "cover": {
+    "status": "PASS",
+    "raw": 15120,
+    "representatives": 3780,
+    "actions": 4,
+    "orbit_histogram": {
+      "4": 3780
+    },
+    "reverse_dp_states": 7872,
+    "seconds": 0.1153158328961581,
+    "source_pins": {
+      "native.py": "a3b59d3b39d90706c1ad147bae6fb75ac0dea69d72f01da09caa0ef8cb8ad0e5",
+      "filter.cpp": "b0128564867d6e825919b561449f6df9305e22046cec8d687fd247d623ef09a5",
+      "filter.dylib": "16efd88dc4e120bb439ee82c79c3f117728742c7afde0069cbe23dd5dfac96c1",
+      "build.sh": "cc5462a97dbc63850767658687203a22fc011f9b94b739bbc5cf42590f181006",
+      "local_filter.py": "b2db79822c2be45dee5b17d545dab87037d766d8ddf777fe6bf751c8c5fb4ca2",
+      "profile-source.json": "9eead59c72c959cdf7f96943cca5c573b8541256499dd3efdaf201fd603ce0c3",
+      "seed-source.json": "406218cebcabd02f19fa1ff160b52c0922bdfa4f985ba97a0383e2b1850f567c",
+      "run.py": "fe2ed71b6afb02fe266d5ca8c85ed61352ae1191224b332e75f32940f228f448"
+    }
+  },
+  "method": "Independent increasing-subset C++ complete domains and full-neighbour deletion replay, reverse-host DP/exhaustive matching-preserving symmetries and exactsource/graph audit. Checker origin /tmp/erdos85-sol1-review2089."
+}

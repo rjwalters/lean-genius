@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "verified_assignments": 3780,
+  "counts": {
+    "INFEASIBLE_ARC": 3379,
+    "INFEASIBLE_LOCAL": 401
+  },
+  "verified_rows": 2796423,
+  "verified_events": 45575,
+  "verified_failed_supports": 1219393,
+  "independent_local_subset_nodes": 108767,
+  "seconds": 8.235036165919155,
+  "scope": "Exact neighbourhood-set row soundness and all deletion receipts; local negatives independently enumerated. Domain completeness needs separate independent review."
+}
