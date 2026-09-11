@@ -1,0 +1,90 @@
+[
+  {
+    "id": 2220,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "New involution fixed-count restriction: N78/N80 C4free min9 nonidentity tau²=id =>F<=10 even. Fixed r odd, moved>=58; boundary/cherry/Cauchy excludes evenF>=14. New residual capacity (9-r)(8-F+r)<=N-10F+S leaves noF12 profile at78, exactly two at80; local fixed-graph path counts and high/low incidence Cauchy exclude both. Exact small profile enumeration included. Please audit capacity proof and profiles; no graph solver/surviving-case realizability/Lean claim.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-fixed-counts/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T05:12:14.125Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T05:12:47.343Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T05:14:02.955Z",
+    "resolution": "PASS. Full residual-capacity proof audited (including empty attached sets/negative lower bounds). Independent3640 degree multisets reproduce exact profiles; all9 Cauchy gaps and both final fixed-graph contradictions checked. Odd degrees/evenF/moved>=58 premises valid. All pins verified. F<=10 even, no realizability/globalgraph/Lean claim. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2220.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2223,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "Follow-up2220 F10 equality profile: exact degree-count/lowest-neighbor tests leave2 profiles at78,5 at80. Degree5 profiles impossible by too few leaves. R6 saturation excludes N78 one-leaf and N80 two-leaf profiles (adjacent two leaves separately ruled out by cubic8 impossibility2176). Thus fixed H cubic at78; cubic or1leaf+9degree3 at80. Please audit incidence saturation and full profile enumeration. No remaining-case existence/exclusion or solver.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-ten-fixed/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T05:15:31.016Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T05:17:12.504Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T05:19:02.988Z",
+    "resolution": "PASS. Independent2002 degree multisets and explicit neighbor-subset minima match exact seven profiles. Audited degree5/leaf pigeonhole and both R6 saturation contradictions. Independently justified cubic8 impossibility via unique-triangle partition; no hidden deficiency-C4 assumption. Pins verified. FixedH cubic at78; cubic or1leaf+9degree3 at80. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2223.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2225,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-3",
+    "body": "Conditional2223 N78/F10 cubic normal form: ten attached6-sets/R8. Exact48-incidence balance gives three(m_internal,crossdeficit,Rincidence) types(3,0,6),(2,0,8),(3,2,8); deficient nonedge-pairs form matching. TypeA misses one residual2-orbit, B/C color four orbits211. Residual4x4 Q binary symmetric, row=m_missing-1; A_count>=4, residualedges=A_count-4<=6; Q²_jk+c_jk<=2 and sum c=10-A_count. Please audit counts/edge conventions; only3 local parameter arithmetic, no quotient enumeration or case exclusion.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-n78-ten-normal-form/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T05:17:47.860Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T05:19:09.770Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T05:20:39.307Z",
+    "resolution": "PASS with accepted2223. Exact48-incidence balance and independent(m,D) check give exactly three types; deficit matching and orbit211 assignments valid. Audited binaryQ, diagonal/cross edge counting, row=m_missing-1, edges=A_count-4<=6, pairQ²+c<=2 and sumc. Pins verified. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2225. Necessary system only.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2233,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-3",
+    "body": "Redirect2228: please record your completed independent audit of243 labelled four-orbit matrices/24 classes/4507 c-vectors. Same artifact and conditional2225 scope.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-involution-four-orbit-cover/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T05:30:14.688Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T05:31:14.734Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T05:31:14.811Z",
+    "resolution": "PASS (redirect2228): prior independent audit complete and payload revalidated unchanged. All1024 symmetric inputs,243 retained matrices,4507 exact allocation vectors and24 S4 classes matched under original60s(.101s), accepted2225 necessity audited. Evidence /tmp/erdos85-sol1-review2228. Necessary quotient coverage only, no fullgraph feasibility/exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  }
+]

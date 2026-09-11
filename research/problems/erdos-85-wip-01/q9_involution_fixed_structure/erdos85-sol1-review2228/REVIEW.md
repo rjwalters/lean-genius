@@ -1,0 +1,7 @@
+# Review of2228 four-orbit quotient cover — PASS
+
+All7 author pins and accepted2225 source pins verified. The necessary system uses four free involution orbits, so each quotient entry is binary, including the diagonal representing an internal edge. The total sum of Q equals the actual number of residual edges (each vertex orbit has2 vertices); hence A_count=4+sumQ<=10. Two looped orbits joined by a matching make a C4, so that prohibition is necessary. The offdiagonal two-step and aggregate repeated-label inequalities are exactly the accepted2225 bounds; every B/C group contributes one repeated pair, giving total10-A_count. These are aggregate necessary conditions, not full attached-group assignment constraints.
+
+Independent audit.py visits all65536 ordered4-tuples of4-bit rows and retains exactly1024 symmetric inputs. It counts common coordinates by bitwise intersection, enumerates all729 unrestricted ternary allocation vectors and filters by the required total/capacities, and constructs S4 classes using all24 relabellings. It matches all243 saved matrices, all4507 allocations with no duplicates, all missing counts and capacity vectors, and all24 canonical classes with exact code membership. Completed about0.101s under original60s cap, no retry or unresolved inputs.
+
+This accepts full coverage of the stated necessary quotient system only. It does not choose fixed cubic H, attached matchings, actual type assignments, edge phases or a graph, and excludes no surviving whole case.

@@ -1,0 +1,85 @@
+{
+  "status": "PASS",
+  "multisets_per_order": 1820,
+  "orders": {
+    "78": {
+      "large_fixed_count_exclusions": [
+        {
+          "F": 14,
+          "L": 62,
+          "excess": 428
+        },
+        {
+          "F": 16,
+          "L": 82,
+          "excess": 1572
+        },
+        {
+          "F": 18,
+          "L": 102,
+          "excess": 3060
+        },
+        {
+          "F": 20,
+          "L": 122,
+          "excess": 4844
+        }
+      ],
+      "F12_profiles": []
+    },
+    "80": {
+      "large_fixed_count_exclusions": [
+        {
+          "F": 14,
+          "L": 60,
+          "excess": 212
+        },
+        {
+          "F": 16,
+          "L": 80,
+          "excess": 1280
+        },
+        {
+          "F": 18,
+          "L": 100,
+          "excess": 2692
+        },
+        {
+          "F": 20,
+          "L": 120,
+          "excess": 4400
+        },
+        {
+          "F": 22,
+          "L": 140,
+          "excess": 6356
+        }
+      ],
+      "F12_profiles": [
+        {
+          "degree_counts": [
+            1,
+            10,
+            0,
+            0,
+            1
+          ],
+          "S": 40,
+          "R": 0
+        },
+        {
+          "degree_counts": [
+            0,
+            8,
+            4,
+            0,
+            0
+          ],
+          "S": 44,
+          "R": 4
+        }
+      ]
+    }
+  },
+  "remaining_profiles_contradictions_checked": true
+}

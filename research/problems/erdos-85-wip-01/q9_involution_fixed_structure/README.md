@@ -1,0 +1,9 @@
+# Involution fixed-set structure at orders 78 and 80
+
+For a C4-free graph on N=78 or N=80 vertices with minimum degree nine and a nonidentity involution, the fixed count is even and at most ten. Reviews 2220 and 2223 establish the boundary/capacity argument and the remaining ten-fixed-vertex profiles: the fixed graph is cubic at N=78, and cubic or one degree-one vertex plus nine degree-three vertices at N=80.
+
+In the N=78, ten-fixed-vertex case, review 2225 establishes a necessary normal form with ten attached six-vertex sets and an eight-vertex residual graph. The attached sets have three possible internal/cross/residual incidence types. The four residual involution orbits have a binary symmetric quotient, including possible diagonal entries, with exact missing-count and repeated-label capacity constraints.
+
+The complete finite quotient check retains 243 labelled matrices in 24 S4 classes and 4,507 aggregate repeated-label allocation vectors from all 1,024 binary symmetric inputs. Review 2233 (redirected from 2228) independently verifies this cover. These are necessary possibilities, not graph realizations. No remaining quotient class, complete involution case, or Erdős 85 is claimed solved. The graph-theoretic reductions here are paper proofs with checked finite arithmetic, not full Lean formalizations.
+
+The four original artifacts and four independent review evidence directories are preserved byte-for-byte, with recorded PASS resolutions and provenance. Run `python3 verify_archive.py` for a read-only integrity and coverage check. Original discovery and audit scripts retain their original absolute input paths where used; the archive checker resolves local copies and does not rerun capped discovery. The quotient run completed in about 0.018 seconds under its original 60-second cap, with no retry or unresolved cases.
