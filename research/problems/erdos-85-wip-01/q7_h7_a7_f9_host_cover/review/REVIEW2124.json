@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "given_high_graphs": 28336,
+  "prefixes": 3545834,
+  "survivors": 99224,
+  "negative_high_graphs": 6194,
+  "structural_nodes": 9630344,
+  "max_structural_nodes": 586,
+  "survivor_domains": 1389136,
+  "survivor_rows": 2155838,
+  "native_subset_nodes": 31876712,
+  "seconds": 20.28294716705568,
+  "scope": "Independent full local-product receipt cover, direct-star empty prefix checks and positive survivor domain checks. Exact ordered2121 inputs and survivor export; no host/residual family search.",
+  "accepted_source_payloads": 17,
+  "proof": "Each COMPLETE receipt forms a prefix-free cover of all compatible products of independently enumerated local empty colour matchings. Each covered rejection has a directly verified empty singleton star; accepted2119 monotonicity excludes all descendants. Each stored host leaf has14 nonempty direct-star domains. Exact matching/prefix construction inherits C4-free partial-host insertion from reviewed2123; the independent input adapter reconstructs the exact accepted2121 E/S/high graph. No premise asserts residual-edge feasibility.",
+  "driver_audit": "run.py guards exact2116/2121 and host API PASS, pins, source completeness and single launch marker. Each call uses100k operations and remaining60saggregate; all receipts/counters written once with explicit UNKNOWN/unvisited. Compressed receipts are individually encoded gzip members sharded below50MB, and Python gzip consumes every member. Surviving export indexes every stored leaf in order.",
+  "review": 2124,
+  "final_source_pins": 18,
+  "final_input_pins": 7,
+  "surviving_S_graphs": 1446
+}

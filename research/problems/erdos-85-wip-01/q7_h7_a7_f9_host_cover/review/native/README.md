@@ -1,0 +1,7 @@
+# Independent compiled singleton-star endpoint checker
+
+verify.cpp reconstructs each host prefix from its seven masks, validating local high-colour partitions, unique pair ownership and zeros outside the prefix. It then enumerates increasing-index pair-vertex subsets to fill the designated singleton star. A candidate pair vertex is rejected if it shares a neighbor with an existing singleton neighbor; selected pair vertices must have mutually disjoint old neighborhoods. The selected support sets must partition all missing high colours. These are direct graph-star intersection tests, independent of the optimized forbidden-empty-host formula.
+
+Caller supplies a validated C4-free H/E/S/P-high input with no pair-low edges and valid E/order arrays. Such an input plus the checked missing-colour host partitions gives a C4-free optimistic graph by the accepted host-insertion lemma. The C API is a reviewer helper, not a new public family-search API. star_count returns exact row counts; verify_prefixes returns zero only if every supplied prefix is well formed and its singleton domain empty. It does not verify complete receipt coverage; the structural verifier does that separately.
+
+Tests compare exact counts to the independent Python whole49graph path-collision checker on57 old/partial fixtures,798singleton domains and2467rows. The26existing unrestricted-fixture prefix receipts pass, and three false receipts fail. No family-generation code is present, and no new family receipt pass was run for these unit tests.

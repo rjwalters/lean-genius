@@ -1,0 +1,7 @@
+# Structural coverage of pair-host receipts
+
+cover.py enumerates each empty vertex's local missing-colour matchings independently, using the largest remaining colour first. It checks that every recorded prefix uses legal matchings, assigns each pair vertex once, and has zero masks outside the recorded depth. Prune prefixes must be distinct and cannot overlap a shorter prune or a stored leaf. For COMPLETE receipts, a separate traversal of compatible local products must end in exactly a recorded prune or a stored complete host assignment. UNKNOWN receipts receive no completeness claim; incomplete preparation may have a shorter order and no endpoints.
+
+This module establishes coverage structure only. A separate direct-graph endpoint checker must prove every recorded prune has an empty optimistic singleton domain, and every survivor must be checked for singleton feasibility before downstream use. A synthetic all-leaf receipt in test.py deliberately tests coverage only; its leaves are not asserted feasible.
+
+On the fixed adjacent-double a6 fixture, the structural product has58 compatible complete host assignments and217 unpruned traversal nodes. A known empty depth6 prefix covers its fixed host branch. Five malformed or incomplete COMPLETE receipts are rejected; two UNKNOWN cases remain explicitly unproved. This is bounded fixed-fixture verification, not a family host search or exclusion.
