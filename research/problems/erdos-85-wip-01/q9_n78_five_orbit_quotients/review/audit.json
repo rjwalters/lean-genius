@@ -1,0 +1,98 @@
+{
+  "status": "COMPLETE",
+  "original_cap_seconds": 30,
+  "seconds": 0.0728892080951482,
+  "cases": [
+    {
+      "order": 24,
+      "sizes": [
+        3,
+        3,
+        24,
+        24,
+        24
+      ],
+      "raw_count": 12,
+      "parity_count": 6,
+      "row_recursion_nodes": 209
+    },
+    {
+      "order": 24,
+      "sizes": [
+        6,
+        12,
+        12,
+        24,
+        24
+      ],
+      "raw_count": 12,
+      "parity_count": 12,
+      "row_recursion_nodes": 1511
+    },
+    {
+      "order": 48,
+      "sizes": [
+        6,
+        6,
+        6,
+        12,
+        48
+      ],
+      "raw_count": 0,
+      "parity_count": 0,
+      "row_recursion_nodes": 22
+    },
+    {
+      "order": 48,
+      "sizes": [
+        6,
+        8,
+        8,
+        8,
+        48
+      ],
+      "raw_count": 10,
+      "parity_count": 10,
+      "row_recursion_nodes": 72
+    },
+    {
+      "order": 48,
+      "sizes": [
+        6,
+        8,
+        16,
+        24,
+        24
+      ],
+      "raw_count": 2,
+      "parity_count": 2,
+      "row_recursion_nodes": 101
+    },
+    {
+      "order": 48,
+      "sizes": [
+        6,
+        12,
+        12,
+        24,
+        24
+      ],
+      "raw_count": 12,
+      "parity_count": 12,
+      "row_recursion_nodes": 1511
+    },
+    {
+      "order": 48,
+      "sizes": [
+        6,
+        16,
+        16,
+        16,
+        24
+      ],
+      "raw_count": 0,
+      "parity_count": 0,
+      "row_recursion_nodes": 128
+    }
+  ]
+}

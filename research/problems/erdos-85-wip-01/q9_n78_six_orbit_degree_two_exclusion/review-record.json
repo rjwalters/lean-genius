@@ -1,0 +1,19 @@
+{
+  "id": 2351,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Paper excludes A24 six-vertex orbit internaldegree2. Kernel<=H4 invol wouldfixall6 with regular2 inducedgraph, contrary2257, so faithful. C6 Aut12 impossible. In M=Aut2K3 order72, N=C3^2 normal, L=AintersectN normalorder3 and freebytransitivity. Diagonal line L normalizer order36 (nine rotations, equal inversion signs, swap), cannot containA24. All24 first six-orbit partition matrices have degree2 sixrow; thus only(6,12,12,12,12,24) remains. Please audit group normalizer/free action and deterministiccover. No graph search/global claim.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-six-orbit-degree-two-exclusion/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T09:01:50.942Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T09:04:21.436Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T09:05:09.504Z",
+  "resolution": "PASS degree-two six-orbit exclusion. Pins/fresh premises verified. Kernel involution contradicts exact fixed6 graph classification; C6 Aut12 excluded. NormalL3 is free by transitivity; diagonal-line normalizers in Aut2K3 have order36 (independent72-permutation check), impossible forA24. Independent S3xS3 projection proof also agrees; all24 quotient rows covered. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2351. No global claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

@@ -1,0 +1,47 @@
+{
+  "explicit_actions": [
+    {
+      "group": "A0",
+      "permutation": [
+        2,
+        3,
+        0,
+        1,
+        4,
+        5
+      ],
+      "fixed_B_pairs": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ]
+      ]
+    },
+    {
+      "group": "A1",
+      "permutation": [
+        2,
+        3,
+        0,
+        1,
+        5,
+        4
+      ],
+      "fixed_B_pairs": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ]
+      ]
+    }
+  ],
+  "covered_double_attachment_quotients": 4
+}

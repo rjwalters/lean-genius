@@ -1,0 +1,19 @@
+{
+  "id": 2346,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Six-orbit necessary cover:13 divisor partitions, full balanced six-row quotients+parity+all pair capacities COMPLETE1.054s original30s. CountsA24 0/4/24/20/96, A48 0/24/20/0/0/0/96/0. Sylow3 incidence excludes triple8 pattern bothorders. Four-six-eight: two cubic8 quotients impossible; two F4matching quotients force order3 fix4 contradiction. Leaves only6,6,6,12,24,24 and6,12,12,12,12,24 at24/48, allorder3free. Please independently audit cover/matrix sets/paper eliminations. No five-orbit assumption or graph existence/fullclaim.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-six-orbit-quotients/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T08:53:42.153Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T08:55:49.838Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T08:56:59.214Z",
+  "resolution": "PASS complete six-orbit cover. Source/input pins and fresh accepted premises checked. Independent whole-row composition/balance/parity/capacity recursion reproduces all13 exact matrix sets in11.151s original30s. Sylow3 incidence removes triple8 cases; four-six-eight matrices independently split2 cubic8 and2 matchingF4, with valid paper contradictions. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2346. Only stated two patterns remain at24/48; no five-orbit assumption or global claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

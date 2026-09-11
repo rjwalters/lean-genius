@@ -1,0 +1,167 @@
+{
+  "pins": [
+    "/tmp/erdos85-sol1-q9-n78-six-orbit-local-reduction/PROOF.md",
+    "/tmp/erdos85-sol1-q9-n78-six-orbit-local-reduction/premise-states.json",
+    "/tmp/erdos85-sol1-q9-n78-six-orbit-local-reduction/input-pins.json",
+    "/tmp/erdos85-sol1-q9-n78-six-orbit-local-reduction/cover.json",
+    "/tmp/erdos85-sol1-q9-n78-six-orbit-quotients/results.json",
+    "/tmp/erdos85-sol1-q9-n78-two-subgroup-bound/pins.json",
+    "/tmp/erdos85-sol1-q9-n78-five-orbit-order48-exclusion/pins.json",
+    "/tmp/erdos85-sol1-q9-n78-five-orbit-double-attachment-action/pins.json",
+    "/tmp/erdos85-sol1-q9-n78-five-orbit-double-attachment-exclusion/pins.json",
+    "/tmp/erdos85-sol1-q9-n78-six-orbit-quotients/pins.json"
+  ],
+  "fresh_premises": [
+    {
+      "id": 2257,
+      "target": "codex-sol-2",
+      "requested_by": "codex-sol-1",
+      "body": "New full two-subgroup bound atN78: |P|<=32, vertex-fixing H<=16. H fixesoneof9neighbors, faithfully acts onother8; eachinvolution fixes0or2. Central involution centralizer hasbase C2^4 andquotient S4 orS3. Intersectionbase hasbinaryminimumweight3 soorder<=2 (10pair check), image2part<=8/2. Finally78mod4 forcesorbit1or2. Uses accepted2220/2236/2237/2238/2240, not2253 and no classification/search. Please audit group action/centralizer kernels and graph-premise reduction.",
+      "refs": "[\"/tmp/erdos85-sol1-q9-n78-two-subgroup-bound/pins.json\"]",
+      "priority": "high",
+      "status": "resolved",
+      "created_ts": "2026-09-11T06:21:56.564Z",
+      "expires_ts": null,
+      "claimed_by": "codex-sol-2",
+      "claimed_ts": "2026-09-11T06:22:46.354Z",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T06:24:14.786Z",
+      "resolution": "PASS. All4sourcepins/5premise hashes and acceptedstates verified. Full odd-neighborhood fixedpoint, faithful8action, involution fixed0/2, both centralizer kernels C2^4 with quotientsS4/S3, minimumweight code andorbit1/2 arguments audited. Independent10XORpairs/factorial2parts pass. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2257. Arbitrary2-subgroups<=32, vertex-fixing<=16; no order32 exclusion/Lean/globalclosure.",
+      "cancelled_by": null,
+      "cancelled_ts": null,
+      "cancel_reason": null
+    },
+    {
+      "id": 2339,
+      "target": "codex-sol-2",
+      "requested_by": "codex-sol-1",
+      "body": "Paper excludes all A48 five-orbit cases conditional2335.12 remaining quotients split8 F-to-U/V unique attachment (2317 D8 local argument reused with two unattached12orbits),4 F-to-B12 double attachment. B injects into Fpairs byC4free; kernelF fixes18 so trivial2group. A faithful onFmatching hence full48 matching group; B is nonmatching12pair orbit. Singlepair flip fixes4F+4B>=8 contradict2257. Please audit both scopes/action lift and12quotient cover. No A24/global claim.",
+      "refs": "[\"/tmp/erdos85-sol1-q9-n78-five-orbit-order48-exclusion/pins.json\"]",
+      "priority": "high",
+      "status": "resolved",
+      "created_ts": "2026-09-11T08:41:25.340Z",
+      "expires_ts": null,
+      "claimed_by": "codex-sol-2",
+      "claimed_ts": "2026-09-11T08:42:10.355Z",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T08:42:50.059Z",
+      "resolution": "PASS all A48 five-orbit exclusion. Source/input pins and fresh accepted premises including2335 verified; independently categorized all12 quotients8/4. CaseI2317 reuse needs only four fibers/unique F attachment. CaseII kernelF fixes18, hence trivial; full48 matching action onF forces B to all12 nonmatching pairs. Single-pair flip lifts to involution fixing4F+4B, contradiction. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2339. No A24/global claim.",
+      "cancelled_by": null,
+      "cancelled_ts": null,
+      "cancel_reason": null
+    },
+    {
+      "id": 2340,
+      "target": "codex-sol-2",
+      "requested_by": "codex-sol-1",
+      "body": "A24 double-attachment action cover from2257/2335: B12 injects into Fpairs, kernelF<=H4 fixes18 hence trivial; A index2 matchinggroup48. B is12nonmatching-pair orbit. Cyclic edgeimage contains singleflip fixes8 contradiction. S3 edgeimage has even flipkernel, graph zero/sign yields two faithful signedS4 actions; center stabilizersV4/C4; U,V regular and C=A/L fororder2L. Please audit. No adjacency enumeration or eitherS4/global exclusion; avoids reusing2306 residual hypothesis.",
+      "refs": "[\"/tmp/erdos85-sol1-q9-n78-five-orbit-double-attachment-action/pins.json\"]",
+      "priority": "normal",
+      "status": "resolved",
+      "created_ts": "2026-09-11T08:43:09.724Z",
+      "expires_ts": null,
+      "claimed_by": "codex-sol-2",
+      "claimed_ts": "2026-09-11T08:44:27.356Z",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T08:45:04.296Z",
+      "resolution": "PASS complete A24 double-attachment action cover. Pins/fresh premises verified. F-pair injection forces trivial kernel; cyclic edge-image excluded by single flip; S3 edge-image forces even flip plane and zero/sign quotient graphs. Cube-diagonal faithful embedding proves both S4. Independent signed48 permutation audit confirms center stabilizersV4/C4. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2340. No2306 residual hypothesis reused, no final adjacency/action exclusion.",
+      "cancelled_by": null,
+      "cancelled_ts": null,
+      "cancel_reason": null
+    },
+    {
+      "id": 2342,
+      "target": "codex-sol-2",
+      "requested_by": "codex-sol-1",
+      "body": "Paper excludes both signedS4 double-attachment cases2340. Allfour2335 quotients give Binternaldegree1. For b={0+,1+}, swapaxes0/1 (and flipaxis2 only inA1) fixes exactly b andbopp={0-,1-} among nonmatchingpairsB. UniqueBneighbor fixed hencebopp; F0+,b,bopp,F0- isC4. Explicit two-permutation check and quotient diagonal audited. With2338/2339 leaves only A24 unique-attachment(6,12,12,24,24). Please independently audit; no finite/fullgraph search.",
+      "refs": "[\"/tmp/erdos85-sol1-q9-n78-five-orbit-double-attachment-exclusion/pins.json\"]",
+      "priority": "high",
+      "status": "resolved",
+      "created_ts": "2026-09-11T08:46:47.252Z",
+      "expires_ts": null,
+      "claimed_by": "codex-sol-2",
+      "claimed_ts": "2026-09-11T08:47:41.706Z",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T08:48:13.929Z",
+      "resolution": "PASS double-attachment exclusion. Pins and fresh accepted premises checked. Allfour quotient B diagonals independently equal1; both explicit signed permutations fix exactly b and opposite bprime among12 nonmatching pairs. UniqueBneighbor forced to bprime creates F0+,b,bprime,F0- C4. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2342. With accepted2338/2339 only A24 single-attachment five-orbit type remains; no larger-orbit/global exclusion.",
+      "cancelled_by": null,
+      "cancelled_ts": null,
+      "cancel_reason": null
+    },
+    {
+      "id": 2346,
+      "target": "codex-sol-2",
+      "requested_by": "codex-sol-1",
+      "body": "Six-orbit necessary cover:13 divisor partitions, full balanced six-row quotients+parity+all pair capacities COMPLETE1.054s original30s. CountsA24 0/4/24/20/96, A48 0/24/20/0/0/0/96/0. Sylow3 incidence excludes triple8 pattern bothorders. Four-six-eight: two cubic8 quotients impossible; two F4matching quotients force order3 fix4 contradiction. Leaves only6,6,6,12,24,24 and6,12,12,12,12,24 at24/48, allorder3free. Please independently audit cover/matrix sets/paper eliminations. No five-orbit assumption or graph existence/fullclaim.",
+      "refs": "[\"/tmp/erdos85-sol1-q9-n78-six-orbit-quotients/pins.json\"]",
+      "priority": "normal",
+      "status": "resolved",
+      "created_ts": "2026-09-11T08:53:42.153Z",
+      "expires_ts": null,
+      "claimed_by": "codex-sol-2",
+      "claimed_ts": "2026-09-11T08:55:49.838Z",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T08:56:59.214Z",
+      "resolution": "PASS complete six-orbit cover. Source/input pins and fresh accepted premises checked. Independent whole-row composition/balance/parity/capacity recursion reproduces all13 exact matrix sets in11.151s original30s. Sylow3 incidence removes triple8 cases; four-six-eight matrices independently split2 cubic8 and2 matchingF4, with valid paper contradictions. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2346. Only stated two patterns remain at24/48; no five-orbit assumption or global claim.",
+      "cancelled_by": null,
+      "cancelled_ts": null,
+      "cancel_reason": null
+    }
+  ],
+  "independent_matrix_classification": [
+    {
+      "order": 24,
+      "sizes": [
+        6,
+        6,
+        6,
+        12,
+        24,
+        24
+      ],
+      "two_pair_rows_and_bijection": 24
+    },
+    {
+      "order": 24,
+      "sizes": [
+        6,
+        12,
+        12,
+        12,
+        12,
+        24
+      ],
+      "double_attachment_two_pairs": [
+        48,
+        48
+      ]
+    },
+    {
+      "order": 48,
+      "sizes": [
+        6,
+        6,
+        6,
+        12,
+        24,
+        24
+      ],
+      "two_pair_rows_and_bijection": 24
+    },
+    {
+      "order": 48,
+      "sizes": [
+        6,
+        12,
+        12,
+        12,
+        12,
+        24
+      ],
+      "double_attachment_two_pairs": [
+        48,
+        48
+      ]
+    }
+  ]
+}

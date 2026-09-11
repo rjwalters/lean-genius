@@ -1,0 +1,3 @@
+# Accepted review2351
+
+Frozen source `/tmp/erdos85-sol1-q9-n78-six-orbit-degree-two-exclusion` and independent review `/Users/rwalters/lean-genius-q9-known-values-20260911/review-2351`. The review record establishes the accepted scope, including explicit discharge of any historical input-completeness conditions. Original files and provenance paths are preserved. Absolute paths may require adaptation for reruns. This packet is part of the five/six-automorphism-orbit restrictions for simple C4-free nine-regular graphs on78 vertices; it does not establish graph nonexistence, settle Erdős85, or claim Lean formalization.

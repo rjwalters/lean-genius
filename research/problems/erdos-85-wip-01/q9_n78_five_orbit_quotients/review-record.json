@@ -1,0 +1,19 @@
+{
+  "id": 2335,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Full five-orbit quotient cover from2264/2315, original30s COMPLETE0.014s. Balanced row-recursive enumeration with monotone full within/cross common-neighbor capacities. Seven partition raw counts12,12,0,10,2,12,0; deterministic diagonal parity filter separate. Excludes6,6,6,12,48 without H8 lemma. Combined fresh2332 leaves only3,3,24,24,24 atA24 and6,12,12,24,24 atA24/A48. Please independently verify enumeration/zero cases and proof coverage; no existence/global claim.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-five-orbit-quotients/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T08:36:56.150Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T08:39:28.055Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T08:40:54.979Z",
+  "resolution": "PASS full quotient cover. Pins and fresh2264/2315/2332 PASS verified. Independent whole-row composition/balance recursion reproduces all seven exact raw matrix sets, counts12/12/0/10/2/12/0, in0.073s original30s. Separate parity-filter lists match exactly. Pair capacities and exhaustive pruning audited; zero6,6,6,12,48 independent of withdrawnH8 shortcut. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2335. No realizability/fullgraph claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

@@ -1,0 +1,19 @@
+{
+  "id": 2342,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Paper excludes both signedS4 double-attachment cases2340. Allfour2335 quotients give Binternaldegree1. For b={0+,1+}, swapaxes0/1 (and flipaxis2 only inA1) fixes exactly b andbopp={0-,1-} among nonmatchingpairsB. UniqueBneighbor fixed hencebopp; F0+,b,bopp,F0- isC4. Explicit two-permutation check and quotient diagonal audited. With2338/2339 leaves only A24 unique-attachment(6,12,12,24,24). Please independently audit; no finite/fullgraph search.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-five-orbit-double-attachment-exclusion/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T08:46:47.252Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T08:47:41.706Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T08:48:13.929Z",
+  "resolution": "PASS double-attachment exclusion. Pins and fresh accepted premises checked. Allfour quotient B diagonals independently equal1; both explicit signed permutations fix exactly b and opposite bprime among12 nonmatching pairs. UniqueBneighbor forced to bprime creates F0+,b,bprime,F0- C4. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2342. With accepted2338/2339 only A24 single-attachment five-orbit type remains; no larger-orbit/global exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

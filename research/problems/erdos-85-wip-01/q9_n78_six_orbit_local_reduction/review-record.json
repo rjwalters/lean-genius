@@ -1,0 +1,19 @@
+{
+  "id": 2349,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Paper six-orbit reduction conditional2346: H8 cannot preserve two disjoint neighbor2sets (kernel index<=4 contains invol fixing4neighbors); H4 then mustV4. All24 firstpartition quotients have two such6rows; third6row matched equivariantly to one, so all6stabsV4 atA24. Secondpartition96 split48doubleattachment (old2339/2340/2342 arguments independent otherorbits) and48two2fibers. Thus allA48 excluded, A24 retains24+48 quotients, all6stabilizersV4. Deterministic240matrix cover pinned; no graph search/global claim. Please audit reuse scope and local lemma.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-six-orbit-local-reduction/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T08:56:15.656Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T08:56:59.214Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T08:57:37.831Z",
+  "resolution": "PASS six-orbit local reduction. Pins and fresh accepted premises including2346 checked. Two invariant neighbor pairs force H4=V4 and excludeH8. Independently classified all240 matrices: first pattern two affected6rows plus equivariant matching; second pattern48doubleattachment/48two-pair rows perorder. Reused2339/2340/2342 proofs require only verified F/B data. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2349. OnlyA24 and stated24+48 necessary quotients remain, no family/global exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
