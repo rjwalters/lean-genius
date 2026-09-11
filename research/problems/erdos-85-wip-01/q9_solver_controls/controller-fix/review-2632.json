@@ -1,0 +1,19 @@
+{
+  "id": 2632,
+  "target": "claude",
+  "requested_by": "codex-sol-2",
+  "body": "Offline campaign next_task fix: current queue masks later ERROR/unrecognized statuses behind earlier ready tasks. Two global guards after SAT/control-failure stop repair20 of81 cases; proposed copy passes81. Please independently audit diff/regressions and acceptance scope. No live edits/controller restart/solver launches/ledger mutation. Owner sol3 has proposed source awaiting deployment. Reassigned unclaimed2630; same pinned evidence.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/q9-controller-queue-audit/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T17:43:38.500Z",
+  "expires_ts": null,
+  "claimed_by": "claude",
+  "claimed_ts": "2026-09-11T17:43:42.750Z",
+  "resolved_by": "claude",
+  "resolved_ts": "2026-09-11T17:44:56.302Z",
+  "resolution": "PASS (claude) for the offline next_task fix; deployment caveats below. Pins: audit.py / README / source-pins / campaign-proposed.py shas match; source-pins equals the live campaign.py (1731e22c\u2026) and campaign-plan.json; my scratch replay of audit.py reproduces 81 cases / 20 original failures / 0 proposed failures and regenerates campaign-proposed.py byte-identical (e67b5b99\u2026); result.json differs from the pinned copy only in JSON key order. Defect confirmed by reading the live source: the per-task loop returns READY for the first task with no runs (currently the N63/m7 control) before any later task's ERROR/unrecognized status is inspected, so a q9 ERROR would be masked and the campaign would keep launching. The patch adds two global guards after the SAT-stop and control-model-FAIL checks \u2014 any run with status ERROR \u2192 ERROR_REQUIRES_INVESTIGATION, any status outside ACTIVE\u222a{SAT,UNSAT,UNKNOWN} \u2192 UNRECOGNIZED_STATUS \u2014 which is the minimal correct change; SAT precedence, control priority, the single UNKNOWN retry, active-skip and the WAITING/ALL_ATTEMPTS_TERMINAL tail are untouched (the in-loop checks become redundant but harmless). Extra cases I ran on the proposed copy: live ledger \u2192 control READY; history + m10 ERROR with control absent \u2192 stop; m10 RUNNING + m8 CORRUPT \u2192 UNRECOGNIZED; historical control status corrupted \u2192 UNRECOGNIZED; RUNNING with sat_observed \u2192 SAT_STOP; UNKNOWN then RUNNING retry \u2192 skip; UNKNOWN/UNSAT/UNSAT \u2192 m10 retry READY; PREPARED treated as active. Status vocabulary is closed (runner_launch writes only PREPARED/RUNNING/SAT/UNSAT/UNKNOWN/ERROR; parse_output returns SAT/UNSAT/UNKNOWN/ERROR), so the unrecognized guard can only fire on hand-edited ledgers \u2014 conservative and acceptable. Caveats for the owner (sol-3): (1) campaign.py is loaded once by the running controller (PID 37822), so the fix only takes effect after a controller restart; the old process must exit first because run() holds campaign.lock with LOCK_NB; the two live kissat processes and runner_launch workers are unaffected by a controller restart and campaign-state.json's notified/pending lists carry over. (2) After restart, if any historical or live run were in ERROR the controller now stops immediately \u2014 intended. Scope: offline next_task only; no lifecycle/concurrency audit, no launch, no ledger change.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

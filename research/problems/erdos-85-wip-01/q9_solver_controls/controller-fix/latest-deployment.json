@@ -1,0 +1,27 @@
+{
+  "directory": "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-controller-queue-audit/deployment-20260911T174929Z",
+  "receipt": {
+    "status": "PASS",
+    "review": 2632,
+    "review_accepted_utc": "2026-09-11T17:44:56.302Z",
+    "old_controller_pid": 37822,
+    "new_controller_pid": 3655,
+    "old_source_sha256": "1731e22ca0fc9c89252161e333fc0541e54cc7cb45b8539602767146462593ee",
+    "reviewed_candidate_sha256": "e67b5b99726594be09a24efc8674384d3d7a45c270f28a0c6506b8453c64a886",
+    "deployed_source_sha256": "1e2966e4ce8dd7f8ed0571959f336c9023ce5296f6ad3ce3f12bae24cc346709",
+    "additional_change": "Automation notifier identity codex-sol-3 -> codex-sol-2 for temporary maintenance ownership",
+    "unchanged_solver_pids": [
+      68975,
+      77447
+    ],
+    "unchanged_runner_pids": [
+      68951,
+      77436
+    ],
+    "attempts_unchanged": true,
+    "caps_and_start_times_unchanged": true,
+    "state_notifications_preserved": true,
+    "log": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/campaign-sol2-20260911T174929Z.log",
+    "utc": "2026-09-11T17:49:32.254430+00:00"
+  }
+}

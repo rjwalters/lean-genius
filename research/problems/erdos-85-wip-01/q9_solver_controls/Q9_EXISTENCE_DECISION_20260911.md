@@ -234,6 +234,21 @@ UNKNOWN receipts are preserved; exact later certificate recovery does not
 resume those capped producers. Subsequent packets2587 onward were pending
 at the cutoff and supply no additional accepted exclusion here.
 
+The pre-cutoff composition review2629 finished at17:37:55 UTC and accepted
+full automorphism order12 exclusion, giving orders **{1,2,3,4,6,8}** and
+bound8 at N78. The [post-cutoff composition archive](../q9_n78_order12_postcutoff/STATUS.md)
+contains the exact proof, branch map, independent audit and errata. This later
+acceptance is recorded separately from the unchanged17:30 frozen snapshot.
+No new symmetry lane is included.
+
+The [controller fix and deployment archive](controller-fix/STATUS.md) records
+accepted review2632 and the17:49:32 controller-only replacement. Global ERROR
+and unrecognized-status guards prevent an earlier ready task from masking a
+later run failure. Controller3655 replaced37822; both solver workers continued
+with unchanged attempts, caps and start times. Independent live verification
+confirmed the source change and handoff. These PIDs are historical deployment
+records; the live ledger and process handles determine current state.
+
 The [amended launch archive](amended-launch/README.md) contains the exact
 runner/controller source, authorization, independent policy audit, input copies
 and timestamped live process/ledger snapshot. This snapshot is not a verdict.

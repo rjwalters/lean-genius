@@ -1,0 +1,171 @@
+{
+  "status": "SUBMITTED_FOR_INDEPENDENT_REVIEW",
+  "group_cover": [
+    2489,
+    2494
+  ],
+  "prior_order_bound": 2487,
+  "groups": {
+    "C12": [
+      2555
+    ],
+    "Dic12": [
+      2555
+    ],
+    "C3xV4": [
+      2544
+    ],
+    "S3xC2": [
+      2627
+    ],
+    "A4": [
+      {
+        "profile": [
+          0,
+          1,
+          0,
+          6
+        ],
+        "cover": [
+          2498,
+          2521,
+          2522,
+          2524
+        ],
+        "branches": [
+          {
+            "branch": "no exceptional orbit",
+            "reviews": [
+              2501
+            ]
+          },
+          {
+            "branch": "exceptional twelve, both W double",
+            "reviews": [
+              2524
+            ]
+          },
+          {
+            "branch": "exceptional twelve, both Y double",
+            "reviews": [
+              2528
+            ]
+          },
+          {
+            "branch": "exceptional twelve, mixed",
+            "reviews": [
+              2606
+            ]
+          }
+        ]
+      },
+      {
+        "profile": [
+          0,
+          1,
+          3,
+          5
+        ],
+        "cover": [
+          2498
+        ],
+        "branches": [
+          {
+            "branch": "no exceptional orbit",
+            "reviews": [
+              2498
+            ]
+          },
+          {
+            "branch": "exceptional four",
+            "reviews": [
+              2516
+            ]
+          },
+          {
+            "branch": "exceptional twelve",
+            "reviews": [
+              2520
+            ]
+          }
+        ]
+      },
+      {
+        "profile": [
+          0,
+          3,
+          0,
+          5
+        ],
+        "branches": [
+          {
+            "branch": "all",
+            "reviews": [
+              2597
+            ]
+          }
+        ]
+      },
+      {
+        "profile": [
+          0,
+          3,
+          3,
+          4
+        ],
+        "branches": [
+          {
+            "branch": "all",
+            "reviews": [
+              2602
+            ]
+          }
+        ]
+      },
+      {
+        "profile": [
+          2,
+          0,
+          0,
+          6
+        ],
+        "branches": [
+          {
+            "branch": "all",
+            "reviews": [
+              2496
+            ]
+          }
+        ]
+      },
+      {
+        "profile": [
+          2,
+          0,
+          3,
+          5
+        ],
+        "branches": [
+          {
+            "branch": "all",
+            "reviews": [
+              2491
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "conditional_conclusion": {
+    "excluded_order": 12,
+    "remaining_orders": [
+      1,
+      2,
+      3,
+      4,
+      6,
+      8
+    ]
+  },
+  "scope": "Full automorphism group of a simple C4-free nine-regular graph on78 vertices; author composition pending independent review."
+}

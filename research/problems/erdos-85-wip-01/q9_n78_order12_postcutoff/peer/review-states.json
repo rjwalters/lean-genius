@@ -1,0 +1,194 @@
+{
+  "2487": {
+    "status": "resolved",
+    "body": "FullA16 exclusion / |Aut(G)|<=12 composition forN78. Ten freshPASS reviews/48sourcehashes (see exactchecks) cover:2419+2447+2450 S2+4,K2/4;2479/2482 bothK4 residualprofiles;2477+2481 onlyK2law111,2484/2485 bothprofiles. Accepted2408 priorlist thenremaining1,2,3,4,6,8,12 (notdivides12). Checked complete3456localcases and12/512/8400partialcounts, zero survivors. Please audit exhaustive disjunction and exactscope. No newfinite search/UNKNOWN reinterpretation/global/Lean.",
+    "resolution": "PASS fullA16 exclusion / N78 fullAutorder<=12. Fifty distinct manifest hashes and12 freshPASS reviews checked. Exhaustive S-action/kernel/residual disjunction audited:2447 eliminatesS2^3,2438/2450 leaveK2/4;2479+2482 closeK4;2477+2481+2484+2485 closeK2. Complete3456 local cases and12/512/8400 partial domain counts agree with accepted independent audits. Removing16 from2408 leaves1,2,3,4,6,8,12, notdivides12. Evidence /tmp/erdos85-sol1-review2487. Asymmetric/smallerorders/N78existence/N80/global/Lean remainopen.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-automorphism-at-most-twelve/pins.json"
+    ]
+  },
+  "2489": {
+    "status": "resolved",
+    "body": "N78 fullA12 first structural cover. Normal Sylow3 has invariant fixedset0/3; quotient4 onthree points forces A-fixedvertex ifnonempty, forbidden2315. ThusnormalPfree andA-orbits3/6/12. Otherwise conjugation onfourSylows isfaithful ->A4. Burnside with involutionfixed f0/2/4/6 andorder3fixed h0/3 forcesf2/6. Coset marks givef=3a+2b,h=c;3a+6b+4c+12d=78 ->exact sixprofiles listed. Please audit exhaustivegroupdichotomy, fixedmarks andarithmetic. Necessary coveronly, noA12exclusion/search/global/Lean.",
+    "resolution": "PASS initial fullA12 cover. Pinned hashes/fresh2207/2257/2315 checked. NormalP fixed3 gives forbidden A-fixedvertex underquotient4. Nonnormal four-Sylow action hasfaithful image12, henceA4; subgroup orders and coset fixedmarks audited. Burnside f2/6 plus h0/3 gives exactlysix multiplicity profiles by independent integer arithmetic. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2489. Necessary coveronly/no fullA12/global/Lean exclusion.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-order-twelve-first-cover/pins.json"
+    ]
+  },
+  "2494": {
+    "status": "resolved",
+    "body": "NormalP/A12 abstractfour-group cover and cyclicH4 geometry. SylowH4 complements normalP3 ->C12,C3xV4,Dic12,S3xC2 by action H->C2. In cyclicH cases uniquecentralinvolz; Pfree makesFixz0/6,78mod12 forces6, outsideallregular. F one6 or two3; transitivity or order4 pointstab outsidefreeness/degree1mod4 forces3K2. Uniqueattachment plusfive-defect saturation derivesWfour12/Rtwo12 andquotient[[1,8,0],[1,5,3],[0,6,3]]. Please audit elementarysplitting, involutionnormalforms andgeometric scope. No order16premise/search/exclusion/global/Lean.",
+    "resolution": "PASS normalP four-group cover/cyclicH normal form. Five hashes/fresh2257/2489 checked. SylowH4 complementsP3 directly; actions H->C2 give C12,C3xV4,Dic12,S3xC2. CyclicH normalforms have unique centralz; Pfree and78mod12 forceFixz6/outsideallregular. Ftransitivity ordegree1mod4 excludes triangle-leaves, giving3K2. Uniqueattachment/saturateddefect counts deriveWfour12/Rtwo12 andquotient independently oforder16. Evidence /tmp/erdos85-sol1-review2494. No group/profile exclusion/global/Lean.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order12-normal-three-cyclic-complement/pins.json"
+    ]
+  },
+  "2555": {
+    "status": "resolved",
+    "body": "Full C12/Dic12 composition ready. Seven fresh PASS premises2494/2540/2545/2547/2549/2551/2552;46 source hashes and five decoded archives inclbinary outcomes. COMPLETE2.279710s original30: exact80residualbase/applicablemode cover,37156partialrows\u2192241328packings\u2192482656packing/action cases\u2192370176final negatives/108516queries, zero uncovered. BothFprofiles, d0/d2, allWpatterns and nonabelian F-action normalizations explicitly composed. Intended fullAut C12/Dic12 exclusion only; S3\u00d7C2/A4/smallerorders/globalN78/Erd\u0151s85/Lean separate. Please audit fullscope/interfaces.",
+    "resolution": "PASS full composition. Seven fresh PASS premises and recursively pinned packet/source hashes; additionally all independent stage-audit source hashes rebound to current artifacts. Decoded archives inclbinary checked. Exact80 base/mode cover\u219237156rows\u2192241328packings\u2192482656packing/action cases\u2192370176negative assignments/108516queries, zero uncovered. COMPLETE1.362058s original30. Paper scope audited: unique involution fixes6, both matchingFprofiles, regular outside, all residualdegrees/Wpatterns, full invariant F-actions including nonabelian six-action. Excludes fullAut C12 and Dic12 atN78 only. Evidence /tmp/erdos85-sol1-cyclic-composition-audit. S3\u00d7C2/A4/smallerorders/globalN78/Erd\u0151s85/Lean remain separate.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-cyclic-complement-composition/pins.json"
+    ]
+  },
+  "2544": {
+    "status": "resolved",
+    "body": "Full N78 C3\u00d7V4 composition. Six fresh PASS premises 2514/2519/2526/2532/2535/2537; 38 source hashes, both decoded gzip receipts. Exact interfaces: all 8472 partial rows -> 4608 packings -> 9216 packing/action cases -> all 46464 attachment-choice negatives, no omissions/duplicates. COMPLETE 2.351802s original30. Three-profile cover, third-profile matching contradiction, both remaining F actions and residual/W normalizations explicitly composed. Intended conclusion excludes full automorphism group C3\u00d7V4 only; other order12 groups/smaller orders/global N78/Erd\u0151s85/Lean remain open. Please audit full scope and interfaces.",
+    "resolution": "PASS fullN78 C3xV4 composition. SixfreshPASS scopes coverallthreeprofiles:2519 thirdprofile, complete2526/2532/2535/2537 chain remainingtwo. Independent46payload/input hashes inclsource manifest/recursiveinputs, bothgzipdecodedreceipts, exact8472->4608->9216->46464 keys/connections/allfinalnegative interfaces. COMPLETE2.362973s original30. No omittedpattern/origin/witness-domain/capped shortcut. Evidence /tmp/erdos85-sol1-review2544/REVIEW.md,results.json. ExcludesfullAut C3xV4 only; othergroups/smallerorders/globalN78/Erdos85/Lean open.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-abelian-composition/pins.json"
+    ]
+  },
+  "2627": {
+    "status": "resolved",
+    "body": "Full S3 x C2 N78 composition for independent review. Fresh accepted2553/2572/2577/2579/2583/2586/2588/2589, recursively rebound all input payloads. Arithmetic cover re-enumerated exactly14 profiles; six bz1 map2572, allregular two3 maps2553, four centralfree map2577/2579/2583/2586, final three two3 map2588/2589. Exact coverage has no remainder. Terminal paper scopes inspected; matching and triangle allocations retained by accepted2567/2574. COMPLETE0.000459s composition, no solver rerun or capped domain touched. Concludes only fullAut S3xC2 excluded under foundational premises, not proper-subgroup/global/Lean. Please audit coverage and scope.",
+    "resolution": "PASS. Fresh11 accepted premise states and168 author/recursive payload hashes. Independent broad vertex-budget inventory solves regular multiplicity and yields exactly14profiles; explicit scope map covers six bz1 via2572, allregular two3 via2553, four centralfree via2577/2579/2583/2586, final three via2588/2589. Original cover and terminal papers inspected; matching/triangle allocation scopes retained. COMPLETE .031598s; no solver or capped domain replay. Evidence rootQ9/review-2627. Excludes fullAut S3xC2 only; A4/order12 bound/global/Lean remain open.",
+    "refs": [
+      "/tmp/erdos85-sol1-s3-times-c2-composition/pins.json"
+    ]
+  },
+  "2496": {
+    "status": "resolved",
+    "body": "Full A4 profile(2,0,0,6) exclusion conditional2493. Complete88 residualbases,2376 W12/35640 W21 ->4248 blocks; all12744 S3phases ->1080; all16740 blockpairs ->576; all3 Fmatching shifts ->1728 cases/6912 localW covers,zero positives. Four separate original30s stages COMPLETE0.840/0.076/0.012/0.152s. NegativeC4/phase/pair witnesses andfull local domains saved. New ME=EM F-W identity provesE_WR=0, then15-residual-endpoint/five-center partition necessity. Please audit normalizations, stagedcoverage andlocalnegatives after2493. No W-W/fullgraphsolver/Lean; otherA4profiles remain.",
+    "resolution": "PASS fullA4 profile(2,0,0,6) exclusion. Fresh2489/2490/2493/pinnedhashes checked. Independent generator-closure/bitadjacency covers88 bases,2376/35640 Wbranches->4248; all12744 phases->1080 and16740 blockpairs->576 verified. ME=EM F-W identity derivesE_WR=0 withoutorder16premise. Independent1728 matching-shift cases/6912localdomains andendpoint-first exactcover yieldzero fullcases. Four original30s audits COMPLETE0.822/0.767/0.050/0.216s. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2496. OtherA4/normalP/global/Lean open.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-a4-two-w-incidences/pins.json"
+    ]
+  },
+  "2491": {
+    "status": "resolved",
+    "body": "Full A4 profile(2,0,3,5) exclusion conditional2489/2490. Three residual4orbits eachsupply12 free unorderedYpair incidences: C3 middle stabilizer cycles threeYneighbors andtheirpairs. C4freeness injects/disjoins ->36 freepairs. FourregularW Ydegrees sum6, so sumchoose>=2 ->24more. RegularY12 A4 action hasonly4 freepairorbits=48pairs (eight order3 elements/inversepairs), contradict60>48. Please audit nonregular middle incidence freeness andscope afterpremises. OtherA4/normalP/smallerorders/global/Lean remainopen.",
+    "resolution": "PASS fullA4 profile(2,0,3,5) exclusion. Hashes/fresh2489/2490 checked. Nonregular B4 middle hasC3 stabilizer cycling its threeYneighbors andunorderedpairs, so12incidences free. ThreeB consume36freepairs; fourregularW degrees sum6 forceatleast24more. Allforgetfulmaps injective/equivariant withdisjointimages byC4. A4 regularY only48freepairs, contradiction60>48. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2491. OtherA4/normalP/fullA12/global/Lean open.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-a4-four-residual-exclusion/pins.json"
+    ]
+  },
+  "2597": {
+    "status": "resolved",
+    "body": "A4 profile(0,3,0,5) exclusion conditional2595. Full local-row domains for80 outcomes/400 queries: all20096 exact-cover rows COMPLETE0.060790s. Test each row's internal inverse closure, then develop its single regular-orbit edge star using a->ab over fixed attachments. All20096 COMPLETE0.497072s; every outcome has at least one empty row domain (1056 rows survive elsewhere). Full trees/indices/inverse failures/C4 witnesses saved. Original caps30. Please audit completeness and orbit direction; no joint fullgraph solver/global/Lean.",
+    "resolution": "PASS. Fresh accepted2595 and recursive hashes. Independent breadth-first full row-domain enumeration verifies400 queries/all20096 exact-cover rows and all terminal prefixes; no prior positive witness substituted for domain. Group permutation multiplication independently confirms left development a->ab. Every row checked for internal inverse closure, then every saved C4 certified in its actually developed78-vertex forced partial graph;1056 positives independently C4-free. Complete80 outcome/400 query source coverage shows each outcome has at least one empty admissible-row domain. COMPLETE0.085719s row and0.225275s star audits, each original30. Evidence /tmp/erdos85-sol1-review2597/audit.py and result.json. Profile (0,3,0,5) excluded under accepted premises. No simultaneous fullgraph solver, otherA4/fullgroup/global/Lean exclusion.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-three-six-full-local-rows/pins.json"
+    ]
+  },
+  "2602": {
+    "status": "resolved",
+    "body": "A4(0,3,3,4) exclusion conditional2600/2601 and complete2599 induced cover. Explicit commuting T-label maps plus saved orbit transports cover336 graphs by3 actual graphs;48 Q sources normalize consistently. Full origin tuple orbits/C4 domains ->8/8/8/12 per graph. All18432 products ->36 packings. Full local inverse-closed neighbor-row domains for all108 ordinary origins ->zero completed rows, all36 excluded. COMPLETE stages .023837/1.099296/.330487/.007375s original30; full maps/domains/certs. Frozen incidence untouched. No global/Lean.",
+    "resolution": "PASS WITH EXPLICIT PAPER ERRATUM /tmp/erdos85-sol1-review2602/ERRATUM.md: classes1/2 have ordinary Q diagonals1/3/1 and cross0-2 degree3, not uniform diagonal3/cross1 as PROOF.md states. Actual code/data use saved Q correctly; false sentence is not a premise. Fresh scoped2599/2600/2601 and hashes; all336 graph transports/48 Q transports verified, E_NR zero on ordinary regular orbits. Complete42768 origin tuples/3564 canonical tuples ->108 local choices; all18432 products ->36 packings. All108 local queries use actual saved Q, full candidates/inverse-closed subsets1044 rows, independent breadth-first exact-cover joins all empty. Thus all36 packings excluded and profile(0,3,3,4) impossible. COMPLETE0.005927s source,0.456923s domain,0.207011s packing,0.006677s local, each original30. Evidence /tmp/erdos85-sol1-review2602. No fullA4/global/Lean conclusion; frozen incidence untouched.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-four-orbit-attachment-cover/pins.json"
+    ]
+  },
+  "2498": {
+    "status": "resolved",
+    "body": "A4 one6-orbit attachment cover. Involutionfixed2 forcesF opposite-edge matching; twelve adjacentF pairs arefree, threeoppositepairs haveV4stab. Outside4 Fdegree0/3, outside12 Fdegree0/1/2; degree3four ordegree2twelve eachconsumesall12freepairs ->atmostoneexceptionalorbit. Five exact W/R branches listed; noexception/c3 branch excluded by independently re-established2490 quotient and2491 freeYpair count60>48. Fourbranchesremain. Please audit pair-action stabilizers, completeness andtransport; nosearch/fullA4/global/Lean.",
+    "resolution": "PASS: six hashes/fresh2207/2257/2489/2490/2491. Independent tetrahedral-edge action confirms12 free/3 opposite nonfree pairs; exceptional-orbit pair exhaustion and allfive attachment profiles checked. Noexception/c3 exclusion re-establishes matching quotient and residual4 independence, then freeYpair60>48 without importing old F orbit structure. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2498. Four necessary branches remain; no fullA4/global/Lean.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-a4-single-six-attachments/pins.json"
+    ]
+  },
+  "2516": {
+    "status": "resolved",
+    "body": "ExceptionalB4 pattern0 exclusion conditional2507/2512. All2880 W0extensions fail necessaryremaining localcovers COMPLETE0.455s original30. Stronger directcertificate extraction COMPLETE0.295s separateoriginal30: for each W1origin find C_i endpoint withzero currentcommonneighbor; exhaustall9 endpointneighbors, eachW0saturated/self/or explicit simplelength3path forbidsnewedge. All2880 directshortages saved, no relianceonrecursive search negative. Since E(C_i,regular)=0 eachrequiresone commonneighbor ->contradiction. Please independently check allfixedpartialgraphs/exhaustive9middles/paths andcompleteinput keys. Together2512 excludes exceptionalB4 branch; otherA4/global/Lean open.",
+    "resolution": "PASS via directcertificate route:13pins/fresh2504/2507/2512. Reconstructed exact2880partialgraphs/keys, allsmall+W0degrees9. All25920potentialmiddles exhaustendpointneighborhoods:8640saturatedW0,1584self,15696explicit simplelength3paths. Emptycurrentcommonneighbors andE_Ci,regular0 forcecontradiction. COMPLETE .120871s/30. No relianceonlocalrecursive negatives. Together2512 entireexceptionalB4branch excluded; otherA4/global/Lean open. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2516.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-a4-exceptional-four-fixed-w0-local/pins.json"
+    ]
+  },
+  "2520": {
+    "status": "resolved",
+    "body": "Paper excludes A4 exceptional12/c3 branch of2498. Threefourorbits independent/F-unattached, onlyfive regularorbits. Regularvertex<=1neighbor perCi (pair stabilizer), soeachCi attachesexactthree regularorbits. CrossCiCj has4nonfree/12freepairs; eachsharedregularorbit consumesall12freepairs, henceattachmentsets intersect<=1. Three3-subsets onfive mustpairwiseintersectexact1 ->union9-3+triple>=6 contradiction. No search. Also independently excludesalreadyclosed noexception/c3. Please audit crosspaircover and counting; otherA4/global/Lean open.",
+    "resolution": "PASS exceptional12/c3 excluded. Pins/fresh2498 checked. EachunattachedCi mustmeet3of5regularorbits; nonfreepair obstruction and12freecrosspair capacity forcepairwiseintersection<=1. Three3subsets on5 haveintersectionexact1, union>=6 contradiction. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2520. No search/global/Lean; otherA4 profiles separate.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-a4-three-unattached-four-exclusion/pins.json"
+    ]
+  },
+  "2501": {
+    "status": "resolved",
+    "body": "Full A4 singleF6/noexception/c0 exclusion conditional2498/2499. All88 residualbases/1980 W03/7128 W21 ->1620; all49140 three-W21 packings ->1404; allsixcenter choices perW origin ->108 packings/432 assignments; all1728 localW covers ->zero cases. Four original30s stages COMPLETE0.205/0.059/0.062/0.062s. ExplicitnegativeC4/overlap witnesses, fullcenteroptions/localcandidate domains. Normalizations andunorderedthree-orbit packing explained; E_WR from2499. Please audit afterpremises. Exceptionalattachments/otherA4/global/Lean remainopen; nofullgraphsolver.",
+    "resolution": "PASS fullA4 singleF6/noexception/c0 exclusion. Independently regenerate88 bases/1980W03/7128W21->1620 and everyC4 certificate; all49140 triplepackings->1404; allsixcenteroptions->432 assignments; all1728 local candidate domains/endpoint-first exactcovers ->zero fullcases. COMPLETE .220035/.194309/.883582/.057055s separate original30s caps. Pinned hashes/fresh2496/2498/2499; normalizations and E_WR0 necessity audited. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2501/REVIEW.md. Exceptional/otherA4/normalP/global/Lean open.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-a4-single-six-partial/pins.json"
+    ]
+  },
+  "2521": {
+    "status": "resolved",
+    "body": "Corrected necessary exceptional12/c0 refinement: B Fdegree2; commonF endpointcount2+2b+c<=6 ->internalb<=2. ExhaustALL11 inverseclosed A4 connectionsets size<=2 in fixedF+B graph:10 explicitC4, onlyempty survives, COMPLETE0.000339s original30. ThusB independent. IndividualWj Bdegree<=2, Yi Bdegree<=3, sumYi=7-sumWj. No unsupported aggregateequitability/fullquotient; preceding chatclaim withdrawn. Initialeight-set receipt preserved but notusedascompletecover. Please audit11-set coverage/directcycles/degreebound. No branchexclusion/global/Lean.",
+    "resolution": "PASS: eight pins/fresh2498. Endpointbound2+2b+c<=6 and normalization audited. Independently enumerateallinverseclosed subsets size<=2 ->11, reconstructallF+Bgraphs/check10C4certs; onlyempty survives, COMPLETE .000216s/30. Initialeight receipt unused/preserved; withdrawnaggregatequotient not imported. IndividualW/Ybounds andreversebalance checked. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2521. B independent, branch/global/Lean stillopen.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-a4-exceptional-twelve-internal/pins.json"
+    ]
+  },
+  "2522": {
+    "status": "resolved",
+    "body": "Exceptional12/c0 necessary paper after2521: F6 consumes36 Bpairs, exactly12 nonfree (two swappedpairs perF) +24free. Remainingfreecapacity24 gives sum binomial(k_i,2)<=2 acrossfive regularneighbororbits; independentB anddegree9 gives sumk=7 ->allk1/2 exactlytwo2. Thus multiset22111, three W/Ydegreepatterns. Everyfree Bpair covered; remaining6nonfreepairs giveE[B] invariantperfectmatching. Please audit stabilizer/paircount/equality; no unsupported aggregateequitablequotient orsearch. Not branchexclusion/global/Lean.",
+    "resolution": "PASS: pins/fresh2498/2521. Fstabilizer pair argument gives36distinctBpairs=12nonfree+24free; explicitA4incidence count checked. Five regularBdegrees sum7/freecapacity2 forces22111 byequality choose(k,2)>=k-1. Remainingfreepairs allcovered, sixunusednonfree formtransitiveE[B]matching. ThreeW/Yplacements complete; noaggregateequitability. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2522. Necessaryonly/no branchexclusion/global/Lean.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-a4-exceptional-twelve-pair-budget/pins.json"
+    ]
+  },
+  "2524": {
+    "status": "resolved",
+    "body": "Complete exceptional12 F+B attachment cover after2521/2522: normalizeeach otherregularorbit toBidentityneighbor, secondBneighbor arbitrary11 ifdegree2; bothW Fcenters arbitrary6; three22111placements. All13068 complete0.826s original30 ->12940explicitC4/128positive (0 bothWdouble,32 mixed,96 bothYdouble). F/B saturateddegree9. Separate localmaskpacking all128*5 COMPLETE0.02356s original30 allpositive; witnesses NOT domains. Please audit origincover/fulltuplecerts. ExcludesbothWdoubleplacement only; other128/global/Lean open.",
+    "resolution": "PASS: pins/fresh2498/2521/2522. Independent all13068 normalizedtuples/fullincidences, F+Bdegree9, all12940C4certs andexact128positive(0/32/96). COMPLETE .477662s/30. Regeneratedall640 localdomains/maskrepresentatives anddirectlyverifiedpositivewitnesses .011872s/30. BothWdoubleplacement excluded, other128preserved; nowitnessasdomain/no global/Lean. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2524.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-a4-exceptional-twelve-incidences/pins.json"
+    ]
+  },
+  "2528": {
+    "status": "resolved",
+    "body": "Paper excludesbothYdouble placement2522. B hasexact4 commonF endpoints ->2 Fdefects; balanceF-B gives4 Bdefects perF plusE[F]matching1 saturates ->E(F,allotherregular)=0. EachdoubleY supplies4Fendpoints viaB, soexact2 Wneighbors ->48edges totaltotwoWorbits. EachW has4Bendpoints viaF plus7remainingneighbors, eachsupplies>=1 Bendpoint, doubleY extra1 -><=1 doubleYneighbor, only24edgespossible. Contradiction. Pointwisebounds/individualF-B balance, no union-equalityassumption orsearch. Mixedplacement/otherA4/global/Lean open.",
+    "resolution": "PASS bothYdouble excluded. Pins/fresh2498/2521/2522/2524. IndividualF-B defectbalance +E[F]matching exhaustsFdefectrows; eachdoubleY musthave2Wneighbors ->48edges. PointwiseW count4+7+m distinctBendpoints<=12 givesm<=1 ->atmost24edges. No union-equitability assumption/search/witness. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2528. Mixedplacement/otherA4/global/Lean open.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-a4-exceptional-twelve-two-y-exclusion/pins.json"
+    ]
+  },
+  "2606": {
+    "status": "resolved",
+    "body": "Remaining mixed A4 exclusion conditional2604/2605, accepted2548 chain. All160 configurations/336 complete queries; project each row's full invariant edges between regular orbits. Full pair tables require opposite projections equal. Necessary unsupported-row deletion empties a domain in every configuration. COMPLETE1.119356s original30. Author audit independently recomputes186976 bitset comparisons, replays all deletions, and simultaneous deletion also empties all160 (.136856s). Full domains/tables/traces saved. No fullassignment search/global/Lean.",
+    "resolution": "PASS: fresh2548/2604/2605 acceptance and recursive pins. Independent endpoint-based reconstruction of complete undirected edge projections for6016 rows/all336 active queries; exact160 configuration cover. Recomputed every186976 Cartesian row-pair comparison, all saved compatibility tables, replayed800 supported-domain deletions and exact terminal sets. Independent simultaneous deletion from full domains empties every160 configuration in one round each. COMPLETE0.900627s original30; loading/hashing outside clock. Evidence /tmp/erdos85-sol1-review2606/audit.py and result.json. Excludes remaining mixed exceptional-twelve A4 case under accepted upstream covers. Full A4 composition remains separate; global/Lean open.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-mixed-row-reciprocity/pins.json"
+    ]
+  },
+  "2553": {
+    "status": "resolved",
+    "body": "S3\u00d7C2 orbit cover, fresh2489/2494/2257. Complete 1/2/4 stabilizer classes with explicit coset fixed counts; central z free/fixed6, s/t even<=6, abstract parity twist exchanges classes. Exactly14 arithmeticprofiles. Three paperexclusions: transitiveF6 forcesW4regular, so d3 impossible; both allregular-outside profiles forceFmatching/W4regular/R2regular, freeRpaircapacity2 versus residual>=1+W>=2 contradiction. Eleven remain (4 zfree,4 transitiveF6,3 two-three). For two-three withnonregularoutside retain triangle-leaf possibility. Explicitgroup/subgroup/action/profile/capacity check COMPLETE .000547s original30. Please audit cover and three exclusions; notfullS3xC2/global/Lean.",
+    "resolution": "PASS. Fresh2489/2494/2257 and all packet/input hashes. Independent bitmask subgroups/full coset-set actions verify five stabilizer classes and fixed counts; abstract s/t exchange verified. Wider vertex-count arithmetic bounds reproduce14 profiles. Direct regular unordered-pair orbits give exactly2free; all ordered degree allocations violate capacity for both regular-outside profiles. TransitiveF6 attachment stabilizer argument forces4regularW and rejects d3. Three paper exclusions valid,11profiles remain; two-three nonregular outside retains triangle-leaf possibility. COMPLETE0.006894s original30. Evidence /tmp/erdos85-sol1-review2553. No fullS3xC2/global/Lean exclusion.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s3-times-c2-orbit-cover/pins.json"
+    ]
+  },
+  "2512": {
+    "status": "resolved",
+    "body": "After2507: complete forcedW0 triangle/crossdegree cover onall648 smallincidences. Enumerate4 inverseC3pairs andevery crossneighbor subset withrow(2,1,1,1,1)/(2,2,1,0,1); disjointsmallendpoint masks; addfullA4 edgeorbits/checkC4. COMPLETE0.443467s original30,2880coversallC4free, all432 pattern0casespositive. All216 pattern1caseszero: excludes B->W1,Y2 mixedpattern, conditional2507. Uses completecandidate lists, no savedwitness asdomain. Please independently audit cover/degree/masks andexactenumeration. Pattern0/otherA4/global/Lean open.",
+    "resolution": "PASS mixed exceptionalB4 pattern exclusion. Nine pins/fresh2504/2507; all648 sourcecases/fullcandidate lists. Independent Cartesian domain allfourC3pairs/exactW0row/disjointsmallmasks/fullA4orbitunions reproduces2880covers andexactsurvivors. COMPLETE1.790594s/30. All216pattern1zero;432pattern0 retain2880 withhist4:72,7:288,8:72. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2512. Otherpattern/global/Lean open.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-a4-exceptional-four-w0-triangles/pins.json"
+    ]
+  },
+  "2599": {
+    "status": "resolved",
+    "body": "A4(0,3,3,4) induced cover plus CAPPED incidence stage, conditional2591/accepted2489/2207. Complete BB512 masks ->independent; TT7x512 ->matching only; BT64 ->7 choices. Full2401 combined ->973 graphs COMPLETE0.079356s. Incidence producer FROZEN30.000005s:929 graphs complete,1UNKNOWN with24 frontier prefixes,43UNVISITED. 2782074 terminals/7522 positives so far, not full domain. Please audit complete structural cover and partial scope; no profile/global/Lean.",
+    "resolution": "SCOPED PASS: complete induced structural cover only. Fresh2489/2207/2591 and recursive payload hashes. Independent group pair-orbit sets and all512 BB masks,3584 TT masks,64 BT masks verify B independent, T one of7 forced matchings, and7 complete local BT choices. All2401 combined cases and explicit C4/degree evidence checked;973 induced graphs remain. COMPLETE0.054229s original30, evidence /tmp/erdos85-sol1-review2599/induced.py. Authoritative incidence summary is INCOMPLETE at30.000005s and remains frozen. I have NOT audited its2782074 partial terminal certificates or adopted any incidence exclusion/survivor-domain conclusion. Downstream use is limited to the complete induced results.json stage, as #2600 states. No profile/global/Lean exclusion.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-three-six-three-four-induced/pins.json"
+    ]
+  },
+  "2600": {
+    "status": "resolved",
+    "body": "Stronger A4 three-four quotient domain from COMPLETE2599 induced data only; frozen incidence not read/resumed. All973 ->10 (H,C) classes with transports. Full B incidence and defect-target domains add exact BB ME=EM, then exact BT equations and full T incidence/defect domain ->384 configurations in2 classes. All have E_TR=0; direct known10-orbit top6 products ->48. COMPLETE .253721/.550916/.022259s, each original30. Full domains/certs preserved. Necessary cover only, no profile/global/Lean.",
+    "resolution": "PASS. Fresh scoped2599 complete induced cover and recursive hashes; frozen incidence never used. Independent ordered-middle reconstruction and all36 transports cover973 graphs ->10(H,C) classes. Complete B binary rows, seven-target/zero defect-location domains, direct known-block BB commutation and full doubled-position T row construction reproduce384 configurations in classes3/9 only. All cross/diagonal defect numerators, divisibility, degree and Cartesian certificates checked. Natural B pairs nonfree and C3 stabilizers free on T verified directly, justifying B multiplicity<=1 and concentrated residual defect targets with reverse degrees2/1. All384 have E_TR=0; known10-orbit top6 products with unknown regular blocks None give48 survivors. COMPLETE0.218826s classes,0.707122s middle domains,0.024729s blocks, each original30. Evidence /tmp/erdos85-sol1-review2600. Complete necessary quotient cover only, no graph/profile/global/Lean exclusion.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-four-orbit-defect-commutator/pins.json"
+    ]
+  },
+  "2601": {
+    "status": "resolved",
+    "body": "A4 three-four regular quotient domain conditional2600. All48 sources, full weak-composition column domains for XQ=12J-F-HX with required row degrees, symmetry join. Exact Y=12J+8I-m^T X-Q^2 leaves unique pair each. Full10-orbit degree/square/commutation identities checked. COMPLETE0.015960s original30, all domains/source matrices saved. No new exclusion or graph/global/Lean claim; frozen2599 untouched.",
+    "resolution": "PASS. Fresh accepted2600 and recursive hashes. Exact48 positive full-block sources covered. Independent bounded-integer tuple enumeration gives all weak-composition row domains satisfying degree and XQ target equations; complete Cartesian tests verify every symmetry/negative-defect rejection. Direct full10-orbit M square reconstructs E including all unequal-size factors; each retained pair matches all previously known blocks, row degrees, weighted symmetry and full commutation. Exactly one Q/Y pair per source,48 total. Necessity is the NR and RR blocks of E=J+8I-M^2 with known F; no unknown graph edges chosen. COMPLETE0.045654s original30. Evidence /tmp/erdos85-sol1-review2601. Necessary quotient domain only, no new exclusion or graph-existence/global/Lean claim; frozen2599 untouched.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-four-orbit-regular-quotient/pins.json"
+    ]
+  }
+}

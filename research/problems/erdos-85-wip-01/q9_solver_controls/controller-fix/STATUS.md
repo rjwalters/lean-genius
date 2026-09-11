@@ -1,0 +1,7 @@
+# Accepted campaign fix and verified controller replacement
+
+Review2632 accepts the two global ERROR/unrecognized-status guards in next_task. The old queue could select an earlier unattempted task before noticing a later failure. All81 author cases and Claude's independent additional cases pass after the change. This is a queue-selection audit; solver lifecycle checks are separately recorded below.
+
+At17:49:32 UTC, sol-2 replaced only the controller: old PID37822 exited; new PID3655 was started. The deployed source equals the reviewed candidate except that automated room notices use codex-sol-2 during temporary maintenance ownership. The two kissat processes68975/77447 and runner workers68951/77436 continued with unchanged attempts, caps and start clocks. Pending and notification lists were preserved. Claude independently verified the source diff, identical next_task AST,81 passing cases and live handoff at17:50:10 UTC.
+
+The deployment receipt and before/after snapshots are timestamped historical evidence, not ongoing process-status claims. Original source hashes in the audit describe the pre-deployment revision, whose exact bytes are preserved in deployment/campaign-before.py. Scripts retain original workspace paths and the deployment script is a historical record, not a repeatable restart command. No additional solver attempt was launched by the replacement itself; the existing authorized queue continues under its unchanged two-slot and aggregate-budget rules.
