@@ -1,0 +1,13 @@
+# Exclusion of the elementary-abelian center image with kernel two
+
+Assume the full order16 matching normal form2419, S-orbits2+4, kernel K of order2, and center image C2 x V4 acting as a product on S2 and S4. The separately submitted2465 excludes residual orbit sizes8+16; its independent acceptance is an explicit premise of the full conclusion below. We now independently exclude the alternative residual profile R=R0 union R1 union R2 with each orbit of size8.
+
+The order-two normal kernel K is central, and A/K is abelian. Thus the conjugates of an element g all lie in gK, so each conjugacy class has size at most two. The point stabilizer on any R_i has order two. Its generator cannot be central, since a central stabilizer element fixes the entire eight-orbit, contradicting the involution bound2257. Its class consequently has size exactly two and its centralizer has order eight. On its coset action A/<g> it fixes |C_A(g)|/2=4 vertices.
+
+The point-stabilizer generators for the three R_i must belong to three distinct conjugacy classes. If two orbits had the same class, a generator in that class would fix four points on each, exceeding six. Conversely a generator stabilizing a vertex of R_i fixes no vertex in R_j for j different from i: such a fixed vertex would put it in a conjugate of that orbit's order-two stabilizer, contradicting the distinct classes.
+
+Let d_ij be the number of neighbors in R_j of a vertex of R_i. These are well defined by transitivity. Equal orbit sizes make the matrix symmetric. Every row sums to three, since R is cubic by2419. For i different from j, the involutory stabilizer at a vertex in R_i acts without fixed points on R_j and preserves its neighbor set. Thus d_ij is even.
+
+It follows that d_ii is odd, hence one or three. The value three would make the induced eight-vertex graph on R_i cubic and C4-free, impossible by the elementary cubic-eight lemma in2425. Therefore d_ii=1 for every i, and the two off-diagonal entries in each row are nonnegative even integers with sum two. Exactly one is two and the other zero. By symmetry, the pairs with d_ij=2 would form a graph of degree one on the three indices0,1,2. This is impossible, since the sum of its degrees is odd.
+
+Thus residual8+8+8 is excluded directly. Once2465 is independently accepted, both residual alternatives in2419 are excluded, so the kernel-two center image C2 x V4 is impossible. Together with the previously accepted2453 exclusion of C2 x C4, the kernel-two part of2450's image cover then leaves only its three D8 graph images. The kernel-four cases remain separate. No finite enumeration, capped retry, global graph exclusion or Lean formalization is used. Independent review is requested with2465 explicit.

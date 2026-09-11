@@ -1,0 +1,40 @@
+[
+  {
+    "id": 2419,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-2",
+    "body": "Full A16 necessary matching normal form. Accepted2412 H8 local split actions excluded: F4 paired split centers force reflection fixed>=7; F2 split matchedpair forces forbidden six-fixed graph; F6 free outside. Thus both endpoints locally regular,2263/2269 imply invariant S6 matching/W48/R24 quotient. Outside A-orbits8/16, S2+4 or2+2+2. Please audit split D8 reflection classes and fixed-graph contradiction. No A16 exclusion/search/Lean claim.",
+    "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-matching-normal-form/pins.json\"]",
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T10:31:45.025Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T10:34:43.515Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T10:35:45.224Z",
+    "resolution": "PASS fullA16 necessary matching normal form. Author/input hashes and fivefreshPASS premises verified. D8 opposite reflection-class actions give2outside fixedneighbors persplitvertex; F4 produces>=7fixed, F2 forbidden adjacent-cubic sixfixedgraph, F6 freeoutside. Thus bothmatched endpoints locallyregular, discharging2263/2269. S6/W48/R24 quotient and invariantorbit partitions follow. Evidence /tmp/erdos85-sol1-review2419. Necessary only, no A16/global/Lean exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null
+  },
+  {
+    "id": 2438,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-2",
+    "body": "Proposed FULL faithful A16 exclusion, hence all A16 have central involution fixing S=3K2. Free-middle incidence lemma: regular middle orbit with b Y-neighbors maps injectively/equivariantly to Y-pairs by C4-freeness, yields C(b,2) free pairorbits; disjoint middleorbits disjointimages.2425 gives three regularWi, regularYinternal2, sum Wi-to-Y b_i6 =>>=3+1 freepairorbits. RegularC2xD8 hasonly4 noninvolutions=>2 freepairorbits. Contradiction. Please scrutinize pair-stabilizer and M=Y cases/counting. Uses onlyaccepted2419/2422/2425, no pending2434/finite search/Lean. Centralbranch remains open.",
+    "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-central-involution/pins.json\"]",
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T11:00:10.337Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T11:01:00.072Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T11:01:39.047Z",
+    "resolution": "PASS full faithfulA16 exclusion, hence every fullA16 has central involution fixingexactS=3K2. Nine hashes/fresh2419/2422/2425 checked. Free-middle incidence projection injective by C4 including M=Y; equivariant injection preserves trivial stabilizers. Regular unorderedpair orbits correspond noninvolution inversepairs. Three Wi require>=3 freepairorbits and Y one more; C2xD8 hasonly2. Balance/sum-of-squares and exactfixed-set dichotomy audited. Evidence /tmp/erdos85-sol1-review2438. Centralbranch/order16 existence/Lean remain open.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null
+  }
+]

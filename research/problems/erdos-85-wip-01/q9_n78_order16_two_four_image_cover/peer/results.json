@@ -1,0 +1,403 @@
+{
+  "status": "COMPLETE",
+  "original_cap_seconds": 30,
+  "seconds": 0.01424520811997354,
+  "hashes": {
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-two-four-image-cover/PROOF.md": "bb9e54df64fbe5496b7f9f5824f98c4bc132154f95adf4983872bdfc8533355e",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-two-four-image-cover/check.py": "d907ba1a5de9779ac48ddc1f2d27f78d3e63f793a123f61a4861670176caab94",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-two-four-image-cover/input-pins.json": "29a04b30b94b3f3ba049489082d459792bf2da13d263c775c21dc68068b318c6",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-two-four-image-cover/premise-states.json": "2075331776c86d5ab4cc58310a3767e62f6db23574b3e67e0c8ea6e3fa4be66a",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-two-four-image-cover/results.json": "c3f9b879446a1d4dae6286c775142661c3f9f6ca4e7b4eefc767e1d7052038b4",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-matching-normal-form/pins.json": "1b1546fa45682014b1a7f2ea8b2723bda99689291ef411e551b4633afcf2021e",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-matching-normal-form/PROOF.md": "f63c40c5ffc5f26d2fca9658ed9bc2848f587bac59eacf3d591d79be10262ad7",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-central-involution/pins.json": "c0719893cf8b97eb7a7cf9f4819ac22c1d31aff47a795a8283fad9549c821854",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-central-involution/PROOF.md": "b8511b38faaec9185ca72a5107988a3f329173c96d0487f4bb9626274239e5b4"
+  },
+  "premises": [
+    {
+      "id": 2419,
+      "status": "resolved",
+      "resolution": "PASS fullA16 necessary matching normal form. Author/input hashes and fivefreshPASS premises verified. D8 opposite reflection-class actions give2outside fixedneighbors persplitvertex; F4 produces>=7fixed, F2 forbidden adjacent-cubic sixfixedgraph, F6 freeoutside. Thus bothmatched endpoints locallyregular, discharging2263/2269. S6/W48/R24 quotient and invariantorbit partitions follow. Evidence /tmp/erdos85-sol1-review2419. Necessary only, no A16/global/Lean exclusion."
+    },
+    {
+      "id": 2438,
+      "status": "resolved",
+      "resolution": "PASS full faithfulA16 exclusion, hence every fullA16 has central involution fixingexactS=3K2. Nine hashes/fresh2419/2422/2425 checked. Free-middle incidence projection injective by C4 including M=Y; equivariant injection preserves trivial stabilizers. Regular unorderedpair orbits correspond noninvolution inversepairs. Three Wi require>=3 freepairorbits and Y one more; C2xD8 hasonly2. Balance/sum-of-squares and exactfixed-set dichotomy audited. Evidence /tmp/erdos85-sol1-review2438. Centralbranch/order16 existence/Lean remain open."
+    }
+  ],
+  "subgroups": [
+    [
+      0
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      0,
+      5
+    ],
+    [
+      0,
+      1,
+      4,
+      5
+    ],
+    [
+      0,
+      2,
+      4,
+      6
+    ],
+    [
+      0,
+      7
+    ],
+    [
+      0,
+      3,
+      4,
+      7
+    ],
+    [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    [
+      0,
+      8
+    ],
+    [
+      0,
+      9
+    ],
+    [
+      0,
+      1,
+      8,
+      9
+    ],
+    [
+      0,
+      11
+    ],
+    [
+      0,
+      3,
+      8,
+      11
+    ],
+    [
+      0,
+      12
+    ],
+    [
+      0,
+      4,
+      8,
+      12
+    ],
+    [
+      0,
+      5,
+      9,
+      12
+    ],
+    [
+      0,
+      7,
+      11,
+      12
+    ],
+    [
+      0,
+      13
+    ],
+    [
+      0,
+      5,
+      8,
+      13
+    ],
+    [
+      0,
+      4,
+      9,
+      13
+    ],
+    [
+      0,
+      1,
+      12,
+      13
+    ],
+    [
+      0,
+      1,
+      4,
+      5,
+      8,
+      9,
+      12,
+      13
+    ],
+    [
+      0,
+      4,
+      10,
+      14
+    ],
+    [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14
+    ],
+    [
+      0,
+      3,
+      4,
+      7,
+      9,
+      10,
+      13,
+      14
+    ],
+    [
+      0,
+      15
+    ],
+    [
+      0,
+      7,
+      8,
+      15
+    ],
+    [
+      0,
+      4,
+      11,
+      15
+    ],
+    [
+      0,
+      3,
+      12,
+      15
+    ],
+    [
+      0,
+      3,
+      4,
+      7,
+      8,
+      11,
+      12,
+      15
+    ],
+    [
+      0,
+      2,
+      4,
+      6,
+      9,
+      11,
+      13,
+      15
+    ],
+    [
+      0,
+      1,
+      4,
+      5,
+      10,
+      11,
+      14,
+      15
+    ],
+    [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ]
+  ],
+  "models": [
+    {
+      "elements": [
+        0,
+        7,
+        11,
+        12
+      ],
+      "order": 4,
+      "involutions_swapping_two": [
+        11,
+        12
+      ]
+    },
+    {
+      "elements": [
+        0,
+        2,
+        4,
+        6,
+        8,
+        10,
+        12,
+        14
+      ],
+      "order": 8,
+      "involutions_swapping_two": [
+        8,
+        12
+      ]
+    },
+    {
+      "elements": [
+        0,
+        3,
+        4,
+        7,
+        9,
+        10,
+        13,
+        14
+      ],
+      "order": 8,
+      "involutions_swapping_two": [
+        9,
+        13
+      ]
+    },
+    {
+      "elements": [
+        0,
+        4,
+        11,
+        15
+      ],
+      "order": 4,
+      "involutions_swapping_two": [
+        11,
+        15
+      ]
+    },
+    {
+      "elements": [
+        0,
+        3,
+        12,
+        15
+      ],
+      "order": 4,
+      "involutions_swapping_two": [
+        12,
+        15
+      ]
+    },
+    {
+      "elements": [
+        0,
+        3,
+        4,
+        7,
+        8,
+        11,
+        12,
+        15
+      ],
+      "order": 8,
+      "involutions_swapping_two": [
+        8,
+        11,
+        12,
+        15
+      ]
+    },
+    {
+      "elements": [
+        0,
+        2,
+        4,
+        6,
+        9,
+        11,
+        13,
+        15
+      ],
+      "order": 8,
+      "involutions_swapping_two": [
+        9,
+        11,
+        13,
+        15
+      ]
+    },
+    {
+      "elements": [
+        0,
+        1,
+        4,
+        5,
+        10,
+        11,
+        14,
+        15
+      ],
+      "order": 8,
+      "involutions_swapping_two": [
+        11,
+        15
+      ]
+    }
+  ],
+  "excluded": [
+    {
+      "elements": [
+        0,
+        4,
+        10,
+        14
+      ],
+      "order": 4,
+      "involutions_swapping_two": []
+    }
+  ],
+  "types": {
+    "graph_V4": 3,
+    "product_C4": 1,
+    "graph_D8": 3,
+    "product_V4": 1
+  }
+}

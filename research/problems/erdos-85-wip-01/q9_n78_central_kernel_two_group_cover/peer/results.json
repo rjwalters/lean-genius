@@ -1,0 +1,854 @@
+{
+  "status": "COMPLETE",
+  "original_cap_seconds": 30,
+  "seconds": 0.029503499856218696,
+  "hashes": {
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-central-kernel-two-group-cover/PROOF.md": "d313cf31eb602df38c7371f80f1c79b93693f0b8204a1ef6f97026e9e6091bcc",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-central-kernel-two-group-cover/check.py": "7f48941dcb1d6cfca4791af920a63444366c182d8bdb21d9bd58547c56e6cfff",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-central-kernel-two-group-cover/input-pins.json": "8734bff304d23e0abdf848f0ebf1636af28300334caab400de1b5b75306b0503",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-central-kernel-two-group-cover/premise-state.json": "44ab0b1af0f55edb2560f16d9199d664fcbd4d77efc3542d919d14e37fb73e04",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-central-kernel-two-group-cover/results.json": "aad84b2863560758bc4aa8f7d71102c15f2f99251967092ea667ec4736cc42bb",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-central-kernel-two-orbits/pins.json": "40c16d413e6ab2954d90f43e4046ac1fa1c5f49da7cffab2344e307358a8cde2",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-central-kernel-two-orbits/PROOF.md": "5526a629f404e3a33809b06204a12c46e8694d625741a33e5ecfc2f9cf94ee2c"
+  },
+  "premise": {
+    "id": 2430,
+    "status": "resolved",
+    "resolution": "PASS necessary S2+2+2/kernel2 subcase. Nine hashes and fresh2257/2419/2425 checked; reread universal applicability of2419 to each index2 point stabilizer. Intersection>=4 yields common S. Quotient fullC2^3, outside involutions lie in one2-element conjugacyclass, fixing4 per8orbit, hence exactlyone8/four16. W attachments and r-to-each-B_s saturation/balance audited; exponent4/cubic8/Cayley lemmas give Rmatching+twoC8. Evidence /tmp/erdos85-sol1-review2430. No subcase exclusion/Lean claim."
+  },
+  "records": [
+    {
+      "square_bits": [
+        0,
+        0,
+        0
+      ],
+      "commutator_bits": [
+        0,
+        0,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        0,
+        0
+      ],
+      "commutator_bits": [
+        0,
+        0,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        0,
+        0
+      ],
+      "commutator_bits": [
+        0,
+        1,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        0,
+        0
+      ],
+      "commutator_bits": [
+        0,
+        1,
+        1
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        0,
+        0,
+        0
+      ],
+      "commutator_bits": [
+        1,
+        0,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        0,
+        0
+      ],
+      "commutator_bits": [
+        1,
+        0,
+        1
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        0,
+        0,
+        0
+      ],
+      "commutator_bits": [
+        1,
+        1,
+        0
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        0,
+        0,
+        0
+      ],
+      "commutator_bits": [
+        1,
+        1,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        0,
+        1
+      ],
+      "commutator_bits": [
+        0,
+        0,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        0,
+        1
+      ],
+      "commutator_bits": [
+        0,
+        0,
+        1
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        0,
+        0,
+        1
+      ],
+      "commutator_bits": [
+        0,
+        1,
+        0
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        0,
+        0,
+        1
+      ],
+      "commutator_bits": [
+        0,
+        1,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        0,
+        1
+      ],
+      "commutator_bits": [
+        1,
+        0,
+        0
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        0,
+        0,
+        1
+      ],
+      "commutator_bits": [
+        1,
+        0,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        0,
+        1
+      ],
+      "commutator_bits": [
+        1,
+        1,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        0,
+        1
+      ],
+      "commutator_bits": [
+        1,
+        1,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        1,
+        0
+      ],
+      "commutator_bits": [
+        0,
+        0,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        1,
+        0
+      ],
+      "commutator_bits": [
+        0,
+        0,
+        1
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        0,
+        1,
+        0
+      ],
+      "commutator_bits": [
+        0,
+        1,
+        0
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        0,
+        1,
+        0
+      ],
+      "commutator_bits": [
+        0,
+        1,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        1,
+        0
+      ],
+      "commutator_bits": [
+        1,
+        0,
+        0
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        0,
+        1,
+        0
+      ],
+      "commutator_bits": [
+        1,
+        0,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        1,
+        0
+      ],
+      "commutator_bits": [
+        1,
+        1,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        1,
+        0
+      ],
+      "commutator_bits": [
+        1,
+        1,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        1,
+        1
+      ],
+      "commutator_bits": [
+        0,
+        0,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        1,
+        1
+      ],
+      "commutator_bits": [
+        0,
+        0,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        1,
+        1
+      ],
+      "commutator_bits": [
+        0,
+        1,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        1,
+        1
+      ],
+      "commutator_bits": [
+        0,
+        1,
+        1
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        0,
+        1,
+        1
+      ],
+      "commutator_bits": [
+        1,
+        0,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        0,
+        1,
+        1
+      ],
+      "commutator_bits": [
+        1,
+        0,
+        1
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        0,
+        1,
+        1
+      ],
+      "commutator_bits": [
+        1,
+        1,
+        0
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        0,
+        1,
+        1
+      ],
+      "commutator_bits": [
+        1,
+        1,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        0,
+        0
+      ],
+      "commutator_bits": [
+        0,
+        0,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        0,
+        0
+      ],
+      "commutator_bits": [
+        0,
+        0,
+        1
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        1,
+        0,
+        0
+      ],
+      "commutator_bits": [
+        0,
+        1,
+        0
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        1,
+        0,
+        0
+      ],
+      "commutator_bits": [
+        0,
+        1,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        0,
+        0
+      ],
+      "commutator_bits": [
+        1,
+        0,
+        0
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        1,
+        0,
+        0
+      ],
+      "commutator_bits": [
+        1,
+        0,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        0,
+        0
+      ],
+      "commutator_bits": [
+        1,
+        1,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        0,
+        0
+      ],
+      "commutator_bits": [
+        1,
+        1,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        0,
+        1
+      ],
+      "commutator_bits": [
+        0,
+        0,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        0,
+        1
+      ],
+      "commutator_bits": [
+        0,
+        0,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        0,
+        1
+      ],
+      "commutator_bits": [
+        0,
+        1,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        0,
+        1
+      ],
+      "commutator_bits": [
+        0,
+        1,
+        1
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        1,
+        0,
+        1
+      ],
+      "commutator_bits": [
+        1,
+        0,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        0,
+        1
+      ],
+      "commutator_bits": [
+        1,
+        0,
+        1
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        1,
+        0,
+        1
+      ],
+      "commutator_bits": [
+        1,
+        1,
+        0
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        1,
+        0,
+        1
+      ],
+      "commutator_bits": [
+        1,
+        1,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        1,
+        0
+      ],
+      "commutator_bits": [
+        0,
+        0,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        1,
+        0
+      ],
+      "commutator_bits": [
+        0,
+        0,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        1,
+        0
+      ],
+      "commutator_bits": [
+        0,
+        1,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        1,
+        0
+      ],
+      "commutator_bits": [
+        0,
+        1,
+        1
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        1,
+        1,
+        0
+      ],
+      "commutator_bits": [
+        1,
+        0,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        1,
+        0
+      ],
+      "commutator_bits": [
+        1,
+        0,
+        1
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        1,
+        1,
+        0
+      ],
+      "commutator_bits": [
+        1,
+        1,
+        0
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        1,
+        1,
+        0
+      ],
+      "commutator_bits": [
+        1,
+        1,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        1,
+        1
+      ],
+      "commutator_bits": [
+        0,
+        0,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        1,
+        1
+      ],
+      "commutator_bits": [
+        0,
+        0,
+        1
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        1,
+        1,
+        1
+      ],
+      "commutator_bits": [
+        0,
+        1,
+        0
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        1,
+        1,
+        1
+      ],
+      "commutator_bits": [
+        0,
+        1,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        1,
+        1
+      ],
+      "commutator_bits": [
+        1,
+        0,
+        0
+      ],
+      "retained": true
+    },
+    {
+      "square_bits": [
+        1,
+        1,
+        1
+      ],
+      "commutator_bits": [
+        1,
+        0,
+        1
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        1,
+        1
+      ],
+      "commutator_bits": [
+        1,
+        1,
+        0
+      ],
+      "retained": false
+    },
+    {
+      "square_bits": [
+        1,
+        1,
+        1
+      ],
+      "commutator_bits": [
+        1,
+        1,
+        1
+      ],
+      "retained": false
+    }
+  ],
+  "retained_count": 24
+}

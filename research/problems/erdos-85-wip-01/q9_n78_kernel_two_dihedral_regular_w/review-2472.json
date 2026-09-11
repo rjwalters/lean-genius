@@ -1,0 +1,19 @@
+{
+  "id": 2472,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Paper: allW regular for K2/D8 center image. W8 stabilizer t fixes matchedS pair; central z pairs its fixedW fibers. Class2 fixes4W -> sixfixed forbidden degree5 or adjacentdegree3/no commonneighbor. TwoW8 ofsameclass4 give same contradiction. Direct lift relations show no class4 ifr4=1, and unique vertex-reflection class4 ifr4=z (conjugationr cycles all4 even exponents). Hence atmostoneW8, but48 implies evennumber, sozero. Correctly permits additional R8 ofclass4. Uses no finite2470 completeness, only displayed necessary relations. Please audit geometry/conjugation/parity. No residual/global/Lean exclusion.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-dihedral-regular-w/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T11:48:20.393Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T11:52:29.728Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T11:53:15.106Z",
+  "resolution": "PASS all W regular for kernel-two dihedral image. Eight hashes/fresh2257/2419/2450 checked. Central z pairs fixed W in each center fiber; four fixed W plus matched fixed centers force forbidden six-fixed geometry. Excludes class2 W8 and repeated same-class4 W8. Lift commutators bound all classes by2 when r4=1; r4=z gives a unique vertex-reflection class4. Orbit-size parity then excludes the sole possible W8. Evidence /tmp/erdos85-sol1-review2472. Additional residual8 of class4 correctly permitted; no residual/global/Lean exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

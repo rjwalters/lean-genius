@@ -1,0 +1,9 @@
+# Review 2475 — PASS vertex-reflection semidihedral exclusion
+
+Nine hashes checked, with freshly accepted 2257,2419,2425,2438,2470,2472. The noncentral involutions r^(2i)s form one class of four and fix two S centers, so three residual eight-orbits would supply eight fixed points. The residual 8+16 profile and accepted regularity of W then force W0-to-Y degree two, with the other degrees one and three: the uniform alternative exceeds the five zero-codegree partners allowed at each Y vertex.
+
+The Cayley analysis is exhaustive for an inverse-closed two-element connection. A noninvolutory inverse pair must have order eight, hence odd rotation, and its two-step pair difference is r^2 or r^6. A pair of involutions either generates a four-cycle or has product r^2 or r^6, giving precisely the same free unordered pair orbit. Thus that whole orbit already has Y middles.
+
+The handedness in the attachment step is correct. For neighbors d_i of a W origin with center c, the S centers seen from Y identity are d_i^-1 c. Choose opposite entries i,j and put c'=d_i^-1 c and e=d_i^-1 d_j. Then e^-1 c'=d_j^-1 c, so the two normalized centers remain exactly the opposite pair originally chosen. This identity does not require commutativity. The group elements sending a square vertex to its opposite are the half-turn and one vertex-axis reflection. Their lifts are respectively r^2,r^6 and noncentral involutions in this particular law. The former pair orbit already has a Y middle; the latter has nontrivial pair stabilizer and cannot be the equivariant injective image of a regular-W middle. Both contradict C4-freeness.
+
+This excludes the entire law (1,0,1) in the kernel-two dihedral center action, including every compatible S2 character. It does not transfer to law (1,1,1), where the locations of the involutory reflection lifts differ. This is a paper proof, with no new enumeration or Lean theorem and no full order-sixteen/global exclusion.

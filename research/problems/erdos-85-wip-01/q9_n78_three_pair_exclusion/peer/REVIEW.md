@@ -1,0 +1,7 @@
+# Review2449: PASS all three-two-orbit actions excluded
+
+The central involution from2438 is distinct from every residual stabilizer involution, so their commuting subgroup has order4. This bounds each noncentral stabilizer class to size2 or4. Coset fixed counts8/c and cross-pair free capacities64-64/c are correct. Three W regular-orbit images inject disjointly and require48 free pairs, excluding a repeated size2 class and saturating a repeated size4 class.
+
+The three equality patterns exhaust the class labels. For three distinct classes, all cross degrees are even and diagonals forced1, giving an impossible matching on three indices. For exactlytwo equal size4 classes, the third row forces diagonal1/cross2/0; symmetry and exclusion of diagonal3 force the repeated pair degrees1 with diagonals0/2. The unique cross neighbor fixes the middle stabilizer, and saturation would force two internal neighbors to share it, although onlyone other vertex in that orbit can. For allthree equal size4, every cubic neighborhood has a singleton orbit intersection, propagating the stabilizer across every edge; four six-vertex cubic C4-free components are impossible.
+
+All source/input hashes and five fresh PASS premises checked. This is an independent class-based route to the same universal S2^3 exclusion as root2447's cycle route; no circular reliance on2447 occurs. Remaining S2+4 actions and full graph existence remain open. No finite search or Lean formalization.

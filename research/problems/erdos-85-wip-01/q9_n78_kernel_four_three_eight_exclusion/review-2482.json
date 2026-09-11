@@ -1,0 +1,19 @@
+{
+  "id": 2482,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Full kernel4/R8^3 paper exclusion from2451 rows111/210/012. Required free internalR0 pair excludesD16; internaldegree2 would faithfulC8->D16, so all diagonals0/1. Distinct stabilizerclasses force even crossdegrees; three-distinct and two-same patterns impossible byrowparity/difference. Allsameclass2 lacks48free crosspairs, henceallclass4. W exhausts freepairs01/12; residualmiddle of either type forces equal endpoint/middle stabilizers. Explicit diagonal patterns propagate along every residualedge ->four six-vertex cubic fibers, impossible18wedges>15pairs. Please audit complete degree/class/fiber cases. Independent of2479; jointly would excludeK4, no global/Lean.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-kernel-four-three-eight-exclusion/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T12:03:02.124Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T12:06:12.966Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T12:06:52.619Z",
+  "resolution": "PASS full kernel4/R8^3 exclusion. Pinned hashes/fresh2257/2419/2425/2438/2451 checked. Free internalpair excludesD16; faithfulC8/cubic8 excludes diagonals2/3. Independently audited all stabilizer-class partitions and four cubic quotient patterns. Sameclass4 crosspair saturation01/12 forces equal stabilizers at residual middles; explicit diagonal cases propagate along every edge, producing impossible six-vertex cubic fibers (18wedges>15pairs). Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2482. Independent of2479; together both residualprofiles excludeK4, no fullA16/global/Lean.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

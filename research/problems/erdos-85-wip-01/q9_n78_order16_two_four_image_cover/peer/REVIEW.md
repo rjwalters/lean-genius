@@ -1,0 +1,11 @@
+# Independent review2450
+
+PASS complete eight-image action cover, conditional on explicit S2+4 pattern and accepted2419/2438. Nine author/input hashes and fresh prerequisite dispositions checked. This is a cover of the image on S, not of its full group extensions or graph realizations.
+
+The matching partner map is an equivariant bijection, so it preserves the distinct-sized2 and4 orbits. Its automorphism group on those cells is C2 x D8. Nonfaithfulness gives image order4 or8, and each projection must be transitive. The outside72 vertices cannot all be regular16-orbits. Any outside8 point stabilizer is an involution outside the S2 stabilizer H, which is free outside S by2419. Its image is a nonidentity involution swapping S2. A cyclic image of order4 cannot have such an element, since its unique involution lies in the kernel of its nontrivial character on S2. Only necessity is asserted: the proof never assumes every quotient involution lifts to an involution.
+
+The independent reviewer constructs the ambient permutation set by enumerating all permutations of four points preserving the opposite-pair matching, combined with both permutations of S2. It then considers all32,768 identity-containing subsets of the16-element group and directly tests multiplication closure for possible subgroup orders. Every true subgroup has such an order; closure in a finite group containing the identity suffices for being a subgroup. This independent method recovers exactly all35 saved subgroups, without using the producer's generator-adjoining queue.
+
+Exact transitivity and involution tests recover the same nine candidate images, the single excluded cyclic order4 group, and all eight retained image element lists. Independent projection/order tests recover three graph-character V4 images, three graph-character D8 images, and one each of C2 x C4 and C2 x V4. The ambient coordinate labels and every saved four-point projection list are also checked directly against permutations.
+
+Original30s group-only audit COMPLETE0.01425s; audit.py/results.json and labels.json preserve independent coverage, classifications, hashes and premise states. No finite graph search, full order16 exclusion or Lean formalization is claimed.

@@ -1,0 +1,45 @@
+{
+  "hashes": {
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-dihedral-group-exclusion/PROOF.md": "4eaef0ccb300292cfaeb4b2f799c29fc0a75fdbb3be6ce682b4b8ad83125b53c",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-dihedral-group-exclusion/premise-states.json": "04c4a580c75221196f4d9a7f02aeeaa53756f4f216c605b2a8e23612afacfe41",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-dihedral-group-exclusion/input-pins.json": "00d272b23d02f7b664dd3feaee098dbd3b9e8d17e22fd5a4ec764827cea42bee",
+    "/tmp/erdos85-sol1-q9-n78-two-subgroup-bound/PROOF.md": "07629e73941936bc34d48d93f7bf3a8fa1b5065c352a86ec7ccea3827b481bf5",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-matching-normal-form/PROOF.md": "f63c40c5ffc5f26d2fca9658ed9bc2848f587bac59eacf3d591d79be10262ad7",
+    "/tmp/erdos85-sol1-q9-n78-faithful-sixteen-orbits/PROOF.md": "3535bd03a3e9f0a232f90049871aaca09a85cb6d0e2a410103f7ead9fbb677a0",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-central-involution/PROOF.md": "b8511b38faaec9185ca72a5107988a3f329173c96d0487f4bb9626274239e5b4",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-three-two-orbits-exclusion/PROOF.md": "f6f893ef6bd8181e2ddbf27af5731a1d3163b67a6177b12829112dce1d785ca2",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-four-actions/PROOF.md": "7c99c27811c8239059d449c377196e7cbf395401b73aec672d315c99167ec8a7"
+  },
+  "premises": [
+    {
+      "id": 2257,
+      "status": "resolved",
+      "resolution": "PASS. All4sourcepins/5premise hashes and acceptedstates verified. Full odd-neighborhood fixedpoint, faithful8action, involution fixed0/2, both centralizer kernels C2^4 with quotientsS4/S3, minimumweight code andorbit1/2 arguments audited. Independent10XORpairs/factorial2parts pass. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2257. Arbitrary2-subgroups<=32, vertex-fixing<=16; no order32 exclusion/Lean/globalclosure."
+    },
+    {
+      "id": 2419,
+      "status": "resolved",
+      "resolution": "PASS fullA16 necessary matching normal form. Author/input hashes and fivefreshPASS premises verified. D8 opposite reflection-class actions give2outside fixedneighbors persplitvertex; F4 produces>=7fixed, F2 forbidden adjacent-cubic sixfixedgraph, F6 freeoutside. Thus bothmatched endpoints locallyregular, discharging2263/2269. S6/W48/R24 quotient and invariantorbit partitions follow. Evidence /tmp/erdos85-sol1-review2419. Necessary only, no A16/global/Lean exclusion."
+    },
+    {
+      "id": 2425,
+      "status": "resolved",
+      "resolution": "PASS. Source/input hashes and fresh2257/2419/2422 verified. Independent orbit proof2424 preserved; exact one8/four16 outside and W attachments audited. CubicC4free8 impossible via unique-triangle partition; stabilizer parity/balance forces R8matching/cross2/1. Inverseclosed degree2 Cayley exponent4 alternatives leave exactlytwoC8 on R16. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2425. Necessary faithful branch only, no exclusion/Lean."
+    },
+    {
+      "id": 2438,
+      "status": "resolved",
+      "resolution": "PASS full faithfulA16 exclusion, hence every fullA16 has central involution fixingexactS=3K2. Nine hashes/fresh2419/2422/2425 checked. Free-middle incidence projection injective by C4 including M=Y; equivariant injection preserves trivial stabilizers. Regular unorderedpair orbits correspond noninvolution inversepairs. Three Wi require>=3 freepairorbits and Y one more; C2xD8 hasonly2. Balance/sum-of-squares and exactfixed-set dichotomy audited. Evidence /tmp/erdos85-sol1-review2438. Centralbranch/order16 existence/Lean remain open."
+    },
+    {
+      "id": 2447,
+      "status": "resolved",
+      "resolution": "PASS full S2^3 exclusion anykernel.11 hashes/fresh2257/2419/2425/2438 checked. UniversalW/R geometry, zero-codegree forced cubicquotient and two-transposition classification audited. InternalR2 isC8; kernelcentral-fixed8 contradiction makesA=AutC8. MatchingR0\u2245R2 gives16nonfree/48freecrosspairs; threeW images exhaust48. Additional16 free cycle-middle incidences inject/disjoint byC4, contradiction. Evidence /tmp/erdos85-sol1-review2447. RemainingA16 S2+4/kernel2or4; no fullA16/global/Lean claim."
+    },
+    {
+      "id": 2477,
+      "status": "resolved",
+      "resolution": "PASS four labeled kernel-two actions. Fourteen hashes/fresh2257/2419/2425/2438/2450/2453/2466/2470/2472/2475 checked. Independently extracted all eight noninvolution/admissible-character rows. Free-pair capacity forces >=10 noninvolutions for R8+16; a0 class2/distinct-stabilizer parity excludes R8^3. Law100/char11 unique class fixes2S+6R. Exact remaining cover:100 chars01/10 R8^3,111 chars01/10 either profile. Evidence /tmp/erdos85-sol1-review2477. Kernel4/fullorder16/global/Lean remain open."
+    }
+  ]
+}

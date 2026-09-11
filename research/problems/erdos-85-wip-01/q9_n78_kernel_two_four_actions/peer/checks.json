@@ -1,0 +1,220 @@
+{
+  "hashes": {
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-four-actions/PROOF.md": "7c99c27811c8239059d449c377196e7cbf395401b73aec672d315c99167ec8a7",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-four-actions/premise-states.json": "19ddebd4ab460a408d930701134de0b21ee7cce88652b9370a1a910edfb79276",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-four-actions/input-pins.json": "a72e184b3313a1189f10d6daea9068429b117508f21d32ab08cf03771f38dc82",
+    "/tmp/erdos85-sol1-q9-n78-two-subgroup-bound/PROOF.md": "07629e73941936bc34d48d93f7bf3a8fa1b5065c352a86ec7ccea3827b481bf5",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-matching-normal-form/PROOF.md": "f63c40c5ffc5f26d2fca9658ed9bc2848f587bac59eacf3d591d79be10262ad7",
+    "/tmp/erdos85-sol1-q9-n78-faithful-sixteen-orbits/PROOF.md": "3535bd03a3e9f0a232f90049871aaca09a85cb6d0e2a410103f7ead9fbb677a0",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-central-involution/PROOF.md": "b8511b38faaec9185ca72a5107988a3f329173c96d0487f4bb9626274239e5b4",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-two-four-image-cover/PROOF.md": "bb9e54df64fbe5496b7f9f5824f98c4bc132154f95adf4983872bdfc8533355e",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-two-four-cyclic-projection-exclusion/PROOF.md": "285aae93d468632c2c28ba507acdf5d0841ab72608054277ba346ea741261467",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-elementary-image-exclusion/PROOF.md": "fd84fc8505230dc5f6688b2cbfe85e03ab989810b6c2620e99424a42eaa4f915",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-dihedral-cover/PROOF.md": "9515a64fb225d0691e09ad42fd1f9cf3316d24d154ce27166821538d6f178318",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-dihedral-regular-w/PROOF.md": "6f8bba327f91ce914a895493fbb72649c57f3f51e9102f544bddda4bb70d5bd3",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-dihedral-vertex-semidihedral-exclusion/PROOF.md": "c3a49423724cb15f92050fb491bff0bbc4da3a2c371710239e04a6aeed1b4fa7",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-dihedral-cover/results.json": "0cf4b3967e5e795b14fd712faaaaf1e2fd8e28042b96ffb238bae24e04523c44"
+  },
+  "premises": [
+    {
+      "id": 2257,
+      "status": "resolved",
+      "resolution": "PASS. All4sourcepins/5premise hashes and acceptedstates verified. Full odd-neighborhood fixedpoint, faithful8action, involution fixed0/2, both centralizer kernels C2^4 with quotientsS4/S3, minimumweight code andorbit1/2 arguments audited. Independent10XORpairs/factorial2parts pass. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2257. Arbitrary2-subgroups<=32, vertex-fixing<=16; no order32 exclusion/Lean/globalclosure."
+    },
+    {
+      "id": 2419,
+      "status": "resolved",
+      "resolution": "PASS fullA16 necessary matching normal form. Author/input hashes and fivefreshPASS premises verified. D8 opposite reflection-class actions give2outside fixedneighbors persplitvertex; F4 produces>=7fixed, F2 forbidden adjacent-cubic sixfixedgraph, F6 freeoutside. Thus bothmatched endpoints locallyregular, discharging2263/2269. S6/W48/R24 quotient and invariantorbit partitions follow. Evidence /tmp/erdos85-sol1-review2419. Necessary only, no A16/global/Lean exclusion."
+    },
+    {
+      "id": 2425,
+      "status": "resolved",
+      "resolution": "PASS. Source/input hashes and fresh2257/2419/2422 verified. Independent orbit proof2424 preserved; exact one8/four16 outside and W attachments audited. CubicC4free8 impossible via unique-triangle partition; stabilizer parity/balance forces R8matching/cross2/1. Inverseclosed degree2 Cayley exponent4 alternatives leave exactlytwoC8 on R16. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2425. Necessary faithful branch only, no exclusion/Lean."
+    },
+    {
+      "id": 2438,
+      "status": "resolved",
+      "resolution": "PASS full faithfulA16 exclusion, hence every fullA16 has central involution fixingexactS=3K2. Nine hashes/fresh2419/2422/2425 checked. Free-middle incidence projection injective by C4 including M=Y; equivariant injection preserves trivial stabilizers. Regular unorderedpair orbits correspond noninvolution inversepairs. Three Wi require>=3 freepairorbits and Y one more; C2xD8 hasonly2. Balance/sum-of-squares and exactfixed-set dichotomy audited. Evidence /tmp/erdos85-sol1-review2438. Centralbranch/order16 existence/Lean remain open."
+    },
+    {
+      "id": 2450,
+      "status": "resolved",
+      "resolution": "PASS complete eight S2+4 imageactions. Nine hashes/fresh2419/2438 checked; nonfaithful image order4/8 and necessary outside involution audit valid. Independent matching-preserving ambient permutations and directclosure onall32768 identitysubsets recoverexact35 subgroups,9candidates,onecyclicexclusion,eightretained; all element/projection/involution lists and3V4graph/3D8graph/2product types verified. COMPLETE0.014s original30s groupcap. Evidence /tmp/erdos85-sol1-review2450. Imageonly, not fullA/graph/Lean."
+    },
+    {
+      "id": 2453,
+      "status": "resolved",
+      "resolution": "PASS fullK2/center-image C2xC4 exclusion.15 hashes/fresh2257/2419/2425/2438/2441 checked. Extensionnormalforms/outsideinvolution restriction ->cases00/11 andW16^3,R8+16; degreepossibilities exhaustive. Case00 freepaircapacity4<5. Case11 modular orders/CayleyY squares verified; three distinctC4 centerresidues forceoppositepair difference involution or alreadyoccupied b\u00b2\u00b1, contradiction. Independent wordrewriting all8laws/orders COMPLETE0.003s original30s arithmeticcap. Evidence /tmp/erdos85-sol1-review2453. Otherimages/fullA16/global/Lean remain open."
+    },
+    {
+      "id": 2466,
+      "status": "resolved",
+      "resolution": "PASS fullK2/productC2xV4 image exclusion. Hashes/sixfreshPASS premises checked, including2465. Size2 stabilizerclasses fix4 perR8, so threeclasses distinct; allcrossdegrees even. Cubic8 obstruction forcesinternal1 andexactlyone crossdegree2 perorbit, impossible symmetric degree1 diagram onthreeindices. This excludesR8^3; accepted2465 excludesR8+16. With2450/2453, onlythree D8 graphimages remain atK2. Evidence /tmp/erdos85-sol1-review2466. Kernel4/fullA16/global/Lean remain open."
+    },
+    {
+      "id": 2470,
+      "status": "resolved",
+      "resolution": "PASS abstract eight-law/24-action cover. Eight hashes and fresh2257/2419/2450 checked. Central-kernel lift relations give exhaustive unique normal forms; independent generator-word reduction reproduces all tables, associativity and orders. Generator permutations verify all24 S6 actions and exact kernel. Explicit eight-coset actions independently recover every involution class and fixed-point mark. COMPLETE0.004782333s original30s audit. Evidence /tmp/erdos85-sol1-review2470. Necessary cover only; no multiplicity/incidence/global/Lean exclusion."
+    },
+    {
+      "id": 2472,
+      "status": "resolved",
+      "resolution": "PASS all W regular for kernel-two dihedral image. Eight hashes/fresh2257/2419/2450 checked. Central z pairs fixed W in each center fiber; four fixed W plus matched fixed centers force forbidden six-fixed geometry. Excludes class2 W8 and repeated same-class4 W8. Lift commutators bound all classes by2 when r4=1; r4=z gives a unique vertex-reflection class4. Orbit-size parity then excludes the sole possible W8. Evidence /tmp/erdos85-sol1-review2472. Additional residual8 of class4 correctly permitted; no residual/global/Lean exclusion."
+    },
+    {
+      "id": 2475,
+      "status": "resolved",
+      "resolution": "PASS full K2/D8 law(1,0,1) exclusion. Nine hashes/fresh2257/2419/2425/2438/2470/2472 checked. Unique involution-class fixed count excludes R8^3; Wregular/zero-codegree forces S4-attached Y-degree3. Exhaustive inverse-closed two-element connections all consume pair orbit{r2,r6}. Handedness verified: e=di^-1 dj,cprime=di^-1 c gives e^-1 cprime=dj^-1 c. Opposite attachment forces halfturnlift already used by Y, or involution forbidden by free-middle lemma. Evidence /tmp/erdos85-sol1-review2475. Law111 and other cases remain open; no global/Lean."
+    }
+  ],
+  "extracted_table": [
+    {
+      "bits": [
+        0,
+        0,
+        0
+      ],
+      "noninvolutions": 4,
+      "characters": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ]
+    },
+    {
+      "bits": [
+        0,
+        0,
+        1
+      ],
+      "noninvolutions": 8,
+      "characters": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ]
+    },
+    {
+      "bits": [
+        0,
+        1,
+        0
+      ],
+      "noninvolutions": 12,
+      "characters": []
+    },
+    {
+      "bits": [
+        0,
+        1,
+        1
+      ],
+      "noninvolutions": 8,
+      "characters": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "bits": [
+        1,
+        0,
+        0
+      ],
+      "noninvolutions": 6,
+      "characters": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ]
+    },
+    {
+      "bits": [
+        1,
+        0,
+        1
+      ],
+      "noninvolutions": 10,
+      "characters": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ]
+    },
+    {
+      "bits": [
+        1,
+        1,
+        0
+      ],
+      "noninvolutions": 14,
+      "characters": []
+    },
+    {
+      "bits": [
+        1,
+        1,
+        1
+      ],
+      "noninvolutions": 10,
+      "characters": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ]
+    }
+  ],
+  "law100_character11": [
+    {
+      "representative": 2,
+      "elements": [
+        2,
+        3,
+        10,
+        11
+      ],
+      "fixed_S": 2,
+      "fixed_on_own_eight_orbit": 2,
+      "admissible_by_six_fixed": true
+    }
+  ]
+}

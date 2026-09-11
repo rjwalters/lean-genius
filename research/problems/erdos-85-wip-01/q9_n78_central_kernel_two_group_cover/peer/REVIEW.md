@@ -1,0 +1,11 @@
+# Independent review2434
+
+PASS complete labelled group/action cover for the specific S2+2+2/kernel2 subcase of accepted2430. Seven author/input hashes and the fresh2430 PASS disposition were checked.
+
+K of order two is central because its nonidentity element is fixed under conjugation. Every element has a unique lift-word normal form because the quotient coordinates determine the three binary exponents and the remaining factor lies in K. All squares and commutators therefore give the six stated bits, with no omitted relation affecting multiplication. Sorting a product of two lift words produces exactly the stated lower-triangular cocycle signs. Bilinearity proves associativity for all bit choices and the stated inverse formula proves the group property. Conversely the actual normal-form multiplication is determined by these bits, giving coverage without requiring the tables to be nonisomorphic.
+
+The111 lift is an involution exactly when its square parity vanishes. Its commutators with the three basis lifts have the stated pairwise sums of b bits. They all vanish precisely for000 or111. Thus exactly six commutator triples and four square choices each remain. The two lifts form one conjugacy class, so their order-two stabilizer subgroups are conjugate and yield equivariantly isomorphic outside-eight actions. Origin choices remain a requirement on later incidence enumeration.
+
+The independent reviewer constructs all64 tables by literal word rewriting: concatenate sorted generator words, bubble-sort them while accumulating the commutator factors at each swap, and reduce repeated generators using their square bits. This does not reuse the producer cocycle function. It checks all16^3 associativity equations for every one of the64 tables and applies direct involution/noncentral multiplication tests, recovering exactly the24 retained parameter pairs. Every saved table and inverse agrees. Independently partitioned cosets and induced S/X permutations agree exactly; all action-composition identities and the four-fixed-point character are checked.
+
+Original30s audit COMPLETE0.02950s. audit.py and results.json preserve the full64-parameter retention record and checks. This is a necessary group/action cover, not exclusion of any of the24 models, the whole order-sixteen case, graph existence, or a Lean formalization.

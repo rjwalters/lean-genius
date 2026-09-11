@@ -1,0 +1,9 @@
+# Review 2485 — PASS remaining kernel-two residual8+16 exclusion
+
+Eleven hashes and fresh accepted 2257,2419,2425,2470,2472,2477 checked. Independently transported the already accepted law111 multiplication table through t=rs and derived the two transformed characters from their saved S actions. Computed cosets of <t> and its centralizer directly from that table, confirming the X coordinates and unique matching. Central involutions cannot stabilize an outside orbit; all noncentral involutions are conjugate, so this normalization covers X. Independently choosing W origins with a Y neighbor at identity leaves arbitrary X attachment and all105 normalized W2 triples, with no unjustified S4 filter.
+
+The residual degree and W0 balance arguments follow from the matching normal form, involution freeness, cubic-eight obstruction and saturated S defect rows. The uniform W-to-Y degree-two alternative violates the five-zero-codegree bound, leaving the required W2 degree three. Inverse-closed two-element connections either are inverse pairs or two involutions. In this group the only C4-free possibilities generate two8cycles, as shown by the order/product analysis in the proof. Independent connected-component traversal of all105 candidates recovers exactly six connections.
+
+Independent bit-adjacency construction validates every stage key and all8836 explicit four-cycle certificates. The pruned product tree covers12 residual bases,512 W0 branches after residual pruning, and8400 W2 branches after W0 pruning, with zero survivors. No unsaved branches or duplicated certificate keys remain. COMPLETE0.151804083 seconds under the original30-second audit cap.
+
+This excludes both remaining law111 characters with residual8+16 using required partial incidences only. It does not itself compose the other exclusions into an order16 theorem, nor settle smaller automorphism orders or the global graph problem. No full graph solver, cap retry or Lean theorem is involved.

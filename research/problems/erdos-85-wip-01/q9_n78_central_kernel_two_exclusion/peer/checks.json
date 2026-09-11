@@ -1,0 +1,23 @@
+{
+  "hashes": {
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-central-kernel-two-exclusion/PROOF.md": "9e8baffa3ea1397307d72e1b21c91ba3728546a82d636e5494c634a1bd3d0f5a",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-central-kernel-two-exclusion/input-pins.json": "7a2edce93a3608425c9c5b764b4b71169f1ebde75cb856773ad112f8b40c12d1",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-central-kernel-two-exclusion/premise-states.json": "52048af4998e7e6aad702675c8d1b8b7c5fba4fd53626e3404221f35ea88a342",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-matching-normal-form/pins.json": "1b1546fa45682014b1a7f2ea8b2723bda99689291ef411e551b4633afcf2021e",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-matching-normal-form/PROOF.md": "f63c40c5ffc5f26d2fca9658ed9bc2848f587bac59eacf3d591d79be10262ad7",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-central-kernel-two-orbits/pins.json": "40c16d413e6ab2954d90f43e4046ac1fa1c5f49da7cffab2344e307358a8cde2",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-central-kernel-two-orbits/PROOF.md": "5526a629f404e3a33809b06204a12c46e8694d625741a33e5ecfc2f9cf94ee2c"
+  },
+  "premises": [
+    {
+      "id": 2419,
+      "status": "resolved",
+      "resolution": "PASS fullA16 necessary matching normal form. Author/input hashes and fivefreshPASS premises verified. D8 opposite reflection-class actions give2outside fixedneighbors persplitvertex; F4 produces>=7fixed, F2 forbidden adjacent-cubic sixfixedgraph, F6 freeoutside. Thus bothmatched endpoints locallyregular, discharging2263/2269. S6/W48/R24 quotient and invariantorbit partitions follow. Evidence /tmp/erdos85-sol1-review2419. Necessary only, no A16/global/Lean exclusion."
+    },
+    {
+      "id": 2430,
+      "status": "resolved",
+      "resolution": "PASS necessary S2+2+2/kernel2 subcase. Nine hashes and fresh2257/2419/2425 checked; reread universal applicability of2419 to each index2 point stabilizer. Intersection>=4 yields common S. Quotient fullC2^3, outside involutions lie in one2-element conjugacyclass, fixing4 per8orbit, hence exactlyone8/four16. W attachments and r-to-each-B_s saturation/balance audited; exponent4/cubic8/Cayley lemmas give Rmatching+twoC8. Evidence /tmp/erdos85-sol1-review2430. No subcase exclusion/Lean claim."
+    }
+  ]
+}

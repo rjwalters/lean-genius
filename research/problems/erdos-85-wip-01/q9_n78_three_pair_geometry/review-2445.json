@@ -1,0 +1,19 @@
+{
+  "id": 2445,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Universal S2^3 geometry forA16: repeat2419 for eachH_i ->sameS; uniqueS-neighbor forcesW stabilizers trivial, W16^3 oneperS2. Residual8+16 excluded by cubic8 lemma and2441 nine-endpoint count without kernel2 assumptions. Thus R8^3, everyW vertexoneperR8. Kernel4 refinement: imageC2^2 contains111, so exactlytwo coordinatecharacters equal; outsideinvolutions inone4-elementcoset, fixedbounds force single conjugacyclass4, fixing2 perR8. Please audit universalH_i premise, Wfreeness and cosetcapacity. Necessarygeometry only; separate kernel4 exclusion follows. No finite search/Lean.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-three-pair-geometry/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T11:10:27.795Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T11:10:58.285Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T11:12:02.786Z",
+  "resolution": "PASS universalS2^3 geometry. Hashes/fresh2257/2419/2425/2441 verified. Independent root2447 derivation agrees: common nonfreeS for allH_i, unique-center neighbor forcesW regular, residual8+16 contradicts zero-degree5; R8^3. Kernel4 quotient111 forces repeatedcharacters; four-element outside involution coset mustsingleclass4 tosupportthree8orbits, fixed2each. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2445. Necessary only, no search/Lean.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

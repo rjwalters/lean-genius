@@ -1,0 +1,7 @@
+# Review2426: PASS with exposition correction
+
+The PROOF sentence saying all120 two-subsets of A minus identity should say105, since binomial(15,2)=105. The actual producer enumerates combinations(range(1,16),2), so it covers the correct105 choices;57 are inverse-closed. This is an exposition typo, not a missing domain or incorrect result. The frozen original has not been modified.
+
+Independent faithful permutations of C2 x D8 on S6 reproduce the group multiplication and inverse tables by permutation composition. Explicit cosets reproduce both X8 actions. Independently enumerate all105 perfect matchings on eight vertices and retain those invariant under every action element: exactlythree in each case, with all saved edges matching. All105 Y-neighbor pairs are considered, yielding the exact57 inverse-closed sets. For every matching, connection and origin, independently translate the identity edges and use wedge uniqueness to test C4-freeness. Both roots test1368 choices and retain288, with all576 full edge lists exactly verified. COMPLETE0.062s under the original30s cap.
+
+All source/input hashes and fresh2422/2425 PASS states verified. The equivariant cross map from regularY is fully determined by its identity neighbor, and all eight possibilities are covered. Transitive X ensures every invariant perfect matching is captured, either by the producer edge-orbit method or this independent full-pairing audit. Thus necessary residual coverage is complete. No W attachment, full graph realization, branch exclusion or Lean formalization is claimed.

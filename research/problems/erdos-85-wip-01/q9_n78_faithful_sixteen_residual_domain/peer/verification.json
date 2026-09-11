@@ -1,0 +1,71 @@
+{
+  "status": "COMPLETE",
+  "cap_seconds": 30,
+  "seconds": 0.06212879088707268,
+  "records": [
+    {
+      "reflection": 0,
+      "matchings": 3,
+      "tested": 1368,
+      "survivors": 288
+    },
+    {
+      "reflection": 1,
+      "matchings": 3,
+      "tested": 1368,
+      "survivors": 288
+    }
+  ],
+  "inverse_closed_pairs": 57,
+  "all_pairs": 105,
+  "hashes": {
+    "/tmp/erdos85-sol1-q9-n78-faithful-sixteen-residual-domain/PROOF.md": "459eac4e32fbec885da6b9585febb4ade930bfaaa666ca8ed0a8d9a5502d2d9a",
+    "/tmp/erdos85-sol1-q9-n78-faithful-sixteen-residual-domain/check.py": "f3d75a713ec8b7a06d1b07e314d7a3ce15326edae6f8474a28a2118d6533d44e",
+    "/tmp/erdos85-sol1-q9-n78-faithful-sixteen-residual-domain/results.json": "93a2bcf2b734e5476bd37ddb3bc8d111e8f5cd66a92ddb63797794394e21a611",
+    "/tmp/erdos85-sol1-q9-n78-faithful-sixteen-residual-domain/premise-states.json": "b3f75f8597676322e73c83869998dc8c9d0ec142c2c6537c1af677bcb4d423de",
+    "/tmp/erdos85-sol1-q9-n78-faithful-sixteen-residual-domain/input-pins.json": "2c23aae983a115a5932fd241cecf318831504324a23f38080ebab00a092596f5",
+    "/tmp/erdos85-sol1-q9-n78-faithful-sixteen-orbits/pins.json": "6dad625e8d2f2acb6792c24e6af697360358cbe2ca6e03e1a90b700e46ac406c",
+    "/tmp/erdos85-sol1-q9-n78-faithful-sixteen-orbits/PROOF.md": "3535bd03a3e9f0a232f90049871aaca09a85cb6d0e2a410103f7ead9fbb677a0",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-central-or-faithful/pins.json": "85a6e54f3be4301f2de2a310e9c2fb52d0382cf7419cc5d3aaf0a6e14204f98e"
+  },
+  "premises": [
+    {
+      "id": 2422,
+      "target": "codex-sol-1",
+      "requested_by": "codex-sol-2",
+      "body": "Order16 dichotomy conditional2419: kernel K of A acting on S lies in H. Nontrivial normal K intersects center A in even order, hence central involution fixes exactly S (H free outside). Faithful action embeds Aut(3K2); edge image2/kernel8 forces whole C2 x D8, S-orbits2+4, H=D8 and FixH size2. Please audit normal-kernel class equation and faithful action identification. Neither alternative excluded; no search/Lean.",
+      "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-central-or-faithful/pins.json\"]",
+      "priority": "normal",
+      "status": "resolved",
+      "created_ts": "2026-09-11T10:35:30.707Z",
+      "expires_ts": null,
+      "claimed_by": "codex-sol-1",
+      "claimed_ts": "2026-09-11T10:37:49.608Z",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T10:38:35.279Z",
+      "resolution": "PASS order16 central-or-faithful dichotomy. Author/input hashes and fresh2419 PASS checked. K<=H normal, conjugation parity gives centralinvolution in nontrivialK, fixesexactS byH-freeness. Faithful matching action has fullswapkernel8/image2, equalsC2 x D8 inverseimage, S2+4; H fixesunique2orbit and isD8factor. Evidence /tmp/erdos85-sol1-review2422. Neither branch excluded, no search/global/Lean claim.",
+      "cancelled_by": null,
+      "cancelled_ts": null,
+      "cancel_reason": null
+    },
+    {
+      "id": 2425,
+      "target": "codex-sol-2",
+      "requested_by": "codex-sol-1",
+      "body": "FaithfulA16 paper refinement. Outside8-stabs z*reflection only; eachtwo conjugacyclasses fixes4 per8orbit ->atmosttwo8orbits, parity72forcesexactone8+four16. W=three regular16,R=8+16; WattachmentsS2one/S4two. R8->R16 even=>internal3or1; elementary cubicC4free8 impossibility forcesmatching/cross2/1. R16 degree2 Cayley on exponent4 group =>twoC8. Please audit fixedcoset cover and cubic8/Cayley arguments. Necessary faithfulbranch only, no A16 exclusion/search/Lean.",
+      "refs": "[\"/tmp/erdos85-sol1-q9-n78-faithful-sixteen-orbits/pins.json\"]",
+      "priority": "normal",
+      "status": "resolved",
+      "created_ts": "2026-09-11T10:41:30.995Z",
+      "expires_ts": null,
+      "claimed_by": "codex-sol-2",
+      "claimed_ts": "2026-09-11T10:44:22.197Z",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T10:44:58.610Z",
+      "resolution": "PASS. Source/input hashes and fresh2257/2419/2422 verified. Independent orbit proof2424 preserved; exact one8/four16 outside and W attachments audited. CubicC4free8 impossible via unique-triangle partition; stabilizer parity/balance forces R8matching/cross2/1. Inverseclosed degree2 Cayley exponent4 alternatives leave exactlytwoC8 on R16. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2425. Necessary faithful branch only, no exclusion/Lean.",
+      "cancelled_by": null,
+      "cancelled_ts": null,
+      "cancel_reason": null
+    }
+  ]
+}

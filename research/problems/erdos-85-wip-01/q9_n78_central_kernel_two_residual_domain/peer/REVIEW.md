@@ -1,0 +1,11 @@
+# Independent review2435
+
+PASS complete necessary residual action cover, conditional on accepted2430/2434. Ten author/input hashes and current PASS dispositions checked. All24 model keys are present exactly once and complete.
+
+The mathematical coverage is sound. In a transitive action any invariant perfect matching is the orbit of one edge: that orbit meets every vertex and is contained in the matching. An invariant simple degree-two graph on a regular orbit is determined by an inverse-closed two-element subset of the nonidentity elements; no connectivity restriction is appropriate. A cross incidence with one X-neighbor at every regular Y vertex is an equivariant map Y to X, determined by any of the eight possible images of the identity. Transitivity makes it surjective, and its fibers have size two. Enumerating these three choices independently therefore covers every possible residual graph in each accepted labelled group action.
+
+The independent reviewer recursively generates all105 perfect matchings of eight points, and tests each entire matching against every group permutation. This reproduces exactly the producer's invariant matching lists without using its edge-orbit enumeration. All105 nonidentity connection pairs are independently checked for inverse closure. Each parameter triple is materialized as adjacency sets; symmetry, absence of loops and cubic degrees are verified. Instead of the producer's pair-codegree intersection test, the reviewer lists all two-edge paths by their center and detects any repeated endpoint pair. Each rejection saves its four C4 vertices.
+
+Across all24 models, exactly18,816 parameter triples are tested. The14,592 rejected triples each have an independently constructed C4 certificate. The remaining4,224 triples agree exactly with the producer parameter keys and every saved36-edge list. Every model retains candidates, so no group or full graph case is excluded by this result.
+
+Original30s aggregate audit COMPLETE0.37839s. audit.py and results.json preserve complete root counts, parameter coverage, hashes, premise states and all rejection certificates. The4,224 graphs are necessary residual configurations only; S/W incidences and full78-vertex realization remain unchecked. No full graph solver or Lean formalization was used.

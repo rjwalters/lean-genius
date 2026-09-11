@@ -1,0 +1,30 @@
+{
+  "hashes": {
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-central-kernel-two-orbits/PROOF.md": "5526a629f404e3a33809b06204a12c46e8694d625741a33e5ecfc2f9cf94ee2c",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-central-kernel-two-orbits/input-pins.json": "9c807621159e21f8837101134af3a32de7a694c4217c2b3a2f98591342cff720",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-central-kernel-two-orbits/premise-states.json": "45fecbe9d2fa7ef4136ddc6849fda0fcd82d4c5578369cd912922b3da579fea9",
+    "/tmp/erdos85-sol1-q9-n78-two-subgroup-bound/pins.json": "f02b9140e18b19d9fa749875ea4f86d7893d1f38b7652f93def360c80c5abec3",
+    "/tmp/erdos85-sol1-q9-n78-two-subgroup-bound/PROOF.md": "07629e73941936bc34d48d93f7bf3a8fa1b5065c352a86ec7ccea3827b481bf5",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-matching-normal-form/pins.json": "1b1546fa45682014b1a7f2ea8b2723bda99689291ef411e551b4633afcf2021e",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-matching-normal-form/PROOF.md": "f63c40c5ffc5f26d2fca9658ed9bc2848f587bac59eacf3d591d79be10262ad7",
+    "/tmp/erdos85-sol1-q9-n78-faithful-sixteen-orbits/pins.json": "6dad625e8d2f2acb6792c24e6af697360358cbe2ca6e03e1a90b700e46ac406c",
+    "/tmp/erdos85-sol1-q9-n78-faithful-sixteen-orbits/PROOF.md": "3535bd03a3e9f0a232f90049871aaca09a85cb6d0e2a410103f7ead9fbb677a0"
+  },
+  "premises": [
+    {
+      "id": 2257,
+      "status": "resolved",
+      "resolution": "PASS. All4sourcepins/5premise hashes and acceptedstates verified. Full odd-neighborhood fixedpoint, faithful8action, involution fixed0/2, both centralizer kernels C2^4 with quotientsS4/S3, minimumweight code andorbit1/2 arguments audited. Independent10XORpairs/factorial2parts pass. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2257. Arbitrary2-subgroups<=32, vertex-fixing<=16; no order32 exclusion/Lean/globalclosure."
+    },
+    {
+      "id": 2419,
+      "status": "resolved",
+      "resolution": "PASS fullA16 necessary matching normal form. Author/input hashes and fivefreshPASS premises verified. D8 opposite reflection-class actions give2outside fixedneighbors persplitvertex; F4 produces>=7fixed, F2 forbidden adjacent-cubic sixfixedgraph, F6 freeoutside. Thus bothmatched endpoints locallyregular, discharging2263/2269. S6/W48/R24 quotient and invariantorbit partitions follow. Evidence /tmp/erdos85-sol1-review2419. Necessary only, no A16/global/Lean exclusion."
+    },
+    {
+      "id": 2425,
+      "status": "resolved",
+      "resolution": "PASS. Source/input hashes and fresh2257/2419/2422 verified. Independent orbit proof2424 preserved; exact one8/four16 outside and W attachments audited. CubicC4free8 impossible via unique-triangle partition; stabilizer parity/balance forces R8matching/cross2/1. Inverseclosed degree2 Cayley exponent4 alternatives leave exactlytwoC8 on R16. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2425. Necessary faithful branch only, no exclusion/Lean."
+    }
+  ]
+}

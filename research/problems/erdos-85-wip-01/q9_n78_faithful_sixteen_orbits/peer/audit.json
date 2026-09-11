@@ -1,0 +1,73 @@
+{
+  "hashes": {
+    "/tmp/erdos85-sol1-q9-n78-faithful-sixteen-orbits/PROOF.md": "3535bd03a3e9f0a232f90049871aaca09a85cb6d0e2a410103f7ead9fbb677a0",
+    "/tmp/erdos85-sol1-q9-n78-faithful-sixteen-orbits/premise-states.json": "230d06f3771a5358c180faa18f3104d7644432e48282b5bf2d69f06d81e07ec0",
+    "/tmp/erdos85-sol1-q9-n78-faithful-sixteen-orbits/input-pins.json": "5ab30f8b77a1d134539738874682565a7ed4896d01e9db85199cf6b110afddaf",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-central-or-faithful/pins.json": "85a6e54f3be4301f2de2a310e9c2fb52d0382cf7419cc5d3aaf0a6e14204f98e",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-central-or-faithful/PROOF.md": "d1594f81e6d4f05cda0b89e9dfbb0bcdfadf7d14a2776e6fe9819d1847862623",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-matching-normal-form/pins.json": "1b1546fa45682014b1a7f2ea8b2723bda99689291ef411e551b4633afcf2021e",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-matching-normal-form/PROOF.md": "f63c40c5ffc5f26d2fca9658ed9bc2848f587bac59eacf3d591d79be10262ad7",
+    "/tmp/erdos85-sol1-q9-n78-two-subgroup-bound/pins.json": "f02b9140e18b19d9fa749875ea4f86d7893d1f38b7652f93def360c80c5abec3",
+    "/tmp/erdos85-sol1-q9-n78-two-subgroup-bound/PROOF.md": "07629e73941936bc34d48d93f7bf3a8fa1b5065c352a86ec7ccea3827b481bf5"
+  },
+  "premises": [
+    {
+      "id": 2257,
+      "target": "codex-sol-2",
+      "requested_by": "codex-sol-1",
+      "body": "New full two-subgroup bound atN78: |P|<=32, vertex-fixing H<=16. H fixesoneof9neighbors, faithfully acts onother8; eachinvolution fixes0or2. Central involution centralizer hasbase C2^4 andquotient S4 orS3. Intersectionbase hasbinaryminimumweight3 soorder<=2 (10pair check), image2part<=8/2. Finally78mod4 forcesorbit1or2. Uses accepted2220/2236/2237/2238/2240, not2253 and no classification/search. Please audit group action/centralizer kernels and graph-premise reduction.",
+      "refs": "[\"/tmp/erdos85-sol1-q9-n78-two-subgroup-bound/pins.json\"]",
+      "priority": "high",
+      "status": "resolved",
+      "created_ts": "2026-09-11T06:21:56.564Z",
+      "expires_ts": null,
+      "claimed_by": "codex-sol-2",
+      "claimed_ts": "2026-09-11T06:22:46.354Z",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T06:24:14.786Z",
+      "resolution": "PASS. All4sourcepins/5premise hashes and acceptedstates verified. Full odd-neighborhood fixedpoint, faithful8action, involution fixed0/2, both centralizer kernels C2^4 with quotientsS4/S3, minimumweight code andorbit1/2 arguments audited. Independent10XORpairs/factorial2parts pass. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2257. Arbitrary2-subgroups<=32, vertex-fixing<=16; no order32 exclusion/Lean/globalclosure.",
+      "cancelled_by": null,
+      "cancelled_ts": null,
+      "cancel_reason": null
+    },
+    {
+      "id": 2419,
+      "target": "codex-sol-1",
+      "requested_by": "codex-sol-2",
+      "body": "Full A16 necessary matching normal form. Accepted2412 H8 local split actions excluded: F4 paired split centers force reflection fixed>=7; F2 split matchedpair forces forbidden six-fixed graph; F6 free outside. Thus both endpoints locally regular,2263/2269 imply invariant S6 matching/W48/R24 quotient. Outside A-orbits8/16, S2+4 or2+2+2. Please audit split D8 reflection classes and fixed-graph contradiction. No A16 exclusion/search/Lean claim.",
+      "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-matching-normal-form/pins.json\"]",
+      "priority": "normal",
+      "status": "resolved",
+      "created_ts": "2026-09-11T10:31:45.025Z",
+      "expires_ts": null,
+      "claimed_by": "codex-sol-1",
+      "claimed_ts": "2026-09-11T10:34:43.515Z",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T10:35:45.224Z",
+      "resolution": "PASS fullA16 necessary matching normal form. Author/input hashes and fivefreshPASS premises verified. D8 opposite reflection-class actions give2outside fixedneighbors persplitvertex; F4 produces>=7fixed, F2 forbidden adjacent-cubic sixfixedgraph, F6 freeoutside. Thus bothmatched endpoints locallyregular, discharging2263/2269. S6/W48/R24 quotient and invariantorbit partitions follow. Evidence /tmp/erdos85-sol1-review2419. Necessary only, no A16/global/Lean exclusion.",
+      "cancelled_by": null,
+      "cancelled_ts": null,
+      "cancel_reason": null
+    },
+    {
+      "id": 2422,
+      "target": "codex-sol-1",
+      "requested_by": "codex-sol-2",
+      "body": "Order16 dichotomy conditional2419: kernel K of A acting on S lies in H. Nontrivial normal K intersects center A in even order, hence central involution fixes exactly S (H free outside). Faithful action embeds Aut(3K2); edge image2/kernel8 forces whole C2 x D8, S-orbits2+4, H=D8 and FixH size2. Please audit normal-kernel class equation and faithful action identification. Neither alternative excluded; no search/Lean.",
+      "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order16-central-or-faithful/pins.json\"]",
+      "priority": "normal",
+      "status": "resolved",
+      "created_ts": "2026-09-11T10:35:30.707Z",
+      "expires_ts": null,
+      "claimed_by": "codex-sol-1",
+      "claimed_ts": "2026-09-11T10:37:49.608Z",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T10:38:35.279Z",
+      "resolution": "PASS order16 central-or-faithful dichotomy. Author/input hashes and fresh2419 PASS checked. K<=H normal, conjugation parity gives centralinvolution in nontrivialK, fixesexactS byH-freeness. Faithful matching action has fullswapkernel8/image2, equalsC2 x D8 inverseimage, S2+4; H fixesunique2orbit and isD8factor. Evidence /tmp/erdos85-sol1-review2422. Neither branch excluded, no search/global/Lean claim.",
+      "cancelled_by": null,
+      "cancelled_ts": null,
+      "cancel_reason": null
+    }
+  ],
+  "status": "PASS"
+}

@@ -1,0 +1,13 @@
+# Independent review 2430
+
+PASS as a necessary restriction on the specific A16 subcase with S-orbits 2+2+2 and kernel of size two. Verified nine author/input hashes and current PASS dispositions 2257,2419,2425.
+
+Re-read the proof of2419: its initial subgroup can indeed be any index-two vertex stabilizer, since normality, the local orbit dichotomy, split exclusion and regular-eight argument apply to every such subgroup. For each H_i this gives a six-point nonfree locus. Every original S vertex has an order-eight stabilizer; its intersection with H_i has order at least four. Thus each new nonfree locus contains S and equals S. This is the required justification for using all three coordinate kernels simultaneously.
+
+The quotient acts faithfully as an order-eight subgroup of C2^3, so it is the full group and the coordinate characters differ. Matching edges between different S-orbits would identify two distinct two-point actions, impossible. Every outside stabilizer involution has all three coordinates nonzero and lies in one two-element coset of K. Outside72 cannot be entirely partitioned into regular16-orbits, so such an involution exists. It cannot be central by the six-fixed bound. Its conjugacy class lies in the same coset because the quotient is abelian, and hence equals that coset. Its centralizer has order eight, giving four fixed points on every outside eight-orbit. The six-fixed bound allows only one such orbit, leaving four regular16-orbits.
+
+The invariant sizes W48 and R24 place the unique eight-orbit in R. Each W16 maps equivariantly to an S2, contributing eight neighbors at each S vertex, so exactly one W16 lies over each S2. The assertion that each residual vertex has one neighbor in each B_s is justified by six total W neighbors: the six associated S endpoints must be distinct by C4-freeness, and there are exactly six S vertices. Thus each residual vertex has two neighbors in each W16. Equivariance makes the degrees from each W16 to X8 and Y16 constant; edge balance gives one and two respectively.
+
+Since R is cubic, the X point stabilizer acts freely on regular Y, forcing even cross degree. The cubic-eight lemma from2425 excludes zero cross degree, giving an internal matching on X and internal degree two on Y. For every group element g, g squared lies in the order-two kernel, so g fourth is identity. The inverse-closed two-element Cayley set either gives forbidden four-cycles or two involutions whose product has order four, hence two eight-cycle components. No unproved classification of order-sixteen groups is required.
+
+This is not an exclusion of the subcase, of all order-sixteen actions, or of graph existence. No finite search or Lean verification was performed or claimed.

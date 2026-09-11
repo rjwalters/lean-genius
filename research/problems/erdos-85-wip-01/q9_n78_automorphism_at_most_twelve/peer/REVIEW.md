@@ -1,0 +1,11 @@
+# Review 2487 — PASS full order16 exclusion and bound12
+
+Fifty distinct hashes from the author and input manifests verified. Twelve fresh PASS reviews checked directly:2408,2419,2438,2447,2450,2474,2477,2479,2481,2482,2484,2485. These include the intermediate exhaustive covers and their independent checks, not merely the final branch claims. The author’s separate composition-checks count of46 source hashes has a different scope; this receipt reports the actual manifest checks performed here.
+
+The disjunction is exhaustive. A full order16 group has the matching normal form2419 and S-orbits2+2+2 or2+4. The former is excluded by2447. In the latter, transitivity on S4 requires image order at least four; the image is a subgroup of Aut(K2 union2K2) of order16. The faithful action is excluded by2438 and the accepted image cover2450 leaves kernel2 or4. The normal form gives exactly residual8+16 or8+8+8.
+
+Kernel4/residual8+16 is excluded by2479 using the independently accepted complete incidence cover2474. Directly checked the complete3456 local-case records, their unique attachment/matching keys and all-negative statuses; accepted2479 supplies the independent endpoint-first reconstruction. Kernel4/residual8+8+8 is excluded by2482’s separate paper argument. No cyclic/faithful case is silently retained in this branch.
+
+For kernel2,2477 is an accepted upper cover of all center images and group laws, not merely a selection of surviving examples.2481 excludes its two law100 actions.2484 excludes residual8+8+8 for both law111 characters, with its bridge to the2482 fiber proof independently verified.2485 excludes their residual8+16 profile. The complete partial domain retains every connection and normalized attachment; directly checked its COMPLETE status and exact12/512/8400/zero counts, whose8836 cycle certificates were independently verified in review2485.
+
+Thus full automorphism order16 is impossible. Removing16 from the accepted2408 list leaves exactly the necessary upper cover1,2,3,4,6,8,12, so the order is at most12. It need not divide12 because8 remains. No surviving order is asserted realizable or excluded. Asymmetric candidates, smaller-order candidates and N78 existence are unresolved; N80 and Erdős85 globally are outside this conclusion. This assembly introduces no search, UNKNOWN reinterpretation or Lean formalization.

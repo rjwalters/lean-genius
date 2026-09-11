@@ -1,0 +1,13 @@
+# Complete residual action domain for the central kernel-two subcase
+
+Use accepted2430 and the24 labelled group/action tables of review2434, whose independent acceptance is an explicit prerequisite. In this subcase the residual graph R is cubic and consists of a transitive eight-point coset action X and a regular sixteen-point action Y. X induces a matching; Y has internal degree two; the cross degrees are two from X and one from Y. Every model2434 gives an explicit X action and regular group table. No S/W incidences are selected here.
+
+For each of the24 tables, enumerate every orbit of the group on unordered distinct X pairs and retain those whose incident degree is one at every X vertex. These are exactly all invariant perfect matchings: transitivity forces the edge orbit of any matching edge to touch every X vertex, hence to be the whole matching. No invariant matching is omitted.
+
+Every invariant degree-two graph on regular Y is a Cayley graph with an inverse-closed two-element connection subset of the fifteen nonidentity elements. Enumerate all105 pairs and retain every inverse-closed choice. We impose no generation, connectivity or cycle-length prefilter; all resulting Y graphs remain until the direct C4 check.
+
+Every equivariant cross incidence is determined by the unique X-neighbor of the identity vertex in Y. Enumerate all eight origins and translate that edge by every group element. The equivariant image covers X, giving exactly two Y neighbors at each X vertex by transitivity and balance. These independent choices of matching, connection set and origin cover every possible invariant residual graph in each labelled model.
+
+Materialize each24-vertex graph, check that it is cubic, then test every pair of vertices for at most one common neighbor. Retain exactly the C4-free choices. The original aggregate30s run is COMPLETE in0.495s across all24 roots. Twelve models have three matchings and57 inverse-closed connection pairs, testing1368 choices and retaining288 each. The other twelve have one matching and25 connection pairs, testing200 choices and retaining64 each. In total18816 labelled choices are tested and4224 positive residual graphs are saved with all36 edges and their generating parameters.
+
+All24 models retain necessary residual choices, so none is excluded here. Isomorphic or equivalently labelled duplicates are deliberately retained. These graphs are not witnesses for the full78-vertex candidate. Complete action coverage is conditional on2434; this packet neither resumes a capped domain nor runs a full graph completion solver, and makes no Lean formalization or global Erdős85 claim.

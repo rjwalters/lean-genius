@@ -1,0 +1,13 @@
+# Central six-fixed involution or a faithful C2 x D8 action
+
+Assume the order-sixteen matching normal form of review2419: the full automorphism group A has order16, H is a normal order8 point stabilizer, S is its six-vertex nonfree locus inducing3K2, and H acts freely outside S. All these are necessary hypotheses; this packet depends on acceptance of2419.
+
+Let K be the kernel of A acting on S. Because S contains a vertex whose A-stabilizer is H, we have K contained in H. The subgroup K is normal in A.
+
+If K is nontrivial, its order is even. Conjugation of the two-group A on K has orbits of power-of-two sizes. Thus |K intersect Z(A)| is even, by counting the singleton orbits modulo two. Since the identity belongs to this intersection, it has a nonidentity element. Taking a suitable power gives an involution z in K intersect Z(A). This z fixes S pointwise. As z is a nonidentity element of H and H acts freely outside S, it fixes no other vertex. Hence A has a central involution whose fixed graph is exactly3K2 on S.
+
+If K is trivial, A acts faithfully on the matching3K2. Its permutation action on the three matching edges has image of order at most two: its order divides both16 and6. The kernel of that edge action is a subgroup of the independent swaps inside the three edges, of order at most8. Since |A|=16, the image has order two and this kernel has order8. Therefore the edge-action image exchanges two edges and fixes the third, and A is the entire inverse image of that order-two subgroup in Aut(3K2). This inverse image is the direct product of the swap of the fixed edge with Aut(2K2) on the other four vertices. Thus A is isomorphic to C2 x D8, and its S-orbits are2+4.
+
+In the faithful case the size-two S-orbit is unique. H fixes it pointwise, since H has a common fixed vertex and is a stabilizer of an A-orbit of size two. More explicitly, any H-fixed point lies in S because S is the nonfree locus; the four-point A-orbit has stabilizer of order4 and cannot contain an H-fixed point. Hence H is exactly the D8 factor fixing the two-point orbit, and Fix(H) consists of those two vertices. The order-eight D8 action on the four-point orbit is faithful.
+
+Consequently every full order16 action either has a central involution fixing exactly six matching centers, or has a faithful S-action with A=C2 x D8 and H=D8 as described. The cases are organized by whether K is nontrivial; no claim that the abstract group C2 x D8 cannot also occur with nonfaithful S-action is intended. This excludes neither alternative. No graph enumeration, capped search or Lean formalization is used.

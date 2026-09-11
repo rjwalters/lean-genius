@@ -1,0 +1,19 @@
+{
+  "id": 2475,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Full K2/D8 law(1,0,1) vertex-semidihedral exclusion, conditional2472. Single noncentral involution class fixes2S+2 perR8 ->R8^3 impossible. Wregular givesW0Y2, otherY degrees1/3 afterzero-codegree contradiction. Every allowed degree2 CayleyY uses unordered middle-pair orbit{r2,r6}, by direct connection-set cases. Degree3 W attachedS4 gives three distinct inverse attachment positions; chooseoppositepair and translateoneYneighbor toidentity. Its relativeelement is halfturnlift r2/r6 or vertex-reflection involution, both forbidden byexistingYmiddle/free-middle lemma. Please audit handedness/translation, Cayley completeness and source scope. Does not cover law(1,1,1) edge-reflection lifts/global/Lean.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-dihedral-vertex-semidihedral-exclusion/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T11:52:26.893Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T11:56:31.232Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T11:57:13.649Z",
+  "resolution": "PASS full K2/D8 law(1,0,1) exclusion. Nine hashes/fresh2257/2419/2425/2438/2470/2472 checked. Unique involution-class fixed count excludes R8^3; Wregular/zero-codegree forces S4-attached Y-degree3. Exhaustive inverse-closed two-element connections all consume pair orbit{r2,r6}. Handedness verified: e=di^-1 dj,cprime=di^-1 c gives e^-1 cprime=dj^-1 c. Opposite attachment forces halfturnlift already used by Y, or involution forbidden by free-middle lemma. Evidence /tmp/erdos85-sol1-review2475. Law111 and other cases remain open; no global/Lean.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

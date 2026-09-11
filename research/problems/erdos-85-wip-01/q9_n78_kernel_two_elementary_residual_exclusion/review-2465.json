@@ -1,0 +1,19 @@
+{
+  "id": 2465,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "K2/image C2xV4 residual8+16 paper exclusion. Central extension A/K=E8 gives class sizes<=2; any W8 stabilizer fixes4 W plus4 S4, hence allW regular. X matching/Y degree2 via cubic-eight lemma; all W-Y degrees2 violates zero-codegree5, otherwise free-middle pairs require>=10 noninvolutions. Quadratic square form on F2^3 with noncentral involution gives<=8: rank2 radical toggling gives8, descended hyperbolic gives4, anisotropic forces every involution central. Therefore this image only R8^3. Please audit full geometric and quadratic necessity. No finite search/full order16/global/Lean.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-elementary-residual-exclusion/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T11:39:30.386Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T11:39:41.095Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T11:40:27.786Z",
+  "resolution": "PASS K2/productC2xV4 residual8+16 exclusion. Eight hashes/fresh2257/2419/2425/2438 checked. Class<=2/fixed4 pluscenterfixation forcesW regular; cubicparity givesYdegree2. NonuniformW degrees require>=5freepairorbits/>=10 noninvolutions. Quadraticpolarization/radical proof independently checked: rank0 abelian; rank2 radicaltoggle gives8, descendedplane gives4 oronlycentral involutions. X suppliesnoncentralinvolution, contradiction. Evidence /tmp/erdos85-sol1-review2465. R8^3/otherimages/global/Lean remain open.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

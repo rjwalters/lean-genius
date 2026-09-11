@@ -1,0 +1,19 @@
+{
+  "id": 2470,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Remaining K2/D8-image abstract cover: central z and lifts r,s give eight laws r4=z^a,s2=z^b,srs^-1=r^-1 z^c. Explicit normal-form product with negative carry covers all extensions. All eight tables/associativity/orders and three nontrivial S2 characters each (24 S6 actions, exact kernel2) checked COMPLETE0.0037s original30s. All involution classes outside H listed with fixedS+centralizer/2 necessary bound. Please audit extension completeness, group/action tables and class marks. No orbit multiplicities/graph search/exclusion/global/Lean.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-dihedral-cover/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T11:45:51.486Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T11:46:56.812Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T11:48:06.361Z",
+  "resolution": "PASS abstract eight-law/24-action cover. Eight hashes and fresh2257/2419/2450 checked. Central-kernel lift relations give exhaustive unique normal forms; independent generator-word reduction reproduces all tables, associativity and orders. Generator permutations verify all24 S6 actions and exact kernel. Explicit eight-coset actions independently recover every involution class and fixed-point mark. COMPLETE0.004782333s original30s audit. Evidence /tmp/erdos85-sol1-review2470. Necessary cover only; no multiplicity/incidence/global/Lean exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

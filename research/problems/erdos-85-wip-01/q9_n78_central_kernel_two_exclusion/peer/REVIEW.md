@@ -1,0 +1,11 @@
+# Independent review2441
+
+PASS exclusion of the entire three-S2-orbit, kernel-two subcase, using only accepted2419/2430. Seven author/input hashes and fresh premise PASS dispositions were checked. The argument does not depend on the optional24 group tables or4,224 residual graphs.
+
+The crucial balance statement in2430 was independently justified in review2430: each residual vertex has six W neighbors, which must reach six distinct S vertices in two steps by C4-freeness. It therefore has one neighbor in each B_s and two in each W16 orbit lying over one S2. In particular each Y vertex has exactly two neighbors in each W_i. Since Y and W_i each have16 vertices and the group is transitive on each, the reverse degree is constant and edge balance forces it to be exactly two as well.
+
+Accepted2430 supplies X-to-Y degree two and internal Y degree two. Thus every vertex of W, X and Y has exactly two Y neighbors. These sets exhaust the complement of S, and y in Y has no S neighbors. Every one of y's nine neighbors consequently supplies precisely one nonreturning two-step endpoint in Y other than y. There are only nine such walks and hence at most nine distinct endpoints among the15 other Y vertices. At least six other Y vertices have no common neighbor with y.
+
+Independently, in any simple9-regular C4-free graph, all72 nonreturning two-step walks from y have distinct endpoints. Distinct walks with the same endpoint must have distinct middle vertices; simplicity ensures those two middles, y and the endpoint are four distinct vertices, yielding a forbidden C4. Triangles cause no exception: the endpoint may be a neighbor of y, but remains distinct from y and the two middles. There are77 other vertices in the78-vertex graph, so exactly77-72=5 of them have no common neighbor with y. This contradicts at least six already inside Y.
+
+The entire2430 subcase is therefore excluded. The previously verified group/residual enumerations remain valid necessary covers; their candidates cannot extend through W to a full graph in this subcase. Other order-sixteen actions, smaller automorphism orders and graph existence are not settled by this proof. No finite search or Lean formalization was used.

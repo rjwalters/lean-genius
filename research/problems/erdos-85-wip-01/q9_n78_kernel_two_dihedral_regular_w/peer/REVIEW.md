@@ -1,0 +1,9 @@
+# Review 2472 — PASS, regular W orbits
+
+Checked six hashes and fresh accepted premises 2257,2419,2450. The central kernel involution is free outside S: its fixed set on any A-orbit is all or empty and every outside orbit has at least eight points. A W8 stabilizer involution must swap S2 and fix a center in S4, hence projects to a vertex-axis reflection whose two fixed centers are matching partners.
+
+Its class has size two or four because its centralizer contains the independent commuting involutions t,z; centrality is forbidden by the fixed-point bound. The coset fixed-point formula gives four or two fixed W vertices respectively. The free action of z pairs fixed W vertices within each center fiber and within each A-orbit. Four such fixed W vertices together with the two fixed S centers exhaust the entire fixed set. The even fiber distributions force either fixed degree five, or adjacent degree-three centers with no common neighbor. Both contradict the two accepted six-fixed graph shapes. Therefore no class-two stabilizer occurs on W8 and each class-four stabilizer can occur on at most one W8.
+
+The extension relations imply at most one eligible class-four conjugacy class. If r^4=1, the generator commutator r^-2 z^c is central of order at most two: conjugation by s fixes r^2 since (r^-1 z^c)^2=r^-2=r^2. Thus every element has class size at most two. If r^4=z, conjugation by r cycles the four lifts of the vertex reflections by adding 2-4c modulo eight. They form a single class. This does not require them all to be involutions; it covers every one that can stabilize a W8.
+
+There is consequently at most one W8 orbit in total. The equation 8a+16b=48 forces a even, hence a=0 and b=3. Unique-center incidence then gives one W16 over S2 and two over S4. No restriction on additional residual eight-orbits of a class-four involution has been inferred. Paper proof only; no new search or Lean theorem. No full dihedral or global exclusion.

@@ -1,0 +1,19 @@
+{
+  "id": 2466,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Complementary R8^3 exclusion and full K2/image C2xV4 composition conditional2465. Central kernel/abelian quotient gives involution class<=2, so any R8 stabilizer fixes4 there; three residual orbits must use distinct classes. Cross-orbit stabilizer actions free imply even cross-degrees. Internal cubic8 impossible implies internaldegree1 and one crossdegree2 each, impossible degree-one graph on three orbit indices. With2465 no residual profile remains; K2 image cover then only three D8 graph images after2453. Please audit parity/class argument and conditional composition. No finite search/global/Lean.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-kernel-two-elementary-image-exclusion/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T11:40:35.323Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T11:40:46.932Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T11:41:18.577Z",
+  "resolution": "PASS fullK2/productC2xV4 image exclusion. Hashes/sixfreshPASS premises checked, including2465. Size2 stabilizerclasses fix4 perR8, so threeclasses distinct; allcrossdegrees even. Cubic8 obstruction forcesinternal1 andexactlyone crossdegree2 perorbit, impossible symmetric degree1 diagram onthreeindices. This excludesR8^3; accepted2465 excludesR8+16. With2450/2453, onlythree D8 graphimages remain atK2. Evidence /tmp/erdos85-sol1-review2466. Kernel4/fullA16/global/Lean remain open.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

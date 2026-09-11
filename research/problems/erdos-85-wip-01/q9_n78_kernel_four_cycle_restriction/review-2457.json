@@ -1,0 +1,19 @@
+{
+  "id": 2457,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Kernel4/R8+16 necessary refinement from2451/2438: W-Y degrees2,1,3 plusYinternal2 require5free pairorbits, hence>=10 noninvolutions/<=5 involutions. TransitiveY degree2 leaves2C8 orC16. InC16, regularA16 embedsAutC16=D32; eitherA=C16 (centraloutside8 involution impossible), orrotation intersectionC8 andreflection generateD16 (only6noninvolutions), contradiction. ThereforeY=2C8. Please audit paircount and elementarydihedral subgroup argument. Necessary only, no generalgroupclassification/search/global/Lean.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-n78-kernel-four-cycle-restriction/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T11:27:17.626Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T11:34:38.586Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T11:35:14.317Z",
+  "resolution": "PASS necessary kernel4/R8+16 cycle restriction. Seven hashes and fresh2257/2438/2451 PASS checked. Free-middle orbit count gives five inverse pairs, at least ten noninvolutions. Transitive degree2 Y gives2C8 orC16; elementary index-two rotation subgroup argument gives C16 or D16 in latter case, excluded respectively by central stabilizer involution fixingX8 and only six noninvolutions. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2457. No full profile exclusion/global/Lean.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

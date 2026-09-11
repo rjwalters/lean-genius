@@ -1,0 +1,5 @@
+# Accepted review 2474
+
+PASS necessary kernel4/A5 partial-incidence cover. Payload/input hashes and fresh2451/2457/2461/2462 checked. H automorphism, X normalization/unique matching, four Y inverse pairs and independent W origins audited. Independent bit-adjacency reconstruction checks every branch key, every negative cycle witness and full common-neighbor condition for positives. Exact576 ->16128 ->1152 ->4608 attachments ->1152 cover; all collision witnesses and six-center positive endpoints verified. Three original30s stages COMPLETE0.161/0.802/0.436s. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2474. No W-W/Smatching/fullgraph/global/Lean claim.
+
+This archive preserves the original author packet and independent review evidence. Source paths in scripts and pin files refer to the original research workspace. These are paper/computational certificates, not Lean formalizations. Intermediate necessary domains retain their original scope even when a later accepted packet excludes their branch.

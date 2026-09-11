@@ -1,0 +1,7 @@
+# Review 2470 — PASS abstract cover
+
+Eight hashes checked; reviews 2257,2419,2450 are freshly resolved PASS. Completeness follows by centrality of the order-two kernel: choose lifts of the standard rotation and reflection. Each defining quotient relation differs by a unique kernel bit, and quotient coordinates plus the kernel bit give sixteen unique normal forms. Moving generators one at a time gives the listed product, including negative rotation carries. Every resulting law is associative and has the required quotient; retaining all eight labels avoids reliance on an isomorphism classification.
+
+The three nonzero characters of the dihedral abelianization give all required S2 actions. Their product with the square action has kernel exactly the prescribed order-two subgroup. Independent generator-permutation composition verifies all 24 actions. The checker independently constructs the eight left cosets of every candidate involution subgroup and counts fixed cosets for every group element, recovering conjugacy classes and their fixed-point marks without using the producer centralizer formula. H acts freely off S, so every outside eight-orbit stabilizer must appear in this list. Six-fixed admissibility is only necessary.
+
+The complete original-30-second audit took 0.004782333 seconds. No orbit multiplicities, graph incidences, global exclusion, or Lean theorem is verified by this packet.
