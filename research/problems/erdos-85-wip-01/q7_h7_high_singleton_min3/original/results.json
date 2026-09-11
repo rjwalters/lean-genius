@@ -1,0 +1,77 @@
+{
+  "status": "HIGH_SINGLETON_MIN3_CONDITIONAL_ON_REVIEWED_GRAPH_PREMISES",
+  "excluded_small_sum_profiles": [
+    [
+      true,
+      4
+    ],
+    [
+      true,
+      5
+    ],
+    [
+      true,
+      6
+    ],
+    [
+      false,
+      9
+    ],
+    [
+      false,
+      10
+    ],
+    [
+      false,
+      11
+    ],
+    [
+      false,
+      12
+    ],
+    [
+      false,
+      13
+    ],
+    [
+      false,
+      14
+    ]
+  ],
+  "covered_assignments": 36678,
+  "cases": [
+    {
+      "a": 6,
+      "status": "NECESSARY_STRUCTURE",
+      "highs_with_singleton_sum_4": 4,
+      "highs_with_singleton_sum_3": 3,
+      "complement_degree_3": 4,
+      "complement_degree_2": 3
+    },
+    {
+      "a": 7,
+      "status": "NECESSARY_STRUCTURE",
+      "highs_with_singleton_sum_4": 0,
+      "highs_with_singleton_sum_3": 7,
+      "complement_degree_3": 0,
+      "complement_degree_2": 7
+    },
+    {
+      "a": 8,
+      "status": "EXCLUDED",
+      "singleton_empty_incidence": 17,
+      "required_minimum": 21
+    },
+    {
+      "a": 9,
+      "status": "EXCLUDED",
+      "singleton_empty_incidence": 13,
+      "required_minimum": 21
+    }
+  ],
+  "a7_complement_types": [
+    "C7",
+    "C3 + C4"
+  ],
+  "scope": "All highs have singleton-empty sum3or4. H7a8 excluded; a6/a7 still open. No Lean/global theorem or frozen queue change."
+}

@@ -1,0 +1,751 @@
+{
+  "source_pins": {
+    "/tmp/erdos85-sol1-h7-pair-host-reduction/results.json": "75ad05ec99213db282921d0dd3047deae10fb9439d4e878d4683eb9a9b099e3c",
+    "/tmp/erdos85-sol1-h7-high0-cover/results.json": "406218cebcabd02f19fa1ff160b52c0922bdfa4f985ba97a0383e2b1850f567c"
+  },
+  "results": [
+    {
+      "twins_adjacent": true,
+      "stabilizer_size": 96,
+      "labelled_profiles": 70,
+      "profile_orbits": 7,
+      "representatives": [
+        {
+          "defects": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            1
+          ],
+          "pair_counts": [
+            3,
+            3,
+            2,
+            2,
+            2,
+            1,
+            1,
+            1
+          ],
+          "empty_counts": [
+            2,
+            2,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          "orbit_size": 12
+        },
+        {
+          "defects": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "pair_counts": [
+            3,
+            3,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1
+          ],
+          "empty_counts": [
+            2,
+            2,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0
+          ],
+          "orbit_size": 8
+        },
+        {
+          "defects": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1
+          ],
+          "pair_counts": [
+            3,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            1
+          ],
+          "empty_counts": [
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0,
+            0
+          ],
+          "orbit_size": 6
+        },
+        {
+          "defects": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "pair_counts": [
+            3,
+            2,
+            2,
+            2,
+            2,
+            1,
+            2,
+            1
+          ],
+          "empty_counts": [
+            2,
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          "orbit_size": 24
+        },
+        {
+          "defects": [
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "pair_counts": [
+            3,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1
+          ],
+          "empty_counts": [
+            2,
+            0,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0
+          ],
+          "orbit_size": 12
+        },
+        {
+          "defects": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "pair_counts": [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1
+          ],
+          "empty_counts": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0
+          ],
+          "orbit_size": 6
+        },
+        {
+          "defects": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "pair_counts": [
+            2,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "empty_counts": [
+            1,
+            0,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "orbit_size": 2
+        }
+      ]
+    },
+    {
+      "twins_adjacent": false,
+      "stabilizer_size": 16,
+      "labelled_profiles": 70,
+      "profile_orbits": 15,
+      "representatives": [
+        {
+          "defects": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            1
+          ],
+          "pair_counts": [
+            2,
+            2,
+            3,
+            3,
+            2,
+            1,
+            1,
+            1
+          ],
+          "empty_counts": [
+            2,
+            2,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          "orbit_size": 4
+        },
+        {
+          "defects": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            1
+          ],
+          "pair_counts": [
+            2,
+            2,
+            3,
+            2,
+            2,
+            2,
+            1,
+            1
+          ],
+          "empty_counts": [
+            2,
+            2,
+            1,
+            0,
+            1,
+            1,
+            0,
+            0
+          ],
+          "orbit_size": 4
+        },
+        {
+          "defects": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "pair_counts": [
+            2,
+            2,
+            3,
+            2,
+            2,
+            1,
+            2,
+            1
+          ],
+          "empty_counts": [
+            2,
+            2,
+            1,
+            0,
+            1,
+            0,
+            1,
+            0
+          ],
+          "orbit_size": 8
+        },
+        {
+          "defects": [
+            0,
+            0,
+            1,
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "pair_counts": [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1
+          ],
+          "empty_counts": [
+            2,
+            2,
+            0,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "orbit_size": 4
+        },
+        {
+          "defects": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1
+          ],
+          "pair_counts": [
+            2,
+            1,
+            3,
+            3,
+            2,
+            2,
+            1,
+            1
+          ],
+          "empty_counts": [
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0,
+            0
+          ],
+          "orbit_size": 4
+        },
+        {
+          "defects": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "pair_counts": [
+            2,
+            1,
+            3,
+            3,
+            2,
+            1,
+            2,
+            1
+          ],
+          "empty_counts": [
+            2,
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          "orbit_size": 8
+        },
+        {
+          "defects": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "pair_counts": [
+            2,
+            1,
+            3,
+            2,
+            2,
+            2,
+            2,
+            1
+          ],
+          "empty_counts": [
+            2,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "orbit_size": 8
+        },
+        {
+          "defects": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "pair_counts": [
+            2,
+            1,
+            2,
+            3,
+            2,
+            2,
+            2,
+            1
+          ],
+          "empty_counts": [
+            2,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1,
+            0
+          ],
+          "orbit_size": 8
+        },
+        {
+          "defects": [
+            0,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "pair_counts": [
+            2,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "empty_counts": [
+            2,
+            1,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "orbit_size": 2
+        },
+        {
+          "defects": [
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "pair_counts": [
+            2,
+            0,
+            3,
+            3,
+            2,
+            2,
+            2,
+            1
+          ],
+          "empty_counts": [
+            2,
+            0,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0
+          ],
+          "orbit_size": 8
+        },
+        {
+          "defects": [
+            0,
+            2,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "pair_counts": [
+            2,
+            0,
+            3,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "empty_counts": [
+            2,
+            0,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "orbit_size": 2
+        },
+        {
+          "defects": [
+            0,
+            2,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "pair_counts": [
+            2,
+            0,
+            2,
+            3,
+            2,
+            2,
+            2,
+            2
+          ],
+          "empty_counts": [
+            2,
+            0,
+            0,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "orbit_size": 2
+        },
+        {
+          "defects": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "pair_counts": [
+            1,
+            1,
+            3,
+            3,
+            2,
+            2,
+            2,
+            1
+          ],
+          "empty_counts": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0
+          ],
+          "orbit_size": 4
+        },
+        {
+          "defects": [
+            1,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "pair_counts": [
+            1,
+            1,
+            3,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "empty_counts": [
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "orbit_size": 2
+        },
+        {
+          "defects": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "pair_counts": [
+            1,
+            0,
+            3,
+            3,
+            2,
+            2,
+            2,
+            2
+          ],
+          "empty_counts": [
+            1,
+            0,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "orbit_size": 2
+        }
+      ]
+    }
+  ],
+  "scope": "Necessary pair/empty host-count profile quotient only; no pair-colouring census or exclusion of any profile."
+}

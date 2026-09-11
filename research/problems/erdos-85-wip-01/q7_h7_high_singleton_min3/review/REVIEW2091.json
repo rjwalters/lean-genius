@@ -1,0 +1,57 @@
+{
+  "status": "PASS",
+  "package_pins": 9,
+  "endpoint_payload_pins": 134,
+  "live_review_snapshots": 15,
+  "small_sum_profiles": [
+    [
+      true,
+      4
+    ],
+    [
+      true,
+      5
+    ],
+    [
+      true,
+      6
+    ],
+    [
+      false,
+      9
+    ],
+    [
+      false,
+      10
+    ],
+    [
+      false,
+      11
+    ],
+    [
+      false,
+      12
+    ],
+    [
+      false,
+      13
+    ],
+    [
+      false,
+      14
+    ]
+  ],
+  "covered_assignments": 36678,
+  "cycle_cover": {
+    "(3, 4)": 105,
+    "(7,)": 360
+  },
+  "high_sum_vectors_by_a": {
+    "6": 35,
+    "7": 1,
+    "8": 0,
+    "9": 0
+  },
+  "proof": "Choose ANY high, apply complete host normal form and exclude every profile with first-two empty counts sum<=2. Each singleton empty degree<=2 gives high sums3or4. Sum49-4a excludes a8/a9, forces all3 at a7 and four4/three3 at a6. Singleton positivity (or sum>=3 with individual<=2) gives distinct high colours for the three a6 degree3 singletons. Pair empty degree<=1 and common-high incidences give s_i+degQ(i)=7, hence degR=s_i-1; a7 R is C7 or C3+C4.",
+  "scope": "H7a8 excluded at reviewed paper/computation level. H7a6/a7,H1,Lean and global objective remain open."
+}

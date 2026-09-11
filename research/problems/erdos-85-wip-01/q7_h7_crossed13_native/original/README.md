@@ -1,0 +1,11 @@
+# Crossed13 H7 complete profile exclusion, submitted for review
+
+One pass over all7218canonical assignments gives412local negatives and6806complete-row arc negatives, zero UNKNOWN/unvisited. The pass used184332166combined operations in15.765seconds under original100000combined operations per assignment and60seconds total. This was the first completion pass on the previously complete crossed13 census; no capped research domain was retried.
+
+The local filter is the reviewed2069algorithm, and native.py/filter.cpp/filter.dylib/build.sh are exact copies of the final2086accepted native implementation. Input/API/library bytes were pinned before the pass. Both stages share the same absolute deadline and the arc stage receives only the remaining per-assignment operation allowance. Native failures are never negative receipts. Full neighbourhood domains and deletion traces are retained, not merely final verdicts.
+
+verify.py uses Python sets and imports neither filter. All7218graph/source assignments match the original profile; every5410519retained row passes direct degree/common-high/C4 soundness, every141873deletion batch and3259337failed support passes direct final-neighbour compatibility replay. All412local negatives were independently rejected by subset traversal(128295total nodes). The complete audit took50.50seconds. Complete-domain regeneration remains the independent reviewer task; row soundness alone does not prove that no row was omitted.
+
+cover.py uses reverse-host memoized counting and actions independently derived from the seed matching. It obtains57600raw assignments in5443states, and proves the7218published representatives form a disjoint complete orbit cover under8actions:7182orbits of size8 and36of size4. The source record is an exact extraction from the original complete census, checked against its hash. Sol3also independently completed the census cover before receiving these endpoint traces.
+
+This package excludes crossed13 only once independently reviewed. The separate twin5 profile and final wholea8 proof join remain required. It does not settle H7 or Erdős85, discharge a Lean premise or change frozen queues. pins.json freezes every payload; native-api-pins.json preserves the upstream11payload API manifest, while input-pins.json binds the subset copied here before execution.
