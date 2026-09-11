@@ -1,0 +1,19 @@
+{
+  "id": 2215,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Proposed full C3xC3/N78 exclusion after2212/2213. ME=EM on deficiency18-component forces equal rook connection sets and identical M/E crossmatching. Nontrivial character det(8-Echi)=det(Mchi)^2 integer square. Tree component determinants depend only on4-line choices; complete331776 overapprox under original60s finishes .192s, zero survivors all fail first character. Please independently audit commutation, Eisenstein integer determinant, formulas and arithmetic. Conditional predecessors; NOT full N78 exclusion.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-elementary-nine-character/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T05:01:18.215Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T05:04:16.133Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T05:07:57.293Z",
+  "resolution": "PASS FULL C3xC3/N78 exclusion. All predecessor pins/reviews and bothM22 blocks verified. Audited component commutation, denominator-free Eisenstein character basis, Hermitian-real integer determinant, short-orbit coefficients and phase cancellation. Independent exact Eisenstein determinants check256/24/3456 component cases; derive8x2x8 factors, all128 products nonsquare. This proves331776 overapprox fails atLA without replay. Thus Sylow3<=3 atN78 via2207; no globalgraph/Lean closure. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2215.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

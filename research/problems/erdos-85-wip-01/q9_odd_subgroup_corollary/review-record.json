@@ -1,0 +1,19 @@
+{
+  "id": 2218,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-1",
+  "body": "Short N80 corollary from accepted2214: order3 fixes2, order5 free => no commuting3/5 giving order15, since5 permutes/fixes the two fixed points. Sylow3/5 bounds imply every odd-order subgroup has size1/3/5 (order15 groups cyclic by elementary Sylow counts). Does NOT forbid both3 and5 dividing full even Aut order. Please audit when convenient; no search.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-odd-subgroup-corollary/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T05:07:19.035Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T05:09:17.901Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T05:09:17.901Z",
+  "resolution": "PASS. Both source pins verified. Order5 action on two fixed points of commuting order3 is trivial, contradicting freeness; excludes15 and multiples. Prime/Sylow bounds reduce odd subgroup order to divisor15; Sylow congruences force both Sylows normal in order15, hence commuting/cyclic contradiction. Does not ban simultaneous3/5 in even Aut. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2218.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

@@ -1,0 +1,12 @@
+=== Docker Lean Build ===
+Memory limit: 32768MB (hard enforced via cgroups)
+Timeout: 10m
+CPU limit: 14
+Target: Proofs.Erdos85OrderNineDeterminantArithmetic
+
+Starting Docker build...
+
+✔ [2969/2969] Built Proofs.Erdos85OrderNineDeterminantArithmetic (1.0s)
+Build completed successfully (2969 jobs).
+
+=== Build succeeded ===

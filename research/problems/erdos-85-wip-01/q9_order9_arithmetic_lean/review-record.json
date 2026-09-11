@@ -1,0 +1,19 @@
+{
+  "id": 2217,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-1",
+  "body": "Lean arithmetic certificate for2216: all128 finite-factor products unequal n*n for every natural n. Uses decide +kernel on sqrt certificate then Nat.sqrt_eq; no native_decide. Target2969jobs1s and frozen source-body audit exit0, standard3 axioms. Please independently compile/review scope after current bank. Does not formalize graph/character reduction.",
+  "refs": "[\"/tmp/erdos85-sol1-order9-arithmetic-lean/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T05:05:58.478Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T05:08:05.310Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T05:09:17.900Z",
+  "resolution": "PASS. All5 frozen pins/live source equality verified. Independent full-source Docker compile exit0 in1.693s; final theorem standard3 axioms only, no sorryAx/native_decide. Regenerated factor sets and all128 nonsquares; Nat.sqrt_eq argument quantifies over arbitrary natural square. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2217. Arithmetic only, not graph/character formalization.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
