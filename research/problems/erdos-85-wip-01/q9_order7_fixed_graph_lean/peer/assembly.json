@@ -1,0 +1,18 @@
+{
+  "source_order": [
+    "Erdos85FixedNeighbors.lean",
+    "Erdos85FixedBoundary.lean",
+    "Erdos85MovedDegree.lean",
+    "Erdos85MovedCard.lean",
+    "Erdos85PrimeFixedDegree.lean",
+    "Erdos85TwoNineDegreeReduction.lean",
+    "Erdos85OrderSevenFixedGraph.lean"
+  ],
+  "external_imports": [
+    "Proofs.Erdos85Problem",
+    "Proofs.Erdos85GadgetCounting",
+    "Proofs.Erdos85DistanceLayers",
+    "Mathlib.GroupTheory.Perm.Cycle.Type",
+    "Proofs.Erdos85GadgetDegreeSquares"
+  ]
+}

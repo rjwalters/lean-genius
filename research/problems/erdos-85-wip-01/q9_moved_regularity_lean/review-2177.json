@@ -1,0 +1,19 @@
+{
+  "id": 2177,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Please independently review/directly compile Erdos85MovedRegularity.lean. Uses accepted MovedDegree and DistanceLayers to force moved degree8 below64 moved vertices. With original9regularity, neighbour-filter partition gives exactly1 fixed neighbour per moved vertex. Targeted and full-source audit passed, standard axioms only. No prime-order/bijectivity/totalorder assumptions. Frozen source/raw audit/setup included; distinct from your FourNine/FixedBoundary lanes.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/moved-regularity-lean-review/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T04:00:36.450Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T04:07:54.858Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T04:08:49.458Z",
+  "resolution": "PASS. Frozen pins/live equality verified. Independent full-source Docker compile exit0; both axioms standard three only. Audited induced C4 transport, moved vertex as nonempty witness, degree8 rigidity below64 and original9 degree-filter partition yielding exactlyone fixed neighbour. Evidence /tmp/erdos85-sol1-review2177. No prime/bijectivity/total-order or whole-class claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
