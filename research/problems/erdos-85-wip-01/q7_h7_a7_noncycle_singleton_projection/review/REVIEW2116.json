@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "source_pins": 10,
+  "origin_pins": 4,
+  "F_classes": 14,
+  "X_raw": 2711,
+  "X_orbits": 1310,
+  "complete": 860,
+  "unknown": 1,
+  "unvisited": 449,
+  "valid_extensions": 46728,
+  "seconds": 0.7976740419398993,
+  "scope": "Independent recursive capacity-cover and explicit AutF orbits; every host join and saved graph checked with bitwise common-neighbor test. No S completion rerun; terminal completeness rests on audited exhaustive star traversal, with unresolved frontier preserved.",
+  "review": 2116,
+  "algorithm_audit": "Each node chooses one unfinished singleton vertex and enumerates all subsets of unfinished neighbors that fill its required degree. An edge to an already fixed vertex cannot be in a completion because that vertex has full degree. A new C4 in a star addition uses the center once, hence either one new spoke and an existing length-three path, or two new spokes and a shared old neighbor of their endpoints. The two source tests exactly cover these cases. Degree feasibility pruning is necessary. State restoration is exact after every successful recursive return; timeout aborts that base and never yields COMPLETE. Aggregate deadline stops further bases. Therefore COMPLETE records are exhaustive under the audited code; no independent S enumeration replay is claimed."
+}
