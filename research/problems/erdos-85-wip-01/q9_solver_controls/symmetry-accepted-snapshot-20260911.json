@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "snapshot_utc": "2026-09-11T17:02:37.129545+00:00",
+  "snapshot_utc": "2026-09-11T17:31:26.803692+00:00",
   "purpose": "Accepted evidence snapshot for existing symmetry section; no new mathematical packet",
   "n78_accepted_full_group_orders": [
     1,
@@ -163,15 +163,17 @@
         {
           "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-n78-m13-quotient",
           "exists": true,
+          "sha256": "9b43dddbd20ad4fc5b3b035480febb0009f2f308babfe385a28733a7b0c28d95",
           "kind": "directory",
-          "file_hashes": {
+          "files": {
             "README.md": "e334f734bf321f6ab5ca5fa290d4e8b1b038d3a333231866851c76bb640b0cdc",
             "enumerate.py": "76e4c66cb9e7bfbf62c091f13eaed6ed3e9a757b9b834a3433189920290f6fdf",
             "pins.json": "f4bd3941d68b456f6e8eef28ee58c38cc413ea0e5559247def78af41db9cffb3",
             "results.json": "8706cfcca5c4fe83cd889c19073eb321d68dad7be7720a26f1e88f62c6ce0e63",
             "verification.json": "4a543b1cd74b5b080ef338d7b58e37172ea40b984ffdd65ff3ce7e5e6930ff08",
             "verify.py": "f7eb661d5e9384758e05ba4d9c85aa32f13e9f670158c19be291b74be9e6835b"
-          }
+          },
+          "hash_definition": "SHA256 of sorted-key JSON relative-file-hash map"
         }
       ]
     },
@@ -386,6 +388,36 @@
       ]
     },
     {
+      "id": 2214,
+      "status": "resolved",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T05:04:02.738Z",
+      "resolution": "PASS FULL N80/F5 subcase (paper/computational). Independent matrix input matches118 words/all capacities/edges. Row-necessity and inductive simultaneous-removal proof audited. Different recursive multiplicity enumeration exits0,.0063s/12221states, exact six removal sets35/12/20/30/20/1, empty fixed point under60s cap. All predecessor reviews/pins verified; exact disjoint1284 partition708+516+58+1+1, no uncovered case. Thus order3 atN80 must fix2 vertices using2176. No Lean/globalN80/Erdos85 closure. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2214.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-order3-local-row-propagation/pins.json",
+          "exists": true,
+          "sha256": "a02d25329013a93b0c92deaf2c0f0e14b106dbf37ac3609b866863697d25408a",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2231,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T05:29:40.741Z",
+      "resolution": "PASS: structural completeness audited with no connectivity assumption. Independent all20 labelled Y graphs x20 pair selections gives16 rooted completions; explicit isomorphisms to the two triangle reps checked. All3 reps cubic/C4free, triangle counts0/2/3; fourpins verified. Evidence /tmp/erdos85-sol1-review2231. FixedH classification only, no fullgraph exclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/cubic-ten-classification/pins.json",
+          "exists": true,
+          "sha256": "770fa70c8f17986644b0f6d5bca1aab20ff482f940c1fef4fdd0c4807bb22bda",
+          "kind": "file"
+        }
+      ]
+    },
+    {
       "id": 2408,
       "status": "resolved",
       "resolved_by": "codex-sol-3",
@@ -566,6 +598,21 @@
       ]
     },
     {
+      "id": 2491,
+      "status": "resolved",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T12:19:07.497Z",
+      "resolution": "PASS fullA4 profile(2,0,3,5) exclusion. Hashes/fresh2489/2490 checked. Nonregular B4 middle hasC3 stabilizer cycling its threeYneighbors andunorderedpairs, so12incidences free. ThreeB consume36freepairs; fourregularW degrees sum6 forceatleast24more. Allforgetfulmaps injective/equivariant withdisjointimages byC4. A4 regularY only48freepairs, contradiction60>48. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2491. OtherA4/normalP/fullA12/global/Lean open.",
+      "source_artifacts": [
+        {
+          "path": "/tmp/erdos85-sol1-q9-n78-a4-four-residual-exclusion/pins.json",
+          "exists": true,
+          "sha256": "1e7f5c46d440a60e7290c0a6c72e1c688e66cddc11d12f18df4f8ba95763efbe",
+          "kind": "file"
+        }
+      ]
+    },
+    {
       "id": 2494,
       "status": "resolved",
       "resolved_by": "codex-sol-1",
@@ -576,6 +623,228 @@
           "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order12-normal-three-cyclic-complement/pins.json",
           "exists": true,
           "sha256": "47633ab37f508b7812c55eb06d73e36e69b355fae8a9187d279b7b2f400c123a",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2496,
+      "status": "resolved",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T12:28:19.849Z",
+      "resolution": "PASS fullA4 profile(2,0,0,6) exclusion. Fresh2489/2490/2493/pinnedhashes checked. Independent generator-closure/bitadjacency covers88 bases,2376/35640 Wbranches->4248; all12744 phases->1080 and16740 blockpairs->576 verified. ME=EM F-W identity derivesE_WR=0 withoutorder16premise. Independent1728 matching-shift cases/6912localdomains andendpoint-first exactcover yieldzero fullcases. Four original30s audits COMPLETE0.822/0.767/0.050/0.216s. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2496. OtherA4/normalP/global/Lean open.",
+      "source_artifacts": [
+        {
+          "path": "/tmp/erdos85-sol1-q9-n78-a4-two-w-incidences/pins.json",
+          "exists": true,
+          "sha256": "517aff34e499c365e77585e75495ff8ec2e2aef21284bdf479bbce2355e71459",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2498,
+      "status": "resolved",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T12:46:43.764Z",
+      "resolution": "PASS: six hashes/fresh2207/2257/2489/2490/2491. Independent tetrahedral-edge action confirms12 free/3 opposite nonfree pairs; exceptional-orbit pair exhaustion and allfive attachment profiles checked. Noexception/c3 exclusion re-establishes matching quotient and residual4 independence, then freeYpair60>48 without importing old F orbit structure. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2498. Four necessary branches remain; no fullA4/global/Lean.",
+      "source_artifacts": [
+        {
+          "path": "/tmp/erdos85-sol1-q9-n78-a4-single-six-attachments/pins.json",
+          "exists": true,
+          "sha256": "7c983ddfc402edf43fb80c60b1006873e55bdbb3becb43a36bb4463893b1fa31",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2501,
+      "status": "resolved",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T12:50:51.803Z",
+      "resolution": "PASS fullA4 singleF6/noexception/c0 exclusion. Independently regenerate88 bases/1980W03/7128W21->1620 and everyC4 certificate; all49140 triplepackings->1404; allsixcenteroptions->432 assignments; all1728 local candidate domains/endpoint-first exactcovers ->zero fullcases. COMPLETE .220035/.194309/.883582/.057055s separate original30s caps. Pinned hashes/fresh2496/2498/2499; normalizations and E_WR0 necessity audited. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2501/REVIEW.md. Exceptional/otherA4/normalP/global/Lean open.",
+      "source_artifacts": [
+        {
+          "path": "/tmp/erdos85-sol1-q9-n78-a4-single-six-partial/pins.json",
+          "exists": true,
+          "sha256": "d869bbb30f4691f52951b92a2a3c85e77abfb231f5dcfe03aba87a604c2a412b",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2515,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T13:31:42.414Z",
+      "resolution": "PASS completecycle refinement. Fresh2509/2510/2513,pins; exact3793 openkeys includingall1873unvisited. Independentexplicitcycle-edge transport/zero-bound omissions reproduce63587cuts; exact1874witness extensions/46invalidations, COMPLETE3.268106s original30. Verifyallbase+newbounds/rows for3411witnesses and382 exactFarkas, COMPLETE1.113552s separate30. Disjoint2653+193+382 negatives and3411open coverall6639; noUNKNOWN/unvisited atstrongerstage, oldercaps untouched. Evidence /tmp/erdos85-sol1-review2515. No fullcount/global/Lean.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-cycle-allocation/pins.json",
+          "exists": true,
+          "sha256": "a8eca8c8a3cc30c66d5e403f32f1225d2f8469b19e309c3acb7698b1820afdd4",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2516,
+      "status": "resolved",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T13:09:28.895Z",
+      "resolution": "PASS via directcertificate route:13pins/fresh2504/2507/2512. Reconstructed exact2880partialgraphs/keys, allsmall+W0degrees9. All25920potentialmiddles exhaustendpointneighborhoods:8640saturatedW0,1584self,15696explicit simplelength3paths. Emptycurrentcommonneighbors andE_Ci,regular0 forcecontradiction. COMPLETE .120871s/30. No relianceonlocalrecursive negatives. Together2512 entireexceptionalB4branch excluded; otherA4/global/Lean open. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2516.",
+      "source_artifacts": [
+        {
+          "path": "/tmp/erdos85-sol1-q9-n78-a4-exceptional-four-fixed-w0-local/pins.json",
+          "exists": true,
+          "sha256": "b839c503b5092a55dbbbc951d4f66c9954b91d414cec68d382e5d1e5b99162eb",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2518,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T13:34:32.848Z",
+      "resolution": "PASS internalgroup cover/filter. Fresh2517,pins. Independentedge-subsets size0..3/disjointendpoints/tau enumerateallpartialmatchings; direct17vertex codegrees/lowcoverage reproduceall896domains/12empty. Exactall235151 arrangements ->216293retained,45rootnegatives/3366positive, allsourcekeys/groupIDs checked. COMPLETE0.439332s original30. Lowfixedendpoint saturation/internalmatching necessity audited; nochosenwitnessrestriction. Evidence /tmp/erdos85-sol1-review2518. No fullcount/global/Lean.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-internal-groups/pins.json",
+          "exists": true,
+          "sha256": "49156a674559c0b2da3afacea3f94330c1fd2dc94501b103d8398833488d947e",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2520,
+      "status": "resolved",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T13:14:12.314Z",
+      "resolution": "PASS exceptional12/c3 excluded. Pins/fresh2498 checked. EachunattachedCi mustmeet3of5regularorbits; nonfreepair obstruction and12freecrosspair capacity forcepairwiseintersection<=1. Three3subsets on5 haveintersectionexact1, union>=6 contradiction. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2520. No search/global/Lean; otherA4 profiles separate.",
+      "source_artifacts": [
+        {
+          "path": "/tmp/erdos85-sol1-q9-n78-a4-three-unattached-four-exclusion/pins.json",
+          "exists": true,
+          "sha256": "4353174f5140caa3efcec8849ff9a335169b3ed0728bb978a4266822afae584b",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2521,
+      "status": "resolved",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T13:15:28.342Z",
+      "resolution": "PASS: eight pins/fresh2498. Endpointbound2+2b+c<=6 and normalization audited. Independently enumerateallinverseclosed subsets size<=2 ->11, reconstructallF+Bgraphs/check10C4certs; onlyempty survives, COMPLETE .000216s/30. Initialeight receipt unused/preserved; withdrawnaggregatequotient not imported. IndividualW/Ybounds andreversebalance checked. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2521. B independent, branch/global/Lean stillopen.",
+      "source_artifacts": [
+        {
+          "path": "/tmp/erdos85-sol1-q9-n78-a4-exceptional-twelve-internal/pins.json",
+          "exists": true,
+          "sha256": "c86897448d33a7f7cdf44bb0ceaaa6df0de0d6614b9cc2810769a318df0ab86c",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2522,
+      "status": "resolved",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T13:15:29.599Z",
+      "resolution": "PASS: pins/fresh2498/2521. Fstabilizer pair argument gives36distinctBpairs=12nonfree+24free; explicitA4incidence count checked. Five regularBdegrees sum7/freecapacity2 forces22111 byequality choose(k,2)>=k-1. Remainingfreepairs allcovered, sixunusednonfree formtransitiveE[B]matching. ThreeW/Yplacements complete; noaggregateequitability. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2522. Necessaryonly/no branchexclusion/global/Lean.",
+      "source_artifacts": [
+        {
+          "path": "/tmp/erdos85-sol1-q9-n78-a4-exceptional-twelve-pair-budget/pins.json",
+          "exists": true,
+          "sha256": "07cb524a96f7b31f1d1438e73700905927a5d66be552b7fc992468915b220091",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2524,
+      "status": "resolved",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T13:19:52.181Z",
+      "resolution": "PASS: pins/fresh2498/2521/2522. Independent all13068 normalizedtuples/fullincidences, F+Bdegree9, all12940C4certs andexact128positive(0/32/96). COMPLETE .477662s/30. Regeneratedall640 localdomains/maskrepresentatives anddirectlyverifiedpositivewitnesses .011872s/30. BothWdoubleplacement excluded, other128preserved; nowitnessasdomain/no global/Lean. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2524.",
+      "source_artifacts": [
+        {
+          "path": "/tmp/erdos85-sol1-q9-n78-a4-exceptional-twelve-incidences/pins.json",
+          "exists": true,
+          "sha256": "9f765f9a37de3f64f917d250ec9f198675abf1f645ad69c45eacdcfe16f6639f",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2528,
+      "status": "resolved",
+      "resolved_by": "codex-sol-2",
+      "resolved_ts": "2026-09-11T13:22:28.046Z",
+      "resolution": "PASS bothYdouble excluded. Pins/fresh2498/2521/2522/2524. IndividualF-B defectbalance +E[F]matching exhaustsFdefectrows; eachdoubleY musthave2Wneighbors ->48edges. PointwiseW count4+7+m distinctBendpoints<=12 givesm<=1 ->atmost24edges. No union-equitability assumption/search/witness. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2528. Mixedplacement/otherA4/global/Lean open.",
+      "source_artifacts": [
+        {
+          "path": "/tmp/erdos85-sol1-q9-n78-a4-exceptional-twelve-two-y-exclusion/pins.json",
+          "exists": true,
+          "sha256": "47ed12e18dff1f4f7fd391aa338bdafa92f44662b05541c9d089b93a684ef354",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2539,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T14:08:31.797Z",
+      "resolution": "PASS. Fresh2518 and all packet/input hashes. Exact452 class0 arrangement keys. Independent augmenting-path bipartite matching reconstructs all111048 restricted row tests and every saved row-domain bitset. All12 negatives have an empty row domain; all440 witnesses directly verified simple/symmetric/cubic/C4-free and within full allowed domains. COMPLETE0.738354s original30. Low at residual0 has budget0, hence seven low neighbors cover residual targets outside{1,2,4}; their F centers cover complement of the three H neighbors, with self removed. No need to replay H search for these certificates; witnesses remain existence only, not future domains. Evidence /tmp/erdos85-sol1-review2539. No whole class/global/Lean exclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-center-rows/pins.json",
+          "exists": true,
+          "sha256": "77539f427758ea99e18942628d0d15599fe4419d6f5ed150d3ae7abab9de20bd",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2542,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T14:17:32.555Z",
+      "resolution": "PASS necessary model/exact partial stage. Fresh2515/2518/2539 and all packet/input hashes. Reconstructed all440 source arrangements, full variable domains/bounds, all retained original rows/cuts and156368 added rows including symbolic FR middle expansion; COMPLETE6.102690s original30. Paper defect degrees/signs/factor2, low disaggregation, fixed forbidden rows and middle exclusions checked. Independent integer-scaled cert audit .345819s:146 exactFarkas/292 exactwitnesses; original and recovery UNKNOWN91/169 preserved. Supportroots0/5/32 excluded,294 arrangements/14roots open. Evidence /tmp/erdos85-sol1-review2542. No wholeclass/global/Lean.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-fixed-allocation/pins.json",
+          "exists": true,
+          "sha256": "5798e13ce0d4d08dad2b434dc8eff0072e340d55591fabfbaf6a977c7d7ed44e",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-fixed-recovery/pins.json",
+          "exists": true,
+          "sha256": "4ffe05c272d0496498e69e8df3c0676f4940d8ca6a59c74ec6d7154b21084763",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2543,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T14:19:06.807Z",
+      "resolution": "PASS. Fresh2542 and all packet/input hashes. Independent ordered-four-vertex enumeration yields exactly630 unoriented edge sets, matched against every cut in eachof294 models using actual H labels. Exact allopen sourcekeys including91/169. Integer-scaled verification all268 witnesses against full original bounds/rows plus630cuts;26 UNKNOWN and unsuccessful recovery keys preserved. COMPLETE0.496004s original30. Each cycle sum<=3 necessary for C4-free H; no prior witness/domain substitution. Evidence /tmp/erdos85-sol1-review2543. No new exclusions/global/Lean.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-fixed-cycles/pins.json",
+          "exists": true,
+          "sha256": "9a8aa26b5697614c15c42850204a675aa7c72431f4367349bab4af6eb7c0fb2e",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-cycle-recovery/pins.json",
+          "exists": true,
+          "sha256": "56d95137873b5092d6291507ec86247cd5618865ce63e36777e1b2caa0082186",
           "kind": "file"
         }
       ]
@@ -596,31 +865,43 @@
       ]
     },
     {
-      "id": 2555,
+      "id": 2546,
       "status": "resolved",
       "resolved_by": "codex-sol-1",
-      "resolved_ts": "2026-09-11T14:10:14.843Z",
-      "resolution": "PASS full composition. Seven fresh PASS premises and recursively pinned packet/source hashes; additionally all independent stage-audit source hashes rebound to current artifacts. Decoded archives inclbinary checked. Exact80 base/mode cover\u219237156rows\u2192241328packings\u2192482656packing/action cases\u2192370176negative assignments/108516queries, zero uncovered. COMPLETE1.362058s original30. Paper scope audited: unique involution fixes6, both matchingFprofiles, regular outside, all residualdegrees/Wpatterns, full invariant F-actions including nonabelian six-action. Excludes fullAut C12 and Dic12 atN78 only. Evidence /tmp/erdos85-sol1-cyclic-composition-audit. S3\u00d7C2/A4/smallerorders/globalN78/Erd\u0151s85/Lean remain separate.",
+      "resolved_ts": "2026-09-11T14:19:30.220Z",
+      "resolution": "PASS. Fresh2543 and all packet/input hashes. Exact26 priorUNKNOWN/recovery/result root sets and source_root/arrangement interfaces. Independent integer-scaled verification each rational vector against all actual491bounds, original constraints and630cyclecuts; COMPLETE0.035401s original30. Maxdenominator28677905 confirmed. Numerical basis/QR/active-selection metadata unused by audit. Together with268 accepted witnesses all294 models exactly rational feasible, no graph realizations/exclusions. OriginalUNKNOWN receipts untouched. Initial audit schema lookup for absent class field corrected before substantive certificate work; no cap hit. Evidence /tmp/erdos85-sol1-review2546. No global/Lean.",
       "source_artifacts": [
         {
-          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-cyclic-complement-composition/pins.json",
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-exact-basis/pins.json",
           "exists": true,
-          "sha256": "b52501e05c2a3b52049ef6f5a3cefeb0dd4b659f1e325e75dcba3d2e767e31dd",
+          "sha256": "28af45cc61efe262073ff0374fa4e13ea54c52e48eb44c8df935bfa9556e6d59",
           "kind": "file"
         }
       ]
     },
     {
-      "id": 2586,
+      "id": 2550,
       "status": "resolved",
       "resolved_by": "codex-sol-1",
-      "resolved_ts": "2026-09-11T16:41:54.586Z",
-      "resolution": "PASS. Fresh2553/2554/2575 and packet/input hashes. Full21 matching seeds and49 unordered-edge orbits/36 optional units checked. Independent binary-interval cover proves all165339 terminal prefixes partition every2^36 subset perseed; explicit negatives and31749 positive graphs checked. Exact free-pair capacities on all31749 graphs leave2784. Final full Cartesian tuple cover checks all9566208 allocations:9547776 explicit capacity contradictions and18432 exact defect-degree contradictions, zero survivors. Covered ordered pairs independently generated at actual nonregular middles; regular-orbit contributions are exactly12 per shared index, none within Ti, yielding exact quotient after division by6. All stages COMPLETE under separate original30 caps:1.445705s induced,1.157252s capacity,4.526294s allocations (archive loading outside audit clock). Evidence /tmp/erdos85-sol1-review2586. Entire profile (0,0,2,3,4) excluded; no other group/global/Lean conclusion.",
+      "resolved_ts": "2026-09-11T14:22:31.520Z",
+      "resolution": "PASS. Fresh2542/2543/2546 and packet/input hashes. Independent reconstruction all294 arrangements,288 new paired high-low variables/model with exactC4 bounds, retained allold rows/cuts, and366912 new rows via actual common-middle expansions. COMPLETE4.278814s original30. Weighted low budget rederived from seven W neighbors; coverage inequalities safely drop nonnegative low-low terms. Separate .688674s integer-scaled audit all original/recovered exactcerts:7Farkas/287rational, exactsource partition and no remaining uncertified case. Negative modelroots125/131/223/229/291/408/422. OriginalUNKNOWN receipts preserved. Evidence /tmp/erdos85-sol1-review2550. No fullbranch/global/Lean.",
       "source_artifacts": [
         {
-          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s3-central-free-five-six-induced/pins.json",
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-high-low-allocation/pins.json",
           "exists": true,
-          "sha256": "75b6f6917dbd337769ca8e1c92c0c4d6999c3b0b215706257b052f784cc6a24f",
+          "sha256": "cd9a3f88c0f7a17e8ad902c89432caab3c909516091344aa137e308c231fd4e4",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-high-low-basis/pins.json",
+          "exists": true,
+          "sha256": "6f56f3de05dd2ff73b23b82b5eed6d42a5d41f451bd09957a8a832c496cdac6a",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-high-low-dual/pins.json",
+          "exists": true,
+          "sha256": "02531f1019dff7e9bfceac8155f2245b43d133675930a4a1a31ec407292063d8",
           "kind": "file"
         }
       ]
@@ -641,6 +922,204 @@
       ]
     },
     {
+      "id": 2555,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T14:10:14.843Z",
+      "resolution": "PASS full composition. Seven fresh PASS premises and recursively pinned packet/source hashes; additionally all independent stage-audit source hashes rebound to current artifacts. Decoded archives inclbinary checked. Exact80 base/mode cover\u219237156rows\u2192241328packings\u2192482656packing/action cases\u2192370176negative assignments/108516queries, zero uncovered. COMPLETE1.362058s original30. Paper scope audited: unique involution fixes6, both matchingFprofiles, regular outside, all residualdegrees/Wpatterns, full invariant F-actions including nonabelian six-action. Excludes fullAut C12 and Dic12 atN78 only. Evidence /tmp/erdos85-sol1-cyclic-composition-audit. S3\u00d7C2/A4/smallerorders/globalN78/Erd\u0151s85/Lean remain separate.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-cyclic-complement-composition/pins.json",
+          "exists": true,
+          "sha256": "b52501e05c2a3b52049ef6f5a3cefeb0dd4b659f1e325e75dcba3d2e767e31dd",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2556,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T14:25:42.684Z",
+      "resolution": "PASS. Fresh2550 and packet/source hashes. Exact287 source models; independently checked all3557 budgetcuts using actualedge lists/budgets and full binary truth tables (six distinctdomains), plusall4 retained common-neighborcuts using reconstructed owners/supports, actual distinct middle paths, coefficientgcd/roundedrhs. COMPLETE0.215409s original30. Selection heuristics unnecessary for validity. Separate .561607s integer-scaled cert audit allold+added rows/bounds and180 recoverykeys ->77Farkas/210rational, originalUNKNOWN receipt preserved. Evidence /tmp/erdos85-sol1-review2556. No wholebranch/global/Lean.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-knapsack-cuts/pins.json",
+          "exists": true,
+          "sha256": "de12fa7cf3cca1ebfa0a24a25e8d4bac2a8444c9ff1df56570e6a742df429d3d",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-knapsack-basis/pins.json",
+          "exists": true,
+          "sha256": "150bc8c1e8ca0cf93b2bf4c6a7acb7a84762f0efe96ef23e25b55511e0a4b884",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-common-neighbor-cuts/pins.json",
+          "exists": true,
+          "sha256": "2dc6c3b1576343a83808d5beed9436a8347c0e36fdb879fa0e3f4903936d0f2f",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-common-neighbor-basis/pins.json",
+          "exists": true,
+          "sha256": "8ce9947c79ab9a882da20b6968f8a1f5b2b18b7e921b23694902cda3849a0f10",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2558,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T14:38:28.151Z",
+      "resolution": "PASS. Fresh2556 and packet/source hashes. Independent actualowner/support conflict reconstruction; all highsubsets bycardinality, direct budgeted subset scan verifies4113 retained rankbounds andcoefficients onexact210models. Allpriorcuts retained. COMPLETE0.424901s original30. Sharing knownneighbor forbids commonWmiddle, so independent-set rank valid; missingedges safelyrelaxed and omittedcuts notneeded forexclusions. Separate .465214s integer-scaled allcerts/sourcekeys:72Farkas/138rational, all120originalUNKNOWNs exactlyresolved with receiptsunchanged. Evidence /tmp/erdos85-sol1-review2558. No whole supportroot/branch/global/Lean.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-neighbor-rank-cuts/pins.json",
+          "exists": true,
+          "sha256": "38b0c2acee18890824c1d7335384637a2d165222c0e885c4fe338c456d30dc80",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-neighbor-rank-basis/pins.json",
+          "exists": true,
+          "sha256": "ef56ac5dd58e736ca464191112c0b3d250d263aa1253459ae270544d0c5d0081",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-neighbor-rank-dual/pins.json",
+          "exists": true,
+          "sha256": "f1d53b2e16548ab97455666e7b70c84deef5dc3de0ace433fdbe66f27ac3e8f4",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2561,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T14:40:38.746Z",
+      "resolution": "PASS necessary strengthened model and exact exclusions. Fresh2558 and all packet/source hashes. Exact138openkeys, allprevious compactcuts retained. Independent actualowner/support conflicts and direct budgeted independent-subset scan validatesall23779 retained rankbounds/coefficient lists, COMPLETE0.358757s original30. Separate integer-scaled allbounds/original+added rows verifies14Farkas/124rational, exact95primal+3dual recoverykeys, COMPLETE0.328811s original30 after input/hash loading. No excluded valid constraint is needed for these conclusions; audit does not independently certify maximal-cut generation completeness or exact local hull membership. OriginalUNKNOWN receipts preserved. Evidence /tmp/erdos85-sol1-review2561. No supportroot/wholebranch/global/Lean.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-complete-rank-cuts/pins.json",
+          "exists": true,
+          "sha256": "b8b71a54869c691d32953c24284d80cdeeadf33f25345f1d1913b87b1eeb9dbb",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-complete-rank-basis/pins.json",
+          "exists": true,
+          "sha256": "473275233238726f549031f1976481b95e42e8b0306d86f889f3382f33cb1832",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-complete-rank-dual/pins.json",
+          "exists": true,
+          "sha256": "9458bebcd94108b139d8b1f34328393dec5c9f25594ebbd30ecb821c8f07523b",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2563,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T14:42:43.781Z",
+      "resolution": "PASS. Fresh2518/2561 and packet/source hashes. Independent globalgroup membership and unorderededge-coordinate maps; project EVERY acceptedmatching and exactorigin indices ->all744 full pattern domains/2975weights on124 sourcearrangements. Preserved oldvariables/bounds/rows/cuts; everynewsimplex and edge-marginal equation exactlyreconstructed, COMPLETE0.099810s original30. Integral graph choosesits actualpattern withweight1; all-low groups nonempty/no coordinates safelyomitted. Separate integer-scaled exactcerts .279657s:17Farkas/107rational, exact87primal recoverykeys/emptydual receipt, originalUNKNOWNs preserved. Evidence /tmp/erdos85-sol1-review2563. No selectedmatching domain shortcut, wholebranch/global/Lean.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-internal-hull/pins.json",
+          "exists": true,
+          "sha256": "e4cd196768d9fee1ed0a0917b9284e35b7601181df531e8e9293322a8dd59e45",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-internal-hull-basis/pins.json",
+          "exists": true,
+          "sha256": "1adb2f3ce90bfbfa6f36541aec2ea670da1d266befe94c0b2416138e5a86b2de",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-internal-hull-dual/pins.json",
+          "exists": true,
+          "sha256": "9e8c410f7b2e8bce1dbd6c32d4504c796c6c94d88d88cc73254a05bedee46633",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2566,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T15:00:59.308Z",
+      "resolution": "PASS. Fresh accepted2563, packet/input hashes, exact full107 source cover including25 unchanged. Independent cardinality-first local subset generation verifies all139 cuts: actual edge availability, owner uniqueness, residual-support disjointness, weighted budgets, integer nonnegative weights, complete pattern sets, exact maxima, coefficients and prior-witness violations. Necessary because any actual star obeys inherited budgets and C4 common-middle uniqueness; odd stars transport by involution. Exact integer-scaled certificates on all original rows plus new cuts verify1 Farkas negative (model185/source12/arr8) and106 rational witnesses; all66 original primalUNKNOWN receipts separately resolved by saved exact recoveries, not overwritten. COMPLETE0.864458s cuts and0.251923s certificates, each original30. Evidence /tmp/erdos85-sol1-review2566. No cut absence interpreted as hull membership; no graph existence, whole support-root exclusion, global or Lean claim.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-star-hull-cuts/pins.json",
+          "exists": true,
+          "sha256": "f617b433c21e38ec8f621f4f4642f0c96c6578b140dfb474c8f1134b6766f936",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-star-hull-basis/pins.json",
+          "exists": true,
+          "sha256": "ad13cb400edaefa8facb8866bd329bb2e72c7a8ed28fd57ee64d7e377ddc15d8",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2568,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T15:02:22.165Z",
+      "resolution": "PASS. Fresh accepted2566 and packet/input hashes. Independent cardinality-first subset enumeration checks full allowed owner-distinct, support-disjoint budgeted high-neighbor domain for every30 even-W representatives in all106 models: all54922 patterns retained. Original variables/bounds/rows and139-cut extension prefixes preserved; all simplex variables, bounds, sum equations and exact edge marginals checked. Thus every graph gives a one-hot pattern assignment, and odd stars transport by involution. Paired-star pruning is not needed as a premise because the complete original local domains agree exactly. Separate integer-scaled verification checks all106 full-model rational witnesses and source keys, including all94 saved UNKNOWN recoveries. COMPLETE3.297647s model-domain audit and0.359800s certificates, each original30. Evidence /tmp/erdos85-sol1-review2568. No new exclusion or graph-existence/fullbranch/global/Lean conclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-full-star-hull/pins.json",
+          "exists": true,
+          "sha256": "4d88e758101b924f0faf3f9227f21b5a82949dc980edd5d75a5444ce94578d3d",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-full-star-hull-basis/pins.json",
+          "exists": true,
+          "sha256": "1d09f31c23dcc73014ce937d930d15fc8a529bbebf87871646c9855676818bac",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-paired-star-domains/pins.json",
+          "exists": true,
+          "sha256": "79208a1d63d956d2059f2eb17229d6274302d295031e7e1471c8a04d5bdd2d4a",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2570,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T15:03:14.219Z",
+      "resolution": "PASS. Fresh accepted2568 and packet/input hashes; full106 source cover with99 changed and7 unchanged. Independently form complete bipartite pattern-compatibility relations using mask intersections, actual fixed owners/residual supports, and xor-one transport for odd endpoints. Full projection of each selected left subset reproduces all304 right neighborhoods, including zero-weight patterns, and exact coefficients/lower -1/upper0 and prior violations. Each actual joint choice satisfies the Hall inequality, so added rows are necessary; no completeness claim for all Hall cuts. Integer-scaled verification checks all106 full-model rational witnesses with all original rows and304 cuts, including85 saved exact UNKNOWN recoveries. COMPLETE0.840060s cuts and0.389925s certificates, each original30. Evidence /tmp/erdos85-sol1-review2570. No new exclusion, graph existence, fullbranch/global/Lean claim.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-star-pair-coupling/pins.json",
+          "exists": true,
+          "sha256": "05dcafcd4d9619da7a9a0e9423889ffc374042731c5423cdcbf5e302cd35c751",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-star-pair-basis/pins.json",
+          "exists": true,
+          "sha256": "ee180d367ee59a1f3052a54d65b0eb9dd27e6b0562de5f53120c7871efb5b789",
+          "kind": "file"
+        }
+      ]
+    },
+    {
       "id": 2572,
       "status": "resolved",
       "resolved_by": "codex-sol-1",
@@ -651,6 +1130,27 @@
           "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s3-transitive-fixed-composition/pins.json",
           "exists": true,
           "sha256": "1a4297ab169442b2d7f61da50d7924fccd5453f1131d26868a9b6c67ec897927",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2576,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T15:05:00.673Z",
+      "resolution": "PASS. Fresh accepted2231/2570 and current packet/input hashes. Direct subset-bitmask enumeration on accepted2231 representatives verifies internal-edge maxima4 on four vertices and5 on five vertices, cubic boundary identity, and equality for complementary five-subsets. Independently checks all35616 added row coefficient maps and complete subset cover across106 sources; all prior Hall cuts and base full-star rows preserved. No regenerated catalog or pending2573 premise required. Exact integer-scaled checks verify106 full-model rational witnesses and source keys, including all92 separate UNKNOWN recoveries. COMPLETE0.118503s cuts and0.417645s certificates, each original30. Evidence /tmp/erdos85-sol1-review2576. No arrangement exclusion or graph-existence/global/Lean claim.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-fixed-cut-bounds/pins.json",
+          "exists": true,
+          "sha256": "9d776593f58ae9aa390f5d6ca70c3337567639553a4dab498cf9822261b9a865",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-fixed-cut-basis/pins.json",
+          "exists": true,
+          "sha256": "db22960d347643ce1db19946d29fc3c5de8830ee61eadfe0f8d7187637a43a13",
           "kind": "file"
         }
       ]
@@ -671,6 +1171,33 @@
       ]
     },
     {
+      "id": 2578,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T15:06:19.200Z",
+      "resolution": "PASS. Fresh accepted2576 and current packet/input hashes. Paper derivation valid: EFF=2I+J-H^2 commutes with cubicH; MFR=0 reduces FF commutation to A EWF=EFW Atranspose. Low fixed defects vanish and paired high entries agree. Independent symbolic expansion over individual high W vertices then division by2 reproduces all4134 nontrivial equations across106 models; old cuts/base rows retained. Exact integer-scaled certificates verify15 contradictions and91 rational witnesses, including81 primal and1 dual separate UNKNOWN recoveries. Complete source cover confirms all remaining source19 arrangements removed and12 support roots remain. COMPLETE0.023521s equations and0.365691s certificates, each original30. Initial audit assertion incorrectly expected omitted all-low internal groups; corrected before a completed audit, no cap hit or domain resumed. Evidence /tmp/erdos85-sol1-review2578. No full class0/D5/N80/global/Lean exclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-FF-commutation/pins.json",
+          "exists": true,
+          "sha256": "ac397177ccdc816fa96b880bfc10e18a786c5cf1be12027c35a7b95ae92faf89",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-FF-basis/pins.json",
+          "exists": true,
+          "sha256": "863a830d6c7b7429d5a506b70d978b2eecdc2a5b7c5113a088fb9685d04e0316",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-FF-dual/pins.json",
+          "exists": true,
+          "sha256": "21f8e62d2ff67d9f0c6824544f9f1bb6fea7d53954f7588084311378e4385ffc",
+          "kind": "file"
+        }
+      ]
+    },
+    {
       "id": 2579,
       "status": "resolved",
       "resolved_by": "codex-sol-1",
@@ -686,6 +1213,54 @@
       ]
     },
     {
+      "id": 2581,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T16:33:29.915Z",
+      "resolution": "PASS. Fresh accepted2578 and packet/input hashes. Independent off-diagonal edge-subset domain using total row sum10 and binary diagonal proves2..5 edges suffice, enumerates exactly all276 matrices in0.012133s. All91 models checked: six distinct owners, existing row identities give2/2/2/2/1/1 and zero outside owners, prior FF equations give symmetry; binary diagonal is center-to-own-high defect adjacency, not a graph loop. All original variables/bounds/constraints retained; full276 pattern simplex and all36 exact B marginals permodel verified1.256426s. Integer-scaled full-model certificates verify91 rational witnesses including81 separate original UNKNOWN recoveries,0.408105s. Each stage COMPLETE under original30 cap. Evidence /tmp/erdos85-sol1-review2581. Necessary integer domain/hull only, no new exclusion or graph-existence/global/Lean conclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-defect-matrix-domain/pins.json",
+          "exists": true,
+          "sha256": "b8ae9be9574002dd9b4cb5d1c6c864ec31ea49a460eb84c5280b9bda83d0f111",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-defect-matrix-hull/pins.json",
+          "exists": true,
+          "sha256": "c6547878489fa757ea74ab8ceef51b7fa99ac7454940da40459d11eb4edbe72b",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-defect-matrix-basis/pins.json",
+          "exists": true,
+          "sha256": "bbf89c90b8632a5053ddb568a2de84cb349c43f6a02599ab3713049b274ae549",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2582,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T16:34:33.618Z",
+      "resolution": "PASS. Fresh accepted2581 and packet/input hashes; all91 sources covered,84 changed and7 unchanged. Independent full compatibility relation expands each of276 defect rows into forbidden12-high-vertex masks and projects each selected star subset over the entire right domain, including zero-weight matrices. All177 neighborhoods, coefficients, normalized lower -1/upper0 and prior exact violations verified. Necessity: a fixed center f and high vertex h sharing adjacent star middle cannot be defect-adjacent, so every graph joint choice satisfies each Hall inequality. Exact integer-scaled full-model checks verify all91 rational witnesses, including76 separately recovered original UNKNOWNs. COMPLETE1.369582s cuts and0.407039s certificates, each original30. Evidence /tmp/erdos85-sol1-review2582. No all-Hall completeness, graph existence, new exclusion, global or Lean claim.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-defect-star-coupling/pins.json",
+          "exists": true,
+          "sha256": "a5b5c5a949be24ee0c06a968a76e04e3afb57864b460055f3eacf92c63c94b6f",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-defect-star-basis/pins.json",
+          "exists": true,
+          "sha256": "f7222996425a1c2563fd34e1e659fdcdc61480825bceb8c33cda91363bb98085",
+          "kind": "file"
+        }
+      ]
+    },
+    {
       "id": 2583,
       "status": "resolved",
       "resolved_by": "codex-sol-1",
@@ -696,6 +1271,60 @@
           "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s3-central-free-mixed-three-commutator/pins.json",
           "exists": true,
           "sha256": "f24a03515a87a581f3814b9afe85d39352dd290591274f7843b13dc7d91a58c6",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2585,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T16:37:04.226Z",
+      "resolution": "PASS. Fresh accepted2539/2581/2582 and all five packet/input hash sets. Full prior row domains, actual FR coefficients, Q interval bounds and B/H common-middle exclusions checked for580944 cached row truth tests and all25116 matrix choices. Independent stack trace audit recomputes each inspected domain from original rows plus all assigned choices; full14126 domains cover282807 negative nodes and6464 positive source witnesses, with no witness substituted for a full domain. Exactly18652 impossible matrix weights are zeroed, all old rows retained. Exact integer-scaled all91 model certificates verify12 contradictions and79 rational witnesses, including64 primal and2 dual saved UNKNOWN recoveries; all12 support roots remain. COMPLETE1.670272s row,1.474508s graph,0.014992s filter,0.860125s certificate audits, each original30. Evidence /tmp/erdos85-sol1-review2585/result.json and scripts. No cap resumed, graph existence, entire support-root/class0/global or Lean conclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-defect-fixed-row-domains/pins.json",
+          "exists": true,
+          "sha256": "6c554f8e2e948e413309d29461cbc706da48b95e56475f315e762e5b4d026098",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-defect-fixed-graphs/pins.json",
+          "exists": true,
+          "sha256": "0f49fda4df5e8f2b7c5b4e3e5f00316e9f17be6fb1301e276f3692be6e218997",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-fixed-domain-filter/pins.json",
+          "exists": true,
+          "sha256": "06d97ed5a67e04d52c5cf0b045a33568208851add5c0b2ea2db15810ad855b58",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-fixed-domain-basis/pins.json",
+          "exists": true,
+          "sha256": "dfd2470f07e2e95642702ee6cc8f3e58d95c804daa7b4371eccd9c37ac6379de",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/residual-ten-D5-four-311-class0-fixed-domain-dual/pins.json",
+          "exists": true,
+          "sha256": "3ae4bf9bc831d2b37e253ef391476be4ceb5b73d3488f7e122dce988688610dd",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2586,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T16:41:54.586Z",
+      "resolution": "PASS. Fresh2553/2554/2575 and packet/input hashes. Full21 matching seeds and49 unordered-edge orbits/36 optional units checked. Independent binary-interval cover proves all165339 terminal prefixes partition every2^36 subset perseed; explicit negatives and31749 positive graphs checked. Exact free-pair capacities on all31749 graphs leave2784. Final full Cartesian tuple cover checks all9566208 allocations:9547776 explicit capacity contradictions and18432 exact defect-degree contradictions, zero survivors. Covered ordered pairs independently generated at actual nonregular middles; regular-orbit contributions are exactly12 per shared index, none within Ti, yielding exact quotient after division by6. All stages COMPLETE under separate original30 caps:1.445705s induced,1.157252s capacity,4.526294s allocations (archive loading outside audit clock). Evidence /tmp/erdos85-sol1-review2586. Entire profile (0,0,2,3,4) excluded; no other group/global/Lean conclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s3-central-free-five-six-induced/pins.json",
+          "exists": true,
+          "sha256": "75b6f6917dbd337769ca8e1c92c0c4d6999c3b0b215706257b052f784cc6a24f",
           "kind": "file"
         }
       ]
@@ -731,6 +1360,291 @@
       ]
     },
     {
+      "id": 2591,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T16:49:26.468Z",
+      "resolution": "PASS. Fresh2489/2257 and recursive packet/input hashes. Independent closure of two3-cycles reconstructs A4 and full coset-set actions. Perfect matchings enumerated as fixed-point-free involutive permutations give15 total/7 invariant seeds; all developments are equivariant perfect matchings with exact fixed-fiber restrictions. Every pair stabilizer and full18 edge-orbit partition checked,9 optional; within free12/cross free24. Triangle-leaf automorphisms obtained from all core permutations prove no free involution. The other V4 involution acts freely on Fix(s), forcing matching. Unique common middle in a regular orbit makes its generated endpoint pairs distinct and free;12 choose(m,2)<=12 forces m<=2, and at most one regular orbit may attain2. COMPLETE0.001145s original30. Evidence /tmp/erdos85-sol1-review2591. Necessary foundation only, no A4 profile/fullgroup/global/Lean exclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-three-six-fixed-seeds/pins.json",
+          "exists": true,
+          "sha256": "8c0dae29ff8b6cf4b4a59444c5f2dce0f912e4beffdb0eff219cf2960d08a09e",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2592,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T16:51:14.783Z",
+      "resolution": "PASS. Fresh accepted2591 and recursive hashes. Full3584 induced masks checked, only seven forced matchings remain. Independent row construction by doubled-coordinate/one-position choices gives all35 multiplicity rows; all300125 tuples and exact capacity/defect certificates reproduce1680 survivors with D=2J-I and E_NR=0. All1680 explicit row/column transports verified, independent canonical keys give exactly2 incidence classes. Full weak compositions independently enumerated as bounded integer tuples; complete Cartesian symmetric joins reproduce6/4 regular-defect quotients, without relying on producer recursion. mY=Dm follows the NR commutation block with E_NR=0; no regular adjacency assumption enters. COMPLETE0.041179s induced,0.415486s incidence,0.018892s quotient, each original30. Evidence /tmp/erdos85-sol1-review2592. Complete necessary domains only; no profile exclusion, graph-existence/global/Lean claim.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-three-six-no-four-domain/pins.json",
+          "exists": true,
+          "sha256": "acca6049c35bef5180828c28a30b7e296561d574314183b3312bd79d400518f7",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2593,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T16:52:43.140Z",
+      "resolution": "PASS. Fresh accepted2592 and recursive hashes. All1680 source transports reconstruct actual matching H with the same row permutation as m, yielding exactly8 pair classes with saved multiplicities. Independent stars-and-bars complete composition domains and full Cartesian symmetry joins reproduce empty classes3/6 and24 total Q matrices. Direct entire8-orbit adjacency quotient square verifies all implied Y entries, D and zero cross-defect blocks, then matches against the complete source Y lists;12 pairs survive. Full8-orbit commutation checked on every surviving pair. Exactly720 labelled sources excluded and960 remain. COMPLETE0.023474s original30. Evidence /tmp/erdos85-sol1-review2593. Necessary quotient reduction only; no full A4 profile or graph-existence/global/Lean conclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-three-six-regular-quotient/pins.json",
+          "exists": true,
+          "sha256": "3f7fb61143e91fe1d0f7ea9eddd7a1bf51007a804f3d74b48b101a523d4af2a8",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2595,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T16:55:37.000Z",
+      "resolution": "PASS. Fresh2591/2592/2593 and recursive hashes. Full matching-H compatibility covers10 cases; all37 domains/2475 raw tuples partition into248 group orbits, all developed C4 and pair-use checks give67 positives. Full160 packing products give80 pair-disjoint packings. Complete160 packed/Q cases and544 local queries checked: exact support/matching coverage, full candidates and35840 per-orbit subset rows. Independent breadth-first negative-prefix cover verifies every saved negative leaf; every positive witness directly covers the18-vertex target without overlap. Exactly80 negative/80 locally feasible cases. E_NR=0 and common-middle uniqueness justify the exact-cover necessity; right-translation normalization independently preserves each regular left action. COMPLETE0.010686s attachments,0.001022s packing,0.128346s local audit, each original30. Evidence /tmp/erdos85-sol1-review2595. Positive witnesses remain local existence only, never full future row domains. No profile/global/Lean exclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-three-six-attachments/pins.json",
+          "exists": true,
+          "sha256": "2234200f9c393ad811e0a35fd26efebdcc03f0feac642bb8a62e879a08e5cbd4",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2597,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T16:57:25.932Z",
+      "resolution": "PASS. Fresh accepted2595 and recursive hashes. Independent breadth-first full row-domain enumeration verifies400 queries/all20096 exact-cover rows and all terminal prefixes; no prior positive witness substituted for domain. Group permutation multiplication independently confirms left development a->ab. Every row checked for internal inverse closure, then every saved C4 certified in its actually developed78-vertex forced partial graph;1056 positives independently C4-free. Complete80 outcome/400 query source coverage shows each outcome has at least one empty admissible-row domain. COMPLETE0.085719s row and0.225275s star audits, each original30. Evidence /tmp/erdos85-sol1-review2597/audit.py and result.json. Profile (0,3,0,5) excluded under accepted premises. No simultaneous fullgraph solver, otherA4/fullgroup/global/Lean exclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-three-six-full-local-rows/pins.json",
+          "exists": true,
+          "sha256": "7a6bec29b6ea928a8b1ee4c0e4d855ad53f860c61fcb0ac6089363316f1c50b6",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2599,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T16:59:05.943Z",
+      "resolution": "SCOPED PASS: complete induced structural cover only. Fresh2489/2207/2591 and recursive payload hashes. Independent group pair-orbit sets and all512 BB masks,3584 TT masks,64 BT masks verify B independent, T one of7 forced matchings, and7 complete local BT choices. All2401 combined cases and explicit C4/degree evidence checked;973 induced graphs remain. COMPLETE0.054229s original30, evidence /tmp/erdos85-sol1-review2599/induced.py. Authoritative incidence summary is INCOMPLETE at30.000005s and remains frozen. I have NOT audited its2782074 partial terminal certificates or adopted any incidence exclusion/survivor-domain conclusion. Downstream use is limited to the complete induced results.json stage, as #2600 states. No profile/global/Lean exclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-three-six-three-four-induced/pins.json",
+          "exists": true,
+          "sha256": "429e2a6958c7dbb5d3428c0db4389bdce6b3c87f387941876ab497cc17550eaf",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2600,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T17:02:12.622Z",
+      "resolution": "PASS. Fresh scoped2599 complete induced cover and recursive hashes; frozen incidence never used. Independent ordered-middle reconstruction and all36 transports cover973 graphs ->10(H,C) classes. Complete B binary rows, seven-target/zero defect-location domains, direct known-block BB commutation and full doubled-position T row construction reproduce384 configurations in classes3/9 only. All cross/diagonal defect numerators, divisibility, degree and Cartesian certificates checked. Natural B pairs nonfree and C3 stabilizers free on T verified directly, justifying B multiplicity<=1 and concentrated residual defect targets with reverse degrees2/1. All384 have E_TR=0; known10-orbit top6 products with unknown regular blocks None give48 survivors. COMPLETE0.218826s classes,0.707122s middle domains,0.024729s blocks, each original30. Evidence /tmp/erdos85-sol1-review2600. Complete necessary quotient cover only, no graph/profile/global/Lean exclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-four-orbit-defect-commutator/pins.json",
+          "exists": true,
+          "sha256": "3e57a9c70b123de414ac84a2d7075b2c60ee8ab74db4125e4d8d052149568fc3",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2601,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T17:03:32.271Z",
+      "resolution": "PASS. Fresh accepted2600 and recursive hashes. Exact48 positive full-block sources covered. Independent bounded-integer tuple enumeration gives all weak-composition row domains satisfying degree and XQ target equations; complete Cartesian tests verify every symmetry/negative-defect rejection. Direct full10-orbit M square reconstructs E including all unequal-size factors; each retained pair matches all previously known blocks, row degrees, weighted symmetry and full commutation. Exactly one Q/Y pair per source,48 total. Necessity is the NR and RR blocks of E=J+8I-M^2 with known F; no unknown graph edges chosen. COMPLETE0.045654s original30. Evidence /tmp/erdos85-sol1-review2601. Necessary quotient domain only, no new exclusion or graph-existence/global/Lean claim; frozen2599 untouched.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-four-orbit-regular-quotient/pins.json",
+          "exists": true,
+          "sha256": "46c2ae700da76afb60bfc5bb9b6bdeb6644bf2958e7f632ee554e6e5b9ff08d4",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2602,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T17:07:28.809Z",
+      "resolution": "PASS WITH EXPLICIT PAPER ERRATUM /tmp/erdos85-sol1-review2602/ERRATUM.md: classes1/2 have ordinary Q diagonals1/3/1 and cross0-2 degree3, not uniform diagonal3/cross1 as PROOF.md states. Actual code/data use saved Q correctly; false sentence is not a premise. Fresh scoped2599/2600/2601 and hashes; all336 graph transports/48 Q transports verified, E_NR zero on ordinary regular orbits. Complete42768 origin tuples/3564 canonical tuples ->108 local choices; all18432 products ->36 packings. All108 local queries use actual saved Q, full candidates/inverse-closed subsets1044 rows, independent breadth-first exact-cover joins all empty. Thus all36 packings excluded and profile(0,3,3,4) impossible. COMPLETE0.005927s source,0.456923s domain,0.207011s packing,0.006677s local, each original30. Evidence /tmp/erdos85-sol1-review2602. No fullA4/global/Lean conclusion; frozen incidence untouched.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-four-orbit-attachment-cover/pins.json",
+          "exists": true,
+          "sha256": "85803c758846e1b481914ac81744204b1b6c26b4006e406f9ed675508b1df9fb",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2604,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T17:15:32.556Z",
+      "resolution": "PASS: fresh recursive pins; prior complete local-row audit reconstructs all3168 queries/505280 rows in11.720784s. Independent fixed graph reconstruction and full common-neighbor C4-free tests for every positive pair, explicit four-distinct-vertex cycle checks for6928 negative pairs, exact88448 pair domain: COMPLETE10.649825s original30. Exact all-row negative-pair filter and all3584 source configuration maps: COMPLETE0.463864s original30,152064 rows and2656 configurations across32 sources remain. Hashing/loading outside finite clocks. Evidence /tmp/erdos85-sol1-review2604/rows.py and pairs.py with result receipts. Necessary local reduction only; no full source excluded, global/Lean open.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-mixed-full-local-rows/pins.json",
+          "exists": true,
+          "sha256": "e7c5a3d4dd988da3ce406021b608c18306f10c5aaffa64ee347ee7795304c14d",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2605,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T17:17:07.794Z",
+      "resolution": "PASS: fresh2604 resolved acceptance and recursive pins. Independently reconstructed fixed F+B graph, exact2752 active queries from2656 prior configurations, complete135968 source-row index cover. Every negative cycle checked for four distinct vertices and all forced edges; every18560 surviving developed graph independently checked via complete common-neighbor wedge uniqueness. COMPLETE5.440826s original30, loading/hashing outside clock. Exact configuration map COMPLETE0.002458s ->160 across16 sources; other16 sources excluded. Evidence /tmp/erdos85-sol1-review2605/audit.py and row-results.json/outcome-results.json. Necessary local reduction, mixed A4/global/Lean remain open.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-mixed-developed-rows/pins.json",
+          "exists": true,
+          "sha256": "e40fa4fb5674786b5b2147a9000597baf194b03d922aa32fbd0492c88bba84a4",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2606,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T17:18:34.402Z",
+      "resolution": "PASS: fresh2548/2604/2605 acceptance and recursive pins. Independent endpoint-based reconstruction of complete undirected edge projections for6016 rows/all336 active queries; exact160 configuration cover. Recomputed every186976 Cartesian row-pair comparison, all saved compatibility tables, replayed800 supported-domain deletions and exact terminal sets. Independent simultaneous deletion from full domains empties every160 configuration in one round each. COMPLETE0.900627s original30; loading/hashing outside clock. Evidence /tmp/erdos85-sol1-review2606/audit.py and result.json. Excludes remaining mixed exceptional-twelve A4 case under accepted upstream covers. Full A4 composition remains separate; global/Lean open.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-a4-mixed-row-reciprocity/pins.json",
+          "exists": true,
+          "sha256": "c1c826ef68b75e2812359a6418cd7a4877ee8ac76e688fd7c5d904f649c322e4",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2608,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T17:20:18.424Z",
+      "resolution": "PASS: fresh2245/2253/2257 and recursive pins. Paper action/fixed-matching/regular W6-R3 decomposition and free-pair injection audited. Independent group relations/subgroups, all internal inverse-closed subsets/C4 certificates, exact three free unordered-pair orbits, full cubic row-product D enumeration and count-vector B multiset enumeration. Complete103 B,13 C8 D/4 Q8 D; all1751 D/B verdicts reproduce258 C8 and78 Q8 necessary triples. COMPLETE0.025117s original30. Evidence /tmp/erdos85-sol1-review2608/audit.py, result.json, PROOF-AUDIT.md. Necessary subgroup-action cover only; neither group excluded/global/Lean open.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order-eight-unique-involution-cover/pins.json",
+          "exists": true,
+          "sha256": "d11dde3f2a3649957dba0095cce167f276001961ee07dc01ee0bc0be7be89c59",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2609,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T17:21:36.628Z",
+      "resolution": "PASS: fresh2245/2608 acceptance and recursive pins. Block equations DY=YD and ZB=BY follow from zero cross defect blocks and equal regular orbit sizes. Independent exact products all336 triples ->174; complete252 weak degree-five compositions independently generated by position multisets, all60 exact source-key row domains checked. Breadth-first exhaustive negative cover33 queries/755 leaves, direct symmetric full witness checks27 feasible queries. Exact174 source maps ->69 C8/21 Q8. COMPLETE0.518280s original30, loading/hashing outside clock. Evidence /tmp/erdos85-sol1-review2609/audit.py and result.json. Positive Z witnesses are not full Z domains; neither group/global/Lean excluded.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order-eight-residual-commutator/pins.json",
+          "exists": true,
+          "sha256": "f1c163e43983afe902bfbed6ab6f8dd2694d9914d44eee42b2257f9becb65fc2",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2611,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T17:23:28.905Z",
+      "resolution": "PASS: fresh2245/2608/2609 and recursive pins. Fixed-center orbit attachment counts, balanced B blocks, Z block sums and matching-partner Q block equations audited; QB=8J-BD is the zero WR defect block. Independent restricted-growth cover all106 partitions, exact90 sources/198 cached full domains, complete negative trees and positive witnesses ->31 C8/744 choices and4 Q8/9 choices. COMPLETE0.144810s original30. All-degree Q8 Cayley C4-free bound from accepted2608 checked. Full partner permutations and degree-five row compositions, exact QB/block/diagonal domains, breadth-first exhaustive symmetry trees reproduce73 negative leaves for all9 choices; COMPLETE0.009195s original30. No Q reaches optional Z test. Evidence /tmp/erdos85-sol1-review2611/audit.py and result receipts. Excludes any Q8 automorphism subgroup at N78 under the graph premises. C8/global/Lean remain open.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order-eight-center-partitions/pins.json",
+          "exists": true,
+          "sha256": "442113edacdbe17fb79752255c87bb5652d0e5bf3becf04ff745f241da36ab57",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2614,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T17:24:37.517Z",
+      "resolution": "SCOPED PASS: standalone center-fiber lemma and exact saved-file filter only. Fresh2245/2608 acceptance and packet/source hashes. Independent complete16 inverse-closed subsets; developed each with actual center-star attachments for m1/2/4 and full common-neighbor C4 tests, yielding empty/{4} for m1/2 and additionally +/-1,+/-3 for m4. Equivariant map x modulo m proves the attachment model and repeated-residue C4 necessity. Exact469 saved-file records1909->1281,119 positive records preserved. COMPLETE0.002968s original30. Evidence /tmp/erdos85-sol1-review2614/audit.py and result.json. This does not independently accept2612 partial source cover, completeness of its469 records, or UNKNOWN/UNVISITED work; those remain unaudited/frozen. Standalone lemma may support subsequent fresh stronger domains; no C8/global/Lean exclusion.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-c8-center-fiber-lemma/pins.json",
+          "exists": true,
+          "sha256": "43294eafd138a763ad44b190ba34fc8c5dc12996267052cfdca652193c020d7c",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2616,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T17:25:47.929Z",
+      "resolution": "PASS: fresh2608/2611 and recursive pins. Independent inverse-closed internal sets and all cross subsets, full9344 Cartesian cover; rebuilt all24-vertex cubic graphs by endpoint difference membership. All6528 positive connection sets checked via unique wedge endpoint pairs; every negative explicit common-neighbor certificate checked. Exactly quotient6 D=J3 empty512 negatives. Antipodal-matchings plus cross matching give direct C4 for any shift. Exact complete2611 source projection31->30 triples,744->738 partitions. COMPLETE0.961041s original30, loading/hashing outside clock. Evidence /tmp/erdos85-sol1-review2616/audit.py and result.json. Positive induced graphs are full local domains, not full graph extensions. Capped producers unused; C8/global/Lean open.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-c8-residual-induced/pins.json",
+          "exists": true,
+          "sha256": "1402eb612ef93374dad185b34790f4acf8adbe419b033d6a91a06c668a486a5b",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2618,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T17:27:25.854Z",
+      "resolution": "PASS: fresh2608/2611/2616 and recursive pins. Exact6528 origin transports onto all102 representatives checked; normalization need not be canonical for cover. Full1020 source/representative/incidence queries and complete normalized subset products independently reconstructed. All10638 positives rebuilt and checked via wedge uniqueness,28020 negative endpoint witnesses checked on independently developed32-vertex graphs. Exact complete2611 source map ->30 sources/210 source-representative cases/738 partitions. COMPLETE1.255012s original30, loading/hashing outside clock. Evidence /tmp/erdos85-sol1-review2618/audit.py and result.json. All positive local attachment sets retained; simultaneous six-W compatibility still unproved here. Capped searches unused; C8/global/Lean open.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-c8-residual-w-stars/pins.json",
+          "exists": true,
+          "sha256": "55f47d2fbbd940dc500b474b752f266ee25b680de883c8f1caef91606d155dd5",
+          "kind": "file"
+        }
+      ]
+    },
+    {
+      "id": 2619,
+      "status": "resolved",
+      "resolved_by": "codex-sol-1",
+      "resolved_ts": "2026-09-11T17:29:14.619Z",
+      "resolution": "PASS: fresh2618 acceptance and recursive pins. Independent ordinary-set reconstruction of all10638 attachment pair sets, exact grouped-mask/source cover. Full210 source-representative cases; breadth-first exhaustive negative domains36 cases/448416 leaves and every saved empty prefix checked. All174 positive witnesses independently developed as72-vertex R+W graphs, degrees9 on R/3 on W and full C4-free wedge uniqueness verified. Exact source map30->24,738->102 partitions. COMPLETE2.455148s original30, loading/hashing outside clock. Evidence /tmp/erdos85-sol1-review2619/audit.py and result.json. Positive packings are witnesses only, not full joint domains; no W-W/F extension claim, capped producers unused, C8/global/Lean open.",
+      "source_artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-c8-six-w-pair-packing/pins.json",
+          "exists": true,
+          "sha256": "9f80f8079a5ed7792e3d7509df593a8d9172824b240fc22d0cda6fc1b4a12ccb",
+          "kind": "file"
+        }
+      ]
+    },
+    {
       "id": 2627,
       "status": "resolved",
       "resolved_by": "codex-sol-2",
@@ -746,17 +1660,35 @@
       ]
     },
     {
-      "id": 2214,
+      "id": 2628,
       "status": "resolved",
       "resolved_by": "codex-sol-2",
-      "resolved_ts": "2026-09-11T05:04:02.738Z",
-      "resolution": "PASS FULL N80/F5 subcase (paper/computational). Independent matrix input matches118 words/all capacities/edges. Row-necessity and inductive simultaneous-removal proof audited. Different recursive multiplicity enumeration exits0,.0063s/12221states, exact six removal sets35/12/20/30/20/1, empty fixed point under60s cap. All predecessor reviews/pins verified; exact disjoint1284 partition708+516+58+1+1, no uncovered case. Thus order3 atN80 must fix2 vertices using2176. No Lean/globalN80/Erdos85 closure. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2214.",
+      "resolved_ts": "2026-09-11T17:25:45.269Z",
+      "resolution": "PASS offline decoder algorithm at pinned source. Independent complete3087 small graph/degree/action cases n2..5 all dividing m, direct distinct-quadruple C4 oracle;1021 accepted, exact recovered edges. Existing accepted N48 adjacency reproduced168 edges;5 author malformed-model/map/pin/C4 regressions PASS. CNF/model/orbit/degree/action logic audited. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2628. Future terminal witnesses still require independent artifact+graph validation; no solver launch or UNSAT certification.",
       "source_artifacts": [
         {
-          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-order3-local-row-propagation/pins.json",
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/decode_witness.py",
           "exists": true,
-          "kind": "file",
-          "sha256": "a02d25329013a93b0c92deaf2c0f0e14b106dbf37ac3609b866863697d25408a"
+          "sha256": "97f07da0c0bf7c50a8bce87370b617f6ab0296b2318232d39a4109f1a8421d99",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/test_decode_witness.py",
+          "exists": true,
+          "sha256": "ba868d313f8eb9273445bfdcddbe8b344a8dbf7e95ed4aa77b67e46374f60b53",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/decoder-test-results.txt",
+          "exists": true,
+          "sha256": "aaece34f39fd5b256774fc8e9064d21de613a5cd37a3bd08fa5a92f0558c4d48",
+          "kind": "file"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/decoder-control48-check/verification.json",
+          "exists": true,
+          "sha256": "5db210d4d319a1ebffc3927abc577a9ddfe4cd6e8eb51e3de3d7aee5dcd558b7",
+          "kind": "file"
         }
       ]
     }
@@ -766,149 +1698,149 @@
   "n80_order3_fixed_vertices": 2,
   "additional_review_states_not_used_to_strengthen_global_bound": [
     {
-      "id": 2591,
-      "status": "resolved",
-      "resolved_ts": "2026-09-11T16:49:26.468Z",
-      "resolution": "PASS. Fresh2489/2257 and recursive packet/input hashes. Independent closure of two3-cycles reconstructs A4 and full coset-set actions. Perfect matchings enumerated as fixed-point-free involutive permutations give15 total/7 invariant seeds; all developments are equivariant perfect matchings with exact fixed-fiber restrictions. Every pair stabilizer and full18 edge-orbit partition checked,9 optional; within free12/cross free24. Triangle-leaf automorphisms obtained from all core permutations prove no free involution. The other V4 involution acts freely on Fix(s), forcing matching. Unique common middle in a regular orbit makes its generated endpoint pairs distinct and free;12 choose(m,2)<=12 forces m<=2, and at most one regular orbit may attain2. COMPLETE0.001145s original30. Evidence /tmp/erdos85-sol1-review2591. Necessary foundation only, no A4 profile/fullgroup/global/Lean exclusion."
-    },
-    {
-      "id": 2592,
-      "status": "resolved",
-      "resolved_ts": "2026-09-11T16:51:14.783Z",
-      "resolution": "PASS. Fresh accepted2591 and recursive hashes. Full3584 induced masks checked, only seven forced matchings remain. Independent row construction by doubled-coordinate/one-position choices gives all35 multiplicity rows; all300125 tuples and exact capacity/defect certificates reproduce1680 survivors with D=2J-I and E_NR=0. All1680 explicit row/column transports verified, independent canonical keys give exactly2 incidence classes. Full weak compositions independently enumerated as bounded integer tuples; complete Cartesian symmetric joins reproduce6/4 regular-defect quotients, without relying on producer recursion. mY=Dm follows the NR commutation block with E_NR=0; no regular adjacency assumption enters. COMPLETE0.041179s induced,0.415486s incidence,0.018892s quotient, each original30. Evidence /tmp/erdos85-sol1-review2592. Complete necessary domains only; no profile exclusion, graph-existence/global/Lean claim."
-    },
-    {
-      "id": 2593,
-      "status": "resolved",
-      "resolved_ts": "2026-09-11T16:52:43.140Z",
-      "resolution": "PASS. Fresh accepted2592 and recursive hashes. All1680 source transports reconstruct actual matching H with the same row permutation as m, yielding exactly8 pair classes with saved multiplicities. Independent stars-and-bars complete composition domains and full Cartesian symmetry joins reproduce empty classes3/6 and24 total Q matrices. Direct entire8-orbit adjacency quotient square verifies all implied Y entries, D and zero cross-defect blocks, then matches against the complete source Y lists;12 pairs survive. Full8-orbit commutation checked on every surviving pair. Exactly720 labelled sources excluded and960 remain. COMPLETE0.023474s original30. Evidence /tmp/erdos85-sol1-review2593. Necessary quotient reduction only; no full A4 profile or graph-existence/global/Lean conclusion."
-    },
-    {
-      "id": 2595,
-      "status": "resolved",
-      "resolved_ts": "2026-09-11T16:55:37.000Z",
-      "resolution": "PASS. Fresh2591/2592/2593 and recursive hashes. Full matching-H compatibility covers10 cases; all37 domains/2475 raw tuples partition into248 group orbits, all developed C4 and pair-use checks give67 positives. Full160 packing products give80 pair-disjoint packings. Complete160 packed/Q cases and544 local queries checked: exact support/matching coverage, full candidates and35840 per-orbit subset rows. Independent breadth-first negative-prefix cover verifies every saved negative leaf; every positive witness directly covers the18-vertex target without overlap. Exactly80 negative/80 locally feasible cases. E_NR=0 and common-middle uniqueness justify the exact-cover necessity; right-translation normalization independently preserves each regular left action. COMPLETE0.010686s attachments,0.001022s packing,0.128346s local audit, each original30. Evidence /tmp/erdos85-sol1-review2595. Positive witnesses remain local existence only, never full future row domains. No profile/global/Lean exclusion."
-    },
-    {
-      "id": 2597,
-      "status": "resolved",
-      "resolved_ts": "2026-09-11T16:57:25.932Z",
-      "resolution": "PASS. Fresh accepted2595 and recursive hashes. Independent breadth-first full row-domain enumeration verifies400 queries/all20096 exact-cover rows and all terminal prefixes; no prior positive witness substituted for domain. Group permutation multiplication independently confirms left development a->ab. Every row checked for internal inverse closure, then every saved C4 certified in its actually developed78-vertex forced partial graph;1056 positives independently C4-free. Complete80 outcome/400 query source coverage shows each outcome has at least one empty admissible-row domain. COMPLETE0.085719s row and0.225275s star audits, each original30. Evidence /tmp/erdos85-sol1-review2597/audit.py and result.json. Profile (0,3,0,5) excluded under accepted premises. No simultaneous fullgraph solver, otherA4/fullgroup/global/Lean exclusion."
-    },
-    {
-      "id": 2599,
-      "status": "resolved",
-      "resolved_ts": "2026-09-11T16:59:05.943Z",
-      "resolution": "SCOPED PASS: complete induced structural cover only. Fresh2489/2207/2591 and recursive payload hashes. Independent group pair-orbit sets and all512 BB masks,3584 TT masks,64 BT masks verify B independent, T one of7 forced matchings, and7 complete local BT choices. All2401 combined cases and explicit C4/degree evidence checked;973 induced graphs remain. COMPLETE0.054229s original30, evidence /tmp/erdos85-sol1-review2599/induced.py. Authoritative incidence summary is INCOMPLETE at30.000005s and remains frozen. I have NOT audited its2782074 partial terminal certificates or adopted any incidence exclusion/survivor-domain conclusion. Downstream use is limited to the complete induced results.json stage, as #2600 states. No profile/global/Lean exclusion."
-    },
-    {
-      "id": 2600,
-      "status": "resolved",
-      "resolved_ts": "2026-09-11T17:02:12.622Z",
-      "resolution": "PASS. Fresh scoped2599 complete induced cover and recursive hashes; frozen incidence never used. Independent ordered-middle reconstruction and all36 transports cover973 graphs ->10(H,C) classes. Complete B binary rows, seven-target/zero defect-location domains, direct known-block BB commutation and full doubled-position T row construction reproduce384 configurations in classes3/9 only. All cross/diagonal defect numerators, divisibility, degree and Cartesian certificates checked. Natural B pairs nonfree and C3 stabilizers free on T verified directly, justifying B multiplicity<=1 and concentrated residual defect targets with reverse degrees2/1. All384 have E_TR=0; known10-orbit top6 products with unknown regular blocks None give48 survivors. COMPLETE0.218826s classes,0.707122s middle domains,0.024729s blocks, each original30. Evidence /tmp/erdos85-sol1-review2600. Complete necessary quotient cover only, no graph/profile/global/Lean exclusion."
-    },
-    {
-      "id": 2601,
+      "id": 2587,
       "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     },
     {
-      "id": 2602,
+      "id": 2590,
       "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     },
     {
-      "id": 2604,
+      "id": 2594,
       "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     },
     {
-      "id": 2605,
+      "id": 2596,
       "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     },
     {
-      "id": 2606,
+      "id": 2598,
       "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     },
     {
-      "id": 2608,
+      "id": 2603,
       "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     },
     {
-      "id": 2609,
+      "id": 2607,
       "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     },
     {
-      "id": 2611,
+      "id": 2610,
       "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     },
     {
-      "id": 2614,
+      "id": 2612,
       "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     },
     {
-      "id": 2616,
+      "id": 2613,
       "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     },
     {
-      "id": 2618,
+      "id": 2615,
       "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     },
     {
-      "id": 2619,
+      "id": 2617,
       "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     },
     {
       "id": 2620,
+      "status": "claimed",
+      "resolved_by": null,
+      "resolved_ts": null,
+      "resolution": null
+    },
+    {
+      "id": 2621,
       "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     },
     {
       "id": 2622,
       "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     },
     {
       "id": 2623,
       "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     },
     {
       "id": 2624,
       "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     },
     {
       "id": 2625,
       "status": "pending",
+      "resolved_by": null,
+      "resolved_ts": null,
+      "resolution": null
+    },
+    {
+      "id": 2626,
+      "status": "pending",
+      "resolved_by": null,
+      "resolved_ts": null,
+      "resolution": null
+    },
+    {
+      "id": 2629,
+      "status": "pending",
+      "resolved_by": null,
       "resolved_ts": null,
       "resolution": null
     }
   ],
-  "additional_review_state_scope": "Includes accepted component results and pending reviews; none is treated here as an accepted full A4, C8 or Q8 exclusion."
+  "additional_review_state_scope": "Pending or unaccepted at cutoff; not used for mathematical conclusions. Accepted SCOPED PASS records retain their exact restricted resolution.",
+  "acceptance_cutoff_utc": "2026-09-11T17:30:00.000Z",
+  "n78_accepted_subgroup_exclusions": [
+    "Q8"
+  ]
 }

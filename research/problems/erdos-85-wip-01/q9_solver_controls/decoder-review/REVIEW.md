@@ -1,0 +1,7 @@
+# Independent decoder review2628
+
+PASS for the offline CNF/model and graph validation algorithm at the pinned source hash. The decoder binds CNF, metadata and log to the terminal receipt, verifies a complete consistent model and every clause, independently reconstructs every translation orbit and the complete simple-pair partition, and directly checks minimum degree and C4-freeness. The N63/d8 special check requires regularity. New terminal artifacts still require independent witness validation; this review is not advance acceptance of future solver outputs or any UNSAT proof.
+
+An independently written complete small-graph audit tested3087 graph/degree/action cases for n=2 through5 and every dividing translation order, with1021 accepted cases. The oracle enumerates distinct vertex quadruples to detect cycles, independently of the decoder common-neighbor criterion. Every selected edge set is recovered exactly. The accepted N48 adjacency is reproduced exactly with168 edges. All five author regression tests also pass, covering malformed models, pin failures, missing/duplicated map pairs, degree failure and a satisfying CNF assignment whose graph contains C4.
+
+The review launched no solver and changed no campaign ledger. The decoder validates witnesses directly and does not certify the provenance of a terminal receipt or turn proof-OFF UNSAT into a certificate. Campaign parameter/launch authorization remains the runner's responsibility.

@@ -1,7 +1,7 @@
 # Q9 existence decision experiment — 2026-09-11
 
 IN PROGRESS. Owner of solver ledger: codex-sol-3. Operator scope: squad board39,
-amended by editor messages50462/50463. As of2026-09-11 16:57 UTC, N80/m10
+amended by editor messages50462/50463. At the2026-09-11 17:30 UTC snapshot, N80/m10
 and N80/m8 are RUNNING in the two host solver slots. Local kissat; proof logging
 OFF. No q9 verdict or graph witness has been reported.
 
@@ -183,45 +183,72 @@ part of the excluded branch, not an open case. Foundational evidence remains
 in [the fixed-count proof](../q9_order3_fixed_counts/STATUS.md) and
 [the residual form](../q9_order3_tight_normal_form/STATUS.md).
 
-### Accepted N78 automorphism bound — snapshot 2026-09-11 16:50 UTC
+### Accepted N78 symmetry results — cutoff 2026-09-11 17:30 UTC
 
 The [accepted review snapshot](symmetry-accepted-snapshot-20260911.json)
-records exact PASS scopes, review timestamps and hashes of the referenced
-artifacts. It separates in-flight reviews from the accepted global bound.
+records exact acceptance timestamps, scopes and source-artifact hashes.
+Pending reviews and explicitly scoped partial results are preserved separately;
+UNKNOWN and unvisited cases supply no exhaustive exclusions.
 
-Review2487 PASS strengthens the earlier review2408 bound: every hypothetical
-N78/minimum-degree9 witness has full automorphism-group order in
-**{1,2,3,4,6,8,12}**, hence at most12. This is a list of possible orders,
-not a divisibility-by12 statement. Review2408 supplies the order48 exclusion
-and preceding global order cover; review2487 excludes the full order16 case
-through the accepted fixed-center action, kernel and residual branches
-(2447,2438,2450,2479,2482,2477,2481,2484,2485 and their premise chains).
-Its independent assembly audit is at `/tmp/erdos85-sol1-review2487`.
+Review2487 excludes full order16, using the accepted fixed-center action,
+kernel and residual chains2447/2438/2450/2479/2482/2477/2481/2484/2485.
+Together with2408, this gives the full-group order cover1,2,3,4,6,8,12.
+For full order12,2489/2494 give C12, Dic12, C3×V4, S3×C2 or A4.
+Review2555 excludes C12/Dic12,2544 excludes C3×V4, and2627 excludes
+S3×C2 through all fourteen profiles2553/2572/2577/2579/2583/2586/2588/2589.
 
-For the possible **full group of order12**, reviews2489/2494 give the group
-cover. Accepted2544 excludes C3×V4; accepted2555 excludes C12 and Dic12.
-Their scopes are full automorphism groups of these types, not unrestricted
-N78 nonexistence. Accepted2627 now excludes full S3×C2: its independently audited composition
-covers all fourteen profiles, using2553/2572/2577/2579/2583/2586/2588/2589.
-The audit is at `/Users/rwalters/lean-genius-q9-known-values-20260911/review-2627`.
-Only A4 remains among the full order12 group types; its closure is pending,
-so the accepted bound stays12. Review2544's assembly audit is at
-`/tmp/erdos85-sol1-review2544`; review2555's is at
-`/tmp/erdos85-sol1-cyclic-composition-audit`.
+The final A4/order12 composition2629 was not accepted by the cutoff.
+Consequently the frozen accepted full-group order cover remains
+**{1,2,3,4,6,8,12}, hence at most12**. Accepted A4 components are recorded
+with their exact scopes; they do not independently promote this snapshot's
+global bound without acceptance of the exhaustive composition.
 
-The terminal C8 subgroup packet2622, Q8 subgroup packet2611, and subsequent
-C4×C2 branch packets have **not been accepted** at this snapshot and are not
-used to strengthen the bound. The order12 composition likewise awaits its
-remaining reviews. Per editor messages50462/50463, new symmetry work stops;
-the accepted snapshot will be refreshed at the17:30 UTC cutoff as pending
-reviews finish. Every exclusion above is a reviewed paper/computational
-result; it is not presented as a Lean theorem or SAT UNSAT certificate.
-Asymmetric graphs and the surviving symmetry classes remain open. These
-restrictions alone do not establish that the order49 example is sporadic.
+Review2611 separately excludes any Q8 automorphism subgroup, through
+2245/2608/2609 and its complete106 center partitions and nine Q8 quotient
+choices. This is a subgroup exclusion, stronger than merely excluding
+fullAut=Q8. Positive C8 necessary-domain witnesses in that packet do not
+exclude C8.
+
+The terminal C8 packet2622 was not accepted at the cutoff and supplies no exclusion here.
+
+Per editor50462/50463, this symmetry programme is frozen at the cutoff;
+no new exclusion lane or capped retry is opened. These are reviewed paper
+and computational results, not Lean theorems or proof-logged SAT certificates.
+Asymmetric graphs, surviving symmetry classes and unrestricted N78/N80
+existence remain open. No conclusion that49 is sporadic follows.
+
+### Frozen N80 cubic-fixed involution class0 LP frontier
+
+The accepted class0 chain ends at2585: among91 remaining arrangement
+models,12 exact contradictions leave79 rational feasible necessary models
+across all12 surviving support roots. Rational feasibility is not a graph
+witness. No entire class0 or surviving support root is excluded by this step.
+
+The chain is2515/2518/2539,2542/2543/2546,2550,2556,2558,2561,2563,
+2566,2568,2570,2576 (also2231),2578,2581,2582,2585. It includes exact
+source coverage, retained old constraints, necessary strengthened rows,
+full local domains and independently checked rational/Farkas certificates.
+Review2585 checks all25116 joint matrix choices and18652 forbidden weights;
+its12 contradictions and79 feasible certificates are exact. Earlier saved
+UNKNOWN receipts are preserved; exact later certificate recovery does not
+resume those capped producers. Subsequent packets2587 onward were pending
+at the cutoff and supply no additional accepted exclusion here.
 
 The [amended launch archive](amended-launch/README.md) contains the exact
 runner/controller source, authorization, independent policy audit, input copies
 and timestamped live process/ledger snapshot. This snapshot is not a verdict.
+
+The [independent encoding audit](../q9_encoding_audit_claude/README.md)
+covers all ten scheduled q9 inputs and both N48/N63-m7 controls. It checks
+orbit maps, functional auxiliary gates and constraint semantics, with zero
+observed mismatches. Its17 package files, including13 logs, were independently
+verified against the published hash manifest. Encoding validation does not
+turn a proof-OFF UNSAT report into a nonexistence certificate.
+
+Independent review2628 accepts the [offline witness decoder](decoder-review/REVIEW.md):
+3087 small graph/degree/action cases agree with a separate cycle oracle,
+and the accepted N48 adjacency is reproduced exactly. Each future SAT
+artifact still requires independent model and graph validation.
 
 ## Current verdict
 

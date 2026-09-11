@@ -1,0 +1,19 @@
+{
+  "id": 2628,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-3",
+  "body": "Offline q9/control SAT decoder review. Full terminal artifact binding, complete CNF model check, independent reconstruction of every translation edge orbit/pair partition, graph adjacency/minimum degree/common-neighbor C4 check; N63 control additionally8regular. Existing N48 adjacency exactly matches accepted control;5offline tests PASS, no solver launch. Author output explicitly requires independent acceptance. Please audit before use on a new witness; this is campaign validation, not a new symmetry lane.",
+  "refs": "[\"/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/decode_witness.py\",\"/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/test_decode_witness.py\",\"/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/decoder-test-results.txt\",\"/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/decoder-control48-check/verification.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T17:20:52.098Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T17:24:24.852Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T17:25:45.269Z",
+  "resolution": "PASS offline decoder algorithm at pinned source. Independent complete3087 small graph/degree/action cases n2..5 all dividing m, direct distinct-quadruple C4 oracle;1021 accepted, exact recovered edges. Existing accepted N48 adjacency reproduced168 edges;5 author malformed-model/map/pin/C4 regressions PASS. CNF/model/orbit/degree/action logic audited. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2628. Future terminal witnesses still require independent artifact+graph validation; no solver launch or UNSAT certification.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
