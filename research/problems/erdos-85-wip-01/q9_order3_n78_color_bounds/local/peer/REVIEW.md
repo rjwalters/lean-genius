@@ -1,0 +1,5 @@
+# Review2210 — PASS paper and complete local counts
+
+Verified all five source pins. The all-nonzero triple-word obstruction follows from accepted2206: b222 forces the two other incoming labels to be0 and the current label, since the internal contribution is the other nonzero label. Therefore the undirected graph of matched current labels on the three centres is1regular, impossible by handshake parity. Inverse permutations justify undirectedness.
+
+Independently reconstructed all pair and neighbor capacities using3x3 matrix multiplication and checked all5832 assignment-word records, including every B matrix and multiplicity upper bound. Exact coverage216 assignments times27 distinct words. Counts for bound3 are56/96/48/0 by nonzero-coordinate count;108 assignments have none. Independent runtime0.06seconds approximately; no graph or quotient search and no capped-domain replay. The bounds are necessary upper bounds, not claimed realizable multiplicities. No assignment or fixed-count case exclusion follows.

@@ -1,0 +1,52 @@
+{
+  "status": "PASS",
+  "source_pins": {
+    "PROOF.md": "94413d2aff48d6478550993cfee39aa84a0094e61b8dc9ad4bafd653bb5dd52a",
+    "audit.py": "1b5e6c4f9b86fc6a76b56c114f8ff271bccc8b176d65e984ef2040c6573ffe04",
+    "premise.json": "9c203505848cd16a238f340aa89360d6d10e2dd83d7d082dade42aba0978a0fa",
+    "arithmetic.json": "44d52d40568e6d5c4674030516e91ed7de24193adc06fbd747f038f02165e159"
+  },
+  "row_profiles_singles_doubles": [
+    [
+      4,
+      1
+    ],
+    [
+      6,
+      0
+    ]
+  ],
+  "balanced_margins": [
+    {
+      "b": [
+        2,
+        2,
+        2
+      ],
+      "double_allocations": [
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          2,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ]
+    }
+  ],
+  "multiplicity_bound": 3,
+  "attached_total_walks": 23
+}

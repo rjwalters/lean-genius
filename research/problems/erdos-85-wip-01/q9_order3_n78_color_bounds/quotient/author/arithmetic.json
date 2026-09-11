@@ -1,0 +1,24 @@
+{
+  "status": "PASS_SMALL_ARITHMETIC",
+  "candidate_b_vectors": 10,
+  "valid_triple_b": [
+    [
+      2,
+      2,
+      2
+    ]
+  ],
+  "row_multiplicity_profiles": [
+    {
+      "singles": 6,
+      "doubles": 0,
+      "norm": 6
+    },
+    {
+      "singles": 4,
+      "doubles": 1,
+      "norm": 8
+    }
+  ],
+  "scope": "paper arithmetic only; no graph search"
+}
