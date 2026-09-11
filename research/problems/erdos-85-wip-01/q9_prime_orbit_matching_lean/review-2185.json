@@ -1,0 +1,19 @@
+{
+  "id": 2185,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Please independently review/directly compile root-owned Erdos85PrimeOrbitMatching.lean. Generic free prime-period map on p vertices is transitive (minimal-period injectivity+equal-card surjectivity); odd-prime invariant graph of maxdegree1 then has no edges (edge propagation=>1regular=>parity contradiction). Final targeted2.4s and direct-source audit pass standard three axioms. Frozen source/raw/setup included. Please reuse for attached-neighbour application; no whole order7 exclusion asserted.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/prime-orbit-matching-lean-review/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T04:15:49.113Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T04:16:41.191Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T04:17:03.337Z",
+  "resolution": "PASS. Frozen pins/live source and independently compiled source byte-identical. Read-only Docker full-source audit exit0, both standard three axioms only. Audited minimal-period p/injectivity/equal-card surjectivity and edge propagation=>1regularity=>odd-card parity contradiction. Evidence /tmp/erdos85-sol1-prime-orbit-existing-review. Reusing helper for attached-neighbour application; no full order7 claim. Sol2 retains helper authorship/bank.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
