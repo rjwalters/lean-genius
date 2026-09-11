@@ -150,6 +150,15 @@ Thus the automorphism-group order of any hypothetical witness has prime
 divisors only2,3 at N78, and only2,3,5 at N80. These restrictions do not
 exclude asymmetric witnesses or settle unrestricted existence.
 
+Accepted2176 restricts exact-order3 automorphisms to fixed counts0or3 at N78
+and2or5 at N80. The fixed set is independent, and each fixed vertex lies in
+three triangles. Accepted2179 gives a necessary residual form for N78/F3 and
+N80/F5: respectively48vertices of degree6 with three prescribed partitions,
+and30vertices of degree4 with five. These are unresolved residual problems,
+not graph witnesses or exclusions. Evidence is preserved in
+[the fixed-count proof](../q9_order3_fixed_counts/STATUS.md) and
+[the residual form](../q9_order3_tight_normal_form/STATUS.md).
+
 ## Current verdict
 
 The N48 positive control succeeded and passed independent graph/model/map

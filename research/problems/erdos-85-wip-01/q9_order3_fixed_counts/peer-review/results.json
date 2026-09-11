@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "orders": {
+    "78": {
+      "initial_profiles": 14,
+      "final_fixed_counts": [
+        0,
+        3
+      ],
+      "unmatched_neighbours": {
+        "3": [
+          3
+        ]
+      }
+    },
+    "80": {
+      "initial_profiles": 16,
+      "final_fixed_counts": [
+        2,
+        5
+      ],
+      "unmatched_neighbours": {
+        "2": [
+          3
+        ],
+        "5": [
+          3
+        ]
+      }
+    }
+  }
+}

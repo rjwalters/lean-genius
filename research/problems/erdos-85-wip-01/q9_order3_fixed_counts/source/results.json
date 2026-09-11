@@ -1,0 +1,363 @@
+{
+  "status": "PASS_ARITHMETIC",
+  "orders": {
+    "78": {
+      "initial_profiles": [
+        {
+          "fixed": 0,
+          "degree_counts": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 3,
+          "degree_counts": [
+            3,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 6,
+          "degree_counts": [
+            2,
+            4,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 6,
+          "degree_counts": [
+            4,
+            2,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 6,
+          "degree_counts": [
+            6,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 9,
+          "degree_counts": [
+            1,
+            8,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 9,
+          "degree_counts": [
+            2,
+            6,
+            1,
+            0
+          ]
+        },
+        {
+          "fixed": 9,
+          "degree_counts": [
+            3,
+            6,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 9,
+          "degree_counts": [
+            4,
+            4,
+            1,
+            0
+          ]
+        },
+        {
+          "fixed": 9,
+          "degree_counts": [
+            5,
+            2,
+            2,
+            0
+          ]
+        },
+        {
+          "fixed": 9,
+          "degree_counts": [
+            5,
+            4,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 9,
+          "degree_counts": [
+            6,
+            2,
+            1,
+            0
+          ]
+        },
+        {
+          "fixed": 9,
+          "degree_counts": [
+            7,
+            0,
+            2,
+            0
+          ]
+        },
+        {
+          "fixed": 12,
+          "degree_counts": [
+            0,
+            10,
+            2,
+            0
+          ]
+        }
+      ],
+      "cauchy_excluded": [
+        {
+          "fixed": 15,
+          "degree_sum_lower": 72,
+          "cauchy_excess": 954
+        },
+        {
+          "fixed": 18,
+          "degree_sum_lower": 102,
+          "cauchy_excess": 3060
+        },
+        {
+          "fixed": 21,
+          "degree_sum_lower": 132,
+          "cauchy_excess": 5832
+        }
+      ],
+      "after_cubic_lemma": [
+        {
+          "fixed": 0,
+          "nonisolated": 0
+        },
+        {
+          "fixed": 3,
+          "nonisolated": 0
+        },
+        {
+          "fixed": 6,
+          "nonisolated": 0
+        }
+      ],
+      "final_fixed_counts": [
+        0,
+        3
+      ]
+    },
+    "80": {
+      "initial_profiles": [
+        {
+          "fixed": 2,
+          "degree_counts": [
+            2,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 5,
+          "degree_counts": [
+            3,
+            2,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 5,
+          "degree_counts": [
+            5,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 8,
+          "degree_counts": [
+            0,
+            8,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 8,
+          "degree_counts": [
+            2,
+            6,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 8,
+          "degree_counts": [
+            3,
+            4,
+            1,
+            0
+          ]
+        },
+        {
+          "fixed": 8,
+          "degree_counts": [
+            4,
+            4,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 8,
+          "degree_counts": [
+            5,
+            2,
+            1,
+            0
+          ]
+        },
+        {
+          "fixed": 8,
+          "degree_counts": [
+            6,
+            2,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 8,
+          "degree_counts": [
+            7,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "fixed": 8,
+          "degree_counts": [
+            8,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 11,
+          "degree_counts": [
+            0,
+            10,
+            1,
+            0
+          ]
+        },
+        {
+          "fixed": 11,
+          "degree_counts": [
+            1,
+            8,
+            2,
+            0
+          ]
+        },
+        {
+          "fixed": 11,
+          "degree_counts": [
+            1,
+            10,
+            0,
+            0
+          ]
+        },
+        {
+          "fixed": 11,
+          "degree_counts": [
+            2,
+            8,
+            1,
+            0
+          ]
+        },
+        {
+          "fixed": 11,
+          "degree_counts": [
+            3,
+            6,
+            2,
+            0
+          ]
+        }
+      ],
+      "cauchy_excluded": [
+        {
+          "fixed": 14,
+          "degree_sum_lower": 60,
+          "cauchy_excess": 212
+        },
+        {
+          "fixed": 17,
+          "degree_sum_lower": 90,
+          "cauchy_excess": 1946
+        },
+        {
+          "fixed": 20,
+          "degree_sum_lower": 120,
+          "cauchy_excess": 4400
+        },
+        {
+          "fixed": 23,
+          "degree_sum_lower": 150,
+          "cauchy_excess": 7412
+        }
+      ],
+      "after_cubic_lemma": [
+        {
+          "fixed": 2,
+          "nonisolated": 0
+        },
+        {
+          "fixed": 5,
+          "nonisolated": 0
+        },
+        {
+          "fixed": 8,
+          "nonisolated": 0
+        },
+        {
+          "fixed": 11,
+          "nonisolated": 10
+        }
+      ],
+      "final_fixed_counts": [
+        2,
+        5
+      ]
+    }
+  },
+  "scope": "Finite necessary profile reductions; graph lemmas supplied by PROOF.md; no search/witness/exclusion of remaining cases."
+}
