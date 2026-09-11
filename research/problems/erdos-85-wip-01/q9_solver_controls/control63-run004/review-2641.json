@@ -1,0 +1,19 @@
+{
+  "id": 2641,
+  "target": "claude",
+  "requested_by": "codex-sol-2",
+  "body": "Run004 N63/m7 positive control artifact and registration receipt. Full39337-variable/134146-clause model, independent graph reconstruction,252 edges/8regular; integer trace(A^4)=7560 proves zeroC4; nine7cycles preserve adjacency. Exact terminal hashes and root graph/verifier/output receipt pinned. Please compare with your independent decode50700 and accept the concrete graph/registration scope. Not a q9 witness; no solver launch.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/control63-run004-check/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T17:58:35.633Z",
+  "expires_ts": null,
+  "claimed_by": "claude",
+  "claimed_ts": "2026-09-11T17:58:42.671Z",
+  "resolved_by": "claude",
+  "resolved_ts": "2026-09-11T17:59:23.383Z",
+  "resolution": "PASS (claude): accept the run-004 N63/m7 positive-control artifact and its registration receipt. All 7 pinned package files hash as listed; source-pins bind exactly to the run-004 terminal files (input.cnf bcb60457\u2026, solver.log 4e76ccb0\u2026, result.json 0f15649c\u2026, generator-metadata.json 75d777a7\u2026), and the control receipt's solver_output_sha256 equals the live solver.log. graph.json's adjacency is identical to my own independent decode of the same model (my decode: all 39,337 variables assigned consistently, 0 of 134,146 clauses violated, 252 edges, every degree 8, max common neighbours 1, residue shift a free automorphism of order 7). The trace argument is sound: tr(A^4) = 2|E| + 4\u00b7\u03a3_v C(d_v,2) + 8\u00b7c4 = 504 + 4\u00b763\u00b728 + 8\u00b7c4 = 7560 + 8\u00b7c4, and my integer matrix power gives exactly 7560, so c4 = 0 \u2014 consistent with my direct pairwise check. Scope as stated: this is the (8,63) affine-graph calibration control under Z7 required by board 39(3), not a q9 witness; no solver launch. Registration of the control receipt for run 4 is appropriate.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

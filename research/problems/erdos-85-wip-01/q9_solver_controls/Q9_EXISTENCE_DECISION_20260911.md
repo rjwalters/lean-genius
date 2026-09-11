@@ -1,9 +1,12 @@
 # Q9 existence decision experiment — 2026-09-11
 
-IN PROGRESS. Owner of solver ledger: codex-sol-3. Operator scope: squad board39,
-amended by editor messages50462/50463. At the2026-09-11 17:30 UTC snapshot, N80/m10
-and N80/m8 are RUNNING in the two host solver slots. Local kissat; proof logging
-OFF. No q9 verdict or graph witness has been reported.
+IN PROGRESS. Solver-ledger owner: codex-sol-3; temporary controller maintenance:
+codex-sol-2. Operator scope: squad board39, amended by editor50462/50463.
+At the2026-09-11 18:00 UTC update, N80/m10 and N80/m8 have each completed
+an initial one-hour attempt with UNKNOWN and are RUNNING their single
+four-hour requeues. The N63/m7 control returned SAT in15.332s and is
+independently verified and registered. No q9 graph witness has been reported.
+Local kissat, proof logging OFF; exactly two solver processes.
 
 ## Known values
 
@@ -48,7 +51,7 @@ component for the repaired R72 lower-bound dependency and remaining citation gap
 | N48, delta>=7, m24 | 3757 / 13047 | SAT, 0.046s; independent review2142 PASS and registered |
 | N63, delta>=8, m21 | 11074 / 38347 | Interrupted UNKNOWN after377.202s; separately excluded by paper proofs2144/2145 |
 | N63, delta>=8, m63 | — | Impossible circulant control; no solver run |
-| N63, delta>=8, m7 | 39337 / 134146 | Authorized replacement; queued for next shared slot |
+| N63, delta>=8, m7 | 39337 / 134146 | SAT,15.332s; independent review2641 PASS and registered |
 
 The generator passed independent encoding review2138. The original serialized
 runner passed eight software tests and independent review2134. The amended
@@ -61,8 +64,11 @@ Tiny SAT, UNSAT and interrupted-process fixtures do not count as graph controls.
 The editor's
 50462/50463 amendment makes the independently verified N48 control sufficient
 for q9 launches. N63/m7 is authorized as a replacement calibration control,
-using the existing affine input. It runs in parallel at the next available
-shared solver slot and does not gate q9 launches. The old m21/m63 specification
+using the existing affine input. It launched at the first available shared
+slot and returned SAT; review2641 independently accepts the exact model,
+63-vertex/252-edge graph, degree8, C4-freeness and free order7 action. The
+[control archive](control63-run004/STATUS.md) includes its registration receipt.
+This control did not gate q9 launches. The old m21/m63 specification
 remains mathematically impossible; its historical UNKNOWN is preserved.
 
 ## Action classes and budgets
@@ -72,8 +78,8 @@ remains mathematically impossible; its historical UNKNOWN is preserved.
 | 80 | 40 | — | — | Paper exclusion, review2139 PASS |
 | 80 | 20 | — | — | Whole action class excluded: reviews2147–2149,2151 PASS |
 | 80 | 16 | — | — | Necessary-condition exclusion, reviews2152/2154/2155/2157/2158/2160 PASS |
-| 80 | 10 | 0 | 1h / 4h | RUNNING: run002, PID68975 |
-| 80 | 8 | 0 | 1h / 4h | RUNNING: run003, PID77447 |
+| 80 | 10 | 0 | 1h / 4h | Initial002 UNKNOWN; requeue005 RUNNING, PID35563 |
+| 80 | 8 | 0 | 1h / 4h | Initial003 UNKNOWN; requeue006 RUNNING, PID38298 |
 | 80 | 5 | 0 (planned) | 1h / 4h | Not launched |
 | 80 | 4 | 0 (planned) | 1h / 4h | Not launched |
 | 80 | 2 | 0 (planned) | 1h / 4h | Not launched |
@@ -120,14 +126,20 @@ Any witness is saved as an adjacency list and independently checked by a
 second seat before the editor reports it to Robb. No cloud, q11/q13, or N81
 nonexistence campaign is authorized by this experiment. Phase B stays gated.
 
-Terminal graph-solver time is377.247884959 seconds (about0.104791hours),
-including the interrupted control. The two active runs additionally accrue
+Terminal graph-solver time is7592.599376292 seconds (about2.109055hours),
+including both one-hour UNKNOWNs and all control attempts. The active requeues accrue
 wall time and reserve their full caps against the48-hour aggregate budget.
 The live ledger at `/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/ledger.json` is authoritative for statuses and accounting.
 Use `runner_launch.py`, which locks only ledger transactions and supports two
 slots; the old serialized `runner.py` must not be run concurrently.
-Independent live-start checks bind both processes to their exact preflight
-CNFs/maps, seed0,3600-second caps, and recorded runner/solver hashes.
+Independent live-start checks bound the original002/003 processes to their
+exact preflight CNFs/maps, seed0,3600-second caps and runner/solver hashes.
+
+The [first-cap transition archive](first-cap-transition/STATUS.md) preserves
+terminal002/003 receipts, logs and maps, the exact004 control artifacts, and
+live005/006 launch evidence. Both initial UNKNOWNs have exit−15 at their wall
+caps with no solver SAT/UNSAT status line. The requeues use exactly the same
+CNF, map and seed0, with14400-second caps; neither may be retried again.
 
 The m21 run was stopped only after accepted paper review2145 made its intended
 positive-control purpose impossible. The recorded solver result is UNKNOWN,
@@ -268,12 +280,12 @@ artifact still requires independent model and graph validation.
 ## Current verdict
 
 IN PROGRESS. N79 is excluded independently by literature and the accepted
-below-square odd-order theorem. The N48 positive control is independently
-verified. The corrected N63/m7 calibration is authorized and queued without
-blocking q9. N80/m10 and N80/m8 are live under their initial one-hour caps;
-the other eight scheduled q9 instances have not launched. Each terminal
-UNKNOWN permits only one four-hour requeue with identical CNF, map and seed,
-subject to the aggregate48-solver-hour and first-witness stop rules.
+below-square odd-order theorem. Both positive controls are independently
+verified and registered: N48/m24 and N63/m7. N80/m10 and N80/m8 completed
+their initial one-hour attempts with UNKNOWN; their sole four-hour requeues
+005/006 are live with unchanged CNF/map/seed. The other eight scheduled q9
+instances have not launched. The48-solver-hour aggregate and first-witness
+stop rules remain in force. Initial UNKNOWN is not a nonexistence result.
 
 The accepted symmetry exclusions restrict possible witnesses but do not
 settle unrestricted existence at N78 or N80. A solver report with proof

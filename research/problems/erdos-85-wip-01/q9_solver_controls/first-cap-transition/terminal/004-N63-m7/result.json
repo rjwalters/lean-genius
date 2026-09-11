@@ -1,0 +1,68 @@
+{
+  "authorization": {
+    "concurrency": 2,
+    "launch_gate": "independently verified N48 control",
+    "proof_logging": false,
+    "source": "squad messages 50462 and 50463"
+  },
+  "cap_seconds": 3600,
+  "cnf": {
+    "path": "/private/tmp/erdos85-sol1-q9-control63-m7-proposed/graph.cnf",
+    "sha256": "bcb604577a885476d7df5612c1ef5e9c48d2e2bb27cb7f5453468ac9ae27c5b6"
+  },
+  "command": [
+    "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+    "--sat",
+    "--strict",
+    "--no-color",
+    "--seed=0",
+    "--time=3600",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/004-N63-m7/input.cnf"
+  ],
+  "d": 8,
+  "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/004-N63-m7",
+  "ended_utc": "2026-09-11T17:55:08.889807+00:00",
+  "exit_code": 10,
+  "id": 4,
+  "kind": "control",
+  "legacy_helpers": {
+    "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+    "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+  },
+  "m": 7,
+  "metadata": {
+    "path": "/private/tmp/erdos85-sol1-q9-control63-m7-proposed/map.json",
+    "sha256": "75d777a74f9dd08acaae9aa30a997578ca63ffe222ad745d5a372c7785d2ae08"
+  },
+  "model_check": {
+    "clauses": 134146,
+    "status": "PASS",
+    "variables": 39337
+  },
+  "monotonic_start": 1532336.61677875,
+  "n": 63,
+  "output": {
+    "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/004-N63-m7/solver.log",
+    "sha256": "4e76ccb0e44fc9e812850dc80d9470be8ffc3578e32e8d0a680dc9779db7207a"
+  },
+  "pgid": 33417,
+  "pid": 33417,
+  "prepared_utc": "2026-09-11T17:54:53.556421+00:00",
+  "proof_logging": false,
+  "retry": false,
+  "runner": {
+    "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+    "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+  },
+  "runner_pid": 33397,
+  "sat_observed": true,
+  "seed": 0,
+  "solver": {
+    "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+    "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+  },
+  "solver_version": "4.0.4",
+  "started_utc": "2026-09-11T17:54:53.593201+00:00",
+  "status": "SAT",
+  "wall_seconds": 15.332060083048418
+}

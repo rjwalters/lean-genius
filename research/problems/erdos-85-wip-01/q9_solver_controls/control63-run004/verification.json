@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "scope": "Author-side CNF and graph check; independent review still required",
+  "run_id": 4,
+  "terminal_status": "SAT",
+  "n": 63,
+  "m": 7,
+  "required_minimum_degree": 8,
+  "edges": 252,
+  "degree_distribution": {
+    "8": 63
+  },
+  "cnf_variables": 39337,
+  "cnf_clauses": 134146,
+  "input_sha256": {
+    "result.json": "0f15649c49a0da4b8b88286c4247f6d3cd447f88403c35224b1cccd518975072",
+    "input.cnf": "bcb604577a885476d7df5612c1ef5e9c48d2e2bb27cb7f5453468ac9ae27c5b6",
+    "generator-metadata.json": "75d777a74f9dd08acaae9aa30a997578ca63ffe222ad745d5a372c7785d2ae08",
+    "solver.log": "4e76ccb0e44fc9e812850dc80d9470be8ffc3578e32e8d0a680dc9779db7207a"
+  },
+  "verifier_sha256": "97f07da0c0bf7c50a8bce87370b617f6ab0296b2318232d39a4109f1a8421d99",
+  "graph_sha256": "d4d0654101c7e96769992cc9a90ec609ef705033dca48edd945f52c3bb344f20"
+}

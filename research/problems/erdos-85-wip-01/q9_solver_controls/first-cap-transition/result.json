@@ -1,0 +1,80 @@
+{
+  "status": "PASS",
+  "utc": "2026-09-11T17:57:35.266018+00:00",
+  "records": [
+    {
+      "id": 2,
+      "n": 80,
+      "m": 10,
+      "status": "UNKNOWN",
+      "pid": 68975,
+      "seed": 0,
+      "retry": false,
+      "cap": 3600,
+      "wall_seconds": 3600.0091445420403,
+      "output_sha256": "23e124d934a19a9acc86293a9abd4f6feccd92e5562845a29614de4143e6ac36",
+      "result_sha256": "e60e73a2957a69ad8b821aa2d76c4128e340b978a5a57ff05c672a8ec8f84624",
+      "solver_status_lines": []
+    },
+    {
+      "id": 3,
+      "n": 80,
+      "m": 8,
+      "status": "UNKNOWN",
+      "pid": 77447,
+      "seed": 0,
+      "retry": false,
+      "cap": 3600,
+      "wall_seconds": 3600.0102867078967,
+      "output_sha256": "262a7a197e0758b996492fd89bdadad47d83c598f64d867a1d9fdfa3df9336d3",
+      "result_sha256": "ec5ed6d7021fb5227f1993d2643e02998430f233b44031514b726cc4861739eb",
+      "solver_status_lines": []
+    },
+    {
+      "id": 4,
+      "n": 63,
+      "m": 7,
+      "status": "SAT",
+      "pid": 33417,
+      "seed": 0,
+      "retry": false,
+      "cap": 3600,
+      "wall_seconds": 15.332060083048418,
+      "output_sha256": "4e76ccb0e44fc9e812850dc80d9470be8ffc3578e32e8d0a680dc9779db7207a",
+      "result_sha256": "0f15649c49a0da4b8b88286c4247f6d3cd447f88403c35224b1cccd518975072",
+      "solver_status_lines": [
+        "s SATISFIABLE"
+      ]
+    },
+    {
+      "id": 5,
+      "n": 80,
+      "m": 10,
+      "status": "RUNNING",
+      "pid": 35563,
+      "seed": 0,
+      "retry": true,
+      "cap": 14400,
+      "live_command": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat --sat --strict --no-color --seed=0 --time=14400 /Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/005-N80-m10/input.cnf",
+      "retry_identity_verified": true
+    },
+    {
+      "id": 6,
+      "n": 80,
+      "m": 8,
+      "status": "RUNNING",
+      "pid": 38298,
+      "seed": 0,
+      "retry": true,
+      "cap": 14400,
+      "live_command": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat --sat --strict --no-color --seed=0 --time=14400 /Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/006-N80-m8/input.cnf",
+      "retry_identity_verified": true
+    }
+  ],
+  "live_solver_processes": [
+    "35563 /opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+    "38298 /opt/homebrew/Cellar/kissat/4.0.4/bin/kissat"
+  ],
+  "terminal_solver_seconds": 7592.599376291968,
+  "scope": "Terminal artifact/status and live launch identity audit; UNKNOWN is not an exclusion. No solver launched by checker."
+}

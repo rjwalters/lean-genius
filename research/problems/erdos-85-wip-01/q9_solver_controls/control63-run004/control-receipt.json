@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "reviewer": "codex-sol-2",
+  "run_id": 4,
+  "n": 63,
+  "d": 8,
+  "m": 7,
+  "solver_output_sha256": "4e76ccb0e44fc9e812850dc80d9470be8ffc3578e32e8d0a680dc9779db7207a",
+  "graph": {
+    "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/control63-run004-check/graph.json",
+    "sha256": "d4d0654101c7e96769992cc9a90ec609ef705033dca48edd945f52c3bb344f20"
+  },
+  "verifier": {
+    "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/control63-run004-check/independent.py",
+    "sha256": "9832c53d4ac7c75bed4c4f3436ee089f5075f9a89bc43e297e93b8bea94e8e99"
+  },
+  "verification_output": {
+    "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/control63-run004-check/independent-receipt.json",
+    "sha256": "be4dd4c0ad2380aa996b2a0dee97b46677725f2eda191db82fc92274b998db1b"
+  },
+  "scope": "Independent complete model, graph and semiregular action validation of N63 control; not a q9 existence result."
+}
