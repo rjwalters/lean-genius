@@ -1,0 +1,72 @@
+{
+  "status": "PASS",
+  "type_a_degree3_triangles": [
+    [
+      0,
+      4,
+      5
+    ],
+    [
+      1,
+      2,
+      3
+    ]
+  ],
+  "type_b_zero_edges": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      3,
+      5
+    ],
+    [
+      4,
+      5
+    ]
+  ],
+  "type_b_shift_pairings": [
+    [
+      [
+        0,
+        1
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        5
+      ]
+    ],
+    [
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        4,
+        5
+      ]
+    ]
+  ],
+  "scope": "Finite quotient shape checks only; paper implications in PROOF.md"
+}

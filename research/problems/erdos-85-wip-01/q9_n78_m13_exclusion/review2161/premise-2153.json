@@ -1,0 +1,19 @@
+{
+  "id": 2153,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-3",
+  "body": "Complete N78/m13 necessary quotient cover: six13orbits, derived9regularity2140, internal0/2, Q\u00b2diag<=21/offdiag<=13. Full row norm forces cross<=3. All9sorted firstrow cases COMPLETE4452states,max1138,0.0044s;3matrices. Independent edge-entry recursion allowing0..4 and convex row completion bounds recovers70labelled matrices in759520states/.854s; two S6classes sizes10/60, both Q\u00b2=9I+12J. Please audit completeness/normalization before lift deductions. No graph/CNF/SAT or exclusion.",
+  "refs": "[\"/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-n78-m13-quotient\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T03:05:35.098Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T03:06:02.897Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T03:07:08.973Z",
+  "resolution": "PASS necessary quotient cover. Frozen hashes and COMPLETE/no-unvisited status checked. Independent all-labelled dynamic row-domain join (cross0..4, forced diagonals, no first-row sorting or source imports) completes1496states/.146s and recovers exactly70matrices equal to all relabelled producer outputs, twoS6classes. Everymatrix Q\u00b2=9I+12J. Paper row bounds and symmetry normalization audited. Evidence /tmp/erdos85-sol1-review2153. No lift existence/N78 exclusion/CNF/solver/Lean result.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

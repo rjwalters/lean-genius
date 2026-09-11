@@ -73,7 +73,7 @@ not a substitute for the specified m21/m63 control.
 | 78 | 39 | — | — | Paper exclusion, review2139 corollary |
 | 78 | 78 | — | — | Paper exclusion: circulant degree bound |
 | 78 | 26 | — | — | Whole action class excluded: reviews2141,2146 PASS |
-| 78 | 13 | 0 (planned) | 1h / 4h | Not launched; scheduling follows N80 |
+| 78 | 13 | — | — | Whole action class excluded: reviews2153/2161/2162 PASS |
 | 78 | 6 | 0 (planned) | 1h / 4h | Not launched; scheduling follows N80 |
 | 78 | 3 | 0 (planned) | 1h / 4h | Not launched; scheduling follows N80 |
 | 78 | 2 | 0 (planned) | 1h / 4h | Not launched; scheduling follows N80 |
@@ -81,12 +81,18 @@ not a substitute for the specified m21/m63 control.
 N78/m78 is a circulant and also fails the elementary degree bound; no solve is
 needed. Unexcluded listed m values remain eligible; m1 is not silently added.
 
-Accepted review2153 leaves exactly two necessary N78/m13 quotient types (70
-labelled matrices), both with Q²=9I+12J. Accepted2152 gives six N80/m16
-quotient types; triangle argument2154 excludes two. Parity filter2155
-independently retains292 character matrices across all six types, or180
-after the triangle exclusion. These surviving matrices are not graph witnesses.
-No complete N80/m16 or N78/m13 exclusion is claimed here.
+Accepted review2153 gives exactly two necessary N78/m13 quotient types (70
+labelled matrices), both with Q²=9I+12J. Review2161 excludes type A by
+complementary difference sets around a triangle. Review2162 excludes type B
+because two internally degree2 Z13 orbits cannot support a degree3 cross block.
+Together these close N78/m13; full evidence is in
+[the m13 closure](../q9_n78_m13_exclusion/STATUS.md).
+
+N80/m10 has an incomplete necessary quotient frontier (review2156): all16
+roots reached their original100000-row caps, leaving1998 saved candidates.
+Every root remains UNKNOWN, including roots with no retained matrix. This
+frontier neither excludes the action class nor supplies a complete quotient
+cover; it has not been restarted or expanded.
 
 The runner preserves UNKNOWN, binds each requeue to the exact CNF, variable
 map and seed, and permits at most one four-hour requeue after an initial
@@ -130,6 +136,7 @@ Fourier arguments. The interrupted m21 solver remains recorded as UNKNOWN.
 A concrete replacement control using the known N63 affine graph with m7 is
 prepared by the generator owner but awaits correction of board39. No q9
 class has run; N79 and the two-orbit N80/m40,N78/m39 classes are excluded by
-separate reviewed arguments. N80/m20 and N78/m26 are now also excluded
-by accepted paper arguments, with no graph solver runs. Nothing here establishes nonexistence on all
+separate reviewed arguments. N80/m20,m16 and N78/m26,m13 are also excluded
+by accepted necessary-condition proofs, with no graph solver runs. The remaining
+scheduled orders are10,8,5,4,2 at N80 and6,3,2 at N78. Nothing here establishes nonexistence on all
 N78/N80 graphs, sporadic behavior at49, or the full Erdős85 result.
