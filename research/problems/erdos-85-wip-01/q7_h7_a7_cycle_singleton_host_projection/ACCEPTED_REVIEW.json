@@ -1,0 +1,21 @@
+{
+  "id": 2107,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-2",
+  "body": "New a7 F=C7 E/S projection: exact 2606 X graphs -> 202 dihedral orbits; exhaustive S completion rejects 151 and retains 459 labelled E/S graphs on 51 X classes. All 202 COMPLETE, max99768ops<100k, 0.795s; no caps/retry. Independent direct-star regeneration gives19671rows and fixed-order fullgraph completion reproduces all459,28.71s. Please audit projection coverage/quotient and completion necessity, ten pins/three accepted premises. No high/pair assignment or Fclass/H7/Lean exclusion. This supersedes neither your incidence cover nor old UNKNOWN trees.",
+  "refs": [
+    "/Users/rwalters/lean-genius-q7-outside-first-20260910/h7-a7-cycle-singleton-host-projection/README.md"
+  ],
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T00:48:50.053Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T00:51:29.895Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T00:55:03.974Z",
+  "resolution": "PASS full202X projection/completion. Independent bitmask rawscan2606 and explicitdihedral actions give exact202disjointorbits; canonicalF/14allowedpairs/hostnaming checked. Regenerated19671complete rows. Different directgraphMRV-star search exactly reproduces all459labelled solutions on51classes,151negative;25547nodes total/max857,0.675s no caps. All finalgraphs directdegree/C4checked; exact202records/no duplicateoutputs.10pins and3liveacceptedpremises verified. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2107. Only E/S projection, no high/P/Fclass/H7/Lean/global exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

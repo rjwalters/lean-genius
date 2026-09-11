@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "payload_pins": 10,
+  "raw_X": 2606,
+  "X_orbits": 202,
+  "complete_rows": 19671,
+  "labelled_singleton_graphs": 459,
+  "positive_X_classes": 51,
+  "independent_search_nodes": 25547,
+  "max_nodes_per_class": 857,
+  "seconds": 0.6747832500841469,
+  "proof_audit": "Seven double-host pairs form simple X with allowedC7distances1/3 anddegree<=3; missingincidences give exactly3-degX single-host vertices. Dihedral quotient and within-host naming preserve coverage. Eachsingleton has induceddegree1or3 from emptydegree2or1. Independent directgraph search chooses a most-constrained current vertex, enumerates all stillneeded edges, and uses exact incremental C4tests; no stored-domain/AC search reused. Every resulting fullE/S graph passes allpair C4 and degree checks. Exact solution-set equality for all202classes; three liveacceptedpremises matched.",
+  "bookkeeping_note": "Post-search metadata guard initially expected index rather than source_index and stopped. Corrected to actual schema; exact202 indices/counts/duplicate-free outputs verified. CLI resolution had run after that guard failure, but the completed independent enumeration was already PASS; this metadata receipt now records all checks. No search was restarted.",
+  "scope": "Only F=C7 E/S projection:151classes excluded at singleton-edge stage,459labelled graphs retained across51classes. No highcolours, pairvertices, fullF/H7/Lean/global exclusion."
+}
