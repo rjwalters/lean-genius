@@ -1,0 +1,15 @@
+# Complete normalized F2 incidence-phase cover
+
+Use2219/2221 and accepted2230, with the reserved-offset construction of2232. Unlike2232's one partial graph per table, this artifact retains every allowed incidence offset subset after explicitly justified normalizations.
+
+For each rooted attached partial permutation P, choose a deterministic spanning forest by visiting its two internal matching edges and then its crossmatching edges in label order. Change the origins of the six attached3-orbits to make all forest offsets0. If there is a cycle, its single nonforest edge must have offset1 or2; retain both. If there is no cycle retain the all-zero forest assignment. This covers every attached matching up to independent origin changes, without identifying the specified generator with its inverse.
+
+For every residual orbit having an A neighbour, choose its origin to make that incidence offset0. A B-only residual orbit similarly has its B offset set to0; an orbit missing both sides has no incidence offset. Thus for a fully attached word(a,b), only its B offset remains. Its possible values are the residues not already occupied by attached two-step paths between labels a,b. Distinct residual orbits with that word must have distinct remaining offsets, or two residual vertices would share both attached neighbours. Conversely distinct unused offsets yield C4-free incidence edges by2232.
+
+Permuting the residual orbit labels within one word cell allows the retained offset values to be sorted; hence retain every subset of the allowed residues of size T_ab, rather than every ordering. Missing orbits occur with multiplicity one and add no phase choice. The possible choices for distinct cells are independent. Every candidate graph with this action therefore restricts to at least one retained parameter choice after these origin changes and orbit renamings. Different retained choices may still be isomorphic; no minimal isomorphism-class claim is made.
+
+check.py constructs the normalized attached lift, independently obtains the unused residues from common-neighbour sets, and enumerates every allowed subset in each cell. It verifies all subset sizes, avoidance conditions, product counts, and absence of duplicate parameter records. Original60s aggregate cap, no retry: all672 tables,856 table/voltage roots, and56916 normalized incidence choices COMPLETE in about0.168s.
+
+Each saved row in phase-parameters.json has the form [state_index,table_index,cycle_voltage,nine_subset_masks], where masks encode residue subsets by bits0,1,2 in lexicographic(a,b) order. The state/table indices refer to the pinned2221 receipts. cycle_voltage=0 denotes the forest case, not an allowed zero cycle voltage.
+
+This is a complete cover of incidence phases for the fixed/attached/residual partition, with residual-to-residual edges still absent. The partial graphs have degree9 only at the20 fixed/attached vertices. No minimum-degree9 graph or exclusion is claimed. Testing only one retained parameter choice cannot exclude its table.
