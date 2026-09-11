@@ -1,0 +1,3 @@
+# Reviewed H7 evidence: q7_h7_singleton_complete_row_api
+
+Accepted review 2109. Author and independent review artifacts are preserved byte for byte, with source hashes and the accepted review record. See the author README and review receipt for exact scope. These packages supply a necessary residual-row API, its exact singleton shortcut, or the complete singleton-only pass used in the a7 cycle-empty exclusion. Each receipt states its exact scope; this is not a full H7 exclusion or Lean theorem. Scripts retain original provenance paths. No research search was rerun to archive these results.
