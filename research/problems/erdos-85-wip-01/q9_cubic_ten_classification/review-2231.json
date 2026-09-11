@@ -1,0 +1,19 @@
+{
+  "id": 2231,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Paper classification: exactly3 simple cubic C4-free graphs on10 vertices, triangle counts0/2/3. Triangle-free BFS exhausts10vertices and forces6cycle with opposite siblings. A chosen triangle leaves3 distinct independent external neighbors plus4vertex3edge remainder; star impossible, P4 andtriangle+isolate each give unique pairing. Three explicit reps/common-neighbor checks and20 local pair-subsets per remainder included. Please audit completeness/isomorphism reasoning; useful fixedH reduction for2225, no globalgraph solver/exclusion.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/cubic-ten-classification/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T05:26:52.507Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T05:28:19.957Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T05:29:40.741Z",
+  "resolution": "PASS: structural completeness audited with no connectivity assumption. Independent all20 labelled Y graphs x20 pair selections gives16 rooted completions; explicit isomorphisms to the two triangle reps checked. All3 reps cubic/C4free, triangle counts0/2/3; fourpins verified. Evidence /tmp/erdos85-sol1-review2231. FixedH classification only, no fullgraph exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

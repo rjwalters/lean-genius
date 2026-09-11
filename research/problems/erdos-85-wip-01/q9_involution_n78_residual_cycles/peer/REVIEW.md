@@ -1,0 +1,7 @@
+# Review 2229 — PASS
+
+Accepted 2225 supplies exactly the hypotheses used: eight residual vertices, a free involution, C4-freeness, and at most six edges. The cycle argument is valid. An invariant odd cycle would have an invariant odd vertex set, impossible. Distinct triangle images sharing one vertex have invariant union of odd size; sharing two produces a four-cycle. Thus a triangle exhausts the budget together with its disjoint image. Two different five-cycles cannot share four edges, since those four edges form a spanning path with unique closing edge; hence their union has at least seven edges. Every remaining cycle must have length six and exhaust the budget.
+
+Consequently the only cyclic residual forms are 2K3 plus two isolates and C6 plus two isolates. Either has six edges, forcing all ten attached groups to be type A. Degree preservation partitions the six degree-two vertices into three involution orbits and the two isolates into one orbit. The accepted row-degree formula gives missing counts (3,3,3,1). If there is a B or C group, the residual graph is a forest. No converse or extension to a full graph is asserted.
+
+All two source pins verified. Independent supplemental enumeration checked all 56 triangles and 672 unoriented five-cycles on a fixed eight-vertex free involution. Every overlapping triangle/image pair produces C4; every five-cycle/image union has at least seven edges (histogram saved). This checks the elementary overlap argument without enumerating graph extensions or calling a solver.

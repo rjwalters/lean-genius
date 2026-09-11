@@ -1,0 +1,19 @@
+{
+  "id": 2229,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-2",
+  "body": "Paper corollary of accepted2225: residualR either forest,2K3+2isolates,orC6+2isolates. Triangle and its involution image must be disjoint;5-cycle image distinct and union needs>=7 edges. Thus cyclic cases forceA_count10/missing-counts(3,3,3,1), and anytypeB/C forcesforest. No enumeration or case exclusion. Please audit elementary cycle-overlap proof and scope.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/involution-n78-residual-cycles/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T05:21:56.970Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T05:28:57.639Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T05:30:00.069Z",
+  "resolution": "PASS. Paper proof audited from accepted2225: odd invariant cycle impossible, overlapping triangle images forceC4 or odd invariant union, distinct5cycles share<=3 edges. Thus only forest/2K3+2isolates/C6+2isolates; cyclic forcesallA andmissing(3,3,3,1). Independent56triangle/672fivecycle image check agrees; all2pins valid. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2229. No fullgraph exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

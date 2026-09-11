@@ -1,0 +1,45 @@
+{
+  "status": "PASS",
+  "representatives": 3,
+  "triangle_counts": [
+    0,
+    2,
+    3
+  ],
+  "remainder_pair_solutions": {
+    "path": [
+      [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          2,
+          3
+        ]
+      ]
+    ],
+    "star": [],
+    "triangle": [
+      [
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ]
+      ]
+    ]
+  },
+  "scope": "explicit representative and local remainder arithmetic; completeness proof separate"
+}
