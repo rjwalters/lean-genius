@@ -1,0 +1,42 @@
+{
+  "status": "PASS",
+  "run_id": 0,
+  "n": 48,
+  "d": 7,
+  "m": 24,
+  "variables": 3757,
+  "clauses": 13047,
+  "edge_orbits": 48,
+  "graph_parameters": {
+    "n": 48,
+    "m": 24,
+    "minimum_degree": 7,
+    "maximum_degree": 7,
+    "edges": 168
+  },
+  "source_result": {
+    "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/000-N48-m24/result.json",
+    "sha256": "9a89dbcd300ec829932ee07bdb48848ae907b1032642007e0edc136603fefa72"
+  },
+  "map": {
+    "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/000-N48-m24/generator-metadata.json",
+    "sha256": "7a31fc88c0c794e16d78fa90bed32022557eae4dc1efa8b38d90580ae36e477b"
+  },
+  "cnf": {
+    "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/000-N48-m24/input.cnf",
+    "sha256": "6c6e90a6a493e200fcefd6446559a47df2f2eccda72d09246483f57fdd7595ae"
+  },
+  "model": {
+    "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/000-N48-m24/solver.log",
+    "sha256": "35968d8a405c65e4bd71cce7144c504337373f431256561b5cca5de8835c70a0"
+  },
+  "generator": {
+    "path": "/private/tmp/erdos85-sol1-q9-semiregular/generate.py",
+    "sha256": "cafc21951969ed93a88f7db2a3b649c38deb53af3d81d6da10caeac5a2aef4a4"
+  },
+  "verifier": {
+    "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/check_control.py",
+    "sha256": "eeda08e3053d53826cb49ef952c3a3263d13a184c017e4373e7253cfbb8886e7"
+  },
+  "scope": "second-seat control: full assignment/CNF/map binding, graph and free cyclic action checked"
+}

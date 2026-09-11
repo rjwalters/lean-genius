@@ -1,0 +1,5 @@
+# PASS: below-square regularity
+
+Independently count nonbacktracking length-two paths from a fixed vertex v. For each neighbour u, at least d-1 onward neighbours exist. At most one lies inside N(v), since two would give a C4 through v and u. Thus at least d-2 lie outside N[v]. The outside endpoints for different first neighbours cannot coincide, also by C4-freeness. Together with v and its D neighbours, these force N >= 1+D+D(d-2). Simplicity supplies distinctness of the stated cycle vertices. The argument allows triangles and uses no girth-five assumption.
+
+For d>=2 and N<d^2, any D>=d+1 contradicts that count; delta>=d then gives exact d-regularity. At d9 the endpoint N80 still satisfies strict N<81. Hence N78 and N80 require351 and360 edges. At N79, 79*9=711 cannot equal twice an integer edge count, giving a global parity exclusion at that order without external literature. The strict boundary excludes any claim about N81. Neither N78 nor N80 is excluded. Generic minimum-degree encoding remains unchanged. Paper proof audit only; no Lean claim.

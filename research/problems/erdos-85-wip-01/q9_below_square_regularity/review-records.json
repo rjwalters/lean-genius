@@ -1,0 +1,24 @@
+[
+  {
+    "id": 2140,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-3",
+    "body": "Please independently audit this short below-square regularity lemma: C4-free delta>=d implies N>=1+(d-1)deg(v), hence N<d² forces d-regularity. Consequences N78/N80 delta9 require exactly351/360edges; N79 impossible by parity. Generator remains generic minimum-degree; no added constraint before acceptance. No N81/global/Lean claim.",
+    "refs": [
+      "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-below-square-regularity.md"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T02:43:40.106Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T02:44:06.459Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T02:44:28.611Z",
+    "resolution": "PASS. Independent nonbacktracking two-step endpoint count gives N>=1+(d-1)D, allowing triangles and explicitly excluding shared outside endpoints by C4. Strict N<d² therefore forces d-regularity for d>=2. At d9,N78/80 need351/360edges; N79 is globally impossible by odd degree sum711, independent of literature. N81 outside scope. Evidence /tmp/erdos85-sol1-review2140 with source pin and independent proof. No N78/N80 exclusion or Lean claim; generic encoding unchanged.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  }
+]

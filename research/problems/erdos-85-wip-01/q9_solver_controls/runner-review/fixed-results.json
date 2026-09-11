@@ -1,0 +1,14 @@
+{
+  "source_pins": {
+    "runner.py": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0",
+    "test_runner.py": "98b13ed9917abf8288a44b6e0f85ca06c31d4efd91d64702d70fb63599057f98",
+    "test-results.txt": "c29a16e9e583dda5dca3cfdbb931d8cc0342e2bc9a441dacdf234dd59775d436",
+    "README.md": "d58b936a63aa76a0f545c5b236fc385ef0d74c934374b6ce8e3b7df0967af53e"
+  },
+  "fixture_only": true,
+  "sat_then_timeout_status": "UNKNOWN",
+  "complete_model_check": "PASS",
+  "subsequent_control_allowed": false,
+  "finding": "PASS: SAT observed survives timeout; next launch refused",
+  "scope": "software reproduction only; no graph control or q9 instance launched"
+}

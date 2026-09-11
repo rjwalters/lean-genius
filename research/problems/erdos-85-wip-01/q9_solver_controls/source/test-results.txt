@@ -1,0 +1,13 @@
+test_first_sat_stop (test_runner.RunnerTests.test_first_sat_stop) ... ok
+test_invalid_model (test_runner.RunnerTests.test_invalid_model) ... ok
+test_real_kissat_sat (test_runner.RunnerTests.test_real_kissat_sat) ... ok
+test_real_kissat_unsat (test_runner.RunnerTests.test_real_kissat_unsat) ... ok
+test_retry_and_budget (test_runner.RunnerTests.test_retry_and_budget) ... ok
+test_sat_observed_despite_timeout_or_bad_exit (test_runner.RunnerTests.test_sat_observed_despite_timeout_or_bad_exit) ... ok
+test_scope (test_runner.RunnerTests.test_scope) ... ok
+test_wall_cap_kills_own_process (test_runner.RunnerTests.test_wall_cap_kills_own_process) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 2.191s
+
+OK

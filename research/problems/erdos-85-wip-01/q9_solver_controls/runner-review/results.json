@@ -1,0 +1,17 @@
+{
+  "source_pins": {
+    "runner.py": "aa7ddf4f5776b93bef968d48c680be90ba3e251ef76d3c47a6f27626fb0012d1",
+    "test_runner.py": "40a8be93ce0231c46e6b8063b1616d1db38c20fd06df15c96d6ec29e62cde59b",
+    "test-results.txt": "b8626bd60884e4b48556b95f53b814d30fafe4046b508606514082bbba40b939",
+    "README.md": "5d1598bd5ee0d2c4c722ccb82d8d3e66350a11acb7d5232bc34cc8130a717651"
+  },
+  "fixture_only": true,
+  "sat_then_timeout_status": "UNKNOWN",
+  "complete_model_check": "PASS",
+  "subsequent_control_allowed": [
+    "control",
+    3600
+  ],
+  "finding": "first-q9-SAT stop bypassed when SAT output precedes wall timeout",
+  "scope": "software reproduction only; no graph control or q9 instance launched"
+}
