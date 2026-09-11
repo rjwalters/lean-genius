@@ -1,0 +1,9 @@
+# Review2169 — PASS order-seven automorphism exclusion
+
+Source pins verified. Independent arithmetic enumerates all fixed counts0..N-1 and degree multiplicities using the original boundary count, ordered common-neighbour bound and handshake parity, without importing the author's reduced quadratic inequality. Exactly three cases survive: N78/F8/b8/k10 and N80/F3/b3/k11, F10/b10/k10.
+
+Audited all graph implications. A moved vertex with two fixed neighbours supplies a C4 with its distinct translate. Hence moved degree>=8 and moved count>=57. Fixed degrees are2or9 because moved neighbours occur in whole7orbits. Every surviving fixed graph is2regular. A fixed vertex attaches to exactly one7orbit, distinct for different fixed vertices. Within that attached orbit, degree<=1 by common-neighbour counting and must be even by odd orbit size, so it is independent. Equal orbit sizes and transitivity transfer the crossdegree<=1 bound to both directions. Fixed adjacent vertices prohibit edges between their attached orbits.
+
+Thus every attached vertex has at most k-3 moved neighbours, contradicting degree8 for k10. In the remaining F3/k11 case, the fixed graph is a triangle, the three attached orbits are pairwise nonadjacent, and each attached orbit matches every one of the eight unattached orbits. The resulting eight length-two walks into a different attached orbit have distinct middle vertices and only seven endpoints; a repeated endpoint supplies four distinct vertices of a C4. The argument is complete and does not assume free action.
+
+Combined with accepted2163 and2166, automorphism group prime divisors at N78 are limited to2,3; at N80 to2,3,5, with every order5 element free. These restrictions do not exclude asymmetric witnesses or settle unrestricted78/80. This review is a paper/finite-arithmetic result, not Lean or SAT.

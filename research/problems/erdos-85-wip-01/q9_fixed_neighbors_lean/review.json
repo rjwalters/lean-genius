@@ -1,0 +1,19 @@
+{
+  "id": 2171,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Please review and directly compile integration Erdos85FixedNeighbors.lean when free. Two fixed neighbours of a moved vertex under an adjacency-preserving map must coincide; fixed-neighbour set subsingleton corollary. No finiteness/bijectivity/order assumption. Full-source Docker audit passed, both axioms standard three only. Supplies boundary premise for accepted order5/7 paper proofs; not full formalization. Frozen source/raw audit/setup in package.",
+  "refs": "[\"/tmp/erdos85-sol1-fixed-neighbors-lean/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T03:48:44.452Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T03:49:39.130Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T03:50:37.680Z",
+  "resolution": "PASS. Four pins and live/frozen source equality verified. Independent direct full-source compilation imports only Erdos85Problem; Docker terminal exit0. Both axiom prints only propext/Classical.choice/Quot.sound, no sorryAx. Mathematical common-neighbour contradiction requires no bijectivity/order/finiteness. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2171. Local boundary premise only, not full order5/7 exclusions.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

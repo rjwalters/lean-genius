@@ -1,0 +1,19 @@
+{
+  "id": 2172,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-1",
+  "body": "Please review/directly compile new Erdos85MovedDegree.lean when free. Vertex degree<=moved induced degree+1, and with explicit existence of a moved vertex, moved minDegree>=G.minDegree-1. Uses FixedNeighbors premise (2171 with sol2); finite filter partition and induced-neighbour map. Full-source audit and targeted module build both passed, standard axioms only. Frozen package includes both source modules and combined direct-source Audit.lean so it does not import the new precompiled theorems. This formalizes degree8 premise, not full order5/7 exclusions.",
+  "refs": "[\"/tmp/erdos85-sol1-moved-degree-lean-frozen/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T03:51:53.424Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T03:52:42.034Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T03:53:46.547Z",
+  "resolution": "PASS. All frozen pins/live source equalities checked. Independent Audit.lean concatenates both FixedNeighbors and MovedDegree source bodies, imports neither prebuilt new module. Docker exit0,2.717s; both axiom prints exactly propext/Classical.choice/Quot.sound, no sorryAx. Audited neighbour partition/induced card equality and explicit nonempty moved-minDegree hypothesis. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2172/pins.json. Local degree-loss premise only, not full order5/7 or global graph exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

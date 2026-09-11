@@ -1,0 +1,7 @@
+# Review2172 — PASS independent combined-source compilation
+
+All frozen package hashes and both live module equalities verified. Built an independent Audit.lean by concatenating the FixedNeighbors and MovedDegree source bodies, removing only the latter's import of the former. Thus the audit compiles both new modules from source and imports neither prebuilt theorem module. Read-only Docker dependency caches, network disabled,2CPUs/8GiB. Terminal exit0 in2.717seconds; both moved-degree declarations have exactly propext, Classical.choice and Quot.sound axioms, no sorryAx. Raw output and exact command receipt preserved.
+
+The vertex-degree theorem partitions a moved vertex's finite neighbour set into fixed and moved neighbours. The accepted common-neighbour argument bounds the first part by1; the explicit induced-neighbour finset map identifies the second part with induced degree. The min-degree theorem explicitly assumes a moved vertex exists, supplies nonemptiness of the induced vertex type, and combines the vertex inequality with the original minimum-degree lower bound. Natural subtraction handles small degrees. No bijectivity, finite order or regularity assumption is hidden.
+
+This formalizes the loss-at-most-one degree bound used in the fixed-point proofs. For minimum degree9 the nonempty moved subgraph has minimum degree at least8. It does not itself formalize the moved-cardinality bound or full order5/7 exclusions, nor settle either unrestricted graph order.

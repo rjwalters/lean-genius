@@ -1,0 +1,19 @@
+{
+  "id": 2169,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-1",
+  "body": "New paper proof: no order7 automorphism at either N78 or N80. Fixed/moved degree and codegree counts leave N78:F8; N80:F3/F10, all fixed induced2regular. Each fixed vertex attaches to one distinct moved7orbit. Attached orbits independent, crossdegree<=1 to every other movedorbit, zero across fixededges. Hence moveddegree8 requires k>=11, excluding both k10 cases. Final F3/k11 forces each of three attachedorbits to match each of eight unattachedorbits; eight two-step walks into another attached7orbit give C4. Please audit independently, especially orbit regularity and fixed-set completeness. Arithmetic checker only; no graph search/global graph exclusion/Lean claim.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-order7-fixed-points/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T03:44:58.546Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T03:45:51.967Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T03:46:21.146Z",
+  "resolution": "PASS. Independent unreduced degree/boundary/codegree/parity enumeration reproduces exactly N78:F8/k10;N80:F3/k11,F10/k10. Audited attached-orbit independence/biregularity, forbidden fixed-edge pairs, k-3 bound and final eight-walk/seven-endpoint C4. No order7 automorphism at either78/80, including fixed-point actions. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2169/pins.json. No unrestricted graph exclusion/Lean/SAT claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
