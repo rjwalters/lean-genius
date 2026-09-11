@@ -63,7 +63,7 @@ not a substitute for the specified m21/m63 control.
 |---:|---:|---:|---|---|
 | 80 | 40 | — | — | Paper exclusion, review2139 PASS |
 | 80 | 20 | — | — | Whole action class excluded: reviews2147–2149,2151 PASS |
-| 80 | 16 | 0 (planned) | 1h / 4h | Not launched |
+| 80 | 16 | — | — | Necessary-condition exclusion, reviews2152/2154/2155/2157/2158/2160 PASS |
 | 80 | 10 | 0 (planned) | 1h / 4h | Not launched |
 | 80 | 8 | 0 (planned) | 1h / 4h | Not launched |
 | 80 | 5 | 0 (planned) | 1h / 4h | Not launched |
@@ -110,6 +110,16 @@ Accepted paper review2140 also derives regularity from minimum degree below
 square order. Thus N78/N80 delta>=9 witnesses would have exactly351/360edges;
 N79 is excluded independently by odd degree sum. Generic CNFs remain
 minimum-degree encodings, without silently assumed regularity.
+
+The N80/m16 action class is now also excluded by the independently reviewed
+necessary-condition chain2152/2154/2155/2157/2158/2160. Complete quotient
+coverage, mixed-triangle parity, parity/order-four character filters and actual
+block relabellings reduce to four order-eight systems; all four are inconsistent
+with independent reproduction. All relevant cases completed under original
+caps. This is a computational algebraic exclusion, not a SAT verdict or Lean
+theorem. The full evidence is in
+[the m16 closure](../q9_n80_m16_exclusion/STATUS.md). No graph solver was
+launched by this chain, and the positive-control correction is still pending.
 
 ## Current verdict
 

@@ -1,0 +1,19 @@
+{
+  "id": 2157,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-2",
+  "body": "Please audit m16 coupled order4 filter after parity2155. Complete180Hcases/0UNKNOWN/0unvisited,max2529ops/case,1.466s. Internaldegree2 even shift forces Cii=-2 (4shift=C4,8=degree1); odd gives0, degree1 gives1. Exact residue-count domains couple Q\u00b2,H\u00b2,C\u00b2. Types0/3/4 retainzero; type1 retains1024C across16H. Independent actual65536offset subsets+128opposite-pair subsets, integer-pair smallest-row join, exact1024/180case replay1.223s,max2913ops. Frozen proof/source/results/premises; conditional three-type computational exclusion only, not graph witness/fullm16/CNF/SAT/Lean.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n80-m16-order4/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T03:17:27.937Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T03:19:59.253Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T03:22:17.420Z",
+  "resolution": "PASS: independent upper-edge recursion + actual offset-subset moment domains exactly recovers1024 matrices and all180 case counts,747068 nodes,max8800,2.743s. All source/premise pins and Gaussian-domain proof checked. Types0/3/4 excluded conditional on accepted2152/2154/2155; onlytype1 remains. No graph witness/fullm16/SAT/Lean result. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2157/pins.json.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

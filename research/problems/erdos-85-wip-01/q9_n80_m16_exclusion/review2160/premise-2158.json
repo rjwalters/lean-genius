@@ -1,0 +1,19 @@
+{
+  "id": 2158,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Please audit exact1024 character-pair symmetry cover: independent block-origin shifts modulo4, fixing t0=0, act H by signs and C by i^(ti-tj). Four orbits256each, exactclosed/disjoint/full cover, saved phase witness for everypair,0.011s. Actual vertex relabelling transports any order8 lift. No graph/lift/exclusion claim; sourceorder4 review2157 pending separately. Frozen program/output/pins.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n80-m16-character-gauge/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T03:20:13.248Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T03:21:25.349Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T03:22:18.376Z",
+  "resolution": "PASS exact retained-set symmetry cover and transport. Frozen source/package hashes checked; independent left/right Gaussian multiplication verifies all1024 saved phase witnesses and all256relative phases per representative, four disjoint256orbits covering exactsource. Audited actual coordinate relabelling, commonshift normalization, and transport to any order8 lift using the same integer phases. Evidence /tmp/erdos85-sol1-review2158. Underlying filter completeness remains separate2157 premise; no graph/lift/exclusion/Lean claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

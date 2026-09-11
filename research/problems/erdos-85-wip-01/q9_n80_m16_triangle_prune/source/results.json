@@ -1,0 +1,45 @@
+{
+  "status": "PASS",
+  "types": [
+    {
+      "type": 0,
+      "obstructed_orbits": [],
+      "multiplicity": 15
+    },
+    {
+      "type": 1,
+      "obstructed_orbits": [],
+      "multiplicity": 60
+    },
+    {
+      "type": 2,
+      "obstructed_orbits": [
+        2,
+        3
+      ],
+      "multiplicity": 30
+    },
+    {
+      "type": 3,
+      "obstructed_orbits": [],
+      "multiplicity": 60
+    },
+    {
+      "type": 4,
+      "obstructed_orbits": [],
+      "multiplicity": 30
+    },
+    {
+      "type": 5,
+      "obstructed_orbits": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "multiplicity": 15
+    }
+  ],
+  "excluded_labelled": 45,
+  "retained_labelled": 165
+}

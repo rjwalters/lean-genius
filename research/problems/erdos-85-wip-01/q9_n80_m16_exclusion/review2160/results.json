@@ -1,0 +1,55 @@
+{
+  "status": "PASS_FOUR_CASES_EMPTY",
+  "cases": [
+    {
+      "case": 0,
+      "retained": 0,
+      "row_sizes": [
+        192,
+        192,
+        96,
+        96,
+        96
+      ],
+      "operations": 1825
+    },
+    {
+      "case": 1,
+      "retained": 0,
+      "row_sizes": [
+        192,
+        192,
+        96,
+        96,
+        96
+      ],
+      "operations": 1825
+    },
+    {
+      "case": 2,
+      "retained": 0,
+      "row_sizes": [
+        48,
+        48,
+        96,
+        48,
+        48
+      ],
+      "operations": 1281
+    },
+    {
+      "case": 3,
+      "retained": 0,
+      "row_sizes": [
+        48,
+        48,
+        96,
+        48,
+        48
+      ],
+      "operations": 1281
+    }
+  ],
+  "seconds": 0.19386708294041455,
+  "method": "residue counts0..2; eight-position convolution; dynamic row constraint join; no producer imports"
+}

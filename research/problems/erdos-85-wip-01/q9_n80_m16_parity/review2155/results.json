@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "types": [
+    {
+      "type": 0,
+      "matrices": 36,
+      "recursive_nodes": 1264,
+      "original_combinations": 104976
+    },
+    {
+      "type": 1,
+      "matrices": 48,
+      "recursive_nodes": 4976,
+      "original_combinations": 139968
+    },
+    {
+      "type": 2,
+      "matrices": 32,
+      "recursive_nodes": 4096,
+      "original_combinations": 209952
+    },
+    {
+      "type": 3,
+      "matrices": 32,
+      "recursive_nodes": 5776,
+      "original_combinations": 131072
+    },
+    {
+      "type": 4,
+      "matrices": 64,
+      "recursive_nodes": 9488,
+      "original_combinations": 186624
+    },
+    {
+      "type": 5,
+      "matrices": 80,
+      "recursive_nodes": 19920,
+      "original_combinations": 419904
+    }
+  ],
+  "total": 292,
+  "seconds": 0.06674074986949563,
+  "scope": "Independent upper-edge recursion; necessary parity matrices only, no graph lifting."
+}

@@ -1,0 +1,5 @@
+# PASS: exact origin-shift cover of the retained character pairs
+
+Independent checker verifies all1024 saved representative-to-member transports, every source join, uniqueness, and every relative phase in each of four256-element orbits. It uses separate left/right Gaussian multiplication, not producer rotation code. Source and symmetry-package hashes checked. The orbits are disjoint and cover exactly the retained1024 pairs.
+
+Replacing coordinate t in block i by t-phase_i changes cross offsets by phase_i-phase_j, giving precisely the stated character action. This is an actual relabelling of the original cyclic blocks. A common origin shift cancels, so fixing phase0=0 loses no action. Integer representatives0..3 can also be used at order8; no higher-order lift is ruled out by choosing this representative of the lower-character pair. Completeness of the underlying order4 filter remains the separate2157 premise. This audit proves a cover of its retained set and valid transport, not a graph witness or exclusion.

@@ -1,0 +1,49 @@
+{
+  "status": "PASS",
+  "types": [
+    {
+      "type": 0,
+      "status": "PASS",
+      "retained": 36,
+      "nodes": 294,
+      "max_case_nodes": 25
+    },
+    {
+      "type": 1,
+      "status": "PASS",
+      "retained": 48,
+      "nodes": 302,
+      "max_case_nodes": 21
+    },
+    {
+      "type": 2,
+      "status": "PASS",
+      "retained": 32,
+      "nodes": 316,
+      "max_case_nodes": 34
+    },
+    {
+      "type": 3,
+      "status": "PASS",
+      "retained": 32,
+      "nodes": 272,
+      "max_case_nodes": 17
+    },
+    {
+      "type": 4,
+      "status": "PASS",
+      "retained": 64,
+      "nodes": 353,
+      "max_case_nodes": 125
+    },
+    {
+      "type": 5,
+      "status": "PASS",
+      "retained": 80,
+      "nodes": 1041,
+      "max_case_nodes": 345
+    }
+  ],
+  "seconds": 0.015460334019735456,
+  "scope": "independent parity row-domain join; necessary only, not graph lift or exclusion"
+}

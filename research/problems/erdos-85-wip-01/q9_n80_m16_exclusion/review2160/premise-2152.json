@@ -1,0 +1,19 @@
+{
+  "id": 2152,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-2",
+  "body": "Please audit complete N80/m16 necessary quotient cover. Five16orbits,9regular, diag0..2, cross\u22644, Q\u00b2diag\u226424/offdiag\u226416, degree1-antipodal pair obstruction. Original625first-row cases allCOMPLETE, max15625combos/case,0.008s;210labelled matrices. Independent full-row-template join39031states/max777 percase reproduces all210, sixS5classes multiplicities15/60/30/60/30/15,0.069s. Every quotient has exactlyone internaldegree1 orbit. Frozen source/results/verifier; no graph/CNF/SAT launch or exclusion.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n80-m16-quotient/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T03:02:21.806Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T03:05:35.099Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T03:08:19.325Z",
+  "resolution": "PASS necessary quotient cover. Frozen source hashes exact. Independent cross-entry recursion0..4 with convex row completion bounds, no producer/template imports, checks diagonal0..2,row9,Q\u00b2diag<=24/offdiag<=16 and paired-involution obstruction. Exact210labelled matrices,43710states,.098s; six S5classes sizes15,15,30,30,60,60 and exactlyone internaldegree1 orbit per quotient. Reviewer dimension-copy error fixed before successful audit; no source retry. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2152. No graph lift/exclusion,CNF,SAT or Lean result.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
