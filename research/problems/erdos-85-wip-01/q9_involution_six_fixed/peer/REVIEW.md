@@ -1,0 +1,7 @@
+# Independent review 2238 — PASS
+
+All four submitted pins and the accepted 2220 premise digest verified. The paper classification is complete without enumeration. A universal degree-five fixed vertex forces the other induced degrees to be both even and at most one, hence zero. Otherwise every fixed degree is one or three. A degree-three vertex with no leaf neighbor would give six distinct nonreturning two-step endpoints among only five other vertices, impossible. Distinct degree-three vertices require different leaves, so there are at most three. Zero gives a matching; one fails the attached capacity; two force the double-star, whose capacity fails only at N78; three consume all leaves and force the triangle with one leaf at each vertex.
+
+Independently constructed the four representatives and all 720 vertex permutations of each. Exact labelled orbit counts are 15,6,120,90. Verified degrees, C4-freeness, all capacity conditions, and membership of every producer representative in the corresponding orbit. Counts and the three-versus-four order-specific lists match the saved output. The producer's full 32768-graph search was not replayed; completeness follows from the audited paper argument, while the independent finite check confirms the representatives and labelled counts.
+
+This accepts the fixed-graph classification only: N78 allows matching, star, or triangle with pendant leaves; N80 also allows the double-star. No residual graph existence or further case exclusion follows by itself.

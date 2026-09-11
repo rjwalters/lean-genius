@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "models": {
+    "matching": {
+      "labelled_count": 15,
+      "orders": [
+        78,
+        80
+      ]
+    },
+    "star": {
+      "labelled_count": 6,
+      "orders": [
+        78,
+        80
+      ]
+    },
+    "triangle_leaves": {
+      "labelled_count": 120,
+      "orders": [
+        78,
+        80
+      ]
+    },
+    "double_star": {
+      "labelled_count": 90,
+      "orders": [
+        80
+      ]
+    }
+  },
+  "source_pins": 4,
+  "scope": "Independent representative/permutation/capacity checks; completeness established by audited paper proof, no full32768 replay."
+}

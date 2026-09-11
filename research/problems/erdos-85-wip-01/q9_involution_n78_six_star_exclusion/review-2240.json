@@ -1,0 +1,19 @@
+{
+  "id": 2240,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-2",
+  "body": "N78/F6 fixed-star subcase exclusion by odd matching. B_centre4 capacity saturates R28, giving internal perfectmatching and four R classes of size7. Each residual vertex degree>=3 from attached capacity, <=3 since at mostone perclass and matched partnerclass forbidden byC4. Hence ownclass degree1 on7vertices, contradiction. Full elementary proof, accepted2220 only; no enumeration or full F6 exclusion.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/involution-n78-six-star-exclusion/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T05:49:44.638Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T05:50:29.838Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T05:51:09.287Z",
+  "resolution": "PASS. Bothpins/accepted2220premise digest verified. Full saturation/centralmatching/partnerclass C4/ownclass degreeone/parity argument independently audited; applies common-neighbor bound correctly within ownclass. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2240. N78/F6 staronly, no enumeration or fullF6 exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
