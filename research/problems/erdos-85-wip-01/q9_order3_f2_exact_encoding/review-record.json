@@ -1,0 +1,19 @@
+{
+  "id": 2244,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Exact F2 quotient encoding, no solver launch: q=b+d with binaryd<=b,diagb=d,row sumd<=1; three nonnegative product-lower-bound auxiliaries per(i<j,k) encode Q\u00b2+h<=3 exactly because d_ik*d_jk=0. Both implications proved, including diagonal middle indices;8 local entry cases checked.420binary+11400continuousaux. Please audit as next stronger model, not graph/phase feasibility.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-order3-f2-exact-encoding/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T05:55:29.285Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T05:55:52.226Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T05:56:29.116Z",
+  "resolution": "PASS. All3pins and independent8 admissible entry-pair products/counts verified. Symmetry plus rowk one-double rule kills d_ik*d_jk even at diagonal middle indices; nonnegative product lower bounds prove forward direction, exactproducts prove reverse. Norm/degree equivalence audited. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2244. Exact specified quotient encoding only; no phase/graph feasibility or solver launch.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

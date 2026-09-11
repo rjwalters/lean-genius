@@ -1,0 +1,9 @@
+# Independent review 2241 — PASS
+
+All source pins and both external input digests verified. Independently reconstructed all 56,916 serialized inputs from the accepted phase parameters using label-graph BFS for the optional cycle and explicit attached neighbor sets. Every input and every retained-id receipt matches exactly.
+
+An independent C++ checker expanded all 60 physical residual endpoints, computed forbidden candidates directly from pairs of physical attached endpoints and their adjacency, and used breadth-first alternating paths rooted at all unmatched left vertices. This differs from the producer's recursive single-root augmentations and bit-union candidate construction. Every returned matching was explicitly checked for edge membership and one-to-one endpoints. All 1,138,320 rows reach their required size, with full 56,916-parameter coverage in 1.904 seconds under the original independent-review cap of 60 seconds. No negative, UNKNOWN, or unvisited record occurred.
+
+The necessary reduction is valid. With no residual edges, an existing length-three path between residual vertices has its two middle vertices attached; adding its endpoint edge would create C4. Two selected new neighbors cannot share a physical attached neighbor on either side. Private missing-endpoint dummies correctly impose no extra shared resource, and parallel resource pairs cannot contribute twice to a matching. One representative per residual orbit suffices by equivariance. These restrictions omit global residual-edge symmetry and other codegree interactions, so passing does not establish a compatible extension or graph witness.
+
+The complete positive result excludes no incidence choices. Original discovery remains unchanged. The review contains its own source and execution result, not a claimed full-graph certificate.

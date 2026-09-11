@@ -1,0 +1,89 @@
+{
+  "status": "PASS",
+  "fixtures": 12,
+  "phases": [
+    0,
+    9484,
+    10138
+  ],
+  "exact_block_entries": 56160,
+  "degree_checks": 720,
+  "malformed_cases": 7,
+  "cli_checks": 2,
+  "seconds": 1.5796277499757707,
+  "details": [
+    {
+      "phase": 0,
+      "kind": "zero",
+      "valid": false,
+      "all_residual_degrees_nine": false
+    },
+    {
+      "phase": 0,
+      "kind": "degree_seven",
+      "valid": false,
+      "all_residual_degrees_nine": true
+    },
+    {
+      "phase": 0,
+      "kind": "dense",
+      "valid": false,
+      "all_residual_degrees_nine": false
+    },
+    {
+      "phase": 0,
+      "kind": "mixed",
+      "valid": false,
+      "all_residual_degrees_nine": false
+    },
+    {
+      "phase": 9484,
+      "kind": "zero",
+      "valid": false,
+      "all_residual_degrees_nine": false
+    },
+    {
+      "phase": 9484,
+      "kind": "degree_seven",
+      "valid": false,
+      "all_residual_degrees_nine": false
+    },
+    {
+      "phase": 9484,
+      "kind": "dense",
+      "valid": false,
+      "all_residual_degrees_nine": false
+    },
+    {
+      "phase": 9484,
+      "kind": "mixed",
+      "valid": false,
+      "all_residual_degrees_nine": false
+    },
+    {
+      "phase": 10138,
+      "kind": "zero",
+      "valid": false,
+      "all_residual_degrees_nine": false
+    },
+    {
+      "phase": 10138,
+      "kind": "degree_seven",
+      "valid": false,
+      "all_residual_degrees_nine": false
+    },
+    {
+      "phase": 10138,
+      "kind": "dense",
+      "valid": false,
+      "all_residual_degrees_nine": false
+    },
+    {
+      "phase": 10138,
+      "kind": "mixed",
+      "valid": false,
+      "all_residual_degrees_nine": false
+    }
+  ],
+  "graph_search_calls": 0
+}

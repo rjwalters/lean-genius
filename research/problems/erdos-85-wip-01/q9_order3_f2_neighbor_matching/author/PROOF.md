@@ -1,0 +1,15 @@
+# Phase-aware necessary neighbour matching bound
+
+Input is the complete56916 incidence parameter cover accepted2234. For one residual vertex x per residual orbit, its present degree is k in{0,1,2}; any extension to degree9 must choose9-k new residual neighbours. Considering one representative per orbit is sufficient because the partial graph and any permitted extension are invariant under the order3 action.
+
+If the current partial graph has a length3 path from x to y, adding xy creates aC4. Such a path between residual vertices has its two middle vertices attached, since there are no residual edges and residual vertices have no fixed neighbours. Thus forbidden targets are computed exactly by taking the attached neighbours of x, their attached neighbours, then the residual vertices incident with those latter vertices.
+
+Any two chosen new residual neighbours must have distinct attached neighbours on each fixed-centre side. Otherwise those two vertices, their shared attached neighbour and x form aC4. Each candidate target therefore represents an edge in a bipartite graph: its left endpoint is its actual A-neighbour, its right endpoint its actual B-neighbour. A missing attached neighbour gets a private dummy endpoint unique to that candidate, imposing no artificial shared resource. Multiple candidate targets may represent the same pair; retaining duplicate edges is harmless, since a matching still uses it at most once.
+
+The selected new neighbours must be a matching of size9-k. Therefore a maximum matching smaller than9-k would certify this incidence parameter impossible. The checker uses an integral augmenting-path algorithm, stopping early only once the required size is reached. For a failed test it would output a minimum vertex cover of smaller size, verifying that the cover meets every candidate edge; no failures occurred.
+
+This test deliberately omits simultaneous symmetry constraints on the chosen new edges, paired loop-orbit choices, two-new-edge codegrees, and interactions between different origins. It is a necessary upper bound only. A successful matching cannot be interpreted as a valid residual extension.
+
+prepare.py reconstructs normalized attached offsets and residual incidence endpoints from all accepted phase records. check.cpp scans each record, forms the candidate-resource graph for each of20 residual orbit representatives, and applies the matching bound. Original60s aggregate cap, no retry: all56916 parameters COMPLETE,1138320 row tests, zero exclusions, in1.265seconds. receipts.txt records each retained parameter id with -1. No case is UNKNOWN or unvisited. The complete positive result shows this local bound alone eliminates none of the incidence choices.
+
+Build: c++ -O2 -std=c++17 check.cpp -o check. Run with inputs.txt and receipts output path as positional arguments. The executable is not part of the frozen source evidence. This is a small necessary matching calculation, not a full graph solver or a rerun of any previously capped search.

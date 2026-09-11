@@ -1,0 +1,9 @@
+# Independent implementation review 2246 — PASS
+
+All five source pins and both input digests verified. Independently rebuilt the expected semantic constraints for all 117 accepted representatives, then compared every generated row by its name, coefficients, and bounds. The audit uses an explicitly filled symmetric matrix-index table, direct six-label attached adjacency intersections for margins, and a closed auxiliary-index formula. All 1,401,660 rows agree, with no duplicate, missing, or extra constraint names. All variable domains, metadata, word/missing-label expansions, source indices, pair orders, and null objectives match their specified meanings.
+
+All 117 canonical manifest hashes and lengths agree with the checked generated models; model zero agrees byte-for-byte with the stored JSON. This incorporates reproducibility only after independent semantic checking. The complete review took 7.470 seconds under its original 60-second cap, with no optimizer calls or unvisited model.
+
+The binary b/d interpretation is correct: d<=b, diagonal b=d, one double per row, and q=b+d give the intended symmetric integral quotient domain. For distinct origins i,j, even when the middle k equals an endpoint, d_ik*d_jk vanishes by symmetry and the row-k one-double condition. The three auxiliaries per middle therefore cover precisely the other binary products. Nonnegativity and lower bounds z>=u+v-1 make their sum upper bound necessary; choosing exact products proves sufficiency for the specified quotient inequalities, as accepted in 2244. Six physical attached-label marginal bounds were independently reconstructed from reserved local routes.
+
+The generator uses the documented absolute input paths and relies on the supplied inputs; this audit establishes correctness for their pinned contents. It does not encode graph phases, run an optimizer, or establish any quotient or graph feasibility result.

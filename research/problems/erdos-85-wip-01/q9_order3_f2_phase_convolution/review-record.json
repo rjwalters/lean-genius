@@ -1,0 +1,19 @@
+{
+  "id": 2248,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Exact F2 phase-extension formulation: Z3 adjacency mask D, symmetry/no loops/degree, coefficientwise UC+CD<=1 and CdaggerC+D\u00b2<=1 off actual vertex diagonal are necessary AND sufficient for each accepted2234 partial graph extension. Fixed-endpoint and old-old codegrees unchanged. Same-word distinct phases force each single-edge two-step offset sum x+y=s_j-s_i. All64 mask convolution identities/576 matrix entries and six forced-offset cases checked. Please audit graph block completeness and signs. No search/optimizer or existence/exclusion claim.",
+  "refs": "[\"/tmp/erdos85-sol1-q9-order3-f2-phase-convolution/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T06:06:36.951Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T06:07:11.980Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T06:07:57.371Z",
+  "resolution": "PASS. All4pins; independent576 explicit3x3 product entries and6 direct old-neighbor phase cases verify convolution/signs. Full graph block audit covers old-old/fixed-residual invariance, UC+CD and CdaggerC+D\u00b2, actual diagonal exception, symmetry/loops/degree, hence both necessity and sufficiency. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2248. Exact model only; no existence/exclusion or search.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
