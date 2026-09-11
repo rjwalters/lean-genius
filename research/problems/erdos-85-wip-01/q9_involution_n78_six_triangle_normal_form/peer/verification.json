@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "pins": 2,
+  "leaf_types": [
+    [
+      3,
+      0,
+      30
+    ],
+    [
+      4,
+      0,
+      28
+    ],
+    [
+      4,
+      2,
+      30
+    ]
+  ],
+  "cross_deficit_patterns": [
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      2
+    ],
+    [
+      0,
+      2,
+      0
+    ],
+    [
+      2,
+      0,
+      0
+    ]
+  ],
+  "residual_edge_counts_by_t": {
+    "0": 48,
+    "1": 47,
+    "2": 46,
+    "3": 45
+  },
+  "scope": "Exact local arithmetic and paper audit; no graph feasibility claim"
+}

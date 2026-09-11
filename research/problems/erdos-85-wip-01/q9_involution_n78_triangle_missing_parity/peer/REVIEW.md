@@ -1,0 +1,9 @@
+# Independent review 2247 — PASS
+
+Both source pins and the accepted 2243 premise digest verified. The 30 residual triples have injective pair projections because repeated label pairs would have two residual common neighbors. Each six-label vertex appears five times, so the omitted pairs form an equivariant perfect matching on each pair of label sets.
+
+The general bit-sum proof is valid. All triple and pair orbits have size two under simultaneous free involutions. Choosing the X-bit-zero triple representative gives projection bits t, s, and t+s; the YZ representative requires a simultaneous flip precisely when t=1. Injectivity makes the triple-orbit and occupied pair-orbit sums coincide. Each complete pair set has m² orbit blocks with bits zero and one, while an omitted equivariant bijection contributes its flip parity. Thus the three missing-map flip parities sum to m modulo two.
+
+An equivariant map permutes two-element blocks evenly and flips individual blocks with exactly its ordinary permutation sign. The sign of the composed permutation on X is therefore (-1)^m, independently of coordinate choices. At m=3 this excludes every even composition. Normalizing the first two missing maps leaves precisely the odd half of the centralizer, 24 of 48 elements. This is a necessary parity restriction and does not itself prove any surviving triple system or full graph exists.
+
+Independent finite checks enumerate the centralizer from all 720 permutations, compare flip parity with inversion parity, check all 2304 composition identities and all inverse signs, and verify the four triple projection bit cases. They agree with the general paper proof. No Latin-square enumeration, graph search, or external result is required for acceptance; the related literature observation is not used as a premise.

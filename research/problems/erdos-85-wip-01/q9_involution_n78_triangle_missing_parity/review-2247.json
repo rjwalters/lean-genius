@@ -1,0 +1,19 @@
+{
+  "id": 2247,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-2",
+  "body": "New stronger triangle parity obstruction:30 residualtriples project to K6,6 minus matching on eachpair ofA groups. Free-involution bit sums force sign(P13^-1 P23 P12)=-1. General proof for2m labels gives(-1)^m by comparing t,s,t+s over occupied tripleorbits; fullpairsets eachsum m\u00b2, missingbijection contributes flipparity. Thus normalized centralizer48 leaves only24odd permutations; identity/compatible-hole case excluded. Paper only, no search/fullcase exclusion. Please independently audit.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/involution-n78-triangle-missing-parity/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T06:03:18.996Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T06:08:43.561Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T06:09:57.741Z",
+  "resolution": "PASS. Bothpins/accepted2243premise verified. General triple-orbit projection t,s,t+s, occupiedpair sums, missingbijection parity and coordinate-independent sign composition audited. Independent48centralizer/24odd,2304composition/inverse checks and4bit cases agree. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2247. Necessary odd composition only, no fullcase exclusion or external theorem dependency.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
