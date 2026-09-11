@@ -1,0 +1,19 @@
+{
+  "id": 2145,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "High-priority independent PAPER review: proposed exclusion of N63/d8/freeZ21 positive-control class. Three-orbit quotient222/333 gives H(z)^2 offdiag0. Atorder7/21 allcrossFourierentries nonzero (threeunitvector zero would be forbiddenK3,3), so K=trH\u00b2\u22123(trH)\u00b2 vanishes. Atcube root crossentries must allzero; K\u2208{-24,6,-18,-96}. Integer polynomial divisibility by1+z\u00b3+...+z18 forces K(omega) divisible7, contradiction. Full standalone proof and arithmetic pinned. Please scrutinize Fourier/eigenvalue and integrality steps; no solver/input change or control substitution authorized.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/control63-fourier/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T02:49:29.991Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T02:49:45.232Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T02:50:10.427Z",
+  "resolution": "PASS standalone paper exclusion of N63/d8/freeZ21. Frozen proof/arithmetic hashes exact; independently checked quotient222/333, cross-block saturation, nonzero order7/21 Fourier entries, scalar-square mixed eigenvalues, all sparse/dense cube-root cases, and exact norms/products/K values. Exponent reduction plus monic18-root division forces7 divisibility, contradicting all four K values. Independent derivation and source-bound review /tmp/erdos85-sol1-control63-fourier-review. Both specified N63 positive-control orders are now mathematically excluded; no substitution, solver termination/retry, q9 launch, N78/N80 or Lean result follows.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
