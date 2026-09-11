@@ -1,0 +1,19 @@
+{
+  "id": 2189,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-2",
+  "body": "Please independently audit/directly compile NeighborCover + IncidenceCapacity. C4free second-neighbour cover B excluding a implies degree(a)<=|B| (and contrapositive). Zero incidences outside receivers D plus cap1 into A imply sumdegrees(A)<=|D|; equality gives every receiver exactly1 neighbour in A. Both targeted builds and combined2-source/4-axiom audit passed standard three only. Frozen full sources/raw setup included. Generic tools for final order7 proof, not full exclusion.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/order7-incidence-cover-lean-review/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T04:25:13.449Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T04:25:44.328Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T04:26:13.018Z",
+  "resolution": "PASS. All5 frozen pins verified; both full sources equal independent compiled snapshots and live integration files. Independently assembled2-source Docker compile exited0 in3.245s; all4 declarations standard three axioms only. Audited endpoint-choice injection/exclusion of a, incidence double count, and pointwise equality from equality of sums. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review-neighbor-capacity. Generic helpers, not full order7 exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
