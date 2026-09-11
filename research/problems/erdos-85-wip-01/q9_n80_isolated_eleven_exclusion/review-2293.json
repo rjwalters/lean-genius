@@ -1,0 +1,19 @@
+{
+  "id": 2293,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "New paper exclusion of isolated e(R)=11 in N80/F10 cubic-fixed branch. Orbit degrees0,2,3,3,3. Two-step walk bound into R10 forces every attached k2/k3 orbit to meet isolation, hence T_g0=delta_g and E(x,B_g)=delta_g-1[g~f]. Missed f ordinary by 3>2. Delta2 neighbor has total commutation slack<=0 but isolated E count1; four211 extra center likewise slack<=0 but count1. Thus e(R)<=10, total deficit>=5 for every H. Uses only accepted2251/2287; no finite enumeration or triangle assumption. Please audit exact orbit counts, walk bound and both deficit cases.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n80-isolated-eleven-exclusion/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T07:31:26.665Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T07:31:51.465Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T07:32:50.783Z",
+  "resolution": "PASS. Both packet/two premise pins and accepted2251/2287 verified. Independent exact commutation, 10-endpoint walk bound, high-orbit isolation coverage, T_g0=delta, and both deficit-distribution slack contradictions audited. Evidence /tmp/erdos85-sol1-review2293. Isolation forces e(R)<=10,delta total>=5 for every H; no full isolation/N80 exclusion or Lean claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
