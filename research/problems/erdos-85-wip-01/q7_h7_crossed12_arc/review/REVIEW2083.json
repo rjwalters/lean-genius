@@ -1,0 +1,45 @@
+{
+  "review": 2083,
+  "status": "PASS",
+  "scope": "Whole crossed12 profile excluded; no full H7/global/Lean claim.",
+  "complete_assignments": 3780,
+  "local_negatives": 255,
+  "arc_negatives": 3525,
+  "complete_rows": 2798734,
+  "deletion_batches": 86996,
+  "failed_supports": 2040955,
+  "source_pins": {
+    "arc_filter.py": "25dcecdc2d342c4c8df04bcd53147ef30f91ddeb3f8a15990928bf6044aee5c9",
+    "cover_verify.py": "a3c5be5bef298b8f11adcdf74820caf989b50d8c844a5ebd134ab8b8e930788c",
+    "summary.json": "28c7c15cb8d453df353ab5a1be0b90a7df9ccb5ed93e3151165d1bd6c52d7cb8",
+    "run.py": "aafef1d7b3ee59b6f654888f0f5fe09c78097e086852b090ee9f4345246f8590",
+    "source-join.json": "d4a1ca3d36f894197b0b78bb922181e51a27d6fb33b60abbb9cb47a1263a0a3c",
+    "local_filter.py": "b2db79822c2be45dee5b17d545dab87037d766d8ddf777fe6bf751c8c5fb4ca2",
+    "profile-source.json": "ea7110dca75c80d46d382097c5e0faf1c0cfd24cbd01e158f120d8925737bcab",
+    "seed-source.json": "406218cebcabd02f19fa1ff160b52c0922bdfa4f985ba97a0383e2b1850f567c",
+    "README.md": "2d68d4d26ce20a2bce58ecf546a70abc28ad1340a72c38f604fb51f99d34ecd3",
+    "results.json.gz": "cdd4e7accf7b25038c3aa8180fd03735f91b2aa733ae1011079fec501520f67f",
+    "cover-verification.json": "30915c1a0c67dd1a07ff40729c083dc72c3ba5ba3b6ad6e8d4443b79f4fe1646",
+    "input-pins.json": "e1015c5b3b17229cd9a801232e01c41067644125be4e373bc392983236cb26db",
+    "verification.json": "db8864847515a0ca29587658743455fcb7048f592d31135c7a0085724bb7f0e7",
+    "verify.py": "f5479bf4d29898f51299a38c1436df23b23780b304186048ec0d27968d688a8b"
+  },
+  "cover": {
+    "status": "COMPLETE",
+    "nodes": 81368,
+    "raw_assignments": 15120,
+    "stabilizer": 4,
+    "canonical_representatives_checked": 3780,
+    "orbit_size_histogram": {
+      "4": 3780
+    },
+    "seconds": 0.7581338749732822,
+    "source_pins": {
+      "/Users/rwalters/lean-genius-q7-outside-first-20260910/h7-crossed12-arc/profile-source.json": "ea7110dca75c80d46d382097c5e0faf1c0cfd24cbd01e158f120d8925737bcab",
+      "/tmp/erdos85-sol1-h7-high0-cover/results.json": "406218cebcabd02f19fa1ff160b52c0922bdfa4f985ba97a0383e2b1850f567c",
+      "/tmp/erdos85-sol1-h7-pair-host-reduction/results.json": "75ad05ec99213db282921d0dd3047deae10fb9439d4e878d4683eb9a9b099e3c"
+    },
+    "scope": "Independent dynamic minimum-domain host enumeration WITHOUT symmetry pruning; full orbit sets partition rawdomain exactly into supplied3780representatives. One complete crossed12 domain only; no old UNKNOWN profiles rerun."
+  },
+  "method": "Independent direct candidate-subset complete domain enumeration and final-neighbour intersection deletion replay, plus unsymmetrized dynamic host enumeration and disjoint full symmetry orbit cover. Original source extraction and author source graph audit also checked."
+}

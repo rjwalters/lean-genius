@@ -1,0 +1,101 @@
+{
+  "review": 2079,
+  "status": "PASS",
+  "cases": [
+    {
+      "sample": 0,
+      "cap": 0,
+      "status": "UNKNOWN",
+      "nodes": 1,
+      "entire_results_equal": true
+    },
+    {
+      "sample": 0,
+      "cap": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001,
+      "entire_results_equal": true
+    },
+    {
+      "sample": 0,
+      "cap": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 23813,
+      "entire_results_equal": true
+    },
+    {
+      "sample": 1,
+      "cap": 0,
+      "status": "UNKNOWN",
+      "nodes": 1,
+      "entire_results_equal": true
+    },
+    {
+      "sample": 1,
+      "cap": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001,
+      "entire_results_equal": true
+    },
+    {
+      "sample": 1,
+      "cap": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 24052,
+      "entire_results_equal": true
+    },
+    {
+      "sample": 2,
+      "cap": 0,
+      "status": "UNKNOWN",
+      "nodes": 1,
+      "entire_results_equal": true
+    },
+    {
+      "sample": 2,
+      "cap": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001,
+      "entire_results_equal": true
+    },
+    {
+      "sample": 2,
+      "cap": 100000,
+      "status": "INFEASIBLE_LOCAL",
+      "nodes": 11659,
+      "entire_results_equal": true
+    },
+    {
+      "sample": 3,
+      "cap": 0,
+      "status": "UNKNOWN",
+      "nodes": 1,
+      "entire_results_equal": true
+    },
+    {
+      "sample": 3,
+      "cap": 1000,
+      "status": "UNKNOWN",
+      "nodes": 1001,
+      "entire_results_equal": true
+    },
+    {
+      "sample": 3,
+      "cap": 100000,
+      "status": "INFEASIBLE_ARC",
+      "nodes": 23529,
+      "entire_results_equal": true
+    }
+  ],
+  "guest_pair_identity_checks": 2244,
+  "expired_deadline_cases": 4,
+  "pins": {
+    "check.py": "44d95735f893ccca817ebb74933a460978f59cfdde64a9c1322905eb5d3b197e",
+    "results.json": "039f9149c58f53c014814d0f5ea092672f125d9d11ac89767fe81e49339d26bc",
+    "README.md": "998dde477758f155eebb658f908e854077bd9f3b42e92db700b1d5adb1a577cc",
+    "original.py": "924ef0f9ded38bb5c2befe59570e2ed77ee6921542321c5a678de02a0f7e7f95",
+    "filter.py": "25dcecdc2d342c4c8df04bcd53147ef30f91ddeb3f8a15990928bf6044aee5c9"
+  },
+  "proof": "Input premises give guest-neighbour set=highsupport union singletonhost. Distinct DFSgroups ensure distinct hosts; subset-of-left then XOR ensures pairwise disjoint high supports. Removed intersection predicate is therefore always true on reachable choices. Existing graph immutable, so precomputed common-neighbour limits exactly equal previous expression. Both edits leave branching order/ticks/domains/events identical under a node budget; wall clock stopping times may differ.",
+  "scope": "API equivalence only; no new profile/exclusion or retry of a capped research case. Four already terminal fixed examples tested, including intentional budget-control tests."
+}

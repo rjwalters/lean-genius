@@ -1,0 +1,27 @@
+{
+  "review": 2078,
+  "status": "PASS",
+  "scope": "Complete crossed11 H7 host-profile exclusion under reviewed normalization premises. No wholeH7/Lean/global claim.",
+  "census": {
+    "raw_count": 12960,
+    "representatives": 1647,
+    "independent_count_states": 4117,
+    "orbit_sizes": {
+      "2": 18,
+      "4": 27,
+      "8": 1602
+    },
+    "proof": "Independent reverse-host DP count; explicit disjoint8action orbit union equals complete rawcount. Exact profile extraction equals original census source."
+  },
+  "negatives": {
+    "local": 319,
+    "arc": 1328,
+    "complete_rows": 1046900,
+    "events": 22787,
+    "failed_supports": 612028,
+    "generation_nodes": 15776466,
+    "seconds": 8.967685665935278
+  },
+  "method": "Rebuilt all1647hostgraphs from canonical assignments and matched exact recorded adjacency. Independent direct candidate-subset DFS regenerated every arc-domain rowset and excluded each specified local row. Replayed all sequential deletions using full final-neighbour intersections and checked distinct eventvertices. Exact1647index cover, no unknown/unvisited.",
+  "validation": "All14submission pins checked before/after. ArcAPI byte-identical to2071reviewed source. No author generator imports. Independent percase100000generationnode/60secondtotal limits respected. No old cappedprofile or completion retried."
+}

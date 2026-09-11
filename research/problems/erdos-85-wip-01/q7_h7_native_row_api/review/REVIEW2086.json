@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "author_payload_pins": 11,
+  "independent_fixture_results": "results.json",
+  "boundary_test": "boundary.cpp compiled with UBSan, terminal exit0; INT_MAX-1 -> INT_MAX -> INT_MAX+1/Limit and expired absolute deadline tested directly without search",
+  "source_audit": [
+    "Outside/host ordering, candidate eligibility and group sort match2079.",
+    "Skip-first recursion and ascending candidates enumerate the identical ordered complete rows; selected masks are unique because groups are disjoint.",
+    "Arc pair iteration and support iteration match; deletions commit only after a complete batch.",
+    "Both generation and arc exceptions discard only unfinished local work, preserving preceding initial domains/events and yielding UNKNOWN.",
+    "Validation covers symmetric loopless 49-vertex host inputs with degree, C4 and outside-host requirements.",
+    "ctypes uint64 masks, JSON integer masks and dictionary-key recovery preserve all bits. Thread-local native string remains valid through returned-byte copying.",
+    "Absolute clock agrees with Python monotonic; research limits remain100000 and deadlines unchanged.",
+    "Counter widened to int64_t fixes accepted INT_MAX overflow; only that source line changed."
+  ],
+  "scope": "Implementation equivalence under reviewed complete H7 host-graph premises, supported by source audit and independent fixed-fixture tests. No new profile or global/Lean exclusion."
+}

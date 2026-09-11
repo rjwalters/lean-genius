@@ -1,0 +1,821 @@
+{
+  "status": "PASS_FIXTURE_EQUIVALENCE",
+  "fixtures": 10,
+  "comparisons": 100,
+  "expired_deadlines": 20,
+  "invalid_inputs_rejected": 5,
+  "statuses": {
+    "UNKNOWN": 80,
+    "INFEASIBLE_LOCAL": 10,
+    "INFEASIBLE_ARC": 10
+  },
+  "unknown_stages": {
+    "GENERATION": 75,
+    "ARC": 5
+  },
+  "clock_delta": 4.998873919248581e-07,
+  "source_sha256": "b0128564867d6e825919b561449f6df9305e22046cec8d687fd247d623ef09a5",
+  "records": [
+    {
+      "assignment_index": 12,
+      "cap": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 12,
+      "cap": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 12,
+      "cap": 2,
+      "nodes": 3,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 12,
+      "cap": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 12,
+      "cap": 255,
+      "nodes": 256,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 12,
+      "cap": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 12,
+      "cap": 6332,
+      "nodes": 6333,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 12,
+      "cap": 12664,
+      "nodes": 12665,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 12,
+      "cap": 12665,
+      "nodes": 12665,
+      "status": "INFEASIBLE_LOCAL",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "assignment_index": 12,
+      "cap": 100000,
+      "nodes": 12665,
+      "status": "INFEASIBLE_LOCAL",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "assignment_index": 35,
+      "cap": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 35,
+      "cap": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 35,
+      "cap": 2,
+      "nodes": 3,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 35,
+      "cap": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 35,
+      "cap": 255,
+      "nodes": 256,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 35,
+      "cap": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 35,
+      "cap": 7445,
+      "nodes": 7446,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 35,
+      "cap": 14890,
+      "nodes": 14891,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 35,
+      "cap": 14891,
+      "nodes": 14891,
+      "status": "INFEASIBLE_LOCAL",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "assignment_index": 35,
+      "cap": 100000,
+      "nodes": 14891,
+      "status": "INFEASIBLE_LOCAL",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "assignment_index": 715,
+      "cap": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 715,
+      "cap": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 715,
+      "cap": 2,
+      "nodes": 3,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 715,
+      "cap": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 715,
+      "cap": 255,
+      "nodes": 256,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 715,
+      "cap": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 715,
+      "cap": 6273,
+      "nodes": 6274,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 715,
+      "cap": 12545,
+      "nodes": 12546,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 715,
+      "cap": 12546,
+      "nodes": 12546,
+      "status": "INFEASIBLE_LOCAL",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "assignment_index": 715,
+      "cap": 100000,
+      "nodes": 12546,
+      "status": "INFEASIBLE_LOCAL",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "assignment_index": 1169,
+      "cap": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1169,
+      "cap": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1169,
+      "cap": 2,
+      "nodes": 3,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1169,
+      "cap": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1169,
+      "cap": 255,
+      "nodes": 256,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1169,
+      "cap": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1169,
+      "cap": 7745,
+      "nodes": 7746,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1169,
+      "cap": 15490,
+      "nodes": 15491,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1169,
+      "cap": 15491,
+      "nodes": 15491,
+      "status": "INFEASIBLE_LOCAL",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "assignment_index": 1169,
+      "cap": 100000,
+      "nodes": 15491,
+      "status": "INFEASIBLE_LOCAL",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "assignment_index": 1918,
+      "cap": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1918,
+      "cap": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1918,
+      "cap": 2,
+      "nodes": 3,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1918,
+      "cap": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1918,
+      "cap": 255,
+      "nodes": 256,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1918,
+      "cap": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1918,
+      "cap": 6392,
+      "nodes": 6393,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1918,
+      "cap": 12783,
+      "nodes": 12784,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1918,
+      "cap": 12784,
+      "nodes": 12784,
+      "status": "INFEASIBLE_LOCAL",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "assignment_index": 1918,
+      "cap": 100000,
+      "nodes": 12784,
+      "status": "INFEASIBLE_LOCAL",
+      "stage": null,
+      "events": 0
+    },
+    {
+      "assignment_index": 2,
+      "cap": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 2,
+      "cap": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 2,
+      "cap": 2,
+      "nodes": 3,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 2,
+      "cap": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 2,
+      "cap": 255,
+      "nodes": 256,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 2,
+      "cap": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 2,
+      "cap": 12644,
+      "nodes": 12645,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 2,
+      "cap": 25287,
+      "nodes": 25288,
+      "status": "UNKNOWN",
+      "stage": "ARC",
+      "events": 10
+    },
+    {
+      "assignment_index": 2,
+      "cap": 25288,
+      "nodes": 25288,
+      "status": "INFEASIBLE_ARC",
+      "stage": null,
+      "events": 11
+    },
+    {
+      "assignment_index": 2,
+      "cap": 100000,
+      "nodes": 25288,
+      "status": "INFEASIBLE_ARC",
+      "stage": null,
+      "events": 11
+    },
+    {
+      "assignment_index": 8,
+      "cap": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 8,
+      "cap": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 8,
+      "cap": 2,
+      "nodes": 3,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 8,
+      "cap": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 8,
+      "cap": 255,
+      "nodes": 256,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 8,
+      "cap": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 8,
+      "cap": 14319,
+      "nodes": 14320,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 8,
+      "cap": 28637,
+      "nodes": 28638,
+      "status": "UNKNOWN",
+      "stage": "ARC",
+      "events": 31
+    },
+    {
+      "assignment_index": 8,
+      "cap": 28638,
+      "nodes": 28638,
+      "status": "INFEASIBLE_ARC",
+      "stage": null,
+      "events": 32
+    },
+    {
+      "assignment_index": 8,
+      "cap": 100000,
+      "nodes": 28638,
+      "status": "INFEASIBLE_ARC",
+      "stage": null,
+      "events": 32
+    },
+    {
+      "assignment_index": 621,
+      "cap": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 621,
+      "cap": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 621,
+      "cap": 2,
+      "nodes": 3,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 621,
+      "cap": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 621,
+      "cap": 255,
+      "nodes": 256,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 621,
+      "cap": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 621,
+      "cap": 14106,
+      "nodes": 14107,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 621,
+      "cap": 28211,
+      "nodes": 28212,
+      "status": "UNKNOWN",
+      "stage": "ARC",
+      "events": 17
+    },
+    {
+      "assignment_index": 621,
+      "cap": 28212,
+      "nodes": 28212,
+      "status": "INFEASIBLE_ARC",
+      "stage": null,
+      "events": 18
+    },
+    {
+      "assignment_index": 621,
+      "cap": 100000,
+      "nodes": 28212,
+      "status": "INFEASIBLE_ARC",
+      "stage": null,
+      "events": 18
+    },
+    {
+      "assignment_index": 922,
+      "cap": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 922,
+      "cap": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 922,
+      "cap": 2,
+      "nodes": 3,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 922,
+      "cap": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 922,
+      "cap": 255,
+      "nodes": 256,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 922,
+      "cap": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 922,
+      "cap": 14725,
+      "nodes": 14726,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 922,
+      "cap": 29450,
+      "nodes": 29451,
+      "status": "UNKNOWN",
+      "stage": "ARC",
+      "events": 25
+    },
+    {
+      "assignment_index": 922,
+      "cap": 29451,
+      "nodes": 29451,
+      "status": "INFEASIBLE_ARC",
+      "stage": null,
+      "events": 26
+    },
+    {
+      "assignment_index": 922,
+      "cap": 100000,
+      "nodes": 29451,
+      "status": "INFEASIBLE_ARC",
+      "stage": null,
+      "events": 26
+    },
+    {
+      "assignment_index": 1916,
+      "cap": 0,
+      "nodes": 1,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1916,
+      "cap": 1,
+      "nodes": 2,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1916,
+      "cap": 2,
+      "nodes": 3,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1916,
+      "cap": 31,
+      "nodes": 32,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1916,
+      "cap": 255,
+      "nodes": 256,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1916,
+      "cap": 1000,
+      "nodes": 1001,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1916,
+      "cap": 15087,
+      "nodes": 15088,
+      "status": "UNKNOWN",
+      "stage": "GENERATION",
+      "events": 0
+    },
+    {
+      "assignment_index": 1916,
+      "cap": 30173,
+      "nodes": 30174,
+      "status": "UNKNOWN",
+      "stage": "ARC",
+      "events": 36
+    },
+    {
+      "assignment_index": 1916,
+      "cap": 30174,
+      "nodes": 30174,
+      "status": "INFEASIBLE_ARC",
+      "stage": null,
+      "events": 37
+    },
+    {
+      "assignment_index": 1916,
+      "cap": 100000,
+      "nodes": 30174,
+      "status": "INFEASIBLE_ARC",
+      "stage": null,
+      "events": 37
+    }
+  ],
+  "scope": "Independent compilation, different previously terminal crossed9 fixtures only. No new search or capped-case retries."
+}
