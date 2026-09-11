@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "utc": "2026-09-11T18:48:16.369017+00:00",
+  "controller_pid": 2747,
+  "old_controller_gone": true,
+  "controller_working_directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls",
+  "source_only_notifier_change": true,
+  "ledger_unchanged": true,
+  "state_lists_preserved": true,
+  "heartbeat_age_seconds": 0.51835,
+  "live_processes": "  PID ELAPSED COMMAND\n 2747   02:41 /opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -u campaign.py --run\n35546   53:07 /opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -u /Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py run --n 80 --d 9 --m 10 --cnf /tmp/erdos85-sol1-q9-n80-m10/graph.cnf --metadata /tmp/erdos85-sol1-q9-n80-m10/map.json --seed 0 --retry\n35563   53:07 /opt/homebrew/Cellar/kissat/4.0.4/bin/kissat --sat --strict --no-color --seed=0 --time=14400 /Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/005-N80-m10/input.cnf\n38290   52:37 /opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -u /Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py run --n 80 --d 9 --m 8 --cnf /tmp/erdos85-sol1-q9-n80-m8/graph.cnf --metadata /tmp/erdos85-sol1-q9-n80-m8/map.json --seed 0 --retry\n38298   52:37 /opt/homebrew/Cellar/kissat/4.0.4/bin/kissat --sat --strict --no-color --seed=0 --time=14400 /Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/006-N80-m8/input.cnf\n",
+  "verified_source_hashes": {
+    "campaign.py": "e67b5b99726594be09a24efc8674384d3d7a45c270f28a0c6506b8453c64a886",
+    "campaign-plan.json": "888651f8b5e7fa4daaaeecf435a1f014f5332a9ca16c0f73c701cf2de1ffa2b5",
+    "runner_launch.py": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+  }
+}

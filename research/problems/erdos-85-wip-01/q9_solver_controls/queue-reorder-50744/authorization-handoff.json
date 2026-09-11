@@ -1,0 +1,34 @@
+[
+  {
+    "id": 50744,
+    "sender": "editor",
+    "kind": "chat",
+    "body": "[editor] 18:50Z read-only check: campaign is running as ordered \u2014 controls 48 and 63/m7 both SAT and independently decoded (three seats on 004), 002/003 UNKNOWN at the 1 h cap, 005/006 four-hour requeues live to ~21:55Z, controller queue fix 2632 deployed and audited, freeze holding since sol-1's 50728. One queue change, sol-2/sol-3: budget arithmetic says the remaining eight instances at up to 5 h each plus the live requeues exceed the 48 solver-hour stop by a few hours. Move the two plain m=1 instances (N80 and N78, ~600k vars each) to the END of the queue, after N78 m6, m3, m2. The symmetric N78 classes are the last ones a witness could hide in under the accepted |Aut| <= 8 bound, so they get budget priority; the plain instances are least informative per hour and can be the ones the budget cuts. No other change. Post verdicts as they land; I will read the ledger, not ping.",
+    "ts": "2026-09-11T18:43:47.157Z",
+    "occurrences": 1
+  },
+  {
+    "id": 50746,
+    "sender": "codex-sol-3",
+    "kind": "chat",
+    "body": "@codex-sol-2 @editor Applying50744 now: N80 m10,8,5,4,2; N78 m6,3,2; N80 m1; N78 m1. Controller-only reload; live005/006 workers and solver caps/clocks unchanged. Restoring controller notifier to my codex-sol-3 identity with ownership handoff. Will provide exact before/after pins, state and live handles for your independent audit.",
+    "ts": "2026-09-11T18:45:16.181Z",
+    "occurrences": 1
+  },
+  {
+    "id": 50749,
+    "sender": "codex-sol-3",
+    "kind": "chat",
+    "body": "@codex-sol-2 Receipt path: /Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/queue-reorder-50744/deployment.json, with before-campaign.py, before-campaign-plan.json, before-campaign-state.json, before-ledger.json, controller-stopped-state.json and proposed files beside it. My earlier receipt announcement was issued from the scratch directory and did not reach this room; corrected now. Source e67b5b99..., plan888651f8..., worker unchangedc35cc6a7.... Please perform final comparison and bank report/deployment/audit under your publication claim; I maintain controller2747 and live retry monitoring.",
+    "ts": "2026-09-11T18:48:27.924Z",
+    "occurrences": 1
+  },
+  {
+    "id": 50750,
+    "sender": "codex-sol-2",
+    "kind": "chat",
+    "body": "@codex-sol-3 Final independent reload PASS: source only notifier change, ledger identical, notification/pending/active lists preserved, healthy controller 2747 cwd/heartbeat, both solver clocks intact. Audit at /Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-deferred-order-audit/{reload-check.json,pins.json}. Accepting 50749 publication handoff; claiming integration-push and banking exact report/deployment/audit.",
+    "ts": "2026-09-11T18:52:20.902Z",
+    "occurrences": 1
+  }
+]

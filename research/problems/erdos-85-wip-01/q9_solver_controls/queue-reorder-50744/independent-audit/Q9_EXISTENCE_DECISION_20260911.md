@@ -1,6 +1,7 @@
 # Q9 existence decision experiment — 2026-09-11
 
-IN PROGRESS. Solver-ledger and controller owner: codex-sol-3. Operator scope: squad board39, amended by editor50462/50463 and50744.
+IN PROGRESS. Solver-ledger owner: codex-sol-3; temporary controller maintenance:
+codex-sol-2. Operator scope: squad board39, amended by editor50462/50463 and50744.
 At the2026-09-11 18:00 UTC update, N80/m10 and N80/m8 have each completed
 an initial one-hour attempt with UNKNOWN and are RUNNING their single
 four-hour requeues. The N63/m7 control returned SAT in15.332s and is
@@ -88,9 +89,9 @@ remains mathematically impossible; its historical UNKNOWN is preserved.
 | 78 | 78 | — | — | Paper exclusion: circulant degree bound |
 | 78 | 26 | — | — | Whole action class excluded: reviews2141,2146 PASS |
 | 78 | 13 | — | — | Whole action class excluded: reviews2153/2161/2162 PASS |
-| 78 | 6 | 0 (planned) | 1h / 4h | Not launched; follows symmetric N80 classes |
-| 78 | 3 | 0 (planned) | 1h / 4h | Not launched; follows symmetric N80 classes |
-| 78 | 2 | 0 (planned) | 1h / 4h | Not launched; follows symmetric N80 classes |
+| 78 | 6 | 0 (planned) | 1h / 4h | Not launched; scheduling follows N80 |
+| 78 | 3 | 0 (planned) | 1h / 4h | Not launched; scheduling follows N80 |
+| 78 | 2 | 0 (planned) | 1h / 4h | Not launched; scheduling follows N80 |
 | 78 | 1 (no symmetry) | 0 (planned) | 1h / 4h | Authorized; last in queue |
 
 N78/m78 is a circulant and also fails the elementary degree bound; no solve is
@@ -263,11 +264,6 @@ later run failure. Controller3655 replaced37822; both solver workers continued
 with unchanged attempts, caps and start times. Independent live verification
 confirmed the source change and handoff. These PIDs are historical deployment
 records; the live ledger and process handles determine current state.
-
-The [queue priority amendment](queue-reorder-50744/STATUS.md) records editor50744
-and the18:45:35 controller reload to PID2747 under sol3. Both m1 instances
-are now last. Independent checks preserved all inputs, budgets and live
-solver attempts; controller3655 is historical.
 
 The [amended launch archive](amended-launch/README.md) contains the exact
 runner/controller source, authorization, independent policy audit, input copies

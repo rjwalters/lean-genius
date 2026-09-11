@@ -1,0 +1,92 @@
+{
+  "status": "PASS",
+  "utc": "2026-09-11T18:47:07.787266+00:00",
+  "expected_order": [
+    [
+      80,
+      10
+    ],
+    [
+      80,
+      8
+    ],
+    [
+      80,
+      5
+    ],
+    [
+      80,
+      4
+    ],
+    [
+      80,
+      2
+    ],
+    [
+      78,
+      6
+    ],
+    [
+      78,
+      3
+    ],
+    [
+      78,
+      2
+    ],
+    [
+      80,
+      1
+    ],
+    [
+      78,
+      1
+    ]
+  ],
+  "unchanged_task_records": true,
+  "unchanged_budgets_and_controls": true,
+  "verified_input_hashes": {
+    "/tmp/erdos85-sol1-q9-control63-m7-proposed/graph.cnf": "bcb604577a885476d7df5612c1ef5e9c48d2e2bb27cb7f5453468ac9ae27c5b6",
+    "/tmp/erdos85-sol1-q9-control63-m7-proposed/map.json": "75d777a74f9dd08acaae9aa30a997578ca63ffe222ad745d5a372c7785d2ae08",
+    "/tmp/erdos85-sol1-q9-n80-m10/graph.cnf": "563cce8198a9b24202d675cc161281c5b0b2b57483def22d08069700b421306a",
+    "/tmp/erdos85-sol1-q9-n80-m10/map.json": "c33adf59620d5341b94b20e842b2f18d8c0fa031c35a4bdb1d6d520252ebb167",
+    "/tmp/erdos85-sol1-q9-n80-m8/graph.cnf": "6320d7926bed1f79e4dc08ddeb9349f58ed725c18549acf11670c11d244c2b9b",
+    "/tmp/erdos85-sol1-q9-n80-m8/map.json": "d9ee7f6b55d5009eabd090abeb05c446dc47ff116f3fdb48ceef7247c53a660e",
+    "/tmp/erdos85-sol1-q9-n80-m5/graph.cnf": "c08853f356a15fc94d007b3cc21ff9afeabad6fb42baafcb2b1fe49b926ff8f2",
+    "/tmp/erdos85-sol1-q9-n80-m5/map.json": "295bd7e961928149dbb16915c8404f29f4fad3428c35cf21bee1094cb66c2bd6",
+    "/tmp/erdos85-sol1-q9-n80-m4/graph.cnf": "0f8716a837c8cf044efb2242000f967947962ba43d10f09d38c619f8f9b0c365",
+    "/tmp/erdos85-sol1-q9-n80-m4/map.json": "19be92066d37db20616c3ae7b9f82c979e1d9eb8f44a403378468618dec14fee",
+    "/tmp/erdos85-sol1-q9-n80-m2/graph.cnf": "33bc0915636db8c2413a724c4a0fed7bb9044baab64cefd654139bae58b491fa",
+    "/tmp/erdos85-sol1-q9-n80-m2/map.json": "cf84f3433c51c29fc828237f5635a6575c60f869244509a5290d856d015d97de",
+    "/tmp/erdos85-sol1-q9-n78-m6/graph.cnf": "e7e37ad40f4b698cd9c5f3a9497729047073fbcc18a260a0fcf36a8bbfa8a738",
+    "/tmp/erdos85-sol1-q9-n78-m6/map.json": "e6ca21f827450e43f1b36088c9f8170257888303d4c32065785259b5d7eb4bf4",
+    "/tmp/erdos85-sol1-q9-n78-m3/graph.cnf": "5c17c1956e24ebcff71c6623e5f7b77c2882fcfc3fb5ba31246675d310a20c58",
+    "/tmp/erdos85-sol1-q9-n78-m3/map.json": "5a50eb6738389de84a8caa36dc4a01c23abc7f5203ba6edffa1e896b5fe060d6",
+    "/tmp/erdos85-sol1-q9-n78-m2/graph.cnf": "2231a42b68dcd1e7bc19edf8e1679f5e83f547455b842278f1870e80818680b9",
+    "/tmp/erdos85-sol1-q9-n78-m2/map.json": "b948b695e867d2e13715ec611e69dfb1ce24fe5704c265e38d0ef8824e8df8e0",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n80-size-check/graph.cnf": "c5591e61c0e7cff2349aa5fca9b004cae7e9d8ce116933af179a8bad0c00fc7d",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n80-size-check/map.json": "b153f1c105d0213a72627dcc16cafd9dd266bc6b5948d1b08563abcbce4e1536",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n78-size-check/graph.cnf": "47f04c0a368313a73f6cbd04dbbd161a1f664372775853078424b30d69b7caa3",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n78-size-check/map.json": "b7681f5e6f2e4b6665289b1e0d5ad7a9ec6756a2ad45379ec812f353a036a24c"
+  },
+  "pure_selection_cases": 12,
+  "active_requeues": [
+    {
+      "id": 5,
+      "pid": 35563,
+      "started_utc": "2026-09-11T17:55:09.761192+00:00",
+      "cap_seconds": 14400
+    },
+    {
+      "id": 6,
+      "pid": 38298,
+      "started_utc": "2026-09-11T17:55:39.973618+00:00",
+      "cap_seconds": 14400
+    }
+  ],
+  "source_hashes": {
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/campaign-plan.json": "888651f8b5e7fa4daaaeecf435a1f014f5332a9ca16c0f73c701cf2de1ffa2b5",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/campaign.py": "e67b5b99726594be09a24efc8674384d3d7a45c270f28a0c6506b8453c64a886"
+  },
+  "scope": "Read-only plan/input/selection and live-requeue audit; controller reload is separately verified by its deployment receipt."
+}
