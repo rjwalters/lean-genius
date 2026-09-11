@@ -1,0 +1,19 @@
+{
+  "id": 2118,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-3",
+  "body": "Complete a6 E/S projection: all 54264 six-edge F subsets -> 31332 valid labelled / 19 F orbits; 26012 X subsets -> 2192 raw / 358 Aut(F) orbits. All 358 singleton completions terminal, 267 negative and 91 positive with 3284 labelled E/S graphs, 85134 states, maximum 8568. Independent fixed-ascending wholegraph path-collision traversal exactly reproduces all 3284 sets, 17.662s maximum 56903 states/base. Both original 100k/base 60s passes uncapped. Eight payload pins and live accepted premises. Please audit finite cover and singleton completeness. No high/P assignment or a6/global exclusion. Sol1 owns downstream extension.",
+  "refs": "[\"/Users/rwalters/lean-genius-erdos85-goal48-sol3/h7-a6-empty-singleton-projection/README.md\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T01:18:58.106Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T01:20:01.412Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T01:22:08.272Z",
+  "resolution": "PASS complete a6 E/S projection. Independent reversed-edge F enumeration with length-two collisions and explicit S7 orbits reproduces31332labelled/19Fclasses; complementary X-subset enumeration and AutF orbits reproduce2192raw/358classes. Different fixed core-first star traversal recovers exact3284solution sets on91positive/267negative bases,75698nodes,max9992,0.192s; cover0.408s,no caps. Audited generalized7-2d capacity,11double/3single hosts,naming quotient and degree/C4 conditions.8pins/livepremises verified. Evidence /Users/rwalters/lean-genius-q7-outside-first-20260910/review-2118. Complete projection only; high/P assignment and a6/H7/Lean/global remain open.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
