@@ -1,0 +1,184 @@
+{
+  "status": "PASS",
+  "checked_files": {
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order24-last-action/PROOF.md": "78f0e39f959ab3a1859ccc83b9a884eb4d4f384d4c5049105fcd68e20fc2c689",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order24-last-action/input-pins.json": "a155b4de2851ac4987bcfd1805f0fe88cb5808c4d34f0f93439ff406105fbe61",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order24-last-action/premise-states.json": "fc3d636309ae2eb8811b3812dcbcdf3d5ccbeaf4913e98da70457a23e7e6f560",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order24-is-s4/pins.json": "63432dabd6824ff87cc71508f106f641ec45d080dfba304d30ef80405ce642c2",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-character/pins.json": "ea08d3b75eb9f3d5cfe4b39a18cbc63cb986eaa54acd683e56352c8137e18e17",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-split-three-exclusion/pins.json": "17e389c30a66efd56d0ea6c13509aa82fc4061a94a10ea321d8a75cfdd947755",
+    "/tmp/erdos85-sol1-q9-n78-s4-three-four-exclusion/pins.json": "e54db9484817e94746005c3c5ebbadd2c9af7395e3c2efd24f535b61997c9f23",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-one-four-three-six/pins.json": "647c0f14ce0b4d2ac76d7711bd43cc22a179f9b938cda91370a6455f2f6fb154",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-single-four-capacity/pins.json": "29707e544ba573184bc8982d195ca637a4bc6793db3de5298592c6a8593cf8ce",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-character/results.json": "bb80133b8019308fa324cf05760190dc5a2aff90c780d94b2b8c78d845da7ce3",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order24-is-s4/PROOF.md": "6d8ea53f36ea5eabec4834802c0b8fe9bc165f772b33527aa2e14cc0e3a3cbaa",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order24-is-s4/input-pins.json": "50589f1ad69fc9af7b25960600164c207e70e0b9d19a1e8326d61686b816676e",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order24-is-s4/premise-states.json": "f61d22ed122d80f3eb0714506c13e16f6dbbb6faea36326d7b8e01f34858a82e",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-character/PROOF.md": "d333754ac1d305530f4ff135f94776f63ddb14b8b1f080936e5218921cec579c",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-character/check.py": "8fc597ecb618aa002e44bf594e8e7327007dd1d2d6416e47451d3a8608d28c58",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-character/input-pins.json": "65eb449e08585448e22f319419836a847af337b1fac999b5489cd47ce69ff6e7",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-character/launch.json": "78633661e236ed53f29db2b15d4d0afa366b5975cddc155e0243da6208ec1933",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-character/premise-states.json": "4c946810aace8ae6b3fcd32b6d103eb3d46a4529f4bb52368d25950886fb9541",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-split-three-exclusion/PROOF.md": "c4985706ee48034c0a874bad93af59579ecc1ef1af8fa352b6a09d0b61fde38b",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-split-three-exclusion/input-pins.json": "caaed1755b5b1a38453172fead4de0b07b1ca3b1aeeed65cd56f5a14900189c9",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-split-three-exclusion/premise-states.json": "c29983d850e8d8931d900e8b041773668b81b12eaa085b089b266e777b8b4d88",
+    "/tmp/erdos85-sol1-q9-n78-s4-three-four-exclusion/PROOF.md": "91e9ab6f305b7716da9191707d0972faf4aa36fc7b5029d68708503215abb19a",
+    "/tmp/erdos85-sol1-q9-n78-s4-three-four-exclusion/input-pins.json": "ed7c49d32d97bb53ac39f5804edb34af071ae49a6da61f41291a8431a542eb04",
+    "/tmp/erdos85-sol1-q9-n78-s4-three-four-exclusion/premise-state.json": "6f223341e4f6669790dd62f46960a1c5bc902b36b5ec646fb411a5d9388262b5",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-one-four-three-six/PROOF.md": "74d43e4f268319ccc7be501f681d2773c3d482b69e4483ce4135f72b3214bcf0",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-one-four-three-six/input-pins.json": "caaed1755b5b1a38453172fead4de0b07b1ca3b1aeeed65cd56f5a14900189c9",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-one-four-three-six/premise-states.json": "c29983d850e8d8931d900e8b041773668b81b12eaa085b089b266e777b8b4d88",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-single-four-capacity/PROOF.md": "fd9161d42dd7a1870ff4aed9f4d9508174deeb3473b90c31a35e992403538b5c",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-single-four-capacity/input-pins.json": "fba2fe9d3b0a235e8b2dbe2d289de749959b83d3ad4830910eba97f750515f56",
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-single-four-capacity/premise-states.json": "c4f7bca739720b4119a52baf8c8ee592bd0957fde86dfae7b5d67e9b7ffc3257"
+  },
+  "cover": [
+    {
+      "index": 0,
+      "sizes": [
+        3,
+        3,
+        4,
+        8,
+        12,
+        24,
+        24
+      ],
+      "exclusion_review": 2380
+    },
+    {
+      "index": 1,
+      "sizes": [
+        4,
+        4,
+        4,
+        6,
+        12,
+        24,
+        24
+      ],
+      "exclusion_review": 2392
+    },
+    {
+      "index": 2,
+      "sizes": [
+        4,
+        6,
+        6,
+        6,
+        8,
+        24,
+        24
+      ],
+      "exclusion_review": 2395
+    },
+    {
+      "index": 3,
+      "sizes": [
+        4,
+        6,
+        6,
+        6,
+        8,
+        24,
+        24
+      ],
+      "exclusion_review": 2395
+    },
+    {
+      "index": 4,
+      "sizes": [
+        4,
+        6,
+        6,
+        6,
+        8,
+        24,
+        24
+      ],
+      "exclusion_review": 2395
+    },
+    {
+      "index": 5,
+      "sizes": [
+        4,
+        6,
+        8,
+        12,
+        12,
+        12,
+        24
+      ],
+      "exclusion_review": 2397
+    },
+    {
+      "index": 6,
+      "sizes": [
+        6,
+        6,
+        6,
+        12,
+        12,
+        12,
+        24
+      ],
+      "exclusion_review": null
+    },
+    {
+      "index": 7,
+      "sizes": [
+        4,
+        4,
+        4,
+        6,
+        6,
+        6,
+        24,
+        24
+      ],
+      "exclusion_review": 2392
+    },
+    {
+      "index": 8,
+      "sizes": [
+        4,
+        6,
+        6,
+        6,
+        8,
+        12,
+        12,
+        24
+      ],
+      "exclusion_review": 2397
+    }
+  ],
+  "remaining": {
+    "indices": [
+      2,
+      2,
+      2,
+      7,
+      7,
+      7,
+      8
+    ],
+    "fixed_counts": [
+      78,
+      6,
+      0,
+      6,
+      6
+    ],
+    "sizes": [
+      6,
+      6,
+      6,
+      12,
+      12,
+      12,
+      24
+    ]
+  },
+  "scope": "Necessary full order24 reduction only; last S4 action remains open."
+}

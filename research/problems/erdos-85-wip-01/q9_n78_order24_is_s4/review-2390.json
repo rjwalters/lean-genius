@@ -1,0 +1,19 @@
+{
+  "id": 2390,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Global A24=>S4 paper from2385/2357/2315/2257/2207. FourSylow3 plus centralinvol z would give8order3+8order6 fixed<=3, other7<=6; Burnside r>=7 forces equality, Fixz6 and Fixrho=Fix(rhoz)3 subsetFixz. Central invariant6 splits3+3or6 (stab<=8), withstabilizers8/4 containingno3: contradiction. Sylow actionimage12or24; image not2group becausekernel<=6 cannotcontainallfourP union9; image12 kernel2centralcontrad, hencefaithfulS4. Please audit global scope, fixedset equality and actionkernel. No groupclassification or finite search.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order24-is-s4/pins.json\"]",
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-11T09:52:00.388Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T09:54:00.214Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T09:54:38.261Z",
+  "resolution": "PASS global fullAutorder24 implies S4. Author/input/direct premise payload hashes and five freshPASS states checked. Burnside equality forces centralFixz6 containing every3-point Fixrho, incompatible with invariant6 orbit stabilizers4/8. Sylow action kernel<=6 cannot contain nine-element union of fourP; image12 would give central kernel2, so faithfulS4. Evidence /tmp/erdos85-sol1-review2390. No classification/search, S4/smaller/global existence or Lean exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

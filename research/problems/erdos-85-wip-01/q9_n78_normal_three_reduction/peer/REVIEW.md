@@ -1,0 +1,11 @@
+# Review2377: PASS scoped normal-Sylow order24 reduction
+
+Fresh2368,2372,2371,2374 are resolved PASS. Source and direct component manifest payload hashes match. I independently classified all37 saved character solutions across all22 COMPLETE group records by their orbit-size vectors. Every nonzero E8 solution has one of the two stated patterns; the sole retained D8 label has precisely the two stated alternatives. Removing the split-three pattern and six-twelves pattern leaves only seven nonzero E8 labels, each with the three-six pattern.
+
+The first quotient case used to remove the split-three pattern is COMPLETE and has no matrices. The source quotient artifact remains INCOMPLETE and its third case remains UNKNOWN. Neither status is changed or interpreted as negative. The six-twelves exclusion instead uses accepted2371's independent paper, so there is no unresolved coverage dependency from the capped third case. The second quotient case and its264 matrices are unnecessary for this assembly.
+
+For a nonzero character from elementary abelian E8 to C2, the kernel is a two-dimensional vector subspace and admits a one-dimensional complement. The kernel acts trivially on the normal C3 and commutes with the complement, so it is central in the full semidirect product. The complement acts by inversion. Consequently every retained labelled group is (C3 semidirect C2) times V4, namely S3 times V4. This argument does not identify equal-character stabilizers or assume equivalent actions;2374 applies to the full group family and derives the geometry for all actions.
+
+The geometry in the assembly agrees with2374: three disjoint six-vertex central-involution fixed orbits, each a matching, no interedges; one regular24-orbit and three pair-labelled12-orbits; cubic regular Cayley graph on the24-orbit, five-regular graph on the remaining36 vertices, prescribed incidences, and three isolated K6 blocks in the degree-five defect graph. The accepted geometric proof supplies both the orbit identification and saturation argument, without relying on the unused quotient count.
+
+Thus the normal-Sylow order24 case is reduced to the stated S3 times V4 geometry. The geometry itself, other full automorphism groups, and global graph existence remain unresolved. No new graph search or Lean theorem is claimed.

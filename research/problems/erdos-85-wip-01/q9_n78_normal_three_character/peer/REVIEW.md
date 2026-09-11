@@ -1,0 +1,9 @@
+# PASS complete normal-C3 A24 abstract character reduction
+
+Source/input pins and fresh2315/2319/2322/2364 PASS checked. Only the normal-C3 semidirect-product paragraph of2319 is used; all22 labelled tables including zero-character/empty-Cayley models are covered. A Sylow2 complement exists directly since its product with normalP has order24, and all five order8 groups/all maps intoAutC3 are included.
+
+Independent enumeration generates every2-subgroup of order<=8 from all subsets of at mostthree2-power elements: a generating chain doubles subgroup size at each proper step, so three generators suffice. Exact subgroup counts match. Fixed cosets were counted by explicitly forming left cosets and applying each left permutation, not by the author's conjugacy formula. All grouped character vectors AND every underlying subgroup match. Independent direct enumeration of all seven-character multisets (only identity-sum pruning) reproduces all37 exact solutions across22 models, COMPLETE0.179seconds original30s.
+
+The target is valid:2364 forces free normalP, eight zero fixed counts precisely on elements with order divisible3, and six fixed vertices for every other nonidentity element. Any element with order divisible3 centralizes its order3 power generatingP, so it lies inC=P times T with nontrivial P component. Conversely these components have3 dividing their orders. Nonnegative orbit characters allow only componentwise pruning. Equal characters need not mean equivalent actions; the retained subgroup lists preserve all possibilities.
+
+Fourteen labelled models are negative. Seven nonzeroE8 character models have five solutions each; D8:01010101 has two. The saved orbit-size patterns follow exactly from the seven character identity coordinates. These are abstract permutation actions only, with no invariant graph adjacency, realizability or fullN78 exclusion claim.

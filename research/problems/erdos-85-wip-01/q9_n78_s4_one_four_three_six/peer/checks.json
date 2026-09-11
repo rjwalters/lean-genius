@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "verified_hashes": 4,
+  "B_C4_relations": [
+    {
+      "selected": [],
+      "degree": 0,
+      "C4_free": true
+    },
+    {
+      "selected": [
+        true
+      ],
+      "degree": 2,
+      "C4_free": false
+    },
+    {
+      "selected": [
+        false
+      ],
+      "degree": 4,
+      "C4_free": false
+    },
+    {
+      "selected": [
+        true,
+        false
+      ],
+      "degree": 6,
+      "C4_free": false
+    }
+  ],
+  "B_B_surviving_unions": [
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      0
+    ],
+    [
+      1,
+      0,
+      0
+    ]
+  ]
+}

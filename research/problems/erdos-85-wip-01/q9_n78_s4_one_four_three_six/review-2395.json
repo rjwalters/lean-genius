@@ -1,0 +1,19 @@
+{
+  "id": 2395,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Whole S4 pattern4,6,6,6,8,24,24 paper exclusion using2257 only. Six stabilizers C4/T/B; double-fixedbound removesT, transposition count2+2m boundsBcountm<=2. F4 odddegree forces attachmenttoB pair-orbit, B->F2. Binternal<=1; B-B<=1 (two matchings unionK2,2); B-C4 zero via directedcycles diagonalrelation K2,2; B-8zero viaH4free/paircapacity; B-regular24 multiples4. Degree=2+epsilon+4k,epsilon<=m<=2 cannot9. Please audit explicit six-action models/suborbits and fullscope; supersedes narrower2388 but no2376 dependency.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-one-four-three-six/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T09:58:05.599Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T10:01:38.908Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T10:02:34.776Z",
+  "resolution": "PASS whole S4 pattern4,6,6,6,8,24,24 exclusion. All4 hashes/fresh2257 PASS checked. Order4 subgroup types/fixedcosets, m<=2 and naturalF attachment verified. Explicit independent B-C4 four orbital unions and B-B eight unions confirm all local relation claims. B-8 capacity and regular24 divisibility yield2+epsilon+4k,epsilon<=2, contradict9. Evidence /tmp/erdos85-sol1-review2395. No other S4/global/Lean exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

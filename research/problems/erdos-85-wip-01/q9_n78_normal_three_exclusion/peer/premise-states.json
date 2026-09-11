@@ -1,0 +1,90 @@
+[
+  {
+    "id": 2377,
+    "target": "codex-sol-3",
+    "requested_by": "codex-sol-2",
+    "body": "Small accepted-premise assembly: every normal-Sylow A24 candidate has A=S3×V4 and the2374 geometry.2368 completecharacter cover leaves E8/D8 labels; first COMPLETE2372 case removes3,3,12,12,12,12,24, separate paper2371 removes6,12^6, so bothD8 alternatives gone. Seven nonzeroE8 chars allisomorphicS3×V4;2374 suppliesremainingstructure. AllfourPASS pinned. Please audit exact cover/dependency scope; third quotientUNKNOWN remains frozen andunused. No remainingE8/fullgraph exclusion.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-normal-three-reduction/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T09:36:29.834Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-3",
+    "claimed_ts": "2026-09-11T09:37:30.029Z",
+    "resolved_by": "codex-sol-3",
+    "resolved_ts": "2026-09-11T09:39:02.806Z",
+    "resolution": "PASS scoped assembly. Freshfour PASS components and source/component payload hashes checked. Independently classified all37 character solutions/all22 models; split-three COMPLETE empty quotient and independent2371 paper remove bothD8 alternatives. Seven nonzeroE8 labels remain; kernel/complement argument givesS3xV4 without merging stabilizer actions.2374 geometry matches fullscope. Original quotientINCOMPLETE/thirdUNKNOWN explicitlypreserved andunused. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2377. No remaininggeometry/global/Lean claim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2379,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-1",
+    "body": "Complete necessary incidence cover after2374: eight center-action triples H_z=<z,(s,t)> after independentbaseconjugation, forcedcentral matching; all6^3 Uorigin centerchoices and inverseclosed cubicCayley triples. R_ab forcedto12FaFb pairs notcoveredbyU, require transitiveAaction. Uorigin oneR each, all12^3 choices or exactmissingS6 endpointpartition; translatewholeA, test78partialgraph (Rdegree4,noR-R). Please audit action/matching/origin/complementpair completeness beforefinite stage. No enumeration outcome or E8 exclusion claimed.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-central-klein-incidence-cover/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T09:38:35.918Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T09:40:18.857Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T09:40:30.677Z",
+    "resolution": "PASS complete necessary central-Klein partial-incidence parameter cover. All7 pins and fresh2374 PASS checked. H_z classification and independent origin conjugations give8 actions; central matching forced. All center triples/cubic inverse-closed sets cover S-U. Saturated pair counts force R_ab to12 complementary pairs with transitivity required; all origin R triples/translates cover U-R, missing-six-endpoint pruning is necessary. Final partial graph Rdegree4 leaves five R-neighbors unresolved. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2379. No enumeration outcome, E8 exclusion or graph realization asserted.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2381,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-1",
+    "body": "Complete2379 necessary partial model: explicitS3×V4,8centeractions x216origins;24 inverseclosed cubicCayley sets.42stage1152 positives, eachone residualtriple; final78partial384 positives(actions1/2/4/7 each96), alladjacencies saved,degrees42x9+36x4. Original30s COMPLETE0.872s. Please independently audit group/action/origin/cubic/fullpartial enumeration and positives after2379. No R-R edges/fullgraph completion or E8 exclusion.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-central-klein-incidence/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T09:40:32.526Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T09:41:12.857Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T09:42:50.166Z",
+    "resolution": "PASS complete necessary partial model. All13 hashes/fresh2379 PASS checked. Independent explicit group/coset actions, cubic triple enumeration and common-middle wedge checks reproduce1152 first-stage positives; all1728 residual triples per positive give exact384 full78 adjacencies (96 each actions1/2/4/7), degrees42x9+36x4. COMPLETE1.001s original30s independent cap. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2381. No R-R completion or E8/global exclusion.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2382,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-1",
+    "body": "All384 saved2381 partialgraphs fail residualsingleedgecapacity: everyRvertex hasZERO allowedRpartners (allpairs alreadydistance3), needs5. Original30s COMPLETE0.102s. Saved13440 explicit distinct3-edge paths fromvertex42 toall35 otherRvertices,384roots; eachclosingedge formsC4. Please independently audit fullroot/certificate coverage and source2381 completeness. No simultaneousRgraph/fullsolver. With2379/2381 accepted wouldexclude E8 normalP family; no other/globalclaim.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-central-klein-edge-capacity/pins.json"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T09:41:56.105Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T09:43:00.052Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T09:44:10.933Z",
+    "resolution": "PASS complete central-Klein obstruction. All20 hashes and fresh2374/2379/2381 PASS verified. Exact384-root/certificate bijection; all13440 explicit four-distinct-vertex paths valid. Independent neighborhood-edge test blocks all241920 unordered residual pairs, reproducing zero allowed partners at everyRvertex. COMPLETE0.100s original30s audit cap. EveryR vertex needs five furtherRneighbors, impossible. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2382. Input completeness discharged; excludes S3×V4 normal-P family, no simultaneous residual solver/global/Lean claim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  }
+]

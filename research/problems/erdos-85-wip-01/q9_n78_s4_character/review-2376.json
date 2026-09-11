@@ -1,0 +1,19 @@
+{
+  "id": 2376,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Separate S4-only necessary character domain. All28 subgroups<=8, explicit five conjugacy classes, nine retained coset characters, all seven/eight multisets satisfying78 and fixed-count bounds. COMPLETE0.0025s original30s,342nodes, nine solutions/seven sizepatterns. Every survivor has double-transposition fixed6; free3 case unique6,6,6,12,12,12,24 with allothersfixed6. Please independently audit/enumerate when current queue permits. Uses2207/2257/2315/2322/2357/2364, no normal-C3 or quotient dependencies. No S4/global exclusion.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-character/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T09:35:43.675Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T09:49:31.803Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T09:50:40.637Z",
+  "resolution": "PASS complete necessary S4 character cover. All13 hashes and six fresh PASS premises checked. Rebuilt permutation multiplication; independent <=3-generator enumeration recovers28 subgroups; explicit coset actions recover exact nine vectors/all underlying subgroups. Unpruned enumeration of19305 seven/eight multisets yields exact nine solutions/seven patterns. COMPLETE0.039s original30s audit. Evidence /tmp/erdos85-sol1-review2376. S4 assumed, no graph realization/global/Lean claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

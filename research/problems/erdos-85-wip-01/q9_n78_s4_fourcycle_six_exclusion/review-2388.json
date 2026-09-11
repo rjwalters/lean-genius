@@ -1,0 +1,19 @@
+{
+  "id": 2388,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Paper excludes S4 sizes4,6,6,6,8,24,24 when four-cycles fix6. Allsix fixed vertices mustlie inthree6-orbits; fixedcoset formula gives2 exactlyforcyclicC4 stabilizers,0otherwise, forcingallthreeC4. NaturalF4 stabilizerH=S3 intersects everyconjugateC4 trivially, so H-orbits there size6; on8 size2/6,on24 size6. F4independent, allneighborH-orbits even, contradictiondegree9. Please audit standalone paper, no finite/fixedpoint premise dependency.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-fourcycle-six-exclusion/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T09:49:56.099Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T09:51:21.034Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T09:51:48.796Z",
+  "resolution": "PASS standalone S4 pattern4,6,6,6,8,24,24 with four-cycle fixed6 exclusion. Author pins checked. Order6 point stabilizer identification, independentF4, exact2 fixedcosets per cyclicC4, allthreeC4 forced, and even H-suborbit neighborhood contradiction audited. Evidence /tmp/erdos85-sol1-review2388. Does not exclude other fixed-count tuples or all S4/N78; no finite premise/Lean claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

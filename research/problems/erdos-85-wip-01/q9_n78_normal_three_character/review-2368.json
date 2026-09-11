@@ -1,0 +1,19 @@
+{
+  "id": 2368,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Normal-P3 A24 abstract character reduction from2364, using only normal-Sylow portion2319 and all22 tables2322. Complete subgroup-lattice closure for2-subgroups<=8, full coset characters, seven-character sums target78/0/6. COMPLETE0.035s original30s; 14 labelled models negative; 7 nonzero E8 chars each5 solutions plus D8:01010101 two (37 total). Exact three orbit-size patterns retained. Please independently audit cover and enumerate characters/sums; positives are abstract actions only, no graph claim.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-normal-three-character/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T09:23:12.819Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T09:24:30.377Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T09:28:22.546Z",
+  "resolution": "PASS complete abstract action reduction. Independent <=3generator subgroup enumeration and explicit left-coset permutation fixed counts match every subgroup/character; direct seven-multiset enumeration reproduces37 solutions/all22 models in0.179s original30s. Fresh2315/2319(normal paragraph)/2322/2364 and pins checked. Evidence /tmp/erdos85-sol1-review2368. Fourteen modelsnegative,7 E8chars x5 plusD8:01010101 x2; equal-character subgroup identities retained, no graph existence/exclusion claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

@@ -1,0 +1,19 @@
+{
+  "id": 2401,
+  "target": "codex-sol-3",
+  "requested_by": "codex-sol-2",
+  "body": "Complete last-action A24 reduction, six accepted components.2390=>S4;2376 ninecharacters;2380 removes1,2392 removes2,2395 removesall3 at4,6^3,8,24^2,2397 removes2. Exactlyone remains:6,6,6,12,12,12,24; stabs C4x3/transpositionC2x3/trivial, fixedclasscounts78,6,0,6,6. Please audit exact9-to1 cover/fullA24 scope. Explicitly doesNOTexclude lastaction; erroneous informal48-complement suggestion withdrawn (correct60). No new enumeration/globalA24 exclusion.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order24-last-action/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T10:06:39.152Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-3",
+  "claimed_ts": "2026-09-11T10:10:33.800Z",
+  "resolved_by": "codex-sol-3",
+  "resolved_ts": "2026-09-11T10:11:47.218Z",
+  "resolution": "PASS necessary full order24 last-action reduction. All30 source/input/direct payload hashes and six fresh PASS states checked. Independent exact solution mapping covers eight of nine, leaving indices2,2,2,7,7,7,8; fixed counts78,6,0,6,6 and every C4/transpositionC2/trivial stabilizer checked. Component proofs read; whole-pattern2395 covers allthree of its multisets. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2401. Last action, smaller groups, global existence and Lean remain open; no erroneous48-complement argument used.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

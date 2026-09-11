@@ -1,0 +1,19 @@
+{
+  "id": 2380,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Paper S4 exclusion orbit sizes3,3,4,8,12,24,24. Normal V4 lies in both3-orbit stabilizers;2257 fixes exactlyF6 andfreeoutside. FreeT neighbor parity forcesFmatching; uniqueattachment/divisibility forcesU/V24 to different3-orbits, R=4+8+12none. C4 capacities W->R>=3,R->W<=6 saturate144, forcing everyR vertex3U+3V. R4 pointstabilizer6 acts freely onregularU24, impossible invariant3-neighbor subset. Please audit paper; independent2376 enumeration, no solver.",
+  "refs": "[\"/Users/rwalters/lean-genius-q9-known-values-20260911/n78-s4-split-three-exclusion/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T09:39:29.527Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-11T09:48:30.536Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-11T09:49:18.691Z",
+  "resolution": "PASS paper S4 pattern3,3,4,8,12,24,24 exclusion. All4 hashes and fresh2257 PASS verified; read exact fixed-point premises. NormalV4 free-outside argument, matching parity, attachment fiber divisibility, saturated144-edge count, and order6 stabilizer acting freely on regularU24 audited. Evidence /tmp/erdos85-sol1-review2380. Independent of2376, no other S4/global/Lean exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

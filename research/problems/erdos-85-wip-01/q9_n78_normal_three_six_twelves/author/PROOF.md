@@ -1,0 +1,15 @@
+# Excluding a six-orbit of vertices and six twelve-orbits with normal C3
+
+Let G be simple, C4-free and nine-regular on78 vertices, with A=Aut(G) of order24 and a normal Sylow3 subgroup P. Suppose its vertex orbits have sizes (6,12,12,12,12,12,12). We exclude this pattern by a paper argument independent of the incomplete quotient computation.
+
+Write F for the six-vertex orbit. Its induced graph is regular, of degree d. Counting pairs with a common neighbor inside F gives 6*choose(d,2)<=choose(6,2)=15, so d<=2. The number of neighbors in each twelve-orbit is even, by edge balance. Thus d is odd, hence one: F is a matching of three edges. Every vertex of F has eight neighbors outside F.
+
+For a twelve-orbit B write r for the number of F-neighbors of a B vertex. Counting pairs in F with middle vertex in B gives 12*choose(r,2)<=15, so r<=2. By balance a vertex of F has 2r neighbors in B, hence zero, two or four.
+
+Suppose some B has r=2. Its vertices have distinct unordered F-neighbor pairs, since duplicate pairs give a C4. Thus the kernel K of the action A on F fixes B pointwise as well. K is a subgroup of an F vertex stabilizer of order4. If K were nontrivial it would contain an involution, fixing all18 vertices in F union B, contrary to accepted2257's bound of six. Therefore A acts faithfully on F, embedding in M=Aut(3K2).
+
+This is incompatible with normal P. The action M on the three matching edges has kernel V=C2^3. The image of P has order3, since P intersects V trivially, and therefore cyclically permutes the three edges. The centralizer C_M(P) maps into the order3 centralizer of this cycle in S3. Its kernel consists of the flips in V invariant under that cycle, just the identity and simultaneous flip of all three edges. Consequently |C_M(P)|<=6. Conjugation N_M(P) to Aut(P)=C2 gives |N_M(P)|<=12. Since P is normal in A, the faithful image of A lies in this normalizer, impossible for order24.
+
+It follows that every nonzero F-to-B degree is two. The eight outside neighbors of a fixed f in F therefore form four invariant two-element subsets, belonging to four distinct twelve-orbits. Let H=A_f, of order4. H cannot fix an individual vertex in a twelve-orbit: its stabilizer in A has order2 and cannot contain H. Thus H acts transitively on each two-element subset, with kernel of order2. A group of order4 has at most three subgroups of order2, so two of the four subsets have the same kernel involution t. It fixes at least four of the eight neighbors other than the matching partner of f. The matching partner is fixed by H as well. Accepted2257's local involution bound permits at most two fixed vertices among those other eight neighbors. This contradiction excludes the orbit-size pattern.
+
+This result does not require the finite character reduction2368 or any quotient enumeration. In particular the capped UNKNOWN quotient case is neither restarted nor treated as negative evidence. The proof excludes only the stated normal-Sylow order24 orbit pattern; other actions and the global graph problem remain open. No Lean formalization is claimed.

@@ -1,0 +1,15 @@
+# Necessary S4 permutation characters on78 vertices
+
+Assume G is simple, C4-free and nine-regular on78 vertices with full automorphism group A isomorphic to S4. Accepted2315 bounds every vertex stabilizer by8. Accepted2357 and2364 give seven or eight vertex orbits. Accepted2257 bounds an involution's fixed count by six, and parity makes the possibilities0,2,4,6. Accepted2207 gives fixed count0 or3 for order3 elements. An order4 element fixes a subset of its involution square's fixed set, and its cycles of lengths1,2,4 show that its fixed count is even, hence also0,2,4,6.
+
+We use the explicit S4 multiplication table from accepted2322. This does not use or assert a complete classification of all nonnormal-Sylow groups of order24: the scope assumes S4.
+
+Every A orbit is A/H for a subgroup H of order at most8. The program generates all such subgroups by adjoining one element and closing under right multiplication. Any desired H has a chain of generated subgroups contained in H, so no target is lost by discarding closures exceeding8. This produces28 subgroups (all subgroups except A4 and S4). The conjugacy classes, computed from the table, have sizes1,6,8,3,6 and representative orders1,2,3,2,4, respectively identity, transpositions, three-cycles, double transpositions, and four-cycles.
+
+For each H the fixed coset count of x is |{a:a^-1*x*a in H}|/|H|. The program checks exact divisibility and computes one coordinate per conjugacy class. Equal character vectors are grouped, retaining every underlying subgroup. Characters that already exceed the allowed total fixed count are discarded by nonnegativity. Nine character vectors remain.
+
+The search enumerates all nondecreasing multisets of seven or eight remaining characters. At each extension, every coordinate must remain within its upper bound; the identity coordinate must still be able to reach78 with the remaining orbit sizes. Since vectors are sorted by their identity coordinate, the smallest selectable size and largest retained size give valid necessary bounds. At a completed multiset the identity must be78, the order3 count0 or3, and the order2/order4 counts even and at most6. All complete survivors are recorded.
+
+The original30-second domain finished COMPLETE in0.0025 seconds,342 DFS nodes. There are nine character multisets with seven distinct orbit-size patterns, all listed in results.json. Every survivor has fixed count six for double transpositions. If three-cycles act freely, the sole character multiset has sizes(6,6,6,12,12,12,24), and every other nonidentity element fixes six vertices. Otherwise the three-cycle fixed count is three and the remaining eight character multisets are retained. Exactly two of them have eight orbits.
+
+This is a necessary abstract action cover. Equal-character subgroups are not assumed conjugate or equivalent; all their identities remain in the output. Positive characters do not assert a graph realization. Neither S4 actions nor any global graph case are excluded by this packet. There is no graph search, replay of a capped domain, or Lean formalization. Independent review is required before use as an accepted premise.

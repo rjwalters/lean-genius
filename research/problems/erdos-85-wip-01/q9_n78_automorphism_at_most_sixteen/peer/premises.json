@@ -1,0 +1,156 @@
+[
+  {
+    "id": 2264,
+    "target": "codex-sol-1",
+    "requested_by": "codex-sol-2",
+    "body": "N78 global Aut order divides48 fromaccepted2182/2207/2215/2262. Therefore>=3vertexorbits; equalityforces |Aut|48/orbits48,24,6. Equitabledegree e+8c+4d=9 leaves3possibilities; K6/C4 and24>15 cherrycapacity leaveF6matching, W48 uniqueFneighbors,R24none. Attachedcapacityforces W->R3,R->W6, same saturated3cellquotient as2245 withoutassumingF pointwiseinvolutionfixed. Full paper proof/no search/no threeorbit or globalexclusion. Please audit.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-automorphism-order-orbits/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T06:39:32.429Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-1",
+    "claimed_ts": "2026-09-11T06:41:04.646Z",
+    "resolved_by": "codex-sol-1",
+    "resolved_ts": "2026-09-11T06:42:01.501Z",
+    "resolution": "PASS. Bothsource/4premise hashes and acceptedstates verified, including2182 explicit prime-support corollary. Independent divisor sums give unique6/24/48 triple; all3degree patterns andquotient weighted counts checked. Paper paircapacity andfullattached saturation audited. Evidence /tmp/erdos85-sol1-review2264. Autorder divides48, >=3orbits, necessary3orbit form only; no pointwisefixedinvolution or graph exclusion inferred.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2361,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-1",
+    "body": "Global A48 exclusion from accepted>=7orbits plus fixedcounts/stabilizer8. Burnside48r<=360-6s for Sylow3 count s1/4/16. s16 givesr<=5.5; s4 equalityr7 forces every non-order3 fix6, contrad order6 from evencentralizer ofP (normalizer12). s1 normalP free since FixP0/3 invariant and orbitsmin6; centralizer>=24=C3xT, >=16 nontrivial3component elementsfix0 =>r<=5.5. Allsix premisesPASS rehashed. Please audit global scope/Burnside equality/direct product. Concludes Autorder properdivisor48, <=24, not divides24; no graph nonexistence.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-automorphism-order48-exclusion/pins.json"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T09:13:56.574Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T09:17:35.265Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T09:18:27.798Z",
+    "resolution": "PASS global exclusion of full Aut order 48 for N78. All 27 source/input payload hashes and six fresh PASS premises verified. Independent Burnside bounds for Sylow counts 1/4/16, equality at s=4, commuting order-six contradiction, and normal free C3 centralizer direct product audited. Remaining order is a proper divisor of 48, at most 24; order 16 remains possible. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2361. No graph nonexistence or Lean claim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2401,
+    "target": "codex-sol-3",
+    "requested_by": "codex-sol-2",
+    "body": "Complete last-action A24 reduction, six accepted components.2390=>S4;2376 ninecharacters;2380 removes1,2392 removes2,2395 removesall3 at4,6^3,8,24^2,2397 removes2. Exactlyone remains:6,6,6,12,12,12,24; stabs C4x3/transpositionC2x3/trivial, fixedclasscounts78,6,0,6,6. Please audit exact9-to1 cover/fullA24 scope. Explicitly doesNOTexclude lastaction; erroneous informal48-complement suggestion withdrawn (correct60). No new enumeration/globalA24 exclusion.",
+    "refs": [
+      "/Users/rwalters/lean-genius-q9-known-values-20260911/n78-order24-last-action/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T10:06:39.152Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-3",
+    "claimed_ts": "2026-09-11T10:10:33.800Z",
+    "resolved_by": "codex-sol-3",
+    "resolved_ts": "2026-09-11T10:11:47.218Z",
+    "resolution": "PASS necessary full order24 last-action reduction. All30 source/input/direct payload hashes and six fresh PASS states checked. Independent exact solution mapping covers eight of nine, leaving indices2,2,2,7,7,7,8; fixed counts78,6,0,6,6 and every C4/transpositionC2/trivial stabilizer checked. Component proofs read; whole-pattern2395 covers allthree of its multisets. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2401. Last action, smaller groups, global existence and Lean remain open; no erroneous48-complement argument used.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2405,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-1",
+    "body": "Proposed lastS4 exclusion conditional2404. All576 SUR partials degree9onS+U,4onR. At residual42/54/66 (192each), existing length3paths leave exactly6eligible partners, but all6 five-subsets contain a pair with an existing common neighbor. All576 complete;3456 explicit subset/conflict/common-neighbor witnesses. Original30s COMPLETE0.254s. Please independently rebuild partials/eligible sets, exact rootcoverage and exhaustive certificates. No simultaneous R-R/fullgraphsolver. With acceptedcover would exclude lastS4, but no globalA24/Lean claim yet.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-s4-residual-neighborhoods/pins.json"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T10:13:08.821Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T10:13:44.526Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T10:15:15.189Z",
+    "resolution": "PASS full last-action S4 obstruction. All19 hashes/fresh2400/2402/2404 PASS verified. Exact576 root/result/certificate bijection; independently rebuilt graphs used to recompute every saved eligible set and148608 five-subsets. All3456 exhaustive conflict witnesses valid, blocked42/54/66=192each. EachR needsfive newRneighbors; no permitted neighborhood at onevertex perroot. COMPLETE0.169s original30s audit. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2405. Input completeness discharged; lastS4 excluded, globalA24 composition still separate, no fullN78/Lean claim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2400,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-1",
+    "body": "Corrected free3 S4 necessary geometry, NOT exclusion.2376/2257 -> S18 three doubleFix matchings, outsideR36+U24. Transposition parity/capacity forces R Sdegree2,U3. Two-stepS counts15+a/16+t force Ucubic,R5regular,U-R degrees3/2. R_t omitted-fixedset types size12; eachU hits eachR_t once, eachR_t internaldegree1/crossdegree2. E[S]=threeK6 components. Please audit all equality steps and scope. Original48-complement error explicitly corrected; no enumeration or finalS4 claim.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-s4-free-three-geometry/pins.json"
+    ],
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T10:06:11.322Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T10:06:48.066Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T10:08:14.678Z",
+    "resolution": "PASS corrected necessary free3 S4 geometry. All15 pins/fresh2376/2257 PASS checked. Correct60 complement, parity/capacity equality forces R Sdegree2,U3. Two-step18-endpoint bounds and balance force cubicU/R5regular, U-R3/2. Omitted types size12 (eachA12 meets eachtype4); per-label counts give U oneeachtype, R internaltype1/cross2. E[S] threeK6 components. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2400. Necessary geometry only; previous48-complement exclusion withdrawn.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2402,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-1",
+    "body": "Complete necessary S18+U24 partial cover, conditional2400. ExplicitS4/C4 copies: all invariant edge-orbit matching exactcovers=7; each216 origintriples oneperdoubleFix; all1771 Cayley triples ->147 inverseclosed ->40 C4free cubicsets. COMPLETE0.228s original30s;13440 combinedextensions,576 positives saved (0,96x6). Please independently audit domain/completeness/codegrees. No R edges/fullgraphcompletion; positives not realizations, no finalS4 exclusion.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-s4-su-domain/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T10:08:35.526Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T10:10:07.911Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T10:11:47.020Z",
+    "resolution": "PASS complete necessary42-domain. All16 hashes/fresh2400 PASS checked. Independent canonical opposite/cross matching construction reproduces7; explicit group/cosets and wedge tests recover147 inverseclosed/40 cubicsets. Paircapacity removes repeatedA6 origins; all48 valid origins per matching and13440 extensions give exact576 tuples(0,96x6). COMPLETE0.374s original30s audit. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2402.2400 condition discharged; no R completion/finalS4 claim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  },
+  {
+    "id": 2404,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-1",
+    "body": "Complete SUR necessary extension of2402, conditional inputcover. Paper forces UoneperS_i, each transposition R12 attaches two withinoneS_i; pairinjectivity identifies R_i with12 non-oppositepairs, bijectiveR_i-S_i. All576 roots extend forcedS-R; enumerate12 choices Uorigin->R_i each, translate/checkC4. COMPLETE0.541s original30s; exactly576 positives, degrees9onS+U,4onR. Please audit pair-action cover and finite extensions. Separate singleedgecapacity excludesNONE (6/7eligible vs5needed); no fullS4/fullgraphsolver claim.",
+    "refs": [
+      "/tmp/erdos85-sol1-q9-n78-s4-sur-domain/pins.json"
+    ],
+    "priority": "normal",
+    "status": "resolved",
+    "created_ts": "2026-09-11T10:11:38.505Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T10:12:14.456Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T10:13:29.665Z",
+    "resolution": "PASS complete necessary SUR extension. All15 hashes/fresh2400/2402 PASS checked. Paper forced pair-action cover audited; independent unique-missing-pair derivation proves singleton choices in everyR_i and matches all576 root/candidate lists. Rebuilt every78 adjacency with wedge/degree checks, saved in review graphs.json. COMPLETE0.156s original30s audit. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2404. Input completeness discharged; no R-R completion/finalS4 claim.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null,
+    "expired": false
+  }
+]

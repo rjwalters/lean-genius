@@ -1,0 +1,5 @@
+# PASS normal-C3 six-twelve-orbits exclusion
+
+Source/input pins and fresh2257 PASS checked. Degree/cherry capacity gives induced F degree<=2, and even exterior row entries force degree1. Every twelve-orbit contributes0/2/4 neighbors percenter. A degree4 attachment injects B into Fpairs, so action kernel fixes18 and is trivial. For a normal order3 subgroup in the faithful matching action, its edge projection is a3cycle; centralizer kernel in flipspace has order2 and image<=3. Thus normalizer<=12, excluding A24. This uses no assumption that P was originally a pure-coordinate cycle.
+
+Remaining four degree2 fibers are H4 invariant and each transitive because no H4 can fix a vertex whose full stabilizer hasorder2. Repeated order2 kernel amongfour fibers fixesfour neighbors plus the matching partner, contrary2257. The paper covers all stated orbit actions without a character or quotient-search premise. No incomplete finite result is used or restarted. No other orbit-pattern/global exclusion is inferred.

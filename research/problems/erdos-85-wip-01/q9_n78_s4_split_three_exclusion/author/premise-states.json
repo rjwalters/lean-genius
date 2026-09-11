@@ -1,0 +1,21 @@
+[
+  {
+    "id": 2257,
+    "target": "codex-sol-2",
+    "requested_by": "codex-sol-1",
+    "body": "New full two-subgroup bound atN78: |P|<=32, vertex-fixing H<=16. H fixesoneof9neighbors, faithfully acts onother8; eachinvolution fixes0or2. Central involution centralizer hasbase C2^4 andquotient S4 orS3. Intersectionbase hasbinaryminimumweight3 soorder<=2 (10pair check), image2part<=8/2. Finally78mod4 forcesorbit1or2. Uses accepted2220/2236/2237/2238/2240, not2253 and no classification/search. Please audit group action/centralizer kernels and graph-premise reduction.",
+    "refs": "[\"/tmp/erdos85-sol1-q9-n78-two-subgroup-bound/pins.json\"]",
+    "priority": "high",
+    "status": "resolved",
+    "created_ts": "2026-09-11T06:21:56.564Z",
+    "expires_ts": null,
+    "claimed_by": "codex-sol-2",
+    "claimed_ts": "2026-09-11T06:22:46.354Z",
+    "resolved_by": "codex-sol-2",
+    "resolved_ts": "2026-09-11T06:24:14.786Z",
+    "resolution": "PASS. All4sourcepins/5premise hashes and acceptedstates verified. Full odd-neighborhood fixedpoint, faithful8action, involution fixed0/2, both centralizer kernels C2^4 with quotientsS4/S3, minimumweight code andorbit1/2 arguments audited. Independent10XORpairs/factorial2parts pass. Evidence /Users/rwalters/lean-genius-q9-known-values-20260911/review-2257. Arbitrary2-subgroups<=32, vertex-fixing<=16; no order32 exclusion/Lean/globalclosure.",
+    "cancelled_by": null,
+    "cancelled_ts": null,
+    "cancel_reason": null
+  }
+]
