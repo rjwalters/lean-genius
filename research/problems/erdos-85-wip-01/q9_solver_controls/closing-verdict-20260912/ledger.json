@@ -1,0 +1,1512 @@
+{
+  "controls": {
+    "48": {
+      "artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/control48-review/graph.json",
+          "sha256": "1ae2a73232a675f57469c405f3c2f1e7cd028223f9ff3e12dc1e310f39a7087c"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/check_control.py",
+          "sha256": "eeda08e3053d53826cb49ef952c3a3263d13a184c017e4373e7253cfbb8886e7"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/control48-review/verification.json",
+          "sha256": "d9bf39a2252ac96491fa9a7ba55d432b795db85e91fe5b852ed6d3b811d9f1cb"
+        }
+      ],
+      "receipt": {
+        "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/control48-review/receipt.json",
+        "sha256": "9d0aeb5b7f103e991bb7c6dc6afa35e63662b82dffe7c6724193fdd48bd33595"
+      },
+      "run_id": 0
+    },
+    "63": {
+      "artifacts": [
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/control63-run004-check/graph.json",
+          "sha256": "d4d0654101c7e96769992cc9a90ec609ef705033dca48edd945f52c3bb344f20"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/control63-run004-check/independent.py",
+          "sha256": "9832c53d4ac7c75bed4c4f3436ee089f5075f9a89bc43e297e93b8bea94e8e99"
+        },
+        {
+          "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/control63-run004-check/independent-receipt.json",
+          "sha256": "be4dd4c0ad2380aa996b2a0dee97b46677725f2eda191db82fc92274b998db1b"
+        }
+      ],
+      "receipt": {
+        "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/control63-run004-check/control-receipt.json",
+        "sha256": "66b7deb104545af6009092521d3877e4eade19777fb05ddf4d315f919a2bd241"
+      },
+      "run_id": 4
+    }
+  },
+  "launch_authorization": {
+    "concurrency": 2,
+    "launch_gate": "independently verified N48 control",
+    "proof_logging": false,
+    "source": "squad messages 50462 and 50463"
+  },
+  "runs": [
+    {
+      "cap_seconds": 3600,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-control48/graph.cnf",
+        "sha256": "6c6e90a6a493e200fcefd6446559a47df2f2eccda72d09246483f57fdd7595ae"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=3600",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/000-N48-m24/input.cnf"
+      ],
+      "d": 7,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/000-N48-m24",
+      "ended_utc": "2026-09-11T02:44:18.169339+00:00",
+      "exit_code": 10,
+      "id": 0,
+      "kind": "control",
+      "m": 24,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-control48/map.json",
+        "sha256": "7a31fc88c0c794e16d78fa90bed32022557eae4dc1efa8b38d90580ae36e477b"
+      },
+      "model_check": {
+        "clauses": 13047,
+        "status": "PASS",
+        "variables": 3757
+      },
+      "monotonic_start": 1477701.518534083,
+      "n": 48,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/000-N48-m24/solver.log",
+        "sha256": "35968d8a405c65e4bd71cce7144c504337373f431256561b5cca5de8835c70a0"
+      },
+      "pgid": 9435,
+      "pid": 9435,
+      "prepared_utc": "2026-09-11T02:44:18.121416+00:00",
+      "proof_logging": false,
+      "retry": false,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "sat_observed": true,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-11T02:44:18.124852+00:00",
+      "status": "SAT",
+      "wall_seconds": 0.046024792129173875
+    },
+    {
+      "cap_seconds": 3600,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-control63/graph.cnf",
+        "sha256": "3319b1362e0ba62afa3ca130ca39efeca1100d34adbca4bd70c94c64f958dc18"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=3600",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/001-N63-m21/input.cnf"
+      ],
+      "d": 8,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/001-N63-m21",
+      "ended_utc": "2026-09-11T02:51:00.797405+00:00",
+      "exit_code": -15,
+      "id": 1,
+      "kind": "control",
+      "m": 21,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-control63/map.json",
+        "sha256": "2f33290d6a163fa8afe5f22947758cb5155d44dbd70d0d7af8348adf3af9cb09"
+      },
+      "monotonic_start": 1477726.986482416,
+      "n": 63,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/001-N63-m21/solver.log",
+        "sha256": "83e6d7c950032b1e1b39020502b2fea6e2c713d5d93ffe60a244e07a8e605254"
+      },
+      "pgid": 21391,
+      "pid": 21391,
+      "prepared_utc": "2026-09-11T02:44:43.590541+00:00",
+      "proof_logging": false,
+      "retry": false,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-11T02:44:43.592964+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "signal 15",
+      "wall_seconds": 377.2018601668533
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 3600,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m10/graph.cnf",
+        "sha256": "563cce8198a9b24202d675cc161281c5b0b2b57483def22d08069700b421306a"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=3600",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/002-N80-m10/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/002-N80-m10",
+      "ended_utc": "2026-09-11T17:54:53.021445+00:00",
+      "exit_code": -15,
+      "id": 2,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 10,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m10/map.json",
+        "sha256": "c33adf59620d5341b94b20e842b2f18d8c0fa031c35a4bdb1d6d520252ebb167"
+      },
+      "monotonic_start": 1528736.071429458,
+      "n": 80,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/002-N80-m10/solver.log",
+        "sha256": "23e124d934a19a9acc86293a9abd4f6feccd92e5562845a29614de4143e6ac36"
+      },
+      "pgid": 68975,
+      "pid": 68975,
+      "prepared_utc": "2026-09-11T16:54:52.986865+00:00",
+      "proof_logging": false,
+      "retry": false,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 68951,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-11T16:54:53.024873+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 3600.0091445420403
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 3600,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m8/graph.cnf",
+        "sha256": "6320d7926bed1f79e4dc08ddeb9349f58ed725c18549acf11670c11d244c2b9b"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=3600",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/003-N80-m8/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/003-N80-m8",
+      "ended_utc": "2026-09-11T17:55:39.603018+00:00",
+      "exit_code": -15,
+      "id": 3,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 8,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m8/map.json",
+        "sha256": "d9ee7f6b55d5009eabd090abeb05c446dc47ff116f3fdb48ceef7247c53a660e"
+      },
+      "monotonic_start": 1528782.651569708,
+      "n": 80,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/003-N80-m8/solver.log",
+        "sha256": "262a7a197e0758b996492fd89bdadad47d83c598f64d867a1d9fdfa3df9336d3"
+      },
+      "pgid": 77447,
+      "pid": 77447,
+      "prepared_utc": "2026-09-11T16:55:39.569473+00:00",
+      "proof_logging": false,
+      "retry": false,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 77436,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-11T16:55:39.604461+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 3600.0102867078967
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 3600,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-control63-m7-proposed/graph.cnf",
+        "sha256": "bcb604577a885476d7df5612c1ef5e9c48d2e2bb27cb7f5453468ac9ae27c5b6"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=3600",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/004-N63-m7/input.cnf"
+      ],
+      "d": 8,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/004-N63-m7",
+      "ended_utc": "2026-09-11T17:55:08.889807+00:00",
+      "exit_code": 10,
+      "id": 4,
+      "kind": "control",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 7,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-control63-m7-proposed/map.json",
+        "sha256": "75d777a74f9dd08acaae9aa30a997578ca63ffe222ad745d5a372c7785d2ae08"
+      },
+      "model_check": {
+        "clauses": 134146,
+        "status": "PASS",
+        "variables": 39337
+      },
+      "monotonic_start": 1532336.61677875,
+      "n": 63,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/004-N63-m7/solver.log",
+        "sha256": "4e76ccb0e44fc9e812850dc80d9470be8ffc3578e32e8d0a680dc9779db7207a"
+      },
+      "pgid": 33417,
+      "pid": 33417,
+      "prepared_utc": "2026-09-11T17:54:53.556421+00:00",
+      "proof_logging": false,
+      "retry": false,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 33397,
+      "sat_observed": true,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-11T17:54:53.593201+00:00",
+      "status": "SAT",
+      "wall_seconds": 15.332060083048418
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 14400,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m10/graph.cnf",
+        "sha256": "563cce8198a9b24202d675cc161281c5b0b2b57483def22d08069700b421306a"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=14400",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/005-N80-m10/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/005-N80-m10",
+      "ended_utc": "2026-09-11T21:55:09.842455+00:00",
+      "exit_code": -15,
+      "id": 5,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 10,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m10/map.json",
+        "sha256": "c33adf59620d5341b94b20e842b2f18d8c0fa031c35a4bdb1d6d520252ebb167"
+      },
+      "monotonic_start": 1532352.77861775,
+      "n": 80,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/005-N80-m10/solver.log",
+        "sha256": "e2b7c1ab6b50fc7c29dce0565a0490b757d84892647ee04bddf72f7b4da12448"
+      },
+      "pgid": 35563,
+      "pid": 35563,
+      "prepared_utc": "2026-09-11T17:55:09.718533+00:00",
+      "proof_logging": false,
+      "retry": true,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 35546,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-11T17:55:09.761192+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 14400.01104537514
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 14400,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m8/graph.cnf",
+        "sha256": "6320d7926bed1f79e4dc08ddeb9349f58ed725c18549acf11670c11d244c2b9b"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=14400",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/006-N80-m8/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/006-N80-m8",
+      "ended_utc": "2026-09-11T21:55:40.067133+00:00",
+      "exit_code": -15,
+      "id": 6,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 8,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m8/map.json",
+        "sha256": "d9ee7f6b55d5009eabd090abeb05c446dc47ff116f3fdb48ceef7247c53a660e"
+      },
+      "monotonic_start": 1532382.997643708,
+      "n": 80,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/006-N80-m8/solver.log",
+        "sha256": "8eeeba194ba66f3a487f1829440823cd97e4f55783c1574fa804e1c8d6dcaa58"
+      },
+      "pgid": 38298,
+      "pid": 38298,
+      "prepared_utc": "2026-09-11T17:55:39.937265+00:00",
+      "proof_logging": false,
+      "retry": true,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 38290,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-11T17:55:39.973618+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 14400.016404750058
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 3600,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m5/graph.cnf",
+        "sha256": "c08853f356a15fc94d007b3cc21ff9afeabad6fb42baafcb2b1fe49b926ff8f2"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=3600",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/007-N80-m5/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/007-N80-m5",
+      "ended_utc": "2026-09-11T22:55:10.387009+00:00",
+      "exit_code": -15,
+      "id": 7,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 5,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m5/map.json",
+        "sha256": "295bd7e961928149dbb16915c8404f29f4fad3428c35cf21bee1094cb66c2bd6"
+      },
+      "monotonic_start": 1546753.314355125,
+      "n": 80,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/007-N80-m5/solver.log",
+        "sha256": "c3cfff41a3ca856c11f48aafc8223b7b00b2fd5148c9bd532c6d64867b033195"
+      },
+      "pgid": 45794,
+      "pid": 45794,
+      "prepared_utc": "2026-09-11T21:55:10.366142+00:00",
+      "proof_logging": false,
+      "retry": false,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 45790,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-11T21:55:10.399233+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 3600.018544166116
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 3600,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m4/graph.cnf",
+        "sha256": "0f8716a837c8cf044efb2242000f967947962ba43d10f09d38c619f8f9b0c365"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=3600",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/008-N80-m4/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/008-N80-m4",
+      "ended_utc": "2026-09-11T22:55:40.680913+00:00",
+      "exit_code": -15,
+      "id": 8,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 4,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m4/map.json",
+        "sha256": "19be92066d37db20616c3ae7b9f82c979e1d9eb8f44a403378468618dec14fee"
+      },
+      "monotonic_start": 1546783.608427875,
+      "n": 80,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/008-N80-m4/solver.log",
+        "sha256": "19243dc77ec37f7cc10c473397a350c351bd3510e799e63b65a238637551c60b"
+      },
+      "pgid": 47615,
+      "pid": 47615,
+      "prepared_utc": "2026-09-11T21:55:40.660413+00:00",
+      "proof_logging": false,
+      "retry": false,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 47604,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-11T21:55:40.699085+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 3600.0183830829337
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 14400,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m5/graph.cnf",
+        "sha256": "c08853f356a15fc94d007b3cc21ff9afeabad6fb42baafcb2b1fe49b926ff8f2"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=14400",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/009-N80-m5/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/009-N80-m5",
+      "ended_utc": "2026-09-12T02:55:11.041594+00:00",
+      "exit_code": -15,
+      "id": 9,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 5,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m5/map.json",
+        "sha256": "295bd7e961928149dbb16915c8404f29f4fad3428c35cf21bee1094cb66c2bd6"
+      },
+      "monotonic_start": 1550353.877864708,
+      "n": 80,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/009-N80-m5/solver.log",
+        "sha256": "0683e88cd8f9d668eb2832b76b90c6742450e0df243c1d8556b969b7eac0f90e"
+      },
+      "pgid": 25227,
+      "pid": 25227,
+      "prepared_utc": "2026-09-11T22:55:10.930707+00:00",
+      "proof_logging": false,
+      "retry": true,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 25222,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-11T22:55:10.967632+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 14400.01398729207
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 14400,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m4/graph.cnf",
+        "sha256": "0f8716a837c8cf044efb2242000f967947962ba43d10f09d38c619f8f9b0c365"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=14400",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/010-N80-m4/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/010-N80-m4",
+      "ended_utc": "2026-09-12T02:55:41.320334+00:00",
+      "exit_code": -15,
+      "id": 10,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 4,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m4/map.json",
+        "sha256": "19be92066d37db20616c3ae7b9f82c979e1d9eb8f44a403378468618dec14fee"
+      },
+      "monotonic_start": 1550384.150611583,
+      "n": 80,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/010-N80-m4/solver.log",
+        "sha256": "246669a0bc71dbae9b8761fcb0d308844e49c03ce359a227162e9d280c27c46a"
+      },
+      "pgid": 27093,
+      "pid": 27093,
+      "prepared_utc": "2026-09-11T22:55:41.203667+00:00",
+      "proof_logging": false,
+      "retry": true,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 27086,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-11T22:55:41.238674+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 14400.01978958305
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 3600,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m2/graph.cnf",
+        "sha256": "33bc0915636db8c2413a724c4a0fed7bb9044baab64cefd654139bae58b491fa"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=3600",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/011-N80-m2/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/011-N80-m2",
+      "ended_utc": "2026-09-12T03:55:11.864970+00:00",
+      "exit_code": -15,
+      "id": 11,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 2,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m2/map.json",
+        "sha256": "cf84f3433c51c29fc828237f5635a6575c60f869244509a5290d856d015d97de"
+      },
+      "monotonic_start": 1564754.649214375,
+      "n": 80,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/011-N80-m2/solver.log",
+        "sha256": "f99cd94b613cea1e8db5793611df31be229dc05b0e7f74366483f99c89bd59a3"
+      },
+      "pgid": 25371,
+      "pid": 25371,
+      "prepared_utc": "2026-09-12T02:55:11.797776+00:00",
+      "proof_logging": false,
+      "retry": false,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 25291,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-12T02:55:11.840307+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 3600.020838083001
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 3600,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-n78-m6/graph.cnf",
+        "sha256": "e7e37ad40f4b698cd9c5f3a9497729047073fbcc18a260a0fcf36a8bbfa8a738"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=3600",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/012-N78-m6/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/012-N78-m6",
+      "ended_utc": "2026-09-12T03:55:42.139479+00:00",
+      "exit_code": -15,
+      "id": 12,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 6,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-n78-m6/map.json",
+        "sha256": "e6ca21f827450e43f1b36088c9f8170257888303d4c32065785259b5d7eb4bf4"
+      },
+      "monotonic_start": 1564784.93132925,
+      "n": 78,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/012-N78-m6/solver.log",
+        "sha256": "77b3563acbda49433a89038e9b63a5790dee15286bcf8a4e452bc99e4d495efa"
+      },
+      "pgid": 36835,
+      "pid": 36835,
+      "prepared_utc": "2026-09-12T02:55:42.079903+00:00",
+      "proof_logging": false,
+      "retry": false,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 36808,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-12T02:55:42.121683+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 3600.0128447909374
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 14400,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m2/graph.cnf",
+        "sha256": "33bc0915636db8c2413a724c4a0fed7bb9044baab64cefd654139bae58b491fa"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=14400",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/013-N80-m2/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/013-N80-m2",
+      "ended_utc": "2026-09-12T07:55:12.184870+00:00",
+      "exit_code": -15,
+      "id": 13,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 2,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-n80-m2/map.json",
+        "sha256": "cf84f3433c51c29fc828237f5635a6575c60f869244509a5290d856d015d97de"
+      },
+      "monotonic_start": 1568354.89338775,
+      "n": 80,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/013-N80-m2/solver.log",
+        "sha256": "76a76c9cfa55ee98f74be58506e5a1fd969613f83b193b7643991c2ac839cffa"
+      },
+      "pgid": 11558,
+      "pid": 11558,
+      "prepared_utc": "2026-09-12T03:55:12.087005+00:00",
+      "proof_logging": false,
+      "retry": true,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 11493,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-12T03:55:12.131890+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 14400.024935415946
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 14400,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-n78-m6/graph.cnf",
+        "sha256": "e7e37ad40f4b698cd9c5f3a9497729047073fbcc18a260a0fcf36a8bbfa8a738"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=14400",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/014-N78-m6/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/014-N78-m6",
+      "ended_utc": "2026-09-12T07:55:42.461618+00:00",
+      "exit_code": -15,
+      "id": 14,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 6,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-n78-m6/map.json",
+        "sha256": "e6ca21f827450e43f1b36088c9f8170257888303d4c32065785259b5d7eb4bf4"
+      },
+      "monotonic_start": 1568385.174069,
+      "n": 78,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/014-N78-m6/solver.log",
+        "sha256": "e21a6a8ca81fafe695b13231e382db1eb63c8acfee4f8cb45439b7c17d8f721b"
+      },
+      "pgid": 21824,
+      "pid": 21824,
+      "prepared_utc": "2026-09-12T03:55:42.368090+00:00",
+      "proof_logging": false,
+      "retry": true,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 21751,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-12T03:55:42.410512+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 14400.020941833034
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 3600,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-n78-m3/graph.cnf",
+        "sha256": "5c17c1956e24ebcff71c6623e5f7b77c2882fcfc3fb5ba31246675d310a20c58"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=3600",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/015-N78-m3/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/015-N78-m3",
+      "ended_utc": "2026-09-12T08:55:12.746615+00:00",
+      "exit_code": -15,
+      "id": 15,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 3,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-n78-m3/map.json",
+        "sha256": "5a50eb6738389de84a8caa36dc4a01c23abc7f5203ba6edffa1e896b5fe060d6"
+      },
+      "monotonic_start": 1582755.428876833,
+      "n": 78,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/015-N78-m3/solver.log",
+        "sha256": "b829958a1caa4e4a0e9142ea70d0e53fe8ce0e754885a599aa267384fd93c726"
+      },
+      "pgid": 53354,
+      "pid": 53354,
+      "prepared_utc": "2026-09-12T07:55:12.693938+00:00",
+      "proof_logging": false,
+      "retry": false,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 53339,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-12T07:55:12.735624+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 3600.02152820793
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 3600,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-n78-m2/graph.cnf",
+        "sha256": "2231a42b68dcd1e7bc19edf8e1679f5e83f547455b842278f1870e80818680b9"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=3600",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/016-N78-m2/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/016-N78-m2",
+      "ended_utc": "2026-09-12T08:55:43.074701+00:00",
+      "exit_code": -15,
+      "id": 16,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 2,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-n78-m2/map.json",
+        "sha256": "b948b695e867d2e13715ec611e69dfb1ce24fe5704c265e38d0ef8824e8df8e0"
+      },
+      "monotonic_start": 1582785.761598875,
+      "n": 78,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/016-N78-m2/solver.log",
+        "sha256": "dd03275502fdd0ca56b0fb803751aac8ec0317c017b5d36ca11d8cec4f9cbb1c"
+      },
+      "pgid": 56258,
+      "pid": 56258,
+      "prepared_utc": "2026-09-12T07:55:43.026920+00:00",
+      "proof_logging": false,
+      "retry": false,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 56229,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-12T07:55:43.070357+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 3600.0164970830083
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 14400,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-n78-m3/graph.cnf",
+        "sha256": "5c17c1956e24ebcff71c6623e5f7b77c2882fcfc3fb5ba31246675d310a20c58"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=14400",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/017-N78-m3/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/017-N78-m3",
+      "ended_utc": "2026-09-12T12:55:13.256309+00:00",
+      "exit_code": -15,
+      "id": 17,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 3,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-n78-m3/map.json",
+        "sha256": "5a50eb6738389de84a8caa36dc4a01c23abc7f5203ba6edffa1e896b5fe060d6"
+      },
+      "monotonic_start": 1586355.855818,
+      "n": 78,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/017-N78-m3/solver.log",
+        "sha256": "36fd4856d56819a324fd401f9aee3c0199f62ace0f2b1cc02af270dda07f5dea"
+      },
+      "pgid": 65567,
+      "pid": 65567,
+      "prepared_utc": "2026-09-12T08:55:13.150709+00:00",
+      "proof_logging": false,
+      "retry": true,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 65527,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-12T08:55:13.193086+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 14400.015441625146
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 14400,
+      "cnf": {
+        "path": "/private/tmp/erdos85-sol1-q9-n78-m2/graph.cnf",
+        "sha256": "2231a42b68dcd1e7bc19edf8e1679f5e83f547455b842278f1870e80818680b9"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=14400",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/018-N78-m2/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/018-N78-m2",
+      "ended_utc": "2026-09-12T12:55:43.471641+00:00",
+      "exit_code": -15,
+      "id": 18,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 2,
+      "metadata": {
+        "path": "/private/tmp/erdos85-sol1-q9-n78-m2/map.json",
+        "sha256": "b948b695e867d2e13715ec611e69dfb1ce24fe5704c265e38d0ef8824e8df8e0"
+      },
+      "monotonic_start": 1586386.062860333,
+      "n": 78,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/018-N78-m2/solver.log",
+        "sha256": "d72e93ee3fa7aaa4328ae0bcd0dbb5d705c44791e4caa13f5560804860a1df7a"
+      },
+      "pgid": 69620,
+      "pid": 69620,
+      "prepared_utc": "2026-09-12T08:55:43.357570+00:00",
+      "proof_logging": false,
+      "retry": true,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 69605,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-12T08:55:43.400236+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 14400.023709542118
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 3600,
+      "cnf": {
+        "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n80-size-check/graph.cnf",
+        "sha256": "c5591e61c0e7cff2349aa5fca9b004cae7e9d8ce116933af179a8bad0c00fc7d"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=3600",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/019-N80-m1/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/019-N80-m1",
+      "ended_utc": "2026-09-12T13:55:15.494086+00:00",
+      "exit_code": -15,
+      "id": 19,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 1,
+      "metadata": {
+        "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n80-size-check/map.json",
+        "sha256": "b153f1c105d0213a72627dcc16cafd9dd266bc6b5948d1b08563abcbce4e1536"
+      },
+      "monotonic_start": 1600758.036532625,
+      "n": 80,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/019-N80-m1/solver.log",
+        "sha256": "dc019fcc46e12bdec7c1950db015591db1030b02ed7c290ff92c1a8d9d075fbe"
+      },
+      "pgid": 40685,
+      "pid": 40685,
+      "prepared_utc": "2026-09-12T12:55:15.420144+00:00",
+      "proof_logging": false,
+      "retry": false,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 40675,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-12T12:55:15.461306+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 3600.0273334579542
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 3600,
+      "cnf": {
+        "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n78-size-check/graph.cnf",
+        "sha256": "47f04c0a368313a73f6cbd04dbbd161a1f664372775853078424b30d69b7caa3"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=3600",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/020-N78-m1/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/020-N78-m1",
+      "ended_utc": "2026-09-12T13:55:43.833469+00:00",
+      "exit_code": -15,
+      "id": 20,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 1,
+      "metadata": {
+        "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n78-size-check/map.json",
+        "sha256": "b7681f5e6f2e4b6665289b1e0d5ad7a9ec6756a2ad45379ec812f353a036a24c"
+      },
+      "monotonic_start": 1600786.382861083,
+      "n": 78,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/020-N78-m1/solver.log",
+        "sha256": "839608620e4f6f73c276a9744250698800eefa6ab54b0135120b61f3dc8c4ecc"
+      },
+      "pgid": 43919,
+      "pid": 43919,
+      "prepared_utc": "2026-09-12T12:55:43.766446+00:00",
+      "proof_logging": false,
+      "retry": false,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 43901,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-12T12:55:43.808702+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 3600.020082750125
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 14400,
+      "cnf": {
+        "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n80-size-check/graph.cnf",
+        "sha256": "c5591e61c0e7cff2349aa5fca9b004cae7e9d8ce116933af179a8bad0c00fc7d"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=14400",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/021-N80-m1/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/021-N80-m1",
+      "ended_utc": "2026-09-12T17:55:17.396666+00:00",
+      "exit_code": -15,
+      "id": 21,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 1,
+      "metadata": {
+        "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n80-size-check/map.json",
+        "sha256": "b153f1c105d0213a72627dcc16cafd9dd266bc6b5948d1b08563abcbce4e1536"
+      },
+      "monotonic_start": 1604359.842467375,
+      "n": 80,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/021-N80-m1/solver.log",
+        "sha256": "e5e29942835e0578ce2125a0318f37aa20a28dbdf43a1761859da63bb7b2c57b"
+      },
+      "pgid": 61295,
+      "pid": 61295,
+      "prepared_utc": "2026-09-12T13:55:17.271210+00:00",
+      "proof_logging": false,
+      "retry": true,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 61275,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-12T13:55:17.313074+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 14400.02754124999
+    },
+    {
+      "authorization": {
+        "concurrency": 2,
+        "launch_gate": "independently verified N48 control",
+        "proof_logging": false,
+        "source": "squad messages 50462 and 50463"
+      },
+      "cap_seconds": 6797,
+      "cnf": {
+        "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n78-size-check/graph.cnf",
+        "sha256": "47f04c0a368313a73f6cbd04dbbd161a1f664372775853078424b30d69b7caa3"
+      },
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=6797",
+        "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/022-N78-m1/input.cnf"
+      ],
+      "d": 9,
+      "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/022-N78-m1",
+      "ended_utc": "2026-09-12T15:49:02.676185+00:00",
+      "exit_code": -15,
+      "id": 22,
+      "kind": "q9",
+      "legacy_helpers": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+        "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+      },
+      "m": 1,
+      "metadata": {
+        "path": "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n78-size-check/map.json",
+        "sha256": "b7681f5e6f2e4b6665289b1e0d5ad7a9ec6756a2ad45379ec812f353a036a24c"
+      },
+      "monotonic_start": 1604388.190645125,
+      "n": 78,
+      "output": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/022-N78-m1/solver.log",
+        "sha256": "7fe8fd2631c3eea796e3c83e8d799d6db608250c22d47e6689870443b2a3d439"
+      },
+      "pgid": 64260,
+      "pid": 64260,
+      "prepared_utc": "2026-09-12T13:55:45.619509+00:00",
+      "proof_logging": false,
+      "retry": true,
+      "runner": {
+        "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+        "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+      },
+      "runner_pid": 64225,
+      "sat_observed": false,
+      "seed": 0,
+      "solver": {
+        "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+      },
+      "solver_version": "4.0.4",
+      "started_utc": "2026-09-12T13:55:45.663886+00:00",
+      "status": "UNKNOWN",
+      "termination_reason": "wall cap",
+      "wall_seconds": 6797.024266707944
+    }
+  ]
+}

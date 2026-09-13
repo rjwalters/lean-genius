@@ -1,0 +1,379 @@
+{
+  "status": "PASS",
+  "utc": "2026-09-12T17:11:11.224092+00:00",
+  "records": [
+    {
+      "id": 9,
+      "n": 80,
+      "d": 9,
+      "m": 5,
+      "status": "UNKNOWN",
+      "pid": 25227,
+      "runner_pid": 25222,
+      "cap_seconds": 14400,
+      "retry": true,
+      "started_utc": "2026-09-11T22:55:10.967632+00:00",
+      "wall_seconds": 14400.01398729207,
+      "ended_utc": "2026-09-12T02:55:11.041594+00:00",
+      "output_sha256": "0683e88cd8f9d668eb2832b76b90c6742450e0df243c1d8556b969b7eac0f90e",
+      "result_sha256": "fede0c1cb9300f6d42e61ce80c9ca88ee54b47a76c50e6718457ea47d72114aa"
+    },
+    {
+      "id": 10,
+      "n": 80,
+      "d": 9,
+      "m": 4,
+      "status": "UNKNOWN",
+      "pid": 27093,
+      "runner_pid": 27086,
+      "cap_seconds": 14400,
+      "retry": true,
+      "started_utc": "2026-09-11T22:55:41.238674+00:00",
+      "wall_seconds": 14400.01978958305,
+      "ended_utc": "2026-09-12T02:55:41.320334+00:00",
+      "output_sha256": "246669a0bc71dbae9b8761fcb0d308844e49c03ce359a227162e9d280c27c46a",
+      "result_sha256": "e2808d9171ea5511ed92b9ee89aa40179ffd30d2547e60788e691d795d0f37d5"
+    },
+    {
+      "id": 11,
+      "n": 80,
+      "d": 9,
+      "m": 2,
+      "status": "UNKNOWN",
+      "pid": 25371,
+      "runner_pid": 25291,
+      "cap_seconds": 3600,
+      "retry": false,
+      "started_utc": "2026-09-12T02:55:11.840307+00:00",
+      "wall_seconds": 3600.020838083001,
+      "ended_utc": "2026-09-12T03:55:11.864970+00:00",
+      "output_sha256": "f99cd94b613cea1e8db5793611df31be229dc05b0e7f74366483f99c89bd59a3",
+      "result_sha256": "af441ceee11f6eb6b9f5547c2d9e4206b6332471a1e5db2301431af944a4a055"
+    },
+    {
+      "id": 12,
+      "n": 78,
+      "d": 9,
+      "m": 6,
+      "status": "UNKNOWN",
+      "pid": 36835,
+      "runner_pid": 36808,
+      "cap_seconds": 3600,
+      "retry": false,
+      "started_utc": "2026-09-12T02:55:42.121683+00:00",
+      "wall_seconds": 3600.0128447909374,
+      "ended_utc": "2026-09-12T03:55:42.139479+00:00",
+      "output_sha256": "77b3563acbda49433a89038e9b63a5790dee15286bcf8a4e452bc99e4d495efa",
+      "result_sha256": "02bf025e8d3930ebf52e77096c082d627513ae10de8b64ba06fca4eba0cbcb61"
+    },
+    {
+      "id": 13,
+      "n": 80,
+      "d": 9,
+      "m": 2,
+      "status": "UNKNOWN",
+      "pid": 11558,
+      "runner_pid": 11493,
+      "cap_seconds": 14400,
+      "retry": true,
+      "started_utc": "2026-09-12T03:55:12.131890+00:00",
+      "wall_seconds": 14400.024935415946,
+      "ended_utc": "2026-09-12T07:55:12.184870+00:00",
+      "output_sha256": "76a76c9cfa55ee98f74be58506e5a1fd969613f83b193b7643991c2ac839cffa",
+      "result_sha256": "098c1e8a660b657015951f8b229d8a57c7e5454f9445fb2b4a8a6cc899a1b9c0"
+    },
+    {
+      "id": 14,
+      "n": 78,
+      "d": 9,
+      "m": 6,
+      "status": "UNKNOWN",
+      "pid": 21824,
+      "runner_pid": 21751,
+      "cap_seconds": 14400,
+      "retry": true,
+      "started_utc": "2026-09-12T03:55:42.410512+00:00",
+      "wall_seconds": 14400.020941833034,
+      "ended_utc": "2026-09-12T07:55:42.461618+00:00",
+      "output_sha256": "e21a6a8ca81fafe695b13231e382db1eb63c8acfee4f8cb45439b7c17d8f721b",
+      "result_sha256": "d63ab580ad7b252632fa12e5c57acf5fd088b199da1350fa6085437ea3aae5c0"
+    },
+    {
+      "id": 15,
+      "n": 78,
+      "d": 9,
+      "m": 3,
+      "status": "UNKNOWN",
+      "pid": 53354,
+      "runner_pid": 53339,
+      "cap_seconds": 3600,
+      "retry": false,
+      "started_utc": "2026-09-12T07:55:12.735624+00:00",
+      "wall_seconds": 3600.02152820793,
+      "ended_utc": "2026-09-12T08:55:12.746615+00:00",
+      "output_sha256": "b829958a1caa4e4a0e9142ea70d0e53fe8ce0e754885a599aa267384fd93c726",
+      "result_sha256": "64451a84b08996a42688f00ea5a23c43ca9ea2fb996d57a4cf7643c45de32d83"
+    },
+    {
+      "id": 16,
+      "n": 78,
+      "d": 9,
+      "m": 2,
+      "status": "UNKNOWN",
+      "pid": 56258,
+      "runner_pid": 56229,
+      "cap_seconds": 3600,
+      "retry": false,
+      "started_utc": "2026-09-12T07:55:43.070357+00:00",
+      "wall_seconds": 3600.0164970830083,
+      "ended_utc": "2026-09-12T08:55:43.074701+00:00",
+      "output_sha256": "dd03275502fdd0ca56b0fb803751aac8ec0317c017b5d36ca11d8cec4f9cbb1c",
+      "result_sha256": "c645b2bad9167bcde9588676e97b36e557bdc8076779524b8a48ef2c253eb540"
+    },
+    {
+      "id": 17,
+      "n": 78,
+      "d": 9,
+      "m": 3,
+      "status": "UNKNOWN",
+      "pid": 65567,
+      "runner_pid": 65527,
+      "cap_seconds": 14400,
+      "retry": true,
+      "started_utc": "2026-09-12T08:55:13.193086+00:00",
+      "wall_seconds": 14400.015441625146,
+      "ended_utc": "2026-09-12T12:55:13.256309+00:00",
+      "output_sha256": "36fd4856d56819a324fd401f9aee3c0199f62ace0f2b1cc02af270dda07f5dea",
+      "result_sha256": "4ba650e73512eaae303ce1e3071f8c813e0f2b350125bdf97fec8607bcc1aaf7"
+    },
+    {
+      "id": 18,
+      "n": 78,
+      "d": 9,
+      "m": 2,
+      "status": "UNKNOWN",
+      "pid": 69620,
+      "runner_pid": 69605,
+      "cap_seconds": 14400,
+      "retry": true,
+      "started_utc": "2026-09-12T08:55:43.400236+00:00",
+      "wall_seconds": 14400.023709542118,
+      "ended_utc": "2026-09-12T12:55:43.471641+00:00",
+      "output_sha256": "d72e93ee3fa7aaa4328ae0bcd0dbb5d705c44791e4caa13f5560804860a1df7a",
+      "result_sha256": "3c79512a7f0b16ec708cb2dbd915194324558d2beb9d928f98eda49ed7cbc23e"
+    },
+    {
+      "id": 19,
+      "n": 80,
+      "d": 9,
+      "m": 1,
+      "status": "UNKNOWN",
+      "pid": 40685,
+      "runner_pid": 40675,
+      "cap_seconds": 3600,
+      "retry": false,
+      "started_utc": "2026-09-12T12:55:15.461306+00:00",
+      "wall_seconds": 3600.0273334579542,
+      "ended_utc": "2026-09-12T13:55:15.494086+00:00",
+      "output_sha256": "dc019fcc46e12bdec7c1950db015591db1030b02ed7c290ff92c1a8d9d075fbe",
+      "result_sha256": "284344f973a54e22476ae69238d015e3d5db741240ccdb0a3ec48ffe583390c6"
+    },
+    {
+      "id": 20,
+      "n": 78,
+      "d": 9,
+      "m": 1,
+      "status": "UNKNOWN",
+      "pid": 43919,
+      "runner_pid": 43901,
+      "cap_seconds": 3600,
+      "retry": false,
+      "started_utc": "2026-09-12T12:55:43.808702+00:00",
+      "wall_seconds": 3600.020082750125,
+      "ended_utc": "2026-09-12T13:55:43.833469+00:00",
+      "output_sha256": "839608620e4f6f73c276a9744250698800eefa6ab54b0135120b61f3dc8c4ecc",
+      "result_sha256": "44a3f38cefbe31e3e9b3bbcfe06fb27999018c9576ec38b1fd32a63ec6d36c23"
+    },
+    {
+      "id": 21,
+      "n": 80,
+      "d": 9,
+      "m": 1,
+      "status": "RUNNING",
+      "pid": 61295,
+      "runner_pid": 61275,
+      "cap_seconds": 14400,
+      "retry": true,
+      "started_utc": "2026-09-12T13:55:17.313074+00:00",
+      "live_command": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat --sat --strict --no-color --seed=0 --time=14400 /Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/021-N80-m1/input.cnf",
+      "live_worker_command": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -u /Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py run --n 80 --d 9 --m 1 --cnf /Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n80-size-check/graph.cnf --metadata /Users/rwalters/lean-genius-q9-known-values-20260911/q9-m1-n80-size-check/map.json --seed 0 --retry"
+    },
+    {
+      "id": 22,
+      "n": 78,
+      "d": 9,
+      "m": 1,
+      "status": "UNKNOWN",
+      "pid": 64260,
+      "runner_pid": 64225,
+      "cap_seconds": 6797,
+      "retry": true,
+      "started_utc": "2026-09-12T13:55:45.663886+00:00",
+      "wall_seconds": 6797.024266707944,
+      "ended_utc": "2026-09-12T15:49:02.676185+00:00",
+      "output_sha256": "7fe8fd2631c3eea796e3c83e8d799d6db608250c22d47e6689870443b2a3d439",
+      "result_sha256": "9a85fff982580055f4ae54c1444a3370b7672229364a8ac5cd9efa9fc5ef3203"
+    }
+  ],
+  "launch_allocations": [
+    {
+      "id": 9,
+      "terminal_seconds": 39992.64537058328,
+      "active_ids": [
+        8
+      ],
+      "reserved_seconds": 3605,
+      "available_cap_seconds": 129197,
+      "allocated_cap_seconds": 14400
+    },
+    {
+      "id": 10,
+      "terminal_seconds": 43592.66375366622,
+      "active_ids": [
+        9
+      ],
+      "reserved_seconds": 14405,
+      "available_cap_seconds": 114797,
+      "allocated_cap_seconds": 14400
+    },
+    {
+      "id": 11,
+      "terminal_seconds": 57992.67774095829,
+      "active_ids": [
+        10
+      ],
+      "reserved_seconds": 14405,
+      "available_cap_seconds": 100397,
+      "allocated_cap_seconds": 3600
+    },
+    {
+      "id": 12,
+      "terminal_seconds": 72392.69753054134,
+      "active_ids": [
+        11
+      ],
+      "reserved_seconds": 3605,
+      "available_cap_seconds": 96797,
+      "allocated_cap_seconds": 3600
+    },
+    {
+      "id": 13,
+      "terminal_seconds": 75992.71836862434,
+      "active_ids": [
+        12
+      ],
+      "reserved_seconds": 3605,
+      "available_cap_seconds": 93197,
+      "allocated_cap_seconds": 14400
+    },
+    {
+      "id": 14,
+      "terminal_seconds": 79592.73121341527,
+      "active_ids": [
+        13
+      ],
+      "reserved_seconds": 14405,
+      "available_cap_seconds": 78797,
+      "allocated_cap_seconds": 14400
+    },
+    {
+      "id": 15,
+      "terminal_seconds": 93992.75614883122,
+      "active_ids": [
+        14
+      ],
+      "reserved_seconds": 14405,
+      "available_cap_seconds": 64397,
+      "allocated_cap_seconds": 3600
+    },
+    {
+      "id": 16,
+      "terminal_seconds": 108392.77709066425,
+      "active_ids": [
+        15
+      ],
+      "reserved_seconds": 3605,
+      "available_cap_seconds": 60797,
+      "allocated_cap_seconds": 3600
+    },
+    {
+      "id": 17,
+      "terminal_seconds": 111992.79861887218,
+      "active_ids": [
+        16
+      ],
+      "reserved_seconds": 3605,
+      "available_cap_seconds": 57197,
+      "allocated_cap_seconds": 14400
+    },
+    {
+      "id": 18,
+      "terminal_seconds": 115592.81511595519,
+      "active_ids": [
+        17
+      ],
+      "reserved_seconds": 14405,
+      "available_cap_seconds": 42797,
+      "allocated_cap_seconds": 14400
+    },
+    {
+      "id": 19,
+      "terminal_seconds": 129992.83055758034,
+      "active_ids": [
+        18
+      ],
+      "reserved_seconds": 14405,
+      "available_cap_seconds": 28397,
+      "allocated_cap_seconds": 3600
+    },
+    {
+      "id": 20,
+      "terminal_seconds": 144392.85426712246,
+      "active_ids": [
+        19
+      ],
+      "reserved_seconds": 3605,
+      "available_cap_seconds": 24797,
+      "allocated_cap_seconds": 3600
+    },
+    {
+      "id": 21,
+      "terminal_seconds": 147992.8816005804,
+      "active_ids": [
+        20
+      ],
+      "reserved_seconds": 3605,
+      "available_cap_seconds": 21197,
+      "allocated_cap_seconds": 14400
+    },
+    {
+      "id": 22,
+      "terminal_seconds": 151592.90168333054,
+      "active_ids": [
+        21
+      ],
+      "reserved_seconds": 14405,
+      "available_cap_seconds": 6797,
+      "allocated_cap_seconds": 6797
+    }
+  ],
+  "live_solver_processes": [
+    "61295 /opt/homebrew/Cellar/kissat/4.0.4/bin/kissat"
+  ],
+  "terminal_solver_seconds": 158389.92595003848,
+  "terminal_solver_hours": 43.99720165278847,
+  "active_full_cap_reservation_seconds": 14405,
+  "terminal_plus_reserved_seconds": 172794.92595003848,
+  "aggregate_limit_seconds": 172800,
+  "scope": "13 terminal artifact audits (009\u2013020,022) and current run021 observation. Historical concurrency and allocation reconstructed from persisted run timestamps, not contemporaneous process observation. UNKNOWN provides no existence or nonexistence conclusion. No solver launched or stopped."
+}

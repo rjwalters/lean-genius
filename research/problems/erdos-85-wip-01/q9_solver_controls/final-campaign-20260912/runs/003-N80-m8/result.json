@@ -1,0 +1,64 @@
+{
+  "authorization": {
+    "concurrency": 2,
+    "launch_gate": "independently verified N48 control",
+    "proof_logging": false,
+    "source": "squad messages 50462 and 50463"
+  },
+  "cap_seconds": 3600,
+  "cnf": {
+    "path": "/private/tmp/erdos85-sol1-q9-n80-m8/graph.cnf",
+    "sha256": "6320d7926bed1f79e4dc08ddeb9349f58ed725c18549acf11670c11d244c2b9b"
+  },
+  "command": [
+    "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+    "--sat",
+    "--strict",
+    "--no-color",
+    "--seed=0",
+    "--time=3600",
+    "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/003-N80-m8/input.cnf"
+  ],
+  "d": 9,
+  "directory": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/003-N80-m8",
+  "ended_utc": "2026-09-11T17:55:39.603018+00:00",
+  "exit_code": -15,
+  "id": 3,
+  "kind": "q9",
+  "legacy_helpers": {
+    "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner.py",
+    "sha256": "18e8584b5d48cde9a7888789c34afeea4de7767bf77f8b4185cda36ea54c5eb0"
+  },
+  "m": 8,
+  "metadata": {
+    "path": "/private/tmp/erdos85-sol1-q9-n80-m8/map.json",
+    "sha256": "d9ee7f6b55d5009eabd090abeb05c446dc47ff116f3fdb48ceef7247c53a660e"
+  },
+  "monotonic_start": 1528782.651569708,
+  "n": 80,
+  "output": {
+    "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/003-N80-m8/solver.log",
+    "sha256": "262a7a197e0758b996492fd89bdadad47d83c598f64d867a1d9fdfa3df9336d3"
+  },
+  "pgid": 77447,
+  "pid": 77447,
+  "prepared_utc": "2026-09-11T16:55:39.569473+00:00",
+  "proof_logging": false,
+  "retry": false,
+  "runner": {
+    "path": "/Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py",
+    "sha256": "c35cc6a7d4c994a7a5c406aba3bac0887b008b334a2a19b1a4853021828c9155"
+  },
+  "runner_pid": 77436,
+  "sat_observed": false,
+  "seed": 0,
+  "solver": {
+    "path": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+    "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848"
+  },
+  "solver_version": "4.0.4",
+  "started_utc": "2026-09-11T16:55:39.604461+00:00",
+  "status": "UNKNOWN",
+  "termination_reason": "wall cap",
+  "wall_seconds": 3600.0102867078967
+}

@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "scope": "Independent staged report versus final ledger and artifact verification; publication not yet checked",
+  "manifest_sha256": "b959c66fd3265630f34f41fb59e5fd09925d68a824f089bf836ffd62bcfe52ae",
+  "report_sha256": "1d828ded1de7d56844eaabe1ab6dd89239c58aaf26d81664d642e2408bf2ef0e",
+  "verified_files": 174,
+  "runs": 23,
+  "q9_unknown": 20,
+  "wall_seconds": 172789.95349128847,
+  "checks": [
+    "All staged hashes",
+    "Final ledger/state/plan byte equality to source",
+    "All23 result fields and source byte identity",
+    "All23 log and metadata hashes",
+    "CSV all fields",
+    "q9 statuses/caps/retry identity and chronology",
+    "Report links resolved against staged overlay plus integration"
+  ],
+  "publication": "pending sol3 integration and refreshed pins"
+}

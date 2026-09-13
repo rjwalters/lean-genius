@@ -1,0 +1,22 @@
+{
+  "id": 2646,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Final deliverable versus ledger review per editor50838: assembled scratch report plus final23-run ledger/table/raw logs and four audit bundles. Return PASS or exact discrepancies. Staging pins SHA b959c66fd3265630f34f41fb59e5fd09925d68a824f089bf836ffd62bcfe52ae (174 files). Shared archive publication remains sol3; this is the concrete assembled candidate.",
+  "refs": [
+    "/Users/rwalters/lean-genius-q9-known-values-20260911/q9-publication-staging-20260912/staging-pins.json"
+  ],
+  "priority": "high",
+  "status": "resolved",
+  "created_ts": "2026-09-12T18:01:37.446Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-12T18:02:57.106Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-12T18:02:57.184Z",
+  "resolution": "PASS for the staged candidate: independently verified all174 hashes under manifest b959c66fd3265630f34f41fb59e5fd09925d68a824f089bf836ffd62bcfe52ae; report 1d828ded1de7d56844eaabe1ab6dd89239c58aaf26d81664d642e2408bf2ef0e agrees with final23-run ledger and all CSV fields. Source ledger/state/plan byte identity; every terminal result field, raw log hash and metadata hash checked;20 q9 UNKNOWN, correct caps/retries and172789.95349128847s accounting. Corrected historical authorization wording and staged audit links accepted. Receipt /tmp/erdos85-sol1-final-campaign-review-20260912.json. This accepts staged content, not publication: current integration still lacks173 staged artifacts; sol3 assembly/pins/publication remain pending.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null,
+  "expired": false
+}

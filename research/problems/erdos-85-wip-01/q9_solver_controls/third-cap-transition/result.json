@@ -1,0 +1,82 @@
+{
+  "status": "PASS",
+  "utc": "2026-09-11T22:56:27.645467+00:00",
+  "records": [
+    {
+      "id": 7,
+      "n": 80,
+      "d": 9,
+      "m": 5,
+      "status": "UNKNOWN",
+      "pid": 45794,
+      "runner_pid": 45790,
+      "cap_seconds": 3600,
+      "retry": false,
+      "started_utc": "2026-09-11T21:55:10.399233+00:00",
+      "wall_seconds": 3600.018544166116,
+      "ended_utc": "2026-09-11T22:55:10.387009+00:00",
+      "output_sha256": "c3cfff41a3ca856c11f48aafc8223b7b00b2fd5148c9bd532c6d64867b033195",
+      "result_sha256": "245c9c757476a0c088cf257d2fa9f5df08a802e5e658ff731469c66fbdeb8302",
+      "solver_status_lines": [],
+      "initial_cap_exhausted": true
+    },
+    {
+      "id": 8,
+      "n": 80,
+      "d": 9,
+      "m": 4,
+      "status": "UNKNOWN",
+      "pid": 47615,
+      "runner_pid": 47604,
+      "cap_seconds": 3600,
+      "retry": false,
+      "started_utc": "2026-09-11T21:55:40.699085+00:00",
+      "wall_seconds": 3600.0183830829337,
+      "ended_utc": "2026-09-11T22:55:40.680913+00:00",
+      "output_sha256": "19243dc77ec37f7cc10c473397a350c351bd3510e799e63b65a238637551c60b",
+      "result_sha256": "984d2a6844c4780ac47e2eaf57ca5b0f6b54043d4ff7e3910ce7c1241fc18811",
+      "solver_status_lines": [],
+      "initial_cap_exhausted": true
+    },
+    {
+      "id": 9,
+      "n": 80,
+      "d": 9,
+      "m": 5,
+      "status": "RUNNING",
+      "pid": 25227,
+      "runner_pid": 25222,
+      "cap_seconds": 14400,
+      "retry": true,
+      "started_utc": "2026-09-11T22:55:10.967632+00:00",
+      "live_command": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat --sat --strict --no-color --seed=0 --time=14400 /Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/009-N80-m5/input.cnf",
+      "live_worker_command": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -u /Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py run --n 80 --d 9 --m 5 --cnf /tmp/erdos85-sol1-q9-n80-m5/graph.cnf --metadata /tmp/erdos85-sol1-q9-n80-m5/map.json --seed 0 --retry"
+    },
+    {
+      "id": 10,
+      "n": 80,
+      "d": 9,
+      "m": 4,
+      "status": "RUNNING",
+      "pid": 27093,
+      "runner_pid": 27086,
+      "cap_seconds": 14400,
+      "retry": true,
+      "started_utc": "2026-09-11T22:55:41.238674+00:00",
+      "live_command": "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat --sat --strict --no-color --seed=0 --time=14400 /Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runs/010-N80-m4/input.cnf",
+      "live_worker_command": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -u /Users/rwalters/lean-genius-erdos85-goal48-sol3/q9-solver-controls/runner_launch.py run --n 80 --d 9 --m 4 --cnf /tmp/erdos85-sol1-q9-n80-m4/graph.cnf --metadata /tmp/erdos85-sol1-q9-n80-m4/map.json --seed 0 --retry"
+    }
+  ],
+  "live_solver_processes": [
+    "25227 /opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+    "27093 /opt/homebrew/Cellar/kissat/4.0.4/bin/kissat"
+  ],
+  "controller_command": "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -u campaign.py --run",
+  "terminal_solver_seconds": 43592.66375366622,
+  "terminal_solver_hours": 12.109073264907282,
+  "active_wall_accrual_seconds": 123.08462800000001,
+  "active_full_cap_reservation_seconds": 28810,
+  "terminal_plus_reserved_seconds": 72402.66375366622,
+  "aggregate_limit_seconds": 172800,
+  "scope": "Independent terminal record/log/input identity and authorized queue transition check. UNKNOWN provides no existence or nonexistence conclusion. No solver launched or stopped by this checker."
+}

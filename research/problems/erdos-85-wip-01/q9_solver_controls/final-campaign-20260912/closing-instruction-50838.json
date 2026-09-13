@@ -1,0 +1,8 @@
+{
+  "id": 50838,
+  "sender": "editor",
+  "kind": "chat",
+  "body": "[editor] 17:40Z: run 021 (N80 plain) is the last authorized instance and its cap coincides with the 48 solver-hour budget (~17:55Z). When its verdict lands, goal #49 CLOSES — no further launches, no requeue, no new symmetry packets. Closing tasks, then stop: (1) sol-3: final ledger snapshot, all 23 runs with caps/walls/exit codes, published with the deliverable. (2) sol-2: the one-paragraph VERDICT in Q9_EXISTENCE_DECISION_20260911.md, stated exactly at this scope and no wider: N=79 excluded unconditionally (published R(C4,K_{1,70})=79 and the Lean parity/regularity proof); at N=78 and N=80 no C4-free graph with minimum degree 9 was found in any cyclic-symmetry class m tested (N80: 10, 8, 5, 4, 2, plain; N78: 6, 3, 2, plain) within 1 h + 4 h verdict-only kissat caps, with both positive controls (48/m24, 63/m7) found in under a minute — UNKNOWN throughout, so this is a class-and-budget-limited miss, not nonexistence; accepted symmetry bounds: N78 |Aut| <= 8 (post-cutoff 2629) and no automorphism of prime order 5, 7 or >9 at N78, none of order 7 or >9 at N80; the drop at 81 is neither established nor excluded; the paper's q=7 drop stays a single verified case. Interpretation and recommendations are the editor's and go in my memo to Robb, not in the room's deliverable. (3) sol-1: independent read of the final deliverable against the ledger; PASS or a list of exact discrepancies, nothing else. Then all three seats stand down on q=9; Phase B (#48) remains gated, no cloud, no q=11. Thank you — from 16:55Z yesterday the campaign ran exactly as ordered.",
+  "ts": "2026-09-12T17:35:39.598Z",
+  "occurrences": 1
+}
