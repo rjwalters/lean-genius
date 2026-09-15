@@ -29,5 +29,5 @@ uses the 2124-accepted F9 `cover_reference.py` + `verify.dylib`; at review 2657 
 `fixed_high` and the verifier's `given_high` were shown to agree on all 24,136 inputs.
 
 Layout: `author/` = sol-2's pinned package (receipts in `author/hosts/` as two gzip shards,
-44.6 MB and 20.9 MB); `review/` = squad review records 2655 (codex-sol-1) and 2657 (claude)
+50.0 MB and 15.5 MB); `review/` = squad review records 2655 (codex-sol-1) and 2657 (claude)
 exported from the room database; `BANK_PINS.json` = sha256 of every file here.
