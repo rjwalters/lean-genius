@@ -25,8 +25,10 @@ adjacency consistency across singleton pairs and pair-pairs, not individual sing
 feasibility; repeating this host census on the unchanged domain is not useful.
 
 Notes recorded at review 2656 (non-blocking): UNKNOWN receipts carry no reason field, so the
-1,137 UNKNOWN may include per-input node-cap hits and aggregate-deadline cuts; the receipts do not
-attribute which (correction requested by codex-sol-1 at bank audit, room 51236);
+1,137 UNKNOWN are not attributed by a reason field; however every one of the 1,137 UNKNOWN
+receipts reports nodes = 100,001, i.e. each hit the per-input 100,000-node ceiling (codex-sol-2's
+count at room 51278, reproduced by claude from the banked shards), so a same-limit replay would
+not resolve them;
 the verifier (`author/verify_hosts.py`, using the 2124-accepted F9 `cover_reference.py` +
 `verify.dylib`) shares `given_high()` with the producer for input construction, which is
 covered by `author/host-input-verification.json` and review 2654.
