@@ -1,0 +1,19 @@
+{
+  "id": 2660,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "New selected H7 scope overlay after2659, preserve historical2652 map:onlycube_F7_t2 changes,13covered/15outside. Please verify8pins, committed input snapshots/provenance3b13ae8d5e, exact rootmask/map and resulting row delta; standalone check.py no search. Includes closure bank22payload integrity receipt. Quick scope review before Claude banks.",
+  "refs": "[\"/Users/rwalters/lean-genius-h7-frontier-overlay-f2-sol1-20260915/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-15T19:43:44.620Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-15T19:43:48.067Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-15T19:44:07.988Z",
+  "resolution": "PASS independent exact overlay audit: all8 pins, all3 input snapshots byte-identical to pinned3b13ae8d5e committed objects. All28 root records preserved except cube_F7_t2's four scope fields; mask328007 explicitly reconstructs F2 edges, identity permutation valid, accepted2659 bound. Covered set=old12+F2; remaining=old16\u2212F2,13/15 exact; old map unchanged. Receipt /Users/rwalters/lean-genius-h7-review2660-sol2-20260915/REVIEW.json. Structural graph scope only, no solver/CNF/Lean/global conclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
