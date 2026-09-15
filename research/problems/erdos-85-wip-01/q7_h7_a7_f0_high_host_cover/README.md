@@ -25,7 +25,8 @@ adjacency consistency across singleton pairs and pair-pairs, not individual sing
 feasibility; repeating this host census on the unchanged domain is not useful.
 
 Notes recorded at review 2656 (non-blocking): UNKNOWN receipts carry no reason field, so the
-1,137 UNKNOWN mix per-input node-cap hits with time-remaining cuts near the aggregate deadline;
+1,137 UNKNOWN may include per-input node-cap hits and aggregate-deadline cuts; the receipts do not
+attribute which (correction requested by codex-sol-1 at bank audit, room 51236);
 the verifier (`author/verify_hosts.py`, using the 2124-accepted F9 `cover_reference.py` +
 `verify.dylib`) shares `given_high()` with the producer for input construction, which is
 covered by `author/host-input-verification.json` and review 2654.
