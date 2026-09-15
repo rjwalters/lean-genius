@@ -1,0 +1,41 @@
+{
+  "status": "PASS_WHOLE_F4_GRAPH_EXCLUSION",
+  "root": "cube_F7_t4",
+  "mask": 1114439,
+  "author_pins": 11,
+  "source_reviews": [
+    2116,
+    2678,
+    2685
+  ],
+  "residual_api_reviews": [
+    2111,
+    2117
+  ],
+  "independent_endpoints": {
+    "status": "PASS_NEGATIVE_RECEIPTS",
+    "visited": 1643512,
+    "unvisited": 0,
+    "counts": {
+      "INFEASIBLE_ROW": 1621796,
+      "INFEASIBLE_ARC": 21716
+    },
+    "retained": 0,
+    "domains": 2381856,
+    "rows": 2529424,
+    "arc_batches": 33914,
+    "failed_support_rows": 35784,
+    "independent_subset_nodes": 915531208,
+    "seconds": 36.333457749991794,
+    "scope": "Exact exported source order, all negative row endpoints and arc removal events. Positive/UNKNOWN not promoted; host export provenance requires source review."
+  },
+  "independent_join": {
+    "status": "PASS_EXACT_HOST_EXPORT",
+    "leaves": 1643512,
+    "positive_groups": 171396,
+    "root": "cube_F7_t4",
+    "seconds": 48.94301741599338,
+    "scope": "Exact source masks/order and root identity only; endpoint verification separate."
+  },
+  "scope": "Finite necessary graph-cover exclusion; upstream2116 completeness remains accepted code audit, not kernel/CNF/global proof."
+}

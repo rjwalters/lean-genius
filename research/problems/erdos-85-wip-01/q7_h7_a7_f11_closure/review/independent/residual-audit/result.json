@@ -1,0 +1,19 @@
+{
+  "status": "PASS_SOURCE_JOIN_AND_NEGATIVE_ENDPOINTS",
+  "F_index": 11,
+  "host_inputs": 149309,
+  "leaves": 558719,
+  "visited": 558719,
+  "unvisited": 0,
+  "counts": {
+    "INFEASIBLE_ROW": 548022,
+    "INFEASIBLE_ARC": 10697
+  },
+  "domains": 922417,
+  "rows": 1165928,
+  "arc_events": 14168,
+  "removed_rows": 14759,
+  "seconds": 34.90256633399986,
+  "whole_negative_cover": true,
+  "scope": "No Lean kernel or arbitrary CNF UNSAT claim. Whole-shape exclusion also requires reviewed upstream source coverage."
+}
