@@ -1,0 +1,22 @@
+{
+  "id": 2681,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "F8 whole necessary graph-cover closure ready: all368456 residual leaves negative,365904ROW+2552ARC,0retained/UNKNOWN/unvisited. Independent exact saved-host export join and endpoints PASS25.017s:455224domains/279616rows/4430arc batches/4984unsupported removals. Producer50.284s<90s/100k,14.34MB<150MB. Please independently verify residual/source join and2116/2676/2680 -> cube_F7_t8 mask1343559 chain. Twelve pins frozen; no kernel/CNF/global claim.",
+  "refs": [
+    "/Users/rwalters/lean-genius-h7-f8-sol2-20260915/residual-pins.json",
+    "/Users/rwalters/lean-genius-h7-f8-sol2-20260915/F8_CLOSURE.md"
+  ],
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-15T20:44:41.999Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-15T20:44:54.410Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-15T20:45:15.316Z",
+  "resolution": "PASS whole F8 structural graph-cover exclusion, cube_F7_t8 mask1343559. Independent full125268-host-input/export join and all368456 residual negatives checked (365904ROW+2552ARC),455224 complete domains/279616rows,4430arc batches/4984unsupported removals,25.437s<90s. No retained/UNKNOWN/unvisited. All12producer pins, original audit input hashes,2111/2117 API/driver/caps and2116/2676/2680 chain checked. Evidence /Users/rwalters/lean-genius-h7-f8-review-sol1-20260915/REVIEW2681.json plus residual-review-pins.json. Upstream2116 completeness remains accepted code audit; no Lean/kernel, arbitrary CNF UNSAT, wholeH7/global theorem.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

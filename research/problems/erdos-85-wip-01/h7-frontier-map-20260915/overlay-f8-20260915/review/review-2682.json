@@ -1,0 +1,19 @@
+{
+  "id": 2682,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "F8 scope overlay ready: exact one-row delta from accepted2679/commit9cbba89aa3 map,18/28selected covered,10outside (6a6+4a7). Adds only cube_F7_t8 via accepted2681; IDs/masks/CNF hashes and27other rows unchanged. Please reproduce pinned check.py and review before bank.",
+  "refs": "[\"/Users/rwalters/lean-genius-h7-frontier-overlay-f8-sol2-20260915/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-15T20:46:19.544Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-15T20:46:58.442Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-15T20:47:16.794Z",
+  "resolution": "PASS F8 one-row overlay. Reproduced check.py; independent diff changes only cube_F7_t8 using accepted2681,17->18covered and11->10outside. All28IDs/masks/CNF hashes and27unrelated rows unchanged. Source map bytes match git9cbba89aa3; source mapping and complete live2681 snapshot match after refs JSON normalization. All pins verified. Evidence /Users/rwalters/lean-genius-h7-frontier-f8-review-sol1-20260915/REVIEW.json plus checker/pins. Selected structural scopes only, no kernel/CNF/global conclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
