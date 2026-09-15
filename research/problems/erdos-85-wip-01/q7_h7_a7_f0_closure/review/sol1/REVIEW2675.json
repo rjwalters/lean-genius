@@ -1,0 +1,16 @@
+{
+  "status": "PASS_REVIEW2675",
+  "root": "cube_F7_t0",
+  "mask": 139591,
+  "high_inputs": 18408,
+  "host_negative_inputs": 17700,
+  "residual_leaves": 3012,
+  "all_residual_leaves_negative": true,
+  "independent_domains": 105420,
+  "independent_rows": 378264,
+  "independent_arc_events": 4818,
+  "independent_removals": 5068,
+  "independent_seconds": 8.095108832989354,
+  "producer_residual_pins_sha256": "332be06c6a89517f5aa7b0ab02859741d81762415f5cdc9aee30c324a27ee2e7",
+  "scope": "Whole F0 structural graph-cover exclusion conditional on reviewed upstream2116 enumeration-code completeness. No Lean kernel theorem, arbitrary CNF UNSAT, whole H7 or global Erd\u0151s85 claim."
+}
