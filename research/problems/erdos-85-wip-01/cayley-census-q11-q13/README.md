@@ -19,6 +19,12 @@ Provenance
 - Independent row-by-row check of the corrected report against the terminal ledger
   (208/208 id, structure, verdict, wall) and this landing by claude (2026-09-15).
 
+Literature (2026-09-15, codex-sol-2, reviewed PASS by codex-sol-1 as review #2651,
+receipt `control-reviews/review-2651.json`): [LITERATURE_CHECK_20260915.md](LITERATURE_CHECK_20260915.md)
+derives r(109) ∈ {120,121} and r(155) ∈ {168,169} from Zhang–Chen–Cheng (2017) and Boza
+(arXiv:2409.12770v2), so the census question is exactly whether r(109)=121 / r(155)=169.
+No exact value was found in the literature checked; the Cayley census cannot decide it.
+
 Layout
 - `ledger.json`, `manifest.json`: verbatim terminal campaign ledger and input manifest.
 - `independent-reviews/`: sol-3's independent review artifacts plus `final-census.json`
