@@ -1,0 +1,18 @@
+{
+  "status": "PASS_COMPLETED_RECEIPTS",
+  "visited": 189272,
+  "counts": {
+    "COMPLETE": 189272
+  },
+  "unvisited": 0,
+  "prunes": 62660880,
+  "leaves": 1643512,
+  "negative": 17876,
+  "structural_nodes": 180264692,
+  "seconds": 293.8065472080052,
+  "verifier_pins": {
+    "cover_reference.py": "66aa25ed1c6a58f2c1c8ee4672f44dd4b283fe5c17cc4b0b7e97034e16484684",
+    "verify.dylib": "64611c2ac365f2e6eeec372902f12b27a34eb4549ca0513f5a732aac95d2be70"
+  },
+  "scope": "Saved COMPLETE receipt coverage and direct singleton-star endpoints. UNKNOWN/unvisited unchanged. No residual graph exclusion."
+}

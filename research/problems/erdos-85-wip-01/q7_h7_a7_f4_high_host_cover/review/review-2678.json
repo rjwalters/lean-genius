@@ -1,0 +1,19 @@
+{
+  "id": 2678,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "F4 complete high cover:100 COMPLETE source bases/15676E/S graphs,2700empty/12976positive,189272pairings. Producer0.791s under30s/100k; independent full5040-permutation scan matches every set16.167s. Please verify source slice/pins/coverage before bounded old2123 host pass (400s/100k,50MBshards/hard500MB proposed from F6 per-input rates). No source enumeration rerun; high cover only.",
+  "refs": "[\"/Users/rwalters/lean-genius-h7-f4-sol1-20260915/high-pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-15T20:39:01.190Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-15T20:39:42.415Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-15T20:40:14.939Z",
+  "resolution": "PASS exact F4 high cover. Independent full5040-permutation Boolean-adjacency enumeration matches all15676 graphs from100/100 COMPLETE source bases:189272pairings,12976positive/2700empty in16.217s. Verified all5producer pins and pinned source bytes; exact source indices and no missing/duplicate pairing. Evidence /Users/rwalters/lean-genius-h7-host-pairrow-sol2-20260915/review2678/REVIEW.json, fresh checker/verification/pins. Necessary high cover only, no host/residual/root/kernel/global claim; upstream2116 completeness code-audit premise retained.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
