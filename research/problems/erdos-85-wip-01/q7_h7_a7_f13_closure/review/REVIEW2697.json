@@ -1,0 +1,19 @@
+{
+  "status": "PASS_REVIEW2697",
+  "root": "cube_F7_t13",
+  "mask": 1581319,
+  "high_inputs": 360172,
+  "host_negative_inputs": 89628,
+  "residual_leaves": 1124960,
+  "counts": {
+    "INFEASIBLE_ROW": 1112380,
+    "INFEASIBLE_ARC": 12580
+  },
+  "independent_domains": 1552680,
+  "independent_rows": 1351068,
+  "independent_arc_events": 18004,
+  "independent_removals": 18916,
+  "independent_seconds": 71.9519182919903,
+  "producer_residual_pins_sha256": "6a209984c1ac6a1090565293f075ffab9295796ea147eae671a74801c03d15fd",
+  "scope": "Whole F13 structural graph-cover exclusion conditional on reviewed2116 enumeration-code completeness. No Lean kernel, arbitrary CNF UNSAT, whole H7 or global Erd\u0151s85 proof."
+}

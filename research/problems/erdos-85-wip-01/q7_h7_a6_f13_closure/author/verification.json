@@ -1,0 +1,19 @@
+{
+  "status": "PASS_EXACT_SOURCE_AND_NEGATIVES",
+  "source_graphs": 49065,
+  "host_leaves": 1196264,
+  "visited": 1196264,
+  "unvisited": 0,
+  "counts": {
+    "INFEASIBLE_ROW": 975220,
+    "INFEASIBLE_ARC": 221044
+  },
+  "retained": 0,
+  "domains": 8711760,
+  "rows": 38237182,
+  "arc_batches": 649123,
+  "failed_support_rows": 800084,
+  "independent_subset_nodes": 2730926798,
+  "seconds": 72.12235529099416,
+  "scope": "Exact raw-source graphs and reviewed host export; all negative endpoints checked. UNKNOWN/positive/suffix not promoted. Upstream source and quotient completeness inherited."
+}

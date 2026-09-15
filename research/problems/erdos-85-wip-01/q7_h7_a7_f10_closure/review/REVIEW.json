@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "review": 2695,
+  "root": "cube_F7_t10",
+  "mask": 541447,
+  "producer_pins_sha256": "bb7fba6810a26cce4652b9ad6c4844d2bf7e177f312c79e0fc5d8928f45319b5",
+  "independent_endpoint": {
+    "status": "PASS_NEGATIVE_RECEIPTS",
+    "visited": 1915852,
+    "unvisited": 0,
+    "counts": {
+      "INFEASIBLE_ROW": 1882944,
+      "INFEASIBLE_ARC": 32908
+    },
+    "retained": 0,
+    "domains": 3034724,
+    "rows": 3657064,
+    "arc_batches": 50458,
+    "failed_support_rows": 53544,
+    "independent_subset_nodes": 1142002409,
+    "seconds": 42.350104999990435,
+    "scope": "Exact exported source order, all negative row endpoints and arc removal events. Positive/UNKNOWN not promoted; host export provenance requires source review."
+  },
+  "independent_export": {
+    "status": "PASS_EXACT_HOST_EXPORT",
+    "leaves": 1915852,
+    "positive_groups": 161880,
+    "root": "cube_F7_t10",
+    "seconds": 43.03362158298842,
+    "scope": "Exact source masks/order and root identity only; endpoint verification separate."
+  },
+  "chain": {
+    "2116": [
+      "resolved",
+      "PASS finite host cover, output validity and explicit frontier. Independent capacity-recursive subset scan plus exact Aut(F) actions gives 2711 raw X and 1310 orbits on the 14 accepted source shapes. Every host naming/join and all 46728 saved E/S graphs independently bitwise degree/C4/unique checked, 0.798s; 10 payload pins, four origin pins and live accepted snapshots exact. Audited exhaustive MRV star recursion and timeout propagation: 860 COMPLETE, one UNKNOWN, 449 unvisited remain unchanged. No independent S enumeration replay; terminal completeness rests on code audit. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2116. No noncycle, H7 or global exclusion."
+    ],
+    "2683": [
+      "resolved",
+      "PASS exact450-base complement and full1310-base source composition. Audited byte-identical2116 traversal, new wrapper/unchanged100k node cap and120s budget; original860COMPLETE and450new inputs partition all1310. Independently checked all28837new unique graphs using edge sets and common-neighbor-pair counting (0.892s); every coverage-map record resolves to exact source index/shape/status/count, no duplicate/missing join. Full74549graphs; F10=48bases/14996graphs,F11=301/6601,F13=133/14124. Allproducer pins and original audit inputs checked. Evidence /Users/rwalters/lean-genius-h7-a7-source-complement-review-sol1-20260915/REVIEW2683.json plus five pinned payloads. Exhaustiveness remains unchanged accepted2116 traversal-code audit, not independent enumeration replay. OriginalUNKNOWN untouched; no downstream/root/kernel/global conclusion."
+    ],
+    "2686": [
+      "resolved",
+      "PASS F10 composed-source high cover. Fresh independent full5040-permutation Boolean-adjacency enumeration matches all14996 E/S graphs in48 COMPLETE source bases:171240pairings,12632positive/2364empty,14.913s. Verified all5high pins, dual-source hashes, exact1310 original+complement partition and source index ordering; no missing/duplicate graph or pairing. Evidence /Users/rwalters/lean-genius-h7-host-pairrow-sol2-20260915/review-f10-high/REVIEW.json plus checker/verification/pins. Necessary high cover only; inherited2116/2683 code-audit completeness premise retained, no downstream/root/kernel/global conclusion."
+    ],
+    "2691": [
+      "resolved",
+      "PASS F10 necessary host cover. Independent accepted2683 coverage-map origin/index reader reconstructs exact composed source; full171240-input stream reconciles9360zero highs/1915852leaves/54258656prunes and nodes in41.791s. All22pins, dual-source/API/driver/launch identities,350s/100k/450MB caps and exactroot cube_F7_t10 mask541447 checked. Producer/checker byte-identical to reviewed F11 after only shape/count/budget substitutions; known2124 checker hashes exact. Saved checker274.746s<400s, all8shards<50MB. Did not repeat54m endpoints. Evidence /Users/rwalters/lean-genius-h7-host-pairrow-sol2-20260915/review-f10-host/REVIEW.json plus audit/pins. Residual/root/kernel/global remains open; source code-audit premise retained."
+    ],
+    "2111": [
+      "resolved",
+      "PASS native2109 residualport. Independently compiled and compared120whole objects on12arbitraryhigh+low relabelled S-complete fixtures;12expireddeadlines/6invalidinputs incl incompleteSdegree,UBSan counter+deadline unitPASS. Audited2109validator/knowncolour/candidate changes; arc+serialization tail andctypes adapter byte-identical2105,referenceexact2109.14pins/live2105+2109premises checked. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2111. Nativebudget0..INT_MAX, research100kunchanged; no newfamily/F/H7/Lean/global exclusion."
+    ],
+    "2117": [
+      "resolved",
+      "PASS forwarded2115: entire a7 F=C7 subcase computationally excluded. Independent explicit support-partition templates regenerate38904domains/29258rows on all28908 endpoints,28614ROW+294ARC; replay484batches/562failed-support rows,0.610s. Exact2114survivor byte join, ordered endpoint coverage,20pins/live covering premises verified. Audited complete2107\u21922110\u21922114 chain:1531654=1502746+28614+294, no unknown/unvisited. Independent template code also matches1155oldfixture domains/2896rows. Evidence /Users/rwalters/lean-genius-q7-outside-first-20260910/review-cycle-residual. No otherF,a6,H1,H7,Lean/global closure; historical caps unchanged."
+    ]
+  },
+  "scope": "Necessary finite structural graph-cover exclusion, retaining upstream source enumeration-code audit premise. No CNF, Lean/kernel, whole H7 or global theorem claim."
+}
