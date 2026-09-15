@@ -1,0 +1,15 @@
+{
+  "status": "PASS_COVERAGE_JOIN",
+  "host_inputs": 24136,
+  "source_leaves": 785408,
+  "visited": 705876,
+  "unvisited": 79532,
+  "counts": {
+    "INFEASIBLE_ROW": 705051,
+    "INFEASIBLE_ARC": 824,
+    "UNKNOWN": 1
+  },
+  "negative_only_complete": false,
+  "seconds": 9.700900542011368,
+  "scope": "Exact host export and residual prefix accounting; negative soundness requires endpoint review."
+}

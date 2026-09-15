@@ -1,0 +1,36 @@
+{
+  "status": "PASS_IDENTITY_MASK_DECODE",
+  "mask": 328007,
+  "edges": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      3,
+      5
+    ],
+    [
+      4,
+      5
+    ]
+  ],
+  "mapping_file_sha256": "f6c286e469da4bfc6b92ed899ff9cbd271dbb32bb1b027d5a7527c78900d90a4",
+  "scope": "Only direct lexicographic mask decoding; does not by itself certify source CNF identity or a root exclusion."
+}

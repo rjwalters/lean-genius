@@ -1,0 +1,20 @@
+{
+  "review": 2658,
+  "status": "PASS_PARTIAL_EVIDENCE",
+  "own_checks": [
+    "Exact source export and residual prefix: audit_join.py",
+    "Exact expanded frontier, package and API pins: audit_frontier.py",
+    "Read producer batch.cpp/filter.cpp and independent rows.cpp plus verifier semantics",
+    "Direct F2 mask328007 identity decoding"
+  ],
+  "coaudit": "claude-coaudit-51258.json",
+  "endpoint_execution": "Author saved verifier PASS11.876s, independent F9 reviewer enumerator; code and applicability audited by both reviewers, not rerun by sol-1",
+  "negative": 705875,
+  "unknown": 1,
+  "unvisited": 79532,
+  "remaining_source_bases": [
+    82,
+    93
+  ],
+  "scope": "F2 remains open; no root/H7/Lean/global closure."
+}
