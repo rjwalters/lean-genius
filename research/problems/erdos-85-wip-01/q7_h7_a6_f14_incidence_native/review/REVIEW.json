@@ -1,0 +1,17 @@
+{
+  "status": "PASS_INDEPENDENT_NATIVE_FIXTURES",
+  "counts": {
+    "INFEASIBLE_PROJECTION": 60,
+    "EMPTY_FAMILY": 91
+  },
+  "tree_nodes": 439,
+  "tree_branches": 739,
+  "seconds": 0.22004533300059848,
+  "input_hashes": {
+    "projection.cpp": "5ee38df2b006fc5b5e07bb3654303c47a8babd393ccd5925a454861395e0bc3b",
+    "projection.dylib": "64bcaf4226ae4b71a7580546bd287545dc9cab28a1300d4b6ac1fe657df866e9",
+    "fixtures.json": "dda53996c4cc80dfc7cdd89cbee81de21a42c25a736326b07feea14125d03efd",
+    "qualification.json": "e66aa737f07d12f1bfad813a74aa5228972a2bc262c1d4e63d2d73d3583bfa1a"
+  },
+  "scope": "Necessary families and every returned negative fixture certificate. Source fixture membership and native validation/caps reviewed separately. Positive path only checked if returned."
+}

@@ -1,0 +1,19 @@
+{
+  "status": "PASS_INDEPENDENT_CONTROLS",
+  "checks": [
+    "null",
+    "negative_cap",
+    "oversize_cap",
+    "expired",
+    "zero_cap",
+    "nan_deadline",
+    "infinite_deadline",
+    "loop",
+    "out_of_range",
+    "asymmetry",
+    "exact_node_boundary",
+    "synthetic_positive_serialization"
+  ],
+  "dylib_sha256": "64bcaf4226ae4b71a7580546bd287545dc9cab28a1300d4b6ac1fe657df866e9",
+  "scope": "API malformed/limit controls and synthetic positive output only; no positive H7 graph claim."
+}

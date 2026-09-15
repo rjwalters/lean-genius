@@ -1,0 +1,19 @@
+{
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "release_flags": [
+    "-std=c++17",
+    "-O3",
+    "-dynamiclib"
+  ],
+  "unit_flags": [
+    "-std=c++17",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer"
+  ],
+  "cpp_sha256": "5ee38df2b006fc5b5e07bb3654303c47a8babd393ccd5925a454861395e0bc3b",
+  "dylib_sha256": "64bcaf4226ae4b71a7580546bd287545dc9cab28a1300d4b6ac1fe657df866e9",
+  "sanitized_unit_sha256": "f6317e8302673e6c1b4913eb3a2ead8c9bb7fa648241c5535f4663ac10bea40d",
+  "sanitized_exit_code": 0
+}

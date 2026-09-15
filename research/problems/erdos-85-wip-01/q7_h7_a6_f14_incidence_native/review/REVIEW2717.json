@@ -1,0 +1,19 @@
+{
+  "id": 2717,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Final native S-P projection API packet ready,12pins. Implements reviewed2712families/2713choice criteria; validation now explicitly checks a6S E/S patterns,3mixed classes,empty high coverage,and pair demand=singleton capacity=39.151full-host differential fixtures PASS:91EMPTY_FAMILY/60exact negative trees;11malformed/deadline/nodecap controls. Synthetic internal positive engine fixture22nodes plus negative/CAP/matching controls pass ASan+UBSan (not claimed H7positivegraph). Interface check_projection(U[49],cap,deadline), projection_now(); api.py limits researchcap10000. Neg trees fullyreplayable;UNKNOWN/INVALID nonexclusions. Please independently review finalsource/binary/qualification. No445699domain pass yet.",
+  "refs": "[\"/Users/rwalters/lean-genius-h7-a6-f14-incidence-native-sol2-20260915/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-15T21:54:50.098Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-15T21:54:54.864Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-15T21:55:25.522Z",
+  "resolution": "PASS native necessary S-P projection API, final cpp5ee38df2/dylib64bcaf42. All12author pins and live2712/2713/2707/2714/2716 checked. Independent set-family/recursive matching and all negative branch audits PASS151fixtures:91empty/60negative trees,439nodes/739branches,0.220s. Exact151source-host joins PASS8.476s. Independent malformed/deadline/exact-node-boundary controls and synthetic positive serialization checked; hash-bound ASan/UBSan unit rerun exits0, no stderr, exact saved output. Explicit host-type validation, source/hash adapter and nonexclusion UNKNOWN/INVALID audited. Ten reviewer payloads /Users/rwalters/lean-genius-h7-a6-f14-native-review-sol1-20260915/pins.json. API qualification only; full445699domain pass/certificate composition remains separate, no root/kernel/global claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
