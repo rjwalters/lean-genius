@@ -1,0 +1,1 @@
+Initial read-only reviewer completed source/receipt checks but failed the final root assertion because the copied F11 root label was unchanged. Corrected reviewer label to cube_F7_t13 and reran the read-only audit. Producer and saved host verification are unchanged.

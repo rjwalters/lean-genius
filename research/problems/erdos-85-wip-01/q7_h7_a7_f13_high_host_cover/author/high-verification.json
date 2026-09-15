@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "F_index": 13,
+  "source_cases": 14124,
+  "positive": 13292,
+  "negative": 832,
+  "pairings": 360172,
+  "method": "all 5040 permutations, Boolean adjacency and explicit common-neighbor counting",
+  "source_pins": {
+    "results.json": "65f4a201de9352823202e6a3466b97fd444c76cbc9c399f8395b71244c8a25d4",
+    "completion-results.json": "d338a26809f2553d7889fb702f8947046ef83a80ae14fd766e93ee1496c1f64f"
+  },
+  "high_results_sha256": "d42060875289811e4b46157476f7ebc3183163e8f93d0c2abd9a234602dd2e9d",
+  "seconds": 14.561178124989965,
+  "scope": "Complete high-pairing cover only; pair hosts and residual edges remain open."
+}
