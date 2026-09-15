@@ -1,0 +1,43 @@
+{
+  "review": 2665,
+  "status": "PASS_WHOLE_F5_COMPUTATIONAL_EXCLUSION",
+  "independent_check": {
+    "status": "PASS_SOURCE_JOIN_AND_NEGATIVE_ENDPOINTS",
+    "F_index": 5,
+    "host_inputs": 6944,
+    "leaves": 331484,
+    "visited": 331484,
+    "unvisited": 0,
+    "counts": {
+      "INFEASIBLE_ROW": 331204,
+      "INFEASIBLE_ARC": 280
+    },
+    "domains": 341004,
+    "rows": 35468,
+    "arc_events": 624,
+    "removed_rows": 704,
+    "seconds": 8.871844875000534,
+    "whole_negative_cover": true,
+    "scope": "No Lean kernel or arbitrary CNF UNSAT claim. Whole-shape exclusion also requires reviewed upstream source coverage."
+  },
+  "source_pin_audit": {
+    "status": "PASS",
+    "pins": 10,
+    "root": {
+      "id": "cube_F7_t5",
+      "edge_count": 7,
+      "mask": 360519,
+      "cnf_sha256": "c1cca36d03731199d8fe1035347bab00f502af31f39b61bcd8320528ad8aee3d",
+      "scope": null,
+      "review_id": null,
+      "parent_to_reviewed_shape": null,
+      "status": "NOT_COVERED_BY_SELECTED_SCOPES"
+    },
+    "launch_bounds": [
+      90,
+      100000
+    ],
+    "residual_pins_sha256": "48e7d30c8b0d7f420eb0dd771bdea518289b61c8c3ad30c82b75c6eea1608d7f"
+  },
+  "scope": "Whole cube_F7_t5 structural graph subcase; upstream2116 completeness rests on accepted code audit. No Lean/kernel, arbitrary CNF, fullH7 or Erdos85 closure."
+}
