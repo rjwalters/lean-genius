@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "review": 2716,
+  "producer_pins_sha256": "b72a7ed660a09f9571a96ca15dbbd85eab2a9ead94e34b5fc3a7bb14adf907a2",
+  "independent": {
+    "status": "PASS_TRIANGLE_CERTIFICATES",
+    "negative": 75027,
+    "remaining": 445699,
+    "source_inputs": 16693,
+    "fixed_vertex_checks": 21603,
+    "compatibility_edge_checks": 341870,
+    "seconds": 8.214026208006544,
+    "scope": "Exact negative triangle certificates and complete unfinished suffix partition; prefix exclusions and whole root remain separate."
+  },
+  "chain": {
+    "2705": "PASS new F12 singleton-triangle obstruction and1253negative complement certificates. Reviewed counting proof p+s>=5,2p+s<=7 forces s>=3; C4-free completion requires eligible singleton triangle. Independent set-adjacency reconstruction checks all1253 exact candidate/compatibility graphs;8242edge common-neighbour tests prove triangle-free,0.888s. Exact disjoint partition1253+218=1471 joins old2130/2135 unfinished complement, including oldUNKNOWN. All8author pins, original audit hashes and live source/prefix reviews checked. Combined397016/397234negative leaves,218unclassified. Evidence /Users/rwalters/lean-genius-h7-a6-f12-triangle-review-sol1-20260915/pins.json (four files). Historical capped producer untouched; no full-row/ARC retry, fullF12/root/kernel/global exclusion.",
+    "2707": "PASS a6 F14 necessary host cover. Independent full2133 structural/template checker checks199155COMPLETE inputs,3631167prunes/2278608leaves/7306zero highs,26384066structural nodes/31900512survivor domains in48.292s<300s. All17producer pins, original input/receipt hashes, driver/launch identities,300s/100k/500MB caps and2118/2122/2123/2125/2703/2133 chain verified. Root/source inherited from independently checked2703. Four reviewer payloads /Users/rwalters/lean-genius-h7-a6-f14-review-sol2-20260915/host-review-pins.json. No residual/root/kernel/global exclusion.",
+    "2714": "PASS F14 saved negative residual prefix only. Independent raw-source199155graph/exact2278608host export checks1757882negative (1169376ROW+588506ARC),21767086domains/99509910rows/1410664ARC batches/1702258unsupported removals in164.977s<240s. All17producer pins, original audit-input hashes, driver/API/source identities,450s/100k/300MB bounds checked. Exact520726unvisited suffix includes6computed_not_saved; no UNKNOWN/positive retained, no suffix promotion. Live2118/2122/2125/2703/2707/2120/2126 chain checked. Four reviewer payloads /Users/rwalters/lean-genius-h7-a6-f14-review-sol2-20260915/residual-review-pins.json. No same-domain residual retry, wholeF14/root/kernel/global claim."
+  },
+  "scope": "Exactly75027new negative suffix certificates;445699remain, no wholeF14/root/kernel/global exclusion."
+}

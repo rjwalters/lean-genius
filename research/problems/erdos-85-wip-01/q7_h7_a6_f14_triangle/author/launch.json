@@ -1,0 +1,17 @@
+{
+  "seconds": 120,
+  "artifact_bytes": 50000000,
+  "cases": 520726,
+  "input_hashes": {
+    "/Users/rwalters/lean-genius-h7-a6-f14-sol1-20260915/residual/results.json": "dc0ec5922468051158274b3215c9d527ae4cac256669cdae039f7172e2c5e001",
+    "/Users/rwalters/lean-genius-h7-a6-f14-sol1-20260915/residual/launch.json": "806186f1b97cdaa49c070b98dd16afbc907bcdf2af8a6833a5a9b2becd7e0554",
+    "/Users/rwalters/lean-genius-h7-a6-f14-sol1-20260915/hosts/survivors.json": "26bc7b7749e6dd95d9461709fc2bbff8a11ee06832f0113c3244e78cc4368ea5",
+    "/Users/rwalters/lean-genius-h7-a6-f14-sol1-20260915/host-pins.json": "01a45655bc6843e5ad3542ca8c0c7b34d0a88febde018bfdb3393754887ccba0"
+  },
+  "driver": "52b6a8b5d17496c07fb3db6fecdf3d427fa108e3ced7e97d9b942d93aae27eea",
+  "reviews": {
+    "2705": "PASS new F12 singleton-triangle obstruction and1253negative complement certificates. Reviewed counting proof p+s>=5,2p+s<=7 forces s>=3; C4-free completion requires eligible singleton triangle. Independent set-adjacency reconstruction checks all1253 exact candidate/compatibility graphs;8242edge common-neighbour tests prove triangle-free,0.888s. Exact disjoint partition1253+218=1471 joins old2130/2135 unfinished complement, including oldUNKNOWN. All8author pins, original audit hashes and live source/prefix reviews checked. Combined397016/397234negative leaves,218unclassified. Evidence /Users/rwalters/lean-genius-h7-a6-f12-triangle-review-sol1-20260915/pins.json (four files). Historical capped producer untouched; no full-row/ARC retry, fullF12/root/kernel/global exclusion.",
+    "2707": "PASS a6 F14 necessary host cover. Independent full2133 structural/template checker checks199155COMPLETE inputs,3631167prunes/2278608leaves/7306zero highs,26384066structural nodes/31900512survivor domains in48.292s<300s. All17producer pins, original input/receipt hashes, driver/launch identities,300s/100k/500MB caps and2118/2122/2123/2125/2703/2133 chain verified. Root/source inherited from independently checked2703. Four reviewer payloads /Users/rwalters/lean-genius-h7-a6-f14-review-sol2-20260915/host-review-pins.json. No residual/root/kernel/global exclusion."
+  },
+  "scope": "Host source reviewed; prefix count selects a domain only, prefix exclusions await review."
+}
