@@ -1,0 +1,3 @@
+# Exact unfinished a7 source slice
+
+The body from base initialization through the COMPLETE/UNKNOWN handler is byte-identical to accepted2116 complete.py. Only the outer queue, declared wall allowance, source identity checks and artifact accounting differ. The new queue is the exact450-source complement to860 old COMPLETE records; it consists of old source860 UNKNOWN-at-wall and449 unvisited inputs. Old source bytes remain untouched. New records use the unchanged100000-node cap and one120-second shared deadline; UNKNOWN records never imply coverage. This is source coverage for remaining F10/F11/F13, to feed the reviewed high/host/residual chain. It does not itself exclude a root.

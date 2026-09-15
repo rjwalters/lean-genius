@@ -1,0 +1,54 @@
+{
+  "status": "PASS_REVIEW2683",
+  "complete_bases": 1310,
+  "graphs": 74549,
+  "shape_counts": {
+    "0": {
+      "bases": 48,
+      "graphs": 2020
+    },
+    "2": {
+      "bases": 48,
+      "graphs": 3944
+    },
+    "3": {
+      "bases": 149,
+      "graphs": 2952
+    },
+    "4": {
+      "bases": 100,
+      "graphs": 15676
+    },
+    "5": {
+      "bases": 28,
+      "graphs": 1500
+    },
+    "6": {
+      "bases": 119,
+      "graphs": 5298
+    },
+    "8": {
+      "bases": 297,
+      "graphs": 5818
+    },
+    "9": {
+      "bases": 39,
+      "graphs": 1620
+    },
+    "10": {
+      "bases": 48,
+      "graphs": 14996
+    },
+    "11": {
+      "bases": 301,
+      "graphs": 6601
+    },
+    "13": {
+      "bases": 133,
+      "graphs": 14124
+    }
+  },
+  "source_manifest_sha256": "a567dbdd3569f1ede3c43f7275271087fcf6fbb06ca09d794b6a6d3481fdf884",
+  "independent_new_graph_seconds": 0.891828916996019,
+  "scope": "Exact disjoint source composition and all new graph outputs verified. Enumeration completeness rests on unchanged accepted2116 traversal-code audit, not independent exhaustive S replay. No downstream high/host/root/kernel/global conclusion."
+}

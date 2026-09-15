@@ -1,0 +1,23 @@
+{
+  "status": "PASS_EXACT_COMPLEMENT_AND_SAVED_GRAPHS",
+  "old_complete": 860,
+  "new_complete": 450,
+  "complete_union": 1310,
+  "graphs_checked": 28837,
+  "new_shape_counts": {
+    "10": {
+      "new_bases": 16,
+      "graphs": 8112
+    },
+    "11": {
+      "new_bases": 301,
+      "graphs": 6601
+    },
+    "13": {
+      "new_bases": 133,
+      "graphs": 14124
+    }
+  },
+  "seconds": 0.891828916996019,
+  "scope": "Graph outputs and exact source partition independently verified. Exhaustive S enumeration rests on byte-identical accepted2116 traversal and code audit, not independent enumeration replay."
+}
