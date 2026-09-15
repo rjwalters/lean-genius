@@ -1,0 +1,22 @@
+{
+  "total": 24136,
+  "visited": 24136,
+  "unvisited": 0,
+  "counts": {
+    "COMPLETE": 24136
+  },
+  "negative_high_graphs": 16,
+  "surviving_host_leaves_complete": 785408,
+  "host_leaves_unknown_cases": 0,
+  "pruned_prefixes": 8742728,
+  "artifact_bytes": 65467254,
+  "nodes": 642811617,
+  "unknown_high_graphs": [],
+  "receipt_shards": [
+    "receipts-000.jsonl.gz",
+    "receipts-001.jsonl.gz"
+  ],
+  "seconds": 37.031925500006764,
+  "stop": null,
+  "scope": "Necessary pair-host cover; no residual-edge or whole-root exclusion."
+}
