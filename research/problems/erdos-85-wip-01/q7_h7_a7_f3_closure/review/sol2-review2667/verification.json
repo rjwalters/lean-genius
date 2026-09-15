@@ -1,0 +1,17 @@
+{
+  "status": "PASS_NEGATIVE_RECEIPTS",
+  "visited": 704382,
+  "unvisited": 0,
+  "counts": {
+    "INFEASIBLE_ROW": 700062,
+    "INFEASIBLE_ARC": 4320
+  },
+  "retained": 0,
+  "domains": 851262,
+  "rows": 514372,
+  "arc_batches": 7651,
+  "failed_support_rows": 8184,
+  "independent_subset_nodes": 317024631,
+  "seconds": 12.815920875000302,
+  "scope": "Exact exported source order, all negative row endpoints and arc removal events. Positive/UNKNOWN not promoted; host export provenance requires source review."
+}

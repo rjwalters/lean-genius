@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "review_id": 2667,
+  "source_reviews": [
+    2116,
+    2662,
+    2664
+  ],
+  "join": {
+    "status": "PASS_EXACT_HOST_EXPORT",
+    "leaves": 704382,
+    "positive_groups": 61986,
+    "root": "cube_F7_t3",
+    "seconds": 16.3109562919999,
+    "scope": "Exact source masks/order and root identity only; endpoint verification separate."
+  },
+  "negative_endpoints": {
+    "status": "PASS_NEGATIVE_RECEIPTS",
+    "visited": 704382,
+    "unvisited": 0,
+    "counts": {
+      "INFEASIBLE_ROW": 700062,
+      "INFEASIBLE_ARC": 4320
+    },
+    "retained": 0,
+    "domains": 851262,
+    "rows": 514372,
+    "arc_batches": 7651,
+    "failed_support_rows": 8184,
+    "independent_subset_nodes": 317024631,
+    "seconds": 12.815920875000302,
+    "scope": "Exact exported source order, all negative row endpoints and arc removal events. Positive/UNKNOWN not promoted; host export provenance requires source review."
+  },
+  "scope": "Whole cube_F7_t3 structural graph exclusion at paper/computation level. Source2116 completeness relies on accepted enumerator code audit, not independent replay. No Lean/CNF/H7/global closure."
+}
