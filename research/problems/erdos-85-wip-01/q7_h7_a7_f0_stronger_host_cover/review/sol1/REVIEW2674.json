@@ -1,0 +1,14 @@
+{
+  "status": "PASS_REVIEW2674",
+  "payloads": 22,
+  "high_inputs": 18408,
+  "reused_negative": 68,
+  "new_negative": 17632,
+  "residual_leaves": 3012,
+  "pair_prunes": 7488293,
+  "singleton_prunes": 1277058,
+  "root": "cube_F7_t0",
+  "mask": 139591,
+  "checks": "Independent exact original reuse/queue/receipt accounting, every graph adapter, pins and disjoint verifier partition reconciliation; audited reviewed checker execution. No independent repetition of all endpoints in this review.",
+  "scope": "Necessary host cover only. Source2116 completeness rests on code audit; residual/F0/global/Lean remain open."
+}

@@ -1,0 +1,25 @@
+{
+  "total_high_inputs": 18408,
+  "covered_before": 68,
+  "queue": 18340,
+  "visited": 18340,
+  "unvisited": 0,
+  "counts": {
+    "COMPLETE": 18340
+  },
+  "negative_high_inputs": 17632,
+  "surviving_host_leaves": 3012,
+  "pair_prunes_complete": 7488293,
+  "singleton_prunes_complete": 1277058,
+  "nodes": 1971994333,
+  "unknown": [],
+  "receipt_shards": [
+    "receipts-000.jsonl.gz",
+    "receipts-001.jsonl.gz"
+  ],
+  "artifact_bytes": 50647063,
+  "computed_not_saved": 0,
+  "stop": null,
+  "seconds": 136.73315345800074,
+  "scope": "Necessary stronger host cover; unresolved/retained cases require further evidence."
+}

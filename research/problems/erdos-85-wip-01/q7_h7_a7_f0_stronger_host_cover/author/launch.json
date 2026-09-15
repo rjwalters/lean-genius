@@ -1,0 +1,43 @@
+{
+  "total_high_inputs": 18408,
+  "covered_before": 68,
+  "queue": 18340,
+  "max_nodes": 450000,
+  "aggregate_seconds": 240,
+  "shard_byte_cap": 50000000,
+  "artifact_byte_cap": 250000000,
+  "reviews": {
+    "2116": [
+      "resolved",
+      "PASS finite host cover, output validity and explicit frontier. Independent capacity-recursive subset scan plus exact Aut(F) actions gives 2711 raw X and 1310 orbits on the 14 accepted source shapes. Every host naming/join and all 46728 saved E/S graphs independently bitwise degree/C4/unique checked, 0.798s; 10 payload pins, four origin pins and live accepted snapshots exact. Audited exhaustive MRV star recursion and timeout propagation: 860 COMPLETE, one UNKNOWN, 449 unvisited remain unchanged. No independent S enumeration replay; terminal completeness rests on code audit. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2116. No noncycle, H7 or global exclusion."
+    ],
+    "2654": [
+      "resolved",
+      "PASS: all pinned files and accepted2096/2110/2116 status checked. Independently derived exact48 completed F0 source bases/2020 graphs and enumerated all5040 bijections per graph using Boolean adjacency/common-neighbor counts. Every saved pairing set matches exactly:452 empty,1568 positive,18408 assignments; no duplicate/missing cases or pairings. Receipt /Users/rwalters/lean-genius-cayley-sol2-20260915/review2654/REVIEW.json (2.08s). Necessary high-cover only, no host/residual/whole-root or Lean exclusion."
+    ],
+    "2656": [
+      "resolved",
+      "PASS (claude, 19:3xZ) \u2014 frozen partial evidence is exactly as reported, scope wording is correct. Independent checks with my own script, no producer resumed: (1) all 18 pins in pins.json match on disk; host-launch.json driver_sha256 = pinned hosts.py; launch api_pins are identical (15/15) to integration q7_h7_monotone_host_api/original/pins.json (review 2123 API). (2) Recount from the two gzip shards reproduces host-results.json exactly: COMPLETE 17,063 / UNKNOWN 1,137 / visited 18,200 / unvisited 208, negative high graphs 60, surviving leaves 717,283, pruned prefixes 12,390,933, nodes 1,310,187,444; 0 duplicate (case,pairing) keys. (3) Frontier: the visited keys are exactly the first 18,200 entries of the 2654-reviewed high order, the 208 unvisited are exactly its suffix, host-frontier.json's unknown (1,137) and unvisited (208) lists equal the shard-derived lists, host-results.unknown equals the shard UNKNOWN list; host-survivors.json has 717,283 entries; stop = AGGREGATE_CAP at 60.0018 s. (4) Driver cap audit of hosts.py: 60 s aggregate wall, 100,000 nodes per input, per-call seconds = time remaining, 50 MB shard / 150 MB artifact caps, immutable 'x' file opens, asserts status \u2208 {COMPLETE, UNKNOWN}, breaks out of both loops on cap \u2014 no retry path exists. (5) Verifier: verify_hosts.py uses the 2124-accepted F9 cover_reference.py + verify.dylib (pins recorded), skips UNKNOWN before endpoint work, asserts every COMPLETE receipt's coverage_proved and every prune/leaf prefix via verify_prefix_batch, and asserts its totals equal host-results; host-verification.json PASS_COMPLETED_RECEIPTS at 59.83 s under its own cap. (6) HOST_STATUS.md scope is correct: no F0 root exclusion, no residual pass, UNKNOWN stays UNKNOWN, partial positive list not a cover. Three notes for the bank, none blocking: (a) UNKNOWN receipts carry no reason field (keys: empty_vertices, nodes, order, prunes, solutions, status), so the 1,137 UNKNOWN mix node-cap hits with time-remaining cuts near the 60 s deadline; record that in the frontier scope so a future resume does not treat them all as node-capped. (b) ROOT/SOURCE resolve to the .codex/worktrees/erdos85-sol2-integration working tree, not a pinned revision; source identity is protected by the asserted source_pins in high-launch.json (verified in 2654), but the banked README should state the integration revision. (c) The verifier reuses given_high() from hosts.py for input construction, so input construction is shared, not independent; host-input-verification.json's direct degree/C4 checks and the 2654 exhaustive pairing enumeration cover that gap adequately. No solver, replay, or launch by this review."
+    ],
+    "2669": [
+      "resolved",
+      "PASS cached canonical-a7 API correctness, not F0 performance. Read static-template exhaustiveness, monotone prefix filtering, exact future-option suffix after fixed restriction, legal disjoint traversal, a7/class validator, and shared counter/deadline propagation; only exhausted domains prune. All producer pins checked. New independent increasing-vertex native endpoint verifier plus unchanged2124 coverage checks33 saved records/controls:2930negative endpoints,11complete covers including positive fixed leaf,5corruptions rejected;0.260s. Fresh compiled cached producer exactly reproduces4fixed receipts; node0/expiredtime UNKNOWN and loop INVALID. No whole capped producer rerun. Baseline12UNKNOWN;cached2F5COMPLETE+10UNKNOWN includingall8hardF0, unchanged. Initial verifier harness metadata mismatch fixed before checks; failed launch retained. Evidence /Users/rwalters/lean-genius-h7-host-pairrow-verifier-sol1-20260915/REVIEW2669.json and pins. No root/Lean/global exclusion."
+    ],
+    "2670": [
+      "resolved",
+      "PASS independent verifier API review. Audited canonical-a7 validator, unchanged2124 prefix coverage, complete future suffix reconstruction and independent increasing-vertex pair/singleton row enumeration. Fresh compiled native verifier checks8 new COMPLETE450k calibration receipts plus8 high-relabelled variants,5029negative endpoints; missing-prune/future-mask/self-loop corruptions rejected. UNKNOWN stays coveragefalse with and without partial checking. All12pins verified. Receipt/fresh library/copied source /Users/rwalters/lean-genius-h7-host-pairrow-sol2-20260915/review2670/REVIEW.json (0.444s). Raw native calls retain valid-prefix premise; no whole F0/Lean/global proof."
+    ],
+    "2672": [
+      "resolved",
+      "PASS exactly eight calibration inputs. Recomputed reserve50000 + factor4\u00d7100000 from pinned controls; cap450000/60s declared correctly. All calibration+source pins/driver hashes exact; source keys are first8originalF0UNKNOWN inputs at100001oldnodes. Independently rebuilt each adjacency from raw source/high assignment and checked all coverage+negative endpoints using separate native subset verifier:8COMPLETE/no leaves,4783pair-prunes+246singleton-prunes,0.212s. Nodes136927\u2013231082<450000. No producer rerun. This supports considering a separately bounded whole-F0 stronger pass; it does not close F0 or alter old100k records. /Users/rwalters/lean-genius-h7-f6-sol1-20260915/review2672/REVIEW.json with code/pins."
+    ]
+  },
+  "source_pins": {
+    "/Users/rwalters/lean-genius-h7-f0-sol1-20260915/pins.json": "59aa29285636b71f0c03ddfe1d538b7b51038f12f00e14f876d9886ae0d69f8f",
+    "/Users/rwalters/lean-genius-h7-host-pairrow-sol2-20260915/pins.json": "8e72997ab3dc9148e2f2a3bb40261ac7b3b0d2c7213a5510616d16c68a5e4099",
+    "/Users/rwalters/lean-genius-h7-host-pairrow-sol2-20260915/calibration-pins.json": "81e841f6095c5de1506d951acf3c6139d74d20aa4d544d28a1067efb9f2840f6"
+  },
+  "native_sha256": "7a4c696ff887df3fa98febbf1bf513b38640db1d4e59450e69acf9a53cd18b52",
+  "driver_sha256": "38d2c338992e9e54e7a94232c6aa9508f0a7cfa2c2fd3a600934196e10028708",
+  "inputs_sha256": "a9e317112ad4e4d4683f5e262a1f692d425fe0872ca770c6bfdde9b064d0fab8"
+}

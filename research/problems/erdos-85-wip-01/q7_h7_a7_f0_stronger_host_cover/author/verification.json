@@ -1,0 +1,13 @@
+{
+  "status": "PASS_COMPLETE_COVER",
+  "new_inputs": 18340,
+  "inherited_negative_inputs": 68,
+  "total_high_inputs": 18408,
+  "new_negative_inputs": 17632,
+  "leaves": 3012,
+  "pair_prunes": 7488293,
+  "singleton_prunes": 1277058,
+  "max_worker_seconds": 102.14911520900205,
+  "partition": "queue-index mod4, exhaustive and disjoint",
+  "scope": "Complete necessary stronger-host cover with all endpoints checked; 3012 leaves still require residual exclusion."
+}
