@@ -1,0 +1,2707 @@
+{
+  "status": "COMPLETE_PROBE",
+  "total": 218,
+  "killed": 89,
+  "certificates": [
+    {
+      "global_index": 227091,
+      "leaf_index": 0,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 101,
+          "pair_candidates": [
+            34
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227091,
+      "leaf_index": 2,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 101,
+          "pair_candidates": [
+            34,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227091,
+      "leaf_index": 3,
+      "vertex": 40,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 101,
+          "pair_candidates": [
+            34,
+            35,
+            41
+          ]
+        },
+        {
+          "triangle": [
+            8,
+            12,
+            14
+          ],
+          "remaining_colours": 39,
+          "pair_candidates": [
+            25,
+            34
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227091,
+      "leaf_index": 8,
+      "vertex": 25,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 101,
+          "pair_candidates": [
+            34,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227092,
+      "leaf_index": 0,
+      "vertex": 30,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 114,
+          "pair_candidates": [
+            31,
+            40
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227092,
+      "leaf_index": 4,
+      "vertex": 28,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 114,
+          "pair_candidates": [
+            31,
+            40
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227092,
+      "leaf_index": 8,
+      "vertex": 29,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 114,
+          "pair_candidates": [
+            31
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227092,
+      "leaf_index": 10,
+      "vertex": 29,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 114,
+          "pair_candidates": [
+            31,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227093,
+      "leaf_index": 0,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 113,
+          "pair_candidates": [
+            24,
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227093,
+      "leaf_index": 1,
+      "vertex": 30,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 102,
+          "pair_candidates": [
+            35,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227093,
+      "leaf_index": 3,
+      "vertex": 39,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 102,
+          "pair_candidates": [
+            34,
+            35,
+            41
+          ]
+        },
+        {
+          "triangle": [
+            7,
+            11,
+            15
+          ],
+          "remaining_colours": 71,
+          "pair_candidates": [
+            31,
+            35
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227093,
+      "leaf_index": 4,
+      "vertex": 31,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 102,
+          "pair_candidates": [
+            35,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227094,
+      "leaf_index": 0,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 113,
+          "pair_candidates": [
+            25,
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227094,
+      "leaf_index": 4,
+      "vertex": 23,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 113,
+          "pair_candidates": [
+            25,
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227094,
+      "leaf_index": 5,
+      "vertex": 24,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 113,
+          "pair_candidates": [
+            25
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227094,
+      "leaf_index": 6,
+      "vertex": 24,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 113,
+          "pair_candidates": [
+            25,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227103,
+      "leaf_index": 0,
+      "vertex": 35,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            14
+          ],
+          "remaining_colours": 113,
+          "pair_candidates": [
+            24,
+            25,
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227105,
+      "leaf_index": 1,
+      "vertex": 23,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 39,
+          "pair_candidates": [
+            25,
+            34
+          ]
+        },
+        {
+          "triangle": [
+            8,
+            13,
+            19
+          ],
+          "remaining_colours": 45,
+          "pair_candidates": [
+            25,
+            34
+          ]
+        },
+        {
+          "triangle": [
+            11,
+            13,
+            19
+          ],
+          "remaining_colours": 57,
+          "pair_candidates": [
+            25,
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227105,
+      "leaf_index": 8,
+      "vertex": 30,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 102,
+          "pair_candidates": [
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227105,
+      "leaf_index": 10,
+      "vertex": 30,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 102,
+          "pair_candidates": [
+            34,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227106,
+      "leaf_index": 0,
+      "vertex": 40,
+      "cuts": [
+        {
+          "triangle": [
+            10,
+            14,
+            16
+          ],
+          "remaining_colours": 92,
+          "pair_candidates": [
+            32,
+            33,
+            35
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227106,
+      "leaf_index": 2,
+      "vertex": 40,
+      "cuts": [
+        {
+          "triangle": [
+            10,
+            14,
+            16
+          ],
+          "remaining_colours": 92,
+          "pair_candidates": [
+            32,
+            33,
+            35
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227115,
+      "leaf_index": 4,
+      "vertex": 28,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            18
+          ],
+          "remaining_colours": 106,
+          "pair_candidates": [
+            37,
+            38,
+            41
+          ]
+        },
+        {
+          "triangle": [
+            10,
+            14,
+            18
+          ],
+          "remaining_colours": 46,
+          "pair_candidates": [
+            32,
+            34
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227116,
+      "leaf_index": 0,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 23,
+          "pair_candidates": [
+            29
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227116,
+      "leaf_index": 1,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 23,
+          "pair_candidates": [
+            29
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227116,
+      "leaf_index": 2,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 23,
+          "pair_candidates": [
+            29,
+            33
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227116,
+      "leaf_index": 3,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 23,
+          "pair_candidates": [
+            29,
+            33
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227116,
+      "leaf_index": 4,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 23,
+          "pair_candidates": [
+            29,
+            33
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227116,
+      "leaf_index": 8,
+      "vertex": 33,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            11,
+            15
+          ],
+          "remaining_colours": 114,
+          "pair_candidates": [
+            30,
+            31,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227116,
+      "leaf_index": 9,
+      "vertex": 40,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 99,
+          "pair_candidates": [
+            30,
+            31,
+            41
+          ]
+        },
+        {
+          "triangle": [
+            7,
+            11,
+            15
+          ],
+          "remaining_colours": 114,
+          "pair_candidates": [
+            30,
+            31,
+            41
+          ]
+        },
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 23,
+          "pair_candidates": [
+            24,
+            33
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227116,
+      "leaf_index": 14,
+      "vertex": 40,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 99,
+          "pair_candidates": [
+            30,
+            41
+          ]
+        },
+        {
+          "triangle": [
+            7,
+            11,
+            15
+          ],
+          "remaining_colours": 114,
+          "pair_candidates": [
+            30,
+            41
+          ]
+        },
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 23,
+          "pair_candidates": [
+            24,
+            33
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227116,
+      "leaf_index": 15,
+      "vertex": 28,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 99,
+          "pair_candidates": [
+            25,
+            41
+          ]
+        },
+        {
+          "triangle": [
+            7,
+            10,
+            18
+          ],
+          "remaining_colours": 106,
+          "pair_candidates": [
+            38,
+            41
+          ]
+        },
+        {
+          "triangle": [
+            10,
+            14,
+            18
+          ],
+          "remaining_colours": 78,
+          "pair_candidates": [
+            35
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227116,
+      "leaf_index": 16,
+      "vertex": 28,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 99,
+          "pair_candidates": [
+            25,
+            41
+          ]
+        },
+        {
+          "triangle": [
+            7,
+            10,
+            18
+          ],
+          "remaining_colours": 106,
+          "pair_candidates": [
+            38,
+            41
+          ]
+        },
+        {
+          "triangle": [
+            10,
+            14,
+            18
+          ],
+          "remaining_colours": 78,
+          "pair_candidates": [
+            38
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227118,
+      "leaf_index": 6,
+      "vertex": 24,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 27,
+          "pair_candidates": [
+            28,
+            36
+          ]
+        },
+        {
+          "triangle": [
+            8,
+            13,
+            18
+          ],
+          "remaining_colours": 58,
+          "pair_candidates": [
+            28,
+            36,
+            37
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227119,
+      "leaf_index": 0,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 39,
+          "pair_candidates": [
+            30,
+            34
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227119,
+      "leaf_index": 1,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 39,
+          "pair_candidates": [
+            30,
+            34
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227119,
+      "leaf_index": 2,
+      "vertex": 29,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 71,
+          "pair_candidates": [
+            31,
+            35
+          ]
+        },
+        {
+          "triangle": [
+            7,
+            10,
+            18
+          ],
+          "remaining_colours": 86,
+          "pair_candidates": [
+            31,
+            35
+          ]
+        },
+        {
+          "triangle": [
+            10,
+            14,
+            18
+          ],
+          "remaining_colours": 90,
+          "pair_candidates": [
+            31,
+            38
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227119,
+      "leaf_index": 4,
+      "vertex": 23,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 39,
+          "pair_candidates": [
+            30
+          ]
+        },
+        {
+          "triangle": [
+            8,
+            13,
+            20
+          ],
+          "remaining_colours": 43,
+          "pair_candidates": [
+            30,
+            37
+          ]
+        },
+        {
+          "triangle": [
+            11,
+            13,
+            20
+          ],
+          "remaining_colours": 58,
+          "pair_candidates": [
+            30,
+            37,
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227119,
+      "leaf_index": 5,
+      "vertex": 37,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 39,
+          "pair_candidates": [
+            30
+          ]
+        },
+        {
+          "triangle": [
+            8,
+            12,
+            14
+          ],
+          "remaining_colours": 99,
+          "pair_candidates": [
+            30,
+            31,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227119,
+      "leaf_index": 6,
+      "vertex": 40,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 71,
+          "pair_candidates": [
+            31
+          ]
+        },
+        {
+          "triangle": [
+            7,
+            11,
+            15
+          ],
+          "remaining_colours": 102,
+          "pair_candidates": [
+            30,
+            31
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227119,
+      "leaf_index": 7,
+      "vertex": 40,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 71,
+          "pair_candidates": [
+            31
+          ]
+        },
+        {
+          "triangle": [
+            7,
+            11,
+            15
+          ],
+          "remaining_colours": 102,
+          "pair_candidates": [
+            30,
+            31,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227122,
+      "leaf_index": 1,
+      "vertex": 30,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 113,
+          "pair_candidates": [
+            24,
+            39,
+            40
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227122,
+      "leaf_index": 19,
+      "vertex": 25,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 71,
+          "pair_candidates": [
+            27,
+            31,
+            35
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227122,
+      "leaf_index": 20,
+      "vertex": 25,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 71,
+          "pair_candidates": [
+            31,
+            35
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227123,
+      "leaf_index": 5,
+      "vertex": 31,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 113,
+          "pair_candidates": [
+            25,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227124,
+      "leaf_index": 0,
+      "vertex": 31,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 113,
+          "pair_candidates": [
+            25,
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227124,
+      "leaf_index": 1,
+      "vertex": 34,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            11,
+            19
+          ],
+          "remaining_colours": 120,
+          "pair_candidates": [
+            36,
+            39,
+            40
+          ]
+        },
+        {
+          "triangle": [
+            8,
+            12,
+            14
+          ],
+          "remaining_colours": 23,
+          "pair_candidates": [
+            24
+          ]
+        },
+        {
+          "triangle": [
+            8,
+            14,
+            19
+          ],
+          "remaining_colours": 53,
+          "pair_candidates": [
+            24,
+            33,
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227124,
+      "leaf_index": 9,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            13,
+            20
+          ],
+          "remaining_colours": 83,
+          "pair_candidates": [
+            29,
+            40
+          ]
+        },
+        {
+          "triangle": [
+            11,
+            13,
+            20
+          ],
+          "remaining_colours": 90,
+          "pair_candidates": [
+            29,
+            31,
+            40
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227129,
+      "leaf_index": 6,
+      "vertex": 31,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 101,
+          "pair_candidates": [
+            35,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227129,
+      "leaf_index": 8,
+      "vertex": 31,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 101,
+          "pair_candidates": [
+            25,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227129,
+      "leaf_index": 9,
+      "vertex": 31,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 101,
+          "pair_candidates": [
+            25,
+            34,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227129,
+      "leaf_index": 10,
+      "vertex": 31,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 101,
+          "pair_candidates": [
+            34,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227132,
+      "leaf_index": 1,
+      "vertex": 34,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            11,
+            15
+          ],
+          "remaining_colours": 114,
+          "pair_candidates": [
+            29,
+            31,
+            40
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227135,
+      "leaf_index": 1,
+      "vertex": 29,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 39,
+          "pair_candidates": [
+            30,
+            34
+          ]
+        },
+        {
+          "triangle": [
+            7,
+            10,
+            18
+          ],
+          "remaining_colours": 54,
+          "pair_candidates": [
+            30,
+            34
+          ]
+        },
+        {
+          "triangle": [
+            10,
+            14,
+            18
+          ],
+          "remaining_colours": 58,
+          "pair_candidates": [
+            30,
+            37
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227135,
+      "leaf_index": 7,
+      "vertex": 25,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 101,
+          "pair_candidates": [
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227135,
+      "leaf_index": 10,
+      "vertex": 25,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 101,
+          "pair_candidates": [
+            34,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227136,
+      "leaf_index": 0,
+      "vertex": 38,
+      "cuts": [
+        {
+          "triangle": [
+            11,
+            13,
+            17
+          ],
+          "remaining_colours": 92,
+          "pair_candidates": [
+            32,
+            33,
+            35
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227136,
+      "leaf_index": 3,
+      "vertex": 38,
+      "cuts": [
+        {
+          "triangle": [
+            11,
+            13,
+            17
+          ],
+          "remaining_colours": 92,
+          "pair_candidates": [
+            32,
+            33,
+            35
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227146,
+      "leaf_index": 19,
+      "vertex": 25,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 58,
+          "pair_candidates": [
+            29,
+            36
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227147,
+      "leaf_index": 2,
+      "vertex": 30,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            20
+          ],
+          "remaining_colours": 105,
+          "pair_candidates": [
+            23,
+            37,
+            38
+          ]
+        },
+        {
+          "triangle": [
+            10,
+            14,
+            20
+          ],
+          "remaining_colours": 43,
+          "pair_candidates": [
+            23,
+            25
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227147,
+      "leaf_index": 6,
+      "vertex": 37,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            11,
+            15
+          ],
+          "remaining_colours": 77,
+          "pair_candidates": [
+            23,
+            26,
+            38
+          ]
+        },
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 58,
+          "pair_candidates": [
+            29,
+            36
+          ]
+        },
+        {
+          "triangle": [
+            10,
+            14,
+            16
+          ],
+          "remaining_colours": 39,
+          "pair_candidates": [
+            25,
+            34
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227147,
+      "leaf_index": 12,
+      "vertex": 30,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            20
+          ],
+          "remaining_colours": 105,
+          "pair_candidates": [
+            25,
+            37
+          ]
+        },
+        {
+          "triangle": [
+            10,
+            14,
+            20
+          ],
+          "remaining_colours": 43,
+          "pair_candidates": [
+            25,
+            37
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227148,
+      "leaf_index": 11,
+      "vertex": 30,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 77,
+          "pair_candidates": [
+            23,
+            26,
+            38
+          ]
+        },
+        {
+          "triangle": [
+            7,
+            10,
+            20
+          ],
+          "remaining_colours": 105,
+          "pair_candidates": [
+            23,
+            26,
+            38
+          ]
+        },
+        {
+          "triangle": [
+            10,
+            14,
+            20
+          ],
+          "remaining_colours": 43,
+          "pair_candidates": [
+            23,
+            25,
+            37
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227150,
+      "leaf_index": 0,
+      "vertex": 25,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 54,
+          "pair_candidates": [
+            30,
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227150,
+      "leaf_index": 1,
+      "vertex": 30,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 85,
+          "pair_candidates": [
+            24,
+            26,
+            40
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227150,
+      "leaf_index": 3,
+      "vertex": 25,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 54,
+          "pair_candidates": [
+            34,
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227150,
+      "leaf_index": 4,
+      "vertex": 25,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 54,
+          "pair_candidates": [
+            34,
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227156,
+      "leaf_index": 0,
+      "vertex": 28,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 99,
+          "pair_candidates": [
+            25,
+            26
+          ]
+        },
+        {
+          "triangle": [
+            7,
+            10,
+            18
+          ],
+          "remaining_colours": 106,
+          "pair_candidates": [
+            37
+          ]
+        },
+        {
+          "triangle": [
+            10,
+            14,
+            18
+          ],
+          "remaining_colours": 46,
+          "pair_candidates": [
+            30,
+            34,
+            37
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227156,
+      "leaf_index": 4,
+      "vertex": 30,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 99,
+          "pair_candidates": [
+            26
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227156,
+      "leaf_index": 5,
+      "vertex": 28,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 99,
+          "pair_candidates": [
+            26,
+            41
+          ]
+        },
+        {
+          "triangle": [
+            7,
+            10,
+            18
+          ],
+          "remaining_colours": 106,
+          "pair_candidates": [
+            37,
+            41
+          ]
+        },
+        {
+          "triangle": [
+            10,
+            14,
+            18
+          ],
+          "remaining_colours": 46,
+          "pair_candidates": [
+            30,
+            34,
+            37
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227156,
+      "leaf_index": 11,
+      "vertex": 30,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 99,
+          "pair_candidates": [
+            26,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227158,
+      "leaf_index": 10,
+      "vertex": 39,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 58,
+          "pair_candidates": [
+            28,
+            36,
+            37
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227163,
+      "leaf_index": 6,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 102,
+          "pair_candidates": [
+            30,
+            34,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227163,
+      "leaf_index": 9,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 102,
+          "pair_candidates": [
+            34,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227164,
+      "leaf_index": 6,
+      "vertex": 30,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 113,
+          "pair_candidates": [
+            24,
+            26
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227165,
+      "leaf_index": 2,
+      "vertex": 30,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 101,
+          "pair_candidates": [
+            26,
+            35,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227165,
+      "leaf_index": 3,
+      "vertex": 30,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            15
+          ],
+          "remaining_colours": 101,
+          "pair_candidates": [
+            35,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227166,
+      "leaf_index": 3,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 114,
+          "pair_candidates": [
+            29,
+            30
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227177,
+      "leaf_index": 0,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 114,
+          "pair_candidates": [
+            30,
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227177,
+      "leaf_index": 1,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 114,
+          "pair_candidates": [
+            30,
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227177,
+      "leaf_index": 17,
+      "vertex": 25,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 114,
+          "pair_candidates": [
+            29,
+            39,
+            40
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227178,
+      "leaf_index": 1,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 114,
+          "pair_candidates": [
+            30,
+            39
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227178,
+      "leaf_index": 2,
+      "vertex": 34,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            11,
+            15
+          ],
+          "remaining_colours": 23,
+          "pair_candidates": [
+            29
+          ]
+        },
+        {
+          "triangle": [
+            7,
+            11,
+            18
+          ],
+          "remaining_colours": 54,
+          "pair_candidates": [
+            29,
+            33,
+            39
+          ]
+        },
+        {
+          "triangle": [
+            8,
+            14,
+            18
+          ],
+          "remaining_colours": 120,
+          "pair_candidates": [
+            36,
+            39,
+            40
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227178,
+      "leaf_index": 9,
+      "vertex": 31,
+      "cuts": [
+        {
+          "triangle": [
+            7,
+            10,
+            20
+          ],
+          "remaining_colours": 83,
+          "pair_candidates": [
+            24,
+            40
+          ]
+        },
+        {
+          "triangle": [
+            10,
+            14,
+            20
+          ],
+          "remaining_colours": 89,
+          "pair_candidates": [
+            24,
+            26,
+            40
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227179,
+      "leaf_index": 7,
+      "vertex": 25,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 114,
+          "pair_candidates": [
+            31,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227181,
+      "leaf_index": 4,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 102,
+          "pair_candidates": [
+            30,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227181,
+      "leaf_index": 6,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 102,
+          "pair_candidates": [
+            35,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227181,
+      "leaf_index": 8,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 102,
+          "pair_candidates": [
+            34,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "global_index": 227181,
+      "leaf_index": 11,
+      "vertex": 26,
+      "cuts": [
+        {
+          "triangle": [
+            8,
+            12,
+            13
+          ],
+          "remaining_colours": 102,
+          "pair_candidates": [
+            30,
+            34,
+            41
+          ]
+        }
+      ]
+    }
+  ],
+  "remaining": [
+    [
+      227091,
+      11
+    ],
+    [
+      227093,
+      5
+    ],
+    [
+      227103,
+      1
+    ],
+    [
+      227103,
+      3
+    ],
+    [
+      227103,
+      4
+    ],
+    [
+      227103,
+      6
+    ],
+    [
+      227104,
+      0
+    ],
+    [
+      227104,
+      1
+    ],
+    [
+      227104,
+      3
+    ],
+    [
+      227105,
+      0
+    ],
+    [
+      227105,
+      3
+    ],
+    [
+      227105,
+      4
+    ],
+    [
+      227105,
+      5
+    ],
+    [
+      227105,
+      6
+    ],
+    [
+      227105,
+      7
+    ],
+    [
+      227106,
+      1
+    ],
+    [
+      227106,
+      4
+    ],
+    [
+      227115,
+      1
+    ],
+    [
+      227116,
+      5
+    ],
+    [
+      227116,
+      6
+    ],
+    [
+      227116,
+      11
+    ],
+    [
+      227116,
+      12
+    ],
+    [
+      227117,
+      4
+    ],
+    [
+      227118,
+      5
+    ],
+    [
+      227119,
+      3
+    ],
+    [
+      227119,
+      14
+    ],
+    [
+      227119,
+      15
+    ],
+    [
+      227121,
+      0
+    ],
+    [
+      227121,
+      1
+    ],
+    [
+      227121,
+      2
+    ],
+    [
+      227122,
+      0
+    ],
+    [
+      227122,
+      3
+    ],
+    [
+      227122,
+      6
+    ],
+    [
+      227122,
+      7
+    ],
+    [
+      227122,
+      11
+    ],
+    [
+      227122,
+      13
+    ],
+    [
+      227123,
+      3
+    ],
+    [
+      227123,
+      4
+    ],
+    [
+      227123,
+      7
+    ],
+    [
+      227123,
+      8
+    ],
+    [
+      227123,
+      10
+    ],
+    [
+      227123,
+      13
+    ],
+    [
+      227123,
+      15
+    ],
+    [
+      227124,
+      3
+    ],
+    [
+      227124,
+      7
+    ],
+    [
+      227124,
+      11
+    ],
+    [
+      227129,
+      1
+    ],
+    [
+      227129,
+      7
+    ],
+    [
+      227131,
+      0
+    ],
+    [
+      227131,
+      2
+    ],
+    [
+      227131,
+      3
+    ],
+    [
+      227132,
+      0
+    ],
+    [
+      227132,
+      2
+    ],
+    [
+      227132,
+      4
+    ],
+    [
+      227132,
+      6
+    ],
+    [
+      227135,
+      0
+    ],
+    [
+      227135,
+      2
+    ],
+    [
+      227135,
+      3
+    ],
+    [
+      227135,
+      5
+    ],
+    [
+      227135,
+      6
+    ],
+    [
+      227135,
+      9
+    ],
+    [
+      227136,
+      1
+    ],
+    [
+      227136,
+      2
+    ],
+    [
+      227145,
+      0
+    ],
+    [
+      227145,
+      3
+    ],
+    [
+      227145,
+      4
+    ],
+    [
+      227145,
+      5
+    ],
+    [
+      227145,
+      6
+    ],
+    [
+      227145,
+      7
+    ],
+    [
+      227145,
+      9
+    ],
+    [
+      227145,
+      12
+    ],
+    [
+      227146,
+      0
+    ],
+    [
+      227146,
+      1
+    ],
+    [
+      227146,
+      2
+    ],
+    [
+      227146,
+      3
+    ],
+    [
+      227146,
+      4
+    ],
+    [
+      227146,
+      10
+    ],
+    [
+      227146,
+      12
+    ],
+    [
+      227146,
+      13
+    ],
+    [
+      227146,
+      14
+    ],
+    [
+      227146,
+      16
+    ],
+    [
+      227146,
+      18
+    ],
+    [
+      227147,
+      0
+    ],
+    [
+      227147,
+      3
+    ],
+    [
+      227147,
+      5
+    ],
+    [
+      227147,
+      8
+    ],
+    [
+      227148,
+      4
+    ],
+    [
+      227148,
+      7
+    ],
+    [
+      227148,
+      9
+    ],
+    [
+      227149,
+      0
+    ],
+    [
+      227149,
+      4
+    ],
+    [
+      227150,
+      6
+    ],
+    [
+      227156,
+      10
+    ],
+    [
+      227157,
+      6
+    ],
+    [
+      227157,
+      12
+    ],
+    [
+      227158,
+      0
+    ],
+    [
+      227158,
+      1
+    ],
+    [
+      227158,
+      2
+    ],
+    [
+      227158,
+      3
+    ],
+    [
+      227158,
+      12
+    ],
+    [
+      227163,
+      0
+    ],
+    [
+      227163,
+      24
+    ],
+    [
+      227164,
+      0
+    ],
+    [
+      227164,
+      8
+    ],
+    [
+      227165,
+      0
+    ],
+    [
+      227165,
+      23
+    ],
+    [
+      227166,
+      0
+    ],
+    [
+      227166,
+      4
+    ],
+    [
+      227177,
+      2
+    ],
+    [
+      227177,
+      3
+    ],
+    [
+      227177,
+      5
+    ],
+    [
+      227177,
+      6
+    ],
+    [
+      227177,
+      9
+    ],
+    [
+      227177,
+      11
+    ],
+    [
+      227178,
+      4
+    ],
+    [
+      227178,
+      6
+    ],
+    [
+      227178,
+      8
+    ],
+    [
+      227179,
+      3
+    ],
+    [
+      227179,
+      4
+    ],
+    [
+      227179,
+      9
+    ],
+    [
+      227179,
+      10
+    ],
+    [
+      227179,
+      12
+    ],
+    [
+      227179,
+      15
+    ],
+    [
+      227179,
+      16
+    ],
+    [
+      227180,
+      1
+    ],
+    [
+      227180,
+      7
+    ],
+    [
+      227180,
+      8
+    ],
+    [
+      227181,
+      1
+    ],
+    [
+      227181,
+      7
+    ]
+  ],
+  "seconds": 0.0588495830015745,
+  "scope": "Triangle-conditioned high-colour matching obstruction only; no full residual row generation or ARC. Unclassified cases preserved."
+}

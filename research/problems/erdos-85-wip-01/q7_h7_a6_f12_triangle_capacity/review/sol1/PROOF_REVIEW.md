@@ -1,0 +1,7 @@
+# Necessity review
+
+At a high vertex h, all eight neighbours are degree-seven low vertices. The 48 nonbacktracking length-two paths from h have distinct endpoints by C4-freeness. Their endpoints exclude h, so they cover the other 48 vertices. Consequently every vertex other than h has exactly one neighbour adjacent to h.
+
+For a degree-two pair vertex u, its fixed high neighbours have no high neighbours because H is independent. The five missing neighbours must therefore partition all seven high supports. Writing s for singleton and p for pair neighbours gives s+p=5 and s+2p=7, hence s=3 and p=2. The three singletons must be one of the complete eligible compatibility triangles. The two pair supports must form a matching covering the four remaining high vertices. Checking the absence of complementary two-element supports is sufficient to rule out that matching. Eligibility against existing neighbours and selected singletons is necessary to avoid a four-cycle through u.
+
+The independent audit uses set adjacency, reconstructs every certificate graph, checks all eligible triangles, and tests the absence of complementary supports. It does not require pair-pair geometric compatibility, so its candidate relation is an overestimate. Failure proves impossibility; surviving it does not prove feasibility. Exact source and prior partition are pinned; 89 new negative cases and 129 unclassified cases partition the prior 218. No old residual enumeration or ARC computation is resumed.
