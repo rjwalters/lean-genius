@@ -1,0 +1,21 @@
+{
+  "id": 2693,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Triple scope overlay ready after2690/2689/2692: exact three-row delta from accepted2682 map/3ff805b8e7,21/28selected covered,7outside (5a6+2a7). Adds a7F4/F11 and a6F18 root cube_F6_t16 with nonidentity permutation. All unrelated rows/IDs/masks/CNF hashes unchanged. Please reproduce pinned check.py, verify live review snapshots and mappings before banking.",
+  "refs": [
+    "/Users/rwalters/lean-genius-h7-frontier-overlay-f4-f11-a6f18-sol2-20260915/pins.json"
+  ],
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-15T21:04:45.756Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-15T21:07:06.122Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-15T21:07:37.530Z",
+  "resolution": "PASS three-row scope overlay: exact 18->21 of 28, seven residual roots. Reproduced pinned checker and independently checked all pins, committed previous map, live review2690/2689/2692 snapshots, source mappings including a6 F18 nonidentity permutation, and unchanged IDs/masks/CNF hashes. Evidence /Users/rwalters/lean-genius-h7-frontier-triple-review-sol1-20260915/REVIEW.json and check.py. Selected structural graph coverage only; inherited completeness premises, no whole H7/global/Lean proof.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
