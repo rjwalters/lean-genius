@@ -1,0 +1,49 @@
+{
+  "root": {
+    "id": "cube_F6_t15",
+    "edge_count": 6,
+    "mask": 622659,
+    "cnf_sha256": "dec6221d8537ede14d953812d18b346fddb6e28595488e5c065f324be6445c28",
+    "scope": null,
+    "review_id": null,
+    "parent_to_reviewed_shape": null,
+    "status": "NOT_COVERED_BY_SELECTED_SCOPES"
+  },
+  "source_F_index": 16,
+  "parent_to_source": [
+    2,
+    3,
+    4,
+    0,
+    1,
+    6,
+    5
+  ],
+  "source_edges": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      6
+    ],
+    [
+      1,
+      5
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      3,
+      4
+    ]
+  ],
+  "source_cover_sha256": "9d9948226a27608df375a13fd23067df191bcdda1129a12a509b27bbf4a622da"
+}

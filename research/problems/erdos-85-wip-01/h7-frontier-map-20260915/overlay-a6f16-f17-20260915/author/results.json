@@ -1,0 +1,464 @@
+{
+  "status": "PASS_REVIEWED_SCOPE_OVERLAY",
+  "source_revision": "76f775789408dd46f02e0cc11b919e0f761fdc64",
+  "rows": [
+    {
+      "id": "cube_F6_t5",
+      "edge_count": 6,
+      "mask": 1081415,
+      "cnf_sha256": "9ba7a01f108ba63db914dd1e89d2ce8aa32e52d1fb81e712e6851136354fbc21",
+      "scope": "F17",
+      "review_id": 2709,
+      "parent_to_reviewed_shape": [
+        2,
+        3,
+        4,
+        0,
+        6,
+        1,
+        5
+      ],
+      "status": "COVERED_BY_SELECTED_REVIEWED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F6_t8",
+      "edge_count": 6,
+      "mask": 139527,
+      "cnf_sha256": "88d4d5d2aec446d8f3ec3f75f28f76705678b1461498ed06da49a386ace80bc5",
+      "scope": "F13",
+      "review_id": 2696,
+      "parent_to_reviewed_shape": [
+        3,
+        0,
+        1,
+        2,
+        6,
+        5,
+        4
+      ],
+      "status": "COVERED_BY_SELECTED_REVIEWED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F6_t14",
+      "edge_count": 6,
+      "mask": 360515,
+      "cnf_sha256": "569406015c7ee26452e76299f518fba008e36c3b7519e1d6f3f1591487af72d9",
+      "scope": "F15",
+      "review_id": 2131,
+      "parent_to_reviewed_shape": [
+        0,
+        1,
+        5,
+        2,
+        3,
+        4,
+        6
+      ],
+      "status": "IN_ACCEPTED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F6_t15",
+      "edge_count": 6,
+      "mask": 622659,
+      "cnf_sha256": "dec6221d8537ede14d953812d18b346fddb6e28595488e5c065f324be6445c28",
+      "scope": "F16",
+      "review_id": 2704,
+      "parent_to_reviewed_shape": [
+        2,
+        3,
+        4,
+        0,
+        1,
+        6,
+        5
+      ],
+      "status": "COVERED_BY_SELECTED_REVIEWED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F6_t16",
+      "edge_count": 6,
+      "mask": 1085571,
+      "cnf_sha256": "b583bccaa37ecbc5d71f75345a4d1a81114d6b917e2e163378ca560f76727d4f",
+      "scope": "F18",
+      "review_id": 2692,
+      "parent_to_reviewed_shape": [
+        0,
+        5,
+        6,
+        2,
+        1,
+        3,
+        4
+      ],
+      "status": "COVERED_BY_SELECTED_REVIEWED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F6_t17",
+      "edge_count": 6,
+      "mask": 331907,
+      "cnf_sha256": "46e285a83f217bea8dfd0eeb3da54c7a1d1805fdd1360badff844dd212cae2dd",
+      "scope": null,
+      "review_id": null,
+      "parent_to_reviewed_shape": null,
+      "status": "NOT_COVERED_BY_SELECTED_SCOPES"
+    },
+    {
+      "id": "cube_F6_t18",
+      "edge_count": 6,
+      "mask": 594051,
+      "cnf_sha256": "acf7bcd846e311fd26794243804a5a69e24b6961a415609302a60e09665a8e44",
+      "scope": null,
+      "review_id": null,
+      "parent_to_reviewed_shape": null,
+      "status": "NOT_COVERED_BY_SELECTED_SCOPES"
+    },
+    {
+      "id": "cube_F7_t0",
+      "edge_count": 7,
+      "mask": 139591,
+      "cnf_sha256": "37f2f36b11336b316c43a54e6d17054c2283dcb8644a9b5969ef0c883eae287b",
+      "scope": "F0",
+      "review_id": 2675,
+      "parent_to_reviewed_shape": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "status": "COVERED_BY_SELECTED_REVIEWED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F7_t2",
+      "edge_count": 7,
+      "mask": 328007,
+      "cnf_sha256": "3115dee58497c9c92b4b9d58699cadc755f3630deb52dade1be27d360cb29c60",
+      "scope": "F2",
+      "review_id": 2659,
+      "parent_to_reviewed_shape": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "status": "COVERED_BY_SELECTED_REVIEWED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F7_t3",
+      "edge_count": 7,
+      "mask": 590151,
+      "cnf_sha256": "89f33dd196d5c335b51cd6b27c426bed351d055d3ab6583988821fb874a8a72f",
+      "scope": "F3",
+      "review_id": 2667,
+      "parent_to_reviewed_shape": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "status": "COVERED_BY_SELECTED_REVIEWED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F7_t4",
+      "edge_count": 7,
+      "mask": 1114439,
+      "cnf_sha256": "4648849e97b17d3e28aeb6d2a7d3f99989ecb608d898eb41ee55887cd03ea3b7",
+      "scope": "F4",
+      "review_id": 2690,
+      "parent_to_reviewed_shape": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "status": "COVERED_BY_SELECTED_REVIEWED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F7_t5",
+      "edge_count": 7,
+      "mask": 360519,
+      "cnf_sha256": "c1cca36d03731199d8fe1035347bab00f502af31f39b61bcd8320528ad8aee3d",
+      "scope": "F5",
+      "review_id": 2665,
+      "parent_to_reviewed_shape": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "status": "COVERED_BY_SELECTED_REVIEWED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F7_t6",
+      "edge_count": 7,
+      "mask": 622663,
+      "cnf_sha256": "f362392181acb436cfb23108237f72519da6ff732e1a74044bea8002b2d97897",
+      "scope": "F6",
+      "review_id": 2677,
+      "parent_to_reviewed_shape": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "status": "COVERED_BY_SELECTED_REVIEWED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F7_t8",
+      "edge_count": 7,
+      "mask": 1343559,
+      "cnf_sha256": "ff0c11fa8e91c63209ae045f4a81c4a5caa89b0bd1d2b2c0e0833b5b140e8f5d",
+      "scope": "F8",
+      "review_id": 2681,
+      "parent_to_reviewed_shape": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "status": "COVERED_BY_SELECTED_REVIEWED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F7_t9",
+      "edge_count": 7,
+      "mask": 1835079,
+      "cnf_sha256": "35829f55cc74b309c5cc0d870c0680ac8704cd995b61fa67c43a3036d203affb",
+      "scope": "F9",
+      "review_id": 2127,
+      "parent_to_reviewed_shape": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "status": "IN_ACCEPTED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F7_t10",
+      "edge_count": 7,
+      "mask": 541447,
+      "cnf_sha256": "fb64663b99d27e36141a36c4ce6fb29e19e03acac37415c87dc675b4e14cfc11",
+      "scope": "F10",
+      "review_id": 2695,
+      "parent_to_reviewed_shape": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "status": "COVERED_BY_SELECTED_REVIEWED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F7_t11",
+      "edge_count": 7,
+      "mask": 401671,
+      "cnf_sha256": "f73c5bc81c1e75c1b324292ace83624efd1ca9f00d3ad7dfb72c269a95b9fb80",
+      "scope": "F11",
+      "review_id": 2689,
+      "parent_to_reviewed_shape": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "status": "COVERED_BY_SELECTED_REVIEWED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F7_t13",
+      "edge_count": 7,
+      "mask": 1581319,
+      "cnf_sha256": "f9d944afdae6b2ba73a85d7d3e0b00a7da686b1013292f27589dfbfa820bfd0f",
+      "scope": "F13",
+      "review_id": 2697,
+      "parent_to_reviewed_shape": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "status": "COVERED_BY_SELECTED_REVIEWED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F7_t14",
+      "edge_count": 7,
+      "mask": 1642627,
+      "cnf_sha256": "4d3488e69b5b65a04025be95c9e0c8237aac80fe4ebfb372ea8e658826f25fed",
+      "scope": "C7",
+      "review_id": 2117,
+      "parent_to_reviewed_shape": [
+        0,
+        1,
+        6,
+        2,
+        5,
+        3,
+        4
+      ],
+      "status": "IN_ACCEPTED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F8_t0",
+      "edge_count": 8,
+      "mask": 663879,
+      "cnf_sha256": "cd3dcf59cab76e9195b0da47ffe1b419b34d5c9d23d3a3cab65186072b94eda8",
+      "scope": "a8",
+      "review_id": 2091,
+      "parent_to_reviewed_shape": null,
+      "status": "IN_ACCEPTED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F8_t1",
+      "edge_count": 8,
+      "mask": 459079,
+      "cnf_sha256": "23a6f8d6c07d0220b4914fc83d13a16c5481efc3f2ec3d1188488659c1c6862a",
+      "scope": "a8",
+      "review_id": 2091,
+      "parent_to_reviewed_shape": null,
+      "status": "IN_ACCEPTED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F8_t2",
+      "edge_count": 8,
+      "mask": 1245511,
+      "cnf_sha256": "2ee7fc53f9db811a83d52db49471ebfd585af9a18d180df13a3d5341f09edf35",
+      "scope": "a8",
+      "review_id": 2091,
+      "parent_to_reviewed_shape": null,
+      "status": "IN_ACCEPTED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F8_t3",
+      "edge_count": 8,
+      "mask": 1376583,
+      "cnf_sha256": "d3ebb94d52cababd1a9b1979930b0f5aaaad0e9cf5716b5d331c1e4516676d2b",
+      "scope": "a8",
+      "review_id": 2091,
+      "parent_to_reviewed_shape": null,
+      "status": "IN_ACCEPTED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F8_t4",
+      "edge_count": 8,
+      "mask": 1638727,
+      "cnf_sha256": "7547c031d4c729a9431b1cd19fbf2b58f220a7106a0fbcbddb70602a0cfe8e1a",
+      "scope": "a8",
+      "review_id": 2091,
+      "parent_to_reviewed_shape": null,
+      "status": "IN_ACCEPTED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F8_t5",
+      "edge_count": 8,
+      "mask": 1867847,
+      "cnf_sha256": "ed84d0484ddd66caf5053327264800ee7e538bee1f5f1ebf973c1534e6871257",
+      "scope": "a8",
+      "review_id": 2091,
+      "parent_to_reviewed_shape": null,
+      "status": "IN_ACCEPTED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F8_t6",
+      "edge_count": 8,
+      "mask": 925959,
+      "cnf_sha256": "2231696282f2c078d80d45be976d4fe50f928c97df576c8c0fef40915533745f",
+      "scope": "a8",
+      "review_id": 2091,
+      "parent_to_reviewed_shape": null,
+      "status": "IN_ACCEPTED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F9_t0",
+      "edge_count": 9,
+      "mask": 1712455,
+      "cnf_sha256": "80d756b1d1c2eb8df411afcce2af38370e94d587d0901011412aefeec77d3c60",
+      "scope": "a9",
+      "review_id": 2080,
+      "parent_to_reviewed_shape": null,
+      "status": "IN_ACCEPTED_STRUCTURAL_SCOPE"
+    },
+    {
+      "id": "cube_F9_t1",
+      "edge_count": 9,
+      "mask": 1507655,
+      "cnf_sha256": "c18551bf2fff0228ab246d773ab5057e6732d30bd8384416f21300cfa2075d70",
+      "scope": "a9",
+      "review_id": 2080,
+      "parent_to_reviewed_shape": null,
+      "status": "IN_ACCEPTED_STRUCTURAL_SCOPE"
+    }
+  ],
+  "covered": [
+    "cube_F6_t5",
+    "cube_F6_t8",
+    "cube_F6_t14",
+    "cube_F6_t15",
+    "cube_F6_t16",
+    "cube_F7_t0",
+    "cube_F7_t2",
+    "cube_F7_t3",
+    "cube_F7_t4",
+    "cube_F7_t5",
+    "cube_F7_t6",
+    "cube_F7_t8",
+    "cube_F7_t9",
+    "cube_F7_t10",
+    "cube_F7_t11",
+    "cube_F7_t13",
+    "cube_F7_t14",
+    "cube_F8_t0",
+    "cube_F8_t1",
+    "cube_F8_t2",
+    "cube_F8_t3",
+    "cube_F8_t4",
+    "cube_F8_t5",
+    "cube_F8_t6",
+    "cube_F9_t0",
+    "cube_F9_t1"
+  ],
+  "residual": [
+    "cube_F6_t17",
+    "cube_F6_t18"
+  ],
+  "newly_covered": [
+    "cube_F6_t15",
+    "cube_F6_t5"
+  ],
+  "counts": {
+    "total": 28,
+    "covered": 26,
+    "residual": 2
+  },
+  "scope": "Selected necessary structural graph exclusions; source/quotient completeness inherited. No arbitrary CNF UNSAT, kernel, wholeH7 or global proof."
+}
