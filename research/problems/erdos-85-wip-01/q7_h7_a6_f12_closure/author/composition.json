@@ -1,0 +1,57 @@
+{
+  "status": "PASS_EXACT_DISJOINT_COVER",
+  "total_host_leaves": 397234,
+  "covered": 397234,
+  "remaining": 0,
+  "source_survivors_sha256": "74dc645fb5ee0e0efebfd970b2200845017d61743fa66b6cdf7cc13037a0376f",
+  "parts": [
+    {
+      "source": "accepted2135",
+      "negative_count": 395763,
+      "results_path": "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/q7_h7_a6_f12_residual_frontier/original/results.json",
+      "results_sha256": "ff4b8faa81c979ab252089f13c656773a6d50b66fb653e2befc98db3ec8943b8"
+    },
+    {
+      "source": "support-capacity",
+      "negative_count": 1253,
+      "results_path": "/Users/rwalters/lean-genius-h7-a6-f12-support-capacity-sol2-20260915/results.json",
+      "results_sha256": "edcca678e668b3755ae98acfdcc55b4261c726ad5a045c6ab492bfe52947ef8b",
+      "pins_sha256": "0be7efeba655bd6bd2be88bdca647db8e5aa1ed1f339380bc07250e1d1378625"
+    },
+    {
+      "source": "triangle-capacity",
+      "negative_count": 89,
+      "results_path": "/Users/rwalters/lean-genius-h7-a6-f12-triangle-capacity-sol2-20260915/results.json",
+      "results_sha256": "8e7a330db116ad23400036e23a4f4908d6243a922ba49b3fe2198a1b3ad44b40",
+      "pins_sha256": "743dc663862f1b748a2bf0cc8cdccaae314bc566af57a0d0f051f401ec51ad8c"
+    },
+    {
+      "source": "hall-capacity",
+      "negative_count": 100,
+      "results_path": "/Users/rwalters/lean-genius-h7-a6-f12-hall-capacity-sol2-20260915/results.json",
+      "results_sha256": "e77ebbe3904ea0970f8c635d52b09c33992aabeae2038c7c021b57ac51949801",
+      "pins_sha256": "0d66dc306f96fd1dd9d1c318dae9d8e96e6f6bfc8643af435b06bcde18c65200"
+    },
+    {
+      "source": "triangle-family",
+      "negative_count": 5,
+      "results_path": "/Users/rwalters/lean-genius-h7-a6-f12-triangle-family-sol2-20260915/results.json",
+      "results_sha256": "a0bd470338d36375ca1c9987169ef5ae46a23ad9e1ab219b98b4d66e98ba7415",
+      "pins_sha256": "24f22c546c21adecc3043483c8f07f4f08dcb08f0ba5a8a5d55610ab5de3ca8a"
+    },
+    {
+      "source": "weighted-family",
+      "negative_count": 1,
+      "results_path": "/Users/rwalters/lean-genius-h7-a6-f12-weighted-family-sol2-20260915/results.json",
+      "results_sha256": "d51f20fa0eb96b29ff08ef7558fe3b72071cd7d9f4cd03d6096cc28b4ef8ff18",
+      "pins_sha256": "63a9fe101e7a015a7520801a224b21c8d007edf23d9d55ce606b901e862433f0"
+    },
+    {
+      "source": "incidence-projection",
+      "negative_count": 23,
+      "results_path": "/Users/rwalters/lean-genius-h7-a6-f12-incidence-projection-sol2-20260915/results.json",
+      "results_sha256": "5e220ce0e26a540b02934b8e6196ea504cd94abc25842419cef85ad9cc4a151b"
+    }
+  ],
+  "scope": "Exact bookkeeping of reviewed prefix/cuts plus new independently checked projection; whole closure awaits peer review."
+}
