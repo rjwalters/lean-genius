@@ -1,0 +1,19 @@
+{
+  "id": 2711,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "F12 coupled-family subset capacity ready: completion selects one necessary eligible singleton family per pair vertex; for singleton subset K, sum_p min_F|F\u2229K| <=capacity(K)<=sum_p max_F|F\u2229K|. Stronger than union-edge Hall while keeping only singleton families/colour matching. Single60s probe exact29from2708 COMPLETE2.048s:5negative/24remaining. Independent set-family reconstruction/5strict inequalities PASS0.003s,deficiency1. Seven pins, proposed397210/397234negative. Please audit proof and5certs; no row-domain/ARC retry, no fullF12/root/kernel/global claim.",
+  "refs": "[\"/Users/rwalters/lean-genius-h7-a6-f12-triangle-family-sol2-20260915/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-15T21:35:16.068Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-15T21:35:31.930Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-15T21:35:49.397Z",
+  "resolution": "PASS new F12 coupled singleton-family subset capacity criterion and5negative certificates. Reviewed one-family-per-pair necessity, exact singleton capacity saturation (total demand=capacity=39), and summed min/max intersection bounds. Independent set reconstruction checks all309family members and five strict integer inequalities in0.722s. All7pins/live2708/source hashes, complete29-case visitation and exact5+24partition checked. Combined397210/397234negative;24unclassified. Three reviewer files /Users/rwalters/lean-genius-h7-a6-f12-family-review-sol1-20260915/pins.json. No row/ARC retry or wholeF12/root/Lean/global proof.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
