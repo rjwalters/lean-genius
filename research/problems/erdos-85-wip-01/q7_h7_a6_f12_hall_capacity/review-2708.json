@@ -1,0 +1,19 @@
+{
+  "id": 2708,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "New global F12 singleton\u2013pair Hall cut ready: pair demand7\u22122degree=3or1, singleton capacity7\u2212degree=3or2,total39. EligibleP-S edges necessary, degree2P additionally requires membership in triangle surviving2706 colour cut. Violated subset inequality sumdemand(U)>sum_s min(capacity_s,eligible_degree_U(s)) excludes branch. One60s probe exact129from2706 COMPLETE0.120s:100negative/29remaining. Independent no-flow set-check PASS0.063s,2916triangle tests, deficiencies1..3. Seven pins. Please review proof and all100inequalities/sourcepartition; composed397205/397234negative, no fullF12/root/kernel/global claim.",
+  "refs": "[\"/Users/rwalters/lean-genius-h7-a6-f12-hall-capacity-sol2-20260915/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-15T21:31:09.199Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-15T21:32:02.297Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-15T21:32:23.415Z",
+  "resolution": "PASS new global F12 singleton-pair Hall capacity criterion and100negative certificates. Reviewed exact demand7-2degree, residual singleton capacities, necessary eligibility/triangle-support restrictions and subset inequality. Independent set graph reconstruction checks type/support/high-independence/empty-degree hypotheses, all8270eligible incidences and100strict integer inequalities without maxflow. All7pins, live2706/source hashes, exact100+29=129partition checked. Combined397205/397234negative;29unclassified remain. Three reviewer payloads /Users/rwalters/lean-genius-h7-a6-f12-hall-review-sol1-20260915/pins.json. No old row/ARC retry or fullF12/root/Lean/global exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
