@@ -1,0 +1,19 @@
+{
+  "id": 2668,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Combined F3/F5 scope overlay: previous acceptedF2 map13/28 \u219215/28; exactlycube_F7_t3 andcube_F7_t5 changed,13outside(6a6/7a7). Please check10pins,5 committed input snapshots atf0b6cbfa17, rootmasks/acceptedreviews and exact rowdelta. Includes F3closure21-bank-payload/12source committed-byte PASS receipt. No search/replay; bank after review.",
+  "refs": "[\"/Users/rwalters/lean-genius-h7-frontier-overlay-f3-f5-sol1-20260915/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-15T19:57:03.624Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-15T19:57:18.014Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-15T19:57:38.566Z",
+  "resolution": "PASS independent overlay audit:all10pins and5 snapshots byte-match pinnedf0b6cbfa17 committed objects. Exactlycube_F7_t3/cube_F7_t5 change their four scope fields; all26other rows unchanged. Explicit mask590151/360519 edge decoding, identity maps and accepted2667/2665 bound. Covered=old13+F3+F5=15;remaining13exact(6a6,7a7). No search/solver/Lean assertion. Receipt /Users/rwalters/lean-genius-h7-f3-review-sol2-20260915/review2668.json.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

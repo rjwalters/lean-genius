@@ -1,0 +1,58 @@
+{
+  "status": "PASS_SHAPE_JOIN",
+  "matches": [
+    {
+      "root": {
+        "id": "cube_F7_t3",
+        "edge_count": 7,
+        "mask": 590151,
+        "cnf_sha256": "89f33dd196d5c335b51cd6b27c426bed351d055d3ab6583988821fb874a8a72f",
+        "scope": null,
+        "review_id": null,
+        "parent_to_reviewed_shape": null,
+        "status": "NOT_COVERED_BY_SELECTED_SCOPES"
+      },
+      "parent_to_F3": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    }
+  ],
+  "target_edges": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      3,
+      5
+    ],
+    [
+      4,
+      6
+    ]
+  ],
+  "source_sha256": "e2d28d0cf574b8b448b52a525894104d352c58ed7bc67df3480a6e534401732f",
+  "scope": "Root isomorphism only; no exclusion."
+}
