@@ -1,0 +1,19 @@
+{
+  "id": 2712,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Refined support families/weighted F12 capacity ready. Demand1 singleton choice now requires3-edge matching on remaining6high colours; demand3 retains2-edge matching. Completion picks one necessary family perP, so sum_p min_F(w\u00b7F)<=w\u00b7capacity for any signed integer w. One24case probe COMPLETE0.047s, LP2s/case only proposes weights: one exact cut(227135,9) minimum\u221251>capacity\u221255,23remaining. Independent permutation/set family reconstruction62members and integer check PASS0.002s. Seven pins; proposed397211/397234negative. Please audit matching refinement/proof/onecertificate; no floating LP verdict promoted or row/ARC retry.",
+  "refs": "[\"/Users/rwalters/lean-genius-h7-a6-f12-weighted-family-sol2-20260915/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-15T21:38:04.389Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-15T21:38:35.725Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-15T21:38:53.448Z",
+  "resolution": "PASS refined singleton support families and one exact weighted capacity exclusion. Reviewed demand1 requires three pair supports matching remaining6colours; demand3 needs two on4colours. Independent set/recursive least-colour matching reconstructs all62family members. Exact signed integer inequality minimum -51 > capacity -55 checked without LP,0.683s. All7pins/live2711/source hashes,24complete diagnostics and exact1+23partition checked. Combined397211/397234negative;23unclassified. Three reviewer payloads /Users/rwalters/lean-genius-h7-a6-f12-weighted-review-sol1-20260915/pins.json. No floating verdict promotion,row/ARC retry,wholeF12/root/Lean/global proof.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

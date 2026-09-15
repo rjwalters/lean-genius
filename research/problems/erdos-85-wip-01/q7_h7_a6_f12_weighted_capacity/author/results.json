@@ -1,0 +1,1003 @@
+{
+  "status": "COMPLETE_PROBE",
+  "total": 24,
+  "killed": 1,
+  "certificates": [
+    {
+      "kind": "WEIGHT_CAPACITY",
+      "weights": [
+        1,
+        -1,
+        -3,
+        -3,
+        -1,
+        -3,
+        3,
+        -3,
+        -3,
+        -3,
+        -3,
+        3,
+        1,
+        -3
+      ],
+      "minimum": -51,
+      "capacity": -55,
+      "global_index": 227135,
+      "leaf_index": 9,
+      "families": {
+        "21": [
+          32,
+          64,
+          256
+        ],
+        "22": [
+          2,
+          512
+        ],
+        "23": [
+          8,
+          16,
+          32,
+          512
+        ],
+        "24": [
+          2114,
+          8258,
+          8272
+        ],
+        "25": [
+          4,
+          16,
+          256
+        ],
+        "26": [
+          2114
+        ],
+        "27": [
+          32,
+          1024
+        ],
+        "28": [
+          4105,
+          4232
+        ],
+        "29": [
+          2184
+        ],
+        "30": [
+          8,
+          32,
+          1024
+        ],
+        "31": [
+          64,
+          128,
+          256,
+          1024
+        ],
+        "32": [
+          4113,
+          8209,
+          4226
+        ],
+        "33": [
+          2,
+          1024
+        ],
+        "34": [
+          273,
+          4226
+        ],
+        "35": [
+          1,
+          32,
+          256,
+          512
+        ],
+        "36": [
+          64,
+          128,
+          512,
+          1024
+        ],
+        "37": [
+          4105,
+          4113,
+          98,
+          1104
+        ],
+        "38": [
+          4,
+          16,
+          128
+        ],
+        "39": [
+          1,
+          2,
+          4,
+          512,
+          1024
+        ],
+        "40": [
+          2057,
+          273,
+          2114,
+          2178,
+          2184
+        ],
+        "41": [
+          98,
+          1104
+        ]
+      }
+    }
+  ],
+  "remaining": [
+    [
+      227122,
+      6
+    ],
+    [
+      227122,
+      7
+    ],
+    [
+      227123,
+      3
+    ],
+    [
+      227123,
+      4
+    ],
+    [
+      227123,
+      7
+    ],
+    [
+      227123,
+      8
+    ],
+    [
+      227123,
+      10
+    ],
+    [
+      227123,
+      13
+    ],
+    [
+      227124,
+      7
+    ],
+    [
+      227124,
+      11
+    ],
+    [
+      227129,
+      1
+    ],
+    [
+      227129,
+      7
+    ],
+    [
+      227132,
+      0
+    ],
+    [
+      227132,
+      2
+    ],
+    [
+      227132,
+      4
+    ],
+    [
+      227132,
+      6
+    ],
+    [
+      227135,
+      0
+    ],
+    [
+      227135,
+      3
+    ],
+    [
+      227135,
+      5
+    ],
+    [
+      227135,
+      6
+    ],
+    [
+      227156,
+      10
+    ],
+    [
+      227163,
+      0
+    ],
+    [
+      227164,
+      0
+    ]
+  ],
+  "unvisited": [],
+  "diagnostics": [
+    {
+      "global_index": 227122,
+      "leaf_index": 6,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 2,
+        "22": 3,
+        "23": 3,
+        "24": 1,
+        "25": 4,
+        "26": 1,
+        "27": 3,
+        "28": 3,
+        "29": 3,
+        "30": 1,
+        "31": 4,
+        "32": 2,
+        "33": 3,
+        "34": 3,
+        "35": 2,
+        "36": 2,
+        "37": 5,
+        "38": 3,
+        "39": 5,
+        "40": 5,
+        "41": 3
+      }
+    },
+    {
+      "global_index": 227122,
+      "leaf_index": 7,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 2,
+        "22": 3,
+        "23": 3,
+        "24": 3,
+        "25": 4,
+        "26": 1,
+        "27": 3,
+        "28": 3,
+        "29": 2,
+        "30": 1,
+        "31": 4,
+        "32": 2,
+        "33": 3,
+        "34": 3,
+        "35": 2,
+        "36": 3,
+        "37": 5,
+        "38": 3,
+        "39": 4,
+        "40": 5,
+        "41": 3
+      }
+    },
+    {
+      "global_index": 227123,
+      "leaf_index": 3,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 2,
+        "22": 3,
+        "23": 2,
+        "24": 1,
+        "25": 3,
+        "26": 4,
+        "27": 3,
+        "28": 3,
+        "29": 3,
+        "30": 3,
+        "31": 1,
+        "32": 2,
+        "33": 3,
+        "34": 3,
+        "35": 2,
+        "36": 5,
+        "37": 4,
+        "38": 5,
+        "39": 5,
+        "40": 4,
+        "41": 5
+      }
+    },
+    {
+      "global_index": 227123,
+      "leaf_index": 4,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 1,
+        "22": 2,
+        "23": 2,
+        "24": 1,
+        "25": 4,
+        "26": 4,
+        "27": 3,
+        "28": 3,
+        "29": 3,
+        "30": 3,
+        "31": 1,
+        "32": 2,
+        "33": 4,
+        "34": 3,
+        "35": 2,
+        "36": 5,
+        "37": 5,
+        "38": 5,
+        "39": 2,
+        "40": 4,
+        "41": 5
+      }
+    },
+    {
+      "global_index": 227123,
+      "leaf_index": 7,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 1,
+        "22": 3,
+        "23": 3,
+        "24": 3,
+        "25": 1,
+        "26": 4,
+        "27": 3,
+        "28": 4,
+        "29": 3,
+        "30": 3,
+        "31": 1,
+        "32": 2,
+        "33": 3,
+        "34": 2,
+        "35": 4,
+        "36": 6,
+        "37": 5,
+        "38": 3,
+        "39": 5,
+        "40": 2,
+        "41": 3
+      }
+    },
+    {
+      "global_index": 227123,
+      "leaf_index": 8,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 1,
+        "22": 3,
+        "23": 3,
+        "24": 3,
+        "25": 1,
+        "26": 4,
+        "27": 3,
+        "28": 3,
+        "29": 3,
+        "30": 3,
+        "31": 4,
+        "32": 4,
+        "33": 3,
+        "34": 2,
+        "35": 2,
+        "36": 5,
+        "37": 5,
+        "38": 3,
+        "39": 5,
+        "40": 2,
+        "41": 3
+      }
+    },
+    {
+      "global_index": 227123,
+      "leaf_index": 10,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 2,
+        "22": 3,
+        "23": 2,
+        "24": 1,
+        "25": 3,
+        "26": 4,
+        "27": 3,
+        "28": 3,
+        "29": 3,
+        "30": 3,
+        "31": 1,
+        "32": 2,
+        "33": 3,
+        "34": 3,
+        "35": 3,
+        "36": 4,
+        "37": 3,
+        "38": 5,
+        "39": 5,
+        "40": 4,
+        "41": 6
+      }
+    },
+    {
+      "global_index": 227123,
+      "leaf_index": 13,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 1,
+        "22": 2,
+        "23": 2,
+        "24": 1,
+        "25": 4,
+        "26": 4,
+        "27": 3,
+        "28": 3,
+        "29": 3,
+        "30": 3,
+        "31": 1,
+        "32": 2,
+        "33": 4,
+        "34": 2,
+        "35": 3,
+        "36": 4,
+        "37": 5,
+        "38": 5,
+        "39": 2,
+        "40": 4,
+        "41": 5
+      }
+    },
+    {
+      "global_index": 227124,
+      "leaf_index": 7,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 1,
+        "22": 3,
+        "23": 3,
+        "24": 3,
+        "25": 3,
+        "26": 1,
+        "27": 3,
+        "28": 4,
+        "29": 1,
+        "30": 2,
+        "31": 4,
+        "32": 2,
+        "33": 2,
+        "34": 3,
+        "35": 3,
+        "36": 5,
+        "37": 3,
+        "38": 5,
+        "39": 3,
+        "40": 4,
+        "41": 5
+      }
+    },
+    {
+      "global_index": 227124,
+      "leaf_index": 11,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 2,
+        "22": 3,
+        "23": 3,
+        "24": 3,
+        "25": 3,
+        "26": 1,
+        "27": 3,
+        "28": 3,
+        "29": 1,
+        "30": 2,
+        "31": 4,
+        "32": 2,
+        "33": 4,
+        "34": 1,
+        "35": 3,
+        "36": 3,
+        "37": 4,
+        "38": 6,
+        "39": 3,
+        "40": 3,
+        "41": 5
+      }
+    },
+    {
+      "global_index": 227129,
+      "leaf_index": 1,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 2,
+        "22": 2,
+        "23": 4,
+        "24": 3,
+        "25": 1,
+        "26": 4,
+        "27": 3,
+        "28": 3,
+        "29": 3,
+        "30": 3,
+        "31": 1,
+        "32": 4,
+        "33": 2,
+        "34": 4,
+        "35": 3,
+        "36": 4,
+        "37": 3,
+        "38": 5,
+        "39": 5,
+        "40": 5,
+        "41": 4
+      }
+    },
+    {
+      "global_index": 227129,
+      "leaf_index": 7,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 1,
+        "22": 3,
+        "23": 1,
+        "24": 3,
+        "25": 3,
+        "26": 4,
+        "27": 3,
+        "28": 3,
+        "29": 2,
+        "30": 2,
+        "31": 4,
+        "32": 4,
+        "33": 4,
+        "34": 3,
+        "35": 2,
+        "36": 4,
+        "37": 5,
+        "38": 5,
+        "39": 4,
+        "40": 3,
+        "41": 2
+      }
+    },
+    {
+      "global_index": 227132,
+      "leaf_index": 0,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 3,
+        "22": 3,
+        "23": 3,
+        "24": 3,
+        "25": 3,
+        "26": 1,
+        "27": 2,
+        "28": 4,
+        "29": 2,
+        "30": 3,
+        "31": 3,
+        "32": 2,
+        "33": 4,
+        "34": 4,
+        "35": 2,
+        "36": 3,
+        "37": 7,
+        "38": 5,
+        "39": 3,
+        "40": 2,
+        "41": 4
+      }
+    },
+    {
+      "global_index": 227132,
+      "leaf_index": 2,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 3,
+        "22": 3,
+        "23": 3,
+        "24": 3,
+        "25": 1,
+        "26": 1,
+        "27": 3,
+        "28": 3,
+        "29": 1,
+        "30": 3,
+        "31": 3,
+        "32": 2,
+        "33": 3,
+        "34": 3,
+        "35": 3,
+        "36": 3,
+        "37": 5,
+        "38": 5,
+        "39": 2,
+        "40": 5,
+        "41": 4
+      }
+    },
+    {
+      "global_index": 227132,
+      "leaf_index": 4,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 3,
+        "22": 3,
+        "23": 3,
+        "24": 3,
+        "25": 1,
+        "26": 3,
+        "27": 3,
+        "28": 3,
+        "29": 1,
+        "30": 2,
+        "31": 3,
+        "32": 2,
+        "33": 3,
+        "34": 3,
+        "35": 3,
+        "36": 5,
+        "37": 5,
+        "38": 4,
+        "39": 2,
+        "40": 4,
+        "41": 4
+      }
+    },
+    {
+      "global_index": 227132,
+      "leaf_index": 6,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 3,
+        "22": 2,
+        "23": 3,
+        "24": 3,
+        "25": 1,
+        "26": 4,
+        "27": 2,
+        "28": 4,
+        "29": 3,
+        "30": 1,
+        "31": 2,
+        "32": 2,
+        "33": 2,
+        "34": 4,
+        "35": 3,
+        "36": 2,
+        "37": 4,
+        "38": 5,
+        "39": 4,
+        "40": 4,
+        "41": 4
+      }
+    },
+    {
+      "global_index": 227135,
+      "leaf_index": 0,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 3,
+        "22": 3,
+        "23": 2,
+        "24": 3,
+        "25": 3,
+        "26": 1,
+        "27": 2,
+        "28": 3,
+        "29": 4,
+        "30": 2,
+        "31": 2,
+        "32": 4,
+        "33": 4,
+        "34": 2,
+        "35": 4,
+        "36": 5,
+        "37": 6,
+        "38": 4,
+        "39": 3,
+        "40": 6,
+        "41": 4
+      }
+    },
+    {
+      "global_index": 227135,
+      "leaf_index": 3,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 3,
+        "22": 3,
+        "23": 1,
+        "24": 3,
+        "25": 3,
+        "26": 3,
+        "27": 2,
+        "28": 3,
+        "29": 4,
+        "30": 2,
+        "31": 2,
+        "32": 4,
+        "33": 4,
+        "34": 2,
+        "35": 4,
+        "36": 4,
+        "37": 4,
+        "38": 4,
+        "39": 3,
+        "40": 5,
+        "41": 3
+      }
+    },
+    {
+      "global_index": 227135,
+      "leaf_index": 5,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 3,
+        "22": 2,
+        "23": 4,
+        "24": 3,
+        "25": 3,
+        "26": 1,
+        "27": 2,
+        "28": 3,
+        "29": 3,
+        "30": 2,
+        "31": 2,
+        "32": 3,
+        "33": 1,
+        "34": 3,
+        "35": 4,
+        "36": 2,
+        "37": 4,
+        "38": 3,
+        "39": 5,
+        "40": 5,
+        "41": 2
+      }
+    },
+    {
+      "global_index": 227135,
+      "leaf_index": 6,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 3,
+        "22": 2,
+        "23": 4,
+        "24": 3,
+        "25": 3,
+        "26": 1,
+        "27": 2,
+        "28": 2,
+        "29": 3,
+        "30": 2,
+        "31": 4,
+        "32": 4,
+        "33": 2,
+        "34": 3,
+        "35": 4,
+        "36": 4,
+        "37": 4,
+        "38": 3,
+        "39": 5,
+        "40": 5,
+        "41": 2
+      }
+    },
+    {
+      "global_index": 227135,
+      "leaf_index": 9,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": -1.333333333333334
+      },
+      "family_counts": {
+        "21": 3,
+        "22": 2,
+        "23": 4,
+        "24": 3,
+        "25": 3,
+        "26": 1,
+        "27": 2,
+        "28": 2,
+        "29": 1,
+        "30": 3,
+        "31": 4,
+        "32": 3,
+        "33": 2,
+        "34": 2,
+        "35": 4,
+        "36": 4,
+        "37": 4,
+        "38": 3,
+        "39": 5,
+        "40": 5,
+        "41": 2
+      }
+    },
+    {
+      "global_index": 227156,
+      "leaf_index": 10,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 2,
+        "22": 2,
+        "23": 3,
+        "24": 1,
+        "25": 4,
+        "26": 3,
+        "27": 3,
+        "28": 3,
+        "29": 2,
+        "30": 3,
+        "31": 2,
+        "32": 2,
+        "33": 4,
+        "34": 2,
+        "35": 4,
+        "36": 4,
+        "37": 4,
+        "38": 5,
+        "39": 4,
+        "40": 4,
+        "41": 3
+      }
+    },
+    {
+      "global_index": 227163,
+      "leaf_index": 0,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 3,
+        "22": 2,
+        "23": 3,
+        "24": 3,
+        "25": 1,
+        "26": 4,
+        "27": 3,
+        "28": 4,
+        "29": 2,
+        "30": 3,
+        "31": 1,
+        "32": 2,
+        "33": 4,
+        "34": 2,
+        "35": 3,
+        "36": 5,
+        "37": 5,
+        "38": 4,
+        "39": 3,
+        "40": 1,
+        "41": 5
+      }
+    },
+    {
+      "global_index": 227164,
+      "leaf_index": 0,
+      "lp": {
+        "status": 0,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "objective": 0.0
+      },
+      "family_counts": {
+        "21": 3,
+        "22": 2,
+        "23": 3,
+        "24": 4,
+        "25": 1,
+        "26": 3,
+        "27": 3,
+        "28": 4,
+        "29": 3,
+        "30": 1,
+        "31": 3,
+        "32": 2,
+        "33": 3,
+        "34": 2,
+        "35": 4,
+        "36": 6,
+        "37": 5,
+        "38": 4,
+        "39": 4,
+        "40": 2,
+        "41": 4
+      }
+    }
+  ],
+  "seconds": 0.0473059999931138,
+  "scope": "Exact integer weighted capacity or empty necessary family only. LP verdict alone never an exclusion; all survivors explicit."
+}
