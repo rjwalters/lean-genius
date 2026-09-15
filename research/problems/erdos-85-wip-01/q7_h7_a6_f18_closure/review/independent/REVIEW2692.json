@@ -1,0 +1,23 @@
+{
+  "status": "PASS_REVIEW2692",
+  "root": "cube_F6_t16",
+  "source_F_index": 18,
+  "mask": 1085571,
+  "parent_to_source": [
+    0,
+    5,
+    6,
+    2,
+    1,
+    3,
+    4
+  ],
+  "leaves": 331996,
+  "domains": 3044414,
+  "rows": 13779596,
+  "arc_events": 240146,
+  "removed_rows": 296274,
+  "independent_seconds": 27.866914666999946,
+  "source_manifest_sha256": "efd50c6ede67469b2df49cd6c24e96f000cd3a88846b35d4a46190a14aa761a3",
+  "scope": "Whole a6 F18 structural graph-cover exclusion using reviewed complete2118/2122/2125/2133 source and host covers. No arbitrary CNF UNSAT, Lean kernel, whole H7 or global theorem."
+}
