@@ -1,0 +1,16 @@
+{
+  "status": "PASS_EXACT_HOST_JOIN_AND_NEGATIVE_ENDPOINTS",
+  "host_inputs": 77813,
+  "leaves": 1577893,
+  "counts": {
+    "INFEASIBLE_ROW": 1365513,
+    "INFEASIBLE_ARC": 212380
+  },
+  "domains": 8798813,
+  "rows": 37134807,
+  "arc_events": 707264,
+  "removed_rows": 929089,
+  "whole_negative_cover": true,
+  "seconds": 85.45929541600344,
+  "scope": "Exact accepted2702 host/input/survivor join and independent complete row/arc checks. Upstream source/high/quotient coverage remains a reviewed premise; no arbitrary CNF UNSAT, Lean or global theorem."
+}

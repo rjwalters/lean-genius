@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "review": 2703,
+  "input_pins_sha256": "c1b54958e4b553a705b45c55dff8818397fa790324373c7d9a848c86a6e8553e",
+  "independent": {
+    "status": "PASS_INDEPENDENT_SOURCE_EDGES",
+    "graphs": 199155,
+    "raw_high_assignments": 238783,
+    "source_classes": 164,
+    "es_graphs": 404,
+    "root": "cube_F6_t18",
+    "mask": 594051,
+    "parent_to_source": [
+      2,
+      3,
+      4,
+      1,
+      0,
+      5,
+      6
+    ],
+    "seconds": 19.22270704100083,
+    "input_sha256": "8669ee1a60e014f19020d097eba0554d8e5924137e3148c768923b9053371804",
+    "scope": "Exact accepted quotient-source reconstruction and root isomorphism only; no host or residual claim."
+  },
+  "premises": [
+    2118,
+    2122,
+    2125
+  ],
+  "scope": "Exact F14 high-quotient input slice only; no host or residual exclusion."
+}

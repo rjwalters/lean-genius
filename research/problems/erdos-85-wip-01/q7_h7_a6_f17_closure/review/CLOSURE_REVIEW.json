@@ -1,0 +1,85 @@
+{
+  "status": "PASS",
+  "review": 2709,
+  "root": {
+    "root": {
+      "id": "cube_F6_t5",
+      "edge_count": 6,
+      "mask": 1081415,
+      "cnf_sha256": "9ba7a01f108ba63db914dd1e89d2ce8aa32e52d1fb81e712e6851136354fbc21",
+      "scope": null,
+      "review_id": null,
+      "parent_to_reviewed_shape": null,
+      "status": "NOT_COVERED_BY_SELECTED_SCOPES"
+    },
+    "source_F_index": 17,
+    "parent_to_source": [
+      2,
+      3,
+      4,
+      0,
+      6,
+      1,
+      5
+    ],
+    "source_edges": [
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "scope_map_path": "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/h7-frontier-map-20260915/overlay-f4-f11-a6f18-20260915/author/results.json",
+    "scope_map_sha256": "726ec732dda1d4ee27ccc80bc5427e0a2ad7606ef30fc297562c88ead4e42b60",
+    "source_cover_sha256": "9d9948226a27608df375a13fd23067df191bcdda1129a12a509b27bbf4a622da"
+  },
+  "independent": {
+    "status": "PASS_EXACT_SOURCE_AND_NEGATIVES",
+    "source_graphs": 77813,
+    "host_leaves": 1577893,
+    "visited": 1577893,
+    "unvisited": 0,
+    "counts": {
+      "INFEASIBLE_ROW": 1365513,
+      "INFEASIBLE_ARC": 212380
+    },
+    "retained": 0,
+    "domains": 8798813,
+    "rows": 37134807,
+    "arc_batches": 707264,
+    "failed_support_rows": 929089,
+    "independent_subset_nodes": 2846181642,
+    "seconds": 77.68847191700479,
+    "scope": "Exact raw-source graphs and reviewed host export; all negative endpoints checked. UNKNOWN/positive/suffix not promoted. Upstream source and quotient completeness inherited."
+  },
+  "chain": {
+    "2118": "PASS complete a6 E/S projection. Independent reversed-edge F enumeration with length-two collisions and explicit S7 orbits reproduces31332labelled/19Fclasses; complementary X-subset enumeration and AutF orbits reproduce2192raw/358classes. Different fixed core-first star traversal recovers exact3284solution sets on91positive/267negative bases,75698nodes,max9992,0.192s; cover0.408s,no caps. Audited generalized7-2d capacity,11double/3single hosts,naming quotient and degree/C4 conditions.8pins/livepremises verified. Evidence /Users/rwalters/lean-genius-q7-outside-first-20260910/review-2118. Complete projection only; high/P assignment and a6/H7/Lean/global remain open.",
+    "2122": "PASS complete a6 high-pair cover. Exact2118 source bytes and all3284 ordered E/S joins;18payloadpins/live2118/2119 and exact2119 native bytes verified. Independent whole14vertex perfect-matching DP interleaving mixed/double pairs gives818836 assignments,1527438states,max587/case4.308s. Every saved colouring checked valid/canonical/unique; count equality proves exact sets. One direct28vertex C4 graph per case3284fixtures. All author calls COMPLETE,max9456nodes,0empty/UNKNOWN/unvisited/artifactstop. Audited one-launch budget driver. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2122. No P-host/residual family or a6/H7/global exclusion.",
+    "2125": "PASS. All 12 payload pins and live 2122 receipt verified. Independent full F/X edge-set automorphism scan and compatible core permutations: 232 actions with exact S-edge images. Exact source flattening and all 818,836 representative-to-member witnesses checked by deriving high bijections from target incidences; 425,550 minimum-index representatives, full action coverage and orbit histogram exact. F12 16,040; F15 4,536. 5.160 seconds. Isomorphisms extend to P through unordered high supports and transport all residual edges, proving cover without exclusion. Evidence /Users/rwalters/lean-genius-q7-outside-first-20260910/review-2125. No host search or Lean claim.",
+    "2698": "PASS a6 F17 exact accepted high-quotient input slice. Independent source-edge reconstruction checks all77813ordered quotient graphs covering82817raw highs,47classes/205E-S graphs,7.731s<90s. Checked all6producer pins, source/quotient manifests, original driver/input hashes,60s materialization cap and live2118/2122/2125 premises. Independently derived cube_F6_t5 mask1081415 permutation[2,3,4,0,6,1,5]. Three reviewer payloads at /Users/rwalters/lean-genius-h7-a6-f17-review-sol2-20260915/pins.json. Input slice only; no host, residual, kernel or global exclusion.",
+    "2702": "PASS a6 F17 necessary host cover. Independent full archived2133 structural/template verifier checks77813COMPLETE inputs,2825313prunes/1577893leaves/2464zero highs,26800769structural nodes/22090502survivor domains in31.674s<180s. All17producer pins, before/after input/receipt hashes, driver/launch identities,240s/100k/450MB caps and2118/2122/2123/2125/2698/2133 chain checked. Exact root map inherited from independently checked2698. Four reviewer payloads /Users/rwalters/lean-genius-h7-a6-f17-review-sol2-20260915/host-review-pins.json. No residual/root/kernel/global exclusion.",
+    "2120": "PASS a6 residual Python/native API. Audited validator-only changes: exactly3mixed+4double/double highs, mixed-only nonedge restriction, adjacent double pairs retained. Row/AC/serialization tails and ctypes wrapper byte-identical accepted2111/2109. Independently compiled;6new arbitraryhigh/low relabel fixtures match210complete domains/1098rows by explicit support-partition templates,48whole-object budget comparisons,12expired guards,26invalid rejects incl a7 and brokenSdegree. Independent UBSan INT_MAX-1\u2192INT_MAX\u2192INT_MAX+1 limit and expireddeadline unit exit0.19pins/livepremises checked. Evidence /Users/rwalters/lean-genius-q7-outside-first-20260910/review-2120. API only; no a6family/H7/Lean/global exclusion.",
+    "2126": "PASS a6 residual batch adapter. Independently compiled; six new arbitraryhigh/low relabel fixtures plus two existing reviewed host fixtures give56exact compact/full-object comparisons and72budget/deadline/empty/invalid guards.11sourcepins/live2120/origins and byte-identical2120filter checked. Audited base/index/mask validation, symmetric insertion, size_t recordstride, perleaf counter/shareddeadline, ordered visitedprefix and unchanged ARC/UNKNOWN serialization. Compact ROW endpoints require independent full-domain regeneration at family audit. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2126. No new family residual run or a6/H7/global exclusion."
+  },
+  "producer_manifest_sha256": "5377a199c1b49783887b6132b6da9430233659bfda1c4dd7508ec068bc551d0b",
+  "scope": "Whole necessary finite structural graph-cover exclusion only; no CNF, kernel, wholeH7 or global theorem."
+}
