@@ -1,0 +1,11 @@
+{
+  "schema": "external-receipts-v1",
+  "files": {
+    "receipts-000.jsonl.gz": {
+      "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h7-receipts/a6-f14-incidence-20260915/receipts-000.jsonl.gz",
+      "sha256": "7bd4ed97292f1d672d862d9232ef118b73c48138f0703335eb0d8f9d0ab14afd",
+      "bytes": 33491445
+    }
+  },
+  "policy": "Receipt shards over 10 MB stay outside git. Original source copy retained; durable copy verified byte-for-byte."
+}

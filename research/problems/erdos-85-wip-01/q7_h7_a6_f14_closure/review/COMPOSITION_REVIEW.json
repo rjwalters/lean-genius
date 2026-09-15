@@ -1,0 +1,43 @@
+{
+  "status": "PASS_EXACT_F14_PARTITION_AND_ROOT",
+  "counts": [
+    1757882,
+    75027,
+    445699
+  ],
+  "total": 2278608,
+  "root": {
+    "id": "cube_F6_t18",
+    "edge_count": 6,
+    "mask": 594051,
+    "cnf_sha256": "acf7bcd846e311fd26794243804a5a69e24b6961a415609302a60e09665a8e44",
+    "scope": null,
+    "review_id": null,
+    "parent_to_reviewed_shape": null,
+    "status": "NOT_COVERED_BY_SELECTED_SCOPES"
+  },
+  "source_F_index": 14,
+  "parent_to_source": [
+    2,
+    3,
+    4,
+    1,
+    0,
+    5,
+    6
+  ],
+  "source_cover_sha256": "9d9948226a27608df375a13fd23067df191bcdda1129a12a509b27bbf4a622da",
+  "previous_map_revision": "97ec983fce",
+  "reviews": {
+    "2118": "PASS complete a6 E/S projection. Independent reversed-edge F enumeration with length-two collisions and explicit S7 orbits reproduces31332labelled/19Fclasses; complementary X-subset enumeration and AutF orbits reproduce2192raw/358classes. Different fixed core-first star traversal recovers exact3284solution sets on91positive/267negative bases,75698nodes,max9992,0.192s; cover0.408s,no caps. Audited generalized7-2d capacity,11double/3single hosts,naming quotient and degree/C4 conditions.8pins/livepremises verified. Evidence /Users/rwalters/lean-genius-q7-outside-first-20260910/review-2118. Complete projection only; high/P assignment and a6/H7/Lean/global remain open.",
+    "2122": "PASS complete a6 high-pair cover. Exact2118 source bytes and all3284 ordered E/S joins;18payloadpins/live2118/2119 and exact2119 native bytes verified. Independent whole14vertex perfect-matching DP interleaving mixed/double pairs gives818836 assignments,1527438states,max587/case4.308s. Every saved colouring checked valid/canonical/unique; count equality proves exact sets. One direct28vertex C4 graph per case3284fixtures. All author calls COMPLETE,max9456nodes,0empty/UNKNOWN/unvisited/artifactstop. Audited one-launch budget driver. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2122. No P-host/residual family or a6/H7/global exclusion.",
+    "2125": "PASS. All 12 payload pins and live 2122 receipt verified. Independent full F/X edge-set automorphism scan and compatible core permutations: 232 actions with exact S-edge images. Exact source flattening and all 818,836 representative-to-member witnesses checked by deriving high bijections from target incidences; 425,550 minimum-index representatives, full action coverage and orbit histogram exact. F12 16,040; F15 4,536. 5.160 seconds. Isomorphisms extend to P through unordered high supports and transport all residual edges, proving cover without exclusion. Evidence /Users/rwalters/lean-genius-q7-outside-first-20260910/review-2125. No host search or Lean claim.",
+    "2703": "PASS a6 F14 exact accepted high-quotient input slice. Independent source-edge reconstruction checks all199155ordered quotient graphs covering238783raw highs,164classes/404E-S graphs,19.223s<90s. All6producer pins, source/quotient manifests, original driver/input hashes,60s materialization cap and live2118/2122/2125 checked. Independently derived cube_F6_t18 mask594051 permutation[2,3,4,1,0,5,6]. Three reviewer payloads /Users/rwalters/lean-genius-h7-a6-f14-review-sol2-20260915/pins.json. No host/residual/root/kernel/global exclusion.",
+    "2707": "PASS a6 F14 necessary host cover. Independent full2133 structural/template checker checks199155COMPLETE inputs,3631167prunes/2278608leaves/7306zero highs,26384066structural nodes/31900512survivor domains in48.292s<300s. All17producer pins, original input/receipt hashes, driver/launch identities,300s/100k/500MB caps and2118/2122/2123/2125/2703/2133 chain verified. Root/source inherited from independently checked2703. Four reviewer payloads /Users/rwalters/lean-genius-h7-a6-f14-review-sol2-20260915/host-review-pins.json. No residual/root/kernel/global exclusion.",
+    "2714": "PASS F14 saved negative residual prefix only. Independent raw-source199155graph/exact2278608host export checks1757882negative (1169376ROW+588506ARC),21767086domains/99509910rows/1410664ARC batches/1702258unsupported removals in164.977s<240s. All17producer pins, original audit-input hashes, driver/API/source identities,450s/100k/300MB bounds checked. Exact520726unvisited suffix includes6computed_not_saved; no UNKNOWN/positive retained, no suffix promotion. Live2118/2122/2125/2703/2707/2120/2126 chain checked. Four reviewer payloads /Users/rwalters/lean-genius-h7-a6-f14-review-sol2-20260915/residual-review-pins.json. No same-domain residual retry, wholeF14/root/kernel/global claim.",
+    "2716": "PASS F14 triangle obstruction packet. Independent set-adjacency audit checks75027negative certificates across16693inputs/21603fixed pair-vertex tests,341870compatibility-edge common-neighbour checks, exact host-mask join and disjoint75027+445699=520726suffix partition in8.214s. All7producer pins, original audit-input hashes, corrected driver/launch identities,120s/50MB bounds and live2705/2707/2714 checked. Repair differs only by skipping zero-leaf groups; failed original preserved. Four reviewer payloads /Users/rwalters/lean-genius-h7-a6-f14-review-sol2-20260915/triangle/pins.json. Combined1832909negative leaves,445699unclassified; no same residual retry, wholeF14/root/kernel/global claim.",
+    "2717": "PASS native necessary S-P projection API, final cpp5ee38df2/dylib64bcaf42. All12author pins and live2712/2713/2707/2714/2716 checked. Independent set-family/recursive matching and all negative branch audits PASS151fixtures:91empty/60negative trees,439nodes/739branches,0.220s. Exact151source-host joins PASS8.476s. Independent malformed/deadline/exact-node-boundary controls and synthetic positive serialization checked; hash-bound ASan/UBSan unit rerun exits0, no stderr, exact saved output. Explicit host-type validation, source/hash adapter and nonexclusion UNKNOWN/INVALID audited. Ten reviewer payloads /Users/rwalters/lean-genius-h7-a6-f14-native-review-sol1-20260915/pins.json. API qualification only; full445699domain pass/certificate composition remains separate, no root/kernel/global claim.",
+    "2715": "PASS exact H7 overlay 26 to 27/28. Independent comparison checks all seven author pins, previous map bytes at dff011aeef, live 2713 review snapshot, actual source F12 edges and permutation [0,4,5,2,1,3,6]. Only cube_F6_t17 changes; all 28 CNF identities/masks and other 27 rows unchanged. Sole residual cube_F6_t18/F14. Reviewer check.py and REVIEW.json at /Users/rwalters/lean-genius-h7-frontier-27-review-sol1-20260915. No whole H7/kernel/global claim."
+  },
+  "scope": "Disjoint exact source partition and root mapping. Last 445699 certificate truths require separate independent audit; no closure promotion from this file alone."
+}

@@ -1,0 +1,18 @@
+{
+  "total": 445699,
+  "aggregate_seconds": 300,
+  "nodes_per_case": 10000,
+  "shard_byte_cap": 50000000,
+  "artifact_byte_cap": 200000000,
+  "batch_raw_target": 524288,
+  "source_remaining_sha256": "036c53da206e432e77f17f5091039e2657c76189a62611fe07065c57b994f85d",
+  "source_host_pins_sha256": "01a45655bc6843e5ad3542ca8c0c7b34d0a88febde018bfdb3393754887ccba0",
+  "api_pins_sha256": "745157137393d08fe9a27d852271afdee11f637d707d97782ab5aa0043873cf8",
+  "driver_sha256": "8b6aad11d3b92686ecb26c80f3cfa5de95c8186b1cefd243c0a4176d70885441",
+  "reviews": {
+    "2707": "PASS a6 F14 necessary host cover. Independent full2133 structural/template checker checks199155COMPLETE inputs,3631167prunes/2278608leaves/7306zero highs,26384066structural nodes/31900512survivor domains in48.292s<300s. All17producer pins, original input/receipt hashes, driver/launch identities,300s/100k/500MB caps and2118/2122/2123/2125/2703/2133 chain verified. Root/source inherited from independently checked2703. Four reviewer payloads /Users/rwalters/lean-genius-h7-a6-f14-review-sol2-20260915/host-review-pins.json. No residual/root/kernel/global exclusion.",
+    "2714": "PASS F14 saved negative residual prefix only. Independent raw-source199155graph/exact2278608host export checks1757882negative (1169376ROW+588506ARC),21767086domains/99509910rows/1410664ARC batches/1702258unsupported removals in164.977s<240s. All17producer pins, original audit-input hashes, driver/API/source identities,450s/100k/300MB bounds checked. Exact520726unvisited suffix includes6computed_not_saved; no UNKNOWN/positive retained, no suffix promotion. Live2118/2122/2125/2703/2707/2120/2126 chain checked. Four reviewer payloads /Users/rwalters/lean-genius-h7-a6-f14-review-sol2-20260915/residual-review-pins.json. No same-domain residual retry, wholeF14/root/kernel/global claim.",
+    "2716": "PASS F14 triangle obstruction packet. Independent set-adjacency audit checks75027negative certificates across16693inputs/21603fixed pair-vertex tests,341870compatibility-edge common-neighbour checks, exact host-mask join and disjoint75027+445699=520726suffix partition in8.214s. All7producer pins, original audit-input hashes, corrected driver/launch identities,120s/50MB bounds and live2705/2707/2714 checked. Repair differs only by skipping zero-leaf groups; failed original preserved. Four reviewer payloads /Users/rwalters/lean-genius-h7-a6-f14-review-sol2-20260915/triangle/pins.json. Combined1832909negative leaves,445699unclassified; no same residual retry, wholeF14/root/kernel/global claim.",
+    "2717": "PASS native necessary S-P projection API, final cpp5ee38df2/dylib64bcaf42. All12author pins and live2712/2713/2707/2714/2716 checked. Independent set-family/recursive matching and all negative branch audits PASS151fixtures:91empty/60negative trees,439nodes/739branches,0.220s. Exact151source-host joins PASS8.476s. Independent malformed/deadline/exact-node-boundary controls and synthetic positive serialization checked; hash-bound ASan/UBSan unit rerun exits0, no stderr, exact saved output. Explicit host-type validation, source/hash adapter and nonexclusion UNKNOWN/INVALID audited. Ten reviewer payloads /Users/rwalters/lean-genius-h7-a6-f14-native-review-sol1-20260915/pins.json. API qualification only; full445699domain pass/certificate composition remains separate, no root/kernel/global claim."
+  }
+}

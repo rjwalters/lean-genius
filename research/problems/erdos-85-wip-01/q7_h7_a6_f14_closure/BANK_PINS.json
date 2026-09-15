@@ -1,0 +1,100 @@
+{
+  "schema": "bank-pins-v2",
+  "local": {
+    "README.md": {
+      "sha256": "e6f9aa6f10f095a31bc7097a43cbc3d172a53375090ddddb3e8064e3436f9b2f",
+      "bytes": 2187
+    },
+    "author/README.md": {
+      "sha256": "18d0433d44c8706d2f77cf68f2a77506754d13a03222c75ce6ce90ad13bdcf40",
+      "bytes": 1790
+    },
+    "author/launch.json": {
+      "sha256": "82582fe1d0656a4e929c4597871b50f09876fe915da4e40ecc8d1cced0a15bf2",
+      "bytes": 3378
+    },
+    "author/pins.json": {
+      "sha256": "1c0dff5914e94219564b648b05769a5e3b8bc3b2f0917579062ed179a2be178e",
+      "bytes": 616
+    },
+    "author/receipt-locations.json": {
+      "sha256": "08c4439867bc82d61702b5c450aaf21121231330e687c4f989bbfac604cfcf3a",
+      "bytes": 458
+    },
+    "author/results.json": {
+      "sha256": "3a77dd92ef6b69a90e9d0bd25af521a66cba0bf59372589d822b51429a655ff3",
+      "bytes": 497
+    },
+    "author/run.py": {
+      "sha256": "8b6aad11d3b92686ecb26c80f3cfa5de95c8186b1cefd243c0a4176d70885441",
+      "bytes": 4654
+    },
+    "author/unvisited.json": {
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    "review/COMPOSITION_REVIEW.json": {
+      "sha256": "12cef6facdc12aa841a1f2b09fd5b50b806606f3cd0da229147abdbe04a05720",
+      "bytes": 6738
+    },
+    "review/PROOF_REVIEW.md": {
+      "sha256": "ea6547620ee38a078dc23db01661ba27942fe13c8ea5e93f20811a4bbebc1ff6",
+      "bytes": 2826
+    },
+    "review/PROVENANCE_REVIEW.json": {
+      "sha256": "bea66dece8298740bb86be0847ba95243d2818bcad557f9b6a0c6c98baac1882",
+      "bytes": 898
+    },
+    "review/REVIEW.json": {
+      "sha256": "348d5a3723c1e5d9941e7bf8830bdc5d86e544ce74a0d96a09fbf8be563560a4",
+      "bytes": 450
+    },
+    "review/REVIEW2718.json": {
+      "sha256": "3ba5bc24cdcc92d9673a9412c6b99653478093b01b1e201c3dfde995751d9193",
+      "bytes": 2427
+    },
+    "review/audit.py": {
+      "sha256": "0c16fdc89a7f6dd1973ca9ae185015d09cb4a4ef5b0fe5463ddbcbd393d90634",
+      "bytes": 3928
+    },
+    "review/certificate.py": {
+      "sha256": "c33740774e11f4d85fc9392357a0cb5d87daa8a63c5c2b98478ca0f3a9527f13",
+      "bytes": 2245
+    },
+    "review/composition.py": {
+      "sha256": "402d20826023c0b18ab5e36827c95a45536bfcf7b39c205eb84aa313201a2764",
+      "bytes": 3522
+    },
+    "review/families.py": {
+      "sha256": "59c9a6d03ba763265a998966b70666956c3d9e9a79cd73d352471382051923e1",
+      "bytes": 1504
+    },
+    "review/launch.json": {
+      "sha256": "45eecdbe8c94f683455f4fbb9c87fc4cdb4285a0ae3aad5396f233c1145e240a",
+      "bytes": 799
+    },
+    "review/pins.json": {
+      "sha256": "f0323318cc56fcd8a093a4d3a8c02a6e4819acfecec8f147e72c5a26c91c2512",
+      "bytes": 977
+    },
+    "review/provenance.py": {
+      "sha256": "c4d26b6fee248cf22ded486e849188d89c2b38cfd76f21762ec78dbe552c6267",
+      "bytes": 1694
+    },
+    "review/qualification.json": {
+      "sha256": "4242d2489338024f95bbd056ebd5df894f256b5737c6a1b64f474f150485cf37",
+      "bytes": 161
+    },
+    "verify_bank.py": {
+      "sha256": "0c1b01a0f0c815f478a24aaeb9a32cd67ee62e96f3e93ead260880deeec6ba61",
+      "bytes": 1910
+    }
+  },
+  "external": {
+    "author/receipts-000.jsonl.gz": {
+      "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h7-receipts/a6-f14-incidence-20260915/receipts-000.jsonl.gz",
+      "sha256": "7bd4ed97292f1d672d862d9232ef118b73c48138f0703335eb0d8f9d0ab14afd",
+      "bytes": 33491445
+    }
+  }
+}
