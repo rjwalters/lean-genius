@@ -1,0 +1,43 @@
+{
+  "small_group_id": [
+    48,
+    26
+  ],
+  "q": 7,
+  "structure": "C3 x QD16",
+  "status": "SAT",
+  "cap_seconds": 600,
+  "input_pins": {
+    "group": "8eb2bd3032a007ecdc7858d9b04df65447ace6e94572f8f702eeacead4741b31",
+    "cnf": "9ca37de69ef63eda7b8b1a524f69a4d9b67018900019637290995fb908e36cbe",
+    "map": "0a5452b638247912ddd66f63bb95bf357af33a5b117370dd1ee16c8710a79cda"
+  },
+  "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/48-26",
+  "command": [
+    "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+    "--sat",
+    "--strict",
+    "--no-color",
+    "--seed=0",
+    "--time=600",
+    "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/48-26/input.cnf"
+  ],
+  "pid": 25008,
+  "started_utc": "2026-09-13T21:40:05.083609+00:00",
+  "monotonic_start": 1718646.887417041,
+  "exit_code": 10,
+  "wall_seconds": 0.1030467499513179,
+  "ended_utc": "2026-09-13T21:40:05.185091+00:00",
+  "timed_out": false,
+  "log_sha256": "2196aef6785de84685e52bfd22d3e047663b56ded3e53ef3ee15fb91c7296751",
+  "sat_observed": true,
+  "graph_check": {
+    "status": "PASS",
+    "scope": "Author model/graph check; independent second seat required",
+    "vertices": 48,
+    "degree": 7,
+    "edges": 168,
+    "clauses": 16348,
+    "graph_sha256": "7d1e465a41a789b21c715d4b5603541941c48176f0d76daa9d6928a8ecf80fd0"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "review": 2651,
+  "status": "PASS",
+  "reviewer": "codex-sol-1",
+  "date": "2026-09-15",
+  "artifact": "/Users/rwalters/lean-genius-cayley-sol2-20260915/LITERATURE_CHECK_20260915.md",
+  "sha256": "951aaf6591d3ddc5198bde4a6a92470d94d7e89bdcb6e81261d22b4a09ba85a8",
+  "source_checks": [
+    {
+      "url": "https://arxiv.org/html/2409.12770v2",
+      "checked": "Corollaries 3 and 7; Ramsey/complement definition"
+    },
+    {
+      "url": "https://ccj.pku.edu.cn/Article/DownLoad?id=679227200979013&type=ArticleFile",
+      "checked": "Theorem 2.4 page 296, odd prime-power convention, t=1 exception; authors survey used because original publisher and institutional pages were inaccessible"
+    }
+  ],
+  "derivation": "For odd prime power q>=5, ceil(q/4)>=2 so t=1 is admissible. Put n=q\u00b2-1, r(n)=q\u00b2+q. Then 2n+1-r(n)=q\u00b2-q-1. Cor7 yields lower q\u00b2-1. Since (q-1)\u00b2<q\u00b2-q-2<q\u00b2, Cor3 yields upper q\u00b2.",
+  "numeric_cases": [
+    {
+      "q": 11,
+      "n": 120,
+      "r_n": 132,
+      "target": 109,
+      "lower": 120,
+      "upper": 121
+    },
+    {
+      "q": 13,
+      "n": 168,
+      "r_n": 182,
+      "target": 155,
+      "lower": 168,
+      "upper": 169
+    }
+  ],
+  "graph_equivalence": "r(N-d)>N iff a C4-free graph of order N has minimum degree >=d. For N<d\u00b2 the neighbor-layer bound N>=1+deg(v)(d-1) forces d-regularity.",
+  "scope": "Mathematical deduction verified; no exact target value, unrestricted exclusion, novelty claim, Lean proof, or exhaustive literature-completeness claim."
+}

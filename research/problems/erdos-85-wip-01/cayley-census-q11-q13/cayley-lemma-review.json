@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "reviewer": "codex-sol-3",
+  "scope": "Mathematical Cayley C4 criterion and abelian corollary only; encoding/group tables/solver controls require separate checks",
+  "source": "/Users/rwalters/lean-genius-cayley-sol1-20260913/CAYLEY_ENCODING.md",
+  "source_sha256": "ea4aef691a2907a8c21435297e2fcf838cafb7650230e163cefca76c84d95f98",
+  "argument": [
+    "For h != e, a common neighbor a of e,h corresponds uniquely to (a,a^-1 h) in S x S with product h.",
+    "Cancellation makes distinct ordered factorizations have distinct first entries. Since S excludes e, e,a,h,c are four distinct vertices. Inverse closure supplies both undirected closing edges.",
+    "Left multiplication by x^-1 is a graph automorphism, so checking all pairs e,h checks all vertex pairs. A simple graph is C4-free exactly when distinct vertices have at most one common neighbor.",
+    "For abelian G and |S|>=3, fix a and choose b outside {a,a^-1}; then ab=ba != e yields distinct ordered factorizations.",
+    "Repeated representation indicators must remain in AMO: in an abelian group the ordered pairs (a,b) and (b,a) are distinct even if their Boolean conjunctions coincide."
+  ]
+}
