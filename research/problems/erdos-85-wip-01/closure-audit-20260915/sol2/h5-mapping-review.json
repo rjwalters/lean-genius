@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "revision": "06bb06b27d49bf0a7f6151d8f6ee08e92f8a0ac0",
+  "scope": "Saved H5 T0/T1 mapping identity, units, size and hash join only; no base materialization or mathematical exclusion replay.",
+  "index_sha256": "8170085370807bca21c0004804be6b7de52a492d88267196291f0f23c15555a7",
+  "mappings": {
+    "t0": {
+      "source_path": "research/problems/erdos-85-wip-01/phase_b_t0_exclusion_mapping/results.json",
+      "sha256": "d5084acc5a13519cd1f967beb1408a501fd4dde01b03d41a4abcd3a753334892",
+      "count": 43
+    },
+    "t1": {
+      "source_path": "research/problems/erdos-85-wip-01/phase_b_t1_exclusion_mapping/results.json",
+      "sha256": "047054621f597e99c7cffae38613f310f662ccfc7a0df54b7c09e7639620b201",
+      "count": 43
+    }
+  }
+}
