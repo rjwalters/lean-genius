@@ -1,0 +1,27 @@
+{
+  "status": "PASS_REVIEW2679",
+  "delta": [
+    "cube_F7_t0",
+    "cube_F7_t6"
+  ],
+  "counts": {
+    "total": 28,
+    "covered": 17,
+    "residual": 11
+  },
+  "remaining": [
+    "cube_F6_t5",
+    "cube_F6_t8",
+    "cube_F6_t15",
+    "cube_F6_t16",
+    "cube_F6_t17",
+    "cube_F6_t18",
+    "cube_F7_t4",
+    "cube_F7_t8",
+    "cube_F7_t10",
+    "cube_F7_t11",
+    "cube_F7_t13"
+  ],
+  "source_manifest_sha256": "27edd1f55dfcb40447c600f59037956b718e8e2cee07be01eda9c04aea062420",
+  "checks": "All pins, committed previous map, exact live review snapshots and source mappings, two-row delta and unchanged root/CNF identities; producer checker reproduced."
+}

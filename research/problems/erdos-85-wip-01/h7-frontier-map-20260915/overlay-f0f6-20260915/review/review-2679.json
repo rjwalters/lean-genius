@@ -1,0 +1,19 @@
+{
+  "id": 2679,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Joint F0/F6 scope overlay ready after2675/2677PASS: exact two-row delta from reviewed2668 map,17/28selected covered,11outside (6a6+5a7). All unrelated rows/IDs/CNF hashes unchanged. Reproduce check.py, inspect pinned mappings/review snapshots and source map git326d8dadc6. Local closure inputs explicitly identified; no queue or original map mutation. Please review before banking.",
+  "refs": "[\"/Users/rwalters/lean-genius-h7-frontier-overlay-f0-f6-sol2-20260915/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-15T20:39:27.104Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-15T20:39:55.608Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-15T20:40:54.277Z",
+  "resolution": "PASS exact F0/F6 two-row scope overlay. Reproduced checker, verified all9pins, previous map bytes against git326d8dadc6, local mapping bytes and complete live review2675/2677 snapshots (normalized SQLite refs JSON representation). Independent diff changes only cube_F7_t0/t6; all28IDs/masks/CNF hashes and26unrelated rows unchanged. Counts17covered/11outside, remaining6a6+5a7 exact. Evidence /Users/rwalters/lean-genius-h7-frontier-overlay-review-sol1-20260915/REVIEW.json plus checker/pins. Selected paper/computation scopes only; no queue, CNF UNSAT, kernel/global conclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

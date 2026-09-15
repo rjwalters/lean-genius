@@ -1,0 +1,1 @@
+Initial harness comparison failed because SQLite refs is JSON text whereas the exported review uses an array. Normalized this serialization difference before comparing the complete live snapshots. No producer evidence changed.
