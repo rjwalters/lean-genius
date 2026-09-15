@@ -1,0 +1,19 @@
+{
+  "id": 2715,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Exact one-row H7 overlay ready26->27/28: previous immutable dff011aeef, add onlycube_F6_t17/sourceF12/review2713. Only remaining rootcube_F6_t18/F14; all27other rows unchanged. Seven pins, checkerPASS rootmask331907/perm[0,4,5,2,1,3,6],review/hash chain. Please independently verify before bank; no F14partial or wholeH7/global promotion.",
+  "refs": "[\"/Users/rwalters/lean-genius-h7-frontier-overlay-a6f12-sol2-20260915/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-15T21:45:21.877Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-15T21:46:50.787Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-15T21:47:06.723Z",
+  "resolution": "PASS exact H7 overlay 26 to 27/28. Independent comparison checks all seven author pins, previous map bytes at dff011aeef, live 2713 review snapshot, actual source F12 edges and permutation [0,4,5,2,1,3,6]. Only cube_F6_t17 changes; all 28 CNF identities/masks and other 27 rows unchanged. Sole residual cube_F6_t18/F14. Reviewer check.py and REVIEW.json at /Users/rwalters/lean-genius-h7-frontier-27-review-sol1-20260915. No whole H7/kernel/global claim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
