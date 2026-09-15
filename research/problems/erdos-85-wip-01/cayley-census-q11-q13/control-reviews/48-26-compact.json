@@ -1,0 +1,45 @@
+{
+  "status": "PASS",
+  "group": "C24 semidirect C2",
+  "action_exponent": 19,
+  "table_generators": {
+    "r": 17,
+    "s": 2
+  },
+  "connection_set": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      5,
+      1
+    ],
+    [
+      9,
+      0
+    ],
+    [
+      14,
+      1
+    ],
+    [
+      15,
+      0
+    ],
+    [
+      22,
+      1
+    ]
+  ],
+  "product": "(i,j)*(a,b)=((i+k^j*a) mod24,(j+b) mod2)",
+  "vertices": 48,
+  "degree": 7,
+  "edges": 168,
+  "full_product_table_comparisons": 2304,
+  "scope": "Exact coordinate re-expression of existing independently verified control; no new solver run or graph-existence claim"
+}

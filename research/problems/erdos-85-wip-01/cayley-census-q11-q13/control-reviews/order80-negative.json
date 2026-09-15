@@ -1,0 +1,1774 @@
+{
+  "status": "PASS",
+  "scope": "Order80 negative calibration: all52 exact group inputs have consistent proof-OFF solver UNSAT reports; no independently checked UNSAT proof certificate",
+  "runs": [
+    {
+      "small_group_id": [
+        80,
+        1
+      ],
+      "q": 9,
+      "structure": "C5 : C16",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "b54a58cdadc40f82016feb13168fca0d028b4791244ebf8af2bdd9fc79775d68",
+        "cnf": "a96ad199d5d2ee9fba50b2b907c51d27789b9abda1e2439dec04a6b29a39d9e2",
+        "map": "7117ab276e3abbb4285740ed15e0399915a4b3972c0725b1cbb394e023e60b23"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-1",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-1/input.cnf"
+      ],
+      "pid": 25385,
+      "started_utc": "2026-09-13T21:40:09.175467+00:00",
+      "monotonic_start": 1718650.979197333,
+      "exit_code": 20,
+      "wall_seconds": 0.11138949985615909,
+      "ended_utc": "2026-09-13T21:40:09.285258+00:00",
+      "timed_out": false,
+      "log_sha256": "d0b69a9622b4caf1e61ea4bac0e33839e5d2c904edb3a53253d9dbf70582c38d",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        2
+      ],
+      "q": 9,
+      "structure": "C80",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "8d023f6b3f2a791a9efa2f147f37a7fe80fe2f81d56adb9108b7da13c7519f9f",
+        "cnf": "2040a7559118ea08a7c31b1e88958210f1fbc3350cb3c231ee4653fd1a6f4070",
+        "map": "13072ac59f643ddd518c32d956e7ffdfcb919b0b948c013069b2f4c1ce8a99e7"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-2",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-2/input.cnf"
+      ],
+      "pid": 25392,
+      "started_utc": "2026-09-13T21:40:09.328613+00:00",
+      "monotonic_start": 1718651.132463125,
+      "exit_code": 20,
+      "wall_seconds": 0.10827283305115998,
+      "ended_utc": "2026-09-13T21:40:09.435408+00:00",
+      "timed_out": false,
+      "log_sha256": "4ed7569ff4f7c7e935cfe4093fb497ac8e76c4e75a9bdd9d0611861aad864b07",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        3
+      ],
+      "q": 9,
+      "structure": "C5 : C16",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "3ed837dfa9405ffa30313171baf1011a4e30d51acf6b1603a6a435d0d2153ee2",
+        "cnf": "9bb607aeed2b04f7bb4c05b6a6f2e0c7cc302ba7b4477a44a5ea242ef0f9344e",
+        "map": "14df51c551fc12b9410873d4a0db5cb212a39d192dc0c5b2cc75069058bb02df"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-3",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-3/input.cnf"
+      ],
+      "pid": 25408,
+      "started_utc": "2026-09-13T21:40:09.481344+00:00",
+      "monotonic_start": 1718651.284938416,
+      "exit_code": 20,
+      "wall_seconds": 0.21739366697147489,
+      "ended_utc": "2026-09-13T21:40:09.697007+00:00",
+      "timed_out": false,
+      "log_sha256": "c014d8049a6521c780563a5bd7de43dea25d20184acf3da2be3dc4bab71d885b",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        4
+      ],
+      "q": 9,
+      "structure": "C8 x D10",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "535d9a6146e699e2b88167256d6fcdec0894d45f48c1e2df86ed7a8577855155",
+        "cnf": "a21f62fc21cfff50cc83a2442ed0d20a028598b13b8a01fd65009dc2de7723c8",
+        "map": "3221ee5de4952b5c04c2ae183166a695ca289b811a1cabb4965ac2563f7fc761"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-4",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-4/input.cnf"
+      ],
+      "pid": 25414,
+      "started_utc": "2026-09-13T21:40:09.741337+00:00",
+      "monotonic_start": 1718651.545132958,
+      "exit_code": 20,
+      "wall_seconds": 0.10953349992632866,
+      "ended_utc": "2026-09-13T21:40:09.849343+00:00",
+      "timed_out": false,
+      "log_sha256": "de3b34d1a998e2a696c3f77a8cd72d17eeb3e1fcbe25a5f4ca85f172e439c5d3",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        5
+      ],
+      "q": 9,
+      "structure": "C40 : C2",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "6e718c98c054bd2c99d76a8d4a48805db1465759a4bdfcfa3dd5d1b650a5f476",
+        "cnf": "b79a07f726ebe7ccb307bf9f5957adbd8684f92e95e84bb0f9ea458222db97d7",
+        "map": "d19331b7a5ab0ab017e623c96038b6d2d142683318f17acf71db5b175fec0a5b"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-5",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-5/input.cnf"
+      ],
+      "pid": 25421,
+      "started_utc": "2026-09-13T21:40:09.892903+00:00",
+      "monotonic_start": 1718651.696600875,
+      "exit_code": 20,
+      "wall_seconds": 0.11333820805884898,
+      "ended_utc": "2026-09-13T21:40:10.004618+00:00",
+      "timed_out": false,
+      "log_sha256": "b9a4b927cc80ade49d4f02592398b3f093c90ddf0463a5980b37932ae2fd5992",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        6
+      ],
+      "q": 9,
+      "structure": "C40 : C2",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "c2c25abbbde5b90f8224f337a9b68e459f4529298f64b3f0225f46d18ed3bdd6",
+        "cnf": "9058d4908aa1f2d46bb5abdbaafa3ce1667cece05952bab47fa73d751cd7196e",
+        "map": "bfa7a4458f07e3a5706f2a4dd913a71af97a2fa598d9f0cb21e042738c1b4a25"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-6",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-6/input.cnf"
+      ],
+      "pid": 25425,
+      "started_utc": "2026-09-13T21:40:10.050485+00:00",
+      "monotonic_start": 1718651.854202666,
+      "exit_code": 20,
+      "wall_seconds": 0.11030524992384017,
+      "ended_utc": "2026-09-13T21:40:10.159189+00:00",
+      "timed_out": false,
+      "log_sha256": "ca5654b4128308982cbacf8ae599170a23a120eff75f8c5fe0aa854f009bc1f1",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        7
+      ],
+      "q": 9,
+      "structure": "D80",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "66f08184b13f37ec86108b9837381cb49a9b72d931873e6089ff05066db7270c",
+        "cnf": "ee8712f4a61b13d9202670562a86dd9b0f7bf94dd899beaded078b108835a649",
+        "map": "ee6ee2dd8c09245914f30fd37cc52d3c1e1387ae2999526552b248fc68e96229"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-7",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-7/input.cnf"
+      ],
+      "pid": 25431,
+      "started_utc": "2026-09-13T21:40:10.206081+00:00",
+      "monotonic_start": 1718652.009974166,
+      "exit_code": 20,
+      "wall_seconds": 0.8741243339609355,
+      "ended_utc": "2026-09-13T21:40:11.078788+00:00",
+      "timed_out": false,
+      "log_sha256": "73055ada987dbefadfcadd5a130e538e2f72e56bea06047191df17cff08754cd",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        8
+      ],
+      "q": 9,
+      "structure": "C5 : Q16",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "3be8cf5aecfa42bad75930e9bfac0d944ea687856ad5f3be5daed974ca183c1c",
+        "cnf": "a350581da3ae62c99f93a307281a660c70c0562861547cfdbe7030c0c5e8bbf3",
+        "map": "daef9ad7f97a34a6f3698e30ce4cad1b44ac689eec60fa863bbb534f9d8f9d77"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-8",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-8/input.cnf"
+      ],
+      "pid": 25454,
+      "started_utc": "2026-09-13T21:40:11.124325+00:00",
+      "monotonic_start": 1718652.928210833,
+      "exit_code": 20,
+      "wall_seconds": 0.1073385828640312,
+      "ended_utc": "2026-09-13T21:40:11.230242+00:00",
+      "timed_out": false,
+      "log_sha256": "5fb8a34607dca4461603114c16484d6bd1e1ba19c51f2e9698e15d76f5d36783",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        9
+      ],
+      "q": 9,
+      "structure": "C2 x (C5 : C8)",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "2f4931998c62613e3b605897addfa60c5bcf235cbd49e5366a550beccf34719e",
+        "cnf": "b3dd51dd2d977e01e29fd9e4ae33aef55a1c30563a4149bc6b858f5b4bf05d5d",
+        "map": "84f734bd25848c4e8e531c51a1d9dfeec3a958d22bba94a9d84fd3316da34f91"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-9",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-9/input.cnf"
+      ],
+      "pid": 25464,
+      "started_utc": "2026-09-13T21:40:11.273796+00:00",
+      "monotonic_start": 1718653.077657208,
+      "exit_code": 20,
+      "wall_seconds": 0.1071612499654293,
+      "ended_utc": "2026-09-13T21:40:11.379512+00:00",
+      "timed_out": false,
+      "log_sha256": "2c8e70988619d577165265215e3ad9d1cbf0099a4a45a7581ad23ccbf732a804",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        10
+      ],
+      "q": 9,
+      "structure": "(C5 : C8) : C2",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "312e0193bb320dd26e46f475af2be5882acfe7012f786a3f4ca8ad24fc02295d",
+        "cnf": "3cb9e975041edfecc0c35bc835329e69b04b79d4ed70772da370401a1f6f2b16",
+        "map": "345bb88dbf194875ccf57b643830f40efcadf6bbd614f75f3a260baeab804253"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-10",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-10/input.cnf"
+      ],
+      "pid": 25478,
+      "started_utc": "2026-09-13T21:40:11.423674+00:00",
+      "monotonic_start": 1718653.227491541,
+      "exit_code": 20,
+      "wall_seconds": 0.10651779198087752,
+      "ended_utc": "2026-09-13T21:40:11.528704+00:00",
+      "timed_out": false,
+      "log_sha256": "c443dbda8503c1d6b0289acd1b771d4699498af100fb06ef04881db29e993923",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        11
+      ],
+      "q": 9,
+      "structure": "C4 x (C5 : C4)",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "29178630ecb63be14cb59a9314d7734678849430f890d9bd303240ed4279d822",
+        "cnf": "a1b5211643f039f4e28466b7b96c5e9a286f41b4d1e75d362325fab6adc7745a",
+        "map": "b024a98fb6bc3752dce7d7a4c4c342ad409238e9701e87867f01ff4379d4eb14"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-11",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-11/input.cnf"
+      ],
+      "pid": 25484,
+      "started_utc": "2026-09-13T21:40:11.571995+00:00",
+      "monotonic_start": 1718653.375722791,
+      "exit_code": 20,
+      "wall_seconds": 0.10837695887312293,
+      "ended_utc": "2026-09-13T21:40:11.678796+00:00",
+      "timed_out": false,
+      "log_sha256": "ba2cecccc6db160520c36adab8e82c5c4385c10215cfc0b2df5adf33aa1fa945",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        12
+      ],
+      "q": 9,
+      "structure": "(C5 : C4) : C4",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "e2c8db297bee697606daa7ea20fab32f413e5cb59e2a7e4ef9f76385b621d110",
+        "cnf": "a5d4cae3365149685f119759eec291f38ee7515d426e6374f77ac0f5031fc9d2",
+        "map": "836dfe4ad815e6ee3c7d12dacf8ec7858e83ce11573f320ed3134566f670df02"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-12",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-12/input.cnf"
+      ],
+      "pid": 25486,
+      "started_utc": "2026-09-13T21:40:11.722804+00:00",
+      "monotonic_start": 1718653.5267745,
+      "exit_code": 20,
+      "wall_seconds": 0.10657950001768768,
+      "ended_utc": "2026-09-13T21:40:11.828052+00:00",
+      "timed_out": false,
+      "log_sha256": "1b7525848b9fb49e53bea293a4069dc2c38edd2011c61ad4bf4626bdc77cd336",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        13
+      ],
+      "q": 9,
+      "structure": "C20 : C4",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "243b1a1252790fa47eac09434c49976e5cbb17af4abe3d24eb664ce6e0a20bfe",
+        "cnf": "c8e5e62861faeeaa5dd1b9681f1c1039dd13f8a2d0309c5a0cffa179a8449a90",
+        "map": "e60ad7736088edfa447c13dd60b3557172fbfafa29ed8fc800339c7d0f344cc5"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-13",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-13/input.cnf"
+      ],
+      "pid": 25492,
+      "started_utc": "2026-09-13T21:40:11.873724+00:00",
+      "monotonic_start": 1718653.677525875,
+      "exit_code": 20,
+      "wall_seconds": 0.11111675016582012,
+      "ended_utc": "2026-09-13T21:40:11.983342+00:00",
+      "timed_out": false,
+      "log_sha256": "0838a80bbc1c6eaf56dcf2b105d09853114ab458d1c916c34765cbd0eb23eaa2",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        14
+      ],
+      "q": 9,
+      "structure": "(C20 x C2) : C2",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "4edc5be0d5c65eb718eac27d3d5bb54f3ae27a98b715bd076b01c9388a8918d8",
+        "cnf": "e4e61df4f57f0c7ea75ce3a22d078d7f477a2d172e57c7a2cfd4d47e9a474b4d",
+        "map": "9a8a22a1b87e9b68c50398046cbe8cf23f2346ba0f01f72564960ad420404cd6"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-14",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-14/input.cnf"
+      ],
+      "pid": 25498,
+      "started_utc": "2026-09-13T21:40:12.028424+00:00",
+      "monotonic_start": 1718653.831964375,
+      "exit_code": 20,
+      "wall_seconds": 0.11370854103006423,
+      "ended_utc": "2026-09-13T21:40:12.140374+00:00",
+      "timed_out": false,
+      "log_sha256": "4219dc5a91482dd1992378c36ea1d3e2d5528abba2bc59aeea5b6f435b79eb1d",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        15
+      ],
+      "q": 9,
+      "structure": "(C5 x D8) : C2",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "1dca505002000bd646af8ea02c6083ebabe22def3b4b7b5552210e45f124f510",
+        "cnf": "1fa3c414f7938b72d8657dec1fc2c41a917d2415017f6c4c9e3b925613503e1f",
+        "map": "189546cadbcce8ee236bf2fe3fbf7537824d3e2574419734cb8095a4c32eb68c"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-15",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-15/input.cnf"
+      ],
+      "pid": 25505,
+      "started_utc": "2026-09-13T21:40:12.199179+00:00",
+      "monotonic_start": 1718654.002700458,
+      "exit_code": 20,
+      "wall_seconds": 0.11349708284251392,
+      "ended_utc": "2026-09-13T21:40:12.310900+00:00",
+      "timed_out": false,
+      "log_sha256": "f5ffb0824e306244b8d8a747610f29656c792f2fc56fbde1daee6efbf799830b",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        16
+      ],
+      "q": 9,
+      "structure": "(C5 : Q8) : C2",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "bb11938565d5e1df8931e71b7b9eadbc17fcf47327ba37fc75b39f770649f5ac",
+        "cnf": "25206194dfba2de7669d367a3f281f67811df0535f52617465d3af3ec07396e2",
+        "map": "a6acb7cdd8abcd56cbf6b1e1b4915e8dc0e11793a732b549a59e460b661c5ce0"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-16",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-16/input.cnf"
+      ],
+      "pid": 25507,
+      "started_utc": "2026-09-13T21:40:12.355076+00:00",
+      "monotonic_start": 1718654.158928416,
+      "exit_code": 20,
+      "wall_seconds": 0.10799683397635818,
+      "ended_utc": "2026-09-13T21:40:12.461630+00:00",
+      "timed_out": false,
+      "log_sha256": "e9550af0e97ee34af41b82119451506565971a6765a447a6ca9247ad0f697782",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        17
+      ],
+      "q": 9,
+      "structure": "(C5 x Q8) : C2",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "1d7fbf814d39fd3db2bab35e008df5ec2e107c06ae8b1c2abc2ceac783e1dc52",
+        "cnf": "25eefe5bffecee7d5e5703c3f6c8a09fe2346b07099b8b2bc759b78e6d53eba2",
+        "map": "fdd34e7ae8e728fca9efa46375eb5d2e653a2090fb01e135de588b502868adf6"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-17",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-17/input.cnf"
+      ],
+      "pid": 25513,
+      "started_utc": "2026-09-13T21:40:12.504895+00:00",
+      "monotonic_start": 1718654.308779916,
+      "exit_code": 20,
+      "wall_seconds": 0.10692470893263817,
+      "ended_utc": "2026-09-13T21:40:12.610411+00:00",
+      "timed_out": false,
+      "log_sha256": "c41cdbcd07468e820b93ae2e8de81d8af665a9b7b347551721d4925dccb9e8a3",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        18
+      ],
+      "q": 9,
+      "structure": "C5 : Q16",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "0fd8863f04361011d48d914ec03b4169640e0066ee1eebc4075ccfa581a8fba6",
+        "cnf": "9c9546ab03de7b3737bbec9ddf768e4589fa928f75de5db6df36fed045347be0",
+        "map": "a467b4af35e40800fec8253b5a8a43fd0e497572b28847ed4aceeafd7fe88873"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-18",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-18/input.cnf"
+      ],
+      "pid": 25516,
+      "started_utc": "2026-09-13T21:40:12.654582+00:00",
+      "monotonic_start": 1718654.458378291,
+      "exit_code": 20,
+      "wall_seconds": 0.1132316670846194,
+      "ended_utc": "2026-09-13T21:40:12.766318+00:00",
+      "timed_out": false,
+      "log_sha256": "6c4284c6a4cee9b671b61687fe00c826192a4ae7a2d8afe25aabb0af4bad8f47",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        19
+      ],
+      "q": 9,
+      "structure": "(C10 x C2) : C4",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "c8f20a3f0a8e4212540f701645b2bedc6aa2b8b72c24ed6ee5ac7ef4d5619661",
+        "cnf": "9c1462a3e6bc6464c3229fa5368a457bc7e9e68cf945f3c12d9c4838201090e3",
+        "map": "2d0331605c07bad767eb29ecc1148a1aa882f9b816e82d3f53627d03f3ffa71b"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-19",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-19/input.cnf"
+      ],
+      "pid": 25521,
+      "started_utc": "2026-09-13T21:40:12.811930+00:00",
+      "monotonic_start": 1718654.615621208,
+      "exit_code": 20,
+      "wall_seconds": 0.1092802919447422,
+      "ended_utc": "2026-09-13T21:40:12.919610+00:00",
+      "timed_out": false,
+      "log_sha256": "761307f963b9befd8c22b4d97e225d341ef7ef94fe6e3e2bf51e778180b515d6",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        20
+      ],
+      "q": 9,
+      "structure": "C20 x C4",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "85cdd970b979d94596668fbd7bafe10caefa1bcb1512b9383358861300af5839",
+        "cnf": "d4cb229111e49ce735bdf09b68e67403ff253d39aab71ab17f71415e5963295c",
+        "map": "bdbf833fb01a3a40e1ee6a7a37b360fc156a195349f24a8b692ab50f5f29ef8e"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-20",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-20/input.cnf"
+      ],
+      "pid": 25526,
+      "started_utc": "2026-09-13T21:40:12.965402+00:00",
+      "monotonic_start": 1718654.769222,
+      "exit_code": 20,
+      "wall_seconds": 0.10765612497925758,
+      "ended_utc": "2026-09-13T21:40:13.071589+00:00",
+      "timed_out": false,
+      "log_sha256": "7eb64c13bd4f1d1e777e3c3b17c5b774e855961d195b92cc381b67023c824ca6",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        21
+      ],
+      "q": 9,
+      "structure": "C5 x ((C4 x C2) : C2)",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "a31497fdf79d4eec393c3414e7dbd07e696c7489cdbb2df9576c508cd5e81b25",
+        "cnf": "2b389530b5fa54b57d5b2fc0d80d2c8029743c3a90b423801ac66baef93b58a8",
+        "map": "6e850bcd3b0524dda55ee1cb45ea93d29d623f8d9f45fa8dc6ea313137b08172"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-21",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-21/input.cnf"
+      ],
+      "pid": 25531,
+      "started_utc": "2026-09-13T21:40:13.116209+00:00",
+      "monotonic_start": 1718654.920132083,
+      "exit_code": 20,
+      "wall_seconds": 0.1118269581347704,
+      "ended_utc": "2026-09-13T21:40:13.226672+00:00",
+      "timed_out": false,
+      "log_sha256": "94aea803922d0499e230239fecfb24ae531105ecd94f33a34cfdf14f37c77f93",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        22
+      ],
+      "q": 9,
+      "structure": "C5 x (C4 : C4)",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "a78ce8ab5e3d7c30c581127283f0ddfe27b5a7c0df47c34b1ddceb40b574da51",
+        "cnf": "8fcbe1c54df3b043735de2168432f67b2adf9c39017ca00a493247b254c80cb0",
+        "map": "a2df3f82d0075276d80b5dc675ad9f17cd1967ed3bfd1650feb54d2b5fda6d00"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-22",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-22/input.cnf"
+      ],
+      "pid": 25533,
+      "started_utc": "2026-09-13T21:40:13.270835+00:00",
+      "monotonic_start": 1718655.074636125,
+      "exit_code": 20,
+      "wall_seconds": 0.11332579096779227,
+      "ended_utc": "2026-09-13T21:40:13.382676+00:00",
+      "timed_out": false,
+      "log_sha256": "ee7a984ca5b5aa3b661bd7b9fdd594f2bf6190a119fd2215a253612b9a20cefd",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        23
+      ],
+      "q": 9,
+      "structure": "C40 x C2",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "0e505a1f9beade6a1f7477df0d26e3d741538d62876a0e82838c087c35ad103e",
+        "cnf": "7ce7a6013c6cecb3f11f1fe29085d8f9df41723e9d1f92826856a7ff258bf949",
+        "map": "1bedd940452ec222e9f15475744114ea83f1eac505a7cd971a3a82b945a7f217"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-23",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-23/input.cnf"
+      ],
+      "pid": 25538,
+      "started_utc": "2026-09-13T21:40:13.428707+00:00",
+      "monotonic_start": 1718655.232441208,
+      "exit_code": 20,
+      "wall_seconds": 0.1135136669036001,
+      "ended_utc": "2026-09-13T21:40:13.540671+00:00",
+      "timed_out": false,
+      "log_sha256": "3609dc4c1d3d3320fcbb21963b07716a3254754f56a282ff2ec3392fc874bc6e",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        24
+      ],
+      "q": 9,
+      "structure": "C5 x (C8 : C2)",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "08af22ecc33ad54549bc34e1baef9b62e30f9ec7ad4b73633bec596d3db8e912",
+        "cnf": "045465ef070264ea7e7d6dc6f9fcbda62a9284cc45eaee274f8c0ac92e3e4881",
+        "map": "7d7cdc7c22b7006a67ab0db51729f3be74df8481747a66d35db492ff0d55a597"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-24",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-24/input.cnf"
+      ],
+      "pid": 25541,
+      "started_utc": "2026-09-13T21:40:13.584291+00:00",
+      "monotonic_start": 1718655.388055,
+      "exit_code": 20,
+      "wall_seconds": 0.11110129090957344,
+      "ended_utc": "2026-09-13T21:40:13.693874+00:00",
+      "timed_out": false,
+      "log_sha256": "dc78f16d4820b934162152cc70b7145511f10c352e0631959d429c62281ad117",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        25
+      ],
+      "q": 9,
+      "structure": "C5 x D16",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "afd1c41e08aa41424573f0029e3851d5b35414f719bc1531b9e47a9f96fe4885",
+        "cnf": "0b5595a10f5687c0903354edafebee3fcaca44939d0a988189a72a1e0c8dc185",
+        "map": "e6a4e31849c29ff67ddcff7584ad3720d634881c987b32b3f2eba57e74e48a0d"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-25",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-25/input.cnf"
+      ],
+      "pid": 25547,
+      "started_utc": "2026-09-13T21:40:13.738660+00:00",
+      "monotonic_start": 1718655.542383458,
+      "exit_code": 20,
+      "wall_seconds": 0.11349987494759262,
+      "ended_utc": "2026-09-13T21:40:13.850602+00:00",
+      "timed_out": false,
+      "log_sha256": "66e95b22d1ce3edb4c49b4b6b322b20a4b351fcc39a06ce6003be5de6b20e6a9",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        26
+      ],
+      "q": 9,
+      "structure": "C5 x QD16",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "51542c11f530848529d323281d37107e2458a1b5b8aa5288c71a18aa1e9d90ea",
+        "cnf": "d05f7be302026d88d1d9825f02045c0c5010e84177ea6b5e49de468bda17f8f4",
+        "map": "33b56bb0c4e6a83a6fec7af1a72a0192fe7c6a6b820d539886b5265d8889a82c"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-26",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-26/input.cnf"
+      ],
+      "pid": 25559,
+      "started_utc": "2026-09-13T21:40:13.897240+00:00",
+      "monotonic_start": 1718655.700685625,
+      "exit_code": 20,
+      "wall_seconds": 0.10454812506213784,
+      "ended_utc": "2026-09-13T21:40:13.999955+00:00",
+      "timed_out": false,
+      "log_sha256": "15d3eef09f04ba478a261c6a9473ea6ea79be5b6d35139d70673cc03617f64e6",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        27
+      ],
+      "q": 9,
+      "structure": "C5 x Q16",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "322e9732ba00c34ae349b65dc2f2cb9d4d4e99c42f8d2d4d0afaf03b35954394",
+        "cnf": "f3120490932633411ffdfcd9416367ef3692fb71f9f3549a2aaf8a670c6eba6b",
+        "map": "e7c6037f5205c2b7e4cb1f2fe55b1ccd2a70f224741035905ae0b252f07702cc"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-27",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-27/input.cnf"
+      ],
+      "pid": 25566,
+      "started_utc": "2026-09-13T21:40:14.047728+00:00",
+      "monotonic_start": 1718655.851368416,
+      "exit_code": 20,
+      "wall_seconds": 0.11046445881947875,
+      "ended_utc": "2026-09-13T21:40:14.156555+00:00",
+      "timed_out": false,
+      "log_sha256": "8fe82182af608ced45d6492a3ea6d6f73fe36b843cb28b26789886c3d698341b",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        28
+      ],
+      "q": 9,
+      "structure": "C5 : (C8 x C2)",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "486bca0f5b95de69cdb01b696189bbf855abf358c896e36d0aa2e9d85d04200f",
+        "cnf": "d205cf703a3dd9795516dd11a21fd3cb0c3a638704c06441a9c0da1f691d3b06",
+        "map": "7be7cc2b04747a0d7cbfa0644a4fe4ea7053309e29841948cf1ba1de6fbcce9a"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-28",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-28/input.cnf"
+      ],
+      "pid": 25578,
+      "started_utc": "2026-09-13T21:40:14.203939+00:00",
+      "monotonic_start": 1718656.007813791,
+      "exit_code": 20,
+      "wall_seconds": 0.11278550000861287,
+      "ended_utc": "2026-09-13T21:40:14.315323+00:00",
+      "timed_out": false,
+      "log_sha256": "85cab587088b8211f6a56ac042f521df744b468a1b2f872950f6e6b9eca6ce3b",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        29
+      ],
+      "q": 9,
+      "structure": "(C5 : C8) : C2",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "61796b10001beef331afc7022f15b62cc2ae9c2683a88b4fe7f75101ede8100b",
+        "cnf": "e3c012b161ca1baca4a8aba14b0f47ca7ec804c9244ae2e02848a317d8bdeeb5",
+        "map": "759c757516b48668cf61a5b613cf9d8e5f6aba3b680303c6dad9302663a3c225"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-29",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-29/input.cnf"
+      ],
+      "pid": 25586,
+      "started_utc": "2026-09-13T21:40:14.360501+00:00",
+      "monotonic_start": 1718656.164330416,
+      "exit_code": 20,
+      "wall_seconds": 0.11117504211142659,
+      "ended_utc": "2026-09-13T21:40:14.470231+00:00",
+      "timed_out": false,
+      "log_sha256": "2a4596ea9c621a06685a6599778a9696ad5452111ca87a940d60017579fa9f34",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        30
+      ],
+      "q": 9,
+      "structure": "C4 x (C5 : C4)",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "113e01ff7cad09cce6f6adc65fe07ba9b279e33c8775be16f8cc7b74c0c3b8c0",
+        "cnf": "abc413dbbf46348f5209efc1dadfb805d5b978d5647ec68471bd26d229da9b60",
+        "map": "9a55add448aab5c8a869dcbbeff3b986f229cfc88d8812ec7f8e924e9a6fe757"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-30",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-30/input.cnf"
+      ],
+      "pid": 25592,
+      "started_utc": "2026-09-13T21:40:14.514946+00:00",
+      "monotonic_start": 1718656.318631,
+      "exit_code": 20,
+      "wall_seconds": 0.11179025005549192,
+      "ended_utc": "2026-09-13T21:40:14.625149+00:00",
+      "timed_out": false,
+      "log_sha256": "6bbb4a323dd23af06dd7485eebfcbb1debd56f258a3b8ebc3b77ca0960745aee",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        31
+      ],
+      "q": 9,
+      "structure": "C20 : C4",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "c91e50187d8a5a6cb28313eba524ef5a6c04e781beba26d6a301dabfe1f069d2",
+        "cnf": "5a9d7ce573be2dc9345c6555b2b0ec9567c98804c043ea4a8164b88f47832f79",
+        "map": "13b48e9be1a33b845e4f23fb0ca79e1e19dfc3bb675e86a72997516dc4cfe87c"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-31",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-31/input.cnf"
+      ],
+      "pid": 25598,
+      "started_utc": "2026-09-13T21:40:14.672688+00:00",
+      "monotonic_start": 1718656.476418125,
+      "exit_code": 20,
+      "wall_seconds": 0.11372537491843104,
+      "ended_utc": "2026-09-13T21:40:14.784872+00:00",
+      "timed_out": false,
+      "log_sha256": "771ff51d326403138237808fff5675e1fd7976e70cd9e667c65f6b42d72e1613",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        32
+      ],
+      "q": 9,
+      "structure": "C2 x (C5 : C8)",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "0a58f51ae8dda8cfeeafe577b9af33592bc5463e6103ebc50ecae7fd028ee987",
+        "cnf": "1f5e7e5727f35f2ce891f7e7f256f9eb0e3f32e0dba98522689f83119751a3e7",
+        "map": "5204698941c3354636a2a711ebf5d4e089fd18a0fdb2d2f8e49ff92990b67f4a"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-32",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-32/input.cnf"
+      ],
+      "pid": 25600,
+      "started_utc": "2026-09-13T21:40:14.831057+00:00",
+      "monotonic_start": 1718656.634821625,
+      "exit_code": 20,
+      "wall_seconds": 0.10403983294963837,
+      "ended_utc": "2026-09-13T21:40:14.933592+00:00",
+      "timed_out": false,
+      "log_sha256": "4e564897d4cfe11077ddc4dedda747cb5b7deff2f80b7751a273a8df236229ec",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        33
+      ],
+      "q": 9,
+      "structure": "(C5 : C8) : C2",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "412037ffafe5b218da5b15aec05981763a7b466505ccd2f0f04b3c206b44090b",
+        "cnf": "5868f4bbbdb9404cbb19995b49feee86746c3ae63f3b8c0fed579c2fc399b0be",
+        "map": "195d0b3a8159f7043afee7045b6d581da746959cffc3825fe3a942373e712c51"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-33",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-33/input.cnf"
+      ],
+      "pid": 25608,
+      "started_utc": "2026-09-13T21:40:14.979153+00:00",
+      "monotonic_start": 1718656.782869625,
+      "exit_code": 20,
+      "wall_seconds": 0.11241750000044703,
+      "ended_utc": "2026-09-13T21:40:15.090019+00:00",
+      "timed_out": false,
+      "log_sha256": "354ce844b7b27435552a9daa65c96c5f7ae42d56c31706f8f44ab8ec3e722948",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        34
+      ],
+      "q": 9,
+      "structure": "(C10 x C2) : C4",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "001f097dee9c1b65b62202f0eff4727470dc941ecf7ac57cdcd22cd1d578c199",
+        "cnf": "aa0ce638d17951316f52e48fbb62968f587e2d54c16cd8d7b3268c39637b9fdc",
+        "map": "b95b9b2da2116e4e457cde6ed07b52370c14e5339d11198f95bace47dcf0bdfb"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-34",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-34/input.cnf"
+      ],
+      "pid": 25617,
+      "started_utc": "2026-09-13T21:40:15.135476+00:00",
+      "monotonic_start": 1718656.939205375,
+      "exit_code": 20,
+      "wall_seconds": 0.11355195799842477,
+      "ended_utc": "2026-09-13T21:40:15.247491+00:00",
+      "timed_out": false,
+      "log_sha256": "8c74bb1212f405032cafc7051e146be6453200db11ad6f475d5a1f152d379ea1",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        35
+      ],
+      "q": 9,
+      "structure": "C2 x (C5 : Q8)",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "708f00dfc3e325e4379e48f4988076f7e0f6c71d34dde63dd19a2f675537958c",
+        "cnf": "28092a2b99bc9711a164f7f3887e500be9ab3f1c4dd86b87d1f1623e891db5f3",
+        "map": "72a24c222092c25991f37c67af8c450df3615463d524f62738018e1ad8522080"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-35",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-35/input.cnf"
+      ],
+      "pid": 25623,
+      "started_utc": "2026-09-13T21:40:15.292742+00:00",
+      "monotonic_start": 1718657.096534791,
+      "exit_code": 20,
+      "wall_seconds": 0.1124721250962466,
+      "ended_utc": "2026-09-13T21:40:15.403742+00:00",
+      "timed_out": false,
+      "log_sha256": "69121baa6ef37222f50da0cc41804333d59b08184d1d01192f04896f0c3fa4e0",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        36
+      ],
+      "q": 9,
+      "structure": "C2 x C4 x D10",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "eb228b2278df61ad1ab3c21dbefc99363d4fa52dd563e611e906b8fcb3b22166",
+        "cnf": "67eb614f822d8ad6f54f0f432a2d82f5994bb3d02a04e05d580ccc4ed5f9a2e9",
+        "map": "1163dcca5b17e16b378583f3d6cf6947330e4ec5621a48d37da11b4506c005f9"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-36",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-36/input.cnf"
+      ],
+      "pid": 25631,
+      "started_utc": "2026-09-13T21:40:15.448110+00:00",
+      "monotonic_start": 1718657.251793583,
+      "exit_code": 20,
+      "wall_seconds": 0.11369854211807251,
+      "ended_utc": "2026-09-13T21:40:15.560229+00:00",
+      "timed_out": false,
+      "log_sha256": "d6de8617fb68a1e357d60473c441ef302e0c76eaecb7723515924556171abbb1",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        37
+      ],
+      "q": 9,
+      "structure": "C2 x D40",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "5023c097a4d82d2bc2ebdfd3ba6d714f3eee3a759036e0a47b00ce77bf9e62e3",
+        "cnf": "80404bd41092be624242eda276fd3bf665658629faf990cc55d747b2a6926469",
+        "map": "ea71b9f1deaf53d0b78c460452bf4b65b670f60f255118ce6376a063345a74a1"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-37",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-37/input.cnf"
+      ],
+      "pid": 25649,
+      "started_utc": "2026-09-13T21:40:15.603888+00:00",
+      "monotonic_start": 1718657.407717041,
+      "exit_code": 20,
+      "wall_seconds": 0.3156992089934647,
+      "ended_utc": "2026-09-13T21:40:15.918157+00:00",
+      "timed_out": false,
+      "log_sha256": "1e0b6f4e391c16b11d5b1ab073f72e75ad4a9526beac3647a0d5eef3443ea28f",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        38
+      ],
+      "q": 9,
+      "structure": "(C20 x C2) : C2",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "c0bd52771b74c57fc3c676450633cd050fd6753a064d9a390133acfc25d56753",
+        "cnf": "2e40a1532e4e9d0353547a36a450063df9564a64c6b4976214d82f8cfdb0b126",
+        "map": "e4189f1ebb053f6df52f06846b40ec99c19347d3debc21bf46e472679729e82d"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-38",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-38/input.cnf"
+      ],
+      "pid": 25668,
+      "started_utc": "2026-09-13T21:40:15.962510+00:00",
+      "monotonic_start": 1718657.766191416,
+      "exit_code": 20,
+      "wall_seconds": 0.11269662505947053,
+      "ended_utc": "2026-09-13T21:40:16.073631+00:00",
+      "timed_out": false,
+      "log_sha256": "67e087ddca1f53dd3dce5fe55515068ac0597b1bf880c3bd30a340898ce0e193",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        39
+      ],
+      "q": 9,
+      "structure": "D8 x D10",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "a6a54fea3537290e52b8135e5b49befdc7a2dd6bf1523b44fe22d1f4418e0492",
+        "cnf": "32a12658747a70ebd2e0ec53bf91b78cb2ea6c83b11080e2a50a7780582d4011",
+        "map": "f5abfa517d39e5d14a809a66f0ceccd12340edeb8923e634ba1dbc65701c2b04"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-39",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-39/input.cnf"
+      ],
+      "pid": 25670,
+      "started_utc": "2026-09-13T21:40:16.117324+00:00",
+      "monotonic_start": 1718657.921098708,
+      "exit_code": 20,
+      "wall_seconds": 0.1135950421448797,
+      "ended_utc": "2026-09-13T21:40:16.229438+00:00",
+      "timed_out": false,
+      "log_sha256": "3180ea06aafe95e654e1823adee223977036fc862db5d5d7e1772b02353e5ff8",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        40
+      ],
+      "q": 9,
+      "structure": "(C4 x D10) : C2",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "3c8b0798d974abd1e7796e460d6f0b2ccb8071f942e0f094ade8ee4344e45a67",
+        "cnf": "91bad30afea776a1929a8f40bfb9425ed65291c244bf1f9cb91da3f4a02ad781",
+        "map": "80fba715adc7ff8329950cb4ea4d36cd34363415e8932a4c16de55d0ab34710b"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-40",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-40/input.cnf"
+      ],
+      "pid": 25676,
+      "started_utc": "2026-09-13T21:40:16.273129+00:00",
+      "monotonic_start": 1718658.0769735,
+      "exit_code": 20,
+      "wall_seconds": 0.11354100005701184,
+      "ended_utc": "2026-09-13T21:40:16.385260+00:00",
+      "timed_out": false,
+      "log_sha256": "0a127cc1e007f305bf5cb28c7ebc4c06d5b9c5808eb474fff7c9d6dff93346a7",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        41
+      ],
+      "q": 9,
+      "structure": "Q8 x D10",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "9c279b0f3d48db983bebdb371f85071396461439be08306edb67dfcddbae7453",
+        "cnf": "1b35ab579a776ffa02c7da6e56335287e8676c108acad7d7d54084caa4fd8626",
+        "map": "77513897eb2cbfcc2d10a5d4c08e1cbfd294fc6d4d1426408ef3b9ae1fe219a1"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-41",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-41/input.cnf"
+      ],
+      "pid": 25685,
+      "started_utc": "2026-09-13T21:40:16.430414+00:00",
+      "monotonic_start": 1718658.234195458,
+      "exit_code": 20,
+      "wall_seconds": 0.11377754202112556,
+      "ended_utc": "2026-09-13T21:40:16.542720+00:00",
+      "timed_out": false,
+      "log_sha256": "9a8570d40af24b90e2509081969f49550336fb68f37b96c06f6c99d54604f8ac",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        42
+      ],
+      "q": 9,
+      "structure": "(C4 x D10) : C2",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "110c18efe6b31bbe1a3851b72fa109a0f7a3d93077770d84ebd9df1725fc124f",
+        "cnf": "92971ee3e63fde56d349d01c121e8d7d2458a1e6b5b0cd9d6f1f843afe357e1f",
+        "map": "5e9799a5e0cfd8537d8bae4abb4554daa71afdbfca214e8dce47eec16da21647"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-42",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-42/input.cnf"
+      ],
+      "pid": 25695,
+      "started_utc": "2026-09-13T21:40:16.588949+00:00",
+      "monotonic_start": 1718658.392630375,
+      "exit_code": 20,
+      "wall_seconds": 0.22203537495806813,
+      "ended_utc": "2026-09-13T21:40:16.809416+00:00",
+      "timed_out": false,
+      "log_sha256": "63d54dce8b197037727ec36576652365711237dc1b381cf05ac70657e268a07d",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        43
+      ],
+      "q": 9,
+      "structure": "C2 x C2 x (C5 : C4)",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "99952b41976fcce9944fff4cd66be1f4edf60aa40ddded210137149e97613d76",
+        "cnf": "5420a0b9ed4cd28fbd549228077249c2ae9543ea08687c3dfb88b32c2b09381d",
+        "map": "063d412b87af980b81bfd496416adf0d2ce2ced702a66a953317f978d659d102"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-43",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-43/input.cnf"
+      ],
+      "pid": 25705,
+      "started_utc": "2026-09-13T21:40:16.854495+00:00",
+      "monotonic_start": 1718658.658280625,
+      "exit_code": 20,
+      "wall_seconds": 0.10805495805107057,
+      "ended_utc": "2026-09-13T21:40:16.961088+00:00",
+      "timed_out": false,
+      "log_sha256": "de4522201e4928a2f0868412861ef756652431a28bc616a23a24857ea2308a22",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        44
+      ],
+      "q": 9,
+      "structure": "C2 x ((C10 x C2) : C2)",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "e527a73bc5f2beead98eaa184e373cfe12bd5d69d134c59cc870a5831655dd7e",
+        "cnf": "a64082d64ac523fcb48f0cd3db41fcf3609f5f82bb9d77383214d7f63bde92ed",
+        "map": "9d25869a73edf18ceb75f975ef51253adc6dbba40e43bd741a0324a2d90338fc"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-44",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-44/input.cnf"
+      ],
+      "pid": 25710,
+      "started_utc": "2026-09-13T21:40:17.007158+00:00",
+      "monotonic_start": 1718658.810770666,
+      "exit_code": 20,
+      "wall_seconds": 0.11205466696992517,
+      "ended_utc": "2026-09-13T21:40:17.117579+00:00",
+      "timed_out": false,
+      "log_sha256": "480493a31298c41874a9c8f01a3e5ca5c1d1e5690c6c059fcda717d32ef8b164",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        45
+      ],
+      "q": 9,
+      "structure": "C20 x C2 x C2",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "fa4d22e3c0150d5eb46778e3e350c592d9615a4ab7b2ecc3e30d54fe1dbb4efc",
+        "cnf": "a8bedaa23f0804c27853348291e65d37b1d4d56ee2a144310ec04af6ce308897",
+        "map": "cd5058a1f3b08c1b2f110da5a0cbe0f17033bf162db20218866c0eb5996a110d"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-45",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-45/input.cnf"
+      ],
+      "pid": 25726,
+      "started_utc": "2026-09-13T21:40:17.162366+00:00",
+      "monotonic_start": 1718658.966193333,
+      "exit_code": 20,
+      "wall_seconds": 0.10422933287918568,
+      "ended_utc": "2026-09-13T21:40:17.265178+00:00",
+      "timed_out": false,
+      "log_sha256": "87c9dc3d212917e840cf7de82f89432c1da7ad6c97d3881ce24ee702ae868e07",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        46
+      ],
+      "q": 9,
+      "structure": "C10 x D8",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "7e7d759a2f97cd2dc57493dc0b21c1c0ced0bbeff51a646f4a97a736a84ef4b4",
+        "cnf": "52a708fa90f207b3a5aebcb0d3bea3a4df27747e121a80488dfc101d6a663137",
+        "map": "1c2114155545cb77cac440d8967dcab0284cf0db1eaef76b5fefec7a82f2f99c"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-46",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-46/input.cnf"
+      ],
+      "pid": 25729,
+      "started_utc": "2026-09-13T21:40:17.309548+00:00",
+      "monotonic_start": 1718659.113421833,
+      "exit_code": 20,
+      "wall_seconds": 0.11266100010834634,
+      "ended_utc": "2026-09-13T21:40:17.420840+00:00",
+      "timed_out": false,
+      "log_sha256": "1ce07e25acf5f43435e63f5870b1ed862a71c18b834f7da0e75f4415d1664311",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        47
+      ],
+      "q": 9,
+      "structure": "C10 x Q8",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "53b934a036413513ff7b6e1dccf515c88d3dd08e86cc19cd113543717d141be8",
+        "cnf": "a6ab87aed18ad0af87bb03e6104977ee47b1a7653fd5cff70851abcdfe005c1f",
+        "map": "821ba777f0ebb7a52c9e74e090808c814ff5754043e3cdc6b2d1b4c667803355"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-47",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-47/input.cnf"
+      ],
+      "pid": 25732,
+      "started_utc": "2026-09-13T21:40:17.465769+00:00",
+      "monotonic_start": 1718659.269489166,
+      "exit_code": 20,
+      "wall_seconds": 0.11058733379468322,
+      "ended_utc": "2026-09-13T21:40:17.574835+00:00",
+      "timed_out": false,
+      "log_sha256": "70d1d3bf740c7cfce90f0f3bbda2172a49345e6a62a26ecc85380dfa388cc916",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        48
+      ],
+      "q": 9,
+      "structure": "C5 x ((C4 x C2) : C2)",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "bc037480c363516b7cdef8305a3ee3b990169a0aa5ceecbb8bf465b19a967df6",
+        "cnf": "f02aafbee2b004fe8e6d6c514bbe9f6572fd19c39d396661a5e8718107333297",
+        "map": "7ba0f8283719ad783fe4dcf01ce41b7643f0b58ca6593ea61bd74682048661dc"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-48",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-48/input.cnf"
+      ],
+      "pid": 25748,
+      "started_utc": "2026-09-13T21:40:17.619713+00:00",
+      "monotonic_start": 1718659.423391875,
+      "exit_code": 20,
+      "wall_seconds": 0.10717991599813104,
+      "ended_utc": "2026-09-13T21:40:17.725332+00:00",
+      "timed_out": false,
+      "log_sha256": "c6e10b9944def02b4d041072b03d8edcaa9af7a9a1abed6372fbcf0cedebf07b",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        49
+      ],
+      "q": 9,
+      "structure": "(C2 x C2 x C2 x C2) : C5",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "84c57c94c80979bc3c116ba88e29d5d80cf1a6be57e5a127d71d167550b817b2",
+        "cnf": "6545caf8f1f441651c57ab2656bf68dbcdeedef0ce3efd2b01c011e16be12713",
+        "map": "d96316f32f90b5c533f47b221e11b9f9e2b16cca48dd933c3fa9ef0dd5c086cc"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-49",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-49/input.cnf"
+      ],
+      "pid": 25752,
+      "started_utc": "2026-09-13T21:40:17.769614+00:00",
+      "monotonic_start": 1718659.573303375,
+      "exit_code": 20,
+      "wall_seconds": 0.11379104107618332,
+      "ended_utc": "2026-09-13T21:40:17.881856+00:00",
+      "timed_out": false,
+      "log_sha256": "6e6b64677237ba7afacab9a0c41984948fb28e56052af6bfc3feacacf908d055",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        50
+      ],
+      "q": 9,
+      "structure": "C2 x C2 x (C5 : C4)",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "a5cad32a283f74ec2ec60f33a9ed1c614e8d91812f0c9f14efdd96a1920fefcf",
+        "cnf": "f48ac8d8282fd9fac5adb24d47f48478480861b86b1567456863b059fc429c11",
+        "map": "c5ff3a46911107572e1c4453fbd57d620ac03d949a3538e668a151ff0f79296a"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-50",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-50/input.cnf"
+      ],
+      "pid": 25756,
+      "started_utc": "2026-09-13T21:40:17.926924+00:00",
+      "monotonic_start": 1718659.730761833,
+      "exit_code": 20,
+      "wall_seconds": 0.10766900004819036,
+      "ended_utc": "2026-09-13T21:40:18.033194+00:00",
+      "timed_out": false,
+      "log_sha256": "201dbd48277f85a483904dab4675ce293acf82de35bbbb4b357ada920393f499",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        51
+      ],
+      "q": 9,
+      "structure": "C2 x C2 x C2 x D10",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "70548efcdcb228e063e8f8f09efa36ef3614e795202d9fd923a860912755bba3",
+        "cnf": "c2f03759d7c49b3fc0e594bd8a8d23c957a5444c47dae60721f9c11ed04a35d5",
+        "map": "ece425510eb1d3a49f42e6803daf64f09db0adb3e473ea79ce966f50cd586e1b"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-51",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-51/input.cnf"
+      ],
+      "pid": 25759,
+      "started_utc": "2026-09-13T21:40:18.078095+00:00",
+      "monotonic_start": 1718659.881841708,
+      "exit_code": 20,
+      "wall_seconds": 0.1140495000872761,
+      "ended_utc": "2026-09-13T21:40:18.190656+00:00",
+      "timed_out": false,
+      "log_sha256": "a4cc916764366dbdca37b1597fe592c7a7a71e6340f6dcc2e839d562e0b4d3c3",
+      "sat_observed": false
+    },
+    {
+      "small_group_id": [
+        80,
+        52
+      ],
+      "q": 9,
+      "structure": "C10 x C2 x C2 x C2",
+      "status": "UNSAT",
+      "cap_seconds": 600,
+      "input_pins": {
+        "group": "eec24afdf06b54b86401464564621d0bbd2fcf2818c530548bb071855f854b68",
+        "cnf": "d423bfe41ae553c416efcf5dd550acc43eea57776eca722af7d444fab22aa68e",
+        "map": "5219b9d792fb332c39552b29ff0b16e343d12c425f4d6ec7ab4cc432ccc1770e"
+      },
+      "directory": "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-52",
+      "command": [
+        "/opt/homebrew/Cellar/kissat/4.0.4/bin/kissat",
+        "--sat",
+        "--strict",
+        "--no-color",
+        "--seed=0",
+        "--time=600",
+        "/Users/rwalters/lean-genius-cayley-sol3-20260913/runs/80-52/input.cnf"
+      ],
+      "pid": 25765,
+      "started_utc": "2026-09-13T21:40:18.234999+00:00",
+      "monotonic_start": 1718660.038405541,
+      "exit_code": 20,
+      "wall_seconds": 0.10989287495613098,
+      "ended_utc": "2026-09-13T21:40:18.343065+00:00",
+      "timed_out": false,
+      "log_sha256": "b61c02d7ca21e0d4577b5df3fb14464cd5f07835af4c31569982cc6c861769ff",
+      "sat_observed": false
+    }
+  ]
+}

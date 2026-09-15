@@ -1,0 +1,40 @@
+{
+  "status": "PASS",
+  "revision": "06bb06b27d49bf0a7f6151d8f6ee08e92f8a0ac0",
+  "scope": "Frozen index/source hash and complete ID/index/CNF-hash bijection only; no exclusion proof or solver replay.",
+  "index_sha256": "8170085370807bca21c0004804be6b7de52a492d88267196291f0f23c15555a7",
+  "counts": {
+    "H1": 1257,
+    "H3": 2,
+    "H5": 129,
+    "H7": 28
+  },
+  "total": 1416,
+  "sources": {
+    "H1": {
+      "path": "phase_b_h1_h3/h1-frozen-candidates.json",
+      "sha256": "c10965a5d9473107169badf4996b73da13edc522cf344c4bcdb45e1a05e7d16b",
+      "array": "rows",
+      "count": 1257
+    },
+    "H3": {
+      "path": "phase_b_h1_h3/h3-inputs.json",
+      "sha256": "092010615104e466569dd473c3f2c17c76c9c81d73a7e638c9c8b3475b3cded7",
+      "array": "instances",
+      "count": 2
+    },
+    "H5": {
+      "path": "phase_b_h5_h7/h5-inventory.json",
+      "sha256": "2400037fffb87f39a6ea2abc0588c148afce15c4686d87e7fa89ffa09c9a0d6d",
+      "array": "jobs",
+      "count": 129
+    },
+    "H7": {
+      "path": "phase_b_h5_h7/h7-inventory.json",
+      "sha256": "3374800ce9a9a246679b44bc1823598670ec95fbd15ad8bd4dcc2bbd411826d1",
+      "array": "survivors",
+      "count": 28
+    }
+  },
+  "launch_ready": false
+}

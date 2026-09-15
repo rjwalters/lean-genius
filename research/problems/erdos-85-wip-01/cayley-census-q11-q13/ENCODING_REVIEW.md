@@ -1,0 +1,13 @@
+# Independent encoding review
+
+The mathematical criterion is accepted in cayley-lemma-review.json. Executable validation additionally requires the full encoding audit, group-table audit and export provenance checks; passing controls alone do not establish this.
+
+For every gate, the clauses imply both directions of its defining equation. AND uses (not y or a), (not y or b), (y or not a or not b). OR uses its dual. For y iff A or (B and x), the first two clauses force y from A or from B and x; the last two require A or B and A or x when y holds. Thus the four clauses exactly express the recurrence. Boolean-constant simplification removes only true clauses and false literals; duplicate-literal removal and tautology removal preserve meaning. There are no unconstrained auxiliary variables.
+
+Starting with t[0,0]=true and t[0,k]=false for k>0, induction gives t[i,k] iff at least k of the first i selections are true. The two terminal units t[n-1,q] and not t[n-1,q+1] express exactly q. Inverse equalities give S=S^-1 and identity0 has no selection variable. The full-encoding auditor checks every primary index, every recurrence state and both units.
+
+For each nonidentity h, the auditor enumerates all ordered nonidentity factors by scanning table[a][b]=h. This deliberately differs from the author's inverse-product lookup. Every pair has an equivalent conjunction indicator, with x_a reused for a=b. For a list z1,...,zk the prefix recurrence p_j=p_(j-1) or z_j and clauses not p_(j-1) or not z_j impose at-most-one by induction. Equal Boolean expressions arising from distinct pairs remain separate positions, as required by the common-neighbor bijection. Products h=e are excluded, and no other factor is omitted. The auditor verifies all (n-1)(n-2) ordered nonidentity-product pairs per group and exactly accounts for the entire DIMACS clause multiset and map gate sequence.
+
+Group export uses GAP SmallGroup(n,i) for all i=1..NumberSmallGroups(n), Elements(G) with identity moved to0, and Position for products and inverses. No group or connection-set pruning occurs. An independent live query of the manifest-pinned Docker image returned GAP4.11.1 and counts52,52,47,57 at orders48,80,120,168. Image RepoDigest equals d66dca500c3d8b8ca88824d3c3c7315183335af029f6b74ce592ed0d148edaee. The group-table audit checks identity, inverses and every associativity triple for all208 exported tables. This trusts GAP's SmallGroups catalogue for isomorphism-class completeness; it does not prove that catalogue internally.
+
+Together these checks validate encoding faithfulness for this census. They do not turn proof-OFF UNSAT reports into checked certificates or imply unrestricted graph nonexistence.
