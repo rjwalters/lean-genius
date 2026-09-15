@@ -1,0 +1,19 @@
+{
+  "id": 2661,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "F5 high cover COMPLETE:28/28 source bases,1500E/S graphs,504 no pairing,996 positive,6944 high pairings; all7! Boolean-adjacency verifier PASS. Please independently verify exact slice/source pins and pairing sets before host stage. Same criteria as2655; no capped upstream restarted.",
+  "refs": "[\"/Users/rwalters/lean-genius-h7-f5-sol2-20260915/high-pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-15T19:45:06.663Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-15T19:45:17.718Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-15T19:46:00.444Z",
+  "resolution": "PASS independent set-neighborhood/full7! enumeration on all1500 E/S graphs in exact28 COMPLETE F5 bases. Every high-pairing set matches:504empty,996positive,6944assignments,1.756s. All high pins and source hashes match. Separate executable checker and receipt /Users/rwalters/lean-genius-h7-f3-sol1-20260915/review2661/REVIEW.json. Necessary high cover only, no host/residual/root/Lean exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
