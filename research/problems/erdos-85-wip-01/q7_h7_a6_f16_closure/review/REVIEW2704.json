@@ -1,0 +1,42 @@
+{
+  "status": "PASS_REVIEW2704",
+  "root": {
+    "id": "cube_F6_t15",
+    "edge_count": 6,
+    "mask": 622659,
+    "cnf_sha256": "dec6221d8537ede14d953812d18b346fddb6e28595488e5c065f324be6445c28",
+    "scope": null,
+    "review_id": null,
+    "parent_to_reviewed_shape": null,
+    "status": "NOT_COVERED_BY_SELECTED_SCOPES"
+  },
+  "source_F_index": 16,
+  "parent_to_source": [
+    2,
+    3,
+    4,
+    0,
+    1,
+    6,
+    5
+  ],
+  "residual_count": 500280,
+  "audit": {
+    "status": "PASS_EXACT_HOST_JOIN_AND_NEGATIVE_ENDPOINTS",
+    "host_inputs": 48759,
+    "leaves": 500280,
+    "counts": {
+      "INFEASIBLE_ARC": 120956,
+      "INFEASIBLE_ROW": 379324
+    },
+    "domains": 4612784,
+    "rows": 20546518,
+    "arc_events": 379027,
+    "removed_rows": 471809,
+    "whole_negative_cover": true,
+    "seconds": 42.07265199998801,
+    "scope": "Exact accepted2701 host/input/survivor join and independent complete row/arc checks. Upstream source/high/quotient coverage remains a reviewed premise; no arbitrary CNF UNSAT, Lean or global theorem."
+  },
+  "author_manifest_sha256": "029f18b357b63611a560cf42c1ef71b9bef484cba98e4ee87622a2d8e9452002",
+  "scope": "Whole a6F16 necessary structural graph-cover exclusion, not arbitrary CNF/Lean/global proof."
+}

@@ -1,0 +1,19 @@
+{
+  "id": 2705,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "New F12 singleton-triangle criterion/probe ready, distinct from capped row/ARC generation. Proof: degree2pair u needs5active neighbours, s+p=5 and s+2p<=7 =>s>=3; eligibleS compatibility must contain triangle. Triangle-free graph cert excludes branch. Exactly1471oldunfinished leaves (2130/2135) tested once0.215s<60s:1253certs incl oldUNKNOWN,218remaining. Independent set-adjacency certificate audit PASS0.048s,43453triples, exactdisjoint complement. Eight payloads frozen. Please audit criterion, source/partition and all certs; old capped files/statuses unchanged, no fullF12/root/kernel/global claim.",
+  "refs": "[\"/Users/rwalters/lean-genius-h7-a6-f12-support-capacity-sol2-20260915/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-15T21:26:39.931Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-15T21:27:04.521Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-15T21:27:53.191Z",
+  "resolution": "PASS new F12 singleton-triangle obstruction and1253negative complement certificates. Reviewed counting proof p+s>=5,2p+s<=7 forces s>=3; C4-free completion requires eligible singleton triangle. Independent set-adjacency reconstruction checks all1253 exact candidate/compatibility graphs;8242edge common-neighbour tests prove triangle-free,0.888s. Exact disjoint partition1253+218=1471 joins old2130/2135 unfinished complement, including oldUNKNOWN. All8author pins, original audit hashes and live source/prefix reviews checked. Combined397016/397234negative leaves,218unclassified. Evidence /Users/rwalters/lean-genius-h7-a6-f12-triangle-review-sol1-20260915/pins.json (four files). Historical capped producer untouched; no full-row/ARC retry, fullF12/root/kernel/global exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

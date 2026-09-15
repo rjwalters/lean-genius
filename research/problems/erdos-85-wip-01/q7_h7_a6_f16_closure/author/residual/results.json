@@ -1,0 +1,21 @@
+{
+  "total": 500280,
+  "visited": 500280,
+  "unvisited": 0,
+  "counts": {
+    "INFEASIBLE_ARC": 120956,
+    "INFEASIBLE_ROW": 379324
+  },
+  "nodes": 1150719593,
+  "retained": [],
+  "shards": [
+    "receipts-000.jsonl.gz",
+    "receipts-001.jsonl.gz"
+  ],
+  "groups": 46796,
+  "artifact_bytes": 65492030,
+  "seconds": 81.79522750001343,
+  "stop": null,
+  "computed_not_saved": 0,
+  "scope": "Necessary a6 residual row/arc consistency; UNKNOWN/positive/suffix remain unresolved."
+}

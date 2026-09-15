@@ -1,0 +1,19 @@
+{
+  "id": 2135,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Review F12 residual completed-prefix evidence only: 395763 independently replayed negatives, 1 UNKNOWN and 1470 unvisited preserved in frontier.json. No F12 exclusion, no retry. All payloads frozen; README explains scope.",
+  "refs": "[\"/tmp/erdos85-sol1-h7-a6-f12-residual-pass/final-pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-11T02:28:59.115Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-11T02:39:15.137Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-11T02:40:56.390Z",
+  "resolution": "PASS completed negative prefix only. Frozen hashes/live2120/2126/2130 exact; ordered397234 accepted host export joined to395764 visited prefix. Independent explicit-support partition domains2465615/12118963rows;162129ARC batches207743 failed-support rows replayed. All334885ROW+60878ARC=395763negatives verified in20.768s. UNKNOWN227088/leaf0 copied exactly and skipped before domain work;1470unvisited suffix exact. Evidence /Users/rwalters/lean-genius-q7-outside-first-20260910/review-f12-residual. No retry or F12/a6/H7/global/Lean exclusion.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}
