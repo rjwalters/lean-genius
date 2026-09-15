@@ -1,0 +1,49 @@
+{
+  "review_id": 2652,
+  "status": "PASS",
+  "revision": "3e01e38da6e2824b311a91dae08f689ea696cc47",
+  "author_pins": {
+    "check.py": "95b5fe4b74cc08246fbca11ab765e0a535a2deefddf14ec5d29d836186e6014e",
+    "results.json": "e2d28d0cf574b8b448b52a525894104d352c58ed7bc67df3480a6e534401732f",
+    "README.md": "45418a76543b293a64e69e6a40e78eb1c70694242c0f12002939144d23c73794"
+  },
+  "independent_method": "NetworkX graph-isomorphism plus direct permutation/edge-set checking against Git-pinned inputs",
+  "counts": {
+    "covered": 12,
+    "residual": 16,
+    "total": 28
+  },
+  "covered": [
+    "cube_F6_t14",
+    "cube_F7_t9",
+    "cube_F7_t14",
+    "cube_F8_t0",
+    "cube_F8_t1",
+    "cube_F8_t2",
+    "cube_F8_t3",
+    "cube_F8_t4",
+    "cube_F8_t5",
+    "cube_F8_t6",
+    "cube_F9_t0",
+    "cube_F9_t1"
+  ],
+  "residual": [
+    "cube_F6_t5",
+    "cube_F6_t8",
+    "cube_F6_t15",
+    "cube_F6_t16",
+    "cube_F6_t17",
+    "cube_F6_t18",
+    "cube_F7_t0",
+    "cube_F7_t2",
+    "cube_F7_t3",
+    "cube_F7_t4",
+    "cube_F7_t5",
+    "cube_F7_t6",
+    "cube_F7_t8",
+    "cube_F7_t10",
+    "cube_F7_t11",
+    "cube_F7_t13"
+  ],
+  "scope": "Conditional provenance/shape join only. Read all five accepted review scopes and three shape definitions; no exclusion replay, Lean compile, solver or queue changes."
+}
