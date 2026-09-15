@@ -1,0 +1,18 @@
+{
+  "status": "PASS_REVIEW2701",
+  "host_manifest_sha256": "078e2ec1fac37ff44df8bed4af6615c95dcc7d59ae37afa906ce0d56d105d905",
+  "full_verification": {
+    "status": "PASS",
+    "source_high_representatives": 48759,
+    "raw_high_assignments": 62985,
+    "prunes": 931977,
+    "survivors": 500280,
+    "survivor_domains": 7003920,
+    "negative_highs": 1963,
+    "structural_nodes": 5748569,
+    "max_structural_nodes": 283,
+    "seconds": 11.676410667001619
+  },
+  "extra_checks": "All16host pins, accepted source2699 and API2123 hashes, host driver hash,120s/100k/250MB caps, actual shard byte sum and2118/2122/2123/2125/2699/2133 live review chain verified. Full saved host checker reproduced separately; input hashes checked before and after.",
+  "scope": "Necessary host cover only, no residual/root/Lean/global exclusion."
+}

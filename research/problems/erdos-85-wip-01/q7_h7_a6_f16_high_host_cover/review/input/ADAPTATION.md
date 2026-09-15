@@ -1,0 +1,1 @@
+Initial reviewer count assertion confused all 44 source classes with the subset having nonempty E/S graph lists in the saved layout. Corrected to count all source classes from the complete source and separately verify the exact positive-class set. No producer or source bytes changed.

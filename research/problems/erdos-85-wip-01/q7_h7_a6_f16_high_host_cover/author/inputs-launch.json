@@ -1,0 +1,15 @@
+{
+  "total": 48759,
+  "raw_high_assignments": 62985,
+  "aggregate_seconds": 60,
+  "source_path": "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/q7_h7_a6_high_pairing_cover/original",
+  "quotient_path": "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/q7_h7_a6_high_quotient/original",
+  "source_pins_sha256": "686debc525ae1cfab245c0377ca1add6e4b5874017c287d4cd43f964b10aeab6",
+  "quotient_pins_sha256": "7e7d5de8fd972e90e0439cf46610088a66b8e53ed31e3f22e293abe3ebf435e4",
+  "driver_sha256": "c3b69c5b768203b6a29262c23f9e8dc405903c295bb2e0377f3c9abca73d233f",
+  "reviews": {
+    "2118": "PASS complete a6 E/S projection. Independent reversed-edge F enumeration with length-two collisions and explicit S7 orbits reproduces31332labelled/19Fclasses; complementary X-subset enumeration and AutF orbits reproduce2192raw/358classes. Different fixed core-first star traversal recovers exact3284solution sets on91positive/267negative bases,75698nodes,max9992,0.192s; cover0.408s,no caps. Audited generalized7-2d capacity,11double/3single hosts,naming quotient and degree/C4 conditions.8pins/livepremises verified. Evidence /Users/rwalters/lean-genius-q7-outside-first-20260910/review-2118. Complete projection only; high/P assignment and a6/H7/Lean/global remain open.",
+    "2122": "PASS complete a6 high-pair cover. Exact2118 source bytes and all3284 ordered E/S joins;18payloadpins/live2118/2119 and exact2119 native bytes verified. Independent whole14vertex perfect-matching DP interleaving mixed/double pairs gives818836 assignments,1527438states,max587/case4.308s. Every saved colouring checked valid/canonical/unique; count equality proves exact sets. One direct28vertex C4 graph per case3284fixtures. All author calls COMPLETE,max9456nodes,0empty/UNKNOWN/unvisited/artifactstop. Audited one-launch budget driver. Evidence /Users/rwalters/lean-genius-erdos85-goal48-sol3/review2122. No P-host/residual family or a6/H7/global exclusion.",
+    "2125": "PASS. All 12 payload pins and live 2122 receipt verified. Independent full F/X edge-set automorphism scan and compatible core permutations: 232 actions with exact S-edge images. Exact source flattening and all 818,836 representative-to-member witnesses checked by deriving high bijections from target incidences; 425,550 minimum-index representatives, full action coverage and orbit histogram exact. F12 16,040; F15 4,536. 5.160 seconds. Isomorphisms extend to P through unordered high supports and transport all residual edges, proving cover without exclusion. Evidence /Users/rwalters/lean-genius-q7-outside-first-20260910/review-2125. No host search or Lean claim."
+  }
+}
