@@ -1,0 +1,3335 @@
+{
+  "image": "gapsystem/gap-docker@sha256:d66dca500c3d8b8ca88824d3c3c7315183335af029f6b74ce592ed0d148edaee",
+  "groups": [
+    {
+      "small_group_id": [
+        48,
+        1
+      ],
+      "q": 7,
+      "structure": "C3 : C16",
+      "group": "groups/48-1.json",
+      "group_sha256": "6c55847ba15857cc7b8a7408ea792619338b71fbc7c288d73a2d6189b661236d",
+      "cnf": "instances/48-1/input.cnf",
+      "cnf_sha256": "1e895208ada4a594bc2b5327fa55f7fc0463e184a3e642d36ac28cd886adea25",
+      "map": "instances/48-1/map.json",
+      "map_sha256": "541a585c779971c1e4bcf63ecc289914ea6aa62dc69a5f15cbc9c88354890bd5",
+      "variables": 4654,
+      "clauses": 16344
+    },
+    {
+      "small_group_id": [
+        48,
+        2
+      ],
+      "q": 7,
+      "structure": "C48",
+      "group": "groups/48-2.json",
+      "group_sha256": "640e757cee359df207b16d316dcbcb3813e2d5660390093f4f2cc94f6c58012c",
+      "cnf": "instances/48-2/input.cnf",
+      "cnf_sha256": "b1219845a04715d16df2205138cac3418e2f39ee7159d7abc3ed683b4da8bde1",
+      "map": "instances/48-2/map.json",
+      "map_sha256": "39d7791a9bf34d4a685dd01d6558724f214f4a678b5a24e2c60076dcd019bde3",
+      "variables": 4654,
+      "clauses": 16344
+    },
+    {
+      "small_group_id": [
+        48,
+        3
+      ],
+      "q": 7,
+      "structure": "(C4 x C4) : C3",
+      "group": "groups/48-3.json",
+      "group_sha256": "a956ef0bffa22a29138ca995c544492ba20e0f782b9e5aaa50fae5b4ee17498b",
+      "cnf": "instances/48-3/input.cnf",
+      "cnf_sha256": "59f4de11f2f5980d32102cf3c21cbb265e6634989f193a1d247d81ff038d1457",
+      "map": "instances/48-3/map.json",
+      "map_sha256": "77ac22206f8dcaff78e098cffd63ec37ed1a07e1e7adf08388fe74167a9ae424",
+      "variables": 4656,
+      "clauses": 16346
+    },
+    {
+      "small_group_id": [
+        48,
+        4
+      ],
+      "q": 7,
+      "structure": "C8 x S3",
+      "group": "groups/48-4.json",
+      "group_sha256": "e88c74773966304d078d6dc6fe0a87bcf47f5d27806b7b0b4ec46f0de8dbdb9c",
+      "cnf": "instances/48-4/input.cnf",
+      "cnf_sha256": "11e50fb8edc7d1e6965329fe1e58653b28f8c153f62c755e3e8597973a3b4296",
+      "map": "instances/48-4/map.json",
+      "map_sha256": "ede8d748d790c60f0ebec84afd6036032a0aa7662a796510be553a4126a68ed6",
+      "variables": 4660,
+      "clauses": 16350
+    },
+    {
+      "small_group_id": [
+        48,
+        5
+      ],
+      "q": 7,
+      "structure": "C24 : C2",
+      "group": "groups/48-5.json",
+      "group_sha256": "225c0b40ae3b168754c487f80391b11b870c9b14817b1762313875cdd5fb043b",
+      "cnf": "instances/48-5/input.cnf",
+      "cnf_sha256": "6a8057f13e2c9a43f4f479ae95932c93c54a5bd6b9cf0db5bdafdbe5c7607195",
+      "map": "instances/48-5/map.json",
+      "map_sha256": "45f944b3156cec70fc2684d52f0b1592f83e06abf1305907cfff685f6d692d80",
+      "variables": 4660,
+      "clauses": 16350
+    },
+    {
+      "small_group_id": [
+        48,
+        6
+      ],
+      "q": 7,
+      "structure": "C24 : C2",
+      "group": "groups/48-6.json",
+      "group_sha256": "4a2888745412f650254f33c78ddb903ea74c1e853c0cf72986462cf0c455e5da",
+      "cnf": "instances/48-6/input.cnf",
+      "cnf_sha256": "3e2d63e2b89716acd91333f9f0ad00e0bf6a337070aa2512e0ccac8a2b82d7d0",
+      "map": "instances/48-6/map.json",
+      "map_sha256": "605d774d933f9b149ede0a5c49a2b851ad6fe4cee74f227bb27b21a4f5973937",
+      "variables": 4666,
+      "clauses": 16356
+    },
+    {
+      "small_group_id": [
+        48,
+        7
+      ],
+      "q": 7,
+      "structure": "D48",
+      "group": "groups/48-7.json",
+      "group_sha256": "157a8a37068f22342da5494f1d90a44702d5381358ae1278fcbf480b52c19ed5",
+      "cnf": "instances/48-7/input.cnf",
+      "cnf_sha256": "cab6181c2c254cd5d33eb0200b2156a6b8917c62df63b8c829197f2dca124e5d",
+      "map": "instances/48-7/map.json",
+      "map_sha256": "58c71260a8f9a8d4ec4f00c6f37b814f5cab912eda331da4b83540e5f76a4123",
+      "variables": 4678,
+      "clauses": 16368
+    },
+    {
+      "small_group_id": [
+        48,
+        8
+      ],
+      "q": 7,
+      "structure": "C3 : Q16",
+      "group": "groups/48-8.json",
+      "group_sha256": "3bc84e256fe0125eb6c1e8026b43d9283f24b6ae9c7bb8febe4cb253ba421ac4",
+      "cnf": "instances/48-8/input.cnf",
+      "cnf_sha256": "428aaa52ca31e9fedb3b7e0149fa2cad2413bec3de3d6ed9704915f9f9e78d23",
+      "map": "instances/48-8/map.json",
+      "map_sha256": "0e4c7328683cd4451e821eea9e87fe07b63fe27b96a87f3d30e016d3fd12687b",
+      "variables": 4654,
+      "clauses": 16344
+    },
+    {
+      "small_group_id": [
+        48,
+        9
+      ],
+      "q": 7,
+      "structure": "C2 x (C3 : C8)",
+      "group": "groups/48-9.json",
+      "group_sha256": "2ab23cae9f804bbc01e8d969228b5ee78589c492d9a7e070c821c3e297dccc87",
+      "cnf": "instances/48-9/input.cnf",
+      "cnf_sha256": "4cbf001dc4847d3fe0ab5fdd6e8efe345e477d909d04d76a12a9da9b27b10c80",
+      "map": "instances/48-9/map.json",
+      "map_sha256": "0aa672017adbe8d8aca7e4aed69702de71d277558c3c3281b206ffa31b887652",
+      "variables": 4656,
+      "clauses": 16346
+    },
+    {
+      "small_group_id": [
+        48,
+        10
+      ],
+      "q": 7,
+      "structure": "(C3 : C8) : C2",
+      "group": "groups/48-10.json",
+      "group_sha256": "5c934247e2db96241ea5cd2374c9df552a9510b763e4c8686803140f017fb076",
+      "cnf": "instances/48-10/input.cnf",
+      "cnf_sha256": "446f0915dfbad148de633430609767209d178e6d39eaa007c9a72ee2b6e3243d",
+      "map": "instances/48-10/map.json",
+      "map_sha256": "d8cdd52f9f1e5960ad43d26cd912371bfa0a2a9d2ecf89d59731104c29c631cc",
+      "variables": 4656,
+      "clauses": 16346
+    },
+    {
+      "small_group_id": [
+        48,
+        11
+      ],
+      "q": 7,
+      "structure": "C4 x (C3 : C4)",
+      "group": "groups/48-11.json",
+      "group_sha256": "91b26c775873f1fe5f8d13874adaf2f82b616f51af14123212a358d8838a7c6b",
+      "cnf": "instances/48-11/input.cnf",
+      "cnf_sha256": "4966225b62b31177ab167b030002e1e65c6f8aedd217095decf4b4ea96c9e185",
+      "map": "instances/48-11/map.json",
+      "map_sha256": "a2a6edc61f551aac537b193f6e0e1d55fd9f90265490171ebab1c02fb1bcbdac",
+      "variables": 4656,
+      "clauses": 16346
+    },
+    {
+      "small_group_id": [
+        48,
+        12
+      ],
+      "q": 7,
+      "structure": "(C3 : C4) : C4",
+      "group": "groups/48-12.json",
+      "group_sha256": "d6ea5966350f88e4a874ae17759d5e8ef7a41275a077a52ed529098a98fc3ddc",
+      "cnf": "instances/48-12/input.cnf",
+      "cnf_sha256": "017ef4dc139d5096d2ca021befdb6f91aff4b3245a885489026528280e7ef1f2",
+      "map": "instances/48-12/map.json",
+      "map_sha256": "75f8c1dcfc4602b6635ca5bf5a967b0e776ca084f0d9c28c9be66e47e3e9a4f9",
+      "variables": 4656,
+      "clauses": 16346
+    },
+    {
+      "small_group_id": [
+        48,
+        13
+      ],
+      "q": 7,
+      "structure": "C12 : C4",
+      "group": "groups/48-13.json",
+      "group_sha256": "1ceda77f41f4a163297aa225ba244c576a29a41f9c2228ab2120e72a1466cf44",
+      "cnf": "instances/48-13/input.cnf",
+      "cnf_sha256": "a56af2013881097f249282bf56237164fb754439df1bdc10f098901192d16691",
+      "map": "instances/48-13/map.json",
+      "map_sha256": "f32fc0286230ae3e2578d4c911a1d3195f7845c1f59425f2eccc1a017805b829",
+      "variables": 4656,
+      "clauses": 16346
+    },
+    {
+      "small_group_id": [
+        48,
+        14
+      ],
+      "q": 7,
+      "structure": "(C12 x C2) : C2",
+      "group": "groups/48-14.json",
+      "group_sha256": "a08b36e00c8e5977c21b4c5e6b1f84930401be8ea614cba1786d958e14d81c36",
+      "cnf": "instances/48-14/input.cnf",
+      "cnf_sha256": "063c976efec7a97eba3dcc844692650812098b0cf1e1e2a10c6b6309343077a8",
+      "map": "instances/48-14/map.json",
+      "map_sha256": "90cc32f426b95155228dea120d666995b45dbd8e46670ad4b15df46141a41987",
+      "variables": 4668,
+      "clauses": 16358
+    },
+    {
+      "small_group_id": [
+        48,
+        15
+      ],
+      "q": 7,
+      "structure": "(C3 x D8) : C2",
+      "group": "groups/48-15.json",
+      "group_sha256": "aacabac5b12a6e54416e783d21188e9234daeaea404546cb80b8265ce007f9cf",
+      "cnf": "instances/48-15/input.cnf",
+      "cnf_sha256": "48add240688f4b0dd6250794ae1d8641be4e72c62ef7d9aaf987cd965ffaf539",
+      "map": "instances/48-15/map.json",
+      "map_sha256": "badb756187899a3ab2edb8641667b30a2c803eb16d020d483fac76c1503101e0",
+      "variables": 4670,
+      "clauses": 16360
+    },
+    {
+      "small_group_id": [
+        48,
+        16
+      ],
+      "q": 7,
+      "structure": "(C3 : Q8) : C2",
+      "group": "groups/48-16.json",
+      "group_sha256": "3dc8d566c497b2a4a64f0c14a04d81ea233fc76022cbcb4b10098f31722635de",
+      "cnf": "instances/48-16/input.cnf",
+      "cnf_sha256": "b5b09c8de2049cf59498852eff7ef4ac037c8e790f3760d65247440b43a1c683",
+      "map": "instances/48-16/map.json",
+      "map_sha256": "40d8687ad5f777c70fc2d92330e4cff4486ed5aed1cb555155bf1e50d5d8f56f",
+      "variables": 4658,
+      "clauses": 16348
+    },
+    {
+      "small_group_id": [
+        48,
+        17
+      ],
+      "q": 7,
+      "structure": "(C3 x Q8) : C2",
+      "group": "groups/48-17.json",
+      "group_sha256": "790ed35392497bb8e99748296a455424db4009fb24a9373e03dd718810603f28",
+      "cnf": "instances/48-17/input.cnf",
+      "cnf_sha256": "7104d6343d2b7c2fbd29a21025350a150be0791405715c4d0ed78af9730628b3",
+      "map": "instances/48-17/map.json",
+      "map_sha256": "8ae5db5bc7233bab889d188054c4bf89ae1b496362b6dda8e24bed92f7802104",
+      "variables": 4666,
+      "clauses": 16356
+    },
+    {
+      "small_group_id": [
+        48,
+        18
+      ],
+      "q": 7,
+      "structure": "C3 : Q16",
+      "group": "groups/48-18.json",
+      "group_sha256": "50a291b85785aa56ea9744e94ba916982fa7306df7f58e3486227bd7f5606e78",
+      "cnf": "instances/48-18/input.cnf",
+      "cnf_sha256": "e7fd365fc231f652dfc99753462c16437211b901f72926688c1abf81af1a47ba",
+      "map": "instances/48-18/map.json",
+      "map_sha256": "2ee8c09b9411b7016d54dd86de03fd54225c2c7fe5a4737ae64ac011daf7c0da",
+      "variables": 4654,
+      "clauses": 16344
+    },
+    {
+      "small_group_id": [
+        48,
+        19
+      ],
+      "q": 7,
+      "structure": "(C6 x C2) : C4",
+      "group": "groups/48-19.json",
+      "group_sha256": "01d9be0806035fe8f947d60bd29077403c914b2ed0dd6a0e6de263117fe990b3",
+      "cnf": "instances/48-19/input.cnf",
+      "cnf_sha256": "ee1b48d80e8cc3bc651c37240f060fa9bca026b8d928133775b547fc13b683c3",
+      "map": "instances/48-19/map.json",
+      "map_sha256": "5d5285a90717df0a7427fe6f80519fb4ed2366ae46d4e093f8d3d03122e18641",
+      "variables": 4660,
+      "clauses": 16350
+    },
+    {
+      "small_group_id": [
+        48,
+        20
+      ],
+      "q": 7,
+      "structure": "C12 x C4",
+      "group": "groups/48-20.json",
+      "group_sha256": "9a9464639aebee122d903bab669f157407551cb2c664d5acb72771c32197d0d3",
+      "cnf": "instances/48-20/input.cnf",
+      "cnf_sha256": "d629bddd5c40928e18424f5f1a05d8ca3f73ae6afe68501c29788e908974113a",
+      "map": "instances/48-20/map.json",
+      "map_sha256": "2dbce30dd474699ab431ad5de220f97ad85e3c28334b4309a2fcb2b2a4c0e858",
+      "variables": 4656,
+      "clauses": 16346
+    },
+    {
+      "small_group_id": [
+        48,
+        21
+      ],
+      "q": 7,
+      "structure": "C3 x ((C4 x C2) : C2)",
+      "group": "groups/48-21.json",
+      "group_sha256": "7712a16994aea44ab54d8d0f7998a36c215bed57be205c40a2de2d5f6a0de852",
+      "cnf": "instances/48-21/input.cnf",
+      "cnf_sha256": "265e84699a8bcb0743f3f35936dd78ad1fb94fe10effabfa143319c5849d4a4a",
+      "map": "instances/48-21/map.json",
+      "map_sha256": "e41cbf3b12935b905ea512d9a4ebaa25e9444b2617e7ffe77142a5b9c827f466",
+      "variables": 4660,
+      "clauses": 16350
+    },
+    {
+      "small_group_id": [
+        48,
+        22
+      ],
+      "q": 7,
+      "structure": "C3 x (C4 : C4)",
+      "group": "groups/48-22.json",
+      "group_sha256": "751435160d558a92ca646779561e909e40e38837bc4202b5fa89b25a8569c1b2",
+      "cnf": "instances/48-22/input.cnf",
+      "cnf_sha256": "7599a5654f0696e7e2e7120c4f7e2a61e8a7259a4930d8c7e5e85fcf4be575e2",
+      "map": "instances/48-22/map.json",
+      "map_sha256": "09453f569989f6f4ae8cc72609b82e083996e5685f78b29c2e59aa666946cb68",
+      "variables": 4656,
+      "clauses": 16346
+    },
+    {
+      "small_group_id": [
+        48,
+        23
+      ],
+      "q": 7,
+      "structure": "C24 x C2",
+      "group": "groups/48-23.json",
+      "group_sha256": "cdae9283d1e5376bf114e9c77166268436b4aef21f2e7f0d884bebbde179c4ac",
+      "cnf": "instances/48-23/input.cnf",
+      "cnf_sha256": "6101760e9e51b28fea7cb6605b58d68082042dcb8814b1931b7ecdd6fa6970f7",
+      "map": "instances/48-23/map.json",
+      "map_sha256": "d95444e4ef8a0a89ac4e9241525e2e7d1fd5c3c23323d75dca1700166403f1b0",
+      "variables": 4656,
+      "clauses": 16346
+    },
+    {
+      "small_group_id": [
+        48,
+        24
+      ],
+      "q": 7,
+      "structure": "C3 x (C8 : C2)",
+      "group": "groups/48-24.json",
+      "group_sha256": "1d3f43969ccd90ba6997f4f1d9a51ded979d82b8a8cda6119e8be2a71a3737ef",
+      "cnf": "instances/48-24/input.cnf",
+      "cnf_sha256": "620a79609f2f245fde4feea8da239e9439252bf4beea492094837e1d984574b5",
+      "map": "instances/48-24/map.json",
+      "map_sha256": "457ec0960c5b6ac916870661b35130f65a94b9d727809d03aa38bd1201ea5072",
+      "variables": 4656,
+      "clauses": 16346
+    },
+    {
+      "small_group_id": [
+        48,
+        25
+      ],
+      "q": 7,
+      "structure": "C3 x D16",
+      "group": "groups/48-25.json",
+      "group_sha256": "b69f05d0e3b3133265570dec4b17bac42ff8804ebfc2fa3041b1056c7ec38722",
+      "cnf": "instances/48-25/input.cnf",
+      "cnf_sha256": "c92d8833f52addab88036fd78e361403cad60525a1cbea8da70f8f5311615c98",
+      "map": "instances/48-25/map.json",
+      "map_sha256": "fdf210f3a5dd426983be9b5dcf033afee71e8a7b324c777aaf06ae52a72646b7",
+      "variables": 4662,
+      "clauses": 16352
+    },
+    {
+      "small_group_id": [
+        48,
+        26
+      ],
+      "q": 7,
+      "structure": "C3 x QD16",
+      "group": "groups/48-26.json",
+      "group_sha256": "8eb2bd3032a007ecdc7858d9b04df65447ace6e94572f8f702eeacead4741b31",
+      "cnf": "instances/48-26/input.cnf",
+      "cnf_sha256": "9ca37de69ef63eda7b8b1a524f69a4d9b67018900019637290995fb908e36cbe",
+      "map": "instances/48-26/map.json",
+      "map_sha256": "0a5452b638247912ddd66f63bb95bf357af33a5b117370dd1ee16c8710a79cda",
+      "variables": 4658,
+      "clauses": 16348
+    },
+    {
+      "small_group_id": [
+        48,
+        27
+      ],
+      "q": 7,
+      "structure": "C3 x Q16",
+      "group": "groups/48-27.json",
+      "group_sha256": "85ef71d1abf7ea5ecabc7b80d0f9d7f0dbd43f3181355d919a4c118c3d6f7abe",
+      "cnf": "instances/48-27/input.cnf",
+      "cnf_sha256": "06fe00b559367891092a3bd48cc355091bc14a21773135bcf493789a62aaaf91",
+      "map": "instances/48-27/map.json",
+      "map_sha256": "baf2d7dfe1c47dc8bb468c9f7c13aa481dfaf9ca157f55985f2e6f7e60580a86",
+      "variables": 4654,
+      "clauses": 16344
+    },
+    {
+      "small_group_id": [
+        48,
+        28
+      ],
+      "q": 7,
+      "structure": "C2 . S4 = SL(2,3) . C2",
+      "group": "groups/48-28.json",
+      "group_sha256": "c0003aeebfca43d5a8b6b4d8b2083a494b8c9160ee86145e3a9bbdec8eaa9e14",
+      "cnf": "instances/48-28/input.cnf",
+      "cnf_sha256": "1818129291044c588d9a973ab389a26288e8a04dfdd862bd9b4c676457a87618",
+      "map": "instances/48-28/map.json",
+      "map_sha256": "5380c12d3823cf898a2e159a2962ad50c8b78cf864bc3161ad703730b5ed4a58",
+      "variables": 4654,
+      "clauses": 16344
+    },
+    {
+      "small_group_id": [
+        48,
+        29
+      ],
+      "q": 7,
+      "structure": "GL(2,3)",
+      "group": "groups/48-29.json",
+      "group_sha256": "65e6dddac6d4187fd4ea42b07363d9837a2d4eb67516bd7e9d605801613c994c",
+      "cnf": "instances/48-29/input.cnf",
+      "cnf_sha256": "437427de2c426663ef19ef6e7a0e6e0214579e30695155ad3d51b0c28fd5ff96",
+      "map": "instances/48-29/map.json",
+      "map_sha256": "7cd0da49adc814cfd9483f723202f0420c7615a9d75034d9b22287133bede5a1",
+      "variables": 4666,
+      "clauses": 16356
+    },
+    {
+      "small_group_id": [
+        48,
+        30
+      ],
+      "q": 7,
+      "structure": "A4 : C4",
+      "group": "groups/48-30.json",
+      "group_sha256": "4154419b275e750dab86817a0517532fdb3af9a46ea2f6bb5be388c577f93241",
+      "cnf": "instances/48-30/input.cnf",
+      "cnf_sha256": "c36c1f86418f4f8fc2c6f32a2c0b2f04bd60c822762aac0520269a43919a77f9",
+      "map": "instances/48-30/map.json",
+      "map_sha256": "bb96b3dacf9140f190536a7bb3f2380f65d8a3cbaa4daf9ee1b4415289123f0a",
+      "variables": 4660,
+      "clauses": 16350
+    },
+    {
+      "small_group_id": [
+        48,
+        31
+      ],
+      "q": 7,
+      "structure": "C4 x A4",
+      "group": "groups/48-31.json",
+      "group_sha256": "d7277c7ad685da2aae03cc6e189a01a0cd9e25f4d8026d5556de6091f6aa7d03",
+      "cnf": "instances/48-31/input.cnf",
+      "cnf_sha256": "91eb33748f99d65f0fe124ffe28a548908952e202eb1967e2fb8d63d51fccf18",
+      "map": "instances/48-31/map.json",
+      "map_sha256": "8591498526e7c214f0abf31a5ad9b9ba7dc663512d34bc2a89fcfc0d411f5f04",
+      "variables": 4660,
+      "clauses": 16350
+    },
+    {
+      "small_group_id": [
+        48,
+        32
+      ],
+      "q": 7,
+      "structure": "C2 x SL(2,3)",
+      "group": "groups/48-32.json",
+      "group_sha256": "0909d74d95bd57f701feceed90226a25db8d5d0a8c835662004b10c99527cf0b",
+      "cnf": "instances/48-32/input.cnf",
+      "cnf_sha256": "9736b3d2dbca035ddf66e956a424e68afd31f5bf13356c62cda59c83268097b6",
+      "map": "instances/48-32/map.json",
+      "map_sha256": "387515004be10c5b911262f6305e6331fba0219e9e68bbd4cd839be6cb53c1c1",
+      "variables": 4656,
+      "clauses": 16346
+    },
+    {
+      "small_group_id": [
+        48,
+        33
+      ],
+      "q": 7,
+      "structure": "((C4 x C2) : C2) : C3",
+      "group": "groups/48-33.json",
+      "group_sha256": "4698e24ebc12d0b3b66902b95a35ff65f07e53787f92f85716755d5ca9d1e367",
+      "cnf": "instances/48-33/input.cnf",
+      "cnf_sha256": "4c24666dc98f82e3d7c3d2aa3553ea565f9fd03b3b53bdcab5c00b33a1eb1744",
+      "map": "instances/48-33/map.json",
+      "map_sha256": "a94e26a0f66ca8e6341ae919fd44303bf134741d2994ab682eb0b3fa2d49a97d",
+      "variables": 4660,
+      "clauses": 16350
+    },
+    {
+      "small_group_id": [
+        48,
+        34
+      ],
+      "q": 7,
+      "structure": "C2 x (C3 : Q8)",
+      "group": "groups/48-34.json",
+      "group_sha256": "03fbe79b1cd1288f489bbae32d9c9e0957398790d755fab562fd2ee56184bcc6",
+      "cnf": "instances/48-34/input.cnf",
+      "cnf_sha256": "116d3a84af1759de4fc83471ee3158975cf14e2ca06f5520c7d80f3b10a38914",
+      "map": "instances/48-34/map.json",
+      "map_sha256": "da207d0abf95aa844dfc74dd3a8d92e70eb0ce2aab86b04b2df8c71fe4523b79",
+      "variables": 4656,
+      "clauses": 16346
+    },
+    {
+      "small_group_id": [
+        48,
+        35
+      ],
+      "q": 7,
+      "structure": "C2 x C4 x S3",
+      "group": "groups/48-35.json",
+      "group_sha256": "82a884533093003e4b57b4e1d5af0fef6e6fc4680b69fb3fc77c469095d7dbc6",
+      "cnf": "instances/48-35/input.cnf",
+      "cnf_sha256": "adc8d2a29b07ead0ea758a415368ff92f6fd5097869e2a66e1e6d2f273290e7b",
+      "map": "instances/48-35/map.json",
+      "map_sha256": "0fac1f4cdf4df98da724340311e9c887e5a1c273d6a2d66631f908b75669590a",
+      "variables": 4668,
+      "clauses": 16358
+    },
+    {
+      "small_group_id": [
+        48,
+        36
+      ],
+      "q": 7,
+      "structure": "C2 x D24",
+      "group": "groups/48-36.json",
+      "group_sha256": "27721aa016e80271e64d352d75fd059ea6211a200240053322548133cfe69efa",
+      "cnf": "instances/48-36/input.cnf",
+      "cnf_sha256": "3038ee9b409b6a061efefb58d3c017c7c7c9884d0dec7504681dc21081017c8b",
+      "map": "instances/48-36/map.json",
+      "map_sha256": "19e69d3ff2e9ad4a969eb2359909837b367b376774ce5ffc682c8e0d56d717ae",
+      "variables": 4680,
+      "clauses": 16370
+    },
+    {
+      "small_group_id": [
+        48,
+        37
+      ],
+      "q": 7,
+      "structure": "(C12 x C2) : C2",
+      "group": "groups/48-37.json",
+      "group_sha256": "b227eeeb111dd29f98bc67f5da5ebcc3d8e0565fcbdcd338a46eb5460f75c4a3",
+      "cnf": "instances/48-37/input.cnf",
+      "cnf_sha256": "1b3b51aa69d49553a1e4379329e5a4de417a156add97516f4e799b0973c39203",
+      "map": "instances/48-37/map.json",
+      "map_sha256": "203b19b2319fec44718a40bc7fc5f39dbaf640700b984739a361c46412ff24c3",
+      "variables": 4668,
+      "clauses": 16358
+    },
+    {
+      "small_group_id": [
+        48,
+        38
+      ],
+      "q": 7,
+      "structure": "D8 x S3",
+      "group": "groups/48-38.json",
+      "group_sha256": "8f162c8e769803f615216beb4c95b943523989e1c14dfad2e1c40390848a4a27",
+      "cnf": "instances/48-38/input.cnf",
+      "cnf_sha256": "171c2fae2a09c929e4f5b09f97b8cae644696248c4c40cbde51d18c6157cc235",
+      "map": "instances/48-38/map.json",
+      "map_sha256": "3985a7fea9cc4bc0f7a091f07357244e45a6ef5830de80dc29eb54c36af01ea0",
+      "variables": 4676,
+      "clauses": 16366
+    },
+    {
+      "small_group_id": [
+        48,
+        39
+      ],
+      "q": 7,
+      "structure": "(C4 x S3) : C2",
+      "group": "groups/48-39.json",
+      "group_sha256": "69755ce75b7cc7b124e6cea6bd86240c0a501f24013d0aae6f786ae131777c07",
+      "cnf": "instances/48-39/input.cnf",
+      "cnf_sha256": "3881719b72f2b9cf1cf42839cc5f1e7bb3419e6e8ea42a041740b03f9b3416dd",
+      "map": "instances/48-39/map.json",
+      "map_sha256": "b75cf3e6f1077c21cb3427de6b65aa2baacfadf551d6d3f56848bb4ee0b8b0e0",
+      "variables": 4664,
+      "clauses": 16354
+    },
+    {
+      "small_group_id": [
+        48,
+        40
+      ],
+      "q": 7,
+      "structure": "Q8 x S3",
+      "group": "groups/48-40.json",
+      "group_sha256": "f552a4e9872ad79eefab48d588a52831f761e2367e11035ec68b75b5e8152783",
+      "cnf": "instances/48-40/input.cnf",
+      "cnf_sha256": "636bfc1948b544469c07d4e294afede9ef601d6d000786176f529ec1e9ae1c5a",
+      "map": "instances/48-40/map.json",
+      "map_sha256": "c52112db4ec948f1f89a32debb8bd379a837510376d9471ff909f3dc3efc8561",
+      "variables": 4660,
+      "clauses": 16350
+    },
+    {
+      "small_group_id": [
+        48,
+        41
+      ],
+      "q": 7,
+      "structure": "(C4 x S3) : C2",
+      "group": "groups/48-41.json",
+      "group_sha256": "4541a9b7a38cece0a4108f981641fc4444464953fcaa99048d3357b53e65f5e1",
+      "cnf": "instances/48-41/input.cnf",
+      "cnf_sha256": "e46eaa0521285e9aa6e0ef38b6b8c02d01d6be56a71575b6135fed7cf314d180",
+      "map": "instances/48-41/map.json",
+      "map_sha256": "7847ad2b3dfd0c8ecf6f9d746f77c38e5e1548a132dad9e0b48252e41ed49adc",
+      "variables": 4672,
+      "clauses": 16362
+    },
+    {
+      "small_group_id": [
+        48,
+        42
+      ],
+      "q": 7,
+      "structure": "C2 x C2 x (C3 : C4)",
+      "group": "groups/48-42.json",
+      "group_sha256": "d9c01fbdcc9fbe789ae3af1d51d588ba53d26348d25fa231b3b5e55fd5084e77",
+      "cnf": "instances/48-42/input.cnf",
+      "cnf_sha256": "f236f3edb53bb096eb09027608ffe750ef99949f1aa5dd58ff2368a763fa130a",
+      "map": "instances/48-42/map.json",
+      "map_sha256": "3b777d97a9f4093beec0200e80ced43152a02fdae9d18b04acecb8f0aa91d89c",
+      "variables": 4660,
+      "clauses": 16350
+    },
+    {
+      "small_group_id": [
+        48,
+        43
+      ],
+      "q": 7,
+      "structure": "C2 x ((C6 x C2) : C2)",
+      "group": "groups/48-43.json",
+      "group_sha256": "fb65518204b61575dbedcafde394f5779e9df0bc777f0c4e3e972c00aa5749f3",
+      "cnf": "instances/48-43/input.cnf",
+      "cnf_sha256": "d82fd50f451180abb1ba42d1225c757e44e204677c9c0d2a43ded575f907f8e7",
+      "map": "instances/48-43/map.json",
+      "map_sha256": "9b1d1827f3cb6250c0b2f5a51408a11d9458918e356d0c21719a9cff2d209463",
+      "variables": 4672,
+      "clauses": 16362
+    },
+    {
+      "small_group_id": [
+        48,
+        44
+      ],
+      "q": 7,
+      "structure": "C12 x C2 x C2",
+      "group": "groups/48-44.json",
+      "group_sha256": "b8144beac2695db90227eca98127f3d41a6b50fb855e9c7f497ce193bdfce204",
+      "cnf": "instances/48-44/input.cnf",
+      "cnf_sha256": "2802c75b14fcae52ce10fbc310f77ef37de5e8ec2693e3aa40e86f8dc1d635b1",
+      "map": "instances/48-44/map.json",
+      "map_sha256": "5a6a13d56a6eb7ec04ffbec0b41789f9b1a7071ca22c6cde9a66b57b25ae18bd",
+      "variables": 4660,
+      "clauses": 16350
+    },
+    {
+      "small_group_id": [
+        48,
+        45
+      ],
+      "q": 7,
+      "structure": "C6 x D8",
+      "group": "groups/48-45.json",
+      "group_sha256": "e4ec367df05449d1d4fc2dcac6f98774e9826fbe2ed36646b0e473c78c62c6e8",
+      "cnf": "instances/48-45/input.cnf",
+      "cnf_sha256": "87d53d0a7593e4799741dbf708a46470474f9053993f9ef65b3a00ae8351d660",
+      "map": "instances/48-45/map.json",
+      "map_sha256": "b6fb1d26c6d4f9927be31dba9950fe065ae79d6437e50360b1d9c0028b28818b",
+      "variables": 4664,
+      "clauses": 16354
+    },
+    {
+      "small_group_id": [
+        48,
+        46
+      ],
+      "q": 7,
+      "structure": "C6 x Q8",
+      "group": "groups/48-46.json",
+      "group_sha256": "ed9ff92f7e7bb8bd0b3a69f6221bd5cf5ad73492c1f2fd25032df101d7871f84",
+      "cnf": "instances/48-46/input.cnf",
+      "cnf_sha256": "0ae1079169b5d2a616e03e77b9a3917d18132197d5bb070bb8bc9fe8e495decc",
+      "map": "instances/48-46/map.json",
+      "map_sha256": "2d668ad5eb037052371469138afcec0d7c396bb3ac8570286f563d8098bf3076",
+      "variables": 4656,
+      "clauses": 16346
+    },
+    {
+      "small_group_id": [
+        48,
+        47
+      ],
+      "q": 7,
+      "structure": "C3 x ((C4 x C2) : C2)",
+      "group": "groups/48-47.json",
+      "group_sha256": "67df4a7041c3205d5258744da611e4ef58106dfe94e9db60ebbb531521f68458",
+      "cnf": "instances/48-47/input.cnf",
+      "cnf_sha256": "6a758520c3d58f403a949808655558bea937dc236454ffe5e56e37748b8b15fa",
+      "map": "instances/48-47/map.json",
+      "map_sha256": "3ed3687a8bf8155ad3d855565e5e4f885c6f942434d32f39073137db588bc424",
+      "variables": 4660,
+      "clauses": 16350
+    },
+    {
+      "small_group_id": [
+        48,
+        48
+      ],
+      "q": 7,
+      "structure": "C2 x S4",
+      "group": "groups/48-48.json",
+      "group_sha256": "41f3d9a9a20dfda085bac770781decc178906d45bc13a814886b8d70d4e41bbf",
+      "cnf": "instances/48-48/input.cnf",
+      "cnf_sha256": "43522457832aec375bf59aa69d84c8d9d586403236c3def5894673ddeff5dfff",
+      "map": "instances/48-48/map.json",
+      "map_sha256": "4445256cc9c91528844d7ddeaf5b8ff5ff60c24c50de323c475d30a1f9749a20",
+      "variables": 4672,
+      "clauses": 16362
+    },
+    {
+      "small_group_id": [
+        48,
+        49
+      ],
+      "q": 7,
+      "structure": "C2 x C2 x A4",
+      "group": "groups/48-49.json",
+      "group_sha256": "2c8d730a6cc41bbd3b3df34c1020f4fdad7520088b61a69279c8d6b3c8470d56",
+      "cnf": "instances/48-49/input.cnf",
+      "cnf_sha256": "e899a248b064497e3341b3002cdaa3e655d5ea7b99c904a96bc95a354d5854cc",
+      "map": "instances/48-49/map.json",
+      "map_sha256": "046d6aa0cb62d76fc71d18725124bb7ff952ed0739109c8aab3dcee080fb40b5",
+      "variables": 4668,
+      "clauses": 16358
+    },
+    {
+      "small_group_id": [
+        48,
+        50
+      ],
+      "q": 7,
+      "structure": "(C2 x C2 x C2 x C2) : C3",
+      "group": "groups/48-50.json",
+      "group_sha256": "33d5b7635f25e3170f41c52e3c277c41ce4f219c0a5576f898f0d380956bad6d",
+      "cnf": "instances/48-50/input.cnf",
+      "cnf_sha256": "730f1d4cd6b485180b17555ba8980cfdc0b00b0e08975633edbaca5c409497ec",
+      "map": "instances/48-50/map.json",
+      "map_sha256": "105ecb4e3c736a2f8bab5d66a6a0acf2872d0ff7b4bda81e9c1d81d9de64aff8",
+      "variables": 4668,
+      "clauses": 16358
+    },
+    {
+      "small_group_id": [
+        48,
+        51
+      ],
+      "q": 7,
+      "structure": "C2 x C2 x C2 x S3",
+      "group": "groups/48-51.json",
+      "group_sha256": "95ca679a6c3c333998e838b37a2ef8ea10e6b15e6c70ee83e5b721200c3f4c4d",
+      "cnf": "instances/48-51/input.cnf",
+      "cnf_sha256": "aac8f0dd6af3f2b11ac174f588fbc4fb093c5937d7668327e76e9b626224ca11",
+      "map": "instances/48-51/map.json",
+      "map_sha256": "9419bf85b616685324750aa030d942846df7d8d8e4bc69dfe070f06918b27e49",
+      "variables": 4684,
+      "clauses": 16374
+    },
+    {
+      "small_group_id": [
+        48,
+        52
+      ],
+      "q": 7,
+      "structure": "C6 x C2 x C2 x C2",
+      "group": "groups/48-52.json",
+      "group_sha256": "fc541551d352cc080b35d21187c1d046794ae687d878c71453cec5156b694561",
+      "cnf": "instances/48-52/input.cnf",
+      "cnf_sha256": "3a1565b1d7fb0c637f2a2006ab54208bfd49b327cf2b9a3c2035c93e9c83e885",
+      "map": "instances/48-52/map.json",
+      "map_sha256": "2ccec39ce141b3dd69c3c0c67b3046a1f41bba3686776274e0b72a54ea370d88",
+      "variables": 4668,
+      "clauses": 16358
+    },
+    {
+      "small_group_id": [
+        80,
+        1
+      ],
+      "q": 9,
+      "structure": "C5 : C16",
+      "group": "groups/80-1.json",
+      "group_sha256": "b54a58cdadc40f82016feb13168fca0d028b4791244ebf8af2bdd9fc79775d68",
+      "cnf": "instances/80-1/input.cnf",
+      "cnf_sha256": "a96ad199d5d2ee9fba50b2b907c51d27789b9abda1e2439dec04a6b29a39d9e2",
+      "map": "instances/80-1/map.json",
+      "map_sha256": "7117ab276e3abbb4285740ed15e0399915a4b3972c0725b1cbb394e023e60b23",
+      "variables": 13036,
+      "clauses": 45804
+    },
+    {
+      "small_group_id": [
+        80,
+        2
+      ],
+      "q": 9,
+      "structure": "C80",
+      "group": "groups/80-2.json",
+      "group_sha256": "8d023f6b3f2a791a9efa2f147f37a7fe80fe2f81d56adb9108b7da13c7519f9f",
+      "cnf": "instances/80-2/input.cnf",
+      "cnf_sha256": "2040a7559118ea08a7c31b1e88958210f1fbc3350cb3c231ee4653fd1a6f4070",
+      "map": "instances/80-2/map.json",
+      "map_sha256": "13072ac59f643ddd518c32d956e7ffdfcb919b0b948c013069b2f4c1ce8a99e7",
+      "variables": 13036,
+      "clauses": 45804
+    },
+    {
+      "small_group_id": [
+        80,
+        3
+      ],
+      "q": 9,
+      "structure": "C5 : C16",
+      "group": "groups/80-3.json",
+      "group_sha256": "3ed837dfa9405ffa30313171baf1011a4e30d51acf6b1603a6a435d0d2153ee2",
+      "cnf": "instances/80-3/input.cnf",
+      "cnf_sha256": "9bb607aeed2b04f7bb4c05b6a6f2e0c7cc302ba7b4477a44a5ea242ef0f9344e",
+      "map": "instances/80-3/map.json",
+      "map_sha256": "14df51c551fc12b9410873d4a0db5cb212a39d192dc0c5b2cc75069058bb02df",
+      "variables": 13036,
+      "clauses": 45804
+    },
+    {
+      "small_group_id": [
+        80,
+        4
+      ],
+      "q": 9,
+      "structure": "C8 x D10",
+      "group": "groups/80-4.json",
+      "group_sha256": "535d9a6146e699e2b88167256d6fcdec0894d45f48c1e2df86ed7a8577855155",
+      "cnf": "instances/80-4/input.cnf",
+      "cnf_sha256": "a21f62fc21cfff50cc83a2442ed0d20a028598b13b8a01fd65009dc2de7723c8",
+      "map": "instances/80-4/map.json",
+      "map_sha256": "3221ee5de4952b5c04c2ae183166a695ca289b811a1cabb4965ac2563f7fc761",
+      "variables": 13046,
+      "clauses": 45814
+    },
+    {
+      "small_group_id": [
+        80,
+        5
+      ],
+      "q": 9,
+      "structure": "C40 : C2",
+      "group": "groups/80-5.json",
+      "group_sha256": "6e718c98c054bd2c99d76a8d4a48805db1465759a4bdfcfa3dd5d1b650a5f476",
+      "cnf": "instances/80-5/input.cnf",
+      "cnf_sha256": "b79a07f726ebe7ccb307bf9f5957adbd8684f92e95e84bb0f9ea458222db97d7",
+      "map": "instances/80-5/map.json",
+      "map_sha256": "d19331b7a5ab0ab017e623c96038b6d2d142683318f17acf71db5b175fec0a5b",
+      "variables": 13046,
+      "clauses": 45814
+    },
+    {
+      "small_group_id": [
+        80,
+        6
+      ],
+      "q": 9,
+      "structure": "C40 : C2",
+      "group": "groups/80-6.json",
+      "group_sha256": "c2c25abbbde5b90f8224f337a9b68e459f4529298f64b3f0225f46d18ed3bdd6",
+      "cnf": "instances/80-6/input.cnf",
+      "cnf_sha256": "9058d4908aa1f2d46bb5abdbaafa3ce1667cece05952bab47fa73d751cd7196e",
+      "map": "instances/80-6/map.json",
+      "map_sha256": "bfa7a4458f07e3a5706f2a4dd913a71af97a2fa598d9f0cb21e042738c1b4a25",
+      "variables": 13056,
+      "clauses": 45824
+    },
+    {
+      "small_group_id": [
+        80,
+        7
+      ],
+      "q": 9,
+      "structure": "D80",
+      "group": "groups/80-7.json",
+      "group_sha256": "66f08184b13f37ec86108b9837381cb49a9b72d931873e6089ff05066db7270c",
+      "cnf": "instances/80-7/input.cnf",
+      "cnf_sha256": "ee8712f4a61b13d9202670562a86dd9b0f7bf94dd899beaded078b108835a649",
+      "map": "instances/80-7/map.json",
+      "map_sha256": "ee6ee2dd8c09245914f30fd37cc52d3c1e1387ae2999526552b248fc68e96229",
+      "variables": 13076,
+      "clauses": 45844
+    },
+    {
+      "small_group_id": [
+        80,
+        8
+      ],
+      "q": 9,
+      "structure": "C5 : Q16",
+      "group": "groups/80-8.json",
+      "group_sha256": "3be8cf5aecfa42bad75930e9bfac0d944ea687856ad5f3be5daed974ca183c1c",
+      "cnf": "instances/80-8/input.cnf",
+      "cnf_sha256": "a350581da3ae62c99f93a307281a660c70c0562861547cfdbe7030c0c5e8bbf3",
+      "map": "instances/80-8/map.json",
+      "map_sha256": "daef9ad7f97a34a6f3698e30ce4cad1b44ac689eec60fa863bbb534f9d8f9d77",
+      "variables": 13036,
+      "clauses": 45804
+    },
+    {
+      "small_group_id": [
+        80,
+        9
+      ],
+      "q": 9,
+      "structure": "C2 x (C5 : C8)",
+      "group": "groups/80-9.json",
+      "group_sha256": "2f4931998c62613e3b605897addfa60c5bcf235cbd49e5366a550beccf34719e",
+      "cnf": "instances/80-9/input.cnf",
+      "cnf_sha256": "b3dd51dd2d977e01e29fd9e4ae33aef55a1c30563a4149bc6b858f5b4bf05d5d",
+      "map": "instances/80-9/map.json",
+      "map_sha256": "84f734bd25848c4e8e531c51a1d9dfeec3a958d22bba94a9d84fd3316da34f91",
+      "variables": 13038,
+      "clauses": 45806
+    },
+    {
+      "small_group_id": [
+        80,
+        10
+      ],
+      "q": 9,
+      "structure": "(C5 : C8) : C2",
+      "group": "groups/80-10.json",
+      "group_sha256": "312e0193bb320dd26e46f475af2be5882acfe7012f786a3f4ca8ad24fc02295d",
+      "cnf": "instances/80-10/input.cnf",
+      "cnf_sha256": "3cb9e975041edfecc0c35bc835329e69b04b79d4ed70772da370401a1f6f2b16",
+      "map": "instances/80-10/map.json",
+      "map_sha256": "345bb88dbf194875ccf57b643830f40efcadf6bbd614f75f3a260baeab804253",
+      "variables": 13038,
+      "clauses": 45806
+    },
+    {
+      "small_group_id": [
+        80,
+        11
+      ],
+      "q": 9,
+      "structure": "C4 x (C5 : C4)",
+      "group": "groups/80-11.json",
+      "group_sha256": "29178630ecb63be14cb59a9314d7734678849430f890d9bd303240ed4279d822",
+      "cnf": "instances/80-11/input.cnf",
+      "cnf_sha256": "a1b5211643f039f4e28466b7b96c5e9a286f41b4d1e75d362325fab6adc7745a",
+      "map": "instances/80-11/map.json",
+      "map_sha256": "b024a98fb6bc3752dce7d7a4c4c342ad409238e9701e87867f01ff4379d4eb14",
+      "variables": 13038,
+      "clauses": 45806
+    },
+    {
+      "small_group_id": [
+        80,
+        12
+      ],
+      "q": 9,
+      "structure": "(C5 : C4) : C4",
+      "group": "groups/80-12.json",
+      "group_sha256": "e2c8db297bee697606daa7ea20fab32f413e5cb59e2a7e4ef9f76385b621d110",
+      "cnf": "instances/80-12/input.cnf",
+      "cnf_sha256": "a5d4cae3365149685f119759eec291f38ee7515d426e6374f77ac0f5031fc9d2",
+      "map": "instances/80-12/map.json",
+      "map_sha256": "836dfe4ad815e6ee3c7d12dacf8ec7858e83ce11573f320ed3134566f670df02",
+      "variables": 13038,
+      "clauses": 45806
+    },
+    {
+      "small_group_id": [
+        80,
+        13
+      ],
+      "q": 9,
+      "structure": "C20 : C4",
+      "group": "groups/80-13.json",
+      "group_sha256": "243b1a1252790fa47eac09434c49976e5cbb17af4abe3d24eb664ce6e0a20bfe",
+      "cnf": "instances/80-13/input.cnf",
+      "cnf_sha256": "c8e5e62861faeeaa5dd1b9681f1c1039dd13f8a2d0309c5a0cffa179a8449a90",
+      "map": "instances/80-13/map.json",
+      "map_sha256": "e60ad7736088edfa447c13dd60b3557172fbfafa29ed8fc800339c7d0f344cc5",
+      "variables": 13038,
+      "clauses": 45806
+    },
+    {
+      "small_group_id": [
+        80,
+        14
+      ],
+      "q": 9,
+      "structure": "(C20 x C2) : C2",
+      "group": "groups/80-14.json",
+      "group_sha256": "4edc5be0d5c65eb718eac27d3d5bb54f3ae27a98b715bd076b01c9388a8918d8",
+      "cnf": "instances/80-14/input.cnf",
+      "cnf_sha256": "e4e61df4f57f0c7ea75ce3a22d078d7f477a2d172e57c7a2cfd4d47e9a474b4d",
+      "map": "instances/80-14/map.json",
+      "map_sha256": "9a8a22a1b87e9b68c50398046cbe8cf23f2346ba0f01f72564960ad420404cd6",
+      "variables": 13058,
+      "clauses": 45826
+    },
+    {
+      "small_group_id": [
+        80,
+        15
+      ],
+      "q": 9,
+      "structure": "(C5 x D8) : C2",
+      "group": "groups/80-15.json",
+      "group_sha256": "1dca505002000bd646af8ea02c6083ebabe22def3b4b7b5552210e45f124f510",
+      "cnf": "instances/80-15/input.cnf",
+      "cnf_sha256": "1fa3c414f7938b72d8657dec1fc2c41a917d2415017f6c4c9e3b925613503e1f",
+      "map": "instances/80-15/map.json",
+      "map_sha256": "189546cadbcce8ee236bf2fe3fbf7537824d3e2574419734cb8095a4c32eb68c",
+      "variables": 13060,
+      "clauses": 45828
+    },
+    {
+      "small_group_id": [
+        80,
+        16
+      ],
+      "q": 9,
+      "structure": "(C5 : Q8) : C2",
+      "group": "groups/80-16.json",
+      "group_sha256": "bb11938565d5e1df8931e71b7b9eadbc17fcf47327ba37fc75b39f770649f5ac",
+      "cnf": "instances/80-16/input.cnf",
+      "cnf_sha256": "25206194dfba2de7669d367a3f281f67811df0535f52617465d3af3ec07396e2",
+      "map": "instances/80-16/map.json",
+      "map_sha256": "a6acb7cdd8abcd56cbf6b1e1b4915e8dc0e11793a732b549a59e460b661c5ce0",
+      "variables": 13040,
+      "clauses": 45808
+    },
+    {
+      "small_group_id": [
+        80,
+        17
+      ],
+      "q": 9,
+      "structure": "(C5 x Q8) : C2",
+      "group": "groups/80-17.json",
+      "group_sha256": "1d7fbf814d39fd3db2bab35e008df5ec2e107c06ae8b1c2abc2ceac783e1dc52",
+      "cnf": "instances/80-17/input.cnf",
+      "cnf_sha256": "25eefe5bffecee7d5e5703c3f6c8a09fe2346b07099b8b2bc759b78e6d53eba2",
+      "map": "instances/80-17/map.json",
+      "map_sha256": "fdd34e7ae8e728fca9efa46375eb5d2e653a2090fb01e135de588b502868adf6",
+      "variables": 13056,
+      "clauses": 45824
+    },
+    {
+      "small_group_id": [
+        80,
+        18
+      ],
+      "q": 9,
+      "structure": "C5 : Q16",
+      "group": "groups/80-18.json",
+      "group_sha256": "0fd8863f04361011d48d914ec03b4169640e0066ee1eebc4075ccfa581a8fba6",
+      "cnf": "instances/80-18/input.cnf",
+      "cnf_sha256": "9c9546ab03de7b3737bbec9ddf768e4589fa928f75de5db6df36fed045347be0",
+      "map": "instances/80-18/map.json",
+      "map_sha256": "a467b4af35e40800fec8253b5a8a43fd0e497572b28847ed4aceeafd7fe88873",
+      "variables": 13036,
+      "clauses": 45804
+    },
+    {
+      "small_group_id": [
+        80,
+        19
+      ],
+      "q": 9,
+      "structure": "(C10 x C2) : C4",
+      "group": "groups/80-19.json",
+      "group_sha256": "c8f20a3f0a8e4212540f701645b2bedc6aa2b8b72c24ed6ee5ac7ef4d5619661",
+      "cnf": "instances/80-19/input.cnf",
+      "cnf_sha256": "9c1462a3e6bc6464c3229fa5368a457bc7e9e68cf945f3c12d9c4838201090e3",
+      "map": "instances/80-19/map.json",
+      "map_sha256": "2d0331605c07bad767eb29ecc1148a1aa882f9b816e82d3f53627d03f3ffa71b",
+      "variables": 13042,
+      "clauses": 45810
+    },
+    {
+      "small_group_id": [
+        80,
+        20
+      ],
+      "q": 9,
+      "structure": "C20 x C4",
+      "group": "groups/80-20.json",
+      "group_sha256": "85cdd970b979d94596668fbd7bafe10caefa1bcb1512b9383358861300af5839",
+      "cnf": "instances/80-20/input.cnf",
+      "cnf_sha256": "d4cb229111e49ce735bdf09b68e67403ff253d39aab71ab17f71415e5963295c",
+      "map": "instances/80-20/map.json",
+      "map_sha256": "bdbf833fb01a3a40e1ee6a7a37b360fc156a195349f24a8b692ab50f5f29ef8e",
+      "variables": 13038,
+      "clauses": 45806
+    },
+    {
+      "small_group_id": [
+        80,
+        21
+      ],
+      "q": 9,
+      "structure": "C5 x ((C4 x C2) : C2)",
+      "group": "groups/80-21.json",
+      "group_sha256": "a31497fdf79d4eec393c3414e7dbd07e696c7489cdbb2df9576c508cd5e81b25",
+      "cnf": "instances/80-21/input.cnf",
+      "cnf_sha256": "2b389530b5fa54b57d5b2fc0d80d2c8029743c3a90b423801ac66baef93b58a8",
+      "map": "instances/80-21/map.json",
+      "map_sha256": "6e850bcd3b0524dda55ee1cb45ea93d29d623f8d9f45fa8dc6ea313137b08172",
+      "variables": 13042,
+      "clauses": 45810
+    },
+    {
+      "small_group_id": [
+        80,
+        22
+      ],
+      "q": 9,
+      "structure": "C5 x (C4 : C4)",
+      "group": "groups/80-22.json",
+      "group_sha256": "a78ce8ab5e3d7c30c581127283f0ddfe27b5a7c0df47c34b1ddceb40b574da51",
+      "cnf": "instances/80-22/input.cnf",
+      "cnf_sha256": "8fcbe1c54df3b043735de2168432f67b2adf9c39017ca00a493247b254c80cb0",
+      "map": "instances/80-22/map.json",
+      "map_sha256": "a2df3f82d0075276d80b5dc675ad9f17cd1967ed3bfd1650feb54d2b5fda6d00",
+      "variables": 13038,
+      "clauses": 45806
+    },
+    {
+      "small_group_id": [
+        80,
+        23
+      ],
+      "q": 9,
+      "structure": "C40 x C2",
+      "group": "groups/80-23.json",
+      "group_sha256": "0e505a1f9beade6a1f7477df0d26e3d741538d62876a0e82838c087c35ad103e",
+      "cnf": "instances/80-23/input.cnf",
+      "cnf_sha256": "7ce7a6013c6cecb3f11f1fe29085d8f9df41723e9d1f92826856a7ff258bf949",
+      "map": "instances/80-23/map.json",
+      "map_sha256": "1bedd940452ec222e9f15475744114ea83f1eac505a7cd971a3a82b945a7f217",
+      "variables": 13038,
+      "clauses": 45806
+    },
+    {
+      "small_group_id": [
+        80,
+        24
+      ],
+      "q": 9,
+      "structure": "C5 x (C8 : C2)",
+      "group": "groups/80-24.json",
+      "group_sha256": "08af22ecc33ad54549bc34e1baef9b62e30f9ec7ad4b73633bec596d3db8e912",
+      "cnf": "instances/80-24/input.cnf",
+      "cnf_sha256": "045465ef070264ea7e7d6dc6f9fcbda62a9284cc45eaee274f8c0ac92e3e4881",
+      "map": "instances/80-24/map.json",
+      "map_sha256": "7d7cdc7c22b7006a67ab0db51729f3be74df8481747a66d35db492ff0d55a597",
+      "variables": 13038,
+      "clauses": 45806
+    },
+    {
+      "small_group_id": [
+        80,
+        25
+      ],
+      "q": 9,
+      "structure": "C5 x D16",
+      "group": "groups/80-25.json",
+      "group_sha256": "afd1c41e08aa41424573f0029e3851d5b35414f719bc1531b9e47a9f96fe4885",
+      "cnf": "instances/80-25/input.cnf",
+      "cnf_sha256": "0b5595a10f5687c0903354edafebee3fcaca44939d0a988189a72a1e0c8dc185",
+      "map": "instances/80-25/map.json",
+      "map_sha256": "e6a4e31849c29ff67ddcff7584ad3720d634881c987b32b3f2eba57e74e48a0d",
+      "variables": 13044,
+      "clauses": 45812
+    },
+    {
+      "small_group_id": [
+        80,
+        26
+      ],
+      "q": 9,
+      "structure": "C5 x QD16",
+      "group": "groups/80-26.json",
+      "group_sha256": "51542c11f530848529d323281d37107e2458a1b5b8aa5288c71a18aa1e9d90ea",
+      "cnf": "instances/80-26/input.cnf",
+      "cnf_sha256": "d05f7be302026d88d1d9825f02045c0c5010e84177ea6b5e49de468bda17f8f4",
+      "map": "instances/80-26/map.json",
+      "map_sha256": "33b56bb0c4e6a83a6fec7af1a72a0192fe7c6a6b820d539886b5265d8889a82c",
+      "variables": 13040,
+      "clauses": 45808
+    },
+    {
+      "small_group_id": [
+        80,
+        27
+      ],
+      "q": 9,
+      "structure": "C5 x Q16",
+      "group": "groups/80-27.json",
+      "group_sha256": "322e9732ba00c34ae349b65dc2f2cb9d4d4e99c42f8d2d4d0afaf03b35954394",
+      "cnf": "instances/80-27/input.cnf",
+      "cnf_sha256": "f3120490932633411ffdfcd9416367ef3692fb71f9f3549a2aaf8a670c6eba6b",
+      "map": "instances/80-27/map.json",
+      "map_sha256": "e7c6037f5205c2b7e4cb1f2fe55b1ccd2a70f224741035905ae0b252f07702cc",
+      "variables": 13036,
+      "clauses": 45804
+    },
+    {
+      "small_group_id": [
+        80,
+        28
+      ],
+      "q": 9,
+      "structure": "C5 : (C8 x C2)",
+      "group": "groups/80-28.json",
+      "group_sha256": "486bca0f5b95de69cdb01b696189bbf855abf358c896e36d0aa2e9d85d04200f",
+      "cnf": "instances/80-28/input.cnf",
+      "cnf_sha256": "d205cf703a3dd9795516dd11a21fd3cb0c3a638704c06441a9c0da1f691d3b06",
+      "map": "instances/80-28/map.json",
+      "map_sha256": "7be7cc2b04747a0d7cbfa0644a4fe4ea7053309e29841948cf1ba1de6fbcce9a",
+      "variables": 13046,
+      "clauses": 45814
+    },
+    {
+      "small_group_id": [
+        80,
+        29
+      ],
+      "q": 9,
+      "structure": "(C5 : C8) : C2",
+      "group": "groups/80-29.json",
+      "group_sha256": "61796b10001beef331afc7022f15b62cc2ae9c2683a88b4fe7f75101ede8100b",
+      "cnf": "instances/80-29/input.cnf",
+      "cnf_sha256": "e3c012b161ca1baca4a8aba14b0f47ca7ec804c9244ae2e02848a317d8bdeeb5",
+      "map": "instances/80-29/map.json",
+      "map_sha256": "759c757516b48668cf61a5b613cf9d8e5f6aba3b680303c6dad9302663a3c225",
+      "variables": 13046,
+      "clauses": 45814
+    },
+    {
+      "small_group_id": [
+        80,
+        30
+      ],
+      "q": 9,
+      "structure": "C4 x (C5 : C4)",
+      "group": "groups/80-30.json",
+      "group_sha256": "113e01ff7cad09cce6f6adc65fe07ba9b279e33c8775be16f8cc7b74c0c3b8c0",
+      "cnf": "instances/80-30/input.cnf",
+      "cnf_sha256": "abc413dbbf46348f5209efc1dadfb805d5b978d5647ec68471bd26d229da9b60",
+      "map": "instances/80-30/map.json",
+      "map_sha256": "9a55add448aab5c8a869dcbbeff3b986f229cfc88d8812ec7f8e924e9a6fe757",
+      "variables": 13046,
+      "clauses": 45814
+    },
+    {
+      "small_group_id": [
+        80,
+        31
+      ],
+      "q": 9,
+      "structure": "C20 : C4",
+      "group": "groups/80-31.json",
+      "group_sha256": "c91e50187d8a5a6cb28313eba524ef5a6c04e781beba26d6a301dabfe1f069d2",
+      "cnf": "instances/80-31/input.cnf",
+      "cnf_sha256": "5a9d7ce573be2dc9345c6555b2b0ec9567c98804c043ea4a8164b88f47832f79",
+      "map": "instances/80-31/map.json",
+      "map_sha256": "13b48e9be1a33b845e4f23fb0ca79e1e19dfc3bb675e86a72997516dc4cfe87c",
+      "variables": 13046,
+      "clauses": 45814
+    },
+    {
+      "small_group_id": [
+        80,
+        32
+      ],
+      "q": 9,
+      "structure": "C2 x (C5 : C8)",
+      "group": "groups/80-32.json",
+      "group_sha256": "0a58f51ae8dda8cfeeafe577b9af33592bc5463e6103ebc50ecae7fd028ee987",
+      "cnf": "instances/80-32/input.cnf",
+      "cnf_sha256": "1f5e7e5727f35f2ce891f7e7f256f9eb0e3f32e0dba98522689f83119751a3e7",
+      "map": "instances/80-32/map.json",
+      "map_sha256": "5204698941c3354636a2a711ebf5d4e089fd18a0fdb2d2f8e49ff92990b67f4a",
+      "variables": 13038,
+      "clauses": 45806
+    },
+    {
+      "small_group_id": [
+        80,
+        33
+      ],
+      "q": 9,
+      "structure": "(C5 : C8) : C2",
+      "group": "groups/80-33.json",
+      "group_sha256": "412037ffafe5b218da5b15aec05981763a7b466505ccd2f0f04b3c206b44090b",
+      "cnf": "instances/80-33/input.cnf",
+      "cnf_sha256": "5868f4bbbdb9404cbb19995b49feee86746c3ae63f3b8c0fed579c2fc399b0be",
+      "map": "instances/80-33/map.json",
+      "map_sha256": "195d0b3a8159f7043afee7045b6d581da746959cffc3825fe3a942373e712c51",
+      "variables": 13038,
+      "clauses": 45806
+    },
+    {
+      "small_group_id": [
+        80,
+        34
+      ],
+      "q": 9,
+      "structure": "(C10 x C2) : C4",
+      "group": "groups/80-34.json",
+      "group_sha256": "001f097dee9c1b65b62202f0eff4727470dc941ecf7ac57cdcd22cd1d578c199",
+      "cnf": "instances/80-34/input.cnf",
+      "cnf_sha256": "aa0ce638d17951316f52e48fbb62968f587e2d54c16cd8d7b3268c39637b9fdc",
+      "map": "instances/80-34/map.json",
+      "map_sha256": "b95b9b2da2116e4e457cde6ed07b52370c14e5339d11198f95bace47dcf0bdfb",
+      "variables": 13058,
+      "clauses": 45826
+    },
+    {
+      "small_group_id": [
+        80,
+        35
+      ],
+      "q": 9,
+      "structure": "C2 x (C5 : Q8)",
+      "group": "groups/80-35.json",
+      "group_sha256": "708f00dfc3e325e4379e48f4988076f7e0f6c71d34dde63dd19a2f675537958c",
+      "cnf": "instances/80-35/input.cnf",
+      "cnf_sha256": "28092a2b99bc9711a164f7f3887e500be9ab3f1c4dd86b87d1f1623e891db5f3",
+      "map": "instances/80-35/map.json",
+      "map_sha256": "72a24c222092c25991f37c67af8c450df3615463d524f62738018e1ad8522080",
+      "variables": 13038,
+      "clauses": 45806
+    },
+    {
+      "small_group_id": [
+        80,
+        36
+      ],
+      "q": 9,
+      "structure": "C2 x C4 x D10",
+      "group": "groups/80-36.json",
+      "group_sha256": "eb228b2278df61ad1ab3c21dbefc99363d4fa52dd563e611e906b8fcb3b22166",
+      "cnf": "instances/80-36/input.cnf",
+      "cnf_sha256": "67eb614f822d8ad6f54f0f432a2d82f5994bb3d02a04e05d580ccc4ed5f9a2e9",
+      "map": "instances/80-36/map.json",
+      "map_sha256": "1163dcca5b17e16b378583f3d6cf6947330e4ec5621a48d37da11b4506c005f9",
+      "variables": 13058,
+      "clauses": 45826
+    },
+    {
+      "small_group_id": [
+        80,
+        37
+      ],
+      "q": 9,
+      "structure": "C2 x D40",
+      "group": "groups/80-37.json",
+      "group_sha256": "5023c097a4d82d2bc2ebdfd3ba6d714f3eee3a759036e0a47b00ce77bf9e62e3",
+      "cnf": "instances/80-37/input.cnf",
+      "cnf_sha256": "80404bd41092be624242eda276fd3bf665658629faf990cc55d747b2a6926469",
+      "map": "instances/80-37/map.json",
+      "map_sha256": "ea71b9f1deaf53d0b78c460452bf4b65b670f60f255118ce6376a063345a74a1",
+      "variables": 13078,
+      "clauses": 45846
+    },
+    {
+      "small_group_id": [
+        80,
+        38
+      ],
+      "q": 9,
+      "structure": "(C20 x C2) : C2",
+      "group": "groups/80-38.json",
+      "group_sha256": "c0bd52771b74c57fc3c676450633cd050fd6753a064d9a390133acfc25d56753",
+      "cnf": "instances/80-38/input.cnf",
+      "cnf_sha256": "2e40a1532e4e9d0353547a36a450063df9564a64c6b4976214d82f8cfdb0b126",
+      "map": "instances/80-38/map.json",
+      "map_sha256": "e4189f1ebb053f6df52f06846b40ec99c19347d3debc21bf46e472679729e82d",
+      "variables": 13058,
+      "clauses": 45826
+    },
+    {
+      "small_group_id": [
+        80,
+        39
+      ],
+      "q": 9,
+      "structure": "D8 x D10",
+      "group": "groups/80-39.json",
+      "group_sha256": "a6a54fea3537290e52b8135e5b49befdc7a2dd6bf1523b44fe22d1f4418e0492",
+      "cnf": "instances/80-39/input.cnf",
+      "cnf_sha256": "32a12658747a70ebd2e0ec53bf91b78cb2ea6c83b11080e2a50a7780582d4011",
+      "map": "instances/80-39/map.json",
+      "map_sha256": "f5abfa517d39e5d14a809a66f0ceccd12340edeb8923e634ba1dbc65701c2b04",
+      "variables": 13070,
+      "clauses": 45838
+    },
+    {
+      "small_group_id": [
+        80,
+        40
+      ],
+      "q": 9,
+      "structure": "(C4 x D10) : C2",
+      "group": "groups/80-40.json",
+      "group_sha256": "3c8b0798d974abd1e7796e460d6f0b2ccb8071f942e0f094ade8ee4344e45a67",
+      "cnf": "instances/80-40/input.cnf",
+      "cnf_sha256": "91bad30afea776a1929a8f40bfb9425ed65291c244bf1f9cb91da3f4a02ad781",
+      "map": "instances/80-40/map.json",
+      "map_sha256": "80fba715adc7ff8329950cb4ea4d36cd34363415e8932a4c16de55d0ab34710b",
+      "variables": 13050,
+      "clauses": 45818
+    },
+    {
+      "small_group_id": [
+        80,
+        41
+      ],
+      "q": 9,
+      "structure": "Q8 x D10",
+      "group": "groups/80-41.json",
+      "group_sha256": "9c279b0f3d48db983bebdb371f85071396461439be08306edb67dfcddbae7453",
+      "cnf": "instances/80-41/input.cnf",
+      "cnf_sha256": "1b35ab579a776ffa02c7da6e56335287e8676c108acad7d7d54084caa4fd8626",
+      "map": "instances/80-41/map.json",
+      "map_sha256": "77513897eb2cbfcc2d10a5d4c08e1cbfd294fc6d4d1426408ef3b9ae1fe219a1",
+      "variables": 13046,
+      "clauses": 45814
+    },
+    {
+      "small_group_id": [
+        80,
+        42
+      ],
+      "q": 9,
+      "structure": "(C4 x D10) : C2",
+      "group": "groups/80-42.json",
+      "group_sha256": "110c18efe6b31bbe1a3851b72fa109a0f7a3d93077770d84ebd9df1725fc124f",
+      "cnf": "instances/80-42/input.cnf",
+      "cnf_sha256": "92971ee3e63fde56d349d01c121e8d7d2458a1e6b5b0cd9d6f1f843afe357e1f",
+      "map": "instances/80-42/map.json",
+      "map_sha256": "5e9799a5e0cfd8537d8bae4abb4554daa71afdbfca214e8dce47eec16da21647",
+      "variables": 13066,
+      "clauses": 45834
+    },
+    {
+      "small_group_id": [
+        80,
+        43
+      ],
+      "q": 9,
+      "structure": "C2 x C2 x (C5 : C4)",
+      "group": "groups/80-43.json",
+      "group_sha256": "99952b41976fcce9944fff4cd66be1f4edf60aa40ddded210137149e97613d76",
+      "cnf": "instances/80-43/input.cnf",
+      "cnf_sha256": "5420a0b9ed4cd28fbd549228077249c2ae9543ea08687c3dfb88b32c2b09381d",
+      "map": "instances/80-43/map.json",
+      "map_sha256": "063d412b87af980b81bfd496416adf0d2ce2ced702a66a953317f978d659d102",
+      "variables": 13042,
+      "clauses": 45810
+    },
+    {
+      "small_group_id": [
+        80,
+        44
+      ],
+      "q": 9,
+      "structure": "C2 x ((C10 x C2) : C2)",
+      "group": "groups/80-44.json",
+      "group_sha256": "e527a73bc5f2beead98eaa184e373cfe12bd5d69d134c59cc870a5831655dd7e",
+      "cnf": "instances/80-44/input.cnf",
+      "cnf_sha256": "a64082d64ac523fcb48f0cd3db41fcf3609f5f82bb9d77383214d7f63bde92ed",
+      "map": "instances/80-44/map.json",
+      "map_sha256": "9d25869a73edf18ceb75f975ef51253adc6dbba40e43bd741a0324a2d90338fc",
+      "variables": 13062,
+      "clauses": 45830
+    },
+    {
+      "small_group_id": [
+        80,
+        45
+      ],
+      "q": 9,
+      "structure": "C20 x C2 x C2",
+      "group": "groups/80-45.json",
+      "group_sha256": "fa4d22e3c0150d5eb46778e3e350c592d9615a4ab7b2ecc3e30d54fe1dbb4efc",
+      "cnf": "instances/80-45/input.cnf",
+      "cnf_sha256": "a8bedaa23f0804c27853348291e65d37b1d4d56ee2a144310ec04af6ce308897",
+      "map": "instances/80-45/map.json",
+      "map_sha256": "cd5058a1f3b08c1b2f110da5a0cbe0f17033bf162db20218866c0eb5996a110d",
+      "variables": 13042,
+      "clauses": 45810
+    },
+    {
+      "small_group_id": [
+        80,
+        46
+      ],
+      "q": 9,
+      "structure": "C10 x D8",
+      "group": "groups/80-46.json",
+      "group_sha256": "7e7d759a2f97cd2dc57493dc0b21c1c0ced0bbeff51a646f4a97a736a84ef4b4",
+      "cnf": "instances/80-46/input.cnf",
+      "cnf_sha256": "52a708fa90f207b3a5aebcb0d3bea3a4df27747e121a80488dfc101d6a663137",
+      "map": "instances/80-46/map.json",
+      "map_sha256": "1c2114155545cb77cac440d8967dcab0284cf0db1eaef76b5fefec7a82f2f99c",
+      "variables": 13046,
+      "clauses": 45814
+    },
+    {
+      "small_group_id": [
+        80,
+        47
+      ],
+      "q": 9,
+      "structure": "C10 x Q8",
+      "group": "groups/80-47.json",
+      "group_sha256": "53b934a036413513ff7b6e1dccf515c88d3dd08e86cc19cd113543717d141be8",
+      "cnf": "instances/80-47/input.cnf",
+      "cnf_sha256": "a6ab87aed18ad0af87bb03e6104977ee47b1a7653fd5cff70851abcdfe005c1f",
+      "map": "instances/80-47/map.json",
+      "map_sha256": "821ba777f0ebb7a52c9e74e090808c814ff5754043e3cdc6b2d1b4c667803355",
+      "variables": 13038,
+      "clauses": 45806
+    },
+    {
+      "small_group_id": [
+        80,
+        48
+      ],
+      "q": 9,
+      "structure": "C5 x ((C4 x C2) : C2)",
+      "group": "groups/80-48.json",
+      "group_sha256": "bc037480c363516b7cdef8305a3ee3b990169a0aa5ceecbb8bf465b19a967df6",
+      "cnf": "instances/80-48/input.cnf",
+      "cnf_sha256": "f02aafbee2b004fe8e6d6c514bbe9f6572fd19c39d396661a5e8718107333297",
+      "map": "instances/80-48/map.json",
+      "map_sha256": "7ba0f8283719ad783fe4dcf01ce41b7643f0b58ca6593ea61bd74682048661dc",
+      "variables": 13042,
+      "clauses": 45810
+    },
+    {
+      "small_group_id": [
+        80,
+        49
+      ],
+      "q": 9,
+      "structure": "(C2 x C2 x C2 x C2) : C5",
+      "group": "groups/80-49.json",
+      "group_sha256": "84c57c94c80979bc3c116ba88e29d5d80cf1a6be57e5a127d71d167550b817b2",
+      "cnf": "instances/80-49/input.cnf",
+      "cnf_sha256": "6545caf8f1f441651c57ab2656bf68dbcdeedef0ce3efd2b01c011e16be12713",
+      "map": "instances/80-49/map.json",
+      "map_sha256": "d96316f32f90b5c533f47b221e11b9f9e2b16cca48dd933c3fa9ef0dd5c086cc",
+      "variables": 13050,
+      "clauses": 45818
+    },
+    {
+      "small_group_id": [
+        80,
+        50
+      ],
+      "q": 9,
+      "structure": "C2 x C2 x (C5 : C4)",
+      "group": "groups/80-50.json",
+      "group_sha256": "a5cad32a283f74ec2ec60f33a9ed1c614e8d91812f0c9f14efdd96a1920fefcf",
+      "cnf": "instances/80-50/input.cnf",
+      "cnf_sha256": "f48ac8d8282fd9fac5adb24d47f48478480861b86b1567456863b059fc429c11",
+      "map": "instances/80-50/map.json",
+      "map_sha256": "c5ff3a46911107572e1c4453fbd57d620ac03d949a3538e668a151ff0f79296a",
+      "variables": 13058,
+      "clauses": 45826
+    },
+    {
+      "small_group_id": [
+        80,
+        51
+      ],
+      "q": 9,
+      "structure": "C2 x C2 x C2 x D10",
+      "group": "groups/80-51.json",
+      "group_sha256": "70548efcdcb228e063e8f8f09efa36ef3614e795202d9fd923a860912755bba3",
+      "cnf": "instances/80-51/input.cnf",
+      "cnf_sha256": "c2f03759d7c49b3fc0e594bd8a8d23c957a5444c47dae60721f9c11ed04a35d5",
+      "map": "instances/80-51/map.json",
+      "map_sha256": "ece425510eb1d3a49f42e6803daf64f09db0adb3e473ea79ce966f50cd586e1b",
+      "variables": 13082,
+      "clauses": 45850
+    },
+    {
+      "small_group_id": [
+        80,
+        52
+      ],
+      "q": 9,
+      "structure": "C10 x C2 x C2 x C2",
+      "group": "groups/80-52.json",
+      "group_sha256": "eec24afdf06b54b86401464564621d0bbd2fcf2818c530548bb071855f854b68",
+      "cnf": "instances/80-52/input.cnf",
+      "cnf_sha256": "d423bfe41ae553c416efcf5dd550acc43eea57776eca722af7d444fab22aa68e",
+      "map": "instances/80-52/map.json",
+      "map_sha256": "5219b9d792fb332c39552b29ff0b16e343d12c425f4d6ec7ab4cc432ccc1770e",
+      "variables": 13050,
+      "clauses": 45818
+    },
+    {
+      "small_group_id": [
+        120,
+        1
+      ],
+      "q": 11,
+      "structure": "C5 x (C3 : C8)",
+      "group": "groups/120-1.json",
+      "group_sha256": "ecc95d67dedc7fb0254ee6e3300eab8ed9a1635c718383c032cc7374db1fa69f",
+      "cnf": "instances/120-1/input.cnf",
+      "cnf_sha256": "f43bbf5df03d926fdd523b181051400a56d1d970262247fe6df45add3cd1c2cc",
+      "map": "instances/120-1/map.json",
+      "map_sha256": "f9bcd5abe9f614c3960d2e2443650425b64d5cbe0203feeb0bfbd6a006a6a9bd",
+      "variables": 29394,
+      "clauses": 103272
+    },
+    {
+      "small_group_id": [
+        120,
+        2
+      ],
+      "q": 11,
+      "structure": "C3 x (C5 : C8)",
+      "group": "groups/120-2.json",
+      "group_sha256": "9c9b80b2b535097d89afa2a2586acc88a29b06b3a5e22997dabf8647b6283ea6",
+      "cnf": "instances/120-2/input.cnf",
+      "cnf_sha256": "e96f45b152c093338a1a0595f476ea0992668318e5ddb73f9a7f7cb64a8a6eea",
+      "map": "instances/120-2/map.json",
+      "map_sha256": "5e12fa026ecd80652ab9264abf63aa58ae52e6bbdf123af857d1414b175a7192",
+      "variables": 29394,
+      "clauses": 103272
+    },
+    {
+      "small_group_id": [
+        120,
+        3
+      ],
+      "q": 11,
+      "structure": "C3 : (C5 : C8)",
+      "group": "groups/120-3.json",
+      "group_sha256": "33b414c2f498056fee6bfa7cdfb08ad2ec405142354244af80efe510e9bec86f",
+      "cnf": "instances/120-3/input.cnf",
+      "cnf_sha256": "4584dc56595a5fa70fcbee7e7db7f0f0276bc2529ef2cb73882bee4aa6072263",
+      "map": "instances/120-3/map.json",
+      "map_sha256": "75f2c041ac73d65ed5c087d078a66647fd7f972bdd0828a21d33ad2708baec72",
+      "variables": 29394,
+      "clauses": 103272
+    },
+    {
+      "small_group_id": [
+        120,
+        4
+      ],
+      "q": 11,
+      "structure": "C120",
+      "group": "groups/120-4.json",
+      "group_sha256": "7f496da6754a232c721287a9b5f6fab900aef5d179b909ea590fe5ce5dee1fb2",
+      "cnf": "instances/120-4/input.cnf",
+      "cnf_sha256": "15647dc13d8ff5fc1d6b7a8d5f2ffd71fd8da123aaf58fef837fd7b83b3c2849",
+      "map": "instances/120-4/map.json",
+      "map_sha256": "224fec82f9b2e30636c554b54c1c10791f60061b19e4e44db867bb4ee7d02ac8",
+      "variables": 29394,
+      "clauses": 103272
+    },
+    {
+      "small_group_id": [
+        120,
+        5
+      ],
+      "q": 11,
+      "structure": "SL(2,5)",
+      "group": "groups/120-5.json",
+      "group_sha256": "0e44a4060cb5ed6108efd749c1eb124ba36c73bab53fc0d9119ae89b4a73363f",
+      "cnf": "instances/120-5/input.cnf",
+      "cnf_sha256": "7ee33ddd6f22f3ac38488013933632a299b8ccbdceaa2c05987232034c273660",
+      "map": "instances/120-5/map.json",
+      "map_sha256": "0271b728ad8b74f4aa985255669509536a64323647a506332e3f4882a3f22f7b",
+      "variables": 29394,
+      "clauses": 103272
+    },
+    {
+      "small_group_id": [
+        120,
+        6
+      ],
+      "q": 11,
+      "structure": "C3 x (C5 : C8)",
+      "group": "groups/120-6.json",
+      "group_sha256": "a4c3697fa9b141ab800c3932f77d9c99747b34a1ad0d107295b6ab234dd5ad93",
+      "cnf": "instances/120-6/input.cnf",
+      "cnf_sha256": "fe34c6ffc9d84db45615e61caec6b0e53e2be80522cbe39deb1bcb5cba3d7162",
+      "map": "instances/120-6/map.json",
+      "map_sha256": "9a2503221ff6355fc2d0106e2fe9610ef980bd3970b828f93439505838ab651a",
+      "variables": 29394,
+      "clauses": 103272
+    },
+    {
+      "small_group_id": [
+        120,
+        7
+      ],
+      "q": 11,
+      "structure": "C3 : (C5 : C8)",
+      "group": "groups/120-7.json",
+      "group_sha256": "9bb505d7aa14e62bebd6e0ce9f60d784f7cb4d5165a068ee57389568197df308",
+      "cnf": "instances/120-7/input.cnf",
+      "cnf_sha256": "e5c31d8b483451924531bfccbc4f067b6192c2af73886cb19c9cfb8ce1cc4315",
+      "map": "instances/120-7/map.json",
+      "map_sha256": "c6cdf1a5eeb1b74783660bd8bce8e15bebcff992c8bdf22b6c643f6dd30ce3d5",
+      "variables": 29394,
+      "clauses": 103272
+    },
+    {
+      "small_group_id": [
+        120,
+        8
+      ],
+      "q": 11,
+      "structure": "(C3 : C4) x D10",
+      "group": "groups/120-8.json",
+      "group_sha256": "fc99b39cba649df9ea4455add918b6685348a3d64f3482e6ae40e52397af6eec",
+      "cnf": "instances/120-8/input.cnf",
+      "cnf_sha256": "6184193c98fd9c75d760f4256131da0f711abb144ef8fb44cc43e64790d47f98",
+      "map": "instances/120-8/map.json",
+      "map_sha256": "bfdbc88ee38ddb93b58026c482dc7b59da2f67638e557477c443f3858e97c3c4",
+      "variables": 29404,
+      "clauses": 103282
+    },
+    {
+      "small_group_id": [
+        120,
+        9
+      ],
+      "q": 11,
+      "structure": "S3 x (C5 : C4)",
+      "group": "groups/120-9.json",
+      "group_sha256": "0802cd2e8d8eb8d9b949fe51167ebf342446c709ada8670d04b1966fbb5a5fba",
+      "cnf": "instances/120-9/input.cnf",
+      "cnf_sha256": "fc819166717bf41cb729446acf75c4a31e4a88a91e9cba2be129e0913049910e",
+      "map": "instances/120-9/map.json",
+      "map_sha256": "5da843afae35c02b216f8f640ee5b008979070a738404d44fe76a0282c11c160",
+      "variables": 29400,
+      "clauses": 103278
+    },
+    {
+      "small_group_id": [
+        120,
+        10
+      ],
+      "q": 11,
+      "structure": "C3 : (C4 x D10)",
+      "group": "groups/120-10.json",
+      "group_sha256": "9f6663b50fd7515ad2ec2fa57c9db0b98b20bb42c30d40864ede153bf54d8603",
+      "cnf": "instances/120-10/input.cnf",
+      "cnf_sha256": "bae2d8034a7eda4fb6e77ebd50e8bb4a74fb34f6d8f0c4595e3cee8216110446",
+      "map": "instances/120-10/map.json",
+      "map_sha256": "54323fce5e8291d7b616d5d58bedfbce00829fb6843534f5f8db7401c117138d",
+      "variables": 29424,
+      "clauses": 103302
+    },
+    {
+      "small_group_id": [
+        120,
+        11
+      ],
+      "q": 11,
+      "structure": "C3 : ((C10 x C2) : C2)",
+      "group": "groups/120-11.json",
+      "group_sha256": "55eddbd9c4df5761b4b24f4e8663178be359a39f8994b0525a1f7df6573169d9",
+      "cnf": "instances/120-11/input.cnf",
+      "cnf_sha256": "428bbb44cbb30285dc651f8e245d0c01ff2e48a604ff1a06fb004c36c645237e",
+      "map": "instances/120-11/map.json",
+      "map_sha256": "fa707584744df848d9dffce588f2d8026adc9c85531c88e6139cf05e6edfa972",
+      "variables": 29410,
+      "clauses": 103288
+    },
+    {
+      "small_group_id": [
+        120,
+        12
+      ],
+      "q": 11,
+      "structure": "C3 : D40",
+      "group": "groups/120-12.json",
+      "group_sha256": "f0f9b660e58ab72a536c485bffcd16e25d12bbc338bd59e6e227ee0dd23f332e",
+      "cnf": "instances/120-12/input.cnf",
+      "cnf_sha256": "fc0bfa084876d68baf3009614af97961a09167b191dd725485046096670c587d",
+      "map": "instances/120-12/map.json",
+      "map_sha256": "15fcb393a810848bd74df94cbd834e8fdb1d35ddc195788b93132dc8cf438bf0",
+      "variables": 29434,
+      "clauses": 103312
+    },
+    {
+      "small_group_id": [
+        120,
+        13
+      ],
+      "q": 11,
+      "structure": "C3 : ((C10 x C2) : C2)",
+      "group": "groups/120-13.json",
+      "group_sha256": "c94804fcad2f4a3333137e4853d9a26a50b0968977106a11bf4fbfb450e89f8f",
+      "cnf": "instances/120-13/input.cnf",
+      "cnf_sha256": "e388e3d4d954d7510d8f382d03c06898f44594a6830c9ad08ffad08a95ea21d8",
+      "map": "instances/120-13/map.json",
+      "map_sha256": "bbe27e80d6867b54ad8890935d58e817da8b73b977e9b727ade410b74e5f8eb1",
+      "variables": 29430,
+      "clauses": 103308
+    },
+    {
+      "small_group_id": [
+        120,
+        14
+      ],
+      "q": 11,
+      "structure": "C3 : (C5 : Q8)",
+      "group": "groups/120-14.json",
+      "group_sha256": "93f51a7a40c5e8ffabb38b6dda39e09ed4c575905a9820b55f738ebeb39bdcf9",
+      "cnf": "instances/120-14/input.cnf",
+      "cnf_sha256": "30b34b9c89c9f9596b97a2b5ba3b6494e37be1ae3fdfec513640e8aee8a735d7",
+      "map": "instances/120-14/map.json",
+      "map_sha256": "0d27235fdbc935628c7b3a2959e9238406f7ff557c11e61e040aa006b9cb7909",
+      "variables": 29394,
+      "clauses": 103272
+    },
+    {
+      "small_group_id": [
+        120,
+        15
+      ],
+      "q": 11,
+      "structure": "C5 x SL(2,3)",
+      "group": "groups/120-15.json",
+      "group_sha256": "369f7fd25c63a1f0c651d70cc5a84f060b119e8616415c1f4dd8c221e11b5dcf",
+      "cnf": "instances/120-15/input.cnf",
+      "cnf_sha256": "0964933e75de1000f66d924757579f9d50c24a07b5e872019ebfff79532874d6",
+      "map": "instances/120-15/map.json",
+      "map_sha256": "9cae5711c5dbc8980e749ccf809e007b7134ea5c876c8d24448cd33b87c9f9ac",
+      "variables": 29394,
+      "clauses": 103272
+    },
+    {
+      "small_group_id": [
+        120,
+        16
+      ],
+      "q": 11,
+      "structure": "C3 x (C5 : Q8)",
+      "group": "groups/120-16.json",
+      "group_sha256": "3190701c7e603b3da9e5fed4be9761269e581210ace4e7425127a38dd6ee6330",
+      "cnf": "instances/120-16/input.cnf",
+      "cnf_sha256": "1886e29e575fa42fcfb8573b47ada32e42548708a3027c184cc17ae27d79e0ad",
+      "map": "instances/120-16/map.json",
+      "map_sha256": "a7f83e3d98e3d35a689237728ce2c2ac0ce61c1b53a03fd0c496137c97e5a698",
+      "variables": 29394,
+      "clauses": 103272
+    },
+    {
+      "small_group_id": [
+        120,
+        17
+      ],
+      "q": 11,
+      "structure": "C12 x D10",
+      "group": "groups/120-17.json",
+      "group_sha256": "0d438245484c1169dbd914ea9d62a450ba1e34557bb110f8350fb07c2859ac57",
+      "cnf": "instances/120-17/input.cnf",
+      "cnf_sha256": "c86679646b7d4f0271bbf579831be4bbf1f9f8d03c0555660f12435c29bb62d9",
+      "map": "instances/120-17/map.json",
+      "map_sha256": "c15ab8db3aae3e5c92b5c36687c6b282009e67c88f83176b10edbb2b0bba1284",
+      "variables": 29404,
+      "clauses": 103282
+    },
+    {
+      "small_group_id": [
+        120,
+        18
+      ],
+      "q": 11,
+      "structure": "C3 x D40",
+      "group": "groups/120-18.json",
+      "group_sha256": "6bbb5de3662b905e2d2a860870bde6ea6b41895a56552d885549a8458e7af9d8",
+      "cnf": "instances/120-18/input.cnf",
+      "cnf_sha256": "dcf885e8144e95179469a56adddded8b4d396b98ecde0fa21dcef37a1e27e827",
+      "map": "instances/120-18/map.json",
+      "map_sha256": "665b9686bf072855e26b6ac6fe7bfe9172574190660574c86d3dadf2e9dfe9be",
+      "variables": 29414,
+      "clauses": 103292
+    },
+    {
+      "small_group_id": [
+        120,
+        19
+      ],
+      "q": 11,
+      "structure": "C6 x (C5 : C4)",
+      "group": "groups/120-19.json",
+      "group_sha256": "ceaa9f8ef8290157953570df30c23d4b969bbe6abe34575fe800fb3c7eb85e43",
+      "cnf": "instances/120-19/input.cnf",
+      "cnf_sha256": "cdbe065e9c0814cd6bff9438d6919a8fe879415a1119cce5d13079b49bbd8079",
+      "map": "instances/120-19/map.json",
+      "map_sha256": "e12f1ac1382dd7abd4eb5916ef227d63192ef4e61cbd3b353c03639c6a8ddb68",
+      "variables": 29396,
+      "clauses": 103274
+    },
+    {
+      "small_group_id": [
+        120,
+        20
+      ],
+      "q": 11,
+      "structure": "C3 x ((C10 x C2) : C2)",
+      "group": "groups/120-20.json",
+      "group_sha256": "7c15d01b9a39cdc28c816cf483072d3498884d9694c717c8229c4a7311a15e28",
+      "cnf": "instances/120-20/input.cnf",
+      "cnf_sha256": "ba0964be7e3a04c0dc674937553737facf9b4cb434209654acebc4c7e3185648",
+      "map": "instances/120-20/map.json",
+      "map_sha256": "939ee51f770e9369a48aed55574dd8eb21c1606e23b1ffc44e2ebc374c5f2361",
+      "variables": 29406,
+      "clauses": 103284
+    },
+    {
+      "small_group_id": [
+        120,
+        21
+      ],
+      "q": 11,
+      "structure": "C5 x (C3 : Q8)",
+      "group": "groups/120-21.json",
+      "group_sha256": "1cd6e4bf9c529a38fa0eb470fe3089c805669c3cf2671340d768d82f89b5675e",
+      "cnf": "instances/120-21/input.cnf",
+      "cnf_sha256": "a59367b45cde5c6cbbf2f784a6836c840dcb77c7ac4a6b481caf16c3d68c2e81",
+      "map": "instances/120-21/map.json",
+      "map_sha256": "cdd01891639d5d84ddf16f78700120b520cba094bcc665d64d712abc0458ec42",
+      "variables": 29394,
+      "clauses": 103272
+    },
+    {
+      "small_group_id": [
+        120,
+        22
+      ],
+      "q": 11,
+      "structure": "C20 x S3",
+      "group": "groups/120-22.json",
+      "group_sha256": "4c24921c88b376298a7e4968bf91bb9d1b2a164bffdda1e66e3ed7ce948d75eb",
+      "cnf": "instances/120-22/input.cnf",
+      "cnf_sha256": "a0a25e33d94eedcdef2287b8df5e975af39f944d1a8fdc78950c1bd22d9a7807",
+      "map": "instances/120-22/map.json",
+      "map_sha256": "7329b2f57981c69cea3047fa96ad5449723d000080500711f44345e1cc27b259",
+      "variables": 29400,
+      "clauses": 103278
+    },
+    {
+      "small_group_id": [
+        120,
+        23
+      ],
+      "q": 11,
+      "structure": "C5 x D24",
+      "group": "groups/120-23.json",
+      "group_sha256": "813ef951df0c4d805583791349cff2aa4d98427ce3f487ad793bfbe07d77a950",
+      "cnf": "instances/120-23/input.cnf",
+      "cnf_sha256": "72e240393acf6e089a4123c729a94f4ff69cf597a872dffb85ddd3757cc5e6c8",
+      "map": "instances/120-23/map.json",
+      "map_sha256": "c32cece2012e9d03a12455df0c4aa78325cbdf3bf390e4b50003bd30554a43e9",
+      "variables": 29406,
+      "clauses": 103284
+    },
+    {
+      "small_group_id": [
+        120,
+        24
+      ],
+      "q": 11,
+      "structure": "C10 x (C3 : C4)",
+      "group": "groups/120-24.json",
+      "group_sha256": "ab62ab3be48e1482056204df80dc76484b01703d1ac2366a765358cbdc28c718",
+      "cnf": "instances/120-24/input.cnf",
+      "cnf_sha256": "602eaed0684725f88f2014c0aa8900a0f195d09ad58f9697b2628ba8d1018662",
+      "map": "instances/120-24/map.json",
+      "map_sha256": "ed408c9bc08985d7eb74b721148c643e4b4b120df1aa4f925817d250536639fc",
+      "variables": 29396,
+      "clauses": 103274
+    },
+    {
+      "small_group_id": [
+        120,
+        25
+      ],
+      "q": 11,
+      "structure": "C5 x ((C6 x C2) : C2)",
+      "group": "groups/120-25.json",
+      "group_sha256": "01d8993c7f578c96208b41ec2897e67db15eacc3c83782b30e118f321134f037",
+      "cnf": "instances/120-25/input.cnf",
+      "cnf_sha256": "5f0d011454a3265cd4b7f70389bf1e83dd1baa0db32406b00955be2bf359fb3e",
+      "map": "instances/120-25/map.json",
+      "map_sha256": "4961a733742e873ef6618f592078c7f7c31cfa14193fab803ff60c44e8e0096a",
+      "variables": 29402,
+      "clauses": 103280
+    },
+    {
+      "small_group_id": [
+        120,
+        26
+      ],
+      "q": 11,
+      "structure": "C3 : (C5 : Q8)",
+      "group": "groups/120-26.json",
+      "group_sha256": "5a59e20811952ee3d4b59f93854fa315ccc973999abb1bd402af50bd3b0809f4",
+      "cnf": "instances/120-26/input.cnf",
+      "cnf_sha256": "700c51c209a742fee1f12cc0e560659dbe9b993133b2df86c4b4420147c7bed7",
+      "map": "instances/120-26/map.json",
+      "map_sha256": "a46582446646b616654872cdcd99e19272189dc6f494a4813cc86b2df4b1fab0",
+      "variables": 29394,
+      "clauses": 103272
+    },
+    {
+      "small_group_id": [
+        120,
+        27
+      ],
+      "q": 11,
+      "structure": "C4 x D30",
+      "group": "groups/120-27.json",
+      "group_sha256": "5ec9a6528af6593c3fed16d06132183a72bb65f0f3476485df7c9d5b6aab5331",
+      "cnf": "instances/120-27/input.cnf",
+      "cnf_sha256": "c5d6c84b9508c3d0be06a2bae8c4c9f759242dec176905ef61a79273c98ea2f4",
+      "map": "instances/120-27/map.json",
+      "map_sha256": "a78b874bc97daefa6fbb8071c82d9a21ffcea388ca053e807201ba77522e1aac",
+      "variables": 29424,
+      "clauses": 103302
+    },
+    {
+      "small_group_id": [
+        120,
+        28
+      ],
+      "q": 11,
+      "structure": "D120",
+      "group": "groups/120-28.json",
+      "group_sha256": "ec507399e9c5efab5fccfcd7d8bc6418a8a25fd4e1f6d747f874a928b3ceefe6",
+      "cnf": "instances/120-28/input.cnf",
+      "cnf_sha256": "3b9e80005953af52f7c3fa286dde064ccf0f856d9bb2c8ad51058c75da88742b",
+      "map": "instances/120-28/map.json",
+      "map_sha256": "278f918a8f790daa1eb830bea33cf9eec875aa93fa0e0ee955b25847120dd478",
+      "variables": 29454,
+      "clauses": 103332
+    },
+    {
+      "small_group_id": [
+        120,
+        29
+      ],
+      "q": 11,
+      "structure": "C2 x (C15 : C4)",
+      "group": "groups/120-29.json",
+      "group_sha256": "751066df8fb647d9ca28bed3b3f6073f4440f249027f8b2b7c9389ea4228a827",
+      "cnf": "instances/120-29/input.cnf",
+      "cnf_sha256": "c1162ba2aa67644b2075beb66934bb5627ede07aa39fd004186875a665a1e32b",
+      "map": "instances/120-29/map.json",
+      "map_sha256": "aef6c6fe843109f6ab1f7b7c2f4e3b4d6d7426a96fd44253e9ac09ebc4babb29",
+      "variables": 29396,
+      "clauses": 103274
+    },
+    {
+      "small_group_id": [
+        120,
+        30
+      ],
+      "q": 11,
+      "structure": "C3 : ((C10 x C2) : C2)",
+      "group": "groups/120-30.json",
+      "group_sha256": "bc69fb90cf25d655a8ebcf49f1df747a159fa3bd3e530f5dea531369d83705d3",
+      "cnf": "instances/120-30/input.cnf",
+      "cnf_sha256": "3261374bbb982caec7f5aa5b545a9417b6505f5e28aa4406c95ed412c07b1f84",
+      "map": "instances/120-30/map.json",
+      "map_sha256": "358a37c17439731f75a97a04835ab09e2e80d8d8915dee5f481cfcee9546e49a",
+      "variables": 29426,
+      "clauses": 103304
+    },
+    {
+      "small_group_id": [
+        120,
+        31
+      ],
+      "q": 11,
+      "structure": "C60 x C2",
+      "group": "groups/120-31.json",
+      "group_sha256": "f7e392c82f5195bec0c314140f5dbde748b5220b7d5d3841ae1700a46e17bb7b",
+      "cnf": "instances/120-31/input.cnf",
+      "cnf_sha256": "5cc1b83becd9f7004e966e95b3f635f96869f0530a8842b53de954c56814b8a1",
+      "map": "instances/120-31/map.json",
+      "map_sha256": "a52cbe4933f7d8d1289a88d853f0f1557a2001ae876c96798c06a7c6f5706799",
+      "variables": 29396,
+      "clauses": 103274
+    },
+    {
+      "small_group_id": [
+        120,
+        32
+      ],
+      "q": 11,
+      "structure": "C15 x D8",
+      "group": "groups/120-32.json",
+      "group_sha256": "14aae48cdf72df119e3f4a15f08a990622d9e118887374b2ac5da1693ef6f024",
+      "cnf": "instances/120-32/input.cnf",
+      "cnf_sha256": "d76475a3938ee7301a13d492a26f7c2a66237f115b6cd2a1d80d0642c65ba6f1",
+      "map": "instances/120-32/map.json",
+      "map_sha256": "6eae9c6b039f01eb3de672a59db9dc8aa1ba68b898658d943db3d304513e31a9",
+      "variables": 29398,
+      "clauses": 103276
+    },
+    {
+      "small_group_id": [
+        120,
+        33
+      ],
+      "q": 11,
+      "structure": "C15 x Q8",
+      "group": "groups/120-33.json",
+      "group_sha256": "069210373fe6d44df653def27cad4e751aca2fc21cdcf4be0084b136098d3087",
+      "cnf": "instances/120-33/input.cnf",
+      "cnf_sha256": "f7c835fb6c79848a406943fc20fbd0216641cc67d835aeb0595e03e4024bbba1",
+      "map": "instances/120-33/map.json",
+      "map_sha256": "c2b06ec3be98d8e43a0e536dd42f27fd9152e4581db3fb2f02908f8b19a0de7b",
+      "variables": 29394,
+      "clauses": 103272
+    },
+    {
+      "small_group_id": [
+        120,
+        34
+      ],
+      "q": 11,
+      "structure": "S5",
+      "group": "groups/120-34.json",
+      "group_sha256": "cda95a4e7df5ccc092485f9cd6ba945148d82ff6fc43fcfed103a71c2cd8044a",
+      "cnf": "instances/120-34/input.cnf",
+      "cnf_sha256": "93befaef89eb05d42ba2775b229e1c2abfe058536c8d45c6233bdf4e7b08ebb7",
+      "map": "instances/120-34/map.json",
+      "map_sha256": "8bf1e8630caddccadbacd6be3fc95f787eaf38b96e4a1136fde1353ca4d6bcc6",
+      "variables": 29418,
+      "clauses": 103296
+    },
+    {
+      "small_group_id": [
+        120,
+        35
+      ],
+      "q": 11,
+      "structure": "C2 x A5",
+      "group": "groups/120-35.json",
+      "group_sha256": "0b960f2dd3a1d387e87e0f0a8b7f24017c468fcfed562f83f91e1884a4e86a6b",
+      "cnf": "instances/120-35/input.cnf",
+      "cnf_sha256": "9d27f8ea0adc7e4fab4e1bab6d0db26b63d30f8860fb9f969be7007592ce4960",
+      "map": "instances/120-35/map.json",
+      "map_sha256": "c0cc07293887998cffc0919ea5f214d3d1840e380492536a268d4635b6f2a822",
+      "variables": 29424,
+      "clauses": 103302
+    },
+    {
+      "small_group_id": [
+        120,
+        36
+      ],
+      "q": 11,
+      "structure": "S3 x (C5 : C4)",
+      "group": "groups/120-36.json",
+      "group_sha256": "74867405b415e06e896ec78134dac34cd2d0acddb32fb02bbdc980787b7781ef",
+      "cnf": "instances/120-36/input.cnf",
+      "cnf_sha256": "a76e4323f28021d3f2d27cf187971c1b08f75b20cf4f886eaab5bb8d240fc169",
+      "map": "instances/120-36/map.json",
+      "map_sha256": "9c14e5fa857157295f72d4744726eac93d5467ed13ad90d902efd9e8e57381bb",
+      "variables": 29416,
+      "clauses": 103294
+    },
+    {
+      "small_group_id": [
+        120,
+        37
+      ],
+      "q": 11,
+      "structure": "C5 x S4",
+      "group": "groups/120-37.json",
+      "group_sha256": "fe735c6aa1a1537fdfc8270597e5712708b24fa0cc0a35999e57b02987745d79",
+      "cnf": "instances/120-37/input.cnf",
+      "cnf_sha256": "57c51350510f986aa8234825e2d718328bb1da679083daf6352f77ec67f1e757",
+      "map": "instances/120-37/map.json",
+      "map_sha256": "b269559b9579f8751891b592bec4470e127f85246f50778041882ab6348e425d",
+      "variables": 29402,
+      "clauses": 103280
+    },
+    {
+      "small_group_id": [
+        120,
+        38
+      ],
+      "q": 11,
+      "structure": "C5 : S4",
+      "group": "groups/120-38.json",
+      "group_sha256": "303c75919aeb2e9f1b1bed6e5a74b2413db4d1305a327f496e1b0fc7371f5a74",
+      "cnf": "instances/120-38/input.cnf",
+      "cnf_sha256": "bb0396e0cc787bccb59a6dc06d9412c4f27d6d6d111f6fe3c680b51d26f44388",
+      "map": "instances/120-38/map.json",
+      "map_sha256": "a797d7943f02d6b0467b6245bbf04a7afdc5a9371eea7e462d897bd76c5821dd",
+      "variables": 29426,
+      "clauses": 103304
+    },
+    {
+      "small_group_id": [
+        120,
+        39
+      ],
+      "q": 11,
+      "structure": "A4 x D10",
+      "group": "groups/120-39.json",
+      "group_sha256": "a290b0bbe82b30e7e5cf79fb4a0748e69b1b8ec2fa70fbf84c26a24190088b37",
+      "cnf": "instances/120-39/input.cnf",
+      "cnf_sha256": "ec562a04b088d4ed7484e3aa7bd5a27a886107b61aadfd4a1a1efa3a09345a34",
+      "map": "instances/120-39/map.json",
+      "map_sha256": "eeacb9af8144ebcbd8aad9b4d13618af462cbf434b061571580f49c357c3320f",
+      "variables": 29416,
+      "clauses": 103294
+    },
+    {
+      "small_group_id": [
+        120,
+        40
+      ],
+      "q": 11,
+      "structure": "C6 x (C5 : C4)",
+      "group": "groups/120-40.json",
+      "group_sha256": "e6b9a129c6d394129ef92942fbce85f20b9452fd109ddeeab04531833336b782",
+      "cnf": "instances/120-40/input.cnf",
+      "cnf_sha256": "17c561328520a7779aadfb8a0fae889cd4a12134dc052e83774f14ccf6961644",
+      "map": "instances/120-40/map.json",
+      "map_sha256": "86988bcf253f35bdba0a4444f78b2db42ad8594ec72f35545bd7cd4143d9a10c",
+      "variables": 29404,
+      "clauses": 103282
+    },
+    {
+      "small_group_id": [
+        120,
+        41
+      ],
+      "q": 11,
+      "structure": "C2 x (C15 : C4)",
+      "group": "groups/120-41.json",
+      "group_sha256": "7bdc8c736031a876a3d05f803031aecb3124f9af52d8ee6f36ba39130ec0993c",
+      "cnf": "instances/120-41/input.cnf",
+      "cnf_sha256": "3b683b4b1ebd7833eb7068e8f0fe00b68a91ce31145386021aa18ce7e4025249",
+      "map": "instances/120-41/map.json",
+      "map_sha256": "6b7f2da3611e94859a5f3ba5443677638d89c688c6d56f54f4f5e02c3a978190",
+      "variables": 29404,
+      "clauses": 103282
+    },
+    {
+      "small_group_id": [
+        120,
+        42
+      ],
+      "q": 11,
+      "structure": "C2 x S3 x D10",
+      "group": "groups/120-42.json",
+      "group_sha256": "e6ded81342eb1b92df045ec3636c76743a245a0ca8cdb8f765fd5fbdb8bc5bb9",
+      "cnf": "instances/120-42/input.cnf",
+      "cnf_sha256": "1d11c9b40416bdaa49300e424a8d3d95d7807c62cbab100d447ddbc79cc5b291",
+      "map": "instances/120-42/map.json",
+      "map_sha256": "8062fc5ee3d978761b872b48d44bea548cca933b26dc4eb5b393e52642da5bd5",
+      "variables": 29440,
+      "clauses": 103318
+    },
+    {
+      "small_group_id": [
+        120,
+        43
+      ],
+      "q": 11,
+      "structure": "C10 x A4",
+      "group": "groups/120-43.json",
+      "group_sha256": "668d1b8adf1cc1d0d242ba5ae9405804b86c5fb8c20bff763b011cf41f48d90a",
+      "cnf": "instances/120-43/input.cnf",
+      "cnf_sha256": "43d8567d4cb26f8f10b4fd22b5ac264f0322b2a6680e9d7d224aa50f158b5557",
+      "map": "instances/120-43/map.json",
+      "map_sha256": "ea7e76130655becc3dd7fa0ab954dca311345128050065e43a361d7f075948d4",
+      "variables": 29400,
+      "clauses": 103278
+    },
+    {
+      "small_group_id": [
+        120,
+        44
+      ],
+      "q": 11,
+      "structure": "C2 x C6 x D10",
+      "group": "groups/120-44.json",
+      "group_sha256": "3dbc60490338e01e5545ec97ef7109036b0ce798125ff965a10506efe8a957fe",
+      "cnf": "instances/120-44/input.cnf",
+      "cnf_sha256": "3c5364a40b4b25c6619626a497d2d2071b97b9bb65f502bdc78e303b06e6435d",
+      "map": "instances/120-44/map.json",
+      "map_sha256": "f121f8e6a7c7f22a83df64ba2b04b8b27331d788ec24903a5e6978ee5a3c2985",
+      "variables": 29416,
+      "clauses": 103294
+    },
+    {
+      "small_group_id": [
+        120,
+        45
+      ],
+      "q": 11,
+      "structure": "C2 x C10 x S3",
+      "group": "groups/120-45.json",
+      "group_sha256": "d32554f16d0719295dfa34774a3232eb9558881c92140062bd292c1cd3e60569",
+      "cnf": "instances/120-45/input.cnf",
+      "cnf_sha256": "7ad9701d62cadc64e3d14d4e6583c6bd651acd37e9924d533895dad81a6f0fc3",
+      "map": "instances/120-45/map.json",
+      "map_sha256": "9bbac147c134bdcc91aaecce458d7eb8ed198d8cd175735179222765a7641a3f",
+      "variables": 29408,
+      "clauses": 103286
+    },
+    {
+      "small_group_id": [
+        120,
+        46
+      ],
+      "q": 11,
+      "structure": "C2 x C2 x D30",
+      "group": "groups/120-46.json",
+      "group_sha256": "9122f0d154e74ec98b32e6608d3ca56e1c9a6fd258a0e1b6396dd24952807517",
+      "cnf": "instances/120-46/input.cnf",
+      "cnf_sha256": "6982ea1108a9b39f1c4d93a7e893dfed5a2c29652f2bb45c8ef9e95cc82ac493",
+      "map": "instances/120-46/map.json",
+      "map_sha256": "57a7b4890ed671e9353dbdc7a7b6b6725769ab09d71738449eefdf49cca2e6b7",
+      "variables": 29456,
+      "clauses": 103334
+    },
+    {
+      "small_group_id": [
+        120,
+        47
+      ],
+      "q": 11,
+      "structure": "C30 x C2 x C2",
+      "group": "groups/120-47.json",
+      "group_sha256": "c5011d41770e713be99c938b9dfb5a41f50b1c335d0949dd97e3dc90257febf2",
+      "cnf": "instances/120-47/input.cnf",
+      "cnf_sha256": "4c392811672cdc6cf3a569f8443b51a980495a2d27f0efb8e70b6560b3eb7d2f",
+      "map": "instances/120-47/map.json",
+      "map_sha256": "19d9f612c117f3306d5e88aace002f1395ec0465cca09c6787d845297de78f92",
+      "variables": 29400,
+      "clauses": 103278
+    },
+    {
+      "small_group_id": [
+        168,
+        1
+      ],
+      "q": 13,
+      "structure": "C7 : C24",
+      "group": "groups/168-1.json",
+      "group_sha256": "f8b92f10478648df59920e374ed99467bc2dc44a1509d285ddf488494e073245",
+      "cnf": "instances/168-1/input.cnf",
+      "cnf_sha256": "05153a53828278334ceee61eecfdbc2ba444a71e5e41286861d2ee4127038cdc",
+      "map": "instances/168-1/map.json",
+      "map_sha256": "0337e296f2402b562d60b990ea05f020e0e385b3bac38560ffc250cead26fa75",
+      "variables": 57616,
+      "clauses": 202380
+    },
+    {
+      "small_group_id": [
+        168,
+        2
+      ],
+      "q": 13,
+      "structure": "C8 x (C7 : C3)",
+      "group": "groups/168-2.json",
+      "group_sha256": "655ed4352f9aa26a3300126d2fca2a0cc03a4f0ec8e8cb84559dfdf9e1501cbb",
+      "cnf": "instances/168-2/input.cnf",
+      "cnf_sha256": "148b9ca2e4c64b9119b7a377166ba5005b7b3f39717cfca8bc56351a0652f8d7",
+      "map": "instances/168-2/map.json",
+      "map_sha256": "67d6a4ab989793ec750c00883dc8f1a7410e11edebf2cb05d3e3aa9b69bed1c6",
+      "variables": 57616,
+      "clauses": 202380
+    },
+    {
+      "small_group_id": [
+        168,
+        3
+      ],
+      "q": 13,
+      "structure": "C7 x (C3 : C8)",
+      "group": "groups/168-3.json",
+      "group_sha256": "4160877aca1b9c290b774fd5e7886e6135bb835f1af190462f9898b1f7b52761",
+      "cnf": "instances/168-3/input.cnf",
+      "cnf_sha256": "e6ea68387e293f0c76ac32e5896f35010ddaa779d147370ee5df341827625786",
+      "map": "instances/168-3/map.json",
+      "map_sha256": "24a9956921c011af38d43e1e88ba5e1f74e11439591228ad445e452a3ea04d60",
+      "variables": 57616,
+      "clauses": 202380
+    },
+    {
+      "small_group_id": [
+        168,
+        4
+      ],
+      "q": 13,
+      "structure": "C3 x (C7 : C8)",
+      "group": "groups/168-4.json",
+      "group_sha256": "e395a338af70d6b18cf4782f0a3a891447df110c5dd9b49a19eb10f84cfc37a6",
+      "cnf": "instances/168-4/input.cnf",
+      "cnf_sha256": "fd043b9c721a9c85accd4206152828350859d11a516f2ecc50289e2db6b6044c",
+      "map": "instances/168-4/map.json",
+      "map_sha256": "9354637bda0f3e937eca912f4cf2d2e36c9494bab1fb4f3deab44bcae4e2cc32",
+      "variables": 57616,
+      "clauses": 202380
+    },
+    {
+      "small_group_id": [
+        168,
+        5
+      ],
+      "q": 13,
+      "structure": "C3 : (C7 : C8)",
+      "group": "groups/168-5.json",
+      "group_sha256": "f460ccae920871e4f35d053268fbe7b8785c4e0bebfdd908ab72ebbad45c7b2f",
+      "cnf": "instances/168-5/input.cnf",
+      "cnf_sha256": "8b4433e7aeab8fdc3c4e6d0b0b538c4dd92d2a102ccf2a07f4854287d81cac61",
+      "map": "instances/168-5/map.json",
+      "map_sha256": "daf66dd57e2c30fcc3e9c7166d4533f912d9e63fcce7ee0e9545c27a431b4543",
+      "variables": 57616,
+      "clauses": 202380
+    },
+    {
+      "small_group_id": [
+        168,
+        6
+      ],
+      "q": 13,
+      "structure": "C168",
+      "group": "groups/168-6.json",
+      "group_sha256": "f467394e17b92b65519bec0dca865fe9ec94a685231748dcbeedb131e3def5fc",
+      "cnf": "instances/168-6/input.cnf",
+      "cnf_sha256": "adec34a42110e11fa0f8fc85fe2d7259d0810b7b7ae15147a04706cb6f996633",
+      "map": "instances/168-6/map.json",
+      "map_sha256": "512604e14f032ca89e59bb522d43c29fd472129482086fe760b50175ffdec950",
+      "variables": 57616,
+      "clauses": 202380
+    },
+    {
+      "small_group_id": [
+        168,
+        7
+      ],
+      "q": 13,
+      "structure": "C7 : (C3 x Q8)",
+      "group": "groups/168-7.json",
+      "group_sha256": "2972aecd0e53723d7c95da709d526feb2b27717288370bfaf33d2d6fa72dbb71",
+      "cnf": "instances/168-7/input.cnf",
+      "cnf_sha256": "78f5198efbfe2cbe078cb93f8d9de868ab00110bf61c7c85aa5ed0a722bb3c2a",
+      "map": "instances/168-7/map.json",
+      "map_sha256": "eda453a8a1d29f1dfdb946544f64790b4a10247db7ca934c00c8fe7e684ebb53",
+      "variables": 57616,
+      "clauses": 202380
+    },
+    {
+      "small_group_id": [
+        168,
+        8
+      ],
+      "q": 13,
+      "structure": "C4 x (C7 : C6)",
+      "group": "groups/168-8.json",
+      "group_sha256": "b373948838c0e96d8deb0072e969f32b999241c9f668143ab2eb2129b333ccac",
+      "cnf": "instances/168-8/input.cnf",
+      "cnf_sha256": "de44742264ac0a0d0049c0c6b809ff22157a6471bb6476018801635d292b5bc1",
+      "map": "instances/168-8/map.json",
+      "map_sha256": "53511c1832e4fc0e94d0b9c116dbc2f71d627ebb026d8626af7f48976ad971e9",
+      "variables": 57630,
+      "clauses": 202394
+    },
+    {
+      "small_group_id": [
+        168,
+        9
+      ],
+      "q": 13,
+      "structure": "C7 : (C3 x D8)",
+      "group": "groups/168-9.json",
+      "group_sha256": "14e7b8b65b248c5e07a843262db86a20055f3abc67d048c833b711663828d52d",
+      "cnf": "instances/168-9/input.cnf",
+      "cnf_sha256": "2c55aa7024de09251937f8e9f6e8f290d30579105cabac33e9547494ddb59168",
+      "map": "instances/168-9/map.json",
+      "map_sha256": "c71af57d8a5219834335aed012a76e97171e0cd7b66c5c6cf28ddb9caee37451",
+      "variables": 57644,
+      "clauses": 202408
+    },
+    {
+      "small_group_id": [
+        168,
+        10
+      ],
+      "q": 13,
+      "structure": "C2 x (C7 : C12)",
+      "group": "groups/168-10.json",
+      "group_sha256": "3c3f1a064a475b9f71ba9f7b47425c4c731323eee71d26ea07cfec8564214c1b",
+      "cnf": "instances/168-10/input.cnf",
+      "cnf_sha256": "692ace04bb03ffb747a9a87c05be8b5b000bc523cbd7e31a4c841fd4eb8e1c01",
+      "map": "instances/168-10/map.json",
+      "map_sha256": "e6587ccdef0cc6746f39d3f5c63ba082582c291e539ba5ed92bd9b799f1cd0b4",
+      "variables": 57618,
+      "clauses": 202382
+    },
+    {
+      "small_group_id": [
+        168,
+        11
+      ],
+      "q": 13,
+      "structure": "C7 : (C3 x D8)",
+      "group": "groups/168-11.json",
+      "group_sha256": "e4e167550d0de6d10630ca72f97465ee8a028915efac5e2f4d4427fa2abea436",
+      "cnf": "instances/168-11/input.cnf",
+      "cnf_sha256": "b14b89167a0e6e83a39a44b7581058575c92d27720a66e5cbd56b2994ccb54f4",
+      "map": "instances/168-11/map.json",
+      "map_sha256": "d7725e70903dfa454aee304070d862c57eb21525ce327b732f9494b41d2146b1",
+      "variables": 57632,
+      "clauses": 202396
+    },
+    {
+      "small_group_id": [
+        168,
+        12
+      ],
+      "q": 13,
+      "structure": "(C3 : C4) x D14",
+      "group": "groups/168-12.json",
+      "group_sha256": "548f4b59988ed1f1612a6152e9acdfeff091553ac1f17694b2a084fb87d41915",
+      "cnf": "instances/168-12/input.cnf",
+      "cnf_sha256": "765f19f6c566ae1ba6633dcfb3b9223df3fb5cfd5be88dd0455eb3c13f029509",
+      "map": "instances/168-12/map.json",
+      "map_sha256": "72b12faf8d1d0455b16d1f5e815196e37fa33b7a30206fa0688f1920c9a9a35d",
+      "variables": 57630,
+      "clauses": 202394
+    },
+    {
+      "small_group_id": [
+        168,
+        13
+      ],
+      "q": 13,
+      "structure": "S3 x (C7 : C4)",
+      "group": "groups/168-13.json",
+      "group_sha256": "3f0080183134dd48d92d19db13f522182815e5239b0dc7ecd2a3882e0abace5a",
+      "cnf": "instances/168-13/input.cnf",
+      "cnf_sha256": "8e73c2213ada7f7756873cdac64559190bc7ad2ff296dafd0771a3443afb49b9",
+      "map": "instances/168-13/map.json",
+      "map_sha256": "e4f6d12bed9989df2ca6ab4103031c22e90f7ccb8ecc9d66d82c727bad418b5e",
+      "variables": 57622,
+      "clauses": 202386
+    },
+    {
+      "small_group_id": [
+        168,
+        14
+      ],
+      "q": 13,
+      "structure": "C3 : (C4 x D14)",
+      "group": "groups/168-14.json",
+      "group_sha256": "7b53e15a01438d6457ddcafd5e69cd868e49a22745f2f7234cee34515e02302c",
+      "cnf": "instances/168-14/input.cnf",
+      "cnf_sha256": "4d725d096f8a2dcadb44db5c700f9f7e496e9a87818ec5de9f18c429b5169297",
+      "map": "instances/168-14/map.json",
+      "map_sha256": "f71d4012737a4371e140429639c626fafa5c8553d3d38cade3435cd584cee051",
+      "variables": 57658,
+      "clauses": 202422
+    },
+    {
+      "small_group_id": [
+        168,
+        15
+      ],
+      "q": 13,
+      "structure": "C3 : ((C14 x C2) : C2)",
+      "group": "groups/168-15.json",
+      "group_sha256": "dbc4e8dfe7d59a47b894365361cab04a0bab9ab8ac2e8c091b074f9c4f2d78e0",
+      "cnf": "instances/168-15/input.cnf",
+      "cnf_sha256": "8611d68a14f064e3a81a0f048e84ba3f6dd3ae8c3d2ff9c782f29a03a9c86c18",
+      "map": "instances/168-15/map.json",
+      "map_sha256": "04a1b084df136c0f963df9cb12372d208a086a6bc6e3f746b7b094317b254673",
+      "variables": 57636,
+      "clauses": 202400
+    },
+    {
+      "small_group_id": [
+        168,
+        16
+      ],
+      "q": 13,
+      "structure": "C3 : D56",
+      "group": "groups/168-16.json",
+      "group_sha256": "f4eecc98c8239aadd10700e54722bb70070bd2b402260a5962d42abec22413dd",
+      "cnf": "instances/168-16/input.cnf",
+      "cnf_sha256": "f083aeaf5abc4963255c5441e2c871e79d59aa6f3fed936e19d0e899d4d70d8d",
+      "map": "instances/168-16/map.json",
+      "map_sha256": "7f549842efaf827ffd63a57d96518b37b2692140c6fc18c46ca9ec512c87ad47",
+      "variables": 57672,
+      "clauses": 202436
+    },
+    {
+      "small_group_id": [
+        168,
+        17
+      ],
+      "q": 13,
+      "structure": "C3 : ((C14 x C2) : C2)",
+      "group": "groups/168-17.json",
+      "group_sha256": "52863ce478bc5b160e21516705105c56107dc0a4bb3a8879737bac4528542237",
+      "cnf": "instances/168-17/input.cnf",
+      "cnf_sha256": "6ad6ec746bb4c3244866ba93348a591741adfde0e615274019484455288f4e1d",
+      "map": "instances/168-17/map.json",
+      "map_sha256": "46fa71371225f268f0f318cee199973fde9993a90d15e6567e8932afc439ab8c",
+      "variables": 57664,
+      "clauses": 202428
+    },
+    {
+      "small_group_id": [
+        168,
+        18
+      ],
+      "q": 13,
+      "structure": "C3 : (C7 : Q8)",
+      "group": "groups/168-18.json",
+      "group_sha256": "bc150efb2b26633d7705cc05b8b8e550af78650a0edce7900c8a2b655d97d284",
+      "cnf": "instances/168-18/input.cnf",
+      "cnf_sha256": "453c68e49df9837fe972af8f17685b901f3ba0e3b8f0e75a67b44024d44df612",
+      "map": "instances/168-18/map.json",
+      "map_sha256": "621fb9d6812adb7ad6a14634ea9134c899534ef8613690bdc9d58877a19eb660",
+      "variables": 57616,
+      "clauses": 202380
+    },
+    {
+      "small_group_id": [
+        168,
+        19
+      ],
+      "q": 13,
+      "structure": "C2 x C4 x (C7 : C3)",
+      "group": "groups/168-19.json",
+      "group_sha256": "c76d4f23ca062fdc93550c0f7e9d0313a7b9c5197db1cddfbd6a00e90ac3cefd",
+      "cnf": "instances/168-19/input.cnf",
+      "cnf_sha256": "752e1b40d53cf3ee6b42cf6bca3466ce3ed2499d16df81a16c644aa9d5ca92a1",
+      "map": "instances/168-19/map.json",
+      "map_sha256": "7c7cb676b1cf3052c1d3f6ba949e6725aa04f8f9f29e2b8f446d4c5b7b4a004d",
+      "variables": 57618,
+      "clauses": 202382
+    },
+    {
+      "small_group_id": [
+        168,
+        20
+      ],
+      "q": 13,
+      "structure": "D8 x (C7 : C3)",
+      "group": "groups/168-20.json",
+      "group_sha256": "9a052f7932d616f1b66d132e6f402d7cd47850ce68a66821884e7935b7fbda6a",
+      "cnf": "instances/168-20/input.cnf",
+      "cnf_sha256": "0fc98734b6d16e53741976be1c052c352c842622c85d5dee0c6843c059f4baf6",
+      "map": "instances/168-20/map.json",
+      "map_sha256": "4074019ed6d9e8d22bf173901ce9b2644d81372b20ad82e990ab11285d60ebe3",
+      "variables": 57620,
+      "clauses": 202384
+    },
+    {
+      "small_group_id": [
+        168,
+        21
+      ],
+      "q": 13,
+      "structure": "Q8 x (C7 : C3)",
+      "group": "groups/168-21.json",
+      "group_sha256": "cd7b299fdb102ae061bd2b33a77c6aad699a67e421af6244bb224ff2a40f6468",
+      "cnf": "instances/168-21/input.cnf",
+      "cnf_sha256": "cf49ff5e2b270844ce548d2bdafd6fda6636d8af1d5f5d55f261be08f7fc3a0e",
+      "map": "instances/168-21/map.json",
+      "map_sha256": "5c8926e1f9b187ac6da37fbedc6026f096298839f1ed249f78440bdaf83c79f3",
+      "variables": 57616,
+      "clauses": 202380
+    },
+    {
+      "small_group_id": [
+        168,
+        22
+      ],
+      "q": 13,
+      "structure": "C7 x SL(2,3)",
+      "group": "groups/168-22.json",
+      "group_sha256": "5150f0c050b22a613e7df420ff1f763243fb0c6788abd4acea02759f086dcf5c",
+      "cnf": "instances/168-22/input.cnf",
+      "cnf_sha256": "25e58b656625caebc731f7b8455dbbe7a4f8d9ca0ec201c1f4351a9d49d3551d",
+      "map": "instances/168-22/map.json",
+      "map_sha256": "893df47ee1cf5a8582ed2bb04c71ee9dec18e205cd5d5dcb22f6c534ade1ecbe",
+      "variables": 57616,
+      "clauses": 202380
+    },
+    {
+      "small_group_id": [
+        168,
+        23
+      ],
+      "q": 13,
+      "structure": "Q8 : (C7 : C3)",
+      "group": "groups/168-23.json",
+      "group_sha256": "0f2a1042226638d733c2f524c9d07a7df32f75625c26dc294368e1cfdc953075",
+      "cnf": "instances/168-23/input.cnf",
+      "cnf_sha256": "23e8c7a062e81bdde0b9a162c4e3f000158664d7ae7e7dcf18174f4c637db13b",
+      "map": "instances/168-23/map.json",
+      "map_sha256": "933da03fcecf88ee5a34d1f5b4f9a9c9ee52a32c43609dfb15f38ebffe72145e",
+      "variables": 57616,
+      "clauses": 202380
+    },
+    {
+      "small_group_id": [
+        168,
+        24
+      ],
+      "q": 13,
+      "structure": "C3 x (C7 : Q8)",
+      "group": "groups/168-24.json",
+      "group_sha256": "e7fb8017e2dd0b50358f14de2c05464718c149a96c02e752b21d806d02c94ec3",
+      "cnf": "instances/168-24/input.cnf",
+      "cnf_sha256": "c01a80d7beb7b109b9e80b8fb0276a93956500fb8c376afcbf9c905255a8d134",
+      "map": "instances/168-24/map.json",
+      "map_sha256": "c70b1fb159abb59bdd71748ecae93dfcba946a351c8d646bed22561906e41755",
+      "variables": 57616,
+      "clauses": 202380
+    },
+    {
+      "small_group_id": [
+        168,
+        25
+      ],
+      "q": 13,
+      "structure": "C12 x D14",
+      "group": "groups/168-25.json",
+      "group_sha256": "7755ff17a4c97f35cd88bd2c206e1d3c7bd08aa1367c877a23fc1f6d6b33675f",
+      "cnf": "instances/168-25/input.cnf",
+      "cnf_sha256": "37ef5eed001eecd2fe7c2b1bf408ab565448ed092c7a2398cf6e95bd6c4b9dd0",
+      "map": "instances/168-25/map.json",
+      "map_sha256": "3a45f5e9f8146739278134f28f470a0827e3330b2cdf2434dcad019032830c46",
+      "variables": 57630,
+      "clauses": 202394
+    },
+    {
+      "small_group_id": [
+        168,
+        26
+      ],
+      "q": 13,
+      "structure": "C3 x D56",
+      "group": "groups/168-26.json",
+      "group_sha256": "4e0b610f0eb93a943fff5cf130bd09920925badb662aa2775255664886953062",
+      "cnf": "instances/168-26/input.cnf",
+      "cnf_sha256": "389ed29f3673676044ccf510865afc407ebde1ca9b132137c0e29b023ee3371f",
+      "map": "instances/168-26/map.json",
+      "map_sha256": "773844eec2dfd5f71baba62fe7459e811468d109e5529f38917f7a64dd4f55a9",
+      "variables": 57644,
+      "clauses": 202408
+    },
+    {
+      "small_group_id": [
+        168,
+        27
+      ],
+      "q": 13,
+      "structure": "C6 x (C7 : C4)",
+      "group": "groups/168-27.json",
+      "group_sha256": "d15b03c75e3e9c587dfbbecc381a682487623d51d34604b5ebb81392aa426e9f",
+      "cnf": "instances/168-27/input.cnf",
+      "cnf_sha256": "b5f8ac78a80eb10e91a27ccc0d356dd814acce4f407435a33e393b456edb3dce",
+      "map": "instances/168-27/map.json",
+      "map_sha256": "3e4a33d5fa1088a2267033a64befc898dace394c5c2a7414471b2887a5b1df44",
+      "variables": 57618,
+      "clauses": 202382
+    },
+    {
+      "small_group_id": [
+        168,
+        28
+      ],
+      "q": 13,
+      "structure": "C3 x ((C14 x C2) : C2)",
+      "group": "groups/168-28.json",
+      "group_sha256": "5f9fcef06f6eccf45e329300075a2cb19c777ee9a1ed601e358582521f1d2208",
+      "cnf": "instances/168-28/input.cnf",
+      "cnf_sha256": "3eb241aca9efe604c9e5a5f7f3c0403f51626ef432a82b5bc6361e4bc2bb2f41",
+      "map": "instances/168-28/map.json",
+      "map_sha256": "44fe78d6b883a29750a4fa430306ce206d3adc79119b29d13a7c662b83453cd9",
+      "variables": 57632,
+      "clauses": 202396
+    },
+    {
+      "small_group_id": [
+        168,
+        29
+      ],
+      "q": 13,
+      "structure": "C7 x (C3 : Q8)",
+      "group": "groups/168-29.json",
+      "group_sha256": "9d70c398d92db562a9200c5611457310cf3469206b494441433faad4f0c2a25b",
+      "cnf": "instances/168-29/input.cnf",
+      "cnf_sha256": "bb4ca14f7839615d88c326907aa7df61c9172fbfdeda0bf378f5cea40c64cd51",
+      "map": "instances/168-29/map.json",
+      "map_sha256": "8151f5d0d0e9ea886c6b47096ccf314f9afb25bb29353c9ffd32bdcf37fe8972",
+      "variables": 57616,
+      "clauses": 202380
+    },
+    {
+      "small_group_id": [
+        168,
+        30
+      ],
+      "q": 13,
+      "structure": "C28 x S3",
+      "group": "groups/168-30.json",
+      "group_sha256": "1f4cf98634cbd9a79639a888eb311170c0c7b7904cf5ddaacd394e94a35b583c",
+      "cnf": "instances/168-30/input.cnf",
+      "cnf_sha256": "0bfe524976545ebe00989430545f6b5ecd6d83cd4c22aa5beee137b30f3f0891",
+      "map": "instances/168-30/map.json",
+      "map_sha256": "25681a6a11cd3454d2a322f2dbace291048455751b70cdb58a6aab914786b506",
+      "variables": 57622,
+      "clauses": 202386
+    },
+    {
+      "small_group_id": [
+        168,
+        31
+      ],
+      "q": 13,
+      "structure": "C7 x D24",
+      "group": "groups/168-31.json",
+      "group_sha256": "e852e97dd24c13b41e107a2ea54aa20c3a49459a230ff7e61fb623d10d22e63f",
+      "cnf": "instances/168-31/input.cnf",
+      "cnf_sha256": "a17531b3335cd27354fa24151adc10a148113d3dccb2f9a4f9ed719bfccd30ad",
+      "map": "instances/168-31/map.json",
+      "map_sha256": "74717f36d64b1e2d2e831e015cc45ee53fba832915f3afac771d11afe5bd65a6",
+      "variables": 57628,
+      "clauses": 202392
+    },
+    {
+      "small_group_id": [
+        168,
+        32
+      ],
+      "q": 13,
+      "structure": "C14 x (C3 : C4)",
+      "group": "groups/168-32.json",
+      "group_sha256": "86edfb61d22f39df10e8587159be9ef9b6d24f3529127492be50f8b2659da672",
+      "cnf": "instances/168-32/input.cnf",
+      "cnf_sha256": "6614a42bec0644f40abfd3bfe9b7aacaad08817756dbc20657d8638cc0c9b27a",
+      "map": "instances/168-32/map.json",
+      "map_sha256": "79eb59754f2b270a9e9f2cf2745254402f0c1989479026a51057bb443cd6e5ff",
+      "variables": 57618,
+      "clauses": 202382
+    },
+    {
+      "small_group_id": [
+        168,
+        33
+      ],
+      "q": 13,
+      "structure": "C7 x ((C6 x C2) : C2)",
+      "group": "groups/168-33.json",
+      "group_sha256": "635577ae52a47a82958fbcbcf77070ddea5206ae6d32b4a2a5522cd538cf3115",
+      "cnf": "instances/168-33/input.cnf",
+      "cnf_sha256": "dc74110085dbdb308bd7163386273ade47ce341fdc526660c53ef47140fa7c4c",
+      "map": "instances/168-33/map.json",
+      "map_sha256": "fcd627069b89df6287fc075cebfbc8515800f6599e7c592ed5d86ec8dd02d1c7",
+      "variables": 57624,
+      "clauses": 202388
+    },
+    {
+      "small_group_id": [
+        168,
+        34
+      ],
+      "q": 13,
+      "structure": "C3 : (C7 : Q8)",
+      "group": "groups/168-34.json",
+      "group_sha256": "6a03af6b0e83870732165be9b84d8d62e9466080b2cd14c622620f56ca6065a0",
+      "cnf": "instances/168-34/input.cnf",
+      "cnf_sha256": "71f7d6bb1603937e0c0b5d0d39687f8e7bc80a2859dc596b92e1c091581226fd",
+      "map": "instances/168-34/map.json",
+      "map_sha256": "f22a8e25636ffd2f9f65b767e6f0c7930309ddd59c3b1a9bd2d72cdc18926760",
+      "variables": 57616,
+      "clauses": 202380
+    },
+    {
+      "small_group_id": [
+        168,
+        35
+      ],
+      "q": 13,
+      "structure": "C4 x D42",
+      "group": "groups/168-35.json",
+      "group_sha256": "d412208e522620c40b300376eceb3d242ccf1329cabf85f0aae04d3a91fc218d",
+      "cnf": "instances/168-35/input.cnf",
+      "cnf_sha256": "3f63d52226e8540f2fa3d5d5e3ac4a52dbfeb7a4ed9fdcbe542a86d7bfe94014",
+      "map": "instances/168-35/map.json",
+      "map_sha256": "f7064ddc6c2ab8d90268746041a0ce22d7c9c4c2556c32b7fd11e03c0b4b4333",
+      "variables": 57658,
+      "clauses": 202422
+    },
+    {
+      "small_group_id": [
+        168,
+        36
+      ],
+      "q": 13,
+      "structure": "D168",
+      "group": "groups/168-36.json",
+      "group_sha256": "aabe8cb721268c383aec5f365dc76c0b7f3c4bf2c666c23a1f4ef81860497f1c",
+      "cnf": "instances/168-36/input.cnf",
+      "cnf_sha256": "a70605d890843b3cb12f85adbfefdfe7025ec42e389972e0a4967921a65254bd",
+      "map": "instances/168-36/map.json",
+      "map_sha256": "337b04e316aa02957e5dc96e169b14b914c673c8b081d3696d04dd99a170a19c",
+      "variables": 57700,
+      "clauses": 202464
+    },
+    {
+      "small_group_id": [
+        168,
+        37
+      ],
+      "q": 13,
+      "structure": "C2 x (C21 : C4)",
+      "group": "groups/168-37.json",
+      "group_sha256": "940ead924c72231ef159d4fa648018fa33eaa5d64274465a8dbe79e0f51ec54b",
+      "cnf": "instances/168-37/input.cnf",
+      "cnf_sha256": "8bf31813c1c7a5480c406b9cb0efb0bd77688ae4cba5a6e40b8f51a5490a766f",
+      "map": "instances/168-37/map.json",
+      "map_sha256": "ccec16673248cfc316fbd09569f8d13329b567c427cc94472e1c5e66cf5dfbba",
+      "variables": 57618,
+      "clauses": 202382
+    },
+    {
+      "small_group_id": [
+        168,
+        38
+      ],
+      "q": 13,
+      "structure": "C3 : ((C14 x C2) : C2)",
+      "group": "groups/168-38.json",
+      "group_sha256": "16b46997b7247987f2190af662a186b5e896aaf29eda427c901e0b8b6a1e338e",
+      "cnf": "instances/168-38/input.cnf",
+      "cnf_sha256": "20f2b4b1753918a1444a38d31cad935412ce2101a02f1a6cd5cac4237f69e7cc",
+      "map": "instances/168-38/map.json",
+      "map_sha256": "c6029fea7c54ddc1f79015d948bd63060f49934e4e1591395c49bd49627ad930",
+      "variables": 57660,
+      "clauses": 202424
+    },
+    {
+      "small_group_id": [
+        168,
+        39
+      ],
+      "q": 13,
+      "structure": "C84 x C2",
+      "group": "groups/168-39.json",
+      "group_sha256": "859d5e0bccf5b8c183c8e1006017aada26cb037929bfa8579b3ad31177d55bc6",
+      "cnf": "instances/168-39/input.cnf",
+      "cnf_sha256": "9e2b1c5758b6961da3a03a068d707bdff3c6a592cad08cb21cb28f509b2f5532",
+      "map": "instances/168-39/map.json",
+      "map_sha256": "3d7b374978ca6499be4cd373852564255f4196f26dcabd1994e8465d885978c1",
+      "variables": 57618,
+      "clauses": 202382
+    },
+    {
+      "small_group_id": [
+        168,
+        40
+      ],
+      "q": 13,
+      "structure": "C21 x D8",
+      "group": "groups/168-40.json",
+      "group_sha256": "2932404a6fe5de14fe5b4754052fbd14d99bcef4417d7e5a03cb2c56d844571c",
+      "cnf": "instances/168-40/input.cnf",
+      "cnf_sha256": "75c3847f83531522d04eb79d02439b53e6aef086f71917ab9e7cdec7de300532",
+      "map": "instances/168-40/map.json",
+      "map_sha256": "1d4bcd3c033f4391fa731368bde87f176f2cc8c8e75a2ba757f4775f3567db4a",
+      "variables": 57620,
+      "clauses": 202384
+    },
+    {
+      "small_group_id": [
+        168,
+        41
+      ],
+      "q": 13,
+      "structure": "C21 x Q8",
+      "group": "groups/168-41.json",
+      "group_sha256": "d64f3f403042e48f7cd9302075739132eed67086746e63e5ed2ec121e366ed7e",
+      "cnf": "instances/168-41/input.cnf",
+      "cnf_sha256": "06d6a1ac5f0de86adaa65afee2f539d67a3ad5f2c3f40cb79e849462fd2c7d86",
+      "map": "instances/168-41/map.json",
+      "map_sha256": "7086829ce3143d806e64dae5fb43f53bd0805206d289a4caed537cc0fd023cb3",
+      "variables": 57616,
+      "clauses": 202380
+    },
+    {
+      "small_group_id": [
+        168,
+        42
+      ],
+      "q": 13,
+      "structure": "PSL(3,2)",
+      "group": "groups/168-42.json",
+      "group_sha256": "255a53feb8410b843dfe7c97daa672f7a678f3b588ae76cd0e336f5e9aae263a",
+      "cnf": "instances/168-42/input.cnf",
+      "cnf_sha256": "5d78a9afcab178f92bdb5f766c878a74cb65eedbc474797f41be231f26f7ad83",
+      "map": "instances/168-42/map.json",
+      "map_sha256": "98481b5e4ae07aea01cdca47382ce350dc74ef3fb82240f0c1bd52e591ddb3e6",
+      "variables": 57636,
+      "clauses": 202400
+    },
+    {
+      "small_group_id": [
+        168,
+        43
+      ],
+      "q": 13,
+      "structure": "(C2 x C2 x C2) : (C7 : C3)",
+      "group": "groups/168-43.json",
+      "group_sha256": "b0fa56e258f1ff351605c8f8bf6abfab1360b1e04cfd300c868f55424074f447",
+      "cnf": "instances/168-43/input.cnf",
+      "cnf_sha256": "1325921306db5a35518d39e0c738960ef8d0eb7f039ca7d026b75054281a62a6",
+      "map": "instances/168-43/map.json",
+      "map_sha256": "52fdf5510657ed31562f69561fee7aa7466a6442e928ad548a6213ae8792d9be",
+      "variables": 57622,
+      "clauses": 202386
+    },
+    {
+      "small_group_id": [
+        168,
+        44
+      ],
+      "q": 13,
+      "structure": "C3 x ((C2 x C2 x C2) : C7)",
+      "group": "groups/168-44.json",
+      "group_sha256": "2faad0f9ac1ae1369e8f47d542fa5d1c01aa6904e4a9d86ca5c14d43ce0160bd",
+      "cnf": "instances/168-44/input.cnf",
+      "cnf_sha256": "8ecf37de6394369ae0979187ba4707dafea3574ca30420d4e0b2156f875b3460",
+      "map": "instances/168-44/map.json",
+      "map_sha256": "db956834165905845fe2da04c6dc035f646d039257bf05592f7c76fcad6c103d",
+      "variables": 57622,
+      "clauses": 202386
+    },
+    {
+      "small_group_id": [
+        168,
+        45
+      ],
+      "q": 13,
+      "structure": "C7 x S4",
+      "group": "groups/168-45.json",
+      "group_sha256": "f8449d064608a82119e510afb2275739a811aeb8939124345e65828468578910",
+      "cnf": "instances/168-45/input.cnf",
+      "cnf_sha256": "26016b8fa0f9ffe4487a9eaf23b752f1a90aa6c9f671684a8f18b8542393f0c4",
+      "map": "instances/168-45/map.json",
+      "map_sha256": "816a0b52b8e772bff63e9173194b680815935adf40bfca75ffe78b3be12d91d4",
+      "variables": 57624,
+      "clauses": 202388
+    },
+    {
+      "small_group_id": [
+        168,
+        46
+      ],
+      "q": 13,
+      "structure": "C7 : S4",
+      "group": "groups/168-46.json",
+      "group_sha256": "9ea6db356f42f672d6af2b95eb1c5116f6ca8448804aeb583d7cfc8205b40f4d",
+      "cnf": "instances/168-46/input.cnf",
+      "cnf_sha256": "ccab7894f61972564c8ba38cf013362f059e7980a433b2be7fd9c6c2888b72ae",
+      "map": "instances/168-46/map.json",
+      "map_sha256": "f561b60e38b2b0f6d80c69ce68be8bb553dfee88feb7b55099315dd5db44a7db",
+      "variables": 57660,
+      "clauses": 202424
+    },
+    {
+      "small_group_id": [
+        168,
+        47
+      ],
+      "q": 13,
+      "structure": "C2 x C2 x (C7 : C6)",
+      "group": "groups/168-47.json",
+      "group_sha256": "f131217aedadb074125701cbf5a8208426aa4e85d85faea724a7b47564bd90ce",
+      "cnf": "instances/168-47/input.cnf",
+      "cnf_sha256": "f927a34ac67af42c9e1bb74c2662fde85f792c4b49cdf421cfa43521bb1448e0",
+      "map": "instances/168-47/map.json",
+      "map_sha256": "f1d4cff86ec678a6a5d164d061661808d5ebc910f5f81f0c01599f7152d9a12d",
+      "variables": 57646,
+      "clauses": 202410
+    },
+    {
+      "small_group_id": [
+        168,
+        48
+      ],
+      "q": 13,
+      "structure": "A4 x D14",
+      "group": "groups/168-48.json",
+      "group_sha256": "21c3468c98c800ce2ebc7bdba81b9470a58c1babd8be4a04ae85e1a8e251afa5",
+      "cnf": "instances/168-48/input.cnf",
+      "cnf_sha256": "8afe4e9c4c97c5630aa261b4b0cca3b6fdbb62f84b32a2cf47e95b3b613fc081",
+      "map": "instances/168-48/map.json",
+      "map_sha256": "0f930b3dab78300454e8f00d85f23b4d6fac55f09d98e0fefb90f0b6b70e2679",
+      "variables": 57646,
+      "clauses": 202410
+    },
+    {
+      "small_group_id": [
+        168,
+        49
+      ],
+      "q": 13,
+      "structure": "C7 : (C2 x A4)",
+      "group": "groups/168-49.json",
+      "group_sha256": "d630e5562424d23988a55811883c29991557b1f0dc6c3945325b533f050e61b9",
+      "cnf": "instances/168-49/input.cnf",
+      "cnf_sha256": "272b901bd2287f6bb1d66a5c3cfe6d2e4a42f449faf6b57dc862370e9dd287b7",
+      "map": "instances/168-49/map.json",
+      "map_sha256": "b8c01d0f45934111a083639f8063a07458e3c60c91317aa28b717f9cd534ddd7",
+      "variables": 57646,
+      "clauses": 202410
+    },
+    {
+      "small_group_id": [
+        168,
+        50
+      ],
+      "q": 13,
+      "structure": "C2 x S3 x D14",
+      "group": "groups/168-50.json",
+      "group_sha256": "f23a6678e7059d1e9a342802726c1c8b6fdb8d4035d3dc26a05adbd59a53490c",
+      "cnf": "instances/168-50/input.cnf",
+      "cnf_sha256": "9b94a497cafdb949f132334c0b5447712b570da2d35e819f17b26c19b549eb94",
+      "map": "instances/168-50/map.json",
+      "map_sha256": "289dcdf5cd9570d2bc93c1f81475002f8479d0f8da4f09cecc3953d642b44767",
+      "variables": 57678,
+      "clauses": 202442
+    },
+    {
+      "small_group_id": [
+        168,
+        51
+      ],
+      "q": 13,
+      "structure": "C2 x C2 x C2 x (C7 : C3)",
+      "group": "groups/168-51.json",
+      "group_sha256": "225c8211874d9f0981674eb9396bf1d9fc54a8efe4ffc066cf9998f403e4baf4",
+      "cnf": "instances/168-51/input.cnf",
+      "cnf_sha256": "3d0f570edd54647ecfc887a1f1ea1e22bb9c27364aa6b57536b7d183595258bc",
+      "map": "instances/168-51/map.json",
+      "map_sha256": "dfb07397b561e66c9c90e72a098e0a2736a759bee7c22b92127e2a24a5b5006b",
+      "variables": 57622,
+      "clauses": 202386
+    },
+    {
+      "small_group_id": [
+        168,
+        52
+      ],
+      "q": 13,
+      "structure": "C14 x A4",
+      "group": "groups/168-52.json",
+      "group_sha256": "c59b698b4c26a0de4270307914b9ad7ff7929eda7f029bb22a077070acdc15bf",
+      "cnf": "instances/168-52/input.cnf",
+      "cnf_sha256": "c3aaa789b1aa617ab6e6d7629076a3245b83ad4fba9a815d2151714b814cf2f6",
+      "map": "instances/168-52/map.json",
+      "map_sha256": "e6a5064d10e295d6296547e87fd700cf613d649445a2e13d39cb9f9ec48895f8",
+      "variables": 57622,
+      "clauses": 202386
+    },
+    {
+      "small_group_id": [
+        168,
+        53
+      ],
+      "q": 13,
+      "structure": "C2 x ((C14 x C2) : C3)",
+      "group": "groups/168-53.json",
+      "group_sha256": "f65bc546ce5be7e07b90bf7120986ec0f236d2ea4490dfce18c8a39a8e33fbe2",
+      "cnf": "instances/168-53/input.cnf",
+      "cnf_sha256": "0b91c4933f4a09600c497f1b2e11ec753323e39772b209a7805cd73d40d4c2a9",
+      "map": "instances/168-53/map.json",
+      "map_sha256": "a753593a11f46f730c2be1fb667fdfff11bec5b44e217492aa55566c4c11be6c",
+      "variables": 57622,
+      "clauses": 202386
+    },
+    {
+      "small_group_id": [
+        168,
+        54
+      ],
+      "q": 13,
+      "structure": "C2 x C6 x D14",
+      "group": "groups/168-54.json",
+      "group_sha256": "710dd822ce397caeaad1364d89c923784e31d3abadb51c0139b2fed6effc85da",
+      "cnf": "instances/168-54/input.cnf",
+      "cnf_sha256": "5c939ff8fe54e582a13117d0c948d05e9349ad0a456f886037d5451eeec85961",
+      "map": "instances/168-54/map.json",
+      "map_sha256": "dbc1f65562358adac63d6a8cb1e1a15bb8cbf90627ef3f62b77482b26c26a66e",
+      "variables": 57646,
+      "clauses": 202410
+    },
+    {
+      "small_group_id": [
+        168,
+        55
+      ],
+      "q": 13,
+      "structure": "C2 x C14 x S3",
+      "group": "groups/168-55.json",
+      "group_sha256": "031a132073db26e742ec20ea74f2f5cf06b972f01020d5a29bcb695b6a579f39",
+      "cnf": "instances/168-55/input.cnf",
+      "cnf_sha256": "f9433c61b2e0b5d49994b3e6d9055757331ad73246b83f7332be7b6042cfa4b8",
+      "map": "instances/168-55/map.json",
+      "map_sha256": "35c9bbe063c748b27f607ecd4923769ed6b0136bfc9344e389c6c2d79b248052",
+      "variables": 57630,
+      "clauses": 202394
+    },
+    {
+      "small_group_id": [
+        168,
+        56
+      ],
+      "q": 13,
+      "structure": "C2 x C2 x D42",
+      "group": "groups/168-56.json",
+      "group_sha256": "b7fc9a75d8ea37efbda9e0c530eb6ef0a45e61f93441d9590acc64534102ae3b",
+      "cnf": "instances/168-56/input.cnf",
+      "cnf_sha256": "edb7060ddb5d3a1ae727b1cc734df59cac3324c41a983c4eacc9de968660b06a",
+      "map": "instances/168-56/map.json",
+      "map_sha256": "06c290233037bafaf3daf0309921b845f225b8afbd198a6cd1dd8739b47bfc20",
+      "variables": 57702,
+      "clauses": 202466
+    },
+    {
+      "small_group_id": [
+        168,
+        57
+      ],
+      "q": 13,
+      "structure": "C42 x C2 x C2",
+      "group": "groups/168-57.json",
+      "group_sha256": "0476be85a4e30a9ab2bde85957cd39d9091f9e90803f1801670afd3f2950d34f",
+      "cnf": "instances/168-57/input.cnf",
+      "cnf_sha256": "6aec0ab04409fec3aff80649ab642207cf5dbcd5c31614669dd21e9c2d3b0583",
+      "map": "instances/168-57/map.json",
+      "map_sha256": "bbc28f1693ed7972273e5a143dd8722cae7876761c91d0c1c76855cf7dbc1c2a",
+      "variables": 57622,
+      "clauses": 202386
+    }
+  ],
+  "encoder_sha256": "58959545e0af53deb92b971519c2a2310b4a23692e0260a2cb5dac81f0b98fa4",
+  "exporter_sha256": "bf2de9349cea5bdda794f1a8ee602ae5fecd01e3f27a28100b3c40a8df48b462"
+}

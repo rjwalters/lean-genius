@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "review_id": 2649,
+  "reviewer": "codex-sol-1",
+  "date": "2026-09-15",
+  "small_group_id": [
+    48,
+    26
+  ],
+  "vertices": 48,
+  "degree": 7,
+  "edges": 168,
+  "clauses_checked": 16348,
+  "prior_receipt_equal": true,
+  "terminal_bindings_checked": true,
+  "independent_common_neighbor_pairs_checked": 1128,
+  "standalone_coordinate_control": "PASS",
+  "pins": {
+    "group.json": "8eb2bd3032a007ecdc7858d9b04df65447ace6e94572f8f702eeacead4741b31",
+    "input.cnf": "9ca37de69ef63eda7b8b1a524f69a4d9b67018900019637290995fb908e36cbe",
+    "map.json": "0a5452b638247912ddd66f63bb95bf357af33a5b117370dd1ee16c8710a79cda",
+    "solver.log": "2196aef6785de84685e52bfd22d3e047663b56ded3e53ef3ee15fb91c7296751",
+    "result.json": "486f992bcacce44db709b5b6532e1b44ec1542a498fbfc328be51aff1e044635",
+    "graph.json": "7d1e465a41a789b21c715d4b5603541941c48176f0d76daa9d6928a8ecf80fd0"
+  },
+  "checker_sha256": "75ccb78379c30e81296bb4235b70bd464111f7372c573d5e5f8743a648cc0021",
+  "scope": "Explicit positive control verified. No target-order nonexistence or Lean certification claim."
+}

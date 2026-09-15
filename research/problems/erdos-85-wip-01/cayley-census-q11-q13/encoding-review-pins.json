@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "files": {
+    "cayley-lemma-review.json": "b519bbd2dfa222acbdbb9fd142ce5670f705cacbedca3b68707c764dd7be80be",
+    "audit_group_tables.py": "71fe7ba67c3e148bc27d5c7450432dc32b226c9faaa1f5e27ed5478d883781df",
+    "group-table-audit.json": "c6871681ba67a576d7d513278ed1d4128d1d8a72791199f3be8474e24b0ae649",
+    "audit_encoding.py": "9936327eada480f527baa92e4467a80aa30d0b42d8dfb9afc053915d4d2ab0b3",
+    "encoding-audit.json": "e284e465d463a70b2da016ca9c4c124af3c299e4957e845be14249b6863c80f2",
+    "audit_full_encoding.py": "f2089050feef11e8806d9e78cc81ab0091b1eeaa595e880b9ed7dabf8c4ec17e",
+    "full-encoding-audit.json": "f475257efed3300bb1978b3b20e67df5d95f5fc9b1f3fce00e6118cbaf041f8c",
+    "ENCODING_REVIEW.md": "aef6fc498c6c79ee764d327138e71cc7eaa6782c607bd3125bc7ab76fc0a4c9e"
+  },
+  "source_pins": {
+    "/Users/rwalters/lean-genius-cayley-sol1-20260913/encode.py": "58959545e0af53deb92b971519c2a2310b4a23692e0260a2cb5dac81f0b98fa4",
+    "/Users/rwalters/lean-genius-cayley-sol1-20260913/export.g": "bf2de9349cea5bdda794f1a8ee602ae5fecd01e3f27a28100b3c40a8df48b462",
+    "/Users/rwalters/lean-genius-cayley-sol1-20260913/manifest.json": "83751253c098027045cd5b5eeb0ebbbe3537a3806c6f500c5ebe61f50085100b",
+    "/Users/rwalters/lean-genius-cayley-sol1-20260913/CAYLEY_ENCODING.md": "ea4aef691a2907a8c21435297e2fcf838cafb7650230e163cefca76c84d95f98"
+  },
+  "scope": "Mathematical/source/exhaustive production constraint cover; not solver UNSAT certification"
+}
