@@ -1,0 +1,22 @@
+{
+  "review": 2666,
+  "status": "PASS_GENERIC_PREFIX_PREDICATE",
+  "checks": {
+    "status": "PASS_INDEPENDENT_BUILD_AND_FIXTURES",
+    "fixtures": 4,
+    "relabelings_per_fixture": 2,
+    "domain_checks": 1344,
+    "positive": 1222,
+    "negative": 122,
+    "retained_full_rows": 5344,
+    "complete_prefix_equalities": 168,
+    "seconds": 0.9015750000107801,
+    "source_sha256": "b45e7f2c04876e4f1e5337b90b054042b4ca03f934d46467164209596d6a1574",
+    "rebuilt_sha256": "f41b1d20c0f96066c8be4826629b164ebee05a47cdcd360a1f5de5b3838cbfac",
+    "scope": "Generic predicate only under stated valid-prefix and future-option completeness premises. No host integration/search/exclusion."
+  },
+  "source_pins_sha256": "9787669a021e84b5739ca6aee289b13902dcb77782686c3be68c25d27436b23c",
+  "compile_command": "clang++ -std=c++17 -O2 -dynamiclib SOURCE/pair_rows.cpp -o REVIEW/rebuilt.dylib",
+  "soundness": "Any completion supplies a size4/5 active row; partial graph star is a subgraph of it. Least uncovered support-label DFS covers every allowed row. Future-host flag must overapproximate legal continuation. Only COMPLETE-empty permits pruning.",
+  "limitations": "Caller must establish valid-a7-prefix and future-option completeness; neither basic native validation nor fixtures establish those for arbitrary callers. Host integration remains separately reviewable; no search or root exclusion."
+}

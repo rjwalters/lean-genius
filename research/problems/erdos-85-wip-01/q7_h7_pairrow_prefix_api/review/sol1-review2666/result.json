@@ -1,0 +1,14 @@
+{
+  "status": "PASS_INDEPENDENT_BUILD_AND_FIXTURES",
+  "fixtures": 4,
+  "relabelings_per_fixture": 2,
+  "domain_checks": 1344,
+  "positive": 1222,
+  "negative": 122,
+  "retained_full_rows": 5344,
+  "complete_prefix_equalities": 168,
+  "seconds": 0.9015750000107801,
+  "source_sha256": "b45e7f2c04876e4f1e5337b90b054042b4ca03f934d46467164209596d6a1574",
+  "rebuilt_sha256": "f41b1d20c0f96066c8be4826629b164ebee05a47cdcd360a1f5de5b3838cbfac",
+  "scope": "Generic predicate only under stated valid-prefix and future-option completeness premises. No host integration/search/exclusion."
+}

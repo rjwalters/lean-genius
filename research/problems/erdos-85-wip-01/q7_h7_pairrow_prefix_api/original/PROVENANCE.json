@@ -1,0 +1,11 @@
+{
+  "fixture_cover_review": 2663,
+  "accepted_reference_review": 2127,
+  "input_pins": {
+    "/Users/rwalters/lean-genius-h7-f5-sol2-20260915/host-pins.json": "5601340e3e844bbcab95c20aa6101d604e6a4915d933263b349ecefb223004cc",
+    "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/q7_h7_a7_f9_host_cover/author/cover_reference.py": "66aa25ed1c6a58f2c1c8ee4672f44dd4b283fe5c17cc4b0b7e97034e16484684",
+    "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/q7_h7_a7_f9_closure/review/row-verifier/rows.cpp": "3269c62dec48a6ab36b034da264b64f38338d5fc4ff0d580fe032fa8b8df1ad8",
+    "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/research/problems/erdos-85-wip-01/q7_h7_a7_f9_closure/review/row-verifier/rows.dylib": "cabf8dbf14dcfed235c764f836bc9b369e9bbac48050da0a0bc4eacb8cf87a4b"
+  },
+  "compile_command": "clang++ -std=c++17 -O2 -dynamiclib pair_rows.cpp -o pair_rows.dylib"
+}
