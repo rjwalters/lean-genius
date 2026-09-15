@@ -1,0 +1,19 @@
+{
+  "total": 1003978,
+  "visited": 1003978,
+  "unvisited": 0,
+  "counts": {
+    "INFEASIBLE_ROW": 992118,
+    "INFEASIBLE_ARC": 11860
+  },
+  "nodes": 1700648006,
+  "retained": [],
+  "receipt_shards": [
+    "receipts-000.jsonl.gz"
+  ],
+  "artifact_bytes": 19941675,
+  "seconds": 134.94693345800624,
+  "stop": null,
+  "computed_but_not_retained_at_artifact_cap": 0,
+  "scope": "Necessary residual row and pairwise arc consistency only; positive or UNKNOWN leaves are not graph witnesses."
+}

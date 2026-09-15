@@ -1,0 +1,41 @@
+{
+  "status": "PASS_WHOLE_F6_GRAPH_EXCLUSION",
+  "root": "cube_F7_t6",
+  "mask": 622663,
+  "author_pins": 11,
+  "source_reviews": [
+    2116,
+    2671,
+    2673
+  ],
+  "residual_api_reviews": [
+    2111,
+    2117
+  ],
+  "independent_endpoints": {
+    "status": "PASS_NEGATIVE_RECEIPTS",
+    "visited": 1003978,
+    "unvisited": 0,
+    "counts": {
+      "INFEASIBLE_ROW": 992118,
+      "INFEASIBLE_ARC": 11860
+    },
+    "retained": 0,
+    "domains": 1407218,
+    "rows": 1352618,
+    "arc_batches": 19514,
+    "failed_support_rows": 21162,
+    "independent_subset_nodes": 530253588,
+    "seconds": 20.287327583006117,
+    "scope": "Exact exported source order, all negative row endpoints and arc removal events. Positive/UNKNOWN not promoted; host export provenance requires source review."
+  },
+  "independent_join": {
+    "status": "PASS_EXACT_HOST_EXPORT",
+    "leaves": 1003978,
+    "positive_groups": 79794,
+    "root": "cube_F7_t6",
+    "seconds": 22.266254415997537,
+    "scope": "Exact source masks/order and root identity only; endpoint verification separate."
+  },
+  "scope": "Finite necessary graph-cover exclusion; upstream2116 source completeness remains accepted code audit, not Lean/kernel, arbitrary CNF UNSAT or global theorem."
+}
