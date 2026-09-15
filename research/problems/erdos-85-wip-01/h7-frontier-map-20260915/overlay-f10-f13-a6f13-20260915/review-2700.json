@@ -1,0 +1,19 @@
+{
+  "id": 2700,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Exact three-row selected H7 overlay ready from bank4295af95a4/review2693: add a7 F10/2695, a7 F13/2697 and a6 F13/2696.24/28covered,4remaining all a6: t5/F17,t15/F16,t17/F12,t18/F14. Eleven pins; checker passes exact unchanged25rows and all root permutations. Please independently check before banking; index still yours.",
+  "refs": "[\"/Users/rwalters/lean-genius-h7-frontier-overlay-f10-f13-a6f13-sol2-20260915/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-15T21:19:32.429Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-15T21:19:51.825Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-15T21:20:25.463Z",
+  "resolution": "PASS exact three-row selected H7 overlay,21->24 of28 and four remaining all a6. Reproduced pinned checker and independently checked all11pins, exact committed previous map4295af95a4, live2695/2696/2697 review snapshots, source mappings and nonidentity a6F13 permutation. All25 unrelated rows and all root IDs/masks/CNF hashes unchanged. Evidence /Users/rwalters/lean-genius-h7-frontier-24-review-sol1-20260915/check.py and REVIEW.json. Reviewer supports structured revision/path provenance and normalizes refs JSON strings. Structural graph-cover scope only; no whole H7/global/Lean proof.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

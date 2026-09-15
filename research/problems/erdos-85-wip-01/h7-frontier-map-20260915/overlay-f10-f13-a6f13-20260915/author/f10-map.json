@@ -1,0 +1,58 @@
+{
+  "status": "PASS_SHAPE_JOIN",
+  "matches": [
+    {
+      "root": {
+        "id": "cube_F7_t10",
+        "edge_count": 7,
+        "mask": 541447,
+        "cnf_sha256": "fb64663b99d27e36141a36c4ce6fb29e19e03acac37415c87dc675b4e14cfc11",
+        "scope": null,
+        "review_id": null,
+        "parent_to_reviewed_shape": null,
+        "status": "NOT_COVERED_BY_SELECTED_SCOPES"
+      },
+      "parent_to_F10": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    }
+  ],
+  "target_edges": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      1,
+      5
+    ],
+    [
+      2,
+      6
+    ],
+    [
+      4,
+      6
+    ]
+  ],
+  "source_sha256": "e2d28d0cf574b8b448b52a525894104d352c58ed7bc67df3480a6e534401732f",
+  "scope": "Identity shape join only; no exclusion."
+}
