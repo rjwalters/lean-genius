@@ -1,0 +1,16 @@
+{
+  "status": "PASS_EXACT_FINISH_AND_NEGATIVES",
+  "leaves": 79533,
+  "counts": {
+    "INFEASIBLE_ROW": 79293,
+    "INFEASIBLE_ARC": 240
+  },
+  "domains": 87693,
+  "rows": 32366,
+  "arc_events": 700,
+  "removed_rows": 766,
+  "seconds": 1.9231736669898964,
+  "row_library_sha256": "cabf8dbf14dcfed235c764f836bc9b369e9bbac48050da0a0bc4eacb8cf87a4b",
+  "combined_negative_host_leaves": 785408,
+  "scope": "Complete F2 host-leaf rejection conditional on reviewed upstream covers; no Lean/kernel closure."
+}

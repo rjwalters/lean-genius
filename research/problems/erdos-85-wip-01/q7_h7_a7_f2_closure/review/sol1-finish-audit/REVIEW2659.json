@@ -1,0 +1,34 @@
+{
+  "review": 2659,
+  "status": "PASS_WHOLE_F2_COMPUTATIONAL_EXCLUSION",
+  "finish_check": {
+    "status": "PASS_EXACT_FINISH_AND_NEGATIVES",
+    "leaves": 79533,
+    "counts": {
+      "INFEASIBLE_ROW": 79293,
+      "INFEASIBLE_ARC": 240
+    },
+    "domains": 87693,
+    "rows": 32366,
+    "arc_events": 700,
+    "removed_rows": 766,
+    "seconds": 1.9231736669898964,
+    "row_library_sha256": "cabf8dbf14dcfed235c764f836bc9b369e9bbac48050da0a0bc4eacb8cf87a4b",
+    "combined_negative_host_leaves": 785408,
+    "scope": "Complete F2 host-leaf rejection conditional on reviewed upstream covers; no Lean/kernel closure."
+  },
+  "root": {
+    "id": "cube_F7_t2",
+    "edge_count": 7,
+    "mask": 328007,
+    "cnf_sha256": "3115dee58497c9c92b4b9d58699cadc755f3630deb52dade1be27d360cb29c60",
+    "scope": null,
+    "review_id": null,
+    "parent_to_reviewed_shape": null,
+    "status": "NOT_COVERED_BY_SELECTED_SCOPES"
+  },
+  "scope": "Exact cube_F7_t2 structural graph subcase excluded at paper/computation level. No Lean kernel closure, no arbitrary CNF UNSAT, no whole H7 or Erdos85 solution.",
+  "coverage_basis": "2116 complete F2 slice (enumerator code audited, not independently replayed);2655 high cover;2657 host cover;2658 original negative prefix; new independent finishing check and exact complement join",
+  "covered_root_count": 13,
+  "outside_selected_scopes": 15
+}
