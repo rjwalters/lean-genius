@@ -1,0 +1,124 @@
+{
+  "status": "PASS_EIGHT_CALIBRATION_INPUTS",
+  "inputs": 8,
+  "source_identity": "Exact first eight original F0 UNKNOWN keys; adjacency independently reconstructed",
+  "reserve": 50000,
+  "factor": 4,
+  "budget": 450000,
+  "checks": [
+    {
+      "status": "COMPLETE",
+      "prefixes": 454,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 606,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 424,
+        "singleton_prunes": 30
+      },
+      "endpoint_nodes": 289131,
+      "seconds": 0.019452624997938983
+    },
+    {
+      "status": "COMPLETE",
+      "prefixes": 474,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 552,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 449,
+        "singleton_prunes": 25
+      },
+      "endpoint_nodes": 302317,
+      "seconds": 0.01964070799294859
+    },
+    {
+      "status": "COMPLETE",
+      "prefixes": 488,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 723,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 424,
+        "singleton_prunes": 64
+      },
+      "endpoint_nodes": 271714,
+      "seconds": 0.018855874994187616
+    },
+    {
+      "status": "COMPLETE",
+      "prefixes": 474,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 552,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 473,
+        "singleton_prunes": 1
+      },
+      "endpoint_nodes": 339767,
+      "seconds": 0.01944674999685958
+    },
+    {
+      "status": "COMPLETE",
+      "prefixes": 474,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 552,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 464,
+        "singleton_prunes": 10
+      },
+      "endpoint_nodes": 332579,
+      "seconds": 0.02019141700293403
+    },
+    {
+      "status": "COMPLETE",
+      "prefixes": 771,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 999,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 732,
+        "singleton_prunes": 39
+      },
+      "endpoint_nodes": 478741,
+      "seconds": 0.032771166996099055
+    },
+    {
+      "status": "COMPLETE",
+      "prefixes": 942,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 1110,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 936,
+        "singleton_prunes": 6
+      },
+      "endpoint_nodes": 629786,
+      "seconds": 0.03900366701418534
+    },
+    {
+      "status": "COMPLETE",
+      "prefixes": 952,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 1291,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 881,
+        "singleton_prunes": 71
+      },
+      "endpoint_nodes": 571162,
+      "seconds": 0.03662025000085123
+    }
+  ],
+  "seconds": 0.2116030420002062,
+  "scope": "Eight fixed high inputs only, no whole F0 exclusion. Old capped records unchanged."
+}

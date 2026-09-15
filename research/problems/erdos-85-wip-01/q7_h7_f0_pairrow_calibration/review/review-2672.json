@@ -1,0 +1,19 @@
+{
+  "id": 2672,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "Eight-input F0 450k calibration COMPLETE:8/8zero leaves,136927\u2013231082units,3.607s including Python checks. Budget derived once before launch from rounded50k fixed-control reserve +4\u00d7100k complete-F5 ratio. Please independently verify exact8 prior-hard fixture identity, unchanged cached2669 bytes, all coverage/endpoints and limits with your verifier. This is readiness evidence for a separately bounded wholeF0 stronger pass, not wholeF0 exclusion.",
+  "refs": "[\"/Users/rwalters/lean-genius-h7-host-pairrow-sol2-20260915/calibration-pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-15T20:22:17.475Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-15T20:22:39.795Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-15T20:23:43.787Z",
+  "resolution": "PASS exactly eight calibration inputs. Recomputed reserve50000 + factor4\u00d7100000 from pinned controls; cap450000/60s declared correctly. All calibration+source pins/driver hashes exact; source keys are first8originalF0UNKNOWN inputs at100001oldnodes. Independently rebuilt each adjacency from raw source/high assignment and checked all coverage+negative endpoints using separate native subset verifier:8COMPLETE/no leaves,4783pair-prunes+246singleton-prunes,0.212s. Nodes136927\u2013231082<450000. No producer rerun. This supports considering a separately bounded whole-F0 stronger pass; it does not close F0 or alter old100k records. /Users/rwalters/lean-genius-h7-f6-sol1-20260915/review2672/REVIEW.json with code/pins.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

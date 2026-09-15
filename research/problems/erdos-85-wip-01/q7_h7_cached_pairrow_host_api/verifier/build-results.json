@@ -1,0 +1,61 @@
+{
+  "status": "PASS_REBUILT_FIXED_CONTROLS",
+  "controls": 4,
+  "results": [
+    {
+      "status": "COMPLETE",
+      "prefixes": 1,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 2,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 1
+      },
+      "endpoint_nodes": 643,
+      "seconds": 0.0004625409928848967
+    },
+    {
+      "status": "COMPLETE",
+      "prefixes": 1,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 2,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 1
+      },
+      "endpoint_nodes": 768,
+      "seconds": 0.00042829199810512364
+    },
+    {
+      "status": "COMPLETE",
+      "prefixes": 1,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 2,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 1
+      },
+      "endpoint_nodes": 666,
+      "seconds": 0.0003684580005938187
+    },
+    {
+      "status": "COMPLETE",
+      "prefixes": 1,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 2,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 1
+      },
+      "endpoint_nodes": 203,
+      "seconds": 0.0003407079930184409
+    }
+  ],
+  "source_sha256": "5a493b378ee611fca8435461a983b2e0b8e0d16bc34b48a9d18458544944c645",
+  "rebuilt_sha256": "8e602e3a5800ca2b5e4d36f251971bafb7ff7f1e2846b50424a29467767938a3",
+  "scope": "Four fixed assignments and limit/input controls only; no whole capped input restarted."
+}

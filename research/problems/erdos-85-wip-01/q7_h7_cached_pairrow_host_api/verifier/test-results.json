@@ -1,0 +1,525 @@
+{
+  "status": "PASS_SAVED_RECEIPTS_AND_CONTROLS",
+  "receipts": 33,
+  "whole_coverage_proved": 11,
+  "negative_checks": 2930,
+  "positive_leaf_controls": 1,
+  "corruptions_rejected": 5,
+  "seconds": 0.260006083000917,
+  "results": [
+    {
+      "variant": "baseline",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 13,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 13
+      },
+      "endpoint_nodes": 8726,
+      "seconds": 0.001082333008525893
+    },
+    {
+      "variant": "baseline",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 31,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 29,
+        "singleton_prunes": 2
+      },
+      "endpoint_nodes": 19521,
+      "seconds": 0.0016100830107461661
+    },
+    {
+      "variant": "baseline",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 18,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 15,
+        "singleton_prunes": 3
+      },
+      "endpoint_nodes": 8375,
+      "seconds": 0.0010178750089835376
+    },
+    {
+      "variant": "baseline",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 26,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 25,
+        "singleton_prunes": 1
+      },
+      "endpoint_nodes": 18421,
+      "seconds": 0.0014307500096037984
+    },
+    {
+      "variant": "baseline",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 21,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 21
+      },
+      "endpoint_nodes": 16335,
+      "seconds": 0.0012352919875411317
+    },
+    {
+      "variant": "baseline",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 17,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 17
+      },
+      "endpoint_nodes": 10882,
+      "seconds": 0.0010952500015264377
+    },
+    {
+      "variant": "baseline",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 36,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 36
+      },
+      "endpoint_nodes": 24291,
+      "seconds": 0.0018659159977687523
+    },
+    {
+      "variant": "baseline",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 30,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 30
+      },
+      "endpoint_nodes": 19505,
+      "seconds": 0.0016382080066250637
+    },
+    {
+      "variant": "baseline",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 20,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 20
+      },
+      "endpoint_nodes": 13131,
+      "seconds": 0.001117415988119319
+    },
+    {
+      "variant": "baseline",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 17,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "singleton_prunes": 4,
+        "pair_prunes": 13
+      },
+      "endpoint_nodes": 8712,
+      "seconds": 0.0009439159912290052
+    },
+    {
+      "variant": "baseline",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 20,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "singleton_prunes": 5,
+        "pair_prunes": 15
+      },
+      "endpoint_nodes": 9475,
+      "seconds": 0.0009880830039037392
+    },
+    {
+      "variant": "baseline",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 25,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 11,
+        "singleton_prunes": 14
+      },
+      "endpoint_nodes": 6222,
+      "seconds": 0.0010793330002343282
+    },
+    {
+      "variant": "baseline",
+      "kind": "fixed-control",
+      "status": "COMPLETE",
+      "prefixes": 1,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 2,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 1
+      },
+      "endpoint_nodes": 643,
+      "seconds": 0.00032287499925587326
+    },
+    {
+      "variant": "baseline",
+      "kind": "fixed-control",
+      "status": "COMPLETE",
+      "prefixes": 1,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 2,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 1
+      },
+      "endpoint_nodes": 768,
+      "seconds": 0.0003169999981764704
+    },
+    {
+      "variant": "baseline",
+      "kind": "fixed-control",
+      "status": "COMPLETE",
+      "prefixes": 1,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 2,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 1
+      },
+      "endpoint_nodes": 666,
+      "seconds": 0.0003040839947061613
+    },
+    {
+      "variant": "baseline",
+      "kind": "fixed-control",
+      "status": "COMPLETE",
+      "prefixes": 1,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 2,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 1
+      },
+      "endpoint_nodes": 203,
+      "seconds": 0.00029466699925251305
+    },
+    {
+      "variant": "cached",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 217,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 204,
+        "singleton_prunes": 13
+      },
+      "endpoint_nodes": 138071,
+      "seconds": 0.00926620900281705
+    },
+    {
+      "variant": "cached",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 238,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 226,
+        "singleton_prunes": 12
+      },
+      "endpoint_nodes": 151244,
+      "seconds": 0.010126291002961807
+    },
+    {
+      "variant": "cached",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 142,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 124,
+        "singleton_prunes": 18
+      },
+      "endpoint_nodes": 79068,
+      "seconds": 0.005919041999732144
+    },
+    {
+      "variant": "cached",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 240,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 239,
+        "singleton_prunes": 1
+      },
+      "endpoint_nodes": 176411,
+      "seconds": 0.010417041994514875
+    },
+    {
+      "variant": "cached",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 231,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 230,
+        "singleton_prunes": 1
+      },
+      "endpoint_nodes": 171658,
+      "seconds": 0.009408041994902305
+    },
+    {
+      "variant": "cached",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 245,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 240,
+        "singleton_prunes": 5
+      },
+      "endpoint_nodes": 159336,
+      "seconds": 0.009701375005533919
+    },
+    {
+      "variant": "cached",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 301,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 295,
+        "singleton_prunes": 6
+      },
+      "endpoint_nodes": 199242,
+      "seconds": 0.012997124998946674
+    },
+    {
+      "variant": "cached",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 213,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 200,
+        "singleton_prunes": 13
+      },
+      "endpoint_nodes": 130866,
+      "seconds": 0.008054665988311172
+    },
+    {
+      "variant": "cached",
+      "kind": "whole-input-receipt",
+      "status": "COMPLETE",
+      "prefixes": 224,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 311,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 201,
+        "singleton_prunes": 23
+      },
+      "endpoint_nodes": 125473,
+      "seconds": 0.009221541011356749
+    },
+    {
+      "variant": "cached",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 233,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "singleton_prunes": 65,
+        "pair_prunes": 168
+      },
+      "endpoint_nodes": 116963,
+      "seconds": 0.009546292014420033
+    },
+    {
+      "variant": "cached",
+      "kind": "whole-input-receipt",
+      "status": "COMPLETE",
+      "prefixes": 192,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 274,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "singleton_prunes": 30,
+        "pair_prunes": 162
+      },
+      "endpoint_nodes": 98652,
+      "seconds": 0.007457749990862794
+    },
+    {
+      "variant": "cached",
+      "kind": "whole-input-receipt",
+      "status": "UNKNOWN",
+      "prefixes": 172,
+      "solutions": 0,
+      "coverage_proved": false,
+      "nodes": 0,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 133,
+        "singleton_prunes": 39
+      },
+      "endpoint_nodes": 88872,
+      "seconds": 0.007231958996271715
+    },
+    {
+      "variant": "cached",
+      "kind": "fixed-control",
+      "status": "COMPLETE",
+      "prefixes": 1,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 2,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 1
+      },
+      "endpoint_nodes": 643,
+      "seconds": 0.00039245799416676164
+    },
+    {
+      "variant": "cached",
+      "kind": "fixed-control",
+      "status": "COMPLETE",
+      "prefixes": 1,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 2,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 1
+      },
+      "endpoint_nodes": 768,
+      "seconds": 0.000357083001290448
+    },
+    {
+      "variant": "cached",
+      "kind": "fixed-control",
+      "status": "COMPLETE",
+      "prefixes": 1,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 2,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 1
+      },
+      "endpoint_nodes": 666,
+      "seconds": 0.0003393340011825785
+    },
+    {
+      "variant": "cached",
+      "kind": "fixed-control",
+      "status": "COMPLETE",
+      "prefixes": 1,
+      "solutions": 0,
+      "coverage_proved": true,
+      "nodes": 2,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "pair_prunes": 1
+      },
+      "endpoint_nodes": 203,
+      "seconds": 0.00032637501135468483
+    },
+    {
+      "variant": "synthetic-valid",
+      "kind": "positive-fixed-leaf",
+      "status": "COMPLETE",
+      "prefixes": 0,
+      "solutions": 1,
+      "coverage_proved": true,
+      "nodes": 8,
+      "endpoint_status": "PASS",
+      "endpoint_counts": {
+        "positive_leaves": 1
+      },
+      "endpoint_nodes": 279,
+      "seconds": 0.0005079999973531812
+    }
+  ],
+  "scope": "Verifier controls and saved calibration receipts only; no new host producer run or root exclusion."
+}
