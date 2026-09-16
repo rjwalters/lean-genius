@@ -29,6 +29,9 @@ POLICY = {"crosscheck": True, "primary_cap_seconds": 14400,
 MAX_WORKERS = 24
 MAX_MATERIALIZERS = 4
 PILOT = HERE / "pilot-24.json"
+# A post-pilot reviewed revision must set this to the exact gate bytes.
+# Until then, no scaled execution is possible.
+APPROVED_GATE_SHA256 = None
 
 
 def sha(raw: bytes) -> str:
@@ -62,6 +65,8 @@ def read_gate(path: Path, commit: str, plan: dict, pilot_results: Path,
               expected_pilot_ids: set[str]) -> tuple[dict, bytes, bytes, bytes]:
     raw = path.read_bytes()
     base.runner.require_banked_inventory(path, commit, expected_bytes=raw)
+    if APPROVED_GATE_SHA256 is None or sha(raw) != APPROVED_GATE_SHA256:
+        raise ValueError("Scaling gate has not been approved in this source revision")
     gate = json.loads(raw)
     pilot_raw = pilot_results.read_bytes()
     monitor_raw = resource_monitor.read_bytes()
@@ -91,16 +96,14 @@ def read_gate(path: Path, commit: str, plan: dict, pilot_results: Path,
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False)
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--config-commit")
     parser.add_argument("--wrapper-commit")
     parser.add_argument("--output-dir", type=Path)
     parser.add_argument("--workers", type=int, choices=range(1, MAX_WORKERS + 1), default=4)
     parser.add_argument("--materializers", type=int, choices=range(1, MAX_MATERIALIZERS + 1), default=2)
-    selection = parser.add_mutually_exclusive_group()
-    selection.add_argument("--pilot", type=Path)
-    selection.add_argument("--case-id", action="append")
+    parser.add_argument("--case-id", action="append")
     parser.add_argument("--scaling-gate", type=Path)
     parser.add_argument("--scaling-gate-commit")
     parser.add_argument("--pilot-results", type=Path)
@@ -115,9 +118,7 @@ def main() -> int:
         raise ValueError("H1 two-solver policy changed")
     allowed = {row["id"] for row in fresh}
     frozen_pilot_ids = set(residual.pilot_ids(PILOT, CONFIG, fresh))
-    if args.pilot:
-        ids = residual.pilot_ids(args.pilot.resolve(), CONFIG.resolve(), fresh)
-    elif args.case_id:
+    if args.case_id:
         selected = set(args.case_id)
         if (len(selected) != len(args.case_id) or not selected <= allowed or
                 selected & frozen_pilot_ids):
@@ -134,8 +135,6 @@ def main() -> int:
         return 0
     if not args.config_commit or not args.wrapper_commit or not args.output_dir:
         parser.error("Execution requires banked config/wrapper commits and a new output directory")
-    if args.pilot and args.workers > 4:
-        parser.error("Unreviewed pilot scaling: pilot execution is capped at four workers")
     for path, raw in plan["captured"]:
         base.runner.require_banked_inventory(path, args.config_commit, expected_bytes=raw)
     wrapper = Path(__file__).resolve()
@@ -144,24 +143,17 @@ def main() -> int:
     residual_path = Path(residual.__file__).resolve()
     base.runner.require_banked_inventory(residual_path, args.config_commit,
                                          expected_bytes=residual_path.read_bytes())
-    snapshots = []
-    if args.pilot:
-        pilot_path = args.pilot.resolve()
-        base.runner.require_banked_inventory(pilot_path, args.config_commit,
-                                             expected_bytes=pilot_path.read_bytes())
-        snapshots.append((pilot_path.name, pilot_path.read_bytes()))
-    else:
-        if not all((args.scaling_gate, args.scaling_gate_commit,
-                    args.pilot_results, args.resource_monitor)):
-            parser.error("Full or selected non-pilot execution requires a banked scaling gate and pilot receipts")
-        gate_path = args.scaling_gate.resolve()
-        gate, raw, pilot_raw, monitor_raw = read_gate(
-            gate_path, args.scaling_gate_commit, plan,
-            args.pilot_results.resolve(), args.resource_monitor.resolve(),
-            args.workers, args.materializers, frozen_pilot_ids)
-        snapshots.extend([(gate_path.name, raw),
-                          ("pilot-results.json", pilot_raw),
-                          ("resource-monitor.csv", monitor_raw)])
+    if not all((args.scaling_gate, args.scaling_gate_commit,
+                args.pilot_results, args.resource_monitor)):
+        parser.error("Execution requires a banked scaling gate and pilot receipts")
+    gate_path = args.scaling_gate.resolve()
+    gate, raw, pilot_raw, monitor_raw = read_gate(
+        gate_path, args.scaling_gate_commit, plan,
+        args.pilot_results.resolve(), args.resource_monitor.resolve(),
+        args.workers, args.materializers, frozen_pilot_ids)
+    snapshots = [(gate_path.name, raw),
+                 ("pilot-results.json", pilot_raw),
+                 ("resource-monitor.csv", monitor_raw)]
     start = dt.datetime.fromisoformat(plan["config"]["not_before"].replace("Z", "+00:00"))
     if dt.datetime.now(dt.timezone.utc) < start:
         parser.error("Execution window has not started")

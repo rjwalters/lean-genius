@@ -20,9 +20,13 @@ it; `inventory_all_unsat` stays false because the run is a subset of the
 A non-pilot execution requires a separately banked scaling gate. The gate
 binds the exact completed 24-case pilot results, the resource-monitor bytes,
 the frozen config hash, and approved worker/materializer limits. The gate is
-not available while the pilot is live. Any launch decision must review the
-pilot receipts and resource profile first. The host target remains zero cloud
-spend; this code does not start AWS or request proof logging.
+not available while the pilot is live. This source revision has no approved
+gate hash, so execution fails closed even if someone banks a self-declared
+gate. A later reviewed source revision must pin the gate's exact SHA-256 after
+auditing pilot receipts and resource profile. The scaled route has no pilot
+override; the existing pilot keeps its separate reviewed dispatcher. The host
+target remains zero cloud spend; this code does not start AWS or request proof
+logging.
 
 For a planning illustration only, 1,137 roots at the historical completed
 Kissat mean of 4,539 seconds would occupy 1,433 host-hours of primary solve

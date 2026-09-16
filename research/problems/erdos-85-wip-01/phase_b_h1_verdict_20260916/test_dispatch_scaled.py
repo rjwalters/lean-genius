@@ -23,6 +23,12 @@ class ScaledDispatchTests(unittest.TestCase):
         self.assertEqual((report["workers"], report["materializers"]), (24, 4))
         self.assertFalse(report["proof_logging"])
 
+    def test_scaled_route_does_not_accept_a_pilot_override(self):
+        with patch.object(target.sys, "argv", ["scaled", "--pilot", "/tmp/alternate.json"]), \
+             contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                target.main()
+
     def test_preparation_semaphore_limits_concurrency(self):
         def prepare(*_):
             time.sleep(0.02)
@@ -59,6 +65,11 @@ class ScaledDispatchTests(unittest.TestCase):
             gate_path = base / "gate.json"
             gate_path.write_text(json.dumps(gate))
             with patch.object(target.base.runner, "require_banked_inventory"):
+                with self.assertRaisesRegex(ValueError, "has not been approved"):
+                    target.read_gate(gate_path, "a" * 40, {"raw": config},
+                                     pilot_path, monitor_path, 24, 4, ids)
+            with patch.object(target.base.runner, "require_banked_inventory"), \
+                 patch.object(target, "APPROVED_GATE_SHA256", target.sha(gate_path.read_bytes())):
                 loaded, _, saved_pilot, saved_monitor = target.read_gate(
                     gate_path, "a" * 40, {"raw": config},
                     pilot_path, monitor_path, 24, 4, ids)
@@ -105,6 +116,7 @@ class ScaledDispatchTests(unittest.TestCase):
                 state["status"] = "complete"
                 target.base.runner.write_json(output_dir / "results.json", state)
             with patch.object(target.base.runner, "require_banked_inventory"), \
+                 patch.object(target, "APPROVED_GATE_SHA256", target.sha(gate_path.read_bytes())), \
                  patch.object(target.base.runner, "solver_identity",
                               side_effect=lambda p: {"path": str(p), "sha256": "a" * 64}), \
                  patch.object(target.base, "run_prepared_case",
