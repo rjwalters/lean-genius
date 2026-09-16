@@ -27,6 +27,16 @@ def sha(raw: bytes) -> str:
     return hashlib.sha256(raw).hexdigest()
 
 
+def file_identity(path: Path) -> tuple[str, int]:
+    digest = hashlib.sha256()
+    size = 0
+    with path.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(chunk)
+            size += len(chunk)
+    return digest.hexdigest(), size
+
+
 def select(case_id: str) -> dict:
     if native.sha256(Path(native.__file__)) != NATIVE_SHA256:
         raise ValueError("Reviewed native H1 materializer changed")
@@ -80,6 +90,8 @@ def materialize(case_id: str, output_dir: Path) -> dict:
         "capacity_local_index": row["capacity_local_index"],
         "gap130_sha256": MANIFEST_SHA256,
         "one_row_source_sha256": adapter_sha,
+        "adapter_source_sha256": file_identity(Path(__file__))[0],
+        "freeze_source_sha256": file_identity(HERE / "freeze.py")[0],
         "native_materializer_sha256": NATIVE_SHA256,
         "solver_launched": False,
     }
@@ -92,9 +104,23 @@ def materialize(case_id: str, output_dir: Path) -> dict:
                 result["status"] != "materialized" or
                 result["solver_launched"] is not False):
             raise ValueError("Native receipt does not bind the selected capacity row")
-        record.update(status="materialized", cnf_sha256=result["cnf_sha256"],
-                      cnf_bytes=result["cnf_bytes"],
-                      native_receipt_sha256=native.sha256(output_dir / "native/receipt.json"))
+        cnf = output_dir / "native/input.cnf"
+        if Path(result["cnf_path"]).resolve() != cnf or not cnf.is_file():
+            raise ValueError("Native CNF path does not match the owned output")
+        actual_hash, actual_bytes = file_identity(cnf)
+        if (actual_hash != result["cnf_sha256"] or
+                actual_bytes != result["cnf_bytes"]):
+            raise ValueError("Native CNF bytes differ from claimed hash or size")
+        receipt_path = output_dir / "native/receipt.json"
+        receipt = json.loads(receipt_path.read_text())
+        if receipt != result or receipt.get("container_absent") is not True:
+            raise ValueError("Native receipt differs from returned result or cleanup failed")
+        if (file_identity(Path(__file__))[0] != record["adapter_source_sha256"] or
+                file_identity(HERE / "freeze.py")[0] != record["freeze_source_sha256"]):
+            raise ValueError("Adapter or freeze source changed during generation")
+        record.update(status="materialized", cnf_sha256=actual_hash,
+                      cnf_bytes=actual_bytes,
+                      native_receipt_sha256=native.sha256(receipt_path))
     except BaseException as error:
         record["error"] = f"{type(error).__name__}: {error}"
         raise

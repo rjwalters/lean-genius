@@ -26,10 +26,11 @@ no recorded v3 claim. Neither state is a solver verdict.
 `materialize_capacity_gap.py` is a candidate adapter for those 34 rows. It
 checks the frozen manifest and source join, constructs a deterministic
 one-row input for the unchanged reviewed H1 native materializer, and records
-both the adapter input SHA-256 and the native emission/check receipt. It
+the adapter/freeze source hashes, adapter input SHA-256, native emission/check
+receipt, and an independent post-return CNF hash and byte-count readback. It
 rejects the other 96 rows and all unknown IDs. Dry-run selection and all 34
-adapter inputs pass the native selector; three focused tests pass. A real
-Docker emission/check canary and independent source review are still needed
+adapter inputs pass the native selector; six focused tests pass. A real
+Docker emission/check canary and renewed independent source review are still needed
 before using its output as a solver input. This adapter never invokes a SAT
 solver.
 
@@ -40,8 +41,9 @@ two-solver policy with 14,400-second caps, and checks each newly emitted CNF
 against that row's reviewed overlay SHA-256 *before* either solver starts.
 This extra guard is necessary because the frozen candidate rows have blank
 historical CNF hash fields for all 96 cases. Its full dry run selects 96,
-and four focused tests pass. It has not launched a solver; independent source
-review and a separate execution decision remain open.
+and four focused tests pass. Independent source review passed for commit
+`54b7f7035b`; it has not launched a solver, and a separate execution decision
+remains open.
 
 The manifest pins the source SHA-256 values, reconstructs every capacity
 tag from its 24-value table, checks all profile ordinals and set identities,
