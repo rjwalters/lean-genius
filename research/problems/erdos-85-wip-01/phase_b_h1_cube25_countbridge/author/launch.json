@@ -1,0 +1,34 @@
+{
+  "base_command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "erdos85-sol2-countbridge",
+    "--network",
+    "none",
+    "-v",
+    "/Users/rwalters/lean-genius-h1-cube25-countbridge-sol2-20260916/source:/source:ro",
+    "-v",
+    "/Users/rwalters/lean-genius-h1-cube25-countbridge-sol2-20260916/build:/out",
+    "-v",
+    "/Users/rwalters/GitHub/lean-genius/proofs/.lake/packages:/packages:ro",
+    "-e",
+    "LEAN_PATH=/out:/packages/mathlib/.lake/build/lib/lean:/packages/plausible/.lake/build/lib/lean:/packages/proofwidgets/.lake/build/lib/lean:/packages/batteries/.lake/build/lib/lean:/packages/aesop/.lake/build/lib/lean:/packages/importGraph/.lake/build/lib/lean:/packages/LeanSearchClient/.lake/build/lib/lean:/packages/Qq/.lake/build/lib/lean",
+    "lean4-arm64:v4.31.0",
+    "lean"
+  ],
+  "sources": {
+    "Erdos85SequentialCounter": "213563e0fd24b642d95e18c7479153a60b987a69fb9985aceccb98c22e8d319d",
+    "Erdos85SequentialCounterReverse": "8b414811c789f6631b98647efd81e92fc39820dd2b93c11f1b5725dc641a66d6",
+    "Erdos85OneHighCube25CnfCover": "5c15d1da74d6b391efe07a58316bba9afca86a8c59e4d9cb4ee1fab5888e2cab",
+    "Erdos85OneHighCube25CountBridge": "44186f01ba7393fa20bf26cfdcd08005d292705b4379b3e5135835e59ac04295"
+  },
+  "per_module_timeout": 120,
+  "order": [
+    "Erdos85SequentialCounter",
+    "Erdos85SequentialCounterReverse",
+    "Erdos85OneHighCube25CnfCover",
+    "Erdos85OneHighCube25CountBridge"
+  ]
+}

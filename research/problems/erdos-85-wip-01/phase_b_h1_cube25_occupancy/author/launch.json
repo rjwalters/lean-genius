@@ -1,0 +1,22 @@
+{
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "erdos85-sol2-cube25-occupancy",
+    "--network",
+    "none",
+    "-v",
+    "/Users/rwalters/GitHub/lean-genius/.codex/worktrees/erdos85-sol2-integration/proofs:/workspace:ro",
+    "-v",
+    "/Users/rwalters/GitHub/lean-genius/proofs/.lake/packages:/packages:ro",
+    "-e",
+    "LEAN_PATH=/packages/mathlib/.lake/build/lib/lean:/packages/plausible/.lake/build/lib/lean:/packages/proofwidgets/.lake/build/lib/lean:/packages/batteries/.lake/build/lib/lean:/packages/aesop/.lake/build/lib/lean:/packages/importGraph/.lake/build/lib/lean:/packages/LeanSearchClient/.lake/build/lib/lean:/packages/Qq/.lake/build/lib/lean",
+    "lean4-arm64:v4.31.0",
+    "lean",
+    "/workspace/Proofs/Erdos85OneHighCube25CnfCover.lean"
+  ],
+  "source_sha256": "5c15d1da74d6b391efe07a58316bba9afca86a8c59e4d9cb4ee1fab5888e2cab",
+  "timeout": 120
+}
