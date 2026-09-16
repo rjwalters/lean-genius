@@ -104,8 +104,14 @@ seven base-CNF `Unsat` proofs to
 in `Erdos85OrderFortyNineSmallHighCubeGridTerminal.lean`. It reaches the same
 `hno49` conclusion without constructing the five existential LRAT arrays of
 the older consumer. The finite-drop core accepts either route. H1 capacity
-rows still need the full row-to-stratum assembly; H7 needs its own exclusion
-theorem.
+rows still need the full row-to-stratum assembly. The H7 structural ledger
+`H7_CLOSURE_20260915.md` covers all 28 roots that survive the 15 singleton
+capacity exclusions at the paper/computation level. This does not yet
+instantiate the Lean capstone
+`orderFortyNineStratumExcluded_seven_of_emptyCubeEvidenceVectors`, whose
+statement still takes four evidence-vector arguments of lengths 19/15/7/2.
+H1 still has a root-coverage campaign; H7's formal evidence bridge and the
+final generated aggregate remain open proof obligations.
 
 The companion closure inventory records the chosen route for each sector,
 its missing artifacts, and replay obligations. Its counts and cost estimates
