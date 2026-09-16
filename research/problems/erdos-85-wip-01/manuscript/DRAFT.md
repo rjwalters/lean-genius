@@ -21,8 +21,10 @@ the adjacent-value claim, with the H1 gap census still in progress:
 
 `f(48) = 8` and `f(49) = 7`,
 
-which would give a strict finite drop. The lower side uses a Lean-checked
-48-vertex extremal witness; an independently computed isomorphism check finds
+which would give a strict finite drop. The lower side uses a 48-vertex
+extremal witness checked in Lean through `native_decide` (six named
+`native_decide` axioms in total for the two witness endpoints; a preliminary
+`#print axioms` audit is banked as `AXIOM_AUDIT_OVERLAY_20260916.md`); an independently computed isomorphism check finds
 it non-isomorphic to the previously recorded Afzaly–McKay witness. For the
 order-49 upper side, structural reductions and archived SAT evidence have
 different verification levels; the remaining H1 rows are being tested by two
@@ -71,7 +73,8 @@ conjectural uniform hypothesis enters this finite computation. Separately,
 an independently computed NetworkX
 isomorphism comparison of archived graph6 artifacts finds that the checked
 order-48 extremal graph is not isomorphic to the Afzaly–McKay record; this
-novelty check is not part of the kernel-checked theorem.
+novelty check is not part of the Lean-elaborated theorem, and that theorem's
+witness side rests on `native_decide`, not on a standard-axiom-only kernel proof.
 
 ### Evidence levels and formal obligations for Result A
 
@@ -82,7 +85,7 @@ solver verdict or an archived proof object to a kernel-checked theorem.
 
 | Class | Current evidence | Limit for this paper |
 |---|---|---|
-| Order 48 and 49 lower witnesses | Lean-checked finite graphs in `Erdos85FiniteDropWitnesses.lean` | Establish the lower sides only. |
+| Order 48 and 49 lower witnesses | Finite graphs in `Erdos85FiniteDropWitnesses.lean`, elaborated in Lean via `native_decide`; the preliminary `#print axioms` audit lists three `native_decide` axioms per witness endpoint, and independent edge-list audits (168 edges, all pair codegrees ≤ 1) corroborate both graphs | Establish the lower sides only; not standard-axiom-only. |
 | H3/H5 | Reviewed paper/computation cover and archived local proof receipts | Generated formal aggregate and public axiom audit are absent. |
 | H7 | All 28 surviving structural roots covered after 15 singleton-capacity exclusions (`H7_CLOSURE_20260915.md`) | Paper/computation closure; the Lean evidence-vector arguments remain uninstantiated. |
 | H1 historical overlay | 96 reviewed historical cases with archived `drat-trim` verification (`phase_b_historical_overlay_96/`) | Historical checks are not a current kernel replay. |
@@ -691,7 +694,9 @@ nonexistence theorem (room msgs 31845–31846 and outline v2.64 entry 2.61).
 
 Result A is computational evidence, not a theorem, and this section is
 written so that it can be read standing alone. The lower sides of both values
-are Lean-checked witnesses. The upper side at order 49 is a case split into
+are explicit witnesses elaborated in Lean through `native_decide`, which adds
+six named trust axioms beyond Lean's standard three; only Theorem B is
+standard-axiom-only in the preliminary `#print axioms` audit. The upper side at order 49 is a case split into
 the strata H1, H3, H5 and H7. Three of the four are closed at the level of a
 paper argument backed by reproducible, independently reviewed computation with
 banked receipts; the H1 rows are to be settled by a verdict-only census, still
