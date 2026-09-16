@@ -89,6 +89,29 @@ the capacity-grid certificate replay or close its metadata gaps. The joins
 use dated, asynchronous snapshots and make no claim about live bucket state
 or proof validity.
 
+### Exact relation to the 1,161-root verdict-only cohort
+
+The reviewed historical overlay selects 96 of the 1,257 frozen Phase B H1
+roots, leaving 1,161 residual IDs. A set join against the same capacity and
+rescue snapshots partitions the 1,288 metadata gaps as follows:
+
+| Gap class | Inside v3 | Outside v3 | Total |
+|---|---:|---:|---:|
+| Residual Phase B roots | 1,076 | 82 | 1,158 |
+| Historical-overlay Phase B roots | 0 | 96 | 96 |
+| Outside the frozen Phase B root set | 34 | 0 | 34 |
+| **All metadata gaps** | **1,110** | **178** | **1,288** |
+
+The other three residual Phase B tags have listed objects:
+`dba11866daee2215`, `df21cf066affa6f4`, and `e7c1dfc9654d954c`.
+Therefore a verdict-only dispatch of exactly the 1,161 residual roots covers
+1,158 of the 1,288 gap tags and also tests three non-gap tags. It leaves
+130 gap tags outside that dispatch. The historical 96 have separate reviewed
+UNSAT evidence but no listed object in this snapshot; the other 34 lack a
+Phase B root. A claim of two-solver verdicts on every gap requires an exact
+additional 130-tag plan and receipts, or a changed and explicitly stated
+target. This count is a metadata reconciliation, not new solver evidence.
+
 ## Required mathematical output
 
 Prove `minDegreeForC4 48 = 8` and `minDegreeForC4 49 = 7`, hence the strict
