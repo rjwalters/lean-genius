@@ -50,6 +50,15 @@ Independent readback found matching hashes, sizes, and receipt identity;
 the native check returned zero, container cleanup completed, and no solver
 launched. This is one input canary, not a verdict for any of the 34 rows.
 
+`dispatch_capacity34.py` is a separate candidate verdict-only route for all
+34 outside-frozen rows, which are absent from the 1,416-case Phase B index.
+It uses the reviewed native adapter for each input and the unchanged
+`run_verdict_only.run_case` for Kissat and CaDiCaL at the H1 14,400-second
+caps. Execution requires banked config and wrapper commits, a new output
+directory, and the frozen 34-ID digest. Its full dry run selects 34; four
+focused wrapper tests pass. It has not launched a solver and still needs
+independent source review and an execution decision.
+
 `dispatch_historical96.py` is a separate candidate verdict-only wrapper for
 the 96 historical-overlay gaps. It selects exactly the reviewed historical
 IDs from the unchanged 1,416-case Phase B index, uses the existing H1
