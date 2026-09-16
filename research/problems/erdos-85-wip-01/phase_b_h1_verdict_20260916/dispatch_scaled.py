@@ -29,6 +29,7 @@ POLICY = {"crosscheck": True, "primary_cap_seconds": 14400,
 MAX_WORKERS = 24
 MAX_MATERIALIZERS = 4
 PILOT = HERE / "pilot-24.json"
+PILOT_SHA256 = "f94b9c0d77061db7c65575bd50ad68690ba9442a8898830bd4a38ec53c340063"
 # A post-pilot reviewed revision must set this to the exact gate bytes.
 # Until then, no scaled execution is possible.
 APPROVED_GATE_SHA256 = None
@@ -117,6 +118,9 @@ def main() -> int:
     if plan["config"]["policies"]["H1"] != POLICY:
         raise ValueError("H1 two-solver policy changed")
     allowed = {row["id"] for row in fresh}
+    pilot_manifest_raw = PILOT.read_bytes()
+    if sha(pilot_manifest_raw) != PILOT_SHA256:
+        raise ValueError("Frozen 24-case pilot manifest changed")
     frozen_pilot_ids = set(residual.pilot_ids(PILOT, CONFIG, fresh))
     if args.case_id:
         selected = set(args.case_id)
@@ -143,6 +147,8 @@ def main() -> int:
     residual_path = Path(residual.__file__).resolve()
     base.runner.require_banked_inventory(residual_path, args.config_commit,
                                          expected_bytes=residual_path.read_bytes())
+    base.runner.require_banked_inventory(PILOT, args.config_commit,
+                                         expected_bytes=pilot_manifest_raw)
     if not all((args.scaling_gate, args.scaling_gate_commit,
                 args.pilot_results, args.resource_monitor)):
         parser.error("Execution requires a banked scaling gate and pilot receipts")
@@ -168,6 +174,7 @@ def main() -> int:
         (retained / f"{number:02d}-{path.name}").write_bytes(source_raw)
     (retained / wrapper.name).write_bytes(wrapper_raw)
     (retained / residual_path.name).write_bytes(residual_path.read_bytes())
+    (retained / PILOT.name).write_bytes(pilot_manifest_raw)
     for name, raw in snapshots:
         (retained / name).write_bytes(raw)
     kissat, cadical = args.kissat.resolve(), args.cadical.resolve()
@@ -176,6 +183,7 @@ def main() -> int:
     state = {"schema": "erdos85-dispatch-results-v1", "status": "running",
              "pid": os.getpid(), "config_sha256": sha(plan["raw"]),
              "config_commit": args.config_commit, "wrapper_commit": args.wrapper_commit,
+             "frozen_pilot_manifest_sha256": PILOT_SHA256,
              "scaling_gate_sha256": sha(gate_raw),
              "pilot_results_sha256": sha(pilot_raw),
              "resource_monitor_sha256": sha(monitor_raw),

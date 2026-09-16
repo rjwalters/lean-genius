@@ -4,7 +4,7 @@ This is a dispatch design, not an execution approval or a verdict. The live
 24-case pilot continues under the previously reviewed four-worker wrapper.
 
 The frozen H1 residual inventory has 1,161 IDs. The scaled route excludes the
-24 exact pilot IDs and selects the other 1,137; an auditor combines receipts
+24 exact pilot IDs from a byte-pinned manifest and selects the other 1,137; an auditor combines receipts
 from both runs. Capped UNKNOWN cases remain open and are not retried
 automatically. The 96 historical-overlay and 34 outside-frozen gaps use their
 separate reviewed routes.

@@ -29,6 +29,15 @@ class ScaledDispatchTests(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 target.main()
 
+    def test_frozen_pilot_manifest_bytes_are_required(self):
+        with tempfile.TemporaryDirectory() as temp:
+            changed = Path(temp) / "pilot-24.json"
+            changed.write_bytes(target.PILOT.read_bytes() + b" ")
+            with patch.object(target, "PILOT", changed), \
+                 patch.object(target.sys, "argv", ["scaled"]):
+                with self.assertRaisesRegex(ValueError, "Frozen 24-case pilot manifest changed"):
+                    target.main()
+
     def test_preparation_semaphore_limits_concurrency(self):
         def prepare(*_):
             time.sleep(0.02)
@@ -143,6 +152,8 @@ class ScaledDispatchTests(unittest.TestCase):
             self.assertEqual(state["scaling_gate_sha256"], target.sha(gate_path.read_bytes()))
             self.assertEqual(state["pilot_results_sha256"], target.sha(pilot_path.read_bytes()))
             self.assertEqual(state["resource_monitor_sha256"], target.sha(monitor_path.read_bytes()))
+            self.assertEqual(state["frozen_pilot_manifest_sha256"], target.PILOT_SHA256)
+            self.assertEqual((output / "snapshots/pilot-24.json").read_bytes(), target.PILOT.read_bytes())
 
 
 if __name__ == "__main__":
