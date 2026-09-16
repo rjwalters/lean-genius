@@ -33,6 +33,16 @@ Docker emission/check canary and independent source review are still needed
 before using its output as a solver input. This adapter never invokes a SAT
 solver.
 
+`dispatch_historical96.py` is a separate candidate verdict-only wrapper for
+the 96 historical-overlay gaps. It selects exactly the reviewed historical
+IDs from the unchanged 1,416-case Phase B index, uses the existing H1
+two-solver policy with 14,400-second caps, and checks each newly emitted CNF
+against that row's reviewed overlay SHA-256 *before* either solver starts.
+This extra guard is necessary because the frozen candidate rows have blank
+historical CNF hash fields for all 96 cases. Its full dry run selects 96,
+and four focused tests pass. It has not launched a solver; independent source
+review and a separate execution decision remain open.
+
 The manifest pins the source SHA-256 values, reconstructs every capacity
 tag from its 24-value table, checks all profile ordinals and set identities,
 and carries every table needed by a future materializer. Reproduce it with:
