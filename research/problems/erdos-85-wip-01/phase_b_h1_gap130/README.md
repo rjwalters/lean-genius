@@ -57,8 +57,9 @@ It uses the reviewed native adapter for each input and the unchanged
 caps. Execution requires banked config and wrapper commits, a new output
 directory, and the frozen 34-ID digest. It accepts a row only after an
 `UNSAT_CROSSCHECKED` result; primary-only UNSAT is an error. Its full dry run
-selects 34; six focused wrapper tests pass. It has not launched a solver and still needs
-independent source review and an execution decision.
+selects 34; six focused wrapper tests pass. Independent source review passed
+for commit `4366cedadb` (#2735). It has not launched a solver; execution
+remains a separate decision.
 
 `dispatch_historical96.py` is a separate candidate verdict-only wrapper for
 the 96 historical-overlay gaps. It selects exactly the reviewed historical
@@ -70,6 +71,19 @@ historical CNF hash fields for all 96 cases. Its full dry run selects 96,
 and four focused tests pass. Independent source review passed for commit
 `54b7f7035b`; it has not launched a solver, and a separate execution decision
 remains open.
+
+`audit_h1_gap_verdicts.py` is a read-only census over the dated 1,288 gaps.
+It reuses the Phase B receipt/log summarizer for the 1,158 residual gap rows
+and 96 historical-overlay gap rows, and checks native binding, retained CNF,
+Kissat/CaDiCaL logs and receipts for the 34 outside-frozen rows. Only a fresh
+`UNSAT_CROSSCHECKED` row reduces the open count. Inherited historical
+verification is reported separately, and running or capped cases remain
+open. With no runs, it reports 1,288 `NOT_RUN`; with the live 24-root pilot
+before any completed receipt, it reports 24 `INCOMPLETE`, 96 historical
+evidence rows, and 1,168 `NOT_RUN`, with zero fresh crosschecked UNSAT.
+Supply `--phase-b-run DIR` or `--outside-run DIR` for each run directory; use
+`--output FILE` for an exclusive full row-level JSON report. The auditor
+neither launches a solver nor establishes a Lean theorem.
 
 The manifest pins the source SHA-256 values, reconstructs every capacity
 tag from its 24-value table, checks all profile ordinals and set identities,
