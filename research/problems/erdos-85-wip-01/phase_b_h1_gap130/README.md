@@ -36,6 +36,16 @@ canary passed for `h1_0d27d1c53e67aa6c` on 2026-09-16: the checked CNF has
 `8ddc9688635bec216d221f3c1b6e821c9f1b8061387c89ac943a56795d92d1b9`.
 The output and both receipts are at
 `/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-capacity-gap-canary-20260916-sol1-h1_0d27d1c53e67aa6c`.
+The native receipt SHA-256 is
+`09a041486fd2abd4f6f350df8399cd3d98f132ca2a9421728b4ce91eb6298473`;
+the binding receipt pins the adapter source SHA-256
+`b223db0913341b69d8be23c89c28e3ea8f966a1ed8099b8d9fe00363125cf2fa`,
+freeze source SHA-256
+`5beca242a3f0cd4b86fe8aa361be5b306b4ab46f300e4b86e3b7ffac6761dece`,
+native materializer SHA-256
+`00201aa9e23c2c55bce8cab3532d5eaf34df9fdb24d0134df01a974e0ff74dbd`,
+and frozen manifest SHA-256
+`e65684212b851d3fa3cb0e7598b6ead5662da7b3abcc97c64835945cccd7baf0`.
 Independent readback found matching hashes, sizes, and receipt identity;
 the native check returned zero, container cleanup completed, and no solver
 launched. This is one input canary, not a verdict for any of the 34 rows.
