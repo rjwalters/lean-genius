@@ -17,6 +17,9 @@ class PilotGateInputAuditTests(unittest.TestCase):
                 "2026-09-16T19:00:30+00:00,2,2,910,305,94,50100\n")
             report = target.primary_monitor(path, 4)
             self.assertEqual(report["maximum_solver_processes"], 4)
+            self.assertEqual(report["first_kissat_processes"], 3)
+            self.assertEqual(report["first_cadical_processes"], 1)
+            self.assertTrue(report["first_sample_has_active_solver"])
             self.assertEqual(report["maximum_sample_gap_seconds"], 30)
             path.write_text(path.read_text().replace(",2,2,910", ",3,2,910"))
             with self.assertRaisesRegex(ValueError, "exceeds frozen worker count"):

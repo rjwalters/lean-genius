@@ -91,7 +91,10 @@ def primary_monitor(path: Path, workers: int) -> dict:
     disk = [nonnegative(r, "output_disk_kib") for r in rows]
     require(all(a <= b for a, b in zip(largest, rss)) and all(x <= 100 for x in free),
             "Primary monitor memory fields are inconsistent")
-    return dict(report, maximum_solver_processes=max(k + c for k, c in process_counts),
+    return dict(report, first_kissat_processes=process_counts[0][0],
+                first_cadical_processes=process_counts[0][1],
+                first_sample_has_active_solver=sum(process_counts[0]) > 0,
+                maximum_solver_processes=max(k + c for k, c in process_counts),
                 maximum_kissat_processes=max(k for k, _ in process_counts),
                 maximum_cadical_processes=max(c for _, c in process_counts),
                 maximum_solver_rss_mib=max(rss),
@@ -158,6 +161,7 @@ def audit(run_dir: Path, primary_path: Path, supplement_path: Path) -> dict:
     last = dt.datetime.fromisoformat(primary["last_utc"])
     supplement_first = dt.datetime.fromisoformat(supplement["first_utc"])
     supplement_last = dt.datetime.fromisoformat(supplement["last_utc"])
+    snapshots_time = dt.datetime.fromtimestamp(snapshots_mtime, dt.timezone.utc)
     return {"schema": "erdos85-h1-pilot-gate-input-audit-v1",
             "scope": "Read-only receipts/logs and monitor arithmetic; monitor provenance/full time coverage need human review; no scaling approval or proof",
             "run_dir": str(run_dir), "pilot_results_sha256": sha(state_raw),
@@ -165,8 +169,7 @@ def audit(run_dir: Path, primary_path: Path, supplement_path: Path) -> dict:
             "pilot_manifest_sha256": PILOT_SHA256,
             "recorded_config_commit": state["config_commit"],
             "pilot_pid": state["pid"],
-            "input_snapshots_mtime_utc": dt.datetime.fromtimestamp(
-                snapshots_mtime, dt.timezone.utc).isoformat(),
+            "input_snapshots_mtime_utc": snapshots_time.isoformat(),
             "pilot_results_mtime_utc": dt.datetime.fromtimestamp(
                 results_mtime, dt.timezone.utc).isoformat(),
             "pilot_selected_cases": 24,
@@ -182,6 +185,9 @@ def audit(run_dir: Path, primary_path: Path, supplement_path: Path) -> dict:
             "primary_monitor": primary,
             "supplement_monitor": supplement,
             "primary_maximum_gap_at_most_60s": primary["maximum_sample_gap_seconds"] <= 60,
+            "seconds_from_snapshots_mtime_to_primary_first_sample":
+                (first - snapshots_time).total_seconds(),
+            "primary_startup_coverage_gap_observed": primary["first_sample_has_active_solver"],
             "supplement_maximum_gap_at_most_60s": supplement["maximum_sample_gap_seconds"] <= 60,
             "supplement_covers_primary_interval": supplement_first <= first and supplement_last >= last,
             "gate_approved": False,
