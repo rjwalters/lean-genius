@@ -62,6 +62,33 @@ H7 results are attributed to Sol3; this audit verified receipt hashes and
 joined the supplied metadata, rather than rerunning his checks. Earlier
 snapshots and their narrower review scopes remain unchanged.
 
+## Phase B versus capacity-grid set join (2026-09-16)
+
+An independent tag join compares the 1,257 unique frozen Phase B H1 roots in
+`phase_b_h1_h3/h1-frozen-candidates.json` with the 13,351 capacity rows in
+`closure-inventory-evidence/h1-exact-set-join.json` and the 13 rescue tags in
+`closure-inventory-evidence/followup-20260910/h1-rescue-set-join.json`.
+Every frozen tag belongs to the capacity grid. The banked object snapshot
+plus rescue lists 12,063 unique object tags, leaving 1,288 metadata gaps:
+1,110 inside v3 and 178 outside v3.
+
+| Frozen Phase B tags | Count |
+|---|---:|
+| In the remaining metadata gaps | 1,254 |
+| Of those, inside / outside the v3 queue | 1,076 / 178 |
+| With a listed object in the earlier snapshot | 3 |
+| With any v3 claim / a v3 UNKNOWN verdict | 64 / 22 |
+
+The three object-listed frozen tags are exactly the three rows with a
+certificate key present: `dba11866daee2215`, `df21cf066affa6f4`, and
+`e7c1dfc9654d954c`. None of the 1,257 frozen rows records a valid
+certificate ledger or readback. The 22 v3 verdicts are `UNKNOWN`, not
+accepted certificates. Phase B roots and the capacity grid therefore
+overlap heavily as *tags*, while the Phase B decomposition does not supply
+the capacity-grid certificate replay or close its metadata gaps. The joins
+use dated, asynchronous snapshots and make no claim about live bucket state
+or proof validity.
+
 ## Required mathematical output
 
 Prove `minDegreeForC4 48 = 8` and `minDegreeForC4 49 = 7`, hence the strict
