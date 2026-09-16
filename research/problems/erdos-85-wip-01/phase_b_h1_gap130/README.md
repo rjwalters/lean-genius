@@ -23,6 +23,16 @@ establish the generated CNF bytes before any solve. Seven of these 34 have
 v3 claims without a terminal ledger in the dated join; the other 27 have
 no recorded v3 claim. Neither state is a solver verdict.
 
+`materialize_capacity_gap.py` is a candidate adapter for those 34 rows. It
+checks the frozen manifest and source join, constructs a deterministic
+one-row input for the unchanged reviewed H1 native materializer, and records
+both the adapter input SHA-256 and the native emission/check receipt. It
+rejects the other 96 rows and all unknown IDs. Dry-run selection and all 34
+adapter inputs pass the native selector; three focused tests pass. A real
+Docker emission/check canary and independent source review are still needed
+before using its output as a solver input. This adapter never invokes a SAT
+solver.
+
 The manifest pins the source SHA-256 values, reconstructs every capacity
 tag from its 24-value table, checks all profile ordinals and set identities,
 and carries every table needed by a future materializer. Reproduce it with:
