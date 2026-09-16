@@ -694,11 +694,11 @@ written so that it can be read standing alone. The lower sides of both values
 are Lean-checked witnesses. The upper side at order 49 is a case split into
 the strata H1, H3, H5 and H7. Three of the four are closed at the level of a
 paper argument backed by reproducible, independently reviewed computation with
-banked receipts; the H1 rows are settled by a verdict-only census in which two
-independent SAT solvers must both return UNSAT under a declared cap, and every
-row that reaches the cap is listed as open in the final table rather than
-absorbed. If that table shows no open row, the honest statement is that we
-have strong computational evidence that `f(48) = 8` and `f(49) = 7`, and
+banked receipts; the H1 rows are to be settled by a verdict-only census, still
+in progress at this draft revision, in which two independent SAT solvers must
+both return UNSAT under a declared cap, and every row that reaches the cap is
+listed as open in the final table rather than absorbed. If that table shows no
+open row, the honest statement will be that we have strong computational evidence that `f(48) = 8` and `f(49) = 7`, and
 therefore that the threshold drops between two adjacent orders. Erdős
 Problem 85 asks whether `f(n+1) ≥ f(n)` holds for all large `n`. One drop at
 48-to-49 is a data point against monotonicity at small order; it is
@@ -706,8 +706,9 @@ compatible with either answer to the problem as posed, which a finite
 computation cannot settle, and we make no claim about the problem itself.
 
 We chose to stop at belief and publish the price of certainty. A bank of
-12,019 LRAT certificates for the H1 rows already exists; replaying it through
-the Lean kernel is a priced, bounded task (about $1,276 of spot infrastructure
+12,019 historical ready certificate inputs for the H1 rows is inventoried
+(objects and metadata, not yet validated payload by payload); replaying it
+through the Lean kernel is a priced, bounded task (about $1,276 of spot infrastructure
 and 17 ideal allocated days on 16 hosts, plus about $182 of retrieval), and the
 remaining rows have no credible fixed price because they were selected by
 difficulty. The certificate bank can be released as a requester-pays object
