@@ -29,10 +29,16 @@ one-row input for the unchanged reviewed H1 native materializer, and records
 the adapter/freeze source hashes, adapter input SHA-256, native emission/check
 receipt, and an independent post-return CNF hash and byte-count readback. It
 rejects the other 96 rows and all unknown IDs. Dry-run selection and all 34
-adapter inputs pass the native selector; six focused tests pass. A real
-Docker emission/check canary and renewed independent source review are still needed
-before using its output as a solver input. This adapter never invokes a SAT
-solver.
+adapter inputs pass the native selector; six focused tests pass. Independent
+source review passed for commit `1a6f1c906c`. One real Docker emission/check
+canary passed for `h1_0d27d1c53e67aa6c` on 2026-09-16: the checked CNF has
+12,479,696 bytes and SHA-256
+`8ddc9688635bec216d221f3c1b6e821c9f1b8061387c89ac943a56795d92d1b9`.
+The output and both receipts are at
+`/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-capacity-gap-canary-20260916-sol1-h1_0d27d1c53e67aa6c`.
+Independent readback found matching hashes, sizes, and receipt identity;
+the native check returned zero, container cleanup completed, and no solver
+launched. This is one input canary, not a verdict for any of the 34 rows.
 
 `dispatch_historical96.py` is a separate candidate verdict-only wrapper for
 the 96 historical-overlay gaps. It selects exactly the reviewed historical
