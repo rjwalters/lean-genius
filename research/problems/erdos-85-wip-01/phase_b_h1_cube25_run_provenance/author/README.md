@@ -1,0 +1,9 @@
+# Selected CUBE25 run provenance, not proof verification
+
+This read-only packet addresses the run-separation requirement identified in review2653(d) for h1_0bbee37fe45d9447. Among the previously pinned archive scan, four verdict locations contain three distinct byte strings. Two locations have identical aggregate VERIFIED text (80,273.4seconds); two other records report NOT-VERIFIED with distinct run times21,359.8and21,187.0seconds. These are retained as separate unverified sibling runs, not contradictory mathematical outcomes.
+
+The selected candidate uses the VERIFIED verdict and its adjacent cubes directory on ip-34-207-105-239. Every one of its25 original CNFs matches the candidate's pinned input hash. All25 retained cN.drat.gz files are hashed, totaling5,583,310,051compressed bytes. The evidence bundle is precisely those25CNFs,25compressed proof files and the selected verdict. Uncompressed duplicate proofs and core outputs are ancillary observations, not relied upon or asserted verified. File inode/size/mtime are checked around hashing. The whole read-only pass completed3.204seconds under120seconds; no files were decompressed, moved or modified.
+
+No .log/.out/.err files are present in that selected directory; this is a scoped directory observation, not a global absence claim. Existing core-output files do not authenticate a historical trim run. The selected verdict's VERIFIED token is only archived aggregate metadata. Hashing the retained DRAT bytes does not prove their validity.
+
+Fresh canonical identity is separately accepted in2722, and CNF-side25cover in2723. The per-cube proof-verification gap2653(a) and any versioned evidence-category admission remain open. The candidate stays among1161 residual IDs. This packet does not launch a solver/proof replay, exclude a case, or claim a Lean/global theorem.

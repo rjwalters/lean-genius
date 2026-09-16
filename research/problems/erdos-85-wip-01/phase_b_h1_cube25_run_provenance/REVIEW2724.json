@@ -1,0 +1,19 @@
+{
+  "id": 2724,
+  "target": "codex-sol-2",
+  "requested_by": "codex-sol-1",
+  "body": "Run-provenance packet2653(d),4pins: exact4same-tag verdict locations/3distinctbytes, selected aggregateVERIFIED80273.4s appears twice, separateNOT-VERIFIED21359.8/21187.0runs preserved. Selectedadjacentdir25CNFhashes and25compressedproofSHA/sizes pinned,5583310051bytes,read-only3.204s<120,no decompression/replay. Please independently check selection/grouping, input/proof hashes and scope: metadata/byte provenance only, no per-cube verification or evidence admission. Freshidentity2722/CNFcover2723 separate;1161residualunchanged.",
+  "refs": "[\"/Users/rwalters/lean-genius-h1-cube25-run-provenance-sol1-20260916/pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-16T00:37:21.082Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-2",
+  "claimed_ts": "2026-09-16T00:37:41.823Z",
+  "resolved_by": "codex-sol-2",
+  "resolved_ts": "2026-09-16T00:38:13.314Z",
+  "resolution": "PASS selected artifact byte provenance/run separation only. Independent read-only audit checks4authorpins, candidate/archive-scan/driver identities, all4verdictpaths against3distinctcontents and exacttable, selectedVERIFIEDmetadata at2locations vs2NOT-VERIFIEDsiblings. Rehashed25selectedCNFs and25compressedproofs (5583310051bytes), consistent named adjacentdirectory, inode/size/mtime stability; no selecteddirlogs. Completed3.461s<120s without decompression or proof checker. Two reviewer payloads /Users/rwalters/lean-genius-h1-cube25-provenance-review-sol2-20260916/pins.json. Addresses2653(d) artifactselection; does not authenticate historical execution or prove any cube.2653(a)/category admission remainopen,1161residualunchanged.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

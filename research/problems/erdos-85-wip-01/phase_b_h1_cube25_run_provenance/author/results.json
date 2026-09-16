@@ -1,0 +1,506 @@
+{
+  "status": "PASS_ARTIFACT_PROVENANCE_ONLY",
+  "case_id": "h1_0bbee37fe45d9447",
+  "selected_verdict_path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/0bbee37fe45d9447.v2.verdict",
+  "selected_verdict_sha256": "aebcfada278004ba80a026404d6c1524ccd24bfcbdb818d00fe25c38a7d3c7b3",
+  "selected_cube_directory": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2",
+  "verdicts": [
+    {
+      "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/post-incident-local/ip-54-152-98-49/0bbee37fe45d9447.v2.verdict",
+      "sha256": "98a83bb4cff146010fcaabfacb20f0320c239c34a35e279653aebafa3ea6ff94",
+      "bytes": 471,
+      "label": "NOT_VERIFIED_AGGREGATE",
+      "text": "0bbee37fe45d9447 UNSAT 21359.8s drat:NOT-VERIFIED mode:CUBE25 arm:v2 profile:BBBB cubetimes:[20.6, 790.9, 653.5, 1052.6, 700.1, 1.1, 705.7, 1084.1, 1064.1, 1184.1, 32.6, 629.7, 887.5, 577.2, 912.1, 5.8, 1053.1, 1054.2, 923.4, 713.6, 37.9, 783.1, 1307.1, 1232.3, 874.9] table:[[[0, 5], 1], [[0, 6], 1], [[0, 7], 2], [[1, 2], 1], [[1, 3], 1], [[1, 4], 1], [[1, 5], 1], [[2, 4], 1], [[2, 6], 1], [[2, 7], 1], [[3, 4], 1], [[3, 5], 1], [[3, 6], 1], [[4, 7], 1], [[5, 6], 1]]\n"
+    },
+    {
+      "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/post-incident-local/ip-3-82-216-217/0bbee37fe45d9447.v2.verdict",
+      "sha256": "1af198b7bcce6bf3f9a762a6cd55058e581bb7cf45b485919572fe00f8e477ef",
+      "bytes": 471,
+      "label": "NOT_VERIFIED_AGGREGATE",
+      "text": "0bbee37fe45d9447 UNSAT 21187.0s drat:NOT-VERIFIED mode:CUBE25 arm:v2 profile:BBBB cubetimes:[21.9, 732.0, 707.5, 1038.4, 728.9, 0.9, 663.6, 1163.6, 1107.6, 1228.9, 29.1, 611.0, 841.9, 596.9, 847.3, 5.9, 1009.6, 1118.3, 934.6, 681.1, 36.2, 733.7, 1261.4, 1148.7, 863.4] table:[[[0, 5], 1], [[0, 6], 1], [[0, 7], 2], [[1, 2], 1], [[1, 3], 1], [[1, 4], 1], [[1, 5], 1], [[2, 4], 1], [[2, 6], 1], [[2, 7], 1], [[3, 4], 1], [[3, 5], 1], [[3, 6], 1], [[4, 7], 1], [[5, 6], 1]]\n"
+    },
+    {
+      "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/post-incident-local/ip-34-207-105-239/0bbee37fe45d9447.v2.verdict",
+      "sha256": "aebcfada278004ba80a026404d6c1524ccd24bfcbdb818d00fe25c38a7d3c7b3",
+      "bytes": 465,
+      "label": "VERIFIED_AGGREGATE_ONLY",
+      "text": "0bbee37fe45d9447 UNSAT 80273.4s drat:VERIFIED mode:CUBE25 arm:v2 profile:BBBB cubetimes:[24.4, 762.3, 694.0, 936.5, 670.7, 1.0, 645.6, 1115.5, 1134.9, 1364.0, 30.1, 637.1, 879.0, 653.4, 775.2, 5.8, 978.1, 1051.9, 860.0, 660.3, 33.9, 668.7, 1183.0, 1180.7, 722.9] table:[[[0, 5], 1], [[0, 6], 1], [[0, 7], 2], [[1, 2], 1], [[1, 3], 1], [[1, 4], 1], [[1, 5], 1], [[2, 4], 1], [[2, 6], 1], [[2, 7], 1], [[3, 4], 1], [[3, 5], 1], [[3, 6], 1], [[4, 7], 1], [[5, 6], 1]]\n"
+    },
+    {
+      "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/0bbee37fe45d9447.v2.verdict",
+      "sha256": "aebcfada278004ba80a026404d6c1524ccd24bfcbdb818d00fe25c38a7d3c7b3",
+      "bytes": 465,
+      "label": "VERIFIED_AGGREGATE_ONLY",
+      "text": "0bbee37fe45d9447 UNSAT 80273.4s drat:VERIFIED mode:CUBE25 arm:v2 profile:BBBB cubetimes:[24.4, 762.3, 694.0, 936.5, 670.7, 1.0, 645.6, 1115.5, 1134.9, 1364.0, 30.1, 637.1, 879.0, 653.4, 775.2, 5.8, 978.1, 1051.9, 860.0, 660.3, 33.9, 668.7, 1183.0, 1180.7, 722.9] table:[[[0, 5], 1], [[0, 6], 1], [[0, 7], 2], [[1, 2], 1], [[1, 3], 1], [[1, 4], 1], [[1, 5], 1], [[2, 4], 1], [[2, 6], 1], [[2, 7], 1], [[3, 4], 1], [[3, 5], 1], [[3, 6], 1], [[4, 7], 1], [[5, 6], 1]]\n"
+    }
+  ],
+  "distinct_verdict_contents": 3,
+  "identical_verdict_locations": {
+    "98a83bb4cff146010fcaabfacb20f0320c239c34a35e279653aebafa3ea6ff94": [
+      "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/post-incident-local/ip-54-152-98-49/0bbee37fe45d9447.v2.verdict"
+    ],
+    "1af198b7bcce6bf3f9a762a6cd55058e581bb7cf45b485919572fe00f8e477ef": [
+      "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/post-incident-local/ip-3-82-216-217/0bbee37fe45d9447.v2.verdict"
+    ],
+    "aebcfada278004ba80a026404d6c1524ccd24bfcbdb818d00fe25c38a7d3c7b3": [
+      "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/post-incident-local/ip-34-207-105-239/0bbee37fe45d9447.v2.verdict",
+      "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/0bbee37fe45d9447.v2.verdict"
+    ]
+  },
+  "cubes": [
+    {
+      "cube": 0,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c0.cnf",
+        "sha256": "d67ac0ef211972b4a1b0ad651b8517485414c94d8306514bf04fd1d2ebdd61a4",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c0.drat.gz",
+        "sha256": "de58ac060b717991999c3259e0052a6b1ee206b3776425671be0747f028b26d6",
+        "bytes": 13538711
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c0.core.cnf",
+        "bytes": 2448
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 1,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c1.cnf",
+        "sha256": "c4097923e717cff47dc86e03cbadfc81cfa95aa6a2d08a08ee0622ec74e2ad51",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c1.drat.gz",
+        "sha256": "666b8b541df834e02ef9d3c091f211dde2dff8cd30855f7e42241fa4160bdff2",
+        "bytes": 245926556
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c1.core.cnf",
+        "bytes": 958054
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 2,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c2.cnf",
+        "sha256": "d8382f5b2e904c2f2eec14bdcfb7d5d08c427cd52e8d97c0858620331e5439dc",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c2.drat.gz",
+        "sha256": "40a1b2a050354922e1d30106057d695fa780713ee6c9a7dfb5a8ca3dd944ce2d",
+        "bytes": 225438212
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c2.core.cnf",
+        "bytes": 1069925
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 3,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c3.cnf",
+        "sha256": "2f8538a1f3b6b485e5a9a021859c35b8353d20b8140b62f01f40efde6da2d28e",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c3.drat.gz",
+        "sha256": "eb89d1be16aed43807324423e99791d22d2280cfacd9789fa45fffa85160029b",
+        "bytes": 298149519
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c3.core.cnf",
+        "bytes": 1042994
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 4,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c4.cnf",
+        "sha256": "1d8825cf3df1c85e861ba6a031d0881afbbd4929c6105c49bd145b49ab5ec586",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c4.drat.gz",
+        "sha256": "5842205e9970d1587a85cb3c2d9d8f86a656df2c014de488f77188a10fda7ba6",
+        "bytes": 208301876
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c4.core.cnf",
+        "bytes": 1012088
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 5,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c5.cnf",
+        "sha256": "81ed3ff56e28718683c23d2ffdec66cd16ef1a5b841c8b0592638eb5b49493b6",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c5.drat.gz",
+        "sha256": "77ab9bcac45801441878de823628f346021bc01cbad072de2fbb23ac6e45c646",
+        "bytes": 711033
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c5.core.cnf",
+        "bytes": 2538
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 6,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c6.cnf",
+        "sha256": "b2b5a90fa43100fc887ebab3dcb719bff131554a28b51f9b31de51b5b80d2082",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c6.drat.gz",
+        "sha256": "8492889ee8f4d98da168331e5bf940b6447f04415d06bd61cac5a33b920dd679",
+        "bytes": 214509546
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c6.core.cnf",
+        "bytes": 1033179
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 7,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c7.cnf",
+        "sha256": "cc00d5c7708cd11c9dedae5cbd99bd41e7fe8da93ea65f5a7cf132496aabe7dd",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c7.drat.gz",
+        "sha256": "346a5641fd31a271fd88bb8838528571532cf98aea2f0b9becfac6de72c83005",
+        "bytes": 352879994
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c7.core.cnf",
+        "bytes": 1072737
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 8,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c8.cnf",
+        "sha256": "578dd9fa7c5b73b4279669aa8d0e191df1382d7f817f9b8cb77deec28b701ebf",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c8.drat.gz",
+        "sha256": "d784651dc39c92d0000cdcf0a61916be6d203f846ae5f797e148d74f48bc2fdb",
+        "bytes": 340877497
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c8.core.cnf",
+        "bytes": 1102556
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 9,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c9.cnf",
+        "sha256": "c58d8f68a54f265bc89b2b0b57a4c4f71efc9ceee7c46310dc284fa8a1f9574f",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c9.drat.gz",
+        "sha256": "4234e5fb35cacacd2230b55265af34b8a7f71feb6ea56fc36a8f8c02274299c2",
+        "bytes": 385554339
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c9.core.cnf",
+        "bytes": 713939
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 10,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c10.cnf",
+        "sha256": "4043756a157a44b4154d2cda1f9cf9026e02de4f8176bd1d890004471a23afa8",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c10.drat.gz",
+        "sha256": "5ca5e41bc267a363ea91deca5156bd75436fc609cf2c5eae9f8d2ac5fc46cc3d",
+        "bytes": 14566754
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c10.core.cnf",
+        "bytes": 2448
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 11,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c11.cnf",
+        "sha256": "27fb2c13f98d72d43b1fb7bdf6ce82e84814310bf5908962983c65961c59e2f3",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c11.drat.gz",
+        "sha256": "2b635daa5b41d375adb502a794816bf56c4c4db1a746adf3124d963f88f96f2a",
+        "bytes": 184961356
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c11.core.cnf",
+        "bytes": 906231
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 12,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c12.cnf",
+        "sha256": "9f8275d9be39497d9bd9bd07937083d4ae488a70ab4abf08218fac72ea28f1cc",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c12.drat.gz",
+        "sha256": "f29a6eafb77d36d06ac89a36493311fe1f312c6a00fe95a7633afca3cff1922a",
+        "bytes": 258935659
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c12.core.cnf",
+        "bytes": 992887
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 13,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c13.cnf",
+        "sha256": "ec2c5d71e0339f50a071faf3567392189d157a3ac975a098869dc2e48092f03f",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c13.drat.gz",
+        "sha256": "7d9ce6e08fe71b5f364a18993ff12a31f64ed0aea15e85d4bfbd4266a0e314db",
+        "bytes": 197160456
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c13.core.cnf",
+        "bytes": 1014069
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 14,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c14.cnf",
+        "sha256": "0785dc12225a334d2c6c48200a3888d12dfbda47c31bc6f1ec52f0483e4db439",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c14.drat.gz",
+        "sha256": "a8c5038b7d25e2b2b57d38b7b546f68a3f15a9d65d162708943bd6a412c49715",
+        "bytes": 274853648
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c14.core.cnf",
+        "bytes": 925099
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 15,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c15.cnf",
+        "sha256": "e48d9b459edaf27d85d15e4757be02baea94bf777c09895dd21f3560414fc033",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c15.drat.gz",
+        "sha256": "68edf5e97ea4e3258b609f68af165ef31421b3e948a3fda66f5d343c56c5e76b",
+        "bytes": 3791849
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c15.core.cnf",
+        "bytes": 2448
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 16,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c16.cnf",
+        "sha256": "d86c8c86c117418b4468eb693e6e83e1326d2219fbe231baf6e61145cca10afc",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c16.drat.gz",
+        "sha256": "c83c6e71e77a1fc74e201b84b723bf6fa82bac36beff26f86aa04fcbe2524c2e",
+        "bytes": 309117810
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c16.core.cnf",
+        "bytes": 857148
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 17,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c17.cnf",
+        "sha256": "98dcbf4900f93b90f46a9600e5ecb2cfea45612c8c8094daa094a6e761737b97",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c17.drat.gz",
+        "sha256": "fe2169fba006c626e9d7fd78f5ba9f8d80ca28b125ea4900e8bac820ac11e39e",
+        "bytes": 317437159
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c17.core.cnf",
+        "bytes": 984070
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 18,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c18.cnf",
+        "sha256": "e4c90375d6e670baafebefb33f3be9e1cb86e1ac8580631bff08f403177e5d17",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c18.drat.gz",
+        "sha256": "5c33abf46ae7a52ee4aa2858cebb5bec0ce7e8670d73df31e8a5eabcd7c5da7c",
+        "bytes": 276361321
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c18.core.cnf",
+        "bytes": 1013736
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 19,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c19.cnf",
+        "sha256": "ffea8315f4b1769cdbb9b0ab4b6b1b3405711f2098ab592b665ea29391caf50b",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c19.drat.gz",
+        "sha256": "6695c054ff087c87b97074d501858a9629addc1b9be879ee31684c12628afff5",
+        "bytes": 197350791
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c19.core.cnf",
+        "bytes": 1108986
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 20,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c20.cnf",
+        "sha256": "ba3de79b8fa0ff209528199fc3a1aa8d60c15088f5ea0250c8d082851c002e8f",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c20.drat.gz",
+        "sha256": "45fd3de8ecda640ce414913a0fb6b4535daea3b1c20ff143755b86021a1f9a14",
+        "bytes": 20024560
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c20.core.cnf",
+        "bytes": 2768
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 21,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c21.cnf",
+        "sha256": "7d8b985016793329f5745d83a4462a5a8d97f356ca298b45cc4cf09dcb51f402",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c21.drat.gz",
+        "sha256": "f8e498264371974a2764d3f0dd96eea04aa7f5d3408f0a90a89b8f7ca15ac3a8",
+        "bytes": 214401891
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c21.core.cnf",
+        "bytes": 856446
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 22,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c22.cnf",
+        "sha256": "5b451d9d4224ef394409f1b77ca579a018bd3f5b5c78a671e9ef9359adc58662",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c22.drat.gz",
+        "sha256": "3dd5e87c0dea154b40848924847e93285577a92cd022a7122e67485e6fd32d94",
+        "bytes": 390471918
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c22.core.cnf",
+        "bytes": 1154515
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 23,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c23.cnf",
+        "sha256": "2e579f8f983980f90e00b07c1d21043ca5485ab05177b10cdca50b2859d47dc1",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c23.drat.gz",
+        "sha256": "0c35d8b75a3b1da8544fbb98f987c6ae2835b98502e80b22f0e0b447096ad09e",
+        "bytes": 374077351
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c23.core.cnf",
+        "bytes": 1288370
+      },
+      "proof_verified": false
+    },
+    {
+      "cube": 24,
+      "input": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c24.cnf",
+        "sha256": "42bc11e2fc2839218a5dc98bbde01d4bb4c993a5678f0c90834bbb2253e1d073",
+        "bytes": 12504339
+      },
+      "proof_gzip": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c24.drat.gz",
+        "sha256": "1000d656441a3ee4a7df4cdd9d3e0168a544c26c2fcabec3bd0bcc64b3ffa81d",
+        "bytes": 263910245
+      },
+      "core_observation": {
+        "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/remote-sweeps/fleet-tail/ip-34-207-105-239/cubes-0bbee37fe45d9447.v2/c24.core.cnf",
+        "bytes": 1106464
+      },
+      "proof_verified": false
+    }
+  ],
+  "compressed_proof_bytes": 5583310051,
+  "same_directory_log_files": [],
+  "seconds": 3.2043982910108753,
+  "scope": "Selected run filenames/input hashes and retained compressed proof bytes are pinned. Aggregate VERIFIED is historical metadata only. NOT-VERIFIED siblings remain separate; no per-cube verification or category admission."
+}
