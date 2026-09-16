@@ -25,11 +25,35 @@ import materialize_capacity_gap as adapter  # noqa: E402
 
 VALID = {"UNSAT_CROSSCHECKED", "UNKNOWN", "ERROR", "SAT_CANDIDATE",
          "DISAGREEMENT", "INCOMPLETE", "NOT_RUN"}
+CONFIG_SHA256 = "f7cf7a15894a114d30f4069abc1198af1397d6f8f3b85b0f0eae3b4e294d66a3"
+WRAPPER_SHA256 = "87239aea874456fc0c4ad88cbe0cfc61a7700278d0d3c570e8963d6335a70be1"
+ADAPTER_SHA256 = "b223db0913341b69d8be23c89c28e3ea8f966a1ed8099b8d9fe00363125cf2fa"
+FREEZE_SHA256 = "5beca242a3f0cd4b86fe8aa361be5b306b4ab46f300e4b86e3b7ffac6761dece"
+NATIVE_SHA256 = "00201aa9e23c2c55bce8cab3532d5eaf34df9fdb24d0134df01a974e0ff74dbd"
+GAP130_SHA256 = "e65684212b851d3fa3cb0e7598b6ead5662da7b3abcc97c64835945cccd7baf0"
 
 
 def require(condition, message):
     if not condition:
         raise ValueError(message)
+
+
+def one_row_bytes(row):
+    candidate = {"id": row["id"], "tag": row["tag"],
+                 "profile": str(row["profile"]), "table_values": row["table_values"],
+                 "host_cnf_sha256": "", "fleet_cnf_sha256": "",
+                 "fleet_v2_cnf_sha256": "", "fleet_v3_cnf_sha256": ""}
+    return (json.dumps({"schema": "erdos85-phase-b-h1-candidates-v1",
+                        "rows": [candidate]}, indent=2) + "\n").encode()
+
+
+def table_bytes(row):
+    pairs = [(a, b) for a in range(8) for b in range(a + 1, 8) if b != (a ^ 1)]
+    require(len(row["table_values"]) == len(pairs), "Outside-34 table length mismatch")
+    table = sorted((pair, value) for pair, value in zip(pairs, row["table_values"]) if value)
+    require(hashlib.sha1(json.dumps(table).encode()).hexdigest()[:16] == row["tag"],
+            "Outside-34 table/tag mismatch")
+    return (json.dumps(table) + "\n").encode()
 
 
 def dated_gap_ids(plan, rows):
@@ -57,7 +81,7 @@ def audit_outside_case(run: Path, state: dict, record: dict, row: dict) -> dict:
     require(saved == record and record["id"] == case_id and
             record["sector"] == "H1" and record["profile"] == row["profile"] and
             record["capacity_local_index"] == row["capacity_local_index"] and
-            record["gap130_sha256"] == adapter.MANIFEST_SHA256,
+            record["gap130_sha256"] == GAP130_SHA256,
             "Outside-34 case receipt/row mismatch")
     attempt = {"run": str(run), "status": record["status"],
                "case_receipt_sha256": summary.digest(saved_raw)}
@@ -71,22 +95,37 @@ def audit_outside_case(run: Path, state: dict, record: dict, row: dict) -> dict:
     require(binding["status"] == "materialized" and binding["id"] == case_id and
             binding["tag"] == row["tag"] and binding["profile"] == row["profile"] and
             binding["capacity_local_index"] == row["capacity_local_index"] and
-            binding["gap130_sha256"] == adapter.MANIFEST_SHA256 and
-            binding["one_row_source_sha256"] == adapter.sha(adapter.one_row_manifest(row)) and
-            binding["native_materializer_sha256"] == adapter.NATIVE_SHA256 and
-            binding["adapter_source_sha256"] == summary.digest(Path(adapter.__file__).read_bytes()) and
-            binding["freeze_source_sha256"] == summary.digest((HERE / "freeze.py").read_bytes()) and
+            binding["gap130_sha256"] == GAP130_SHA256 and
+            binding["one_row_source_sha256"] == summary.digest(one_row_bytes(row)) and
+            binding["native_materializer_sha256"] == NATIVE_SHA256 and
+            binding["adapter_source_sha256"] == ADAPTER_SHA256 and
+            binding["freeze_source_sha256"] == FREEZE_SHA256 and
             binding["solver_launched"] is False,
             "Outside-34 native binding identity mismatch")
     native_path = directory / "materialization/native/receipt.json"
     native, native_raw = summary.read_json(native_path)
+    adapter_path = directory / "materialization/one-row-source.json"
+    require(adapter_path.read_bytes() == one_row_bytes(row),
+            "Outside-34 one-row source differs from capacity table")
+    table_path = directory / "materialization/native/table.json"
+    require(table_path.read_bytes() == table_bytes(row) and
+            summary.digest(table_path.read_bytes()) == native["table_sha256"],
+            "Outside-34 native table differs from selected source")
+    check_log = summary.read_bytes(directory / "materialization/native/check.log", 4096).decode("ascii").strip()
     require(summary.digest(native_raw) == binding["native_receipt_sha256"] and
             native["status"] == "materialized" and native["container_absent"] is True and
             native["id"] == case_id and native["cnf_sha256"] == binding["cnf_sha256"] and
             native["cnf_bytes"] == binding["cnf_bytes"] and
-            native["runner_sha256"] == adapter.NATIVE_SHA256 and
+            native["manifest_sha256"] == binding["one_row_source_sha256"] and
+            native["tag"] == row["tag"] and native["profile"] == row["profile"] and
+            native["emitter_sha256"] == adapter.native.EMITTER_SHA256 and
+            native["image_id"] == adapter.native.IMAGE_ID and
+            native["runner_sha256"] == NATIVE_SHA256 and
+            native["validator_sha256"] == state["config"]["tool_sha256"]["materialize_verdict_input.py"] and
+            native["emit"]["returncode"] == 0 and
             native["solver_launched"] is False and
-            native["check"]["returncode"] == 0,
+            native["check"]["returncode"] == 0 and
+            check_log == f"MATCH ({native['clauses']} clauses, top {native['variables']})",
             "Outside-34 native emission/check mismatch")
     cnf = directory / "materialization/native/input.cnf"
     require(not cnf.is_symlink() and cnf.is_file() and
@@ -126,25 +165,24 @@ def summarize_outside(run_dirs, rows):
         state, state_raw = summary.read_json(run / "results.json")
         require(state["schema"] == "erdos85-h1-capacity34-verdict-results-v1" and
                 state["inventory_cases"] == 34 and
-                state["gap130_sha256"] == adapter.MANIFEST_SHA256 and
+                state["gap130_sha256"] == GAP130_SHA256 and
                 state["proof_logging"] is False,
                 "Outside-34 run scope mismatch")
         selected = state["selected_cases"]
         require(len(set(selected)) == len(selected) and set(selected) <= set(by_id),
                 "Outside-34 run selection mismatch")
-        require(state["config_sha256"] == hashlib.sha256(outside.CONFIG.read_bytes()).hexdigest(),
+        require(state["config_sha256"] == CONFIG_SHA256,
                 "Outside-34 config identity mismatch")
         snapshots = {summary.digest(path.read_bytes()): path.read_bytes()
                      for path in (run / "snapshots").iterdir() if path.is_file()}
-        required = {state["config_sha256"], adapter.MANIFEST_SHA256,
-                    summary.digest(Path(outside.__file__).read_bytes()),
-                    summary.digest(Path(adapter.__file__).read_bytes()),
-                    summary.digest((HERE / "freeze.py").read_bytes())}
+        required = {CONFIG_SHA256, GAP130_SHA256, WRAPPER_SHA256,
+                    ADAPTER_SHA256, FREEZE_SHA256}
         require(required <= set(snapshots), "Missing outside-34 source snapshots")
         config = json.loads(snapshots[state["config_sha256"]])
         require(config["policies"]["H1"] == outside.POLICY,
                 "Outside-34 policy changed")
         state["h1_generator_commit"] = config["h1_generator_commit"]
+        state["config"] = config
         done = set()
         for record in state["results"]:
             case_id = record["id"]
