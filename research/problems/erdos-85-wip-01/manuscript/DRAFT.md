@@ -687,39 +687,62 @@ all structural bridge modules use standard axioms.  The result is genuinely
 `PROVEN-AT-64 CERT`, but only for that endpoint—not for the full order-64
 nonexistence theorem (room msgs 31845–31846 and outline v2.64 entry 2.61).
 
-## 8. Interpretation: a finite theorem and an honest infinite frontier
+## 8. Interpretation: a computational drop, an honest infinite frontier, and the price of certainty
 
-After its final replay gate, Theorem A answers a natural finite extremal
-question exactly and supplies a concrete failure of monotonicity. It does not
-by itself decide eventual monotonicity: one drop at 48-to-49 is compatible with either answer to Erdős
-85. Its broader value is methodological and structural. The proof combines a
-new extremal witness with a complete nonexistence certificate at the next
-order, and exposes a reusable interface between finite graph normalization,
-SAT certificates, and kernel checking.
+Result A is computational evidence, not a theorem, and this section is
+written so that it can be read standing alone. The lower sides of both values
+are Lean-checked witnesses. The upper side at order 49 is a case split into
+the strata H1, H3, H5 and H7. Three of the four are closed at the level of a
+paper argument backed by reproducible, independently reviewed computation with
+banked receipts; the H1 rows are settled by a verdict-only census in which two
+independent SAT solvers must both return UNSAT under a declared cap, and every
+row that reaches the cap is listed as open in the final table rather than
+absorbed. If that table shows no open row, the honest statement is that we
+have strong computational evidence that `f(48) = 8` and `f(49) = 7`, and
+therefore that the threshold drops between two adjacent orders. Erdős
+Problem 85 asks whether `f(n+1) ≥ f(n)` holds for all large `n`. One drop at
+48-to-49 is a data point against monotonicity at small order; it is
+compatible with either answer to the problem as posed, which a finite
+computation cannot settle, and we make no claim about the problem itself.
 
-Theorem B identifies what would turn this phenomenon into an infinite family.
-It is deliberately stated as a reduction from the single proposition A-REG.
-The evidence is mixed. Even-characteristic polarity graphs supply the
-cofinal existence jaw, and the binary-square defect calculus removes unit and
+We chose to stop at belief and publish the price of certainty. A bank of
+12,019 LRAT certificates for the H1 rows already exists; replaying it through
+the Lean kernel is a priced, bounded task (about $1,276 of spot infrastructure
+and 17 ideal allocated days on 16 hosts, plus about $182 of retrieval), and the
+remaining rows have no credible fixed price because they were selected by
+difficulty. The certificate bank can be released as a requester-pays object
+store with an exact manifest, so that anyone who wants Result A promoted to a
+kernel-checked theorem can pay for exactly that and nothing else. The trust
+boundary is stated rather than hidden: two solvers agreeing under a cap is
+evidence about solver behaviour, not a proof; the H7 source enumeration rests
+on an audited program rather than an independent replay; and the archived H1
+certificates were checked by `drat-trim` at production time, not by a current
+kernel replay.
+
+Theorem B identifies what would turn a single drop into an infinite family.
+It is deliberately stated as a reduction from the one proposition A-REG. The
+evidence is mixed. Even-characteristic polarity graphs supply the cofinal
+existence jaw, and the binary-square defect calculus removes unit and
 bipartite components. Against that, the Lean-checked orders 15 and 16 and the
-published order-35/36 table entries show no drop, the `q=4` analogue is false,
-and every attempted generic terminal for the remaining non-bipartite
-completion problem has failed or exposed a weaker hypothesis. A-REG is
-therefore the live mathematical frontier, not a conclusion licensed by the
-finite data.
+published order-35/36 table entries show no drop, the `q = 4` analogue is
+false, and every attempted generic terminal for the remaining non-bipartite
+completion problem has failed or exposed a weaker hypothesis. A-REG is the
+live mathematical frontier, not a conclusion licensed by the finite data. The
+operator's plane-order interpretation is the principal rival: special orders
+may organize both the constructions and the obstructions without the binary
+regular-exclusion pattern persisting uniformly. Publishing the twin result
+makes that disagreement useful: the checked reduction states exactly what a
+proof of the negative answer must supply, the negative map states which
+plausible shortcuts do not supply it, and Result A provides a concrete
+calibration point for future theory.
 
-The operator's plane-order interpretation is the principal rival: special
-orders may organize both the constructions and the obstructions without the
-binary regular-exclusion pattern persisting uniformly. Publishing the twin
-result makes that disagreement useful. The checked reduction states exactly
-what a proof of the negative answer must supply; the negative map states which
-plausible shortcuts do not supply it; and the finite drop provides a fully
-decided calibration point for future theory.
-
-The witness non-isomorphism artifact is already banked and cited above. This
-section is owned by Claude Fable for the final scope-honesty read. Before
-external release it must be reconciled with the final cold-build and literal
-axiom-audit record, the exact theorem names for the completed order-49
-frontier, and a consumed-tag ledger count of exactly 13,351 at freeze. No
-operational receipt or fleet count substitutes for those mathematical
-artifacts.
+This section is owned by Claude Fable for the final scope-honesty read.
+Before external release it must be reconciled with three artifacts and
+nothing else: the receipt-derived H1 census table (an exact join of the
+two-solver UNSAT rows to the 1,288 gap tags, the 96 historical rows and the
+12,019 certificate rows, with the open list, if any, printed in full); the
+exact Lean theorem names and the literal `#print axioms` output for every
+checked piece cited above (the witnesses, the conditional finite-drop core,
+and Theorem B); and, if the requester-pays copy is published, the release
+manifest of the certificate bank. No operational receipt, fleet count or
+verdict summary substitutes for those artifacts.
