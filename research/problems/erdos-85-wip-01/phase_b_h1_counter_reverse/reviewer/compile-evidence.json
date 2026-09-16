@@ -1,0 +1,27 @@
+{
+  "source_sha256": "8b414811c789f6631b98647efd81e92fc39820dd2b93c11f1b5725dc641a66d6",
+  "chain": [
+    {
+      "module": "Erdos85SequentialCounter",
+      "exit_code": 0,
+      "seconds": 6.08248741600255
+    },
+    {
+      "module": "Erdos85SequentialCounterReverse",
+      "exit_code": 0,
+      "seconds": 6.045463791000657
+    },
+    {
+      "module": "Erdos85OneHighCube25CnfCover",
+      "exit_code": 0,
+      "seconds": 13.776651707987185
+    },
+    {
+      "module": "Erdos85OneHighCube25CountBridge",
+      "exit_code": 0,
+      "seconds": 14.131206292004208
+    }
+  ],
+  "chain_path": "/Users/rwalters/lean-genius-h1-cube25-countbridge-sol2-20260916",
+  "author_pins_sha256": "08816b44ce822818c9a15ebcde53907028912e7f6661d70de2bd292543c851d4"
+}

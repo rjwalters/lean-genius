@@ -1,0 +1,5 @@
+import Proofs.Erdos85SequentialCounterReverse
+#print axioms Erdos85.seqCounterReverse_no_chain
+#print axioms Erdos85.seqCounterReverse_card_le
+#print axioms Erdos85.seqCounterReverse_seqPrefixTrue_le
+#print axioms Erdos85.seqCounterReverse_complement_lower_bound
