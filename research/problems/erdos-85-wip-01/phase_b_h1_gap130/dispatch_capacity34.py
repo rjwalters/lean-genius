@@ -54,7 +54,7 @@ def select():
     return plan, rows
 
 
-def run_one(row, plan, output, kissat, cadical, wrapper_commit):
+def run_one(row, plan, output, kissat, cadical):
     case_id = row["id"]
     directory = output / case_id
     result = {"id": case_id, "sector": "H1", "status": "ERROR",
@@ -75,18 +75,31 @@ def run_one(row, plan, output, kissat, cadical, wrapper_commit):
         if runner.ABORT.is_set() or shutil.disk_usage(output).free < dispatch.RESERVE:
             raise RuntimeError("Cancelled or insufficient free space after preparation")
         cnf = directory / "materialization/native/input.cnf"
-        if (binding["status"] != "materialized" or
+        if (binding.get("status") != "materialized" or
+                binding.get("id") != case_id or binding.get("tag") != row["tag"] or
+                binding.get("profile") != row["profile"] or
+                binding.get("capacity_local_index") != row["capacity_local_index"] or
+                binding.get("gap130_sha256") != adapter.MANIFEST_SHA256 or
+                binding.get("one_row_source_sha256") !=
+                    adapter.sha(adapter.one_row_manifest(row)) or
+                binding.get("native_materializer_sha256") != adapter.NATIVE_SHA256 or
+                binding.get("solver_launched") is not False or
+                binding.get("adapter_source_sha256") != runner.sha256(Path(adapter.__file__)) or
+                binding.get("freeze_source_sha256") != runner.sha256(HERE / "freeze.py") or
+                not runner.HEX.fullmatch(binding.get("native_receipt_sha256", "")) or
                 runner.sha256(cnf) != binding["cnf_sha256"] or
                 cnf.stat().st_size != binding["cnf_bytes"]):
-            raise ValueError("Capacity-gap CNF changed before solver dispatch")
+            raise ValueError("Capacity-gap binding or CNF changed before solver dispatch")
         solve = directory / "solve"
         solve.mkdir()
         solve_case = dict(POLICY, id=case_id, sector="H1",
                           resolved_cnf=str(cnf), cnf_sha256=binding["cnf_sha256"],
-                          generator_commit=wrapper_commit)
+                          generator_commit=plan["config"]["h1_generator_commit"])
         solved = runner.run_case(solve_case, solve, kissat, cadical)
-        result.update(status=solved["status"], solve=solved,
-                      cnf_sha256=binding["cnf_sha256"])
+        result["solve"] = solved
+        if solved["status"] == "UNSAT_PRIMARY":
+            raise ValueError("Primary-only UNSAT is insufficient for a gap verdict")
+        result.update(status=solved["status"], cnf_sha256=binding["cnf_sha256"])
         dispatch.check_sources(plan)
     except Exception as error:
         result.update(status="ERROR", error=f"{type(error).__name__}: {error}")
@@ -152,8 +165,12 @@ def main() -> int:
     runner.write_json(output / "results.json", state)
     with runner.cancellation_handlers():
         dispatch.dispatch(rows,
-            lambda row: run_one(row, plan, output, kissat, cadical, args.wrapper_commit),
+            lambda row: run_one(row, plan, output, kissat, cadical),
             args.workers, output, state)
+    state["selected_all_unsat"] = (not state["not_started"] and
+                                   all(r["status"] == "UNSAT_CROSSCHECKED"
+                                       for r in state["results"]))
+    runner.write_json(output / "results.json", state)
     print(json.dumps({k: v for k, v in state.items() if k not in ("results", "solvers")}))
     return 0 if state["selected_all_unsat"] else 1
 

@@ -55,8 +55,9 @@ launched. This is one input canary, not a verdict for any of the 34 rows.
 It uses the reviewed native adapter for each input and the unchanged
 `run_verdict_only.run_case` for Kissat and CaDiCaL at the H1 14,400-second
 caps. Execution requires banked config and wrapper commits, a new output
-directory, and the frozen 34-ID digest. Its full dry run selects 34; four
-focused wrapper tests pass. It has not launched a solver and still needs
+directory, and the frozen 34-ID digest. It accepts a row only after an
+`UNSAT_CROSSCHECKED` result; primary-only UNSAT is an error. Its full dry run
+selects 34; six focused wrapper tests pass. It has not launched a solver and still needs
 independent source review and an execution decision.
 
 `dispatch_historical96.py` is a separate candidate verdict-only wrapper for
