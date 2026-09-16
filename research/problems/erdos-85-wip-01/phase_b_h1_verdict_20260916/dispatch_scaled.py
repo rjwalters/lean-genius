@@ -147,11 +147,11 @@ def main() -> int:
                 args.pilot_results, args.resource_monitor)):
         parser.error("Execution requires a banked scaling gate and pilot receipts")
     gate_path = args.scaling_gate.resolve()
-    gate, raw, pilot_raw, monitor_raw = read_gate(
+    gate, gate_raw, pilot_raw, monitor_raw = read_gate(
         gate_path, args.scaling_gate_commit, plan,
         args.pilot_results.resolve(), args.resource_monitor.resolve(),
         args.workers, args.materializers, frozen_pilot_ids)
-    snapshots = [(gate_path.name, raw),
+    snapshots = [(gate_path.name, gate_raw),
                  ("pilot-results.json", pilot_raw),
                  ("resource-monitor.csv", monitor_raw)]
     start = dt.datetime.fromisoformat(plan["config"]["not_before"].replace("Z", "+00:00"))
@@ -164,8 +164,8 @@ def main() -> int:
     output.mkdir()
     retained = output / "snapshots"
     retained.mkdir()
-    for number, (path, raw) in enumerate(plan["captured"]):
-        (retained / f"{number:02d}-{path.name}").write_bytes(raw)
+    for number, (path, source_raw) in enumerate(plan["captured"]):
+        (retained / f"{number:02d}-{path.name}").write_bytes(source_raw)
     (retained / wrapper.name).write_bytes(wrapper_raw)
     (retained / residual_path.name).write_bytes(residual_path.read_bytes())
     for name, raw in snapshots:
@@ -176,6 +176,9 @@ def main() -> int:
     state = {"schema": "erdos85-dispatch-results-v1", "status": "running",
              "pid": os.getpid(), "config_sha256": sha(plan["raw"]),
              "config_commit": args.config_commit, "wrapper_commit": args.wrapper_commit,
+             "scaling_gate_sha256": sha(gate_raw),
+             "pilot_results_sha256": sha(pilot_raw),
+             "resource_monitor_sha256": sha(monitor_raw),
              "index_sha256": plan["config"]["index"]["sha256"],
              "inventory_cases": 1416, "residual_inventory_cases": 1161,
              "frozen_pilot_cases": len(frozen_pilot_ids),

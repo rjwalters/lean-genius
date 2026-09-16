@@ -140,6 +140,9 @@ class ScaledDispatchTests(unittest.TestCase):
             self.assertEqual((state["inventory_cases"], state["selected_cases"]), (1416, [selected]))
             self.assertTrue(state["selected_all_unsat"])
             self.assertFalse(state["inventory_all_unsat"])
+            self.assertEqual(state["scaling_gate_sha256"], target.sha(gate_path.read_bytes()))
+            self.assertEqual(state["pilot_results_sha256"], target.sha(pilot_path.read_bytes()))
+            self.assertEqual(state["resource_monitor_sha256"], target.sha(monitor_path.read_bytes()))
 
 
 if __name__ == "__main__":

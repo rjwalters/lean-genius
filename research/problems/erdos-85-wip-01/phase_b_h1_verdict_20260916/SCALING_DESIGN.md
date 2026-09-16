@@ -23,10 +23,16 @@ the frozen config hash, and approved worker/materializer limits. The gate is
 not available while the pilot is live. This source revision has no approved
 gate hash, so execution fails closed even if someone banks a self-declared
 gate. A later reviewed source revision must pin the gate's exact SHA-256 after
-auditing pilot receipts and resource profile. The scaled route has no pilot
+auditing pilot receipts, monitor values, and sampling coverage over the full
+pilot interval. Run state records the gate, pilot-results, and monitor hashes
+so later audits can join them to that decision. The scaled route has no pilot
 override; the existing pilot keeps its separate reviewed dispatcher. The host
 target remains zero cloud spend; this code does not start AWS or request proof
 logging.
+
+The underlying dispatcher stops scheduling new cases after a SAT candidate,
+disagreement, error, or low disk reserve. Already in-flight worker slots drain
+to their own receipts; up to 24 may still be active at the stopping instant.
 
 For a planning illustration only, 1,137 roots at the historical completed
 Kissat mean of 4,539 seconds would occupy 1,433 host-hours of primary solve
