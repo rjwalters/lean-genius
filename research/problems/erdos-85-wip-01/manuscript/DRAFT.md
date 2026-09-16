@@ -1,35 +1,32 @@
-# A Decided Drop and a Uniform Reduction for Erdős Problem 85
+# Computational Evidence for a Drop and a Uniform Reduction for Erdős Problem 85
 
 **Claude Fable and GPT Sol**
 
 **Status.** Working manuscript. Nothing in this document is for external
 distribution before the operator read-through and Zenodo gate. Formal claims
-refer to Lean 4.31.0 with the repository-pinned mathlib; certificate-backed
-claims additionally require the final cold build and literal `#print axioms`
-audit. **[Certificate closure pending.]** Theorem A is stated below in its
-intended final form, but its unconditional generated Lean capstones are not
-yet established at this draft revision. The conditional finite-drop core is
-already checked. Every claim of a decided drop in this internal draft is
-subject to this marker. Delete the marker only after the entire certificate
-chain, final cold build, and public-theorem axiom audit pass. No external
-posting or Zenodo release precedes that closure and operator read-through.
+refer to Lean 4.31.0 with the repository-pinned mathlib. Result A is a
+computational claim, subject to completion of the two-solver H1 gap census;
+it is not a proved finite theorem. The conditional finite-drop core is Lean
+checked, but its order-49 nonexistence hypothesis has not been discharged.
+The operator has cancelled certificate replay and production for this paper.
+Theorem B is the Lean-checked conditional reduction to A-REG, which itself
+remains open.
 
 ## Abstract
 
 Let `f(n) = minDegreeForC4 n`, the minimum threshold such that every simple
 graph on `n` vertices with minimum degree at least `f(n)` contains a `C₄`.
-We report two complementary results. First,
-we report the determination of the adjacent values, with the final evidence
-gate still pending at this draft revision:
+We report two complementary results. First, the current computation supports
+the adjacent-value claim, with the H1 gap census still in progress:
 
 `f(48) = 8` and `f(49) = 7`,
 
-giving a strict finite drop, subject at this draft revision to completion of
-the final replay, cold-build, and axiom-audit gate. The lower side uses a newly
-checked 48-vertex extremal witness; an independently computed isomorphism check
-finds it non-isomorphic to the previously recorded Afzaly–McKay witness. The
-order-49 upper side is supplied by exhaustive structural reduction and LRAT
-evidence whose final generated kernel replay is pending. Second, we reduce
+which would give a strict finite drop. The lower side uses a Lean-checked
+48-vertex extremal witness; an independently computed isomorphism check finds
+it non-isomorphic to the previously recorded Afzaly–McKay witness. For the
+order-49 upper side, structural reductions and archived SAT evidence have
+different verification levels; the remaining H1 rows are being tested by two
+independent solvers without proof certificates. Second, we reduce
 a negative answer to Erdős Problem 85 to one uniform graph-theoretic proposition,
 `BinarySquareRegularExclusion` (A-REG). Lean verifies the entire implication
 
@@ -46,35 +43,57 @@ non-bipartite residues that remain open.
 
 ## Main results
 
-### Theorem A — the 48-to-49 drop
+### Result A — computational evidence for a 48-to-49 drop
 
-**[Certificate closure pending.]** The adjacent thresholds satisfy
+The combined evidence supports the adjacent-value claim
 
 `minDegreeForC4 48 = 8 ∧ minDegreeForC4 49 = 7`,
 
-and hence
+and consequently the proposed strict drop
 
 `minDegreeForC4 49 < minDegreeForC4 48`.
 
-The bracket marks an unfinished proof, not an additional hypothesis of the
-intended finite theorem. It remains in this internal draft until the checks
-below are complete.
+This is a computational result, not an unconditional Lean theorem. Rows that
+reach a declared solver cap remain open and prevent a complete computational
+claim. Even if all rows return UNSAT, proof certificates would still be needed
+for a formal theorem.
 
 The already checked finite-drop core is
 `minDegreeForC4_fortyEight_fortyNine_exact_checked` and
 `minDegreeForC4_fortyNine_lt_fortyEight_checked`; both take the order-49
-nonexistence hypothesis. The unconditional generated endpoints will be
+nonexistence hypothesis. The conditional generated endpoints are specified as
 `minDegreeForC4_fortyEight_fortyNine_exact_of_generatedSevenBaseCertificates`
 and
 `minDegreeForC4_fortyNine_lt_fortyEight_of_generatedSevenBaseCertificates`.
-They become paper evidence only when the generated module lands and passes the
-cold build and literal axiom audit. No conjectural uniform hypothesis enters
-this finite computation. Separately, an independently computed NetworkX
+They would prove the finite drop only after every input is supplied, the
+generated module lands, and a cold build and literal axiom audit pass. No
+conjectural uniform hypothesis enters this finite computation. Separately,
+an independently computed NetworkX
 isomorphism comparison of archived graph6 artifacts finds that the checked
 order-48 extremal graph is not isomorphic to the Afzaly–McKay record; this
 novelty check is not part of the kernel-checked theorem.
 
-### Proof obligations for Theorem A
+### Evidence levels and formal obligations for Result A
+
+The evidence classes below are not a partition: the historical 96 H1 roots,
+the existing certificate-object inventory, and the Phase B root set use
+different selections of the same capacity tags. No row is promoted from a
+solver verdict or an archived proof object to a kernel-checked theorem.
+
+| Class | Current evidence | Limit for this paper |
+|---|---|---|
+| Order 48 and 49 lower witnesses | Lean-checked finite graphs in `Erdos85FiniteDropWitnesses.lean` | Establish the lower sides only. |
+| H3/H5 | Reviewed paper/computation cover and archived local proof receipts | Generated formal aggregate and public axiom audit are absent. |
+| H7 | All 28 surviving structural roots covered after 15 singleton-capacity exclusions (`H7_CLOSURE_20260915.md`) | Paper/computation closure; the Lean evidence-vector arguments remain uninstantiated. |
+| H1 historical overlay | 96 reviewed historical cases with archived `drat-trim` verification (`phase_b_historical_overlay_96/`) | Historical checks are not a current kernel replay. |
+| H1 existing bank | 12,019 historical ready certificate inputs in the replay sizing model | Object and metadata availability do not establish a completed kernel replay. |
+| H1 gaps | 1,288 capacity tags lack listed certificate objects in the banked snapshot; 1,161 residual Phase B roots are a related, overlapping decomposition | Two independent verdict-only solver runs and receipts are planned. Any cap hit stays open; no proof certificate is produced. |
+
+The last row is unfinished at this draft revision. Its final reported count
+must come from exact tag and CNF joins of the solver receipts, not a sum of
+the overlapping inventory counts. A complete set of two-solver UNSAT verdicts
+would support Result A computationally; it would still leave the formal
+nonexistence theorem unproved.
 
 The mathematical dependency chain is independent of how the computation is
 scheduled. The checked witness module `Erdos85FiniteDropWitnesses.lean`
@@ -115,11 +134,37 @@ final generated aggregate remain open proof obligations.
 
 The companion closure inventory records the chosen route for each sector,
 its missing artifacts, and replay obligations. Its counts and cost estimates
-are operational evidence, not additional theorem hypotheses. Final closure
-requires the exact cover and semantic bridges, all necessary certificate
-replays, the generated aggregate, and a cold build with literal axiom audits
-of the two public exact-value/drop endpoints. Each missing stage remains a
-proof obligation even if every earlier solver result is UNSAT.
+are operational evidence, not additional theorem hypotheses. A future formal
+closure would require the exact cover and semantic bridges, certificate
+replay for every necessary row, the generated aggregate, and a cold build
+with literal axiom audits of the two public exact-value/drop endpoints.
+None of these steps follows from verdict-only UNSAT results.
+
+### Cost to verify Result A formally
+
+The cancelled replay plan is retained as a reproducible cost model, not an
+active launch plan. For 12,019 historical ready certificate inputs, its
+byte-weighted model estimates 4,831 compile box-hours. With the plan's 25%
+noncompile allowance, 10% spot-loss factor, and eight bootstrap hours, this
+becomes about 6,651 box-hours: **17.32 ideal allocated days on 16 hosts** and
+**about $1,276 of infrastructure** at the sampled spot, gp3 and IPv4 rates
+(`sat49/H1_REPLAY_SPOT_16_BUDGET_PLAN_20260916.md`). Retrieval is additional: a
+full 6.06 TB pass at the cited Glacier Instant Retrieval rate of $0.03/GB
+would cost about $182 before requests, repeat reads, output storage or other
+services. No replay wave is authorized by this estimate.
+
+The missing-certificate production cost is unresolved. An early **rough
+$2,600 proxy** multiplied 1,288 gaps by a 10-hour claim-to-ledger interval;
+the worker logs show that interval includes queue and pipeline time, so it
+must not be used as a solver-time forecast. The later v3 readback finds
+574 verified-UNSAT solves with a 4,011-second median and a 4,539-second mean,
+and 22 UNKNOWN rows at a 14,400-second cap
+(`sat49/H1_V3_SOLVER_TIMING_20260916.md`). The unproved rows are selected for
+difficulty, and proof logging, trimming, splits and retries have no measured
+cost model here. Thus the gap-certificate figure is a historical planning
+proxy, not a credible fixed price. A public requester-pays copy of the
+existing certificate bank could let others fund independent verification,
+subject to the operator's publication gate and an exact release manifest.
 
 ### Theorem B — a one-proposition reduction of the infinite problem
 
@@ -430,15 +475,13 @@ both lists separately rather than reporting the smaller list for the larger
 theorem (31845, 31846, 31882).  It closes the disconnected size-two subtree
 at order 64, not NONBIP-CONNECTED and not A-REG.
 
-The same discipline permits the stronger order-49 status only after the
-generated frontier has passed kernel replay, cold integration, and the literal
-axiom audit. The operator has accepted Theorem A as the decided finite-drop
-headline; this working revision records its final evidence gate as pending.
-Once discharged, that statement still does not enlarge into a solution of
-eventual monotonicity. The release manuscript will say “drop proved” for
-48-to-49 only after that gate and “conditional reduction” for
-A-REG-to-`¬ Erdos85Question`; it never exchanges one scope for the other. The
-distinction is enforced by outline §F and operator goal #40.
+The same discipline keeps Result A at its computational evidence level.
+The operator cancelled certificate production and replay for this paper;
+the two-solver H1 census is the remaining empirical gate. Even a completed
+census would not prove eventual monotonicity false, since one drop does not
+settle an eventual property. The release manuscript will distinguish a
+computationally supported 48-to-49 drop from the Lean-checked conditional
+reduction A-REG-to-`¬ Erdos85Question`.
 
 ## 6. The thin human role
 
@@ -452,7 +495,7 @@ inverse-potential lane after P8, fractional-cover integrality, and divergence
 currently launched H3/H5/H7 finite cells but cannot decide 48/49 without a
 separate H1 closure; goal #40 commissioned this manuscript in parallel.
 These are portfolio and governance decisions.  The mathematical
-claims still pass through Lean or certificate replay, and nothing goes
+formal claims still pass through Lean or certificate replay, and nothing goes
 external before operator review (31965, 31970).
 
 ## 7. Why Erdős problems
@@ -520,10 +563,9 @@ are the unit of trust.
 ## Results and evidence map
 
 The paper has two different logical endpoints and keeps them separate.
-Theorem A is the unconditional finite result targeted by the active final
-replay gate: the adjacent values at 48 and 49 are decided exactly once its
-generated endpoints pass the recorded cold-build and axiom audit. Theorem B is
-a uniform conditional result: the negation
+Result A is a finite computational claim whose H1 verdict-only census remains
+open at this revision. It does not carry the status of an unconditional Lean
+theorem. Theorem B is a uniform conditional result: the negation
 of Erdős 85 follows from A-REG, while A-REG itself remains open. The
 implications from an unbounded family of plane-order drops to the negation of
 Erdős 85 are proved as `erdos85Negation_iff_not_question`,
@@ -548,17 +590,17 @@ bipartite when `4 ∣ q`
 all-non-bipartite connected-or-mixed node A-REG-NONBIP; the post-inverse
 divergence found no surviving terminal (room msgs 31962–31964).
 
-### The decided 48-to-49 campaign
+### The computational 48-to-49 campaign
 
-Theorem A combines two checked witness ingredients—a 48-vertex degree-seven
-`C₄`-free witness and a 49-vertex degree-six witness—with certificate-backed
-nonexistence of a 49-vertex minimum-degree-seven witness. The graph-to-CNF consumer
+Result A combines two checked witness ingredients—a 48-vertex degree-seven
+`C₄`-free witness and a 49-vertex degree-six witness—with heterogeneous
+evidence against a 49-vertex minimum-degree-seven witness. The graph-to-CNF consumer
 `not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighCubeBaseUnsat`
 assembles the one-, three-, five-, and seven-high exclusions. The finite-drop
-core then yields the exact thresholds and strict inequality. The certificate
-universe, its structural decomposition, and the final dependency-cone audit
-belong to the proof evidence for Theorem A; they are not a third headline
-result.
+core would yield the exact thresholds and strict inequality if the
+nonexistence hypothesis were proved. The certificate universe, its structural
+decomposition, and the dependency-cone audit describe what formal
+verification would require; they are not a third headline result.
 
 The order-48 existence input deserves separate notice. An independent NetworkX
 check over archived graph6 artifacts finds the checked extremal witness
@@ -592,6 +634,35 @@ case remains a gap.  The eleven `[2,2,2,2]` assembly targets are external
 UNSAT verdicts without certificates.  Therefore `63→64` is **not a decided
 drop**, and none of these order-64 enumerations proves the uniform A-REG
 statement (outline v2.64, §A.5.2).
+
+### Plane-order censuses and the literature boundary
+
+The order-80 search for a 9-regular `C₄`-free graph, which would supply the
+`q=9` existence jaw, is unresolved. All 20 authorized q9 solver attempts
+ended UNKNOWN under their caps; the independently checked positive controls
+returned SAT, but neither is an order-80 witness. The same campaign also
+left the order-78 existence cases open. Its 48-hour ledger is frozen in
+`q9_solver_controls/Q9_EXISTENCE_DECISION_20260911.md`. An UNKNOWN is not
+evidence of nonexistence.
+
+The complete finite-group Cayley census examined 52 groups of order 80,
+47 of order 120, and 57 of order 168 with inverse-closed connection sets
+of degree 9, 11, and 13 respectively. Every input returned UNSAT; the
+reviewed encoding and table audits cover all these groups
+(`cayley-census-q11-q13/CAYLEY_CENSUS_Q11_Q13_20260913.md`). This excludes
+the specified Cayley families, not arbitrary graphs at those orders. The
+same census found one order-48, degree-7 Cayley witness among 52 groups.
+
+The deductions from [Zhang–Chen–Cheng's polarity-graph result](https://doi.org/10.1016/j.disc.2016.12.005)
+and [Boza's bounds](https://arxiv.org/abs/2409.12770) put the adjacent
+star-Ramsey values at
+`r(109) ∈ {120,121}` and `r(155) ∈ {168,169}`, where
+`r(s)=R(C₄,K₁,ₛ)` (`cayley-census-q11-q13/LITERATURE_CHECK_20260915.md`).
+The upper choice in either pair is equivalent to existence of the relevant
+11- or 13-regular graph on 120 or 168 vertices. The Cayley census cannot
+select the unrestricted value. The cited literature check found no exact
+determination of these two values within its stated search scope; this is
+not a claim that none exists.
 
 ### Certificate case study: the h305 80-owner error and 88-owner repair
 
