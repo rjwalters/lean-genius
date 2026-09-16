@@ -1,0 +1,20 @@
+{
+  "status": "PASS_EXACT_FINAL_OVERLAY",
+  "rows": 28,
+  "changed": [
+    "cube_F6_t18"
+  ],
+  "review": 2718,
+  "parent_to_source": [
+    2,
+    3,
+    4,
+    1,
+    0,
+    5,
+    6
+  ],
+  "previous_sha256": "06af61a9cb6a81c923f5af6f0b24003a798551cae625dda529b76112afc411a1",
+  "packet_pins_sha256": "228a7ee42c136d50dcae91021aec93d162873f614d4ed4cee787d490ef492333",
+  "scope": "Exact selected structural scope join; no new certificate replay, arbitrary CNF UNSAT, Lean or global proof."
+}
