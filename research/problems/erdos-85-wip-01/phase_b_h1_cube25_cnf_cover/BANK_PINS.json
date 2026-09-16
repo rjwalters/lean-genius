@@ -1,0 +1,60 @@
+{
+  "schema": "bank-pins-v2",
+  "local": {
+    "README.md": {
+      "sha256": "abcc1b861ae8c6155296671986dfc3561843c50a2a56d36bd0e11a0d855a2ba2",
+      "bytes": 1245
+    },
+    "REVIEW2723.json": {
+      "sha256": "6050a0d8882797a451dd63f8bcce9b5c4964e5cd72d64d050f4846b8ce4a4d62",
+      "bytes": 2100
+    },
+    "author/AUDIT.md": {
+      "sha256": "9830cce5884d2d3ed7f8d510c58cd46132569e2588d3d486df9152aa01f94a50",
+      "bytes": 4128
+    },
+    "author/CLAUSE_COVER.md": {
+      "sha256": "37292693cdc3e9b00dc7a9ab0e17ade368e09123f26c7bc2a072b9b789159bdf",
+      "bytes": 2609
+    },
+    "author/clause-certificate.json": {
+      "sha256": "8cc0ea65dca4b6a0c41d6b27c4e65a55dfe30899bd90b53fb733aa4202055d22",
+      "bytes": 55403
+    },
+    "author/extract.py": {
+      "sha256": "54b50db29f70bc593263f0d9c2ddca9463ea17ca6dd19b31feaf7c1130cb2a9e",
+      "bytes": 3525
+    },
+    "author/final-pins.json": {
+      "sha256": "026d631d91f4066f640262160e8c875b8016c51b1dfaaa8d5d60e9293366b7de",
+      "bytes": 445
+    },
+    "author/source-pins.json": {
+      "sha256": "5bf9c141eb129094d1c569c0c941dab0c15bcbe208d2af622fcefae6b90088f9",
+      "bytes": 646
+    },
+    "review/PROOF_REVIEW.md": {
+      "sha256": "36ec66a0bf1cfccbcd12f5db6b1b430647f1d68a95bd993afe0c349e1bc12209",
+      "bytes": 2265
+    },
+    "review/REVIEW.json": {
+      "sha256": "557845cf5c1e5446de197ee17dfa41ab79eb7b7f9734cce9ff7bba56a56b0d7b",
+      "bytes": 658
+    },
+    "review/check.py": {
+      "sha256": "dd0550aa856d65c048fd105b32739735f353741663ade32c4371b7e9cca3b98a",
+      "bytes": 3546
+    },
+    "review/pins.json": {
+      "sha256": "7daa0dec86630449ae3a568f69c3c0887bd6d1a04072cbfd9636d86864982ae7",
+      "bytes": 259
+    }
+  },
+  "external": {
+    "input.cnf": {
+      "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-identity-20260916/0bbee37fe45d9447/input.cnf",
+      "sha256": "23e2b1f4b75f87e1b6e43c7885d6b65e5125b363a19ea0d6de8cac8456e398b2",
+      "bytes": 12504327
+    }
+  }
+}

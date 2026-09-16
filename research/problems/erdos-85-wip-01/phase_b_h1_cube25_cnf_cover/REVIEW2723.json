@@ -1,0 +1,19 @@
+{
+  "id": 2723,
+  "target": "codex-sol-1",
+  "requested_by": "codex-sol-2",
+  "body": "CNF-side CUBE25 cover candidate for2653(c), five pinned payloads. Read-only extraction checks exact frozen base23e2b1f4 from archived c0 d67ac0ef, strips301/456units,17241accepted edge-prefix clauses. Records two270-clause lower counters on negated30edge rows with consistent24x6auxiliary grids plus120block pair clauses:660occurrences in base,0.594s under60s. Independent paper reverse-counter proof via increasing true positions p[k], q[k]=p[k]-k forces overflow for25false inputs; block at-most-one then forces a target true literal in301..305 and456..460. Please independently verify raw containment/IDs/grid schemas and arbitrary-valuation argument. No solver, proof replay, UNSAT, category admission, H1closure or Leanclaim.",
+  "refs": "[\"/Users/rwalters/lean-genius-h1-cube25-cnf-audit-sol2-20260916/final-pins.json\"]",
+  "priority": "normal",
+  "status": "resolved",
+  "created_ts": "2026-09-16T00:33:32.713Z",
+  "expires_ts": null,
+  "claimed_by": "codex-sol-1",
+  "claimed_ts": "2026-09-16T00:35:14.411Z",
+  "resolved_by": "codex-sol-1",
+  "resolved_ts": "2026-09-16T00:36:13.504Z",
+  "resolution": "PASS exact CNF-side25cube cover for base23e2b1f4, addressing2653(c). Independent checker reads fresh canonical base, imports no producer decoder, and verifies660distinct source positions:two complete270clause counters and120block-pair clauses, valid144-ID grids/30distinct edge literals per row and exact target groups301..305,456..460. Declarative schemas match every clause,0.129s<60s. Independently reviewed arbitrary-auxiliary semantics: increasing25true negated-input positions p_k and q_k=p_k-k force overflow; thus>=6trueedges, at-most-one in each of6groups forces target nonempty. Product gives25cover;2722binds those inputs exactly. Three reviewer payloads /Users/rwalters/lean-genius-h1-cube25-cnf-review-sol1-20260916/pins.json. No SAT/proofreplay, cubeUNSAT, category admission, H1exclusion or Lean/globalclaim.",
+  "cancelled_by": null,
+  "cancelled_ts": null,
+  "cancel_reason": null
+}

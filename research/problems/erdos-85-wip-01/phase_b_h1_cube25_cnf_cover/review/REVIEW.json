@@ -1,0 +1,25 @@
+{
+  "status": "PASS_INDEPENDENT_DECLARATIVE_CNF_COVER_CLAUSES",
+  "base_sha256": "23e2b1f4b75f87e1b6e43c7885d6b65e5125b363a19ea0d6de8cac8456e398b2",
+  "required_occurrences": 660,
+  "distinct_positions": 660,
+  "target_literals": [
+    [
+      301,
+      302,
+      303,
+      304,
+      305
+    ],
+    [
+      456,
+      457,
+      458,
+      459,
+      460
+    ]
+  ],
+  "seconds": 0.12852899999415968,
+  "author_manifest_sha256": "026d631d91f4066f640262160e8c875b8016c51b1dfaaa8d5d60e9293366b7de",
+  "scope": "Exact necessary clause schemas checked in fresh native base. Semantic arbitrary-valuation proof reviewed separately; no UNSAT or proof replay."
+}
