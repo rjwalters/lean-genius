@@ -13,11 +13,18 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
   18:59Z in tmux `e85-pilot` / `e85-monitor`. Output on Stripe:
   `artifacts/erdos85-sat49/h1-verdict-pilot-20260921-claude`. Expect 6–12 h.
 - [ ] A2. Run `audit_pilot_gate_inputs.py` on the finished pilot; bank the report.
-- [R] A3. Scaling gate. `dispatch_scaled.py` fails closed until a reviewed gate
-  SHA is pinned in source. Either wait for a Sol seat, or Robb waives the
-  second seat and claude pins it after A2.
-- [ ] A4. Full run: the other 1,137 residual roots, up to 24 workers, Kissat then
-  CaDiCaL, 4 h cap each. Estimate 3–5 days on the host.
+- [x] A3. Scaling gate: not needed. Robb (2026-09-21, board goal #44) granted the
+  single-seat waiver and $200 of AWS. The cloud run uses the reviewed residual
+  wrapper with `--case-id` and one worker, which has no gate; `dispatch_scaled.py`
+  is not used.
+- [~] A4. Full run of the other 1,137 residual roots on AWS spot, launched
+  2026-09-21 19:30Z: four c7g.16xlarge (256 slots), reviewed wrapper unchanged,
+  Kissat then CaDiCaL, 4 h cap each. Tooling and README in
+  `phase_b_h1_verdict_cloud_20260921/`. Receipts sync to Stripe
+  `artifacts/erdos85-sat49/h1-verdict-cloud-20260921/`. Controller in tmux
+  `e85-controller`, hard stop at an estimated $170. Expected 14–20 h, about $50.
+  Afterwards: release and rerun orphaned or ERROR cases, then extract every
+  run directory for A7.
 - [ ] A5. The 130 gap slots outside the residual queue: 96-historical route
   (54b7f7035b) and 34-outside-frozen route (4366cedadb).
 - [R] A6. Cap-hit policy. Recommendation: no retries, no longer caps. Rows that
@@ -53,7 +60,7 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
   open (A-REG-NONBIP), where every artifact lives, how to resume, what not to
   retry (pointer to the cuts ledger and parked lanes).
 - [ ] C2. Closing entry in `FINAL_PROOF_OUTLINE.md`; squad outline publication.
-- [R] C3. Landing strategy (measured 2026-09-21: the merge has ONE conflict,
+- [x→] C3. DECIDED 2026-09-21 (Robb): clean up the integration branch, tag it as the archive, then cherry-pick the conclusions to `main`. No full merge. Landing strategy (measured 2026-09-21: the merge has ONE conflict,
   `FINAL_PROOF_OUTLINE.md` add/add, but adds 4.4 GB of blobs to `main`,
   including a 92 MB LRAT file and many 50 MB receipt shards, and puts 3,702 new
   Lean files under the `Proofs.*` build glob. Every fleet worktree of `main`
