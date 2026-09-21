@@ -1,0 +1,55 @@
+{
+  "slug": "issue-43623-erdos-85-push-for-a-significant-result-monotonicit",
+  "title": "erdos-85: push for a significant result — monotonicity via witness extension",
+  "phase": "OBSERVE",
+  "status": "available",
+  "tier": "B",
+  "path": "full",
+  "sourceIssue": 43623,
+  "problemStatement": {
+    "formal": "",
+    "plain": "## Goal Push `erdos-85` past small-value bookkeeping toward a result that is *significant* — ideally the stated Erdős question itself. Spun out of #43622: surveying our gallery against [VibeMathed's](https://vibemathed.com/) entry criteria showed that almost nothing we hold qualifies, because their bar is \"a precisely stated open question whose answer is now a proved or disproved theorem\" and they explicitly exclude formalizations of known results. `erdos-85` is our best-positioned recognized op",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-08-04T05:39:14Z",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read the source issue and gather context.",
+    "blockers": [],
+    "nextAction": "Read the source GitHub issue thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: issue-43623-erdos-85-push-for-a-significant-result-monotonicit\n\nSourced from GitHub issue #43623 (https://github.com/rjwalters/lean-genius/issues/43623).\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "issue-sourced"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://github.com/rjwalters/lean-genius/issues/43623"
+    ],
+    "mathlib": []
+  },
+  "started": "2026-08-04T05:39:14Z",
+  "lastUpdate": "2026-08-04T05:39:14Z",
+  "significance": 5,
+  "tractability": 5
+}

@@ -53,7 +53,12 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
   open (A-REG-NONBIP), where every artifact lives, how to resume, what not to
   retry (pointer to the cuts ledger and parked lanes).
 - [ ] C2. Closing entry in `FINAL_PROOF_OUTLINE.md`; squad outline publication.
-- [R] C3. Landing strategy. `erdos85/integration` is 10,232 commits ahead of
+- [R] C3. Landing strategy (measured 2026-09-21: the merge has ONE conflict,
+  `FINAL_PROOF_OUTLINE.md` add/add, but adds 4.4 GB of blobs to `main`,
+  including a 92 MB LRAT file and many 50 MB receipt shards, and puts 3,702 new
+  Lean files under the `Proofs.*` build glob. Every fleet worktree of `main`
+  would grow by 4.4 GB and the default build target would include the
+  certificate modules). `erdos85/integration` is 10,232 commits ahead of
   `main` with 3,702 Lean files (about 2.0M lines) that `main` does not have.
   Recommendation: tag the branch (`erdos85-pause-2026-09`), keep it as the
   archive, and land on `main` only the paper, the outline, the handoff, and
@@ -67,8 +72,12 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
   requester-pays with a manifest, or delete. It costs money every month
   while paused.
 - [ ] C7. PR #43624 (open since 2026-08-04): merge or close with a note.
-- [ ] C8. `main` checkout: two unpushed local commits and four untracked
-  erdos-85 paths. Bank or drop each one.
+- [x] C8. `main` checkout strays. Both unpushed local commits are already on
+  integration by content. The four untracked erdos-85 files are now banked on
+  integration. Two local-only branches with unlanded content were pushed for
+  preservation (`archive/erdos85-sol3-integration-…-cleanup-20260910`,
+  `feature/erdos85-sol3-normalization`). Remaining: reset the local `main`
+  to `origin/main` once Robb agrees (shared checkout, not done by an agent).
 
 ## D. Publish
 
@@ -97,6 +106,20 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
 - [ ] E5. Kill tmux sessions, retire `~/lean-genius-remote-staging`.
 - [ ] E6. Squad: close goals #15, #23, #37, #38, #41, #42, #43 with final notes,
   release claims, agents leave. Memory note with the resume pointer.
+
+## AWS option for A4 (quota checked 2026-09-21, nothing launched)
+
+us-east-1 spot quota is 300 standard vCPUs with 0 in use; on-demand is 128
+with 80 in use by other projects. us-east-2 has 5, us-west-2 has 32 spot.
+Spot now: c7a.16xlarge $1.03/h (64 real cores), c7g.16xlarge $0.64/h,
+c8g.16xlarge $0.71/h. Work is about 1,137 roots × (Kissat ≈ 1.25 h + CaDiCaL
+≈ 1.4 h) ≈ 3,000 core-hours plus the cap tail. Four 64-core spot hosts finish
+in roughly 14–20 h for about $45–85 total, inside the $100/day ceiling, versus
+3–5 days on the Mac. Needs: CNFs generated and hashed on the Mac then uploaded
+(no Lean image in the cloud), the same pinned Kissat 4.0.4 and CaDiCaL 3.0.1
+builds, verdict-only, no proof logging, receipts in the Phase B schema so the
+reviewed auditor reads them unchanged. Per goal #42 this needs Robb's explicit
+nod with a declared figure before any launch.
 
 ## Order of work
 
