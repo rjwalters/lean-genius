@@ -98,24 +98,35 @@ pnpm lint
 
 ```
 src/
+├── assets/           # Static assets bundled by Vite
 ├── components/       # React components
 │   ├── auth/         # Authentication (login, signup, profile)
 │   ├── comments/     # Threaded discussion system
-│   ├── proof/        # Proof viewer and annotations
-│   └── ui/           # Shared UI primitives
+│   ├── proof/        # Proof viewer, gallery cards, annotations
+│   ├── research/     # Research problem cards and phase indicators
+│   ├── ui/           # Shared UI primitives
+│   └── visualizations/ # Proof-specific visualizations (e.g. knight's tour)
 ├── contexts/         # React contexts (auth)
-├── data/proofs/      # Proof content (Lean source, annotations, metadata)
+├── data/proofs/      # Proof content (annotations, metadata) — one dir per proof
+├── data/research/    # Research problem JSON (synced from research/problems/*/meta.json)
 ├── hooks/            # Shared React hooks
-├── lib/              # Utilities (Lean tokenizer, etc.)
+├── lib/              # Utilities (Lean tokenizer, gallery search, OQ slugs)
 ├── pages/            # Route pages
 ├── types/            # TypeScript types
 └── utils/            # Misc helpers
 
 proofs/
 ├── Proofs/           # Individual Lean proof files
+├── Proofs.lean       # Root module (no imports; modules discovered by lakefile globs)
 ├── lakefile.toml     # Lean 4 project config (Mathlib dependency)
 ├── lean-toolchain    # Lean version pin
-└── scripts/          # Build and extraction scripts
+├── Dockerfile        # Memory-limited build image used by scripts/docker-build.sh
+├── bin/              # `lake` safety wrapper that blocks direct `lake build`
+├── batch2/           # v4.26→v4.31 migration ledger (verify-results.tsv) and diagnostics
+├── data/             # Supporting data (e.g. Knuth tour extraction)
+├── scripts/          # Build and extraction scripts (docker-build.sh, setup.sh, ...)
+├── MATHLIB_STYLE.md  # Style/naming notes for files headed to Mathlib
+└── BADGE_TAXONOMY.md # Proof badge definitions
 
 functions/            # Cloudflare Workers API endpoints
 shared/               # Shared code between frontend and backend
@@ -128,6 +139,17 @@ external/             # Git submodules (erdosproblems, formal-conjectures)
 public/               # Build-generated static assets (gitignored)
 aristotle-results/    # Retrieved Aristotle proof-search output (gitignored)
 ```
+
+Top-level documents and helpers:
+
+| File | Purpose |
+|------|---------|
+| `CLAUDE.md` / `AGENTS.md` | Agent instructions (Claude Code reads `CLAUDE.md`; Codex and other AGENTS.md-aware runtimes read `AGENTS.md`) |
+| `CONTRIBUTING.md` | Contribution workflow and data architecture |
+| `ROADMAP.md` / `PROOFS_ROADMAP.md` | Project plans / curated list of proofs to add |
+| `START_WORK.md` / `STOP_WORK.md` | Recipes for launching and gracefully stopping the agent team |
+| `Makefile` | `make help` lists build, cleanup, and agent-control targets |
+| `loom.sh` | Wrapper to start the Loom daemon from the repo root |
 
 ## Working with Proofs
 

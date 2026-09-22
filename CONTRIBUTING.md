@@ -104,15 +104,18 @@ gh pr create --title "Research: <topic>" --body "Summary of findings..."
 | `src/data/research/problems/*.json` | Problem definitions, current knowledge | Yes |
 | `.lean/state/candidate-pool.json` | Problem registry and status | No (gitignored; lives in the main checkout) |
 | `research/db/data/*.sql` | Historical sessions, detailed records | No (gitignored; dir may not exist) |
-| `research/db/schema.sql` | Database schema | Yes |
+| `research/db/schema.sql` | Research DB schema (read by `pnpm db:rebuild`) | No (gitignored; `research/db/` is currently absent — see the Known-Gaps Ledger in `.lean/roles/COMMON.md`) |
 | `research/db/knowledge.db` | Local SQLite database | No (gitignored) |
+
+> `shared/db/schema.ts` is a different schema: the tracked Drizzle definition of the
+> website's Cloudflare D1 database (users, sessions, comments), not the research DB.
 
 ### Database Workflow
 
 The SQLite database is a **local working copy** rebuilt from SQL dump files:
 
 ```
-SQL files (tracked) ──db:rebuild──> Local DB (gitignored) ──db:export──> SQL files
+SQL files (research/db/, gitignored) ──db:rebuild──> Local DB (gitignored) ──db:export──> SQL files
 ```
 
 - `pnpm db:rebuild` - Create local DB from SQL files (run after clone/pull)

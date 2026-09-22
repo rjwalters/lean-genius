@@ -22,7 +22,8 @@ The system can run completely autonomously:
 ```
 
 This will:
-1. Extract open problems from the proof gallery (427+ problems)
+1. Extract open problems from the proof gallery (the tracked `problems.json`
+   snapshot holds 427; the live candidate pool is far larger — see Problem Sources)
 2. Select a tractable problem to work on
 3. Initialize a research workspace
 4. Run one OODA loop iteration
@@ -252,15 +253,28 @@ research/
 ├── README.md                 # This file
 ├── registry.json             # Active/completed problems
 ├── STATE_MACHINE.md          # State definitions
+├── PROBLEMS-STRUCTURE.md     # Layout of research/problems/<slug>/
+├── CANDIDATE_POOL.md         # Candidate pool notes
+├── HIGH_VALUE_PROBLEMS.md    # High-value research candidates
+├── VISION.md                 # Distributed research platform vision
+├── SORRY-CLASSIFICATION.md   # Sorry tiers + Aristotle pre-submission rules
+├── ARISTOTLE-WORKFLOW.md     # Aristotle CLI pipeline (single source of truth)
+├── aristotle-jobs.json       # Aristotle job tracker (+ archive JSONs)
+├── problems.json             # Extracted-problem snapshot (427 entries)
+├── open-conjectures.json     # Tier-3 open-conjecture targets for Aristotle
 │
 ├── templates/                # Document templates
 │   ├── problem.md            # Problem statement
 │   ├── hypothesis.md         # Approach definition
 │   ├── post-mortem.md        # Failure documentation
-│   └── insight.md            # Knowledge capture
+│   ├── insight.md            # Knowledge capture
+│   ├── knowledge-structured.md
+│   ├── success-recap.md
+│   └── value-assessment.md
 │
 ├── creativity/               # Ideation tools
 │   ├── divergent.md          # Idea generation
+│   ├── divergent-quick.md    # 5–10 minute idea generation
 │   ├── convergent.md         # Idea evaluation
 │   └── strategies.md         # Technique catalog
 │
@@ -268,9 +282,18 @@ research/
 │   ├── technique-index.json  # Which techniques used on which problems
 │   ├── patterns.md           # Cross-problem patterns
 │   ├── tactics.md            # Tactic-level learnings
-│   └── theorems.md           # Reusable theorem catalog
+│   ├── theorems.md           # Reusable theorem catalog
+│   └── templates/            # Lean file templates (e.g. nrt-irrational.lean.tmpl)
 │
-└── problems/                 # Active research
+├── scripts/                  # aristotle-status/submit/validate + verify_*.py checks
+├── aristotle-runs/           # Recovered Aristotle output (.lean)
+├── migration/                # Toolchain/Mathlib bump toolkit (see its README)
+├── certs/, certificates/     # Python verification scripts for specific results
+├── notes/                    # Ad-hoc research notes
+├── summaries/                # Generated knowledge-base overview
+├── vibemathed/               # One-off discovery-feed join analysis (see its README)
+│
+└── problems/                 # Active research (~2,700 problem dirs)
     └── {problem-slug}/
         ├── problem.md        # Problem statement
         ├── state.md          # Current OODA state
@@ -320,9 +343,9 @@ See `STATE_MACHINE.md` for full state definitions and transitions.
 
 | Label | Meaning |
 |-------|---------|
-| `loom:research-active` | Problem under investigation |
-| `loom:hypothesis` | Approach awaiting testing |
-| `loom:breakthrough` | Potential proof, needs review |
+| `research` | Research agent work (general topic tag) |
+| `research:queued` | Math problem to route into the researcher candidate pool (Seeker intake trigger) |
+| `research:pooled` | Ingested into the candidate pool by the Seeker intake (idempotency marker) |
 
 ## Scripts
 

@@ -2,6 +2,14 @@
 
 MCP (Model Context Protocol) server for integrating [Harmonic Aristotle](https://aristotle.harmonic.fun/) theorem proving into Claude Code workflows.
 
+> **Status**: this server is not registered in the repo's `.mcp.json`. The
+> project's active Aristotle path is the CLI pipeline in `scripts/aristotle/`
+> (`submit-batch.sh`, `check-jobs.sh`, `retrieve-integrate.sh`), documented in
+> `research/ARISTOTLE-WORKFLOW.md`; the MCP wrapper was dropped from the
+> registry in issue #38098 after Harmonic's v1+ API cut-over. The server here
+> shells out to `uvx --from aristotlelib aristotle ...`, so it needs `uv` and
+> a working `aristotlelib`.
+
 ## Overview
 
 This server enables Claude to use Aristotle's powerful proof search capabilities during the OODA loop research process. It provides a strategic integration where:
@@ -34,7 +42,8 @@ pnpm build
 
 ## Configuration
 
-Add to your Claude Code MCP config (`~/.claude/config.json`):
+Register it with Claude Code — either project-scoped in this repo's `.mcp.json`
+or user-scoped in `~/.claude.json` (e.g. via `claude mcp add`). Entry shape:
 ```json
 {
   "mcpServers": {
@@ -50,6 +59,19 @@ Add to your Claude Code MCP config (`~/.claude/config.json`):
 ```
 
 ## Available Tools
+
+`src/index.ts` registers eight tools.
+
+| Tool | Purpose |
+|------|---------|
+| `aristotle_prove` | Submit a Lean 4 file with sorries and wait for the completed proof |
+| `aristotle_informal` | Submit a natural-language problem for formalization and proof |
+| `aristotle_version` | Verify the Aristotle CLI is working and report its version |
+| `aristotle_submit` | Submit a file without waiting; returns a `project_id` (async workflow) |
+| `aristotle_status` | Non-blocking status check for a `project_id` (QUEUED / IN_PROGRESS / COMPLETE / FAILED) |
+| `aristotle_retrieve` | Download the solved file for a COMPLETE project to `output_path` |
+| `aristotle_list` | List all projects and their statuses |
+| `aristotle_check_results` | List projects, auto-retrieve every COMPLETE one, report pending progress |
 
 ### `aristotle_prove`
 
@@ -105,7 +127,7 @@ The MCP server is designed to integrate with the research OODA loop:
   1. Submit to Aristotle (returns project_id)
   2. Continue working on other parts
   3. Check `aristotle_status` periodically
-  4. Retrieve with `aristotle_solution` when complete
+  4. Retrieve with `aristotle_retrieve` when complete
 
 ### LEARN Phase
 - Analyze Aristotle's solutions for patterns
