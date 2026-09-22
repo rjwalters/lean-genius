@@ -26,7 +26,7 @@
   {
     "id": "ann-vf-oq03oq01-main",
     "proofId": "vietas-formulas-oq-03-oq-01",
-    "range": { "startLine": 72, "endLine": 90 },
+    "range": { "startLine": 77, "endLine": 100 },
     "type": "insight",
     "title": "General Newton's Identity: k·eₖ = (−1)^{k+1}·Σ (−1)^a·eₐ·p_b",
     "content": "`newton_identity` is the main result: for any commutative ring R, any n, any x : Fin n → R, and any k, the identity `k · eₖ(x) = (−1)^{k+1} · Σ_{a+b=k, a<k} (−1)^a · eₐ(x) · p_b(x)` holds. The proof applies `MvPolynomial.mul_esymm_eq_sum` (Mathlib's general version, using Zeilberger's 1984 combinatorial proof) and rewrites both sides using the aeval bridge theorems. The `calc` chain makes each step explicit: rewrite LHS as aeval of MvPolynomial expression, apply the Mathlib identity, then simplify via bridge lemmas.",

@@ -4,7 +4,7 @@
     "proofId": "erdos-959",
     "type": "concept",
     "range": {
-      "startLine": 7,
+      "startLine": 8,
       "endLine": 22
     },
     "title": "Problem Overview: Distance Frequency Gaps",
@@ -97,7 +97,7 @@
     "proofId": "erdos-959",
     "type": "concept",
     "range": {
-      "startLine": 50,
+      "startLine": 51,
       "endLine": 55
     },
     "title": "Main Conjecture (Omega(n log n) Gap)",
@@ -120,7 +120,7 @@
     "proofId": "erdos-959",
     "type": "insight",
     "range": {
-      "startLine": 59,
+      "startLine": 60,
       "endLine": 62
     },
     "title": "Clemen-Dumitrescu-Liu Lower Bound (2025)",
@@ -143,8 +143,8 @@
     "proofId": "erdos-959",
     "type": "definition",
     "range": {
-      "startLine": 67,
-      "endLine": 71
+      "startLine": 73,
+      "endLine": 78
     },
     "title": "Stronger Conjecture (Superpolynomial Gap)",
     "content": "**ErdosProblem959_strong**: The frequency gap grows as n^{1 + c / log log n} for some c > 0. This is **superpolynomial** in n -- stronger than n log n but weaker than n^{1+epsilon} for any fixed epsilon.",
@@ -189,7 +189,7 @@
     "proofId": "erdos-959",
     "type": "insight",
     "range": {
-      "startLine": 112,
+      "startLine": 113,
       "endLine": 114
     },
     "title": "Total Pair Count Bound",
@@ -212,7 +212,7 @@
     "proofId": "erdos-959",
     "type": "insight",
     "range": {
-      "startLine": 86,
+      "startLine": 87,
       "endLine": 88
     },
     "title": "Empty Set Base Case",

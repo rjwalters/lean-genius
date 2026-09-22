@@ -27,7 +27,7 @@
     "id": "ann-arge-oq01-irreducible",
     "proofId": "abel-ruffini-galois-extensions-oq-01",
     "range": { "startLine": 113, "endLine": 133 },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Irreducibility via Eisenstein's criterion",
     "content": "`irreducible_Phi` proves Φ ℚ a b irreducible whenever a prime p divides a and b but p² does not divide b. For q = Φ ℚ 4 2 this is Eisenstein at p = 2: 2 ∣ 4, 2 ∣ 2, and 4 ∤ 2. The proof maps to ℤ, applies `irreducible_of_eisenstein_criterion`, and dispatches the coefficient divisibility obligations by `interval_cases` over the degree. Irreducibility is what forces 5 ∣ |Gal|, hence a 5-cycle in the group.",
     "mathContext": "Eisenstein at 2 ⟹ $X^5 - 4X + 2$ irreducible over $\\mathbb{Q}$.",
@@ -38,8 +38,8 @@
   {
     "id": "ann-arge-oq01-rootcounts",
     "proofId": "abel-ruffini-galois-extensions-oq-01",
-    "range": { "startLine": 134, "endLine": 184 },
-    "type": "lemma",
+    "range": { "startLine": 135, "endLine": 185 },
+    "type": "theorem",
     "title": "Exactly three real roots (two complex)",
     "content": "`real_roots_Phi_le` bounds the real roots by 3 using `card_rootSet_le_derivative` twice (the second derivative 20X³ has a single real root, so the chain of Rolle bounds gives ≤ 3). `real_roots_Phi_ge` produces 2 distinct real roots via the intermediate value theorem (`intermediate_value_Icc`/`Ioc`) using sign changes of x⁵ − ax + b. `complex_roots_Phi` gives 5 complex roots (separable + splits in ℂ). Three real plus five total forces exactly two non-real, complex-conjugate roots — the condition the prime-degree theorem needs.",
     "mathContext": "$\\#\\{\\text{real roots}\\} = 3$, $\\#\\{\\text{complex roots}\\} = 5$, hence two non-real conjugate roots.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-arge-oq01-witness-q",
     "proofId": "abel-ruffini-galois-extensions-oq-01",
-    "range": { "startLine": 199, "endLine": 221 },
+    "range": { "startLine": 203, "endLine": 221 },
     "type": "theorem",
     "title": "Specializing to the witness q = X⁵ − 4X + 2",
     "content": "Here the generic machinery is instantiated at the classical Abel–Ruffini witness q := Φ ℚ 4 2, unfolding to X⁵ − 4X + 2 (q_eq, by rfl). Each property is a one-line specialization of a general Φ theorem: q_irreducible = irreducible_Phi 4 2 2 with the Eisenstein-at-2 side conditions (2 ∣ 4, 2 ∣ 2, 4 ∤ 2) discharged by norm_num/decide; q_separable = irreducibility in characteristic zero; q_card_complex_roots = 5 from complex_roots_Phi; and q_galActionHom_bijective = gal_Phi 4 2 with b < a (2 < 4) supplying the two-non-real-roots hypothesis. Choosing a = 4, b = 2 is exactly what makes b < a hold (three real roots) while keeping Eisenstein at 2 available — the two constraints that together force the full S₅ action.",

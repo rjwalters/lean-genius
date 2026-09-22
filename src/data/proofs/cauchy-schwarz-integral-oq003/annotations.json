@@ -14,7 +14,7 @@
   {
     "id": "ann-nonempty-lemma",
     "proofId": "cauchy-schwarz-integral-oq003",
-    "range": { "startLine": 56, "endLine": 64 },
+    "range": { "startLine": 59, "endLine": 64 },
     "type": "insight",
     "title": "Nonemptiness from Sum-One Constraint",
     "content": "A small but essential auxiliary: positive weights summing to 1 must come from a nonempty index set, since an empty Finset has Σ = 0 ≠ 1. Used downstream to extract a witness index for the 'all equal' case. The proof is by case split on s.eq_empty_or_nonempty: if empty, simp closes the contradiction with hw'.",

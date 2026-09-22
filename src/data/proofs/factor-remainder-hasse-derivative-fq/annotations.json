@@ -26,7 +26,7 @@
   {
     "id": "ann-scaling",
     "proofId": "factor-remainder-hasse-derivative-fq",
-    "range": { "startLine": 83, "endLine": 89 },
+    "range": { "startLine": 92, "endLine": 98 },
     "type": "theorem",
     "title": "Scaling identity: ordinary derivative = Hasse derivative × k!",
     "content": "iterate_derivative_eq_smul_hasseDeriv repackages Mathlib's factorial_smul_hasseDeriv with the scalar pushed into the base field F: derivative^[k] f = (k! : F) • hasseDeriv k f. This is the engine — it shows the ordinary derivative carries exactly the Hasse information except for the multiplicative factor (k! : F), so all information loss is exactly the vanishing of that factor characterized in the threshold lemma.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-blind",
     "proofId": "factor-remainder-hasse-derivative-fq",
-    "range": { "startLine": 91, "endLine": 97 },
+    "range": { "startLine": 92, "endLine": 97 },
     "type": "theorem",
     "title": "Above the threshold the ordinary test is blind",
     "content": "iterate_derivative_eq_zero_of_char_le: for p ≤ k, the k-th iterated ordinary derivative of EVERY polynomial f is zero. Once the factorial scalar (k! : F) vanishes (by the threshold lemma), the scaling identity collapses to zero • hasseDeriv k f = 0. So at orders ≥ p the ordinary-derivative criterion carries no multiplicity information whatsoever — a total, uniform blindness, not a gradual decay.",

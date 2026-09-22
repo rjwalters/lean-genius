@@ -33,8 +33,8 @@
     "proofId": "erdos-1051",
     "type": "definition",
     "range": {
-      "startLine": 21,
-      "endLine": 29
+      "startLine": 26,
+      "endLine": 34
     },
     "title": "Growth Condition: Doubly Exponential Lower Bound",
     "content": "Defines `GrowthCondition`: $\\liminf_{n \\to \\infty} a_n^{1/2^n} > 1$, formalized using Mathlib's `Filter.liminf` with the `atTop` filter. This condition implies that $a_n$ grows at least as fast as $c^{2^n}$ for some $c > 1$ eventually. The `noncomputable` tag reflects the use of real-valued limits requiring classical choice. The condition is weaker than requiring $a_{n+1} \\geq C \\cdot a_n^2$ at every step; this gap between 'infinitely often' and 'always' is the essence of the open problem.",
@@ -58,8 +58,8 @@
     "proofId": "erdos-1051",
     "type": "definition",
     "range": {
-      "startLine": 31,
-      "endLine": 37
+      "startLine": 36,
+      "endLine": 42
     },
     "title": "The Reciprocal Product Series",
     "content": "Defines `erdosSeries` as $\\sum_{n=0}^{\\infty} 1/(a_n \\cdot a_{n+1})$ using Mathlib's `tsum` (topological sum). For arithmetic progressions with common difference $d$, partial fractions give $\\frac{1}{a_n a_{n+1}} = \\frac{1}{d}(\\frac{1}{a_n} - \\frac{1}{a_{n+1}})$, yielding a rational sum. The gallery's triangular-reciprocals entry demonstrates this telescoping for $a_n = n$. For general rapidly growing sequences, no such simplification exists, making irrationality harder to establish.",
@@ -87,7 +87,7 @@
     "proofId": "erdos-1051",
     "type": "concept",
     "range": {
-      "startLine": 39,
+      "startLine": 40,
       "endLine": 51
     },
     "title": "Erdős Problem #1051: The Main Conjecture",
@@ -111,7 +111,7 @@
     "proofId": "erdos-1051",
     "type": "concept",
     "range": {
-      "startLine": 53,
+      "startLine": 54,
       "endLine": 63
     },
     "title": "Rapid Growth Case: Erdős's 1988 Result",

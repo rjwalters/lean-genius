@@ -97,7 +97,7 @@
     "id": "ann-613-conjecture",
     "proofId": "erdos-613",
     "range": {
-      "startLine": 75,
+      "startLine": 78,
       "endLine": 83
     },
     "type": "definition",
@@ -120,7 +120,7 @@
     "id": "ann-613-star",
     "proofId": "erdos-613",
     "range": {
-      "startLine": 84,
+      "startLine": 87,
       "endLine": 96
     },
     "type": "definition",
@@ -167,7 +167,7 @@
     "id": "ann-613-pikhurko-lower",
     "proofId": "erdos-613",
     "range": {
-      "startLine": 108,
+      "startLine": 109,
       "endLine": 113
     },
     "type": "concept",
@@ -235,7 +235,7 @@
     "id": "ann-613-tao",
     "proofId": "erdos-613",
     "range": {
-      "startLine": 125,
+      "startLine": 126,
       "endLine": 130
     },
     "type": "concept",
@@ -280,7 +280,7 @@
     "id": "ann-613-faudree",
     "proofId": "erdos-613",
     "range": {
-      "startLine": 144,
+      "startLine": 145,
       "endLine": 150
     },
     "type": "concept",
@@ -324,7 +324,7 @@
     "id": "ann-613-gap",
     "proofId": "erdos-613",
     "range": {
-      "startLine": 166,
+      "startLine": 169,
       "endLine": 186
     },
     "type": "definition",
@@ -346,10 +346,10 @@
     "id": "ann-613-ramsey-connection",
     "proofId": "erdos-613",
     "range": {
-      "startLine": 187,
-      "endLine": 199
+      "startLine": 195,
+      "endLine": 207
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Connection to Classical Ramsey",
     "content": "The classical Ramsey number $R(s,t)$ is the minimum $n$ such that any 2-coloring of $K_n$ yields a monochromatic $K_s$ or $K_t$. The size Ramsey number replaces vertex count with edge count.\n\nThe theorem `size_ramsey_generalizes` shows $\\hat{r}(K_{1,s}, \\mathcal{F}) \\le \\binom{R(s,t)}{2}$: the complete graph on $R(s,t)$ vertices trivially works.",
     "mathContext": "Since $K_{R(s,t)}$ has $\\binom{R(s,t)}{2}$ edges and any 2-coloring yields monochromatic $K_s \\supseteq K_{1,s}$ or $K_t \\supseteq C_{2k+1}$ (for $t \\ge 3$), we get the trivial upper bound $\\hat{r} \\le \\binom{R(s,t)}{2}$. Size Ramsey numbers are interesting precisely because they can be much smaller than this bound.",
@@ -369,7 +369,7 @@
     "id": "ann-613-n3",
     "proofId": "erdos-613",
     "range": {
-      "startLine": 200,
+      "startLine": 201,
       "endLine": 241
     },
     "type": "concept",

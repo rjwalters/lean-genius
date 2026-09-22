@@ -42,7 +42,7 @@
   {
     "id": "ann-independence",
     "proofId": "gelfond-schneider-oq-01",
-    "range": { "startLine": 110, "endLine": 144 },
+    "range": { "startLine": 111, "endLine": 144 },
     "type": "lemma",
     "title": "log 3 / log 2 is Irrational — Unconditionally",
     "content": "irrational_log_three_div_log_two supplies the ℚ-linear-independence hypothesis Baker's theorem needs, and depends on NO Baker assumption. A rational value log 3 / log 2 = p/d would cross-multiply to N·log 2 = d·log 3 with N = p > 0, hence log(2^N) = log(3^d) and so 2^N = 3^d. Then 2 ∣ 3^d, and Nat.Prime.dvd_of_dvd_pow forces 2 ∣ 3 — false. The reciprocal irrational_log_two_div_log_three follows from Irrational.inv.",

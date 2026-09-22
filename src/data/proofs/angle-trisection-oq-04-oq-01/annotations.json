@@ -26,8 +26,8 @@
   {
     "id": "ann-angle-tri-oq04-oq01-backward",
     "proofId": "angle-trisection-oq-04-oq-01",
-    "range": { "startLine": 71, "endLine": 105 },
-    "type": "lemma",
+    "range": { "startLine": 67, "endLine": 101 },
+    "type": "theorem",
     "title": "exists_dvd_of_primes: Strong Induction on minFac (the Technical Heart)",
     "content": "This is the hard backward direction and the only nontrivial proof in the file. It uses Nat.strong_induction_on. If d = 1, take a = b = 0. Otherwise let p = d.minFac, which is prime (Nat.minFac_prime, valid since d ≠ 1) and divides d, so d = p·e. One shows e > 0 and e < d (since p > 1), and that e ∣ d, so every prime factor of e is also a prime factor of d — hence in {2,3}. The induction hypothesis applied to e gives e ∣ 2^a·3^b. Finally p ∈ {2,3} (it is a prime factor of d), and we re-absorb it: if p = 2, then d = 2e ∣ 2·(2^a·3^b) = 2^{a+1}·3^b; symmetrically for p = 3. The ring lemma 2^{a+1}·3^b = 2·(2^a·3^b) and mul_dvd_mul_left close it.",
     "mathContext": "Peel $p = \\mathrm{minFac}(d) \\in \\{2,3\\}$, write $d = p\\cdot e$ with $e < d$; from $e \\mid 2^a 3^b$ get $d = pe \\mid p\\cdot 2^a 3^b$, which is $2^{a+1}3^b$ or $2^a 3^{b+1}$.",

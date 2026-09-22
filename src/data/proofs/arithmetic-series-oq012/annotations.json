@@ -2,7 +2,7 @@
   {
     "id": "ann-qmultichoose-definition",
     "proofId": "arithmetic-series-oq012",
-    "range": { "startLine": 40, "endLine": 50 },
+    "range": { "startLine": 50, "endLine": 60 },
     "type": "definition",
     "title": "qMultichoose: Gaussian Binomial as q-Analog of Multisets",
     "content": "The definition is a single line: qMultichoose q n k := qBinom q (n+k-1) k. The index shift n+k-1 encodes the classical identity Nat.multichoose n k = C(n+k-1, k): the q-analog replaces C(n+k-1, k) with the Gaussian binomial [n+k-1 choose k]_q. The noncomputable annotation reflects that qBinom involves polynomial evaluation over a general CommRing.",

@@ -205,8 +205,8 @@
     "title": "Frankl-Füredi Optimal Family (Even Case)",
     "content": "For n + r even, the construction is slightly different, using |A \\ {0}| ≥ (n+r)/2 instead of |A| > (n+r)/2 to handle the boundary case. This resolves the ambiguity when (n+r)/2 is an integer.",
     "range": {
-      "startLine": 264,
-      "endLine": 266
+      "startLine": 249,
+      "endLine": 255
     },
     "significance": "key",
     "mathContext": "When $n + r$ is even, the boundary sets with $|A| = (n+r)/2$ need special treatment. The even construction uses $|A \\setminus \\{1\\}| \\geq (n+r)/2$, which shifts the threshold by considering a distinguished element. This is a common technique in extremal combinatorics for handling parity issues in optimal constructions.",
@@ -250,8 +250,8 @@
     "title": "Main Question — Exponential Bound for Middle Range",
     "content": "For every ε > 0, is there δ > 0 such that T(n,r) < (2-δ)^n when εn < r < (1/2-ε)n? This asks whether the forbidden intersection constraint is strong enough in the 'middle range' to force an exponential gap from the trivial bound 2^n.",
     "range": {
-      "startLine": 280,
-      "endLine": 284
+      "startLine": 285,
+      "endLine": 290
     },
     "significance": "key",
     "mathContext": "The 'middle range' $\\varepsilon n < r < (1/2 - \\varepsilon)n$ is where the problem is most interesting. For $r = O(1)$, $T(n,r)/2^n \\to 1$ (Frankl-Füredi). For $r$ near $n/2$, constraints are very strong. The question asks whether there is a sharp threshold: does $T(n,r)$ drop from $\\sim 2^n$ to $< (2-\\delta)^n$ when $r$ enters the middle range? This is formalized with rational $\\varepsilon, \\delta$ for constructive reasoning.",

@@ -82,8 +82,8 @@
   {
     "id": "russnno-ann-05",
     "proofId": "russell-1-plus-1-oq-01",
-    "range": { "startLine": 160, "endLine": 184 },
-    "type": "theorem",
+    "range": { "startLine": 158, "endLine": 182 },
+    "type": "definition",
     "title": "Lambek's Lemma: ℕ ≅ 1 + ℕ",
     "content": "Lambek's lemma states that the structure map of an *initial* algebra is always an isomorphism. Here it is exhibited concretely: `structMap : Option ℕ → ℕ` (with `Option ℕ` the type `1 + ℕ`) sends `none ↦ zero` and `some n ↦ succ n`, and `structInv : ℕ → Option ℕ` is its candidate inverse. The two round-trip identities `structMap_leftInv` and `structInv_rightInv` are proved by case analysis (each case is `rfl`) and packaged in `lambek`, witnessing the bijection ℕ ≅ 1 + ℕ. This is the categorical reason every natural number is *uniquely* either zero or a successor — ℕ is a fixed point of the functor `X ↦ 1 + X`.",
     "mathContext": "$\\mathrm{structMap}\\circ\\mathrm{structInv}=\\mathrm{id}_{\\mathbb{N}}$ and $\\mathrm{structInv}\\circ\\mathrm{structMap}=\\mathrm{id}_{1+\\mathbb{N}}$, hence $\\mathbb{N}\\cong 1+\\mathbb{N}$.",

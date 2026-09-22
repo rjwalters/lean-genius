@@ -26,8 +26,8 @@
     "id": "ann-e242-core-defs",
     "proofId": "erdos-242",
     "range": {
-      "startLine": 48,
-      "endLine": 60
+      "startLine": 56,
+      "endLine": 68
     },
     "type": "definition",
     "title": "Core Definitions: ES and HasNormSplit",
@@ -49,7 +49,7 @@
     "id": "ann-e242-fermat",
     "proofId": "erdos-242",
     "range": {
-      "startLine": 61,
+      "startLine": 64,
       "endLine": 85
     },
     "type": "concept",
@@ -71,10 +71,10 @@
     "id": "ann-e242-ed2",
     "proofId": "erdos-242",
     "range": {
-      "startLine": 86,
-      "endLine": 115
+      "startLine": 101,
+      "endLine": 130
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Dyachenko ED2 Triple [PROVED]",
     "content": "An **ED2 triple** (delta, b, c) for a prime p satisfies the identity:\n\n(4b - 1)(4c - 1) = 4*p*delta + 1\n\nplus divisibility and bound conditions. The key insight is that this identity, combined with delta | b*c, yields the decomposition 4/p = 1/A + 1/(bp) + 1/(cp) where A = bc/delta.\n\nThe bound lemma `ed2_bound` shows A <= bp, which is needed for the witnesses to be valid.",
     "mathContext": "The identity (4b-1)(4c-1) = 4*p*delta + 1 encodes 4bc - b - c = p*delta, which after division gives the unit fraction decomposition.",

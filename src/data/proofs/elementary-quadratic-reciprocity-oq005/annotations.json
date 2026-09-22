@@ -62,7 +62,7 @@
   {
     "id": "ann-eqr-oq0103010101-legendre",
     "proofId": "elementary-quadratic-reciprocity-oq005",
-    "range": { "startLine": 188, "endLine": 195 },
+    "range": { "startLine": 189, "endLine": 197 },
     "type": "theorem",
     "title": "Legendre-symbol form",
     "content": "sign_mulLeft_eq_legendre: converts the field quadratic character of the reduced unit back into the Legendre symbol mod p via the parent's legendreSym_unit_eq, giving the clean statement sign(x ↦ u·x on (ℤ/pⁿ)ˣ) = legendreSym p ((ρ u).val) — the prime-power generalization of the prime base case.",

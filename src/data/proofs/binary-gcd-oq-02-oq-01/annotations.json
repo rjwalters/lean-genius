@@ -25,7 +25,7 @@
   {
     "id": "ann-bridge-lemmas",
     "proofId": "binary-gcd-oq-02-oq-01",
-    "range": { "startLine": 38, "endLine": 51 },
+    "range": { "startLine": 39, "endLine": 51 },
     "type": "insight",
     "title": "Part I: Bridge Lemmas — Bit Ops to Arithmetic",
     "content": "Two bridge lemmas connect the bit-operation world to the arithmetic world:\n\n**shiftRight_one_eq_div_two**: `n >>> 1 = n / 2`. The proof uses `Nat.shiftRight_succ n 0`: right-shifting by k+1 is right-shifting by k then dividing by 2. With k=0 and `Nat.shiftRight_zero` (n >>> 0 = n), the chain gives n >>> 1 = n / 2.\n\n**even_iff_testBit_zero_false**: `n % 2 = 0 ↔ n.testBit 0 = false`. This is a one-liner wrapping Lean 4 core's `Nat.mod_two_eq_zero_iff_testBit_zero` — a built-in theorem that directly connects the LSB test to parity. No Mathlib needed.\n\nThese two lemmas are the entire 'glue layer' between the arithmetic formulation (binaryGcd) and the bit formulation (binaryGcdBit). They convert any use of `n % 2 = 0` to `n.testBit 0 = false` and any use of `n / 2` to `n >>> 1`, enabling the correctness proof to be a straightforward rewriting.",
@@ -47,7 +47,7 @@
   {
     "id": "ann-definition",
     "proofId": "binary-gcd-oq-02-oq-01",
-    "range": { "startLine": 52, "endLine": 78 },
+    "range": { "startLine": 53, "endLine": 79 },
     "type": "definition",
     "title": "Part II: binaryGcdBit — The Bit-Level Algorithm",
     "content": "The definition `binaryGcdBit` is structurally identical to `binaryGcd` (from GCDAlgorithmOQ02) with two substitutions:\n- `(a+1) % 2 = 0` → `(a+1).testBit 0 = false` (parity check)\n- `(a+1) / 2` → `(a+1) >>> 1` (halving)\n\nThis is a well-founded recursive definition. Lean requires a termination proof; the measure `a + b` works because each recursive call either reduces `a` by halving (case: a even), reduces `b` by halving (case: b even), or subtracts the smaller from the larger (case: a = b implies 0, case: b large implies b ← b - (a+1)).\n\n**Hardware interpretation**: Each case of the definition corresponds to a branch in actual GCD microcode:\n- Both zero: base case\n- One zero: return the other\n- Both even: factor out 2, recurse, multiply by 2\n- a even only: halve a\n- b even only: halve b\n- a > b: replace larger with difference\n- else: replace larger with difference",

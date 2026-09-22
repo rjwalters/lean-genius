@@ -4,7 +4,7 @@
     "proofId": "ramanujan-sum-fallacy",
     "range": {
       "startLine": 1,
-      "endLine": 6
+      "endLine": 1
     },
     "type": "concept",
     "title": "The Famous Fallacy",
@@ -27,8 +27,8 @@
     "id": "ann-tsum",
     "proofId": "ramanujan-sum-fallacy",
     "range": {
-      "startLine": 8,
-      "endLine": 45
+      "startLine": 3,
+      "endLine": 40
     },
     "type": "definition",
     "title": "How Mathlib Handles Infinite Sums",
@@ -51,8 +51,8 @@
     "id": "ann-naturals-def",
     "proofId": "ramanujan-sum-fallacy",
     "range": {
-      "startLine": 8,
-      "endLine": 45
+      "startLine": 3,
+      "endLine": 40
     },
     "type": "definition",
     "title": "Defining the Natural Number Series",
@@ -73,8 +73,8 @@
     "id": "ann-false-claim",
     "proofId": "ramanujan-sum-fallacy",
     "range": {
-      "startLine": 8,
-      "endLine": 45
+      "startLine": 3,
+      "endLine": 40
     },
     "type": "insight",
     "title": "The False Claim Would Require Convergence",
@@ -96,8 +96,8 @@
     "id": "ann-grandi",
     "proofId": "ramanujan-sum-fallacy",
     "range": {
-      "startLine": 8,
-      "endLine": 45
+      "startLine": 3,
+      "endLine": 40
     },
     "type": "definition",
     "title": "The Grandi Series",
@@ -120,8 +120,8 @@
     "id": "ann-grandi-half-impossible",
     "proofId": "ramanujan-sum-fallacy",
     "range": {
-      "startLine": 55,
-      "endLine": 56
+      "startLine": 50,
+      "endLine": 51
     },
     "type": "insight",
     "title": "FALLACY: Cannot Prove Grandi = 1/2",
@@ -142,8 +142,8 @@
     "id": "ann-shift-concept",
     "proofId": "ramanujan-sum-fallacy",
     "range": {
-      "startLine": 70,
-      "endLine": 73
+      "startLine": 65,
+      "endLine": 68
     },
     "type": "concept",
     "title": "The Shift-and-Add Trick",
@@ -166,8 +166,8 @@
     "id": "ann-alternating-not-summable",
     "proofId": "ramanujan-sum-fallacy",
     "range": {
-      "startLine": 78,
-      "endLine": 91
+      "startLine": 73,
+      "endLine": 86
     },
     "type": "tactic",
     "title": "Alternating Naturals Don't Converge Either",
@@ -189,8 +189,8 @@
     "id": "ann-shift-requires-summable",
     "proofId": "ramanujan-sum-fallacy",
     "range": {
-      "startLine": 93,
-      "endLine": 97
+      "startLine": 88,
+      "endLine": 92
     },
     "type": "insight",
     "title": "Shifting Requires Convergence Proof",
@@ -211,8 +211,8 @@
     "id": "ann-shift-blocked",
     "proofId": "ramanujan-sum-fallacy",
     "range": {
-      "startLine": 99,
-      "endLine": 105
+      "startLine": 94,
+      "endLine": 100
     },
     "type": "insight",
     "title": "FALLACY: Shift-Add Blocked by Type System",
@@ -233,8 +233,8 @@
     "id": "ann-unbounded",
     "proofId": "ramanujan-sum-fallacy",
     "range": {
-      "startLine": 110,
-      "endLine": 128
+      "startLine": 105,
+      "endLine": 123
     },
     "type": "tactic",
     "title": "Partial Sums Grow Without Bound",
@@ -255,8 +255,8 @@
     "id": "ann-main-theorem",
     "proofId": "ramanujan-sum-fallacy",
     "range": {
-      "startLine": 206,
-      "endLine": 213
+      "startLine": 201,
+      "endLine": 208
     },
     "type": "insight",
     "title": "MAIN RESULT: The Sum Does NOT Equal -1/12",
@@ -277,8 +277,8 @@
     "id": "ann-zeta-distinction",
     "proofId": "ramanujan-sum-fallacy",
     "range": {
-      "startLine": 161,
-      "endLine": 185
+      "startLine": 156,
+      "endLine": 180
     },
     "type": "concept",
     "title": "What -1/12 Actually Means",
@@ -301,8 +301,8 @@
     "id": "ann-step2",
     "proofId": "ramanujan-sum-fallacy",
     "range": {
-      "startLine": 215,
-      "endLine": 224
+      "startLine": 210,
+      "endLine": 219
     },
     "type": "insight",
     "title": "Step 2 Fails: Cannot Shift Divergent Series",
@@ -323,8 +323,8 @@
     "id": "ann-step3",
     "proofId": "ramanujan-sum-fallacy",
     "range": {
-      "startLine": 226,
-      "endLine": 227
+      "startLine": 221,
+      "endLine": 222
     },
     "type": "insight",
     "title": "Step 3 'Works' But Is Useless",
@@ -345,8 +345,8 @@
     "id": "ann-conclusion",
     "proofId": "ramanujan-sum-fallacy",
     "range": {
-      "startLine": 243,
-      "endLine": 246
+      "startLine": 238,
+      "endLine": 241
     },
     "type": "concept",
     "title": "Conclusion: Type Systems Enforce Rigor",

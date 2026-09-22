@@ -22,7 +22,7 @@
   {
     "id": "ann-mod12-core",
     "proofId": "erdos-101-oq-02",
-    "range": { "startLine": 43, "endLine": 76 },
+    "range": { "startLine": 46, "endLine": 76 },
     "type": "tactic",
     "title": "Reducing $n(n-1)$ modulo 12",
     "content": "The arithmetic heart: given $3 \\mid (n-1)$ (replication integer) and $12 \\mid n(n-1)$ (block-count integer), conclude $n \\equiv 1$ or $4 \\pmod{12}$. The obstacle is that $n(n-1)$ is nonlinear, so `omega` cannot see it directly. The fix is `Nat.mul_mod`, rewriting $n(n-1) \\bmod 12 = (n \\bmod 12)\\cdot((n-1)\\bmod 12) \\bmod 12$; expressing $(n-1)\\bmod 12$ through $n \\bmod 12$; then `interval_cases` on the residue $r = n\\bmod 12$ turns every product into a literal, and `omega` closes each of the 12 branches (residues $7,10$ die on the block-count constraint, non-$1\\bmod 3$ residues die on the replication constraint).",

@@ -26,7 +26,7 @@
     "proofId": "herons-formula",
     "type": "concept",
     "range": {
-      "startLine": 48,
+      "startLine": 50,
       "endLine": 52
     },
     "title": "Namespace and Open Declarations",
@@ -139,7 +139,7 @@
     "proofId": "herons-formula",
     "type": "concept",
     "range": {
-      "startLine": 142,
+      "startLine": 145,
       "endLine": 146
     },
     "title": "Alternative Expansion Ordering",
@@ -269,8 +269,8 @@
     "proofId": "herons-formula",
     "type": "concept",
     "range": {
-      "startLine": 261,
-      "endLine": 266
+      "startLine": 249,
+      "endLine": 254
     },
     "title": "Triangle Area Non-negativity",
     "content": "Proves that `triangle_area` is always non-negative for valid triangles. The proof unfolds the definition and applies `sqrt_nonneg`, which holds unconditionally ($\\sqrt{x} \\geq 0$ for all real $x$, with the convention $\\sqrt{x} = 0$ for $x < 0$).",

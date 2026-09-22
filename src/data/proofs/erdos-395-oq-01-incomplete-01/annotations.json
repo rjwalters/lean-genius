@@ -14,7 +14,7 @@
   {
     "id": "ann-e395inc01-negone-zmod2",
     "proofId": "erdos-395-oq-01-incomplete-01",
-    "range": { "startLine": 34, "endLine": 34 },
+    "range": { "startLine": 30, "endLine": 30 },
     "type": "insight",
     "title": "(-1 : ZMod 2) = 1 by decide",
     "content": "The one-line lemma `neg_one_zmod2` proves that -1 equals 1 in ZMod 2, verified by the `decide` tactic which exhaustively checks all elements of ZMod 2 = {0, 1}.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-e395inc01-tail-nonzero",
     "proofId": "erdos-395-oq-01-incomplete-01",
-    "range": { "startLine": 72, "endLine": 90 },
+    "range": { "startLine": 73, "endLine": 91 },
     "type": "insight",
     "title": "Parity argument: tail sum is odd, hence nonzero",
     "content": "This is the mathematical core of the proof. The lemma `tail_nonzero` proves T ≠ 0 by contradiction: if T = 0, then (T : ZMod 2) = 0. But each εₖ ∈ {-1,1} maps to 1 in ZMod 2, so (T : ZMod 2) = (n-1)·1. Since n is even, n-1 is odd, giving (n-1)·1 ≡ 1 (mod 2). This contradicts 0 = 1 in ZMod 2.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-e395inc01-main-thm",
     "proofId": "erdos-395-oq-01-incomplete-01",
-    "range": { "startLine": 96, "endLine": 116 },
+    "range": { "startLine": 97, "endLine": 117 },
     "type": "insight",
     "title": "Main theorem: |sum| ≥ √2 for all sign vectors",
     "content": "The theorem `counterexample_always_large_proved` assembles the four lemmas: (1) unfold normSq = Re² + Im² = ε₀² + T², (2) ε₀² = 1 since ε₀ ∈ {-1,1}, (3) T ≠ 0 (by tail_nonzero) implies T² ≥ 1 (nonzero integer), (4) normSq ≥ 1+1 = 2, (5) Real.sqrt_le_sqrt gives |sum| = √normSq ≥ √2.",

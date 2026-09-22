@@ -22,7 +22,7 @@
     "content": "Addresses OQ-02: does the Bryan et al. motivic class formula extend beyond complete flags to partial flag varieties? The answer: yes, the q-analog infrastructure extends, and the Gaussian binomial identity [Gr(d,n)] \u00b7 [d]! \u00b7 [n-d]! = [n]! serves as the bridge. The extension conjecture states the map-space class involves Levi subgroups and unipotent radicals, generalizing GL_n to block-diagonal subgroups.",
     "proofId": "motivic-flag-maps-oq-02",
     "range": {
-      "startLine": 476,
+      "startLine": 479,
       "endLine": 490
     }
   },
@@ -184,7 +184,7 @@
     "content": "The partial flag class is defined recursively via List pattern matching with `termination_by l => l.length`. The formula [Fl(d\u2081,...,d\u2096; n)] = \u220f Gr factors mirrors the tower of fibrations: at each level, forget the innermost subspace to get a Grassmannian fiber. This is the geometric content of the motivic factorization. The complete flag is Fl(1,2,...,n-1; n), and complete_flag_is_partial_flag shows this gives [n]!.",
     "proofId": "motivic-flag-maps-oq-02",
     "range": {
-      "startLine": 476,
+      "startLine": 479,
       "endLine": 490
     }
   },
@@ -211,7 +211,7 @@
     "content": "The extension conjecture is the open part of this file (marked as axiom). For complete flags, the Levi is GL_n and dim U = 0 (Borel = parabolic for complete flags), recovering Bryan et al. For a Grassmannian Fl(d; n+1) = Gr(d, n+1), the Levi is GL_d \u00d7 GL_{n+1-d} and dim U = d(n+1-d). The conjecture says the space of maps [S\u00b2, Gr(d,n+1)]_\u03b2 has motivic class [GL_d \u00d7 GL_{n+1-d} \u00d7 A^{a''}], geometrically counting maps by Levi \u00d7 affine structure.",
     "proofId": "motivic-flag-maps-oq-02",
     "range": {
-      "startLine": 476,
+      "startLine": 483,
       "endLine": 490
     }
   }

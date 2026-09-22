@@ -42,8 +42,8 @@
   {
     "id": "key-lemma-statement",
     "proofId": "infinitude-primes-4k3-oq-03-oq-01",
-    "range": { "startLine": 65, "endLine": 67 },
-    "type": "theorem",
+    "range": { "startLine": 58, "endLine": 92 },
+    "type": "lemma",
     "title": "Key Lemma: prime_dvd_phi3_mod_three",
     "content": "States the arithmetic core: any prime p ≠ 3 dividing m² + m + 1 satisfies p % 3 = 1. This is the q = 3 case of the general cyclotomic fact 'a prime p ∤ q dividing Φ_q(m) lies in 1 mod q'. The hypothesis p ≠ 3 is essential — 3 is the ramified prime for ℚ(ζ₃) and is the single exceptional prime that can divide Φ₃(m) without being ≡ 1 (mod 3).",
     "mathContext": "$p \\text{ prime},\\, p \\neq 3,\\, p \\mid m^2+m+1 \\;\\Rightarrow\\; p \\equiv 1 \\pmod 3$.",

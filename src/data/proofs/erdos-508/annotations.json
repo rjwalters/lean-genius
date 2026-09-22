@@ -29,8 +29,8 @@
     "id": "ann-508-unit-dist-graph",
     "proofId": "erdos-508",
     "range": {
-      "startLine": 25,
-      "endLine": 33
+      "startLine": 28,
+      "endLine": 36
     },
     "type": "definition",
     "title": "unitDistGraph: The Infinite Unit-Distance Graph on ℝ²",
@@ -54,10 +54,10 @@
     "id": "ann-508-chromatic",
     "proofId": "erdos-508",
     "range": {
-      "startLine": 34,
-      "endLine": 37
+      "startLine": 35,
+      "endLine": 38
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "planeChromatic: Axiomatized Chromatic Number",
     "content": "`planeChromatic : ℕ` is an `axiom` formalizing the chromatic number $\\chi(\\mathbb{R}^2)$. Axiomatizing (rather than defining) is appropriate since the exact value is unknown — it could be 5, 6, or 7. All downstream results are implications from this axiom; none of them determine its value. The docstring explains the design choice: axiomatizing allows stating bounds without committing to a value, which is exactly what the formalization needs.",
     "mathContext": "Formally, $\\chi(\\mathbb{R}^2) = \\min\\{k \\in \\mathbb{N} : \\exists c : \\mathbb{R}^2 \\to \\{1,\\ldots,k\\},\\; \\forall x,y,\\; \\|x-y\\|=1 \\Rightarrow c(x) \\neq c(y)\\}$. The axiom declares this minimum exists as some $k \\in \\mathbb{N}$, justified by Isbell's 7-coloring ($k \\leq 7$). The Erdős-de Bruijn compactness theorem (1951) guarantees: $k \\leq \\chi(\\mathbb{R}^2) \\iff$ there exists a finite unit-distance graph requiring $>k-1$ colors.",
@@ -77,8 +77,8 @@
     "id": "ann-508-axiom-design",
     "proofId": "erdos-508",
     "range": {
-      "startLine": 34,
-      "endLine": 38
+      "startLine": 35,
+      "endLine": 39
     },
     "type": "insight",
     "title": "Lean 4 Design Pattern: Axiomatizing an Unknown Mathematical Constant",
@@ -102,8 +102,8 @@
     "id": "ann-508-stubs-known-results",
     "proofId": "erdos-508",
     "range": {
-      "startLine": 39,
-      "endLine": 45
+      "startLine": 35,
+      "endLine": 41
     },
     "type": "concept",
     "title": "Stubs: Known Results (Unformalized Lower Bounds, Upper Bound, Related Results)",

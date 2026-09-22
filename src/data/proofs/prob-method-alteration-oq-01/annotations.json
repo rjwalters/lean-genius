@@ -43,7 +43,7 @@
   {
     "id": "ann-deletion-oq01-independence",
     "proofId": "prob-method-alteration-oq-01",
-    "range": { "startLine": 62, "endLine": 85 },
+    "range": { "startLine": 63, "endLine": 85 },
     "type": "insight",
     "title": "The complement of the deletion set is independent",
     "content": "Let D = edgeFinset.image pick be the chosen endpoints. Then |D| ≤ m (Finset.card_image_le). Independence of univ ∖ D is a one-line contradiction: if a, b both survive and are adjacent, then s(a,b) is a genuine edge (mem_edgeFinset with mem_edgeSet), so its chosen endpoint pick s(a,b) ∈ D; but pick s(a,b) equals a or b (pick_mem_pair), each of which was assumed outside D. The symmetric min-choice is what guarantees the deleted vertex is provably one of the two endpoints under consideration.",
@@ -81,7 +81,7 @@
   {
     "id": "ann-deletion-oq01-subsampling",
     "proofId": "prob-method-alteration-oq-01",
-    "range": { "startLine": 109, "endLine": 132 },
+    "range": { "startLine": 113, "endLine": 132 },
     "type": "concept",
     "title": "The sub-sampling optimization behind the strong bound n²/(4m)",
     "content": "The n − m bound is tight for a perfect matching but vacuous once m ≥ n; the strong bound α(G) ≥ n²/(4m) instead keeps each vertex with probability p and deletes one endpoint of every surviving edge, leaving n·p − m·p² vertices in expectation. sample_delete_optimum completes the square, n·p − m·p² = n²/(4m) − m(p − n/(2m))², whence sample_delete_le (the surplus never exceeds n²/(4m)) and sample_delete_attained (equality at p = n/(2m)). Only the expectation-to-existence step is missing to reach the graph bound — recorded as an open question.",

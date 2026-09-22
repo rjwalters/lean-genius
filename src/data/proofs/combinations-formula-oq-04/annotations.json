@@ -22,7 +22,7 @@
   {
     "id": "ann-log-concave",
     "proofId": "combinations-formula-oq-04",
-    "range": { "startLine": 51, "endLine": 81 },
+    "range": { "startLine": 52, "endLine": 81 },
     "type": "theorem",
     "title": "Log-Concavity of the Row",
     "content": "choose_mul_choose_le_sq: C(n,k)·C(n,k+2) ≤ C(n,k+1)². Out of range (n < k+2) the right factor is 0 and the bound is trivial. In range, substituting n = k+2+t removes truncated subtraction; choose_succ_right_eq at k and at k+1 give a·(t+2)=b·(k+1) and c·(k+2)=b·(t+1). Multiplying yields a·c·(t+2)(k+2) = b²·(k+1)(t+1), and cancelling the positive factor (t+2)(k+2) finishes, since (k+1)(t+1) ≤ (t+2)(k+2).",

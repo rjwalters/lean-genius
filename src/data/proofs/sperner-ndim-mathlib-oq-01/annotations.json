@@ -26,7 +26,7 @@
   {
     "id": "ann-sperner-mathlib-oq01-bridge",
     "proofId": "sperner-ndim-mathlib-oq-01",
-    "range": { "startLine": 59, "endLine": 113 },
+    "range": { "startLine": 69, "endLine": 123 },
     "type": "insight",
     "title": "Part I: SpernerTriangulation → CellComplex Bridge (0 axioms)",
     "content": "**`toAbstractCellComplex K`**: every `SpernerNDim.SpernerTriangulation d N` projects to a `CellComplex (Vertex d N) d` by *forgetting* the two boundary-specific fields `adj_unique_facet` and `boundary_face`. The remaining fields (`Simplex`, `vertices`, `vertices_injective`, `adj`, `adj_symm`, `adj_vertices`, `adj_ne`) are exactly `CellComplex`'s. **`isFC_bridge`** and **`isDoorAt_bridge`** are `rfl` — the abstract and concrete `IsFC` / `isDoorAt` predicates are definitionally equal across the projection. **`sperner_from_triangulation`** is then a one-line application of `SpernerAbstract.sperner`. **`boundary_doors_agree`**: for *Sperner colorings*, the abstract boundary-door count equals the concrete one (which restricts to face $d$) — this is the bridge that lets the abstract parity argument recover the classical statement.",
@@ -47,7 +47,7 @@
   {
     "id": "ann-sperner-mathlib-oq01-freud-defs",
     "proofId": "sperner-ndim-mathlib-oq-01",
-    "range": { "startLine": 115, "endLine": 150 },
+    "range": { "startLine": 125, "endLine": 160 },
     "type": "definition",
     "title": "FreudSimplex and swapAdj: Permutations and Adjacent Transposition",
     "content": "**`FreudSimplex n`**: the subtype of `List (Fin n)` consisting of *nodup* lists of length $n$ — i.e., **permutations of $\\text{Fin}(n)$** in list form. Equipped with `DecidableEq` via the underlying list equality. **`swapAdj l hk0 hkn`**: swaps positions $k-1$ and $k$ in $l$ via two `List.set` operations, defined for any list (not just permutations). **`swapAdj_length`**: `set` doesn't change length (one-line `simp`). **`swapAdj_invol`**: applying `swapAdj` twice is the identity — the proof uses `List.ext_getElem` to compare element-by-element, with four `by_cases` branches on whether $i = k - 1$, $i = k$. The branch $i = k - 1, i = k$ is impossible (handled by `omega`); the other three branches simp through.",

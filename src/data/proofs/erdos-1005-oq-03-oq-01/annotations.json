@@ -14,7 +14,7 @@
   {
     "id": "ann-erdos1005oq0301-scaffold",
     "proofId": "erdos-1005-oq-03-oq-01",
-    "range": { "startLine": 62, "endLine": 82 },
+    "range": { "startLine": 66, "endLine": 82 },
     "type": "definition",
     "title": "Farey fraction scaffold",
     "content": "The self-contained data carried over from the sibling: FareyFraction n (reduced p/q with 1 ≤ q ≤ n, p ≤ q), its rational value toRat, and the unimodular predicate IsConsecutiveFarey (g.p·f.q − f.p·g.q = 1). These mirror the sibling exactly so the file stands alone.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-erdos1005oq0301-denomsum",
     "proofId": "erdos-1005-oq-03-oq-01",
-    "range": { "startLine": 84, "endLine": 129 },
+    "range": { "startLine": 88, "endLine": 129 },
     "type": "tactic",
     "title": "Reused denominator-sum criterion",
     "content": "The sibling's machinery, re-proved here for self-containment: toRat_lt_iff (order = cross-multiplication), intermediate_denom_ge (any fraction strictly between a unimodular pair has denominator ≥ b + d, via the identity q·(bc−ad) = d·(pb−aq) + b·(cq−pd)), and farey_adjacent_of_denom_sum_gt (b + d > n ⟹ adjacent). The headline is_successor proof feeds the constructed adjacency back through this last lemma.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-erdos1005oq0301-defs",
     "proofId": "erdos-1005-oq-03-oq-01",
-    "range": { "startLine": 131, "endLine": 165 },
+    "range": { "startLine": 135, "endLine": 165 },
     "type": "definition",
     "title": "The successor and the floor-division bracket",
     "content": "Definitions succK = ⌊(n+b)/d⌋, succNum e = k·c − a, succDen f = k·d − b. The two bracket lemmas are the workhorse: succK_mul_le gives k·d ≤ n+b (so f ≤ n, the successor stays in F_n) and lt_succK_succ_mul gives n+b < (k+1)·d (so d + f > n, the pair is adjacent). The multiplier k is precisely the largest one keeping f ≤ n.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-erdos1005oq0301-unimodular",
     "proofId": "erdos-1005-oq-03-oq-01",
-    "range": { "startLine": 200, "endLine": 220 },
+    "range": { "startLine": 204, "endLine": 220 },
     "type": "insight",
     "title": "Unimodularity is preserved for free",
     "content": "succ_unimodular: the new pair c/d, e/f again satisfies e·d − c·f = 1. The point is that this is automatic algebra — e·d − c·f = (kc−a)d − c(kd−b) = bc − ad = 1 — the multiplier k cancels entirely. After clearing the truncated subtractions over ℤ via zify (using the genuine-subtraction bounds), a single linear_combination against bc − ad = 1 closes it. The recurrence thus carries the unimodular invariant forward with no extra work.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-erdos1005oq0301-packaging",
     "proofId": "erdos-1005-oq-03-oq-01",
-    "range": { "startLine": 308, "endLine": 347 },
+    "range": { "startLine": 312, "endLine": 347 },
     "type": "tactic",
     "title": "Packaging e/f and ordering",
     "content": "succFarey bundles the five certificates into a FareyFraction n; succFarey_p/_q are the projection simp lemmas. cur_lt_succ shows c/d < e/f (immediate from e·d = c·f + 1), and isConsecutive_cur_succ records that c/d, e/f is again a unimodular pair — the input shape the headline and any iteration need.",

@@ -28,8 +28,8 @@
     "proofId": "erdos-994",
     "type": "definition",
     "range": {
-      "startLine": 45,
-      "endLine": 45
+      "startLine": 46,
+      "endLine": 47
     },
     "title": "Fractional Part Function",
     "content": "Defines $\\{x\\} = x - \\lfloor x \\rfloor$, the fractional part of a real number. This is the fundamental operation underlying equidistribution modulo 1. The formalization uses Lean's `Int.floor` for the floor function.",
@@ -50,8 +50,8 @@
     "proofId": "erdos-994",
     "type": "concept",
     "range": {
-      "startLine": 48,
-      "endLine": 53
+      "startLine": 49,
+      "endLine": 54
     },
     "title": "Fractional Part Bounds",
     "content": "Two proved theorems establishing that $0 \\leq \\{x\\} < 1$ for all $x$. `frac_nonneg` uses `Int.floor_le` ($\\lfloor x \\rfloor \\leq x$) and `frac_lt_one` uses `Int.sub_one_lt_floor` ($x - 1 < \\lfloor x \\rfloor$). These are among the few fully proved results in the file.",
@@ -72,8 +72,8 @@
     "proofId": "erdos-994",
     "type": "definition",
     "range": {
-      "startLine": 56,
-      "endLine": 56
+      "startLine": 57,
+      "endLine": 58
     },
     "title": "Fractional Part Sequence",
     "content": "Defines $\\{k\\alpha\\}_{k=1}^{\\infty}$, the sequence of fractional parts of multiples of $\\alpha$. This is the object studied by Weyl's equidistribution theorem (1916). For irrational $\\alpha$, this sequence is dense in $[0,1)$ and equidistributed in intervals.",
@@ -95,8 +95,8 @@
     "proofId": "erdos-994",
     "type": "definition",
     "range": {
-      "startLine": 59,
-      "endLine": 60
+      "startLine": 60,
+      "endLine": 62
     },
     "title": "Indicator Function",
     "content": "Defines $\\mathbf{1}_E(x) = 1$ if $x \\in E$, $0$ otherwise. Used to count hits: $\\sum_{k=1}^n \\mathbf{1}_E(\\{k\\alpha\\})$ is the number of fractional parts landing in $E$.",
@@ -116,8 +116,8 @@
     "proofId": "erdos-994",
     "type": "definition",
     "range": {
-      "startLine": 67,
-      "endLine": 68
+      "startLine": 68,
+      "endLine": 70
     },
     "title": "Count of Hits in E",
     "content": "Counts how many of $\\{\\alpha\\}, \\{2\\alpha\\}, \\ldots, \\{n\\alpha\\}$ fall in $E$, implemented using `Finset.range n` filtered by the membership predicate. The shift `k + 1` ensures we count from $k = 1$ (since `Finset.range n` gives $0, 1, \\ldots, n-1$).",
@@ -138,8 +138,8 @@
     "proofId": "erdos-994",
     "type": "definition",
     "range": {
-      "startLine": 71,
-      "endLine": 72
+      "startLine": 72,
+      "endLine": 74
     },
     "title": "Empirical Frequency",
     "content": "Normalizes the count by $n$ to get the empirical frequency $\\frac{1}{n}|\\{k \\leq n : \\{k\\alpha\\} \\in E\\}|$. Equidistribution means this converges to $\\lambda(E)$ as $n \\to \\infty$.",
@@ -159,8 +159,8 @@
     "proofId": "erdos-994",
     "type": "definition",
     "range": {
-      "startLine": 75,
-      "endLine": 76
+      "startLine": 76,
+      "endLine": 78
     },
     "title": "Equidistribution Predicate",
     "content": "Defines `IsEquidistributed α E μ` as `Tendsto (empiricalFrequency α E) atTop (nhds μ)`: the empirical frequency converges to $\\mu = \\lambda(E)$ in the topology of $\\mathbb{R}$. This is the precise limit condition that both Weyl and Khintchine concern.",
@@ -207,8 +207,8 @@
     "proofId": "erdos-994",
     "type": "definition",
     "range": {
-      "startLine": 89,
-      "endLine": 91
+      "startLine": 90,
+      "endLine": 93
     },
     "title": "Weyl's Statement as Proposition",
     "content": "Packages Weyl's theorem as a single proposition `WeylStatement`: for all measurable $E \\subseteq (0,1)$, almost every $\\alpha$ gives equidistribution. The quantifier order is $\\forall E,\\; \\forall^{\\text{a.e.}} \\alpha$.",
@@ -229,8 +229,8 @@
     "proofId": "erdos-994",
     "type": "concept",
     "range": {
-      "startLine": 94,
-      "endLine": 96
+      "startLine": 95,
+      "endLine": 98
     },
     "title": "Weyl's Theorem is True",
     "content": "Proves `weyl_is_true : WeylStatement` by introducing $E$ and its measurability/containment hypotheses, then applying the `weyl_theorem` axiom. This is a simple wrapper making the axiom usable as a named theorem.",
@@ -273,8 +273,8 @@
     "proofId": "erdos-994",
     "type": "definition",
     "range": {
-      "startLine": 110,
-      "endLine": 113
+      "startLine": 111,
+      "endLine": 115
     },
     "title": "Khintchine's Conjecture (Explicit Null Set)",
     "content": "An equivalent formulation making the null set explicit: $\\exists S$ with $\\lambda(S) = 0$ such that for all $\\alpha \\notin S$ and all measurable $E \\subseteq (0,1)$, equidistribution holds. This makes clear that the conjecture asks for a single universal null set $S$.",
@@ -295,8 +295,8 @@
     "proofId": "erdos-994",
     "type": "definition",
     "range": {
-      "startLine": 124,
-      "endLine": 125
+      "startLine": 125,
+      "endLine": 127
     },
     "title": "Weyl Quantifier Order",
     "content": "Makes the quantifier order of Weyl's theorem explicit: $\\forall E,\\; \\forall^{\\text{a.e.}} \\alpha$ (for each set, almost all $\\alpha$ work). The null set $N_E = \\{\\alpha : \\alpha \\text{ fails for } E\\}$ depends on $E$.",
@@ -317,8 +317,8 @@
     "proofId": "erdos-994",
     "type": "definition",
     "range": {
-      "startLine": 128,
-      "endLine": 129
+      "startLine": 129,
+      "endLine": 131
     },
     "title": "Khintchine Quantifier Order",
     "content": "Makes Khintchine's quantifier order explicit: $\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$ (almost all $\\alpha$ work for every set simultaneously). This would require a single null set $N$ independent of $E$—which Marstrand showed is impossible.",
@@ -339,8 +339,8 @@
     "proofId": "erdos-994",
     "type": "concept",
     "range": {
-      "startLine": 132,
-      "endLine": 132
+      "startLine": 129,
+      "endLine": 131
     },
     "title": "Quantifier Exchange Fails",
     "content": "Axiomatizes the key negative result: even though `WeylOrder` is true, `KhintchineOrder` does not follow. This captures the mathematical essence of the problem: $\\forall E\\; \\forall^{\\text{a.e.}} \\alpha \\not\\Rightarrow \\forall^{\\text{a.e.}} \\alpha\\; \\forall E$.",

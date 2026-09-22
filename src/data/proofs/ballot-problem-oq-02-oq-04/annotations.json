@@ -74,7 +74,7 @@
   {
     "id": "ann-density",
     "proofId": "ballot-problem-oq-02-oq-04",
-    "range": { "startLine": 137, "endLine": 151 },
+    "range": { "startLine": 138, "endLine": 152 },
     "type": "theorem",
     "title": "The U-shaped Density (arcsineDensity_symm, arcsineDensity_half)",
     "content": "arcsineDensity_symm proves f(x) = f(1−x): after unfolding, the argument x(1−x) is symmetric under x ↦ 1−x, so ring_nf closes it. arcsineDensity_half proves f(1/2) = 2/π: rewrite (1/2)(1−1/2) = (1/2)² so √((1/2)²) = 1/2 (sqrt_sq), then field_simp. The value 2/π ≈ 0.637 is the bottom of the U — the density's global minimum — quantifying the paradox: the 'fair' split of spending half the time positive is the single least likely outcome, while f diverges at the extremes 0 and 1 where the path spends almost all its time on one side.",

@@ -26,7 +26,7 @@
   {
     "id": "ann-pell-group",
     "proofId": "pell-equation-oq-04",
-    "range": { "startLine": 97, "endLine": 167 },
+    "range": { "startLine": 115, "endLine": 185 },
     "type": "insight",
     "title": "The Norm-1 Solutions Form an Abelian Group",
     "content": "`PellUnit D` is the subtype of integer points with x²−Dy²=1, and it carries a genuine `CommGroup` instance: the identity is (1,0), multiplication is composition (`comp`), and the inverse of (x,y) is its conjugate (x,−y) — because (x,y)·(x,−y) = (x²−Dy², 0) = (1,0) precisely when the norm is 1. Associativity and commutativity are `ring` facts about the coordinates (after `Prod.ext_iff`). This is the Pell group, and `unit_smul_sol` shows it *acts* on the solutions of every right-hand side N (since N·1 = N), so the N-solutions are partitioned into group orbits — the structural meaning of 'generalize to arbitrary N'.",

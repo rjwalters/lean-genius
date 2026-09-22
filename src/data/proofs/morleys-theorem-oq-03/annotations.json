@@ -14,7 +14,7 @@
   {
     "id": "morley-oq03-ann-amgm",
     "proofId": "morleys-theorem-oq-03",
-    "range": { "startLine": 50, "endLine": 108 },
+    "range": { "startLine": 54, "endLine": 108 },
     "type": "insight",
     "title": "AM–GM (SOS Certificate) and Three-Point Jensen for sin",
     "content": "Part I proves the two analytic inequalities. amgm_three establishes u·v·w ≤ ((u+v+w)/3)³ for nonnegative reals via the explicit sum-of-squares decomposition (u+v+w)³ − 27uvw = 3·Σ u(v−w)² + ½(u+v+w)·Σ(u−v)², which nlinarith closes — no rpow or weighted-mean machinery. The Jensen inequality sin a₁ + sin a₂ + sin a₃ ≤ 3·sin((a₁+a₂+a₃)/3) for aᵢ ∈ [0,π] is built by treating the mean as a fourth point and chaining the two-point (midpoint) concavity inequality, avoiding Finset/Matrix-indexed Jensen entirely.",
@@ -26,7 +26,7 @@
   {
     "id": "morley-oq03-ann-equality-cases",
     "proofId": "morleys-theorem-oq-03",
-    "range": { "startLine": 109, "endLine": 168 },
+    "range": { "startLine": 113, "endLine": 168 },
     "type": "insight",
     "title": "Equality Cases from Strict Concavity",
     "content": "sin_two_eq and sin_jensen_three_eq isolate the equality cases of the two- and three-point Jensen inequalities for sin. Because sin is strictly concave on [0,π] (Real.strictConcaveOn_sin_Icc), tightness in the midpoint inequality forces the two points to coincide; chaining this gives that equality in the three-point Jensen forces a₁ = a₂ = a₃. These equality-case lemmas are exactly what upgrades the bound to a strict uniqueness statement later.",
@@ -38,7 +38,7 @@
   {
     "id": "morley-oq03-ann-side-and-max",
     "proofId": "morleys-theorem-oq-03",
-    "range": { "startLine": 169, "endLine": 262 },
+    "range": { "startLine": 173, "endLine": 262 },
     "type": "concept",
     "title": "Morley Side Length and Its Sharp Maximum",
     "content": "Defines morleySide (the product form 8R·sin(α/3)·sin(β/3)·sin(γ/3)) and proves the sharp bound morley_side_le_equilateral: s ≤ 8R·sin³(π/9). The product of sines is bounded by sin³(π/9) by chaining AM–GM (applied to the three sines), the trisected-mean constraint a₁+a₂+a₃ = π/3, the three-point Jensen, and monotonicity of t↦t³ on [0,∞) (pow_le_pow_left₀); nonnegativity of each sin on [0,π] keeps every factor in range. morley_side_equilateral shows the equilateral attains the bound.",

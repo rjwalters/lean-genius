@@ -26,8 +26,8 @@
     "proofId": "erdos-50",
     "type": "definition",
     "range": {
-      "startLine": 37,
-      "endLine": 38
+      "startLine": 38,
+      "endLine": 40
     },
     "title": "Totient Ratio Sublevel Set",
     "content": "The set $\\{n \\in \\mathbb{N} : n > 0,\\; \\varphi(n)/n < c\\}$ for $c \\in [0,1]$. The ratio $\\varphi(n)/n = \\prod_{p \\mid n}(1 - 1/p)$ measures how 'smooth' or 'highly composite' $n$ is: it is small when $n$ has many small prime factors (e.g., primorials $p_k\\# = 2 \\cdot 3 \\cdot 5 \\cdots p_k$) and close to 1 when $n$ is prime.",
@@ -49,8 +49,8 @@
     "proofId": "erdos-50",
     "type": "definition",
     "range": {
-      "startLine": 41,
-      "endLine": 44
+      "startLine": 42,
+      "endLine": 46
     },
     "title": "Natural Density via $\\liminf$",
     "content": "The natural density $d(S) = \\lim_{N \\to \\infty} \\frac{|S \\cap \\{0,\\ldots,N\\}|}{N+1}$ formalized as $\\texttt{Filter.liminf}$ of the counting ratios. When the limit exists (as Schoenberg proved for $S = \\{n : \\varphi(n)/n < c\\}$), this equals the standard natural density.",
@@ -118,7 +118,7 @@
     "proofId": "erdos-50",
     "type": "concept",
     "range": {
-      "startLine": 60,
+      "startLine": 61,
       "endLine": 61
     },
     "title": "Monotonicity of $f$",
@@ -140,8 +140,8 @@
     "proofId": "erdos-50",
     "type": "concept",
     "range": {
-      "startLine": 64,
-      "endLine": 64
+      "startLine": 65,
+      "endLine": 65
     },
     "title": "Boundary Values $f(0) = 0$, $f(1) = 1$",
     "content": "At the endpoints: $f(0) = 0$ because no positive integer satisfies $\\varphi(n)/n < 0$, and $f(1) = 1$ because $\\varphi(n)/n < 1$ for all $n > 1$ (with only $\\varphi(1)/1 = 1$ excluded, having density 0).",

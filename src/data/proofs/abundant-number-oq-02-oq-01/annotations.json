@@ -38,7 +38,7 @@
   {
     "id": "ann-abn0201-sigma-N",
     "proofId": "abundant-number-oq-02-oq-01",
-    "range": { "startLine": 68, "endLine": 83 },
+    "range": { "startLine": 80, "endLine": 95 },
     "type": "insight",
     "title": "Multiplicative Assembly: σ(N) = 10799308800",
     "content": "`sigma_N` is the heart of the file: it computes $\\sigma(N)$ *without ever enumerating the divisors of a ten-digit number*. First `norm_num` rewrites $N$ as the right-nested product $25\\cdot(7\\cdot(11\\cdot(\\dots\\cdot 29)))$. Then seven applications of `isMultiplicative_sigma.map_mul_of_coprime` peel off one coprime factor at a time — each coprimality side condition discharged by `norm_num` (which evaluates `Nat.gcd`, deliberately avoiding `decide` because `Nat.gcd` does not kernel-reduce well). Rewriting with the eight atoms and a final `norm_num` gives $\\sigma(N) = 31\\cdot 8\\cdot 12\\cdot 14\\cdot 18\\cdot 20\\cdot 24\\cdot 30 = 10799308800$. This is what makes the whole result feasible and axiom-free.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-abn0201-odd-coprime",
     "proofId": "abundant-number-oq-02-oq-01",
-    "range": { "startLine": 96, "endLine": 100 },
+    "range": { "startLine": 108, "endLine": 112 },
     "type": "tactic",
     "title": "Odd and Coprime to 3",
     "content": "`odd_N` proves $N$ is odd and `not_three_dvd_N` proves $3\\nmid N$, both by kernel `decide`. Unlike divisor enumeration, oddness ($N \\bmod 2 = 1$) and non-divisibility by 3 ($N \\bmod 3 \\neq 0$) are single modular reductions that the kernel handles instantly even for a ten-digit literal, so no `native_decide` is needed here either — keeping the result free of `Lean.ofReduceBool`.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-abn0201-membership",
     "proofId": "abundant-number-oq-02-oq-01",
-    "range": { "startLine": 102, "endLine": 112 },
+    "range": { "startLine": 114, "endLine": 124 },
     "type": "insight",
     "title": "Membership Certificate and the Axiom Audit",
     "content": "`mem_odd_three_free_abundant` bundles the three facts into a single membership proof $N \\in \\{n \\mid \\mathrm{Odd}\\,n \\wedge \\neg 3\\mid n \\wedge \\mathrm{Abundant}\\,n\\}$ via the anonymous constructor $\\langle$odd_N, not_three_dvd_N, abundant_N$\\rangle$. This certifies $N$ as an **upper bound** for the least such number; the matching lower bound (`odd_abundant_coprime_three_ge_witness`) lives in the companion files. The closing `#print axioms` is a deliberate audit: it must report only `propext`, `Classical.choice`, `Quot.sound` — and in particular NOT `Lean.ofReduceBool` (which `native_decide` would introduce) or `sorryAx` — confirming the axiom-free claim.",

@@ -49,7 +49,7 @@
   {
     "id": "ann-easy-direction",
     "proofId": "erdos-1098-oq-01-oq-03",
-    "range": { "startLine": 111, "endLine": 150 },
+    "range": { "startLine": 167, "endLine": 206 },
     "type": "theorem",
     "title": "Sharp bound ω ≤ [G:Z(G)] (fully proved)",
     "content": "`clique_card_le_index`: every clique $S$ satisfies $|S| \\le [G:Z(G)]$ whenever the index is finite. Since the quotient map injects $S$ into the finite quotient $G/Z(G)$ (size $[G:Z(G)]$), `Finset.card_le_card_of_injOn` gives the bound. Hence `bounded_cliques_of_finite_index`: finite centre index $\\Rightarrow$ $\\omega(\\Gamma(G))$ finite, witnessed by the explicit bound $[G:Z(G)]$.",

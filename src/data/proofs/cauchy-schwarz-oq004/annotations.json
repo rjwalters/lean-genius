@@ -14,7 +14,7 @@
   {
     "id": "pcq2211-ann-02",
     "proofId": "cauchy-schwarz-oq004",
-    "range": { "startLine": 55, "endLine": 83 },
+    "range": { "startLine": 59, "endLine": 87 },
     "type": "insight",
     "title": "Forward Direction: Real-Part Projection of the Sesquilinear Parseval Identity",
     "content": "`parseval_rclike` is the genuine new content the parent left open. Mathlib's `HilbertBasis.hasSum_inner_mul_inner b x x` provides the *sesquilinear* identity $\\sum_i \\langle x, b_i\\rangle\\,\\langle b_i, x\\rangle = \\langle x, x\\rangle$ in $\\mathbb{K}$. The proof applies the continuous $\\mathbb{R}$-linear real-part map `RCLike.reCLM` through the infinite sum via `HasSum.mapL` — legitimate because a continuous linear map commutes with `HasSum`. On each summand, `inner_conj_symm` rewrites $\\langle x, b_i\\rangle = \\overline{\\langle b_i, x\\rangle}$, so the term becomes $\\overline{z}\\,z$ with $z = \\langle b_i, x\\rangle$; `RCLike.conj_mul` collapses this to $\\|z\\|^2$ (coerced from ℝ), whose real part is $\\|z\\|^2$ (`RCLike.ofReal_re`, after `ofReal_pow`). On the total, `inner_self_eq_norm_sq` gives $\\operatorname{re}\\langle x, x\\rangle = \\|x\\|^2$. The resulting `HasSum (fun i => ‖⟨bᵢ,x⟩‖²) (‖x‖²)` yields the identity by `tsum_eq`. `parseval_of_hilbertBasis` then transports it to the family `v` along `⇑b = v` by `subst`.",
@@ -26,7 +26,7 @@
   {
     "id": "pcq2211-ann-03",
     "proofId": "cauchy-schwarz-oq004",
-    "range": { "startLine": 85, "endLine": 110 },
+    "range": { "startLine": 89, "endLine": 114 },
     "type": "insight",
     "title": "Reverse Direction: Parseval ⟹ Trivial Orthogonal Complement",
     "content": "`orthogonalComplement_eq_bot_of_parseval` derives completeness (totality) from Parseval, and the argument is field-agnostic — it transports verbatim from the real case. Assuming Parseval holds for every $x$, it shows $(\\mathrm{span}_{\\mathbb{K}}\\{v_i\\})^\\perp = \\bot$. After `Submodule.eq_bot_iff`, take $x$ in the orthogonal complement. Since each $v_i$ lies in the span (`Submodule.subset_span (Set.mem_range_self i)`), membership forces $\\langle v_i, x\\rangle = 0$ for all $i$ via `Submodule.inner_right_of_mem_orthogonal`. Each coefficient norm then vanishes ($\\|0\\|^2 = 0$), so the Parseval sum collapses to $0$ (`tsum_zero`). Parseval equates this with $\\|x\\|^2$, giving $\\|x\\|^2 = 0$, and `pow_eq_zero_iff` + `norm_eq_zero` yield $x = 0$. The `CompleteSpace` hypothesis is unused here (the section-variable linter is disabled file-wide), confirming totality is a purely algebraic-geometric consequence of Parseval.",
@@ -38,7 +38,7 @@
   {
     "id": "pcq2211-ann-04",
     "proofId": "cauchy-schwarz-oq004",
-    "range": { "startLine": 111, "endLine": 141 },
+    "range": { "startLine": 115, "endLine": 145 },
     "type": "insight",
     "title": "Main Characterization: the iff over 𝕜",
     "content": "`hilbertBasis_iff_parseval` assembles the criterion over an arbitrary RCLike field. Forward: `rintro ⟨b, hb⟩` and apply `parseval_of_hilbertBasis`. Reverse: from Parseval build the basis with `HilbertBasis.mkOfOrthogonalEqBot hv (orthogonalComplement_eq_bot_of_parseval hp)`, witnessed by `HilbertBasis.coe_mkOfOrthogonalEqBot` to confirm the constructed basis has underlying family $v$. `orthogonalComplement_eq_bot_iff_parseval` packages the same equivalence in construction-free form (totality ⟺ Parseval) — the cleanest internal completeness test, producing no `HilbertBasis` object. Together these are the standard 'orthonormal system is a basis iff it is total iff Parseval saturates' equivalence, now valid over both ℝ and ℂ.",
@@ -50,7 +50,7 @@
   {
     "id": "pcq2211-ann-05",
     "proofId": "cauchy-schwarz-oq004",
-    "range": { "startLine": 143, "endLine": 162 },
+    "range": { "startLine": 115, "endLine": 134 },
     "type": "concept",
     "title": "Examples and Axiom Audit",
     "content": "The example confirms a genuine Hilbert basis over $\\mathbb{K}$ (e.g. the standard basis of a complex $\\ell^2$ space) satisfies Parseval, applying `parseval_rclike` directly. The closing `#print axioms ParsevalCompletenessRCLike.hilbertBasis_iff_parseval` certifies the development depends only on Mathlib's standard foundational axioms — `propext`, `Classical.choice`, `Quot.sound` — with no `Lean.ofReduceBool` (no `native_decide`) and no `sorryAx`. The entry is fully machine-checked and axiom-free in the project's sense.",

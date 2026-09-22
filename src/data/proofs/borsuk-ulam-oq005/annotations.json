@@ -26,7 +26,7 @@
   {
     "id": "ann-largest-prime-isprime",
     "proofId": "borsuk-ulam-oq005",
-    "range": { "startLine": 57, "endLine": 65 },
+    "range": { "startLine": 63, "endLine": 71 },
     "type": "insight",
     "title": "Primality of largestPrimeBelow via Witness 2",
     "content": "Proves that `largestPrimeBelow n` is itself prime whenever $n \\geq 2$, using `Nat.findGreatest_spec` with the explicit witness `Nat.prime_two`. The hypothesis `2 ≤ n` is exactly what `findGreatest_spec` needs: a value ≤ n satisfying the predicate, ensuring the search returns a real prime rather than the default 0.",
@@ -98,7 +98,7 @@
   {
     "id": "ann-concrete-four-six",
     "proofId": "borsuk-ulam-oq005",
-    "range": { "startLine": 144, "endLine": 149 },
+    "range": { "startLine": 63, "endLine": 68 },
     "type": "insight",
     "title": "Concrete Case: S₄ on ℝ⁶ — The Klein-4 Test",
     "content": "$\\text{symBUDim}(4, 6) = 5$ (conditional). Mathematically the most interesting concrete case because $S_4$ contains the non-cyclic Klein four-group $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$ — a natural counterexample candidate to the conjecture. Note `largestPrimeBelow 4 = 3` (since 4 is composite), so the conjecture predicts $\\text{symBUDim}(4, 6) = \\text{buDim}(3, 6) = 5$, NOT $\\text{buDim}(4, 6)$.",

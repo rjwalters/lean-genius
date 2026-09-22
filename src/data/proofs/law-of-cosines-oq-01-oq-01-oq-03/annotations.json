@@ -98,7 +98,7 @@
   {
     "id": "ann-polar-std-law",
     "proofId": "law-of-cosines-oq-01-oq-01-oq-03",
-    "range": { "startLine": 200, "endLine": 234 },
+    "range": { "startLine": 45, "endLine": 79 },
     "type": "theorem",
     "title": "Standard Spherical Law Applied to Polar Triangle",
     "content": "Verifies that the *polar triangle itself* satisfies the standard spherical law of cosines — i.e., the polar triangle is just another spherical triangle, so it inherits the same relation. The clever part is the dot decomposition $\\langle A', B'\\rangle = \\langle A', C'\\rangle\\langle B', C'\\rangle + \\langle \\mathrm{proj}_{C'^\\perp} A',\\ \\mathrm{proj}_{C'^\\perp} B'\\rangle$, proved by `linear_combination` with the unit constraint $\\|C'\\|^2 = 1$ as polynomial certificate. Combined with `cos_arcLen_unit` (3×) and `projperp_dot_sinsincos`, this assembles into the standard law.",

@@ -24,7 +24,7 @@
   {
     "id": "ann-defect-hall-reproduced",
     "proofId": "halls-theorem-oq-01-oq-02",
-    "range": { "startLine": 60, "endLine": 177 },
+    "range": { "startLine": 63, "endLine": 177 },
     "type": "tactic",
     "title": "The Defect (Ore) Biconditional, Reproduced",
     "content": "defect_hall is the qualitative deficiency theorem — the relaxed Hall condition ∀ s, #s ≤ #(s.biUnion t) + d holds iff there is a partial SDR leaving at most d indices unmatched. It is identical to the verified statement in halls-theorem-oq-01-oq-01 and is inlined here so this file depends only on Mathlib. The forward direction adjoins d universal dummies over α ⊕ Fin d, turning relaxed Hall for t into ordinary Hall for the enlarged family and applying Mathlib's marriage theorem; the converse is an inter/sdiff counting split. This lemma is the single engine the König formula drives at one optimal slack.",

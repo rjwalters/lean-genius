@@ -27,8 +27,8 @@
     "proofId": "erdos-461",
     "type": "definition",
     "range": {
-      "startLine": 24,
-      "endLine": 27
+      "startLine": 20,
+      "endLine": 23
     },
     "title": "Smooth Component Definition",
     "content": "The $t$-smooth component $s_t(n)$ is defined **constructively** as `(n.factors.filter (· < t)).prod` — the product of prime factors of $n$ (with multiplicity) that are strictly less than $t$. This extracts the largest divisor of $n$ whose prime factorization consists entirely of primes $< t$. Handles $n = 0$ correctly: `Nat.factors 0 = []`, so $s_t(0) = 1$.",

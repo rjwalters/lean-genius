@@ -2,7 +2,7 @@
   {
     "id": "ann-minor-ij",
     "proofId": "cramers-rule-oq001",
-    "range": { "startLine": 78, "endLine": 82 },
+    "range": { "startLine": 87, "endLine": 91 },
     "type": "definition",
     "title": "The complementary n×n submatrix (uniform-in-n)",
     "content": "`minorIJ A i j` is the complementary `n×n` submatrix obtained by deleting row `i` and column `j` from an `(n+1)×(n+1)` matrix. The construction `A.submatrix (Fin.succAbove i) (Fin.succAbove j)` uses `Fin.succAbove i : Fin n → Fin (n+1)`, the canonical injection that skips index `i`. Crucially, `minorIJ` is declared `abbrev` rather than `def`: this makes it transparent to definitional equality, which is what enables the `qdetF_eq_qdet3` bridge to hold by `rfl` (since the parent's `block3` is itself an `abbrev` over the same body).",
@@ -110,7 +110,7 @@
   {
     "id": "ann-qdetn-step",
     "proofId": "cramers-rule-oq001",
-    "range": { "startLine": 209, "endLine": 233 },
+    "range": { "startLine": 218, "endLine": 242 },
     "type": "definition",
     "title": "qdetN_step — the non-recursive one-step Schur formula (Route B, S3 SCAFFOLD)",
     "content": "`qdetN_step` is the **non-commutative** counterpart to `qdetF` for an `(n+1)×(n+1)` matrix `A` over a division ring `D`. It computes the Gelfand–Retakh Schur correction `A i j − ∑_{p,q : Fin n} A i (succAbove j q) · Minv q p · A (succAbove i p) j`, where `Minv` plays the role of the (homological-relations) inverse of the complementary minor `minorIJ A i j`. Crucially, `Minv` is taken as an *explicit parameter* rather than constructed by mutual recursion — this is the structural innovation of the S3 SCAFFOLD: the recurrence is decoupled from its inverse-construction. The full inductive `qdetN` (S4+) will be obtained either (a) by structural recursion on `Σ n, Matrix _ _ D` with `qdetN_step` as the recurrence kernel, or (b) by parameterising on `Invertible (minorIJ A i j)` and treating the inverse as a typeclass input — avoiding mutual recursion altogether. Both routes converge on `qdetN_step A i j Minv`; only the source of `Minv` differs.",

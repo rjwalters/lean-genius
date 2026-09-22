@@ -26,7 +26,7 @@
     "id": "ann-e1018-vkf-axiom",
     "proofId": "erdos-1018-oq-04",
     "range": {
-      "startLine": 162,
+      "startLine": 163,
       "endLine": 163
     },
     "type": "concept",
@@ -51,7 +51,7 @@
     "id": "ann-e1018-k5-nonplanar",
     "proofId": "erdos-1018-oq-04",
     "range": {
-      "startLine": 167,
+      "startLine": 168,
       "endLine": 172
     },
     "type": "insight",
@@ -196,8 +196,8 @@
     "proofId": "erdos-1018-oq-04",
     "type": "insight",
     "range": {
-      "startLine": 92,
-      "endLine": 117
+      "startLine": 94,
+      "endLine": 119
     },
     "title": "Density Threshold and Maximum Edge Count",
     "content": "`isDenseHypergraph` formalizes the super-linear density regime: at least $n^{r-1+\\varepsilon}$ edges (generalizing the graph threshold $n^{1+\\varepsilon}$ at $r=2$). `max_edges` proves the matching upper bound $|E(H)|\\leq\\binom{n}{r}$ for every $r$-uniform hypergraph on $n$ vertices, via `card_le_card` against the full $r$-subset family. Together these pin down the density scale at which the topological obstruction is conjectured to appear.",
@@ -268,8 +268,8 @@
     "proofId": "erdos-1018-oq-04",
     "type": "concept",
     "range": {
-      "startLine": 195,
-      "endLine": 235
+      "startLine": 201,
+      "endLine": 241
     },
     "title": "Generalized Kostochka–Pyber Conjecture and Graph Recovery",
     "content": "`hypergraph_kostochka_pyber` states the central open question: for $r\\geq2$ and $\\varepsilon>0$, every $r$-uniform hypergraph with $\\geq n^{r-1+\\varepsilon}$ edges contains a sub-hypergraph on $O_{r,\\varepsilon}(1)$ vertices that is non-embeddable in $\\mathbb{R}^{2(r-1)}$. The supporting `criticalDim_graph` ($2(r-1)=2$), `density_exponent_graph` ($r-1+\\varepsilon=1+\\varepsilon$), and `obstruction_size_graph` ($2r+1=5$) verify that at $r=2$ this collapses exactly to the original Kostochka–Pyber theorem (1988). For $r\\geq3$ it is OPEN.",
@@ -316,8 +316,8 @@
     "proofId": "erdos-1018-oq-04",
     "type": "concept",
     "range": {
-      "startLine": 277,
-      "endLine": 316
+      "startLine": 279,
+      "endLine": 318
     },
     "title": "Turán-Type Threshold and Honest Status Summary",
     "content": "`turanNumber` (the extremal count avoiding $K_t^{(r)}$) is left as a `def` with `sorry` -- only the graph case $\\mathrm{ex}(n,K_t)$ is classical (Turán), and even $\\pi(K_4^{(3)})$ is a famous open problem. The axiom `density_exceeds_turan` records that the super-linear density $n^{r-1+\\varepsilon}$ eventually overtakes any subquadratic Turán number, forcing complete subhypergraphs. The file's summary is candid about its status: 4 axioms, 1 definitional sorry, the full conjecture OPEN for $r\\geq3$ -- matching the entry's `axiomatized`/`axiom` badge and `sorries: 1`.",

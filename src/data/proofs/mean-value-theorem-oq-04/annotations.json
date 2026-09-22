@@ -86,7 +86,7 @@
   {
     "id": "ann-lipschitz-bound",
     "proofId": "mean-value-theorem-oq-04",
-    "range": { "startLine": 276, "endLine": 292 },
+    "range": { "startLine": 270, "endLine": 286 },
     "type": "theorem",
     "title": "lipschitz_dist_bound: Distance Control from Derivative Bounds",
     "content": "For K-Lipschitz continuous F (|F'(x)| ≤ K everywhere): |F(x) - F(y)| ≤ K·|x - y|. This is the quantitative bound on displacement from derivative bounds, proved by applying Newton-Leibniz to |F(x) - F(y)| = |∫ᵧˣ F'| ≤ ∫ᵧˣ K = K|x-y|. In the approximation context: integral_approx_from_mvt gives |∫f - f(c)·(b-a)| ≤ Lip(f')·(b-a)²/2, the first-order quadrature error bound.",

@@ -14,7 +14,7 @@
   {
     "id": "ann-kummer-oq03-carry-count",
     "proofId": "kummer-theorem-oq-03",
-    "range": { "startLine": 30, "endLine": 31 },
+    "range": { "startLine": 31, "endLine": 33 },
     "type": "definition",
     "title": "carryCount: Number of Base-p Carries in k + (n-k)",
     "content": "`carryCount p n k b` counts the positions $i \\in \\{1, \\ldots, b-1\\}$ where a carry occurs when adding $k$ and $n-k$ in base $p$. The predicate `p^i ≤ k % p^i + (n-k) % p^i` captures a carry at position $i$: the sum of the $i$-th digit contributions of $k$ and $n-k$ overflows the $p^i$ threshold. The bound `b = Nat.log p n + 1` is sufficient since carries above the top digit are impossible. The `noncomputable` qualifier is needed since `Finset.card` of a `filter` over `Ico` requires decidability of the predicate — in Lean 4 with `ENNReal`-like real arithmetic this is classical. This definition is the discrete encoding of Kummer's 1852 carry count.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-summary-fractal",
     "proofId": "kummer-theorem-oq-03",
-    "range": { "startLine": 96, "endLine": 114 },
+    "range": { "startLine": 97, "endLine": 114 },
     "type": "insight",
     "title": "The Fractal Structure of Pascal's Triangle mod Prime Powers",
     "content": "The closing summary synthesizes the results into the qualitative picture. Because p-adic divisibility of C(n,k) is controlled entirely by the base-p carry pattern, the divisibility layers stack: C(n,k) ≡ 0 mod p iff ≥ 1 carry (Lucas), mod p² iff ≥ 2 carries, ..., mod pᵐ iff ≥ m carries. This is exactly why Pascal's triangle mod p exhibits self-similar fractal structure — for p = 2 the pattern of odd entries is the Sierpiński triangle, and in general the divisibility pattern reproduces itself at scale p because a digit of the index either does or does not force a carry. The special rows pⁿ (all interior entries divisible by p) are the 'blank rows' that separate the self-similar blocks. The mathematical content of the fractal is thus purely the arithmetic of base-p digits.",

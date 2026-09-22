@@ -42,7 +42,7 @@
     "content": "The principal symbol is the key invariant for the qualitative theory of PDEs: ellipticity, hyperbolicity, and local solvability are all determined by $p_m$ rather than the lower-order terms. By filtering to `MultiIndex.order \u03b1 = m` via an `if-then-else` inside `Finset.univ.sum`, Lean correctly extracts the homogeneous part and converts real $\\xi$ components to complex via the cast `(\u03be i : \u2102)`.",
     "proofId": "hilbert-20-oq-01",
     "range": {
-      "startLine": 69,
+      "startLine": 70,
       "endLine": 82
     },
     "type": "insight"

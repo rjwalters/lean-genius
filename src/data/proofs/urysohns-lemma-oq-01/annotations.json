@@ -14,7 +14,7 @@
   {
     "id": "ann-abstract-normal",
     "proofId": "urysohns-lemma-oq-01",
-    "range": { "startLine": 45, "endLine": 75 },
+    "range": { "startLine": 49, "endLine": 75 },
     "type": "theorem",
     "title": "The Abstract Urysohn Lemma (Re-exported)",
     "content": "urysohn_normal re-exports Mathlib's exists_continuous_zero_one_of_isClosed: in a NormalSpace, disjoint closed s, t admit a continuous f : C(X,ℝ) with f = 0 on s, f = 1 on t, 0 ≤ f ≤ 1. urysohn_locallyCompact gives the locally-compact-Hausdorff form (compact set vs. disjoint closed set), the version behind partitions of unity and the Riesz representation theorem. urysohn_point_isClosed separates a point from a disjoint closed set in a normal T1 space by applying the lemma to the closed singleton {x₀} — the gateway to complete regularity.",

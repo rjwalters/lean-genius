@@ -14,7 +14,7 @@
   {
     "id": "ann-at-cos20-conj-roots",
     "proofId": "angle-trisection-cos-20-gal-oq-02-oq-01",
-    "range": { "startLine": 49, "endLine": 84 },
+    "range": { "startLine": 53, "endLine": 84 },
     "type": "insight",
     "title": "Conjugation Maps ζ to the Other Root",
     "content": "conj_zeta proves conj(e^{iθ}) = e^{−iθ} via Complex.exp_conj (exp commutes with conjugation). zeta_mul gives the unit-circle product e^{iθ}·e^{−iθ} = 1; zeta_add gives the sum e^{iθ} + e^{−iθ} = 2cos θ (Complex.two_cos). quadratic_factor assembles these into (z − e^{iθ})(z − e^{−iθ}) = z² − (2cos θ)z + 1. The two roots are a complex-conjugate pair, so conjugation is exactly the swap of the two roots of this real quadratic.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-at-cos20-fixes-coeff",
     "proofId": "angle-trisection-cos-20-gal-oq-02-oq-01",
-    "range": { "startLine": 85, "endLine": 94 },
+    "range": { "startLine": 89, "endLine": 94 },
     "type": "insight",
     "title": "Conjugation Fixes the Real Coefficient 2cos θ",
     "content": "conj_two_cos proves conj(2cos θ) = 2cos θ. This certifies that the quadratic X²−(2cos θ)X+1 genuinely lives over the real subfield ℚ(cos θ): the automorphism that swaps the roots ζ and ζ⁻¹ leaves the base-field coefficient fixed, exactly as the tower ℚ(cos θ) ⊆ ℚ(ζ) demands of a ℚ(cos θ)-automorphism.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-at-cos20-roots-distinct",
     "proofId": "angle-trisection-cos-20-gal-oq-02-oq-01",
-    "range": { "startLine": 95, "endLine": 131 },
+    "range": { "startLine": 99, "endLine": 131 },
     "type": "insight",
     "title": "Sine Positivity Makes Conjugation Nontrivial (n ≥ 3)",
     "content": "zeta_im computes Im(e^{iθ}) = sin θ; conj_zeta_ne_self_iff reduces 'conjugation moves ζ' to sin θ ≠ 0 (Complex.conj_eq_iff_im). sin_two_pi_div_pos proves sin(2π/n) > 0 for n ≥ 3 (Real.sin_pos_of_pos_of_lt_pi, since 0 < 2π/n < π); sin_two_pi_div_ne_zero packages the nonvanishing, and cyclotomic_conj_ne_self combines it with conj_zeta_ne_self_iff to conclude conjugation moves ζₙ for every cyclotomic angle n ≥ 3. This is the analytic engine — an elementary trigonometric fact — that the next section turns into the geometric statement 'the two roots are distinct'.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-at-cos20-consistency",
     "proofId": "angle-trisection-cos-20-gal-oq-02-oq-01",
-    "range": { "startLine": 149, "endLine": 161 },
+    "range": { "startLine": 153, "endLine": 161 },
     "type": "concept",
     "title": "Consistency Checks: φ(9)/2 = φ(7)/2 = 3",
     "content": "totient_div_two_nine and totient_div_two_seven verify φ(9)/2 = 3 (cos 40°, the cos 20° trisection sibling) and φ(7)/2 = 3 (regular heptagon). The verified degree-2 step is precisely the ÷2 carrying Euler's totient φ(n) down to the gallery's computed cubic degrees — the cubics whose irreducibility makes trisecting 120° and constructing the heptagon impossible by straightedge and compass.",

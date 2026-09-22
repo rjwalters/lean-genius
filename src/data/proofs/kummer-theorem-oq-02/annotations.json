@@ -103,8 +103,8 @@
     "content": "The evaluation theorems establish that q-analogs are genuine generalizations. The proofs of qBinomial_eval_one and qBinomial_eq_zero use the same Pascal recurrence structure as the definitions, showing definitional coherence. qNumber_add_shift is the key algebraic identity used in the quotient formula proof \u2014 it partitions the geometric sum into two consecutive ranges.",
     "proofId": "kummer-theorem-oq-02",
     "range": {
-      "startLine": 365,
-      "endLine": 412
+      "startLine": 371,
+      "endLine": 409
     }
   },
   {
@@ -130,7 +130,7 @@
     "content": "The quotient formula is the most technically demanding theorem in the file. The linear_combination step at line 199-200 is the mathematical heart: it proves the polynomial identity by expressing the goal as a linear combination of the hypotheses with explicit polynomial coefficients. This is the q-analog of the binomial identity C(n+1,k+1) = C(n,k) + C(n,k+1), lifted to polynomial ring arithmetic.",
     "proofId": "kummer-theorem-oq-02",
     "range": {
-      "startLine": 163,
+      "startLine": 167,
       "endLine": 205
     }
   },

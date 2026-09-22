@@ -28,7 +28,7 @@
     "proofId": "erdos-218",
     "type": "definition",
     "range": {
-      "startLine": 43,
+      "startLine": 46,
       "endLine": 67
     },
     "title": "Prime Enumeration",
@@ -51,8 +51,8 @@
     "proofId": "erdos-218",
     "type": "definition",
     "range": {
-      "startLine": 69,
-      "endLine": 100
+      "startLine": 96,
+      "endLine": 107
     },
     "title": "Prime Gap Function",
     "content": "primeGap(n) = nthPrime(n+1) - nthPrime(n) = d_n. primeGap_pos: proved (gaps always positive, from strict monotonicity). Specific values: primeGap 0 = 1, primeGap 1 = 2, primeGap 2 = 2, primeGap 3 = 4.",
@@ -213,7 +213,7 @@
     "proofId": "erdos-218",
     "type": "concept",
     "range": {
-      "startLine": 273,
+      "startLine": 274,
       "endLine": 300
     },
     "title": "Symmetry Heuristic and Partition",

@@ -2,7 +2,7 @@
   {
     "id": "ann-bern-oq010201-header",
     "proofId": "bernoulli-inequality-oq-01-oq-02-oq-01",
-    "range": { "startLine": 4, "endLine": 38 },
+    "range": { "startLine": 5, "endLine": 38 },
     "type": "concept",
     "title": "The parent's open question, posed and answered",
     "content": "The docstring states the parent's first listed open question verbatim: does the degree-k truncation ∑_{i≤k} C(n,i)aⁱ ≤ (1+a)ⁿ hold for all a ≥ 0 with equality iff a = 0 ∨ n ≤ k? This file answers it for every k at once. The key reframing is that the proof needs no Pascal induction (the parent's tool) at all — the truncation is literally a sub-sum of the binomial expansion, so the bound, its strictness, and its equality case all follow from nonnegativity of the discarded terms.",
@@ -14,7 +14,7 @@
   {
     "id": "ann-bern-oq010201-expansion",
     "proofId": "bernoulli-inequality-oq-01-oq-02-oq-01",
-    "range": { "startLine": 46, "endLine": 59 },
+    "range": { "startLine": 48, "endLine": 59 },
     "type": "tactic",
     "title": "Orienting the binomial theorem to match the truncation",
     "content": "term n i a := C(n,i)·aⁱ packages the summand and term_nonneg gives its nonnegativity for a ≥ 0. full_expansion rewrites (1+a)ⁿ with add_pow then normalizes each summand (add_comm puts a first so the 1^{n-i} factor disappears) into ∑_{i ∈ range (n+1)} term n i a — exactly the orientation in which the truncation ∑_{i ∈ range (k+1)} is a literal initial segment.",

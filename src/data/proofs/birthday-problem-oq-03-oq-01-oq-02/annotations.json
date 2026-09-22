@@ -55,8 +55,8 @@
     "title": "asympThreshold_cubed: Exact Inverse of Cube Root",
     "content": "asympThreshold_cubed proves (asympThreshold d)\u00b3 = 6d\u00b2 ln 2 for d \u2265 1. This confirms asympThreshold is the exact solution to n\u00b3 = 6d\u00b2 ln 2. Proof: (x^{1/3})\u00b3 = x^{(1/3)\u00b73} = x^1 = x by Real.rpow_mul and Real.rpow_one. Requires d \u2265 1 to ensure the base 6d\u00b2 ln 2 is non-negative (ln 2 > 0 requires knowing log 2 > 0).",
     "range": {
-      "startLine": 134,
-      "endLine": 141
+      "startLine": 164,
+      "endLine": 171
     },
     "mathContext": "Chain: asympThreshold(d)^3 = ((6d\u00b2 ln2)^{1/3})^3 = (6d\u00b2 ln2)^{(1/3)\u00b73} = (6d\u00b2 ln2)^1 = 6d\u00b2 ln2. Key Lean tactic: `rw [\u2190 Real.rpow_natCast, \u2190 Real.rpow_mul (by positivity)]` followed by `norm_num [Real.rpow_one]`.",
     "significance": "supporting",
@@ -78,8 +78,8 @@
     "title": "asympThreshold_ratio: d^{2/3} Scaling with Explicit Constant",
     "content": "asympThreshold_ratio proves asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} for all d \u2265 1. This is the cleanest statement of the asymptotic: the threshold grows like d^{2/3} with a constant factor (6 ln 2)^{1/3} \u2248 1.614. Proof strategy: factor (6d\u00b2 ln2)^{1/3} = (6 ln2)^{1/3} \u00b7 (d\u00b2)^{1/3} = (6 ln2)^{1/3} \u00b7 d^{2/3} using Real.mul_rpow (both factors \u2265 0), then divide both sides by d^{2/3}.",
     "range": {
-      "startLine": 142,
-      "endLine": 155
+      "startLine": 171,
+      "endLine": 184
     },
     "mathContext": "The constant C = (6 ln 2)^{1/3} \u2248 (6 \u00b7 0.693)^{1/3} \u2248 4.158^{1/3} \u2248 1.614. So for d=365: asympThreshold(365) \u2248 1.614 \u00b7 365^{2/3} \u2248 1.614 \u00b7 51.2 \u2248 82.6. The exponent 2/3 = (k-1)/k for k=3, a special case of the general k-way coincidence scaling.",
     "significance": "key",
@@ -102,8 +102,8 @@
     "title": "asympThreshold_order: \u0398(d^{2/3}) via Taylor Bounds for ln 2",
     "content": "asympThreshold_order proves d^{2/3} \u2264 asympThreshold(d) \u2264 3d^{2/3} for all d \u2265 1. Lower bound: (6 ln 2)^{1/3} \u2265 1 because 6 ln 2 \u2265 1 (ln 2 > 0.69 > 1/6). Proved using 4-term Taylor bound exp(0.6932) > 2 giving log 2 > 0.6931. Upper bound: (6 ln 2)^{1/3} \u2264 3 because 6 ln 2 \u2264 27 = 3\u00b3. Uses 3-term Taylor exp(1) > 2.5 > 2 giving log 2 < 1, then 6\u00b71 = 6 \u2264 27. Key Lean issue: Real.rpow_le_rpow with inline `by` arguments creates unresolved metavariables \u2014 must use `calc` with `apply; norm_num` separated.",
     "range": {
-      "startLine": 156,
-      "endLine": 200
+      "startLine": 185,
+      "endLine": 229
     },
     "mathContext": "Both bounds translate via asympThreshold_ratio: asympThreshold(d) = (6 ln 2)^{1/3}\u00b7d^{2/3}, so bounding the constant suffices. Taylor bounds for ln 2: lower bound 0.6931 via 4-term series at x=0.6932; upper bound 1 via 3-term series showing e^1 > 2.",
     "significance": "supporting",

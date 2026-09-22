@@ -14,7 +14,7 @@
   {
     "id": "ann-beec-channel",
     "proofId": "shannon-channel-coding-bec-oq-04",
-    "range": { "startLine": 93, "endLine": 135 },
+    "range": { "startLine": 96, "endLine": 135 },
     "type": "definition",
     "title": "The Binary Error-and-Erasure Channel BEEC(ε, q)",
     "content": "beec : DMChannel Bool (Option Bool) erases each symbol with probability ε (W x none = ε) and otherwise passes it through a BSC with crossover q: W x (some y) = (1-ε)(1-q) when x = y (delivered correctly) and (1-ε)q when x ≠ y (delivered flipped). The rows sum to ε + (1-ε)(1-q) + (1-ε)q = ε + (1-ε) = 1. Setting q = 0 recovers the BEC; setting ε = 0 recovers the BSC.",

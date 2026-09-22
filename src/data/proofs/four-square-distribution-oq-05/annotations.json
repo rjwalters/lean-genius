@@ -38,7 +38,7 @@
   {
     "id": "fsd-oq05-ann-two-pow",
     "proofId": "four-square-distribution-oq-05",
-    "range": { "startLine": 69, "endLine": 75 },
+    "range": { "startLine": 82, "endLine": 88 },
     "type": "theorem",
     "title": "2^(nonzeroCount) Divides the Contribution",
     "content": "`two_pow_nonzeroCount_dvd_contribution` is the headline result: `2^(nonzeroCount t) ∣ contribution t`. It is obtained from `signFactor_dvd_contribution` by unfolding `signFactor` to its definition `2^(nonzeroCount)` in the hypothesis. Group-theoretically this is the statement that the order of the sign-change subgroup (ℤ/2)^(nonzeroCount) divides the orbit size, an instance of Lagrange's theorem made concrete.",

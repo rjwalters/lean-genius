@@ -24,7 +24,7 @@
   {
     "id": "ann-bezout-int-binary-defn",
     "proofId": "bezout-identity-oq-01-oq-01-oq-02",
-    "range": { "startLine": 38, "endLine": 44 },
+    "range": { "startLine": 42, "endLine": 48 },
     "type": "definition",
     "title": "intBinaryGcd: One-Line Definition via natAbs",
     "content": "**`intBinaryGcd a b : ℤ := ↑(binaryGcd a.natAbs b.natAbs)`** — the entire integer extension is a single coercion + composition. The output is always nonneg (a nonneg integer cast from ℕ), agreeing with Mathlib's convention that `(Int.gcd a b : ℤ) ≥ 0`. The definition is `def`, not `noncomputable` — `binaryGcd` on ℕ is computable, and so is the result.",

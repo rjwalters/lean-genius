@@ -2,7 +2,7 @@
   {
     "id": "ann-intro",
     "proofId": "sylvester-sequence-oq-02-oq-01",
-    "range": { "startLine": 3, "endLine": 42 },
+    "range": { "startLine": 4, "endLine": 42 },
     "type": "concept",
     "title": "From Convergence to an Exact Tail",
     "content": "Sylvester's sequence $a_0 = 2$, $a_{n+1} = a_n^2 - a_n + 1$ (2, 3, 7, 43, 1807, …; OEIS A000058) is the greedy Egyptian-fraction expansion of $1$. The parent entry (oq-02) proves $\\sum'_k 1/a_k = 1$ and that the error term $1/(a_{n+1}-1)$ tends to $0$, but only as an asymptotic statement. This entry makes the convergence **exact**: the entire infinite tail past the first $n+1$ terms equals precisely $1/(a_{n+1}-1)$, which by the Euclid/Sylvester product identity is $1/\\prod_{k\\le n} a_k$.",

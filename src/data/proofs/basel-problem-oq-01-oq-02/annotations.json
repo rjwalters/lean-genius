@@ -26,8 +26,8 @@
   {
     "id": "ann-zeta-even-statement",
     "proofId": "basel-problem-oq-01-oq-02",
-    "range": { "startLine": 75, "endLine": 76 },
-    "type": "definition",
+    "range": { "startLine": 89, "endLine": 104 },
+    "type": "theorem",
     "title": "Statement: every even zeta value is irrational",
     "content": "The main theorem `zeta_even_irrational` asserts that for every `n ≥ 1`, the series `∑' k, 1/k^(2n)` — the even-argument zeta value ζ(2n) — is irrational. The hypothesis `hn : 0 < n` excludes the divergent case 2n = 0 (ζ(0) is not a convergent series). This is the tractable half of the parent open question, which asks the same for the odd values ζ(2n+1).",
     "mathContext": "$\\zeta(2n) = \\sum_{k=1}^{\\infty} \\frac{1}{k^{2n}}$ is irrational for all $n \\ge 1$.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-open-odd",
     "proofId": "basel-problem-oq-01-oq-02",
-    "range": { "startLine": 110, "endLine": 117 },
+    "range": { "startLine": 111, "endLine": 117 },
     "type": "concept",
     "title": "The open odd case (documentation only)",
     "content": "This closing docstring deliberately states NO theorem about ζ(2n+1). The irrationality of any individual odd value past Apéry's ζ(3) — ζ(5), ζ(7), … — is a genuine open problem in mathematics, not merely unformalized: Ball–Rivoal (2001) proved infinitely many ζ(2n+1) are irrational and Rivoal–Zudilin pinned at least one of ζ(5), ζ(7), ζ(9), ζ(11), but no single value with n ≥ 2 is known. The even-case theorem above marks the exact boundary of what is provable today, which is the entry's whole point.",

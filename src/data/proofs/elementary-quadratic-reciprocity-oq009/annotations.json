@@ -74,7 +74,7 @@
   {
     "id": "ann-eqr-zqr-crtorder",
     "proofId": "elementary-quadratic-reciprocity-oq009",
-    "range": { "startLine": 667, "endLine": 725 },
+    "range": { "startLine": 679, "endLine": 725 },
     "type": "definition",
     "title": "Closing the gap: the concrete CRT order discharges the transition signs",
     "content": "crtOrder is the diagonal order whose inverse is the Chinese-remainder map z ↦ (z mod p, z mod q) through ZMod.finEquiv. sign_rowTransition conjugates crtOrder⁻¹∘rowOrder by arrEquiv to realize it literally as Equiv.prodCongrLeft of the affine line map x ↦ q·x + j, then sign_prodCongrLeft_affineLine collapses the q-fold product to the single Legendre symbol (q/p) (q odd). sign_colTransition is dual, giving (p/q).",

@@ -26,8 +26,8 @@
     "id": "r4k-oq03-ann-parameters",
     "proofId": "ramsey-r4k-extensions-oq-03",
     "range": {
-      "startLine": 42,
-      "endLine": 81
+      "startLine": 46,
+      "endLine": 85
     },
     "type": "definition",
     "title": "cliqueMonoProb, cliqueDependencyBound, RamseyLLLCondition: the LLL inputs",
@@ -95,10 +95,10 @@
     "id": "r4k-oq03-ann-reduction",
     "proofId": "ramsey-r4k-extensions-oq-03",
     "range": {
-      "startLine": 165,
-      "endLine": 202
+      "startLine": 169,
+      "endLine": 206
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "SymmetricLLLForRamsey & ramsey_lll_lower_bound: the hypothesis-clean reduction",
     "content": "SymmetricLLLForRamsey is the symmetric-LLL avoidance principle stated in Ramsey form: whenever the numeric condition RamseyLLLCondition n k holds (k ≥ 3), there is a symmetric, irreflexive Bool-colouring of Kₙ's edges with no monochromatic k-clique of either colour. Kept as an explicit Prop hypothesis — not an axiom — it makes ramsey_lll_lower_bound an axiom-free conditional theorem: given hLLL : SymmetricLLLForRamsey and the feasibility condition, R(k,k) > n. The dependency degree feeding that condition is exactly the one bounded by cliqueNeighbors_card_le.",
     "mathContext": "The symmetric LLL avoidance conclusion Pr[⋂ Āᵢ] > 0 translates, for the monochromatic-clique events, into the existence of a colouring avoiding every monochromatic k-clique — i.e. a Ramsey lower bound R(k,k) > n.",
@@ -118,10 +118,10 @@
     "id": "r4k-oq03-ann-monotonicity",
     "proofId": "ramsey-r4k-extensions-oq-03",
     "range": {
-      "startLine": 204,
-      "endLine": 229
+      "startLine": 208,
+      "endLine": 233
     },
-    "type": "theorem",
+    "type": "lemma",
     "title": "cliqueDependencyBound_mono & RamseyLLLCondition_antitone: the threshold",
     "content": "cliqueDependencyBound_mono shows d = C(k,2)·C(n−2,k−2) is monotone in n (via Nat.choose_le_choose). RamseyLLLCondition_antitone concludes the feasibility test is a genuine threshold: if it holds at m vertices it holds at every n ≤ m, since a larger dependency degree makes e·p·(d+1) ≤ 1 harder to satisfy. So an LLL certificate R(k,k) > m automatically certifies R(k,k) > n for all n ≤ m.",
     "mathContext": "Monotonicity of the binomial coefficient in its upper argument gives monotonicity of the dependency degree, which propagates satisfiability of the LLL condition downward in n.",
@@ -140,8 +140,8 @@
     "id": "r4k-oq03-ann-integer-criterion",
     "proofId": "ramsey-r4k-extensions-oq-03",
     "range": {
-      "startLine": 232,
-      "endLine": 272
+      "startLine": 235,
+      "endLine": 275
     },
     "type": "theorem",
     "title": "ramseyLLLCondition_iff & concrete witnesses: a decidable test that provably beats the first moment",
@@ -164,8 +164,8 @@
     "id": "r4k-oq03-ann-lll-vs-union",
     "proofId": "ramsey-r4k-extensions-oq-03",
     "range": {
-      "startLine": 274,
-      "endLine": 311
+      "startLine": 277,
+      "endLine": 314
     },
     "type": "theorem",
     "title": "cliqueDependency_total_identity & cliqueDependencyBound_le_total: why LLL beats the union bound",

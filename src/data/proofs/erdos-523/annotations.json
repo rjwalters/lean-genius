@@ -265,8 +265,8 @@
     "proofId": "erdos-523",
     "type": "definition",
     "range": {
-      "startLine": 210,
-      "endLine": 222
+      "startLine": 202,
+      "endLine": 214
     },
     "title": "Rudin Conjecture and Mahler Measure",
     "content": "`RudinConjecture` concerns the deterministic minimum: is $\\min_p \\max_{|z|=1} |p(z)| = \\Theta(\\sqrt{n})$ over Littlewood polynomials? `mahlerMeasure s` computes the Mahler measure $M(f) = \\exp(\\frac{1}{2\\pi} \\int_0^{2\\pi} \\log|f(e^{i\\theta})| d\\theta)$, the geometric mean of $|f|$ on the unit circle. `szegoConnection` notes the link to Szego's theorem.",
@@ -290,8 +290,8 @@
     "proofId": "erdos-523",
     "type": "concept",
     "range": {
-      "startLine": 238,
-      "endLine": 238
+      "startLine": 235,
+      "endLine": 236
     },
     "title": "Summary: Complete Resolution",
     "content": "Four concluding theorems: `erdos_523` and `erdos_523_solved` both assert `ErdosQuestion523` (forwarding from `erdos_523_answer`). `erdos_523_constant` witnesses $C = 1$ explicitly. `erdos_523_main` packages `halasz_theorem`. The problem is completely solved: $\\max_{|z|=1} |\\sum \\varepsilon_k z^k| = (1 + o(1))\\sqrt{n \\log n}$ almost surely.",

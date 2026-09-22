@@ -26,7 +26,7 @@
   {
     "id": "ann-inversion",
     "proofId": "law-of-cosines-oq-03-oq-03",
-    "range": { "startLine": 118, "endLine": 124 },
+    "range": { "startLine": 120, "endLine": 124 },
     "type": "insight",
     "title": "Inverting the Second Law: One-Line linear_combination",
     "content": "The second law of cosines is LINEAR in cosh of the opposite side: cos C = -cos A cos B + (sin A sin B)·cosh c. So cosh c = (cos C + cos A cos B)/(sin A sin B). In Lean, eq_div_iff (with the nonzero product of sines) turns the goal into cosh c · (sin A sin B) = cos C + cos A cos B, which is precisely the structure field lawC rearranged — discharged by linear_combination -t.lawC. The right-hand side depends only on the angles, which is the entire content of AAA determinacy.",

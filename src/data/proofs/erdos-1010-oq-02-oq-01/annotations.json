@@ -26,7 +26,7 @@
   {
     "id": "ann-turan-forcing",
     "proofId": "erdos-1010-oq-02-oq-01",
-    "range": { "startLine": 77, "endLine": 93 },
+    "range": { "startLine": 78, "endLine": 93 },
     "type": "insight",
     "title": "De-axiomatizing the Turán Forcing Step",
     "content": "not_cliqueFree_of_extremalNumber_lt is the key de-axiomatization: a graph with strictly more than ex(n, K_{r+1}) edges is not (r+1)-clique-free. It obtains ⊤ ⊑ G from IsContained.of_extremalNumber_lt_card_edgeFinset, then converts via cliqueFree_iff_top_free (CliqueFree(r+1) is ⊤-freeness on a size-(r+1) vertex set). This is exactly the statement the parent posited as axiom turan_theorem, now proved from Mathlib.",

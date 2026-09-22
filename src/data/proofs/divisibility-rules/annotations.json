@@ -74,7 +74,7 @@
   {
     "id": "ann-divrules-seven-truncation",
     "proofId": "divisibility-rules",
-    "range": { "startLine": 291, "endLine": 311 },
+    "range": { "startLine": 292, "endLine": 311 },
     "type": "insight",
     "title": "Divisibility by 7: The Truncation Method via IsCoprime",
     "content": "The 7-truncation rule states: 7 | n iff 7 | (n/10 - 2 * (n%10)). The key algebraic identity is 10 * (n/10 - 2r) = n - 21r (where r = n%10), proved by push_cast + omega. Since 21 = 3 × 7, we have 7 | 21r, so 7 | n - 21r iff 7 | n. The coprimality of 7 and 10 (IsCoprime 7 10, proved by decide) allows cancellation: 7 | 10 * (n/10 - 2r) implies 7 | (n/10 - 2r). The reverse direction uses dvd_mul_of_dvd_right. This proof demonstrates the IsCoprime.dvd_of_dvd_mul_left pattern from Mathlib's linear algebra API.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-divrules-digitalroot",
     "proofId": "divisibility-rules",
-    "range": { "startLine": 319, "endLine": 341 },
+    "range": { "startLine": 328, "endLine": 341 },
     "type": "definition",
     "title": "Digital Root: Closed-Form Definition via mod 9",
     "content": "Rather than defining digitalRoot by recursion on digit summation, the formalization uses the closed-form: digitalRoot(n) = 0 if n = 0, = 9 if n > 0 and 9 | n, = n % 9 otherwise. This avoids termination proofs for the iterative digit-sum algorithm. The key property digitalRoot_le_9 follows from split_ifs + omega on the three cases. Concrete values are verified by native_decide (e.g., digitalRoot(123) = 6, since 1+2+3=6; digitalRoot(999) = 9 since 9 | 999). This closed-form is equivalent to the iterative algorithm because digit summation preserves residue mod 9 (established elsewhere in DivisibilityByThreeOQ02).",
@@ -98,7 +98,7 @@
   {
     "id": "ann-divrules-verification",
     "proofId": "divisibility-rules",
-    "range": { "startLine": 384, "endLine": 392 },
+    "range": { "startLine": 385, "endLine": 392 },
     "type": "insight",
     "title": "Master Verification Theorem: All Rules Confirmed",
     "content": "rules_verification is a large conjunction bundling concrete verifications of all the major divisibility rules simultaneously: 2|246, 5|250, 10|250 (last-digit rules), 4|1024, 25|1025 (last-two-digit), 8|1000 (last-three-digit), 3|111, 9|999 (digit sum), 6|252, 12|252, 15|255 (combined). Each clause is proved by native_decide after structuring via refine ⟨?_, ...⟩. This capstone theorem serves both as documentation and as a machine-checked sanity check: the constants chosen are not accidents—e.g., 999 = 9 × 111, 1024 = 2^10, 1025 = 25 × 41.",

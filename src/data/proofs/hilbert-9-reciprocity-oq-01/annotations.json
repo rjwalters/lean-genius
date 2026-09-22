@@ -50,7 +50,7 @@
   {
     "id": "ann-degree-instances",
     "proofId": "hilbert-9-reciprocity-oq-01",
-    "range": { "startLine": 106, "endLine": 136 },
+    "range": { "startLine": 107, "endLine": 136 },
     "type": "theorem",
     "title": "Degree Formula and Concrete Instances",
     "content": "card_gal_eq_totient transports cardinality along the reciprocity isomorphism (Nat.card_congr) and applies ZMod.card_units_eq_totient to obtain |Gal(ℚ(ζ_n)/ℚ)| = φ(n) — the classical statement [ℚ(ζ_n):ℚ] = φ(n) read off the Galois group. The concrete cases card_gal_five (φ(5)=4) and card_gal_seven (φ(7)=6) give cyclic groups of prime-minus-one order, while card_gal_eight (φ(8)=4) is the first NON-cyclic cyclotomic Galois group over ℚ, since (ℤ/8)ˣ ≅ ℤ/2 × ℤ/2 — showing the reciprocity isomorphism is genuinely about the unit group, not a mere degree count. Each concrete value is closed by kernel computation (decide).",

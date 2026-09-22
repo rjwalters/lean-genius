@@ -50,7 +50,7 @@
   {
     "id": "sibling-transfer",
     "proofId": "erdos-1058-oq-03",
-    "range": { "startLine": 88, "endLine": 102 },
+    "range": { "startLine": 98, "endLine": 112 },
     "type": "theorem",
     "title": "Transfer to the Sibling n!−1",
     "content": "`prime_dvd_factorial_pred_sub_one_iff`: for a prime p, p ∣ (p−1)!−1 ⟺ p = 2. Directly answers the parent's sibling question ('similar results for n!−1?'). Using `ZMod.wilsons_lemma` after `Nat.cast_sub` (guarded by (p−1)! ≥ 1), (p−1)!−1 ≡ −1 − 1 = −2 (mod p), so divisibility holds iff p ∣ 2 iff p = 2 (`Nat.prime_dvd_prime_iff_eq`). Odd primes fail because −2 ≢ 0. The same Wilson engine, a different but equally sharp answer — demonstrating the technique genuinely extends.",

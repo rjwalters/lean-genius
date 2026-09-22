@@ -99,10 +99,10 @@
     "id": "ann-erdos-1018-oq-01-oq-01-sharpness",
     "proofId": "erdos-1018-oq-01-oq-01",
     "range": {
-      "startLine": 187,
-      "endLine": 246
+      "startLine": 183,
+      "endLine": 242
     },
-    "type": "theorem",
+    "type": "lemma",
     "title": "k-Degeneracy of the Witness and the Sharpness Theorem",
     "content": "`splitGraph_kDegenerate` proves the witness is k-degenerate by a clean case split on a vertex set T. If T contains any independent-part vertex v (v.val ≥ k), then v's neighbours inside T are among the ≤ k universal vertices (the adjacency forces the OTHER endpoint into the universal part), so degOn T v ≤ k. Otherwise every vertex of T is universal, hence |T| ≤ k (via `card_lt_le`), and any vertex has within-degree ≤ |T|−1 ≤ k (neighbours ⊆ `T.erase v`, `card_erase_of_mem`). No elimination ordering is required. `splitGraph_sharp` bundles k-degeneracy with the edge identity 2|E| + k(k+1) = 2kn; combined with `degenerate_edge_bound` this certifies the coefficient k is optimal. `splitGraph_edge_count` extracts the closed form |E| = k·n − C(k+1,2) using `Nat.even_mul_succ_self` (k(k+1) is even) and `omega`.",
     "mathContext": "$S_{n,k}$ is $k$-degenerate with $\\#E = k\\,n - \\binom{k+1}{2}$; with the converse bound $\\#E \\le k\\,n$ this pins the coefficient $k$ as optimal and the slack as exactly $\\binom{k+1}{2}$.",

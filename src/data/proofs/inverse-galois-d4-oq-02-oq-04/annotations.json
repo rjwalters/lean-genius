@@ -14,7 +14,7 @@
   {
     "id": "ann-coprime-prime-totient",
     "proofId": "inverse-galois-d4-oq-02-oq-04",
-    "range": { "startLine": 59, "endLine": 71 },
+    "range": { "startLine": 61, "endLine": 71 },
     "type": "insight",
     "title": "A Prime Is Coprime to Its Totient",
     "content": "coprime_prime_totient is the key number-theoretic observation. Since Nat.totient_prime gives φ(ℓ) = ℓ − 1, and a prime ℓ is coprime to m iff ℓ ∤ m (hℓ.coprime_iff_not_dvd), the claim reduces to ℓ ∤ (ℓ − 1). This holds because any divisor would force ℓ ≤ ℓ − 1 (Nat.le_of_dvd on the positive ℓ − 1), impossible — omega closes it. Consecutive integers are coprime, so no per-ℓ case analysis is needed.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-affine-lower-bound",
     "proofId": "inverse-galois-d4-oq-02-oq-04",
-    "range": { "startLine": 77, "endLine": 91 },
+    "range": { "startLine": 79, "endLine": 91 },
     "type": "insight",
     "title": "The Affine Lower Bound ℓ(ℓ−1) ∣ |Gal|",
     "content": "gal_card_affine_lower_bound is the main theorem. The parent supplies two divisibilities — the kernel factor ℓ ∣ |Gal| (n_dvd_gal_card) and the cyclotomic quotient factor φ(ℓ) ∣ |Gal| (totient_dvd_gal_card). Because they are coprime at a prime degree, Nat.Coprime.mul_dvd_of_dvd_of_dvd multiplies them into ℓ·φ(ℓ) ∣ |Gal|, and rewriting φ(ℓ) = ℓ − 1 gives the full affine order ℓ(ℓ−1) ∣ |Gal(Xˡ−p/ℚ)| with no extra hypothesis.",

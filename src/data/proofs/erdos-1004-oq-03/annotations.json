@@ -50,7 +50,7 @@
   {
     "id": "ann-erdos-1004-oq-03-04",
     "proofId": "erdos-1004-oq-03",
-    "range": { "startLine": 112, "endLine": 136 },
+    "range": { "startLine": 113, "endLine": 136 },
     "type": "insight",
     "title": "The Bound Is Sharp at n = 3",
     "content": "K ≤ n−1 is not just an inequality artifact: at n = 3 it is met with equality. φ(4) = 2 and φ(5) = 4 form a distinct run of length 2 = n−1 (run_sharp_at_three), while length 3 is impossible because φ(6) = 2 = φ(4) breaks distinctness (no_run_three_three). The witness uses kernel `decide` (computable totient), introducing no `Lean.ofReduceBool`.",

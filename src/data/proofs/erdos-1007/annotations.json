@@ -26,8 +26,8 @@
     "id": "ann-1007-embedding",
     "proofId": "erdos-1007",
     "range": {
-      "startLine": 49,
-      "endLine": 73
+      "startLine": 57,
+      "endLine": 81
     },
     "type": "definition",
     "title": "Unit Distance Embedding and Graph Dimension",
@@ -50,10 +50,10 @@
     "id": "ann-1007-bipartite",
     "proofId": "erdos-1007",
     "range": {
-      "startLine": 75,
-      "endLine": 87
+      "startLine": 133,
+      "endLine": 145
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Complete Bipartite Graphs",
     "content": "$K_{m,n}$ is the complete bipartite graph: $m$ vertices on one side, $n$ on the other, with all $m \\cdot n$ cross-edges present. The formalization represents the vertex set as `Fin m ⊕ Fin n` (disjoint union), with adjacency holding between different parts (`Sum.inl` and `Sum.inr`) and never within a part.\n\n$K_{3,3}$ has $3 + 3 = 6$ vertices and $3 \\times 3 = 9$ edges. The tautological theorem `completeBipartite_edge_count` states $m \\cdot n = m \\cdot n$ — a placeholder for the more substantive fact that the formalized adjacency relation produces exactly $mn$ edges.",
     "mathContext": "$K_{m,n}$ on $\\text{Fin}\\,m \\oplus \\text{Fin}\\,n$: $\\text{adj}(\\text{inl}\\,i, \\text{inr}\\,j) = \\text{True}$, $\\text{adj}(\\text{inl}\\,i, \\text{inl}\\,j) = \\text{False}$. $|E(K_{3,3})| = 9$, $|V(K_{3,3})| = 6$.",

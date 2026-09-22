@@ -14,7 +14,7 @@
   {
     "id": "pb-first-moment",
     "proofId": "property-b-first-moment",
-    "range": { "startLine": 38, "endLine": 55 },
+    "range": { "startLine": 42, "endLine": 55 },
     "type": "theorem",
     "title": "First Moment Principle (Existence of a Zero)",
     "content": "The probabilistic-method workhorse, stated combinatorially and proved self-contained: if a nonnegative integer statistic f sums to strictly less than the number of outcomes |s|, then some outcome takes the value 0. Contrapositive: if every outcome had f ≥ 1, the sum would be ≥ |s|. This is exactly 'if the expected number of bad events is < 1, a perfect outcome exists' — the averaging argument with no measure theory, just ∑ f < |s| ⟹ ∃ a, f a = 0.",
@@ -26,7 +26,7 @@
   {
     "id": "pb-card-const-on",
     "proofId": "property-b-first-moment",
-    "range": { "startLine": 57, "endLine": 98 },
+    "range": { "startLine": 61, "endLine": 98 },
     "type": "theorem",
     "title": "Counting Crux: Colorings Constant on an Edge = 2^(n−|e|)",
     "content": "card_const_on counts the colorings pinned to a fixed value b on every vertex of e: the colors off e are free, giving 2^(n−|e|). The filtered set is recognized as a Fintype.piFinset — value forced to the singleton {b} on e, ranging over univ off e — and Fintype.card_piFinset turns the count into a product ∏_x #(choices at x). Each factor is 2^(if x∈e then 0 else 1), and the exponent sum ∑(1 off e) collapses to n − |e| via card_univ_diff. This exact product count is the analytic heart that replaces the '2^{1−k} probability per vertex' of the textbook proof.",
@@ -38,7 +38,7 @@
   {
     "id": "pb-card-mono",
     "proofId": "property-b-first-moment",
-    "range": { "startLine": 100, "endLine": 135 },
+    "range": { "startLine": 104, "endLine": 135 },
     "type": "theorem",
     "title": "Exact Count of Monochromatic Colorings = 2·2^(n−|e|)",
     "content": "card_mono counts the colorings monochromatic on a nonempty edge e: split 'monochromatic' into all-true-on-e ⊔ all-false-on-e. These two sets are disjoint (a vertex of e cannot be both true and false — this is where nonemptiness of e is used), so by card_union_of_disjoint and two applications of card_const_on the total is 2^(n−|e|) + 2^(n−|e|) = 2·2^(n−|e|). Choose the common color (2 ways) times the free colors off e. This is the per-edge contribution to the first-moment sum.",
@@ -50,7 +50,7 @@
   {
     "id": "pb-main",
     "proofId": "property-b-first-moment",
-    "range": { "startLine": 137, "endLine": 201 },
+    "range": { "startLine": 141, "endLine": 201 },
     "type": "theorem",
     "title": "Erdős 1963: Small k-Uniform Hypergraphs Are 2-Colorable",
     "content": "The headline theorem: a k-uniform hypergraph (k ≥ 1) with fewer than 2^(k−1) edges has Property B. After dispatching the empty-edge-family case, the (coloring, monochromatic edge) incidence sum is computed by Fubini (sum_comm): ∑_c #{mono edges} = |E|·2·2^(n−k) using card_mono on each k-edge. The key strict inequality |E|·2 < 2^k (from |E| < 2^(k−1) = 2^k/2) multiplies up to |E|·2·2^(n−k) < 2^k·2^(n−k) = 2^n = |Ω|. The first moment principle then yields a coloring c with zero monochromatic edges, i.e. a proper 2-coloring.",

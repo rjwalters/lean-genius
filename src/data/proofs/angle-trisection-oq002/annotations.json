@@ -74,7 +74,7 @@
   {
     "id": "ann-main-theorem",
     "proofId": "angle-trisection-oq002",
-    "range": { "startLine": 172, "endLine": 203 },
+    "range": { "startLine": 183, "endLine": 203 },
     "type": "insight",
     "title": "Purely Inseparable Extension → Trivial Galois Group",
     "content": "algEquiv_eq_refl_of_isPurelyInseparable: every F-algebra automorphism of a purely inseparable extension K/F is the identity. Proof: for any σ : K ≃ₐ[F] K and x ∈ K, get n with x^(p^n) ∈ F (IsPurelyInseparable.pow_mem). Then σ(x)^(p^n) = x^(p^n) (σ fixes F), so (σ(x)−x)^(p^n) = 0 (Frobenius lemma). Fields have no nonzero nilpotents, so σ(x) = x. Since x is arbitrary, σ = id.",

@@ -38,7 +38,7 @@
   {
     "id": "ann-aro07doq01oq01-separability",
     "proofId": "abel-ruffini-oq-07-discriminant-oq-01-oq-01",
-    "range": { "startLine": 89, "endLine": 111 },
+    "range": { "startLine": 95, "endLine": 111 },
     "type": "theorem",
     "title": "Separability: the Discriminant Detects Repeated Roots",
     "content": "Over an integral domain, diffProd_ne_zero_iff restates Matrix.det_vandermonde_ne_zero_iff: δ ≠ 0 ⟺ the family r is injective. disc_eq_zero_iff then concludes disc r = 0 ⟺ ¬Function.Injective r, using pow_eq_zero_iff to reduce disc = δ² = 0 to δ = 0. This is the separability criterion in its cleanest form: the discriminant vanishes exactly when two roots coincide, so a separable polynomial (distinct roots in a splitting field) has nonzero discriminant.",

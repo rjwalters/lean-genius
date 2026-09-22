@@ -13,7 +13,7 @@
   {
     "id": "ann-matrix-power",
     "proofId": "cassini-identity-oq-01-oq-02",
-    "range": { "startLine": 41, "endLine": 67 },
+    "range": { "startLine": 52, "endLine": 75 },
     "type": "theorem",
     "title": "Closed Form of the Q-Matrix Power (the only induction)",
     "content": "The identity $Q^{n+1} = \\begin{psmallmatrix}F_{n+2}&F_{n+1}\\\\F_{n+1}&F_n\\end{psmallmatrix}$, proved by induction on $n$. The base case is $Q^1 = Q$. In the step $Q^{k+2} = Q^{k+1}\\cdot Q$ is expanded with `Matrix.mul_fin_two`; each of the four entries is a Fibonacci recurrence instance, closed by `push_cast` with the recurrence and `ring`. The shifted exponent $n+1$ keeps every index nonnegative, avoiding the $F_{-1}$ convention. This is the only induction in the file.",

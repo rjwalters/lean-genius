@@ -182,8 +182,8 @@
     "proofId": "erdos-686",
     "type": "definition",
     "range": {
-      "startLine": 147,
-      "endLine": 156
+      "startLine": 248,
+      "endLine": 257
     },
     "title": "Follow-Up: Fixed Parameter Sets",
     "content": "`RepresentableSet(n,k)` = $\\{N : \\exists m \\geq n+k,\\, P(m,k)/P(n,k) = N\\}$. `representable_set_infinite` (axiom): for $k \\geq 2$, this set is infinite. The proof idea: as $m \\to \\infty$, $P(m,k)/P(n,k) \\to \\infty$ by the monotonicity theorem, giving arbitrarily large representable values. This is Erd\u0151s's secondary question about the structure of representable integers.",
@@ -269,8 +269,8 @@
     "id": "ann-e686-factorial-bounds",
     "proofId": "erdos-686",
     "range": {
-      "startLine": 176,
-      "endLine": 199
+      "startLine": 177,
+      "endLine": 200
     },
     "type": "concept",
     "title": "Product-Factorial Bounds and Shift Gap",
@@ -292,8 +292,8 @@
     "id": "ann-e686-injectivity",
     "proofId": "erdos-686",
     "range": {
-      "startLine": 209,
-      "endLine": 216
+      "startLine": 210,
+      "endLine": 217
     },
     "type": "insight",
     "title": "Consecutive Product Injectivity",

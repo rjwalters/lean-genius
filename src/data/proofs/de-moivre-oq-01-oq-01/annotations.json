@@ -26,7 +26,7 @@
   {
     "id": "ann-dm0101-parity",
     "proofId": "de-moivre-oq-01-oq-01",
-    "range": { "startLine": 82, "endLine": 97 },
+    "range": { "startLine": 86, "endLine": 101 },
     "type": "tactic",
     "title": "The sign engine: Re(iᵐ) is 0 or ±1 with period four",
     "content": "Two short lemmas isolate where the alternating signs come from. `re_I_pow_odd` writes an odd power $i^{2j+1} = (-1)^j\\, i$ (using $i^2 = -1$), a purely imaginary number, so its real part is $0$. `re_I_pow_two_mul` writes an even power $i^{2j} = (-1)^j$ and reads $\\operatorname{Re}(i^{2j}) = (-1)^j$. Together they show that the $\\operatorname{Re}(i^{n-k})$ factor of the previous step vanishes on odd $n-k$ and supplies the alternating sign on even $n-k$ — the single source of both features of the closed form.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-dm0101-chebyshev",
     "proofId": "de-moivre-oq-01-oq-01",
-    "range": { "startLine": 143, "endLine": 156 },
+    "range": { "startLine": 147, "endLine": 157 },
     "type": "concept",
     "title": "Closing the loop with T_n(cos θ)",
     "content": "`binomial_eq_chebyshev_T` proves the explicit binomial sum equals $T_n(\\cos\\theta)$ by composing `cos_nsmul_binomial_re` (sum $= \\cos(n\\theta)$) with Mathlib's `T_real_cos` ($T_n(\\cos\\theta) = \\cos(n\\theta)$). Where the parent entry established the *existence* fact $\\cos(n\\theta) = T_n(\\cos\\theta)$ abstractly, this identifies the concrete binomial polynomial with the Chebyshev polynomial, directly answering the parent's leading open question.",

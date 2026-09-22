@@ -26,7 +26,7 @@
   {
     "id": "ann-weak-duality",
     "proofId": "hall-marriage-theorem-oq-01-oq-02",
-    "range": { "startLine": 74, "endLine": 116 },
+    "range": { "startLine": 75, "endLine": 117 },
     "type": "theorem",
     "title": "Weak Duality: Every Matching ≤ Every Cover",
     "content": "`matching_card_le_cover` is the easy half of the min–max identity, proved with no appeal to Hall. Each matched index $i \\in J$ is covered on exactly one endpoint, so map it there: $g\\,i = \\mathrm{Sum.inl}\\,i$ if $i \\in A$, else $\\mathrm{Sum.inr}\\,(f\\,i)$ — and in the second case the edge $(i, f\\,i)$ forces $f\\,i \\in B$. This $g$ is injective on $J$ (an `inl` and an `inr` never collide; within each summand injectivity comes from set-injectivity of identity resp. of $f$) and lands in $A.\\mathrm{image}\\,\\mathrm{inl} \\cup B.\\mathrm{image}\\,\\mathrm{inr}$, whose cardinality is $\\#A + \\#B$. Hence $\\#J \\le \\#A + \\#B$.",

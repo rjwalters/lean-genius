@@ -14,7 +14,7 @@
   {
     "id": "ann-catalan-kummer-def",
     "proofId": "catalan-numbers-oq004",
-    "range": { "startLine": 50, "endLine": 65 },
+    "range": { "startLine": 54, "endLine": 65 },
     "type": "definition",
     "title": "The Kummer carry count and its digit-sum formula",
     "content": "carries p n := padicValNat p (Nat.centralBinom n) realises the number of carries in n + n (base p) as a p-adic valuation. sub_one_mul_carries restates the parent's central-binomial identity for this definition: (p−1)·carries p n + s_p(2n) = 2·s_p(n), i.e. (p−1)·carries p n = 2·s_p(n) − s_p(2n). This is a definitional reuse of the parent's analytic work.",

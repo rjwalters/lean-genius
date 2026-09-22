@@ -26,7 +26,7 @@
   {
     "id": "propb-upper-oq01-ann-complete-def",
     "proofId": "property-b-first-moment-oq-01",
-    "range": { "startLine": 55, "endLine": 72 },
+    "range": { "startLine": 59, "endLine": 76 },
     "type": "definition",
     "title": "The complete k-uniform hypergraph and its size",
     "content": "`completeHypergraph k` is all $k$-element subsets of $\\mathrm{Fin}(2k-1)$ (`powersetCard k`). `completeHypergraph_uniform` confirms every edge has $k$ vertices, and `completeHypergraph_card` computes the edge count $\\binom{2k-1}{k}$ via `card_powersetCard` and `Fintype.card_fin`. The vertex count $2k-1$ is the pigeonhole sweet spot: just small enough that two colour classes cannot both avoid size $k$.",
@@ -62,7 +62,7 @@
   {
     "id": "propb-upper-oq01-ann-fano",
     "proofId": "property-b-first-moment-oq-01",
-    "range": { "startLine": 119, "endLine": 139 },
+    "range": { "startLine": 123, "endLine": 143 },
     "type": "insight",
     "title": "The Fano plane PG(2,2) is not 2-colorable",
     "content": "`fanoLines` lists the 7 lines of the Fano plane on $\\mathrm{Fin}\\,7$. `fano_uniform` and `fano_card` (each `decide`) confirm it is 3-uniform with 7 lines. `fano_notTwoColorable` is the crux: kernel `decide` over all $2^7 = 128$ colorings shows every one monochromatizes some line — using `decide` (not `native_decide`), so it stays axiom-free (`maxRecDepth` is raised to let the kernel finish). The Fano plane is the smallest non-2-colorable 3-uniform hypergraph.",

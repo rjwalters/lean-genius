@@ -14,7 +14,7 @@
   {
     "id": "ann-frob-oq0103-fullsym",
     "proofId": "frobenius-number-oq-01-oq-03",
-    "range": { "startLine": 35, "endLine": 68 },
+    "range": { "startLine": 41, "endLine": 74 },
     "type": "insight",
     "title": "symmetric_le_frobenius: closing the boundary",
     "content": "OQ-02 proves $\\text{Rep}(k) \\Leftrightarrow \\neg\\text{Rep}(g-k)$ only for $0 < k < g$, because the two sides flip polarity at the endpoints. Here the endpoints are checked directly: at $k=0$, $0 \\in S$ and $g \\notin S$; at $k=g$, $g \\notin S$ and $0 \\in S$. The interior case delegates to `frobenius_symmetry`. The result is the genuine symmetric-semigroup statement over the whole gap window $[0,g]$.",

@@ -38,7 +38,7 @@
   {
     "id": "ann-no-red-k4",
     "proofId": "ramsey-r4k-oq-02",
-    "range": { "startLine": 70, "endLine": 75 },
+    "range": { "startLine": 71, "endLine": 75 },
     "type": "insight",
     "title": "No Red 4-Clique: ω(complement) = 3",
     "content": "A red 4-clique would be four vertices pairwise joined by red edges, i.e. an independent set of size 4 in the blue Wagner graph. The Wagner graph V₈ has independence number α(V₈) = 3, so no such set exists and the red graph has clique number 3 < 4. The statement quantifies over all `Finset (Fin 8)` (every one of the 2⁸ = 256 subsets), and `decide` enumerates them; `set_option maxRecDepth 4000` is needed because the recursive kernel unfolding of the nested `Finset` decidability instance exceeds the default depth of 512.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-no-blue-k3",
     "proofId": "ramsey-r4k-oq-02",
-    "range": { "startLine": 77, "endLine": 81 },
+    "range": { "startLine": 78, "endLine": 81 },
     "type": "insight",
     "title": "No Blue 3-Clique: V₈ Is Triangle-Free",
     "content": "A blue 3-clique is a triangle in the Wagner graph. V₈ is triangle-free: it is bipartite-like enough that no three of the chord types {±1, 4} close up — e.g. 1+1 = 2, 1+4 = 5, 4+4 = 0 are never themselves in {1,4,7} in a way that forms a 3-cycle. Hence the blue graph has no K₃. As with the red case, the claim ranges over all 256 subsets of `Fin 8` and is closed by kernel `decide` under raised `maxRecDepth`. Triangle-freeness together with α = 3 is precisely the extremal pair a witness for R(4,3) > 8 must satisfy.",

@@ -14,7 +14,7 @@
   {
     "id": "ann-erdos101-realform",
     "proofId": "erdos-101-oq-01-incomplete-01",
-    "range": { "startLine": 62, "endLine": 83 },
+    "range": { "startLine": 66, "endLine": 83 },
     "type": "theorem",
     "title": "Clearing the ℕ-Division from the Packing Bound",
     "content": "twelve_mul_fourPointLineCount_le_sq takes the framework's elementary packing bound improved_upper_bound (fourPointLineCount P ≤ n(n−1)/12 in ℕ, from a pair-packing double count) and converts it to a clean real inequality 12·fourPointLineCount P ≤ n². The delicate part is the natural-number floor division: multiplying by 12 and using Nat.div_mul_le_self recovers 12·count ≤ n(n−1) without the floor loss, then n(n−1) ≤ n·n (Nat.sub_le) and exact_mod_cast lift to ℝ. This real-form bound is the single ingredient every later theorem rests on.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-erdos101-headline",
     "proofId": "erdos-101-oq-01-incomplete-01",
-    "range": { "startLine": 104, "endLine": 120 },
+    "range": { "startLine": 108, "endLine": 120 },
     "type": "theorem",
     "title": "The Headline: OQ-01 Holds for Every ε > 1/12",
     "content": "fourPointLineCount_lt_eps_sq is the headline: for every ε > 1/12, every P with |P| ≥ 1 and no five collinear satisfies fourPointLineCount P < ε·n² — with NO size threshold N at all. The reason is that the uniform density ceiling n²/12 already beats ε·n² strictly for every n ≥ 1 as soon as ε > 1/12 (since n² > 0). The proof feeds the real-form bound, n² > 0, and the positivity of n²·(ε − 1/12) to nlinarith, which closes the strict inequality. The absence of a threshold is what makes this an unconditional theorem rather than an asymptotic statement.",

@@ -27,10 +27,10 @@
     "id": "ann-rosser-sentence",
     "proofId": "godel-first-incompleteness-oq01-oq-01",
     "range": {
-      "startLine": 100,
-      "endLine": 149
+      "startLine": 122,
+      "endLine": 171
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "The Rosser Sentence R and Two Key Axioms: The Heart of the Improvement",
     "content": "**The Rosser sentence** `R : Formula := ⟨43⟩` is constructed (in a full formalization) by the **Diagonal Lemma** applied to:\n$$\\psi(x) = \\forall p[\\text{ProofOf}(x, p) \\to \\exists q \\leq p,\\, \\text{DisproofOf}(x, q)]$$\nR says: *'For every proof of me, there is an equally short or shorter disproof.'* This is strictly stronger than Gödel's G (code 42), which says only 'I have no proof.'\n\n**Axiom 1** (`R_prov_gives_formal_disproof`): If ⊢ R via proof code $p_0$, then by Σ₁-completeness of ProofOf, the system can verify this. R's self-referential content yields $\\exists q \\leq p_0$, DisproofOf(⌜R⌝, q). By Σ₁-soundness (the system cannot falsely assert bounded existentials), a meta-level disproof code exists, so ⊢ ¬R.\n\n**Axiom 2** (`R_disproof_gives_formal_prov`): If ⊢ ¬R via proof code $q_0$, then ¬R asserts $\\exists p <q_0$ with ProofOf(⌜R⌝, p) and no shorter disproof — the system derives such a proof exists, so ⊢ R.\n\nAxiom 2 **replaces `omega_consistency_G`** from Gödel's proof. Gödel needed ω-consistency to go from '¬G is provable' to 'the system cannot prove Prov(⌜G⌝)'. Rosser's R encodes enough structure to make this implication direct.",
     "mathContext": "Rosser sentence via Diagonal Lemma: $R \\iff \\forall p[\\text{ProofOf}(\\ulcorner R \\urcorner, p) \\to \\exists q \\leq p,\\, \\text{DisproofOf}(\\ulcorner R \\urcorner, q)]$. Gödel's G: $G \\iff \\neg\\text{Prov}(\\ulcorner G \\urcorner)$. The proof-length comparison in R is what makes the biconditional $(\\vdash R) \\iff (\\vdash \\neg R)$ provable without ω-consistency.",
@@ -53,8 +53,8 @@
     "id": "ann-r-not-provable",
     "proofId": "godel-first-incompleteness-oq01-oq-01",
     "range": {
-      "startLine": 151,
-      "endLine": 168
+      "startLine": 155,
+      "endLine": 172
     },
     "type": "insight",
     "title": "R_not_provable: Three Lines Using Only Plain Consistency",
@@ -100,8 +100,8 @@
     "id": "ann-equi-decidability",
     "proofId": "godel-first-incompleteness-oq01-oq-01",
     "range": {
-      "startLine": 189,
-      "endLine": 246
+      "startLine": 194,
+      "endLine": 251
     },
     "type": "insight",
     "title": "Equi-Decidability: (⊢ R) ↔ (⊢ ¬R) — the Algebraic Heart",
@@ -124,8 +124,8 @@
     "id": "ann-godel-comparison",
     "proofId": "godel-first-incompleteness-oq01-oq-01",
     "range": {
-      "startLine": 247,
-      "endLine": 308
+      "startLine": 136,
+      "endLine": 197
     },
     "type": "concept",
     "title": "Axiom Comparison Table and Independence Theorems",

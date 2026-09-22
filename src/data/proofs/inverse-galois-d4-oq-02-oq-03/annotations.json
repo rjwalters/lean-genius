@@ -46,7 +46,7 @@
   {
     "id": "ann-lcm-coprime-merged",
     "proofId": "inverse-galois-d4-oq-02-oq-03",
-    "range": { "startLine": 49, "endLine": 57 },
+    "range": { "startLine": 47, "endLine": 55 },
     "type": "insight",
     "title": "Parts I & II (lcm bound + coprime sharpening), now in the parent",
     "content": "The two combining results were originally proved in this file and later merged into the parent InverseGaloisD4OQ02.lean (PR #31408) to keep the namespace coherent; this comment block records that history, and the file imports them. Their content is the conceptual core: (1) lcm_dvd_gal_card — two independent divisibilities a ∣ N and b ∣ N give not ab ∣ N but lcm(a, b) ∣ N, and the lcm is genuinely weaker whenever n and φ(n) share a prime (n = 4, φ(4) = 2, lcm(4, 2) = 4 ≠ 8); and (2) mul_totient_dvd_gal_card_of_coprime — when gcd(n, φ(n)) = 1, lcm(n, φ(n)) = n·φ(n) (Nat.Coprime.lcm_eq_mul), so the full metacyclic order n·φ(n) ∣ |Gal| drops out with no genericity/linear-disjointness hypothesis. These are the two inputs Part III specialises to n = 3.",
@@ -70,7 +70,7 @@
   {
     "id": "ann-six-dvd-cubic",
     "proofId": "inverse-galois-d4-oq-02-oq-03",
-    "range": { "startLine": 59, "endLine": 66 },
+    "range": { "startLine": 61, "endLine": 66 },
     "type": "tactic",
     "title": "The cubic instance: 6 ∣ |Gal(X³−p)| for every prime p",
     "content": "six_dvd_gal_card_cubic specialises the parent's coprime bound mul_totient_dvd_gal_card_of_coprime to n = 3, needing only the decidable facts gcd(3, φ(3)) = gcd(3, 2) = 1 and 3·φ(3) = 6, both discharged by kernel `decide` (not native_decide — so no Lean.ofReduceBool, and the result stays axiom-free). The conclusion 6 ∣ |Gal(X³−p/ℚ)| is uniform in p: it holds for X³−2, X³−3, X³−5, and every other prime, because the coprime lower bound is a structural feature of n = 3, independent of which prime sits inside the radical.",

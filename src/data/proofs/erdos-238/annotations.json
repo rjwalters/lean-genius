@@ -34,8 +34,8 @@
     "proofId": "erdos-238",
     "type": "definition",
     "range": {
-      "startLine": 35,
-      "endLine": 49
+      "startLine": 38,
+      "endLine": 52
     },
     "title": "Prime Enumeration",
     "content": "`nthPrime(n) = Nat.nth Nat.Prime n` gives the $n$-th prime (0-indexed in Lean: nthPrime 0 = 2, nthPrime 1 = 3, etc.). `primeGap(n) = nthPrime(n+1) - nthPrime(n)` is the gap between consecutive primes. These are noncomputable since `Nat.nth` uses classical choice.",
@@ -56,8 +56,8 @@
     "proofId": "erdos-238",
     "type": "definition",
     "range": {
-      "startLine": 51,
-      "endLine": 75
+      "startLine": 54,
+      "endLine": 78
     },
     "title": "Consecutive Prime Sequences",
     "content": "`consecutivePrimes m k : Fin k → ℕ` gives $k$ primes starting from $p_m$. `allPrimesLeX m k x` requires all primes in the sequence $\\le x$. `allGapsLarge m k c₂` requires all $k-1$ consecutive gaps exceed $c_2$.\n\nThe use of `Fin k` for indexing ensures the sequence is exactly $k$ primes, and `Fin (k-1)` for gaps captures exactly the $k-1$ adjacent pairs.",
@@ -79,7 +79,7 @@
     "proofId": "erdos-238",
     "type": "concept",
     "range": {
-      "startLine": 77,
+      "startLine": 80,
       "endLine": 89
     },
     "title": "The Main Conjecture (OPEN)",
@@ -101,10 +101,10 @@
   {
     "id": "erdos-238-negation",
     "proofId": "erdos-238",
-    "type": "definition",
+    "type": "theorem",
     "range": {
-      "startLine": 91,
-      "endLine": 102
+      "startLine": 322,
+      "endLine": 333
     },
     "title": "Negation of Conjecture",
     "content": "If the conjecture fails: $\\exists c_1, c_2 > 0$ such that for infinitely many $x$, no run of $c_1 \\cdot \\log(x)$ consecutive primes $\\le x$ has all gaps $> c_2$. This explicit negation is used in `conjecture_vs_negation` to prove $\\text{mainConjecture} \\Rightarrow \\neg\\text{conjectureNegation}$.",
@@ -125,7 +125,7 @@
     "proofId": "erdos-238",
     "type": "insight",
     "range": {
-      "startLine": 104,
+      "startLine": 107,
       "endLine": 117
     },
     "title": "Erdős's Partial Result (Axiom)",
@@ -154,8 +154,8 @@
     "proofId": "erdos-238",
     "type": "concept",
     "range": {
-      "startLine": 119,
-      "endLine": 141
+      "startLine": 185,
+      "endLine": 207
     },
     "title": "Prime Number Theorem Context",
     "content": "Two axioms providing PNT context:\n\n`average_gap_grows`: For any $c_2 > 0$, eventually there exists a gap $> c_2$ among primes $\\le x$. This is a consequence of the average gap $\\sim \\log x \\to \\infty$.\n\n`prime_number_theorem_asymptotic`: $\\pi(x) \\sim x/\\log x$, formalized as $|\\pi(x)/(x/\\log x) - 1| < \\varepsilon$ eventually. Uses `Finset.filter Nat.Prime` for the counting function.",

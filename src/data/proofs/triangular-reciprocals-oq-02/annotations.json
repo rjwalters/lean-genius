@@ -44,7 +44,7 @@
   {
     "id": "ann-partial-fraction",
     "proofId": "triangular-reciprocals-oq-02",
-    "range": { "startLine": 35, "endLine": 49 },
+    "range": { "startLine": 39, "endLine": 49 },
     "type": "insight",
     "title": "Lemma 1: Partial Fraction Decomposition",
     "content": "The decomposition $\\frac{1}{n(n+k)} = \\frac{1}{k}\\left(\\frac{1}{n} - \\frac{1}{n+k}\\right)$ is the engine of the whole proof: it turns a product into a *signed* difference, setting up a sliding-window cancellation when summed over $n$. The factor $\\frac{1}{k}$ is what scales the final sum to $H_k/k$ rather than $H_k$. The proof is one `field_simp; ring` after the three non-zero side conditions ($n \\neq 0$, $k \\neq 0$, $n+k \\neq 0$, the last via `positivity`) are established — a textbook example of how Lean's `field_simp` discharges fraction arithmetic once the denominator hypotheses are in scope. The lemma is lifted verbatim from the alternating sibling `Proofs/TriangularReciprocalGeneralized.lean:133`, exploiting the fact that the algebraic identity is sign-agnostic — only the way the difference is *summed* depends on whether the signs alternate.",
@@ -65,7 +65,7 @@
   {
     "id": "ann-partial-sum-closed-form",
     "proofId": "triangular-reciprocals-oq-02",
-    "range": { "startLine": 51, "endLine": 132 },
+    "range": { "startLine": 39, "endLine": 120 },
     "type": "insight",
     "title": "Lemma 2: Partial Sum Closed Form via Reindexing",
     "content": "The technical heart of the proof. Starting from $S_N(k) = \\sum_{n=1}^{N} \\frac{1}{n(n+k)}$, applying `partial_fraction` term-by-term and `Finset.sum_sub_distrib` produces $\\frac{1}{k}\\bigl(\\sum_{n=1}^{N} \\frac{1}{n} - \\sum_{n=1}^{N} \\frac{1}{n+k}\\bigr)$. The second sum is reindexed by $m = n + k$ via `Finset.sum_Ico_add'`, transforming $\\sum_{n=1}^{N} \\frac{1}{n+k}$ into $\\sum_{m=k+1}^{N+k} \\frac{1}{m}$, which is exactly $H_{N+k} - H_k$. The two harmonic differences are then identified using `harmonic_eq_sum_Icc` plus `Finset.sum_Ico_consecutive`, and the result drops out as $\\frac{1}{k}(H_k - (H_{N+k} - H_N))$. The internal `have harm_R : ∀ m : ℕ, (harmonic m : ℝ) = ∑ i ∈ Finset.Icc 1 m, 1/(i : ℝ)` is the crucial bridge between Mathlib's rational `harmonic` and the real-valued partial sum — `push_cast` does the heavy lifting after the initial `exact_mod_cast` on `harmonic_eq_sum_Icc`.",
@@ -87,7 +87,7 @@
   {
     "id": "ann-tail-to-zero",
     "proofId": "triangular-reciprocals-oq-02",
-    "range": { "startLine": 134, "endLine": 179 },
+    "range": { "startLine": 138, "endLine": 179 },
     "type": "insight",
     "title": "Lemma 3: Harmonic Tail Decay by Induction on k",
     "content": "Shows $H_{N+k} - H_N \\to 0$ as $N \\to \\infty$ for any fixed $k$. The proof is by induction on $k$: the base case $k=0$ is trivial (the difference is identically zero), and the successor step uses the identity $H_{N+(k+1)} = H_{N+k} + \\frac{1}{N+k+1}$ (i.e. `harmonic_succ`) to split the difference into $(H_{N+k} - H_N) + \\frac{1}{N+k+1}$. The first summand tends to zero by IH; the second is a shift of $\\frac{1}{N+1}$ by $k$ in the index, so it tends to zero via `tendsto_one_div_add_atTop_nhds_zero_nat` precomposed with `tendsto_add_atTop_nat k`. The proof carefully binds intermediate `have` results with explicit types — the docstring notes this avoided a `ContinuousSMul ℚ≥0` typeclass instability that earlier versions hit. The combinator `ih.add h_term` (adding two zero limits) is the punchline.",
@@ -109,7 +109,7 @@
   {
     "id": "ann-summable",
     "proofId": "triangular-reciprocals-oq-02",
-    "range": { "startLine": 181, "endLine": 210 },
+    "range": { "startLine": 185, "endLine": 210 },
     "type": "insight",
     "title": "Lemma 4: Summability by p-Series Comparison",
     "content": "Establishes `Summable (fun n => 1/((n+1)((n+1)+k)))` by dominating the summand by $\\frac{1}{(n+1)^2}$ (since $(n+1)+k \\geq (n+1)$ for $k \\geq 0$) and invoking Mathlib's `summable_one_div_nat_pow.mpr one_lt_two` for the $p$-series at $p=2$ — the Basel-series convergence backbone. The summable-shift `summable_nat_add_iff (f := …) 1` aligns the index $n$ (starting at 0) with the partial-sum convention $n+1$ used in the main theorem. The bound itself is closed by `nlinarith` after `div_le_div_iff₀` normalizes both sides to a polynomial inequality in $n, k$. Comparison test (`Summable.of_nonneg_of_le`) closes the chain.",
@@ -131,7 +131,7 @@
   {
     "id": "ann-main-theorem",
     "proofId": "triangular-reciprocals-oq-02",
-    "range": { "startLine": 212, "endLine": 284 },
+    "range": { "startLine": 216, "endLine": 284 },
     "type": "insight",
     "title": "Main Theorem: HasSum of H_k/k",
     "content": "Combines Lemmas 2–4 to conclude $\\mathrm{HasSum}\\, (\\lambda n.\\ \\frac{1}{(n+1)((n+1)+k)})\\ \\frac{H_k}{k}$. The structural moves: (1) nonnegativity of the summand (clear since denominators are positive) lets us use `hasSum_iff_tendsto_nat_of_nonneg`, reducing `HasSum` to a `Tendsto` statement about partial sums. (2) Align the partial sum over `Finset.range N` (the `hasSum_iff_tendsto_nat_of_nonneg` shape) with the `Finset.Icc 1 N` form used in Lemma 2 via `Finset.sum_Ico_add' 1` — this is the *same* `Finset.sum_Ico_add'` lemma that powers Lemma 2's reindexing, applied at the boundary rather than inside the body. (3) Substitute Lemma 2's closed form. (4) Take the limit: the constant term $H_k/k$ is constant in $N$ (so `tendsto_const_nhds`), and the tail $(H_{N+k} - H_N)/k$ tends to 0 by Lemma 3 composed with `Tendsto.const_mul (1/k)`. (5) `Tendsto.sub` adds the two limits to yield $\\frac{1}{k}(H_k - 0) = H_k/k$. The tsum corollary follows by `HasSum.tsum_eq`. **The whole 70-line proof is glue**: every nontrivial step lives in Lemmas 1–4, and the main theorem is the orchestration.",
@@ -152,7 +152,7 @@
   {
     "id": "ann-special-cases",
     "proofId": "triangular-reciprocals-oq-02",
-    "range": { "startLine": 286, "endLine": 317 },
+    "range": { "startLine": 290, "endLine": 317 },
     "type": "concept",
     "title": "Special Cases: k = 1 (Leibniz), k = 2, k = 3",
     "content": "Three closed-form sanity checks: $H_1/1 = 1$, $H_2/2 = 3/4$, $H_3/3 = 11/18$. Each is proved by unfolding `harmonic_succ` (the recurrence $H_{n+1} = H_n + 1/(n+1)$) repeatedly back to `harmonic_zero` $= 0$, then closing with `push_cast; norm_num`. The $k=1$ case is precisely the classical Leibniz identity $\\sum_{n=1}^{\\infty} \\frac{1}{n(n+1)} = 1$ (Leibniz 1673; Wiedijk #42 in its scaled form $\\sum \\frac{2}{n(n+1)} = 2$), confirming that the generalization recovers the basepoint of the family. The $k=2$ and $k=3$ cases serve as concrete arithmetic witnesses that the closed form $H_k/k$ is genuinely $k$-dependent: $H_2/2 = (1 + 1/2)/2 = 3/4 \\neq 1$ shows the identity goes beyond Leibniz, and $H_3/3 = (1 + 1/2 + 1/3)/3 = 11/18$ extends the table. These three triples $(k, H_k, H_k/k) \\in \\{(1,1,1), (2,3/2,3/4), (3,11/6,11/18)\\}$ all check out by direct computation, giving the reader a numerical handle on the symbolic main theorem.",

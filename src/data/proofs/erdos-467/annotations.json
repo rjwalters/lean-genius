@@ -28,8 +28,8 @@
     "proofId": "erdos-467",
     "type": "definition",
     "range": {
-      "startLine": 37,
-      "endLine": 40
+      "startLine": 38,
+      "endLine": 42
     },
     "title": "Prime Partition Structure",
     "content": "A `PrimePartition x` partitions primes $\\leq x$ into sets $A$ and $B$ via a Boolean classifier `inA`. Both sets must be non-empty (witnessed by existential proofs).",

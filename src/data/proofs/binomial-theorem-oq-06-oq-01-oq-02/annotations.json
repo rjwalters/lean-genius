@@ -73,10 +73,10 @@
     "id": "ann-termwise-negation-key",
     "proofId": "binomial-theorem-oq-06-oq-01-oq-02",
     "range": {
-      "startLine": 84,
-      "endLine": 91
+      "startLine": 58,
+      "endLine": 75
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Each Reflected Term Is Its Own Negative",
     "content": "The `key` sub-lemma is where the sign-reversing involution is realized termwise: for every k ∈ range(n+1), the reflected summand (-1)^{n-k} C(n,n-k)^2 equals -((-1)^k C(n,k)^2). Two facts combine — `Nat.choose_symm hk` collapses C(n,n-k) to C(n,k) so the squared binomial (the 'weight') is invariant, and `neg_one_pow_sub` flips the sign. `ring` then closes the identity. Feeding this into `Finset.sum_range_reflect` is exactly what turns the reflected sum into -S; without a weight-preserving, sign-reversing pairing at the term level, the S = -S collapse would not follow.",
     "mathContext": "$(-1)^{n-k}\\binom{n}{n-k}^2 = -\\left((-1)^k\\binom{n}{k}^2\\right)$ for $k \\le n$",

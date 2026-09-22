@@ -74,7 +74,7 @@
   {
     "id": "ann-descent-context",
     "proofId": "dissection-of-cubes-oq-03-oq-02",
-    "range": { "startLine": 188, "endLine": 208 },
+    "range": { "startLine": 189, "endLine": 208 },
     "type": "concept",
     "title": "Littlewood's Descent: The Remaining Gap and Next Steps",
     "content": "The closing summary section (comment, not code) explains the 5-step descent argument. Steps 1-4 are fully machine-checked by this file. Step 5 — applying exists_smaller_cube to non-bottom-floor cubes — requires showing c₂.z + c₂.side < 1, which needs smallest_above_is_smaller: the cubes covering the top face of the floor minimum are strictly smaller than it. This 2D tiling argument (smallest cube in a covering of a rectangle is strictly smaller than the rectangle) is the remaining mathematical gap.",

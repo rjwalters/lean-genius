@@ -26,7 +26,7 @@
   {
     "id": "ann-1036oq03-bounds",
     "proofId": "erdos-1036-oq-03",
-    "range": { "startLine": 101, "endLine": 131 },
+    "range": { "startLine": 102, "endLine": 131 },
     "type": "theorem",
     "title": "Basic Bounds: [1, 2^n]",
     "content": "induced_univ shows inducing on the full vertex set returns the original hypergraph. numDistinctInduced_pos gives at least one induced sub-hypergraph, and numDistinctInduced_le_two_pow gives the trivial ceiling of 2^n (induced sub-hypergraphs are indexed by vertex subsets). This isolates the real content of oq-03 as a matching LOWER bound.",

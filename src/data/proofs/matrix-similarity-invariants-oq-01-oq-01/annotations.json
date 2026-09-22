@@ -26,7 +26,7 @@
   {
     "id": "ann-refl-symm",
     "proofId": "matrix-similarity-invariants-oq-01-oq-01",
-    "range": { "startLine": 50, "endLine": 56 },
+    "range": { "startLine": 51, "endLine": 56 },
     "type": "tactic",
     "title": "Reflexivity and Symmetry",
     "content": "`Similar.refl` conjugates by the identity (P = 1), and `Similar.symm` conjugates back by P⁻¹, observing that A = P⁻¹·B·(P⁻¹)⁻¹ once B = P·A·P⁻¹. The `@[refl]` attribute registers reflexivity with the `rfl`-style automation. These two facts (with transitivity from the parent entry) make 'up to similarity' a genuine equivalence; here they are the scaffolding that lets every invariant be stated symmetrically in A and B.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-nullity-def",
     "proofId": "matrix-similarity-invariants-oq-01-oq-01",
-    "range": { "startLine": 89, "endLine": 96 },
+    "range": { "startLine": 93, "endLine": 100 },
     "type": "definition",
     "title": "Nullity as the Dimension of the Kernel",
     "content": "Over a field K, `nullity A` is defined as `finrank K (LinearMap.ker A.mulVecLin)` — the dimension of the kernel of the linear map x ↦ A·x on (n → K). The `noncomputable` marker reflects that `finrank` is defined via classical dimension theory. Tying nullity to `A.mulVecLin` rather than to row/column operations is what lets the rank–nullity theorem for linear maps apply verbatim.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-rank-nullity",
     "proofId": "matrix-similarity-invariants-oq-01-oq-01",
-    "range": { "startLine": 98, "endLine": 103 },
+    "range": { "startLine": 99, "endLine": 104 },
     "type": "theorem",
     "title": "Rank–Nullity Theorem, Matrix Form",
     "content": "`rank_add_nullity`: rank A + nullity A = n (= Fintype.card n) over a field. A single rewrite chains `Matrix.rank` (defined as the finrank of the range of `A.mulVecLin`), the definition of `nullity`, `LinearMap.finrank_range_add_finrank_ker` (rank–nullity for the linear map), and `finrank_pi` (which evaluates dim (n → K) to the cardinality of n). The `omit [DecidableEq n]` shows the identity needs no decidable equality on the index type.",
@@ -110,7 +110,7 @@
   {
     "id": "ann-trivial-kernel-full-rank",
     "proofId": "matrix-similarity-invariants-oq-01-oq-01",
-    "range": { "startLine": 114, "endLine": 121 },
+    "range": { "startLine": 115, "endLine": 122 },
     "type": "insight",
     "title": "Trivial Kernel ⇔ Full Rank",
     "content": "`nullity_eq_zero_iff_rank_eq_card`: a square matrix over a field has nullity 0 iff it has full rank n. This is the algebraic shadow of 'injective ⇔ surjective ⇔ bijective' for an endomorphism of a finite-dimensional space — trivial kernel means injective, full rank means surjective, and for endomorphisms these coincide. Because rank A + nullity A = n pins the two numbers as complements, the equivalence is again an `omega` consequence of a single linear relation.",

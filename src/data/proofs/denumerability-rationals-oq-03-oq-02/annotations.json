@@ -41,7 +41,7 @@
   {
     "id": "ann-sbsurj-torat-surjective",
     "proofId": "denumerability-rationals-oq-03-oq-02",
-    "range": { "startLine": 125, "endLine": 143 },
+    "range": { "startLine": 126, "endLine": 144 },
     "type": "theorem",
     "title": "Every Positive Rational Is Reached",
     "content": "`toRat_surjective` lifts surjectivity from coprime pairs to the rationals: for any `x : ℚ` with `0 < x`, some path satisfies `toRat t = x`. The bridge is Mathlib's rational structure — `Rat.num_pos` gives `x.num > 0`, `Rat.reduced` gives coprimality of `(x.num.natAbs, x.den)`, and `Rat.num_div_den` reassembles `x` from numerator and denominator. Apply `reach_root` to the reduced pair and the path's value is exactly `x`.",
@@ -54,7 +54,7 @@
   {
     "id": "ann-sbsurj-bst-bounds",
     "proofId": "denumerability-rationals-oq-03-oq-02",
-    "range": { "startLine": 144, "endLine": 167 },
+    "range": { "startLine": 148, "endLine": 171 },
     "type": "theorem",
     "title": "BST Bounds: Left Below, Right Above the Mediant",
     "content": "`left_lt_mediant` and `mediant_lt_right` distill the parent's `value_between_ancestors` into two clean ℕ cross-multiplied facts: a node in `s`'s left subtree has value strictly below `s`'s mediant (`num·(lb+rb) < (la+ra)·den`), and a node in the right subtree strictly above it. Working over ℕ (rather than the parent's ℤ form) lets the injectivity contradictions be discharged by `omega`-driven substitution with no cast bookkeeping.",

@@ -29,8 +29,8 @@
     "proofId": "chebyshev-bounds-oq-04-oq-01",
     "type": "definition",
     "range": {
-      "startLine": 82,
-      "endLine": 86
+      "startLine": 89,
+      "endLine": 93
     },
     "title": "vonMangoldtConv: Explicit Divisor-Sum Form of Λ ∗ Λ",
     "content": "`noncomputable def vonMangoldtConv (n : ℕ) : ℝ := ∑ d ∈ n.divisors, vonMangoldt d * vonMangoldt (n / d)`\n\nThe Dirichlet convolution $(\\Lambda * \\Lambda)(n)$ defined as an *explicit* divisor-sum rather than via Mathlib's `ArithmeticFunction.mul`.\n\n**Why this choice matters** (per the docstring on L76–80): Selberg's downstream identities require rewriting sums of the form $\\sum_{d \\mid n} f(d) g(n/d) = \\sum_{ab = n} f(a) g(b)$ — these rewrites work as direct `Nat.divisors`-level manipulations but become harder when funneled through `ArithmeticFunction`'s `divisorsAntidiagonal` coercion. The cost is a small one (this file's lemmas re-prove what `(Λ * Λ).map_zero` and friends would give for free), but it unlocks ~1500 lines of clean downstream algebra.\n\nThe `n = 0` boundary case is handled by `Nat.divisors_zero = ∅`, giving `vonMangoldtConv 0 = 0` — the next-block `vonMangoldtConv_zero` lemma is then a one-line `simp`.",
@@ -52,8 +52,8 @@
     "proofId": "chebyshev-bounds-oq-04-oq-01",
     "type": "definition",
     "range": {
-      "startLine": 88,
-      "endLine": 107
+      "startLine": 107,
+      "endLine": 126
     },
     "title": "selbergLambda2 and selbergSum2: The Central Objects",
     "content": "Two `noncomputable def`s that fix the central counting objects of the elementary proof.\n\n**`selbergLambda2 n := Λ(n) · log n + (Λ ∗ Λ)(n)`** (L102–103) — Selberg's auxiliary function $\\Lambda_2$. The decomposition into a \"first-order\" part $\\Lambda(n) \\log n$ and a \"second-order\" part $(\\Lambda * \\Lambda)(n)$ is *exactly* the structure that makes Möbius inversion of $\\log^2$ work cleanly: the Mathlib expansion $\\Lambda = \\mu * \\log$ feeds in via $\\mu * \\log^2 = \\mu * (\\log \\cdot \\log) = \\Lambda \\log + \\Lambda * \\Lambda$ (the Leibniz-style derivative of convolution).\n\n**`selbergSum2 N := ∑ n ∈ range (N + 1), selbergLambda2 n`** (L106–107) — the truncated Selberg sum $S_2(N) = \\sum_{n \\leq N} \\Lambda_2(n)$.\n\nBoth use `noncomputable` because $\\log$ on $\\mathbb{R}$ is non-computable in Lean's sense. The docstring at L88–98 records *what Selberg's symmetry formula will eventually claim* about this $S_2$: the central identity $S_2(N) = 2N \\log N + O(N)$, which this iteration sets up but does not yet prove.",

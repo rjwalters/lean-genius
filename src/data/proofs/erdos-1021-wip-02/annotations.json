@@ -14,7 +14,7 @@
   {
     "id": "ann-adjacency",
     "proofId": "erdos-1021-wip-02",
-    "range": { "startLine": 72, "endLine": 115 },
+    "range": { "startLine": 76, "endLine": 119 },
     "type": "theorem",
     "title": "Adjacency Characterizations (adj_pair_iff, adj_primary_iff, adj_primary_pair, adj_pair_inl)",
     "content": "Four iff-lemmas translate the match-defined Adj into clean membership conditions. adj_pair_iff: a pair vertex ⟨(a,b)⟩ is adjacent to w iff w = Sum.inl a or w = Sum.inl b. adj_primary_iff: a primary y_i is adjacent to w iff w is a pair vertex Sum.inr q whose pair contains i. The two projection-free forms adj_primary_pair (y_i ∼ ⟨(a,b)⟩ ↔ i = a ∨ i = b) and adj_pair_inl (⟨(a,b)⟩ ∼ y_m ↔ m = a ∨ m = b) avoid Subtype.val/Prod projections entirely, so the disjunctions they produce are directly consumable by omega in the main case analysis — the key to keeping the C₄-free proof arithmetic-clean.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-corollaries",
     "proofId": "erdos-1021-wip-02",
-    "range": { "startLine": 185, "endLine": 216 },
+    "range": { "startLine": 186, "endLine": 217 },
     "type": "theorem",
     "title": "Codegree Bound and No 4-Cycle (Gk_codegree_le_one, Gk_no_C4)",
     "content": "Two immediate corollaries package the subsingleton bound. Gk_codegree_le_one restates it in cardinality form: the neighbourhood intersection of any two distinct vertices has ncard ≤ 1, via Set.ncard_le_one (finiteness of the ambient Fintype vertex set is automatic). Gk_no_C4 gives the explicit graph-theoretic statement that there are no two distinct vertices v ≠ w with two distinct common neighbours u₁, u₂ — i.e. G_k has no K_{2,2} and no 4-cycle. Together these are exactly the Kővári–Sós–Turán / Reiman hypothesis whose conclusion is ex(n, G_k) = O(n^{3/2}), explaining why the n^{3/2} exponent is natural for Erdős #1021 while leaving the open question (beating it to 3/2 − c_k) untouched.",

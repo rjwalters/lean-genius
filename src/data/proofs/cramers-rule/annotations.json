@@ -26,8 +26,8 @@
     "proofId": "cramers-rule",
     "type": "concept",
     "range": {
-      "startLine": 52,
-      "endLine": 57
+      "startLine": 51,
+      "endLine": 56
     },
     "title": "Type Variables and Assumptions",
     "content": "The formalization works over a commutative ring $R$ with a decidable finite index type $n$. `DecidableEq n` enables case splits on indices; `Fintype n` enables finite sums for determinants; `CommRing R` provides the algebraic structure for matrix arithmetic.",
@@ -233,8 +233,8 @@
     "proofId": "cramers-rule",
     "type": "concept",
     "range": {
-      "startLine": 156,
-      "endLine": 159
+      "startLine": 102,
+      "endLine": 105
     },
     "title": "Verification of Core Mathlib Lemmas",
     "content": "Uses `#check` to verify that the four core Mathlib lemmas (`mulVec_cramer`, `cramer_apply`, `cramer_eq_adjugate_mulVec`, `mul_adjugate`) exist and have the expected types. This serves as documentation and a guard against Mathlib API changes.",

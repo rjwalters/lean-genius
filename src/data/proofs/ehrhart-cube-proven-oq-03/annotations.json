@@ -38,7 +38,7 @@
   {
     "id": "ann-hypersimplex-lattice-count",
     "proofId": "ehrhart-cube-proven-oq-03",
-    "range": { "startLine": 56, "endLine": 62 },
+    "range": { "startLine": 52, "endLine": 58 },
     "type": "definition",
     "title": "`hypersimplexLatticeCount`: Slice Cardinality",
     "content": "`hypersimplexLatticeCount d k n` is the cardinality of `Finset.univ.filter (Σ x_i = n · k)` over the finite function space `Fin d → Fin (n + 1)`. Mirrors the parent file's `cube_lattice_count` (which counts the whole cube `(Fin d → Fin (n+1))`) but adds the slice predicate. This is the central object: `L(Δ(d, k), n) = hypersimplexLatticeCount d k n`. The choice to inline the predicate `(∑ i : Fin d, (x i : ℕ)) = n * k` rather than reference `coordSumEq d n (n * k)` is intentional — it gives `decide` direct access to the unfolded form without an extra `unfold` step, which materially reduces the runtime of the four sanity checks in Section III.",

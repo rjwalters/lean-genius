@@ -26,7 +26,7 @@
     "proofId": "cauchy-schwarz-integral",
     "type": "concept",
     "range": {
-      "startLine": 44,
+      "startLine": 46,
       "endLine": 46
     },
     "title": "L2 is an Inner Product Space",
@@ -48,8 +48,8 @@
     "proofId": "cauchy-schwarz-integral",
     "type": "concept",
     "range": {
-      "startLine": 48,
-      "endLine": 50
+      "startLine": 57,
+      "endLine": 64
     },
     "title": "Abstract L2 Cauchy-Schwarz",
     "content": "For $L^2$ functions $f, g$: $|\\langle f, g \\rangle| \\leq \\|f\\| \\cdot \\|g\\|$. This is the abstract Cauchy-Schwarz applied to the $L^2$ inner product space, proved by `abs_real_inner_le_norm`.",
@@ -90,8 +90,8 @@
     "proofId": "cauchy-schwarz-integral",
     "type": "concept",
     "range": {
-      "startLine": 68,
-      "endLine": 73
+      "startLine": 72,
+      "endLine": 77
     },
     "title": "Bridge: L2 Inner Product = Integral",
     "content": "The critical bridge theorem: $\\langle f, g \\rangle = \\int f(a) \\cdot g(a) \\, d\\mu(a)$. This connects the abstract inner product on $L^2$ to the concrete Bochner integral.",
@@ -112,8 +112,8 @@
     "proofId": "cauchy-schwarz-integral",
     "type": "concept",
     "range": {
-      "startLine": 81,
-      "endLine": 84
+      "startLine": 85,
+      "endLine": 88
     },
     "title": "Bunyakovsky-Schwarz (Absolute Value Form)",
     "content": "The main result: $|\\int f(a) \\cdot g(a) \\, d\\mu(a)| \\leq \\|f\\|_{L^2} \\cdot \\|g\\|_{L^2}$. Proved by rewriting the bridge theorem into the abstract Cauchy-Schwarz.",
@@ -134,8 +134,8 @@
     "proofId": "cauchy-schwarz-integral",
     "type": "concept",
     "range": {
-      "startLine": 90,
-      "endLine": 93
+      "startLine": 94,
+      "endLine": 97
     },
     "title": "Bunyakovsky-Schwarz (Squared Form)",
     "content": "The squared integral form: $(\\int f \\cdot g \\, d\\mu)^2 \\leq \\|f\\|^2 \\cdot \\|g\\|^2$. Follows from the abstract squared form via the bridge theorem.",
@@ -155,8 +155,8 @@
     "proofId": "cauchy-schwarz-integral",
     "type": "concept",
     "range": {
-      "startLine": 98,
-      "endLine": 109
+      "startLine": 102,
+      "endLine": 113
     },
     "title": "Equality Characterization",
     "content": "Equality $|\\langle f, g \\rangle| = \\|f\\|\\|g\\|$ holds iff $f$ and $g$ are linearly dependent in $L^2$: $\\exists c \\in \\mathbb{R}, f = c \\cdot g$ (as $L^2$ functions, i.e., a.e.).",

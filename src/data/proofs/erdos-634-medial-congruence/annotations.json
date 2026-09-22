@@ -14,7 +14,7 @@
   {
     "id": "tri-congruent",
     "proofId": "erdos-634-medial-congruence",
-    "range": { "startLine": 57, "endLine": 100 },
+    "range": { "startLine": 63, "endLine": 106 },
     "type": "definition",
     "title": "TriCongruent: isometry-congruence of triangles",
     "content": "Two ordered triangles are congruent if some isometry of the ambient space carries the first vertex triple onto the second, vertex by vertex. This is the gold-standard notion of congruence. It is proved to be an equivalence relation (refl/symm/trans), and congruent triangles are shown to have equal corresponding side lengths (the SSS direction), since isometries preserve distance.",
@@ -26,7 +26,7 @@
   {
     "id": "explicit-isometries",
     "proofId": "erdos-634-medial-congruence",
-    "range": { "startLine": 102, "endLine": 128 },
+    "range": { "startLine": 105, "endLine": 128 },
     "type": "definition",
     "title": "The explicit isometries: translation and point reflection",
     "content": "Two isometry families witness the congruences. Translation x ↦ v + x (IsometryEquiv.constVAdd) handles the three corner triangles. The central triangle needs a 180° rotation, realized as the point reflection x ↦ w - x and built as negation (LinearIsometryEquiv.neg ℝ) followed by a translation — an isometry in any normed space.",

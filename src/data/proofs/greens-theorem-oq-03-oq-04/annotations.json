@@ -50,7 +50,7 @@
   {
     "id": "ann-typeI-via-stokes",
     "proofId": "greens-theorem-oq-03-oq-04",
-    "range": { "startLine": 179, "endLine": 204 },
+    "range": { "startLine": 211, "endLine": 236 },
     "type": "concept",
     "title": "General TypeI: OQ-03 Axiom and the Mathlib Gap",
     "content": "greens_theorem_typeI_via_stokes shows that the general TypeI case is already handled by OQ-03's greens_theorem_typeI — the proof is simply a delegation. The documentation axiom `stokes_for_curved_domains_not_in_mathlib_4_26 : True` records the Mathlib gap: as of v4.26.0, Mathlib has the divergence theorem for rectangular boxes but lacks a general Stokes theorem for 2D manifolds with piecewise-smooth curved boundaries. This is documented as True (not a mathematical axiom) to make the gap explicit.",

@@ -74,7 +74,7 @@
   {
     "id": "ann-erdos103-oq02-conjecture-hierarchy",
     "proofId": "erdos-103-oq-02",
-    "range": { "startLine": 204, "endLine": 215 },
+    "range": { "startLine": 208, "endLine": 215 },
     "type": "theorem",
     "title": "The Corrected Conjecture Hierarchy: Main ⟹ Weak",
     "content": "correct_main_implies_weak shows the corrected main conjecture (∀C, ∃N, ∀n≥N, hCong n > C) implies the corrected weak conjecture WeakConjectureCorrect (∃N, ∀n≥N, hCong n ≥ 2), by instantiating C = 1. This mirrors the usual strong-implies-weak hierarchy of Erdős-style conjectures, but now stated for the genuinely meaningful congruence count hCong rather than the degenerate raw count h.",

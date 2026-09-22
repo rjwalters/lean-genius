@@ -80,7 +80,7 @@
   {
     "id": "special-cases-summary",
     "proofId": "arithmetic-series-oq003",
-    "range": { "startLine": 206, "endLine": 268 },
+    "range": { "startLine": 210, "endLine": 268 },
     "type": "concept",
     "title": "Uniform specializations and the take-away",
     "content": "Because multiGF_eq is quantified over an arbitrary list, the 1-D and 3-D cases are one-line specializations (oneDim_multiGF, threeDim_multiGF) rather than separate proofs. The closing summary records the file's organizing principle: the right algebraic abstraction — the group of units of S⟦X⟧ together with the additivity of invOneSubPow — compresses the parent's combinatorial induction into a homomorphism computation.",

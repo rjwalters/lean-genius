@@ -84,7 +84,7 @@
   {
     "id": "ann-pent03-general",
     "proofId": "pentagonal-number-theorem-oq-01-oq-03",
-    "range": { "startLine": 190, "endLine": 202 },
+    "range": { "startLine": 191, "endLine": 202 },
     "type": "concept",
     "title": "The general s-gonal discriminant identity unifies all figurate tests",
     "content": "disc_genPolygonal proves that for the generalized s-gonal number P (with 2P=(s−2)k²−(s−4)k), 8(s−2)·P+(s−4)² = ((2s−4)k−(s−4))² — one square-completion valid for every polygon. The proof is linear_combination 4(s−2)·hP, since ((2s−4)k−(s−4))²−(s−4)² = 4(s−2)((s−2)k²−(s−4)k) = 4(s−2)·(2P). Pentagonal (s=5: 24P+1=(6k−1)²) and heptagonal (s=7: 40P+9=(10k−3)²) are the instances disc_genPolygonal_pent and disc_genPolygonal_hept, exhibiting the parent's pentagonal test as a special case.",

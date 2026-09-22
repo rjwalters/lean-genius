@@ -26,8 +26,8 @@
     "proofId": "erdos-281",
     "type": "definition",
     "range": {
-      "startLine": 35,
-      "endLine": 46
+      "startLine": 36,
+      "endLine": 47
     },
     "title": "Congruence Classes and Coverage",
     "content": "**`CongruenceChoice moduli`** assigns each index i a residue aᵢ mod nᵢ. **`IsCovered`** checks if m ≡ aᵢ (mod nᵢ). **`IsCoveredByFirst k`** checks coverage by the first k classes.",
@@ -48,8 +48,8 @@
     "proofId": "erdos-281",
     "type": "definition",
     "range": {
-      "startLine": 50,
-      "endLine": 59
+      "startLine": 51,
+      "endLine": 60
     },
     "title": "Uncovered Count and Density",
     "content": "**`uncoveredCount`** counts integers in [1,N] not covered by the first k classes. **`uncoveredDensity`** normalizes by N. These measure how well finite approximations perform.",
@@ -71,7 +71,7 @@
     "proofId": "erdos-281",
     "type": "concept",
     "range": {
-      "startLine": 63,
+      "startLine": 64,
       "endLine": 131
     },
     "title": "Proved Infrastructure Lemmas (12 Lemmas)",
@@ -139,7 +139,7 @@
     "proofId": "erdos-281",
     "type": "concept",
     "range": {
-      "startLine": 217,
+      "startLine": 218,
       "endLine": 230
     },
     "title": "Divergence and Coprime Results",

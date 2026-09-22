@@ -50,7 +50,7 @@
   {
     "id": "dilworth-hard-inter-union-glue",
     "proofId": "dilworth-theorem-oq-01-oq-02",
-    "range": { "startLine": 144, "endLine": 216 },
+    "range": { "startLine": 146, "endLine": 216 },
     "type": "theorem",
     "title": "Decomposition: meet in A, cover s, and glue",
     "content": "Three structural pillars. downSet_inter_upSet: the two sets meet exactly in A (an element in both is squeezed y₂ ≤ x ≤ y₁ between antichain elements, forcing it into A). downSet_union_upSet: for a maximum antichain they cover all of s — an element missed by both is incomparable to all of A, so A ∪ {x} would be a strictly larger antichain, contradicting maximality. glue_isChain: a down-chain and an up-chain through the same a' ∈ A union to a chain, since any cross-pair is comparable through a' (x ≤ a' ≤ y).",
@@ -62,7 +62,7 @@
   {
     "id": "dilworth-hard-saturation",
     "proofId": "dilworth-theorem-oq-01-oq-02",
-    "range": { "startLine": 218, "endLine": 263 },
+    "range": { "startLine": 219, "endLine": 263 },
     "type": "theorem",
     "title": "Saturation pigeonhole: every chain meets the antichain",
     "content": "chain_meets_antichain_of_card_le. If a chain family 𝒞 covers an antichain A and |𝒞| ≤ |A|, then every chain of 𝒞 meets A. The map a ↦ (a chain containing a) is injective on A (two antichain elements in the same chain would coincide, by chain∩antichain ≤ 1), so its image has card |A| ≤ |𝒞| and, by equal cardinalities, equals 𝒞 — i.e. the map is onto, so every chain is hit. This bridges the easy bound to the gluing step: it guarantees the inductive down/up sub-covers are indexed by A.",

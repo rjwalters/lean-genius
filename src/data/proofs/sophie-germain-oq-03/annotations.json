@@ -14,7 +14,7 @@
   {
     "id": "ann-closed-form",
     "proofId": "sophie-germain-oq-03",
-    "range": { "startLine": 49, "endLine": 82 },
+    "range": { "startLine": 54, "endLine": 87 },
     "type": "insight",
     "title": "Solving the Recurrence: pᵢ = 2ⁱ·(a+1) − 1",
     "content": "`cunninghamTerm a i = 2^i * (a+1) - 1` is the explicit solution of $p_{i+1} = 2p_i + 1$ with $p_0 = a$. `cunninghamTerm_zero` confirms the chain starts at $a$, and `cunninghamTerm_succ` proves the closed form really does satisfy the defining recurrence (the only delicate point is ℕ truncated subtraction, handled by introducing $Y = 2^i(a+1) \\ge 1$ and letting `omega` finish). Reducing an iterated process to a single modular expression is what makes the Fermat obstruction visible.",

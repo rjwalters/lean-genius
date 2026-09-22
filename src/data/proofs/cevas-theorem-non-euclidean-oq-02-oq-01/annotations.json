@@ -14,7 +14,7 @@
   {
     "id": "ann-sin-properties",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 40, "endLine": 70 },
+    "range": { "startLine": 44, "endLine": 70 },
     "type": "insight",
     "title": "sin Properties for Signed Geodesic Arcs",
     "content": "Part 1 establishes the sin properties needed for the signed-arc framework. sin_pos_of_pos_lt_pi confirms sin > 0 on (0,π) using Real.sin_pos_of_pos_of_lt_pi from Mathlib. sin_ne_zero_of_neg_gt_neg_pi shows sin ≠ 0 on (-π,0) by writing sin(x) = -sin(-x) (using sin oddness) and noting -x ∈ (0,π) has positive sin. sin_odd proves sin(-x) = -sin(x) using Real.sin_neg — this is the critical structural property enabling signed arc ratios. These lemmas exactly parallel the sinh properties proved in the parent hyperbolic file.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-algebraic-core",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 72, "endLine": 97 },
+    "range": { "startLine": 75, "endLine": 97 },
     "type": "insight",
     "title": "Algebraic Core: Menelaus Product = -1 ↔ Cross-Product Identity",
     "content": "The algebraic core proves a universal fact about ratio products: menelausRatioProduct a b c d e f = -1 ↔ a*c*e = -(b*d*f). This is pure algebra, independent of geometry. The proof uses div_mul_div_comm to merge numerators/denominators, then div_eq_iff (with nonzero denominator) to clear fractions, and linarith to close. By defining menelausRatioProduct as (a/b)*(c/d)*(e/f) and using this lemma, the spherical Menelaus theorem reduces to showing that sin(BD)*sin(CE)*sin(AF) = -(sin(DC)*sin(EA)*sin(FB)), which is the product form of the cross-ratio identity.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-interior-specialization",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 157, "endLine": 217 },
+    "range": { "startLine": 160, "endLine": 217 },
     "type": "insight",
     "title": "Interior-Arc Specialization: All Arcs in (0,π)",
     "content": "The interior-arc specialization restricts to configurations where all 6 arc values are in (0,π), the natural domain for interior points of geodesic triangles on the upper hemisphere. In this regime, all sin values are positive (by sin_pos_of_pos_lt_pi), so the non-degeneracy conditions are automatically satisfied. spherical_menelaus_interior directly applies spherical_menelaus_theorem after constructing a SphericalMenelausConfig from the positivity hypotheses. The specialization handles the most common geometric scenario.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-ceva-menelaus-duality",
     "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01",
-    "range": { "startLine": 219, "endLine": 297 },
+    "range": { "startLine": 222, "endLine": 297 },
     "type": "insight",
     "title": "Ceva-Menelaus Duality: Product = +1 vs Product = -1",
     "content": "The duality section documents the fundamental distinction between Ceva's theorem (cevians from vertices, product = +1) and Menelaus' theorem (transversal, product = -1). spherical_ceva_product_pos shows that if all six sin-ratios are positive (interior configurations), the Ceva-type product is positive, while the Menelaus product cannot be -1. This separates Ceva (concurrent cevians) from Menelaus (collinear transversal points) configurations. Concrete numeric examples verify specific angle triples satisfy/fail the conditions. The duality is the same in Euclidean, spherical, and hyperbolic geometry — the geometry only changes the measure function.",

@@ -62,7 +62,7 @@
   {
     "id": "ann-summable-eventually-zero",
     "proofId": "central-limit-theorem-oq-02-oq-03",
-    "range": { "startLine": 166, "endLine": 176 },
+    "range": { "startLine": 167, "endLine": 176 },
     "type": "theorem",
     "title": "Reusable: Eventually-Zero ⇒ Summable rpow",
     "content": "summable_rpow_of_eventually_zero is a general analytic lemma: if f : ℕ → ℝ vanishes past some index N and θ ≠ 0, then n ↦ (f n)^θ is summable. The support is contained in Finset.range (N+1); past it, f n = 0 gives (f n)^θ = 0^θ = 0 (Real.zero_rpow needs θ ≠ 0). Summability then follows from summable_of_ne_finset_zero. This isolates the rate-condition core so it can be reused for any eventually-zero mixing rate.",

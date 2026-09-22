@@ -46,7 +46,7 @@
   {
     "id": "ann-prodfamily-order",
     "proofId": "erdos-909-oq-01-oq-02",
-    "range": { "startLine": 102, "endLine": 143 },
+    "range": { "startLine": 108, "endLine": 149 },
     "type": "insight",
     "title": "The Combinatorial Core: Order Is Multiplicative on Product Families",
     "content": "`prodFamily_order` is the heart of the logarithmic law. For families $f$ (order $\\leq p$) and $g$ (order $\\leq q$), the rectangular family $(i,j) \\mapsto f_i \\times g_j$ has order $\\leq p\\,q$. Fix a point $z = (x,y)$ and a finset $S$ of pairs all containing $z$. Project $S$ onto coordinates: $A = S.\\mathrm{image}\\,\\mathrm{fst}$, $B = S.\\mathrm{image}\\,\\mathrm{snd}$, so $S \\subseteq A ×ˢ B$. Since $z \\in f_i \\times g_j$ forces $x \\in f_i$ and $y \\in g_j$, every $i \\in A$ has $x \\in f_i$ (so $|A| \\leq p$) and every $j \\in B$ has $y \\in g_j$ (so $|B| \\leq q$). Then $|S| \\leq |A ×ˢ B| = |A|\\,|B| \\leq p\\,q$. This single finite-combinatorial fact is the whole reason a product inequality holds at all.",

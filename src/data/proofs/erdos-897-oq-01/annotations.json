@@ -50,10 +50,10 @@
     "id": "ann-e897oq01-additive",
     "proofId": "erdos-897-oq-01",
     "range": {
-      "startLine": 56,
-      "endLine": 71
+      "startLine": 52,
+      "endLine": 67
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "`logSqWeight` is (strongly) additive",
     "content": "Additivity follows because coprime numbers have disjoint prime supports, so the defining sum splits over a coprime product. Strong additivity follows from `(p^k).primeFactors = p.primeFactors`, giving `logSqWeight(p^k) = logSqWeight(p) = (log p)²`.",
     "mathContext": "Additive: $f(ab)=f(a)+f(b)$ for $\\gcd(a,b)=1$; strongly additive additionally requires $f(p^k)=f(p)$. Here $\\{p:p\\mid ab\\}=\\{p:p\\mid a\\}\\sqcup\\{p:p\\mid b\\}$ for coprime $a,b$, and $(p^k).\\mathrm{primeFactors}=\\{p\\}$.",
@@ -138,8 +138,8 @@
     "id": "ann-e897oq01-plain-unbounded",
     "proofId": "erdos-897-oq-01",
     "range": {
-      "startLine": 144,
-      "endLine": 165
+      "startLine": 149,
+      "endLine": 173
     },
     "type": "theorem",
     "title": "The hypothesis forces plain unboundedness",

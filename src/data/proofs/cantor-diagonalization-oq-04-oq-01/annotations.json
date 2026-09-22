@@ -25,7 +25,7 @@
   {
     "id": "ann-cantor-oq04-oq01-codes-setoid",
     "proofId": "cantor-diagonalization-oq-04-oq-01",
-    "range": { "startLine": 51, "endLine": 61 },
+    "range": { "startLine": 55, "endLine": 65 },
     "type": "definition",
     "title": "CodesEndomorphismsSetoid: A Pointwise-Equivalence Retract",
     "content": "**`CodesEndomorphismsSetoid Y s`**: a structure with three fields — `encode : (Y → Y) → Y` (names a function), `decode : Y → (Y → Y)` (extracts a function), and `retract : ∀ g y, s.r (decode (encode g) y) (g y)`. The retract is **pointwise** in $y$ and uses the **setoid relation** `s.r`, not exact equality. This is strictly weaker than the parent's `decode (encode g) = g` (function-level equality, which by funext = pointwise *equality*).",

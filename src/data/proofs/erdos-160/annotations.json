@@ -26,8 +26,8 @@
     "proofId": "erdos-160",
     "type": "definition",
     "range": {
-      "startLine": 35,
-      "endLine": 38
+      "startLine": 42,
+      "endLine": 45
     },
     "title": "4-Term Arithmetic Progression",
     "content": "Is4AP(n, a, d) asserts that $a, a+d, a+2d, a+3d$ is a valid 4-AP in $\\{1,\\ldots,n\\}$ with common difference $d \\ge 1$. This is the combinatorial object whose colorings we control.",
@@ -70,7 +70,7 @@
     "proofId": "erdos-160",
     "type": "definition",
     "range": {
-      "startLine": 46,
+      "startLine": 47,
       "endLine": 53
     },
     "title": "3-Diverse Coloring on 4-APs",
@@ -202,7 +202,7 @@
     "proofId": "erdos-160",
     "type": "concept",
     "range": {
-      "startLine": 168,
+      "startLine": 169,
       "endLine": 172
     },
     "title": "Hunter's Improved Upper Bound: h(N) = O(N^{0.356})",
@@ -248,7 +248,7 @@
     "proofId": "erdos-160",
     "type": "concept",
     "range": {
-      "startLine": 189,
+      "startLine": 190,
       "endLine": 203
     },
     "title": "Consequences of Known Bounds",

@@ -14,7 +14,7 @@
   {
     "id": "ann-platonic-oq0201-model",
     "proofId": "platonic-solids-oq-02-oq-01",
-    "range": { "startLine": 36, "endLine": 65 },
+    "range": { "startLine": 40, "endLine": 65 },
     "type": "definition",
     "title": "The Rational Angle Model and the Triangle Minimum",
     "content": "Angles are measured in units of π over ℚ: angleFrac n = 1 − 2/n is the interior angle of a regular n-gon (triangle 1/3, square 1/2, → 1 as n→∞). vertexAngleSum sums angleFrac over a vertex's face list, and PositiveDefect faces := vertexAngleSum faces < 2 captures the angular gap. The key monotonicity fact angleFrac_ge_third proves 1/3 ≤ angleFrac n for n ≥ 3: the equilateral triangle has the smallest interior angle of any regular polygon, established by nlinarith on 2/n ≤ 2/3. Working over ℚ keeps every comparison exact and norm_num-decidable.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-platonic-oq0201-degree",
     "proofId": "platonic-solids-oq-02-oq-01",
-    "range": { "startLine": 67, "endLine": 101 },
+    "range": { "startLine": 71, "endLine": 101 },
     "type": "theorem",
     "title": "Necessary Direction: Degree ≤ 5",
     "content": "The necessary half. list_sum_lb is a generic induction: if f n ≥ c for every entry of a list, then Σ f ≥ length·c. Specializing to angleFrac with c = 1/3 gives vertexAngleSum_ge: a vertex of degree d has angle sum ≥ d·(1/3). Then degree_le_five combines this with PositiveDefect (sum < 2): d/3 < 2 forces d < 6, hence d ≤ 5 (cast to ℕ, closed by omega). The geometric meaning is exact — six equilateral triangles meet with angle sum exactly 6·(1/3) = 2, a flat tiling with zero defect — so five is the genuine ceiling for positive defect.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-platonic-oq0201-archimedean",
     "proofId": "platonic-solids-oq-02-oq-01",
-    "range": { "startLine": 103, "endLine": 124 },
+    "range": { "startLine": 107, "endLine": 124 },
     "type": "tactic",
     "title": "All 13 Archimedean Types Pass — Without native_decide",
     "content": "archimedeanTypes lists the 13 Archimedean vertex configurations (same data as the parent). all_archimedean_positiveDefect proves each has positive defect by destructuring the membership into 13 cases (rcases ... <;>), substituting, unfolding the angle definitions, and closing each with norm_num over ℚ. This deliberately replaces the parent's native_decide — which trusts kernel reduction via Lean.ofReduceBool and so is NOT axiom-free — with an axiom-free rational computation. It is the foundational upgrade that lets the whole file report only propext / Classical.choice / Quot.sound.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-platonic-oq0201-family",
     "proofId": "platonic-solids-oq-02-oq-01",
-    "range": { "startLine": 126, "endLine": 163 },
+    "range": { "startLine": 130, "endLine": 163 },
     "type": "insight",
     "title": "The Infinite Witness Family [3, 3, k+4]",
     "content": "The counterexample engine. family k = [3,3,k+4] fixes two triangles and grows the third face. family_positiveDefect shows angle sum 1/3 + 1/3 + (1 − 2/n) = 5/3 − 2/n < 5/3 < 2 for all n ≥ 3 (nlinarith). family_injective: distinct k give distinct lists (the third entry k+4 is injective, omega). family_not_archimedean: no member is among the 13 — every length-3 Archimedean type has its second face ≥ 6, but the family's second face is 3 (simp). IsUniform is defined (all faces congruent = Platonic), and family_not_uniform shows no member is uniform since 3 ≠ k+4. So the family is an infinite, injective stream of non-Platonic, non-Archimedean positive-defect vertices.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-platonic-oq0201-answer",
     "proofId": "platonic-solids-oq-02-oq-01",
-    "range": { "startLine": 165, "endLine": 206 },
+    "range": { "startLine": 169, "endLine": 206 },
     "type": "theorem",
     "title": "The Answer: Infinitely Many Non-Archimedean Witnesses",
     "content": "The payoff theorems use Set.infinite_of_injective_forall_mem with the injective family. infinitely_many_positiveDefect: the positive-defect set is infinite. infinitely_many_nonArchimedean_positiveDefect (the sharp answer to the open question): even after excluding uniform AND Archimedean types, infinitely many positive-defect vertices remain — so the angle constraint at a single vertex cannot determine the 13; global geometric realizability is the decisive missing ingredient. concrete_witnesses pins the two smallest, [3,3,4] and [3,3,5], each verified positive-defect, non-Archimedean, and non-uniform via the family lemmas at k = 0, 1.",

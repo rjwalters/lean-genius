@@ -26,7 +26,7 @@
   {
     "id": "ann-gcd-oq0401-normalize-formula",
     "proofId": "gcd-algorithm-oq-04-oq-01",
-    "range": { "startLine": 71, "endLine": 90 },
+    "range": { "startLine": 72, "endLine": 90 },
     "type": "insight",
     "title": "Part II: Headline — normalize p = C (leadingCoeff p)⁻¹ * p",
     "content": "normalize_eq_C_inv_leadingCoeff_mul is the headline identity: the abstract normalized associate of a nonzero polynomial is the explicit monic polynomial obtained by dividing through by the leading coefficient. The proof rewrites normalize_apply (normalize p = p * normUnit p), substitutes the Part I form of normUnit, and commutes the product. normalize_zero_poly records the p = 0 convention normalize 0 = 0, which is forced because leadingCoeff 0 = 0 has no inverse.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-gcd-oq0401-uniqueness",
     "proofId": "gcd-algorithm-oq-04-oq-01",
-    "range": { "startLine": 111, "endLine": 139 },
+    "range": { "startLine": 112, "endLine": 139 },
     "type": "insight",
     "title": "Part IV: normalize p is the Unique Monic Associate",
     "content": "normalize_eq_self_iff characterizes nonzero fixed points of normalize as exactly the monic polynomials. eq_normalize_of_monic_associated proves uniqueness: any monic q associated to p must equal normalize p — the proof turns the association into normalize p = normalize q via normalize_eq_normalize_iff_associated, then uses Monic.normalize_eq_self to collapse normalize q to q. exists_unique_monic_associate packages existence (Part III) and uniqueness into a single ∃! statement: a nonzero polynomial has exactly one monic associate, namely normalize p.",
