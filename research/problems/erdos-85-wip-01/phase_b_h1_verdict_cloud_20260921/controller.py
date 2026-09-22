@@ -28,11 +28,15 @@ import time
 PROFILE = "2am-admin"
 REGION = "us-east-1"
 BUCKET = "2am-erdos85-certs"
-PREFIX = "sat49/verdict-only-20260921"
+BASE_PREFIX = "sat49/verdict-only-20260921"
+PREFIX = BASE_PREFIX
 TAG = "e85-verdict-20260921"
 ROLE = "Erdos85VerdictWorker"
 SG_NAME = "erdos85-verdict-noingress"
 LT_NAME = "e85-verdict-20260921"
+PASS = {"name": "", "queue": "queue-1137.ids", "queue_sha256": "d9e4548ff356dfbd23db82b09d6a02d9a1d348f7c9aa4378e5dc6e8bc9e6fe87",
+        "config": "research/problems/erdos-85-wip-01/phase_b_h1_verdict_20260916/config.draft.json",
+        "config_commit": "bf95b3937e894956d07f09b55401dc41ffa904a6", "direct": False, "size": 1137}
 AMI_PARAM = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-arm64"
 TYPES = ["c8g.16xlarge", "c7g.16xlarge", "m8g.16xlarge", "m7g.16xlarge", "r8g.16xlarge", "r7g.16xlarge"]
 MAX_SPOT_PRICE = "1.30"
@@ -40,8 +44,9 @@ HARD_STOP_USD = 170.0
 EBS_GIB = 60
 EBS_USD_PER_GIB_HOUR = 0.08 / 730
 HERE = Path(__file__).resolve().parent
-STRIPE = Path("/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-verdict-cloud-20260921")
-IMAGE_ARCHIVE = STRIPE / "freight/lean4-arm64-v4.31.0.oci.tar.zst"
+BASE_STRIPE = Path("/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-verdict-cloud-20260921")
+STRIPE = BASE_STRIPE
+IMAGE_ARCHIVE = BASE_STRIPE / "freight/lean4-arm64-v4.31.0.oci.tar.zst"
 EMITTER = Path("/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/h1fleet/"
                "v3freight-rebuild-20260905/stage/freight/v2cnf")
 EMITTER_SHA = "4bd9604c6d670ad65a8ca332a26dbf35132418634a3b0678c177c8b2cfff4bf6"
@@ -70,10 +75,13 @@ def now() -> dt.datetime:
 def user_data(commit: str) -> str:
     sparse = " ".join(f"'{p}'" for p in SPARSE + ["/" + line for line in
                       (HERE / "captured-paths.txt").read_text().split()])
+    env = (f"export E85_PASS='{PASS['name']}' E85_QUEUE='{PASS['queue']}' E85_QUEUE_SHA='{PASS['queue_sha256']}' "
+           f"E85_CONFIG='{PASS['config']}' E85_CONFIG_COMMIT='{PASS['config_commit']}' E85_DIRECT='{int(PASS['direct'])}'")
     script = f"""#!/bin/bash
 exec >> /var/log/e85-userdata.log 2>&1
 set -u
 export HOME=/root AWS_DEFAULT_REGION={REGION}
+{env}
 TOKEN=$(curl -s -X PUT http://169.254.169.254/latest/api/token -H 'X-aws-ec2-metadata-token-ttl-seconds: 600')
 IID=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id)
 die() {{ echo "USERDATA-FAIL: $*"; aws s3 cp --only-show-errors /var/log/e85-userdata.log s3://{BUCKET}/{PREFIX}/nodes/$IID/userdata-FAILED.log; /usr/sbin/poweroff; exit 1; }}
@@ -138,13 +146,13 @@ def freight(_args) -> None:
     raw = EMITTER.read_bytes()
     if hashlib.sha256(raw).hexdigest() != EMITTER_SHA:
         raise SystemExit("emitter identity mismatch")
-    packed = STRIPE / "freight/v2cnf.zst"
+    packed = BASE_STRIPE / "freight/v2cnf.zst"
     if not packed.exists():
         subprocess.run(["zstd", "-q", "-19", "-T0", str(EMITTER), "-o", str(packed)], check=True)
     for path in (packed, IMAGE_ARCHIVE):
         print("uploading", path.name, path.stat().st_size, flush=True)
-        aws("s3", "cp", "--only-show-errors", str(path), f"s3://{BUCKET}/{PREFIX}/freight/{path.name}", timeout=6 * 3600)
-    print(aws("s3", "ls", f"s3://{BUCKET}/{PREFIX}/freight/"))
+        aws("s3", "cp", "--only-show-errors", str(path), f"s3://{BUCKET}/{BASE_PREFIX}/freight/{path.name}", timeout=6 * 3600)
+    print(aws("s3", "ls", f"s3://{BUCKET}/{BASE_PREFIX}/freight/"))
 
 
 def launch(args) -> None:
@@ -237,14 +245,14 @@ def one_pass(state: dict, act: bool) -> dict:
                 aws("s3api", "delete-object", "--bucket", BUCKET, "--key", f"{PREFIX}/claims/{case_id}")
                 state["claims"].pop(case_id, None)
             released.append(case_id)
-    report = {"utc": now().strftime("%Y-%m-%dT%H:%M:%SZ"), "live_instances": len(live),
+    report = {"utc": now().strftime("%Y-%m-%dT%H:%M:%SZ"), "pass": PASS["name"] or "1", "live_instances": len(live),
               "instances_seen": len(state["instances"]), "estimated_spend_usd": round(spend, 2),
-              "queue": 1137, "claimed": len(claims), "finished": len(finished), "statuses": statuses,
+              "queue": PASS["size"], "claimed": len(claims), "finished": len(finished), "statuses": statuses,
               "orphans_released": len(released), "control": control}
     if act and spend >= HARD_STOP_USD:
         report["action"] = "HARD BUDGET STOP"
         stop(None)
-    elif act and live and len(finished) >= 1137 and not (claims - set(finished)):
+    elif act and live and len(finished) >= PASS["size"] and not (claims - set(finished)):
         report["action"] = "queue complete; stopping"
         stop(None)
     return report
@@ -287,8 +295,23 @@ def watch(args) -> None:
         time.sleep(300)
 
 
+def select_pass(name: str) -> None:
+    """Pass 2+: separate S3 sub-prefix, Stripe dir, tag and launch template; base freight is shared."""
+    global PREFIX, STRIPE, TAG, LT_NAME
+    if not name:
+        return
+    spec = json.loads((HERE / f"pass-{name}.json").read_text())
+    PASS.update(spec, name=name)
+    PASS["size"] = len((HERE / PASS["queue"]).read_text().split())
+    PREFIX = f"{BASE_PREFIX}/{name}"
+    STRIPE = BASE_STRIPE / name
+    TAG = f"e85-verdict-20260921-{name}"
+    LT_NAME = f"e85-verdict-20260921-{name}"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--pass", dest="pass_name", default="", help="pass name, e.g. pass2 (reads pass-<name>.json)")
     sub = parser.add_subparsers(dest="command", required=True)
     p = sub.add_parser("setup"); p.add_argument("--commit", required=True); p.set_defaults(run=setup)
     p = sub.add_parser("freight"); p.set_defaults(run=freight)
@@ -299,6 +322,7 @@ def main() -> int:
     p = sub.add_parser("status"); p.set_defaults(run=lambda a: watch(argparse.Namespace(dry=True, once=True)))
     p = sub.add_parser("stop"); p.set_defaults(run=stop)
     args = parser.parse_args()
+    select_pass(args.pass_name)
     args.run(args)
     return 0
 

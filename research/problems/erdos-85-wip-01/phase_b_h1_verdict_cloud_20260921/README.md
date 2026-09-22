@@ -63,3 +63,21 @@ IAM role and instance profile `Erdos85VerdictWorker`, security group
 `erdos85-verdict-noingress`, launch template `e85-verdict-20260921`, S3 prefix
 `sat49/verdict-only-20260921/` (freight can be deleted after the run; receipts are synced
 to Stripe `artifacts/erdos85-sat49/h1-verdict-cloud-20260921/`).
+
+## Pass 2: long caps for the pass-1 cap hits (board goal #45, 2026-09-22)
+
+About 18% of pass-1 rows stop at the 14,400 s Kissat cap. Robb: raise the cap on a second
+pass. `config.longcap.json` is `config.draft.json` with H1 caps of 43,200 s for both solvers
+and no `h1_residual` block; it runs through the reviewed base dispatcher
+`dispatch_verdict_only.py --case-id ID --workers 1` (the residual wrapper hard-codes the
+14,400 s policy, so it cannot be reused). After pass 1 is complete:
+
+    python3 -B build_pass2_queue.py <commit-that-banked-config.longcap.json>
+    git add queue-pass2.ids pass-pass2.json && git commit && git push   # then re-run with that commit
+    python3 -B controller.py --pass pass2 setup --commit <commit>
+    python3 -B controller.py --pass pass2 launch 1      # canary, then up to 3 more
+    python3 -B controller.py --pass pass2 watch
+
+Pass 2 uses S3 sub-prefix `pass2/`, Stripe subdirectory `pass2/`, tag and launch template
+`e85-verdict-20260921-pass2`; freight and solver binaries are shared with pass 1. Worst case
+per row is 24 h; nodes and fleets still stop at 30 h. Rows that still hit the cap are open.

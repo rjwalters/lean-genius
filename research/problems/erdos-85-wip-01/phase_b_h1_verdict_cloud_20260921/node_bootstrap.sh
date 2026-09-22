@@ -7,7 +7,13 @@
 # No proof logging, no certificates, no Lean build. A bootstrap failure uploads the log and powers off.
 set -u
 B=2am-erdos85-certs; P=sat49/verdict-only-20260921
-CONFIG_COMMIT=bf95b3937e894956d07f09b55401dc41ffa904a6
+# Pass selection (pass 1 defaults). The launch template's user data exports E85_* for later passes.
+E85_PASS=${E85_PASS:-}; PP="$P${E85_PASS:+/$E85_PASS}"
+CONFIG_COMMIT=${E85_CONFIG_COMMIT:-bf95b3937e894956d07f09b55401dc41ffa904a6}
+E85_CONFIG=${E85_CONFIG:-research/problems/erdos-85-wip-01/phase_b_h1_verdict_20260916/config.draft.json}
+E85_QUEUE=${E85_QUEUE:-queue-1137.ids}
+E85_QUEUE_SHA=${E85_QUEUE_SHA:-d9e4548ff356dfbd23db82b09d6a02d9a1d348f7c9aa4378e5dc6e8bc9e6fe87}
+E85_DIRECT=${E85_DIRECT:-0}
 IMAGE_ID=sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6
 EMITTER_SHA=4bd9604c6d670ad65a8ca332a26dbf35132418634a3b0678c177c8b2cfff4bf6
 EMITTER=/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/h1fleet/v3freight-rebuild-20260905/stage/freight/v2cnf
@@ -18,8 +24,8 @@ TOKEN=$(curl -s -X PUT http://169.254.169.254/latest/api/token -H 'X-aws-ec2-met
 IID=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-id)
 ITYPE=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/instance-type)
 AWS0=$(command -v aws)
-fail() { echo "BOOTSTRAP-FAIL: $*"; $AWS0 s3 cp --only-show-errors $LOG s3://$B/$P/nodes/$IID/bootstrap-FAILED.log; /usr/sbin/poweroff; exit 1; }
-echo "$(date -u +%FT%TZ) bootstrap start iid=$IID type=$ITYPE head=$(git -C $REPO rev-parse HEAD)"
+fail() { echo "BOOTSTRAP-FAIL: $*"; $AWS0 s3 cp --only-show-errors $LOG s3://$B/$PP/nodes/$IID/bootstrap-FAILED.log; /usr/sbin/poweroff; exit 1; }
+echo "$(date -u +%FT%TZ) bootstrap start iid=$IID type=$ITYPE head=$(git -C $REPO rev-parse HEAD) pass=${E85_PASS:-1} config=$E85_CONFIG@$CONFIG_COMMIT queue=$E85_QUEUE direct=$E85_DIRECT"
 # Hard lifetime backstop, 30 h. Instance-initiated power-off terminates the instance (launch template).
 systemd-run --on-active=108000 --unit=e85-lifetime /usr/sbin/poweroff
 for try in 1 2 3 4 5; do dnf -y install docker python3.12 zstd gcc gcc-c++ make tar unzip && break; sleep 30; done
@@ -68,12 +74,12 @@ printf 'p cnf 1 2\n1 0\n-1 0\n' > /scratch/freight/unsat.cnf
 /usr/local/bin/cadical /scratch/freight/unsat.cnf | grep -qx 's UNSATISFIABLE' || fail "cadical preflight"
 # S3 claim primitive self-test: a second conditional PUT of the same key must fail with PreconditionFailed.
 echo $IID > /scratch/freight/node
-$AWS s3api put-object --bucket $B --key $P/selftest/$IID --body /scratch/freight/node --if-none-match '*' >/dev/null || fail "selftest first put"
-if $AWS s3api put-object --bucket $B --key $P/selftest/$IID --body /scratch/freight/node --if-none-match '*' >/dev/null 2>/scratch/freight/put2.err; then fail "conditional put is not exclusive"; fi
+$AWS s3api put-object --bucket $B --key $PP/selftest/$IID --body /scratch/freight/node --if-none-match '*' >/dev/null || fail "selftest first put"
+if $AWS s3api put-object --bucket $B --key $PP/selftest/$IID --body /scratch/freight/node --if-none-match '*' >/dev/null 2>/scratch/freight/put2.err; then fail "conditional put is not exclusive"; fi
 grep -q PreconditionFailed /scratch/freight/put2.err || fail "unexpected conditional put error: $(cat /scratch/freight/put2.err)"
 # Prefetch every banked dependency blob once, single-threaded (partial clone), then a read-only dry run.
 while read -r f; do git -C $REPO show $CONFIG_COMMIT:"$f" > /dev/null || fail "prefetch $f"; done < $HERE/captured-paths.txt
 git -C $REPO show $CONFIG_COMMIT:research/problems/erdos-85-wip-01/sat49/dispatch_h1_residual_verdict_only.py > /dev/null || fail "prefetch wrapper"
 ( cd $REPO && python3.12 -B research/problems/erdos-85-wip-01/sat49/dispatch_h1_residual_verdict_only.py --config research/problems/erdos-85-wip-01/phase_b_h1_verdict_20260916/config.draft.json --workers 1 | cut -c1-200 | grep -q '"selected_cases": 1161' ) || fail "dry run census"
-echo "$(date -u +%FT%TZ) bootstrap ok"; $AWS s3 cp --only-show-errors $LOG s3://$B/$P/nodes/$IID/bootstrap.log
+echo "$(date -u +%FT%TZ) bootstrap ok"; $AWS s3 cp --only-show-errors $LOG s3://$B/$PP/nodes/$IID/bootstrap.log
 exec python3.12 -B $HERE/node_worker.py --repo $REPO --iid $IID --itype $ITYPE --slots "${E85_SLOTS:-$(nproc)}"

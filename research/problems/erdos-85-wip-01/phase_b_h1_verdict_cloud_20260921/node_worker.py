@@ -27,9 +27,12 @@ import threading
 import time
 
 BUCKET = "2am-erdos85-certs"
-PREFIX = "sat49/verdict-only-20260921"
+BASE_PREFIX = "sat49/verdict-only-20260921"
+PREFIX = BASE_PREFIX  # pass 1; `--pass-prefix NAME` appends /NAME (pass 2 and later)
 CONFIG_COMMIT = "bf95b3937e894956d07f09b55401dc41ffa904a6"
 QUEUE_SHA256 = "d9e4548ff356dfbd23db82b09d6a02d9a1d348f7c9aa4378e5dc6e8bc9e6fe87"
+CONFIG = "research/problems/erdos-85-wip-01/phase_b_h1_verdict_20260916/config.draft.json"
+CASE_TIMEOUT = 30000
 AWS = "/usr/local/bin/aws"
 RUNS = Path("/scratch/runs")
 OUT = Path("/scratch/out")
@@ -104,19 +107,22 @@ def run_case(args, slot: int, case_id: str) -> dict:
     if run_dir.exists():
         shutil.rmtree(run_dir)
     sat49 = Path(args.repo) / "research/problems/erdos-85-wip-01/sat49"
-    config = Path(args.repo) / "research/problems/erdos-85-wip-01/phase_b_h1_verdict_20260916/config.draft.json"
-    command = ["python3.12", "-B", str(sat49 / "dispatch_h1_residual_verdict_only.py"),
+    config = Path(args.repo) / CONFIG
+    # Pass 1: the reviewed residual wrapper. Pass 2+: the reviewed base dispatcher with an
+    # explicit case ID (the wrapper hard-codes the 14,400 s policy). Both are unchanged code.
+    tool = "dispatch_verdict_only.py" if args.direct else "dispatch_h1_residual_verdict_only.py"
+    command = ["python3.12", "-B", str(sat49 / tool),
                "--config", str(config), "--config-commit", CONFIG_COMMIT, "--execute",
                "--case-id", case_id, "--workers", "1", "--output-dir", str(run_dir),
                "--kissat", "/usr/local/bin/kissat", "--cadical", "/usr/local/bin/cadical"]
     started = time.time()
-    # 120 s generation + two 14,400 s caps + slack. The runner enforces the real caps.
-    process = subprocess.run(command, capture_output=True, text=True, timeout=30000, cwd=str(sat49))
+    # Generation cap + both solver caps + slack. The runner enforces the real caps.
+    process = subprocess.run(command, capture_output=True, text=True, timeout=CASE_TIMEOUT, cwd=str(sat49))
     elapsed = time.time() - started
     record = {"id": case_id, "node": args.iid, "instance_type": args.itype, "slot": slot,
               "wrapper_returncode": process.returncode, "elapsed_seconds": round(elapsed, 1),
               "wrapper_stderr_tail": process.stderr[-1500:], "status": "ERROR",
-              "config_commit": CONFIG_COMMIT,
+              "config_commit": CONFIG_COMMIT, "config": CONFIG, "tool": tool, "pass_prefix": PREFIX,
               "checkout_head": subprocess.check_output(["git", "-C", args.repo, "rev-parse", "HEAD"], text=True).strip()}
     state_path = run_dir / "results.json"
     if state_path.is_file():
@@ -230,21 +236,34 @@ def heartbeat(args, threads: list[threading.Thread], final: bool = False) -> Non
 
 
 def main() -> int:
+    global PREFIX, CONFIG, CONFIG_COMMIT, CASE_TIMEOUT
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", required=True)
     parser.add_argument("--iid", required=True)
     parser.add_argument("--itype", required=True)
     parser.add_argument("--slots", type=int, required=True)
     parser.add_argument("--no-poweroff", action="store_true")
+    parser.add_argument("--pass-prefix", default="", help="pass 2+: S3 sub-prefix for claims/results/ledger/nodes/control")
+    parser.add_argument("--queue", default="queue-1137.ids", help="ID file in this directory")
+    parser.add_argument("--queue-sha256", default=QUEUE_SHA256)
+    parser.add_argument("--config", default=CONFIG, help="repo-relative dispatch config")
+    parser.add_argument("--config-commit", default=CONFIG_COMMIT)
+    parser.add_argument("--direct", action="store_true", help="use dispatch_verdict_only.py instead of the residual wrapper")
     args = parser.parse_args()
-    raw = (HERE / "queue-1137.ids").read_bytes()
-    if hashlib.sha256(raw).hexdigest() != QUEUE_SHA256:
+    if args.pass_prefix:
+        PREFIX = f"{BASE_PREFIX}/{args.pass_prefix}"
+    CONFIG, CONFIG_COMMIT = args.config, args.config_commit
+    policy = json.loads((Path(args.repo) / CONFIG).read_text())
+    CASE_TIMEOUT = (policy["generation_cap_seconds"] + policy["policies"]["H1"]["primary_cap_seconds"]
+                    + policy["policies"]["H1"]["crosscheck_cap_seconds"] + 1200)
+    raw = (HERE / args.queue).read_bytes()
+    if hashlib.sha256(raw).hexdigest() != args.queue_sha256:
         raise SystemExit("queue identity mismatch")
     queue = raw.decode().split()
-    if len(queue) != 1137 or len(set(queue)) != 1137:
-        raise SystemExit("queue size mismatch")
+    if not queue or len(set(queue)) != len(queue):
+        raise SystemExit("queue empty or has duplicates")
     RUNS.mkdir(parents=True, exist_ok=True)
-    log(f"node start iid={args.iid} type={args.itype} slots={args.slots}")
+    log(f"node start iid={args.iid} type={args.itype} slots={args.slots} prefix={PREFIX} queue={args.queue} n={len(queue)} config={CONFIG}@{CONFIG_COMMIT[:10]} direct={args.direct} case_timeout={CASE_TIMEOUT}")
     threads = [threading.Thread(target=slot_loop, args=(args, slot, queue), daemon=True)
                for slot in range(args.slots)]
     for thread in threads:
