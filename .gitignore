@@ -17,6 +17,12 @@
 .claude/worktrees/
 # Codex agent worktrees (same role as .claude/worktrees/ and .loom/worktrees/)
 .codex/worktrees/
+
+# Machine-local git hooks (git-lfs install --local writes here; wired via core.hooksPath)
+.githooks/
+
+# Per-issue research scaffolds (problem.md / state.md) are local working notes, not gallery content
+research/problems/issue-*/
 aristotle-results/llm-mapping-cache.json
 *.token
 
