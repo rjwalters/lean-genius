@@ -8,7 +8,7 @@ Annotations reference specific lines in Lean proofs. When the Lean source change
 
 ## The Solution
 
-Annotations now use **anchors** instead of line numbers. Anchors reference Lean constructs by name or content:
+Migrated annotations use **anchors** instead of line numbers. Anchors reference Lean constructs by name or content:
 
 ```json
 {
@@ -86,6 +86,41 @@ See what constructs are available for anchoring:
 ```bash
 pnpm annotations:parse proofs/Proofs/Sqrt2Irrational.lean
 ```
+
+### Normalize annotation enums
+
+`type` and `significance` values must be members of the enums in
+`src/types/proof.ts` (mirrored in `types.ts` here). `normalize-enums.ts` applies
+the deterministic remediation map from issue #31246 to every `annotations.json`
+in place (idempotent):
+
+```bash
+pnpm annotations:normalize          # rewrite invalid values
+pnpm annotations:normalize-check    # dry run; exit 1 if any invalid value remains (CI guard)
+```
+
+### Repair anchors in source files
+
+`fix-anchors.ts` fixes common anchor problems in `annotations.source.json`
+(pattern anchors on `--` line comments, empty `doc-comment` anchors, non-matching
+patterns):
+
+```bash
+npx tsx scripts/annotations/fix-anchors.ts            # apply
+npx tsx scripts/annotations/fix-anchors.ts --dry-run
+npx tsx scripts/annotations/fix-anchors.ts --mappings /path/to/proof_mappings.txt
+```
+
+## Files in this directory
+
+| File | Role |
+|------|------|
+| `build.ts` | Build-time entry (`pnpm annotations:build` / `--strict`): resolves anchors, validates line-based files |
+| `resolver.ts` | Anchor resolution; also the `migrate` / `parse` CLI behind `pnpm annotations:migrate` / `annotations:parse` |
+| `lean-parser.ts` | Parses Lean files into anchorable constructs |
+| `types.ts` | Annotation and anchor types (mirror of `src/types/proof.ts` enums) |
+| `normalize-enums.ts` | Enum normalizer (`pnpm annotations:normalize[-check]`) |
+| `fix-anchors.ts` | Anchor repair helper for `annotations.source.json` |
 
 ## Workflow
 

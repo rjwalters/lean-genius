@@ -31,6 +31,7 @@ don't give up. The three real exceptions are enumerated in the agent prompt: uns
 |------|---------|
 | `single-proof-prompt.template.md` | The agent playbook. Substitute `{{FILE}}`/`{{WORKTREE}}`/`{{CACHE_VOL}}`/`{{CPUSET}}`/`{{VER}}` per dispatch. Contains the verify recipe, the FRAMING, the finish protocol, the native_decide axiom-integrity rule, and a seam cheatsheet. |
 | `collect.sh` | The **conflict-proof collector**. For each pushed `mig/<file>`, applies ONLY its `.lean` + flips its single ledger row AFTER re-verifying EXIT=0 in a clean container. Never `git merge`s a mig branch. This is the safety gate that catches false-greens and case-collisions. Env-driven (see header). |
+| `RECONCILE-RESUME.md` | Runbook written mid-flight (2026-07-17) for the epic #37508 reconcile-and-flip: state of the `reconcile/main-into-37508` branch, pins to verify before flipping, and the remaining steps in order. |
 | `SLOT-TABLE.template.txt` | Canonical slot→worktree→cache-volume→cpuset mapping. NEVER dispatch two agents to one worktree/cache concurrently. |
 | `38611-statement-repairs-*.txt` | Log of every genuine soundness/statement repair surfaced by the stricter new toolchain (false theorems that old tactics accepted). Deliverable for the gallery re-audit issue. |
 | `38612-deep-rework-defers-*.txt` | Files too broken for a single migration pass (3000+-line WIP scaffolds, sorry-tainted native_decide, unsound-originals needing new math). Deliverable for the deep-rework issue. |

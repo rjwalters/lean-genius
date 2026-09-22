@@ -20,18 +20,18 @@ Lean 4 mathematical proofs with Mathlib, integrated into the LeanGenius monorepo
 - `FundamentalTheoremCalculus.lean` - FTC
 - `InfinitudePrimes.lean` - Infinitely many primes
 - `CantorDiagonalization.lean` - Cantor's diagonal argument
-
-### Work in Progress (contain sorry/axioms)
-- `NavierStokes.lean` - Navier-Stokes regularity (θₖ approach)
 - `AbelRuffini.lean` - Quintic unsolvability
 - `GodelIncompleteness.lean` - Gödel's incompleteness
-- `BrouwerFixedPoint.lean` - Brouwer fixed point
 - `EulerIdentity.lean` - Euler's identity
-- `FourColorTheorem.lean` - Four color theorem
 - `FundamentalTheoremAlgebra.lean` - FTA
 - `HaltingProblem.lean` - Halting problem
 - `PythagoreanTheorem.lean` - Pythagorean theorem
-- `RamanujanSumFallacy.lean` - 1+2+3+... = -1/12 fallacy
+
+### Work in Progress (contain sorry/axioms)
+- `NavierStokes.lean` - Navier-Stokes regularity (θₖ approach; sorries)
+- `BrouwerFixedPoint.lean` - Brouwer fixed point (axioms)
+- `FourColorTheorem.lean` - Four color theorem (axioms)
+- `RamanujanSumFallacy.lean` - 1+2+3+... = -1/12 fallacy (axioms)
 
 ## Version Compatibility
 
@@ -104,7 +104,7 @@ Output is saved as `<filename>.leanInk` JSON files.
 proofs/
 ├── lakefile.toml        # Lake configuration
 ├── lean-toolchain       # Lean 4.31.0
-├── Proofs.lean          # Main import file
+├── Proofs.lean          # Root module (intentionally no imports; modules found by lakefile globs)
 ├── Proofs/              # Individual proofs
 │   ├── Sqrt2Irrational.lean  # ✅ Verified
 │   ├── NavierStokes.lean     # ⚠️ WIP (axioms)
