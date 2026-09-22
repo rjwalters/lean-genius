@@ -25,6 +25,16 @@ source "$SCRIPT_DIR/kill-session-tree.sh"
 # recognize worktrees at an overridden root, not just under .loom/worktrees.
 # shellcheck source=lib/worktree-root.sh
 source "$SCRIPT_DIR/lib/worktree-root.sh"
+# Worktree-removal ledger (#5950) — terminal-destroy is one of several
+# independent removers; all of them record to the same file. Sourced defensively
+# with a no-op fallback so a partially-resynced .loom/ degrades to "no ledger
+# entry" rather than failing the destroy.
+if [[ -f "$SCRIPT_DIR/lib/worktree-removal-log.sh" ]]; then
+    # shellcheck source=lib/worktree-removal-log.sh
+    source "$SCRIPT_DIR/lib/worktree-removal-log.sh"
+else
+    loom_record_worktree_removal() { :; }
+fi
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -159,7 +169,7 @@ main() {
                         else
                             # Safety check: Don't remove worktree if other processes have their CWD inside it
                             local active_pids
-                            active_pids=$(lsof +d "$worktree_real" -F pt 2>/dev/null | awk '/^p/{pid=substr($0,2)} /^tcwd/{print pid}' | grep -v "$$" || true)
+                            active_pids=$(lsof +d "$worktree_real" -F pf 2>/dev/null | awk '/^p/{pid=substr($0,2)} /^fcwd/{print pid}' | grep -v "$$" || true)
                             if [[ -n "$active_pids" ]]; then
                                 log_warn "Skipping worktree removal: active processes detected (PIDs: $(echo "$active_pids" | tr '\n' ' '))"
                                 log_info "Use 'loom-clean' for deferred cleanup after processes exit"
@@ -167,6 +177,8 @@ main() {
                                 log_info "Removing worktree: $worktree_path"
                                 git -C "$repo_root" worktree remove "$worktree_path" --force 2>/dev/null || true
                                 worktree_cleaned=true
+                                loom_record_worktree_removal "$repo_root" "agent-destroy.sh" \
+                                    "$worktree_path" "" "terminal_destroy"
                                 log_success "Removed worktree: $worktree_path"
                             fi
                         fi

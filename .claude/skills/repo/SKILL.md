@@ -23,8 +23,9 @@ costs.
 | Command | What it does |
 |---------|--------------|
 | [[help]] | Explain the installed `/repo:*` commands — what each does, where to start |
-| [[all]] | The whole hygiene pass in order — audit, docs, tidy, update-tools, reset — safe fixes by default, destructive steps gated |
+| [[all]] | The whole hygiene pass in order — audit, scrub, docs, tidy, update-tools, reset — safe fixes by default, destructive steps gated |
 | [[audit]] | Full sweep — runs all hygiene checks, produces a summary report |
+| [[scrub]] | Public-surface scrub — scan code, history, issues, PRs (and forks) for sensitive identifiers, and report which findings can actually be removed. Report-only; severity gates verbosity so it stays quiet inside [[all]]. Its fork-network sweep is implemented in `scripts/repo/repo-scrub-forks.sh` (installed to `.claude/skills/repo/scripts/`) |
 | [[reset]] | Back to baseline — review stale worktrees/branches/stashes, sync with remote, return to the default branch |
 | [[handoff]] | Roll the session safely — file follow-ups, reset, check for a CLI update, write a handoff note the next session reads first |
 | [[tidy]] | Tidy up — build artifacts, caches, temp files, empty dirs |
@@ -33,7 +34,8 @@ costs.
 | [[remote]] | Launch a cloud dev session (GCP or AWS) with this repo ready to go, then open SSH. Its provisioning contract is implemented once in `scripts/repo/repo-remote.sh` (installed to `.claude/skills/repo/scripts/`); the interactive flow delegates to that script, which also serves as a headless `repo-remote up --yes --json` entry point for non-interactive callers (e.g. loom's `fleet add-worker`) |
 | [[sudo]] | Opt-in passwordless-sudo setup for a dev machine — install a `visudo`-validated `/etc/sudoers.d` drop-in (blanket `ALL` or a scoped command list) so an agent over SSH isn't blocked on password prompts; always confirmed first, validated with rollback on failure |
 | [[update-tools]] | Check installed tool packages (Loom, Anvil, …) against their sources and offer updates |
-| [[deps]] | Third-party dependency currency — verify/scaffold Dependabot (config *and* the repo-level security flag as distinct items) and triage open Dependabot PRs, always confirmed first |
+| [[deps]] | Third-party dependency currency — reconcile organization policy, Renovate or Dependabot setup, and bot PRs; report-only under `--check` |
+| [[org-policy]] | Preview or deploy canonical rjwalters/repo preferences to the client's GitHub owner/.github repository through a policy PR |
 | [[followups]] | Capture follow-on work from this session and file it as issues — here or in upstream tool repos, always confirmed first |
 | [[branches]] | Branch & worktree hygiene — merged PRs, orphaned branches, stale worktrees |
 | [[gitignore]] | Gitignore hygiene — over-ignored files, under-ignored build artifacts |
@@ -52,8 +54,11 @@ costs.
 - Before turning a Mac into a heavy Loom/agent build host (`host-optimize`)
 - To unblock an agent driving a dev box over SSH from `sudo` password prompts (`sudo`)
 - Periodically, to keep installed tool packages current (`update-tools`) and
-  third-party dependencies current — Dependabot setup and bot-PR triage (`deps`)
+  third-party dependencies current — organization policy, updater setup, and bot-PR triage (`deps`)
+- To preview or install organization preferences from a client repo (`org-policy`)
 - Periodically (monthly) as general hygiene (`audit`)
+- Before making a repo public, and periodically after — to check what the
+  public surface actually exposes (`scrub`)
 - Before a demo, handoff, or onboarding (clean up before they arrive)
 
 ## Principles
@@ -78,8 +83,7 @@ costs.
 Installing Repo Skills also wires a **PreToolUse safety hook** —
 `.claude/skills/repo/hooks/guard-destructive.sh` — into the consumer repo's
 `.claude/settings.json`. This is the **canonical generic destructive-command
-guard** (rjwalters/repo#30): Loom and other tooling defer to this copy instead
-of shipping their own. It runs before every agent `Bash` command and:
+guard** (rjwalters/repo#30). It runs before every agent `Bash` command and:
 
 - **Blocks** catastrophic operations outright: `rm -rf` of root / `$HOME` / a
   top-level system dir (with lexical `..`/`//` normalization so traversal
@@ -102,6 +106,61 @@ of shipping their own. It runs before every agent `Bash` command and:
   `/tmp` subpaths, and obviously read-only commands (`git status`, `ls`,
   `grep`, …) via a structural fast path that skips the pattern gauntlet.
 
+**Deferral by other tooling is conditional, and as of 0.9.0 it holds**
+(rjwalters/repo#168, #188). Loom wires its own
+`.loom/hooks/guard-destructive.sh` as the registered hook; that script is a
+dispatcher which `exec`s this canonical guard only when the copy it finds
+passes both a version probe **and** a capability probe for Bash-tool write
+confinement (`grep -q 'worktree-write-confinement'`). This guard implements
+that category and emits the marker, so the dispatcher now prefers it.
+
+The probe is a **single marker that switches which guard runs entirely**, not a
+per-feature advertisement — so emitting it while behind on any other category
+would silently downgrade protection fleet-wide. It was therefore gated on
+behavioral parity with the vendored copy, established by diffing both guards'
+deny/allow decisions across the pattern surface rather than by counting
+functions. Two classes of gap were closed:
+
+- **`git stash` had no coverage here at all.** `pop`/`drop`/`clear` were
+  allowed silently while the vendored guard asked. `refs/stash` is a single
+  stack shared across every linked worktree, so this is how one agent destroys
+  another's WIP. Now gated by `guards.stashScope` / `REPO_GUARD_STASH_SCOPE`.
+- **Four checks scanned the raw command** (`COMMAND_NO_COMMENT`, or `COMMAND`)
+  instead of the literal-redacted `COMMAND_ASK_SCAN`: SQL DDL, force ops, cloud
+  CLI, and `rm -rf` scope. That made this guard deny ordinary prose — filing an
+  issue that quoted a destructive statement, or committing a note mentioning
+  one. The vendored copy had always scanned the redacted copy.
+
+One deliberate divergence remains: `aws iam delete-role` is a hard **deny**
+here and an ask in the vendored copy, so the switch makes a Loom-managed repo
+stricter on IAM deletion rather than weaker.
+
+A second, narrower divergence (#195): the vendored guard's ASK-tier positional-
+argument masking (`mask_ask_positional_args()`) carries one hardcoded allowlist
+entry, `./.loom/scripts/check-duplicate.sh` — always masked, with no way to
+extend or disable it per repo. This guard ports the same masking mechanism but
+makes the allowlist a `guards.positionalMaskAllowlist` config array instead
+(empty/absent by default, so it is a no-op on every repo that hasn't opted
+in — see "Configuring per repo" below). It does **not** carry the vendored
+copy's hardcoded entry, since `check-duplicate.sh` is a Loom-specific script
+this repo doesn't ship: a repo that relies on the vendored copy's built-in
+masking for that script and switches to this guard must add it explicitly via
+config, or the switch is (by default) stricter for that one command — more
+asks, never fewer. `grep`/`egrep`/`fgrep`/`rg` **and** `cp`/`mv`/`tee`/`sed`
+can never be added to the allowlist here regardless of config: the working
+copy this masking narrows (`COMMAND_ASK_SCAN`) also feeds two **deny**-tier
+scans — the SQL DDL/DML check (which reads a `grep '<pattern>' file`
+invocation's own quoted pattern, the vendored copy's reason for excluding the
+grep family) and the #4178 Bash-tool write-confinement check (which extracts
+`cp`/`mv`/`tee`/`sed` write targets from that same text). Masking either
+scan's subject would silently downgrade a hard deny to an allow, so the
+exclusion set is hardcoded and not operator-overridable. **Only allowlist a
+command whose positional arguments are inert text it merely reads** — never
+one that acts on them (writes them as paths, executes them as statements).
+See `positional_mask_cmdre()`'s consumer audit table in
+`guard-destructive.sh`. Loom's vendored copy can adopt the same configurable
+mechanism to drop its hardcoded path (rjwalters/loom#5660).
+
 Precision features ported from Loom's guard: quote-aware command segmentation
 (a `|` inside quotes is not a pipe), literal-text redaction (a dangerous phrase
 quoted in `--body`/`-m`/`--title`/`--notes`/`--comment` values doesn't trip the
@@ -121,6 +180,7 @@ All toggles resolve: `REPO_*` env var (wins) → legacy `LOOM_*` env var →
 | Toggle | Env var (wins) | Legacy env var | Config key | Default |
 |--------|----------------|----------------|------------|---------|
 | Read-only fast path | `REPO_GUARD_READONLY_FASTPATH` | `LOOM_GUARD_READONLY_FASTPATH` | `guards.readOnlyFastPath` (+ extend-only `guards.readOnlyFastPathExtra`) | on |
+| ASK-tier positional-arg masking allowlist | — (config-only) | — | `guards.positionalMaskAllowlist` (array of command names; grep/egrep/fgrep/rg and cp/mv/tee/sed can never be added — they are the subjects of deny-tier scans) | `[]` (no-op) |
 | SQL DDL/DML | `REPO_GUARD_SQL` | `LOOM_GUARD_SQL` | `guards.sqlDdl` | on |
 | Cloud CLI (mutating-verb asks + `az`/`gcloud` delete denies) | `REPO_GUARD_CLOUD` | `LOOM_GUARD_CLOUD` | `guards.cloudCli` | on |
 | Reversible-GitHub asks (`gh pr/issue close`, `gh label delete`) | `REPO_GUARD_REVERSIBLE_GH` | `LOOM_GUARD_REVERSIBLE_GH` | `guards.reversibleGh` | **off** (opt-in) |
@@ -135,6 +195,56 @@ or malformed config keeps the guard on; the opt-in toggles are the inverse.
 // .claude/skills/repo/config.json
 { "guards": { "sqlDdl": false, "cloudCli": true, "forceScope": "protected" } }
 ```
+
+**`rmScope`'s unresolved-shell-variable policy (#239).** `extract_rm_targets()`
+is a tokenizer, not a shell evaluator: an `rm` target of `"$p"` reaches the
+scope check with the `$p` reference unexpanded. The naive resolution — treat
+anything that doesn't start with `/` as CWD-relative — silently reinterprets
+an unresolvable target as repo-relative, which is the ONE interpretation
+guaranteed to pass the in-scope check regardless of what the variable actually
+expands to at runtime (`rm -rf "$p"` at a repo cwd, `$p` really pointing
+outside the repo, was wrongly allowed). Deleting is not recoverable, so
+`guards.rmScope=repo` fails **closed** on an unresolvable target rather than
+guessing, mirroring the Bash-tool write-confinement category's own posture on
+the same ambiguity (`#4921`/`#4927`).
+
+The guard takes the deliberate **middle option** between "deny every
+unresolvable target" (breaks every scripted `rm` loop, including ones fully
+inside the repo) and "keep guessing" (this issue): deny only when the
+variable is the **path root** — nothing literal precedes the first unexpanded
+`$` (`rm -rf "$p"`, `rm -rf "$(mktemp -d)"`, `rm -rf "/$X/evil"`). A variable
+in a *later* directory component, with a real literal root before it
+(`rm -rf "build-artifacts/$sub/tmp"`), is instead resolved as far as the
+literal text allows and only the **known prefix** — everything before the
+first unexpanded `$` — is scope-tested: in scope → allowed (the delete stays
+inside the area `rmScope=repo` already permits), not in scope or unusable →
+denied. A `$` that appears only in the trailing/final path component
+(`rm -rf build-artifacts/tmp/$stamp`) needs none of this, since the directory
+portion is fully literal either way, and keeps its existing (unaffected)
+treatment.
+
+This is the **opposite polarity** from write-confinement's equivalent
+known-prefix case, which *denies* an in-scope prefix (there, an unresolvable
+directory component inside the protected area could still let a **write**
+escape it). For `rm`-scope the risk runs the other way — a **delete** landing
+*outside* the repo — so a known-in-scope prefix is exactly the evidence that
+risk did not materialize, and the target is allowed. See
+`hooks/repo/guard-destructive.sh` (search `#239`) for the implementation and
+`hooks/repo/tests/test-guard-destructive.sh`'s "rm-scope unresolved shell
+variable in target (#239)" section for the pinned cases in both directions.
+This policy only applies while `guards.rmScope=repo` is active — with
+`rmScope:"off"`/`"permissive"` the legacy CWD-relative fallback is unchanged,
+so the opt-out stays byte-for-byte permissive.
+
+**Affected caller: `commands/repo/sudo.md` (#245).** All four `rm` calls in
+that command (`sudo rm -f "$DROPIN"` and `rm -f "$TMP"`, each root-unresolved
+— the variable is the entire target) are denied under the default
+`guards.rmScope=repo`. Unlike the write-confinement guard's own affected
+caller note in the same file, this trigger is **config-only and defaults to
+`repo`** — it has no "only when a managed worktree exists" carve-out, so it
+is not avoided by running outside a Loom-managed checkout the way the write
+denials are. See the "Guard note" in `commands/repo/sudo.md` for the
+per-call-site manual remedy.
 
 The full stable interface (input/output contract, exit semantics, every env
 name) is documented in the hook's own header — downstream tools (e.g. Loom's
@@ -164,6 +274,40 @@ Behavioral contract:
 - **Skips `/clear`.** `clear` is not a process relaunch, so re-emitting the
   banner there would be noise.
 
-There are no configuration toggles — the hook's behavior is fixed. To disable
-it, remove its `SessionStart` entries from `.claude/settings.json` (or run
+**Sibling visibility (opt-in, off by default).** A note is repo-scoped, so "no
+note in this repo" and "no note anywhere" are indistinguishable at session
+start. Export `REPO_HANDOFF_SIBLING_ROOT=<dir of checkouts>` and — *only* when
+the current repo has no note of its own — the hook also lists which repos
+directly under that root do have one, **path and age only, never the body**.
+The scan is single-level (`"$ROOT"/*/.claude/handoff.md`), capped at
+`MAX_SIBLING_DIRS` (64) directories examined, never `cd`s into a sibling or
+writes anything, and fails open to silence on a missing or unreadable root.
+Unset, the hook behaves exactly as it did before the variable existed.
+
+That variable is the hook's only configuration toggle. To disable the hook
+entirely, remove its `SessionStart` entries from `.claude/settings.json` (or run
 `uninstall.sh`, which removes only the entries it owns).
+
+## Refreshing this install (`resync-installed.sh`)
+
+Everything above is a **copy** made at install time, so a fix merged upstream
+does not reach this repo on its own. `.claude/skills/repo/scripts/resync-installed.sh`
+refreshes the copied surfaces from the source clone recorded in the
+machine-local sidecar:
+
+```bash
+.claude/skills/repo/scripts/resync-installed.sh --dry-run   # report drift, write nothing
+.claude/skills/repo/scripts/resync-installed.sh             # apply
+```
+
+It is idempotent, reports per-file created/updated/unchanged/skipped, skips
+symlinked (`--dev`) destinations, and **never removes a file** — anything with
+no source counterpart is named and left alone. Exit status: `0` in sync, `2`
+from `--dry-run` when drift was found, `1` on error. `--quiet` reduces it to a
+one-line summary; `--source` / `--target` override the resolved paths.
+
+Hook wiring in `.claude/settings.json`, the `CLAUDE.md` block, and `.gitignore`
+belong to `install.sh`, not to a refresh — re-run the installer if those need
+updating. This split is requirement **C7** of the normative
+[tool-package installer contract](https://github.com/rjwalters/repo/blob/main/INSTALLER-CONTRACT.md),
+which [[update-tools]] follows for every tool in the family.

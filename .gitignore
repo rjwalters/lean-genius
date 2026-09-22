@@ -128,7 +128,9 @@ __pycache__/
 # Loom runtime state (don't commit these)
 .loom-in-use
 .loom-checkpoint
+.loom-managed
 .no-changes-needed
+.snapshots/
 .loom/.daemon.pid
 .loom/.daemon.log
 .loom/daemon.sock
@@ -142,13 +144,17 @@ __pycache__/
 .loom/interventions/
 .loom/worktrees/
 .loom/worktrees-local/
+.claude/worktrees/
 .loom/state.json
 .loom/mcp-command.json
 .loom/activity.db
 .loom/claims/
+.loom/locks/
 .loom/signals/
 .loom/status/
 .loom/retry-state/
+.loom/exit-codes/
+.loom/sweep-checkpoint/
 .loom/sweep-run/
 .loom/stats/
 .loom/diagnostics/
@@ -159,6 +165,10 @@ __pycache__/
 .loom/metrics/
 .loom/usage-cache.json
 .loom/claude-config/
+.loom/native-tools/
+.loom/tokens/
+.loom/accounts.env
+.loom/api-keys/
 .loom/account-health.json
 .loom/account-health.lock
 .loom/CANARY
@@ -166,7 +176,12 @@ __pycache__/
 .loom/*.sock
 .loom/*.tmp
 .loom/*.bak
+.loom/.install.lock
 .loom/logs/
+.loom/.resync-in-progress
+.loom/gh-config/
+.loom/gh-config-by-owner/
+.loom-local/
 # <<< loom-managed <<<
 
 .squad/

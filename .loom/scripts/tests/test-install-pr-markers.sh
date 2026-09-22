@@ -20,6 +20,11 @@
 # commit message that *would* be sent to `gh pr create` / `git commit` by
 # redirecting them through the stubs into temp files. No real PRs created.
 #
+# Source-tree-only by design (#6194): scripts/install/create-pr.sh and
+# scripts/install-loom.sh both live at the repo root, not under defaults/, so
+# neither is shipped into an installed consumer repo. This suite SKIPs
+# (exit 0) rather than errors when run outside Loom's own checkout.
+#
 # Usage:
 #   bash defaults/scripts/tests/test-install-pr-markers.sh
 
@@ -90,13 +95,13 @@ assert_starts_with() {
 }
 
 if [[ ! -f "$CREATE_PR" ]]; then
-    echo "ERROR: $CREATE_PR not found" >&2
-    exit 1
+    echo "SKIP: source-tree-only test, $CREATE_PR not found (not shipped into an installed repo)" >&2
+    exit 0
 fi
 
 if [[ ! -f "$INSTALL_SH" ]]; then
-    echo "ERROR: $INSTALL_SH not found" >&2
-    exit 1
+    echo "SKIP: source-tree-only test, $INSTALL_SH not found (not shipped into an installed repo)" >&2
+    exit 0
 fi
 
 # ---------------------------------------------------------------------------
@@ -194,6 +199,26 @@ if [[ "$1" == "pr" && "$2" == "create" ]]; then
   echo "https://github.com/test-owner/test-repo/pull/9999"
   exit 0
 fi
+
+# Capture `gh pr merge` arguments so the FORCE_AUTO_MERGE tests can assert
+# which merge strategy flag was used (#7844).
+if [[ "$1" == "pr" && "$2" == "merge" ]]; then
+  shift 2
+  printf '%s\n' "$*" >> "$CAPTURE_DIR/merge_args"
+  exit 0
+fi
+
+# Merge-method probe (#7844): detect_merge_method() calls
+# `gh api repos/<nwo> --jq '[...] | @tsv'`, so emit the tab-separated triple
+# that expression produces. Each flag is controlled by a STUB_ALLOW_* env var
+# so a test can model a squash-disabled repository.
+if [[ "$1" == "api" ]]; then
+  printf '%s\t%s\t%s\n' \
+    "${STUB_ALLOW_SQUASH:-true}" \
+    "${STUB_ALLOW_MERGE:-true}" \
+    "${STUB_ALLOW_REBASE:-true}"
+  exit 0
+fi
 exit 0
 EOF
     chmod +x "$stub_dir/bin/gh"
@@ -210,7 +235,8 @@ run_create_pr() {
     shift
     local capture_dir="$stub_dir/capture"
     # Clear captures.
-    rm -f "$capture_dir/pr_title" "$capture_dir/pr_body" "$capture_dir/commit_msg"
+    rm -f "$capture_dir/pr_title" "$capture_dir/pr_body" "$capture_dir/commit_msg" \
+        "$capture_dir/merge_args"
 
     # Make a worktree dir for create-pr.sh to cd into (it requires a real path).
     local worktree_dir="$stub_dir/worktree"
@@ -219,6 +245,11 @@ run_create_pr() {
     # Build the env command. We use `env -i` to start from a clean environment,
     # then pass KEY=VAL pairs as args. Doing this with `env -i ... "$@"` keeps
     # word-splitting safe (values with spaces survive).
+    #
+    # Assignments are applied left to right, so a KEY=VAL in "$@" overrides the
+    # same KEY set below — that is how the #7844 tests flip FORCE_AUTO_MERGE to
+    # true (they also assert the merge was actually attempted, so a shell that
+    # did not honour the override would fail loudly rather than silently pass).
     env -i \
         HOME="$HOME" \
         PATH="$stub_dir/bin:/usr/bin:/bin" \
@@ -388,6 +419,79 @@ else
     TESTS_FAILED=$((TESTS_FAILED + 1))
     echo -e "  ${RED}FAIL${NC}: defaults/docs/ci-integration.md missing"
 fi
+
+# -----------------------------------------------------------------------------
+# Group 6: FORCE_AUTO_MERGE detects the repo's allowed merge method (#7844)
+#
+# create-pr.sh used to hardcode `--squash`, which fails outright on a repo
+# configured for merge-commit-only or rebase-only. It now probes the repo via
+# detect_merge_method() (scripts/install/forge-detect.sh) and passes the
+# detected strategy to `gh pr merge`.
+# -----------------------------------------------------------------------------
+echo ""
+echo "Group 6: FORCE_AUTO_MERGE uses the detected merge method (issue #7844)"
+
+STUB_DIR6=$(mktemp -d /tmp/loom-pr-markers-6.XXXXXX)
+trap 'rm -rf "$STUB_DIR6"' EXIT
+make_stub_env "$STUB_DIR6"
+
+# 6a: squash-allowed repo — existing behavior must be unchanged.
+run_create_pr "$STUB_DIR6" \
+    "FORCE_AUTO_MERGE=true" \
+    "STUB_ALLOW_SQUASH=true" \
+    "STUB_ALLOW_MERGE=true" \
+    "STUB_ALLOW_REBASE=true"
+
+MERGE_ARGS_OUT=$(cat "$STUB_DIR6/capture/merge_args" 2>/dev/null || echo "")
+
+assert_contains "$MERGE_ARGS_OUT" "--squash" \
+    "squash-allowed repo still merges with --squash (no regression)"
+assert_contains "$MERGE_ARGS_OUT" "--delete-branch" \
+    "squash-allowed repo still passes --delete-branch"
+
+# 6b: squash disabled, merge commits allowed — must use --merge, never --squash.
+run_create_pr "$STUB_DIR6" \
+    "FORCE_AUTO_MERGE=true" \
+    "STUB_ALLOW_SQUASH=false" \
+    "STUB_ALLOW_MERGE=true" \
+    "STUB_ALLOW_REBASE=false"
+
+MERGE_ARGS_OUT=$(cat "$STUB_DIR6/capture/merge_args" 2>/dev/null || echo "")
+
+assert_contains "$MERGE_ARGS_OUT" "--merge" \
+    "merge-commit-only repo merges with --merge"
+assert_not_contains "$MERGE_ARGS_OUT" "--squash" \
+    "merge-commit-only repo never passes --squash"
+
+# 6c: rebase-only repo — must use --rebase.
+run_create_pr "$STUB_DIR6" \
+    "FORCE_AUTO_MERGE=true" \
+    "STUB_ALLOW_SQUASH=false" \
+    "STUB_ALLOW_MERGE=false" \
+    "STUB_ALLOW_REBASE=true"
+
+MERGE_ARGS_OUT=$(cat "$STUB_DIR6/capture/merge_args" 2>/dev/null || echo "")
+
+assert_contains "$MERGE_ARGS_OUT" "--rebase" \
+    "rebase-only repo merges with --rebase"
+assert_not_contains "$MERGE_ARGS_OUT" "--squash" \
+    "rebase-only repo never passes --squash"
+
+# 6d: FORCE_AUTO_MERGE=false must not attempt a merge at all.
+run_create_pr "$STUB_DIR6"
+
+TESTS_RUN=$((TESTS_RUN + 1))
+if [[ ! -f "$STUB_DIR6/capture/merge_args" ]]; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "  ${GREEN}PASS${NC}: FORCE_AUTO_MERGE=false attempts no merge"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "  ${RED}FAIL${NC}: FORCE_AUTO_MERGE=false unexpectedly invoked gh pr merge"
+    echo "    Captured: $(cat "$STUB_DIR6/capture/merge_args")"
+fi
+
+rm -rf "$STUB_DIR6"
+trap - EXIT
 
 # -----------------------------------------------------------------------------
 # Summary

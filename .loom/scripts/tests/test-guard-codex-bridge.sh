@@ -31,8 +31,22 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-SRC_HOOKS="$REPO_ROOT/defaults/hooks"
-SRC_LIB="$REPO_ROOT/defaults/scripts/lib"
+# Hooks and the guard lib are both shipped (installed at .loom/hooks and
+# .loom/scripts/lib respectively), so resolve each the way each layout
+# actually lays it out: the installed path first (consumer repos, and
+# Loom's own dogfooded checkout), falling back to the defaults/
+# source-tree path (a bare source checkout with no installed copy yet).
+# See issue #6194 / #6241.
+if [[ -d "$REPO_ROOT/.loom/hooks" ]]; then
+    SRC_HOOKS="$REPO_ROOT/.loom/hooks"
+else
+    SRC_HOOKS="$REPO_ROOT/defaults/hooks"
+fi
+if [[ -d "$REPO_ROOT/.loom/scripts/lib" ]]; then
+    SRC_LIB="$REPO_ROOT/.loom/scripts/lib"
+else
+    SRC_LIB="$REPO_ROOT/defaults/scripts/lib"
+fi
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -45,6 +59,15 @@ pass() { PASS=$((PASS + 1)); TOTAL=$((TOTAL + 1)); printf "${GREEN}PASS${NC} %s\
 fail() { FAIL=$((FAIL + 1)); TOTAL=$((TOTAL + 1)); printf "${RED}FAIL${NC} %s\n" "$1"; }
 
 command -v jq >/dev/null 2>&1 || { echo "jq is required for this suite"; exit 1; }
+
+if [[ ! -d "$SRC_HOOKS" ]]; then
+    echo -e "${RED}FATAL${NC}: hooks directory not found at $SRC_HOOKS"
+    exit 1
+fi
+if [[ ! -d "$SRC_LIB" ]]; then
+    echo -e "${RED}FATAL${NC}: scripts/lib directory not found at $SRC_LIB"
+    exit 1
+fi
 
 # ---------------------------------------------------------------------------
 # Fixture: an isolated git repo with the installed hook layout and ONE managed
@@ -337,6 +360,63 @@ assert_bridge "nested bash -c does not launder a catastrophic command" deny \
         "$(jq -nc '{command:["bash","-lc","bash -c \"rm -rf /\""]}')" "$WT")")"
 
 echo
+echo "=== workdir anchor validation (issue #4767) ==="
+#
+# `tool_input.workdir` is a MODEL-CHOSEN field (unlike the event's top-level
+# `cwd`). A `workdir` that is not inside the acting session's own git repo
+# must not silently leave GUARD_CWD rootless — that is exactly what let a
+# managed-worktree write past guard-destructive-generic.sh's #4178
+# confinement block before this fix (its `_WT_MAIN_ROOT` came up empty and
+# the containment test `continue`d past every write). Every vector here
+# targets the MAIN CHECKOUT with an absolute path, so if the bridge ever
+# regresses to trusting a rootless/foreign workdir, these turn from `deny`
+# into `allow` — exactly the fixture in the issue's reproduction table.
+
+# A second, unrelated git repo — "resolves to a valid repo" is not enough;
+# it must be the SAME repo as the acting session's.
+OTHER_REPO="$(mktemp -d)"
+git init -q "$OTHER_REPO"
+
+workdir_write_case() {
+    local desc="$1" workdir="$2" command="$3" expected="$4"
+    assert_bridge "$desc" "$expected" \
+        "$(run_bridge "$(codex_event shell "$(jq -nc --arg c "$command" --arg wd "$workdir" '{command:["bash","-lc",$c], workdir:$wd}')" "$WT")")"
+}
+
+for wd_desc_pair in \
+    "/tmp|an out-of-repo absolute path (/tmp)" \
+    "/|the filesystem root (/)" \
+    "${OTHER_REPO}|a non-repo/foreign-repo absolute path" \
+    "${WT}/does/not/exist|a nonexistent directory" \
+    "../../../../../../../../..|a relative workdir that escapes the worktree AND the repo" \
+    ; do
+    wd="${wd_desc_pair%%|*}"
+    desc="${wd_desc_pair#*|}"
+    workdir_write_case "workdir=$desc, redirect into the main checkout -> deny" \
+        "$wd" "echo pwned > $TMPROOT/CLAUDE.md" deny
+    workdir_write_case "workdir=$desc, tee into the main checkout -> deny" \
+        "$wd" "echo pwned | tee $TMPROOT/CLAUDE.md" deny
+    workdir_write_case "workdir=$desc, cp into the main checkout -> deny" \
+        "$wd" "cp $WT/src/a.txt $TMPROOT/CLAUDE.md" deny
+    workdir_write_case "workdir=$desc, mv into the main checkout -> deny" \
+        "$wd" "mv $WT/src/a.txt $TMPROOT/CLAUDE.md" deny
+    workdir_write_case "workdir=$desc, sed -i on the main checkout -> deny" \
+        "$wd" "sed -i '' 's/a/b/' $TMPROOT/CLAUDE.md" deny
+done
+
+# The valid, matching-repo case must be unaffected: a legitimate workdir
+# (absolute, pointing at the acting worktree) still allows a write inside it
+# and still denies escapes into the main checkout.
+workdir_write_case "workdir=the acting worktree (absolute) -> write inside it allowed" \
+    "$WT" "echo ok > $WT/src/workdir-ok.txt" allow
+workdir_write_case "workdir=the acting worktree (absolute) -> write to main checkout still denied" \
+    "$WT" "echo pwned > $TMPROOT/CLAUDE.md" deny
+workdir_write_case "workdir='.' (relative, matches event cwd) -> write to main checkout still denied" \
+    "." "echo pwned > $TMPROOT/CLAUDE.md" deny
+
+rm -rf "$OTHER_REPO"
+
+echo
 echo "=== alternate Codex execution payload shapes ==="
 
 assert_bridge "shell_command {cmd: string}" deny \
@@ -479,8 +559,17 @@ else
 fi
 crash_out=""
 crash_code=0
-crash_out="$(printf '%s' "$(codex_event shell '{"command":["bash","-lc","ls"]}' "$TMPROOT")" \
-    | bash "$CRASH_ROOT/hooks/guard-codex-bridge.sh" 2>/dev/null)" || crash_code=$?
+#     The payload is fed via process substitution rather than a pipe so the
+#     writer (printf) never participates in this command's exit status: under
+#     `set -o pipefail`, a `printf | bash` pipe lets a writer-side EPIPE (the
+#     crashing bridge copy can exit near-instantly, before it starts reading
+#     stdin) "win" over the bridge's own real exit 0 from its EXIT trap,
+#     since pipefail reports the rightmost non-zero exit in the pipeline
+#     (issue #7060). Process substitution runs printf outside the pipeline
+#     entirely, so only the bridge's own exit status can reach crash_code.
+crash_out="$(bash "$CRASH_ROOT/hooks/guard-codex-bridge.sh" \
+    < <(printf '%s' "$(codex_event shell '{"command":["bash","-lc","ls"]}' "$TMPROOT")") \
+    2>/dev/null)" || crash_code=$?
 assert_bridge "the bridge crashing before a decision -> deny (fail closed)" deny "$crash_code|$crash_out"
 assert_wire_conformance "wire: bridge crash deny" "$crash_code|$crash_out"
 
@@ -496,9 +585,17 @@ printf '#!/usr/bin/env bash\nexit 0\n' > "$CRASH_ROOT/slow/guard-destructive.sh"
 printf '#!/usr/bin/env bash\nexit 0\n' > "$CRASH_ROOT/slow/guard-worktree-paths.sh"
 chmod +x "$CRASH_ROOT/slow/"*.sh
 SLOW_OUT="$CRASH_ROOT/slow-stdout.txt"
-printf '%s' "$(codex_event shell '{"command":["bash","-lc","ls"]}' "$TMPROOT")" \
-    | LOOM_CODEX_BRIDGE_GUARD_DIR="$CRASH_ROOT/slow" \
-      bash "$CRASH_ROOT/slow/guard-codex-bridge.sh" > "$SLOW_OUT" 2>/dev/null &
+# Same writer-out-of-the-pipeline fix as the crash case above (#7060): under
+# `set -o pipefail`, backgrounding a `printf | bash ... &` pipe and later
+# `wait`-ing on its `$!` still yields the pipefail-computed pipeline exit
+# status, not just the bridge process's own exit — so a printf EPIPE from the
+# TERM-killed reader can shadow slow_code exactly like the crash case
+# (verified: this shape shares the identical exposure). Process substitution
+# removes printf from the pipeline so only the bridge's own exit reaches it.
+LOOM_CODEX_BRIDGE_GUARD_DIR="$CRASH_ROOT/slow" \
+  bash "$CRASH_ROOT/slow/guard-codex-bridge.sh" \
+  < <(printf '%s' "$(codex_event shell '{"command":["bash","-lc","ls"]}' "$TMPROOT")") \
+  > "$SLOW_OUT" 2>/dev/null &
 slow_pid=$!
 sleep 1
 kill -TERM "$slow_pid" 2>/dev/null || true

@@ -146,6 +146,39 @@
 #   worker cannot `git push` or call `gh`. `LOOM_CODEX_NETWORK=1` adds
 #   `-c sandbox_workspace_write.network_access=true` (workspace-write only).
 #
+# Session-exec mode (issue #6926, Epic #6896 Phase 2):
+#   A Codex profile ADOPTED by `loom-daemon accounts session start <name>`
+#   (issue #6925) is owned exclusively by that account's long-lived
+#   `loom-worker-session` container (ADR-0017 Decision 1's ownership rule) —
+#   no ambient host-direct process, including a bare-metal `codex exec`, may
+#   touch its CODEX_HOME volume once adopted. This adapter detects adoption
+#   via the SAME on-disk sentinel `loom-daemon` writes
+#   (`$CODEX_HOME/.session-managed.json`, `session_lifecycle.rs`'s
+#   `SESSION_MARKER_FILE`) and, when present, dispatches headlessly with
+#   `docker exec <container> codex exec ...` INSTEAD of running `codex`
+#   bare-metal — never `tmux send-keys` (that TUI-driving path is
+#   `session attach`'s alone, operator-only, per
+#   `docker/session/README.md`'s "Two ways to interact"). The container name
+#   follows the fixed `loom-codex-session-<name>` convention
+#   `session_lifecycle::container_name` owns. A non-adopted profile (the
+#   common case, and every bare-metal profile today) has no marker file, so
+#   this mode never engages and dispatch stays byte-for-byte unchanged —
+#   the regression-free default this issue's acceptance criteria require.
+#
+#   Gated by `LOOM_CODEX_SESSION_EXEC` (never a hardcoded default):
+#     auto (default) — engage only when the marker file is present.
+#     0               — force bare-metal even for an adopted profile (escape
+#                        hatch).
+#     1               — force session-exec even with no marker file (a test
+#                        double, or a profile adopted by other tooling).
+#   An adopted profile has NO interactive dispatch path here: this script
+#   exits 78 rather than running an interactive `codex` against a
+#   container-owned volume from the host. Use
+#   `loom-daemon accounts session attach <name>` for interactive/re-auth
+#   access instead. The session container must already be running (`session
+#   start <name>`); an adopted-but-stopped container exits 78 naming the fix
+#   rather than surfacing a raw `docker exec` error.
+#
 # Usage:
 #   .loom/scripts/spawn-codex.sh -p "your prompt"
 #   LOOM_RUNTIME=codex .loom/scripts/spawn-worker.sh -p "your prompt"
@@ -165,6 +198,12 @@
 #                        Unset by default (no `-m` emitted).
 #   LOOM_CODEX_MODEL_CHECK  Set to 0 to disable the Claude-shaped-model refusal
 #                        below (issue #5028). Default on (`1`).
+#   LOOM_CODEX_AUTH_MODE_CHECK  Set to 0 to disable the ChatGPT-plan pinned-
+#                        model guard below (issue #5499): a ChatGPT-plan
+#                        profile only accepts its account's own default
+#                        model, so an explicitly pinned model (even a
+#                        Codex-family one) is dropped with a warning rather
+#                        than launched into a guaranteed 400. Default on (`1`).
 #   LOOM_EFFORT          Reasoning effort, mapped to
 #                        `-c model_reasoning_effort=<value>`. Skipped when an
 #                        explicit `-c model_reasoning_effort=` override is
@@ -179,6 +218,8 @@
 #                        root (auth tier 3).
 #   LOOM_CODEX_PROFILE_ROOT  Profile root for LOOM_CODEX_PROFILE. Default
 #                        `~/.loom/codex-profiles`.
+#   LOOM_CODEX_SESSION_EXEC  auto (default) | 0 | 1 — session-exec mode gate
+#                        (issue #6926). See "Session-exec mode" above.
 #   LOOM_SPAWN_NO_EXPORT If set, skip ALL auth resolution (mirrors
 #                        spawn-claude.sh) — the caller already prepared the env.
 #   LOOM_WORKSPACE       Override repo-root detection (config lookups).
@@ -494,6 +535,7 @@ if [[ -n "$EFFECTIVE_MODEL" && "${LOOM_CODEX_MODEL_CHECK:-1}" != "0" ]]; then
             log_error "This model/runtime combination is guaranteed to fail on the wire (HTTP 400)."
             log_error "Fix one of:"
             log_error "  - set autonomous.roleRunner.roleModels.<role> to a Codex-valid model in .loom/config.json"
+            log_error "  - set autonomous.roleRunner.roleModels.<role> to \"default\" to pass through to the Codex CLI's own default model (#7894) -- the only working shape on a ChatGPT-plan seat, which rejects every explicit pin"
             log_error "  - set LOOM_MODEL / LOOM_CODEX_MODEL to a Codex-valid model for this invocation"
             log_error "  - point this role/runtime binding back at Claude (unset runtimes.roles.<role> / LOOM_RUNTIME_<ROLE>)"
             log_error "Escape hatch: LOOM_CODEX_MODEL_CHECK=0 (only if this really is a valid Codex model name)."
@@ -577,6 +619,38 @@ if [[ "$HAS_SKIP_GIT_CHECK_ARG" != "true" ]]; then
     fi
 fi
 
+# --- Account provider resolution (issue #5609, design D8) ---
+# Reads THIS runtime's own manifest (defaults/runtimes/codex.json)'s
+# "accountProvider" field so the pool `tokens select --provider` dispatches
+# into is a property of the runtime manifest, not a value hardcoded in this
+# script -- an operator can locally repoint it by editing
+# .loom/runtimes/codex.json without touching this script. Resolution mirrors
+# check-runtime-capabilities.sh's precedence: an on-disk
+# <repo>/.loom/runtimes/<name>.json wins over the defaults/runtimes/ fallback
+# next to this script. A missing file, missing field, or missing `jq` all
+# fall open to "claude" (never fail closed) -- design D8's "a missing
+# accountProvider on an un-resynced install must default to claude". Mirrors
+# the identical helper in spawn-claude.sh; each spawn adapter stays a
+# self-contained sibling rather than sourcing a shared lib for one lookup.
+_loom_account_provider_for_runtime() {
+    local runtime_name="$1" manifest=""
+    if [[ -f "${WORKSPACE}/.loom/runtimes/${runtime_name}.json" ]]; then
+        manifest="${WORKSPACE}/.loom/runtimes/${runtime_name}.json"
+    elif [[ -f "${_SCRIPT_DIR}/../runtimes/${runtime_name}.json" ]]; then
+        manifest="${_SCRIPT_DIR}/../runtimes/${runtime_name}.json"
+    fi
+    if [[ -z "$manifest" ]] || ! command -v jq >/dev/null 2>&1; then
+        printf '%s\n' "claude"
+        return
+    fi
+    local provider
+    provider="$(jq -r '.accountProvider // "claude"' "$manifest" 2>/dev/null)"
+    case "$provider" in
+        "" | null) provider="claude" ;;
+    esac
+    printf '%s\n' "$provider"
+}
+
 # --- Auth: CODEX_HOME profile passthrough (see header) ---
 CODEX_PROFILE_NAME=""
 if [[ -n "${LOOM_SPAWN_NO_EXPORT:-}" ]]; then
@@ -598,10 +672,19 @@ else
             log_error "No loom-daemon binary supporting provider-aware account selection was found."
             exit 78
         fi
+        _account_provider="$(_loom_account_provider_for_runtime codex)"
         _selection_stderr_file="$(mktemp)"
         _selection_output=""
-        if ! _selection_output="$("$_daemon_bin" tokens select --provider codex \
-            --workspace "$WORKSPACE" --export 2>"$_selection_stderr_file")"; then
+        # #8277: narrow selection to the model about to be dispatched, so an
+        # account held only for a DIFFERENT class-scoped MODEL_CREDITS_EXHAUSTED
+        # mark (#8058 Phase 2) stays selectable. `EFFECTIVE_MODEL` was already
+        # resolved above (model-selection block); an unrecognized value is not
+        # an error on the daemon side, it just degrades to class-less selection.
+        # shellcheck disable=SC2086  # ${VAR:+...} is a deliberate word-split:
+        # it expands to the two-token `--model <value>`, or to nothing at all.
+        # A model name cannot contain whitespace (validated above).
+        if ! _selection_output="$("$_daemon_bin" tokens select --provider "$_account_provider" \
+            --workspace "$WORKSPACE" --export ${EFFECTIVE_MODEL:+--model "$EFFECTIVE_MODEL"} 2>"$_selection_stderr_file")"; then
             log_error "Codex account selection failed:"
             cat "$_selection_stderr_file" >&2 || true
             rm -f "$_selection_stderr_file"
@@ -644,6 +727,106 @@ else
         fi
     else
         log_info "spawn-codex: no Codex profile requested — using the Codex CLI's ambient login state (~/.codex)"
+    fi
+fi
+
+# --- Session-exec mode detection (issue #6926, Epic #6896 Phase 2) ---
+# See the header's "Session-exec mode" section for the full contract. Only
+# meaningful when a Codex profile was actually resolved above (CODEX_HOME
+# set) — ambient auth (tier 4) is never adopted by `session start`, so it is
+# always bare-metal.
+CODEX_SESSION_EXEC=false
+CODEX_SESSION_CONTAINER=""
+if [[ -n "${CODEX_HOME:-}" ]]; then
+    _session_exec_pref="${LOOM_CODEX_SESSION_EXEC:-auto}"
+    case "$_session_exec_pref" in
+        auto|"") _session_exec_pref="auto" ;;
+        0) _session_exec_pref="off" ;;
+        1) _session_exec_pref="on" ;;
+        *)
+            log_error "Invalid LOOM_CODEX_SESSION_EXEC='$_session_exec_pref'. Valid values: auto (default), 0, 1."
+            exit 78  # EX_CONFIG
+            ;;
+    esac
+
+    # The exact sentinel `session_lifecycle::mark_session_managed` writes on
+    # first `loom-daemon accounts session start <name>` — reading the ACTUAL
+    # adoption fact recorded on disk, never guessed from a naming convention.
+    _session_marker="${CODEX_HOME}/.session-managed.json"
+    if [[ "$_session_exec_pref" == "off" ]]; then
+        if [[ -f "$_session_marker" ]]; then
+            log_warn "spawn-codex: profile '$CODEX_PROFILE_NAME' is session-managed but LOOM_CODEX_SESSION_EXEC=0 forces bare-metal dispatch — this can race a concurrently-running session container's own auth-refresh chain (ADR-0017 Decision 1)."
+        fi
+    elif [[ "$_session_exec_pref" == "on" || -f "$_session_marker" ]]; then
+        CODEX_SESSION_EXEC=true
+        # Fixed naming convention `session_lifecycle::container_name` owns —
+        # a pure string format with no other moving parts to keep in sync.
+        CODEX_SESSION_CONTAINER="loom-codex-session-${CODEX_PROFILE_NAME}"
+        if [[ "$_session_exec_pref" == "on" && ! -f "$_session_marker" ]]; then
+            log_warn "spawn-codex: LOOM_CODEX_SESSION_EXEC=1 forces session-exec mode though '$_session_marker' is absent (profile not adopted by \`loom-daemon accounts session start\`)"
+        fi
+        log_info "spawn-codex: profile '$CODEX_PROFILE_NAME' is session-managed — dispatching headlessly via docker exec $CODEX_SESSION_CONTAINER (issue #6926); never tmux send-keys"
+    fi
+fi
+
+if [[ "$CODEX_SESSION_EXEC" == "true" && "$HAS_PROMPT" != "true" ]]; then
+    log_error "Profile '$CODEX_PROFILE_NAME' is session-managed; an interactive host-direct Codex run is not permitted against an adopted profile (ADR-0017 Decision 1)."
+    log_error "For interactive access (e.g. re-authentication), use:"
+    log_error "  loom-daemon accounts session attach $CODEX_PROFILE_NAME"
+    exit 78  # EX_CONFIG
+fi
+
+# --- ChatGPT-plan auth-mode guard for a pinned model (issue #5499) ---
+# A Codex profile authenticated via a ChatGPT PLAN (interactive `codex login`)
+# restricts the CLI to the account's own default model — an EXPLICITLY pinned
+# model, even a Codex-family one like `gpt-5-codex`, is rejected on the wire
+# with a 400 `invalid_request_error`: "The '<model>' model is not supported
+# when using Codex with a ChatGPT account." The Claude-shaped-model refusal
+# above cannot catch this: `gpt-5-codex` is correctly Codex-family, so it
+# passes that check — the real incompatibility is model vs AUTH MODE, not
+# model vs runtime family, and nothing before this point has verified it.
+#
+# Detected here, AFTER CODEX_HOME is resolved and BEFORE the CLI is ever
+# dispatched, via `codex login status`'s own designed-for-this wording
+# ("Logged in using ChatGPT" vs "Logged in using an API key") — never by
+# opening or parsing `auth.json` itself, which Loom treats as opaque mutable
+# state owned by Codex (see account_lifecycle.rs's module doc). A ChatGPT-plan
+# match DROPS the pinned model (with a warning) rather than launching a
+# doomed invocation — the account's own default model is exactly what a
+# manual `codex exec` with no `-m` uses successfully. This is a warn-and-drop,
+# not a hard refusal (unlike the Claude-shaped-model check): the pin is a
+# now-provably-wrong REQUEST, not a malformed one, and dropping it lets the
+# scheduled role/sweep still run productively on the account's own default
+# instead of dying every cadence tick.
+#
+# Skipped entirely under LOOM_CODEX_NO_EXEC (argv-preview mode promises to
+# "never touch the real CLI") and when no model is pinned at all (nothing to
+# drop). Bounded to 10s via bounded-run.sh — same budget
+# account_lifecycle.rs's `codex login status` call uses — so a wedged CLI
+# cannot hang a spawn. Escape hatch: LOOM_CODEX_AUTH_MODE_CHECK=0.
+CODEX_DROP_PINNED_MODEL=false
+# For a session-managed profile the probe runs INSIDE the account's container
+# (issue #8518): a host-direct `codex login status` against an adopted
+# profile is exactly the host-side CODEX_HOME access the ownership rule
+# forbids, and it would read the host's default login state, not the
+# account's. Same read-only, bounded probe account_lifecycle.rs uses.
+_codex_bin=(codex); [[ "$CODEX_SESSION_EXEC" == "true" ]] && _codex_bin=(docker exec "$CODEX_SESSION_CONTAINER" codex)
+if [[ -n "$EFFECTIVE_MODEL" && -z "${LOOM_CODEX_NO_EXEC:-}" \
+      && "${LOOM_CODEX_AUTH_MODE_CHECK:-1}" != "0" ]] \
+    && command -v "${_codex_bin[0]}" >/dev/null 2>&1; then
+    _auth_mode_bounded_run_lib="${_SCRIPT_DIR}/lib/bounded-run.sh"
+    if [[ -f "$_auth_mode_bounded_run_lib" ]]; then
+        # shellcheck source=./lib/bounded-run.sh
+        source "$_auth_mode_bounded_run_lib"
+        _login_status_out="$(bounded_run 10 "${_codex_bin[@]}" login status </dev/null 2>&1)"
+        _login_status_rc=$?
+        if [[ $_login_status_rc -eq 0 ]] \
+            && printf '%s' "$_login_status_out" | grep -qi "logged in using chatgpt"; then
+            log_warn "spawn-codex: this Codex profile is authenticated via a ChatGPT plan, which only supports the account's own default model (issue #5499)."
+            log_warn "spawn-codex: dropping the pinned model '$EFFECTIVE_MODEL' rather than launching a doomed invocation — the CLI 400s with \"model is not supported when using Codex with a ChatGPT account\"."
+            log_warn "spawn-codex: fix by omitting autonomous.roleRunner.roleModels/LOOM_MODEL/LOOM_CODEX_MODEL for this role/profile, or point it at an API-key-authenticated profile. Escape hatch: LOOM_CODEX_AUTH_MODE_CHECK=0."
+            CODEX_DROP_PINNED_MODEL=true
+        fi
     fi
 fi
 
@@ -743,17 +926,76 @@ CODEX_ARGS=()
 if [[ "$HAS_PROMPT" == "true" ]]; then
     CODEX_ARGS+=(exec)
 fi
-CODEX_ARGS+=(${PASSTHROUGH_ARGS[@]+"${PASSTHROUGH_ARGS[@]}"})
+if [[ "$CODEX_DROP_PINNED_MODEL" == "true" ]]; then
+    # Issue #5499: strip the pinned `-m`/`--model` (both the two-token and
+    # `=`-joined single-token forms) that the ChatGPT-plan guard above decided
+    # not to forward. Filtered here, not skipped at push-time, so every OTHER
+    # passthrough arg (sandbox, effort, `-c` overrides, `--skip-git-repo-check`)
+    # is preserved unchanged regardless of where in PASSTHROUGH_ARGS the model
+    # flag landed.
+    _codex_filtered_args=()
+    _codex_skip_next_arg=false
+    for _codex_arg in ${PASSTHROUGH_ARGS[@]+"${PASSTHROUGH_ARGS[@]}"}; do
+        if [[ "$_codex_skip_next_arg" == "true" ]]; then
+            _codex_skip_next_arg=false
+            continue
+        fi
+        case "$_codex_arg" in
+            -m | --model)
+                _codex_skip_next_arg=true
+                continue
+                ;;
+            -m=* | --model=*)
+                continue
+                ;;
+        esac
+        _codex_filtered_args+=("$_codex_arg")
+    done
+    CODEX_ARGS+=(${_codex_filtered_args[@]+"${_codex_filtered_args[@]}"})
+else
+    CODEX_ARGS+=(${PASSTHROUGH_ARGS[@]+"${PASSTHROUGH_ARGS[@]}"})
+fi
 if [[ "$HAS_PROMPT" == "true" ]]; then
     CODEX_ARGS+=("$PROMPT")
 fi
 
+# --- Session-exec invocation assembly (issue #6926) ---
+# Bare-metal: `codex <CODEX_ARGS...>`. Session-exec: `docker exec <container>
+# codex <CODEX_ARGS...>` — the exact shape docker/session/README.md's
+# "Headless dispatch" section documents, never `tmux send-keys`.
+if [[ "$CODEX_SESSION_EXEC" == "true" ]]; then
+    # -e CARGO_INCREMENTAL=0 (issue #8456, parent #8453 §1): `docker exec`
+    # does NOT inherit this script's environment, so the value the
+    # daemon-side dispatcher injects for bare-metal dispatch would be
+    # stripped at the container boundary — carry it across explicitly, the
+    # same way spawn-claude.sh's containment env does. sccache cannot cache
+    # an incrementally-compiled crate, and cargo keys incremental session
+    # state by the crate's absolute source path, so it is orphaned disk the
+    # moment a worktree goes away. An inline `CARGO_INCREMENTAL=1 cargo …`
+    # prefix still outranks it per-invocation.
+    #
+    # --workdir "$PWD" (issue #8518): `docker exec` also does NOT inherit
+    # this script's cwd — without it Codex starts in the image's WORKDIR
+    # (/home/loom), which is neither a repository nor a trusted project, and
+    # every dispatch dies with "Not inside a trusted directory". The mount
+    # contract (docker/worker/MOUNT-CONTRACT.md §1) guarantees the host path
+    # exists byte-identically inside the container, so $PWD is valid there.
+    # LOOM_WORKSPACE and the Loom context vars below are forwarded
+    # explicitly for the same reason; host HOME/PATH/CODEX_HOME and ambient
+    # provider credentials are deliberately NOT forwarded — the container
+    # owns its own CODEX_HOME (ADR-0017 Decision 1).
+    CODEX_INVOKE=(docker exec --workdir "$PWD" --env "LOOM_WORKSPACE=$WORKSPACE" -e CARGO_INCREMENTAL=0)
+    for _v in LOOM_ROLE LOOM_RUNTIME LOOM_TERMINAL_ID LOOM_SWEEP_ID LOOM_WORKTREE_PATH LOOM_WORKTREE_ROOT LOOM_PROJECT_ROOT LOOM_SWEEP_CLAIM_OWNED LOOM_ACCOUNT_NAME LOOM_ACCOUNT_PROVIDER; do [[ -n "${!_v:-}" ]] && CODEX_INVOKE+=(--env "$_v=${!_v}"); done
+    CODEX_INVOKE+=("$CODEX_SESSION_CONTAINER")
+fi
+CODEX_INVOKE+=(codex ${CODEX_ARGS[@]+"${CODEX_ARGS[@]}"})
+
 # --- Test/CI hook: surface the resolved argv without touching the real CLI ---
 # Checked BEFORE the binary check so the mocked test can assert argv assembly on
-# a host with no `codex` installed at all.
+# a host with no `codex` (or `docker`) installed at all.
 if [[ -n "${LOOM_CODEX_NO_EXEC:-}" ]]; then
     echo "# LOOM_CLI_START runtime=codex" >&2
-    echo "spawn-codex would-exec: codex ${CODEX_ARGS[*]}"
+    echo "spawn-codex would-exec: ${CODEX_INVOKE[*]}"
     exit 0
 fi
 
@@ -762,10 +1004,23 @@ fi
 # including spawn-worker.sh's unknown-runtime dispatch failure. A missing
 # runtime binary is the contract's "Runtime-missing" facet, which
 # spawn-claude.sh answers with 127.
-if ! command -v codex >/dev/null 2>&1; then
-    log_error "'codex' command not found in PATH."
-    log_error "Install the OpenAI Codex CLI (>= 0.146.0), e.g.:"
-    log_error "  npm install -g @openai/codex     # or: brew install codex"
+if [[ "$CODEX_SESSION_EXEC" == "true" ]]; then
+    if ! command -v docker >/dev/null 2>&1; then
+        log_error "'docker' command not found in PATH."
+        log_error "Session-exec dispatch requires Docker to exec into the session container '$CODEX_SESSION_CONTAINER' (issue #6926)."
+        exit 127
+    fi
+    # Fail with a named, actionable error rather than a raw `docker exec`
+    # failure when the session container has not been started (or was
+    # stopped) — the contract's missing-credential-shaped facet, reused for
+    # "missing session container".
+    _session_running="$(docker inspect -f '{{.State.Running}}' "$CODEX_SESSION_CONTAINER" 2>/dev/null || true)"
+    if [[ "$_session_running" != "true" ]]; then
+        log_error "Session container '$CODEX_SESSION_CONTAINER' for profile '$CODEX_PROFILE_NAME' is not running. Start it with: loom-daemon accounts session start $CODEX_PROFILE_NAME"
+        exit 78  # EX_CONFIG
+    fi
+elif ! command -v codex >/dev/null 2>&1; then
+    log_error "'codex' command not found in PATH. Install the OpenAI Codex CLI (>= 0.146.0), e.g.: npm install -g @openai/codex  # or: brew install codex"
     exit 127
 fi
 
@@ -775,7 +1030,7 @@ fi
 # case — an operator at the keyboard needs it.
 if [[ "$HAS_PROMPT" != "true" || -n "${LOOM_CODEX_NO_CAPTURE:-}" ]]; then
     echo "# LOOM_CLI_START runtime=codex" >&2
-    exec codex ${CODEX_ARGS[@]+"${CODEX_ARGS[@]}"}
+    exec "${CODEX_INVOKE[@]}"
 fi
 
 # Headless run. Two live-CLI behaviors force a child (not `exec`) here:
@@ -794,7 +1049,7 @@ trap "rm -f '$_stderr_file'" EXIT
 
 set +e
 echo "# LOOM_CLI_START runtime=codex" >&2
-{ codex ${CODEX_ARGS[@]+"${CODEX_ARGS[@]}"} </dev/null 2>&1 1>&3 3>&- \
+{ "${CODEX_INVOKE[@]}" </dev/null 2>&1 1>&3 3>&- \
     | tee "$_stderr_file" >&2; } 3>&1
 _exit_code=${PIPESTATUS[0]}
 set -e
@@ -843,6 +1098,29 @@ fi
 # single source of truth; this adapter only packages its result with the
 # provider/account attribution already selected for this child. Raw output is
 # neither included in this record nor persisted by the health layer.
+#
+# v2 (#8277) adds `model=` so a class-scoped MODEL_CREDITS_EXHAUSTED mark
+# (#8058 Phase 2, `class_cooldowns`) has a producer: `EFFECTIVE_MODEL` is the
+# same value already threaded into token selection above, sanitized to the
+# same charset `account=` uses, plus `@` for a suffixed ID — Loom's own
+# `model@effort` rung grammar (#3702, the same suffix the #5028 check above
+# strips with `${EFFECTIVE_MODEL%%@*}`) or a pinned `model@date`. Anything
+# else, or no model at all, becomes the `none` sentinel, which the daemon
+# parser treats identically to a v1 record with no model field (fail-safe:
+# account-wide, never a fabricated class). The suffix is NOT stripped here:
+# `tokens_pool::health::model_class_of` collapses it onto the bare model's
+# class daemon-side (#8380), so the record stays a faithful report of what
+# was actually pinned and classification keeps happening in exactly one place.
+#
+# The field reports the model that was ACTUALLY IN FLIGHT, which is not always
+# `EFFECTIVE_MODEL`: the #5499 ChatGPT-plan guard above may set
+# CODEX_DROP_PINNED_MODEL, in which case the `-m`/`--model` flag was stripped
+# from the invocation and the account's own default model ran instead. Naming
+# the dropped model here would pin a class-scoped credit-exhaustion hold on a
+# class that never ran — and, worse, leave the class that DID run selectable.
+# We cannot know the account's default from here, so that case reports `none`
+# and takes the account-wide path, which is the fail-safe direction #8058
+# requires.
 _classifier_lib="${_SCRIPT_DIR}/lib/classify-error.sh"
 if [[ -f "$_classifier_lib" ]]; then
     # shellcheck source=./lib/classify-error.sh
@@ -850,13 +1128,21 @@ if [[ -f "$_classifier_lib" ]]; then
     _classifier_input="$(tail -c 65536 "$_stderr_file" 2>/dev/null || true)"
     _terminal_category="$(classify_error "$_classifier_input" "$_exit_code" codex)"
     _terminal_account="${LOOM_ACCOUNT_NAME:-${CODEX_PROFILE_NAME:-unknown}}"
-    if [[ ! "$_terminal_account" =~ ^[A-Za-z0-9._-]+$ ]]; then
-        _terminal_account="unknown"
-    fi
+    [[ "$_terminal_account" =~ ^[A-Za-z0-9._-]+$ ]] || _terminal_account="unknown"
+    # `none` when nothing was pinned, when the #5499 guard stripped the pin
+    # before exec (the account's own default ran and we cannot name it), or
+    # when the value is not record-safe — all three fail safe to account-wide.
+    _terminal_model="${EFFECTIVE_MODEL:-none}"
+    [[ "${CODEX_DROP_PINNED_MODEL:-false}" != "true" && "$_terminal_model" =~ ^[A-Za-z0-9._@-]+$ ]] || _terminal_model="none"
     case "$_terminal_category" in
-        SUCCESS|TOKEN_EXPIRED|TOKEN_EXHAUSTED|RECOVERABLE|TIMEOUT|FATAL|CWD_DELETED|MODEL_REFUSAL|SESSION_LIMIT)
-            printf '# LOOM_TERMINAL_RESULT v=1 provider=codex account=%s category=%s exit_code=%s\n' \
-                "$_terminal_account" "$_terminal_category" "$_exit_code" >&2
+        # MODEL_CREDITS_EXHAUSTED (#5687) is listed so the allowlist stays a
+        # complete mirror of the classifier's category set. The `codex` table
+        # emits no credit-exhaustion pattern of its own today, so this arm is
+        # unreachable for provider=codex — but an allowlist that silently drops
+        # a valid category is exactly how terminal feedback goes missing.
+        SUCCESS|TOKEN_EXPIRED|TOKEN_EXHAUSTED|MODEL_CREDITS_EXHAUSTED|RECOVERABLE|TIMEOUT|FATAL|CWD_DELETED|MODEL_REFUSAL|SESSION_LIMIT)
+            printf '# LOOM_TERMINAL_RESULT v=2 provider=codex account=%s category=%s exit_code=%s model=%s\n' \
+                "$_terminal_account" "$_terminal_category" "$_exit_code" "$_terminal_model" >&2
             ;;
         *)
             log_warn "spawn-codex: classifier returned an invalid category; terminal feedback omitted"
