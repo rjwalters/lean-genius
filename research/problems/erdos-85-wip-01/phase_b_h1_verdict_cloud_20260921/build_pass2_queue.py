@@ -20,10 +20,13 @@ queue1 = (HERE / 'queue-1137.ids').read_text().split()
 missing = [c for c in queue1 if c not in statuses]
 if missing or len(pilot['results']) != 24:
     sys.exit(f"pass 1 incomplete: {len(missing)} cloud rows without a ledger, pilot rows {len(pilot['results'])}")
-bad = sorted(c for c, s in statuses.items() if s not in ('UNSAT_CROSSCHECKED', 'UNKNOWN'))
+bad = sorted(c for c, s in statuses.items() if s not in ('UNSAT_CROSSCHECKED', 'UNKNOWN', 'ERROR'))
 if bad:
-    sys.exit(f"pass 1 has non-UNSAT/UNKNOWN rows, resolve first: {bad}")
-queue = sorted(c for c, s in statuses.items() if s == 'UNKNOWN')
+    sys.exit(f"pass 1 has SAT/DISAGREEMENT rows, resolve first: {bad}")
+# ERROR rows are infrastructure failures (e.g. Docker shut down by a spot reclaim mid-generation,
+# h1_a9994949dd2ee8f3 on 2026-09-22); they are rerun in pass 2 with the same reviewed dispatcher.
+errors = sorted(c for c, s in statuses.items() if s == 'ERROR')
+queue = sorted(c for c, s in statuses.items() if s in ('UNKNOWN', 'ERROR'))
 raw = ''.join(c + '\n' for c in queue).encode()
 (HERE / 'queue-pass2.ids').write_bytes(raw)
 commit = sys.argv[1] if len(sys.argv) > 1 else 'FILL-AFTER-COMMIT'
@@ -32,6 +35,6 @@ spec = {"queue": "queue-pass2.ids", "queue_sha256": hashlib.sha256(raw).hexdiges
         "config_commit": commit, "direct": True,
         "source": {"cloud_rows": len(latest), "pilot_rows": len(pilot['results']),
                    "unsat_crosschecked": sum(s == 'UNSAT_CROSSCHECKED' for s in statuses.values()),
-                   "unknown": len(queue)}}
+                   "unknown": len(queue) - len(errors), "error_reruns": errors}}
 (HERE / 'pass-pass2.json').write_text(json.dumps(spec, indent=1) + '\n')
 print(json.dumps(spec))

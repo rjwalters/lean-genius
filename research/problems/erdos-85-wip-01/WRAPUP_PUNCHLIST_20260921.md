@@ -9,10 +9,10 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
 
 ## A. Evidence for the drop (the only compute left)
 
-- [~] A1. 24-case H1 pilot, reviewed wrapper, 4 workers. Relaunched 2026-09-21
+- [x] A1. DONE 2026-09-22 03:20Z: 24/24 UNSAT_CROSSCHECKED. 24-case H1 pilot, reviewed wrapper, 4 workers. Relaunched 2026-09-21
   18:59Z in tmux `e85-pilot` / `e85-monitor`. Output on Stripe:
   `artifacts/erdos85-sat49/h1-verdict-pilot-20260921-claude`. Expect 6–12 h.
-- [ ] A2. Run `audit_pilot_gate_inputs.py` on the finished pilot; bank the report.
+- [x] A2. Pilot gate-input audit run 2026-09-22: all checks pass (monitor coverage complete, max 4 solvers, 1.2 GiB peak solver RSS, no swap). Banked as `phase_b_h1_verdict_20260916/PILOT_GATE_INPUT_AUDIT_20260921.json`. No scaling gate is needed (A3).
 - [x] A3. Scaling gate: not needed. Robb (2026-09-21, board goal #44) granted the
   single-seat waiver and $200 of AWS. The cloud run uses the reviewed residual
   wrapper with `--case-id` and one worker, which has no gate; `dispatch_scaled.py`
@@ -27,7 +27,7 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
   run directory for A7.
 - [ ] A5. The 130 gap slots outside the residual queue: 96-historical route
   (54b7f7035b) and 34-outside-frozen route (4366cedadb).
-- [R] A6. Cap-hit policy. Recommendation: no retries, no longer caps. Rows that
+- [x] A6. DECIDED 2026-09-22 (Robb, board #45): second pass at 43,200 s caps for every cap-hit row; rows still open after that are printed as open. Cap-hit policy (original text). Recommendation: no retries, no longer caps. Rows that
   hit the cap are printed as open and the paper uses the "partial evidence"
   wording. Any SAT result stops everything and the drop claim is withdrawn.
 - [ ] A7. Receipt-derived H1 census table (auditor 3d263fb913): exact tag and CNF

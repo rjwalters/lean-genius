@@ -1,0 +1,175 @@
+{
+  "schema": "erdos85-h1-pilot-gate-input-audit-v1",
+  "scope": "Read-only receipts/logs and monitor arithmetic; monitor provenance/full time coverage need human review; no scaling approval or proof",
+  "run_dir": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-verdict-pilot-20260921-claude",
+  "pilot_results_sha256": "95a5f3abdd415244dd7ba5be76aeabbc7a3c427b769b90e89bab376950426d21",
+  "config_sha256": "f7cf7a15894a114d30f4069abc1198af1397d6f8f3b85b0f0eae3b4e294d66a3",
+  "pilot_manifest_sha256": "f94b9c0d77061db7c65575bd50ad68690ba9442a8898830bd4a38ec53c340063",
+  "recorded_config_commit": "bf95b3937e894956d07f09b55401dc41ffa904a6",
+  "pilot_pid": 22527,
+  "input_snapshots_mtime_utc": "2026-09-21T18:59:34.508785+00:00",
+  "pilot_results_mtime_utc": "2026-09-22T03:20:18.313331+00:00",
+  "pilot_selected_cases": 24,
+  "pilot_status": "complete",
+  "completed_results": 24,
+  "verdict_status_counts": {
+    "UNSAT_CROSSCHECKED": 24
+  },
+  "all_24_terminal_rows_published": true,
+  "crosschecked_unsat_rows": 24,
+  "primary_monitor": {
+    "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-verdict-pilot-20260921-claude-monitor/resource-monitor.csv",
+    "sha256": "59ae06e4d001f0d66e558cff40e43aee8cb248356fd5ff979232887204eb04d1",
+    "bytes": 59222,
+    "samples": 1003,
+    "first_utc": "2026-09-21T18:59:22.391834+00:00",
+    "last_utc": "2026-09-22T03:20:29.015914+00:00",
+    "span_seconds": 30066.62408,
+    "maximum_sample_gap_seconds": 30.010731,
+    "first_kissat_processes": 0,
+    "first_cadical_processes": 0,
+    "first_sample_has_active_solver": false,
+    "maximum_solver_processes": 4,
+    "maximum_kissat_processes": 4,
+    "maximum_cadical_processes": 4,
+    "maximum_solver_rss_mib": 1222.0,
+    "maximum_largest_solver_rss_mib": 492.4,
+    "minimum_memory_free_percent": 87.0,
+    "maximum_output_disk_kib": 65412.0
+  },
+  "supplement_monitor": {
+    "path": "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-verdict-pilot-20260921-claude-monitor/resource-supplement.csv",
+    "sha256": "68e65046fd71d8a24183827169af85fec1b267ca07d3dc9909a36be06e200348",
+    "bytes": 1172923,
+    "samples": 1004,
+    "first_utc": "2026-09-21T18:59:22.391834+00:00",
+    "last_utc": "2026-09-22T03:20:36.079540+00:00",
+    "span_seconds": 30073.687706,
+    "maximum_sample_gap_seconds": 30.010731,
+    "maximum_host_process_rss_mib": 75801.5,
+    "maximum_docker_host_rss_mib": 1573.1,
+    "maximum_swap_used_mib": 0.0,
+    "maximum_h1_input_containers": 1,
+    "docker_stats_error_samples": 3,
+    "observed_container_names": [
+      "erdos85-h1-input-0efc776604be40929618597f89eaf460",
+      "erdos85-h1-input-430dcfadba5645bba8f76a0bf5161c54",
+      "erdos85-h1-input-63407e86c18d47b69a8ff936a7f61654",
+      "erdos85-h1-input-7190c9d559ac42c6a79a0f2ad54c4646",
+      "erdos85-h1-input-7eeb44e8097a42de9e36d95ef304de2b",
+      "erdos85-h1-input-9eb379eabcc94723baf8ed1142af5141",
+      "erdos85-h1-input-e785e8e2d53d4e699ec100aa3f2cf1b3",
+      "erdos85-h1-input-e9903bec95c14b20a5ee1925d4c1bed7",
+      "erdos85-h1-input-fec9726ee81a4959b90ef27a46eed297",
+      "loom-codex-session-agent-1",
+      "loom-codex-session-agent-2",
+      "loom-codex-session-agent-4",
+      "loom-codex-session-agent-5",
+      "zealous_morse"
+    ]
+  },
+  "primary_maximum_gap_at_most_60s": true,
+  "seconds_from_snapshots_mtime_to_primary_first_sample": -12.116951,
+  "primary_startup_coverage_gap_observed": false,
+  "supplement_maximum_gap_at_most_60s": true,
+  "supplement_covers_primary_interval": true,
+  "gate_approved": false,
+  "rows": [
+    {
+      "id": "h1_12614d4d4b5c4228",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_136e336a56215c40",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_15ed144312925e2f",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_18b282125bf248f0",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_1e1729454da91cdd",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_44902e5b2fbee3d6",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_4a1f827d2d44b243",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_4fb7232f07aa714c",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_59a11223b6094343",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_7326a069c6fc20d9",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_872f6efeb769425e",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_875b5bd0db56eb5b",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_876c9a2ab8062cd5",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_8cfaf3d2f53dc2f4",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_a9de763059d15374",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_ac82f761e43ded9f",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_b68f096823bec91a",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_bb482825333e6bb2",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_c231d433d9d538d7",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_e44ab5ed592ffc19",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_e6a7e3834a6654ac",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_e83ec6cd0b457efc",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_ee2db4a49e0892b3",
+      "status": "UNSAT_CROSSCHECKED"
+    },
+    {
+      "id": "h1_eef860f24fecbde2",
+      "status": "UNSAT_CROSSCHECKED"
+    }
+  ]
+}
