@@ -44,8 +44,8 @@
 #                     Default: the resolved binary alone (no invented flags).
 #   --socket PATH     The AF_UNIX socket safehoused binds. Resolved (when not
 #                     passed) via the SAME env>config>default chain the daemon
-#                     and worker MCP injection use (safehouse.socket config >
-#                     $LOOM_SAFEHOUSE_SOCKET > $SAFEHOUSED_SOCKET). Baked into
+#                     and worker MCP injection use ($LOOM_SAFEHOUSE_SOCKET >
+#                     $SAFEHOUSED_SOCKET > safehouse.socket config). Baked into
 #                     the service env as SAFEHOUSED_SOCKET so the daemon and its
 #                     clients agree on one path.
 #   --config PATH     safehoused's own config file. Env SAFEHOUSED_CONFIG. Baked
@@ -86,10 +86,50 @@ err()  { echo -e "${RED}$*${NC}" >&2; }
 warn() { echo -e "${YELLOW}$*${NC}" >&2; }
 ok()   { echo -e "${GREEN}$*${NC}"; }
 
+# A concise operator usage block, held in the script rather than recovered by
+# reading "$0" at runtime (#7794). The header comment above keeps all of the
+# design rationale -- ownership decision #4346, the supervision-policy contrast
+# with loom-daemon, the parameter precedence chain -- and is never printed:
+# that text is for someone reading the source, not for someone who typed
+# `--help` and wants the flags. Printing it was also the reason this script
+# read its own file, which a same-path truncate+rewrite landing mid-read can
+# tear into a torn, incomplete banner with no I/O error to catch (#7201,
+# PR #7768). Nothing here touches the filesystem.
+#
+# Keep in sync with the argument parser below: every flag it accepts must
+# appear here.
 show_help() {
-    # Print the leading comment banner (line 2 through the last comment line
-    # before `set -uo pipefail`), stripping the leading "# ".
-    awk 'NR>=2 { if ($0 !~ /^#/) exit; sub(/^# ?/, ""); print }' "$0"
+    cat <<'EOF'
+Usage: safehoused-service.sh <install|uninstall|status> [options]
+       safehoused-service.sh (--print-plist|--print-unit)
+
+Supervise an operator-supplied safehoused binary: a launchd LaunchAgent on
+macOS, a `systemd --user` service on Linux.
+
+Actions:
+  install | uninstall | status   install+start / stop+remove / report state
+  --print-plist | --print-unit   print the service definition, install nothing
+  -h, --help                     show this help
+
+Options (precedence: flag > env > config > default):
+  --bin PATH      safehoused binary           [SAFEHOUSED_BIN]
+  --exec "ARGV"   full ExecStart override      [SAFEHOUSED_EXEC]
+  --socket PATH   AF_UNIX socket to bind       [LOOM_SAFEHOUSE_SOCKET,
+                                                SAFEHOUSED_SOCKET,
+                                                safehouse.socket config]
+  --config PATH   safehoused config file       [SAFEHOUSED_CONFIG]
+  --log PATH      service stdout/stderr log    [SAFEHOUSED_LOG]
+  --label LABEL   macOS LaunchAgent label      [SAFEHOUSED_LAUNCHD_LABEL]
+  --unit NAME     Linux `systemd --user` unit  [SAFEHOUSED_SYSTEMD_UNIT]
+  --no-launchd    rejected -- supervision is this script's whole purpose
+
+Exit codes: 0 success; 1 usage error / binary not found / install failed;
+            2 unsupported platform (no launchd on macOS, no reachable
+              `systemd --user` on Linux).
+
+Defaults, supervision policy and the #4346 ownership decision are documented
+in this script's header comment.
+EOF
 }
 
 # ---------- repo root (for config resolution only) ----------
@@ -305,7 +345,7 @@ REPO_ROOT="$(find_repo_root)"
 SAFEHOUSED_BIN="${OPT_BIN:-${SAFEHOUSED_BIN:-}}"
 RESOLVED_BIN="$(locate_safehoused_bin)"
 
-# Socket: flag > (config > LOOM_SAFEHOUSE_SOCKET > SAFEHOUSED_SOCKET via the
+# Socket: flag > (LOOM_SAFEHOUSE_SOCKET > SAFEHOUSED_SOCKET > config via the
 # shared resolver). The resolver soft-degrades to empty when nothing resolves.
 RESOLVED_SOCKET="$OPT_SOCKET"
 if [[ -z "$RESOLVED_SOCKET" ]] && command -v loom_mcp_safehouse_socket >/dev/null 2>&1; then

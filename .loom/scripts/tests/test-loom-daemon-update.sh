@@ -95,6 +95,8 @@ export LOOM_SYSTEMD_UNIT="loom-daemon-update-test-$$.service"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CLI_DIR="$(cd "$SCRIPT_DIR/../cli" && pwd)"
 UPDATE_SCRIPT="$CLI_DIR/loom-daemon-update.sh"
+# Which binary implements the loom-daemon-start.sh stub (#8134/#8087) is pinned
+# by lib/daemon-update-fixtures.sh, sourced below — see its header.
 
 # Shared launchd sandbox (#4078). Belt-and-braces on top of LOOM_DAEMON_LAUNCHD=0:
 #   - a scratch LOOM_LAUNCHD_LABEL so any launchd lookup that DID fire could not
@@ -166,52 +168,15 @@ assert_true() {
 # can pull in the real scripts/install/provision-daemon.sh (which defines the
 # #4016 sign_daemon_binary helper loom-daemon-update.sh sources at
 # $REPO_ROOT/scripts/install/provision-daemon.sh).
+# shellcheck disable=SC2034  # read by lib/daemon-update-fixtures.sh, sourced below
 LOOM_REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 
-# ---------- fixture builder ----------
-# Sets up a fresh throwaway repo root at $1 with a real git HEAD, a stub
-# loom-daemon crate, real start/stop scripts, a real copy of
-# provision-daemon.sh (so the #4016 signing step is exercised, not silently
-# skipped as "not found/sourceable"), and a minimal, machine-agnostic PATH
-# (excludes ~/.local/bin and similar, so a real loom-daemon possibly
-# installed on the dev machine can never leak into a test).
-new_fixture() {
-    local root="$1"
-    mkdir -p "$root/.loom/logs" "$root/.loom/scripts/cli" "$root/.loom/scripts/lib" "$root/loom-daemon" "$root/scripts/install"
-    cp "$CLI_DIR/loom-daemon-start.sh" "$root/.loom/scripts/cli/loom-daemon-start.sh"
-    cp "$CLI_DIR/loom-daemon-stop.sh" "$root/.loom/scripts/cli/loom-daemon-stop.sh"
-    chmod +x "$root/.loom/scripts/cli/"*.sh
-    # The fixture start/stop scripts source ../lib/launchd-domain.sh for the
-    # shared gui/<uid> ↦ user/<uid> resolver (#4130), so it must exist alongside
-    # them in the throwaway tree — else a launchd-mode restart path would find no
-    # resolve_launchd_domain. Mirrors the real defaults/scripts/lib layout.
-    cp "$CLI_DIR/../lib/launchd-domain.sh" "$root/.loom/scripts/lib/launchd-domain.sh"
-    # Same for lib/systemd-user.sh (#4268): the fixture start script's systemd
-    # --user path (invoked via perform_systemd_relaunch's call to $START_SCRIPT,
-    # #4260 sub-issue C) sources it relative to ITS OWN location, so it must exist
-    # alongside the fixture copy too, not just in the real repo tree.
-    cp "$CLI_DIR/../lib/systemd-user.sh" "$root/.loom/scripts/lib/systemd-user.sh"
-    # Same for lib/bounded-run.sh (#4799): the fixture start script's
-    # print_calibrate_hint() sources it relative to ITS OWN location to bound
-    # its `calibrate` command substitution, so it must exist alongside the
-    # fixture copy too.
-    cp "$CLI_DIR/../lib/bounded-run.sh" "$root/.loom/scripts/lib/bounded-run.sh"
-    # Same for lib/locate-daemon-bin.sh (#4875): the fixture start script
-    # sources it relative to ITS OWN location to resolve the daemon binary
-    # under a minimal PATH, so every fixture flow that execs the copied
-    # loom-daemon-start.sh (restart, --relaunch, the full update run) needs it
-    # in the throwaway tree. Without it those flows abort with
-    # "locate-daemon-bin.sh not found at <fixture>/.loom/scripts/lib" before
-    # reaching the behaviour under test.
-    cp "$CLI_DIR/../lib/locate-daemon-bin.sh" "$root/.loom/scripts/lib/locate-daemon-bin.sh"
-    cp "$LOOM_REPO_ROOT/scripts/install/provision-daemon.sh" "$root/scripts/install/provision-daemon.sh"
-    cat > "$root/loom-daemon/Cargo.toml" <<'EOF'
-[package]
-name = "loom-daemon"
-version = "0.0.0"
-EOF
-    ( cd "$root" && git init -q && git -c user.email=test@test -c user.name=test commit -q --allow-empty -m init )
-}
+# The fake-binary / fake-forge fixtures, shared with the resolve-json
+# sibling suite so both build identical ones from a single definition
+# (#7977). Requires CLI_DIR / START_SCRIPT / NEW_FAKE_BIN_SRC above.
+# shellcheck source=lib/daemon-update-fixtures.sh
+source "$SCRIPT_DIR/lib/daemon-update-fixtures.sh"
+
 
 # install_update_script_into <root> (#5140) — drops a real copy of
 # loom-daemon-update.sh (plus every lib/ it sources, resolved relative to its
@@ -228,23 +193,9 @@ install_update_script_into() {
     cp "$CLI_DIR/../lib/"*.sh "$root/.loom/scripts/lib/"
 }
 
-# new_fixture_with_origin <root> <bare_dir> (#4330) — builds on new_fixture(),
-# adding a local BARE repo as `origin` so the ff-first sync path (which
-# resolves the default branch via refs/remotes/origin/HEAD, then fetches and
-# compares against origin/<branch>) has a real remote to talk to — entirely
-# offline (a plain filesystem path, no network). Forces the branch name to
-# `main` (deterministic regardless of the test host's init.defaultBranch) and
-# sets refs/remotes/origin/HEAD via `git remote set-head origin -a` so
-# loom_default_branch() resolves it the same way a real clone would.
-new_fixture_with_origin() {
-    local root="$1" bare="$2"
-    new_fixture "$root"
-    ( cd "$root" && git branch -q -M main )
-    git init -q --bare "$bare"
-    ( cd "$root" && git remote add origin "$bare" && git push -q origin HEAD:refs/heads/main )
-    git -C "$bare" symbolic-ref HEAD refs/heads/main
-    ( cd "$root" && git remote set-head origin -a >/dev/null 2>&1 )
-}
+# new_fixture_with_origin moved to lib/daemon-update-fixtures.sh (#8028): the
+# fetch sibling's local-checkout-divergence scenario needs it too, and this
+# repo's convention is one shared definition rather than a copy that can drift.
 
 # push_extra_commits_to_origin <bare_dir> <n> — advances the bare `origin`
 # repo `n` commits ahead of whatever a fixture repo's `main` currently is, by
@@ -266,52 +217,6 @@ push_extra_commits_to_origin() {
     echo "$tip"
 }
 
-# Writes a fake daemon binary at $1 that reports commit $2 on --version and,
-# on a normal run, appends its inherited LOOM_WORK_FINDER / LOOM_MAIN_HEALTH_GATE
-# to marker file $3 before looping forever (so it stays alive for kill -0).
-#
-# `calibrate` is handled explicitly (#4799) and exits immediately with no
-# output: this fixture has no real calibrate implementation, and every
-# successful loom-daemon-start.sh run (nohup/launchd/systemd, all three
-# reached by this suite's restart scenarios) calls `$DAEMON_BIN calibrate
-# --workspace ... --json` via print_calibrate_hint(). Before this fix, that
-# call fell through to the `while true` loop below and hung forever inside
-# print_calibrate_hint()'s blocking `$(...)` -- the exact hang
-# ci-excluded.txt documented. print_calibrate_hint() is bounded independently
-# now (lib/bounded-run.sh), but this fixture also short-circuits so the suite
-# stays fast rather than eating that timeout on every restart.
-#
-# GENERALIZED (#4799 CI hang): `calibrate` was only one instance of a whole
-# CLASS of wedge. ANY *subcommand* the lifecycle scripts dispatch that this
-# fixture does not recognize used to fall through to the `while true` daemon
-# body IN THE FOREGROUND and block its caller forever -- which is precisely how
-# the CI run hung: with a real `systemctl --user` reachable, the update script
-# resolved DAEMON_MANAGER=systemd and ran `"$PROVISION_TARGET" restart`, and
-# this fixture (no `restart` handler) looped instead of answering. So the
-# catch-all below exits non-zero for any unrecognized NON-FLAG first argument
-# (a real daemon rejects an unknown subcommand; it does not daemonize). A
-# leading `-`/`--` still falls through to the daemon body, because the
-# supervisors DO launch the daemon proper with flags.
-write_fake_daemon() {
-    local path="$1" commit="$2" marker="$3"
-    cat > "$path" <<EOF
-#!/usr/bin/env bash
-if [[ "\${1:-}" == "--version" ]]; then
-    echo "loom-daemon 0.15.0 (commit ${commit}, built 2026-07-26T00:00:00Z)"
-    exit 0
-fi
-if [[ "\${1:-}" == "calibrate" ]]; then
-    exit 1
-fi
-if [[ -n "\${1:-}" && "\${1:-}" != -* ]]; then
-    echo "fake loom-daemon: unsupported subcommand: \$*" >&2
-    exit 1
-fi
-echo "FAKE_DAEMON WF=[\${LOOM_WORK_FINDER:-}] HG=[\${LOOM_MAIN_HEALTH_GATE:-}]" > "${marker}"
-while true; do sleep 1; done
-EOF
-    chmod +x "$path"
-}
 
 # Writes a fake daemon binary at $1 that reports commit $2 on --version, and on a
 # `restart` subcommand (the #4077 supervised primitive, #4042) appends a line to
@@ -355,8 +260,14 @@ EOF
 # only ever logs the literal word "restart" and cannot distinguish a plain
 # restart from a drain-mode one. Lets a test assert exactly which flags the
 # update script threaded through to `loom-daemon restart`.
+#
+# Optional $5 (Issue #6007): a JSON body to emit on `status --json`. Absent (the
+# default, and what every pre-#6007 caller gets), `status` falls through to the
+# "unsupported subcommand" arm and exits 1 — exactly how a daemon binary that
+# cannot answer the probe behaves, which is the fallback path the #6007
+# pending-roll detector is written to tolerate. Must not contain single quotes.
 write_fake_daemon_restart_argv() {
-    local path="$1" commit="$2" restart_marker="$3" restart_rc="$4"
+    local path="$1" commit="$2" restart_marker="$3" restart_rc="$4" status_json="${5:-}"
     cat > "$path" <<EOF
 #!/usr/bin/env bash
 if [[ "\${1:-}" == "--version" ]]; then
@@ -366,6 +277,10 @@ fi
 if [[ "\${1:-}" == "restart" ]]; then
     echo "\$*" >> "${restart_marker}"
     exit ${restart_rc}
+fi
+if [[ -n '${status_json}' && "\${1:-}" == "status" ]]; then
+    printf '%s\n' '${status_json}'
+    exit 0
 fi
 if [[ "\${1:-}" == "calibrate" ]]; then
     exit 1
@@ -700,25 +615,6 @@ WantedBy=default.target
 EOF
 }
 
-# Writes a fake `cargo` that, on `cargo build --release` (cwd = loom-daemon/),
-# copies $NEW_FAKE_BIN_SRC into target/release/loom-daemon instead of
-# compiling. Tests export NEW_FAKE_BIN_SRC before invoking loom-daemon-update.sh.
-write_fake_cargo() {
-    local path="$1"
-    cat > "$path" <<'EOF'
-#!/usr/bin/env bash
-if [[ "${1:-}" == "build" ]]; then
-    mkdir -p target/release
-    cp "$NEW_FAKE_BIN_SRC" target/release/loom-daemon
-    chmod +x target/release/loom-daemon
-    echo "[fake cargo] build ok"
-    exit 0
-fi
-echo "[fake cargo] unsupported subcommand: $*" >&2
-exit 1
-EOF
-    chmod +x "$path"
-}
 
 # Fake `crontab` (#4697): the update script's idle-shutdown-notice check runs
 # `crontab -l` unconditionally on every invocation, so without this stub every
@@ -746,201 +642,10 @@ EOF
     chmod +x "$path"
 }
 
-# Writes a fake `gh` at $1 for the artifact-fetch tests (Epic #4990 Phase 3,
-# #5020). Understands exactly the invocations loom-daemon-update.sh's
-# fetch_resolve_latest() / fetch_and_verify_artifact() make:
-#   gh release view --json tagName  -R <slug> --jq '.tagName'         -> $2
-#   gh release view --json assets   -R <slug> --jq '.assets[].name'   -> `ls $3`
-#   gh release download <tag> -R <slug> -p <name> [-p <name> ...] -D <dir> --clobber
-#       -> copies each matching file from $3 into <dir>; exits 1 if NONE of
-#          the -p patterns matched anything under $3 (mirrors real gh's
-#          "no assets match" failure for a required download).
-write_fake_gh() {
-    local path="$1" tag="$2" assets_dir="$3"
-    cat > "$path" <<FAKEGH
-#!/usr/bin/env bash
-ASSETS_DIR="$assets_dir"
-TAG_VAL="$tag"
-FAKEGH
-    cat >> "$path" <<'FAKEGH'
-if [[ "${1:-}" == "release" && "${2:-}" == "view" ]]; then
-    shift 2
-    fields=""
-    while [[ $# -gt 0 ]]; do
-        case "$1" in
-            --json) fields="$2"; shift 2 ;;
-            *) shift ;;
-        esac
-    done
-    case "$fields" in
-        tagName) echo "$TAG_VAL"; exit 0 ;;
-        assets)  ls "$ASSETS_DIR" 2>/dev/null; exit 0 ;;
-        *) exit 1 ;;
-    esac
-fi
-if [[ "${1:-}" == "release" && "${2:-}" == "download" ]]; then
-    shift 2
-    shift # drop the <tag> positional arg
-    dest="."
-    patterns=()
-    while [[ $# -gt 0 ]]; do
-        case "$1" in
-            -p) patterns+=("$2"); shift 2 ;;
-            -D) dest="$2"; shift 2 ;;
-            -R) shift 2 ;;
-            --clobber) shift ;;
-            *) shift ;;
-        esac
-    done
-    mkdir -p "$dest"
-    copied=0
-    for pat in "${patterns[@]}"; do
-        for f in "$ASSETS_DIR"/$pat; do
-            [[ -e "$f" ]] || continue
-            cp "$f" "$dest/"
-            copied=1
-        done
-    done
-    [[ "$copied" -eq 1 ]] && exit 0 || exit 1
-fi
-echo "fake gh: unsupported invocation: $*" >&2
-exit 1
-FAKEGH
-    chmod +x "$path"
-}
 
-# Writes a fake "release artifact" binary at $1 reporting version $2 / commit
-# $3 on --version, otherwise behaving like write_fake_daemon (rejects unknown
-# subcommands, loops forever on a normal run) — standing in for a downloaded
-# `loom-daemon-<target>` asset. A parameterized-version sibling of
-# write_fake_daemon (which hardcodes 0.15.0), needed so a fetched artifact can
-# report a version NEWER than the installed daemon's.
-write_fake_artifact_daemon() {
-    local path="$1" version="$2" commit="$3"
-    cat > "$path" <<EOF
-#!/usr/bin/env bash
-if [[ "\${1:-}" == "--version" ]]; then
-    echo "loom-daemon ${version} (commit ${commit}, built 2026-08-03T00:00:00Z)"
-    exit 0
-fi
-if [[ "\${1:-}" == "calibrate" ]]; then
-    exit 1
-fi
-if [[ -n "\${1:-}" && "\${1:-}" != -* ]]; then
-    echo "fake loom-daemon: unsupported subcommand: \$*" >&2
-    exit 1
-fi
-while true; do sleep 1; done
-EOF
-    chmod +x "$path"
-}
 
-# sha256_of <path> — portable checksum in `.sha256`-file format
-# (`<hex>  <basename>`), matching the release workflow's own
-# `shasum -a 256`/`sha256sum` output.
-sha256_of() {
-    local path="$1" base
-    base="$(basename "$path")"
-    if command -v shasum >/dev/null 2>&1; then
-        (cd "$(dirname "$path")" && shasum -a 256 "$base")
-    else
-        (cd "$(dirname "$path")" && sha256sum "$base")
-    fi
-}
 
-# Writes a fake `gh` at $1 whose every `release view` fails — standing in for
-# the "GitHub API unreachable / rate-limited / unauthenticated" case that must
-# SOFTLY fall back to the local source build (AC4), never hard-fail.
-write_fake_gh_unreachable() {
-    local path="$1"
-    cat > "$path" <<'FAKEGH'
-#!/usr/bin/env bash
-echo "gh: failed to fetch release: dial tcp: lookup api.github.com: no such host" >&2
-exit 1
-FAKEGH
-    chmod +x "$path"
-}
 
-# Writes a fake `codesign` at $1 emulating one of three macOS states, so the
-# darwin signature branch of verify_artifact_signature() is testable on ANY
-# host (including a Linux CI runner, which has no codesign at all):
-#   unsigned    -- `-dv` reports "code object is not signed at all" (expected
-#                  for a release built with no Developer ID secrets: soft-skip)
-#   signed-ok   -- `-dv` reports an Authority, `--verify` succeeds
-#   signed-bad  -- `-dv` reports an Authority, `--verify` FAILS (tamper
-#                  evidence: must abort, NOT be confused with "unsigned")
-write_fake_codesign() {
-    local path="$1" mode="$2"
-    cat > "$path" <<FAKECS
-#!/usr/bin/env bash
-MODE="$mode"
-FAKECS
-    cat >> "$path" <<'FAKECS'
-target="${!#}"
-if [[ "${1:-}" == "-dv" || "${1:-}" == "-dvvv" ]]; then
-    if [[ "$MODE" == "unsigned" ]]; then
-        echo "$target: code object is not signed at all" >&2
-        exit 1
-    fi
-    {
-        echo "Executable=$target"
-        echo "Identifier=com.rjwalters.loom-daemon"
-        echo "Authority=Developer ID Application: Test Authority (TESTTEAM)"
-    } >&2
-    exit 0
-fi
-if [[ "${1:-}" == "--verify" ]]; then
-    [[ "$MODE" == "signed-ok" ]] && exit 0
-    echo "$target: invalid signature (code or signature have been modified)" >&2
-    exit 1
-fi
-exit 0
-FAKECS
-    chmod +x "$path"
-}
-
-# Writes a fake `cosign` at $1 whose `verify-blob` exits $2 — the Linux
-# detached-signature branch of verify_artifact_signature().
-write_fake_cosign() {
-    local path="$1" rc="$2"
-    cat > "$path" <<FAKECOSIGN
-#!/usr/bin/env bash
-if [[ "\${1:-}" == "verify-blob" ]]; then
-    if [[ "$rc" -eq 0 ]]; then
-        echo "Verified OK" >&2
-        exit 0
-    fi
-    echo "Error: failed to verify signature" >&2
-    exit 1
-fi
-exit 0
-FAKECOSIGN
-    chmod +x "$path"
-}
-
-# Writes a fake `cosign` at $1 whose `verify-blob` exits $2 AND appends its full
-# argv to the log file at $3 (#5054). Recording the argv is the point: the
-# keyless cases below assert not just "verification ran" but that it ran with
-# the DERIVED signer identity + OIDC issuer, which is the whole security
-# property — a fake cosign that always exits 0 would otherwise "pass" even if
-# the script silently verified against nothing.
-write_fake_cosign_recording() {
-    local path="$1" rc="$2" argslog="$3"
-    cat > "$path" <<FAKECOSIGN
-#!/usr/bin/env bash
-printf '%s\n' "\$*" >> "$argslog"
-if [[ "\${1:-}" == "verify-blob" ]]; then
-    if [[ "$rc" -eq 0 ]]; then
-        echo "Verified OK" >&2
-        exit 0
-    fi
-    echo "Error: failed to verify signature" >&2
-    exit 1
-fi
-exit 0
-FAKECOSIGN
-    chmod +x "$path"
-}
 
 MINIMAL_PATH="/usr/bin:/bin:/usr/sbin:/sbin"
 
@@ -983,7 +688,20 @@ BASE_WORKDIR="$(mktemp -d)"
 #
 # Tests below that need a pinned value still set it on their own invocation
 # (e.g. `LOOM_DAEMON_BIN="$W1/..." bash ...`), which applies regardless.
-live_state_sandbox_init "$BASE_WORKDIR/live-state"
+#
+# The return code is CHECKED, never bare (#6420). init returns non-zero when it
+# could not `cd` into the sandbox root (#6386 — the cwd tier is then still aimed
+# at wherever this suite was launched from, i.e. potentially a LIVE checkout) or
+# when the ambient supervisor label is the real production one (#5501). This
+# suite runs under `set -uo pipefail` with NO `-e`, so a bare call would swallow
+# both and continue with a HALF-ARMED sandbox — the exact state the helper's own
+# failure path exists to prevent — while driving the real lifecycle scripts.
+if ! live_state_sandbox_init "$BASE_WORKDIR/live-state"; then
+    echo "FATAL: live-state sandbox init failed — refusing to run this suite against a half-armed sandbox (#6420)." >&2
+    echo "  See the reason above (lib/live-state-sandbox.sh): a writable sandbox root is required, and the ambient LOOM_LAUNCHD_LABEL / LOOM_WATCHDOG_LABEL must not be the real production identities." >&2
+    rm -rf "$BASE_WORKDIR"
+    exit 1
+fi
 
 # Supervisor identity, not a state path — the watchdog LaunchAgent must be
 # provisioned under the scratch label so a restart path can never touch the
@@ -1009,6 +727,16 @@ export LOOM_PROVISION_ALLOW_SCRIPT=1
 # any test regresses into one, this decoy dies and the final assertion fails.
 # Spawned OUTSIDE $BASE_WORKDIR's path so the trap's `pkill -f "$BASE_WORKDIR"`
 # does not sweep it; killed explicitly below.
+#
+# Deliberately NOT renamed per #5548's "test fixtures should not be named
+# `loom-daemon`" fix: the whole point of this fixture is to BE a process
+# named `loom-daemon` so the label-blind pgrep tier it decoys has something
+# to (not) match -- renaming it would defeat the test. It is tracked via
+# bg_proc_track/bg_proc_reap (EXIT/INT/TERM traps) like every other
+# background fixture in this suite, so it does not additionally widen
+# #5548's "orphaned past all cleanup" risk beyond what SIGKILL of the test
+# runner already allows for any tracked fixture (a hard, documented
+# bash/POSIX limit -- see lib/bg-proc-trap.sh).
 DECOY_DIR="$(mktemp -d)"
 cat > "$DECOY_DIR/loom-daemon" <<'EOF'
 #!/usr/bin/env bash
@@ -1157,7 +885,14 @@ else
     echo -e "${RED}✗${NC} fixture: old daemon process is alive before update"
 fi
 
-( cd "$W5" && PATH="$TEST_PATH" LOOM_DAEMON_BIN="$INSTALLED5" NEW_FAKE_BIN_SRC="$NEW_FAKE5" \
+# `LOOM_PID_FILE=''` (empty) is deliberate and load-bearing since #6386:
+# loom-daemon-update.sh (and the loom-daemon-stop.sh it delegates the restart's
+# stop half to) now resolve LOOM_PID_FILE AHEAD of the $PWD-derived state home,
+# and live_state_sandbox_init exports it suite-wide. A scenario whose fixture
+# pid file lives at "$W<N>/.loom/.daemon.pid" must therefore say it means the
+# $PWD tier. Safe: the paired `cd "$W<N>"` keeps that tier inside this suite's
+# own scratch workspace.
+( cd "$W5" && PATH="$TEST_PATH" LOOM_PID_FILE='' LOOM_DAEMON_BIN="$INSTALLED5" NEW_FAKE_BIN_SRC="$NEW_FAKE5" \
     env -u LOOM_WORK_FINDER -u LOOM_MAIN_HEALTH_GATE \
     bash "$UPDATE_SCRIPT" >"$W5/update.log" 2>&1 )
 update_rc=$?
@@ -1233,7 +968,7 @@ echo "$old_pid5b" > "$W5B/.loom/.daemon.pid"
 # Capture to a log rather than /dev/null (#4799): when this scenario wedged in
 # CI the tail of the suite output was undiagnostic precisely because its update
 # run wrote nowhere, so the failure surfaced as silence. Mirror scenario 5.
-( cd "$W5B" && PATH="$TEST_PATH" LOOM_DAEMON_BIN="$INSTALLED5B" NEW_FAKE_BIN_SRC="$NEW_FAKE5B" \
+( cd "$W5B" && PATH="$TEST_PATH" LOOM_PID_FILE='' LOOM_DAEMON_BIN="$INSTALLED5B" NEW_FAKE_BIN_SRC="$NEW_FAKE5B" \
     env -u LOOM_WORK_FINDER -u LOOM_MAIN_HEALTH_GATE \
     bash "$UPDATE_SCRIPT" >"$W5B/update.log" 2>&1 )
 update5b_rc=$?
@@ -1388,7 +1123,7 @@ bg_proc_track "$old_pid7"
 sleep 0.3
 echo "$old_pid7" > "$W7/.loom/.daemon.pid"
 
-( cd "$W7" && PATH="$TEST_PATH" LOOM_DAEMON_BIN="$INSTALLED7" NEW_FAKE_BIN_SRC="$NEW_FAKE7" \
+( cd "$W7" && PATH="$TEST_PATH" LOOM_PID_FILE='' LOOM_DAEMON_BIN="$INSTALLED7" NEW_FAKE_BIN_SRC="$NEW_FAKE7" \
     bash "$UPDATE_SCRIPT" --no-restart >/dev/null 2>&1 )
 
 TESTS_RUN=$((TESTS_RUN + 1))
@@ -1403,16 +1138,113 @@ kill "$old_pid7" 2>/dev/null || true
 
 # ============================================================
 # 8. --help documents --check / --dry-run / --force / --no-restart.
+#
+# Retried (#7201): a --help invocation recovers UPDATE_SCRIPT's own banner
+# from disk at runtime (the `_LOOM_HELP_BANNER` capture at the top of
+# loom-daemon-update.sh, printed by show_help()) rather than printing static
+# text baked in at parse time. Since #7794 that read happens exactly once, as
+# the script's first statement, instead of lazily inside show_help() behind a
+# double-read/five-retry stability check -- which narrows the window but does
+# not close it, so this retry is still load-bearing. A concurrent same-path
+# rewrite of that exact file (the shape `git checkout`/`cp` writes use --
+# open+truncate+write in place, not an atomic rename) landing while THIS bash
+# process is loading/executing it can
+# hand back an empty/torn read that has nothing to do with a real regression
+# in the script's own --help output -- observed as a one-off CI flake in
+# #7201, and reproduced locally by racing a background overwrite against a
+# --help call. A whole-invocation retry recovers deterministically once any
+# such external rewrite finishes (confirmed empirically across hundreds of
+# local runs against an injected single-shot race that fails ~95-100% of the
+# time unretried -- see scenario 8b below for the same race exercised
+# directly against an isolated fixture, many times over, with the same retry
+# budget). A GENUINE regression in the documented flags fails every retry
+# identically, since retrying changes nothing about what an unmodified
+# script prints.
 # ============================================================
-help_out=$(bash "$UPDATE_SCRIPT" --help 2>/dev/null)
+help_ok=false
+for _help_attempt in 1 2 3 4 5 6; do
+    help_out=$(bash "$UPDATE_SCRIPT" --help 2>/dev/null)
+    if echo "$help_out" | grep -q -- '--check' && echo "$help_out" | grep -q -- '--dry-run' \
+        && echo "$help_out" | grep -q -- '--no-restart'; then
+        help_ok=true
+        break
+    fi
+    sleep 0.15
+done
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$help_out" | grep -q -- '--check' && echo "$help_out" | grep -q -- '--dry-run' \
-    && echo "$help_out" | grep -q -- '--no-restart'; then
+if [[ "$help_ok" == "true" ]]; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --help documents --check / --dry-run / --no-restart"
 else
     TESTS_FAILED=$((TESTS_FAILED + 1))
     echo -e "${RED}✗${NC} --help documents --check / --dry-run / --no-restart"
+fi
+
+# ============================================================
+# 8b. --help survives a concurrent same-path rewrite of the script file
+#     itself, repeated many times (regression test for #7201's flake).
+#
+# Builds an ISOLATED fixture copy of loom-daemon-update.sh (+ its two
+# sourced lib deps) so this scenario can safely race a background writer
+# against it without ever touching the real UPDATE_SCRIPT -- corrupting the
+# repo's own checked-in script, even transiently, would be far worse than
+# the flake this regression test exists to catch.
+#
+# The race: launch a background `cat orig > fixture` (a same-path
+# truncate+rewrite, byte-identical content) in its own backgrounded
+# subshell -- empirically, that extra fork generation lines the writer's
+# truncate up against THIS bash invocation's own script load closely enough
+# to reproduce the #7201 failure shape ~95-100% of the time per attempt,
+# vs. effectively 0% with a bare `cmd &` (no subshell) whose write finishes
+# well before a freshly-forked bash even opens the script. Both the
+# single-early-read banner capture (`_LOOM_HELP_BANNER`, #7794 -- which
+# replaced #7201's lazy double-read + five-retry show_help()) and the
+# whole-invocation retry (scenario 8 above) get exercised here, together,
+# across many iterations -- proving the combination holds up, not just a
+# single lucky run.
+#
+# THIS SCENARIO IS THE GATE ON THAT REPLACEMENT. #7794 measured it directly:
+# unretried, the deliberate race fails 80/400 against the old lazy read and
+# 45/400 against the single early read; with the retry budget below it is
+# 0/200 racing iterations for the new form. Do not delete it -- it is the only
+# thing standing between a future "simplify the banner read" edit and #7201
+# coming back.
+# ============================================================
+W8B="$BASE_WORKDIR/w8b"
+mkdir -p "$W8B/cli" "$W8B/lib"
+cp "$UPDATE_SCRIPT" "$W8B/cli/loom-daemon-update.sh"
+cp "$CLI_DIR/../lib/daemon-env-harvest.sh" "$CLI_DIR/../lib/locate-daemon-bin.sh" "$W8B/lib/"
+FIXTURE8B="$W8B/cli/loom-daemon-update.sh"
+ORIG8B="$W8B/cli/.orig.sh"
+cp "$FIXTURE8B" "$ORIG8B"
+
+RACE_ITERS_8B=20
+race_fails_8b=0
+for _race8b in $(seq 1 "$RACE_ITERS_8B"); do
+    ( cat "$ORIG8B" > "$FIXTURE8B" ) &
+    writer_pid_8b=$!
+    bg_proc_track "$writer_pid_8b"
+    race_ok_8b=false
+    for _attempt8b in 1 2 3 4 5 6; do
+        race_out_8b=$(bash "$FIXTURE8B" --help 2>/dev/null)
+        if echo "$race_out_8b" | grep -q -- '--check' && echo "$race_out_8b" | grep -q -- '--dry-run' \
+            && echo "$race_out_8b" | grep -q -- '--no-restart'; then
+            race_ok_8b=true
+            break
+        fi
+        sleep 0.15
+    done
+    wait "$writer_pid_8b" 2>/dev/null
+    [[ "$race_ok_8b" == "true" ]] || race_fails_8b=$((race_fails_8b + 1))
+done
+
+TESTS_RUN=$((TESTS_RUN + 1))
+if [[ "$race_fails_8b" -eq 0 ]]; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} --help survives a concurrent same-path script rewrite across $RACE_ITERS_8B racing iterations (#7201)"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} --help survives a concurrent same-path script rewrite across $RACE_ITERS_8B racing iterations (#7201) -- $race_fails_8b/$RACE_ITERS_8B failed"
 fi
 
 # ============================================================
@@ -1808,7 +1640,7 @@ pid17=$!
 bg_proc_track "$pid17"
 sleep 0.3
 echo "$pid17" > "$W17/.loom/.daemon.pid"
-check_pid_out=$( cd "$W17" && PATH="$TEST_PATH" LOOM_DAEMON_LAUNCHD=0 \
+check_pid_out=$( cd "$W17" && PATH="$TEST_PATH" LOOM_PID_FILE='' LOOM_DAEMON_LAUNCHD=0 \
     LOOM_DAEMON_BIN="$INSTALLED17" bash "$UPDATE_SCRIPT" --check 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
 if echo "$check_pid_out" | grep -qi 'manager: PID-file'; then
@@ -3405,7 +3237,7 @@ fi
 # 57. ff-abort classification (#4951): local <default> has DIVERGED from
 #     origin/<default> in commit history, but the two are content-IDENTICAL
 #     (`git diff origin/main...main` is empty — e.g. a local resync commit
-#     and its own revert that net to no change, the robb-STUDIO 2026-08-02
+#     and its own revert that net to no change, the studio-host 2026-08-02
 #     incident shape). Default (no --auto-resolve-safe-abort): still hard
 #     aborts (exit 1, HEAD untouched) but now names the exact safe command
 #     instead of the old bare "resolve manually" message.
@@ -3740,919 +3572,18 @@ else
 fi
 
 # ============================================================
-# Artifact-fetch mode (Epic #4990 Phase 3, #5020): resolve the latest GitHub
-# Release, download + verify its artifact for this host's platform, and
-# provision it INSTEAD of a local `cargo build --release`. Every test below
-# pins LOOM_DAEMON_UPDATE_GH_REPO (bypassing git-remote parsing) and
-# LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" (a Linux target, so no
-# codesign/cosign tooling is needed to exercise the core resolve/download/
-# verify/provision flow — signature verification for that target is a
-# soft-skip whenever no `.sig` asset is published, exactly test A's fixture).
+# Artifact-fetch mode (Epic #4990 Phase 3, #5020) tests A-V live in the
+# sibling suite test-loom-daemon-update-fetch.sh, split out by #7810 PR 6a:
+# fetch_and_verify_artifact() now delegates to `loom-daemon release-fetch`
+# and so needs a BUILT binary, which this suite must not require -- it is one
+# of the five host-mutating suites run-ci-suites.sh guards via
+# LIVE_DAEMON_GUARDED_SUITES (#6386), and that membership is pinned as an
+# explicit literal in test-run-ci-suites-daemon-guard.sh. The fixtures both
+# suites need (write_fake_daemon, write_fake_codesign*, write_fake_cosign*)
+# moved into lib/daemon-update-fixtures.sh so both build identical ones from
+# a single definition, the same reasoning #7977 already applied to
+# write_fake_gh/write_fake_artifact_daemon/write_fake_cargo.
 # ============================================================
-
-# ------------------------------------------------------------
-# A. Successful artifact update: a newer release with a matching-platform
-#    artifact is fetched, checksum-verified, and provisioned — WITHOUT ever
-#    invoking `cargo build` (no fake cargo is placed on PATH for this test at
-#    all, so a fallback to the source-build path would fail loudly rather
-#    than silently succeed).
-# ------------------------------------------------------------
-WA="$BASE_WORKDIR/w-fetch-a"
-new_fixture "$WA"
-write_fake_daemon "$WA/installed-loom-daemon" "oldc0mm" "$WA/marker"
-
-WA_ASSETS="$WA/gh-assets"
-mkdir -p "$WA_ASSETS"
-WA_BIN_NAME="loom-daemon-x86_64-unknown-linux-gnu"
-write_fake_artifact_daemon "$WA_ASSETS/$WA_BIN_NAME" "0.16.0" "artifac1"
-sha256_of "$WA_ASSETS/$WA_BIN_NAME" > "$WA_ASSETS/$WA_BIN_NAME.sha256"
-
-WA_FAKEBIN="$WA/fakebin"
-mkdir -p "$WA_FAKEBIN"
-write_fake_gh "$WA_FAKEBIN/gh" "v0.16.0" "$WA_ASSETS"
-
-outA=$( cd "$WA" && PATH="$WA_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WA/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" \
-    bash "$UPDATE_SCRIPT" --no-restart 2>&1; echo "EXIT=$?" )
-rcA=$(echo "$outA" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "0" "$rcA" "artifact-fetch: successful update exits 0"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outA" | grep -q 'Rebuilding loom-daemon (cargo build'; then
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} artifact-fetch: successful update never invokes 'cargo build' (AC1)"
-    echo "  output: $outA"
-else
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} artifact-fetch: successful update never invokes 'cargo build' (AC1)"
-fi
-
-installedA_version="$("$WA/installed-loom-daemon" --version 2>/dev/null)"
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$installedA_version" | grep -q 'commit artifac1'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} artifact-fetch: the fetched+verified artifact was provisioned to the destination"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} artifact-fetch: the fetched+verified artifact was provisioned to the destination"
-    echo "  --version: $installedA_version"
-fi
-
-# ------------------------------------------------------------
-# B. Checksum-mismatch abort: a tampered/corrupted checksum aborts the WHOLE
-#    update (exit 1) and leaves the running (destination) daemon untouched —
-#    never a soft fallback to a source build (AC2).
-# ------------------------------------------------------------
-WB="$BASE_WORKDIR/w-fetch-b"
-new_fixture "$WB"
-write_fake_daemon "$WB/installed-loom-daemon" "oldc0mm" "$WB/marker"
-installedB_before="$("$WB/installed-loom-daemon" --version 2>/dev/null)"
-
-WB_ASSETS="$WB/gh-assets"
-mkdir -p "$WB_ASSETS"
-WB_BIN_NAME="loom-daemon-x86_64-unknown-linux-gnu"
-write_fake_artifact_daemon "$WB_ASSETS/$WB_BIN_NAME" "0.16.0" "artifac2"
-# Deliberately WRONG checksum (does not match the binary written above).
-echo "0000000000000000000000000000000000000000000000000000000000000000  ${WB_BIN_NAME}" > "$WB_ASSETS/$WB_BIN_NAME.sha256"
-
-WB_FAKEBIN="$WB/fakebin"
-mkdir -p "$WB_FAKEBIN"
-write_fake_gh "$WB_FAKEBIN/gh" "v0.16.0" "$WB_ASSETS"
-
-outB=$( cd "$WB" && PATH="$WB_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WB/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" \
-    bash "$UPDATE_SCRIPT" --no-restart 2>&1; echo "EXIT=$?" )
-rcB=$(echo "$outB" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "1" "$rcB" "artifact-fetch: checksum mismatch aborts the update (exit 1)"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outB" | grep -q 'Checksum verification FAILED'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} artifact-fetch: checksum-mismatch failure is reported explicitly"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} artifact-fetch: checksum-mismatch failure is reported explicitly"
-    echo "  output: $outB"
-fi
-
-installedB_after="$("$WB/installed-loom-daemon" --version 2>/dev/null)"
-assert_eq "$installedB_before" "$installedB_after" "artifact-fetch: checksum mismatch leaves the destination binary untouched"
-
-# ------------------------------------------------------------
-# C. Missing-artifact fallback: the resolved release has no artifact
-#    published for this host's platform (a real, but incomplete, release) —
-#    softly falls back to the existing local source-build path and still
-#    completes the update end-to-end (AC4).
-# ------------------------------------------------------------
-WC="$BASE_WORKDIR/w-fetch-c"
-new_fixture "$WC"
-HEADC="$(cd "$WC" && git rev-parse --short HEAD)"
-write_fake_daemon "$WC/installed-loom-daemon" "deadbee" "$WC/marker"
-NEW_FAKE_C="$WC/new-fake-daemon"
-write_fake_daemon "$NEW_FAKE_C" "$HEADC" "$WC/new-marker"
-
-# A release exists (newer than installed) but publishes NO assets at all for
-# this target — fetch_resolve_latest must reject it (no matching bin/sha256)
-# and the caller must fall back, not hard-fail.
-WC_ASSETS="$WC/gh-assets"
-mkdir -p "$WC_ASSETS"
-echo "unrelated-file" > "$WC_ASSETS/README.txt"
-
-WC_FAKEBIN="$WC/fakebin"
-mkdir -p "$WC_FAKEBIN"
-write_fake_gh "$WC_FAKEBIN/gh" "v0.20.0" "$WC_ASSETS"
-write_fake_cargo "$WC_FAKEBIN/cargo"
-
-outC=$( cd "$WC" && PATH="$WC_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WC/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" \
-    NEW_FAKE_BIN_SRC="$NEW_FAKE_C" \
-    bash "$UPDATE_SCRIPT" --no-restart 2>&1; echo "EXIT=$?" )
-rcC=$(echo "$outC" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "0" "$rcC" "artifact-fetch: missing-artifact fallback still completes the update (exit 0)"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outC" | grep -q 'Artifact-fetch:.*falling back to the local source-build path'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} artifact-fetch: a resolution failure is reported as a soft fallback"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} artifact-fetch: a resolution failure is reported as a soft fallback"
-    echo "  output: $outC"
-fi
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outC" | grep -q 'Rebuilding loom-daemon (cargo build'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} artifact-fetch: missing-artifact fallback actually rebuilds from source"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} artifact-fetch: missing-artifact fallback actually rebuilds from source"
-    echo "  output: $outC"
-fi
-
-installedC_version="$("$WC/installed-loom-daemon" --version 2>/dev/null)"
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$installedC_version" | grep -q "commit ${HEADC}"; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} artifact-fetch: the source-build fallback provisioned the freshly-built binary"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} artifact-fetch: the source-build fallback provisioned the freshly-built binary"
-    echo "  --version: $installedC_version"
-fi
-
-# ------------------------------------------------------------
-# D. --no-fetch disables artifact-fetch mode entirely, even when a matching
-#    release artifact IS available — restores the pre-#5020 always-build
-#    behavior.
-# ------------------------------------------------------------
-WD="$BASE_WORKDIR/w-fetch-d"
-new_fixture "$WD"
-HEADD="$(cd "$WD" && git rev-parse --short HEAD)"
-write_fake_daemon "$WD/installed-loom-daemon" "deadbee" "$WD/marker"
-NEW_FAKE_D="$WD/new-fake-daemon"
-write_fake_daemon "$NEW_FAKE_D" "$HEADD" "$WD/new-marker"
-
-WD_ASSETS="$WD/gh-assets"
-mkdir -p "$WD_ASSETS"
-WD_BIN_NAME="loom-daemon-x86_64-unknown-linux-gnu"
-write_fake_artifact_daemon "$WD_ASSETS/$WD_BIN_NAME" "0.16.0" "artifac4"
-sha256_of "$WD_ASSETS/$WD_BIN_NAME" > "$WD_ASSETS/$WD_BIN_NAME.sha256"
-
-WD_FAKEBIN="$WD/fakebin"
-mkdir -p "$WD_FAKEBIN"
-write_fake_gh "$WD_FAKEBIN/gh" "v0.16.0" "$WD_ASSETS"
-write_fake_cargo "$WD_FAKEBIN/cargo"
-
-outD=$( cd "$WD" && PATH="$WD_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WD/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" \
-    NEW_FAKE_BIN_SRC="$NEW_FAKE_D" \
-    bash "$UPDATE_SCRIPT" --no-restart --no-fetch 2>&1; echo "EXIT=$?" )
-rcD=$(echo "$outD" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "0" "$rcD" "--no-fetch: update still completes (exit 0)"
-
-installedD_version="$("$WD/installed-loom-daemon" --version 2>/dev/null)"
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$installedD_version" | grep -q "commit ${HEADD}"; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} --no-fetch: rebuilds from source even though a release artifact was available"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} --no-fetch: rebuilds from source even though a release artifact was available"
-    echo "  --version: $installedD_version"
-fi
-
-# ------------------------------------------------------------
-# E. --fetch (forced) hard-fails rather than silently falling back to a
-#    source build when no matching artifact resolves.
-# ------------------------------------------------------------
-WE="$BASE_WORKDIR/w-fetch-e"
-new_fixture "$WE"
-write_fake_daemon "$WE/installed-loom-daemon" "deadbee" "$WE/marker"
-
-WE_ASSETS="$WE/gh-assets"
-mkdir -p "$WE_ASSETS"
-echo "unrelated-file" > "$WE_ASSETS/README.txt"
-
-WE_FAKEBIN="$WE/fakebin"
-mkdir -p "$WE_FAKEBIN"
-write_fake_gh "$WE_FAKEBIN/gh" "v0.20.0" "$WE_ASSETS"
-write_fake_cargo "$WE_FAKEBIN/cargo"
-
-outE=$( cd "$WE" && PATH="$WE_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WE/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" \
-    bash "$UPDATE_SCRIPT" --no-restart --fetch 2>&1; echo "EXIT=$?" )
-rcE=$(echo "$outE" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "1" "$rcE" "--fetch: refuses to silently fall back to a source build (exit 1)"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outE" | grep -q 'Rebuilding loom-daemon (cargo build'; then
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} --fetch: never falls back to 'cargo build' on a forced-fetch failure"
-    echo "  output: $outE"
-else
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} --fetch: never falls back to 'cargo build' on a forced-fetch failure"
-fi
-
-# ------------------------------------------------------------
-# F. GitHub API unreachable/rate-limited during release resolution: every
-#    `gh release view` fails. This must be a SOFT fallback to the local
-#    source build (AC4) — never a hard failure of the whole update.
-# ------------------------------------------------------------
-WF="$BASE_WORKDIR/w-fetch-f"
-new_fixture "$WF"
-HEADF="$(cd "$WF" && git rev-parse --short HEAD)"
-write_fake_daemon "$WF/installed-loom-daemon" "deadbee" "$WF/marker"
-NEW_FAKE_F="$WF/new-fake-daemon"
-write_fake_daemon "$NEW_FAKE_F" "$HEADF" "$WF/new-marker"
-
-WF_FAKEBIN="$WF/fakebin"
-mkdir -p "$WF_FAKEBIN"
-write_fake_gh_unreachable "$WF_FAKEBIN/gh"
-write_fake_cargo "$WF_FAKEBIN/cargo"
-
-outF=$( cd "$WF" && PATH="$WF_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WF/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" \
-    NEW_FAKE_BIN_SRC="$NEW_FAKE_F" \
-    bash "$UPDATE_SCRIPT" --no-restart 2>&1; echo "EXIT=$?" )
-rcF=$(echo "$outF" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "0" "$rcF" "artifact-fetch: an unreachable GitHub API falls back to the source build (exit 0)"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outF" | grep -q 'Artifact-fetch:.*falling back to the local source-build path'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} artifact-fetch: an unreachable GitHub API is reported as a soft fallback"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} artifact-fetch: an unreachable GitHub API is reported as a soft fallback"
-    echo "  output: $outF"
-fi
-
-installedF_version="$("$WF/installed-loom-daemon" --version 2>/dev/null)"
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$installedF_version" | grep -q "commit ${HEADF}"; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} artifact-fetch: the API-failure fallback still provisioned a freshly-built binary"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} artifact-fetch: the API-failure fallback still provisioned a freshly-built binary"
-    echo "  --version: $installedF_version"
-fi
-
-# ------------------------------------------------------------
-# G. Already at the latest release: the resolved release's version equals the
-#    installed daemon's AND the local source commit matches too — the
-#    existing up-to-date no-op contract must hold (exit 0, no download, no
-#    build, destination untouched).
-# ------------------------------------------------------------
-WG="$BASE_WORKDIR/w-fetch-g"
-new_fixture "$WG"
-HEADG="$(cd "$WG" && git rev-parse --short HEAD)"
-write_fake_daemon "$WG/installed-loom-daemon" "$HEADG" "$WG/marker"
-
-WG_ASSETS="$WG/gh-assets"
-mkdir -p "$WG_ASSETS"
-WG_BIN_NAME="loom-daemon-x86_64-unknown-linux-gnu"
-write_fake_artifact_daemon "$WG_ASSETS/$WG_BIN_NAME" "0.15.0" "shouldnt"
-sha256_of "$WG_ASSETS/$WG_BIN_NAME" > "$WG_ASSETS/$WG_BIN_NAME.sha256"
-
-WG_FAKEBIN="$WG/fakebin"
-mkdir -p "$WG_FAKEBIN"
-# write_fake_daemon reports version 0.15.0, so tag v0.15.0 is NOT newer.
-write_fake_gh "$WG_FAKEBIN/gh" "v0.15.0" "$WG_ASSETS"
-
-outG=$( cd "$WG" && PATH="$WG_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WG/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" \
-    bash "$UPDATE_SCRIPT" --no-restart 2>&1; echo "EXIT=$?" )
-rcG=$(echo "$outG" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "0" "$rcG" "artifact-fetch: already at the latest release is a no-op (exit 0)"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outG" | grep -q 'is not newer than the installed version'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} artifact-fetch: an equal-version release is reported as nothing to fetch"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} artifact-fetch: an equal-version release is reported as nothing to fetch"
-    echo "  output: $outG"
-fi
-
-installedG_version="$("$WG/installed-loom-daemon" --version 2>/dev/null)"
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$installedG_version" | grep -q "commit ${HEADG}" && ! echo "$outG" | grep -q 'Downloading '; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} artifact-fetch: the up-to-date no-op downloads nothing and leaves the binary untouched"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} artifact-fetch: the up-to-date no-op downloads nothing and leaves the binary untouched"
-    echo "  output: $outG"
-fi
-
-# ------------------------------------------------------------
-# H. --check regression: reports the available RELEASE artifact (exit 3) and
-#    writes nothing.
-# ------------------------------------------------------------
-WH="$BASE_WORKDIR/w-fetch-h"
-new_fixture "$WH"
-write_fake_daemon "$WH/installed-loom-daemon" "oldc0mm" "$WH/marker"
-installedH_before="$("$WH/installed-loom-daemon" --version 2>/dev/null)"
-
-WH_ASSETS="$WH/gh-assets"
-mkdir -p "$WH_ASSETS"
-WH_BIN_NAME="loom-daemon-x86_64-unknown-linux-gnu"
-write_fake_artifact_daemon "$WH_ASSETS/$WH_BIN_NAME" "0.16.0" "artifac8"
-sha256_of "$WH_ASSETS/$WH_BIN_NAME" > "$WH_ASSETS/$WH_BIN_NAME.sha256"
-
-WH_FAKEBIN="$WH/fakebin"
-mkdir -p "$WH_FAKEBIN"
-write_fake_gh "$WH_FAKEBIN/gh" "v0.16.0" "$WH_ASSETS"
-
-outH=$( cd "$WH" && PATH="$WH_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WH/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" \
-    bash "$UPDATE_SCRIPT" --check 2>&1; echo "EXIT=$?" )
-rcH=$(echo "$outH" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "3" "$rcH" "--check: an available release artifact still reports 'update available' (exit 3)"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outH" | grep -q 'Update available via release artifact v0.16.0'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} --check: names the release artifact it would fetch"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} --check: names the release artifact it would fetch"
-    echo "  output: $outH"
-fi
-
-installedH_after="$("$WH/installed-loom-daemon" --version 2>/dev/null)"
-assert_eq "$installedH_before" "$installedH_after" "--check: writes nothing even when an artifact is available"
-
-# ------------------------------------------------------------
-# I. --dry-run regression: describes the fetch it WOULD perform, never runs
-#    cargo, and leaves the destination untouched.
-# ------------------------------------------------------------
-WI="$BASE_WORKDIR/w-fetch-i"
-new_fixture "$WI"
-write_fake_daemon "$WI/installed-loom-daemon" "oldc0mm" "$WI/marker"
-installedI_before="$("$WI/installed-loom-daemon" --version 2>/dev/null)"
-
-WI_ASSETS="$WI/gh-assets"
-mkdir -p "$WI_ASSETS"
-WI_BIN_NAME="loom-daemon-x86_64-unknown-linux-gnu"
-write_fake_artifact_daemon "$WI_ASSETS/$WI_BIN_NAME" "0.16.0" "artifac9"
-sha256_of "$WI_ASSETS/$WI_BIN_NAME" > "$WI_ASSETS/$WI_BIN_NAME.sha256"
-
-WI_FAKEBIN="$WI/fakebin"
-mkdir -p "$WI_FAKEBIN"
-write_fake_gh "$WI_FAKEBIN/gh" "v0.16.0" "$WI_ASSETS"
-
-outI=$( cd "$WI" && PATH="$WI_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WI/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" \
-    bash "$UPDATE_SCRIPT" --dry-run 2>&1; echo "EXIT=$?" )
-rcI=$(echo "$outI" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "0" "$rcI" "--dry-run: exits 0 with an artifact available"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outI" | grep -q '\[dry-run\] Would fetch + verify release artifact v0.16.0' \
-    && ! echo "$outI" | grep -q '\[dry-run\] Would run: (cd .* cargo build'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} --dry-run: describes the artifact fetch instead of a cargo build"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} --dry-run: describes the artifact fetch instead of a cargo build"
-    echo "  output: $outI"
-fi
-
-installedI_after="$("$WI/installed-loom-daemon" --version 2>/dev/null)"
-assert_eq "$installedI_before" "$installedI_after" "--dry-run: leaves the destination binary untouched in artifact mode"
-
-# ------------------------------------------------------------
-# J. Linux detached signature PRESENT, cosign + a public key both resolvable,
-#    verification SUCCEEDS -> the update proceeds and says so (AC3).
-# ------------------------------------------------------------
-WJ="$BASE_WORKDIR/w-fetch-j"
-new_fixture "$WJ"
-write_fake_daemon "$WJ/installed-loom-daemon" "oldc0mm" "$WJ/marker"
-
-WJ_ASSETS="$WJ/gh-assets"
-mkdir -p "$WJ_ASSETS"
-WJ_BIN_NAME="loom-daemon-x86_64-unknown-linux-gnu"
-write_fake_artifact_daemon "$WJ_ASSETS/$WJ_BIN_NAME" "0.16.0" "sigokc0"
-sha256_of "$WJ_ASSETS/$WJ_BIN_NAME" > "$WJ_ASSETS/$WJ_BIN_NAME.sha256"
-echo "fake-detached-signature" > "$WJ_ASSETS/$WJ_BIN_NAME.sig"
-echo "-----BEGIN PUBLIC KEY-----fake-----END PUBLIC KEY-----" > "$WJ/cosign.pub"
-
-WJ_FAKEBIN="$WJ/fakebin"
-mkdir -p "$WJ_FAKEBIN"
-write_fake_gh "$WJ_FAKEBIN/gh" "v0.16.0" "$WJ_ASSETS"
-write_fake_cosign "$WJ_FAKEBIN/cosign" 0
-
-outJ=$( cd "$WJ" && PATH="$WJ_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WJ/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" \
-    LOOM_DAEMON_UPDATE_COSIGN_PUBKEY="$WJ/cosign.pub" \
-    bash "$UPDATE_SCRIPT" --no-restart 2>&1; echo "EXIT=$?" )
-rcJ=$(echo "$outJ" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "0" "$rcJ" "signature present + cosign verifies: update proceeds (exit 0)"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outJ" | grep -q 'cosign signature verification passed'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} signature present: cosign verification actually ran and passed"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} signature present: cosign verification actually ran and passed"
-    echo "  output: $outJ"
-fi
-
-installedJ_version="$("$WJ/installed-loom-daemon" --version 2>/dev/null)"
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$installedJ_version" | grep -q 'commit sigokc0'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} signature present + verified: the artifact was provisioned"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} signature present + verified: the artifact was provisioned"
-    echo "  --version: $installedJ_version"
-fi
-
-# ------------------------------------------------------------
-# K. Linux detached signature PRESENT but cosign verification FAILS -> abort
-#    (exit 1), destination untouched. A present-but-invalid signature is
-#    tamper evidence, never a soft skip.
-# ------------------------------------------------------------
-WK="$BASE_WORKDIR/w-fetch-k"
-new_fixture "$WK"
-write_fake_daemon "$WK/installed-loom-daemon" "oldc0mm" "$WK/marker"
-installedK_before="$("$WK/installed-loom-daemon" --version 2>/dev/null)"
-
-WK_ASSETS="$WK/gh-assets"
-mkdir -p "$WK_ASSETS"
-WK_BIN_NAME="loom-daemon-x86_64-unknown-linux-gnu"
-write_fake_artifact_daemon "$WK_ASSETS/$WK_BIN_NAME" "0.16.0" "sigbadc"
-sha256_of "$WK_ASSETS/$WK_BIN_NAME" > "$WK_ASSETS/$WK_BIN_NAME.sha256"
-echo "tampered-detached-signature" > "$WK_ASSETS/$WK_BIN_NAME.sig"
-echo "-----BEGIN PUBLIC KEY-----fake-----END PUBLIC KEY-----" > "$WK/cosign.pub"
-
-WK_FAKEBIN="$WK/fakebin"
-mkdir -p "$WK_FAKEBIN"
-write_fake_gh "$WK_FAKEBIN/gh" "v0.16.0" "$WK_ASSETS"
-write_fake_cosign "$WK_FAKEBIN/cosign" 1
-write_fake_cargo "$WK_FAKEBIN/cargo"
-
-outK=$( cd "$WK" && PATH="$WK_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WK/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" \
-    LOOM_DAEMON_UPDATE_COSIGN_PUBKEY="$WK/cosign.pub" \
-    bash "$UPDATE_SCRIPT" --no-restart 2>&1; echo "EXIT=$?" )
-rcK=$(echo "$outK" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "1" "$rcK" "signature present but INVALID: aborts the update (exit 1)"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outK" | grep -q 'cosign signature verification FAILED' \
-    && ! echo "$outK" | grep -q 'Rebuilding loom-daemon (cargo build'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} signature present but INVALID: never degrades to a source-build fallback"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} signature present but INVALID: never degrades to a source-build fallback"
-    echo "  output: $outK"
-fi
-
-installedK_after="$("$WK/installed-loom-daemon" --version 2>/dev/null)"
-assert_eq "$installedK_before" "$installedK_after" "signature-verification failure leaves the destination binary untouched"
-
-# ------------------------------------------------------------
-# L. Linux detached signature PRESENT but no cosign public key is resolvable
-#    -> LOUD SKIP, update still proceeds (AC3: an unverifiable-but-optional
-#    signature never blocks; the checksum already passed).
-# ------------------------------------------------------------
-WL="$BASE_WORKDIR/w-fetch-l"
-new_fixture "$WL"
-write_fake_daemon "$WL/installed-loom-daemon" "oldc0mm" "$WL/marker"
-
-WL_ASSETS="$WL/gh-assets"
-mkdir -p "$WL_ASSETS"
-WL_BIN_NAME="loom-daemon-x86_64-unknown-linux-gnu"
-write_fake_artifact_daemon "$WL_ASSETS/$WL_BIN_NAME" "0.16.0" "nokeyc0"
-sha256_of "$WL_ASSETS/$WL_BIN_NAME" > "$WL_ASSETS/$WL_BIN_NAME.sha256"
-echo "fake-detached-signature" > "$WL_ASSETS/$WL_BIN_NAME.sig"
-
-WL_FAKEBIN="$WL/fakebin"
-mkdir -p "$WL_FAKEBIN"
-write_fake_gh "$WL_FAKEBIN/gh" "v0.16.0" "$WL_ASSETS"
-write_fake_cosign "$WL_FAKEBIN/cosign" 0
-
-outL=$( cd "$WL" && PATH="$WL_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WL/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" \
-    bash "$UPDATE_SCRIPT" --no-restart 2>&1; echo "EXIT=$?" )
-rcL=$(echo "$outL" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "0" "$rcL" "signature present, no public key: loud skip, update still proceeds (exit 0)"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outL" | grep -q 'no cosign public key is resolvable.*SKIPPING verification'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} signature present, no public key: the skip is LOUD, not silent"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} signature present, no public key: the skip is LOUD, not silent"
-    echo "  output: $outL"
-fi
-
-installedL_version="$("$WL/installed-loom-daemon" --version 2>/dev/null)"
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$installedL_version" | grep -q 'commit nokeyc0'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} signature present, no public key: the artifact was still provisioned"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} signature present, no public key: the artifact was still provisioned"
-    echo "  --version: $installedL_version"
-fi
-
-# ------------------------------------------------------------
-# M. macOS target, artifact UNSIGNED (no Developer ID secrets were configured
-#    for that release) -> soft-skip, update proceeds. This is the case that
-#    must NOT be confused with tamper evidence.
-# ------------------------------------------------------------
-WM="$BASE_WORKDIR/w-fetch-m"
-new_fixture "$WM"
-write_fake_daemon "$WM/installed-loom-daemon" "oldc0mm" "$WM/marker"
-
-WM_ASSETS="$WM/gh-assets"
-mkdir -p "$WM_ASSETS"
-WM_BIN_NAME="loom-daemon-aarch64-apple-darwin"
-write_fake_artifact_daemon "$WM_ASSETS/$WM_BIN_NAME" "0.16.0" "unsignd"
-sha256_of "$WM_ASSETS/$WM_BIN_NAME" > "$WM_ASSETS/$WM_BIN_NAME.sha256"
-
-WM_FAKEBIN="$WM/fakebin"
-mkdir -p "$WM_FAKEBIN"
-write_fake_gh "$WM_FAKEBIN/gh" "v0.16.0" "$WM_ASSETS"
-write_fake_codesign "$WM_FAKEBIN/codesign" unsigned
-
-outM=$( cd "$WM" && PATH="$WM_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WM/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="aarch64-apple-darwin" \
-    bash "$UPDATE_SCRIPT" --no-restart 2>&1; echo "EXIT=$?" )
-rcM=$(echo "$outM" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "0" "$rcM" "macOS artifact unsigned: soft-skip, update proceeds (exit 0)"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outM" | grep -q 'Downloaded artifact is unsigned'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} macOS artifact unsigned: reported as 'unsigned', not as a verification failure"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} macOS artifact unsigned: reported as 'unsigned', not as a verification failure"
-    echo "  output: $outM"
-fi
-
-installedM_version="$("$WM/installed-loom-daemon" --version 2>/dev/null)"
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$installedM_version" | grep -q 'commit unsignd'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} macOS artifact unsigned: still provisioned (absence never blocks)"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} macOS artifact unsigned: still provisioned (absence never blocks)"
-    echo "  --version: $installedM_version"
-fi
-
-# ------------------------------------------------------------
-# N. macOS target, artifact SIGNED and codesign verification succeeds ->
-#    proceeds, reporting the verification.
-# ------------------------------------------------------------
-WN="$BASE_WORKDIR/w-fetch-n"
-new_fixture "$WN"
-write_fake_daemon "$WN/installed-loom-daemon" "oldc0mm" "$WN/marker"
-
-WN_ASSETS="$WN/gh-assets"
-mkdir -p "$WN_ASSETS"
-WN_BIN_NAME="loom-daemon-aarch64-apple-darwin"
-write_fake_artifact_daemon "$WN_ASSETS/$WN_BIN_NAME" "0.16.0" "csignok"
-sha256_of "$WN_ASSETS/$WN_BIN_NAME" > "$WN_ASSETS/$WN_BIN_NAME.sha256"
-
-WN_FAKEBIN="$WN/fakebin"
-mkdir -p "$WN_FAKEBIN"
-write_fake_gh "$WN_FAKEBIN/gh" "v0.16.0" "$WN_ASSETS"
-write_fake_codesign "$WN_FAKEBIN/codesign" signed-ok
-
-outN=$( cd "$WN" && PATH="$WN_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WN/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="aarch64-apple-darwin" \
-    bash "$UPDATE_SCRIPT" --no-restart 2>&1; echo "EXIT=$?" )
-rcN=$(echo "$outN" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "0" "$rcN" "macOS artifact signed + verified: update proceeds (exit 0)"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outN" | grep -q 'macOS codesign verification passed'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} macOS artifact signed: codesign verification actually ran and passed"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} macOS artifact signed: codesign verification actually ran and passed"
-    echo "  output: $outN"
-fi
-
-# ------------------------------------------------------------
-# O. macOS target, artifact SIGNED but codesign verification FAILS -> abort
-#    (exit 1), destination untouched. Distinct from the "unsigned" case in M.
-# ------------------------------------------------------------
-WO="$BASE_WORKDIR/w-fetch-o"
-new_fixture "$WO"
-write_fake_daemon "$WO/installed-loom-daemon" "oldc0mm" "$WO/marker"
-installedO_before="$("$WO/installed-loom-daemon" --version 2>/dev/null)"
-
-WO_ASSETS="$WO/gh-assets"
-mkdir -p "$WO_ASSETS"
-WO_BIN_NAME="loom-daemon-aarch64-apple-darwin"
-write_fake_artifact_daemon "$WO_ASSETS/$WO_BIN_NAME" "0.16.0" "csignbad"
-sha256_of "$WO_ASSETS/$WO_BIN_NAME" > "$WO_ASSETS/$WO_BIN_NAME.sha256"
-
-WO_FAKEBIN="$WO/fakebin"
-mkdir -p "$WO_FAKEBIN"
-write_fake_gh "$WO_FAKEBIN/gh" "v0.16.0" "$WO_ASSETS"
-write_fake_codesign "$WO_FAKEBIN/codesign" signed-bad
-write_fake_cargo "$WO_FAKEBIN/cargo"
-
-outO=$( cd "$WO" && PATH="$WO_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WO/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="aarch64-apple-darwin" \
-    bash "$UPDATE_SCRIPT" --no-restart 2>&1; echo "EXIT=$?" )
-rcO=$(echo "$outO" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "1" "$rcO" "macOS artifact signed but INVALID: aborts the update (exit 1)"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outO" | grep -q 'codesign verification FAILED' \
-    && ! echo "$outO" | grep -q 'Rebuilding loom-daemon (cargo build'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} macOS signed-but-invalid: treated as tamper evidence, no source-build fallback"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} macOS signed-but-invalid: treated as tamper evidence, no source-build fallback"
-    echo "  output: $outO"
-fi
-
-installedO_after="$("$WO/installed-loom-daemon" --version 2>/dev/null)"
-assert_eq "$installedO_before" "$installedO_after" "macOS signed-but-invalid leaves the destination binary untouched"
-
-# ------------------------------------------------------------
-# P. KEYLESS verification is the DEFAULT with NO operator configuration
-#    (#5054, the core regression this issue exists for). The release publishes
-#    `.sig` + its `.pem` signing certificate; NO LOOM_DAEMON_UPDATE_COSIGN_*
-#    env var is set and NO cosign.pub is checked in. Cases J/K/L only ever
-#    exercised the LOOM_DAEMON_UPDATE_COSIGN_PUBKEY override, so this is the
-#    first coverage of the path a stock install actually takes.
-#
-#    Asserts the recorded cosign argv, not just the log line: the expected
-#    signer identity must be DERIVED from the release slug + tag, and the
-#    issuer must be GitHub Actions' OIDC provider. Without that, a verification
-#    that "ran" could still be trusting anything.
-# ------------------------------------------------------------
-WP="$BASE_WORKDIR/w-fetch-p"
-new_fixture "$WP"
-write_fake_daemon "$WP/installed-loom-daemon" "oldc0mm" "$WP/marker"
-
-WP_ASSETS="$WP/gh-assets"
-mkdir -p "$WP_ASSETS"
-WP_BIN_NAME="loom-daemon-x86_64-unknown-linux-gnu"
-write_fake_artifact_daemon "$WP_ASSETS/$WP_BIN_NAME" "0.16.0" "keyles0"
-sha256_of "$WP_ASSETS/$WP_BIN_NAME" > "$WP_ASSETS/$WP_BIN_NAME.sha256"
-echo "fake-detached-signature" > "$WP_ASSETS/$WP_BIN_NAME.sig"
-echo "-----BEGIN CERTIFICATE-----fake-----END CERTIFICATE-----" > "$WP_ASSETS/$WP_BIN_NAME.pem"
-
-WP_FAKEBIN="$WP/fakebin"
-mkdir -p "$WP_FAKEBIN"
-WP_COSIGN_ARGS="$WP/cosign-args.log"
-write_fake_gh "$WP_FAKEBIN/gh" "v0.16.0" "$WP_ASSETS"
-write_fake_cosign_recording "$WP_FAKEBIN/cosign" 0 "$WP_COSIGN_ARGS"
-
-outP=$( cd "$WP" && PATH="$WP_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WP/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" \
-    bash "$UPDATE_SCRIPT" --no-restart 2>&1; echo "EXIT=$?" )
-rcP=$(echo "$outP" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "0" "$rcP" "keyless (sig + cert, no env override): update proceeds (exit 0)"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outP" | grep -q 'cosign keyless signature verification passed' \
-    && ! echo "$outP" | grep -q 'SKIPPING verification'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} keyless: real verification runs on a STOCK install (no loud skip, no env override)"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} keyless: real verification runs on a STOCK install (no loud skip, no env override)"
-    echo "  output: $outP"
-fi
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if grep -qF -- '--certificate ' "$WP_COSIGN_ARGS" 2>/dev/null \
-    && grep -qF -- '--certificate-identity-regexp ^https://github\.com/test-owner/test-repo/\.github/workflows/[^@]+@refs/tags/v0\.16\.0$' "$WP_COSIGN_ARGS" \
-    && grep -qF -- '--certificate-oidc-issuer https://token.actions.githubusercontent.com' "$WP_COSIGN_ARGS" \
-    && ! grep -qF -- '--key ' "$WP_COSIGN_ARGS"; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} keyless: cosign was invoked with the DERIVED signer identity (repo slug + release tag) and the GitHub Actions issuer"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} keyless: cosign was invoked with the DERIVED signer identity (repo slug + release tag) and the GitHub Actions issuer"
-    echo "  cosign argv: $(cat "$WP_COSIGN_ARGS" 2>/dev/null)"
-fi
-
-installedP_version="$("$WP/installed-loom-daemon" --version 2>/dev/null)"
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$installedP_version" | grep -q 'commit keyles0'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} keyless verified: the artifact was provisioned"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} keyless verified: the artifact was provisioned"
-    echo "  --version: $installedP_version"
-fi
-
-# ------------------------------------------------------------
-# Q. Keyless verification FAILS (wrong signer / tampered blob) -> abort
-#    (exit 1), destination untouched, no source-build fallback. The keyless
-#    twin of case K: enforcement must be real in BOTH directions, or "default
-#    verification" is theatre.
-# ------------------------------------------------------------
-WQ="$BASE_WORKDIR/w-fetch-q"
-new_fixture "$WQ"
-write_fake_daemon "$WQ/installed-loom-daemon" "oldc0mm" "$WQ/marker"
-installedQ_before="$("$WQ/installed-loom-daemon" --version 2>/dev/null)"
-
-WQ_ASSETS="$WQ/gh-assets"
-mkdir -p "$WQ_ASSETS"
-WQ_BIN_NAME="loom-daemon-x86_64-unknown-linux-gnu"
-write_fake_artifact_daemon "$WQ_ASSETS/$WQ_BIN_NAME" "0.16.0" "keybad0"
-sha256_of "$WQ_ASSETS/$WQ_BIN_NAME" > "$WQ_ASSETS/$WQ_BIN_NAME.sha256"
-echo "tampered-detached-signature" > "$WQ_ASSETS/$WQ_BIN_NAME.sig"
-echo "-----BEGIN CERTIFICATE-----wrong-signer-----END CERTIFICATE-----" > "$WQ_ASSETS/$WQ_BIN_NAME.pem"
-
-WQ_FAKEBIN="$WQ/fakebin"
-mkdir -p "$WQ_FAKEBIN"
-write_fake_gh "$WQ_FAKEBIN/gh" "v0.16.0" "$WQ_ASSETS"
-write_fake_cosign "$WQ_FAKEBIN/cosign" 1
-write_fake_cargo "$WQ_FAKEBIN/cargo"
-
-outQ=$( cd "$WQ" && PATH="$WQ_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WQ/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" \
-    bash "$UPDATE_SCRIPT" --no-restart 2>&1; echo "EXIT=$?" )
-rcQ=$(echo "$outQ" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "1" "$rcQ" "keyless verification failure: aborts the update (exit 1)"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outQ" | grep -q 'cosign keyless signature verification FAILED' \
-    && ! echo "$outQ" | grep -q 'Rebuilding loom-daemon (cargo build'; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} keyless failure: treated as tamper evidence, never a source-build fallback"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} keyless failure: treated as tamper evidence, never a source-build fallback"
-    echo "  output: $outQ"
-fi
-
-installedQ_after="$("$WQ/installed-loom-daemon" --version 2>/dev/null)"
-assert_eq "$installedQ_before" "$installedQ_after" "keyless verification failure leaves the destination binary untouched"
-
-# ------------------------------------------------------------
-# R. KEY-mode default resolution with NO env override (#5054): a key-signed
-#    release (bare `.sig`, no `.pem`) plus a checked-in `.loom/cosign.pub`
-#    verifies for real -- proving resolve_cosign_pubkey()'s conventional-path
-#    branch works, which no prior test covered (J/K set the env override, L
-#    resolved nothing at all).
-# ------------------------------------------------------------
-WR="$BASE_WORKDIR/w-fetch-r"
-new_fixture "$WR"
-write_fake_daemon "$WR/installed-loom-daemon" "oldc0mm" "$WR/marker"
-
-WR_ASSETS="$WR/gh-assets"
-mkdir -p "$WR_ASSETS"
-WR_BIN_NAME="loom-daemon-x86_64-unknown-linux-gnu"
-write_fake_artifact_daemon "$WR_ASSETS/$WR_BIN_NAME" "0.16.0" "convkey"
-sha256_of "$WR_ASSETS/$WR_BIN_NAME" > "$WR_ASSETS/$WR_BIN_NAME.sha256"
-echo "fake-detached-signature" > "$WR_ASSETS/$WR_BIN_NAME.sig"
-echo "-----BEGIN PUBLIC KEY-----fake-----END PUBLIC KEY-----" > "$WR/.loom/cosign.pub"
-
-WR_FAKEBIN="$WR/fakebin"
-mkdir -p "$WR_FAKEBIN"
-WR_COSIGN_ARGS="$WR/cosign-args.log"
-write_fake_gh "$WR_FAKEBIN/gh" "v0.16.0" "$WR_ASSETS"
-write_fake_cosign_recording "$WR_FAKEBIN/cosign" 0 "$WR_COSIGN_ARGS"
-
-outR=$( cd "$WR" && PATH="$WR_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WR/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" \
-    bash "$UPDATE_SCRIPT" --no-restart 2>&1; echo "EXIT=$?" )
-rcR=$(echo "$outR" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "0" "$rcR" "key mode via checked-in .loom/cosign.pub (no env override): update proceeds (exit 0)"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outR" | grep -q 'cosign signature verification passed' \
-    && grep -qF -- "--key $WR/.loom/cosign.pub" "$WR_COSIGN_ARGS" 2>/dev/null; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} key mode: the checked-in .loom/cosign.pub resolves with no env override"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} key mode: the checked-in .loom/cosign.pub resolves with no env override"
-    echo "  output: $outR"
-    echo "  cosign argv: $(cat "$WR_COSIGN_ARGS" 2>/dev/null)"
-fi
-
-# ------------------------------------------------------------
-# S. The ARTIFACT's shape selects the mode, never local config (#5054): a
-#    keyless release (`.sig` + `.pem`) is verified keylessly EVEN WHEN a stale
-#    LOOM_DAEMON_UPDATE_COSIGN_PUBKEY is set. The inverse (letting a leftover
-#    key win) would turn every operator's stale env var into a fleet-wide false
-#    "tamper" abort.
-# ------------------------------------------------------------
-WS="$BASE_WORKDIR/w-fetch-s"
-new_fixture "$WS"
-write_fake_daemon "$WS/installed-loom-daemon" "oldc0mm" "$WS/marker"
-
-WS_ASSETS="$WS/gh-assets"
-mkdir -p "$WS_ASSETS"
-WS_BIN_NAME="loom-daemon-x86_64-unknown-linux-gnu"
-write_fake_artifact_daemon "$WS_ASSETS/$WS_BIN_NAME" "0.16.0" "shapes0"
-sha256_of "$WS_ASSETS/$WS_BIN_NAME" > "$WS_ASSETS/$WS_BIN_NAME.sha256"
-echo "fake-detached-signature" > "$WS_ASSETS/$WS_BIN_NAME.sig"
-echo "-----BEGIN CERTIFICATE-----fake-----END CERTIFICATE-----" > "$WS_ASSETS/$WS_BIN_NAME.pem"
-echo "-----BEGIN PUBLIC KEY-----stale-----END PUBLIC KEY-----" > "$WS/stale-cosign.pub"
-
-WS_FAKEBIN="$WS/fakebin"
-mkdir -p "$WS_FAKEBIN"
-WS_COSIGN_ARGS="$WS/cosign-args.log"
-write_fake_gh "$WS_FAKEBIN/gh" "v0.16.0" "$WS_ASSETS"
-write_fake_cosign_recording "$WS_FAKEBIN/cosign" 0 "$WS_COSIGN_ARGS"
-
-outS=$( cd "$WS" && PATH="$WS_FAKEBIN:$TEST_PATH" \
-    LOOM_DAEMON_BIN="$WS/installed-loom-daemon" \
-    LOOM_DAEMON_UPDATE_GH_REPO="test-owner/test-repo" \
-    LOOM_DAEMON_UPDATE_TARGET="x86_64-unknown-linux-gnu" \
-    LOOM_DAEMON_UPDATE_COSIGN_PUBKEY="$WS/stale-cosign.pub" \
-    bash "$UPDATE_SCRIPT" --no-restart 2>&1; echo "EXIT=$?" )
-rcS=$(echo "$outS" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
-assert_eq "0" "$rcS" "keyless release + stale pubkey env: still verifies keylessly (exit 0)"
-
-TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outS" | grep -q 'cosign keyless signature verification passed' \
-    && ! grep -qF -- '--key ' "$WS_COSIGN_ARGS" 2>/dev/null; then
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} artifact shape (not local config) selects the verification mode"
-else
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} artifact shape (not local config) selects the verification mode"
-    echo "  output: $outS"
-    echo "  cosign argv: $(cat "$WS_COSIGN_ARGS" 2>/dev/null)"
-fi
 
 # ============================================================
 # P1-P8. --prune-stale-entry-points (#5139): the stale-entry-point advisory
@@ -5078,6 +4009,20 @@ else
     echo "  output: $out70"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
+# Issue #6007: this fixture's fake daemon cannot answer `status --json`, which
+# stands in for a pre-#6007 daemon (one that really did clear the drain flag and
+# resume dispatch). The detector must stay conservative there and keep the
+# historical "re-run" advice rather than promising a convergence that binary does
+# not implement.
+if echo "$out70" | grep -q 'Re-run this script' && ! echo "$out70" | grep -q 'ROLL PENDING'; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} an unconfirmable pending roll falls back to the historical re-run advice (#6007)"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} an unconfirmable pending roll falls back to the historical re-run advice (#6007)"
+    echo "  output: $out70"
+fi
+TESTS_RUN=$((TESTS_RUN + 1))
 if ! grep -qi 'reset-failed' "$SD_LOG70" 2>/dev/null; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} fail-safe timeout NEVER triggers the reset-failed+start self-heal"
@@ -5196,6 +4141,454 @@ else
     echo -e "${RED}✗${NC} --dry-run --restart-now on systemd describes the immediate (non-drained) plan"
     echo "  output: $dry72_now"
 fi
+
+# ============================================================
+# 73. (#6008) The generic ff-only hard abort names the host-local config tier
+#     when the blocking dirty tracked file is a config tier. `.loom/config.json`
+#     is NOT in the managed set (it never was — that is why this case hard-aborts
+#     rather than being auto-discarded), so on a fleet host a deliberate
+#     host-specific edit there re-blocks every roll forever and the checkout
+#     drifts hundreds of commits behind (the loom-worker-2 incident). The abort
+#     must therefore point at .loom-local/local.json, not just "resolve
+#     manually" — and must NOT emit that hint when the blocker is some other file.
+# ============================================================
+W73="$BASE_WORKDIR/w73"
+BARE73="$BASE_WORKDIR/w73-origin.git"
+new_fixture_with_origin "$W73" "$BARE73"
+mkdir -p "$W73/.loom"
+printf '{"safehouse":{"enabled":true}}\n' > "$W73/.loom/config.json"
+( cd "$W73" && git add .loom/config.json && git -c user.email=test@test -c user.name=test commit -q -m "track legacy config" && git push -q origin HEAD:refs/heads/main )
+TMPCLONE73="$(mktemp -d)"
+git clone -q "$BARE73" "$TMPCLONE73"
+printf '{"safehouse":{"enabled":true,"room":"loom-fleet"}}\n' > "$TMPCLONE73/.loom/config.json"
+( cd "$TMPCLONE73" && git commit -aq -m "origin updates the tracked config" && git push -q origin HEAD:refs/heads/main )
+rm -rf "$TMPCLONE73"
+# The host's deliberate, host-specific edit: safehoused is not provisioned here.
+printf '{"safehouse":{"enabled":false}}\n' > "$W73/.loom/config.json"
+HEAD_BEFORE73="$(cd "$W73" && git rev-parse --short HEAD)"
+out73=$( cd "$W73" && PATH="$TEST_PATH" bash "$UPDATE_SCRIPT" --auto-resolve-safe-abort 2>&1 )
+rc73=$?
+assert_eq "1" "$rc73" "dirty tracked .loom/config.json still hard-aborts (never auto-discarded)"
+HEAD_AFTER73="$(cd "$W73" && git rev-parse --short HEAD)"
+assert_eq "$HEAD_BEFORE73" "$HEAD_AFTER73" "dirty config tier: HEAD untouched"
+TESTS_RUN=$((TESTS_RUN + 1))
+if grep -q '"enabled":false' "$W73/.loom/config.json"; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} the host's deliberate config edit is left untouched"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} the host's deliberate config edit is left untouched"
+fi
+TESTS_RUN=$((TESTS_RUN + 1))
+if echo "$out73" | grep -q '\.loom/config\.json' \
+    && echo "$out73" | grep -q '\.loom-local/local\.json'; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} hard abort names the dirty config tier and points at .loom-local/local.json (#6008)"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} hard abort names the dirty config tier and points at .loom-local/local.json (#6008)"
+    echo "  output: $out73"
+fi
+# The hint is targeted, not unconditional: test 61's blocker was an ordinary
+# unmanaged file, so that abort must stay free of the config-tier advice.
+TESTS_RUN=$((TESTS_RUN + 1))
+if ! echo "$out61" | grep -q '\.loom-local/local\.json'; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} config-tier hint is NOT emitted when the blocker is an ordinary unmanaged file"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} config-tier hint is NOT emitted when the blocker is an ordinary unmanaged file"
+    echo "  output: $out61"
+fi
+
+# ============================================================
+# 74. Staleness is compared against the SYSTEMD-managed binary, not the
+#     PATH-resolved one (#6009 AC1/AC2): the unit's ExecStart= points at a
+#     binary that is CURRENT (matches source HEAD) while a DIFFERENT,
+#     STALE `loom-daemon` sits earlier on PATH. --check must report
+#     "already up to date" (using the supervisor's binary), not "update
+#     available" (which the pre-#6009 PATH-only comparison would have
+#     reported) -- and must explicitly warn that the two paths diverge.
+# ============================================================
+W74="$BASE_WORKDIR/w74"
+new_fixture "$W74"
+HEAD74="$(cd "$W74" && git rev-parse --short HEAD)"
+PATHBIN_DIR74="$W74/path-bin"
+mkdir -p "$PATHBIN_DIR74"
+write_fake_daemon "$PATHBIN_DIR74/loom-daemon" "deadbee" "$W74/path-marker"
+SUP_DIR74="$W74/supervisor-install"
+mkdir -p "$SUP_DIR74"
+write_fake_daemon "$SUP_DIR74/loom-daemon" "$HEAD74" "$W74/sup-marker"
+SD_BIN74="$W74/systemd-bin"
+SD_LOG74="$W74/systemctl.log"
+write_fake_systemd_active_bin "$SD_BIN74" "$SD_LOG74" "4242"
+HOME74="$W74/home"
+UNIT74="loom-daemon-test-sd74.service"
+UNIT_PATH74="$HOME74/.config/systemd/user/${UNIT74}"
+write_fixture_unit_pre4267 "$UNIT_PATH74" "$SUP_DIR74/loom-daemon"
+check74_out=$( cd "$W74" && PATH="$SD_BIN74:$PATHBIN_DIR74:$TEST_PATH" HOME="$HOME74" \
+    LOOM_SYSTEMD_FORCE=1 LOOM_DAEMON_SYSTEMD=1 LOOM_SYSTEMD_UNIT="$UNIT74" \
+    bash "$UPDATE_SCRIPT" --check 2>&1 )
+rc74=$?
+assert_eq "0" "$rc74" "#6009: --check exits 0 (up to date) when the SUPERVISOR's binary matches source HEAD, even though a stale one sits on PATH"
+TESTS_RUN=$((TESTS_RUN + 1))
+if echo "$check74_out" | grep -qF "$SUP_DIR74/loom-daemon" && echo "$check74_out" | grep -qi 'already up to date'; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} #6009: 'Installed binary' line reports the systemd-managed binary, not the PATH one"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} #6009: 'Installed binary' line reports the systemd-managed binary, not the PATH one"
+    echo "  output: $check74_out"
+fi
+TESTS_RUN=$((TESTS_RUN + 1))
+if echo "$check74_out" | grep -qF "$PATHBIN_DIR74/loom-daemon" && echo "$check74_out" | grep -qF "$SUP_DIR74/loom-daemon" \
+    && echo "$check74_out" | grep -qi 'is NOT the binary systemd will actually launch'; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} #6009: divergence between the PATH-resolved and systemd-managed binaries is reported explicitly (AC2)"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} #6009: divergence between the PATH-resolved and systemd-managed binaries is reported explicitly (AC2)"
+    echo "  output: $check74_out"
+fi
+
+# ============================================================
+# 75. Mirror of test 74 in the OTHER direction (#6009 AC1/AC2, closes the
+#     "false update available" case from the issue body): the unit's
+#     ExecStart= binary is STALE while a CURRENT (matches source HEAD)
+#     `loom-daemon` sits on PATH. --check must still report "update
+#     available" (comparing against the supervisor's STALE binary, not the
+#     PATH-current one) and must warn about the divergence.
+# ============================================================
+W75="$BASE_WORKDIR/w75"
+new_fixture "$W75"
+HEAD75="$(cd "$W75" && git rev-parse --short HEAD)"
+PATHBIN_DIR75="$W75/path-bin"
+mkdir -p "$PATHBIN_DIR75"
+write_fake_daemon "$PATHBIN_DIR75/loom-daemon" "$HEAD75" "$W75/path-marker"
+SUP_DIR75="$W75/supervisor-install"
+mkdir -p "$SUP_DIR75"
+write_fake_daemon "$SUP_DIR75/loom-daemon" "deadbee" "$W75/sup-marker"
+SD_BIN75="$W75/systemd-bin"
+SD_LOG75="$W75/systemctl.log"
+write_fake_systemd_active_bin "$SD_BIN75" "$SD_LOG75" "4242"
+HOME75="$W75/home"
+UNIT75="loom-daemon-test-sd75.service"
+UNIT_PATH75="$HOME75/.config/systemd/user/${UNIT75}"
+write_fixture_unit_pre4267 "$UNIT_PATH75" "$SUP_DIR75/loom-daemon"
+check75_out=$( cd "$W75" && PATH="$SD_BIN75:$PATHBIN_DIR75:$TEST_PATH" HOME="$HOME75" \
+    LOOM_SYSTEMD_FORCE=1 LOOM_DAEMON_SYSTEMD=1 LOOM_SYSTEMD_UNIT="$UNIT75" \
+    bash "$UPDATE_SCRIPT" --check 2>&1 )
+rc75=$?
+assert_eq "3" "$rc75" "#6009: --check exits 3 (update available) when the SUPERVISOR's binary is stale, even though a current one sits on PATH"
+TESTS_RUN=$((TESTS_RUN + 1))
+if echo "$check75_out" | grep -qi 'already up to date'; then
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} #6009: never reports 'up to date' off the PATH-resolved binary when the supervisor's own binary is stale"
+    echo "  output: $check75_out"
+else
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} #6009: never reports 'up to date' off the PATH-resolved binary when the supervisor's own binary is stale"
+fi
+TESTS_RUN=$((TESTS_RUN + 1))
+if echo "$check75_out" | grep -qF "$PATHBIN_DIR75/loom-daemon" && echo "$check75_out" | grep -qF "$SUP_DIR75/loom-daemon" \
+    && echo "$check75_out" | grep -qi 'is NOT the binary systemd will actually launch'; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} #6009: divergence reported even when the PATH-resolved binary looks current"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} #6009: divergence reported even when the PATH-resolved binary looks current"
+    echo "  output: $check75_out"
+fi
+
+# ============================================================
+# 76. launchd mirror of test 74 (#6009 AC1/AC2): the plist's
+#     ProgramArguments[0] points at a binary that is CURRENT while a
+#     DIFFERENT, STALE `loom-daemon` sits on PATH. --check reports "already
+#     up to date" (using the launchd-managed binary) and warns about the
+#     divergence. Requires a real /usr/libexec/PlistBuddy (macOS-only,
+#     mirrors the plutil-gated scenarios 21-22 above).
+# ============================================================
+if ! command -v /usr/libexec/PlistBuddy >/dev/null 2>&1; then
+    echo -e "${YELLOW}⊘${NC} SKIP scenario 76 (launchd supervisor-vs-PATH divergence): /usr/libexec/PlistBuddy not available — resolve_supervisor_bin()'s launchd branch is a macOS-only production path"
+else
+W76="$BASE_WORKDIR/w76"
+new_fixture "$W76"
+HEAD76="$(cd "$W76" && git rev-parse --short HEAD)"
+PATHBIN_DIR76="$W76/path-bin"
+mkdir -p "$PATHBIN_DIR76"
+write_fake_daemon "$PATHBIN_DIR76/loom-daemon" "deadbee" "$W76/path-marker"
+SUP_DIR76="$W76/supervisor-install"
+mkdir -p "$SUP_DIR76"
+write_fake_daemon "$SUP_DIR76/loom-daemon" "$HEAD76" "$W76/sup-marker"
+LD_BIN76="$W76/launchd-bin"
+write_fake_launchd_loaded_bin "$LD_BIN76" "$W76/launchctl.log"
+HOME76="$W76/home"
+PLIST76="$HOME76/Library/LaunchAgents/${LOOM_LAUNCHD_LABEL}.plist"
+write_fixture_plist_pre4077 "$PLIST76" "$LOOM_LAUNCHD_LABEL" "$SUP_DIR76/loom-daemon" "$HOME76"
+check76_out=$( cd "$W76" && PATH="$LD_BIN76:$PATHBIN_DIR76:$TEST_PATH" HOME="$HOME76" \
+    LOOM_DAEMON_LAUNCHD=1 \
+    bash "$UPDATE_SCRIPT" --check 2>&1 )
+rc76=$?
+assert_eq "0" "$rc76" "#6009 (launchd): --check exits 0 (up to date) when the SUPERVISOR's binary matches source HEAD, even though a stale one sits on PATH"
+TESTS_RUN=$((TESTS_RUN + 1))
+if echo "$check76_out" | grep -qF "$SUP_DIR76/loom-daemon" && echo "$check76_out" | grep -qi 'already up to date'; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} #6009 (launchd): 'Installed binary' line reports the launchd-managed binary, not the PATH one"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} #6009 (launchd): 'Installed binary' line reports the launchd-managed binary, not the PATH one"
+    echo "  output: $check76_out"
+fi
+TESTS_RUN=$((TESTS_RUN + 1))
+if echo "$check76_out" | grep -qF "$PATHBIN_DIR76/loom-daemon" && echo "$check76_out" | grep -qF "$SUP_DIR76/loom-daemon" \
+    && echo "$check76_out" | grep -qi 'is NOT the binary launchd will actually launch'; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} #6009 (launchd): divergence between the PATH-resolved and launchd-managed binaries is reported explicitly (AC2)"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} #6009 (launchd): divergence between the PATH-resolved and launchd-managed binaries is reported explicitly (AC2)"
+    echo "  output: $check76_out"
+fi
+fi
+
+# ============================================================
+# 77. Post-provision verification also covers the SUPERVISOR's own path
+#     (#6009 AC3): after a normal rebuild+provision run, when the systemd
+#     unit's ExecStart= still points at a DIFFERENT path than the one just
+#     provisioned, the script explicitly warns that the supervisor was NOT
+#     updated and names --relaunch as the fix (rather than silently
+#     reporting success).
+# ============================================================
+W77="$BASE_WORKDIR/w77"
+new_fixture "$W77"
+HEAD77="$(cd "$W77" && git rev-parse --short HEAD)"
+NEW_FAKE77="$W77/new-fake-daemon"
+write_fake_daemon "$NEW_FAKE77" "$HEAD77" "$W77/new-marker"
+SUP_DIR77="$W77/other-supervisor-bin"
+mkdir -p "$SUP_DIR77"
+write_fake_daemon "$SUP_DIR77/loom-daemon" "aaaaaaa" "$W77/sup-marker"
+SD_BIN77="$W77/systemd-bin"
+SD_LOG77="$W77/systemctl.log"
+write_fake_systemd_active_bin "$SD_BIN77" "$SD_LOG77" "4242"
+HOME77="$W77/home"
+UNIT77="loom-daemon-test-sd77.service"
+UNIT_PATH77="$HOME77/.config/systemd/user/${UNIT77}"
+write_fixture_unit_pre4267 "$UNIT_PATH77" "$SUP_DIR77/loom-daemon"
+MACHINE_INSTALL77="$W77/machine-install"
+out77=$( cd "$W77" && PATH="$SD_BIN77:$TEST_PATH" HOME="$HOME77" \
+    LOOM_SYSTEMD_FORCE=1 LOOM_DAEMON_SYSTEMD=1 LOOM_SYSTEMD_UNIT="$UNIT77" \
+    LOOM_DAEMON_BIN_DIR="$MACHINE_INSTALL77" NEW_FAKE_BIN_SRC="$NEW_FAKE77" \
+    bash "$UPDATE_SCRIPT" --no-restart 2>&1 )
+rc77=$?
+assert_eq "0" "$rc77" "#6009: a run that provisions to a path the supervisor doesn't point at still exits 0 (advisory, not a hard failure)"
+TESTS_RUN=$((TESTS_RUN + 1))
+if [[ -x "$MACHINE_INSTALL77/loom-daemon" ]]; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} #6009: provisioning itself still succeeded at the machine-level destination"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} #6009: provisioning itself still succeeded at the machine-level destination"
+    echo "  output: $out77"
+fi
+TESTS_RUN=$((TESTS_RUN + 1))
+if echo "$out77" | grep -qF "$SUP_DIR77/loom-daemon" && echo "$out77" | grep -qF "$MACHINE_INSTALL77/loom-daemon" \
+    && echo "$out77" | grep -qi 'is NOT the one just provisioned' && echo "$out77" | grep -q -- '--relaunch'; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} #6009 AC3: post-provision verification warns the supervisor's config still points elsewhere and names --relaunch"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} #6009 AC3: post-provision verification warns the supervisor's config still points elsewhere and names --relaunch"
+    echo "  output: $out77"
+fi
+
+# ============================================================
+# 78. No FALSE divergence when the two paths are two spellings of the SAME
+#     file (#6009): the systemd unit's ExecStart= names a symlink that
+#     resolves to exactly the binary PATH resolution finds. The divergence
+#     advisory must stay silent (it is compared through _lde_realpath), and
+#     the staleness verdict is unchanged — this is the ordinary healthy
+#     `/usr/local/bin/loom-daemon -> ~/.local/bin/loom-daemon` install, not
+#     the stale-entry-point condition.
+# ============================================================
+W78="$BASE_WORKDIR/w78"
+new_fixture "$W78"
+HEAD78="$(cd "$W78" && git rev-parse --short HEAD)"
+PATHBIN_DIR78="$W78/path-bin"
+mkdir -p "$PATHBIN_DIR78"
+write_fake_daemon "$PATHBIN_DIR78/loom-daemon" "$HEAD78" "$W78/path-marker"
+SUP_DIR78="$W78/supervisor-link-dir"
+mkdir -p "$SUP_DIR78"
+ln -s "$PATHBIN_DIR78/loom-daemon" "$SUP_DIR78/loom-daemon"
+SD_BIN78="$W78/systemd-bin"
+SD_LOG78="$W78/systemctl.log"
+write_fake_systemd_active_bin "$SD_BIN78" "$SD_LOG78" "4242"
+HOME78="$W78/home"
+UNIT78="loom-daemon-test-sd78.service"
+UNIT_PATH78="$HOME78/.config/systemd/user/${UNIT78}"
+write_fixture_unit_pre4267 "$UNIT_PATH78" "$SUP_DIR78/loom-daemon"
+check78_out=$( cd "$W78" && PATH="$SD_BIN78:$PATHBIN_DIR78:$TEST_PATH" HOME="$HOME78" \
+    LOOM_SYSTEMD_FORCE=1 LOOM_DAEMON_SYSTEMD=1 LOOM_SYSTEMD_UNIT="$UNIT78" \
+    bash "$UPDATE_SCRIPT" --check 2>&1 )
+rc78=$?
+assert_eq "0" "$rc78" "#6009: --check exits 0 when the supervisor's ExecStart is a symlink to the PATH-resolved binary"
+TESTS_RUN=$((TESTS_RUN + 1))
+if echo "$check78_out" | grep -qi 'will actually launch'; then
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} #6009: no divergence warning when ExecStart is just a symlink to the PATH-resolved binary"
+    echo "  output: $check78_out"
+else
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} #6009: no divergence warning when ExecStart is just a symlink to the PATH-resolved binary"
+fi
+
+# ============================================================
+# 79. Drain timeout against a #6007+ daemon that RETAINED the roll (Issue
+#     #6007): same fail-safe shape as test 70 (exit 8, pre-update pid still
+#     running, nothing cancelled), but the daemon still reports
+#     `drain.draining: true` past the deadline — it kept dispatch paused and
+#     re-armed the restart instead of handing the admission window back to the
+#     work finder. The exit-8 advice must therefore say "nothing to re-run" and
+#     must NOT tell the operator to re-run the script, which on a busy host is
+#     exactly what reproduced the livelock this issue fixes.
+# ============================================================
+W79="$BASE_WORKDIR/w79"
+new_fixture "$W79"
+HEAD79="$(cd "$W79" && git rev-parse --short HEAD)"
+INSTALLED79="$W79/installed/loom-daemon"
+mkdir -p "$W79/installed"
+RESTART_MARKER79="$W79/restart-invoked"
+# The pending-roll status body the still-running daemon reports. Shaped exactly
+# like `loom-daemon status --json`'s drain block (draining first, then deadline,
+# then the note the supervisor recorded on the refusal).
+PENDING_JSON79='{"drain": {"draining": true, "deadline": "2026-08-11T18:00:00Z", "note": "ROLL PENDING (retry 1)"}}'
+write_fake_daemon_restart_argv "$INSTALLED79" "deadbee" "$RESTART_MARKER79" 0 "$PENDING_JSON79"
+NEW_FAKE79="$W79/new-fake-daemon"
+write_fake_daemon_restart_argv "$NEW_FAKE79" "$HEAD79" "$RESTART_MARKER79" 0 "$PENDING_JSON79"
+sleep 60 >/dev/null 2>&1 &
+STILL_RUNNING_PID79=$!
+bg_proc_track "$STILL_RUNNING_PID79"
+SD_BIN79="$W79/systemd-bin"
+SD_LOG79="$W79/systemctl.log"
+SD_STATE79="$W79/systemd-pid-state"
+write_fake_systemd_pid_bin "$SD_BIN79" "$SD_LOG79" "$SD_STATE79" "${STILL_RUNNING_PID79}:active:success"
+
+out79=$( cd "$W79" && PATH="$SD_BIN79:$TEST_PATH" LOOM_SYSTEMD_FORCE=1 LOOM_DAEMON_SYSTEMD=1 \
+    LOOM_SYSTEMD_UNIT="loom-daemon-test-sd79.service" \
+    LOOM_DAEMON_BIN="$INSTALLED79" NEW_FAKE_BIN_SRC="$NEW_FAKE79" \
+    LOOM_DAEMON_DRAIN_POLL_SECS=1 LOOM_DAEMON_RESTART_POLL_INTERVAL=0.2 \
+    bash "$UPDATE_SCRIPT" --drain 2>&1 )
+rc79=$?
+assert_eq "8" "$rc79" "a retained (pending) roll still exits 8 — the fail-safe is unchanged (#6007)"
+TESTS_RUN=$((TESTS_RUN + 1))
+if echo "$out79" | grep -q 'ROLL PENDING' && echo "$out79" | grep -q 'Nothing to re-run' \
+    && ! echo "$out79" | grep -q 'Re-run this script'; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} a retained roll reports 'nothing to re-run' instead of the advice that reproduces the livelock (#6007)"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} a retained roll reports 'nothing to re-run' instead of the advice that reproduces the livelock (#6007)"
+    echo "  output: $out79"
+fi
+TESTS_RUN=$((TESTS_RUN + 1))
+if echo "$out79" | grep -q -- '--abort-drain' && echo "$out79" | grep -q -- '--force-after-timeout'; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} the pending-roll message names both operator escape hatches (#6007)"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} the pending-roll message names both operator escape hatches (#6007)"
+    echo "  output: $out79"
+fi
+TESTS_RUN=$((TESTS_RUN + 1))
+# The whole point of the fail-safe: a pending roll must not have touched the
+# in-flight work or the running (pre-update) process.
+if kill -0 "$STILL_RUNNING_PID79" 2>/dev/null && ! grep -qi 'reset-failed' "$SD_LOG79" 2>/dev/null; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} a pending roll never forces the sweep-cancelling restart the fail-safe prevents"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} a pending roll never forces the sweep-cancelling restart the fail-safe prevents"
+    echo "  systemctl.log: $(cat "$SD_LOG79" 2>/dev/null)"
+fi
+kill "$STILL_RUNNING_PID79" 2>/dev/null || true
+
+# ============================================================
+# 80. Regression test (#6160): the rebuild is found and PROVISIONED even
+#     when cargo's own build output directory is redirected via
+#     CARGO_TARGET_DIR to a directory OUTSIDE the source tree entirely.
+#     The old logic probed only two hardcoded paths
+#     (<repo>/loom-daemon/target/release, <repo>/target/release) and
+#     hard-failed on this exact host shape even though the build had
+#     fully succeeded (observed for real on a host with
+#     ~/.cargo/config.toml's build.target-dir redirected after an ENOSPC
+#     incident) -- the script now resolves the artifact from cargo's own
+#     build output instead of guessing.
+# ============================================================
+W80="$BASE_WORKDIR/w80"
+new_fixture "$W80"
+HEAD80="$(cd "$W80" && git rev-parse --short HEAD)"
+INSTALLED80="$W80/installed/loom-daemon"
+mkdir -p "$W80/installed"
+write_fake_daemon "$INSTALLED80" "deadbee" "$W80/old-marker"
+NEW_FAKE80="$W80/new-fake-daemon"
+write_fake_daemon "$NEW_FAKE80" "$HEAD80" "$W80/new-marker"
+REDIRECTED_TARGET80="$BASE_WORKDIR/w80-redirected-cargo-target"
+mkdir -p "$REDIRECTED_TARGET80"
+# No .loom/.daemon.pid -> WAS_RUNNING resolves false (mirrors test 6's
+# shape): this scenario is purely about locating + provisioning the
+# artifact, not the restart path.
+
+out80=$( cd "$W80" && PATH="$TEST_PATH" LOOM_DAEMON_BIN="$INSTALLED80" NEW_FAKE_BIN_SRC="$NEW_FAKE80" \
+    CARGO_TARGET_DIR="$REDIRECTED_TARGET80" \
+    bash "$UPDATE_SCRIPT" 2>&1 )
+rc80=$?
+assert_eq "0" "$rc80" "a CARGO_TARGET_DIR redirect outside the source tree still succeeds (#6160)"
+
+TESTS_RUN=$((TESTS_RUN + 1))
+if [[ -x "$REDIRECTED_TARGET80/release/loom-daemon" ]]; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} fixture sanity: the build actually landed in the CARGO_TARGET_DIR redirect (#6160)"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} fixture sanity: the build actually landed in the CARGO_TARGET_DIR redirect (#6160)"
+fi
+
+TESTS_RUN=$((TESTS_RUN + 1))
+if [[ ! -e "$W80/loom-daemon/target/release/loom-daemon" ]]; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} nothing was written to the old hardcoded target/release path (proves resolution followed the redirect, not a coincidental match, #6160)"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} nothing was written to the old hardcoded target/release path (proves resolution followed the redirect, not a coincidental match, #6160)"
+fi
+
+TESTS_RUN=$((TESTS_RUN + 1))
+installed_commit80="$("$INSTALLED80" --version 2>/dev/null | grep -oE 'commit [0-9a-f]+' | awk '{print $2}')"
+if [[ "$installed_commit80" == "$HEAD80" ]]; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} the redirected-target build was actually PROVISIONED to LOOM_DAEMON_BIN, not silently dropped (#6160)"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} the redirected-target build was actually PROVISIONED to LOOM_DAEMON_BIN, not silently dropped (#6160)"
+    echo "  installed commit: ${installed_commit80:-<none>}, expected: $HEAD80"
+    echo "  output: $out80"
+fi
+
+# ============================================================
+# --resolve-json (#7609) lives in the sibling suite
+# test-loom-daemon-update-resolve-json.sh, split out by #7810 PR 5: as of
+# #7977 that mode delegates to `loom-daemon release-resolve` and so needs a
+# BUILT binary, which this suite must not require — it is one of the five
+# host-mutating suites run-ci-suites.sh guards via LIVE_DAEMON_GUARDED_SUITES
+# (#6386), and that membership is pinned as an explicit literal in
+# test-run-ci-suites-daemon-guard.sh.
+#
+# Test 84 ((#7609) "a forced --fetch is NOT blocked by local-checkout state")
+# moved for the identical reason, to the fetch sibling
+# test-loom-daemon-update-fetch.sh (scenario W): as of #8028
+# fetch_and_verify_artifact() also delegates to `loom-daemon release-fetch`,
+# so it too needs a BUILT binary this suite must not require.
+# ============================================================
+
 
 # ============================================================
 # 25. Launchd-sandbox guards (#4078): the whole suite exercises the REAL

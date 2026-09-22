@@ -317,6 +317,218 @@ assert_exit "new rejects non-numeric --pid" 1 "$REG" new --pid abc
 # 13. cleanup of an already-absent entry is a no-op (exit 0).
 assert_exit "cleanup of missing entry exits 0" 0 "$REG" cleanup "$RID1"
 
+# --------------------------------------------------------------------------
+# #5896: same-PID stale-heartbeat classification. A `/clear` inside the
+# long-lived `claude -p /loom:sweep …` orchestrator does not kill that OS
+# process, so a pre-`/clear` registry entry and the post-`/clear` re-invoked
+# run share the SAME liveness pid. `peers` must label the stale one distinctly
+# from a genuine live peer (whether same-pid-fresh or a different pid).
+# --------------------------------------------------------------------------
+
+# 14. A same-PID entry with a STALE heartbeat is classified `stale-same-pid`,
+#     not folded into an ordinary live-peer report — the exact `/clear` +
+#     re-invoke zombie #5896 is about.
+LIVE5=$(spawn_live); LIVE_PIDS+=("$LIVE5")
+RID_NEW=$("$REG" new --pid "$LIVE5")  # the "new" post-/clear run
+RID_OLD=$("$REG" new --pid "$LIVE5")  # the "old" pre-/clear zombie, same pid
+# Force the OLD entry's heartbeat far into the past via a direct file edit
+# (same technique already used above for baseline files) — this test must
+# not depend on real time passing.
+OLD_FILE="$TMP_REPO/.loom/sweep-run/${RID_OLD}.json"
+cat > "$OLD_FILE" <<EOF
+{
+  "run_id": "$RID_OLD",
+  "pid": $LIVE5,
+  "timestamp": "2020-01-01T00:00:00Z",
+  "heartbeat": "2020-01-01T00:00:00Z"
+}
+EOF
+out=$("$REG" peers "$RID_NEW")
+if echo "$out" | grep -qE "^$RID_OLD $LIVE5 [^ ]+ [^ ]+ stale-same-pid:[0-9]+m$"; then
+    echo "PASS: same-PID stale-heartbeat entry classified stale-same-pid"
+    PASS=$((PASS + 1))
+else
+    echo "FAIL: same-PID stale-heartbeat entry not classified as stale, got: $out" >&2
+    FAIL=$((FAIL + 1))
+fi
+
+# 14a. The stale-same-pid entry is LABELED, not pruned — its pid is still
+#      alive, only the heartbeat is stale, and #4691's keep-if-ambiguous bias
+#      means this helper only ever deletes on confirmed PID death.
+if [[ -f "$OLD_FILE" ]]; then
+    echo "PASS: stale-same-pid entry is labeled, not deleted"
+    PASS=$((PASS + 1))
+else
+    echo "FAIL: stale-same-pid entry was deleted (should only be labeled)" >&2
+    FAIL=$((FAIL + 1))
+fi
+
+# 14b. A genuinely live same-process peer (FRESH heartbeat) must NOT be
+#      misclassified as stale — the #4691 EPERM-fail-safe bias (never treat
+#      an ambiguous/live case as dead) extended to the new same-PID path.
+"$REG" heartbeat "$RID_OLD" >/dev/null
+out=$("$REG" peers "$RID_NEW")
+if echo "$out" | grep -qE "^$RID_OLD $LIVE5 [^ ]+ [^ ]+ live-same-pid$"; then
+    echo "PASS: same-PID fresh-heartbeat entry classified live-same-pid, not stale"
+    PASS=$((PASS + 1))
+else
+    echo "FAIL: same-PID fresh-heartbeat entry misclassified, got: $out" >&2
+    FAIL=$((FAIL + 1))
+fi
+
+# 14c. A same-PID entry that is the caller's OWN run is still excluded via the
+#      existing self-skip in cmd_peers (matched by RUN_ID) — not accidentally
+#      caught (or exempted) by the new same-PID heartbeat logic.
+out=$("$REG" peers "$RID_NEW")
+if echo "$out" | grep -q "$RID_NEW"; then
+    echo "FAIL: run listed itself as a peer under the new same-PID classification" >&2
+    FAIL=$((FAIL + 1))
+else
+    echo "PASS: run still excludes itself under the new same-PID classification"
+    PASS=$((PASS + 1))
+fi
+
+# 14d. A genuine live peer under a DIFFERENT pid with a FRESH heartbeat is
+#      still classified plain `live` — neither the same-PID branch nor the
+#      #6595 different-PID staleness check may swallow ordinary peer reports.
+LIVE6=$(spawn_live); LIVE_PIDS+=("$LIVE6")
+RID_DIFF=$("$REG" new --pid "$LIVE6")
+out=$("$REG" peers "$RID_NEW")
+if echo "$out" | grep -qE "^$RID_DIFF $LIVE6 [^ ]+ [^ ]+ live$"; then
+    echo "PASS: different-pid fresh-heartbeat peer still classified plain 'live'"
+    PASS=$((PASS + 1))
+else
+    echo "FAIL: different-pid fresh-heartbeat peer misclassified, got: $out" >&2
+    FAIL=$((FAIL + 1))
+fi
+
+# --------------------------------------------------------------------------
+# #6595: DIFFERENT-pid stale-heartbeat classification. A sweep interrupted
+# inside a long-lived interactive session leaves an entry whose pid (that
+# session) stays alive for hours — under a pid unrelated to the next sweep's,
+# so the #5896 same-PID branch never sees it and it warned as a plain `live`
+# peer for the session's entire lifetime.
+# --------------------------------------------------------------------------
+
+# 14f. The reported false positive: entry pid alive, DIFFERENT from the
+#      caller's, heartbeat far in the past → `stale-heartbeat:Nm`, not `live`.
+DIFF_FILE="$TMP_REPO/.loom/sweep-run/${RID_DIFF}.json"
+cat > "$DIFF_FILE" <<EOF
+{
+  "run_id": "$RID_DIFF",
+  "pid": $LIVE6,
+  "timestamp": "2020-01-01T00:00:00Z",
+  "heartbeat": "2020-01-01T00:00:00Z"
+}
+EOF
+out=$("$REG" peers "$RID_NEW")
+if echo "$out" | grep -qE "^$RID_DIFF $LIVE6 [^ ]+ [^ ]+ stale-heartbeat:[0-9]+m$"; then
+    echo "PASS: different-pid stale-heartbeat entry classified stale-heartbeat"
+    PASS=$((PASS + 1))
+else
+    echo "FAIL: different-pid stale-heartbeat entry not flagged stale, got: $out" >&2
+    FAIL=$((FAIL + 1))
+fi
+
+# 14g. That entry is LABELED, not pruned — its pid is alive, and #4691's
+#      keep-when-ambiguous bias means only confirmed PID death may delete.
+if [[ -f "$DIFF_FILE" ]]; then
+    echo "PASS: stale-heartbeat entry is labeled, not deleted"
+    PASS=$((PASS + 1))
+else
+    echo "FAIL: stale-heartbeat entry was deleted (should only be labeled)" >&2
+    FAIL=$((FAIL + 1))
+fi
+
+# 14h. A heartbeat refresh clears the stale label — the entry goes straight
+#      back to plain `live` once its sweep proves it is still driving work.
+"$REG" heartbeat "$RID_DIFF" >/dev/null
+out=$("$REG" peers "$RID_NEW")
+if echo "$out" | grep -qE "^$RID_DIFF $LIVE6 [^ ]+ [^ ]+ live$"; then
+    echo "PASS: heartbeat refresh returns a stale-heartbeat entry to 'live'"
+    PASS=$((PASS + 1))
+else
+    echo "FAIL: refreshed different-pid entry not back to 'live', got: $out" >&2
+    FAIL=$((FAIL + 1))
+fi
+
+# 14i. Backward compat / fail-safe: a pre-#5896 entry has NO "heartbeat" field
+#      and its writer never refreshes one, so its (old) registration time says
+#      nothing about whether it is still sweeping. It must stay plain `live`,
+#      never be manufactured into a stale label from the timestamp fallback.
+cat > "$DIFF_FILE" <<EOF
+{
+  "run_id": "$RID_DIFF",
+  "pid": $LIVE6,
+  "timestamp": "2020-01-01T00:00:00Z"
+}
+EOF
+out=$("$REG" peers "$RID_NEW")
+if echo "$out" | grep -qE "^$RID_DIFF $LIVE6 [^ ]+ [^ ]+ live$"; then
+    echo "PASS: pre-#5896 entry with no heartbeat field stays plain 'live'"
+    PASS=$((PASS + 1))
+else
+    echo "FAIL: heartbeat-less entry misclassified, got: $out" >&2
+    FAIL=$((FAIL + 1))
+fi
+
+# 14j. An UNPARSEABLE heartbeat is "unknown age", never "stale" (same fail-safe
+#      the same-PID path already applies).
+cat > "$DIFF_FILE" <<EOF
+{
+  "run_id": "$RID_DIFF",
+  "pid": $LIVE6,
+  "timestamp": "2020-01-01T00:00:00Z",
+  "heartbeat": "not-a-timestamp"
+}
+EOF
+out=$("$REG" peers "$RID_NEW")
+if echo "$out" | grep -qE "^$RID_DIFF $LIVE6 [^ ]+ [^ ]+ live$"; then
+    echo "PASS: unparseable heartbeat on a different-pid entry stays 'live'"
+    PASS=$((PASS + 1))
+else
+    echo "FAIL: unparseable heartbeat manufactured a stale label, got: $out" >&2
+    FAIL=$((FAIL + 1))
+fi
+
+# 14k. SWEEP_RUN_HEARTBEAT_STALE_SECS governs the different-PID threshold too:
+#      a very large threshold keeps an old-heartbeat peer `live`.
+cat > "$DIFF_FILE" <<EOF
+{
+  "run_id": "$RID_DIFF",
+  "pid": $LIVE6,
+  "timestamp": "2020-01-01T00:00:00Z",
+  "heartbeat": "2020-01-01T00:00:00Z"
+}
+EOF
+out=$(SWEEP_RUN_HEARTBEAT_STALE_SECS=999999999999 "$REG" peers "$RID_NEW")
+if echo "$out" | grep -qE "^$RID_DIFF $LIVE6 [^ ]+ [^ ]+ live$"; then
+    echo "PASS: SWEEP_RUN_HEARTBEAT_STALE_SECS raises the different-pid threshold"
+    PASS=$((PASS + 1))
+else
+    echo "FAIL: stale threshold override ignored for different-pid entry, got: $out" >&2
+    FAIL=$((FAIL + 1))
+fi
+
+# 14e. `heartbeat` on an unregistered RUN_ID is a usage error (exit 1), and on
+#      a known RUN_ID leaves `pid`/`timestamp` unchanged (only `heartbeat`
+#      advances).
+assert_exit "heartbeat on unknown RUN_ID exits 1" 1 "$REG" heartbeat "sweep-nonexistent"
+assert_exit "heartbeat requires a RUN_ID arg" 1 "$REG" heartbeat
+ORIG_TS=$(sed -n 's/.*"timestamp"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$TMP_REPO/.loom/sweep-run/${RID_NEW}.json")
+"$REG" heartbeat "$RID_NEW" >/dev/null
+NEW_TS=$(sed -n 's/.*"timestamp"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$TMP_REPO/.loom/sweep-run/${RID_NEW}.json")
+NEW_PID=$(sed -n 's/.*"pid"[[:space:]]*:[[:space:]]*\([0-9][0-9]*\).*/\1/p' "$TMP_REPO/.loom/sweep-run/${RID_NEW}.json")
+assert_eq "heartbeat leaves timestamp unchanged" "$ORIG_TS" "$NEW_TS"
+assert_eq "heartbeat leaves pid unchanged" "$LIVE5" "$NEW_PID"
+
+# Restore the empty-registry precondition the remaining cases assume.
+"$REG" cleanup "$RID_NEW"
+"$REG" cleanup "$RID_OLD"
+"$REG" cleanup "$RID_DIFF"
+kill "$LIVE5" "$LIVE6" 2>/dev/null
+wait "$LIVE5" "$LIVE6" 2>/dev/null
+
 echo
 echo "Results: $PASS passed, $FAIL failed"
 [[ $FAIL -eq 0 ]] || exit 1
