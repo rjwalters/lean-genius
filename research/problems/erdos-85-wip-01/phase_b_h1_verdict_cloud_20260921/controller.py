@@ -36,7 +36,7 @@ SG_NAME = "erdos85-verdict-noingress"
 LT_NAME = "e85-verdict-20260921"
 PASS = {"name": "", "queue": "queue-1137.ids", "queue_sha256": "d9e4548ff356dfbd23db82b09d6a02d9a1d348f7c9aa4378e5dc6e8bc9e6fe87",
         "config": "research/problems/erdos-85-wip-01/phase_b_h1_verdict_20260916/config.draft.json",
-        "config_commit": "bf95b3937e894956d07f09b55401dc41ffa904a6", "direct": False, "size": 1137}
+        "config_commit": "bf95b3937e894956d07f09b55401dc41ffa904a6", "direct": False, "size": 1137, "lifetime": 108000}
 AMI_PARAM = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-arm64"
 TYPES = ["c8g.16xlarge", "c7g.16xlarge", "m8g.16xlarge", "m7g.16xlarge", "r8g.16xlarge", "r7g.16xlarge"]
 MAX_SPOT_PRICE = "1.30"
@@ -76,7 +76,8 @@ def user_data(commit: str) -> str:
     sparse = " ".join(f"'{p}'" for p in SPARSE + ["/" + line for line in
                       (HERE / "captured-paths.txt").read_text().split()])
     env = (f"export E85_PASS='{PASS['name']}' E85_QUEUE='{PASS['queue']}' E85_QUEUE_SHA='{PASS['queue_sha256']}' "
-           f"E85_CONFIG='{PASS['config']}' E85_CONFIG_COMMIT='{PASS['config_commit']}' E85_DIRECT='{int(PASS['direct'])}'")
+           f"E85_CONFIG='{PASS['config']}' E85_CONFIG_COMMIT='{PASS['config_commit']}' E85_DIRECT='{int(PASS['direct'])}' "
+           f"E85_LIFETIME='{PASS['lifetime']}'")
     script = f"""#!/bin/bash
 exec >> /var/log/e85-userdata.log 2>&1
 set -u
@@ -162,7 +163,7 @@ def launch(args) -> None:
     overrides = [{"InstanceType": kind, "SubnetId": subnet["SubnetId"], "MaxPrice": MAX_SPOT_PRICE}
                  for kind in (args.types or TYPES) for subnet in subnets]
     request = {"Type": "request", "TerminateInstancesWithExpiration": True,
-               "ValidUntil": (now() + dt.timedelta(hours=30)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+               "ValidUntil": (now() + dt.timedelta(seconds=PASS["lifetime"] + 3600)).strftime("%Y-%m-%dT%H:%M:%SZ"),
                "SpotOptions": {"AllocationStrategy": "price-capacity-optimized",
                                "InstanceInterruptionBehavior": "terminate"},
                "LaunchTemplateConfigs": [{"LaunchTemplateSpecification": {"LaunchTemplateName": LT_NAME,

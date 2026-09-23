@@ -14,6 +14,7 @@ E85_CONFIG=${E85_CONFIG:-research/problems/erdos-85-wip-01/phase_b_h1_verdict_20
 E85_QUEUE=${E85_QUEUE:-queue-1137.ids}
 E85_QUEUE_SHA=${E85_QUEUE_SHA:-d9e4548ff356dfbd23db82b09d6a02d9a1d348f7c9aa4378e5dc6e8bc9e6fe87}
 E85_DIRECT=${E85_DIRECT:-0}
+E85_LIFETIME=${E85_LIFETIME:-108000}   # seconds; pass 2 uses 144000 (40 h) because one row can take 24 h
 IMAGE_ID=sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6
 EMITTER_SHA=4bd9604c6d670ad65a8ca332a26dbf35132418634a3b0678c177c8b2cfff4bf6
 EMITTER=/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/h1fleet/v3freight-rebuild-20260905/stage/freight/v2cnf
@@ -26,8 +27,8 @@ ITYPE=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/lat
 AWS0=$(command -v aws)
 fail() { echo "BOOTSTRAP-FAIL: $*"; $AWS0 s3 cp --only-show-errors $LOG s3://$B/$PP/nodes/$IID/bootstrap-FAILED.log; /usr/sbin/poweroff; exit 1; }
 echo "$(date -u +%FT%TZ) bootstrap start iid=$IID type=$ITYPE head=$(git -C $REPO rev-parse HEAD) pass=${E85_PASS:-1} config=$E85_CONFIG@$CONFIG_COMMIT queue=$E85_QUEUE direct=$E85_DIRECT"
-# Hard lifetime backstop, 30 h. Instance-initiated power-off terminates the instance (launch template).
-systemd-run --on-active=108000 --unit=e85-lifetime /usr/sbin/poweroff
+# Hard lifetime backstop. Instance-initiated power-off terminates the instance (launch template).
+systemd-run --on-active=$E85_LIFETIME --unit=e85-lifetime /usr/sbin/poweroff
 for try in 1 2 3 4 5; do dnf -y install docker python3.12 zstd gcc gcc-c++ make tar unzip && break; sleep 30; done
 command -v docker >/dev/null && command -v python3.12 >/dev/null && command -v zstd >/dev/null || fail "package install"
 # Latest AWS CLI v2: put-object --if-none-match is required for atomic claims.

@@ -41,6 +41,8 @@ HERE = Path(__file__).resolve().parent
 
 lock = threading.Lock()
 node = {"errors": 0, "done": 0, "stop": False, "active": {}, "statuses": {}}
+STARTED = time.time()
+CLAIM_DEADLINE = float("inf")  # no new claims when the remaining lifetime cannot fit a worst-case row
 
 
 def log(message: str) -> None:
@@ -173,18 +175,29 @@ def slot_loop(args, slot: int, queue: list[str]) -> None:
         with lock:
             if node["stop"]:
                 break
+        if time.time() > CLAIM_DEADLINE:
+            log(f"slot={slot} lifetime window closed; no new claims")
+            break
         try:
-            if exists("control/STOP"):
-                log(f"slot={slot} STOP present")
-                break
-            taken = listing("claims")
             picked = None
-            for case_id in order:
-                if case_id in taken:
-                    continue
-                if put_new(f"claims/{case_id}", marker):
-                    picked = case_id
+            for attempt in range(3):  # a transient S3/API blip must not kill 64 slots at once
+                try:
+                    if exists("control/STOP"):
+                        log(f"slot={slot} STOP present")
+                        return
+                    taken = listing("claims")
+                    for case_id in order:
+                        if case_id in taken:
+                            continue
+                        if put_new(f"claims/{case_id}", marker):
+                            picked = case_id
+                            break
                     break
+                except Exception as error:  # noqa: BLE001
+                    log(f"slot={slot} claim attempt {attempt} failed: {type(error).__name__}: {error}")
+                    if attempt == 2:
+                        raise
+                    time.sleep(60 + 10 * slot % 30)
             if picked is None:
                 log(f"slot={slot} no work left")
                 break
@@ -231,18 +244,21 @@ def heartbeat(args, threads: list[threading.Thread], final: bool = False) -> Non
     path = OUT / "status.json"
     OUT.mkdir(exist_ok=True)
     path.write_text(json.dumps(status, indent=1) + "\n")
-    aws("s3", "cp", "--only-show-errors", str(path), f"s3://{BUCKET}/{PREFIX}/nodes/{args.iid}/status.json")
-    aws("s3", "cp", "--only-show-errors", "/var/log/e85-worker.log", f"s3://{BUCKET}/{PREFIX}/nodes/{args.iid}/worker.log")
+    for source, name in ((str(path), "status.json"), ("/var/log/e85-worker.log", "worker.log")):
+        result = aws("s3", "cp", "--only-show-errors", source, f"s3://{BUCKET}/{PREFIX}/nodes/{args.iid}/{name}")
+        if result.returncode != 0:
+            log(f"heartbeat upload of {name} failed rc={result.returncode}: {result.stderr.strip()[:300]}")
 
 
 def main() -> int:
-    global PREFIX, CONFIG, CONFIG_COMMIT, CASE_TIMEOUT
+    global PREFIX, CONFIG, CONFIG_COMMIT, CASE_TIMEOUT, CLAIM_DEADLINE
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", required=True)
     parser.add_argument("--iid", required=True)
     parser.add_argument("--itype", required=True)
     parser.add_argument("--slots", type=int, required=True)
     parser.add_argument("--no-poweroff", action="store_true")
+    parser.add_argument("--lifetime", type=int, default=108000, help="seconds until the node's own poweroff backstop")
     parser.add_argument("--pass-prefix", default="", help="pass 2+: S3 sub-prefix for claims/results/ledger/nodes/control")
     parser.add_argument("--queue", default="queue-1137.ids", help="ID file in this directory")
     parser.add_argument("--queue-sha256", default=QUEUE_SHA256)
@@ -256,6 +272,7 @@ def main() -> int:
     policy = json.loads((Path(args.repo) / CONFIG).read_text())
     CASE_TIMEOUT = (policy["generation_cap_seconds"] + policy["policies"]["H1"]["primary_cap_seconds"]
                     + policy["policies"]["H1"]["crosscheck_cap_seconds"] + 1200)
+    CLAIM_DEADLINE = STARTED + args.lifetime - CASE_TIMEOUT - 900
     raw = (HERE / args.queue).read_bytes()
     if hashlib.sha256(raw).hexdigest() != args.queue_sha256:
         raise SystemExit("queue identity mismatch")
@@ -263,7 +280,7 @@ def main() -> int:
     if not queue or len(set(queue)) != len(queue):
         raise SystemExit("queue empty or has duplicates")
     RUNS.mkdir(parents=True, exist_ok=True)
-    log(f"node start iid={args.iid} type={args.itype} slots={args.slots} prefix={PREFIX} queue={args.queue} n={len(queue)} config={CONFIG}@{CONFIG_COMMIT[:10]} direct={args.direct} case_timeout={CASE_TIMEOUT}")
+    log(f"node start iid={args.iid} type={args.itype} slots={args.slots} prefix={PREFIX} queue={args.queue} n={len(queue)} config={CONFIG}@{CONFIG_COMMIT[:10]} direct={args.direct} case_timeout={CASE_TIMEOUT} claim_window_s={int(CLAIM_DEADLINE - STARTED)}")
     threads = [threading.Thread(target=slot_loop, args=(args, slot, queue), daemon=True)
                for slot in range(args.slots)]
     for thread in threads:
