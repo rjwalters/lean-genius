@@ -17,7 +17,7 @@
       "asymptotic"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 1162,
     "erdosUrl": "https://erdosproblems.com/1162",
     "erdosProblemStatus": "open",
@@ -47,31 +47,32 @@
     ],
     "originalContributions": [
       "numSubgroups: concrete noncomputable def f(n) = Nat.card (Subgroup (Equiv.Perm (Fin n))) (not an axiom)",
-      "roney_dougal_tracey: log f(n) / n² → 1/16 (Tendsto formulation)",
+      "roney_dougal_tracey: log f(n) / n² → 1/16 (Tendsto formulation) — the file's single `axiom` declaration",
       "rdt_implies_pyber: convergence → eventual bounds (PROVED, no sorry)",
       "pyber_theorem: derived from rdt_implies_pyber + roney_dougal_tracey (no longer an axiom)",
+      "Part VII, generative subgroup-lattice enumeration (new, ~330 lines, fully proved): satStep/satAux saturate a Finset under left multiplication by a symmetric seed; satAux_isWord + prod_mul_mem show the saturation genR r t is a subgroup; closure_eq_genSubgroup identifies it with Subgroup.closure; genR_mem_of_closed shows a family closed under adjoining one generator contains every subgroup carrier; card_subgroup_of_goodFamily turns a decidable GoodFamily certificate into the exact value of Nat.card (Subgroup G). This replaces the compile-infeasible 2^|G|-subset native_decide (issue #39058).",
       "Elementary abelian 2-group infrastructure (maxElem2Rank)",
       "constant_explanation: (1/4)² = 1/16 (proved by norm_num)",
-      "Small cases: f(1)=1, f(2)=2, f(3)=6, f(4)=30",
+      "Small cases: f(1)=1 PROVED axiom-free; f(2)=2 and f(3)=6 PROVED via bounded native_decide GoodFamily certificates; f(4)=30 NOT PROVED (sorry, see assumptions and #39058)",
       "erdos1162_asymptotic: formal statement of the asymptotic result"
     ],
-    "axiomCount": 1,
-    "lineCount": 220,
-    "assumptions": "1 axiom: roney_dougal_tracey. BUILD-BLOCKED (issue #39058): the file does not currently compile. The small-case theorems f3/f4 (numSubgroups 3 = 6, numSubgroups 4 = 30) are discharged by native_decide computing Nat.card (Subgroup (Equiv.Perm (Fin n))) — a brute-force enumeration of the entire subgroup lattice of S₄ (~2^24 subsets with closure checks per candidate). This is compile-infeasible: two independent verification attempts pegged one core at 100% CPU for 3h41m and >22min with zero progress (not an OOM — pure compute pathology). Consequently these small-case values are NOT machine-checked in the current source, and the entry has not been verified end-to-end. A feasible reproof of the S₄ subgroup count (explicit subgroups + Lagrange, as in SylowTheoremOQ04) is deep formalization work tracked under #39058 / epic #37508.",
-    "theoremCount": 9,
-    "definitionCount": 5
+    "axiomCount": 3,
+    "lineCount": 663,
+    "assumptions": "3 assumptions, and 1 sorry. (1) `axiom roney_dougal_tracey` — the 2025 asymptotic log f(n) = (1/16 + o(1))n², a deep published result; `erdos_1162` and `pyber_theorem` depend on it and on nothing else (`#print axioms erdos_1162` = [propext, Classical.choice, roney_dougal_tracey, Quot.sound]). (2)+(3) the small cases f(2)=2 and f(3)=6 are discharged by bounded `native_decide` certificates, so each carries a compiler-trust axiom: on Lean v4.31.0 `f2._native.native_decide.ax_1_1` and `f3._native.native_decide.ax_1_1` (the per-declaration form of `Lean.ofReduceBool`). Per the Axiom Integrity Policy these are substantive and are counted here, which is why meta.axiomCount (3) exceeds leanFile.axiomCount (1, literal `axiom` declarations only). SORRY (1): `f4 : numSubgroups 4 = 30` is NOT machine-checked and depends on `sorryAx`. The file does now compile (`docker-build.sh Proofs.Erdos1162Problem`, 3.6 s), and the compile-infeasible enumeration that used to block it — `native_decide` over all 2^24 subsets of S₄ via the noncomputable `SetLike.instFintype` — has been removed entirely and replaced by the proved generative machinery of Part VII. What remains is a performance gap, not a mathematical one: the S₄ certificate is correct and `carriersR 24 2` does evaluate to the 30-element lattice in 15.7 s, but the closure leg (∀ s ∈ C, ∀ g : S₄, genR 24 (insert g s) ∈ C — 720 further saturations) exceeds a 9-minute cap, because `native_decide` runs Mathlib's `Equiv.Perm` arithmetic through the IR interpreter where every product allocates an `Equiv.trans` closure. Closing it needs a flat model of S₄ (a 24×24 multiplication table over `Fin 24`, or Nat-bitmask carriers) transported back along a MulEquiv. Tracked in #39058 / epic #37508. f(4)=30 = 1+9+4+7+4+3+1+1 remains a classical fact, cited but not verified here.",
+    "theoremCount": 36,
+    "definitionCount": 15
   },
   "overview": {
     "historicalContext": "Counting subgroups of the symmetric group $S_n$ is a fundamental problem in combinatorial group theory, posed by Erdős and Turán. The problem has two parts: the asymptotic formula for $f(n) = |\\{H \\leq S_n\\}|$ and a 'statistical theorem on their order' (the distribution of $|H|$ as $H$ ranges over subgroups). The first breakthrough came from Pyber (1993), who established $\\log f(n) \\asymp n^2$ — the order of magnitude — using probabilistic arguments about the structure of maximal subgroups. The precise constant eluded researchers for 32 years. Roney-Dougal and Tracey (2025) finally proved $\\log f(n) = (1/16 + o(1))n^2$, showing the dominant contribution comes from elementary abelian 2-subgroups of the wreath product $(\\mathbb{Z}/2\\mathbb{Z}) \\wr S_{\\lfloor n/4 \\rfloor}$. The constant $1/16 = (1/4)^2$ is purely combinatorial: the number of subgroups of $(\\mathbb{Z}/2\\mathbb{Z})^k$ (counted by Gaussian binomial coefficients over $\\mathrm{GF}(2)$) grows as $2^{k^2/4}$, and with $k = n/4$ this gives $n^2/64 \\cdot \\log 2$, which (after careful bookkeeping) yields $n^2/16$.",
     "problemStatement": "**Problem Statement (Partially Resolved)**\n\nGive an asymptotic formula for the number of subgroups of $S_n$. Is there a statistical theorem on their order?\n\n**Known:**\n- Pyber (1993): $\\log f(n) \\asymp n^2$\n- Roney-Dougal-Tracey (2025): $\\log f(n) = (\\frac{1}{16} + o(1))n^2$\n\nThe asymptotic formula is now established. The statistical theorem on orders remains partially open.",
     "text": "Asymptotic enumeration of subgroups of S_n: log f(n) = (1/16 + o(1))n². The constant 1/16 arises from elementary abelian 2-subgroups.",
-    "proofStrategy": "The formalization axiomatizes f(n) as the subgroup count (not computationally feasible to define constructively), states Pyber's bounds and the Roney-Dougal-Tracey asymptotic using Filter.Tendsto. The connection to elementary abelian 2-groups explains the constant 1/16. Small cases are stated for verification.",
+    "proofStrategy": "The formalization defines f(n) concretely as Nat.card (Subgroup (Equiv.Perm (Fin n))) and states Pyber's bounds and the Roney-Dougal-Tracey asymptotic using Filter.Tendsto, with the 2025 asymptotic as the single axiom. The connection to elementary abelian 2-groups explains the constant 1/16. For the small cases the file builds a *generative* enumeration of the subgroup lattice (Part VII): a Finset is saturated under left multiplication by a symmetric seed, that saturation is proved to be the carrier of Subgroup.closure, and a family closed under adjoining one generator is proved to contain every subgroup carrier — which converts the subgroup count into a single decidable certificate whose cost is bounded by |G| and the size of the lattice, never by 2^|G|. f(1)=1 is proved axiom-free and f(2)=2, f(3)=6 by bounded native_decide certificates; f(4)=30 is still a sorry for interpreter-performance reasons only (see assumptions and #39058).",
     "keyInsights": [
       "**The constant 1/16**: Comes from (1/4)² — the dominant subgroups embed as elementary abelian 2-groups on ⌊n/4⌋ points, and the number of subgroups of (Z/2Z)^k grows as 2^(k²/4).",
       "**Most subgroups are 2-groups**: The overwhelming majority of subgroups of S_n have order a power of 2.",
       "**Wreath product structure**: The key construction is (Z/2Z) ≀ S_{⌊n/4⌋} — wreath products of 2-groups with symmetric groups on a quarter of the points.",
       "**Gaussian binomial coefficients**: The count of subgroups of (Z/2Z)^k involves Gaussian binomials over GF(2), contributing the k²/4 term.",
-      "**Axiom reduction to 1 (build-blocked)**: The formalization was restructured to leave only the single deep published result (Roney-Dougal-Tracey 2025) as an irreducible assumption, with f1 proved via a Subsingleton→Unique chain. The intended discharge of f2-f4 by native_decide does not compile, however: the S₄ subgroup-lattice enumeration is compile-infeasible (see assumptions / issue #39058), so those small cases remain unverified in the current source."
+      "**Axiom reduction to 1 literal axiom**: The formalization was restructured to leave only the single deep published result (Roney-Dougal-Tracey 2025) as an irreducible `axiom`, and the file builds. f1 is proved axiom-free via a Subsingleton→Unique chain; f2 = 2 and f3 = 6 are proved from the generative `GoodFamily` counting principle of Part VII, whose bounded certificates are discharged by `native_decide` — so each of those two mints its own per-declaration compiler-trust axiom (disclosed in assumptions and counted in axiomCount). Only f4 (S₄, the 30-subgroup lattice) remains an explicit `sorry`: the certificate is correct but its closure leg exceeds the Lean interpreter's budget, pending a flat model of S₄ (issue #39058). The compile-infeasible 2^24 whole-lattice enumeration has been removed entirely."
     ],
     "prerequisites": [
       "Symmetric groups $S_n$ and their subgroup structure",
@@ -152,7 +153,7 @@
       "summary": "Ledger of the formalization's assumptions: five auxiliary axioms (numSubgroups and f(1)–f(4)) were eliminated in favour of concrete definitions and native_decide, leaving the single deep axiom roney_dougal_tracey and zero sorries.",
       "startLine": 207,
       "endLine": 220,
-      "mathContext": "Remaining assumption: the published Roney-Dougal-Tracey (2025) asymptotic, encoded as $\\texttt{axiom roney\\_dougal\\_tracey}$. The small-case values $f(2),\\dots,f(4)$ are $\\textit{intended}$ to be discharged by $\\texttt{native\\_decide}$ (which would rely on $\\texttt{Lean.ofReduceBool}$), but the file is build-blocked (issue #39058): the $S_4$ subgroup-lattice enumeration is compile-infeasible, so these values are $\\textit{not}$ currently machine-checked. Only $f(1)$ is proved (Subsingleton→Unique)."
+      "mathContext": "Remaining assumption: the published Roney-Dougal-Tracey (2025) asymptotic, encoded as $\\texttt{axiom roney\\_dougal\\_tracey}$. The file builds. $f(1) = 1$ is proved axiom-free (Subsingleton→Unique), and $f(2) = 2$, $f(3) = 6$ are machine-checked from the generative $\\texttt{GoodFamily}$ counting principle of Part VII, whose bounded certificates are discharged by $\\texttt{native\\_decide}$ inside groups of order 2 and 6. On Lean v4.31.0 each of those certificates mints its own per-declaration compiler-trust axiom, $\\texttt{f2.\\_native.native\\_decide.ax\\_1\\_1}$ and $\\texttt{f3.\\_native.native\\_decide.ax\\_1\\_1}$ (the per-declaration form of the older $\\texttt{Lean.ofReduceBool}$), so $f(2)$ and $f(3)$ are $\\textit{not}$ axiom-free. $f(4) = 30$ is $\\textit{not}$ machine-checked: it remains an explicit $\\texttt{sorry}$ and so depends on $\\texttt{sorryAx}$, because the $S_4$ certificate's closure leg exceeds the interpreter's budget pending a flat model of $S_4$ (issue #39058). The compile-infeasible $2^{24}$-subset enumeration is gone."
     }
   ],
   "conclusion": {
@@ -230,12 +231,12 @@
       "Filter"
     ],
     "namespace": "Erdos1162",
-    "lineCount": 220,
+    "lineCount": 663,
     "axiomCount": 1,
-    "theoremCount": 9,
-    "definitionCount": 5,
+    "theoremCount": 36,
+    "definitionCount": 15,
     "path": "Proofs/Erdos1162Problem.lean",
-    "sorries": 0
+    "sorries": 1
   },
-  "sorries": 0
+  "sorries": 1
 }
