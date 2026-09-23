@@ -208,11 +208,14 @@ inverses. Saturating under left multiplication by a symmetric seed is enough to
 reach the whole generated subgroup. -/
 def seed (t : Finset G) : Finset G := insert 1 (t ∪ t.image fun a => a⁻¹)
 
+omit [Fintype G] in
 lemma one_mem_seed (t : Finset G) : (1 : G) ∈ seed t := Finset.mem_insert_self _ _
 
+omit [Fintype G] in
 lemma subset_seed (t : Finset G) : t ⊆ seed t := fun _ hx =>
   Finset.mem_insert_of_mem (Finset.mem_union_left _ hx)
 
+omit [Fintype G] in
 lemma inv_mem_seed {t : Finset G} {x : G} (hx : x ∈ seed t) : x⁻¹ ∈ seed t := by
   rcases Finset.mem_insert.1 hx with rfl | hx
   · rw [inv_one]
@@ -224,6 +227,7 @@ lemma inv_mem_seed {t : Finset G} {x : G} (hx : x ∈ seed t) : x⁻¹ ∈ seed 
       rw [inv_inv]
       exact Finset.mem_insert_of_mem (Finset.mem_union_left _ ha)
 
+omit [Fintype G] in
 lemma seed_mem_subgroup {t : Finset G} {K : Subgroup G} (h : ∀ x ∈ t, x ∈ K) :
     ∀ x ∈ seed t, x ∈ K := by
   intro x hx
@@ -237,12 +241,15 @@ lemma seed_mem_subgroup {t : Finset G} {K : Subgroup G} (h : ∀ x ∈ t, x ∈ 
 /-- One round of closing `s` under left multiplication by `A`. -/
 def satStep (A s : Finset G) : Finset G := s ∪ A.sup fun a => s.image fun b => a * b
 
+omit [Fintype G] in
 lemma subset_satStep (A s : Finset G) : s ⊆ satStep A s := Finset.subset_union_left
 
+omit [Fintype G] in
 lemma mul_mem_satStep {A s : Finset G} {a b : G} (ha : a ∈ A) (hb : b ∈ s) :
     a * b ∈ satStep A s :=
   Finset.mem_union_right _ (Finset.mem_sup.2 ⟨a, ha, Finset.mem_image.2 ⟨b, hb, rfl⟩⟩)
 
+omit [Fintype G] in
 lemma satStep_mem_subgroup {A s : Finset G} {K : Subgroup G}
     (hA : ∀ x ∈ A, x ∈ K) (hs : ∀ x ∈ s, x ∈ K) : ∀ x ∈ satStep A s, x ∈ K := by
   intro x hx
@@ -257,11 +264,14 @@ def satAux (A : Finset G) : ℕ → Finset G → Finset G
   | 0, s => s
   | n + 1, s => if satStep A s = s then s else satAux A n (satStep A s)
 
+omit [Fintype G] in
 lemma satAux_zero (A s : Finset G) : satAux A 0 s = s := rfl
 
+omit [Fintype G] in
 lemma satAux_succ (A : Finset G) (n : ℕ) (s : Finset G) :
     satAux A (n + 1) s = if satStep A s = s then s else satAux A n (satStep A s) := rfl
 
+omit [Fintype G] in
 lemma subset_satAux (A : Finset G) (n : ℕ) (s : Finset G) : s ⊆ satAux A n s := by
   induction n generalizing s with
   | zero => rw [satAux_zero]
@@ -271,6 +281,7 @@ lemma subset_satAux (A : Finset G) (n : ℕ) (s : Finset G) : s ⊆ satAux A n s
       · exact Finset.Subset.refl s
       · exact (subset_satStep A s).trans (ih (satStep A s))
 
+omit [Fintype G] in
 lemma satAux_mem_subgroup {A : Finset G} {K : Subgroup G} (hA : ∀ x ∈ A, x ∈ K) :
     ∀ (n : ℕ) (s : Finset G), (∀ x ∈ s, x ∈ K) → ∀ x ∈ satAux A n s, x ∈ K := by
   intro n
@@ -309,6 +320,7 @@ lemma satStep_satAux (A : Finset G) (n : ℕ) (s : Finset G)
           have hlt := Finset.card_lt_card hss
           omega
 
+omit [Fintype G] in
 /-- Everything the saturation reaches is a product of elements of `A`. -/
 lemma satAux_isWord (A : Finset G) :
     ∀ (n : ℕ) (s : Finset G),
@@ -338,6 +350,7 @@ lemma satAux_isWord (A : Finset G) :
           · exact ha
           · exact hl z hz
 
+omit [Fintype G] in
 /-- A fixed point of the saturation absorbs left multiplication by any
 `A`-word. -/
 lemma prod_mul_mem {A s : Finset G} (hfix : satStep A s = s) :
@@ -357,9 +370,11 @@ lemma prod_mul_mem {A s : Finset G} (hfix : satStep A s = s) :
 of saturation. Any `r ≥ Fintype.card G` computes the true carrier. -/
 def genR (r : ℕ) (t : Finset G) : Finset G := satAux (seed t) r (seed t)
 
+omit [Fintype G] in
 lemma one_mem_genR (r : ℕ) (t : Finset G) : (1 : G) ∈ genR r t :=
   subset_satAux _ _ _ (one_mem_seed t)
 
+omit [Fintype G] in
 lemma subset_genR (r : ℕ) (t : Finset G) : t ⊆ genR r t :=
   (subset_seed t).trans (subset_satAux _ _ _)
 
@@ -367,6 +382,7 @@ lemma satStep_genR {r : ℕ} (hr : Fintype.card G ≤ r) (t : Finset G) :
     satStep (seed t) (genR r t) = genR r t :=
   satStep_satAux _ _ _ (hr.trans (Nat.le_add_right _ _))
 
+omit [Fintype G] in
 lemma genR_isWord (r : ℕ) (t : Finset G) {x : G} (hx : x ∈ genR r t) :
     ∃ l : List G, (∀ y ∈ l, y ∈ seed t) ∧ l.prod = x := by
   refine satAux_isWord (seed t) r (seed t) ?_ x hx
@@ -415,10 +431,12 @@ membership in an abstract subgroup is not decidable — which is harmless: every
 computation below happens on the `genR` side. -/
 noncomputable def carrierFinset (H : Subgroup G) : Finset G := (H : Set G).toFinite.toFinset
 
+omit [DecidableEq G] in
 @[simp] lemma mem_carrierFinset {H : Subgroup G} {x : G} :
     x ∈ carrierFinset H ↔ x ∈ H := by
   simp [carrierFinset]
 
+omit [DecidableEq G] in
 lemma carrierFinset_injective : Function.Injective (carrierFinset (G := G)) := by
   intro H₁ H₂ h
   refine SetLike.ext fun x => ?_
@@ -518,14 +536,23 @@ end Enumeration
 
 /- ## Part VIII: Small Cases
 
-`f1` is a pure `Unique`-instance argument. `f2`, `f3`, `f4` each discharge one
-`GoodFamily` certificate by `native_decide` (Part VII): the computation is a
-bounded saturation inside a group of order ≤ 24 and finishes in milliseconds.
+`f1` is a pure `Unique`-instance argument. `f2` and `f3` each discharge one
+`GoodFamily` certificate by `native_decide` (Part VII): a bounded saturation
+inside a group of order 2, resp. 6, which finishes in milliseconds. `f4` (S₄,
+order 24) is **not** proved here — see the TODO at `f4` and issue #39058.
 
 Per the repository's Axiom Integrity Policy these `native_decide` calls are
-substantive, so they are disclosed: they add `Lean.ofReduceBool` to the axioms
-of `f2`, `f3`, `f4` (not to `erdos_1162`, which depends only on
-`roney_dougal_tracey`). -/
+substantive, so they are disclosed. On this toolchain (Lean v4.31.0) each one
+introduces its own compiler-trust axiom rather than the older shared
+`Lean.ofReduceBool`; `#print axioms` reports
+
+    'Erdos1162.f2' depends on axioms:
+      [propext, Classical.choice, Quot.sound, f2._native.native_decide.ax_1_1]
+    'Erdos1162.f3' depends on axioms:
+      [propext, Classical.choice, Quot.sound, f3._native.native_decide.ax_1_1]
+
+so `f2` and `f3` are *not* axiom-free. Neither axiom reaches `erdos_1162`, which
+depends only on `roney_dougal_tracey`. -/
 
 /-- `Fintype.card (Equiv.Perm (Fin n)) = n !`, in the form the saturation bound
 needs. -/
@@ -610,11 +637,13 @@ theorem erdos_1162 : erdos1162_asymptotic := roney_dougal_tracey
 `[propext, Classical.choice, Quot.sound, roney_dougal_tracey]`.
 
 **Disclosed `native_decide` dependency:**
-`f2` and `f3` additionally depend on `Lean.ofReduceBool` (the compiler-trust
-axiom every `native_decide` carries), so they are *not* axiom-free. The
-mathematical content they certify is a bounded, terminating saturation of the
-subgroup lattice — the `native_decide` calls this file used to contain attempted
-the full `2 ^ |S_n|` subset enumeration and never terminated (#39058).
+`f2` and `f3` additionally depend on a compiler-trust axiom — on Lean v4.31.0 a
+per-declaration one, `f2._native.native_decide.ax_1_1` resp.
+`f3._native.native_decide.ax_1_1`, playing the role `Lean.ofReduceBool` plays on
+older toolchains — so they are *not* axiom-free. The mathematical content they
+certify is a bounded, terminating saturation of the subgroup lattice; the
+`native_decide` calls this file used to contain instead attempted the full
+`2 ^ |S_n|` subset enumeration and never terminated (#39058).
 
 **Remaining sorries: 1** — `f4` (`numSubgroups 4 = 30`). The whole-lattice
 enumeration is gone, and the replacement certificate is *correct*; it is the
