@@ -14,7 +14,7 @@
   {
     "id": "ann-arge-oq01-phi-family",
     "proofId": "abel-ruffini-galois-extensions-oq-01",
-    "range": { "startLine": 78, "endLine": 111 },
+    "range": { "startLine": 79, "endLine": 111 },
     "type": "definition",
     "title": "The Φ = X⁵ − aX + b family and its basic invariants",
     "content": "Rather than hard-code X⁵ − 4X + 2, the file works with the parametrized quintic Φ R a b := X⁵ − C a · X + C b over an arbitrary commutative ring R, specializing to R = ℚ, a = 4, b = 2 only at the very end. The structural lemmas are proved once, generically: map_Phi (Φ is stable under any ring hom, so ℤ→ℚ base change is transparent — the @[simp] form that lets later proofs shuttle between ℤ and ℚ), coeff_zero_Phi (constant term = b) and coeff_five_Phi (leading coeff = 1), then degree_Phi = 5 (via degree_add_eq_left_of_degree_lt: the X⁵ term dominates the linear and constant tails), natDegree_Phi = 5, leadingCoeff_Phi = 1, and finally monic_Phi. Monicity and the exact degree are the hypotheses every downstream step — Eisenstein, the root counts, the prime-degree theorem — silently depends on.",

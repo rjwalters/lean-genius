@@ -14,8 +14,8 @@
   {
     "id": "ann-oq02oq02oq02-toolbox",
     "proofId": "angle-trisection-oq-02-oq-02-oq-02",
-    "range": { "startLine": 39, "endLine": 63 },
-    "type": "lemma",
+    "range": { "startLine": 43, "endLine": 63 },
+    "type": "theorem",
     "title": "Powers of two: closed under products, downward-closed under division, odd only at 1",
     "content": "Three small lemmas drive everything. IsPow2.mul (2^i · 2^j = 2^(i+j)) gives the sufficiency direction once each factor is a power of two. isPow2_of_dvd_pow2 uses Nat.dvd_prime_pow: any divisor of 2^k is 2^j for some j ≤ k — this is how 'p^(e-1)·(p-1) divides φ(n) = 2^k' is turned into structural information. eq_one_of_odd_isPow2 is proved by parity (m % 2 = 0 from evenness of 2^k with k ≥ 1 contradicts m % 2 = 1 from oddness), avoiding the renamed Nat.odd_iff_not_even.",
     "mathContext": "A divisor of $2^k$ is a $2^j$; the only odd power of two is $2^0 = 1$.",

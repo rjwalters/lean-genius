@@ -97,10 +97,10 @@
     "id": "ann-esymm-cross-condition",
     "proofId": "newton-inductive-step-oq-02",
     "range": {
-      "startLine": 219,
-      "endLine": 252
+      "startLine": 218,
+      "endLine": 251
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Cross Condition for esymm Log-Concavity",
     "content": "A private helper packaging the two consecutive instances of the unnormalized Newton inequality (at $k$ and $k-1$) plus the zero-tail property into the `cross_product_of_log_concave` form expected by `newton_cleared_denom_inductive_step`. The cross condition: $e_k \\cdot e_{k-1} \\geq e_{k-2} \\cdot e_{k+1}$. Proof handles three sub-cases via `Nat.lt_or_ge` on the list length, falling back to zero-tail when esymm vanishes by overflow.",
     "mathContext": "$e_k(\\mathbf{x}) \\cdot e_{k-1}(\\mathbf{x}) \\geq e_{k-2}(\\mathbf{x}) \\cdot e_{k+1}(\\mathbf{x})$ for $k \\geq 2$. This is the *cross-product* form of consecutive log-concavity, a standard packaging used in inductive proofs that operate on three or four adjacent terms.",

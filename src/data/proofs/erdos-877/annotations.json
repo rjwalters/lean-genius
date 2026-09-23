@@ -158,8 +158,8 @@
     "title": "f(n) — Count of All Sum-Free Subsets",
     "content": "f(n) counts all sum-free subsets of {0,...,n}, defined by filtering the powerset of range(n+1) by isSumFree. Cameron-Erdős conjectured f(n) = Θ(2^{n/2}), now proven.",
     "range": {
-      "startLine": 117,
-      "endLine": 118
+      "startLine": 152,
+      "endLine": 157
     },
     "significance": "key",
     "mathContext": "The Cameron-Erdős conjecture $f(n) = \\Theta(2^{n/2})$ was proved independently by Green (2004) and Sapozhenko (2003). The lower bound $f(n) \\geq 2^{\\lfloor n/2 \\rfloor}$ comes from subsets of odd numbers. The upper bound requires the container method or regularity arguments.",

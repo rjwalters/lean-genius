@@ -52,10 +52,10 @@
     "id": "ann-chord-arc",
     "proofId": "ptolemys-theorem-oq-01-oq-02",
     "range": {
-      "startLine": 84,
-      "endLine": 143
+      "startLine": 86,
+      "endLine": 140
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Chord-Arc Identity: ‖a−b‖ = 2·sin(arccos(⟨a,b⟩)/2)",
     "content": "The core lemma connecting Euclidean chord length to spherical arc distance.\n\n**Setup**: `arccos(⟨a,b⟩) ∈ [0,π]` (from `arccos_nonneg`, `arccos_le_pi`), so `arccos/2 ∈ [0,π/2]` and `sin(arccos/2) ≥ 0`.\n\n**Left square**: `‖a−b‖² = ‖a‖² − 2⟨a,b⟩ + ‖b‖² = 2 − 2⟨a,b⟩` (using `norm_sub_sq_real` and `‖a‖=‖b‖=1`).\n\n**Right square calculation**:\n- `cos(arccos c) = 2cos²(arccos(c)/2) − 1` (double-angle: `cos_two_mul`)\n- Combined with `cos_arccos : cos(arccos c) = c`: `cos²(arccos(c)/2) = (1+c)/2`\n- Pythagorean identity: `sin²(arccos(c)/2) = 1 − (1+c)/2 = (1−c)/2`\n- So `(2sin(arccos(c)/2))² = 4·(1−c)/2 = 2−2c`\n\n**Conclusion**: Both sides non-negative, squares equal → equal, via `Real.sqrt_sq : √(x²) = x for x ≥ 0`.",
     "mathContext": "For $a, b$ on the unit sphere ($\\|a\\| = \\|b\\| = 1$) in a real inner product space, the geodesic distance is $d_S(a,b) = \\arccos(\\langle a, b \\rangle)$. The chord-arc identity $\\|a - b\\| = 2\\sin(d_S(a,b)/2)$ bridges Euclidean and spherical distance:\n\n$$\\|a-b\\|^2 = 2 - 2\\langle a, b \\rangle$$\n$$\\left(2\\sin\\frac{\\arccos c}{2}\\right)^2 = 4 \\cdot \\frac{1-c}{2} = 2 - 2c$$\n\nwhere $c = \\langle a, b \\rangle$. The derivation uses the half-angle identity $\\sin^2(\\theta/2) = (1 - \\cos\\theta)/2$, which follows from $\\cos(2\\alpha) = 1 - 2\\sin^2\\alpha$. The proof concludes using `Real.sqrt_sq`: since both sides are non-negative and their squares are equal, they must be equal.",

@@ -123,10 +123,10 @@
     "id": "ann-1214-axiom",
     "proofId": "erdos-1214",
     "range": {
-      "startLine": 190,
-      "endLine": 195
+      "startLine": 212,
+      "endLine": 217
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Axiomatized Corrales-Rodánez–Schoof Theorem: The Kummer Theory Gap",
     "content": "The axiom corrales_schoof states: for x, y ≥ 2, if supp(x^n-1) = supp(y^n-1) for all n ≥ 1, then x = y. This is axiomatized because the Corrales-Rodánez–Schoof (1997) proof requires substantial algebraic number theory — specifically Kummer theory and Galois cohomology — to go from 'equal multiplicative orders at every prime' to 'x = y'. The gap between the accessible combinatorial content (equal orders, proved above) and the conclusion (x = y) reflects a genuine difficulty: equal orders mod all primes means that for every prime p, x and y look the same in (ℤ/pℤ)×, but showing this forces x = y in ℤ requires global arithmetic arguments over number fields.",
     "mathContext": "The proved direction: equal support $\\Rightarrow$ equal orders $\\mathrm{ord}_p(x) = \\mathrm{ord}_p(y)$ for all $p \\nmid xy$. The axiomatized direction: equal orders $\\Rightarrow x = y$, proved via Kummer theory: the condition on orders implies $x/y$ is a perfect power in $\\mathbb{Q}^\\times/(\\mathbb{Q}^\\times)^n$ for all $n$, forcing $x = y$.",

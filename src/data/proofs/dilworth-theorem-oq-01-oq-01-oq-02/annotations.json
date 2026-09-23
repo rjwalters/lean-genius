@@ -14,8 +14,8 @@
   {
     "id": "dilworth-oq010102-ann-dictionary",
     "proofId": "dilworth-theorem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 60, "endLine": 73 },
-    "type": "definition",
+    "range": { "startLine": 61, "endLine": 71 },
+    "type": "theorem",
     "title": "The predicate dictionary: Finset chains are set chains",
     "content": "isChainOn_iff_isChain is the only genuine content of the file: the parent's Finset-level predicate IsChainOn C (pairwise ≤-comparable) holds iff its coercion ↑C is a Mathlib chain IsChain (· ≤ ·). The forward direction drops the redundant x ≠ y hypothesis (comparability is supplied unconditionally on Finset members); the reverse handles the x = y case by reflexivity (le_rfl), since IsChain only constrains distinct elements. The lemma omits [Fintype α] — it is a pure translation needing no finiteness. Once this dictionary is in place, the two height inequalities become direct applications of off-the-shelf chain-height lemmas.",
     "mathContext": "$\\mathrm{IsChainOn}\\,C \\iff \\mathrm{IsChain}\\,(\\le)\\,(\\uparrow\\! C)$; reverse fills $x=y$ by $\\le$-reflexivity.",

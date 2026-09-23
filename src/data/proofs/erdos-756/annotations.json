@@ -416,10 +416,10 @@
     "id": "ann-e756-upper",
     "proofId": "erdos-756",
     "range": {
-      "startLine": 244,
-      "endLine": 256
+      "startLine": 232,
+      "endLine": 244
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Upper Bounds",
     "content": "**multiplicity_trivial_upper:**\n\nTrivial bound: any distance has multiplicity ≤ n².\n\n```lean\ntheorem multiplicity_trivial_upper (A : PointSet) (d : ℝ) :\n    distanceMultiplicity A d ≤ A.card * A.card\n```\n\n**Proof:** The multiplicity counts pairs from A × A, which has n² elements.\n\n**rich_distances_trivial_upper:**\nNumber of rich distances ≤ number of distinct distances.",
     "significance": "supporting",

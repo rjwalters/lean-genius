@@ -162,8 +162,8 @@
     "proofId": "erdos-201",
     "type": "definition",
     "range": {
-      "startLine": 119,
-      "endLine": 122
+      "startLine": 234,
+      "endLine": 241
     },
     "title": "Erdős Problem 201 — The Open Conjecture",
     "content": "Is $\\lim_{N \\to \\infty} R_3(N) / G_3(N) = 1$? Formalized as: $\\forall \\varepsilon > 0, \\exists N_0: \\forall N \\geq N_0, R_3(N) \\leq (1 + \\varepsilon) \\cdot G_3(N)$. This uses rationals to avoid real-number overhead.",

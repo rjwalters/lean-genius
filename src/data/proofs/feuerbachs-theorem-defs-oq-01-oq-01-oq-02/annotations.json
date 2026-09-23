@@ -26,8 +26,8 @@
   {
     "id": "ann-feuerbach-oq010102-coords",
     "proofId": "feuerbachs-theorem-defs-oq-01-oq-01-oq-02",
-    "range": { "startLine": 124, "endLine": 136 },
-    "type": "definition",
+    "range": { "startLine": 129, "endLine": 135 },
+    "type": "lemma",
     "title": "The orthocenter in coordinates",
     "content": "orthocenter_fst and orthocenter_snd unfold the parent's definition componentwise: H = (A₁+B₁+C₁−2O₁, A₂+B₂+C₂−2O₂), both by rfl. This is the algebraic form H = A + B + C − 2O that makes every perpendicularity a linear substitution in O.",
     "mathContext": "$H = A + B + C - 2O$, i.e. $H_1 = A_1+B_1+C_1-2O_1$, $H_2 = A_2+B_2+C_2-2O_2$.",

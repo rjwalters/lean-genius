@@ -26,8 +26,8 @@
   {
     "id": "ann-quadform",
     "proofId": "cauchy-interlacing-theorem-oq-02-oq-02",
-    "range": { "startLine": 86, "endLine": 137 },
-    "type": "theorem",
+    "range": { "startLine": 83, "endLine": 132 },
+    "type": "lemma",
     "title": "The Quadratic-Form Submatrix Identity",
     "content": "quad_form_submatrix (and its conjugate-transposed variant quad_form_submatrix') is the mathematical heart: star(pad e x) ⬝ᵥ (A *ᵥ pad e x) = star x ⬝ᵥ (A.submatrix e e *ᵥ x). The quadratic form of A on the zero-padded vector equals the quadratic form of the principal submatrix on the original. Both sides expand to ∑ᵢⱼ conj(xᵢ) A_{e i, e j} xⱼ — on the left the ambient double sum over Fin (n+m) collapses (Finset.sum_eq_single) because pad is supported on the retained coordinates; on the right submatrix_apply rewrites the entries. Remarkably, this needs no injectivity of e.",
     "mathContext": "$\\overline{\\mathrm{pad}\\,x}^{\\mathsf T} A\\, \\mathrm{pad}\\,x = \\sum_{i,j} \\overline{x_i}\\, A_{e i,\\,e j}\\, x_j = \\overline{x}^{\\mathsf T} A_{e,e}\\, x$.",
@@ -38,8 +38,8 @@
   {
     "id": "ann-inner",
     "proofId": "cauchy-interlacing-theorem-oq-02-oq-02",
-    "range": { "startLine": 138, "endLine": 180 },
-    "type": "theorem",
+    "range": { "startLine": 134, "endLine": 179 },
+    "type": "lemma",
     "title": "Rayleigh Numerators as Inner Products",
     "content": "rayleigh_pad_eq lifts the quadratic-form identity to the EuclideanSpace inner product via EuclideanSpace.inner_eq_star_dotProduct and ofLp_toEuclideanLin_apply — this is the V-side Rayleigh numerator ⟪toEuclideanLin A (pad x), pad x⟫ = ⟪(A.submatrix e e)•x, x⟫. pad_dot / pad_preserves_inner show the padding is inner-product preserving (⟪pad a, pad b⟫ = ⟪a, b⟫); here injectivity of e forces the off-diagonal terms [e i = e j] to vanish for i ≠ j. This supplies the H-side numerator through Submodule.coe_inner, deliberately avoiding LinearIsometryEquiv.inner_map_map on ↥H (whose Submodule.module vs InnerProductSpace instance diamond blocks unification).",
     "mathContext": "$\\langle \\mathrm{pad}\\,a, \\mathrm{pad}\\,b\\rangle = \\langle a,b\\rangle$ (needs $e$ injective); $\\langle T\\,\\mathrm{pad}\\,x, \\mathrm{pad}\\,x\\rangle = \\langle T_{\\mathrm{sub}} x, x\\rangle$.",

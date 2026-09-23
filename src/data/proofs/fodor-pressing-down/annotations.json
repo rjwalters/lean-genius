@@ -2,7 +2,7 @@
   {
     "id": "ann-club",
     "proofId": "fodor-pressing-down",
-    "range": { "startLine": 43, "endLine": 80 },
+    "range": { "startLine": 38, "endLine": 50 },
     "type": "definition",
     "title": "Club and Stationary Sets: Set-Theoretic Infrastructure",
     "content": "IsUnboundedBelow S o says S is cofinal below o. IsClubBelow S o is a `structure` with three fields — `subset_Iio : S ⊆ Iio o`, `closed : IsClosedBelow S o`, and `unbounded : IsUnboundedBelow S o` — i.e. a club is bounded below o, closed under accumulation points, and cofinal. The helper theorems IsClubBelow.mem_lt (membership ⟹ < o, derived from subset_Iio) and IsClubBelow.mem_of_isAcc (an accumulation point in Iio o is in S, derived from closed) reproduce the conventional 'closed unbounded' API. IsStationaryBelow S o says S meets every club below o. The standalone lemma isClubBelow_Iio_of_isSuccLimit witnesses that `Iio o` is itself a club whenever o is a successor-limit (used by IsStationaryBelow.nonempty in Part VI).",

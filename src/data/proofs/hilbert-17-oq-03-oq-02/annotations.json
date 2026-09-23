@@ -48,10 +48,10 @@
     "id": "ann-h17-oq0302-topsq",
     "proofId": "hilbert-17-oq-03-oq-02",
     "range": {
-      "startLine": 170,
-      "endLine": 223
+      "startLine": 168,
+      "endLine": 221
     },
-    "type": "theorem",
+    "type": "lemma",
     "title": "The degree bound via leading forms",
     "content": "topsq proves homogeneousComponent (2D) (p²) = (homogeneousComponent D p)² whenever D bounds deg p: writing p = (top form) + (lower part), the cross and lower-squared terms have total degree < 2D and drop out, while the top form squared is homogeneous of degree 2D and survives. degree_bound then takes D to be the maximal degree among the qᵢ: if D ≥ 4 the degree-2D component of M = Σ qᵢ² would be Σ (top form)² = 0 (M has degree 6 < 2D), forcing every top form to vanish — impossible for the qᵢ attaining the maximum. Hence every qᵢ has total degree ≤ 3.",
     "mathContext": "$\\deg\\Big(\\sum_i q_i^2\\Big) = 2\\max_i \\deg q_i \\;\\Longrightarrow\\; \\max_i \\deg q_i = 3.$",
@@ -71,10 +71,10 @@
     "id": "ann-h17-oq0302-coeff22",
     "proofId": "hilbert-17-oq-03-oq-02",
     "range": {
-      "startLine": 290,
-      "endLine": 323
+      "startLine": 289,
+      "endLine": 319
     },
-    "type": "theorem",
+    "type": "lemma",
     "title": "The x²y² coefficient is a square",
     "content": "coeff22_sq is the heart of the contradiction. Expanding [x²y²] qᵢ² over the nine antidiagonal pairs (a,b) with a+b = (2,2), every pair other than (xy, xy) contains a factor that the constraints kill: a coefficient of degree ≥ 4 (degree bound), or a pure-x / pure-y coefficient of positive degree (pure-axis vanishing established by the x⁶→x⁴→x² and y⁶→y⁴→y² chains). Only (xy)·(xy) survives, giving [x²y²] qᵢ² = ([xy] qᵢ)². Summing over i: −3 = [x²y²] M = Σᵢ ([xy] qᵢ)² ≥ 0, a contradiction.",
     "mathContext": "$[x^2y^2]\\,q_i^2 = \\big([xy]\\,q_i\\big)^2 \\;\\Longrightarrow\\; -3 = \\sum_i \\big([xy]\\,q_i\\big)^2 \\ge 0.$",

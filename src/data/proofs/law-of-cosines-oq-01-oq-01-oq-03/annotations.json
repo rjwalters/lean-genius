@@ -86,8 +86,8 @@
   {
     "id": "ann-dual-trig-identity",
     "proofId": "law-of-cosines-oq-01-oq-01-oq-03",
-    "range": { "startLine": 186, "endLine": 194 },
-    "type": "lemma",
+    "range": { "startLine": 429, "endLine": 437 },
+    "type": "theorem",
     "title": "Pure Trig: cos(π−x) = −cos x, sin(π−x) = sin x",
     "content": "An algebraic Lemma packaging the polar substitution. Given the standard spherical law $\\cos(\\pi - \\gamma) = \\cos(\\pi - \\alpha)\\cos(\\pi - \\beta) + \\sin(\\pi - \\alpha)\\sin(\\pi - \\beta)\\cos(\\pi - c)$, applies $\\cos(\\pi - x) = -\\cos x$ and $\\sin(\\pi - x) = \\sin x$ to derive the dual law $\\cos\\gamma = -\\cos\\alpha\\cos\\beta + \\sin\\alpha\\sin\\beta\\cos c$. The proof is a one-liner: `simp` rewrites with `Real.cos_pi_sub` and `Real.sin_pi_sub`, then `linarith` closes. This is the only step in the whole pipeline that's pure trigonometry — everything else is geometric.",
     "mathContext": "$\\cos(\\pi - \\gamma) = \\cos(\\pi - \\alpha)\\cos(\\pi - \\beta) + \\sin(\\pi - \\alpha)\\sin(\\pi - \\beta)\\cos(\\pi - c) \\implies \\cos\\gamma = -\\cos\\alpha\\cos\\beta + \\sin\\alpha\\sin\\beta\\cos c$",

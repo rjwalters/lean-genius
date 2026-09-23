@@ -136,8 +136,8 @@
     "proofId": "erdos-160",
     "type": "definition",
     "range": {
-      "startLine": 97,
-      "endLine": 106
+      "startLine": 129,
+      "endLine": 142
     },
     "title": "The Function h(N)",
     "content": "$h(N)$ is axiomatized as the minimum number of colors for a 3-diverse coloring of $\\{1,\\ldots,N\\}$ on 4-APs. Both achievability and minimality are axioms, since `Nat.find` requires decidability which is not available here.",

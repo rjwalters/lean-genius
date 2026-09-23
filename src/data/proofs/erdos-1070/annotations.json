@@ -115,10 +115,10 @@
     "id": "ann-1070-6",
     "proofId": "erdos-1070",
     "range": {
-      "startLine": 87,
-      "endLine": 88
+      "startLine": 84,
+      "endLine": 89
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Density Constant m₁",
     "content": "The *upper density* $m_1 = \\sup\\{\\overline{d}(S) : S \\subseteq \\mathbb{R}^2 \\text{ measurable, unit-distance-free}\\}$ where $\\overline{d}(S) = \\limsup_{R \\to \\infty} \\text{area}(S \\cap B_R) / \\text{area}(B_R)$. This continuous quantity controls the discrete function $f(n)$ via the Larman-Rogers connection. Axiomatized with `m1_pos` ($m_1 > 0$) and `m1_le_one` ($m_1 \\leq 1$). The exact value of $m_1$ is unknown; best bounds are $0.22936 \\leq m_1 \\leq 0.247$.",
     "mathContext": "$m_1 = \\sup\\{\\overline{d}(S) : S \\subseteq \\mathbb{R}^2,\\, \\forall p, q \\in S,\\, d(p,q) \\neq 1\\}$",

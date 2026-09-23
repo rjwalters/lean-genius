@@ -26,7 +26,7 @@
   {
     "id": "ann-probability-typeclass",
     "proofId": "laws-of-large-numbers-oq-01-oq-03",
-    "range": { "startLine": 66, "endLine": 66 },
+    "range": { "startLine": 62, "endLine": 66 },
     "type": "definition",
     "title": "Why `[IsProbabilityMeasure μ]` and Not Just `[SigmaFinite μ]`?",
     "content": "The `variable` declaration constrains $\\mu$ to be a probability measure (total mass 1) rather than merely $\\sigma$-finite. This is mathematically essential at three points in the Chebyshev-variance argument: (1) the indicator variance bound $\\mathrm{Var}(\\mathbf{1}_{A_k}) = \\mu(A_k)(1 - \\mu(A_k)) \\leq \\mu(A_k)$ uses $\\mu(A_k) \\leq 1$, which fails for general $\\sigma$-finite measures; (2) Chebyshev's inequality $P(|X - E[X]| \\geq t) \\leq \\mathrm{Var}(X)/t^2$ is stated for probability measures (with general expectations defined via integrals against a probability measure); (3) the conclusion $\\mu(\\limsup A_n) = 1$ uses 1 as the total mass — for a general measure the natural conclusion would be $\\mu(\\limsup A_n) = \\mu(\\Omega)$ if finite, or $= \\infty$ if $\\sigma$-finite. The conclusion's `openQuestions` flags the $\\sigma$-finite generalization as genuinely open: while the *qualitative* statement 'limsup has full measure' should survive, the *Chebyshev-variance* proof method does not transfer cleanly outside the probability setting. An ergodic-theoretic reformulation (e.g., via Hopf's ratio ergodic theorem) is the natural path for the $\\sigma$-finite case, but the constants and the role of pairwise independence are different in that regime.",
