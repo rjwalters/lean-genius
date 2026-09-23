@@ -74,7 +74,7 @@
   {
     "id": "ann-axiom-cleanliness",
     "proofId": "lagrange-theorem-oq-02-oq-03",
-    "range": { "startLine": 159, "endLine": 167 },
+    "range": { "startLine": 147, "endLine": 167 },
     "type": "concept",
     "title": "Verified Status and the #check Anchors",
     "content": "The file closes with seven `#check @...` anchors, one per theorem, confirming the final type signature of each result before closing the `OrbitStabilizerCardinal` namespace. The file introduces no `axiom` declarations, no `sorry`, and no `native_decide`; the Mathlib API closure inherits only the standard foundational triple (`Classical.choice`, `propext`, `Quot.sound`), which the Axiom Integrity Policy does not count as assumptions. Status `verified` (0 sorries, 0 axioms, 0 structure-encoded assumptions) is justified.",

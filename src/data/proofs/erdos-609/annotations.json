@@ -141,8 +141,8 @@
     "id": "ann-e609-complete-graph",
     "proofId": "erdos-609",
     "range": {
-      "startLine": 74,
-      "endLine": 81
+      "startLine": 54,
+      "endLine": 55
     },
     "type": "definition",
     "title": "Complete Graph K_n",
@@ -164,10 +164,10 @@
     "id": "ann-e609-f-def",
     "proofId": "erdos-609",
     "range": {
-      "startLine": 86,
-      "endLine": 103
+      "startLine": 87,
+      "endLine": 102
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "The Function f(n) and Alternative Definition",
     "content": "**erdos609_f n:** Defined via `Nat.find` as the minimum $m$ such that every $n$-coloring of $K_{2^n+1}$ has a monochromatic odd cycle of length $\\leq m$. The existence of such $m$ (`f_exists`) is the content of the forcing theorem (sorry'd). **IsErdos609_f n m** gives an alternative characterization: $m$ is the threshold iff it forces and is minimal.",
     "mathContext": "The `Nat.find` construction yields $f(n) = \\min\\{m \\in \\mathbb{N} : \\forall c,\\; \\exists \\text{mono odd } C_\\ell,\\; \\ell \\leq m\\}$. The alternative `IsErdos609_f` adds the minimality clause: $f(n) = m$ iff $m$ forces and $m-1$ does not. This is a standard well-ordering argument on $\\mathbb{N}$.",
@@ -258,8 +258,8 @@
     "id": "ann-e609-chung",
     "proofId": "erdos-609",
     "range": {
-      "startLine": 136,
-      "endLine": 138
+      "startLine": 113,
+      "endLine": 117
     },
     "type": "definition",
     "title": "Chung's Question (1997)",
@@ -443,8 +443,8 @@
     "id": "ann-e609-main",
     "proofId": "erdos-609",
     "range": {
-      "startLine": 217,
-      "endLine": 219
+      "startLine": 169,
+      "endLine": 187
     },
     "type": "concept",
     "title": "Main Problem Statement and Asymptotics",

@@ -14,7 +14,7 @@
   {
     "id": "ann-setup",
     "proofId": "shannon-channel-coding-awgn-oq-02",
-    "range": { "startLine": 33, "endLine": 39 },
+    "range": { "startLine": 34, "endLine": 36 },
     "type": "definition",
     "title": "Probability-Space Setup",
     "content": "Imports Mathlib and opens MeasureTheory and ProbabilityTheory. The ambient context is an arbitrary measurable space $\\Omega$ with a probability measure $\\mu$ (`IsProbabilityMeasure`). All random variables are real-valued ($\\Omega\\to\\mathbb{R}$), and the notation $\\mu[X]$ denotes the Bochner integral $\\int X\\,d\\mu$ = expectation. Working on an arbitrary probability space (rather than a concrete Gaussian one) is what makes the result fully general.",
@@ -26,8 +26,8 @@
   {
     "id": "ann-bridge",
     "proofId": "shannon-channel-coding-awgn-oq-02",
-    "range": { "startLine": 41, "endLine": 48 },
-    "type": "lemma",
+    "range": { "startLine": 38, "endLine": 45 },
+    "type": "theorem",
     "title": "Second Moment = Variance for Centered Variables",
     "content": "`secondMoment_eq_variance_of_mean_zero`: for square-integrable $X$ with $\\mathbb{E}[X]=0$, the second moment $\\mathbb{E}[X^2]$ equals $\\mathrm{Var}[X]$. The proof rewrites by `variance_eq_sub` ($\\mathrm{Var}[X]=\\mathbb{E}[X^2]-\\mathbb{E}[X]^2$), substitutes $\\mathbb{E}[X]=0$, and closes with `ring`. This is the bridge between the channel's notion of 'power' (the raw second moment $\\mathbb{E}[X^2]$) and Mathlib's `variance` (the centered second moment) — the two coincide exactly under zero mean.",
     "mathContext": "$\\mathbb{E}[X]=0 \\Rightarrow \\mathbb{E}[X^2]=\\mathrm{Var}[X]$",

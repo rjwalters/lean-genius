@@ -25,10 +25,10 @@
     "id": "ann-410-sigma",
     "proofId": "erdos-410",
     "range": {
-      "startLine": 42,
-      "endLine": 55
+      "startLine": 40,
+      "endLine": 61
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Sum of Divisors",
     "content": "The sum-of-divisors function σ(n) = Σ_{d|n} d is one of the most fundamental arithmetic functions. Key properties proved here: σ(n) > n for n > 1 (since n and 1 are always divisors), σ(1) = 1, σ(p) = p + 1 for prime p. Robin's inequality gives the upper bound: σ(n) < e^γ · n · ln(ln n) for n > 5040, which is equivalent to the Riemann Hypothesis (Robin 1984).",
     "mathContext": "$\\sigma(n) = \\sum_{d \\mid n} d$. For $n > 1$: $\\sigma(n) \\geq n + 1$ (since $1$ and $n$ are always divisors). For prime $p$: $\\sigma(p) = p + 1$. Average order: $\\frac{1}{N}\\sum_{n=1}^{N} \\sigma(n)/n \\sim \\frac{\\pi^2}{6}$.",

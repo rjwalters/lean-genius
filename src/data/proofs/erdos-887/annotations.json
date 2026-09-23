@@ -143,8 +143,8 @@
     "proofId": "erdos-887",
     "type": "concept",
     "range": {
-      "startLine": 132,
-      "endLine": 153
+      "startLine": 128,
+      "endLine": 148
     },
     "title": "Summary and Main Entry Point",
     "content": "**erdos_887_summary** packages all known results into a single 4-part conjunction: (1) the Erdős–Rosenfeld lower bound of 4, (2) Chan's perfect-square bound of 5, (3) unboundedness for α > 1/2, and (4) the bound of 2 for α < 1/4.\n\n**erdos_887** provides the main entry point by showing that ErdosRosenfeldConjecture unfolds to the expected quantified statement. This is proved by `rfl` since the conjecture is definitionally equal to its expansion.\n\nThe problem's status is OPEN: neither the existence nor non-existence of the universal constant K has been established in the general case.",

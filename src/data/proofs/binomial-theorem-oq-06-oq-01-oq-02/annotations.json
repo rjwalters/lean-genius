@@ -26,10 +26,10 @@
     "id": "ann-neg-one-pow-sub",
     "proofId": "binomial-theorem-oq-06-oq-01-oq-02",
     "range": {
-      "startLine": 63,
-      "endLine": 79
+      "startLine": 58,
+      "endLine": 75
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "The Parity Sign Identity",
     "content": "The sign-reversing core of the involution: for odd n and k ≤ n, (-1)^{n-k} = -(-1)^k over ℤ. The proof is algebraic rather than a parity case-split: since (n-k)+k = n is odd, (-1)^{n-k}·(-1)^k = (-1)^n = -1, and since ((-1)^k)^2 = 1, multiplying through by (-1)^k isolates (-1)^{n-k} = -(-1)^k.",
     "mathContext": "$n$ odd, $k \\le n \\implies (-1)^{n-k} = -(-1)^k$",

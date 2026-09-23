@@ -50,8 +50,8 @@
   {
     "id": "ann-cantorsoq0104-towers",
     "proofId": "cantors-theorem-oq-01-oq-04",
-    "range": { "startLine": 74, "endLine": 92 },
-    "type": "lemma",
+    "range": { "startLine": 73, "endLine": 87 },
+    "type": "theorem",
     "title": "§4 — Strict Cantor and Beth Towers",
     "content": "card_real_lt_powerSet (|ℝ| < |𝒫(ℝ)|) and card_powerSet_real_lt_powerSet_powerSet (|𝒫(ℝ)| < |𝒫(𝒫(ℝ))|) are instances of Cardinal.cantor (κ < 2^κ): rewrite the appropriate power set with mk_set, then apply cantor. (For the second, the rewrite must target the right-hand #(Set (Set ℝ)), supplied via an explicit have, since mk_set would otherwise match the left side first.) beth_tower_strictMono gives ℶ₁ < ℶ₂ < ℶ₃ from Cardinal.beth_strictMono applied to the ordinal inequalities 1 < 2 and 2 < 3.",
     "mathContext": "Cantor: $\\kappa < 2^\\kappa$ gives $\\#\\mathbb{R} < |\\mathcal{P}(\\mathbb{R})| < |\\mathcal{P}(\\mathcal{P}(\\mathbb{R}))|$. Strict monotonicity of $\\beth$ on ordinals gives $\\beth_1 < \\beth_2 < \\beth_3$.",

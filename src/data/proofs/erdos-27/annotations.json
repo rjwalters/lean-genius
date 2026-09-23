@@ -357,10 +357,10 @@
     "id": "ann-27-critical",
     "proofId": "erdos-27",
     "range": {
-      "startLine": 204,
-      "endLine": 211
+      "startLine": 212,
+      "endLine": 217
     },
-    "type": "lemma",
+    "type": "definition",
     "title": "Critical Exponent",
     "content": "**criticalExponent N** = $\\frac{\\log\\log\\log N}{4\\log\\log N}$. For $C \\leq N^{\\alpha(N)}$, almost-covering provably fails.",
     "mathContext": "$\\alpha(N) = \\frac{\\log\\log\\log N}{4\\log\\log N} \\to 0$ as $N \\to \\infty$, but extremely slowly. For $N = 10^{100}$, $\\alpha(N) \\approx 0.045$, so $N^{\\alpha(N)} \\approx 10^{4.5}$.",

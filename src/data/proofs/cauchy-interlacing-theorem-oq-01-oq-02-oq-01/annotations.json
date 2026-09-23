@@ -50,7 +50,7 @@
   {
     "id": "ann-include-directive",
     "proofId": "cauchy-interlacing-theorem-oq-01-oq-02-oq-01",
-    "range": { "startLine": 59, "endLine": 61 },
+    "range": { "startLine": 46, "endLine": 61 },
     "type": "tactic",
     "title": "Threading the Poincaré Hypotheses with `include`",
     "content": "The Poincaré data (`T, b, hT, hlam, hHdim, TH, bH, hTH, hmu, hRayleigh`) appears only inside the proof bodies — the *statements* of the Ky Fan theorems mention only `mu`, `lam`, and `s`. Lean's section-variable auto-binding therefore would not pull them in, so an explicit `include` directive forces their inclusion into every theorem below. Omitting it produces the misleading `unknown identifier T` error at each call site.",

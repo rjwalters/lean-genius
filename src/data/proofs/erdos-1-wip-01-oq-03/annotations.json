@@ -14,7 +14,7 @@
   {
     "id": "ann-erdos1-oq03-maxrecdepth",
     "proofId": "erdos-1-wip-01-oq-03",
-    "range": { "startLine": 55, "endLine": 58 },
+    "range": { "startLine": 128, "endLine": 133 },
     "type": "tactic",
     "title": "Raising maxRecDepth for Kernel Decision",
     "content": "The distinct-subset-sums checks for the larger witnesses (n = 7, 8) force the Lean kernel to reduce a cardinality computation over a powerset of 2⁷ = 128 and 2⁸ = 256 subsets. That reduction nests deeper than the default elaboration recursion limit, so `set_option maxRecDepth 10000` is required. Crucially this raises only the recursion budget of ordinary kernel `decide`; it does not switch to `native_decide`, so no compiler-trust axiom (`Lean.ofReduceBool`) is introduced.",

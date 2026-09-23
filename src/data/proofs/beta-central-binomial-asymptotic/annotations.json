@@ -2,8 +2,8 @@
   {
     "id": "ann-centralbinom-cast",
     "proofId": "beta-central-binomial-asymptotic",
-    "range": { "startLine": 50, "endLine": 62 },
-    "type": "definition",
+    "range": { "startLine": 54, "endLine": 66 },
+    "type": "lemma",
     "title": "The Central Binomial as a Factorial Quotient",
     "content": "centralBinom_cast establishes the exact real identity C(2n,n) = (2n)!/(n!·n!). It proves the natural-number version C(2n,n)·(n!·n!) = (2n)! from Mathlib's Nat.choose_mul_factorial_mul_factorial (after rewriting 2n − n = n) and casts to ℝ via eq_div_iff. This factorial form is the bridge that lets Mathlib's Stirling factorial equivalence be applied to each factorial appearing in the central binomial.",
     "mathContext": "$C(2n,n) = \\dfrac{(2n)!}{n!\\,n!}$",

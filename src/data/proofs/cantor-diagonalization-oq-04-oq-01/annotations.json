@@ -167,7 +167,7 @@
   {
     "id": "ann-cantor-oq04-oq01-end",
     "proofId": "cantor-diagonalization-oq-04-oq-01",
-    "range": { "startLine": 166, "endLine": 166 },
+    "range": { "startLine": 160, "endLine": 166 },
     "type": "concept",
     "title": "Closing: Toward a Full CCC Formalization",
     "content": "Closes the namespace. The 8 theorems together establish: (1) Lawvere's FPT for setoids, (2) its contrapositive, (3) recovery of the Type version, (4) two concrete non-Lawvere setoids ($\\text{Bool}$, $\\mathbb{N}$ mod parity), and (5) Cantor's theorem in the setoid setting. The remaining gap to a full CCC formalization is replacing `(Y → Y)` with the internal-hom $[Y, Y]$ in a CCC and re-stating the retract using the evaluation morphism — a substantial categorical refactor left to OQ-04-OQ-01-OQ-XX.",

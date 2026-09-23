@@ -163,8 +163,8 @@
     "proofId": "erdos-411",
     "type": "definition",
     "range": {
-      "startLine": 65,
-      "endLine": 67
+      "startLine": 144,
+      "endLine": 148
     },
     "title": "General Ratio Relation",
     "content": "Generalization of the doubling relation: $g^{k+r}(n) = c \\cdot g^k(n)$ for all large $k$, where $c$ is an arbitrary multiplicative factor. Cambie discovered that ratios besides 2 (specifically 3 and 4) can also occur, extending the landscape of solutions beyond Erdős's original question.",
@@ -185,8 +185,8 @@
     "proofId": "erdos-411",
     "type": "concept",
     "range": {
-      "startLine": 69,
-      "endLine": 69
+      "startLine": 191,
+      "endLine": 195
     },
     "title": "Cambie's Ratio-3 Solution",
     "content": "Cambie found that $n = 738$ with period $r = 4$ gives a ratio-3 solution: $g^{k+4}(738) = 3 \\cdot g^k(738)$ for all large $k$. This shows the phenomenon extends beyond doubling to tripling, opening up a richer classification problem.",

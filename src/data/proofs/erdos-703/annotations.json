@@ -337,8 +337,8 @@
     "title": "L-Avoiding Family (Generalization)",
     "content": "A family F avoids a set L of intersection sizes if no two sets in F have intersection size in L. This generalizes r-avoiding (where L = {r}) to forbidden sets of intersection sizes, the setting of the Frankl-Wilson theorem.",
     "range": {
-      "startLine": 316,
-      "endLine": 317
+      "startLine": 907,
+      "endLine": 913
     },
     "significance": "key",
     "mathContext": "The generalization from forbidding a single intersection size $r$ to forbidding a set $L$ of sizes is central to the Frankl-Wilson approach. The $L$-avoiding condition is: $|A \\cap B| \\notin L$ for all $A, B \\in \\mathcal{F}$. When $|L| = s$, the Frankl-Wilson theorem gives $|\\mathcal{F}| \\leq \\binom{n}{s}$, a polynomial bound regardless of $n$.",

@@ -38,8 +38,8 @@
   {
     "id": "erdos659-oq05-ann-small-nonneg",
     "proofId": "erdos-659-oq-05",
-    "range": { "startLine": 58, "endLine": 70 },
-    "type": "lemma",
+    "range": { "startLine": 61, "endLine": 73 },
+    "type": "theorem",
     "title": "Base Cases and Nonnegativity",
     "content": "isRepresented_zero/one/two record that 0, 1, 2 are represented (Q 0 0, Q 1 0, Q 0 1), each by `decide`. isRepresented_one is the monoid identity needed for the submonoid below. isRepresented_nonneg shows every represented integer is ≥ 0 (a sum of squares, closed by `positivity`) — essential because these integers stand for squared distances, which cannot be negative.",
     "mathContext": "$Q(1,0)=1,\\ Q(0,1)=2;\\qquad \\mathrm{IsRepresented}(n) \\Rightarrow n \\ge 0$",
@@ -62,7 +62,7 @@
   {
     "id": "erdos659-oq05-ann-submonoid",
     "proofId": "erdos-659-oq-05",
-    "range": { "startLine": 82, "endLine": 95 },
+    "range": { "startLine": 167, "endLine": 180 },
     "type": "definition",
     "title": "The Submonoid of Represented Integers",
     "content": "representedSubmonoid packages isRepresented_one (identity) and isRepresented_mul (closure) into an honest Submonoid ℤ, with mem_representedSubmonoid as the membership simp-lemma. isRepresented_prod then extends closure from binary products to arbitrary finite products via Finset.prod_induction. Recording the structure as a submonoid (rather than ad hoc lemmas) makes the multiplicative nature first-class and reusable in any monoid-theoretic argument.",
@@ -74,7 +74,7 @@
   {
     "id": "erdos659-oq05-ann-lattice",
     "proofId": "erdos-659-oq-05",
-    "range": { "startLine": 97, "endLine": 99 },
+    "range": { "startLine": 197, "endLine": 199 },
     "type": "definition",
     "title": "The Moree–Osburn Lattice Point",
     "content": "latticePoint x y is the point (x, y·√2) ∈ ℝ², the explicit embedding of integer coordinates used in the Moree–Osburn construction. The √2 stretch in the second coordinate is exactly what makes squared Euclidean distances land in the form x² + 2y² rather than x² + y², converting a geometric question about distinct distances into the arithmetic of the represented set.",

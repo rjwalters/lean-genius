@@ -26,8 +26,8 @@
   {
     "id": "ann-flip-bounds",
     "proofId": "greens-theorem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 64, "endLine": 67 },
-    "type": "definition",
+    "range": { "startLine": 65, "endLine": 68 },
+    "type": "theorem",
     "title": "The Sign-Flip Identity",
     "content": "The cornerstone of interval integral arithmetic: ∫ x in a..b, f x = -(∫ x in b..a, f x). This is what distinguishes the signed interval integral from the unsigned Lebesgue integral. The proof is a one-liner: integral_symm b a is exactly this identity. This sign convention is what makes interval integrals a directed quantity and gives them their algebraic richness — but it's also what forces the 4-case analysis in the general Fubini below.",
     "mathContext": "$\\int_a^b f(x) \\, dx = -\\int_b^a f(x) \\, dx$ — the directional sign convention of interval integrals",
@@ -38,8 +38,8 @@
   {
     "id": "ann-neg-outside",
     "proofId": "greens-theorem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 69, "endLine": 73 },
-    "type": "definition",
+    "range": { "startLine": 70, "endLine": 73 },
+    "type": "theorem",
     "title": "Negation Pulls Out of Integrals",
     "content": "A trivial but indispensable wrapper around intervalIntegral.integral_neg: ∫ x in a..b, -g x = -(∫ x in a..b, g x). Used heavily in the general-Fubini cases to commute the sign-flip out from the inner integral to the outer. Without this lemma each case proof would have to repeat the same negation-extraction calculation.",
     "mathContext": "$\\int_a^b (-g(x)) \\, dx = -\\int_a^b g(x) \\, dx$ — linearity of the integral with respect to negation",

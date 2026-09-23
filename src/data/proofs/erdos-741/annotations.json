@@ -178,10 +178,10 @@
     "id": "ann-e741-density-axioms",
     "proofId": "erdos-741",
     "range": {
-      "startLine": 182,
-      "endLine": 200
+      "startLine": 229,
+      "endLine": 263
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Density Properties (5 Axioms)",
     "content": "Five axioms characterizing upper density behavior. density_empty: d(empty) = 0. density_finite: finite sets have density 0. density_mono: A subset B implies d(A) <= d(B). density_univ: d(N) = 1. density_le_one: d(A) <= 1 for all A. These are standard properties of upper Banach density that could in principle be proved from the limsup definition but are axiomatized to keep the formalization focused.",
     "mathContext": "Axioms: $\\bar{d}(\\emptyset) = 0$, $A$ finite $\\Rightarrow \\bar{d}(A) = 0$, $A \\subseteq B \\Rightarrow \\bar{d}(A) \\leq \\bar{d}(B)$, $\\bar{d}(\\mathbb{N}) = 1$, $\\bar{d}(A) \\leq 1$. These characterize upper density as a finitely subadditive, monotone, normalized set function.",

@@ -14,7 +14,7 @@
   {
     "id": "ann-setup-variables",
     "proofId": "newton-power-sum-identities-oq-01-oq-03",
-    "range": { "startLine": 45, "endLine": 51 },
+    "range": { "startLine": 47, "endLine": 51 },
     "type": "definition",
     "title": "Ambient setting: any finite σ over any commutative ring",
     "content": "The proof opens Finset, Matrix and MvPolynomial and fixes a finite index type σ and a commutative ring R. Because everything lives in MvPolynomial σ R, the identities are universal symmetric-function statements: they hold for every finite σ and every commutative ring R, with no division by k!. When card σ < k the higher eⱼ vanish and the determinant degenerates to the correct value automatically. The [CommRing R] hypothesis (not [Field] or [CommRing R] with a ℚ-algebra structure) is the strongest possible generality for these identities.",

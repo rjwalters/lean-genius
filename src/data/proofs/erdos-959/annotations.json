@@ -166,8 +166,8 @@
     "proofId": "erdos-959",
     "type": "definition",
     "range": {
-      "startLine": 94,
-      "endLine": 99
+      "startLine": 113,
+      "endLine": 120
     },
     "title": "Generalized r-th Frequency Gap",
     "content": "**frequencyGapR A r** computes f(d_r) - f(d_{r+1}), the gap between the r-th and (r+1)-th most frequent distances. Frequencies are sorted in decreasing order and indexed; returns 0 if r is out of range.",

@@ -25,10 +25,10 @@
   {
     "id": "erdos-1155-process-axioms",
     "proofId": "erdos-1155",
-    "type": "definition",
+    "type": "axiom",
     "range": {
-      "startLine": 40,
-      "endLine": 61
+      "startLine": 50,
+      "endLine": 71
     },
     "title": "Axiomatization of the Triangle Removal Process",
     "content": "The process is axiomatized through three declarations:\n\n1. **triangleRemovalEdges** : ℕ → ℝ — the function f(n) giving the expected number of remaining edges after the process on $K_n$ terminates\n2. **triangleRemovalEdges_nonneg** : f(n) ≥ 0 — edges cannot be negative\n3. **triangleRemovalEdges_le_complete** : f(n) ≤ n(n-1)/2 — the process only removes edges\n\nFull probabilistic formalization would require extensive measure theory infrastructure, so axiomatization is the practical approach.",

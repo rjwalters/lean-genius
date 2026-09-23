@@ -25,10 +25,10 @@
     "id": "ramsey-number",
     "proofId": "erdos-1014",
     "range": {
-      "startLine": 27,
-      "endLine": 29
+      "startLine": 30,
+      "endLine": 32
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Ramsey Number R(k,l)",
     "content": "The Ramsey number R(k,l) is the minimum n such that every 2-coloring of K_n's edges contains a red K_k or blue K_l. Axiomatized here since a constructive definition would require significant graph-theoretic machinery including Ramsey's theorem and the well-ordering of ℕ.",
     "significance": "key",
@@ -427,10 +427,10 @@
     "id": "ann-erdos1014-small-values",
     "proofId": "erdos-1014",
     "range": {
-      "startLine": 318,
-      "endLine": 323
+      "startLine": 350,
+      "endLine": 353
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Classical Small Ramsey Values: R(3,3)=6, R(3,4)=9, R(3,5)=14",
     "content": "The handful of exactly known off-diagonal Ramsey numbers in the $k=3$ row, recorded as axioms (their determination is by combinatorial case analysis / computer search, not reproved here). $R(3,3)=6$ is the classic \"party problem\" (among 6 people, 3 are mutual acquaintances or 3 mutual strangers). These anchor the strict-monotonicity sanity checks that follow and illustrate how sparse exact knowledge of Ramsey numbers is — even $R(5,5)$ is unknown, famously bracketed only as $43 \\le R(5,5) \\le 48$.",
     "significance": "supporting",

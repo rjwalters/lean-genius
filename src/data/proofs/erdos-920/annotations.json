@@ -303,10 +303,10 @@
     "id": "ann-e920-ramsey-def",
     "proofId": "erdos-920",
     "range": {
-      "startLine": 170,
-      "endLine": 175
+      "startLine": 147,
+      "endLine": 152
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Ramsey Number R(k,m)",
     "content": "**RamseyNumber k m**: The Ramsey number $R(k,m)$ is the smallest $n$ such that every 2-coloring of the edges of $K_n$ contains either a red $K_k$ or a blue $K_m$. Axiomatized because the full definition requires quantifying over all edge 2-colorings. Ramsey numbers are notoriously difficult to compute: $R(3,3) = 6$, $R(4,4) = 18$, and $R(5,5)$ is still unknown (known to be between 43 and 48).",
     "mathContext": "$R(k,m) = \\min\\{n : \\forall c: E(K_n) \\to \\{\\text{red, blue}\\}, \\exists \\text{red } K_k \\text{ or blue } K_m\\}$. Ramsey's theorem guarantees $R(k,m) < \\infty$. The Erdős-Szekeres bound gives $R(k,m) \\leq \\binom{k+m-2}{k-1}$.",
@@ -374,8 +374,8 @@
     "id": "ann-e920-ramsey-k4",
     "proofId": "erdos-920",
     "range": {
-      "startLine": 199,
-      "endLine": 203
+      "startLine": 165,
+      "endLine": 169
     },
     "type": "concept",
     "title": "Mattheus-Verstraete Ramsey Bound R(4,m)",

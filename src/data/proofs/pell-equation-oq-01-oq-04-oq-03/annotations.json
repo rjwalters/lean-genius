@@ -23,8 +23,8 @@
   {
     "id": "ann-pell-oq03-infra",
     "proofId": "pell-equation-oq-01-oq-04-oq-03",
-    "range": { "startLine": 69, "endLine": 122 },
-    "type": "lemma",
+    "range": { "startLine": 72, "endLine": 122 },
+    "type": "theorem",
     "title": "Restated grandparent infrastructure (homomorphism and power laws)",
     "content": "pellNorm_one (the identity has norm 1), pellNorm_mul (Brahmagupta's identity / multiplicativity, proved by a linear_combination against (√d)² = d), pellNorm_mul_inv and pellNorm_ne_zero (the norm of the conjugate inverts it, so the norm never vanishes), pellRegulator_mul (additivity via Real.log_mul), pellNorm_pow and pellRegulator_pow (R(aⁿ) = n·R(a) via Real.log_pow). Restated verbatim from the grandparent so the file is self-contained; these are exactly the facts the bundled homomorphisms and the minimality theorem consume.",
     "mathContext": "$\\mathrm{pellNorm}(a\\cdot b) = \\mathrm{pellNorm}(a)\\,\\mathrm{pellNorm}(b),\\qquad R(a^n) = n\\,R(a)$.",
@@ -63,8 +63,8 @@
   {
     "id": "ann-pell-oq03-bound",
     "proofId": "pell-equation-oq-01-oq-04-oq-03",
-    "range": { "startLine": 171, "endLine": 190 },
-    "type": "lemma",
+    "range": { "startLine": 172, "endLine": 187 },
+    "type": "theorem",
     "title": "Norm bound and positivity of the fundamental regulator",
     "content": "one_lt_pellNorm: a nontrivial positive solution (1 < x, 0 < y, d > 0) has ‖a‖ = x + y√d > 1, since x > 1 and y√d > 0. pellRegulator_fundamental_pos: a fundamental solution a₁ — which by definition has 1 < a₁.x, 0 < a₁.y, and forces d > 0 (IsFundamental.d_pos) — therefore has R(a₁) = log‖a₁‖ > 0 by Real.log_pos. This strict positivity is the only inequality the minimality argument needs: it is the floor below which no positive regulator can fall.",
     "mathContext": "$1 < a.x,\\; 0 < a.y \\;\\Rightarrow\\; \\|a\\| > 1,\\qquad R(a_1) > 0$.",
