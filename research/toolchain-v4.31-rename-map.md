@@ -1572,3 +1572,46 @@ subtraction made the original statement false; geometric gluing bound). No calle
 - `minpoly.eq_of_irreducible_of_monic` arg order → `(h_irred) (h_root) (h_monic) : p = minpoly A x`.
 - Instances stated on `IntermediateField.fixedField H` don't fire through def-wrappers — apply
   `IsGalois.of_fixedField_normal_subgroup` by hand.
+
+### 7j. Doctor re-verify wave recipes (#38065, 2026-09-23, post-flip on `main`)
+
+All four items grep-verified against the v4.31 Mathlib source *in-container*
+(`docker run --rm -v lean-mathlib-packages:/pk lean4-arm64:v4.31.0 …`) and build-verified on
+`Proofs/Erdos1162Problem.lean` (6 errors → 3).
+
+- **`Nat.card_pos_of_nonempty h` → `Nat.card_pos` (instance-carried).** v4.31 has only
+  `Mathlib/SetTheory/Cardinal/Finite.lean:85` `@[simp] lemma card_pos [Nonempty α] [Finite α] :
+  0 < Nat.card α`; the explicit-argument form is gone. Recipe:
+  ```lean
+  haveI : Nonempty (Subgroup G) := ⟨⊥⟩
+  exact Nat.card_pos          -- was: exact Nat.card_pos_of_nonempty ⟨⊥⟩
+  ```
+  (`Finite` came for free here from the SetLike instance; add
+  `haveI : Finite _ := Finite.of_injective _ SetLike.coe_injective` if it does not.)
+- **`Equiv.Perm.subsingleton` removed → the fact is now an *instance*.** v4.31
+  `Mathlib/Logic/Equiv/Defs.lean:195/198` declares `instance equiv_subsingleton_cod
+  [Subsingleton β]` and `equiv_subsingleton_dom [Subsingleton α] : Subsingleton (α ≃ β)`, so
+  `haveI : Subsingleton (Equiv.Perm (Fin 1)) := inferInstance` works and the named lemma is
+  unnecessary. (The surviving *lemma* is `Equiv.Perm.subsingleton_eq_refl`, a different statement.)
+- **`rw [lt_div_iff₀ h] at hx` fails when `hx` is stated with `>`.** `GT.gt` is a `@[reducible]`
+  wrapper, which `rw`'s syntactic matcher does not unfold, so the pattern `?a < ?b / c` is "not
+  found" even though the hypothesis is definitionally that. The error is recognizable because the
+  printed target is the `>` form. Fix: apply the iff as a *term* (term elaboration unifies at
+  reducible transparency) or restate the hypothesis with `<`:
+  ```lean
+  have h' := (lt_div_iff₀ hn2).mp h_lo   -- was: rw [lt_div_iff₀ hn2] at h_lo
+  linarith
+  ```
+- **`native_decide` can no longer see through any `SetLike` carrier (NOT a rename — a
+  computability-model regression).** v4.31 `Mathlib/Data/SetLike/Fintype.lean:25` declares
+  ```lean
+  noncomputable instance (priority := 100) {A B} [SetLike A B] [Fintype B] : Fintype A :=
+    Fintype.ofInjective SetLike.coe SetLike.coe_injective
+  ```
+  so every `native_decide` over `Fintype.card (Subgroup G)`, `Fintype.card (Sylow p G)`, submodule /
+  subalgebra / subgraph carriers, … fails with *"failed to compile definition … depends on
+  `SetLike.instFintype`, which is `noncomputable`"*. There is **no mechanical recipe**: the fix is
+  either a hand-built computable `Fintype` instance for the specific carrier or a
+  non-computational proof. Known instances of this class: `Erdos1162Problem` (#39058),
+  `SylowTheoremOQ04`, `Erdos662Problem`, `PicksTheoremOQ01OQ01OQ01`. Note the kernel-`decide`
+  fallback does not help either — the enumerations are 2^|G| (2^24 for `S₄`).
