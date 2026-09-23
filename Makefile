@@ -164,7 +164,7 @@ build:
 	pnpm build
 
 test:
-	pnpm test:oq-slug && pnpm test:oq-group
+	pnpm test:oq-slug && pnpm test:oq-group && pnpm test:research-state
 
 lint:
 	pnpm lint
