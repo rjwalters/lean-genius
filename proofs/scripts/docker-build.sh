@@ -8,9 +8,19 @@
 #   ./proofs/scripts/docker-build.sh --repair-cache   # repair corrupt oleans, then exit
 #
 # Environment variables:
-#   LEAN_MEMORY_LIMIT  - Memory limit in MB (default: 32768 = 32GB)
-#   LEAN_BUILD_TIMEOUT - Build timeout (default: 60m)
-#   LEAN_SKIP_CACHE    - Skip Mathlib cache download (default: false)
+#   LEAN_MEMORY_LIMIT    - Memory limit in MB (default: 32768 = 32GB)
+#   LEAN_BUILD_TIMEOUT   - Build timeout (default: 60m)
+#   LEAN_SKIP_CACHE      - Skip Mathlib cache download (default: false)
+#   LEAN_ALLOW_COLD_CACHE - Set to 1/true to skip the cold-cache preflight and
+#                           download inline on a fresh host instead of failing
+#                           fast (default: off; see check-cache-primed.sh)
+#
+# First time on a fresh host? Run the one-time cache prime FIRST (foreground,
+# ~15GB on disk, tens of minutes):
+#     ./proofs/scripts/prime-cache.sh
+# Skipping this makes the first `docker-build.sh` invocation start that same
+# multi-GB download inline, which an unattended/headless agent session can
+# abandon mid-download when it ends its turn (see #43620).
 #
 # Recovering from exit-135 / SIGBUS ("unexpected end of input") corruption:
 #   The shared Mathlib volumes can retain truncated oleans after an OOM-killed
@@ -92,6 +102,21 @@ if ! docker info &>/dev/null; then
     echo "Please start Docker Desktop"
     exit 1
 fi
+
+# Fail fast on a cold cache instead of silently kicking off a multi-GB
+# download inline (issue #43620) — an autonomous/headless session that starts
+# that download and ends its turn loses it when the process exits, reporting
+# "no work done". --fast keeps this to metadata lookups (no container start),
+# so it costs nothing on the warm path and only fires when the image or the
+# shared volumes are genuinely absent. Set LEAN_ALLOW_COLD_CACHE=1 to opt back
+# into the old inline-download behavior (attended, interactive first-time use).
+case "${LEAN_ALLOW_COLD_CACHE:-}" in
+    1|true|TRUE|yes|YES|on|ON) ;;
+    *) "${SCRIPT_DIR}/check-cache-primed.sh" --fast --quiet || {
+           "${SCRIPT_DIR}/check-cache-primed.sh" --fast
+           exit 1
+       } ;;
+esac
 
 # Check if image exists, build if needed
 if ! docker image inspect "$IMAGE" &>/dev/null; then
