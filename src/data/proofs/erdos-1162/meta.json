@@ -57,7 +57,7 @@
       "erdos1162_asymptotic: formal statement of the asymptotic result"
     ],
     "axiomCount": 3,
-    "lineCount": 655,
+    "lineCount": 663,
     "assumptions": "3 assumptions, and 1 sorry. (1) `axiom roney_dougal_tracey` — the 2025 asymptotic log f(n) = (1/16 + o(1))n², a deep published result; `erdos_1162` and `pyber_theorem` depend on it and on nothing else (`#print axioms erdos_1162` = [propext, Classical.choice, roney_dougal_tracey, Quot.sound]). (2)+(3) the small cases f(2)=2 and f(3)=6 are discharged by bounded `native_decide` certificates, so each carries a compiler-trust axiom: on Lean v4.31.0 `f2._native.native_decide.ax_1_1` and `f3._native.native_decide.ax_1_1` (the per-declaration form of `Lean.ofReduceBool`). Per the Axiom Integrity Policy these are substantive and are counted here, which is why meta.axiomCount (3) exceeds leanFile.axiomCount (1, literal `axiom` declarations only). SORRY (1): `f4 : numSubgroups 4 = 30` is NOT machine-checked and depends on `sorryAx`. The file does now compile (`docker-build.sh Proofs.Erdos1162Problem`, 3.6 s), and the compile-infeasible enumeration that used to block it — `native_decide` over all 2^24 subsets of S₄ via the noncomputable `SetLike.instFintype` — has been removed entirely and replaced by the proved generative machinery of Part VII. What remains is a performance gap, not a mathematical one: the S₄ certificate is correct and `carriersR 24 2` does evaluate to the 30-element lattice in 15.7 s, but the closure leg (∀ s ∈ C, ∀ g : S₄, genR 24 (insert g s) ∈ C — 720 further saturations) exceeds a 9-minute cap, because `native_decide` runs Mathlib's `Equiv.Perm` arithmetic through the IR interpreter where every product allocates an `Equiv.trans` closure. Closing it needs a flat model of S₄ (a 24×24 multiplication table over `Fin 24`, or Nat-bitmask carriers) transported back along a MulEquiv. Tracked in #39058 / epic #37508. f(4)=30 = 1+9+4+7+4+3+1+1 remains a classical fact, cited but not verified here.",
     "theoremCount": 36,
     "definitionCount": 15
@@ -72,7 +72,7 @@
       "**Most subgroups are 2-groups**: The overwhelming majority of subgroups of S_n have order a power of 2.",
       "**Wreath product structure**: The key construction is (Z/2Z) ≀ S_{⌊n/4⌋} — wreath products of 2-groups with symmetric groups on a quarter of the points.",
       "**Gaussian binomial coefficients**: The count of subgroups of (Z/2Z)^k involves Gaussian binomials over GF(2), contributing the k²/4 term.",
-      "**Axiom reduction to 1 (build-blocked)**: The formalization was restructured to leave only the single deep published result (Roney-Dougal-Tracey 2025) as an irreducible assumption, with f1 proved via a Subsingleton→Unique chain. The intended discharge of f2-f4 by native_decide does not compile, however: the S₄ subgroup-lattice enumeration is compile-infeasible (see assumptions / issue #39058), so those small cases remain unverified in the current source."
+      "**Axiom reduction to 1 literal axiom**: The formalization was restructured to leave only the single deep published result (Roney-Dougal-Tracey 2025) as an irreducible `axiom`, and the file builds. f1 is proved axiom-free via a Subsingleton→Unique chain; f2 = 2 and f3 = 6 are proved from the generative `GoodFamily` counting principle of Part VII, whose bounded certificates are discharged by `native_decide` — so each of those two mints its own per-declaration compiler-trust axiom (disclosed in assumptions and counted in axiomCount). Only f4 (S₄, the 30-subgroup lattice) remains an explicit `sorry`: the certificate is correct but its closure leg exceeds the Lean interpreter's budget, pending a flat model of S₄ (issue #39058). The compile-infeasible 2^24 whole-lattice enumeration has been removed entirely."
     ],
     "prerequisites": [
       "Symmetric groups $S_n$ and their subgroup structure",
@@ -153,7 +153,7 @@
       "summary": "Ledger of the formalization's assumptions: five auxiliary axioms (numSubgroups and f(1)–f(4)) were eliminated in favour of concrete definitions and native_decide, leaving the single deep axiom roney_dougal_tracey and zero sorries.",
       "startLine": 207,
       "endLine": 220,
-      "mathContext": "Remaining assumption: the published Roney-Dougal-Tracey (2025) asymptotic, encoded as $\\texttt{axiom roney\\_dougal\\_tracey}$. The small-case values $f(2),\\dots,f(4)$ are $\\textit{intended}$ to be discharged by $\\texttt{native\\_decide}$ (which would rely on $\\texttt{Lean.ofReduceBool}$), but the file is build-blocked (issue #39058): the $S_4$ subgroup-lattice enumeration is compile-infeasible, so these values are $\\textit{not}$ currently machine-checked. Only $f(1)$ is proved (Subsingleton→Unique)."
+      "mathContext": "Remaining assumption: the published Roney-Dougal-Tracey (2025) asymptotic, encoded as $\\texttt{axiom roney\\_dougal\\_tracey}$. The file builds. $f(1) = 1$ is proved axiom-free (Subsingleton→Unique), and $f(2) = 2$, $f(3) = 6$ are machine-checked from the generative $\\texttt{GoodFamily}$ counting principle of Part VII, whose bounded certificates are discharged by $\\texttt{native\\_decide}$ inside groups of order 2 and 6. On Lean v4.31.0 each of those certificates mints its own per-declaration compiler-trust axiom, $\\texttt{f2.\\_native.native\\_decide.ax\\_1\\_1}$ and $\\texttt{f3.\\_native.native\\_decide.ax\\_1\\_1}$ (the per-declaration form of the older $\\texttt{Lean.ofReduceBool}$), so $f(2)$ and $f(3)$ are $\\textit{not}$ axiom-free. $f(4) = 30$ is $\\textit{not}$ machine-checked: it remains an explicit $\\texttt{sorry}$ and so depends on $\\texttt{sorryAx}$, because the $S_4$ certificate's closure leg exceeds the interpreter's budget pending a flat model of $S_4$ (issue #39058). The compile-infeasible $2^{24}$-subset enumeration is gone."
     }
   ],
   "conclusion": {
@@ -231,7 +231,7 @@
       "Filter"
     ],
     "namespace": "Erdos1162",
-    "lineCount": 655,
+    "lineCount": 663,
     "axiomCount": 1,
     "theoremCount": 36,
     "definitionCount": 15,

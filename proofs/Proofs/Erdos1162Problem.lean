@@ -14,7 +14,10 @@ Known Results:
 - Pyber (1993): log f(n) ≍ n² (exact order of magnitude) [DERIVED from RDT]
 - Roney-Dougal-Tracey (2025): log f(n) = (1/16 + o(1))n² (asymptotic formula) [AXIOM]
 Axioms: 1 (roney_dougal_tracey deep published result)
-  + Lean.ofReduceBool, from the bounded `native_decide` certificates of f(2), f(3)
+  + 2 compiler-trust axioms, from the bounded `native_decide` certificates of
+    f(2), f(3): on this toolchain (Lean v4.31.0) they are per-declaration --
+    f2._native.native_decide.ax_1_1 and f3._native.native_decide.ax_1_1 --
+    playing the role Lean.ofReduceBool plays on older toolchains (see Part X)
 Sorries: 1 (f4, the S_4 subgroup count -- see the TODO there and issue #39058)
 
 The key insight is that most subgroups of S_n arise from subgroups of S_n
@@ -588,9 +591,14 @@ theorem f3 : numSubgroups 3 = 6 := by
 /-- f(4) = 30: S_4 has 30 subgroups
     (1 trivial, 9 of order 2, 4 of order 3, 7 of order 4, 4 of order 6,
     3 of order 8, 1 of order 12, 1 of order 24).
-    Verified by bounded saturation of the 30-element lattice (Part VII) — *not*
-    by enumerating the 2^24 subsets of S₄, which is compile-infeasible
-    (#39058). -/
+    **Not proved here.** The generative counting principle of Part VII is in
+    place, and bounded saturation of the 30-element lattice is the right shape
+    for the certificate, but the S₄ certificate itself is not discharged
+    here: its closure leg exceeds the Lean interpreter's budget. That is an
+    interpreter-cost gap, not a mathematical one — see the `TODO(#39058)`
+    below for the measurements and the remaining work. Per Part X, `f4`
+    depends on `sorryAx` and must not be presented as verified. The
+    compile-infeasible 2^24-subset enumeration of S₄ is gone. -/
 theorem f4 : numSubgroups 4 = 30 := by
   -- TODO(#39058): the `GoodFamily` certificate below is the right shape and
   -- evaluates to `true`, but not inside the Lean *interpreter*'s budget.
