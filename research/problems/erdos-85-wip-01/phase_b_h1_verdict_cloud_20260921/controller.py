@@ -40,6 +40,7 @@ PASS = {"name": "", "queue": "queue-1137.ids", "queue_sha256": "d9e4548ff356dfbd
 AMI_PARAM = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-arm64"
 TYPES = ["c8g.16xlarge", "c7g.16xlarge", "m8g.16xlarge", "m7g.16xlarge", "r8g.16xlarge", "r7g.16xlarge"]
 MAX_SPOT_PRICE = "1.30"
+ON_DEMAND_USD_PER_HOUR = {"c7g.16xlarge": 2.32, "c7g.12xlarge": 1.74, "c8g.16xlarge": 2.5523, "m7g.16xlarge": 2.6112}
 HARD_STOP_USD = 170.0
 EBS_GIB = 60
 EBS_USD_PER_GIB_HOUR = 0.08 / 730
@@ -180,7 +181,8 @@ def instances() -> list[dict]:
     for reservation in data["Reservations"]:
         for item in reservation["Instances"]:
             rows.append({"id": item["InstanceId"], "type": item["InstanceType"], "state": item["State"]["Name"],
-                         "az": item["Placement"]["AvailabilityZone"], "launch": item["LaunchTime"]})
+                         "az": item["Placement"]["AvailabilityZone"], "launch": item["LaunchTime"],
+                         "lifecycle": item.get("InstanceLifecycle", "on-demand")})
     return rows
 
 
@@ -205,9 +207,13 @@ def one_pass(state: dict, act: bool) -> dict:
     prices: dict = {}
     for row in rows:
         seen = state["instances"].setdefault(row["id"], {"type": row["type"], "az": row["az"],
-                                                          "launch": row["launch"], "end": None, "price": None})
+                                                          "launch": row["launch"], "end": None, "price": None,
+                                                          "lifecycle": row["lifecycle"]})
         if row["state"] in ("pending", "running"):
-            seen["price"] = max(seen["price"] or 0.0, spot_price(row["type"], row["az"], prices))
+            if row["lifecycle"] == "spot":
+                seen["price"] = max(seen["price"] or 0.0, spot_price(row["type"], row["az"], prices))
+            else:
+                seen["price"] = ON_DEMAND_USD_PER_HOUR.get(row["type"], 2.60)  # quota approved 2026-09-23; Robb prefers on-demand for 24 h rows
         elif seen["end"] is None:
             seen["end"] = now().isoformat()
     spend = 0.0
