@@ -16,6 +16,7 @@ AbelRuffiniGaloisExtensionsOQ06GaloisDirection	GREEN
 AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly	GREEN	
 AbelRuffiniGaloisExtensionsOQ06GaloisDirectionMainAssembly	GREEN	
 AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4	GREEN	
+AbelRuffiniGaloisExtensionsOQ06Metabelian	GREEN	post-inventory
 AbelRuffiniGaloisExtensionsOQ10	GREEN	
 AbelRuffiniOQ03	GREEN	
 AbelRuffiniOQ04	GREEN	
@@ -52,6 +53,7 @@ AlgebraicNumbersCountableOQ02OQ04OQ01	GREEN
 AlgebraicNumbersCountableOQ04	GREEN	
 AlgebraicPointsNull	GREEN	
 AlgebraicRealsNull	GREEN	
+AlternatingSeriesBooleSummationOQ01OQ01ClosedForm	GREEN	post-inventory
 AmgmInequalityOQ02	GREEN	
 AmgmInequalityOQ02Aristotle	GREEN	
 AmgmInequalityOQ02Defs	GREEN	
@@ -168,9 +170,9 @@ BallotProblemOQ03	GREEN
 BallotProblemOQ03OQ01OQ01	GREEN	
 BallotProblemOQ03OQ01OQ01OQ01	GREEN	
 BallotProblemOQ03OQ01OQ01OQ01Aristotle	GREEN	
-BallotProblemOQ03OQ01OQ02	RESIDUAL	type-mismatch
-BallotProblemOQ03OQ01OQ02Aristotle	RESIDUAL	type-mismatch
-BallotProblemOQ03OQ01OQ02Helpers	RESIDUAL	type-mismatch
+BallotProblemOQ03OQ01OQ02	RESIDUAL	deep-rework:dep-BallotProblemOQ03OQ01OQ02Helpers (#39060)
+BallotProblemOQ03OQ01OQ02Aristotle	RESIDUAL	deep-rework:dep-BallotProblemOQ03OQ01OQ02Helpers (#39060)
+BallotProblemOQ03OQ01OQ02Helpers	RESIDUAL	deep-rework:100+-errors-hits-maxErrors-cap-in-15995-line-file (#39060)
 BallotProblemOQ03OQ02	GREEN	
 BallotProblemOQ03OQ02OQ01	GREEN	
 BallotProblemOQ03OQ02OQ03	GREEN	
@@ -182,6 +184,7 @@ BaselProblemOQ01OQ01OQ02	GREEN
 BaselProblemOQ01OQ01OQ02Aristotle	GREEN	
 BaselProblemOQ01OQ01OQ02OQ03	GREEN	
 BaselProblemOQ01OQ02	GREEN	
+BaselProblemOQ01OQ02Graded	GREEN	post-inventory
 BaselProblemOQ02	GREEN	
 BaselProblemOQ02Aristotle	GREEN	
 BaselProblemOQ03OQ01	GREEN	
@@ -211,6 +214,7 @@ BetaIntegralRecurrenceOQ01OQ03OQ01	GREEN
 BetaIntegralRecurrenceOQ01OQ03OQ01OQ02	GREEN	
 BezoutIdentity	GREEN	
 BezoutIdentityOQ01OQ02OQ02Descent	GREEN	
+BezoutIdentityOQ01OQ02OQ02Invariant	GREEN	post-inventory
 BezoutIdentityOQ01OQ02OQ02Transitive	PRE-EXISTING	never-green: docstring self-reports UNVERIFIED, real unsolved goals predating migration
 BezoutIdentityOQ02OQ01OQ01OQ01OQ01	GREEN	
 BezoutIdentityOQ02OQ01OQ02	GREEN	
@@ -344,6 +348,7 @@ CauchyInterlacingMajorizationPositivity	GREEN
 CauchyInterlacingOQ01OQ01OQ01	GREEN	
 CauchyInterlacingOQ01OQ01OQ01OQ01	GREEN
 CauchyInterlacingPoincareCompression	GREEN	
+CauchyInterlacingPoincareSubmatrixEigenvalues	GREEN	post-inventory
 CauchyInterlacingWeylDual	GREEN	
 CauchySchwarz	GREEN	type-mismatch
 CauchySchwarzIntegralLpDualityGluing	GREEN	
@@ -381,6 +386,7 @@ CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02	GREEN
 CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02Masa	GREEN	
 CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02Range	GREEN	
 CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02Scalar	GREEN	
+CayleyHamiltonCyclicVectorAllFieldsOQ02OQ02ScalarConverse	GREEN	post-inventory
 CayleyHamiltonCyclicVectorAllFieldsOQ03	GREEN	
 CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge	GREEN	
 CayleyHamiltonCyclicVectorAllFieldsOQ03Converse	GREEN	unknown-const:Basis
@@ -457,6 +463,7 @@ CircumferenceViaDifferentiationOQ02	GREEN
 CircumferenceViaDifferentiationOQ03	GREEN	
 CollatzCyclesOQ04	GREEN	
 CollatzStructuredOQ02OQ01	GREEN	
+CollatzStructuredOQ02OQ03CertMaximal	GREEN	post-inventory
 CollatzStructuredOQ03	GREEN	instance-synth
 CombinationsFormulaOQ01OQ04	GREEN	
 CombinationsFormulaOQ02	GREEN
@@ -503,6 +510,7 @@ CubeRoot7Irrational	GREEN
 CubeRoot9Irrational	GREEN	
 CyclotomicPolynomialsOQ02OQ04	GREEN	
 CyclotomicPolynomialsOQ02OQ06	GREEN	
+CyclotomicPolynomialsOQ02OQ07	GREEN	post-inventory
 DeMoivre	GREEN	
 DeMoivreOQ01OQ03	GREEN	
 DeMoivreOQ01OQ03OQ01	GREEN	
@@ -513,6 +521,7 @@ DeMoivreOQ01OQ03OQ02	GREEN
 DeMoivreOQ02OQ02	GREEN	
 DeMoivreOQ03OQ01	GREEN	
 DeMoivreOQ06	GREEN	
+DeMoivreOQ06OQ02	GREEN	post-inventory
 DedekindFrobeniusBridge	GREEN	
 DenumerabilityRationalsOQ01	GREEN	elab-drift
 DenumerabilityRationalsOQ02OQ02	GREEN	
@@ -539,6 +548,7 @@ DesarguesTheorem	GREEN
 DesarguesTheoremOQ01OQ01	GREEN
 DescartesRuleOfSignsOQ01OQ01	GREEN	
 DescartesRuleOfSignsOQ01OQ02	GREEN	
+DescartesRuleOfSignsOQ01OQ03Split	GREEN	post-inventory
 DescartesRuleOfSignsOQ02	GREEN	
 DescartesRuleOfSignsOQ02OQ01	GREEN	
 DescartesRuleOfSignsOQ02Parity	GREEN	proof-drift
@@ -666,11 +676,13 @@ Erdos1018OQ01OQ01OQ01OQ01	GREEN
 Erdos1018OQ04	GREEN	
 Erdos1018OQ04Incomplete01	GREEN	
 Erdos1018OQ04Incomplete01Aristotle	GREEN	
+Erdos1018OQ04Mono	GREEN	post-inventory
 Erdos1018Problem	GREEN	
 Erdos1019Problem	GREEN	
 Erdos101OQ01	GREEN	
 Erdos101OQ01OQ02	GREEN	
 Erdos101OQ04	GREEN	
+Erdos101OQ04Infinite	GREEN	post-inventory
 Erdos101OQ04OQ01	GREEN	
 Erdos1020Problem	GREEN	
 Erdos1021Aristotle	GREEN	
@@ -798,12 +810,12 @@ Erdos1098Problem	GREEN
 Erdos109OQ01	GREEN	
 Erdos109OQ01Aristotle	GREEN	
 Erdos109Problem	GREEN	
-Erdos10Incomplete01OQ02	RESIDUAL	slow-timeout
+Erdos10Incomplete01OQ02	GREEN	
 Erdos10OQ01	GREEN	
 Erdos10OQ01Incomplete01	GREEN	
 Erdos10OQ02Bridge	GREEN	
 Erdos10Problem	GREEN	
-Erdos10WIP01OQ03	RESIDUAL	slow-timeout
+Erdos10WIP01OQ03	GREEN	
 Erdos1100Problem	PRE-EXISTING	never-compiled:p
 Erdos1100ProblemAristotle	PRE-EXISTING	transitively never-compiled: pure import-wrapper over Erdos1100ProblemProvable (already PRE-EXISTING/never-compiled); no content of its own to fix
 Erdos1100ProblemProvable	PRE-EXISTING	never-compiled:p
@@ -870,7 +882,7 @@ Erdos1159Problem	GREEN
 Erdos115OQ01Problem	GREEN	
 Erdos115Problem	GREEN	
 Erdos1161Problem	GREEN	
-Erdos1162Problem	RESIDUAL	unknown-const:Nat.card_pos_of_nonempty
+Erdos1162Problem	RESIDUAL	deep-rework:native_decide-on-noncomputable-SetLike-Fintype f2/f3/f4 (#39058)
 Erdos1165Problem	GREEN	
 Erdos1166Problem	GREEN	
 Erdos1167Problem	GREEN	
@@ -894,6 +906,7 @@ Erdos1179OQ02Upper	GREEN
 Erdos1179OQ02Witness	GREEN	
 Erdos1179Problem	GREEN	
 Erdos117Problem	GREEN	
+Erdos117WIP01Mono	GREEN	post-inventory
 Erdos1181Problem	GREEN	
 Erdos1182Problem	GREEN	doctor-inc65
 Erdos1183Problem	GREEN	
@@ -910,6 +923,7 @@ Erdos1211Problem	GREEN
 Erdos1212Problem	GREEN	
 Erdos1213Problem	GREEN	
 Erdos1214Problem	GREEN	
+Erdos1215UnitCircleMonotone	GREEN	post-inventory
 Erdos1216Problem	GREEN	
 Erdos1217Problem	GREEN	
 Erdos121Problem	GREEN	
@@ -1014,6 +1028,7 @@ Erdos216Problem	GREEN	instance-synth
 Erdos217Problem	GREEN	
 Erdos21Problem	GREEN	
 Erdos220Aristotle	GREEN	
+Erdos220Incomplete01OQ01	GREEN	post-inventory
 Erdos220Problem	GREEN	
 Erdos220ProblemProvable	GREEN	
 Erdos221Problem	GREEN	
@@ -1298,6 +1313,7 @@ Erdos466Problem	GREEN
 Erdos468Problem	GREEN	
 Erdos469Problem	GREEN	
 Erdos46Problem	GREEN	
+Erdos46WIP01Cost	GREEN	post-inventory
 Erdos470Problem	GREEN	
 Erdos471Problem	GREEN	
 Erdos472Problem	GREEN	
@@ -1325,6 +1341,7 @@ Erdos488Problem	GREEN
 Erdos489Problem	GREEN	
 Erdos48Problem	GREEN	
 Erdos490Aristotle	GREEN	parse-error
+Erdos490Energy	GREEN	post-inventory
 Erdos490OQ01	GREEN	
 Erdos490ProblemAristotle	GREEN	
 Erdos491Problem	GREEN	
@@ -1369,6 +1386,7 @@ Erdos528Problem	GREEN
 Erdos529Problem	PRE-EXISTING	never-compiled:d_2
 Erdos52Problem	GREEN	
 Erdos530Problem	GREEN	
+Erdos531Incomplete01	GREEN	post-inventory
 Erdos531Problem	GREEN	
 Erdos532Problem	GREEN	
 Erdos533Problem	GREEN	
@@ -1514,6 +1532,7 @@ Erdos631Problem	GREEN
 Erdos631ProblemAristotle	GREEN	
 Erdos632Aristotle	GREEN	
 Erdos634Aristotle	GREEN	
+Erdos634MedialCentralDisjointOQ02	GREEN	post-inventory
 Erdos634Problem	GREEN	
 Erdos635Problem	GREEN	
 Erdos636Aristotle	GREEN	
@@ -1553,6 +1572,7 @@ Erdos662Problem	GREEN
 Erdos663Problem	GREEN	
 Erdos664Problem	GREEN	
 Erdos665Problem	GREEN	
+Erdos666Monotone	GREEN	post-inventory
 Erdos666Problem	GREEN	
 Erdos667Aristotle	GREEN	
 Erdos667Problem	GREEN	
@@ -1636,6 +1656,7 @@ Erdos732Problem	GREEN
 Erdos733LimitBounds	GREEN	doctor-inc65
 Erdos733Problem	GREEN	doctor-inc65
 Erdos734Problem	GREEN	
+Erdos735OQ04GeneralPosition	GREEN	post-inventory
 Erdos736Problem	GREEN	
 Erdos737Problem	GREEN	
 Erdos738Problem	GREEN	
@@ -1673,6 +1694,7 @@ Erdos768Problem	GREEN
 Erdos769Problem	GREEN	
 Erdos76OQ02	GREEN	
 Erdos770Problem	PRE-EXISTING	never-compiled:X
+Erdos771GeneralLowerBound	GREEN	post-inventory
 Erdos771Problem	GREEN	
 Erdos772Problem	GREEN	
 Erdos773Problem	GREEN	unknown-const:pow_lt_pow_left
@@ -1791,6 +1813,7 @@ Erdos868Problem	GREEN
 Erdos869Problem	GREEN	
 Erdos86Problem	GREEN	
 Erdos870Aristotle	GREEN	
+Erdos870Incomplete01	GREEN	post-inventory
 Erdos870Problem	GREEN	
 Erdos871Problem	GREEN	
 Erdos872Problem	GREEN	
@@ -1928,7 +1951,9 @@ Erdos986Problem	GREEN
 Erdos987Problem	GREEN	
 Erdos988Problem	GREEN	
 Erdos989Problem	GREEN	
+Erdos98Cospherical	GREEN	post-inventory
 Erdos98Problem	GREEN	
+Erdos98WIP01Thresholds	GREEN	post-inventory
 Erdos990Problem	GREEN	
 Erdos992Problem	GREEN	
 Erdos993Problem	GREEN	
@@ -1976,6 +2001,7 @@ FermatsLastTheoremOQ03	GREEN
 FeuerbachsTheoremDefsOQ04	GREEN	type-mismatch
 FeuerbachsTheoremOQ01Aristotle	GREEN	
 FeuerbachsTheoremOQ01OQ03	GREEN	
+FeuerbachsTheoremOQ04Diameter	GREEN	post-inventory
 FeuerbachsTheoremOQ04TangentLine	GREEN	
 FeuerbachsTheoremOQ05	GREEN
 FibonacciIdentitiesOQ02	GREEN	
@@ -2038,6 +2064,7 @@ FurstenbergCorrespondenceOQ01	GREEN
 FurstenbergCorrespondenceOQ02	GREEN	
 GCDAlgorithmOQ01OQ03OQ01	GREEN	
 GCDAlgorithmOQ01OQ03OQ01OQ01	GREEN	
+GaussWilsonNonCyclicOQ02	GREEN	post-inventory
 GcdAlgorithmOQ02	GREEN	
 GcdAlgorithmOQ02OQ01	GREEN	
 GelfondSchneider	GREEN	
@@ -2055,6 +2082,7 @@ GeometricSeriesOQ07OQ01OQ01OQ01OQ06OQ01	GREEN
 GeometricSeriesOQ07OQ02	GREEN	
 GeometricSeriesOQ08	GREEN	
 GeometricSeriesOQ10	GREEN	
+GodelSecondIncompletenessOQ02GLFour	GREEN	post-inventory
 GoemansWilliamsonMaxCut	GREEN	
 GraphCore	GREEN	
 GreensTheorem	GREEN	
@@ -2082,6 +2110,8 @@ HermiteSawtoothIdentity	GREEN
 HermiteSawtoothIdentityOQ02	GREEN	
 HeronsFormulaOQ01	GREEN	
 HierholzerAlgorithm	GREEN	
+Hilbert10OQ01OQ02IntStabilizer	GREEN	post-inventory
+Hilbert10OQ01OQ02IntStabilizerExact	GREEN	post-inventory
 Hilbert11OQ01Aristotle	GREEN	
 Hilbert11_QuadraticFormsAristotle	GREEN	
 Hilbert14Invariants	GREEN	
@@ -2161,6 +2191,7 @@ KnightsTourObliqueOQ01	GREEN
 KnightsTourObliqueOQ01OQ02	GREEN	
 KnightsTourObliqueOQ02	GREEN	
 KnightsTourObliqueOQ02Order16	GREEN	
+KnightsTourObliqueOQ02Order16LevelSet	GREEN	post-inventory
 KnightsTourObliqueOQ02Palindrome	GREEN	
 KnightsTourObliqueOQ02Reverse	GREEN	
 KnightsTourObliqueOQ02ReverseCount	GREEN	
@@ -2187,6 +2218,7 @@ LHopitalOQ03	GREEN
 LHopitalOQ04	GREEN	
 LHopitalOQ04OQ01	GREEN	
 LagrangeFourSquaresOQ01OQ03	GREEN	
+LagrangeFourSquaresOQ01OQ03Parity	GREEN	post-inventory
 LagrangeFourSquaresOQ02	GREEN	
 LagrangeFourSquaresOQ02OQ02	GREEN	
 LagrangeFourSquaresOQ04	GREEN	
@@ -2302,6 +2334,7 @@ PascalsHexagon	GREEN
 PascalsHexagonOQ02	GREEN	
 PascalsHexagonOQ03	GREEN	
 PascalsHexagonOQ03Incomplete01Derangements	GREEN	
+PascalsHexagonOQ03Reflections	GREEN	post-inventory
 PellEquationOQ01	GREEN	unknown-const:Int.cast_nonneg.mpr
 PentagonalNumberTheoremOQ01	GREEN	
 PentagonalNumberTheoremOQ01OQ01	GREEN	
@@ -2372,6 +2405,7 @@ RationalCanonicalFormExists	GREEN
 RiemannHypothesis	GREEN	
 RiemannHypothesisConsequences	GREEN	
 RothTheorem	GREEN	
+RothTheoremK3OQ03Incomplete01	GREEN	post-inventory
 RothTheoremOQ01	GREEN	
 RothTheoremOQ01Primes	GREEN	
 RothTheoremOQ01RecipSufficient	GREEN	
@@ -2399,6 +2433,7 @@ ShannonChannelCodingAWGNOQ01	GREEN
 ShannonChannelCodingAWGNOQ03	GREEN	
 ShannonChannelCodingAWGNOQ03OQ01EqualNoise	GREEN	
 ShannonChannelCodingAWGNOQ03OQ01Monotone	GREEN	
+ShannonChannelCodingAWGNOQ03OQ01Supremum	GREEN	post-inventory
 ShannonChannelCodingBEC	GREEN	
 ShannonChannelCodingBECOQ01	GREEN	
 ShannonChannelCodingBECOQ02	GREEN	
@@ -2439,6 +2474,7 @@ SophieGermainOQ02	GREEN
 SpectralTraceDetEigenvaluesOQ01OQ01	GREEN	
 SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02	GREEN	
 SpectralTraceDetEigenvaluesOQ02	GREEN	
+SpernerFacetIncidenceND	GREEN	post-inventory
 SpernerFreudenthal	GREEN	
 SpernerFreudenthalSimplex	GREEN	
 SpernerGrid	GREEN	
@@ -2546,6 +2582,7 @@ SzemerediRegularityOQ04	GREEN
 SzemerediRegularityOQ04Assembly	GREEN	
 SzemerediRegularityOQ04Bridge	GREEN	
 SzemerediRegularityOQ04Energy	GREEN	
+SzemerediRegularityOQ04MassCeiling	GREEN	post-inventory
 SzemerediRegularityOQ04Product	GREEN	
 SzemerediRegularityOQ04Witness	GREEN	
 TaxicabNumberOQ01	GREEN	
@@ -2603,6 +2640,8 @@ TestHolderApi	GREEN
 TestSphereLocEuc	GREEN	
 TestWolstenholme	GREEN	
 TestZetaNonzero	GREEN	
+TetrahedralNumberFormulaOQ02	GREEN	post-inventory
+TetrahedralNumberFormulaOQ02SumPoly	GREEN	post-inventory
 ThreeSquares	GREEN	
 ThreeSquaresGaussEureka	GREEN	
 ThreeSquaresRationalBridge	GREEN	
@@ -2613,6 +2652,7 @@ ThreeSquaresSufficiencyCorrected	GREEN
 ThreeSquaresWitnessObstruction	GREEN	
 ThreeSubgroupsLemmaOQ0101	GREEN	
 ThreeSubgroupsLemmaOQ01OQ01	GREEN	
+TractatusCompleteness	GREEN	post-inventory
 TractatusQuantifiers	GREEN	
 TriangleAngleSum	GREEN	
 TriangleAngleSumOQ02	GREEN	
