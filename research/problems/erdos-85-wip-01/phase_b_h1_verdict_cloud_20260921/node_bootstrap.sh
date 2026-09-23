@@ -83,4 +83,13 @@ while read -r f; do git -C $REPO show $CONFIG_COMMIT:"$f" > /dev/null || fail "p
 git -C $REPO show $CONFIG_COMMIT:research/problems/erdos-85-wip-01/sat49/dispatch_h1_residual_verdict_only.py > /dev/null || fail "prefetch wrapper"
 ( cd $REPO && python3.12 -B research/problems/erdos-85-wip-01/sat49/dispatch_h1_residual_verdict_only.py --config research/problems/erdos-85-wip-01/phase_b_h1_verdict_20260916/config.draft.json --workers 1 | cut -c1-200 | grep -q '"selected_cases": 1161' ) || fail "dry run census"
 echo "$(date -u +%FT%TZ) bootstrap ok"; $AWS s3 cp --only-show-errors $LOG s3://$B/$PP/nodes/$IID/bootstrap.log
-exec python3.12 -B $HERE/node_worker.py --repo $REPO --iid $IID --itype $ITYPE --slots "${E85_SLOTS:-$(nproc)}"
+exec # Background evidence uploader: worker stderr/log, a process snapshot and disk state every 60 s,
+# so a wedged or crashed worker can be diagnosed without host access.
+( while true; do
+    { date -u +%FT%TZ; uptime; df -h /scratch | tail -1; ps -eo pid,ppid,stat,etimes,pcpu,rss,comm,args --sort=-pcpu | head -40 | cut -c1-200; } > /scratch/out/ps.txt 2>&1
+    for f in /var/log/e85-worker.err /var/log/e85-worker.log /scratch/out/ps.txt; do [ -f $f ] && $AWS s3 cp --only-show-errors $f s3://$B/$PP/nodes/$IID/$(basename $f) >/dev/null 2>&1; done
+    sleep 60
+  done ) &
+UPLOADER=$!
+export PYTHONFAULTHANDLER=1 PYTHONUNBUFFERED=1
+python3.12 -B $HERE/node_worker.py --repo $REPO --iid $IID --itype $ITYPE --slots "${E85_SLOTS:-$(nproc)}"
