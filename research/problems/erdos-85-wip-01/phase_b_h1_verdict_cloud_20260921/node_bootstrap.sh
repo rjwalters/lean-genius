@@ -80,10 +80,18 @@ if $AWS s3api put-object --bucket $B --key $PP/selftest/$IID --body /scratch/fre
 grep -q PreconditionFailed /scratch/freight/put2.err || fail "unexpected conditional put error: $(cat /scratch/freight/put2.err)"
 # Prefetch every banked dependency blob once, single-threaded (partial clone), then a read-only dry run.
 while read -r f; do git -C $REPO show $CONFIG_COMMIT:"$f" > /dev/null || fail "prefetch $f"; done < $HERE/captured-paths.txt
-git -C $REPO show $CONFIG_COMMIT:research/problems/erdos-85-wip-01/sat49/dispatch_h1_residual_verdict_only.py > /dev/null || fail "prefetch wrapper"
-( cd $REPO && python3.12 -B research/problems/erdos-85-wip-01/sat49/dispatch_h1_residual_verdict_only.py --config research/problems/erdos-85-wip-01/phase_b_h1_verdict_20260916/config.draft.json --workers 1 | cut -c1-200 | grep -q '"selected_cases": 1161' ) || fail "dry run census"
+for f in research/problems/erdos-85-wip-01/sat49/dispatch_h1_residual_verdict_only.py "$E85_CONFIG"; do git -C $REPO show $CONFIG_COMMIT:"$f" > /dev/null || fail "prefetch $f"; done
+[ "$(sha256sum $HERE/$E85_QUEUE | cut -d' ' -f1)" = "$E85_QUEUE_SHA" ] || fail "queue sha mismatch"
+if [ "$E85_DIRECT" = 1 ]; then
+  FIRST=$(head -1 $HERE/$E85_QUEUE)
+  ( cd $REPO && python3.12 -B research/problems/erdos-85-wip-01/sat49/dispatch_verdict_only.py --config "$E85_CONFIG" --workers 1 --case-id "$FIRST" | cut -c1-200 | grep -q '"selected_cases": 1,' ) || fail "dry run direct"
+  WORKER_ARGS="--direct"
+else
+  ( cd $REPO && python3.12 -B research/problems/erdos-85-wip-01/sat49/dispatch_h1_residual_verdict_only.py --config "$E85_CONFIG" --workers 1 | cut -c1-200 | grep -q '"selected_cases": 1161' ) || fail "dry run census"
+  WORKER_ARGS=""
+fi
 echo "$(date -u +%FT%TZ) bootstrap ok"; $AWS s3 cp --only-show-errors $LOG s3://$B/$PP/nodes/$IID/bootstrap.log
-exec # Background evidence uploader: worker stderr/log, a process snapshot and disk state every 60 s,
+# Background evidence uploader: worker stderr/log, a process snapshot and disk state every 60 s,
 # so a wedged or crashed worker can be diagnosed without host access.
 ( while true; do
     { date -u +%FT%TZ; uptime; df -h /scratch | tail -1; ps -eo pid,ppid,stat,etimes,pcpu,rss,comm,args --sort=-pcpu | head -40 | cut -c1-200; } > /scratch/out/ps.txt 2>&1
@@ -92,4 +100,14 @@ exec # Background evidence uploader: worker stderr/log, a process snapshot and d
   done ) &
 UPLOADER=$!
 export PYTHONFAULTHANDLER=1 PYTHONUNBUFFERED=1
-python3.12 -B $HERE/node_worker.py --repo $REPO --iid $IID --itype $ITYPE --slots "${E85_SLOTS:-$(nproc)}"
+WORKER_CMD=(python3.12 -B $HERE/node_worker.py --repo $REPO --iid $IID --itype $ITYPE --slots "${E85_SLOTS:-$(nproc)}" --lifetime "$E85_LIFETIME" --no-poweroff
+  --queue "$E85_QUEUE" --queue-sha256 "$E85_QUEUE_SHA" --config "$E85_CONFIG" --config-commit "$CONFIG_COMMIT")
+[ -n "$E85_PASS" ] && WORKER_CMD+=(--pass-prefix "$E85_PASS")
+[ -n "$WORKER_ARGS" ] && WORKER_CMD+=($WORKER_ARGS)
+echo "$(date -u +%FT%TZ) worker command: ${WORKER_CMD[*]}"
+"${WORKER_CMD[@]}" 2>> /var/log/e85-worker.err
+RC=$?; echo "$(date -u +%FT%TZ) worker exited rc=$RC"; kill $UPLOADER 2>/dev/null
+# Always leave the worker's own evidence off-box, then power off (terminate) after a grace period.
+for f in /var/log/e85-worker.err /var/log/e85-worker.log /scratch/out/status.json; do [ -f $f ] && $AWS s3 cp --only-show-errors $f s3://$B/$PP/nodes/$IID/$(basename $f); done
+$AWS s3 cp --only-show-errors $LOG s3://$B/$PP/nodes/$IID/bootstrap.log
+sleep 600; /usr/sbin/poweroff
