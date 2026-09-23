@@ -29,6 +29,22 @@ two halves of the argument ported here are:
 
 Later segments (three-edge-connectivity, the double graph, and the eight-flow theorem
 proper) consume these declarations by name, so no upstream name is changed here.
+
+## Provenance, licensing and attribution
+
+Ported from `openai/cdc-lean`, `CDCLean/JaegerKilpatrick.lean` (lines 12-178),
+vendored with adaptation per the operator decision recorded on #37507 (comment of
+2026-08-03). `openai/cdc-lean` carries **no license file**, so default copyright
+applies -- it is *not* public domain, and the absence of a license is not a grant. A
+permissive licence was requested upstream on 2026-07-12 (openai/cdc-lean#4); there
+was no response and the upstream issue tracker has since been disabled.
+
+The operator's decision is an explicit *risk acceptance*, not a license grant: the
+definitions, statements and proof scripts below follow upstream, adapted only for
+this port's namespace and this repository's Mathlib pin, and the mathematical content
+originates with `openai/cdc-lean`. If upstream ever objects, this file is a unit of
+removal; the inventory of vendored files and the per-file re-derivation plan are in
+`LICENSE-STATUS.md` in this directory (tracking issue #43638).
 -/
 
 namespace CycleDoubleCover
