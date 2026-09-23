@@ -14,7 +14,7 @@
   {
     "id": "ann-hanson-def",
     "proofId": "basel-problem-oq003",
-    "range": { "startLine": 67, "endLine": 81 },
+    "range": { "startLine": 71, "endLine": 85 },
     "type": "definition",
     "title": "lcmRange n: lcm(1,...,n) via Finset.lcm",
     "content": "`lcmRange n := (Finset.range n).lcm (· + 1)` encodes lcm(1,...,n) as the lcm of {1,2,...,n} using Mathlib's GCDMonoid.Finset infrastructure. The `(· + 1)` shift compensates for `Finset.range n = {0, 1, ..., n-1}` — without it the lcm would include 0, collapsing to 0 (since lcm(0,k)=0 in `Nat`). Defined here independently of the parent file's `lcmUpTo` so that this OQ can be type-checked without the parent's heavy analytic dependencies on Apéry's machinery.",
@@ -194,7 +194,7 @@
   {
     "id": "ann-iter18-per-prime-bounds",
     "proofId": "basel-problem-oq003",
-    "range": { "startLine": 675, "endLine": 792 },
+    "range": { "startLine": 682, "endLine": 799 },
     "type": "theorem",
     "title": "Iter 18: Per-prime correction-factor bounds (3 forms)",
     "content": "Three forms of the per-prime bound on the correction-factor term $p^{\\text{Nat.log}\\,p\\,n - 1}$:\n\n- `prime_pow_pred_mul_eq_pow` (line 698): **exponent recurrence** $p^{\\text{Nat.log}\\,p\\,n - 1} \\cdot p = p^{\\text{Nat.log}\\,p\\,n}$. Algebraic identity extracted from Iter 16; uses `Nat.log_pos` ($p \\ge 2$, $p \\le n$ gives $\\log \\ge 1$) and `Nat.sub_add_cancel` to unfold.\n\n- `prime_pow_pred_le_self` (line 714): **coarse bound** $p^{\\text{Nat.log}\\,p\\,n - 1} \\le n$. Trivial chain via `Nat.pow_le_pow_right` (monotone exponent) and `Nat.pow_log_le_self` (maximal-power inequality).\n\n- `prime_pow_pred_le_div` (line 746): **sharp bound** $p^{\\text{Nat.log}\\,p\\,n - 1} \\le n / p$. The downstream-useful form for the product-bound argument; uses the recurrence and divisibility chain.\n\nBase-agnostic about Iter 17's small-prime filter — each prime $p \\le n$ satisfies these regardless of whether $p^2 \\le n$ or not. The sharp `≤ n/p` bound is what enables the Chebyshev-style $\\prod_{p \\le \\sqrt n} (n/p) \\le 2^{c\\sqrt n}$ estimate in Route B.",

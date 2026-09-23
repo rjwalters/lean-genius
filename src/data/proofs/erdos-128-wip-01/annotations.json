@@ -14,7 +14,7 @@
   {
     "id": "erdos128-wip01-ann-objects",
     "proofId": "erdos-128-wip-01",
-    "range": { "startLine": 44, "endLine": 71 },
+    "range": { "startLine": 48, "endLine": 75 },
     "type": "definition",
     "title": "The Graph Objects (Re-declared with Classical Decidability)",
     "content": "Graph n bundles an adjacency relation on Fin n with symmetry and irreflexivity. edgeCount is the cardinality of the filtered set of ordered pairs p.1 < p.2 with G.adj p.1 p.2 — noncomputable, relying on open Classical for the filter's DecidablePred (the exact instance the scaffold was missing). induce S restricts adjacency to u ∈ S ∧ v ∈ S ∧ G.adj u v. hasTriangle asserts three pairwise-distinct mutually adjacent vertices; triangleFree is its negation. These re-declarations make the entry self-contained against the non-building scaffold.",

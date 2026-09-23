@@ -14,8 +14,8 @@
   {
     "id": "roth-oq0301-conj-zero",
     "proofId": "roth-theorem-k3-oq-03-oq-01",
-    "range": { "startLine": 81, "endLine": 86 },
-    "type": "theorem",
+    "range": { "startLine": 70, "endLine": 75 },
+    "type": "definition",
     "title": "conjugateByWeight_zero — the conjugation factor fixes 0",
     "content": "The weight-conjugation factor `conjugateByWeight ω` sends 0 to 0 regardless of the parity of |ω|: the even branch is the identity and the odd branch is `starRingEnd ℂ` (complex conjugation), and both fix the origin. Marked `@[simp]` so it feeds the vanishing arguments downstream. The proof is `unfold; split <;> simp`.",
     "mathContext": "$C^{|\\omega|}(0)=0$ for either parity of $|\\omega|$",
@@ -26,8 +26,8 @@
   {
     "id": "roth-oq0301-gowers-zero",
     "proofId": "roth-theorem-k3-oq-03-oq-01",
-    "range": { "startLine": 88, "endLine": 101 },
-    "type": "theorem",
+    "range": { "startLine": 70, "endLine": 83 },
+    "type": "definition",
     "title": "gowersNorm_zero — ‖0‖_{U^s} = 0",
     "content": "The Gowers U^s norm of the zero function is 0. Every hypercube factor is `conjugateByWeight ω ((0) (x + hypercubeShift h ω)) = conjugateByWeight ω 0 = 0`, so `Finset.prod_eq_zero` (using the distinguished vertex `default : Fin s → Bool`) collapses each 2^s-fold product to 0; the double averaging sum over x and h is then 0, and `‖0‖ = 0`. This is the first metric datum of the Gowers norm.",
     "mathContext": "$\\|0\\|_{U^s} = 0$",
@@ -38,7 +38,7 @@
   {
     "id": "roth-oq0301-const",
     "proofId": "roth-theorem-k3-oq-03-oq-01",
-    "range": { "startLine": 103, "endLine": 121 },
+    "range": { "startLine": 183, "endLine": 201 },
     "type": "theorem",
     "title": "kAPCount_const — Λ_k(c,…,c) = cᵏ and the normalization",
     "content": "The k-AP count of the constant tuple (c,…,c) equals cᵏ. The inner product `∏ i : Fin k, c` collapses to `c ^ k` via `Finset.prod_const` (card of Fin k is k). The double sum over ZMod N × ZMod N of the constant cᵏ evaluates to `N · (N · cᵏ)` through `Finset.sum_const`, `ZMod.card`, and `nsmul_eq_mul`. The prefactor is then cleared by the algebraic identity `(N⁻¹)² · (N·(N·cᵏ)) = (N⁻¹·N)² · cᵏ` (a `ring` rewrite) followed by `inv_mul_cancel₀` — valid since `N ≠ 0` from the `NeZero N` instance. This is the (N⁻¹)²·N² = 1 normalization that certifies Λ_k is a genuine expectation E_{x,d}, not an unnormalized sum.",

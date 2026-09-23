@@ -14,7 +14,7 @@
   {
     "id": "ann-oneform-def",
     "proofId": "greens-theorem-oq-02-oq-04",
-    "range": { "startLine": 47, "endLine": 65 },
+    "range": { "startLine": 51, "endLine": 69 },
     "type": "definition",
     "title": "OneForm2D: A 2D 1-Form as a Coefficient Pair",
     "content": "`OneForm2D` is the minimal Lean encoding of a 2D 1-form $\\omega = P\\,dx + Q\\,dy$ — just the pair $(P, Q)$ of coefficient functions $\\mathbb{R}^2 \\to \\mathbb{R}$. Anywhere the Lean code uses `ω.P` and `ω.Q`, the mathematical statement is reading off the dx- and dy-coefficients. The integration pairing $\\int_C \\omega$ unrolls to $\\int_0^T [P(\\gamma(t)) \\cdot \\gamma_1'(t) + Q(\\gamma(t)) \\cdot \\gamma_2'(t)] \\, dt$. This is *not* a generic Mathlib differential form (which would require manifold structure); it's a research-grade lightweight model that captures exactly the algebraic structure needed for 2D Stokes. The deliberate minimality is what lets the file's main theorems be one-line wrappers around `greens_theorem_l1curl`.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-language-bridge",
     "proofId": "greens-theorem-oq-02-oq-04",
-    "range": { "startLine": 87, "endLine": 108 },
+    "range": { "startLine": 91, "endLine": 112 },
     "type": "insight",
     "title": "Language Bridge: Whitney's Curl Hypothesis = extDeriv",
     "content": "Two short theorems formalize the language-bridge claim. `curl_eq_extDeriv_iff` states the trivial bi-implication between the curl-form and exterior-form versions of Whitney's pointwise hypothesis — `simp [extDeriv1_2D_eq_curl]` closes it because both sides reduce to the same expression. `extDeriv_eq_curl_ae` packages the same equality in the *almost-everywhere* form Whitney's theorem actually consumes (`∀ᵐ p ∂μ, ...`); the proof `filter_upwards [] with p; rfl` is the Lean idiom for 'pick any $p$, the equality holds by `rfl`'. The empty `filter_upwards` says we don't need to discard any null set — equality is *literal* everywhere, not just a.e.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-stokes-form",
     "proofId": "greens-theorem-oq-02-oq-04",
-    "range": { "startLine": 110, "endLine": 139 },
+    "range": { "startLine": 114, "endLine": 143 },
     "type": "concept",
     "title": "Whitney = Stokes: The Headline Theorem",
     "content": "`greens_stokes_l1curl` is the file's headline: under Whitney's hypotheses (Lipschitz closed curve $C$ traversing the boundary of a rectangle $D$, plus L¹ integrability of $d\\omega$ on $D$), the line integral $\\int_C \\omega$ equals the area integral $\\int_D d\\omega$. The Lean statement uses `lipschitzLineIntegral ω.P ω.Q C` (left-hand side) and `∫ p in Ioo a b ×ˢ Ioo c d, extDeriv1_2D ω p ∂volume` (right-hand side). The proof is a one-line wrapper: `simp only [extDeriv1_2D]` unfolds the exterior-form notation back to the classical curl, then the parent's `greens_theorem_l1curl` axiom closes the goal. The wrap-up shows that `greens_theorem_l1curl` and the Stokes form $\\int_C \\omega = \\int_D d\\omega$ are *literally the same theorem* — the file's empirical confirmation of the de Rham–Whitney connection.",

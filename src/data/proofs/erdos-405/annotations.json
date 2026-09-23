@@ -169,7 +169,7 @@
     "proofId": "erdos-405",
     "type": "concept",
     "range": {
-      "startLine": 111,
+      "startLine": 112,
       "endLine": 112
     },
     "title": "Exactly Three Solutions",
@@ -543,8 +543,8 @@
     "proofId": "erdos-405",
     "type": "insight",
     "range": {
-      "startLine": 244,
-      "endLine": 258
+      "startLine": 78,
+      "endLine": 92
     },
     "title": "Summary: Existence and Uniqueness",
     "content": "The summary theorem combines both directions: (existence) all three triples satisfy the equation, verified computationally via `solution_1`, `solution_2`, `solution_3`; and (uniqueness) every solution is one of these three, via the Yu–Liu characterization. This provides a complete 'if and only if' in a user-friendly form.",

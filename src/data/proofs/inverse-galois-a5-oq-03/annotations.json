@@ -125,10 +125,10 @@
   {
     "id": "inverse-galois-a5-oq-03-axioms",
     "proofId": "inverse-galois-a5-oq-03",
-    "type": "definition",
+    "type": "axiom",
     "range": {
-      "startLine": 163,
-      "endLine": 184
+      "startLine": 166,
+      "endLine": 187
     },
     "title": "The two assumptions: generic family + Hilbert Irreducibility (Sₙ and Aₙ)",
     "content": "The deep analytic certificate, isolated as exactly two honest axioms:\n\n- **`symmetricGroup_realizableOverRat n`**: for every `n`, `Perm (Fin n)` is realizable over `ℚ`. This bundles two ingredients absent from Mathlib — (i) the generic degree-`n` polynomial `Xⁿ − t₁Xⁿ⁻¹ + ⋯ ± tₙ` has Galois group the full `Sₙ` over `ℚ(t₁,…,tₙ)` (algebraically independent roots), and (ii) Hilbert's Irreducibility Theorem produces infinitely many rational specializations preserving the group.\n- **`alternatingGroup_realizableOverRat n`**: `alternatingGroup (Fin n)` is realizable over `ℚ`, via the square-discriminant twist `√(disc f_n)` plus HIT.\n\nWhy two axioms and not one? The `Aₙ` case is **provably not derivable** from `Sₙ` within this framework: `Aₙ ◁ Sₙ` is normal with quotient `ℤ/2`, so by `RealizableOverRat.quotient` an `Sₙ`-realization `K/ℚ` only realizes `Aₙ` over the quadratic subfield `K^{Aₙ}`, not over `ℚ`. Pulling `Aₙ` down to `ℚ` needs the specialized discriminant to be a square — a genuinely separate analytic input. Both are stated as `axiom` (so they count toward `axiomCount = 2`); neither the function-field Galois computation nor HIT (no thin sets, no `RatFunc` specialization API) exists in Mathlib 4.26.0.",

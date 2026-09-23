@@ -27,8 +27,8 @@
     "id": "ann-chain-cost",
     "proofId": "hilbert-22-oq-01-oq-03",
     "range": {
-      "startLine": 69,
-      "endLine": 118
+      "startLine": 72,
+      "endLine": 121
     },
     "type": "definition",
     "title": "Cost of a Single Chain and Its Combinatorial Laws",
@@ -49,10 +49,10 @@
     "id": "ann-chain-dist",
     "proofId": "hilbert-22-oq-01-oq-03",
     "range": {
-      "startLine": 120,
-      "endLine": 163
+      "startLine": 123,
+      "endLine": 166
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "The Chain Pseudometric and Its Three Axioms",
     "content": "`chainDist c p q = ⨅ mid : List X, chainCost c p mid q` is the abstract Kobayashi pseudometric. `chainDist_le` records that it is bounded above by the cost of any particular chain (an `iInf_le`). The three pseudometric axioms then fall out: `chainDist_self` (reflexivity) uses the empty chain, whose cost `c p p = 0`; `chainDist_comm` (symmetry) reverses every chain via `chainCost_reverse`, packaged through a single `key : ∀ a b, chainDist c a b ≤ chainDist c b a`; and `chainDist_triangle` (subadditivity) concatenates a p ⇝ q chain with a q ⇝ r chain, then pushes the two infima of the right-hand side together using the ENNReal arithmetic identities `ENNReal.iInf_add` and `ENNReal.add_iInf`.",
     "mathContext": "$d(p,q)=\\bigsqcap_{\\mathit{mid}}\\texttt{chainCost}\\,c\\,p\\,\\mathit{mid}\\,q$. The triangle proof rewrites $\\bigl(\\bigsqcap_{m_1} f\\,m_1\\bigr) + \\bigl(\\bigsqcap_{m_2} g\\,m_2\\bigr) = \\bigsqcap_{m_1}\\bigsqcap_{m_2}\\bigl(f\\,m_1 + g\\,m_2\\bigr)$ and bounds each summand below by $d(p,r)$ via the concatenated chain $m_1 +\\!\\!+ q::m_2$.",
@@ -71,10 +71,10 @@
     "id": "ann-pseudo-emetric",
     "proofId": "hilbert-22-oq-01-oq-03",
     "range": {
-      "startLine": 165,
-      "endLine": 179
+      "startLine": 168,
+      "endLine": 182
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "Packaging into a Genuine PseudoEMetricSpace",
     "content": "`chainPseudoEMetricSpace` assembles the three proved axioms into Mathlib's `PseudoEMetricSpace` structure: from any symmetric atomic cost vanishing on the diagonal, `X` is equipped with `edist := chainDist c` together with `edist_self`, `edist_comm`, and `edist_triangle`. The uniformity and its compatibility are supplied automatically by the structure's default fields. This realises properties (1)–(2) of the Kobayashi pseudometric — the parts the parent entry stated only informally — as a first-class, instance-grade Mathlib object. The symmetry and diagonal-vanishing conditions remain explicit hypotheses, not structure-encoded assumptions, so the construction carries no hidden axioms.",
     "mathContext": "Mathlib's \\texttt{PseudoEMetricSpace} bundles $\\texttt{edist\\_self}:\\;d(x,x)=0$, $\\texttt{edist\\_comm}:\\;d(x,y)=d(y,x)$, and $\\texttt{edist\\_triangle}:\\;d(x,z)\\le d(x,y)+d(y,z)$, deriving the induced uniform structure from $d$.",
@@ -93,8 +93,8 @@
     "id": "ann-functoriality",
     "proofId": "hilbert-22-oq-01-oq-03",
     "range": {
-      "startLine": 181,
-      "endLine": 203
+      "startLine": 184,
+      "endLine": 206
     },
     "type": "theorem",
     "title": "Functoriality: The Defining Holomorphic Invariance",
@@ -116,8 +116,8 @@
     "id": "ann-universal-property",
     "proofId": "hilbert-22-oq-01-oq-03",
     "range": {
-      "startLine": 205,
-      "endLine": 263
+      "startLine": 208,
+      "endLine": 264
     },
     "type": "theorem",
     "title": "The Universal Property: Pseudometric Coreflection",

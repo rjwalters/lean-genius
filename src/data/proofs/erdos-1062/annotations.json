@@ -52,8 +52,8 @@
     "proofId": "erdos-1062",
     "type": "definition",
     "range": {
-      "startLine": 39,
-      "endLine": 42
+      "startLine": 33,
+      "endLine": 38
     },
     "title": "The Extremal Function f(n)",
     "content": "Defines $f(n) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,n\\},\\, \\text{NDTO}(A)\\}$ as the supremum of cardinalities over all valid subsets. This is a Turán-type extremal function for the divisibility poset: how large can a set be while avoiding a specific substructure (an element dividing two others)?",
@@ -213,7 +213,7 @@
     "proofId": "erdos-1062",
     "type": "concept",
     "range": {
-      "startLine": 94,
+      "startLine": 95,
       "endLine": 97
     },
     "title": "Primitive Implies NDTO",

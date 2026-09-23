@@ -14,7 +14,7 @@
   {
     "id": "roth-oq030101-engine",
     "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01",
-    "range": { "startLine": 39, "endLine": 40 },
+    "range": { "startLine": 41, "endLine": 53 },
     "type": "theorem",
     "title": "prod_update_factor — the factorization engine",
     "content": "This is the single lemma that powers everything else. It is supplied by the imported parent `Proofs.RothTheoremOQ03OQ01` (the comment on this line records that), and the multilinearity theorems below run off it. Replacing slot `j` of the tuple `f` by a function `v` (using `Function.update f j v`) lets you pull the j-th factor `v(x + j·d)` clean out of the k-AP product, leaving the product of the untouched factors over `univ.erase j`. Once a slot can be isolated this way, additivity and homogeneity become routine bookkeeping over the remaining product. Multilinearity properties of any indexed product are almost always reduced to exactly this 'isolate one coordinate' move.",

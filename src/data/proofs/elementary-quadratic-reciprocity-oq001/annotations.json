@@ -89,7 +89,7 @@
   {
     "id": "ann-eqr-oq01x4-step4",
     "proofId": "elementary-quadratic-reciprocity-oq001",
-    "range": { "startLine": 128, "endLine": 141 },
+    "range": { "startLine": 116, "endLine": 129 },
     "type": "insight",
     "title": "Step 4: Apply qr_gauss_sums_identity to legendreCharQ",
     "content": "**`gauss_sum_char_identity`** is a **one-line application** of `FrobeniusStepQR.qr_gauss_sums_identity` from the parent OQ01OQ01OQ02 to `legendreCharQ`. The hypotheses (nontriviality, quadratic, $p \\neq q$, $q \\neq 2$) are dispatched via the file's earlier lemmas. The conclusion is exactly Step 4: $(\\chi(-1) \\cdot |\\mathbb{Z}/p|)^{|\\mathbb{Z}/q|/2} = \\chi(|\\mathbb{Z}/q|)$ in the target ring $\\mathbb{Z}/q$.",
@@ -132,7 +132,7 @@
   {
     "id": "ann-eqr-oq01x4-main",
     "proofId": "elementary-quadratic-reciprocity-oq001",
-    "range": { "startLine": 169, "endLine": 178 },
+    "range": { "startLine": 157, "endLine": 166 },
     "type": "insight",
     "title": "Main Theorem: gauss_sum_qr_assembled",
     "content": "**`gauss_sum_qr_assembled`** is the **classical statement of QR**: for distinct odd primes $p, q$, $\\left(\\tfrac{p}{q}\\right) \\cdot \\left(\\tfrac{q}{p}\\right) = (-1)^{(p/2)(q/2)}$ as integers. The proof is a **one-line invocation** of Mathlib's `legendreSym.quadratic_reciprocity`. The deeper formalization content is in the four-step assembly above; the final `legendreSym.quadratic_reciprocity` provides the integer-level conclusion, and the **mathematical equivalence** of our `gauss_sum_zmod_qr` with the classical statement is captured by the lift from $\\mathbb{Z}/q$ to $\\mathbb{Z}$.",
@@ -172,7 +172,7 @@
   {
     "id": "ann-eqr-oq01x4-verifications",
     "proofId": "elementary-quadratic-reciprocity-oq001",
-    "range": { "startLine": 208, "endLine": 243 },
+    "range": { "startLine": 209, "endLine": 243 },
     "type": "concept",
     "title": "Concrete Verifications via native_decide",
     "content": "Five private `Fact` instances make small primes 3, 5, 7, 11, 13 available, then four `example` declarations verify QR for the prime pairs $(3,5), (3,7), (5,7), (11,13)$ via `native_decide`. **Each example is a closed term of QR for two specific primes** — a strong validation that the formalization is operationally correct, not just propositionally derivable. The closing comment block summarizes the full assembly with a status table.",

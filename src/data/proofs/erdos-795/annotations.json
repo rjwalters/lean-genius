@@ -74,8 +74,8 @@
     "type": "definition",
     "title": "Prime Counting Function",
     "range": {
-      "startLine": 80,
-      "endLine": 82
+      "startLine": 83,
+      "endLine": 85
     },
     "content": "The prime counting function $\\pi(n)$ counts the number of primes $p \\leq n$. By the prime number theorem, $\\pi(n) \\sim n / \\ln n$. This function is central to the problem since primes are the building blocks of sets with distinct subset products: by the fundamental theorem of arithmetic, any set of distinct primes automatically has distinct subset products.",
     "mathContext": "$\\pi(n) = |\\{p \\leq n : p \\text{ is prime}\\}| \\sim \\frac{n}{\\ln n}$",

@@ -224,7 +224,7 @@
     "id": "ann-1057-lichtman",
     "proofId": "erdos-1057",
     "range": {
-      "startLine": 262,
+      "startLine": 263,
       "endLine": 264
     },
     "type": "concept",
@@ -407,10 +407,10 @@
     "id": "ann-1057-unbounded",
     "proofId": "erdos-1057",
     "range": {
-      "startLine": 697,
-      "endLine": 726
+      "startLine": 418,
+      "endLine": 447
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "C Is Unbounded (Verified)",
     "content": "A fully verified proof that $C(x) \\to \\infty$: for any $N$, there exists $x$ with $C(x) > N$. The proof constructs a set of $N+1$ distinct Carmichael numbers by induction, using `infinitely_many_carmichaels` (AGP axiom) at each step to find a new Carmichael number beyond all previous ones.",
     "mathContext": "$\\forall N \\in \\mathbb{N}, \\exists x: C(x) > N$. Proof by induction on $N$, using AGP to extend the witness set.",

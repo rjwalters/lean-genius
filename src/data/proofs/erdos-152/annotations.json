@@ -69,8 +69,8 @@
     "proofId": "erdos-152",
     "type": "definition",
     "range": {
-      "startLine": 37,
-      "endLine": 49
+      "startLine": 68,
+      "endLine": 80
     },
     "title": "Isolated Elements and Their Count",
     "content": "An element $s \\in A + A$ is isolated if $s - 1 \\notin A + A$ and $s + 1 \\notin A + A$ — it has no sumset neighbors. `isolatedCount A` counts these elements via `Finset.filter`. Isolated elements represent the most extreme form of sparsity in the sumset: not just gaps, but completely surrounded by gaps.",
@@ -113,7 +113,7 @@
     "proofId": "erdos-152",
     "type": "concept",
     "range": {
-      "startLine": 62,
+      "startLine": 63,
       "endLine": 72
     },
     "title": "Strong Form: $\\gg |A|^2$ Isolated Elements",

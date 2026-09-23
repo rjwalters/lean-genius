@@ -50,7 +50,7 @@
   {
     "id": "dilworth-oq010102-ann-finite",
     "proofId": "dilworth-theorem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 100, "endLine": 108 },
+    "range": { "startLine": 101, "endLine": 108 },
     "type": "insight",
     "title": "Finiteness corollary: the height is a genuine natural",
     "content": "univ_chainHeight_ne_top reads off from the bridge that the chain height of a finite poset is never ⊤. Carrying the main equality in ℕ∞ (rather than ℕ) is essential — Set.chainHeight is valued in the extended naturals — but since the value equals the cast of a natural number maxChainLen, ENat.coe_ne_top recovers that it is finite. This is the small but necessary reconciliation between Mathlib's ℕ∞-valued invariant and the gallery's ℕ-valued one.",

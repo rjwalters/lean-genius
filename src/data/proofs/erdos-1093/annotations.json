@@ -28,8 +28,8 @@
     "proofId": "erdos-1093",
     "type": "definition",
     "range": {
-      "startLine": 26,
-      "endLine": 28
+      "startLine": 27,
+      "endLine": 29
     },
     "title": "$k$-Smooth Numbers",
     "content": "Defines `IsKSmooth k m`: a positive integer $m$ is $k$-smooth if every prime factor of $m$ is $\\leq k$. These are numbers composed entirely of 'small' primes. The concept originates in computational number theory where $B$-smooth numbers play a central role in factoring algorithms (quadratic sieve, number field sieve). In the context of deficiency, $k$-smooth terms in the falling factorial are the ones whose prime factors are 'absorbed' by $k!$.",
@@ -162,7 +162,7 @@
     "proofId": "erdos-1093",
     "type": "concept",
     "range": {
-      "startLine": 83,
+      "startLine": 84,
       "endLine": 87
     },
     "title": "ELS Upper Bound: $n \\ll 2^k \\sqrt{k}$",
@@ -185,7 +185,7 @@
     "proofId": "erdos-1093",
     "type": "concept",
     "range": {
-      "startLine": 89,
+      "startLine": 90,
       "endLine": 93
     },
     "title": "Computational Census: At Least 58 Examples",

@@ -26,8 +26,8 @@
     "proofId": "erdos-478",
     "type": "definition",
     "range": {
-      "startLine": 30,
-      "endLine": 31
+      "startLine": 31,
+      "endLine": 33
     },
     "title": "Factorial Residue Set $A_p$",
     "content": "The set $A_p = \\{k! \\bmod p : 1 \\leq k < p\\}$ formalized as a $\\texttt{Finset}$ over $\\texttt{ZMod p}$ by mapping $k \\mapsto (k+1)!$ for $k \\in \\{0, \\ldots, p-2\\}$. This gives all factorial residues from $1!$ through $(p-1)!$. The image operation automatically removes duplicates, so $|A_p| \\leq p - 1$.",
@@ -50,8 +50,8 @@
     "proofId": "erdos-478",
     "type": "definition",
     "range": {
-      "startLine": 34,
-      "endLine": 35
+      "startLine": 35,
+      "endLine": 36
     },
     "title": "Factorial Residue Count",
     "content": "$\\texttt{factorialResidueCount}(p) = |A_p|$, the number of distinct factorial residues modulo $p$. The conjecture predicts $|A_p| \\sim (1 - 1/e) \\cdot p \\approx 0.6321p$. Known values: $|A_5| = 3$, $|A_7| = 4$, $|A_{11}| = 8$, $|A_{13}| = 9$.",
@@ -160,7 +160,7 @@
     "proofId": "erdos-478",
     "type": "concept",
     "range": {
-      "startLine": 59,
+      "startLine": 60,
       "endLine": 61
     },
     "title": "Ratio Set Covers $(\\mathbb{Z}/p\\mathbb{Z})^*$",

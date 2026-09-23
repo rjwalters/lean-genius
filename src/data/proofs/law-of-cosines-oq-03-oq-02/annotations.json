@@ -14,7 +14,7 @@
   {
     "id": "ann-sinh-positivity",
     "proofId": "law-of-cosines-oq-03-oq-02",
-    "range": { "startLine": 82, "endLine": 87 },
+    "range": { "startLine": 87, "endLine": 87 },
     "type": "insight",
     "title": "sinh Positivity: The Denominator Clearing Tool",
     "content": "sinh_pos_of_pos uses Real.sinh_pos_iff (from Mathlib) to prove sinh x > 0 for x > 0. The nonzero form (sinh_pos_ne_zero) converts this to sinh x ≠ 0, needed for div_eq_div_iff to clear denominators. This two-lemma pattern (pos → ne_of_gt) is a standard Lean idiom: div_eq_div_iff requires ≠ 0 not > 0, so ne_of_gt provides the bridge.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-sin-injectivity",
     "proofId": "law-of-cosines-oq-03-oq-02",
-    "range": { "startLine": 154, "endLine": 201 },
+    "range": { "startLine": 155, "endLine": 201 },
     "type": "insight",
     "title": "sin Injectivity on (0,π): The Supplement-Exclusion Argument",
     "content": "The proof has two main steps: (1) derive cos A = cos B from sin A = sin B; (2) conclude A = B via Real.cos_injOn_Icc. For step 1: sin²A = sin²B gives cos²A = cos²B (Pythagorean); so cos A = ±cos B. If cos A = -cos B, then the product-to-sum formula gives cos(A+B) = cos A·cos B - sin A·sin B = -cos²B - sin²B = -1, forcing A+B = π — contradicted by hAB_lt. The by_contra structure: assuming A ≠ B, derive contradiction via arccos_neg_one.",

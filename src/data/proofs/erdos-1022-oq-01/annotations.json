@@ -66,8 +66,8 @@
     "content": "The proof is elegant: `Fin.castSucc_injective _ h` converts an equality on castSucc values back to the original, then applies `hab` for contradiction. This demonstrates that Lean's type-theoretic representation of finite types automatically gives the correct injectivity property. The `general monotonicity` version (`hasPropertyBK_mono_gen`) uses `induction hkm` on the `\u2264` proof.",
     "proofId": "erdos-1022-oq-01",
     "range": {
-      "startLine": 76,
-      "endLine": 82
+      "startLine": 77,
+      "endLine": 86
     },
     "type": "insight"
   },
@@ -89,8 +89,8 @@
     "content": "Property B is sometimes called '2-colorability without monochromaticity' or 'independence system coloring'. The Lean definition directly captures the splitting condition via `f \u2229 S` (elements in $S$, color 0) and `f \\ S` (elements not in $S$, color 1). The equivalence with `HasPropertyBK F 2` is the content of `propertyB_iff_propertyBK_two`.",
     "proofId": "erdos-1022-oq-01",
     "range": {
-      "startLine": 94,
-      "endLine": 95
+      "startLine": 97,
+      "endLine": 99
     },
     "type": "insight"
   },

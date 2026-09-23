@@ -26,8 +26,8 @@
     "id": "ann-setup",
     "proofId": "pentagonal-number-theorem-oq-01",
     "range": {
-      "startLine": 51,
-      "endLine": 78
+      "startLine": 63,
+      "endLine": 90
     },
     "type": "definition",
     "title": "Division-Free Generalized Pentagonal Numbers",
@@ -47,8 +47,8 @@
     "id": "ann-criterion",
     "proofId": "pentagonal-number-theorem-oq-01",
     "range": {
-      "startLine": 80,
-      "endLine": 128
+      "startLine": 91,
+      "endLine": 139
     },
     "type": "theorem",
     "title": "The Square-Discriminant Recognition Criterion",
@@ -112,10 +112,10 @@
     "id": "ann-series-coefficient",
     "proofId": "pentagonal-number-theorem-oq-01",
     "range": {
-      "startLine": 255,
-      "endLine": 369
+      "startLine": 308,
+      "endLine": 422
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Concrete Values and the Series-Side Coefficient",
     "content": "The first generalized pentagonal numbers, indexed `k = 0,1,-1,2,-2,…`, are `0,1,2,5,7,12,15,22,26`, each proved from the doubling relation by `omega`; `twelve_isGenPent` confirms the criterion fires (`24·12+1 = 289 = 17²`).\n\nPart 5 then builds the right-hand side of Euler's identity explicitly. `pentSign k = (-1)^|k|` is ±1-valued, nonvanishing, and pairing-invariant. `pentSeriesCoeff n` is the coefficient `[Xⁿ]` of `∑_{k∈ℤ}(-1)ᵏX^{g(k)}`, well-defined by `genPent_injective` (each exponent is hit by at most one index): `pentSeriesCoeff_genPent` gives `(-1)ᵏ` at `g(k)`, `pentSeriesCoeff_ne_zero_iff` fixes its support as the pentagonal numbers, `pentSeriesCoeff_eq_zero_or` bounds it to `0/±1`, and `[X⁰]=+1`, `[X¹]=-1` match the leading `1 - X` of `∏(1-Xⁿ)`.",
     "mathContext": "Indexing $k=0,1,-1,2,-2,\\dots$ enumerates A001318; $\\texttt{pentSeriesCoeff}(g(k))=(-1)^k$ is the RHS coefficient of $\\sum_k(-1)^kX^{g(k)}$.",

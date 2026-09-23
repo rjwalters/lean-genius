@@ -14,7 +14,7 @@
   {
     "id": "ann-ordered-fubini",
     "proofId": "greens-theorem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 38, "endLine": 60 },
+    "range": { "startLine": 39, "endLine": 60 },
     "type": "insight",
     "title": "Ordered Fubini: Bridging Interval and Lebesgue Integrals",
     "content": "The core technical step. Uses integral_of_le hab to convert ∫ x in a..b (signed interval integral, defined for any a, b) to ∫ x in Ioc a b (Lebesgue integral over an open-closed interval, defined when a ≤ b). The integrability hypothesis must be downgraded from Icc (closed interval, what hf_int provides) to Ioc (what integral_of_le requires) — done via Measure.prod_mono with two Measure.restrict_mono applications and Ioc_subset_Icc_self. Once both interval integrals are converted to Lebesgue, MeasureTheory.integral_integral_swap delivers the Fubini swap.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-continuous-case",
     "proofId": "greens-theorem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 178, "endLine": 195 },
+    "range": { "startLine": 179, "endLine": 195 },
     "type": "insight",
     "title": "Continuous Case: Auto-Discharged Hypotheses",
     "content": "The most user-friendly version: for continuous f, no measurability or integrability hypotheses are needed. Continuity gives measurability via Continuous.measurable. Integrability follows from ContinuousOn.integrableOn_compact applied to the compact rectangle uIcc a b ×ˢ uIcc c d (uIcc compactness is isCompact_uIcc). The restrict_prod_eq_prod_restrict lemma converts (volume.restrict R₁).prod (volume.restrict R₂) to volume.restrict (R₁ ×ˢ R₂), bridging product-of-restrictions with restriction-of-product. This version is what the application below uses, and what most callers will reach for.",

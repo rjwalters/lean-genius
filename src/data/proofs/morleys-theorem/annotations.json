@@ -50,10 +50,10 @@
     "id": "ann-equilateral-sides",
     "proofId": "morleys-theorem",
     "range": {
-      "startLine": 113,
-      "endLine": 160
+      "startLine": 110,
+      "endLine": 157
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "Equilateral Triangle Has Equal Sides (Proved)",
     "content": "A unit equilateral triangle is placed at the cube roots of unity: $P = e^{0} = 1$, $Q = e^{i \\cdot 2\\pi/3}$, $R = e^{i \\cdot 4\\pi/3}$ via `equilateralVertex k = exp(i · 2πk/3)`. The theorem `equilateral_side_length` **proves** (no axiom) that $|Q - P| = |R - Q| = |P - R|$. The proof observes $R = Q^2$, $Q^3 = 1$, and $|Q| = 1$, so $R - Q = Q(Q - P)$ and $P - R = Q^2(Q - P)$; multiplying by a unit-modulus factor preserves length.",
     "mathContext": "The vertices $\\{e^{i \\cdot 2\\pi k/3}\\}_{k=0}^{2}$ are the cube roots of unity, an equilateral triangle inscribed in the unit circle: $P = 1$, $Q = -1/2 + i\\sqrt{3}/2$, $R = -1/2 - i\\sqrt{3}/2$. The proof is fully constructive in Lean: `hP : P = 1` by `simp`, `hR : R = Q^2` via `Complex.exp_add`, `hQ_abs : |Q| = 1` from `map_exp_ofReal_mul_I_re`, and `hQ3 : Q^3 = 1` from `Complex.exp_two_pi_mul_I`. Then `map_mul` and `Complex.abs_pow` collapse each side length to $|Q - P|$.",
@@ -172,8 +172,8 @@
     "id": "ann-special-cases",
     "proofId": "morleys-theorem",
     "range": {
-      "startLine": 434,
-      "endLine": 469
+      "startLine": 443,
+      "endLine": 478
     },
     "type": "definition",
     "title": "Special Cases: Equilateral and Right Isosceles",
@@ -197,7 +197,7 @@
     "id": "ann-history",
     "proofId": "morleys-theorem",
     "range": {
-      "startLine": 475,
+      "startLine": 478,
       "endLine": 524
     },
     "type": "concept",

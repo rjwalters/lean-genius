@@ -38,7 +38,7 @@
   {
     "id": "ann-easy-direction",
     "proofId": "hall-marriage-theorem-oq-01-oq-01",
-    "range": { "startLine": 160, "endLine": 187 },
+    "range": { "startLine": 161, "endLine": 188 },
     "type": "theorem",
     "title": "From a Matching to Deficiency",
     "content": "`deficiency_le_of_matching` is the easy converse. Given a matching on $J$ of size $\\ge \\#\\iota - d$, for any sub-family $s$ the function $f$ injects $s \\cap J$ into $s.\\mathrm{biUnion}\\,t$ (each matched $f\\,i \\in t\\,i$), so $\\#(s \\cap J) \\le \\#(s.\\mathrm{biUnion}\\,t)$ via `card_le_card_of_injOn`. The unsaturated part is controlled by $\\#J^c \\le d$, and $s \\subseteq (s \\cap J) \\cup J^c$ gives $\\#s \\le \\#(s \\cap J) + \\#J^c \\le \\#(s.\\mathrm{biUnion}\\,t) + d$. This makes the bound in the main theorem tight: $d$-deficiency is both necessary and sufficient.",

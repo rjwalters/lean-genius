@@ -183,8 +183,8 @@
     "id": "ann-548-girth",
     "proofId": "erdos-548",
     "range": {
-      "startLine": 156,
-      "endLine": 162
+      "startLine": 262,
+      "endLine": 268
     },
     "type": "definition",
     "title": "Girth",
@@ -205,7 +205,7 @@
     "id": "ann-548-brandt",
     "proofId": "erdos-548",
     "range": {
-      "startLine": 164,
+      "startLine": 165,
       "endLine": 173
     },
     "type": "concept",
@@ -249,8 +249,8 @@
     "id": "ann-548-complement",
     "proofId": "erdos-548",
     "range": {
-      "startLine": 190,
-      "endLine": 209
+      "startLine": 298,
+      "endLine": 317
     },
     "type": "concept",
     "title": "Wang-Li-Liu (2000): Complement Girth >= 5",
@@ -271,10 +271,10 @@
     "id": "ann-548-extremal",
     "proofId": "erdos-548",
     "range": {
-      "startLine": 211,
-      "endLine": 222
+      "startLine": 326,
+      "endLine": 343
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Extremal Number ex(n, T)",
     "content": "Defines $\\text{ex}(n, T)$ as the supremum of edge counts over all $T$-free graphs on $n$ vertices. The theorem `erdos_sos_implies_extremal` (sorry) shows the conjecture implies $\\text{ex}(n, T) \\le (k-1)n/2$ for all trees $T$. This is the Turan-number formulation of the conjecture.",
     "mathContext": "$\\text{ex}(n, T) = \\max\\{|E(G)| : |V(G)| = n,\\, T \\not\\subseteq G\\}$",

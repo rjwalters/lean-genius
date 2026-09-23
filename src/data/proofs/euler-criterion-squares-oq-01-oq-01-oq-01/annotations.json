@@ -26,7 +26,7 @@
   {
     "id": "ecsoq010101-ann-gcd",
     "proofId": "euler-criterion-squares-oq-01-oq-01-oq-01",
-    "range": { "startLine": 36, "endLine": 41 },
+    "range": { "startLine": 37, "endLine": 41 },
     "type": "insight",
     "title": "The gcd Collapse",
     "content": "gcd_eq proves $\\gcd(p-1, k) = k$ whenever $k \\mid p-1$ (Nat.gcd_comm then Nat.gcd_eq_left). This is where the divisibility hypothesis does its work: the general cyclic count is $(p-1)/\\gcd(p-1,k)$, and it collapses to the clean $(p-1)/k$ exactly under $k \\mid p-1$. Needs neither Fact, so both are omitted.",
@@ -62,7 +62,7 @@
   {
     "id": "ecsoq010101-ann-bridge",
     "proofId": "euler-criterion-squares-oq-01-oq-01-oq-01",
-    "range": { "startLine": 55, "endLine": 77 },
+    "range": { "startLine": 56, "endLine": 77 },
     "type": "insight",
     "title": "Bridge: Field k-th Powers vs Image Membership",
     "content": "isKthPower_coe_iff_mem_range shows that for a unit $u$, $\\uparrow u$ is a $k$-th power in the field iff $u$ lies in the image of the unit power map. Forward: a witness $x$ with $x^k = \\uparrow u \\ne 0$ must be nonzero (else $0^k = 0$, using $k \\ne 0$ via zero_pow), so it lifts to a unit $w$ with $w^k = u$. Backward is immediate. This transports the unit-group count to field $k$-th powers.",

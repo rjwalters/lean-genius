@@ -13,7 +13,7 @@
   {
     "id": "ann-erdos1040oq03oq02-setup",
     "proofId": "erdos-1040-oq-03-oq-02",
-    "range": { "startLine": 44, "endLine": 61 },
+    "range": { "startLine": 45, "endLine": 61 },
     "type": "tactic",
     "title": "The Bare Lemniscate and the Rescaled Pure Power",
     "content": "lemOf f = {z : ‖f z‖ < 1} is the sub-level set of a bare function ℂ → ℂ — no polynomial scaffolding, so the entry is self-contained. scaledPure R c n = ((z - c)/R)^n = R^{-n}(z - c)^n is the pure power rescaled by R > 0; it keeps the single root c of multiplicity n but sets the leading coefficient to R^{-n}, monic exactly when R = 1.",

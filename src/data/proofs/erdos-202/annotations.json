@@ -29,8 +29,8 @@
     "proofId": "erdos-202",
     "type": "definition",
     "range": {
-      "startLine": 73,
-      "endLine": 84
+      "startLine": 74,
+      "endLine": 85
     },
     "title": "Congruence Class and Disjointness",
     "content": "A `CongruenceClass` is a structure with residue $a \\in \\mathbb{Z}$, modulus $n > 0$. Membership: $x \\in (a, n) \\iff x \\equiv a \\pmod{n}$. Two classes are disjoint (`AreDisjoint`) if no integer belongs to both.",
@@ -74,8 +74,8 @@
     "proofId": "erdos-202",
     "type": "definition",
     "range": {
-      "startLine": 108,
-      "endLine": 109
+      "startLine": 103,
+      "endLine": 105
     },
     "title": "The Function $f(N)$",
     "content": "Defines $f(N) = \\sup\\{r : \\exists S$ disjoint system with moduli $\\leq N$ and $|S| = r\\}$ via `sSup`. This is the central extremal function whose asymptotics are the subject of the problem.",

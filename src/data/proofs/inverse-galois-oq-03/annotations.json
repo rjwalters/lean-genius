@@ -14,8 +14,8 @@
   {
     "id": "ann-axiomatization",
     "proofId": "inverse-galois-oq-03",
-    "range": { "startLine": 76, "endLine": 105 },
-    "type": "definition",
+    "range": { "startLine": 87, "endLine": 116 },
+    "type": "axiom",
     "title": "Part I: Axiomatizing 𝕄 (4 of the 6 axioms)",
     "content": "Because the Monster has no small permutation carrier, even its underlying type is introduced axiomatically. Four axioms are declared here: `Monster` (the type), `instGroupMonster` (its group structure), `instFintypeMonster` (finiteness), and `Monster_card` (Griess's 1982 order, the 54-digit number). `Monster_isSimple` records simplicity from CFSG. These are cited mathematical facts, not conjectures and not reproved — exactly the kind of well-established input the axiom integrity policy permits, with axiomCount honestly set to 6 (the 5 here plus Thompson's realizability axiom in Part V). The `attribute [instance]` lines register the group and fintype axioms so typeclass resolution can use them downstream.",
     "mathContext": "$|\\mathbb{M}| = 808{,}017{,}424{,}794{,}512{,}875{,}886{,}459{,}904{,}961{,}710{,}757{,}005{,}754{,}368{,}000{,}000{,}000$. Simplicity: $\\mathbb{M}$ has no normal subgroup other than $\\{1\\}$ and $\\mathbb{M}$ itself.",

@@ -14,7 +14,7 @@
   {
     "id": "imports-namespace-setup",
     "proofId": "dirichlets-theorem-oq-01-oq-01",
-    "range": { "startLine": 38, "endLine": 47 },
+    "range": { "startLine": 47, "endLine": 47 },
     "type": "insight",
     "title": "Imports, Heartbeat Bump, and the noncomputable Section",
     "content": "Imports the parent file `Proofs.DirichletsTheoremOQ01` (supplying `IsSiegelZero`, `SiegelZeroConjecture`, and the five framework axioms: `siegel_theorem`, `grh_implies_no_siegel_zeros`, `landau_page_theorem`, `deuring_heilbronn_repulsion`, `tatuzawa_theorem`) plus `Mathlib.Tactic`. The `set_option maxHeartbeats 400000` doubles the default to handle heavy L-function elaboration. The `noncomputable section` is required because L-functions, real characters, and Siegel zeros are intrinsically classical objects (no algorithm computes whether $L(\\beta, \\chi) = 0$). Open declarations expose the API: `Nat`, `Real`, `Filter`, `DirichletCharacter`, the `Topology` scope, and the parent's namespace `DirichletsTheoremOQ01`.",

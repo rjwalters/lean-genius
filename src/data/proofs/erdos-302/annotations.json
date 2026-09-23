@@ -73,8 +73,8 @@
     "proofId": "erdos-302",
     "type": "definition",
     "range": {
-      "startLine": 58,
-      "endLine": 62
+      "startLine": 60,
+      "endLine": 64
     },
     "title": "Unit-Fraction-Sum-Free Sets",
     "content": "**IsUnitFractionSumFree A:**\n\nA set A is unit-fraction-sum-free if no three distinct elements a, b, c ∈ A satisfy 1/a = 1/b + 1/c.\n\n**Key:** Elements must be DISTINCT - we don't count solutions like 1/2 = 1/4 + 1/4 where b = c.",
@@ -142,8 +142,8 @@
     "proofId": "erdos-302",
     "type": "definition",
     "range": {
-      "startLine": 117,
-      "endLine": 119
+      "startLine": 125,
+      "endLine": 127
     },
     "title": "Upper Half Construction",
     "content": "**upperHalf N:**\n\nThe integers in [N/2, N].\n\n**Size:** About N/2 elements.\n\n**Why it works:** If a, b, c ≥ N/2, then:\n- 1/a ≤ 2/N\n- 1/b + 1/c ≥ 4/N\n\nBut 2/N < 4/N, so 1/a ≠ 1/b + 1/c!",
@@ -212,8 +212,8 @@
     "proofId": "erdos-302",
     "type": "definition",
     "range": {
-      "startLine": 235,
-      "endLine": 238
+      "startLine": 243,
+      "endLine": 246
     },
     "title": "The Original Question",
     "content": "**original_question:**\n\nIs f(N) = (1/2+o(1))N?\n\n**Answer:** NO!\n\nCambie showed f(N) ≥ (5/8+o(1))N, and 5/8 > 1/2.\n\nSo the original conjecture underestimated how large sum-free sets can be.",

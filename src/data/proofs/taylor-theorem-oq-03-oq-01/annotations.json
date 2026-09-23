@@ -62,7 +62,7 @@
   {
     "id": "ann-ttoq0301-tendsto",
     "proofId": "taylor-theorem-oq-03-oq-01",
-    "range": { "startLine": 133, "endLine": 149 },
+    "range": { "startLine": 136, "endLine": 154 },
     "type": "theorem",
     "title": "Convergence Sanity Check",
     "content": "taylorWithinEval_exp_tendsto confirms the bridge is compatible with convergence: the bridged Taylor polynomials tend to exp x. It builds HasSum of the exp series (via NormedSpace.exp_eq_tsum and summable_pow_div_factorial), takes partial sums (tendsto_sum_nat), shifts the index by 1 (tendsto_add_atTop_nat), and rewrites each term with the bridge to match taylorWithinEval.",

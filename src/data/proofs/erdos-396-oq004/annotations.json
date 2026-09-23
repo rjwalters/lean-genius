@@ -85,7 +85,7 @@
   {
     "id": "ann-e396growthrate-rpow",
     "proofId": "erdos-396-oq004",
-    "range": { "startLine": 148, "endLine": 158 },
+    "range": { "startLine": 149, "endLine": 159 },
     "type": "theorem",
     "title": "n-th root form: (catalan n)^{1/n} → 4",
     "content": "Composing the logarithmic limit with the continuity of $\\exp$ gives $(\\mathrm{catalan}\\,n)^{1/n} = \\exp\\!\\big((\\log \\mathrm{catalan}\\,n)/n\\big) \\to \\exp(\\log 4) = 4$. This is the Cauchy–Hadamard statement that the Catalan generating function $\\sum \\mathrm{catalan}\\,n\\,x^n$ has radius of convergence exactly $1/4$.",

@@ -30,8 +30,8 @@
     "proofId": "erdos-731",
     "type": "definition",
     "range": {
-      "startLine": 27,
-      "endLine": 28
+      "startLine": 25,
+      "endLine": 26
     },
     "title": "Central Binomial Coefficient",
     "content": "Defines `centralBinom n` = $\\binom{2n}{n} = (2n)!/(n!)^2$ using `Nat.choose`. This is the central entry of the $2n$-th row of Pascal's triangle, and satisfies $\\binom{2n}{n} \\sim 4^n/\\sqrt{\\pi n}$ by Stirling's approximation. Its rich divisibility structure makes it the natural object for studying non-divisors.",
@@ -296,8 +296,8 @@
     "proofId": "erdos-731",
     "type": "concept",
     "range": {
-      "startLine": 108,
-      "endLine": 111
+      "startLine": 241,
+      "endLine": 252
     },
     "title": "Bertrand's Postulate Applied",
     "content": "Axiomatizes `bertrand_central`: for $n \\geq 1$, there exists a prime $p$ with $n < p \\leq 2n$ dividing $\\binom{2n}{n}$. Such a prime $p$ appears exactly once in the factorization of $(2n)!$ (in the range $(n, 2n]$) but not at all in $(n!)^2$, so $v_p(\\binom{2n}{n}) = 1$. This is the classical proof of Bertrand's postulate via central binomials.",
@@ -318,8 +318,8 @@
     "proofId": "erdos-731",
     "type": "concept",
     "range": {
-      "startLine": 113,
-      "endLine": 115
+      "startLine": 269,
+      "endLine": 289
     },
     "title": "Exponential Lower Bound",
     "content": "Axiomatizes `central_binom_lower`: $\\binom{2n}{n} \\cdot (2n+1) \\geq 4^n$. This follows from the identity $\\sum_{k=0}^{2n} \\binom{2n}{k} = 4^n$ with $\\binom{2n}{n}$ being the largest term. The bound implies $\\binom{2n}{n} \\geq 4^n/(2n+1)$, showing exponential growth and hence many prime divisors.",

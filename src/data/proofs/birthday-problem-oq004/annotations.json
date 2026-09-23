@@ -26,7 +26,7 @@
   {
     "id": "ann-faithful",
     "proofId": "birthday-problem-oq004",
-    "range": { "startLine": 91, "endLine": 122 },
+    "range": { "startLine": 109, "endLine": 140 },
     "type": "insight",
     "title": "Faithful Specialization to the Parent's k=3 Recurrence",
     "content": "The centerpiece `Rk_eq_Rpar` proves Rk n [e,s] = Rpar n e s, where Rpar is the parent's two-state recurrence e·R(n,e−1,s+1) + s·R(n,e,s−1). On width-2 states the two transitions hold definitionally: transition [e,s] 0 = [e−1,s+1] and transition [e,s] 1 = [e,s−1] (both by `rfl`). The proof inducts on n (generalizing e, s), expands the level sum with `Finset.sum_range_succ`/`sum_range_one`, rewrites the two transitions and `getD` lookups, applies the induction hypothesis twice, and closes by `rfl`. This is a *provable* equality of recurrences, not mere numerical agreement on examples — nothing is lost passing to the general list-state formulation.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-unified-count",
     "proofId": "birthday-problem-oq004",
-    "range": { "startLine": 124, "endLine": 140 },
+    "range": { "startLine": 128, "endLine": 144 },
     "type": "concept",
     "title": "The Unified k-Way Birthday Count",
     "content": "`birthdayCountK n d k = Rk n (d :: replicate (k−2) 0)` counts functions f : Fin n → Fin d whose every fiber has size < k (no k people share a day), starting from all d days empty in a width-(k−1) histogram. `birthdayCountK_eq_Rpar_k3` proves that at k = 3 the start state reduces definitionally to [d, 0], so the unified count recovers the parent's Rpar n d 0 (= birthdayCount3) via the faithfulness theorem. One definition thus subsumes the injective count (k=2), the parent's triple-avoiding count (k=3), and the new k≥4 counts.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-concrete-counts",
     "proofId": "birthday-problem-oq004",
-    "range": { "startLine": 142, "endLine": 209 },
+    "range": { "startLine": 182, "endLine": 217 },
     "type": "concept",
     "title": "Concrete k=2, 3, 4 Counts and Monotonicity in k",
     "content": "Kernel `decide` (not `native_decide`, keeping the file axiom-free) evaluates the recurrence on small inputs across three regimes: k=2 gives the descending factorial d·(d−1)···(d−n+1) of injective placements (e.g. birthdayCountK 5 5 2 = 120 = 5!, and 0 when n > d); k=3 recovers the parent's values 24, 90, and capacity-zero; k=4 produces genuinely new quadruple-avoiding counts the parent never computed (birthdayCountK 4 3 4 = 78, birthdayCountK 7 2 4 = 0 at n > 2·3 capacity). `k_monotone_4_3` checks the count is monotone in k — relaxing the maximum occupancy can only admit more assignments — with 0 ≤ 54 ≤ 78 for n=4, d=3. `kway_summary` bundles faithfulness, k=3 recovery, and a new k=4 value.",

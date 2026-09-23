@@ -84,7 +84,7 @@
   {
     "id": "ann-fiboq02-5",
     "proofId": "fibonacci-identities-oq-02",
-    "range": { "startLine": 96, "endLine": 109 },
+    "range": { "startLine": 97, "endLine": 109 },
     "type": "concept",
     "title": "Worked Examples and the Sharp Boundary",
     "content": "Three concrete instances ground the theory: the strong-divisibility law at $(12,8)$ ($F_{\\gcd(12,8)} = F_4 = 3$), the numeric check $\\gcd(F_{12},F_8) = \\gcd(144,21) = 3$ by `decide` (kernel evaluation — note this uses `decide`, not `native_decide`, so no `Lean.ofReduceBool` axiom enters), and the characterization specialised to $m=3$: $F_3 = 2 \\mid F_n \\iff 3 \\mid n$, the familiar 'every third Fibonacci number is even'. The latter also illustrates the sharp boundary: at $m=2$, $F_2 = 1$ divides *every* $F_n$ while $2 \\mid n$ fails for odd $n$, so the biconditional genuinely requires $m \\ge 3$.",

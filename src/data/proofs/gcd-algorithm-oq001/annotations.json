@@ -106,7 +106,7 @@
   {
     "id": "ann-gcd-oq01030101-sanitychecks",
     "proofId": "gcd-algorithm-oq001",
-    "range": { "startLine": 185, "endLine": 199 },
+    "range": { "startLine": 188, "endLine": 199 },
     "type": "concept",
     "title": "Sanity Checks on a Concrete Fibonacci Pair",
     "content": "Part VI validates the machinery on small instances. The first example checks the geometric bound φ³ ≤ fib 5 (φ³ ≈ 4.236 ≤ 5) as the n=3 case of phi_pow_le_fib. The second exercises the full closed-form bound on the worst-case Fibonacci pair (fib 7, fib 6) = (13, 8), which takes exactly 5 Euclidean steps: it reads 5 ≤ log_φ(8) + 1, discharged by feeding euclidSteps_le_logb the identity euclidSteps(fib 7)(fib 6) = 5 — obtained from the parent's worst-case identity euclidSteps(fib(n+2))(fib(n+1)) = n at n=5, NOT native_decide — so the sanity check itself introduces no ofReduceBool dependency. This confirms the bound is tight exactly on consecutive Fibonacci pairs, the extremal case of Lamé's theorem.",

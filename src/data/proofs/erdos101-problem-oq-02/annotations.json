@@ -22,7 +22,7 @@
   {
     "id": "ann-square-identity",
     "proofId": "erdos101-problem-oq-02",
-    "range": { "startLine": 51, "endLine": 64 },
+    "range": { "startLine": 52, "endLine": 64 },
     "type": "tactic",
     "title": "Turning pair-counts into squares: n² = n + 2·C(n,2)",
     "content": "This elementary identity is the hinge of the whole argument. The double-counting step naturally produces $\\sum_\\ell \\binom{r_\\ell}{2}$, but Cauchy–Schwarz wants $\\sum_\\ell r_\\ell^2$. Since $r^2 = r + 2\\binom{r}{2}$, summing gives $\\sum_\\ell r_\\ell^2 = I + 2\\sum_\\ell \\binom{r_\\ell}{2}$. Proved by induction with Nat.choose_succ_succ and Nat.choose_one_right.",

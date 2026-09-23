@@ -29,8 +29,8 @@
     "id": "ann-strong-nullstellensatz",
     "proofId": "factor-remainder-nullstellensatz-oq-01",
     "range": {
-      "startLine": 28,
-      "endLine": 36
+      "startLine": 32,
+      "endLine": 40
     },
     "type": "concept",
     "title": "Strong Nullstellensatz via Mathlib",
@@ -53,8 +53,8 @@
     "id": "ann-weak-nullstellensatz",
     "proofId": "factor-remainder-nullstellensatz-oq-01",
     "range": {
-      "startLine": 42,
-      "endLine": 51
+      "startLine": 46,
+      "endLine": 55
     },
     "type": "insight",
     "title": "Weak Nullstellensatz: Proper Ideals Have Zeros",
@@ -127,10 +127,10 @@
     "id": "ann-galois-connection",
     "proofId": "factor-remainder-nullstellensatz-oq-01",
     "range": {
-      "startLine": 66,
-      "endLine": 80
+      "startLine": 75,
+      "endLine": 87
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Galois Connection: V and I as Order-Reversing Adjoints",
     "content": "The theorem `galois_connection_vi` formalizes that V and I form a Galois connection (categorical adjunction in the order-enriched setting). The proof uses the `.dual` of Mathlib's `zeroLocus_vanishingIdeal_galoisConnection`, which packages the adjunction. The dualization is needed because a Galois connection between posets P and Q is an antitone (order-reversing) adjunction, which in Lean is represented as a Galois connection between the opposite category of ideals and the set of varieties. The `OrderDual` infrastructure handles the reversal.",
     "mathContext": "A Galois connection between $\\text{Ideal}(k[\\mathbf{x}])$ and $\\text{Set}(k^n)$: $J_1 \\subseteq J_2 \\Rightarrow V(J_2) \\subseteq V(J_1)$ (V is order-reversing) and $S_1 \\subseteq S_2 \\Rightarrow I(S_2) \\subseteq I(S_1)$ (I is order-reversing). Formally: $V(J) \\subseteq S \\iff J \\subseteq I(S)$ (with appropriate dualization). This is equivalent to the adjunction $V \\dashv I$ in the 2-category of posets.",

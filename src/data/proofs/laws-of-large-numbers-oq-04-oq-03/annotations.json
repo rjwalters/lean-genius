@@ -14,7 +14,7 @@
   {
     "id": "ann-axiom-1-proof",
     "proofId": "laws-of-large-numbers-oq-04-oq-03",
-    "range": { "startLine": 43, "endLine": 63 },
+    "range": { "startLine": 51, "endLine": 63 },
     "type": "insight",
     "title": "Integrability via Integrable.mono'",
     "content": "The standard Lean 4 pattern for proving integrability of bounded measurable functions: find a dominating integrable function, prove AEMeasurability of the target, and bound the norm pointwise.\n\nHere the dominating function is the constant 1 (integrable on any probability space via `integrable_const`). The indicator 1_{X₀ ≤ x} has norm ≤ 1 (it takes values 0 or 1), proved by splitting on whether X₀(ω) ≤ x. AEMeasurability follows from composing Measurable (X 0) with the Borel-measurable indicator.\n\n**Lean walkthrough (lines 53–63)**:\n```\napply Integrable.mono' (integrable_const (1 : ℝ))\n· exact ((measurable_iic_indicator x).comp (hX 0)).aemeasurable  -- AEMeasurable\n· filter_upwards with ω; simp only [thresholdIndicator, Set.indicator, norm_one]\n  split_ifs with h\n  · norm_num   -- case X₀ ω ≤ x: indicator value 1, ‖1‖ = 1 ≤ 1\n  · norm_num   -- case X₀ ω > x: indicator value 0, ‖0‖ = 0 ≤ 1\n```\nThis is the *canonical* pattern for any 0/1-valued indicator on a probability space — replacing what could otherwise be a bare integrability axiom in dozens of similar formalizations.",

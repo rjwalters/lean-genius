@@ -50,7 +50,7 @@
   {
     "id": "dm-finite-field-pow",
     "proofId": "de-moivre-oq-01-oq-03-oq-02",
-    "range": { "startLine": 111, "endLine": 124 },
+    "range": { "startLine": 115, "endLine": 124 },
     "type": "theorem",
     "title": "Power-Map Conjugacy over the Finite Field 𝔽_p",
     "content": "chebyshevEnd_eval_pow specializes the conjugacy to 𝔽_p = ZMod p with p prime: for z ≠ 0, the nested Chebyshev endomorphism evaluated at the unit-circle point z + z⁻¹ realizes the (m·n)-th power map, equalling (zⁿ)ᵐ + (z⁻ⁿ)ᵐ = z^{mn} + z^{-mn}. This is the step that genuinely needs the field structure — mul_inv_cancel₀ requires z ≠ 0 to be invertible — making 𝔽_p (not just an arbitrary ZMod p) the relevant setting, and matching the cryptographically interesting case.",

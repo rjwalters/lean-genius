@@ -46,7 +46,7 @@
   {
     "id": "ann-triangle-data",
     "proofId": "herons-formula-oq-06",
-    "range": { "startLine": 100, "endLine": 151 },
+    "range": { "startLine": 104, "endLine": 151 },
     "type": "concept",
     "title": "Radii from Heron, and the Square-Root-Free Setup",
     "content": "The semi-perimeter s = (a+b+c)/2, Heron product s(s-a)(s-b)(s-c), area = √(Heron product), circumradius R = abc/(4·Area) and inradius r = Area/s are defined exactly as in classical geometry. The key lemma area_sq proves Area² = Heron product via Real.sq_sqrt (valid because the Heron product is positive for a nondegenerate triangle). After this single step, no square roots remain — every subsequent manipulation is polynomial, which is what makes `nlinarith` and `linear_combination` effective.",
@@ -58,7 +58,7 @@
   {
     "id": "ann-ravi-reduction",
     "proofId": "herons-formula-oq-06",
-    "range": { "startLine": 153, "endLine": 179 },
+    "range": { "startLine": 157, "endLine": 179 },
     "type": "tactic",
     "title": "Ravi Substitution: abc ≥ 8(s-a)(s-b)(s-c)",
     "content": "Setting x = s-a, y = s-b, z = s-c (all positive iff the triangle inequalities are strict), the sides become a = y+z, b = z+x, c = x+y. The AM-GM core then reads exactly (y+z)(z+x)(x+y) ≥ 8xyz, i.e. abc ≥ 8(s-a)(s-b)(s-c). The lemma sides_ge_eight_prod packages this substitution, rewriting a, b, c via the three identities a = (s-b)+(s-c), etc.",
@@ -70,7 +70,7 @@
   {
     "id": "ann-euler-main",
     "proofId": "herons-formula-oq-06",
-    "range": { "startLine": 181, "endLine": 248 },
+    "range": { "startLine": 185, "endLine": 248 },
     "type": "insight",
     "title": "Clearing Denominators to Prove R ≥ 2r and its Equality Case",
     "content": "R ≥ 2r is 2·(Area/s) ≤ abc/(4·Area). Since s and Area are positive, div_le_div_iff₀ clears denominators to 2·Area·(4·Area) ≤ abc·s, i.e. 8·Area² ≤ abc·s; substituting Area² = Heron product and the reduced inequality finishes via `nlinarith`. For the equality case, the same denominator-clearing turns R = 2r into abc·s = 8·Area², and after cancelling s > 0 the AM-GM equality characterization (prod_sum_eq_iff) transported through the Ravi substitution gives a = b ∧ b = c.",

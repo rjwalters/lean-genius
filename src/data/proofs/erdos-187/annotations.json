@@ -52,8 +52,8 @@
     "proofId": "erdos-187",
     "type": "concept",
     "range": {
-      "startLine": 38,
-      "endLine": 46
+      "startLine": 39,
+      "endLine": 47
     },
     "title": "Van der Waerden's Theorem Implication: f(d) → ∞",
     "content": "**`optAPBound_unbounded`**: For every $k$, there exists $d$ such that $f(d) \\geq k$ — equivalently, $f(d) \\to \\infty$ as $d$ ranges over naturals.\n\n**Origin:** Van der Waerden's 1927 theorem: any 2-coloring of $\\{1, \\ldots, W(2,k)\\}$ contains a monochromatic $k$-AP. Taking $d$ to be the common difference gives $f(d) \\geq k$.\n\n**Limitation:** The van der Waerden numbers $W(2, k)$ grow tower-type in $k$ (at least as fast as $2^{2^{\\cdots}}$). This gives no quantitative rate for $f(d)$ as a function of $d$ itself.",

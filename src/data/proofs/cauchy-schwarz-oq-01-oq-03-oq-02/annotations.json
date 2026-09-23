@@ -2,7 +2,7 @@
   {
     "id": "ann-entropy-def",
     "proofId": "cauchy-schwarz-oq-01-oq-03-oq-02",
-    "range": { "startLine": 32, "endLine": 35 },
+    "range": { "startLine": 35, "endLine": 38 },
     "type": "definition",
     "title": "Shannon Entropy via negMulLog",
     "content": "`shannonEntropy p` is defined as ∑ᵢ Real.negMulLog (p i), where Mathlib's Real.negMulLog t = −t·log t. This is the entropy in nats (natural logarithm). Building on Mathlib's negMulLog rather than rolling a bespoke −∑ pᵢ log pᵢ is the key design choice: it immediately grants access to the library's concavity lemma concaveOn_negMulLog and the nonnegativity lemma negMulLog_nonneg, which are exactly what the two main theorems consume. The definition is `noncomputable` because Real.log is.",

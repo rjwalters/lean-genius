@@ -14,7 +14,7 @@
   {
     "id": "ann-hall-divisor-def",
     "proofId": "lagrange-theorem-oq-01-oq-03",
-    "range": { "startLine": 52, "endLine": 58 },
+    "range": { "startLine": 55, "endLine": 58 },
     "type": "definition",
     "title": "Hall Divisor and Hall Subgroup Definitions",
     "content": "Two central definitions formalize Hall's theory. IsHallDivisor d n captures the coprimeness condition: d divides n AND d is coprime to n/d, meaning the prime factors of n are partitioned into two disjoint sets — those dividing d and those not. IsHallSubgroup H formalizes that H is a Hall subgroup: its order and index are coprime, i.e., H contains exactly the p-Sylow components for a chosen subset of primes.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-orderof-pow-lemma",
     "proofId": "lagrange-theorem-oq-01-oq-03",
-    "range": { "startLine": 112, "endLine": 118 },
+    "range": { "startLine": 117, "endLine": 118 },
     "type": "insight",
     "title": "Order of a Power: The Key Cyclic Calculation",
     "content": "The private lemma orderOf_pow_div_of_dvd is the computational heart of the cyclic case. For an element g of order n, the power g^(n/d) has order exactly d. The proof chains orderOf_pow' (which gives orderOf(g^k) = n / gcd(n,k)) with Nat.gcd_eq_right (since d|n implies gcd(n, n/d) = d... wait, actually gcd(n, n/d) = n/d if d|n... let me re-read) — actually it rewrites gcd(orderOf g, orderOf g / d) = orderOf g / d using the fact that d | orderOf g, then uses Nat.div_div_self to simplify (n/d)/d... wait, let me re-read more carefully.\n\nActually: orderOf_pow' g k = orderOf(g) / gcd(orderOf g, k). With k = n/d, we get orderOf(g^(n/d)) = n / gcd(n, n/d). Since d|n, we have gcd(n, n/d) = n/d (the smaller divides the larger). So n / (n/d) = d. The proof uses Nat.gcd_eq_right (n/d | n) to simplify, then Nat.div_div_self.",
@@ -98,7 +98,7 @@
   {
     "id": "ann-a5-counterexample",
     "proofId": "lagrange-theorem-oq-01-oq-03",
-    "range": { "startLine": 164, "endLine": 172 },
+    "range": { "startLine": 165, "endLine": 172 },
     "type": "insight",
     "title": "Sharpness: A₅ Has No Subgroup of Order 15",
     "content": "The alternating group A₅ on 5 elements has order 60 = 4·3·5. The number 15 = 3·5 is a Hall divisor of 60 (gcd(15, 4) = 1), but A₅ has no subgroup of order 15. This is because A₅ is the smallest non-abelian simple group, hence not solvable, and it demonstrates that Hall's theorem fails for non-solvable groups. The proof uses alternatingGroup.not_solvable which is directly available in Mathlib.",

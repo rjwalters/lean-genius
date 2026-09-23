@@ -205,8 +205,8 @@
     "proofId": "erdos-1063",
     "type": "definition",
     "range": {
-      "startLine": 128,
-      "endLine": 131
+      "startLine": 133,
+      "endLine": 141
     },
     "title": "Polynomial growth question",
     "content": "The central open question formalized as a Lean `Prop`: does there exist a constant $C \\geq 1$ such that $n_k \\leq k^C$ for all $k \\geq 2$? If true, the growth is polynomial; if false, it is at least exponential. The gap between the known bounds — polynomial lower bound $n_k \\geq 2k$ (trivially) and exponential upper bound $n_k \\leq e^{(1+o(1))k}$ (Cambie) — is enormous, making this one of the cleanest open problems in combinatorial number theory.",

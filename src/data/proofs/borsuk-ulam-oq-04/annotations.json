@@ -29,8 +29,8 @@
     "id": "ann-oq04-involution",
     "proofId": "borsuk-ulam-oq-04",
     "range": {
-      "startLine": 58,
-      "endLine": 67
+      "startLine": 62,
+      "endLine": 71
     },
     "type": "definition",
     "title": "Z/2 Involution Structure",
@@ -77,10 +77,10 @@
     "id": "ann-oq04-rp",
     "proofId": "borsuk-ulam-oq-04",
     "range": {
-      "startLine": 90,
-      "endLine": 103
+      "startLine": 104,
+      "endLine": 117
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Real Projective Space and Projection",
     "content": "Defines real projective $n$-space $\\mathbb{R}P^n$ as the quotient of $\\mathbb{R}^{n+1}$ by the antipodal relation: $\\mathbb{R}P^n := \\mathbb{R}^{n+1} / {(x \\sim -x)}$. Technically, one should restrict to the unit sphere $S^n$, but quotienting all of $\\mathbb{R}^{n+1}$ (minus the origin) gives the same space up to homotopy equivalence.\n\nThe **projection map** $\\pi: \\mathbb{R}^{n+1} \\to \\mathbb{R}P^n$ sends each point to its equivalence class via `Quotient.mk'`.\n\nThe theorem `projMap_neg` proves the defining property: $\\pi(-x) = \\pi(x)$, using `Quotient.sound'` with the witness that $-x \\sim x$ (since $-x = \\sigma(x)$ where $\\sigma$ is the antipodal involution). This is the key compatibility that makes the projection well-defined as a 2-fold covering map.",
     "mathContext": "$\\mathbb{R}P^n = \\mathbb{R}^{n+1} / {(x \\sim -x)}$, $\\pi: \\mathbb{R}^{n+1} \\twoheadrightarrow \\mathbb{R}P^n$, $\\pi(-x) = \\pi(x)$.",

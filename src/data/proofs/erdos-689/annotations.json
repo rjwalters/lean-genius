@@ -4,8 +4,8 @@
     "proofId": "erdos-689",
     "type": "definition",
     "range": {
-      "startLine": 24,
-      "endLine": 26
+      "startLine": 26,
+      "endLine": 28
     },
     "title": "Primes Up To n",
     "content": "Defines `primesUpTo n` as the Finset of primes in $\\{0, 1, \\ldots, n\\}$ via `Finset.range (n+1)` filtered by `Nat.Prime`. This is the set of available moduli for congruence class selection. Its cardinality $\\pi(n) \\sim n/\\log n$ by the prime number theorem.",
@@ -181,8 +181,8 @@
     "proofId": "erdos-689",
     "type": "insight",
     "range": {
-      "startLine": 92,
-      "endLine": 103
+      "startLine": 102,
+      "endLine": 113
     },
     "title": "Small Cases: n = 1",
     "content": "Proves `primesUpTo_one`: there are no primes $\\leq 1$, and `coveringCount_one`: the covering count is 0 for $n = 1$. These establish that covering is impossible for very small $n$, confirming that the conjecture requires $n$ to be sufficiently large. The proof uses `interval_cases` to check $n = 0$ and $n = 1$.",
@@ -203,8 +203,8 @@
     "proofId": "erdos-689",
     "type": "concept",
     "range": {
-      "startLine": 107,
-      "endLine": 111
+      "startLine": 171,
+      "endLine": 177
     },
     "title": "Double Covering Conjecture",
     "content": "Axiomatizes `erdos_689_double_cover`: there exists $N_0$ such that for all $n \\geq N_0$, some assignment $a$ achieves `IsRFoldCover n 2 a`. This is the core of Erdős Problem 689. The existential quantifier over $a$ means we must find a single assignment that simultaneously covers every integer in $[1,n]$ twice.",
@@ -247,8 +247,8 @@
     "proofId": "erdos-689",
     "type": "concept",
     "range": {
-      "startLine": 121,
-      "endLine": 127
+      "startLine": 181,
+      "endLine": 223
     },
     "title": "Mertens' Sum Divergence",
     "content": "Axiomatizes `mertens_sum_divergence`: $\\sum_{p \\leq n} 1/p$ exceeds any constant $C > 0$ for sufficiently large $n$. This is a consequence of Mertens' second theorem (1874): $\\sum_{p \\leq n} 1/p = \\log\\log n + M + o(1)$ where $M \\approx 0.2615$ is the Meissel-Mertens constant. The divergence provides the probabilistic heuristic supporting the covering conjectures.",

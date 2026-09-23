@@ -26,7 +26,7 @@
   {
     "id": "ann-niven-application",
     "proofId": "hilbert-3-oq-04",
-    "range": { "startLine": 47, "endLine": 73 },
+    "range": { "startLine": 48, "endLine": 74 },
     "type": "insight",
     "title": "Niven's theorem applied: arccos(1/3) is not a rational multiple of π",
     "content": "`arccos_one_third_not_rat_mul_pi` is the transcendence core. Assuming arccos(1/3) = r·π for some r : ℚ, the hypotheses of `niven` are met (the angle is a rational multiple of π, and its cosine 1/3 is rational), so `niven` forces cos(arccos(1/3)) ∈ {-1, -1/2, 0, 1/2, 1}. Rewriting cos(arccos(1/3)) = 1/3 and unfolding the finite-set membership produces a five-way disjunction of false numeric equalities, each closed by `norm_num`. The corollary `irrational_arccos_one_third_div_pi` repackages this as `Irrational (arccos(1/3)/π)`: a rational value r of the quotient would give arccos(1/3) = r·π (using π ≠ 0 and `div_eq_iff`), contradicting the previous theorem.",

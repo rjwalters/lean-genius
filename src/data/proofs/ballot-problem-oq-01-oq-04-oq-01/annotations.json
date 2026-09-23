@@ -4,8 +4,8 @@
     "proofId": "ballot-problem-oq-01-oq-04-oq-01",
     "type": "definition",
     "range": {
-      "startLine": 44,
-      "endLine": 74
+      "startLine": 45,
+      "endLine": 75
     },
     "title": "IsDyckPath and chungFellerRot: Core Definitions",
     "content": "`IsDyckPath D n` asserts that D is a balanced ±1 path of semi-length n where all prefix sums are ≥ 0. Formally: `IsBalancedPath D n ∧ ∀ k, (D.take k).sum ≥ 0`.\n\n`chungFellerRot l = cyclicRotation (1::l) (rightmostMinPos (1::l))` — the 'good rotation'. Starting from the augmented path (1::l), rotate by the position of the rightmost minimum. The rightmost minimum position is the canonical choice ensuring uniqueness.\n\nKey invariant: among all n+1 cyclic rotations of (1::l), exactly one is a 'good rotation' (starts with 1, all subsequent prefix sums ≥ 1). The good rotation position is unique and canonical.",
@@ -53,8 +53,8 @@
     "proofId": "ballot-problem-oq-01-oq-04-oq-01",
     "type": "theorem",
     "range": {
-      "startLine": 332,
-      "endLine": 390
+      "startLine": 298,
+      "endLine": 356
     },
     "title": "chungFellerRot_tail_is_dyck: The Good Rotation's Tail is a Dyck Path",
     "content": "`chungFellerRot_tail_is_dyck {l : List ℤ} {n : ℕ} (hn : 0 < n) (hbal : IsBalancedPath l n) : IsDyckPath (chungFellerRot l).tail n`\n\nThis is the central structural result. Proof chain:\n1. `chungFellerRot_head_eq_one`: the good rotation starts with 1.\n2. `chungFellerRot_tail_nonneg_prefixSum`: the tail has all prefix sums ≥ 0.\n3. `chungFellerRot_tail_upsteps_all_above`: all upsteps in the tail are above the axis (position of upstep = position in prefix sum sequence where value increases, which is always ≥ 1 for the tail).\n4. `chungFellerRot_tail_type_eq_n`: upstepsAboveAxis(tail) = n.\n5. Combine: tail is balanced with all prefix sums ≥ 0 → IsDyckPath.",
@@ -100,8 +100,8 @@
     "proofId": "ballot-problem-oq-01-oq-04-oq-01",
     "type": "definition",
     "range": {
-      "startLine": 456,
-      "endLine": 781
+      "startLine": 429,
+      "endLine": 754
     },
     "title": "chungFellerMap and Reconstruction Lemmas (L456–781)",
     "content": "`chungFellerMap n hn l` (around L456) is defined as the pair $(D, t)$ where $D$ is the *tail* of `chungFellerRot l` (a Dyck path of semi-length $n$) and $t$ is the path `type` index — `upstepsAboveAxis l : Fin (n+1)`. This is the candidate bijection whose injectivity and surjectivity are established later (L782–1023).\n\nThe ~325 lines following the definition build the *reconstruction* infrastructure needed for the bijectivity proof:\n• Inverse-rotation lemmas: given a Dyck path $D$ and a type $k$, recover the unique balanced path $l$ whose `chungFellerRot` has tail $D$ and whose `upstepsAboveAxis = k`. The inverse is `cyclicRotation` of `1::D` by `n+1-k` (mod) followed by tail extraction.\n• `cyclicRotation_get?_zero` and friends: characterize the entry of a rotated list at position 0, used to relate $l$'s head to the rotation amount.\n• Type-index transport lemmas: show that `upstepsAboveAxis` is invariant under the bijection in the controlled way the bijectivity proof needs (it equals the rotation index, which is the type).\n\nThe payoff is `chung_feller_bijection_exists` (next annotation): both injectivity (via reconstruction) and surjectivity (via building $l$ from $(D, k)$) become one-line applications.",
@@ -149,8 +149,8 @@
     "proofId": "ballot-problem-oq-01-oq-04-oq-01",
     "type": "theorem",
     "range": {
-      "startLine": 1023,
-      "endLine": 1164
+      "startLine": 1008,
+      "endLine": 1149
     },
     "title": "chung_feller_uniform': Uniform Distribution Over Path Types",
     "content": "`chung_feller_uniform' (n : ℕ) (j k : ℕ) (hj : j ≤ n) (hk : k ≤ n)`: |{balanced paths of length 2n and type j}| = |{balanced paths of length 2n and type k}|\n\nwhere 'type j' means upstepsAboveAxis = j.\n\nProof: Apply `Set.ncard_congr` with the type-swapping map:\n`f(l) = (e.symm((e(l).1, ⟨k, hk⟩)).val`\nwhere `e = Equiv.ofBijective (chungFellerMap n hn') (chung_feller_bijection_exists n hn')`.\n\nThis sends a type-j balanced path l to the unique type-k balanced path sharing the same Dyck image. The map is well-defined (by the bijection), and bijective (Equiv.symm is injective). The key observation: e(l).1 is the Dyck image (orbit-canonical), and replacing the type component with k gives a type-k path.\n\nFor n=0: trivially true (only one path type exists).",

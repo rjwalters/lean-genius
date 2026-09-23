@@ -50,7 +50,7 @@
   {
     "id": "normaut-ann-boundary",
     "proofId": "angle-trisection-oq004",
-    "range": { "startLine": 100, "endLine": 120 },
+    "range": { "startLine": 101, "endLine": 120 },
     "type": "insight",
     "title": "Separability boundary and the Galois corollary",
     "content": "card_algEquiv_eq_finrank_iff_isSeparable isolates the sharp boundary: among finite normal extensions, |Aut_F(K)| = [K:F] ⟺ K/F is separable (rewrite by the equality, then Field.finSepDegree_eq_finrank_iff). This makes precise that the automorphism group measures the separable degree, not the full degree — for a normal purely inseparable extension [K:F]_s = 1 = |Aut| while [K:F] = pⁿ is arbitrary. card_algEquiv_eq_finrank_of_normal_isSeparable recovers Mathlib's Galois fact IsGalois.card_aut_eq_finrank (|Aut| = [K:F] for finite Galois) as a one-line corollary — normal equality + finSepDegree_eq_finrank_of_isSeparable — showing the normal equality strictly subsumes the Galois statement.",

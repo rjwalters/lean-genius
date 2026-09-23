@@ -125,7 +125,7 @@
   {
     "id": "ann-lgv-wellformed-failure",
     "proofId": "combinations-formula-oq-01-oq-04",
-    "range": { "startLine": 161, "endLine": 176 },
+    "range": { "startLine": 164, "endLine": 176 },
     "type": "insight",
     "title": "Well-Formedness Failure: When the Involution Breaks",
     "content": "lgv_2x2_not_wellFormed_when_b_zero demonstrates a failure case: when b=0 so both sources and targets are [0,1], the well-formedness condition fails because source 1 = 1 > 0 = target 0. Without well-formedness, the Gessel-Viennot involution is not well-defined — paths from source 1 can arrive at target 0, which is below source 0, creating geometric configurations the involution cannot handle. The proof extracts the (1,0) entry of the well-formedness predicate and derives a contradiction via omega.",
@@ -145,7 +145,7 @@
   {
     "id": "ann-lgv-natural",
     "proofId": "combinations-formula-oq-01-oq-04",
-    "range": { "startLine": 179, "endLine": 189 },
+    "range": { "startLine": 182, "endLine": 189 },
     "type": "insight",
     "title": "Determinant Is Always a Natural Number: An Existential Certificate",
     "content": "lgv_det_is_natural packages the LGV theorem as an existential statement: for any well-formed LGV configuration, there exists a natural number n such that det(pathMatrix) = n. This is proved by exhibiting n = niTupleCount and applying lgv_lemma_rxr symmetrically. The statement is conceptually important: it provides a uniform certificate for non-negativity that applies to all r×r binomial determinants simultaneously, without needing to compute each determinant explicitly.",

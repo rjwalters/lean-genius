@@ -49,8 +49,8 @@
     "proofId": "erdos-935",
     "type": "definition",
     "range": {
-      "startLine": 29,
-      "endLine": 48
+      "startLine": 32,
+      "endLine": 51
     },
     "title": "Powerful Part Q₂(n) and Properties",
     "content": "**`powerfulPart n`** extracts the product of all prime powers p^{kₚ} with kₚ ≥ 2. Key properties: Q₂(1) = 1, Q₂(n) | n, Q₂(n) is powerful (every prime divides it to power ≥ 2), and Q₂ is multiplicative on coprime inputs.",

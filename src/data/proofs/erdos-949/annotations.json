@@ -28,7 +28,7 @@
     "proofId": "erdos-949",
     "type": "definition",
     "range": {
-      "startLine": 31,
+      "startLine": 32,
       "endLine": 35
     },
     "title": "Sidon Set in ℝ",
@@ -52,8 +52,8 @@
     "proofId": "erdos-949",
     "type": "definition",
     "range": {
-      "startLine": 37,
-      "endLine": 39
+      "startLine": 38,
+      "endLine": 44
     },
     "title": "The Sumset A + A",
     "content": "The sumset $A + A = \\{a + b : a, b \\in A\\}$ collects all pairwise sums from $A$. This is the image of the addition map $A \\times A \\to \\mathbb{R}$. If $|A| = \\aleph_0$, then $|A+A| \\leq \\aleph_0$. If $|A| = \\mathfrak{c}$, then $|A+A| \\leq \\mathfrak{c}$. The problem asks for $A$ with $(A+A) \\cap S = \\emptyset$, i.e., the sumset avoids the original sum-free set entirely.",

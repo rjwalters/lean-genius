@@ -43,7 +43,7 @@
   {
     "id": "ann-predicates",
     "proofId": "erdos-1012-oq-02-oq-01",
-    "range": { "startLine": 62, "endLine": 86 },
+    "range": { "startLine": 69, "endLine": 86 },
     "type": "definition",
     "title": "Pancyclicity predicates as a length window 3..m",
     "content": "Five nested predicates build up the notion. hasCycleThroughVertex G v l asserts a cycle of length l through v; hasCycleOfLength G l existentially quantifies the vertex; isPancyclicUpTo G m requires a cycle of every length 3 ≤ l ≤ m; isVertexPancyclicUpTo G v m requires v to lie on cycles of every such length; and isVertexPancyclicGraphUpTo G m demands this of every vertex. The window deliberately starts at 3 — the shortest possible cycle — which is exactly the length where a triangle-free graph fails, so length 3 is the only case the obstruction needs to defeat.",

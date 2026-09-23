@@ -43,7 +43,7 @@
   {
     "id": "var-oq0101-ann-diagonal",
     "proofId": "varignon-theorem-oq-01-oq-01",
-    "range": { "startLine": 71, "endLine": 96 },
+    "range": { "startLine": 52, "endLine": 77 },
     "type": "tactic",
     "title": "The shoelace sum telescopes to the diagonal cross product",
     "content": "The pivotal lemma signedArea_eq_half_cross_diagonals shows the four-edge shoelace sum collapses to a single cross product of the diagonals: signedArea A B C D = cross (C − A) (D − B) / 2. So a quadrilateral's signed area depends only on its diagonals AC and BD. Applying the same to the four midpoints gives varignonArea = cross (C − A) (D − B) / 4 — the Varignon sides are the half-diagonals (C−A)/2 and (D−B)/2. Both identities are closed by `ring` after unfolding the definitions.",

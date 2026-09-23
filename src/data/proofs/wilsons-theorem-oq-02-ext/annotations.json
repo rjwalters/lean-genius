@@ -14,7 +14,7 @@
   {
     "id": "ann-prod-involution-const",
     "proofId": "wilsons-theorem-oq-02-ext",
-    "range": { "startLine": 99, "endLine": 150 },
+    "range": { "startLine": 100, "endLine": 156 },
     "type": "theorem",
     "title": "prod_involution_const: FPF Involution Computes Product",
     "content": "In a finite commutative group G with FPF involution σ satisfying x·σ(x) = c for all x: ∏G = c^(|G|/2). Proved by telescoping: pair each x with σ(x), each pair contributes x·σ(x) = c, there are |G|/2 such pairs, so the product is c^(|G|/2). This works for any commutative group — not just ZMod. This is the abstract engine for the two-involution trick: any FPF involution with constant pair product c gives an explicit formula for ∏G.",

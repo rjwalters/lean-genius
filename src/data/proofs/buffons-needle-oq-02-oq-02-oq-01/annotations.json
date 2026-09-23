@@ -26,7 +26,7 @@
   {
     "id": "buffon-oq020201-ann-monotone",
     "proofId": "buffons-needle-oq-02-oq-02-oq-01",
-    "range": { "startLine": 79, "endLine": 98 },
+    "range": { "startLine": 83, "endLine": 98 },
     "type": "theorem",
     "title": "Strict Two-Step Monotonicity",
     "content": "crossingFactor_two_step_lt proves α_{n+2} < αₙ for n ≥ 2: the recurrence multiplies the positive αₙ by the ratio n/(n+1) < 1, strictly shrinking it (closed by nlinarith using positivity and the ratio bound). The two-step (rather than one-step) form reflects the even/odd interleaving of the recurrence — the even and odd subsequences each descend independently. crossingFactor_three_lt_two makes the first cross-parity comparison concrete: α₃ = 1/2 < 2/π = α₂ (since π < 4), seeding the interleaving.",
@@ -38,7 +38,7 @@
   {
     "id": "buffon-oq020201-ann-max",
     "proofId": "buffons-needle-oq-02-oq-02-oq-01",
-    "range": { "startLine": 99, "endLine": 121 },
+    "range": { "startLine": 103, "endLine": 121 },
     "type": "insight",
     "title": "The Maximum is 2/π, Attained at n = 2",
     "content": "crossingFactor_le_two_div_pi proves αₙ ≤ 2/π for all n ≥ 2 by strong induction on n. The base window n < 4 is settled by `interval_cases`: α₂ = 2/π exactly, and α₃ = 1/2 ≤ 2/π reduces to π ≤ 4 (`pi_le_four`). For n = m + 4 the two-step recurrence crossingFactor_succ_succ writes αₙ = ((m+2)/(m+3))·α_{m+2}; the induction hypothesis bounds α_{m+2} ≤ 2/π, the factor (m+2)/(m+3) ≤ 1, and positivity of α_{m+2} lets `nlinarith` combine them (the key product term 1−(m+2)/(m+3) times α_{m+2} being nonnegative). So the classical planar Buffon value α₂ = 2/π is the global maximum across all dimensions — the even subsequence starts there and the odd one starts strictly below at α₃.",

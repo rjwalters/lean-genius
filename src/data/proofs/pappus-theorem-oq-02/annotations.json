@@ -50,7 +50,7 @@
   {
     "id": "ann-core-identity",
     "proofId": "pappus-theorem-oq-02",
-    "range": { "startLine": 168, "endLine": 219 },
+    "range": { "startLine": 191, "endLine": 242 },
     "type": "insight",
     "title": "Core Identity: f·det(A,B,C) + g·det(A',B',C') = 0",
     "content": "The `pappus_core_identity` is the hardest step: after instantiating d1,...,d6 with their actual determinant values, the four-term expansion equals f·det(A,B,C) + g·det(A',B',C') for explicit degree-9 polynomial coefficients f and g. When A,B,C are collinear (det=0) and A',B',C' are collinear (det=0), both terms vanish. The coefficients f and g were computed using a Gröbner basis calculation (computer algebra system), then verified in Lean via `linear_combination` — a tactic that verifies ring equalities given explicit coefficients.",

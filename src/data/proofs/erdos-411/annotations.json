@@ -48,8 +48,8 @@
     "proofId": "erdos-411",
     "type": "definition",
     "range": {
-      "startLine": 27,
-      "endLine": 29
+      "startLine": 20,
+      "endLine": 21
     },
     "title": "Iterated $g^k(n)$",
     "content": "The $k$-th iterate $g^k(n)$ is defined recursively: $g^0(n) = n$ and $g^{k+1}(n) = g(g^k(n))$. The sequence $g^0(n), g^1(n), g^2(n), \\ldots$ is strictly increasing since $g(m) > m$ for $m \\geq 1$. The ratio $g^{k+r}(n) / g^k(n)$ may stabilize as $k \\to \\infty$.",

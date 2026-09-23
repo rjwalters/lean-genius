@@ -14,7 +14,7 @@
   {
     "id": "ann-adjacency",
     "proofId": "erdos-1021-wip-01",
-    "range": { "startLine": 72, "endLine": 104 },
+    "range": { "startLine": 76, "endLine": 108 },
     "type": "theorem",
     "title": "Exact Adjacency on Each Side (Gk_pair_adj_iff, Gk_primary_adj_iff)",
     "content": "Two iff-lemmas characterise adjacency exactly, by case analysis on the Sum constructor of the second vertex. Gk_pair_adj_iff: a pair vertex ⟨(a,b)⟩ is adjacent to w iff w = Sum.inl a or w = Sum.inl b — the inr/inr (same-side) case is impossible (False.elim one way, Sum.inr_ne_inl the other). Gk_primary_adj_iff: a primary vertex y_i is adjacent to w iff w is a pair vertex Sum.inr q whose pair contains i (i = q.1 or i = q.2); the inl/inl case is again vacuous. These are the structural lemmas every later neighbor-set computation rewrites through — they translate the match-defined Adj into clean membership conditions.",

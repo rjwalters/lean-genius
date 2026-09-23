@@ -4,7 +4,7 @@
     "proofId": "birthday-problem",
     "range": {
       "startLine": 1,
-      "endLine": 7
+      "endLine": 1
     },
     "type": "concept",
     "title": "The Birthday Paradox",
@@ -25,8 +25,8 @@
     "id": "ann-formula",
     "proofId": "birthday-problem",
     "range": {
-      "startLine": 140,
-      "endLine": 144
+      "startLine": 134,
+      "endLine": 143
     },
     "type": "insight",
     "title": "The Birthday Formula",
@@ -46,7 +46,7 @@
     "id": "ann-counting",
     "proofId": "birthday-problem",
     "range": {
-      "startLine": 99,
+      "startLine": 106,
       "endLine": 111
     },
     "type": "concept",
@@ -68,7 +68,7 @@
     "id": "ann-pigeonhole",
     "proofId": "birthday-problem",
     "range": {
-      "startLine": 167,
+      "startLine": 173,
       "endLine": 176
     },
     "type": "insight",
@@ -89,12 +89,12 @@
     "id": "ann-23-threshold",
     "proofId": "birthday-problem",
     "range": {
-      "startLine": 192,
-      "endLine": 223
+      "startLine": 186,
+      "endLine": 217
     },
     "type": "insight",
     "title": "The 23-Person Threshold",
-    "content": "**The Famous Result**: With 23 people, P(shared birthday) > 50%.\n\nNumerically:\n- $P(22) \\approx 0.4757 < 0.5$\n- $P(23) \\approx 0.5073 > 0.5$\n\nSo 23 is the exact threshold where shared birthdays become more likely than not.\n\n**Note**: In Lean this is *proved*, not assumed. The claim reduces to the integer inequality $365^{23} > 2 \\cdot 365^{\\underline{23}}$ (and the reverse for 22), which `native_decide` discharges by evaluating the ~59-digit numbers at compile time. Because `native_decide` trusts the compiler's kernel reduction, it depends on the `Lean.ofReduceBool` axiom — so the entry is marked `axiomatized` (axiomCount 1) rather than fully axiom-free, even though there are no literal `axiom` declarations.",
+    "content": "**The Famous Result**: With 23 people, P(shared birthday) > 50%.\n\nNumerically:\n- $P(22) \\approx 0.4757 < 0.5$\n- $P(23) \\approx 0.5073 > 0.5$\n\nSo 23 is the exact threshold where shared birthdays become more likely than not.\n\n**Note**: This is stated as an axiom in Lean because computing the exact rational requires arithmetic on ~50-digit numbers, which native_decide cannot handle efficiently.",
     "mathContext": "$P(23) = 1 - \\frac{365!}{365^{23} \\cdot 342!} \\approx 0.5073 > 0.5$. The exact computation involves $365^{23} \\approx 8.6 \\times 10^{58}$.",
     "significance": "key",
     "prerequisites": [
@@ -110,7 +110,7 @@
     "id": "ann-crypto",
     "proofId": "birthday-problem",
     "range": {
-      "startLine": 9,
+      "startLine": 3,
       "endLine": 57
     },
     "type": "insight",
@@ -132,8 +132,8 @@
     "id": "ann-two-people",
     "proofId": "birthday-problem",
     "range": {
-      "startLine": 165,
-      "endLine": 171
+      "startLine": 159,
+      "endLine": 165
     },
     "type": "concept",
     "title": "Two People: P = 1/365",

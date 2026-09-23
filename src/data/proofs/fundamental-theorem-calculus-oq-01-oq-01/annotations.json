@@ -36,7 +36,7 @@
   {
     "id": "ann-ftc-oq01-edist",
     "proofId": "fundamental-theorem-calculus-oq-01-oq-01",
-    "range": { "startLine": 34, "endLine": 49 },
+    "range": { "startLine": 42, "endLine": 57 },
     "type": "insight",
     "title": "Lemma 1 & 2: edist Identity and eVariationOn Upper Bound Criterion",
     "content": "**`edist_real_ofReal`**: On ℝ, `edist x y = ENNReal.ofReal |x - y|`. Proof: `edist_dist + Real.dist_eq` — combining the fact that edist on ℝ equals its distance function, and the distance function is |x-y|. This bridging lemma converts between edist (extended metric space) and ENNReal.ofReal (which handles real-valued absolute differences).\n\n**`eVariationOn_le_of_forall`**: The key upper-bound criterion: if for every monotone sequence `u` in `s`, the partition sum `∑ edist(f(u(i+1)), f(u(i)))` is ≤ C, then `eVariationOn f s ≤ C`. Proof: unfold `eVariationOn` as a supremum over pairs (n, u), then apply `iSup_le` — to bound a supremum, it suffices to bound every value it takes.\n\nThis lemma encapsulates the universal quantifier hidden in the `iSup`: instead of directly manipulating `iSup`, callers can provide a universal bound and let `iSup_le` do the work. It is the technical heart of how local AC bounds propagate to global variation bounds.",

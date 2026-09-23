@@ -14,7 +14,7 @@
   {
     "id": "ann-isc-interface",
     "proofId": "erdos-1036-oq-01",
-    "range": { "startLine": 39, "endLine": 53 },
+    "range": { "startLine": 40, "endLine": 54 },
     "type": "insight",
     "title": "Axiomatizing numISCTrue: Three Properties Without Full Quotient",
     "content": "Rather than constructing the Quotient type (~200 lines), three axioms capture what's needed:\n\n**numISCTrue**: The function exists (maps SimpleGraph V → ℕ). Full construction: Fintype.card(Quotient ≈) where S ≈ T ↔ G.induce S ≅g G.induce T.\n\n**numISCTrue_le_pow**: numISCTrue G ≤ 2^n (ISC classes ≤ vertex subsets).\n\n**numISCTrue_pos**: numISCTrue G > 0 (∅ gives one ISC class).\n\nThese are 'trivially true' axioms (not genuine assumptions) that could be eliminated with a Fintype quotient construction.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-summary",
     "proofId": "erdos-1036-oq-01",
-    "range": { "startLine": 150, "endLine": 167 },
+    "range": { "startLine": 47, "endLine": 64 },
     "type": "concept",
     "title": "Audit Trail: The Six Axioms by Type",
     "content": "The closing comment block functions as an *audit trail*, classifying each of the six axioms by the level of effort needed to eliminate it:\n\n**Trivially true (3 axioms, ~200 lines of Mathlib quotient infrastructure)**: `numISCTrue`, `numISCTrue_le_pow`, `numISCTrue_pos` are the interface for the ISC count function. Eliminating them requires constructing `Quotient (S : Finset V) (≈)` where `S₁ ≈ S₂ ↔ G.induce S₁ ≅g G.induce S₂`, equipping the quotient with `Fintype`, and proving `Fintype.card ≤ 2^|V|`. This is engineering, not mathematics.\n\n**Inherited from parent (2 axioms)**: `nonRamseyExistsTrue` and `shelah_isc` are imported as-axioms from the parent file `Erdos1036Problem.lean`, where they ultimately trace to Shelah's 1998 theorem and the existence of non-Ramsey graphs. Eliminating these would require formalising Shelah's $\\sim 30$-page proof.\n\n**Genuine open problem (1 axiom)**: `optimalConstantTrue_eq_one` is the only mathematical assumption — the actual Erdős open question this entry encodes. Eliminating it is the OQ.\n\nThis tripartite classification is the entry's main pedagogical contribution: it disambiguates *engineering work* from *mathematical assumption* and makes clear which axiom carries the genuine open content.",

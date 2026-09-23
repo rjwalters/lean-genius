@@ -93,8 +93,8 @@
     "proofId": "erdos-505",
     "type": "definition",
     "range": {
-      "startLine": 42,
-      "endLine": 48
+      "startLine": 36,
+      "endLine": 42
     },
     "title": "Borsuk Number $\\alpha(n)$",
     "content": "The Borsuk number $\\alpha(n)$ is the minimum $k$ such that every diameter-1 set in $\\mathbb{R}^n$ can be partitioned into $k$ parts of strictly smaller diameter. It is axiomatized as a function $\\mathbb{N} \\to \\mathbb{N}$ since computing it requires solving an extremal geometry problem. Borsuk conjectured $\\alpha(n) = n + 1$; this is true for $n \\leq 3$ but fails dramatically for $n \\geq 64$.",

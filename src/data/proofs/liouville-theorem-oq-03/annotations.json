@@ -23,7 +23,7 @@
   {
     "id": "ann-liouoq03-2",
     "proofId": "liouville-theorem-oq-03",
-    "range": { "startLine": 66, "endLine": 73 },
+    "range": { "startLine": 72, "endLine": 79 },
     "type": "definition",
     "title": "The Well-Approximable Set W τ",
     "content": "**`wellApprox τ := {x | LiouvilleWith τ x}`** packages the central object directly on top of Mathlib's `LiouvilleWith` predicate. The `@[simp]` lemma `mem_wellApprox` unfolds membership definitionally to `LiouvilleWith τ x` (`Iff.rfl`), so every later proof can move freely between the set-builder view (good for `dimH_mono`, subset reasoning) and the predicate view (good for invoking Mathlib's `LiouvilleWith.mono`). Choosing a named set rather than working through the bare predicate is what makes the Hausdorff-dimension API — which acts on `Set ℝ` — directly applicable.",
@@ -43,7 +43,7 @@
   {
     "id": "ann-liouoq03-3",
     "proofId": "liouville-theorem-oq-03",
-    "range": { "startLine": 75, "endLine": 91 },
+    "range": { "startLine": 78, "endLine": 94 },
     "type": "tactic",
     "title": "Order Structure: Antitone Sets and the Liouville Subset",
     "content": "Three genuine (0-axiom) structural facts establish the order skeleton. **`wellApprox_antitone`**: a larger exponent is a stronger demand, so $\\sigma \\le \\tau \\Rightarrow W(\\tau) \\subseteq W(\\sigma)$ — one line from `LiouvilleWith.mono`. **`wellApprox_le_one`** / **`wellApprox_one`**: for $\\tau \\le 1$ approximation to that order is automatic for *every* real (via `liouvilleWith_one`), so $W(\\tau) = \\mathbb{R}$; the interesting regime is therefore $\\tau > 1$, and the dimension formula activates at the threshold $\\tau = 2$. **`liouville_subset_wellApprox`**: a Liouville number is approximable to *every* order, so $\\{x \\mid \\mathrm{Liouville}\\,x\\} \\subseteq W(\\tau)$ for all $\\tau$ — from `Liouville.liouvilleWith`. This last inclusion is the hinge that later forces the Liouville dimension to $0$.",

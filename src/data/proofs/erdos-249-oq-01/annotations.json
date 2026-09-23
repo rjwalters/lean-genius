@@ -2,7 +2,7 @@
   {
     "id": "ann-e249oq1-term-values",
     "proofId": "erdos-249-oq-01",
-    "range": { "startLine": 32, "endLine": 48 },
+    "range": { "startLine": 33, "endLine": 48 },
     "type": "concept",
     "title": "Euler Totient Values for Small n: Primes and 2²",
     "content": "The three theorems compute φ(n)/2^n for n = 3, 4, 5 to extend the parent formalization's n = 0, 1, 2 values. For n = 3 and n = 5 (primes), Nat.totient_prime gives φ(p) = p - 1, so φ(3) = 2 and φ(5) = 4. For n = 4 = 2² (prime power), φ(4) = 4·(1 - 1/2) = 2 is computed by native_decide. The term values are 2/8 = 1/4, 2/16 = 1/8, and 4/32 = 1/8 respectively. Notably, φ(4)/4 = 1/2 < 1, illustrating the strict inequality φ(n) < n for composite n, which will be used in the strict upper bound proof.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-e249oq1-comparison-series",
     "proofId": "erdos-249-oq-01",
-    "range": { "startLine": 87, "endLine": 116 },
+    "range": { "startLine": 88, "endLine": 116 },
     "type": "insight",
     "title": "Comparison with ∑ n/2^n = 2: Strict Upper Bound < 2",
     "content": "The upper bound proof uses the comparison series Σ n·(1/2)^n = 2 (a known generating function result, here derived from hasSum_coe_mul_geometric_of_norm_lt_one). termFn_le_comp proves the pointwise bound φ(n)/2^n ≤ n/2^n for all n (since φ(n) ≤ n). termFn_four_lt provides the strict gap: φ(4)/2^4 = 1/8 < 4/16 = 1/4. hasSum_lt (Mathlib) then gives the strict inequality: if f ≤ g pointwise, g has a HasSum, and f is strictly below g at some index, then Σf < Σg. This is the standard comparison test with strict inequality.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-e249oq1-strict-lower",
     "proofId": "erdos-249-oq-01",
-    "range": { "startLine": 135, "endLine": 155 },
+    "range": { "startLine": 138, "endLine": 155 },
     "type": "concept",
     "title": "Strict Lower Bound > 5/4: Adding the n=6 Term",
     "content": "termFn_six computes φ(6)/2^6 = 2/64 = 1/32 (using native_decide for φ(6) = 2, since 6 = 2·3). partial_sum_7 then computes the sum of 7 terms as 41/32 = 5/4 + 1/32 > 5/4. totientPowerSum_gt_five_fourths follows by the same sum_le_hasSum pattern as the ≥ bound: since the partial sum of the first 7 terms exceeds 5/4, and all remaining terms are non-negative, the total sum strictly exceeds 5/4. The n=6 term is the critical 'witness' that distinguishes strict inequality from non-strict.",

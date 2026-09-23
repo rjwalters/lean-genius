@@ -38,7 +38,7 @@
   {
     "id": "totient-oq09-ann-dvd-dichotomy",
     "proofId": "euler-totient-oq-09",
-    "range": { "startLine": 101, "endLine": 110 },
+    "range": { "startLine": 102, "endLine": 111 },
     "type": "theorem",
     "title": "Divisibility Consequences of the Power Law",
     "content": "Two divisibility facts read straight off the factored power law φ(nᵏ) = nᵏ⁻¹·φ(n). `pow_pred_dvd_totient_pow`: nᵏ⁻¹ ∣ φ(nᵏ) — the leading power factor survives the totient — proved by rewriting with `totient_pow` and taking `dvd_mul_right`. `totient_dvd_totient_pow`: φ(n) ∣ φ(nᵏ), the other factor, by `dvd_mul_left`. Together they express that φ(nᵏ) sits in the divisibility chain φ(n) ∣ φ(n²) ∣ φ(n³) ∣ … with each successive quotient equal to n.",

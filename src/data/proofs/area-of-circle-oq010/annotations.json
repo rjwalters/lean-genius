@@ -50,7 +50,7 @@
   {
     "id": "ann-signed-area",
     "proofId": "area-of-circle-oq010",
-    "range": { "startLine": 156, "endLine": 194 },
+    "range": { "startLine": 152, "endLine": 190 },
     "type": "insight",
     "title": "Signed Area Invariance (No Monotonicity Required)",
     "content": "`signed_area_reparam_invariant` follows the identical change-of-variables route, but with a telling difference: the Jacobian φ' enters the area integrand LINEARLY (no square root), so the algebra goes through for ANY C¹ period-commuting φ — no φ' ≥ 0 hypothesis. This reflects the geometry: signed area is sensitive to orientation, and a non-monotone reparametrization that locally reverses and re-traverses the curve cancels its own contributions, leaving the net signed area unchanged. Equality of the Green's-theorem integrals over a period gives equality of the signed areas of γ∘φ and γ.",

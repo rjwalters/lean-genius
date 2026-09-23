@@ -26,8 +26,8 @@
   {
     "id": "wallis-bridge",
     "proofId": "buffons-needle-oq007",
-    "range": { "startLine": 160, "endLine": 190 },
-    "type": "theorem",
+    "range": { "startLine": 77, "endLine": 107 },
+    "type": "lemma",
     "title": "The Wallis Bridge W m = (2m+1)·E_m²",
     "content": "The exact algebraic link from the elementary factor product to π. Mathlib's Wallis partial product is W m = ∏_{i<m} (2i+2)/(2i+1)·(2i+2)/(2i+3); its second factor is exactly the even-product factor, and the first factor accumulates the ratio that, telescoped, equals 2m+1. The identity W m = (2m+1)·E_m² is proved by induction (successor step: `W_succ`, the inductive hypothesis, `evenProd_succ`, then `field_simp`/`ring`). Because Mathlib proves W m → π/2 (`tendsto_W_nhds_pi_div_two`) WITHOUT Stirling — via the ratio of ∫sinⁿ integrals — this bridge transfers the limit verbatim to (2m+1)·E_m² → π/2, giving E_m² = W m/(2m+1) and hence the entire asymptotic with no Gamma-function expansion.",
     "mathContext": "$W_m=\\prod_{i<m}\\frac{2i+2}{2i+1}\\cdot\\frac{2i+2}{2i+3}=(2m+1)E_m^2,\\qquad E_m^2=\\frac{W_m}{2m+1}\\xrightarrow{}\\frac{\\pi/2}{2m+1}.$",

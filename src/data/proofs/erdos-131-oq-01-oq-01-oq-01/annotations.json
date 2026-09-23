@@ -38,8 +38,8 @@
   {
     "id": "ann-erdos131-dav-pigeonhole",
     "proofId": "erdos-131-oq-01-oq-01-oq-01",
-    "range": { "startLine": 128, "endLine": 137 },
-    "type": "lemma",
+    "range": { "startLine": 63, "endLine": 137 },
+    "type": "theorem",
     "title": "exists_nonempty_subset_sum_dvd: D(ℤ/aℤ) ≤ a",
     "content": "The Davenport bound is closed by pigeonhole. There are L.length + 1 = |s| + 1 ≥ a + 1 prefix-sum values, all living in ZMod a which has only a elements; Fintype.exists_ne_map_eq_of_card_lt forces two distinct indices i ≠ j with equal prefix sum mod a. Whichever is smaller plays the role of p in the key lemma, producing the nonempty zero-sum subset. This is exactly the statement D(ℤ/aℤ) ≤ a (any a integers contain a nonempty subset summing to 0 mod a), reproved from scratch because Mathlib lacks the Davenport constant.",
     "mathContext": "$|\\mathbb{Z}/a\\mathbb{Z}| = a < a+1 \\le |s|+1$, so the prefix-sum map collides — the engine behind $D(\\mathbb{Z}/a\\mathbb{Z}) \\le a$.",

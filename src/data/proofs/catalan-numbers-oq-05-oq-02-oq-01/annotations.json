@@ -20,7 +20,7 @@
   {
     "id": "ann-rowsum-def",
     "proofId": "catalan-numbers-oq-05-oq-02-oq-01",
-    "range": { "startLine": 53, "endLine": 57 },
+    "range": { "startLine": 57, "endLine": 61 },
     "type": "concept",
     "title": "The ballot number ballotNumber n k (restated)",
     "content": "ballotNumber n k := (n+k).choose k − (n+k).choose (n+1), identical to the parent's definition and restated locally so this file depends only on Mathlib (not on the heavy parent module). The first term counts unrestricted monotone lattice paths to (n,k); the reflected second term C(n+k,n+1) = C(n+k,k−1) counts the 'bad' paths that cross the diagonal, so the difference is the diagonal-bounded count. Encoding the reflected term as C(n+k,n+1) rather than C(n+k,k−1) keeps every binomial index a genuine natural number even at k=0.",

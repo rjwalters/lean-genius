@@ -2,7 +2,7 @@
   {
     "id": "ann-conway-ryba-index",
     "proofId": "pascals-hexagon-oq-03-incomplete-01",
-    "range": { "startLine": 5, "endLine": 62 },
+    "range": { "startLine": 6, "endLine": 62 },
     "type": "concept",
     "title": "Conway–Ryba: indexing the 95/95 configuration by S₆ conjugacy classes",
     "content": "The docstring records the key structural idea behind the whole file. Conway and Ryba (2012) observed that every point and line of the Hexagrammum Mysticum is indexed by a conjugacy class of the symmetric group S₆: six-cycles index the 60 Pascal lines and 60 Kirkman points, products of two 3-cycles index the 20 Steiner points and 20 Cayley–Salmon lines, and products of three 2-cycles index the 15 Plücker lines and 15 Salmon points. The exceptional outer automorphism of S₆ exchanges the point and line members of each class, so a class of size 2k splits into k points and k lines. This reduces the geometric census to a finite group-theoretic count.",
@@ -14,7 +14,7 @@
   {
     "id": "ann-fixed-point-free",
     "proofId": "pascals-hexagon-oq-03-incomplete-01",
-    "range": { "startLine": 68, "endLine": 72 },
+    "range": { "startLine": 69, "endLine": 72 },
     "type": "definition",
     "title": "Fixed-point-free permutations of Fin 6",
     "content": "The shared building block: a permutation whose support is all of Fin 6, i.e. one with no fixed point. A fixed-point-free element of S₆ must have cycle type (6), (4,2), (3,3), or (2,2,2) — every one of the classes that index the Hexagrammum objects is fixed-point-free, so this single predicate underlies all three census theorems. The hand-supplied `Decidable` instance (just `inferInstanceAs` on the bounded ∀) is what lets `native_decide` evaluate the filters quickly.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-six-cycle",
     "proofId": "pascals-hexagon-oq-03-incomplete-01",
-    "range": { "startLine": 74, "endLine": 83 },
+    "range": { "startLine": 75, "endLine": 83 },
     "type": "tactic",
     "title": "Isolating 6-cycles by power conditions (the subtle (4,2) exclusion)",
     "content": "Rather than call the `cycleType` API, a 6-cycle is pinned by elementary power/fixed-point conditions: fixed-point-free with σ⁶=1, σ²≠1, σ³≠1. Among fixed-point-free types, σ²≠1 removes (2,2,2), σ³≠1 removes (3,3), and — the subtle step — σ⁶=1 removes (4,2). A (4,2) element has order lcm(4,2)=4, so σ⁶=σ²≠1; demanding σ⁶=1 is exactly what excludes it. Only genuine 6-cycles (order 6) survive.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-double-three-cycle",
     "proofId": "pascals-hexagon-oq-03-incomplete-01",
-    "range": { "startLine": 85, "endLine": 93 },
+    "range": { "startLine": 86, "endLine": 93 },
     "type": "definition",
     "title": "Products of two 3-cycles: fixed-point-free with σ³=1",
     "content": "The (3,3) class is captured by just two conditions: fixed-point-free and σ³=1. No fixed points plus order dividing 3 forces every cycle length to divide 3 and exceed 1, so all cycles have length 3; since 3+3=6 this means exactly two 3-cycles. These 40 elements index the 20 Steiner points and 20 Cayley–Salmon lines.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-triple-transposition",
     "proofId": "pascals-hexagon-oq-03-incomplete-01",
-    "range": { "startLine": 95, "endLine": 103 },
+    "range": { "startLine": 96, "endLine": 103 },
     "type": "definition",
     "title": "Products of three 2-cycles: fixed-point-free involutions",
     "content": "The (2,2,2) class is the fixed-point-free involutions: σ²=1 with no fixed points forces every cycle to have length exactly 2, and 2+2+2=6 gives three transpositions. This class is self-paired under the outer automorphism, so its single size 15 accounts for both the 15 Plücker lines and the 15 Salmon points.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-census-native-decide",
     "proofId": "pascals-hexagon-oq-03-incomplete-01",
-    "range": { "startLine": 105, "endLine": 128 },
+    "range": { "startLine": 106, "endLine": 128 },
     "type": "tactic",
     "title": "The census by native_decide: 720 / 120 / 40 / 15",
     "content": "Each class size is certified by enumerating all 720 elements of Sym(6) via Finset.univ, filtering by the decidable predicate, and computing the cardinality with `native_decide`. This compiles the decision procedure to native code and evaluates it, trusting the Lean compiler — hence the proof depends on the `Lean.ofReduceBool` axiom and the entry is `axiomatized`, not axiom-free. The anchor card_sym6 = 720 confirms the enumeration is over the full group; 120 + 40 + 15 = 175 fixed-point-free elements of these three types.",

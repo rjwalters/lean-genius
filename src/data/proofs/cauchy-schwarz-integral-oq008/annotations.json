@@ -26,7 +26,7 @@
   {
     "id": "csi-strict-ann-nonstrict",
     "proofId": "cauchy-schwarz-integral-oq008",
-    "range": { "startLine": 62, "endLine": 94 },
+    "range": { "startLine": 67, "endLine": 99 },
     "type": "tactic",
     "title": "The two non-strict links, re-derived from Mathlib AM-GM",
     "content": "Three private lemmas supply the $\\le$ links without importing the grandparent. `inv_wgm_eq` is the reciprocal identity $(1/a)^{w_1}(1/b)^{w_2} = (a^{w_1}b^{w_2})^{-1}$ (via `Real.div_rpow` and `field_simp`). `wgm_le_wam_aux` is Mathlib's two-variable weighted AM-GM `Real.geom_mean_le_arith_mean2_weighted` directly. `whm_le_wgm_aux` applies that same AM-GM to the reciprocals $1/a, 1/b$ and inverts with `inv_le_comm₀` — strict positivity of the weights keeps the harmonic denominator $w_1/a + w_2/b$ positive.",
@@ -38,7 +38,7 @@
   {
     "id": "csi-strict-ann-strict-links",
     "proofId": "cauchy-schwarz-integral-oq008",
-    "range": { "startLine": 96, "endLine": 122 },
+    "range": { "startLine": 100, "endLine": 126 },
     "type": "tactic",
     "title": "The three strict links: ≤ upgraded by a ≠ b",
     "content": "`whm_lt_wgm_of_ne`, `wgm_lt_wam_of_ne`, and `wam_lt_wqm_of_ne` each turn a non-strict link into a strict one via `LE.le.lt_of_ne`: the $\\le$ together with $a\\ne b$, where $a\\ne b$ excludes equality through the contrapositive of the parent's equality characterization (`whm_eq_wgm_iff`, `wgm_eq_wam_iff`). The arithmetic-quadratic link is re-exported from the parent's `wam_lt_wqm_of_ne` (the 'positive variance' gap) for symmetry. No new analytic input is needed — strictness is the logical shadow of the equality case.",
@@ -50,7 +50,7 @@
   {
     "id": "csi-strict-ann-iff",
     "proofId": "cauchy-schwarz-integral-oq008",
-    "range": { "startLine": 124, "endLine": 147 },
+    "range": { "startLine": 128, "endLine": 151 },
     "type": "insight",
     "title": "Each strict gap is equivalent to a ≠ b",
     "content": "`whm_lt_wgm_iff_ne`, `wgm_lt_wam_iff_ne`, `wam_lt_wqm_iff_ne` package each link as a biconditional $\\text{(strict link)}\\iff a\\ne b$. The forward direction is the contrapositive of the parent's equality iff (`Iff.not` applied to `h.ne`); the reverse is the strict link from Part I. Because every link is governed by the *same* scalar condition $a\\ne b$, the three gaps are mutually equivalent — the structural fact behind the rigidity dichotomy.",
@@ -62,7 +62,7 @@
   {
     "id": "csi-strict-ann-headline",
     "proofId": "cauchy-schwarz-integral-oq008",
-    "range": { "startLine": 149, "endLine": 193 },
+    "range": { "startLine": 153, "endLine": 197 },
     "type": "insight",
     "title": "Headline: strict chain and the all-or-nothing rigidity dichotomy",
     "content": "`strict_chain_of_ne` collects the three strict links into the full chain $\\text{WHM}<\\text{WGM}<\\text{WAM}<\\text{WQM}$ for $a\\ne b$, and `strict_chain_iff_ne` makes it an equivalence with $a\\ne b$. The capstone `any_strict_iff_all_strict` is the rigidity dichotomy: a *single* strict gap anywhere (a disjunction) forces *every* gap (the conjunction). The proof extracts $a\\ne b$ from whichever disjunct holds (each link's iff) and re-derives the whole strict chain. There is no intermediate regime: the means are either all equal or all strictly ordered.",
@@ -74,7 +74,7 @@
   {
     "id": "csi-strict-ann-specialization",
     "proofId": "cauchy-schwarz-integral-oq008",
-    "range": { "startLine": 195, "endLine": 226 },
+    "range": { "startLine": 199, "endLine": 227 },
     "type": "concept",
     "title": "Equal-weight specialization: the classical strict HM < GM < AM < QM",
     "content": "`unweighted_strict_chain_of_ne` specialises to $w_1=w_2=1/2$ and rewrites each weighted mean into its textbook closed form: $\\text{WHM}=2ab/(a+b)$, $\\text{WGM}=\\sqrt{ab}$, $\\text{WAM}=(a+b)/2$, $\\text{WQM}=\\sqrt{(a^2+b^2)/2}$ (via `field_simp`/`ring`, `Real.mul_rpow`, and `Real.sqrt_eq_rpow`). Feeding these identities into `strict_chain_of_ne` yields the classical strict chain $2ab/(a+b) < \\sqrt{ab} < (a+b)/2 < \\sqrt{(a^2+b^2)/2}$ for $a\\ne b$ — the familiar harmonic–geometric–arithmetic–quadratic ordering.",

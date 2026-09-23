@@ -26,7 +26,7 @@
   {
     "id": "dini-oq0102-ann-modulus",
     "proofId": "dini-theorem-oq-01-oq-02",
-    "range": { "startLine": 96, "endLine": 117 },
+    "range": { "startLine": 100, "endLine": 117 },
     "type": "theorem",
     "title": "The Sharp Modulus: sup |xⁿ − 0| = 1",
     "content": "pow_uniform_error_Ico is the headline result answering OQ-02. On [0,1) the error |xⁿ − 0| equals xⁿ itself, because xⁿ ≥ 0 there (abs_of_nonneg after sub_zero); `Set.image_congr` rewrites the error-image to the plain power-image, so its supremum is the xⁿ-supremum from pow_sSup_Ico, namely 1. This is the exact modulus of non-uniform convergence — the supremal pointwise error over the whole domain — and it sharpens the parent's lower bound of 1/2 to the optimal value 1, which cannot be improved (no value > 1 is even an upper bound, and no value < 1 bounds the image).",

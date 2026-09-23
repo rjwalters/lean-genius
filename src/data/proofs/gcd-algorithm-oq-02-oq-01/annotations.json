@@ -74,7 +74,7 @@
   {
     "id": "ann-gcd0201-tightness",
     "proofId": "gcd-algorithm-oq-02-oq-01",
-    "range": { "startLine": 176, "endLine": 186 },
+    "range": { "startLine": 177, "endLine": 186 },
     "type": "theorem",
     "title": "Order tightness on the diagonal",
     "content": "The bound has the right logarithmic order: on (2^k, 2^k) the step count is exactly k + 1. Induction on k, using steps(1,1) = 1 at the base and the doubling law steps(2·2^k, 2·2^k) = 1 + steps(2^k, 2^k) at the step. Against the upper bound 2·size(2^k) = 2(k+1), this shows the algorithm is Θ(log) — the O(log) bound cannot be improved to o(log).",

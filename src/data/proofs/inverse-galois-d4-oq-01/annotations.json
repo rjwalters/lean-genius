@@ -2,7 +2,7 @@
   {
     "id": "d4-oq01-ann-overview",
     "proofId": "inverse-galois-d4-oq-01",
-    "range": { "startLine": 3, "endLine": 51 },
+    "range": { "startLine": 5, "endLine": 51 },
     "type": "concept",
     "title": "From |Gal| = 8 to the Structure ℤ/4 ⋊ ℤ/2",
     "content": "The header states OQ-01 of the parent entry: the parent proves the splitting field of X⁴−2 over ℚ is Galois with |Gal| = 8 and remarks the group is D₄, but the order 8 alone does not pin down the isomorphism type — two non-abelian groups (D₄ and the quaternion group Q₈) and three abelian groups all have order 8. This file supplies the distinguishing data: a normal order-4 rotation subgroup and an order-2 reflection acting by inversion. The 'scope honesty' note is important — everything here is proved inside the abstract group DihedralGroup 4; the explicit MulEquiv from the concrete Galois group to D₄ is the harder OQ-03 bridge.",
@@ -14,7 +14,7 @@
   {
     "id": "d4-oq01-ann-rhom",
     "proofId": "inverse-galois-d4-oq-01",
-    "range": { "startLine": 57, "endLine": 94 },
+    "range": { "startLine": 61, "endLine": 94 },
     "type": "definition",
     "title": "Rotation Subgroup as the Range of an Injective Hom (≅ ℤ/4)",
     "content": "rHom : Multiplicative (ZMod 4) →* DihedralGroup 4 sends i ↦ rᵢ; it is a monoid hom because r_mul_r turns addition of indices into multiplication of rotations, and toAdd_mul matches the multiplicative type tag. Injectivity (rHom_injective) follows from constructor injectivity of r composed with Multiplicative.toAdd being injective. Defining rotations := rHom.range then yields, via MonoidHom.ofInjective, the equivalence rotationsEquiv : rotations ≃* Multiplicative (ZMod 4) — so the rotation subgroup is cyclic of order 4 for free, with card_rotations = 4 read off through Nat.card_congr and ZMod.card. This is the normal ℤ/4 factor of the semidirect product.",

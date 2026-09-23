@@ -14,7 +14,7 @@
   {
     "id": "conjugate-count",
     "proofId": "little-wedderburn-oq-02-oq-02",
-    "range": { "startLine": 49, "endLine": 91 },
+    "range": { "startLine": 54, "endLine": 91 },
     "type": "lemma",
     "title": "Each Minimal Polynomial Has deg Conjugate Roots",
     "content": "card_minpoly_fiber proves that the elements of GF(p^m) sharing a given minimal polynomial g number exactly deg g. The fibre {y : minpoly y = g} is identified with the root set of g in GF(p^m): y is a root of g iff g, being monic irreducible, is the minimal polynomial of y. That root set has deg g elements because g splits in the normal extension (Normal.splits) and is separable over the perfect field 𝔽_p (Algebra.IsSeparable), so its roots are distinct (nodup_roots) and number its degree (Splits.natDegree_eq_card_roots). mdeg_dvd records that every such degree divides m, by the tower law finrank 𝔽_p 𝔽_p⟮x⟯ · finrank 𝔽_p⟮x⟯ GF = m.",

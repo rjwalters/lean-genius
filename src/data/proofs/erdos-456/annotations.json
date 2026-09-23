@@ -215,10 +215,10 @@
   {
     "id": "ann-456-conjectures",
     "proofId": "erdos-456",
-    "type": "theorem",
+    "type": "definition",
     "range": {
-      "startLine": 198,
-      "endLine": 212
+      "startLine": 197,
+      "endLine": 211
     },
     "title": "The Three Erdős Conjectures",
     "content": "`ErdosProblem456_Part1`: $m_n < p_n$ for almost all $n$. `Part2`: $\\forall C,\\, C \\cdot m_n \\le p_n$ for a.a. $n$ (formalization of $p_n/m_n \\to \\infty$). `Part3`: $\\forall N,\\, \\exists p \\ge N$ prime with $m_{p-1} = p$ and $\\forall n,\\, m_n = p \\Rightarrow n = p - 1$ (infinitely many 'rigid' primes).",

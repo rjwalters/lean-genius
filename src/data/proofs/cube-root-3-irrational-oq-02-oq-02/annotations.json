@@ -110,7 +110,7 @@
   {
     "id": "explicit-vector-form",
     "proofId": "cube-root-3-irrational-oq-02-oq-02",
-    "range": { "startLine": 97, "endLine": 103 },
+    "range": { "startLine": 98, "endLine": 104 },
     "type": "theorem",
     "title": "Explicit Vector Form: ![1, α, α²]",
     "content": "The second theorem `one_cbrt3_cbrt3_sq_linearIndependent` restates the result for the explicit vector `![1, α, α²] : Fin 3 → ℝ`. The proof is `convert cbrt3_powers_linearIndependent using 1` followed by `ext i; fin_cases i <;> simp [pow_succ]` — this reduces the goal to checking that `![1, α, α²] i = α^(i:ℕ)` for each i ∈ {0, 1, 2}, which is true by `pow_succ` unfolding. This 'explicit form' is the user-facing statement most likely to be cited in downstream proofs, since it matches the textbook phrasing exactly. The abstract `α^i` formulation is structurally cleaner for the proof, but `![1, α, α²]` is what readers (and proof-by-name lookup) expect.",

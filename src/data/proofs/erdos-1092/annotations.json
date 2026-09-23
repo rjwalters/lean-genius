@@ -54,8 +54,8 @@
     "proofId": "erdos-1092",
     "type": "definition",
     "range": {
-      "startLine": 44,
-      "endLine": 52
+      "startLine": 55,
+      "endLine": 63
     },
     "title": "Chromatic Reduction by Edge Deletion",
     "content": "Defines `CanReduceChromatic G k r`: there exists a set of at most $k$ edges whose removal yields a graph with chromatic number $\\leq r$. The removed edges are represented as a finset of ordered pairs; both orientations are excluded to maintain symmetry. This captures the notion that $G$ is '$k$ edges away' from being $r$-colorable, a natural measure of distance in the space of graphs ordered by chromatic number.",
@@ -101,7 +101,7 @@
     "proofId": "erdos-1092",
     "type": "concept",
     "range": {
-      "startLine": 66,
+      "startLine": 67,
       "endLine": 69
     },
     "title": "Question 1: Does $f_2(n) \\gg n$?",

@@ -26,7 +26,7 @@
   {
     "id": "ann-threshold-formula",
     "proofId": "birthday-problem-oq-03-oq-03",
-    "range": { "startLine": 111, "endLine": 151 },
+    "range": { "startLine": 112, "endLine": 151 },
     "type": "definition",
     "title": "Threshold Power Formula: k! · d^{k-1}",
     "content": "thresholdPower k d = (k! · d^{k-1} : ℝ) works with the k-th power n_k^k to avoid fractional exponents. This makes monotonicity and comparison proofs algebraically clean: thresholdPower_pos, thresholdPower_mono_d, and thresholdPower_mono_k are all proved via positivity/monotonicity of multiplication and rpow. The factorial factor k! captures the combinatorial growth of coincidence patterns: among k people, there are k! orderings of their birthdays, and all k! of them must be distinct.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-classical-recovery",
     "proofId": "birthday-problem-oq-03-oq-03",
-    "range": { "startLine": 160, "endLine": 211 },
+    "range": { "startLine": 163, "endLine": 211 },
     "type": "insight",
     "title": "Classical Recovery: k=2,3,4 Formulas and 365-Day Examples",
     "content": "threshold_k2/k3/k4 compute the threshold power for the first three non-trivial cases: n₂² = 2d (square-root birthday), n₃³ = 6d², n₄⁴ = 24d³. These are proved by unfolding thresholdPower and simplifying Nat.factorial. The comparison theorems show that for d ≥ 2 (k=2) or d ≥ 1 (k=3), the probabilistic threshold is strictly smaller than the pigeonhole bound — confirming the birthday problem effect. Concrete 365-day examples: thresholdPower 2 365 = 730 (so n₂ ≈ √730 ≈ 27 people), thresholdPower 3 365 = 6·365² = 798,150.",

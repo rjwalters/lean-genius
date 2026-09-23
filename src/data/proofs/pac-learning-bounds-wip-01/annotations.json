@@ -27,8 +27,8 @@
     "id": "ann-pac-wip01-01b-ambient",
     "proofId": "pac-learning-bounds-wip-01",
     "range": {
-      "startLine": 41,
-      "endLine": 42
+      "startLine": 43,
+      "endLine": 47
     },
     "type": "concept",
     "title": "Ambient Context: DecidableEq α Powers the Whole Combinatorics",
@@ -204,10 +204,10 @@
     "id": "ann-pac-wip01-09-tightness",
     "proofId": "pac-learning-bounds-wip-01",
     "range": {
-      "startLine": 110,
-      "endLine": 133
+      "startLine": 49,
+      "endLine": 72
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "The Bounds Are Tight: the Powerset Class Shatters",
     "content": "trace_powerset_self shows the full powerset class 2^S shatters S: each h ⊆ S satisfies h ∩ S = h, so the trace is all of S.powerset. powerset_shatters records this, and shatters_card_le_sharp packages it as a witness that shatters_card_le is sharp — for every S there is a class of size exactly 2^|S| shattering S. So the growth bound (≤ 2^|S|) and the size bound (2^|S| ≤ |H|) are both attained, not merely upper estimates.",
     "mathContext": "Π_{2^S}(S) = 2^S, so |Π_{2^S}(S)| = 2^|S| = |2^S| — equality throughout.",

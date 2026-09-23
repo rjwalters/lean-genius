@@ -38,8 +38,8 @@
   {
     "id": "ann-bridge",
     "proofId": "herons-formula-oq-06-oq-01",
-    "range": { "startLine": 146, "endLine": 154 },
-    "type": "lemma",
+    "range": { "startLine": 144, "endLine": 154 },
+    "type": "theorem",
     "title": "two_circumradius_mul_inradius — the algebraic bridge",
     "content": "Proves 2·R·r = abc/(a+b+c) in the side-length model, where R = circumradius a b c = abc/(4·Area) and r = inradius a b c = Area/s. Unfolds the definitions, uses area_pos (Heron's area is positive for a genuine triangle, from the triangle inequalities), and clears denominators with field_simp; the Area factors cancel and ring closes. This is the sole place the area enters — and it disappears.",
     "mathContext": "$2Rr=2\\cdot\\dfrac{abc}{4\\,\\mathrm{Area}}\\cdot\\dfrac{\\mathrm{Area}}{s}=\\dfrac{abc}{2s}=\\dfrac{abc}{a+b+c}$, using $s=\\tfrac{a+b+c}{2}$. The $\\mathrm{Area}$ cancels exactly, so the bridge is a pure rational identity in $a,b,c$.",

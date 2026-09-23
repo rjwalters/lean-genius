@@ -36,7 +36,7 @@
   {
     "id": "napoleon-oq0301-ann-halfturn",
     "proofId": "napoleons-theorem-oq-03-oq-01",
-    "range": { "startLine": 100, "endLine": 106 },
+    "range": { "startLine": 101, "endLine": 106 },
     "type": "insight",
     "title": "Half-Turn Equivariance Is the Engine",
     "content": "The key structural lemma napCenter_halfTurn says that reflecting both endpoints of a side through a center g reflects the resulting Napoleon center through g: napCenter(2g−b, 2g−c) = 2g − napCenter(b,c). Crucially this is a pure ring identity — the displacement coefficient a cancels symbolically, so the equivariance holds regardless of the value of a. The period-two phenomenon rides entirely on this symmetry together with centroid preservation; the specific value a² = -1/12 is only needed to identify T_out²(z) as the half-turn in the first place.",
@@ -48,7 +48,7 @@
   {
     "id": "napoleon-oq0301-ann-reflection",
     "proofId": "napoleons-theorem-oq-03-oq-01",
-    "range": { "startLine": 111, "endLine": 139 },
+    "range": { "startLine": 112, "endLine": 139 },
     "type": "insight",
     "title": "The Point-Reflection Law Hₖ = 2g − Gₖ",
     "content": "Unfolding the doubled construction one vertex at a time, the difference between Hₖ = T_out²(z)ₖ and the half-turn 2g − Gₖ factors as a linear expression in z times (a² + 1/12), which vanishes by disp_sq. Each of the three vertices closes with a single linear_combination (linear coefficient) * disp_sq, with the coefficients cyclically permuted. This is the one place the arithmetic fact a² = -1/12 enters; everything afterward is ring rewriting.",
@@ -72,7 +72,7 @@
   {
     "id": "napoleon-oq0301-ann-sharp",
     "proofId": "napoleons-theorem-oq-03-oq-01",
-    "range": { "startLine": 173, "endLine": 196 },
+    "range": { "startLine": 174, "endLine": 196 },
     "type": "insight",
     "title": "Exactly Two, and Why the Hypothesis Is Needed",
     "content": "Doubling is not idempotent: T_out²(z) = T_out(z) would force every outer vertex Gₖ onto the centroid g, i.e. the outer Napoleon triangle collapsing to a point. So on any nondegenerate triangle the period is exactly two — contrasting sharply with the parent's outer∘inner composition, which always collapses. The fixed-point sanity check T_out(0,0,0) = (0,0,0) shows the degenerate locus is genuinely there and the nondegeneracy hypothesis cannot be dropped.",

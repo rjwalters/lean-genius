@@ -160,8 +160,8 @@
     "id": "ann-249-conjecture",
     "proofId": "erdos-249",
     "range": {
-      "startLine": 135,
-      "endLine": 135
+      "startLine": 129,
+      "endLine": 134
     },
     "type": "definition",
     "title": "The Main Conjecture (OPEN)",
@@ -182,10 +182,10 @@
     "id": "ann-249-alternative",
     "proofId": "erdos-249",
     "range": {
-      "startLine": 140,
-      "endLine": 147
+      "startLine": 141,
+      "endLine": 148
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Alternative Characterization (Proved)",
     "content": "`isRational` defines the negation: $\\exists r : \\mathbb{Q}, (r : \\mathbb{R}) = \\text{totientPowerSum}$.\n\n`erdos_249_iff_not_rational` (**proved by `rfl`**): `erdos_249 ↔ ¬isRational`. This is definitionally true since `Irrational x` in Mathlib is exactly `¬∃ r : ℚ, (r : ℝ) = x`.",
     "mathContext": "The `rfl` proof means this is a definitional equality in Lean's type theory — no computation needed, just unfolding definitions.",

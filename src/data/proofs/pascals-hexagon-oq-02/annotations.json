@@ -71,7 +71,7 @@
   {
     "id": "ann-brianchon",
     "proofId": "pascals-hexagon-oq-02",
-    "range": { "startLine": 164, "endLine": 187 },
+    "range": { "startLine": 167, "endLine": 190 },
     "type": "theorem",
     "title": "Brianchon's Theorem",
     "content": "`brianchon_theorem`: for a hexagon circumscribed about the line-conic $D$, the three main diagonals are concurrent. The proof applies `pascal_hexagon_theorem` to `toInscribed hex`, rewrites the three Pascal points into the three diagonals via the bridge lemmas, and finishes — since collinearity of three lines *is* their concurrency.",

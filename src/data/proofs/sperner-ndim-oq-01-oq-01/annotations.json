@@ -60,7 +60,7 @@
   {
     "id": "ann-sperner0101-interior",
     "proofId": "sperner-ndim-oq-01-oq-01",
-    "range": { "startLine": 158, "endLine": 181 },
+    "range": { "startLine": 162, "endLine": 181 },
     "type": "insight",
     "title": "Interior Facets Are Shared by Exactly Two Simplices",
     "content": "freudenthal_adjacency_theorem reproves the parent result for 0 < k < n. It feeds the 2-element gap prefixSet l (k+1) \\ prefixSet l (k-1) into intermediate_sets_card_eq_two, obtaining a count of 2 with bound (prefixSet l (k-1)).card + 1. The exponent is then rewritten back to k using |prefixSet l (k-1)| = k - 1 and Nat.sub_add_cancel (k - 1 + 1 = k, valid since 0 < k). Geometrically the two simplices differ by swapping the adjacent permutation entries l[k-1] and l[k].",
@@ -78,7 +78,7 @@
   {
     "id": "ann-sperner0101-boundary",
     "proofId": "sperner-ndim-oq-01-oq-01",
-    "range": { "startLine": 182, "endLine": 228 },
+    "range": { "startLine": 186, "endLine": 228 },
     "type": "insight",
     "title": "Boundary Facets Bound Exactly One Simplex",
     "content": "The new contribution. freudenthal_boundary_bottom (k = 0): the facet dropping V₀ = ∅ admits only the 0-element refill ∅, so the filter equals {∅} and the count is 1 — no nondegeneracy hypothesis is needed, since |S| = 0 forces S = ∅. freudenthal_boundary_top (k = n): the facet dropping Vₙ = Fin n has prefixSet l (n+1) = Finset.univ (a nodup list of length n exhausts Fin n, so card = n = card univ), and the only n-element subset of Fin n is univ, so the filter equals {univ} and the count is 1. These two endpoints are the only boundary facet positions in the flag model.",

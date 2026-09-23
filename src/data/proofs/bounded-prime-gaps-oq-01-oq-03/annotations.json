@@ -24,7 +24,7 @@
   {
     "id": "ann-diameter-table",
     "proofId": "bounded-prime-gaps-oq-01-oq-03",
-    "range": { "startLine": 40, "endLine": 89 },
+    "range": { "startLine": 44, "endLine": 93 },
     "type": "concept",
     "title": "Part I: Completing the k=50 Diameter Table Entry",
     "content": "Four theorems establish witnesses for the minimum-diameter admissible k-tuple at k=2,3,5,50:\n\n- `table_k2`: `{0,2}` — diameter 2, admissible (twin prime gap pattern)\n- `table_k3`: `{0,2,6}` — diameter 6, admissible (smallest 3-element admissible set)\n- `table_k5`: `{0,2,6,8,12}` — diameter 12, admissible (EH-conditional bound)\n- `table_k50`: Engelsma tuple — diameter 246, admissible (Polymath bound)\n\nEach theorem provides an existential witness: a specific Finset ℕ satisfying IsAdmissible, card = k, and max' - min' = the claimed diameter. The proofs use `native_decide` for the diameter calculation (the explicit values can be verified by direct computation) and imported admissibility theorems from OQ03.\n\n**The significance of `complete_diameter_table`**: This conjunction theorem says that the minimum admissible k-tuple diameter is exactly d(k) for k ∈ {2,3,5,50} — not merely at most d(k). This upgrade from upper-bound-only to exact requires the Engelsma lower bound for k=50.",
@@ -47,7 +47,7 @@
   {
     "id": "ann-bound-tightness",
     "proofId": "bounded-prime-gaps-oq-01-oq-03",
-    "range": { "startLine": 91, "endLine": 114 },
+    "range": { "startLine": 95, "endLine": 114 },
     "type": "insight",
     "title": "Part II: The 246 Bound Is Tight",
     "content": "Two theorems establish that 246 is the exact minimum diameter, not just an upper bound:\n\n**oq01_upper_bound_is_tight**: For any D < 246, there is no admissible 50-tuple (or larger) with diameter ≤ D. The proof is a single `omega` after applying `engelsma_lower_bound`: if H is admissible, card ≥ 50, and has diameter D < 246, then the lower bound says diameter ≥ 246, contradicting D < 246.\n\n**oq01_k50_diameter_is_exactly_246**: The conjunction of existence (from table_k50) and uniqueness-of-minimum (from engelsma_lower_bound). This is the precise statement that 246 is the minimum.\n\nThe elegance here: the proof is literally one line each. All the mathematical content lives in the imported `engelsma_lower_bound` axiom; this file just assembles the conclusion. The `omega` tactic handles the arithmetic (`D < 246` and `246 ≤ D` are contradictory).",
@@ -67,7 +67,7 @@
   {
     "id": "ann-sieve-connection",
     "proofId": "bounded-prime-gaps-oq-01-oq-03",
-    "range": { "startLine": 116, "endLine": 129 },
+    "range": { "startLine": 120, "endLine": 129 },
     "type": "insight",
     "title": "Part III: The 50-Tuple Sieve is Optimally Tight",
     "content": "**maynard_tao_50_sieve_limit** is a 'best-of-both-worlds' theorem: it simultaneously shows (1) the 246 bound is achievable (polymath_achieves_246 from BoundedPrimeGaps) and (2) it cannot be improved within the 50-tuple sieve framework (engelsma_lower_bound). The proof is a `⟨..., ...⟩` conjunction.\n\nThe mathematical content: the Maynard-Tao sieve for H ≤ d proves that infinitely many prime gaps are ≤ d, provided there exists an admissible tuple of size ≥ 50 with diameter ≤ d. Since every admissible tuple of size ≥ 50 has diameter ≥ 246, the tightest possible d under this approach is 246.\n\n**OpenQuestion01** (in the OQ-01 framework): Can we prove H ≤ d for some d < 246 unconditionally? This would require either a NEW sieve that doesn't rely on admissible 50-tuples, or evidence that the Engelsma axiom is wrong (impossible given the exhaustive search).",
@@ -89,7 +89,7 @@
   {
     "id": "ann-hierarchy",
     "proofId": "bounded-prime-gaps-oq-01-oq-03",
-    "range": { "startLine": 131, "endLine": 154 },
+    "range": { "startLine": 135, "endLine": 154 },
     "type": "insight",
     "title": "Part IV: Hierarchy of Prime Gap Bounds",
     "content": "**exact_gap_bound_hierarchy** crystallizes the complete known state of unconditional and conditional prime gap bounds:\n\n1. **TPC gives H=2**: Twin Prime Conjecture → primeGap n ≤ 2 infinitely often. This is an open conjecture.\n\n2. **Unconditional H≤246 (tight)**: polymath_achieves_246 gives the bound; engelsma_lower_bound shows it's optimal within the 50-tuple approach.\n\nNotably absent from this hierarchy: the EH-conditional H ≤ 12 (from OQ-01-OQ-02). This theorem focuses on the unconditional case and the TPC case, leaving the conditional ladder to the sibling file.\n\nThe proof is a `refine` pattern: the TPC branch needs some case work (extract the prime-gap hypothesis and apply monotonicity), while the unconditional branches are direct imports.",

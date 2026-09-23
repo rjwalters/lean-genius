@@ -50,7 +50,7 @@
   {
     "id": "ann-qdet3-nc-def",
     "proofId": "cramers-rule-oq-01-oq-02-oq-01",
-    "range": { "startLine": 188, "endLine": 210 },
+    "range": { "startLine": 189, "endLine": 211 },
     "type": "definition",
     "title": "Non-Commutative (0,0)-Quasideterminant via Iterated Schur",
     "content": "Defines `schurComp3 A = A_{11} - A_{12} \\cdot (A_{22})^{-1} \\cdot A_{21}` (the quasideterminant of `block3 A 0 0` at position $(0,0)$) and `qdet3_00_nc A = A_{00} - [A_{01},A_{02}] \\cdot (M^{00})^{-\\text{Schur}} \\cdot [A_{10};A_{20}]^T$ where $(M^{00})^{-\\text{Schur}}$ is the explicit Schur complement inverse:\n$$\\begin{pmatrix} q^{-1} & -(q^{-1} A_{12} d^{-1}) \\\\ -(d^{-1} A_{21} q^{-1}) & d^{-1} + d^{-1} A_{21} q^{-1} A_{12} d^{-1} \\end{pmatrix}$$\nwhere $q = \\text{schurComp3}(A)$ and $d = A_{22}$. This is the `schurInv` formula from CramersRuleOQ01OQ02.lean, applied to `block3 A 0 0`.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-qdet3-consistency",
     "proofId": "cramers-rule-oq-01-oq-02-oq-01",
-    "range": { "startLine": 237, "endLine": 252 },
+    "range": { "startLine": 238, "endLine": 253 },
     "type": "insight",
     "title": "Consistency: Non-Commutative Reduces to Field Formula",
     "content": "Proves `qdet3_00_nc_eq_qdet3`: over a field $F$ with $A_{22} \\neq 0$ and $q = A_{11} - A_{12}(A_{22})^{-1}A_{21} \\neq 0$, the non-commutative definition equals the det-ratio definition. The proof is `field_simp; ring` after unfolding all definitions. The hypothesis $q \\neq 0$ is needed to interpret $q^{-1}$ as the field inverse (not a formal symbol).",

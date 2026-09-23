@@ -14,7 +14,7 @@
   {
     "id": "chcv-oq02-ann-krylov",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-02",
-    "range": { "startLine": 47, "endLine": 86 },
+    "range": { "startLine": 48, "endLine": 86 },
     "type": "insight",
     "title": "Krylov Vectors of a Cyclic Vector are Independent",
     "content": "krylov_linearIndependent shows that for a cyclic vector v, the family k ↦ Mᵏ·v (k < n) is linearly independent. Any vanishing relation Σ cₖ Mᵏ·v = 0 is encoded as the polynomial p = Σ C(cₖ)·Xᵏ of degree < n; then (aeval M p)·v = 0, and the cyclic hypothesis (no nonzero degree-<n polynomial annihilates v) forces p = 0, so all coefficients cₖ vanish (read off via coeff_monomial and Fin.val injectivity). This mirrors the infinite-field backward direction and gives n independent vectors in Kⁿ — a basis.",
@@ -26,7 +26,7 @@
   {
     "id": "chcv-oq02-ann-commute-pow",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-02",
-    "range": { "startLine": 88, "endLine": 102 },
+    "range": { "startLine": 92, "endLine": 102 },
     "type": "insight",
     "title": "Polynomials in M Commute with Powers of M",
     "content": "aeval_commute_pow proves p(M)·Mʲ = Mʲ·p(M). The base fact Commute (aeval M p) M follows because aeval is an algebra hom and X·p = p·X; Commute.pow_right then lifts commutation with M to commutation with every power Mʲ. This is one of the two commutation facts the main theorem needs (the other being that A commutes with Mⁱ, given A commutes with M).",
@@ -38,7 +38,7 @@
   {
     "id": "chcv-oq02-ann-main",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-02",
-    "range": { "startLine": 103, "endLine": 178 },
+    "range": { "startLine": 107, "endLine": 178 },
     "type": "insight",
     "title": "Main Theorem: Commuting Matrices are Polynomials in M",
     "content": "commuting_matrix_is_polynomial proves that if M has cyclic vector v and A·M = M·A then A = aeval M p for some p. After the 0×0 degenerate case, the Krylov basis b is built (basisOfLinearIndependentOfCardEqFinrank). The polynomial p is read off from the coordinates of A·v in b: p = Σ C(b.repr(A·v) k)·Xᵏ, so p(M)·v = A·v by Basis.sum_repr. The crux (key) shows A and p(M) agree on each basis vector Mⁱ·v: A·(Mⁱ·v) = Mⁱ·(A·v) = Mⁱ·(p(M)·v) = p(M)·(Mⁱ·v), using A's commutation with Mⁱ and aeval_commute_pow. Linearity (mulVecLin, map_sum, map_smul) extends agreement to all vectors, and the column extraction A·(Pi.single j 1) recovers the matrix entries, giving A = p(M).",
@@ -50,7 +50,7 @@
   {
     "id": "chcv-oq02-ann-consequences",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-02",
-    "range": { "startLine": 180, "endLine": 208 },
+    "range": { "startLine": 185, "endLine": 208 },
     "type": "concept",
     "title": "Consequences: Commutative Centralizer and K[M] ⊆ centralizer(M)",
     "content": "commutant_commutative concludes that the centralizer of a cyclic M is commutative: any two matrices A, B commuting with M are both polynomials in M (by the main theorem), and polynomials in M commute with each other (via mul_comm in K[X] and the algebra hom). aeval_commute records the trivial inclusion K[M] ⊆ centralizer(M) — every p(M) commutes with M. Together with the main theorem this gives the full equality centralizer(M) = K[M].",

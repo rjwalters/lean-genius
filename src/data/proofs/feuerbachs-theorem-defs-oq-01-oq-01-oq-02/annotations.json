@@ -14,7 +14,7 @@
   {
     "id": "ann-feuerbach-oq010102-perpbisector",
     "proofId": "feuerbachs-theorem-defs-oq-01-oq-01-oq-02",
-    "range": { "startLine": 76, "endLine": 122 },
+    "range": { "startLine": 87, "endLine": 122 },
     "type": "tactic",
     "title": "Perpendicular-bisector relations for the circumcenter",
     "content": "Part 0 reproves the circumcenter's defining equidistance relations, which the parent kept private. perp_bisector_AB and perp_bisector_AC state (B−A)⊥(B+A−2O) and (C−A)⊥(C+A−2O), proved by substituting the explicit circumcenter coordinates and clearing denominators (field_simp; ring) under the non-degeneracy hypothesis. perp_bisector_BC is their difference (equidistance is transitive). These are the linear facts every perpendicularity below reduces to.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-feuerbach-oq010102-perps",
     "proofId": "feuerbachs-theorem-defs-oq-01-oq-01-oq-02",
-    "range": { "startLine": 138, "endLine": 181 },
+    "range": { "startLine": 145, "endLine": 181 },
     "type": "insight",
     "title": "The three perpendicularities are the orthocentric system",
     "content": "Part 2 proves opposite connectors of {A,B,C,H} are perpendicular: (A−H)⊥(B−C), (B−H)⊥(C−A), (C−H)⊥(A−B). Each follows from one perpendicular-bisector relation after substituting H = A + B + C − 2O (a single linear_combination). These three statements ARE the orthocentric configuration; orthocentric_perpendicularities bundles them.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-feuerbach-oq010102-uniqueness",
     "proofId": "feuerbachs-theorem-defs-oq-01-oq-01-oq-02",
-    "range": { "startLine": 232, "endLine": 286 },
+    "range": { "startLine": 236, "endLine": 286 },
     "type": "tactic",
     "title": "Uniqueness via a 2×2 Cramer argument",
     "content": "isOrthocenterOf_unique shows that for a non-degenerate triangle the perpendicularity characterization pins the orthocenter uniquely. Two altitude conditions, differenced, give a 2×2 linear system in P − P'; Cramer's rule multiplies through by the triangle's non-degeneracy determinant, forcing P.1 = P'.1 and P.2 = P'.2. orthocenter_of_BCH_unique specializes this so that on a non-degenerate BCH, A is THE orthocenter.",

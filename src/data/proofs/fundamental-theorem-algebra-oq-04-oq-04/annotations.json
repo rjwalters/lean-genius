@@ -66,7 +66,7 @@
   {
     "id": "ann-newton-polygon-axiom",
     "proofId": "fundamental-theorem-algebra-oq-04-oq-04",
-    "range": { "startLine": 102, "endLine": 127 },
+    "range": { "startLine": 105, "endLine": 127 },
     "type": "insight",
     "title": "Part III: Newton Polygon Axiom — X^n - p Irreducible over ℚ_p",
     "content": "The critical axiom: X^n - p is irreducible over ℚ_p for every n ≥ 1. While the ℤ and ℚ irreducibility (Part II) are proved, the p-adic version requires different machinery.\n\n**Newton polygon argument** (mathematical justification in the docstring): For a polynomial f = a₀ + a₁X + ... + aₙXⁿ ∈ ℚ_p[X], the Newton polygon is the lower convex hull of the points {(k, v_p(aₖ)) : aₖ ≠ 0}. For f = X^n - p:\n- Coefficient of X^n: 1, with v_p(1) = 0 → point (n, 0)\n- Coefficient of X^0: -p, with v_p(-p) = 1 → point (0, 1)  \n- All intermediate coefficients are 0 (omitted from polygon)\n\nThis gives a single segment from (0,1) to (n,0) with slope -1/n. The **Ore-Hensel theorem** states: if the Newton polygon of f has a single segment of slope -h/e with gcd(h,e) = 1, then f is irreducible. Here h = 1, e = n, gcd(1,n) = 1, confirming irreducibility.\n\n**Why this is an axiom**: Mathlib's `PadicInt` is constructed as the inverse limit of ℤ/p^n ℤ, not directly as a DVR. Connecting `PadicInt` to the `DiscreteValuationRing` typeclass (needed for Gauss's lemma and the Eisenstein criterion over ℤ_p) requires bridging lemmas that exist in principle but are not yet assembled into a proof.",

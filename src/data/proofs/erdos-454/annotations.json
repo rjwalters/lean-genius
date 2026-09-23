@@ -28,8 +28,8 @@
     "proofId": "erdos-454",
     "type": "definition",
     "range": {
-      "startLine": 34,
-      "endLine": 35
+      "startLine": 38,
+      "endLine": 39
     },
     "title": "The $n$th Prime Function",
     "content": "`nthPrime k` $:= $ `k.nth Prime` returns the $k$-th prime number ($0$-indexed): $p_0 = 2$, $p_1 = 3$, $p_2 = 5$, etc. This uses Mathlib's `Nat.nth` which extracts the $k$-th element satisfying a decidable predicate — here `Nat.Prime`.",
@@ -52,8 +52,8 @@
     "proofId": "erdos-454",
     "type": "concept",
     "range": {
-      "startLine": 37,
-      "endLine": 54
+      "startLine": 53,
+      "endLine": 70
     },
     "title": "Prime Sequence Properties",
     "content": "Proves $p_0 = 2$, $p_1 = 3$, and $p_2 = 5$ via `simp` with Mathlib's named prime lemmas `Nat.nth_prime_zero_eq_two`, `Nat.nth_prime_one_eq_three`, and `Nat.nth_prime_two_eq_five` — no `native_decide`, so these facts stay kernel-checked and add no compiler-trust axiom. Establishes `nthPrime_prime`: every $p_k$ is prime (from `Nat.prime_nth_prime`). Establishes `nthPrime_strictMono`: $k < l \\Rightarrow p_k < p_l$ (from `Nat.nth_strictMono` on the infinite set of primes).",
@@ -76,8 +76,8 @@
     "proofId": "erdos-454",
     "type": "definition",
     "range": {
-      "startLine": 58,
-      "endLine": 63
+      "startLine": 62,
+      "endLine": 67
     },
     "title": "Symmetric Prime Sum",
     "content": "`symmetricPrimeSum n i hi` $= p_{n+i} + p_{n-i}$ for $i < n$. This measures the sum of primes at equal index-distance from position $n$. For evenly spaced sequences $a_k = a + kd$, we have $a_{n+i} + a_{n-i} = 2a_n$ exactly — so deviation from $2p_n$ reflects the irregularity of prime spacing.",
@@ -125,8 +125,8 @@
     "proofId": "erdos-454",
     "type": "definition",
     "range": {
-      "startLine": 99,
-      "endLine": 105
+      "startLine": 106,
+      "endLine": 112
     },
     "title": "The Deviation",
     "content": "`deviation n` $= f(n) - 2p_n$ over $\\mathbb{Z}$. This measures the signed distance between the minimum symmetric sum and twice the central prime. Positive deviation means ALL symmetric sums exceed $2p_n$; negative means some fall below.",
@@ -269,8 +269,8 @@
     "proofId": "erdos-454",
     "type": "concept",
     "range": {
-      "startLine": 220,
-      "endLine": 222
+      "startLine": 217,
+      "endLine": 219
     },
     "title": "Large Prime Gaps Exist",
     "content": "`large_prime_gaps_exist` (axiom): $\\forall G,\\, \\exists k,\\, p_{k+1} - p_k \\ge G$. Arbitrarily large prime gaps exist — classically proved via the construction $n! + 2, n! + 3, \\ldots, n! + n$ (all composite). Large gaps are necessary but not sufficient for large deviations.",

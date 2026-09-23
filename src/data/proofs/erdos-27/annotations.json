@@ -218,8 +218,8 @@
     "id": "erdos27-perfect-zero",
     "proofId": "erdos-27",
     "range": {
-      "startLine": 95,
-      "endLine": 111
+      "startLine": 97,
+      "endLine": 113
     },
     "type": "theorem",
     "title": "Perfect Covering ⇒ 0-Almost Covering",
@@ -278,10 +278,10 @@
     "id": "erdos27-density-telescope",
     "proofId": "erdos-27",
     "range": {
-      "startLine": 132,
-      "endLine": 177
+      "startLine": 134,
+      "endLine": 179
     },
-    "type": "theorem",
+    "type": "lemma",
     "title": "The Telescoping Density Product ∏(1−1/n) = 1/k and Its Vanishing",
     "content": "Two proved results underlie the averaging argument. `naturalDensity_eq_inv`: $\\prod_{n=2}^{k}(1-1/n)=1/k$, by induction with the telescoping cancellation $(1/2)(2/3)\\cdots((k-1)/k)=1/k$ (`Finset.prod_insert` + `field_simp`/`ring`). `naturalDensity_vanishes`: consequently $\\prod_{n=2}^{k}(1-1/n)\\to 0$, so for any $\\varepsilon>0$ some finite range already has density $<\\varepsilon$ (choose $k>1/\\varepsilon$). This is the quantitative core of why *growing* ranges can achieve arbitrarily small uncovered density.",
     "mathContext": "$\\prod_{n=2}^{k}\\bigl(1-\\tfrac1n\\bigr)=\\tfrac1k \\xrightarrow{k\\to\\infty} 0$",
@@ -297,8 +297,8 @@
     "id": "ann-27-conjecture",
     "proofId": "erdos-27",
     "range": {
-      "startLine": 181,
-      "endLine": 185
+      "startLine": 193,
+      "endLine": 197
     },
     "type": "definition",
     "title": "Erdős Conjecture ($100 Prize)",
@@ -340,10 +340,10 @@
     "id": "erdos27-dichotomy",
     "proofId": "erdos-27",
     "range": {
-      "startLine": 192,
-      "endLine": 202
+      "startLine": 193,
+      "endLine": 203
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "Conjecture ↔ ¬Negation",
     "content": "`conjecture_dichotomy`: `ErdosConjecture ↔ ¬ErdosConjectureNegation`. The two statements are exact logical opposites — the conjecture asserts a universal $C$ works for all $\\varepsilon,N$, the negation asserts every $C$ fails for some $\\varepsilon,N$. Unfolding both and matching the existential/universal witnesses (`push_neg`) gives the equivalence, so disproving the conjecture reduces to *proving* the negation.",
     "significance": "supporting",

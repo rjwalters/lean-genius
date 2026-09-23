@@ -24,7 +24,7 @@
   {
     "id": "dedekind-instances",
     "proofId": "bezout-identity-oq014",
-    "range": { "startLine": 55, "endLine": 78 },
+    "range": { "startLine": 59, "endLine": 78 },
     "type": "insight",
     "title": "Dedekind Domain Instances via Typeclass Inference",
     "content": "Three results establish the Dedekind domain hierarchy in Lean. Two examples (ℤ and k[x]) follow from Mathlib typeclass inference — Lean's instance system automatically derives IsDedekindDomain from the EuclideanDomain → PID → Dedekind chain. The theorem pid_is_dedekind makes this implication explicit in universe-polymorphic form. The theorem prime_ideal_is_maximal directly applies IsDedekindDomain.dimensionLtOne — the formal encoding of 'Krull dimension ≤ 1'.",
@@ -46,7 +46,7 @@
   {
     "id": "norm-theory",
     "proofId": "bezout-identity-oq014",
-    "range": { "startLine": 80, "endLine": 107 },
+    "range": { "startLine": 83, "endLine": 107 },
     "type": "definition",
     "title": "Norm Theory and Dual Factorizations of 6",
     "content": "The norm N(a+b√-5) = a²+5b² is the central computational tool. Three key theorems: norm_formula gives the explicit formula, norm_nonneg shows N ≥ 0 via positivity, norm_mul_eq establishes multiplicativity N(z·w) = N(z)·N(w). Four decide-verified computations give N(2)=4, N(3)=9, N(1+√-5)=6, N(1-√-5)=6. The theorem two_factorizations_of_6 proves 2·3 = (1+√-5)(1-√-5) by decide, establishing the dual factorization concretely.",
@@ -112,7 +112,7 @@
   {
     "id": "irred-not-prime",
     "proofId": "bezout-identity-oq014",
-    "range": { "startLine": 182, "endLine": 231 },
+    "range": { "startLine": 183, "endLine": 231 },
     "type": "insight",
     "title": "The Key Divergence: 2 is Irreducible but Not Prime",
     "content": "two_irreducible: if 2 = a·b, then N(a)·N(b) = 4 with both ≥ 1, so N(a) ∈ {1,2,3,4}. Cases N=2 and N=3 are impossible (norm gap), so N(a)=1 (a unit) or N(a)=4, N(b)=1 (b unit) — two_irreducible. two_not_prime: 2 divides (1+√-5)(1-√-5) = 6, but if 2 | (1+√-5) then N(1+√-5) = N(2)·N(k) = 4·N(k) gives 6 = 4·N(k) — no integer solution. Both factors resist divisibility by 2.",
@@ -135,7 +135,7 @@
   {
     "id": "non-ufd-conclusion",
     "proofId": "bezout-identity-oq014",
-    "range": { "startLine": 233, "endLine": 265 },
+    "range": { "startLine": 234, "endLine": 265 },
     "type": "insight",
     "title": "Non-UFD Certificate and Domain Hierarchy",
     "content": "zsqrtneg5_not_ufd: assumes UFD, applies UniqueFactorizationMonoid.irreducible_iff_prime to derive Prime 2 from two_irreducible — contradicting two_not_prime. The hierarchy theorem shows PIDs are simultaneously Dedekind and UFDs. The bundle zsqrtneg5_witness packages all three key facts as a complete machine-checked certificate: Irreducible 2, ¬Prime 2, and the dual factorization 2·3 = (1+√-5)(1-√-5). This triple constitutes definitive proof that ℤ[√-5] is Dedekind but not a UFD.",

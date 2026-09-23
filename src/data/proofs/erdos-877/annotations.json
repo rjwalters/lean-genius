@@ -72,7 +72,7 @@
     "title": "Odd Numbers Are Sum-Free",
     "content": "The set {1, 3, 5, 7, 9} is sum-free because odd + odd = even, so no odd number can be the sum of two odd numbers. Proved by simp and omega on the finite example.",
     "range": {
-      "startLine": 63,
+      "startLine": 64,
       "endLine": 66
     },
     "significance": "supporting",
@@ -114,8 +114,8 @@
     "title": "Maximal Sum-Free Set",
     "content": "A sum-free set A ⊆ {0,...,n} is maximal if adding any element x not in A would create a sum. Formalized as: A ⊆ range(n+1), isSumFree A, and for all x in range(n+1) \\ A, insert x A is not sum-free.",
     "range": {
-      "startLine": 90,
-      "endLine": 93
+      "startLine": 81,
+      "endLine": 89
     },
     "significance": "key",
     "mathContext": "Maximality is a strong constraint: a maximal sum-free set $A$ must satisfy that for every $x \\notin A$, either $x = a + b$ for some $a, b \\in A$, or $a = x + b$ for some $a, b \\in A$, or $2x \\in A$. This forces $A$ to be 'saturated' — every element outside $A$ interacts with $A$ through a sum relation. The count $f_m(n)$ of maximal sum-free sets is much smaller than $f(n)$ of all sum-free sets.",
@@ -180,8 +180,8 @@
     "title": "f_m(n) — Count of Maximal Sum-Free Subsets",
     "content": "f_m(n) counts maximal sum-free subsets of {0,...,n}. This is the central quantity in Problem #877. Defined by filtering the powerset by isMaximalSumFree.",
     "range": {
-      "startLine": 124,
-      "endLine": 125
+      "startLine": 159,
+      "endLine": 164
     },
     "significance": "key",
     "mathContext": "$f_m(n) = |\\{A \\subseteq [n] : A \\text{ is maximal sum-free}\\}|$ is the main counting function. The question $f_m(n) = o(2^{n/2})$ asks whether maximality dramatically reduces the count compared to $f(n) = \\Theta(2^{n/2})$. The answer is yes: $f_m(n) = \\Theta(2^{n/4})$, an exponential reduction.",

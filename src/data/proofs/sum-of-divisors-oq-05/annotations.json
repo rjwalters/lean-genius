@@ -14,7 +14,7 @@
   {
     "id": "ann-def",
     "proofId": "sum-of-divisors-oq-05",
-    "range": { "startLine": 38, "endLine": 41 },
+    "range": { "startLine": 39, "endLine": 42 },
     "type": "tactic",
     "title": "Defining the Index over ℚ",
     "content": "`abundancy n = (σ₁ n : ℚ) / n` is defined from Mathlib's `ArithmeticFunction.sigma`, with `abundancy_one : abundancy 1 = 1` as a simp lemma. Working over ℚ keeps the index an honest function and avoids `native_decide`, so the file is genuinely axiom-free.",

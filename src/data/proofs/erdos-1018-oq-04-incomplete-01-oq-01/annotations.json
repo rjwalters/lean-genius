@@ -14,7 +14,7 @@
   {
     "id": "ann-e1018oq04i01oq01-pascal",
     "proofId": "erdos-1018-oq-04-incomplete-01-oq-01",
-    "range": { "startLine": 48, "endLine": 54 },
+    "range": { "startLine": 49, "endLine": 54 },
     "type": "insight",
     "title": "Pascal's rule linearizes the induction",
     "content": "completeEdges_succ proves C(n+1,2) = C(n,2) + n from Nat.choose_succ_succ (Pascal: C(n+1,2) = C(n,1) + C(n,2)) and Nat.choose_one_right (C(n,1) = n). The defeq 2 = 1+1 is forced by annotating the `have` with an explicit `2`-typed statement, so omega sees a single atom C(n,2) and closes. This recurrence is what turns the nonlinear inequality C(n,2) > 3n−6 into a step that omega can advance one n at a time.",

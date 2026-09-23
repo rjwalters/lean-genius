@@ -22,7 +22,7 @@
   {
     "id": "ann-centralBinom-cast",
     "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-01",
-    "range": { "startLine": 50, "endLine": 62 },
+    "range": { "startLine": 52, "endLine": 62 },
     "type": "tactic",
     "title": "Central Binomial as a Factorial Quotient",
     "content": "centralBinom_cast establishes the real identity C(2n,n) = (2n)!/(n!·n!). This is the bridge that lets Stirling's factorial equivalence be transported to the central binomial coefficient: once C(2n,n) is written as a quotient of factorials, the factorial asymptotic can be applied term by term. The proof comes from Mathlib's Nat.choose_mul_factorial_mul_factorial (C(2n,n)·n!·n! = (2n)!), cast to ℝ and divided.",

@@ -2,7 +2,7 @@
   {
     "id": "ann-dsWeight",
     "proofId": "cauchy-interlacing-theorem-oq003",
-    "range": { "startLine": 69, "endLine": 88 },
+    "range": { "startLine": 70, "endLine": 89 },
     "type": "definition",
     "title": "The Doubly Stochastic Change-of-Basis Matrix",
     "content": "`dsWeight` defines `D i j = ‖⟪v j, e i⟫‖²`, the squared moduli of the inner products between the orthonormal eigenbasis `v = hT.eigenvectorBasis hn` of `T` and the chosen orthonormal basis `e`. `dsWeight_nonneg` is `sq_nonneg`. `dsWeight_row_sum` (∑ j, D i j = 1) and `dsWeight_col_sum` (∑ i, D i j = 1) are Parseval's identity: `OrthonormalBasis.sum_sq_norm_inner_right` for the eigenbasis (rows, ‖e i‖² = 1) and `sum_sq_norm_inner_left` for `e` (columns, ‖v j‖² = 1). Thus `D` is doubly stochastic.",

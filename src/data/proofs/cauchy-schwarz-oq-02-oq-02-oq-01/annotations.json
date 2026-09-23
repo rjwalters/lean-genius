@@ -14,7 +14,7 @@
   {
     "id": "pcq221-ann-02",
     "proofId": "cauchy-schwarz-oq-02-oq-02-oq-01",
-    "range": { "startLine": 46, "endLine": 65 },
+    "range": { "startLine": 52, "endLine": 71 },
     "type": "tactic",
     "title": "Forward Direction: Hilbert Basis ⟹ Parseval",
     "content": "`parseval_of_hilbertBasis` transports the parent's verified Parseval identity from a Hilbert basis `b` to the orthonormal family `v` along the coercion equality `⇑b = v`. The key move is `subst hb`: because `v` is a local variable, substituting `⇑b = v` replaces every occurrence of `v` by `⇑b`, collapsing the goal $\\sum_i \\langle v_i, x\\rangle^2 = \\|x\\|^2$ to exactly `BesselInequality.parseval_real b x`. No Parseval algebra is re-derived — the forward half is pure reuse of already-verified work, which maximizes confidence and keeps the new content concentrated in the reverse direction.",

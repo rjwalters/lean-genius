@@ -122,10 +122,10 @@
     "id": "ann-emp-ent",
     "proofId": "shannon-source-coding-oq-03",
     "range": {
-      "startLine": 105,
-      "endLine": 115
+      "startLine": 112,
+      "endLine": 122
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Empirical Entropy: The Sample Average of Surprisal",
     "content": "empEnt(x) := -(1/n) ∑ᵢ log p(xᵢ) = -(1/n) log P(x). This is the average surprisal, or negative log-probability per symbol. The lemma `empEnt_eq_neg_log_joint` makes the connection to the joint probability explicit: empEnt(x) = -(1/n) log P(x) when all p(xᵢ) > 0, proved via `Real.log_prod`. The AEP says this average concentrates around H(p) as n → ∞.",
     "mathContext": "\\mathrm{empEnt}(\\mathbf{x}) = -\\frac{1}{n} \\sum_{i=1}^n \\log p(x_i) = -\\frac{1}{n} \\log P(\\mathbf{x}).",
@@ -146,8 +146,8 @@
     "id": "ann-expval-def",
     "proofId": "shannon-source-coding-oq-03",
     "range": {
-      "startLine": 121,
-      "endLine": 124
+      "startLine": 124,
+      "endLine": 126
     },
     "type": "definition",
     "title": "Expected Value Over the Joint Distribution",
@@ -241,7 +241,7 @@
     "id": "ann-chebyshev",
     "proofId": "shannon-source-coding-oq-03",
     "range": {
-      "startLine": 204,
+      "startLine": 207,
       "endLine": 223
     },
     "type": "concept",
@@ -265,8 +265,8 @@
     "id": "ann-logvar-marginal-product",
     "proofId": "shannon-source-coding-oq-03",
     "range": {
-      "startLine": 228,
-      "endLine": 270
+      "startLine": 232,
+      "endLine": 274
     },
     "type": "concept",
     "title": "logVar and 2D Independence: expVal_marginal_product",

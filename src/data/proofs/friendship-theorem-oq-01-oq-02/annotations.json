@@ -38,7 +38,7 @@
   {
     "id": "friendship-oq0102-trace",
     "proofId": "friendship-theorem-oq-01-oq-02",
-    "range": { "startLine": 254, "endLine": 288 },
+    "range": { "startLine": 259, "endLine": 288 },
     "type": "insight",
     "title": "The Trace-mod-p Contradiction (d ≥ 3)",
     "content": "false_of_three_le_degree is the heart of the spectral proof. Pick a prime p ∣ d−1. Since A² = J mod p, all higher powers Aᵏ = J for k ≥ 2 (adjMatrix_pow_mod_p_of_regular), so tr(Aᵖ) = |V| = d²−d+1 ≡ 1 (mod p). But the Frobenius identity over ZMod p, ZMod.trace_pow_card, gives tr(Aᵖ) = (tr A)ᵖ, and tr A = 0 because a simple graph has no self-loops, so (tr A)ᵖ = 0. Thus 1 = 0 in ZMod p — impossible for p ≥ 2. This rules out every degree d ≥ 3.",
@@ -50,7 +50,7 @@
   {
     "id": "friendship-oq0102-smalldeg",
     "proofId": "friendship-theorem-oq-01-oq-02",
-    "range": { "startLine": 290, "endLine": 358 },
+    "range": { "startLine": 293, "endLine": 358 },
     "type": "tactic",
     "title": "Small-Degree Casework and Assembly",
     "content": "The trace argument needs d ≥ 3, so d ≤ 2 is handled directly. For d ≤ 1 the graph has at most one vertex (existsPolitician_of_degree_le_one), trivially with a politician. For d = 2 the graph has exactly 3 vertices and must be the complete graph K₃, so every vertex is universal (neighborFinset_eq_of_degree_eq_two, existsPolitician_of_degree_eq_two). friendship_theorem then assembles the proof by contradiction: assume no politician ⇒ d-regular; casework d ≤ 2 (politician exists anyway) versus d ≥ 3 (graph cannot exist).",
@@ -62,7 +62,7 @@
   {
     "id": "friendship-oq0102-bridge",
     "proofId": "friendship-theorem-oq-01-oq-02",
-    "range": { "startLine": 373, "endLine": 411 },
+    "range": { "startLine": 374, "endLine": 411 },
     "type": "concept",
     "title": "Gallery Bridge: ncard ↔ Fintype.card",
     "content": "The gallery's own predicates count common neighbors with Set.ncard and phrase 'politician' as IsUniversalVertex. isFriendship_iff_friendship reconciles the two countings — Nat.card_coe_set_eq and Nat.card_eq_fintype_card identify (commonNeighbors u v).ncard with the Fintype.card used by the ported proof — establishing IsFriendshipGraph G ↔ Theorems100.Friendship G. friendship_theorem_of_isFriendship then delivers the gallery's headline (∃ universal vertex) with 0 axioms, using the classical spectral route rather than the sibling entry's characteristic-polynomial axiom.",

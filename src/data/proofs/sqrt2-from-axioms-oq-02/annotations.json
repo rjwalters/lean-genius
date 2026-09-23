@@ -26,8 +26,8 @@
   {
     "id": "ann-int-corollary",
     "proofId": "sqrt2-from-axioms-oq-02",
-    "range": { "startLine": 122, "endLine": 133 },
-    "type": "lemma",
+    "range": { "startLine": 120, "endLine": 133 },
+    "type": "theorem",
     "title": "Lifting to ℤ: No Nontrivial Integer Solution",
     "content": "`no_int_solution` transports the ℕ result to ℤ by passing to absolute values: `Int.natAbs_mul_self` turns `x*x` into `↑(|x|*|x|)`, so `x² = 2y²` becomes `|x|² = 2|y|²` as a statement in ℕ. The natural-number theorem `no_nat_solution` then gives `|y| = 0`, and `omega` concludes `y = 0`. Working through natAbs is what lets the sign-agnostic ℕ descent settle the ℤ case without redoing the argument.",
     "mathContext": "$x^2 = 2y^2 \\Rightarrow |x|^2 = 2|y|^2$ in $\\mathbb N \\Rightarrow |y| = 0 \\Rightarrow y = 0$.",

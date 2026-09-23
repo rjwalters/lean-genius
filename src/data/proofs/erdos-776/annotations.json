@@ -215,8 +215,8 @@
     "proofId": "erdos-776",
     "type": "concept",
     "range": {
-      "startLine": 93,
-      "endLine": 96
+      "startLine": 297,
+      "endLine": 300
     },
     "title": "r>1: Achievability of n-3",
     "content": "Axiomatizes `erdos_trotter_achievable`: for $r > 1$, there exists $N$ such that $\\text{maxDistinctSizes}(n, r) \\geq n - 3$ for all $n \\geq N$. The construction takes $r$ sets from each of the $n - 3$ non-excluded layers, forming an antichain. This requires $n$ large enough that at least $n - 3$ layers have $\\binom{n}{k} \\geq r$ and the antichain property is maintainable.",

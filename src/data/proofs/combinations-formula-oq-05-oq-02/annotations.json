@@ -50,7 +50,7 @@
   {
     "id": "ann-cf0502-extraction",
     "proofId": "combinations-formula-oq-05-oq-02",
-    "range": { "startLine": 98, "endLine": 151 },
+    "range": { "startLine": 101, "endLine": 151 },
     "type": "theorem",
     "title": "The three-way extraction identity (main result)",
     "content": "three_way_split, the heart of the answer to OQ-05-OQ-02: for r < 3, 3·S_r(n) = ∑_{j<3} ω^{2jr}(1+ω^j)^n. The calc proof (1) expands each (1+ω^j)^n binomially via add_pow, (2) swaps the j- and k-sums with Finset.sum_comm to isolate, for each fixed k, the inner sum ∑_j ω^{j(k+2r)}, (3) collapses that inner sum through filter3 — it is 3·C(n,k) exactly when 3 ∣ (k+2r), i.e. when k % 3 = r, a translation discharged uniformly by `omega`, and (4) reassembles the surviving terms into 3·S_r(n) via Finset.sum_filter. All exponents stay natural-number valued (ω^{-jr} is encoded as ω^{2jr} since ω^{3j} = 1, i.e. ω^{-1} = ω²), so the whole extraction is Finset bookkeeping with no complex-analytic machinery beyond ω³ = 1.",

@@ -14,7 +14,7 @@
   {
     "id": "ann-helpers",
     "proofId": "hilbert-9-reciprocity-oq-04",
-    "range": { "startLine": 45, "endLine": 63 },
+    "range": { "startLine": 46, "endLine": 63 },
     "type": "tactic",
     "title": "Characteristic Transfer and {±1}-Cast Injectivity",
     "content": "Two helper lemmas make the descent rigorous. cast_pm_inj: integers drawn from {1,−1} that agree after casting into a field of characteristic ≠ 2 are equal — this is exactly the injectivity needed to pass from an equality of character VALUES in K back to an equality of integers (using Ring.neg_one_ne_one_of_char_ne_two). ringChar_extension_ne_two: the algebra map F → K is injective (FaithfulSMul.algebraMap_injective), so charP_of_injective_algebraMap transfers F's characteristic to K; hence odd characteristic of F passes to K, letting Euler's criterion be applied in K.",

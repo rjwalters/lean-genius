@@ -26,7 +26,7 @@
   {
     "id": "ann-injectivity",
     "proofId": "frobenius-number",
-    "range": { "startLine": 94, "endLine": 132 },
+    "range": { "startLine": 95, "endLine": 133 },
     "type": "insight",
     "title": "Injectivity → Surjectivity: The Bijection Engine",
     "content": "The private lemma `mul_mod_injective` proves that k ↦ k*b mod a is injective on Fin a when gcd(a,b) = 1. Proof: if k₁*b ≡ k₂*b (mod a), then a | b*(k₁-k₂), and since gcd(a,b) = 1, `Nat.Coprime.dvd_of_dvd_mul_right` gives a | (k₁-k₂). Since |k₁-k₂| < a, this forces k₁ = k₂. Then `Finite.injective_iff_surjective` converts injectivity to surjectivity on the finite set Fin a, giving `exists_mul_mod`: every residue r < a is achieved as k*b mod a.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-large-rep",
     "proofId": "frobenius-number",
-    "range": { "startLine": 134, "endLine": 180 },
+    "range": { "startLine": 42, "endLine": 88 },
     "type": "insight",
     "title": "Large Representable: The Residue Class Argument",
     "content": "For n ≥ (a-1)(b-1), find k < a with k*b ≡ n (mod a) (from surjectivity). Then a | (n - k*b). The crucial step: why is n ≥ k*b? By contradiction — if k*b > n, then a | (k*b - n), so a ≤ k*b - n. But k ≤ a-1 gives k*b ≤ (a-1)b = (a-1)(b-1) + (a-1) ≤ n + (a-1) < n + a, so k*b < n + a and k*b - n < a. Contradiction with a ≤ k*b - n. Thus n = aq + k*b for some q ≥ 0.",

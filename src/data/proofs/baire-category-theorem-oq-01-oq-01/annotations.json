@@ -2,7 +2,7 @@
   {
     "id": "ann-baire-oq0101-docstring",
     "proofId": "baire-category-theorem-oq-01-oq-01",
-    "range": { "startLine": 3, "endLine": 40 },
+    "range": { "startLine": 4, "endLine": 40 },
     "type": "concept",
     "title": "Banach–Steinhaus from Baire — Goal and Plan",
     "content": "The docstring fixes the objective: derive the Uniform Boundedness Principle (Banach–Steinhaus) directly from the gallery Baire category theorem (BaireCategoryTheoremOQ01.baire_nonempty_interior), NOT by invoking Mathlib's packaged banach_steinhaus. It previews the classical textbook argument — closed sublevel sets, their union exhausting the space, Baire producing a ball of local uniform boundedness, and a shell estimate promoting that to a uniform operator-norm bound — and notes this is genuinely distinct from Mathlib's current proof, which goes through the barrelled-space / equicontinuity framework. Three results: the principle, an equicontinuity-form restatement, and the contrapositive resonance principle.",

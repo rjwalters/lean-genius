@@ -63,6 +63,26 @@ pnpm annotations:migrate src/data/proofs/{proof}/annotations.json proofs/Proofs/
 
 This creates `annotations.source.json` with anchors. Review and commit it.
 
+### Re-align drifted line-based annotations
+
+```bash
+pnpm annotations:realign          # dry run: what would move, what cannot be placed
+pnpm annotations:realign-apply    # write the moves in place (formatting preserved)
+```
+
+When a Lean file changes, the legacy line-based `annotations.json` ranges go
+stale and `pnpm annotations:build` reports them ("No Lean construct found at
+line N", type mismatches, out-of-bounds ranges). `realign-lines.ts` moves each
+misaligned range back onto the construct it describes, using the same parser
+and alignment rules as the validator: first by declaration name found in the
+annotation's title or backticked content, then by a construct still inside the
+annotation's own span, then by the nearest compatible construct within 15
+lines. Multi-line annotations keep their extent; a kind-specific type that
+contradicts the Lean source is corrected. Whatever it cannot place is listed
+for a human. Anchor-based proofs are skipped (their `annotations.json` is
+generated). Run it twice if the second dry run still reports moves: freeing a
+construct can make a neighbor placeable.
+
 ### Resolve anchors to line numbers
 
 ```bash

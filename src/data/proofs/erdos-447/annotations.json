@@ -99,8 +99,8 @@
     "proofId": "erdos-447",
     "type": "concept",
     "range": {
-      "startLine": 67,
-      "endLine": 67
+      "startLine": 68,
+      "endLine": 70
     },
     "title": "Middle Layer is Union-Free",
     "content": "**middleLayer_union_free**: The middle layer (all sets of size $\\lfloor n/2 \\rfloor$) is union-free. If $A, B, C$ all have cardinality $k = \\lfloor n/2 \\rfloor$ and $A \\cup B = C$ with $A \\neq B$, then since $A \\subseteq C$ and $B \\subseteq C$ we get $|C| \\geq |A \\cup B| > |A| = k$. But $|C| = k$, contradiction.\n\nMore precisely: $|A \\cup B| = |A| + |B| - |A \\cap B| = 2k - |A \\cap B|$. Since $|C| = k$, we need $|A \\cap B| = k$, so $A = B$.",
