@@ -1,0 +1,28 @@
+{
+ "queue": "queue-pass2.ids",
+ "queue_sha256": "b95937b39768015f1f1049fc603b98e2dece686a1e6ff2bf82842b82cf07c642",
+ "config": "research/problems/erdos-85-wip-01/phase_b_h1_verdict_cloud_20260921/config.longcap.json",
+ "config_commit": "6f911646170b40524af9171838bce0c3457279ed",
+ "direct": true,
+ "source": {
+  "cloud_rows": 1127,
+  "pilot_rows": 24,
+  "unsat_crosschecked": 896,
+  "unknown": 254,
+  "error_reruns": [
+   "h1_a9994949dd2ee8f3"
+  ],
+  "pass1_rows_still_in_flight_at_build": [
+   "h1_04df606bb844af19",
+   "h1_0a841e4f8d157f7d",
+   "h1_28644fb7d6ccb3ef",
+   "h1_4a6399ee8fd4d7be",
+   "h1_62a1b080a06945ab",
+   "h1_81663d6489b63999",
+   "h1_9e8fb1c38694357d",
+   "h1_a0887468bb2f6c23",
+   "h1_d86cf74c681288a3",
+   "h1_dcf7290be31590ee"
+  ]
+ }
+}
