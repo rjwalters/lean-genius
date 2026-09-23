@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigationType } from 'react-router-dom'
 import { getListings, getSearchIndex } from '@/data/proofs'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
@@ -8,7 +8,7 @@ import { LoadingScreen } from '@/components/LoadingScreen'
 import { BadgeFilter } from '@/components/ui/proof-badge'
 import { BADGE_INFO, ERDOS_BADGE_INFO } from '@/types/proof'
 import { Plus, Filter, ArrowUpDown, Search, Github, Share2, ExternalLink, Calendar, Trophy } from 'lucide-react'
-import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData, useIncrementalList } from '@/hooks'
+import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData, useIncrementalList, useScrollRestoration } from '@/hooks'
 import { ErdosGalleryCard } from '@/components/proof'
 import { LoadMore } from '@/components/ui/load-more'
 import { buildHaystacks, buildSortKeys, compareTitles, normalizeSearchText, sortKeysFor } from '@/lib/gallery-search'
@@ -137,7 +137,17 @@ export function ErdosPage() {
   }, [erdosListings, haystacks, sortKeys, searchQuery, selectedBadges, sortBy, showAiSolvedOnly])
 
   // Mount the grid in batches rather than all ~1,600 cards at once.
-  const { visible: visibleProofs, hasMore, remaining, sentinelRef, showAll } = useIncrementalList(erdosProofs)
+  // Back-navigation lands on this page before the listings have loaded, so
+  // restore the revealed depth and scroll offset ourselves once they have
+  // (#43696). Keyed by pathname + search so each filter view restores its own.
+  const location = useLocation()
+  const restore = useNavigationType() === 'POP'
+  const routeKey = `${location.pathname}${location.search}`
+  const { visible: visibleProofs, hasMore, remaining, sentinelRef, showAll } = useIncrementalList(erdosProofs, {
+    persistKey: routeKey,
+    restore,
+  })
+  useScrollRestoration(routeKey, listings !== null, restore)
 
   // Compute statistics
   const stats = useMemo(() => ({
