@@ -18,6 +18,12 @@ Lean Genius maintains a gallery of formalized mathematical proofs in Lean 4, alo
 - [Lean 4](https://leanprover.github.io/lean4/doc/setup.html) and Lake
 - [Node.js](https://nodejs.org/) (v20+) and pnpm
 - Git and GitHub CLI (`gh`)
+- [Docker](https://docs.docker.com/get-docker/) — required to build Lean proofs
+  (the Docker wrapper is the only sanctioned build path)
+- **A primed Lean/Mathlib build cache** — a one-time, per-host step. See
+  [One-time host cache prime](#one-time-host-cache-prime-required-before-any-lean-build)
+  below. **Required before running any autonomous/Loom agent session on a new
+  machine.**
 
 ### Setup
 
@@ -40,7 +46,14 @@ Lean Genius maintains a gallery of formalized mathematical proofs in Lean 4, alo
    ```
    This creates `research/db/knowledge.db` from the SQL dump files.
 
-5. **Build proofs** (optional, only if modifying Lean files):
+5. **Prime the Lean build cache** (once per host, only if you will build Lean
+   files — see [the next section](#one-time-host-cache-prime-required-before-any-lean-build)
+   for what it downloads and how long it takes):
+   ```bash
+   ./proofs/scripts/prime-cache.sh
+   ```
+
+6. **Build proofs** (optional, only if modifying Lean files):
    ```bash
    ./proofs/scripts/docker-build.sh Proofs.YourProof
    ```
@@ -48,6 +61,57 @@ Lean Genius maintains a gallery of formalized mathematical proofs in Lean 4, alo
    > **Never run `lake build` directly.** It can consume 100GB+ of memory in
    > seconds and crash the host. Always use the Docker wrapper. See the DANGER
    > section in the repository root `CLAUDE.md`.
+
+### One-time host cache prime (required before any Lean build)
+
+A freshly cloned host has neither the Lean toolchain image nor the Mathlib cache
+that `./proofs/scripts/docker-build.sh` needs. Both live outside the repo — a
+Docker image plus two named Docker volumes shared by every worktree on the host —
+so cloning the repo again does not create them, and priming them once serves all
+worktrees:
+
+| Artifact | What it is | Approx. size on this host |
+|----------|------------|---------------------------|
+| `lean4-arm64:v4.31.0` image | elan + the pinned Lean 4.31.0 toolchain | ~4.5 GB |
+| `lean-mathlib-packages` volume | pinned Mathlib source checkout + oleans (`proofs/.lake/packages`) | ~8 GB |
+| `lean-mathlib-cache` volume | this project's build output (`proofs/.lake/build`) | ~2.5 GB, grows with use |
+
+Prime them with a single command, **in the foreground**:
+
+```bash
+./proofs/scripts/prime-cache.sh
+```
+
+- **Duration:** tens of minutes on a fast connection the first time — the image
+  build pulls the Lean toolchain, and `lake exe cache get` fetches ~8,500 Mathlib
+  olean files. Budget an hour on a cold host. On an already-primed host the same
+  command re-verifies the cache and exits in well under a minute (measured: 25s
+  for 8,560 files), which is why it is safe to re-run.
+- **Idempotent and resumable:** re-running skips the image build if the image
+  exists and skips already-downloaded cache files, so an interrupted run (Ctrl-C,
+  reboot, flaky network) resumes rather than restarting.
+- **Check without priming:**
+  ```bash
+  ./proofs/scripts/check-cache-primed.sh     # exit 0 = primed, 1 = cold
+  ./proofs/scripts/prime-cache.sh --check    # same check, via the prime script
+  ./proofs/scripts/prime-cache.sh --dry-run  # print the plan, change nothing
+  ```
+
+#### Why this is a prerequisite for autonomous/Loom operation
+
+`docker-build.sh` runs a fast preflight (metadata lookups only — no container
+start, so it costs nothing on a warm host) and **fails fast with the prime
+instruction** when the image or volumes are missing, instead of starting the
+multi-GB download inline. That is deliberate: an autonomous/headless agent
+session that kicks off this download, treats it as a background task and ends
+its turn **loses the download when its process exits** — the session reports "no
+work done" and the issue it claimed is left untouched (issue #43620; three
+builder sessions stalled exactly this way on a fresh host).
+
+So: prime the cache as an attended operator step **before** starting Loom or
+Lean-Genius agents on a new machine. If you deliberately want the old inline
+behaviour for an attended interactive first build, set
+`LEAN_ALLOW_COLD_CACHE=1`.
 
 ## Research Contribution Workflow
 
@@ -207,6 +271,9 @@ Before starting significant work on a problem:
 ```bash
 # Initial setup
 pnpm install && pnpm db:rebuild
+
+# Initial setup, once per host, only if building Lean proofs (~15GB, tens of minutes)
+./proofs/scripts/prime-cache.sh
 
 # Start work
 git checkout -b research/topic
