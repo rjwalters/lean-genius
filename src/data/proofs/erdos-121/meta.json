@@ -6,7 +6,7 @@
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/121",
-    "status": "pending",
+    "status": "open",
     "proofRepoPath": "Proofs/Erdos121Problem.lean",
     "tags": [
       "erdos",
@@ -22,7 +22,7 @@
     "erdosProblemStatus": "disproved",
     "axiomCount": 0,
     "lineCount": 77,
-    "assumptions": "0 axioms, 0 sorries. The known asymptotics for k = 2, 3, 4 and Tao's 2024 disproof are described in doc comments as background — they are not formalized as axioms, theorems, or any named declaration (the file has 0 axioms and 0 theorems).",
+    "assumptions": "0 axioms, 0 sorries. The known asymptotics for k = 2, 3, 4 and Tao's 2024 disproof are described in doc comments as background — they are not formalized as axioms, theorems, or any named declaration (the file has 0 axioms and 0 theorems). Green Docker build of Proofs.Erdos121Problem confirmed 2026-09-22 (Lean v4.31.0); the entry is a statement-only formalization of an open problem (4 definitions, 0 theorems), hence status 'open'.",
     "mathlib_version": "4.31.0",
     "theoremCount": 0,
     "definitionCount": 4
