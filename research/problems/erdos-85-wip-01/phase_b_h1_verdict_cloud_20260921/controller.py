@@ -102,9 +102,9 @@ def setup(args) -> None:
                                                      "Action": "sts:AssumeRole"}]}
     policy = {"Version": "2012-10-17", "Statement": [
         {"Sid": "PrefixObjects", "Effect": "Allow", "Action": ["s3:GetObject", "s3:PutObject"],
-         "Resource": f"arn:aws:s3:::{BUCKET}/{PREFIX}/*"},
+         "Resource": f"arn:aws:s3:::{BUCKET}/{BASE_PREFIX}/*"},  # base prefix: shared freight + every pass
         {"Sid": "PrefixList", "Effect": "Allow", "Action": "s3:ListBucket", "Resource": f"arn:aws:s3:::{BUCKET}",
-         "Condition": {"StringLike": {"s3:prefix": [f"{PREFIX}/*"]}}}]}
+         "Condition": {"StringLike": {"s3:prefix": [f"{BASE_PREFIX}/*"]}}}]}
     aws("iam", "create-role", "--role-name", ROLE, "--assume-role-policy-document", json.dumps(trust),
         "--tags", f"Key=project,Value={TAG}", check=False)
     aws("iam", "put-role-policy", "--role-name", ROLE, "--policy-name", "VerdictPrefixOnly",
