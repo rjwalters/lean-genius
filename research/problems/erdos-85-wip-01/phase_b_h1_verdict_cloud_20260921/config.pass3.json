@@ -17,8 +17,8 @@
   "policies": {
     "H1": {
       "crosscheck": true,
-      "primary_cap_seconds": 129600,
-      "crosscheck_cap_seconds": 129600
+      "primary_cap_seconds": 86400,
+      "crosscheck_cap_seconds": 86400
     },
     "H3": {
       "crosscheck": true,
@@ -41,5 +41,5 @@
     "path": "../phase_b_historical_overlay_96/historical-96.json",
     "sha256": "f60a65905e9e1f23896151aad2b51cc87ff3f685ae9a5ce59aeac3c2b530495d"
   },
-  "_note": "Pass 3 (board goal #46): 129,600 s (36 h) caps for the pass-2 cap-hit rows only; one on-demand node; run through dispatch_verdict_only.py with explicit --case-id. SINGLE-SEAT."
+  "_note": "Pass 3 (board goal #46): 86,400 s (24 h) caps \u2014 the maximum the reviewed dispatcher and summarizer accept \u2014 for the pass-2 cap-hit rows only; one on-demand node; run through dispatch_verdict_only.py with explicit --case-id. SINGLE-SEAT."
 }

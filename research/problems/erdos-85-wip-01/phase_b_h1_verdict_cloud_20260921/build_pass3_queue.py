@@ -23,7 +23,7 @@ raw = ''.join(c + '\n' for c in queue).encode()
 commit = next((a for a in sys.argv[1:] if not a.startswith('--')), 'FILL-AFTER-COMMIT')
 spec = {"queue": "queue-pass3.ids", "queue_sha256": hashlib.sha256(raw).hexdigest(),
         "config": "research/problems/erdos-85-wip-01/phase_b_h1_verdict_cloud_20260921/config.pass3.json",
-        "config_commit": commit, "direct": True, "lifetime": 288000,
+        "config_commit": commit, "direct": True, "lifetime": 216000,
         "source": {"pass2_rows": len(status), "unsat_crosschecked": sum(s == 'UNSAT_CROSSCHECKED' for s in status.values()),
                    "unknown": sum(s == 'UNKNOWN' for s in status.values()),
                    "error_reruns": sorted(c for c, s in status.items() if s == 'ERROR')}}
