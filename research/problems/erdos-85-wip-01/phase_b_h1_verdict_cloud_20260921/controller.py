@@ -40,7 +40,8 @@ PASS = {"name": "", "queue": "queue-1137.ids", "queue_sha256": "d9e4548ff356dfbd
 AMI_PARAM = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-arm64"
 TYPES = ["c8g.16xlarge", "c7g.16xlarge", "m8g.16xlarge", "m7g.16xlarge", "r8g.16xlarge", "r7g.16xlarge"]
 MAX_SPOT_PRICE = "1.30"
-ON_DEMAND_USD_PER_HOUR = {"c7g.16xlarge": 2.32, "c7g.12xlarge": 1.74, "c8g.16xlarge": 2.5523, "m7g.16xlarge": 2.6112}
+ON_DEMAND_USD_PER_HOUR = {"c7g.16xlarge": 2.32, "c7g.12xlarge": 1.74, "c7g.8xlarge": 1.16, "c7g.4xlarge": 0.58,
+                          "c8g.16xlarge": 2.5523, "m7g.16xlarge": 2.6112}
 HARD_STOP_USD = 170.0
 EBS_GIB = 60
 EBS_USD_PER_GIB_HOUR = 0.08 / 730
@@ -173,6 +174,17 @@ def launch(args) -> None:
                "TargetCapacitySpecification": {"TotalTargetCapacity": args.count, "DefaultTargetCapacityType": "spot"},
                "TagSpecifications": [{"ResourceType": "fleet", "Tags": [{"Key": "project", "Value": TAG}]}]}
     print(json.dumps(aws_json("ec2", "create-fleet", "--cli-input-json", json.dumps(request))))
+
+
+def launch_ondemand(args) -> None:
+    """One on-demand instance from the pass launch template (latest version), no spot (goal #46)."""
+    subnet = aws("ec2", "describe-subnets", "--filters", "Name=default-for-az,Values=true",
+                 f"Name=availability-zone,Values={args.az}", "--query", "Subnets[0].SubnetId", "--output", "text").strip()
+    out = aws_json("ec2", "run-instances", "--launch-template", f"LaunchTemplateName={LT_NAME},Version=$Latest",
+                   "--instance-type", args.type, "--subnet-id", subnet)
+    item = out["Instances"][0]
+    print(json.dumps({"instance": item["InstanceId"], "type": item["InstanceType"], "lifecycle": item.get("InstanceLifecycle", "on-demand"),
+                      "az": item["Placement"]["AvailabilityZone"]}))
 
 
 def instances() -> list[dict]:
@@ -324,6 +336,7 @@ def main() -> int:
     p = sub.add_parser("freight"); p.set_defaults(run=freight)
     p = sub.add_parser("launch"); p.add_argument("count", type=int, choices=range(1, 5))
     p.add_argument("--types", nargs="*"); p.set_defaults(run=launch)
+    p = sub.add_parser("launch-ondemand"); p.add_argument("type"); p.add_argument("--az", default="us-east-1f"); p.set_defaults(run=launch_ondemand)
     p = sub.add_parser("watch"); p.add_argument("--dry", action="store_true"); p.add_argument("--once", action="store_true")
     p.set_defaults(run=watch)
     p = sub.add_parser("status"); p.set_defaults(run=lambda a: watch(argparse.Namespace(dry=True, once=True)))
