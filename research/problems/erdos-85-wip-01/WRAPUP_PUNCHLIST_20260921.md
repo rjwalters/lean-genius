@@ -17,14 +17,16 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
   single-seat waiver and $200 of AWS. The cloud run uses the reviewed residual
   wrapper with `--case-id` and one worker, which has no gate; `dispatch_scaled.py`
   is not used.
-- [~] A4. Full run of the other 1,137 residual roots on AWS spot, launched
-  2026-09-21 19:30Z: four c7g.16xlarge (256 slots), reviewed wrapper unchanged,
-  Kissat then CaDiCaL, 4 h cap each. Tooling and README in
-  `phase_b_h1_verdict_cloud_20260921/`. Receipts sync to Stripe
-  `artifacts/erdos85-sat49/h1-verdict-cloud-20260921/`. Controller in tmux
-  `e85-controller`, hard stop at an estimated $170. Expected 14–20 h, about $50.
-  Afterwards: release and rerun orphaned or ERROR cases, then extract every
-  run directory for A7.
+- [~] A4. Full run of the other 1,137 residual roots on AWS. Pass 1 (4 h caps,
+  spot, 2026-09-21/23): 1,133 verdicts, 876 UNSAT_CROSSCHECKED, 256 cap hits, 1
+  infrastructure error, 4 rows killed in flight, 0 SAT. Pass 2 (12 h caps, spot then
+  on-demand, 2026-09-23/25, board #45): 261 rows, 239 UNSAT_CROSSCHECKED so far, 17
+  cap hits, 5 in flight. Pass 3 (24 h caps, the reviewed maximum, one on-demand
+  c7g.8xlarge, board #46, +$100 authorized 2026-09-24): the pass-2 cap hits; launches
+  automatically (tmux `e85-pass3-auto`). Spot reclaims (6 in total) each restarted
+  their rows; Robb: no spot for 24 h rows. Tooling and README in
+  `phase_b_h1_verdict_cloud_20260921/`; receipts on Stripe
+  `artifacts/erdos85-sat49/h1-verdict-cloud-20260921/{,pass2,pass3}`.
 - [ ] A5. The 130 gap slots outside the residual queue: 96-historical route
   (54b7f7035b) and 34-outside-frozen route (4366cedadb).
 - [x] A6. DECIDED 2026-09-22 (Robb, board #45): second pass at 43,200 s caps for every cap-hit row; rows still open after that are printed as open. Cap-hit policy (original text). Recommendation: no retries, no longer caps. Rows that
