@@ -1,0 +1,15 @@
+{
+ "queue": "queue-pass3b.ids",
+ "queue_sha256": "34ff4719f41a9578f73a74a7909daef7b91eddec4330fc6967033e164cc757a6",
+ "config": "research/problems/erdos-85-wip-01/phase_b_h1_verdict_cloud_20260921/config.pass3.json",
+ "config_commit": "e984046b63895ca3fbad4b8274ecd30d9cf82237",
+ "direct": true,
+ "lifetime": 216000,
+ "source": {
+  "note": "pass 3b: the two pass-2 rows that finished after the pass-3 queue was built and hit the 12 h cap (board #46)",
+  "rows": [
+   "h1_0c79d82f56a92899",
+   "h1_766e53c39597bd73"
+  ]
+ }
+}
