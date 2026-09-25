@@ -12,8 +12,10 @@ for path in sorted(LEDGER.glob('*.json')):
 status = {case: sorted(v)[-1][1] for case, v in latest.items()}
 queue2 = (HERE / 'queue-pass2.ids').read_text().split()
 missing = [c for c in queue2 if c not in status]
-if missing:
+if missing and '--allow-incomplete' not in sys.argv:
     sys.exit(f"pass 2 incomplete: {len(missing)} rows without a ledger")
+# --allow-incomplete (operator, 2026-09-25 01:15Z): launch on the final cap hits while the last
+# pass-2 rows finish; any late cap hit is run afterwards as a follow-up.
 bad = sorted(c for c, s in status.items() if s not in ('UNSAT_CROSSCHECKED', 'UNKNOWN', 'ERROR'))
 if bad:
     sys.exit(f"pass 2 has SAT/DISAGREEMENT rows, resolve first: {bad}")
@@ -26,6 +28,7 @@ spec = {"queue": "queue-pass3.ids", "queue_sha256": hashlib.sha256(raw).hexdiges
         "config_commit": commit, "direct": True, "lifetime": 216000,
         "source": {"pass2_rows": len(status), "unsat_crosschecked": sum(s == 'UNSAT_CROSSCHECKED' for s in status.values()),
                    "unknown": sum(s == 'UNKNOWN' for s in status.values()),
-                   "error_reruns": sorted(c for c, s in status.items() if s == 'ERROR')}}
+                   "error_reruns": sorted(c for c, s in status.items() if s == 'ERROR'),
+                   "pass2_rows_still_in_flight_at_build": missing}}
 (HERE / 'pass-pass3.json').write_text(json.dumps(spec, indent=1) + '\n')
 print(json.dumps(spec))

@@ -1,0 +1,18 @@
+{
+ "queue": "queue-pass3.ids",
+ "queue_sha256": "e844416f22736163d15d819bc938da6982ee11a87602e85cecdd749e5f91529a",
+ "config": "research/problems/erdos-85-wip-01/phase_b_h1_verdict_cloud_20260921/config.pass3.json",
+ "config_commit": "e984046b63895ca3fbad4b8274ecd30d9cf82237",
+ "direct": true,
+ "lifetime": 216000,
+ "source": {
+  "pass2_rows": 259,
+  "unsat_crosschecked": 242,
+  "unknown": 17,
+  "error_reruns": [],
+  "pass2_rows_still_in_flight_at_build": [
+   "h1_0c79d82f56a92899",
+   "h1_766e53c39597bd73"
+  ]
+ }
+}
