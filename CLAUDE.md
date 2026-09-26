@@ -75,7 +75,7 @@ LEAN_BUILD_TIMEOUT=30m ./proofs/scripts/docker-build.sh
 ./proofs/scripts/build-safe-subset.sh
 ```
 
-A `lake` wrapper in `proofs/bin/` blocks direct `lake build` calls when activated via `direnv allow` or `source ./proofs/scripts/activate-safety.sh`. Bypass with `LAKE_UNSAFE=1` (dangerous).
+A `lake` wrapper in `proofs/bin/` blocks direct `lake build` calls when activated via `source ./proofs/scripts/activate-safety.sh` (there is no `.envrc`, so direnv does not apply). Bypass with `LAKE_UNSAFE=1` (dangerous).
 
 ---
 
@@ -119,7 +119,7 @@ Mathematical work: formalizing proofs, enhancing entries, automated proof search
 
 **Team orchestration**: `/lean` manages Enricher, Aristotle, Researcher, Auditor, Mechanic, Seeker, Deployer, Tester, Herald. Run `/lean` for commands and pool configuration.
 
-**Legacy**: Erdos Enhancer (`make enhance`) — stub creation is complete (0 stubs remaining).
+**Legacy**: Erdos Enhancer (`make enhance`) — stub creation is complete (no problems are waiting for a stub; the 105 files under `proofs/Proofs/Stubs/` are the finished legacy stubs).
 
 ### When to Use Which
 
