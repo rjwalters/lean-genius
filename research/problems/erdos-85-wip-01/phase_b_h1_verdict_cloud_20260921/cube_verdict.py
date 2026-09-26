@@ -113,6 +113,7 @@ def main() -> int:
     parser.add_argument("--base-sha256", required=True, help="pinned identity of the base CNF (reviewed materializer receipt)")
     parser.add_argument("--case-id", required=True)
     parser.add_argument("-k", type=int, default=5, help="split variables; 2^k cubes")
+    parser.add_argument("--split-vars", type=Path, help="JSON from cube_split.py; overrides the occurrence heuristic")
     parser.add_argument("--cap", type=int, default=86400, help="seconds per solver per cube")
     parser.add_argument("--workers", type=int, default=16)
     parser.add_argument("--output-dir", type=Path, required=True)
@@ -126,7 +127,15 @@ def main() -> int:
         raise SystemExit("base CNF identity mismatch")
     base = read_cnf(base_path)
     raw, header_index, variables, clauses = base
-    split = occurrence_top(raw, header_index, variables, args.k)
+    if args.split_vars:
+        chosen = json.loads(args.split_vars.read_text())
+        split = list(chosen["split_variables"])
+        if len(split) != args.k or len(set(split)) != args.k or not all(1 <= v <= variables for v in split):
+            raise SystemExit("split-vars file does not provide k distinct variables of this CNF")
+        split_method = chosen.get("method", "explicit")
+    else:
+        split = occurrence_top(raw, header_index, variables, args.k)
+        split_method = "highest occurrence count"
     run = args.output_dir.resolve()
     run.mkdir(parents=True)
     (run / "base.cnf").write_bytes(raw)
@@ -134,6 +143,7 @@ def main() -> int:
     assignments = [dict(zip(split, bits)) for bits in itertools.product((0, 1), repeat=args.k)]
     state = {"schema": "erdos85-cube-verdict-v1", "case_id": args.case_id, "base_sha256": args.base_sha256,
              "base_variables": variables, "base_clauses": clauses, "k": args.k, "split_variables": split,
+             "split_method": split_method,
              "cubes": len(assignments), "cap_seconds": args.cap, "workers": args.workers, "proof_logging": False,
              "solvers": identities, "tool_sha256": runner.sha256(Path(__file__)), "runner_sha256": runner.sha256(Path(runner.__file__)),
              "status": "running", "pid": os.getpid(), "results": []}
