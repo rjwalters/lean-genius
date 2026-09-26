@@ -169,6 +169,45 @@ proxy, not a credible fixed price. A public requester-pays copy of the
 existing certificate bank could let others fund independent verification,
 subject to the operator's publication gate and an exact release manifest.
 
+#### A cheaper route: cube-partitioned certificates (projection)
+
+The price above assumes one certificate per instance, checked whole. The
+archived bank shows why that is expensive: across 12,102 verified H1 rows the
+compact LRAT proof grows at a nearly constant 5 to 6 GB per Kissat solve-hour
+(median 1.2 GB, 90th percentile 4.0 GB, largest 26.5 GB, 22.6 TB in total), and
+the replay pilot checked about half a megabyte of gzipped certificate per
+second, so a kernel check costs roughly as long as the solve that produced it.
+The largest files force one checker per 64 GB host, which is what turns 4,800
+compile hours into a month of fleet time. The 1,161 residual roots settled by
+the verdict-only census are heavier still: 1,159 UNSAT verdicts needed 2,695
+Kissat core-hours (median 1.9 hours per row; 120 rows above 4 hours, six above
+12 hours), so whole-instance certificates for them would total about 15 TB, and
+the hardest rows would produce single files of 60 to 130 GB that no checker can
+hold.
+
+Cube-and-conquer changes the shape of that cost. Fixing the values of a few
+variables splits an instance into cubes that partition its search space; the
+instance is UNSAT exactly when every cube is. Each cube yields its own small
+certificate, so checkers need a few gigabytes rather than 64, eight or more
+checks share one host, a lost spot instance costs one cube rather than a
+26 GB job, and a short Lean lemma (a complete tree of UNSAT cubes refutes the
+base formula) composes the leaves. The trivial fraction is large: on the
+hardest residual row, split five levels deep by unit-propagation lookahead, 26
+of 32 cubes were refuted within 15 minutes each, against a whole-instance run
+that failed at a 24-hour cap. Proof size still tracks solver work, so the
+total byte count is the open question; splitting can lower it where a
+single CDCL run thrashes and raise it where work is duplicated across cubes.
+
+Under the measured rates, a cube-certified census of the 1,161 residual roots
+would need about 6,700 core-hours of proof-logged solving and trimming
+(roughly $70 to $100 on spot), about 360 host-hours of kernel checking packed
+eight to a host (roughly $70), and 4 TB of gzipped certificates (about $16 per
+month in cold storage), against $2,000 to $2,500 for the whole-instance plan.
+These are projections from the archived bank and one live cube tree, not
+receipts; the Lean-side composition lemma and per-cube proof emission are not
+yet built. We record the route because it makes the price of certainty an
+order of magnitude more approachable for whoever takes Result A to a theorem.
+
 ### Theorem B — a one-proposition reduction of the infinite problem
 
 Define `BinarySquareRegularExclusion` to assert that, for every `k ≥ 3`, no

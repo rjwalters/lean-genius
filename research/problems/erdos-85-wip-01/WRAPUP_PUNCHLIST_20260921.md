@@ -42,7 +42,7 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
 
 - [ ] B1. Fill the H1 row of the evidence table, the abstract sentence and §8
   from A7. Remove every "in progress" phrase (DRAFT.md lines 20, 131, 560, 702).
-- [ ] B1a. Cost-to-verify refinement (Robb, 2026-09-26): measure how much of each
+- [~] B1a. DRAFTED 2026-09-26 as manuscript subsection "A cheaper route: cube-partitioned certificates (projection)"; update its cube-tree numbers when pass 4 finishes. Cost-to-verify refinement (Robb, 2026-09-26): measure how much of each
   row is trivial. The pass-4 cube split of the hardest row showed 27 of 32 cubes
   refuted by unit propagation in seconds; certificate cost concentrates in a few hard
   cubes, so a cube-partitioned certificate would be far smaller than the priced
