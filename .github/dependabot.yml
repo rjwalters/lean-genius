@@ -34,6 +34,12 @@ updates:
       aristotle-minor-patch:
         patterns: ["*"]
         update-types: ["minor", "patch"]
+    ignore:
+      # TypeScript 7 (the native rewrite) fails `tsc` on src/client.ts with new
+      # implicit-any errors (#43727 merged manifest-only and was pinned back to 5.9
+      # in the follow-up fix). Re-evaluate when the server is ported.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "gitsubmodule"
     directory: "/"
