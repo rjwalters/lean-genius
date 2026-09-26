@@ -57,6 +57,15 @@ def main() -> int:
         require(saved == node, f"node {nid} receipt differs from run state")
         assignment = {abs(l): int(l > 0) for l in node["literals"]}
         require(len(assignment) == len(node["literals"]), f"node {nid} assigns a variable twice")
+        if kind == "split" and node.get("status") == "SPLIT_INITIAL":
+            # Pre-split without solving: only the tree structure matters for soundness.
+            a, b = node["children"]
+            v = node["split_variable"]
+            require(v not in assignment and 1 <= v <= variables, f"initial split node {nid} variable")
+            require(sorted([nodes[a]["literals"][-1], nodes[b]["literals"][-1]]) == sorted([v, -v]), f"initial split node {nid} children literals")
+            require(nodes[a]["literals"][:-1] == node["literals"] and nodes[b]["literals"][:-1] == node["literals"], f"initial split node {nid} children prefix")
+            splits += 1
+            continue
         expected = cube.cube_bytes(raw, header_index, variables, clauses, assignment)
         require(hashlib.sha256(expected).hexdigest() == node["cube_sha256"], f"node {nid} cube bytes do not re-derive")
         if (directory / "cube.cnf").exists():

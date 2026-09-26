@@ -63,6 +63,7 @@ def main() -> int:
     parser.add_argument("--max-depth", type=int, default=24)
     parser.add_argument("--workers", type=int, default=24)
     parser.add_argument("--candidates", type=int, default=80, help="lookahead candidates per split (most balanced occurrence, unassigned)")
+    parser.add_argument("--initial-depth", type=int, default=0, help="pre-split the root to this depth by lookahead before any solving, so every worker starts busy")
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--kissat", default="/opt/homebrew/bin/kissat")
     parser.add_argument("--cadical", default="/opt/homebrew/bin/cadical")
@@ -94,7 +95,29 @@ def main() -> int:
     work: queue.Queue = queue.Queue()
     counter = {"next": 1, "active": 0, "stop": False}
     state["nodes"]["0"] = {"id": 0, "parent": None, "literals": [], "depth": 0, "kind": "pending"}
-    work.put(0)
+    # Optional initial split (no solving): a split node without a probe is marked SPLIT_INITIAL.
+    frontier = [0]
+    for _ in range(args.initial_depth):
+        next_frontier = []
+        for nid in frontier:
+            node = state["nodes"][str(nid)]
+            var = choose_split(prop, candidates, tuple(node["literals"]))
+            if var is None:
+                next_frontier.append(nid)
+                continue
+            a, b = counter["next"], counter["next"] + 1
+            counter["next"] += 2
+            for cid, lit in ((a, var), (b, -var)):
+                state["nodes"][str(cid)] = {"id": cid, "parent": nid, "literals": list(node["literals"]) + [lit],
+                                            "depth": node["depth"] + 1, "kind": "pending"}
+            node.update(kind="split", status="SPLIT_INITIAL", children=[a, b], split_variable=var)
+            directory = run / f"node-{nid:05d}"
+            directory.mkdir()
+            runner.write_json(directory / "result.json", node)
+            next_frontier += [a, b]
+        frontier = next_frontier
+    for nid in frontier:
+        work.put(nid)
 
     def save():
         runner.write_json(run / "results.json", state)
