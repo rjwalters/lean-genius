@@ -34,7 +34,7 @@ importers:
         version: 2.1.1
       drizzle-orm:
         specifier: ^0.45.2
-        version: 0.45.2(@cloudflare/workers-types@4.20251221.0)(@types/better-sqlite3@7.6.13)(better-sqlite3@12.5.0)
+        version: 0.45.2(@cloudflare/workers-types@5.20260919.1)(@types/better-sqlite3@7.6.13)(better-sqlite3@12.5.0)
       katex:
         specifier: ^0.16.27
         version: 0.16.27
@@ -76,8 +76,8 @@ importers:
         version: 4.2.1
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ^4.20251221.0
-        version: 4.20251221.0
+        specifier: ^5.20260919.1
+        version: 5.20260919.1
       '@eslint/js':
         specifier: ^9.39.1
         version: 9.39.2
@@ -236,8 +236,8 @@ packages:
     resolution: {integrity: sha512-qQ5m48eI/MFLQ5PxQj4PFaprjyCTLI37ElWMmNs0K8Lk3dVeOdNpB3ks8jc7yM5CDmVC73eMVk/trk3fgmrUpA==}
     engines: {node: '>=6.9.0'}
 
-  '@cloudflare/workers-types@4.20251221.0':
-    resolution: {integrity: sha512-VVTEhY29TtwIwjBjpRrdT51Oqu0JlXijc5TiEKFCjwouUSn+5VhzoTSaz7UBjVOu4vfvcQmjqt/dzwBUR7c95w==}
+  '@cloudflare/workers-types@5.20260919.1':
+    resolution: {integrity: sha512-xUdKJoTHhNcXwnBrfrM1STkzm3oSUc9cRVzP8fO5NyJZ/UtnDnWZHDk9z8IkTnbC2WRWFAS87HICmqZhbHDvQw==}
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
@@ -2857,7 +2857,7 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@cloudflare/workers-types@4.20251221.0': {}
+  '@cloudflare/workers-types@5.20260919.1': {}
 
   '@drizzle-team/brocli@0.10.2': {}
 
@@ -3923,9 +3923,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.45.2(@cloudflare/workers-types@4.20251221.0)(@types/better-sqlite3@7.6.13)(better-sqlite3@12.5.0):
+  drizzle-orm@0.45.2(@cloudflare/workers-types@5.20260919.1)(@types/better-sqlite3@7.6.13)(better-sqlite3@12.5.0):
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20251221.0
+      '@cloudflare/workers-types': 5.20260919.1
       '@types/better-sqlite3': 7.6.13
       better-sqlite3: 12.5.0
 
