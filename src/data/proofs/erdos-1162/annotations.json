@@ -87,8 +87,8 @@
     ],
     "proofId": "erdos-1162",
     "range": {
-      "startLine": 88,
-      "endLine": 113
+      "startLine": 89,
+      "endLine": 117
     },
     "type": "concept",
     "content": "rdt_implies_pyber: Extracting Pyber's Bounds from RDT via ε-N. From $\\log f(n)/n^2 \\to 1/16$, the proof extracts Pyber's two-sided bound: $\\exists c_1, c_2 > 0$, $\\exists N$, $\\forall n \\geq N: c_1 n^2 \\leq \\log f(n) \\leq c_2 n^2$. The witnesses are $c_1 = 1/32$ and $c_2 = 3/32$, obtained by applying the convergence at $\\varepsilon = 1/32$ (a distance of 1/32 from 1/16 gives the interval $(1/32, 3/32)$ for the ratio)."
