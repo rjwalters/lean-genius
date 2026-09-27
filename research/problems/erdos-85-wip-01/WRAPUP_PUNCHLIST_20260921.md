@@ -17,22 +17,22 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
   single-seat waiver and $200 of AWS. The cloud run uses the reviewed residual
   wrapper with `--case-id` and one worker, which has no gate; `dispatch_scaled.py`
   is not used.
-- [~] A4. Full run of the other 1,137 residual roots on AWS. Pass 1 (4 h caps,
-  spot, 2026-09-21/23): 1,133 verdicts, 876 UNSAT_CROSSCHECKED, 256 cap hits, 1
-  infrastructure error, 4 rows killed in flight, 0 SAT. Pass 2 (12 h caps, spot then
-  on-demand, 2026-09-23/25, board #45): 261 rows, 239 UNSAT_CROSSCHECKED so far, 17
-  cap hits, 5 in flight. Pass 3 (24 h caps, the reviewed maximum, one on-demand
-  c7g.8xlarge, board #46, +$100 authorized 2026-09-24): the pass-2 cap hits; launches
-  automatically (tmux `e85-pass3-auto`). Spot reclaims (6 in total) each restarted
-  their rows; Robb: no spot for 24 h rows. Tooling and README in
-  `phase_b_h1_verdict_cloud_20260921/`; receipts on Stripe
-  `artifacts/erdos85-sat49/h1-verdict-cloud-20260921/{,pass2,pass3}`.
-- [ ] A5. The 130 gap slots outside the residual queue: 96-historical route
-  (54b7f7035b) and 34-outside-frozen route (4366cedadb).
+- [x] A4. DONE 2026-09-27. All 1,161 residual roots UNSAT: pilot 24 + pass 1 876 +
+  pass 2 242 + pass 3 16 + pass 3b 2 = 1,160 whole-instance two-solver verdicts, plus
+  `h1_81494a6ef36d3ec9` by an adaptive cube tree (36 leaves, all two-solver UNSAT,
+  checker rc 0). Six spot reclaims restarted rows; actual EC2 cost $235 of the $300
+  ceiling. Receipts: `phase_b_h1_census_20260927/` and Stripe
+  `artifacts/erdos85-sat49/h1-verdict-cloud-20260921/`, `h1-cube-pass4-20260926/`.
+- [~] A5. The 130 gap slots outside the residual queue. The 96 historical rows are
+  carried by the reviewed overlay (drat-trim-verified certificates) and reported as
+  HISTORICAL_VERIFIED_UNSAT by the summarizer; not re-solved. The 34 outside-frozen
+  rows are running on the Mac since 2026-09-27 17:27Z via the reviewed
+  `dispatch_capacity34.py` (three four-worker shards, 4 h caps, zero spend), output
+  Stripe `artifacts/erdos85-sat49/h1-gap34-20260927/`.
 - [x] A6. DECIDED 2026-09-22 (Robb, board #45): second pass at 43,200 s caps for every cap-hit row; rows still open after that are printed as open. Cap-hit policy (original text). Recommendation: no retries, no longer caps. Rows that
   hit the cap are printed as open and the paper uses the "partial evidence"
   wording. Any SAT result stops everything and the drop claim is withdrawn.
-- [ ] A7. Receipt-derived H1 census table (auditor 3d263fb913): exact tag and CNF
+- [x] A7. DONE 2026-09-27: `phase_b_h1_census_20260927/h1-census-table.{json,tsv}` from the reviewed summarizer over 1,413 cloud run dirs + the Mac pilot (1,160 UNSAT_CROSSCHECKED, 96 historical, 1 cube row reported separately, 0 disagreements). Receipt-derived H1 census table (auditor 3d263fb913): exact tag and CNF
   joins across the 1,288 gap tags, 96 historical rows, 12,019 certificate rows.
   This table is the only permitted source of counts in the paper and the post.
 - [x] A8. 63-to-64 and plane-order campaigns: no further compute. They are
@@ -40,8 +40,7 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
 
 ## B. The paper
 
-- [ ] B1. Fill the H1 row of the evidence table, the abstract sentence and §8
-  from A7. Remove every "in progress" phrase (DRAFT.md lines 20, 131, 560, 702).
+- [~] B1. DONE 2026-09-27 for the residual roots (abstract, evidence table, §8, cube subsection; no "in progress" phrase remains). Left: the one sentence on the 34 outside-frozen slots once A5 finishes. Fill the H1 row of the evidence table, the abstract sentence and §8 from A7.
 - [~] B1a. DRAFTED 2026-09-26 as manuscript subsection "A cheaper route: cube-partitioned certificates (projection)"; update its cube-tree numbers when pass 4 finishes. Cost-to-verify refinement (Robb, 2026-09-26): measure how much of each
   row is trivial. The pass-4 cube split of the hardest row showed 27 of 32 cubes
   refuted by unit propagation in seconds; certificate cost concentrates in a few hard
