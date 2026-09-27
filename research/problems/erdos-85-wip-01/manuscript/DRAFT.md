@@ -16,8 +16,8 @@ remains open.
 
 Let `f(n) = minDegreeForC4 n`, the minimum threshold such that every simple
 graph on `n` vertices with minimum degree at least `f(n)` contains a `C₄`.
-We report two complementary results. First, the current computation supports
-the adjacent-value claim, with the H1 gap census still in progress:
+We report two complementary results. First, the completed computation supports
+the adjacent-value claim:
 
 `f(48) = 8` and `f(49) = 7`,
 
@@ -27,8 +27,9 @@ extremal witness checked in Lean through `native_decide` (six named
 `#print axioms` audit is banked as `AXIOM_AUDIT_OVERLAY_20260916.md`); an independently computed isomorphism check finds
 it non-isomorphic to the previously recorded Afzaly–McKay witness. For the
 order-49 upper side, structural reductions and archived SAT evidence have
-different verification levels; the remaining H1 rows are being tested by two
-independent solvers without proof certificates. Second, we reduce
+different verification levels; every one of the 1,161 residual H1 instances
+returned UNSAT from two independent solvers without proof certificates (1,160
+as whole instances, one as an exact partition into 36 cubes). Second, we reduce
 a negative answer to Erdős Problem 85 to one uniform graph-theoretic proposition,
 `BinarySquareRegularExclusion` (A-REG). Lean verifies the entire implication
 
@@ -90,13 +91,13 @@ solver verdict or an archived proof object to a kernel-checked theorem.
 | H7 | All 28 surviving structural roots covered after 15 singleton-capacity exclusions (`H7_CLOSURE_20260915.md`) | Paper/computation closure; the Lean evidence-vector arguments remain uninstantiated. |
 | H1 historical overlay | 96 reviewed historical cases with archived `drat-trim` verification (`phase_b_historical_overlay_96/`) | Historical checks are not a current kernel replay. |
 | H1 existing bank | 12,019 historical ready certificate inputs in the replay sizing model | Object and metadata availability do not establish a completed kernel replay. |
-| H1 gaps | 1,288 capacity tags lack listed certificate objects in the banked snapshot; 1,161 residual Phase B roots are a related, overlapping decomposition | Two independent verdict-only solver runs and receipts are planned. Any cap hit stays open; no proof certificate is produced. |
+| H1 residual roots | 1,161 Phase B roots without a listed certificate object: 1,160 returned UNSAT from Kissat 4.0.4 and then CaDiCaL 3.0.1 under declared caps (4, 12 or 24 hours per solver over four passes), and one, `h1_81494a6ef36d3ec9`, which defeated every whole-instance cap, returned UNSAT on all 36 leaves of an exact cube partition under both solvers; receipts re-derived by the reviewed summarizer and cube checker (`phase_b_h1_census_20260927/`) | Verdict-only evidence: two solvers agreeing under a cap is evidence about solver behaviour, not a proof; no certificate is produced. |
+| H1 capacity-grid slots | The 1,288 gap slots of the banked capacity snapshot are an overlapping decomposition: 1,158 are residual roots above, 96 are the historical overlay, 34 lie outside the frozen Phase B source and run through their own reviewed route (`phase_b_h1_gap130/`) | The 34 outside-frozen slots are being solved at this revision; their count is reported from receipts only. |
 
-The last row is unfinished at this draft revision. Its final reported count
-must come from exact tag and CNF joins of the solver receipts, not a sum of
-the overlapping inventory counts. A complete set of two-solver UNSAT verdicts
-would support Result A computationally; it would still leave the formal
-nonexistence theorem unproved.
+The residual-root count is final and comes from exact tag and CNF joins of the
+solver receipts by the reviewed summarizer, not from a sum of overlapping
+inventory counts. The complete set of two-solver UNSAT verdicts supports
+Result A computationally; it leaves the formal nonexistence theorem unproved.
 
 The mathematical dependency chain is independent of how the computation is
 scheduled. The checked witness module `Erdos85FiniteDropWitnesses.lean`
@@ -191,10 +192,11 @@ instance is UNSAT exactly when every cube is. Each cube yields its own small
 certificate, so checkers need a few gigabytes rather than 64, eight or more
 checks share one host, a lost spot instance costs one cube rather than a
 26 GB job, and a short Lean lemma (a complete tree of UNSAT cubes refutes the
-base formula) composes the leaves. The trivial fraction is large: on the
-hardest residual row, split five levels deep by unit-propagation lookahead, 26
-of 32 cubes were refuted within 15 minutes each, against a whole-instance run
-that failed at a 24-hour cap. Proof size still tracks solver work, so the
+base formula) composes the leaves. The trivial fraction is large: the hardest
+residual row, which failed every whole-instance cap up to 24 hours, was refuted
+by an adaptive cube tree of 36 leaves (35 splits, depth at most 8) in 9.7 Kissat
+and 6.2 CaDiCaL core-hours, under five hours of wall clock on 24 cores; 29 of
+the 36 leaves fell within 15 minutes and the hardest needed 52 minutes. Proof size still tracks solver work, so the
 total byte count is the open question; splitting can lower it where a
 single CDCL run thrashes and raise it where work is duplicated across cubes.
 
@@ -738,11 +740,14 @@ six named trust axioms beyond Lean's standard three; only Theorem B is
 standard-axiom-only in the preliminary `#print axioms` audit. The upper side at order 49 is a case split into
 the strata H1, H3, H5 and H7. Three of the four are closed at the level of a
 paper argument backed by reproducible, independently reviewed computation with
-banked receipts; the H1 rows are to be settled by a verdict-only census, still
-in progress at this draft revision, in which two independent SAT solvers must
-both return UNSAT under a declared cap, and every row that reaches the cap is
-listed as open in the final table rather than absorbed. If that table shows no
-open row, the honest statement will be that we have strong computational evidence that `f(48) = 8` and `f(49) = 7`, and
+banked receipts; the H1 rows were settled by a verdict-only census in which two
+independent SAT solvers had to return UNSAT under a declared cap. Rows that
+reached a cap were rerun at longer caps (4, then 12, then 24 hours per solver),
+and the single row that defeated every whole-instance cap was split by
+cube-and-conquer into 36 cubes that partition its search space exactly, each
+refuted by both solvers within an hour. No row is open: all 1,161 residual
+instances are UNSAT under two solvers. The honest statement is therefore that we
+have strong computational evidence that `f(48) = 8` and `f(49) = 7`, and
 therefore that the threshold drops between two adjacent orders. Erdős
 Problem 85 asks whether `f(n+1) ≥ f(n)` holds for all large `n`. One drop at
 48-to-49 is a data point against monotonicity at small order; it is
