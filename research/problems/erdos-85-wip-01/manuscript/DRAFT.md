@@ -144,6 +144,25 @@ replay for every necessary row, the generated aggregate, and a cold build
 with literal axiom audits of the two public exact-value/drop endpoints.
 None of these steps follows from verdict-only UNSAT results.
 
+#### Where the residual trust sits
+
+The weakest link in any SAT-based nonexistence result is the encoding, not the
+solver. Three facts bound that risk here. The H1 instance generator is itself a
+Lean program, `Proofs/Erdos85OneHighV2CnfEmit.lean`, compiled to the native
+`v2cnf` binary (sha256 `4bd9604c…`) that every run pins; the emitted DIMACS is
+regenerated and compared by the binary's own check mode before any solver
+starts; and in 1,322 of the 1,412 input preparations of the census the emitted
+CNF matched, byte for byte, the hash recorded by the independent 2026-08
+producer. What the encoding does not yet have is a Lean-elaborated semantic
+bridge: for H3 and H5 the checked formulas are the Lean terms
+`orderFortyNineGeneratedCanonicalSatCnf` applied to the representative masks,
+whereas for H1 the row-to-stratum assembly is an open formal obligation. An
+encoding error would be systematic and invisible to solving; the h305
+case study below records one such error that review caught. After the
+encoding come the solvers themselves (two independent UNSAT verdicts are
+evidence about solver behaviour, not a proof) and the uninstantiated H7 Lean
+capstone.
+
 ### Cost to verify Result A formally
 
 The cancelled replay plan is retained as a reproducible cost model, not an

@@ -1,0 +1,8 @@
+import Proofs.Erdos85BinarySquareRegularCapstone
+import Proofs.Erdos85FiniteDropWitnesses
+
+#print axioms Erdos85.not_erdos85Question_of_binarySquareRegularExclusion
+#print axioms Erdos85.minDegreeForC4_fortyEight_eq_eight_checked
+#print axioms Erdos85.seven_le_minDegreeForC4_fortyNine_checked
+#print axioms Erdos85.minDegreeForC4_fortyEight_fortyNine_exact_checked
+#print axioms Erdos85.minDegreeForC4_fortyNine_lt_fortyEight_checked
