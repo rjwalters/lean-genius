@@ -1,0 +1,2613 @@
+{
+ "schema": "erdos85-cube-tree-verdict-v1",
+ "case_id": "h1_81494a6ef36d3ec9",
+ "base_sha256": "860d8af25dee56685ed1007a03c82164a45c864253d08e667d1bd7c3a8ed177d",
+ "base_variables": 42160,
+ "base_clauses": 613228,
+ "probe_cap_seconds": 3600,
+ "full_cap_seconds": 86400,
+ "max_depth": 24,
+ "workers": 24,
+ "split_method": "unit-propagation lookahead inside the cube, greedy max-min forced literals",
+ "proof_logging": false,
+ "solvers": {
+  "kissat": {
+   "path": "/opt/homebrew/bin/kissat",
+   "sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+   "version": "4.0.4"
+  },
+  "cadical": {
+   "path": "/opt/homebrew/bin/cadical",
+   "sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+   "version": "3.0.1"
+  }
+ },
+ "tool_sha256": "89023d19c225092e5f65ccb625427dde5310c3397c6d102385197d229c22d2f9",
+ "runner_sha256": "8458932d4a9a9066dd9a240389ffad743d59a4b2742889f50fbe970046cfd509",
+ "status": "UNSAT_CUBE_CROSSCHECKED",
+ "pid": 46360,
+ "nodes": {
+  "0": {
+   "id": 0,
+   "parent": null,
+   "literals": [],
+   "depth": 0,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    1,
+    2
+   ],
+   "split_variable": 356
+  },
+  "1": {
+   "id": 1,
+   "parent": 0,
+   "literals": [
+    356
+   ],
+   "depth": 1,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    3,
+    4
+   ],
+   "split_variable": 354
+  },
+  "2": {
+   "id": 2,
+   "parent": 0,
+   "literals": [
+    -356
+   ],
+   "depth": 1,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    5,
+    6
+   ],
+   "split_variable": 386
+  },
+  "3": {
+   "id": 3,
+   "parent": 1,
+   "literals": [
+    356,
+    354
+   ],
+   "depth": 2,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    7,
+    8
+   ],
+   "split_variable": 413
+  },
+  "4": {
+   "id": 4,
+   "parent": 1,
+   "literals": [
+    356,
+    -354
+   ],
+   "depth": 2,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    9,
+    10
+   ],
+   "split_variable": 353
+  },
+  "5": {
+   "id": 5,
+   "parent": 2,
+   "literals": [
+    -356,
+    386
+   ],
+   "depth": 2,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    11,
+    12
+   ],
+   "split_variable": 384
+  },
+  "6": {
+   "id": 6,
+   "parent": 2,
+   "literals": [
+    -356,
+    -386
+   ],
+   "depth": 2,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    13,
+    14
+   ],
+   "split_variable": 416
+  },
+  "7": {
+   "id": 7,
+   "parent": 3,
+   "literals": [
+    356,
+    354,
+    413
+   ],
+   "depth": 3,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    15,
+    16
+   ],
+   "split_variable": 382
+  },
+  "8": {
+   "id": 8,
+   "parent": 3,
+   "literals": [
+    356,
+    354,
+    -413
+   ],
+   "depth": 3,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    17,
+    18
+   ],
+   "split_variable": 443
+  },
+  "9": {
+   "id": 9,
+   "parent": 4,
+   "literals": [
+    356,
+    -354,
+    353
+   ],
+   "depth": 3,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    19,
+    20
+   ],
+   "split_variable": 414
+  },
+  "10": {
+   "id": 10,
+   "parent": 4,
+   "literals": [
+    356,
+    -354,
+    -353
+   ],
+   "depth": 3,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    21,
+    22
+   ],
+   "split_variable": 352
+  },
+  "11": {
+   "id": 11,
+   "parent": 5,
+   "literals": [
+    -356,
+    386,
+    384
+   ],
+   "depth": 3,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    23,
+    24
+   ],
+   "split_variable": 353
+  },
+  "12": {
+   "id": 12,
+   "parent": 5,
+   "literals": [
+    -356,
+    386,
+    -384
+   ],
+   "depth": 3,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    25,
+    26
+   ],
+   "split_variable": 383
+  },
+  "13": {
+   "id": 13,
+   "parent": 6,
+   "literals": [
+    -356,
+    -386,
+    416
+   ],
+   "depth": 3,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    27,
+    28
+   ],
+   "split_variable": 414
+  },
+  "14": {
+   "id": 14,
+   "parent": 6,
+   "literals": [
+    -356,
+    -386,
+    -416
+   ],
+   "depth": 3,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    29,
+    30
+   ],
+   "split_variable": 446
+  },
+  "15": {
+   "id": 15,
+   "parent": 7,
+   "literals": [
+    356,
+    354,
+    413,
+    382
+   ],
+   "depth": 4,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    31,
+    32
+   ],
+   "split_variable": 482
+  },
+  "16": {
+   "id": 16,
+   "parent": 7,
+   "literals": [
+    356,
+    354,
+    413,
+    -382
+   ],
+   "depth": 4,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    33,
+    34
+   ],
+   "split_variable": 381
+  },
+  "17": {
+   "id": 17,
+   "parent": 8,
+   "literals": [
+    356,
+    354,
+    -413,
+    443
+   ],
+   "depth": 4,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    35,
+    36
+   ],
+   "split_variable": 382
+  },
+  "18": {
+   "id": 18,
+   "parent": 8,
+   "literals": [
+    356,
+    354,
+    -413,
+    -443
+   ],
+   "depth": 4,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    37,
+    38
+   ],
+   "split_variable": 412
+  },
+  "19": {
+   "id": 19,
+   "parent": 9,
+   "literals": [
+    356,
+    -354,
+    353,
+    414
+   ],
+   "depth": 4,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    39,
+    40
+   ],
+   "split_variable": 382
+  },
+  "20": {
+   "id": 20,
+   "parent": 9,
+   "literals": [
+    356,
+    -354,
+    353,
+    -414
+   ],
+   "depth": 4,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    41,
+    42
+   ],
+   "split_variable": 444
+  },
+  "21": {
+   "id": 21,
+   "parent": 10,
+   "literals": [
+    356,
+    -354,
+    -353,
+    352
+   ],
+   "depth": 4,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    43,
+    44
+   ],
+   "split_variable": 384
+  },
+  "22": {
+   "id": 22,
+   "parent": 10,
+   "literals": [
+    356,
+    -354,
+    -353,
+    -352
+   ],
+   "depth": 4,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    45,
+    46
+   ],
+   "split_variable": 351
+  },
+  "23": {
+   "id": 23,
+   "parent": 11,
+   "literals": [
+    -356,
+    386,
+    384,
+    353
+   ],
+   "depth": 4,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    47,
+    48
+   ],
+   "split_variable": 442
+  },
+  "24": {
+   "id": 24,
+   "parent": 11,
+   "literals": [
+    -356,
+    386,
+    384,
+    -353
+   ],
+   "depth": 4,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    49,
+    50
+   ],
+   "split_variable": 413
+  },
+  "25": {
+   "id": 25,
+   "parent": 12,
+   "literals": [
+    -356,
+    386,
+    -384,
+    383
+   ],
+   "depth": 4,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    51,
+    52
+   ],
+   "split_variable": 354
+  },
+  "26": {
+   "id": 26,
+   "parent": 12,
+   "literals": [
+    -356,
+    386,
+    -384,
+    -383
+   ],
+   "depth": 4,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    53,
+    54
+   ],
+   "split_variable": 382
+  },
+  "27": {
+   "id": 27,
+   "parent": 13,
+   "literals": [
+    -356,
+    -386,
+    416,
+    414
+   ],
+   "depth": 4,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    55,
+    56
+   ],
+   "split_variable": 353
+  },
+  "28": {
+   "id": 28,
+   "parent": 13,
+   "literals": [
+    -356,
+    -386,
+    416,
+    -414
+   ],
+   "depth": 4,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    57,
+    58
+   ],
+   "split_variable": 413
+  },
+  "29": {
+   "id": 29,
+   "parent": 14,
+   "literals": [
+    -356,
+    -386,
+    -416,
+    446
+   ],
+   "depth": 4,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    59,
+    60
+   ],
+   "split_variable": 444
+  },
+  "30": {
+   "id": 30,
+   "parent": 14,
+   "literals": [
+    -356,
+    -386,
+    -416,
+    -446
+   ],
+   "depth": 4,
+   "kind": "split",
+   "status": "SPLIT_INITIAL",
+   "children": [
+    61,
+    62
+   ],
+   "split_variable": 354
+  },
+  "31": {
+   "id": 31,
+   "parent": 15,
+   "literals": [
+    356,
+    354,
+    413,
+    382,
+    482
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "eee089a79ee5771b10d1f5f0ea6f233da95b5341baa2435d125e0aca6f5c7855",
+   "cube_bytes": 12503473,
+   "started_utc": "2026-09-26T20:46:56.880245+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00031/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 3.717628457932733,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "eb798f2f818549738d79e8319783a76bcc22326af18262c57385fc6b436fae55",
+    "log_bytes": 4984,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00031/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 0.23318491701502353,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "64dbd22dda2d962ae1aa51e5dbbbc40d9f8647e23208858373d0e97c7175fd17",
+    "log_bytes": 5445,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:47:00.839927+00:00",
+   "cube_removed": true
+  },
+  "32": {
+   "id": 32,
+   "parent": 15,
+   "literals": [
+    356,
+    354,
+    413,
+    382,
+    -482
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "37f2134b9532bc5120f3aba7451e1b370f092c43967063c8516f793eb2690f6b",
+   "cube_bytes": 12503474,
+   "started_utc": "2026-09-26T20:46:56.861035+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00032/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 4.285998958977871,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "60528777c9dd0ff12d2d39008e430c19a6ee11d1b8c5ea0015464f447121235c",
+    "log_bytes": 13386,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00032/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 7.95290566701442,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "5adf5ed35c8ea6d724c5c6bbff50b98506adf54ce185f0b97a2d32b7bba7bec5",
+    "log_bytes": 21484,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:47:09.109722+00:00",
+   "cube_removed": true
+  },
+  "33": {
+   "id": 33,
+   "parent": 16,
+   "literals": [
+    356,
+    354,
+    413,
+    -382,
+    381
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "f6c449b208a59c55d07b835dd5b2203369e6293ad8d5c8bc197bbb0f00b495fb",
+   "cube_bytes": 12503474,
+   "started_utc": "2026-09-26T20:46:56.894696+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00033/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 41.81036075006705,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "569d74038f0a7bef83d5e1eba217433273e1f97c507f5ca892e1a29adc06abce",
+    "log_bytes": 86515,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00033/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 29.392627791967243,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "fe3ee90938066010f15a8159ed9b257dc56503fedcea4a06d2edaa13ed51e952",
+    "log_bytes": 53978,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:48:08.106488+00:00",
+   "cube_removed": true
+  },
+  "34": {
+   "id": 34,
+   "parent": 16,
+   "literals": [
+    356,
+    354,
+    413,
+    -382,
+    -381
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "646c5af177feeffdf1d4c7c32d55621723d23f1f7e5e6756e99d566e79fa47ad",
+   "cube_bytes": 12503475,
+   "started_utc": "2026-09-26T20:46:56.879079+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00034/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 88.17279133305419,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "3abf8c4b7b1d597d30f4c2349d2b3d5598d15d135c28c89a0948f242e224288c",
+    "log_bytes": 104191,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00034/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 76.7646673329873,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "8d2d3e031fffea36797d1d792372dbb6aec7597fd8303e2774c9c89b7ee35174",
+    "log_bytes": 77702,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:49:41.829713+00:00",
+   "cube_removed": true
+  },
+  "35": {
+   "id": 35,
+   "parent": 17,
+   "literals": [
+    356,
+    354,
+    -413,
+    443,
+    382
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "878a14520bd9102785121c885c9678b36aa2204e712ad7ad24c73144bf666260",
+   "cube_bytes": 12503474,
+   "started_utc": "2026-09-26T20:46:56.880114+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00035/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 5.422406124998815,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "c50714bdb8b121c56aa3d0a7f3f2330cf7a311c5c1ee23ca07e8f35601236a94",
+    "log_bytes": 31881,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00035/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 0.6093922500731423,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "ad3eacbc16cd72ee24b28645847695b4f27d9bf5bc9c184dada36f220c86b30a",
+    "log_bytes": 8283,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:47:02.918666+00:00",
+   "cube_removed": true
+  },
+  "36": {
+   "id": 36,
+   "parent": 17,
+   "literals": [
+    356,
+    354,
+    -413,
+    443,
+    -382
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "00448366bb04faaffe08949b0fe7a0caadd7ef003fe442c34d65cb9a846bcfff",
+   "cube_bytes": 12503475,
+   "started_utc": "2026-09-26T20:46:56.879497+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00036/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 193.3373155000154,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "53c6c24a064a8ebe7d19622540eff4e8d2673a399250186a8526d0442810ba2a",
+    "log_bytes": 134305,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00036/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 133.01388066704385,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "85d59b689573ec5aad602766c159ff929e581ef5fd32f66923b30d6fe30f55e7",
+    "log_bytes": 97818,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:52:23.240697+00:00",
+   "cube_removed": true
+  },
+  "37": {
+   "id": 37,
+   "parent": 18,
+   "literals": [
+    356,
+    354,
+    -413,
+    -443,
+    412
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "7a6284a30353d2369f9c75a17f418b975bb3a72d56eb7c2c540c3e49741ee031",
+   "cube_bytes": 12503475,
+   "started_utc": "2026-09-26T20:46:56.895316+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00037/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 157.77178566693328,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "d4907ed1b0b81e754d4de1364f5415648ee31fbcfe73e71b232601e5dcce0925",
+    "log_bytes": 128653,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00037/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 135.05759579199366,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "1390611d3ff46f5d95df122cb8265eae3453f40f8fa499512d6737c44518f4a2",
+    "log_bytes": 95270,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:51:49.736842+00:00",
+   "cube_removed": true
+  },
+  "38": {
+   "id": 38,
+   "parent": 18,
+   "literals": [
+    356,
+    354,
+    -413,
+    -443,
+    -412
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "60e16ddf8d0195b7a3aa6a78ebb1cb85495feac7df26f964adb0a7c11a371a85",
+   "cube_bytes": 12503476,
+   "started_utc": "2026-09-26T20:46:56.905551+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00038/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 1136.5288864580216,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "b639d047bad6830b183a80e3fc3cee710e6fab99a5e7f2b322aaff1ef65746b6",
+    "log_bytes": 247915,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00038/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 1147.0065510829445,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "8fdac225995ae8d83fde807bfd66c89a914a8e051f82fd197242873d6b1d4b1e",
+    "log_bytes": 215104,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T21:25:00.476096+00:00",
+   "cube_removed": true
+  },
+  "39": {
+   "id": 39,
+   "parent": 19,
+   "literals": [
+    356,
+    -354,
+    353,
+    414,
+    382
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "5a3c28c13c0f3a7442d5483bb54b96e77b54bdfd83bdd645daf0e501c5baf802",
+   "cube_bytes": 12503474,
+   "started_utc": "2026-09-26T20:46:56.878744+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00039/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 4.165880499989726,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "2a15e0ddfdfcb94dc7e3e2c4db982d9c9ac65b8c2b7924866dcc177cd9d27224",
+    "log_bytes": 16885,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00039/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 0.2898392080096528,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "3d69e0f4efe31b7440f046f0f90dfdd01d50fcb54598f48c20cd9d8af172288a",
+    "log_bytes": 6665,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:47:01.341158+00:00",
+   "cube_removed": true
+  },
+  "40": {
+   "id": 40,
+   "parent": 19,
+   "literals": [
+    356,
+    -354,
+    353,
+    414,
+    -382
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "1bb40cba9344dd29fb62760e5e8e0b27ed1e017150c9529c2dd0e69a61b5c7a8",
+   "cube_bytes": 12503475,
+   "started_utc": "2026-09-26T20:46:56.886438+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00040/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 99.93294679094106,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "32dde64f8f547ef561eddf69cdd3c7bfdc00b02a5ffc87c306382ef2835a5b44",
+    "log_bytes": 108816,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00040/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 173.62670962500852,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "1d5819f63dad54061047f13e716d16c22eee33b2451ace829b9e4e61f379ab53",
+    "log_bytes": 105517,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:51:30.458404+00:00",
+   "cube_removed": true
+  },
+  "41": {
+   "id": 41,
+   "parent": 20,
+   "literals": [
+    356,
+    -354,
+    353,
+    -414,
+    444
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "7a44cdcc11a4be17267462a6c25896776f2529d9836bf8218c4ea2411c35ec1e",
+   "cube_bytes": 12503475,
+   "started_utc": "2026-09-26T20:46:56.928296+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00041/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 165.74658166710287,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "8cd318018054c0dfae5827aaace430ab78ea47f4944f9d2a4325ccf9c31bbf68",
+    "log_bytes": 130812,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00041/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 166.04878029203974,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "36798fc0542f836eb864b8d35b571e349c45f26284dba558a7da55ae54b75b12",
+    "log_bytes": 108292,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:52:28.786599+00:00",
+   "cube_removed": true
+  },
+  "42": {
+   "id": 42,
+   "parent": 20,
+   "literals": [
+    356,
+    -354,
+    353,
+    -414,
+    -444
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "2f4f117a71627d9374a6b35609e4c44b0e272416ad044e983964aaa56d4603b1",
+   "cube_bytes": 12503476,
+   "started_utc": "2026-09-26T20:46:56.925984+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00042/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 158.80514708405826,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "c184d19e374d15d63b1d29cb6630bf180b62f1d567aa9711e7e6574c0017fe0f",
+    "log_bytes": 129562,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00042/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 113.50769620900974,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "7281677fe14cb86bfa9d9e8a009d60d9ad690250cceac012e4267a72f8a50151",
+    "log_bytes": 87591,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:51:29.249602+00:00",
+   "cube_removed": true
+  },
+  "43": {
+   "id": 43,
+   "parent": 21,
+   "literals": [
+    356,
+    -354,
+    -353,
+    352,
+    384
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "e80256eed70f7e329f64659e0066148f55b68a4f7c7bb9fe437c24fdf04a11f3",
+   "cube_bytes": 12503475,
+   "started_utc": "2026-09-26T20:46:56.948205+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00043/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 312.15628295904025,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "ccdc83d5148c878ff7bf4bbde6ecd11bde64da087ed93f7ade6462c969e60a4d",
+    "log_bytes": 159071,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00043/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 226.24319841701072,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "fd2af5224a1aa539641db2e56ea5c7ac8f0b59d68daeec75ba8235f0e812a935",
+    "log_bytes": 118380,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:55:55.360031+00:00",
+   "cube_removed": true
+  },
+  "44": {
+   "id": 44,
+   "parent": 21,
+   "literals": [
+    356,
+    -354,
+    -353,
+    352,
+    -384
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "29cf9b44d8530e5eb998713ee36787b9488c5659b941ad109bbd469280d47a47",
+   "cube_bytes": 12503476,
+   "started_utc": "2026-09-26T20:46:56.942714+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00044/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 529.690833541099,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "f6247c8774ba9f4e76569b652128eab27b3dff7cfe0dfbecab6b5e6a6025d686",
+    "log_bytes": 195587,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00044/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 525.6249107499607,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "5a8927a04e27aa8106aaaebe7386111a013e09b8fb8a8c3bdb4c4ebf4a893bac",
+    "log_bytes": 171342,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T21:04:32.396277+00:00",
+   "cube_removed": true
+  },
+  "45": {
+   "id": 45,
+   "parent": 22,
+   "literals": [
+    356,
+    -354,
+    -353,
+    -352,
+    351
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "23fa77a4158890858f2c7958c0fa7d4b5d4940833c7c823a12fcba2714f90ecd",
+   "cube_bytes": 12503476,
+   "started_utc": "2026-09-26T20:46:56.927679+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00045/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 593.6508595419582,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "42b101db01e5c32b05a0175a1d8d3798465a6668d21fa7710d265d6dfa013114",
+    "log_bytes": 198432,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00045/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 594.0839324579574,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "26ba3b6d59661dfcf7252452773233ae9817970170867080e3bb34564f063ead",
+    "log_bytes": 177266,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T21:06:44.678846+00:00",
+   "cube_removed": true
+  },
+  "46": {
+   "id": 46,
+   "parent": 22,
+   "literals": [
+    356,
+    -354,
+    -353,
+    -352,
+    -351
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "d38742468876635fa7ce242355f275ba0d8668d9702c29cee276be35c8ec9af6",
+   "cube_bytes": 12503477,
+   "started_utc": "2026-09-26T20:46:56.942520+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00046/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 1193.464436374954,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "dbf34d63f8ff9ffc2f11c9c1251c1a0f0e5a14831602ad18cc914e1c2a865d8f",
+    "log_bytes": 251793,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00046/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 1562.314419665956,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "0e43c422497d3a2bab04818d93ec2459b6f6a67232eec80350cd54f5a35e6473",
+    "log_bytes": 234632,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T21:32:52.747681+00:00",
+   "cube_removed": true
+  },
+  "47": {
+   "id": 47,
+   "parent": 23,
+   "literals": [
+    -356,
+    386,
+    384,
+    353,
+    442
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "405f68751b0d6fd67a85d9176889f1807a6f47abc69a5cba3bcec159a392724a",
+   "cube_bytes": 12503474,
+   "started_utc": "2026-09-26T20:46:56.984014+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00047/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 0.14546487503685057,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "dde15ff2233db8ad2aeb938201e91576c6640d32e1d615183c685c35e0b0fc7e",
+    "log_bytes": 2369,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00047/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 0.1372115829726681,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "e1e36dd5bcf00a07e03d4ff6207139e7909ca959280e9e1e8e2ad8d3154ca548",
+    "log_bytes": 3750,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:46:57.305423+00:00",
+   "cube_removed": true
+  },
+  "48": {
+   "id": 48,
+   "parent": 23,
+   "literals": [
+    -356,
+    386,
+    384,
+    353,
+    -442
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "ff9b257081d605ca1ed72b0e1b8e39cebee806efbe6ea1764abffff70bd81faf",
+   "cube_bytes": 12503475,
+   "started_utc": "2026-09-26T20:46:56.955433+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00048/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 0.14384620799683034,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "2adb97e1db5179920dc36569d24a9387d4c60a64ca168fb0389a5477c67522d1",
+    "log_bytes": 2369,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00048/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 0.1191605000058189,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "e86e13059a1e31c66bbbdb04456442faab5f7bcfc2b879c2b26ca029e001233b",
+    "log_bytes": 3750,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:46:57.227180+00:00",
+   "cube_removed": true
+  },
+  "49": {
+   "id": 49,
+   "parent": 24,
+   "literals": [
+    -356,
+    386,
+    384,
+    -353,
+    413
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "b7992675f055293a4db4bad6fac0b0459827cdc1c1d747e70219b4c452b5fdcd",
+   "cube_bytes": 12503475,
+   "started_utc": "2026-09-26T20:46:56.962388+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00049/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 4.303876499994658,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "7935946ac6ff6c8f6b4361d9590940015a17f87d036d61d23b1c07a323b25ef5",
+    "log_bytes": 11735,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00049/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 0.2871176659828052,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "65e1f6a8510a1c033a8565d25b7ecbe31fe791eaf6fab9b2a4c98e9336bd709d",
+    "log_bytes": 6104,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:47:01.563096+00:00",
+   "cube_removed": true
+  },
+  "50": {
+   "id": 50,
+   "parent": 24,
+   "literals": [
+    -356,
+    386,
+    384,
+    -353,
+    -413
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "3ae54cb9f0dbf122e03203bef25579d85371dfb78f5d3c8d2611ab17ecb00ac2",
+   "cube_bytes": 12503476,
+   "started_utc": "2026-09-26T20:46:56.999905+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00050/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 880.5987422920298,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "8c88b43fd53d0e95c351695a484182b27460ba4ece20a1c9fdb288cf90d4f123",
+    "log_bytes": 223871,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00050/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 517.2169016669504,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "76575e3535cc6a10634019026a56b4dd1e35a7d23da04f2d9008baecc528cf28",
+    "log_bytes": 172659,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T21:10:14.833214+00:00",
+   "cube_removed": true
+  },
+  "51": {
+   "id": 51,
+   "parent": 25,
+   "literals": [
+    -356,
+    386,
+    -384,
+    383,
+    354
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "0775182e4c7d9711e041f8f0eb338094ce12e810463552e52ec74f816e927c23",
+   "cube_bytes": 12503475,
+   "started_utc": "2026-09-26T20:46:56.992458+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00051/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 0.11622583400458097,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "d4ddc9ba1e324d967d935d9b5a062edcb66bee832971ba344771d9eb7857482e",
+    "log_bytes": 2369,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00051/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 0.11840425000991672,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "a3171117a8c0bde7cd0a10aca71c287b08b57c32fb0a3cdee122b837d3bcb57a",
+    "log_bytes": 3750,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:46:57.274160+00:00",
+   "cube_removed": true
+  },
+  "52": {
+   "id": 52,
+   "parent": 25,
+   "literals": [
+    -356,
+    386,
+    -384,
+    383,
+    -354
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "97929ee898125eaec7695dfb4ec389bb1cd98b061cc87cf839d8b0d8dd82e94d",
+   "cube_bytes": 12503476,
+   "started_utc": "2026-09-26T20:46:56.992141+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00052/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 195.38052929204423,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "999e2d0493445f8acb5fb688e97c339753710e9ae1db8da02f4c6be0e3b7e6e2",
+    "log_bytes": 132076,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00052/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 253.2618152499199,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "be42af30823d8cd5285f4313b65e3db5bcb730cfa24df9f65cff2cad95a6b28d",
+    "log_bytes": 127317,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:54:25.647063+00:00",
+   "cube_removed": true
+  },
+  "53": {
+   "id": 53,
+   "parent": 26,
+   "literals": [
+    -356,
+    386,
+    -384,
+    -383,
+    382
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "f5a0d36c7cf681ebde33b01c6cff3765a90d2845bace523338f14f3efe2d17cc",
+   "cube_bytes": 12503476,
+   "started_utc": "2026-09-26T20:46:57.000280+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00053/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 324.850045625004,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "ddfefb31d309f40c9eff482b85cf165f0e29145bfa3ed465d12178b79ddafaf2",
+    "log_bytes": 162695,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00053/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 264.64646804204676,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "ad6d5120297b61b1be6bff9c4769e6271ec6e0e30b7f755fa853089ba79b453f",
+    "log_bytes": 136376,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:56:46.509356+00:00",
+   "cube_removed": true
+  },
+  "54": {
+   "id": 54,
+   "parent": 26,
+   "literals": [
+    -356,
+    386,
+    -384,
+    -383,
+    -382
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "56227ecf26c5bbd20ffa9af4b41191d511b23f410a237ddea893c27444075eb4",
+   "cube_bytes": 12503477,
+   "started_utc": "2026-09-26T20:46:57.032164+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00054/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 1698.401580707985,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "106a913185302d420d3248bd6033c8219c90e553cd3504aad13a30e80be5de99",
+    "log_bytes": 291487,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00054/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 1981.9288729591062,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "40335f87783be9889c0e206c8be1a2ab592f6d3415e9fc4135d2abdf02b19771",
+    "log_bytes": 265125,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T21:48:17.470959+00:00",
+   "cube_removed": true
+  },
+  "55": {
+   "id": 55,
+   "parent": 27,
+   "literals": [
+    -356,
+    -386,
+    416,
+    414,
+    353
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "286d02388e9b5be8e8df7f58307c5b3b9c2ae1a93a5d400fd6429bc350d752b3",
+   "cube_bytes": 12503475,
+   "started_utc": "2026-09-26T20:46:57.367122+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00055/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 231.79886583401822,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "e36a04e437e8eb9222f593a6bc4ec0235fab19ce2ccb4818bb65856154a665f9",
+    "log_bytes": 150225,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00055/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 71.62988716701511,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "f1e3de5bc6006e9d57c0cab4da8488771ef46d91121fbde0f9b2d6d8799c5613",
+    "log_bytes": 76297,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:52:00.804917+00:00",
+   "cube_removed": true
+  },
+  "56": {
+   "id": 56,
+   "parent": 27,
+   "literals": [
+    -356,
+    -386,
+    416,
+    414,
+    -353
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "577de7f0441efcfb2e6ec3bfacce20f372d178ef1085c6debf56de314a9ad378",
+   "cube_bytes": 12503476,
+   "started_utc": "2026-09-26T20:46:57.383710+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00056/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 737.4068460830022,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "25fa49fec2d1bb76fcfada328109aad723807ec166365cfe6a92d2318045939f",
+    "log_bytes": 217030,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00056/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 492.87617695797235,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "b371fa7f68477d4257af05f70423586ae9694be9b7ca136d95d1c5a8c06ab0f0",
+    "log_bytes": 169696,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T21:07:27.683150+00:00",
+   "cube_removed": true
+  },
+  "57": {
+   "id": 57,
+   "parent": 28,
+   "literals": [
+    -356,
+    -386,
+    416,
+    -414,
+    413
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "4db728f1344c728000d5b53dc66c8bc92e1b4f929bebaf52f12174c5079dad72",
+   "cube_bytes": 12503476,
+   "started_utc": "2026-09-26T20:46:57.395477+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00057/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 199.06613529194146,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "ba5d5faa5aabaad9f7d8cac916df5c85293c9f5c4554e5270b4bf5e47792263b",
+    "log_bytes": 134445,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00057/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 144.34479020896833,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "edeee05feef5b79e82c3336d95f6c6aef253b44f29df52da362951469df02612",
+    "log_bytes": 104514,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:52:40.891375+00:00",
+   "cube_removed": true
+  },
+  "58": {
+   "id": 58,
+   "parent": 28,
+   "literals": [
+    -356,
+    -386,
+    416,
+    -414,
+    -413
+   ],
+   "depth": 5,
+   "kind": "split",
+   "status": "SPLIT",
+   "children": [
+    63,
+    64
+   ],
+   "cube_sha256": "48884fa6fef08a5e486ef741460e186c390ad729ae147c209a72bbc14c89637f",
+   "cube_bytes": 12503477,
+   "started_utc": "2026-09-26T20:47:00.917660+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00058/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 0,
+    "elapsed_seconds": 3600.0234855409944,
+    "stop_reason": null,
+    "verdict": "UNKNOWN",
+    "log_sha256": "f941ae54bf64299ed1b2c6a11f8815e9710ccc299d17d6f0995e52baee5aae3f",
+    "log_bytes": 372664,
+    "proof_requested": false
+   },
+   "split_variable": 412,
+   "finished_utc": "2026-09-26T21:47:02.091197+00:00",
+   "cube_removed": true
+  },
+  "59": {
+   "id": 59,
+   "parent": 29,
+   "literals": [
+    -356,
+    -386,
+    -416,
+    446,
+    444
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "69161fe71ae5f979958eba8d77a9dc73204c94baa2519acf37d7069aa932bf65",
+   "cube_bytes": 12503476,
+   "started_utc": "2026-09-26T20:47:01.412106+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00059/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 3.6334409170085564,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "e024f895dea8f26298ac11d7626b08df7d350beb1d8de4df505b0fdc1296bd51",
+    "log_bytes": 9396,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00059/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 0.5437333330046386,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "7d0246a7cced94dd3c79f1a4dfb1a32afa53a7e1b145795a54edf94c64cf49b6",
+    "log_bytes": 8206,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T20:47:05.596233+00:00",
+   "cube_removed": true
+  },
+  "60": {
+   "id": 60,
+   "parent": 29,
+   "literals": [
+    -356,
+    -386,
+    -416,
+    446,
+    -444
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "5e0c9a1385129c2d801801e5d4a11ef012c725fc945b8e693b49aaa53b3bd1b5",
+   "cube_bytes": 12503477,
+   "started_utc": "2026-09-26T20:47:01.676756+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00060/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 456.11177266703453,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "0c3c450de750c6669f2f98a91ed8b72d16497ecb2344552a7d6ea41a5c868f17",
+    "log_bytes": 180712,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00060/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 364.9507607499836,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "a57e0285f7bd207ba55dc90bab1ee6ca40445c82ea36161fb210092390e1b4a4",
+    "log_bytes": 160526,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T21:00:42.753226+00:00",
+   "cube_removed": true
+  },
+  "61": {
+   "id": 61,
+   "parent": 30,
+   "literals": [
+    -356,
+    -386,
+    -416,
+    -446,
+    354
+   ],
+   "depth": 5,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "5177e8ef02b916b9c055d881369d92dcc28f786c58d9c82be64f85f8d8365762",
+   "cube_bytes": 12503477,
+   "started_utc": "2026-09-26T20:47:03.112827+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00061/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 2317.267234417028,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "eb92123776648e6b025e9642800ef9ad81943fbc586d755f27dab7d73d50ac3a",
+    "log_bytes": 330446,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00061/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 3235.9063551250147,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "9966ffc311e5de9d9f9521ffad396ca061359252132226ec2f781fc5367e1e91",
+    "log_bytes": 293587,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T22:19:36.327412+00:00",
+   "cube_removed": true
+  },
+  "62": {
+   "id": 62,
+   "parent": 30,
+   "literals": [
+    -356,
+    -386,
+    -416,
+    -446,
+    -354
+   ],
+   "depth": 5,
+   "kind": "split",
+   "status": "SPLIT",
+   "children": [
+    65,
+    66
+   ],
+   "cube_sha256": "e3c27c4b19b33948b94f96e079fa49884c34cb3eeee172e8b7f79e7e7ee7ae7b",
+   "cube_bytes": 12503478,
+   "started_utc": "2026-09-26T20:47:05.736425+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00062/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 0,
+    "elapsed_seconds": 3600.048969040974,
+    "stop_reason": null,
+    "verdict": "UNKNOWN",
+    "log_sha256": "38fa1f054eb4fcd2794f29ba768e4972d14cf796a14cc21e6b1bdf9279b9b8b0",
+    "log_bytes": 388423,
+    "proof_requested": false
+   },
+   "split_variable": 384,
+   "finished_utc": "2026-09-26T21:47:06.880573+00:00",
+   "cube_removed": true
+  },
+  "63": {
+   "id": 63,
+   "parent": 58,
+   "literals": [
+    -356,
+    -386,
+    416,
+    -414,
+    -413,
+    412
+   ],
+   "depth": 6,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "9d842c61a8f7bf614aeeb43932322fb0f0d60aa8fba42d06fd098efd52ca296f",
+   "cube_bytes": 12503483,
+   "started_utc": "2026-09-26T21:47:02.159079+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00063/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 413.2919407499721,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "6b0d2347ef99ccdb45cf0c7550ee33264038e90b851b276b39f6c44a667da7ac",
+    "log_bytes": 186466,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00063/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 1204.817734332988,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "c72fec318d62ede50ca574360b9cd79d7928b315a70d662d85c9ae505bf006fd",
+    "log_bytes": 222972,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T22:14:00.286234+00:00",
+   "cube_removed": true
+  },
+  "64": {
+   "id": 64,
+   "parent": 58,
+   "literals": [
+    -356,
+    -386,
+    416,
+    -414,
+    -413,
+    -412
+   ],
+   "depth": 6,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "eae24cba4fcd9ea6cc572af96802615af3bd4d6e9406fbd1e3ee907df7cbe856",
+   "cube_bytes": 12503484,
+   "started_utc": "2026-09-26T21:47:02.167200+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00064/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 1999.4722852500854,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "9aa23edf65af9907d2681e3893ce0d478c1680dd987c6415c095a5ea6adfa94e",
+    "log_bytes": 309517,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00064/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 1619.9993190839887,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "8f67dfe7f01aadee7827271a46391ea1b856b350dd5647c519be361044d3f180",
+    "log_bytes": 254592,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T22:47:21.668248+00:00",
+   "cube_removed": true
+  },
+  "65": {
+   "id": 65,
+   "parent": 62,
+   "literals": [
+    -356,
+    -386,
+    -416,
+    -446,
+    -354,
+    384
+   ],
+   "depth": 6,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "5e300ec3e489e19b4e19d9703dd9c6d589dd15d41c26ef18d5c40e47dbb72e43",
+   "cube_bytes": 12503484,
+   "started_utc": "2026-09-26T21:47:06.943990+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00065/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 1917.6076197909424,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "2c13659b6e16e00c0c72792c296697b46d4d88dd1c83bc4be2ccbae8cd09d941",
+    "log_bytes": 309702,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00065/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 2196.578304667026,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "d0a5c6cd9759f9c47111f456d37d98735b202e6d32d59b4569855369cbe4a319",
+    "log_bytes": 291022,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T22:55:41.185688+00:00",
+   "cube_removed": true
+  },
+  "66": {
+   "id": 66,
+   "parent": 62,
+   "literals": [
+    -356,
+    -386,
+    -416,
+    -446,
+    -354,
+    -384
+   ],
+   "depth": 6,
+   "kind": "split",
+   "status": "SPLIT",
+   "children": [
+    67,
+    68
+   ],
+   "cube_sha256": "d59f67674bcc533a00b09a38019bec0b8570a77f8837d5097266277b0944cf65",
+   "cube_bytes": 12503485,
+   "started_utc": "2026-09-26T21:47:06.957635+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00066/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": -15,
+    "elapsed_seconds": 3600.0231190830236,
+    "stop_reason": "wall_time_limit",
+    "verdict": "UNKNOWN",
+    "log_sha256": "21a8f5237992de7582c477ff038ee078e01d66ea64638cc2eb13df3fc0bb32a8",
+    "log_bytes": 392533,
+    "proof_requested": false
+   },
+   "split_variable": 353,
+   "finished_utc": "2026-09-26T22:47:08.037675+00:00",
+   "cube_removed": true
+  },
+  "67": {
+   "id": 67,
+   "parent": 66,
+   "literals": [
+    -356,
+    -386,
+    -416,
+    -446,
+    -354,
+    -384,
+    353
+   ],
+   "depth": 7,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "1ada945a8ba3c157810ddca43e98b3f0edef9f991a3e2bc8dc7256a6d422d8b8",
+   "cube_bytes": 12503491,
+   "started_utc": "2026-09-26T22:47:08.108103+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00067/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 619.2510434159776,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "ad63603619d2fdb73411cd8a4f278a4e537f581756c385be60fac92b1fc05291",
+    "log_bytes": 214283,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00067/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 994.9474656659877,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "f3950d80c0eae7a561bed7b21329598ba3bb405585c9da23eee84e77612c3107",
+    "log_bytes": 217049,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-26T23:14:02.324224+00:00",
+   "cube_removed": true
+  },
+  "68": {
+   "id": 68,
+   "parent": 66,
+   "literals": [
+    -356,
+    -386,
+    -416,
+    -446,
+    -354,
+    -384,
+    -353
+   ],
+   "depth": 7,
+   "kind": "split",
+   "status": "SPLIT",
+   "children": [
+    69,
+    70
+   ],
+   "cube_sha256": "c4ca3c2bc54065f48d5f3910f331d97a4b124c679a74e0d036c614f8c8f7adb9",
+   "cube_bytes": 12503492,
+   "started_utc": "2026-09-26T22:47:08.107733+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00068/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": -15,
+    "elapsed_seconds": 3600.0189334590686,
+    "stop_reason": "wall_time_limit",
+    "verdict": "UNKNOWN",
+    "log_sha256": "773111d7801d8232137ca6ca5839755915ceed6823414ccd9d3b04227ea96f7f",
+    "log_bytes": 422389,
+    "proof_requested": false
+   },
+   "split_variable": 414,
+   "finished_utc": "2026-09-26T23:47:09.250578+00:00",
+   "cube_removed": true
+  },
+  "69": {
+   "id": 69,
+   "parent": 68,
+   "literals": [
+    -356,
+    -386,
+    -416,
+    -446,
+    -354,
+    -384,
+    -353,
+    414
+   ],
+   "depth": 8,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "e956ce276d2cf94246ea06fb79e988cedfe8c4f347b50c86613aa589d10d38bc",
+   "cube_bytes": 12503498,
+   "started_utc": "2026-09-26T23:47:09.319085+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00069/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 877.6734035420232,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "fc3645d6969ffe14276ce0e0fea25d2ff0843c9c07ac05b4a7787ac33d27ae05",
+    "log_bytes": 242464,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00069/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 614.0176795000443,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "5903d1b0509dd9315528b27b02d82db6ef9254d2f8bd26776988d883b07f1f11",
+    "log_bytes": 186190,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-27T00:12:01.055618+00:00",
+   "cube_removed": true
+  },
+  "70": {
+   "id": 70,
+   "parent": 68,
+   "literals": [
+    -356,
+    -386,
+    -416,
+    -446,
+    -354,
+    -384,
+    -353,
+    -414
+   ],
+   "depth": 8,
+   "kind": "leaf",
+   "status": "UNSAT_CROSSCHECKED",
+   "children": null,
+   "cube_sha256": "1f715bfd1eb187fcf65be36a1ae66ab5d908dddf322bfa8a0a56e4d7717ce9bd",
+   "cube_bytes": 12503499,
+   "started_utc": "2026-09-26T23:47:09.330963+00:00",
+   "probe_cap_seconds": 3600,
+   "primary": {
+    "command": [
+     "/opt/homebrew/bin/kissat",
+     "--time=3600",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00070/cube.cnf"
+    ],
+    "solver_sha256": "05d6f3e9c402a1fe8853b0746e384e1b3d1c4a550e255f11daa2461d279aa848",
+    "returncode": 20,
+    "elapsed_seconds": 3128.706296083983,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "369bb2be208e242c62b7fe7547ffa1928b7ead74926e705802f707133e5cc005",
+    "log_bytes": 393740,
+    "proof_requested": false
+   },
+   "crosscheck": {
+    "command": [
+     "/opt/homebrew/bin/cadical",
+     "-t",
+     "86400",
+     "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/node-00070/cube.cnf"
+    ],
+    "solver_sha256": "601c9fa8ba5d09fd81bb00c89b3e54832f138bccc3422bd8652e8cda4d74d1fa",
+    "returncode": 20,
+    "elapsed_seconds": 3464.311590957921,
+    "stop_reason": null,
+    "verdict": "UNSAT",
+    "log_sha256": "b14c205f25516c5af385406af2d24b240837ec3d8fbe000040d4ec69e1e6453e",
+    "log_bytes": 330767,
+    "proof_requested": false
+   },
+   "finished_utc": "2026-09-27T01:37:02.398269+00:00",
+   "cube_removed": true
+  }
+ },
+ "leaf_counts": {
+  "UNSAT_CROSSCHECKED": 36
+ },
+ "splits": 35,
+ "trivial_leaves_under_10s": 9
+}
