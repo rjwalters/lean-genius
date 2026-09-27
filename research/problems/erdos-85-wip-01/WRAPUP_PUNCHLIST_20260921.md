@@ -51,11 +51,10 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
   conditional finite-drop core, Theorem B) from a cold Docker build. The banked
   audit is a preliminary overlay audit.
 - [x] B3. DONE 2026-09-27 (single-seat, mechanical): 45 Lean identifiers cited; 40 resolve to declarations in `proofs/Proofs`, 1 is a module name, 2 are the planned names of the not-yet-generated endpoint module (now labelled as such in the text), 2 are notation. A Sol should repeat the semantic half (statement wording vs. Lean statement) when available. Claim-by-claim audit of the manuscript against exact Lean names (goal #40 rule).
-- [ ] B4. Negative map and cuts ledger: freeze row numbers, check every
-  cross-reference from the paper.
+- [x] B4. DONE 2026-09-27: `CUTS_LEDGER_DRAFT.md` has rows 1–186; every row cited by the paper (172–186, 174, 175, 176, 180) exists. Room-message and outline-version pointers are transcript references and were left as is. Negative map and cuts ledger: freeze row numbers, check every cross-reference from the paper.
 - [x] B5. DONE 2026-09-27: both external URLs resolve (200); every repo-relative file cited in the manuscript exists; F-versus-r convention note in `FIRST_DROP_LITERATURE_CHECK.md` is referenced. References and conventions: Boza arXiv:2409.12770v2, Afzaly–McKay data
   page, erdosproblems.com/85, the F versus r convention note.
-- [ ] B6. Typeset: Markdown to LaTeX/PDF, title page, AI-authorship and
+- [~] B6. First PDF builds cleanly with pandoc 3.11 + xelatex (Stripe `artifacts/erdos85-manuscript-build-20260927/DRAFT.pdf`, 158 KB; two glyphs missing in the mono font, to fix in the final pass). Final typeset waits for the 34-slot sentence and the authorship statement. Typeset: Markdown to LaTeX/PDF, title page, AI-authorship and
   contribution statement per the goal #45 ruling.
 - [ ] B7. Final scope-honesty read of the whole paper (claude owns §8).
 - [R] B8. Operator read-through. Nothing external before this.
@@ -79,12 +78,12 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
   within the Docker limits. Do not merge the generated certificate modules.
 - [ ] C4. Gallery: update `src/data/proofs/erdos-85` and the research problem
   JSON. Status stays `axiomatized`/open. No "verified drop" wording.
-- [~] C5. README DONE (`STRIPE_ARTIFACTS_README_20260927.md`); sha256 manifest RUNNING 2026-09-27 (low priority) of `artifacts/erdos85-sat49` (830 GB) → `artifacts/erdos85-sat49-MANIFEST-20260927.sha256`; README mapping still to write. Stripe artifacts (933 GB under `artifacts/`): one sha256 manifest, one
+- [x] C5. DONE 2026-09-27: README `STRIPE_ARTIFACTS_README_20260927.md`; manifest `artifacts/erdos85-sat49-MANIFEST-20260927.sha256` (194,620 files; regenerate once the 34-slot run finishes, which was still writing) of `artifacts/erdos85-sat49` (830 GB) → `artifacts/erdos85-sat49-MANIFEST-20260927.sha256`; README mapping still to write. Stripe artifacts (933 GB under `artifacts/`): one sha256 manifest, one
   README mapping directories to paper sections.
 - [R] C6. S3 bucket `2am-erdos85-certs` (about 6 TB): keep cold, release as
   requester-pays with a manifest, or delete. It costs money every month
   while paused.
-- [ ] C7. PR #43624 (open since 2026-08-04): merge or close with a note.
+- [x] C7. DONE 2026-09-27: PR #43624 closed as superseded (its head is an ancestor of `erdos85/integration`; landing is by tag + cherry-pick).
 - [x] C8. `main` checkout strays. Both unpushed local commits are already on
   integration by content. The four untracked erdos-85 files are now banked on
   integration. Two local-only branches with unlanded content were pushed for
@@ -109,7 +108,7 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
   belong to this project and still carry EBS cost: `deepsix-ondemand`
   (c7i.8xlarge), one unnamed c7i.4xlarge, `repo-remote-repo` (t3.small). The
   account is shared with other projects, so Robb confirms before termination.
-- [ ] E2. Host scratch: 117 `~/lean-genius-*` folders, 70 GB. First bank the two
+- [~] E2. IN PROGRESS 2026-09-27: the 115 non-worktree folders are being moved (not deleted) to Stripe `attic/home-scratch-20260927/` (list in `MOVED-FROM-HOME.txt`); the two registered worktrees (`a3-bank`, `h1-pilot-consume`) are removed after their loose files are confirmed banked. Host scratch: 117 `~/lean-genius-*` folders, 70 GB. First bank the two
   loose items (a3-bank untracked files, one freight tarball), then delete the
   small review folders, then move or delete the raw sweep folders per Robb.
 - [ ] E3. Worktrees and branches: 16 erdos-85 worktrees. Check `.lake` symlinks
