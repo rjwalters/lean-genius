@@ -23,8 +23,9 @@ the adjacent-value claim:
 
 which would give a strict finite drop. The lower side uses a 48-vertex
 extremal witness checked in Lean through `native_decide` (six named
-`native_decide` axioms in total for the two witness endpoints; a preliminary
-`#print axioms` audit is banked as `AXIOM_AUDIT_OVERLAY_20260916.md`); an independently computed isomorphism check finds
+`native_decide` axioms in total for the two witness endpoints; the literal
+`#print axioms` output from a cold rebuild is banked as
+`AXIOM_AUDIT_COLD_20260927/`); an independently computed isomorphism check finds
 it non-isomorphic to the previously recorded Afzaly–McKay witness. For the
 order-49 upper side, structural reductions and archived SAT evidence have
 different verification levels; every one of the 1,161 residual H1 instances
@@ -64,11 +65,11 @@ for a formal theorem.
 The already checked finite-drop core is
 `minDegreeForC4_fortyEight_fortyNine_exact_checked` and
 `minDegreeForC4_fortyNine_lt_fortyEight_checked`; both take the order-49
-nonexistence hypothesis. The conditional generated endpoints are specified as
+nonexistence hypothesis. The conditional generated endpoints are specified, under the planned names
 `minDegreeForC4_fortyEight_fortyNine_exact_of_generatedSevenBaseCertificates`
 and
-`minDegreeForC4_fortyNine_lt_fortyEight_of_generatedSevenBaseCertificates`.
-They would prove the finite drop only after every input is supplied, the
+`minDegreeForC4_fortyNine_lt_fortyEight_of_generatedSevenBaseCertificates`,
+in a generated module that is not yet present in the source tree. They would prove the finite drop only after every input is supplied, the
 generated module lands, and a cold build and literal axiom audit pass. No
 conjectural uniform hypothesis enters this finite computation. Separately,
 an independently computed NetworkX
@@ -86,7 +87,7 @@ solver verdict or an archived proof object to a kernel-checked theorem.
 
 | Class | Current evidence | Limit for this paper |
 |---|---|---|
-| Order 48 and 49 lower witnesses | Finite graphs in `Erdos85FiniteDropWitnesses.lean`, elaborated in Lean via `native_decide`; the preliminary `#print axioms` audit lists three `native_decide` axioms per witness endpoint, and independent edge-list audits (168 edges, all pair codegrees ≤ 1) corroborate both graphs | Establish the lower sides only; not standard-axiom-only. |
+| Order 48 and 49 lower witnesses | Finite graphs in `Erdos85FiniteDropWitnesses.lean`, elaborated in Lean via `native_decide`; the cold-rebuild `#print axioms` audit (`AXIOM_AUDIT_COLD_20260927/`) lists three `native_decide` axioms per witness endpoint, and independent edge-list audits (168 edges, all pair codegrees ≤ 1) corroborate both graphs | Establish the lower sides only; not standard-axiom-only. |
 | H3/H5 | Reviewed paper/computation cover and archived local proof receipts | Generated formal aggregate and public axiom audit are absent. |
 | H7 | All 28 surviving structural roots covered after 15 singleton-capacity exclusions (`H7_CLOSURE_20260915.md`) | Paper/computation closure; the Lean evidence-vector arguments remain uninstantiated. |
 | H1 historical overlay | 96 reviewed historical cases with archived `drat-trim` verification (`phase_b_historical_overlay_96/`) | Historical checks are not a current kernel replay. |
@@ -756,7 +757,8 @@ Result A is computational evidence, not a theorem, and this section is
 written so that it can be read standing alone. The lower sides of both values
 are explicit witnesses elaborated in Lean through `native_decide`, which adds
 six named trust axioms beyond Lean's standard three; only Theorem B is
-standard-axiom-only in the preliminary `#print axioms` audit. The upper side at order 49 is a case split into
+standard-axiom-only in the cold-rebuild `#print axioms` audit
+(`AXIOM_AUDIT_COLD_20260927/`). The upper side at order 49 is a case split into
 the strata H1, H3, H5 and H7. Three of the four are closed at the level of a
 paper argument backed by reproducible, independently reviewed computation with
 banked receipts; the H1 rows were settled by a verdict-only census in which two

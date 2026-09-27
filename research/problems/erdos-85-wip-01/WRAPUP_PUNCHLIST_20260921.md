@@ -47,14 +47,13 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
   cubes, so a cube-partitioned certificate would be far smaller than the priced
   whole-instance replay. Use the pass-4 receipts (and the size distribution of the
   12,019 archived LRATs versus solve time) to revise the cost-to-verify section.
-- [~] B2. RUNNING 2026-09-27: cold Docker build (fresh build volume `lean-e85-cold-20260927`, pinned image, Mathlib from cache) of the capstone and witness modules, then `AXIOM_AUDIT_COLD_20260927/axioms.lean`. Literal `#print axioms` for every cited Lean statement (two witnesses,
+- [x] B2. DONE 2026-09-27: `AXIOM_AUDIT_COLD_20260927/` — output byte-identical to the 2026-09-16 overlay audit; manuscript now cites it. Cold Docker build (fresh build volume `lean-e85-cold-20260927`, pinned image, Mathlib from cache) of the capstone and witness modules, then `AXIOM_AUDIT_COLD_20260927/axioms.lean`. Literal `#print axioms` for every cited Lean statement (two witnesses,
   conditional finite-drop core, Theorem B) from a cold Docker build. The banked
   audit is a preliminary overlay audit.
-- [ ] B3. Claim-by-claim audit of the manuscript against exact Lean names
-  (goal #40 rule). Sol-1's job; single-seat if the Sols are still away.
+- [x] B3. DONE 2026-09-27 (single-seat, mechanical): 45 Lean identifiers cited; 40 resolve to declarations in `proofs/Proofs`, 1 is a module name, 2 are the planned names of the not-yet-generated endpoint module (now labelled as such in the text), 2 are notation. A Sol should repeat the semantic half (statement wording vs. Lean statement) when available. Claim-by-claim audit of the manuscript against exact Lean names (goal #40 rule).
 - [ ] B4. Negative map and cuts ledger: freeze row numbers, check every
   cross-reference from the paper.
-- [ ] B5. References and conventions: Boza arXiv:2409.12770v2, Afzaly–McKay data
+- [x] B5. DONE 2026-09-27: both external URLs resolve (200); every repo-relative file cited in the manuscript exists; F-versus-r convention note in `FIRST_DROP_LITERATURE_CHECK.md` is referenced. References and conventions: Boza arXiv:2409.12770v2, Afzaly–McKay data
   page, erdosproblems.com/85, the F versus r convention note.
 - [ ] B6. Typeset: Markdown to LaTeX/PDF, title page, AI-authorship and
   contribution statement per the goal #45 ruling.
@@ -80,7 +79,7 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
   within the Docker limits. Do not merge the generated certificate modules.
 - [ ] C4. Gallery: update `src/data/proofs/erdos-85` and the research problem
   JSON. Status stays `axiomatized`/open. No "verified drop" wording.
-- [~] C5. RUNNING 2026-09-27: sha256 manifest of `artifacts/erdos85-sat49` (830 GB) → `artifacts/erdos85-sat49-MANIFEST-20260927.sha256`; README mapping still to write. Stripe artifacts (933 GB under `artifacts/`): one sha256 manifest, one
+- [~] C5. README DONE (`STRIPE_ARTIFACTS_README_20260927.md`); sha256 manifest RUNNING 2026-09-27 (low priority) of `artifacts/erdos85-sat49` (830 GB) → `artifacts/erdos85-sat49-MANIFEST-20260927.sha256`; README mapping still to write. Stripe artifacts (933 GB under `artifacts/`): one sha256 manifest, one
   README mapping directories to paper sections.
 - [R] C6. S3 bucket `2am-erdos85-certs` (about 6 TB): keep cold, release as
   requester-pays with a manifest, or delete. It costs money every month
