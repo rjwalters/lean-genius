@@ -56,7 +56,7 @@ def main() -> int:
     nums = set(re.findall(r"(?<![\w.])(\d{1,3}(?:,\d{3})+|\d{4,}|\d+\.\d+)(?=\s*(?:TB|GB|MB|h\b|hours|core-hours|host-hours|box-hours|days|\\%|%|per|USD|\$)|\b)", scan))
     untraced = sorted(n for n in nums if n.replace(",", "") not in corpus_norm and not re.fullmatch(r"(19|20)\d\d", n))
     if untraced: fails += 1; print("UNTRACED NUMBERS (not found in refs, excluding DRAFT.md):", ", ".join(untraced))
-    ids = {m.replace("\\_", "_") for m in re.findall(r"\\texttt\{([A-Za-z][A-Za-z0-9_.\\]*(?:\\?_[A-Za-z0-9]+)+)\}", body)}
+    ids = {m.replace("\\_", "_") for m in re.findall(r"\\(?:texttt|lean)\{([A-Za-z][A-Za-z0-9_.\\]*(?:\\?_[A-Za-z0-9]+)+)\}", body)}
     decls = subprocess.run(["grep", "-rhoE", r"^(theorem|lemma|def|abbrev|structure|inductive|noncomputable def|instance|class|opaque|axiom) +[A-Za-z0-9_.]+", str(a.proofs)], capture_output=True, text=True).stdout
     declset = set()
     for l in decls.splitlines():
