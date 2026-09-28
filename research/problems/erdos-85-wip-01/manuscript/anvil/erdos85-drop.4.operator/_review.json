@@ -1,0 +1,25 @@
+{
+  "schema_version": "1",
+  "kind": "judgment",
+  "version_dir": "erdos85-drop.4",
+  "critic_id": "operator",
+  "model": null,
+  "rubric": null,
+  "scores": [],
+  "findings": [
+    {"severity": "blocker", "dimension": "9_rhetorical_economy", "evidence_span": "main.tex:L237-L239", "rationale": "Sentences addressed to the operator ('No replay wave is authorized by this estimate', 'subject to the operator's publication gate') are non sequiturs for the declared audience.", "suggested_fix": "Delete or restate as the reader-relevant fact per BRIEF R-AUD."},
+    {"severity": "blocker", "dimension": "9_rhetorical_economy", "evidence_span": "main.tex:L346-L368", "rationale": "Appendix B carries governance narrative (goal numbers, authorizations, operator review, room-message numbers into a private transcript) that no reader can use.", "suggested_fix": "Keep only the technical lessons, drop 'Persistence' and 'The human role', remove all goal and message numbers per BRIEF R-AUD."},
+    {"severity": "blocker", "dimension": "5_reproducibility", "evidence_span": "main.tex:L301-L322", "rationale": "Artifacts and receipts are named as repo-relative paths and private locators (S3 bucket, artifact volume) rather than public links.", "suggested_fix": "Hyperlink every public file via \\repobase/\\repofile per BRIEF R-LINK; describe non-public material in one sentence without paths."},
+    {"severity": "major", "dimension": "5_reproducibility", "evidence_span": "main.tex:L327-L344", "rationale": "Appendix A ledger files and §3.2/§4.2 Lean modules are bare names.", "suggested_fix": "Same \\repofile treatment."}
+  ],
+  "critical_flags": [
+    {"type": "audience_fit", "justification": "BRIEF rule R-AUD (added 2026-09-28): the paper contains statements about authorization, publication gating, operator goals and private transcript pointers that are addressed to the project's operator rather than to combinatorialists and formal-methods readers. Examples: main.tex L237, L239, L300, L321, L344, L346-L368.", "evidence_span": "main.tex:L346-L368"},
+    {"type": "non_public_links", "justification": "BRIEF rule R-LINK (added 2026-09-28): every named artifact must be a hyperlink to its public GitHub location; v4 uses repo-relative paths and names a private S3 bucket and artifact volume.", "evidence_span": "main.tex:L301-L322"}
+  ],
+  "total": null,
+  "threshold": null,
+  "verdict": "BLOCK",
+  "rendered_artifact": null,
+  "probes": null,
+  "unscored": true
+}

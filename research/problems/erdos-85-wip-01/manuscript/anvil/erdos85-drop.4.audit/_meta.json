@@ -1,0 +1,20 @@
+{
+  "critic": "audit",
+  "role": "paper-audit.md",
+  "started": "2026-09-28T21:45:00Z",
+  "finished": "2026-09-28T21:58:38Z",
+  "model": "claude-fable-5-1",
+  "schema_version": 1,
+  "scorecard_kind": "human-verdict",
+  "rubric_id": "anvil-pub-v2",
+  "rubric_total": 44,
+  "advance_threshold": 35,
+  "sidecar": "python -m anvil.lib.sidecar cleanup/stage/copy/commit (issue #645 CLI shim; uv run --project .anvil)",
+  "compile": "xelatex + bibtex + xelatex to .aux fixpoint (4 xelatex passes; aux byte-identical between passes 3 and 4) in a scratch copy of main.tex/refs.bib/anvil-paper.cls; version dir untouched; raw bytes landed via sidecar copy (sha256 d46aaa99f5e5b43e...)",
+  "pending_gate": "anvil.lib.pending_marker erdos85-drop.4/ --write-review: pass (0 markers)",
+  "evidence_drift": "anvil.lib.evidence_drift check erdos85-drop erdos85-drop.4: CLEAN",
+  "corpus_tier": "inactive (resolve_corpus_dirs -> [])",
+  "lean_check": "single declaration sweep of /Volumes/Stripe/lean-genius/claude-e85-wrapup/proofs/Proofs (grep only, no build): 72/72 declaration-shaped names, 9/9 modules; scope_lint.py PASS (66 numbers, 53 Lean names)",
+  "review_json": "_review.json written additively (kind: tool_evidence, critic_id: paper-audit, 0 critical_flags, 4 minor + 2 nit findings); schema-validated; not in the required-files manifest",
+  "git_sync": "skipped (no .anvil/config.json; operator excluded git commands for this run)"
+}

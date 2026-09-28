@@ -1,0 +1,109 @@
+{
+  "schema_version": "1",
+  "kind": "tool_evidence",
+  "version_dir": "erdos85-drop.4",
+  "critic_id": "paper-audit",
+  "model": "claude-fable-5-1",
+  "rubric": null,
+  "scores": [
+    {
+      "dimension": "citation_resolution",
+      "score": null,
+      "max": 1,
+      "critical": false,
+      "evidence_span": "main.tex:L1-L373",
+      "fix": null,
+      "justification": "12 of 12 cite keys resolve in refs.bib; rendered PDF has 0 '??'. Claim-support: 3 partial (author notes only), 9 unverified (no source on disk), 0 does-not-support. The three v3 receipt-contradicted statements (C1, C2, M1) are corrected and verified against the receipts and the Lean source. Owns no rubric dim."
+    },
+    {
+      "dimension": "numerical_consistency",
+      "score": null,
+      "max": 1,
+      "critical": false,
+      "evidence_span": "main.tex:L57-L368",
+      "fix": null,
+      "justification": "Every number traces to a receipt and every sum checks; 0 text-vs-table or text-vs-receipt mismatches. Four minor precision items (noun 'cells' at L74; 'complement completion for eleven' at L176; '1,412 preparations for the 1,161 rows' at L74/L306; 'axioms that we list' at L96). Owns no rubric dim."
+    },
+    {
+      "dimension": "build",
+      "score": null,
+      "max": 1,
+      "critical": false,
+      "evidence_span": null,
+      "fix": null,
+      "justification": "xelatex+bibtex+xelatex converged in 4 passes (aux byte-identical between passes 3 and 4), 0 errors, 0 undefined, 0 overfull, 7 underfull, 21 pages; scratch copy, version dir untouched."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "minor",
+      "dimension": "7_prose",
+      "evidence_span": "main.tex:L74-L74",
+      "rationale": "'H7 by thirteen LRAT certificates checked inside Lean by native_decide, one for each of its canonical cells with a positive triple': the thirteen certificates are one per canonical representative with t>=1; the cells with a positive triple are the seven cells t=1..7 (Table 2 L143: fourteen representatives, 1,1,2,3,3,2,1,1 by t). The count is correct and is glossed correctly at L154, L174, L143 and L292; only the introduction's noun is off.",
+      "suggested_fix": "'one for each of its thirteen canonical representatives with a positive triple'.",
+      "tool_calls": [
+        {"tool": "read", "args": {"path": "erdos85-drop/refs/H7_POSITIVE_TRIPLE_CELLS_H5_CLOSURE_FORMULA_COUNTS_20260928.md", "section": "1"}, "result_summary": "fourteen representatives distributed 1,1,2,3,3,2,1,1 by t=0..7; thirteen with t>=1 excluded by LRAT certificates, one per representative"},
+        {"tool": "grep", "args": {"pattern": "1, 1, 2, 3, 3, 2, 1, 1", "path": "/Volumes/Stripe/lean-genius/claude-e85-wrapup/proofs/Proofs/Erdos85OrderFortyNineSevenHighCanonicalCensus.lean"}, "result_summary": "L91"}
+      ]
+    },
+    {
+      "severity": "minor",
+      "dimension": "8_citation_hygiene",
+      "evidence_span": "main.tex:L176-L176",
+      "rationale": "'source enumeration with complement completion for eleven of the twelve a = 7 roots': H7_CLOSURE_20260915.md applies the source-complement completion (review 2683) 'where required'; only cube_F7_t10, _t11 and _t13 carry 2683 in the root table. The wording homogenizes the route over the eleven rows.",
+      "suggested_fix": "'source enumeration, with complement completion where required, for eleven of the twelve a = 7 roots and a cycle-exclusion chain for the twelfth'.",
+      "tool_calls": [
+        {"tool": "read", "args": {"path": "erdos85-drop/refs/H7_CLOSURE_20260915.md", "section": "Common premises and review chains; All 28 frozen roots"}, "result_summary": "A7: source enumeration 2116, with source-complement completion 2683 where required; 2683 appears on three of the eleven a7 rows; cube_F7_t14 is C7 -> 2117"}
+      ]
+    },
+    {
+      "severity": "minor",
+      "dimension": "8_citation_hygiene",
+      "evidence_span": "main.tex:L74-L74",
+      "rationale": "'The census recorded 1,412 input preparations for the 1,161 residual rows over four cloud passes' (also L306 'the 1,412 preparation receipts for the 1,161 rows'): CENSUS_TIMING_20260928.md counts 1,412 = 1,132 + 261 + 17 + 2 receipts in the four cloud passes; Table 3 shows pass 1 dispatched 1,137 rows, the other 24 rows having been solved by the Mac pilot. The preparations concern the 1,137 cloud-dispatched rows. Both numbers trace; the linking phrase is loose.",
+      "suggested_fix": "'1,412 input preparations over the four cloud passes for the 1,137 rows dispatched to the cloud (the 24 pilot rows ran on the Mac)'; align L306.",
+      "tool_calls": [
+        {"tool": "read", "args": {"path": "erdos85-drop/refs/CENSUS_TIMING_20260928.md", "section": "Input identity"}, "result_summary": "1,412 preparation receipts in the four cloud passes: pass 1 1,042+90, pass 2 261, pass 3 17, pass 3b 2"},
+        {"tool": "read", "args": {"path": "erdos85-drop/refs/CENSUS.md", "section": "Passes"}, "result_summary": "Mac pilot 24 rows; pass 1 1,137 rows"}
+      ]
+    },
+    {
+      "severity": "minor",
+      "dimension": "8_citation_hygiene",
+      "evidence_span": "main.tex:L96-L96",
+      "rationale": "'The finite witnesses and the thirteen H7 certificate checks are checked through native_decide, which adds compiler-generated axioms that we list': the six witness axioms are listed in Table 1, but the thirteen certificate checks' axioms are not (Table 1 caption L106: 'not part of this rebuild and are not listed'; L174 names only Lean.ofReduceBool because no #print axioms was run on them).",
+      "suggested_fix": "'...which adds compiler-generated axioms; we list them for the witnesses (Table 1) and state the dependency for the certificate checks (Section 4.2)'.",
+      "tool_calls": [
+        {"tool": "read", "args": {"path": "erdos85-drop/refs/AXIOM_AUDIT_COLD_20260927.md"}, "result_summary": "cold rebuild covered the capstone and the finite-drop witnesses only; per-declaration native_decide axioms listed for the witnesses"},
+        {"tool": "read", "args": {"path": "erdos85-drop/refs/H7_POSITIVE_TRIPLE_CELLS_H5_CLOSURE_FORMULA_COUNTS_20260928.md", "section": "Status caveats"}, "result_summary": "the thirteen modules were not rebuilt in the 2026-09-27 cold audit"}
+      ]
+    },
+    {
+      "severity": "nit",
+      "dimension": "7_prose",
+      "evidence_span": "main.tex:L174-L174",
+      "rationale": "Table 1 / axioms.out name the witnesses' native_decide trust as per-declaration '..._native.native_decide.ax_N' axioms; L174, L219, L233 and L292 describe the H7 checks' trust as 'Lean.ofReduceBool' (the receipt's wording). Two vocabularies for one mechanism.",
+      "suggested_fix": "One clause tying them: 'the per-declaration native_decide axioms, whose soundness rests on Lean.ofReduceBool'.",
+      "tool_calls": [
+        {"tool": "read", "args": {"path": "erdos85-drop/refs/axioms.out"}, "result_summary": "witness statements list Erdos85.boza48Graph._native.native_decide.ax_1 etc.; Lean.ofReduceBool does not appear literally"}
+      ]
+    },
+    {
+      "severity": "nit",
+      "dimension": "6_figures_tables",
+      "evidence_span": "main.tex:L223-L223",
+      "rationale": "Table 4 'H1 residual roots ... under declared caps over four passes': the 1,160 whole-instance rows were settled across the Mac pilot and cloud passes 1, 2, 3 and 3b (Table 3); elsewhere the paper says 'four cloud passes'.",
+      "suggested_fix": "'over the pilot and four cloud passes'.",
+      "tool_calls": [
+        {"tool": "read", "args": {"path": "erdos85-drop/refs/CENSUS.md", "section": "Passes"}, "result_summary": "pilot 24, pass 1 876, pass 2 242, pass 3 16, pass 3b 2 UNSAT = 1,160"}
+      ]
+    }
+  ],
+  "critical_flags": [],
+  "total": null,
+  "threshold": null,
+  "verdict": null,
+  "rendered_artifact": null,
+  "probes": null,
+  "unscored": false
+}
