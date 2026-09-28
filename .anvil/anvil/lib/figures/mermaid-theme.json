@@ -1,0 +1,24 @@
+{
+  "_comment": "palette: keep in sync with anvil/lib/figures/palette.py and anvil/skills/deck/assets/anvil-deck.css :root. Passed to mmdc via `-c`. JSON has no comments, so this sync note lives in a _comment key; mermaid ignores unknown top-level keys. See anvil/skills/deck/assets/figure-conventions.md section 3.",
+  "_themeCSS_comment": "themeCSS ships four canonical semantic classDefs (anvil-accent, anvil-muted, anvil-warning, anvil-success) injected verbatim into a <style> block in every rendered SVG. Authors apply via `:::anvil-warning` etc. on a node in their .mmd source. Each class triple-sets fill+stroke+text with !important so it overrides mermaid's per-source classDef defaults AND ensures the text is white-on-color (the white-on-white sub-symptom from heirloom/consent_flow). The selectors `.anvil-X > rect, .anvil-X > polygon` target the shape; `.anvil-X span` targets the foreignObject text. Hexes here MUST match ANVIL_NAVY/ANVIL_MUTED/ANVIL_WARNING/ANVIL_SUCCESS in palette.py — drift caught by tests/lib/test_figures_mermaid_classdefs.py. themeVariables.fontSize (18px) and themeVariables.padding (12) are legibility-floor knobs introduced in issue #563: the source font is the input to the figure_legibility gate's displayed-glyph-height heuristic (anvil/skills/deck/lib/figure_legibility.py), and the wider node padding tightens glyph density per node so a height-clamped render keeps text clustered rather than running off into thin lines.",
+  "_edgeLabel_comment": "The trailing themeCSS .edgeLabel rules fix a mermaid v11 white-on-white regression on flowchart edge labels (verified against mmdc 11.15.0, issue #619). mermaid v11's `base` theme emits `.label { color: <primaryTextColor> }` and edge labels INHERIT `.label`; because primaryTextColor is #ffffff (correct for the dark-filled nodes) the edge-label text renders white on the near-white secondaryColor-derived #f5f5f5 label background — invisible. themeVariables.labelTextColor and themeVariables.edgeLabelBackground do NOT fix it (the reporter tested both; labels vanished entirely) — a themeCSS override is the only working path. The .edgeLabel color #1a1a1a matches themeVariables.textColor and the #ffffff background matches themeVariables.background. These selectors are deliberately separate from the .anvil-X classDef selectors: `.anvil-X span` targets node labels and must stay white-on-color, while `.edgeLabel` targets edge labels only — no collision. Drift caught by tests/lib/test_figures_mermaid_classdefs.py.",
+  "theme": "base",
+  "themeCSS": ".anvil-accent > rect, .anvil-accent > polygon { fill: #1f4e7a !important; stroke: #1a1a1a !important; } .anvil-accent span, .anvil-accent .nodeLabel { color: #ffffff !important; fill: #ffffff !important; } .anvil-muted > rect, .anvil-muted > polygon { fill: #6b6b6b !important; stroke: #1a1a1a !important; } .anvil-muted span, .anvil-muted .nodeLabel { color: #ffffff !important; fill: #ffffff !important; } .anvil-warning > rect, .anvil-warning > polygon { fill: #b5651d !important; stroke: #1a1a1a !important; } .anvil-warning span, .anvil-warning .nodeLabel { color: #ffffff !important; fill: #ffffff !important; } .anvil-success > rect, .anvil-success > polygon { fill: #2d5f3f !important; stroke: #1a1a1a !important; } .anvil-success span, .anvil-success .nodeLabel { color: #ffffff !important; fill: #ffffff !important; } .edgeLabel, .edgeLabel p, .edgeLabel span, .edgeLabel .labelBkg { color: #1a1a1a !important; } .edgeLabel, .edgeLabel p { background-color: #ffffff !important; }",
+  "themeVariables": {
+    "primaryColor": "#1f4e7a",
+    "primaryTextColor": "#ffffff",
+    "primaryBorderColor": "#1a1a1a",
+    "lineColor": "#6b6b6b",
+    "secondaryColor": "#f5f5f5",
+    "secondaryTextColor": "#1a1a1a",
+    "secondaryBorderColor": "#d6d6d6",
+    "tertiaryColor": "#ffffff",
+    "tertiaryTextColor": "#1a1a1a",
+    "tertiaryBorderColor": "#d6d6d6",
+    "textColor": "#1a1a1a",
+    "fontFamily": "Helvetica Neue, Helvetica, Arial, sans-serif",
+    "fontSize": "18px",
+    "padding": 12,
+    "background": "#ffffff"
+  }
+}

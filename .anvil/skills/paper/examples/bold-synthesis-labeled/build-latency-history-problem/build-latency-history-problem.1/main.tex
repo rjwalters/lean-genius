@@ -1,0 +1,296 @@
+%% main.tex — FIXTURE B of the underclaiming/buried-lede regression pair.
+%%
+%% Issue #1046 / #1048. This paper is deliberately BOLD AND LABELED: it
+%% stakes a synthesis/research-program claim in the title, the abstract,
+%% and the opening paragraph, and labels each contribution as
+%% demonstrated / derived / synthesis / conjecture. Its method, numbers,
+%% ablations, seeds, tables, threats section, and bibliography are
+%% IDENTICAL to Fixture A's
+%% (../../../underclaiming-buried-lede/...) — only the framing differs.
+%%
+%% Everything here is SYNTHETIC — the organization, the traces, the
+%% measurements, and every bibliography entry are invented for the
+%% fixture. Do not cite any of it.
+%%
+%% The Method-through-Experiments span is byte-identical to Fixture A's
+%% and is pinned by tests/test_paper_underclaiming_fixtures.py, which is
+%% what makes the score divergence attributable to framing alone. Edit
+%% both fixtures or neither.
+
+\documentclass{anvil-paper}
+
+\title{Build Latency Is a History Problem: Repository Churn as a First-Class Scheduling Signal}
+\author{Author Names Withheld}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We argue that a distributed build system should treat version-control history
+as a scheduling input, not merely as metadata for code analysis. The argument
+rests on a measured asymmetry: in a fourteen-week trace of 2.1 million build
+invocations across three production repositories, 8.3\% of source files
+account for 71.4\% of remote-cache misses, and membership in that minority is
+predictable a day ahead from churn and co-change centrality with AUC 0.87. We
+build a scheduler that ranks files by that prediction and speculatively warms
+their downstream targets; across an eight-week deployment to 1{,}412
+engineers it cuts median build latency 22.4\% and p90 latency 31.1\% for a
+5.8\% cluster-CPU cost. Neither history mining nor speculative warming is new;
+the claim is that their composition makes history a scheduling signal, and the
+ablation supports it — churn alone yields 9.1\%, centrality alone 7.4\%,
+together 22.4\%. We conjecture, and do not here demonstrate, that the same
+signal governs test selection and runner placement.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+A distributed build system decides what to compute and where, and it makes
+those decisions from the dependency graph alone. We argue that this is the
+wrong input set: the dependency graph says what \emph{could} change, while
+version-control history says what \emph{will}, and the second signal is both
+available and predictive a day in advance. Build latency, on this reading, is
+less a caching problem than a history problem, and repository history belongs
+in the scheduler beside the dependency graph rather than in the offline
+analysis tools where it currently lives.
+
+The measured asymmetry that motivates the claim is sharp. Across a
+fourteen-week trace of 2.1 million build invocations, 8.3\% of source files
+account for 71.4\% of remote-cache misses (Table~\ref{tab:concentration}), and
+next-day membership in that minority is predictable from history with AUC 0.87
+against 0.71 for the recency baseline in use
+today~\cite{lindqvist2021prefetch}. A scheduler that acts on that prediction
+cuts median build latency 22.4\% at a 5.8\% CPU cost.
+
+We state the contributions at the scope each one is actually supported at,
+labeling which are demonstrated, which are derived, which are synthesis, and
+which are conjecture:
+
+\begin{itemize}
+  \item \textbf{Demonstrated.} Misses concentrate: 8.3\% of files account for
+        71.4\% of misses across 2.1 million invocations, and the effect holds
+        in all three repositories (Section~\ref{sec:experiments}). A
+        history-derived predictor attains AUC 0.87 on next-day membership, and
+        a scheduler acting on it cuts median build latency 22.4\% and p90
+        31.1\% across 612{,}000 builds in an eight-week randomized deployment.
+  \item \textbf{Derived.} The ranking rule follows from the concentration
+        measurement and the standard speculative-work cost model rather than
+        from tuning: rank by predicted miss probability, admit until the CPU
+        budget binds (Section~\ref{sec:method}).
+  \item \textbf{Synthesis.} Co-change mining~\cite{ferreira2016cochange,
+        imani2017graphcentrality} and speculative build
+        warming~\cite{lindqvist2021prefetch, salcedo2023speculative} are both
+        mature; neither ingredient is ours. What is ours is the composition —
+        history as a live scheduler input rather than an offline report — and
+        the evidence that the composition is not redundant: the two history
+        signals select different files and their combination beats the sum of
+        the parts (Table~\ref{tab:ablation}).
+  \item \textbf{Conjecture.} We expect the same history signal to govern
+        regression-test selection and CI-runner placement, because both are
+        scheduling decisions over the same change distribution. We do not test
+        this here. The falsifiable form: a history-ranked test-selection
+        policy should beat a failure-history policy~\cite{bhattacharya2022testsel}
+        on tail CI latency by a margin comparable to the 16-point AUC gap we
+        report for cache warming; a null result there would confine our claim
+        to cache warming.
+\end{itemize}
+
+Section~\ref{sec:related} positions the work against the caching, prefetching,
+and mining literatures, Section~\ref{sec:method} describes the trace and the
+predictor, Section~\ref{sec:experiments} reports the measurements and the
+ablation, and Section~\ref{sec:discussion} states the limits of the claim.
+
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Build caching and remote execution.}
+Content-addressed caching for build actions is mature~\cite{okonkwo2019remote},
+and the questions it has generated are capacity, eviction, and transport --- all
+of which treat the miss set as exogenous. Our claim is orthogonal to the
+caching mechanism and complementary to it: we do not change what is cached, we
+change which work the scheduler starts before it is asked for.
+
+\paragraph{Prefetching in continuous integration.}
+Lindqvist and Osei~\cite{lindqvist2021prefetch} warm CI artifacts by recency,
+and Salcedo et al.~\cite{salcedo2023speculative} study admission policies for
+speculative work on shared clusters. We inherit the warming mechanism from the
+first and the budget-controller shape from the second. The disagreement is
+about the ranking signal: recency is a one-feature proxy for history, and
+Section~\ref{sec:experiments} shows it leaves most of the available signal
+unused (AUC 0.71 against 0.87).
+
+\paragraph{Co-change mining.}
+Ferreira and Adeyemi~\cite{ferreira2016cochange} introduced the co-change graph
+for impact analysis and Nakamura et al.~\cite{nakamura2020churn} established
+the churn windows we adopt; the centrality measure is the standard eigenvector
+formulation~\cite{imani2017graphcentrality}. We take all three unchanged. This
+literature reads history offline, to advise humans about risk. The
+contribution here is not a better mining technique but the observation that
+its output is accurate enough, and fresh enough, to drive an online scheduling
+decision --- a claim about where history belongs in the system, which the
+mining literature does not make and which our ablation is what tests.
+
+\paragraph{History-aware test selection.}
+Bhattacharya and Lund~\cite{bhattacharya2022testsel} select regression tests
+from historical failure data --- the closest prior instance of history driving an
+online decision, and the reason our conjecture in Section~\ref{sec:discussion}
+is a conjecture rather than a surprise. Their signal is failure history for a
+test-selection decision; ours is change history for a build-scheduling
+decision, and we do not claim their result transfers to our setting or the
+reverse without the experiment we propose there.
+
+\section{Method}
+\label{sec:method}
+
+\subsection{Trace collection}
+
+Each build invocation is a directed acyclic graph of actions; the build tool
+emits one record per action with the action's cache key, the resolved input
+hashes, the outcome (\texttt{hit}, \texttt{miss}, or \texttt{local}), and the
+wall-clock duration. We collected every such record for fourteen consecutive
+weeks across three repositories: R1, a 41k-file monorepo; R2, a 9.8k-file
+service repository; and R3, a 6.2k-file embedded firmware repository. The
+trace contains 2.1 million build invocations comprising 903 million action
+records.
+
+A miss is attributed to a source file when that file's content hash appears in
+the action's resolved input set and differs from the hash present at the last
+observed hit for the same action identity. Actions whose input set changed in
+more than one source file are attributed fractionally, splitting the miss
+evenly across the changed inputs; Section~\ref{sec:discussion} reports the
+sensitivity of our results to that choice.
+
+\subsection{Predictor}
+
+For each source file and each day we compute four features: the count of
+commits touching the file in the preceding 30 days; the eigenvector centrality
+of the file in the 90-day co-change graph~\cite{imani2017graphcentrality};
+the reverse-dependency fan-out of the file in the build graph; and the mean
+diff size across the file's commits in the preceding 30 days. A logistic
+regression predicts whether the file will appear in the next day's
+top-decile miss set. We fit with L2 regularization ($\lambda = 0.01$), five-fold
+cross-validation grouped by week to avoid temporal leakage, and a fixed seed
+(20260214) recorded in the released artifact.
+
+\subsection{Pre-warming}
+
+The pre-warmer ranks files by predicted probability, takes the top $k$, and
+speculatively builds their downstream targets during idle cluster capacity.
+The parameter $k$ is set by a controller that holds speculative work within a
+6\% cluster-CPU budget; the controller and its budget are described in the
+released configuration. No developer-visible behavior changes: speculative
+work is preemptible and is discarded when a real build arrives.
+
+\section{Experiments}
+\label{sec:experiments}
+
+\subsection{Miss concentration}
+
+Table~\ref{tab:concentration} reports the concentration of the miss set. Across
+the pooled trace, 8.3\% of source files account for 71.4\% of remote-cache
+misses. Concentration is present in all three repositories and is strongest in
+the monorepo R1, where 6.1\% of files account for 74.8\% of misses.
+
+\begin{table}[t]
+  \centering
+  \begin{tabular}{lrrr}
+    \toprule
+    Repository & Files & Miss-heavy files (\%) & Misses covered (\%) \\
+    \midrule
+    R1 (monorepo)  & 41{,}200 & 6.1 & 74.8 \\
+    R2 (service)   & 9{,}800  & 9.7 & 68.2 \\
+    R3 (firmware)  & 6{,}200  & 11.4 & 66.9 \\
+    \midrule
+    Pooled         & 57{,}200 & 8.3 & 71.4 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Concentration of remote-cache misses. ``Miss-heavy files'' is the
+  smallest set of files, ranked by attributed misses, covering the reported
+  share of all misses over the fourteen-week trace.}
+  \label{tab:concentration}
+\end{table}
+
+\subsection{Predictability}
+
+The logistic regression attains AUC 0.87 (95\% CI [0.86, 0.88], five-fold
+grouped cross-validation) on next-day top-decile miss-set membership. The
+recency-only baseline of Lindqvist and Osei~\cite{lindqvist2021prefetch}
+attains AUC 0.71 on the same folds. Table~\ref{tab:ablation} reports the
+feature ablation.
+
+\begin{table}[t]
+  \centering
+  \begin{tabular}{lrr}
+    \toprule
+    Signal & AUC & Median latency reduction (\%) \\
+    \midrule
+    Recency only (baseline)      & 0.71 & 5.3 \\
+    Churn only                   & 0.79 & 9.1 \\
+    Centrality only              & 0.76 & 7.4 \\
+    Churn $+$ centrality (full)  & 0.87 & 22.4 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Feature ablation. Latency reductions are medians over the
+  deployment arm described in Section~\ref{sec:experiments}.}
+  \label{tab:ablation}
+\end{table}
+
+\subsection{Deployment}
+
+We deployed the pre-warmer for eight weeks, cluster-randomized by engineer
+across 1{,}412 engineers and 612{,}000 builds. Median end-to-end build latency
+fell 22.4\% (95\% CI [20.9, 23.8]) in the treatment arm; p90 latency fell
+31.1\%. Cluster CPU rose 5.8\%, within the configured budget. No regression
+was observed in build correctness auditing, which compares speculative outputs
+against the subsequently computed real outputs on a 1\% sample.
+
+The combined signal outperforms the sum of its parts: churn alone yields 9.1\%
+and centrality alone 7.4\%, while the combination yields 22.4\%. The two
+signals select different files. Churn ranks recently edited leaves highly;
+centrality ranks stable files whose edits propagate widely. Neither ordering
+alone covers the miss set that drives tail latency.
+
+\section{Discussion}
+\label{sec:discussion}
+
+\paragraph{What the claim rests on, and where it stops.}
+The demonstrated part of the claim is bounded by the deployment: one
+organization, three repositories, one build tool, eight weeks. The scheduling
+argument --- that history belongs beside the dependency graph --- is supported by
+the non-redundant ablation but is not proven by it, and a build environment
+whose change distribution is flat rather than concentrated would not reproduce
+the effect. The extension to test selection and runner placement is conjecture
+and is labeled as such wherever it appears.
+
+\paragraph{Threats to validity.}
+The three repositories belong to one organization and share a CI lineage, so
+practices such as branch cadence are held constant rather than varied. The
+deployment arm ran on the cluster that produced the observational trace, so
+the two are not independent. Fractional miss attribution for multi-input
+changes is a modeling choice; re-running the analysis with
+first-changed-input attribution moves pooled coverage from 71.4\% to 68.9\%
+and does not change the ordering in Table~\ref{tab:ablation}. Finally, the
+deployment measured wall-clock latency under the cluster's ordinary contention
+and not under saturation, where speculative work is likelier to displace real
+work.
+
+\paragraph{Cost.}
+The 5.8\% CPU overhead is a real cost, and organizations whose clusters run
+near saturation should expect the trade to be less favorable than it was here.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+Version-control history predicts, a day in advance and with AUC 0.87, which
+files will drive a build cluster's cache misses, and a scheduler that acts on
+that prediction cuts median build latency 22.4\% for a 5.8\% CPU cost. We take
+this as evidence for the broader claim that history is a scheduling signal
+rather than an offline analysis product --- a claim whose next test is not
+another cache experiment but the test-selection experiment named in
+Section~\ref{sec:discussion}.
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

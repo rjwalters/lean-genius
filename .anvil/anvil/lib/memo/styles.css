@@ -1,0 +1,243 @@
+/*
+ * anvil/lib/memo/styles.css
+ *
+ * Canonical pinned default theme for anvil:memo PDF rendering.
+ * Consumed by pandoc via anvil/lib/memo/template.html and the
+ * weasyprint / wkhtmltopdf render chain (see README.md in this dir).
+ *
+ * DESIGN NOTE: This stylesheet is DELIBERATELY MINIMAL. The maintainer
+ * policy is to close aesthetic-tuning PRs against the default. Consumers
+ * who want custom typography, color, or layout SHOULD override at the
+ * theme tier: `<consumer>/.anvil/themes/<theme>/memo/styles.css` (the
+ * installer scaffolds a starter theme at `.anvil/themes/starter/`;
+ * enable with `theme: starter` in the project BRIEF). See README.md
+ * "Override discipline" for the full resolution order.
+ *
+ * Pinned choices and why:
+ *   - System sans-serif fallback (Helvetica / Arial) — keeps the renderer
+ *     dependency-free; no @font-face declarations, no external font
+ *     downloads, no Marp-style themeSet shenanigans. The chain has to
+ *     work in CI containers without TeX Live or webfont caches.
+ *   - 11pt body, 1.45 line-height — middle of the readable-on-paper band
+ *     for a US-Letter memo. Matches the 600-words-per-page proxy used by
+ *     anvil:memo target_length (#122).
+ *   - 0.75in margins — generous enough that page footers and headers
+ *     never collide with body content, tight enough that an 8-page memo
+ *     stays within the cap.
+ *   - @page rule with footer page numbers — required for any
+ *     review-grade artifact; without page numbers, a printed memo loses
+ *     its navigation aid the moment it leaves the renderer.
+ *   - No color, no logos, no background images — those belong in the
+ *     consumer override, not the framework default.
+ */
+
+/* ------------------------------------------------------------------ */
+/* @page — paged-media rules (weasyprint reads these directly;          */
+/* wkhtmltopdf supports a subset via --header-* / --footer-* CLI flags) */
+/* ------------------------------------------------------------------ */
+
+@page {
+  size: 8.5in 11in;  /* US Letter — explicit dims, portable across WeasyPrint versions */
+  margin: 0.75in;
+
+  @bottom-center {
+    content: counter(page) " / " counter(pages);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 9pt;
+    color: #555;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Body typography                                                      */
+/* ------------------------------------------------------------------ */
+
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 11pt;
+  line-height: 1.45;
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Headings — minimal hierarchy, no decorative rules                    */
+/* ------------------------------------------------------------------ */
+
+h1 {
+  font-size: 18pt;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 14pt;
+  font-weight: bold;
+  margin-top: 1.2em;
+  margin-bottom: 0.4em;
+}
+
+h3 {
+  font-size: 12pt;
+  font-weight: bold;
+  margin-top: 1em;
+  margin-bottom: 0.3em;
+}
+
+h4, h5, h6 {
+  font-size: 11pt;
+  font-weight: bold;
+  margin-top: 0.8em;
+  margin-bottom: 0.2em;
+}
+
+/* ------------------------------------------------------------------ */
+/* Title block (rendered from $title$ / $author$ / $date$ frontmatter)  */
+/* ------------------------------------------------------------------ */
+
+.title-block {
+  margin-bottom: 1.5em;
+}
+
+.title-block .title {
+  font-size: 18pt;
+  font-weight: bold;
+  margin-bottom: 0.25em;
+}
+
+.title-block .author,
+.title-block .date {
+  font-size: 10pt;
+  color: #333;
+  margin-bottom: 0.1em;
+}
+
+/* ------------------------------------------------------------------ */
+/* Paragraphs, lists, blockquotes                                       */
+/* ------------------------------------------------------------------ */
+
+p {
+  margin-top: 0;
+  margin-bottom: 0.7em;
+}
+
+ul, ol {
+  margin-top: 0;
+  margin-bottom: 0.7em;
+  padding-left: 1.5em;
+}
+
+li {
+  margin-bottom: 0.2em;
+}
+
+blockquote {
+  margin: 0.7em 0 0.7em 1em;
+  padding-left: 0.7em;
+  border-left: 2px solid #888;
+  color: #333;
+}
+
+/* ------------------------------------------------------------------ */
+/* Code — fixed-width, no syntax-highlight color                        */
+/* ------------------------------------------------------------------ */
+
+code {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 10pt;
+}
+
+pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 10pt;
+  line-height: 1.35;
+  margin: 0.7em 0;
+  padding: 0.5em;
+  background: #f4f4f4;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+pre code {
+  font-size: inherit;
+  background: transparent;
+}
+
+/* ------------------------------------------------------------------ */
+/* Tables — booktabs-class rule weights (#238)                          */
+/* ------------------------------------------------------------------ */
+/*
+ * The default styling emulates the LaTeX booktabs convention used by
+ * `template.tex`: top rule on the table, a thinner rule below the
+ * header, no internal vertical or horizontal rules, and a bottom rule
+ * after the final data row. Comparison tables in synthesis / feedback
+ * memos carry rhetorical load — rule-weight tuning here is in-scope
+ * per the maintainer policy carve-out documented in README.md.
+ *
+ * The visual booktabs effect comes from the rule WEIGHTS (1pt top /
+ * 0.5pt header-bottom / 1pt final-row), not from color. We stay on
+ * `#000` for consistency with the body `color: #000` pin in the
+ * README's "no color" rule. No zebra striping, no vertical rules.
+ *
+ * `font-variant-numeric: tabular-nums` ensures numeric columns line
+ * up at the digit position, which is the other half of the booktabs
+ * "comparative tables read cleanly" effect.
+ */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0.7em 0;
+  font-size: 9.5pt;
+  line-height: 1.3;
+}
+
+thead th {
+  border-top: 1pt solid #000;
+  border-bottom: 0.5pt solid #000;
+  padding: 0.25em 0.5em;
+  font-weight: bold;
+  text-align: left;
+  vertical-align: top;
+}
+
+tbody td {
+  border: none;
+  padding: 0.25em 0.5em;
+  text-align: left;
+  vertical-align: top;
+  font-variant-numeric: tabular-nums;
+}
+
+tbody tr:last-child td {
+  border-bottom: 1pt solid #000;
+}
+
+/* ------------------------------------------------------------------ */
+/* Images — constrain to page width                                     */
+/* ------------------------------------------------------------------ */
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ------------------------------------------------------------------ */
+/* Horizontal rule                                                      */
+/* ------------------------------------------------------------------ */
+
+hr {
+  border: none;
+  border-top: 1px solid #888;
+  margin: 1em 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Page breaks (writer can opt in with class="page-break" div)          */
+/* ------------------------------------------------------------------ */
+
+.page-break {
+  page-break-before: always;
+}

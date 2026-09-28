@@ -1,0 +1,14 @@
+{
+  "_comment": "Canonical JSON mirror of the Anvil figure palette. The Python module anvil/lib/figures/palette.py is the source of truth; this file exists so figure scripts run with bare python3 (no PYTHONPATH) can json.load(...) the palette without importing anvil. Drift between this file and palette.py is enforced by tests/lib/test_figures.py::test_palette_json_matches_palette_py.",
+  "ANVIL_NAVY": "#1f4e7a",
+  "ANVIL_INK": "#1a1a1a",
+  "ANVIL_MUTED": "#6b6b6b",
+  "ANVIL_GREY": "#6b6b6b",
+  "ANVIL_RULE": "#d6d6d6",
+  "ANVIL_BG": "#ffffff",
+  "ANVIL_BG_SECTION": "#f5f5f5",
+  "ANVIL_WARNING": "#b5651d",
+  "ANVIL_SUCCESS": "#2d5f3f",
+  "ANVIL_NAVY_TINT": "#5b82a6",
+  "ANVIL_RAMP": ["#1f4e7a", "#6b6b6b", "#5b82a6", "#d6d6d6"]
+}

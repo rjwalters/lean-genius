@@ -1,0 +1,110 @@
+# arXiv reader-norm rubric — advisory overlay for `anvil:paper`.
+#
+# Source: arXiv submission moderation policies + community reader norms.
+# See:
+#   https://info.arxiv.org/help/moderation/index.html
+#   https://info.arxiv.org/help/policies/index.html
+# arXiv has no formal peer review; this rubric encodes the de-facto bar
+# a careful reader applies when deciding whether a preprint is worth
+# their time, plus the moderation criteria arXiv itself uses (category
+# correctness, scope, abstract claims matching the body).
+#
+# This rubric is ADVISORY — it produces venue-specific scoring that the
+# reviser consumes for additional signal, but does NOT contribute to the
+# /40 convergence gate in `anvil/skills/paper/rubric.md`. The generic /40
+# rubric remains the authoritative convergence gate for advance decisions.
+# See `anvil/lib/snippets/rubric.md` and `anvil/lib/rubric.py` for the
+# advisory-vs-gate distinction.
+#
+# Weights sum to 10.
+
+id: anvil-pub-arxiv-v1
+name: arXiv reader-norm rubric (advisory overlay)
+venue: arxiv
+total: 10
+advisory: true
+source: https://info.arxiv.org/help/moderation/index.html
+
+dimensions:
+  - id: citation_completeness
+    name: Citation completeness
+    weight: 3
+    description: >-
+      Comprehensive engagement with prior work in the area. arXiv readers
+      cross-check against their own knowledge of the literature; a
+      preprint that misses well-known prior results loses credibility
+      quickly. This dimension assesses whether the bibliography covers
+      the obvious prior art and whether the related-work section engages
+      with it on the merits (not just listing citations).
+    calibration: >-
+      3/3 — the related-work section engages with the relevant prior
+      art the area's experts would expect; the bibliography is
+      comprehensive. 2/3 — covers most prior work; one or two notable
+      gaps. 1/3 — sparse engagement with prior work; multiple expected
+      citations missing. 0/3 — appears to ignore the literature.
+
+  - id: reproducibility
+    name: Reproducibility (code, data, seeds)
+    weight: 3
+    description: >-
+      Code, data, seeds, hyperparameters, or experimental protocols are
+      present or referenced. arXiv preprints that intend to be taken
+      seriously by the community routinely link to GitHub repositories,
+      include supplementary archives, or provide enough detail in the
+      methods section to permit replication. The bar here mirrors the
+      NeurIPS reproducibility checklist but without the formal
+      requirement.
+    calibration: >-
+      3/3 — code+data+seeds either supplied or referenced via a stable
+      artifact. 2/3 — methods are detailed enough to replicate without
+      code. 1/3 — methods sketched but key details missing. 0/3 —
+      replication not feasible from the preprint alone.
+
+  - id: clarity_of_contribution
+    name: Clarity of contribution
+    weight: 2
+    description: >-
+      The abstract and introduction state the contribution
+      unambiguously. arXiv readers triage on the abstract — if the
+      contribution is unclear there, the paper does not get read. This
+      dimension assesses whether a reader can extract the contribution
+      in one sentence per item from the abstract and the first page.
+    calibration: >-
+      2/2 — abstract and intro state the contribution clearly; one
+      sentence per claimed contribution. 1/2 — contribution is
+      identifiable but requires reading past the introduction. 0/2 —
+      contribution is unclear or unstated.
+
+  - id: scope_classification
+    name: Scope and category classification
+    weight: 2
+    description: >-
+      The arXiv submission category (cs.LG, stat.ML, math.PR, etc.) is
+      correct for the work, and the abstract's claims match what that
+      category's readers expect. arXiv moderators reject or
+      cross-classify papers whose category is mismatched; this
+      dimension captures that bar pre-submission so the paper lands
+      in front of the right readers.
+    calibration: >-
+      2/2 — category is correct and the abstract's framing matches
+      community expectations for that category. 1/2 — category is
+      defensible but ambiguous; an alternative might be more
+      appropriate. 0/2 — category mismatch; the paper belongs in a
+      different primary category.
+
+critical_flags:
+  - type: category_mismatch
+    description: >-
+      The submission's primary arXiv category does not match the actual
+      scope of the work. Examples: a methods paper claiming a domain
+      result, a survey submitted as a primary research category, an
+      ML paper submitted to stat.AP with no statistical-application
+      content. Moderators routinely reclassify or hold these.
+
+  - type: unstated_contribution
+    description: >-
+      The abstract and introduction do not state an identifiable
+      contribution. The reader cannot extract what is new in one
+      sentence per item from the first page. arXiv preprints with
+      unstated contributions are skipped on triage; the flag fires
+      pre-publication so the preprint can be revised.
