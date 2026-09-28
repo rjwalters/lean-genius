@@ -1,0 +1,229 @@
+{
+  "schema_version": "1",
+  "kind": "judgment",
+  "version_dir": "erdos85-drop.1",
+  "critic_id": "paper-review",
+  "rubric": "anvil-pub-v2",
+  "scores": [
+    {
+      "dimension": "1_rigor",
+      "score": 4,
+      "max": 6,
+      "critical": false,
+      "evidence_span": "main.tex:L313-L313",
+      "fix": "Define the strata H1/H3/H5/H7 and state that the case split is exhaustive; summarize the H3/H5/H7 closure arguments in the paper rather than by ledger pointer.",
+      "justification": "Sound architecture and explicit trust boundary, but the strata are never defined and three of four stratum closures are pointers to internal ledgers."
+    },
+    {
+      "dimension": "2_evidence",
+      "score": 4,
+      "max": 6,
+      "critical": true,
+      "evidence_span": "main.tex:L126-L136",
+      "fix": "Add the cost-model and bank-statistics receipts to refs/ (or cut unbacked figures) and reconcile 1,159 vs 1,160.",
+      "justification": "H1 census reconciles with refs/CENSUS.md, cube-tree-check.json and axioms.out; cost-model numbers cite receipts absent from refs/; negative-map claims rest on commit hashes."
+    },
+    {
+      "dimension": "3_contribution_clarity",
+      "score": 2,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L31-L39",
+      "fix": "Add an Introduction stating the problem, both results in plain mathematics, the strata, and the significance (first drop to our knowledge; Boza r(42) selection) with the epistemic qualifier.",
+      "justification": "Contributions are extractable only through Lean identifiers; the problem is never stated in the abstract; significance and the strongest honest claim are absent (buried lede)."
+    },
+    {
+      "dimension": "4_related_work",
+      "score": 1,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L303-L303",
+      "fix": "Write a Related Work section citing Boza (incl. the open r(42) entry), Zhang-Chen-Cheng, Afzaly-McKay (lower-bound examples only), the SAT-certificate lineage, Lean 4 and mathlib.",
+      "justification": "No related-work section; Boza and Zhang-Chen-Cheng only as href links; Afzaly-McKay and the entire SAT/Lean toolchain uncited; no r(42) connection."
+    },
+    {
+      "dimension": "5_reproducibility",
+      "score": 2,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L319-L319",
+      "fix": "Publish or at least manifest the census receipts, emitter, cube tools and graph6 inputs; describe the cube-splitting procedure in enough detail to re-run.",
+      "justification": "Solver versions, caps and hashes are stated, but all artifacts are on a private volume or unreleased bucket and scripts are cited by internal path."
+    },
+    {
+      "dimension": "6_figures_tables",
+      "score": 1,
+      "max": 4,
+      "critical": false,
+      "evidence_span": "main.tex:L62-L87",
+      "fix": "Caption, number and label both tables; fix the midrule/bottomrule order; make the evidence-levels table fit its page; remove the backslash artefacts from cells.",
+      "justification": "No figures; two uncaptioned tables, the first with rules in the wrong order and a 54.8pt page overflow that prints the folio inside a cell."
+    },
+    {
+      "dimension": "7_prose_structure",
+      "score": 1,
+      "max": 4,
+      "critical": true,
+      "evidence_span": "main.tex:L9-L9",
+      "fix": "Remove the \\path override, add an Introduction, strip hand numbers from section titles, move process essays to an appendix, purge room-msg/commit citations, delete the honest/candid label class.",
+      "justification": "No introduction; doubled section numbers; transcript citations in the body; AI-tell adjectives (honest x11, candid x3); every Lean statement renders with literal backslashes; empty References."
+    },
+    {
+      "dimension": "8_citation_hygiene",
+      "score": 1,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L321-L322",
+      "fix": "Add \\cite at first mention for all 11 refs.bib entries and replace the two href links with \\cite.",
+      "justification": "Zero \\cite in the body; BibTeX reports an empty thebibliography; the rendered PDF ends with a bare References heading; refs.bib entries themselves are well-formed."
+    },
+    {
+      "dimension": "9_rhetorical_economy",
+      "score": 1,
+      "max": 4,
+      "critical": false,
+      "evidence_span": "main.tex:L219-L277",
+      "fix": "Cut or appendix the eight campaign-process sections, state the trust boundary once, delete the reconciled-on-2026-09-28 meta-paragraph, and lead with the result.",
+      "justification": "About six of 14 pages are campaign-process essays; the trust-boundary sentence is repeated five times; editorial meta-commentary sits in the body; the lede is buried."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "blocker",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L9-L9",
+      "rationale": "\\renewcommand{\\texttt}[1]{\\path{#1}} renders every escaped identifier and statement with literal backslashes, abstract included.",
+      "suggested_fix": "Delete the override; typeset mathematics in math mode and Lean names in \\texttt with a breaking package; grep pdftotext output for '\\\\_' before the next review."
+    },
+    {
+      "severity": "blocker",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L132-L132",
+      "rationale": "1,159 UNSAT verdicts (L132) contradicts 1,160 whole-instance rows everywhere else and in refs/CENSUS.md.",
+      "suggested_fix": "Reconcile the count in one sentence (name the excluded row and why) or correct the number to agree with CENSUS.md."
+    },
+    {
+      "severity": "major",
+      "dimension": "3_contribution_clarity",
+      "evidence_span": "main.tex:L31-L39",
+      "rationale": "Underclaiming / buried lede: the abstract never states Erdős Problem 85 or why a 48-to-49 drop matters; the strongest honest claim (first strict drop on the stated domain to our knowledge; selects Boza's open r(42) entry) is absent from the whole paper; there is no Introduction.",
+      "suggested_fix": "Add a one-page Introduction stating the problem, both results in plain mathematics, the strata, the epistemically qualified significance with \\cite{boza2024ramsey}, and a roadmap.",
+      "downstream_risk": "envelope-breach: the BRIEF targets 12-18 pages; adding an Introduction and Related Work without moving the process essays to an appendix (see the structure finding) would push past 18 pages."
+    },
+    {
+      "severity": "major",
+      "dimension": "8_citation_hygiene",
+      "evidence_span": "main.tex:L321-L322",
+      "rationale": "Zero \\cite commands; BibTeX 'Empty thebibliography'; the PDF's References section is empty although refs.bib holds 11 resolvable entries.",
+      "suggested_fix": "Cite Boza, Zhang-Chen-Cheng, Afzaly-McKay, Kissat, CaDiCaL, cube-and-conquer, DRAT-trim, LRAT, Lean 4, mathlib and Bloom's problem page at first mention; replace the two \\href links at L303 with \\cite."
+    },
+    {
+      "severity": "major",
+      "dimension": "4_related_work",
+      "evidence_span": "main.tex:L297-L303",
+      "rationale": "No Related Work section; positioning is one subsection inside Results and refers to an internal literature-check file rather than the literature.",
+      "suggested_fix": "Write a short Related Work section from the 11 refs.bib entries, stating the F/r convention and the r(41)=49, r(42) in {49,50} entries (BRIEF rule)."
+    },
+    {
+      "severity": "major",
+      "dimension": "1_rigor",
+      "evidence_span": "main.tex:L162-L162",
+      "rationale": "'A-REG itself remains an axiom/conjecture, not a proved result' contradicts the abstract's 'live hypothesis' and brushes the BRIEF's hard rule on A-REG's status.",
+      "suggested_fix": "Replace with 'remains an unproved hypothesis' and use that voice everywhere."
+    },
+    {
+      "severity": "major",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L126-L136",
+      "rationale": "Every cost-to-verify figure (12,019; 4,831; 6,651; 17.32 d; $1,276; 6.06 TB; $182; $2,600; 574; 4,011 s; 4,539 s; 12,102; 22.6 TB; 2,695 h; 15 TB; 6,700 h; $2,000-2,500; etc.), plus '1,322 of 1,412' (L122) and 13,351 (L291), traces only to refs/DRAFT.md and cites receipts (sat49/H1_REPLAY_SPOT_16_BUDGET_PLAN_20260916.md, sat49/H1_V3_SOLVER_TIMING_20260916.md, bank statistics) that are not in refs/.",
+      "suggested_fix": "Add those receipts to refs/ or cut each figure that cannot be backed; the BRIEF requires the cost-to-verify section to survive in substance, so prefer adding receipts."
+    },
+    {
+      "severity": "major",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L152-L311",
+      "rationale": "Hand-numbered titles ('0. Mathematical status' ... '8. Interpretation') inside auto-numbered sections render as '2 0.' ... '13 8.'; the in-text '§8' (L148) points nowhere.",
+      "suggested_fix": "Strip the hand numbers; use \\label/\\ref; reorder deliberately."
+    },
+    {
+      "severity": "major",
+      "dimension": "9_rhetorical_economy",
+      "evidence_span": "main.tex:L219-L277",
+      "rationale": "Eight campaign-process sections (verification asymmetry, adversarial diversity, exchange rate, persistence, honest scoping, thin human role, why Erdős problems, silence is not success) and the room-protocol Methods cite room messages and commit hashes and add nothing a combinatorics reader needs.",
+      "suggested_fix": "Move them to an appendix or a separate note; purge 'room msg'/'outline v2.6x'/commit-hash citations from the body (one Artifacts appendix table may keep them).",
+      "downstream_risk": "cross-reference-dangle: §8's 'the h305 case study below' (L122) and 'the callback-free order-64 consumer above' (L309) refer into the moved material; re-point them to the appendix."
+    },
+    {
+      "severity": "major",
+      "dimension": "9_rhetorical_economy",
+      "evidence_span": "main.tex:L319-L319",
+      "rationale": "'This section was reconciled on 2026-09-28 with the three artifacts it names and nothing else' is an authors' provenance note inside the body.",
+      "suggested_fix": "Move the three artifact names to a Data and code availability paragraph and delete the rest."
+    },
+    {
+      "severity": "major",
+      "dimension": "6_figures_tables",
+      "evidence_span": "main.tex:L62-L87",
+      "rationale": "Evidence-levels table: \\midrule\\bottomrule precede the body rows, no caption/number/label, and the float overflows the page by 54.8 pt so the page-3 folio prints inside the last row.",
+      "suggested_fix": "Convert to a captioned table with correct rule order and a page-fitting layout (longtable or a shortened last cell); caption and label the four-input table at L95-L114 too."
+    },
+    {
+      "severity": "major",
+      "dimension": "1_rigor",
+      "evidence_span": "main.tex:L58-L116",
+      "rationale": "The strata H1/H3/H5/H7, 'one-high'/'seven-high', representative masks, positive cubes and negative covers are used without definition, so exhaustiveness of the case split cannot be checked.",
+      "suggested_fix": "Add one paragraph defining the strata and stating that the four are exhaustive, with the Lean name of the exhaustiveness lemma."
+    },
+    {
+      "severity": "major",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L78-L78",
+      "rationale": "'(168 edges, all pair codegrees <= 1) corroborate both graphs' — 168 = 48*7/2 is the 48-vertex witness's edge count only.",
+      "suggested_fix": "Give the 49-vertex witness's edge count separately or restrict the parenthetical to the 48-vertex graph."
+    },
+    {
+      "severity": "minor",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L144-L313",
+      "rationale": "Default AI-tell adjective class: 'honest' x11 (L144, L235, L239, L243, L295, L309, L311, L313), 'candid' x3 (L144, L176, L307), 'genuinely' (L309) label moves instead of making them.",
+      "suggested_fix": "Delete each or replace with the concrete referent (e.g. 'the corrected 88-owner table')."
+    },
+    {
+      "severity": "minor",
+      "dimension": "9_rhetorical_economy",
+      "evidence_span": "main.tex:L138-L178",
+      "rationale": "The defect-operator reduction chain is stated three times (§Theorem B, §0, §Results and evidence map).",
+      "suggested_fix": "Keep one statement plus a table of Lean names -> statements -> axiom status; forward-reference elsewhere."
+    },
+    {
+      "severity": "minor",
+      "dimension": "3_contribution_clarity",
+      "evidence_span": "main.tex:L39-L39",
+      "rationale": "'the published Boza table reports the same no-drop behavior at orders 35 and 36' silently converts r(35)=42, r(36)=43 to F values; the BRIEF requires saying which convention is in use.",
+      "suggested_fix": "State the F/r conversion when quoting Boza's entries."
+    },
+    {
+      "severity": "nit",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L33-L166",
+      "rationale": "Display statements set as \\texttt paragraphs; \\rule separators at L150/L217/L257 are Markdown leftovers.",
+      "suggested_fix": "Use math display or theorem environments; remove the rules."
+    }
+  ],
+  "critical_flags": [
+    {
+      "type": "rendered_formal_statements_garbled",
+      "justification": "The preamble line \\renewcommand{\\texttt}[1]{\\path{#1}} makes \\path print pandoc's escape backslashes literally, so the compiled PDF shows the abstract's headline claim as 'f(48)\\=\\8 and f(49)\\=\\7', Theorem B as 'BinarySquareRegularExclusion\\→\\¬\\Erdos85Question' and the finite-drop hypothesis as 'hno49\\:\\¬\\C4FreeMinDegreeWitness\\49\\7' (96 '\\_' and 23 '\\=' / '\\→' / '\\¬' artefacts in the pdftotext output). The statements as printed are not the statements the paper makes; a reader cannot take page 1 seriously. Analogue of the vision rubric's mathtext_artifact_breaks_meaning; outside the mechanical render gate's detector set, so set from a direct read of the PDF text.",
+      "evidence_span": "main.tex:L9-L9"
+    },
+    {
+      "type": "numerical_inconsistency",
+      "justification": "Section 'A cheaper route' states '1,159 UNSAT verdicts needed 2,695 Kissat core-hours' for the residual whole-instance rows, while the evidence-levels table (L83), the abstract (L35), section 8 (L313, L319) and refs/CENSUS.md all give 1,160 whole-instance two-solver UNSAT rows. For a paper whose Result A is a census count with an 'empty open list', an unexplained off-by-one in the headline count is disqualifying until reconciled (one sentence naming a row without a timing record would suffice, if that is the cause).",
+      "evidence_span": "main.tex:L132-L132"
+    }
+  ],
+  "total": 17,
+  "threshold": 35,
+  "verdict": "BLOCK",
+  "unscored": false
+}

@@ -200,9 +200,10 @@ the replay pilot checked about half a megabyte of gzipped certificate per
 second, so a kernel check costs roughly as long as the solve that produced it.
 The largest files force one checker per 64 GB host, which is what turns 4,800
 compile hours into a month of fleet time. The 1,161 residual roots settled by
-the verdict-only census are heavier still: 1,159 UNSAT verdicts needed 2,695
-Kissat core-hours (median 1.9 hours per row; 120 rows above 4 hours, six above
-12 hours), so whole-instance certificates for them would total about 15 TB, and
+the verdict-only census are heavier still: the 1,160 whole-instance UNSAT
+verdicts needed 2,704 Kissat and 2,996 CaDiCaL core-hours (median 1.9 hours of
+Kissat per row; 121 rows above 4 hours, six above 12 hours), so whole-instance
+certificates for them would total about 15 TB, and
 the hardest rows would produce single files of 60 to 130 GB that no checker can
 hold.
 
