@@ -1,0 +1,181 @@
+{
+  "schema_version": "1",
+  "kind": "judgment",
+  "version_dir": "erdos85-drop.5",
+  "critic_id": "paper-review",
+  "model": "claude-fable-5-1",
+  "rubric": "anvil-pub-v2",
+  "scores": [
+    {
+      "dimension": "1_rigor",
+      "score": 6,
+      "max": 6,
+      "critical": false,
+      "evidence_span": "main.tex:L191-L195",
+      "fix": null,
+      "justification": "Argument unchanged from v4 and the one wording overstatement is now exact against the ledger (complement completion where required, three roots); the two consumers are kept apart; the 1,412-preparation sentence names the right population (1,137 cloud rows, 24 pilot rows)."
+    },
+    {
+      "dimension": "2_evidence",
+      "score": 5,
+      "max": 6,
+      "critical": false,
+      "evidence_span": "main.tex:L193-L338",
+      "fix": "Publish the thirteen packed LRAT files (or a manifest with sizes) beside the certificate bank so the H7 t>=1 Lean checks are re-checkable; the H5 / H7 t=0 review discussions remain unpublished.",
+      "justification": "H1 complete and traceable; H3 and the thirteen H7 representatives carry checked certificates; H5 and H7 t=0 closed by reviewed reductions with linked ledgers, and Section 7 now says what a reader can inspect. The inspectable evidence did not grow: the packed certificates are unpublished so the thirteen modules cannot be rebuilt publicly."
+    },
+    {
+      "dimension": "3_contribution_clarity",
+      "score": 5,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L66-L68",
+      "fix": null,
+      "justification": "Two-paragraph abstract, one result per paragraph, each with its qualifier in one sentence; cold-reader test passes; the stated claim is the BRIEF's strongest honest claim. Minor without deduction: the abstract dropped 'through native_decide' for the lower sides."
+    },
+    {
+      "dimension": "4_related_work",
+      "score": 3,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L101-L101",
+      "fix": "Run paper-litsearch for the methods behind the exact r(s) values and prior SAT-with-certificate results in extremal combinatorics before publication.",
+      "justification": "Unchanged from v4: accurate, BRIEF-compliant positioning against all 12 refs.bib entries; the method-lineage gap is declared, not filled; scored on what refs/ allows (web search off, nothing invented)."
+    },
+    {
+      "dimension": "5_reproducibility",
+      "score": 4,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L322-L340",
+      "fix": "Publish the packed LRAT files and the solver logs / run directories, or manifest them with sizes; state the packed-file total once a receipt carries it.",
+      "justification": "Every named artifact is a public link (69 uses, 60 paths, all present on disk and on the branch); solver versions, caps, hashes, tooling and profile counts make the census regenerable. Unchanged gap: the certificate bank, the artifact volume and the thirteen packed LRAT files are unpublished, so orderFortyNineStratumExcluded_seven_of_t0 cannot be rebuilt publicly."
+    },
+    {
+      "dimension": "6_figures_tables",
+      "score": 3,
+      "max": 4,
+      "critical": false,
+      "evidence_span": "main.tex:L123-L246",
+      "fix": "Add one figure from banked data via paper-figures: the 71-node cube tree (tree-check.json) or the solve-time distribution (h1-census-table.tsv).",
+      "justification": "Five standalone captioned tables that fit the page, identifiers breaking only after underscores, the in-table link via repofiletab. No figure where one would carry the argument."
+    },
+    {
+      "dimension": "7_prose_structure",
+      "score": 4,
+      "max": 4,
+      "critical": false,
+      "evidence_span": "main.tex:L85-L193",
+      "fix": null,
+      "justification": "The three v4 defects are fixed (representatives noun, article, split certificate sentence); render clean (0 errors, 0 overfull, 5 mild underfulls); Appendix B reads as technical lessons; no AI-tell instance (the only grep hits are the word 'candidate')."
+    },
+    {
+      "dimension": "8_citation_hygiene",
+      "score": 5,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L107-L117",
+      "fix": null,
+      "justification": "All 12 refs.bib entries cited and resolving with complete fields (BibTeX 0 warnings, 0 [?]); the axiom-scope minor of the v4 audit is fixed and the two native_decide vocabularies are tied together; no unsourced non-trivial claim found."
+    },
+    {
+      "dimension": "9_rhetorical_economy",
+      "score": 3,
+      "max": 4,
+      "critical": false,
+      "evidence_span": "main.tex:L238-L252",
+      "fix": "Split the two 300-word Section 4.2 paragraphs at their change of topic; let Section 4.4 and Section 6 point at Section 4.2's trust statement with one clause instead of restating it.",
+      "justification": "The v4 costs are paid (two-paragraph 260-token abstract, one-page Appendix B, 20 pages). Remaining cost is restatement: the H7 certificate trust profile appears six times and the H5-closure and H7 t=0 paragraphs each exceed 300 words."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "minor",
+      "dimension": "3_contribution_clarity",
+      "evidence_span": "main.tex:L66-L66",
+      "rationale": "Abstract: 'The lower sides are explicit graphs checked in Lean 4.' dropped v4's 'through native_decide'; Section 1, Table 1, Section 4.1 and Section 6 still disclose it, but the abstract alone now reads as a kernel proof of the lower sides.",
+      "suggested_fix": "Restore 'through native_decide' (four words)."
+    },
+    {
+      "severity": "minor",
+      "dimension": "9_rhetorical_economy",
+      "evidence_span": "main.tex:L191-L195",
+      "rationale": "Two Section 4.2 paragraphs (H5 closure; H7 t=0 cell) each run past 300 words carrying an interface description, a computation summary, review numbers and a trust statement.",
+      "suggested_fix": "Split each at the change of topic ('H5 itself was closed on 2026-09-10' / 'The closure ledger of 2026-09-15')."
+    },
+    {
+      "severity": "minor",
+      "dimension": "9_rhetorical_economy",
+      "evidence_span": "main.tex:L107-L311",
+      "rationale": "The H7 certificate trust profile (Lean.ofReduceBool, no cold rebuild, unpublished packed files) is stated in Section 2, Section 3.1, Section 4.2, Table 4, Section 4.4 and Section 6.",
+      "suggested_fix": "Keep Section 4.2 and Table 4 as canonical; reduce Section 4.4 and Section 6 to one clause pointing at Section 4.2."
+    },
+    {
+      "severity": "minor",
+      "dimension": "4_related_work",
+      "evidence_span": "main.tex:L101-L101",
+      "rationale": "related-work: the method-lineage gap (methods behind the exact r(s) entries; prior SAT-with-certificate results in extremal combinatorics) stands; correctly declined again with web search off.",
+      "suggested_fix": "paper-litsearch run before publication; no citation proposed here."
+    },
+    {
+      "severity": "minor",
+      "dimension": "5_reproducibility",
+      "evidence_span": "main.tex:L193-L340",
+      "rationale": "The thirteen H7 modules cannot be rebuilt from the public tree (packed LRAT files unpublished) and their total size is not stated; the reviser rightly declined a summed figure under the no-new-numbers rule.",
+      "suggested_fix": "Publish the packed files or a manifest with sizes beside the certificate bank."
+    },
+    {
+      "severity": "nit",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L322-L322",
+      "rationale": "'The links point at that branch and will be repointed at the release tag when one is cut.' is a production note; reader-addressed, so not an R-AUD violation.",
+      "suggested_fix": "At publication, state what the links point at rather than a promise."
+    },
+    {
+      "severity": "nit",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L319-L319",
+      "rationale": "'review gates' in the required acknowledgement is the one phrase still echoing the governance vocabulary R-AUD removed.",
+      "suggested_fix": "'review steps' or 'reviews'."
+    },
+    {
+      "severity": "nit",
+      "dimension": "5_reproducibility",
+      "evidence_span": "main.tex:L36-L38",
+      "rationale": "Directory targets are linked through /blob/\u2026/ and GitHub answers 301 -> /tree/ (verified 301 -> 200 for three of the eleven directories).",
+      "suggested_fix": "A \\repodir variant on /tree/ would avoid depending on the redirect when the base is switched to the release tag."
+    },
+    {
+      "severity": "nit",
+      "dimension": "6_figures_tables",
+      "evidence_span": "main.tex:L219-L219",
+      "rationale": "No figure; figures/ is empty; declined by the reviser with a stated reason.",
+      "suggested_fix": "paper-figures: cube-tree diagram from tree-check.json or solve-time histogram from h1-census-table.tsv."
+    },
+    {
+      "severity": "nit",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L1-L384",
+      "rationale": "5 underfull lines (badness 1776-6094; v4: 7); none needs action.",
+      "suggested_fix": "No action needed; recorded for the audit trail."
+    },
+    {
+      "severity": "nit",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L7-L7",
+      "rationale": "26 cosmetic TU/Menlo font-shape warnings from the hyphenat htt option.",
+      "suggested_fix": "No action needed; recorded for the audit trail."
+    },
+    {
+      "severity": "nit",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L66-L379",
+      "rationale": "Procedural: numeric detector clean (897 numbers, 0 claims); manual arithmetic cross-check clean; pending gate clean; render gate pass (20 pages, 0 overfull, 0 placeholders); evidence drift CLEAN; scope_lint PASS; Lean identifiers 0 missing; links 69/60 all present, GitHub spot-check 11 files 200 + 3 dirs 301->200; evidence_check run on scoring.md before commit; sidecar via the anvil.lib.sidecar CLI shim.",
+      "suggested_fix": "No action needed; recorded for the audit trail."
+    }
+  ],
+  "critical_flags": [],
+  "total": 38,
+  "threshold": 35,
+  "verdict": "ADVANCE"
+}

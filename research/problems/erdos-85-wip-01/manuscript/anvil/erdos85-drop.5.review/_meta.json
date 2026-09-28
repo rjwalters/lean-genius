@@ -1,0 +1,17 @@
+{
+  "critic": "review",
+  "role": "paper-review.md",
+  "started": "2026-09-28T22:25:12Z",
+  "finished": "2026-09-28T22:35:49Z",
+  "model": "claude-fable-5-1",
+  "schema_version": 1,
+  "scorecard_kind": "human-verdict",
+  "rubric_id": "anvil-pub-v2",
+  "rubric_total": 44,
+  "advance_threshold": 35,
+  "sidecar": "python -m anvil.lib.sidecar stage/commit (issue #645 CLI shim)",
+  "evidence_check": "anvil.lib.evidence_check run against staging scoring.md before commit: 9 dimensions, 0 findings, pass",
+  "compile": "scratch copy, xelatex+bibtex+xelatex x2, all exit 0, 0 errors, 0 undefined refs/cites, 0 overfull, 5 underfull, 20 pages; version dir untouched",
+  "prior_review": "erdos85-drop.4.review (37/44, advance true, rubric anvil-pub-v2)",
+  "prior_critic_flags_reevaluated": "erdos85-drop.4.operator: audience_fit (R-AUD) resolved; non_public_links (R-LINK) resolved"
+}
