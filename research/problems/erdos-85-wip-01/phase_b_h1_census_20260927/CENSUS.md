@@ -56,8 +56,24 @@ cost-to-verify discussion.
 ## Capacity-grid decomposition (1,288 gap slots)
 
 1,158 gap slots are residual roots settled above; 96 are the historical overlay; 34 are outside
-the frozen Phase B source and have their own reviewed route (`phase_b_h1_gap130/dispatch_capacity34.py`).
-Their status is recorded in `h1-gap130-status.md` when that route runs.
+the frozen Phase B source and were solved 2026-09-27/28 on the Mac through the reviewed route
+(`phase_b_h1_gap130/dispatch_capacity34.py`, 4 h caps, zero spend): **34 of 34 UNSAT_CROSSCHECKED**,
+Kissat 0.3–1.7 h and CaDiCaL 0.0–2.0 h per row, no cap hits. Receipts: Stripe
+`artifacts/erdos85-sat49/h1-gap34-20260927/shard-{1,2,3}-r2/` and `shard-r3/` (the interrupted first
+attempt `shard-{1,2,3}/`, stopped at the operator's pause, is kept as evidence but excluded from
+the census because the reviewed auditor treats any unfinished attempt as INCOMPLETE).
+
+Reviewed auditor `audit_h1_gap_verdicts.py` over every run directory (`h1-gap1288-audit.json`):
+
+| Status | Slots |
+|---|---:|
+| Fresh two-solver UNSAT (`UNSAT_CROSSCHECKED`) | 1,191 |
+| Inherited 2026-08 certificate verification (`HISTORICAL_VERIFIED_UNSAT`) | 96 |
+| `UNKNOWN` (the cube-partitioned row, which the auditor cannot read) | 1 |
+| SAT, disagreement, error, incomplete | 0 |
+
+The auditor counts only fresh verdicts as closing a slot, so it prints 97 "open" slots (96 + 1);
+every slot has evidence, and the cube slot's evidence is `cube-h1_81494a6ef36d3ec9/tree-check.json`.
 
 ## Evidence class for the paper
 

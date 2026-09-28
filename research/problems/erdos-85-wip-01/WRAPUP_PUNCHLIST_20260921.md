@@ -23,7 +23,7 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
   checker rc 0). Six spot reclaims restarted rows; actual EC2 cost $235 of the $300
   ceiling. Receipts: `phase_b_h1_census_20260927/` and Stripe
   `artifacts/erdos85-sat49/h1-verdict-cloud-20260921/`, `h1-cube-pass4-20260926/`.
-- [~] A5. The 130 gap slots outside the residual queue. The 96 historical rows are
+- [x] A5. DONE 2026-09-28: 34/34 outside-frozen slots UNSAT_CROSSCHECKED; gap auditor: 1,191 fresh + 96 inherited + 1 cube slot, 0 incomplete. The 130 gap slots outside the residual queue. The 96 historical rows are
   carried by the reviewed overlay (drat-trim-verified certificates) and reported as
   HISTORICAL_VERIFIED_UNSAT by the summarizer; not re-solved. The 34 outside-frozen
   rows are running on the Mac since 2026-09-27 17:27Z via the reviewed
@@ -40,7 +40,7 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
 
 ## B. The paper
 
-- [~] B1. DONE 2026-09-27 for the residual roots (abstract, evidence table, §8, cube subsection; no "in progress" phrase remains). Left: the one sentence on the 34 outside-frozen slots once A5 finishes. Fill the H1 row of the evidence table, the abstract sentence and §8 from A7.
+- [x] B1. DONE 2026-09-28 including the capacity-grid row and the §8 reconciliation paragraph. Earlier: DONE 2026-09-27 for the residual roots (abstract, evidence table, §8, cube subsection; no "in progress" phrase remains). Left: the one sentence on the 34 outside-frozen slots once A5 finishes. Fill the H1 row of the evidence table, the abstract sentence and §8 from A7.
 - [~] B1a. DRAFTED 2026-09-26 as manuscript subsection "A cheaper route: cube-partitioned certificates (projection)"; update its cube-tree numbers when pass 4 finishes. Cost-to-verify refinement (Robb, 2026-09-26): measure how much of each
   row is trivial. The pass-4 cube split of the hardest row showed 27 of 32 cubes
   refuted by unit propagation in seconds; certificate cost concentrates in a few hard
@@ -54,9 +54,9 @@ Legend: [ ] open, [~] in progress, [x] done, [R] needs Robb.
 - [x] B4. DONE 2026-09-27: `CUTS_LEDGER_DRAFT.md` has rows 1–186; every row cited by the paper (172–186, 174, 175, 176, 180) exists. Room-message and outline-version pointers are transcript references and were left as is. Negative map and cuts ledger: freeze row numbers, check every cross-reference from the paper.
 - [x] B5. DONE 2026-09-27: both external URLs resolve (200); every repo-relative file cited in the manuscript exists; F-versus-r convention note in `FIRST_DROP_LITERATURE_CHECK.md` is referenced. References and conventions: Boza arXiv:2409.12770v2, Afzaly–McKay data
   page, erdosproblems.com/85, the F versus r convention note.
-- [~] B6. First PDF builds cleanly with pandoc 3.11 + xelatex (Stripe `artifacts/erdos85-manuscript-build-20260927/DRAFT.pdf`, 158 KB; two glyphs missing in the mono font, to fix in the final pass). Final typeset waits for the 34-slot sentence and the authorship statement. Typeset: Markdown to LaTeX/PDF, title page, AI-authorship and
+- [x] B6. Final PDF 2026-09-28: `manuscript/DRAFT.pdf` (pandoc 3.11 + xelatex, glyph issues fixed by ASCII substitutions). Authorship statement is the existing Contributions section. First PDF builds cleanly with pandoc 3.11 + xelatex (Stripe `artifacts/erdos85-manuscript-build-20260927/DRAFT.pdf`, 158 KB; two glyphs missing in the mono font, to fix in the final pass). Final typeset waits for the 34-slot sentence and the authorship statement. Typeset: Markdown to LaTeX/PDF, title page, AI-authorship and
   contribution statement per the goal #45 ruling.
-- [ ] B7. Final scope-honesty read of the whole paper (claude owns §8).
+- [x] B7. DONE 2026-09-28: full read; fixed every passage that still called the census pending (status block, Result A, §5, evidence map, contributions, §8 reconciliation). Final scope-honesty read of the whole paper (claude owns §8).
 - [R] B8. Operator read-through. Nothing external before this.
 
 ## C. Document the attempt (so a cold reader can resume in months)

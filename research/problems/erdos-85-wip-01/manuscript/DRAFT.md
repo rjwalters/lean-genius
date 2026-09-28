@@ -93,7 +93,7 @@ solver verdict or an archived proof object to a kernel-checked theorem.
 | H1 historical overlay | 96 reviewed historical cases with archived `drat-trim` verification (`phase_b_historical_overlay_96/`) | Historical checks are not a current kernel replay. |
 | H1 existing bank | 12,019 historical ready certificate inputs in the replay sizing model | Object and metadata availability do not establish a completed kernel replay. |
 | H1 residual roots | 1,161 Phase B roots without a listed certificate object: 1,160 returned UNSAT from Kissat 4.0.4 and then CaDiCaL 3.0.1 under declared caps (4, 12 or 24 hours per solver over four passes), and one, `h1_81494a6ef36d3ec9`, which defeated every whole-instance cap, returned UNSAT on all 36 leaves of an exact cube partition under both solvers; receipts re-derived by the reviewed summarizer and cube checker (`phase_b_h1_census_20260927/`) | Verdict-only evidence: two solvers agreeing under a cap is evidence about solver behaviour, not a proof; no certificate is produced. |
-| H1 capacity-grid slots | The 1,288 gap slots of the banked capacity snapshot are an overlapping decomposition: 1,158 are residual roots above, 96 are the historical overlay, 34 lie outside the frozen Phase B source and run through their own reviewed route (`phase_b_h1_gap130/`) | The 34 outside-frozen slots are being solved at this revision; their count is reported from receipts only. |
+| H1 capacity-grid slots | The 1,288 gap slots of the banked capacity snapshot are an overlapping decomposition: 1,158 are residual roots above, 96 are the historical overlay, 34 lie outside the frozen Phase B source and were solved through their own reviewed route (`phase_b_h1_gap130/`, all 34 UNSAT under both solvers, Kissat 0.3 to 1.7 hours each). The reviewed gap auditor (`phase_b_h1_census_20260927/h1-gap1288-audit.json`) reports 1,191 slots with fresh two-solver UNSAT verdicts, 96 with inherited 2026-08 certificate verification, and 1 slot, the cube-partitioned row, which it cannot read and lists as UNKNOWN | By the auditor's own definition only fresh verdicts count, so it prints 97 "open" slots: the 96 inherited rows and the cube row. Every slot has evidence; none has a certificate produced by this paper. |
 
 The residual-root count is final and comes from exact tag and CNF joins of the
 solver receipts by the reviewed summarizer, not from a sum of overlapping
@@ -310,7 +310,7 @@ of component `c` has exactly `m_c` graph-neighbours within that component
 (`binarySquare_regular_degree_induce_defectComponent_eq_part`).  Unit
 parts are impossible for even `q`
 (`binarySquare_regular_no_sizeQ_defectComponent_of_even`), as are bipartite
-defect components when `4 ∣ q`
+defect components when `4 | q`
 (`binarySquare_regular_no_bipartite_defectComponent`).  What remains is
 therefore exactly **A-REG-NONBIP**: all partitions `q = Σ m_c` with
 `m_c ≥ 2` and every defect component non-bipartite.
@@ -648,7 +648,7 @@ substantial.  The defect operator satisfies
 (`adjMatrix_sq_eq_sub_secondOrderDefect_of_regular` and
 `adjMatrix_comm_secondOrderDefect_of_regular`).  Its components have orders
 `q m_c`, with `Σm_c=q`; unit parts are impossible; and no component is
-bipartite when `4 ∣ q`
+bipartite when `4 | q`
 (`binarySquare_regular_exists_defectComponent_partition`,
 `binarySquare_regular_no_sizeQ_defectComponent_of_even`, and
 `binarySquare_regular_no_bipartite_defectComponent`).  What remains is the
@@ -722,7 +722,7 @@ The deductions from [Zhang–Chen–Cheng's polarity-graph result](https://doi.o
 and [Boza's bounds](https://arxiv.org/abs/2409.12770) put the adjacent
 star-Ramsey values at
 `r(109) ∈ {120,121}` and `r(155) ∈ {168,169}`, where
-`r(s)=R(C₄,K₁,ₛ)` (`cayley-census-q11-q13/LITERATURE_CHECK_20260915.md`).
+`r(s)=R(C₄,K_{1,s})` (`cayley-census-q11-q13/LITERATURE_CHECK_20260915.md`).
 The upper choice in either pair is equivalent to existence of the relevant
 11- or 13-regular graph on 120 or 168 vertices. The Cayley census cannot
 select the unrestricted value. The cited literature check found no exact
@@ -808,13 +808,17 @@ proof of the negative answer must supply, the negative map states which
 plausible shortcuts do not supply it, and Result A provides a concrete
 calibration point for future theory.
 
-This section is owned by Claude Fable for the final scope-honesty read.
-Before external release it must be reconciled with three artifacts and
-nothing else: the receipt-derived H1 census table (an exact join of the
-two-solver UNSAT rows to the 1,288 gap tags, the 96 historical rows and the
-12,019 certificate rows, with the open list, if any, printed in full); the
-exact Lean theorem names and the literal `#print axioms` output for every
-checked piece cited above (the witnesses, the conditional finite-drop core,
-and Theorem B); and, if the requester-pays copy is published, the release
-manifest of the certificate bank. No operational receipt, fleet count or
-verdict summary substitutes for those artifacts.
+This section was reconciled on 2026-09-28 with the three artifacts it names
+and nothing else. The receipt-derived census: the reviewed Phase B summarizer
+over 1,413 run directories and the Mac pilot (`phase_b_h1_census_20260927/h1-census-table.json`:
+1,160 two-solver UNSAT rows, 96 historical rows, no disagreement) and the
+reviewed 1,288-slot gap auditor (`h1-gap1288-audit.json`: 1,191 fresh
+two-solver UNSAT slots, 96 inherited, one cube-partitioned slot reported
+separately by `cube-h1_81494a6ef36d3ec9/tree-check.json`); the open list is
+empty. The 12,019 certificate rows enter only as the inventory that prices
+replay; they are not re-joined here. The literal `#print axioms` output from a
+cold rebuild for the witnesses, the conditional finite-drop core and Theorem B
+(`AXIOM_AUDIT_COLD_20260927/`). The release manifest of the certificate bank
+is not part of this revision because no requester-pays copy has been
+published; if one is, its manifest must be added here. No operational
+receipt, fleet count or verdict summary substitutes for those artifacts.

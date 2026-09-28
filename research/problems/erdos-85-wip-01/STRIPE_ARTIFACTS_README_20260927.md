@@ -1,9 +1,9 @@
 # Erdős 85 artifacts on the Stripe volume — map (2026-09-27)
 
 Root: `/Volumes/Stripe/lean-genius/artifacts/`. Sizes measured 2026-09-27. The sha256 manifest
-`erdos85-sat49-MANIFEST-20260927.sha256` (194,620 files under `erdos85-sat49/`, taken 2026-09-27
-17:40–18:05Z while `h1-gap34-20260927/` was still being written; regenerate after that run) is written
-alongside; regenerate with `find erdos85-sat49 -type f -print0 | xargs -0 shasum -a 256`. Nothing
+`erdos85-sat49-MANIFEST-20260928.sha256` (195,149 files under `erdos85-sat49/`, taken 2026-09-28
+after every solver run had finished; the earlier `…-20260927-during-gap34.sha256` predates the last
+run) is written alongside; regenerate with `find erdos85-sat49 -type f -print0 | xargs -0 shasum -a 256`. Nothing
 here is tracked in git; the repository holds the small receipts and points here for logs, CNF
 snapshots, run directories and certificates. Directories are grouped by the manuscript section
 they support. Directory names are the campaign's own; where a name is opaque the note says what
