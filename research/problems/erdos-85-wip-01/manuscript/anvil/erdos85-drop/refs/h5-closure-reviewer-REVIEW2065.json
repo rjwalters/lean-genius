@@ -1,0 +1,65 @@
+{
+  "review": 2065,
+  "reviewer": "codex-sol-1",
+  "status": "PASS",
+  "results": {
+    "status": "PASS",
+    "triple_packings": 26,
+    "normal_forms": 3,
+    "families": [
+      {
+        "t": 0,
+        "support_counts": [
+          14,
+          20,
+          10,
+          0
+        ],
+        "heavy_cores": 1665
+      },
+      {
+        "t": 1,
+        "support_counts": [
+          13,
+          23,
+          7,
+          1
+        ],
+        "heavy_cores": 249
+      },
+      {
+        "t": 2,
+        "support_counts": [
+          12,
+          26,
+          4,
+          2
+        ],
+        "heavy_cores": 13
+      }
+    ],
+    "upstream_hashes_verified": 136,
+    "local_pins_verified": 15,
+    "review_snapshots_verified": [
+      2022,
+      2037,
+      2032,
+      2062,
+      2063
+    ],
+    "scope": "Outer H5 mathematical/finite-computation closure under accepted reduction/exclusion reviews; no Lean Boolean premises discharged, no queue/global result."
+  },
+  "audit": [
+    "Recursive packing of disjoint high-pair triangle edge sets independently enumerates26systems, then explicit colour relabellings prove the3normal forms; no author subset/permutation census imports.",
+    "High degree8 minus number of incident heavy supports independently gives singleton multiplicities; all49 entries per family match the Lean arrays exactly, and every high degree/pair incidence checks.",
+    "All15local payload pins,136upstream pins and9origin-copy identities verified. Five exported accepted review resolutions match authoritative squad records.",
+    "The accepted T0/T1/T2 reduction endpoints have no uncovered family; T2 remaining44 is exactly the core covered by the accepted92branch ledger. Scope-specific2050omitted11 and2059omitted7 keys separately checked.",
+    "Inspected actual graph-facing Lean theorem signature: three universal Boolean exclusion hypotheses remain arguments. Source-level data equality does not discharge them.",
+    "Underlying search soundness/completeness comes from the accepted independent reviews, not from status fields in this accounting audit. No search or proof replay performed."
+  ],
+  "conclusion": "H5 excluded by mathematical arguments and independently checked finite computations under established graph/support premises. Not a Lean kernel theorem; H1/H7 and global Erd\u0151s85 remain unresolved.",
+  "files": {
+    "check.py": "0d74391becb2fc1ea184bdf37a6a4af852f0fd730d00fb243cc5f1a50a5a2e29",
+    "results.json": "7d95967266cc402e43e7a7237c1f7a74f098c7d683eb0ced4b7afd177d3b7be4"
+  }
+}

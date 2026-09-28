@@ -1,0 +1,59 @@
+# Three receipts for the paper thread (2026-09-28): H7 cells t = 1..7, the H5 closure, and the five-versus-seven formula counts
+
+Written for the erdos85-drop paper thread after the v3 review (35/44) asked for them. Every statement below is read from the Lean sources on `erdos85/integration`, the certificate manifests on Stripe, or the H5 closure ledger; nothing here is a new result.
+
+## 1. What excludes the seven-high cells with t ≥ 1
+
+The seven-high stratum splits by t, the number of low vertices of support 3 (`orderFortyNine_highIncidence_profile_of_seven_high` bounds t by 7; `orderFortyNineStratumExcluded_seven_of_tripleCells` composes the eight cells). The disposal of the cells is *not* uniform:
+
+- **Canonical census (Lean, kernel-checked).** `Erdos85OrderFortyNineSevenHighCanonicalCensus.lean`: the size-three supports form a linear triple system on seven points; after sending one block to `012` the executable raw census is exhaustive, and the file kernel-checks that every raw system is permutation-equivalent to one of **fourteen representatives, distributed 1, 1, 2, 3, 3, 2, 1, 1 by block count t = 0..7** (`reps`, `total_representative_count : … = 14`).
+- **Graph cover (Lean, proved).** `sevenHighCanonicalGraphCover_all` in `Erdos85OrderFortyNineSevenHighGraphCover.lean`: every C4-free graph on 49 vertices with minimum degree 7, exactly seven high vertices and t support-3 low vertices satisfies the Boolean constraints `orderFortyNineBooleanConstraints 7 (representativeMasks t index)` of one of the representatives of block count t, for every t ≤ 7 (per-t lemmas `sevenHighCanonicalGraphCover_zero … _seven` in the `…SevenHigh{One,…,Seven}Fiber.lean` files). `orderFortyNineStratumExcluded_seven_of_certificates` / `orderFortyNineTripleCellExcluded_seven_of_canonical` (`Erdos85OrderFortyNineSevenHighCanonicalCapstone.lean`) turn exclusion of the fourteen representatives into exclusion of the stratum; the file's docstring: "Its representative obligations total fourteen."
+- **The thirteen representatives with t ≥ 1 are excluded by LRAT certificates checked inside Lean.** Files `Erdos85OrderFortyNineSevenHighT{t}Rep{i}Certificate.lean` for (t, i) ∈ {(1,0), (2,0), (2,1), (3,0), (3,1), (3,2), (4,0), (4,1), (4,2), (5,0), (5,1), (6,0), (7,0)}. Each file `include_str`s the packed-lz4 LRAT proof from `artifacts/erdos85-sat49/strata-lrat/h7_t{t}_rep{i}.packed.lz4p7`, parses it (`parsePackedLz4OrderFortyNineLratProof`), proves `sevenHighT{t}Rep{i}_check : LRAT.check proof (orderFortyNineGeneratedH7SatCnf (representativeMasks t i))` by `native_decide` (`Std.Tactic.BVDecide` LRAT checker, so the theorem depends on `Lean.ofReduceBool`), and derives `sevenHighT{t}Rep{i}_excluded : SevenHighCanonicalRepresentativeExcluded t i` through `sevenHighCanonicalRepresentativeExcluded_of_lrat` (`Erdos85OrderFortyNineSevenHighCertificateBridge.lean`, which uses `false_of_orderFortyNine_generated_h7_lrat`). The formula of every representative has 1,329,041 clauses (manifests).
+- **Aggregation.** `Erdos85OrderFortyNineSevenHighCertificates.lean` (commit `bd623427d1f`, 2026-08-15, "aggregate seven-high checked certificates"; docstring: "The twelve canonical representatives with two through seven high triples are discharged by packed LRAT certificates") gives `orderFortyNineStratumExcluded_seven_of_t0_t1`; commit `a0139795e99` (2026-08-15, "check seven-high t1 and reduce to t0") adds the t = 1 certificate and `orderFortyNineStratumExcluded_seven_of_t0 (hzero : SevenHighCanonicalRepresentativeExcluded 0 0) : OrderFortyNineStratumExcluded 7`, whose docstring reads "All thirteen checked canonical representatives with at least one high triple are excluded. The empty triple-system representative is the sole remaining certificate input for the seven-high stratum." `Erdos85OrderFortyNineSevenHighT0CanonicalTerminal.lean` (commit `5c42a566a07`, 2026-08-26) restates this at the graph level: "A checked proof that no canonical completion graph exists closes the t=0 triple cell; the already checked certificates close cells t=1,...,7."
+- **So the closure ledger of 2026-09-15 concerns only the t = 0 cell.** Its 7/14/21/0 support profile (`Q7_H5_H7_SQUEEZE_20260910.md`, "H7/T0 is the remaining operator-designated sector"), the 43 empty-block classes and the 28 structural roots all live in t = 0; the Lean evidence interface for that cell is `orderFortyNineStratumExcluded_seven_of_emptyCubeEvidenceVectors` (19/15/7/2 canonical empty cubes), which is uninstantiated. The "H7 reduction and normalization premises" the ledger cites are: reviews 1573/1574, the 49-vertex degree-7/8 setting with independent high vertices (both also Lean theorems, see `STRATA_AND_SMALL_ORDERS_20260928.md`), and review 2091, the singleton–empty sums and distinct high colours used by the a = 6, 7 source arguments.
+
+**Status caveats for the t ≥ 1 certificates.** (i) The `_check` theorems are `native_decide` proofs, so they carry `Lean.ofReduceBool` in addition to the standard axioms. (ii) The certificate modules `include_str` absolute Stripe paths and were compiled at the 2026-08-15 commits; the cold Docker audit of 2026-09-27 (`AXIOM_AUDIT_COLD_20260927.md`) covered the finite-drop core with `hno49` as a hypothesis and did **not** rebuild these thirteen modules, so their compile receipts are the commit records plus the production manifests below. (iii) The manifests record, per instance, an external `drat-trim` verification, an external `lrat-check` verification and a Lean replay of the compact LRAT at production time (2026-08-15).
+
+### Certificate manifests (`artifacts/erdos85-sat49/strata-lrat/*.manifest.txt`, 2026-08-15)
+
+| instance | source CNF sha256 (prefix) | clauses | compact LRAT bytes | LRAT actions | drat-trim | lrat-check | Lean replay of compact LRAT |
+|---|---|---:|---:|---:|---|---|---|
+| `h7_t1_rep0` | `6699c73daa88…` | 1,329,041 | 5,750,832,743 | 14,332,419 | s VERIFIED | c VERIFIED | LRAT accepted: true |
+| `h7_t2_rep0` | `c70e7d20d077…` | 1,329,041 | 854,071,652 | 2,636,658 | s VERIFIED | c VERIFIED | LRAT accepted: true |
+| `h7_t2_rep1` | `12498caa61c8…` | 1,329,041 | 992,786,957 | 3,155,801 | s VERIFIED | c VERIFIED | LRAT accepted: true |
+| `h7_t3_rep0` | `2f189eae2752…` | 1,329,041 | 126,587,219 | 435,195 | s VERIFIED | c VERIFIED | LRAT accepted: true |
+| `h7_t3_rep1` | `ccf36d58acb4…` | 1,329,041 | 211,263,123 | 665,095 | s VERIFIED | c VERIFIED | LRAT accepted: true |
+| `h7_t3_rep2` | `06d60da77f9b…` | 1,329,041 | 542,466,730 | 1,619,671 | s VERIFIED | c VERIFIED | LRAT accepted: true |
+| `h7_t4_rep0` | `f14d3eb5faad…` | 1,329,041 | 111,958,420 | 316,062 | s VERIFIED | c VERIFIED | LRAT accepted: true |
+| `h7_t4_rep1` | `5bbd6a69f22e…` | 1,329,041 | 455,007,948 | 1,007,709 | s VERIFIED | c VERIFIED | LRAT accepted: true |
+| `h7_t4_rep2` | `9fa93084d098…` | 1,329,041 | 234,079,469 | 592,362 | s VERIFIED | c VERIFIED | LRAT accepted: true |
+| `h7_t5_rep0` | `c79b3293d519…` | 1,329,041 | 53,671 | 347 | s VERIFIED | c VERIFIED | LRAT accepted: true |
+| `h7_t5_rep1` | `999d879a94dc…` | 1,329,041 | 260,661 | 1,979 | s VERIFIED | c VERIFIED | LRAT accepted: true |
+| `h7_t6_rep0` | `16825dda98f4…` | 1,329,041 | 40,309 | 285 | s VERIFIED | c VERIFIED | LRAT accepted: true |
+| `h7_t7_rep0` | `a2a409bc957f…` | 1,329,041 | 21,147 | 163 | s VERIFIED | c VERIFIED | LRAT accepted: true |
+
+## 2. The H5 closure: what ran, what it returned, who checked it, when
+
+Receipt: `q7_h5_closure_ledger/` (copied here as `H5_CLOSURE_LEDGER_README_20260910.md`, `H5_CLOSURE_REVIEWED_RESULT_20260910.md`, `h5-closure-review2065.json`, `h5-closure-reviewer-REVIEW2065.json`). Paper-and-computation level, under the established graph-reduction premises; not a Lean theorem.
+
+- **Cells.** Under the H5 support reduction (weights at most 3, no repeated high pair in two triple supports), an independent enumeration of all 1,024 triple systems on five colours leaves 26 labelled systems (one empty, ten single-triple, fifteen double-triple), which the 120 colour permutations collapse to exactly the three canonical cells T0, T1, T2 with support profiles (14,20,10,0), (13,23,7,1), (12,26,4,2). The checker reconstructs all 49 masks of each cell and compares them exactly to the Lean canonical arrays (`Erdos85OrderFortyNineSmallHighProfileMasks.lean`).
+- **Per-cell finite exclusions (reviewed earlier, joined by the ledger).**
+
+| Cell | Reviewed finite domain and exclusion | Accepting review |
+|---|---|---|
+| T0 | 1,665 heavy classes → 761 host-compatible → 14 singleton-compatible → 13 empty negatives, plus a separate 20 > 19 counting contradiction | 2037 |
+| T1 | 249 heavy classes → 211 joint-host-compatible → 10 singleton-compatible → 0 empty-compatible | 2032 |
+| T2 | 13 heavy classes → 12 excluded by the exact reviewed census chain → the 44-core (`core44`), whose 92 branches are each assigned once to a reviewed exclusion | 2062 and 2063 |
+
+- **Outer ledger review 2065.** Requested by `codex-sol-2`, claimed and resolved by `codex-sol-1` on 2026-09-10 (created 23:11:21Z, resolved 23:13:51Z), status PASS: "Outer H5 closure under accepted reduction/exclusion premises. Independent recursive triangle-edge packing gives 26 systems; explicit relabelling yields 3 families …". The reviewer's `REVIEW2065.json` records 26 triple packings, 3 normal forms, the three families with their support counts and heavy-core counts (1,665 / 249 / 13), and pins `check.py` (sha256 `0d74391b…`) and `results.json` (sha256 `7d959672…`). Its conclusion: "H5 excluded by mathematical arguments and independently checked finite computations under established graph/support premises. Not a Lean kernel theorem; H1/H7 and global Erdős 85 remain unresolved."
+- **What is not there.** The three Boolean-exclusion premises of `orderFortyNineStratumExcluded_five_of_booleanExclusions` are undischarged in Lean; no fresh Lean compilation, no SAT run, no certificate replay and no queue change were part of the closure. The 129 H5 root cubes in the frozen census index (`PHASE_B_H5_H7_INVENTORY_20260910.md`) are the SAT-side inventory of the same three cells and were not consumed by this closure.
+
+## 3. Five representative formulas versus seven base formulas
+
+Two Lean consumers reach `hno49` from different H3/H5 inputs, and their counts must not be mixed or double-counted (`DROP_CLOSURE_INVENTORY.md`, "Landed alternate route for the finer cube campaign"):
+
+- **LRAT consumer, five whole-cell formulas.** `not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighLratChecks` takes checked LRAT proofs of `orderFortyNineGeneratedCanonicalSatCnf` at the **two** H3 representative masks (cells t = 0, 1; 29,500 variables and 1,328,183 clauses each) and the **three** H5 representative masks (cells t = 0, 1, 2).
+- **Cube consumer, seven base formulas.** `not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighCubeBaseUnsat` (`Erdos85OrderFortyNineSmallHighCubeGridTerminal.lean`) takes `Unsat` for **four H3 scout formulas**, `orderFortyNineGeneratedThreeHighDistOneB1ScoutCnf`, `…DistOneC1ScoutCnf`, `…DistOneC2ScoutCnf` and `orderFortyNineGeneratedThreeHighDistTwoScoutCnf`, and **three H5 cell formulas**, `orderFortyNineGeneratedVariableHighSatCnf 5` at `orderFortyNineFiveHighT0Masks`, `…T1Masks`, `…T2Masks`; each base's `Unsat` is supplied by the checked cube-grid theorem from its cover and leaf evidence.
+- **Grid accounting.** A 7 × 8 grid of positive cubes per base: 4 × 56 = 224 (H3, with 8 negative cover obligations) + 3 × 56 = 168 (H5, with 6) = **392 positive cubes and 14 covers**, the 406 bounded jobs (`orderFortyNineSmallHigh_positiveCube_job_count`).
+
+So the phrase "the seven whole-cell H3/H5 formulas" is wrong on both words: the seven are the *base* formulas of the cube route (four H3 scouts and three H5 cells), and the whole-cell formulas of the LRAT route number five.
