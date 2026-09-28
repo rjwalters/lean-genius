@@ -5,8 +5,8 @@
 **Status.** Working manuscript. Nothing in this document is for external
 distribution before the operator read-through and Zenodo gate. Formal claims
 refer to Lean 4.31.0 with the repository-pinned mathlib. Result A is a
-computational claim, subject to completion of the two-solver H1 gap census;
-it is not a proved finite theorem. The conditional finite-drop core is Lean
+computational claim resting on a completed two-solver H1 census; it is not a
+proved finite theorem. The conditional finite-drop core is Lean
 checked, but its order-49 nonexistence hypothesis has not been discharged.
 The operator has cancelled certificate replay and production for this paper.
 Theorem B is the Lean-checked conditional reduction to A-REG, which itself
@@ -21,7 +21,7 @@ the adjacent-value claim:
 
 `f(48) = 8` and `f(49) = 7`,
 
-which would give a strict finite drop. The lower side uses a 48-vertex
+which, at the level of computational evidence, is a strict finite drop. The lower side uses a 48-vertex
 extremal witness checked in Lean through `native_decide` (six named
 `native_decide` axioms in total for the two witness endpoints; the literal
 `#print axioms` output from a cold rebuild is banked as
@@ -57,10 +57,10 @@ and consequently the proposed strict drop
 
 `minDegreeForC4 49 < minDegreeForC4 48`.
 
-This is a computational result, not an unconditional Lean theorem. Rows that
-reach a declared solver cap remain open and prevent a complete computational
-claim. Even if all rows return UNSAT, proof certificates would still be needed
-for a formal theorem.
+This is a computational result, not an unconditional Lean theorem. The census
+rule was that any row reaching its declared solver cap would be printed as
+open; after escalating caps and one cube partition, no row is open. Even with
+every row UNSAT, proof certificates would still be needed for a formal theorem.
 
 The already checked finite-drop core is
 `minDegreeForC4_fortyEight_fortyNine_exact_checked` and
@@ -250,7 +250,8 @@ not a proof of A-REG.
 ### Contributions and collaboration
 
 Claude Fable led the certification pipeline and cold-integration verification,
-the existence halves of the census, fleet operations, §8, and the final scope
+the existence halves of the census, fleet operations, the September 2026
+verdict-only census with its cube-partition tooling, §8, and the final scope
 review. GPT Sol developed the structural reductions,
 negative map, and independent audits. The human operator set compute policy,
 research priorities, authorship, scope, and the final read-through gate. The
@@ -541,11 +542,11 @@ at order 64, not NONBIP-CONNECTED and not A-REG.
 
 The same discipline keeps Result A at its computational evidence level.
 The operator cancelled certificate production and replay for this paper;
-the two-solver H1 census is the remaining empirical gate. Even a completed
-census would not prove eventual monotonicity false, since one drop does not
-settle an eventual property. The release manuscript will distinguish a
-computationally supported 48-to-49 drop from the Lean-checked conditional
-reduction A-REG-to-`¬ Erdos85Question`.
+the two-solver H1 census was the remaining empirical gate and is complete.
+A completed census does not prove eventual monotonicity false, since one
+drop does not settle an eventual property. This manuscript therefore
+distinguishes a computationally supported 48-to-49 drop from the
+Lean-checked conditional reduction A-REG-to-`¬ Erdos85Question`.
 
 ## 6. The thin human role
 
@@ -627,9 +628,9 @@ are the unit of trust.
 ## Results and evidence map
 
 The paper has two different logical endpoints and keeps them separate.
-Result A is a finite computational claim whose H1 verdict-only census remains
-open at this revision. It does not carry the status of an unconditional Lean
-theorem. Theorem B is a uniform conditional result: the negation
+Result A is a finite computational claim whose H1 verdict-only census is
+complete at this revision. It does not carry the status of an unconditional
+Lean theorem. Theorem B is a uniform conditional result: the negation
 of Erdős 85 follows from A-REG, while A-REG itself remains open. The
 implications from an unbounded family of plane-order drops to the negation of
 Erdős 85 are proved as `erdos85Negation_iff_not_question`,
