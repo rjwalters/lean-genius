@@ -1,0 +1,216 @@
+{
+  "schema_version": "1",
+  "kind": "judgment",
+  "version_dir": "erdos85-drop.3",
+  "critic_id": "paper-review",
+  "model": "claude-fable-5-1",
+  "rubric": "anvil-pub-v2",
+  "scores": [
+    {
+      "dimension": "1_rigor",
+      "score": 5,
+      "max": 6,
+      "critical": false,
+      "evidence_span": "main.tex:L164-L164",
+      "fix": "Add to refs/ a statement of what excludes the H7 cells t>=1 and state it in Section 4.2; reconcile 'seven whole-cell H3/H5 formulas' with the two H3 + three H5 representative formulas (four H3 scouts + three H5 cells, per Appendix B).",
+      "justification": "Strata now defined from the Lean source and the elementary derivation is correct; the H7 sketch covers the t=0 profile and folds the exclusion of t>=1 into an unnamed premise, and the seven-vs-five formula count is unreconciled."
+    },
+    {
+      "dimension": "2_evidence",
+      "score": 5,
+      "max": 6,
+      "critical": false,
+      "evidence_span": "main.tex:L162-L162",
+      "fix": "Name the H5 closure receipt (jobs, verdicts, checker, review numbers, date) in Section 7 and state the outcome in Section 4.2, or say the H5 receipts are local and not released.",
+      "justification": "H1 complete and traceable, projection rates sourced, H3 and H7 substantively sketched; H5 is asserted closed with archived local receipts and no file in refs/ documents the closure."
+    },
+    {
+      "dimension": "3_contribution_clarity",
+      "score": 5,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L54-L54",
+      "fix": null,
+      "justification": "Both contributions, the evidence-level qualifier, the Boza connection and the census scale are extractable from abstract + Section 1; 'decided' replaced by 'settled, at the level of computational evidence'; cold-reader test passes."
+    },
+    {
+      "dimension": "4_related_work",
+      "score": 3,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L87-L87",
+      "fix": "Run paper-litsearch for the methods behind the exact r(s) values and prior SAT-with-certificate results; replace the process note 'left to a literature pass with search enabled' with 'we do not compare the methods here'.",
+      "justification": "Accurate, BRIEF-compliant positioning against all 11 refs.bib entries; method lineage still absent, now acknowledged in a sentence that reads as a process note; scored on what refs/ allows (web search off, nothing invented)."
+    },
+    {
+      "dimension": "5_reproducibility",
+      "score": 4,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L297-L297",
+      "fix": "Publish or manifest the solver logs, certificate bank and H7 receipt shards; bank the H5 closure receipt.",
+      "justification": "Emitter interface, H1 structure and profiles, hashes, caps, toolchain, repository URL and a receipt-by-receipt list make the census regenerable from the public branch; logs, bank and H7/H5 receipts remain private."
+    },
+    {
+      "dimension": "6_figures_tables",
+      "score": 3,
+      "max": 4,
+      "critical": false,
+      "evidence_span": "main.tex:L133-L144",
+      "fix": "Widen Table 2's identifier column or restrict the camel-case break to running text; consider a figure of the cube tree or the solve-time tail.",
+      "justification": "Five standalone captioned tables that fit the page; Table 3 and Table 4 fixes verified in the PDF; Table 2's Lean identifiers break mid-name in the rendered cells; no figure."
+    },
+    {
+      "dimension": "7_prose_structure",
+      "score": 3,
+      "max": 4,
+      "critical": false,
+      "evidence_span": "main.tex:L87-L87",
+      "fix": "Remove the process note in Section 2; split the two twenty-line Section 4.2 paragraphs; clear the six badness-10000 lines with a parenthetical list or display.",
+      "justification": "Clean render, correct order, jargon and AI-tell class absent, trust sentence stated once; a process note in the body, 23 underfull lines (six at 10000), two over-long paragraphs."
+    },
+    {
+      "dimension": "8_citation_hygiene",
+      "score": 4,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L120-L120",
+      "fix": "Name the bound behind h<=9 or attribute it to the Lean theorem only; cite a receipt for the H5 closure and for the H7 premise reviews.",
+      "justification": "All 11 entries cited and resolving, n.d. fixed, orders-15/16 and non-isomorphism receipts named; the H5 closure and the H7 premises rest on bare pointers and one inequality is attributed to an unnamed bound."
+    },
+    {
+      "dimension": "9_rhetorical_economy",
+      "score": 3,
+      "max": 4,
+      "critical": false,
+      "evidence_span": "main.tex:L271-L271",
+      "fix": "Halve the Section 6 opening sentence; point Appendix B's Methods paragraph at Sections 3.1/4.4 instead of repeating them; cut the Section 2 process note.",
+      "justification": "Abstract and Section 6 no longer restate Section 4 and the new strata material carries weight; Section 6 still opens with a one-sentence restatement of the architecture, Appendix B runs three pages with a duplicated Methods paragraph."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "major",
+      "dimension": "1_rigor",
+      "evidence_span": "main.tex:L164-L164",
+      "rationale": "The H7 closure sketch works from the t=0 profile (7/14/21) while Table 2 and the profile theorem give cells t=0..7; the exclusion of t>=1 is attributed to 'premises the closure ledger cites as established' and no file in refs/ states it (Q7_H5_H7_SQUEEZE calls H7/T0 'the remaining operator-designated sector').",
+      "suggested_fix": "Add to refs/ a two-sentence statement (from the Lean source or the premise reviews 1573/1574/2091) of what disposes of cells t=1..7, then state it in one sentence of Section 4.2 before the 7/14/21 split; do not guess."
+    },
+    {
+      "severity": "major",
+      "dimension": "1_rigor",
+      "evidence_span": "main.tex:L162-L162",
+      "rationale": "'replaces the seven whole-cell H3/H5 formulas' is never reconciled with Section 3.2's two H3 + three H5 representative formulas and Section 4.2's 'The two H3 formulas'; Appendix B's 'four H3 scouts, three H5 cells' is the missing link (the cube route's seven base CNFs).",
+      "suggested_fix": "One clause: 'the seven base formulas of the cube route (four H3 scout formulas and three H5 cell formulas), as against the five representative formulas of the LRAT consumer'."
+    },
+    {
+      "severity": "major",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L162-L162",
+      "rationale": "The H5 closure outcome is never stated: the paragraph describes the cover structure and the 129 root cubes then asserts closure 'with archived local proof receipts'; no file in refs/ documents which jobs ran, what they returned or who checked them (the 2026-09-10 inventory lists 129 open root cubes; CENSUS.md says closed by other routes).",
+      "suggested_fix": "Add the H5 closure receipt (jobs, verdicts, checker, review numbers, date) to refs/, name it in Section 7 and state the outcome in one sentence of Section 4.2, or say explicitly that the H5 closure receipts are local and not in the release material."
+    },
+    {
+      "severity": "minor",
+      "dimension": "8_citation_hygiene",
+      "evidence_span": "main.tex:L120-L120",
+      "rationale": "'the C4-free edge bound gives h<=9': the standard ex(n,C4) bound gives at most 182 edges at n=49 and hence only h<=21; the inequality is a Lean theorem per STRATA_AND_SMALL_ORDERS but is attributed to an unnamed bound.",
+      "suggested_fix": "Name the counting argument used or write 'and a counting bound proved in Lean gives h<=9'."
+    },
+    {
+      "severity": "minor",
+      "dimension": "3_contribution_clarity",
+      "evidence_span": "main.tex:L54-L54",
+      "rationale": "Abstract: 'it selects r(42)=49 in Boza's open entry' reads as a determination; Section 1 says more carefully that the nonexistence hypothesis selects it.",
+      "suggested_fix": "'corresponds to selecting r(42)=49' or 'would select r(42)=49'."
+    },
+    {
+      "severity": "minor",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L71-L71",
+      "rationale": "'about 1,400 solver inputs (1,412 preparation receipts over four cloud passes)': the 1,412 receipts are re-preparations of the 1,137 cloud rows across passes (1,132 + 261 + 17 + 2), not 1,400 distinct instances (1,161 rows).",
+      "suggested_fix": "'1,412 input preparations for the 1,161 rows over four cloud passes'."
+    },
+    {
+      "severity": "minor",
+      "dimension": "4_related_work",
+      "evidence_span": "main.tex:L87-L87",
+      "rationale": "related-work: 'that comparison is left to a literature pass with search enabled' is a process note in the published body; the method-lineage gap (how the exact r(s) values were obtained; prior SAT-with-certificate results in extremal combinatorics) stands from v2.",
+      "suggested_fix": "Replace with 'we do not compare the methods here'; run paper-litsearch with search enabled before publication; no citation invented here."
+    },
+    {
+      "severity": "minor",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L164-L164",
+      "rationale": "The per-family route list omits the C7 cycle-exclusion chain that closes cube_F7_t14 (H7_CLOSURE: 'C7 -> 2117'), so 'source enumeration with complement completion for a=7' does not cover all twelve a=7 roots.",
+      "suggested_fix": "Add '(one a=7 root by a cycle-exclusion chain)'."
+    },
+    {
+      "severity": "minor",
+      "dimension": "8_citation_hygiene",
+      "evidence_span": "main.tex:L81-L81",
+      "rationale": "'Every number in Sections 1 to 7 traces to a receipt file named in Section 7': the Section 5.3 finite-census orders (64, 78, 80; 80/120/168) trace to Appendix A pointers and the Section 4.4 emitter hash 4bd9604c traces to PAUSE_HANDOFF_20260927.md / DRAFT.md, neither named in Section 7.",
+      "suggested_fix": "Name the pause handoff (or the census manifest carrying the v2cnf hash) in Section 7, or add 'and the appendix pointers' to the sentence."
+    },
+    {
+      "severity": "minor",
+      "dimension": "1_rigor",
+      "evidence_span": "main.tex:L162-L162",
+      "rationale": "Q7_H1_H3_SQUEEZE calls the (25,18,3,0)/(24,21,0,1) tables 'incidence profiles only; they do not replace the finer existing H3 canonical cells'; the paper calls them cells.",
+      "suggested_fix": "Say 'incidence profiles (the canonical cells of the Lean statement refine them)' at first use."
+    },
+    {
+      "severity": "minor",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L190-L190",
+      "rationale": "The mechanism given for the three residual roots that are not gap slots ('the capacity snapshot already lists a certificate object for each') is a reading of the inventory's phrase 'three historical object conflicts', not a receipt sentence.",
+      "suggested_fix": "Keep the count and the inventory's term; mark the mechanism as a reading or cite the census-table rows."
+    },
+    {
+      "severity": "minor",
+      "dimension": "6_figures_tables",
+      "evidence_span": "main.tex:L133-L144",
+      "rationale": "The camel-case break rule splits Lean identifiers inside Table 2 cells without a hyphen ('orderFortyNineStratum / Excluded_three_of_tripleCells', '..._one_of_pure / Families'), so the interface table shows names a reader cannot copy.",
+      "suggested_fix": "Widen column 2 (0.47 -> 0.52) or restrict the camel-case break to running text and keep tables at underscore breaks."
+    },
+    {
+      "severity": "minor",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L146-L146",
+      "rationale": "23 underfull lines, six at badness 10000 (Section 3.2 second-consumer paragraph, Section 4.1 witness sentence, Section 5.2 residue paragraph), each carrying three or more 40-character identifiers in one sentence.",
+      "suggested_fix": "A parenthetical list or a display for the three-identifier sentences."
+    },
+    {
+      "severity": "nit",
+      "dimension": "9_rhetorical_economy",
+      "evidence_span": "main.tex:L271-L271",
+      "rationale": "Section 6 opens with a 60-word restatement of the Section 1/4 architecture.",
+      "suggested_fix": "Halve it."
+    },
+    {
+      "severity": "nit",
+      "dimension": "9_rhetorical_economy",
+      "evidence_span": "main.tex:L344-L344",
+      "rationale": "Appendix B's Methods paragraph duplicates Sections 3.1 and 4.4.",
+      "suggested_fix": "A pointer would do."
+    },
+    {
+      "severity": "nit",
+      "dimension": "5_reproducibility",
+      "evidence_span": "main.tex:L284-L284",
+      "rationale": "Section 7 names h1-census-table.json; refs/ holds the .tsv twin (CENSUS.md names both).",
+      "suggested_fix": "Name both or the one that is banked."
+    },
+    {
+      "severity": "nit",
+      "dimension": "6_figures_tables",
+      "evidence_span": "main.tex:L204-L204",
+      "rationale": "Table 4 'and the edge count (168) the order-48 graph' is correct but elliptical.",
+      "suggested_fix": "'and the edge count (168) corroborates the order-48 graph'."
+    }
+  ],
+  "critical_flags": [],
+  "total": 35,
+  "threshold": 35,
+  "verdict": "ADVANCE"
+}
