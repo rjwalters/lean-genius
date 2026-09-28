@@ -1,0 +1,28 @@
+'Erdos85.not_erdos85Question_of_binarySquareRegularExclusion' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos85.minDegreeForC4_fortyEight_eq_eight_checked' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Erdos85.boza48Graph._native.native_decide.ax_1,
+ Erdos85.boza48Graph_common_le_one._native.native_decide.ax_1_1,
+ Erdos85.boza48Graph_degree._native.native_decide.ax_1_1]
+'Erdos85.seven_le_minDegreeForC4_fortyNine_checked' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Erdos85.orderFortyNineDegreeSixGraph._native.native_decide.ax_1,
+ Erdos85.orderFortyNineDegreeSixGraph_common_le_one._native.native_decide.ax_1_1,
+ Erdos85.orderFortyNineDegreeSixGraph_degree_ge._native.native_decide.ax_1_1]
+'Erdos85.minDegreeForC4_fortyEight_fortyNine_exact_checked' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Erdos85.boza48Graph._native.native_decide.ax_1,
+ Erdos85.boza48Graph_common_le_one._native.native_decide.ax_1_1,
+ Erdos85.boza48Graph_degree._native.native_decide.ax_1_1,
+ Erdos85.orderFortyNineDegreeSixGraph._native.native_decide.ax_1,
+ Erdos85.orderFortyNineDegreeSixGraph_common_le_one._native.native_decide.ax_1_1,
+ Erdos85.orderFortyNineDegreeSixGraph_degree_ge._native.native_decide.ax_1_1]
+'Erdos85.minDegreeForC4_fortyNine_lt_fortyEight_checked' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Erdos85.boza48Graph._native.native_decide.ax_1,
+ Erdos85.boza48Graph_common_le_one._native.native_decide.ax_1_1,
+ Erdos85.boza48Graph_degree._native.native_decide.ax_1_1]
