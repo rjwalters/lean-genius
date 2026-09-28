@@ -1,0 +1,188 @@
+{
+  "schema_version": "1",
+  "kind": "judgment",
+  "version_dir": "erdos85-drop.4",
+  "critic_id": "paper-review",
+  "model": "claude-fable-5-1",
+  "rubric": "anvil-pub-v2",
+  "scores": [
+    {
+      "dimension": "1_rigor",
+      "score": 6,
+      "max": 6,
+      "critical": false,
+      "evidence_span": "main.tex:L172-L176",
+      "fix": null,
+      "justification": "Both v3 rigor gaps closed in the text and verified at source: the thirteen t>=1 H7 representatives are excluded by Lean-checked LRAT certificates and orderFortyNineStratumExcluded_seven_of_t0 reduces the stratum to the t=0 representative; the five whole-cell formulas and seven base formulas are kept apart and never added."
+    },
+    {
+      "dimension": "2_evidence",
+      "score": 5,
+      "max": 6,
+      "critical": false,
+      "evidence_span": "main.tex:L172-L176",
+      "fix": "State in Section 7 (or Table 4) which of the cited review numbers (2037, 2032, 2062, 2063, 2065, 2718, 2719, 1573, 1574, 2091) have a public ledger snapshot on the branch of record and which exist only in the private room transcript.",
+      "justification": "H1 complete and traceable; H3 and H7 t>=1 carry checked certificates; the H5 closure is now stated with route, dates and reviews matching the ledger files. Weakness: for H5 and the H7 t=0 cell the evidence is a chain of numbered room reviews whose transcript is private; only the ledger snapshots named in Section 7 are inspectable."
+    },
+    {
+      "dimension": "3_contribution_clarity",
+      "score": 5,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L57-L84",
+      "fix": null,
+      "justification": "Both results, the evidence-level qualifier, the Boza correspondence, the non-claim and Theorem B are one sentence each in the abstract and Section 1; cold-reader test passes; the stated claim is the BRIEF's strongest honest claim."
+    },
+    {
+      "dimension": "4_related_work",
+      "score": 3,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L90-L90",
+      "fix": "Run paper-litsearch for the methods behind the exact r(s) values and prior SAT-with-certificate results in extremal combinatorics before publication.",
+      "justification": "Accurate, BRIEF-compliant positioning against all 12 refs.bib entries; the process note is replaced by a scope statement; the method-lineage gap remains and is scored on what refs/ allows (web search off, nothing invented)."
+    },
+    {
+      "dimension": "5_reproducibility",
+      "score": 4,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L321-L321",
+      "fix": "State the total size of the thirteen packed LRAT files (about 9.3 GB compact per the 2026-09-28 manifests) and whether they ship with the certificate bank; publish or manifest the solver logs and run directories.",
+      "justification": "Emitter interface, hashes, caps, toolchain, branch of record and a receipt-by-receipt list make the census regenerable from the public tree; solver logs, the certificate bank and the packed LRAT files the thirteen H7 Lean modules include_str remain on a private volume, so orderFortyNineStratumExcluded_seven_of_t0 cannot be rebuilt publicly."
+    },
+    {
+      "dimension": "6_figures_tables",
+      "score": 3,
+      "max": 4,
+      "critical": false,
+      "evidence_span": "main.tex:L104-L228",
+      "fix": "Add one figure from banked data: the 71-node cube tree (cube-tree-check.json) or the per-row solve-time distribution (h1-census-table.tsv), via paper-figures.",
+      "justification": "Five standalone captioned tables that fit the page; the leantab macro fixes the mid-identifier breaks of v3 (names now break only after underscores); Table 2 and the split Table 4 rows carry the corrected H5/H7 evidence. No figure where one would carry the argument."
+    },
+    {
+      "dimension": "7_prose_structure",
+      "score": 3,
+      "max": 4,
+      "critical": false,
+      "evidence_span": "main.tex:L74-L74",
+      "fix": "Section 1: 'one for each of its thirteen canonical representatives with a positive triple'; Section 4.2: 'an include_str'; split the ninety-word certificate sentence after 'by native_decide' and after 'representative'.",
+      "justification": "Clean render (0 errors, 0 overfull, 0 badness-10000 lines), the long Section 4.2 paragraphs split, the process note gone, no AI-tell instance; a noun slip in Section 1 (cells for representatives), an article error, and one ninety-word five-identifier sentence remain."
+    },
+    {
+      "dimension": "8_citation_hygiene",
+      "score": 5,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L172-L172",
+      "fix": null,
+      "justification": "All 12 refs.bib entries cited and resolving with complete fields (n.d. plus access dates for the two undated web pages); the H5 closure, the H7 premise reviews and the h<=9 bound now have named receipts or attributions; no unsourced non-trivial claim found. Claim-support verification is paper-audit's job."
+    },
+    {
+      "dimension": "9_rhetorical_economy",
+      "score": 3,
+      "max": 4,
+      "critical": false,
+      "evidence_span": "main.tex:L57-L57",
+      "fix": "Split the abstract into two paragraphs and move its negative-map sentence to Section 5.3; trim Appendix B's collaboration narrative.",
+      "justification": "Section 6 opener halved, Appendix B Methods reduced to pointers, and the added pages are needed corrections; a 303-word single-paragraph abstract and a three-page collaboration appendix remain, 21 pages for an argument that fits in 12."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "minor",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L74-L74",
+      "rationale": "'H7 by thirteen LRAT certificates ... one for each of its canonical cells with a positive triple': the certificates are one per canonical representative (thirteen, over the seven cells t=1..7), as Section 3.2, Section 4.2, Table 2 and Section 6 say.",
+      "suggested_fix": "'one for each of its thirteen canonical representatives with a positive triple'."
+    },
+    {
+      "severity": "minor",
+      "dimension": "1_rigor",
+      "evidence_span": "main.tex:L176-L176",
+      "rationale": "'source enumeration with complement completion for eleven of the twelve a=7 roots': H7_CLOSURE_20260915.md applies the complement completion (review 2683) only 'where required' (cube_F7_t10, _t11, _t13); the other eight a=7 roots use source enumeration 2116 alone.",
+      "suggested_fix": "'source enumeration, with complement completion where required, for eleven of the twelve a=7 roots'."
+    },
+    {
+      "severity": "minor",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L172-L176",
+      "rationale": "H5 and the H7 t=0 cell are closed by numbered room reviews; Appendix B says the transcript is private. Section 7 names the H5 ledger snapshots and says the H7 review archives sit on the branch, but the paper does not say which review numbers have a public snapshot.",
+      "suggested_fix": "One sentence in Section 7 (or a Table 4 column) listing which cited reviews have public ledger snapshots and which exist only in the transcript."
+    },
+    {
+      "severity": "minor",
+      "dimension": "5_reproducibility",
+      "evidence_span": "main.tex:L321-L321",
+      "rationale": "The thirteen H7 certificate modules include_str absolute local paths; the paper discloses this but gives neither the size of the packed LRAT files (about 9.3 GB compact per the 2026-09-28 manifest table) nor whether they will be released.",
+      "suggested_fix": "State the total size and the release status of the thirteen packed LRAT files alongside the certificate-bank sentence."
+    },
+    {
+      "severity": "minor",
+      "dimension": "9_rhetorical_economy",
+      "evidence_span": "main.tex:L57-L57",
+      "rationale": "303-word single-paragraph abstract; its last sentence (the negative-map inventory) and the parenthetical definition of A-REG belong to Section 1 / Section 5.3.",
+      "suggested_fix": "Two-paragraph abstract (Result A / Theorem B); move the negative-map sentence to Section 5.3."
+    },
+    {
+      "severity": "minor",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L174-L174",
+      "rationale": "The certificate sentence 'Each of the thirteen modules, ... at production time.' runs to about ninety words with five identifiers.",
+      "suggested_fix": "Split after 'by native_decide' and after 'representative'."
+    },
+    {
+      "severity": "minor",
+      "dimension": "4_related_work",
+      "evidence_span": "main.tex:L90-L90",
+      "rationale": "related-work: the method-lineage gap (how the exact r(s) entries were obtained; prior SAT-with-certificate results in extremal combinatorics) stands; correctly declined again with web search off.",
+      "suggested_fix": "paper-litsearch run before publication; no citation proposed here."
+    },
+    {
+      "severity": "nit",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L174-L174",
+      "rationale": "'a \\verb|include_str|' should be 'an'.",
+      "suggested_fix": "'an include_str'."
+    },
+    {
+      "severity": "nit",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L303-L321",
+      "rationale": "The \\lean{} macro is used for paths, S3 URIs, scripts and the case id as well as Lean declarations.",
+      "suggested_fix": "Consider a \\path{} alias for non-Lean names."
+    },
+    {
+      "severity": "nit",
+      "dimension": "6_figures_tables",
+      "evidence_span": "main.tex:L196-L200",
+      "rationale": "No figure; figures/ is empty; declined by the reviser with a stated reason.",
+      "suggested_fix": "paper-figures: cube-tree diagram from cube-tree-check.json or solve-time histogram from h1-census-table.tsv."
+    },
+    {
+      "severity": "nit",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L336-L337",
+      "rationale": "7 underfull lines, maximum badness 6094; none needs action.",
+      "suggested_fix": "No action needed; recorded for the audit trail."
+    },
+    {
+      "severity": "nit",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L7-L7",
+      "rationale": "22 cosmetic TU/Menlo font-shape warnings from the hyphenat htt option.",
+      "suggested_fix": "No action needed; recorded for the audit trail."
+    },
+    {
+      "severity": "nit",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L57-L373",
+      "rationale": "Procedural: numeric detector clean (831 numbers, 0 claims); manual arithmetic cross-check clean; pending gate clean; render gate pass (21 pages, 0 overfull, 0 placeholders); evidence drift CLEAN; evidence_check run on scoring.md before commit; sidecar via the anvil.lib.sidecar CLI shim.",
+      "suggested_fix": "No action needed; recorded for the audit trail."
+    }
+  ],
+  "critical_flags": [],
+  "total": 37,
+  "threshold": 35,
+  "verdict": "ADVANCE"
+}

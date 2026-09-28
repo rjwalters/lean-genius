@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "thread": "erdos85-drop",
+  "for_version": 4,
+  "phases": {
+    "review": {
+      "state": "done",
+      "started": "2026-09-28T21:28:17Z",
+      "completed": "2026-09-28T21:43:03Z"
+    }
+  },
+  "metadata": {
+    "iteration": 4,
+    "max_iterations": 4,
+    "total": 37,
+    "threshold": 35,
+    "rubric_id": "anvil-pub-v2",
+    "advance": true,
+    "ready": true,
+    "critical_flags": 0,
+    "prior_total": 35,
+    "score_history": [
+      {
+        "iteration": 1,
+        "total": 17,
+        "threshold": 35,
+        "rubric_id": "anvil-pub-v2"
+      },
+      {
+        "iteration": 2,
+        "total": 32,
+        "threshold": 35,
+        "rubric_id": "anvil-pub-v2"
+      },
+      {
+        "iteration": 3,
+        "total": 35,
+        "threshold": 35,
+        "rubric_id": "anvil-pub-v2"
+      },
+      {
+        "iteration": 4,
+        "total": 37,
+        "threshold": 35,
+        "rubric_id": "anvil-pub-v2"
+      }
+    ],
+    "score_history_note": "carried in the review sidecar because no orchestrator process drove the loop; erdos85-drop.4/_progress.json not modified"
+  },
+  "termination_reason": "THRESHOLD_MET"
+}
