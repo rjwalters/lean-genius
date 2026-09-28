@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "thread": "erdos85-drop",
+  "phases": {
+    "revise": {
+      "state": "done",
+      "started": "2026-09-28T21:13:51Z",
+      "completed": "2026-09-28T21:25:03Z",
+      "note": "revised from erdos85-drop.3 against .review (35/44, advance true, 3 major, 10 minor, 5 nit), .audit (BLOCK: critical C1 H7 t>=1 certificates, C2 five-vs-seven formulas; major M1 H5 closure; m1-m5), .numeric (0) and .pending (0); addressed both critical flags, the major and every minor/nit except three declined with reasons (figure, related-work lineage, off-disk citation verification); compiled xelatex+bibtex+xelatex x2, 0 errors, 0 undefined citations/references, 0 overfull, 0 badness-10000 underfull, 21 pages (body 15 + appendices); scope_lint PASS"
+    }
+  },
+  "metadata": {
+    "iteration": 4,
+    "max_iterations": 4,
+    "revised_from": 3,
+    "evidence_snapshot": {
+      "brief_mtime": 1790622983.6047318,
+      "refs_mtime": 1790628614.0007753
+    }
+  }
+}
