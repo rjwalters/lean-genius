@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "thread": "erdos85-drop",
+  "for_version": 3,
+  "phases": {
+    "audit": { "state": "done", "started": "2026-09-28T20:44:00Z", "completed": "2026-09-28T21:05:25Z" }
+  },
+  "metadata": {
+    "audit_summary": {
+      "critical_flags": 2,
+      "unresolved_citations": 0,
+      "claim_support_failures": 1,
+      "numerical_inconsistencies": 1,
+      "major_findings": 1,
+      "minor_findings": 4,
+      "nit_findings": 1,
+      "unverified_citations": 9,
+      "partial_citations": 3,
+      "stale_figures": 0,
+      "build_status": "ok",
+      "build_passes": 4,
+      "pending_gate": "pass",
+      "evidence_drift": "refs/** drifted after v3 snapshot (advisory)",
+      "corpus_tier": "inactive"
+    },
+    "thread_state_after_audit": "READY-WITH-AUDIT-FLAGS",
+    "note": "Two critical flags on statements contradicted by the 2026-09-28 receipts (H7 cells t>=1 evidence attribution; seven-vs-five whole-cell H3/H5 formulas). Build clean, citations resolve, pending gate passes. Recommend paper-revise consuming .3.audit alongside .3.review."
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "critic": "audit",
+  "role": "paper-audit.md",
+  "started": "2026-09-28T20:44:00Z",
+  "finished": "2026-09-28T21:05:25Z",
+  "model": "claude-fable-5-1",
+  "schema_version": 1,
+  "scorecard_kind": "human-verdict",
+  "rubric_id": "anvil-pub-v2",
+  "rubric_total": 44,
+  "advance_threshold": 35,
+  "sidecar": "python -m anvil.lib.sidecar cleanup/stage/copy/commit (issue #645 CLI shim; uv run --project .anvil)",
+  "compile": "xelatex + bibtex + xelatex to .aux fixpoint (4 passes) in a scratch copy of main.tex/refs.bib/anvil-paper.cls; version dir untouched; raw bytes landed via sidecar copy",
+  "pending_gate": "anvil.lib.pending_marker erdos85-drop.3/ --write-review: pass",
+  "evidence_drift": "anvil.lib.evidence_drift check: EVIDENCE-DRIFT (refs/** changed after the v3 snapshot: the three 2026-09-28 receipts this audit consumed; advisory)",
+  "corpus_tier": "inactive (resolve_corpus_dirs -> [])",
+  "review_json": "_review.json written additively (kind: tool_evidence, critic_id: paper-audit) so the two critical flags route through compute_verdict; not in the required-files manifest"
+}

@@ -1,0 +1,260 @@
+{
+  "schema_version": "1",
+  "kind": "tool_evidence",
+  "version_dir": "erdos85-drop.3",
+  "critic_id": "paper-audit",
+  "model": "claude-fable-5-1",
+  "rubric": null,
+  "scores": [
+    {
+      "dimension": "citation_resolution",
+      "score": null,
+      "max": 1,
+      "critical": false,
+      "evidence_span": "main.tex:L1-L349",
+      "fix": null,
+      "justification": "12 of 12 cite keys resolve in refs.bib; rendered PDF has 0 '??'. Claim-support: 3 partial (author notes only), 9 unverified (no source on disk), 0 does-not-support. Owns no rubric dim."
+    },
+    {
+      "dimension": "numerical_consistency",
+      "score": null,
+      "max": 1,
+      "critical": false,
+      "evidence_span": "main.tex:L162-L162",
+      "fix": null,
+      "justification": "All figures trace to receipts and sum; one inconsistency ('seven whole-cell' vs five) at L162/L332. Owns no rubric dim."
+    },
+    {
+      "dimension": "build",
+      "score": null,
+      "max": 1,
+      "critical": false,
+      "evidence_span": null,
+      "fix": null,
+      "justification": "xelatex+bibtex+xelatex converged in 4 passes, 0 errors, 0 undefined, 0 overfull, 18 pages."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "blocker",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L164-L164",
+      "rationale": "Section 4.2 attributes the reduction of the H7 stratum to its 7/14/21 (t=0) profile to 'the H7 reduction and normalization premises the closure ledger cites as established'; Table 2 (L140) and Table 4 (L206) give the 2026-09-15 closure ledger as the evidence for cells t=0..7. The receipt says the thirteen representatives with t>=1 are excluded by LRAT certificates checked in Lean via native_decide (Lean.ofReduceBool), not by those premises, and that the ledger concerns only the t=0 cell.",
+      "suggested_fix": "State in 4.2 that cells t=1..7 are closed by thirteen Lean-checked LRAT certificates (orderFortyNineStratumExcluded_seven_of_t0 reduces the stratum to the t=0 representative) and that the ledger closes t=0; split Table 2 / Table 4 H7 evidence accordingly; disclose the native_decide dependency and that these modules were outside the 2026-09-27 cold rebuild; name the receipt in Section 7.",
+      "tool_calls": [
+        {
+          "tool": "read",
+          "args": {
+            "path": "erdos85-drop/refs/H7_POSITIVE_TRIPLE_CELLS_H5_CLOSURE_FORMULA_COUNTS_20260928.md",
+            "section": "1"
+          },
+          "result_summary": "t>=1 cells excluded by LRAT certificates checked in Lean (native_decide); ledger concerns only t=0"
+        },
+        {
+          "tool": "grep",
+          "args": {
+            "pattern": "theorem orderFortyNineStratumExcluded_seven_of_t0",
+            "path": "/Volumes/Stripe/lean-genius/claude-e85-wrapup/proofs/Proofs/Erdos85OrderFortyNineSevenHighCertificates.lean"
+          },
+          "result_summary": "found at L70 with docstring 'All thirteen checked canonical representatives with at least one high triple are excluded'"
+        },
+        {
+          "tool": "grep",
+          "args": {
+            "pattern": "native_decide",
+            "path": "/Volumes/Stripe/lean-genius/claude-e85-wrapup/proofs/Proofs/Erdos85OrderFortyNineSevenHighT*Rep*Certificate.lean"
+          },
+          "result_summary": "13 files, 2 native_decide proofs each"
+        },
+        {
+          "tool": "sed",
+          "args": {
+            "path": "/Volumes/Stripe/lean-genius/claude-e85-wrapup/proofs/Proofs/Erdos85OrderFortyNineSevenHighT0CanonicalTerminal.lean",
+            "lines": "1-12"
+          },
+          "result_summary": "docstring: 'the already checked certificates close cells t=1,...,7'"
+        }
+      ],
+      "downstream_risk": "Table 2 and Table 4 misstate the evidence level of seven of eight H7 cells; a reader checking the ledger finds them unaccounted for."
+    },
+    {
+      "severity": "blocker",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L162-L162",
+      "rationale": "'replaces the seven whole-cell H3/H5 formulas by two checked cover formulas and a 7x8 grid of positive cubes per cell' (also App. B L332) contradicts Section 3.2 L146 (two H3 + three H5 whole-cell formulas = five) and the receipt, which says the seven are the cube route's base formulas (four H3 scouts + three H5 cells); 392 = 7x56 and 14 = 7x2 only per base formula, not per cell (five cells would give 280/10).",
+      "suggested_fix": "At L162 and L332: 'replaces the five whole-cell H3/H5 formulas by seven base formulas (four H3 scout formulas and three H5 cell formulas), each covered by two checked cover formulas and a 7x8 grid of positive cubes', keeping 392 + 14 = 406.",
+      "tool_calls": [
+        {
+          "tool": "read",
+          "args": {
+            "path": "erdos85-drop/refs/H7_POSITIVE_TRIPLE_CELLS_H5_CLOSURE_FORMULA_COUNTS_20260928.md",
+            "section": "3"
+          },
+          "result_summary": "'the phrase ... is wrong on both words'"
+        },
+        {
+          "tool": "grep",
+          "args": {
+            "pattern": "five concrete LRAT checks",
+            "path": "/Volumes/Stripe/lean-genius/claude-e85-wrapup/proofs/Proofs/Erdos85OrderFortyNineSmallHighVerifiedFrontier.lean"
+          },
+          "result_summary": "docstring L6-L8"
+        },
+        {
+          "tool": "grep",
+          "args": {
+            "pattern": "ScoutCnf|FiveHighT[012]Masks",
+            "path": "/Volumes/Stripe/lean-genius/claude-e85-wrapup/proofs/Proofs/Erdos85OrderFortyNineSmallHighCubeGridTerminal.lean"
+          },
+          "result_summary": "four scout CNFs + orderFortyNineFiveHighT0/T1/T2Masks"
+        },
+        {
+          "tool": "python",
+          "args": {
+            "expr": "7*56, 5*56, 7*2"
+          },
+          "result_summary": "392, 280, 14"
+        }
+      ]
+    },
+    {
+      "severity": "major",
+      "dimension": "8_citation_hygiene",
+      "evidence_span": "main.tex:L162-L162",
+      "rationale": "The H5 closure outcome and route are never stated; the paragraph's cube-grid / 129-root-cube description followed by 'closed by reviewed paper-and-computation covers with archived local proof receipts' implies a route the receipt says was not used (H5 closed 2026-09-10 by reviewed reductions T0/T1/T2, reviews 2037/2032/2062/2063, outer review 2065 PASS; no SAT run, no certificate replay; the 129 root cubes not consumed; three Boolean-exclusion premises undischarged in Lean). No receipt for the H5 closure is named in Section 7.",
+      "suggested_fix": "One sentence in 4.2 with the H5 outcome, route, review numbers and date; split the Table 4 H3/H5 row; add the H5 closure files and the 2026-09-28 receipt to Section 7.",
+      "tool_calls": [
+        {
+          "tool": "read",
+          "args": {
+            "path": "erdos85-drop/refs/H5_CLOSURE_LEDGER_README_20260910.md"
+          },
+          "result_summary": "T0/T1/T2 reductions; no SAT run; Boolean premises undischarged"
+        },
+        {
+          "tool": "read",
+          "args": {
+            "path": "erdos85-drop/refs/h5-closure-review2065.json"
+          },
+          "result_summary": "status resolved, PASS, resolved_by codex-sol-1, 2026-09-10T23:13:51Z"
+        },
+        {
+          "tool": "read",
+          "args": {
+            "path": "erdos85-drop/refs/H7_POSITIVE_TRIPLE_CELLS_H5_CLOSURE_FORMULA_COUNTS_20260928.md",
+            "section": "2"
+          },
+          "result_summary": "'the 129 H5 root cubes ... were not consumed by this closure'"
+        }
+      ]
+    },
+    {
+      "severity": "minor",
+      "dimension": "8_citation_hygiene",
+      "evidence_span": "main.tex:L71-L71",
+      "rationale": "'about 1,400 solver inputs (1,412 preparation receipts ...)': 1,412 preparations (1,132+261+17+2) of 1,161 distinct rows.",
+      "suggested_fix": "'1,412 input preparations for the 1,161 rows over four cloud passes'.",
+      "tool_calls": [
+        {
+          "tool": "read",
+          "args": {
+            "path": "erdos85-drop/refs/CENSUS_TIMING_20260928.md",
+            "section": "Input identity"
+          },
+          "result_summary": "1,322 historical + 90 new = 1,412 over four cloud passes"
+        }
+      ]
+    },
+    {
+      "severity": "minor",
+      "dimension": "1_rigor",
+      "evidence_span": "main.tex:L120-L120",
+      "rationale": "'the C4-free edge bound gives h <= 9': the standard ex(49,C4) <= 182 gives only h <= 21; the receipt attributes h <= 9 to a Lean counting bound.",
+      "suggested_fix": "'a counting bound proved in Lean gives h <= 9'.",
+      "tool_calls": [
+        {
+          "tool": "read",
+          "args": {
+            "path": "erdos85-drop/refs/STRATA_AND_SMALL_ORDERS_20260928.md"
+          },
+          "result_summary": "'an upper bound from the C4-free edge count keeps h <= 9' (Lean theorem)"
+        },
+        {
+          "tool": "python",
+          "args": {
+            "expr": "(343+21)/2 <= 182"
+          },
+          "result_summary": "True; h<=21 only"
+        }
+      ]
+    },
+    {
+      "severity": "minor",
+      "dimension": "8_citation_hygiene",
+      "evidence_span": "main.tex:L219-L219",
+      "rationale": "The v2cnf hash 4bd9604c... (L219) and interface (L166), and the Section 5.3 / Appendix A census orders, trace to PAUSE_HANDOFF_20260927.md and DRAFT.md, which Section 7 does not name.",
+      "suggested_fix": "Name the pause handoff in Section 7 or scope the traceability sentence.",
+      "tool_calls": [
+        {
+          "tool": "grep",
+          "args": {
+            "pattern": "4bd9604c",
+            "path": "erdos85-drop/refs/"
+          },
+          "result_summary": "PAUSE_HANDOFF_20260927.md L29; DRAFT.md L153"
+        }
+      ]
+    },
+    {
+      "severity": "minor",
+      "dimension": "8_citation_hygiene",
+      "evidence_span": "main.tex:L205-L205",
+      "rationale": "Table 4 lumps H3 (checked LRAT proofs of both whole-cell formulas) with H5 (reviewed reductions) under one evidence level.",
+      "suggested_fix": "Split into two rows with their actual evidence and Lean gap.",
+      "tool_calls": [
+        {
+          "tool": "read",
+          "args": {
+            "path": "erdos85-drop/refs/STRATA_AND_SMALL_ORDERS_20260928.md",
+            "section": "How each stratum is closed"
+          },
+          "result_summary": "H3: checked LRAT proofs for both cells; H5: reviewed paper/computation cover"
+        }
+      ]
+    },
+    {
+      "severity": "nit",
+      "dimension": "8_citation_hygiene",
+      "evidence_span": "refs.bib:bloom-erdos85",
+      "rationale": "year = {2026} on two undated web pages is the access year.",
+      "suggested_fix": "Keep the 'undated ... accessed' note as is.",
+      "tool_calls": [
+        {
+          "tool": "read",
+          "args": {
+            "path": "erdos85-drop.3/refs.bib"
+          },
+          "result_summary": "bloom-erdos85 and afzaly-mckay-extremal carry year 2026 with an 'undated web page, accessed' note"
+        }
+      ]
+    }
+  ],
+  "critical_flags": [
+    {
+      "type": "claim_support_failure",
+      "justification": "H7 cells t=1..7: Section 4.2 (L164), Table 2 (L140) and Table 4 (L206) attribute the exclusion of the whole H7 stratum to the 2026-09-15 closure ledger and its premises; receipt H7_POSITIVE_TRIPLE_CELLS_H5_CLOSURE_FORMULA_COUNTS_20260928.md section 1 and the Lean source (orderFortyNineStratumExcluded_seven_of_t0; thirteen SevenHighT{t}Rep{i}Certificate modules with native_decide) show the t>=1 cells are closed by Lean-checked LRAT certificates and the ledger covers only t=0. The paper's evidence-level tables are wrong for seven of eight H7 cells and omit a native_decide dependency outside the cold audit.",
+      "evidence_span": "main.tex:L164-L164"
+    },
+    {
+      "type": "numerical_inconsistency",
+      "justification": "'the seven whole-cell H3/H5 formulas' (L162, L332) vs the five whole-cell formulas of Section 3.2 (L146; Lean docstring 'five concrete LRAT checks'); the receipt section 3 says the phrase is 'wrong on both words' (the seven are base formulas: four H3 scouts + three H5 cells); 392 = 7x56 and 14 = 7x2 only per base formula, not 'per cell'.",
+      "evidence_span": "main.tex:L162-L162"
+    }
+  ],
+  "total": null,
+  "threshold": null,
+  "verdict": "BLOCK",
+  "rendered_artifact": null,
+  "probes": null,
+  "unscored": false
+}
