@@ -1,0 +1,311 @@
+\documentclass{anvil-paper}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setmonofont{Menlo}[Scale=0.85]
+\usepackage[htt]{hyphenat}
+
+% Lean identifiers: typewriter with url-style breaking at underscores and dots.
+% (No pandoc escapes: the argument is written with raw underscores.)
+\DeclareUrlCommand\lean{\urlstyle{tt}}
+% Long identifiers: allow moderate stretch instead of \sloppy.
+\tolerance=800
+\setlength{\emergencystretch}{3em}
+% Keep tables with text rather than on float pages.
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.9}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\floatpagefraction}{0.85}
+\newcommand{\AREG}{\mathrm{A\text{-}REG}}
+\newcommand{\NONBIP}{\mathrm{A\text{-}REG\text{-}NONBIP}}
+\newcommand{\Qn}{\textsf{Erdos85Question}}
+\newcommand{\hnoFortyNine}{\lean{hno49}}
+
+\newtheorem*{resultA}{Result A}
+\newtheorem*{theoremB}{Theorem B}
+\theoremstyle{definition}
+\newtheorem*{hypAREG}{Hypothesis A-REG}
+\newtheorem*{nonbipconn}{NONBIP-CONNECTED}
+
+\title{Computational Evidence for a Drop and a Uniform Reduction for Erdős Problem 85}
+\author{Claude Fable and GPT Sol \\ Lean Genius project, 2AM Logic}
+\date{28 September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For $n\ge 4$ let $f(n)$ be the least $d$ such that every simple graph on $n$ vertices with minimum degree at least $d$ contains a four-cycle. Erdős Problem 85 asks whether $f$ is eventually nondecreasing. We report two results. First, a completed computation supports $f(48)=8$ and $f(49)=7$, a strict drop between adjacent orders. The lower sides are explicit graphs checked in Lean 4 through \texttt{native\_decide}; the upper side at order 49 is a case split into four strata, three closed by reviewed arguments with banked computation and the fourth, H1, a census of 1,257 SAT instances of which 96 carry drat-trim-verified certificates and 1,161 were refuted by Kissat and then CaDiCaL under declared caps without proof logging (1,160 as whole instances, one as an exact partition into 36 cubes). No instance was satisfiable and the two solvers never disagreed. This is verdict-level evidence, not a theorem: we state the evidence level of every input, price the certificate route to a kernel-checked statement, and describe a cheaper cube-partitioned route. To our knowledge, and conditional on that evidence level, it is the first strict drop of $f$ decided on the problem's stated domain; in the Ramsey convention $r(s)=R(C_4,K_{1,s})$ it selects $r(42)=49$ in Boza's open entry $r(42)\in\{49,50\}$. One drop is compatible with either answer to the problem, about which we claim nothing. Second, Lean 4 verifies from the standard axioms alone that a single uniform proposition, $\AREG$ (for every $k\ge 3$ there is no $C_4$-free $2^k$-regular graph on $4^k$ vertices), implies a negative answer to Erdős Problem 85. $\AREG$ is an unproved hypothesis, not a forecast: the exact Lean results at orders 15 and 16 refute its $q=4$ analogue, and the operator's plane-order reading is presented as the rival. A negative map records which determinant, spectral, packing, incidence and finite-census routes fail to decide $\AREG$.
+\end{abstract}
+
+\section{Introduction}\label{sec:intro}
+
+For $n\ge 4$ let
+\[
+f(n)=\min\{d:\ \text{every simple graph on $n$ vertices with minimum degree at least $d$ contains a }C_4\}.
+\]
+Erdős Problem 85 \citep{bloom-erdos85} asks whether $f(n+1)\ge f(n)$ holds for all sufficiently large $n$; the maintained record states the problem for $n\ge 4$, lists it as open and gives its Ramsey reformulation. In Lean the function is \lean{minDegreeForC4} and the question is the proposition \Qn. The formal negation is equivalent to the existence of arbitrarily late strict drops (\lean{erdos85Negation_iff_not_question}), so a negative answer needs infinitely many drops, and a single drop decides nothing about the problem as posed.
+
+The Ramsey side uses $r(s)=R(C_4,K_{1,s})$ \citep{boza2024ramsey,zhang2017polarity}. The two functions are related by an elementary conversion: $r(s)\le N$ holds exactly when every $C_4$-free graph on $N$ vertices has a vertex of degree at most $N-1-s$, that is, when $f(N)\le N-s$; hence $r(s)=\min\{N: f(N)\le N-s\}$, and a plateau $r(s)=r(s+1)=N$ says exactly that $f(N)\le N-s-1<N-s\le f(N-1)$, a strict drop from order $N-1$ to order $N$. We use $f$ throughout and say which convention is meant whenever a value from Boza's table is quoted.
+
+\paragraph{Result A (computational).} Lean checks, through \texttt{native\_decide} on explicit graphs, that $f(48)=8$ (\lean{minDegreeForC4_fortyEight_eq_eight_checked}) and $f(49)\ge 7$ (\lean{seven_le_minDegreeForC4_fortyNine_checked}). The one unproved hypothesis is the nonexistence of a $C_4$-free graph on 49 vertices with minimum degree 7, the Lean hypothesis
+\[
+\text{\texttt{hno49}} \;:\; \neg\,\text{\texttt{C4FreeMinDegreeWitness 49 7}} .
+\]
+Under that hypothesis the Lean-checked finite-drop core gives $f(49)=7<8=f(48)$. Result A is the claim that a completed two-solver census supports the hypothesis at the level of computational evidence: the order-49 upper side splits into strata H1, H3, H5 and H7 (Section~\ref{sec:strata}); H3, H5 and H7 are closed by reviewed arguments with banked computation; H1 is 1,257 SAT instances, 96 of them with 2026-08 drat-trim-verified certificates and 1,161 refuted by Kissat 4.0.4 and then CaDiCaL 3.0.1 under declared caps, with no proof logging (1,160 as whole instances and one, which defeated every whole-instance cap up to 24 hours, as an exact partition into 36 cubes). No row is satisfiable, no row is open and the solvers never disagreed. Two solvers agreeing under a cap is evidence about solver behaviour, not a proof; Result A is therefore not a theorem, and Section~\ref{sec:cost} prices what a theorem would cost.
+
+\paragraph{Significance.} To our knowledge, and conditional on that evidence level, this is the first strict drop of $f$ decided on the problem's stated domain $n\ge 4$: the maintained record \citep{bloom-erdos85} lists no partial solution and warns that its literature list may be incomplete, and Boza's decided table \citep{boza2024ramsey} reports no consecutive equality that yields an in-domain drop, though some of its entries remain ranges, so an earlier undecided candidate cannot be ruled out. In Boza's convention the relevant entries are $r(41)=49$ and $r(42)\in\{49,50\}$; the nonexistence hypothesis selects $r(42)=49$, giving the plateau $r(41)=r(42)=49$, which by the conversion above is exactly $f(49)=7<8=f(48)$. A satisfying assignment in any H1 row would instead have selected $r(42)=50$ and there would be no drop at 49. One drop is compatible with either answer to Erdős Problem 85, and we make no claim about the problem itself.
+
+\paragraph{Theorem B (Lean, standard axioms only).} Let $\AREG$ (\lean{BinarySquareRegularExclusion}) assert that for every $k\ge 3$ there is no simple $C_4$-free $2^k$-regular graph on $4^k$ vertices. Lean 4 \citep{moura2021lean4} with mathlib \citep{mathlib2020} verifies
+\[
+\AREG \;\Rightarrow\; \neg\,\Qn
+\]
+as \lean{not_erdos85Question_of_binarySquareRegularExclusion}, depending on no axioms beyond \lean{propext}, \lean{Classical.choice} and \lean{Quot.sound}. $\AREG$ is an unproved hypothesis with a stated rival, not a conjecture we endorse: Section~\ref{sec:theoremB} states what has been proved beneath it, what residue remains, and why the evidence is mixed.
+
+\paragraph{What the paper does not claim.} Result A is never called a theorem, a proof or a decided value; no solver verdict or archived certificate is promoted to a kernel-checked statement; nothing is claimed about Erdős Problem 85 itself; and $\AREG$ is not asserted. Every number in the paper traces to a banked receipt named in Section~\ref{sec:artifacts}.
+
+\paragraph{Organization.} Section~\ref{sec:related} places the work against Boza's table, the Afzaly--McKay records and the SAT-with-certificates lineage. Section~\ref{sec:prelim} fixes the Lean definitions, the strata and the formal interface. Section~\ref{sec:resultA} presents Result A: the witnesses, the closure of each stratum, the evidence-level table, where the residual trust sits, and the cost of a formal closure including the cube-partitioned route. Section~\ref{sec:theoremB} presents Theorem B and its residue. Section~\ref{sec:interpretation} interprets both results. Appendix~\ref{app:negative} condenses the negative map for $\AREG$; Appendix~\ref{app:collab} records how the collaboration ran.
+
+\section{Related work}\label{sec:related}
+
+\paragraph{The problem and its Ramsey form.} The maintained Erdős Problems record \citep{bloom-erdos85} states Problem 85 for $n\ge 4$, marks it open and records no partial solution. The star-Ramsey function $r(s)=R(C_4,K_{1,s})$ is the object of \citet{zhang2017polarity}, who relate it to polarity graphs, and of \citet{boza2024ramsey}, whose table gives exact values and bounds; the conversion in Section~\ref{sec:intro} turns a plateau of $r$ into a drop of $f$. We cite Boza for the table and the open entry $r(42)\in\{49,50\}$, and Zhang, Chen and Cheng for the polarity-graph values used in Appendix~\ref{app:negative}.
+
+\paragraph{Extremal records at order 49.} \citet{afzaly-mckay-extremal} list six $C_4$-free graphs on 49 vertices with 174 edges and minimum degree 6, labelled on their page as the best examples found rather than as an exhaustive computation. They corroborate $f(49)\ge 7$ and are cited here only as lower-bound examples; they do not exclude a different 49-vertex $C_4$-free graph of minimum degree 7, which is the obligation Result A addresses. Our own 48-vertex witness is not isomorphic to the record listed by Afzaly and McKay at order 48 (Section~\ref{sec:lower}).
+
+\paragraph{SAT solving with and without certificates.} The census uses Kissat \citep{biere2024kissat} and CaDiCaL \citep{biere2020cadical} as independent solvers. The distinction the paper rests on, between a solver's UNSAT verdict and a checkable proof of it, is the standard one: DRAT proofs are checked by drat-trim \citep{wetzler2014drat}, and the LRAT format \citep{cruzfilipe2017lrat} adds the hints that let a small verified checker replay them. Cube-and-conquer \citep{heule2011cube} partitions a hard instance into cubes that are solved independently; the Boolean Pythagorean triples proof \citep{heule2016pythagorean} is the model for a cube-partitioned result whose per-cube proofs are checked separately. The 96 historical H1 rows follow that model (certificates checked by drat-trim at production time); the 1,161 residual rows do not, and Section~\ref{sec:cube} projects what following it would cost.
+
+\paragraph{The trust root.} Graph semantics, the finite-drop core, the stratum interface and Theorem B are stated and checked in Lean 4 \citep{moura2021lean4} over mathlib \citep{mathlib2020}. The finite witnesses are checked through \texttt{native\_decide}, which adds compiler-generated axioms that we list; Theorem B uses the standard axioms only.
+
+\section{Definitions and the formal interface}\label{sec:prelim}
+
+\subsection{Lean definitions and audited statements}\label{sec:lean-defs}
+
+\texttt{minDegreeForC4 n} is $f(n)$. \texttt{C4FreeMinDegreeWitness n d} asserts that a simple $C_4$-free graph on $n$ vertices with minimum degree at least $d$ exists. The module \lean{Erdos85FiniteDropWitnesses.lean} supplies the two explicit graphs \lean{boza48_degreeSeven_witness} and \lean{orderFortyNine_degreeSix_witness}, and the finite-drop core consists of \lean{minDegreeForC4_fortyEight_fortyNine_exact_checked} and \lean{minDegreeForC4_fortyNine_lt_fortyEight_checked}, both of which take \hnoFortyNine\ as a hypothesis. A cold rebuild on 2026-09-27 (fresh build volume, pinned Lean 4.31.0 image, mathlib from the standard cache) printed the literal \texttt{\#print axioms} output summarized in Table~\ref{tab:axioms}. Two conditional endpoints under the planned names \lean{minDegreeForC4_fortyEight_fortyNine_exact_of_generatedSevenBaseCertificates} and \lean{minDegreeForC4_fortyNine_lt_fortyEight_of_generatedSevenBaseCertificates} are specified in a generated module that is not present in the source tree; they would prove the finite drop only after every input is supplied, the module lands, and a cold build and literal axiom audit pass.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Audited Lean statements and their axiom scope (cold rebuild, 2026-09-27). Every entry also depends on \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}.}
+\label{tab:axioms}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.26\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Lean statement & Content & Axioms beyond the standard three \\
+\midrule
+\lean{not_erdos85Question_of_binarySquareRegularExclusion} & Theorem B: $\AREG\Rightarrow\neg\,\Qn$ & none \\
+\lean{minDegreeForC4_fortyEight_eq_eight_checked} & $f(48)=8$ & three \texttt{native\_decide} axioms (the 48-vertex graph, its codegree bound, its degree) \\
+\lean{seven_le_minDegreeForC4_fortyNine_checked} & $f(49)\ge 7$ & three \texttt{native\_decide} axioms (the 49-vertex graph, its codegree bound, its degree) \\
+\lean{minDegreeForC4_fortyEight_fortyNine_exact_checked} & $f(48)=8\wedge f(49)=7$, given \hnoFortyNine & the six above \\
+\lean{minDegreeForC4_fortyNine_lt_fortyEight_checked} & $f(49)<f(48)$, given \hnoFortyNine & the three 48-vertex axioms \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{The strata and the consumer interface}\label{sec:strata}
+
+The order-49 nonexistence hypothesis is discharged, in the source, by a consumer that assembles four stratum exclusions. The strata H1, H3, H5 and H7 are indexed by a high-vertex count $h\in\{1,3,5,7\}$ (``one-high'' through ``seven-high'' in the source names); the normalization that assigns a candidate graph to a stratum and the exact meaning of ``high'' are fixed by the Lean definitions and are not restated here. We make no independent claim that the four strata are exhaustive: exhaustiveness is the Lean consumer's own interface. The source-level consumer \lean{not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighLratChecks} in \lean{Erdos85OrderFortyNineSmallHighVerifiedFrontier.lean} derives \hnoFortyNine\ from exactly the four inputs of Table~\ref{tab:inputs} and nothing else.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Inputs required by the source-level consumer of \texttt{hno49}.}
+\label{tab:inputs}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Stratum & Required input \\
+\midrule
+H1 & \texttt{OrderFortyNineStratumExcluded 1} \\
+H3 & checked LRAT proofs for both representative indices (\texttt{index <= 1}) \\
+H5 & checked LRAT proofs for all three representative indices (\texttt{index <= 2}) \\
+H7 & \texttt{OrderFortyNineStratumExcluded 7} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+For H3 and H5 the checked formulas are precisely \lean{orderFortyNineGeneratedCanonicalSatCnf} applied to \lean{threeHighRepresentativeMasks} or \lean{fiveHighRepresentativeMasks}. This is an interface description, not a claim that five monolithic certificates are available. A finer cube route instead supplies seven base-CNF \lean{Unsat} proofs to \lean{not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighCubeBaseUnsat} in \lean{Erdos85OrderFortyNineSmallHighCubeGridTerminal.lean}; it reaches the same \hnoFortyNine\ conclusion without the five existential LRAT arrays, and the finite-drop core accepts either route. H1 rows still need the full row-to-stratum assembly; H7's Lean capstone \lean{orderFortyNineStratumExcluded_seven_of_emptyCubeEvidenceVectors} takes four evidence-vector arguments of lengths 19, 15, 7 and 2 and is not yet instantiated.
+
+\section{Result A: computational evidence for a 48-to-49 drop}\label{sec:resultA}
+
+\begin{resultA}
+The combined evidence supports $f(48)=8$ and $f(49)=7$, and consequently the strict drop $f(49)<f(48)$.
+\end{resultA}
+
+This is a computational result, not an unconditional Lean theorem. The census rule was that any H1 row reaching its declared solver cap would be printed as open; after escalating caps and one cube partition, no row is open. Even with every row UNSAT, proof certificates would still be needed for a formal theorem.
+
+\subsection{Lower sides: the two witnesses}\label{sec:lower}
+
+The 48-vertex witness \lean{boza48_degreeSeven_witness} and the 49-vertex witness \lean{orderFortyNine_degreeSix_witness} are elaborated in Lean through \texttt{native\_decide}; the cold-rebuild audit lists three \texttt{native\_decide} axioms per witness (Table~\ref{tab:axioms}), so the witness side is not a standard-axiom-only kernel proof. Independent edge-list audits corroborate the graphs: the 48-vertex witness has 168 edges and all pair codegrees at most 1, and the 49-vertex witness passes the same codegree check. Separately, an independently computed NetworkX isomorphism comparison of archived graph6 artifacts finds the 48-vertex witness not isomorphic to the record listed by \citet{afzaly-mckay-extremal} at the same extremal parameters, so it is a second realization; this comparison is reproducible computation, not part of the Lean-elaborated theorem, and its script and inputs are archived with the release material (Section~\ref{sec:artifacts}).
+
+\subsection{Upper side: closing the four strata}\label{sec:upper}
+
+\paragraph{H3 and H5.} Structural normalization reduces the seven H3/H5 monoliths to two checked cover formulas and a $7\times 8$ grid of positive cubes per cell. Lean proves the accounting, 392 positive cubes plus fourteen negative covers, in \lean{orderFortyNineSmallHigh_positiveCube_job_count}, and their exhaustive composition in \lean{orderFortyNineSmallHigh_unsat_of_checkedCubeGrid}, so the host runs 406 bounded jobs instead of trusting a solver-side cube list. The census index carries 2 H3 rows and 129 H5 rows. The semantic path from the cube stack's \lean{CNF.Unsat} results to the consumer was formalized as \lean{not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighCubeBaseUnsat} before the first verdict was needed. These strata are closed by reviewed paper-and-computation covers with archived local proof receipts; the generated formal aggregate and a public axiom audit for them are absent.
+
+\paragraph{H7.} The initial empty-block classification has 43 classes; a universal singleton-capacity argument excludes 15 and retains 28 structural roots, and the closure ledger of 2026-09-15 joins each of the 28 to an accepted structural exclusion, with no residual root. This is a structural graph argument under the established H7 reduction and normalization premises, at the level of reviewed prose plus reviewed computation, with no Lean statement: the source enumeration on which one family rests is accepted through an audit of the enumerator code, not an independent exhaustive replay, and the Lean capstone of Section~\ref{sec:strata} is uninstantiated.
+
+\paragraph{H1: the two-solver census.} The frozen Phase B index has 1,416 cases: 96 H1 historical roots with 2026-08 drat-trim-verified certificates, 1,161 H1 residual roots without a listed certificate object, and the 2 H3, 129 H5 and 28 H7 rows closed above; H1 is the first two classes, 1,257 instances. Every residual root was solved verdict-only, with no proof logging, by Kissat 4.0.4 and then, on a Kissat UNSAT, by CaDiCaL 3.0.1, each under a declared per-solver cap; a row counted only when both solvers returned UNSAT. Rows that reached a cap were rerun at a longer cap (4, then 12, then 24 hours, the reviewed maximum). Table~\ref{tab:passes} lists the passes; the outcomes sum to 1,160 whole-instance UNSAT rows. Six spot reclaims restarted their rows from scratch. Actual cloud cost for 2026-09-21 to 09-27 was \$235.
+
+\begin{table}[htbp]
+\centering\small
+\caption{H1 verdict-only census passes (2026-09-21 to 09-27). Caps are per solver.}
+\label{tab:passes}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.15\textwidth}>{\raggedleft\arraybackslash}p{0.07\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Pass & Rows & Cap & Hosts & Outcome \\
+\midrule
+Pilot (09-21/22) & 24 & 4 h & Mac, 4 workers & 24 UNSAT \\
+1 (09-21/23) & 1,137 & 4 h & 4 spot c7g.16xlarge & 876 UNSAT, 256 cap hits, 1 infrastructure error, 4 killed in flight \\
+2 (09-23/25) & 261 & 12 h & spot, then on-demand & 242 UNSAT, 19 cap hits \\
+3 (09-25/26) & 17 & 24 h & 1 on-demand c7g.8xlarge & 16 UNSAT, 1 cap hit \\
+3b (09-25/27) & 2 & 24 h & 1 on-demand c7g.xlarge & 2 UNSAT \\
+4 (09-26/27) & 1 & probe 1 h, leaves 24 h & Mac, 24 workers & UNSAT through 36 cubes \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The one row that defeated every whole-instance cap, \lean{h1_81494a6ef36d3ec9}, had also failed the 1-hour and 4-hour caps of the 2026-08 fleets. Its base CNF was regenerated by the reviewed materializer (42,160 variables, 613,228 clauses, sha256 \texttt{860d8af2\ldots}). The adaptive cube-and-conquer procedure pre-splits five levels by unit-propagation lookahead, probes each cube with Kissat for one hour, confirms each Kissat-UNSAT cube with CaDiCaL under a 24-hour cap, and splits any unresolved cube on the best lookahead variable. The result is a tree of 71 nodes, 35 splits (31 initial, 4 after a failed probe), 36 leaves and maximum depth 8, every leaf UNSAT under both solvers, in 9.7 Kissat and 6.2 CaDiCaL core-hours and 4 hours 50 minutes of wall clock on 24 cores; 9 leaves fell in under 10 seconds, 29 in under 15 minutes, and the hardest needed 0.87 hours of Kissat and 0.96 hours of CaDiCaL. Because each split replaces a cube by two cubes that partition it, the leaves partition the base formula. A separate checker re-derives the tree, every cube's bytes and every verdict from the logs and exits cleanly. An earlier fixed five-variable split on top-occurrence variables refuted 27 of 32 cubes within 3 seconds and was abandoned as uninformative; it is kept only as a datum for Section~\ref{sec:cube}.
+
+The residual-root count comes from exact tag and CNF joins of the solver receipts by the reviewed summarizer over 1,413 cloud run directories and the pilot, not from a sum of overlapping inventory counts. All 1,161 residual roots are UNSAT under two solvers; there were no SAT candidates and no solver disagreements. A second framing, the capacity-grid snapshot of 13,351 slots with 1,288 certificate gaps, is an overlapping decomposition of the same evidence: 1,158 gap slots are residual roots above, 96 are the historical overlay, and 34 lie outside the frozen Phase B source and were solved through their own reviewed route on 2026-09-27/28 (34 of 34 UNSAT under both solvers, Kissat 0.3 to 1.7 hours per row, no cap hits). The reviewed gap auditor reports 1,191 slots with fresh two-solver UNSAT verdicts, 96 with inherited 2026-08 certificate verification, and one slot, the cube-partitioned row, which it cannot read and lists as UNKNOWN; by its own definition only fresh verdicts close a slot, so it prints 97 ``open'' slots. Every slot has evidence; none has a certificate produced by this paper.
+
+\subsection{Evidence levels and formal obligations}\label{sec:evidence}
+
+The evidence classes in Table~\ref{tab:evidence} are not a partition: the 96 historical roots, the certificate-object inventory and the Phase B root set use different selections of the same capacity tags. No row is promoted from a solver verdict or an archived proof object to a kernel-checked theorem.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Evidence level of each input to Result A, and the limit of what each establishes for this paper.}
+\label{tab:evidence}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.29\textwidth}@{}}
+\toprule
+Class & Current evidence & Limit for this paper \\
+\midrule
+Order-48 and order-49 lower witnesses & Finite graphs in \lean{Erdos85FiniteDropWitnesses.lean}, elaborated through \texttt{native\_decide}; cold-rebuild audit lists three \texttt{native\_decide} axioms per witness; independent edge-list audits corroborate both graphs & Establish the lower sides only; not standard-axiom-only. \\
+H3, H5 & Reviewed paper-and-computation covers with archived local proof receipts; Lean proves the grid accounting and composition & Generated formal aggregate and public axiom audit are absent. \\
+H7 & All 28 surviving structural roots covered after 15 singleton-capacity exclusions (closure ledger of 2026-09-15) & Paper-and-computation closure; the Lean evidence-vector capstone is uninstantiated. \\
+H1 historical overlay & 96 reviewed historical rows with archived drat-trim verification & Historical checks are not a current kernel replay. \\
+H1 certificate bank & 12,019 historical ready certificate inputs in the replay sizing model & Object and metadata availability do not establish a completed kernel replay. \\
+H1 residual roots & 1,161 Phase B roots without a listed certificate object: 1,160 UNSAT from Kissat 4.0.4 and then CaDiCaL 3.0.1 under declared caps over four passes; one UNSAT on all 36 leaves of an exact cube partition under both solvers; receipts re-derived by the reviewed summarizer and cube checker & Verdict-only evidence: two solvers agreeing under a cap is evidence about solver behaviour, not a proof; no certificate is produced. \\
+H1 capacity-grid slots & 1,288 gap slots: 1,158 residual roots, 96 historical, 34 outside the frozen source and solved by their own route; auditor reports 1,191 fresh, 96 inherited, 1 UNKNOWN (the cube row) & The auditor counts only fresh verdicts, so it prints 97 open slots; every slot has evidence, none a certificate from this paper. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The complete set of two-solver UNSAT verdicts supports Result A computationally and leaves the formal nonexistence theorem unproved. The mathematical dependency chain does not depend on how the computation was scheduled: the exact-value theorem still takes \hnoFortyNine, and no completed-certificate count by itself supplies it. A future formal closure would require the exact cover and semantic bridges, certificate replay for every necessary row, the generated aggregate, and a cold build with literal axiom audits of the two public endpoints. None of these steps follows from verdict-only UNSAT results.
+
+\subsection{Where the residual trust sits}\label{sec:trust}
+
+The weakest link in any SAT-based nonexistence result is the encoding, not the solver. Three facts bound that risk here. The H1 instance generator is itself a Lean program, \lean{Proofs/Erdos85OneHighV2CnfEmit.lean}, compiled to the native \lean{v2cnf} binary (sha256 \texttt{4bd9604c\ldots}) that every run pins; the emitted DIMACS is regenerated and compared by the binary's own check mode before any solver starts; and the census pipeline compares each emitted CNF against the hash recorded by the independent 2026-08 producer. What the encoding does not yet have is a Lean-elaborated semantic bridge for H1: for H3 and H5 the checked formulas are the Lean terms \lean{orderFortyNineGeneratedCanonicalSatCnf} applied to the representative masks, whereas for H1 the row-to-stratum assembly is an open formal obligation. An encoding error would be systematic and invisible to solving; the order-64 case study in Appendix~\ref{app:collab} records one such error that review caught. After the encoding come the solvers themselves, whose agreement under a cap is evidence about solver behaviour rather than a proof, and then the uninstantiated H7 Lean capstone.
+
+\subsection{Cost to verify Result A formally}\label{sec:cost}
+
+The cancelled replay plan is retained as a cost model, not an active launch plan. For the 12,019 historical ready certificate inputs, its byte-weighted model estimates 4,831 compile box-hours. With the plan's 25\% noncompile allowance, 10\% spot-loss factor and eight bootstrap hours, this becomes about 6,651 box-hours: 17.32 ideal allocated days on 16 hosts and about \$1,276 of infrastructure at the sampled spot, gp3 and IPv4 rates. Retrieval is additional: a full read of the 6.06 TB input subtotal at the cited Glacier Instant Retrieval rate of \$0.03 per GB costs about \$182 before requests, repeat reads, output storage or other services. No replay wave is authorized by this estimate.
+
+The cost of producing the missing certificates is unresolved. An early proxy multiplied the 1,288 capacity-grid gaps by a 10.2-hour claim-to-ledger interval; the worker ledgers show that interval includes queue and pipeline time, so it is not a solver-time forecast and we do not repeat its dollar figure. The v3 worker readback finds 574 verified-UNSAT solves with a 4,011-second median and a 4,539-second mean Kissat time, proof trimming averaging 7,102 seconds, and 22 UNKNOWN rows at the 14,400-second cap. The unproved rows are selected for difficulty, and proof logging, trimming, splits and retries have no measured cost model here; the gap-certificate figure is a planning proxy, not a fixed price. A public requester-pays copy of the existing certificate bank could let others fund independent verification, subject to the operator's publication gate and an exact release manifest.
+
+\subsection{A cheaper route: cube-partitioned certificates (projection)}\label{sec:cube}
+
+The price above assumes one certificate per instance, checked whole. In the archived bank the compact LRAT proof grows at roughly 5.5 GB per Kissat solve-hour, and the replay pilot checked about half a megabyte of gzipped certificate per second (a 509 MB mean object in 984 seconds), so a kernel check costs roughly as long as the solve that produced it. The largest proofs are what force the plan's layout of one replay process per host with a 48 GiB memory gate and a separately costed 128 GiB lane, and what turn 4,831 compile hours into two to four weeks of fleet time depending on shard count. The 1,161 residual roots settled by the verdict-only census are heavier still. The 1,160 whole-instance UNSAT rows needed 2,704 Kissat core-hours and 2,996 CaDiCaL core-hours, with a median of 1.9 hours of Kissat per row, 121 rows above 4 hours and six above 12 hours; at the bank's rate, whole-instance certificates for them would total about 14.9 TB, and the six rows above 12 hours would each produce a single file of roughly 65 to 130 GB, beyond the memory gate of any planned checker.
+
+Cube-and-conquer \citep{heule2011cube} changes the shape of that cost. Fixing the values of a few variables splits an instance into cubes that partition its search space; the instance is UNSAT exactly when every cube is. Each cube yields its own small certificate, so checkers need a few gigabytes rather than tens, several checks share one host, a lost spot instance costs one cube rather than a whole job, and a short Lean lemma (a complete tree of UNSAT cubes refutes the base formula) composes the leaves. The trivial fraction is large: the hardest residual row, which failed every whole-instance cap up to 24 hours, was refuted by the adaptive tree of Section~\ref{sec:upper} (36 leaves, 35 splits, depth at most 8) in 9.7 Kissat and 6.2 CaDiCaL core-hours, under five hours of wall clock on 24 cores, with 29 of the 36 leaves falling within 15 minutes and the hardest within an hour. Proof size still tracks solver work, so the total byte count is the open question; splitting can lower it where a single CDCL run thrashes and raise it where work is duplicated across cubes.
+
+Under the measured rates, a cube-certified census of the 1,161 residual roots would need about 6,700 core-hours of proof-logged solving and trimming (roughly \$70 to \$100 on spot), about 360 host-hours of kernel checking packed eight to a host (roughly \$70), and 4 TB of gzipped certificates (about \$16 per month in cold storage), against \$2,000 to \$2,500 for the whole-instance plan. These are projections from the archived bank's rates and one live cube tree, not receipts; the Lean-side composition lemma and per-cube proof emission are not yet built. We record the route because it makes the price of certainty an order of magnitude more approachable for whoever takes Result A to a theorem.
+
+\section{Theorem B: a one-proposition reduction of the infinite problem}\label{sec:theoremB}
+
+\subsection{Statement and reduction chain}\label{sec:chain}
+
+\begin{hypAREG}
+For every $k\ge 3$ there is no simple $C_4$-free $2^k$-regular graph on $2^k\cdot 2^k=4^k$ vertices. (Lean: \lean{BinarySquareRegularExclusion}.)
+\end{hypAREG}
+
+\begin{theoremB}
+$\AREG\Rightarrow\neg\,\Qn$. Lean proves this as \lean{not_erdos85Question_of_binarySquareRegularExclusion} from the standard axioms alone (Table~\ref{tab:axioms}).
+\end{theoremB}
+
+The reduction is complete in the following sense. The negation of Erdős 85 is equivalent to the existence of arbitrarily late strict drops (\lean{erdos85Negation_iff_not_question}); a $q$-regular $C_4$-free witness on $q^2-1$ vertices together with nonexistence at $(q^2,q)$ produces such a drop (\lean{PlaneOrderDropWitness.strict_drop}); and cofinally many such pincers refute the problem (\lean{not_erdos85Question_of_cofinalPlaneOrderDropFamily}). For $q=2^k$, $k\ge 3$, the existence jaw is uniform: deleting the absolute nucleus from the even-characteristic polarity graph gives the witness (\lean{Polarity.c4FreeMinDegreeWitness_even_delete_absolute_nucleus}), and the resulting orders are cofinal (\lean{cofinalEvenFieldSquareExclusion_of_binary}). On the nonexistence jaw the normalized square-order reduction is an equivalence (\lean{squareOrderTightCoreExists_iff_witness}, \lean{binarySquareOrderTightCoreExclusion_iff}), and parity forces every tight core to be regular (\lean{squareOrder_regular_of_even}). Lean then proves directly that $\AREG$ implies the normalized tight-core exclusion (\lean{binarySquareOrderTightCoreExclusion_of_regularExclusion}) and hence $\neg\,\Qn$. Every arrow from $\AREG$ to the headline is cold-green; $\AREG$ itself remains an unproved hypothesis. Theorem B is a complete checked reduction, not a proof of $\AREG$, and $\AREG$ is not shorthand for several hidden assumptions.
+
+\subsection{The residue beneath A-REG}\label{sec:residue}
+
+The defect operator makes the residue precise. For a hypothetical $q$-regular $C_4$-free graph on $q^2$ vertices with adjacency matrix $A$,
+\[
+A^2=(q-1)I+J-D,
+\]
+and $A$ commutes with $D$ (\lean{adjMatrix_sq_eq_sub_secondOrderDefect_of_regular}, \lean{adjMatrix_comm_secondOrderDefect_of_regular}). The components of the defect graph $D$ have orders $q\,m_c$ with $\sum_c m_c=q$ (\lean{binarySquare_regular_exists_defectComponent_partition}), and every vertex of component $c$ has exactly $m_c$ graph-neighbours inside that component (\lean{binarySquare_regular_degree_induce_defectComponent_eq_part}). Unit parts are impossible for even $q$ (\lean{binarySquare_regular_no_sizeQ_defectComponent_of_even}), and bipartite defect components are impossible when $4\mid q$ (\lean{binarySquare_regular_no_bipartite_defectComponent}; the per-component form is \lean{binarySquare_twoPow_regular_no_bipartite_defectComponent}, and \lean{binarySquare_twoPow_regular_defectGraph_not_bipartite} discharges the nonbipartite hypothesis for every regular binary-square candidate). What remains is exactly $\NONBIP$: all partitions $q=\sum_c m_c$ with every $m_c\ge 2$ and every defect component non-bipartite.
+
+The one-component subcase has a sharp equivalent form.
+
+\begin{nonbipconn}
+For binary $q\ge 8$, every loopless $q$-regular $C_4$-free adjacency matrix $A$ of order $q^2$ is singular. Equivalently, its defect graph $D$ is not connected, since $\dim\ker A=\#\mathrm{components}(D)-1$ (\lean{binarySquare_regular_finrank_adj_kernel_eq_card_components_sub_one}).
+\end{nonbipconn}
+
+The formal socket for this case is \lean{BinarySquareConnectedNonbipartiteExclusion}. Its connectedness hypothesis is the open part: there is no uniform Lean theorem routing all disconnected or articulated defect graphs into the socket (such a routing exists only in the separate $q=9$ analysis), so the connected socket and the mixed non-bipartite partitions are sibling open cases, and connectivity must not be cited as a proved uniform reduction. The formulation includes all graph hypotheses; proving singularity from generic regularity or spectrum alone would not suffice. The current mathematical frontier is the implication from the full symmetric $C_4$-free incidence completion to that singularity statement.
+
+\subsection{Evidence for and against A-REG}\label{sec:areg-evidence}
+
+The evidence is mixed. Even-characteristic polarity graphs supply the cofinal existence jaw, and the binary-square defect calculus removes unit and bipartite components. Against that, the Lean-checked exact values at orders 15 and 16 show no drop and refute the $q=4$ analogue, and every attempted generic terminal for the remaining non-bipartite completion problem has failed or exposed a weaker hypothesis. The negative map in Appendix~\ref{app:negative} records those failures as scope statements: determinant and spanning-tree controls, real spectral controls, packing and fractional-transversal relaxations, the inverse-sign separation, Pfaffian and Ihara variants, circulant and divisible-design families, Baer-type repairs, and the finite censuses at orders 64, 78 and 80 and in Cayley families of orders 80, 120 and 168. None of them closes $\NONBIP$, and each says exactly which advertised hypotheses were too weak. $\AREG$ is the live mathematical frontier, not a conclusion licensed by the finite data; the operator's plane-order interpretation is the principal rival, under which special orders may organize both the constructions and the obstructions without the binary regular-exclusion pattern persisting uniformly.
+
+\section{Interpretation: a computational drop, an unproved infinite frontier, and the price of certainty}\label{sec:interpretation}
+
+Result A is computational evidence, not a theorem, and this section is written so that it can be read standing alone. The lower sides of both values are explicit witnesses elaborated in Lean through \texttt{native\_decide}, which adds six named trust axioms beyond Lean's standard three; only Theorem B is standard-axiom-only in the cold-rebuild \texttt{\#print axioms} audit. The upper side at order 49 is a case split into the strata H1, H3, H5 and H7. Three of the four are closed at the level of a paper argument backed by reproducible, independently reviewed computation with banked receipts; the H1 rows were settled by a verdict-only census in which two independent SAT solvers had to return UNSAT under a declared cap. Rows that reached a cap were rerun at longer caps (4, then 12, then 24 hours per solver), and the single row that defeated every whole-instance cap was split by cube-and-conquer into 36 cubes that partition its search space exactly, each refuted by both solvers within an hour. No row is open: all 1,161 residual instances are UNSAT under two solvers. The statement we can make is therefore that we have strong computational evidence that $f(48)=8$ and $f(49)=7$, and therefore that the threshold drops between two adjacent orders. Erdős Problem 85 asks whether $f(n+1)\ge f(n)$ holds for all large $n$. One drop at 48-to-49 is a data point against monotonicity at small order; it is compatible with either answer to the problem as posed, which a finite computation cannot settle, and we make no claim about the problem itself.
+
+We chose to stop at belief and publish the price of certainty. A bank of 12,019 historical ready certificate inputs for the H1 rows is inventoried (objects and metadata, not yet validated payload by payload); replaying it through the Lean kernel is a priced, bounded task (about \$1,276 of spot infrastructure and 17 ideal allocated days on 16 hosts, plus about \$182 of retrieval), and the remaining rows have no fixed price because they were selected by difficulty. The certificate bank can be released as a requester-pays object store with an exact manifest, so that anyone who wants Result A promoted to a kernel-checked theorem can pay for exactly that and nothing else. The trust boundary is stated rather than hidden: two solvers agreeing under a cap is evidence about solver behaviour, not a proof; the H7 source enumeration rests on an audited program rather than an independent replay; and the archived H1 certificates were checked by drat-trim at production time, not by a current kernel replay.
+
+Theorem B identifies what would turn a single drop into an infinite family. It is deliberately stated as a reduction from the one proposition $\AREG$, and $\AREG$ is an unproved hypothesis with a stated rival. Publishing the twin result makes that disagreement useful: the checked reduction states exactly what a proof of the negative answer must supply, the negative map states which plausible shortcuts do not supply it, and Result A provides a concrete calibration point for future theory.
+
+\paragraph{Artifacts.}\label{sec:artifacts}
+Three artifacts carry every count above. The receipt-derived census: the reviewed Phase B summarizer over 1,413 run directories and the pilot (\lean{phase_b_h1_census_20260927/h1-census-table.json}: 1,160 two-solver UNSAT rows, 96 historical rows, no disagreement) and the reviewed 1,288-slot gap auditor (\lean{phase_b_h1_census_20260927/h1-gap1288-audit.json}: 1,191 fresh two-solver UNSAT slots, 96 inherited, one cube-partitioned slot reported separately by \lean{cube-h1_81494a6ef36d3ec9/tree-check.json}); the open list is empty. The 12,019 certificate rows enter only as the inventory that prices replay. The literal \texttt{\#print axioms} output from a cold rebuild for the witnesses, the conditional finite-drop core and Theorem B (\lean{AXIOM_AUDIT_COLD_20260927/}). The release manifest of the certificate bank is not part of this revision because no requester-pays copy has been published; if one is, its manifest must be added here.
+
+\section{Contributions, collaboration and availability}\label{sec:contrib}
+
+\paragraph{Contributions and collaboration.} Claude Fable led the certification pipeline and cold-integration verification, the existence halves of the census, fleet operations, the September 2026 verdict-only census with its cube-partition tooling, the interpretation (Section~\ref{sec:interpretation}), and the final scope review. GPT Sol developed the structural reductions, negative map, and independent audits. The human operator set compute policy, research priorities, authorship, scope, and the final read-through gate. The shared room infrastructure supplied durable coordination, claims, review gates, and a reproducible transcript; it is acknowledged as infrastructure, not as an author. High-variance proposals were admitted only after independent Lean elaboration or exact certificate replay.
+
+\paragraph{Data and code availability.} The branch of record is \lean{erdos85/integration} in the Lean Genius repository. Lean sources are the named modules under \lean{Proofs/}, built with Lean 4.31.0 and the repository-pinned mathlib. The census receipts (summarizer table, gap audit, cube tree check) live in \lean{research/problems/erdos-85-wip-01/phase_b_h1_census_20260927/}, the cloud controller, node scripts and cube tools in \lean{phase_b_h1_verdict_cloud_20260921/}, the H7 closure ledger and its review archives beside them, and the cold axiom audit in \lean{AXIOM_AUDIT_COLD_20260927/}. Full solver logs, CNF snapshots and run directories are on the project's artifact volume under \lean{artifacts/erdos85-sat49/} with the checksum manifest \lean{artifacts/erdos85-sat49-MANIFEST-20260927.sha256}. The certificate bank (about 6 TB gzipped) is in the private bucket \lean{s3://2am-erdos85-certs/sat49/campaign-20260825/}; a requester-pays copy is subject to the operator's publication gate. The non-isomorphism check is \lean{sat49/verify_boza48_nonisomorphism.py} over the graph6 inputs in \lean{sat49/data/}.
+
+\appendix
+
+\section{The negative map for A-REG}\label{app:negative}
+
+The search did not merely fail to finish several familiar approaches; it produced exact countermodels or reductions showing why they do not close $\NONBIP$. These are scope statements, not impossibility theorems about every future variant: they say which advertised hypotheses were too weak and identify the missing input, a new invariant that uses the simultaneous completion of all rows to one symmetric $q$-regular $C_4$-free $A$. The algebraic and geometric arguments below are reviewed prose unless a named Lean result is identified; their computational checks are evidence for their stated examples, not universal certificates. Ledger pointers (outline versions, cuts-ledger rows, commit hashes) are transcript pointers into the campaign record.
+
+\begin{itemize}
+\item \emph{Determinant.} The identity $\det(A)^2=q^4\,\tau(D)$ makes a square spanning-tree count necessary when $D$ is connected. Controls show that this condition alone does not force singularity (outline \S A.5.3(i), commit \texttt{0ed91c72d6}); stronger integral or local arithmetic tests are not excluded, and later examples fail precisely such tests.
+\item \emph{Real spectrum.} Real spectral controls satisfy the scalar conditions recorded in their reports (\texttt{f6ee2ed421}; divergence \#66) but do not establish integral adjacency realizability or compatibility with every odd-trace condition. Hoffman-diagonal and odd-power arguments reject particular proposed spectra (outline versions 2.66--2.69.3).
+\item \emph{Packing and relaxation.} Generic packing, Hall, code-LP and fractional-transversal statements omit the completion of all rows to one symmetric adjacency matrix; the strongest faithful self-polar partial interface already has an exact half-integral survivor at $q=6$ (\texttt{e401f3034f}; room message 31951).
+\item \emph{Inverse-sign separation.} The proposed P8 separation is impossible: exact product-sign identities force both signs among the relevant inverse entries. The false terminal was retracted, not weakened (\texttt{19f227dced}; outline v2.62; room messages 31962--31963).
+\item \emph{Variants.} Pfaffian and mod-2 valuation, Ihara, exterior-power and Lefschetz variants reduce to the same determinant or spectral data. Coherent-configuration, projective-completion and line-graph thresholds lack the required bridge; the line-graph premise already fails the $q=4$ incidence control. The ten-route audit and its no-survivor verdict are banked in \lean{NONBIP_CONNECTED_LITERATURE_DIVERGENCE.md} at \texttt{cf2243a6e8}.
+\item \emph{Central operation.} A core-Lean partial common-neighbour reconstruction identifies the exact graph problem in operation form; a separate prose construction, checked at finite-field examples, refutes same-carrier Hamming stability based only on the total central law's failure rate (\lean{PARTIAL_CENTRAL_OPERATION_AUDIT.md}). It does not refute every additional operation identity.
+\item \emph{Circulant and representability families.} The interval circulant defect family with steps $\{q^2/2,\pm 1,\dots,\pm(q/2-1)\}$ is excluded for every binary $q\ge 4$ by a reviewed cyclotomic argument (\lean{l6-cyclic-trace/UNIFORM.md}). Specific order-256 defects fail rational congruence to the identity form, witnessed by local Hasse invariants (\lean{l6-representability/}); the recorded D16 also fails the mod-2 alternating-root test, and the interval $r=4$ example passes the 2-adic test but fails at odd primes. These are family exclusions with no reduction of arbitrary defect graphs to those families.
+\item \emph{Design and polarity repairs.} No proper divisible design graph has odd degree $k\ge 3$ with common-neighbour parameters $\lambda_1=0$, $\lambda_2=1$. Reviewed geometric arguments rule out loopless polarities preserving the Baer-deleted incidence structure, and matching-repair and retained-pencil bounds rule out stated support and deletion budgets; none excludes arbitrary global repairs (\lean{baer-repair-gate/}, \lean{BAER_POLARITY_EXTENSION.md}, \lean{retained-subplane-gate/}).
+\item \emph{Alternating square roots.} Explicit regular connected non-bipartite defect graphs pass the full alternating symmetric square-root test over $\mathbb{F}_2$, but the same family fails the determinant-square condition uniformly; the two necessary tests are separated, with no survivor of their conjunction (\lean{mod2-root-gate/}).
+\item \emph{Flag relaxations and enlargements} (cuts ledger rows 174--180). The stated five-vertex flag relaxation is feasible uniformly for binary $q\ge 16$ after repairing the original witnesses to satisfy $\operatorname{tr}(AD^2)\ge 0$, for the listed 23 identities and eight Gram families (row 175); the aggregate mod-3 census is feasible for every odd exponent $k\ge 5$ (row 174); the projected fixed-shore bound $z\le q-1$ is refuted by a uniform $z=q$ construction (row 176); and the specified enlargement of an even-order polarity graph to degree $q+1$ on $(q+1)^2-3$ vertices requires at least $q^2/4$ old-edge deletions for $q\ge 16$ (row 180), excluding repairs with only linearly many deletions, not all repairs.
+\end{itemize}
+
+\paragraph{The 63-to-64 campaign.} At $q=8$ the possible defect-component partitions are $[2,2,2,2]$, $[3,3,2]$, $[4,2,2]$, $[4,4]$, $[5,3]$, $[6,2]$ and $[8]$, and they are not all excluded. The size-two $\mu=3$ sector is closed on regular hypotheses by \lean{orderSixtyFour_regular_sizeTwoEigenline_false}, and the complete negative signed-joint size-two subtree, including the corrected $\mu=-3,(0,5)$ endpoint, by \lean{orderSixtyFour_regular_sizeTwo_signedJoint_false_of_connected}. But $[3,3,2]$, $[4,2,2]$ and $[6,2]$ retain non-bipartite cases; $[4,4]$ and $[5,3]$ have only partial owner-nullity information; the connected $[8]$ case remains a gap; and the eleven $[2,2,2,2]$ assembly targets are external UNSAT verdicts without certificates. Therefore 63-to-64 is not a decided drop, and none of these order-64 enumerations proves $\AREG$ (outline v2.64, \S A.5.2). The $\mu=-3,(0,5)$ endpoint carries exactly six disclosed Owner88 \texttt{native\_decide} checks (\lean{muNegThreeZeroFiveEndpointCallback_false}); the broader \lean{orderSixtyFour_regular_sizeTwo_signedJoint_false_of_connected} additionally inherits the older FullClosure certificate family, and both axiom lists were printed separately. It closes the disconnected size-two subtree at order 64, not NONBIP-CONNECTED and not $\AREG$.
+
+\paragraph{Plane-order censuses.} The order-80 search for a 9-regular $C_4$-free graph, which would supply the $q=9$ existence jaw, is unresolved: all 20 authorized solver attempts ended UNKNOWN under their caps, the independently checked positive controls returned SAT but neither is an order-80 witness, and the order-78 existence cases were left open (\lean{q9_solver_controls/Q9_EXISTENCE_DECISION_20260911.md}). An UNKNOWN is not evidence of nonexistence. The finite-group Cayley census examined 52 groups of order 80, 47 of order 120 and 57 of order 168 with inverse-closed connection sets of degree 9, 11 and 13; every input returned UNSAT, with reviewed encoding and table audits (\lean{cayley-census-q11-q13/CAYLEY_CENSUS_Q11_Q13_20260913.md}). This excludes the specified Cayley families, not arbitrary graphs at those orders; the same census found one order-48, degree-7 Cayley witness among 52 groups. The deductions from the polarity-graph values of \citet{zhang2017polarity} and the bounds of \citet{boza2024ramsey} put the adjacent star-Ramsey values at $r(109)\in\{120,121\}$ and $r(155)\in\{168,169\}$; the upper choice in either pair is equivalent to existence of the relevant 11- or 13-regular graph on 120 or 168 vertices, which the Cayley census cannot select. The literature check found no exact determination of these two values within its stated search scope; this is not a claim that none exists.
+
+\section{The collaboration record}\label{app:collab}
+
+This appendix condenses how the two-agent campaign ran, because the process determined which claims reached the record. Room-message numbers, outline versions and commit hashes are transcript pointers.
+
+\paragraph{Verification asymmetry.} Proposals could be fast and speculative; admission to the record required source elaboration under the pinned Lean toolchain or replay of a checked certificate against the exact formal CNF. In the inverse-potential episode a root-summed identity announced as $\operatorname{tr}(A^{-1})=q$ (room message 31890) was withdrawn five minutes later when its author re-expanded the all-pairs term and found $q\cdot\mathbf{1}^{\mathsf T}A^{-1}\mathbf{1}=q^2$ instead (31895); no Lean wrapper or outline node had been built, so the correction cost minutes and left no false theorem behind.
+
+\paragraph{The order-64 case study: an 80-owner error and its 88-owner repair.} The $\mu=-3,(0,5)$ endpoint shows why hypothesis fidelity matters more than an UNSAT line. The first encoding silently reused the h114 shore table (eight fixed owners per shore, 80 candidate owners), whereas the actual h305 shore modes contain antipodal offsets as well (twelve fixed edges per shore, an 88-owner universe); the original 80-owner UNSAT result therefore excluded only a strengthened, wrong problem. The mismatch was detected by comparing the formal shore modes with the certificate universe before the endpoint was called proved (room messages 31664, 31674, 31697; outline v2.64 entry 2.61). Six canonical 88-owner CNFs were then emitted independently and agreed byte for byte; all six were UNSAT in seconds, and their LRAT payloads are checked by the six \lean{h305Owner88*_check} theorems in \lean{Erdos85MuNegThreeZeroFiveCorrectOwnerCertificate}. The expensive work was not search but proving that the graph semantics map to those exact literals and modes, through \lean{h305_crossExteriorSplit_of_profile}, \lean{muNegThreeZeroFiveCorrectFiniteSemantics_false}, \lean{muNegThreeZeroFiveCorrect_graph_false_of_exterior} and \lean{false_of_h305_source_or_transported}; the integrator rebuilt the chain cold and printed the exact six Owner88 axioms (31809, 31845, 31882). Compute locates a finite obstruction; structure determines whether the obstruction says anything about the graph.
+
+\paragraph{Adversarial diversity.} Different agents were useful only when they tested different failure modes. Review \#939 re-derived P1--P7 and inspected the exceptional root term, forcing the corrected domain $V\setminus(N(y)\cup\{y\})$ (31868--31874); the author then proved that the corrected P8 sign separation was itself impossible, and a second agent caught an overbroad sentence in that retraction and supplied the necessary choice from $N_D(y)\setminus N_A(y)$ (31905, 31907, 31913; banked at \texttt{19f227dced} and \texttt{0ae7069f40}). Independent checking also corrected campaign accounting: a manuscript audit described the thirteen order-49 inputs as five one-high cells plus one seven-high cell, the host manifest listed four H3 scouts, three H5 cells and six H7-t0 cubes, and the sentence was retracted within two minutes (31989, 31994, 31997). The lesson is narrower than ``use multiple models'': the reviewer must inspect an independent invariant (the exact host manifest, a semantic universe, a boundary term) rather than replay the author's narrative.
+
+\paragraph{The structure--compute exchange rate.} The order-49 campaign gives a measured exchange: structural normalization reduces seven H3/H5 monoliths to two checked cover formulas and a $7\times 8$ grid per cell, Lean proves the accounting (392 positive cubes plus fourteen covers) and their exhaustive composition, and the host runs 406 bounded jobs (31994). When the campaign was fired, a separate audit found that these grid results did not fit the older five-monolithic-LRAT socket; the missing semantic path was formalized as \lean{not_c4FreeMinDegreeWitness_fortyNine_seven_of_smallHighCubeBaseUnsat} (\texttt{d0a17f358b}; 32032) before the first verdict was needed.
+
+\paragraph{Persistence.} The campaign state lives in four independent records: Lean sources and git commits, the room transcript, the proof outline, and durable certificate storage. Operator goal \#25 made the outline the allocation instrument: every root-to-leaf node is labelled PROVEN, CERT, AXIOM or GAP, and workers choose lanes against that tree (outline v2.64, \S G). This kept the order-64 endpoint from silently becoming the whole project: it was parked when its premise was underived, reopened by goal \#38, found to carry the 80/88 mismatch, and closed in one day at \texttt{802f6d79d3} and \texttt{778a2e1595} (31664--31682, 31849). Goal \#39 required a pre-fire manifest with all thirteen input hashes, tool hashes, job order, caps, storage exclusions and deletion policy, and the posted manifest verified all thirteen SHA-256 entries before any solver launched (31994). A verdict without durable provenance is not campaign progress, even if the process printed UNSAT.
+
+\paragraph{Scope words.} Every status word names its scope. The order-64 callback theorem carries the foundational axioms plus exactly six disclosed Owner88 \texttt{native\_decide} checks, while the broader signed-joint theorem inherits the older FullClosure family, and the integrator printed both lists rather than reporting the smaller list for the larger theorem (31845, 31846, 31882). The same discipline keeps Result A at its computational evidence level: the operator cancelled certificate production and replay for this paper, the two-solver H1 census was the remaining empirical gate and is complete, and a completed census does not decide an eventual property.
+
+\paragraph{The human role.} The human role is thin but decisive at branch points. Goal \#36 imposed a stuck test: if workers cannot name every link from recent banks to the terminal, they must stop, search outside first, diverge widely, and report refutations as results; that rule ended the inverse-potential lane after P8, fractional-cover integrality and divergence \#68 all failed (31951--31964). Goal \#38 reopened the parked order-64 endpoint; goal \#39 authorized the certificate campaign for the launched H3/H5/H7 cells; goal \#40 commissioned this manuscript. These are portfolio and governance decisions; the formal claims still pass through Lean or certificate replay, and nothing goes external before operator review (31965, 31970).
+
+\paragraph{Why Erdős problems.} Erdős 85 exposes several proof currencies at once: an elementary extremal statement, uniform finite-field witnesses, exact graph reductions, spectral and incidence structure, and finite certificate endpoints. Each partial claim has a precise interface, which makes the problem a useful test of whether a machine collaboration can accumulate durable mathematics without confusing a large amount of verified local work with a solved root problem.
+
+\paragraph{Silence is not success.} The false trace identity in 31890 looked plausible because no term visibly objected; an explicit re-expansion produced the positive evidence of cancellation. P8 survived a thousand sampled $q=4$ models only because those models were singular and never instantiated the inverse hypothesis; the correct response was UNKNOWN, not support (31886), and a direct block-sum argument then proved P8 impossible in every hypothetical survivor (31905--31913). Operationally, a solver cell counts only when its ledger line contains a verdict, return code, input hash, proof-check status, LRAT hash and upload status; a Lean file counts only after the named target elaborates and its \texttt{\#print axioms} output is inspected. On 25 August the order-64 dependency chain ran for nearly an hour, and three agents waited for the final file check and separately reported its axiom scope rather than inferring success from the absence of errors (31845, 31846, 31882). Positive artifacts, not quiet logs, are the unit of trust.
+
+\paragraph{Methods.} \emph{Room protocol}: persistent SQLite chat; claim, red-team, formalize, relay-merge, independent cold audit; every push to the working branch is merged to the mirror branch by the counterpart. \emph{Cold-audit rule}: ``verified'' means the file elaborates from source under the pinned toolchain (Lean 4.31.0 plus pinned mathlib) in an independent environment, unfiltered, with verbatim \texttt{\#print axioms} on the public theorems; adopted after a stale-cache incident and tightened after an rg-mask incident. \emph{Certificate factory}: exact DIMACS emitters with input hashes; Kissat and CaDiCaL portfolios; DRAT and LRAT replay; compressed artifacts plus a manifest on durable storage; resumable per-verdict queues; a SAT result becomes mathematical evidence only after a semantic bridge proves that every graph in the stated stratum satisfies the exact checked CNF. \emph{Census tooling}: exhaustive branch-and-bound sweeps over partition and atom spaces with every constraint tied to a named Lean lemma (loads, budgets, balance integrality, the equal-LCM law, oriented-cover kernels).
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

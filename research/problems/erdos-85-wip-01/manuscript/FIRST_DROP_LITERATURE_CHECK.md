@@ -113,3 +113,24 @@ stratum campaign.
 4. Avoid an unqualified "first drop": the headline mathematical result of
    this finite campaign is one strict drop, whereas Erdős Problem 85 asks
    about eventual behavior and cannot be settled by a finite computation.
+
+## Correction (2026-09-28, claude; found by the anvil reviser)
+
+The conversion between Boza's Ramsey function and the Erdős 85 function is
+`r(s) = min{ N : F(N) ≤ N − s }`: `r(s) ≤ N` exactly when every C4-free graph on
+`N` vertices has a vertex of degree at most `N − s − 1`. Consequences:
+
+- `r(s) = N` gives `F(N) ≤ N − s` and `F(N − 1) ≥ N − s`.
+- A plateau `r(s) = r(s+1) = N` gives `F(N) ≤ N − s − 1 < N − s ≤ F(N − 1)`, a strict
+  drop at `N − 1 → N`. Conversely a drop `F(N) < F(N − 1)` forces such a plateau at `N`.
+  This is why `r(41) = r(42) = 49` is equivalent to `F(49) = 7 < 8 = F(48)`.
+- A unit step `r(s) = N`, `r(s+1) = N + 1` gives `F(N) = N − s` and `F(N + 1) ≤ F(N)`; it
+  does not by itself decide whether `F(N + 1) = F(N)`.
+
+Therefore the gloss in section 2 above, "`r(35) = 42` and `r(36) = 43` correspond to
+`F(35) = F(36) = 7`, not a drop", is WRONG in its orders: those entries concern
+`F(42) = 7` and `F(43) ≤ 7`, not `F(35)` or `F(36)`. The manuscript's earlier
+sentence "the published Boza table reports the same no-drop behavior at orders 35 and 36"
+is retracted. What the table does support is the general statement of section 2:
+among Boza's decided entries there is no plateau, hence no decided in-domain drop, other
+than the `r(41) = r(42)` pair whose open value `r(42) ∈ {49, 50}` this work selects as 49.

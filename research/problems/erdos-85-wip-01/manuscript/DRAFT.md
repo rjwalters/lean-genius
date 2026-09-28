@@ -38,8 +38,8 @@ a negative answer to Erdős Problem 85 to one uniform graph-theoretic propositio
 
 A-REG is a live hypothesis, not a proved theorem or a forecast. In particular,
 the exact Lean results at orders 15 and 16 exhibit no drop and refute the
-`q = 4` analogue, while the published Boza table reports the same no-drop
-behavior at orders 35 and 36. We therefore present the operator's
+`q = 4` analogue, while Boza's decided Ramsey entries contain no plateau, and
+hence no decided drop, other than the one this work selects. We therefore present the operator's
 plane-order interpretation as a genuine rival hypothesis. The extensive
 negative map records which determinant, spectrum, packing, incidence, and
 finite-census routes fail to settle A-REG, isolating the connected and mixed
@@ -796,8 +796,8 @@ Theorem B identifies what would turn a single drop into an infinite family.
 It is deliberately stated as a reduction from the one proposition A-REG. The
 evidence is mixed. Even-characteristic polarity graphs supply the cofinal
 existence jaw, and the binary-square defect calculus removes unit and
-bipartite components. Against that, the Lean-checked orders 15 and 16 and the
-published order-35/36 table entries show no drop, the `q = 4` analogue is
+bipartite components. Against that, the Lean-checked orders 15 and 16 show no
+drop, Boza's decided entries contain no other plateau, the `q = 4` analogue is
 false, and every attempted generic terminal for the remaining non-bipartite
 completion problem has failed or exposed a weaker hypothesis. A-REG is the
 live mathematical frontier, not a conclusion licensed by the finite data. The
