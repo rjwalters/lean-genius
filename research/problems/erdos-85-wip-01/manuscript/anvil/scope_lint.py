@@ -58,9 +58,11 @@ def main() -> int:
     if untraced: fails += 1; print("UNTRACED NUMBERS (not found in refs, excluding DRAFT.md):", ", ".join(untraced))
     ids = {m.replace("\\_", "_") for m in re.findall(r"\\texttt\{([A-Za-z][A-Za-z0-9_.\\]*(?:\\?_[A-Za-z0-9]+)+)\}", body)}
     decls = subprocess.run(["grep", "-rhoE", r"^(theorem|lemma|def|abbrev|structure|inductive|noncomputable def|instance|class|opaque|axiom) +[A-Za-z0-9_.]+", str(a.proofs)], capture_output=True, text=True).stdout
-    declset = {l.split()[-1] for l in decls.splitlines()}
+    declset = set()
+    for l in decls.splitlines():
+        name = l.split()[-1]; declset.add(name); declset.add(name.split(".")[-1])
     NOT_DECLS = {"m_c", "native_decide"}
-    missing = sorted(i for i in ids if i.split(".")[-1] not in declset and i not in PLANNED and i not in NOT_DECLS
+    missing = sorted(i for i in ids if i not in declset and i.split(".")[-1] not in declset and i not in PLANNED and i not in NOT_DECLS
                      and not re.fullmatch(r"h1_[0-9a-f]{16}", i) and not i.endswith((".lean", ".md", ".py", ".json")) and "/" not in i)
     if missing: fails += 1; print("LEAN NAMES NOT FOUND:", ", ".join(missing))
     print("scope_lint:", "FAIL" if fails else "PASS", f"({len(nums)} numbers checked, {len(ids)} Lean names checked)")
