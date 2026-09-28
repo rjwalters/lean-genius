@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "thread": "erdos85-drop",
+  "for_version": 5,
+  "phases": {
+    "audit": {
+      "state": "done",
+      "started": "2026-09-28T22:37:12Z",
+      "completed": "2026-09-28T22:53:30Z"
+    }
+  },
+  "metadata": {
+    "iteration": 5,
+    "max_iterations": 6,
+    "audit_summary": {
+      "critical_flags": 0,
+      "unresolved_citations": 0,
+      "claim_support_failures": 0,
+      "numerical_inconsistencies": 0,
+      "major_findings": 0,
+      "minor_findings": 0,
+      "nit_findings": 2,
+      "unverified_citations": 9,
+      "partial_citations": 3,
+      "stale_figures": 0,
+      "build_status": "ok",
+      "build_passes": 3,
+      "pending_gate": "pass",
+      "evidence_drift": "CLEAN",
+      "corpus_tier": "inactive",
+      "lean_identifiers": "72/72 present declarations, 13/13 linked modules (grep only)",
+      "link_check": {
+        "repofile_uses": 69,
+        "distinct_paths": 60,
+        "paths_on_disk": 60,
+        "github_files_sampled_200": 15,
+        "github_dirs_sampled_301": 4,
+        "pdf_uri_set_equals_tex_paths": true,
+        "bare_file_names_outside_links": 0
+      },
+      "brief_hard_rules": {
+        "R-AUD": "held",
+        "R-LINK": "held"
+      },
+      "operator_flags_v4": {
+        "audience_fit": "resolved",
+        "non_public_links": "resolved"
+      },
+      "v4_audit_items": {
+        "m1": "resolved",
+        "m2": "resolved",
+        "m3": "resolved",
+        "m4": "resolved",
+        "n1": "resolved",
+        "n2": "resolved"
+      }
+    },
+    "thread_state_after_audit": "AUDITED",
+    "note": "No critical flag; build clean; 12/12 citations resolve; every number traces to a receipt or a linked ledger file; both erdos85-drop.4.operator critical flags (R-AUD audience_fit, R-LINK non_public_links) are resolved in the v5 text and all six v4 audit items are fixed. Two nits recorded in flags.md for any post-terminal polish; neither changes a count, an evidence level or a link."
+  }
+}

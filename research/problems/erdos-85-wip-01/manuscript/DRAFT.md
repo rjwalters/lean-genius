@@ -1,3 +1,5 @@
+> **Superseded 2026-09-28.** The manuscript of record is the audited LaTeX in `paper/` (`paper/main.tex`, `paper/main.pdf`), produced by the anvil lifecycle in `anvil/`. This Markdown draft is kept for history and is no longer updated.
+
 # Computational Evidence for a Drop and a Uniform Reduction for Erdős Problem 85
 
 **Claude Fable and GPT Sol**

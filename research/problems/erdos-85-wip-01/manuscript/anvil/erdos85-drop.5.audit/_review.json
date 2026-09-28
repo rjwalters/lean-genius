@@ -1,0 +1,76 @@
+{
+  "schema_version": "1",
+  "kind": "tool_evidence",
+  "version_dir": "erdos85-drop.5",
+  "critic_id": "paper-audit",
+  "model": "claude-fable-5-1",
+  "rubric": null,
+  "scores": [
+    {
+      "dimension": "citation_resolution",
+      "score": null,
+      "max": 1,
+      "critical": false,
+      "evidence_span": "main.tex:L1-L384",
+      "fix": null,
+      "justification": "12 of 12 cite keys resolve in refs.bib; rendered PDF has 0 '??'. Claim-support: 3 partial (author notes only), 9 unverified (no source on disk), 0 does-not-support. Every statement v5 changed traces to a receipt in refs/ or to the linked public ledger file. Owns no rubric dim."
+    },
+    {
+      "dimension": "numerical_consistency",
+      "score": null,
+      "max": 1,
+      "critical": false,
+      "evidence_span": "main.tex:L66-L379",
+      "fix": null,
+      "justification": "Every number traces to a receipt and every sum checks; 0 text-vs-table or text-vs-receipt mismatches; the four v4 minors (m1-m4) and two nits (n1-n2) are fixed at L85, L195, L85/L325, L107, L117 and L242. Owns no rubric dim."
+    },
+    {
+      "dimension": "build",
+      "score": null,
+      "max": 1,
+      "critical": false,
+      "evidence_span": null,
+      "fix": null,
+      "justification": "xelatex+bibtex+xelatex converged in 3 passes (no rerun warning on passes 2 and 3; aux byte-identical), 0 errors, 0 undefined citations or references, 0 overfull, 5 underfull (max badness 6094), 20 pages; scratch copy, version dir untouched."
+    },
+    {
+      "dimension": "brief_hard_rules",
+      "score": null,
+      "max": 1,
+      "critical": false,
+      "evidence_span": "main.tex:L36-L38,L256-L258,L313,L319-L340,L345-L379",
+      "fix": null,
+      "justification": "R-AUD held: governance-vocabulary grep of main.tex is clean (authoriz/goal/message/board/ticket/s3:///refs/ 0 each; 'operator' only as the defect operator, the BRIEF-mandated acknowledgement and \\operatorname). R-LINK held: 69 \\repofile uses over 60 distinct paths, 60/60 on disk, 15/15 sampled files 200 and 4/4 directories 301 on GitHub, PDF URI set equal to the tex path set, 0 bare file names outside links, non-public collections described without paths. The two erdos85-drop.4.operator critical flags (audience_fit, non_public_links) are resolved. Owns no rubric dim."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "nit",
+      "dimension": "8_citation_hygiene",
+      "evidence_span": "main.tex:L117-L117",
+      "rationale": "'the six such entries in Table 1 are instances of the compiler-trust axiom Lean.ofReduceBool': axioms.out prints the witness axioms as per-declaration '..._native.native_decide.ax_N' and never the name Lean.ofReduceBool; the only receipt naming Lean.ofReduceBool is the H7 receipt's caveat (i) for the H7 _check theorems. The identification is a statement about Lean's native_decide implementation, not a receipt line. It is the fix the v4 audit suggested and the sentence correctly says the H7 lists were not printed.",
+      "suggested_fix": "'are the per-declaration form of the compiler trust that the H7 receipt names as Lean.ofReduceBool'.",
+      "tool_calls": [
+        {"tool": "grep", "args": {"pattern": "ofReduceBool", "path": "erdos85-drop/refs/axioms.out"}, "result_summary": "0 hits; six ..._native.native_decide.ax_N entries"},
+        {"tool": "read", "args": {"path": "erdos85-drop/refs/H7_POSITIVE_TRIPLE_CELLS_H5_CLOSURE_FORMULA_COUNTS_20260928.md", "section": "Status caveats"}, "result_summary": "(i) the _check theorems are native_decide proofs, so they carry Lean.ofReduceBool"}
+      ]
+    },
+    {
+      "severity": "nit",
+      "dimension": "7_prose",
+      "evidence_span": "main.tex:L375-L375",
+      "rationale": "'The certificate campaign of Section 4.2 was fired only after a posted manifest of its thirteen input hashes': the thirteen are the base inputs of the 2026-08 grid campaign (four H3 scouts, three H5 cells, six H7 t=0 cubes, as L373 and refs/DRAFT.md state), not the thirteen H7 certificate modules of Section 4.2 L193; with both sets described by 'thirteen' and by 'Section 4.2', a reader can attach the wrong set. Both counts are correct.",
+      "suggested_fix": "'a posted manifest of its thirteen base-input hashes (the four H3 scouts, three H5 cells and six H7 t=0 cubes)'.",
+      "tool_calls": [
+        {"tool": "grep", "args": {"pattern": "thirteen input|six H7", "path": "erdos85-drop/refs/DRAFT.md"}, "result_summary": "'all thirteen input hashes, tool hashes, job order, caps, storage exclusions'; 'four H3 scouts, three H5 cells, and six H7-t0 cubes'"}
+      ]
+    }
+  ],
+  "critical_flags": [],
+  "total": null,
+  "threshold": null,
+  "verdict": null,
+  "rendered_artifact": null,
+  "probes": null,
+  "unscored": false
+}
