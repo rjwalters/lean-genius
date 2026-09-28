@@ -1,0 +1,238 @@
+{
+  "schema_version": "1",
+  "kind": "judgment",
+  "version_dir": "erdos85-drop.2",
+  "critic_id": "paper-review",
+  "model": "claude-fable-5-1",
+  "rubric": "anvil-pub-v2",
+  "scores": [
+    {
+      "dimension": "1_rigor",
+      "score": 5,
+      "max": 6,
+      "critical": false,
+      "evidence_span": "main.tex:L105-L105",
+      "fix": "Add the Lean normalization (what a high vertex is; why h in {1,3,5,7} is exhaustive) to refs/ and state it in Section 3.2.",
+      "justification": "Sound, explicitly scoped architecture; the one weakness is that the stratum normalization is not stated, so exhaustiveness cannot be evaluated from the paper."
+    },
+    {
+      "dimension": "2_evidence",
+      "score": 4,
+      "max": 6,
+      "critical": false,
+      "evidence_span": "main.tex:L139-L141",
+      "fix": "Sketch the H3/H5 cover-formula and H7 singleton-capacity arguments (or table the 28 H7 roots); name the receipts behind the 5.5 GB/h and 0.5 MB/s rates; explain 1,161 vs 1,158.",
+      "justification": "H1 census, cube tree and timing figures reconcile with refs/ line for line; H3/H5/H7 and Appendix A remain summaries plus pointers a reader cannot open."
+    },
+    {
+      "dimension": "3_contribution_clarity",
+      "score": 4,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L58-L58",
+      "fix": "Replace the reserved verb 'decided' with 'settled at the level of computational evidence'; surface the census scale (about 5,700 core-hours, about 1,400 instances) in Section 1.",
+      "justification": "Both contributions, the significance and the qualifier are extractable from abstract + introduction; 'decided' is the reserved verb and the campaign scale stays buried in Section 4.6."
+    },
+    {
+      "dimension": "4_related_work",
+      "score": 3,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L72-L76",
+      "fix": "Say how the decided entries of Boza's table were obtained and where a two-solver SAT census sits among prior SAT-based extremal computations; run paper-litsearch.",
+      "justification": "Accurate, BRIEF-compliant positioning against the 11 refs.bib entries, but thin: no account of prior methods for r(s) values and no placement among SAT-in-combinatorics results; no litsearch sibling."
+    },
+    {
+      "dimension": "5_reproducibility",
+      "score": 3,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L259-L259",
+      "fix": "Publish or manifest the receipts, emitter and cube tools; add the repository URL; describe the H1 encoding mathematically.",
+      "justification": "Solver versions, caps, hashes, cube procedure and receipt paths are stated, but every artifact is private and the encoding is not described, so the census is reproducible from the repository, not from the paper."
+    },
+    {
+      "dimension": "6_figures_tables",
+      "score": 3,
+      "max": 4,
+      "critical": false,
+      "evidence_span": "main.tex:L158-L158",
+      "fix": "Widen Table 3's Cap column; consider a figure of the cube tree or the per-row Kissat-time distribution.",
+      "justification": "Four captioned, labelled tabularx tables that fit the page; Table 3's Cap cell wraps a lone 'h'; no figure where one would carry the argument."
+    },
+    {
+      "dimension": "7_prose_structure",
+      "score": 3,
+      "max": 4,
+      "critical": false,
+      "evidence_span": "main.tex:L222-L222",
+      "fix": "Define or replace room vocabulary (cold-green, jaw, socket, monoliths); split the longest paragraphs; add allowbreak points in the worst underfull identifiers.",
+      "justification": "Clean render, correct section order, no AI-tell adjectives, 0 overfull; 32 underfull lines from long identifiers, undefined campaign jargon, and several over-long paragraphs."
+    },
+    {
+      "dimension": "8_citation_hygiene",
+      "score": 4,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "main.tex:L39-L39",
+      "fix": "Name the Lean statements behind 'orders 15 and 16'; cite a receipt for the non-isomorphism check; consider an access year for the two n.d. web entries.",
+      "justification": "All 11 entries cited and resolving, well-formed fields; two body claims (orders 15/16, non-isomorphism) lack a named statement or receipt; 'n.d.' renders in text."
+    },
+    {
+      "dimension": "9_rhetorical_economy",
+      "score": 3,
+      "max": 4,
+      "critical": false,
+      "evidence_span": "main.tex:L246-L246",
+      "fix": "Trim the abstract to results + qualifier; stop Section 6 re-narrating Section 4.2; state the trust boundary once.",
+      "justification": "Lede leads and process essays are in an appendix; the counts are restated in eight places, the trust-boundary sentence four times, and Section 6 announces that it repeats Section 4."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "major",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L66-L66",
+      "rationale": "Section 1 claims every number traces to a receipt named in Section 6; the cost/projection figures of Sections 4.5-4.6 and the Appendix A figures trace to receipts (budget plan, v3 timing readback, fleet-cost JSON, bank statistics, 2026-09-28 timing/projection worksheet, ledger rows) not named anywhere in the paper.",
+      "suggested_fix": "Name those receipts in the Artifacts or Data-availability paragraph, or narrow the sentence to 'Every census count'."
+    },
+    {
+      "severity": "major",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L204-L208",
+      "rationale": "The cube-route projection rests on 5.5 GB per Kissat-hour and about 0.5 MB gzipped per second, whose measurement (12,102 bank rows binned by solve time; the replay pilot) is not pointed to in the body.",
+      "suggested_fix": "Add one sentence naming the bank sample and the pilot as the sources of the two rates."
+    },
+    {
+      "severity": "major",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L165-L165",
+      "rationale": "1,161 residual roots vs 1,158 residual-root gap slots: both numbers are correct per CENSUS.md but the three-row difference is unexplained.",
+      "suggested_fix": "Add one clause taken from the census receipts explaining why three residual roots are not gap slots; do not guess."
+    },
+    {
+      "severity": "major",
+      "dimension": "1_rigor",
+      "evidence_span": "main.tex:L105-L105",
+      "rationale": "The stratum normalization and the meaning of 'high' are 'not restated here', so a reader cannot see that h in {1,3,5,7} exhausts the 49-vertex candidates.",
+      "suggested_fix": "Add a two-sentence statement of the normalization to refs/ (from the Lean source) and state it in Section 3.2; at minimum say what quantity h counts."
+    },
+    {
+      "severity": "major",
+      "dimension": "4_related_work",
+      "evidence_span": "main.tex:L72-L76",
+      "rationale": "Related work never says how the decided entries of Boza's table were obtained nor where a two-solver SAT census sits among prior SAT-based extremal/Ramsey computations. [related-work]",
+      "suggested_fix": "Run paper-litsearch for the method lineage behind exact r(s)=R(C4,K_{1,s}) and ex(n,C4) values and for prior SAT-with-certificate results in extremal combinatorics; no citations are proposed here."
+    },
+    {
+      "severity": "major",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L139-L141",
+      "rationale": "H3/H5 and H7 closures are named ('two checked cover formulas', '43 classes ... excludes 15') but not sketched; the reader cannot evaluate three of four strata.",
+      "suggested_fix": "One paragraph each on what a cover formula and a singleton-capacity argument are, or an appendix table of the 28 H7 roots and review chains from refs/H7_CLOSURE_20260915.md."
+    },
+    {
+      "severity": "minor",
+      "dimension": "3_contribution_clarity",
+      "evidence_span": "main.tex:L58-L58",
+      "rationale": "'the first strict drop of f decided' uses the verb the literature check reserves for the certificate-audited case; hedged per the BRIEF, but one word from its hard rule.",
+      "suggested_fix": "Use 'settled at the level of computational evidence' or 'established at this evidence level'."
+    },
+    {
+      "severity": "minor",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L204-L204",
+      "rationale": "'two to four weeks of fleet time' glosses the fleet-cost JSON's 7.9-31.5 planned days (about one to four and a half weeks).",
+      "suggested_fix": "Quote the receipt's range."
+    },
+    {
+      "severity": "minor",
+      "dimension": "2_evidence",
+      "evidence_span": "main.tex:L204-L204",
+      "rationale": "'roughly 65 to 130 GB' vs the worksheet's printed 60-130 GB (arithmetic 66-132).",
+      "suggested_fix": "Align with the receipt or state the arithmetic."
+    },
+    {
+      "severity": "minor",
+      "dimension": "8_citation_hygiene",
+      "evidence_span": "main.tex:L39-L39",
+      "rationale": "'the exact Lean results at orders 15 and 16' names no Lean statement, unlike every other Lean-checked fact.",
+      "suggested_fix": "Name the theorem(s) or drop 'Lean-checked'."
+    },
+    {
+      "severity": "minor",
+      "dimension": "8_citation_hygiene",
+      "evidence_span": "main.tex:L135-L135",
+      "rationale": "Non-isomorphism claim names a script but no output receipt.",
+      "suggested_fix": "Cite the receipt or say 'reproducible from the archived script'."
+    },
+    {
+      "severity": "minor",
+      "dimension": "6_figures_tables",
+      "evidence_span": "main.tex:L158-L158",
+      "rationale": "Table 3 Cap cell 'probe 1 h, leaves 24 h' wraps to a lone 'h' in the PDF.",
+      "suggested_fix": "Widen the Cap column or write '1 h probe / 24 h leaves'."
+    },
+    {
+      "severity": "minor",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L222-L222",
+      "rationale": "Room vocabulary (cold-green, jaw, socket, monoliths, pincers) is undefined for an outside reader.",
+      "suggested_fix": "Define at first use or replace with plain terms."
+    },
+    {
+      "severity": "minor",
+      "dimension": "9_rhetorical_economy",
+      "evidence_span": "main.tex:L246-L246",
+      "rationale": "Section 6 restates Section 4.2's census narrative almost in full; abstract and Section 1 Result A paragraph are near-duplicates; trust-boundary sentence appears four times.",
+      "suggested_fix": "Keep the claim, the 'either answer' sentence and the price-of-certainty paragraph; cut the re-narration; trim the abstract."
+    },
+    {
+      "severity": "minor",
+      "dimension": "8_citation_hygiene",
+      "evidence_span": "main.tex:L48-L48",
+      "rationale": "'(Bloom, n.d.)' and '(Afzaly and McKay, n.d.)' in running text.",
+      "suggested_fix": "Consider year = {2026} with an accessed note for the two web entries."
+    },
+    {
+      "severity": "minor",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L84-L84",
+      "rationale": "32 underfull lines (6 at badness 10000) on long Lean identifiers.",
+      "suggested_fix": "Add allowbreak points at camel-case boundaries in the worst offenders or move identifiers to footnotes."
+    },
+    {
+      "severity": "nit",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L52-L52",
+      "rationale": "hno49 is typeset as text-texttt in one display and as the lean macro elsewhere.",
+      "suggested_fix": "Use one form."
+    },
+    {
+      "severity": "nit",
+      "dimension": "6_figures_tables",
+      "evidence_span": "main.tex:L179-L179",
+      "rationale": "Table 4 cell 'independent edge-list audits corroborate both graphs' still reads as if both graphs had an edge-count audit.",
+      "suggested_fix": "Say 'codegree checks; edge count for order 48'."
+    },
+    {
+      "severity": "nit",
+      "dimension": "5_reproducibility",
+      "evidence_span": "main.tex:L259-L259",
+      "rationale": "Repository-relative paths without a repository URL.",
+      "suggested_fix": "Add the repository URL once."
+    },
+    {
+      "severity": "nit",
+      "dimension": "7_prose_structure",
+      "evidence_span": "main.tex:L286-L286",
+      "rationale": "Appendix B's room-message numbers point to a transcript whose availability is not stated.",
+      "suggested_fix": "Add one line on whether the transcript is public."
+    }
+  ],
+  "critical_flags": [],
+  "total": 32,
+  "threshold": 35,
+  "verdict": "REVISE",
+  "unscored": false
+}
