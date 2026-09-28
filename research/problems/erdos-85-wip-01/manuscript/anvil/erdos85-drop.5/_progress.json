@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "thread": "erdos85-drop",
+  "phases": {
+    "revise": {
+      "state": "done",
+      "started": "2026-09-28T22:10:14Z",
+      "completed": "2026-09-28T22:22:35Z",
+      "note": "operator-directed revision (cap raised to 6) from erdos85-drop.4 against .review (37/44, advance true, 0 critical, 7 minor, 6 nit), .audit (AUDITED, 0 critical, 4 minor m1-m4, 2 nit), .operator (BLOCK: critical audience_fit R-AUD and non_public_links R-LINK), .numeric (0) and .pending (0); both operator critical flags addressed (governance text removed or restated as reader-relevant facts; 69 \\repofile links to 60 verified public paths under \\repobase, non-public material described in one sentence); audit m1-m4/n1-n2 and the remaining review minors fixed; declined with reasons: figure (D6), litsearch (D4), off-disk citation verification, packed-LRAT total size (no receipt); compiled xelatex+bibtex+xelatex x2, 0 errors, 0 undefined citations/references, 0 overfull, 5 underfull (max 6094), 20 pages; scope_lint PASS"
+    }
+  },
+  "metadata": {
+    "iteration": 5,
+    "max_iterations": 6,
+    "revised_from": 4,
+    "evidence_snapshot": {
+      "brief_mtime": 1790632806.2725558,
+      "refs_mtime": 1790628614.0007753
+    }
+  }
+}
