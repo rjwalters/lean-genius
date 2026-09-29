@@ -81,6 +81,25 @@ Anvil-specific design choices vs. upstream
   ``flex_container_cost_factor`` (columns render side-by-side, not stacked).
   Both refinements only *reduce* charges; they add no new error sources.
   Any layout the heuristic still mis-scores keeps the escape hatch above.
+- **Split-panel text-column width (issue #1321).** The wrap-cost model
+  (``body_paragraph_chars_per_line`` / ``bullet_chars_per_line``) assumed
+  every slide has a full-width text column. A slide using
+  ``![bg right:N%]`` / ``![bg left:N%]`` only has ``(100 - N)%`` of the
+  width for text to wrap into — the same character count wraps to more
+  lines than the flat model predicted, and a slide that scored comfortably
+  clean collided with the footer in the rendered PDF. ``_estimate_text_
+  column_fraction`` derives the effective column width from the slide's own
+  ``bg left``/``bg right`` directive(s) (additive when an image is pinned to
+  each side; the no-percent form defaults to Marp's documented 50% split)
+  and scales the two chars-per-line constants accordingly before
+  estimating cost. Bare ``bg`` (full-bleed) and ``bg vertical:N%`` do not
+  narrow the column — text overlays those forms at full width — so those
+  slides, and every slide with no split directive at all, are unaffected:
+  existing full-width decks score unchanged. When a split's magnitude can't
+  be trusted (unparseable or multiple splits combining to ≥100%), the lint
+  does not silently fall back to full width unannounced — it emits a
+  distinct ``slide-content-overflow`` warning saying so, so an unmeasurable
+  slide never looks like a clean, measured one.
 
 Anvil-specific scope
 --------------------
@@ -669,6 +688,27 @@ _IMAGE_HEIGHT_KEYWORD_RE = re.compile(
 _IMAGE_WIDTH_KEYWORD_RE = re.compile(
     r"(?:^|\s)w[:= ](?P<width>\d+(?:%|px))(?:\s|$)"
 )
+
+# Marp split-panel background keyword: ``bg left:N%`` / ``bg right:N%`` (and
+# the no-percent form ``bg left`` / ``bg right``, which Marp defaults to a
+# 50% split — https://marpit.marp.app/image-syntax). Unlike the bare ``bg``
+# and ``bg vertical:N%`` forms (which paint full-bleed or split top/bottom
+# and leave the text column at full slide width), ``bg left``/``bg right``
+# reserve ``N%`` of the slide's HORIZONTAL width for the image, leaving only
+# ``(100 - N)%`` for the text column to wrap into. Issue #1321:
+# ``body_paragraph_chars_per_line`` / ``bullet_chars_per_line`` model a
+# full-width column unconditionally, so a slide using this keyword scored
+# comfortably under budget while the rendered PDF wrapped to extra lines and
+# collided with the footer. See ``_estimate_text_column_fraction`` below.
+_IMAGE_BG_SPLIT_RE = re.compile(
+    r"(?:^|\s)bg\s+(?P<direction>left|right)\b(?::(?P<percent>\d+(?:\.\d+)?)%)?",
+    re.IGNORECASE,
+)
+
+#: Marp's documented default split ratio for ``bg left`` / ``bg right``
+#: with no explicit ``:N%`` suffix.
+_BG_SPLIT_DEFAULT_PERCENT: float = 50.0
+
 _HR_RE = re.compile(r"^\s*(\*\s*){3,}\s*$|^\s*(-\s*){3,}\s*$|^\s*(_\s*){3,}\s*$")
 _BLOCKQUOTE_RE = re.compile(r"^\s*>")
 _TABLE_SEP_RE = re.compile(r"^\s*\|?[\s:|-]+\|[\s:|-]*$")
@@ -914,6 +954,81 @@ def _keywordless_image_cost(
 
     # Full-width assumption (path not resolvable or refinement unavailable).
     return (geo.image_units, "image")
+
+
+# Split-panel text-column width (issue #1321) ----------------------------------
+
+
+@dataclass(frozen=True)
+class _TextColumnEstimate:
+    """Fraction of the slide's horizontal width available to wrapping text.
+
+    ``fraction=1.0, determinate=True`` is the default: a slide with no
+    ``bg left``/``bg right`` split-panel directive has a full-width text
+    column, exactly as modeled before issue #1321 — every existing
+    full-width slide's ``slide-content-overflow`` score is unchanged.
+
+    ``determinate=False`` means a split directive IS present but its
+    magnitude cannot be trusted (an unparseable/out-of-range percentage, or
+    multiple split directives whose percentages combine to 100% or more —
+    no room left for a text column at all). Callers must not silently use
+    ``fraction`` (always ``1.0`` in this case, the same as "no split")
+    without also surfacing the uncertainty to the caller — an unmeasurable
+    slide must look different from a measured one, per issue #1321's
+    acceptance criteria.
+    """
+
+    fraction: float = 1.0
+    determinate: bool = True
+
+
+def _estimate_text_column_fraction(slide_raw: str) -> _TextColumnEstimate:
+    """Derive the slide's text-column width fraction from its own bg directives.
+
+    Scans every image alt-string on the slide for the ``bg left:N%`` /
+    ``bg right:N%`` split-panel keyword (the no-percent form defaults to
+    Marp's documented 50%, per ``_BG_SPLIT_DEFAULT_PERCENT``). Multiple
+    split directives on one slide (an image pinned to each side) are
+    additive — the text column is whatever percentage remains.
+
+    Bare ``bg`` (full-bleed) and ``bg vertical:N%`` (top/bottom split) do
+    NOT narrow the text column — the text overlays the image (or a
+    vertically-stacked panel) at full slide width — so a slide using only
+    those forms returns the full-width default unchanged.
+    """
+    saw_split = False
+    out_of_range = False
+    total_image_pct = 0.0
+
+    for alt_match in _IMAGE_ALT_RE.finditer(slide_raw):
+        alt = alt_match.group("alt")
+        if not alt:
+            continue
+        padded = f" {alt} "
+        for m in _IMAGE_BG_SPLIT_RE.finditer(padded):
+            saw_split = True
+            pct_raw = m.group("percent")
+            if pct_raw is None:
+                pct = _BG_SPLIT_DEFAULT_PERCENT
+            else:
+                try:
+                    pct = float(pct_raw)
+                except ValueError:
+                    out_of_range = True
+                    continue
+            if not (0.0 <= pct <= 100.0):
+                out_of_range = True
+                continue
+            total_image_pct += pct
+
+    if not saw_split:
+        return _TextColumnEstimate()
+
+    if out_of_range or total_image_pct >= 100.0:
+        return _TextColumnEstimate(fraction=1.0, determinate=False)
+
+    fraction = max(0.0, (100.0 - total_image_pct) / 100.0)
+    return _TextColumnEstimate(fraction=fraction, determinate=True)
 
 
 def _estimate_slide_cost(
@@ -1470,8 +1585,59 @@ def lint_source(
 
         suppressed = "slide-content-overflow" in disabled_rules
 
+        # Split-panel text-column width (issue #1321): a slide using
+        # `![bg right:N%]` / `![bg left:N%]` only has `(100 - N)%` of the
+        # slide width for its text column to wrap into, not the full width
+        # the capacity model otherwise assumes. Derive the effective
+        # per-slide wrap width and, when determinable, scale the two
+        # chars-per-line constants that drive wrap-cost estimation before
+        # accumulating the slide's cost. A slide with no split directive
+        # (the overwhelming majority) gets `fraction == 1.0` back and
+        # `effective_geo is geo` — byte-identical to pre-#1321 behavior.
+        text_column = _estimate_text_column_fraction(slide.raw)
+        if text_column.determinate and text_column.fraction < 1.0:
+            effective_geo = replace(
+                geo,
+                body_paragraph_chars_per_line=max(
+                    1,
+                    int(geo.body_paragraph_chars_per_line * text_column.fraction),
+                ),
+                bullet_chars_per_line=max(
+                    1,
+                    int(geo.bullet_chars_per_line * text_column.fraction),
+                ),
+            )
+        else:
+            effective_geo = geo
+
+        # A split directive is present but its magnitude can't be trusted
+        # (unparseable / out-of-range / combined ≥100% percentage). Rather
+        # than silently falling back to the full-width assumption, say so:
+        # emit a distinct finding so an unmeasurable slide never looks like
+        # a clean, measured one (issue #1321 AC3).
+        if not text_column.determinate:
+            indeterminate_finding = Finding(
+                slide=slide.index,
+                line=slide.start_line,
+                rule="slide-content-overflow",
+                severity="info" if suppressed else "warning",
+                message=(
+                    "Slide declares a bg left/right split-panel background "
+                    "whose combined width could not be determined "
+                    "(unparseable percentage, or multiple splits combining "
+                    "to ≥100%). The slide-content-overflow estimate for "
+                    "this slide falls back to the full-width assumption and "
+                    "may understate wrapping — confirm the rendered PDF "
+                    "manually rather than trusting a clean score here."
+                ),
+            )
+            if suppressed:
+                result.infos.append(indeterminate_finding)
+            else:
+                result.warnings.append(indeterminate_finding)
+
         breakdown = _estimate_slide_cost(
-            slide, geo, flex_class_names=flex_class_names, deck_path=deck_path
+            slide, effective_geo, flex_class_names=flex_class_names, deck_path=deck_path
         )
 
         # Anti-pattern penalty: H1 + H2 on the same slide (#25 repro).
@@ -1498,11 +1664,17 @@ def lint_source(
             if is_ask_slide
             else ""
         )
+        column_note = (
+            f" (text column ~{text_column.fraction * 100:.0f}% width from a "
+            "bg left/right split panel)"
+            if text_column.determinate and text_column.fraction < 1.0
+            else ""
+        )
         message = (
             f"Slide exceeds estimated vertical capacity by "
             f"~{overage:.1f} line-units "
             f"(estimated {breakdown.total_units:.1f}u vs. capacity {slide_capacity:.1f}u). "
-            f"Top costs: {cost_summary}.{capacity_note}"
+            f"Top costs: {cost_summary}.{capacity_note}{column_note}"
         )
 
         finding = Finding(

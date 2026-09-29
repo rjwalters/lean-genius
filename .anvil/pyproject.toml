@@ -19,7 +19,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "anvil"
-version = "0.11.6"
+version = "0.11.9"
 description = "AI-orchestrated artifact creation using the filesystem as the coordination layer (consumer-side install)."
 requires-python = ">=3.10"
 license = { text = "MIT" }

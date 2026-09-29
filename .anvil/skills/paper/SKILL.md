@@ -45,6 +45,14 @@ A **paper thread** is a single research paper authored across one or more revisi
     citation-audit.md             Per-\cite{} resolution + claim-support check
     numerical-audit.md            Numbers-in-text vs figures/tables consistency
     flags.md                      Critical flags (unsupported citations, numerical disagreement)
+  <thread>.1.audience/            Audience-fit pre-flight sidecar (deterministic, advisory — issue #1322)
+    _review.json                  kind: tool_evidence; governance-vocabulary / private-locator /
+                                  unlinked-artifact-path findings (major in body, minor in appendix)
+  <thread>.1.operator/            (optional, human) Operator read-through after READY (issue #1322)
+    _review.json                  kind: judgment, critic_id: "operator", verdict: BLOCK; its critical
+                                  flags make paper-revise produce one more version
+    _meta.json                    scorecard_kind: "human-verdict"
+    operator.md                   Operator's notes for the reviser
   <thread>.1.litsearch/           (optional) Re-run litsearch after reviewer flagged missing prior work
   <thread>.2/                     Revised version (after revise consumes v1 + all critic siblings)
   ...
@@ -71,14 +79,18 @@ EMPTY → DRAFTED → REVIEWED → REVISED → … → READY → AUDITED
 | `DRAFTED` | Latest `<thread>.{N}/` exists with `main.tex` + `refs.bib` + `_progress.json.draft == done`; no sibling review at the same `N` |
 | `REVIEWED` | `<thread>.{N}.review/verdict.md` exists for the latest `N` |
 | `REVISED` | A `<thread>.{N+1}/` exists after a prior `<thread>.{N}.review/` |
-| `READY` | Latest `<thread>.{N}.review/verdict.md` records `advance: true` AND no unresolved critical flag (in either `.review/` or `.audit/`) AND no unresolved `[PENDING <source>]` marker in the body (`paper-review` step 7's terminal gate) |
-| `AUDITED` | `<thread>.{N}.audit/` exists alongside a `READY` version AND `audit/_progress.json.audit == done` AND `flags.md` records no unresolved critical flag AND no unresolved `[PENDING <source>]` marker in the body (`paper-audit` step 6b's terminal gate) |
+| `READY` | Latest `<thread>.{N}.review/verdict.md` records `advance: true` AND no unresolved critical flag (in `.review/`, `.audit/`, or an operator `.operator/` sibling — issue #1322) AND no unresolved `[PENDING <source>]` marker in the body (`paper-review` step 7's terminal gate) |
+| `AUDITED` | `<thread>.{N}.audit/` exists alongside a `READY` version AND `audit/_progress.json.audit == done` AND `flags.md` records no unresolved critical flag AND no blocking flag in a `<thread>.{N}.operator/` sibling AND no unresolved `[PENDING <source>]` marker in the body (`paper-audit` step 6b's terminal gate) |
 
 > **Pending-marker gate is a separate terminal condition, not a critical flag (issue #842).** An unresolved `[PENDING <source>]` marker (an honest disclosure that a load-bearing value is not yet available — a training run still running, a benchmark queued, a vendor quote not returned) holds the READY and AUDITED transitions *independently of* the "no unresolved critical flag" clause above. It is deliberately **not** implied by that clause: the deterministic `pending_marker` gate (`anvil/lib/pending_marker.py`, wired at `paper-review` step 4g / step 7 and `paper-audit` step 6b) emits the specially-resolved `pending_dependency` flag type, which `convergence.blocking_critical_flags` filters *out* of the ordinary blocking-critical set — so it never forces `advance: false`, never lowers a dimension score (see `rubric.md`), and would be missed by a reader relying on the literal "no unresolved critical flag" wording. Resolving it means replacing the marker with the real value; **never fabricate a value to force the terminal transition.**
 
-Thresholds: **≥35/44** advances. **<35/44** requires revision. Any critical flag (from `.review/` OR `.audit/`) short-circuits regardless of total — block until addressed.
+> **Operator feedback after READY (issue #1322).** The operator's read-through of a `READY` or `AUDITED` thread is the one gate the lifecycle reserves for a human. When it finds a defect the critics missed, or the operator amends `BRIEF.md` after READY, the feedback goes into one more critic sibling at the current version: `<thread>.{N}.operator/`. It holds an ordinary `Review` (`kind: judgment`, `critic_id: "operator"`, `verdict: BLOCK`, one `CriticalFlag` per defect, conventional types `operator_defect` / `brief_amendment`) plus `_meta.json` (`scorecard_kind: "human-verdict"`) and `operator.md`. Write it with `python -m anvil.lib.operator_feedback write <thread>.{N}/ --flag "<type>: <justification>"`. Only `operator_defect:` / `brief_amendment:` are read as a type prefix (any other `word:` stays in the justification), and `pending_dependency:` is refused with exit `2`: that type is non-blocking, so the sibling would not reopen the thread. No schema change is involved (`critic_id` and `CriticalFlag.type` are free-form), and `critics.discover_critics` picks the sibling up unchanged. A blocking operator flag takes the thread out of `READY`/`AUDITED` and satisfies `paper-revise` step 4's pre-check, so the reviser produces `<thread>.{N+1}/` and the loop resumes at `paper-review`. `paper-revise` step 3 allows that one operator-driven pass even beyond `max_iterations`; each further pass needs a new sibling written by a human. Editing an existing critic sibling, or bumping `max_iterations` and hand-writing an ad hoc sibling, are no longer needed.
 
-Iteration cap: default `max_iterations: 4` (`<thread>.{max_iterations}/` — `<thread>.4/` at the default — is the worst-case terminal version dir; there is no `<thread>.5/` under a default cap). The cap is configurable per-thread by writing `{ "max_iterations": <N> }` to `<thread>/.anvil.json` in the thread root. Exceeding the cap marks the thread `BLOCKED` (in the portfolio orchestrator's report) and requires human review.
+> **Audience fit is scored, not gated (issue #1322).** `paper-review` step 4i runs the deterministic `anvil/lib/audience_check.py` pre-flight and writes `<thread>.{N}.audience/`. That sidecar is advisory and carries no critical flag, so it never moves the state machine by itself. Its findings feed the rubric's audience-fit sub-rule under dims 7 and 9 and the reviser. `paper-audit` step 6c reuses the same scan for artifact link hygiene, which *is* a critical flag in `flags.md` when a public repository URL resolves.
+
+Thresholds: **≥35/44** advances. **<35/44** requires revision. Any critical flag (from `.review/` OR `.audit/` OR `.operator/`) short-circuits regardless of total — block until addressed.
+
+Iteration cap: default `max_iterations: 4` (`<thread>.{max_iterations}/` — `<thread>.4/` at the default — is the worst-case terminal version dir; there is no `<thread>.5/` under a default cap). The cap is configurable per-thread by writing `{ "max_iterations": <N> }` to `<thread>/.anvil.json` in the thread root. Exceeding the cap marks the thread `BLOCKED` (in the portfolio orchestrator's report) and requires human review. The one exception is an operator-driven pass (issue #1322): a version whose `<thread>.{N}.operator/` sibling carries a blocking flag gets exactly one more revision past the cap (`paper-revise` step 3).
 
 ### `<thread>/.anvil.json` schema
 
@@ -88,6 +100,7 @@ The per-thread config supports the following optional fields:
 {
   "max_iterations": 4,
   "venue": "neurips",
+  "public_repo_url": "https://github.com/example/proofs",
   "artifact_verify": {
     "commands": ["lake build", "lake exe check_theorems"],
     "cwd": "proof/",
@@ -100,6 +113,7 @@ The per-thread config supports the following optional fields:
 |---|---|---|---|
 | `max_iterations` | int | 4 | Iteration cap (see above). |
 | `venue` | string | none | Target venue slug. When set, `paper-review` also scores the paper against the matching venue YAML and writes `_review.venue.json` alongside `_review.json`. Advisory only; does not change the /44 gate. See "Venue overlays" below. |
+| `public_repo_url` | string | none | Public repository that hosts the paper's artifacts (issue #1322). `paper-review` step 4i and `paper-audit` step 6c use it to suggest the concrete `\href` for a bare repo-relative artifact path. With it declared (here, or in the thread `BRIEF.md` frontmatter `public_repo_url`), an unlinked path in an artifacts/availability section is an audit critical flag. Without a declaration the scanner may *derive* a candidate from the first GitHub/GitLab/Codeberg/Bitbucket/Zenodo/DOI/OSF/figshare/Hugging Face link inside the paper's artifacts/availability section (a dependency cited elsewhere, e.g. the Mathlib GitHub in the introduction, is never used). A derived URL is reported with `public_repo_url_source: "derived"` and is not trusted: unlinked paths stay a non-critical audit note that names the candidate and asks the author to declare it, and no concrete `\href` is templated. |
 | `artifact_verify` | object | none | Optional external-artifact verification gate (issue #663). When declared, `paper-review` runs each command in `commands` (a list of command strings) in the resolved `cwd` (thread-relative or absolute; defaults to the thread root) under a per-command `timeout_s` budget (default 300s). A failed command (non-zero exit or timeout) emits an `artifact_verify_*` critical flag that blocks the review. When absent, behavior is byte-identical to today. See "External-artifact verification" below. |
 
 ### Venue overlays (advisory)
