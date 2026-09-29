@@ -12,7 +12,7 @@ Entry points are `main.tsx` and `App.tsx`. Routes defined in `App.tsx`:
 | `pages/` | One component per route (HomePage, ProofPage, ResearchPage, ResearchProblemPage, SubmitPage, AboutPage, ErdosPage) |
 | `components/` | `auth/`, `comments/`, `proof/` (viewer, gallery cards, annotation panel), `research/` (problem cards, phase indicators), `ui/` (primitives), `visualizations/` |
 | `contexts/` | `AuthContext.tsx` |
-| `hooks/` | Data-fetching and URL-state hooks (`useFetchedData`, `useLazyFetchedData`, `useIncrementalList`, `useUrlState`) |
+| `hooks/` | Data-fetching, URL-state and scroll hooks (`useFetchedData`, `useLazyFetchedData`, `useIncrementalList`, `useUrlState`, `useScrollRestoration`; re-exported from `index.ts`) |
 | `lib/` | `lean-tokenizer.ts`, `gallery-search.ts`, `oq-slug.ts`, `oq-group.ts`, `comments.ts`, `utils.ts` |
 | `types/` | TypeScript types; `types/proof.ts` is the authoritative badge/status/annotation enum source |
 | `utils/`, `assets/` | `lazyWithRetry.ts`; static assets |

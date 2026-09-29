@@ -14,7 +14,6 @@
 # Per-machine install record (absolute source path + install timestamp)
 .claude/skills/repo/.install-local.json
 .claude/projects/
-.claude/worktrees/
 # Codex agent worktrees (same role as .claude/worktrees/ and .loom/worktrees/)
 .codex/worktrees/
 
@@ -32,18 +31,14 @@ aristotle-results/llm-mapping-cache.json
 # blanket `.loom/*` ignore, so we enumerate runtime paths instead of the old
 # ignore-then-negate. Secrets lines above (.loom/tokens, *.token) still apply.
 # (Loom's own installer appends a `>>> loom-managed >>>` block below covering
-# logs/signals/worktrees/daemon files; the paths here fill its gaps.)
+# logs/signals/worktrees/locks/checkpoints/exit-codes/accounts.env/.loom-managed
+# and .claude/worktrees; the paths here are only the gaps that block lacks.)
 # .loom/config.json is HOST-LOCAL (worktree.root=/Volumes/Stripe, guards.forceScope)
 # and must never be committed.
-.loom/accounts.env
-.loom/locks/
 .loom/state/
 .loom/tmp/
-.loom/sweep-checkpoint/
-.loom/exit-codes/
 .loom/config.json
 .loom/model-config.env
-.loom-managed
 # host-local dev symlink to the loom-tools package source (see #43675)
 loom-tools
 research/*.pid

@@ -97,7 +97,7 @@ Software development workflow. See `.loom/roles/*.md` for detailed role definiti
 | **Doctor** | Fixes bugs and PR feedback | Manual |
 | **Guide** | Prioritizes and triages issues | Autonomous (15min) |
 
-Invoke via: `/builder`, `/judge`, `/curator`, `/architect`, `/hermit`, `/doctor`, `/guide`
+Invoke via: `/loom:builder`, `/loom:judge`, `/loom:curator`, `/loom:architect`, `/loom:hermit`, `/loom:doctor`, `/loom:guide`
 
 ### Lean Genius (Mathematical Orchestration)
 
@@ -125,7 +125,7 @@ Mathematical work: formalizing proofs, enhancing entries, automated proof search
 
 | Task | Use |
 |------|-----|
-| Writing code, fixing bugs, reviewing PRs | Loom agents (`/builder`, `/judge`, etc.) |
+| Writing code, fixing bugs, reviewing PRs | Loom agents (`/loom:builder`, `/loom:judge`, etc.) |
 | Enriching existing gallery proofs | `/lean` (enricher) |
 | Formalizing math, proving theorems | `/lean` (researcher) |
 | Automated proof search | `/lean` (aristotle) |

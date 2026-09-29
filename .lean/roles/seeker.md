@@ -236,7 +236,7 @@ recommendations.
 
 The live prompt references these paths, currently missing from `main` (see the
 Known-Gaps Ledger in [`COMMON.md`](./COMMON.md) for recovery):
+`research/db/sync_pool.py`, `research/db/migrate.py`.
 `.lean/scripts/extract-problems.ts`, `.lean/scripts/research.sh`,
-`research/db/sync_pool.py`, `research/db/migrate.py`,
-`scripts/lean/update-stats.sh`. `scripts/research/validate-seeker-stubs.ts` and
+`scripts/lean/update-stats.sh`, `scripts/research/validate-seeker-stubs.ts` and
 `scripts/research/launch-seeker.sh` are tracked.

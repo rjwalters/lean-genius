@@ -262,6 +262,18 @@ research/
 ├── aristotle-jobs.json       # Aristotle job tracker (+ archive JSONs)
 ├── problems.json             # Extracted-problem snapshot (427 entries)
 ├── open-conjectures.json     # Tier-3 open-conjecture targets for Aristotle
+├── FAST_PATH.md              # Abbreviated OODA loop for straightforward problems
+├── FEASIBILITY_CHECK.md      # Feasibility reconnaissance before committing to a problem
+├── MATHLIB_SEARCH.md         # Mathlib exploration protocol
+├── VALUE_ASSESSMENT.md       # Value assessment framework
+├── MATHLIB-PREREQS-UNIT-DISTANCE.md  # Mathlib prerequisites scoping (class field towers, #20577)
+├── sperner-grid-analysis.md  # Sperner grid instance analysis
+├── erdos-mordell-chord-identity-strategy.md  # Erdős–Mordell key_inequality strategy note
+├── toolchain-upgrade-v4.31-spike.md  # Lean v4.26→v4.31 upgrade spike report (#37508)
+├── toolchain-v4.31-rename-map.md     # v4.31 rename map (Mechanic batch input, #38064)
+├── remote-build-pool-design.md       # Remote lake-build pool design (#38684, unapplied)
+├── remote-build-pool-cost-estimate.md # Companion cost estimate for the design above
+├── lean-daemon-state.json    # Snapshot of a 2026-01 lean daemon run (historical)
 │
 ├── templates/                # Document templates
 │   ├── problem.md            # Problem statement
@@ -312,6 +324,22 @@ research/
                 │   └── ...
                 └── post-mortem.md  # What we learned
 ```
+
+### Legacy problem directories outside `problems/`
+
+Seven problem directories sit directly under `research/` rather than under
+`research/problems/`. They are left where they are (no relocation); where a
+twin exists under `problems/`, the twin is the live one.
+
+| Directory | Twin under `research/problems/` |
+|-----------|----------------------------------|
+| `area-of-circle-oq-05-oq-04/` | yes, diverged: `state.md` differs; the twin carries the `sessions/` log, the stray copy carries `knowledge.md`/`problem.md` and s4b/s6 prep notes |
+| `ballot-problem-oq-01-oq-02/` | yes, diverged: `knowledge.md` differs |
+| `binary-gcd-oq-02-oq-02/` | yes, diverged: `state.md` differs; the stray copy has one extra `sessions/` note |
+| `erdos-574-oq-01/` | none (`knowledge.md` + `verify_lower_bound.py`) |
+| `konigsberg-hierholzer-drafts/` | none (a single draft `.lean`) |
+| `roth-theorem-oq-02/` | yes, diverged: `knowledge.md`, `problem.md` and `state.md` all differ; the twin carries the `sessions/` log |
+| `sperner-simplicial-instance-oq-05/` | yes, diverged: `state.md` differs; the two `sessions/` sets do not overlap |
 
 ## State Machine
 
