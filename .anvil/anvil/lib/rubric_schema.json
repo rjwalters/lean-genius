@@ -1,0 +1,171 @@
+{
+  "$defs": {
+    "CriticalFlagDefinition": {
+      "additionalProperties": false,
+      "description": "Definition of one critical-flag type a rubric recognizes.\n\nMirrors ``CriticalFlag`` (in ``review_schema.py``) on the rubric\nside: ``CriticalFlag`` carries one instance set by a critic;\n``CriticalFlagDefinition`` declares the vocabulary so reviewer\nagents apply a consistent set of flag types per rubric.",
+      "properties": {
+        "description": {
+          "description": "One-paragraph definition of when this flag should fire. Reviewer agents read this to decide whether a specific defect rises to flag-worthy severity.",
+          "title": "Description",
+          "type": "string"
+        },
+        "type": {
+          "description": "Short tag matching ``CriticalFlag.type``, e.g. ``unverified_reproducibility_claim``. Lower_snake_case.",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "description"
+      ],
+      "title": "CriticalFlagDefinition",
+      "type": "object"
+    },
+    "Rubric": {
+      "additionalProperties": false,
+      "description": "A weighted-dimension rubric, generic or venue-pinned.\n\nLoaded from a YAML file via ``load_rubric``. The same model serves\nboth the framework-wide convergence-gate rubrics (when shipped as\nYAML \u2014 markdown rubrics like ``anvil/skills/paper/rubric.md`` are\nnot currently loaded by this module) and venue advisory overlays.\nThe ``advisory`` flag distinguishes them. The lib is total-agnostic\n\u2014 gate rubrics declare any positive integer ``total`` (``40`` and\n``44`` are the v0 observed shapes) and the validator enforces\nweight-sum-equals-``total`` only for non-advisory rubrics.",
+      "properties": {
+        "advisory": {
+          "default": false,
+          "description": "When True, this rubric is an advisory overlay: its scores are surfaced to the reviser for additional signal, but do NOT contribute to the convergence-gate decision and the sum-of-weights == total invariant is not enforced. Venue rubrics (NeurIPS, Nature, arXiv) ship with advisory=True. Generic convergence-gate rubrics (whatever their declared ``total``) use advisory=False.",
+          "title": "Advisory",
+          "type": "boolean"
+        },
+        "critical_flags": {
+          "description": "Critical-flag vocabulary for this rubric. May be empty for rubrics where any critic-judgment defect type is acceptable (no closed vocabulary).",
+          "items": {
+            "$ref": "#/$defs/CriticalFlagDefinition"
+          },
+          "title": "Critical Flags",
+          "type": "array"
+        },
+        "dimensions": {
+          "description": "Per-dimension rows. v0 generic gate rubrics ship with 8 dimensions (/40 shape) or 9 dimensions (/44 shape, dim 9 *Rhetorical economy*) per ``snippets/rubric.md``; advisory venue rubrics may have any number \u2265 1. The lib does not enforce a count.",
+          "items": {
+            "$ref": "#/$defs/RubricDimension"
+          },
+          "minItems": 1,
+          "title": "Dimensions",
+          "type": "array"
+        },
+        "id": {
+          "description": "Stable rubric identifier matching ``Review.rubric``, e.g. ``anvil-pub-v1`` for a /40 generic gate rubric, ``anvil-memo-v2`` for a /44 generic gate rubric (post the /40 \u2192 /44 migration described in ``snippets/rubric.md`` \u00a7\"Per-review version stamping\"), or ``anvil-pub-neurips-v1`` for a venue overlay. The lib does not enforce a naming scheme \u2014 the convention is documented in ``anvil/lib/README.md``.",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "description": "Human-readable rubric name shown in reviewer prose, e.g. 'NeurIPS reviewer rubric (2024 form)'.",
+          "title": "Name",
+          "type": "string"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Public source for the rubric (URL, paper citation, or venue-form year). Required by convention for shipped venue YAMLs so they remain updateable as venue guidelines evolve.",
+          "title": "Source"
+        },
+        "threshold": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Advance threshold (integer score out of ``total``). Required for ``advisory=False`` rubrics (it drives the convergence gate). Optional for ``advisory=True`` rubrics (overlays are advisory; they have no gate).",
+          "title": "Threshold"
+        },
+        "total": {
+          "description": "Total point pool. For ``advisory=False`` rubrics this MUST equal the sum of dimension weights. For ``advisory=True`` rubrics it is the declared total and need not match the weight sum (although matching is recommended for clarity).",
+          "minimum": 1,
+          "title": "Total",
+          "type": "integer"
+        },
+        "venue": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Venue slug (e.g. ``neurips``, ``nature``, ``arxiv``) when this rubric is a venue overlay. None for generic rubrics. Matches the ``venue`` field in ``<thread>/.anvil.json``.",
+          "title": "Venue"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "total",
+        "dimensions"
+      ],
+      "title": "Rubric",
+      "type": "object"
+    },
+    "RubricDimension": {
+      "additionalProperties": false,
+      "description": "One weighted dimension on a rubric.\n\nMirrors ``Score`` (in ``review_schema.py``) on the rubric side:\n``Score`` carries one critic's integer score against a dimension's\n``max``; ``RubricDimension`` declares that ``max`` (here called\n``weight``) plus the prose calibration guidance a scoring agent\nreads to assign the score.",
+      "properties": {
+        "calibration": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Optional calibration prose: what a full-weight score looks like vs. half-weight vs. zero. Strongly recommended for rubrics intended to be consumed by an LLM scoring agent.",
+          "title": "Calibration"
+        },
+        "description": {
+          "description": "What this dimension measures. Two or more sentences so a scoring agent can actually apply the dimension without reading other context.",
+          "title": "Description",
+          "type": "string"
+        },
+        "id": {
+          "description": "Stable dimension identifier matched against ``Score.dimension`` on the critic side. Skills choose convention (e.g. ``soundness`` for venue rubrics, ``2_problem_clarity`` for ordinal-prefixed generic rubrics). Opaque to the lib.",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "description": "Human-readable dimension name shown in reviewer prose and the scoring table. May be more verbose than ``id``.",
+          "title": "Name",
+          "type": "string"
+        },
+        "weight": {
+          "description": "Maximum score for this dimension (also called ``max`` on ``Score``). Integer points; must be at least 1.",
+          "minimum": 1,
+          "title": "Weight",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "weight",
+        "description"
+      ],
+      "title": "RubricDimension",
+      "type": "object"
+    }
+  },
+  "$id": "https://anvil.dev/schemas/rubric_schema.json",
+  "$ref": "#/$defs/Rubric",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Canonical YAML/JSON contract for Anvil rubric files. Covers both generic convergence-gate rubrics (the skill's declared `total`; /40 and /44 are the v0 observed shapes) and advisory venue overlays (discriminated by the `advisory` field). Generated from anvil/lib/rubric.py; do not edit by hand.",
+  "title": "Anvil rubric YAML schema"
+}

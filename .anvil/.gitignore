@@ -1,0 +1,13 @@
+# Anvil-owned .gitignore — suppresses the Python runtime artifacts the anvil
+# installer's own .anvil/ footprint generates (bytecode caches under the
+# .anvil/anvil/ mirror, the uv venv at .anvil/.venv/, and the setuptools
+# egg-info metadata `uv sync`'s editable install materializes) plus the
+# machine-local install sidecar (absolute source path + install date —
+# meaningless outside the installing machine, issue #894). Patterns are
+# relative to this directory. The installer writes this file once
+# (skip-if-exists), so any local additions you make here survive re-install.
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.install-local.json

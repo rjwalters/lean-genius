@@ -1,0 +1,70 @@
+# anvil.mplstyle — declarative matplotlib defaults for Anvil figures.
+#
+# palette: keep in sync with anvil/lib/figures/palette.py and
+# anvil/skills/deck/assets/anvil-deck.css :root
+#
+# Apply via `plt.style.use(...)` — the canonical way is
+# `from anvil.lib.figures.palette import apply; apply()`, which resolves this
+# file relative to the module. A figure that uses these defaults is on-brand
+# (navy-first series, restrained greys, projector-legible) with zero per-series
+# effort. Colors below mirror the CSS :root: navy #1f4e7a (--anvil-accent),
+# ink #1a1a1a (--anvil-text), muted #6b6b6b (--anvil-muted), rule #d6d6d6
+# (--anvil-rule). The prop_cycle is the navy-anchored ramp from palette.ANVIL_RAMP.
+
+# --- Typography: match the deck theme's Helvetica family. matplotlib silently
+#     substitutes the next available family if HelveticaNeue/Helvetica is
+#     absent (e.g. on Linux CI), so the listed fallbacks keep this from erroring.
+#     NOTE (benign): on a stock macOS/Linux + matplotlib install the unresolvable
+#     spellings emit `findfont: Font family '...' not found` warnings before the
+#     chain falls back to DejaVu Sans. These are cosmetic fallback noise, not an
+#     error — the concrete-chain fallback (see below) is working as intended.
+#
+#     IMPORTANT — per-glyph Unicode fallback (matplotlib 3.6+):
+#     `font.family` MUST be a concrete list of family names, NOT the
+#     `sans-serif` alias. The alias form (`font.family: sans-serif` +
+#     `font.sans-serif: [list]`) resolves to first-available-family-wins with
+#     NO per-glyph fallback — a glyph the primary font lacks (e.g. `→`
+#     U+2192 on Helvetica Neue) renders as the missing-glyph box and matplotlib
+#     emits `Glyph N missing from font` warnings. Listing concrete families on
+#     `font.family` itself triggers matplotlib's per-glyph fallback chain so
+#     missing glyphs are looked up in subsequent families (DejaVu Sans, bundled
+#     with matplotlib, is the universal last-resort backstop). The
+#     `font.sans-serif` line below is kept as documentation of intent but is
+#     redundant once `font.family` carries the concrete chain.
+font.family:        Helvetica Neue, HelveticaNeue, Helvetica, Arial, DejaVu Sans
+font.sans-serif:    Helvetica Neue, HelveticaNeue, Helvetica, Arial, DejaVu Sans, sans-serif
+
+# --- Figure geometry + output: slide-scale, projector-crisp, transparent so
+#     the chart composites onto any of the three slide backgrounds.
+figure.figsize:     12, 7
+figure.dpi:         120
+savefig.dpi:        200
+savefig.transparent: True
+savefig.bbox:       tight
+
+# --- Series colors: navy first, then the restrained navy-anchored ramp
+#     (muted slate -> navy tint -> rule grey). Deliberately no rose/crimson/
+#     magenta/gold. Mirrors palette.ANVIL_RAMP.
+axes.prop_cycle:    cycler('color', ['1f4e7a', '6b6b6b', '5b82a6', 'd6d6d6'])
+
+# --- Axes / text colors: ink for labels+titles, rule grey for spines, with a
+#     spine-light look (top/right hidden). Grid off by default — charts in this
+#     theme are clean and spine-light, not gridded.
+axes.edgecolor:     d6d6d6
+axes.labelcolor:    1a1a1a
+axes.titlecolor:    1a1a1a
+axes.spines.top:    False
+axes.spines.right:  False
+text.color:         1a1a1a
+
+axes.grid:          False
+grid.color:         d6d6d6
+grid.linewidth:     0.6
+
+xtick.color:        1a1a1a
+ytick.color:        1a1a1a
+xtick.labelcolor:   1a1a1a
+ytick.labelcolor:   1a1a1a
+
+# --- Legend: frameless reads cleaner on a slide.
+legend.frameon:     False

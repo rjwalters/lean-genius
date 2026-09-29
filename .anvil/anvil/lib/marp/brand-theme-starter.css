@@ -1,0 +1,170 @@
+/* brand-theme-starter.css — Copy-template for porting a consumer brand
+ * (typically a LaTeX beamer .sty) onto a Marp CSS theme.
+ *
+ * This file is a STARTER, not a shipped theme. It is deliberately not
+ * listed in the pinned themeSet at anvil/lib/marp/config.yml (that list
+ * names shipped themes only). To use it:
+ *
+ *   1. Copy this file to your consumer overlay:
+ *        .anvil/skills/deck/templates/<your-theme>.css     (anvil:deck)
+ *        .anvil/skills/slides/templates/<your-theme>.css   (anvil:slides)
+ *   2. Rename the @theme marker below from REPLACE-ME to <your-theme>.
+ *   3. Fill the :root brand-token block from your .sty's \definecolor /
+ *      \setbeamercolor values.
+ *   4. Flesh out the four SLOT: sections from your .sty's frame templates.
+ *   5. Render with:  marp deck.md --pdf --html --allow-local-files \
+ *        --config-file .anvil/anvil/lib/marp/config.yml \
+ *        --theme-set .anvil/skills/deck/templates/<your-theme>.css
+ *
+ * The full porting recipe (beamer-concept mapping table, registration,
+ * validation via render gate + vision critic) lives at
+ * anvil/lib/snippets/brand-theme-porting.md (in an installed consumer
+ * repo: .anvil/anvil/lib/snippets/brand-theme-porting.md).
+ *
+ * The token pattern below mirrors the shipped default theme at
+ * anvil/skills/deck/assets/anvil-deck.css — same :root custom-property
+ * approach, `--brand-*` namespace so your tokens never collide with the
+ * shipped `--anvil-*` tokens if both themes are on the same --theme-set
+ * line.
+ */
+
+/* @theme REPLACE-ME */
+
+@import "default";
+
+:root {
+  /* Brand-token block — fill these from your .sty.
+   *
+   * Mapping from beamer:
+   *   \definecolor{brandblue}{HTML}{1F4E7A}  →  --brand-accent: #1f4e7a;
+   *   \setbeamercolor{normal text}{fg=...}   →  --brand-text
+   *   \setbeamercolor{structure}{fg=...}     →  --brand-accent
+   *   \setbeamercolor{block title}{bg=...}   →  --brand-bg-callout
+   *
+   * The placeholder values below are neutral grayscale on purpose — a
+   * rendered deck that still looks like a wireframe means you have not
+   * finished step 3.
+   */
+  --brand-text:       #1a1a1a;   /* body text */
+  --brand-muted:      #6b6b6b;   /* secondary text, footer, pagination */
+  --brand-accent:     #444444;   /* REPLACE: your primary brand color */
+  --brand-rule:       #d6d6d6;   /* hairlines, table borders */
+  --brand-bg:         #ffffff;   /* slide background */
+  --brand-bg-section: #f5f5f5;   /* section-divider / callout tint */
+  --brand-bg-callout: #f0f0f0;   /* callout-box background */
+}
+
+/* Base slide chrome — typography is yours to brand; the defaults below
+ * are the shipped-theme sizes so text fits without overflow lint noise. */
+section {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 26px;
+  line-height: 1.45;
+  color: var(--brand-text);
+  background: var(--brand-bg);
+  padding: 56px 72px;
+}
+
+section strong {
+  color: var(--brand-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* SLOT: title slide                                                   */
+/*                                                                     */
+/* beamer equivalent: \titlepage / \setbeamertemplate{title page} /    */
+/* a custom title-frame macro. Applied per-slide in deck.md via        */
+/* `<!-- _class: title -->`.                                           */
+/* ------------------------------------------------------------------ */
+section.title {
+  background: var(--brand-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 100px;
+}
+
+section.title h1 {
+  font-size: 72px;
+  color: var(--brand-accent);
+  line-height: 1.05;
+  margin: 0 0 20px 0;
+}
+
+section.title h2 {
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--brand-text);
+  border: none;
+  margin: 0 0 60px 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* SLOT: section divider                                               */
+/*                                                                     */
+/* beamer equivalent: \section frame / \AtBeginSection auto-frames.    */
+/* Applied per-slide via `<!-- _class: section -->` (deck convention)  */
+/* or `<!-- _class: divider -->` (slides convention) — both selectors  */
+/* are wired so one starter serves both skills.                        */
+/* ------------------------------------------------------------------ */
+section.section,
+section.divider {
+  background: var(--brand-accent);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+section.section h1,
+section.divider h1 {
+  color: #ffffff;
+  font-size: 64px;
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* SLOT: callout box                                                   */
+/*                                                                     */
+/* beamer equivalent: block / alertblock / tcolorbox / summary-box     */
+/* macros. Used inline in the slide body as                            */
+/* `<div class="callout"> ... </div>` (html: true is pinned, so raw    */
+/* HTML passes through). Class-based selectors survive Marp's          */
+/* foreignObject PDF path; inline style="..." display rules do NOT     */
+/* (verified, issue #128).                                             */
+/* ------------------------------------------------------------------ */
+section .callout {
+  background: var(--brand-bg-callout);
+  border-left: 6px solid var(--brand-accent);
+  border-radius: 4px;
+  padding: 18px 24px;
+  margin: 16px 0;
+}
+
+section .callout strong {
+  color: var(--brand-accent);
+}
+
+/* ------------------------------------------------------------------ */
+/* SLOT: footer / confidentiality strip                                */
+/*                                                                     */
+/* beamer equivalent: \setbeamertemplate{footline} and the             */
+/* CONFIDENTIAL strip many corporate .sty files pin to every frame.    */
+/* The text itself comes from the Marp `footer:` directive in the      */
+/* deck.md frontmatter (e.g. `footer: "CONFIDENTIAL — Acme Corp"`);    */
+/* this slot styles where and how it renders. `section::after` styles  */
+/* the page number emitted by `paginate: true`.                        */
+/* ------------------------------------------------------------------ */
+section footer {
+  color: var(--brand-muted);
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+section::after {
+  color: var(--brand-muted);
+  font-size: 14px;
+  font-weight: 400;
+}
