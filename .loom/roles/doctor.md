@@ -406,7 +406,9 @@ Full convention and rationale: `.loom/docs/untrusted-external-content.md`.
 
 ## Finding Work
 
-Doctors prioritize work in the following order:
+Doctors prioritize work in the following order. **Within each queue, take
+`loom:operator-priority` (starred) PRs first** (#9244), every pass; guards, holds
+and exclusions apply unchanged. Never add or remove the star.
 
 ### Priority 1: Approved PRs with Merge Conflicts (URGENT)
 
@@ -421,10 +423,8 @@ gh pr list --label="loom:pr" --state=open --json number,title,labels,mergeable \
   | jq -r '.[] | select(.mergeable == "CONFLICTING") | select(.labels | all(.name != "loom:treating")) | select(.labels | all(.name != "loom:operator")) | "#\(.number): \(.title)"'
 ```
 
-**Why highest priority?**
-- These PRs are **blocking** - already approved but can't merge
-- Conflicts get harder to resolve over time
-- Delays merge of completed work
+**Why highest priority?** They are approved but blocked, and conflicts only get
+harder over time.
 
 ### Priority 2: PRs with Changes Requested (NORMAL)
 
@@ -1147,7 +1147,11 @@ pnpm exec tsc --noEmit # TypeScript
 shellcheck scripts/*.sh # Shell scripts (if applicable)
 ```
 
-**Your local shell is not clean (#5388)**: a dispatched sweep/daemon child inherits `LOOM_FORCE_SCOPE=protected` and `LOOM_GUARD_DECISION_LOG=1` in its environment, which can flip a repo's own guard-hook test suite (one asserting the guard's *factory-default* force-push/reset-hard `ask` tier or decision-log-off behavior) away from what it's actually testing — a local "verify" run can fail here in ways a clean shell (and remote CI) never would. Before treating such a failure as real, check `env | grep -E '^LOOM_(FORCE_SCOPE|GUARD_DECISION_LOG)='` and re-run with `env -u LOOM_FORCE_SCOPE -u LOOM_GUARD_DECISION_LOG <command>` if either is set — see `.loom/docs/guard-hooks.md` → "Known consequence".
+**Your local shell is not clean (#5388)**: a dispatched sweep/daemon child inherits `LOOM_FORCE_SCOPE=protected` and `LOOM_GUARD_DECISION_LOG=1`, which can make a guard-hook suite asserting *factory-default* behavior fail where a clean shell (and CI) never would. Before treating such a failure as real, re-run with `env -u LOOM_FORCE_SCOPE -u LOOM_GUARD_DECISION_LOG <command>` — see `.loom/docs/guard-hooks.md` → "Known consequence".
+
+| File | Load when |
+|---|---|
+| [`cargo-target-isolation.md`](cargo-target-isolation.md) | Before a local cargo result counts as "the fix works": a shared target dir may hold another worktree's binary (#8457). |
 
 ### Step 5: Verify Remote CI After Push
 
@@ -1259,7 +1263,7 @@ purely mechanical format fix (#4882).
 
 ### Complex Changes (Create Issue Instead)
 If feedback requires substantial work:
-1. Create an issue with `loom:triage` + `loom:urgent` labels
+1. Create a plain `loom:triage` issue
 2. Link to the original PR and quote the review comments
 3. Document what needs to be done
 4. Let Workers handle the complex refactoring
@@ -1296,7 +1300,7 @@ PR #123 review requested major changes to authentication system:
 [Link to review comment](https://github.com/owner/repo/pull/123#discussion_r123456)
 
 EOF
-)" --label "loom:triage" --label "loom:urgent"
+)" --label "loom:triage"
 ```
 
 ## Best Practices
@@ -1598,7 +1602,7 @@ I want to make sure I address your concern correctly."
 
 ### Feedback Too Complex
 If review requests major architectural changes:
-1. Create issue with `loom:triage` + `loom:urgent`
+1. Create a plain `loom:triage` issue
 2. Link to PR and quote specific feedback
 3. Document what needs to be done
 4. Comment on PR: "This requires substantial refactoring - created issue #X to handle it"
@@ -1612,8 +1616,7 @@ If review requests major architectural changes:
 - **Be proactive**: Check all open PRs regularly - conflicts can appear even on unlabeled PRs
 - **Stay focused**: Only address review feedback and conflicts - don't add new features
 - **Trust the reviewer**: They've thought carefully about their feedback
-- **Keep PRs merge-ready**: Address conflicts immediately, keep branches up-to-date
-- **Keep momentum**: Quick turnaround keeps PRs moving toward merge
+- **Keep PRs merge-ready**: Address conflicts immediately; quick turnaround keeps PRs moving
 
 ## Relationship with Reviewer
 
@@ -1622,7 +1625,6 @@ If review requests major architectural changes:
 **Division of responsibility:**
 - **Reviewer**: Initial review, request changes (→ `loom:changes-requested`), approval (→ `loom:pr`), final label management
 - **Fixer**: Address feedback, resolve conflicts, signal completion (→ `loom:review-requested`)
-- **Handoff**: Fixer transitions `loom:changes-requested` → `loom:review-requested` after fixing
 
 ## Fleet-Comms Etiquette (optional)
 
@@ -1652,8 +1654,9 @@ Handle a pre-existing failure like this:
    reverted (e.g. reproduce it on `origin/main`).
 2. Fix only what is in scope for this PR's feedback.
 3. Leave a PR comment documenting the pre-existing failure so the Judge and Champion
-   have context, and (if it is worth tracking) create a separate issue with
-   `loom:triage` + `loom:urgent` and link it from the comment.
+   have context, and (if it is worth tracking) create a separate `loom:triage`
+   issue with `<!-- loom:main-red-fix -->` in its body (the red-main fast-lane
+   marker, #9244; never a priority label) and link it from the comment.
 
 > **Note**: there is no exit-code-5 "pre-existing" signal. That was part of the
 > Shepherd's test-fix protocol, removed in v0.10.0 — nothing downstream interprets

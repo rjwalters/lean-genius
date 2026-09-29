@@ -14,6 +14,10 @@
 #      - --worktree-path bypasses sentinel on the explicit path
 #      - default path keeps sentinel guard
 #      - discovery fallback emits hint without removing
+#   7. The REAL `_issue_is_closed_for_cleanup` (#4186), extracted and sourced
+#      from merge-pr.sh (not the Test 4/5 simulation above), driven against
+#      the actual `loom-daemon merge-pr issue-close-gate` binary (#8191) —
+#      including the daemon-fault fail-unsafe-to-preserve path.
 #
 # This is the companion to test-merge-pr-help.sh. The help test verifies
 # the documentation surface; this test verifies the implementation surface.
@@ -25,6 +29,16 @@ SCRIPTS_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 MERGE_PR="$SCRIPTS_DIR/merge-pr.sh"
 FORGE_HELPERS="$SCRIPTS_DIR/lib/forge-helpers.sh"
 
+# #8191: `_issue_is_closed_for_cleanup`'s decision now delegates to
+# `loom-daemon merge-pr issue-close-gate`. Pin the binary Test 7 below execs
+# and verify it HAS that subcommand, mirroring every other ported-decision
+# suite in this family (e.g. test-merge-pr-closed-issue-cleanup.sh). Tests
+# 1-6 above never invoke the real function (they re-simulate the decision
+# tree in pure bash), so this does not gate them.
+# shellcheck source=lib/require-daemon-bin.sh
+source "$SCRIPT_DIR/lib/require-daemon-bin.sh"
+loom_test_require_daemon_bin "$SCRIPTS_DIR" "merge-pr issue-close-gate"
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
@@ -35,6 +49,19 @@ TESTS_FAILED=0
 
 pass() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1)); echo -e "  ${GREEN}PASS${NC}: $1"; }
 fail() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1)); echo -e "  ${RED}FAIL${NC}: $1"; }
+
+# An assertion that CANNOT survive the port to Rust, retired under the
+# three-part test in defaults/docs/verification-recipes.md §6. Printed, not
+# deleted: a reader must be able to see what was removed, why, and what proves
+# the property now. Counted as run so the totals stay honest.
+YELLOW='\033[0;33m'
+retired() { # <what> <property> <why-structural> <successor>
+    TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "  ${YELLOW}RETIRED${NC}: $1"
+    echo "      property:   $2"
+    echo "      structural: $3"
+    echo "      successor:  $4"
+}
 
 assert_grep() {
     local pattern="$1" file="$2" msg="$3"
@@ -129,8 +156,13 @@ assert_grep "Preserving Judge/Doctor review worktree at" "$MERGE_PR" \
 # --- Test 2d: never-closing-issue worktree/branch cleanup (#6694) source surface ---
 assert_grep 'source "\$SCRIPT_DIR/lib/branch-landed.sh"' "$MERGE_PR" \
     "merge-pr.sh sources the shared branch-landed primitive (#7812)"
-assert_grep 'branch_landed "\$branch" "\${DEFAULT_BRANCH_NAME:-}" "\$expected_head_sha"' "$MERGE_PR" \
-    "_maybe_delete_local_branch delegates its safety check to the shared primitive (#6694/#7812)"
+retired \
+    "_maybe_delete_local_branch delegates its safety check to the shared primitive (#6694/#7812)" \
+    "the local-branch -d -> -D upgrade is gated on the shared branch-landed verdict (fed the merged PR's head SHA), never a private re-derivation" \
+    "#8191: the decision left the shell. _maybe_delete_local_branch now calls 'loom-daemon merge-pr delete-branch', whose only rule is worktree_cli::branch_delete, which calls worktree_cli::branch_landed::probe (the Rust twin of lib/branch-landed.sh that worktree.sh remove already uses) — the shell holds no branch_landed call to grep for" \
+    "the assertion immediately below (the shell threads \$expected_head_sha into the daemon), plus loom-daemon's branch_delete::tests::only_a_landed_verdict_may_escalate_to_force_delete and the behavioural cases in test-merge-pr-local-branch-cleanup.sh / test-merge-pr-primary-checkout-advice.sh that force-delete on a tip match"
+assert_grep 'merge-pr delete-branch .*--expected-head-sha "\$expected_head_sha"' "$MERGE_PR" \
+    "_maybe_delete_local_branch hands the merged head SHA to the shared rule (loom-daemon merge-pr delete-branch, #8191)"
 assert_grep 'branch_has_landed "\$PR_BRANCH" "\$DEFAULT_BRANCH_NAME" "\$PR_HEAD_SHA"' "$MERGE_PR" \
     "the worktree-preserve decision reuses the shared primitive at every call site (#6694/#7812)"
 assert_grep "holds nothing unmerged; removing it \\(#6694\\)" "$MERGE_PR" \
@@ -541,6 +573,105 @@ if [[ "$result" == "skip:no-pr-worktree" ]]; then
 else
     fail "case S: expected 'skip:no-pr-worktree', got '$result'"
 fi
+
+# --- Test 7: the REAL _issue_is_closed_for_cleanup (#4186/#8191) ---
+echo ""
+echo "Test 7: _issue_is_closed_for_cleanup driven against the real daemon"
+
+# Extract just the function under test from merge-pr.sh and source it — the
+# same "extract from source, don't replicate" strategy
+# test-merge-pr-closed-issue-cleanup.sh uses, so this stays in lockstep with
+# the script rather than testing a hand-copied rewrite of it.
+GATE_FUNCS_FILE="$(mktemp)"
+GATE_STUB_DIR="$(mktemp -d)"
+awk '
+  /^_issue_is_closed_for_cleanup\(\) \{/ { capture=1 }
+  capture { print }
+  capture && /^}/ { capture=0 }
+' "$MERGE_PR" > "$GATE_FUNCS_FILE"
+if ! grep -q "^_issue_is_closed_for_cleanup() {" "$GATE_FUNCS_FILE"; then
+    fail "could not extract _issue_is_closed_for_cleanup from $MERGE_PR"
+else
+    # Minimal shims the extracted body calls.
+    warning() { echo "WARN: $*" >&2; }
+    # shellcheck disable=SC1090
+    source "$GATE_FUNCS_FILE"
+
+    # REPO_NWO/PR_NUMBER/GH are read only by the extracted+sourced function
+    # above, which shellcheck cannot see.
+    # shellcheck disable=SC2034
+    REPO_NWO="owner/repo"
+    # shellcheck disable=SC2034
+    PR_NUMBER="999"
+    # shellcheck disable=SC2034
+    GH="gh"
+    GATE_CLOSE_TARGETS=""
+    GATE_STATE=""
+    forge_pr_close_targets() { printf '%s' "$GATE_CLOSE_TARGETS"; }
+    forge_get_issue_state() { printf '%s' "$GATE_STATE"; }
+
+    # T1: issue IS a close target -> clean up, no live-state read needed.
+    GATE_CLOSE_TARGETS="42"; GATE_STATE=""
+    if _issue_is_closed_for_cleanup 42; then
+        pass "T1: a close-target issue authorizes cleanup with no live-state read"
+    else
+        fail "T1: expected cleanup authorized for a close-target issue"
+    fi
+
+    # T2: not a close target, live state CLOSED -> clean up.
+    GATE_CLOSE_TARGETS="7"; GATE_STATE="CLOSED"
+    if _issue_is_closed_for_cleanup 42; then
+        pass "T2: a non-close-target issue with live state CLOSED authorizes cleanup"
+    else
+        fail "T2: expected cleanup authorized when live state is CLOSED"
+    fi
+
+    # T3: not a close target, live state OPEN -> preserve.
+    GATE_CLOSE_TARGETS="7"; GATE_STATE="OPEN"
+    set +e; _issue_is_closed_for_cleanup 42; rc=$?; set -e
+    if [[ $rc -eq 1 ]]; then
+        pass "T3: a non-close-target issue with live state OPEN preserves"
+    else
+        fail "T3: expected preserve (rc=1) for an OPEN non-close-target issue, got rc=$rc"
+    fi
+
+    # T4: not a close target, live-state lookup failure (empty) -> preserve
+    # (fail-unsafe-to-preserve).
+    GATE_CLOSE_TARGETS="7"; GATE_STATE=""
+    set +e; _issue_is_closed_for_cleanup 42; rc=$?; set -e
+    if [[ $rc -eq 1 ]]; then
+        pass "T4: a live-state lookup failure preserves (fail-unsafe-to-preserve)"
+    else
+        fail "T4: expected preserve (rc=1) on a lookup failure, got rc=$rc"
+    fi
+
+    # T5 (#8191): a daemon predating the verb must preserve (never guess
+    # cleanup) AND warn naming the fault — a guessed removal here is the
+    # exact irreversible mistake #4186 exists to prevent.
+    fake_no_verb="$GATE_STUB_DIR/fake-loom-daemon-no-verb"
+    cat > "$fake_no_verb" <<'FAKEDAEMON'
+#!/usr/bin/env bash
+echo "error: unrecognized subcommand 'issue-close-gate'" >&2
+exit 2
+FAKEDAEMON
+    chmod +x "$fake_no_verb"
+    saved_bin="${LOOM_DAEMON_BIN:-}"
+    GATE_CLOSE_TARGETS="42"; GATE_STATE=""
+    export LOOM_DAEMON_BIN="$fake_no_verb"
+    set +e; stderr_out="$(_issue_is_closed_for_cleanup 42 2>&1 >/dev/null)"; rc=$?; set -e
+    export LOOM_DAEMON_BIN="$saved_bin"
+    if [[ $rc -eq 1 ]]; then
+        pass "T5: a daemon predating the verb preserves rather than guessing cleanup"
+    else
+        fail "T5: expected preserve (rc=1) when the daemon lacks the verb, got rc=$rc"
+    fi
+    if [[ "$stderr_out" == *"did not run"* ]]; then
+        pass "T5: the daemon-fault path warns naming the cleanup gate"
+    else
+        fail "T5: expected a warning naming the fault; got: $stderr_out"
+    fi
+fi
+rm -rf "$GATE_FUNCS_FILE" "$GATE_STUB_DIR" 2>/dev/null || true
 
 # --- Summary ---
 echo ""
