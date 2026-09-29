@@ -28,6 +28,9 @@
 # below for the split) it shares with install.sh:
 #   .claude/skills/repo/SKILL.md                        <- skills/repo/SKILL.md
 #   .claude/skills/repo/hooks/*.sh                      <- hooks/repo/*.sh
+#     (guard-destructive.sh only when install-metadata.json's guardHookInstalled
+#     is true/absent — repo#490: a target that deferred to another tool's guard
+#     at install time never had this file, and a resync must not start adding it)
 #   .claude/skills/repo/scripts/repo-remote.sh          <- scripts/repo/repo-remote.sh
 #   .claude/skills/repo/scripts/repo-scrub-forks.sh     <- scripts/repo/repo-scrub-forks.sh
 #   .claude/skills/repo/scripts/resync-installed.sh     <- scripts/repo/resync-installed.sh
@@ -314,6 +317,15 @@ INSTALLED_VERSION="$(json_string "$METADATA" version)"
 DEV_INSTALL="$(json_bool "$METADATA" dev)"
 FILTERED="$(json_bool "$METADATA" filtered)"
 
+# guardHookInstalled (repo#490): whether install.sh actually copied
+# hooks/repo/guard-destructive.sh, or deferred to a guard some OTHER tool
+# already wired into .claude/settings.json. A metadata file written before this
+# field existed has none — default to true, matching what every install before
+# repo#490 actually did, so an old install's guard keeps being refreshed rather
+# than silently vanishing on the next resync.
+GUARD_HOOK_INSTALLED="$(json_bool "$METADATA" guardHookInstalled)"
+[[ -n "$GUARD_HOOK_INSTALLED" ]] || GUARD_HOOK_INSTALLED=true
+
 # A layout bump means destinations moved or a metadata field changed meaning —
 # things a pure file refresh cannot fix. Warn loudly and keep going (the refresh
 # is still an improvement over stale files) rather than refusing outright.
@@ -335,11 +347,21 @@ plan() {  # <source-rel> <dest-rel> <exec:0|1> [transform: render|codex-skill]
 }
 
 plan "skills/repo/SKILL.md"                 ".claude/skills/repo/SKILL.md"                    0
-plan "hooks/repo/guard-destructive.sh"      ".claude/skills/repo/hooks/guard-destructive.sh"  1
+# Only planned when the recorded install decision says the guard was actually
+# installed (repo#490) — a target that deferred to another tool's guard at
+# install time (GUARD_HOOK_INSTALLED=false) never had this file, and a resync
+# must not start adding it: nothing in that target's settings.json would ever
+# run a second copy, and a hand-deleted or never-installed file must stay
+# absent across resyncs, same as any other deliberate install-time decision
+# (compare the FILTERED handling for `commands`, right below).
+if [[ "$GUARD_HOOK_INSTALLED" == true ]]; then
+  plan "hooks/repo/guard-destructive.sh"      ".claude/skills/repo/hooks/guard-destructive.sh"  1
+fi
 plan "hooks/repo/session-start-handoff.sh"  ".claude/skills/repo/hooks/session-start-handoff.sh" 1
 plan "scripts/repo/repo-remote.sh"          ".claude/skills/repo/scripts/repo-remote.sh"      1
 plan "scripts/repo/repo-scrub-forks.sh"     ".claude/skills/repo/scripts/repo-scrub-forks.sh" 1
 plan "scripts/repo/repo-org-policy.py"      ".claude/skills/repo/scripts/repo-org-policy.py" 1
+plan "scripts/repo/repo-optimize-ci.py"     ".claude/skills/repo/scripts/repo-optimize-ci.py" 1
 
 # Which commands belong to this install. A `--skills=` install is a deliberate
 # subset, so widening it here would install commands the operator declined; an
@@ -654,7 +676,7 @@ fi
 stamp_metadata() {
   local tmp
   tmp="$(mktemp "$SKILL_ROOT/.install-metadata.XXXXXX")" || { warn "Could not stage install-metadata.json — version stamp skipped"; return; }
-  metadata_tracked_json "$VERSION" "$COMMIT" "${DEV_INSTALL:-false}" "${FILTERED:-false}" "$COMMANDS" >"$tmp"
+  metadata_tracked_json "$VERSION" "$COMMIT" "${DEV_INSTALL:-false}" "${FILTERED:-false}" "$COMMANDS" "$GUARD_HOOK_INSTALLED" >"$tmp"
   mv -f "$tmp" "$METADATA" 2>/dev/null || { rm -f "$tmp"; warn "Could not update install-metadata.json — version stamp skipped"; }
 
   # The Codex surface carries its own copy of the same tracked metadata (same
@@ -662,7 +684,7 @@ stamp_metadata() {
   # keep claiming the version it was installed at.
   [[ -n "$CODEX_ROOT" && -f "$CODEX_ROOT/install-metadata.json" ]] || return 0
   tmp="$(mktemp "$CODEX_ROOT/.install-metadata.XXXXXX")" || { warn "Could not stage $CODEX_SKILL_REL/install-metadata.json — version stamp skipped"; return; }
-  metadata_tracked_json "$VERSION" "$COMMIT" "${DEV_INSTALL:-false}" "${FILTERED:-false}" "$COMMANDS" >"$tmp"
+  metadata_tracked_json "$VERSION" "$COMMIT" "${DEV_INSTALL:-false}" "${FILTERED:-false}" "$COMMANDS" "$GUARD_HOOK_INSTALLED" >"$tmp"
   mv -f "$tmp" "$CODEX_ROOT/install-metadata.json" 2>/dev/null \
     || { rm -f "$tmp"; warn "Could not update $CODEX_SKILL_REL/install-metadata.json — version stamp skipped"; }
 }

@@ -96,11 +96,54 @@ HOOK_ERROR_LOG="${SCRIPT_DIR}/../logs/hook-errors.log"
 # see decision_log_enabled() below.
 DECISION_LOG="${REPO_GUARD_DECISION_LOG_FILE:-${LOOM_GUARD_DECISION_LOG_FILE:-${SCRIPT_DIR}/../logs/guard-decisions.log}}"
 
+# ensure_log_dir <log-file> — create the log file's directory and make that
+# directory ignore its own contents (repo#482).
+#
+# The logs directory is created by the HOOKS, never by install.sh: at runtime it
+# resolves to .claude/skills/repo/logs/ inside the consumer repo, and nothing in
+# the installed payload ignored it. That left "add a .gitignore rule for the
+# guard's runtime logs" as an unstated per-consumer obligation — and a consumer
+# who never learned of it carries an untracked hook-errors.log/guard-decisions.log
+# in `git status` forever. In a repo whose installed-surface resync gates on a
+# clean `git status --porcelain` (Loom's resync-installed.sh does), that one
+# untracked log silently stalls every scheduled resync with no obvious cause.
+#
+# Writing a `*`-only .gitignore into the directory as we create it makes the
+# directory ignore its own contents — the .gitignore file included — wherever
+# the hooks create it, so no consumer .gitignore rule is needed at all. Doing it
+# HERE rather than in install.sh is deliberate: this is the only code that ever
+# creates the directory, so it covers a pre-existing install too (the next log
+# write drops the file in), a bare hook copy made without running the installer,
+# and whichever hook happens to create the directory first.
+#
+# An existing .gitignore is never overwritten — a consumer who wrote their own
+# rules in that file keeps them.
+#
+# Best-effort like every other logging path in this file: a failed mkdir or
+# write NEVER changes a decision and NEVER produces a non-zero exit.
+ensure_log_dir() {  # <log-file-path>
+    local dir
+    dir="$(dirname "$1" 2>/dev/null)" || return 0
+    [[ -n "$dir" ]] || return 0
+    mkdir -p "$dir" 2>/dev/null || return 0
+    [[ -e "$dir/.gitignore" ]] && return 0
+    # Grouped so a FAILED redirection-open (unwritable dir) has its bash-level
+    # error caught by the group's stderr redirect too — same reason
+    # log_guard_decision's append below is grouped.
+    { printf '%s\n' \
+        "# Runtime output from the installed Repo Skills hooks (repo#482)." \
+        "# Machine-local: these logs routinely carry absolute filesystem paths," \
+        "# so they must never be committed. This file ignores the whole" \
+        "# directory, itself included, so no consumer .gitignore rule is needed." \
+        "*" >"$dir/.gitignore"; } 2>/dev/null || true
+    return 0
+}
+
 # Log a diagnostic error message (best-effort, never fails the script)
 log_hook_error() {
     local msg="$1"
-    # Ensure log directory exists
-    mkdir -p "$(dirname "$HOOK_ERROR_LOG")" 2>/dev/null || true
+    # Ensure log directory exists (and ignores itself — see ensure_log_dir)
+    ensure_log_dir "$HOOK_ERROR_LOG"
     echo "[$(date -u '+%Y-%m-%dT%H:%M:%SZ')] [guard-destructive] $msg" >> "$HOOK_ERROR_LOG" 2>/dev/null || true
 }
 
@@ -192,7 +235,7 @@ log_guard_decision() {
             2>/dev/null) || return 0
     fi
     [[ -n "$line" ]] || return 0
-    mkdir -p "$(dirname "$DECISION_LOG")" 2>/dev/null || true
+    ensure_log_dir "$DECISION_LOG"
     # Group the append so a FAILED >> redirection (unwritable/nonexistent dir)
     # has its bash-level error caught by the group's stderr redirect too — a bare
     # `>> "$f" 2>/dev/null` does not suppress the redirection-open error itself.

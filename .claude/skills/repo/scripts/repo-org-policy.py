@@ -20,6 +20,8 @@ from urllib.parse import quote, urlencode, urlparse
 
 SOURCE_REPO = "rjwalters/repo"
 MANAGED_FILES = {"repo-policy.json", "renovate-config.json"}
+RENOVATE_APP_SLUG = "renovate"
+RENOVATE_INSTALL_URL = "https://github.com/apps/renovate"
 
 
 class PolicyError(Exception):
@@ -167,6 +169,52 @@ def render(policy, source, owner):
     }
 
 
+def check_app_installed(api, owner, app_slug=RENOVATE_APP_SLUG):
+    """Report whether a GitHub App is installed on an organization/user account.
+
+    Published policy and an authorized client config prove nothing about
+    whether the App that is supposed to act on them is actually installed —
+    that is a separate, org-owner-gated step this helper does not perform.
+    Returns True/False when the installations endpoint answers definitively,
+    or None when it cannot be determined from here (insufficient permissions,
+    or a personal account other than the caller's own — `user/installations`
+    only lists the authenticated user's own installations, and there is no
+    equivalent endpoint for an arbitrary third-party personal account).
+    """
+    try:
+        account = api.api(f"users/{owner}")
+    except PolicyError:
+        return None
+    account_type = account.get("type") if account else None
+    try:
+        if account_type == "Organization":
+            installations = api.api(f"orgs/{owner}/installations")
+        elif account_type == "User":
+            viewer = api.api("user")
+            if not viewer or viewer.get("login", "").lower() != owner.lower():
+                return None
+            installations = api.api("user/installations")
+        else:
+            return None
+    except PolicyError:
+        return None
+    entries = (installations or {}).get("installations", [])
+    return any(entry.get("app_slug") == app_slug for entry in entries)
+
+
+def app_status_line(installed, app_slug=RENOVATE_APP_SLUG, install_url=RENOVATE_INSTALL_URL):
+    name = app_slug.capitalize()
+    if installed is True:
+        return f"{name} GitHub App: installed."
+    if installed is False:
+        return (f"{name} GitHub App: NOT installed — policy published, but no PRs will be "
+                f"raised until it is. Install: {install_url} (requires an organization "
+                "owner/admin, who may not be the person running this command).")
+    return (f"{name} GitHub App: UNKNOWN — could not verify installation from here "
+            f"(insufficient permissions, or a personal account other than the caller's own). "
+            f"Install (if missing): {install_url}")
+
+
 def snapshot(api, target):
     metadata = api.api(f"repos/{target}", missing_ok=True)
     if metadata is None:
@@ -177,15 +225,127 @@ def snapshot(api, target):
     return {"branch": branch, "head": commit["sha"], "tree": commit["commit"]["tree"]["sha"]}
 
 
+def classify_absence(api, owner, client, target):
+    """Best-effort disambiguation of a 404 on the target policy repository.
+
+    GitHub answers 404 both for a repository that does not exist and for one
+    the caller cannot see, so certainty is not available from here. What is
+    available is evidence: the client repository is a known sibling in the same
+    account, so admin on it — plus an organization owner, or the caller's own
+    personal account — means a private target would normally have been visible.
+    Returns (verdict, evidence) where verdict is "absent" (evidence favors a
+    genuinely missing repository), "restricted" (a hidden repository cannot be
+    ruled out), or "unknown" (the probe itself could not answer).
+    """
+    try:
+        account = api.api(f"users/{owner}", missing_ok=True)
+    except PolicyError:
+        return "unknown", f"the {owner} account could not be read to establish access"
+    if not isinstance(account, dict):
+        return "unknown", f"no GitHub account named {owner} is visible from here"
+    try:
+        sibling = api.api(f"repos/{client}", missing_ok=True)
+    except PolicyError:
+        return "unknown", f"{client} could not be read to establish access"
+    if not isinstance(sibling, dict):
+        return "restricted", (f"the sibling repository {client} is not visible from here either, "
+                              f"so this token's view of {owner} is incomplete")
+    if not (sibling.get("permissions") or {}).get("admin"):
+        return "restricted", (f"you do not have admin on the sibling repository {client}, so a "
+                              f"private {target} would answer the same 404")
+    account_type = account.get("type")
+    if account_type == "Organization":
+        return "absent", (f"{owner} is an organization and you have admin on the sibling "
+                          f"repository {client}, so a private {target} would normally be visible")
+    if account_type == "User":
+        try:
+            viewer = api.api("user")
+        except PolicyError:
+            viewer = None
+        if isinstance(viewer, dict) and viewer.get("login", "").lower() == owner.lower():
+            return "absent", (f"{owner} is your own account, whose repositories are all visible "
+                              "to this token")
+        return "restricted", (f"{owner} is a personal account other than your own, so its private "
+                              "repositories are invisible from here")
+    return "unknown", f"the {owner} account type ({account_type or 'unreported'}) is unrecognized"
+
+
+ABSENCE_SUMMARY = {
+    "absent": "appears absent rather than hidden",
+    "restricted": "is absent or inaccessible, and this token cannot tell which",
+    "unknown": "is absent or inaccessible, and the access check was inconclusive",
+}
+
+
+def absence_message(verdict, evidence, target):
+    summary = f"{target} {ABSENCE_SUMMARY[verdict]}: {evidence}."
+    if verdict == "absent":
+        return (f"{summary} GitHub answers 404 for both an absent and a hidden repository, so this "
+                "is evidence, not proof. To create it, plan again with --create-repository public "
+                "(or private)")
+    return (f"{summary} Verify access first; to create it, plan again with --create-repository "
+            "public (or private)")
+
+
+def client_is_private(api, client):
+    """The client repository's own visibility, or None when it cannot be read."""
+    try:
+        metadata = api.api(f"repos/{client}", missing_ok=True)
+    except PolicyError:
+        return None
+    if not isinstance(metadata, dict) or "private" not in metadata:
+        return None
+    return bool(metadata["private"])
+
+
+def check_preset_visibility(api, client, target, create_repository):
+    """Refuse a private preset a public client could never resolve.
+
+    A public repository cannot consume a preset from a private `.github`, so
+    `--create-repository private` for a public client produces a valid-looking
+    `extends` reference that fails at Renovate runtime. Refuse that mismatch;
+    warn (never silently proceed) when the client's visibility cannot be read.
+    """
+    if create_repository != "private":
+        return
+    private = client_is_private(api, client)
+    if private is False:
+        raise PolicyError(
+            f"{client} is public, but --create-repository private would create a private "
+            f"{target}, whose preset a public client cannot resolve: "
+            f"`extends: github>{target}:renovate-config` fails at Renovate runtime. Plan again "
+            "with --create-repository public, or make the client private first")
+    if private is None:
+        print(f"repo-org-policy: warning: could not verify whether {client} is public; a private "
+              f"{target} cannot be consumed from a public client.", file=sys.stderr)
+
+
+def deps_handoff(client, pending_pr):
+    """Name the next command for the invoking client, and what must happen first."""
+    reconcile = (f"run /repo:deps --install in {client} to reconcile that client (its "
+                 "renovate.json, Dependabot state, ignorePaths for installer-owned roots, and "
+                 "security-PR ownership)")
+    if pending_pr:
+        return (f"Next: merge the organization PR above, then {reconcile}. A hand-written client "
+                "renovate.json is not that reconciliation, and the preset does not resolve until "
+                "the PR is merged.")
+    return (f"Next: {reconcile}. No organization PR is pending, so nothing has to be merged "
+            "first.")
+
+
 def make_plan(api, client, source_dir=None, create_repository=None):
     client = repo_name(client)
     owner = client.split("/")[0]
     target = f"{owner}/.github"
     policy, source = load_policy(api, owner, source_dir)
     current = snapshot(api, target)
-    if current is None and create_repository is None:
-        raise PolicyError(f"{target} is absent or inaccessible. Verify access; to create it, "
-                          "plan again with --create-repository public (or private)")
+    if current is None:
+        # Both extra checks stay behind this branch: the common "target already
+        # exists" path must not pay for them.
+        if create_repository is None:
+            verdict, evidence = classify_absence(api, owner, client, target)
+            raise PolicyError(absence_message(verdict, evidence, target))
+        check_preset_visibility(api, client, target, create_repository)
     before = {name: read_file(api, target, name, current["head"]) if current else None
               for name in sorted(MANAGED_FILES)}
     after = render(policy, source, owner)
@@ -216,7 +376,7 @@ def changed(plan):
     return plan["before"] != plan["after"]
 
 
-def show_plan(plan):
+def show_plan(api, plan):
     print(f"Source: {SOURCE_REPO} ({plan['source'].get('revision', 'local preview')})")
     print(f"Client: {plan['client']}  Target: {plan['target']}")
     if plan["createRepository"]:
@@ -227,6 +387,10 @@ def show_plan(plan):
             fromfile=f"{plan['target']}/{name} (current)",
             tofile=f"{plan['target']}/{name} (proposed)")), end="")
     print("Policy PR required." if changed(plan) else "Organization policy is current.")
+    # Config presence never proves the App that acts on it is installed —
+    # report that separately so "policy published" and "policy published but
+    # inert" cannot read the same in this output.
+    print(app_status_line(check_app_installed(api, plan["client"].split("/")[0])))
 
 
 def apply_plan(api, plan):
@@ -249,7 +413,8 @@ def apply_plan(api, plan):
     if fresh != plan:
         raise PolicyError("Source or organization changed after preview; regenerate and review the plan")
     if not changed(plan):
-        return "Organization policy is current; nothing to publish."
+        return ("Organization policy is current; nothing to publish.\n"
+                + deps_handoff(client, pending_pr=False))
     prefix = f"repos/{target}"
     # Publishing the same policy from two clients must reuse the same org PR.
     publication = {key: plan[key] for key in ("target", "base", "after")}
@@ -296,7 +461,7 @@ def apply_plan(api, plan):
     query = urlencode({"state": "open", "head": f"{owner}:{branch}", "base": current["branch"]})
     prs = api.api(f"{prefix}/pulls?{query}")
     if prs:
-        return prs[0]["html_url"]
+        return f"{prs[0]['html_url']}\n" + deps_handoff(client, pending_pr=True)
     body = (f"Install organization policy from {SOURCE_REPO}@{plan['source']['revision']}.\n\n"
             "The canonical preferences remain in rjwalters/repo/policies/. "
             "Edit them there and rerun /repo:org-policy to update this copy.\n\n"
@@ -305,7 +470,7 @@ def apply_plan(api, plan):
             "GitHub App installation, client onboarding, and repository settings are separate steps.")
     pr = api.api(f"{prefix}/pulls", "POST", {"title": "chore: reconcile organization dependency policy",
                  "head": branch, "base": current["branch"], "body": body})
-    return pr["html_url"]
+    return f"{pr['html_url']}\n" + deps_handoff(client, pending_pr=True)
 
 
 def main():
@@ -319,21 +484,35 @@ def main():
     apply = subs.add_parser("apply", help="publish the saved plan as an organization PR")
     apply.add_argument("--plan", type=Path, required=True)
     apply.add_argument("--yes", action="store_true", help="authorize this reviewed plan")
+    check_app = subs.add_parser(
+        "check-app", help="report whether a GitHub App (default: renovate) is installed for an owner")
+    check_app.add_argument("--repo", help="client OWNER/REPO to derive the owner from; defaults to origin")
+    check_app.add_argument("--owner", help="explicit organization/user login; overrides --repo")
+    check_app.add_argument("--app-slug", default=RENOVATE_APP_SLUG,
+                           help="GitHub App slug to check (default: renovate)")
     args = parser.parse_args()
     try:
         api = GitHub()
         if args.command == "plan":
             plan = make_plan(api, client_repo(args.repo), args.source_dir, args.create_repository)
-            show_plan(plan)
+            show_plan(api, plan)
             if args.output:
                 # A fresh path prevents overwriting an unrelated user file.
                 with args.output.open("x") as out:
                     out.write(dump(plan))
                 print(f"Saved plan: {args.output}")
-        else:
+        elif args.command == "apply":
             if not args.yes:
                 raise PolicyError("Review the saved plan, then pass --yes to publish its changes")
-            print(apply_plan(api, json.loads(args.plan.read_text())))
+            plan = json.loads(args.plan.read_text())
+            print(apply_plan(api, plan))
+            print(app_status_line(check_app_installed(api, plan["client"].split("/")[0])))
+        else:
+            owner = args.owner or client_repo(args.repo).split("/")[0]
+            # Absence is a report, never an error: this call is purely
+            # informational and must not make an otherwise-healthy plan/apply
+            # run look like it failed.
+            print(app_status_line(check_app_installed(api, owner, args.app_slug), args.app_slug))
         return 0
     except (PolicyError, OSError, ValueError, KeyError, TypeError) as exc:
         print(f"repo-org-policy: {exc}", file=sys.stderr)

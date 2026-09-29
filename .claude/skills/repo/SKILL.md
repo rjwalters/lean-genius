@@ -35,7 +35,9 @@ costs.
 | [[sudo]] | Opt-in passwordless-sudo setup for a dev machine — install a `visudo`-validated `/etc/sudoers.d` drop-in (blanket `ALL` or a scoped command list) so an agent over SSH isn't blocked on password prompts; always confirmed first, validated with rollback on failure |
 | [[update-tools]] | Check installed tool packages (Loom, Anvil, …) against their sources and offer updates |
 | [[deps]] | Third-party dependency currency — reconcile organization policy, Renovate or Dependabot setup, and bot PRs; report-only under `--check` |
+| [[optimize-ci]] | Audit GitHub Actions for wasted CI minutes — change-relevance path filtering (required-check safe), cache keys, superseded runs; ranked by measured savings, report-only unless `--apply`. Its deterministic half is `scripts/repo/repo-optimize-ci.py` (installed to `.claude/skills/repo/scripts/`) |
 | [[org-policy]] | Preview or deploy canonical rjwalters/repo preferences to the client's GitHub owner/.github repository through a policy PR |
+| [[decide]] | Put operator decisions to the operator as ranked options — best to worst, each with why — so they can answer with a number |
 | [[followups]] | Capture follow-on work from this session and file it as issues — here or in upstream tool repos, always confirmed first |
 | [[branches]] | Branch & worktree hygiene — merged PRs, orphaned branches, stale worktrees |
 | [[gitignore]] | Gitignore hygiene — over-ignored files, under-ignored build artifacts |
@@ -55,6 +57,8 @@ costs.
 - To unblock an agent driving a dev box over SSH from `sudo` password prompts (`sudo`)
 - Periodically, to keep installed tool packages current (`update-tools`) and
   third-party dependencies current — organization policy, updater setup, and bot-PR triage (`deps`)
+- When CI is slow or expensive — docs-only PRs running full suites, caches that
+  never hit, superseded PR runs still burning minutes (`optimize-ci`)
 - To preview or install organization preferences from a client repo (`org-policy`)
 - Periodically (monthly) as general hygiene (`audit`)
 - Before making a repo public, and periodically after — to check what the
