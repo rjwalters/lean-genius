@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20.19"
+  },
   "scripts": {
     "dev": "vite",
     "build": "export NODE_OPTIONS=\"${NODE_OPTIONS:-} --max-old-space-size=8192\" && pnpm gallery:check-size && pnpm gallery:check-verified-companions && pnpm annotations:build && pnpm research:build && pnpm research:enrich && pnpm gallery:check-search-index && pnpm gallery:loading-facts && pnpm gallery:build-redirects && tsc -b && vite build && pnpm gallery:check-bundle-budget",

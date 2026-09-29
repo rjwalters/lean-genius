@@ -140,6 +140,7 @@ npx tsx scripts/annotations/fix-anchors.ts --mappings /path/to/proof_mappings.tx
 | `lean-parser.ts` | Parses Lean files into anchorable constructs |
 | `types.ts` | Annotation and anchor types (mirror of `src/types/proof.ts` enums) |
 | `normalize-enums.ts` | Enum normalizer (`pnpm annotations:normalize[-check]`) |
+| `realign-lines.ts` | Re-aligns drifted line-based `annotations.json` ranges (`pnpm annotations:realign[-apply]`) |
 | `fix-anchors.ts` | Anchor repair helper for `annotations.source.json` |
 
 ## Workflow

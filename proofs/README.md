@@ -103,21 +103,26 @@ Output is saved as `<filename>.leanInk` JSON files.
 ```
 proofs/
 ├── lakefile.toml        # Lake configuration
+├── lake-manifest.json   # Lake dependency lockfile
 ├── lean-toolchain       # Lean 4.31.0
+├── Dockerfile           # Memory-limited build image used by scripts/docker-build.sh
 ├── Proofs.lean          # Root module (intentionally no imports; modules found by lakefile globs)
 ├── Proofs/              # Individual proofs
 │   ├── Sqrt2Irrational.lean  # ✅ Verified
 │   ├── NavierStokes.lean     # ⚠️ WIP (axioms)
 │   └── ...
 ├── bin/                 # Safety wrapper blocking direct `lake build`
-├── data/                # Supporting data (e.g. Knuth tour extraction)
+├── batch2/              # v4.26→v4.31 migration ledger (STATUS.md, verify-results.tsv) — see its README
+├── MATHLIB_STYLE.md     # Style/naming notes for files headed to Mathlib
+├── BADGE_TAXONOMY.md    # Proof badge definitions
 └── scripts/
     ├── setup.sh
     ├── docker-build.sh          # REQUIRED build path (memory-limited)
     ├── build-safe-subset.sh
     ├── activate-safety.sh
     ├── DOCKER-BUILD-RUNBOOK.md
-    └── extract-proof-info.sh
+    ├── extract-proof-info.sh
+    └── ...                      # cache priming/repair, safe-build, verify_*.py numeric checks
 ```
 
 ## Troubleshooting

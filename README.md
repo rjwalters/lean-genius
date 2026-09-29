@@ -119,11 +119,11 @@ proofs/
 ├── Proofs/           # Individual Lean proof files
 ├── Proofs.lean       # Root module (no imports; modules discovered by lakefile globs)
 ├── lakefile.toml     # Lean 4 project config (Mathlib dependency)
+├── lake-manifest.json # Lake dependency lockfile
 ├── lean-toolchain    # Lean version pin
 ├── Dockerfile        # Memory-limited build image used by scripts/docker-build.sh
 ├── bin/              # `lake` safety wrapper that blocks direct `lake build`
 ├── batch2/           # v4.26→v4.31 migration ledger (verify-results.tsv) and diagnostics
-├── data/             # Supporting data (e.g. Knuth tour extraction)
 ├── scripts/          # Build and extraction scripts (docker-build.sh, setup.sh, ...)
 ├── MATHLIB_STYLE.md  # Style/naming notes for files headed to Mathlib
 └── BADGE_TAXONOMY.md # Proof badge definitions

@@ -142,7 +142,7 @@ Remaining gaps (deliberately NOT restored):
 
 | Missing path | Referenced by | Notes |
 |---|---|---|
-| `research/db/sync_pool.py`, `research/db/migrate.py` | seeker | `research/db/` is gitignored (runtime state); currently absent from disk too — restoration/tracking decision deferred to the operator (#38398 item 3) |
+| `research/db/sync_pool.py`, `research/db/migrate.py` | seeker | `research/db/` is gitignored (runtime state); absent from `main` — restoration/tracking decision deferred to the operator (#38398 item 3) |
 | `research/registry.json` tracking decision | researcher, seeker | Fleet-mutated: conflict risk; deferred by the operator in #38387 |
 | `research/db/knowledge.db` dump strategy | researcher | Binary SQLite — not git-friendly; deferred |
 

@@ -2,7 +2,7 @@
 
 **Epic:** #37508 · **Prep for:** #38064 (Mechanic batch: renames)
 **Pins:** Lean `v4.26.0` / Mathlib `2df2f0150c27` → Lean `v4.31.0` / Mathlib `9a9483a92959`
-**Generated:** 2026-07-11, from the in-flight full failure inventory (`proofs/spike-logs-full/`, 274 logs / 271 FAIL at snapshot time — inventory still running; re-harvest before closing #38064).
+**Generated:** 2026-07-11, from the in-flight full failure inventory (`proofs/spike-logs-full/` — parked out of the repo on 2026-09-29 at `/Volumes/Stripe/lean-genius/attic/retired-20260929/proofs/spike-logs-full/`; 274 logs / 271 FAIL at snapshot time — inventory still running; re-harvest before closing #38064).
 
 **Method.** Old→new pairs were extracted from three evidence sources, in decreasing strength:
 1. **Compiler deprecation messages** in the failure logs (`` `X` has been deprecated: Use `Y` instead ``) — the new pin itself names the replacement.
