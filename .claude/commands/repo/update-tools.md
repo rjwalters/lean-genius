@@ -104,6 +104,52 @@ Known family members: Loom (`.loom/`), Anvil (`.anvil/`), Repo Skills
 metadata pattern. Report any metadata file found even if the tool is
 unrecognized.
 
+**A tool's top-level `version` can be a partial claim — read the per-component
+fields too where the tool records them.** `install-anvil.sh` deliberately
+declines to overwrite consumer-modified skill bodies (its documented `--force`
+skip) while still stamping the installer-run version into `anvil_version`. The
+result is a tree at a mix of versions whose top-level field names only one of
+them — reported as a clean `current` by a version-only comparison, over a tree
+hundreds of files behind (anvil#1320: a 0.10.1 → 0.11.6 upgrade where 467 files
+differed and the manifest read `0.11.6`).
+
+For `.anvil/install-metadata.json` specifically, three more fields decide this:
+
+- `skipped_overrides` — skills the last run declined to overwrite. Non-empty
+  means the tree is **not** uniformly at `anvil_version`.
+- `skill_versions` — per skill, the version of the run that last *actually*
+  installed that skill's body (anvil#633). This is how far behind each frozen
+  skill is. A pre-#633 manifest has no such block: record those skills as
+  frozen at an **unknown** version, never as `anvil_version`. Borrowing the
+  top-level number there would re-introduce the exact false `current` this
+  check exists to remove.
+- `skill_hashes` — the as-installed content hash per skill; the installer's own
+  input for deciding modified-vs-unmodified. Not needed for the report, but it
+  is what makes the skip decision above reproducible.
+
+**Read those three fields directly out of the tracked manifest — that is the
+primary path, and it always works.** The data is in the manifest, so the check
+needs neither a source clone nor a remote fetch.
+
+**Optional fast path, only when the script is actually present.** Anvil ships
+an anvil-owned reader that performs the same parse (no jq, writes nothing), but
+it postdates most installs — it landed in anvil#1324, so a clone or install
+older than that will not have it. Gate on its existence; never assume it:
+
+```bash
+if [[ -x "<source>/scripts/check-install-staleness.sh" ]]; then
+  <source>/scripts/check-install-staleness.sh <this-repo>          # human report
+  <source>/scripts/check-install-staleness.sh <this-repo> --json   # machine-readable
+  # exit 0 = uniformly current, 1 = N skill(s) frozen behind, 2 = could not evaluate
+fi
+```
+
+Its absence — including when `<source>` itself never resolved (the
+`source unknown` path above) — is **not** a "could not evaluate": fall back to
+the direct manifest read, which is unconditional. Carry the frozen count and
+the per-skill frozen versions into step 2 as a third drift dimension alongside
+version drift and commit drift.
+
 **Detect dev installs before comparing versions.** `install.sh --dev .`
 **symlinks** a tool's files directly into `.claude/` instead of copying them —
 the installed surface *is* the source clone, so stamped-version comparison is
@@ -154,15 +200,17 @@ git -C <source> show origin/HEAD:VERSION 2>/dev/null
 git -C <source> log --oneline <installed-commit>..origin/HEAD | wc -l
 ```
 
-**Record two numbers per non-dev tool, not one — version drift AND commit
-drift.** Version equality alone systematically under-reports staleness:
-upstream routinely merges a day of work without bumping VERSION, so a tool
+**Record three numbers per non-dev tool, not one — version drift, commit
+drift, and (for a tool that records per-component versions) its
+frozen-component count (step 1).** Version equality alone systematically
+under-reports staleness: upstream routinely merges a day of work without
+bumping VERSION, so a tool
 whose stamped version equals the VERSION at `origin/HEAD` can still be dozens
 of commits behind the code that will eventually ship under that same version
 number. In a real run that reported two tools `current`, one was 24 and the
 other 7 commits behind, and the misleading `current` stood for a whole working
-day until upstream happened to cut a release (repo#291). So carry both into
-step 3:
+day until upstream happened to cut a release (repo#291). So carry all three
+into step 3:
 
 1. **Version drift** — the metadata's installed `version` vs the VERSION at
    `origin/HEAD` (the comparison already shown above).
@@ -172,6 +220,17 @@ step 3:
    (**C5**), so it is already available from step 1 — no new metadata is needed.
    Use the tool's key variant where it differs (`kct_commit` for kicad-tools,
    `loom_commit` / `anvil_commit` for legacy inline shapes).
+3. **Frozen-component drift** — the count of per-component entries the tool
+   itself records as not-at-the-stamped-version. Today only Anvil reports this
+   (`skipped_overrides` + `skill_versions`, step 1); every other family member
+   (Loom, Repo Skills, kicad-tools) has no per-component surface, so its frozen
+   count is structurally `0`, **not** `unknown` — this dimension never widens
+   the "could not evaluate" surface for a tool that simply does not have it.
+   This dimension needs **no source clone and no remote fetch** — it is a
+   self-consistency check on the tracked manifest, so it is computable for
+   every Anvil install including the `source unknown` / `source_mode: "git"`
+   cases where both dimensions above come back unknown. It is also the one
+   dimension the GitHub fallback below does not lose.
 
 **Commit drift is only computable when both inputs exist.** It needs a local
 source clone *and* a recorded installed commit that the clone can actually
@@ -232,6 +291,11 @@ version-drift number — never attempt to compute or report a commit-drift
 count here (see the "Commit drift is only computable" rule above, which
 already lists "the source clone is missing" as one of the unknown cases).
 
+**Frozen-component drift does not stay unknown on this path** — it reads the
+tracked manifest, not the clone, so keep computing and reporting it here. It is
+the only one of the three dimensions that survives a missing source clone
+intact.
+
 ### 3. Report
 
 ```
@@ -241,25 +305,48 @@ TOOL PACKAGES
 |-------------|------------------|---------|-------------|
 | loom        | 0.9.1 (Jun 4)    | 0.10.6  | STALE       |
 | anvil       | 0.9.0 (Jul 1)    | 0.9.0   | current     |
+| anvil       | 0.11.6 (Jul 1)   | 0.11.6  | current, but 14 skill(s) frozen behind (memo 0.10.1, deck 0.10.1, …) |
 | other-tool  | 1.2.0 (commit abc1234) | 1.2.0 | current, but 24 commits behind source HEAD |
 | repo-skills | 0.8.0 (Aug 9)    | —       | dev (symlinked to /Users/you/GitHub/repo) |
 | kicad-tools | 2.3.0 (May 20)   | ?       | source repo missing — clone it? |
 | some-tool   | 1.2.0 (Jun 30)   | ?       | sidecar missing — re-run installer? |
 ```
 
-**A non-dev tool gets one of three statuses, not two.** Version equality by
-itself is not "current" — resolve the status from *both* numbers step 2
-recorded:
+**A non-dev tool gets one of four statuses, not two.** Version equality by
+itself is not "current" — resolve the status from *all three* numbers step 2
+recorded, in this precedence order:
 
-| Version vs `origin/HEAD` | Installed commit vs `origin/HEAD` | Status |
-|--------------------------|-----------------------------------|--------|
-| behind | not consulted — version drift already decides it | `STALE` |
-| equal | 0 commits behind | `current` |
-| equal | N > 0 commits behind | `current, but N commits behind source HEAD` |
-| equal | not computable (step 2) | `current (commit drift unknown — <why>)` |
+| Version vs `origin/HEAD` | Frozen components (step 2.3) | Installed commit vs `origin/HEAD` | Status |
+|--------------------------|------------------------------|-----------------------------------|--------|
+| behind | not consulted | not consulted — version drift already decides it | `STALE` |
+| equal | N > 0 | not consulted | `current, but N skill(s) frozen behind (<name> <ver>, …)` |
+| equal | 0 | 0 commits behind | `current` |
+| equal | 0 | N > 0 commits behind | `current, but N commits behind source HEAD` |
+| equal | 0 | not computable (step 2) | `current (commit drift unknown — <why>)` |
 
-The third row is what this distinction exists for. It is **not** a claim that
-the install is broken — the released version really does match — it says the
+**Never report a bare `current` for a tool with a non-zero frozen count.** That
+is the failure anvil#1320 reported: the released version genuinely matches, so
+every version-only and commit-only check says `current`, while the tree's actual
+*content* sits at an older release — the version marker answering confidently
+and wrongly, over a tree 467 files behind. It ranks **above** commit drift in the
+precedence table because it is a strictly larger, already-confirmed gap: commit
+drift is unreleased work the install has not yet taken, frozen components are
+*released* work the install explicitly declined. Name the frozen components and
+their versions inline (truncate with `…` past three) so the operator can see the
+scale without re-reading the manifest; a component whose version is unrecorded
+(pre-anvil#633 manifest, step 1) is named with `unknown` rather than the
+top-level number.
+
+A frozen count of zero is a real `0`, not an `unknown` — the manifest's
+`skipped_overrides` is authoritative and requires no remote lookup — so this row
+never degrades into the "could not evaluate" wording the commit-drift row needs.
+For a tool family member with no per-component surface at all (Loom, Repo
+Skills, kicad-tools today), the count is `0` by construction and this row simply
+never fires; do not invent a per-component check for a tool that records none.
+
+The `N commits behind source HEAD` row is what the *earlier* (repo#291)
+distinction exists for. It is **not** a claim that the install is broken — the
+released version really does match — it says the
 source has merged work that has not been cut into a release yet, which the
 operator can take right now (step 4) because the installers are idempotent.
 Reporting it as a plain `current` is what hid 24 unreleased commits for a full
@@ -284,9 +371,10 @@ for Loom only when `.loom/loom-source-path` is also absent, never on the
 absence of `.install-local.json` alone (Loom never writes that file).
 
 **A dev-mode tool (step 1) always gets its own `dev (symlinked to <source>)`
-status row — never `current`, never `STALE`, and never the commit-drift status
-above.** The three-status table is the *non-dev* path only: a dev install has no
-stamped copy to be behind its source, so its source clone's own distance from
+status row — never `current`, never `STALE`, and never the commit-drift or
+frozen-component statuses above.** The four-status table is the *non-dev* path
+only: a dev install has no stamped copy to be behind its source, so its source
+clone's own distance from
 its remote is reported inside the `dev (…)` row (below), not as
 `current, but N commits behind source HEAD`. `current` would only be a
 coincidence for a symlinked install (the files are the source, not a copy that
@@ -331,6 +419,36 @@ unchanged version number makes it look like a no-op (Safety Rule 1 applies
 unchanged — it is a real code change), and a tool whose commit drift came back
 **unknown** is never offered an update on that basis, because nothing was
 actually compared.
+
+**Frozen components are the one status an ordinary re-run does NOT fix, so
+report the trade-off instead of quietly escalating.** A skill lands in
+`skipped_overrides` precisely because the consumer edited it; the installer's
+default is to preserve that edit, and re-running the installer without
+`--force` skips it again and reports the identical status next pass. Only
+`install-anvil.sh --force <this-repo>` overwrites it — and `--force` is
+**global, not per-skill**: it overwrites *every* consumer-modified skill body
+plus the lib override assets, with no undo. So for a tool reported
+`current, but N skill(s) frozen behind`:
+
+- Offer the plain (non-`--force`) re-run as usual if it also has version or
+  commit drift — that still upgrades the unmodified components, and leaves the
+  frozen ones exactly where they were.
+- Never add `--force` on your own initiative, and never treat a frozen count as
+  license to escalate. Surface the choice explicitly, with the per-skill frozen
+  versions from step 3 and the preview command, and let the operator decide
+  which local edits they are willing to lose:
+
+  ```bash
+  # Preview exactly what --force would overwrite, per frozen skill:
+  diff -ru <source>/anvil/skills/<name> <this-repo>/.anvil/skills/<name>
+  ```
+
+- A frozen component the operator intends to keep edited is a legitimate steady
+  state, not a defect. Say so rather than re-reporting it as an action item
+  every pass: the value of the row is that the gap is *visible*, not that it
+  must be closed. It belongs in the report unconditionally, but in the
+  confirmation prompt only as information unless the operator asks for
+  `--force`.
 
 For each non-dev tool the user approves — whether it was reported `STALE`
 (version drift) or `current, but N commits behind source HEAD` (commit drift) —
@@ -702,7 +820,10 @@ Land each tool's bump as its own commit:
    source `origin/HEAD` rather than a version bump. The same prompt must name
    every repo-local modification the resync would overwrite (step 4's
    `LOCAL MODIFICATIONS` block) — an operator cannot consent to losing a patch
-   they were never shown
+   they were never shown. **Never pass `install-anvil.sh --force` on your own
+   initiative** to close a frozen-component row (step 4): it is global, not
+   per-skill, and has no undo — report the trade-off and the `diff -ru` preview
+   and let the operator choose
 2. **Always use the tool's own installer or update mechanism** — where a tool
    ships a dedicated non-destructive updater (e.g. Loom's
    `.loom/scripts/resync-installed.sh`), prefer it over re-running the
