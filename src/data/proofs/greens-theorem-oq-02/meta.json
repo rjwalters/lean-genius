@@ -81,6 +81,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "§0: Module Header — the Open Question and Whitney's Answer",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "States OQ-02 — what is the minimal regularity under which Green's theorem holds? — and answers it: Lipschitz boundary + L¹ curl (Whitney 1957), via Rademacher's a.e.-differentiability theorem and Whitney's W^{1,1} theorem. A comparison table contrasts this file's hypotheses with OQ-01 (rectangle/FTC, 0 axioms) and OQ-03 (TypeI region, 1 axiom), then outlines the four parts of the file (Lipschitz closed curves, line integrals, L¹ curl fields, Whitney's theorem) and states the summary: 19 theorems, 1 axiom, 0 sorries.",
+      "mathContext": "OQ-02: minimal regularity for $\\oint_C(P\\,dx+Q\\,dy)=\\iint_\\Omega(\\partial_x Q-\\partial_y P)\\,dA$. Answer (Whitney 1957): Lipschitz boundary + $L^1$ curl suffice, via Rademacher's a.e.-differentiability theorem."
+    },
+    {
       "id": "lipschitz-curves",
       "title": "Part I: Lipschitz Closed Curves",
       "startLine": 64,

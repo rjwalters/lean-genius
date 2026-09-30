@@ -1,5 +1,27 @@
 [
   {
+    "id": "greens-oq02-header",
+    "proofId": "greens-theorem-oq-02",
+    "range": { "startLine": 1, "endLine": 63 },
+    "type": "concept",
+    "title": "Module Header: The Open Question and Whitney's Answer",
+    "content": "States OQ-02: classical Green's theorem needs a C¹ boundary and a C¹ vector field (proved for rectangles in OQ-01) — what is the minimal regularity under which it still holds? Answer: Lipschitz boundaries + L¹-integrable curl suffice (Whitney, 1957). Two mechanisms make this work: Rademacher's theorem gives Lipschitz curves an a.e.-defined derivative bounded by the Lipschitz constant, so the line integral is a well-defined Lebesgue integral; Whitney's W^{1,1}-regularity theorem then gives the Green's-theorem equality whenever the curl is L¹ on a Lipschitz domain. A comparison table contrasts this file's setting (Lipschitz boundary, L¹ curl, 1 axiom) against OQ-01 (rectangle, C¹ field, 0 axioms via FTC) and OQ-03 (TypeI region, C¹ field, 1 axiom). Outlines the file's four parts and states the final tally: 19 theorems, 1 axiom, 0 sorries.",
+    "mathContext": "Regularity hierarchy $C^\\infty \\subset C^1 \\subset \\text{Lipschitz}$; Rademacher (1919): a Lipschitz $\\gamma$ is differentiable a.e. with $|\\gamma'| \\le K$; Whitney (1957): $\\oint_C(P\\,dx+Q\\,dy)=\\iint_\\Omega(\\partial_x Q-\\partial_y P)\\,dA$ holds for Lipschitz $\\partial\\Omega$ and $L^1$ curl.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Rademacher's theorem",
+      "Whitney's theorem",
+      "Lipschitz boundary",
+      "L¹ curl",
+      "minimal regularity"
+    ],
+    "prerequisites": [
+      "Classical Green's theorem (see greens-theorem-oq-01)",
+      "Lipschitz continuity",
+      "Lebesgue integration and L¹ spaces"
+    ]
+  },
+  {
     "id": "greens-oq02-overview",
     "proofId": "greens-theorem-oq-02",
     "range": {
