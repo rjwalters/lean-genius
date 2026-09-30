@@ -19,9 +19,9 @@
     "phase": "ACT",
     "since": "2026-05-14",
     "iteration": 32,
-    "focus": "S35 (researcher-3, 2026-08-03): general-n PREP layer STARTED — new self-contained file SpernerFreudenthalNDim.lean (import Mathlib only). Frame: monotone partial-sum coordinates (N*Delta^n ~ K = {0 <= z_1 <= ... <= z_n <= N}); cells = Kuhn (base b, permutation sigma) chains w_0 = b, w_{i+1} = w_i + e_{sigma(i)} whose n+1 vertices all lie in K. Main theorem isKuhnCell_iff: validity <=> base condition (b j + 1 <= N; b j <= b k for j < k, STRICT exactly when sigma^{-1} j < sigma^{-1} k). Consistency: for n=2 this reproduces the proven Type-1/Type-2 dichotomy and the C(N+1,2)+C(N,2)=N^2 cell count exactly. All host-verified v4.31 (lake env lean exit 0; #print axioms = propext/Classical.choice/Quot.sound). Also fixed the stale top-level status=blocked (from S30b 2026-05-12; obsolete per v4.31 migration, confirmed S33/S34).",
+    "focus": "S36 (researcher-2, 2026-09-29): interior swap pivot EXISTENCE HALF shipped in SpernerFreudenthalNDim.lean — facet sharing, pivoted-vertex formula, mate-validity iff, involution + never-identity (parity pairing shape). Docker green (8576 jobs), 0 ax / 0 sorry.",
     "blockers": [],
-    "nextAction": "Next rung of the n>=3 lift, in order: (1) face/adjacency pivot rules for Kuhn cells in K (interior facet shared by exactly 2 cells: permutation-swap pivots for interior drops, base-shift pivots at chain ends, reflection at the monotone-region boundary); (2) counting lemma #cells = N^n (optional sanity); (3) AbstractSimplicialData instance + pseudomanifold; (4) Sperner parity + diameter bound; (5) axiom elimination in SpernerNDimMathlibOQ02.lean. Rung (1) is the next session-sized target.",
+    "nextAction": "Remaining adjacency rungs, in order: (1b) end pivots (dropped index 0: base-shift b' = b + e_{sigma 0} with rotated sigma; dropped index n: symmetric), (1c) boundary-facet characterization (pivoted vertex not a grid point <-> facet on the boundary of K), (1d) uniqueness: no third cell through an interior facet. Then AbstractSimplicialData + pseudomanifold, parity, axiom elimination.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -113,7 +113,8 @@
       "satDiag_self_drop_adj_none, satDiag_self_drop_endpoint_indices, satDiag_self_drop_isDoor_iff, lastFace_filter_extract, lastFace_card_eq, lastFace_odd in SpernerFreudenthalSimplex.lean N2LastFaceAssembly",
       "sperner_panchromatic_two fully proved (end of SpernerFreudenthalSimplex.lean, section N2Panchromatic)",
       "S34: brouwer_fixed_point_simplex_zero/_one/_two + inSimplex_iff_freud in SpernerNDimMathlibOQ02.lean — axiom-free Brouwer for Δ⁰, Δ¹, Δ² (sperner_panchromatic axiom no longer needed for n≤2)",
-      "SpernerFreudenthalNDim.lean (S35, self-contained, 0 axioms 0 sorries, host-verified v4.31): IsGridPt, kuhnVertex, kuhnVertex_zero/_last/_succ_apply/_mono/_sum/_injective, IsKuhnCell, BaseCompatible, isKuhnCell_iff (full characterization, both directions), IsKuhnCell.base_isGridPt"
+      "SpernerFreudenthalNDim.lean (S35, self-contained, 0 axioms 0 sorries, host-verified v4.31): IsGridPt, kuhnVertex, kuhnVertex_zero/_last/_succ_apply/_mono/_sum/_injective, IsKuhnCell, BaseCompatible, isKuhnCell_iff (full characterization, both directions), IsKuhnCell.base_isGridPt",
+      "SpernerFreudenthalNDim.lean section InteriorSwapPivot (232->384 LOC): mul_swap_symm_apply, kuhnVertex_mul_swap_of_ne (facet sharing), kuhnVertex_mul_swap_succ (pivoted vertex = w_t + e_{sigma t'}), kuhnVertex_mul_swap_succ_ne, isKuhnCell_mul_swap_iff (mate validity = one new vertex gridpoint), mul_swap_mul_swap + mul_swap_ne (involution pairing shape). 0 ax / 0 sorry, docker green 8576 jobs."
     ],
     "insights": [
       "Sperner coloring well-definedness is purely algebraic: if fv_i > v_i for all i in supp(v), then sum fv > sum v = 1, contradiction. Proved using Finset.sum_lt_sum.",
@@ -160,7 +161,8 @@
       "S34: The two InSimplex definitions (SpernerBrouwer in OQ02 vs SpernerFreudSimp in SpernerFreudenthalSimplex) are definitionally equal, so the proved sperner_panchromatic_zero/_one/_two plug directly into brouwer_from_panchromatic; only friction is the Nat-cast bound ((n:ℕ):ℝ)/N vs literal (0|1|2:ℝ)/N, closed by simpa",
       "GENERAL-n FRAME (S35): in monotone partial-sum coordinates the dilated simplex N*Delta^n is the region K = {0 <= z_1 <= ... <= z_n <= N}, and the correct general-n triangulation is the restriction of the Kuhn/Freudenthal cube triangulation: cells (b, sigma) whose whole vertex chain stays in K. This subsumes the n=2 Type-1/Type-2 construction and avoids the broken constant-miss FreudCell approach entirely.",
       "Cell validity collapses to the base (isKuhnCell_iff): (b,sigma) is a cell of K iff b j + 1 <= N for all j and, for j < k, b j <= b k with STRICT inequality exactly when sigma^{-1} j < sigma^{-1} k (increments arriving in order force a strict gap). For n=2 this yields weak bases for the inverted permutation and strict bases for id — i.e. C(N+1,2) + C(N,2) = N^2 cells, matching the proven planar count exactly.",
-      "Vertex-chain structure: w_{i+1} = w_i + e_{sigma(i)} (kuhnVertex_succ_apply), coordinate sum of w_i = sum b + i (kuhnVertex_sum, via Equiv.sum_comp reindexing), hence the n+1 vertices are pairwise distinct (kuhnVertex_injective) — the level function that the eventual pseudomanifold argument will key on."
+      "Vertex-chain structure: w_{i+1} = w_i + e_{sigma(i)} (kuhnVertex_succ_apply), coordinate sum of w_i = sum b + i (kuhnVertex_sum, via Equiv.sum_comp reindexing), hence the n+1 vertices are pairwise distinct (kuhnVertex_injective) — the level function that the eventual pseudomanifold argument will key on.",
+      "Interior swap pivot proofs run entirely on the kuhnVertex indicator formula: (sigma * swap t t').symm j = swap t t' (sigma.symm j), and the indicator sigma^-1 j < i is insensitive to exchanging positions t, t+1 unless i = t+1 — so all vertices except the dropped one are literally unchanged (facet sharing is definitional, not geometric). Validity of the mate collapses to grid-membership of the single pivoted vertex w_t + e_{sigma(t+1)}; its failure characterizes boundary facets (next rung)."
     ],
     "mathlibGaps": [
       "Grid triangulation of Δⁿ as a CellComplex (needed for sperner_near_fixed_point axiom — significant work ~200 lines)",
@@ -188,7 +190,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T11:50:53.576Z",
-  "lastUpdate": "2026-08-03",
+  "lastUpdate": "2026-09-29",
   "significance": 7,
   "tractability": 5
 }
