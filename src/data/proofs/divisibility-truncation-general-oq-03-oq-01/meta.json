@@ -41,7 +41,8 @@
       "Nothing in the osculator construction depends on the radix being 10: the digit split n = b·⌊n/b⌋ + (n mod b) is Nat.div_add_mod for any b, and the divisibility transfer needs only gcd(b,d)=1. Making b a parameter costs no extra mathematics.",
       "The proof of the digit-split cast is cleanest by casting the ℕ identity Nat.div_add_mod directly (exact_mod_cast) rather than push_cast-ing the goal, which would replace ↑(n/b) by the unrelated integer quotient ↑n / ↑b.",
       "The same theorem instantiates to genuinely different classical rules: base 100 gives the 'group decimal digits in pairs' tests (7, 11, 13, 101), while base 16 gives hexadecimal digit-sum (3, 5) and alternating-digit (17) tests — all as one-line corollaries.",
-      "recovers_base_ten makes the generalization auditable: the base-10 parent is literally the b=10 specialization, so the new statement strictly subsumes the old one."
+      "recovers_base_ten makes the generalization auditable: the base-10 parent is literally the b=10 specialization, so the new statement strictly subsumes the old one.",
+      "Both 'alternating-digit' witnesses (d=101 in base 100, d=17 in base 16) share the same structural cause: d = b+1 exactly, so b·(-1) - 1 = -(b+1) = -d is automatically divisible by d. The file proves osculator_base100_hundredone and osculator_base16_seventeen as two separate norm_num computations, but they are the same one-line fact (d = b+1 ⟹ c = -1 is a valid osculator) instantiated twice — the 'alternating sum' rule is not a distinct proof technique, just the b+1 case of the general osculator."
     ],
     "prerequisites": [
       "Bézout's identity (Nat.gcd_eq_gcd_ab in Mathlib)",
