@@ -314,15 +314,15 @@ theorem approx_fp_limit_1d (F : ContinuousIntervalCorrespondence)
     -- y n → xs: y n = x(φ n) - (x(φ n) - y n)
     have hy_lim : Filter.Tendsto y Filter.atTop (nhds xs) := by
       have h := hφ_conv.sub h_diff
-      simp only [sub_sub_cancel, sub_zero] at h; exact h
+      simp only [Function.comp_apply, sub_sub_cancel, sub_zero] at h; exact h
     -- F.lower(x(φ n)) → F.lower(xs): ContinuousOn + convergence in Icc
     have htend_within : Filter.Tendsto (x ∘ φ) Filter.atTop (nhdsWithin xs (Set.Icc (0:ℝ) 1)) := by
-      rw [Filter.tendsto_nhdsWithin_iff]
+      rw [tendsto_nhdsWithin_iff]
       exact ⟨hφ_conv, Filter.Eventually.of_forall (fun n => hx_in (φ n))⟩
     have hlower_lim : Filter.Tendsto (fun n => F.lower (x (φ n))) Filter.atTop (nhds (F.lower xs)) :=
-      (F.lower_cont.continuousWithinAt hxs_in).comp htend_within
+      Filter.Tendsto.comp (F.lower_cont.continuousWithinAt hxs_in) htend_within
     -- Conclude by limit comparison: F.lower(x(φ n)) ≤ y n, both converge
-    exact le_of_tendsto_of_tendsto hlower_lim hy_lim hy_lb
+    exact le_of_tendsto_of_tendsto' hlower_lim hy_lim hy_lb
   · -- Goal 2: xs ≤ F.upper xs (symmetric argument)
     have hy : ∀ n, ∃ yn : ℝ, yn ≤ F.upper (x (φ n)) ∧ |x (φ n) - yn| < ε (φ n) := fun n => by
       obtain ⟨yn, ⟨_, hu⟩, hd⟩ := hx_approx (φ n); exact ⟨yn, hu, hd⟩
@@ -333,13 +333,13 @@ theorem approx_fp_limit_1d (F : ContinuousIntervalCorrespondence)
       squeeze_zero_norm (fun n => by rw [Real.norm_eq_abs]; exact (hy_dist n).le) hεφ
     have hy_lim : Filter.Tendsto y Filter.atTop (nhds xs) := by
       have h := hφ_conv.sub h_diff
-      simp only [sub_sub_cancel, sub_zero] at h; exact h
+      simp only [Function.comp_apply, sub_sub_cancel, sub_zero] at h; exact h
     have htend_within : Filter.Tendsto (x ∘ φ) Filter.atTop (nhdsWithin xs (Set.Icc (0:ℝ) 1)) := by
-      rw [Filter.tendsto_nhdsWithin_iff]
+      rw [tendsto_nhdsWithin_iff]
       exact ⟨hφ_conv, Filter.Eventually.of_forall (fun n => hx_in (φ n))⟩
     have hupper_lim : Filter.Tendsto (fun n => F.upper (x (φ n))) Filter.atTop (nhds (F.upper xs)) :=
-      (F.upper_cont.continuousWithinAt hxs_in).comp htend_within
-    exact le_of_tendsto_of_tendsto hy_lim hupper_lim hy_ub
+      Filter.Tendsto.comp (F.upper_cont.continuousWithinAt hxs_in) htend_within
+    exact le_of_tendsto_of_tendsto' hy_lim hupper_lim hy_ub
 
 /-- **Bisection complexity**: The grid search error 2/n goes to 0,
     so any desired precision ε is achieved with n = ⌈2/ε⌉ grid points. -/
