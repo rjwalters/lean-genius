@@ -295,7 +295,7 @@ BrouwerFixedPointOQ02OQ02OQ01Iteration	GREEN
 BrouwerFixedPointOQ02OQ03	GREEN	
 BrouwerFixedPointOQ04OQ02	GREEN	
 BrouwerFixedPointOQ04OQ03	GREEN	
-BrouwerFixedPointOQ04OQ04	GREEN	type-mismatch
+BrouwerFixedPointOQ04OQ04	RESIDUAL	type-mismatch:317:49-type-mismatch;320:10-unknown-const-Filter.tendsto_nhdsWithin_iff (#43756)
 BuffonConstantAsymptotic	GREEN	
 BuffonsNeedleOQ01	GREEN	
 BuffonsNeedleOQ01OQ01	GREEN	
@@ -453,7 +453,7 @@ ChineseRemainderConstructiveOQ04OQ03	GREEN
 ChineseRemainderExplicitOQ04OQ03OQ01	GREEN	
 ChineseRemainderNonCoprimeList	GREEN	
 ChineseRemainderNonCoprimeOQ01	GREEN	
-ChineseRemainderNonCoprimeOQ01OQ01	GREEN	
+ChineseRemainderNonCoprimeOQ01OQ01	RESIDUAL	proof-drift:58:63-unsolved-goals;83:2-type-mismatch (#43756)
 ChineseRemainderNonCoprimeOQ02	GREEN	parse-error
 ChineseRemainderNonCoprimeOQ02OQ01	GREEN	instance-synth
 ChineseRemainderNonCoprimeOQ03OQ02	GREEN	
@@ -1926,7 +1926,7 @@ Erdos964Aristotle	GREEN	unknown-const:Nat.divisors_prime
 Erdos964Problem	GREEN	
 Erdos965Problem	GREEN	
 Erdos966Problem	GREEN	
-Erdos967Problem	GREEN	proof-drift
+Erdos967Problem	RESIDUAL	proof-drift:209:48-unsolved-goals;209:65-omega-could-not-prove-goal (#43756)
 Erdos968Problem	GREEN	
 Erdos969Problem	GREEN	
 Erdos96Problem	GREEN	
@@ -2333,7 +2333,7 @@ PartitionTheoremOQ04Aristotle	GREEN
 PascalsHexagon	GREEN	
 PascalsHexagonOQ02	GREEN	
 PascalsHexagonOQ03	GREEN	
-PascalsHexagonOQ03Incomplete01Derangements	GREEN	
+PascalsHexagonOQ03Incomplete01Derangements	RESIDUAL	duplicate-declaration:48:8-card_fixedPointFree_eq_numDerangements-already-declared-vs-parent-module (#43756)
 PascalsHexagonOQ03Reflections	GREEN	post-inventory
 PellEquationOQ01	GREEN	unknown-const:Int.cast_nonneg.mpr
 PentagonalNumberTheoremOQ01	GREEN	
@@ -2697,3 +2697,4 @@ ZsqrtdNegTwoOQ03	GREEN	elab-drift
 ZsqrtdNegTwoOQ03OQ01	GREEN	elab-drift
 ZsqrtdNegTwoOQ03OQ06	GREEN	elab-drift
 eTranscendental	GREEN	
+BirthdayProblemOQ03OQ01OQ01	RESIDUAL	hang:34-decide/native_decide-occurrences;non-terminating-tactic-10h+-at-99%-CPU;excluded-from-safe-subset (#43756)
