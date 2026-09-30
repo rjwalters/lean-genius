@@ -2,7 +2,7 @@
   "slug": "erdos-1092-oq-02",
   "title": "Rödl's Chromatic-Decomposition Construction for r ≥ 3",
   "phase": "ORIENT",
-  "status": "active",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,11 +16,17 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-07-04T18:35:43-07:00",
     "iteration": 1,
     "focus": "fThreshold COMPLETELY DETERMINED on its good regime: fThreshold_determined — fThreshold r n = if r = 1 then 2 else 1 for all 1 <= r, r+2 <= n. r=2 row closed (fThreshold_two_eq_one, fThreshold_two_five, fThreshold_two_constant, cross-row strict drop fThreshold_two_lt_fThreshold_one), then generalized to every r >= 2 (one_mem_fThresholdSet via Fin.castSucc/Fin.last third-color trick, two_notMem_fThresholdSet via cliquePlus K_{r+2} 2-matching shed). 0 axioms, 0 sorries.",
-    "blockers": [],
+    "blockers": [
+      {
+        "route": "Rödl chromatic-decomposition construction for r ≥ 3 (parent OQ: the actual combinatorial construction with polylog bound)",
+        "reopenCriterion": "materially new mechanism required — research-level, not session-sized; do not reopen for more fThresholdSet/sSup bookkeeping",
+        "blockedAt": "2026-09-29"
+      }
+    ],
     "nextAction": "The finite-value theory of this formalization is CLOSED — every row constant, every value attained, the r=1 -> r=2 drop is the only jump (fThreshold_determined). No further exact-value rungs exist. Remaining directions are structural only: (a) the parent OQ itself (Rödl's construction for r >= 3) — research-level, do not attempt session-sized; (b) possible contrast note: the real Erdős–Hajnal–Szemerédi f_r(n) grows (Rödl: O(n polylog)), while this per-induced-subgraph budget formalization collapses to <= 2 — a candidate enrichment/documentation angle rather than new theorems.",
     "attemptCounts": {
       "total": 0,
@@ -29,7 +35,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "fThreshold is now COMPLETELY DETERMINED on its good regime 1 <= r, r+2 <= n: fThreshold r n = 2 if r = 1, else 1 (fThreshold_determined). History: well-definedness theory, r=1 row (= 2, constant), (2,4) = 1, then this session closed the whole r=2 row AND every row r >= 2 at once. Key collapse: membership of budget 1 is uniform in BOTH n and r (S=univ + recolor the removed pair's head with Fin.last r); upper bound K_{r+2}+isolated passes budget 2 by shedding a 2-matching (chromatic number drops r+2 -> r by merging two pairs into color classes) — needs 4 clique vertices, which is exactly why r=1 sits at 2 instead. Nothing left to compute; parent OQ (Rödl r >= 3 construction) research-level.",
+    "progressSummary": "TRIAGE 2026-09-29 (researcher-1): COMPLETED — finite-value theory fully closed by fThreshold_determined (fThreshold r n = if r = 1 then 2 else 1 on the good regime); stale rung nextSteps cleared (they are corollaries already on main). Only the parent Rödl r >= 3 construction remains and it is research-level (recorded as structured blocker). fThreshold is now COMPLETELY DETERMINED on its good regime 1 <= r, r+2 <= n: fThreshold r n = 2 if r = 1, else 1 (fThreshold_determined). History: well-definedness theory, r=1 row (= 2, constant), (2,4) = 1, then this session closed the whole r=2 row AND every row r >= 2 at once. Key collapse: membership of budget 1 is uniform in BOTH n and r (S=univ + recolor the removed pair's head with Fin.last r); upper bound K_{r+2}+isolated passes budget 2 by shedding a 2-matching (chromatic number drops r+2 -> r by merging two pairs into color classes) — needs 4 clique vertices, which is exactly why r=1 sits at 2 instead. Nothing left to compute; parent OQ (Rödl r >= 3 construction) research-level.",
     "builtItems": [
       "Third session (researcher-3, 2026-07-24): COMPLETE r=1 row — fThreshold_one_eq_two (fThreshold 1 n = 2 for ALL n ≥ 3), fThreshold_one_five, fThreshold_one_constant, plus generic coverColoring/coverColoring_proper (2-coloring from a 2-element edge cover, symbolic n), mem_killTri (omega-based membership at symbolic n), trianglePlus. Host-verified v4.31.0; axioms = [propext, Classical.choice, Quot.sound]; 0 sorries.",
       "fThresholdSet_zero_mem (Erdos1092OQ02.lean): 0 ∈ fThresholdSet r n unconditionally — defining set always nonempty",
@@ -64,14 +70,11 @@
       "(2,n) and in fact (r,n) row collapse: the anticipated 'multiple K4 embeddings' analysis at (2,5) was never needed. Budget-1 membership is uniform in n AND r: at S=univ the hypothesis yields at most ONE removed pair p and an r-coloring c of G minus p; recoloring the single vertex p.1 with the fresh color Fin.last r ((c .).castSucc elsewhere) repairs every hidden edge (each is incident to p.1). No obstruction analysis, no completeness dichotomy.",
       "Upper bound for every r >= 2: cliquePlus (r+2) n (K_{r+2} + isolated). Shedding the 2-matching {(v0,v1),(v2,v3)} drops chi from r+2 to exactly r (merged pairs become 2-element color classes; explicit coloring {0,1}->0, {2,3}->1, j->j-2 with min-padding for isolated vertices), uniformly in the induced S. Non-(r+1)-colorability: proper coloring is injective on the clique, Fin (r+2) -> Fin (r+1) injection refuted by Fintype.card_le_of_injective. The 2-matching needs FOUR clique vertices — exactly why fThreshold 1 n = 2 but fThreshold r n = 1 for r >= 2: K_3 has no 2-matching.",
       "Closed form: fThreshold r n = if r = 1 then 2 else 1 on the whole good regime (fThreshold_determined). Contrast: the real Erdős–Hajnal–Szemerédi f_r(n) grows with n (Rödl: f_2(n) = O(n polylog n)) — the per-induced-subgraph fresh-budget semantics of this formalization is what collapses the growth; worth a documentation note, not new theorems.",
-      "Lean v4.31 gotchas this session: rw [if_pos h] at hcuv fails on beta-unreduced (fun w => if ...) u = ... hypotheses — use simp only [if_pos h, if_neg h'] at hcuv, which beta-reduces first. congrArg Fin.val on an equation between Fin.mk's elaborates against the wrong implicit pair — use Fin.mk_eq_mk.mp. by_cases name shadowing: an outer obtain hv1 is silently shadowed by by_cases hv1 inside the same proof; rename (hua/hva) before calling lemmas that need the outer fact."
+      "Lean v4.31 gotchas this session: rw [if_pos h] at hcuv fails on beta-unreduced (fun w => if ...) u = ... hypotheses — use simp only [if_pos h, if_neg h'] at hcuv, which beta-reduces first. congrArg Fin.val on an equation between Fin.mk's elaborates against the wrong implicit pair — use Fin.mk_eq_mk.mp. by_cases name shadowing: an outer obtain hv1 is silently shadowed by by_cases hv1 inside the same proof; rename (hua/hva) before calling lemmas that need the outer fact.",
+      "S-triage (2026-09-29): the two remaining nextSteps ((2,5) rung obstruction analysis; (2,n) row constancy) were closed WHOLESALE by fThreshold_determined (PR #43572): fThreshold r n = if r = 1 then 2 else 1 on the entire good regime 1 <= r, r+2 <= n — fThreshold_two_five, fThreshold_two_constant, fThreshold_two_lt_fThreshold_one, fThreshold_eq_one are all corollaries on main (Erdos1092OQ02.lean, 0 axioms, 0 sorries). Nothing session-sized remains; pool status set to completed to stop depth-first re-serving."
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "(2,5) rung: K4-subgraph obstruction analysis on 5 vertices — multiple K4 embeddings, budget interplay; genuinely harder than (2,4).",
-      "(2,n) general row: needs the \"K4 is the only obstruction => budget caps\" story to break; is fThreshold 2 n constant in n like the r=1 row?",
-      "Parent OQ (Rödl r >= 3 polylog) — research-level, do not attempt."
-    ],
+    "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-1092-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -116,5 +119,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1092Problem.lean"
     }
-  ]
+  ],
+  "updatedAt": "2026-09-29"
 }
