@@ -368,4 +368,164 @@ theorem mul_swap_ne (σ : Equiv.Perm (Fin n)) {t t' : Fin n} (h : t ≠ t') :
 
 end InteriorSwapPivot
 
+section EndPivotBase
+
+/-! ### End pivot at the base — existence half of the drop-0 adjacency rule
+
+Second rung of the pseudomanifold pivot rules. Dropping the *base* vertex
+`w 0 = b` leaves the facet `{w 1, …, w (n+1)}`; the candidate mate through
+that facet takes the step in direction `σ 0` **last** instead of first: its
+base is the original second vertex `w 1 = kuhnVertex b σ 1` and its
+permutation is the cyclic rotation `σ * finRotate (n+1)` (position `i` steps
+in direction `σ (i+1)`, and the last position wraps to `σ 0`).
+
+Coordinates are `Fin (n+1)` throughout this section (so `σ 0` and
+`finRotate` make sense); dimension-0 cells have no facet opposite their only
+vertex, so nothing is lost.
+
+* `kuhnVertex_mul_finRotate_castSucc` — vertices `0, …, n` of the mate are
+  vertices `1, …, n+1` of the original: the two cells share the facet
+  opposite the dropped base;
+* `kuhnVertex_mul_finRotate_last` — the one new vertex is
+  `w (n+1) + e_{σ 0}` (the chain overshoots the top vertex in the wrapped
+  direction), and `kuhnVertex_mul_finRotate_last_ne` shows it differs from
+  the dropped base;
+* `isKuhnCell_mul_finRotate_iff` — given `(b, σ)` valid, validity of the
+  mate collapses to grid-membership of that single new vertex;
+* `mul_finRotate_last_apply`, `kuhnVertex_one_ne_base`, `endPivot_inj` — the
+  mate's **last** step direction is `σ 0` (so this door is the mate's
+  drop-last door, not another drop-0 door), the mate is never the original
+  cell (the base strictly grows in column `σ 0` — this covers `n = 0`
+  coordinates `Fin 1`, where `finRotate 1 = 1` leaves `σ` unchanged), and
+  the pivot map is injective on cell data — the pairing shape for the
+  future door-counting parity argument.
+
+NOT claimed here: the symmetric drop-last pivot as a standalone rule (it is
+the inverse pairing of this one, via `mul_finRotate_last_apply` and
+`endPivot_inj`), the boundary-facet characterization, and uniqueness of the
+mate — those are the remaining rungs of the adjacency layer. -/
+
+/-- `(finRotate (n+1))⁻¹` sends `0` to the last position: the wrapped step
+comes from the end of the rotated chain. -/
+theorem finRotate_symm_zero : (finRotate (n + 1)).symm 0 = Fin.last n :=
+  (finRotate (n + 1)).symm_apply_eq.mpr finRotate_last.symm
+
+/-- `(finRotate (n+1))⁻¹` shifts a successor position down by one. -/
+theorem finRotate_symm_succ (k : Fin n) :
+    (finRotate (n + 1)).symm k.succ = k.castSucc :=
+  (finRotate (n + 1)).symm_apply_eq.mpr
+    (by rw [finRotate_succ_apply, Fin.coeSucc_eq_succ])
+
+/-- `symm` of a cell permutation post-composed (in position space) with the
+rotation: the rotation's inverse migrates inside. -/
+theorem mul_finRotate_symm_apply (σ : Equiv.Perm (Fin (n + 1)))
+    (j : Fin (n + 1)) :
+    (σ * finRotate (n + 1)).symm j = (finRotate (n + 1)).symm (σ.symm j) := by
+  rw [Equiv.Perm.mul_def, Equiv.symm_trans_apply]
+
+/-- **Facet sharing.** Vertex `i` of the end-pivot mate (base `w 1`,
+permutation rotated) is vertex `i + 1` of the original cell, for every
+`i ≤ n`: the mate walks the tail `w 1, …, w (n+1)` of the original chain
+before taking the wrapped step. -/
+theorem kuhnVertex_mul_finRotate_castSucc (b : Fin (n + 1) → ℕ)
+    (σ : Equiv.Perm (Fin (n + 1))) (i : Fin (n + 1)) :
+    kuhnVertex (kuhnVertex b σ 1) (σ * finRotate (n + 1)) i.castSucc
+      = kuhnVertex b σ i.succ := by
+  funext j
+  have hi : (i : ℕ) < n + 1 := i.isLt
+  simp only [kuhnVertex, mul_finRotate_symm_apply]
+  obtain hm | ⟨k, hm⟩ := Fin.eq_zero_or_eq_succ (σ.symm j) <;> rw [hm]
+  · rw [finRotate_symm_zero]
+    simp only [Fin.val_zero, Fin.val_one, Fin.val_last, Fin.val_castSucc,
+      Fin.val_succ]
+    split_ifs <;> omega
+  · rw [finRotate_symm_succ]
+    simp only [Fin.val_one, Fin.val_castSucc, Fin.val_succ]
+    split_ifs <;> omega
+
+/-- **The pivoted vertex.** At the last index the mate overshoots the top
+vertex of the original cell in the wrapped direction:
+`w' (n+1) = w (n+1) + e_{σ 0}`. -/
+theorem kuhnVertex_mul_finRotate_last (b : Fin (n + 1) → ℕ)
+    (σ : Equiv.Perm (Fin (n + 1))) :
+    kuhnVertex (kuhnVertex b σ 1) (σ * finRotate (n + 1)) (Fin.last (n + 1))
+      = fun j => kuhnVertex b σ (Fin.last (n + 1)) j
+          + (if j = σ 0 then 1 else 0) := by
+  funext j
+  simp only [kuhnVertex_last, kuhnVertex, Fin.val_one]
+  by_cases h : j = σ 0
+  · subst h
+    rw [Equiv.symm_apply_apply, if_pos h, if_pos rfl]
+    · omega
+  · have hm : σ.symm j ≠ 0 := fun hh =>
+      h (by rw [← Equiv.apply_symm_apply σ j, hh])
+    have hval : (σ.symm j : ℕ) ≠ 0 := fun hz => hm (Fin.ext (by simp [hz]))
+    rw [if_neg h, if_neg (by omega)]
+
+/-- The pivoted vertex genuinely differs from the dropped base (it exceeds
+it by `2` in column `σ 0`), so the end pivot produces a second cell through
+the facet, not the same cell again. -/
+theorem kuhnVertex_mul_finRotate_last_ne (b : Fin (n + 1) → ℕ)
+    (σ : Equiv.Perm (Fin (n + 1))) :
+    kuhnVertex (kuhnVertex b σ 1) (σ * finRotate (n + 1)) (Fin.last (n + 1))
+      ≠ b := by
+  intro h
+  have hcol := congrFun h (σ 0)
+  rw [kuhnVertex_mul_finRotate_last] at hcol
+  simp only [kuhnVertex_last, if_pos rfl] at hcol
+  omega
+
+/-- **Validity of the mate.** Given a valid cell, all vertices of its end
+pivot except the pivoted one are vertices of the original cell, so validity
+of the mate is exactly grid-membership of the single new vertex. -/
+theorem isKuhnCell_mul_finRotate_iff (N : ℕ) (b : Fin (n + 1) → ℕ)
+    (σ : Equiv.Perm (Fin (n + 1))) (hcell : IsKuhnCell N b σ) :
+    IsKuhnCell N (kuhnVertex b σ 1) (σ * finRotate (n + 1))
+      ↔ IsGridPt N
+          (kuhnVertex (kuhnVertex b σ 1) (σ * finRotate (n + 1))
+            (Fin.last (n + 1))) := by
+  constructor
+  · intro h
+    exact h (Fin.last (n + 1))
+  · intro hnew i
+    induction i using Fin.lastCases with
+    | last => exact hnew
+    | cast i₀ =>
+      rw [kuhnVertex_mul_finRotate_castSucc]
+      exact hcell i₀.succ
+
+/-- The mate's **last** step direction is the original's first: the shared
+facet is the mate's drop-last facet, so the end pivots at the two ends pair
+up with each other (never drop-0 with drop-0). -/
+theorem mul_finRotate_last_apply (σ : Equiv.Perm (Fin (n + 1))) :
+    (σ * finRotate (n + 1)) (Fin.last n) = σ 0 := by
+  rw [Equiv.Perm.mul_apply, finRotate_last]
+
+/-- The mate's base is never the original base (column `σ 0` grows), so the
+end pivot never returns the cell it started from — even for `n = 0`
+coordinates `Fin 1`, where the rotation is trivial and only the base moves. -/
+theorem kuhnVertex_one_ne_base (b : Fin (n + 1) → ℕ)
+    (σ : Equiv.Perm (Fin (n + 1))) :
+    kuhnVertex b σ 1 ≠ b := by
+  intro h
+  have hcol := congrFun h (σ 0)
+  simp [kuhnVertex] at hcol
+
+/-- **Injectivity of the end pivot on cell data**: distinct cells have
+distinct drop-0 mates. Together with `mul_finRotate_last_apply` this is the
+bijection shape needed for the door-counting parity pairing. -/
+theorem endPivot_inj (b b' : Fin (n + 1) → ℕ)
+    (σ σ' : Equiv.Perm (Fin (n + 1)))
+    (hb : kuhnVertex b σ 1 = kuhnVertex b' σ' 1)
+    (hσ : σ * finRotate (n + 1) = σ' * finRotate (n + 1)) :
+    b = b' ∧ σ = σ' := by
+  have hσσ : σ = σ' := mul_right_cancel hσ
+  subst hσσ
+  refine ⟨funext fun j => ?_, rfl⟩
+  have hj := congrFun hb j
+  simp only [kuhnVertex] at hj
+  split_ifs at hj <;> omega
+
+end EndPivotBase
+
 end SpernerFreudNDim
