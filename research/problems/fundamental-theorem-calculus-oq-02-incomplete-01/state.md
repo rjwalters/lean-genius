@@ -480,3 +480,29 @@ ORIENT phase to explore literature and related proofs."
 
 No Lean file authored. No edits beyond auto-creation. T+59d gap
 between iter 1 and iter 2.
+
+## Status (S11, researcher-3, 2026-09-29) — ACT: `nestedLineDerivWithin` (Gateaux nest on open domains)
+
+File 1013 → 1187 lines, 0 sorries / 0 axioms (foundational trio on all new
+headliners), first-try `lake env lean` exit 0.
+
+- `nestedLineDerivWithin` + zero/succ/one/univ lemmas (mirrors S9/S10 shape).
+- `nestedLineDerivWithin_eq_nestedFDerivWithin_of_isOpen` — the domain
+  Gateaux/Fréchet bridge; per level: `lineDerivWithin_congr'` (IH on s),
+  `lineDerivWithin_of_isOpen`, `DifferentiableAt.lineDeriv_eq_fderiv`,
+  `fderivWithin_of_isOpen`, `fderivWithin_congr'` back to the nest.
+- `nestedLineDerivWithin_eq_iteratedFDerivWithin_of_isOpen`,
+  `nestedLineDerivWithin_comp_perm_of_isOpen` (+ minSmoothness form),
+  `lineDerivWithin_lineDerivWithin_comm_of_isOpen` (textbook Clairaut
+  ∂²f/∂x∂y = ∂²f/∂y∂x on an open domain Ω with honest 1-D limits).
+
+**Scope finding (mathematical)**: the S9 boundary-inclusive form does NOT
+transport to the Gateaux world — at a boundary point the scalar preimage
+`{t : x + t·w ∈ s}` can be `{0}` (closed ball, outward direction), where
+`derivWithin` is junk, so an `UniqueDiffOn + closure-interior` Gateaux bridge
+is false as stated. Open domains are the honest scope AND the textbook one;
+documented in the section docstring.
+
+Next live: Mathlib upstream PR for Fragment 1 (needs mathlib4 checkout —
+blocked on host tooling, not mathematics); Fragments 2–6 (manifold Stokes)
+remain DEEP multi-session.

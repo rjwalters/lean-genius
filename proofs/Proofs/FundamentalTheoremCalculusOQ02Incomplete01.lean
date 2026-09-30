@@ -1010,4 +1010,179 @@ theorem nestedLineDeriv_two_apply (a b : E) (f : E → F) (x : E) :
 
 end GateauxNested
 
+/-! ### Step 10 (S11): the Gateaux nest within an open domain — `nestedLineDerivWithin`
+
+The S10 Gateaux nest, transported to functions that are only defined/smooth on a
+domain: `nestedLineDerivWithin` iterates `lineDerivWithin`, the honest directional
+derivative `d/dt g(x + t·w)|₀` computed along `{t : x + t·w ∈ s}`.  This is the
+textbook setting for Clairaut/Schwarz — `f : Ω → ℝ`, `Ω ⊆ ℝⁿ` an *open* domain,
+only iterated one-dimensional limits in the statement.
+
+Openness is the honest scope, not a convenience: at a boundary point `x` of a
+general `UniqueDiffOn` set the scalar preimage `{t : x + t·w ∈ s}` can collapse
+to `{0}` (take `s` a closed ball and `w` pointing outward), where `derivWithin`
+degenerates to junk — so a boundary-inclusive Gateaux bridge is FALSE as stated,
+in contrast to the Fréchet `Within` nest (S9), which does reach the boundary.
+On an open domain each level upgrades to a genuine Fréchet level
+(`lineDerivWithin_of_isOpen` + `DifferentiableAt.lineDeriv_eq_fderiv` +
+`fderivWithin_of_isOpen`), so the nest computes `iteratedFDerivWithin` and
+inherits all-orders permutation symmetry. -/
+
+section GateauxWithinNested
+
+variable {s : Set E}
+
+variable (𝕜) in
+/-- The `n`-fold nested Gateaux (line) derivative *within* `s`:
+`nestedLineDerivWithin 𝕜 n v f s = ∂_{v 0} (∂_{v 1} (… (∂_{v (n-1)} f)))` where
+`∂_w g x = lineDerivWithin 𝕜 g s x w` — the `Within` counterpart of
+`nestedLineDeriv`, direction `v 0` outermost. -/
+noncomputable def nestedLineDerivWithin : (n : ℕ) → (Fin n → E) → (E → F) → Set E → E → F
+  | 0, _, f, _ => f
+  | n + 1, v, f, s => fun x =>
+      lineDerivWithin 𝕜 (nestedLineDerivWithin n (Fin.tail v) f s) s x (v 0)
+
+@[simp]
+theorem nestedLineDerivWithin_zero (v : Fin 0 → E) (f : E → F) (s : Set E) :
+    nestedLineDerivWithin 𝕜 0 v f s = f :=
+  rfl
+
+theorem nestedLineDerivWithin_succ_apply {n : ℕ} (v : Fin (n + 1) → E) (f : E → F)
+    (s : Set E) (x : E) :
+    nestedLineDerivWithin 𝕜 (n + 1) v f s x
+      = lineDerivWithin 𝕜 (nestedLineDerivWithin 𝕜 n (Fin.tail v) f s) s x (v 0) :=
+  rfl
+
+@[simp]
+theorem nestedLineDerivWithin_one_apply (v : Fin 1 → E) (f : E → F) (s : Set E) (x : E) :
+    nestedLineDerivWithin 𝕜 1 v f s x = lineDerivWithin 𝕜 f s x (v 0) :=
+  rfl
+
+/-- On the whole space the `Within` Gateaux nest is the plain Gateaux nest. -/
+theorem nestedLineDerivWithin_univ :
+    ∀ {n : ℕ} (v : Fin n → E) (f : E → F),
+      nestedLineDerivWithin 𝕜 n v f Set.univ = nestedLineDeriv 𝕜 n v f := by
+  intro n
+  induction n with
+  | zero => intro v f; rfl
+  | succ n IH =>
+    intro v f
+    funext x
+    rw [nestedLineDerivWithin_succ_apply, nestedLineDeriv_succ_apply, IH,
+      lineDerivWithin_univ]
+
+/-- **The domain Gateaux/Fréchet nest bridge.** On an *open* set, the `n`-fold
+nested line derivative within `s` of a `C^n`-on-`s` function agrees with the
+nested Fréchet derivative within `s` at every point of `s`: each Gateaux level
+upgrades to a Fréchet level because `s` is a neighbourhood of its points.  (At
+boundary points of a general set this is false — see the section docstring.) -/
+theorem nestedLineDerivWithin_eq_nestedFDerivWithin_of_isOpen (hs : IsOpen s) :
+    ∀ {n : ℕ}, ContDiffOn 𝕜 (n : ℕ) f s → ∀ (v : Fin n → E), ∀ x ∈ s,
+      nestedLineDerivWithin 𝕜 n v f s x = nestedFDerivWithin 𝕜 n v f s x := by
+  intro n
+  induction n with
+  | zero => intro _ v x _; rfl
+  | succ n IH =>
+    intro hf v x hx
+    have hsu : UniqueDiffOn 𝕜 s := hs.uniqueDiffOn
+    have hfn : ContDiffOn 𝕜 (n : ℕ) f s := hf.of_le (by exact_mod_cast Nat.le_succ n)
+    have heq : Set.EqOn (nestedLineDerivWithin 𝕜 n (Fin.tail v) f s)
+        (fun y => iteratedFDerivWithin 𝕜 n f s y (Fin.tail v)) s := fun y hy => by
+      rw [IH hfn (Fin.tail v) y hy,
+        nestedFDerivWithin_eq_iteratedFDerivWithin hsu hfn (Fin.tail v) y hy]
+    have heq' : Set.EqOn (nestedFDerivWithin 𝕜 n (Fin.tail v) f s)
+        (fun y => iteratedFDerivWithin 𝕜 n f s y (Fin.tail v)) s := fun y hy =>
+      nestedFDerivWithin_eq_iteratedFDerivWithin hsu hfn (Fin.tail v) y hy
+    have h1 : DifferentiableWithinAt 𝕜 (iteratedFDerivWithin 𝕜 n f s) s x :=
+      hf.differentiableOn_iteratedFDerivWithin (by norm_cast; omega) hsu x hx
+    have hdiffAt : DifferentiableAt 𝕜
+        (fun y => iteratedFDerivWithin 𝕜 n f s y (Fin.tail v)) x :=
+      (h1.differentiableAt (hs.mem_nhds hx)).continuousMultilinear_apply_const _
+    calc nestedLineDerivWithin 𝕜 (n + 1) v f s x
+        = lineDerivWithin 𝕜 (nestedLineDerivWithin 𝕜 n (Fin.tail v) f s) s x (v 0) :=
+          rfl
+      _ = lineDerivWithin 𝕜 (fun y => iteratedFDerivWithin 𝕜 n f s y (Fin.tail v)) s
+            x (v 0) := lineDerivWithin_congr' heq hx
+      _ = lineDeriv 𝕜 (fun y => iteratedFDerivWithin 𝕜 n f s y (Fin.tail v)) x (v 0) :=
+          lineDerivWithin_of_isOpen hs hx
+      _ = fderiv 𝕜 (fun y => iteratedFDerivWithin 𝕜 n f s y (Fin.tail v)) x (v 0) :=
+          hdiffAt.lineDeriv_eq_fderiv
+      _ = fderivWithin 𝕜 (fun y => iteratedFDerivWithin 𝕜 n f s y (Fin.tail v)) s x
+            (v 0) := by rw [fderivWithin_of_isOpen hs hx]
+      _ = fderivWithin 𝕜 (nestedFDerivWithin 𝕜 n (Fin.tail v) f s) s x (v 0) := by
+          rw [fderivWithin_congr' heq' hx]
+      _ = nestedFDerivWithin 𝕜 (n + 1) v f s x := rfl
+
+/-- The domain Gateaux nest of a `C^n`-on-`s` function computes the `n`-th
+iterated Fréchet derivative within `s` applied to the direction tuple — the
+S11 and S9 bridges composed. -/
+theorem nestedLineDerivWithin_eq_iteratedFDerivWithin_of_isOpen (hs : IsOpen s)
+    {n : ℕ} (hf : ContDiffOn 𝕜 (n : ℕ) f s) (v : Fin n → E) {x : E} (hxs : x ∈ s) :
+    nestedLineDerivWithin 𝕜 n v f s x = iteratedFDerivWithin 𝕜 n f s x v := by
+  rw [nestedLineDerivWithin_eq_nestedFDerivWithin_of_isOpen hs hf v x hxs,
+    nestedFDerivWithin_eq_iteratedFDerivWithin hs.uniqueDiffOn hf v x hxs]
+
+/-- **Classical all-orders Clairaut/Schwarz on an open domain, Gateaux form.**
+For a function that is `C^n` on an open set `Ω` (over `ℝ` or `ℂ`), nested
+one-dimensional directional derivatives along `Ω` may be taken in any order —
+the textbook statement for functions defined only on a domain, with only
+iterated limits `d/dt g(x + t·w)|₀` in the statement. -/
+theorem nestedLineDerivWithin_comp_perm_of_isOpen [IsRCLikeNormedField 𝕜]
+    (hs : IsOpen s) {n : ℕ} (hf : ContDiffOn 𝕜 (n : ℕ) f s) {x : E} (hxs : x ∈ s)
+    (v : Fin n → E) (σ : Equiv.Perm (Fin n)) :
+    nestedLineDerivWithin 𝕜 n (v ∘ σ) f s x = nestedLineDerivWithin 𝕜 n v f s x := by
+  have h's : s ⊆ closure (interior s) := by
+    rw [hs.interior_eq]
+    exact subset_closure
+  rw [nestedLineDerivWithin_eq_nestedFDerivWithin_of_isOpen hs hf (v ∘ σ) x hxs,
+    nestedLineDerivWithin_eq_nestedFDerivWithin_of_isOpen hs hf v x hxs,
+    nestedFDerivWithin_comp_perm hs.uniqueDiffOn h's hf hxs v σ]
+
+/-- Field-uniform `minSmoothness` form of the domain Gateaux Clairaut theorem. -/
+theorem nestedLineDerivWithin_comp_perm_of_isOpen_of_minSmoothness
+    (hs : IsOpen s) {n : ℕ} (hf : ContDiffOn 𝕜 (minSmoothness 𝕜 n) f s) {x : E}
+    (hxs : x ∈ s) (v : Fin n → E) (σ : Equiv.Perm (Fin n)) :
+    nestedLineDerivWithin 𝕜 n (v ∘ σ) f s x = nestedLineDerivWithin 𝕜 n v f s x := by
+  have h's : s ⊆ closure (interior s) := by
+    rw [hs.interior_eq]
+    exact subset_closure
+  have hfn : ContDiffOn 𝕜 (n : ℕ) f s := hf.of_le le_minSmoothness
+  rw [nestedLineDerivWithin_eq_nestedFDerivWithin_of_isOpen hs hfn (v ∘ σ) x hxs,
+    nestedLineDerivWithin_eq_nestedFDerivWithin_of_isOpen hs hfn v x hxs,
+    nestedFDerivWithin_comp_perm_of_minSmoothness hs.uniqueDiffOn h's hf hxs v σ]
+
+/-- **Mixed Gateaux derivatives on an open domain commute** for `C²`-on-`Ω`
+functions: `∂_a (∂_b f) = ∂_b (∂_a f)` at every point of `Ω`, with each `∂`
+the one-dimensional limit along `Ω` — literally the textbook
+`∂²f/∂x∂y = ∂²f/∂y∂x` for `f` defined only on an open domain. -/
+theorem lineDerivWithin_lineDerivWithin_comm_of_isOpen [IsRCLikeNormedField 𝕜]
+    (hs : IsOpen s) (hf : ContDiffOn 𝕜 2 f s) (a b : E) {x : E} (hxs : x ∈ s) :
+    lineDerivWithin 𝕜 (fun y => lineDerivWithin 𝕜 f s y b) s x a
+      = lineDerivWithin 𝕜 (fun y => lineDerivWithin 𝕜 f s y a) s x b := by
+  have h2 : ContDiffOn 𝕜 ((2 : ℕ) : ℕ∞ω) f s := by exact_mod_cast hf
+  have hab : (![b, a] : Fin 2 → E) ∘ ⇑(Equiv.swap 0 1) = ![a, b] := by
+    funext i
+    fin_cases i <;> simp
+  have ha : Fin.tail (![a, b] : Fin 2 → E) = ![b] := by
+    funext i
+    fin_cases i
+    rfl
+  have hb : Fin.tail (![b, a] : Fin 2 → E) = ![a] := by
+    funext i
+    fin_cases i
+    rfl
+  have key := nestedLineDerivWithin_comp_perm_of_isOpen hs h2 hxs
+    (![b, a] : Fin 2 → E) (Equiv.swap 0 1)
+  rw [hab] at key
+  calc lineDerivWithin 𝕜 (fun y => lineDerivWithin 𝕜 f s y b) s x a
+      = nestedLineDerivWithin 𝕜 2 ![a, b] f s x := by
+        rw [nestedLineDerivWithin_succ_apply, ha]
+        rfl
+    _ = nestedLineDerivWithin 𝕜 2 ![b, a] f s x := key
+    _ = lineDerivWithin 𝕜 (fun y => lineDerivWithin 𝕜 f s y a) s x b := by
+        rw [nestedLineDerivWithin_succ_apply, hb]
+        rfl
+
+end GateauxWithinNested
+
 end FTCOQ02Incomplete01
