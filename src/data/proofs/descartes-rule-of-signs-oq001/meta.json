@@ -82,11 +82,18 @@
   },
   "sections": [
     {
-      "id": "header-imports",
-      "title": "Module Header and Imports",
+      "id": "header-docstring",
+      "title": "Docstring: Research Question and the Explicit Witness",
       "startLine": 1,
+      "endLine": 55,
+      "summary": "States the parent's existential termination bound this leaf upgrades, derives the candidate witness k = Nat.clog 2 ⌈w/δ⌉₊ and why it only gives the non-strict bound w/2^k ≤ δ, motivates the '+1' correction via the exact-power-of-two obstruction, lists the four theorems to be proved, and records the VERIFIED status (0 axioms, 0 sorries)."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Mathlib Imports and Namespace Setup",
+      "startLine": 57,
       "endLine": 68,
-      "summary": "Docstring stating the research question, the explicit witness and the necessity of the +1, the four proved results, and the VERIFIED status; Mathlib imports (including Nat.Log for Nat.clog) and the VincentBisection namespace."
+      "summary": "Imports the narrow slice of Mathlib actually needed — Data.Real.Basic, Finset.Prod/Max/Image for minGap's offDiag construction, Order.Archimedean.Basic, and Data.Nat.Log for Nat.clog — rather than the parent's blanket `import Mathlib`, then opens the VincentBisection namespace and Finset."
     },
     {
       "title": "§ 1. Minimum Gap of a Finite Root Set (reproduced)",
