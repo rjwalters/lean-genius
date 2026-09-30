@@ -832,4 +832,478 @@ theorem ramsey_existence (k s t : ℕ) (hk : 2 ≤ k) (hs : k ≤ s) (ht : k ≤
     ∃ n, IsRamsey n k s t :=
   ramsey_existence_of_one_le k s t (by omega) hs ht
 
+/-! ### S9: `sInf` glue and the recursive Erdős–Rado inequality (OQ-03b, step 1)
+
+With `ramsey_existence_of_one_le` in hand, the `sInf` defining
+`ramseyNumber` ranges over a nonempty set (in the legal parameter range),
+so its two defining properties become available as lemmas:
+
+* `ramseyNumber_le_of_isRamsey` — any Ramsey witness bounds the number
+  from above (`Nat.sInf_le`);
+* `isRamsey_ramseyNumber` — the number itself satisfies the Ramsey
+  condition (`Nat.sInf_mem` on the nonempty defining set);
+* `min_le_ramseyNumber` — the trivial vertex-count lower bound: a
+  monochromatic clique needs at least `min s t` vertices. This is what
+  certifies inner `ramseyNumber` values as legal (≥ `k`) target sizes
+  when they are fed back into a lower-uniformity Ramsey number.
+
+They combine into the **recursive Erdős–Rado inequality**
+
+  `R_{k+1}(s, t) ≤ R_k(R_{k+1}(s-1, t), R_{k+1}(s, t-1)) + 1`,
+
+whose proof is the S8 genuine-case recursion body re-run at the `sInf`
+witnesses. The body is extracted as the standalone step lemma
+`IsRamsey.step` (explicit witnesses `n₁`, `n₂`, `m` instead of the
+existentials of `ramsey_existence_of_one_le`, and no `max`-bumping —
+the `sInf` values are already large enough by `min_le_ramseyNumber`).
+Iterating the inequality down to the pigeonhole base
+`R_1(s, t) = s + t - 1` (`ramseyNumber_one`) is what produces the
+Erdős–Rado tower upper bound (the S10 target). -/
+
+/-- **Upper `sInf` glue.** Any `n` satisfying the Ramsey condition bounds
+`ramseyNumber k s t` from above. No side conditions: this direction of the
+`sInf` characterization needs no nonemptiness. -/
+lemma ramseyNumber_le_of_isRamsey {n k s t : ℕ} (h : IsRamsey n k s t) :
+    ramseyNumber k s t ≤ n := by
+  unfold ramseyNumber
+  exact Nat.sInf_le h
+
+/-- **Membership `sInf` glue.** In the parameter range of
+`ramsey_existence_of_one_le` the set `{n | IsRamsey n k s t}` is nonempty,
+so its infimum is a genuine member (`Nat.sInf_mem`): `ramseyNumber k s t`
+itself satisfies the Ramsey condition. -/
+lemma isRamsey_ramseyNumber (k s t : ℕ) (hk : 1 ≤ k) (hs : k ≤ s) (ht : k ≤ t) :
+    IsRamsey (ramseyNumber k s t) k s t := by
+  obtain ⟨n, hn⟩ := ramsey_existence_of_one_le k s t hk hs ht
+  have h : sInf {n | IsRamsey n k s t} ∈ {n | IsRamsey n k s t} :=
+    Nat.sInf_mem ⟨n, hn⟩
+  exact h
+
+/-- **Vertex-count lower bound.** A monochromatic `s`- or `t`-clique carries
+`s` (resp. `t`) distinct vertices of `Fin n`, so `IsRamsey n k s t` forces
+`min s t ≤ n`; applying this at `n = ramseyNumber k s t` (a Ramsey witness
+by `isRamsey_ramseyNumber`) gives `min s t ≤ ramseyNumber k s t`. Run the
+witness on any coloring — the constant-`true` one will do. -/
+lemma min_le_ramseyNumber (k s t : ℕ) (hk : 1 ≤ k) (hs : k ≤ s) (ht : k ≤ t) :
+    min s t ≤ ramseyNumber k s t := by
+  have hR := isRamsey_ramseyNumber k s t hk hs ht
+  have hcard_le : ∀ S : Finset (Fin (ramseyNumber k s t)),
+      S.card ≤ ramseyNumber k s t := by
+    intro S
+    calc S.card ≤ (Finset.univ : Finset (Fin (ramseyNumber k s t))).card :=
+          Finset.card_le_card (Finset.subset_univ S)
+      _ = ramseyNumber k s t := by rw [Finset.card_univ, Fintype.card_fin]
+  rcases hR (fun _ => true) with ⟨S, hScard, _⟩ | ⟨S, hScard, _⟩
+  · have := hcard_le S
+    have hmin : min s t ≤ s := min_le_left _ _
+    omega
+  · have := hcard_le S
+    have hmin : min s t ≤ t := min_le_right _ _
+    omega
+
+/-- **The Ramsey 1930 recursion step, isolated.** If `n₁` handles targets
+`(s-1, t)` and `n₂` handles `(s, t-1)` at uniformity `k + 1`, and `m`
+handles targets `(n₁, n₂)` at uniformity `k`, then `m + 1` handles `(s, t)`
+at uniformity `k + 1`.
+
+This is the genuine-case body of `ramsey_existence_of_one_le`, restated
+with explicit witnesses so it can be run at the `sInf` values in
+`ramseyNumber_succ_le`: run the `k`-uniform certificate `hm` on the link
+coloring at the last vertex `v` (inside the `m`-element complement of `v`
+via `IsRamsey.within`), then run `hn₁` or `hn₂` inside the resulting
+link-monochromatic clique; either it produces the *other*-colored target
+clique outright, or a same-colored clique one vertex short of target,
+which `IsMonochromatic.insert_vertex` splices with `v` (coverage of the
+`v`-containing `k+1`-subsets coming from `IsMonochromatic.link_lifts`). -/
+lemma IsRamsey.step {k s t n₁ n₂ m : ℕ} (hs : 1 ≤ s) (ht : 1 ≤ t)
+    (hn₁ : IsRamsey n₁ (k + 1) (s - 1) t)
+    (hn₂ : IsRamsey n₂ (k + 1) s (t - 1))
+    (hm : IsRamsey m k n₁ n₂) : IsRamsey (m + 1) (k + 1) s t := by
+  intro χ
+  -- Distinguished vertex and its `m`-element complement.
+  set v : Fin (m + 1) := Fin.last m
+  have hA_card : ((Finset.univ : Finset (Fin (m + 1))).erase v).card = m := by
+    rw [Finset.card_erase_of_mem (Finset.mem_univ v), Finset.card_univ,
+      Fintype.card_fin]
+    omega
+  -- Run the `k`-uniform certificate on the link coloring at `v`,
+  -- inside the complement of `v`.
+  rcases hm.within (kColoring.link χ v) (Finset.univ.erase v) hA_card with
+    ⟨S, hSsub, hScard, hSm⟩ | ⟨S, hSsub, hScard, hSm⟩
+  · -- Link-mono-**false** `k`-clique `S`, `|S| = n₁`.
+    have hvS : v ∉ S := fun hv' => (Finset.mem_erase.mp (hSsub hv')).1 rfl
+    rcases hn₁.within χ S hScard with
+      ⟨S', hS'sub, hS'card, hS'm⟩ | ⟨S', _, hS'card, hS'm⟩
+    · -- χ-mono-false `(s-1)`-clique `S' ⊆ S`: splice `v` in.
+      have hvS' : v ∉ S' := fun hv' => hvS (hS'sub hv')
+      have hLink : ∀ T ∈ (insert v S').powersetCard (k + 1), v ∈ T →
+          χ T = false := fun T hT hvT =>
+        IsMonochromatic.link_lifts (k := k + 1) χ v false S hvS hSm T
+          (Finset.powersetCard_mono (Finset.insert_subset_insert v hS'sub) hT)
+          hvT
+      refine Or.inl ⟨insert v S', ?_,
+        IsMonochromatic.insert_vertex hvS' hS'm hLink⟩
+      rw [Finset.card_insert_of_notMem hvS', hS'card]
+      omega
+    · -- χ-mono-true `t`-clique: done outright.
+      exact Or.inr ⟨S', hS'card, hS'm⟩
+  · -- Link-mono-**true** `k`-clique `S`, `|S| = n₂`: symmetric.
+    have hvS : v ∉ S := fun hv' => (Finset.mem_erase.mp (hSsub hv')).1 rfl
+    rcases hn₂.within χ S hScard with
+      ⟨S', _, hS'card, hS'm⟩ | ⟨S', hS'sub, hS'card, hS'm⟩
+    · -- χ-mono-false `s`-clique: done outright.
+      exact Or.inl ⟨S', hS'card, hS'm⟩
+    · -- χ-mono-true `(t-1)`-clique `S' ⊆ S`: splice `v` in.
+      have hvS' : v ∉ S' := fun hv' => hvS (hS'sub hv')
+      have hLink : ∀ T ∈ (insert v S').powersetCard (k + 1), v ∈ T →
+          χ T = true := fun T hT hvT =>
+        IsMonochromatic.link_lifts (k := k + 1) χ v true S hvS hSm T
+          (Finset.powersetCard_mono (Finset.insert_subset_insert v hS'sub) hT)
+          hvT
+      refine Or.inr ⟨insert v S', ?_,
+        IsMonochromatic.insert_vertex hvS' hS'm hLink⟩
+      rw [Finset.card_insert_of_notMem hvS', hS'card]
+      omega
+
+/-- (OQ-03b, recursion layer) **The recursive Erdős–Rado inequality.** For
+`k ≥ 1` and target sizes `s, t ≥ k + 2` (the genuinely recursive range —
+smaller targets are the boundary collapses `ramseyNumber_one` and
+`is_ramsey_self_right`/`left`):
+
+  `R_{k+1}(s, t) ≤ R_k(R_{k+1}(s-1, t), R_{k+1}(s, t-1)) + 1.`
+
+Proof: instantiate the recursion body `IsRamsey.step` at the three `sInf`
+witnesses supplied by `isRamsey_ramseyNumber`; the vertex-count bound
+`min_le_ramseyNumber` certifies the two inner Ramsey numbers as legal
+(≥ `k`) target sizes at uniformity `k`, so no `max`-bumping is needed.
+Iterating this inequality down to the pigeonhole base
+`R_1(s, t) = s + t - 1` yields the Erdős–Rado tower upper bound (S10). -/
+theorem ramseyNumber_succ_le (k s t : ℕ) (hk : 1 ≤ k)
+    (hs : k + 2 ≤ s) (ht : k + 2 ≤ t) :
+    ramseyNumber (k + 1) s t ≤
+      ramseyNumber k (ramseyNumber (k + 1) (s - 1) t)
+        (ramseyNumber (k + 1) s (t - 1)) + 1 := by
+  set n₁ := ramseyNumber (k + 1) (s - 1) t with hn₁_def
+  set n₂ := ramseyNumber (k + 1) s (t - 1) with hn₂_def
+  have hn₁ : IsRamsey n₁ (k + 1) (s - 1) t :=
+    isRamsey_ramseyNumber (k + 1) (s - 1) t (by omega) (by omega) (by omega)
+  have hn₂ : IsRamsey n₂ (k + 1) s (t - 1) :=
+    isRamsey_ramseyNumber (k + 1) s (t - 1) (by omega) (by omega) (by omega)
+  -- The inner Ramsey numbers are ≥ k + 1 > k by the vertex-count bound.
+  have hk₁ : k ≤ n₁ := by
+    have h := min_le_ramseyNumber (k + 1) (s - 1) t (by omega) (by omega) (by omega)
+    rw [← hn₁_def] at h
+    omega
+  have hk₂ : k ≤ n₂ := by
+    have h := min_le_ramseyNumber (k + 1) s (t - 1) (by omega) (by omega) (by omega)
+    rw [← hn₂_def] at h
+    omega
+  -- The `sInf` witness at uniformity `k` with the inner numbers as targets.
+  have hm : IsRamsey (ramseyNumber k n₁ n₂) k n₁ n₂ :=
+    isRamsey_ramseyNumber k n₁ n₂ hk hk₁ hk₂
+  exact ramseyNumber_le_of_isRamsey
+    (IsRamsey.step (by omega) (by omega) hn₁ hn₂ hm)
+
+/-! ### S10: monotonicity of `ramseyNumber` and the graph-case unwind
+(Erdős–Szekeres binomial bound)
+
+The recursion `ramseyNumber_succ_le` unwinds level by level down to the
+pigeonhole base `R_1(s, t) = s + t - 1`.  This section performs the first —
+and classically most famous — unwind, at uniformity `k = 2` (graphs):
+substituting `ramseyNumber_one` into the recursion collapses the `+1` and
+gives the Erdős–Szekeres recursion
+
+  `R_2(s, t) ≤ R_2(s-1, t) + R_2(s, t-1)`,
+
+whose induction along `s + t` (base: the boundary collapses
+`R_2(2, t) ≤ t`, `R_2(s, 2) ≤ s`) yields the **Erdős–Szekeres binomial
+bound** `R_2(s, t) ≤ (s + t - 2).choose (s - 1)` — the 1935 upper bound
+from the same paper as the slug's namesake theorem — and its diagonal
+exponential form `R_2(s, s) ≤ 4 ^ (s - 1)`.  The general-`k` tower unwind
+(Erdős–Rado) iterates the same pattern one uniformity level at a time and
+is the remaining S11 target; `ramseyNumber_mono` proved here is the glue it
+needs. -/
+
+/-- **Monotonicity of the Ramsey number in both targets** (within the
+well-defined range `k ≤ s', t'`): a certificate for the larger targets
+restricts to one for the smaller targets (`IsRamsey.anti_s`/`anti_t`), so
+the infima are ordered. -/
+theorem ramseyNumber_mono {k s s' t t' : ℕ} (hk : 1 ≤ k) (hs' : k ≤ s')
+    (ht' : k ≤ t') (hss' : s' ≤ s) (htt' : t' ≤ t) :
+    ramseyNumber k s' t' ≤ ramseyNumber k s t := by
+  have hR : IsRamsey (ramseyNumber k s t) k s t :=
+    isRamsey_ramseyNumber k s t hk (by omega) (by omega)
+  exact ramseyNumber_le_of_isRamsey ((hR.anti_s hss').anti_t htt')
+
+/-- **The Erdős–Szekeres recursion** (the `k = 2` unwind of
+`ramseyNumber_succ_le` through the pigeonhole base `ramseyNumber_one`):
+
+  `R_2(s, t) ≤ R_2(s-1, t) + R_2(s, t-1)`  for `s, t ≥ 3`.
+
+The `R_1(n₁, n₂) + 1 = n₁ + n₂ - 1 + 1 = n₁ + n₂` collapse uses
+`min_le_ramseyNumber` to certify `n₁, n₂ ≥ 1`. -/
+theorem ramseyNumber_two_le_add (s t : ℕ) (hs : 3 ≤ s) (ht : 3 ≤ t) :
+    ramseyNumber 2 s t ≤ ramseyNumber 2 (s - 1) t + ramseyNumber 2 s (t - 1) := by
+  have hrec : ramseyNumber 2 s t ≤
+      ramseyNumber 1 (ramseyNumber 2 (s - 1) t) (ramseyNumber 2 s (t - 1)) + 1 := by
+    simpa using ramseyNumber_succ_le 1 s t (by omega) (by omega) (by omega)
+  set n₁ := ramseyNumber 2 (s - 1) t with hn₁_def
+  set n₂ := ramseyNumber 2 s (t - 1) with hn₂_def
+  have h₁ : 1 ≤ n₁ := by
+    have h := min_le_ramseyNumber 2 (s - 1) t (by omega) (by omega) (by omega)
+    rw [← hn₁_def] at h
+    omega
+  have h₂ : 1 ≤ n₂ := by
+    have h := min_le_ramseyNumber 2 s (t - 1) (by omega) (by omega) (by omega)
+    rw [← hn₂_def] at h
+    omega
+  have hone : ramseyNumber 1 n₁ n₂ = n₁ + n₂ - 1 := ramseyNumber_one n₁ n₂ h₁ h₂
+  rw [hone] at hrec
+  omega
+
+/-- **The Erdős–Szekeres binomial bound (1935)**:
+
+  `R_2(s, t) ≤ (s + t - 2).choose (s - 1)`  for `s, t ≥ 2`.
+
+Induction on `s + t` (bounded by a fuel parameter, as in
+`ramsey_existence_of_one_le`): the boundary rows are the collapses
+`R_2(2, t) ≤ t = C(t, 1)` and `R_2(s, 2) ≤ s = C(s, s - 1)`
+(`is_ramsey_self_right`/`left`); the interior is the Erdős–Szekeres
+recursion plus Pascal's rule `C(a+1, b+1) = C(a, b) + C(a, b+1)`. -/
+theorem ramseyNumber_two_le_choose (s t : ℕ) (hs : 2 ≤ s) (ht : 2 ≤ t) :
+    ramseyNumber 2 s t ≤ (s + t - 2).choose (s - 1) := by
+  -- Bounded induction on `s + t` via an explicit fuel parameter.
+  suffices h : ∀ (m s t : ℕ), s + t ≤ m → 2 ≤ s → 2 ≤ t →
+      ramseyNumber 2 s t ≤ (s + t - 2).choose (s - 1) from
+    h (s + t) s t le_rfl hs ht
+  intro m
+  induction m with
+  | zero => intro s t hst hs ht; omega
+  | succ m IH =>
+    intro s t hst hs ht
+    by_cases hs2 : s = 2
+    · -- Boundary row `s = 2`: `R_2(2, t) ≤ t = C(t, 1)`.
+      subst hs2
+      have h1 : ramseyNumber 2 2 t ≤ t :=
+        ramseyNumber_le_of_isRamsey (is_ramsey_self_right 2 t (by omega) ht)
+      have h2 : (2 + t - 2).choose (2 - 1) = t := by
+        rw [show 2 + t - 2 = t by omega]
+        exact Nat.choose_one_right t
+      omega
+    by_cases ht2 : t = 2
+    · -- Boundary row `t = 2`: `R_2(s, 2) ≤ s = C(s, s - 1)`.
+      subst ht2
+      have h1 : ramseyNumber 2 s 2 ≤ s :=
+        ramseyNumber_le_of_isRamsey (is_ramsey_self_left 2 s (by omega) hs)
+      have h2 : (s + 2 - 2).choose (s - 1) = s := by
+        rw [show s + 2 - 2 = s by omega, Nat.choose_symm (by omega : 1 ≤ s),
+            Nat.choose_one_right]
+      omega
+    -- Interior: `s, t ≥ 3` — recursion + IH + Pascal.
+    have hs3 : 3 ≤ s := by omega
+    have ht3 : 3 ≤ t := by omega
+    have hrec := ramseyNumber_two_le_add s t hs3 ht3
+    have h1 : ramseyNumber 2 (s - 1) t ≤ ((s - 1) + t - 2).choose ((s - 1) - 1) :=
+      IH (s - 1) t (by omega) (by omega) ht
+    have h2 : ramseyNumber 2 s (t - 1) ≤ (s + (t - 1) - 2).choose (s - 1) :=
+      IH s (t - 1) (by omega) hs (by omega)
+    have hpascal : ((s - 1) + t - 2).choose ((s - 1) - 1)
+        + (s + (t - 1) - 2).choose (s - 1) = (s + t - 2).choose (s - 1) := by
+      rw [show (s - 1) + t - 2 = s + t - 3 by omega,
+          show (s - 1) - 1 = s - 2 by omega,
+          show s + (t - 1) - 2 = s + t - 3 by omega,
+          show s + t - 2 = (s + t - 3) + 1 by omega,
+          show s - 1 = (s - 2) + 1 by omega]
+      exact (Nat.choose_succ_succ' (s + t - 3) (s - 2)).symm
+    omega
+
+/-- **Diagonal exponential form**: `R_2(s, s) ≤ 4 ^ (s - 1)` for `s ≥ 2` —
+the binomial bound estimated by `C(n, k) ≤ 2 ^ n` at `n = 2s - 2`:
+`C(2s - 2, s - 1) ≤ 2 ^ (2s - 2) = 4 ^ (s - 1)`. -/
+theorem ramseyNumber_two_self_le (s : ℕ) (hs : 2 ≤ s) :
+    ramseyNumber 2 s s ≤ 4 ^ (s - 1) := by
+  have h1 := ramseyNumber_two_le_choose s s hs hs
+  have h2 : (s + s - 2).choose (s - 1) ≤ 2 ^ (s + s - 2) :=
+    Nat.choose_le_two_pow _ _
+  have h3 : (2 : ℕ) ^ (s + s - 2) = 4 ^ (s - 1) := by
+    rw [show s + s - 2 = 2 * (s - 1) by omega, pow_mul]
+    norm_num
+  omega
+
+/-! ### S11: the general-`k` unwind — the Erdős–Rado recursive majorant
+
+This section completes the quantitative layer of OQ-03b: an **explicit,
+computable upper bound for `ramseyNumber` at every uniformity**, obtained by
+unwinding `ramseyNumber_succ_le` all the way down to the graph base
+`ramseyNumber_two_le_choose`.
+
+**An honesty note on the bound's shape.**  The plan recorded in the node's
+state file hoped the unwind would give the classical tower bound
+`R_k(s, s) ≤ twr_{k-1}(c_k · s)` (height `k - 1`, independent of `s`).  It
+does not, and cannot: at uniformity `k + 1` the recursion
+`R_{k+1}(s, t) ≤ R_k(R_{k+1}(s-1, t), R_{k+1}(s, t-1)) + 1` is applied once
+per unit of `s + t`, and EACH application feeds the (already exponential)
+level-`k` bound with the previous inner value — so a fixed uniformity
+`k + 1` costs a tower of height `≈ s + t`, not a single exponential.  The
+classical height-`(k-1)` tower comes from a genuinely different argument
+(Erdős–Rado 1956: the tree/ramification construction, one exponential per
+uniformity level via `R_k(s,t) ≤ 2^{\binom{R_{k-1}(s-1,t-1)}{k-1}} + k - 1`),
+which is not a corollary of the recursion formalized here.  What the
+recursion honestly yields is the **Ackermann-shaped majorant** below —
+still an effective, everywhere-defined bound, and the faithful quantitative
+content of `ramseyNumber_succ_le`.
+
+`erdosRadoBound j m` bounds `R_{j+2}(s, t)` whenever `s + t ≤ m`:
+
+* level `j = 0` (graphs): `2 ^ m`, absorbing the Erdős–Szekeres binomial
+  bound `C(m - 2, s - 1) ≤ 2 ^ m`;
+* level `j + 1`: iterate `m ↦ (level-j bound at twice the previous value)
+  + 1`, exactly mirroring one application of `ramseyNumber_succ_le`. -/
+
+/-- The **Erdős–Rado recursive majorant**: the Ackermann-shaped function
+obtained by unwinding `ramseyNumber_succ_le` down to the graph base.
+`erdosRadoBound j m` will bound `ramseyNumber (j + 2) s t` for `s + t ≤ m`
+(`ramseyNumber_le_erdosRadoBound`).  The recursion is lexicographic in
+`(j, m)`, precisely Ackermann's shape. -/
+def erdosRadoBound : ℕ → ℕ → ℕ
+  | 0, m => 2 ^ m
+  | _ + 1, 0 => 1
+  | j + 1, m + 1 => erdosRadoBound j (2 * erdosRadoBound (j + 1) m) + 1
+
+/-- The majorant dominates its argument: `m ≤ erdosRadoBound j m`.  (Level
+`0` is `m ≤ 2 ^ m`; higher levels gain at least `+ 1` per step.) -/
+theorem le_erdosRadoBound : ∀ j m : ℕ, m ≤ erdosRadoBound j m
+  | 0, m => by simpa [erdosRadoBound] using m.lt_two_pow_self.le
+  | _ + 1, 0 => Nat.zero_le _
+  | j + 1, m + 1 => by
+    have h1 := le_erdosRadoBound (j + 1) m
+    have h2 := le_erdosRadoBound j (2 * erdosRadoBound (j + 1) m)
+    simp only [erdosRadoBound]
+    omega
+
+/-- The majorant is monotone in its argument (step form). -/
+theorem erdosRadoBound_le_succ (j m : ℕ) :
+    erdosRadoBound j m ≤ erdosRadoBound j (m + 1) := by
+  cases j with
+  | zero =>
+    simpa [erdosRadoBound] using
+      Nat.pow_le_pow_right (by norm_num) (Nat.le_succ m)
+  | succ j =>
+    have h := le_erdosRadoBound j (2 * erdosRadoBound (j + 1) m)
+    simp only [erdosRadoBound]
+    omega
+
+/-- The majorant is monotone in its argument. -/
+theorem erdosRadoBound_mono (j : ℕ) : Monotone (erdosRadoBound j) :=
+  monotone_nat_of_le_succ (erdosRadoBound_le_succ j)
+
+/-- **The general-`k` unwind of the Erdős–Rado recursion** (OQ-03b,
+quantitative layer, all uniformities): for every `j` and all target sizes
+`s, t ≥ j + 2`,
+
+  `R_{j+2}(s, t) ≤ erdosRadoBound j (s + t)`.
+
+Outer induction on the uniformity level `j` (base: the Erdős–Szekeres
+binomial bound estimated by `C(n, i) ≤ 2 ^ n`); inner fuel induction on
+`s + t` (boundary rows collapse via `is_ramsey_self_right`/`left`, the
+interior is one application of `ramseyNumber_succ_le` fed into the outer
+hypothesis — the inner Ramsey numbers are certified `≥ j + 2` by
+`min_le_ramseyNumber` and bounded by the inner hypothesis, then
+`erdosRadoBound_mono` aligns the arguments). -/
+theorem ramseyNumber_le_erdosRadoBound :
+    ∀ j s t : ℕ, j + 2 ≤ s → j + 2 ≤ t →
+      ramseyNumber (j + 2) s t ≤ erdosRadoBound j (s + t) := by
+  intro j
+  induction j with
+  | zero =>
+    -- Graph base: Erdős–Szekeres binomial bound, coarsened to `2 ^ (s + t)`.
+    intro s t hs ht
+    show ramseyNumber 2 s t ≤ erdosRadoBound 0 (s + t)
+    have h1 := ramseyNumber_two_le_choose s t hs ht
+    have h2 : (s + t - 2).choose (s - 1) ≤ 2 ^ (s + t - 2) :=
+      Nat.choose_le_two_pow _ _
+    have h3 : (2 : ℕ) ^ (s + t - 2) ≤ 2 ^ (s + t) :=
+      Nat.pow_le_pow_right (by norm_num) (by omega)
+    simp only [erdosRadoBound]
+    omega
+  | succ j IHj =>
+    -- Level `j + 1` (uniformity `j + 3`): fuel induction on `s + t`.
+    suffices h : ∀ (m s t : ℕ), s + t ≤ m → j + 3 ≤ s → j + 3 ≤ t →
+        ramseyNumber (j + 3) s t ≤ erdosRadoBound (j + 1) (s + t) by
+      intro s t hs ht
+      exact h (s + t) s t le_rfl hs ht
+    intro m
+    induction m with
+    | zero => intro s t hst hs ht; omega
+    | succ m IH =>
+      intro s t hst hs ht
+      by_cases hsK : s = j + 3
+      · -- Boundary row `s = j + 3`: `R_K(K, t) ≤ t`.
+        subst hsK
+        have h1 : ramseyNumber (j + 3) (j + 3) t ≤ t :=
+          ramseyNumber_le_of_isRamsey
+            (is_ramsey_self_right (j + 3) t (by omega) ht)
+        have h2 : t ≤ erdosRadoBound (j + 1) (j + 3 + t) :=
+          le_trans (by omega) (le_erdosRadoBound (j + 1) (j + 3 + t))
+        omega
+      by_cases htK : t = j + 3
+      · -- Boundary row `t = j + 3`: `R_K(s, K) ≤ s`.
+        subst htK
+        have h1 : ramseyNumber (j + 3) s (j + 3) ≤ s :=
+          ramseyNumber_le_of_isRamsey
+            (is_ramsey_self_left (j + 3) s (by omega) hs)
+        have h2 : s ≤ erdosRadoBound (j + 1) (s + (j + 3)) :=
+          le_trans (by omega) (le_erdosRadoBound (j + 1) (s + (j + 3)))
+        omega
+      -- Interior: `s, t ≥ j + 4` — one recursion step.
+      have hs4 : j + 4 ≤ s := by omega
+      have ht4 : j + 4 ≤ t := by omega
+      set A := ramseyNumber (j + 3) (s - 1) t with hA_def
+      set B := ramseyNumber (j + 3) s (t - 1) with hB_def
+      have hrec : ramseyNumber (j + 3) s t ≤ ramseyNumber (j + 2) A B + 1 :=
+        ramseyNumber_succ_le (j + 2) s t (by omega) (by omega) (by omega)
+      -- The inner Ramsey numbers are legal (`≥ j + 2`) targets at level `j`.
+      have hA_lb : j + 2 ≤ A := by
+        have h := min_le_ramseyNumber (j + 3) (s - 1) t (by omega) (by omega)
+          (by omega)
+        rw [← hA_def] at h
+        omega
+      have hB_lb : j + 2 ≤ B := by
+        have h := min_le_ramseyNumber (j + 3) s (t - 1) (by omega) (by omega)
+          (by omega)
+        rw [← hB_def] at h
+        omega
+      -- Inner hypothesis: both inner values are `≤ erdosRadoBound (j+1) (s+t-1)`.
+      have hA_ub : A ≤ erdosRadoBound (j + 1) (s + t - 1) := by
+        have h := IH (s - 1) t (by omega) (by omega) ht
+        rw [← hA_def, show s - 1 + t = s + t - 1 by omega] at h
+        exact h
+      have hB_ub : B ≤ erdosRadoBound (j + 1) (s + t - 1) := by
+        have h := IH s (t - 1) (by omega) hs (by omega)
+        rw [← hB_def, show s + (t - 1) = s + t - 1 by omega] at h
+        exact h
+      -- Outer hypothesis at the pair `(A, B)`, aligned by monotonicity.
+      have hstep : ramseyNumber (j + 2) A B ≤ erdosRadoBound j (A + B) :=
+        IHj A B hA_lb hB_lb
+      have hmono : erdosRadoBound j (A + B) ≤
+          erdosRadoBound j (2 * erdosRadoBound (j + 1) (s + t - 1)) :=
+        erdosRadoBound_mono j (by omega)
+      -- Fold the level-`(j+1)` recursion equation at `s + t`.
+      have hunfold : erdosRadoBound (j + 1) (s + t)
+          = erdosRadoBound j (2 * erdosRadoBound (j + 1) (s + t - 1)) + 1 := by
+        rw [show s + t = (s + t - 1) + 1 by omega]
+        simp only [erdosRadoBound, Nat.add_sub_cancel]
+      omega
+
+/-- **Diagonal form**: `R_k(s, s) ≤ erdosRadoBound (k - 2) (2s)` for
+`k ≥ 2`, `s ≥ k` — the effective bound at every uniformity, specialized to
+the diagonal. -/
+theorem ramseyNumber_self_le_erdosRadoBound (k s : ℕ) (hk : 2 ≤ k)
+    (hs : k ≤ s) :
+    ramseyNumber k s s ≤ erdosRadoBound (k - 2) (2 * s) := by
+  have h := ramseyNumber_le_erdosRadoBound (k - 2) s s (by omega) (by omega)
+  rw [show k - 2 + 2 = k by omega] at h
+  rw [show 2 * s = s + s by omega]
+  exact h
+
 end RamseyK
