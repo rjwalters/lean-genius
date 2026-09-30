@@ -32,9 +32,9 @@
     "phase": "ACT",
     "since": "2026-07-24T11:00:00-07:00",
     "iteration": 9,
-    "focus": "Fragment 1 complete through S9: Within nested layer (nestedFDerivWithin + bridge + permutation symmetry incl. convex boundary points) and the Gateaux lineDeriv_lineDeriv_comm classical form.",
+    "focus": "S11 (2026-09-29): nestedLineDerivWithin on open domains complete — bridges + comp_perm + n=2 textbook Clairaut, 0 ax / 0 sorry, first-try compile.",
     "blockers": [],
-    "nextAction": "S9 DONE (researcher-2, 2026-07-24): nestedFDerivWithin def + simp lemmas + univ lemma, nestedFDerivWithin_eq_iteratedFDerivWithin (Within bridge via fderivWithin_congr' + fderivWithin_continuousMultilinear_apply_const_apply), nestedFDerivWithin_comp_perm (+ minSmoothness/convex forms), fderivWithin_fderivWithin_comm, and lineDeriv_lineDeriv_comm (mixed Gateaux derivatives commute for C^2 - the textbook d2f/dxdy = d2f/dydx with honest 1-D limits). All 0-axiom/0-sorry, host-verified. Live next: an actual Mathlib upstream PR (needs mathlib4 checkout - not on this host), or the general-n nested lineDeriv bridge (nestedLineDeriv, session-sized, same induction with lineDeriv_eq_fderiv at each level). Fragments 2-6 (manifold Stokes) remain DEEP multi-session - do not chase in one session.",
+    "nextAction": "Mathlib upstream PR for Fragment 1 (tooling-blocked: needs mathlib4 checkout); Fragments 2-6 deep. The nested-derivative development (S8-S11) is feature-complete: global/Within x Frechet/Gateaux all four quadrants done.",
     "attemptCounts": {
       "total": 5,
       "currentApproach": 1,
@@ -43,7 +43,7 @@
     "lastUpdate": "2026-07-24T17:55:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fragment 1 nested development complete across multilinear (S5-S7), Frechet nest (S8), Within nest (S9), Gateaux nest (S10); remaining = Mathlib upstream PR or S11 nestedLineDerivWithin; Fragments 2-6 deep",
+    "progressSummary": "S11 DONE (researcher-3, 2026-09-29): Gateaux nest on open domains — nestedLineDerivWithin with full bridge to iteratedFDerivWithin and all-orders permutation symmetry; textbook Clairaut on an open domain with honest 1-D limits (lineDerivWithin_lineDerivWithin_comm_of_isOpen). Boundary degeneracy of the Gateaux-Within nest documented (open = honest scope). PROGRESS: Fragment 1 nested development complete across multilinear (S5-S7), Frechet nest (S8), Within nest (S9), Gateaux nest (S10); remaining = Mathlib upstream PR or S11 nestedLineDerivWithin; Fragments 2-6 deep",
     "builtItems": [
       "S7 (researcher-3, 2026-07-24): full `Within`/`UniqueDiffOn` version added to `FundamentalTheoremCalculusOQ02Incomplete01.lean` — `iteratedFDerivWithin_comp_perm` (UniqueDiffOn s + s ⊆ closure (interior s), C^n on s, symmetry at every point of s incl. boundary), `iteratedFDerivWithin_comp_perm_of_convex` (convex sets w/ nonempty interior over ℝ: closed balls, Icc, simplices), `iteratedFDerivWithin_comp_perm_of_minSmoothness` (field-uniform), `iteratedFDerivWithin_domDomCongr`; whole induction redone with fderivWithin. 0 axioms, 0 sorries; host-verified on pinned v4.31.0 (rev 9a9483a929).",
       "S5 ACT (researcher-3 PR, 2026-07-24): `proofs/Proofs/FundamentalTheoremCalculusOQ02Incomplete01.lean` — `iteratedFDeriv_comp_perm` (C^n, finite smoothness, over R), plus `iteratedFDeriv_domDomCongr` and a C^infty specialization; 0 axioms, 0 sorries.",
@@ -60,7 +60,8 @@
       "nestedFDeriv_eq_iteratedFDeriv: general-n nested/multilinear bridge, any NontriviallyNormedField (S8)",
       "nestedFDeriv_comp_perm + nestedFDeriv_comp_perm_of_minSmoothness: classical all-orders Clairaut, nested form (S8)",
       "fderiv_fderiv_comm: C² nested second-derivative commutation (S8)",
-      "nestedLineDeriv + bridges + nestedLineDeriv_comp_perm(_of_minSmoothness) + _two_apply (section GateauxNested, S10)"
+      "nestedLineDeriv + bridges + nestedLineDeriv_comp_perm(_of_minSmoothness) + _two_apply (section GateauxNested, S10)",
+      "S11 (FundamentalTheoremCalculusOQ02Incomplete01.lean 1013->1187): nestedLineDerivWithin + simp/univ lemmas, _eq_nestedFDerivWithin_of_isOpen, _eq_iteratedFDerivWithin_of_isOpen, _comp_perm_of_isOpen (+minSmoothness), lineDerivWithin_lineDerivWithin_comm_of_isOpen."
     ],
     "insights": [
       "FTC is represented as the 1D Stokes theorem with M=[a,b], omega=F, and d omega=F' dx.",
@@ -74,7 +75,9 @@
       "The general-n bridge between nested directional derivatives and iteratedFDeriv is a one-induction proof once fderiv_continuousMultilinear_apply_const_apply is known: the IH turns the inner nest into a CONSTANT CMM-application of D^n f, which commutes past fderiv; Mathlib had the bridge only at n=2 (iteratedFDeriv_two_apply).",
       "Mathlib Analysis/Distribution/DerivNotation.lean defines an abstract iterated line-derivative operator (LineDeriv.iteratedLineDerivOp, notation ∂^{v}) but provides NO instance for plain functions E → F and NO relation to iteratedFDeriv — the concrete nested/multilinear bridge was genuinely missing.",
       "fderiv_fderiv_comm (nested C² Clairaut, evaluation INSIDE the outer derivative) is not IsSymmSndFDerivAt (evaluation OUTSIDE): the two differ exactly by the constant-application commutation step, and Mathlib has no lemma of the nested shape.",
-      "S10: the Gateaux nest (nestedLineDeriv) equals the Frechet nest for C^n over any nontrivially normed field — per level, rewrite inner nest to constant-tuple evaluation of iteratedFDeriv (S8 bridge), DifferentiableAt.continuousMultilinear_apply_const, then lineDeriv_eq_fderiv. Weakest-primitive Clairaut: only iterated 1-D limits in the statement."
+      "S10: the Gateaux nest (nestedLineDeriv) equals the Frechet nest for C^n over any nontrivially normed field — per level, rewrite inner nest to constant-tuple evaluation of iteratedFDeriv (S8 bridge), DifferentiableAt.continuousMultilinear_apply_const, then lineDeriv_eq_fderiv. Weakest-primitive Clairaut: only iterated 1-D limits in the statement.",
+      "Gateaux-Within degenerates at boundaries: lineDerivWithin's scalar preimage {t : x+tw in s} can be {0} at boundary points (closed ball, outward w), so the S9 boundary-inclusive bridge is FALSE for the line-derivative nest; open domains are the honest scope (and the textbook one).",
+      "Domain bridge recipe per level: lineDerivWithin_congr' (IH holds on s) -> lineDerivWithin_of_isOpen -> DifferentiableAt.lineDeriv_eq_fderiv -> fderivWithin_of_isOpen backwards -> fderivWithin_congr'; DifferentiableWithinAt upgrades to DifferentiableAt via hs.mem_nhds."
     ],
     "mathlibGaps": [
       "`iteratedFDeriv_comp_perm` for C^n (finite smoothness) functions is still absent from Mathlib v4.31 (only n=2 and the analytic case exist) — now proved in this slug's file; upstream candidate.",
@@ -82,8 +85,8 @@
       "The parent Lean comments identify differential-form integration on oriented manifolds with boundary as future Mathlib infrastructure."
     ],
     "nextSteps": [
-      "Actual Mathlib PR submission: the file is now feature-complete for upstream (global + minSmoothness + full Within versions; natural home: Mathlib.Analysis.Calculus.FDeriv.Symmetric or Analysis.Analytic.IteratedFDeriv).",
-      "Fragments 2-6 (differential forms, d o d = 0, manifold Stokes) — DEEP multi-session work."
+      "Mathlib upstream PR for Fragment 1 (iteratedFDeriv_comp_perm C^n case) — needs a mathlib4 checkout + cache on host; tooling-blocked, not math-blocked.",
+      "Fragments 2-6 (manifold Stokes): DEEP multi-session — do not chase in one session."
     ],
     "markdown": "# Knowledge Base: fundamental-theorem-calculus-oq-02-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThis slug tracks a gallery-gap around the generalized Stokes theorem. The displayed identity is\n\n$$\\int_{\\partial M} \\omega = \\int_M d\\omega,$$\n\nwith the existing parent formalization specializing it concretely to FTC in one dimension and Green's theorem in two dimensions. The original incomplete point was the concrete 2D bridge: prove $d_1(d_0 f)=0$ by connecting equality of mixed partials to Mathlib's Frechet-derivative API.\n\n---\n\n## Local Evidence\n\n- `problem.md` names the target as Generalized Stokes Theorem and records the original goal as bridging Mathlib's derivative-symmetry theorem to concrete partial derivative expressions.\n- `state.md` still has this slug in OBSERVE with zero attempts, so phase, status, path, and attempt counts should stay unchanged.\n- `src/data/proofs/fundamental-theorem-calculus-oq-02/meta.json` records the parent Stokes proof as formalized with 0 axioms and 0 sorries in the main file.\n- `Proofs/FundamentalTheoremCalculusStokes.lean` contains `dd_eq_zero_2D` and `stokes_2d_rectangle`; the latter delegates to `GreensTheoremOQ01.greens_theorem_concrete`.\n- The same Lean file documents the full abstract manifold Stokes theorem as future work requiring differential-form integration on oriented manifolds with boundary.\n\n---\n\n## Insights\n\nThe stale scaffold says there is one sorry to fill, but the current parent proof evidence says the concrete Clairaut bridge has already landed in the main file. The remaining useful research question is therefore either administrative reconciliation of this stale gallery-gap slug, or a retargeting to the genuinely open fully general Stokes theorem on manifolds with boundary.\n\n---\n\n## Dead Ends\n\nDo not label this as number theory, prime gaps, or sieve methods. Do not claim new Lean progress from this metadata backfill; it only records local evidence already present in the repository.\n"
   },
@@ -126,5 +129,5 @@
   "started": "2026-04-03T02:25:34-07:00",
   "significance": 8,
   "tractability": 5,
-  "lastUpdate": "2026-07-24"
+  "lastUpdate": "2026-09-29"
 }
