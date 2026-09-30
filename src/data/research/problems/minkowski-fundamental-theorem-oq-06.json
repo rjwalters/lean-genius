@@ -20,10 +20,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-24",
-    "iteration": 5,
-    "focus": "S6.5 (researcher-2, 2026-09-29): build repair — dropped redundant `ring` after field_simp at line 568 (v4.31 drift, sole error from 2026-09-25 full build / issue #43756). Docker-GREEN 8576 jobs, profile unchanged (0 sorry / 0 axiom). S7 assessment: Mathlib ZLattice.covolume API exists — packingDensity rung viable.",
+    "iteration": 6,
+    "focus": "S7 (researcher-2, 2026-09-29): packing rung landed. packingDensity := vol(ball(r/2))/ZLattice.covolume L; balls at half min-distance proved pairwise disjoint; hlawka_packing_symm realizes every d < zeta(n)/2^(n-1) by a covolume-1 lattice packing (staged on hMV/hInt). File 619 -> 732 LOC, 21 -> 26 theorems + 1 def, 0 sorry / 0 axiom.",
     "blockers": [],
-    "nextAction": "S7 candidate: packingDensity definition rung for covolume-1 lattices using Mathlib ZLattice.covolume (API confirmed present in v4.31). DEEP blocker unchanged: Siegel-Rogers primitive mean-value (Haar measure on SL_n(Z)\\SL_n(R) absent from Mathlib).",
+    "nextAction": "Elementary/staging surface now saturated through the classical packing formulation. Remaining: DEEP blocker only -- Siegel-Rogers primitive mean-value identity (Haar probability measure on SL_n(Z)\\SL_n(R), >1000 LOC absent from Mathlib; registry blocked route). Conceivable side rung: instantiate a single concrete unimodular lattice (e.g. Z^n via ZSpan) to witness the staging surface is inhabited -- assess value first.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: S6 density rung complete; v4.31 build repair 2026-09-29 (module now GREEN on docker wrapper, was the one new failure in issue #43756). MinkowskiFundamentalTheoremOQ06.lean: 619 LOC, 0 sorry / 0 axiom, host-verified. Unconditional: zeta-series, primitivity descent bridge, extraction, hFin finiteness (S4), ±-pairing 2*zeta(n) threshold (S5), ball-volume scaling bookkeeping (S6). hlawka_density_symm gives the classical packing-density form delta_n >= zeta(n)/2^(n-1) staged on exactly hMV (primitive Siegel-Rogers mean value, all radii) + hInt. Deep blocker unchanged: Haar measure on SL_n(Z)\\SL_n(R).",
+    "progressSummary": "PROGRESS: S7 packing rung complete (2026-09-29, researcher-2). MinkowskiFundamentalTheoremOQ06.lean: 732 LOC, 0 sorry / 0 axiom, Docker-GREEN. Unconditional: zeta-series, primitivity descent bridge, extraction, hFin finiteness (S4), +/--pairing 2*zeta(n) threshold (S5), ball-volume scaling (S6), packingDensity via ZLattice.covolume + pairwise-disjoint balls at half min-distance (S7). hlawka_packing_symm delivers delta_n >= zeta(n)/2^(n-1) as an honest sphere-packing statement for covolume-1 lattices, staged on exactly hMV (primitive Siegel-Rogers mean value) + hInt. Deep blocker unchanged: Haar measure on SL_n(Z)\\SL_n(R).",
     "builtItems": [
       "research/problems/minkowski-fundamental-theorem-oq-06/verify_minkowski_hlawka.py - durable sympy verification: (A) symmetric threshold 2*zeta(n) <-> density zeta(n)/2^(n-1); (B) hierarchy 2^-n <= MH <= delta_known; (C) improvement factor = 2*zeta(n). All pass.",
       "MinkowskiFundamentalTheoremOQ06.lean (NEW, 273 lines, 0 axioms, 0 sorries): zetaSum + summability/bounds, IsPrimitive, minimal_isPrimitive, exists_primitive_norm_le (descent bridge), no_nonzero_of_no_primitive_in_ball, exists_count_zero_of_integral_lt_one (better-than-average extraction), hlawka_avoidance + hlawka_ball (staged on Siegel-Rogers primitive mean-value hypothesis)",
@@ -41,7 +41,8 @@
       "hlawka_avoidance_of_isBounded / hlawka_ball_of_discrete in MinkowskiFundamentalTheoremOQ06.lean — staged Minkowski-Hlawka with hFin discharged (only hMV + hInt remain)",
       "unitBallVol, volume_ball_toReal, unitBallVol_pos, volume_ball_half_toReal, exists_radius_volume_eq, exists_radius_of_density (all unconditional) in MinkowskiFundamentalTheoremOQ06.lean",
       "hlawka_density_symm (staged S6 headline) in MinkowskiFundamentalTheoremOQ06.lean",
-      "Repaired v4.31 build failure at MinkowskiFundamentalTheoremOQ06.lean:568 (dropped post-field_simp ring); Docker-GREEN 8576 jobs, 0 sorry / 0 axiom unchanged"
+      "Repaired v4.31 build failure at MinkowskiFundamentalTheoremOQ06.lean:568 (dropped post-field_simp ring); Docker-GREEN 8576 jobs, 0 sorry / 0 axiom unchanged",
+      "pairwiseDisjoint_balls_of_minDist, packingDensity (def via ZLattice.covolume), packingDensity_covolume_one, packingDensity_eq_scaling, packingDensity_pos, hlawka_packing_symm (S7 staged headline) in MinkowskiFundamentalTheoremOQ06.lean"
     ],
     "insights": [
       "Minkowski-Hlawka is the EXISTENCE complement to the gallery parent (which proves only the Minkowski convex-body OBSTRUCTION). Parent MinkowskiFundamentalTheorem.lean is sorry-free but proves a different theorem; Hlawka is absent from proofs/ (grep -i hlawka hits only Erdos997Problem.lean, unrelated).",
@@ -63,7 +64,10 @@
       "S6 (density bookkeeping) DONE: the residual 2^(1-n) factor between the doubled avoidance threshold 2*zeta(n) and the classical density bound is pure ball-volume scaling — formalized unconditionally via Measure.addHaar_ball (vol(ball r)=r^n*vol(ball 1)), with radius realization through Real.rpow_inv_natCast_pow.",
       "hlawka_density_symm states the classical delta_n >= zeta(n)/2^(n-1) as: every density d < zeta(n)/2^(n-1) equals vol(ball(r/2)) for a radius r at which the family contains a lattice of minimum distance >= r. hMV/hInt staging now quantified over all radii (the true Siegel-Rogers identity holds for every Borel set, so this is not a strengthening of the assumption).",
       "v4.31 tactic drift: field_simp now closes the final calc step of exists_radius_of_density outright, so the trailing `ring` errored with 'No goals to be solved' (the module's single build failure in the 2026-09-25 full build, issue #43756). Fixed by dropping the redundant ring.",
-      "S7 assessment: Mathlib v4.31 HAS a ZLattice covolume API (Mathlib/Algebra/Module/ZLattice/Covolume.lean: ZLattice.covolume, covolume_pos, covolume_eq_measure_fundamentalDomain, covolume_eq_det, plus lattice-point counting asymptotics tendsto_card_le_div'). The packingDensity definition rung named in nextSteps is viable — define packing density for covolume-1 lattices via covolume + disjoint balls of radius r/2 (Metric.ball disjointness from min-distance >= r)."
+      "S7 assessment: Mathlib v4.31 HAS a ZLattice covolume API (Mathlib/Algebra/Module/ZLattice/Covolume.lean: ZLattice.covolume, covolume_pos, covolume_eq_measure_fundamentalDomain, covolume_eq_det, plus lattice-point counting asymptotics tendsto_card_le_div'). The packingDensity definition rung named in nextSteps is viable — define packing density for covolume-1 lattices via covolume + disjoint balls of radius r/2 (Metric.ball disjointness from min-distance >= r).",
+      "S7 (2026-09-29): Submodule.mem_toAddSubgroup is NOT name-resolvable in the pinned v4.31 Mathlib (module-system exposure) even though it is in Submodule/Defs.lean; toAddSubgroup is @[reducible] and the iff is Iff.rfl, so membership transports by defeq -- pass the hypothesis through unchanged. Submodule.coe_toAddSubgroup DOES resolve (simp lemma).",
+      "packingDensity bridges the AddSubgroup staging surface to ZLattice: state the headline over latticeOf : Omega -> Submodule Z E and apply the AddSubgroup theorems to (latticeOf omega).toAddSubgroup; covolume-1 hypothesis (hcov) avoids needing DiscreteTopology/IsZLattice instance families over Omega entirely.",
+      "pairwiseDisjoint_balls_of_minDist is the geometric content justifying 'packing': min-dist >= r gives Metric.ball_disjoint_ball at radius r/2 via dist_eq_norm on the difference vector (unconditional, any normed space)."
     ],
     "mathlibGaps": [
       "Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: GeometryOfNumbers.lean has ONLY Blichfeldt (exists_pair_mem_lattice_not_disjoint_vadd) + Minkowski convex-body (exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt/le_measure). No Hlawka.",
