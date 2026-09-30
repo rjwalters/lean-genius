@@ -56,7 +56,7 @@ theorem kLCM_dvd_iff {s : Finset ℕ} {d : ℤ} :
 @[simp] theorem kLCM_empty : kLCM (∅ : Finset ℕ) = 1 := by simp [kLCM]
 
 @[simp] theorem kLCM_singleton (m : ℕ) : kLCM {m} = (m : ℤ) := by
-  simp [kLCM, Finset.lcm_singleton]
+  simp [kLCM, Finset.lcm_singleton, Int.normalize_coe_nat]
 
 /-- The kLCM divides the product of all moduli. -/
 theorem kLCM_dvd_prod {s : Finset ℕ} :
@@ -79,8 +79,9 @@ theorem kLCM_dvd_prod {s : Finset ℕ} :
     kLCM(s) dividing (y₁ - y₂). -/
 theorem kModuli_periodic {s : Finset ℕ} (y₁ y₂ : ℤ) :
     (∀ m ∈ s, y₁ ≡ y₂ [ZMOD (m : ℤ)]) ↔ kLCM s ∣ (y₁ - y₂) := by
-  simp_rw [Int.modEq_iff_dvd]
-  exact kLCM_dvd_iff.symm
+  rw [kLCM_dvd_iff]
+  refine forall_congr' fun m => imp_congr_right fun _ => ?_
+  rw [Int.modEq_iff_dvd, dvd_sub_comm]
 
 /-- Corollary: If x₀ and y both satisfy the k congruences, then kLCM ∣ (y - x₀). -/
 theorem solution_coset {s : Finset ℕ} {a : ℕ → ℤ} (x₀ y : ℤ)
@@ -98,16 +99,17 @@ theorem solution_coset {s : Finset ℕ} {a : ℕ → ℤ} (x₀ y : ℤ)
 /-- kLCM is nonneg for naturals (GCDMonoid ℤ uses normalize, which gives |a| for ℤ,
     so lcm of nonneg elements is nonneg). -/
 theorem kLCM_nonneg (s : Finset ℕ) : 0 ≤ kLCM s := by
-  simp only [kLCM]
-  apply Finset.lcm_nonneg
-  intro m _; exact Int.natCast_nonneg
+  apply Int.nonneg_of_normalize_eq_self
+  simp only [kLCM, Finset.normalize_lcm]
 
 /-- kLCM is positive when all moduli are positive. -/
 theorem kLCM_pos {s : Finset ℕ} (hne : s.Nonempty) (hpos : ∀ m ∈ s, 0 < m) :
     0 < kLCM s := by
-  obtain ⟨m, hm⟩ := hne
-  have hm_pos : (0 : ℤ) < (m : ℤ) := by exact_mod_cast hpos m hm
-  exact lt_of_lt_of_le hm_pos (dvd_kLCM hm).le
+  have hne0 : kLCM s ≠ 0 := by
+    simp only [kLCM, Finset.lcm_ne_zero_iff]
+    intro m hm
+    exact_mod_cast (hpos m hm).ne'
+  exact lt_of_le_of_ne (kLCM_nonneg s) (Ne.symm hne0)
 
 /-- Any solution reduces canonically: y % kLCM is also a solution in [0, kLCM). -/
 theorem kModuli_canonical {s : Finset ℕ} {a : ℕ → ℤ} (y : ℤ)
@@ -148,18 +150,12 @@ theorem kLCM_le_prod {s : Finset ℕ} (hne : s.Nonempty) (hpos : ∀ m ∈ s, 0 
 theorem kLCM_lt_prod_when_gcd_gt_one {m n : ℕ} (hm : 0 < m) (hn : 0 < n)
     (hg : 1 < Nat.gcd m n) :
     kLCM {m, n} < (m : ℤ) * n := by
-  have hL : kLCM {m, n} = Int.lcm m n := by
-    simp [kLCM, Finset.lcm_pair, Int.lcm]
-    ring_nf
-    simp [Int.gcd_natCast_natCast, Nat.lcm]
-  rw [hL]
-  have : (Int.lcm m n : ℤ) < (m : ℤ) * n := by
-    rw [Int.lcm, show Int.gcd m n = Nat.gcd m n from Int.gcd_natCast_natCast m n]
-    rw [show (m : ℤ) * n = (m * n : ℕ) from by push_cast; ring]
-    push_cast
-    rw [Nat.cast_lt]
-    exact ChineseRemainderNonCoprimeOQ01.lcm_lt_mul_of_gcd_gt_one m n hm hn hg
-  exact this
+  have hL : kLCM {m, n} = ((Nat.lcm m n : ℕ) : ℤ) := by
+    simp only [kLCM, Finset.lcm_insert, Finset.lcm_singleton, Int.normalize_coe_nat]
+    rw [← Int.coe_lcm, Int.lcm_def]
+    simp
+  rw [hL, show ((m : ℤ) * n) = ((m * n : ℕ) : ℤ) by push_cast; ring, Nat.cast_lt]
+  exact ChineseRemainderNonCoprimeOQ01.lcm_lt_mul_of_gcd_gt_one m n hm hn hg
 
 -- ============================================================
 -- Part V: Iterative Construction
@@ -180,21 +176,21 @@ theorem kModuli_iterative {s : Finset ℕ} {m : ℕ} {a : ℕ → ℤ} {x₀ : �
   constructor
   · intro hall
     refine ⟨hall m (mem_insert_self m s), ?_⟩
-    rw [← kModuli_periodic]
+    rw [Int.modEq_iff_dvd, kLCM_dvd_iff]
     intro n hn
-    exact (hall n (mem_insert_of_mem hn)).trans (hx₀ n hn).symm
+    exact ((hall n (mem_insert_of_mem hn)).trans (hx₀ n hn).symm).dvd
   · intro ⟨hm_cong, hL_cong⟩ n hn
     rcases mem_insert.mp hn with rfl | hn_s
     · exact hm_cong
-    · -- kLCM s ∣ (y - x₀) and (n : ℤ) ∣ kLCM s, so (n : ℤ) ∣ (y - x₀)
-      have hLdvd : kLCM s ∣ (y - x₀) := Int.modEq_iff_dvd.mp hL_cong
+    · -- kLCM s ∣ (x₀ - y) and (n : ℤ) ∣ kLCM s, so (n : ℤ) ∣ (x₀ - y)
+      have hLdvd : kLCM s ∣ (x₀ - y) := Int.modEq_iff_dvd.mp hL_cong
       have hndvdL : (n : ℤ) ∣ kLCM s := dvd_kLCM hn_s
-      have hndvd : (n : ℤ) ∣ (y - x₀) := dvd_trans hndvdL hLdvd
-      have hx₀n : (n : ℤ) ∣ (x₀ - a n) := Int.modEq_iff_dvd.mp (hx₀ n hn_s)
+      have hndvd : (n : ℤ) ∣ (x₀ - y) := dvd_trans hndvdL hLdvd
+      have hx₀n : (n : ℤ) ∣ (a n - x₀) := Int.modEq_iff_dvd.mp (hx₀ n hn_s)
       rw [Int.modEq_iff_dvd]
-      have : y - a n = (y - x₀) + (x₀ - a n) := by ring
-      rw [this]
-      exact dvd_add hndvd hx₀n
+      have hsum : a n - y = (a n - x₀) + (x₀ - y) := by ring
+      rw [hsum]
+      exact dvd_add hx₀n hndvd
 
 -- ============================================================
 -- Part VI: Necessary Condition
@@ -206,13 +202,15 @@ theorem kModuli_necessary {s : Finset ℕ} {a : ℕ → ℤ} (x₀ : ℤ)
     (hx₀ : ∀ m ∈ s, x₀ ≡ a m [ZMOD (m : ℤ)])
     {m n : ℕ} (hm : m ∈ s) (hn : n ∈ s) :
     (Nat.gcd m n : ℤ) ∣ (a m - a n) := by
-  have hxm := Int.modEq_iff_dvd.mp (hx₀ m hm)  -- (m : ℤ) ∣ x₀ - a m
-  have hxn := Int.modEq_iff_dvd.mp (hx₀ n hn)  -- (n : ℤ) ∣ x₀ - a n
+  have hxm := Int.modEq_iff_dvd.mp (hx₀ m hm)  -- (m : ℤ) ∣ a m - x₀
+  have hxn := Int.modEq_iff_dvd.mp (hx₀ n hn)  -- (n : ℤ) ∣ a n - x₀
   have hgm : (Nat.gcd m n : ℤ) ∣ (m : ℤ) := Int.natCast_dvd_natCast.mpr (Nat.gcd_dvd_left m n)
   have hgn : (Nat.gcd m n : ℤ) ∣ (n : ℤ) := Int.natCast_dvd_natCast.mpr (Nat.gcd_dvd_right m n)
-  have h1 : (Nat.gcd m n : ℤ) ∣ (x₀ - a m) := dvd_trans hgm hxm
-  have h2 : (Nat.gcd m n : ℤ) ∣ (x₀ - a n) := dvd_trans hgn hxn
-  convert dvd_sub h1 h2 using 1; ring
+  have h1 : (Nat.gcd m n : ℤ) ∣ (a m - x₀) := dvd_trans hgm hxm
+  have h2 : (Nat.gcd m n : ℤ) ∣ (a n - x₀) := dvd_trans hgn hxn
+  have hsub : a m - a n = (a m - x₀) - (a n - x₀) := by ring
+  rw [hsub]
+  exact dvd_sub h1 h2
 
 -- ============================================================
 -- Part VII: Concrete Examples
