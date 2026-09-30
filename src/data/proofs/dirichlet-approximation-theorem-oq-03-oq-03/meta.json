@@ -96,14 +96,21 @@
       "id": "header",
       "title": "Docstring: Packaging the Determinant–Shear Volume Technique",
       "startLine": 1,
-      "endLine": 54,
+      "endLine": 51,
       "mathContext": "Goal: $\\operatorname{vol}(M\\cdot[a,b]) = |\\det M|\\prod_i(b_i-a_i)$, closing the parent's open $\\operatorname{vol}(K(\\alpha,N))=4$ step.",
-      "summary": "Docstring framing the entry against the parent's single open volume step (volume(body α N) = 4) and packaging the general-dimension 'volume = |det| · box volume' lemma its third open question requested. Previews the five results (the reusable core, unit-cube volume, concrete parallelepiped volume, the 2-D shoelace specialisation, and the Dirichlet-body closure) and notes the relation to Mathlib's abstract addHaar_image_linearMap / addHaar_parallelepiped. import Mathlib only; opens the namespace."
+      "summary": "Docstring framing the entry against the parent's single open volume step (volume(body α N) = 4) and packaging the general-dimension 'volume = |det| · box volume' lemma its third open question requested. Previews the five results (the reusable core, unit-cube volume, concrete parallelepiped volume, the 2-D shoelace specialisation, and the Dirichlet-body closure) and notes the relation to Mathlib's abstract addHaar_image_linearMap / addHaar_parallelepiped."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Import, Namespace, and Section Variable",
+      "startLine": 52,
+      "endLine": 59,
+      "summary": "`import Mathlib` (the only import — everything is derived, nothing borrowed beyond the load-bearing addHaar_image_linearMap), opens the `ParallelepipedVolume` namespace and `MeasureTheory Matrix Set`, and fixes the ambient dimension `variable {n : ℕ}` shared by every lemma in the reusable-core and parallelepiped sections."
     },
     {
       "id": "reusable-core",
       "title": "The Reusable Core: volume of a box-image = |det| · box volume",
-      "startLine": 55,
+      "startLine": 60,
       "endLine": 71,
       "mathContext": "$\\operatorname{vol}(M\\cdot[a,b]) = |\\det M|\\,\\prod_i (b_i - a_i)$, and $\\operatorname{vol}([0,1]^n) = 1$.",
       "summary": "volume_toLin'_image_Icc is the general-dimension 'volume of a parallelogram = |det| · box volume': addHaar_image_linearMap turns the image volume into ofReal|LinearMap.det (toLin' M)|·volume[a,b], LinearMap.det_toLin' replaces it by the matrix determinant M.det, and Real.volume_Icc_pi expands the box volume into ∏ ofReal(bᵢ − aᵢ). volume_unitCube specialises the box volume at [0,1]ⁿ to 1."
