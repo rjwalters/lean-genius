@@ -1130,4 +1130,180 @@ theorem ramseyNumber_two_self_le (s : ℕ) (hs : 2 ≤ s) :
     norm_num
   omega
 
+/-! ### S11: the general-`k` unwind — the Erdős–Rado recursive majorant
+
+This section completes the quantitative layer of OQ-03b: an **explicit,
+computable upper bound for `ramseyNumber` at every uniformity**, obtained by
+unwinding `ramseyNumber_succ_le` all the way down to the graph base
+`ramseyNumber_two_le_choose`.
+
+**An honesty note on the bound's shape.**  The plan recorded in the node's
+state file hoped the unwind would give the classical tower bound
+`R_k(s, s) ≤ twr_{k-1}(c_k · s)` (height `k - 1`, independent of `s`).  It
+does not, and cannot: at uniformity `k + 1` the recursion
+`R_{k+1}(s, t) ≤ R_k(R_{k+1}(s-1, t), R_{k+1}(s, t-1)) + 1` is applied once
+per unit of `s + t`, and EACH application feeds the (already exponential)
+level-`k` bound with the previous inner value — so a fixed uniformity
+`k + 1` costs a tower of height `≈ s + t`, not a single exponential.  The
+classical height-`(k-1)` tower comes from a genuinely different argument
+(Erdős–Rado 1956: the tree/ramification construction, one exponential per
+uniformity level via `R_k(s,t) ≤ 2^{\binom{R_{k-1}(s-1,t-1)}{k-1}} + k - 1`),
+which is not a corollary of the recursion formalized here.  What the
+recursion honestly yields is the **Ackermann-shaped majorant** below —
+still an effective, everywhere-defined bound, and the faithful quantitative
+content of `ramseyNumber_succ_le`.
+
+`erdosRadoBound j m` bounds `R_{j+2}(s, t)` whenever `s + t ≤ m`:
+
+* level `j = 0` (graphs): `2 ^ m`, absorbing the Erdős–Szekeres binomial
+  bound `C(m - 2, s - 1) ≤ 2 ^ m`;
+* level `j + 1`: iterate `m ↦ (level-j bound at twice the previous value)
+  + 1`, exactly mirroring one application of `ramseyNumber_succ_le`. -/
+
+/-- The **Erdős–Rado recursive majorant**: the Ackermann-shaped function
+obtained by unwinding `ramseyNumber_succ_le` down to the graph base.
+`erdosRadoBound j m` will bound `ramseyNumber (j + 2) s t` for `s + t ≤ m`
+(`ramseyNumber_le_erdosRadoBound`).  The recursion is lexicographic in
+`(j, m)`, precisely Ackermann's shape. -/
+def erdosRadoBound : ℕ → ℕ → ℕ
+  | 0, m => 2 ^ m
+  | _ + 1, 0 => 1
+  | j + 1, m + 1 => erdosRadoBound j (2 * erdosRadoBound (j + 1) m) + 1
+
+/-- The majorant dominates its argument: `m ≤ erdosRadoBound j m`.  (Level
+`0` is `m ≤ 2 ^ m`; higher levels gain at least `+ 1` per step.) -/
+theorem le_erdosRadoBound : ∀ j m : ℕ, m ≤ erdosRadoBound j m
+  | 0, m => by simpa [erdosRadoBound] using m.lt_two_pow_self.le
+  | _ + 1, 0 => Nat.zero_le _
+  | j + 1, m + 1 => by
+    have h1 := le_erdosRadoBound (j + 1) m
+    have h2 := le_erdosRadoBound j (2 * erdosRadoBound (j + 1) m)
+    simp only [erdosRadoBound]
+    omega
+
+/-- The majorant is monotone in its argument (step form). -/
+theorem erdosRadoBound_le_succ (j m : ℕ) :
+    erdosRadoBound j m ≤ erdosRadoBound j (m + 1) := by
+  cases j with
+  | zero =>
+    simpa [erdosRadoBound] using
+      Nat.pow_le_pow_right (by norm_num) (Nat.le_succ m)
+  | succ j =>
+    have h := le_erdosRadoBound j (2 * erdosRadoBound (j + 1) m)
+    simp only [erdosRadoBound]
+    omega
+
+/-- The majorant is monotone in its argument. -/
+theorem erdosRadoBound_mono (j : ℕ) : Monotone (erdosRadoBound j) :=
+  monotone_nat_of_le_succ (erdosRadoBound_le_succ j)
+
+/-- **The general-`k` unwind of the Erdős–Rado recursion** (OQ-03b,
+quantitative layer, all uniformities): for every `j` and all target sizes
+`s, t ≥ j + 2`,
+
+  `R_{j+2}(s, t) ≤ erdosRadoBound j (s + t)`.
+
+Outer induction on the uniformity level `j` (base: the Erdős–Szekeres
+binomial bound estimated by `C(n, i) ≤ 2 ^ n`); inner fuel induction on
+`s + t` (boundary rows collapse via `is_ramsey_self_right`/`left`, the
+interior is one application of `ramseyNumber_succ_le` fed into the outer
+hypothesis — the inner Ramsey numbers are certified `≥ j + 2` by
+`min_le_ramseyNumber` and bounded by the inner hypothesis, then
+`erdosRadoBound_mono` aligns the arguments). -/
+theorem ramseyNumber_le_erdosRadoBound :
+    ∀ j s t : ℕ, j + 2 ≤ s → j + 2 ≤ t →
+      ramseyNumber (j + 2) s t ≤ erdosRadoBound j (s + t) := by
+  intro j
+  induction j with
+  | zero =>
+    -- Graph base: Erdős–Szekeres binomial bound, coarsened to `2 ^ (s + t)`.
+    intro s t hs ht
+    show ramseyNumber 2 s t ≤ erdosRadoBound 0 (s + t)
+    have h1 := ramseyNumber_two_le_choose s t hs ht
+    have h2 : (s + t - 2).choose (s - 1) ≤ 2 ^ (s + t - 2) :=
+      Nat.choose_le_two_pow _ _
+    have h3 : (2 : ℕ) ^ (s + t - 2) ≤ 2 ^ (s + t) :=
+      Nat.pow_le_pow_right (by norm_num) (by omega)
+    simp only [erdosRadoBound]
+    omega
+  | succ j IHj =>
+    -- Level `j + 1` (uniformity `j + 3`): fuel induction on `s + t`.
+    suffices h : ∀ (m s t : ℕ), s + t ≤ m → j + 3 ≤ s → j + 3 ≤ t →
+        ramseyNumber (j + 3) s t ≤ erdosRadoBound (j + 1) (s + t) by
+      intro s t hs ht
+      exact h (s + t) s t le_rfl hs ht
+    intro m
+    induction m with
+    | zero => intro s t hst hs ht; omega
+    | succ m IH =>
+      intro s t hst hs ht
+      by_cases hsK : s = j + 3
+      · -- Boundary row `s = j + 3`: `R_K(K, t) ≤ t`.
+        subst hsK
+        have h1 : ramseyNumber (j + 3) (j + 3) t ≤ t :=
+          ramseyNumber_le_of_isRamsey
+            (is_ramsey_self_right (j + 3) t (by omega) ht)
+        have h2 : t ≤ erdosRadoBound (j + 1) (j + 3 + t) :=
+          le_trans (by omega) (le_erdosRadoBound (j + 1) (j + 3 + t))
+        omega
+      by_cases htK : t = j + 3
+      · -- Boundary row `t = j + 3`: `R_K(s, K) ≤ s`.
+        subst htK
+        have h1 : ramseyNumber (j + 3) s (j + 3) ≤ s :=
+          ramseyNumber_le_of_isRamsey
+            (is_ramsey_self_left (j + 3) s (by omega) hs)
+        have h2 : s ≤ erdosRadoBound (j + 1) (s + (j + 3)) :=
+          le_trans (by omega) (le_erdosRadoBound (j + 1) (s + (j + 3)))
+        omega
+      -- Interior: `s, t ≥ j + 4` — one recursion step.
+      have hs4 : j + 4 ≤ s := by omega
+      have ht4 : j + 4 ≤ t := by omega
+      set A := ramseyNumber (j + 3) (s - 1) t with hA_def
+      set B := ramseyNumber (j + 3) s (t - 1) with hB_def
+      have hrec : ramseyNumber (j + 3) s t ≤ ramseyNumber (j + 2) A B + 1 :=
+        ramseyNumber_succ_le (j + 2) s t (by omega) (by omega) (by omega)
+      -- The inner Ramsey numbers are legal (`≥ j + 2`) targets at level `j`.
+      have hA_lb : j + 2 ≤ A := by
+        have h := min_le_ramseyNumber (j + 3) (s - 1) t (by omega) (by omega)
+          (by omega)
+        rw [← hA_def] at h
+        omega
+      have hB_lb : j + 2 ≤ B := by
+        have h := min_le_ramseyNumber (j + 3) s (t - 1) (by omega) (by omega)
+          (by omega)
+        rw [← hB_def] at h
+        omega
+      -- Inner hypothesis: both inner values are `≤ erdosRadoBound (j+1) (s+t-1)`.
+      have hA_ub : A ≤ erdosRadoBound (j + 1) (s + t - 1) := by
+        have h := IH (s - 1) t (by omega) (by omega) ht
+        rw [← hA_def, show s - 1 + t = s + t - 1 by omega] at h
+        exact h
+      have hB_ub : B ≤ erdosRadoBound (j + 1) (s + t - 1) := by
+        have h := IH s (t - 1) (by omega) hs (by omega)
+        rw [← hB_def, show s + (t - 1) = s + t - 1 by omega] at h
+        exact h
+      -- Outer hypothesis at the pair `(A, B)`, aligned by monotonicity.
+      have hstep : ramseyNumber (j + 2) A B ≤ erdosRadoBound j (A + B) :=
+        IHj A B hA_lb hB_lb
+      have hmono : erdosRadoBound j (A + B) ≤
+          erdosRadoBound j (2 * erdosRadoBound (j + 1) (s + t - 1)) :=
+        erdosRadoBound_mono j (by omega)
+      -- Fold the level-`(j+1)` recursion equation at `s + t`.
+      have hunfold : erdosRadoBound (j + 1) (s + t)
+          = erdosRadoBound j (2 * erdosRadoBound (j + 1) (s + t - 1)) + 1 := by
+        rw [show s + t = (s + t - 1) + 1 by omega]
+        simp only [erdosRadoBound, Nat.add_sub_cancel]
+      omega
+
+/-- **Diagonal form**: `R_k(s, s) ≤ erdosRadoBound (k - 2) (2s)` for
+`k ≥ 2`, `s ≥ k` — the effective bound at every uniformity, specialized to
+the diagonal. -/
+theorem ramseyNumber_self_le_erdosRadoBound (k s : ℕ) (hk : 2 ≤ k)
+    (hs : k ≤ s) :
+    ramseyNumber k s s ≤ erdosRadoBound (k - 2) (2 * s) := by
+  have h := ramseyNumber_le_erdosRadoBound (k - 2) s s (by omega) (by omega)
+  rw [show k - 2 + 2 = k by omega] at h
+  rw [show 2 * s = s + s by omega]
+  exact h
+
 end RamseyK

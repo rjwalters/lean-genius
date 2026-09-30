@@ -1,23 +1,29 @@
 # Current State
 
-**OQ-03a PROVED, OQ-03b recursion + graph-level unwind PROVED**
-(2026-07-24, researcher-2, S10): `RamseyHypergraph.lean` is
-**0-sorry / 0-axiom** (~1140 LOC, 30 theorems). S8 closed
-`ramsey_existence` (OQ-03a); S9 added the `sInf` glue and the
-**recursive Erdős–Rado inequality**
-`R_{k+1}(s,t) ≤ R_k(R_{k+1}(s-1,t), R_{k+1}(s,t-1)) + 1`
-(`ramseyNumber_succ_le`); S10 added `ramseyNumber_mono` (the S10-prep
-glue) and performed the `k = 2` unwind: the Erdős–Szekeres recursion
-`R_2(s,t) ≤ R_2(s-1,t) + R_2(s,t-1)`, the **Erdős–Szekeres binomial
-bound** `R_2(s,t) ≤ C(s+t-2, s-1)` (1935), and the diagonal
-`R_2(s,s) ≤ 4^(s-1)`. Remaining sub-goals: S11 = general-`k` tower
-def + induction (OQ-03b tower form) and OQ-03c (Erdős–Hajnal
-stepping-up lower bound).
+**OQ-03a PROVED; OQ-03b quantitative layer PROVED at ALL uniformities**
+(2026-09-29, researcher-2, S11): `RamseyHypergraph.lean` is
+**0-sorry / 0-axiom** (1309 LOC, 35 theorems, Docker-GREEN). S8 closed
+`ramsey_existence` (OQ-03a); S9 the recursive Erdős–Rado inequality
+(`ramseyNumber_succ_le`); S10 the `k = 2` unwind (Erdős–Szekeres
+binomial bound + `R_2(s,s) ≤ 4^(s-1)`); **S11 the general-`k` unwind**:
+`ramseyNumber_le_erdosRadoBound : R_{j+2}(s,t) ≤ erdosRadoBound j (s+t)`
+with `erdosRadoBound` the explicit Ackermann-shaped computable majorant,
+plus the diagonal form.
 
-**Phase**: ACT (S10 closes the graph-level unwind; S11 targets the
-general-`k` tower)
-**Since**: 2026-07-24 (S10, researcher-2)
-**Iteration**: 10
+**S11 honesty finding**: the classical tower `R_k(s,s) ≤ twr_{k-1}(c_k·s)`
+(the shape the old S4 plan named) is **not derivable** from
+`ramseyNumber_succ_le` — each uniformity level costs tower height `≈ s+t`,
+not one exponential. The height-`(k−1)` tower needs the Erdős–Rado 1956
+tree/ramification argument (`R_k(s,t) ≤ 2^{C(R_{k-1}(s-1,t-1), k-1)} + k−1`)
+— registered as a structured blocked route in the tracker
+(reopen: formalize the 1956 construction as its own major rung).
+
+Remaining sub-goals: OQ-03c (Erdős–Hajnal stepping-up lower bound,
+S-up-4 PREP below), or the 1956 tree upper bound.
+
+**Phase**: ACT (S11 closes the quantitative unwind at every uniformity)
+**Since**: 2026-09-29 (S11, researcher-2)
+**Iteration**: 11
 **Researcher**: researcher-2 (S10); researcher-1 (S9, S8 ACT-F, S7 ACT-E, S5-prep, S4-prep); researcher-9 (S6 ACT-D, S4 ACT-C, S2); researcher-11 (S3); researcher-8 (S1)
 
 ## Iteration 10 (researcher-2, 2026-07-24) — S10: `ramseyNumber_mono` + Erdős–Szekeres binomial bound (graph-level unwind)

@@ -30,9 +30,15 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-24",
-    "iteration": 9,
-    "focus": "S9 (researcher-1, 2026-07-24): OQ-03b recursion layer closed. Five new sorry-free declarations (835 -> 1007 LOC): ramseyNumber_le_of_isRamsey (Nat.sInf_le), isRamsey_ramseyNumber (Nat.sInf_mem over the set shown nonempty by ramsey_existence_of_one_le), min_le_ramseyNumber (vertex-count lower bound via the constant-true coloring), IsRamsey.step (the S8 genuine-case recursion body with explicit witnesses: link coloring at Fin.last m, certificates run via IsRamsey.within, splice via link_lifts + insert_vertex), and ramseyNumber_succ_le — the recursive Erdős–Rado inequality R_{k+1}(s,t) <= R_k(R_{k+1}(s-1,t), R_{k+1}(s,t-1)) + 1 for k >= 1, s,t >= k+2. Host-verified (lake env lean, v4.31.0, exit 0). Next: S10 tower unwind.",
-    "blockers": [],
+    "iteration": 10,
+    "focus": "S11 landed (2026-09-29): general-k unwind complete via the Ackermann-shaped majorant erdosRadoBound. Sharp tower height-(k-1) recorded as blocked route (Erdos-Rado 1956 tree argument required). Next live: OQ-03c stepping-up lower bound (S-up-4 PREP in state.md), or the 1956 tree upper bound as its own major rung.",
+    "blockers": [
+      {
+        "route": "classical tower upper bound R_k(s,s) <= twr_{k-1}(c_k s) via unwinding ramseyNumber_succ_le",
+        "reopenCriterion": "materially new mechanism required: the Erdos-Rado 1956 tree/ramification construction (one exponential per uniformity level); the succ_le recursion alone provably costs tower height ~s+t per level",
+        "blockedAt": "2026-09-29"
+      }
+    ],
     "nextAction": "S11: general-k tower def + induction unwinding ramseyNumber_succ_le (use ramseyNumber_mono to tame the double recursion). OQ-03c (Erdos-Hajnal stepping-up lower bound) remains the deep half.",
     "attemptCounts": {
       "total": 8,
@@ -41,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S9 (researcher-1 2026-07-24): OQ-03b recursion layer PROVED — ramseyNumber_succ_le: R_{k+1}(s,t) <= R_k(R_{k+1}(s-1,t), R_{k+1}(s,t-1)) + 1 for k >= 1, s,t >= k+2, via sInf glue lemmas (ramseyNumber_le_of_isRamsey / isRamsey_ramseyNumber / min_le_ramseyNumber) and IsRamsey.step, the S8 recursion body restated with explicit witnesses. RamseyHypergraph.lean is 0-sorry / 0-axiom (1007 LOC, 26 theorems), host-verified under v4.31. Remaining: S10 tower unwind (define tower, prove R_k(s,s) <= tower(k-1, c_k*s) by iterating ramseyNumber_succ_le down to ramseyNumber_one), then OQ-03c stepping-up lower bound.",
+    "progressSummary": "PROGRESS: OQ-03a closed (S8 ramsey_existence); OQ-03b closed through the quantitative layer at ALL uniformities (S9 recursion + S10 Erdos-Szekeres binomial/4^(s-1) + S11 general-k unwind: R_{j+2}(s,t) <= erdosRadoBound j (s+t), an explicit Ackermann-shaped computable majorant; 2026-09-29). RamseyHypergraph.lean 1309 LOC, 35 theorems, 0 sorry / 0 axiom, Docker-GREEN. The classical height-(k-1) tower is NOT reachable from the succ_le recursion (blocked route: needs Erdos-Rado 1956 tree argument). Remaining: OQ-03c stepping-up lower bound (deep half).",
     "builtItems": [
       "proofs/Proofs/RamseyHypergraph.lean — IsRamsey.anti_s, IsRamsey.anti_t, is_ramsey_self_right, is_ramsey_self_left + boundary-discharging ramsey_existence (S4 ACT-C, researcher-9).",
       "proofs/Proofs/RamseyHypergraph.lean — IsRamsey.swap (color symmetry), ramseyNumber_zero_false, ramseyNumber_zero_true (S4-prep, researcher-1).",
@@ -63,7 +69,8 @@
       "isRamsey_ramseyNumber in RamseyHypergraph.lean (S9): ramseyNumber k s t itself satisfies IsRamsey (Nat.sInf_mem, nonemptiness from ramsey_existence_of_one_le)",
       "min_le_ramseyNumber in RamseyHypergraph.lean (S9): vertex-count lower bound min s t <= ramseyNumber k s t via constant-true coloring",
       "IsRamsey.step in RamseyHypergraph.lean (S9): the Ramsey 1930 recursion body with explicit witnesses n1, n2, m — IsRamsey (m+1) (k+1) s t from IsRamsey n1 (k+1) (s-1) t, IsRamsey n2 (k+1) s (t-1), IsRamsey m k n1 n2",
-      "ramseyNumber_succ_le in RamseyHypergraph.lean (S9): the recursive Erdős–Rado inequality (OQ-03b recursion layer)"
+      "ramseyNumber_succ_le in RamseyHypergraph.lean (S9): the recursive Erdős–Rado inequality (OQ-03b recursion layer)",
+      "erdosRadoBound (Ackermann-shaped recursive majorant def), le_erdosRadoBound, erdosRadoBound_le_succ, erdosRadoBound_mono, ramseyNumber_le_erdosRadoBound (R_{j+2}(s,t) <= erdosRadoBound j (s+t), all uniformities), ramseyNumber_self_le_erdosRadoBound (diagonal) in RamseyHypergraph.lean"
     ],
     "insights": [
       "The s=k boundary case is settled at n=t by a direct Bool case-split: either some k-subset is colored false (it IS the mono-false k-clique, since |S|=k forces |T|=|S| ⇒ T=S for any k-sub-subset T ⊆ S, via Finset.eq_of_subset_of_card_le), or every k-subset is colored true (and Finset.univ : Finset (Fin t) is the mono-true t-clique).",
@@ -88,7 +95,10 @@
       "S9: no max-bumping is needed at the sInf witnesses — min_le_ramseyNumber gives R_{k+1}(s-1,t) >= min(s-1,t) >= k+1 > k in the genuine range s,t >= k+2, so the inner Ramsey numbers are automatically legal target sizes at uniformity k (the S8 induction needed max n k only because its witnesses were bare existentials)",
       "S9: extracting the recursion body as IsRamsey.step (explicit witnesses) keeps the diff additive — the proven S8 induction is untouched, and the same body now serves both the existence proof and the quantitative inequality",
       "S9: omega handles Nat.min/max directly, so the min s t <= ramseyNumber bookkeeping (and k <= n1/n2 derivations) discharge without min_le_iff case splits",
-      "Stale-PR rebase pattern: 67-day-old #43504 'conflict' had dissolved — main's merged S8 text was byte-identical inside the PR file (git diff = 298 pure additions), so landing = fresh branch off origin/main + checkout PR's file + reverify. Check diff direction before assuming a real conflict."
+      "Stale-PR rebase pattern: 67-day-old #43504 'conflict' had dissolved — main's merged S8 text was byte-identical inside the PR file (git diff = 298 pure additions), so landing = fresh branch off origin/main + checkout PR's file + reverify. Check diff direction before assuming a real conflict.",
+      "S11 finding (2026-09-29): the hoped-for classical tower bound R_k(s,s) <= twr_{k-1}(c_k s) is NOT derivable from ramseyNumber_succ_le -- the recursion is applied once per unit of s+t at each uniformity and each application feeds the exponential level-k bound with the previous inner value, so a fixed uniformity costs tower height ~s+t. The height-(k-1) tower needs the genuinely different Erdos-Rado 1956 tree/ramification argument (R_k(s,t) <= 2^C(R_{k-1}(s-1,t-1), k-1) + k - 1) -- recorded as a blocked route.",
+      "What succ_le honestly yields: the Ackermann-shaped majorant erdosRadoBound (level 0 = 2^m absorbing Erdos-Szekeres; level j+1 iterates m -> B_j(2*B_{j+1}(m-1))+1), with R_{j+2}(s,t) <= erdosRadoBound j (s+t) proved by outer induction on j + inner fuel induction on s+t (boundary rows via is_ramsey_self_right/left + le_erdosRadoBound).",
+      "Lean gotchas: WF equation lemmas introduce m+1-1 (close with Nat.add_sub_cancel in the simp set); omega treats j+2+1 and j+3 as distinct atoms -- restate hypotheses at the canonical numeral by defeq (have hrec' : ... j+3 ... := hrec); goal `ramseyNumber (0+2)` needs `show ramseyNumber 2 ...` before omega."
     ],
     "mathlibGaps": [
       "No general hypergraph Ramsey number — only SimpleGraph.ramseyNumber (k=2).",
