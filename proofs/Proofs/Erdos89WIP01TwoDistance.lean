@@ -113,21 +113,18 @@ theorem twoDistPoly_eq_sum (p : EuclideanSpace ℝ (Fin 2)) (a b : ℝ) :
     norm_sub_sq_coords x p
   simp only [twoDistPoly, hx, twoDistCoeff, twoDistBasis, Fin.sum_univ_succ,
     Finset.univ_unique, Finset.sum_singleton, Fin.default_eq_zero,
-    Matrix.cons_val_zero, Matrix.cons_val_succ, Pi.smul_apply, Pi.add_apply,
+    Matrix.cons_val_zero, Matrix.cons_val_succ, Pi.smul_apply,
     Finset.sum_apply, smul_eq_mul]
   ring
 
-/-- The finset of the ten monomials. -/
-noncomputable def twoDistBasisSet : Finset (EuclideanSpace ℝ (Fin 2) → ℝ) :=
-  Finset.univ.image twoDistBasis
-
-/-- Membership: every `twoDistPoly` lies in the span of the ten monomials. -/
+/-- Membership: every `twoDistPoly` lies in the span of the ten monomials
+(their range as a function on `Fin 10`). -/
 theorem twoDistPoly_mem_span (p : EuclideanSpace ℝ (Fin 2)) (a b : ℝ) :
     twoDistPoly p a b ∈
-      Submodule.span ℝ (twoDistBasisSet : Set (EuclideanSpace ℝ (Fin 2) → ℝ)) := by
+      Submodule.span ℝ (Set.range twoDistBasis) := by
   rw [twoDistPoly_eq_sum]
   refine Submodule.sum_smul_mem _ _ fun i _ => Submodule.subset_span ?_
-  exact Finset.mem_coe.mpr (Finset.mem_image_of_mem _ (Finset.mem_univ i))
+  exact Set.mem_range_self i
 
 /-! ### Section 3. The card bound by diagonal evaluation -/
 
@@ -142,8 +139,9 @@ theorem two_distance_card_le_ten (S : Finset (EuclideanSpace ℝ (Fin 2)))
       Erdos89.dist p q = a ∨ Erdos89.dist p q = b) :
     S.card ≤ 10 := by
   classical
-  set V := Submodule.span ℝ
-    (twoDistBasisSet : Set (EuclideanSpace ℝ (Fin 2) → ℝ)) with hV
+  set V := Submodule.span ℝ (Set.range twoDistBasis) with hV
+  haveI : Module.Finite ℝ V :=
+    Module.Finite.span_of_finite ℝ (Set.finite_range twoDistBasis)
   -- linear independence of the raw function family
   have hindep : LinearIndependent ℝ
       (fun i : ↥S => twoDistPoly (↑i) a b) := by
@@ -176,13 +174,10 @@ theorem two_distance_card_le_ten (S : Finset (EuclideanSpace ℝ (Fin 2)))
   have hcard : Fintype.card ↥S ≤ Module.finrank ℝ V :=
     hindepV.fintype_card_le_finrank
   have hrank : Module.finrank ℝ V ≤ 10 := by
-    have h1 : Module.finrank ℝ V ≤ twoDistBasisSet.card :=
-      finrank_span_finset_le_card twoDistBasisSet
-    have h2 : twoDistBasisSet.card ≤ 10 := by
-      calc twoDistBasisSet.card ≤ (Finset.univ : Finset (Fin 10)).card :=
-            Finset.card_image_le
-        _ = 10 := by simp
-    omega
+    have h1 : (Set.range twoDistBasis).finrank ℝ ≤ Fintype.card (Fin 10) :=
+      finrank_range_le_card twoDistBasis
+    rw [Fintype.card_fin] at h1
+    exact h1
   have := hcard.trans hrank
   simpa [Fintype.card_coe] using this
 
@@ -194,7 +189,7 @@ theorem card_le_ten_of_numDistinctDistances_le_two
   classical
   by_cases hsmall : S.card ≤ 10
   · exact hsmall
-  push_neg at hsmall
+  rw [not_le] at hsmall
   exfalso
   have h1 : 1 ≤ numDistinctDistances S :=
     one_le_numDistinctDistances_of_two_le_card S (by omega)
@@ -212,7 +207,8 @@ theorem card_le_ten_of_numDistinctDistances_le_two
   unfold numDistinctDistances at h1 h2
   rcases Nat.lt_or_ge (distinctDistances S).card 2 with hlt | hge
   · -- exactly one distance value
-    obtain ⟨r, hD⟩ := Finset.card_eq_one.mp (by omega)
+    obtain ⟨r, hD⟩ := Finset.card_eq_one.mp
+      (show (distinctDistances S).card = 1 by omega)
     have hrmem : r ∈ distinctDistances S := by rw [hD]; exact Finset.mem_singleton_self r
     have hrpos := hpos r hrmem
     have hbound := two_distance_card_le_ten S r r hrpos hrpos
@@ -240,7 +236,7 @@ theorem three_le_numDistinctDistances_of_card
     (S : Finset (EuclideanSpace ℝ (Fin 2))) (h : 11 ≤ S.card) :
     3 ≤ numDistinctDistances S := by
   by_contra hcon
-  push_neg at hcon
+  rw [not_le] at hcon
   have := card_le_ten_of_numDistinctDistances_le_two S (by omega)
   omega
 

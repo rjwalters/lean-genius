@@ -37,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-07-23, researcher-1): regular n-gon upper bound g(n) ≤ ⌊n/2⌋ shipped axiom-free in new file Erdos89WIP01Ngon.lean (minDistinctDistances_le_half; Docker-verified). Chord-length formula dist = 2|sin(π(i−j)/n)| proved once; vertex injectivity DERIVED from it (dist 0 ⟹ sin = 0 in (−π,π) ⟹ i = j, no separate coordinate geometry); index reflection min(m, n−m) via sin(π−x) = sin x. Halves the progression bound n−1; one uniform witness recovers the entire known upper ladder (tight at n = 3,4,5; hexagon re-derives g(6) ≤ 3) and adds the FIRST new entry: 2 ≤ g(7) ≤ 3 (minDistinctDistances_seven_mem_Icc). Exact table still pinned through n=5; g(6) = g(7) = 3 both blocked on the planar two-distance-set ≤ 5-points bound.",
+    "progressSummary": "PROGRESS (2026-09-29, researcher-1): FIRST g(n) >= 3 lower bound via the polynomial method — new Erdos89WIP01TwoDistance.lean proves any planar two-distance set has <= 10 points (10 monomials + diagonal-evaluation linear independence), hence g(n) >= 3 for n >= 11, giving the bracket 3 <= g(n) <= floor(n/2) and g(11) in [3,5]. Axiom-free, foundational only. PROGRESS (2026-07-23, researcher-1): regular n-gon upper bound g(n) ≤ ⌊n/2⌋ shipped axiom-free in new file Erdos89WIP01Ngon.lean (minDistinctDistances_le_half; Docker-verified). Chord-length formula dist = 2|sin(π(i−j)/n)| proved once; vertex injectivity DERIVED from it (dist 0 ⟹ sin = 0 in (−π,π) ⟹ i = j, no separate coordinate geometry); index reflection min(m, n−m) via sin(π−x) = sin x. Halves the progression bound n−1; one uniform witness recovers the entire known upper ladder (tight at n = 3,4,5; hexagon re-derives g(6) ≤ 3) and adds the FIRST new entry: 2 ≤ g(7) ≤ 3 (minDistinctDistances_seven_mem_Icc). Exact table still pinned through n=5; g(6) = g(7) = 3 both blocked on the planar two-distance-set ≤ 5-points bound.",
     "builtItems": [
       "Erdos89.dist_pos_of_ne in Erdos89WIP01.lean",
       "Erdos89.distinctDistances_eq_image (filter redundant) in Erdos89WIP01.lean",
@@ -79,7 +79,8 @@
       "ngonPoint_injOn: vertex distinctness derived from the chord formula (sin_eq_zero_iff_of_lt_of_lt)",
       "two_sin_mem_image: index reflection m ↦ min(m, n−m) via Real.sin_pi_sub",
       "minDistinctDistances_le_half: g(n) ≤ ⌊n/2⌋ (halves minDistinctDistances_le_pred)",
-      "minDistinctDistances_seven_le_three + minDistinctDistances_seven_mem_Icc: 2 ≤ g(7) ≤ 3"
+      "minDistinctDistances_seven_le_three + minDistinctDistances_seven_mem_Icc: 2 ≤ g(7) ≤ 3",
+      "proofs/Proofs/Erdos89WIP01TwoDistance.lean (~250 LOC, 0 ax/0 sorry, foundational axioms only): norm_sub_sq_coords, twoDistPoly/twoDistBasis/twoDistCoeff, twoDistPoly_eq_sum (polynomial identity), twoDistPoly_mem_span, two_distance_card_le_ten (planar 2-distance set <= 10 pts), card_le_ten_of_numDistinctDistances_le_two, three_le_numDistinctDistances_of_card, three_le_minDistinctDistances (g(n)>=3 for n>=11), minDistinctDistances_bracket, minDistinctDistances_eleven_mem_Icc (g(11) in [3,5])."
     ],
     "insights": [
       "distinctDistances S filters (·>0) over the off-diagonal image, but every off-diagonal pair (p≠q) already has ‖p−q‖>0, so the filter is redundant: distinctDistances S = S.offDiag.image (dist · ·). This removes the awkward filter for all downstream cardinality reasoning.",
@@ -99,13 +100,16 @@
       "The matching lower bound g(6) ≥ 3 is equivalent to the SHARP planar two-distance statement (a 2-distance set in ℝ² has ≤ 5 points, Kelly/Erdős), which is strictly beyond the elementary Larman–Rogers–Seidel rank ceiling ≤ (d+1)(d+2)/2 = 6 — so g(6) = 3 stays the open lower-bound direction.",
       "The n-gon bound is proof-economical: injectivity and the distance census both flow from ONE trig identity (cosA−cosB)²+(sinA−sinB)² = 4sin²((A−B)/2), so no per-vertex coordinate lemmas are needed — contrast the pentagon witness which needed dozens of bespoke dist_* lemmas",
       "Name-stability tactic: avoid div_lt_iff/lt_div_iff (renamed in recent Mathlib); the calc through div_eq_mul_inv + mul_lt_mul_of_pos_right + field_simp is drift-proof",
-      "g(n) ≤ ⌊n/2⌋ is tight at n = 3,4,5 and conjecturally at 6,7 — the first n where the n-gon is provably beaten is far out (grid constructions); so all remaining ladder work is LOWER bounds, which stay blocked on two-distance-set machinery"
+      "g(n) ≤ ⌊n/2⌋ is tight at n = 3,4,5 and conjecturally at 6,7 — the first n where the n-gon is provably beaten is far out (grid constructions); so all remaining ladder work is LOWER bounds, which stay blocked on two-distance-set machinery",
+      "2026-09-29: the polynomial (linear-algebra / Larman-Rogers-Seidel) method gives the FIRST lower bound beyond the no_four_equidistant floor g(n) >= 2. To each point p attach F_p(x) = (dist(x,p)^2 - a^2)(dist(x,p)^2 - b^2) for the two distance values a,b; these live in the 10-dim span of {Q^2, Q*x0, Q*x1, Q, x0^2, x0*x1, x1^2, x0, x1, 1} (Q = x0^2+x1^2) and are linearly independent by DIAGONAL EVALUATION (F_p(q)=0 for distinct set points, F_p(p)=a^2*b^2 != 0), so any planar 2-distance set has <= 10 points. Hence g(n) >= 3 for n >= 11.",
+      "The 10-bound is the NAIVE LRS instance (degree-2 monomials in 2 vars = C(4,2)=... actually dim 10 = the full quadratic-in-Q expansion). Sharp planar 2-distance max is 5 (Kelly); the LRS rank bound gives 6. Either would push the g(n)>=3 threshold from n>=11 down to n>=7 (LRS) or n>=6 (sharp), yielding g(7)=3 or g(6)=3 — both need finer arguments than diagonal evaluation and stay blocked.",
+      "Lean idioms (v4.31): span over Set.range (NOT Finset.image) to dodge DecidableEq on the function type; finrank_range_le_card b : (Set.range b).finrank <= Fintype.card ι is the exact bound; Module.Finite ℝ V needed for fintype_card_le_finrank, supplied by Module.Finite.span_of_finite ℝ (Set.finite_range b); LinearIndependent.of_comp V.subtype lifts raw-function independence into the submodule; EuclideanSpace.norm_eq + Real.sq_sqrt + Fin.sum_univ_two + sq_abs expands ‖x-p‖^2 to coords; untyped omega under Finset.card_eq_one.mp needs an explicit show for the metavariable card goal."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "g(6) ≥ 3: prove no 6-point two-distance set exists in ℝ² (sharp two-distance bound ≤ 5 pts) — deep, beyond the LRS rank ≤ 6 ceiling.",
-      "g(6) upper: alternatively a 3-distance 6-set (e.g. regular hexagon, or 5-pt 2-distance + 1) — pentagon+centre already gives ≤ 3.",
-      "√n×√n integer grid toward the conjectured Θ(n/√(log n)) rate."
+      "Sharpen the two-distance card bound from 10 toward 6 (LRS rank method: the F_p actually span a 6-dim space of symmetric polynomials once the Q^2 and cross terms are related on the 2-sphere embedding) — would give g(7) = 3. Then the sharp bound 5 (Kelly, case analysis) gives g(6) = 3. Both stay on the blocked-route ledger (need finer combinatorial geometry).",
+      "g(6) upper bound: pentagon+centre already gives <= 3 (documented); pairs with the eventual g(6)>=3 for the exact value.",
+      "sqrt(n) x sqrt(n) integer grid toward the conjectured Theta(n/sqrt(log n)) rate (deep, number-theoretic)."
     ],
     "markdown": "# Knowledge Base: erdos-89-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -130,5 +134,6 @@
   "lastUpdate": "2026-07-21",
   "significance": 7,
   "tractability": 6,
-  "nextAction": "Elementary upper-bound ladder complete (g(2..5) exact, g(6) ∈ [2,3], 0-axiom). Remaining: hard lower bounds (two-distance-set ≤ 5) + general n-gon ⌊n/2⌋ construction (large trig session). Stand down unless committing a full session."
+  "nextAction": "Elementary upper-bound ladder complete (g(2..5) exact, g(6) ∈ [2,3], 0-axiom). Remaining: hard lower bounds (two-distance-set ≤ 5) + general n-gon ⌊n/2⌋ construction (large trig session). Stand down unless committing a full session.",
+  "updatedAt": "2026-09-29"
 }
