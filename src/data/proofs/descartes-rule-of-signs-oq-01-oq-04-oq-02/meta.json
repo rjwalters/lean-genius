@@ -82,11 +82,18 @@
       "summary": "no_pos_roots_of_signVariations_zero: from Mathlib's Descartes bound, signVariations = 0 forces the positive-root count to 0. No parity, no analysis."
     },
     {
-      "id": "ivt-existence",
-      "title": "Part 2: Opposite Leading/Trailing Signs Force a Positive Root (IVT)",
+      "id": "deflation-and-exclusion",
+      "title": "Part 2a: Deflation by Xᵐ and Excluding the Monomial Case",
       "startLine": 75,
+      "endLine": 133,
+      "summary": "exists_pos_root_of_sign_opposition, setup half: deflate P = Xᵐ·Q by the largest power of X (pow_rootMultiplicity_dvd), establish Q.eval 0 = trailingCoeff ≠ 0 and Q.leadingCoeff = P.leadingCoeff, then show Q has positive degree — otherwise P would be a monomial with equal leading and trailing signs, contradicting the sign-opposition hypothesis."
+    },
+    {
+      "id": "ivt-conclusion",
+      "title": "Part 2b: Crossing Zero via the Intermediate Value Theorem",
+      "startLine": 134,
       "endLine": 165,
-      "summary": "exists_pos_root_of_sign_opposition: the analytic heart. Deflate P = Xᵐ·Q (largest power of X), establish Q.eval 0 = trailingCoeff ≠ 0, Q.leadingCoeff = P.leadingCoeff, and positive degree of Q. Use the ±∞ asymptotics to find a far point carrying the leading sign, then the Intermediate Value Theorem to cross zero in (0, ∞)."
+      "summary": "Splitting on the sign of the leading coefficient, the ±∞ asymptotics locate a point b > 0 where Q.eval b carries the leading sign while Q.eval 0 carries the opposite trailing sign; intermediate_value_Icc (or its primed variant) yields a root of Q strictly between 0 and b, which transports back to a positive root of P."
     },
     {
       "id": "boundary-count",
