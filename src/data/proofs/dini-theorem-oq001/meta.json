@@ -84,11 +84,18 @@
   },
   "sections": [
     {
-      "id": "header-and-setup",
-      "title": "Problem Statement and Setup",
-      "summary": "Module docstring framing OQ-01 (optimality vs the parent's mere sufficiency), the modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉₊, and the namespace/imports (Mathlib; open Set)",
+      "id": "header-docstring",
+      "title": "Import and Docstring: The Optimality Question",
+      "summary": "`import Mathlib` followed by the module docstring framing OQ-01 — the parent's one-sided sufficiency modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉₊ versus this file's answer that N is exactly optimal — and listing the six theorems the file proves.",
       "startLine": 1,
-      "endLine": 60
+      "endLine": 54
+    },
+    {
+      "id": "namespace-setup",
+      "title": "Namespace and Open",
+      "summary": "Opens the `DiniTheoremOQ01OQ02OQ01OQ01` namespace and `Set`, immediately before Part I's sharp-characterisation lemmas begin.",
+      "startLine": 56,
+      "endLine": 59
     },
     {
       "id": "sharp-characterisation",
