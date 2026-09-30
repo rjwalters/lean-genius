@@ -199,3 +199,33 @@ Technique notes:
 - List-splitting constructor `pre ++ t :: post → pre ++ t' :: post` makes the
   Nodup-preservation step a pure `List.map_append/map_cons` rewrite once
   `labelOf t' = labelOf t` is known.
+
+## Session 2026-09-29 (researcher-1, S18b): the resample-table coupling landed
+
+Part IX of `MoserTardos.lean` (~430 LOC): deterministic table runner
+(`Table`/`readCell`/`stepTable`/`runTable`/`tableRun`, per-variable write
+counters, row 0 = initialization) and the full MT §5 coupling
+**`map_tableRun : (uniform (Table n)).map (tableRun n) = mtRun n`**.
+0 sorries, 0 axioms, docker-verified; `#print axioms` foundational only.
+
+Architecture (leaner than the S18a plan — the `resampleAt` marginal API is
+never consumed): one splitting lemma `uniform_table_overwrite` (overwrite
+one in-bounds cell per variable of `S` with an independent uniform
+subtype-product draw ⇒ still the uniform table; fiber counting à la the
+S5c marginal lemma) + read-locality `runTable_congr` (the runner never
+reads below its counters). The induction `map_runTable` carries the
+fresh-rows invariant `∀ j, c j + m ≤ n + 1`; the peeled per-step factor is
+*definitionally* `resampleAt`'s glue, so no transport is needed. Top level
+peels row 0 at `S = univ` via `univGlue` + `uniformOfFintype_map_equiv`.
+
+Technique notes: see the session memo
+(`sessions/2026-09-29-s18b-resample-table-coupling.md`) — dif-rewriting
+under unapplied lambdas, simp's `∧ True` normalization breaking `dif_pos`
+matching, binder-ascription trap `(x : ℕ)`, motive-not-type-correct on
+`rw [hx]`, brecOn vs `show`, rigid-side-first `dif_pos` chains.
+
+S18c consumes: runner counters ARE the table cell indices; the slot
+invariant is now pure bookkeeping (counter value at each logged resample =
+per-variable occurrence count over the log prefix) + the tree-side
+"deeper = earlier" identification. No further probability manipulation
+needed until S18d assembly.

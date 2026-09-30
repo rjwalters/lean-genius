@@ -1146,8 +1146,9 @@ private lemma uniform_table_overwrite (n : ℕ) (S : Finset (Fin P.numVars))
     fun j => T₀ j.val ⟨c j.val, hc j.val j.property⟩ with ha₀
   rw [Finset.sum_eq_single a₀]
   · -- the surviving term: count the fiber of the overwrite map over T₀
-    rw [PMF.map_apply, tsum_fintype, ← Finset.sum_filter, Finset.sum_const,
-      nsmul_eq_mul]
+    rw [PMF.map_apply, tsum_fintype]
+    simp_rw [PMF.uniformOfFintype_apply]
+    rw [← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]
     have h_fiber :
         (Finset.univ.filter (fun T : P.Table n => T₀ =
             fun j (x : Fin (n + 1)) => if h : j ∈ S ∧ (x : ℕ) = c j
@@ -1166,27 +1167,31 @@ private lemma uniform_table_overwrite (n : ℕ) (S : Finset (Fin P.numVars))
       · -- the reconstructed table lies in the fiber
         funext j x
         by_cases h : j ∈ S ∧ (x : ℕ) = c j
-        · rw [dif_pos h, dif_pos h, ha₀]
-          have hx : x = ⟨c j, hc j h.1⟩ := Fin.ext h.2
-          rw [hx]
-        · rw [dif_pos h, dif_neg h]
-          exact absurd h (by simp)
+        · obtain ⟨hjS, hxc⟩ := h
+          have hcond : j ∈ S ∧ (x : ℕ) = c j := ⟨hjS, hxc⟩
+          have hx : x = ⟨c j, hc j hjS⟩ := Fin.ext hxc
+          exact ((dif_pos hcond).trans (congrArg (T₀ j) hx.symm)).symm
+        · simp only [dif_neg h]
       · -- left inverse
         rintro ⟨T, hT⟩
         apply Subtype.ext
         funext j x
         by_cases h : j ∈ S ∧ (x : ℕ) = c j
-        · rw [dif_pos h]
-          have hx : x = ⟨c j, hc j h.1⟩ := Fin.ext h.2
-          rw [hx]
-        · rw [dif_neg h]
+        · obtain ⟨hjS, hxc⟩ := h
+          have hcond : j ∈ S ∧ (x : ℕ) = c j := ⟨hjS, hxc⟩
+          have hx : x = ⟨c j, hc j hjS⟩ := Fin.ext hxc
+          exact (dif_pos hcond).trans (congrArg (T j) hx.symm)
+        · simp only [dif_neg h]
           have := congrFun (congrFun hT j) x
-          rw [dif_neg h] at this
+          simp only [dif_neg h] at this
           exact this
       · -- right inverse
         intro b
         funext j
-        rw [dif_pos ⟨j.property, rfl⟩]
+        have hcond : (j : Fin P.numVars) ∈ S ∧
+            (((⟨c j.val, hc j.val j.property⟩ : Fin (n + 1)) : ℕ) = c j.val) :=
+          ⟨j.property, rfl⟩
+        exact dif_pos hcond
     rw [h_fiber]
     have h_ne_zero :
         ((Fintype.card (∀ j : S, P.alphabet j.val) : ℕ) : ENNReal) ≠ 0 := by
@@ -1195,8 +1200,7 @@ private lemma uniform_table_overwrite (n : ℕ) (S : Finset (Fin P.numVars))
     have h_ne_top :
         ((Fintype.card (∀ j : S, P.alphabet j.val) : ℕ) : ENNReal) ≠ ⊤ :=
       ENNReal.natCast_ne_top _
-    rw [PMF.uniformOfFintype_apply, PMF.uniformOfFintype_apply, ← mul_assoc,
-      ENNReal.inv_mul_cancel h_ne_zero h_ne_top, one_mul]
+    rw [← mul_assoc, ENNReal.inv_mul_cancel h_ne_zero h_ne_top, one_mul]
   · -- any other draw is incompatible: the fiber is empty
     intro a _ ha
     rw [PMF.map_apply, tsum_fintype]
@@ -1206,10 +1210,16 @@ private lemma uniform_table_overwrite (n : ℕ) (S : Finset (Fin P.numVars))
     intro hT
     refine ha ?_
     funext j
-    have := congrFun (congrFun hT j.val) ⟨c j.val, hc j.val j.property⟩
-    rw [dif_pos ⟨j.property, rfl⟩] at this
+    have hcond : (j : Fin P.numVars) ∈ S ∧
+        (((⟨c j.val, hc j.val j.property⟩ : Fin (n + 1)) : ℕ) = c j.val) :=
+      ⟨j.property, rfl⟩
+    have hkey : T₀ (j : Fin P.numVars)
+        ⟨c j.val, hc j.val j.property⟩
+        = a ⟨(j : Fin P.numVars), j.property⟩ :=
+      (congrFun (congrFun hT j.val)
+        ⟨c j.val, hc j.val j.property⟩).trans (dif_pos hcond)
     rw [ha₀]
-    exact this
+    exact hkey.symm
   · intro h
     exact absurd (Finset.mem_univ _) h
 
@@ -1299,7 +1309,7 @@ private lemma map_runTable (m : ℕ) :
               by_cases hj : j ∈ P.vbl i
               · rw [if_pos hj, dif_pos hj]
                 simp only [readCell, dif_pos (hbound j hj), hTw]
-                rw [dif_pos ⟨hj, rfl⟩]
+                simp [hj]
               · rw [if_neg hj, dif_neg hj]
             have h1 : (P.stepTable Tw (v, c)).1 =
                 ((fun j => if h : j ∈ P.vbl i then a ⟨j, h⟩ else v j),
@@ -1343,6 +1353,95 @@ private lemma map_runTable (m : ℕ) :
             ← PMF.map_comp,
             ih _ _ hc']
           simp
+
+/-- Run the algorithm entirely from the table: initialize every variable
+    from its row-`0` cell, then consume fresh cells (rows `≥ 1`) at each
+    resample. Returns the final assignment and the log. -/
+noncomputable def tableRun (n : ℕ) (T : P.Table n) :
+    P.State × List (Fin P.numEvents) :=
+  ((P.runTable T n (fun j => T j 0, fun _ => 1)).1.1,
+    (P.runTable T n (fun j => T j 0, fun _ => 1)).2)
+
+/-- Pushing a uniform distribution through an equivalence gives the uniform
+    distribution. -/
+private lemma uniformOfFintype_map_equiv {α β : Type*} [Fintype α]
+    [Nonempty α] [Fintype β] [Nonempty β] (e : α ≃ β) :
+    (PMF.uniformOfFintype α).map e = PMF.uniformOfFintype β := by
+  classical
+  ext b
+  rw [PMF.map_apply, tsum_fintype, Finset.sum_eq_single (e.symm b)]
+  · simp [PMF.uniformOfFintype_apply, Fintype.card_congr e,
+      Equiv.apply_symm_apply]
+  · intro a _ ha
+    rw [if_neg]
+    intro hba
+    exact ha (by rw [hba, Equiv.symm_apply_apply])
+  · intro h
+    exact absurd (Finset.mem_univ _) h
+
+/-- The subtype product over `Finset.univ` is the full product: the domain
+    `resampleAt Finset.univ` samples is the state space itself. -/
+private def univGlue :
+    (∀ j : (Finset.univ : Finset (Fin P.numVars)), P.alphabet j.val)
+      ≃ P.State where
+  toFun a := fun j => a ⟨j, Finset.mem_univ j⟩
+  invFun v := fun j => v j.val
+  left_inv _ := rfl
+  right_inv _ := rfl
+
+/-- **The Moser–Tardos coupling (MT §5)**: the uniformly sampled resample
+    table, consumed by the deterministic runner — row `0` as the
+    initialization, one fresh cell per variable at each resample — is
+    exactly the uniformly-initialized instrumented Moser–Tardos process
+    `mtRun` of Part VIII. All randomness of the algorithm is pre-sampled
+    into independent uniform cells; downstream (S18c) this places each
+    witness-tree vertex's resample values into disjoint independent cells
+    whose indices are determined by the tree alone. -/
+theorem map_tableRun (n : ℕ) :
+    (PMF.uniformOfFintype (P.Table n)).map (P.tableRun n) = P.mtRun n := by
+  classical
+  rw [P.uniform_table_overwrite n Finset.univ (fun _ => 0)
+      (fun j _ => Nat.succ_pos n),
+    PMF.map_bind]
+  simp only [mtRun]
+  rw [show PMF.uniformOfFintype P.State =
+      (PMF.uniformOfFintype
+        (∀ j : (Finset.univ : Finset (Fin P.numVars)), P.alphabet j.val)).map
+        P.univGlue from (uniformOfFintype_map_equiv P.univGlue).symm,
+    PMF.bind_map]
+  refine congrArg _ (funext fun a => ?_)
+  rw [PMF.map_comp]
+  have hpoint : (P.tableRun n ∘
+      (fun T j (x : Fin (n + 1)) =>
+        if h : j ∈ (Finset.univ : Finset (Fin P.numVars)) ∧ (x : ℕ) = 0
+        then a ⟨j, h.1⟩ else T j x))
+      = fun T => ((P.runTable T n (P.univGlue a, fun _ => 1)).1.1,
+          (P.runTable T n (P.univGlue a, fun _ => 1)).2) := by
+    funext T
+    simp only [Function.comp_apply]
+    set Tw : P.Table n :=
+      fun j (x : Fin (n + 1)) =>
+        if h : j ∈ (Finset.univ : Finset (Fin P.numVars)) ∧ (x : ℕ) = 0
+        then a ⟨j, h.1⟩ else T j x with hTw
+    simp only [tableRun]
+    have hinit : (fun j => Tw j 0) = P.univGlue a := by
+      funext j
+      have hcond : j ∈ (Finset.univ : Finset (Fin P.numVars)) ∧
+          (((0 : Fin (n + 1)) : ℕ) = 0) := ⟨Finset.mem_univ j, by simp⟩
+      exact dif_pos hcond
+    have hforget : P.runTable Tw n (P.univGlue a, fun _ => 1)
+        = P.runTable T n (P.univGlue a, fun _ => 1) := by
+      refine P.runTable_congr n _ fun j x hx => ?_
+      have hx' : (1 : ℕ) ≤ (x : ℕ) := hx
+      have hcell : ¬ (j ∈ (Finset.univ : Finset (Fin P.numVars)) ∧
+          (x : ℕ) = 0) := by
+        rintro ⟨-, hx0⟩
+        omega
+      simp only [hTw, dif_neg hcell]
+    rw [hinit, hforget]
+  rw [hpoint, P.map_runTable n (P.univGlue a) (fun _ => 1)
+    (fun j => by omega)]
+  rfl
 
 end TableCoupling
 
