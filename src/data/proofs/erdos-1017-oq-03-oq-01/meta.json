@@ -55,7 +55,8 @@
       "Two consecutive quarter-squares sum to a triangular number: T(n) + T(n+1) = C(n+1,2) = n(n+1)/2. The extremal bipartite edge counts on n and n+1 vertices tile the complete graph K_{n+1} — every edge accounted for exactly once.",
       "The two-step increment T(n+2) − T(n) = n+1 is exact and parity-blind, because (n+2)^2 − n^2 = 4(n+1) is divisible by 4 — no floor correction, unlike the one-step increment floor((n+1)/2).",
       "The accumulation formula T(n) = sum_{k<n} ceil(k/2) exhibits the quarter-square sequence as the discrete integral of the ceiling-halving sequence 0,1,1,2,2,3,3,…, closing the loop between the closed form and the incremental growth law.",
-      "These additive identities complement the multiplicative quarter-square identity T(m+n) − T(m−n) = m·n and the discrete convexity recorded in the sibling file, giving a full arithmetic picture of the extremal bound."
+      "These additive identities complement the multiplicative quarter-square identity T(m+n) − T(m−n) = m·n and the discrete convexity recorded in the sibling file, giving a full arithmetic picture of the extremal bound.",
+      "The graph-theoretic reading is narrative, not machine-checked. Every theorem is pure Nat arithmetic over turanBound : ℕ → ℕ; the file never mentions SimpleGraph, an edge set, or an actual bipartite graph. Phrases like 'the extremal bipartite edge counts on n and n+1 vertices tile K_{n+1}' describe the intended combinatorial meaning of T(n) + T(n+1) = C(n+1,2), not a formalized statement about a graph — the Lean content is the arithmetic identity alone."
     ]
   },
   "sections": [
