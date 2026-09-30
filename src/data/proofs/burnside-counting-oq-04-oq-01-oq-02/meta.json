@@ -133,6 +133,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "§0: Module Header — the Closed-Form Goal and Honest Scope",
+      "startLine": 1,
+      "endLine": 67,
+      "summary": "Imports the grandparent's dihedral bracelet action and the sibling's rotation closed form. Module docstring states the goal — write down and validate Burnside's closed form b(n) = (rotTerm n + reflTerm n)/(2n) rather than computing b(n) length-by-length by decide — previews rotTerm_eq, the braceletClosed_eq_orbitCount_{three,four,five,six} ground-truth matches, and the bracelet_seven..bracelet_ten onward predictions, then an honesty note that only the rotation half is proved generic while the reflection half is validated only for n ≤ 6.",
+      "mathContext": "Goal: an explicit, axiom-free closed form $b(n) = \\dfrac{\\mathrm{rotTerm}(n)+\\mathrm{reflTerm}(n)}{2n}$ replacing per-length `decide` on the orbit quotient."
+    },
+    {
       "id": "formula",
       "title": "The Closed-Form Formula",
       "startLine": 68,
