@@ -99,11 +99,19 @@
     },
     {
       "id": "sec-repackaged",
-      "title": "Repackaged sum and numeric check",
-      "startLine": 106,
-      "endLine": 120,
-      "summary": "Theorem numDerangements_eq_alternating_binomial_sum: the same identity with the magnitude C(n,k)·(n−k)! carried under a single ℕ→ℤ cast and the sign as (−1)^k. Followed by the example verifying D(4) = 24−24+12−4+1 = 9.",
+      "title": "Repackaged sum: sign isolated from magnitude",
+      "startLine": 102,
+      "endLine": 112,
+      "summary": "Theorem numDerangements_eq_alternating_binomial_sum: the same identity with the magnitude C(n,k)·(n−k)! carried under a single ℕ→ℤ cast and the sign as (−1)^k, obtained from the binomial-form theorem by a one-step push_cast/ring rewrite.",
       "mathContext": "The repackaged form isolates the alternating sign from the positive integer magnitude, matching the usual 'signed count of permutations by fixed-point set size' reading."
+    },
+    {
+      "id": "sec-check",
+      "title": "Numeric sanity check",
+      "startLine": 114,
+      "endLine": 120,
+      "summary": "Example verifying the formula at n = 4: D(4) = 24 − 24 + 12 − 4 + 1 = 9, matching the known derangement count and guarding against sign or index-shift errors in the alternating sum.",
+      "mathContext": "$\\sum_{k=0}^{4}(-1)^k\\binom{4}{k}(4-k)! = 9 = D(4)$."
     }
   ],
   "crossReferences": [
