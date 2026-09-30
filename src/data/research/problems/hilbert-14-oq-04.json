@@ -34,9 +34,9 @@
     "phase": "ACT",
     "since": "2026-07-24T12:10:00Z",
     "iteration": 8,
-    "focus": "S7b-prep (researcher-2, 2026-07-24): Noether bound reduced to a single multiplicative kernel. New section NoetherReduction (398 -> 508 LOC, 0 ax/0 sorry, docker green): noetherCandidate subalgebra (adjoin of degree <= |G| Reynolds monomial images), unconditional noetherCandidate_le_fixedPoints + finite generating set, and conditional fixedPoints_eq_noetherCandidate_of_kernel + fg_of_kernel under the named kernel hypothesis hker (Reynolds images of degree > |G| monomials lie in the candidate).",
+    "focus": "S7b-engine (researcher-2, 2026-09-29): ZeroSumEngine section shipped — prefix-product pigeonhole (any finite group) + Davenport-bound multiset extraction (CommGroup), the combinatorial heart of the abelian/diagonal hker warm-up. hker itself (even diagonal) NOT claimed; docker verification this session.",
     "blockers": [],
-    "nextAction": "S7b ACT: discharge the multiplicative kernel hker — aux-variable orbit expansion + Newton identities (Mathlib has Symmetric/NewtonIdentities.lean psum_eq_mul_esymm_sub_sum AND Symmetric/FundamentalTheorem.lean); scope to |G|! invertible (char 0 or char > |G|), NOT the sharp Fleischmann-Fogarty form. Multi-session; partial progress now lands against the fixed target statement hker.",
+    "nextAction": "S7b diagonal warm-up, remaining rungs: (b) diagonal-action character bookkeeping (g.X_i = c_i(g) X_i => reynolds(monomial m 1) in {0, x^m}); (c) strong induction on deg m using exists_zeroSum_sub_multiset to split invariant monomials of degree > |G|, discharging hker for diagonal actions. Full hker (general linear action, Newton identities, |G|! invertible) remains the hard multi-session leg.",
     "attemptCounts": {
       "total": 12,
       "currentApproach": 1,
@@ -56,7 +56,9 @@
       "eq_sum_reynolds_monomial / mem_span_reynolds_monomial_of_totalDegree_le / fixedPoints_le_span_reynolds_monomial / totalDegree_reynolds_monomial_le (S7a spanning layer, 0 ax / 0 sorry)",
       "Hilbert14OQ04.lean section NoetherReduction (S7b-prep): noetherCandidate = adjoin of degree <= |G| Reynolds monomial images; noetherCandidate_le_fixedPoints unconditional",
       "fixedPoints_eq_noetherCandidate_of_kernel + fg_of_kernel: Noether degree-bounded finite generation reduced to the single per-monomial kernel hypothesis hker",
-      "finite_degreeBounded_exponents: exponent vectors of bounded total degree are finite (Finsupp.equivFunOnFinite embedding into Pi of Iic, Set.Finite.pi)"
+      "finite_degreeBounded_exponents: exponent vectors of bounded total degree are finite (Finsupp.equivFunOnFinite embedding into Pi of Iic, Set.Finite.pi)",
+      "exists_segment_prod_eq_one (Hilbert14OQ04.lean, section ZeroSumEngine): prefix-product pigeonhole for ANY finite group — a list longer than |H| has a nonempty consecutive segment of length <= |H| with product 1, excision preserving the total product (no commutativity needed)",
+      "exists_zeroSum_sub_multiset: Davenport-bound extraction D(H) <= |H| in multiset form (CommGroup + DecidableEq) — nonempty sub-multiset of size <= |H| with product 1 whose removal preserves the product; the form the diagonal-hker finsupp wiring will consume"
     ],
     "insights": [
       "OQ-04 is a meta-mathematical conjecture about algorithm existence; it cannot be formalized as a single Lean theorem. Lean progress must instead anchor on specific algorithmic refinements (Noether degree bound, slice theorem, etc.).",
@@ -74,7 +76,10 @@
       "Decompose-then-close: S7a eq_sum_reynolds_monomial + Subalgebra.sum_mem/smul_mem + per-monomial degree split reduces Noether bound to the kernel with zero new analysis; low-degree monomials are free via Algebra.subset_adjoin",
       "Elaborator gotcha recurred exactly as S7a memory warned: bare monomial m 1 in new statements hunts Field NN — pin (1 : k) in EVERY new declaration; v4.31 also dropped le_or_lt (use Nat.lt_or_ge)",
       "Subalgebra.fg_def closes conditional FG by rfl when the target subalgebra is literally defined as the adjoin of the finite set",
-      "S7b toolbox: Mathlib has RingTheory/MvPolynomial/Symmetric/NewtonIdentities.lean and FundamentalTheorem.lean — missing pieces are aux-variable orbit expansion + coefficient extraction only"
+      "S7b toolbox: Mathlib has RingTheory/MvPolynomial/Symmetric/NewtonIdentities.lean and FundamentalTheorem.lean — missing pieces are aux-variable orbit expansion + coefficient extraction only",
+      "The abelian/diagonal warm-up of hker decomposes: (a) zero-sum extraction engine (DONE — pigeonhole on partial products, D(H) <= |H|), (b) character bookkeeping (diagonal action g.X_i = c_i(g) X_i makes reynolds(monomial m 1) either 0 or the invariant monomial x^m), (c) strong induction on deg m splitting x^m along the extracted sub-multiset. Only (b)+(c) remain for the diagonal case.",
+      "Multiset subtraction needs [DecidableEq H] (the Sub instance requires it) — add it to any lemma stating (s - t).prod.",
+      "The complement identity (take i ++ drop j).prod = l.prod needs NO commutativity: equal prefix products cancel through the group; only the multiset s - t re-ordering needs CommGroup."
     ],
     "mathlibGaps": [
       "No Noether degree bound for finite-group invariants",
@@ -178,7 +183,7 @@
     ]
   },
   "started": "2026-05-12T19:30:00.000Z",
-  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "lastUpdate": "2026-09-29",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
