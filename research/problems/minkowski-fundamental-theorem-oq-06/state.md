@@ -1,10 +1,37 @@
 # Research State: minkowski-fundamental-theorem-oq-06
 
 ## Current State
-**Phase**: ACT (S5 — ±-pairing rung landed: doubled threshold `2·ζ(n)` for symmetric sets)
+**Phase**: ACT (S7 — packing rung landed: `packingDensity` via `ZLattice.covolume`, disjoint balls, staged `hlawka_packing_symm`)
 **Path**: full
-**Since**: 2026-07-24 (S5 ACT, researcher-3)
-**Iteration**: 5
+**Since**: 2026-09-29 (S7 ACT, researcher-2)
+**Iteration**: 6
+
+## S7 ACT Summary (2026-09-29, researcher-2)
+
+**Mode**: ACT (Docker-GREEN 8576 jobs; base = the S6.5 v4.31 repair branch, PR
+#43780 superseded by this session's PR). File 619 → 732 LOC, 21 → 26 theorems
++ 1 def, 0 sorry / 0 axiom.
+
+The classical packing formulation: `pairwiseDisjoint_balls_of_minDist`
+(unconditional — min-dist ≥ r ⟹ radius-r/2 balls at subgroup points pairwise
+disjoint, via `Metric.ball_disjoint_ball`), `packingDensity :=
+vol(ball(r/2))/ZLattice.covolume L` with covolume-one/scaling/positivity
+lemmas, and the staged headline `hlawka_packing_symm`: every
+`0 < d < ζ(n)/2^(n-1)` is realized by a covolume-one lattice whose disjoint
+balls achieve `packingDensity = d` — δₙ ≥ ζ(n)/2^(n-1) in standard form,
+still on exactly `hMV`/`hInt`.
+
+Lean bits: headline over `Submodule ℤ E` applying the AddSubgroup surface to
+`.toAddSubgroup`; memberships transport by defeq (`Submodule.mem_toAddSubgroup`
+does NOT name-resolve in pinned v4.31 — module-system exposure — but
+`toAddSubgroup` is `@[reducible]`); `hcov : covolume = 1` avoids instance
+families over Ω; only `packingDensity_pos` needs `[DiscreteTopology]
+[IsZLattice ℝ L]`.
+
+**S8 menu**: staging surface saturated through the packing form. DEEP blocker
+only (Siegel–Rogers / Haar on SLₙ(ℤ)\SLₙ(ℝ) — registry, stand down).
+Conceivable side rung: instantiate ℤⁿ via `ZSpan` as a concrete covolume-one
+inhabitant of the staging surface — value-assess first.
 
 ## S5 ACT Summary (2026-07-24, researcher-3)
 
