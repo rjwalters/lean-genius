@@ -1395,4 +1395,69 @@ theorem engelsmaSearchPruned_agrees_small :
       engelsmaSearchPruned w k == engelsmaSearch w k) = true := by
   native_decide
 
+/-! ## S28 — the compute step: `(246, 50)` decided, the Engelsma axiom discharged
+
+The S27 bridge made `engelsmaSearchPruned_eq_false_iff` a theorem; what
+remained (the tracker's S12) was the actual computation at the target
+parameters — flagged as an untested wall-clock/memory risk ever since the
+S4 feasibility plan. The risk was a phantom: the residue-pruning is so
+effective that the interpreter (`#eval`, before native compilation) decides
+the exhaustive-false target `(246, 50)` in ~0.1 s. Profiled ladder
+(interpreter wall-clock, Apple silicon):
+
+| `(w, k)`    | value | time    |
+|-------------|-------|---------|
+| `(32, 10)`  | false | 0.09 ms |
+| `(76, 20)`  | false | 2.6 ms  |
+| `(124, 30)` | false | 0.8 ms  |
+| `(176, 40)` | false | 4.0 ms  |
+| `(246, 50)` | false | 108 ms  |
+| `(247, 50)` | true  | 39 ms   |
+
+Why it is fast: `chosen` stays `[0]`, so the node guard
+`candidates.length < k - chosen.length` compares against the constant
+`k - 1` while each prime level multiplies the pool by `(p - 1)/p`; by
+Mertens the pool drops below `k - 1` within the first half-dozen primes on
+almost every residue combination, so the effective tree is tiny.
+
+The `(w, k) = (246, 50)` and `(247, 50)` values match Engelsma's
+`H(50) = 246` on **both** sides: no admissible 50-tuple fits in a window
+of width 246 (`false` + the S27 completeness direction), and one fits in
+width 247 (`true` + the soundness direction — an independent re-derivation
+of what the explicit `engelsma50Tuple` witnesses in the parent file).
+
+Trust base: `native_decide`, i.e. the `Lean.ofReduceBool` compiler-trust
+axiom — consistent with this file's established accounting. The parent
+file's `engelsma_lower_bound` **stated axiom is eliminated** (converted to
+a theorem consuming `engelsma_lower_bound_of_engelsmaSearchPruned_false`),
+replacing an opaque literature citation by a machine-checked search whose
+soundness *and* completeness are proved (S26/S27). -/
+
+/-- **The S12 compute step**: the pruned search refutes any admissible
+50-subset of a width-246 window. Decided by `native_decide` (~0.1 s even
+in the interpreter; see the S28 header ladder). -/
+theorem engelsmaSearchPruned_246_50_eq_false :
+    engelsmaSearchPruned 246 50 = false := by
+  native_decide
+
+/-- **Sharpness cross-check**: width 247 admits an admissible 50-tuple, so
+together with `engelsmaSearchPruned_246_50_eq_false` the search pins
+Engelsma's `H(50) = 246` exactly (the `true` side re-derives, through the
+S27 soundness direction, what the parent file's explicit `engelsma50Tuple`
+witnesses). -/
+theorem engelsmaSearchPruned_247_50_eq_true :
+    engelsmaSearchPruned 247 50 = true := by
+  native_decide
+
+/-- **Engelsma's lower bound, machine-verified** (2013 exhaustive
+computation, re-done inside Lean): every admissible set of at least 50
+elements has diameter at least 246. This is the statement the parent
+file's `engelsma_lower_bound` axiom asserted; it now follows from the
+S27-verified pruned search plus the S12 `native_decide` computation. -/
+theorem engelsma_lower_bound_verified :
+    ∀ H : Finset ℕ, IsAdmissible H → H.card ≥ 50 →
+    ∀ hne : H.Nonempty, H.max' hne - H.min' hne ≥ 246 :=
+  engelsma_lower_bound_of_engelsmaSearchPruned_false
+    engelsmaSearchPruned_246_50_eq_false
+
 end BoundedPrimeGapsOQ03OQ02
