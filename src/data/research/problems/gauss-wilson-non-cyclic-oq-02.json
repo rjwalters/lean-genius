@@ -2,7 +2,7 @@
   "slug": "gauss-wilson-non-cyclic-oq-02",
   "title": "Does the 2-torsion bound extend to characterize when the Sylow 2-subgroup of ...",
   "phase": "BLOCKED",
-  "status": "in-progress",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -23,12 +23,12 @@
     "goal": "Two Lean theorems characterizing when S2((ZMod n)ˣ) is cyclic resp. elementary abelian."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-07-24T15:10:00Z",
     "iteration": 3,
-    "focus": "S3 ACT (researcher-2, 2026-07-24): UNBLOCKED (S2 Docker-blackout flags were 6 weeks stale) + CYCLIC HALF PROVED. New GaussWilsonNonCyclicOQ02.lean (0 sorries, 0 axioms, kernel decide only): two_torsion_pm_one_iff_isCyclic (n>=3, 2-torsion in {+-1} iff IsCyclic (ZMod n)-units; forward = contrapositive of parent exists_third_sqrt_of_not_cyclic via public unitOfSqEqOne lifts, reverse = IsCyclic.card_pow_eq_one_le vs {1,-1,x}); neg_one_ne_one_units public re-derivation (CharP.cast_eq_zero_iff); exponent anchors zmod8_units_sq_eq_one + zmod16_units_exists_order_four (rank-blind exponent phenomenon).",
+    "focus": "S4 (2026-09-29): elementary-abelian half proved (units_pow_four_imp_sq_iff); OQ-02 fully formal, both halves, 0 sorries / 0 axioms, kernel decide only.",
     "blockers": [],
-    "nextAction": "UNBLOCK when Docker returns: create Proofs/GaussWilsonNonCyclicOQ02.lean stating s2_cyclic_iff (via ZMod.isCyclic_units_iff) and s2_elementaryAbelian_iff (per-odd-prime p%4=3 AND n.factorization 2 ≤ 3), reusing the parent CRT machinery (ZMod.chineseRemainder); locate or build the (ZMod 2^a)ˣ structure lemma.",
+    "nextAction": "Mark completed; no strong follow-ups (equivalent-strength check: v2(lambda(n)) refinement is the same induction, adds no theory-level information).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -36,11 +36,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S3 (researcher-2, 2026-07-24): slug unblocked; the CYCLIC half of OQ-02 is fully proved in the new GaussWilsonNonCyclicOQ02.lean (0 sorries, 0 axioms). Remaining: S4 elementary-abelian half (CRT + odd order-gcd + 2-adic cap; (ZMod 2^a)-units structure lemma is the likely Mathlib gap). The OQ-02 answer is YES on paper; half is now formal.",
+    "progressSummary": "COMPLETE (S4, researcher-3, 2026-09-29): both halves of OQ-02 formal, 0 sorries / 0 axioms. Cyclic half (S3): two_torsion_pm_one_iff_isCyclic. Elementary-abelian half (S4): units_pow_four_imp_sq_iff — Sylow-2 of (ZMod n)^x elementary abelian iff every odd prime factor is 3 mod 4 and v2(n) <= 3. Multiplicative induction + CRT unit splitting + ZMod.orderOf_five for the 2-adic cap.",
     "builtItems": [
       "GaussWilsonNonCyclicOQ02.lean (new file, S3): two_torsion_pm_one_iff_isCyclic — Sylow-2 cyclic iff global cyclic",
       "neg_one_ne_one_units (S3): public units-level -1 != 1 for n >= 3",
-      "zmod8_units_sq_eq_one + zmod16_units_exists_order_four (S3): kernel-decide exponent anchors"
+      "zmod8_units_sq_eq_one + zmod16_units_exists_order_four (S3): kernel-decide exponent anchors",
+      "GaussWilsonNonCyclicOQ02.lean S4 block (131->379 lines): exists_pow_four_ne_sq, pow_four_imp_sq_of_mulEquiv, pow_four_imp_sq_prod_iff, pow_four_imp_sq_units_odd_prime_pow_iff, pow_four_imp_sq_units_two_pow_iff, units_pow_four_imp_sq_iff (the S4 criterion), decide anchors n=24/n=5."
     ],
     "insights": [
       "S2((ZMod n)ˣ) ≅ D(a) × prod_{odd p|n} C_{2^{v2(p-1)}}, D(a)=1/C2/C2×C_{2^{a-2}} for a=v2(n) ≤1/=2/≥3",
@@ -50,15 +51,16 @@
       "S3: The cyclic boundary needs NO new structure theory — the parent third-sqrt theorem IS the forward direction (contrapositive), and IsCyclic.card_pow_eq_one_le closes the reverse. The Sylow-free formulation (2-torsion in {+-1}) avoids Sylow machinery entirely.",
       "S3: Elementary-abelian-ness of the Sylow 2-subgroup of a finite abelian group is equivalent to: no element of order 4 (forall x, x^4 = 1 -> x^2 = 1) — the right Sylow-free surrogate for S4.",
       "S3: kernel decide handles (ZMod 8)-units and (ZMod 16)-units exponent facts directly (Fintype on units evaluates); no native_decide needed.",
-      "S3 ops: stale-blocker vein recurrence — S2 flagged BLOCKED on the 2026-06-13 Docker blackout, cleared weeks ago; MODERATE/RICH slugs with old build-blocker narratives must be re-verified against live infra (same lesson as bpg-oq-03-oq-02 S26)."
+      "S3 ops: stale-blocker vein recurrence — S2 flagged BLOCKED on the 2026-06-13 Docker blackout, cleared weeks ago; MODERATE/RICH slugs with old build-blocker narratives must be re-verified against live infra (same lesson as bpg-oq-03-oq-02 S26).",
+      "ZMod.orderOf_five (5 has order 2^(a-2) in ZMod 2^a) landed in Mathlib.RingTheory.ZMod.UnitsCyclic — the (ZMod 2^a)-units structure lemma predicted as an 80-150 LOC gap costs zero lines now. Check Mathlib before building predicted gaps.",
+      "Order-4 witness factory beats orderOf_pow gcd bookkeeping: from orderOf g = 4*m, m≠0, the element g^m satisfies (g^m)^4=1 and (g^m)^2≠1 directly (dvd + Nat.le_of_dvd), no gcd computation.",
+      "v4.31 drift: orderOf_eq_card_of_forall_mem_zpowers returns Nat.card (bridge Nat.card_eq_fintype_card, use orderOf_dvd_natCard); Nat.recOnPosPrimePosCoprime hands Nat.Prime directly; Nat.Prime.factorization_pow wants Nat.Prime; Nat.Coprime.pow has explicit exponent args."
     ],
     "mathlibGaps": [
       "Explicit (ZMod 2^a)ˣ ≅ C2 × C_{2^{a-2}} (a≥3) iso — confirm presence in Mathlib.RingTheory.ZMod.UnitsCyclic; if absent, ~80-150 LOC to build"
     ],
     "nextSteps": [
-      "S4: prove s2_elementaryAbelian_iff in Sylow-free form (forall x, x^4=1 -> x^2=1) iff (odd p | n => p%4=3) and v2(n) <= 3 — CRT + order-gcd + 2-adic cap.",
-      "S4 sub-piece: order-4 element of (ZMod 2^a)-units for a >= 4 (push 3 mod 16 up via unit congruence, or build the C2 x C_{2^{a-2}} iso if absent from Mathlib).",
-      "S5 (optional): package both halves as the full Sylow-2 shape trichotomy and cross-link with OQ-03 count formula."
+      "None strong — OQ-02 answered in full; v2(lambda(n)) generalization judged routine (same induction, no new mechanism)."
     ]
   },
   "tags": [
@@ -83,7 +85,7 @@
     ]
   },
   "started": "2026-06-10T18:04:48.642Z",
-  "lastUpdate": "2026-06-13",
+  "lastUpdate": "2026-09-29",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
