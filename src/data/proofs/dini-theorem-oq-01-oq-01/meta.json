@@ -72,7 +72,8 @@
       "**The third hypothesis is the subtle one.** Continuity-of-limit and compactness each fail via a *static* obstruction (a fixed jump, a fixed escaping point). Monotonicity fails via a *moving* one: the bump's peak slides toward 0 while keeping constant height e⁻¹, so no single point witnesses non-uniformity — the witness is the travelling family x = 1/n.",
       "**A smooth bump beats a triangular tent in Lean.** Replacing the piecewise-linear tent of the textbook with n·x·e^{−n·x} makes continuity a one-line fun_prop and reduces pointwise convergence to the off-the-shelf limit t·e^{−t} → 0, avoiding all piecewise/absolute-value case analysis.",
       "**Non-monotonicity is verified, not assumed.** The entry proves the family is concretely neither monotone nor antitone at x = 1/2 (it rises 1→2 then falls 2→3), so the witness genuinely satisfies every Dini hypothesis except the one it is built to remove — an honest counterexample, not a strawman.",
-      "**The whole obstruction is a constant peak height.** Because Fₙ(1/n) = e⁻¹ exactly for all n, the supremum error is bounded below by a fixed positive constant; the proof needs only the crude bound e⁻¹ > 1/3, i.e. exp 1 < 3."
+      "**The whole obstruction is a constant peak height.** Because Fₙ(1/n) = e⁻¹ exactly for all n, the supremum error is bounded below by a fixed positive constant; the proof needs only the crude bound e⁻¹ > 1/3, i.e. exp 1 < 3.",
+      "**The non-monotonicity witness point is not arbitrary.** `x = 1/2` is chosen precisely because it is F₂'s own peak (1/2 = 1/n at n = 2): the proof samples the family exactly where its middle term F₂ attains its maximum, which is what forces both the rise F₁ < F₂ and the fall F₃ < F₂ — testing at any other fixed point would not obviously exhibit both directions with the same two elementary exp(1/2) bounds."
     ],
     "prerequisites": [
       "Pointwise versus uniform convergence of sequences of functions",
