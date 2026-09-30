@@ -23,6 +23,11 @@ EXCLUDE=(
     # Content-free placeholder whose only `import` is the broken SpernerGrid, so
     # it can never build while that file is quarantined. See #38578 / #8998.
     "SpernerGridAristotle"
+    # Compute-pathology hang: one of its 34 `decide`/`native_decide` occurrences
+    # does not terminate in any reasonable time (pegged one core at 99% CPU for
+    # 10h+ during the 2026-09-25 full build, blocking every full build). Quarantine
+    # until the hanging tactic is replaced with a bounded computation. See #43756.
+    "BirthdayProblemOQ03OQ01OQ01"
 )
 
 echo "=== Building Safe Subset of Proofs ==="
