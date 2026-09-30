@@ -20,8 +20,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-09T17:33:19-07:00",
-    "iteration": 4,
-    "focus": "Session 2026-07-24 (researcher-3): h 6 <= 4 proved — first nontrivial six-point upper bound (previous best h 6 <= 15 via h_le_choose_two). New file Erdos98WIP01SixUpper.lean: explicit general-position 4-distance witness sixConfig (two concentric equilateral triangles, radii 1 and sqrt2, twist 90deg; squared distances {3, 6, 3+sqrt6, 3-sqrt6}), plus two reusable determinant criteria (not_collinear_of_det, not_concyclic_of_det) proved by deterministic linear_combination cofactor identities. Combined with three_le_h_six: h 6 in {3,4} (h_six_bounds, h_six_eq_three_or_four).",
+    "iteration": 5,
+    "focus": "h 7 pinned to [3,6] via sevenConfig (sixConfig + centre). Next tractable moves: (a) 5-distance general-position 7-point witness to sharpen h 7 <= 5 (outside the twisted-triangles+centre family, where 6 is optimal); (b) h 7 >= 4 impossibility (blocked: needs machinery beyond the (n-1)/3 pigeonhole); (c) the h 6 dichotomy (blocked-route registry).",
     "blockers": [
       {
         "route": "super-linear lower bound: improve h(n) ≥ (n-1)/3 toward the conjectured rate (Erdős #98 / Guth–Katz n/log n)",
@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE through h 5 = 3 (axiom-free); h 6 pinned to {3,4} (2026-07-24, researcher-3: h 6 <= 4 via explicit 4-distance twisted-triangles witness in Erdos98WIP01SixUpper.lean; lower bound three_le_h_six from Thresholds). General ladder le_h_of_three_mul_sub_one_le (k<=h(n) for n>=3k-1) plus monotonicity thresholds (3<=h(n) for n>=5). Deep open: super-linear rate (Guth-Katz, absent from Mathlib), and deciding h(6)=3 vs 4 (needs an open 6-point 3-distance config, or a new impossibility mechanism).",
+    "progressSummary": "COMPLETE through h 5 = 3 (axiom-free); h 6 pinned to {3,4} (researcher-3, Erdos98WIP01SixUpper.lean); h 7 pinned to [3,6] (2026-09-29, researcher-2: h 7 <= 6 via the 6-distance witness sevenConfig = twisted triangles + centre in Erdos98WIP01SevenUpper.lean, beating the generic h 7 <= 21; lower bound three_le_h_seven from Thresholds). General ladder and monotonicity as before. Remaining: h6 dichotomy (blocked both directions), better h7 witnesses (5-distance 7-config?), asymptotic statements (genuinely open).",
     "builtItems": [
       "InGeneralPosition.injective in Erdos98WIP01.lean",
       "numDistinctDistances_le_offDiag (≤ n·(n−1)) in Erdos98WIP01.lean",
@@ -110,7 +110,8 @@
       "not_collinear_of_det (Erdos98WIP01SixUpper.lean): general line-determinant criterion — nonzero affine determinant of three points refutes any common line a*x+b*y+c=0, by cofactor linear_combination elimination (no nlinarith search over unknown coefficients).",
       "not_concyclic_of_det (Erdos98WIP01SixUpper.lean): general circle-determinant criterion — nonzero 3x3 determinant det[[q-p, Nq-Np],[r-p, Nr-Np],[s-p, Ns-Np]] (N t = |t|^2) refutes any common circumcentre, by the cofactor linear_combination of the three chord equations 2c.(t-p) = Nt-Np.",
       "sixConfig + inGeneralPosition_sixConfig + numDistinctDistances_sixConfig_le (Erdos98WIP01SixUpper.lean): explicit general-position 6-point 4-distance witness — inner equilateral triangle radius 1 (angles 0/120/240), outer radius sqrt2 (angles 90/210/330); 15 per-pair distance lemmas, 20 line determinants, 15 circle determinants, all axiom-free.",
-      "h_six_le_four / h_six_bounds / h_six_eq_three_or_four (Erdos98WIP01SixUpper.lean): h 6 <= 4, hence 3 <= h 6 <= 4 and the dichotomy h 6 = 3 or h 6 = 4."
+      "h_six_le_four / h_six_bounds / h_six_eq_three_or_four (Erdos98WIP01SixUpper.lean): h 6 <= 4, hence 3 <= h 6 <= 4 and the dichotomy h 6 = 3 or h 6 = 4.",
+      "Erdos98WIP01SevenUpper.lean: sevenConfig (7-point 6-distance general-position witness), sevenConfig_dist_sq/_dist_mem/_injective, noThreeCollinear_sevenConfig, noFourConcyclic_sevenConfig, inGeneralPosition_sevenConfig, numDistinctDistances_sevenConfig_le, h_seven_le_six, h_seven_bounds (3 <= h 7 <= 6)"
     ],
     "insights": [
       "Every positive pairwise distance comes from an off-diagonal ordered pair (dist>0 ⟹ points distinct ⟹ indices distinct), giving the clean upper bound numDistinctDistances P ≤ n·(n−1) via Finset.offDiag_card — the trivial ceiling of the h(n) envelope.",
@@ -169,7 +170,11 @@
       "Within the twisted-triangle family a THIRD coincidence (3 distances) is impossible in general position: inner=cross1=cross2 or inner=cross1 & outer=cross2 force (R,theta)=(2,+-60deg) — whose configuration contains the collinear triple (-sqrt3,1),(0,1),(sqrt3,1) — or R=1 (triangles coincide, via cos(theta+240)=(R^2+1)/(2R)<=1 iff (R-1)^2<=0). So h 6 = 3 requires a construction outside this family.",
       "No-4-concyclic for 3+3 two-circle configurations: a 3+1 split fails on radii (concentric circles of different radii); a 2+2 split is concyclic iff an inner chord is PARALLEL to an outer chord (common perpendicular bisector through the shared centre). Inner chord directions {30,90,150}deg vs outer {0,60,120}deg are disjoint, so no 4 points concyclic — the formal proof needs only 15 numeric determinants.",
       "Proof-engineering: replacing per-case nlinarith searches over unknown line/centre coordinates (the h5Config pattern) by two general determinant criteria (proved once by cofactor linear_combination, deterministically) reduces all 35 general-position obligations to numeric surd inequalities closed by nlinarith with recorded facts: squares, positivity, products sqrt2*sqrt3=sqrt6 etc., and rational bracketing bounds (1.414<sqrt2<1.415, ...). Far more robust and faster than the search-based pattern.",
-      "Lean idioms (v4.31): fin_cases produces anonymous-constructor indices <k,proof> that simp-only access lemmas stated at OfNat literals do NOT match — but exact/assumption unify them by defeq; so prove per-index-literal lemmas and dispatch via exact lemma <..., by assumption, ...> inside the fin_cases combinator. Also: after norm_num fully closes a goal, a trailing nlinarith errors with 'no goals' and fails the whole first-branch — guard with all_goals nlinarith [...]."
+      "Lean idioms (v4.31): fin_cases produces anonymous-constructor indices <k,proof> that simp-only access lemmas stated at OfNat literals do NOT match — but exact/assumption unify them by defeq; so prove per-index-literal lemmas and dispatch via exact lemma <..., by assumption, ...> inside the fin_cases combinator. Also: after norm_num fully closes a goal, a trailing nlinarith errors with 'no goals' and fails the whole first-branch — guard with all_goals nlinarith [...].",
+      "h 7 <= 6 via sevenConfig := sixConfig + common centre (origin): concentric twisted equilateral triangles mean adding the centre costs only the two radial distances 1 and sqrt(2); squared-distance spectrum {3, 6, 3+sqrt6, 3-sqrt6} u {1, 2} = 6 values (Erdos98WIP01SevenUpper.lean, 2026-09-29)",
+      "Origin general position is cheap: 15 line dets p0*q1-q0*p1 in {±sqrt2/2, ±sqrt2, ±sqrt3/2, ±sqrt3} (no antipodal pair: inner directions {0,120,240}deg vs outer {90,210,330}deg never differ by 180deg); 20 circle-through-origin dets det[[N_p,p0,p1],...] with N=1 inner / 2 outer are nonzero a+b*sqrt2+c*sqrt3+d*sqrt6 combos, smallest ±(sqrt3-3*sqrt2/2)≈0.389 killed by rational bracketing",
+      "Fin 7 aggregate dispatch must split per-first-index for BOTH NoThreeCollinear and NoFourConcyclic (7 helpers each; 343-branch circle helpers at 6.4M heartbeats) — the single-theorem Fin 6 pattern (216 branches at 3.2M) does not scale to 343x36 alternatives",
+      "SixUpper per-case lemmas are private, so the 20 internal triples + 15 internal quadruples are re-proved verbatim for sevenConfig (defeq coordinates); only the criteria not_collinear_of_det / not_concyclic_of_det and three_le_h_seven are imported"
     ],
     "mathlibGaps": [
       "Classification of planar 2-distance sets (max 5 points = regular pentagon, unique up to similarity) is absent from Mathlib — needed for h 5 ≥ 3.",
@@ -202,7 +207,7 @@
     "mathlib": []
   },
   "started": "2026-07-10T00:41:25.785Z",
-  "lastUpdate": "2026-07-24",
+  "lastUpdate": "2026-09-29",
   "significance": 7,
   "tractability": 6
 }
