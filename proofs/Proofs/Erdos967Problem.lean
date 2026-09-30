@@ -206,7 +206,9 @@ def geometricSequence : IntegerSequence := {
     exact Nat.pow_lt_pow_right (by norm_num) (by omega)
   all_greater_than_one := by
     intro n
-    have : 2^(n+1) ≥ 2 := Nat.pow_le_pow_right (by norm_num) (by omega)
+    have : 2^(n+1) ≥ 2 := by
+      calc 2 = 2 ^ 1 := (pow_one 2).symm
+        _ ≤ 2 ^ (n + 1) := Nat.pow_le_pow_right (by norm_num) (by omega)
     omega
 }
 
