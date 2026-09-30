@@ -13,7 +13,8 @@
       "Unitarity of a matrix is exactly two-sided invertibility of the induced operator toEuclideanLin U together with the fact that its adjoint equals its inverse — the abstract content of 'the conjugate transpose is the inverse'.",
       "Mathlib's toEuclideanLin_conjTranspose_eq_adjoint is the bridge from matrix algebra to operator theory: it makes the operator adjoint of toEuclideanLin U literally toEuclideanLin Uᴴ, so the parent's matrix identities become statements about f and its adjoint.",
       "The two forms of unitary-group membership (Uᴴ·U = 1 and U·Uᴴ = 1) supply the left and right inverses separately; the left inverse gives inner-product preservation and the right inverse gives surjectivity, the two hypotheses LinearIsometryEquiv.ofSurjective needs.",
-      "Once bundled, the parent's ℓ²-energy law ‖Ux‖ = ‖x‖ and the inner-product law are no longer separate theorems but the norm_map and inner_map_map of a single isometry, and the inverse DFT is literally the inverse morphism (dftLIE).symm = toEuclideanLin Uᴴ."
+      "Once bundled, the parent's ℓ²-energy law ‖Ux‖ = ‖x‖ and the inner-product law are no longer separate theorems but the norm_map and inner_map_map of a single isometry, and the inverse DFT is literally the inverse morphism (dftLIE).symm = toEuclideanLin Uᴴ.",
+      "The construction never inspects the DFT matrix's exponential entries — every step (dftMatrix_mem_unitaryGroup aside) uses only that `dftMatrix n ∈ Matrix.unitaryGroup (Fin n) ℂ`, so the whole pipeline `unitaryGroup membership → toEuclideanLin_conjTranspose_eq_adjoint → isometryOfInner → LinearIsometryEquiv.ofSurjective` is a reusable template: any unitary matrix over any finite index type packages the same way into a `LinearIsometryEquiv`, with the DFT supplying only the input, not the argument."
     ]
   },
   "leanFile": {
