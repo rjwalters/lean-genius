@@ -1002,6 +1002,449 @@ theorem weight_le_one (τ : WitnessTree P) : weight τ ≤ 1 :=
 
 end WitnessTree
 
+/-! ## Part IX — The resample table and the coupling (S18b)
+
+Moser–Tardos §5 re-presents the randomness of the algorithm as a
+**pre-sampled table**: for each variable an independent column of fresh
+uniform draws, with column entry `0` the initialization and entry `t` the
+value the variable receives at its `t`-th resampling. Running the algorithm
+against the table is then *deterministic* — each resample of event `i` reads,
+for each `j ∈ vbl i`, the next unused cell of column `j` — and the coupling
+lemma `map_runTable` states that this deterministic runner, pushed forward
+along the uniform table distribution, **is** the instrumented random runner
+of Part VII. Consequences downstream (S18c): any event of the run — in
+particular "the log extracts witness tree τ" — can be computed on the table
+side, where the per-vertex resample values sit in *pairwise-disjoint,
+independent* table cells indexed by data of τ alone (the slot invariant).
+
+Design notes:
+
+* Cells are addressed by `ℕ` counters via `readCell`, with a junk fallback
+  (`Classical.arbitrary`) above row `n`; the coupling hypothesis
+  `c j + m ≤ n + 1` guarantees the fallback is never consumed, and the
+  table type stays the *finite* product the uniform PMF needs.
+* The randomness bookkeeping is one splitting lemma
+  (`uniform_table_overwrite`): overwriting one fresh cell per variable of
+  `S` in a uniform table with an independent uniform draw reproduces the
+  uniform table. Together with read-locality (`runTable_congr`: the runner
+  never looks below its counters) this peels one resample off the run, and
+  the peeled factor is *definitionally* `resampleAt` — the same
+  subtype-product glue. -/
+
+section TableCoupling
+
+/-- A **resample table** with `n + 1` rows: for each variable `j`, a column
+    of `n + 1` pre-sampled values of `alphabet j`. Row `0` is the
+    initialization; row `t ≥ 1` is the value `j` receives at its `t`-th
+    resampling. -/
+abbrev Table (n : ℕ) : Type :=
+  (j : Fin P.numVars) → Fin (n + 1) → P.alphabet j
+
+instance (n : ℕ) : Nonempty (P.Table n) :=
+  ⟨fun j _ => Classical.arbitrary (P.alphabet j)⟩
+
+variable {n : ℕ}
+
+/-- Read the table cell in column `j` at row `x : ℕ`, with a junk fallback
+    above row `n` (never consumed under the coupling's counter bounds). -/
+noncomputable def readCell (T : P.Table n) (j : Fin P.numVars) (x : ℕ) :
+    P.alphabet j :=
+  if h : x < n + 1 then T j ⟨x, h⟩ else Classical.arbitrary (P.alphabet j)
+
+/-- One deterministic Moser–Tardos step against the table. The runner state
+    is the current assignment together with one **write counter** per
+    variable (the row index of that variable's next unused cell). From a
+    good state, stay put and report `none`; otherwise resample the
+    least-index violated event `i` by reading, for each `j ∈ vbl i`, the
+    cell at `j`'s counter, then bump exactly those counters. -/
+noncomputable def stepTable (T : P.Table n)
+    (s : P.State × (Fin P.numVars → ℕ)) :
+    (P.State × (Fin P.numVars → ℕ)) × Option (Fin P.numEvents) :=
+  match P.pickBad s.1 with
+  | none => (s, none)
+  | some i =>
+      ((fun j => if j ∈ P.vbl i then P.readCell T j (s.2 j) else s.1 j,
+        fun j => if j ∈ P.vbl i then s.2 j + 1 else s.2 j), some i)
+
+/-- The deterministic instrumented runner against the table: `m` steps from
+    runner state `s`, returning the final runner state and the resample log
+    in execution order (mirroring `runLog`). -/
+noncomputable def runTable (T : P.Table n) :
+    ℕ → P.State × (Fin P.numVars → ℕ) →
+      (P.State × (Fin P.numVars → ℕ)) × List (Fin P.numEvents)
+  | 0, s => (s, [])
+  | m + 1, s =>
+      ((runTable T m (P.stepTable T s).1).1,
+        (P.stepTable T s).2.toList ++ (runTable T m (P.stepTable T s).1).2)
+
+/-- **Read-locality, one step**: a table step from runner state `s` only
+    reads cells at the current counters, so tables agreeing at all rows
+    `≥ s.2 j` of each column `j` step identically. -/
+private lemma stepTable_congr {T T' : P.Table n}
+    (s : P.State × (Fin P.numVars → ℕ))
+    (h : ∀ j (x : Fin (n + 1)), s.2 j ≤ (x : ℕ) → T j x = T' j x) :
+    P.stepTable T s = P.stepTable T' s := by
+  cases hpb : P.pickBad s.1 with
+  | none => simp [stepTable, hpb]
+  | some i =>
+      simp only [stepTable, hpb]
+      refine congrArg (fun w => ((w, _), _)) ?_
+      funext j
+      by_cases hj : j ∈ P.vbl i
+      · simp only [if_pos hj, readCell]
+        by_cases hlt : s.2 j < n + 1
+        · rw [dif_pos hlt, dif_pos hlt, h j ⟨s.2 j, hlt⟩ (le_refl _)]
+        · rw [dif_neg hlt, dif_neg hlt]
+      · simp only [if_neg hj]
+
+/-- Counters never decrease along a step. -/
+private lemma stepTable_counter_le (T : P.Table n)
+    (s : P.State × (Fin P.numVars → ℕ)) (j : Fin P.numVars) :
+    s.2 j ≤ (P.stepTable T s).1.2 j := by
+  cases hpb : P.pickBad s.1 with
+  | none => simp [stepTable, hpb]
+  | some i =>
+      simp only [stepTable, hpb]
+      by_cases hj : j ∈ P.vbl i <;> simp [hj]
+
+/-- **Read-locality**: the runner never reads a cell below its counters, so
+    tables agreeing at all rows `≥ s.2 j` of each column produce identical
+    runs from `s`. -/
+private lemma runTable_congr (m : ℕ) :
+    ∀ (s : P.State × (Fin P.numVars → ℕ)) {T T' : P.Table n},
+      (∀ j (x : Fin (n + 1)), s.2 j ≤ (x : ℕ) → T j x = T' j x) →
+      P.runTable T m s = P.runTable T' m s := by
+  induction m with
+  | zero => intro s T T' _; rfl
+  | succ m ih =>
+      intro s T T' h
+      have hstep : P.stepTable T s = P.stepTable T' s := P.stepTable_congr s h
+      have hrec : P.runTable T m (P.stepTable T s).1
+          = P.runTable T' m (P.stepTable T s).1 :=
+        ih _ fun j x hx =>
+          h j x (le_trans (P.stepTable_counter_le T s j) hx)
+      simp only [runTable]
+      rw [← hstep, hrec]
+
+/-- **The splitting lemma**: overwriting, in a uniform table, one designated
+    cell per variable of `S` (column `j`, row `c j`, in bounds) with an
+    independent uniform draw reproduces the uniform table. This is the
+    product-structure fact that peels one resample's worth of fresh
+    randomness off the table; the overwriting draw lives on exactly the
+    subtype product `resampleAt` samples. -/
+private lemma uniform_table_overwrite (n : ℕ) (S : Finset (Fin P.numVars))
+    (c : Fin P.numVars → ℕ) (hc : ∀ j ∈ S, c j < n + 1) :
+    PMF.uniformOfFintype (P.Table n) =
+      (PMF.uniformOfFintype (∀ j : S, P.alphabet j.val)).bind fun a =>
+        (PMF.uniformOfFintype (P.Table n)).map fun T j (x : Fin (n + 1)) =>
+          if h : j ∈ S ∧ (x : ℕ) = c j then a ⟨j, h.1⟩ else T j x := by
+  classical
+  ext T₀
+  rw [PMF.bind_apply, tsum_fintype, PMF.uniformOfFintype_apply]
+  -- the unique compatible overwrite draw: the values T₀ takes at the cells
+  set a₀ : ∀ j : S, P.alphabet j.val :=
+    fun j => T₀ j.val ⟨c j.val, hc j.val j.property⟩ with ha₀
+  rw [Finset.sum_eq_single a₀]
+  · -- the surviving term: count the fiber of the overwrite map over T₀
+    rw [PMF.map_apply, tsum_fintype]
+    simp_rw [PMF.uniformOfFintype_apply]
+    rw [← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]
+    have h_fiber :
+        (Finset.univ.filter (fun T : P.Table n => T₀ =
+            fun j (x : Fin (n + 1)) => if h : j ∈ S ∧ (x : ℕ) = c j
+              then a₀ ⟨j, h.1⟩ else T j x)).card
+          = Fintype.card (∀ j : S, P.alphabet j.val) := by
+      rw [← Fintype.card_subtype]
+      apply Fintype.card_congr
+      refine
+        { toFun := fun T => fun j : S =>
+            T.val j.val ⟨c j.val, hc j.val j.property⟩
+          invFun := fun b =>
+            ⟨fun j (x : Fin (n + 1)) => if h : j ∈ S ∧ (x : ℕ) = c j
+              then b ⟨j, h.1⟩ else T₀ j x, ?_⟩
+          left_inv := ?_
+          right_inv := ?_ }
+      · -- the reconstructed table lies in the fiber
+        funext j x
+        by_cases h : j ∈ S ∧ (x : ℕ) = c j
+        · obtain ⟨hjS, hxc⟩ := h
+          have hcond : j ∈ S ∧ (x : ℕ) = c j := ⟨hjS, hxc⟩
+          have hx : x = ⟨c j, hc j hjS⟩ := Fin.ext hxc
+          exact ((dif_pos hcond).trans (congrArg (T₀ j) hx.symm)).symm
+        · simp only [dif_neg h]
+      · -- left inverse
+        rintro ⟨T, hT⟩
+        apply Subtype.ext
+        funext j x
+        by_cases h : j ∈ S ∧ (x : ℕ) = c j
+        · obtain ⟨hjS, hxc⟩ := h
+          have hcond : j ∈ S ∧ (x : ℕ) = c j := ⟨hjS, hxc⟩
+          have hx : x = ⟨c j, hc j hjS⟩ := Fin.ext hxc
+          exact (dif_pos hcond).trans (congrArg (T j) hx.symm)
+        · simp only [dif_neg h]
+          have := congrFun (congrFun hT j) x
+          simp only [dif_neg h] at this
+          exact this
+      · -- right inverse
+        intro b
+        funext j
+        have hcond : (j : Fin P.numVars) ∈ S ∧
+            (((⟨c j.val, hc j.val j.property⟩ : Fin (n + 1)) : ℕ) = c j.val) :=
+          ⟨j.property, rfl⟩
+        exact dif_pos hcond
+    rw [h_fiber]
+    have h_ne_zero :
+        ((Fintype.card (∀ j : S, P.alphabet j.val) : ℕ) : ENNReal) ≠ 0 := by
+      exact_mod_cast (Fintype.card_pos
+        (α := ∀ j : S, P.alphabet j.val)).ne'
+    have h_ne_top :
+        ((Fintype.card (∀ j : S, P.alphabet j.val) : ℕ) : ENNReal) ≠ ⊤ :=
+      ENNReal.natCast_ne_top _
+    rw [← mul_assoc, ENNReal.inv_mul_cancel h_ne_zero h_ne_top, one_mul]
+  · -- any other draw is incompatible: the fiber is empty
+    intro a _ ha
+    rw [PMF.map_apply, tsum_fintype]
+    rw [Finset.sum_eq_zero, mul_zero]
+    intro T _
+    rw [if_neg]
+    intro hT
+    refine ha ?_
+    funext j
+    have hcond : (j : Fin P.numVars) ∈ S ∧
+        (((⟨c j.val, hc j.val j.property⟩ : Fin (n + 1)) : ℕ) = c j.val) :=
+      ⟨j.property, rfl⟩
+    have hkey : T₀ (j : Fin P.numVars)
+        ⟨c j.val, hc j.val j.property⟩
+        = a ⟨(j : Fin P.numVars), j.property⟩ :=
+      (congrFun (congrFun hT j.val)
+        ⟨c j.val, hc j.val j.property⟩).trans (dif_pos hcond)
+    rw [ha₀]
+    exact hkey.symm
+  · intro h
+    exact absurd (Finset.mem_univ _) h
+
+/-- **The coupling, running form**: pushing the uniform table forward along
+    `m` deterministic table steps from assignment `v` — with counters `c`
+    leaving enough fresh rows (`c j + m ≤ n + 1`) — reproduces the
+    instrumented random runner `runLog m v` exactly (final assignment and
+    log; the counters are projected away). One resample is peeled per
+    induction step: the splitting lemma makes the read cells an independent
+    uniform draw on the `resampleAt` subtype product, and read-locality
+    lets the recursive run forget the consumed cells. -/
+private lemma map_runTable (m : ℕ) :
+    ∀ (v : P.State) (c : Fin P.numVars → ℕ), (∀ j, c j + m ≤ n + 1) →
+      (PMF.uniformOfFintype (P.Table n)).map
+          (fun T => ((P.runTable T m (v, c)).1.1, (P.runTable T m (v, c)).2))
+        = P.runLog m v := by
+  induction m with
+  | zero =>
+      intro v c _
+      have hconst : (fun T : P.Table n =>
+          ((P.runTable T 0 (v, c)).1.1, (P.runTable T 0 (v, c)).2))
+          = Function.const _ (v, ([] : List (Fin P.numEvents))) := rfl
+      rw [hconst, PMF.map_const]
+      rfl
+  | succ m ih =>
+      intro v c hc
+      cases hpb : P.pickBad v with
+      | none =>
+          -- silent step on both sides
+          have hfun : (fun T : P.Table n =>
+              ((P.runTable T (m + 1) (v, c)).1.1,
+                (P.runTable T (m + 1) (v, c)).2))
+              = fun T => ((P.runTable T m (v, c)).1.1,
+                (P.runTable T m (v, c)).2) := by
+            funext T
+            simp only [runTable, stepTable, hpb, Option.toList_none,
+              List.nil_append]
+          rw [hfun, ih v c fun j => le_trans (by omega) (hc j)]
+          simp only [runLog, stepLog, hpb, PMF.pure_bind]
+          have hid : (fun q : P.State × List (Fin P.numEvents) =>
+              (q.1, (none : Option (Fin P.numEvents)).toList ++ q.2)) = id := by
+            funext q
+            simp
+          rw [hid, PMF.map_id]
+      | some i =>
+          -- resampling step: peel the read cells off the uniform table
+          have hbound : ∀ j ∈ P.vbl i, c j < n + 1 := fun j _ => by
+            have := hc j; omega
+          rw [P.uniform_table_overwrite n (P.vbl i) c hbound, PMF.map_bind]
+          -- reduce the runLog side to a bind over the same subtype draw
+          simp only [runLog, stepLog, hpb]
+          rw [show P.resampleAt (P.vbl i) v =
+              (PMF.uniformOfFintype (∀ j : (P.vbl i : Finset (Fin P.numVars)),
+                P.alphabet j.val)).map
+                (fun a (j : Fin P.numVars) =>
+                  if h : j ∈ P.vbl i then a ⟨j, h⟩ else v j) from rfl,
+            PMF.map_comp, PMF.bind_map]
+          refine congrArg _ (funext fun a => ?_)
+          -- fixed draw `a`: the overwritten table steps to the glued
+          -- assignment and never re-reads the consumed cells
+          rw [PMF.map_comp]
+          have hpoint : ((fun T : P.Table n =>
+              ((P.runTable T (m + 1) (v, c)).1.1,
+                (P.runTable T (m + 1) (v, c)).2)) ∘
+              (fun T j (x : Fin (n + 1)) =>
+                if h : j ∈ P.vbl i ∧ (x : ℕ) = c j
+                then a ⟨j, h.1⟩ else T j x))
+              = fun T =>
+                  ((P.runTable T m
+                    ((fun j => if h : j ∈ P.vbl i then a ⟨j, h⟩ else v j),
+                      fun j => if j ∈ P.vbl i then c j + 1 else c j)).1.1,
+                    i :: (P.runTable T m
+                    ((fun j => if h : j ∈ P.vbl i then a ⟨j, h⟩ else v j),
+                      fun j => if j ∈ P.vbl i then c j + 1 else c j)).2) := by
+            funext T
+            simp only [Function.comp_apply, runTable]
+            set Tw : P.Table n :=
+              fun j (x : Fin (n + 1)) =>
+                if h : j ∈ P.vbl i ∧ (x : ℕ) = c j
+                then a ⟨j, h.1⟩ else T j x with hTw
+            have hstep : P.stepTable Tw (v, c) =
+                (((fun j => if h : j ∈ P.vbl i then a ⟨j, h⟩ else v j),
+                  fun j => if j ∈ P.vbl i then c j + 1 else c j), some i) := by
+              simp only [stepTable, hpb]
+              refine congrArg (fun w => ((w, _), _)) ?_
+              funext j
+              by_cases hj : j ∈ P.vbl i
+              · rw [if_pos hj, dif_pos hj]
+                simp only [readCell, dif_pos (hbound j hj), hTw]
+                simp [hj]
+              · rw [if_neg hj, dif_neg hj]
+            have h1 : (P.stepTable Tw (v, c)).1 =
+                ((fun j => if h : j ∈ P.vbl i then a ⟨j, h⟩ else v j),
+                  fun j => if j ∈ P.vbl i then c j + 1 else c j) := by
+              rw [hstep]
+            have h2 : (P.stepTable Tw (v, c)).2 = some i := by rw [hstep]
+            rw [h1, h2]
+            have hforget : P.runTable Tw m
+                ((fun j => if h : j ∈ P.vbl i then a ⟨j, h⟩ else v j),
+                  fun j => if j ∈ P.vbl i then c j + 1 else c j)
+                = P.runTable T m
+                ((fun j => if h : j ∈ P.vbl i then a ⟨j, h⟩ else v j),
+                  fun j => if j ∈ P.vbl i then c j + 1 else c j) := by
+              refine P.runTable_congr m _ fun j x hx => ?_
+              have hcell : ¬ (j ∈ P.vbl i ∧ (x : ℕ) = c j) := by
+                rintro ⟨hj, hxc⟩
+                simp only [if_pos hj] at hx
+                omega
+              simp only [hTw, dif_neg hcell]
+            rw [hforget]
+            simp
+          rw [hpoint]
+          have hc' : ∀ j, (if j ∈ P.vbl i then c j + 1 else c j) + m ≤ n + 1 := by
+            intro j
+            have := hc j
+            by_cases hj : j ∈ P.vbl i <;> simp [hj] <;> omega
+          rw [show (fun T : P.Table n =>
+              ((P.runTable T m
+                ((fun j => if h : j ∈ P.vbl i then a ⟨j, h⟩ else v j),
+                  fun j => if j ∈ P.vbl i then c j + 1 else c j)).1.1,
+                i :: (P.runTable T m
+                ((fun j => if h : j ∈ P.vbl i then a ⟨j, h⟩ else v j),
+                  fun j => if j ∈ P.vbl i then c j + 1 else c j)).2))
+              = (fun q : P.State × List (Fin P.numEvents) => (q.1, i :: q.2)) ∘
+                (fun T => ((P.runTable T m
+                  ((fun j => if h : j ∈ P.vbl i then a ⟨j, h⟩ else v j),
+                    fun j => if j ∈ P.vbl i then c j + 1 else c j)).1.1,
+                  (P.runTable T m
+                  ((fun j => if h : j ∈ P.vbl i then a ⟨j, h⟩ else v j),
+                    fun j => if j ∈ P.vbl i then c j + 1 else c j)).2)) from rfl,
+            ← PMF.map_comp,
+            ih _ _ hc']
+          simp
+
+/-- Run the algorithm entirely from the table: initialize every variable
+    from its row-`0` cell, then consume fresh cells (rows `≥ 1`) at each
+    resample. Returns the final assignment and the log. -/
+noncomputable def tableRun (n : ℕ) (T : P.Table n) :
+    P.State × List (Fin P.numEvents) :=
+  ((P.runTable T n (fun j => T j 0, fun _ => 1)).1.1,
+    (P.runTable T n (fun j => T j 0, fun _ => 1)).2)
+
+/-- Pushing a uniform distribution through an equivalence gives the uniform
+    distribution. -/
+private lemma uniformOfFintype_map_equiv {α β : Type*} [Fintype α]
+    [Nonempty α] [Fintype β] [Nonempty β] (e : α ≃ β) :
+    (PMF.uniformOfFintype α).map e = PMF.uniformOfFintype β := by
+  classical
+  ext b
+  rw [PMF.map_apply, tsum_fintype, Finset.sum_eq_single (e.symm b)]
+  · simp [PMF.uniformOfFintype_apply, Fintype.card_congr e,
+      Equiv.apply_symm_apply]
+  · intro a _ ha
+    rw [if_neg]
+    intro hba
+    exact ha (by rw [hba, Equiv.symm_apply_apply])
+  · intro h
+    exact absurd (Finset.mem_univ _) h
+
+/-- The subtype product over `Finset.univ` is the full product: the domain
+    `resampleAt Finset.univ` samples is the state space itself. -/
+private def univGlue :
+    (∀ j : (Finset.univ : Finset (Fin P.numVars)), P.alphabet j.val)
+      ≃ P.State where
+  toFun a := fun j => a ⟨j, Finset.mem_univ j⟩
+  invFun v := fun j => v j.val
+  left_inv _ := rfl
+  right_inv _ := rfl
+
+/-- **The Moser–Tardos coupling (MT §5)**: the uniformly sampled resample
+    table, consumed by the deterministic runner — row `0` as the
+    initialization, one fresh cell per variable at each resample — is
+    exactly the uniformly-initialized instrumented Moser–Tardos process
+    `mtRun` of Part VIII. All randomness of the algorithm is pre-sampled
+    into independent uniform cells; downstream (S18c) this places each
+    witness-tree vertex's resample values into disjoint independent cells
+    whose indices are determined by the tree alone. -/
+theorem map_tableRun (n : ℕ) :
+    (PMF.uniformOfFintype (P.Table n)).map (P.tableRun n) = P.mtRun n := by
+  classical
+  rw [P.uniform_table_overwrite n Finset.univ (fun _ => 0)
+      (fun j _ => Nat.succ_pos n),
+    PMF.map_bind]
+  simp only [mtRun]
+  rw [show PMF.uniformOfFintype P.State =
+      (PMF.uniformOfFintype
+        (∀ j : (Finset.univ : Finset (Fin P.numVars)), P.alphabet j.val)).map
+        P.univGlue from (uniformOfFintype_map_equiv P.univGlue).symm,
+    PMF.bind_map]
+  refine congrArg _ (funext fun a => ?_)
+  rw [PMF.map_comp]
+  have hpoint : (P.tableRun n ∘
+      (fun T j (x : Fin (n + 1)) =>
+        if h : j ∈ (Finset.univ : Finset (Fin P.numVars)) ∧ (x : ℕ) = 0
+        then a ⟨j, h.1⟩ else T j x))
+      = fun T => ((P.runTable T n (P.univGlue a, fun _ => 1)).1.1,
+          (P.runTable T n (P.univGlue a, fun _ => 1)).2) := by
+    funext T
+    simp only [Function.comp_apply]
+    set Tw : P.Table n :=
+      fun j (x : Fin (n + 1)) =>
+        if h : j ∈ (Finset.univ : Finset (Fin P.numVars)) ∧ (x : ℕ) = 0
+        then a ⟨j, h.1⟩ else T j x with hTw
+    simp only [tableRun]
+    have hinit : (fun j => Tw j 0) = P.univGlue a := by
+      funext j
+      have hcond : j ∈ (Finset.univ : Finset (Fin P.numVars)) ∧
+          (((0 : Fin (n + 1)) : ℕ) = 0) := ⟨Finset.mem_univ j, by simp⟩
+      exact dif_pos hcond
+    have hforget : P.runTable Tw n (P.univGlue a, fun _ => 1)
+        = P.runTable T n (P.univGlue a, fun _ => 1) := by
+      refine P.runTable_congr n _ fun j x hx => ?_
+      have hx' : (1 : ℕ) ≤ (x : ℕ) := hx
+      have hcell : ¬ (j ∈ (Finset.univ : Finset (Fin P.numVars)) ∧
+          (x : ℕ) = 0) := by
+        rintro ⟨-, hx0⟩
+        omega
+      simp only [hTw, dif_neg hcell]
+    rw [hinit, hforget]
+  rw [hpoint, P.map_runTable n (P.univGlue a) (fun _ => 1)
+    (fun j => by omega)]
+  rfl
+
+end TableCoupling
+
 end MTProblem
 
 end ProbMethod.MoserTardos
