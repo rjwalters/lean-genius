@@ -18,12 +18,13 @@ This companion makes those two remarks precise against Mathlib's derangement the
 * `fixedPointFree_iff_mem_derangements` — the parent's `FixedPointFree` predicate is
   *literally* membership in Mathlib's `derangements (Fin 6) = {σ | ∀ x, σ x ≠ x}`
   (definitional).
-* `card_fixedPointFree_eq_numDerangements` — the parent's census count equals
-  `numDerangements 6`, tying the geometric Hexagrammum census to the standard
-  derangement number.
 
-The first two are axiom-free; the third inherits `Lean.ofReduceBool` from the parent's
-`native_decide`-proved `card_fixedPointFree`. 0 sorries.
+Both are axiom-free. 0 sorries.
+
+(The census-count identity `card_fixedPointFree_eq_numDerangements` — the parent's census
+count equals `numDerangements 6` — now lives in the parent file
+`PascalsHexagonOQ03Incomplete01.lean` itself, alongside its kernel-checkable corollary
+`card_fixedPointFree_eq_265_kernel`, so it is no longer restated here.)
 -/
 
 namespace PascalsHexagonOQ03Incomplete01
@@ -40,14 +41,5 @@ theorem numDerangements_six : numDerangements 6 = 265 := by decide
 `derangements (Fin 6) = {σ | ∀ x, σ x ≠ x}`. -/
 theorem fixedPointFree_iff_mem_derangements (σ : Equiv.Perm (Fin 6)) :
     FixedPointFree σ ↔ σ ∈ derangements (Fin 6) := Iff.rfl
-
-/-- **The Hexagrammum census equals the derangement number `D₆`.**  The parent's count
-of fixed-point-free permutations of `Fin 6` is exactly `numDerangements 6`, making
-rigorous the prose identification of `265` with `D₆`.  (Inherits `Lean.ofReduceBool`
-from the parent's `native_decide` count `card_fixedPointFree`.) -/
-theorem card_fixedPointFree_eq_numDerangements :
-    (Finset.univ.filter (fun σ : Equiv.Perm (Fin 6) => FixedPointFree σ)).card
-      = numDerangements 6 := by
-  rw [card_fixedPointFree, numDerangements_six]
 
 end PascalsHexagonOQ03Incomplete01
