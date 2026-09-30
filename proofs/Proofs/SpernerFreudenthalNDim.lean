@@ -229,4 +229,143 @@ theorem IsKuhnCell.base_isGridPt {N : ℕ} {b : Fin n → ℕ}
     {σ : Equiv.Perm (Fin n)} (h : IsKuhnCell N b σ) : IsGridPt N b := by
   simpa using h 0
 
+section InteriorSwapPivot
+
+/-! ### Interior swap pivot — existence half of the adjacency rules
+
+First rung of the pseudomanifold pivot rules (facet-adjacency) for Kuhn
+cells. Dropping an *interior* vertex `w (t+1)` (`t : Fin n` with
+`t + 1 ≤ n - 1`, encoded as `t.succ : Fin (n+1)`) merges the two chain
+steps in directions `σ t` and `σ t'` (`t' = t + 1` as positions). The
+candidate mate through that facet is the **swap pivot**
+`(b, σ * Equiv.swap t t')`, which takes the same two steps in the other
+order:
+
+* `kuhnVertex_mul_swap_of_ne` — every vertex except index `t.succ` is
+  unchanged, so the two cells share the facet opposite the dropped vertex;
+* `kuhnVertex_mul_swap_succ` — the one new vertex is
+  `w t.castSucc + e_{σ t'}` (detour through the other corner of the merged
+  2-step rectangle), and `kuhnVertex_mul_swap_succ_ne` shows it genuinely
+  differs from the dropped vertex;
+* `isKuhnCell_mul_swap_iff` — given `(b, σ)` valid, validity of the mate
+  collapses to grid-membership of that single new vertex (the facet is
+  interior to `K` exactly when it holds — the boundary/reflection
+  characterization is the next rung);
+* `mul_swap_mul_swap`, `mul_swap_ne` — the pivot is an involution and never
+  returns the same cell, the shape needed for the future door-counting
+  parity pairing.
+
+NOT claimed here: uniqueness (no third cell through an interior facet),
+the end pivots (`base`-shift at dropped index `0` or `n`), and the
+boundary-facet characterization — those are the remaining rungs of the
+adjacency layer. -/
+
+/-- `symm` of a cell permutation post-composed (in position space) with a
+swap: the swap migrates inside. -/
+theorem mul_swap_symm_apply (σ : Equiv.Perm (Fin n)) (t t' j : Fin n) :
+    (σ * Equiv.swap t t').symm j = Equiv.swap t t' (σ.symm j) := by
+  rw [Equiv.Perm.mul_def, Equiv.symm_trans_apply, Equiv.symm_swap]
+
+/-- **Facet sharing.** Away from the dropped index `t + 1`, swapping the two
+consecutive step directions does not change the vertex: the indicator
+`σ⁻¹ j < i` is insensitive to exchanging positions `t` and `t' = t + 1`
+unless `i` separates them, i.e. `i = t + 1`. -/
+theorem kuhnVertex_mul_swap_of_ne (b : Fin n → ℕ) (σ : Equiv.Perm (Fin n))
+    {t t' : Fin n} (htt : (t' : ℕ) = (t : ℕ) + 1) {i : Fin (n + 1)}
+    (hi : (i : ℕ) ≠ (t : ℕ) + 1) :
+    kuhnVertex b (σ * Equiv.swap t t') i = kuhnVertex b σ i := by
+  funext j
+  simp only [kuhnVertex, mul_swap_symm_apply]
+  by_cases h1 : σ.symm j = t
+  · rw [h1, Equiv.swap_apply_left]
+    split_ifs <;> omega
+  · by_cases h2 : σ.symm j = t'
+    · rw [h2, Equiv.swap_apply_right]
+      split_ifs <;> omega
+    · rw [Equiv.swap_apply_of_ne_of_ne h1 h2]
+
+/-- **The pivoted vertex.** At the dropped index `t.succ` the swapped cell
+detours through the other corner of the merged 2-step rectangle:
+`w' (t+1) = w t + e_{σ t'}`. -/
+theorem kuhnVertex_mul_swap_succ (b : Fin n → ℕ) (σ : Equiv.Perm (Fin n))
+    {t t' : Fin n} (htt : (t' : ℕ) = (t : ℕ) + 1) :
+    kuhnVertex b (σ * Equiv.swap t t') t.succ
+      = fun j => kuhnVertex b σ t.castSucc j + (if j = σ t' then 1 else 0) := by
+  funext j
+  have htne : t ≠ t' := fun h => by
+    have : (t : ℕ) = (t' : ℕ) := congrArg Fin.val h
+    omega
+  simp only [kuhnVertex, mul_swap_symm_apply, Fin.val_succ, Fin.val_castSucc]
+  by_cases h1 : σ.symm j = t
+  · have hjt : j = σ t := by rw [← h1, Equiv.apply_symm_apply]
+    have hne : j ≠ σ t' := by
+      rw [hjt]
+      intro hh
+      exact htne (σ.injective hh)
+    rw [h1, Equiv.swap_apply_left, if_neg hne]
+    split_ifs <;> omega
+  · by_cases h2 : σ.symm j = t'
+    · have hjt' : j = σ t' := by rw [← h2, Equiv.apply_symm_apply]
+      rw [h2, Equiv.swap_apply_right, if_pos hjt']
+      split_ifs <;> omega
+    · have hne : j ≠ σ t' := fun hh => h2 (by rw [hh]; simp)
+      rw [Equiv.swap_apply_of_ne_of_ne h1 h2, if_neg hne]
+      have hx : (σ.symm j : ℕ) ≠ (t : ℕ) := fun hh => h1 (Fin.ext hh)
+      split_ifs <;> omega
+
+/-- The pivoted vertex genuinely differs from the dropped one (they disagree
+in column `σ t`), so the swap pivot produces a second cell through the
+facet, not the same cell again. -/
+theorem kuhnVertex_mul_swap_succ_ne (b : Fin n → ℕ) (σ : Equiv.Perm (Fin n))
+    {t t' : Fin n} (htt : (t' : ℕ) = (t : ℕ) + 1) :
+    kuhnVertex b (σ * Equiv.swap t t') t.succ ≠ kuhnVertex b σ t.succ := by
+  intro h
+  have hcol := congrFun h (σ t)
+  have htne : t ≠ t' := fun hh => by
+    have : (t : ℕ) = (t' : ℕ) := congrArg Fin.val hh
+    omega
+  have hne : σ t ≠ σ t' := fun hh => htne (σ.injective hh)
+  rw [kuhnVertex_mul_swap_succ b σ htt] at hcol
+  simp only [kuhnVertex, Fin.val_succ, Fin.val_castSucc,
+    Equiv.symm_apply_apply, if_neg hne] at hcol
+  split_ifs at hcol <;> omega
+
+/-- **Validity of the mate.** Given a valid cell, all vertices of its swap
+pivot except the pivoted one are already grid points, so validity of the
+mate is exactly grid-membership of the single new vertex. (The facet
+opposite the dropped vertex is interior to `K` iff this holds; the
+geometric boundary characterization is a future rung.) -/
+theorem isKuhnCell_mul_swap_iff (N : ℕ) (b : Fin n → ℕ)
+    (σ : Equiv.Perm (Fin n)) {t t' : Fin n} (htt : (t' : ℕ) = (t : ℕ) + 1)
+    (hcell : IsKuhnCell N b σ) :
+    IsKuhnCell N b (σ * Equiv.swap t t')
+      ↔ IsGridPt N (kuhnVertex b (σ * Equiv.swap t t') t.succ) := by
+  constructor
+  · intro h
+    exact h t.succ
+  · intro hnew i
+    by_cases hi : (i : ℕ) = (t : ℕ) + 1
+    · have hiv : i = t.succ := Fin.ext (by simp [hi])
+      rw [hiv]
+      exact hnew
+    · rw [kuhnVertex_mul_swap_of_ne b σ htt hi]
+      exact hcell i
+
+/-- The swap pivot is an involution on cells: pivoting twice returns the
+original permutation (the base is untouched throughout). -/
+theorem mul_swap_mul_swap (σ : Equiv.Perm (Fin n)) (t t' : Fin n) :
+    (σ * Equiv.swap t t') * Equiv.swap t t' = σ := by
+  rw [mul_assoc, Equiv.swap_mul_self, mul_one]
+
+/-- The swap pivot never returns the cell it started from. -/
+theorem mul_swap_ne (σ : Equiv.Perm (Fin n)) {t t' : Fin n} (h : t ≠ t') :
+    σ * Equiv.swap t t' ≠ σ := by
+  intro hh
+  have happ : (σ * Equiv.swap t t') t = σ t := by rw [hh]
+  have : σ t' = σ t := by
+    simpa [Equiv.Perm.mul_apply, Equiv.swap_apply_left] using happ
+  exact h (σ.injective this.symm)
+
+end InteriorSwapPivot
+
 end SpernerFreudNDim
