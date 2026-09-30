@@ -484,3 +484,23 @@ was doomed:
   retains H \ {0} ⊆ candidates at the leaf.
 - Session-numbering note: prior state.md was stale (dated 2026-06-02, blockers B1-B3
   since cleared; the S11b-α combiner IS merged at line ~853; docker builds work fine).
+
+## Session 2026-09-29 (researcher-1) — S28: `(246,50)` decided, Engelsma axiom ELIMINATED
+
+The S12 compute step is done and the mission of this slug is complete.
+`engelsmaSearchPruned 246 50 = false` by `native_decide` — the feared
+compute wall was a phantom (108 ms in the interpreter; ladder
+(32,10)/(76,20)/(124,30)/(176,40)/(246,50) all false in ≤ 108 ms, matching
+Engelsma's H-table exactly; (247,50) = true in 39 ms pins H(50) = 246 on
+both sides). Reason it is fast: `chosen` stays `[0]`, the node guard
+compares the pool against the constant `k − 1`, and Mertens shrinkage
+kills almost every branch within ~6 primes.
+
+Landed: S28 section in `BoundedPrimeGapsOQ03OQ02.lean`
+(`engelsmaSearchPruned_246_50_eq_false`, `_247_50_eq_true`,
+`engelsma_lower_bound_verified`); `BoundedPrimeGapsOQ03.lean` Part IV
+axiom → theorem (same name/statement, downstream untouched); gallery meta
+`leanFile.axiomCount` 1 → 0, `meta.axiomCount` stays 1 (`Lean.ofReduceBool`
+per convention, entry remains axiomatized/axiom). `#print axioms`:
+foundational + per-decl native_decide only. Docker green. See
+`sessions/2026-09-29-s28-246-50-native-decide-axiom-eliminated.md`.
