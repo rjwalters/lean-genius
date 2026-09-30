@@ -300,3 +300,45 @@ BEFORE the bare-`ζ` equation, else the pattern is destroyed; `push_cast`
 before angle `rw [show … by ring]` normalizes `↑(i : ℕ)` to numerals so the
 pattern matches; `congr 2` + `push_cast; ring` aligns `exp` arguments across
 `↑1` casts.
+
+## Status (Iter 14, researcher-3, 2026-09-29) — ACT: sextic layer CLOSED (n = 7, 14) + uniform φ(n)=6 capstone
+
+`CyclotomicPolynomialsOQ02OQ15.lean` (new file, ~330 lines, 0 axioms / 0
+sorries, host-verified `lake env lean` exit 0): **the `φ(n) = 6` layer
+closes** — `not_isPreconnected_levelSet_seven` / `_fourteen`:
+`{z : |Φ₇(z)| < C}` and `{z : |Φ₁₄(z)| < C}` are disconnected (and not
+path-connected) for every `0 < C < 1/15625 = (1/5)⁶`, plus the uniform
+capstone `not_isPreconnected_levelSet_sextic`: ALL `n ∈ {7, 9, 14, 18}`
+(exactly the `φ(n) = 6` values) disconnect below the common threshold.
+
+**Mechanism — the minimal cubic of `cos(2π/7)`, no `cos_seven_mul` needed.**
+OQ14 predicted "repeated `cos_add`" machinery; the heptagon trick is cheaper:
+
+- At `θ = 2π/7`, `4θ + 3θ = 2π` gives `cos 4θ = cos 3θ` (`cos_two_pi_sub`).
+  Double-angle twice (`cos 4θ = 2(2c²−1)² − 1`) against `cos_three_mul`
+  yields the quartic `8c⁴ − 4c³ − 8c² + 3c + 1 = 0`, which factors EXACTLY
+  as `(c − 1)(8c³ + 4c² − 4c − 1) = 0` (one `linear_combination h43`);
+  `c < 1` (cos monotone from `cos 0`) kills the first factor →
+  `cos_two_pi_div_seven_cubic`: the minimal cubic `8c³ + 4c² − 4c − 1 = 0`,
+  a byproduct absent from Mathlib.
+- Engine bound `cos(2π/7) < 23/25` by root isolation: exact division
+  `p(c) − 77111/15625 = (c − 23/25)(8c² + (284/25)c + 4032/625)`, second
+  factor positive (`nlinarith`), so a root ≥ 23/25 forces `p(c) > 0`.
+- All other primitive gaps have NEGATIVE cosines: `cos(4π/7) = −cos(3π/7)`,
+  `cos(6π/7) = −cos(π/7)` via `cos_pi_sub` + `cos_pos_of_mem_Ioo`; the
+  wrap-around gaps (`8π/7, 10π/7, 12π/7`) reflect through `cos_two_pi_sub`.
+- n = 14 runs the identical engine at `ζ₁₄ = exp(πi/7)` with `b = ζ³`
+  (`ζ³ = ζ → ζ² = 1 → 14 ∣ 2`, absurd); coprimality to 14 kills the
+  ≈25.7° non-primitive neighbours (nearest primitive gap is `2π/7`), the
+  same phenomenon as n = 18.
+
+**Lean idioms (delta over OQ14)**: `push_neg` is DEPRECATED in v4.31 —
+use `push Not at h`; the quartic→cubic factorization is a single
+`linear_combination` (no nlinarith fishing); `interval_cases i` at n = 14
+spawns 14 branches — 8 die by `decide` on non-coprimality.
+
+**Remaining live rungs**: exact component COUNTS for quartic/sextic layers
+(OQ12 star-shape template at 4/6 foci — per-petal `nlinarith` certificates get
+harder with degree); sharpness above threshold (through-the-neck path, no
+certificate known). Deep `C > 1` labyrinth driver unchanged (blocked:
+polynomial-lemniscate topology absent from Mathlib).
