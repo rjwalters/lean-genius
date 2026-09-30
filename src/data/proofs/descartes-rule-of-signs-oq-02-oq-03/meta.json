@@ -73,11 +73,19 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module Header and complexRoots Definition",
+      "title": "Module Header: The Open Question",
       "startLine": 1,
+      "endLine": 28,
+      "summary": "States the parent's open question (OQ-03): the budan_parity axiom rests on complex roots of a real polynomial coming in conjugate pairs, which ultimately depends on the Fundamental Theorem of Algebra. Lists the four results the file derives (aeval_conj_eq_zero, complexRoots_conj_invariant, count_complexRoots_conj, even_card_nonreal_roots — the conjugate-pair structure fixing the real-root parity) and the verification status (0 sorries, 0 axioms, no native_decide).",
+      "mathContext": "The file derives that non-real elements of the complex root multiset split into conjugate pairs $\\{z,\\bar z\\}$, forcing $\\#\\{\\text{real roots}\\} \\equiv \\deg p \\pmod 2$."
+    },
+    {
+      "id": "complexroots-def",
+      "title": "The complexRoots Definition",
+      "startLine": 29,
       "endLine": 32,
-      "summary": "States the parent's open question (OQ-03): the budan_parity axiom rests on complex roots of a real polynomial coming in conjugate pairs, which ultimately depends on the Fundamental Theorem of Algebra. Lists the four results the file derives (aeval_conj_eq_zero, complexRoots_conj_invariant, count_complexRoots_conj, even_card_nonreal_roots — the conjugate-pair structure fixing the real-root parity), then defines complexRoots p as the complex root multiset of p.map (algebraMap ℝ ℂ).",
-      "mathContext": "$\\mathrm{complexRoots}\\,p = (p.\\mathrm{map}(\\mathbb{R}\\hookrightarrow\\mathbb{C})).\\mathrm{roots}$; the file derives that non-real elements of this multiset split into conjugate pairs $\\{z,\\bar z\\}$."
+      "summary": "Opens the DescartesRuleOfSignsOQ02OQ03 namespace and the Polynomial/Complex namespaces, then defines complexRoots p as the complex root multiset of p.map (algebraMap ℝ ℂ) — the real polynomial pushed into ℂ[X] via the canonical embedding, with roots collected as a Multiset ℂ carrying multiplicity.",
+      "mathContext": "$\\mathrm{complexRoots}\\,p = (p.\\mathrm{map}(\\mathbb{R}\\hookrightarrow\\mathbb{C})).\\mathrm{roots}$."
     },
     {
       "id": "membership",
