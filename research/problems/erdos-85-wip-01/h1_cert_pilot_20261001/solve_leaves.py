@@ -66,6 +66,8 @@ OUT.mkdir(parents=True, exist_ok=True)
 todo = [n for n in leaves if n["id"] not in done]
 print(f"{len(todo)} leaves to solve, {WORKERS} workers", flush=True)
 with cf.ThreadPoolExecutor(WORKERS) as ex, open(rec_path, "a") as rec:
-    for r in ex.map(run, todo):
+    # as_completed: a receipt lands when its leaf finishes, not behind slower leaves (#48 crash lesson)
+    for fut in cf.as_completed([ex.submit(run, n) for n in todo]):
+        r = fut.result()
         rec.write(json.dumps(r) + "\n"); rec.flush()
         print(r["node"], r.get("verdict", r["status"] if "status" in r else "?"), round(r.get("wall_seconds", 0)), r.get("lrat_bytes"), flush=True)

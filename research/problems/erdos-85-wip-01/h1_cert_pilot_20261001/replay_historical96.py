@@ -76,6 +76,8 @@ def run(r):
 todo = [r for r in rows if r["tag"] not in done]
 print(f"{len(todo)} rows, {WORKERS} workers", flush=True)
 with cf.ThreadPoolExecutor(WORKERS) as ex, open(rec_path, "a") as out:
-    for rec in ex.map(run, todo):
+    # as_completed: a receipt lands when its row finishes, not behind slower rows (#48 crash lesson)
+    for fut in cf.as_completed([ex.submit(run, r) for r in todo]):
+        rec = fut.result()
         out.write(json.dumps(rec) + "\n"); out.flush()
         print(rec["tag"], rec["status"], round(rec.get("drat_trim_wall", 0)), round(rec.get("lratreplay_wall", 0)), flush=True)
