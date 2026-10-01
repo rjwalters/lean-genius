@@ -40,7 +40,7 @@ comment quotes values of both and says which is which.
 > 4^k vertices. Lean 4 (standard axioms only) verifies that A-REG implies a
 > negative answer to this problem: F(N+1) < F(N) for infinitely many N. A-REG
 > is open and we do not conjecture it. The analogue at k = 2 is false, there
-> is no drop at orders 15–16 or 35–36, and the paper records a long list of
+> is no drop at orders 15–16, and the paper records a long list of
 > determinant, spectral, packing and census approaches that fail to prove it.
 >
 > A single drop at 48 to 49 is compatible with either answer to the problem

@@ -4,7 +4,7 @@ and emit one Lean leaf module per leaf plus the aggregate module.
 
 usage: gen_leaf_stubs.py <leaves-dir> <proofs/Proofs dir> [node ids...]
 """
-import json, subprocess, sys
+import json, os, subprocess, sys
 from pathlib import Path
 HERE = Path(__file__).resolve().parent
 COMPRESS = HERE.parent / "sat49/compress_h1_v2_binary_lrat.py"
@@ -13,6 +13,17 @@ recs = {}
 for line in (leaves_dir / "receipts.jsonl").read_text().splitlines():
     r = json.loads(line); recs[r["node"]] = r
 only = [int(x) for x in sys.argv[3:]]
+# Leaves that finished but whose receipt line is still queued behind slower leaves (driver
+# writes receipts in submission order): reconstruct from cadical.log + the banked tree.
+TREE = json.loads(Path("/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/results.json").read_text())["nodes"]
+for nid in only:
+    if nid in recs: continue
+    log = (leaves_dir / f"node-{nid:05d}" / "cadical.log").read_text()
+    assert "s UNSATISFIABLE" in log, nid
+    secs = [l for l in log.splitlines() if "total process time since initialization" in l]
+    n = TREE[str(nid)]
+    recs[nid] = {"node": nid, "literals": n["literals"], "cube_sha256": n["cube_sha256"], "verdict": "UNSAT",
+                 "lrat_binary": True, "wall_seconds": float(secs[-1].split()[-2]) if secs else -1.0, "cpu_seconds": -1.0}
 todo = only or sorted(recs)
 for nid in todo:
     r = recs[nid]; assert r["verdict"] == "UNSAT" and r["lrat_binary"], r
@@ -25,6 +36,11 @@ for nid in todo:
                              check=True, capture_output=True, text=True).stdout
         meta_path.write_text(out)
     meta = json.loads(meta_path.read_text())
+    # include_str can only see the worktree inside the build container: hard-link the payload in.
+    payload = proofs.parent / ".e85payload" / f"h1cube81494a-{nid:05d}.lrat.lz4p7"
+    payload.parent.mkdir(exist_ok=True)
+    if not payload.exists():
+        os.link(packed, payload)
     lits = sorted(r["literals"], key=abs)
     name = f"h1Cube81494aLeaf{nid:05d}"
     frame_bytes = meta.get("lz4_frame_bytes") or meta.get("frame_bytes")
@@ -48,7 +64,7 @@ private def {name}Cnf : Std.Sat.CNF Nat :=
   cubeCnf h1Cube81494aBaseCnf {json.dumps(lits)}
 
 private def {name}ProofText : String :=
-  include_str "{packed}"
+  include_str "../.e85payload/h1cube81494a-{nid:05d}.lrat.lz4p7"
 
 private def {name}RawProof : Array LRAT.IntAction :=
   parsePackedLz4OrderFortyNineLratProof {name}ProofText
