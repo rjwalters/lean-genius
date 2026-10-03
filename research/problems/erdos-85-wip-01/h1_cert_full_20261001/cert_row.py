@@ -107,16 +107,24 @@ def solve_and_check(a, work: Path, cnf: Path, rec: dict) -> None:
     t = threading.Thread(target=relay, args=(fa, fb, state, solver), daemon=True)
     t.start()
 
+    def exited(p: subprocess.Popen) -> bool:
+        # Peek without reaping (WNOWAIT): Popen.poll() would reap the child and make the main
+        # thread's os.wait4 fail with ECHILD (2026-10-03 full-run bug: 5 rows lost as ERROR).
+        try:
+            return os.waitid(os.P_PID, p.pid, os.WEXITED | os.WNOHANG | os.WNOWAIT) is not None
+        except ChildProcessError:
+            return True
+
     def watchdog() -> None:
         # Never deadlock on a FIFO: if the checker dies, drain FIFO B; if the solver dies before
         # opening FIFO A, open-and-close A so the relay sees EOF.
         drained = False
         while t.is_alive():
-            if checker.poll() is not None and not drained and not state.get("dst_closing"):
+            if exited(checker) and not drained and not state.get("dst_closing"):
                 drained = True
                 state["checker_exited_early"] = True
                 threading.Thread(target=lambda: open(fb, "rb").read(), daemon=True).start()
-            if solver.poll() is not None and not state.get("src_open"):
+            if exited(solver) and not state.get("src_open"):
                 try:
                     os.close(os.open(fa, os.O_WRONLY | os.O_NONBLOCK))
                 except OSError:

@@ -163,7 +163,10 @@ def run_row(args, slot: int, row: dict) -> dict:
 
 def slot_loop(args, slot: int, rows: list[dict]) -> None:
     time.sleep(slot * 3)
-    marker = Path(args.freight) / "manifest.jsonl"
+    # Claim body = instance ID, so the controller can release claims held by dead (e.g. spot-reclaimed) nodes.
+    marker = OUT / "claim-owner"
+    OUT.mkdir(exist_ok=True)
+    marker.write_text(args.iid)
     while True:
         with lock:
             if node["stop"]:
