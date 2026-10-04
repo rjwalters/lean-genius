@@ -40,9 +40,9 @@ def manifest_sha() -> str:
     return hashlib.sha256((FREIGHT / "manifest.jsonl").read_bytes()).hexdigest()
 
 
-def user_data(commit: str, only: str) -> str:
+def user_data(commit: str, only: str, heap_mb: int = 4000) -> str:
     sparse = " ".join(f"'{p}'" for p in SPARSE)
-    env = f"export E85_MANIFEST_SHA='{manifest_sha()}' E85_LIFETIME='{LIFETIME}' E85_ONLY='{only}'"
+    env = f"export E85_MANIFEST_SHA='{manifest_sha()}' E85_LIFETIME='{LIFETIME}' E85_ONLY='{only}' E85_HEAP_MB='{heap_mb}'"
     script = f"""#!/bin/bash
 exec >> /var/log/e85-userdata.log 2>&1
 set -u
@@ -89,7 +89,7 @@ def setup(args) -> None:
                                                                        "DeleteOnTermination": True}}],
             "TagSpecifications": [{"ResourceType": kind, "Tags": [{"Key": "project", "Value": vc.TAG}, {"Key": "Name", "Value": vc.TAG}]}
                                   for kind in ("instance", "volume")],
-            "UserData": user_data(args.commit, args.only)}
+            "UserData": user_data(args.commit, args.only, args.heap_mb)}
     existing = vc.aws_json("ec2", "describe-launch-templates", "--filters", f"Name=launch-template-name,Values={vc.LT_NAME}")
     if existing["LaunchTemplates"]:
         version = vc.aws_json("ec2", "create-launch-template-version", "--launch-template-name", vc.LT_NAME,
@@ -99,6 +99,22 @@ def setup(args) -> None:
         version = 1
     print(json.dumps({"role": ROLE, "security_group": sg, "ami": ami, "launch_template": vc.LT_NAME, "version": version,
                       "pinned_commit": args.commit, "manifest_sha256": manifest_sha(), "only": args.only}))
+
+
+def launch(args) -> None:
+    """vc.launch with an AZ exclusion and a bid ceiling override (2026-10-04: 7 spot reclaims, all in us-east-1d)."""
+    if args.max_price:
+        vc.MAX_SPOT_PRICE = args.max_price
+    if args.exclude_az:
+        real = vc.aws_json
+
+        def filtered(*a):
+            out = real(*a)
+            if a[:2] == ("ec2", "describe-subnets"):
+                out["Subnets"] = [s for s in out["Subnets"] if s["AvailabilityZone"] not in args.exclude_az]
+            return out
+        vc.aws_json = filtered
+    vc.launch(args)
 
 
 def freight(_args) -> None:
@@ -118,9 +134,10 @@ def main() -> int:
     vc.PASS["size"] = sum(1 for l in (FREIGHT / "manifest.jsonl").read_text().splitlines() if l.strip())
     p = argparse.ArgumentParser(description=__doc__)
     sub = p.add_subparsers(dest="command", required=True)
-    s = sub.add_parser("setup"); s.add_argument("--commit", required=True); s.add_argument("--only", default=""); s.set_defaults(run=setup)
+    s = sub.add_parser("setup"); s.add_argument("--commit", required=True); s.add_argument("--only", default=""); s.add_argument("--heap-mb", type=int, default=4000); s.set_defaults(run=setup)
     s = sub.add_parser("freight"); s.set_defaults(run=freight)
-    s = sub.add_parser("launch"); s.add_argument("count", type=int, choices=range(1, 5)); s.add_argument("--types", nargs="*"); s.set_defaults(run=vc.launch)
+    s = sub.add_parser("launch"); s.add_argument("count", type=int, choices=range(1, 5)); s.add_argument("--types", nargs="*")
+    s.add_argument("--exclude-az", nargs="*", default=[]); s.add_argument("--max-price", default=""); s.set_defaults(run=launch)
     s = sub.add_parser("watch"); s.add_argument("--dry", action="store_true"); s.add_argument("--once", action="store_true"); s.set_defaults(run=vc.watch)
     s = sub.add_parser("status"); s.set_defaults(run=lambda a: vc.watch(argparse.Namespace(dry=True, once=True)))
     s = sub.add_parser("stop"); s.set_defaults(run=vc.stop)
