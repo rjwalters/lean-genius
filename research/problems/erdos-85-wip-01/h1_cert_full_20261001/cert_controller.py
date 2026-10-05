@@ -130,8 +130,49 @@ def freight(_args) -> None:
     print(vc.aws("s3", "ls", f"s3://{vc.BUCKET}/{vc.PREFIX}/freight/"))
 
 
+def certified_ids() -> set[str]:
+    out = set()
+    for p in (vc.STRIPE / "ledger").glob("*.json"):
+        try:
+            l = json.loads(p.read_text())
+        except Exception:  # noqa: BLE001
+            continue
+        if l.get("status") == "CERTIFIED":
+            out.add(l["id"])
+    return out
+
+
+_reviewed_one_pass = vc.one_pass
+
+
+def one_pass(state: dict, act: bool) -> dict:
+    """Reviewed pass with two cert-run fixes (2026-10-05 incidents):
+    (1) claim owners are re-read from S3 every pass (a stale cached owner released live claims);
+    (2) "queue complete" requires a CERTIFIED ledger for every manifest row — an ERROR or
+        SOLVER_NOT_UNSAT ledger is not completion (the reviewed check stopped a node mid-rerun).
+    The reviewed budget stop is untouched."""
+    state["claims"] = {}
+    size = vc.PASS["size"]
+    vc.PASS["size"] = 10**9  # disable the reviewed ledger-count completion; decided below
+    try:
+        report = _reviewed_one_pass(state, act)
+    finally:
+        vc.PASS["size"] = size
+    done = len(certified_ids() & MANIFEST_IDS)
+    report["queue"], report["certified"] = size, done
+    if act and not report.get("action") and done >= len(MANIFEST_IDS):
+        report["action"] = "all rows CERTIFIED; stopping"
+        vc.stop(None)
+    return report
+
+
+vc.one_pass = one_pass
+MANIFEST_IDS: set[str] = set()
+
+
 def main() -> int:
-    vc.PASS["size"] = sum(1 for l in (FREIGHT / "manifest.jsonl").read_text().splitlines() if l.strip())
+    MANIFEST_IDS.update(json.loads(l)["id"] for l in (FREIGHT / "manifest.jsonl").read_text().splitlines() if l.strip())
+    vc.PASS["size"] = len(MANIFEST_IDS)
     p = argparse.ArgumentParser(description=__doc__)
     sub = p.add_subparsers(dest="command", required=True)
     s = sub.add_parser("setup"); s.add_argument("--commit", required=True); s.add_argument("--only", default=""); s.add_argument("--heap-mb", type=int, default=4000)
