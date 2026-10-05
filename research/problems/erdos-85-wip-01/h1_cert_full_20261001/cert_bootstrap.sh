@@ -9,6 +9,7 @@ B=2am-erdos85-certs; VP=sat49/verdict-only-20260921; PP=sat49/cert-20261001
 E85_LIFETIME=${E85_LIFETIME:-129600}   # 36 h: the longest census row is 19.7 h CaDiCaL (x1.2 logging)
 E85_MANIFEST_SHA=${E85_MANIFEST_SHA:?manifest sha required}
 E85_HEAP_MB=${E85_HEAP_MB:-4000}
+E85_CAP=${E85_CAP:-86400}   # CaDiCaL -t seconds; the 19.7 h census row needs > 24 h with proof logging
 E85_ONLY=${E85_ONLY:-}
 CAKE_COMMIT=a36874a8b750b43fe4b385b8ddbf5b033e46a3fa
 IMAGE_ID=sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6
@@ -69,8 +70,8 @@ UPLOADER=$!
 MEM_GB=$(awk '/MemTotal/{printf "%d", $2/1048576}' /proc/meminfo)
 export PYTHONFAULTHANDLER=1 PYTHONUNBUFFERED=1
 CMD=(python3.12 -B $HERE/cert_worker.py --repo $REPO --freight /scratch/freight/cert --manifest-sha256 $E85_MANIFEST_SHA
-  --iid $IID --itype $ITYPE --slots "${E85_SLOTS:-$(nproc)}" --mem-budget-gb $((MEM_GB - 24)) --heap-mb $E85_HEAP_MB
-  --lifetime $E85_LIFETIME --v2cnf $EMITTER --no-poweroff)
+  --iid $IID --itype $ITYPE --slots "${E85_SLOTS:-$(nproc)}" --mem-budget-gb $((MEM_GB > 48 ? MEM_GB - 24 : MEM_GB - 8)) --heap-mb $E85_HEAP_MB
+  --lifetime $E85_LIFETIME --cap $E85_CAP --v2cnf $EMITTER --no-poweroff)
 [ -n "$E85_ONLY" ] && CMD+=(--only "$E85_ONLY")
 echo "$(date -u +%FT%TZ) worker command: ${CMD[*]}"
 "${CMD[@]}" 2>> /var/log/e85-cert.err

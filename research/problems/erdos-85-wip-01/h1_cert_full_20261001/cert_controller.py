@@ -29,7 +29,7 @@ vc.STRIPE = vc.BASE_STRIPE = Path("/Volumes/Stripe/lean-genius/artifacts/erdos85
 vc.HARD_STOP_USD = 250.0
 vc.TYPES = ["r7g.16xlarge", "r8g.16xlarge", "r6g.16xlarge"]  # 512 GiB / 64 vCPU: memory-bound slots fill every core
 vc.MAX_SPOT_PRICE = "1.60"
-vc.ON_DEMAND_USD_PER_HOUR.update({"r7g.16xlarge": 3.4272, "r8g.16xlarge": 3.7699, "r6g.16xlarge": 3.2256})
+vc.ON_DEMAND_USD_PER_HOUR.update({"r7g.2xlarge": 0.4284, "r7g.16xlarge": 3.4272, "r8g.16xlarge": 3.7699, "r6g.16xlarge": 3.2256})
 vc.EBS_GIB = 100
 LIFETIME = 129600  # 36 h
 vc.PASS.update(name="cert", lifetime=LIFETIME)
@@ -40,9 +40,9 @@ def manifest_sha() -> str:
     return hashlib.sha256((FREIGHT / "manifest.jsonl").read_bytes()).hexdigest()
 
 
-def user_data(commit: str, only: str, heap_mb: int = 4000) -> str:
+def user_data(commit: str, only: str, heap_mb: int = 4000, cap: int = 86400, lifetime: int = LIFETIME) -> str:
     sparse = " ".join(f"'{p}'" for p in SPARSE)
-    env = f"export E85_MANIFEST_SHA='{manifest_sha()}' E85_LIFETIME='{LIFETIME}' E85_ONLY='{only}' E85_HEAP_MB='{heap_mb}'"
+    env = f"export E85_MANIFEST_SHA='{manifest_sha()}' E85_LIFETIME='{lifetime}' E85_ONLY='{only}' E85_HEAP_MB='{heap_mb}' E85_CAP='{cap}'"
     script = f"""#!/bin/bash
 exec >> /var/log/e85-userdata.log 2>&1
 set -u
@@ -89,7 +89,7 @@ def setup(args) -> None:
                                                                        "DeleteOnTermination": True}}],
             "TagSpecifications": [{"ResourceType": kind, "Tags": [{"Key": "project", "Value": vc.TAG}, {"Key": "Name", "Value": vc.TAG}]}
                                   for kind in ("instance", "volume")],
-            "UserData": user_data(args.commit, args.only, args.heap_mb)}
+            "UserData": user_data(args.commit, args.only, args.heap_mb, args.cap, args.lifetime)}
     existing = vc.aws_json("ec2", "describe-launch-templates", "--filters", f"Name=launch-template-name,Values={vc.LT_NAME}")
     if existing["LaunchTemplates"]:
         version = vc.aws_json("ec2", "create-launch-template-version", "--launch-template-name", vc.LT_NAME,
@@ -134,7 +134,9 @@ def main() -> int:
     vc.PASS["size"] = sum(1 for l in (FREIGHT / "manifest.jsonl").read_text().splitlines() if l.strip())
     p = argparse.ArgumentParser(description=__doc__)
     sub = p.add_subparsers(dest="command", required=True)
-    s = sub.add_parser("setup"); s.add_argument("--commit", required=True); s.add_argument("--only", default=""); s.add_argument("--heap-mb", type=int, default=4000); s.set_defaults(run=setup)
+    s = sub.add_parser("setup"); s.add_argument("--commit", required=True); s.add_argument("--only", default=""); s.add_argument("--heap-mb", type=int, default=4000)
+    s.add_argument("--cap", type=int, default=86400); s.add_argument("--lifetime", type=int, default=LIFETIME); s.set_defaults(run=setup)
+    s = sub.add_parser("launch-ondemand"); s.add_argument("type"); s.add_argument("--az", default="us-east-1b"); s.set_defaults(run=vc.launch_ondemand)
     s = sub.add_parser("freight"); s.set_defaults(run=freight)
     s = sub.add_parser("launch"); s.add_argument("count", type=int, choices=range(1, 5)); s.add_argument("--types", nargs="*")
     s.add_argument("--exclude-az", nargs="*", default=[]); s.add_argument("--max-price", default=""); s.set_defaults(run=launch)
