@@ -29,7 +29,7 @@ vc.STRIPE = vc.BASE_STRIPE = Path("/Volumes/Stripe/lean-genius/artifacts/erdos85
 vc.HARD_STOP_USD = 250.0
 vc.TYPES = ["r7g.16xlarge", "r8g.16xlarge", "r6g.16xlarge"]  # 512 GiB / 64 vCPU: memory-bound slots fill every core
 vc.MAX_SPOT_PRICE = "1.60"
-vc.ON_DEMAND_USD_PER_HOUR.update({"r7g.2xlarge": 0.4284, "r7g.16xlarge": 3.4272, "r8g.16xlarge": 3.7699, "r6g.16xlarge": 3.2256})
+vc.ON_DEMAND_USD_PER_HOUR.update({"r7g.2xlarge": 0.4284, "r7g.4xlarge": 0.8568, "r7g.16xlarge": 3.4272, "r8g.16xlarge": 3.7699, "r6g.16xlarge": 3.2256})
 vc.EBS_GIB = 100
 LIFETIME = 129600  # 36 h
 vc.PASS.update(name="cert", lifetime=LIFETIME)
