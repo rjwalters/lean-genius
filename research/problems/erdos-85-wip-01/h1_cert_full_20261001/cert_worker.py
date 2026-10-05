@@ -108,9 +108,9 @@ def run_row(args, slot: int, row: dict) -> dict:
     heap = args.heap_mb
     attempts = []
     while True:
-        out = WORK / f"{row['id']}.h{heap}"
-        if out.exists():
-            shutil.rmtree(out)
+        # Unique per attempt: a duplicate claim of the same row on this node must never touch a
+        # live attempt's directory (2026-10-05: rmtree of a running attempt lost two UNSAT receipts).
+        out = WORK / f"{row['id']}.h{heap}.{int(time.time())}.s{slot}"
         need = heap / 1000 + SOLVER_GB
         reserve(need)
         try:
