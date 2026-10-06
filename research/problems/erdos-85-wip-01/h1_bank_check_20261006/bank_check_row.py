@@ -33,13 +33,17 @@ def awsbase():
     return [args_.aws] + (["--profile", args_.profile] if args_.profile else []) + ["--region", "us-east-1"]
 
 
+def payer():
+    return ["--request-payer", "requester"] if args_.request_payer else []
+
+
 def aws(args, **kw):
     return subprocess.run(awsbase() + list(args), **kw)
 
 
 def ledger_line(tag: str) -> dict:
     for fleet in ("h1-fleet-v3", "h1-fleet-v2", "h1-fleet"):
-        r = aws(["s3", "cp", f"{BUCKET}/{fleet}/ledger/{tag}.line", "-"], capture_output=True, text=True)
+        r = aws(["s3", "cp", *payer(), f"{BUCKET}/{fleet}/ledger/{tag}.line", "-"], capture_output=True, text=True)
         if r.returncode == 0 and r.stdout.strip():
             for line in r.stdout.strip().splitlines()[::-1]:
                 f = line.split()
@@ -75,6 +79,7 @@ def main():
     p.add_argument("--v2cnf", default="/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/campaign-20260825.noindex/h1fleet/v3freight-rebuild-20260905/stage/freight/v2cnf")
     p.add_argument("--cake-lpr", default="/Volumes/Stripe/lean-genius/cake_lpr-src/cake_lpr")
     p.add_argument("--aws", default=shutil.which("aws") or "aws"); p.add_argument("--profile", default="2am-admin", help="'' on cloud nodes (instance role)")
+    p.add_argument("--request-payer", action="store_true", help="add --request-payer requester (third parties reading the Requester Pays bucket)")
     p.add_argument("--candidates", default="", help="JSON file of producer-ledger candidates from the manifest, or 'none' (no producer ledger); default: look up S3 ledgers")
     args_ = p.parse_args()
     d = args_.out.resolve() / args_.tag; d.mkdir(parents=True, exist_ok=False)
@@ -105,7 +110,7 @@ def main():
         t0 = time.time()
         cake = subprocess.Popen([args_.cake_lpr, str(inp / "input.cnf"), str(fifo), f"--CML_HEAP_SIZE={args_.heap_mb}", "--CML_STACK_SIZE=1000"],
                                 stdout=clog, stderr=subprocess.STDOUT)
-        dl = subprocess.Popen(awsbase() + ["s3", "cp", f"{BUCKET}/h1/{args_.tag}.compact.lrat.gz", "-"],
+        dl = subprocess.Popen(awsbase() + ["s3", "cp", *payer(), f"{BUCKET}/h1/{args_.tag}.compact.lrat.gz", "-"],
                               stdout=subprocess.PIPE, stderr=open(d / "download.err", "wb"))
         gz = subprocess.Popen(["gzip", "-dc"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         hg, hl, n = hashlib.sha256(), hashlib.sha256(), {"gz": 0, "lrat": 0}
