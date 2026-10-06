@@ -1,0 +1,208 @@
+{
+ "schema_version": "1",
+ "kind": "judgment",
+ "version_dir": "erdos85-drop.6",
+ "critic_id": "paper-review",
+ "model": "claude-opus-5-5",
+ "rubric": "anvil-pub-v2",
+ "scores": [
+  {
+   "dimension": "1_rigor",
+   "score": 5,
+   "max": 6,
+   "critical": false,
+   "evidence_span": "main.tex:L232-L297",
+   "fix": "Restate H1 over 13,351 slots with the bank's status; hedge the S4.6 counterfactual.",
+   "justification": "Scope of H1 argued from the 1,257 Phase B residual although the paper's own capacity grid is 13,351 slots; S4.6 bytes counterfactual drawn from one cube tree."
+  },
+  {
+   "dimension": "2_evidence",
+   "score": 4,
+   "max": 6,
+   "critical": false,
+   "evidence_span": "main.tex:L68-L344",
+   "fix": "Restore the bank disclosure and add it to the gap list, or re-check the bank with a verified checker (new receipts).",
+   "justification": "All new H1-certification numbers recompute exactly from receipts, but the headline 'every one of them'/'whole stratum' exceeds them: ~12,094 H1 capacity rows rest on the 2026-08 bank (producer drat-trim only, never re-validated) and were not part of the October run."
+  },
+  {
+   "dimension": "3_contribution_clarity",
+   "score": 4,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L68-L180",
+   "fix": null,
+   "justification": "Contribution extractable and correctly qualified in the Result A statement; deduction for 'every H1 instance' scope and the title dropping 'reviewed arguments'."
+  },
+  {
+   "dimension": "4_related_work",
+   "score": 4,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L103-L109",
+   "fix": "paper-litsearch before publication.",
+   "justification": "cake_lpr, Pythagorean and Schur lineage added and accurate; Boza-method comparison still declined; Lean LRAT checker uncited."
+  },
+  {
+   "dimension": "5_reproducibility",
+   "score": 4,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L268-L274",
+   "fix": "Identify the leaf toolchain; name lratreplay.",
+   "justification": "Pinned binaries, flags, success criterion and per-row proof hashes; leaf toolchain (macOS CaDiCaL, cake_lpr d23c413b) unidentified, six largest leaves lack proof sha256, lratreplay unnamed; bank, artifact volume and H7 packed files unpublished."
+  },
+  {
+   "dimension": "6_figures_tables",
+   "score": 3,
+   "max": 4,
+   "critical": false,
+   "evidence_span": "main.tex:L276-L291",
+   "fix": "Correct the caption and the row label.",
+   "justification": "Table 5 good, but its caption claims sha256 for every receipt (false for six leaves) and its 'All of H1 1,257' row inherits the scope problem; no figure."
+  },
+  {
+   "dimension": "7_prose_structure",
+   "score": 3,
+   "max": 4,
+   "critical": false,
+   "evidence_span": "main.tex:L68-L87",
+   "fix": "Split the abstract sentence; shorten S1.",
+   "justification": "Clean build and R-AUD clean; the abstract's key sentence is hard to parse; the 459-word S1 Result A paragraph; 'checked the same way' imprecise."
+  },
+  {
+   "dimension": "8_citation_hygiene",
+   "score": 4,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L107-L268",
+   "fix": "paper-audit claim-support for heule2016/heule2018.",
+   "justification": "14/14 resolve; heule2018schur added without being in the thread refs.bib or the BRIEF; check-then-discard attribution needs audit; Lean LRAT checker uncited."
+  },
+  {
+   "dimension": "9_rhetorical_economy",
+   "score": 3,
+   "max": 4,
+   "critical": false,
+   "evidence_span": "main.tex:L87-L344",
+   "fix": "One canonical gap list plus pointers.",
+   "justification": "Retired material cut cleanly; the gap list is repeated near-verbatim five times; the S1 paragraph restates S4.2/S4.5."
+  }
+ ],
+ "findings": [
+  {
+   "severity": "blocker",
+   "dimension": "2_evidence",
+   "evidence_span": "main.tex:L68-L362",
+   "rationale": "H1 is described as 1,257 instances, all checked by a verified checker ('every H1 instance', 'whole stratum', 'left the H1 trust base'), but the receipts close H1 over 13,351 capacity slots; ~12,094 rest on the 2026-08 certificate bank (producer drat-trim only, payloads not re-validated) that the October run did not check. v5's disclosure was deleted and the bank-replay plan is called 'superseded'.",
+   "suggested_fix": "Restate the scope, restore the bank row and disclosure, and add bank re-validation (and the 34 outside slots if needed) to every gap list."
+  },
+  {
+   "severity": "major",
+   "dimension": "1_rigor",
+   "evidence_span": "main.tex:L264-L264",
+   "rationale": "The trust sentence puts trust in compiled LRAT.check for 30 leaves that cake_lpr also accepted, and omits the unverified lratreplay (Erdos85LratRuntime) parsing front end; it does not say this is the same compiler trust as the H7 native_decide checks.",
+   "suggested_fix": "One sentence in S4.4 naming lratreplay, check_sound, and redundancy for the 30 leaves."
+  },
+  {
+   "severity": "major",
+   "dimension": "5_reproducibility",
+   "evidence_span": "main.tex:L87-L278",
+   "rationale": "'checked the same way' and the Table 5 caption's 'each receipt keeps the proof's sha256' do not match the leaf receipts (macOS CaDiCaL, file-based check, cake_lpr build d23c413b, no proof sha256 for the six largest leaves).",
+   "suggested_fix": "Describe the leaf toolchain; restrict the caption."
+  },
+  {
+   "severity": "major",
+   "dimension": "2_evidence",
+   "evidence_span": "main.tex:L232-L253",
+   "rationale": "Whether H1's exclusion needs the 34 verdict-only outside slots is not stated; PAUSE_HANDOFF says the capacity-grid framing needs them.",
+   "suggested_fix": "State which framing the Lean reduction consumes; list the 34 as open if needed."
+  },
+  {
+   "severity": "minor",
+   "dimension": "3_contribution_clarity",
+   "evidence_span": "main.tex:L60-L60",
+   "rationale": "The title 'Certificate-Checked Drop' omits the reviewed arguments that H5 and H7 t=0 rest on (the title is set by the BRIEF; operator decision).",
+   "suggested_fix": "Operator: consider 'Certificate-Checked Census' or accept the shorthand knowingly."
+  },
+  {
+   "severity": "minor",
+   "dimension": "1_rigor",
+   "evidence_span": "main.tex:L297-L297",
+   "rationale": "'splitting would have multiplied the bytes' is generalized from one tree's per-CPU-hour rate.",
+   "suggested_fix": "Hedge or drop."
+  },
+  {
+   "severity": "minor",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L68-L68",
+   "rationale": "The abstract's checker sentence nests a colon list with a participial clause; 'by ... by'.",
+   "suggested_fix": "Split into two sentences."
+  },
+  {
+   "severity": "minor",
+   "dimension": "9_rhetorical_economy",
+   "evidence_span": "main.tex:L87-L87",
+   "rationale": "The S1 Result A paragraph is 459 words and restates S4.2/S4.5.",
+   "suggested_fix": "Shorten and point forward."
+  },
+  {
+   "severity": "minor",
+   "dimension": "9_rhetorical_economy",
+   "evidence_span": "main.tex:L68-L344",
+   "rationale": "The five-gap list is repeated near-verbatim in five places.",
+   "suggested_fix": "One canonical list plus named pointers."
+  },
+  {
+   "severity": "minor",
+   "dimension": "8_citation_hygiene",
+   "evidence_span": "main.tex:L107-L268",
+   "rationale": "related-work: heule2018schur is new and not in the thread refs.bib; the check-then-discard attribution needs audit; the Lean LRAT checker is uncited.",
+   "suggested_fix": "paper-audit / paper-litsearch."
+  },
+  {
+   "severity": "minor",
+   "dimension": "3_contribution_clarity",
+   "evidence_span": "main.tex:L68-L68",
+   "rationale": "'the 1,160 instances of a two-solver census' reads as if the hardest row were outside the 1,161-row census.",
+   "suggested_fix": "'the 1,160 whole-instance rows ... and the 36 cubes that partition its remaining, hardest row'."
+  },
+  {
+   "severity": "nit",
+   "dimension": "5_reproducibility",
+   "evidence_span": null,
+   "rationale": "changelog says cube_sha_ok true for all; 31 explicit, 5 absent (all 36 verified against the tree by this reviewer).",
+   "suggested_fix": "Correct the changelog wording."
+  },
+  {
+   "severity": "nit",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L357-L370",
+   "rationale": "audience_check flags 14 \\repofile lines as unlinked (detector does not expand the macro).",
+   "suggested_fix": "Suppression directive or upstream detector fix."
+  },
+  {
+   "severity": "nit",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L372-L372",
+   "rationale": "BRIEF R-LINK still lists the room transcript as unpublished; v6 links it publicly (HTTP 200).",
+   "suggested_fix": "Operator: reconcile the BRIEF."
+  },
+  {
+   "severity": "nit",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L68-L274",
+   "rationale": "Three names for the second checker.",
+   "suggested_fix": "Use one name everywhere."
+  }
+ ],
+ "critical_flags": [
+  {
+   "type": "scope_overclaim_h1_certificate_check",
+   "justification": "Abstract/S4.5/S4.4/S6/Table 5 state that H1 consists of 1,257 instances and that every H1 instance (the whole stratum) has a proof accepted by a formally verified checker. The receipts close H1 over the 13,351-slot capacity universe; ~12,094 rows were screened out of Phase B because 2026-08 bank certificates exist, which were producer-verified by drat-trim only and 'not downloaded or kernel-checked' (PHASE_B_H1_H3_INVENTORY_20260910.md); the October README scopes itself to 'Every H1 residual root'. v5 disclosed the unvalidated bank; v6 removed the disclosure and Table 4 row and calls the bank-replay plan 'superseded'. The disclosure is weakened relative to the AUDITED v5, R-CERT's 'name the remaining gaps' rule is broken, and the BRIEF frontmatter claim is not supported by the receipts.",
+   "evidence_span": "main.tex:L68-L362"
+  }
+ ],
+ "total": 34,
+ "threshold": 35,
+ "verdict": "BLOCK"
+}

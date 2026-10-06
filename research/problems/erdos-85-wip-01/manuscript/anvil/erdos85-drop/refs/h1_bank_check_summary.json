@@ -1,0 +1,37 @@
+{
+ "schema": "erdos85-h1-bank-check-summary-v1",
+ "completed_utc": "2026-10-06T22:29Z",
+ "rows": 12094,
+ "verified": 12094,
+ "lrat_bytes_total": 22554276624018,
+ "gz_bytes_total": 6285686522598,
+ "max_lrat_bytes": 26521722365,
+ "check_wall_hours_sum": 408.5,
+ "all_hashes_match_producer_ledger": true,
+ "no_producer_ledger_rows": [
+  "0051c0f06f824a2e"
+ ],
+ "ledgers_total": 12115,
+ "ledger_statuses": {
+  "VERIFIED": 12094,
+  "CNF_MISMATCH": 21
+ },
+ "cnf_mismatch_note": "all 21 CNF_MISMATCH ledgers are emit failures (docker daemon EOF) on spot node i-080ff7d8850a8d38b while it was being reclaimed; every such row re-ran to VERIFIED",
+ "checker": {
+  "name": "cake_lpr",
+  "commit": "a36874a8b750b43fe4b385b8ddbf5b033e46a3fa"
+ },
+ "emitter": {
+  "v2cnf_sha256": "4bd9604c6d670ad65a8ca332a26dbf35132418634a3b0678c177c8b2cfff4bf6",
+  "image": "sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6"
+ },
+ "manifest_sha256": "9b46d0af495492d8799f6b08db34b8cf7fb88371d2638b8dd224089f0230b795",
+ "coverage": {
+  "capacity_orbits": 13351,
+  "bank_orbits_this_run": 12094,
+  "phase_b_orbits_october": 1257,
+  "uncovered": 0
+ },
+ "cloud_spend_usd_estimate": 20.42,
+ "receipts_tsv_sha256": "3436e4d859faf69bf0172c825cb12d25d44f87afb36cf1b4eb416bbba8bef91f"
+}

@@ -1,0 +1,154 @@
+{
+  "schema_version": "1",
+  "kind": "tool_evidence",
+  "version_dir": "erdos85-drop.6",
+  "critic_id": "audience",
+  "model": null,
+  "rubric": null,
+  "scores": [
+    {
+      "dimension": "audience_check",
+      "score": null,
+      "max": 1,
+      "critical": false,
+      "evidence_span": null,
+      "fix": null,
+      "justification": "audience-fit pre-flight is a deterministic advisory scan; owns no rubric dim (evidence for dims 7/9)."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L357",
+      "rationale": "Link hygiene (body, section 'Artifacts and receipts.'): artifact path(s) 'research/problems/erdos-85-wip-01/h1_cert_full_20261001/receipts/README.md', 'research/problems/erdos-85-wip-01/h1_cert_full_20261001/receipts/h1_cert_census_receipts.tsv', 'research/problems/erdos-85-wip-01/h1_cert_full_20261001/receipts/h1_cert_census_summary.json', 'research/problems/erdos-85-wip-01/h1_cert_full_20261001/receipts/historical96_receipts.jsonl' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item \\\\repofile{research/problems/erdos-85-wip-01/h1_cert_full_20261001/receipts/}{h1_cert_full_20261001/receipts/} (\\\\repofile{research/problems/erdos-85-wip-0\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L358",
+      "rationale": "Link hygiene (body, section 'Artifacts and receipts.'): artifact path(s) 'research/problems/erdos-85-wip-01/h1_cert_pilot_20261001/COMPOSITION_AXIOMS_20261006.txt', 'proofs/Proofs/Erdos85CubeTreeComposition.lean', 'proofs/Proofs/Erdos85H1CubePilot81494a.lean' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item \\\\repofile{research/problems/erdos-85-wip-01/h1_cert_pilot_20261001/}{h1_cert_pilot_20261001/}: the pilot drivers (leaf solving, both leaf checkers, the h\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L359",
+      "rationale": "Link hygiene (body, section 'Artifacts and receipts.'): artifact path(s) 'research/problems/erdos-85-wip-01/phase_b_h1_census_20260927/CENSUS.md', 'research/problems/erdos-85-wip-01/phase_b_h1_census_20260927/h1-census-table.json', 'research/problems/erdos-85-wip-01/phase_b_h1_census_20260927/h1-census-table.tsv', 'research/problems/erdos-85-wip-01/phase_b_h1_census_20260927/h1-gap1288-audit.json', 'research/problems/erdos-85-wip-01/phase_b_h1_census_20260927/cube-h1_81494a6ef36d3ec9/tree-check.json', 'cube-h1_81494a6ef36d3ec9/tree-check.json' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item \\\\repofile{research/problems/erdos-85-wip-01/phase_b_h1_census_20260927/}{phase_b_h1_census_20260927/} (\\\\repofile{research/problems/erdos-85-wip-01/phase_\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L360",
+      "rationale": "Link hygiene (body, section 'Artifacts and receipts.'): artifact path(s) 'research/problems/erdos-85-wip-01/CENSUS_TIMING_20260928.md' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item \\\\repofile{research/problems/erdos-85-wip-01/CENSUS_TIMING_20260928.md}{CENSUS_TIMING_20260928.md}: the per-row final-attempt join (2,704 and 2,996 core-h\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L361",
+      "rationale": "Link hygiene (body, section 'Artifacts and receipts.'): artifact path(s) 'research/problems/erdos-85-wip-01/CERT_BANK_STATS_20260926.md' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item \\\\repofile{research/problems/erdos-85-wip-01/CERT_BANK_STATS_20260926.md}{CERT_BANK_STATS_20260926.md}: the certificate-bank statistics (12,102 rows, abou\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L362",
+      "rationale": "Link hygiene (body, section 'Artifacts and receipts.'): artifact path(s) 'research/problems/erdos-85-wip-01/sat49/H1_REPLAY_SPOT_16_BUDGET_PLAN_20260916.md', 'sat49/H1_REPLAY_SPOT_16_BUDGET_PLAN_20260916.md' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item \\\\repofile{research/problems/erdos-85-wip-01/sat49/H1_REPLAY_SPOT_16_BUDGET_PLAN_20260916.md}{sat49/H1_REPLAY_SPOT_16_BUDGET_PLAN_20260916.md}: the supers\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L363",
+      "rationale": "Link hygiene (body, section 'Artifacts and receipts.'): artifact path(s) 'research/problems/erdos-85-wip-01/AXIOM_AUDIT_COLD_20260927/AXIOM_AUDIT_COLD_20260927.md', 'research/problems/erdos-85-wip-01/AXIOM_AUDIT_COLD_20260927/axioms.out' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item \\\\repofile{research/problems/erdos-85-wip-01/AXIOM_AUDIT_COLD_20260927/}{AXIOM_AUDIT_COLD_20260927/} (\\\\repofile{research/problems/erdos-85-wip-01/AXIOM_AU\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L364",
+      "rationale": "Link hygiene (body, section 'Artifacts and receipts.'): artifact path(s) 'research/problems/erdos-85-wip-01/STRATA_AND_SMALL_ORDERS_20260928.md' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item \\\\repofile{research/problems/erdos-85-wip-01/STRATA_AND_SMALL_ORDERS_20260928.md}{STRATA_AND_SMALL_ORDERS_20260928.md}: the Lean names of Section~\\\\ref{sec\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L365",
+      "rationale": "Link hygiene (body, section 'Artifacts and receipts.'): artifact path(s) 'research/problems/erdos-85-wip-01/H7_POSITIVE_TRIPLE_CELLS_H5_CLOSURE_FORMULA_COUNTS_20260928.md' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item \\\\repofile{research/problems/erdos-85-wip-01/H7_POSITIVE_TRIPLE_CELLS_H5_CLOSURE_FORMULA_COUNTS_20260928.md}{H7_POSITIVE_TRIPLE_CELLS_H5_CLOSURE_FORMULA_C\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L366",
+      "rationale": "Link hygiene (body, section 'Artifacts and receipts.'): artifact path(s) 'research/problems/erdos-85-wip-01/q7_h5_closure_ledger/README.md', 'q7_h5_closure_ledger/README.md', 'research/problems/erdos-85-wip-01/q7_h5_closure_ledger/REVIEWED_RESULT.md', 'q7_h5_closure_ledger/REVIEWED_RESULT.md', 'research/problems/erdos-85-wip-01/q7_h5_closure_ledger/review2065.json', 'q7_h5_closure_ledger/review2065.json', 'research/problems/erdos-85-wip-01/q7_h5_closure_ledger/reviewer/REVIEW2065.json', 'q7_h5_closure_ledger/reviewer/REVIEW2065.json' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item \\\\repofile{research/problems/erdos-85-wip-01/q7_h5_closure_ledger/README.md}{q7_h5_closure_ledger/README.md}, \\\\repofile{research/problems/erdos-85-wip-01/\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L367",
+      "rationale": "Link hygiene (body, section 'Artifacts and receipts.'): artifact path(s) 'research/problems/erdos-85-wip-01/PHASE_B_H1_H3_INVENTORY_20260910.md', 'research/problems/erdos-85-wip-01/PHASE_B_H5_H7_INVENTORY_20260910.md', 'research/problems/erdos-85-wip-01/Q7_H1_H3_SQUEEZE_20260910.md', 'research/problems/erdos-85-wip-01/Q7_H5_H7_SQUEEZE_20260910.md', 'research/problems/erdos-85-wip-01/H7_CLOSURE_20260915.md' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item \\\\repofile{research/problems/erdos-85-wip-01/PHASE_B_H1_H3_INVENTORY_20260910.md}{PHASE_B_H1_H3_INVENTORY_20260910.md}, \\\\repofile{research/problems/erdos-\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L368",
+      "rationale": "Link hygiene (body, section 'Artifacts and receipts.'): artifact path(s) 'research/problems/erdos-85-wip-01/PAUSE_HANDOFF_20260927.md' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item \\\\repofile{research/problems/erdos-85-wip-01/PAUSE_HANDOFF_20260927.md}{PAUSE_HANDOFF_20260927.md}: the \\\\lean{v2cnf} emitter hash of Section~\\\\ref{sec:trus\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L369",
+      "rationale": "Link hygiene (body, section 'Artifacts and receipts.'): artifact path(s) 'research/problems/erdos-85-wip-01/sat49/verify_boza48_nonisomorphism.py', 'sat49/verify_boza48_nonisomorphism.py', 'research/problems/erdos-85-wip-01/sat49/BOZA48_NONISOMORPHISM_RECEIPT_20260928.txt', 'sat49/BOZA48_NONISOMORPHISM_RECEIPT_20260928.txt' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item \\\\repofile{research/problems/erdos-85-wip-01/sat49/verify_boza48_nonisomorphism.py}{sat49/verify_boza48_nonisomorphism.py} with its receipt \\\\repofile{rese\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L370",
+      "rationale": "Link hygiene (body, section 'Artifacts and receipts.'): artifact path(s) 'research/problems/erdos-85-wip-01/manuscript/FIRST_DROP_LITERATURE_CHECK.md', 'manuscript/FIRST_DROP_LITERATURE_CHECK.md' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item \\\\repofile{research/problems/erdos-85-wip-01/manuscript/FIRST_DROP_LITERATURE_CHECK.md}{manuscript/FIRST_DROP_LITERATURE_CHECK.md}: the readings of the Bo\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    }
+  ],
+  "critical_flags": [],
+  "total": null,
+  "threshold": null,
+  "verdict": null,
+  "rendered_artifact": null,
+  "probes": null,
+  "unscored": false
+}
