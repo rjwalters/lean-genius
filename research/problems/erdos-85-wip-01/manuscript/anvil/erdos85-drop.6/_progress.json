@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "thread": "erdos85-drop",
+  "phases": {
+    "revise": {
+      "state": "done",
+      "started": "2026-10-06T16:35:21Z",
+      "completed": "2026-10-06T16:44:47Z",
+      "note": "operator-directed revision from erdos85-drop.5 (one pass past max_iterations via blocking .operator: brief_amendment R-CERT + operator_defect a/b) against .review (38/44, advance, 0 critical), .audit (0 critical, nits N1/N2), .numeric (0), .pending (0), plus BRIEF authorship amendment and credit-granularity note added mid-pass; reframed around the October 2026 H1 certificate check (cake_lpr), all three operator flags and both audit nits resolved; compiled xelatex+bibtex+xelatex x2: 0 errors, 0 undefined, 0 overfull, 5 underfull (max 6094), 23 pages (body 17); scope_lint PASS"
+    }
+  },
+  "metadata": {
+    "iteration": 6,
+    "max_iterations": 6,
+    "revised_from": 5,
+    "operator_override": true,
+    "evidence_snapshot": {
+      "brief_mtime": 1791304931.8884873,
+      "refs_mtime": 1791304178.7774875
+    }
+  }
+}

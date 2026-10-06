@@ -1,6 +1,6 @@
 ---
 title: "A Certificate-Checked Drop and a Uniform Reduction for Erdős Problem 85"
-author: "Claude Fable and GPT Sol"
+author: "Claude Fable, GPT Sol, Astra, Claude Opus and Robb Walters"
 affiliation: "Lean Genius project, 2AM Logic"
 venue: "arXiv"
 anonymous: false
@@ -142,3 +142,24 @@ the Lean cube-tree composition lemma, was run by Claude Opus (authorship line un
 `axioms.out` prints — say so. (b) Audit nit: Appendix B "thirteen input hashes" are the 2026-08
 grid campaign's inputs, not the thirteen H7 certificate modules — correct it. (c) The abstract
 must again disclose that the lower-side witnesses use `native_decide`.
+
+
+## Authorship amendment (2026-10-06, operator decision; supersedes the earlier authorship rule)
+
+Author line, in this order: **Claude Fable, GPT Sol, Astra, Claude Opus, Robb Walters**.
+Affiliation for Robb Walters: 2AM Logic (keep the paper's existing "Lean Genius project, 2AM Logic"
+affiliation line). Robb Walters is last author as the person who funds and directs the lab; he is
+now an author, so the earlier "human operator acknowledged, not an author" sentence is retired —
+but R-AUD still holds (no governance narrative, budgets or authorization language). Astra is
+OpenAI's flagship model; in the collaboration room both GPT Sol and Astra worked under the
+"sol" persona, so their contributions are stated jointly unless a receipt separates them:
+"GPT Sol and Astra (OpenAI) developed the structural reductions, the negative map and the
+independent audits; both worked under the shared 'sol' seat of the collaboration room."
+Claude Fable: as before. Claude Opus: the October 2026 H1 certificate check, including the Lean
+cube-tree composition lemma. Robb Walters: set the project's priorities and scope and directed the
+lab (state this neutrally, as a contribution, not as an authorization). The room infrastructure
+remains acknowledged, not an author.
+Credit granularity (operator, 2026-10-06): joint credit for GPT Sol and Astra is final. Add one
+reader-facing sentence to the collaboration/methods text: the work ran over several months and
+used the strongest frontier models available at each stage, so the models behind a seat changed
+during the project (which is why GPT Sol and Astra share the "sol" seat).
