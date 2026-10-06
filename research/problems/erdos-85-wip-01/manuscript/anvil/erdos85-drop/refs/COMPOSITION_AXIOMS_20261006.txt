@@ -1,0 +1,8 @@
+# #print axioms — H1 cube-tree composition (Erdos85CubeTreeComposition.lean, Erdos85H1CubePilot81494a.lean)
+# 2026-10-06, ./proofs/scripts/docker-build.sh Proofs.ScratchE85CubeAxioms (pinned image lean4-arm64:v4.31.0 = sha256:a5ca6c4e…), source tree at commit d1e12a86a60
+# scratch module: import Proofs.Erdos85H1CubePilot81494a followed by the four #print axioms lines
+Build completed successfully (8754 jobs).
+info: Proofs/ScratchE85CubeAxioms.lean:2:0: 'Erdos85.cnf_unsat_of_cubeTree' depends on axioms: [propext, Quot.sound]
+info: Proofs/ScratchE85CubeAxioms.lean:3:0: 'Erdos85.oneHighFamilyV2CheckedUnsat_of_cubeTree' depends on axioms: [propext, Quot.sound]
+info: Proofs/ScratchE85CubeAxioms.lean:4:0: 'Erdos85.h1Cube81494a_cover' depends on axioms: [propext, Quot.sound]
+info: Proofs/ScratchE85CubeAxioms.lean:5:0: 'Erdos85.cnf_unsat_of_h1Cube81494a' depends on axioms: [propext, Quot.sound]

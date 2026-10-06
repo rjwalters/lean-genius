@@ -1,0 +1,72 @@
+{
+ "schema": "erdos85-h1-cert-census-summary-v1",
+ "rows": 1160,
+ "certified": 1160,
+ "checker": {
+  "name": "cake_lpr",
+  "source": "https://github.com/tanyongkiam/cake_lpr",
+  "commit": "a36874a8b750b43fe4b385b8ddbf5b033e46a3fa",
+  "arm8_S_sha256": "95b64883edc0cb09feedbcb1ebec233e2490f5b458fdda9dc29c212ed916f00c"
+ },
+ "solver": {
+  "name": "CaDiCaL",
+  "version": "3.0.1",
+  "linux_arm64_binary_sha256": "fd601b827c2f6e72c255dd27d6bfa9d7f982414181195fe3ea07ec81385772a2",
+  "flags": "--lrat=true --binary=true",
+  "note": "proofs are byte-reproducible only with the identical binary"
+ },
+ "emitter": {
+  "v2cnf_sha256": "4bd9604c6d670ad65a8ca332a26dbf35132418634a3b0678c177c8b2cfff4bf6",
+  "image": "sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6"
+ },
+ "manifest_sha256": "9d04a66c36497329ae594c5b0f2924c7055a8355651b223bef3c4d8a4fb231c2",
+ "proof_bytes_total": 5640561168915,
+ "solver_cpu_hours": 3434.7,
+ "checker_cpu_hours": 207.1,
+ "max_proof_bytes": 36165375193,
+ "hosts": {
+  "Mac (Apple silicon), local": 3,
+  "r7g.16xlarge": 432,
+  "r7g.4xlarge": 3,
+  "r8g.16xlarge": 459,
+  "r6g.16xlarge": 263
+ },
+ "ledgers_total": 1196,
+ "ledger_statuses": {
+  "CERTIFIED": 1163,
+  "ERROR": 30,
+  "SOLVER_NOT_UNSAT": 3
+ },
+ "sat_results": 0,
+ "determinism_pairs": [
+  {
+   "id": "h1_b2c8ff1df5172f4d",
+   "copies": 2,
+   "identical": true
+  },
+  {
+   "id": "h1_975cd491c88d79b8",
+   "copies": 2,
+   "identical": true
+  },
+  {
+   "id": "h1_3e48ec9850423249",
+   "copies": 2,
+   "identical": true
+  }
+ ],
+ "receipts_tsv_sha256": "e22599dffbec5163a128ca6d76df8bfdc9caa773f76e2c85a3bc09e5e812ddb5",
+ "historical_96": {
+  "LRAT_CHECK_ACCEPTED": 50,
+  "CAKE_LPR_VERIFIED": 46
+ },
+ "pilot_h1_81494a6ef36d3ec9": {
+  "leaves": 36,
+  "cake_lpr": {
+   "CAKE_LPR_VERIFIED": 36
+  },
+  "std_lrat_check": {
+   "LRAT_CHECK_ACCEPTED": 30
+  }
+ }
+}
