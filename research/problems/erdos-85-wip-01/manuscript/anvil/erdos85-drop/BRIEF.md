@@ -218,3 +218,23 @@ row; (e) cite the Lean LRAT checker if referenced; keep `heule2018schur`, `tan20
 All earlier scope rules still hold: never "theorem"/"proof"/"decided" for Result A; cake_lpr is outside
 Lean; nothing claimed about Erdős 85 itself; A-REG a hypothesis with a rival; R-AUD; R-LINK; authorship
 and contributions per the Authorship amendment.
+
+## Amendment R-BRIDGE (2026-10-06, after v7; resolves the v7 reviser's scope tensions 1 and 3)
+
+**H1 bridge (supersedes earlier "H1 semantic bridge / row-to-stratum assembly open" wording).** Lean
+already proves `orderFortyNineStratumExcluded_one_of_capacityInventory_checked`
+(`proofs/Proofs/Erdos85OneHighV2CapacityCover.lean`): if each of the 13,351 capacity tables satisfies
+`OneHighFamilyV2CheckedUnsat`, the H1 stratum is excluded. Its axioms (receipt
+`refs/H1_COVER_AXIOMS_20261006.txt`, public path
+`research/problems/erdos-85-wip-01/h1_cert_pilot_20261001/H1_COVER_AXIOMS_20261006.txt`): the three
+standard axioms plus 23 `native_decide` axioms from finite enumeration checks; no `sorryAx`. So for H1
+what remains open in Lean is exactly two things: (i) the external certificate checks are not admitted
+into Lean as `OneHighFamilyV2CheckedUnsat` facts; (ii) that each checked CNF file is the Lean formula
+rests on the compiled emitter `v2cnf` (a Lean program, compiled), not on a kernel proof. Name the cover
+theorem, its `native_decide` dependence, and these two items in the status table; do not describe the
+H1 reduction itself as open.
+
+**Transcript.** The collaboration room transcript is public at https://rjwalters.info/rooms/erdos-85;
+R-LINK's "room transcript … not published" no longer applies to it (the S3 certificate buckets and the
+artifact volume are still described as not published, except the bank proofs and checker kit once the
+public checker is released — see CHECKING.md when it exists).
