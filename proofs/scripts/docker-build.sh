@@ -13,6 +13,20 @@
 #   LEAN_SKIP_CACHE    - Skip Mathlib cache download (default: false)
 #   LEAN_NUM_THREADS   - Optional Lean/Lake task concurrency (e.g. 2 on memory-limited hosts)
 #
+# Opt-in overrides (all unset by default; defaults reproduce the behaviour above).
+# Used by the remote Lean builder (research/problems/erdos-85-wip-01/lean_builder/):
+#   LEAN_REPO_ROOT     - Repo checkout to mount at /workspace (default: this script's repo)
+#   LEAN_CACHE_VOLUME  - Docker volume for proofs/.lake/build (default: lean-mathlib-cache);
+#                        e.g. a per-branch volume so concurrent branches don't invalidate
+#                        each other's project oleans while still sharing Mathlib packages
+#   LEAN_CPU_LIMIT     - Docker --cpus value (default: half the host CPUs)
+#   LEAN_EXTRA_MOUNTS  - Colon-separated host dirs bind-mounted READ-ONLY at the SAME
+#                        absolute path inside the container, e.g. for modules that
+#                        `include_str` LRAT files by absolute host path:
+#                        LEAN_EXTRA_MOUNTS=/Volumes/Stripe/lean-genius/artifacts
+#   LEAN_DOCKER_CMD    - Replace the build command run in /workspace/proofs
+#                        (e.g. "lake env lean Proofs/Foo.lean"); TARGET is then ignored
+#
 # Recovering from exit-135 / SIGBUS ("unexpected end of input") corruption:
 #   The shared Mathlib volumes can retain truncated oleans after an OOM-killed
 #   build, poisoning every subsequent build that imports the module. Run the
@@ -42,7 +56,7 @@ TIMEOUT="${LEAN_BUILD_TIMEOUT:-60m}"
 SKIP_CACHE="${LEAN_SKIP_CACHE:-false}"
 TARGET="${1:-}"
 IMAGE="lean4-arm64:v4.31.0"
-CACHE_VOLUME="lean-mathlib-cache"
+CACHE_VOLUME="${LEAN_CACHE_VOLUME:-lean-mathlib-cache}"
 # Shared Mathlib SOURCE checkout (.lake/packages, ~6.8GB). Without this, every
 # worktree's bind-mounted /workspace accumulates its own 6.8GB copy of the
 # identical pinned Mathlib source on the host — dozens of worktrees × 6.8GB was
@@ -72,13 +86,29 @@ detect_host_cpus() {
     echo "$build_cpus"
 }
 
-CPU_LIMIT="$(detect_host_cpus)"
+CPU_LIMIT="${LEAN_CPU_LIMIT:-$(detect_host_cpus)}"
+REPO_ROOT="${LEAN_REPO_ROOT:-$REPO_ROOT}"
+
+EXTRA_MOUNT_ARGS=()
+if [[ -n "${LEAN_EXTRA_MOUNTS:-}" ]]; then
+    IFS=':' read -r -a _extra_dirs <<< "$LEAN_EXTRA_MOUNTS"
+    for _d in "${_extra_dirs[@]}"; do
+        [[ -z "$_d" ]] && continue
+        if [[ "$_d" != /* || ! -d "$_d" ]]; then
+            echo "ERROR: LEAN_EXTRA_MOUNTS entry must be an existing absolute directory: $_d"
+            exit 1
+        fi
+        EXTRA_MOUNT_ARGS+=(-v "${_d}:${_d}:ro")
+    done
+fi
 
 echo "=== Docker Lean Build ==="
 echo "Memory limit: ${MEMORY_LIMIT}MB (hard enforced via cgroups)"
 echo "Timeout: ${TIMEOUT}"
 echo "CPU limit: ${CPU_LIMIT}"
 echo "Target: ${TARGET:-all}"
+[[ -n "${LEAN_CACHE_VOLUME:-}" ]] && echo "Build volume: ${CACHE_VOLUME}"
+[[ -n "${LEAN_EXTRA_MOUNTS:-}" ]] && echo "Extra read-only mounts: ${LEAN_EXTRA_MOUNTS}"
 echo ""
 
 # Check Docker
@@ -118,6 +148,10 @@ if [ "$SKIP_CACHE" = "true" ]; then
     BUILD_CMD="lake build ${TARGET}"
 else
     BUILD_CMD="lake exe cache get && lake build ${TARGET}"
+fi
+if [[ -n "${LEAN_DOCKER_CMD:-}" ]]; then
+    BUILD_CMD="$LEAN_DOCKER_CMD"
+    echo "Command: ${BUILD_CMD}"
 fi
 
 echo "Starting Docker build..."
@@ -170,6 +204,7 @@ docker run --rm \
     -v "${REPO_ROOT}:/workspace:delegated" \
     -v "${CACHE_VOLUME}:/workspace/proofs/.lake/build:delegated" \
     -v "${PACKAGES_VOLUME}:/workspace/proofs/.lake/packages:delegated" \
+    ${EXTRA_MOUNT_ARGS[@]+"${EXTRA_MOUNT_ARGS[@]}"} \
     -w /workspace/proofs \
     --name "$CONTAINER_NAME" \
     "$IMAGE" \
