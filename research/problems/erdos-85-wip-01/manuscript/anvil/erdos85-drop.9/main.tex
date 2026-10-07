@@ -86,7 +86,7 @@ Let $\AREG$ (\lean{BinarySquareRegularExclusion}) state that for every $k\ge 3$ 
 
 \paragraph{What is not claimed.} Result A is not a theorem of Lean: the H1 checks run outside the Lean kernel and are not admitted into Lean, the checked files are tied to the Lean formulas by a compiled emitter rather than a kernel proof, the exclusions of H3, H5 and H7 ($t=0$) rest on reviewed arguments rather than on certificates or Lean proofs, and Table~\ref{tab:status} lists, once, every step that separates Result A from a Lean theorem. Nothing is claimed about Erdős Problem 85 itself. $\AREG$ is not asserted; Section~\ref{sec:theoremB} gives the evidence on both sides. Every file and Lean module named here is linked to its public location (Section~\ref{sec:availability}), and every number traces to a linked receipt.
 
-\section{The drop at 48 to 49}\label{sec:drop}
+\section{The drop at forty-nine}\label{sec:drop}
 
 \subsection{Lower sides}\label{sec:lower}
 
@@ -128,7 +128,7 @@ The stored inventory, which Lean reads as a file, has 13,541 orbit representativ
 \]
 as \lean{orderFortyNineStratumExcluded_one_of_capacityInventory_checked}, where \lean{OneHighFamilyV2CheckedUnsat} says that the orbit's Lean formula is unsatisfiable. Its cover argument (every H1 graph induces, after relabelling, one of the stored tables) uses \texttt{native\_decide} for the finite enumeration checks: its printed axioms are \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound} together with 23 \texttt{native\_decide} axioms from those checks, and no \texttt{sorryAx} (\repofile{\rp/h1_cert_pilot_20261001/H1_COVER_AXIOMS_20261006.txt}{H1_COVER_AXIOMS_20261006.txt}). So, in Lean, H1 reduces to 13,351 SAT questions, and Section~\ref{sec:h1} answers all of them.
 
-Before any proof was logged, the 1,161 orbits that had no certificate from the first production run in August 2026 were settled verdict-only by a two-solver census (Kissat 4.0.4 \citep{biere2024kissat}, then CaDiCaL 3.0.1 \citep{biere2020cadical}; about 5,700 core-hours, no satisfiable instance, no disagreement; \repofile{\rp/phase_b_h1_census_20260927/CENSUS.md}{CENSUS.md}). That census is now superseded by certificates and we do not rely on it.
+Before any proof was logged, the 1,161 orbits that had no certificate from the first production run in August 2026 were settled verdict-only by a two-solver census (Kissat 4.0.4 \citep{biere2024kissat}, then CaDiCaL 3.0.1 \citep{biere2020cadical,biere2024cadical2}; about 5,700 core-hours, no satisfiable instance, no disagreement; \repofile{\rp/phase_b_h1_census_20260927/CENSUS.md}{CENSUS.md}). That census is now superseded by certificates and we do not rely on it.
 
 \section{How H1 was checked}\label{sec:h1}
 
@@ -172,13 +172,13 @@ Total & 13,351 & about 28 TB & \\
 
 \paragraph{The fresh census.} Of the 1,161 orbits with no August certificate, the 1,160 other than the hardest were re-solved with CaDiCaL 3.0.1 (flags \texttt{-{}-lrat=true -{}-binary=true}) and checked as they streamed by \cakelpr{}: 1,157 on AWS Graviton machines with the published Linux arm64 solver binary (sha256 \texttt{fd601b82\ldots}) and a \cakelpr{} build with sha256 \texttt{95b64883\ldots}, and 3 on a local Apple-silicon machine. All 1,160 verified: 5.64 TB of proofs, 3,435 solver and 207 checker CPU-hours. Of 1,196 run records, 1,163 are verified receipts (three orbits were run twice) and 33 are infrastructure faults (a race in a process watchdog, a 24-hour solver time cap on the longest orbit, and a duplicated claim), each re-run to a verified receipt.
 
-\paragraph{The historical certificates.} The 96 orbits that the August run had also certified were re-checked from their archived DRAT proofs: drat-trim converted each to LRAT against the CNF with the expected hash, and \cakelpr{} (the build with sha256 \texttt{d23c413b\ldots}) accepted all 96, 0.10 TB of LRAT, the largest proof 2.49 GB. Every converted file has the same sha256 as in an earlier conversion pass. The census and the bank re-check cost about \$225 of cloud compute in total.
+\paragraph{The historical certificates.} The 96 orbits that the August run had also certified were re-checked from their archived DRAT proofs: drat-trim converted each to LRAT against the CNF with the expected hash, and \cakelpr{} (a macOS build of the same commit and assembly file, sha256 \texttt{d23c413b\ldots}) accepted all 96, 0.10 TB of LRAT, the largest proof 2.49 GB. Every converted file has the same sha256 as in an earlier conversion pass. The census and the bank re-check cost about \$225 of cloud compute in total.
 
 \subsection{The hardest orbit}\label{sec:cube}
 
 One orbit, \lean{h1_81494a6ef36d3ec9}, defeated every whole-instance solve, at caps of up to 24 hours. An adaptive cube-and-conquer procedure split it, by unit-propagation lookahead, into a tree of 36 leaf cubes of depth at most 8. Each split replaces a cube by two that partition it, so the leaves partition the formula.
 
-For the certificate, the 36 leaf formulas were re-solved with binary LRAT logging by the macOS build of CaDiCaL 3.0.1, each leaf's CNF hash-checked against the tree. The proofs were written to files and checked afterwards by a separate \cakelpr{} build (sha256 \texttt{d23c413b\ldots}), with a 4 GB heap; all 36 verified (47.1 GB in all, the largest 8.24 GB). The leaf receipts record each proof's length, but a proof sha256 only for the 30 smaller leaves (up to 2.42 GB).
+For the certificate, the 36 leaf formulas were re-solved with binary LRAT logging by the macOS build of CaDiCaL 3.0.1, each leaf's CNF hash-checked against the tree. The proofs were written to files and checked afterwards by that macOS \cakelpr{} build, with a 4 GB heap; all 36 verified (47.1 GB in all, the largest 8.24 GB). The leaf receipts record each proof's length, but a proof sha256 only for the 30 smaller leaves (up to 2.42 GB).
 
 The Lean module \repofile{proofs/Proofs/Erdos85H1CubePilot81494a.lean}{Erdos85H1CubePilot81494a.lean} states the tree and the 36 cubes as Lean terms, proves by kernel \texttt{decide} that the cubes cover every cube of the tree (\lean{h1Cube81494a_cover}), and proves \lean{cnf_unsat_of_h1Cube81494a}: the orbit's Lean formula is unsatisfiable if all 36 cube formulas are. The generic step \lean{cnf_unsat_of_cubeTree} and its H1 form \lean{oneHighFamilyV2CheckedUnsat_of_cubeTree} are in \repofile{proofs/Proofs/Erdos85CubeTreeComposition.lean}{Erdos85CubeTreeComposition.lean}. All four statements depend only on \texttt{propext} and \texttt{Quot.sound} (\repofile{\rp/h1_cert_pilot_20261001/COMPOSITION_AXIOMS_20261006.txt}{COMPOSITION_AXIOMS_20261006.txt}). The leaf hypotheses are supplied by the external checks, so for this orbit the composition is checked in Lean and the leaves outside it.
 
@@ -192,7 +192,7 @@ Table~\ref{tab:status} is the one place where the paper lists what is checked an
 
 \begin{table}[htbp]
 \centering\small
-\caption{Status of each component of Result A and of Theorem B. ``Lean'' means a statement elaborated by Lean 4.31.0 from source; axiom lists are those printed by \texttt{\#print axioms}.}
+\caption{Status of each component of Result A and of Theorem B. ``Lean'' means a statement elaborated by Lean 4.31.0 from source; where axioms are listed, they are those printed by \texttt{\#print axioms}.}
 \label{tab:status}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.17\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{.31\textwidth}@{}}
 \toprule
@@ -241,7 +241,7 @@ Several natural approaches to $\NONBIP$ fail for identifiable reasons, and the f
 
 \section{Collaboration and methods}\label{sec:collab}
 
-\paragraph{Contributions.} Claude Fable led the certification pipeline and cold-integration verification, the existence halves of the census, fleet operations, the September 2026 verdict-only census with its cube-partition tooling, the interpretation and the final scope review. GPT Sol and Astra (OpenAI) developed the structural reductions, the negative map and the independent audits; both worked under the shared ``sol'' seat of the collaboration room. Claude Opus ran the October 2026 H1 certificate check, including the Lean cube-tree composition lemma. Robb Walters set the project's priorities and scope and directed the lab. The shared room infrastructure, which supplied coordination, claims, reviews and a durable transcript (\url{https://rjwalters.info/rooms/erdos-85}), is acknowledged; it is not an author.
+\paragraph{Contributions.} Claude Fable led the certification pipeline and cold-integration verification, the lower-side witness graphs, fleet operations, the September 2026 verdict-only census with its cube-partition tooling, the interpretation and the final scope review. GPT Sol and Astra (OpenAI) developed the structural reductions, the negative map and the independent audits; both worked under the shared ``sol'' seat of the collaboration room. Claude Opus ran the October 2026 H1 certificate check, including the Lean cube-tree composition lemma. Robb Walters set the project's priorities and scope and directed the lab. The shared room infrastructure, which supplied coordination, claims, reviews and a durable transcript (\url{https://rjwalters.info/rooms/erdos-85}), is acknowledged; it is not an author.
 
 \paragraph{Methods.} The work ran over several months and used the strongest frontier models available at each stage, so the model behind a seat changed during the project, which is why GPT Sol and Astra share one seat. Proposals were cheap; admission to the record was not. A Lean result counted only after it elaborated from source under the pinned toolchain in an independent environment and its \texttt{\#print axioms} output was read, a rule adopted after a stale-cache incident. A solver result counted only with a pinned input hash and a semantic bridge to a formal statement.
 

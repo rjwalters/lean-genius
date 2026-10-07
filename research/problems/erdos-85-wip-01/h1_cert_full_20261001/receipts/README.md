@@ -64,3 +64,5 @@ unique work dir per attempt), `cert_controller.py` (owner re-read each pass; com
 CERTIFIED). Cloud spend ≈ $204 (controller estimate incl. 10% margin).
 
 2026-10-07: all 96 historical certificates were re-checked by cake_lpr (`historical96_cake_lpr_receipts.jsonl`), so every H1 orbit in this repository's receipts is cake_lpr-checked.
+
+cake_lpr builds: the AWS rows used a Linux arm64 build of commit `a36874a8` (`cake_lpr_arm8.S` sha256 `95b64883…`); the 96 historical orbits and the 36 pilot leaves were checked locally by a macOS arm64 build of the same commit and the same `cake_lpr_arm8.S` (binary sha256 `d23c413b1852eafd…`, recorded as `checker_sha256` in those receipts).
