@@ -5,9 +5,9 @@
 #   e85-remote stop                   stop it (EBS kept; nothing is terminated)
 #   e85-remote status                 EC2 state, watchdog counters, containers, recent jobs
 #   e85-remote build <branch|commit> <Module> [--mem GB] [--timeout 2h] [--threads N]
-#                                     [--cache] [--no-follow]
+#                                     [--cache] [--full] [--no-follow]
 #   e85-remote run <branch|commit> [--host] [--mem GB] [--timeout 2h] [--threads N]
-#                                     [--no-follow] -- <cmd...>
+#                                     [--full] [--no-follow] -- <cmd...>
 #                                     cmd runs in the branch worktree's proofs/ dir INSIDE
 #                                     the pinned Lean image (same mounts as a build), or on
 #                                     the host in the worktree root with --host
@@ -18,7 +18,8 @@
 #   e85-remote worktrees | clean <name>
 #   e85-remote ssh [cmd...]           raw shell (debugging)
 #
-# Branches must be pushed to origin first; the builder fetches from GitHub. Each branch
+# Branches must be pushed to origin first; the builder fetches from GitHub. Remote worktrees
+# are sparse (proofs/ + scripts/) unless --full is given once for that branch. Each branch
 # gets its own worktree and its own proofs/.lake/build volume (seeded from the warm base);
 # Mathlib packages are shared. Exit status of build/run/logs = the remote job's exit status.
 # The instance auto-starts on build/run (E85_NO_AUTOSTART=1 to disable) and stops itself
@@ -65,7 +66,7 @@ wait_ready() {
               --query 'InstanceInformationList[0].PingStatus' --output text 2>/dev/null)" == Online ]] && break
         sleep 5
     done
-    for _ in $(seq 1 30); do rsh true 2>/dev/null && { say "builder ready"; return 0; }; sleep 5; done
+    for _ in $(seq 1 30); do rsh true </dev/null 2>/dev/null && { say "builder ready"; return 0; }; sleep 5; done
     die "builder did not become reachable over SSM"
 }
 
@@ -99,7 +100,7 @@ sync_tooling() {
     [[ -r "$db" ]] || db="$SELF_DIR/../../../../proofs/scripts/docker-build.sh"
     [[ -r "$db" && -r "$SELF_DIR/e85-host.sh" && -r "$SELF_DIR/e85-watchdog.sh" ]] || return 0
     local h; h=$(cat "$SELF_DIR/e85-host.sh" "$SELF_DIR/e85-watchdog.sh" "$db" | shasum -a 256 | cut -c1-64)
-    [[ "$(rsh cat /opt/e85/bin/.tooling-hash 2>/dev/null || true)" == "$h" ]] && return 0
+    [[ "$(rsh cat /opt/e85/bin/.tooling-hash </dev/null 2>/dev/null || true)" == "$h" ]] && return 0
     say "updating host tooling"
     tar -cf - -C "$SELF_DIR" e85-host.sh e85-watchdog.sh -C "$(dirname "$db")" docker-build.sh |
         rsh "set -e; test -d /opt/e85/bin || exit 0; s=/opt/e85/tooling-staging; mkdir -p \$s; tar -xf - -C \$s
@@ -138,7 +139,7 @@ case $cmd in
     start) do_start "$@" ;;
     stop) say "stopping $(iid)"; aws ec2 stop-instances --instance-ids "$(iid)" --query 'StoppingInstances[0].CurrentState.Name' --output text ;;
     status) do_status ;;
-    build|run) ensure_running; rsh -t -t /opt/e85/bin/e85-host "$cmd$(qargs "$@")" 2>&1 | tr -d '\r'; exit "${PIPESTATUS[0]}" ;;
+    build|run) ensure_running; rsh -t -t /opt/e85/bin/e85-host "$cmd$(qargs "$@")" 2>&1 | perl -pe 'BEGIN { $| = 1 } s/\r//g'; exit "${PIPESTATUS[0]}" ;;
     logs|follow) ensure_running; rsh /opt/e85/bin/e85-host follow "$(printf %q "${1:?job id}")" ;;
     jobs|worktrees) ensure_running; rsh /opt/e85/bin/e85-host "$cmd" ;;
     kill|clean) ensure_running; rsh /opt/e85/bin/e85-host "$cmd" "$(printf %q "${1:?arg}")" ;;

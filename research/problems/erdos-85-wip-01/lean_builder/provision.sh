@@ -39,7 +39,7 @@ case ${1:-} in
     run-setup)
         iid=${2:?instance id}
         E85_INSTANCE_ID=$iid "$HERE/e85-remote" ssh "cat > /tmp/ami_setup.sh" < "$HERE/ami_setup.sh"
-        E85_INSTANCE_ID=$iid "$HERE/e85-remote" ssh "sudo tmux new -d -s setup 'bash /tmp/ami_setup.sh 2>&1 | tee /var/log/e85-ami-setup.log; echo EXIT=\${PIPESTATUS[0]} >> /var/log/e85-ami-setup.log'"
+        E85_INSTANCE_ID=$iid "$HERE/e85-remote" ssh "sudo dnf -y -q install tmux >/dev/null && sudo tmux new -d -s setup 'bash /tmp/ami_setup.sh 2>&1 | tee /var/log/e85-ami-setup.log; echo EXIT=\${PIPESTATUS[0]} >> /var/log/e85-ami-setup.log'"
         echo "running; follow with: E85_INSTANCE_ID=$iid $HERE/e85-remote ssh tail -f /var/log/e85-ami-setup.log" ;;
     create-ami)
         iid=${2:?instance id}; name="erdos85-lean-builder-$(date -u +%Y%m%d-%H%M)"

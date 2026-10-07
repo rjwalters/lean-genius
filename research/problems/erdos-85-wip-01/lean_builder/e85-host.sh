@@ -2,8 +2,8 @@
 # e85-host: job runner on the erdos85 Lean builder (installed at /opt/e85/bin/e85-host).
 # Driven by the Mac-side `e85-remote` wrapper; usable directly on the host too.
 #
-#   e85-host build <ref> <Module> [--mem GB] [--timeout 2h] [--threads N] [--cache] [--no-follow]
-#   e85-host run   <ref> [--host] [--mem GB] [--timeout 2h] [--threads N] [--no-follow] -- <cmd...>
+#   e85-host build <ref> <Module> [--mem GB] [--timeout 2h] [--threads N] [--cache] [--full] [--no-follow]
+#   e85-host run   <ref> [--host] [--mem GB] [--timeout 2h] [--threads N] [--full] [--no-follow] -- <cmd...>
 #   e85-host follow <job> | jobs | kill <job> | status | worktrees | clean <name>
 #
 # Layout:
@@ -37,8 +37,11 @@ wt_name() {  # branch -> worktree/volume name
 }
 
 # ---------------------------------------------------------------- job-side helpers
-prepare_worktree() {  # <ref> <name>  -> checks out ref (detached) in $WT_ROOT/<name>, prints sha
-    local ref=$1 name=$2 wt=$WT_ROOT/$2 sha
+# New worktrees are sparse (proofs/ + scripts/: all a Lean build needs; the full tree is
+# ~5 GB, mostly research/). `--full` switches a worktree to a full checkout for good.
+SPARSE_DIRS="proofs scripts"
+prepare_worktree() {  # <ref> <name> <full:0|1>  -> checks out ref (detached) in $WT_ROOT/<name>, prints sha
+    local ref=$1 name=$2 full=${3:-0} wt=$WT_ROOT/$2 sha
     exec 8>"$LOCKS/repo.lock"; flock 8
     if [[ "$ref" =~ ^[0-9a-f]{7,40}$ ]]; then
         git -C "$REPO" cat-file -e "${ref}^{commit}" 2>/dev/null || git -C "$REPO" fetch -q origin || true
@@ -50,8 +53,11 @@ prepare_worktree() {  # <ref> <name>  -> checks out ref (detached) in $WT_ROOT/<
     fi
     if [[ ! -e "$wt/.git" ]]; then
         git -C "$REPO" worktree prune
-        git -C "$REPO" worktree add -q --detach "$wt" "$sha" >&2
+        git -C "$REPO" worktree add -q --no-checkout --detach "$wt" "$sha" >&2
+        [[ "$full" == 1 ]] || git -C "$wt" sparse-checkout set --cone $SPARSE_DIRS >&2
+        git -C "$wt" checkout -q -f --detach "$sha" >&2
     else
+        [[ "$full" == 1 ]] && git -C "$wt" sparse-checkout disable >&2
         # remote worktrees are disposable mirrors of the pushed ref: discard local edits
         git -C "$wt" checkout -q -f --detach "$sha" >&2
     fi
@@ -82,7 +88,7 @@ job_main() {  # runs detached; args: <jobdir>
     exec 9>"$LOCKS/wt-$name.lock"
     if ! flock -n 9; then echo "[e85] waiting for another job on worktree $name ..."; flock 9; fi
     echo "[e85] job $(basename "$jd")  ref=$REF  worktree=$WT_ROOT/$name  started $(date -u +%FT%TZ)"
-    local sha; sha=$(prepare_worktree "$REF" "$name")
+    local sha; sha=$(prepare_worktree "$REF" "$name" "${FULL:-0}")
     echo "[e85] commit $sha ($(git -C "$WT_ROOT/$name" log -1 --format=%s | cut -c1-90))"
     echo "$sha" > "$jd/sha"
     if [[ "$MODE" == host ]]; then
@@ -129,7 +135,7 @@ follow() {
 
 submit() {  # mode ref target/cmd ...
     local mode=$1 ref=$2; shift 2
-    local mem=64 timeout=2h threads="" cache=0 nofollow=0 target="" cmd=""
+    local mem=64 timeout=2h threads="" cache=0 nofollow=0 full=0 target="" cmd=""
     [[ "$mode" == build ]] && { target=${1:?module}; shift; }
     [[ "$mode" == run ]] && mode=run
     while [[ $# -gt 0 ]]; do
@@ -139,6 +145,7 @@ submit() {  # mode ref target/cmd ...
             --threads) threads=$2; shift 2;;
             --cache) cache=1; shift;;
             --host) mode=host; shift;;
+            --full) full=1; shift;;
             --no-follow) nofollow=1; shift;;
             --) shift; cmd="$*"; break;;
             *) die "unknown option $1";;
@@ -153,7 +160,7 @@ submit() {  # mode ref target/cmd ...
     {
         printf 'MODE=%q\nREF=%q\nTARGET=%q\nCMD=%q\n' "$mode" "$ref" "$target" "$cmd"
         printf 'MEM_GB=%q\nTIMEOUT=%q\nTHREADS=%q\nCACHE=%q\nCPUS=%q\n' "$mem" "$timeout" "$threads" "$cache" "$(nproc)"
-        printf 'VOLUME=%q\n' "${E85_VOLUME:-}"
+        printf 'VOLUME=%q\nFULL=%q\n' "${E85_VOLUME:-}" "$full"
     } > "$jd/spec"
     setsid nohup bash -c 'echo $$ > "$1/pid"; "$0" __job "$1"; echo $? > "$1/exit"' \
         "$(readlink -f "$0")" "$jd" > "$jd/log" 2>&1 < /dev/null &

@@ -35,7 +35,7 @@ docker tag "$IMAGE_ID" lean4-arm64:v4.31.0          # the name proofs/scripts/do
 
 echo "== repo clone /opt/lean-genius ($E85_REF)"
 if [ ! -d /opt/lean-genius/.git ]; then
-    git clone -q --filter=blob:none --no-checkout https://github.com/rjwalters/lean-genius /opt/lean-genius
+    git clone -q --no-checkout https://github.com/rjwalters/lean-genius /opt/lean-genius   # full clone: partial clones make every new worktree fetch blobs lazily (~10 min)
 fi
 git -C /opt/lean-genius fetch -q origin "+refs/heads/$E85_REF:refs/remotes/origin/$E85_REF"
 git -C /opt/lean-genius checkout -q -f --detach "origin/$E85_REF"
