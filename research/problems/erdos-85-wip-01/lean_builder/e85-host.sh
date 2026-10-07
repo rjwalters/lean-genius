@@ -121,8 +121,12 @@ job_main() {  # runs detached; args: <jobdir>
 follow() {
     local jd=$JOBS/$1
     [[ -d "$jd" ]] || die "no such job $1"
-    while [[ ! -s "$jd/pid" && ! -e "$jd/exit" ]]; do sleep 0.2; done
-    local pid; pid=$(cat "$jd/pid" 2>/dev/null || echo 0)
+    local i=0
+    while [[ ! -s "$jd/pid" && ! -e "$jd/exit" ]]; do
+        (( ++i > 150 )) && { echo "[e85] job $1 never started (no pid after 30 s)"; return 255; }
+        sleep 0.2
+    done
+    local pid; pid=$(cat "$jd/pid" 2>/dev/null || echo 999999999)
     tail -n +1 -F --pid="$pid" "$jd/log" 2>/dev/null || true
     while [[ ! -e "$jd/exit" ]]; do
         kill -0 "$pid" 2>/dev/null || { echo "[e85] job runner vanished (host stopped?)"; return 255; }
@@ -164,6 +168,9 @@ submit() {  # mode ref target/cmd ...
     } > "$jd/spec"
     setsid nohup bash -c 'echo $$ > "$1/pid"; "$0" __job "$1"; echo $? > "$1/exit"' \
         "$(readlink -f "$0")" "$jd" > "$jd/log" 2>&1 < /dev/null &
+    # Wait until the detached runner owns its own session before returning: otherwise the
+    # ssh pty can hang up the half-forked child (seen with --no-follow).
+    local i=0; until [[ -s "$jd/pid" ]]; do (( ++i > 150 )) && die "job $id failed to start"; sleep 0.2; done
     echo "[e85] submitted job $id   (reattach: e85-remote logs $id)"
     [[ "$nofollow" == 1 ]] && return 0
     follow "$id"
@@ -174,7 +181,7 @@ jobs_list() {
     for jd in $(ls -dt "$JOBS"/*/ 2>/dev/null | head -${1:-15}); do
         id=$(basename "$jd")
         if [[ -e "$jd/exit" ]]; then st="exit=$(cat "$jd/exit")"
-        elif kill -0 "$(cat "$jd/pid" 2>/dev/null || echo 0)" 2>/dev/null; then st=RUNNING
+        elif [[ -s "$jd/pid" ]] && kill -0 "$(cat "$jd/pid")" 2>/dev/null; then st=RUNNING
         else st=DEAD; fi
         ( source "$jd/spec"; printf '%-62s %-9s %s %s\n' "$id" "$st" "$MODE" "${TARGET:-$CMD}" | cut -c1-160 )
     done

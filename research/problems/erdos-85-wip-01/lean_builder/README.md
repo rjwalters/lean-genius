@@ -55,9 +55,15 @@ e85-remote ssh                           # raw shell, for debugging
   interrupted, the job keeps going, and `e85-remote logs <id>` picks it up again.
 * Options: `--mem GB` (Docker hard cap, default 64; the host has ~123 GiB), `--timeout`
   (default `2h`), `--threads N` (passes `LEAN_NUM_THREADS`), `--cache` (runs `lake exe cache get`
-  first, holding an exclusive lock on the shared Mathlib volume), `--no-follow`.
+  first, holding an exclusive lock on the shared Mathlib volume), `--full`, `--no-follow` (submit
+  and return the job id; use `e85-remote logs <id>` later).
+* For agents whose shell tool has a time limit, use `--no-follow` and then run `e85-remote logs <id>`
+  in the background. If a follower is killed, the job itself is unaffected.
 * The branch must be pushed. The host fetches `origin/<branch>` and force-checks it out
   (detached) in `/opt/e85/wt/<branch with / → __>`. Remote worktrees are disposable mirrors.
+* Worktrees are **sparse** (`proofs/` + `scripts/`, plus top-level files) because the full tree is
+  ~5 GB, mostly `research/`. A new branch worktree takes ~7 s. Pass `--full` once if a `run`
+  command needs the whole tree.
 
 ### Concurrency and isolation
 
