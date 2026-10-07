@@ -12,7 +12,7 @@ and 96 historical orbits = 1,257 orbits), this covers **all 13,351 H1 capacity o
 | 12,094 bank orbits (this run) | cake_lpr, streaming the archived compact LRAT |
 | 1,160 residual roots | cake_lpr, streaming a fresh CaDiCaL proof (October) |
 | 1 residual root (`h1_81494a6ef36d3ec9`) | cake_lpr on 36 cube leaves + standard-axiom Lean composition lemma |
-| 96 historical orbits | 46 cake_lpr, 50 Lean's compiled `LRAT.check` (October) |
+| 96 historical orbits | all 96 cake_lpr (2026-10-07; 50 had first been accepted by Lean's compiled `LRAT.check`) |
 
 ## Method (per orbit)
 

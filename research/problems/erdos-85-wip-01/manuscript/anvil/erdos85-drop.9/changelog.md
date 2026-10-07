@@ -1,0 +1,53 @@
+# Changelog: erdos85-drop.8 to erdos85-drop.9
+
+This is an operator-override pass beyond the iteration cap: iteration 9 of `max_iterations: 8`, recorded as `metadata.operator_override: true`. `anvil.lib.operator_feedback check erdos85-drop.8/` exited 1 with five blocking `operator_defect` flags.
+
+Inputs:
+- `erdos85-drop.8.operator/` (5 critical flags)
+- `erdos85-drop.8.review/` (39/44, advance; 1 major, 5 minor, 6 nit)
+- `erdos85-drop.8.audit/` (AUDITED; 0 critical, 1 major, 6 minor, 6 nit)
+- `.8.numeric`, `.8.pending` and `.8.audience` (all clean apart from the known `\repofile` false positives)
+- New refs `H3_EVIDENCE_AUDIT_20261007.md` and `Q7_H3_PROFILE_EXCLUSION_20260910.md`
+
+Scope: corrections only. The operator asked for no new claims, about 10 to 12 pages, and an unchanged title.
+
+## Build and gates
+
+- `xelatex`, `bibtex`, then `xelatex` three more times (4 xelatex passes). All exit 0.
+- The final log has no "may have changed" warning. A scratch fifth pass produces a byte-identical `.aux`, so the shipped PDF is at the fixpoint (this resolves audit m5 and review n4).
+- 0 errors, 0 undefined references or citations, 0 overfull boxes. The 4 underfull boxes are the same as in v8 (§5 residue Lean names; §8 URL line). `pdftotext` finds 0 `??`.
+- 12 pages. References start on p. 11, so the main text is 10 pages (unchanged).
+- Abstract: 1,831 rendered characters (v8: 1,767). That is under the 1,900 limit of R-V8 and arXiv's 1,920.
+- `scope_lint.py`: PASS (34 numbers, 40 Lean names).
+- `numeric_consistency`: pass. `pending_marker`: pass (0 markers).
+- `audience_check`: the same 6 `\repofile` false positives in §8, with 0 governance and 0 private-locator hits.
+- There are 50 distinct `\repofile` targets:
+  - Removed: `Erdos85LratRuntime.lean`.
+  - Added: `Erdos85OrderFortyNineThreeHighOneFiber.lean` and `Q7_H3_PROFILE_EXCLUSION_20260910.md`. Both are verified present on `origin/erdos85/integration`.
+
+## Changes by critic note
+
+| Source | Note | Resolution |
+|---|---|---|
+| erdos85-drop.8.operator (critical, 1) | H3 evidence misstated: no SAT verdict or LRAT proof exists for either H3 cell formula | **§2.3 H3 paragraph rewritten.** It now describes the two cells ($t=1$: one low vertex adjacent to all three highs; $t=0$: three pair neighbours spanning a matching with $b\in\{0,1\}$ edges). It names the Lean cover `threeHighCanonicalGraphCover_all` and the reduction `orderFortyNineStratumExcluded_three_of_representativeExclusions` (both verified in source and on the public branch, and the module is linked). It states plainly that no SAT verdict or LRAT proof exists for either cell formula and that the two exclusions are undischarged Lean hypotheses. It then describes the reviewed argument without minimizing it: graph-to-core reductions plus exhaustive Python enumerations over 3,337 ($t=1$), 972 ($b=0$) and 3,600 ($b=1$) cases, independently reviewed, with the $t=0$ searches replayed from unchanged source with no time limit in exact agreement. All numbers come from `Q7_H3_PROFILE_EXCLUSION_20260910.md`, which is linked. The formula size (29,500 / 1,328,183) and the `STRATA…`/`PHASE_B…` receipt pointers for the nonexistent proofs are removed. **Table 2 H3 row**: "Lean: every graph is covered by the two cell representatives; their exclusion by a reviewed argument with independently replayed computation; no certificates", with open item "two cell-exclusion premises". **Post-table paragraph**: "None of these steps requires new search" is replaced, because it would be false for a certificate route to H3. It now reads: H3/H5 premises and the H7 $t=0$ capstone are substantial formalization work, and H3 could instead be closed by certificates for its two cell formulas, neither of which has been produced. **Abstract, Result A and "What is not claimed"** are fixed (next row). A sweep of intro, trust section, collaboration and availability finds no other H3-certificate implication. §3.4 is H1-only, and the paper has no separate conclusion section. |
+| erdos85-drop.8.operator (critical, 2) | Scope "certificate-checked"; strata tags; say the bound depends on reviewed arguments | **Abstract**: the opening sentence now says only "as a computational result". The first use of "certificate-checked" is "H1 is certificate-checked: … cake_lpr accepted an unsatisfiability proof for each". New sentence: "Among the smaller strata, only one part has certificates, checked inside Lean (H7, $t\ge1$); the others are closed by reviewed arguments with independently replayed computation (H3, H5; H7, $t=0$), on which the upper bound also depends." The not-a-theorem sentence now names "the H3, H5 and H7 ($t=0$) exclusions are open in Lean". **Result A** now says "by certificate-checked computation for H1 and for H7 with $t\ge1$, and by reviewed arguments with independently replayed computation for H3, H5 and H7 with $t=0$". **"What is not claimed"** adds that the H3, H5 and H7 ($t=0$) exclusions rest on reviewed arguments rather than on certificates or Lean proofs. The title is kept, per the operator. |
+| erdos85-drop.8.operator (critical, 3) + .8.review M1 + .8.audit M1 | Hexagon comparison on one axis | **§3 opening**: "Both works reduce the mathematical statement, in Lean, to the unsatisfiability of a formula defined in Lean, and both rely on cake_lpr for the unsatisfiability check. On this axis we claim no advantage: our reduction uses 23 `native_decide` axioms (Section 2.4), and we tie each checked CNF file to its Lean formula only through a compiled Lean emitter (Section 3.4)." Nothing is asserted about the precedent's DIMACS link or its axiom footprint, because neither resolver abstract supports it. The "their encoding is proved correct … whereas we …" contrast is removed. |
+| erdos85-drop.8.operator (critical, 4a) + .8.review m1 + .8.audit m2 | Uncited `LRAT.check` clause and the "30 of the cube leaves" cross-check | Removed from §3.2 "The historical certificates". The sentence now ends at "the same sha256 as in an earlier conversion pass". The `\lratcheck` macro and the `Erdos85LratRuntime.lean` link are removed. The §3.3 statement that proof sha256 values are recorded for only the 30 smaller leaves is a different fact and is kept. |
+| erdos85-drop.8.operator (critical, 4b) + .8.review m4 + .8.audit m1 | §8 checker wording for historical and macOS orbits | **§8** now says `e85-check` "re-solves a census or historical orbit with the pinned CaDiCaL and checks the fresh proof with cake_lpr". It then explains that the sha256 must also match ours only for the 1,157 Linux census orbits, and that for the 96 historical and 3 macOS census orbits there is no comparable proof hash, so the result is a fresh cake_lpr check. This matches `CHECKING.md` lines 14 and 44–46. "re-check any part of H1" becomes "re-check any H1 orbit" in §3 (opening), §3.4 and §8, because the archived historical proofs are not published (review m4, second half). |
+| erdos85-drop.8.operator (critical, 4c) + .8.review n1 + .8.audit N1 | 24-hour cap wording | §3.2 now reads "a 24-hour solver time cap on the longest orbit". |
+| erdos85-drop.8.operator (critical, 5) + .8.review m5 + .8.audit m4/N4 | refs.bib hygiene | `heule2024hexagon` already carries `pages = {61--80}` and no `volume`, so the entry is left as Crossref gives it. Title capitals are protected: `{B}oolean` (heule2016pythagorean), `{S}chur` (heule2018schur, a proper noun that plainnat lowercased to "Schur number five"), and the whole `bloom-erdos85` title, which now renders "Erdős Problem #85". "Bloom" is an author name, not a title word, so nothing is needed there. The PDF was rebuilt with 4 xelatex passes and bibtex to the fixpoint, and `main.tex` and `main.pdf` were copied to `manuscript/paper/`. |
+| erdos85-drop.8.review n2 / .8.audit N2 (generic, nit) | Cost sentence inside the trust paragraph | Moved to the end of §3.2 (after the historical paragraph). The wording is unchanged: "The census and the bank re-check cost about \$225 …". |
+| erdos85-drop.8.audit N6 (nit) | `oneHighCapacityInventory_total_length` is itself proved by `native_decide` | Added "by `native_decide`" in §2.4 (verified in `Erdos85OneHighV2CapacityInventory.lean` L43–46). It is not a dependency of the cover theorem, so Table 2 is unchanged. |
+| erdos85-drop.8.review m2 / .8.audit m6 (minor) | Title "Certificate-Checked" over-reads | Declined: the operator's decision on the title is pending, and the operator directed that it be kept. The abstract now scopes the term to H1 (and to H7 $t\ge1$ in Result A). |
+| erdos85-drop.8.review m3 / .8.audit m3 (minor) | Abstract method-to-stratum mapping | Resolved by operator flag 2 (strata tags). |
+| erdos85-drop.8.review n3 (nit) | "the existence halves of the census" opaque | Declined: the contribution statements must stay transcript-true (BRIEF), and no receipt on disk says what the phrase refers to. Left for the authors. |
+| erdos85-drop.8.audit N3 (nit) | cake_lpr commit `a36874a8` vs. the `d23c413b…` build | Declined: the receipts do not record the commit of the `d23c413b…` build, and §3.2/§3.3 already name that build for the historical and cube-leaf checks. Saying "for the bank and census" would need a receipt that maps commit to build. |
+| erdos85-drop.8.audit N5 (nit) | CaDiCaL 3.0.1 cited via its 2020 system description | Declined: no resolver-checked newer description is on disk. |
+| erdos85-drop.8.audit N4 (nit) | DOIs for `tan2021cakelpr`, `heule2018schur` | Declined: they were not resolved in this pass, and none was typed by hand. |
+| erdos85-drop.8.audience | 6 `unlinked_artifact_path` hits in §8 | No change: all six are `\repofile` arguments, which the scanner does not expand. These false positives are unchanged since v7. |
+
+## Outside the paper (for the operator)
+
+- **BRIEF frontmatter `claim`** still reads "closed by checked LRAT proofs (H3)". The paper no longer says this. The BRIEF is operator-owned and was not edited, so the next `paper-review` may see a claim/paper mismatch. The paper follows `H3_EVIDENCE_AUDIT_20261007.md` and the operator flag.
+- **`STRATA_AND_SMALL_ORDERS_20260928.md`** is still linked from §8 (for the strata Lean names). It was corrected in place in the certpilot worktree on 2026-10-07, but that edit is uncommitted. The public copy on `origin/erdos85/integration` still says "checked LRAT proofs for both cells". The corrected file must land before the paper's links resolve to correct content.
+- `H3_EVIDENCE_AUDIT_20261007.md` is not on any public branch and is not linked from the paper. The paper cites the public `Q7_H3_PROFILE_EXCLUSION_20260910.md` instead.

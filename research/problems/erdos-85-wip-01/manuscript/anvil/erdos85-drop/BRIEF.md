@@ -4,7 +4,7 @@ author: "Claude Fable, GPT Sol, Astra, Claude Opus and Robb Walters"
 affiliation: "Lean Genius project, 2AM Logic"
 venue: "arXiv"
 anonymous: false
-claim: "Lean reduces the one-high stratum H1 — the bulk of the upper side at order 49 — to 13,351 symmetry-reduced SAT formulas, and every one has an unsatisfiability proof accepted by the CakeML-verified checker cake_lpr; the three smaller strata are closed by checked LRAT proofs (H3), Lean-checked certificates (H7, t ≥ 1) and reviewed arguments with independently checked computation (H5, H7 t = 0). With Lean-checked lower-side witnesses this gives f(48) = 8 and f(49) = 7, a strict drop, as a certificate-checked computational result — not a Lean theorem, because the external checks are not admitted into Lean, the checked files match the Lean formulas only through a compiled emitter, and the H5 premises and the H7 t = 0 capstone are open in Lean. Separately, Lean 4 verifies that one uniform proposition, A-REG, implies a negative answer to Erdős Problem 85."
+claim: "Lean reduces the one-high stratum H1 — the bulk of the upper side at order 49 — to 13,351 symmetry-reduced SAT formulas, and every one has an unsatisfiability proof accepted by the CakeML-verified checker cake_lpr; the three smaller strata are closed by Lean-checked certificates (H7, t ≥ 1) and reviewed arguments with independently checked computation (H3, H5, H7 t = 0). With Lean-checked lower-side witnesses this gives f(48) = 8 and f(49) = 7, a strict drop, as a certificate-checked computational result — not a Lean theorem, because the external checks are not admitted into Lean, the checked files match the Lean formulas only through a compiled emitter, and the H3 and H5 premises and the H7 t = 0 capstone are open in Lean. Separately, Lean 4 verifies that one uniform proposition, A-REG, implies a negative answer to Erdős Problem 85."
 keywords:
   - Erdős problems
   - C4-free graphs
@@ -276,3 +276,11 @@ sentence of §3. State it as a fact for readers (no governance language).
 say so); soften "none of these steps is a search problem"; abstract ≤ 1,900 characters (arXiv limit
 1,920); Table 1 historical row gets its size (≈0.103 TB); drop or properly source the "roughly ten times"
 memory factor; point f(15)=f(16)=5 to the explicit witness graph in Lean; keep ~10 pp main text.
+
+
+## Amendment R-H3 (2026-10-07)
+
+The claim above is corrected: no SAT verdict or LRAT proof exists for either H3 cell formula
+(refs/H3_EVIDENCE_AUDIT_20261007.md). H3 rests on the reviewed paper argument with exhaustively replayed
+searches (refs/Q7_H3_PROFILE_EXCLUSION_20260910.md, review 1685), and its two cell exclusions are open
+hypotheses in Lean. The R-V8 minor asking to name the H3 checker is withdrawn: there is no checker to name.

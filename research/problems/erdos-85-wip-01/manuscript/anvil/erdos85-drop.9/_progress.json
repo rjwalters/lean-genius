@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "thread": "erdos85-drop",
+  "phases": {
+    "revise": {
+      "state": "done",
+      "started": "2026-10-07T16:58:52Z",
+      "completed": "2026-10-07T17:03:12Z",
+      "note": "Operator-override pass (R-OP9) from erdos85-drop.8 against .operator (5 operator_defect flags, all addressed: H3 evidence corrected to reviewed argument, certificate-checked scoped to H1 and H7 t>=1 with strata tags, hexagon comparison on one axis, LRAT.check clause dropped, section 8 checker wording, 24-hour cap, bib capitals), .review M1/m1-m5/n1-n4, .audit M1/m1-m6/N1-N6; xelatex+bibtex+xelatex x3 (4 xelatex passes), aux fixpoint verified; 0 errors, 0 undefined, 0 overfull, 4 underfull; 12 pages, main text 10; abstract 1,831 chars; scope_lint PASS"
+    }
+  },
+  "metadata": {
+    "iteration": 9,
+    "max_iterations": 8,
+    "revised_from": 8,
+    "operator_override": true,
+    "evidence_snapshot": {
+      "brief_mtime": 1791384068.3848815,
+      "refs_mtime": 1791392121.9307642
+    }
+  }
+}
