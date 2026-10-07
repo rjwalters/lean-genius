@@ -1,0 +1,82 @@
+{
+  "schema_version": "1",
+  "kind": "tool_evidence",
+  "version_dir": "erdos85-drop.7",
+  "critic_id": "audience",
+  "model": null,
+  "rubric": null,
+  "scores": [
+    {
+      "dimension": "audience_check",
+      "score": null,
+      "max": 1,
+      "critical": false,
+      "evidence_span": null,
+      "fix": null,
+      "justification": "audience-fit pre-flight is a deterministic advisory scan; owns no rubric dim (evidence for dims 7/9)."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L253",
+      "rationale": "Link hygiene (body, section 'Availability'): artifact path(s) 'rp/h1_bank_check_20261006/receipts/README.md', 'h1_bank_check_20261006/receipts/README.md', 'rp/h1_bank_check_20261006/receipts/h1_bank_check_receipts.tsv', 'rp/h1_bank_check_20261006/receipts/h1_bank_check_summary.json' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item H1 bank re-check: \\\\repofile{\\\\rp/h1_bank_check_20261006/receipts/README.md}{h1_bank_check_20261006/receipts/README.md}, with one receipt per orbit in \\\\rep\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L254",
+      "rationale": "Link hygiene (body, section 'Availability'): artifact path(s) 'rp/h1_cert_full_20261001/receipts/README.md', 'h1_cert_full_20261001/receipts/README.md', 'rp/h1_cert_full_20261001/receipts/h1_cert_census_receipts.tsv', 'rp/h1_cert_full_20261001/receipts/h1_cert_census_summary.json', 'rp/h1_cert_full_20261001/receipts/historical96_receipts.jsonl', 'rp/h1_cert_full_20261001/receipts/pilot_h1_81494a_leaf_cake_lpr.jsonl' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item Fresh census, historical certificates and cube leaves: \\\\repofile{\\\\rp/h1_cert_full_20261001/receipts/README.md}{h1_cert_full_20261001/receipts/README.md} \u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L255",
+      "rationale": "Link hygiene (body, section 'Availability'): artifact path(s) 'rp/phase_b_h1_census_20260927/CENSUS.md', 'rp/phase_b_h1_census_20260927/cube-h1_81494a6ef36d3ec9/tree-check.json', 'rp/CENSUS_TIMING_20260928.md', 'rp/PHASE_B_H1_H3_INVENTORY_20260910.md' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item Verdict census and cube tree: \\\\repofile{\\\\rp/phase_b_h1_census_20260927/CENSUS.md}{CENSUS.md}, \\\\repofile{\\\\rp/phase_b_h1_census_20260927/cube-h1_81494a6ef3\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L256",
+      "rationale": "Link hygiene (body, section 'Availability'): artifact path(s) 'proofs/Proofs/Erdos85OneHighV2CapacityCover.lean', 'proofs/Proofs/Erdos85OneHighV2CapacityInventory.lean', 'proofs/Proofs/Certificates/h1_orbit_inventory.compact', 'Certificates/h1_orbit_inventory.compact', 'rp/AXIOM_AUDIT_COLD_20260927/axioms.out', 'AXIOM_AUDIT_COLD_20260927/axioms.out', 'rp/STRATA_AND_SMALL_ORDERS_20260928.md' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item Lean: the H1 reduction in \\\\repofile{proofs/Proofs/Erdos85OneHighV2CapacityCover.lean}{Erdos85OneHighV2CapacityCover.lean} and \\\\repofile{proofs/Proofs/Erd\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L257",
+      "rationale": "Link hygiene (body, section 'Availability'): artifact path(s) 'rp/H7_POSITIVE_TRIPLE_CELLS_H5_CLOSURE_FORMULA_COUNTS_20260928.md', 'rp/q7_h5_closure_ledger/REVIEWED_RESULT.md', 'q7_h5_closure_ledger/REVIEWED_RESULT.md', 'rp/H7_CLOSURE_20260915.md', 'rp/Q7_H5_H7_SQUEEZE_20260910.md' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item Small strata: \\\\repofile{\\\\rp/H7_POSITIVE_TRIPLE_CELLS_H5_CLOSURE_FORMULA_COUNTS_20260928.md}{H7_POSITIVE_TRIPLE_CELLS_H5_CLOSURE_FORMULA_COUNTS_20260928.m\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    },
+    {
+      "severity": "major",
+      "dimension": "audience_fit",
+      "evidence_span": "main.tex:L258",
+      "rationale": "Link hygiene (body, section 'Availability'): artifact path(s) 'rp/manuscript/FIRST_DROP_LITERATURE_CHECK.md', 'manuscript/FIRST_DROP_LITERATURE_CHECK.md', 'rp/sat49/BOZA48_NONISOMORPHISM_RECEIPT_20260928.txt', 'sat49/BOZA48_NONISOMORPHISM_RECEIPT_20260928.txt' are named as bare repo-relative paths with no \\href/\\url and no 'not published' marker; a reader cannot follow them. Excerpt: '\\\\item Literature readings and the $r$-to-$f$ conversion: \\\\repofile{\\\\rp/manuscript/FIRST_DROP_LITERATURE_CHECK.md}{manuscript/FIRST_DROP_LITERATURE_CHECK.md}; t\u2026'.",
+      "suggested_fix": "Link each path to a public location with \\href/\\url, or mark it explicitly 'not published'. Candidate repository https://github.com/rjwalters/lean-genius was only derived from a link in this section and is NOT confirmed as the paper's own repository: if it hosts these artifacts, declare it as `public_repo_url` in <thread>/.anvil.json or the thread BRIEF.md frontmatter and link each path there; never invent a URL.",
+      "tool_calls": [],
+      "downstream_risk": null
+    }
+  ],
+  "critical_flags": [],
+  "total": null,
+  "threshold": null,
+  "verdict": null,
+  "rendered_artifact": null,
+  "probes": null,
+  "unscored": false
+}

@@ -1,0 +1,17 @@
+{
+  "critic": "review",
+  "role": "paper-review.md",
+  "started": "2026-10-07T00:06:03Z",
+  "finished": "2026-10-07T00:09:35Z",
+  "model": "claude-opus-5-5",
+  "schema_version": 1,
+  "scorecard_kind": "human-verdict",
+  "rubric_id": "anvil-pub-v2",
+  "rubric_total": 44,
+  "advance_threshold": 35,
+  "sidecar": "python -m anvil.lib.sidecar stage/commit (issue #645 CLI shim, PYTHONPATH=.anvil)",
+  "evidence_check": "anvil.lib.evidence_check on staged scoring.md: 9 dimensions, 0 findings, pass",
+  "prior_review": "erdos85-drop.6.review (34/44, advance false, rubric anvil-pub-v2, critical flag scope_overclaim_h1_certificate_check)",
+  "prior_critic_flags_reevaluated": "scope_overclaim_h1_certificate_check resolved by evidence (12,094/12,094 bank VERIFIED; 13,351 partition recomputed)",
+  "note": "Stripe volume reads/writes ran unsandboxed (intermittent sandbox EPERM); only review siblings written"
+}
