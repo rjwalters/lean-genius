@@ -238,3 +238,41 @@ H1 reduction itself as open.
 R-LINK's "room transcript … not published" no longer applies to it (the S3 certificate buckets and the
 artifact volume are still described as not published, except the bank proofs and checker kit once the
 public checker is released — see CHECKING.md when it exists).
+
+## Amendment R-V8 (2026-10-07; governs v8, the last iteration under the cap — fixes the v7 review)
+
+**1. Uniform checker (new evidence).** All 96 historical certificates were re-checked by cake_lpr
+(refs `h1_cert_historical96_cake_lpr_receipts.jsonl`; public path
+`research/problems/erdos-85-wip-01/h1_cert_full_20261001/receipts/historical96_cake_lpr_receipts.jsonl`).
+So **cake_lpr checked every one of the 13,351 H1 orbits** (12,094 bank + 1,160 census + 96 historical,
+and the hardest orbit via its 36 cube leaves + the Lean composition lemma). Lean's compiled `LRAT.check`
+is now only a redundant cross-check (50 historical + 30 leaves) — mention it at most once, or drop it;
+the "formally verified checker" headline no longer needs the `lratreplay` qualification.
+
+**2. Close prior work (the v7 critical flag).** Cite and position against `heule2024hexagon`
+(Heule & Scheucher, TACAS 2024: empty-hexagon number, cube-and-conquer, cake_lpr-checked proof) and
+`subercaseaux2024hexagonlean` (Subercaseaux et al., ITP 2024: Lean verification of that result's
+encoding, composed with the cake_lpr check). Both are in the thread refs.bib (DOIs resolved via
+Crossref/DataCite). Be precise and fair: theirs is the closest precedent and is STRONGER on encoding
+faithfulness (the encoding is verified in Lean); ours links the checked CNF to the Lean formula only
+through a compiled Lean emitter. What is distinct here: scale (13,351 formulas, ~28 TB) inside a
+whole-stratum Lean reduction, check-then-discard with hash-only receipts and byte-identical
+regeneration, re-validation of an archived 22.55 TB certificate bank, and a public checker anyone can
+run. Also re-cite `moura2021lean4` and `mathlib2020` (dropped in v7).
+
+**3. R-BRIDGE fixes.** The H1 cover theorem's axioms ARE printed (refs `H1_COVER_AXIOMS_20261006.txt`:
+3 standard + 23 native_decide, no sorryAx); link it; do not say "not in the cold axiom audit". Every
+H1 open-item statement (status table, text, abstract) must name both items: (i) external checks not
+admitted into Lean; (ii) checked-file = Lean formula rests on the compiled emitter.
+
+**4. Public checker (now live).** A third party can re-check H1 on their own AWS machine: public AMI
+`ami-05697724475f2e748` (us-east-1), the `e85-check` tool, the checker kit and the 12,094 bank proofs in
+a Requester Pays bucket, and the guide `research/problems/erdos-85-wip-01/CHECKING.md` (link via
+\repofile). This updates R-LINK: the bank proofs and the checker kit ARE published (Requester Pays);
+the rest of the certificate bucket and the artifact volume are not. Put this in Availability and in one
+sentence of §3. State it as a fact for readers (no governance language).
+
+**5. v7 minors.** Name the checker used for the H3 proofs (from its receipt; if the receipt does not say,
+say so); soften "none of these steps is a search problem"; abstract ≤ 1,900 characters (arXiv limit
+1,920); Table 1 historical row gets its size (≈0.103 TB); drop or properly source the "roughly ten times"
+memory factor; point f(15)=f(16)=5 to the explicit witness graph in Lean; keep ~10 pp main text.
