@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "thread": "erdos85-drop",
+  "for_version": 9,
+  "phases": {
+    "audit": {
+      "state": "done",
+      "started": "2026-10-07T17:12:40Z",
+      "completed": "2026-10-07T17:20:03Z"
+    }
+  },
+  "metadata": {
+    "iteration": 9,
+    "max_iterations": 8,
+    "operator_override": true,
+    "audit_summary": {
+      "critical_flags": 0,
+      "unresolved_citations": 0,
+      "claim_support_failures": 0,
+      "numerical_inconsistencies": 0,
+      "release_preconditions": 1,
+      "minor_findings": 2,
+      "nit_findings": 6,
+      "unverified_citations": 10,
+      "partial_citations": 6,
+      "stale_figures": 0,
+      "unlinked_artifact_paths": 0,
+      "audience_notes": 0,
+      "build_status": "ok",
+      "build_passes": 4,
+      "pages": 12,
+      "pending_gate": "pass",
+      "evidence_drift": "BRIEF drifted (R-H3, R-TITLE; advisory), refs not drifted",
+      "corpus_tier": "inactive",
+      "link_check": {
+        "repofile_uses": 55,
+        "distinct_targets": 50,
+        "on_integration": 50,
+        "stale_content_on_integration": ["STRATA_AND_SMALL_ORDERS_20260928.md"]
+      },
+      "lean_identifiers": "scope_lint PASS (40 names); H3 names at L530/L537 (grep only)"
+    },
+    "thread_state_after_audit": "AUDITED",
+    "note": "No critical flag; review M1 and m1 applied and verified; R-H3 and R-TITLE held; build clean at the 4-pass fixpoint and shipped PDF text-identical. Release precondition P1: commit the corrected STRATA receipt and merge paper-v6 into integration before tagging."
+  }
+}

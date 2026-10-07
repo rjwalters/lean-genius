@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "thread": "erdos85-drop",
+  "for_version": 9,
+  "phases": {
+    "review": {
+      "state": "done",
+      "started": "2026-10-07T17:05:59Z",
+      "completed": "2026-10-07T17:10:59Z"
+    }
+  },
+  "metadata": {
+    "iteration": 9,
+    "max_iterations": 8,
+    "operator_override": true,
+    "total": 39,
+    "threshold": 35,
+    "rubric_id": "anvil-pub-v2",
+    "advance": true,
+    "ready": true,
+    "critical_flags": 0,
+    "prior_total": 39,
+    "score_history": [
+      {
+        "iteration": 1,
+        "total": 17,
+        "threshold": 35,
+        "rubric_id": "anvil-pub-v2"
+      },
+      {
+        "iteration": 2,
+        "total": 32,
+        "threshold": 35,
+        "rubric_id": "anvil-pub-v2"
+      },
+      {
+        "iteration": 3,
+        "total": 35,
+        "threshold": 35,
+        "rubric_id": "anvil-pub-v2"
+      },
+      {
+        "iteration": 4,
+        "total": 37,
+        "threshold": 35,
+        "rubric_id": "anvil-pub-v2"
+      },
+      {
+        "iteration": 5,
+        "total": 38,
+        "threshold": 35,
+        "rubric_id": "anvil-pub-v2"
+      },
+      {
+        "iteration": 6,
+        "total": 34,
+        "threshold": 35,
+        "rubric_id": "anvil-pub-v2"
+      },
+      {
+        "iteration": 7,
+        "total": 35,
+        "threshold": 35,
+        "rubric_id": "anvil-pub-v2"
+      },
+      {
+        "iteration": 8,
+        "total": 39,
+        "threshold": 35,
+        "rubric_id": "anvil-pub-v2"
+      },
+      {
+        "iteration": 9,
+        "total": 39,
+        "threshold": 35,
+        "rubric_id": "anvil-pub-v2"
+      }
+    ],
+    "score_history_note": "carried in the review sidecar; erdos85-drop.9/_progress.json not modified"
+  },
+  "termination_reason": "ADVANCE"
+}

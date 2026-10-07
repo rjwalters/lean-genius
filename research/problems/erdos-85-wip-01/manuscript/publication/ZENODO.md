@@ -72,7 +72,7 @@ archived through the GitHub release, not duplicated here.
 ## Metadata
 
 - **Resource type:** Publication / Preprint
-- **Title:** A Certificate-Checked Drop and a Uniform Reduction for Erdős Problem 85
+- **Title:** A Drop at Forty-Nine in Erdős Problem 85
 - **Publication date:** the deposit date (the paper is dated 7 October 2026)
 - **Creators** (order as in the paper):
   1. Claude Fable (affiliation: Lean Genius project) [decide: name format and whether to add "Anthropic model"]

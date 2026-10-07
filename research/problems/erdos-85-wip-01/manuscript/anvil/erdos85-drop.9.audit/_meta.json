@@ -1,0 +1,22 @@
+{
+  "critic": "audit",
+  "role": "paper-audit.md",
+  "started": "2026-10-07T17:12:40Z",
+  "finished": "2026-10-07T17:20:03Z",
+  "model": "claude-opus-5-5",
+  "schema_version": 1,
+  "scorecard_kind": "human-verdict",
+  "rubric_id": "anvil-pub-v2",
+  "rubric_total": 44,
+  "advance_threshold": 35,
+  "sidecar": "PYTHONPATH=.anvil python3 -m anvil.lib.sidecar cleanup/stage/copy/commit (issue #645 CLI shim; uv form not used)",
+  "compile": "xelatex + bibtex + xelatex x3 to the .aux fixpoint (4 xelatex passes; pass 2 natbib 'Citation(s) may have changed', pass 3 'Label(s) may have changed', pass 4 neither, aux byte-identical to pass 3) in a scratch copy; version dir untouched; raw bytes via sidecar copy (sha256 06a2ac66ec987033...)",
+  "shipped_pdf": "erdos85-drop.9/main.pdf (10:11) converged; pdftotext identical to audit fixpoint PDF; shows R-TITLE title",
+  "pending_gate": "anvil.lib.pending_marker erdos85-drop.9/: pass (0 markers); run without --write-review (identical result already in .9.pending; sibling dirs untouched)",
+  "audience_check": "governance 0, private_locator 0, unlinked_artifact_path 6 (all \\repofile false positives); public_repo_url derived, not declared -> non-critical",
+  "evidence_drift": "brief_drifted true (R-H3, R-TITLE), refs_drifted false; advisory",
+  "corpus_tier": "inactive (no corpus: key)",
+  "link_check": "50 distinct \\repofile targets / 55 uses; all 50 present on origin/erdos85/integration 4fee7764397 and origin/erdos85/paper-v6 13400a4c890 (git ls-tree); STRATA_AND_SMALL_ORDERS_20260928.md content stale on integration (correction uncommitted in working tree) -> release precondition P1",
+  "lean_check": "scope_lint.py --proofs erdos85-certpilot/proofs/Proofs: PASS (34 numbers, 40 Lean names); H3 names grep-verified at Erdos85OrderFortyNineThreeHighOneFiber.lean L530/L537; no build",
+  "git_sync": "skipped (no .anvil/config.json; run instructions exclude commits)"
+}

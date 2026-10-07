@@ -15,7 +15,7 @@ H3 is "excluded by an LRAT proof of its Lean-generated formula". Paths are relat
   1683/1674/1679/1680/1681, combined review 1685). That note says it is "not yet a Lean kernel theorem"
   and that "no new LRAT payload… is claimed".
 - **Lean side of H3:** the graph normalization/cover is proved (`threeHighCanonicalGraphCover_all`,
-  `Erdos85ThreeHighOneFiber.lean`; scout covers B1/C1/C2 normalization). Every Lean route to
+  `Erdos85OrderFortyNineThreeHighOneFiber.lean`; scout covers B1/C1/C2 normalization). Every Lean route to
   `OrderFortyNineStratumExcluded 3` still takes the SAT exclusions as **undischarged hypotheses**
   (`…_three_of_tripleCells`, `…_three_of_lratChecks` in `Erdos85SmallHighCnfExclusion.lean`, the
   cube-grid and scout-dichotomy terminals). Closing H3 in Lean needs either two `LRAT.check` facts for

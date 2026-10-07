@@ -1,0 +1,119 @@
+{
+ "schema_version": "1",
+ "kind": "tool_evidence",
+ "version_dir": "erdos85-drop.9",
+ "critic_id": "paper-audit",
+ "model": "claude-opus-5-5",
+ "rubric": null,
+ "scores": [
+  {
+   "dimension": "citation_resolution",
+   "score": null,
+   "max": 1,
+   "critical": false,
+   "evidence_span": "main.tex:L73-L239",
+   "fix": null,
+   "justification": "16/16 keys resolve; 0 undefined at fixpoint; 0 '??'. 6 partial, 10 unverified (no source on disk), 0 does-not-support."
+  },
+  {
+   "dimension": "numerical_consistency",
+   "score": null,
+   "max": 1,
+   "critical": false,
+   "evidence_span": "main.tex:L64-L263",
+   "fix": null,
+   "justification": "New H3 counts 3,337/972/3,600 match Q7_H3 ref; H1 totals recomputed from per-row receipts (13,351; 28.35 TB); 0 mismatches."
+  },
+  {
+   "dimension": "build",
+   "score": null,
+   "max": 1,
+   "critical": false,
+   "evidence_span": null,
+   "fix": null,
+   "justification": "xelatex+bibtex converged in 4 xelatex passes, aux byte-identical; 0 errors/undefined/overfull; 12 pages; shipped PDF text-identical."
+  },
+  {
+   "dimension": "pending_marker",
+   "score": null,
+   "max": 1,
+   "critical": false,
+   "evidence_span": null,
+   "fix": null,
+   "justification": "pass, 0 markers."
+  },
+  {
+   "dimension": "link_hygiene",
+   "score": null,
+   "max": 1,
+   "critical": false,
+   "evidence_span": "main.tex:L32-L35,L252-L263",
+   "fix": null,
+   "justification": "50/50 \\repofile targets on integration; STRATA receipt content stale on integration (release precondition P1); R-AUD clean."
+  }
+ ],
+ "findings": [
+  {
+   "severity": "major",
+   "dimension": "5_reproducibility",
+   "evidence_span": "main.tex:L257-L257",
+   "rationale": "Linked receipt STRATA_AND_SMALL_ORDERS_20260928.md on origin/erdos85/integration (4fee7764397) still says H3 has 'checked LRAT proofs for both cells' and H1 assembly is open; the correction exists only uncommitted in the certpilot working tree. Release precondition, not a manuscript defect.",
+   "suggested_fix": "Commit the corrected file with v9 on erdos85/paper-v6 and merge into erdos85/integration before tagging.",
+   "tool_calls": [
+    {
+     "tool": "git",
+     "args": {
+      "cmd": "git show origin/erdos85/integration:research/problems/erdos-85-wip-01/STRATA_AND_SMALL_ORDERS_20260928.md"
+     },
+     "result_summary": "line 18: 'checked LRAT proofs for both cells'; line 17: 'row-to-stratum assembly is an open formal obligation'"
+    },
+    {
+     "tool": "git",
+     "args": {
+      "cmd": "git status --short; git merge-base --is-ancestor 13400a4c890 origin/erdos85/integration"
+     },
+     "result_summary": "STRATA file ' M' in working tree; v9 commit not on integration"
+    }
+   ]
+  },
+  {
+   "severity": "minor",
+   "dimension": "1_rigor",
+   "evidence_span": "main.tex:L195-L205",
+   "rationale": "Table 2 caption says axiom lists are from #print axioms; Case-split and H3 rows cite theorems absent from the cold audit and give no list.",
+   "suggested_fix": "Add '(not in the cold audit)' or print their axioms into a linked receipt.",
+   "tool_calls": [
+    {
+     "tool": "grep",
+     "args": {
+      "path": "erdos85-drop/refs/axioms.out"
+     },
+     "result_summary": "neither not_c4FreeMinDegreeWitness_fortyNine_seven_of_strata nor threeHighCanonicalGraphCover_all present"
+    }
+   ]
+  },
+  {
+   "severity": "minor",
+   "dimension": "9_rhetorical_economy",
+   "evidence_span": "main.tex:L214-L214",
+   "rationale": "H3 certificate-route sentence accurate but may read as routine; cell formulas never run, scouts s UNKNOWN after ~12 h.",
+   "suggested_fix": "Optionally append 'and whether they are within reach is untested'.",
+   "tool_calls": [
+    {
+     "tool": "read",
+     "args": {
+      "path": "erdos85-drop/refs/H3_EVIDENCE_AUDIT_20261007.md"
+     },
+     "result_summary": "cell formulas materialized, never solved; scout CNFs s UNKNOWN ~12 h"
+    }
+   ]
+  }
+ ],
+ "critical_flags": [],
+ "total": null,
+ "threshold": null,
+ "verdict": null,
+ "rendered_artifact": null,
+ "probes": null,
+ "unscored": false
+}

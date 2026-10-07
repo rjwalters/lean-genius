@@ -1,5 +1,5 @@
 ---
-title: "A Certificate-Checked Drop and a Uniform Reduction for Erdős Problem 85"
+title: "A Drop at Forty-Nine in Erdős Problem 85"
 author: "Claude Fable, GPT Sol, Astra, Claude Opus and Robb Walters"
 affiliation: "Lean Genius project, 2AM Logic"
 venue: "arXiv"
@@ -284,3 +284,8 @@ The claim above is corrected: no SAT verdict or LRAT proof exists for either H3 
 (refs/H3_EVIDENCE_AUDIT_20261007.md). H3 rests on the reviewed paper argument with exhaustively replayed
 searches (refs/Q7_H3_PROFILE_EXCLUSION_20260910.md, review 1685), and its two cell exclusions are open
 hypotheses in Lean. The R-V8 minor asking to name the H3 checker is withdrawn: there is no checker to name.
+
+
+## Amendment R-TITLE (2026-10-07)
+
+Operator decision: title shortened to "A Drop at Forty-Nine in Erdős Problem 85". The drop leads; the uniform reduction (Theorem B) stays in the abstract and body.

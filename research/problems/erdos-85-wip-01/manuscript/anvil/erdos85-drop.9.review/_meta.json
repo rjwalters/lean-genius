@@ -1,0 +1,16 @@
+{
+  "critic": "review",
+  "role": "paper-review.md",
+  "started": "2026-10-07T17:05:59Z",
+  "finished": "2026-10-07T17:10:59Z",
+  "model": "claude-opus-5-5",
+  "schema_version": 1,
+  "scorecard_kind": "human-verdict",
+  "rubric_id": "anvil-pub-v2",
+  "rubric_total": 44,
+  "advance_threshold": 35,
+  "sidecar": "python -m anvil.lib.sidecar stage/commit (issue #645 CLI shim, PYTHONPATH=.anvil)",
+  "evidence_check": "anvil.lib.evidence_check on staged scoring.md: 9 dimensions, 0 findings, pass (re-run after the R-TITLE D3 update)",
+  "prior_review": "erdos85-drop.8.review (39/44, advance true, rubric anvil-pub-v2, no critical flag); erdos85-drop.8.operator (5 operator_defect flags) re-evaluated: all resolved, residual M1 wording",
+  "note": "Operator retitled main.tex L56 mid-review (R-TITLE); scored against updated main.tex; main.pdf predates the edit and _gate.json reflects the pre-edit PDF. Stripe volume accessed unsandboxed; only v9 critic siblings (.review/.numeric/.pending/.audience) written."
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": "1",
+  "kind": "tool_evidence",
+  "version_dir": "erdos85-drop.9",
+  "critic_id": "pending",
+  "model": null,
+  "rubric": null,
+  "scores": [
+    {
+      "dimension": "pending_marker",
+      "score": null,
+      "max": 1,
+      "critical": false,
+      "evidence_span": null,
+      "fix": null,
+      "justification": "pending-marker detection is a deterministic placeholder-presence check; owns no rubric dim."
+    }
+  ],
+  "findings": [],
+  "critical_flags": [],
+  "total": null,
+  "threshold": null,
+  "verdict": null,
+  "rendered_artifact": null,
+  "probes": null,
+  "unscored": false
+}
