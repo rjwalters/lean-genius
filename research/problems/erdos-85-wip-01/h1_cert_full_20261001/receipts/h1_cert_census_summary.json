@@ -68,5 +68,9 @@
   "std_lrat_check": {
    "LRAT_CHECK_ACCEPTED": 30
   }
+ },
+ "historical_96_cake_lpr_recheck_20261007": {
+  "cake_lpr_verified": 96,
+  "note": "all 96 historical certificates re-checked by cake_lpr (archived DRAT -> drat-trim -L -> cake_lpr); supersedes the 50/46 LRAT.check/cake_lpr split for the trust statement; receipts historical96_cake_lpr_receipts.jsonl"
  }
 }

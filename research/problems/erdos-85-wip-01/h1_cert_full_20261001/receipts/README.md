@@ -5,7 +5,7 @@ Completed 2026-10-06 06:36Z. Every H1 residual root is now certificate-checked:
 | Set | Rows | Result | Checker |
 |---|---|---|---|
 | Census roots (this run) | 1,160 | 1,160 CERTIFIED | cake_lpr |
-| Historical certificates | 96 | 96 accepted | 50 Std `LRAT.check` (lratreplay), 46 cake_lpr |
+| Historical certificates | 96 | 96 accepted | all 96 cake_lpr (2026-10-07; 50 were first accepted by Std `LRAT.check`) |
 | Pilot root `h1_81494a6ef36d3ec9` (cube tree) | 36 leaves | 36 VERIFIED | cake_lpr (30 also Std `LRAT.check`) + Lean composition lemma |
 
 No proof was rejected and no solver returned SAT anywhere (1,196 census ledgers).
@@ -62,3 +62,5 @@ duplicate claim that reused (and deleted) a live attempt's work directory. Seven
 cost rerun time only. Fixes: `cert_row.py` (waitid WNOWAIT), `cert_worker.py` (claim owner = IID,
 unique work dir per attempt), `cert_controller.py` (owner re-read each pass; completion requires
 CERTIFIED). Cloud spend ≈ $204 (controller estimate incl. 10% margin).
+
+2026-10-07: all 96 historical certificates were re-checked by cake_lpr (`historical96_cake_lpr_receipts.jsonl`), so every H1 orbit in this repository's receipts is cake_lpr-checked.

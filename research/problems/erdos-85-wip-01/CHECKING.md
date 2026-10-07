@@ -11,7 +11,7 @@ AWS machine. Nothing needs to be downloaded to your computer.
 | Set | Orbits | How `e85-check` checks it | Your cost |
 |---|---:|---|---|
 | Certificate bank | 12,094 | stream our published LRAT proof into cake_lpr | ~minutes per 100-row sample; whole bank ≈ 400 checker-hours (≈ $20 on spot) |
-| Census + historical | 1,160 + 96 | re-solve with the pinned CaDiCaL, stream the proof into cake_lpr, compare its sha256 with ours | small rows take minutes; the whole set ≈ 3,500 CPU-hours |
+| Census + historical | 1,160 + 96 | re-solve with the pinned CaDiCaL, stream the proof into cake_lpr, compare its sha256 with ours (our own check of the 96 historical orbits used their archived DRAT certificates via drat-trim, then cake_lpr) | small rows take minutes; the whole set ≈ 3,500 CPU-hours |
 | Hardest orbit `h1_81494a6ef36d3ec9` | 1 (36 cubes) | rebuild each cube CNF, solve, cake_lpr; the cover is a Lean lemma | ≈ 8 CPU-hours |
 
 For every row the formula is regenerated from the orbit's table by the pinned emitter `v2cnf` (a
