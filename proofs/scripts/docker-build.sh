@@ -11,6 +11,7 @@
 #   LEAN_MEMORY_LIMIT  - Memory limit in MB (default: 32768 = 32GB)
 #   LEAN_BUILD_TIMEOUT - Build timeout (default: 60m)
 #   LEAN_SKIP_CACHE    - Skip Mathlib cache download (default: false)
+#   LEAN_NUM_THREADS   - Optional Lean/Lake task concurrency (e.g. 2 on memory-limited hosts)
 #
 # Recovering from exit-135 / SIGBUS ("unexpected end of input") corruption:
 #   The shared Mathlib volumes can retain truncated oleans after an OOM-killed
@@ -127,6 +128,15 @@ CONTAINER_NAME="lean-build-$$"
 BUILD_PID=""
 CLEANED_UP=false
 
+# Forward the task limit explicitly: host environment variables otherwise do
+# not enter the container, and a CPU quota alone does not limit Lake's jobs.
+if [[ -n "${LEAN_NUM_THREADS:-}" ]]; then
+    if [[ ! "$LEAN_NUM_THREADS" =~ ^[1-9][0-9]*$ ]]; then
+        echo "ERROR: LEAN_NUM_THREADS must be a positive integer"
+        exit 1
+    fi
+fi
+
 cleanup() {
     local exit_code="${1:-$?}"
 
@@ -153,6 +163,7 @@ trap 'cleanup 129' HUP
 trap 'cleanup $?' EXIT
 
 docker run --rm \
+    --env LEAN_NUM_THREADS \
     --memory="${MEMORY_LIMIT}m" \
     --memory-swap="${MEMORY_LIMIT}m" \
     --cpus="$CPU_LIMIT" \
