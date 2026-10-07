@@ -1,0 +1,15 @@
+{
+  "scope": "Unverified finite H3 full-U representative 1 / R representative 15 pilot; no pair exclusion established",
+  "result": "UNKNOWN_TIMEOUT",
+  "exit_code": 124,
+  "command": "LEAN_NUM_THREADS=1 LEAN_MEMORY_LIMIT=8192 LEAN_BUILD_TIMEOUT=4m LEAN_SKIP_CACHE=true ./proofs/scripts/docker-build.sh Proofs.Erdos85ThreeHighNativeTerminalPilot",
+  "source_commit_dependencies": "e6ebfb739d8cc9058dd71e6bcbc0a38277f8f00a",
+  "source_path_at_run": "proofs/Proofs/Erdos85ThreeHighNativeTerminalPilot.lean",
+  "retained_source": "Erdos85ThreeHighNativeTerminalPilot.lean",
+  "source_sha256": "8da3fcb8847f6206e26026905e256438d39eacb6d804b8ff33fabed68619f499",
+  "lean_toolchain": "leanprover/lean4:v4.31.0",
+  "lake_manifest_sha256": "f243fb1348183fbb95612c9c97beea1620651a55441b3e78fbc6bc3bfd26da01",
+  "full_local_log_sha256": "31ede31bedc403db22a9203ecda0117d1991f64e1be58d653deb9766c0945fe6",
+  "retained_log": "pilot-timeout.txt (final timeout excerpt only)",
+  "observation": "The target Lean compiler process was observed running before the cap. The build did not produce a verified rejection theorem. Timeout is not a SAT or UNSAT result."
+}

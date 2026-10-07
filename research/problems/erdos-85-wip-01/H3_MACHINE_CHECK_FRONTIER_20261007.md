@@ -76,22 +76,27 @@ exhaustions do not by themselves imply these weaker Lean searches return false.
 Some pairs may still be rejected by the weaker tests; universal rejection must
 be checked rather than assumed.
 
-`Erdos85OrderFortyNineThreeHighTripleDistinctColorNeighbor.lean` proposes the
+`Erdos85OrderFortyNineThreeHighTripleDistinctColorNeighbor.lean` proves the
 stronger graph-side fact. The existing ordinary-neighbor theorem supplies a
 vertex `y ≠ x` with both coordinate sets of cardinality three. The existing
 C4-free intersection bound limits their intersection to one, so the coordinate
 sets cannot be equal. This yields `encodedDistinctFamilyCompatibility` for all
-color pairs, including equal colors. Compilation is pending. Connecting that
-stronger condition through the compact joint-witness and orbit-transport
-interfaces remains separate work.
+color pairs, including equal colors. It compiled with standard axioms only. The companion
+`Erdos85ThreeHighDistinctJointWitness.lean` constructs the stronger joint witness
+from the actual graph's families, proves its relabel invariance, and forgets it
+to the old interface. `Erdos85ThreeHighDistinctJointSearch.lean` checks distinct
+neighbors within each selected family and proves the terminal sound for this
+stronger witness. Connecting the stronger witness through the full retained
+compact/orbit census and checking all remaining pairs remain separate work.
 
-## Current pilot
+## Finite pilot (unverified)
 
 `Erdos85ThreeHighNativePairSearch.lean` combines the existing sound static
-column search and cached family search, with fixed U/R adjacency and the fixed
+column search and new distinct-neighbor family search, with fixed U/R adjacency and the fixed
 U block-cap check cached outside the prefix traversal. Its equality and
 soundness lemmas are separate from the finite check in
-`Erdos85ThreeHighNativeTerminalPilot.lean`. Its proposed new pair uses full compact
+`h3_formal_20261007/Erdos85ThreeHighNativeTerminalPilot.lean`, retained outside
+the default library build glob. Its proposed new pair uses full compact
 U code `(6,6,15)` (full representative 1) and secondary representative 15.
 This differs from the already certified pair `(1,14)`. Independent Python
 set arithmetic on the retained Lean tables reproduced the full counts above,
@@ -118,6 +123,27 @@ The two-thread retry reached the ten-minute cap (exit 124) after completing
 reported build jobs. It did not reach the pilot module. The container was removed
 and the single build slot handed to the H7 owner. These timings include dependency
 compilation and are not timings for the finite search.
+
+After the four library modules compiled, a final one-thread pilot reached the
+target Lean compiler process but timed out at the four-minute cap (exit 124).
+This is an unknown result, not a rejection or a counterexample. The source and
+timeout receipt are preserved under `h3_formal_20261007/`; no new concrete pair
+is certified. The container stopped and the Docker slot returned to the H7 owner.
+
+## Verified contribution
+
+The four new library modules compile through
+`Proofs.Erdos85ThreeHighNativePairSearch`. All 14 printed exports use only
+`propext`, `Classical.choice`, and `Quot.sound`; there is no `sorry`, added axiom,
+or `native_decide` in these four modules. The finite pilot is separate.
+Source/toolchain hashes and axiom excerpts are retained in
+`h3_formal_20261007/graph-receipt.json` and `terminal-receipt.json`.
+
+The mathematical commits, in dependency order, are `55c9ceea2a1`,
+`607d0e7ad6c`, `ad27935201e`, and `e6ebfb739d8` on
+`erdos85/h3-triple-formal-20261007`. The runner fix is `34caae65a09`.
+These are local committed contributions shared with the integrator; this note
+does not assert that they have been merged to the integration branch.
 
 ## Remaining H3 scope
 
