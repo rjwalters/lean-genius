@@ -1,0 +1,174 @@
+{
+ "schema_version": "1",
+ "kind": "judgment",
+ "version_dir": "erdos85-drop.8",
+ "critic_id": "paper-review",
+ "model": "claude-opus-5-5",
+ "rubric": "anvil-pub-v2",
+ "scores": [
+  {
+   "dimension": "1_rigor",
+   "score": 5,
+   "max": 6,
+   "critical": false,
+   "evidence_span": "main.tex:L113-L117,L188",
+   "fix": "Name the H3 checker if a record is found.",
+   "justification": "Trust boundary exact; cover axioms stated from receipt; partition recomputed 13,351. Deduction: small strata at reviewed-prose rigor (enumerator audit rather than replay); H3 checker unrecorded."
+  },
+  {
+   "dimension": "2_evidence",
+   "score": 5,
+   "max": 6,
+   "critical": false,
+   "evidence_span": "main.tex:L113,L172",
+   "fix": "None required; H5/H7 t=0 remain reviewed.",
+   "justification": "H1 uniformly cake_lpr-checked (12,094+1,160+96+cube leaves), receipts match. Deduction: H5 and H7 t=0 reviewed arguments; H3 checker unrecorded."
+  },
+  {
+   "dimension": "3_contribution_clarity",
+   "score": 5,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L65-L67,L86",
+   "fix": "",
+   "justification": "Two results stated with boundaries in abstract and \u00a71; What is new gives three items; v7 over/underclaims fixed."
+  },
+  {
+   "dimension": "4_related_work",
+   "score": 4,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L138",
+   "fix": "Put the hexagon contrast on one axis (M1); confirm precedent's DIMACS link via paper-litsearch.",
+   "justification": "v7 flag resolved: heule2024hexagon + subercaseaux2024hexagonlean cited and credited as stronger on encoding faithfulness; novelty specific. Deduction: contrast compares their encoding proof with our file link although H1 encoding is Lean-verified."
+  },
+  {
+   "dimension": "5_reproducibility",
+   "score": 4,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L262,L264",
+   "fix": "Publish or describe H7 certificates; name H3 checker.",
+   "justification": "Public AMI + e85-check + Requester Pays bank + CHECKING.md; all tools pinned; 49/49 links exist. Deduction: packed H7 certificates unpublished; H3 proofs unrecorded."
+  },
+  {
+   "dimension": "6_figures_tables",
+   "score": 4,
+   "max": 4,
+   "critical": false,
+   "evidence_span": "main.tex:L156-L213",
+   "fix": "",
+   "justification": "Table 1 and 2 self-contained; historical size added; Table 2 consistent with R-BRIDGE."
+  },
+  {
+   "dimension": "7_prose_structure",
+   "score": 4,
+   "max": 4,
+   "critical": false,
+   "evidence_span": "main.tex:L247",
+   "fix": "",
+   "justification": "Clean build and flow; no AI-tell labels; audience scan clean."
+  },
+  {
+   "dimension": "8_citation_hygiene",
+   "score": 4,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L176",
+   "fix": "Drop or cite the LRAT.check mention; add LNCS volume to heule2024hexagon via resolver.",
+   "justification": "16/16 keys resolve; Lean/Mathlib restored. Deduction: Lean LRAT.check referenced but uncited (R-SIMPLE e)."
+  },
+  {
+   "dimension": "9_rhetorical_economy",
+   "score": 4,
+   "max": 4,
+   "critical": false,
+   "evidence_span": "main.tex:L192",
+   "fix": "",
+   "justification": "10 pp main text; open items listed once in Table 2; abstract 1,767 chars."
+  }
+ ],
+ "findings": [
+  {
+   "severity": "major",
+   "dimension": "4_related_work",
+   "evidence_span": "main.tex:L138",
+   "rationale": "Hexagon comparison sets their encoding-correctness proof against our file-to-formula link; H1's encoding-to-stratum link is itself a Lean theorem (23 native_decide axioms; \u00a73.4 L188). Undersells this paper and may mischaracterize the precedent's DIMACS link (reviewer recall; web search off).",
+   "suggested_fix": "State the contrast on one axis: both reduce to a Lean-defined formula; ours uses native_decide and ties files to formulas through a compiled emitter. Confirm precedent details via paper-litsearch."
+  },
+  {
+   "severity": "minor",
+   "dimension": "8_citation_hygiene",
+   "evidence_span": "main.tex:L176",
+   "rationale": "Lean's LRAT.check referenced once but not cited (R-SIMPLE e).",
+   "suggested_fix": "Drop the redundant clause or resolve a citation via paper-litsearch."
+  },
+  {
+   "severity": "minor",
+   "dimension": "3_contribution_clarity",
+   "evidence_span": "main.tex:L57,L67",
+   "rationale": "Title/abstract 'certificate-checked' covers H5 and H7 t=0, which have no certificates; corrected two sentences later; title fixed by BRIEF R-CERT.",
+   "suggested_fix": "Scope 'certificate-checked' to the largest stratum (operator decision on title)."
+  },
+  {
+   "severity": "minor",
+   "dimension": "3_contribution_clarity",
+   "evidence_span": "main.tex:L67",
+   "rationale": "Abstract maps three methods to 'three strata' imprecisely (H7 split; H3 checker unrecorded).",
+   "suggested_fix": "Add '(H3; H7 with t>=1; H5 and H7 with t=0)'."
+  },
+  {
+   "severity": "minor",
+   "dimension": "5_reproducibility",
+   "evidence_span": "main.tex:L262",
+   "rationale": "'re-solves a census or historical orbit ... and compares the proof's sha256 with ours': no CaDiCaL hash exists for the 96 historical orbits (or 3 macOS census rows).",
+   "suggested_fix": "Say the re-solve is checked by cake_lpr, with hash match only for Linux-solved census orbits."
+  },
+  {
+   "severity": "minor",
+   "dimension": "8_citation_hygiene",
+   "evidence_span": "refs.bib:heule2024hexagon",
+   "rationale": "LNCS entry lacks volume.",
+   "suggested_fix": "Resolve from DOI 10.1007/978-3-031-57246-3_5."
+  },
+  {
+   "severity": "nit",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L174",
+   "rationale": "'the solver's own 24-hour limit' was a configured -t cap.",
+   "suggested_fix": "'a 24-hour solver time cap'."
+  },
+  {
+   "severity": "nit",
+   "dimension": "9_rhetorical_economy",
+   "evidence_span": "main.tex:L188",
+   "rationale": "Cost sentence sits inside the trust paragraph.",
+   "suggested_fix": "Move to \u00a73.2 or \u00a78."
+  },
+  {
+   "severity": "nit",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L245",
+   "rationale": "'the existence halves of the census' is opaque.",
+   "suggested_fix": "Name what is meant."
+  },
+  {
+   "severity": "nit",
+   "dimension": "7_prose_structure",
+   "evidence_span": "compile-log.txt",
+   "rationale": "Final xelatex pass still prints 'Label(s) may have changed'; fixpoint text identical.",
+   "suggested_fix": "One more pass in paper-audit."
+  },
+  {
+   "severity": "nit",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L255-L260",
+   "rationale": "6 audience unlinked_artifact_path hits are \\repofile false positives.",
+   "suggested_fix": "None."
+  }
+ ],
+ "critical_flags": [],
+ "total": 39,
+ "threshold": 35,
+ "verdict": "ADVANCE"
+}
