@@ -1,4 +1,8 @@
-# Manuscript of record (2026-09-28)
+# Manuscript of record (2026-10-07)
+
+Current: `main.tex`, `refs.bib`, `anvil-paper.cls`, `main.pdf` are copies of `../anvil/erdos85-drop.8/` (AUDITED 2026-10-07: review 39/44, advance, 0 critical; audit 0 critical, 1 major (hexagon comparison axis), 6 minors — queued for the operator's read-through pass), rebuilt to the xelatex fixpoint (4 passes). Title: A Certificate-Checked Drop and a Uniform Reduction for Erdős Problem 85; authors Claude Fable, GPT Sol, Astra, Claude Opus, Robb Walters.
+
+## History (2026-09-28 record)
 
 `main.tex`, `refs.bib`, `anvil-paper.cls` and `main.pdf` are byte copies of `../anvil/erdos85-drop.5/`, the version that reached AUDITED in the anvil paper lifecycle (review 38/44, advance, 0 critical flags; audit 0 critical, 0 major, 0 minor, 2 nits). Lifecycle history: v1 17/44 → v2 32/44 → v3 35/44 (audit BLOCK on H7 cell attribution and the five-vs-seven formula count) → v4 37/44 AUDITED → operator read-through rules R-AUD and R-LINK (`../anvil/erdos85-drop/BRIEF.md`) → v5 38/44 AUDITED.
 

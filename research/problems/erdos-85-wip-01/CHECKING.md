@@ -11,7 +11,7 @@ AWS machine. Nothing needs to be downloaded to your computer.
 | Set | Orbits | How `e85-check` checks it | Your cost |
 |---|---:|---|---|
 | Certificate bank | 12,094 | stream our published LRAT proof into cake_lpr | ~minutes per 100-row sample; whole bank ≈ 400 checker-hours (≈ $20 on spot) |
-| Census + historical | 1,160 + 96 | re-solve with the pinned CaDiCaL, stream the proof into cake_lpr, compare its sha256 with ours (our own check of the 96 historical orbits used their archived DRAT certificates via drat-trim, then cake_lpr) | small rows take minutes; the whole set ≈ 3,500 CPU-hours |
+| Census + historical | 1,160 + 96 | re-solve with the pinned CaDiCaL and stream the proof into cake_lpr; for the 1,157 census orbits we solved on Linux, your proof's sha256 must also equal ours (the 96 historical orbits and 3 census orbits finished on macOS have no comparable Linux proof hash, so for them it is a fresh cake_lpr check) | small rows take minutes; the whole set ≈ 3,500 CPU-hours |
 | Hardest orbit `h1_81494a6ef36d3ec9` | 1 (36 cubes) | rebuild each cube CNF, solve, cake_lpr; the cover is a Lean lemma | ≈ 8 CPU-hours |
 
 For every row the formula is regenerated from the orbit's table by the pinned emitter `v2cnf` (a
@@ -39,9 +39,12 @@ published value before any proof is checked. A row passes only if cake_lpr print
    ```
 4. **Read the result.** `summary` prints a tally:
    - `bank: PASS` — cake_lpr verified our proof and its sha256 equals the published receipt.
-   - `census: PASS, proof byte-identical to published` — your solver run reproduced our exact proof.
-     Three census orbits were finished on a macOS build of CaDiCaL; for those your (Linux) proof is a
-     different, equally valid proof and is reported as `PASS (proof differs …)`.
+   - `census: PASS, proof byte-identical to published` — your solver run reproduced our exact proof
+     (expected for the 1,157 census orbits we solved on Linux).
+   - `census: PASS (proof differs …)` — the 3 census orbits we finished on a macOS build of CaDiCaL;
+     your Linux proof is a different, equally valid proof, checked fresh by cake_lpr.
+   - `census: PASS (historical orbit: no published proof hash …)` — the 96 historical orbits; our
+     certificates for them came from archived Kissat DRAT, so there is no CaDiCaL proof hash to match.
    - `cube: CERTIFIED` per leaf.
    Anything else (`CHECK_FAILED`, `CNF_MISMATCH`, `HASH_MISMATCH`) is a real discrepancy — please tell us.
 

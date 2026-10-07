@@ -1,0 +1,23 @@
+{
+  "critic": "audit",
+  "role": "paper-audit.md",
+  "started": "2026-10-07T14:51:44Z",
+  "finished": "2026-10-07T15:05:40Z",
+  "model": "claude-opus-5-5",
+  "schema_version": 1,
+  "scorecard_kind": "human-verdict",
+  "rubric_id": "anvil-pub-v2",
+  "rubric_total": 44,
+  "advance_threshold": 35,
+  "sidecar": "uv run --project .anvil python -m anvil.lib.sidecar cleanup/stage/copy/commit (issue #645 CLI shim)",
+  "compile": "xelatex + bibtex + xelatex to the .aux fixpoint in 4 xelatex passes (pass 2 natbib 'Citation(s) may have changed'; pass 3 'Label(s) may have changed'; pass 4 neither, aux byte-identical to pass 3) in a scratch copy of main.tex/refs.bib/anvil-paper.cls; version dir untouched; raw bytes landed via sidecar copy (sha256 4edfa8c634996a91...)",
+  "pending_gate": "anvil.lib.pending_marker erdos85-drop.8/: pass (0 markers); run without --write-review per run instructions (no sibling-dir writes)",
+  "audience_check": "anvil.lib.audience_check erdos85-drop.8/: governance 0, private_locator 0, unlinked_artifact_path 6 (all \\repofile false positives); public_repo_url derived, not declared -> non-critical",
+  "evidence_drift": "anvil.lib.evidence_drift check: brief_drifted true (frontmatter claim updated 07:41 after v8), refs_drifted false; advisory",
+  "corpus_tier": "inactive (no corpus: key in BRIEF frontmatter)",
+  "link_check": "49 distinct \\repofile targets / 55 uses; 40 on origin/erdos85/integration d1e12a86a60; 9 only on origin/erdos85/paper-v6 e451a842779 (resolvable post-merge); GitHub sample 200/200/301, CHECKING.md 404 on integration, 200 on paper-v6",
+  "lean_check": "ripgrep over proofs/Proofs/*.lean (<=5MB), no build: 47/47 declaration names present",
+  "external_metadata": "Crossref (10.1007/978-3-031-57246-3_5) and DataCite (10.4230/LIPIcs.ITP.2024.35) abstracts read for claim support; no web search",
+  "review_json": "_review.json written additively (kind tool_evidence, critic_id paper-audit; 0 critical_flags, 1 major, 6 minor, 6 nit); schema-validated with anvil.lib.review_schema.Review",
+  "git_sync": "skipped (no .anvil/config.json; run instructions exclude commits)"
+}

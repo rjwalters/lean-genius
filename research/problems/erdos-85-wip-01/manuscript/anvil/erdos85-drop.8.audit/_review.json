@@ -1,0 +1,302 @@
+{
+ "schema_version": "1",
+ "kind": "tool_evidence",
+ "version_dir": "erdos85-drop.8",
+ "critic_id": "paper-audit",
+ "model": "claude-opus-5-5",
+ "rubric": null,
+ "scores": [
+  {
+   "dimension": "citation_resolution",
+   "score": null,
+   "max": 1,
+   "critical": false,
+   "evidence_span": "main.tex:L74-L240",
+   "fix": null,
+   "justification": "16/16 keys resolve; 0 undefined at the .aux fixpoint; 0 '??'. Claim support: 6 partial (author notes / DOI-resolver abstracts), 10 unverified (no source on disk), 0 does-not-support. Owns no rubric dim."
+  },
+  {
+   "dimension": "numerical_consistency",
+   "score": null,
+   "max": 1,
+   "critical": false,
+   "evidence_span": "main.tex:L65-L264",
+   "fix": null,
+   "justification": "Every number traces; H1 totals recomputed from per-row TSV/JSONL receipts (13,351 partition, 22.55+5.64+0.10+0.047 = 28.35 TB, 1,075/1,160 at 4 GB, 207.1/3,434.7 = 6.0%, $204+$20.42); 0 mismatches. Owns no rubric dim."
+  },
+  {
+   "dimension": "build",
+   "score": null,
+   "max": 1,
+   "critical": false,
+   "evidence_span": null,
+   "fix": null,
+   "justification": "xelatex+bibtex+xelatex converged in 4 xelatex passes (pass 2 natbib 'Citation(s) may have changed', pass 3 'Label(s) may have changed', pass 4 neither, aux byte-identical); 0 errors, 0 undefined, 0 overfull, 4 underfull; 12 pages; scratch copy."
+  },
+  {
+   "dimension": "pending_marker",
+   "score": null,
+   "max": 1,
+   "critical": false,
+   "evidence_span": null,
+   "fix": null,
+   "justification": "pending_marker: pass, 0 markers (run without --write-review; .8.pending already records the same)."
+  },
+  {
+   "dimension": "link_hygiene",
+   "score": null,
+   "max": 1,
+   "critical": false,
+   "evidence_span": "main.tex:L32-L35,L253-L264",
+   "fix": null,
+   "justification": "49 distinct \\repofile targets: 40 on origin/erdos85/integration, 9 only on origin/erdos85/paper-v6 (resolve post-merge); public_repo_url not declared (derived) so audience_check hits are non-critical, and all 6 are \\repofile false positives. R-AUD clean."
+  }
+ ],
+ "findings": [
+  {
+   "severity": "major",
+   "dimension": "4_related_work",
+   "evidence_span": "main.tex:L138-L138",
+   "rationale": "Hexagon comparison contrasts the precedent's Lean-verified encoding with this paper's file-to-formula link, although this paper's own encoding-to-stratum link is a Lean theorem (23 native_decide axioms, L130); the precedent's file link is unverified (not in resolver abstracts). Framing defect, not a claim-support failure.",
+   "suggested_fix": "Compare on one axis: both reduce to a Lean-defined formula; theirs from standard axioms, ours with native_decide; ours ties files to formulas via a compiled Lean emitter.",
+   "tool_calls": [
+    {
+     "tool": "curl",
+     "args": {
+      "url": "https://api.datacite.org/dois/10.4230/LIPIcs.ITP.2024.35"
+     },
+     "result_summary": "abstract: formalize and verify in Lean; framework connecting geometric objects to propositional assignments; no mention of cake_lpr or DIMACS link"
+    },
+    {
+     "tool": "read",
+     "args": {
+      "path": "erdos85-drop/refs/H1_COVER_AXIOMS_20261006.txt"
+     },
+     "result_summary": "cover theorem: 3 standard + 23 native_decide axioms, no sorryAx"
+    }
+   ]
+  },
+  {
+   "severity": "minor",
+   "dimension": "5_reproducibility",
+   "evidence_span": "main.tex:L262-L262",
+   "rationale": "'re-solves a census or historical orbit with the pinned CaDiCaL and compares the proof's sha256 with ours': no CaDiCaL proof hash exists for the 96 historical orbits (archived Kissat DRAT via drat-trim) and the 3 macOS census proofs differ by design; CHECKING.md shares the ambiguity.",
+   "suggested_fix": "Say the fresh proof is checked by cake_lpr, with sha256 equality only for the 1,157 Linux-solved census orbits.",
+   "tool_calls": [
+    {
+     "tool": "python",
+     "args": {
+      "path": "erdos85-drop/refs/h1_cert_historical96_cake_lpr_receipts.jsonl"
+     },
+     "result_summary": "96 rows with drat_bytes/drat_trim_rc; lrat_sha256 is of drat-trim output"
+    },
+    {
+     "tool": "git show",
+     "args": {
+      "ref": "HEAD",
+      "path": "research/problems/erdos-85-wip-01/CHECKING.md"
+     },
+     "result_summary": "census+historical row promises sha256 comparison; macOS rows reported PASS (proof differs)"
+    }
+   ]
+  },
+  {
+   "severity": "minor",
+   "dimension": "8_citation_hygiene",
+   "evidence_span": "main.tex:L176-L176",
+   "rationale": "Lean's compiled LRAT.check referenced without citation (R-SIMPLE e); attribution accurate (core LRAT namespace).",
+   "suggested_fix": "Drop the redundant clause (R-V8 section 1 permits) rather than invent a citation.",
+   "tool_calls": [
+    {
+     "tool": "rg",
+     "args": {
+      "pattern": "LRAT|import",
+      "path": "proofs/Proofs/Erdos85LratRuntime.lean"
+     },
+     "result_summary": "open LRAT; LRAT.Internal; import Std.Data.HashMap"
+    }
+   ]
+  },
+  {
+   "severity": "minor",
+   "dimension": "3_contribution_clarity",
+   "evidence_span": "main.tex:L67-L67",
+   "rationale": "Abstract maps three methods to 'the other three strata' although H7 splits by method (t>=1 certificates; t=0 reviewed).",
+   "suggested_fix": "Add '(H3)', '(H7, t >= 1)', '(H5; H7, t = 0)'; abstract stays under 1,920 chars (now 1,767).",
+   "tool_calls": [
+    {
+     "tool": "pdftotext",
+     "args": {
+      "path": "scratch main.pdf"
+     },
+     "result_summary": "abstract 1,767 rendered characters"
+    }
+   ]
+  },
+  {
+   "severity": "minor",
+   "dimension": "8_citation_hygiene",
+   "evidence_span": "refs.bib:heule2024hexagon",
+   "rationale": "LNCS entry lacks volume; Crossref record has no volume field.",
+   "suggested_fix": "Take the volume from the Springer landing page of DOI 10.1007/978-3-031-57246-3_5; do not guess.",
+   "tool_calls": [
+    {
+     "tool": "curl",
+     "args": {
+      "url": "https://api.crossref.org/works/10.1007/978-3-031-57246-3_5"
+     },
+     "result_summary": "volume: None; pages 61-80; ISBN 9783031572456/9783031572463"
+    }
+   ]
+  },
+  {
+   "severity": "minor",
+   "dimension": "7_prose_structure",
+   "evidence_span": "erdos85-drop.8/main.log:L887",
+   "rationale": "Shipped main.pdf built one xelatex pass short of the fixpoint: its log ends with 'Label(s) may have changed'; pass 4 moves the sec:method anchor p.4 -> p.5. Text layer identical; only outline/anchor page stale.",
+   "suggested_fix": "Rebuild to the fixpoint (4 xelatex passes; grep for 'may have changed' to cover natbib) before shipping.",
+   "tool_calls": [
+    {
+     "tool": "grep",
+     "args": {
+      "pattern": "may have changed",
+      "path": "erdos85-drop.8/main.log"
+     },
+     "result_summary": "line 887: Label(s) may have changed"
+    },
+    {
+     "tool": "diff",
+     "args": {
+      "a": "aux.2",
+      "b": "main.aux (pass 3)"
+     },
+     "result_summary": "sec:method page 4 -> 5"
+    }
+   ]
+  },
+  {
+   "severity": "minor",
+   "dimension": "3_contribution_clarity",
+   "evidence_span": "main.tex:L57-L57",
+   "rationale": "Title 'Certificate-Checked Drop' also covers H5 and H7 t=0, which have no certificates; corrected in abstract; title fixed by BRIEF R-CERT.",
+   "suggested_fix": "Operator decision only.",
+   "tool_calls": [
+    {
+     "tool": "read",
+     "args": {
+      "path": "erdos85-drop/BRIEF.md",
+      "section": "R-CERT"
+     },
+     "result_summary": "title fixed by operator"
+    }
+   ]
+  },
+  {
+   "severity": "nit",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L174-L174",
+   "rationale": "'the solver's own 24-hour limit' was a configured -t cap.",
+   "suggested_fix": "'a 24-hour solver time cap on the longest orbit'.",
+   "tool_calls": [
+    {
+     "tool": "read",
+     "args": {
+      "path": "erdos85-drop/refs/H1_CERT_RECEIPTS_README_20261006.md",
+      "section": "Incidents"
+     },
+     "result_summary": "CaDiCaL's 24 h -t cap on the longest row"
+    }
+   ]
+  },
+  {
+   "severity": "nit",
+   "dimension": "9_rhetorical_economy",
+   "evidence_span": "main.tex:L188-L188",
+   "rationale": "Cost sentence sits inside the trust paragraph.",
+   "suggested_fix": "Move to the end of section 3.2 or to section 8.",
+   "tool_calls": [
+    {
+     "tool": "read",
+     "args": {
+      "path": "erdos85-drop.8/main.tex",
+      "lines": "L188"
+     },
+     "result_summary": "'about $225 of cloud compute' inside 'What the check establishes'"
+    }
+   ]
+  },
+  {
+   "severity": "nit",
+   "dimension": "1_rigor",
+   "evidence_span": "main.tex:L145-L145",
+   "rationale": "cake_lpr 'commit a36874a8' stated generically; historical and cube-leaf checks used build sha256 d23c413b with no recorded commit.",
+   "suggested_fix": "Scope the commit to bank and census, point to section 3.2 for the other build.",
+   "tool_calls": [
+    {
+     "tool": "python",
+     "args": {
+      "path": "erdos85-drop/refs/pilot_h1_81494a_leaf_cake_lpr.jsonl"
+     },
+     "result_summary": "checker_sha256 d23c413b x36; no commit field"
+    }
+   ]
+  },
+  {
+   "severity": "nit",
+   "dimension": "8_citation_hygiene",
+   "evidence_span": "refs.bib:heule2016pythagorean,bloom-erdos85,tan2021cakelpr,heule2018schur",
+   "rationale": "Rendered 'boolean Pythagorean' and 'Erdős problem #85' lower-cased; two entries without DOI.",
+   "suggested_fix": "Brace {B}oolean and the whole Bloom title; add DOIs only if resolved.",
+   "tool_calls": [
+    {
+     "tool": "pdftotext",
+     "args": {
+      "path": "scratch main.pdf"
+     },
+     "result_summary": "bibliography text as rendered"
+    }
+   ]
+  },
+  {
+   "severity": "nit",
+   "dimension": "8_citation_hygiene",
+   "evidence_span": "main.tex:L132-L132",
+   "rationale": "CaDiCaL 3.0.1 cited via the 2020 competition description.",
+   "suggested_fix": "Leave unless a resolver-checked newer system description is added.",
+   "tool_calls": [
+    {
+     "tool": "read",
+     "args": {
+      "path": "erdos85-drop.8/refs.bib",
+      "key": "biere2020cadical"
+     },
+     "result_summary": "SAT Competition 2020 description"
+    }
+   ]
+  },
+  {
+   "severity": "nit",
+   "dimension": "1_rigor",
+   "evidence_span": "main.tex:L123-L123",
+   "rationale": "oneHighCapacityInventory_total_length (cited for the 13,351 count) is proved by native_decide; not a dependency of the cover theorem.",
+   "suggested_fix": "Optionally add '(by native_decide)'.",
+   "tool_calls": [
+    {
+     "tool": "rg",
+     "args": {
+      "pattern": "theorem oneHighCapacityInventory_total_length",
+      "path": "proofs/Proofs"
+     },
+     "result_summary": "... = 13351 := by native_decide"
+    }
+   ]
+  }
+ ],
+ "critical_flags": [],
+ "total": null,
+ "threshold": null,
+ "verdict": null,
+ "rendered_artifact": null,
+ "probes": null,
+ "unscored": false
+}
