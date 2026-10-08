@@ -61,9 +61,9 @@ sweep nor a partial sweep proves the whole cell; no cell composition is run
 here because residue 89 is already unresolved. Preserve all receipts and
 force-add ignored raw logs before banking results.
 
-Validation: 26 metadata/dummy-process tests pass, including full-cap versus
-global-budget timeout classification and non-timeout failures. The actual
-sweep has not yet launched; preflight and launch receipts will record it.
+Validation: 34 metadata/dummy-process tests pass, including full-cap versus
+global-budget timeout classification, non-timeout failures and a child exit
+racing the full-cap timer.
 
 ## Audited preflight
 
@@ -72,3 +72,27 @@ execution pin `e2578cb884187bbd93359201cd48b46497bb5235`, exited zero and
 passed independent collection as `SWEEP_PREFLIGHT_AUDIT_PASS`. It checked
 all 90 reusable objects, the source/input/runtime pins and actual resource
 limits. It ran no native part and granted no new mathematical credit.
+
+## Terminal sweep acceptance
+
+Job `20261008T131600-erdos85__h3-triple-formal-20261007-522397`, execution
+pin `61e4c3ec17cac2fefea52542abc3580ee2d5a222`, exited zero after all 293
+attempts. `sweep-evidence1/AUDIT.json` is `H3_SWEEP_ARTIFACT_AUDIT_PASS`:
+288 new parts accepted, plus the original 90, for 378/384. The unresolved
+residues are exactly **89, 134, 142, 186, 279, 298**. The new five each
+received the full 90-second allowance. No whole-cell credit is granted.
+
+The initial collector stopped at its requirement that every timed-out child
+have a nonzero exit code (`collection-attempt1.stderr`). Part 279 raced the
+timer: elapsed 90.139596547 seconds, explicit `TIMEOUT`, child exit 0.
+The worker correctly classified it as unresolved, preserved its 6,712-byte
+object under `unaccepted-objects`, and removed it from the reusable cache.
+The corrected auditor checks the explicit timeout, exact full cap, elapsed
+time and terminal child result; it does not turn that object into a success.
+Eight regressions exercise this case and reject short-deadline, early,
+missing-result and non-timeout records. No computation was rerun.
+
+The accepted collection retains 606 hash-verified files, including all raw
+logs and the quarantined object. Producer records and the execution pin
+remain unchanged. The next stage may use only the six unresolved residues,
+under the separately authorized residual limits.
