@@ -94,10 +94,8 @@ theorem sevenHighT0RowSet_highRelabel
   have h := sevenHighT0CanonicalHighRelabel_empty_outside_adj σ flip H e
     ((sevenHighT0OutsideHighPerm σ flip).symm y)
   rw [Equiv.apply_symm_apply] at h
-  unfold sevenHighT0RowSet
-  rw [Finset.mem_filter, Finset.mem_filter]
-  exact ⟨fun hy => ⟨Finset.mem_univ _, h.mp hy.2⟩,
-    fun hy => ⟨Finset.mem_univ _, h.mpr hy.2⟩⟩
+  simp only [sevenHighT0RowSet, Finset.mem_filter, Finset.mem_univ, true_and]
+  exact h
 
 theorem sevenHighT0RowKey_highRelabel
     (w : SevenHighT0OutsideIndex → ℕ)
@@ -132,8 +130,9 @@ theorem SevenHighT0CanonicalCompletionSemantics.emptyNbr_add_row_card
     rw [← sevenHighT0LowNbr_card_split]
     congr 1
     ext i
-    rw [SimpleGraph.mem_neighborFinset, Finset.mem_filter]
-    exact ⟨fun h => ⟨Finset.mem_univ _, h⟩, fun h => h.2⟩
+    simp only [SimpleGraph.mem_neighborFinset, Finset.mem_filter,
+      Finset.mem_univ, true_and]
+    exact Iff.rfl
   omega
 
 /-- The empty neighbours are read off the semantic mask. -/
@@ -146,18 +145,15 @@ theorem sevenHighT0EmptyNbrSet_eq_mask
           (sevenHighT0CanonicalEmptySemanticMask H) e.1 f.1 = true := by
   ext f
   have h := sevenHighT0CanonicalEmptySemanticMaskAdj_eq H e f
-  unfold sevenHighT0EmptyNbrSet
-  rw [Finset.mem_filter, Finset.mem_filter]
+  simp only [sevenHighT0EmptyNbrSet, Finset.mem_filter, Finset.mem_univ,
+    true_and]
   constructor
   · intro hadj
-    refine ⟨Finset.mem_univ _, ?_⟩
     rw [h]
-    exact decide_eq_true hadj.2
+    exact decide_eq_true hadj
   · intro hm
-    refine ⟨Finset.mem_univ _, ?_⟩
-    have hm2 := hm.2
-    rw [h] at hm2
-    exact of_decide_eq_true hm2
+    rw [h] at hm
+    exact of_decide_eq_true hm
 
 /-- Among the completions with the mask of `H` there is one that no
 high-side relabeling makes lexicographically smaller in its row keys. -/
@@ -240,9 +236,9 @@ theorem sevenHighT0HsbWitness_excludes
     apply Finset.eq_of_subset_of_card_le
     · intro x hx
       rw [List.mem_toFinset] at hx
-      unfold sevenHighT0RowSet
-      rw [Finset.mem_filter]
-      exact ⟨Finset.mem_univ _, hall j hj x hx⟩
+      simp only [sevenHighT0RowSet, Finset.mem_filter, Finset.mem_univ,
+        true_and]
+      exact hall j hj x hx
     · rw [List.toFinset_card_of_nodup (hnodup j hj)]
       have h1 := hH'.emptyNbr_add_row_card j
       have h2 := congrArg Finset.card (sevenHighT0EmptyNbrSet_eq_mask H' j)
