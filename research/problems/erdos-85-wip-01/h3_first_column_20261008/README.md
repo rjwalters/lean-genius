@@ -37,3 +37,10 @@ the same build cache at commit `34bb24f5fb1`, using 16 GiB, one Lean thread,
 and a 30-minute limit. It runs `check_inventory.py`, which first builds the
 theorem module and then evaluates the inventory only if dependencies pass.
 No theorem or diagnostic result from that job is claimed yet.
+
+`audit.py` independently checks a completed run's commands, logs, source and
+object hashes, all five theorem axiom reports (standard axioms only), and
+the complete diagnostic candidate lists against the compiler output. It is
+read-only and does not run Lean. A synthetic valid receipt passed, while
+altered candidate counts and a changed diagnostic object were rejected.
+The real artifact audit remains pending.
