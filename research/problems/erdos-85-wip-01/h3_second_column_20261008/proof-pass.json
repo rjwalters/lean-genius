@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "scope": "Four structural/conditional exports. No concrete branch, pair, or stratum rejection.",
+  "job": "20261008T042206-erdos85__h3-first-column-20261008-176612",
+  "execution_commit": "603bac25c0dba372b28a2573e36f0a70dfa8985f",
+  "exit_code": 0,
+  "finished_utc": "2026-10-08T04:22:43Z",
+  "memory_gib": 16,
+  "lean_threads": 1,
+  "timeout": "15m",
+  "fresh_target_seconds": 3.7,
+  "source_sha256": "8c90cc9a128fa75a14e53e5cadecc8764ae8809eda8d1e635e2c8de0e558d464",
+  "olean_sha256": "6f3d9801539059895511fed14794dc7c8b0dcfd6cb869e1821bb8bcec8bacf6a",
+  "object_verification": "Read directly by sudo sha256sum in cloud named build volume.",
+  "log_sha256": "2311cda0c8e36d74f0b671a3aa88b71d69518c32eaedb885f116447a23a9a550",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.threeHighFirstColumnBranch_eq_secondColumns",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighNativeFirstColumnSearch_eq_secondColumns",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighNativePairSearch_false_of_twoColumns",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighNativeTwoColumns_no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}
