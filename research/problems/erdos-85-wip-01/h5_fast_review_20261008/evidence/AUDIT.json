@@ -1,0 +1,61 @@
+{
+  "status": "H5_FAST_LINK_BUILD_AUDIT_PASS",
+  "job": "20261008T112110-erdos85__h5-formal-20261008-450285",
+  "execution_commit": "f7117ae8d261c6a0ad7176503983d6938532c1ae",
+  "review_commit": "99bc3e3413008ca13d5efb29bee5e855af961976",
+  "authoritative_exit": 0,
+  "job_log_sha256": "6d55b72ee4b1264b9c625ec25eba2e004aa1b54280da2f5c90aaf41f66a14c7a",
+  "retained_files_sha256": {
+    "job.log": "6d55b72ee4b1264b9c625ec25eba2e004aa1b54280da2f5c90aaf41f66a14c7a",
+    "job.spec": "341f159cc81a9a1469632cb1e7c7d9ef8ec8bcf6200403d48156d27a211d34e1",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "Erdos85H5Fast.lean": "bc1f9631ede32d330fb6c663dd7601377a87b393b6021e5525aac8f592f43beb"
+  },
+  "results": [
+    {
+      "module": "Erdos85H5Fast",
+      "source_sha256": "bc1f9631ede32d330fb6c663dd7601377a87b393b6021e5525aac8f592f43beb",
+      "olean_sha256": "60fd039e16dc8bdfc3115be40d216d93d6e1ca6a0415a075b0a5242e6fb5a3a2",
+      "olean_bytes": 487384,
+      "olean_mtime": 1791458479.6878061,
+      "fresh_build_elapsed": "4.7s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H5.searchF_sound",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.H5.fiveHighCanonicalRepresentativeExcluded_of_partsF",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  ],
+  "prerequisites": [
+    {
+      "module": "Erdos85H3PairEngine",
+      "source_sha256": "6f84fc3a0de0bbc170d98b7a85824b1c84282fbcf4f2824267cac96bf3b37625",
+      "olean_sha256": "35c3cba5f6e9e8526ecc31c6471e591baafbe9a816641e50856b882cef440222"
+    },
+    {
+      "module": "Erdos85H5Engine",
+      "source_sha256": "7e39050eeef3acda6f578a321a148873961e3a09b332776806cc3236b842638a",
+      "olean_sha256": "a70da513a95fac71dbab06bcedf1d91faf6bbce1aa24585c246d276d03a9af4e"
+    },
+    {
+      "module": "Erdos85H5Bridge",
+      "source_sha256": "81f0128eb80a6509f30c2962636d1865678480f167c7ad01fd890f34851b3205",
+      "olean_sha256": "1ecb095d48ef4b380851a8c57e177fe01f51d1dd543007dc52cfcb271cefcd3c"
+    }
+  ],
+  "scope": "Fresh H5Fast conditional soundness link only; prior audited prerequisites unchanged. No native-premise or whole-stratum verdict.",
+  "auditor_sha256": "3895f03b1b67c04d8709ebb966939b5dfed68aac7f97cf578315db67f0a1bd33"
+}
