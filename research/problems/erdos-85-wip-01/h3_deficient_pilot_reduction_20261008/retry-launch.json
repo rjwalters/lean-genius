@@ -1,5 +1,5 @@
 {
-  "status": "SUBMITTED",
+  "status": "IMPORT_FAILURE",
   "job": "20261008T051053-erdos85__h3-triple-formal-20261007-212516",
   "execution_commit": "11d4ba4b3b32f33988970c1ef9937c3c56fe58c5",
   "memory_gib": 32,
@@ -14,5 +14,9 @@
   },
   "scope": "Consume existing native certificate; no native rejection search repeated.",
   "previous_launch": "launch.json",
-  "correction": "Only staged package ownership corrected, then three source files restored exactly; no proof changes"
+  "correction": "Only staged package ownership corrected, then three source files restored exactly; no proof changes",
+  "exit_code": 1,
+  "log_sha256": "d9aaa6ad409d21d93460d7e912ca72d71d3d4c8d19722cd78744fa88d57db0f3",
+  "log_kind": "Complete follower output including wrapper terminal line",
+  "failure": "Partial Proofs namespace staging shadowed the complete library on LEAN_PATH"
 }

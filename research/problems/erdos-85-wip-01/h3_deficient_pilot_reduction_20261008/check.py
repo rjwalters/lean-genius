@@ -87,8 +87,23 @@ def main():
         save()
         return 1
     save()
-    env["LEAN_PATH"] = os.pathsep.join((str(output), str(prerequisites / "extra"),
-        str(prerequisites / "base"), env.get("LEAN_PATH", "")))
+    # Lean chooses a root for the whole Proofs namespace; a partial Proofs/
+    # directory earlier on LEAN_PATH hides unrelated library objects. Place
+    # these three audited objects alongside the complete library instead.
+    library_root = Path(".lake/build/lib/lean").resolve()
+    for relative, sha in objects.items():
+        source_object = prerequisites / relative
+        relative_object = Path(relative).relative_to("extra")
+        destination = (library_root / relative_object if relative_object.parts[0] == "Proofs"
+                       else output / relative_object)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        if destination.exists():
+            require(digest(destination) == sha, "Refuse to replace a different imported object")
+        else:
+            shutil.copyfile(source_object, destination)
+        require(digest(destination) == sha, "Imported object copy changed")
+    env["LEAN_PATH"] = os.pathsep.join((str(output), str(prerequisites / "base"),
+        env.get("LEAN_PATH", "")))
     source = PACKAGE / "Deficient1553.lean"
     target = output / source.name
     shutil.copyfile(source, target)

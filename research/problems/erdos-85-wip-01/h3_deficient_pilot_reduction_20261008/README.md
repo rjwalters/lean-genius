@@ -32,3 +32,11 @@ was corrected only for this new package, and its three committed source files
 were restored exactly. Retry `20261008T051053-erdos85__h3-triple-formal-20261007-212516`
 uses the same proof/checker bytes at `11d4ba4b3b3`; `retry-launch.json` records
 the bounded submission. No native search was repeated.
+
+The retry completed its 9,026-job dependency build in 643.13 seconds, then
+failed immediately on import: the isolated partial `Proofs/` directory
+shadowed the complete library namespace in Lean search paths. Its failed
+follower log is retained in `first-check.log`. The checker now places the
+three audited pilot objects in the complete library directory (refusing any
+different existing object), and copies the membership object into the new
+output root. No proof source or native certificate is changed.
