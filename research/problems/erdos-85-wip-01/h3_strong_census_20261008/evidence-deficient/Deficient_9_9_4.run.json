@@ -1,0 +1,36 @@
+{
+  "module": "Deficient_9_9_4",
+  "source": "compact_u_orbits/deficient_coverage/Deficient_9_9_4.lean",
+  "source_sha256": "758d1a8cf103acb31764383bf1430a2f183bb52762eb0194dfe32f6e3a580e1f",
+  "log_sha256": "4b148ae83442b2c2e25ae0d92fbf9847301cc29238105d0ee0d7e03cd58acfd0",
+  "olean_sha256": "a029fa8d0abc829b53a7c052582ca21afb37975d73fabd31bc3cced854c43139",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/deficient",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/deficient/Deficient_9_9_4.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/deficient/Deficient_9_9_4.lean"
+  ],
+  "elapsed_seconds": 19.5176224859988,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "DeficientUShard_9_9_4.checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "DeficientUShard_9_9_4.covered",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

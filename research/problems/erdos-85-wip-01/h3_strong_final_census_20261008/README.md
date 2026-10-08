@@ -1,6 +1,6 @@
 # Strong full-case census: 276 to 261
 
-Status: **queued for checking, not a Lean proof receipt**.
+Status: **cloud check running, not a Lean proof receipt**.
 
 `Full261.lean` connects the strong actual-graph witness in `Full276.lean`
 to `FullCapacityPruning.remainingPairs`, the retained 261-pair census.
@@ -26,10 +26,11 @@ Lean output, in order. The two new exports are:
 Host checks completed: Python parsing, complete acyclic source/import
 inventory, explicit axiom-report inventory, and refusal to compile outside
 Docker. No Lean build has completed for this package. Cloud job
-`20261008T014827-erdos85__h3-census-20261008-82783` is queued behind the
-deficient census on the same dedicated worktree, at 32 GiB / four Lake threads
+`20261008T014827-erdos85__h3-census-20261008-82783` started at 02:06:42 UTC
+after the full and deficient census passed. It uses the same dedicated worktree
+at 32 GiB / four Lake threads
 with a four-hour limit; individual module checks use one Lean thread.
-`launch.json` records the submission. Its prerequisite full census is now
+`launch.json` records the submission and actual execution commit. Its prerequisite full census is now
 verified in `../h3_strong_census_20261008/evidence-full/`. The pilot is unchanged.
 
 After the full census prerequisite has a PASS receipt, run from `proofs/`

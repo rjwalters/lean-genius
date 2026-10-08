@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "audited_at_utc": "2026-10-08T02:07:35.576663+00:00",
+  "source_commit": "3e67a0afc3b9b99a478f5c37cc7c2ac29a8bcfb7",
+  "receipt_sha256": "190d7e37c814bd8a7eea54e6ad1bbcba73e092e6e0d77deddc717bab098bfecc",
+  "modules": 203,
+  "shards": 200,
+  "export_reports": 416,
+  "new_exports": [
+    {
+      "theorem": "DeficientUStrongCensus.actual_distinct_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "DeficientUStrongCensus.excluded_of_rejections",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "scope": "Complete deficient-branch strong witness connection to 1554 pairs; all finite rejections remain hypotheses.",
+  "verification": "Exact planned module inventory, dependency build command/exit/log, unchanged source copies, source/log/object hashes, independently parsed declared axiom exports, successful module exits, and standard axioms verified."
+}

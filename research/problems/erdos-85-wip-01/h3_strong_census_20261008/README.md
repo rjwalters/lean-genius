@@ -7,8 +7,12 @@ the module/export inventory and source/log/object hashes. The complete receipt
 and compiler logs are retained in `evidence-full/`. Both new exports use only
 `propext`, `Classical.choice`, and `Quot.sound`.
 
-The two exports in `Deficient1554.lean` remain unverified while the same cloud
-job checks their dependency and 200-shard coverage chain.
+The two exports in `Deficient1554.lean` are also verified: all 203 modules
+passed, including 200 coverage shards and 416 standard-axiom reports. Its
+[AUDIT.json](evidence-deficient/AUDIT.json), complete receipt, and compiler logs
+are retained in `evidence-deficient/`. Both new exports use the same three
+standard axioms. The combined cloud job exited zero: 310 modules, 644 axiom
+reports, and four new concrete strong-witness census exports.
 
 `Full276.lean` connects an actual full-branch graph to the existing 276-pair
 block-pruned set, retaining `ThreeHighDistinctJointWitness`. It uses the complete
@@ -39,7 +43,7 @@ that local run has no complete census PASS receipt. The replacement runs on the 
 cloud branch `erdos85/h3-census-20261008` with 32 GiB and four workers.
 `cloud-launch.json` pins job
 `20261008T012918-erdos85__h3-census-20261008-67303` and its actual source commit.
-Proof and checker source hashes remain unchanged. The launch records are not proof evidence; the completed full-branch evidence
+Proof and checker source hashes remain unchanged. The launch records are not proof evidence; the completed evidence for both branches
 is linked above.
 
 ## Checker

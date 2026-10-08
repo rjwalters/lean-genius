@@ -19,7 +19,17 @@
   "coordination_message": 52533,
   "submit_command": "e85-remote run erdos85/h3-census-20261008 --full --mem 32 --threads 4 --timeout 4h --no-follow -- 'lake env python3 ../research/problems/erdos-85-wip-01/h3_strong_census_20261008/check.py --branch both --workers 4 --output /workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first'",
   "follow_command": "e85-remote logs 20261008T012918-erdos85__h3-census-20261008-67303",
-  "final_result": null,
+  "final_result": {
+    "status": "PASS",
+    "exit_code": 0,
+    "finished_at_utc": "2026-10-08T02:06:43Z",
+    "modules": 310,
+    "axiom_reports": 644,
+    "new_exports": 4,
+    "full_evidence": "evidence-full/",
+    "deficient_evidence": "evidence-deficient/",
+    "finite_rejections_verified": 0
+  },
   "completion_requirements": [
     "Both branch RUN.json statuses PASS",
     "All 107 full and 203 deficient module checks present and passed",

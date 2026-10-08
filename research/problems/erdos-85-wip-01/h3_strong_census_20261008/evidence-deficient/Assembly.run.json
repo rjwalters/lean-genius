@@ -1,0 +1,36 @@
+{
+  "module": "Assembly",
+  "source": "compact_u_orbits/deficient_coverage/Assembly.lean",
+  "source_sha256": "2332cc04cb6e64ed34b21e155f8ccde05b91df5299670428216116fa3c7b7194",
+  "log_sha256": "c040d405ba8d51fd824aeefdea8ca5ace970461d0ea55042ed380f4ef62af89c",
+  "olean_sha256": "e12c2730a087a165fdc961c0cb40840f352b26dae0c03d1cd21181fc2d751dac",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/deficient",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/deficient/Assembly.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/deficient/Assembly.lean"
+  ],
+  "elapsed_seconds": 9.23875945400141,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "DeficientUNormalizedAssembly.checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "DeficientUNormalizedAssembly.covered",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}
