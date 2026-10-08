@@ -79,3 +79,42 @@ axioms). The audit also passed against the real full-census prerequisite:
 107 modules and 228 axiom reports, receipt SHA-256
 `9924e45dfa932bae6af3607eb7de97e4b77d590366bf8d4bb9eaaf8de480236f`.
 The final 342-module audit remains pending completion of its cloud build.
+
+## Continuation after a terminal timeout or failure
+
+`resume.py` preserves verified prefix work if the original bounded job stops
+before completion. It is prepared and metadata-tested, but has not been used
+to continue the running census. It never stops or submits a cloud job.
+
+First, on the cloud host, its `--capture-terminal JOB` mode requires the
+authoritative job exit file to contain a nonzero exit and the old process ID
+to be absent. It parses the actual command in the job log and binds the
+requested output directory to that command, execution commit, log hash,
+exit hash, and current receipt hash. The terminal record must be a new file.
+Missing exit evidence or an observation timeout cannot authorize a continuation.
+
+Only after capture, an explicitly submitted continuation may run the helper
+inside cloud Docker, from `proofs/`, with `--terminal-record`, `--base-build`,
+`--output` (the original container path), and `--snapshot` (a new separate
+directory). The dedicated census ref must remain unchanged while a job is
+live. No continuation is submitted by this preparation artifact.
+
+Before changing output, the helper checks the full prerequisite census and
+every passing module in the exact dependency prefix. It checks original and
+copied sources, object/log hashes, commands, individual receipts, requested
+axiom reports, and standard-only axiom sets. It also refuses changes to the
+transitive library sources or Lean/Lake settings, including `lakefile.toml`.
+The entire old output is copied to the fresh snapshot and revalidated before
+the active receipt changes. A last failed module is retained in the snapshot
+and recompiled; it is never reused as a success. Remaining modules compile
+at the same original paths with one Lean thread, and a complete audit follows.
+
+`python3 test_resume.py` runs 15 small metadata-only regression tests. These
+accept a valid prefix and copied snapshot and reject changed sources, objects,
+logs, receipts, dependency evidence, report inventories, report names, axiom
+sets, result order, and nonzero successful exits. They also check refusal of
+live or successful jobs, missing terminal records, wrong output paths, and
+changed transitive library or Lake settings. They invoke neither Lean nor
+finite search. A read-only check against the original execution commit
+`3e67a0afc3b9b99a478f5c37cc7c2ac29a8bcfb7` found all 453 transitive library
+and toolchain input paths unchanged at preparation time.
