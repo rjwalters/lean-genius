@@ -432,3 +432,29 @@ wall/CPU, two GiB address space and CPUs 0–1 on the existing builder.
 and audit. These results justify a single optimized Lean bucket-zero canary
 using the original five-minute inner cap (`run_probe_fast.py`), but provide
 no formal exclusion credit themselves. No broader native campaign is started.
+
+## Optimized all-phase native canary: one verified part
+
+Job `20261008T112357-erdos85__h3-triple-formal-20261007-452333` at
+`d73223d49864daa8d102a2a74ac435d4f05718b5` completed the optimized
+`Probe384R0.lean` successfully. The theorem
+`Erdos85.H3TripleCompletion.triplePart_384_0` proves `triplePart 384 0 = true`,
+including all three search phases, in 143.890 seconds elapsed (142.736 user,
+1.110 system). The original 300-second inner cap did not fire. Maximum RSS
+was 6,484,784 KiB; both runner and wrapper exited zero.
+
+The object is 6,712 bytes, SHA-256
+`996fc99b4983a1c5de605bdb26dc74bdac03878f989e4277b1537a5728b86b7d`.
+Its reported axioms are exactly `propext`, `Quot.sound`, and its own
+`triplePart_384_0._native.native_decide.ax_1_1`. No `sorry` or compiler error
+was reported. A live container snapshot verified the pinned image, 16 GiB
+memory limit and two CPUs. `probe-fast-evidence/` retains source, runner,
+raw logs, receipt and audit; `probe-fast-container-live.json` records the
+snapshot. Source and prerequisite object hashes were unchanged in the audit.
+
+This is one verified part of the 384-way split. The other 383 part premises
+have not been verified by this run, so the conditional whole-cell theorem is
+not instantiated. There is no credit against the separate old census ledger
+and no full-campaign cost estimate. The original five-minute timeout remains
+historical evidence for the pre-optimization engine. No broader native
+campaign was launched.

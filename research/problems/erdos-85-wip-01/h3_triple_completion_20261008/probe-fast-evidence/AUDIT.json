@@ -1,0 +1,30 @@
+{
+  "job": "20261008T112357-erdos85__h3-triple-formal-20261007-452333",
+  "execution_commit": "d73223d49864daa8d102a2a74ac435d4f05718b5",
+  "status": "COMPILED",
+  "exit": 0,
+  "prerequisite_objects_unchanged": {
+    "Erdos85H3TripleCompletionEngine": "24524f945a9ff93f888e90a369f1e6da4cdfa3d479ff0bfd72ea4070698ccc28",
+    "Erdos85H3TripleCompletionBridge": "02220d1339caaf079b5889edf2e0c4e52b49b37d6c2b89ba4886c06d5a77e18e",
+    "Erdos85H3TripleCompletionSplit": "acfdbed1a9ccec6f972f9c8c8afc5575937d82b3cbc3541f0239a8e3b019d0d3"
+  },
+  "retained_sha256": {
+    "job.log": "79d1dedb427d970dbb83829e884a014480bd48858593eb8a7c8882b8113c84f2",
+    "job.spec": "dc3970ef86d0affeb97b08ea7a50d5e910fa93c6b8308365269f1464ca58f94b",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "Probe384R0.lean": "badb03f821a2011a5dd36b0793d5ad608ef1139a12729cd97afd072e6b9d840d",
+    "run_probe_fast.py": "9b09cfce6a4c3ba646a1914f0c69ab36847b8ce84ad66539da73aeea003f0908",
+    "RUN.json": "d96c201ebb832ed8671b55f4a554a195a9909bb7079d5f35165c8c83d51d6472",
+    "probe.log": "b0d8ca00d025781fec4f8703a61b6b17674636b5e429e84cbecf5568709fb9dd"
+  },
+  "scope": "One part of 384 only; no whole-cell exclusion or full-campaign estimate.",
+  "part_axioms": [
+    "propext",
+    "Quot.sound",
+    "Erdos85.H3TripleCompletion.triplePart_384_0._native.native_decide.ax_1_1"
+  ],
+  "result_olean_sha256": "996fc99b4983a1c5de605bdb26dc74bdac03878f989e4277b1537a5728b86b7d",
+  "result_olean_bytes": 6712,
+  "auditor_sha256": "1474dfda8b17a818ff429b60d916ae51c7235546163c7a92aaee472d540c494a",
+  "container_snapshot_sha256": "28a70dda1241bc556fff9b1ea570b0b54e5a2779cfcc612ad87e3bf8cfc554f6"
+}
