@@ -1,13 +1,13 @@
 {
   "status": "PASS",
-  "scope": "Six metadata-only tests after deficient import fix; no Lean, finite search, Docker or AWS invoked.",
-  "manifest_sha256": "11ded9568ddc0497b8fd58d9107bc35f50caca0fd9064e9f85db18f98f614445",
-  "test_log_sha256": "0302f5c4b979355692cc37c7fe04bca5aee6c3602c51e552cd00ca91bcc21754",
+  "scope": "Six metadata-only tests; no Lean, finite search, Docker or AWS invoked.",
+  "manifest_sha256": "576f7038609e1a26094c9e1a7d9e38044f4522692a5eef68747e7b4b99944f49",
+  "test_log_sha256": "a58a9127c5c97448440aaed11c900e1785b59401e2983977e0fdbd9305f7ee2a",
   "cases": 1815,
   "generated_source_hashes": 7260,
   "pinned_prerequisite_sources": 1126,
   "code_sha256": {
-    "common.py": "5bcb94d5c45905a6a6b25ae6f5f3db8bbf5cbfcec30e89bfe86c2294f4734b31",
+    "common.py": "66c243c75eb1b9d46fb748fdd0409707b863da118b213723bd26964b054e7dc3",
     "manifest.py": "15f4594c91c6437b7eaa5675fe1cdc13a13829da704a6a476a4cabe5e9f43e7c",
     "controller.py": "32469162fefa60f00cef37693018b44279705bd88829b5060ae6b20398c43dcd",
     "test_metadata.py": "6c75f0ff5a054137430935d12477200eee88dff5e0097068300084a721c1b034"

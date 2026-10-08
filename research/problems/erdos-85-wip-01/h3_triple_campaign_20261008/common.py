@@ -99,7 +99,7 @@ def sources(c):
     census = 'FullCapacityPruning.remainingPairs' if branch == 'full' else 'DeficientUOrbitPruning.remainingPairs'
     definitions = ('FullCapacityPruning.remainingPairs, FullTerminalPruning.remainingPairs, FullUBlockPruning.remainingPairs, FullUOrbitPruning.remainingPairs'
                    if branch == 'full' else 'DeficientUOrbitPruning.remainingPairs')
-    census_import = 'CapacityReduction' if branch == 'full' else 'Pruning'
+    census_import = 'CapacityReduction' if branch == 'full' else 'Deficient1554'
     inputs = f"""import Proofs.Erdos85ThreeBlockCompactCodes
 import Proofs.Erdos85ThreeHighSecondaryOrbitTable
 import Proofs.Erdos85ThreeHighNativePairSearch

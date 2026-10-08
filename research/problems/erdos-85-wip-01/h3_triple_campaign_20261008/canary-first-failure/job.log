@@ -1,0 +1,23 @@
+[e85] job 20261008T070527-erdos85__h3-triple-formal-20261007-283163  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T07:05:27Z
+[e85] commit c47efaa6ffb003b4dc665bfbd3a887d93c51730f (erdos85: prepare isolated campaign bridge canary using audited proofs)
+=== Docker Lean Build ===
+Memory limit: 16384MB (hard enforced via cgroups)
+Timeout: 15m
+CPU limit: 16
+Target: all
+Build volume: lean-build-erdos85__h3-triple-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Command: lake env python3 ../research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/canary.py --manifest-sha256 576f7038609e1a26094c9e1a7d9e38044f4522692a5eef68747e7b4b99944f49 --full-prerequisites /workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/prerequisites --deficient-base /workspace/research/problems/erdos-85-wip-01/h3_deficient_pilot_reduction_20261008/_build/prerequisites/base --old-objects /workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-prerequisites --output /workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-first
+Starting Docker build...
+
+{"case": "full-u003-r03", "stage": "Inputs", "status": "PASS"}
+{"case": "full-u003-r03", "stage": "Membership", "status": "PASS"}
+{"case": "full-u003-r03", "stage": "Certificate", "status": "PASS"}
+{"case": "full-u003-r03", "stage": "Consumer", "status": "PASS"}
+[30s] Building...
+{"case": "deficient-u026-r02", "stage": "Inputs", "status": "PASS"}
+{"case": "deficient-u026-r02", "stage": "Membership", "status": "FAIL"}
+[60s] Building...
+
+=== Build failed with exit code 1 ===

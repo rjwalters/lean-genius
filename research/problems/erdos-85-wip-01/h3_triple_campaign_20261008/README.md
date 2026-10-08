@@ -34,7 +34,7 @@ computation has passed but its further full-census connection is prepared,
 not compiled. Keep compute credit and formal aggregation status distinct.
 
 `MANIFEST.json` SHA-256 at preparation:
-`576f7038609e1a26094c9e1a7d9e38044f4522692a5eef68747e7b4b99944f49`.
+`11ded9568ddc0497b8fd58d9107bc35f50caca0fd9064e9f85db18f98f614445`.
 It also pins transitive project proof sources, all research census sources,
 Lean/Lake configuration, immutable prerequisite receipts, and the generator.
 The actual launch additionally pins a source commit, container image digest,
@@ -131,7 +131,7 @@ live IDs, enforces the capacity fit, and emits a deterministic pending queue:
 
 ```sh
 python3 -B controller.py --manifest MANIFEST.json \
-  --manifest-sha256 576f7038609e1a26094c9e1a7d9e38044f4522692a5eef68747e7b4b99944f49 \
+  --manifest-sha256 11ded9568ddc0497b8fd58d9107bc35f50caca0fd9064e9f85db18f98f614445 \
   --memory-gib 123 --vcpus 16 --nodes 1 --in-flight full-u054-r20
 ```
 
@@ -200,3 +200,15 @@ search/controller/collector lifecycle. An independent artifact audit follows.
 
 The canary remains uncompiled until its separately recorded cloud job passes.
 Local Python syntax/import and host-execution-refusal checks pass.
+
+The first bridge canary exited 1 at 07:06:40 UTC. Its complete source/log/run
+failure evidence is retained in `canary-first-failure/`, at execution commit
+`c47efaa6ffb003b4dc665bfbd3a887d93c51730f`. The full branch passed all four
+stages; deficient Membership lacked the import defining
+`DeficientUNormalizedAssembly.representative`, so the compiler reported an
+unknown identifier and sorryAx. Those failed exports are not accepted evidence.
+The generator now imports the already verified `Deficient1554` module, which
+imports both Assembly and Pruning. This changes deficient membership source
+hashes and the frozen manifest hash; the old manifest remains in the original
+Git commit and its hash is recorded with the failed run. A fresh canary must
+verify this correction before source readiness is claimed.
