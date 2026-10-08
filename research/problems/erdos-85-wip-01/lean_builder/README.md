@@ -118,6 +118,15 @@ AMI rebuilds pick them up from there too.
 * For more threads, `r7g.8xlarge` (32 vCPU / 256 GiB, $1.71/h) is a stop → `modify-instance-attribute
   --instance-type` → start away. Lower the wall to ~5 h if you do this.
 
+## Measured (2026-10-07/08, r7g.4xlarge)
+
+| job | result | wall |
+|---|---|---|
+| AMI warm: `lake exe cache get` + `…SevenHighT0CanonicalCnfSatisfaction` (OOMs at 12 GiB on the Mac) | ok, 8758 jobs | ~38 min |
+| `…SevenHighT0CanonicalEmptyCubeCounting` (fresh branch volume, seeded) | ok, 8924 jobs | ~47 min (one ~30 min single-threaded module, `…CanonicalEmptyOrbitCover`) |
+| `…SevenHighT0CanonicalEmptyCubeMixedCapstone` (all 13 H7 LRAT certificate modules) | ok, 8954 jobs, peak ≈ 20 GB | 2 h 35 min (`T1Rep0Certificate`, 1.6 GB LRAT: 8149 s alone) |
+| new sparse branch worktree | | ~7 s |
+
 ## Rebuilding the AMI
 
 ```bash
