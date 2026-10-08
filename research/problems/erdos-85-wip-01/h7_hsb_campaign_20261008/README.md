@@ -497,3 +497,38 @@ Not blockers, but open: the Lean side still has to state how 377,804 receipts be
 STOP does not interrupt an item that is already running (bounded by the cap; `stop` terminates
 the instances anyway); checker-heap exhaustion was tested with a stub, not with a real
 exhausted checker.
+
+## 6. Head profile (2026-10-08, INTERIM, after the canary)
+
+The canary showed that the lexicographically first leaves of a cube are much harder than the
+uniform cost sample suggested. `profile_index.py` (builder job
+`20261008T183708-commit-30eef0821a39-712073`, 14 slots, 2 h cap, 2 GB heap, campaign path) ran
+leaves at indices 0, 1, 2, 4, 8, … plus one random leaf per geometric stratum for eight cubes;
+223 of 230 planned leaves are in `receipts/head_profile.jsonl`, with each leaf's tree position
+(`leaf_tree.py`). `head_estimate.py` re-weights by index stratum
+(`receipts/head_estimate_table.md`, `receipts/head_estimate.json`; canary leaves in
+`receipts/canary_head_leaves.json`).
+
+* **Hardness tracks the first two rows.** Leaves under the first canonical row with a small
+  second-row index (roughly the first 50–500 leaves of a cube) cost 10–100 times the cube mean;
+  beyond index ~1,000 the strata agree with the uniform sample. `cube_F7_t10` and `cube_F7_t13`
+  have no hard head.
+* **Total: 3,714 CPU-hours (3,392–4,672)**, against 3,915 from the uniform sample: the head is
+  expensive per leaf but short, and the sample had over-weighted two long leaves. Unprofiled
+  cubes carry the pooled factor 0.95 (range 0.71–1.67 seen on the profiled cubes).
+* **Leaves over 2 h: 5 of 223 profiled** (all at indices 1–4 of the three 4-4-4 cubes `F7_t0`,
+  `F8_t0`, `F9_t0`; 6.8–8.2 GB of proof when stopped), none among the 1,400 uniform samples. The
+  stratified expectation is about 16 leaves in the campaign; with one or two observations per
+  stratum the honest range is 10–200. They are counted at the cap, a lower bound.
+* **Heap.** 3 of 223 leaves (`F7_t0` 256, `F8_t4` 8 and 128; solver UNSAT after 4,834–6,988 s,
+  proofs 4.7–6.0 GB) ended `CHECK_HEAP_EXHAUSTED` at the 2 GB checker heap. That is a resource
+  limit, not a rejection, but the solve is wasted. The longest verified proofs were 5.2 GB at a
+  4 GB heap and 3.9 GB at 2 GB.
+* **Batches.** A 64-leaf batch at the head of a hard cube is 10–30 CPU-hours in ONE slot
+  (`F8_t4` leaves 0–8 alone took 8 h). It would straggle past the rest of the run and lose
+  hours on a spot reclaim.
+
+Recommended changes before the main pass (not yet implemented; they change the manifest sha):
+checker heap 6,000 MB on r-type 16xlarge only (64 × 7.5 GB = 480 GB); head rows first and in
+small batches (the first 1,024 leaves of every cube in batches of 4, at the front of the manifest);
+2 h cap unchanged; residual pass with 12 h cap and 16 GB heap; main-pass hard stop stays $160.
