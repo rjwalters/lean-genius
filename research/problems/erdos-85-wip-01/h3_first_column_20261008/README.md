@@ -17,3 +17,12 @@ The equality proof and four associated exports are to be checked in an
 isolated cloud branch. The running U1/R15 and Full261 jobs are unchanged.
 This module enables smaller parallel proof units; no runtime improvement is
 claimed until measured.
+
+`Inventory.lean` and `check_inventory.py` prepare a separate cloud diagnostic
+for U1/R15 and the four cases selected in `h3_varied_pilot_20261008`. They
+enumerate static first-column candidates and record the first prefix gate
+result for every candidate, encoded as a 15-bit mask. They do not run the
+remaining DFS. These diagnostic sources are **uncompiled and unqueued**.
+The runner requires a fresh output directory and retains the complete compiler
+log, candidate list, and source/object hashes; its PASS is a diagnostic result,
+not a rejection certificate.
