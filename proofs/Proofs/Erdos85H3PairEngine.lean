@@ -816,13 +816,24 @@ theorem exists_fresh_nbr {s : St} {adj : V → V → Bool} (hs : s.WF) (M : Mode
           rw [hyv, hsxv] at hxy
           cases hxy
 
+/-- Occurrence counts of the vertices in a list of triples (heuristic only). -/
+def triCounts (avail : List Tri) : Array Nat :=
+  avail.foldl (fun cnt t =>
+    let cnt := cnt.modify t.1.val (· + 1)
+    let cnt := if t.2.1 = t.1 then cnt else cnt.modify t.2.1.val (· + 1)
+    if t.2.2 = t.1 ∨ t.2.2 = t.2.1 then cnt else cnt.modify t.2.2.val (· + 1))
+    (Array.replicate 49 0)
+
+/-- Heuristic choice of the next deficient nonempty vertex.  Soundness of
+`dfs2` does not depend on this function. -/
 def pickCore (s : St) (avail : List Tri) : Option V :=
+  let cnt := triCounts avail
   (coreVerts.foldl (fun (best : Option (Nat × V)) v =>
     if (s.nbr[v.val]).length < 7 then
-      let cnt := avail.countP (containsV v)
+      let c := cnt[v.val]!
       match best with
-      | none => some (cnt, v)
-      | some (c, _) => if cnt < c then some (cnt, v) else best
+      | none => some (c, v)
+      | some (c', _) => if c < c' then some (c, v) else best
     else best) none).map fun p => p.2
 
 def findFresh (s : St) : Option V :=
@@ -917,26 +928,43 @@ theorem patLoop_sound {f : Tri → List Tri → Bool} {pre : List Tri}
     · exact hchild adj c _ hg hw hit h.1
     · exact ih h.2 adj hg (hsplit adj c rest hg hw hit)
 
+def containsM (m : Nat) (v : V) (t : Tri) : Bool :=
+  (!m.testBit 0 || decide (t.1 = v)) && (!m.testBit 1 || decide (t.2.1 = v)) &&
+    (!m.testBit 2 || decide (t.2.2 = v))
+
+/-- `patLoop` on the available triples split by whether they contain `v`. -/
+def patLoopSplit (f : Tri → List Tri → Bool) (v : V) (avail : List Tri) : Bool :=
+  let m := maskOf v
+  patLoop f (avail.filter fun t => !containsM m v t) (avail.filter fun t => containsM m v t)
+
+theorem patLoopSplit_eq (f : Tri → List Tri → Bool) (v : V) (avail : List Tri) :
+    patLoopSplit f v avail =
+      patLoop f (avail.filter fun t => !containsV v t)
+        (avail.filter fun t => containsV v t) := rfl
+
+/-- One phase-2 node, with the recursive call abstracted. -/
+def step2 (leaf : St → Bool) (rec : St → List Tri → Bool) (s : St)
+    (avail : List Tri) : Bool :=
+  match pickCore s avail with
+  | none => leaf s
+  | some v =>
+    decide (3 ≤ v.val) && decide (v.val < 24) &&
+      decide ((s.nbr[v.val]).length < 7) &&
+      match findFresh s with
+      | none => true
+      | some n =>
+        decide (24 ≤ n.val) && (s.rows[n.val] == 0) &&
+          patLoopSplit
+            (fun c av =>
+              match addTri s n c with
+              | none => true
+              | some s' => rec s' av)
+            v avail
+
 def dfs2 (leaf : St → Bool) : Nat → St → List Tri → Bool
   | 0, _, _ => false
   | fuel + 1, s, avail0 =>
-    stateOK s &&
-      match pickCore s (avail0.filter (insertable s)) with
-      | none => leaf s
-      | some v =>
-        decide (3 ≤ v.val) && decide (v.val < 24) &&
-          decide ((s.nbr[v.val]).length < 7) &&
-          match findFresh s with
-          | none => true
-          | some n =>
-            decide (24 ≤ n.val) && (s.rows[n.val] == 0) &&
-              patLoop
-                (fun c av =>
-                  match addTri s n c with
-                  | none => true
-                  | some s' => dfs2 leaf fuel s' av)
-                ((avail0.filter (insertable s)).filter fun t => !containsV v t)
-                ((avail0.filter (insertable s)).filter fun t => containsV v t)
+    stateOK s && step2 leaf (dfs2 leaf fuel) s (avail0.filter (insertable s))
 
 theorem tri_fixed {x y : V} (hx : 24 ≤ x.val) (hy : 24 ≤ y.val) {a : V} {w : Fin 3}
     (ha : col a w = true) : Equiv.swap x y a = a := by
@@ -967,6 +995,7 @@ theorem dfs2_sound (leaf : St → Bool)
     obtain ⟨hok, h⟩ := h
     have hw := freshWit_filter hs M hc hw0
     generalize avail0.filter (insertable s) = avail at h hw
+    unfold step2 at h
     split at h
     · exact hleaf s hs h adj M hc
     · rename_i v _
@@ -982,6 +1011,7 @@ theorem dfs2_sound (leaf : St → Bool)
       · rename_i n _
         simp only [Bool.and_eq_true, decide_eq_true_eq, beq_iff_eq] at h
         obtain ⟨⟨hn24, hnrow⟩, hloop⟩ := h
+        rw [patLoopSplit_eq] at hloop
         have hnfresh : SFresh s n := sfresh_of_row_zero hnrow
         refine patLoop_sound
           (Good := fun adj => Model adj ∧ Compat s adj)
