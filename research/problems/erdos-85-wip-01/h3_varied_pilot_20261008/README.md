@@ -139,4 +139,23 @@ It completed with exit zero at 06:38:33 UTC. The certificate took
 the consumer took 10.336 seconds. Both were freshly built and use standard
 axioms plus exactly the matching FullU3R3 native rejection axiom.
 `FullU3R3-evidence/` retains the independently audited source/log/receipt
-sets; all cloud object hashes matched. Full U54/R20 remains unqueued.
+sets; all cloud object hashes matched. Full U54/R20 is now submitted under the same bounded limits.
+
+Full U54/R20 is submitted as
+`20261008T064336-erdos85__h3-first-column-20261008-270638`, using the
+same pinned source commit `9a1555a52461ab6d53bb145378f92de81c88cdc6`,
+16-GiB limit, one Lake thread, and two-hour cap. It is the last of the four
+agreed diagnostic cases. No result is claimed yet.
+
+Audited certificate timings so far (consumer time excluded):
+
+| Diagnostic case | Certificate wall minutes | Maximum RSS KiB |
+| --- | ---: | ---: |
+| Deficient U26/R2 | 3.207 | 6,549,052 |
+| Deficient U369/R11 | 74.045 | 8,332,452 |
+| Full U3/R3 | 3.983 | 6,562,176 |
+| Full U54/R20 | pending | pending |
+
+The earlier U1/R15 pilot took 97.400 minutes. This selected diagnostic
+set shows large cost variation; it is not a basis for an unbiased campaign
+average. The remaining live case cannot yet be assigned a completed time.
