@@ -1,0 +1,23 @@
+{
+  "status": "HASH_VERIFIED",
+  "source": "/var/lib/docker/volumes/lean-build-erdos85__h3-first-column-20261008/_data/lib/lean/Proofs/Erdos85ThreeHighPilotDeficientU369R11Certificate.olean",
+  "destination": "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_deficient_second_pilot_reduction_20261008/_build/prerequisites/Erdos85ThreeHighPilotDeficientU369R11Certificate.olean",
+  "sha256": "5c7279ec67ccff629e4431b5d6bbc91f5211e296ea72ad49954c4e9d62eaa760",
+  "bytes": 7400,
+  "provenance": {
+    "prior_receipt_sha256": "368442552377b3438ffeaea3fd291c327b5cfeec9432e94b4b913cfef2bcb0f0",
+    "second_pilot_receipt_sha256": "90b9321318d9399384dc04cd63bcd94c2fb97dba662e7a572424e0aeec587c3b",
+    "base_receipt_sha256": "190d7e37c814bd8a7eea54e6ad1bbcba73e092e6e0d77deddc717bab098bfecc",
+    "first_pilot_receipt_sha256": "c084a76d8c05199564a29058ae256b205d5d7d94fa9f4dde7bf77a3b2117ee4c",
+    "prior_object_sha256": "23f624d5135225af6def01922fddb0a4fc2e51fcddad428926a77a74078bc737",
+    "second_certificate_module": "Erdos85ThreeHighPilotDeficientU369R11Certificate",
+    "second_certificate_object_sha256": "5c7279ec67ccff629e4431b5d6bbc91f5211e296ea72ad49954c4e9d62eaa760",
+    "imported_object_sha256": {
+      "extra/Proofs/Erdos85ThreeHighPilotDeficientU26R2Inputs.olean": "23e1b2bda5a011cd8c1f26fb913cc334d2b373e5d03970b5c6c3895293b578e7",
+      "extra/Proofs/Erdos85ThreeHighPilotDeficientU369R11Inputs.olean": "c9d9a7423ced2c9c8e6f8f7f7b3e8eb4ff823d379131dd55215b2b4626d1941d",
+      "extra/DeficientMembership.olean": "8045b2c082d4da0665a57d8e79f59f4c91906bd94450e2e135bacf9702ad071d",
+      "extra/Proofs/Erdos85ThreeHighPilotDeficientU26R2Certificate.olean": "898bb93401b80e72561b054462fab7d3dd93cb80e0017bd38866b9629814f783"
+    }
+  },
+  "scope": "Read-only prerequisite validation and copy of immutable prior object; no Lean invoked."
+}
