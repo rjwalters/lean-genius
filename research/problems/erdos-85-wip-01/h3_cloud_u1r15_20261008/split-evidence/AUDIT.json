@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "job": "20261008T024639-erdos85__h3-triple-formal-20261007-116600",
+  "execution_commit": "bd75f1b58288bb94294825d9d1c58e009f1847c2",
+  "exit_code": 0,
+  "finished_utc": "2026-10-08T04:24:22Z",
+  "run_sha256": "b1dd1f5ec0a48fb8e5261b23a3715ff9942edb596bbe7ce0eacd1673a3b17b21",
+  "independent_checks": [
+    "Exact archive inventory and regular files",
+    "Both source snapshots match current local sources and execution commit",
+    "Both cloud object hashes independently read from named build volume match receipt",
+    "Both copied cloud source hashes independently read and match receipt",
+    "All raw logs match recorded hashes",
+    "Exact module commands, order, successful exit, and separate run records",
+    "Exactly the expected native-backed axiom set for each export; no sorry or errors"
+  ],
+  "scope": "One whole U1/R15 pair. no_joint retains cross-domain and external-block-cap premises. Native certificate trust boundary retained; not full H3 exclusion."
+}

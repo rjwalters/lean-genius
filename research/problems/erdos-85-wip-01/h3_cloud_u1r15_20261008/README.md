@@ -1,6 +1,8 @@
 # Cloud U1/R15 pilot, 8 October 2026 (UTC)
 
-Status: **first run failed in consumer elaboration; no passing proof receipt**.
+Status: **split pilot passed; one complete U1/R15 pair has a native-backed receipt**.
+
+The original combined-module run failed in consumer elaboration.
 The job exited 1 at 02:31:46 UTC. Lake reports 5,859 seconds for the target
 module. Its native rejection declaration was printed, but `no_joint` at line
 21 exceeded the recursion-depth limit, so the entire module failed.
@@ -27,11 +29,22 @@ cloud worktree and builds them separately, retaining each complete log, source,
 object hash, and axiom report. Thus a later consumer failure preserves a
 successfully compiled rejection object. It records per-process wall/CPU time
 and Linux `wait4` peak RSS; that RSS is not aggregate concurrent memory.
-The split pilot is running as job
+The split pilot passed as job
 `20261008T024639-erdos85__h3-triple-formal-20261007-116600`, started at 02:46:39 UTC
 from `bd75f1b58288bb94294825d9d1c58e009f1847c2`, with 24 GiB and a four-hour cap.
-`split-launch.json` records source hashes and the command. It has not yet
-passed. No larger finite campaign has been queued.
+It finished with exit 0 at 04:24:22 UTC. `split-launch.json` retains the launch
+provenance and final audit. `split-evidence/` preserves both compiled sources,
+complete raw logs, separate module records, and the full run receipt.
+Independent source/object/hash/report checks passed (`split-evidence/AUDIT.json`).
+
+The native rejection took 5,844.03 seconds wall time and 5,837.18 seconds user
+CPU, with `wait4` maximum RSS 8,337,112 KiB (about 7.95 GiB). The consumer took
+9.57 seconds wall time. Both exports report exactly `propext`,
+`Classical.choice`, `Quot.sound`, and
+`Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1`.
+The consumer still assumes cross-domain membership and the external block cap.
+This establishes one complete pair, not full H3 exclusion. No larger finite
+campaign has been queued.
 
 The 5,859-second measurement includes both declarations and does not isolate
 native search time. If every one of the 1,815 remaining pairs cost that much,
