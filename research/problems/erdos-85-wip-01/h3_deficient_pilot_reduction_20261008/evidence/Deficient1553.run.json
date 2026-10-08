@@ -1,0 +1,74 @@
+{
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_deficient_pilot_reduction_20261008/_build/cloud-second",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_deficient_pilot_reduction_20261008/_build/cloud-second/Deficient1553.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_deficient_pilot_reduction_20261008/_build/cloud-second/Deficient1553.lean"
+  ],
+  "started_utc": "2026-10-08T05:23:34.183720+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 27.307391098001972,
+  "user_cpu_seconds": 71.373844,
+  "system_cpu_seconds": 1.539867,
+  "max_rss_kib": 8489972,
+  "log_sha256": "3f408620490f4c06c38fc9b60081e08a2bcc616a27fd53af8e19159d1f399e37",
+  "module": "Deficient1553",
+  "status": "PASS",
+  "source_sha256": "5e6f06cf69c7cfda568268d47c46c2019ca848392684f3abf5200cd264846720",
+  "olean_sha256": "23f624d5135225af6def01922fddb0a4fc2e51fcddad428926a77a74078bc737",
+  "axiom_exports": [
+    {
+      "theorem": "DeficientUStrongAfterPilot.pilot_mem",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "DeficientUStrongAfterPilot.remainingPairs_card",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "DeficientUStrongAfterPilot.pilot_input",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "DeficientUStrongAfterPilot.pilot_rejected",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.VariedPilot.DeficientU26R2.rejected._native.native_decide.ax_1_1"
+      ]
+    },
+    {
+      "theorem": "DeficientUStrongAfterPilot.actual_distinct_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.VariedPilot.DeficientU26R2.rejected._native.native_decide.ax_1_1"
+      ]
+    },
+    {
+      "theorem": "DeficientUStrongAfterPilot.excluded_of_rejections",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.VariedPilot.DeficientU26R2.rejected._native.native_decide.ax_1_1"
+      ]
+    }
+  ]
+}

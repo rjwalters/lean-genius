@@ -1,6 +1,6 @@
 # Deficient census after the U26/R2 pilot
 
-Status: **cloud check submitted; not yet a passing proof receipt**.
+Status: **cloud proof PASS; six exports independently audited**.
 
 `Deficient1553.lean` consumes the independently verified U26/R2 rejection,
 its census membership and representative identity, and the verified
@@ -40,3 +40,17 @@ follower log is retained in `first-check.log`. The checker now places the
 three audited pilot objects in the complete library directory (refusing any
 different existing object), and copies the membership object into the new
 output root. No proof source or native certificate is changed.
+
+The corrected check passed in job
+`20261008T052325-erdos85__h3-triple-formal-20261007-220726` at `6e44e57cd83`,
+exit 0 at 05:24:11 UTC. The module took 27.307 seconds wall, 71.374 seconds
+user CPU, and 8,489,972 KiB wait4 peak RSS. This was one compiler process with
+`LEAN_NUM_THREADS=1`; the recorded CPU use is not a one-core wall-time estimate.
+Warm dependencies took 6.643 seconds. `evidence/` retains the exact executed
+source, complete compiler/dependency logs, receipts, and independent audit.
+The three structural exports use exactly the standard three axioms; the
+three certificate consumers add only the already verified U26/R2 native axiom.
+All four reused object hashes match their audited evidence, and the resulting
+object hash was separately read from the cloud. No native search was repeated.
+The finite obligation count is now 1,553 on this deficient branch, conditional
+on the remaining rejection hypotheses; this does not close H3.
