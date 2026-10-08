@@ -561,3 +561,21 @@ This section supersedes the earlier sections where they differ (2 GB heap, 5,945
   (job `20261008T220255-…-821964`, axioms `propext`, `Quot.sound`). No split tooling exists yet.
 * Tests: `test_campaign.py` 21 tests; `e2e_test.sh` 15 of 15 (builder job
   `20261008T220330-commit-ff46715e06e0-822935`).
+
+## 8. Final head profile (230 leaves, 2026-10-08 23:18Z) — revises section 6
+
+The last six profile leaves were the slowest and change the capped-leaf picture
+(`receipts/head_profile.jsonl`, `receipts/head_estimate.json`, `receipts/head_estimate_table.md`):
+
+* **Total 4,109 CPU-hours (3,653–5,241)**, capped leaves counted at the 2 h cap (a lower bound).
+* **10 of 230 leaves hit the 2 h cap**, no longer only at indices 1–4: `F9_t0` 1, 2, 3, 4, 118,
+  164; `F8_t4` 3, 107; `F8_t0` 4; `F7_t0` 1. Four more were solved but ended
+  `CHECK_HEAP_EXHAUSTED` at 2 GB (`F8_t4` 8, 12, 128; `F7_t0` 256).
+* **Expected leaves over 2 h: about 140 in the eight profiled cubes, about 270 in the campaign**
+  if the other cubes behave alike. This rests on single capped observations in strata of 64–128
+  leaves (`F9_t0` and `F8_t4`, indices 64–256), so the range is wide: tens to several hundred.
+  None of the 1,400 uniform samples exceeded 2 h, which bounds the campaign-wide fraction at
+  about 0.2% (roughly 800 leaves) with 95% confidence.
+* **Residual load is not measured**: no leaf has been run beyond 2 h. At 4–12 h each, 270 leaves
+  are 1,100–3,200 CPU-hours ($19–55 on spot); 800 leaves at 12 h would be 9,600 CPU-hours ($166).
+  A leaf that exceeds 12 h needs the split of section 4.6 (the lemma exists, the tooling does not).
