@@ -1,6 +1,6 @@
 # Exact second-column decomposition for H3
 
-Status: **source-only, uncompiled, unqueued**.
+Status: **first cloud build failed; local proof-script fixes awaiting verification**.
 
 The audited first-column diagnostic found a single empty first column for
 Full U3/R3 and Deficient U26/R2. A first-column split alone cannot parallelize
@@ -14,6 +14,10 @@ No concrete branch, pair, or stratum rejection is supplied. No runtime
 improvement is claimed. The fixed U/R matrices are cached in each executable
 two-column branch as they are in the verified first-column function.
 
-Cloud verification will use the existing warm first-column worktree after
-the live one-branch native pilot releases it. That pilot and the whole-pair
-U1/R15 and Full261 census jobs are unchanged.
+The first cloud build at `765b97a125f` failed on Boolean-expression precedence
+and a rewrite blocked by local definitions. `first-build.json` and
+`first-build.log` retain that failure. Parenthesizing the equality and reducing
+the local definitions addresses those errors; the revised source still needs
+a passing cloud build. Verification uses the existing warm first-column
+worktree, with 16 GiB, one compiler thread, and a 15-minute timeout.
+The whole-pair U1/R15 and Full261 census jobs are unchanged.

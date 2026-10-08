@@ -17,7 +17,7 @@ private theorem finiteRowDFS_seven_second {α : Type}
   rfl
 
 private theorem and_list_any {α : Type} (b : Bool) (xs : List α) (f : α → Bool) :
-    b && xs.any f = xs.any (fun x => b && f x) := by
+    (b && xs.any f) = xs.any (fun x => b && f x) := by
   cases b <;> simp
 
 /-- One first/second-column branch with both prefix checks. -/
@@ -39,6 +39,7 @@ theorem threeHighFirstColumnBranch_eq_secondColumns
       (threeHighStaticPrunedColumnList U R 1).any
         (threeHighFirstTwoColumnsBranch U R accept S) := by
   unfold threeHighFirstColumnBranch threeHighFirstTwoColumnsBranch
+  dsimp only
   rw [finiteRowDFS_seven_second]
   simp [and_list_any]
 
