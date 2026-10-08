@@ -91,13 +91,11 @@ def enrichSample (s : St) (input : List Tri) : NodeSample :=
   let filtered := input.filter (insertable s)
   ⟨s, input, filtered, pickCore s filtered, findFresh s⟩
 
-/-- Force the computed checksum into an IO reference before stopping the clock. -/
+/-- Kept out of line so the supplied computation runs between the two clocks. -/
 @[noinline] def timeComponent (leaf : Nat) (name : String) (f : Unit → Nat) : IO Unit := do
-  let cell ← IO.mkRef 0
   let begin ← IO.monoMsNow
-  cell.set (f ())
+  let checksum := f ()
   let finish ← IO.monoMsNow
-  let checksum ← cell.get
   IO.println s!"COMPONENT leaf={leaf} name={name} elapsed_ms={finish-begin} checksum={checksum}"
 
 def appendChecksum (pre : List Tri) : List Tri → Nat

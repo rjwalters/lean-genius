@@ -1,0 +1,135 @@
+[e85] job 20261008T110349-erdos85__h3-triple-formal-20261007-436420  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T11:03:49Z
+[e85] commit 521505a9874ce443503fb280024947a6ead2e8d9 (Measure bounded H3 phase-two component costs on retained node inputs)
+=== Docker Lean Build ===
+Memory limit: 16384MB (hard enforced via cgroups)
+Timeout: 2m
+CPU limit: 2
+Target: all
+Build volume: lean-build-erdos85__h3-triple-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Command: lake env python3 -B ../research/problems/erdos-85-wip-01/h3_triple_completion_20261008/run_phase_two_components.py
+Starting Docker build...
+
+STATES count=4
+SAMPLE leaf=1 key=975744 nodes=17 leaves=0 exhausted=0 invalid=0 capped=false
+COMPONENT leaf=1 name=state elapsed_ms=0 checksum=17
+COMPONENT leaf=1 name=filter elapsed_ms=0 checksum=1062
+COMPONENT leaf=1 name=pick elapsed_ms=0 checksum=212
+COMPONENT leaf=1 name=fresh elapsed_ms=0 checksum=482
+COMPONENT leaf=1 name=partition elapsed_ms=0 checksum=1062
+COMPONENT leaf=1 name=append elapsed_ms=0 checksum=1052
+COMPONENT leaf=1 name=insert elapsed_ms=0 checksum=62
+SAMPLE leaf=2 key=986112 nodes=1000 leaves=30 exhausted=0 invalid=0 capped=true
+COMPONENT leaf=2 name=state elapsed_ms=0 checksum=1000
+COMPONENT leaf=2 name=filter elapsed_ms=0 checksum=15339
+COMPONENT leaf=2 name=pick elapsed_ms=0 checksum=11324
+COMPONENT leaf=2 name=fresh elapsed_ms=0 checksum=41402
+COMPONENT leaf=2 name=partition elapsed_ms=0 checksum=15339
+COMPONENT leaf=2 name=append elapsed_ms=0 checksum=19678
+COMPONENT leaf=2 name=insert elapsed_ms=0 checksum=4154
+SAMPLE leaf=3 key=41088 nodes=1000 leaves=52 exhausted=0 invalid=0 capped=true
+COMPONENT leaf=3 name=state elapsed_ms=0 checksum=1000
+COMPONENT leaf=3 name=filter elapsed_ms=0 checksum=12315
+COMPONENT leaf=3 name=pick elapsed_ms=0 checksum=12312
+COMPONENT leaf=3 name=fresh elapsed_ms=0 checksum=41684
+COMPONENT leaf=3 name=partition elapsed_ms=0 checksum=12315
+COMPONENT leaf=3 name=append elapsed_ms=0 checksum=16712
+COMPONENT leaf=3 name=insert elapsed_ms=0 checksum=4138
+SAMPLE leaf=4 key=776448 nodes=1000 leaves=51 exhausted=0 invalid=0 capped=true
+COMPONENT leaf=4 name=state elapsed_ms=0 checksum=1000
+COMPONENT leaf=4 name=filter elapsed_ms=0 checksum=12885
+COMPONENT leaf=4 name=pick elapsed_ms=0 checksum=11873
+COMPONENT leaf=4 name=fresh elapsed_ms=0 checksum=41460
+COMPONENT leaf=4 name=partition elapsed_ms=0 checksum=12885
+COMPONENT leaf=4 name=append elapsed_ms=0 checksum=17352
+COMPONENT leaf=4 name=insert elapsed_ms=0 checksum=4178
+
+{
+  "command": [
+    "lean",
+    "-j1",
+    "H3TripleCompletionPhaseTwoComponents.lean",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/phase-two-components/PhaseTwoComponents.olean"
+  ],
+  "source_sha256": "7377715bed2439492a3ce7e98686b4899e5cd6c4652a5d13dd0a1413acc92293",
+  "timeout_seconds": 60,
+  "started_utc": "2026-10-08T11:03:51.064005+00:00",
+  "prerequisites": [
+    {
+      "module": "Erdos85H3TripleCompletionEngine",
+      "source_sha256": "a8bbf737978ff1ff1a24b8d3bb675304a00006f8927b17d9478656907d393c39",
+      "olean_sha256": "c144efb4d85c1186f5019666fd8dede6b71e92ec0c8bc14390457f539ab2e412",
+      "olean_bytes": 2103088,
+      "olean_mtime": 1791456891.6277816,
+      "fresh_build_elapsed": "11s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.search_sound",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85H3TripleCompletionBridge",
+      "source_sha256": "499f480a8d1eb73f33ca4119b0175f319982484a9d3fcdf0a2fbbda73d2db36b",
+      "olean_sha256": "02220d1339caaf079b5889edf2e0c4e52b49b37d6c2b89ba4886c06d5a77e18e",
+      "olean_bytes": 198624,
+      "olean_mtime": 1791456899.3572543,
+      "fresh_build_elapsed": "4.0s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.threeHighCanonicalRepresentativeExcluded_one_of_tripleSearch",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.H3TripleCompletion.orderFortyNineTripleCellExcluded_three_one_of_tripleSearch",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85H3TripleCompletionSplit",
+      "source_sha256": "b85d4d99bb82cefdbe5f8d0543928262422f2f5e6a8dfa799d7100dc7ca826a3",
+      "olean_sha256": "acfdbed1a9ccec6f972f9c8c8afc5575937d82b3cbc3541f0239a8e3b019d0d3",
+      "olean_bytes": 187736,
+      "olean_mtime": 1791456903.1570253,
+      "fresh_build_elapsed": "3.8s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.orderFortyNineTripleCellExcluded_three_one_of_parts",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  ],
+  "status": "COMPILED",
+  "returncode": 0,
+  "timed_out": false,
+  "elapsed_seconds": 7.072421049000695,
+  "child_user_seconds": 5.982879,
+  "child_system_seconds": 1.08052,
+  "child_maxrss_kib": 6509396,
+  "log_sha256": "c981140323fbf2093ad3dcbe85242d9c5bbf13ef6186f30ef036a9780fd84f3b",
+  "olean_sha256": "051ffb7852b91c3a7c61e56228210b66105b89bb538f60b3a92aba2c4296add7",
+  "olean_bytes": 580888
+}
+
+=== Build succeeded ===
