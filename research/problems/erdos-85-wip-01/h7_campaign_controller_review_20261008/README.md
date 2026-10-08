@@ -1,7 +1,21 @@
 # H7 campaign completion review
 
 Reviewed commit: `1cab73ef2a2780161d98ac389068acbb54b9002b`.
-Status: **two collector defects reproduced and reported to Claude; fixes pending**.
+Status: **two collector defects reproduced; proposed patch passes eight metadata checks**.
+
+`proposed-collector.patch` is a minimal patch against the reviewed commit.
+It pins the currently approved checker binary, rejects unknown or empty
+cube selections, and reports both the selected cubes and whether the full
+campaign is complete. It is not applied to Claude's campaign branch.
+`check_patch.py` uses `git apply --check` and applies it only in a temporary
+tree. Its eight fixtures cover an approved checker, wrong/missing checker
+hashes, unknown/mixed/empty selectors, an empty inventory, and a known
+subset. The results are retained in `patch-check.json`.
+
+The patch deliberately requires the already reviewed checker binary hash.
+A different linked build remains rejected until its provenance is reviewed
+and an explicit approved hash is added. This proposed patch does not change
+batch retry scheduling or resolve the memory-limit issue below.
 
 This review reads the collector, batch runner, worker, controller, bootstrap,
 and end-to-end test. It does not launch or alter a campaign. Reproduce the
