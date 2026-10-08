@@ -1,0 +1,17 @@
+[e85] job 20261008T073251-erdos85__h3-pair-formal-20261008-299945  ref=erdos85/h3-pair-formal-20261008  worktree=/opt/e85/wt/erdos85__h3-pair-formal-20261008  started 2026-10-08T07:32:51Z
+[e85] commit 9d1b51d0afa158491f80a6b963b2f08a976422d6 (erdos85: H3 pair engine: subset branching in phase 3, fix first build errors)
+=== Docker Lean Build ===
+Memory limit: 32768MB (hard enforced via cgroups)
+Timeout: 2h
+CPU limit: 16
+Target: Proofs.Erdos85H3PairEngine
+Build volume: lean-build-erdos85__h3-pair-formal-20261008
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Starting Docker build...
+
+ℹ [8576/8576] Built Proofs.Erdos85H3PairEngine (10s)
+info: Proofs/Erdos85H3PairEngine.lean:1274:0: 'Erdos85.H3Pair.search_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+Build completed successfully (8576 jobs).
+
+=== Build succeeded ===

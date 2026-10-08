@@ -1,0 +1,56 @@
+{
+  "status": "CONDITIONAL_CHAIN_BUILD_AUDIT_PASS",
+  "results": [
+    {
+      "job": "20261008T073251-erdos85__h3-pair-formal-20261008-299945",
+      "module": "Erdos85H3PairEngine",
+      "execution_commit": "9d1b51d0afa158491f80a6b963b2f08a976422d6",
+      "authoritative_exit": 0,
+      "fresh_built": true,
+      "source_sha256": "59cf853ca0bfecec6c0efe32b65950fb841948e7c3586dcb464cc8aeca681cb8",
+      "olean_sha256": "929cd8977807701e897dd28d14db0f7f433a8f44bae4ed0dbd96cc14899b7a99",
+      "log_sha256": "5ca4db970ad69a84eddf3cc33b001d82d3482a662e45ea94bcec6042e159920f",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3Pair.search_sound",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "job": "20261008T073435-erdos85__h3-pair-formal-20261008-301486",
+      "module": "Erdos85H3PairBridge",
+      "execution_commit": "9aad4f0656deeb3084095d14ef8595a6ea0607eb",
+      "authoritative_exit": 0,
+      "fresh_built": true,
+      "source_sha256": "be9455ca1bcc1eba1629b7b0a565d5196b79d118212af4228a39412846937715",
+      "olean_sha256": "afee1354cbb1ba499deec8718c1549b15243b7a9bc394d03e193d79b277916db",
+      "log_sha256": "55e65bc825e39735d47616964d15c9c5530a46da61e59a76b24cc9618a18a3e5",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3Pair.threeHighCanonicalRepresentativeExcluded_zero_of_pairSearch",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.H3Pair.orderFortyNineTripleCellExcluded_three_zero_of_pairSearch",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  ],
+  "scope": "Engine and conditional graph bridge only. Native pairSearch_true and unconditional exclusion are not audited by this result.",
+  "review_commit": "a4d9e8f7fbb92cf0e21cdaa3b3f5f12e2ff06e48",
+  "reviewed_sources_equal_successful_build_sources": true
+}
