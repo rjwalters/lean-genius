@@ -1,6 +1,5 @@
 {
-  "status": "RUNNING",
-  "observed_at_utc": "2026-10-08T05:43:50Z",
+  "status": "PASS",
   "job": "20261008T053927-erdos85__h7-lrat-adapter-20261008-230549",
   "execution_commit": "bdc03fba4bb3cc5e5429d91db5581008cf2caee1",
   "branch": "erdos85/h7-lrat-adapter-20261008",
@@ -9,5 +8,8 @@
   "timeout": "10m",
   "production_receipt_sha256": "274b250e970ba21704ce1fc8d7acb800bdf77aceec51e54bfaeeef166ed69c56",
   "checker_source_sha256": "f8ae4acabb665a2fa8448fe97333042adf7b7542673922cf90e46de84975bdec",
-  "scope": "Optional replay of one cover only; no cube or stratum exclusion."
+  "scope": "Optional replay of one cover only; no cube or stratum exclusion.",
+  "exit_code": 0,
+  "finished_at_utc": "2026-10-08T05:49:19Z",
+  "audit": "lean-evidence/AUDIT.json"
 }

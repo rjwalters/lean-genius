@@ -1,0 +1,39 @@
+{
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h7_cover_lean_pilot_20261008/_build/lean-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h7_cover_lean_pilot_20261008/_build/lean-first/CoverF6T5.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h7_cover_lean_pilot_20261008/_build/lean-first/CoverF6T5.lean"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 577.1131309880002,
+  "user_cpu_seconds": 575.68614,
+  "system_cpu_seconds": 1.449939,
+  "max_rss_kib": 7700740,
+  "log_sha256": "ddcf816b063ebaaf7867233145348d95110f20fcb148ba8b96b32c3034ef29ff",
+  "status": "PASS",
+  "source_sha256": "b3cc455851fc73d9972ef0a9d196777157ca829b622d69545b0a560bfe733342",
+  "olean_sha256": "91b3f8e93b6a73244450cfbbc0848866157f5a42ab88a5f76a7cf5d9e3bc7500",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.HsbCoverPilot.F6T5.check",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.HsbCoverPilot.F6T5.check._native.native_decide.ax_1_1"
+      ]
+    },
+    {
+      "theorem": "Erdos85.HsbCoverPilot.F6T5.checkedCover",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.HsbCoverPilot.F6T5.check._native.native_decide.ax_1_1"
+      ]
+    }
+  ]
+}

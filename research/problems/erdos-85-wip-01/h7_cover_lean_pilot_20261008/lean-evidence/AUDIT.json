@@ -1,0 +1,41 @@
+{
+  "status": "PASS",
+  "job": "20261008T053927-erdos85__h7-lrat-adapter-20261008-230549",
+  "execution_commit": "bdc03fba4bb3cc5e5429d91db5581008cf2caee1",
+  "authoritative_exit_code": 0,
+  "run_sha256": "44741af6ed1f4dcbd44b470c1ad57f898fa006033d6eb2d7191f1eda02100727",
+  "source_sha256": "b3cc455851fc73d9972ef0a9d196777157ca829b622d69545b0a560bfe733342",
+  "independent_cloud_olean_sha256": "91b3f8e93b6a73244450cfbbc0848866157f5a42ab88a5f76a7cf5d9e3bc7500",
+  "independent_cloud_job_log_sha256": "4ecd1bea9bf89eec1c2da70f654a028b141531357be0b1ad96418b64def2be1f",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.HsbCoverPilot.F6T5.check",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.HsbCoverPilot.F6T5.check._native.native_decide.ax_1_1"
+      ]
+    },
+    {
+      "theorem": "Erdos85.HsbCoverPilot.F6T5.checkedCover",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.HsbCoverPilot.F6T5.check._native.native_decide.ax_1_1"
+      ]
+    }
+  ],
+  "checks": [
+    "Exact five-file evidence inventory",
+    "Receipt equals individual result and raw job result",
+    "Source equals retained production source and pinned production hash",
+    "Log and dependency log hashes match; dependency build succeeded",
+    "Independent cloud object and receipt hashes match",
+    "Exact two exports use standard axioms plus one expected native-decision axiom",
+    "Compiler command targets the retained source; no sorry in log",
+    "Execution-commit producer/checker source matches current source"
+  ],
+  "scope": "One Lean-constructed H7 F6/t5 cover checked; no leaf replay, parent cube exclusion, or H7 stratum exclusion."
+}
