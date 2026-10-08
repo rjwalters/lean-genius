@@ -1,0 +1,11 @@
+MODE=host
+REF=erdos85/h3-triple-formal-20261007
+TARGET=''
+CMD=python3\ -B\ research/problems/erdos-85-wip-01/h7_cost_sample_review_20261008/audit_sample.py
+MEM_GB=64
+TIMEOUT=10m
+THREADS=''
+CACHE=0
+CPUS=16
+VOLUME=''
+FULL=1

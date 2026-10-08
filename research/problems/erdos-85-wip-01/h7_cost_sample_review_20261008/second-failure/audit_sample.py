@@ -204,6 +204,7 @@ def main():
     bootstrap.sort()
     interval = [round(bootstrap[250]), round(bootstrap[4750])]
     require(round(total_cpu) == estimate['cpu_hours'] == 3856 and
+            interval == estimate['cpu_hours_5_95'] == [2864, 5216] and
             round(expected_capped) == estimate['expected_capped_leaves'] == 720 and
             round(capped_cpu) == estimate['cpu_hours_counted_for_capped_leaves'] == 766 and
             round(proof_bytes / 1e12, 1) == estimate['proof_tb_streamed'] == 20.1,
@@ -214,16 +215,7 @@ def main():
     require(SAMPLE.read_bytes() == raw_bytes and helper_path.read_bytes() == helper_bytes and
             (INPUTS / 'inputs.json').read_bytes() == input_bytes,
             'Evidence changed during audit')
-    bootstrap_match = interval == estimate['cpu_hours_5_95']
-    print(json.dumps({'status': 'COST_SAMPLE_AUDIT_PASS' if bootstrap_match else
-                               'COST_SAMPLE_AUDIT_WITH_REPRODUCIBILITY_FINDING',
-        'receipt_identity_status': 'PASS', 'point_arithmetic_status': 'PASS',
-        'bootstrap_reproduction': {'status': 'PASS' if bootstrap_match else 'NOT_REPRODUCED',
-            'replicates': 5000, 'seed': 1, 'sample_order': 'committed sample_results.jsonl',
-            'recorded_interval': estimate['cpu_hours_5_95'], 'reproduced_interval': interval,
-            'finding': None if bootstrap_match else 'Retained estimate does not reproduce with the '
-                'committed estimator default replicate count and committed sample order. '
-                'The original generation command/ordering has been requested from the owner.'},
+    print(json.dumps({'status': 'COST_SAMPLE_RECEIPT_AND_ARITHMETIC_AUDIT_PASS',
         'review_commit': source['commit'], 'auditor_sha256': sha(Path(__file__).read_bytes()),
         'inputs_sha256': INPUT_SHA, 'sample_sha256': SAMPLE_SHA, 'raw_sample_sha256': RAW_SHA,
         'helper_snapshot_sha256': HELPER_SHA, 'matching_duplicate_proofs': 146,
@@ -239,9 +231,7 @@ def main():
         'scope': 'Recorded sample receipt identities and internally consistent solver/checker outcomes; '
                  'independently reconstructed CNF hashes, deterministic sample selection, primary receipt equality '
                  'under the exact verified archival transform, '
-                 'and point-estimate arithmetic. Bootstrap reproduction is reported separately; '
-                 'a mismatch remains an unresolved finding, not an accepted interval. '
-                 'Proof streams were discarded and were not rechecked. '
+                 'and estimate arithmetic. Proof streams were discarded and were not rechecked. '
                  'The interval describes a censored empirical bootstrap, not a completion-time bound. '
                  'The dollar result uses stated price/utilisation assumptions, not current billing verification.'}, indent=2))
 
