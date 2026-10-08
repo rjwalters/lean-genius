@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # End-to-end test of cert_worker.py / cert_batch.py / collect_receipts.py on the builder, against a
-# local directory store (no S3, no instances). ~21 real items in the exact campaign format, plus:
+# local directory store (no S3, no instances). 21 real items in the exact campaign format (leaves
+# known from the cost sample to take 0.4-50 s), plus:
 #   * a simulated spot reclaim (claim + ledger removed, 3 receipts left as partial/) -> carry-forward
 #   * a must-ALARM run with a fake checker that never prints `s VERIFIED UNSAT` -> ALARM + STOP
 #   * a worker started after STOP must claim nothing
+#   * a 5 s solver cap -> INCOMPLETE ledger (timeouts are not alarms)
 # usage: e2e_test.sh <inputs dir> <out dir> <cadical> <cake_lpr> [slots]
 set -uo pipefail
 IN=$1; OUT=$2; CAD=$3; CAKE=$4; SLOTS=${5:-2}
@@ -13,8 +15,8 @@ cat > "$OUT/manifest.jsonl" <<'M'
 {"cube": "cube_F6_t14", "id": "cube_F6_t14-cover", "kind": "cover"}
 {"cube": "cube_F6_t14", "end": 5, "id": "cube_F6_t14-b0000", "kind": "leaves", "start": 0}
 {"cube": "cube_F6_t14", "end": 10, "id": "cube_F6_t14-b0001", "kind": "leaves", "start": 5}
-{"cube": "cube_F9_t1", "id": "cube_F9_t1-x0", "kind": "leaves", "leaves": [100, 2000, 5000, 7000, 9000]}
-{"cube": "cube_F7_t5", "end": 15, "id": "cube_F7_t5-b0000", "kind": "leaves", "start": 10}
+{"cube": "cube_F9_t1", "id": "cube_F9_t1-x0", "kind": "leaves", "leaves": [4890, 4571, 6823, 4349, 4067]}
+{"cube": "cube_F7_t5", "id": "cube_F7_t5-x0", "kind": "leaves", "leaves": [469, 1410, 814, 1035, 1336]}
 M
 MS=$(sha256sum "$OUT/manifest.jsonl" | cut -d' ' -f1); IS=$(sha256sum "$IN/inputs.json" | cut -d' ' -f1)
 W() { # W <tag> <store> <cake> [extra args]
@@ -46,6 +48,10 @@ W c "$S2" "$OUT/fake_cake" --only cube_F6_t14-b0000 --slots 1
 chk "ALARM + STOP written, nothing CERTIFIED" '[ -f "$S2/control/STOP" ] && ls "$S2"/control/ALARM-* >/dev/null && ! grep -l "\"status\": \"CERTIFIED\"" "$S2"/ledger/*.json'
 W d "$S2" "$CAKE"
 chk "worker after STOP claims nothing" '[ $(ls "$S2/claims" | wc -l) = 1 ]'
+echo "== cap path: 5 s cap on a batch with leaves that need 7-50 s -> INCOMPLETE, no alarm"
+S3=$OUT/store-cap
+W e "$S3" "$CAKE" --only cube_F9_t1-x0 --slots 1 --cap 5
+chk "INCOMPLETE ledger lists SOLVER_TIMEOUT leaves, no STOP" 'grep -q "\"status\": \"INCOMPLETE\"" "$S3"/ledger/*.json && grep -q SOLVER_TIMEOUT "$S3"/ledger/*.json && [ ! -e "$S3/control/STOP" ]'
 echo "== ledgers"; for l in "$S"/ledger/*.json; do $PY -c "import json,sys; l=json.load(open(sys.argv[1])); print(l['id'], l['node'], l['status'], l['certified'], '/', l['items'], 'carried', l['carried'], 'solver_cpu', round(l['solver_cpu_seconds'],1), 'checker_cpu', round(l['checker_cpu_seconds'],1), 'proof', l['proof_bytes'])" "$l"; done
 [ $fail = 0 ] && echo "E2E_ALL_PASS" || echo "E2E_FAILED"
 exit $fail
