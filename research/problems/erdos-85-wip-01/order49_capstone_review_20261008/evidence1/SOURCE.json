@@ -1,0 +1,4637 @@
+{
+  "status": "SOURCE_REVIEW_PASS_NOT_COMPILED",
+  "execution_commit": "c955257fbd9a4b4aab5e96c90e26cdedb0f74a5c",
+  "job": "20261008T135640-erdos85__order49-capstone-20261008-546872",
+  "module": "Erdos85OrderFortyNineCapstone",
+  "sources": {
+    "Erdos85OrderFortyNineCapstone": {
+      "source_sha256": "2ef3064dc6b16ace2184802d0a7827564ef102067c1bd73ab35d37b85fbe4405",
+      "imports": [
+        "Erdos85OneHighV2CapacityCover",
+        "Erdos85H3PairCell",
+        "Erdos85H5Stratum",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalHsbStratumCapstone",
+        "Erdos85OrderFortyNineStrataCapstone",
+        "Erdos85FiniteDropWitnesses"
+      ]
+    },
+    "Erdos85FiniteDropWitnesses": {
+      "source_sha256": "2328926f14dc606c7f05be525ad40e23e360e4f756ccb7ee3e1b6a75a4eb3743",
+      "imports": [
+        "Erdos85FiniteDropCore",
+        "Erdos85Boza48Witness",
+        "Erdos85OrderFortyNineDegreeSixWitness"
+      ]
+    },
+    "Erdos85OrderFortyNineDegreeSixWitness": {
+      "source_sha256": "6cc9c63f666817e3664cac2d7e09408c6a5d92818ba729b61ebddfdcbea06db4",
+      "imports": [
+        "Erdos85Problem"
+      ]
+    },
+    "Erdos85Problem": {
+      "source_sha256": "ac93ab677ff54606330a179d764418e4e317d477aba5cce604a5d3e6de48ed95",
+      "imports": []
+    },
+    "Erdos85Boza48Witness": {
+      "source_sha256": "a3b4b67fc6e47c0e4bba7a239b75fb5d57407132af88c9133dd00bc19d0fcc73",
+      "imports": [
+        "Erdos85Problem",
+        "Erdos85LocalTriangleParity"
+      ]
+    },
+    "Erdos85LocalTriangleParity": {
+      "source_sha256": "91622d8552f5f93a002113306cdac4694745e8172b6cfe66b8a4f0880be77445",
+      "imports": [
+        "Erdos85BranchDeficitSymmetry"
+      ]
+    },
+    "Erdos85BranchDeficitSymmetry": {
+      "source_sha256": "ebb5c841ae9dffaa5c2558d2963782b40197e369feb61a5b48050b7ee98410a9",
+      "imports": [
+        "Erdos85CleanHighBranchObstruction"
+      ]
+    },
+    "Erdos85CleanHighBranchObstruction": {
+      "source_sha256": "70de743bab1c1c5bf4f45fe4bdd291eb487ad6f261173f48371bfe1bf00ec776",
+      "imports": [
+        "Erdos85HighRootZeroSlack",
+        "Erdos85CommonNeighborPigeonhole"
+      ]
+    },
+    "Erdos85CommonNeighborPigeonhole": {
+      "source_sha256": "e60db1a57e80de84ccddc21bebf52dca7e063a2b66851a36d99ad0a3f0d253a9",
+      "imports": [
+        "Erdos85Problem"
+      ]
+    },
+    "Erdos85HighRootZeroSlack": {
+      "source_sha256": "51fa135122ff02c5438d118e57680b78a273c733f2350a7041d4a1f5e4fa22a6",
+      "imports": [
+        "Erdos85OrderFortyNineHighBranchGeometry"
+      ]
+    },
+    "Erdos85OrderFortyNineHighBranchGeometry": {
+      "source_sha256": "bdbd004eca4d5b84acb3a9a3ad0ad4deef2270452711263503440c584ccfba9d",
+      "imports": [
+        "Erdos85OrderFortyNineLowTriangleIncidence"
+      ]
+    },
+    "Erdos85OrderFortyNineLowTriangleIncidence": {
+      "source_sha256": "0376fb8e6b136dac71ed1c041062bbbd5f595d54190eeb49166f5618893fd94f",
+      "imports": [
+        "Erdos85OrderFortyNineLowTriangles"
+      ]
+    },
+    "Erdos85OrderFortyNineLowTriangles": {
+      "source_sha256": "93d31d7addd3bb0aa151dc088f097fac648bb95516a6fd9beb05139826bad28e",
+      "imports": [
+        "Erdos85OrderFortyNineHighPartnerBound"
+      ]
+    },
+    "Erdos85OrderFortyNineHighPartnerBound": {
+      "source_sha256": "cfd871293d0446e03e24cbecac9e2510201452bc53e9fdc4e7be7bb19a26f1cb",
+      "imports": [
+        "Erdos85OrderFortyNineDefectPerfectCodes"
+      ]
+    },
+    "Erdos85OrderFortyNineDefectPerfectCodes": {
+      "source_sha256": "5a961053733d6411a9b41c826db572f7d69a098337e4887c973ad9589978fece",
+      "imports": [
+        "Erdos85OrderFortyNineDefectEigenvectors",
+        "Erdos85ComponentLocalObstruction"
+      ]
+    },
+    "Erdos85ComponentLocalObstruction": {
+      "source_sha256": "2975c624564e75a0202d736a0ff094f86e42dc10b452b56f1b01b9c2258b428a",
+      "imports": [
+        "Erdos85ComponentwiseNonextension"
+      ]
+    },
+    "Erdos85ComponentwiseNonextension": {
+      "source_sha256": "c785a2a63e4fc9423232a4694136a7e848a9dfa08b6bba82bc2fe8626885fafc",
+      "imports": [
+        "Erdos85ControlledDeletion",
+        "Erdos85QuadraticPlateauComponents"
+      ]
+    },
+    "Erdos85QuadraticPlateauComponents": {
+      "source_sha256": "9782b04fea7e6541d74c99a4353f46667afa67befb539023a27cf1b66470180a",
+      "imports": [
+        "Erdos85BoundaryConnectedClean",
+        "Erdos85ConflictComponents",
+        "Erdos85QuadraticConductor"
+      ]
+    },
+    "Erdos85QuadraticConductor": {
+      "source_sha256": "5de95a8cde0d6a4d64a65a58d419acf4980ea024ee4f470f9b7abe354d4ca22e",
+      "imports": [
+        "Erdos85ParabolaSidonRuler",
+        "Erdos85CofinalLowerBound",
+        "Erdos85RamseyPlateau"
+      ]
+    },
+    "Erdos85RamseyPlateau": {
+      "source_sha256": "97ec7b7b9a51be73fb9591d5a1dce40a9c69d06213d0b5a0f4efb59810f1c6bc",
+      "imports": [
+        "Erdos85Ramsey",
+        "Erdos85MinimalWitness",
+        "Erdos85ProblemConflict",
+        "Erdos85RepairSet",
+        "Erdos85SecondOrderStructure",
+        "Erdos85LayeredWitness"
+      ]
+    },
+    "Erdos85LayeredWitness": {
+      "source_sha256": "093bedececb58f0be538191b5f48db7c26654830c8ac7c8d0329967a9c290a5f",
+      "imports": [
+        "Erdos85MinimalWitness"
+      ]
+    },
+    "Erdos85MinimalWitness": {
+      "source_sha256": "8d2f14ec835a147f442ce4b807f92cd2af6ca0970592d2b2ec01c8b983904d8c",
+      "imports": [
+        "Erdos85Problem"
+      ]
+    },
+    "Erdos85SecondOrderStructure": {
+      "source_sha256": "aeb70eb982bfbe278104e9b303bb864c6827bba05c91d65255c529da3ffff867",
+      "imports": [
+        "Erdos85EvenAntipodalQuotient"
+      ]
+    },
+    "Erdos85EvenAntipodalQuotient": {
+      "source_sha256": "a16a244f8b0d7bb375c02d8a44bd32351c45bbb2c795aaa727b4a0be3c573a88",
+      "imports": [
+        "Erdos85EvenFirstOrderAntipodal"
+      ]
+    },
+    "Erdos85EvenFirstOrderAntipodal": {
+      "source_sha256": "a51bb972d04fe2cdf5092e891bc581709a9005f027b18102dfdbe170b3adedd4",
+      "imports": [
+        "Erdos85OddFirstOrderSpectral",
+        "Erdos85Relabel",
+        "Erdos85Problem14",
+        "Erdos85ThirtyTwoQuotient",
+        "Erdos85FiniteSigningClosure"
+      ]
+    },
+    "Erdos85FiniteSigningClosure": {
+      "source_sha256": "51f32a09b125694c7f43a38db719489825b333a45d9fb8df9f7db26fd348ec56",
+      "imports": [
+        "Erdos85SRGLocalCycle"
+      ]
+    },
+    "Erdos85SRGLocalCycle": {
+      "source_sha256": "4d8f6bf12096f840a4e7f7b9e581694a2c86054881e7c0ab4a8d9bd61274a4a5",
+      "imports": [
+        "Erdos85LocalCycleSAT"
+      ]
+    },
+    "Erdos85LocalCycleSAT": {
+      "source_sha256": "9d98d1f9a7811367491a8f9e5a9584b6466561116ca222cfccd79294063cab8c",
+      "imports": [
+        "Erdos85SignedSRGBridge"
+      ]
+    },
+    "Erdos85SignedSRGBridge": {
+      "source_sha256": "91070cc9e45e95542f69ede38bfc804113b15510aa79173d9f2e18051461ef80",
+      "imports": [
+        "Erdos85SignedSRGSAT"
+      ]
+    },
+    "Erdos85SignedSRGSAT": {
+      "source_sha256": "b09c295499e3bee695f5f1e9900a1b2ec62e3485ac903ec99ea34c0877eda520",
+      "imports": [
+        "Erdos85SignedSRGObstruction"
+      ]
+    },
+    "Erdos85SignedSRGObstruction": {
+      "source_sha256": "84bbdd03482f583d40359633a74c90f1915e95596b4b4d07db2dfe49d69e0398",
+      "imports": [
+        "Erdos85ThirtyTwoQuotient"
+      ]
+    },
+    "Erdos85ThirtyTwoQuotient": {
+      "source_sha256": "635b37dc591647ddf18f42c199ffff22ea171904d40adb125a64945ced5ae106",
+      "imports": [
+        "Erdos85ThirtyTwo"
+      ]
+    },
+    "Erdos85ThirtyTwo": {
+      "source_sha256": "518e5484abc3b30cab3d404ad57b7ec8594c664e686e2ce1b001e1e8c3ad668a",
+      "imports": [
+        "Erdos85GadgetExtension",
+        "Erdos85DistanceLayers"
+      ]
+    },
+    "Erdos85DistanceLayers": {
+      "source_sha256": "299d4261d62000a23a34b369682a6bb6c1e6af1c79505785154c3195a14d76a7",
+      "imports": [
+        "Erdos85RepairSet"
+      ]
+    },
+    "Erdos85RepairSet": {
+      "source_sha256": "018289be8ed501f603b58275126bda01b0300d63d5fd0d888f7b2287794bc1a0",
+      "imports": [
+        "Erdos85DeletePair"
+      ]
+    },
+    "Erdos85DeletePair": {
+      "source_sha256": "7123f409aa6385a6e6e1b383b228b90bc41ecdbd273e715895f0b7484fd5eefa",
+      "imports": [
+        "Erdos85VertexDeletion",
+        "Erdos85PairedWitness"
+      ]
+    },
+    "Erdos85PairedWitness": {
+      "source_sha256": "34b141900122d0f41c7eed1dac46c16f1436fb8650e1e00f3e65447e16b4fcf2",
+      "imports": [
+        "Erdos85Extension"
+      ]
+    },
+    "Erdos85Extension": {
+      "source_sha256": "ef2d97ff115fa54b7f3040cd422ecaa58a94bac3da31608153c16b13ebe9a6aa",
+      "imports": [
+        "Erdos85Problem"
+      ]
+    },
+    "Erdos85VertexDeletion": {
+      "source_sha256": "6e90a168d30aa92a212efb01aaf52aba50e2276f6032a0f76a7334e4953a6845",
+      "imports": [
+        "Erdos85Relabel"
+      ]
+    },
+    "Erdos85Relabel": {
+      "source_sha256": "53ea2ddb34b984163f41db8f91aeffc88b428297bd2dff40710e3e5458980e00",
+      "imports": [
+        "Erdos85Problem"
+      ]
+    },
+    "Erdos85GadgetExtension": {
+      "source_sha256": "45fe94f3d806d387722f36fd6cadeef3587a3ce7e646f21f9fec8573c2c605a9",
+      "imports": [
+        "Erdos85Extension"
+      ]
+    },
+    "Erdos85Problem14": {
+      "source_sha256": "b720b5518bdb32ca53b442916c7c2918f391875a220d75f63dad794803305dc1",
+      "imports": [
+        "Erdos85Problem"
+      ]
+    },
+    "Erdos85OddFirstOrderSpectral": {
+      "source_sha256": "b41e4958e2fa814cb0b49505f5dbd56b153932478f35ecf4f2af6972f05aa6d5",
+      "imports": [
+        "Erdos85MooreFriendship"
+      ]
+    },
+    "Erdos85MooreFriendship": {
+      "source_sha256": "3880597db9ac1f4b468ffc7bb97d9a443396b528eba25ab6f432dc19937f44cb",
+      "imports": [
+        "Erdos85DistanceLayers",
+        "FriendshipTheoremOQ01"
+      ]
+    },
+    "FriendshipTheoremOQ01": {
+      "source_sha256": "2826eff9fa628fefa10f435b1a10899a46df5941cfa1860d5563a38fbf316498",
+      "imports": []
+    },
+    "Erdos85ProblemConflict": {
+      "source_sha256": "d7633cb3eef0e6abddc967a03b9aac6a8af4020d9458c1c92cb201e5e5d68ccc",
+      "imports": [
+        "Erdos85Problem"
+      ]
+    },
+    "Erdos85Ramsey": {
+      "source_sha256": "a2e0c8b07ff09a6e78708cfe6eb727a14be01822a71c2bc2e8ad54d213040177",
+      "imports": [
+        "Erdos85Problem"
+      ]
+    },
+    "Erdos85CofinalLowerBound": {
+      "source_sha256": "7825fee33904d5f8b97f4d289493d252afbc2485df23415eed5016c4a2ee06ea",
+      "imports": [
+        "Erdos85PolarityAbsolute",
+        "Erdos85PolarityDeletion",
+        "Erdos85PolarityBand"
+      ]
+    },
+    "Erdos85PolarityBand": {
+      "source_sha256": "dc31b2e4880873d6930c01e920492a5a195c7b9cc247abcf02328935d6f43002",
+      "imports": [
+        "Erdos85PolarityAbsolute",
+        "Erdos85IteratedDeletion"
+      ]
+    },
+    "Erdos85IteratedDeletion": {
+      "source_sha256": "49ccbb783bf24bf9a89d81755f82ea77b8b3f7afddd23b3dea3967821d0334cf",
+      "imports": [
+        "Erdos85VertexDeletion"
+      ]
+    },
+    "Erdos85PolarityAbsolute": {
+      "source_sha256": "f23ba89cca17cc8a8d1ee5287ff42751f6081d9a5efe98cf030e5fa1624c13e3",
+      "imports": [
+        "Erdos85PolarityDeletion"
+      ]
+    },
+    "Erdos85PolarityDeletion": {
+      "source_sha256": "bb6de1fb7e8856e672341c98053d86aa48b5b171e53f469ebeaf444ba0da54e6",
+      "imports": [
+        "Erdos85PolarityFamily",
+        "Erdos85Relabel",
+        "Erdos85DeletePair"
+      ]
+    },
+    "Erdos85PolarityFamily": {
+      "source_sha256": "7633c28397ddd3277c0de9f16be5ed1ea0eda5c23454e9a1f015f23e7e1e11d0",
+      "imports": [
+        "Erdos85PolarityDegree"
+      ]
+    },
+    "Erdos85PolarityDegree": {
+      "source_sha256": "5e987677b5934630ee1ea97401d64ff207cfbef38677e303e4838c3486a7f23d",
+      "imports": [
+        "Erdos85Polarity"
+      ]
+    },
+    "Erdos85Polarity": {
+      "source_sha256": "27a8e3a5297e938b206c4248e531183b61d538844768032eb37bf992dc44eee1",
+      "imports": [
+        "Erdos85TightWitness"
+      ]
+    },
+    "Erdos85TightWitness": {
+      "source_sha256": "163ed0643f97b66d227f7fdf3aba41811d78fc447859fa2842413818b1a46908",
+      "imports": [
+        "Erdos85Problem"
+      ]
+    },
+    "Erdos85ParabolaSidonRuler": {
+      "source_sha256": "a95d4832b61a374f41f52ec61f2aa5382af14839f2fcdc63aeec9391d287b29e",
+      "imports": [
+        "Erdos85SidonNoWrap"
+      ]
+    },
+    "Erdos85SidonNoWrap": {
+      "source_sha256": "64d27ff5730ca0a293c4c5e32fb93c6989e1a0ff1b353b5f81a371d814505110",
+      "imports": [
+        "Erdos85DifferenceSidonCayley"
+      ]
+    },
+    "Erdos85DifferenceSidonCayley": {
+      "source_sha256": "74f57c891c7093a35c30921864fdc7124c2649fd65f1d50c67a332ba48f3beb5",
+      "imports": [
+        "Erdos85Relabel"
+      ]
+    },
+    "Erdos85ConflictComponents": {
+      "source_sha256": "14e3cbfbaafcc74e8656b8f95531e9777a455a04555bec210d9d53e3c2d03aa4",
+      "imports": [
+        "Erdos85RamseyPlateau"
+      ]
+    },
+    "Erdos85BoundaryConnectedClean": {
+      "source_sha256": "87017af0477fef5e7e57a0ff44d0b9968aabdf8f035d1298b156dfa8e825c0f9",
+      "imports": [
+        "Erdos85BoundaryConnected"
+      ]
+    },
+    "Erdos85BoundaryConnected": {
+      "source_sha256": "9473e8f12f8d970ef7fc5f7f68d41d4c0ccf1ac82461e7470a4196371723fe7d",
+      "imports": [
+        "Erdos85EvenAntipodalQuotient",
+        "Erdos85ComponentFactorization"
+      ]
+    },
+    "Erdos85ComponentFactorization": {
+      "source_sha256": "5248258c91416d745a6f2ba9b87ffa50f9d4ed27863c666f0393b0c6da02295d",
+      "imports": [
+        "Erdos85CycleGraphIso",
+        "RationalCanonicalFormExists"
+      ]
+    },
+    "RationalCanonicalFormExists": {
+      "source_sha256": "eb47b8607e8c037d4ffd04ace6fafc982a498954f12ac86111f05f4f9d512171",
+      "imports": []
+    },
+    "Erdos85CycleGraphIso": {
+      "source_sha256": "77816d2679fa38361c429c45b71472dd615da17f97043e9dc9671314ec898e12",
+      "imports": [
+        "Erdos85CycleResolvent"
+      ]
+    },
+    "Erdos85CycleResolvent": {
+      "source_sha256": "9b042eff8c1182c0dfc8d607c01a5217fe79004600ed868821d676ac51cb30ae",
+      "imports": [
+        "Erdos85SecondOrderEvenDefect"
+      ]
+    },
+    "Erdos85SecondOrderEvenDefect": {
+      "source_sha256": "b904db2a0f435366a44bd228f7a0942a9985f34b7fc754c2d51cdbfb6a640411",
+      "imports": [
+        "Erdos85SecondOrderStructure"
+      ]
+    },
+    "Erdos85ControlledDeletion": {
+      "source_sha256": "eac7de1b9b2bcb439faee93a1bce01ecef6f0f6dd1f54e918b47df3dff053c35",
+      "imports": [
+        "Erdos85Relabel"
+      ]
+    },
+    "Erdos85OrderFortyNineDefectEigenvectors": {
+      "source_sha256": "7b8a73c0edea2043e303f4dff47d52cec5367a7cc8c710ea1bb6d4b2e0048d5c",
+      "imports": [
+        "Erdos85OrderFortyNineDefectIncidence"
+      ]
+    },
+    "Erdos85OrderFortyNineDefectIncidence": {
+      "source_sha256": "31b17b9df337009c5b3cda6541189b994a65605a9bbfc5f1ba65dbf82da25a5a",
+      "imports": [
+        "Erdos85OrderFortyNineIncidence",
+        "Erdos85NonregularDefectOperator",
+        "Erdos85AlternatingFourthMoment"
+      ]
+    },
+    "Erdos85AlternatingFourthMoment": {
+      "source_sha256": "f138c4df7a7c2e497e7af78f6357422258236c1950dec402719771461dad0d38",
+      "imports": [
+        "Erdos85C4FreeFourthMoment"
+      ]
+    },
+    "Erdos85C4FreeFourthMoment": {
+      "source_sha256": "d929299be9a49ff7f3f076a485132150c61879b4295eb0a5934ed2165005c7e6",
+      "imports": [
+        "Erdos85ExcessThreeSectorCount"
+      ]
+    },
+    "Erdos85ExcessThreeSectorCount": {
+      "source_sha256": "56889da7d37a253ea3a720fd29641f28b559cdaa0a4b9dfbc1aff55f2d1c1d3c",
+      "imports": [
+        "Erdos85PositiveExcessLocalParity"
+      ]
+    },
+    "Erdos85PositiveExcessLocalParity": {
+      "source_sha256": "a50917bb2eb3a4e55a1f8d144f1eadff55e14a6c4d2527f9a2e9638a94571c6c",
+      "imports": [
+        "Erdos85PositiveExcessOne"
+      ]
+    },
+    "Erdos85PositiveExcessOne": {
+      "source_sha256": "d7ae3e872e4204ddd4485f1529418f6b969fab7852c6927198aa8512291dcca5",
+      "imports": [
+        "Erdos85ExcessDefectRegular",
+        "Erdos85SecondOrderColorTrace",
+        "Erdos85NonneighborReduction"
+      ]
+    },
+    "Erdos85NonneighborReduction": {
+      "source_sha256": "480b8a692d8c4226e325ba1c8157d4d59f3ea1bc0daf06bff76abfeadfb511ef",
+      "imports": [
+        "Erdos85MinimalWitness",
+        "Erdos85Relabel"
+      ]
+    },
+    "Erdos85SecondOrderColorTrace": {
+      "source_sha256": "aaabe7bf06679b13419d0495d49d6dd863be4c140d137a41ce39114eba844c26",
+      "imports": [
+        "Erdos85GlobalCycleFactorization"
+      ]
+    },
+    "Erdos85GlobalCycleFactorization": {
+      "source_sha256": "81dc8c9771e1e8e99f829a6d3f5b06d333102c9ab251f6695e4435f0e6ef6cce",
+      "imports": [
+        "Erdos85ComponentCycleCharpoly",
+        "Erdos85CycleResolvent"
+      ]
+    },
+    "Erdos85ComponentCycleCharpoly": {
+      "source_sha256": "575efad705b5679276d41a59edb9c64c6492e8eff6cd47a300593072fc8aebaf",
+      "imports": [
+        "Erdos85CycleCharpoly"
+      ]
+    },
+    "Erdos85CycleCharpoly": {
+      "source_sha256": "400656b786f0b0f0b116e36fb958c9459ae179ec61c90710490cdd8477ff1671",
+      "imports": [
+        "Erdos85PathCharpoly"
+      ]
+    },
+    "Erdos85PathCharpoly": {
+      "source_sha256": "51d4f71a89bc6b3486409d9ddd9cf9f690a97ff198fb4a6665e06630fce29c66",
+      "imports": [
+        "Erdos85ComponentFactorization"
+      ]
+    },
+    "Erdos85ExcessDefectRegular": {
+      "source_sha256": "10955361271be1d18e002c640946e0718064ac52f14a7bcaf63d0b8daa94c55a",
+      "imports": [
+        "Erdos85SecondOrderEvenDefect"
+      ]
+    },
+    "Erdos85NonregularDefectOperator": {
+      "source_sha256": "ae1845a726b195ffe2b5c97e949f2be78d594eb0490d6e90af4b52f7c7239e02",
+      "imports": [
+        "Erdos85ExcessDefectRegular",
+        "Erdos85ConflictDegreeAccounting"
+      ]
+    },
+    "Erdos85ConflictDegreeAccounting": {
+      "source_sha256": "d2eeac311a6e84df7d56fa427b6e72d0e5e85d7220aac909051c7e0a8b27ad06",
+      "imports": [
+        "Erdos85ConflictRegular"
+      ]
+    },
+    "Erdos85ConflictRegular": {
+      "source_sha256": "47b46c54e3f410a777ac9556149b2503ac8ec0f3fc9bf64cbdcabe9a465fc7ed",
+      "imports": [
+        "Erdos85ProblemConflict"
+      ]
+    },
+    "Erdos85OrderFortyNineIncidence": {
+      "source_sha256": "b869108778237546ab733a6a05aa12fbfaead3c4dc77d38472db6f9f5c3140a9",
+      "imports": [
+        "Erdos85OrderFortyNineStratification"
+      ]
+    },
+    "Erdos85OrderFortyNineStratification": {
+      "source_sha256": "6ef1941e748ea93e200337e77d31d801c4e96f4fb0161989ea2defe3894a685c",
+      "imports": [
+        "Erdos85DegreeExcessStratification",
+        "Erdos85PositiveExcessLocalParity"
+      ]
+    },
+    "Erdos85DegreeExcessStratification": {
+      "source_sha256": "56e1d99c47c37df15ffb82de92f89b5541016c870b5be40e406aaa0330e6c710",
+      "imports": [
+        "Erdos85ConflictDegreeAccounting",
+        "Erdos85ConflictDefectDuality",
+        "Erdos85GadgetCounting",
+        "Erdos85MinimalWitness"
+      ]
+    },
+    "Erdos85GadgetCounting": {
+      "source_sha256": "a2e5013330a590d247a606e3d7e0ad00e4f7d5d45960b0b76c81df3ed7716443",
+      "imports": [
+        "Erdos85GadgetExtension"
+      ]
+    },
+    "Erdos85ConflictDefectDuality": {
+      "source_sha256": "92cb5bb49a4fed64a2907502a268c0854cfe1f2c1886db5f89bcaeb42b3af868",
+      "imports": [
+        "Erdos85ExcessDefectRegular",
+        "Erdos85ConflictRegular"
+      ]
+    },
+    "Erdos85FiniteDropCore": {
+      "source_sha256": "55f45904452d0649701a606f37b4409120b591c407b259d86959a80052bcbaa3",
+      "imports": [
+        "Erdos85RamseyPlateau"
+      ]
+    },
+    "Erdos85OrderFortyNineStrataCapstone": {
+      "source_sha256": "af317b32c4a9130ea55a8f9bfd7aac052dbcf348952eb347cb9abb9a7507797b",
+      "imports": [
+        "Erdos85OrderFortyNineNineHighContradiction",
+        "Erdos85OrderFortyNineOneThreeHighProfile",
+        "Erdos85OrderFortyNineFiveHighTripleBound",
+        "Erdos85OrderFortyNineSevenHighProfile",
+        "Erdos85OneHighFamilyCnfSemantics"
+      ]
+    },
+    "Erdos85OneHighFamilyCnfSemantics": {
+      "source_sha256": "6af28cddeccff652e9cc3b701d70a8292d52c8e4e3f3bb513d605dde265998d1",
+      "imports": [
+        "Erdos85OneHighCanonicalMate",
+        "Erdos85SequentialCounterReification"
+      ]
+    },
+    "Erdos85SequentialCounterReification": {
+      "source_sha256": "dd7ab6c1263180b33e89d6447615453ccf33cb3e5042eb3de4c9744a5cb4b61c",
+      "imports": [
+        "Erdos85SequentialCounterGenerator",
+        "Erdos85SequentialCounterClauses"
+      ]
+    },
+    "Erdos85SequentialCounterClauses": {
+      "source_sha256": "95668862f4f134b26b9a1a141ef7aae15559b73d04036a31c543692b731d26cd",
+      "imports": [
+        "Erdos85SequentialCounter"
+      ]
+    },
+    "Erdos85SequentialCounter": {
+      "source_sha256": "213563e0fd24b642d95e18c7479153a60b987a69fb9985aceccb98c22e8d319d",
+      "imports": []
+    },
+    "Erdos85SequentialCounterGenerator": {
+      "source_sha256": "420c3b52df27cd8b05c2acde831e311787c406c1a523b85b5f5eb4be17990e99",
+      "imports": [
+        "Erdos85SequentialCounter"
+      ]
+    },
+    "Erdos85OneHighCanonicalMate": {
+      "source_sha256": "79e895bd0b9a71ca05ee50765e986ebfbf68612a3323b465291318b55824609d",
+      "imports": [
+        "Erdos85PairedBlockRigidity",
+        "Erdos85OrderFortyNineOneHighOverlap"
+      ]
+    },
+    "Erdos85OrderFortyNineOneHighOverlap": {
+      "source_sha256": "c36af9820736a936802f377cba091a0b25c82be007ffcb49634b0f543e1a22e7",
+      "imports": [
+        "Erdos85OrderFortyNineHighBranchGeometry",
+        "Erdos85ExteriorDefectDecomposition",
+        "Erdos85LocalTriangleParity",
+        "Erdos85OrderFortyNineDistOnePinning",
+        "Erdos85BranchDeficitSymmetry",
+        "Erdos85PairedBlockRigidity",
+        "Erdos85MinimumSectorAssemblyInterface",
+        "Erdos85SquareOrderHighRootKernel",
+        "Erdos85OrderFortyNineSquareRoot"
+      ]
+    },
+    "Erdos85OrderFortyNineSquareRoot": {
+      "source_sha256": "dfb58d639f567a5db945d70ea67aba7695e72ec97e890a068c88912fbd460be0",
+      "imports": [
+        "Erdos85NonregularDefectOperator",
+        "Erdos85AlternatingParity",
+        "Erdos85OrderFortyNineIncidence",
+        "Erdos85OrderFortyNineStratification"
+      ]
+    },
+    "Erdos85AlternatingParity": {
+      "source_sha256": "31151c576ad1e930ff9a3e679cb4f0c6d34d2cb9bcae7c3e5ff1a5e0adc3d13b",
+      "imports": []
+    },
+    "Erdos85SquareOrderHighRootKernel": {
+      "source_sha256": "798ab908cb815f4b25f89432212922ece36b41f011a26e4d784d7e14e30f4e43",
+      "imports": [
+        "Erdos85HighRootZeroSlack"
+      ]
+    },
+    "Erdos85MinimumSectorAssemblyInterface": {
+      "source_sha256": "e5c76d5730bbaaf28a1d282f88ddb7f1bac6dbcc27645645cb574ee88e7f1869",
+      "imports": [
+        "Erdos85BoundaryQuotientDivisibility",
+        "Erdos85ComponentFactorization"
+      ]
+    },
+    "Erdos85BoundaryQuotientDivisibility": {
+      "source_sha256": "098aecc80011ba6104f10c5b22e86e2700a3e117a645fb0b420ed44f48400e97",
+      "imports": [
+        "Erdos85BoundaryQuotientIrreducible",
+        "Erdos85ComponentPeriodicityBound"
+      ]
+    },
+    "Erdos85ComponentPeriodicityBound": {
+      "source_sha256": "db1c7cdf156c4a60884938dd1ca9e5e8ed994785d57056aa542d5ceab48d93c4",
+      "imports": [
+        "Erdos85DefectCycleBlock",
+        "Erdos85SecondOrderQuotient"
+      ]
+    },
+    "Erdos85SecondOrderQuotient": {
+      "source_sha256": "7e892e3230fd73b3eab65720284a6986efe4b10803a184ebbe91cb3aa4247514",
+      "imports": [
+        "Erdos85SecondOrderColorTrace"
+      ]
+    },
+    "Erdos85DefectCycleBlock": {
+      "source_sha256": "16ab211ff147e86567b7bdd9e12c1f307c2f301edf1343000451cdf9a5e47447",
+      "imports": [
+        "Erdos85CycleIntertwinerPeriodicity",
+        "Erdos85CycleGraphIso"
+      ]
+    },
+    "Erdos85CycleIntertwinerPeriodicity": {
+      "source_sha256": "f1356b327f6f4a1123126dea2f9a081a163052f93986a1b875de690f1bea8f5b",
+      "imports": [
+        "Erdos85SecondOrderColorTrace"
+      ]
+    },
+    "Erdos85BoundaryQuotientIrreducible": {
+      "source_sha256": "c8bad1cb91d18fe462f2120b6cf465ebfca5013681ec68f611e66e900f25967d",
+      "imports": [
+        "Erdos85BoundaryConnected",
+        "Erdos85SecondOrderQuotient"
+      ]
+    },
+    "Erdos85PairedBlockRigidity": {
+      "source_sha256": "c97dec1e90b44efa0b28c5455b79ce94fd5f4ec0a1c0be86b7aa2c28d1d57d00",
+      "imports": [
+        "Erdos85OrderFortyNineOuterDefect"
+      ]
+    },
+    "Erdos85OrderFortyNineOuterDefect": {
+      "source_sha256": "8a1762f6072648a823c4230593ad2f2f87e8fa0bfd392d56b61c8e9707799a58",
+      "imports": [
+        "Erdos85SquareOrderOuterGraph",
+        "Erdos85ConflictDefectDuality",
+        "Erdos85OrderFortyNineHighBranchGeometry"
+      ]
+    },
+    "Erdos85SquareOrderOuterGraph": {
+      "source_sha256": "bc6673cdec44511b0f6a7f753b465fe33d144c0e42ebf239954e70f696fa17a2",
+      "imports": [
+        "Erdos85BranchDeficitSymmetry"
+      ]
+    },
+    "Erdos85OrderFortyNineDistOnePinning": {
+      "source_sha256": "6fbead1cf0ac4c1fdf25f52d3e1b66cf7e1051614b1964064d6847b7269de010",
+      "imports": [
+        "Erdos85OrderFortyNineDistTwoPinning"
+      ]
+    },
+    "Erdos85OrderFortyNineDistTwoPinning": {
+      "source_sha256": "3bbe0441b9cbccb887f202cd2a1b1d609b378081d52e53f62d3bf9478436e83c",
+      "imports": [
+        "Erdos85OrderFortyNineHighBranchGeometry",
+        "Erdos85OrderFortyNineLocalEdgePartition"
+      ]
+    },
+    "Erdos85OrderFortyNineLocalEdgePartition": {
+      "source_sha256": "5cbdf7a4e429bd34c68de1318e891997fdc726d77230c0735de446c254c56cb9",
+      "imports": [
+        "Erdos85LocalTriangleParity",
+        "Erdos85OrderFortyNineHighPartnerBound"
+      ]
+    },
+    "Erdos85ExteriorDefectDecomposition": {
+      "source_sha256": "b3118914dda45482ee4b57fd881a70c235335d8defa2646a1fee0197c613fcb6",
+      "imports": [
+        "Erdos85ExcessDefectRegular"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighProfile": {
+      "source_sha256": "af3811309f5494f4ceac02aeb9abea583c8c4a21d84b21914beb3573c295ffed",
+      "imports": [
+        "Erdos85OrderFortyNineGeneralHighProfile"
+      ]
+    },
+    "Erdos85OrderFortyNineGeneralHighProfile": {
+      "source_sha256": "69bbc8f48720ce60b6cf8f4432a78971b4fea31dd0f202015074598a8ff21c2b",
+      "imports": [
+        "Erdos85OrderFortyNinePBDClassification"
+      ]
+    },
+    "Erdos85OrderFortyNinePBDClassification": {
+      "source_sha256": "838fc8df481e94de442aaa2a6e7278d694e350372231aa1ca2a40392998c2786",
+      "imports": [
+        "Erdos85OrderFortyNineOddIncidence"
+      ]
+    },
+    "Erdos85OrderFortyNineOddIncidence": {
+      "source_sha256": "ef4e4131560f8fca8e1813c4cf371b0aca1730b2a1393474a0a30e9acb28693a",
+      "imports": [
+        "Erdos85OrderFortyNineLowNeighborhoodPartition"
+      ]
+    },
+    "Erdos85OrderFortyNineLowNeighborhoodPartition": {
+      "source_sha256": "87bfcf2b2bd880bee6481dff5f8e5365a2b9245d1124a1b171fc9de20390439f",
+      "imports": [
+        "Erdos85OrderFortyNineDefectWeightedIncidence"
+      ]
+    },
+    "Erdos85OrderFortyNineDefectWeightedIncidence": {
+      "source_sha256": "021713d05f85ad041b9b444cc8226c54226c6717025a04fbe38d4f810fc3d5b3",
+      "imports": [
+        "Erdos85OrderFortyNineHighPartnerBound",
+        "Erdos85OrderFortyNineHighIncidenceCensus",
+        "Erdos85BranchDeficitSymmetry"
+      ]
+    },
+    "Erdos85OrderFortyNineHighIncidenceCensus": {
+      "source_sha256": "e949ee0ce4adecf6f2b257d31c24e80f17b21fb258086297e55f12ab4390ca12",
+      "imports": [
+        "Erdos85OrderFortyNineHighPartnerBound",
+        "Erdos85OrderFortyNineLocalEdgePartition"
+      ]
+    },
+    "Erdos85OrderFortyNineFiveHighTripleBound": {
+      "source_sha256": "27d99de0c4a54acf9f9b005dee50dce5560b245f14954fd1c2c8a7d90214b45f",
+      "imports": [
+        "Erdos85OrderFortyNineGeneralHighProfile"
+      ]
+    },
+    "Erdos85OrderFortyNineOneThreeHighProfile": {
+      "source_sha256": "aad7983815f2b235c23c6415cc78682a7342ba23e88887cac61cd35fa24f9885",
+      "imports": [
+        "Erdos85OrderFortyNineGeneralHighProfile"
+      ]
+    },
+    "Erdos85OrderFortyNineNineHighContradiction": {
+      "source_sha256": "821cf242fa42790d21d4e033467ca66b48ba9c538048ff92f6c0bcdc1a4ac647",
+      "imports": [
+        "Erdos85OrderFortyNineT2RepACertificate",
+        "Erdos85OrderFortyNineT2RepBCertificate",
+        "Erdos85OrderFortyNineT3Rep0Certificate",
+        "Erdos85OrderFortyNineT3Rep1Certificate",
+        "Erdos85OrderFortyNineT3Rep2Certificate",
+        "Erdos85OrderFortyNineT3Rep3Certificate",
+        "Erdos85OrderFortyNineT3Rep4Certificate",
+        "Erdos85OrderFortyNineT4Rep0Certificate",
+        "Erdos85OrderFortyNineT4Rep1Certificate",
+        "Erdos85OrderFortyNineT4Rep2Certificate",
+        "Erdos85OrderFortyNineT4Rep3Certificate",
+        "Erdos85OrderFortyNineT4Rep4Certificate",
+        "Erdos85OrderFortyNineT4Rep5Certificate",
+        "Erdos85OrderFortyNineT4Rep6Certificate",
+        "Erdos85OrderFortyNineT4Rep7Certificate",
+        "Erdos85OrderFortyNineT4Rep8Certificate",
+        "Erdos85OrderFortyNineT4Rep9Certificate",
+        "Erdos85OrderFortyNineT4Rep10Certificate",
+        "Erdos85OrderFortyNineCheckedTerminal"
+      ]
+    },
+    "Erdos85OrderFortyNineCheckedTerminal": {
+      "source_sha256": "19cf3d87b5fb2a43da414ab7e6bd53d23dd4492443bc08d07f62c7ebebb872cc",
+      "imports": [
+        "Erdos85OrderFortyNineAlignedBooleanBridge",
+        "Erdos85DimacsSatBridge"
+      ]
+    },
+    "Erdos85DimacsSatBridge": {
+      "source_sha256": "f89e835358f53a17913e3658399f4f56e9c02ce21458b80b7b931df8935d9dc2",
+      "imports": [
+        "Erdos85OrderFortyNineCnfSegments",
+        "Erdos85OrderFortyNineDegreeBlocksNonzero"
+      ]
+    },
+    "Erdos85OrderFortyNineDegreeBlocksNonzero": {
+      "source_sha256": "d5e6ccb2b17adf1b49bb93556ec6cc92fd987b6572af7cfb1adfa43e144aa985",
+      "imports": [
+        "Erdos85OrderFortyNineDegreeBlocks"
+      ]
+    },
+    "Erdos85OrderFortyNineDegreeBlocks": {
+      "source_sha256": "5993f77f8f22d3b0979e42910ff8918fdbdadcd5e3d194ad44f699b922bb3505",
+      "imports": [
+        "Erdos85OrderFortyNineDimacsRows"
+      ]
+    },
+    "Erdos85OrderFortyNineDimacsRows": {
+      "source_sha256": "fbaa9bd9c21943aa9b822ac069ccf243b2e934be37f2e28d1eb5285fb99e9ea3",
+      "imports": [
+        "Erdos85OrderFortyNineBooleanTerminal",
+        "Erdos85SequentialCounterReification"
+      ]
+    },
+    "Erdos85OrderFortyNineBooleanTerminal": {
+      "source_sha256": "d3f566e0dd75633c3a20abcecebb92f04485d0ed9cdb600e576f5462a4639690",
+      "imports": [
+        "Erdos85OrderFortyNineSupportPartitions"
+      ]
+    },
+    "Erdos85OrderFortyNineSupportPartitions": {
+      "source_sha256": "771f375897d78392cb328b6475894fafcdd9a99cfa6a5530a6dcaf479ae52897",
+      "imports": [
+        "Erdos85OrderFortyNineOneThreeHighProfile"
+      ]
+    },
+    "Erdos85OrderFortyNineCnfSegments": {
+      "source_sha256": "c6f42e82240cc17a4b0dacdbc267a11e97eb76a3c4f01ad8132b80ba7d5d7935",
+      "imports": [
+        "Erdos85OrderFortyNinePartitionClauses"
+      ]
+    },
+    "Erdos85OrderFortyNinePartitionClauses": {
+      "source_sha256": "f88b773b663a31920752d112f65b3d9473d68a3e384be2403c38d3d955eb0f9d",
+      "imports": [
+        "Erdos85OrderFortyNineC4Clauses"
+      ]
+    },
+    "Erdos85OrderFortyNineC4Clauses": {
+      "source_sha256": "2e45f5bf451d6f232931b9bc0fe7e1750aa1a721f472d81e19909913ad80e7f6",
+      "imports": [
+        "Erdos85OrderFortyNineFixedClauses"
+      ]
+    },
+    "Erdos85OrderFortyNineFixedClauses": {
+      "source_sha256": "a9cb33dc4cc6763689b49e3aa28e1f8e21341d13419347db0c63e1ea77c8da01",
+      "imports": [
+        "Erdos85OrderFortyNineDegreeBlocks"
+      ]
+    },
+    "Erdos85OrderFortyNineAlignedBooleanBridge": {
+      "source_sha256": "867b5a98c19333fc7512ba6e61fefcaa7666a30e4da6cefe3ca9579c519b8b42",
+      "imports": [
+        "Erdos85OrderFortyNineFullCanonicalLabeling",
+        "Erdos85OrderFortyNineBooleanTerminal",
+        "Erdos85Relabel"
+      ]
+    },
+    "Erdos85OrderFortyNineFullCanonicalLabeling": {
+      "source_sha256": "10b1b030ec6fdc8e6dcff3b43b7ed447f1c9355e8606a0def304dc7f9724d2fb",
+      "imports": [
+        "Erdos85OrderFortyNineCanonicalProfileFibers"
+      ]
+    },
+    "Erdos85OrderFortyNineCanonicalProfileFibers": {
+      "source_sha256": "268095f9da2030a6772393f80547f61bd286d067ad1c7c647d1403b4fc0abb44",
+      "imports": [
+        "Erdos85OrderFortyNineCanonicalTripleSystem",
+        "Erdos85OrderFortyNineCanonicalMaskFibers"
+      ]
+    },
+    "Erdos85OrderFortyNineCanonicalMaskFibers": {
+      "source_sha256": "6e3635dbe74ea63c72295ecf3c3e119e4e7942c1b166d07a81097db2886bbaba",
+      "imports": [
+        "Erdos85OrderFortyNineCanonicalTripleSystem"
+      ]
+    },
+    "Erdos85OrderFortyNineCanonicalTripleSystem": {
+      "source_sha256": "87ccb5770fd95504d97aeab8b5c1dd594cfdbe9bd9ade493d1c5834271f9220e",
+      "imports": [
+        "Erdos85OrderFortyNineGraphPrefixNormalization",
+        "Erdos85OrderFortyNineRowSemantics"
+      ]
+    },
+    "Erdos85OrderFortyNineRowSemantics": {
+      "source_sha256": "a1d2ddadab97bd774a9a8c43e8291fb4676a12d9bdfec288996f21dca8495d0a",
+      "imports": [
+        "Erdos85OrderFortyNineGraphPrefixNormalization"
+      ]
+    },
+    "Erdos85OrderFortyNineGraphPrefixNormalization": {
+      "source_sha256": "3c58c5b802cc6a910f52488925e1320e3e1945314dfe50d7893c2ec4b3108960",
+      "imports": [
+        "Erdos85OrderFortyNinePBDClassification",
+        "Erdos85OrderFortyNinePrefixNormalization"
+      ]
+    },
+    "Erdos85OrderFortyNinePrefixNormalization": {
+      "source_sha256": "1d3720a6cf19c9aee3f4562c3ffbd9ed38be89ae1c39685243cc959544f78a28",
+      "imports": [
+        "Erdos85OrderFortyNineTableVerification"
+      ]
+    },
+    "Erdos85OrderFortyNineTableVerification": {
+      "source_sha256": "88eeb5d795e90d8c0262675c5158e3abd336476c6cd873e19f312398d78687c4",
+      "imports": [
+        "Erdos85OrderFortyNineProfileMasks",
+        "Erdos85OrderFortyNineWitnessTable"
+      ]
+    },
+    "Erdos85OrderFortyNineWitnessTable": {
+      "source_sha256": "3ddf4b4cc3d4a57dbae396601e44036582369a77710cace2e4c301ba2007336f",
+      "imports": []
+    },
+    "Erdos85OrderFortyNineProfileMasks": {
+      "source_sha256": "ffe201e2fe851105ec12ea6c7f419a0424671faadef07931704b62e8e16740db",
+      "imports": [
+        "Erdos85OrderFortyNineCnfSegments"
+      ]
+    },
+    "Erdos85OrderFortyNineT4Rep10Certificate": {
+      "source_sha256": "abbeeaa4928e30e7e7d42d497f8156e4d0a8d8e9c0418d557f80ef850069d919",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineLratCertificateBase": {
+      "source_sha256": "1241b6bfea39eb7ccc08954e77a320bd0749d479d6c6d76ba2165f644d3f0d36",
+      "imports": [
+        "Erdos85DimacsSatBridge",
+        "Erdos85OrderFortyNineProfileMasks"
+      ]
+    },
+    "Erdos85OrderFortyNineT4Rep9Certificate": {
+      "source_sha256": "c6650cf6558e9bc4e16c910ca6ed62b1068345b410982fdadc5019429ea9ffe8",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineT4Rep8Certificate": {
+      "source_sha256": "ea599f1b89e945ae1f6374afa0f18968755a913b189de2c8ae4570c8a249f77a",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineT4Rep7Certificate": {
+      "source_sha256": "bd200b0327bf5b2733ba2b36ac638c3fbf39f4e42e76012b9422a53ef6590358",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineT4Rep6Certificate": {
+      "source_sha256": "e80a46f523e34b0fc076709ed8c9b80778d4bde6d00ed91eaf74371d4e0cba59",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineT4Rep5Certificate": {
+      "source_sha256": "5e0932f44568a4295de54e8028af6a9b7fad266ec205e5811d09d34ff1c94c65",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineT4Rep4Certificate": {
+      "source_sha256": "86ff2f7894cf27128c746361a812c63b81c4c341b8392abb26e26eb47edd6098",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineT4Rep3Certificate": {
+      "source_sha256": "11a2b1a0bc3aadc2b2005f07bc7ae2bbc0ce86b1e4aa7b37018d5b8c0546d8c2",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineT4Rep2Certificate": {
+      "source_sha256": "04f9ef78ee0be7c22b54f75093c89bcc48d73a302b337d175eeef36a0b0ea869",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineT4Rep1Certificate": {
+      "source_sha256": "41601bd7a185902484a2283889375376010e2c2255eda28370d607b74a3e454c",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineT4Rep0Certificate": {
+      "source_sha256": "f84e9d59b6933de25d02968fcbb524495d8fd94064f277c3cae6f293089afb65",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineT3Rep4Certificate": {
+      "source_sha256": "4ac237b0eb14d1a7f89d3589935d53fc3b2eca128c8e4890215deab376250450",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineT3Rep3Certificate": {
+      "source_sha256": "07bdd4318d5ae6d37099206229e6c3ed83924d3c6c3690349a7d210130b03f30",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineT3Rep2Certificate": {
+      "source_sha256": "8e1b88c9e1834b90c5a9ad6e51c5524f8f02638c795baa16a1d9c2f3d9ba5403",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineT3Rep1Certificate": {
+      "source_sha256": "59c4002c5ec8f800b16b99a18b12e7383b171a1854857a441f9f25e65005dcc4",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineT3Rep0Certificate": {
+      "source_sha256": "983c9222a63842432228ad54dcf0d2eb717c86bb022579ecf48bdfca4ef04ff0",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineT2RepBCertificate": {
+      "source_sha256": "8a3fae8cd5dc7df170275c3160d3f2c068f83e6227c77117aab49fcfeacf5d75",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineT2RepACertificate": {
+      "source_sha256": "af05a8a794c656746926a018b3ec34dc7f4629ae2d82234fc22b2260b4616449",
+      "imports": [
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalHsbStratumCapstone": {
+      "source_sha256": "709912235f58789240262f22b022936b4fb10c587f9ebac11e19eac9b981eb5d",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeMixedCapstone",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalHsbCapstone"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalHsbCapstone": {
+      "source_sha256": "8f55c9a9e7c31ac2a11118269b6126cb6daaecc5907834d9b03a71ed7ab27bc4",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeCounting",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalHsbLeaves"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalHsbLeaves": {
+      "source_sha256": "9d00906dd065fcc24ce193e8cce53e6d982af2d168098ec9ce3bbb5ffdc51697",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalHsbSound"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalHsbSound": {
+      "source_sha256": "460f8914bddc2a5860cda50eae4a8c368f7d653ce8a80e1e5a44b7ec4cb5175a",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalHighSymmetryRowKey",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalHsbGen",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeOrbitExtraClauses"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeOrbitExtraClauses": {
+      "source_sha256": "128daa740a132e46ed85cf2b0ea149452bcee53757b87a5dd38390b6f82808e6",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeExtraClauses"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeExtraClauses": {
+      "source_sha256": "6f8fa2ddf87e4340b0fdbe6a79182ba0a5bcd04fa90bc3aceb88b5a766cc2028",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeSemanticExclusion",
+        "Erdos85CnfBinarySplit"
+      ]
+    },
+    "Erdos85CnfBinarySplit": {
+      "source_sha256": "3b4e5f9e7dc8c5735e30b6e04b3e5da3da8f8db38867cdf588dc1d87f12195f1",
+      "imports": [
+        "Erdos85CnfCubeCover"
+      ]
+    },
+    "Erdos85CnfCubeCover": {
+      "source_sha256": "e142b34d9e3bdd6a22bc19ead746b394d5d024ae4e33e6a0f82665145f663c9e",
+      "imports": []
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeSemanticExclusion": {
+      "source_sha256": "d72c0a6d8450b718e23a0010c285c02994bbd835ab4dc8fee39e6c10ae1433a1",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptySemanticOrbitCover",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeSatisfaction",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalCnfTerminal"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalCnfTerminal": {
+      "source_sha256": "34b17e85a78dbc3f71b82bafe61d0ce09f9a97be75752e512beb437bb660dc6f",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalCnfC4Completion",
+        "Erdos85OrderFortyNineDegreeBlocksNonzero",
+        "Erdos85DimacsSatBridge"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalCnfC4Completion": {
+      "source_sha256": "85d8c58f8c2d3453cb3bb5783b6c4264abbcbbf71e7290dea31dfcdec404cee0",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalCnfDegreeWitness",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalCnfC4Fold"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalCnfC4Fold": {
+      "source_sha256": "ac7e2c00fe2ce605ac5e5ea14983cf1288df609bb43ac4eb99e790e569c0adaf",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalCnfC4Witness"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalCnfC4Witness": {
+      "source_sha256": "9a7adec2d665d1eabeacc2c801d10421783cc11b246e432e8fc24f6a20f012eb",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalCnfSatisfaction"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalCnfSatisfaction": {
+      "source_sha256": "4c225a8750439e1fddc803caebbf6c91317f15ca6f7c8ce0fd71ac733dadddc6",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalCnf",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalSemantics",
+        "Erdos85SequentialCounterReification"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalSemantics": {
+      "source_sha256": "1e44709106ffccaefeb2c8ad0556a3f78f77adeb1a18d5c48330b0c4fa1f47f9",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalGraph"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalGraph": {
+      "source_sha256": "e4c9db40f2835cbbd655f853c12f3648c8cd202dea14c694e8b21cff96e6bfb9",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0IndexedProfiles"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0IndexedProfiles": {
+      "source_sha256": "725d891fedd1b5c5654081de1dcce389f60be239181943071d3f64039a9d3b5e",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0LowVertexIndexing",
+        "Erdos85OrderFortyNineSevenHighT0LocalProfile"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0LocalProfile": {
+      "source_sha256": "e3456458ddc36c76d1d57d5b66f9fbd310a1abcad9df51de2274daca21144364",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0LocalQuotientCapacity"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0LocalQuotientCapacity": {
+      "source_sha256": "bb23955f21e280f00b3ef1eeb1d3fb6bc14304e0e9fe02f7ad851a2961a70754",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0LocalQuotientBridge"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0LocalQuotientBridge": {
+      "source_sha256": "704036827ae0b5074c062799172e333c7690122089e7da0bddd231b2f8e02bd0",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0ActualSingletonCompatibility"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0ActualSingletonCompatibility": {
+      "source_sha256": "1f7ba9e06a77ab2f0d6402da73009989508d4434700421ea379e6f0fe80f3682",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0EmptyQuotient"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0EmptyQuotient": {
+      "source_sha256": "3d329fa6b4e1c03fa4d19c95ef3520c6eb46c12b68fb02cc3361228cdbbf82f5",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighZeroFiber",
+        "Erdos85OrderFortyNineSupportPartitions"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighZeroFiber": {
+      "source_sha256": "bbf86d83983a90c52e778d9c1cd55a5bffa69b291c9a0115bbca3651c268c58a",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighFiberLabeling"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighFiberLabeling": {
+      "source_sha256": "231aae3a8b6ee462b5c7a8095799fdd9be660c163294897503a0186b84439153",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighLabelingBridge"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighLabelingBridge": {
+      "source_sha256": "64d3764a5be8a1403cd893dab839fbc58d09354813832bd3dd2bc175dca51903",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCanonicalCapstone",
+        "Erdos85OrderFortyNineAlignedBooleanBridge"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighCanonicalCapstone": {
+      "source_sha256": "e1c427179907a68e42c00582a8ebd65174087f3621a58ee69dc675f30a66a8ba",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighProfileMasks",
+        "Erdos85OrderFortyNineStrataCapstone"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighProfileMasks": {
+      "source_sha256": "dd72d837f5653c6d95782279f02b7980220238925cfc407f3a07490224716f06",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCanonicalCensus",
+        "Erdos85OrderFortyNineBooleanTerminal"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighCanonicalCensus": {
+      "source_sha256": "0a01c8a8d0a38e722a27f4053439be11c4c1c0811f0bc9bc0194d17a9fb60a9f",
+      "imports": [
+        "Erdos85OrderFortyNineTableVerification"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0LowVertexIndexing": {
+      "source_sha256": "a83b703f1c19ceb7c8286e1e0763c6105699566126c484d9ac467c59b089b494",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0EmptyVertices",
+        "Erdos85OrderFortyNineSevenHighT0PairVertices",
+        "Erdos85OrderFortyNineSevenHighT0SingletonCopies"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0SingletonCopies": {
+      "source_sha256": "ec6b01963829d2256f1a7eec01013bdc561225bfb716a79cad2e6e03bd54638a",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0ActualSingletonCompatibility"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0PairVertices": {
+      "source_sha256": "8cf3bffaef9de43e4c82551c6b0fd7dcea82ac18714005058776ea36c7f6e288",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0SingletonCopies"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0EmptyVertices": {
+      "source_sha256": "87cfc21e67355614ad080dbcad05b7ee20f37d5fc186ee5a77dc189e82682b9c",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighZeroFiber"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalCnf": {
+      "source_sha256": "711cd891769b04c2ffb19988845f8a87c2194a61440a539e27895bb058ea7b4e",
+      "imports": [
+        "Erdos85DimacsSatBridge",
+        "Erdos85SequentialCounterGenerator"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalCnfDegreeWitness": {
+      "source_sha256": "0718faaac6a875d69035984c2c18617168d481d0c12f7e90ba643300bba79d95",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalCnfSatisfaction"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeSatisfaction": {
+      "source_sha256": "4715f11881d85a5caf409a375557fef5a8c1da0106027307f5386c487d71226e",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalSemanticEmptyMask",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeCnf"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeCnf": {
+      "source_sha256": "fb9762b1f45d6163f0a2d7ae3f8d4015f6e232584059042799b87da39ed84622",
+      "imports": [
+        "Erdos85CnfCubeCover",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalCnf"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalSemanticEmptyMask": {
+      "source_sha256": "125c6bb7a19efd1eaf0eedb033c4849b56310b0321b246b26d154d02a291e075",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalSemanticStructure",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalCnfC4Witness",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalRelabeling",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalFinTransport"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalFinTransport": {
+      "source_sha256": "8f83a40625b255a1fac8aa52abfd1d474aa70adcbdd0bc101e7ec8269e3b0c45",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalSemanticStructure",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalCnfSatisfaction",
+        "Erdos85OrderFortyNineAlignedBooleanBridge",
+        "Erdos85OrderFortyNineHighIncidenceCensus",
+        "Erdos85OrderFortyNineSevenHighT0LocalQuotientCapacity",
+        "Erdos85OrderFortyNineSevenHighT0GlobalQuotientParity"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0GlobalQuotientParity": {
+      "source_sha256": "f7ca5fb4ab9356a08610a9a8076fc9318cd719ec561df2f4ff37824db6556e86",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0GlobalQuotientBridge"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0GlobalQuotientBridge": {
+      "source_sha256": "6dcd3fc9d30c3fd074e3c70a24e474a8a7e6fc57b885c38e3a1499d77f7f00b8",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0LocalProfile"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalSemanticStructure": {
+      "source_sha256": "9bfaf56742ffa8b0db0c99048498b96dd2e7f5c82523dbefe9a814d79dc14b3b",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalSemantics",
+        "Erdos85OrderFortyNineHighIncidenceCensus"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalRelabeling": {
+      "source_sha256": "1a54d4c4cbe53bef3752a2ee10ba51fa02e0e747bdbdd6dc817004db286e7da5",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalSemantics"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalEmptySemanticOrbitCover": {
+      "source_sha256": "f43dc68533b3551458593af0f3004fe3e67fe7c3a060d230c64a4eeaff8972b0",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalSemanticEmptyAdmissible",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyPermutationAction",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalSemanticEmptyOrbitRelabel"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalSemanticEmptyOrbitRelabel": {
+      "source_sha256": "305ff6445ebadaaf16e3efc7d7aadae8fffd582f64aae78cc37493caf1476c51",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalSemanticEmptyMask"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyPermutationAction": {
+      "source_sha256": "e6de440acad2182bb171282be7b0d0bae4c4b97bff5fee10c8cd2ecd9052de26",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyOrbitWitness"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyOrbitWitness": {
+      "source_sha256": "b01ec4c3f63a307ce2f48bf463726ab8353f96d8a3b466fab0af7e5506d40613",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyOrbitCover"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyOrbitCover": {
+      "source_sha256": "138f79b5ee591c679c04b4a42ee9fdaa41e549b678cfbffe095c5839b1ca4b52",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeCnf",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalRelabeling"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalSemanticEmptyAdmissible": {
+      "source_sha256": "8dfeb615bb464aaaa63061e803c65457b885008daf196c8f8f0cf0e9e45aa6d0",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalSemanticEmptyMask",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyOrbitWitness"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalHsbGen": {
+      "source_sha256": "1392283ebaff7a8de62837a0eef0480a3838d466473162039a8348c476510e54",
+      "imports": []
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalHighSymmetryRowKey": {
+      "source_sha256": "1c684659b74527d9554252b6826d713597c1c2318cbf064eaf109bbafa597424",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalHighSymmetry"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalHighSymmetry": {
+      "source_sha256": "78d8cd83c497130183541f8dfefeed4d9f7afc461bf7844ffcceb2ffc2c6fd4a",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalRelabeling",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalSemanticEmptyOrbitRelabel"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeCounting": {
+      "source_sha256": "f0ade67ee6c988ba44243a1f9e429f7b2a4bba4ac62da2f984ad953103c49876",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0EmptyCountingCore",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeSemanticExclusion"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0EmptyCountingCore": {
+      "source_sha256": "444df5abbadeea7715c120cc5e4fdab741c22160ae409b2261f573aa437eec6d",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeCnf",
+        "Erdos85OrderFortyNineSevenHighT0ExteriorCapacityInequality"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0ExteriorCapacityInequality": {
+      "source_sha256": "4787d80fa74553b8f499a112e1d9389ec575a71f380224476916ec850041b726",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0ExteriorPairCapacity",
+        "Erdos85OrderFortyNineSevenHighT0ExteriorPairLowerBound",
+        "Erdos85VertexSubsetEdgeCapacity"
+      ]
+    },
+    "Erdos85VertexSubsetEdgeCapacity": {
+      "source_sha256": "ca92376accbf4a6c2428e64971405f70c498d6683b7d8390811f5a8bccc3560f",
+      "imports": []
+    },
+    "Erdos85OrderFortyNineSevenHighT0ExteriorPairLowerBound": {
+      "source_sha256": "292c8aed7c2909c042e7716ae6af8ac0f48d41754d77bfc46649bfbb26530de6",
+      "imports": [
+        "Erdos85ExteriorPairEdgeLowerBound",
+        "Erdos85OrderFortyNineSevenHighT0EmptyEdgeNine"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0EmptyEdgeNine": {
+      "source_sha256": "c0801e111129ff7bb8abde878ad6b75fafa9b08ef9eaaec31b7d51ec8e9b94b9",
+      "imports": [
+        "Erdos85SevenVertexSubcubicBound",
+        "Erdos85ThreeLevelEigenSupportC4Bound",
+        "Erdos85OrderFortyNineSevenHighT0GlobalQuotientParity",
+        "Erdos85OrderFortyNineSevenHighT0LocalQuotientCapacity"
+      ]
+    },
+    "Erdos85ThreeLevelEigenSupportC4Bound": {
+      "source_sha256": "5028fda2163d1509dfcfc8f5a4a225a5e4f3b48288deee4d629f1438d1bcda38",
+      "imports": [
+        "Erdos85ThreeLevelEigenSupportEdgeCensus",
+        "Erdos85GadgetDegreeSquares"
+      ]
+    },
+    "Erdos85GadgetDegreeSquares": {
+      "source_sha256": "09fe1462689286deb562fd31a0256ec08df805a65349b175b71a8d02d39e2f33",
+      "imports": [
+        "Erdos85GadgetMultiplicity"
+      ]
+    },
+    "Erdos85GadgetMultiplicity": {
+      "source_sha256": "e61534a0769af91fb123944cbbd05008a9c2f3ed57782744820af2635c4e3ba2",
+      "imports": [
+        "Erdos85CompensatedGadget"
+      ]
+    },
+    "Erdos85CompensatedGadget": {
+      "source_sha256": "9959abf8e774f44eacf3d49c25e413ef5fc6088cb824448e73880c7d9a09ef0d",
+      "imports": [
+        "Erdos85DeleteGadget",
+        "Erdos85GadgetCounting"
+      ]
+    },
+    "Erdos85DeleteGadget": {
+      "source_sha256": "9f8db014fb6c3b82cf0a5deedcb03cc8547467d52e37627e869dc7df3aae6908",
+      "imports": [
+        "Erdos85ControlledDeletion",
+        "Erdos85GadgetExtension"
+      ]
+    },
+    "Erdos85ThreeLevelEigenSupportEdgeCensus": {
+      "source_sha256": "a135d09c621f2672aa7944e38d413e2803f2419c5af75215c59582a8fb3c1255",
+      "imports": [
+        "Erdos85ThreeLevelEigenSupportIncidenceBalance",
+        "Erdos85BinarySquareSizeTwoNegativeSupportProfiles"
+      ]
+    },
+    "Erdos85BinarySquareSizeTwoNegativeSupportProfiles": {
+      "source_sha256": "b790872ac2a7e094199b9d89d9ae440c115da5386b08282d1fc48016775cc324",
+      "imports": [
+        "Erdos85BinarySquareSizeTwoSignedJointPackage",
+        "Erdos85ThreeLevelEigenSupportMinDegree"
+      ]
+    },
+    "Erdos85ThreeLevelEigenSupportMinDegree": {
+      "source_sha256": "da6f5653df7ef51cf16025f4c9e19995faea93eaabf43fc79d7925e113a5787e",
+      "imports": [
+        "Erdos85BinarySquareSignedEigenvectorSupport"
+      ]
+    },
+    "Erdos85BinarySquareSignedEigenvectorSupport": {
+      "source_sha256": "a07d69d780d00c4a5588d76fd34b8f77f5f8106e1378a2e20e3eeea997376cf4",
+      "imports": [
+        "Erdos85BinarySquareAdjacencySquareAction",
+        "Erdos85ThreeLevelSupportBalance"
+      ]
+    },
+    "Erdos85ThreeLevelSupportBalance": {
+      "source_sha256": "037c94f689466c44bfcc5af391e7f899ab670ad5677be8abc684edf3a1006e7a",
+      "imports": []
+    },
+    "Erdos85BinarySquareAdjacencySquareAction": {
+      "source_sha256": "19586167b8926d21990e8373e40f7cbc9563f6c6d4d9b3481d7c5a8849c29f3f",
+      "imports": [
+        "Erdos85BinarySquareRegularParity"
+      ]
+    },
+    "Erdos85BinarySquareRegularParity": {
+      "source_sha256": "59ff7be138e8cf5635449cefcd6fe9272f40838b8b2ffe55e9f4157ed53e1cd3",
+      "imports": [
+        "Erdos85EvenExcessOneDefectKernel",
+        "Erdos85AdjacencyCharpolySquareModTwo",
+        "Erdos85ComponentFactorization",
+        "Erdos85ComponentLocalObstruction",
+        "Erdos85QuotientGramIdentity",
+        "Erdos85ExcessEigenspace",
+        "Erdos85ResidueSignedCount",
+        "Erdos85GlobalLocalTriangleCount",
+        "Erdos85IsCyclesComponentCharpoly",
+        "Erdos85DefectComponentBlockCommute"
+      ]
+    },
+    "Erdos85DefectComponentBlockCommute": {
+      "source_sha256": "a0b3730c6dcc191bb4d6b2577048c0dacf7902c0c0d5e3d936f0166707465bc5",
+      "imports": [
+        "Erdos85ExcessDefectRegular",
+        "Erdos85FrequencyPairTransport"
+      ]
+    },
+    "Erdos85FrequencyPairTransport": {
+      "source_sha256": "f712781e36e9171ce8ee60b77fdfd34fa2a58076cf556cb379070e7eaa97ad77",
+      "imports": [
+        "Erdos85FrequencyPairInterface",
+        "Erdos85FrequencyPairGraphBlocks",
+        "Erdos85ZeroRowDifference",
+        "Erdos85DiagonalAnchorParity"
+      ]
+    },
+    "Erdos85DiagonalAnchorParity": {
+      "source_sha256": "4f30ecfdf639d7f32074f412e5ea965499fc9eda2e8b6bc21d1ef553edd56dc4",
+      "imports": [
+        "Erdos85DifferenceArrayEquality"
+      ]
+    },
+    "Erdos85DifferenceArrayEquality": {
+      "source_sha256": "76adb51ffbdaddf8c278485fcb5864a54b6cf447d6d8511616ad913e036167d3",
+      "imports": [
+        "Erdos85ProjectedMultiplicityParity",
+        "Erdos85DifferenceArray"
+      ]
+    },
+    "Erdos85DifferenceArray": {
+      "source_sha256": "d233146545ed122a1e76d75775bca7eb1acf8dfca754d6c5419eb0901d500f29",
+      "imports": [
+        "Erdos85TaggedFactorization"
+      ]
+    },
+    "Erdos85TaggedFactorization": {
+      "source_sha256": "dffe737dbcda0a7590bcb68c6ad6dd3587ec58aeef2c86c115872d504392f97d",
+      "imports": [
+        "Erdos85DifferencePacking"
+      ]
+    },
+    "Erdos85DifferencePacking": {
+      "source_sha256": "8d018548818f37f198d5d5a09d465c9dc6c22fda8d64eaafa8050e2c721c064c",
+      "imports": [
+        "Erdos85UniqueSidonFactor",
+        "Erdos85SecondOrderQuotient"
+      ]
+    },
+    "Erdos85UniqueSidonFactor": {
+      "source_sha256": "0265b78b996082501e0b96762025084dc63e3d6d7836ac75b78c2328bfc69f59",
+      "imports": [
+        "Erdos85BinaryCycleIntertwiner"
+      ]
+    },
+    "Erdos85BinaryCycleIntertwiner": {
+      "source_sha256": "f864bef387f64b98f8a636585eefa5f39a242663fc80cd3ac79becfc88b3cde6",
+      "imports": [
+        "Erdos85CycleCoverRigidity"
+      ]
+    },
+    "Erdos85CycleCoverRigidity": {
+      "source_sha256": "03f12710afc13fbb3cd046d4da77d9f7543a5edbcbf353622ee3d05ab4ef69e0",
+      "imports": [
+        "Erdos85DefectCycleBlock"
+      ]
+    },
+    "Erdos85ProjectedMultiplicityParity": {
+      "source_sha256": "7eaee476c02ab447f84ed1be338f81cb0b4b040decad64d24e3e583c93a4c62f",
+      "imports": [
+        "Erdos85PrimeConvolutionObstruction"
+      ]
+    },
+    "Erdos85PrimeConvolutionObstruction": {
+      "source_sha256": "2c6f558c86854628c62bb64e83b5b90cf88962301513bb388f890f9e5f89dc4c",
+      "imports": [
+        "Erdos85CyclicConvolutionParity"
+      ]
+    },
+    "Erdos85CyclicConvolutionParity": {
+      "source_sha256": "35bebb06e2aac01301de07e7fd03ee8295f4a8595d590fabeaa296ea5312d894",
+      "imports": [
+        "Erdos85PrimeFourier"
+      ]
+    },
+    "Erdos85PrimeFourier": {
+      "source_sha256": "bcde5093146f8e23cf856900d96174b39533365eadb934466ae5ab99c7a284cf",
+      "imports": [
+        "Erdos85DifferenceArrayArithmetic"
+      ]
+    },
+    "Erdos85DifferenceArrayArithmetic": {
+      "source_sha256": "950e362509b3277076e7734a73e7c09436808429db747d90bfbeba10a44f8aae",
+      "imports": [
+        "Erdos85DifferenceArrayBoundary"
+      ]
+    },
+    "Erdos85DifferenceArrayBoundary": {
+      "source_sha256": "719dd32410b7962ebaa7ac2bdb8a2a8ffd6e0624f3144047454a98d16c3a6048",
+      "imports": [
+        "Erdos85DifferenceArray",
+        "Erdos85ZeroRowDifference",
+        "Erdos85EqualCycleTerminal"
+      ]
+    },
+    "Erdos85EqualCycleTerminal": {
+      "source_sha256": "9435a5c78aafff3513c376ddce17acb0855e0c2cd053447a8579b23c12166caa",
+      "imports": [
+        "Erdos85DifferencePacking",
+        "Erdos85TriangleTerminal"
+      ]
+    },
+    "Erdos85TriangleTerminal": {
+      "source_sha256": "f038beceff7753cf29dd37b3ddd4de8513f1d9c96db42dbedd01c471e5022aca",
+      "imports": [
+        "Erdos85BinaryCycleIntertwiner",
+        "Erdos85BoundaryQuotientExcess",
+        "Erdos85QuadraticTrace"
+      ]
+    },
+    "Erdos85QuadraticTrace": {
+      "source_sha256": "9cf62621bbde4c33dd71789446ccbfb904461c49162d7913e429bd63df377fbd",
+      "imports": [
+        "Erdos85InvariantDecomposition",
+        "Erdos85EvenCharpolyTrace"
+      ]
+    },
+    "Erdos85EvenCharpolyTrace": {
+      "source_sha256": "0330d9a3f11050aa3c938339e8dc22bbfc2366ff6ebfa961afb2d588826c88c4",
+      "imports": []
+    },
+    "Erdos85InvariantDecomposition": {
+      "source_sha256": "81197d2b48785785187162eeda955949c6955287bbfa1060dfe5028c994e4827",
+      "imports": []
+    },
+    "Erdos85BoundaryQuotientExcess": {
+      "source_sha256": "f0e339448a70979f344605d6269864462a5f8511827aa3314bdac90cd5a25873",
+      "imports": [
+        "Erdos85BoundaryQuotientDivisibility"
+      ]
+    },
+    "Erdos85ZeroRowDifference": {
+      "source_sha256": "64ac7e632087098b91e8da01e993a76c93c1b32f0f93fe9879d442189a3f1a9c",
+      "imports": [
+        "Erdos85BinaryCycleIntertwiner",
+        "Erdos85DifferencePacking"
+      ]
+    },
+    "Erdos85FrequencyPairGraphBlocks": {
+      "source_sha256": "504ce54f639eb2690fef0ad790038d8a201ab9f866260b6a25605beff55fa197",
+      "imports": [
+        "Erdos85BinaryCycleIntertwiner"
+      ]
+    },
+    "Erdos85FrequencyPairInterface": {
+      "source_sha256": "bbdcff05c0e6518e807d5c4fa34780c1ee7589e16aa3c884507ffc9f7fce9493",
+      "imports": [
+        "Erdos85FrequencyPairProjector",
+        "Erdos85ProjectedMultiplicityParity",
+        "Erdos85SquareTrace"
+      ]
+    },
+    "Erdos85SquareTrace": {
+      "source_sha256": "bee8e20c7e7a53fa98f91abd8c8fe6c1b09bdd1223b994d6975998bbf6e8c74f",
+      "imports": [
+        "Erdos85PrimeFourierConvolution"
+      ]
+    },
+    "Erdos85PrimeFourierConvolution": {
+      "source_sha256": "c83d7d7a897dc25146a091213d0ca1d4ae57bcbab1ff4db7b81dd897618443d2",
+      "imports": [
+        "Erdos85GraphProjectedConvolutionTerminal"
+      ]
+    },
+    "Erdos85GraphProjectedConvolutionTerminal": {
+      "source_sha256": "7007944af036fda0328df18a911086b72dc42fb45e1199cafc617672a5ae6bb8",
+      "imports": [
+        "Erdos85ZModProjectionFiber"
+      ]
+    },
+    "Erdos85ZModProjectionFiber": {
+      "source_sha256": "b8a633c411139f0425a340bdcaa53961d48d1872447100f0fcf6aa5466acde00",
+      "imports": [
+        "Erdos85GraphAnchorParity"
+      ]
+    },
+    "Erdos85GraphAnchorParity": {
+      "source_sha256": "09b1b4de747fe810e70eccb61643ced6b60f452271a89f414f8e148df1d0095e",
+      "imports": [
+        "Erdos85DifferenceArrayParity"
+      ]
+    },
+    "Erdos85DifferenceArrayParity": {
+      "source_sha256": "7c49fa33db4267f92e9442caa79950070b582f0a7c8c09a8d9487468743cf23c",
+      "imports": [
+        "Erdos85GraphDiagonalAnchor"
+      ]
+    },
+    "Erdos85GraphDiagonalAnchor": {
+      "source_sha256": "19c62b1e71011cc7e3a8cbd1bbe292fab79ecdf160ca11f6ed5373f676450e1f",
+      "imports": [
+        "Erdos85DiagonalAnchorParity",
+        "Erdos85DifferenceArrayBoundary"
+      ]
+    },
+    "Erdos85FrequencyPairProjector": {
+      "source_sha256": "e935251492e021b34b02ba6ac0e3933f474b4fc72d04e60c3a9e417a002ccd71",
+      "imports": [
+        "Erdos85FrequencyPairEigenspace"
+      ]
+    },
+    "Erdos85FrequencyPairEigenspace": {
+      "source_sha256": "9e80d513230a0f6e043915ce8de63c5a8351267a388ad7e9716f1a4a2c0c5701",
+      "imports": []
+    },
+    "Erdos85IsCyclesComponentCharpoly": {
+      "source_sha256": "ec4d5b226bb0636e5c5df4a317004ba745f08c5699d2abb582fd405b6c886575",
+      "imports": [
+        "Erdos85ComponentCycleCharpoly"
+      ]
+    },
+    "Erdos85GlobalLocalTriangleCount": {
+      "source_sha256": "d1878b99fcab70124953985b0c662c5355cfec7d3093b93d15ec9b46d985a05c",
+      "imports": [
+        "Erdos85LocalTriangleParity"
+      ]
+    },
+    "Erdos85ResidueSignedCount": {
+      "source_sha256": "047324254f9da6bda0089f71c2f12220bf9dc398631c447fc90ea9cfc0a10e70",
+      "imports": [
+        "Erdos85QuotientSectorModP",
+        "Erdos85ComponentFactorization"
+      ]
+    },
+    "Erdos85QuotientSectorModP": {
+      "source_sha256": "250902887d9776101876392ddb6627874772c5daf29406ae9efa740511725d33",
+      "imports": [
+        "Erdos85MixedSectorMassQuotient"
+      ]
+    },
+    "Erdos85MixedSectorMassQuotient": {
+      "source_sha256": "d170b508d76e702093402b375e97015562857aaf098fb7149904ab67ae1c878b",
+      "imports": [
+        "Erdos85MixedNonsquareMass",
+        "Erdos85DifferenceArrayBoundary"
+      ]
+    },
+    "Erdos85MixedNonsquareMass": {
+      "source_sha256": "ede8f5d58c76d97aacc346327b949eeecc0c41210fd7e5221e9b956887919d5f",
+      "imports": [
+        "Erdos85FrequencyPairMixedTransport",
+        "Erdos85PrimeFourierNonsquare"
+      ]
+    },
+    "Erdos85PrimeFourierNonsquare": {
+      "source_sha256": "5af4e90a5e2e37f7d22f06dac71a1180e0b3f573413029a00325bbd3f0ff6540",
+      "imports": [
+        "Erdos85QuadraticTraceField",
+        "Erdos85PrimeFourierSquare",
+        "Erdos85ZModProjectionFiber"
+      ]
+    },
+    "Erdos85PrimeFourierSquare": {
+      "source_sha256": "404fb0f1fb61d8d73cf822c9e616e9fcbd8f4f042fde63cf1b3680af4ec7c73b",
+      "imports": [
+        "Erdos85SquareTrace"
+      ]
+    },
+    "Erdos85QuadraticTraceField": {
+      "source_sha256": "0f46cdcfc0a9d3e20f205ce043fe48839eca9077a824508c3e265bdf289381d9",
+      "imports": [
+        "Erdos85QuadraticTrace"
+      ]
+    },
+    "Erdos85FrequencyPairMixedTransport": {
+      "source_sha256": "6ed9fdecc35b2157cf2584cd13fa512e0876e62d2f128f30d8d3076bee8be6ca",
+      "imports": [
+        "Erdos85FrequencyPairMixed",
+        "Erdos85FrequencyPairGraphBlocks",
+        "Erdos85FrequencyPairTransport",
+        "Erdos85EqualCycleLabeling",
+        "Erdos85ZeroRowDifference"
+      ]
+    },
+    "Erdos85EqualCycleLabeling": {
+      "source_sha256": "dc848014854507143ccff77f8d54eb80face739de2b13605668395711d7fa972",
+      "imports": [
+        "Erdos85DefectCycleBlock",
+        "Erdos85GlobalCycleFactorization"
+      ]
+    },
+    "Erdos85FrequencyPairMixed": {
+      "source_sha256": "bb1595c56f9379ffa95a8612c49cf21763bb47a85e1e65082e63b207fcfb83bd",
+      "imports": [
+        "Erdos85FrequencyPairProjector"
+      ]
+    },
+    "Erdos85ExcessEigenspace": {
+      "source_sha256": "8596ce97d990ec02598d5752fcb2162418905b015ebbc44114b7ebb14cabd5a1",
+      "imports": [
+        "Erdos85ExcessDefectRegular",
+        "Erdos85FrequencyPairEigenspace",
+        "Erdos85QuadraticTraceField"
+      ]
+    },
+    "Erdos85QuotientGramIdentity": {
+      "source_sha256": "f8054aa9087a1ca93a07121db246d6f88c03340ade34712f6b4835cd1fcba742",
+      "imports": [
+        "Erdos85CrossComponentPairCount",
+        "Erdos85PositiveExcessQuotientTrace"
+      ]
+    },
+    "Erdos85PositiveExcessQuotientTrace": {
+      "source_sha256": "48af03811c2d99c6ec3ac8fdbde2a2fbb7ee22812b27e06ab43dc9778abb82af",
+      "imports": [
+        "Erdos85PositiveExcessDeterminant",
+        "Erdos85MixedSectorMassQuotient"
+      ]
+    },
+    "Erdos85PositiveExcessDeterminant": {
+      "source_sha256": "cff4e6a5967c3efccf5b1e3342ee1668a2aef6e0ffb71afc6fd98cdea4c15dd1",
+      "imports": [
+        "Erdos85PlateauExcessStructure",
+        "Erdos85FrequencyPairTransport"
+      ]
+    },
+    "Erdos85PlateauExcessStructure": {
+      "source_sha256": "0c61f306ec65335484015fcb02c51fd1e84687e4b816bbf87d62080306b352e7",
+      "imports": [
+        "Erdos85ExcessDefectRegular",
+        "Erdos85OddBoundaryClean"
+      ]
+    },
+    "Erdos85OddBoundaryClean": {
+      "source_sha256": "489851cf406f547cececee958fe8a1bbc2a7c984c2f152f4776c33f62cffad4f",
+      "imports": [
+        "Erdos85OddFirstOrderSpectral",
+        "Erdos85SecondOrderStructure",
+        "Erdos85RamseyPlateau"
+      ]
+    },
+    "Erdos85CrossComponentPairCount": {
+      "source_sha256": "cf4aee25bd612d763977c79e22cf289025d6a031b09a381f098b8a29a6b8e4fc",
+      "imports": [
+        "Erdos85SecondOrderQuotient"
+      ]
+    },
+    "Erdos85AdjacencyCharpolySquareModTwo": {
+      "source_sha256": "19a4f2fd042643083daa906a39f165eb812fb9216852dc8b729200c5116c41bb",
+      "imports": [
+        "Erdos85AlternatingParity"
+      ]
+    },
+    "Erdos85EvenExcessOneDefectKernel": {
+      "source_sha256": "1afb6b0e476b5569749e7b894458c700f28b66c15424a52dffead731c7d15e7d",
+      "imports": [
+        "Erdos85AlternatingParity",
+        "Erdos85ExcessDefectRegular"
+      ]
+    },
+    "Erdos85BinarySquareSizeTwoSignedJointPackage": {
+      "source_sha256": "875c609062aad4d2475ac3443ac66d295e3a56435496cc09a62c9f1eacf9573a",
+      "imports": [
+        "Erdos85BinarySquareSizeTwoJointEigenvectorMuOneExclusion",
+        "Erdos85SignedRegularEigenvalueRange"
+      ]
+    },
+    "Erdos85SignedRegularEigenvalueRange": {
+      "source_sha256": "0879f0ea413ac44725dfccd084946cf00ec01cc4085fac237d1e66de487c403d",
+      "imports": [
+        "Erdos85BinarySquareSignedEigenvectorSupport"
+      ]
+    },
+    "Erdos85BinarySquareSizeTwoJointEigenvectorMuOneExclusion": {
+      "source_sha256": "25d742e0b03511c8c90edadec43b864a667e176181b9fc670794393e0a1efa67",
+      "imports": [
+        "Erdos85BinarySquareRegularParity"
+      ]
+    },
+    "Erdos85ThreeLevelEigenSupportIncidenceBalance": {
+      "source_sha256": "52c8015dd967ddafac6abaa5a3d6c5be430c264a0576950939af596844a610b8",
+      "imports": [
+        "Erdos85ThreeLevelEigenSupportDegreeBalance"
+      ]
+    },
+    "Erdos85ThreeLevelEigenSupportDegreeBalance": {
+      "source_sha256": "2c9294c7e052e943791d5df573a72eff45272dd4e6e46c7014aa4bbe64a11b2a",
+      "imports": [
+        "Erdos85ThreeLevelEigenSupportMinDegree",
+        "Erdos85BinarySquareSizeTwoSignedJointPackage"
+      ]
+    },
+    "Erdos85SevenVertexSubcubicBound": {
+      "source_sha256": "f2e4443965a1ff8a38a627fec67b809d22959ccb4aa501bdc2f6e8cadd645899",
+      "imports": [
+        "Erdos85DegreeExcessStratification",
+        "Erdos85LocalTriangleParity"
+      ]
+    },
+    "Erdos85ExteriorPairEdgeLowerBound": {
+      "source_sha256": "f93f3cfeeb071eaa4e8665c5bad008e454efd3ba38d06f8792a5af9c87b98794",
+      "imports": [
+        "Erdos85OrderSixtyFourExteriorPairGraph"
+      ]
+    },
+    "Erdos85OrderSixtyFourExteriorPairGraph": {
+      "source_sha256": "2942f187c3da30a47dce9a35b7bb0d1d3ae934eab31e95f060d9b4fc479bef7e",
+      "imports": [
+        "Erdos85ExteriorGramSecondMoment",
+        "Erdos85OrderSixtyFourSixteenBlockGramTrace",
+        "Erdos85GadgetExtension"
+      ]
+    },
+    "Erdos85OrderSixtyFourSixteenBlockGramTrace": {
+      "source_sha256": "76d81c2f499d564b4c2f77bef8a674bd00fb56a16bbdfe4856d6c57736f8567d",
+      "imports": [
+        "Erdos85OrderSixtyFourComponentComplexGram",
+        "Erdos85OrderSixtyFourSixteenBlockCycles",
+        "Erdos85OrderSixtyFourDefectSecondMoment",
+        "Erdos85ComponentLocalObstruction"
+      ]
+    },
+    "Erdos85OrderSixtyFourDefectSecondMoment": {
+      "source_sha256": "09dc01577d60ce31c24ebe004366262bfb3280c49b238df019834b87afd808fc",
+      "imports": [
+        "Erdos85OrderSixtyFourRegularKernel",
+        "Erdos85OrderSixtyFourSevenComponent",
+        "Erdos85OrderSixtyFourResidualLaplacianProduct",
+        "Erdos85TriangleFreeCommutatorGap"
+      ]
+    },
+    "Erdos85TriangleFreeCommutatorGap": {
+      "source_sha256": "9cce2fd4837a2e6bbabf7536b4bcc48c7c0132e0e3be46e03402f6a1d32454e2",
+      "imports": [
+        "Erdos85ColorCommutator",
+        "Erdos85DefectSecondMixedMoment"
+      ]
+    },
+    "Erdos85DefectSecondMixedMoment": {
+      "source_sha256": "e50fbf2e9e44d88672bb764cccf70d5ed04983443e22834316f9e695bac64ae6",
+      "imports": [
+        "Erdos85PositiveExcessOneOperator"
+      ]
+    },
+    "Erdos85PositiveExcessOneOperator": {
+      "source_sha256": "28c9c7bbb6cf24e019f6215565dd69592f07a4767082909b207676452ac21a1c",
+      "imports": [
+        "Erdos85PositiveExcessOne"
+      ]
+    },
+    "Erdos85ColorCommutator": {
+      "source_sha256": "01add97670427185fa5946a9de1c0538c6f2de7653e051ff4185c041707cc6e1",
+      "imports": [
+        "Erdos85AlternatingFourthMoment",
+        "Erdos85ExcessDefectRegular",
+        "Erdos85PositiveExcessOneOperator"
+      ]
+    },
+    "Erdos85OrderSixtyFourResidualLaplacianProduct": {
+      "source_sha256": "9fc419aab88b19452b5f6c1b3e8681382118e874d716465dfdc71e4dd5b2a51f",
+      "imports": [
+        "Erdos85OrderSixtyFourLaplacianBlockDiagonal"
+      ]
+    },
+    "Erdos85OrderSixtyFourLaplacianBlockDiagonal": {
+      "source_sha256": "ad8881ff11efc68b72dd4c1876a6adf2269db9b2e7f1366df61475e0ebf07304",
+      "imports": [
+        "Erdos85DependentPiDeterminant",
+        "Erdos85ComponentLocalObstruction"
+      ]
+    },
+    "Erdos85DependentPiDeterminant": {
+      "source_sha256": "a09f40492201dba7504ea3102739657acf7c43718fd7dca0ed77e3d60720877b",
+      "imports": [
+        "Erdos85OrderSixtyFourComponentMeanZeroEquiv"
+      ]
+    },
+    "Erdos85OrderSixtyFourComponentMeanZeroEquiv": {
+      "source_sha256": "11f948d73f94e8118b0c818d4baff9deb278bd505027aa38dde49e95412f3aa8",
+      "imports": [
+        "Erdos85OrderSixtyFourComponentMeanZero"
+      ]
+    },
+    "Erdos85OrderSixtyFourComponentMeanZero": {
+      "source_sha256": "ce42a9ca00f9000913b4a080fe223b0978903b4f1f7671650887cd10ffc71aab",
+      "imports": [
+        "Erdos85OrderSixtyFourK8ResidualDeterminant"
+      ]
+    },
+    "Erdos85OrderSixtyFourK8ResidualDeterminant": {
+      "source_sha256": "c4f7895934ed87ab7a7c5746cce0788a7d3b40650676d100079c8c7b16ff76b7",
+      "imports": [
+        "Erdos85OrderSixtyFourProjectionRank"
+      ]
+    },
+    "Erdos85OrderSixtyFourProjectionRank": {
+      "source_sha256": "fd01f0f9a76d64010ad6fba1c901f14d3715775210624ac6736f0e9c43b0fdf5",
+      "imports": [
+        "Erdos85OrderSixtyFourSizeEightDefectClique",
+        "Erdos85MinimumSectorAssemblyInterface"
+      ]
+    },
+    "Erdos85OrderSixtyFourSizeEightDefectClique": {
+      "source_sha256": "73ab1fa741a6b1e8941b38a0ca6342ce4364c1f47899af95fceb853cb0f4270c",
+      "imports": [
+        "Erdos85OrderSixtyFourResidualDeterminantSquare"
+      ]
+    },
+    "Erdos85OrderSixtyFourResidualDeterminantSquare": {
+      "source_sha256": "df032a700d8470142e83258af670b77d208a6e0eb75411bec2cf088ed255bc30",
+      "imports": [
+        "Erdos85OrderSixtyFourSevenComponentPairPacking"
+      ]
+    },
+    "Erdos85OrderSixtyFourSevenComponentPairPacking": {
+      "source_sha256": "1ce63aff2a3784a7b454cc47b0fec0c0931c01dead41bda83144849e9eb96ff0",
+      "imports": [
+        "Erdos85OrderSixtyFourResidualInjective"
+      ]
+    },
+    "Erdos85OrderSixtyFourResidualInjective": {
+      "source_sha256": "ee0056797121a2a152e3c04d0b7e852aad28b3ea99e0804c5c251d4a8750ada0",
+      "imports": [
+        "Erdos85OrderSixtyFourSevenComponentLocal"
+      ]
+    },
+    "Erdos85OrderSixtyFourSevenComponentLocal": {
+      "source_sha256": "a66955cdb1a129b3bd755f4919033be8bbb8215f9a6785e1f4d9f5d055c4918d",
+      "imports": [
+        "Erdos85OrderSixtyFourMinusOneTrace"
+      ]
+    },
+    "Erdos85OrderSixtyFourMinusOneTrace": {
+      "source_sha256": "5436e1d2e3cfe9876fc2f39f24bf0d6a611736e5b603b1f207586ad9f9417abc",
+      "imports": [
+        "Erdos85OrderSixtyFourResidualTrace"
+      ]
+    },
+    "Erdos85OrderSixtyFourResidualTrace": {
+      "source_sha256": "57e29d47a76be4910d78669d18ed21a26bbb4cd04e3a8c0930c6ff5a956ce228",
+      "imports": [
+        "Erdos85OrderSixtyFourSevenComponent",
+        "Erdos85InvariantDecomposition"
+      ]
+    },
+    "Erdos85OrderSixtyFourSevenComponent": {
+      "source_sha256": "375a2617c3ee122535ece7ad25b2b7426651700fc1040990b82883367ee8406e",
+      "imports": [
+        "Erdos85OrderSixtyFourPrincipalTrace"
+      ]
+    },
+    "Erdos85OrderSixtyFourPrincipalTrace": {
+      "source_sha256": "60cf7992bd4fc3c672a90b4588e7bea1992380c9d2a7bc4b9633d1904e813990",
+      "imports": [
+        "Erdos85OrderSixtyFourEightComponentKill",
+        "Erdos85PrincipalIndicatorTrace"
+      ]
+    },
+    "Erdos85PrincipalIndicatorTrace": {
+      "source_sha256": "ed9b95e204077bf893f510e72615625cd6e930f61cb290ee370c382a19b10db3",
+      "imports": [
+        "Erdos85SymmetricSectorFactorization",
+        "Erdos85PositiveExcessQuotientTrace",
+        "Erdos85FrequencyPairTransport",
+        "Erdos85NonprincipalCharpoly"
+      ]
+    },
+    "Erdos85NonprincipalCharpoly": {
+      "source_sha256": "cf2de12ec82a252c1182ed791863488e66bea9443d47bf2cc615ab289a1988d6",
+      "imports": [
+        "Erdos85OrbitFactorExtraction",
+        "Erdos85AdjoinSquareConjugation"
+      ]
+    },
+    "Erdos85AdjoinSquareConjugation": {
+      "source_sha256": "4484c43e16ed04b74891a3b6abffd20f312a4aa1a16bccd085b831f637bc0334",
+      "imports": [
+        "Erdos85OrbitFactorExtraction"
+      ]
+    },
+    "Erdos85OrbitFactorExtraction": {
+      "source_sha256": "4847263ca23566fd76e15f50b8cbfdab3a48d70d948cab584e84903b4cd25737",
+      "imports": [
+        "Erdos85OrbitParity"
+      ]
+    },
+    "Erdos85OrbitParity": {
+      "source_sha256": "5092375dcbfb98b88622784322274cfd9096837992cdc946d909dcb68d805110",
+      "imports": []
+    },
+    "Erdos85SymmetricSectorFactorization": {
+      "source_sha256": "584a9a6f1552f98059d2db2a138c58a1db2324095613c5028e8dfb746ee59a14",
+      "imports": [
+        "Erdos85RationalPrimaryTraceSplit"
+      ]
+    },
+    "Erdos85RationalPrimaryTraceSplit": {
+      "source_sha256": "23445e730285d96a8672cca414065251945a3b115970907ed9ff2d581bf25e2e",
+      "imports": [
+        "Erdos85UniqueSquareTraceTerminal",
+        "Erdos85ResidualTraceOrbit",
+        "Erdos85FrequencyPairEigenspace",
+        "CayleyHamiltonOQ01OQ04"
+      ]
+    },
+    "CayleyHamiltonOQ01OQ04": {
+      "source_sha256": "dc7f4deef21fa3f4977f6265dfbd85f4f79b22e0d1dcb875d3cf64e0051eea9b",
+      "imports": []
+    },
+    "Erdos85ResidualTraceOrbit": {
+      "source_sha256": "054988b88d4561348e21d929d0e7826ed4580caa400e44eebc06f56b4a154ee2",
+      "imports": [
+        "Erdos85OrbitFactorExtraction"
+      ]
+    },
+    "Erdos85UniqueSquareTraceTerminal": {
+      "source_sha256": "6dc218b04fc3288e2847c4c6aa8a94a4d20e2fc5b2edeee4f1e97b859008a09a",
+      "imports": [
+        "Erdos85QuadraticTrace"
+      ]
+    },
+    "Erdos85OrderSixtyFourEightComponentKill": {
+      "source_sha256": "a84538ceaf915815e4f897d32da90d71681044daa760925b2067a77630ae6713",
+      "imports": [
+        "Erdos85OrderSixtyFourDefectComponentEquitable",
+        "Erdos85QuadraticTrace",
+        "Erdos85PrincipalIndicatorTrace"
+      ]
+    },
+    "Erdos85OrderSixtyFourDefectComponentEquitable": {
+      "source_sha256": "9077a830d45009ace0ebe33e2ffa669ee1d560d4ca79ab4ccb3eafd167bfba4e",
+      "imports": [
+        "Erdos85OrderSixtyFourDisconnectedDefect"
+      ]
+    },
+    "Erdos85OrderSixtyFourDisconnectedDefect": {
+      "source_sha256": "e0fdf120ce155865b33b1b0823b84ad13e053a17f11279afc818a701badbf6b3",
+      "imports": [
+        "Erdos85OrderSixtyFourConnectedDefect",
+        "Erdos85SecondOrderQuotient"
+      ]
+    },
+    "Erdos85OrderSixtyFourConnectedDefect": {
+      "source_sha256": "cce87932d111c6f89223cb82d8543e18bd47b44596553c9bb89a5347326c7083",
+      "imports": [
+        "Erdos85OrderSixtyFourRegularDeterminant",
+        "Erdos85ExcessEigenspace",
+        "Erdos85FrequencyPairTransport"
+      ]
+    },
+    "Erdos85OrderSixtyFourRegularDeterminant": {
+      "source_sha256": "80735a42207b3abd841dc6f0c74a9abc00ec32584c25121c6cacb1a963eb9740",
+      "imports": [
+        "Erdos85OrderSixtyFourRegularKernel"
+      ]
+    },
+    "Erdos85OrderSixtyFourRegularKernel": {
+      "source_sha256": "76b6323f95727ec950b5531461ee0e4809139ebf2598c61284b46e023f3229c4",
+      "imports": [
+        "Erdos85OrderSixtyFourPositiveHighExcluded",
+        "Erdos85ExcessDefectRegular",
+        "Erdos85BoundaryConnectedClean"
+      ]
+    },
+    "Erdos85OrderSixtyFourPositiveHighExcluded": {
+      "source_sha256": "206ea6cf98fcedf005d6c22485f8123bb8481609de5214f77dabd7665b3b7882",
+      "imports": [
+        "Erdos85OrderSixtyFourBranchReduction"
+      ]
+    },
+    "Erdos85OrderSixtyFourBranchReduction": {
+      "source_sha256": "738045dba9a334b42515284121a4222e85633208e376109685443a11d7c620a4",
+      "imports": [
+        "Erdos85OrderSixtyFourHighCount"
+      ]
+    },
+    "Erdos85OrderSixtyFourHighCount": {
+      "source_sha256": "2f7078ffb11fe9499097b0b9f1cdf47b44298a07e98e19b054992eecd66d5c25",
+      "imports": [
+        "Erdos85BinarySquareOrderReduction",
+        "Erdos85SquareOrderHighIncidence"
+      ]
+    },
+    "Erdos85SquareOrderHighIncidence": {
+      "source_sha256": "46b7647da7100f4770ea3b498b82811e67c711f5f57be7c15fc59f2819ea03a2",
+      "imports": [
+        "Erdos85HighRootZeroSlack",
+        "Erdos85OrderFortyNineIncidence"
+      ]
+    },
+    "Erdos85BinarySquareOrderReduction": {
+      "source_sha256": "8fafd5446f0a2024a71e9ff3c2e16be3085dcf7ce91eec20667b1017aecbbb86",
+      "imports": [
+        "Erdos85EnergyMinimalEdgeCover",
+        "Erdos85PlaneOrderDropFamily"
+      ]
+    },
+    "Erdos85PlaneOrderDropFamily": {
+      "source_sha256": "9f4a291318a7e515ef84da9cb229a85f4e030e47690f5b35c852c33f3b12c881",
+      "imports": [
+        "Erdos85FiniteDropWitnesses",
+        "Erdos85PolarityEven"
+      ]
+    },
+    "Erdos85PolarityEven": {
+      "source_sha256": "32b8bbf00fbf420f4fd41ad4ef2a0d60c739884a5a70a8b67c28e37cc2e7f934",
+      "imports": [
+        "Erdos85PolarityConic",
+        "Erdos85ProblemConflict"
+      ]
+    },
+    "Erdos85PolarityConic": {
+      "source_sha256": "c12a4a89459055f9d8d6f9328f39b2699b3284bab8286d7f87e68899171a9908",
+      "imports": [
+        "Erdos85PolarityOddSecant"
+      ]
+    },
+    "Erdos85PolarityOddSecant": {
+      "source_sha256": "729bc650afab02fe494dd1cf885d00d210bc49739230273629ed80aa66319c75",
+      "imports": [
+        "Erdos85PolarityAbsoluteSetDeletion"
+      ]
+    },
+    "Erdos85PolarityAbsoluteSetDeletion": {
+      "source_sha256": "0d55ec1d14d6d5de30fe848d22f43fb01ecdd20e5648b89034092bf842c9eb8b",
+      "imports": [
+        "Erdos85ControlledDeletion",
+        "Erdos85PolarityAbsolute"
+      ]
+    },
+    "Erdos85EnergyMinimalEdgeCover": {
+      "source_sha256": "e9b0c9fc423d511ae2ee5b0ff61954e9467dd3107b53157e69030e003fee14f4",
+      "imports": [
+        "Erdos85EdgeSlideMinimizerExistence",
+        "Erdos85MinimalWitness"
+      ]
+    },
+    "Erdos85EdgeSlideMinimizerExistence": {
+      "source_sha256": "7b313246081b5ae2280d0958295d024f19943d51bca6100b530bb364d0a9fc98",
+      "imports": [
+        "Erdos85EdgeSlideNormalization"
+      ]
+    },
+    "Erdos85EdgeSlideNormalization": {
+      "source_sha256": "2b43d43fcbeced19a576498e9ee71de9789fa518e44a729d8cf87d5df0c31aff",
+      "imports": [
+        "Erdos85EdgeSlideCriterion"
+      ]
+    },
+    "Erdos85EdgeSlideCriterion": {
+      "source_sha256": "752ac1ee588eb4cf14f4e866db282c4c9c4e4fcddeb783b3dea89d78bbde0354",
+      "imports": [
+        "Erdos85Problem"
+      ]
+    },
+    "Erdos85OrderSixtyFourSixteenBlockCycles": {
+      "source_sha256": "485d14749117b94140dbadcdf2f741f62492ea62ee5f9c6d11db8cf44c82dc29",
+      "imports": [
+        "Erdos85OrderSixtyFourColoredSupport"
+      ]
+    },
+    "Erdos85OrderSixtyFourColoredSupport": {
+      "source_sha256": "a3ec6834abaf0031fff93da8aa98d90f81eacb429c490cc442121144f2acf60a",
+      "imports": [
+        "Erdos85OrderSixtyFourSevenComponentLocal",
+        "Erdos85FifthMomentBridge",
+        "Erdos85LocalTriangleParity"
+      ]
+    },
+    "Erdos85FifthMomentBridge": {
+      "source_sha256": "8cc1214936383aa503dff658a188944141b1bb029ac778a18291becdcdc395a4",
+      "imports": [
+        "Erdos85DefectSecondMixedMoment"
+      ]
+    },
+    "Erdos85OrderSixtyFourComponentComplexGram": {
+      "source_sha256": "2c982abf18722c0941fda0be260b611b6852fb83910f5bdd8d730f7ead39a4c1",
+      "imports": [
+        "Erdos85OrderSixtyFourComponentGramIdentity"
+      ]
+    },
+    "Erdos85OrderSixtyFourComponentGramIdentity": {
+      "source_sha256": "d1f433ed62d0f089915b95d3e9b7a113a9b1bcd6f783376330fc1e75f7c705df",
+      "imports": [
+        "Erdos85DefectComponentBlockCommute",
+        "Erdos85OrderSixtyFourSevenComponent"
+      ]
+    },
+    "Erdos85ExteriorGramSecondMoment": {
+      "source_sha256": "c57354eadfafd8271a5532bf98b28c812b10940f0c51ce6bc4b5c988b38b8a62",
+      "imports": [
+        "Erdos85OrderSixtyFourDefectSecondMoment"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0ExteriorPairCapacity": {
+      "source_sha256": "2c1f8ce3a921ebd1aca41694f74215b1fcecac6e89f9b7eb2f486a459c95d7eb",
+      "imports": [
+        "Erdos85ExteriorPairDegreeCapacity",
+        "Erdos85OrderFortyNineSevenHighT0EmptyEdgeNine"
+      ]
+    },
+    "Erdos85ExteriorPairDegreeCapacity": {
+      "source_sha256": "ab91859983c0ddcdbb930b299b4cc645df455cc395f787baec56994fdbf6eb91",
+      "imports": [
+        "Erdos85OrderSixtyFourExteriorPairGraph"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeMixedCapstone": {
+      "source_sha256": "67fd7be5c6a29c2b55d4951682711231d5539723e723d74b28a055e5aa16f180",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeCounting",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeSplitTerminal"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeSplitTerminal": {
+      "source_sha256": "65f212c5f616905a2248420fa734be8fa2d585f5d13ac0f59482ce369967d39b",
+      "imports": [
+        "Erdos85CnfBinarySplit",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeTerminal"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeTerminal": {
+      "source_sha256": "00b0827075a8f963a21b5724eee05a66941534eddf70c5b751ac96549a44b9e5",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeCnf",
+        "Erdos85OrderFortyNineSevenHighT0CanonicalTerminal"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalTerminal": {
+      "source_sha256": "b3100ce3b829d34bb81392d3f54c29e3a5acd225aacafdcf2f6642522b24aca7",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT0CanonicalSemantics",
+        "Erdos85OrderFortyNineSevenHighCertificates",
+        "Erdos85OrderFortyNineSevenHighGraphCover"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighGraphCover": {
+      "source_sha256": "78c3a15deaae50f7658c37c0ea305d00fccd05fdcb095f58c024e6ea8440a6d8",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighSevenFiber"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighSevenFiber": {
+      "source_sha256": "1d9eeb02635492c21221fbc8874ca76d0049d8db728e222c4586de0ce25999eb",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighSixFiber"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighSixFiber": {
+      "source_sha256": "383363c5ec27dc9c2b5f3f2335d09d849b45c6629fc215bcbe0232372a5abb1e",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighFiveFiber"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighFiveFiber": {
+      "source_sha256": "262d69d6eab7127c793849fd7c2fe3193252de3f7605cf52eea8245090b400c4",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighFourFiber"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighFourFiber": {
+      "source_sha256": "5ae26feb4b4cfe914c79b8672e2eeffa1169cccaad131cf405cbfc47b425f6c7",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighThreeFiber"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighThreeFiber": {
+      "source_sha256": "b64e0fb48505670f2f72d8664bd26f82bea5cd904ac346f6400e72a8b30f5dfb",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighTwoFiber"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighTwoFiber": {
+      "source_sha256": "ca8bc09075c8a9e7e4152826c12493e20ea7c4c7d675c7bbea21871df43abcad",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighOneFiber"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighOneFiber": {
+      "source_sha256": "95b7f75e6d367d68aa238c69b2ba8b8685ea8c4a76e1a08ba0a7c4bf994369e9",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighZeroFiber"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighCertificates": {
+      "source_sha256": "f4630079b0393140cf20b27e0c72a791e7d5ef24c31ec4db2f85f1aa47ef1cc8",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighT1Rep0Certificate",
+        "Erdos85OrderFortyNineSevenHighT2Rep0Certificate",
+        "Erdos85OrderFortyNineSevenHighT2Rep1Certificate",
+        "Erdos85OrderFortyNineSevenHighT3Rep0Certificate",
+        "Erdos85OrderFortyNineSevenHighT3Rep1Certificate",
+        "Erdos85OrderFortyNineSevenHighT3Rep2Certificate",
+        "Erdos85OrderFortyNineSevenHighT4Rep0Certificate",
+        "Erdos85OrderFortyNineSevenHighT4Rep1Certificate",
+        "Erdos85OrderFortyNineSevenHighT4Rep2Certificate",
+        "Erdos85OrderFortyNineSevenHighT5Rep0Certificate",
+        "Erdos85OrderFortyNineSevenHighT5Rep1Certificate",
+        "Erdos85OrderFortyNineSevenHighT6Rep0Certificate",
+        "Erdos85OrderFortyNineSevenHighT7Rep0Certificate"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT7Rep0Certificate": {
+      "source_sha256": "d13aeb8ee00d00127510f925639d9f7e5b1b921c0a19b8de9055f96342a38cd2",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCertificateBridge",
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighCertificateBridge": {
+      "source_sha256": "3f540c49092ed3bf42a1497c29b4401365fb2b120ad534aacaaa56abe084d3a1",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCnfSemantics",
+        "Erdos85OrderFortyNineSevenHighGraphCover"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighCnfSemantics": {
+      "source_sha256": "548c479d5907fd7d21b8019b3dec6eced0e01b6d6c85809c1f39d196cfb3c89e",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCnf"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighCnf": {
+      "source_sha256": "2d71973c76eaa2d4fab212499438cf6e2fc3dff6773e781f92953b1505a04b30",
+      "imports": [
+        "Erdos85DimacsSatBridge",
+        "Erdos85OrderFortyNineSevenHighProfileMasks"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT6Rep0Certificate": {
+      "source_sha256": "931a35b561bc59a68984a27de5af23157692a0651d53df3643623cf9c3538095",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCertificateBridge",
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT5Rep1Certificate": {
+      "source_sha256": "78d03ce9b50c702de9d8cdfbc2a0500bcf02efa9624c5dc5fa8a34d8c3b3a54f",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCertificateBridge",
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT5Rep0Certificate": {
+      "source_sha256": "9351610a65ebd75a4a33d8e94b870581e58c5fb546cb52bc5b1b68882c896dfc",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCertificateBridge",
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT4Rep2Certificate": {
+      "source_sha256": "cbd8b653c1446afc8c5648671503874ae2a9841377c5541c318a5594dbcf6372",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCertificateBridge",
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT4Rep1Certificate": {
+      "source_sha256": "753ef28a8d7150fcdaec4d33815c780b79791fdf52b380571ec5a424274c7eb1",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCertificateBridge",
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT4Rep0Certificate": {
+      "source_sha256": "25c3dcf8f6e22ead98b68847a2204654a157393b5ee4c059fb9d256c77fb167b",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCertificateBridge",
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT3Rep2Certificate": {
+      "source_sha256": "f73d833944b824853b9b1d7553c567b2e91b68e326c2da2688729518af170678",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCertificateBridge",
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT3Rep1Certificate": {
+      "source_sha256": "34cfb8458133667773c72bc6414c4543db52f5acf809896b8ac5e00a65b97cd1",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCertificateBridge",
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT3Rep0Certificate": {
+      "source_sha256": "d47d2620b32ff1b22113b23dcbeb540aa9ba80886be6801dd874133729e0b587",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCertificateBridge",
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT2Rep1Certificate": {
+      "source_sha256": "43a250b66783e52de42a2f46a30db02995fda21f3280505a5e2d6e0f1cf8f0ef",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCertificateBridge",
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT2Rep0Certificate": {
+      "source_sha256": "1e863f1681654ddef41aeaf1f059eb62940c60da8ff29bc5984f4a6ab879c3f3",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCertificateBridge",
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT1Rep0Certificate": {
+      "source_sha256": "a1f2d8369b5b44ecadb0886dbbd0c1f67b50759ba80dc1ed0eadf53aecec11c9",
+      "imports": [
+        "Erdos85OrderFortyNineSevenHighCertificateBridge",
+        "Erdos85OrderFortyNineLratCertificateBase"
+      ]
+    },
+    "Erdos85H5Stratum": {
+      "source_sha256": "7262850cd5fa29e456480e10d65eaef67955bb0ff569643f03cd377c465c6150",
+      "imports": [
+        "Erdos85H5T0",
+        "Erdos85H5T1",
+        "Erdos85H5T2",
+        "Erdos85OrderFortyNineFiveHighTwoFiber"
+      ]
+    },
+    "Erdos85OrderFortyNineFiveHighTwoFiber": {
+      "source_sha256": "38fc0cda32a0626a1358df99fa24fb936831abb2ba013f133c7a0674bbf5d04d",
+      "imports": [
+        "Erdos85OrderFortyNineFiveHighOneFiber"
+      ]
+    },
+    "Erdos85OrderFortyNineFiveHighOneFiber": {
+      "source_sha256": "22fd0a1f00e4d37f3cf7ec6da1bb391ac7eca3c89b33c4c64ac8a30b4b66e1e3",
+      "imports": [
+        "Erdos85OrderFortyNineFiveHighZeroFiber"
+      ]
+    },
+    "Erdos85OrderFortyNineFiveHighZeroFiber": {
+      "source_sha256": "8b20ae6587298f58437d3729cc2920678e00573b617fe30e241bf184f78b79b1",
+      "imports": [
+        "Erdos85OrderFortyNineSmallHighFiberLabeling"
+      ]
+    },
+    "Erdos85OrderFortyNineSmallHighFiberLabeling": {
+      "source_sha256": "95ca2c68172607c7f3b2a4b8ecb19763a6e88c2b07738841c506ea3ef2348c38",
+      "imports": [
+        "Erdos85OrderFortyNineSmallHighLabelingBridge"
+      ]
+    },
+    "Erdos85OrderFortyNineSmallHighLabelingBridge": {
+      "source_sha256": "fc8393b64cced6955300e2d26ff6d045c1a2557c361071bb1f40efc54cb1dde9",
+      "imports": [
+        "Erdos85OrderFortyNineSmallHighCanonicalCapstone",
+        "Erdos85OrderFortyNineAlignedBooleanBridge"
+      ]
+    },
+    "Erdos85OrderFortyNineSmallHighCanonicalCapstone": {
+      "source_sha256": "4759d22d35d1b9ab59dabe8d7bf427c9e0c9506d9d8d23afe82fef8a12488299",
+      "imports": [
+        "Erdos85OrderFortyNineSmallHighProfileMasks",
+        "Erdos85OrderFortyNineStrataCapstone"
+      ]
+    },
+    "Erdos85OrderFortyNineSmallHighProfileMasks": {
+      "source_sha256": "dbe14ee2100e84ccad1e0512b74936a595f783210c31e60bbf796e304914392e",
+      "imports": [
+        "Erdos85OrderFortyNineBooleanTerminal"
+      ]
+    },
+    "Erdos85H5T2": {
+      "source_sha256": "f610b66aaf52213286000efe86022e4bf15a95dcbe96b372aa50a9b110bc1a3e",
+      "imports": [
+        "Erdos85H5T2Part00",
+        "Erdos85H5T2Part01",
+        "Erdos85H5T2Part02",
+        "Erdos85H5T2Part03",
+        "Erdos85H5T2Part04",
+        "Erdos85H5T2Part05",
+        "Erdos85H5T2Part06",
+        "Erdos85H5T2Part07"
+      ]
+    },
+    "Erdos85H5T2Part07": {
+      "source_sha256": "cb83abf429da391c92d831c72812e4a6ff4a3a9f62552ae7c0b97a226f0c5f6c",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5Fast": {
+      "source_sha256": "bc1f9631ede32d330fb6c663dd7601377a87b393b6021e5525aac8f592f43beb",
+      "imports": [
+        "Erdos85H5Bridge"
+      ]
+    },
+    "Erdos85H5Bridge": {
+      "source_sha256": "81f0128eb80a6509f30c2962636d1865678480f167c7ad01fd890f34851b3205",
+      "imports": [
+        "Erdos85H5Engine",
+        "Erdos85OrderFortyNineBitRelabel",
+        "Erdos85OrderFortyNineSmallHighCanonicalCapstone"
+      ]
+    },
+    "Erdos85OrderFortyNineBitRelabel": {
+      "source_sha256": "0ebb83cc864981d251dfe814dd976ecbb0ca22b651e242a6051e367c42244f1b",
+      "imports": [
+        "Erdos85OrderFortyNineBooleanTerminal"
+      ]
+    },
+    "Erdos85H5Engine": {
+      "source_sha256": "7e39050eeef3acda6f578a321a148873961e3a09b332776806cc3236b842638a",
+      "imports": [
+        "Erdos85H3PairEngine"
+      ]
+    },
+    "Erdos85H3PairEngine": {
+      "source_sha256": "6f84fc3a0de0bbc170d98b7a85824b1c84282fbcf4f2824267cac96bf3b37625",
+      "imports": []
+    },
+    "Erdos85H5T2Part06": {
+      "source_sha256": "d7bdd84065e80d5a1b6aeb4fc69b536216a11f562c23c92dc9e2ff7cd4a24a8b",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T2Part05": {
+      "source_sha256": "891b05b4aaf670289fd4a8b626d9f1575ae0fc32e00be9c8c12eb7fd4bd3fe48",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T2Part04": {
+      "source_sha256": "1b3646ed80dee7abc4f23525b268b58eb0e9bb74d5bcdf03b54012185bf37ebc",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T2Part03": {
+      "source_sha256": "39fce419585bbc17dc2e8c61364fd61909a7611636cc568c808dabb7a2f36f6c",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T2Part02": {
+      "source_sha256": "cbb2d02ddf83eda3e8a505b75ab4347870c8f6c3ce84bc7794b40ab0cfdfdb8c",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T2Part01": {
+      "source_sha256": "b55bafbbd7529280c28663c405c7e540cdf958096d2c22e0c2cc39bbeeb61f5e",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T2Part00": {
+      "source_sha256": "ac6d48061a6c145f5358866118a87d5612b11cb5b72afeca7375973a869a33b3",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T1": {
+      "source_sha256": "402f29704c618f6ca9f8c0584c6dd5aee1a854e50b2d8b5fea671faa9364de33",
+      "imports": [
+        "Erdos85H5T1Part00",
+        "Erdos85H5T1Part01",
+        "Erdos85H5T1Part02",
+        "Erdos85H5T1Part03",
+        "Erdos85H5T1Part04",
+        "Erdos85H5T1Part05",
+        "Erdos85H5T1Part06",
+        "Erdos85H5T1Part07",
+        "Erdos85H5T1Part08",
+        "Erdos85H5T1Part09",
+        "Erdos85H5T1Part10",
+        "Erdos85H5T1Part11",
+        "Erdos85H5T1Part12",
+        "Erdos85H5T1Part13",
+        "Erdos85H5T1Part14",
+        "Erdos85H5T1Part15"
+      ]
+    },
+    "Erdos85H5T1Part15": {
+      "source_sha256": "21f184ae8e7a962ea2677f0096a61a82ea450cbdf867fc6ff1b65f63aa192b55",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T1Part14": {
+      "source_sha256": "502ba803ed3c6be49520f2f8020fd12aa5b97fc94244bcad4e5ad334c228b3cb",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T1Part13": {
+      "source_sha256": "11d893c02702081c7b7fc7158549cf9a05ca885f20eade99b303fd3bdba68681",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T1Part12": {
+      "source_sha256": "0acd3f4865fac8c61c27b5622393511ab42ab1d7471b88f796cfb67256de7955",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T1Part11": {
+      "source_sha256": "26fc22f071863ff318ccd4b4023794ee5590ae6f7221d7bd77c2519ee01af2e1",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T1Part10": {
+      "source_sha256": "f9aa60686405b769d23642c89dfd6af48ab6680889b737c240c657f2ecf33c66",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T1Part09": {
+      "source_sha256": "3a2349ab8873b9203b089d13780136fe9bd52db8ee010815c8ce8c66e991746b",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T1Part08": {
+      "source_sha256": "9cb0e681033e8007494e99dc972a7d2fa7369e13829ae705c81b8b8268a3069c",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T1Part07": {
+      "source_sha256": "a4792b1dfbcc751f397e3b51cd507be4edb4691358f4eeb98326d42147051ccc",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T1Part06": {
+      "source_sha256": "33537c50ba0d7712c93347974ee01446a4a877a28fc52f45047713d0aff5b8ee",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T1Part05": {
+      "source_sha256": "486c73dcef994dfdb8030b9197431b5cf94c878bcc4a470571e0727a45edd198",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T1Part04": {
+      "source_sha256": "1b22ffeb0761f3df36d78d26b9cad7d3f68531f817f00a1cf73260be15160d76",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T1Part03": {
+      "source_sha256": "73719c02477b281c82b315ef94f5628f079f493d9aef813131b19d5d3503af16",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T1Part02": {
+      "source_sha256": "7bdb63d39062d9e98fe9538e036cab78516bee7d127c6f5a7e5517e43e0249bc",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T1Part01": {
+      "source_sha256": "cca6b5b38d587371f948316cc544bf5345755eb30c56a949468720f6727628e6",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T1Part00": {
+      "source_sha256": "7cbd8d50d985e16dad773c7286cb4fbdb113eaa63baa3b6ae290d4441aa60dc7",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T0": {
+      "source_sha256": "6cd36aeae37494329b85905668268b846f8a54f6ccaffda57c405728ca54cda7",
+      "imports": [
+        "Erdos85H5T0Part00",
+        "Erdos85H5T0Part01",
+        "Erdos85H5T0Part02",
+        "Erdos85H5T0Part03",
+        "Erdos85H5T0Part04",
+        "Erdos85H5T0Part05",
+        "Erdos85H5T0Part06",
+        "Erdos85H5T0Part07",
+        "Erdos85H5T0Part08",
+        "Erdos85H5T0Part09",
+        "Erdos85H5T0Part10",
+        "Erdos85H5T0Part11",
+        "Erdos85H5T0Part12",
+        "Erdos85H5T0Part13",
+        "Erdos85H5T0Part14",
+        "Erdos85H5T0Part15"
+      ]
+    },
+    "Erdos85H5T0Part15": {
+      "source_sha256": "8d539619d80dca8042b4ac3c3cec03e9dee04fac91d0333bf242c8959d09c194",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T0Part14": {
+      "source_sha256": "6db1d506687aed038698a973d1feed708c2a8dc13786e0be873539b211fd2328",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T0Part13": {
+      "source_sha256": "fa35a658aecf6a1c8ca7e12a2984d14f2471bc1c4b793e61629cb953b1377b99",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T0Part12": {
+      "source_sha256": "b310649fe858a10428081f703623756080bd6f9b102d88ff2790c119fd69287c",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T0Part11": {
+      "source_sha256": "292c95c4322fe3b9e60005974445c11c1290dad64a7698f0eb5410943ca61fec",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T0Part10": {
+      "source_sha256": "8e79d0431f9734163d5316da2f0211cd201efb6653b75eac1ccbc54df6d85dd0",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T0Part09": {
+      "source_sha256": "f56170e6e17ecd2d15cca8e1a68da52a4cbda263ff2c19dc21c3960a8ee10a16",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T0Part08": {
+      "source_sha256": "ab7a51c6d9d1a4a6d7419a8103d1046150d35ceeb05e4bd97c501a3203e3fb59",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T0Part07": {
+      "source_sha256": "e09ea3c1c480248574b1ea03b33f9a7dc278277de6827a4be08c655852ec19e1",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T0Part06": {
+      "source_sha256": "3f56730dcfa2807b86f46400fffb8f01843b6dee1af76aa44bfa26902ce8a34f",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T0Part05": {
+      "source_sha256": "6855451fe2ff1e36218fea19ccf2c84be1152bca3fdddff9de3b2dae60e3c075",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T0Part04": {
+      "source_sha256": "b1b86f04e3a44b5b50dbfc6b1cd5de17d4e6ec80f2750c3832392afeb8e9295e",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T0Part03": {
+      "source_sha256": "4230124d850495ee2eb946e7a7470e9b25651b680484dd22b1fa5c11204c49d3",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T0Part02": {
+      "source_sha256": "54009a0ebfb63547fec74774bcd162f1fd62140b27caa3cb873e8ea0293436b8",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T0Part01": {
+      "source_sha256": "ee513e7f1d11247f66efbf7ff1fc7a353ca7c19183e1cbb7edc0080ac6e11910",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H5T0Part00": {
+      "source_sha256": "9fa4d3fac66aedfb9e7a176f69a6adcb316c10d32d2a8ea9b9a54e3240fd0fd9",
+      "imports": [
+        "Erdos85H5Fast"
+      ]
+    },
+    "Erdos85H3PairCell": {
+      "source_sha256": "717702013f12303c841f1713c967d294bafa58ae9e9b6b147817ea9bdef28040",
+      "imports": [
+        "Erdos85H3PairPart00",
+        "Erdos85H3PairPart01",
+        "Erdos85H3PairPart02",
+        "Erdos85H3PairPart03",
+        "Erdos85H3PairPart04",
+        "Erdos85H3PairPart05",
+        "Erdos85H3PairPart06",
+        "Erdos85H3PairPart07",
+        "Erdos85H3PairPart08",
+        "Erdos85H3PairPart09",
+        "Erdos85H3PairPart10",
+        "Erdos85H3PairPart11",
+        "Erdos85H3PairPart12",
+        "Erdos85H3PairPart13",
+        "Erdos85H3PairPart14",
+        "Erdos85H3PairPart15",
+        "Erdos85H3PairPart16",
+        "Erdos85H3PairPart17",
+        "Erdos85H3PairPart18",
+        "Erdos85H3PairPart19",
+        "Erdos85H3PairPart20",
+        "Erdos85H3PairPart21",
+        "Erdos85H3PairPart22",
+        "Erdos85H3PairPart23"
+      ]
+    },
+    "Erdos85H3PairPart23": {
+      "source_sha256": "5de726b85fda5e1a96cd0765e53229b215cfbd3085aa9ec68dafca4e35a794f7",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairSplit": {
+      "source_sha256": "788c54887e121212693f0aaae3d99577e30db2a383d2fea161ce08b127f44839",
+      "imports": [
+        "Erdos85H3PairBridge"
+      ]
+    },
+    "Erdos85H3PairBridge": {
+      "source_sha256": "be9455ca1bcc1eba1629b7b0a565d5196b79d118212af4228a39412846937715",
+      "imports": [
+        "Erdos85H3PairEngine",
+        "Erdos85OrderFortyNineBitRelabel",
+        "Erdos85OrderFortyNineThreeHighZeroFiber"
+      ]
+    },
+    "Erdos85OrderFortyNineThreeHighZeroFiber": {
+      "source_sha256": "cb229de2017d17f8c97b49d258d5c4ec109186b3f6da0184f891b7dcbff9bc43",
+      "imports": [
+        "Erdos85OrderFortyNineSmallHighFiberLabeling"
+      ]
+    },
+    "Erdos85H3PairPart22": {
+      "source_sha256": "3d34ae0a3f49894ba9b09b05fae865e50785bf3f43477c27126e3d13a66f2a92",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart21": {
+      "source_sha256": "f0f3b87a5a7d259344ca84a920340177cf3eb357885ace8b99af13bc6b80ab1a",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart20": {
+      "source_sha256": "2d172b60dd1f512587c038f4f74bf343e38960e44e43eeb71353181b5b94f560",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart19": {
+      "source_sha256": "501524075810b030f4f070aaf88cb1e4cd470abeb6b85dec5eacfbfe480165c1",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart18": {
+      "source_sha256": "e692cb04e405d2fb75c2cee02f55ad7c6dce11b807755b9031546fd5415bdc11",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart17": {
+      "source_sha256": "1eab862b17c662896e751080f3c20129537fea8fe7ccc37928f7b6d588fb33ec",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart16": {
+      "source_sha256": "51ebd404d1ffe7e4f303b178cf3534c151bad3b98b4e860acbbdbdb1449e9f27",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart15": {
+      "source_sha256": "62ae9bef9670e5bcfbae2d42d22caab709248971970132ef0b29a510f3395bdc",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart14": {
+      "source_sha256": "b0cbc3ad590d2e3396636f09d0f69cdc30cc7b7735a21b64aa20be8c0dcc416c",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart13": {
+      "source_sha256": "581c0784732ed0c292dc2ee9ec9ec8ca640f1c37a0dc2b17984d22df38b3e7f7",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart12": {
+      "source_sha256": "0d0d4fb70d4ffd85e336c177dd3471e1afba8dd8e6123ab048026707012b9115",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart11": {
+      "source_sha256": "f7fbd1d56a12e3de486086e7202acb9bfd5964a63c30754b4cef7585171a36a4",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart10": {
+      "source_sha256": "62bd3179e973405d1240d9313fedc15fff478c38638c67685983256937a5e4a1",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart09": {
+      "source_sha256": "833b4e7a43bba188ba6d077f9b1c699ec07a1cefd9fdb316266b129ba57ada28",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart08": {
+      "source_sha256": "c31c9def5e84d4a5e47a172571a769071a3da772550c4a7bb6c3a87ca15b1acf",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart07": {
+      "source_sha256": "0e19b6e4c77f3597306964eb15286d28c1d281bd1a96130d5aa0104d08b10253",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart06": {
+      "source_sha256": "ed60af8abe744d817ea43cae0b88814c9f67444f58c072c00875a5f373692ed9",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart05": {
+      "source_sha256": "ea364dea00982e53ff28084187fd417e6f19f169bc16227d1f7b5ea06e9704f2",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart04": {
+      "source_sha256": "ff910d1f2cb31cd3a3fe61d6716eefba3dad8971dff0fde9f9f6deb3c9c47f28",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart03": {
+      "source_sha256": "baa3704a5e8242afaa648cb89d01c9031e724375f2dd7e4349477b9276429693",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart02": {
+      "source_sha256": "c048a311810d08231ce0c513be994a4d39d14bad1fe0e1e173c3499fa9f334f1",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart01": {
+      "source_sha256": "738b37213bea31f394633c7aaad3bf94245fff275afaf8ea95ae84e8925f3749",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85H3PairPart00": {
+      "source_sha256": "6301719c1a7017797bd8dd1a906275cf607fdfb0b38cf89ebcd8bf7337fcfe15",
+      "imports": [
+        "Erdos85H3PairSplit"
+      ]
+    },
+    "Erdos85OneHighV2CapacityCover": {
+      "source_sha256": "e5f506fe603e36dc86fca0a162057307a749c839f0f3ce66a76dc065883dad5b",
+      "imports": [
+        "Erdos85OneHighV2CapacityInventory",
+        "Erdos85OneHighV2F3bRawLedger"
+      ]
+    },
+    "Erdos85OneHighV2F3bRawLedger": {
+      "source_sha256": "19a77def7b20692cb8fdd8b494544b84a330108ea089a57a594388262c280ba0",
+      "imports": [
+        "Erdos85OneHighV2F3bGraphSide",
+        "Erdos85OneHighV2TableTransport"
+      ]
+    },
+    "Erdos85OneHighV2TableTransport": {
+      "source_sha256": "10d151857cc9f1766cd29b1085382751e8436d3a20e055da9e88ea944d2684fb",
+      "imports": [
+        "Erdos85OneHighV2GraphLedgers"
+      ]
+    },
+    "Erdos85OneHighV2GraphLedgers": {
+      "source_sha256": "36d8001b045489894fcda395859904ec06fe90ef07422f10f1db8945ba4d7da7",
+      "imports": [
+        "Erdos85OneHighV2Satisfaction",
+        "Erdos85OneHighV2F3bCollectorAlign"
+      ]
+    },
+    "Erdos85OneHighV2F3bCollectorAlign": {
+      "source_sha256": "0230fe5739c4ed7152757af85f41759e6abcc6ddbf96fdfe683d8f7cc656b9b3",
+      "imports": [
+        "Erdos85OneHighV2Satisfaction"
+      ]
+    },
+    "Erdos85OneHighV2Satisfaction": {
+      "source_sha256": "4703bea6e1f74569892abdfba9030e9b842a44507a230be0c14dde32a3c363d8",
+      "imports": [
+        "Erdos85OneHighV2Cnf"
+      ]
+    },
+    "Erdos85OneHighV2Cnf": {
+      "source_sha256": "9165b02d57a38d84202606d4940f4e83e5393ad0edc1cc687105e97370a6bb3d",
+      "imports": [
+        "Erdos85OneHighOrbitCnf"
+      ]
+    },
+    "Erdos85OneHighOrbitCnf": {
+      "source_sha256": "b39f1f0e8d12d59cba11b2e5221dd69f10ac8c63f342275e3c3d8fb5a62cb4eb",
+      "imports": [
+        "Erdos85OneHighFamilyCnfSatisfaction"
+      ]
+    },
+    "Erdos85OneHighFamilyCnfSatisfaction": {
+      "source_sha256": "571fbe5498e4080f0624d95812a60d78781697e7e4a1a8c31303815999510760",
+      "imports": [
+        "Erdos85OneHighFamilyCnfGenerator",
+        "Erdos85DimacsSatBridge"
+      ]
+    },
+    "Erdos85OneHighFamilyCnfGenerator": {
+      "source_sha256": "cfcd65631bfe99bf085895c0066bbf8a3965767d063872f45d016d2138222c0e",
+      "imports": [
+        "Erdos85SequentialCounterGenerator",
+        "Erdos85OneHighFamilyCnfSemantics"
+      ]
+    },
+    "Erdos85OneHighV2F3bGraphSide": {
+      "source_sha256": "4c7e132498ec38b07017920a94e3a1296cf3dcfb739c4d3de1d5ebd9abfbfebb",
+      "imports": [
+        "Erdos85OneHighCanonicalMate",
+        "Erdos85PairedBlockRigidity"
+      ]
+    },
+    "Erdos85OneHighV2CapacityInventory": {
+      "source_sha256": "67d929d926b7c34a014077ae7671eefbdae9942f9e14468fb83934fa069956cc",
+      "imports": [
+        "Erdos85OneHighV2InventoryCover"
+      ]
+    },
+    "Erdos85OneHighV2InventoryCover": {
+      "source_sha256": "8d6a2161dabf295bf14ee044c1a49ca73a8f93cb027bf9337d7455c8872b2c89",
+      "imports": [
+        "Erdos85OneHighV2Cp4Action",
+        "Erdos85OneHighV2EnumCompleteness",
+        "Erdos85OneHighV2CanonicalKey",
+        "Erdos85OneHighV2Inventory",
+        "Erdos85OneHighV2Enumerator",
+        "Erdos85OneHighV2InventoryOrbitCheck",
+        "Erdos85OneHighV2PrunedEnumComplete"
+      ]
+    },
+    "Erdos85OneHighV2PrunedEnumComplete": {
+      "source_sha256": "09b5133c777cd39522730ff4519719d072d244bb05e940e484e7e70c886c4297",
+      "imports": [
+        "Erdos85OneHighV2Enumerator",
+        "Erdos85OneHighV2EnumCompleteness"
+      ]
+    },
+    "Erdos85OneHighV2EnumCompleteness": {
+      "source_sha256": "00afd3439d79af91c2a98ddbf009c7fd9993c58cb502d41ae24efd72d623495f",
+      "imports": [
+        "Erdos85OneHighV2ProfileSymmetry"
+      ]
+    },
+    "Erdos85OneHighV2ProfileSymmetry": {
+      "source_sha256": "6dcd4ef660f7f1d6319272b894c64eeabec39e1b329c16076ae14870fe304ac7",
+      "imports": [
+        "Erdos85OneHighV2FiniteTable"
+      ]
+    },
+    "Erdos85OneHighV2FiniteTable": {
+      "source_sha256": "40f475d3f90da06f0ee26d47d74257106849630ca80fb09e22b4e512d041a8eb",
+      "imports": [
+        "Erdos85OneHighV2OrbitInvariants",
+        "Erdos85OneHighV2TableAgree",
+        "Erdos85OneHighV2OrbitExclusion"
+      ]
+    },
+    "Erdos85OneHighV2OrbitExclusion": {
+      "source_sha256": "7427ca8afe54190745b5506c4e0a7b467d8b6a55d338482e05699f9da99d560f",
+      "imports": [
+        "Erdos85OneHighV2TableAgree",
+        "Erdos85OneHighRawPresentation"
+      ]
+    },
+    "Erdos85OneHighRawPresentation": {
+      "source_sha256": "d9204216a09befb6637db84085de44abc4907086de18280cac6c473fb498d8f0",
+      "imports": [
+        "Erdos85OneHighFamilyCnfSemantics"
+      ]
+    },
+    "Erdos85OneHighV2TableAgree": {
+      "source_sha256": "5b7f9e96fcbbc23574f3fe428db471dc82a97d600bd3a76da4517d437907bb3c",
+      "imports": [
+        "Erdos85OneHighV2Exclusion"
+      ]
+    },
+    "Erdos85OneHighV2Exclusion": {
+      "source_sha256": "79aaa5e32182f1a6ce85111103b989c95d87ebae720508621946a769812fc6bd",
+      "imports": [
+        "Erdos85OneHighV2F3bRawLedger",
+        "Erdos85OrderFortyNineStrataCapstone"
+      ]
+    },
+    "Erdos85OneHighV2OrbitInvariants": {
+      "source_sha256": "010c08e2709556ba42ecc3ddd7e4488211fcc40aac99916bac34590b989fbc0d",
+      "imports": [
+        "Erdos85OneHighRawPresentation",
+        "Erdos85BranchDeficitSymmetry",
+        "Erdos85OneHighV2F3bRawLedger"
+      ]
+    },
+    "Erdos85OneHighV2Enumerator": {
+      "source_sha256": "3515f15993ffcdf69a4cf3d0ba48374b42175eedec65f4e58d0cd9c15c0f6d10",
+      "imports": [
+        "Erdos85OneHighV2Inventory"
+      ]
+    },
+    "Erdos85OneHighV2Inventory": {
+      "source_sha256": "08f099ece6484de4cccdd7793f73ef90a8d8d5a07ed94ea0278f952ebeead247",
+      "imports": [
+        "Erdos85OneHighV2RelabeledPresentation"
+      ]
+    },
+    "Erdos85OneHighV2RelabeledPresentation": {
+      "source_sha256": "d5a276756216e29a9a77df0db3af0918a502f81270e4b9dda9de3cd4637c70b7",
+      "imports": [
+        "Erdos85OneHighV2ProfileSymmetry"
+      ]
+    },
+    "Erdos85OneHighV2InventoryOrbitCheck": {
+      "source_sha256": "0b13d43cade7c6be18c94ecbdd536adc79827d93f6c97e469c13dec84858bcf9",
+      "imports": [
+        "Erdos85OneHighV2CanonicalKey",
+        "Erdos85OneHighV2Inventory",
+        "Erdos85OneHighV2Enumerator"
+      ]
+    },
+    "Erdos85OneHighV2CanonicalKey": {
+      "source_sha256": "44e4cd8b5e9ad2c2234ea4fab6dc0ec9f638e0bb8629a7221bbb1073cc45fb8e",
+      "imports": [
+        "Erdos85OneHighV2Cp4Action",
+        "Erdos85OneHighV2EnumCompleteness"
+      ]
+    },
+    "Erdos85OneHighV2Cp4Action": {
+      "source_sha256": "b59546c2155666611039f9be75c5032fdfa4f58fe00edab55354f59aba85316a",
+      "imports": [
+        "Erdos85OneHighV2ProfileSymmetry"
+      ]
+    }
+  },
+  "audited_imports": {
+    "Erdos85H5T0Part00": {
+      "source_sha256": "9fa4d3fac66aedfb9e7a176f69a6adcb316c10d32d2a8ea9b9a54e3240fd0fd9",
+      "object_sha256": "2a754c725676d33462940e4b0ace8ba98eda5f4b1008b277aef98f4b28be4767",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T0Part01": {
+      "source_sha256": "ee513e7f1d11247f66efbf7ff1fc7a353ca7c19183e1cbb7edc0080ac6e11910",
+      "object_sha256": "7dc150c27cdade17b29c2b7cd4c9fa9bddb9c5b3c5ae957a1408425f5df1e578",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T0Part02": {
+      "source_sha256": "54009a0ebfb63547fec74774bcd162f1fd62140b27caa3cb873e8ea0293436b8",
+      "object_sha256": "d1fdfe4b89abe4acc1375e362f96ebeb385e8411dcf45d67e27cbffb7c338270",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T0Part03": {
+      "source_sha256": "4230124d850495ee2eb946e7a7470e9b25651b680484dd22b1fa5c11204c49d3",
+      "object_sha256": "fea2d4be982b50b8e7c7d6350086e1e89ea758b92f0bbf2deebff5a9031f11f7",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T0Part04": {
+      "source_sha256": "b1b86f04e3a44b5b50dbfc6b1cd5de17d4e6ec80f2750c3832392afeb8e9295e",
+      "object_sha256": "b910249010575bcedad65d34df7f1b69bd3cccef145466e15b89601a3941bb1a",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T0Part05": {
+      "source_sha256": "6855451fe2ff1e36218fea19ccf2c84be1152bca3fdddff9de3b2dae60e3c075",
+      "object_sha256": "f2cd63fc021f5cc2c759b1f223ac81f61626bfb162ae9843493678c834af7971",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T0Part06": {
+      "source_sha256": "3f56730dcfa2807b86f46400fffb8f01843b6dee1af76aa44bfa26902ce8a34f",
+      "object_sha256": "12ba56c5033429d8ca236be6c8a54778550e78140e340601391f33aaeeb11566",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T0Part07": {
+      "source_sha256": "e09ea3c1c480248574b1ea03b33f9a7dc278277de6827a4be08c655852ec19e1",
+      "object_sha256": "83873f65c1a56d08556f3514652a6e9de06ce968cd1517627947ad9b32bc1d2e",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T0Part08": {
+      "source_sha256": "ab7a51c6d9d1a4a6d7419a8103d1046150d35ceeb05e4bd97c501a3203e3fb59",
+      "object_sha256": "533c78fcb02cc9d5ea2899fceddfef6235bcbc43afc30324461cd2ea9445cf70",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T0Part09": {
+      "source_sha256": "f56170e6e17ecd2d15cca8e1a68da52a4cbda263ff2c19dc21c3960a8ee10a16",
+      "object_sha256": "574fb8fcfef36a99258b6a013180e7d690ff9f83f8ac77d526e3dc7ed1c50c02",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T0Part10": {
+      "source_sha256": "8e79d0431f9734163d5316da2f0211cd201efb6653b75eac1ccbc54df6d85dd0",
+      "object_sha256": "4c4a95b1ff1941dc03b3923d4def6e9c1acbeccdb19b5a5ece810a671737787f",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T0Part11": {
+      "source_sha256": "292c95c4322fe3b9e60005974445c11c1290dad64a7698f0eb5410943ca61fec",
+      "object_sha256": "8d112116f4346ab7bd2d827a52af41c65ec858c82292197e6c584994e68512b4",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T0Part12": {
+      "source_sha256": "b310649fe858a10428081f703623756080bd6f9b102d88ff2790c119fd69287c",
+      "object_sha256": "8954291afd7a75719e06464bfab122038feab14c05ee244210ef906e83b60a8b",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T0Part13": {
+      "source_sha256": "fa35a658aecf6a1c8ca7e12a2984d14f2471bc1c4b793e61629cb953b1377b99",
+      "object_sha256": "f0c3d380d22ae832df6ef60e84ce017d2cb126eda1815feb32496a2a566352c7",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T0Part14": {
+      "source_sha256": "6db1d506687aed038698a973d1feed708c2a8dc13786e0be873539b211fd2328",
+      "object_sha256": "cdb73a022ce234aaaa23bca1293d2ed34188748b25fd7525925cb1a9cae3673d",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T0Part15": {
+      "source_sha256": "8d539619d80dca8042b4ac3c3cec03e9dee04fac91d0333bf242c8959d09c194",
+      "object_sha256": "9cb97ad4ce514d171bb0dc376309545bd71ccf326bef6776c21ede755a1d3172",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T0": {
+      "source_sha256": "6cd36aeae37494329b85905668268b846f8a54f6ccaffda57c405728ca54cda7",
+      "object_sha256": "bd8729d2b0d892f5cc6bf21127401b21904db871fb9d7dfc9377ecd6342d121a",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1Part00": {
+      "source_sha256": "7cbd8d50d985e16dad773c7286cb4fbdb113eaa63baa3b6ae290d4441aa60dc7",
+      "object_sha256": "4976586e9279a0c51cfeec16ba9b31f76675987edeffe0ebe5f7ee9a42548ddd",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1Part01": {
+      "source_sha256": "cca6b5b38d587371f948316cc544bf5345755eb30c56a949468720f6727628e6",
+      "object_sha256": "7aeb3ee4f389025cc3343ea071cd3a82c0d163ad5f837055c78ca65c8418aebd",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1Part02": {
+      "source_sha256": "7bdb63d39062d9e98fe9538e036cab78516bee7d127c6f5a7e5517e43e0249bc",
+      "object_sha256": "31320d6f8726c36c1690d0071bb9cc4b8e0448fbfef810c6466db925f39395e5",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1Part03": {
+      "source_sha256": "73719c02477b281c82b315ef94f5628f079f493d9aef813131b19d5d3503af16",
+      "object_sha256": "250e214af0d151e72ab375c0835df6d8adf2643282cac71b30ed5aa3d6f93a44",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1Part04": {
+      "source_sha256": "1b22ffeb0761f3df36d78d26b9cad7d3f68531f817f00a1cf73260be15160d76",
+      "object_sha256": "e4ff9e773001cc34262c2b5c1e77df2f62002ca76374f81e8e81778e0a50e7e1",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1Part05": {
+      "source_sha256": "486c73dcef994dfdb8030b9197431b5cf94c878bcc4a470571e0727a45edd198",
+      "object_sha256": "da8f53fb8842c949a5e9f89b7a7be2f223968eb4f0ac59b8cada84d262fd6e7a",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1Part06": {
+      "source_sha256": "33537c50ba0d7712c93347974ee01446a4a877a28fc52f45047713d0aff5b8ee",
+      "object_sha256": "2f56eac9b487ca38b0db70938109f0b49d20802440c1af7bda4db1f42c832d75",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1Part07": {
+      "source_sha256": "a4792b1dfbcc751f397e3b51cd507be4edb4691358f4eeb98326d42147051ccc",
+      "object_sha256": "09138789fd4f970ca52364b49456cd3ca3bb1b3929327513d10c6f2897f4d7d3",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1Part08": {
+      "source_sha256": "9cb0e681033e8007494e99dc972a7d2fa7369e13829ae705c81b8b8268a3069c",
+      "object_sha256": "c91b905edffe7432553187998f342878dd57cced9ff6c7937ef9d4692c4bdeaa",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1Part09": {
+      "source_sha256": "3a2349ab8873b9203b089d13780136fe9bd52db8ee010815c8ce8c66e991746b",
+      "object_sha256": "e7138138c0db62d103dc8f55152e981fb01560139997066cce56d87d71d6b0ea",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1Part10": {
+      "source_sha256": "f9aa60686405b769d23642c89dfd6af48ab6680889b737c240c657f2ecf33c66",
+      "object_sha256": "8d1d5acce0afea575ee52f01e650baadbc9f37ef4b0ca8249f1cf40be4eb049e",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1Part11": {
+      "source_sha256": "26fc22f071863ff318ccd4b4023794ee5590ae6f7221d7bd77c2519ee01af2e1",
+      "object_sha256": "c9ac3051bf9a994f43750c59e5e29d2e4cd54b5d4ab555fcad0e3dd132d80ee6",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1Part12": {
+      "source_sha256": "0acd3f4865fac8c61c27b5622393511ab42ab1d7471b88f796cfb67256de7955",
+      "object_sha256": "b832ff9121010b79c4a6e9565d4540db6fb40a029d12dfe40f82da6c23442d2b",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1Part13": {
+      "source_sha256": "11d893c02702081c7b7fc7158549cf9a05ca885f20eade99b303fd3bdba68681",
+      "object_sha256": "1caff2142b66da09c8138e1a85c49bec1e9c660ab317764c41ac5d86595d0691",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1Part14": {
+      "source_sha256": "502ba803ed3c6be49520f2f8020fd12aa5b97fc94244bcad4e5ad334c228b3cb",
+      "object_sha256": "1fb216524d6ad806afbacb9224f19cb56fe2f3439cc52467b53cd9b96845e1f4",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1Part15": {
+      "source_sha256": "21f184ae8e7a962ea2677f0096a61a82ea450cbdf867fc6ff1b65f63aa192b55",
+      "object_sha256": "734b1eed7ca14934b0be4652e37a249f79e533e6f9db42cea18d1184a833806b",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T1": {
+      "source_sha256": "402f29704c618f6ca9f8c0584c6dd5aee1a854e50b2d8b5fea671faa9364de33",
+      "object_sha256": "e6ac216815399cfff102211aa0779fc2b1698a5acff8262a6e3f7f0464268ac9",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T2Part00": {
+      "source_sha256": "ac6d48061a6c145f5358866118a87d5612b11cb5b72afeca7375973a869a33b3",
+      "object_sha256": "ed284e46af3e6c0bc34315875dd471a3c87027d557fb16e71f9d46c741f08485",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T2Part01": {
+      "source_sha256": "b55bafbbd7529280c28663c405c7e540cdf958096d2c22e0c2cc39bbeeb61f5e",
+      "object_sha256": "fcd9d1703ddb3872ca06fe5646f58dfb70af8e44e2d30d6c0fc2d9f8065cf9b2",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T2Part02": {
+      "source_sha256": "cbb2d02ddf83eda3e8a505b75ab4347870c8f6c3ce84bc7794b40ab0cfdfdb8c",
+      "object_sha256": "bea2b568f69319672514c0f9862dbe34a422f1beb9ac45e3fc0a93c3693e421d",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T2Part03": {
+      "source_sha256": "39fce419585bbc17dc2e8c61364fd61909a7611636cc568c808dabb7a2f36f6c",
+      "object_sha256": "217421533aeaee62d08bf0004f73d7a896387a39590efa957c6536d9371fe478",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T2Part04": {
+      "source_sha256": "1b3646ed80dee7abc4f23525b268b58eb0e9bb74d5bcdf03b54012185bf37ebc",
+      "object_sha256": "349c4717b52326410b6bcd84ea5ec2ef43cbe174478ca6dd7734ec4f022a3d9b",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T2Part05": {
+      "source_sha256": "891b05b4aaf670289fd4a8b626d9f1575ae0fc32e00be9c8c12eb7fd4bd3fe48",
+      "object_sha256": "6a5081cbe6ff273f6ab9e5b961d5a67181a2d122c7132eac1ad98d4d98f82d41",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T2Part06": {
+      "source_sha256": "d7bdd84065e80d5a1b6aeb4fc69b536216a11f562c23c92dc9e2ff7cd4a24a8b",
+      "object_sha256": "6b0e5eed3755cb9a928556e35e4b35b65e9aaa831f694f337196aaf4109b98c1",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T2Part07": {
+      "source_sha256": "cb83abf429da391c92d831c72812e4a6ff4a3a9f62552ae7c0b97a226f0c5f6c",
+      "object_sha256": "f89ed1b63606951f67754cf4906da8046f721ffe115a41bec41f6f27a88220bf",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5T2": {
+      "source_sha256": "f610b66aaf52213286000efe86022e4bf15a95dcbe96b372aa50a9b110bc1a3e",
+      "object_sha256": "4eef3ca795769964e52d9fd084c2b7dc19e9a990d3bfce07cd1aae5df4980df2",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5Stratum": {
+      "source_sha256": "7262850cd5fa29e456480e10d65eaef67955bb0ff569643f03cd377c465c6150",
+      "object_sha256": "71c5f298447769ee058de801206b1415228de6e92a9814a4d4856fb78731aa8d",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H3PairEngine": {
+      "source_sha256": "6f84fc3a0de0bbc170d98b7a85824b1c84282fbcf4f2824267cac96bf3b37625",
+      "object_sha256": "35c3cba5f6e9e8526ecc31c6471e591baafbe9a816641e50856b882cef440222",
+      "audits": [
+        "h5",
+        "pair"
+      ]
+    },
+    "Erdos85H5Engine": {
+      "source_sha256": "7e39050eeef3acda6f578a321a148873961e3a09b332776806cc3236b842638a",
+      "object_sha256": "a70da513a95fac71dbab06bcedf1d91faf6bbce1aa24585c246d276d03a9af4e",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5Bridge": {
+      "source_sha256": "81f0128eb80a6509f30c2962636d1865678480f167c7ad01fd890f34851b3205",
+      "object_sha256": "1ecb095d48ef4b380851a8c57e177fe01f51d1dd543007dc52cfcb271cefcd3c",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H5Fast": {
+      "source_sha256": "bc1f9631ede32d330fb6c663dd7601377a87b393b6021e5525aac8f592f43beb",
+      "object_sha256": "60fd039e16dc8bdfc3115be40d216d93d6e1ca6a0415a075b0a5242e6fb5a3a2",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85OrderFortyNineSmallHighLabelingBridge": {
+      "source_sha256": "fc8393b64cced6955300e2d26ff6d045c1a2557c361071bb1f40efc54cb1dde9",
+      "object_sha256": "d0cbb1ccae5b4e5f79c30d225bd85bd708396b4593de302cc21705e5dd3bde37",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85OrderFortyNineSmallHighFiberLabeling": {
+      "source_sha256": "95ca2c68172607c7f3b2a4b8ecb19763a6e88c2b07738841c506ea3ef2348c38",
+      "object_sha256": "9b53d529870014d0c25a47e8a9821caeecfba049e5acd17e537322849ac94805",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85OrderFortyNineFiveHighZeroFiber": {
+      "source_sha256": "8b20ae6587298f58437d3729cc2920678e00573b617fe30e241bf184f78b79b1",
+      "object_sha256": "5e1e2418eca8415f2011ee52dc168cd3c40e0ab1a7ecb52164be0af503fae441",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85OrderFortyNineFiveHighOneFiber": {
+      "source_sha256": "22fd0a1f00e4d37f3cf7ec6da1bb391ac7eca3c89b33c4c64ac8a30b4b66e1e3",
+      "object_sha256": "ce45763c4d8921749677e47fc06ca1e8732b3072586f86e4b2870805786047ba",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85OrderFortyNineFiveHighTwoFiber": {
+      "source_sha256": "38fc0cda32a0626a1358df99fa24fb936831abb2ba013f133c7a0674bbf5d04d",
+      "object_sha256": "e0f03481b2953e0d97ec75c236837829796133be6cf355cff956a750dbf5abc7",
+      "audits": [
+        "h5"
+      ]
+    },
+    "Erdos85H3PairBridge": {
+      "source_sha256": "be9455ca1bcc1eba1629b7b0a565d5196b79d118212af4228a39412846937715",
+      "object_sha256": "03fd6525e3f750f19e3ef10169ce4ce453a13d23210939e2778707edac483cef",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairSplit": {
+      "source_sha256": "788c54887e121212693f0aaae3d99577e30db2a383d2fea161ce08b127f44839",
+      "object_sha256": "d78f0f470f2771a7ff71922fd08b950264d9b0ca0c672798cd5c26bd81b8c7ff",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart00": {
+      "source_sha256": "6301719c1a7017797bd8dd1a906275cf607fdfb0b38cf89ebcd8bf7337fcfe15",
+      "object_sha256": "be01df72b0141a567997b717bbf37625a5dd4f10ed4dd19a09f13070009747fa",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart01": {
+      "source_sha256": "738b37213bea31f394633c7aaad3bf94245fff275afaf8ea95ae84e8925f3749",
+      "object_sha256": "2953e27e1a8f197e7caa70aa2bda229c746560a97bf54b87fb47e5859a9f3944",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart02": {
+      "source_sha256": "c048a311810d08231ce0c513be994a4d39d14bad1fe0e1e173c3499fa9f334f1",
+      "object_sha256": "176f6963ce9654518f5ccffda10b33c6ea2932896d2f1ba657c6caab994c7d24",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart03": {
+      "source_sha256": "baa3704a5e8242afaa648cb89d01c9031e724375f2dd7e4349477b9276429693",
+      "object_sha256": "8bc0b70691caee6c8b94b9c6f17b866945856c9c5b6def43ca4c890bbdacb131",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart04": {
+      "source_sha256": "ff910d1f2cb31cd3a3fe61d6716eefba3dad8971dff0fde9f9f6deb3c9c47f28",
+      "object_sha256": "aa486425d91b9eb5bef9f663b684946e938abed1e429a56508f30f98208d9deb",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart05": {
+      "source_sha256": "ea364dea00982e53ff28084187fd417e6f19f169bc16227d1f7b5ea06e9704f2",
+      "object_sha256": "9e8e9cb61c8543b3a308be5df996c969f25b5ce91d2d7bcf1f946a9e7dce5086",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart06": {
+      "source_sha256": "ed60af8abe744d817ea43cae0b88814c9f67444f58c072c00875a5f373692ed9",
+      "object_sha256": "8cb65a1803265964b4ccb4ae74ca3683c038b2e8333a3e2c7aea95a794946997",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart07": {
+      "source_sha256": "0e19b6e4c77f3597306964eb15286d28c1d281bd1a96130d5aa0104d08b10253",
+      "object_sha256": "1b842614086a87fec5504992b87c80b2b5a4d32cd8c38656a21d828e6ab7e8f5",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart08": {
+      "source_sha256": "c31c9def5e84d4a5e47a172571a769071a3da772550c4a7bb6c3a87ca15b1acf",
+      "object_sha256": "5fd896ff208d7e8378c8636a9e62b561a53496f9aac34caf03b8046960c4a865",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart09": {
+      "source_sha256": "833b4e7a43bba188ba6d077f9b1c699ec07a1cefd9fdb316266b129ba57ada28",
+      "object_sha256": "184a4174539c545a36e8a35e522ac7a8e529b3bb5df707ea21d5f4a3632ab07c",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart10": {
+      "source_sha256": "62bd3179e973405d1240d9313fedc15fff478c38638c67685983256937a5e4a1",
+      "object_sha256": "d3d8474bc3513347f2b2e2f8f3df6359459dbd6ed627d7309ad9d0c75baa6ccb",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart11": {
+      "source_sha256": "f7fbd1d56a12e3de486086e7202acb9bfd5964a63c30754b4cef7585171a36a4",
+      "object_sha256": "325e1c6b0940a00255a2b8454e83466733d48e579649d75e3270a72706b0c898",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart12": {
+      "source_sha256": "0d0d4fb70d4ffd85e336c177dd3471e1afba8dd8e6123ab048026707012b9115",
+      "object_sha256": "f25ee4732f9898a15b885f280ebe56c87c7ac1d6e4a67d1bb808fa75e8c9b9fd",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart13": {
+      "source_sha256": "581c0784732ed0c292dc2ee9ec9ec8ca640f1c37a0dc2b17984d22df38b3e7f7",
+      "object_sha256": "623d22d01f7801a8740f334e906410e8a1141ba5bfb3ad039249d10fc1896780",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart14": {
+      "source_sha256": "b0cbc3ad590d2e3396636f09d0f69cdc30cc7b7735a21b64aa20be8c0dcc416c",
+      "object_sha256": "aa599429abdb6e3b0a08163a2a1cd3f38b80a56b097f57af142b71682bfed60b",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart15": {
+      "source_sha256": "62ae9bef9670e5bcfbae2d42d22caab709248971970132ef0b29a510f3395bdc",
+      "object_sha256": "6339f67c26516e1ad0fd6e4bceead12b3de05f32040363e363be5ae2a98e842b",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart16": {
+      "source_sha256": "51ebd404d1ffe7e4f303b178cf3534c151bad3b98b4e860acbbdbdb1449e9f27",
+      "object_sha256": "23e251ea8724db9c5f6df9efc45094b23420d81c6bf1f03d0c1aa8eec1d2d4c3",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart17": {
+      "source_sha256": "1eab862b17c662896e751080f3c20129537fea8fe7ccc37928f7b6d588fb33ec",
+      "object_sha256": "4c4a020cd8c66305a30d6580fe8c454ed9108527d61fa2f0106b7489d140eedc",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart18": {
+      "source_sha256": "e692cb04e405d2fb75c2cee02f55ad7c6dce11b807755b9031546fd5415bdc11",
+      "object_sha256": "6df25f9af6573b23c4fa9d3d9de0a69bce2ac467a600a73180c07c9a5f859722",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart19": {
+      "source_sha256": "501524075810b030f4f070aaf88cb1e4cd470abeb6b85dec5eacfbfe480165c1",
+      "object_sha256": "71a02a51c8e24866091fc43923f89097f9535821d731ddcb7aff98fc6093a1ea",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart20": {
+      "source_sha256": "2d172b60dd1f512587c038f4f74bf343e38960e44e43eeb71353181b5b94f560",
+      "object_sha256": "20261d4855862b0f0503c3da718cc3cf76fd4b9d829e259900712accec3aad1e",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart21": {
+      "source_sha256": "f0f3b87a5a7d259344ca84a920340177cf3eb357885ace8b99af13bc6b80ab1a",
+      "object_sha256": "ce79b5f54f81409cf7cbe9696de832797234326876835d4a3d432fa5e02deef2",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart22": {
+      "source_sha256": "3d34ae0a3f49894ba9b09b05fae865e50785bf3f43477c27126e3d13a66f2a92",
+      "object_sha256": "2b72ec05b2fb596db26d5d858ab2e3a55b06b18e5dc78092caaca9890be9d34b",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairPart23": {
+      "source_sha256": "5de726b85fda5e1a96cd0765e53229b215cfbd3085aa9ec68dafca4e35a794f7",
+      "object_sha256": "a15eeea431b7bbdf577496ae17ae8c65bef53e610a3c684bdf40cab4a6d97405",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85H3PairCell": {
+      "source_sha256": "717702013f12303c841f1713c967d294bafa58ae9e9b6b147817ea9bdef28040",
+      "object_sha256": "e9a79924cce61c34e9ce46b74537e23180ee0518b6c5e42edea0dfc33a8e6e20",
+      "audits": [
+        "pair"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalHsbLeaves": {
+      "source_sha256": "9d00906dd065fcc24ce193e8cce53e6d982af2d168098ec9ce3bbb5ffdc51697",
+      "object_sha256": "cf2b052ca7e60305fc948036414e320d4b66e0bd7ad08a343ab2035a601d82a0",
+      "audits": [
+        "h7"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalHsbCapstone": {
+      "source_sha256": "8f55c9a9e7c31ac2a11118269b6126cb6daaecc5907834d9b03a71ed7ab27bc4",
+      "object_sha256": "7edddbefcea5f31d8e6849d11af0dc5e3ee8c29c976c246ae607851913169247",
+      "audits": [
+        "h7"
+      ]
+    },
+    "Erdos85OrderFortyNineSevenHighT0CanonicalHsbStratumCapstone": {
+      "source_sha256": "709912235f58789240262f22b022936b4fb10c587f9ebac11e19eac9b981eb5d",
+      "object_sha256": "d16786ce8068dc7614a5f9efda5eed95bf9ffaf8217f3f62aaa8d317864f1ad9",
+      "audits": [
+        "h7"
+      ]
+    }
+  },
+  "required_inherited_axioms": {
+    "Erdos85.not_c4FreeMinDegreeWitness_fortyNine_seven_of_externalEvidence_threeStratum": [
+      "Classical.choice",
+      "Erdos85.H5.cellPartF_0_4_16_00._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_01._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_02._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_03._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_04._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_05._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_06._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_07._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_08._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_09._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_10._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_11._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_12._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_13._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_14._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_15._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_00._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_01._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_02._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_03._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_04._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_05._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_06._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_07._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_08._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_09._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_10._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_11._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_12._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_13._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_14._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_15._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_00._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_01._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_02._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_03._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_04._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_05._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_06._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_07._native.native_decide.ax_1_1",
+      "Erdos85.extend_five_linear_triples_canonical._native.native_decide.ax_1_1",
+      "Erdos85.extend_five_linear_triples_canonical._native.native_decide.ax_1_2",
+      "Erdos85.extend_four_linear_triples_canonical._native.native_decide.ax_1_1",
+      "Erdos85.extend_four_linear_triples_canonical._native.native_decide.ax_1_2",
+      "Erdos85.extend_four_linear_triples_canonical._native.native_decide.ax_1_3",
+      "Erdos85.extend_six_linear_triples_canonical._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+      "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+      "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.fixed_first_four_linear_triples_canonical_packed._native.native_decide.ax_1_1",
+      "Erdos85.fixed_first_three_linear_triples_canonical._native.native_decide.ax_1_1",
+      "Erdos85.orderFortyNineDegreeBlocks_seven_nonzero._native.native_decide.ax_1_1",
+      "Erdos85.orderFortyNineH7HighPairs_ne._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_five._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_five._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_five._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighCanonicalFiberCover_five._native.native_decide.ax_1_4",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_4",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_5",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_6",
+      "Erdos85.sevenHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_one._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_seven._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_seven._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_six._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_six._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_4",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_5",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_6",
+      "Erdos85.sevenHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_two._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighCanonicalFiberCover_two._native.native_decide.ax_1_4",
+      "Erdos85.sevenHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_zero._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighT0CanonicalEmptyPermutationAction_table._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT0CanonicalEmptyRepresentative_orbit_cover._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT1Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT2Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT2Rep1_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3Rep1_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3Rep2_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3TripleSet_member_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighT3TripleSet_member_card._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighT4Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT4Rep1_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT4Rep2_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT4TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT4TripleSet_member_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighT4TripleSet_member_card._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighT5Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT5Rep1_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT5TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT5TripleSet_member_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighT6Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT6TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT7Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT7TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_14",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_15",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_16",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_17",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+      "Erdos85.sevenHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHigh_t3_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t3_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHigh_t3_mask_key_fiber_card._native.native_decide.ax_1_3",
+      "Erdos85.sevenHigh_t4_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t4_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHigh_t4_mask_key_fiber_card._native.native_decide.ax_1_3",
+      "Erdos85.sevenHigh_t5_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t5_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHigh_t6_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t7_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Quot.sound",
+      "propext"
+    ],
+    "Erdos85.not_c4FreeMinDegreeWitness_fortyNine_seven_of_externalEvidence": [
+      "Classical.choice",
+      "Erdos85.H3Pair.pairPart_24_00._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_01._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_02._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_03._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_04._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_05._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_06._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_07._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_08._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_09._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_10._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_11._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_12._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_13._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_14._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_15._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_16._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_17._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_18._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_19._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_20._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_21._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_22._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_23._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_00._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_01._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_02._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_03._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_04._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_05._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_06._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_07._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_08._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_09._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_10._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_11._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_12._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_13._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_14._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_15._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_00._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_01._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_02._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_03._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_04._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_05._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_06._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_07._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_08._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_09._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_10._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_11._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_12._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_13._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_14._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_15._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_00._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_01._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_02._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_03._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_04._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_05._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_06._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_07._native.native_decide.ax_1_1",
+      "Erdos85.extend_five_linear_triples_canonical._native.native_decide.ax_1_1",
+      "Erdos85.extend_five_linear_triples_canonical._native.native_decide.ax_1_2",
+      "Erdos85.extend_four_linear_triples_canonical._native.native_decide.ax_1_1",
+      "Erdos85.extend_four_linear_triples_canonical._native.native_decide.ax_1_2",
+      "Erdos85.extend_four_linear_triples_canonical._native.native_decide.ax_1_3",
+      "Erdos85.extend_six_linear_triples_canonical._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+      "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+      "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.fixed_first_four_linear_triples_canonical_packed._native.native_decide.ax_1_1",
+      "Erdos85.fixed_first_three_linear_triples_canonical._native.native_decide.ax_1_1",
+      "Erdos85.orderFortyNineDegreeBlocks_seven_nonzero._native.native_decide.ax_1_1",
+      "Erdos85.orderFortyNineH7HighPairs_ne._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_five._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_five._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_five._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighCanonicalFiberCover_five._native.native_decide.ax_1_4",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_4",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_5",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_6",
+      "Erdos85.sevenHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_one._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_seven._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_seven._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_six._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_six._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_4",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_5",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_6",
+      "Erdos85.sevenHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_two._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighCanonicalFiberCover_two._native.native_decide.ax_1_4",
+      "Erdos85.sevenHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_zero._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighT0CanonicalEmptyPermutationAction_table._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT0CanonicalEmptyRepresentative_orbit_cover._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT1Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT2Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT2Rep1_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3Rep1_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3Rep2_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3TripleSet_member_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighT3TripleSet_member_card._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighT4Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT4Rep1_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT4Rep2_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT4TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT4TripleSet_member_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighT4TripleSet_member_card._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighT5Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT5Rep1_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT5TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT5TripleSet_member_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighT6Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT6TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT7Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT7TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_14",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_15",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_16",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_17",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+      "Erdos85.sevenHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHigh_t3_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t3_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHigh_t3_mask_key_fiber_card._native.native_decide.ax_1_3",
+      "Erdos85.sevenHigh_t4_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t4_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHigh_t4_mask_key_fiber_card._native.native_decide.ax_1_3",
+      "Erdos85.sevenHigh_t5_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t5_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHigh_t6_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t7_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Quot.sound",
+      "propext"
+    ],
+    "Erdos85.minDegreeForC4_fortyEight_fortyNine_exact_of_externalEvidence": [
+      "Classical.choice",
+      "Erdos85.H3Pair.pairPart_24_00._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_01._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_02._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_03._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_04._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_05._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_06._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_07._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_08._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_09._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_10._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_11._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_12._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_13._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_14._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_15._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_16._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_17._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_18._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_19._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_20._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_21._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_22._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_23._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_00._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_01._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_02._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_03._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_04._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_05._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_06._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_07._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_08._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_09._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_10._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_11._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_12._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_13._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_14._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_15._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_00._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_01._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_02._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_03._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_04._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_05._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_06._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_07._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_08._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_09._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_10._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_11._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_12._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_13._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_14._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_15._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_00._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_01._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_02._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_03._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_04._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_05._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_06._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_07._native.native_decide.ax_1_1",
+      "Erdos85.extend_five_linear_triples_canonical._native.native_decide.ax_1_1",
+      "Erdos85.extend_five_linear_triples_canonical._native.native_decide.ax_1_2",
+      "Erdos85.extend_four_linear_triples_canonical._native.native_decide.ax_1_1",
+      "Erdos85.extend_four_linear_triples_canonical._native.native_decide.ax_1_2",
+      "Erdos85.extend_four_linear_triples_canonical._native.native_decide.ax_1_3",
+      "Erdos85.extend_six_linear_triples_canonical._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+      "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+      "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.fixed_first_four_linear_triples_canonical_packed._native.native_decide.ax_1_1",
+      "Erdos85.fixed_first_three_linear_triples_canonical._native.native_decide.ax_1_1",
+      "Erdos85.orderFortyNineDegreeBlocks_seven_nonzero._native.native_decide.ax_1_1",
+      "Erdos85.orderFortyNineH7HighPairs_ne._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_five._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_five._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_five._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighCanonicalFiberCover_five._native.native_decide.ax_1_4",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_4",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_5",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_6",
+      "Erdos85.sevenHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_one._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_seven._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_seven._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_six._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_six._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_4",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_5",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_6",
+      "Erdos85.sevenHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_two._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighCanonicalFiberCover_two._native.native_decide.ax_1_4",
+      "Erdos85.sevenHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_zero._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighT0CanonicalEmptyPermutationAction_table._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT0CanonicalEmptyRepresentative_orbit_cover._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT1Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT2Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT2Rep1_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3Rep1_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3Rep2_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3TripleSet_member_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighT3TripleSet_member_card._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighT4Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT4Rep1_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT4Rep2_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT4TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT4TripleSet_member_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighT4TripleSet_member_card._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighT5Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT5Rep1_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT5TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT5TripleSet_member_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighT6Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT6TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT7Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT7TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_14",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_15",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_16",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_17",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+      "Erdos85.sevenHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHigh_t3_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t3_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHigh_t3_mask_key_fiber_card._native.native_decide.ax_1_3",
+      "Erdos85.sevenHigh_t4_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t4_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHigh_t4_mask_key_fiber_card._native.native_decide.ax_1_3",
+      "Erdos85.sevenHigh_t5_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t5_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHigh_t6_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t7_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Quot.sound",
+      "propext"
+    ],
+    "Erdos85.minDegreeForC4_fortyNine_lt_fortyEight_of_externalEvidence": [
+      "Classical.choice",
+      "Erdos85.H3Pair.pairPart_24_00._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_01._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_02._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_03._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_04._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_05._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_06._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_07._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_08._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_09._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_10._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_11._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_12._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_13._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_14._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_15._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_16._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_17._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_18._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_19._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_20._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_21._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_22._native.native_decide.ax_1_1",
+      "Erdos85.H3Pair.pairPart_24_23._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_00._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_01._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_02._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_03._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_04._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_05._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_06._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_07._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_08._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_09._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_10._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_11._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_12._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_13._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_14._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_0_4_16_15._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_00._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_01._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_02._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_03._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_04._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_05._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_06._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_07._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_08._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_09._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_10._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_11._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_12._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_13._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_14._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_1_6_16_15._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_00._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_01._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_02._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_03._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_04._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_05._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_06._native.native_decide.ax_1_1",
+      "Erdos85.H5.cellPartF_2_12_8_07._native.native_decide.ax_1_1",
+      "Erdos85.extend_five_linear_triples_canonical._native.native_decide.ax_1_1",
+      "Erdos85.extend_five_linear_triples_canonical._native.native_decide.ax_1_2",
+      "Erdos85.extend_four_linear_triples_canonical._native.native_decide.ax_1_1",
+      "Erdos85.extend_four_linear_triples_canonical._native.native_decide.ax_1_2",
+      "Erdos85.extend_four_linear_triples_canonical._native.native_decide.ax_1_3",
+      "Erdos85.extend_six_linear_triples_canonical._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+      "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+      "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.fixed_first_four_linear_triples_canonical_packed._native.native_decide.ax_1_1",
+      "Erdos85.fixed_first_three_linear_triples_canonical._native.native_decide.ax_1_1",
+      "Erdos85.orderFortyNineDegreeBlocks_seven_nonzero._native.native_decide.ax_1_1",
+      "Erdos85.orderFortyNineH7HighPairs_ne._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_five._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_five._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_five._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighCanonicalFiberCover_five._native.native_decide.ax_1_4",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_4",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_5",
+      "Erdos85.sevenHighCanonicalFiberCover_four._native.native_decide.ax_1_6",
+      "Erdos85.sevenHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_one._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_seven._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_seven._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_six._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_six._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_4",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_5",
+      "Erdos85.sevenHighCanonicalFiberCover_three._native.native_decide.ax_1_6",
+      "Erdos85.sevenHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighCanonicalFiberCover_two._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighCanonicalFiberCover_two._native.native_decide.ax_1_4",
+      "Erdos85.sevenHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighCanonicalFiberCover_zero._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighT0CanonicalEmptyPermutationAction_table._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT0CanonicalEmptyRepresentative_orbit_cover._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT1Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT2Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT2Rep1_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3Rep1_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3Rep2_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT3TripleSet_member_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighT3TripleSet_member_card._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighT4Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT4Rep1_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT4Rep2_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT4TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT4TripleSet_member_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighT4TripleSet_member_card._native.native_decide.ax_1_3",
+      "Erdos85.sevenHighT5Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT5Rep1_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT5TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT5TripleSet_member_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHighT6Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT6TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT7Rep0_check._native.native_decide.ax_1_1",
+      "Erdos85.sevenHighT7TripleSet_member_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_14",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_15",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_16",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_17",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+      "Erdos85.sevenHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+      "Erdos85.sevenHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHigh_t3_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t3_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHigh_t3_mask_key_fiber_card._native.native_decide.ax_1_3",
+      "Erdos85.sevenHigh_t4_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t4_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHigh_t4_mask_key_fiber_card._native.native_decide.ax_1_3",
+      "Erdos85.sevenHigh_t5_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t5_mask_key_fiber_card._native.native_decide.ax_1_2",
+      "Erdos85.sevenHigh_t6_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.sevenHigh_t7_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Quot.sound",
+      "propext"
+    ]
+  },
+  "exact_axiom_review_status": "AWAITING_PRINTED_SET_REVIEW",
+  "inputs": {
+    "h5": {
+      "path": "research/problems/erdos-85-wip-01/h5_terminal_review_20261008/terminal-evidence2/AUDIT.json",
+      "sha256": "ad96b0b53965f6e6deacd8bf13fff79c6c69261fe03c5bef29ef26ff1463500e"
+    },
+    "pair": {
+      "path": "research/problems/erdos-85-wip-01/h3_pair_completion_review_20261008/AUDIT.json",
+      "sha256": "807d3a82bf01cb6ac1d7686632ab9a585899e3f6120519f9425370b99ce231c6"
+    },
+    "h7": {
+      "path": "research/problems/erdos-85-wip-01/h7_hsb_capstone_review_20261008/audit.json",
+      "sha256": "ba0492272b34f3a50e8a8df69d3ba6f56c424ef2a3c74c006f88ab9d5fa8045b"
+    }
+  },
+  "source_review": {
+    "h1": "All capacity-inventory tables in all five profiles require OneHighFamilyV2CheckedUnsat, containing nonzero clauses and actual CNF UNSAT.",
+    "h7": "All 28 structural cubes require SevenHighT0CanonicalHsbEvidence at one depth, with a checked cover and every generated leaf.",
+    "h3": "Whole stratum 3, or triple cell (3,1) together with the independently accepted pair cell, remains an explicit hypothesis.",
+    "finite_drop": "Exact thresholds and strict drop apply the same conditional nonexistence result to the checked finite witnesses."
+  },
+  "resource_note": "Original job spec says 16 CPUs, 48 GiB, 6 workers, 6 h. Author capped container lean-build-546968 to 8 CPUs at 13:59 UTC; independently observed 8 CPUs/48 GiB at 14:00:06 UTC. Preserve the original spec.",
+  "scope": "Conditional capstone only. No completion of H1/H7 evidence or H3 triple exclusion; no unconditional drop claim."
+}
