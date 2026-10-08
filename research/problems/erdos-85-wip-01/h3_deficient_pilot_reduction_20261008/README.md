@@ -1,6 +1,6 @@
 # Deficient census after the U26/R2 pilot
 
-Status: **source prepared; cloud check pending**.
+Status: **cloud check submitted; not yet a passing proof receipt**.
 
 `Deficient1553.lean` consumes the independently verified U26/R2 rejection,
 its census membership and representative identity, and the verified
@@ -20,3 +20,8 @@ the membership proof, both of its input dependencies, and the U26/R2 certificate
 It checks their hashes against the retained audited receipts before and after
 compilation. It retains complete logs, source, object hashes, six exact axiom
 reports, and wall/CPU/RSS measurements. The two live cloud refs are unchanged.
+
+Cloud job `20261008T050920-erdos85__h3-triple-formal-20261007-210533`
+uses source `41efcf17a72`, 32 GiB, four Lake threads (one per direct Lean
+compiler), and a 30-minute cap. The 614 prerequisite files were hash-checked
+before and after copying. `launch.json` records the submission provenance.
