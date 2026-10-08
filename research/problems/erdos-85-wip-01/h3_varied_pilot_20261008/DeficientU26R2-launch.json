@@ -1,0 +1,18 @@
+{
+  "status": "RUNNING",
+  "job": "20261008T044647-erdos85__h3-first-column-20261008-194983",
+  "branch": "erdos85/h3-first-column-20261008",
+  "execution_commit": "1d388af91cd645c9d8edf53e30a786698a61b971",
+  "case": "DeficientU26R2",
+  "memory_gib": 16,
+  "lean_threads": 1,
+  "timeout": "2h",
+  "preflight_receipt_sha256": "c0e0517d74016e473049f68646a539901b63412430496ebd0ef0cae736a36ea4",
+  "source_sha256": {
+    "Erdos85ThreeHighPilotDeficientU26R2Inputs.lean": "4e864df441cf5afab76be002d9abd90fcdb906752c4d5207e8522b74b164e02c",
+    "Erdos85ThreeHighPilotDeficientU26R2Certificate.lean": "19241072eccf8b014ea12dd7245439a5d23367cc9403dddcd751d29b3ce27f6d",
+    "Erdos85ThreeHighPilotDeficientU26R2Consumer.lean": "2161fa6533b67580b8af285b1b591bf77749071e922b56b11bb36be7fa8ca5c8",
+    "check_case.py": "b7eecdd21d78bb81574a0f34d1042aa90f1c0a7045bfb934747d57e23c37b137"
+  },
+  "scope": "One complete deficient timing-sample pair; no other pair is launched and no H3 exclusion follows."
+}

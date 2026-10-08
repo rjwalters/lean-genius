@@ -1,6 +1,6 @@
 # Four-case H3 timing sample
 
-Status: **input/deficient-membership preflight PASS; no search queued**.
+Status: **input/deficient-membership preflight PASS; Deficient U26/R2 timing run active**.
 
 Claude requested 3–5 additional pairs after the U1/R15 pipeline fix, to measure
 cost variation before a larger campaign. The four selected cases are:
@@ -96,3 +96,11 @@ lake env python3 ../research/problems/erdos-85-wip-01/h3_varied_pilot_20261008/c
   --membership-evidence ../research/problems/erdos-85-wip-01/h3_varied_pilot_20261008/preflight-evidence \
   --output ../research/problems/erdos-85-wip-01/h3_varied_pilot_20261008/_build/DeficientU26R2-first
 ```
+
+Deficient U26/R2 is now running as
+`20261008T044647-erdos85__h3-first-column-20261008-194983`, at source
+`1d388af91cd`, under the above two-hour/16-GiB/one-thread limits.
+`DeficientU26R2-launch.json` records the exact source and preflight hashes.
+This is a launch record, not a passing rejection receipt. The other three
+sample cases are not queued. Observe this same job; do not restart it because
+a local log follower disconnects or an observation times out.
