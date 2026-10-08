@@ -161,6 +161,9 @@ class TerminalChecks(unittest.TestCase):
         self.addCleanup(patch.stopall)
         patch.object(resume, "JOBS", self.root / "jobs").start()
         patch.object(resume, "HOST_REPOSITORY", self.root / "repository").start()
+        patch.object(resume.checker, "plan", return_value=([], [], ["Proofs.A"])).start()
+        patch.object(resume, "library_unchanged", return_value=1).start()
+        patch.object(resume, "library_hashes", return_value={"proofs/Proofs/A.lean": "f" * 64}).start()
         original_exists = Path.exists
         def exists(path):
             return False if str(path) == "/.dockerenv" else original_exists(path)
@@ -174,6 +177,7 @@ class TerminalChecks(unittest.TestCase):
         record = json.loads(self.record.read_text())
         self.assertEqual(record["recorded_output"], "/workspace/research/result")
         self.assertEqual(record["build_receipt_sha256"], resume.digest(self.output / "RUN.json"))
+        self.assertEqual(record["library_source_sha256"], {"proofs/Proofs/A.lean": "f" * 64})
         with self.assertRaises(FileExistsError):
             self.capture()
 
@@ -202,6 +206,34 @@ class TerminalChecks(unittest.TestCase):
 
 
 class LibraryChecks(unittest.TestCase):
+    def test_container_hash_check_needs_no_git(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "proofs/Proofs").mkdir(parents=True)
+            a, b = root / "proofs/Proofs/A.lean", root / "proofs/Proofs/B.lean"
+            a.write_text("import Proofs.B\n")
+            b.write_text("import Std\n")
+            with patch.object(resume, "REPOSITORY", root), patch.object(
+                    resume.subprocess, "check_output", side_effect=AssertionError("No Git in Docker")):
+                terminal = {"library_source_sha256": resume.library_hashes(["Proofs.A"])}
+                self.assertEqual(resume.verify_library_sources(terminal, ["Proofs.A"]), 6)
+                b.write_text("import Std\n-- changed dependency\n")
+                with self.assertRaisesRegex(ValueError, "source hashes differ"):
+                    resume.verify_library_sources(terminal, ["Proofs.A"])
+
+    def test_new_configuration_and_missing_inventory_refused(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "proofs/Proofs").mkdir(parents=True)
+            (root / "proofs/Proofs/A.lean").write_text("import Std\n")
+            with patch.object(resume, "REPOSITORY", root):
+                terminal = {"library_source_sha256": resume.library_hashes(["Proofs.A"])}
+                with self.assertRaisesRegex(ValueError, "source hashes differ"):
+                    resume.verify_library_sources({}, ["Proofs.A"])
+                (root / "proofs/lakefile.toml").write_text('name = "different"\n')
+                with self.assertRaisesRegex(ValueError, "source hashes differ"):
+                    resume.verify_library_sources(terminal, ["Proofs.A"])
+
     def test_transitive_library_and_toml_changes_refused(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

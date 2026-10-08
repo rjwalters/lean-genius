@@ -70,11 +70,19 @@ def capture_terminal(job, output, record):
     expected_output = HOST_REPOSITORY / recorded_output.relative_to(CONTAINER_REPOSITORY)
     require(output == expected_output, "Terminal job output does not match requested output")
     require(output.is_dir(), "Missing census output")
+    # The container sees the worktree but not its external .git directory.
+    # Compare with the execution commit here on the host, then carry the exact
+    # transitive source inventory into the container for a hash-only check.
+    _, _, library = checker.plan()
+    library_unchanged(commit[1], library)
+    library_sources = library_hashes(library)
+    library_unchanged(commit[1], library)
     record.parent.mkdir(parents=True, exist_ok=True)
     with record.open("x") as handle:
         json.dump({"status": "TERMINAL", "job": job, "exit_code": code,
                    "execution_commit": commit[1], "job_pid_absent": pid,
                    "recorded_output": str(recorded_output),
+                   "library_source_sha256": library_sources,
                    "job_log_sha256": digest(directory / "log"),
                    "job_exit_sha256": digest(exit_path),
                    "build_receipt_sha256": digest(output / "RUN.json")}, handle, indent=2)
@@ -82,7 +90,7 @@ def capture_terminal(job, output, record):
     print(json.dumps(read_json(record)), flush=True)
 
 
-def library_unchanged(commit, library):
+def library_paths(library):
     paths, pending = set(), list(library)
     while pending:
         module = pending.pop()
@@ -97,12 +105,30 @@ def library_unchanged(commit, library):
         pending.extend(checker.census.imports(source))
     paths.update({"proofs/lean-toolchain", "proofs/lake-manifest.json",
                   "proofs/lakefile.lean", "proofs/lakefile.toml"})
+    return paths
+
+
+def library_unchanged(commit, library):
+    paths = library_paths(library)
     changed = subprocess.check_output(
         ["git", "diff", "--name-only", commit, "--", "proofs"],
         cwd=REPOSITORY, text=True).splitlines()
     require(not set(changed) & paths,
             f"Library/toolchain inputs changed: {sorted(set(changed) & paths)}")
     return len(paths)
+
+
+def library_hashes(library):
+    # None records an absent alternative Lake configuration file explicitly.
+    return {path: digest(REPOSITORY / path) if (REPOSITORY / path).is_file() else None
+            for path in sorted(library_paths(library))}
+
+
+def verify_library_sources(terminal, library):
+    actual = library_hashes(library)
+    require(terminal.get("library_source_sha256") == actual,
+            "Library/toolchain source hashes differ from host terminal capture")
+    return len(actual)
 
 
 def validate_prefix(output, sources, library, recorded_output=None):
@@ -184,7 +210,7 @@ def main():
     require(digest(output / "RUN.json") == terminal["build_receipt_sha256"],
             "Build changed after terminal capture")
     base, sources, library = checker.plan()
-    library_files = library_unchanged(terminal["execution_commit"], library)
+    library_files = verify_library_sources(terminal, library)
     _, _, base_library = checker.census.plan("full")
     base_receipt = read_json(base_build / "RUN.json")
     require(base_receipt["branch"] == "full" and base_receipt["shard_count"] == 100,

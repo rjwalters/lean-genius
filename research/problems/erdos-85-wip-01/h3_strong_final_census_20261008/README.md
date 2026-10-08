@@ -92,6 +92,11 @@ to be absent. It parses the actual command in the job log and binds the
 requested output directory to that command, execution commit, log hash,
 exit hash, and current receipt hash. The terminal record must be a new file.
 Missing exit evidence or an observation timeout cannot authorize a continuation.
+The host also compares the transitive library and Lean/Lake configuration
+against the original execution commit, then records every source hash
+(including absence of alternative configuration files). The container checks
+that exact inventory without invoking Git: inspection of the running census
+container confirmed that its worktree's external Git directory is not mounted.
 
 Only after capture, an explicitly submitted continuation may run the helper
 inside cloud Docker, from `proofs/`, with `--terminal-record`, `--base-build`,
@@ -109,12 +114,14 @@ the active receipt changes. A last failed module is retained in the snapshot
 and recompiled; it is never reused as a success. Remaining modules compile
 at the same original paths with one Lean thread, and a complete audit follows.
 
-`python3 test_resume.py` runs 15 small metadata-only regression tests. These
+`python3 test_resume.py` runs 17 small metadata-only regression tests. These
 accept a valid prefix and copied snapshot and reject changed sources, objects,
 logs, receipts, dependency evidence, report inventories, report names, axiom
 sets, result order, and nonzero successful exits. They also check refusal of
 live or successful jobs, missing terminal records, wrong output paths, and
-changed transitive library or Lake settings. They invoke neither Lean nor
+changed transitive library or Lake settings. The container-side checks also
+pass with Git deliberately unavailable and reject a missing captured inventory
+or newly introduced Lake configuration. They invoke neither Lean nor
 finite search. A read-only check against the original execution commit
 `3e67a0afc3b9b99a478f5c37cc7c2ac29a8bcfb7` found all 453 transitive library
 and toolchain input paths unchanged at preparation time.
