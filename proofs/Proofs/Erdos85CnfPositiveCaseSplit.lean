@@ -17,18 +17,20 @@ def cnfNegativeCaseCover (cases : List (List α)) : CNF α :=
 
 theorem cnfPositiveUnits_eval (variables : List α) (assignment : α → Bool) :
     (cnfPositiveUnits variables).eval assignment = variables.all assignment := by
-  simp [cnfPositiveUnits, CNF.eval, CNF.Clause.eval, List.all_map]
+  simp [cnfPositiveUnits, CNF.eval, CNF.Clause.eval, List.all_map, Function.comp_def]
 
 private theorem negativeClause_eval (variables : List α) (assignment : α → Bool) :
     CNF.Clause.eval assignment (variables.map fun v => (v, false)) =
       !variables.all assignment := by
   simp only [CNF.Clause.eval, List.any_map]
-  simpa using (List.not_all_eq_any_not (l := variables) (p := assignment)).symm
+  simpa [Function.comp_def] using
+    (List.not_all_eq_any_not (l := variables) (p := assignment)).symm
 
 theorem cnfNegativeCaseCover_eval (cases : List (List α)) (assignment : α → Bool) :
     (cnfNegativeCaseCover cases).eval assignment =
       cases.all (fun variables => !variables.all assignment) := by
-  simp [cnfNegativeCaseCover, CNF.eval, List.all_map, negativeClause_eval]
+  simp [cnfNegativeCaseCover, CNF.eval, List.all_map, Function.comp_def,
+    negativeClause_eval]
 
 /-- Every valuation satisfies the cover or at least one positive-unit case. -/
 theorem cnfPositiveCases_cover_or_case

@@ -1,6 +1,6 @@
 # Positive-unit leaf and negative-cover interface
 
-Status: **source-only; cloud build pending**.
+Status: **first cloud build failed on simplification; fixed source awaiting recheck**.
 
 `Proofs.Erdos85CnfPositiveCaseSplit` defines a positive-unit CNF for each
 list of variables and the negative blocking clause for each list. It proposes
@@ -18,3 +18,11 @@ proved UNSAT after appending the same base formula (cube plus sound hsb).
 The module imports only `Std.Sat.CNF.Basic`; it can be cloud-checked on the
 free H3 pilot worktree without touching Claude's live H7 worktree or the
 running H3 deficient pilot/census. No finite rejection search is performed.
+
+Claude independently added the more general signed-literal theorem
+`cnf_unsat_of_blocking_clauses` in `...CanonicalHsbLeaves` at `e812684bde7`.
+That is the H7 integration path. This positive-only module is a standalone
+cross-check and requires no changes to Claude's proof files. The first build
+failed because composition expressions were not unfolded by the core simp
+set; `Function.comp_def` is now supplied explicitly. The failed build and
+its follower output are retained in `first-build.json` / `first-build.log`.
