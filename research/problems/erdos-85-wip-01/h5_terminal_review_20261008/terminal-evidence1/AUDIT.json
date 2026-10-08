@@ -1,0 +1,931 @@
+{
+  "job": "20261008T112746-erdos85__h5-formal-20261008-455708",
+  "execution_commit": "99bc3e3413008ca13d5efb29bee5e855af961976",
+  "authoritative_exit": 0,
+  "status": "NEEDS_GRAPH_AXIOM_REVIEW",
+  "problems": [],
+  "results": [
+    {
+      "module": "Erdos85H5T0Part00",
+      "source_sha256": "9fa4d3fac66aedfb9e7a176f69a6adcb316c10d32d2a8ea9b9a54e3240fd0fd9",
+      "object": {
+        "sha256": "2a754c725676d33462940e4b0ace8ba98eda5f4b1008b277aef98f4b28be4767",
+        "bytes": 8696,
+        "mtime": 1791466738.2109892
+      },
+      "fresh_build_elapsed": "1894s"
+    },
+    {
+      "module": "Erdos85H5T0Part01",
+      "source_sha256": "ee513e7f1d11247f66efbf7ff1fc7a353ca7c19183e1cbb7edc0080ac6e11910",
+      "object": {
+        "sha256": "7dc150c27cdade17b29c2b7cd4c9fa9bddb9c5b3c5ae957a1408425f5df1e578",
+        "bytes": 8736,
+        "mtime": 1791466193.563878
+      },
+      "fresh_build_elapsed": "1388s"
+    },
+    {
+      "module": "Erdos85H5T0Part02",
+      "source_sha256": "54009a0ebfb63547fec74774bcd162f1fd62140b27caa3cb873e8ea0293436b8",
+      "object": {
+        "sha256": "d1fdfe4b89abe4acc1375e362f96ebeb385e8411dcf45d67e27cbffb7c338270",
+        "bytes": 8600,
+        "mtime": 1791466658.3526099
+      },
+      "fresh_build_elapsed": "1875s"
+    },
+    {
+      "module": "Erdos85H5T0Part03",
+      "source_sha256": "4230124d850495ee2eb946e7a7470e9b25651b680484dd22b1fa5c11204c49d3",
+      "object": {
+        "sha256": "fea2d4be982b50b8e7c7d6350086e1e89ea758b92f0bbf2deebff5a9031f11f7",
+        "bytes": 8600,
+        "mtime": 1791466657.982615
+      },
+      "fresh_build_elapsed": "2087s"
+    },
+    {
+      "module": "Erdos85H5T0Part04",
+      "source_sha256": "b1b86f04e3a44b5b50dbfc6b1cd5de17d4e6ec80f2750c3832392afeb8e9295e",
+      "object": {
+        "sha256": "b910249010575bcedad65d34df7f1b69bd3cccef145466e15b89601a3941bb1a",
+        "bytes": 8600,
+        "mtime": 1791466290.878974
+      },
+      "fresh_build_elapsed": "1732s"
+    },
+    {
+      "module": "Erdos85H5T0Part05",
+      "source_sha256": "6855451fe2ff1e36218fea19ccf2c84be1152bca3fdddff9de3b2dae60e3c075",
+      "object": {
+        "sha256": "f2cd63fc021f5cc2c759b1f223ac81f61626bfb162ae9843493678c834af7971",
+        "bytes": 8736,
+        "mtime": 1791466323.10894
+      },
+      "fresh_build_elapsed": "1806s"
+    },
+    {
+      "module": "Erdos85H5T0Part06",
+      "source_sha256": "3f56730dcfa2807b86f46400fffb8f01843b6dee1af76aa44bfa26902ce8a34f",
+      "object": {
+        "sha256": "12ba56c5033429d8ca236be6c8a54778550e78140e340601391f33aaeeb11566",
+        "bytes": 8736,
+        "mtime": 1791466532.2390099
+      },
+      "fresh_build_elapsed": "2132s"
+    },
+    {
+      "module": "Erdos85H5T0Part07",
+      "source_sha256": "e09ea3c1c480248574b1ea03b33f9a7dc278277de6827a4be08c655852ec19e1",
+      "object": {
+        "sha256": "83873f65c1a56d08556f3514652a6e9de06ce968cd1517627947ad9b32bc1d2e",
+        "bytes": 8736,
+        "mtime": 1791465963.5542352
+      },
+      "fresh_build_elapsed": "1692s"
+    },
+    {
+      "module": "Erdos85H5T0Part08",
+      "source_sha256": "ab7a51c6d9d1a4a6d7419a8103d1046150d35ceeb05e4bd97c501a3203e3fb59",
+      "object": {
+        "sha256": "533c78fcb02cc9d5ea2899fceddfef6235bcbc43afc30324461cd2ea9445cf70",
+        "bytes": 8736,
+        "mtime": 1791464804.8440387
+      },
+      "fresh_build_elapsed": "1734s"
+    },
+    {
+      "module": "Erdos85H5T0Part09",
+      "source_sha256": "f56170e6e17ecd2d15cca8e1a68da52a4cbda263ff2c19dc21c3960a8ee10a16",
+      "object": {
+        "sha256": "574fb8fcfef36a99258b6a013180e7d690ff9f83f8ac77d526e3dc7ed1c50c02",
+        "bytes": 8736,
+        "mtime": 1791464516.9966576
+      },
+      "fresh_build_elapsed": "1499s"
+    },
+    {
+      "module": "Erdos85H5T0Part10",
+      "source_sha256": "8e79d0431f9734163d5316da2f0211cd201efb6653b75eac1ccbc54df6d85dd0",
+      "object": {
+        "sha256": "4c4a95b1ff1941dc03b3923d4def6e9c1acbeccdb19b5a5ece810a671737787f",
+        "bytes": 8736,
+        "mtime": 1791464783.1843283
+      },
+      "fresh_build_elapsed": "1840s"
+    },
+    {
+      "module": "Erdos85H5T0Part11",
+      "source_sha256": "292c95c4322fe3b9e60005974445c11c1290dad64a7698f0eb5410943ca61fec",
+      "object": {
+        "sha256": "8d112116f4346ab7bd2d827a52af41c65ec858c82292197e6c584994e68512b4",
+        "bytes": 8736,
+        "mtime": 1791464843.3463035
+      },
+      "fresh_build_elapsed": "1902s"
+    },
+    {
+      "module": "Erdos85H5T0Part12",
+      "source_sha256": "b310649fe858a10428081f703623756080bd6f9b102d88ff2790c119fd69287c",
+      "object": {
+        "sha256": "8954291afd7a75719e06464bfab122038feab14c05ee244210ef906e83b60a8b",
+        "bytes": 8736,
+        "mtime": 1791464558.1241546
+      },
+      "fresh_build_elapsed": "1773s"
+    },
+    {
+      "module": "Erdos85H5T0Part13",
+      "source_sha256": "fa35a658aecf6a1c8ca7e12a2984d14f2471bc1c4b793e61629cb953b1377b99",
+      "object": {
+        "sha256": "f0c3d380d22ae832df6ef60e84ce017d2cb126eda1815feb32496a2a566352c7",
+        "bytes": 8736,
+        "mtime": 1791464399.2843528
+      },
+      "fresh_build_elapsed": "1670s"
+    },
+    {
+      "module": "Erdos85H5T0Part14",
+      "source_sha256": "6db1d506687aed038698a973d1feed708c2a8dc13786e0be873539b211fd2328",
+      "object": {
+        "sha256": "cdb73a022ce234aaaa23bca1293d2ed34188748b25fd7525925cb1a9cae3673d",
+        "bytes": 8736,
+        "mtime": 1791464271.109432
+      },
+      "fresh_build_elapsed": "1580s"
+    },
+    {
+      "module": "Erdos85H5T0Part15",
+      "source_sha256": "8d539619d80dca8042b4ac3c3cec03e9dee04fac91d0333bf242c8959d09c194",
+      "object": {
+        "sha256": "9cb97ad4ce514d171bb0dc376309545bd71ccf326bef6776c21ede755a1d3172",
+        "bytes": 8736,
+        "mtime": 1791464570.4660957
+      },
+      "fresh_build_elapsed": "1892s"
+    },
+    {
+      "module": "Erdos85H5T0",
+      "source_sha256": "6cd36aeae37494329b85905668268b846f8a54f6ccaffda57c405728ca54cda7",
+      "object": {
+        "sha256": "bd8729d2b0d892f5cc6bf21127401b21904db871fb9d7dfc9377ecd6342d121a",
+        "bytes": 60400,
+        "mtime": 1791466741.7840002
+      },
+      "fresh_build_elapsed": "3.6s"
+    },
+    {
+      "module": "Erdos85H5T1Part00",
+      "source_sha256": "7cbd8d50d985e16dad773c7286cb4fbdb113eaa63baa3b6ae290d4441aa60dc7",
+      "object": {
+        "sha256": "4976586e9279a0c51cfeec16ba9b31f76675987edeffe0ebe5f7ee9a42548ddd",
+        "bytes": 8736,
+        "mtime": 1791463017.0013576
+      },
+      "fresh_build_elapsed": "961s"
+    },
+    {
+      "module": "Erdos85H5T1Part01",
+      "source_sha256": "cca6b5b38d587371f948316cc544bf5345755eb30c56a949468720f6727628e6",
+      "object": {
+        "sha256": "7aeb3ee4f389025cc3343ea071cd3a82c0d163ad5f837055c78ca65c8418aebd",
+        "bytes": 8696,
+        "mtime": 1791463070.3178277
+      },
+      "fresh_build_elapsed": "1021s"
+    },
+    {
+      "module": "Erdos85H5T1Part02",
+      "source_sha256": "7bdb63d39062d9e98fe9538e036cab78516bee7d127c6f5a7e5517e43e0249bc",
+      "object": {
+        "sha256": "31320d6f8726c36c1690d0071bb9cc4b8e0448fbfef810c6466db925f39395e5",
+        "bytes": 8600,
+        "mtime": 1791462942.5822556
+      },
+      "fresh_build_elapsed": "956s"
+    },
+    {
+      "module": "Erdos85H5T1Part03",
+      "source_sha256": "73719c02477b281c82b315ef94f5628f079f493d9aef813131b19d5d3503af16",
+      "object": {
+        "sha256": "250e214af0d151e72ab375c0835df6d8adf2643282cac71b30ed5aa3d6f93a44",
+        "bytes": 8600,
+        "mtime": 1791462940.9622698
+      },
+      "fresh_build_elapsed": "1014s"
+    },
+    {
+      "module": "Erdos85H5T1Part04",
+      "source_sha256": "1b22ffeb0761f3df36d78d26b9cad7d3f68531f817f00a1cf73260be15160d76",
+      "object": {
+        "sha256": "e4ff9e773001cc34262c2b5c1e77df2f62002ca76374f81e8e81778e0a50e7e1",
+        "bytes": 8736,
+        "mtime": 1791462690.7156196
+      },
+      "fresh_build_elapsed": "788s"
+    },
+    {
+      "module": "Erdos85H5T1Part05",
+      "source_sha256": "486c73dcef994dfdb8030b9197431b5cf94c878bcc4a470571e0727a45edd198",
+      "object": {
+        "sha256": "da8f53fb8842c949a5e9f89b7a7be2f223968eb4f0ac59b8cada84d262fd6e7a",
+        "bytes": 8736,
+        "mtime": 1791462784.602904
+      },
+      "fresh_build_elapsed": "891s"
+    },
+    {
+      "module": "Erdos85H5T1Part06",
+      "source_sha256": "33537c50ba0d7712c93347974ee01446a4a877a28fc52f45047713d0aff5b8ee",
+      "object": {
+        "sha256": "2f56eac9b487ca38b0db70938109f0b49d20802440c1af7bda4db1f42c832d75",
+        "bytes": 8600,
+        "mtime": 1791462678.075574
+      },
+      "fresh_build_elapsed": "873s"
+    },
+    {
+      "module": "Erdos85H5T1Part07",
+      "source_sha256": "a4792b1dfbcc751f397e3b51cd507be4edb4691358f4eeb98326d42147051ccc",
+      "object": {
+        "sha256": "09138789fd4f970ca52364b49456cd3ca3bb1b3929327513d10c6f2897f4d7d3",
+        "bytes": 8736,
+        "mtime": 1791462728.689612
+      },
+      "fresh_build_elapsed": "1001s"
+    },
+    {
+      "module": "Erdos85H5T1Part08",
+      "source_sha256": "9cb0e681033e8007494e99dc972a7d2fa7369e13829ae705c81b8b8268a3069c",
+      "object": {
+        "sha256": "c91b905edffe7432553187998f342878dd57cced9ff6c7937ef9d4692c4bdeaa",
+        "bytes": 8736,
+        "mtime": 1791461804.5407877
+      },
+      "fresh_build_elapsed": "855s"
+    },
+    {
+      "module": "Erdos85H5T1Part09",
+      "source_sha256": "3a2349ab8873b9203b089d13780136fe9bd52db8ee010815c8ce8c66e991746b",
+      "object": {
+        "sha256": "e7138138c0db62d103dc8f55152e981fb01560139997066cce56d87d71d6b0ea",
+        "bytes": 8736,
+        "mtime": 1791461892.6857178
+      },
+      "fresh_build_elapsed": "973s"
+    },
+    {
+      "module": "Erdos85H5T1Part10",
+      "source_sha256": "f9aa60686405b769d23642c89dfd6af48ab6680889b737c240c657f2ecf33c66",
+      "object": {
+        "sha256": "8d1d5acce0afea575ee52f01e650baadbc9f37ef4b0ca8249f1cf40be4eb049e",
+        "bytes": 8736,
+        "mtime": 1791461926.179474
+      },
+      "fresh_build_elapsed": "1010s"
+    },
+    {
+      "module": "Erdos85H5T1Part11",
+      "source_sha256": "26fc22f071863ff318ccd4b4023794ee5590ae6f7221d7bd77c2519ee01af2e1",
+      "object": {
+        "sha256": "c9ac3051bf9a994f43750c59e5e29d2e4cd54b5d4ab555fcad0e3dd132d80ee6",
+        "bytes": 8736,
+        "mtime": 1791461727.4930155
+      },
+      "fresh_build_elapsed": "814s"
+    },
+    {
+      "module": "Erdos85H5T1Part12",
+      "source_sha256": "0acd3f4865fac8c61c27b5622393511ab42ab1d7471b88f796cfb67256de7955",
+      "object": {
+        "sha256": "b832ff9121010b79c4a6e9565d4540db6fb40a029d12dfe40f82da6c23442d2b",
+        "bytes": 8736,
+        "mtime": 1791462049.21056
+      },
+      "fresh_build_elapsed": "1142s"
+    },
+    {
+      "module": "Erdos85H5T1Part13",
+      "source_sha256": "11d893c02702081c7b7fc7158549cf9a05ca885f20eade99b303fd3bdba68681",
+      "object": {
+        "sha256": "1caff2142b66da09c8138e1a85c49bec1e9c660ab317764c41ac5d86595d0691",
+        "bytes": 8736,
+        "mtime": 1791461986.544547
+      },
+      "fresh_build_elapsed": "1097s"
+    },
+    {
+      "module": "Erdos85H5T1Part14",
+      "source_sha256": "502ba803ed3c6be49520f2f8020fd12aa5b97fc94244bcad4e5ad334c228b3cb",
+      "object": {
+        "sha256": "1fb216524d6ad806afbacb9224f19cb56fe2f3439cc52467b53cd9b96845e1f4",
+        "bytes": 8736,
+        "mtime": 1791462055.1195138
+      },
+      "fresh_build_elapsed": "1172s"
+    },
+    {
+      "module": "Erdos85H5T1Part15",
+      "source_sha256": "21f184ae8e7a962ea2677f0096a61a82ea450cbdf867fc6ff1b65f63aa192b55",
+      "object": {
+        "sha256": "734b1eed7ca14934b0be4652e37a249f79e533e6f9db42cea18d1184a833806b",
+        "bytes": 8736,
+        "mtime": 1791461902.0241745
+      },
+      "fresh_build_elapsed": "1027s"
+    },
+    {
+      "module": "Erdos85H5T1",
+      "source_sha256": "402f29704c618f6ca9f8c0584c6dd5aee1a854e50b2d8b5fea671faa9364de33",
+      "object": {
+        "sha256": "e6ac216815399cfff102211aa0779fc2b1698a5acff8262a6e3f7f0464268ac9",
+        "bytes": 60400,
+        "mtime": 1791465970.7013478
+      },
+      "fresh_build_elapsed": "3.6s"
+    },
+    {
+      "module": "Erdos85H5T2Part00",
+      "source_sha256": "ac6d48061a6c145f5358866118a87d5612b11cb5b72afeca7375973a869a33b3",
+      "object": {
+        "sha256": "ed284e46af3e6c0bc34315875dd471a3c87027d557fb16e71f9d46c741f08485",
+        "bytes": 8696,
+        "mtime": 1791460906.5402136
+      },
+      "fresh_build_elapsed": "2035s"
+    },
+    {
+      "module": "Erdos85H5T2Part01",
+      "source_sha256": "b55bafbbd7529280c28663c405c7e540cdf958096d2c22e0c2cc39bbeeb61f5e",
+      "object": {
+        "sha256": "fcd9d1703ddb3872ca06fe5646f58dfb70af8e44e2d30d6c0fc2d9f8065cf9b2",
+        "bytes": 8696,
+        "mtime": 1791460919.337717
+      },
+      "fresh_build_elapsed": "2048s"
+    },
+    {
+      "module": "Erdos85H5T2Part02",
+      "source_sha256": "cbb2d02ddf83eda3e8a505b75ab4347870c8f6c3ce84bc7794b40ab0cfdfdb8c",
+      "object": {
+        "sha256": "bea2b568f69319672514c0f9862dbe34a422f1beb9ac45e3fc0a93c3693e421d",
+        "bytes": 8560,
+        "mtime": 1791460874.108807
+      },
+      "fresh_build_elapsed": "2003s"
+    },
+    {
+      "module": "Erdos85H5T2Part03",
+      "source_sha256": "39fce419585bbc17dc2e8c61364fd61909a7611636cc568c808dabb7a2f36f6c",
+      "object": {
+        "sha256": "217421533aeaee62d08bf0004f73d7a896387a39590efa957c6536d9371fe478",
+        "bytes": 8560,
+        "mtime": 1791460913.4892216
+      },
+      "fresh_build_elapsed": "2042s"
+    },
+    {
+      "module": "Erdos85H5T2Part04",
+      "source_sha256": "1b3646ed80dee7abc4f23525b268b58eb0e9bb74d5bcdf03b54012185bf37ebc",
+      "object": {
+        "sha256": "349c4717b52326410b6bcd84ea5ec2ef43cbe174478ca6dd7734ec4f022a3d9b",
+        "bytes": 8696,
+        "mtime": 1791460915.7476184
+      },
+      "fresh_build_elapsed": "2045s"
+    },
+    {
+      "module": "Erdos85H5T2Part05",
+      "source_sha256": "891b05b4aaf670289fd4a8b626d9f1575ae0fc32e00be9c8c12eb7fd4bd3fe48",
+      "object": {
+        "sha256": "6a5081cbe6ff273f6ab9e5b961d5a67181a2d122c7132eac1ad98d4d98f82d41",
+        "bytes": 8696,
+        "mtime": 1791460882.3743274
+      },
+      "fresh_build_elapsed": "2011s"
+    },
+    {
+      "module": "Erdos85H5T2Part06",
+      "source_sha256": "d7bdd84065e80d5a1b6aeb4fc69b536216a11f562c23c92dc9e2ff7cd4a24a8b",
+      "object": {
+        "sha256": "6b0e5eed3755cb9a928556e35e4b35b65e9aaa831f694f337196aaf4109b98c1",
+        "bytes": 8696,
+        "mtime": 1791460948.6317728
+      },
+      "fresh_build_elapsed": "2078s"
+    },
+    {
+      "module": "Erdos85H5T2Part07",
+      "source_sha256": "cb83abf429da391c92d831c72812e4a6ff4a3a9f62552ae7c0b97a226f0c5f6c",
+      "object": {
+        "sha256": "f89ed1b63606951f67754cf4906da8046f721ffe115a41bec41f6f27a88220bf",
+        "bytes": 8696,
+        "mtime": 1791460888.9373915
+      },
+      "fresh_build_elapsed": "2018s"
+    },
+    {
+      "module": "Erdos85H5T2",
+      "source_sha256": "f610b66aaf52213286000efe86022e4bf15a95dcbe96b372aa50a9b110bc1a3e",
+      "object": {
+        "sha256": "4eef3ca795769964e52d9fd084c2b7dc19e9a990d3bfce07cd1aae5df4980df2",
+        "bytes": 46480,
+        "mtime": 1791465967.1082628
+      },
+      "fresh_build_elapsed": "3.6s"
+    },
+    {
+      "module": "Erdos85H5Stratum",
+      "source_sha256": "7262850cd5fa29e456480e10d65eaef67955bb0ff569643f03cd377c465c6150",
+      "object": {
+        "sha256": "71c5f298447769ee058de801206b1415228de6e92a9814a4d4856fb78731aa8d",
+        "bytes": 53592,
+        "mtime": 1791466745.4923584
+      },
+      "fresh_build_elapsed": "3.7s"
+    }
+  ],
+  "prerequisites": [
+    {
+      "module": "Erdos85H3PairEngine",
+      "source_sha256": "6f84fc3a0de0bbc170d98b7a85824b1c84282fbcf4f2824267cac96bf3b37625",
+      "object": {
+        "sha256": "35c3cba5f6e9e8526ecc31c6471e591baafbe9a816641e50856b882cef440222",
+        "bytes": 2095936,
+        "mtime": 1791455014.379877
+      }
+    },
+    {
+      "module": "Erdos85H5Engine",
+      "source_sha256": "7e39050eeef3acda6f578a321a148873961e3a09b332776806cc3236b842638a",
+      "object": {
+        "sha256": "a70da513a95fac71dbab06bcedf1d91faf6bbce1aa24585c246d276d03a9af4e",
+        "bytes": 2492824,
+        "mtime": 1791455026.030168
+      }
+    },
+    {
+      "module": "Erdos85H5Bridge",
+      "source_sha256": "81f0128eb80a6509f30c2962636d1865678480f167c7ad01fd890f34851b3205",
+      "object": {
+        "sha256": "1ecb095d48ef4b380851a8c57e177fe01f51d1dd543007dc52cfcb271cefcd3c",
+        "bytes": 207608,
+        "mtime": 1791455037.3504512
+      }
+    },
+    {
+      "module": "Erdos85H5Fast",
+      "source_sha256": "bc1f9631ede32d330fb6c663dd7601377a87b393b6021e5525aac8f592f43beb",
+      "object": {
+        "sha256": "60fd039e16dc8bdfc3115be40d216d93d6e1ca6a0415a075b0a5242e6fb5a3a2",
+        "bytes": 487384,
+        "mtime": 1791458479.6878061
+      }
+    }
+  ],
+  "graph_modules": [
+    {
+      "module": "Erdos85OrderFortyNineFiveHighZeroFiber",
+      "source_sha256": "8b20ae6587298f58437d3729cc2920678e00573b617fe30e241bf184f78b79b1",
+      "object": {
+        "sha256": "5e1e2418eca8415f2011ee52dc168cd3c40e0ab1a7ecb52164be0af503fae441",
+        "bytes": 520480,
+        "mtime": 1791458771.395197
+      }
+    },
+    {
+      "module": "Erdos85OrderFortyNineFiveHighOneFiber",
+      "source_sha256": "22fd0a1f00e4d37f3cf7ec6da1bb391ac7eca3c89b33c4c64ac8a30b4b66e1e3",
+      "object": {
+        "sha256": "ce45763c4d8921749677e47fc06ca1e8732b3072586f86e4b2870805786047ba",
+        "bytes": 844304,
+        "mtime": 1791458778.5253804
+      }
+    },
+    {
+      "module": "Erdos85OrderFortyNineFiveHighTwoFiber",
+      "source_sha256": "38fc0cda32a0626a1358df99fa24fb936831abb2ba013f133c7a0674bbf5d04d",
+      "object": {
+        "sha256": "e0f03481b2953e0d97ec75c236837829796133be6cf355cff956a750dbf5abc7",
+        "bytes": 2221648,
+        "mtime": 1791458851.0972207
+      }
+    }
+  ],
+  "scope": "Whole H5 stratum acceptance requires all 40 parts, all four assemblies and exact reviewed graph-cover axioms.",
+  "axiom_check": {
+    "status": "NEEDS_GRAPH_AXIOM_REVIEW",
+    "problems": [],
+    "exports": [
+      {
+        "theorem": "Erdos85.H5.fiveHighCanonicalRepresentativeExcluded_0",
+        "module": "Erdos85H5T0",
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound",
+          "Erdos85.H5.cellPartF_0_4_16_00._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_01._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_02._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_03._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_04._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_05._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_06._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_07._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_08._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_09._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_10._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_11._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_12._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_13._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_14._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_15._native.native_decide.ax_1_1"
+        ],
+        "required_search_axiom_count": 16,
+        "additional_graph_axioms": []
+      },
+      {
+        "theorem": "Erdos85.H5.fiveHighCanonicalRepresentativeExcluded_1",
+        "module": "Erdos85H5T1",
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound",
+          "Erdos85.H5.cellPartF_1_6_16_00._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_01._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_02._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_03._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_04._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_05._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_06._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_07._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_08._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_09._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_10._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_11._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_12._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_13._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_14._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_15._native.native_decide.ax_1_1"
+        ],
+        "required_search_axiom_count": 16,
+        "additional_graph_axioms": []
+      },
+      {
+        "theorem": "Erdos85.H5.fiveHighCanonicalRepresentativeExcluded_2",
+        "module": "Erdos85H5T2",
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound",
+          "Erdos85.H5.cellPartF_2_12_8_00._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_01._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_02._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_03._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_04._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_05._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_06._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_07._native.native_decide.ax_1_1"
+        ],
+        "required_search_axiom_count": 8,
+        "additional_graph_axioms": []
+      },
+      {
+        "theorem": "Erdos85.H5.orderFortyNineTripleCellExcluded_five_zero",
+        "module": "Erdos85H5Stratum",
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound",
+          "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+          "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2",
+          "Erdos85.H5.cellPartF_0_4_16_00._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_01._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_02._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_03._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_04._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_05._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_06._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_07._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_08._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_09._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_10._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_11._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_12._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_13._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_14._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_15._native.native_decide.ax_1_1"
+        ],
+        "required_search_axiom_count": 16,
+        "additional_graph_axioms": [
+          "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+          "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2"
+        ]
+      },
+      {
+        "theorem": "Erdos85.H5.orderFortyNineTripleCellExcluded_five_one",
+        "module": "Erdos85H5Stratum",
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound",
+          "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+          "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2",
+          "Erdos85.H5.cellPartF_1_6_16_00._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_01._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_02._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_03._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_04._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_05._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_06._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_07._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_08._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_09._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_10._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_11._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_12._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_13._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_14._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_15._native.native_decide.ax_1_1"
+        ],
+        "required_search_axiom_count": 16,
+        "additional_graph_axioms": [
+          "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+          "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2"
+        ]
+      },
+      {
+        "theorem": "Erdos85.H5.orderFortyNineTripleCellExcluded_five_two",
+        "module": "Erdos85H5Stratum",
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound",
+          "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+          "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2",
+          "Erdos85.H5.cellPartF_2_12_8_00._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_01._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_02._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_03._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_04._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_05._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_06._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_07._native.native_decide.ax_1_1"
+        ],
+        "required_search_axiom_count": 8,
+        "additional_graph_axioms": [
+          "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+          "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2"
+        ]
+      },
+      {
+        "theorem": "Erdos85.H5.orderFortyNineStratumExcluded_five",
+        "module": "Erdos85H5Stratum",
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound",
+          "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+          "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2",
+          "Erdos85.H5.cellPartF_0_4_16_00._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_01._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_02._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_03._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_04._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_05._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_06._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_07._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_08._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_09._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_10._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_11._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_12._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_13._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_14._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_0_4_16_15._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_00._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_01._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_02._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_03._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_04._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_05._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_06._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_07._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_08._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_09._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_10._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_11._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_12._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_13._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_14._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_1_6_16_15._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_00._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_01._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_02._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_03._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_04._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_05._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_06._native.native_decide.ax_1_1",
+          "Erdos85.H5.cellPartF_2_12_8_07._native.native_decide.ax_1_1"
+        ],
+        "required_search_axiom_count": 40,
+        "additional_graph_axioms": [
+          "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+          "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2"
+        ]
+      }
+    ]
+  },
+  "retained_sha256": {
+    "job.log": "2508158ba54305ec4f6a1d5e1c3f9d44cc60cbc1d217fc746f21c3f5af7a8309",
+    "job.spec": "829da8cd688d48c8bf08655b73268c33fe2bc576f9e866774c1ebfaf12d186ac",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "sources/Erdos85H5T0Part00.lean": "9fa4d3fac66aedfb9e7a176f69a6adcb316c10d32d2a8ea9b9a54e3240fd0fd9",
+    "sources/Erdos85H5T0Part01.lean": "ee513e7f1d11247f66efbf7ff1fc7a353ca7c19183e1cbb7edc0080ac6e11910",
+    "sources/Erdos85H5T0Part02.lean": "54009a0ebfb63547fec74774bcd162f1fd62140b27caa3cb873e8ea0293436b8",
+    "sources/Erdos85H5T0Part03.lean": "4230124d850495ee2eb946e7a7470e9b25651b680484dd22b1fa5c11204c49d3",
+    "sources/Erdos85H5T0Part04.lean": "b1b86f04e3a44b5b50dbfc6b1cd5de17d4e6ec80f2750c3832392afeb8e9295e",
+    "sources/Erdos85H5T0Part05.lean": "6855451fe2ff1e36218fea19ccf2c84be1152bca3fdddff9de3b2dae60e3c075",
+    "sources/Erdos85H5T0Part06.lean": "3f56730dcfa2807b86f46400fffb8f01843b6dee1af76aa44bfa26902ce8a34f",
+    "sources/Erdos85H5T0Part07.lean": "e09ea3c1c480248574b1ea03b33f9a7dc278277de6827a4be08c655852ec19e1",
+    "sources/Erdos85H5T0Part08.lean": "ab7a51c6d9d1a4a6d7419a8103d1046150d35ceeb05e4bd97c501a3203e3fb59",
+    "sources/Erdos85H5T0Part09.lean": "f56170e6e17ecd2d15cca8e1a68da52a4cbda263ff2c19dc21c3960a8ee10a16",
+    "sources/Erdos85H5T0Part10.lean": "8e79d0431f9734163d5316da2f0211cd201efb6653b75eac1ccbc54df6d85dd0",
+    "sources/Erdos85H5T0Part11.lean": "292c95c4322fe3b9e60005974445c11c1290dad64a7698f0eb5410943ca61fec",
+    "sources/Erdos85H5T0Part12.lean": "b310649fe858a10428081f703623756080bd6f9b102d88ff2790c119fd69287c",
+    "sources/Erdos85H5T0Part13.lean": "fa35a658aecf6a1c8ca7e12a2984d14f2471bc1c4b793e61629cb953b1377b99",
+    "sources/Erdos85H5T0Part14.lean": "6db1d506687aed038698a973d1feed708c2a8dc13786e0be873539b211fd2328",
+    "sources/Erdos85H5T0Part15.lean": "8d539619d80dca8042b4ac3c3cec03e9dee04fac91d0333bf242c8959d09c194",
+    "sources/Erdos85H5T0.lean": "6cd36aeae37494329b85905668268b846f8a54f6ccaffda57c405728ca54cda7",
+    "sources/Erdos85H5T1Part00.lean": "7cbd8d50d985e16dad773c7286cb4fbdb113eaa63baa3b6ae290d4441aa60dc7",
+    "sources/Erdos85H5T1Part01.lean": "cca6b5b38d587371f948316cc544bf5345755eb30c56a949468720f6727628e6",
+    "sources/Erdos85H5T1Part02.lean": "7bdb63d39062d9e98fe9538e036cab78516bee7d127c6f5a7e5517e43e0249bc",
+    "sources/Erdos85H5T1Part03.lean": "73719c02477b281c82b315ef94f5628f079f493d9aef813131b19d5d3503af16",
+    "sources/Erdos85H5T1Part04.lean": "1b22ffeb0761f3df36d78d26b9cad7d3f68531f817f00a1cf73260be15160d76",
+    "sources/Erdos85H5T1Part05.lean": "486c73dcef994dfdb8030b9197431b5cf94c878bcc4a470571e0727a45edd198",
+    "sources/Erdos85H5T1Part06.lean": "33537c50ba0d7712c93347974ee01446a4a877a28fc52f45047713d0aff5b8ee",
+    "sources/Erdos85H5T1Part07.lean": "a4792b1dfbcc751f397e3b51cd507be4edb4691358f4eeb98326d42147051ccc",
+    "sources/Erdos85H5T1Part08.lean": "9cb0e681033e8007494e99dc972a7d2fa7369e13829ae705c81b8b8268a3069c",
+    "sources/Erdos85H5T1Part09.lean": "3a2349ab8873b9203b089d13780136fe9bd52db8ee010815c8ce8c66e991746b",
+    "sources/Erdos85H5T1Part10.lean": "f9aa60686405b769d23642c89dfd6af48ab6680889b737c240c657f2ecf33c66",
+    "sources/Erdos85H5T1Part11.lean": "26fc22f071863ff318ccd4b4023794ee5590ae6f7221d7bd77c2519ee01af2e1",
+    "sources/Erdos85H5T1Part12.lean": "0acd3f4865fac8c61c27b5622393511ab42ab1d7471b88f796cfb67256de7955",
+    "sources/Erdos85H5T1Part13.lean": "11d893c02702081c7b7fc7158549cf9a05ca885f20eade99b303fd3bdba68681",
+    "sources/Erdos85H5T1Part14.lean": "502ba803ed3c6be49520f2f8020fd12aa5b97fc94244bcad4e5ad334c228b3cb",
+    "sources/Erdos85H5T1Part15.lean": "21f184ae8e7a962ea2677f0096a61a82ea450cbdf867fc6ff1b65f63aa192b55",
+    "sources/Erdos85H5T1.lean": "402f29704c618f6ca9f8c0584c6dd5aee1a854e50b2d8b5fea671faa9364de33",
+    "sources/Erdos85H5T2Part00.lean": "ac6d48061a6c145f5358866118a87d5612b11cb5b72afeca7375973a869a33b3",
+    "sources/Erdos85H5T2Part01.lean": "b55bafbbd7529280c28663c405c7e540cdf958096d2c22e0c2cc39bbeeb61f5e",
+    "sources/Erdos85H5T2Part02.lean": "cbb2d02ddf83eda3e8a505b75ab4347870c8f6c3ce84bc7794b40ab0cfdfdb8c",
+    "sources/Erdos85H5T2Part03.lean": "39fce419585bbc17dc2e8c61364fd61909a7611636cc568c808dabb7a2f36f6c",
+    "sources/Erdos85H5T2Part04.lean": "1b3646ed80dee7abc4f23525b268b58eb0e9bb74d5bcdf03b54012185bf37ebc",
+    "sources/Erdos85H5T2Part05.lean": "891b05b4aaf670289fd4a8b626d9f1575ae0fc32e00be9c8c12eb7fd4bd3fe48",
+    "sources/Erdos85H5T2Part06.lean": "d7bdd84065e80d5a1b6aeb4fc69b536216a11f562c23c92dc9e2ff7cd4a24a8b",
+    "sources/Erdos85H5T2Part07.lean": "cb83abf429da391c92d831c72812e4a6ff4a3a9f62552ae7c0b97a226f0c5f6c",
+    "sources/Erdos85H5T2.lean": "f610b66aaf52213286000efe86022e4bf15a95dcbe96b372aa50a9b110bc1a3e",
+    "sources/Erdos85H5Stratum.lean": "7262850cd5fa29e456480e10d65eaef67955bb0ff569643f03cd377c465c6150",
+    "sources/Erdos85H3PairEngine.lean": "6f84fc3a0de0bbc170d98b7a85824b1c84282fbcf4f2824267cac96bf3b37625",
+    "sources/Erdos85H5Engine.lean": "7e39050eeef3acda6f578a321a148873961e3a09b332776806cc3236b842638a",
+    "sources/Erdos85H5Bridge.lean": "81f0128eb80a6509f30c2962636d1865678480f167c7ad01fd890f34851b3205",
+    "sources/Erdos85H5Fast.lean": "bc1f9631ede32d330fb6c663dd7601377a87b393b6021e5525aac8f592f43beb",
+    "sources/Erdos85OrderFortyNineFiveHighZeroFiber.lean": "8b20ae6587298f58437d3729cc2920678e00573b617fe30e241bf184f78b79b1",
+    "sources/Erdos85OrderFortyNineFiveHighOneFiber.lean": "22fd0a1f00e4d37f3cf7ec6da1bb391ac7eca3c89b33c4c64ac8a30b4b66e1e3",
+    "sources/Erdos85OrderFortyNineFiveHighTwoFiber.lean": "38fc0cda32a0626a1358df99fa24fb936831abb2ba013f133c7a0674bbf5d04d",
+    "inventory.json": "080dff60afc06611d05bda20065881a3f3392b535bfd1cf485d13bef1f427d19",
+    "fast-AUDIT.json": "c9ae83d6f45260557b3dadbe369c5a41596a378f6d1603efcc615b2beafcb7f8",
+    "engine-AUDIT.json": "1320ddd76a0e2f1f95ef4e647dc0d4b965bb3085818a6bbff5695bd925e4ceea",
+    "graph-axioms.json": "00d4f97ad89aa8b3e80c9bf9d6e098bbf5f56d7fc93bcba9d7c2baf223c7bf88",
+    "audit_cloud.py": "d64f74858b7dbc145ee65e5e9fcec2cdea8ef217a6d6b675b54b06c70665a6a1",
+    "validate_axioms.py": "fba844d5283e34b699ee1b7fc6594925c4c801efa7b2915441a5178d832dcc08",
+    "capture.py": "35745b43d32ccceeafc71c7f545202a8302971330c01429a11efb2b48af9c6ab"
+  }
+}

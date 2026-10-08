@@ -10,7 +10,8 @@ class ArtifactChecks(unittest.TestCase):
         self.base=Path(self.tmp.name);self.repo=self.base/'repo'
         self.job=self.base/INV['intended_job'];self.job.mkdir()
         self.inv=copy.deepcopy(INV);rows,review=fixture();review['sources']={}
-        self.config={'inventory':self.inv,'graph_review':review,'prerequisites':[]}
+        self.config={'inventory':self.inv,'graph_review':review,'prerequisites':[],
+                     'graph_dependency_audit':{'status':'H5_GRAPH_DEPENDENCY_ARTIFACT_AUDIT_PASS','h5_execution_commit':audit.COMMIT,'results':[]}}
         self.objects={}
         for module,entry in self.inv['sources'].items():
             path=self.repo/entry['path'];path.parent.mkdir(parents=True,exist_ok=True)
@@ -63,4 +64,10 @@ class ArtifactChecks(unittest.TestCase):
     def test_pending_graph_review_retains_evidence_without_credit(self):
         self.config['graph_review']['status']='AWAITING_EXACT_PRINTED_SET_REVIEW'
         r=self.run_audit();self.assertEqual(r['audit']['status'],'NEEDS_GRAPH_AXIOM_REVIEW');self.assertEqual(len(r['audit']['results']),44)
+    def test_unaccepted_graph_dependency_audit_rejected(self):
+        self.config['graph_dependency_audit']['status']='PENDING'
+        self.assertEqual(self.run_audit()['audit']['status'],'REJECTED')
+    def test_wrong_graph_dependency_pin_rejected(self):
+        self.config['graph_dependency_audit']['h5_execution_commit']='b'*40
+        self.assertEqual(self.run_audit()['audit']['status'],'REJECTED')
 if __name__=='__main__':unittest.main()

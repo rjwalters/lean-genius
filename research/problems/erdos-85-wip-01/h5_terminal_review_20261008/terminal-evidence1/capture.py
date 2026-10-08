@@ -9,11 +9,6 @@ def main():
     inventory_data=(ROOT.parent/'h5_stratum_review_20261008/inventory.json').read_bytes()
     fast_data=(ROOT.parent/'h5_fast_review_20261008/evidence/AUDIT.json').read_bytes()
     engine_data=(ROOT.parent/'h5_engine_review_20261008/evidence/AUDIT.json').read_bytes()
-    graph_dependency_data=(ROOT/'graph-dependency-evidence1/AUDIT.json').read_bytes()
-    graph_dependencies=json.loads(graph_dependency_data)
-    assert graph_dependencies['status']=='H5_GRAPH_DEPENDENCY_ARTIFACT_AUDIT_PASS'
-    for name,digest in graph_dependencies['retained_sha256'].items():
-        assert sha((ROOT/'graph-dependency-evidence1'/name).read_bytes())==digest
     fast=json.loads(fast_data);engine=json.loads(engine_data)
     assert fast['status']=='H5_FAST_LINK_BUILD_AUDIT_PASS'
     assert engine['status']=='CONDITIONAL_SPLIT_CHAIN_BUILD_AUDIT_PASS'
@@ -22,8 +17,7 @@ def main():
         assert (old['source_sha256'],old['olean_sha256'])==(entry['source_sha256'],entry['olean_sha256'])
     prerequisites=engine['results']+fast['results']
     assert {p['module'] for p in prerequisites}=={'Erdos85H3PairEngine','Erdos85H5Engine','Erdos85H5Bridge','Erdos85H5Fast'}
-    config={'inventory':json.loads(inventory_data),'graph_review':json.loads((ROOT/'graph-axioms.json').read_text()),
-            'prerequisites':prerequisites,'graph_dependency_audit':graph_dependencies}
+    config={'inventory':json.loads(inventory_data),'graph_review':json.loads((ROOT/'graph-axioms.json').read_text()),'prerequisites':prerequisites}
     assert config['graph_review']['execution_commit']==config['inventory']['execution_commit']
     validator=(ROOT/'validate_axioms.py').read_bytes();auditor=(ROOT/'audit_cloud.py').read_bytes()
     code='import types,sys\nm=types.ModuleType("validate_axioms");sys.modules[m.__name__]=m\n'
@@ -37,7 +31,6 @@ def main():
     report=bundle['audit'];files={n:base64.b64decode(b) for n,b in bundle['files'].items()}
     for n,b in files.items():assert sha(b)==report['retained_sha256'][n]
     files.update({'inventory.json':inventory_data,'fast-AUDIT.json':fast_data,'engine-AUDIT.json':engine_data,
-                  'graph-dependency-AUDIT.json':graph_dependency_data,
                   'graph-axioms.json':(ROOT/'graph-axioms.json').read_bytes(),
                   'audit_cloud.py':auditor,'validate_axioms.py':validator,'capture.py':Path(__file__).read_bytes()})
     report['retained_sha256']={n:sha(b) for n,b in files.items()}

@@ -1,0 +1,11 @@
+MODE=build
+REF=erdos85/h5-formal-20261008
+TARGET=Proofs.Erdos85H5Stratum
+CMD=''
+MEM_GB=48
+TIMEOUT=6h
+THREADS=8
+CACHE=0
+CPUS=16
+VOLUME=''
+FULL=0
