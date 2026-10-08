@@ -3,6 +3,10 @@
 
     estimate.py --inputs-json inputs.json --sample results.jsonl [--json out.json] [--md out.md]
 
+The retained receipts/estimate.json and receipts/estimate_table.md are the output of the defaults
+(20,000 bootstrap replicates, random.Random(1)) on receipts/sample_results_with_followup.jsonl;
+the interval moves by a few CPU-hours with the replicate count (5,000 gives 2,865-5,369).
+
 Per leaf the campaign cost is solver CPU + checker CPU (both measured by wait4 rusage on the exact
 campaign path). Per cube: leaves x sample mean. Range: stratified bootstrap (resample within each
 cube), 5%-95%. The bootstrap cannot see leaves harder than the sample maximum, so the tail is
@@ -36,7 +40,8 @@ def main() -> int:
     ap.add_argument("--sample", type=Path, required=True)
     ap.add_argument("--json", type=Path)
     ap.add_argument("--md", type=Path)
-    ap.add_argument("--boot", type=int, default=5000)
+    ap.add_argument("--boot", type=int, default=20000,
+                    help="bootstrap replicates; the retained receipts use 20000 with random.Random(1)")
     a = ap.parse_args()
     meta = json.loads(a.inputs_json.read_text())
     recs = [json.loads(l) for l in a.sample.read_text().splitlines() if l.strip()]

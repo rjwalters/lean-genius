@@ -125,6 +125,24 @@ that; the range is the bootstrap 5%–95% of leaves × mean.
 
 Spot $ is CPU-hours / 0.85 × $0.0147.
 
+The table, `receipts/estimate.json` and every interval quoted in this README are the byte-exact
+output of the committed script with its defaults (20,000 bootstrap replicates, `random.Random(1)`),
+run with Python 3.14.8 on the Mac from this directory:
+
+```bash
+python3 estimate.py --inputs-json receipts/inputs.json \
+    --sample receipts/sample_results_with_followup.jsonl \
+    --json receipts/estimate.json --md receipts/estimate_table.md          # --boot 20000 is the default
+python3 estimate.py --inputs-json receipts/inputs.json --sample receipts/sample_results.jsonl \
+    --json receipts/estimate_capped_at_1h.json --md receipts/estimate_table_capped_at_1h.md
+```
+
+The point estimate (3,915.35 CPU-h, 20.44 TB) does not depend on the bootstrap. The interval does,
+slightly: 20,000 replicates give 2,864–5,392, 5,000 give 2,865–5,369 and 2,000 give 2,859–5,383
+(the last two are codex's independent runs, room messages 52896–52901). The numbers were first
+published while the script's default was still 5,000 and the run used `--boot 20000` explicitly;
+the default now equals what was run.
+
 ## 3. Estimate
 
 ### 3.1 Main pass
