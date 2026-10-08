@@ -30,10 +30,10 @@ open SimpleGraph
 /-- The 35 singleton/pair low indices. -/
 abbrev SevenHighT0OutsideIndex := (Fin 7 × Fin 2) ⊕ SevenHighT0PairIndex
 
-abbrev sevenHighT0EmptyVertex (e : Fin 7) : SevenHighT0CanonicalIndex :=
+abbrev sevenHighT0HsbEmptyVertex (e : Fin 7) : SevenHighT0CanonicalIndex :=
   Sum.inr (Sum.inl e)
 
-abbrev sevenHighT0OutsideVertex (x : SevenHighT0OutsideIndex) :
+abbrev sevenHighT0HsbOutsideVertex (x : SevenHighT0OutsideIndex) :
     SevenHighT0CanonicalIndex :=
   Sum.inr (Sum.inr x)
 
@@ -50,15 +50,15 @@ theorem sevenHighT0CanonicalHighRelabel_empty_outside_adj
     (H : SimpleGraph SevenHighT0CanonicalIndex) (e : Fin 7)
     (x : SevenHighT0OutsideIndex) :
     (sevenHighT0CanonicalHighRelabel σ flip H).Adj
-        (sevenHighT0EmptyVertex e)
-        (sevenHighT0OutsideVertex (sevenHighT0OutsideHighPerm σ flip x)) ↔
-      H.Adj (sevenHighT0EmptyVertex e) (sevenHighT0OutsideVertex x) := by
+        (sevenHighT0HsbEmptyVertex e)
+        (sevenHighT0HsbOutsideVertex (sevenHighT0OutsideHighPerm σ flip x)) ↔
+      H.Adj (sevenHighT0HsbEmptyVertex e) (sevenHighT0HsbOutsideVertex x) := by
   have hsymm : (sevenHighT0OutsideHighPerm σ flip).symm
       (sevenHighT0OutsideHighPerm σ flip x) = x :=
     Equiv.symm_apply_apply _ _
   have hadj : (sevenHighT0CanonicalHighRelabel σ flip H).Adj
-        (sevenHighT0EmptyVertex e)
-        (sevenHighT0OutsideVertex (sevenHighT0OutsideHighPerm σ flip x)) ↔
+        (sevenHighT0HsbEmptyVertex e)
+        (sevenHighT0HsbOutsideVertex (sevenHighT0OutsideHighPerm σ flip x)) ↔
       H.Adj (Sum.inr (Sum.inl e))
         (Sum.inr (Sum.inr ((sevenHighT0OutsideHighPerm σ flip).symm
           (sevenHighT0OutsideHighPerm σ flip x)))) := Iff.rfl
@@ -69,14 +69,14 @@ open Classical in
 def sevenHighT0RowSet (H : SimpleGraph SevenHighT0CanonicalIndex)
     (e : Fin 7) : Finset SevenHighT0OutsideIndex :=
   Finset.univ.filter fun x =>
-    H.Adj (sevenHighT0EmptyVertex e) (sevenHighT0OutsideVertex x)
+    H.Adj (sevenHighT0HsbEmptyVertex e) (sevenHighT0HsbOutsideVertex x)
 
 open Classical in
 /-- Empty neighbours of an empty vertex. -/
 def sevenHighT0EmptyNbrSet (H : SimpleGraph SevenHighT0CanonicalIndex)
     (e : Fin 7) : Finset (Fin 7) :=
   Finset.univ.filter fun f =>
-    H.Adj (sevenHighT0EmptyVertex e) (sevenHighT0EmptyVertex f)
+    H.Adj (sevenHighT0HsbEmptyVertex e) (sevenHighT0HsbEmptyVertex f)
 
 /-- Weighted key of a row. -/
 def sevenHighT0RowKey (w : SevenHighT0OutsideIndex → ℕ)
@@ -114,7 +114,7 @@ open Classical in
 theorem sevenHighT0LowNbr_card_split
     (H : SimpleGraph SevenHighT0CanonicalIndex) (e : Fin 7) :
     (Finset.univ.filter fun i : SevenHighT0LowIndex =>
-        H.Adj (sevenHighT0EmptyVertex e) (Sum.inr i)).card =
+        H.Adj (sevenHighT0HsbEmptyVertex e) (Sum.inr i)).card =
       (sevenHighT0EmptyNbrSet H e).card + (sevenHighT0RowSet H e).card := by
   unfold sevenHighT0EmptyNbrSet sevenHighT0RowSet
   simp only [Finset.card_filter, Fintype.sum_sum_type]
@@ -227,10 +227,10 @@ theorem sevenHighT0HsbWitness_excludes
     (hlt : ((L k).map fun x => w (sevenHighT0OutsideHighPerm σ flip x)).sum <
         ((L k).map w).sum) :
     ∃ j, j ≤ k ∧ ∃ x ∈ L j,
-      ¬ H'.Adj (sevenHighT0EmptyVertex j) (sevenHighT0OutsideVertex x) := by
+      ¬ H'.Adj (sevenHighT0HsbEmptyVertex j) (sevenHighT0HsbOutsideVertex x) := by
   by_contra hcon
   have hall : ∀ j, j ≤ k → ∀ x ∈ L j,
-      H'.Adj (sevenHighT0EmptyVertex j) (sevenHighT0OutsideVertex x) := by
+      H'.Adj (sevenHighT0HsbEmptyVertex j) (sevenHighT0HsbOutsideVertex x) := by
     intro j hj x hx
     by_contra hx'
     exact hcon ⟨j, hj, x, hx, hx'⟩
