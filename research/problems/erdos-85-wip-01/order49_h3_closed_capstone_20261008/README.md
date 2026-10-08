@@ -67,3 +67,12 @@ source tree, terminal job, full object ledger twice, fresh object creation,
 baseline byte-identical rebuild, and all three exact printed axiom sets.
 Only `H1_H7_CONDITIONAL_CAPSTONE_ARTIFACT_AUDIT_PASS` grants acceptance.
 Keep raw evidence immutable and force-add ignored logs when banking.
+
+## Accepted object transfer
+
+Host job `20261008T151157-erdos85__h3-triple-formal-20261007-602337`
+at `ef7d2bda68008a8380d17acfffc58141dd84094b` exited zero. Independent
+read-only inspection accepted all 500 capstone objects; 216 absent objects
+were copied, with no overwrites. All other H3 inputs also matched.
+`transfer-evidence1/AUDIT.json` reports
+`CAPSTONE_TRANSFER_ARTIFACT_AUDIT_PASS`. Compilation remains pending.

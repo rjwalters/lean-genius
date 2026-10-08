@@ -1,0 +1,11 @@
+MODE=host
+REF=erdos85/h3-triple-formal-20261007
+TARGET=''
+CMD=sudo\ python3\ -B\ research/problems/erdos-85-wip-01/order49_h3_closed_capstone_20261008/transfer.py\ --apply\ --receipt\ research/problems/erdos-85-wip-01/order49_h3_closed_capstone_20261008/transfer.json
+MEM_GB=16
+TIMEOUT=3m
+THREADS=1
+CACHE=0
+CPUS=2
+VOLUME=''
+FULL=1
