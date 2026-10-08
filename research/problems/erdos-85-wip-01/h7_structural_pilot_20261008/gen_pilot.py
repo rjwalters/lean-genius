@@ -171,6 +171,9 @@ def main() -> None:
     ap.add_argument("--sample-leaves", type=int, default=0,
                     help="also write N random hsb leaf cubes (rows fully fixed) as <out>.leafNNN.cnf")
     ap.add_argument("--seed", type=int, default=1)
+    ap.add_argument("--cover", action="store_true",
+                    help="append one blocking clause per hsb leaf (positive row literals negated): "
+                         "UNSAT of this CNF is the SAT-side proof that the leaves cover cube+hsb")
     ap.add_argument("--probe-depth", type=int, default=0,
                     help="extend each sampled hsb leaf by random compatible rows (no symmetry) "
                          "of empties up to 7+D-1; records branching factors (Knuth estimator)")
@@ -268,6 +271,10 @@ def main() -> None:
         else:
             raise SystemExit(f"unknown fact {fact}")
         stats[f"clauses_{fact}"] = len(extra) - before
+    if args.cover:
+        for leaf in leaves:
+            extra.append(tuple(-ev(e, v) for (e, r) in leaf for v in sorted(r)))
+        stats["cover_clauses"] = len(leaves)
     with args.out.open("wb") as fh:
         fh.write(f"p cnf {top} {len(cnf.clauses) + len(extra)}\n".encode())
         fh.write(data[data.index(b"\n") + 1:])

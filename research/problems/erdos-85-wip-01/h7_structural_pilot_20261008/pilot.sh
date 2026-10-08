@@ -48,6 +48,13 @@ case $1 in
     export -f cert_one
     ls "$out".leaf*.cnf | xargs -P "$PAR" -I{} bash -c "${SOLVER:-solve_one} {} $cap; unlink {}"
     ;;
+  cover)  # cover <root> <K> <cap_s> : cube + hsbK + blocking clause per leaf, solved + cake_lpr-checked
+    shift; root=$1; k=$2; cap=$3
+    out=$W/cnf/$root.cover$k.cnf
+    python3 "$HERE/gen_pilot.py" --root "$root" --facts "hsb$k" --cover --out "$out" > "$W/cnf/$root.cover$k.json" || exit 1
+    cut -c1-400 "$W/cnf/$root.cover$k.json"; echo
+    cert_one "$out" "$cap"
+    ;;
   batch)
     shift; cap=$1; shift
     pids=(); n=0
