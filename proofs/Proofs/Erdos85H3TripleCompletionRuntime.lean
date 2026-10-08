@@ -229,5 +229,31 @@ def s0 : St where
 def stKey (s : St) : Nat :=
   s.rows.toArray.foldl (fun acc r => (acc * 31 + r) % 1000003) 0
 
+/-! ## Phase-three candidate and insertion helpers -/
+
+def cands3 (s : St) (u : V) : List V :=
+  (List.finRange 49).filter fun x => decide (x ≠ u) && !s.adj u x && s.allowed u x
+
+def gate3 (s : St) : Bool :=
+  emptyVerts.any fun u =>
+    decide ((s.nbr[u.val]).length < 7) &&
+      decide ((s.nbr[u.val]).length + (cands3 s u).length < 7)
+
+def pick3 (s : St) : Option V :=
+  (emptyVerts.foldl (fun (best : Option (Nat × V)) u =>
+    if (s.nbr[u.val]).length < 7 then
+      let cnt := (cands3 s u).length
+      match best with
+      | none => some (cnt, u)
+      | some (c, _) => if cnt < c then some (cnt, u) else best
+    else best) none).map fun p => p.2
+
+def addMany (s : St) (u : V) : List V → Option St
+  | [] => some s
+  | x :: xs =>
+    match s.tryAdd u x with
+    | none => none
+    | some s' => addMany s' u xs
+
 end H3TripleCompletion
 end Erdos85

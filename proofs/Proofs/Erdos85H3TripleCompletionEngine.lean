@@ -932,23 +932,6 @@ theorem dfs2_sound (leaf : St → Bool)
 
 /-! ## Phase 3: empty–empty edges -/
 
-def cands3 (s : St) (u : V) : List V :=
-  (List.finRange 49).filter fun x => decide (x ≠ u) && !s.adj u x && s.allowed u x
-
-def gate3 (s : St) : Bool :=
-  emptyVerts.any fun u =>
-    decide ((s.nbr[u.val]).length < 7) &&
-      decide ((s.nbr[u.val]).length + (cands3 s u).length < 7)
-
-def pick3 (s : St) : Option V :=
-  (emptyVerts.foldl (fun (best : Option (Nat × V)) u =>
-    if (s.nbr[u.val]).length < 7 then
-      let cnt := (cands3 s u).length
-      match best with
-      | none => some (cnt, u)
-      | some (c, _) => if cnt < c then some (cnt, u) else best
-    else best) none).map fun p => p.2
-
 theorem mem_cands3 {s : St} {adj : V → V → Bool} (hs : s.WF) (M : Model adj)
     (hc : Compat s adj) {u x : V} (hux : adj u x = true) (hsx : s.adj u x = false) :
     x ∈ cands3 s u := by
@@ -974,13 +957,6 @@ theorem count_gate {s : St} {adj : V → V → Bool} (hs : s.WF) (M : Model adj)
   rw [List.length_append, hlen] at hle
   have := cap_ge u
   omega
-
-def addMany (s : St) (u : V) : List V → Option St
-  | [] => some s
-  | x :: xs =>
-    match s.tryAdd u x with
-    | none => none
-    | some s' => addMany s' u xs
 
 theorem addMany_ne_none {adj : V → V → Bool} (M : Model adj) {u : V} :
     ∀ (xs : List V) (s : St), s.WF → Compat s adj → (∀ x ∈ xs, adj u x = true) →
