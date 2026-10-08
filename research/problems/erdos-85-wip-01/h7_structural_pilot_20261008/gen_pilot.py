@@ -171,6 +171,9 @@ def main() -> None:
     ap.add_argument("--sample-leaves", type=int, default=0,
                     help="also write N random hsb leaf cubes (rows fully fixed) as <out>.leafNNN.cnf")
     ap.add_argument("--seed", type=int, default=1)
+    ap.add_argument("--probe-depth", type=int, default=0,
+                    help="extend each sampled hsb leaf by random compatible rows (no symmetry) "
+                         "of empties up to 7+D-1; records branching factors (Knuth estimator)")
     args = ap.parse_args()
 
     row = roots()[args.root]
@@ -278,7 +281,21 @@ def main() -> None:
         body = body[body.index(b"\n") + 1:]
         for n, li in enumerate(picks):
             units = []
-            for (e, r) in leaves[li]:
+            prefix = list(leaves[li])
+            branching = []
+            dead = False
+            for e in range(7 + len(prefix), 7 + args.probe_depth):
+                cands = [r for r in candidate_rows(7 - len(adj[e]))
+                         if all(len(r & rf) + len(adj[e] & adj[f]) <= 1 for (f, rf) in prefix)]
+                branching.append(len(cands))
+                if not cands:
+                    dead = True
+                    break
+                prefix.append((e, rng.choice(cands)))
+            stats.setdefault("probe", []).append({"leaf": li, "branching": branching, "dead": dead})
+            if dead:
+                continue
+            for (e, r) in prefix:
                 units += [(ev(e, v) if v in r else -ev(e, v)) for v in OUTSIDE]
             with open(f"{args.out}.leaf{n:03d}.cnf", "wb") as fh:
                 fh.write(f"p cnf {top} {len(cnf.clauses) + len(extra) + len(units)}\n".encode())

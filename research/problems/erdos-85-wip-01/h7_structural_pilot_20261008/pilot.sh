@@ -28,10 +28,10 @@ solve_one() {
 case $1 in
   gen) shift; gen "$@" ;;
   leaves)  # leaves <root> <facts> <tag> <N> <cap_s> : sample N hsb leaf cubes and solve each
-    shift; root=$1; facts=$2; tag=$3; n=$4; cap=$5
+    shift; root=$1; facts=$2; tag=$3; n=$4; cap=$5; pd=${6:-0}
     out=$W/cnf/$root.$tag.cnf
-    python3 "$HERE/gen_pilot.py" --root "$root" --facts "$facts" --out "$out" --sample-leaves "$n" > "$W/cnf/$root.$tag.json" || exit 1
-    cat "$W/cnf/$root.$tag.json" | cut -c1-600
+    python3 "$HERE/gen_pilot.py" --root "$root" --facts "$facts" --out "$out" --sample-leaves "$n" --probe-depth "$pd" > "$W/cnf/$root.$tag.json" || exit 1
+    cut -c1-400 "$W/cnf/$root.$tag.json"; echo
     export -f solve_one; export W CAD
     ls "$out".leaf*.cnf | xargs -P "$PAR" -I{} bash -c "solve_one {} $cap; rm -f {}"
     ;;
