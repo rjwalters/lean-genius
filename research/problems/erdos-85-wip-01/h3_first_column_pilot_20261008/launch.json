@@ -1,5 +1,5 @@
 {
-  "status": "SUBMITTED_UNVERIFIED",
+  "status": "PASS",
   "job": "20261008T040148-erdos85__h3-first-column-20261008-164712",
   "execution_commit": "670ef558a38c1004953d7ea2e5b1e6483f0253fb",
   "branch": "erdos85/h3-first-column-20261008",
@@ -7,5 +7,8 @@
   "lean_threads": 1,
   "timeout": "30m",
   "output": "/workspace/research/problems/erdos-85-wip-01/h3_first_column_pilot_20261008/_build/cloud-first",
-  "scope": "U1/R15 first column {0} only. Other fourteen branches not queued."
+  "scope": "U1/R15 first column {0} only. Other fourteen branches not queued.",
+  "exit_code": 0,
+  "finished_utc": "2026-10-08T04:12:45Z",
+  "receipt_sha256": "e0a663d274abcc1baabf254f402b4136a4f25a7960896df8a5395582db19363f"
 }

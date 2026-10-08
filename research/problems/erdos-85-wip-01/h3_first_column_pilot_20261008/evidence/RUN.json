@@ -1,0 +1,56 @@
+{
+  "status": "PASS",
+  "plan": {
+    "case": "FullU1R15",
+    "column_mask": 1,
+    "inventory_receipt_sha256": "64be84c5d58910baa099d20ab18f7b6c76c2d4228a8203cb87ba97d224d5f52b",
+    "whole_pair_source_sha256": "a9aeca79f21509badf9ae1d4fc882e98c47ea8970a5f2b3f2a2f6eacb94b6a05",
+    "source_sha256": "3c7ab2412963ccb41eb2cc21e80a1f7a94b831626cb2bab76125b4466df82628"
+  },
+  "lean_threads": 1,
+  "scope": "Only U1/R15 first column {0}; not a whole-pair or H3 exclusion.",
+  "memory_scope": "Linux wait4 maximum RSS of Lake and its waited children, not aggregate concurrent container memory.",
+  "dependencies": {
+    "command": [
+      "lake",
+      "build",
+      "Proofs.Erdos85ThreeHighFirstColumnSearch",
+      "Proofs.Erdos85ThreeBlockCompactCodes",
+      "Proofs.Erdos85ThreeHighSecondaryOrbitTable"
+    ],
+    "started_utc": "2026-10-08T04:01:50.175518+00:00",
+    "exit_code": 0,
+    "elapsed_seconds": 6.300010888000543,
+    "user_cpu_seconds": 5.358148,
+    "system_cpu_seconds": 1.508209,
+    "max_rss_kib": 915552,
+    "log_sha256": "ec5ddb8c8ca7f0f54cc60b75f7bea582dc981672f1b12a0fe685e5ad86f61b93"
+  },
+  "certificate": {
+    "command": [
+      "lake",
+      "build",
+      "Proofs.Erdos85ThreeHighFirstColumnPilotCertificate"
+    ],
+    "started_utc": "2026-10-08T04:01:56.476341+00:00",
+    "exit_code": 0,
+    "elapsed_seconds": 645.4756837780005,
+    "user_cpu_seconds": 643.690954,
+    "system_cpu_seconds": 2.410228,
+    "max_rss_kib": 8333084,
+    "log_sha256": "5336627c0e7e2596af9451a7e3444f60f13fb6cf3221f68152569eeeb8e29054"
+  },
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.FirstColumnPilot.rejected",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.FirstColumnPilot.rejected._native.native_decide.ax_1_1"
+      ]
+    }
+  ],
+  "olean_path": "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85ThreeHighFirstColumnPilotCertificate.olean",
+  "olean_sha256": "19bd5e9ce712ff13542385029956316d1fc9ac669b989eed8edba5cf6a841cc6"
+}

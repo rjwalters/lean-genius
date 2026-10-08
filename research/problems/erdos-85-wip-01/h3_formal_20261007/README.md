@@ -57,3 +57,9 @@ before deriving the original pair rejection. The separate cloud diagnostic
 found first-column candidate counts 15, 1, 36, 1, and 40 for the five pilot
 pairs; the two one-candidate cases would need a deeper split for parallelism.
 No concrete branch rejection or measured speedup is claimed by this result.
+
+A separate [first-column native pilot](../h3_first_column_pilot_20261008/)
+has now rejected U1/R15's column `{0}` in 645.476 seconds, with one explicit
+native-computation axiom. Its source/object/log provenance and exact axiom
+report were independently audited. The other fourteen columns remain outside
+that pilot, and it does not change the whole-pair pilot's unresolved status.
