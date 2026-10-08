@@ -2,7 +2,11 @@
 
 Branch `erdos85/h5-formal-20261008`, based on the H3 pair-cell branch at
 `85d336bfbfe`. New modules only (`proofs/Proofs/Erdos85H5*.lean`); no
-existing file is edited. Build status, jobs and timings are in `receipt.md`.
+existing file is edited.
+
+Status: every statement listed below is built on the cloud builder at
+commit 99bc3e34130 (job 455708). Jobs, timings and the axiom lists are in
+`receipt.md`.
 
 ## Target
 
