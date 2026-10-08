@@ -1,0 +1,75 @@
+{
+  "module": "Pruning",
+  "source": "full_orbit_pruning/Pruning.lean",
+  "source_sha256": "8f3b04ba385c0794033047e3077ed56d606b40f8c59aa17d23b7fbdc9db8825e",
+  "log_sha256": "36efd0eabc5117701ac050042c6c21e5692bfa34d3e9bf85b9f0e3b28ac145bb",
+  "olean_sha256": "65c67a656a5c02d29496a9fee9cfba17ab95fa1b7163ba725b2cd7d20bc739d2",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full/Pruning.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full/Pruning.lean"
+  ],
+  "elapsed_seconds": 11.128944557000068,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "FullUOrbitPruning.triangle_checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUOrbitPruning.far_color_checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUOrbitPruning.far_R_checked",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUOrbitPruning.remainingPairs_card",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUOrbitPruning.actual_pair_mem",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUOrbitPruning.actual_full_witness_pruned",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUOrbitPruning.actual_full_excluded_pruned",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

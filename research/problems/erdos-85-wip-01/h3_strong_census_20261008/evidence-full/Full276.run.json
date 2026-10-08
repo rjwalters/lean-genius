@@ -1,0 +1,36 @@
+{
+  "module": "Full276",
+  "source": "h3_strong_census_20261008/Full276.lean",
+  "source_sha256": "918a03deb83446bc4486d0f43c9efd996f74078b4d893c9fb64b961967fda60b",
+  "log_sha256": "c7bc186b672d3c54652ad5b7a3bc7a0ded9048ab147cbb4239f248d1b63642f4",
+  "olean_sha256": "29769d1e16a5b15db432780f56ec574ebd9cd5100002d3aa39228529b5f5fc63",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full/Full276.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full/Full276.lean"
+  ],
+  "elapsed_seconds": 4.101798905998294,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "FullUStrongCensus.actual_distinct_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUStrongCensus.excluded_of_rejections",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

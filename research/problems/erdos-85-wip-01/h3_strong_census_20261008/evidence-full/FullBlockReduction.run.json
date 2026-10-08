@@ -1,0 +1,60 @@
+{
+  "module": "FullBlockReduction",
+  "source": "full_block_pruning/Reduction.lean",
+  "source_sha256": "a24ddb491107a93138f8c328bd3f89acfbb77de2011a8e11364da7ab65ad880d",
+  "log_sha256": "1dc7b7059d44a8984da90d5cd4aec26a5de35cbaf3b991e8fc0a4d265c03a640",
+  "olean_sha256": "76a47fd3649d14554acb16c9dd59b73769a0f08f350ab21f5bd969f578737ff1",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full/FullBlockReduction.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full/FullBlockReduction.lean"
+  ],
+  "elapsed_seconds": 14.410888667998734,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "FullUBlockPruning.remainingPairs_card",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUBlockPruning.remainingPairs_subset",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUBlockPruning.joint_witness_reduced",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUBlockPruning.actual_full_witness_pruned",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUBlockPruning.actual_full_excluded_pruned",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

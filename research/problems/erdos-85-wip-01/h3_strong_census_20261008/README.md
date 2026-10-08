@@ -1,7 +1,14 @@
-# Concrete strong H3 census connections — awaiting verification
+# Concrete strong H3 census connections
 
-The four new exports in `Full276.lean` and `Deficient1554.lean` have not yet
-compiled. They are prepared source, not verified proof evidence.
+The two exports in `Full276.lean` are verified: the complete 107-module full
+branch passed in the cloud, including 100 coverage shards and 228 standard-axiom
+reports. [AUDIT.json](evidence-full/AUDIT.json) records an independent check of
+the module/export inventory and source/log/object hashes. The complete receipt
+and compiler logs are retained in `evidence-full/`. Both new exports use only
+`propext`, `Classical.choice`, and `Quot.sound`.
+
+The two exports in `Deficient1554.lean` remain unverified while the same cloud
+job checks their dependency and 200-shard coverage chain.
 
 `Full276.lean` connects an actual full-branch graph to the existing 276-pair
 block-pruned set, retaining `ThreeHighDistinctJointWitness`. It uses the complete
@@ -28,11 +35,12 @@ local run was intentionally stopped after 51 passing shards when Claude
 relayed the user constraint against compute-heavy Mac work (room message
 52533). Its incomplete records and logs are retained in `local-cancelled/`;
 the raw RUN.json still says RUNNING because the process was stopped, and
-there is no complete census PASS receipt. The replacement runs on the separate
+that local run has no complete census PASS receipt. The replacement runs on the separate
 cloud branch `erdos85/h3-census-20261008` with 32 GiB and four workers.
 `cloud-launch.json` pins job
 `20261008T012918-erdos85__h3-census-20261008-67303` and its actual source commit.
-Proof and checker source hashes remain unchanged. Neither launch is proof evidence.
+Proof and checker source hashes remain unchanged. The launch records are not proof evidence; the completed full-branch evidence
+is linked above.
 
 ## Checker
 

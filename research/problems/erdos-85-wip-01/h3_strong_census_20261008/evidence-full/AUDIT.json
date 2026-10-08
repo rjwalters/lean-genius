@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "audited_at_utc": "2026-10-08T01:47:55.964254+00:00",
+  "source_commit": "3e67a0afc3b9b99a478f5c37cc7c2ac29a8bcfb7",
+  "receipt_sha256": "9924e45dfa932bae6af3607eb7de97e4b77d590366bf8d4bb9eaaf8de480236f",
+  "modules": 107,
+  "shards": 100,
+  "export_reports": 228,
+  "new_exports": [
+    {
+      "theorem": "FullUStrongCensus.actual_distinct_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUStrongCensus.excluded_of_rejections",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "scope": "Complete full-branch strong witness connection to 276 pairs; finite rejections remain hypotheses.",
+  "verification": "verify_base checked exact module/export inventory, source copies, source/log/object hashes, successful module exits and standard axioms; dependency build exited zero."
+}

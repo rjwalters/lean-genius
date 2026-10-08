@@ -1,0 +1,36 @@
+{
+  "module": "Assembly",
+  "source": "compact_u_orbits/full_coverage/Assembly.lean",
+  "source_sha256": "83f4922e096f9cf96dfc482ac10ffb6bcea30593b393e78752c950dcc47dffa1",
+  "log_sha256": "2364bfd1f7f865ca09c4b342d36e93ed98be98da98cdb4e6a2605cac8343fbb2",
+  "olean_sha256": "fb9bb01c4dd5ee36b540adcc1114b8226767d9a2e2fb6cd6450bb497598e5d53",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full/Assembly.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full/Assembly.lean"
+  ],
+  "elapsed_seconds": 5.189763578999191,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "FullURestrictedAssembly.checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullURestrictedAssembly.covered",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

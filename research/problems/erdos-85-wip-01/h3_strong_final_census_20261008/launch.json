@@ -1,0 +1,19 @@
+{
+  "record_type": "queued_check_not_proof_receipt",
+  "job_id": "20261008T014827-erdos85__h3-census-20261008-82783",
+  "branch": "erdos85/h3-census-20261008",
+  "source_commit_at_submission": "3e67a0afc3b9b99a478f5c37cc7c2ac29a8bcfb7",
+  "source_commit_at_execution": null,
+  "memory_gib": 32,
+  "lake_threads": 4,
+  "lean_threads_per_module": 1,
+  "timeout_seconds_after_lock": 14400,
+  "predecessor_job": "20261008T012918-erdos85__h3-census-20261008-67303",
+  "verified_base_receipt_sha256": "9924e45dfa932bae6af3607eb7de97e4b77d590366bf8d4bb9eaaf8de480236f",
+  "source_sha256": {
+    "Full261.lean": "51efd5e15120ea29758bce94f9ebf728c8ff80a370d7b3dc883de4dd81345fd6",
+    "check.py": "ee066a2fca05d174e52b23f3f6fa719e778a4dbc2718e7cda917a8d7dc08efab"
+  },
+  "final_result": null,
+  "submit_command": "e85-remote run erdos85/h3-census-20261008 --full --mem 32 --threads 4 --timeout 4h --no-follow -- 'lake env python3 ../research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/check.py --base-build /workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full --output /workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first'"
+}

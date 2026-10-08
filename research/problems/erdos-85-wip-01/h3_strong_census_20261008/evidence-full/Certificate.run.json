@@ -1,0 +1,72 @@
+{
+  "module": "Certificate",
+  "source": "full_block_orbits/Certificate.lean",
+  "source_sha256": "e86619944bbdf83fd475651b09a59383072b5b59092be43914f3b1a201ad31fb",
+  "log_sha256": "ce09f5ddf8051dbc0968e9f1fa62104a987ef53ac1300bacb2f21000bd9d12d1",
+  "olean_sha256": "d09952162b2acfaced331f07bae3a4a858a6c2359915f5bfd1e888778d3e9d86",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full/Certificate.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full/Certificate.lean"
+  ],
+  "elapsed_seconds": 45.73700316900067,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "FullUBlockOrbits.inverse_checked",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUBlockOrbits.block_inverse_checked",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUBlockOrbits.adjacency_checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUBlockOrbits.rows_checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUBlockOrbits.target_mem",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUBlockOrbits.targets_card",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUBlockOrbits.joint_transport",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}
