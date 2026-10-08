@@ -21,6 +21,7 @@ import argparse
 import hashlib
 import json
 import os
+import random
 import shutil
 import subprocess
 import sys
@@ -243,7 +244,9 @@ def run_batch(args, store, slot: int, row: dict) -> dict:
 def slot_loop(args, store, slot: int, rows: list[dict]) -> None:
     time.sleep(slot * 0.5 if args.local_store else slot * 3)
     marker = args.out / "claim-owner"  # claim body = instance id (controller releases dead nodes' claims)
+    waits = 0
     while True:
+        wait = False
         with lock:
             if node["stop"] or (args.max_batches and node["done"] + len(node["active"]) >= args.max_batches):
                 return
@@ -274,8 +277,27 @@ def slot_loop(args, store, slot: int, rows: list[dict]) -> None:
                         raise
                     time.sleep(60 + 10 * slot % 30)
             if picked is None:
-                log(f"slot={slot} nothing claimable")
-                return
+                # Every row is claimed. Rows without a ledger are held by a live node or by a dead node
+                # whose claims the controller has not released yet (canary 2026-10-08: 47 of 48 slots
+                # exited minutes before such claims were released). Exit only when every row has a
+                # ledger; otherwise wait and retry. STOP and the lifetime deadline are re-checked on
+                # every retry, at the top of the claim attempt.
+                try:
+                    finished = {name.split(".", 1)[0] for name in store.listing("ledger/")}
+                except Exception as e:  # noqa: BLE001  (a failed listing is not "everything is finished")
+                    log(f"slot={slot} ledger listing failed while waiting: {type(e).__name__}: {e}")
+                    finished = set()
+                unfinished = [row["id"] for row in rows if row["id"] not in finished]
+                if not unfinished:
+                    log(f"slot={slot} nothing claimable and every row has a ledger; slot exits")
+                    return
+                if waits % 10 == 0:
+                    log(f"slot={slot} nothing claimable, {len(unfinished)} claimed rows without a ledger "
+                        f"(e.g. {unfinished[0]}); waiting")
+                waits += 1
+                wait = True
+                continue
+            waits = 0
             with lock:
                 node["active"][slot] = picked["id"]
             log(f"slot={slot} claimed {picked['id']}")
@@ -315,6 +337,8 @@ def slot_loop(args, store, slot: int, rows: list[dict]) -> None:
             # STOP, lifetime expiry, no claim and store errors also release it.
             with lock:
                 node["active"].pop(slot, None)
+            if wait:  # after the reservation is released: 60-120 s with jitter
+                time.sleep(args.claim_wait + random.random() * args.claim_wait)
 
 
 def heartbeat(args, store, threads, final=False) -> None:
@@ -352,6 +376,7 @@ def main() -> int:
     p.add_argument("--lifetime", type=int, default=129600)
     p.add_argument("--min-left", type=int, default=3 * 3600, help="do not claim with less node lifetime left")
     p.add_argument("--partial-seconds", type=int, default=PARTIAL_SECONDS)
+    p.add_argument("--claim-wait", type=float, default=60, help="base seconds between claim retries when nothing is claimable")
     p.add_argument("--cadical", default="/usr/local/bin/cadical")
     p.add_argument("--cake-lpr", default="/usr/local/bin/cake_lpr")
     p.add_argument("--work", type=Path, default=Path("/dev/shm/h7camp"))

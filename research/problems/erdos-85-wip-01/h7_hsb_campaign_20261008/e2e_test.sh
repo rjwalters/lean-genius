@@ -60,6 +60,11 @@ chk "worker after STOP claims nothing" '[ $(ls "$S2/claims" | wc -l) = 1 ]'
 $PY -B "$HERE/collect_receipts.py" --inputs "$IN" --results "$S2/results" --cubes cube_F6_t14 > "$OUT/collect-fake.json" 2>&1; chk "collector counts nothing from the fake-checker store" 'grep -q "\"certified_leaves\": 0" "$OUT/collect-fake.json"' 
 W m "$OUT/store-mem" "$CAKE" --slots 8 --heap-mb 4000
 chk "slots x (heap + 1.5 GB) over the memory budget is refused" '[ ! -d "$OUT/store-mem/claims" ]'
+echo "== orphaned claim: a row claimed by a dead node (no ledger) must make slots WAIT, not exit"
+S4=$OUT/store-orphan; mkdir -p "$S4/claims"; echo i-dead > "$S4/claims/cube_F6_t14-b0000"
+W f "$S4" "$CAKE" --only cube_F6_t14-b0000 --slots 2 --claim-wait 2 --lifetime 75 --min-left 60
+chk "slots waited for the orphaned claim until the lifetime deadline" 'grep -q "claimed rows without a ledger" "$OUT/worker-f.log" && grep -q "of node lifetime left" "$OUT/worker-f.log" && ! grep -q "every row has a ledger" "$OUT/worker-f.log"'
+
 echo "== cap path: 5 s cap on a batch with leaves that need 7-50 s -> INCOMPLETE, no alarm"
 S3=$OUT/store-cap
 W e "$S3" "$CAKE" --only cube_F9_t1-x0 --slots 1 --cap 5

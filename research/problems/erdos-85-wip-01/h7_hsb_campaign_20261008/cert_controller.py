@@ -235,7 +235,8 @@ def get_json(key: str, prefix: str = ""):
         return {"unparsed": raw[:300]}
 
 
-CLEARABLE = ("all batches CERTIFIED; stopping", "operator stop")  # never: budget stop, ALARM, unknown cause
+DRAINED = "all batches finished, some INCOMPLETE (residual pass needed); stopping"
+CLEARABLE = ("all batches CERTIFIED; stopping", DRAINED, "operator stop")  # never: budget stop, ALARM, unknown cause
 
 
 def marker_state() -> dict:
@@ -421,6 +422,17 @@ def one_pass(state: dict, act: bool) -> dict:
     report["proof_tb"] = round(sum(l.get("proof_bytes", 0) for l in ls) / 1e12, 3)
     report["hard_stop_usd"] = vc.HARD_STOP_USD
     report["prefix"] = vc.PREFIX
+    # orphans_released of the reviewed pass counts THIS pass only; keep a running total and the
+    # passes in which claims were released, so the last report is truthful about what happened earlier.
+    if act:
+        state["orphans_released_total"] = state.get("orphans_released_total", 0) + report.get("orphans_released", 0)
+        if report.get("orphans_released"):
+            state.setdefault("orphan_release_passes", []).append({"utc": report["utc"], "released": report["orphans_released"]})
+    report["orphans_released_this_pass"] = report.get("orphans_released", 0)
+    report["orphans_released_total"] = state.get("orphans_released_total", 0)
+    report["orphan_release_passes"] = state.get("orphan_release_passes", [])[-20:]
+    terminal = {l["id"] for l in ls if l.get("status") in ("CERTIFIED", "INCOMPLETE")} & ids
+    report["incomplete_batches"] = len(terminal - done)
     # A STOP written by anyone else (operator `stop`, a node's ALARM) ends the controller too: the watch
     # returns, and the controller host's loop then powers the host off (canary 2026-10-08: the host kept
     # running after an operator stop). Nothing is cleared.
@@ -428,6 +440,11 @@ def one_pass(state: dict, act: bool) -> dict:
         report["action"] = "STOP marker present; controller exits"
     if act and not report.get("action") and len(done) >= len(ids):
         report["action"] = "all batches CERTIFIED; stopping"
+        vc.stop(None)
+    elif act and not report.get("action") and len(terminal) >= len(ids):
+        # Every row ran to the end; some leaves hit the cap or the heap. Nothing is left to claim, so the
+        # fleet is stopped (a maintain fleet would otherwise keep replacing nodes that exit at once).
+        report["action"] = DRAINED
         vc.stop(None)
     if act and report.get("action") and report["action"] != "STOP marker present; controller exits":  # why the persistent STOP exists; launch reads this and never clears a budget stop
         try:
