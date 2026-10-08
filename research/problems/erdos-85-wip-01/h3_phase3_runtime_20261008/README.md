@@ -32,3 +32,31 @@ source, and verifies prerequisite hashes before compiling the exported
 library and running the existing bucket-zero theorem. Caps remain 60
 seconds for the library, 180 seconds for Lean, four minutes for the outer
 job, two CPUs and 16 GiB. No full campaign is launched.
+
+## Bucket-zero result
+
+Job `20261008T120507-erdos85__h3-triple-formal-20261007-479545` exited zero
+at `9739de63467971b3c0ba673fd4ea2bbcac0c608b`. The exported runtime library
+compiled in 1.115 seconds; the unchanged production bucket-zero theorem
+compiled in 15.132 seconds (13.927 seconds child user time, maximum child
+RSS 6,488,492 KiB). Neither stage hit its cap.
+
+The previous 45-declaration runtime stage took 31.355 seconds on this bucket;
+the earlier optimized unsplit engine took 143.890 seconds. This comparison
+shows about a further 2.07-fold reduction and about 9.51-fold overall by Lean
+elapsed time, excluding library compilation. One selected bucket does not
+establish a runtime bound or estimate for the other 383 parts.
+
+The result retains exactly `propext`, `Quot.sound` and
+`Erdos85.H3TripleCompletion.triplePart_384_0._native.native_decide.ax_1_1`.
+Its 6,712-byte object has SHA-256
+`ff32a8d24924124f1db178025c7feb269acb69d55b00e57d53a19620d08b48f9`.
+The runtime library has SHA-256
+`34da36a0730f0dfc6dd6d5c9f2cf47119b1ee8fe86e95a606067546422e6cdeb`.
+
+`canary-evidence` retains the exact probe, runner, prerequisite audit,
+terminal job records, timing receipt, exported-symbol table and axiom report.
+The read-only capture verifies unchanged source/object prerequisites,
+generated Runtime C, library/result hashes and exact part axiom set. Objects
+and library remain on the builder. Only the existing bucket is reverified;
+the ledger remains one verified part of 384.

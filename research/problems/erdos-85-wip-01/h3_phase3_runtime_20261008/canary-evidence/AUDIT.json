@@ -1,0 +1,31 @@
+{
+  "status": "COMPILED",
+  "job": "20261008T120507-erdos85__h3-triple-formal-20261007-479545",
+  "execution_commit": "9739de63467971b3c0ba673fd4ea2bbcac0c608b",
+  "authoritative_exit": 0,
+  "prerequisite_objects_unchanged": {
+    "Erdos85H3TripleCompletionRuntime": "1995ca73491788c040a6c24f3a87653734ebd70af31d7b1bb26568b0eb37e4ee",
+    "Erdos85H3TripleCompletionEngine": "37b0325155ffc909986d57b20fbfe71e5191ad607da06339bbc0242df8c35602",
+    "Erdos85H3TripleCompletionBridge": "579138abcddfb92dabdb7c4a160d9d37412d93700c18a41b97270a8e91a2a482",
+    "Erdos85H3TripleCompletionSplit": "2a3c491fbed12abc724d53ae025641215a4d567f029cdc46aca26592018a7bf7"
+  },
+  "part_axioms": [
+    "propext",
+    "Quot.sound",
+    "Erdos85.H3TripleCompletion.triplePart_384_0._native.native_decide.ax_1_1"
+  ],
+  "retained_sha256": {
+    "job.log": "034ed428d6a2a2d328712102ad1fe907adc85c0450a864c03fb0f2c49aadadee",
+    "job.spec": "b12bc1b9c3aa8927a42f11b6ce3e3558858ab30b2e8685dd2f7dab0f800cd05e",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "run_canary.py": "111bdd73d36f9b0b00d15fb303db7f759cd4537b6a4ee59399fee28e97a8c074",
+    "build-evidence-AUDIT.json": "21fd8bcce69730f9c3f0de0918412a22430b907d8954f1f90da436366c727b8b",
+    "Probe384R0.lean": "badb03f821a2011a5dd36b0793d5ad608ef1139a12729cd97afd072e6b9d840d",
+    "RUN.json": "945ed4918b4264cb508aa134fb569ab5b10998dbffaf8f549832e30c62312401",
+    "shared.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "probe.log": "b0d8ca00d025781fec4f8703a61b6b17674636b5e429e84cbecf5568709fb9dd",
+    "symbols.log": "243a7a15e83254729e97194ae8853cffae5d7cd0402b6951ce082d16fd2332e1"
+  },
+  "scope": "Reverification of existing bucket 384/0 with production runtime plugin; 383 other premises remain unverified.",
+  "capture_script_sha256": "5b35f235990f34c76cf876a74bb6ebae38b28b705a6e1a4dd0d54d2c7359433d"
+}
