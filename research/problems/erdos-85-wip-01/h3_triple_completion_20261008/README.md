@@ -195,3 +195,36 @@ logs, job records, receipt and read-only audit. The audit checks the source
 against the execution commit, actual binary hash, raw counters and caps, and
 the full control bucket vector against the retained Lean profile. This records
 prototype performance only, with no graph-exclusion credit or campaign estimate.
+
+## Deficit-aware vertex ordering: fixed-prefix comparison
+
+Job `20261008T105313-erdos85__h3-triple-formal-20261007-428217` at
+`51e224ef95c0122e87993ff0a56617795db6cd3a` compared four phase-two orderings
+in `h3_phase2_heuristics.c`. It changes only the next deficient core vertex:
+minimum candidate count (baseline), minimum count minus deficit, minimum
+count/deficit ratio (integer cross multiplication), or minimum binomial
+choice count. All ties retain the earliest vertex. The phase-one control
+again matched all 384 Lean bucket counts.
+
+Each comparison completed the first three selected states in bucket zero,
+with keys 975744, 986112 and 41088 at phase-one positions 1393, 6289 and 6321.
+Each then stopped before processing the fourth state, with explicit
+`stop_reason=leaf-prefix`, `leafrun=3`, exit 124 and no outer timeout.
+The node/time/address-space/CPU limits match the preceding experiment.
+
+| Ordering | Phase-two nodes | Phase-two leaves | Wrapper wall seconds |
+| --- | ---: | ---: | ---: |
+| Candidate count | 1,866,055 | 17,312 | 0.515 |
+| Count minus deficit | 836,990 | 17,312 | 0.265 |
+| Count/deficit ratio | 395,699 | 17,312 | 0.165 |
+| Binomial count | 1,662,297 | 17,312 | 0.616 |
+
+The ratio ordering reduced nodes by about 79% on this sample. These are
+single short runs on a shared builder, not a stable timing benchmark or an
+estimate for all buckets. Matching terminal-state counts do not establish
+formal equivalence. Phase three remains omitted; no graph exclusion follows.
+The result justifies trying the ratio ordering in the sound Lean engine.
+
+`heuristic-evidence/` preserves the source, runner and imported helper, raw
+logs and receipts, plus a read-only audit of the execution pin, file and
+binary hashes, counters, state sequence, stop reasons and control vector.

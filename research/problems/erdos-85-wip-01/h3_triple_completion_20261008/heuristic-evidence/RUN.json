@@ -1,0 +1,314 @@
+{
+  "source_sha256": "1fa13648f41214ed1bc3e5483d94bfa4d8ad5d1b990ce63e1675f632125d13f1",
+  "runner_sha256": "83a2d1f632e773d5d5c3627d80dc730ca3892395a0771f92b8b10219845d0b93",
+  "helper_sha256": "fa587c617e71432e0258c7bcf62280a0e66071c4026e76205534c886fdd27ab4",
+  "affinity": [
+    0,
+    1
+  ],
+  "child_address_space_bytes": 2147483648,
+  "child_cpu_seconds": 30,
+  "child_wall_seconds": 30,
+  "scope": "PROFILING_ONLY",
+  "runs": {
+    "control": {
+      "command": [
+        "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-heuristics/profile",
+        "1",
+        "mrv=0",
+        "fc=0",
+        "pre=22",
+        "mod=384",
+        "secs=20",
+        "nodes=2000000",
+        "earlygate=0",
+        "verbose=1",
+        "res=-1",
+        "p1only=1",
+        "pick=0"
+      ],
+      "started_utc": "2026-10-08T10:53:14.704358+00:00",
+      "returncode": 0,
+      "outer_timeout": false,
+      "elapsed_seconds": 0.004922675994748715,
+      "log_sha256": "5a8e18123dacad60e46cca7b1e0cef74ed496d98536099778bb2d1dcfd739ce3",
+      "profile": {
+        "traversal_return": 1,
+        "stopped": 0,
+        "n1": 8167,
+        "leaf1": 1088,
+        "leafrun": 0,
+        "n2": 0,
+        "leaf2": 0,
+        "n3": 0,
+        "found": 0,
+        "secs": 0.0,
+        "mrv": 0,
+        "fc": 0,
+        "early_gate": 0,
+        "gate_hits": 0,
+        "node_cap": 2000000,
+        "pick": 0,
+        "stop_reason": "none",
+        "maxleaf": 0,
+        "states": []
+      }
+    },
+    "baseline": {
+      "command": [
+        "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-heuristics/profile",
+        "1",
+        "mrv=0",
+        "fc=0",
+        "pre=22",
+        "mod=384",
+        "secs=20",
+        "nodes=2000000",
+        "earlygate=0",
+        "verbose=1",
+        "res=0",
+        "p1only=0",
+        "maxleaf=3",
+        "pick=0"
+      ],
+      "started_utc": "2026-10-08T10:53:14.710937+00:00",
+      "returncode": 124,
+      "outer_timeout": false,
+      "elapsed_seconds": 0.5153473319951445,
+      "log_sha256": "a0ab8792ee0c87b59c1c29ee978e68d00831d5b3bb039169ac110869cea8404d",
+      "profile": {
+        "traversal_return": 1,
+        "stopped": 1,
+        "n1": 7657,
+        "leaf1": 4,
+        "leafrun": 3,
+        "n2": 1866055,
+        "leaf2": 17312,
+        "n3": 0,
+        "found": 0,
+        "secs": 0.5,
+        "mrv": 0,
+        "fc": 0,
+        "early_gate": 0,
+        "gate_hits": 0,
+        "node_cap": 2000000,
+        "pick": 0,
+        "stop_reason": "leaf-prefix",
+        "maxleaf": 3,
+        "states": [
+          [
+            1,
+            975744,
+            1393
+          ],
+          [
+            2,
+            986112,
+            6289
+          ],
+          [
+            3,
+            41088,
+            6321
+          ]
+        ]
+      }
+    },
+    "slack": {
+      "command": [
+        "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-heuristics/profile",
+        "1",
+        "mrv=0",
+        "fc=0",
+        "pre=22",
+        "mod=384",
+        "secs=20",
+        "nodes=2000000",
+        "earlygate=0",
+        "verbose=1",
+        "res=0",
+        "p1only=0",
+        "maxleaf=3",
+        "pick=1"
+      ],
+      "started_utc": "2026-10-08T10:53:15.226864+00:00",
+      "returncode": 124,
+      "outer_timeout": false,
+      "elapsed_seconds": 0.26529592699807836,
+      "log_sha256": "7508f5048730252fc6156819e1fd6490cb58da1be7a040045160929af514b599",
+      "profile": {
+        "traversal_return": 1,
+        "stopped": 1,
+        "n1": 7657,
+        "leaf1": 4,
+        "leafrun": 3,
+        "n2": 836990,
+        "leaf2": 17312,
+        "n3": 0,
+        "found": 0,
+        "secs": 0.2,
+        "mrv": 0,
+        "fc": 0,
+        "early_gate": 0,
+        "gate_hits": 0,
+        "node_cap": 2000000,
+        "pick": 1,
+        "stop_reason": "leaf-prefix",
+        "maxleaf": 3,
+        "states": [
+          [
+            1,
+            975744,
+            1393
+          ],
+          [
+            2,
+            986112,
+            6289
+          ],
+          [
+            3,
+            41088,
+            6321
+          ]
+        ]
+      }
+    },
+    "ratio": {
+      "command": [
+        "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-heuristics/profile",
+        "1",
+        "mrv=0",
+        "fc=0",
+        "pre=22",
+        "mod=384",
+        "secs=20",
+        "nodes=2000000",
+        "earlygate=0",
+        "verbose=1",
+        "res=0",
+        "p1only=0",
+        "maxleaf=3",
+        "pick=2"
+      ],
+      "started_utc": "2026-10-08T10:53:15.492728+00:00",
+      "returncode": 124,
+      "outer_timeout": false,
+      "elapsed_seconds": 0.16513544999907026,
+      "log_sha256": "cf705a31aa435b8eaf80bd015467fc358e1112c4e8f6ddf914d1eb02b0076cff",
+      "profile": {
+        "traversal_return": 1,
+        "stopped": 1,
+        "n1": 7657,
+        "leaf1": 4,
+        "leafrun": 3,
+        "n2": 395699,
+        "leaf2": 17312,
+        "n3": 0,
+        "found": 0,
+        "secs": 0.1,
+        "mrv": 0,
+        "fc": 0,
+        "early_gate": 0,
+        "gate_hits": 0,
+        "node_cap": 2000000,
+        "pick": 2,
+        "stop_reason": "leaf-prefix",
+        "maxleaf": 3,
+        "states": [
+          [
+            1,
+            975744,
+            1393
+          ],
+          [
+            2,
+            986112,
+            6289
+          ],
+          [
+            3,
+            41088,
+            6321
+          ]
+        ]
+      }
+    },
+    "binomial": {
+      "command": [
+        "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-heuristics/profile",
+        "1",
+        "mrv=0",
+        "fc=0",
+        "pre=22",
+        "mod=384",
+        "secs=20",
+        "nodes=2000000",
+        "earlygate=0",
+        "verbose=1",
+        "res=0",
+        "p1only=0",
+        "maxleaf=3",
+        "pick=3"
+      ],
+      "started_utc": "2026-10-08T10:53:15.658516+00:00",
+      "returncode": 124,
+      "outer_timeout": false,
+      "elapsed_seconds": 0.6158941190005862,
+      "log_sha256": "09ffeb2921b974c20c373110b4dcbb63cc7bc48c13fd948e474fb1c13484ac48",
+      "profile": {
+        "traversal_return": 1,
+        "stopped": 1,
+        "n1": 7657,
+        "leaf1": 4,
+        "leafrun": 3,
+        "n2": 1662297,
+        "leaf2": 17312,
+        "n3": 0,
+        "found": 0,
+        "secs": 0.6,
+        "mrv": 0,
+        "fc": 0,
+        "early_gate": 0,
+        "gate_hits": 0,
+        "node_cap": 2000000,
+        "pick": 3,
+        "stop_reason": "leaf-prefix",
+        "maxleaf": 3,
+        "states": [
+          [
+            1,
+            975744,
+            1393
+          ],
+          [
+            2,
+            986112,
+            6289
+          ],
+          [
+            3,
+            41088,
+            6321
+          ]
+        ]
+      }
+    }
+  },
+  "compile": {
+    "command": [
+      "gcc",
+      "-O3",
+      "-std=gnu11",
+      "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/h3_phase2_heuristics.c",
+      "-o",
+      "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-heuristics/profile"
+    ],
+    "started_utc": "2026-10-08T10:53:14.438419+00:00",
+    "returncode": 0,
+    "outer_timeout": false,
+    "elapsed_seconds": 0.2653736860011122,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "binary_sha256": "f02ab56ccaf187399906b57ef3f73748a150340854a608a15726fbf1e3ac6f0d"
+}
