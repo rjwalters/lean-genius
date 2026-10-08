@@ -117,12 +117,21 @@ How the six obligations were met:
    is untrusted and is only compared with Python for identity.
 6. `sevenHighT0CanonicalHsb_orbitSound` feeds `…OrbitSound_of_edgeOnly_representative`.
 
+Builder jobs (branch `erdos85/h7t0-formal-20261007`): `…043722-…-189071` (`HsbSound`, 8786 jobs),
+`…045800-…-202567` (`HsbLeaves`, `HsbCapstone`, 8933 jobs), `…045845-…-203616`
+(`HsbStratumCapstone`, 8963 jobs). Axioms: everything up to and including
+`SevenHighT0CanonicalHsbEvidence.semanticExclusion` is standard-only. The completion-level
+capstones inherit the two pre-existing `native_decide` axioms of the 43-mask orbit cover; the
+stratum-level capstones inherit the same pre-existing `native_decide` set as
+`…EmptyCubeMixedCapstone`. The `hsb` development adds none. Codex's read-only review and
+independent build audit: room messages 52653, 52655, 52666, 52668.
+
 ### Byte identity with `gen_pilot.py`
 
 `check_hsb_lean_identity.py` runs the native emitter of the Lean term and compares it with
 `gen_pilot.hsb_clauses` (using the real `edge_vars` of the reviewed compact generator), for the
 `hsb3` clauses and for the cover (leaf blocking) clauses, and checks each Python mask against the
-Lean `sevenHighT0CanonicalEmptyRepresentativeMask`. Result: see `receipts/hsb_lean_identity.json`.
+Lean `sevenHighT0CanonicalEmptyRepresentativeMask`. Result: **all 28 structural cubes byte-identical** (hsb3 and cover; 2,066,981 hsb clauses and 377,776 leaves in total, 893 to 50,772 leaves per cube; every entry passes `check`), `receipts/hsb_lean_identity.json`, job `…043752-…-189870`.
 
 ### What a certificate run has to deliver
 
