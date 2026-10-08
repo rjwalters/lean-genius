@@ -825,17 +825,20 @@ def triCounts (avail : List Tri) : Array Nat :=
     if t.2.2 = t.1 ∨ t.2.2 = t.2.1 then cnt else cnt.modify t.2.2.val (· + 1))
     (Array.replicate 49 0)
 
-/-- Heuristic choice of the next deficient nonempty vertex.  Soundness of
-`dfs2` does not depend on this function. -/
+/-- Choose the deficient nonempty vertex minimizing candidate count divided by
+remaining degree. Cross multiplication avoids division and preserves the first
+vertex on ties. `dfs2` soundness is independent of this ordering. -/
 def pickCore (s : St) (avail : List Tri) : Option V :=
   let cnt := triCounts avail
-  (coreVerts.foldl (fun (best : Option (Nat × V)) v =>
-    if (s.nbr[v.val]).length < 7 then
+  (coreVerts.foldl (fun (best : Option (Nat × Nat × V)) v =>
+    let need := 7 - (s.nbr[v.val]).length
+    if 0 < need then
       let c := cnt[v.val]!
       match best with
-      | none => some (c, v)
-      | some (c', _) => if c < c' then some (c, v) else best
-    else best) none).map fun p => p.2
+      | none => some (c, need, v)
+      | some (c', need', _) =>
+        if c * need' < c' * need then some (c, need, v) else best
+    else best) none).map fun p => p.2.2
 
 def findFresh (s : St) : Option V :=
   emptyVerts.find? fun e => s.rows[e.val] == 0
