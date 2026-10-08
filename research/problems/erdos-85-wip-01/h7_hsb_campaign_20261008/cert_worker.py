@@ -360,7 +360,7 @@ def main() -> int:
         rows = [r for r in rows if r["id"] in keep]
     if args.slots * (args.heap_mb / 1000 + SLOT_GB) > args.mem_gb:
         raise SystemExit(f"{args.slots} slots x ({args.heap_mb} MB heap + {SLOT_GB} GB) exceeds {args.mem_gb} GB")
-    if not args.allow_unpinned_binaries:  # fail before claiming anything
+    if not args.allow_unpinned_binaries and not args.plan:  # fail before claiming anything
         for k, path in (("cadical", args.cadical), ("cake_lpr", args.cake_lpr)):
             if hc.sha_file(Path(path)) != hc.PINNED_BINARIES[k]:
                 raise SystemExit(f"{k} at {path} is not the approved build")
