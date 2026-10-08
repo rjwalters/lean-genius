@@ -41,7 +41,7 @@ def main() -> int:
     p.add_argument("--batch", required=True, help="the manifest row as JSON")
     p.add_argument("--out", type=Path, required=True)
     p.add_argument("--work", type=Path, default=Path("/dev/shm/h7camp"))
-    p.add_argument("--cap", type=int, default=3600)
+    p.add_argument("--cap", type=int, default=7200)
     p.add_argument("--heap-mb", type=int, default=2000)
     p.add_argument("--cadical", default="cadical")
     p.add_argument("--cake-lpr", default="cake_lpr")

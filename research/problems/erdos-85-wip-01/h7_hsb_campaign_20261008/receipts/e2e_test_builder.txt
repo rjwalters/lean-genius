@@ -1,7 +1,7 @@
 == plan
 {"plan": true, "manifest_rows": 5, "claimed": 0, "claimable": 5, "claimable_items": 21, "slots": 2, "heap_mb": 2000, "cap": 900, "first": ["cube_F6_t14-cover", "cube_F6_t14-b0000"], "store": "/home/ec2-user/h7camp/e2e/store"}
 == run 1 (all rows)
-run1 wall 180s
+run1 wall 175s
 PASS 5 claims
 PASS 5 CERTIFIED ledgers
 PASS claim body is the instance id
@@ -43,7 +43,7 @@ PASS re-claimed batch CERTIFIED with 3 carried
     29
    ],
    "leaves": 893,
-   "max_solver_cpu_seconds": 40.8,
+   "max_solver_cpu_seconds": 39.0,
    "missing_leaves": 883,
    "other_non_certified_receipts": 0,
    "proof_bytes": 255729364,
@@ -62,8 +62,8 @@ PASS slots x (heap + 1.5 GB) over the memory budget is refused
 PASS INCOMPLETE ledger lists SOLVER_TIMEOUT leaves, no STOP
 == ledgers
 cube_F6_t14-b0000 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 1.8 checker_cpu 7.4 proof 6903610
-cube_F6_t14-b0001 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 121.7 checker_cpu 24.6 proof 248825754
+cube_F6_t14-b0001 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 116.0 checker_cpu 23.7 proof 248825754
 cube_F6_t14-cover i-test-a CERTIFIED 1 / 1 carried 0 solver_cpu 1.9 checker_cpu 1.6 proof 4484246
-cube_F7_t5-x0 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 41.0 checker_cpu 12.8 proof 86813774
-cube_F9_t1-x0 i-test-b CERTIFIED 5 / 5 carried 3 solver_cpu 104.2 checker_cpu 20.9 proof 204880813
+cube_F7_t5-x0 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 40.2 checker_cpu 12.4 proof 86813774
+cube_F9_t1-x0 i-test-b CERTIFIED 5 / 5 carried 3 solver_cpu 99.7 checker_cpu 20.5 proof 204880813
 E2E_ALL_PASS

@@ -322,7 +322,7 @@ def main() -> int:
     sub = p.add_subparsers(dest="command", required=True)
     s = sub.add_parser("plan"); s.add_argument("--count", type=int, default=0); s.set_defaults(run=plan)
     s = sub.add_parser("setup"); s.add_argument("--commit", required=True); s.add_argument("--only", default="")
-    s.add_argument("--heap-mb", type=int, default=2000); s.add_argument("--cap", type=int, default=3600)
+    s.add_argument("--heap-mb", type=int, default=2000); s.add_argument("--cap", type=int, default=7200)
     s.add_argument("--lifetime", type=int, default=LIFETIME); s.add_argument("--max-batches", type=int, default=0)
     s.add_argument("--manifest", default="", help="alternative manifest file (residual pass)")
     s.add_argument("--partial-seconds", type=int, default=600)

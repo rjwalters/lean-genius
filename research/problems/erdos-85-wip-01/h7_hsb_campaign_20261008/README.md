@@ -13,13 +13,13 @@ structural cubes, which Lean turns into `OrderFortyNineStratumExcluded 7`
 
 | | |
 |---|---|
-| Estimate | **about 3,900 CPU-hours** of solver + checker time (stratified bootstrap 5%–95%: 2,900–5,200), **plus a residual pass** for the leaves that exceed the 1 h cap, expected about 720 of them (section 3.2). Planning figure including the residual pass: **5,000–7,000 CPU-hours**. |
-| Cost | Spot at $0.0147 per vCPU-hour: **$67 (50–90)** for the main pass, about **$90–120** with the residual pass. At the builder's on-demand rate ($0.0536 per vCPU-hour): $243 (180–329) for the main pass. |
-| Proof volume | about 20 TB of binary LRAT, streamed into cake_lpr and never stored (largest sampled proof 4.7 GB, a capped leaf) |
-| Fleet | 3 × 64-vCPU Graviton spot nodes (`r8g.16xlarge` / `r7g.16xlarge`), us-east-1 without 1d, 64 slots each, 2 GB checker heap; about 24 h wall for the main pass (18–32 h) |
-| Budget cap | controller hard stop **$160**; suggested operator ceiling $200 including the residual pass |
-| Sample | 1,400 leaves (50 per cube, seed 20261008): 1,398 UNSAT and `s VERIFIED UNSAT`, 2 hit the 1 h cap, none SAT, none rejected. All 28 cover CNFs verified. |
-| Blocks a launch | operator go and budget; the AWS path is untested (canary first); shared spot quota; capped leaves need the residual pass, and its cost is not measured yet. See section 5. |
+| Estimate | **about 3,900 CPU-hours** of solver + checker time (3,915; stratified bootstrap 5%–95%: 2,900–5,400). The tail is heavy, so plan for **4,000–5,500 CPU-hours** (section 3.2). |
+| Cost | Spot at $0.0147 per vCPU-hour: **$68 (50–93)**. At the builder's on-demand rate ($0.0536 per vCPU-hour): $247 (180–340). |
+| Proof volume | about 20 TB of binary LRAT, streamed into cake_lpr and never stored (largest sampled proof 5.2 GB) |
+| Fleet | 3 × 64-vCPU Graviton spot nodes (`r8g.16xlarge` / `r7g.16xlarge`), us-east-1 without 1d, 64 slots each, 2 GB checker heap, 2 h solver cap; about 24 h wall (18–33 h) |
+| Budget cap | controller hard stop **$160**; suggested operator ceiling $200 including a residual pass |
+| Sample | 1,400 leaves (50 per cube, seed 20261008): 1,398 UNSAT and `s VERIFIED UNSAT` within the 1 h cap; the 2 that hit the cap were re-run with a 2 h cap and verified after 58 and 64 CPU-minutes. None SAT, none rejected. All 28 cover CNFs verified. |
+| Blocks a launch | operator go and budget; the AWS path is untested (canary first); shared spot quota. See section 5. |
 
 ## 1. What is certified, byte for byte
 
@@ -71,13 +71,20 @@ item ran the campaign path: leaf CNF with positive-only units, CaDiCaL 3.0.1 (sh
 `fd601b82…72a2`) with `--lrat=true --binary=true`, proof streamed through the hashing relay into
 cake_lpr (sha256 `4d47ffdd…464b`, 2 GB heap), solver cap 3,600 s. Receipts:
 `receipts/sample_results.jsonl` (1,428 lines), `receipts/cover_receipts.tsv`,
-`receipts/estimate.json`.
+`receipts/estimate.json`. Leaves were drawn with `random.Random("20261008:<cube>").sample`.
 
 * **Covers: 28 / 28 `s VERIFIED UNSAT`.** Solver at most 40 s each (226 s in total), checker 77 s in
   total, 0.59 GB of proof in total.
 * **Leaves: 1,398 / 1,400 certified, 2 capped, 0 SAT, 0 rejected, 0 heap exhaustions.**
 * **Capped at 1 h:** `cube_F7_t0` leaf 2061 (24.5 M conflicts, 4.7 GB of proof when stopped) and
-  `cube_F7_t6` leaf 119 (14.8 M conflicts). A 2 h follow-up of both is recorded in section 3.2.
+  `cube_F7_t6` leaf 119 (14.8 M conflicts). Both were re-run with a 2 h cap and a 4 GB heap (builder job
+  `20261008T081402-commit-4c8bab43fccd-328154`, `rerun_items.py`, `receipts/capped_followup.jsonl`):
+  **both `s VERIFIED UNSAT`**, after 3,808 s (26.9 M conflicts, 5.19 GB of proof) and 3,474 s
+  (15.7 M conflicts, 3.11 GB). The 1 h cap was a wall-clock cap on a loaded host; both leaves
+  needed about one CPU-hour. The table below uses the follow-up times for these two leaves
+  (`receipts/sample_results_with_followup.jsonl`; the capped version is
+  `receipts/estimate_table_capped_at_1h.md`).
+* So **all 1,400 sampled leaves are certified**; the longest took 64 CPU-minutes of solving.
 * 146 leaves were run twice (once by each sampler process). All 146 pairs produced the same proof
   sha256, so the proofs are reproducible with this binary.
 
@@ -93,7 +100,7 @@ that; the range is the bootstrap 5%–95% of leaves × mean.
 | F6_t18 | 9,442 | 50 | 50 | 0 | 12.9 | 2.1 | 38 | 109 | 101k | 22% | 34 (22–47) | 0.20 | 1 |
 | F6_t5 | 3,456 | 50 | 50 | 0 | 37.9 | 8.2 | 173 | 285 | 301k | 15% | 36 (22–53) | 0.20 | 1 |
 | F6_t8 | 20,225 | 50 | 50 | 0 | 11.5 | 2.4 | 43 | 209 | 83k | 24% | 65 (30–110) | 0.32 | 1 |
-| F7_t0 | 32,538 | 50 | 49 | 1 | 101.2 | 2.6 | 145 | 3835 | 689k | 13% | 914 (142–2281) | 4.35 | 16 |
+| F7_t0 | 32,538 | 50 | 50 | 0 | 107.9 | 2.6 | 145 | 4172 | 736k | 11% | 975 (142–2463) | 4.65 | 17 |
 | F7_t10 | 50,772 | 50 | 50 | 0 | 13.4 | 3.1 | 4 | 498 | 107k | 27% | 189 (45–468) | 1.15 | 3 |
 | F7_t11 | 20,225 | 50 | 50 | 0 | 17.5 | 2.5 | 40 | 316 | 135k | 20% | 98 (49–166) | 0.53 | 2 |
 | F7_t13 | 20,225 | 50 | 50 | 0 | 3.6 | 2.2 | 4 | 49 | 14k | 54% | 20 (14–30) | 0.08 | 0 |
@@ -102,7 +109,7 @@ that; the range is the bootstrap 5%–95% of leaves × mean.
 | F7_t3 | 11,025 | 50 | 50 | 0 | 36.9 | 5.4 | 108 | 337 | 311k | 15% | 113 (70–161) | 0.61 | 2 |
 | F7_t4 | 11,025 | 50 | 50 | 0 | 22.7 | 2.8 | 80 | 168 | 189k | 18% | 70 (44–99) | 0.42 | 1 |
 | F7_t5 | 3,456 | 50 | 50 | 0 | 62.5 | 2.4 | 71 | 1871 | 443k | 13% | 60 (16–129) | 0.30 | 1 |
-| F7_t6 | 3,456 | 50 | 49 | 1 | 179.7 | 17.7 | 118 | 3801 | 979k | 9% | 173 (48–331) | 0.66 | 3 |
+| F7_t6 | 3,456 | 50 | 50 | 0 | 178.2 | 17.7 | 118 | 3727 | 997k | 9% | 171 (48–328) | 0.67 | 3 |
 | F7_t8 | 3,456 | 50 | 50 | 0 | 78.5 | 19.1 | 122 | 1926 | 555k | 12% | 75 (30–147) | 0.37 | 1 |
 | F7_t9 | 3,456 | 50 | 50 | 0 | 31.1 | 4.1 | 21 | 1158 | 265k | 16% | 30 (6–74) | 0.19 | 1 |
 | F8_t0 | 32,538 | 50 | 50 | 0 | 25.7 | 4.4 | 82 | 245 | 219k | 18% | 232 (140–339) | 1.41 | 4 |
@@ -114,7 +121,7 @@ that; the range is the bootstrap 5%–95% of leaves × mean.
 | F8_t6 | 20,225 | 50 | 50 | 0 | 21.8 | 2.8 | 77 | 118 | 174k | 18% | 123 (83–167) | 0.68 | 2 |
 | F9_t0 | 32,538 | 50 | 50 | 0 | 33.8 | 5.5 | 110 | 294 | 298k | 16% | 306 (194–432) | 1.80 | 5 |
 | F9_t1 | 11,025 | 50 | 50 | 0 | 87.5 | 17.0 | 190 | 1406 | 701k | 13% | 268 (126–448) | 1.49 | 5 |
-| **total** | **377,776** | 1400 | 1398 | 2 | | | | | | 15% | **3856 (2864–5216)** | **20.1** | **67** |
+| **total** | **377,776** | 1400 | 1400 | 0 | | | | | | 15% | **3915 (2864–5392)** | **20.4** | **68** |
 
 Spot $ is CPU-hours / 0.85 × $0.0147.
 
@@ -124,8 +131,8 @@ Spot $ is CPU-hours / 0.85 × $0.0147.
 
 | | CPU-hours | spot ($0.0147 / vCPU-h) | builder on-demand ($0.8568 / h for 16 vCPU) |
 |---|---:|---:|---:|
-| point estimate | 3,856 (solver 3,269 + checker 586) | $67 | $243 |
-| bootstrap 5%–95% | 2,864–5,216 | $50–90 | $180–329 |
+| point estimate | 3,915 (solver 3,339 + checker 576) | $68 | $247 |
+| bootstrap 5%–95% | 2,864–5,392 | $50–93 | $180–340 |
 
 Dollar figures divide by an assumed utilisation of 0.85 (bootstrap time, idle tail of a node,
 and slower cores when all 64 are busy; not measured on a full node). `r8g.16xlarge` spot was
@@ -141,25 +148,25 @@ The distribution is heavy-tailed, and the range above understates the upside:
 * The largest 1% of the samples (14 leaves) carry 40% of the sampled CPU time, the largest 5%
   carry 64%. 16 samples took more than 10 minutes and 7 more than 30 minutes. The Hill tail
   index on the pooled normalised sample is about 1.5 (finite mean, infinite variance).
-* `cube_F7_t0` is a quarter of the estimate (914 CPU-h, range 142–2,281) because of a single
-  capped sample that stands for 651 leaves.
-* **Capped leaves.** Two of 1,400 samples hit the cap. Weighted by cube size that is an expected
-  **720 capped leaves** in the campaign (651 in `cube_F7_t0`, 69 in `cube_F7_t6`), with a very wide
-  error (one observation each). The estimate counts them at the cap, which is a lower bound.
-  They are not certified by the main pass and must be re-run in the residual pass, so every hour
-  of true solving time per capped leaf adds about 720 CPU-hours (about $12 on spot), and the hour
-  already spent in the main pass (766 CPU-h in the table) is spent twice.
-* Follow-up of the two capped leaves with a 2 h cap and a 4 GB heap (builder job
-  `20261008T081402-commit-4c8bab43fccd-328154`, `rerun_items.py`): @@FOLLOWUP_RESULT@@
+* `cube_F7_t0` is a quarter of the estimate (975 CPU-h, range 142–2,463) because of a single
+  sample of 70 minutes that stands for 651 leaves.
+* **Leaves near or over one hour.** Two of 1,400 samples needed about an hour. Weighted by cube
+  size that is an expected 720 such leaves (651 in `cube_F7_t0`, 69 in `cube_F7_t6`), with a very
+  wide error (one observation each). With a 1 h cap they would all be solved twice (about 770
+  CPU-hours wasted). **The campaign default is therefore a 2 h solver cap.** No sampled leaf
+  needed more than 64 CPU-minutes, so nothing is known about leaves beyond that: every 0.1% of
+  the leaves (378) that takes 2 h more than the sample suggests adds about 760 CPU-hours ($13).
 * A cube that showed no hard leaf in 50 samples can still have them: with 50 samples, a cube whose
   true capped fraction is 2% shows none with probability 36%.
 * Not in the estimate: memory-bandwidth slowdown on a fully loaded 64-core node, spot reclaims
   (at most the unfinished part of a 64-leaf batch per slot is lost, and partial receipts are
-  carried forward), and the 2 GB heap proving too small for some leaf (none in 1,428 items; such
-  leaves go to the residual pass).
+  carried forward), and the 2 GB heap proving too small for some leaf (none in 1,428 items, and
+  not tested on the two longest leaves, which were re-run at 4 GB; such leaves go to the
+  residual pass).
 
-Planning figure: **5,000–7,000 CPU-hours, $90–120 on spot**, if capped leaves average 2–4 h. The
-controller hard stop of $160 allows about 9,000 CPU-hours at the assumed rate.
+Planning figure: **4,000–5,500 CPU-hours, $70–95 on spot**. The controller hard stop of $160
+allows about 9,000 CPU-hours at the assumed rate, which leaves room for a tail twice as heavy as
+the sample shows.
 
 ### 3.3 Fixed overhead per leaf and batching
 
@@ -209,14 +216,14 @@ Options that would remove the parse, with what they would cost:
 * **3 spot nodes of 64 vCPU** (`r8g.16xlarge`, `r7g.16xlarge`, with `m8g`/`m7g.16xlarge` as
   fallbacks; price-capacity-optimized; us-east-1 without 1d; bid ceiling $1.20/h). 64 slots per
   node, 2 GB checker heap: 64 × 3.5 GB = 224 GB peak.
-* Wall time for the main pass: 3,856 / 0.85 / 192 vCPU ≈ **24 h** (18–32 h for the bootstrap
+* Wall time for the main pass: 3,915 / 0.85 / 192 vCPU ≈ **24 h** (18–33 h for the bootstrap
   range). Node lifetime is 36 h, the fleet request expires after 37 h.
 * Why 3 and not 6: the account's spot quota is 384 standard vCPUs and is **shared**. About 180
   were in use by CI runners and other batch jobs when checked (2026-10-08 05:50Z). Six nodes
   would need the whole quota. `launch` accepts up to 6.
 * Residual pass: 1 node, cap 24 h, 8 GB heap (the bootstrap lowers the slot count to fit).
 * Budget: controller hard stop $160 (3 nodes × 36 h at the bid ceiling, with the controller's
-  10% margin, is $143). Expected spend $60–120.
+  10% margin, is $143). Expected spend $50–100.
 
 ## 4. Runbook
 
@@ -249,7 +256,7 @@ until step 4.4.
 | re-read claim owners every pass | `cert_controller.one_pass` clears the owner cache before the reviewed pass; claim body = instance id |
 | "complete" means CERTIFIED, not "has a ledger" | controller stops the fleet only when every manifest row has a CERTIFIED ledger |
 | `Popen.poll()` reaped the child (ECHILD) | inherited: the watchdog peeks with `waitid(WNOWAIT)` |
-| a solver cap hit on the longest row | caps are expected here: `SOLVER_TIMEOUT` is a status, the batch ledger is `INCOMPLETE`, and `residual` builds the second-pass manifest |
+| a solver cap hit on the longest row | the default cap is 2 h (twice the longest sampled leaf); a cap is still a normal outcome: `SOLVER_TIMEOUT` is a status, the batch ledger is `INCOMPLETE`, and `residual` builds the second-pass manifest |
 | spot reclaim costs rerun time | the claim unit is 64 leaves (about 25 CPU-minutes on average); receipts of a running batch are uploaded every 10 minutes to `partial/`, and the node that re-claims a released batch re-validates and carries the CERTIFIED ones forward |
 | a receipt is only as good as the checker that produced it (codex review, room 52742–52751) | one approved cake_lpr binary (`h7_common.CAKE_LPR_SHA256` = `4d47ffdd…464b`, the builder's build of commit `a36874a8`, used for the sample and the covers) is shipped as freight; nodes do not compile it; worker, batch runner and collector all refuse any other solver or checker hash |
 | memory budget must be the true peak (same review) | the checker heap is fixed for a run; `CHECK_HEAP_EXHAUSTED` is recorded and left to the residual pass (larger heap, fewer slots); the bootstrap sets slots = min(vCPUs, (RAM − 8 GB) / (heap + 1.5 GB)) and the worker refuses a configuration that does not fit |
@@ -331,7 +338,7 @@ batches" would run covers only. `--canary` instead pins eight ordinary manifest 
 **2 cover CNFs + 384 leaf CNFs = 386 items**, with the smallest and the largest hsb clause sets
 (9,213 and 295,994 clauses). It sets the partial-receipt interval to 120 s, so the `partial/`
 upload path runs on every leaf batch that lasts longer than that. Expected result: 8 ledgers,
-`CERTIFIED` unless a leaf hits the 1 h cap (then that batch is `INCOMPLETE` with a
+`CERTIFIED` unless a leaf hits the 2 h cap (then that batch is `INCOMPLETE` with a
 `SOLVER_TIMEOUT` entry, which is a valid canary outcome); 8 objects in `results/`; at least one
 object in `partial/`; no `control/` object. Expected cost: one node for 1–2 h. Not covered by the
 canary: a spot reclaim with carry-forward and the STOP / ALARM path (both covered by
@@ -402,10 +409,10 @@ a small new Lean wrapper (one level of nesting) and is not implemented here.
    needs a quota increase or a quiet period.
 4. **The security group `erdos85-verdict-noingress` no longer exists.** `setup` now recreates it
    (no ingress rules), as the reviewed verdict-pass setup did.
-5. **Capped leaves.** About 720 leaves are expected to exceed 1 h, and their true cost is not
-   known (section 3.2). The residual pass handles them with a longer cap, but a leaf that does not
-   finish in 24 h would need a deeper split, which needs a small Lean wrapper that does not exist
-   yet (section 4.6). Deciding the main-pass cap (1 h as tested, or 2 h) is an operator choice.
+5. **Leaves beyond the cap.** None of the 1,400 sampled leaves needed more than 64 CPU-minutes,
+   and the default cap is 2 h. Leaves that exceed it go to the residual pass (24 h cap). A leaf
+   that does not finish there would need a deeper split, which needs a small Lean wrapper that
+   does not exist yet (section 4.6). This is a risk, not a known obstacle.
 6. **The approved checker binary must run on the fleet AMI.** `cake_lpr` `4d47ffdd…464b` was linked
    on the builder (AL2023 arm64). The bootstrap preflight (accept a valid proof, reject a
    truncated one) fails the node cleanly if it does not run on the current AL2023 image.
