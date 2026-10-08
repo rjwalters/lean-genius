@@ -1,0 +1,13 @@
+{
+  "status": "TIMEOUT_BEFORE_TARGET",
+  "exit_code": 124,
+  "job": "20261008T030527-erdos85__h3-first-column-20261008-127474",
+  "execution_commit": "34133fdb31691fbaae83654ce4ce911b4d708cba",
+  "target": "Proofs.Erdos85ThreeHighFirstColumnSearch",
+  "source_sha256": "4e5a94937f5b4eeb7342a2bce74e82edd00789941d93d82f56e22b7ab6a541db",
+  "log_sha256": "c58206982209d0015ab19bd03a43e8d50f009e117df655045d194f8d5a54f598",
+  "memory_gib": 16,
+  "lean_threads": 1,
+  "timeout": "15m",
+  "scope": "Dependency build timed out before the target theorem module. No target proof or inventory result."
+}

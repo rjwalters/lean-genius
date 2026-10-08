@@ -22,7 +22,18 @@ claimed until measured.
 for U1/R15 and the four cases selected in `h3_varied_pilot_20261008`. They
 enumerate static first-column candidates and record the first prefix gate
 result for every candidate, encoded as a 15-bit mask. They do not run the
-remaining DFS. These diagnostic sources are **uncompiled and unqueued**.
+remaining DFS. These diagnostic sources are **awaiting cloud verification**.
 The runner requires a fresh output directory and retains the complete compiler
 log, candidate list, and source/object hashes; its PASS is a diagnostic result,
 not a rejection certificate.
+
+The initial theorem build, job
+`20261008T030527-erdos85__h3-first-column-20261008-127474`, reached its 15-minute
+limit during dependency compilation (exit 124), before the target module.
+`first-build.json` and `first-build.log` preserve that result.
+
+Job `20261008T032226-erdos85__h3-first-column-20261008-138766` continues from
+the same build cache at commit `34bb24f5fb1`, using 16 GiB, one Lean thread,
+and a 30-minute limit. It runs `check_inventory.py`, which first builds the
+theorem module and then evaluates the inventory only if dependencies pass.
+No theorem or diagnostic result from that job is claimed yet.
