@@ -1,0 +1,27 @@
+[e85] job 20261008T131421-erdos85__h3-triple-formal-20261007-520534  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T13:14:21Z
+[e85] commit e2578cb884187bbd93359201cd48b46497bb5235 (Prepare authorized H3 sweep with recorded timeout skips)
+=== Docker Lean Build ===
+Memory limit: 16384MB (hard enforced via cgroups)
+Timeout: 3m
+CPU limit: 2
+Target: all
+Build volume: lean-build-erdos85__h3-triple-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Command: lake env python3 -B ../research/problems/erdos-85-wip-01/h3_native_sweep_20261008/run.py
+Starting Docker build...
+
+{
+  "status": "READ_ONLY_PREFLIGHT_PASS",
+  "plan_sha256": "5729541d79436ea26cc10f881ae03d20f57960084d14473687a07238bff6f30d",
+  "reused_objects_checked": 90,
+  "new_parts": 293,
+  "known_timeouts": [
+    89
+  ],
+  "cgroup_memory_bytes": 17179869184,
+  "cgroup_cpu_max": "200000 100000",
+  "scope": "No compilation, native search, artifact changes or launch authorization."
+}
+
+=== Build succeeded ===

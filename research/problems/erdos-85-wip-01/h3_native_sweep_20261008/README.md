@@ -64,3 +64,11 @@ force-add ignored raw logs before banking results.
 Validation: 26 metadata/dummy-process tests pass, including full-cap versus
 global-budget timeout classification and non-timeout failures. The actual
 sweep has not yet launched; preflight and launch receipts will record it.
+
+## Audited preflight
+
+Read-only job `20261008T131421-erdos85__h3-triple-formal-20261007-520534`,
+execution pin `e2578cb884187bbd93359201cd48b46497bb5235`, exited zero and
+passed independent collection as `SWEEP_PREFLIGHT_AUDIT_PASS`. It checked
+all 90 reusable objects, the source/input/runtime pins and actual resource
+limits. It ran no native part and granted no new mathematical credit.

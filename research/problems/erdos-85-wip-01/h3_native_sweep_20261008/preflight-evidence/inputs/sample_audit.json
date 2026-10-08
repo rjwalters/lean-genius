@@ -1,0 +1,107 @@
+{
+  "status": "SAMPLE_ARTIFACT_AUDIT_PASS",
+  "job": "20261008T121835-erdos85__h3-triple-formal-20261007-487248",
+  "execution_commit": "afcd487aecce0b9950355c0d06e2f81ffef63093",
+  "authoritative_exit": 0,
+  "worker_status": "SAMPLE_COMPILED_PENDING_AUDIT",
+  "accepted_parts": [
+    {
+      "residue": 0,
+      "module": "Proofs.Erdos85H3TripleCompletionPart000",
+      "theorem": "Erdos85.H3TripleCompletion.triplePart_384_000",
+      "axioms": [
+        "propext",
+        "Quot.sound",
+        "Erdos85.H3TripleCompletion.triplePart_384_000._native.native_decide.ax_1_1"
+      ],
+      "source_sha256": "5f55cfadb0f631fd0bfd020aee8ef35a823134df6cdf48dfa3b312efd21d631c",
+      "object_sha256": "19080f7f1408316ee1368fc3361f1e26c334ee0f63cebcb01dd4c49936ad654a",
+      "object_bytes": 6712,
+      "elapsed_seconds": 15.182851193996612,
+      "child_user_seconds": 13.823648
+    },
+    {
+      "residue": 3,
+      "module": "Proofs.Erdos85H3TripleCompletionPart003",
+      "theorem": "Erdos85.H3TripleCompletion.triplePart_384_003",
+      "axioms": [
+        "propext",
+        "Quot.sound",
+        "Erdos85.H3TripleCompletion.triplePart_384_003._native.native_decide.ax_1_1"
+      ],
+      "source_sha256": "290ef90426844ddbec0cc0debc85ff37bd03b4d0e8bd74b42788bf19cfd07035",
+      "object_sha256": "a8fd2a0a0144cb854d8a24e4834babf41eaac301b89ad247246b15ca6637c5ee",
+      "object_bytes": 6712,
+      "elapsed_seconds": 3.968345418004901,
+      "child_user_seconds": 2.894194999999998
+    },
+    {
+      "residue": 5,
+      "module": "Proofs.Erdos85H3TripleCompletionPart005",
+      "theorem": "Erdos85.H3TripleCompletion.triplePart_384_005",
+      "axioms": [
+        "propext",
+        "Quot.sound",
+        "Erdos85.H3TripleCompletion.triplePart_384_005._native.native_decide.ax_1_1"
+      ],
+      "source_sha256": "cd75031024faeb48a8e21f79b86ba1108cbea16d7b5a78f7215d684051f68911",
+      "object_sha256": "af2f2aa117fdb7e06e77ce11cf862970d08aba6ce7f20202359b57e94958c328",
+      "object_bytes": 6712,
+      "elapsed_seconds": 3.9183551500027534,
+      "child_user_seconds": 2.7299330000000026
+    },
+    {
+      "residue": 4,
+      "module": "Proofs.Erdos85H3TripleCompletionPart004",
+      "theorem": "Erdos85.H3TripleCompletion.triplePart_384_004",
+      "axioms": [
+        "propext",
+        "Quot.sound",
+        "Erdos85.H3TripleCompletion.triplePart_384_004._native.native_decide.ax_1_1"
+      ],
+      "source_sha256": "9933806cec28fcf7dee00c28c150bf3292ad7b5e0cd4546dfa55bc38b94cc93d",
+      "object_sha256": "9bf4727cc3ed31f28650242c0bcbf86bbe6a34c74154c0340d09b6ba6d43664f",
+      "object_bytes": 6712,
+      "elapsed_seconds": 5.9706088329985505,
+      "child_user_seconds": 4.768836
+    },
+    {
+      "residue": 162,
+      "module": "Proofs.Erdos85H3TripleCompletionPart162",
+      "theorem": "Erdos85.H3TripleCompletion.triplePart_384_162",
+      "axioms": [
+        "propext",
+        "Quot.sound",
+        "Erdos85.H3TripleCompletion.triplePart_384_162._native.native_decide.ax_1_1"
+      ],
+      "source_sha256": "4eae109ee328ece731003f25c0e119b8bd98007bdb9c6ccca65fbbdcb0f58c63",
+      "object_sha256": "26fc4a710dfd297206072562f8421902873116f10ecc22f698c6ee8c7f08fed4",
+      "object_bytes": 6712,
+      "elapsed_seconds": 34.45724963200337,
+      "child_user_seconds": 33.342586
+    }
+  ],
+  "retained_sha256": {
+    "job.log": "9f6c800f317d3c07248b9c8a6b6cb47cae13a5f851285c0569ee05eb6a2af9b0",
+    "job.spec": "1914208c5197c22b69ae3d926446a5738af84f880a01dceb207151371eb7eccf",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "MANIFEST.json": "50487367dadbc9192c092b8acdd0cd030bcd9b4ecf47131cb2cfe7a655b5bead",
+    "prepare.py": "0e2b2cd96bacd793457b6759b323cc64b95240b422fc5a86e94a3a38d191e305",
+    "run_sample.py": "b469ce6c88491295a5b28570e21e3bf45f00c97bc8dd37f61cd44c1e729b71d8",
+    "RUN.json": "5b9954b7ce0889c261843faf04482280a66378357b668097b9a563c6ba3e3b8f",
+    "prerequisite-AUDIT.json": "21fd8bcce69730f9c3f0de0918412a22430b907d8954f1f90da436366c727b8b",
+    "shared.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "part000.log": "4a959daff55ca990e91af53d38dccb5cc6039587834a019e27a15a25b6571078",
+    "part003.log": "ecb90adb8000c15fc0c6edc8ff758317aaa77e9c400a5aa4f4c8ddb528e4efaf",
+    "part005.log": "d986849d10fc9472d2be11caceed98a8c62c4d5a5b9f9eb219b6c1e8b4109914",
+    "part004.log": "9c99cfcf7ede121c50ed6ed7904c6f91cd4c20596e0a6c7df89ecd8c15603096",
+    "part162.log": "dff547f76b41f4426be89b5557152c42ab8254b547bdf329b0c618f709786693",
+    "sources/Proofs/Erdos85H3TripleCompletionPart000.lean": "5f55cfadb0f631fd0bfd020aee8ef35a823134df6cdf48dfa3b312efd21d631c",
+    "sources/Proofs/Erdos85H3TripleCompletionPart003.lean": "290ef90426844ddbec0cc0debc85ff37bd03b4d0e8bd74b42788bf19cfd07035",
+    "sources/Proofs/Erdos85H3TripleCompletionPart005.lean": "cd75031024faeb48a8e21f79b86ba1108cbea16d7b5a78f7215d684051f68911",
+    "sources/Proofs/Erdos85H3TripleCompletionPart004.lean": "9933806cec28fcf7dee00c28c150bf3292ad7b5e0cd4546dfa55bc38b94cc93d",
+    "sources/Proofs/Erdos85H3TripleCompletionPart162.lean": "4eae109ee328ece731003f25c0e119b8bd98007bdb9c6ccca65fbbdcb0f58c63"
+  },
+  "scope": "Only listed accepted parts; no full 384-part or whole-cell verdict. Bucket zero replaces diagnostic packaging, not an additional residue.",
+  "collector_sha256": "1ff4862b19f998d2900076cc7d3019db1e4ac4e3a9d52f82f55250b296abeb99"
+}
