@@ -1,0 +1,17 @@
+{
+  "status": "SUBMITTED",
+  "job": "20261008T063412-erdos85__h3-first-column-20261008-264145",
+  "branch": "erdos85/h3-first-column-20261008",
+  "expected_execution_commit": "9a1555a52461ab6d53bb145378f92de81c88cdc6",
+  "case": "FullU3R3",
+  "memory_gib": 16,
+  "lean_threads": 1,
+  "timeout": "2h",
+  "preflight_receipt_sha256": "36fe58d9bae19306311cc9655d0300a3ecf60e669141c4fe834e89be670de820",
+  "source_sha256": {
+    "Erdos85ThreeHighPilotFullU3R3Inputs.lean": "1e3491373759875229ed79a8700f65c6ae4599b344cbb0c84000c08e822932d6",
+    "Erdos85ThreeHighPilotFullU3R3Certificate.lean": "186d7dde7a6d0be550a6e16dec0c06265b3b78a3550dc24c2850a43a3ade619b",
+    "Erdos85ThreeHighPilotFullU3R3Consumer.lean": "2f8f051a0621f465b37a066e3a454d0db7a49051a2998f7ba830270f66f065dd"
+  },
+  "scope": "First full varied pilot; one complete pair only. No full H3 closure or full campaign."
+}

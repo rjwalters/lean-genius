@@ -1,6 +1,6 @@
 # Four-case H3 timing sample
 
-Status: **input/deficient-membership preflight PASS; both deficient certificates and consumers PASS**.
+Status: **both membership gates PASS; both deficient certificates and consumers PASS; full timings pending**.
 
 Claude requested 3–5 additional pairs after the U1/R15 pipeline fix, to measure
 cost variation before a larger campaign. The four selected cases are:
@@ -54,7 +54,11 @@ previously verified deficient census (203 modules, receipt SHA
 `190d7e37c814bd8a7eea54e6ad1bbcba73e092e6e0d77deddc717bab098bfecc`),
 builds all four input modules, then checks deficient membership and representative
 identity with standard axioms only. It does not run any certificate search.
-The full membership preflight awaits the still-building `CapacityReduction`.
+The full membership preflight subsequently passed in cloud job
+`20261008T062957-erdos85__h3-triple-formal-20261007-260985`, with
+independent audit retained in `../h3_u1r15_census_reduction_20261008/evidence/`.
+All four full membership/input reports use standard axioms only; receipt
+SHA-256 is `36fe58d9bae19306311cc9655d0300a3ecf60e669141c4fe834e89be670de820`.
 
 The preflight passed in cloud job
 `20261008T042839-erdos85__h3-first-column-20261008-180990`, using source
@@ -68,8 +72,9 @@ exactly the standard three axioms. Dependencies took 585.40 seconds and the
 membership module took 319.96 seconds, with exit 0 at 04:44:26 UTC.
 
 The current generator simplifies membership formulas before decision checking;
-those later proof-script changes have not been compiled. The retained proof
-and its original plan remain the preflight evidence. The timing runner binds
+the current full membership script has passed, while the later deficient
+script remains uncompiled. The retained deficient proof and its original
+plan remain that branch's preflight evidence. The timing runner binds
 to that immutable plan and requires each selected input, certificate, and
 consumer source to match both the current plan and the verified plan exactly.
 A change in any selected case or source therefore still blocks its search.
@@ -123,3 +128,10 @@ The two deficient certificate times differ by more than a factor of 23.
 Together with the 97.4-minute U1/R15 pilot, this shows substantial variation
 among these selected cases; it does not determine a census-wide average.
 Both full sample cases remain unqueued pending their membership proof.
+
+Full U3/R3 is submitted as cloud job
+`20261008T063412-erdos85__h3-first-column-20261008-264145` at commit
+`9a1555a52461ab6d53bb145378f92de81c88cdc6`, with 16 GiB, one Lake
+thread, and a two-hour cap. It uses the independently audited full membership
+evidence above. `FullU3R3-launch.json` records the exact source hashes.
+No result is claimed yet; Full U54/R20 remains unqueued.
