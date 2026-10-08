@@ -14,16 +14,16 @@ names = []
 for r in range(m):
     nn = str(r).zfill(w)
     mod = f'Erdos85H5T{c}Part{nn}'
-    thm = f'cellPart_{c}_{k}_{m}_{nn}'
+    thm = f'cellPartF_{c}_{k}_{m}_{nn}'
     names.append((mod, thm))
-    (d / f'{mod}.lean').write_text(f'''import Proofs.Erdos85H5Bridge
+    (d / f'{mod}.lean').write_text(f'''import Proofs.Erdos85H5Fast
 
 /-! Part {r} of the {m}-way split five-high search, cell `t = {c}` (`native_decide`). -/
 
 namespace Erdos85
 namespace H5
 
-theorem {thm} : cellPart {c} {k} {m} {r} = true := by
+theorem {thm} : cellPartF {c} {k} {m} {r} = true := by
   native_decide
 
 end H5
@@ -39,14 +39,14 @@ cases = '\n'.join(f'  | {r}, _ => {thm}' for r, (_, thm) in enumerate(names))
 Composition of the {m} `native_decide` parts of the split search with the
 kernel-checked engine soundness and bridge.  Besides the three standard
 axioms, the conclusion depends on exactly the {m} axioms that
-`native_decide` emits for the part theorems `cellPart_{c}_{k}_{m}_NN` (trust
-in compiled evaluation of `cellPart {c} {k} {m} NN`).
+`native_decide` emits for the part theorems `cellPartF_{c}_{k}_{m}_NN` (trust
+in compiled evaluation of `cellPartF {c} {k} {m} NN`).
 -/
 
 namespace Erdos85
 namespace H5
 
-theorem cellPart_{c}_{k}_{m}_all : ∀ r, r < {m} → cellPart {c} {k} {m} r = true
+theorem cellPartF_{c}_{k}_{m}_all : ∀ r, r < {m} → cellPartF {c} {k} {m} r = true
 {cases}
   | n + {m}, h => absurd h (by omega)
 
@@ -54,8 +54,8 @@ theorem cellPart_{c}_{k}_{m}_all : ∀ r, r < {m} → cellPart {c} {k} {m} r = t
 excluded. -/
 theorem fiveHighCanonicalRepresentativeExcluded_{c} :
     FiveHighCanonicalRepresentativeExcluded {c} :=
-  fiveHighCanonicalRepresentativeExcluded_of_parts {c} {k} {m} (by norm_num)
-    cellPart_{c}_{k}_{m}_all
+  fiveHighCanonicalRepresentativeExcluded_of_partsF {c} {k} {m} (by norm_num)
+    cellPartF_{c}_{k}_{m}_all
 
 end H5
 end Erdos85
