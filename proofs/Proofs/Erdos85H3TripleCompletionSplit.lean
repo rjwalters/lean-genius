@@ -14,10 +14,6 @@ No finite search is run in this file.
 namespace Erdos85
 namespace H3TripleCompletion
 
-/-- A cheap key of a partial graph, used only to distribute phase-1 leaves. -/
-def stKey (s : St) : Nat :=
-  s.rows.toArray.foldl (fun acc r => (acc * 31 + r) % 1000003) 0
-
 /-- Leaf test of part `r` of `m`: leaves with another key are accepted
 without search. -/
 def leafPart (m r : Nat) (s : St) : Bool :=

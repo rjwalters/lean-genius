@@ -22,16 +22,6 @@ open OrderFortyNineSmallHighCensus
 
 def hi (w : Fin 3) : V := ⟨w.val, by omega⟩
 
-/-- Initial bit row: a high vertex sees its colour fibre, a low vertex sees
-the high vertices in its mask. -/
-def initRow (a : V) : Nat :=
-  if h : a.val < 3 then fiberMask ⟨a.val, h⟩ else maskOf a
-
-/-- The initial partial graph: exactly the high–low edges. -/
-def s0 : St where
-  rows := Vector.ofFn initRow
-  nbr := Vector.ofFn fun a => (List.finRange 49).filter fun b => (initRow a).testBit b.val
-
 theorem s0_adj (a b : V) : s0.adj a b = (initRow a).testBit b.val := by
   unfold St.adj s0
   simp only [Vector.getElem_ofFn]

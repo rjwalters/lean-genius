@@ -1,4 +1,5 @@
 import Mathlib
+import Proofs.Erdos85H3TripleCompletionRuntime
 
 /-!
 # A sound completion engine for the order-49 three-high triple cell
@@ -32,47 +33,6 @@ No exclusion computation is asserted in this file.
 
 namespace Erdos85
 namespace H3TripleCompletion
-
-abbrev V := Fin 49
-
-/-- High-support mask of the canonical `t = 1` labelling. -/
-def maskOf (v : V) : Nat :=
-  if v.val < 3 then 0 else if v.val = 3 then 7 else if v.val < 11 then 1
-  else if v.val < 18 then 2 else if v.val < 25 then 4 else 0
-
-def col (v : V) (w : Fin 3) : Bool := (maskOf v).testBit w.val
-
-def capOf (v : V) : Nat := if v.val < 3 then 8 else 7
-
-def fiber0 : List V := [3, 4, 5, 6, 7, 8, 9, 10]
-def fiber1 : List V := [3, 11, 12, 13, 14, 15, 16, 17]
-def fiber2 : List V := [3, 18, 19, 20, 21, 22, 23, 24]
-
-def fiberList (w : Fin 3) : List V :=
-  match w with
-  | 0 => fiber0
-  | 1 => fiber1
-  | 2 => fiber2
-
-def fiberMask (w : Fin 3) : Nat :=
-  match w with
-  | 0 => 2040
-  | 1 => 260104
-  | 2 => 33292296
-
-def highVerts : List V := [0, 1, 2]
-
-def coreVerts : List V :=
-  [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
-
-def emptyVerts : List V :=
-  [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41,
-    42, 43, 44, 45, 46, 47, 48]
-
-def coreClauses : List (V × Fin 3) :=
-  coreVerts.flatMap fun u => [(u, 0), (u, 1), (u, 2)]
-
-def M49 : Nat := 2 ^ 49 - 1
 
 /-! ## Finite facts about the labelling -/
 
@@ -154,18 +114,6 @@ theorem length_le_of_nodup_subset {l₁ l₂ : List V} (d : l₁.Nodup)
   (List.subperm_of_subset d h).length_le
 
 /-! ## Partial graphs -/
-
-/-- A partial graph: a bit row and a neighbour list for each vertex. -/
-structure St where
-  rows : Vector Nat 49
-  nbr : Vector (List V) 49
-
-def St.adj (s : St) (a b : V) : Bool := (s.rows[a.val]).testBit b.val
-
-def St.addEdge (s : St) (u x : V) : St where
-  rows := (s.rows.set u.val (s.rows[u.val] ||| 2 ^ x.val)).set x.val
-    (s.rows[x.val] ||| 2 ^ u.val)
-  nbr := (s.nbr.set u.val (x :: s.nbr[u.val])).set x.val (u :: s.nbr[x.val])
 
 theorem addEdge_adj_iff (s : St) (u x a b : V) (hux : u ≠ x) :
     (s.addEdge u x).adj a b = true ↔
@@ -346,11 +294,6 @@ theorem exists_unknown_nbr {s : St} {adj : V → V → Bool} (hs : s.WF) (M : Mo
 
 /-! ## Adding edges -/
 
-def St.allowed (s : St) (u x : V) : Bool :=
-  decide ((s.nbr[x.val]).length < capOf x) &&
-    decide ((s.nbr[u.val]).length < capOf u) &&
-    (s.nbr[u.val]).all fun y => ((s.rows[y.val] &&& s.rows[x.val]) &&& M49) == 0
-
 theorem allowed_sound {s : St} {adj : V → V → Bool} (hs : s.WF) (M : Model adj)
     (hc : Compat s adj) {u x : V} (hux : adj u x = true) (hsx : s.adj u x = false) :
     s.allowed u x = true := by
@@ -378,11 +321,6 @@ theorem allowed_sound {s : St} {adj : V → V → Bool} (hs : s.WF) (M : Model a
     have hyu : adj y u = true := by rw [M.symm y u]; exact hc u y hsy
     exact M.c4 y x u ⟨i, hi⟩ hyx huz hyu hxu (hc _ _ hyz) (hc _ _ hxz)
   · rfl
-
-def St.tryAdd (s : St) (u x : V) : Option St :=
-  if u = x then none
-  else if s.adj u x then some s
-  else if s.allowed u x then some (s.addEdge u x) else none
 
 theorem tryAdd_none {s : St} {adj : V → V → Bool} (hs : s.WF) (M : Model adj)
     (hc : Compat s adj) {u x : V} (h : s.tryAdd u x = none) : adj u x = false := by
@@ -534,9 +472,6 @@ theorem twin_transport {s : St} {adj : V → V → Bool} (hs : s.WF) (M : Model 
 
 /-! ## Phase 1: colour clauses on the nonempty low vertices -/
 
-def clauseOpen (s : St) (u : V) (w : Fin 3) : Bool :=
-  ((s.rows[u.val] &&& fiberMask w) &&& M49) == 0
-
 theorem clauseOpen_not_adj {s : St} {u : V} {w : Fin 3} (h : clauseOpen s u w = true)
     {x : V} (hx : col x w = true) : s.adj u x = false := by
   cases hh : s.adj u x
@@ -544,27 +479,6 @@ theorem clauseOpen_not_adj {s : St} {u : V} {w : Fin 3} (h : clauseOpen s u w = 
   · exfalso
     exact and_no_bit_of_eq_zero h x.val x.isLt hh
       (by rw [fiberMask_testBit]; exact hx)
-
-def twinSkip (s : St) (u : V) (w : Fin 3) (x : V) : Bool :=
-  (fiberList w).any fun y =>
-    decide (y.val < x.val) && decide (y ≠ u) &&
-      decide (s.rows[y.val] = s.rows[x.val]) && decide (maskOf y = maskOf x)
-
-def findClause (s : St) : Option (V × Fin 3) :=
-  coreClauses.find? fun p => clauseOpen s p.1 p.2
-
-def dfs1 (leaf : St → Bool) : Nat → St → Bool
-  | 0, _ => false
-  | fuel + 1, s =>
-    match findClause s with
-    | none => leaf s
-    | some (u, w) =>
-      decide (3 ≤ u.val) && clauseOpen s u w &&
-        (fiberList w).all fun x =>
-          decide (x = u) || twinSkip s u w x ||
-            match s.tryAdd u x with
-            | none => true
-            | some s' => dfs1 leaf fuel s'
 
 theorem dfs1_sound (leaf : St → Bool)
     (hleaf : ∀ s : St, s.WF → leaf s = true →
@@ -629,11 +543,6 @@ theorem dfs1_sound (leaf : St → Bool)
 
 /-! ## Phase 2: incidence triples of the empty vertices -/
 
-abbrev Tri := V × V × V
-
-def allTriples : List Tri :=
-  fiber0.flatMap fun a => fiber1.flatMap fun b => fiber2.map fun c => (a, b, c)
-
 def TriCol (t : Tri) : Prop :=
   col t.1 0 = true ∧ col t.2.1 1 = true ∧ col t.2.2 2 = true
 
@@ -667,10 +576,6 @@ theorem freshWit_allTriples {s : St} {adj : V → V → Bool} (M : Model adj) :
   obtain ⟨c, hcc, hccol⟩ := M.colEx e he3 2
   exact ⟨(a, b, c), mem_allTriples hac hbc hccol, ⟨ha, hb, hcc⟩, ⟨hac, hbc, hccol⟩⟩
 
-def containsV (v : V) (t : Tri) : Bool :=
-  (!col v 0 || decide (t.1 = v)) && (!col v 1 || decide (t.2.1 = v)) &&
-    (!col v 2 || decide (t.2.2 = v))
-
 theorem containsV_of_adj {adj : V → V → Bool} (M : Model adj) {e v : V} {t : Tri}
     (he : 3 ≤ e.val) (hev : adj e v = true) (ht : AdjAll adj e t) (hcol : TriCol t) :
     containsV v t = true := by
@@ -686,15 +591,6 @@ theorem containsV_of_adj {adj : V → V → Bool} (M : Model adj) {e v : V} {t :
   · cases hv : col v 2
     · exact Or.inl rfl
     · exact Or.inr (M.colUniq e he 2 _ _ ht.2.2 hcol.2.2 hev hv)
-
-def pairOK (s : St) (a b : V) : Bool :=
-  decide (a = b) || (((s.rows[a.val] &&& s.rows[b.val]) &&& M49) == 0)
-
-def insertable (s : St) (t : Tri) : Bool :=
-  decide ((s.nbr[t.1.val]).length < capOf t.1) &&
-    decide ((s.nbr[t.2.1.val]).length < capOf t.2.1) &&
-    decide ((s.nbr[t.2.2.val]).length < capOf t.2.2) &&
-    pairOK s t.1 t.2.1 && pairOK s t.1 t.2.2 && pairOK s t.2.1 t.2.2
 
 theorem pairOK_sound {s : St} {adj : V → V → Bool} (hs : s.WF) (M : Model adj)
     (hc : Compat s adj) {e a b : V} (hfresh : SFresh s e)
@@ -740,9 +636,6 @@ theorem freshWit_filter {s : St} {adj : V → V → Bool} (hs : s.WF) (M : Model
   obtain ⟨t, ht, hadj, hcol⟩ := hw e he hfresh
   exact ⟨t, List.mem_filter.mpr ⟨ht, insertable_sound hs M hc hfresh hadj⟩, hadj, hcol⟩
 
-def hasCol (s : St) (a : V) (w : Fin 3) : Bool :=
-  !(((s.rows[a.val] &&& fiberMask w) &&& M49) == 0)
-
 theorem hasCol_sound {s : St} {a : V} {w : Fin 3} (h : hasCol s a w = true) :
     ∃ y : V, s.adj a y = true ∧ col y w = true := by
   unfold hasCol at h
@@ -756,8 +649,6 @@ theorem hasCol_sound {s : St} {a : V} {w : Fin 3} (h : hasCol s a w = true) :
   rw [← fiberMask_testBit]
   exact hfi
 
-def hasAllCols (s : St) (a : V) : Bool := hasCol s a 0 && hasCol s a 1 && hasCol s a 2
-
 theorem hasAllCols_sound {s : St} {a : V} (h : hasAllCols s a = true) (w : Fin 3) :
     ∃ y : V, s.adj a y = true ∧ col y w = true := by
   unfold hasAllCols at h
@@ -768,31 +659,11 @@ theorem hasAllCols_sound {s : St} {a : V} (h : hasAllCols s a = true) (w : Fin 3
   | 1 => exact hasCol_sound h1
   | 2 => exact hasCol_sound h2
 
-/-- Runtime closure check used by phase 2: highs are full, nonempty low
-vertices have all colour neighbours, and each empty vertex is either
-untouched or has all colour neighbours. -/
-def stateOK (s : St) : Bool :=
-  (highVerts.all fun h => decide ((s.nbr[h.val]).length = capOf h)) &&
-    (coreVerts.all fun a => hasAllCols s a) &&
-    (emptyVerts.all fun e => (s.rows[e.val] == 0) || hasAllCols s e)
-
-/-- The fibre masks already have no bits above 48. Cache the row and avoid
-three redundant intersections with M49. -/
-@[inline] def hasAllColsFast (s : St) (a : V) : Bool :=
-  let row := s.rows[a.val]
-  !((row &&& 2040) == 0) && !((row &&& 260104) == 0) &&
-    !((row &&& 33292296) == 0)
-
 theorem hasAllColsFast_eq (s : St) (a : V) :
     hasAllColsFast s a = hasAllCols s a := by
   unfold hasAllColsFast hasAllCols hasCol
   simp only [fiberMask, Nat.and_assoc]
   rfl
-
-def stateOKFast (s : St) : Bool :=
-  (highVerts.all fun h => decide ((s.nbr[h.val]).length = capOf h)) &&
-    (coreVerts.all fun a => hasAllColsFast s a) &&
-    (emptyVerts.all fun e => (s.rows[e.val] == 0) || hasAllColsFast s e)
 
 theorem stateOKFast_eq (s : St) : stateOKFast s = stateOK s := by
   simp only [stateOKFast, stateOK, hasAllColsFast_eq]
@@ -837,40 +708,6 @@ theorem exists_fresh_nbr {s : St} {adj : V → V → Bool} (hs : s.WF) (M : Mode
           have hyv : y = v := M.colUniq x (by omega) w y v (hc x y hxy) hyw hxv hw
           rw [hyv, hsxv] at hxy
           cases hxy
-
-/-- Occurrence counts of the vertices in a list of triples (heuristic only). -/
-def triCounts (avail : List Tri) : Array Nat :=
-  avail.foldl (fun cnt t =>
-    let cnt := cnt.modify t.1.val (· + 1)
-    let cnt := if t.2.1 = t.1 then cnt else cnt.modify t.2.1.val (· + 1)
-    if t.2.2 = t.1 ∨ t.2.2 = t.2.1 then cnt else cnt.modify t.2.2.val (· + 1))
-    (Array.replicate 49 0)
-
-/-- Choose the deficient nonempty vertex minimizing candidate count divided by
-remaining degree. Cross multiplication avoids division and preserves the first
-vertex on ties. `dfs2` soundness is independent of this ordering. -/
-def pickCore (s : St) (avail : List Tri) : Option V :=
-  let cnt := triCounts avail
-  (coreVerts.foldl (fun (best : Option (Nat × Nat × V)) v =>
-    let need := 7 - (s.nbr[v.val]).length
-    if 0 < need then
-      let c := cnt[v.val]!
-      match best with
-      | none => some (c, need, v)
-      | some (c', need', _) =>
-        if c * need' < c' * need then some (c, need, v) else best
-    else best) none).map fun p => p.2.2
-
-def findFresh (s : St) : Option V :=
-  emptyVerts.find? fun e => s.rows[e.val] == 0
-
-def addTri (s : St) (n : V) (t : Tri) : Option St :=
-  match s.tryAdd n t.1 with
-  | none => none
-  | some s1 =>
-    match s1.tryAdd n t.2.1 with
-    | none => none
-    | some s2 => s2.tryAdd n t.2.2
 
 theorem addTri_ne_none {s : St} {adj : V → V → Bool} (hs : s.WF) (M : Model adj)
     (hc : Compat s adj) {n : V} {t : Tri} (ht : AdjAll adj n t) :
@@ -927,10 +764,6 @@ theorem addTri_some {s s' : St} {n : V} {t : Tri} (hs : s.WF)
       intro adj M hc ht
       exact hc3 adj M (hc2 adj M (hc1 adj M hc ht.1) ht.2.1) ht.2.2
 
-def patLoop (f : Tri → List Tri → Bool) (pre : List Tri) : List Tri → Bool
-  | [] => true
-  | c :: rest => f c (pre ++ c :: rest) && patLoop f pre rest
-
 theorem patLoop_sound {f : Tri → List Tri → Bool} {pre : List Tri}
     {Good : (V → V → Bool) → Prop} {Hit : (V → V → Bool) → Tri → Prop}
     {Wit : (V → V → Bool) → List Tri → Prop}
@@ -953,43 +786,10 @@ theorem patLoop_sound {f : Tri → List Tri → Bool} {pre : List Tri}
     · exact hchild adj c _ hg hw hit h.1
     · exact ih h.2 adj hg (hsplit adj c rest hg hw hit)
 
-def containsM (m : Nat) (v : V) (t : Tri) : Bool :=
-  (!m.testBit 0 || decide (t.1 = v)) && (!m.testBit 1 || decide (t.2.1 = v)) &&
-    (!m.testBit 2 || decide (t.2.2 = v))
-
-/-- `patLoop` on the available triples split by whether they contain `v`. -/
-def patLoopSplit (f : Tri → List Tri → Bool) (v : V) (avail : List Tri) : Bool :=
-  let m := maskOf v
-  patLoop f (avail.filter fun t => !containsM m v t) (avail.filter fun t => containsM m v t)
-
 theorem patLoopSplit_eq (f : Tri → List Tri → Bool) (v : V) (avail : List Tri) :
     patLoopSplit f v avail =
       patLoop f (avail.filter fun t => !containsV v t)
         (avail.filter fun t => containsV v t) := rfl
-
-/-- One phase-2 node, with the recursive call abstracted. -/
-def step2 (leaf : St → Bool) (rec : St → List Tri → Bool) (s : St)
-    (avail : List Tri) : Bool :=
-  match pickCore s avail with
-  | none => leaf s
-  | some v =>
-    decide (3 ≤ v.val) && decide (v.val < 25) &&
-      decide ((s.nbr[v.val]).length < 7) &&
-      match findFresh s with
-      | none => true
-      | some n =>
-        decide (25 ≤ n.val) && (s.rows[n.val] == 0) &&
-          patLoopSplit
-            (fun c av =>
-              match addTri s n c with
-              | none => true
-              | some s' => rec s' av)
-            v avail
-
-def dfs2 (leaf : St → Bool) : Nat → St → List Tri → Bool
-  | 0, _, _ => false
-  | fuel + 1, s, avail0 =>
-    stateOKFast s && step2 leaf (dfs2 leaf fuel) s (avail0.filter (insertable s))
 
 theorem tri_fixed {x y : V} (hx : 25 ≤ x.val) (hy : 25 ≤ y.val) {a : V} {w : Fin 3}
     (ha : col a w = true) : Equiv.swap x y a = a := by
