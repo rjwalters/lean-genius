@@ -23,7 +23,7 @@ def digest(path):
 def main():
     if not Path("/.dockerenv").exists():
         raise SystemExit("Run in the cloud Docker environment, not on the host.")
-    output = PACKAGE / "_build/consumer-first"
+    output = PACKAGE / "_build/consumer-rooted"
     output.mkdir(parents=True, exist_ok=False)
     result = {"status": "RUNNING", "scope": "Conditional consumer only; no finite rejection.",
               "results": []}
@@ -42,7 +42,7 @@ def main():
             source = PACKAGE / (name + ".lean")
             log = output / (name + ".log")
             obj = output / (name + ".olean")
-            command = ["lean", "-o", str(obj), str(source)]
+            command = ["lean", "-R", str(PACKAGE), "-o", str(obj), str(source)]
             started = time.monotonic()
             timed_out = False
             with log.open("w") as handle:
