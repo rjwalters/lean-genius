@@ -1,0 +1,46 @@
+/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/cloud-first/Full260.lean:21:40: warning: This simp argument is unused:
+  Finset.mem_product
+
+Hint: Omit it from the simp argument list.
+  simp only [FullCapacityPruning.remainingPairs, FullTerminalPruning.remainingPairs,
+      FullUBlockPruning.remainingPairs, FullUOrbitPruning.remainingPairs, Finset.mem_erase,
+  ̲  ̲ ̲ ̲Finset.mem_sdiff, F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵p̵r̵o̵d̵u̵c̵t̵,̵Finset.mem_filter, Finset.mem_univ, true_and]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/cloud-first/Full260.lean:22:23: warning: This simp argument is unused:
+  Finset.mem_univ
+
+Hint: Omit it from the simp argument list.
+  simp only [FullCapacityPruning.remainingPairs, FullTerminalPruning.remainingPairs,
+      FullUBlockPruning.remainingPairs, FullUOrbitPruning.remainingPairs,
+  ̵  ̵ ̵ ̵Finset.mem_erase,
+  ̲  ̲ ̲ ̲Finset.mem_sdiff, Finset.mem_product,
+  ̵  ̵ ̵ ̵Finset.mem_filter, F̵i̵n̵s̵e̵t.̵m̵e̵m̵_̵u̵n̵i̵v̵,̵ ̵t̵rue_and]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/cloud-first/Full260.lean:22:40: warning: This simp argument is unused:
+  true_and
+
+Hint: Omit it from the simp argument list.
+  simp only [FullCapacityPruning.remainingPairs, FullTerminalPruning.remainingPairs,
+      FullUBlockPruning.remainingPairs, FullUOrbitPruning.remainingPairs,
+  ̵  ̵ ̵ ̵Finset.mem_erase,
+  ̲  ̲ ̲ ̲Finset.mem_sdiff, Finset.mem_product,
+  ̵  ̵ ̵ ̵Finset.mem_filter, Finset.mem_univ,̵ ̵t̵r̵u̵e̵_̵a̵n̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'FullUStrongAfterPilot.pilot_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FullUStrongAfterPilot.remainingPairs_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FullUStrongAfterPilot.pilot_input' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FullUStrongAfterPilot.pilot_rejected' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1]
+'FullUStrongAfterPilot.actual_distinct_witness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1]
+'FullUStrongAfterPilot.excluded_of_rejections' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1]

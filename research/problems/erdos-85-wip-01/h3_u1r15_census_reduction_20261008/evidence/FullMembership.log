@@ -1,0 +1,62 @@
+/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/cloud-first/FullMembership.lean:9:4: warning: This simp argument is unused:
+  Finset.mem_product
+
+Hint: Omit it from the simp argument list.
+  simp only [FullCapacityPruning.remainingPairs, FullTerminalPruning.remainingPairs,
+  ̲  ̲ ̲ ̲FullUBlockPruning.remainingPairs, FullUOrbitPruning.remainingPairs, Finset.mem_erase, ̵F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵s̵d̵i̵f̵f̵,̵
+      Finset.mem_p̵r̵o̵s̲du̵c̵t̵i̲f̲f̲, Finset.mem_filter, Finset.mem_univ, true_and]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/cloud-first/FullMembership.lean:9:43: warning: This simp argument is unused:
+  Finset.mem_univ
+
+Hint: Omit it from the simp argument list.
+  simp only [FullCapacityPruning.remainingPairs, FullTerminalPruning.remainingPairs,
+  ̲  ̲ ̲ ̲FullUBlockPruning.remainingPairs, FullUOrbitPruning.remainingPairs, Finset.mem_erase,
+  ̲  ̲ ̲ ̲Finset.mem_sdiff,
+  ̵  ̵ ̵ ̵Finset.mem_product, Finset.mem_filter, F̵i̵n̵s̵e̵t.̵m̵e̵m̵_̵u̵n̵i̵v̵,̵ ̵t̵rue_and]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/cloud-first/FullMembership.lean:9:60: warning: This simp argument is unused:
+  true_and
+
+Hint: Omit it from the simp argument list.
+  simp only [FullCapacityPruning.remainingPairs, FullTerminalPruning.remainingPairs,
+  ̲  ̲ ̲ ̲FullUBlockPruning.remainingPairs, FullUOrbitPruning.remainingPairs, Finset.mem_erase,
+  ̲  ̲ ̲ ̲Finset.mem_sdiff,
+  ̵  ̵ ̵ ̵Finset.mem_product, Finset.mem_filter, Finset.mem_univ,̵ ̵t̵r̵u̵e̵_̵a̵n̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'FullU3R3_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FullU3R3_input' depends on axioms: [propext, Classical.choice, Quot.sound]
+/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/cloud-first/FullMembership.lean:17:4: warning: This simp argument is unused:
+  Finset.mem_product
+
+Hint: Omit it from the simp argument list.
+  simp only [FullCapacityPruning.remainingPairs, FullTerminalPruning.remainingPairs,
+  ̲  ̲ ̲ ̲FullUBlockPruning.remainingPairs, FullUOrbitPruning.remainingPairs, Finset.mem_erase, ̵F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵s̵d̵i̵f̵f̵,̵
+      Finset.mem_p̵r̵o̵s̲du̵c̵t̵i̲f̲f̲, Finset.mem_filter, Finset.mem_univ, true_and]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/cloud-first/FullMembership.lean:17:43: warning: This simp argument is unused:
+  Finset.mem_univ
+
+Hint: Omit it from the simp argument list.
+  simp only [FullCapacityPruning.remainingPairs, FullTerminalPruning.remainingPairs,
+  ̲  ̲ ̲ ̲FullUBlockPruning.remainingPairs, FullUOrbitPruning.remainingPairs, Finset.mem_erase,
+  ̲  ̲ ̲ ̲Finset.mem_sdiff,
+  ̵  ̵ ̵ ̵Finset.mem_product, Finset.mem_filter, F̵i̵n̵s̵e̵t.̵m̵e̵m̵_̵u̵n̵i̵v̵,̵ ̵t̵rue_and]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/cloud-first/FullMembership.lean:17:60: warning: This simp argument is unused:
+  true_and
+
+Hint: Omit it from the simp argument list.
+  simp only [FullCapacityPruning.remainingPairs, FullTerminalPruning.remainingPairs,
+  ̲  ̲ ̲ ̲FullUBlockPruning.remainingPairs, FullUOrbitPruning.remainingPairs, Finset.mem_erase,
+  ̲  ̲ ̲ ̲Finset.mem_sdiff,
+  ̵  ̵ ̵ ̵Finset.mem_product, Finset.mem_filter, Finset.mem_univ,̵ ̵t̵r̵u̵e̵_̵a̵n̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'FullU54R20_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FullU54R20_input' depends on axioms: [propext, Classical.choice, Quot.sound]
