@@ -27,9 +27,10 @@ import Proofs.Erdos85H3PairPart23
 # Exclusion of the order-49 three-high pair cell
 
 Composition of the 24 `native_decide` parts of the pair-cell search with
-the kernel-checked engine soundness and bridge.  The result depends on
-`Lean.ofReduceBool` through the 24 part theorems and on nothing else
-beyond the standard axioms.
+the kernel-checked engine soundness and bridge.  Besides the three standard
+axioms, the conclusions depend on exactly the 24 axioms
+`pairPart_24_NN._native.native_decide.ax_1_1` that `native_decide` emits for
+the part theorems (trust in compiled evaluation of `pairPart 24 NN`).
 -/
 
 namespace Erdos85
