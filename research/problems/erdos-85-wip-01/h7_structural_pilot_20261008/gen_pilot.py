@@ -111,6 +111,7 @@ def hsb_clauses(mask: int, depth: int, edge_var, stats: dict):
     empties = list(range(7, 7 + depth))
     G = list(group())
     clauses = []
+    leaves = []
 
     def compatible(row, e, prefix):
         for (f, rf) in prefix:
@@ -128,6 +129,7 @@ def hsb_clauses(mask: int, depth: int, edge_var, stats: dict):
     # recursion over levels: prefix = list of (empty, row), stab = list of group elems
     def level(k, prefix, stab):
         if k == depth:
+            leaves.append(list(prefix))
             stats["leaves"] = stats.get("leaves", 0) + 1
             stats["min_stab"] = min(stats.get("min_stab", 10**9), len(stab))
             stats["max_stab"] = max(stats.get("max_stab", 0), len(stab))
@@ -157,7 +159,7 @@ def hsb_clauses(mask: int, depth: int, edge_var, stats: dict):
             level(k + 1, prefix + [(e, r)], sub)
 
     level(0, [], G)
-    return clauses
+    return clauses, leaves
 
 
 def main() -> None:
@@ -166,6 +168,9 @@ def main() -> None:
     ap.add_argument("--facts", default="", help="comma list: cap,fp,x35,dlex,hsb1,hsb2,...")
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--base-cache", type=Path, help="write/read plain cube CNF here")
+    ap.add_argument("--sample-leaves", type=int, default=0,
+                    help="also write N random hsb leaf cubes (rows fully fixed) as <out>.leafNNN.cnf")
+    ap.add_argument("--seed", type=int, default=1)
     args = ap.parse_args()
 
     row = roots()[args.root]
@@ -188,6 +193,7 @@ def main() -> None:
 
     adj = mask_adj(mask)
     extra: list[tuple[int, ...]] = []
+    leaves = []
     top = cnf.variable_count
     stats: dict = {"root": args.root, "mask": mask, "base_sha256": digest}
     facts = [f for f in args.facts.split(",") if f]
@@ -252,8 +258,10 @@ def main() -> None:
         elif fact.startswith("hsb"):
             depth = int(fact[3:])
             hs: dict = {}
-            extra.extend(hsb_clauses(mask, depth, {(e, v): ev(e, v) for e in range(7, 14) for v in OUTSIDE}, hs))
-            stats["hsb"] = hs
+            cl, leaves = hsb_clauses(mask, depth, {(e, v): ev(e, v) for e in range(7, 14) for v in OUTSIDE}, hs)
+            extra.extend(cl)
+            stats["hsb"] = {k: v for k, v in hs.items() if not k.startswith("level")}
+            stats["hsb_levels"] = {k: [len(v), sum(x["forbidden"] for x in v)] for k, v in hs.items() if k.startswith("level")}
         else:
             raise SystemExit(f"unknown fact {fact}")
         stats[f"clauses_{fact}"] = len(extra) - before
@@ -262,6 +270,21 @@ def main() -> None:
         fh.write(data[data.index(b"\n") + 1:])
         for c in extra:
             fh.write((" ".join(map(str, c)) + " 0\n").encode())
+    if args.sample_leaves and leaves:
+        import random
+        rng = random.Random(args.seed)
+        picks = rng.sample(range(len(leaves)), min(args.sample_leaves, len(leaves)))
+        body = args.out.read_bytes()
+        body = body[body.index(b"\n") + 1:]
+        for n, li in enumerate(picks):
+            units = []
+            for (e, r) in leaves[li]:
+                units += [(ev(e, v) if v in r else -ev(e, v)) for v in OUTSIDE]
+            with open(f"{args.out}.leaf{n:03d}.cnf", "wb") as fh:
+                fh.write(f"p cnf {top} {len(cnf.clauses) + len(extra) + len(units)}\n".encode())
+                fh.write(body)
+                fh.write("".join(f"{u} 0\n" for u in units).encode())
+        stats["leaf_picks"] = picks
     stats["variables"] = top
     stats["clauses"] = len(cnf.clauses) + len(extra)
     stats["sha256"] = hashlib.sha256(args.out.read_bytes()).hexdigest()

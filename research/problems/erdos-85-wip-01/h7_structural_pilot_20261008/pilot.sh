@@ -21,12 +21,20 @@ solve_one() {
   local cnf=$1 cap=$2 name; name=$(basename "$cnf" .cnf)
   local log=$W/out/$name.cap$cap.log
   local t0; t0=$(date +%s)
-  "$CAD" -q -t "$cap" "$cnf" > "$log" 2>&1; local rc=$?
+  "$CAD" -t "$cap" "$cnf" > "$log" 2>&1; local rc=$?
   local res=UNKNOWN; [[ $rc == 20 ]] && res=UNSAT; [[ $rc == 10 ]] && res=SAT
-  echo -e "$name\tcap=$cap\t$res\t$(( $(date +%s) - t0 ))s" | tee -a "$W/out/results.tsv"
+  echo -e "$name\tcap=$cap\t$res\t$(( $(date +%s) - t0 ))s\t$(grep -E "^c conflicts:" "$log" | awk '{print $3}')conf" | tee -a "$W/out/results.tsv"
 }
 case $1 in
   gen) shift; gen "$@" ;;
+  leaves)  # leaves <root> <facts> <tag> <N> <cap_s> : sample N hsb leaf cubes and solve each
+    shift; root=$1; facts=$2; tag=$3; n=$4; cap=$5
+    out=$W/cnf/$root.$tag.cnf
+    python3 "$HERE/gen_pilot.py" --root "$root" --facts "$facts" --out "$out" --sample-leaves "$n" > "$W/cnf/$root.$tag.json" || exit 1
+    cat "$W/cnf/$root.$tag.json" | cut -c1-600
+    export -f solve_one; export W CAD
+    ls "$out".leaf*.cnf | xargs -P "$PAR" -I{} bash -c "solve_one {} $cap; rm -f {}"
+    ;;
   batch)
     shift; cap=$1; shift
     pids=(); n=0
