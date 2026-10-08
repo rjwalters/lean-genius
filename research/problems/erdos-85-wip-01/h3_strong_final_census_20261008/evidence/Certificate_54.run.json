@@ -1,0 +1,75 @@
+{
+  "module": "Certificate_54",
+  "source": "fixed_pair_rejections/Certificate_54.lean",
+  "source_sha256": "9abacb5c52dbc7d6c23de673ce596a57105244a1d09edbbed876603dba4063b4",
+  "log_sha256": "0b3795b86f928fcc84229c3f5997447418d6376177343569d7e34806163551bd",
+  "olean_sha256": "852a31f942ebe221f46209d77bf894323baf3af0b0dd2168a9cca328fe3b4938",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Certificate_54.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Certificate_54.lean"
+  ],
+  "elapsed_seconds": 88.18876023600023,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "SeparatedCanary54.initial_cover_checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SeparatedCanary54.separated_checked",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SeparatedCanary54.B_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SeparatedCanary54.admissible",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SeparatedCanary54.external_cap",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SeparatedCanary54.no_joint_literal",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SeparatedCanary54.no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

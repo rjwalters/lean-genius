@@ -1,0 +1,28 @@
+{
+  "module": "CoverageAssemblyStructure",
+  "source": "fixed_pair_coverage/CoverageAssemblyStructure.lean",
+  "source_sha256": "96207dfce0bbfdf725912ce43d6bcbc17f97f13225043d301cf49be876797dc3",
+  "log_sha256": "41d9fa5794236437df76f1885259f8eee5442d05fb6cb02440214b03b1ab0ee8",
+  "olean_sha256": "fe06b6f951793423a36301f04dddcb94ebcfb1224399fc2c395e3970f9c8721d",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/CoverageAssemblyStructure.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/CoverageAssemblyStructure.lean"
+  ],
+  "elapsed_seconds": 8.398405043000821,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "ColumnCoverageStructure.assemble",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

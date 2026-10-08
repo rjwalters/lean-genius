@@ -1,0 +1,59 @@
+{
+  "module": "Zero32Inputs",
+  "source": "zero32_coverage/Zero32Inputs.lean",
+  "source_sha256": "effe09007390f96dd88fc50db142d68c63f69a69d1e1b84d5338a8b8041a5e04",
+  "log_sha256": "1173189170162a33e408124970e66ae91dea416242b85df30fe61229867cb262",
+  "olean_sha256": "e3cecaa6123f6fc6d9583b7b6d92b422dea4f79b26681b2f25a84702fa6391df",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Zero32Inputs.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Zero32Inputs.lean"
+  ],
+  "elapsed_seconds": 9.874699293999583,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "Zero32.domains_checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Zero32.U_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Zero32.R_eq",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Zero32.swaps_valid",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Zero32.table_no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

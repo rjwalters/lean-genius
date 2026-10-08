@@ -1,0 +1,36 @@
+{
+  "module": "Coordinates",
+  "source": "fixed_pair_rejections/Coordinates.lean",
+  "source_sha256": "57ab26a02f54347b7ae202a6a8692b0ca46c084c0b367599a403f28217f7919e",
+  "log_sha256": "8a630fee82a695ab174504f5c5d98755638af90d26712c599c90b01c541801c8",
+  "olean_sha256": "ea00d2de2e8b0be6f00887d0d51c360e866bec10b004ae5a1ebaf264a112e447",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Coordinates.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Coordinates.lean"
+  ],
+  "elapsed_seconds": 4.896580888998869,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "FixedPairCoordinates.U_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FixedPairCoordinates.R_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

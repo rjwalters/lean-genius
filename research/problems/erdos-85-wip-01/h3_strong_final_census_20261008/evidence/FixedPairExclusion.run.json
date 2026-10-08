@@ -1,0 +1,36 @@
+{
+  "module": "FixedPairExclusion",
+  "source": "fixed_pair_coverage/FixedPairExclusion.lean",
+  "source_sha256": "7938bab9df4f96970e7fe5719cb33f1a2c699da1df5fe0639e182030bca17e70",
+  "log_sha256": "c74268ae667fe9e534c1ef25809e63ea1420bf5686124886c91ff709ef1c9334",
+  "olean_sha256": "99902a1ea60b1ac846eaf2c3fe6ec8bfbf36e1937377e37684fb822bbf29612a",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/FixedPairExclusion.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/FixedPairExclusion.lean"
+  ],
+  "elapsed_seconds": 4.72169900100198,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "ColumnCoverageFixedPair.no_joint_literal",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "ColumnCoverageFixedPair.no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

@@ -3,7 +3,11 @@
 Status: **source-only, uncompiled, unqueued**.
 
 The cloud checker is prepared but has not been executed. The final census
-must first finish and pass its independent artifact audit.
+now passes its independent artifact audit (342 modules, 1,077 reports).
+`census-staging.json` records hash-verified copies of the complete base and
+final output directories in this worktree, re-audited after copying. The
+three extra objects also passed their existing-evidence checks. No native
+search or Lean compilation was performed during staging.
 
 The U1/R15 native rejection and its original no-joint consumer are independently
 verified in `../h3_cloud_u1r15_20261008/split-evidence/`. `Full260.lean`
@@ -16,8 +20,8 @@ standard axioms only (or none). The last three are expected to retain the
 one existing native rejection axiom, in addition to standard axioms. No new
 native search is performed. No full H3 or deficient-branch exclusion follows.
 
-Compilation must await the cloud-verified `Full261` and `CapacityReduction`
-objects from the still-running census. Reuse those objects and the already
+Compilation uses the cloud-verified `Full261` and `CapacityReduction`
+objects from the completed census. Reuse those objects and the already
 verified native certificate; do not repeat the 97-minute rejection search.
 The build must preserve source/object/log hashes and all six exact axiom
 reports before this reduction is called verified. The source remains outside

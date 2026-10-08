@@ -1,5 +1,5 @@
 {
-  "status": "RUNNING",
+  "status": "PASS",
   "job": "20261008T060931-erdos85__h3-census-20261008-248468",
   "execution_commit": "6b91e1d41371835eb90e2aa647786be506a86766",
   "branch": "erdos85/h3-census-20261008",
@@ -18,5 +18,9 @@
     "Zero32Shard9"
   ],
   "snapshot": "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/snapshot-first-terminal",
-  "scope": "Validated continuation of an incomplete conditional census; not a final proof receipt."
+  "scope": "Verified conditional census connection; 261 finite rejection hypotheses remain open.",
+  "exit_code": 0,
+  "finished_utc": "2026-10-08T06:28:03Z",
+  "final_receipt_sha256": "dd262a3d974d3da91d5365dd88d7668183f55cb6083a5dca803588ba517217cb",
+  "independent_audit": "../evidence/AUDIT.json"
 }

@@ -1,0 +1,35 @@
+{
+  "module": "CoverageCoordinates",
+  "source": "fixed_pair_coverage/CoverageCoordinates.lean",
+  "source_sha256": "3b8434179802a1886f6fedc8b57a00fb86c1c487223a691c2a0b7c0a26380969",
+  "log_sha256": "8c3caf733540cd5f723855fb2b25d3803e5e7464aaee1bdc64f4ac8ba43a9c70",
+  "olean_sha256": "ef8610f81cbb64ec960c8865d2992d9f0836726d51823b12b308a2476c59304a",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/CoverageCoordinates.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/CoverageCoordinates.lean"
+  ],
+  "elapsed_seconds": 4.650058339999305,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "ColumnCoverageLiterals.U_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "ColumnCoverageLiterals.R_eq",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

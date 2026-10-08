@@ -1,0 +1,76 @@
+{
+  "module": "CapacityReduction",
+  "source": "full_capacity_pruning/CapacityReduction.lean",
+  "source_sha256": "be324322294737ef5b069f9a8016c74c0b6a83c0bc1992001787beb159c74c9d",
+  "log_sha256": "805fb6b1e5e5bb3a99df0b4c9b2cb92ca3f309142e51628e854f768978ac9941",
+  "olean_sha256": "f21c6f0e3202bb7c262760836528e80409284bf8c6b4bdd4693c185ad1384bda",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/CapacityReduction.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/CapacityReduction.lean"
+  ],
+  "elapsed_seconds": 18.14569431899872,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "FullCapacityPruning.remainingPairs_card",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullCapacityPruning.subset_representative",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullCapacityPruning.subset_secondary",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullCapacityPruning.representative_32",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullCapacityPruning.actual_pair_mem",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullCapacityPruning.actual_full_witness_pruned",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullCapacityPruning.actual_full_excluded_pruned",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

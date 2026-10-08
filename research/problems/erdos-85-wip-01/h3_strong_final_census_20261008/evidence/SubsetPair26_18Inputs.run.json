@@ -1,0 +1,59 @@
+{
+  "module": "SubsetPair26_18Inputs",
+  "source": "full_subset_capacity/SubsetPair26_18Inputs.lean",
+  "source_sha256": "130ed265454f8633e5641620293a7aaa1ab1a650b2d2da1f1eb80d145e1934dc",
+  "log_sha256": "69f2783c950b4ff2663867cffc11393ab80f183a7cf582f9b5897701280413ba",
+  "olean_sha256": "1146779bf85e69673c7a822b0cf524858cd7ba7b5ca7f5a75e0bedd78f9f91b6",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/SubsetPair26_18Inputs.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/SubsetPair26_18Inputs.lean"
+  ],
+  "elapsed_seconds": 10.415195961999416,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "SubsetPair26_18.domains_checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SubsetPair26_18.U_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SubsetPair26_18.R_eq",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SubsetPair26_18.caps_checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SubsetPair26_18.deficit",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

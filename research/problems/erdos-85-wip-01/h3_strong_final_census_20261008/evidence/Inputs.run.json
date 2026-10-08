@@ -1,0 +1,36 @@
+{
+  "module": "Inputs",
+  "source": "fixed_pair_coverage/Inputs.lean",
+  "source_sha256": "498d802be991e39bb8fcf0953f58d3c6a155c7f93cc2d324cf4ec2b1aafb02f3",
+  "log_sha256": "7ffc35383dbda5d0c5ad14544cf97e931e0ade8c9c8b7b5a0a177b87ec59cd08",
+  "olean_sha256": "3d9cf789ea11ccb0efb750a009038e9e249171e117a11d6301c83d7390ddaf7b",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Inputs.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Inputs.lean"
+  ],
+  "elapsed_seconds": 4.588370897999994,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "ColumnCoverageInputs.swaps_valid",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "ColumnCoverageInputs.domains_complete",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "module": "LiteralDataPilot",
+  "source": "fixed_pair_coverage/LiteralDataPilot.lean",
+  "source_sha256": "07fc55d94f281fe88e3dcc9b5c31cf3a48109e175ce1e7493d2561064a873fde",
+  "log_sha256": "f20333fd6296141e576f3234750b6935313d8b1dc5d8ccd65b97ccfc9c63189f",
+  "olean_sha256": "ea2bc95e085b6a05ea0ca1806bca7bb129011a5541bea202fc386aa9c6bfca93",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/LiteralDataPilot.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/LiteralDataPilot.lean"
+  ],
+  "elapsed_seconds": 30.22445729500032,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "ColumnCoverageLiteralPilot.checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

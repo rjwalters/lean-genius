@@ -1,6 +1,6 @@
 # Strong full-case census: 276 to 261
 
-Status: **bounded cloud continuation running, not a final Lean proof receipt**.
+Status: **cloud PASS and independently audited; 261 rejection hypotheses remain open**.
 
 The first job reached its four-hour limit and exited 124 at 06:07:02 UTC,
 with 309 of 342 modules passing through `Zero32Shard7`. Its container and
@@ -12,7 +12,12 @@ modules, and 453 library/toolchain source paths, then preserved and
 revalidated the old output snapshot. Observed new PASS results include
 `Zero32Shard8` and `Zero32Shard9`. `continuation-evidence/` retains the old
 terminal log and receipt, host capture, observed continuation receipt,
-and launch record. The final audit remains pending.
+and launch record. The continuation finished with exit zero at 06:28:03 UTC.
+`evidence/` retains all 342 source/log/individual-receipt sets, the complete
+RUN receipt, raw terminal job log, and independent audit. The cloud audit
+checked every original object and all 1,077 axiom reports; the 15 remaining
+modules are data-only. Both final exports use only standard axioms. Final
+receipt SHA-256: `dd262a3d974d3da91d5365dd88d7668183f55cb6083a5dca803588ba517217cb`.
 
 `Full261.lean` connects the strong actual-graph witness in `Full276.lean`
 to `FullCapacityPruning.remainingPairs`, the retained 261-pair census.
@@ -37,7 +42,8 @@ Lean output, in order. The two new exports are:
 
 Host checks completed: Python parsing, complete acyclic source/import
 inventory, explicit axiom-report inventory, and refusal to compile outside
-Docker. No Lean build has completed for this package. Cloud job
+Docker. The initial bounded build did not complete; its validated continuation
+subsequently passed. Cloud job
 `20261008T014827-erdos85__h3-census-20261008-82783` started at 02:06:42 UTC
 after the full and deficient census passed. It uses the same dedicated worktree
 at 32 GiB / four Lake threads
@@ -90,7 +96,8 @@ changed object, changed log, mismatched individual receipt, and nonstandard
 axioms). The audit also passed against the real full-census prerequisite:
 107 modules and 228 axiom reports, receipt SHA-256
 `9924e45dfa932bae6af3607eb7de97e4b77d590366bf8d4bb9eaaf8de480236f`.
-The final 342-module audit remains pending completion of its cloud build.
+The final 342-module audit now passes with 1,077 standard-only axiom reports;
+the completed continuation and independent audit are retained in `evidence/`.
 
 ## Continuation after a terminal timeout or failure
 

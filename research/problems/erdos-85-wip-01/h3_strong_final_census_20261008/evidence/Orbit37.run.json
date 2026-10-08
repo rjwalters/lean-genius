@@ -1,0 +1,51 @@
+{
+  "module": "Orbit37",
+  "source": "fixed_pair_rejections/Orbit37.lean",
+  "source_sha256": "7799265d565df25b74d624105c321f3030b9f70b64eca8ef68960ca9524d984f",
+  "log_sha256": "b393f936b4cd2c6c8897916a481453cb16745d0dac8486ea8ad048ce1949a3eb",
+  "olean_sha256": "1f27050b2d6c0cabcb7f0dd95e6a2b337b55a408de7289a71a80d111634f3891",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Orbit37.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Orbit37.lean"
+  ],
+  "elapsed_seconds": 52.73932367400266,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "Orbit37.adjacency_checked",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Orbit37.no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Orbit37.member_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Orbit37.no_joint_cross",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}
