@@ -1,6 +1,6 @@
 # Four-case H3 timing sample
 
-Status: **both membership gates PASS; both deficient certificates and consumers PASS; full timings pending**.
+Status: **both membership gates PASS; both deficient cases and Full U3/R3 PASS; Full U54/R20 pending**.
 
 Claude requested 3–5 additional pairs after the U1/R15 pipeline fix, to measure
 cost variation before a larger campaign. The four selected cases are:
@@ -129,9 +129,14 @@ Together with the 97.4-minute U1/R15 pilot, this shows substantial variation
 among these selected cases; it does not determine a census-wide average.
 Both full sample cases remain unqueued pending their membership proof.
 
-Full U3/R3 is submitted as cloud job
+Full U3/R3 passed as cloud job
 `20261008T063412-erdos85__h3-first-column-20261008-264145` at commit
 `9a1555a52461ab6d53bb145378f92de81c88cdc6`, with 16 GiB, one Lake
 thread, and a two-hour cap. It uses the independently audited full membership
 evidence above. `FullU3R3-launch.json` records the exact source hashes.
-No result is claimed yet; Full U54/R20 remains unqueued.
+It completed with exit zero at 06:38:33 UTC. The certificate took
+238.976 seconds wall time (237.365 seconds user CPU, 6,562,176 KiB RSS);
+the consumer took 10.336 seconds. Both were freshly built and use standard
+axioms plus exactly the matching FullU3R3 native rejection axiom.
+`FullU3R3-evidence/` retains the independently audited source/log/receipt
+sets; all cloud object hashes matched. Full U54/R20 remains unqueued.

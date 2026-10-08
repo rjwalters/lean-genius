@@ -1,5 +1,5 @@
 {
-  "status": "SUBMITTED",
+  "status": "PASS",
   "job": "20261008T063412-erdos85__h3-first-column-20261008-264145",
   "branch": "erdos85/h3-first-column-20261008",
   "expected_execution_commit": "9a1555a52461ab6d53bb145378f92de81c88cdc6",
@@ -13,5 +13,10 @@
     "Erdos85ThreeHighPilotFullU3R3Certificate.lean": "186d7dde7a6d0be550a6e16dec0c06265b3b78a3550dc24c2850a43a3ade619b",
     "Erdos85ThreeHighPilotFullU3R3Consumer.lean": "2f8f051a0621f465b37a066e3a454d0db7a49051a2998f7ba830270f66f065dd"
   },
-  "scope": "First full varied pilot; one complete pair only. No full H3 closure or full campaign."
+  "scope": "First full varied pilot; one complete pair only. No full H3 closure or full campaign.",
+  "exit_code": 0,
+  "execution_commit": "9a1555a52461ab6d53bb145378f92de81c88cdc6",
+  "finished_at_utc": "2026-10-08T06:38:33Z",
+  "run_sha256": "1a59f0543cf7ee4ddf31c88a9efd2a15585310a14d333f6281e8abce91eb43d0",
+  "audit": "FullU3R3-evidence/AUDIT.json"
 }

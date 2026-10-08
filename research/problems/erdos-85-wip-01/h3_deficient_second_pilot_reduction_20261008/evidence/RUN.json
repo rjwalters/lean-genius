@@ -1,0 +1,121 @@
+{
+  "status": "PASS",
+  "provenance": {
+    "prior_receipt_sha256": "368442552377b3438ffeaea3fd291c327b5cfeec9432e94b4b913cfef2bcb0f0",
+    "second_pilot_receipt_sha256": "90b9321318d9399384dc04cd63bcd94c2fb97dba662e7a572424e0aeec587c3b",
+    "base_receipt_sha256": "190d7e37c814bd8a7eea54e6ad1bbcba73e092e6e0d77deddc717bab098bfecc",
+    "first_pilot_receipt_sha256": "c084a76d8c05199564a29058ae256b205d5d7d94fa9f4dde7bf77a3b2117ee4c",
+    "prior_object_sha256": "23f624d5135225af6def01922fddb0a4fc2e51fcddad428926a77a74078bc737",
+    "second_certificate_module": "Erdos85ThreeHighPilotDeficientU369R11Certificate",
+    "second_certificate_object_sha256": "5c7279ec67ccff629e4431b5d6bbc91f5211e296ea72ad49954c4e9d62eaa760",
+    "imported_object_sha256": {
+      "extra/Proofs/Erdos85ThreeHighPilotDeficientU26R2Inputs.olean": "23e1b2bda5a011cd8c1f26fb913cc334d2b373e5d03970b5c6c3895293b578e7",
+      "extra/Proofs/Erdos85ThreeHighPilotDeficientU369R11Inputs.olean": "c9d9a7423ced2c9c8e6f8f7f7b3e8eb4ff823d379131dd55215b2b4626d1941d",
+      "extra/DeficientMembership.olean": "8045b2c082d4da0665a57d8e79f59f4c91906bd94450e2e135bacf9702ad071d",
+      "extra/Proofs/Erdos85ThreeHighPilotDeficientU26R2Certificate.olean": "898bb93401b80e72561b054462fab7d3dd93cb80e0017bd38866b9629814f783"
+    }
+  },
+  "scope": "Two existing deficient certificates consumed; 1552 rejection hypotheses remain.",
+  "dependencies": {
+    "command": [
+      "lake",
+      "build",
+      "Proofs.Erdos85ThreeBlockCompactCodes",
+      "Proofs.Erdos85ThreeBlockNormalizedDeficientCover",
+      "Proofs.Erdos85ThreeBlockOrbitCertificate",
+      "Proofs.Erdos85ThreeHighDeficientExternalFarTable",
+      "Proofs.Erdos85ThreeHighDeficientExternalSignedFarTable",
+      "Proofs.Erdos85ThreeHighDeficientFarColorTable",
+      "Proofs.Erdos85ThreeHighDeficientLowAdjacentTable",
+      "Proofs.Erdos85ThreeHighDeficientLowDegreeTable",
+      "Proofs.Erdos85ThreeHighDeficientPairTable",
+      "Proofs.Erdos85ThreeHighDistinctRepresentativeWitness",
+      "Proofs.Erdos85ThreeHighNativePairSearch",
+      "Proofs.Erdos85ThreeHighSecondaryDegreeClasses",
+      "Proofs.Erdos85ThreeHighTriangleTables"
+    ],
+    "started_utc": "2026-10-08T06:39:34.190453+00:00",
+    "exit_code": 0,
+    "elapsed_seconds": 6.435898978001205,
+    "user_cpu_seconds": 5.476685,
+    "system_cpu_seconds": 1.528804,
+    "max_rss_kib": 915668,
+    "log_sha256": "dd8932fb07e09e456efce089a7f559d58a1b8e352868cc7c201d86a51b888fd9"
+  },
+  "result": {
+    "command": [
+      "lean",
+      "-R",
+      "/workspace/research/problems/erdos-85-wip-01/h3_deficient_second_pilot_reduction_20261008/_build/cloud-first",
+      "-o",
+      "/workspace/research/problems/erdos-85-wip-01/h3_deficient_second_pilot_reduction_20261008/_build/cloud-first/Deficient1552.olean",
+      "/workspace/research/problems/erdos-85-wip-01/h3_deficient_second_pilot_reduction_20261008/_build/cloud-first/Deficient1552.lean"
+    ],
+    "started_utc": "2026-10-08T06:39:40.627520+00:00",
+    "exit_code": 0,
+    "elapsed_seconds": 26.95438774899958,
+    "user_cpu_seconds": 69.99918,
+    "system_cpu_seconds": 1.608831,
+    "max_rss_kib": 8777188,
+    "log_sha256": "8aab1cee7efff02906392c39a18bfdbbd6f71020c240790ce17d84b5d665c775",
+    "module": "Deficient1552",
+    "status": "PASS",
+    "source_sha256": "da95b402b89a6b3a84f63ec7f5216e7d652c3af6389845eed2181c5003b630f8",
+    "olean_sha256": "1e1d8dad71868f22cd5417726027c951de45632ab1d8eec2e4890b495367b1db",
+    "axiom_exports": [
+      {
+        "theorem": "DeficientUStrongAfterTwoPilots.pilot_mem",
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "theorem": "DeficientUStrongAfterTwoPilots.remainingPairs_card",
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "theorem": "DeficientUStrongAfterTwoPilots.pilot_input",
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ]
+      },
+      {
+        "theorem": "DeficientUStrongAfterTwoPilots.pilot_rejected",
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound",
+          "Erdos85.VariedPilot.DeficientU369R11.rejected._native.native_decide.ax_1_1"
+        ]
+      },
+      {
+        "theorem": "DeficientUStrongAfterTwoPilots.actual_distinct_witness",
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound",
+          "Erdos85.VariedPilot.DeficientU26R2.rejected._native.native_decide.ax_1_1",
+          "Erdos85.VariedPilot.DeficientU369R11.rejected._native.native_decide.ax_1_1"
+        ]
+      },
+      {
+        "theorem": "DeficientUStrongAfterTwoPilots.excluded_of_rejections",
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound",
+          "Erdos85.VariedPilot.DeficientU26R2.rejected._native.native_decide.ax_1_1",
+          "Erdos85.VariedPilot.DeficientU369R11.rejected._native.native_decide.ax_1_1"
+        ]
+      }
+    ]
+  }
+}
