@@ -3,9 +3,11 @@
 Branch `erdos85/h3-pair-formal-20261008` (based on `c47efaa6ffb`). New
 modules only; no existing file is edited.
 
-Status words used below: **built** = compiled on the cloud builder with the
-axioms listed; **pending** = source written, result not yet confirmed.
-See `receipt.md` for the build log lines, timings and axiom output.
+Status: every statement listed below is built on the cloud builder at
+commit dc7f78d47d7. Items 1-16 depend only on `propext`,
+`Classical.choice`, `Quot.sound`. Items 17-18 additionally depend on the 24
+`native_decide` axioms. See `receipt.md` for jobs, timings and the axiom
+output.
 
 ## Target
 
@@ -89,10 +91,9 @@ lazily.
 |---|-----------|------|
 | 18 | `threeHighCanonicalRepresentativeExcluded_zero`, `orderFortyNineTripleCellExcluded_three_zero` | Unconditional conclusions. |
 
-`proofs/Proofs/Erdos85H3PairSearch.lean` holds the unsplit form
-(`pairSearch_true`, one `native_decide`). It was started once and cancelled
-without a result; it is not part of the chain above and has never been
-built. `proofs/Proofs/Erdos85H3PairBench.lean` is a timing probe only.
+`pairSearch` and the two `_of_pairSearch` theorems in the Bridge module are
+the unsplit form. They are built as conditional statements; `pairSearch =
+true` itself was never established and is not used.
 
 ## What a reviewer should check
 
