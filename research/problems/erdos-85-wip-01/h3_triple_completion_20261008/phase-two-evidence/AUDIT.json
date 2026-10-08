@@ -1,0 +1,22 @@
+{
+  "job": "20261008T102949-erdos85__h3-triple-formal-20261007-414392",
+  "execution_commit": "a56fefc7a97fa279ae49f13b31bed1e9a0a25a1f",
+  "status": "TIMEOUT",
+  "exit": 1,
+  "prerequisite_objects_unchanged": {
+    "Erdos85H3TripleCompletionEngine": "c87b641fc9d2b1ad101edf455fe56be65afbf1b5770b8793f2c3e7c361122903",
+    "Erdos85H3TripleCompletionBridge": "02220d1339caaf079b5889edf2e0c4e52b49b37d6c2b89ba4886c06d5a77e18e",
+    "Erdos85H3TripleCompletionSplit": "acfdbed1a9ccec6f972f9c8c8afc5575937d82b3cbc3541f0239a8e3b019d0d3"
+  },
+  "retained_sha256": {
+    "job.log": "719078557818dd8c5a60ce6ac69c6b5d5cf6e1d3ae99a564a9b366c4a56906aa",
+    "job.spec": "15a23b3e3dc8e4dd2331785081873bfc48e24cb143a1e482e6710d8cc90b399d",
+    "job.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "PhaseTwoOnly.lean": "d039c1e7b13d8da016aede597b3aaa2c2864bd1399f22d9db33fe1ca1f111751",
+    "run_phase_two.py": "c829b3b0e7031f24c24b452d4d46bd2a6c36faffcea88cb8d65257c613902373",
+    "RUN.json": "360dffe655a7823c622e2ccbf264c4c196f29afecbdcb1e4d4c6ef7d7e2cb5ec",
+    "probe.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "scope": "Phase one and two, bucket 384/0, constant-true phase-three callback; no graph-exclusion credit.",
+  "auditor_sha256": "5c2d19fca64591ff7895ee25cf282936839c1555c137396943c70116ca378846"
+}

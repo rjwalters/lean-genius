@@ -91,3 +91,23 @@ The result shows that the basic phase-one traversal can finish well within the
 earlier cap. It suggests the expensive work is elsewhere, but the constant
 callback also omits per-leaf hashing: this measurement alone does not isolate
 hashing from phase-two/three search or measure bucket balance.
+
+## Phase-two-only follow-up
+
+`PhaseTwoOnly.lean` keeps the original phase-one hash selection for bucket
+384/0 and runs phase two with a constant-true leaf in place of phase three.
+It requests a traversal result, not a graph exclusion.
+
+Job `20261008T102949-erdos85__h3-triple-formal-20261007-414392` at
+`a56fefc7a97fa279ae49f13b31bed1e9a0a25a1f` timed out at 60.207 seconds
+(58.973 user, 1.230 system), maximum RSS 6,452,552 KiB. No object was produced;
+the compiler log is empty. The inner runner killed and reaped Lean, exited
+124, and the outer Docker wrapper recorded exit 1 with its two-minute-limit
+banner. Exact source, raw records and the read-only audit are retained in
+`phase-two-evidence/`. The audit checks that the prerequisite objects did
+not change. The job spec requests 16 GiB/two CPUs; no live container snapshot
+was captured for this job.
+
+This rules out attributing all expensive work to phase three. It does not yet
+distinguish callback hashing from phase-two branching. No pruning change or
+new exclusion attempt was made on this measurement alone.
