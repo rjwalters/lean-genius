@@ -1,0 +1,11 @@
+MODE=build
+REF=erdos85/order49-capstone-20261008
+TARGET=Proofs.Erdos85OrderFortyNineCapstone
+CMD=''
+MEM_GB=48
+TIMEOUT=6h
+THREADS=6
+CACHE=0
+CPUS=16
+VOLUME=''
+FULL=0
