@@ -1,0 +1,65 @@
+{
+  "status": "CONDITIONAL_ASSEMBLY_AUDIT_PASS",
+  "job": "20261008T122748-erdos85__h3-triple-formal-20261007-492954",
+  "execution_commit": "1e7db250cbfc656e4e26afcd877abcc1e0545e40",
+  "authoritative_exit": 0,
+  "exports": [
+    {
+      "theorem": "Erdos85.H3TripleCompletion.AssemblyPreflight.threeHighCanonicalRepresentativeExcluded_one",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "explicit_native_premises": 384
+    },
+    {
+      "theorem": "Erdos85.H3TripleCompletion.AssemblyPreflight.orderFortyNineTripleCellExcluded_three_one",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "explicit_native_premises": 384
+    }
+  ],
+  "run": {
+    "status": "COMPILED_PENDING_AUDIT",
+    "started_utc": "2026-10-08T12:27:49.890037+00:00",
+    "source_sha256": "9dcfdcafc1386236719e11061c28c23bcc4db8f47a04179ed1f90a18eda06b05",
+    "prerequisite_audit_sha256": "21fd8bcce69730f9c3f0de0918412a22430b907d8954f1f90da436366c727b8b",
+    "cgroup_memory_bytes": 17179869184,
+    "cgroup_cpu_max": "200000 100000",
+    "command": [
+      "lean",
+      "-j1",
+      "H3AssemblyPreflight.lean",
+      "-o",
+      "/workspace/research/problems/erdos-85-wip-01/h3_assembly_preflight_20261008/attempt1/H3AssemblyPreflight.olean"
+    ],
+    "timeout_seconds": 90,
+    "returncode": 0,
+    "timed_out": false,
+    "elapsed_seconds": 7.6242607759995735,
+    "child_user_seconds": 6.376138,
+    "child_system_seconds": 1.211165,
+    "child_maxrss_kib": 6659892,
+    "log_sha256": "ef20f40c977e850a86608481c81caf2f30a9d72a82772df4d29756d231764380",
+    "object_sha256": "2f4c644c5ff9a32d4e1a3f798bbb9a38d894d9be941672e72c5f7ed89beca1dc",
+    "object_bytes": 768408,
+    "object_mtime": 1791462477.239617
+  },
+  "retained_sha256": {
+    "job.log": "fafd68aba4c23f8cd59c6f57dc264bc123301dc0b2341bf6218311bc80c979ea",
+    "job.spec": "205c58db0594572fb7031d538de95b7cb143241d233c4caed5590662775d78ef",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "H3AssemblyPreflight.lean": "9dcfdcafc1386236719e11061c28c23bcc4db8f47a04179ed1f90a18eda06b05",
+    "SOURCE.json": "19e61a93e50a82cffe3b19758bd6e712bc7e0b841a4c0c26bf5e476be5103ead",
+    "run.py": "393e15863d339ab922de3d5c2d4e33aef6c7f8e65cd271d1242b8d708d29c5fe",
+    "RUN.json": "e2aefb36e16e95d7fa9260ac143169417726d12e264db987ac5fd35aa6880eaa",
+    "compile.log": "ef20f40c977e850a86608481c81caf2f30a9d72a82772df4d29756d231764380",
+    "prerequisite-AUDIT.json": "21fd8bcce69730f9c3f0de0918412a22430b907d8954f1f90da436366c727b8b"
+  },
+  "scope": "Conditional assembly only. No native result or whole-cell exclusion verified.",
+  "collector_sha256": "177fe9dd846afacb9bc79529711afcdf92f71a93e6bc7221d7caee0aa5d248bd"
+}

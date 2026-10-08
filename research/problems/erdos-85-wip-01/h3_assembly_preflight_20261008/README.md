@@ -1,6 +1,6 @@
 # H3 conditional assembly preflight
 
-Prepared for a bounded cloud compile. This checks the planned 384-case
+The bounded cloud compile and independent artifact audit passed. This checks the planned 384-case
 composition with every native premise supplied as an explicit hypothesis.
 It proves no new Boolean result and does not close the H3 triple cell.
 
@@ -22,3 +22,19 @@ hash and creation time. The exports may use only the standard logical
 axioms. All 384 Boolean premises remain explicit assumptions in the types.
 Even a successful preflight does not verify production part imports or
 remove the need to build and audit the final unconditional cell module.
+
+## Verified result
+
+Job `20261008T122748-erdos85__h3-triple-formal-20261007-492954`, pinned to
+`1e7db250cbfc656e4e26afcd877abcc1e0545e40`, exited zero.
+Both conditional exclusion exports have exactly `propext`, `Classical.choice`
+and `Quot.sound` as their printed axioms. The 384 native results are explicit
+parameters, so they do not appear as global axioms.
+
+`evidence1/AUDIT.json` records the independent source, prerequisite, resource,
+log, object and timestamp checks. The exact 384-case composition and its
+bridge applications elaborate successfully at the planned recursion limit.
+The five accepted native residues remain unchanged; 379 are still unresolved.
+A final unconditional build with all production imports remains necessary.
+
+Compiler elapsed time: 7.624 seconds. Retained object: 768408 bytes; SHA-256 `2f4c644c5ff9a32d4e1a3f798bbb9a38d894d9be941672e72c5f7ed89beca1dc`.
