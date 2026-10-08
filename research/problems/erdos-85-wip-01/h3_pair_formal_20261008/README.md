@@ -69,12 +69,30 @@ lazily.
 | 12 | `threeHighCanonicalRepresentativeExcluded_zero_of_pairSearch` | `pairSearch = true → ThreeHighCanonicalRepresentativeExcluded 0`. |
 | 13 | `orderFortyNineTripleCellExcluded_three_zero_of_pairSearch` | `pairSearch = true → OrderFortyNineTripleCellExcluded 3 0`. |
 
-`proofs/Proofs/Erdos85H3PairSearch.lean`:
+`proofs/Proofs/Erdos85H3PairSplit.lean`:
 
 | # | Statement | Role |
 |---|-----------|------|
-| 14 | `pairSearch_true : pairSearch = true` | The single `native_decide`. |
-| 15 | `threeHighCanonicalRepresentativeExcluded_zero`, `orderFortyNineTripleCellExcluded_three_zero` | Unconditional conclusions. |
+| 14 | `stKey`, `leafPart m r`, `pairPart m r` | Part `r` of `m`: phase-1 leaves whose key is not `r` mod `m` are accepted without search. |
+| 15 | `dfs1_sound_parts` | If all `m` parts return `true`, no model is compatible with the state. Phase 1 does not depend on the leaf test, so the proof is the proof of `dfs1_sound` with the leaf hypothesis quantified over `r`. |
+| 16 | `orderFortyNineTripleCellExcluded_three_zero_of_parts` | `(∀ r < m, pairPart m r = true) → OrderFortyNineTripleCellExcluded 3 0`. |
+
+`proofs/Proofs/Erdos85H3PairPart00.lean` … `Part23.lean`:
+
+| # | Statement | Role |
+|---|-----------|------|
+| 17 | `pairPart_24_NN : pairPart 24 NN = true` | One `native_decide` per module; these 24 are the only finite computations. |
+
+`proofs/Proofs/Erdos85H3PairCell.lean`:
+
+| # | Statement | Role |
+|---|-----------|------|
+| 18 | `threeHighCanonicalRepresentativeExcluded_zero`, `orderFortyNineTripleCellExcluded_three_zero` | Unconditional conclusions. |
+
+`proofs/Proofs/Erdos85H3PairSearch.lean` holds the unsplit form
+(`pairSearch_true`, one `native_decide`). It was started once and cancelled
+without a result; it is not part of the chain above and has never been
+built. `proofs/Proofs/Erdos85H3PairBench.lean` is a timing probe only.
 
 ## What a reviewer should check
 
@@ -87,6 +105,9 @@ lazily.
 3. Every `true` (= rejected) return of `dfs1`, `dfs2`, `dfs3` is justified;
    running out of fuel and reaching a complete graph both return `false`.
 4. `stateOK` is checked at every phase-2 node rather than proved invariant.
+5. `pickCore`, `pick3`, `triCounts` and `stKey` are heuristics: no lemma is
+   stated about them, and the soundness proofs re-check at run time every
+   property of the chosen vertex that they use.
 
 ## Relation to the Python verifiers
 

@@ -35,9 +35,32 @@ beyond the standard axioms.
 namespace Erdos85
 namespace H3Pair
 
-theorem pairPart_24_all : ∀ r, r < 24 → pairPart 24 r = true := by
-  intro r hr
-  interval_cases r <;> first | exact pairPart_24_00 | exact pairPart_24_01 | exact pairPart_24_02 | exact pairPart_24_03 | exact pairPart_24_04 | exact pairPart_24_05 | exact pairPart_24_06 | exact pairPart_24_07 | exact pairPart_24_08 | exact pairPart_24_09 | exact pairPart_24_10 | exact pairPart_24_11 | exact pairPart_24_12 | exact pairPart_24_13 | exact pairPart_24_14 | exact pairPart_24_15 | exact pairPart_24_16 | exact pairPart_24_17 | exact pairPart_24_18 | exact pairPart_24_19 | exact pairPart_24_20 | exact pairPart_24_21 | exact pairPart_24_22 | exact pairPart_24_23
+theorem pairPart_24_all : ∀ r, r < 24 → pairPart 24 r = true
+  | 0, _ => pairPart_24_00
+  | 1, _ => pairPart_24_01
+  | 2, _ => pairPart_24_02
+  | 3, _ => pairPart_24_03
+  | 4, _ => pairPart_24_04
+  | 5, _ => pairPart_24_05
+  | 6, _ => pairPart_24_06
+  | 7, _ => pairPart_24_07
+  | 8, _ => pairPart_24_08
+  | 9, _ => pairPart_24_09
+  | 10, _ => pairPart_24_10
+  | 11, _ => pairPart_24_11
+  | 12, _ => pairPart_24_12
+  | 13, _ => pairPart_24_13
+  | 14, _ => pairPart_24_14
+  | 15, _ => pairPart_24_15
+  | 16, _ => pairPart_24_16
+  | 17, _ => pairPart_24_17
+  | 18, _ => pairPart_24_18
+  | 19, _ => pairPart_24_19
+  | 20, _ => pairPart_24_20
+  | 21, _ => pairPart_24_21
+  | 22, _ => pairPart_24_22
+  | 23, _ => pairPart_24_23
+  | n + 24, h => absurd h (by omega)
 
 /-- The canonical `t = 0` three-high representative is excluded. -/
 theorem threeHighCanonicalRepresentativeExcluded_zero :
