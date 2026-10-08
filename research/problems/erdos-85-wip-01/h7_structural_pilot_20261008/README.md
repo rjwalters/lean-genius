@@ -81,7 +81,66 @@ The leaf cover can also be discharged on the SAT side: `gen_pilot.py --cover` em
 `cube ++ hsb3 ++ (one blocking clause per leaf)`; its UNSAT says every model of `cube ++ hsb3`
 lies in a leaf. Both cover CNFs tried solved and verified in seconds (see "Cover CNF" below).
 
-## Lean soundness: what exists, what is missing
+## Lean soundness of `hsb` (added 2026-10-08, compiled on the builder)
+
+**Status: `hrep` for `hsb` is proved.** Standard axioms only (`propext`, `Classical.choice`,
+`Quot.sound`); no `native_decide`, no `sorry`. The section "what exists, what is missing" below
+is kept for history; its obligations 1-6 are discharged or made unnecessary as follows.
+
+| module (`proofs/Proofs/Erdos85OrderFortyNineSevenHighT0Canonical…`) | content |
+|---|---|
+| `HsbGen.lean` (core Lean, no Mathlib) | `SevenHighT0Hsb.clauses depth mask`: the `hsb<depth>` clause list as a Lean term; `leaves` / `coverClauses`; the witness checker `check` |
+| `HsbEmit.lean` + `lean_exe h7hsb` | prints `clauses` / `coverClauses` as DIMACS lines |
+| `HighSymmetryRowKey.lean` | row-set action, row cardinality, lex-minimal completion, `sevenHighT0HsbWitness_excludes` |
+| `HsbSound.lean` | `sevenHighT0CanonicalHsb_representative` (= `hrep`), `sevenHighT0CanonicalHsb_orbitSound`, `sevenHighT0CanonicalEmptyCubeSemanticExclusion_of_hsbUnsat` |
+| `HsbLeaves.lean` | `cnf_unsat_of_blocking_clauses`, `…SemanticExclusion_of_hsbLeaves`, `SevenHighT0CanonicalHsbEvidence` |
+| `HsbCapstone.lean`, `HsbStratumCapstone.lean` | 28 structural cubes with `hsb` evidence ⇒ no canonical completion ⇒ `OrderFortyNineStratumExcluded 7` |
+
+How the six obligations were met:
+
+1. **Composition / group law: not needed.** The representative `H'` is the completion whose
+   vector of row keys (`Fin 7 → ℕ`, `Pi.Lex`) is minimal among **all** completions with the
+   cube's mask (a finite set). Every high-side relabeling of `H'` is again such a completion
+   (`…highRelabel`, `…SemanticMask_highRelabel`), so it cannot be smaller.
+2. **Lex-min representative:** `exists_rowKeyMinimal` (`Set.exists_min_image` over the finite
+   set of graphs).
+3. **Code/prefix lemma: replaced.** The order is the lexicographic order on the row keys
+   `Σ_{v ∈ row} 2^(48−v)` of empties `7, 8, …` (the generator's `row_key`), not the 861-bit code,
+   so "rows before `k` fixed, row `k` lowered" is literally the definition of `Pi.Lex`.
+4. **Row cardinality:** `emptyNbr_add_row_card` (from `low_degree`) and
+   `sevenHighT0EmptyNbrSet_eq_mask`; the checker requires `row.length + maskDeg mask j = 7`.
+5. **Clause certificate, without `native_decide`:** every search entry carries a group witness
+   `(sig, flips)`. `clauses` keeps only entries for which `check` validates it (witness is an
+   injection on labels, fixes the key of every prefix row, strictly lowers the last row's key,
+   rows have the right size). `clause_eval_of_check` proves any such clause true in `H'`. The
+   soundness theorem therefore holds for **every** entry list and every depth; the search code
+   is untrusted and is only compared with Python for identity.
+6. `sevenHighT0CanonicalHsb_orbitSound` feeds `…OrbitSound_of_edgeOnly_representative`.
+
+### Byte identity with `gen_pilot.py`
+
+`check_hsb_lean_identity.py` runs the native emitter of the Lean term and compares it with
+`gen_pilot.hsb_clauses` (using the real `edge_vars` of the reviewed compact generator), for the
+`hsb3` clauses and for the cover (leaf blocking) clauses, and checks each Python mask against the
+Lean `sevenHighT0CanonicalEmptyRepresentativeMask`. Result: see `receipts/hsb_lean_identity.json`.
+
+### What a certificate run has to deliver
+
+Per structural cube `(F, i)`, with `M` its mask and `rows` ranging over
+`SevenHighT0Hsb.leaves 3 M` (line `n` of `h7hsb cover 3 M` is the blocking clause of leaf `n`):
+
+* cover: `cube ++ hsb3 ++ (all blocking clauses)` UNSAT (`SevenHighT0CanonicalHsbCoverChecked`);
+* leaf: `cube ++ hsb3 ++ (one positive unit per literal of the leaf's blocking clause)` UNSAT
+  (`SevenHighT0CanonicalHsbLeafChecked`). Positive units only, as the caveat below says.
+
+`SevenHighT0CanonicalHsbEvidence 3 F i` bundles these; the composition is proved for an arbitrary
+leaf list, so only the checked cover CNF vouches for the leaf enumeration.
+
+Trust notes: as for H1, the link "emitted bytes = Lean term" is the compiled emitter; the
+identity of the base cube bytes with `orderFortyNineSevenHighT0CanonicalEmptyCubeSatCnf F i` is
+the pre-existing obligation (`…CanonicalCnfEmit.lean`), not re-run here.
+
+## Lean soundness: what exists, what is missing (superseded, kept for history)
 
 Compiled on the builder in this pilot (axioms `propext`, `Classical.choice`, `Quot.sound` only):
 
