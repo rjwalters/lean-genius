@@ -386,3 +386,19 @@ The measured prefix costs and complete C bucket size support a new bounded
 90-second phase-two-only diagnostic (`run_phase_two_fast.py`) against the
 optimized engine. It still accepts phase-two leaves and cannot prove graph
 exclusion. The earlier timed-out runs retain their original limits and pins.
+
+The optimized phase-two-only native diagnostic completed successfully in job
+`20261008T111628-erdos85__h3-triple-formal-20261007-446936`, execution
+`85d3b19ad0c9dd26bfc42e8f05e564facad6b304`. It took 67.292 seconds elapsed
+(66.107 user, 1.180 system), with maximum RSS 6,485,576 KiB; the 90-second
+inner cap did not fire. The runner and wrapper both exited zero. Its nonempty
+10,624-byte object has SHA-256
+`ba5b387836b542ba2036343adbdd513d7f959179da080b6b700586f8ad9bd4f2`.
+
+The theorem `phaseTwoTraversal` reports exactly `propext`, `Quot.sound` and
+its own `._native.native_decide.ax_1_1`, without `sorry` or compiler errors.
+`phase-two-fast-evidence/` retains the source, runner, logs, receipt and audit;
+all audited prerequisite object hashes remained unchanged. This is a completed
+bucket-zero traversal with a constant-true callback at phase-two leaves.
+It does not prove those leaves impossible: phase-three completion remains the
+next computational step. No new exclusion or old-census credit is claimed.
