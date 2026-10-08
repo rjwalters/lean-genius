@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "job": "20261008T042508-erdos85__h3-first-column-20261008-178693",
+  "execution_commit": "cfae166b13c7f4389e80798a1967f2e1fb1c11a2",
+  "exit_code": 0,
+  "run_sha256": "17fa49b2b80496440d16b047f04ae802a19c158ffdd2f047e871c3c100c6317b",
+  "independent_checks": [
+    "Exact archive members and regular files",
+    "Current/copied/committed source identity",
+    "Cloud object hash independently read and matched",
+    "Source/log hashes match receipt",
+    "Raw JSON reconstructed, validated, and compared to receipt",
+    "First-column candidates and gates match prior audited five-case inventory"
+  ],
+  "scope": "Candidate masks and first/second prefix gates only; no DFS rejection or timing claim."
+}
