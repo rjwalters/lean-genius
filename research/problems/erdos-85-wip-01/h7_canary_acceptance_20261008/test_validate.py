@@ -2,9 +2,9 @@
 from copy import deepcopy
 import json,unittest
 from prepare_inputs import INPUT_SHA,LEAF_CUBES,COVER_CUBES,BINS
-from validate import sha,validate_batches,validate_transition
+from validate import sha,validate_batches,validate_transition,MANIFEST_SHA
 
-COMMIT='a'*40;MANIFEST='b'*64;NODE='i-fixture';PREFIX='sat49/h7hsb-20261008'
+COMMIT='a'*40;MANIFEST=MANIFEST_SHA;NODE='i-fixture';PREFIX='sat49/h7hsb-20261008'
 def fixture():
     batches={}
     for cube in LEAF_CUBES:
@@ -53,6 +53,12 @@ class ReceiptTests(unittest.TestCase):
     def test_wrong_execution_commit(self):
         self.b[self.bid]['ledger']['checkout_head']='d'*40
         with self.assertRaisesRegex(ValueError,'execution'):check(self.e,self.b)
+    def test_wrong_manifest_cannot_be_pinned_by_caller(self):
+        for bundle in self.b.values():bundle['ledger']['manifest_sha256']='d'*64
+        with self.assertRaisesRegex(ValueError,'full manifest'):validate_batches(self.e,self.b,COMMIT,NODE,'d'*64,PREFIX)
+    def test_boolean_is_not_a_leaf_index(self):
+        change_row(self.b,self.bid,lambda rows:rows[1].update(leaf=True))
+        with self.assertRaisesRegex(ValueError,'index'):check(self.e,self.b)
     def test_compressed_transport_corruption(self):
         self.b[self.bid]['packed']+=b'x'
         with self.assertRaisesRegex(ValueError,'transport'):check(self.e,self.b)

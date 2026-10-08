@@ -53,5 +53,7 @@ original job log/spec/exit, scripts and expected-input ledger.
 `EXPECTED.json` SHA256:
 `dbd866038055ef2751ca876f10d0591c134bceaa2d57f0b80c735557530ab8a6`.
 Its eight selected batches also match `h7_common.canary_rows` from the
-current pinned campaign source. All 20 synthetic metadata tests pass. This
+current pinned campaign source. All 22 synthetic metadata tests pass. The validator also fixes the full manifest
+SHA256 to `27799edd1129a208e4476e03841d783a654d1c253231c4743622bbca339fe785`,
+so a caller cannot substitute an unrelated manifest that happens to agree with its ledgers. This
 is preparation only; the launch pin and actual canary receipts remain pending.

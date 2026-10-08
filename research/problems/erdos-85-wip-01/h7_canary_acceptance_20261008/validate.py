@@ -8,13 +8,14 @@ from collections import Counter
 from datetime import datetime
 import hashlib,json,math,re
 
+MANIFEST_SHA='27799edd1129a208e4476e03841d783a654d1c253231c4743622bbca339fe785'
 def require(condition,message):
     if not condition:raise ValueError(message)
 def sha(b):return hashlib.sha256(b).hexdigest()
 def key(r):return r['cube'],r['kind'],r['leaf']
 def validate_batches(expected,bundles,commit,node,manifest_sha,prefix):
     require(re.fullmatch('[a-f0-9]{40}',commit),'Invalid execution commit')
-    require(re.fullmatch('[a-f0-9]{64}',manifest_sha),'Invalid manifest pin')
+    require(manifest_sha==MANIFEST_SHA,'Wrong pinned full manifest')
     require(set(bundles)==set(expected['batches']) and len(bundles)==8,'Canary must contain exactly eight selected batches')
     certified=0;residual=[];checked=[]
     for bid,wanted in expected['batches'].items():
@@ -31,6 +32,8 @@ def validate_batches(expected,bundles,commit,node,manifest_sha,prefix):
         require(ledger['statuses']==dict(statuses) and ledger['certified']==statuses.get('CERTIFIED',0),'Ledger status counts disagree')
         for row in rows:
             w=want[key(row)]
+            require((row['kind']=='cover' and row['leaf'] is None) or
+                    (row['kind']=='leaf' and type(row['leaf']) is int and 0<=row['leaf']<64),'Invalid canary item index')
             require(row['batch']==bid and row['schema']=='erdos85-h7-hsb-cert-v1','Wrong receipt scope')
             require(row['depth']==expected['depth'] and row['cap_seconds']==expected['cap_seconds'] and row['binaries']==expected['binaries'],'Wrong parameters or binary pins')
             require(row['cnf_sha256']==row['expected_cnf_sha256']==w['cnf_sha256'] and row['cnf_bytes']==w['cnf_bytes'],'Wrong CNF identity')
