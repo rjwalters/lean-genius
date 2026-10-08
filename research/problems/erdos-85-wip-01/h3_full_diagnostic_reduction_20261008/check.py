@@ -1,4 +1,4 @@
-"""Cloud-only connection of the two independently audited full diagnostic pairs."""
+"""Cloud-only connection of independently audited full diagnostic pairs."""
 import argparse
 import importlib.util
 import json
@@ -39,8 +39,19 @@ def native(case):
     return 'Erdos85.VariedPilot.' + case + '.rejected._native.native_decide.ax_1_1'
 
 
-def validate(prior_build, prerequisites, extra, second_sha):
-    require(re.fullmatch(r'[0-9a-f]{64}', second_sha) is not None, 'Final independently audited receipt hash required')
+def stages(through, second_sha):
+    require(through in {'Full259', 'Full258'}, 'Unknown final stage')
+    if through == 'Full258':
+        require(isinstance(second_sha, str) and re.fullmatch(r'[0-9a-f]{64}', second_sha) is not None,
+                'Full258 requires an independently audited FullU54 receipt hash')
+    else:
+        require(second_sha is None, 'Full259 must not claim a FullU54 receipt')
+    return [('Full259', 'FullU3R3', {NATIVE_U1})] + (
+        [('Full258', 'FullU54R20', {NATIVE_U1, native('FullU3R3')})] if through == 'Full258' else [])
+
+
+def validate(prior_build, prerequisites, extra, second_sha, through='Full258'):
+    selected = stages(through, second_sha)
     require(digest(prior_build / 'RUN.json') == PRIOR_SHA, 'Wrong Full260 build')
     require(read(PREVIOUS / 'evidence/AUDIT.json')['status'] == 'PASS'
             and read(PREVIOUS / 'evidence/AUDIT.json')['run_sha256'] == PRIOR_SHA, 'Full260 lacks independent audit')
@@ -54,7 +65,8 @@ def validate(prior_build, prerequisites, extra, second_sha):
     objects, _ = previous.imported_objects(prerequisites / 'extra')
     copies = [(prerequisites / 'extra' / (name + '.olean'), name, sha) for name, sha in objects.items()]
     cases = []
-    for case_name, expected_sha in [('FullU3R3', FIRST_SHA), ('FullU54R20', second_sha)]:
+    for _, case_name, _ in selected:
+        expected_sha = FIRST_SHA if case_name == 'FullU3R3' else second_sha
         case, membership_sha = timing.preflight(case_name, PREVIOUS / 'evidence')
         evidence = VARIED / (case_name + '-evidence')
         require(digest(evidence / 'RUN.json') == expected_sha, 'Changed diagnostic receipt')
@@ -90,17 +102,21 @@ def main():
     p.add_argument('--prior-build', type=Path, required=True)
     p.add_argument('--prerequisites', type=Path, required=True)
     p.add_argument('--extra-objects', type=Path, required=True)
-    p.add_argument('--full54-receipt-sha256', required=True)
+    p.add_argument('--through', choices=['Full259', 'Full258'], default='Full258')
+    p.add_argument('--full54-receipt-sha256')
     p.add_argument('--output', type=Path, required=True)
     a = p.parse_args()
+    selected = stages(a.through, a.full54_receipt_sha256)
     require(Path('/.dockerenv').exists() and Path('Proofs').is_dir(), 'Run only inside cloud Docker from proofs')
     prior, prerequisites, extra, output = [v.resolve() for v in (a.prior_build, a.prerequisites, a.extra_objects, a.output)]
-    library, copies, provenance = validate(prior, prerequisites, extra, a.full54_receipt_sha256)
+    library, copies, provenance = validate(prior, prerequisites, extra, a.full54_receipt_sha256, a.through)
     output.mkdir(parents=True, exist_ok=False)
     env = os.environ.copy()
     env['LEAN_NUM_THREADS'] = '1'
-    receipt = {'status': 'RUNNING', 'provenance': provenance, 'results': [],
-               'scope': 'Three prior full certificates consumed; 258 rejection hypotheses remain.'}
+    receipt = {'status': 'RUNNING', 'through': a.through, 'provenance': provenance, 'results': [],
+               'scope': ('Two prior full certificates consumed; 259 rejection hypotheses remain.'
+                         if a.through == 'Full259' else
+                         'Three prior full certificates consumed; 258 rejection hypotheses remain.')}
 
     def save():
         tmp = output / 'RUN.json.tmp'
@@ -124,8 +140,7 @@ def main():
             shutil.copyfile(src, dst)
         require(digest(dst) == sha, 'Object copy mismatch')
     env['LEAN_PATH'] = os.pathsep.join([str(output), str(prior), str(prerequisites / 'final'), str(prerequisites / 'base'), env.get('LEAN_PATH', '')])
-    for name, current, inherited in [('Full259', 'FullU3R3', {NATIVE_U1}),
-                                     ('Full258', 'FullU54R20', {NATIVE_U1, native('FullU3R3')})]:
+    for name, current, inherited in selected:
         source = PACKAGE / (name + '.lean')
         target = output / source.name
         shutil.copyfile(source, target)
@@ -149,7 +164,7 @@ def main():
             receipt['status'] = 'MODULE_FAILURE'
             save()
             return 1
-    require(validate(prior, prerequisites, extra, a.full54_receipt_sha256) == (library, copies, provenance), 'Prerequisites changed')
+    require(validate(prior, prerequisites, extra, a.full54_receipt_sha256, a.through) == (library, copies, provenance), 'Prerequisites changed')
     receipt['status'] = 'PASS'
     save()
     return 0

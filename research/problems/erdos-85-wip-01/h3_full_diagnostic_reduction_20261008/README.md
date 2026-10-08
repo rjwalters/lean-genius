@@ -1,19 +1,18 @@
 # Consume the full diagnostic certificates
 
-Status: **prepared, uncompiled, unqueued; U54/R20 timed out and remains unresolved**.
+Status: **Full259-only build prepared; U54/R20 timed out and Full258 remains blocked**.
 
 The U54/R20 job exited 124 at its two-hour cap, with no completed certificate.
 Its raw timeout evidence is in `../h3_varied_pilot_20261008/FullU54R20-timeout-evidence/`.
-Full259 can consume the already verified U3/R3 result, but the current combined
-checker below requires both diagnostics. A separately bounded Full259-only
-check remains to be prepared; Full258 must continue to require an independently
+Full259 can consume the already verified U3/R3 result using `--through Full259`.
+This mode neither requests nor credits U54/R20. Full258 continues to require an independently
 verified U54/R20 certificate. No native search should be repeated just to run
 the Full259 connection.
 
 `Full259.lean` proposes consuming the independently audited U3/R3 native
 certificate after the verified `Full260` reduction. `Full258.lean` proposes
 consuming U54/R20 after that. The latter certificate is not yet verified;
-no build of this package is authorized by its preparation alone. Its
+its preparation does not authorize another native search. Its
 actual-graph witness and exclusion theorem retain 258 rejection hypotheses.
 Neither module would close the full H3 branch.
 
@@ -24,29 +23,35 @@ two must have exactly the inherited native trust set: U1/R15 plus U3/R3 for
 Full259, and those two plus U54/R20 for Full258. Existing rejection searches
 must not be repeated.
 
-`check.py` requires a complete independently audited U54/R20 receipt hash
+For the default `--through Full258`, `check.py` requires a complete independently audited U54/R20 receipt hash
 as `--full54-receipt-sha256`, matching committed evidence for that exact
 case. It also requires the fixed audited Full260 and U3/R3 receipts. Before
 any output or Lean build, it re-runs the read-only Full260 artifact audit,
 including the entire full base/final census and the reused input objects.
-It verifies both diagnostic source/log/receipt sets, exact native reports,
-and the two certificate objects. Missing, failed, or unaudited evidence
+It verifies the selected diagnostic source/log/receipt sets, exact native reports,
+and certificate objects. Full259 requires only U3/R3 and rejects a supplied
+FullU54 receipt argument. Missing, failed, or unaudited evidence
 blocks the build. A timeout is not an acceptable result.
 
 After that gate, the cloud-only checker verifies its dependency command
-cannot target any imported input or certificate module, copies the five
+cannot target any imported input or certificate module, copies the four or five
 hash-verified prerequisite objects beside the complete Proofs library,
-and compiles Full259 followed by Full258. Full and deficient census import
+and compiles Full259, followed by Full258 only when requested. Full and deficient census import
 paths are kept separate. The checker preserves source/object/log hashes,
 exact exports, and per-module wall/CPU/RSS evidence; it revalidates every
-prerequisite before PASS. An independent final audit is still required.
+prerequisite before PASS. `audit.py` independently checks the actual compiled
+inventory, source/object/log hashes, commands and six exact trust sets per
+module; it revalidates prerequisite evidence and requires an explicit final
+stage. Full259 must have no Full258 artifacts. An actual passing audit is
+still required before this preparation can be credited.
 
 Arguments are `--prior-build` (the verified Full260 output),
 `--prerequisites` (its staged full base/final/extra directory),
-`--extra-objects` (the two diagnostic certificates),
-`--full54-receipt-sha256` (the later independently audited receipt), and
+`--extra-objects` (the selected diagnostic certificates),
+`--through Full259` or `--through Full258` (default),
+`--full54-receipt-sha256` (required only for Full258), and
 `--output` (a fresh directory). Run with `lake env python3` only inside
 cloud Docker from `proofs/`. No automatic retry or submission occurs.
 
-Local Python syntax, CLI import, and host-execution-refusal checks pass.
+Local Python syntax, import, and six stage-selection/receipt-gate checks pass.
 No Lean computation was performed locally.
