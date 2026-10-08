@@ -168,14 +168,6 @@ def cache_roots(inventory, case, manifest):
     return roots
 
 
-def import_paths(roots, private, directory, branch, inherited):
-    # Final full reductions precede the base census, matching the audited
-    # bridge canary. Never depend on JSON dictionary ordering here.
-    census = ('full_final', 'full_base') if branch == 'full' else ('deficient_base',)
-    return os.pathsep.join([str(private), str(directory)] +
-                           [str(roots[name]) for name in census] + [inherited])
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--launch', type=Path, required=True)
@@ -241,9 +233,10 @@ def main():
             (directory / name).write_text(text)
         env = os.environ.copy()
         env['LEAN_NUM_THREADS'] = '1'
+        imports = [str(private), str(directory)] + [str(roots[n]) for n in roots if n != 'library']
         # The launch host must pin the inherited Lake/package search path.
         require(env.get('LEAN_PATH', '') == launch['inherited_lean_path'], 'Unexpected inherited Lean path')
-        env['LEAN_PATH'] = import_paths(roots, private, directory, case['branch'], launch['inherited_lean_path'])
+        env['LEAN_PATH'] = os.pathsep.join(imports + [launch['inherited_lean_path']])
         receipt['lean_path'] = env['LEAN_PATH']
         for stage in artifacts.STAGES:
             if stop_or_timeout():

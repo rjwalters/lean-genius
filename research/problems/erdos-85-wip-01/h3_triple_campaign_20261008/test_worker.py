@@ -100,6 +100,14 @@ class WorkerMetadata(unittest.TestCase):
         self.assertEqual(json.loads(p.read_text()), {'status': 'CERTIFICATE_RETAINED'})
         self.assertFalse(p.with_suffix('.json.tmp').exists())
 
+    def test_branch_import_paths_do_not_depend_on_mapping_order(self):
+        roots = {'full_base': '/base', 'full_final': '/final', 'library': '/unused'}
+        self.assertEqual(worker.import_paths(roots, '/private', '/case', 'full', '/packages'),
+                         '/private:/case:/final:/base:/packages')
+        self.assertEqual(worker.import_paths({'deficient_base': '/def'}, '/private', '/case',
+                                            'deficient', '/packages'),
+                         '/private:/case:/def:/packages')
+
     def test_local_host_refusal_precedes_file_or_process_work(self):
         argv = ['worker.py', '--launch', '/missing', '--launch-sha256', 'x',
                 '--cache-inventory', '/missing', '--stop-file', '/missing']

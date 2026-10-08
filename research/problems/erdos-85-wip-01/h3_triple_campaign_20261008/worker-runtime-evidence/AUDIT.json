@@ -1,0 +1,17 @@
+{
+  "status": "RUNTIME_TEST_AUDIT_PASS",
+  "job": "20261008T072956-erdos85__h3-triple-formal-20261007-298258",
+  "execution_commit": "9e80ddc38aaa2eef9a13fc834e96b3c4bbb432ee",
+  "authoritative_exit": 0,
+  "tests": 4,
+  "production_native_search": false,
+  "sha256": {
+    "job.log": "191a52837d323e9b0558b608e77dbd77a915a1a61448992420ce43da5eab2ccc",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "job.spec": "560a3842dc4cb7a4c3b0330f8cb26b907deafe1215b7e7bac09025a0516cfe1d",
+    "worker.py": "fd947020b489ed9a99d5eb0a7fad028fb1cea5f81dab8b2b8ecd61ab8a6ea43e",
+    "test_worker_runtime.py": "64768a945c376b100932b982a66f9357f74c5eb442413bbc5adcafafd7b6eb85"
+  },
+  "scope": "Cloud-host Python process lifecycle tests only; no production worker or Lean proof credit.",
+  "current_bounded_function_ast_matches_tested_version": true
+}

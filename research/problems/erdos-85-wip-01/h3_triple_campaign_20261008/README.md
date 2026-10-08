@@ -104,13 +104,23 @@ compiler process group. A non-timeout certificate failure is an `ALARM` pending
 raw diagnostic review. There is no automatic retry, resizing, claim release,
 fleet launch, or acceptance as `AUDITED_PASS`.
 
-The launch schema and cache contract are in `RECEIPT.md`. Eight worker metadata
-tests pass, for 29 metadata tests total. `test_worker_runtime.py` is a separate
+The launch schema and cache contract are in `RECEIPT.md`. Nine worker metadata
+tests pass, for 30 metadata tests total. `test_worker_runtime.py` is a separate
 cloud-host-only check of subprocess completion, nonzero exit, timeout cleanup
 and refusal to overwrite retained logs. Production compilation, cache staging,
 Docker mount/image verification, host collection and consumer-only continuation
 are still untested or unimplemented gates. Do not use the worker for a campaign
 until those gates and the limited production canary are complete.
+
+The four cloud process tests passed in 1.211 seconds in job
+`20261008T072956-erdos85__h3-triple-formal-20261007-298258`, at execution commit
+`9e80ddc38aaa2eef9a13fc834e96b3c4bbb432ee`. Independent host inspection confirmed
+exit zero and source equality to that commit. `worker-runtime-evidence/` retains
+the exact tested scripts, raw job log, spec, exit and audit hashes. This tests
+the subprocess runner, including descendant cleanup, not production Lean.
+The later import-path correction keeps full final census objects before the
+base objects, matching the bridge canary; a metadata regression checks both
+branches. The tested subprocess function is unchanged, checked by AST equality.
 
 ## Resource and controller design
 
