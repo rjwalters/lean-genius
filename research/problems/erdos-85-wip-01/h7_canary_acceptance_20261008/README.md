@@ -40,3 +40,18 @@ marker must be classified and its authorized transition documented separately.
 tests grant no real canary, full-campaign, or Lean theorem verdict. The actual
 collection and review will bind the frozen launch commit and canary instance
 and fleet identifiers when they are available.
+
+## Retained cloud input preparation
+
+Host metadata job `20261008T152813-erdos85__h3-triple-formal-20261007-613037`
+at `25a893dc893e970b28b54258d6631a0a70e092c4` exited zero. It ran only
+input-byte reconstruction on the existing builder, with a three-minute limit
+and two-CPU affinity; no solver, checker, Lean or H7 fleet ran.
+`preparation-evidence1/RECEIPT.json` retains seven hashed files, including the
+original job log/spec/exit, scripts and expected-input ledger.
+
+`EXPECTED.json` SHA256:
+`dbd866038055ef2751ca876f10d0591c134bceaa2d57f0b80c735557530ab8a6`.
+Its eight selected batches also match `h7_common.canary_rows` from the
+current pinned campaign source. All 20 synthetic metadata tests pass. This
+is preparation only; the launch pin and actual canary receipts remain pending.
