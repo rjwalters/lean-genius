@@ -1,0 +1,21 @@
+{
+  "record_type": "split_pilot_launch_not_proof_receipt",
+  "job_id": "20261008T024639-erdos85__h3-triple-formal-20261007-116600",
+  "branch": "erdos85/h3-triple-formal-20261007",
+  "execution_commit": "bd75f1b58288bb94294825d9d1c58e009f1847c2",
+  "started_utc": "2026-10-08T02:46:39Z",
+  "memory_limit_gib": 24,
+  "lake_threads_requested": 2,
+  "compiler_threads_set_by_runner": 1,
+  "timeout_seconds": 14400,
+  "sources": {
+    "Erdos85ThreeHighNativeTerminalPilotCertificate.lean": "a9aeca79f21509badf9ae1d4fc882e98c47ea8970a5f2b3f2a2f6eacb94b6a05",
+    "Erdos85ThreeHighNativeTerminalPilot.lean": "8e72a9b53ba46245a58723afa6e9e57056411ddfe2b19e6d84f47525c6dc74f2",
+    "check_split_pilot.py": "4001c7e8c91ab115e54cffc0cc99a860782ea5930132312cb14175f70139b0e1"
+  },
+  "scope": "Rerun the same U1/R15 rejection with separately compiled fixed consumer. No other pair or full H3 exclusion.",
+  "previous_job": "20261008T004436-erdos85__h3-triple-formal-20261007-42449",
+  "consumer_validation_job": "20261008T023753-erdos85__h3-triple-formal-20261007-112090",
+  "submit_command": "e85-remote run erdos85/h3-triple-formal-20261007 --full --mem 24 --threads 2 --timeout 4h --no-follow -- 'lake env python3 ../research/problems/erdos-85-wip-01/h3_cloud_u1r15_20261008/check_split_pilot.py'",
+  "final_result": null
+}

@@ -27,7 +27,11 @@ cloud worktree and builds them separately, retaining each complete log, source,
 object hash, and axiom report. Thus a later consumer failure preserves a
 successfully compiled rejection object. It records per-process wall/CPU time
 and Linux `wait4` peak RSS; that RSS is not aggregate concurrent memory.
-The split pilot has not yet passed. No larger finite campaign has been queued.
+The split pilot is running as job
+`20261008T024639-erdos85__h3-triple-formal-20261007-116600`, started at 02:46:39 UTC
+from `bd75f1b58288bb94294825d9d1c58e009f1847c2`, with 24 GiB and a four-hour cap.
+`split-launch.json` records source hashes and the command. It has not yet
+passed. No larger finite campaign has been queued.
 
 The 5,859-second measurement includes both declarations and does not isolate
 native search time. If every one of the 1,815 remaining pairs cost that much,
