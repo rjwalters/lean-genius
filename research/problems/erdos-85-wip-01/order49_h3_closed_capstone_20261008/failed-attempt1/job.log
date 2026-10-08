@@ -1,0 +1,21 @@
+[e85] job 20261008T151322-erdos85__h3-triple-formal-20261007-603421  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T15:13:22Z
+[e85] commit 6b3c45df6efeb835c827e8292736d9539616cd15 (Bank verified capstone object transfer for H3 integration)
+=== Docker Lean Build ===
+Memory limit: 16384MB (hard enforced via cgroups)
+Timeout: 4m
+CPU limit: 2
+Target: all
+Build volume: lean-build-erdos85__h3-triple-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Command: lake env python3 -B ../research/problems/erdos-85-wip-01/order49_h3_closed_capstone_20261008/run.py
+Starting Docker build...
+
+Traceback (most recent call last):
+  File "/workspace/proofs/../research/problems/erdos-85-wip-01/order49_h3_closed_capstone_20261008/run.py", line 65, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+  File "/workspace/proofs/../research/problems/erdos-85-wip-01/order49_h3_closed_capstone_20261008/run.py", line 35, in main
+    assert sha(baseline_data)==supplement['sha256'] and len(baseline_data)==supplement['bytes'],'Baseline rebuilt object differs'
+AssertionError: Baseline rebuilt object differs
+
+=== Build failed with exit code 1 ===

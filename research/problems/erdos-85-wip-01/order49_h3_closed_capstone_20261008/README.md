@@ -76,3 +76,19 @@ read-only inspection accepted all 500 capstone objects; 216 absent objects
 were copied, with no overwrites. All other H3 inputs also matched.
 `transfer-evidence1/AUDIT.json` reports
 `CAPSTONE_TRANSFER_ARTIFACT_AUDIT_PASS`. Compilation remains pending.
+
+## Preserved first attempt and setup correction
+
+Job `20261008T151322-erdos85__h3-triple-formal-20261007-603421` at
+`6b3c45df6efeb835c827e8292736d9539616cd15` exited one before compiling
+the wrapper. The baseline module compiled successfully, but its object did
+not match the stored object, so the guard rejected it. Raw logs and a
+rejection receipt are retained unchanged in `failed-attempt1`.
+
+The original Lake trace passes a setup file containing package metadata;
+the first direct invocation omitted that setup. The exact original trace
+and setup bytes are retained and pinned by `REBUILD.json`. The second
+attempt uses the original Lean flags (with separate output paths), still
+requires byte identity, and retains fresh outputs under `attempt2`. The
+limits, accepted source/object ledger and expected axiom sets are unchanged.
+No cache artifact was overwritten and no native search was repeated.

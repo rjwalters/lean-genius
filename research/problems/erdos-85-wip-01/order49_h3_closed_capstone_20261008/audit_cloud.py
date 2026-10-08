@@ -21,7 +21,7 @@ def main(config):
     rc=int(files['job.exit']);assert rc==0,'Compile job failed; retain raw job evidence'
     for line in ('MEM_GB=16','THREADS=1','CPUS=2','FULL=1','TIMEOUT=4m'):
         assert line in files['job.spec'].decode().splitlines()
-    for n in ('PLAN.json','supplementary.json','transfer.json','prepare.py','run.py','transfer.py','audit_cloud.py','capture.py','capture_transfer.py'):
+    for n in ('PLAN.json','REBUILD.json','baseline.trace','baseline.setup.json','supplementary.json','transfer.json','prepare.py','run.py','transfer.py','audit_cloud.py','capture.py','capture_transfer.py'):
         b=subprocess.check_output(['git','-C',str(REPO),'show',config['commit']+':'+AREA+'/'+n]);assert b==(ROOT/n).read_bytes();files[n]=b
     plan=json.loads(files['PLAN.json']);_,objects,producers,exports=inputs()
     assert len(objects)==891 and plan['objects']==objects and plan['producers']==producers and plan['exports']==exports
@@ -31,7 +31,7 @@ def main(config):
         assert sha(b)==h and b==subprocess.check_output(['git','-C',str(REPO),'show',config['commit']+':'+relative]),m
     files['wrapper.lean']=(REPO/'proofs/Proofs'/(MODULE+'.lean')).read_bytes()
     for key,p in producers.items():files[key+'-AUDIT.json']=(ROOT.parent/p['path']).read_bytes()
-    out=ROOT/'attempt1'
+    out=ROOT/'attempt2'
     for n in ('RUN.json','BASELINE.json','compile.log','baseline.log'):files[n]=(out/n).read_bytes()
     run=json.loads(files['RUN.json']);baseline=json.loads(files['BASELINE.json']);supplement=json.loads(files['supplementary.json'])
     assert plan['supplementary_sha256']==sha(files['supplementary.json'])
@@ -42,7 +42,11 @@ def main(config):
     quota,period=map(int,run['cgroup_cpu_max'].split());assert quota==2*period
     assert run['command']==['lean','-j1','Proofs/'+MODULE+'.lean','-o','/workspace/proofs/.lake/build/lib/lean/Proofs/'+MODULE+'.olean']
     assert baseline['status']=='BASELINE_REBUILD_BYTE_IDENTICAL' and baseline['returncode']==0
-    assert baseline['command']==['lean','-j1','Proofs/'+supplement['module']+'.lean','-o','/workspace/'+AREA+'/attempt1/'+supplement['module']+'.olean']
+    m=supplement['module'];base='/workspace/'+AREA+'/attempt2/'+m
+    assert baseline['command']==['lean','-j1','/workspace/proofs/Proofs/'+m+'.lean','-o',base+'.olean','-i',base+'.ilean','-c',base+'.c','--setup','/workspace/'+AREA+'/baseline.setup.json','--json']
+    rebuild=json.loads(files['REBUILD.json'])
+    assert baseline['setup_sha256']==rebuild['setup_sha256']==sha(files['baseline.setup.json'])
+    assert baseline['trace_sha256']==rebuild['trace_sha256']==sha(files['baseline.trace'])
     assert baseline['elapsed_seconds']<90 and run['elapsed_seconds']<90
     fresh=(out/(supplement['module']+'.olean')).read_bytes()
     assert sha(fresh)==baseline['sha256']==supplement['sha256'] and len(fresh)==baseline['bytes']==supplement['bytes']

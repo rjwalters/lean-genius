@@ -18,12 +18,15 @@ def main():
         assert plan['sources']==closure(REPO,MODULE)
         for m,row in objects.items():
             b=(cache/(m+'.olean')).read_bytes();assert sha(b)==row['sha256'] and len(b)==row['bytes'],m
-    check();out=ROOT/'attempt1';out.mkdir(exist_ok=False)
+    check();out=ROOT/'attempt2';out.mkdir(exist_ok=False)
     # Validate the extra baseline dependency without replacing its cache object.
     supplement=json.loads((ROOT/'supplementary.json').read_text())
     assert plan['supplementary_sha256']==sha((ROOT/'supplementary.json').read_bytes())
     baseline=supplement['module'];fresh=out/(baseline+'.olean')
-    baseline_command=['lean','-j1','Proofs/'+baseline+'.lean','-o',str(fresh)]
+    rebuild=json.loads((ROOT/'REBUILD.json').read_text())
+    assert sha((ROOT/'baseline.setup.json').read_bytes())==rebuild['setup_sha256']
+    assert sha((ROOT/'baseline.trace').read_bytes())==rebuild['trace_sha256']
+    baseline_command=['lean','-j1',str(REPO/'proofs/Proofs'/(baseline+'.lean')),'-o',str(fresh),'-i',str(out/(baseline+'.ilean')),'-c',str(out/(baseline+'.c')),'--setup',str(ROOT/'baseline.setup.json'),'--json']
     baseline_start=time.monotonic()
     with (out/'baseline.log').open('xb') as log:
         child=subprocess.Popen(baseline_command,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
@@ -33,7 +36,7 @@ def main():
     assert baseline_rc==0 and not re.search(r'\b(sorry|error)\b',(out/'baseline.log').read_text(),re.I)
     baseline_data=fresh.read_bytes()
     assert sha(baseline_data)==supplement['sha256'] and len(baseline_data)==supplement['bytes'],'Baseline rebuilt object differs'
-    baseline_receipt={'status':'BASELINE_REBUILD_BYTE_IDENTICAL','command':baseline_command,'returncode':baseline_rc,'elapsed_seconds':time.monotonic()-baseline_start,'sha256':sha(baseline_data),'bytes':len(baseline_data),'log_sha256':sha((out/'baseline.log').read_bytes())}
+    baseline_receipt={'status':'BASELINE_REBUILD_BYTE_IDENTICAL','command':baseline_command,'returncode':baseline_rc,'elapsed_seconds':time.monotonic()-baseline_start,'sha256':sha(baseline_data),'bytes':len(baseline_data),'log_sha256':sha((out/'baseline.log').read_bytes()),'setup_sha256':rebuild['setup_sha256'],'trace_sha256':rebuild['trace_sha256']}
     (out/'BASELINE.json').write_text(json.dumps(baseline_receipt,indent=2)+'\n')
     check()
     command=['lean','-j1','Proofs/'+MODULE+'.lean','-o',str(obj)]

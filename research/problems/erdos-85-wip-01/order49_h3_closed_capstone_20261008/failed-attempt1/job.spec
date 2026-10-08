@@ -1,0 +1,11 @@
+MODE=run
+REF=erdos85/h3-triple-formal-20261007
+TARGET=''
+CMD=lake\ env\ python3\ -B\ ../research/problems/erdos-85-wip-01/order49_h3_closed_capstone_20261008/run.py
+MEM_GB=16
+TIMEOUT=4m
+THREADS=1
+CACHE=0
+CPUS=2
+VOLUME=''
+FULL=1
