@@ -30,10 +30,15 @@ def preflight(case_name, evidence):
     case, = [c for c in plan["cases"] if c["namespace"].split(".")[-1] == case_name]
     receipt = json.loads((evidence / "RUN.json").read_text())
     audit = json.loads((evidence / "AUDIT.json").read_text())
+    checked_plan = json.loads((evidence / "PLAN.json").read_text())
     if (receipt["status"] != "PASS" or audit["status"] != "PASS"
             or audit["run_sha256"] != digest(evidence / "RUN.json")
-            or receipt["plan_sha256"] != digest(PACKAGE / "PLAN.json")):
+            or receipt["plan_sha256"] != digest(evidence / "PLAN.json")):
         raise ValueError("An independently audited, matching preflight is required")
+    checked_case, = [c for c in checked_plan["cases"]
+                     if c["namespace"].split(".")[-1] == case_name]
+    if case != checked_case:
+        raise ValueError("Selected case differs from the verified preflight plan")
     names = [r["module"] for r in receipt["results"]]
     if len(names) != len(set(names)):
         raise ValueError("Repeated preflight module")
@@ -42,10 +47,10 @@ def preflight(case_name, evidence):
     membership_name = case["branch"].title() + "Membership"
     for name in [input_name, membership_name]:
         entry = entries[name]
-        source = PACKAGE / (name + ".lean")
+        source = evidence / (name + ".lean")
         if entry["status"] != "PASS" or entry["exit_code"] != 0:
             raise ValueError("Failed preflight module")
-        if not digest(source) == entry["source_sha256"] == digest(evidence / source.name):
+        if not digest(source) == entry["source_sha256"] == checked_plan["generated_source_sha256"][source.name]:
             raise ValueError("Preflight source changed")
         if digest(evidence / (name + ".log")) != entry["log_sha256"]:
             raise ValueError("Preflight log changed")
@@ -58,7 +63,8 @@ def preflight(case_name, evidence):
         raise ValueError("Selected pair has no verified membership/identity")
     for suffix in ["Inputs", "Certificate", "Consumer"]:
         filename = case["module_prefix"] + suffix + ".lean"
-        if digest(PACKAGE / filename) != plan["generated_source_sha256"][filename]:
+        if not (digest(PACKAGE / filename) == plan["generated_source_sha256"][filename]
+                == checked_plan["generated_source_sha256"][filename]):
             raise ValueError("Selected source differs from the prepared census plan")
     return case, digest(evidence / "RUN.json")
 

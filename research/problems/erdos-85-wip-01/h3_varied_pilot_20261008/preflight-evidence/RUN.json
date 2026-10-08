@@ -1,0 +1,139 @@
+{
+  "status": "PASS",
+  "scope": "Four input modules and two deficient census memberships; no rejection searches. Full membership pending.",
+  "lean_threads": 1,
+  "plan_sha256": "ab1498a6ccba8cebb44c592b3af3783cfceb3ea31ddb00dbe07c5733005e1a74",
+  "deficient_base_sha256": "190d7e37c814bd8a7eea54e6ad1bbcba73e092e6e0d77deddc717bab098bfecc",
+  "results": [
+    {
+      "command": [
+        "lake",
+        "build",
+        "Proofs.Erdos85ThreeHighPilotFullU3R3Inputs"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 9.158881012001075,
+      "log_sha256": "ffde16f9194d5395e66c74eab1d12fb521c376da106cfef648747c993a105de8",
+      "module": "Erdos85ThreeHighPilotFullU3R3Inputs",
+      "status": "PASS",
+      "source_sha256": "1e3491373759875229ed79a8700f65c6ae4599b344cbb0c84000c08e822932d6",
+      "olean_sha256": "cc9f6bd43319f43b33633b3ea99e82912e07a664de01723869b33a9e5e4bcfe1"
+    },
+    {
+      "command": [
+        "lake",
+        "build",
+        "Proofs.Erdos85ThreeHighPilotFullU54R20Inputs"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 9.186770379001246,
+      "log_sha256": "c8c071c002ab0b06bc033a397b226c636d8300bfbe7670c6559a4519994280f7",
+      "module": "Erdos85ThreeHighPilotFullU54R20Inputs",
+      "status": "PASS",
+      "source_sha256": "324653ac84cdf0a257221e3a495ace46b96e64a73e5d5f2fd3d0de1071f2bd38",
+      "olean_sha256": "f2b33f05da755c15afdf72c2ed3af608f46996d1830072fa612d7a7964e715d3"
+    },
+    {
+      "command": [
+        "lake",
+        "build",
+        "Proofs.Erdos85ThreeHighPilotDeficientU26R2Inputs"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 9.183429997003259,
+      "log_sha256": "8b1b94cac658ab86bf8f146fe5a03d153bd5f8e4ab84a41a22fdda6757bc5a6b",
+      "module": "Erdos85ThreeHighPilotDeficientU26R2Inputs",
+      "status": "PASS",
+      "source_sha256": "4e864df441cf5afab76be002d9abd90fcdb906752c4d5207e8522b74b164e02c",
+      "olean_sha256": "23e1b2bda5a011cd8c1f26fb913cc334d2b373e5d03970b5c6c3895293b578e7"
+    },
+    {
+      "command": [
+        "lake",
+        "build",
+        "Proofs.Erdos85ThreeHighPilotDeficientU369R11Inputs"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 9.063962895997975,
+      "log_sha256": "7bc1013fe24de1ad56843fa013a019598748189a2e0752a4c653628d65400cab",
+      "module": "Erdos85ThreeHighPilotDeficientU369R11Inputs",
+      "status": "PASS",
+      "source_sha256": "7589738f71cca554b32567acf56d4f433a358ed9a79801f923c828f763dadd67",
+      "olean_sha256": "c9d9a7423ced2c9c8e6f8f7f7b3e8eb4ff823d379131dd55215b2b4626d1941d"
+    },
+    {
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_varied_pilot_20261008/_build/preflight-first",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_varied_pilot_20261008/_build/preflight-first/DeficientMembership.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_varied_pilot_20261008/_build/preflight-first/DeficientMembership.lean"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 319.9562092689994,
+      "log_sha256": "b92c95a2663ddb0f4471fcc7a938e15cb1fd8a15a0e1b465962caeab570cf2a7",
+      "module": "DeficientMembership",
+      "status": "PASS",
+      "source_sha256": "e58a4ac6562a34fe770e4b0727672144901781fb3ba2e09660f299dc2d7f0745",
+      "olean_sha256": "8045b2c082d4da0665a57d8e79f59f4c91906bd94450e2e135bacf9702ad071d",
+      "axiom_exports": [
+        {
+          "theorem": "DeficientU26R2_mem",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "DeficientU26R2_input",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "DeficientU369R11_mem",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "DeficientU369R11_input",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  ],
+  "dependencies": {
+    "command": [
+      "lake",
+      "build",
+      "Proofs.Erdos85ThreeBlockCompactCodes",
+      "Proofs.Erdos85ThreeBlockNormalizedDeficientCover",
+      "Proofs.Erdos85ThreeBlockOrbitCertificate",
+      "Proofs.Erdos85ThreeHighDeficientExternalFarTable",
+      "Proofs.Erdos85ThreeHighDeficientExternalSignedFarTable",
+      "Proofs.Erdos85ThreeHighDeficientFarColorTable",
+      "Proofs.Erdos85ThreeHighDeficientLowAdjacentTable",
+      "Proofs.Erdos85ThreeHighDeficientLowDegreeTable",
+      "Proofs.Erdos85ThreeHighDeficientPairTable",
+      "Proofs.Erdos85ThreeHighDistinctRepresentativeWitness",
+      "Proofs.Erdos85ThreeHighNativePairSearch",
+      "Proofs.Erdos85ThreeHighSecondaryDegreeClasses",
+      "Proofs.Erdos85ThreeHighSecondaryOrbitTable",
+      "Proofs.Erdos85ThreeHighTriangleTables"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 585.4027655690006,
+    "log_sha256": "2a326ac08fb78be5823757a139f0d7ac3abe357a07d6e7036efbfe889e24cfa6"
+  }
+}

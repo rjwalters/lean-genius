@@ -1,6 +1,6 @@
 # Four-case H3 timing sample
 
-Status: **input/deficient-membership preflight running; no search queued**.
+Status: **input/deficient-membership preflight PASS; no search queued**.
 
 Claude requested 3–5 additional pairs after the U1/R15 pipeline fix, to measure
 cost variation before a larger campaign. The four selected cases are:
@@ -56,12 +56,23 @@ builds all four input modules, then checks deficient membership and representati
 identity with standard axioms only. It does not run any certificate search.
 The full membership preflight awaits the still-building `CapacityReduction`.
 
-The preflight is cloud job
+The preflight passed in cloud job
 `20261008T042839-erdos85__h3-first-column-20261008-180990`, using source
 `16d3a56a9ab`, 16 GiB, one compiler thread, and a 20-minute cap.
 The copied base contains 610 files; all copied source/log/object hashes match
-the original audited receipt. `preflight-launch.json` records this launch,
-not a successful proof receipt.
+the original audited receipt. `preflight-launch.json` now links its passing receipt. `preflight-evidence/`
+retains all five sources, complete logs, the executed `PLAN.json`, run record,
+and independent audit. All five object hashes were read independently from
+the cloud and matched. The four deficient membership/identity reports use
+exactly the standard three axioms. Dependencies took 585.40 seconds and the
+membership module took 319.96 seconds, with exit 0 at 04:44:26 UTC.
+
+The current generator simplifies membership formulas before decision checking;
+those later proof-script changes have not been compiled. The retained proof
+and its original plan remain the preflight evidence. The timing runner binds
+to that immutable plan and requires each selected input, certificate, and
+consumer source to match both the current plan and the verified plan exactly.
+A change in any selected case or source therefore still blocks its search.
 
 `check_case.py` runs one selected pair only after an independent audit of its
 matching preflight. It rechecks the prepared source hashes, membership and

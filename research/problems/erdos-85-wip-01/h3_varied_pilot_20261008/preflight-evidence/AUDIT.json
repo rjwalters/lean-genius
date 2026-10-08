@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "job": "20261008T042839-erdos85__h3-first-column-20261008-180990",
+  "execution_commit": "16d3a56a9ab3d1fff9b12c4d88b2c8bddef2e478",
+  "exit_code": 0,
+  "finished_utc": "2026-10-08T04:44:26Z",
+  "run_sha256": "c0e0517d74016e473049f68646a539901b63412430496ebd0ef0cae736a36ea4",
+  "plan_sha256": "ab1498a6ccba8cebb44c592b3af3783cfceb3ea31ddb00dbe07c5733005e1a74",
+  "independent_checks": [
+    "Exact archive inventory and regular files",
+    "All five source copies match executed commit and original plan",
+    "All five cloud object hashes independently read and matched",
+    "Complete raw log hashes match receipt",
+    "Four exact standard-only membership/identity axiom reports",
+    "Four timing input sources still match current sources",
+    "203-module base snapshot independently hash-checked before copy and revalidated by runner"
+  ],
+  "scope": "Four timing inputs plus two deficient census memberships and representative identities. FullMembership remains uncompiled. No finite search rejection."
+}
