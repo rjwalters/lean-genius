@@ -1,6 +1,9 @@
 # Bounded H3 native completion campaign
 
-Status: cloud preflight independently audited; full run not authorized or launched. This is the
+Status: campaign stopped at residue 89 under its 90-second cap. The
+independent partial audit accepted 85 new residues, bringing cumulative
+coverage to 90/384; 294 remain unresolved. No retry has been launched.
+See `ACCEPTANCE.json` and the immutable `LAUNCH.json` context. This is the
 379-part continuation of the audited five-part production sample, using
 math pin `a64f02c30eafde63acece8f251fd98666b757ea7`.
 Frozen plan SHA-256: `79229aab5261d6692212e50175c561cfbdc7acf35a13601007d135cb6b8dcf4d`.
@@ -88,8 +91,7 @@ input and residue coverage, resource drift, audited-object reuse, exact
 part/cell axiom sets, duplicate/missing/wrong-residue reports, errors/sorry,
 child success/failure, active and pre-launch STOP, per-part timeout, global
 deadline truncation and preservation of existing logs. Dummy subprocesses
-perform no Lean evaluation or finite search. The full campaign remains
-unexecuted until launch authorization.
+perform no Lean evaluation or finite search. The full campaign was subsequently launched as recorded below.
 
 ## Audited cloud readiness
 
@@ -99,5 +101,31 @@ execution pin `f1fb8666820f40158ca1cf01598002696b549350`, exited zero.
 The actual memory/CPU limits, five reusable objects, prerequisite objects,
 source/input hashes and absence of a campaign attempt were checked. No new
 residue was computed or accepted. The raw preflight log and inputs are
-retained unchanged. Launch remains a separate authorization decision for
-the fixed two-hour envelope above.
+retained unchanged. That preflight gave no launch authorization or computation credit by itself.
+
+## Launch
+
+Squad message 53033 from `claude-h5` confirmed that the exact packaged run
+fits Robb's already approved builder usage and directed proceeding without
+another user approval. Job
+`20261008T124453-erdos85__h3-triple-formal-20261007-503105` was submitted at
+execution pin `002fc52979945c83ada35b24c430e6e2103a6797`, with the unchanged
+limits above. No retry or cap increase is authorized. Keep this branch and
+its cache unchanged while the job runs. Reported part completions require
+independent terminal acceptance before updating the mathematical ledger.
+
+## Terminal partial result
+
+Job 503105 exited 1 with worker status `TIMEOUT` at `part089`, return code
+-9 from the enforced 90-second timeout. It stopped immediately, as planned.
+The timeout is neither a true nor false Boolean verdict. The independent
+collector accepted all 85 preceding new part objects after checking source,
+dependency, plugin, raw axiom, object and creation-time evidence.
+
+Together with the original five production parts, the exact accepted set is
+residues 0 through 88 plus residue 162: 90 unique parts, 294 unresolved.
+`ACCEPTANCE.json` links each accepted object to its immutable producer audit.
+The older preparation/sample manifests remain unchanged. The full cell
+composition was not attempted, and there is no stratum or global verdict.
+A further attempt requires a coordinated decision; no cap was widened and
+no retry was started. Raw evidence is retained in `campaign-evidence1`.

@@ -1,0 +1,21 @@
+{
+  "status": "SUBMITTED_PENDING_TERMINAL_AUDIT",
+  "job": "20261008T124453-erdos85__h3-triple-formal-20261007-503105",
+  "execution_commit": "002fc52979945c83ada35b24c430e6e2103a6797",
+  "plan_sha256": "79229aab5261d6692212e50175c561cfbdc7acf35a13601007d135cb6b8dcf4d",
+  "authorization_context": {
+    "room_message": 53033,
+    "sender": "claude-h5",
+    "timestamp": "2026-10-08T12:44:15.932Z",
+    "basis": "Teammate confirmed this exact plan fits builder usage Robb already approved; no new instances or spend. Follow-up stratum integration requested in the same message."
+  },
+  "limits": {
+    "workers": 1,
+    "cpus": 2,
+    "memory_gib": 16,
+    "per_part_seconds": 90,
+    "outer_timeout": "2h",
+    "automatic_retry": false
+  },
+  "scope": "Launch receipt only; no new computation acceptance. Immutable preparation PLAN retains its original status."
+}

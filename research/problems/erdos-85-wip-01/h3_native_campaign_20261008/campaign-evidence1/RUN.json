@@ -1,0 +1,3382 @@
+{
+  "status": "TIMEOUT",
+  "started_utc": "2026-10-08T12:44:55.076835+00:00",
+  "plan_sha256": "79229aab5261d6692212e50175c561cfbdc7acf35a13601007d135cb6b8dcf4d",
+  "cgroup_memory_bytes": 17179869184,
+  "cgroup_cpu_max": "200000 100000",
+  "reused_residues": [
+    0,
+    3,
+    5,
+    4,
+    162
+  ],
+  "steps": [
+    {
+      "command": [
+        "leanc",
+        "-O3",
+        "-DLEAN_EXPORTING",
+        "-shared",
+        "-fPIC",
+        "/workspace/proofs/.lake/build/ir/Proofs/Erdos85H3TripleCompletionRuntime.c",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 60,
+      "effective_timeout_seconds": 60,
+      "elapsed_seconds": 1.1143446610003593,
+      "child_user_seconds": 1.04132,
+      "child_system_seconds": 0.039445999999999995,
+      "child_maxrss_kib_cumulative": 102584,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "shared"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart001.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart001.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 14.286100680001255,
+      "child_user_seconds": 13.058525,
+      "child_system_seconds": 1.2198619999999998,
+      "child_maxrss_kib_cumulative": 6485872,
+      "log_sha256": "29deb8019a84951a08b61c7284153eaf99e6c2d9e9553f84d2fe48c8220a45b3",
+      "name": "part001"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart002.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart002.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 11.255805637003505,
+      "child_user_seconds": 10.078707,
+      "child_system_seconds": 1.1698500000000003,
+      "child_maxrss_kib_cumulative": 6485940,
+      "log_sha256": "d0e6208c6157bb04f27801e6a91a9366c28a7a9f1ea0ebfdfaab22e3f071bdd4",
+      "name": "part002"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart006.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart006.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 16.671466519001115,
+      "child_user_seconds": 15.485274,
+      "child_system_seconds": 1.1696429999999998,
+      "child_maxrss_kib_cumulative": 6485940,
+      "log_sha256": "e3dd37b991daabb854bc7bff020c7523ec37d7eb3ea99600c1e1468eac7bf70b",
+      "name": "part006"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart007.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart007.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 14.770734931000334,
+      "child_user_seconds": 13.603377000000002,
+      "child_system_seconds": 1.1602880000000004,
+      "child_maxrss_kib_cumulative": 6486068,
+      "log_sha256": "346105d9c4757c85172954946416945feae33fa629e71f07205ab1ccbb925304",
+      "name": "part007"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart008.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart008.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 7.753545055995346,
+      "child_user_seconds": 6.520727000000001,
+      "child_system_seconds": 1.230137,
+      "child_maxrss_kib_cumulative": 6486068,
+      "log_sha256": "a24452ba94125ece887fc9399120fbff7c2d80e4b378742808bb9980361c4aea",
+      "name": "part008"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart009.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart009.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 28.623370628993143,
+      "child_user_seconds": 27.403043999999994,
+      "child_system_seconds": 1.1801309999999994,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "f0411408856f70af9c9a08a8f5433b035c3613c1e16cb01a8b984d8047bf2748",
+      "name": "part009"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart010.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart010.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 23.220505511002557,
+      "child_user_seconds": 21.979070000000007,
+      "child_system_seconds": 1.2299480000000003,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "07f2ca9633b3743ed39736b01b85706b97498fdfab34971f9debd698081a72c3",
+      "name": "part010"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart011.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart011.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 19.758816873996693,
+      "child_user_seconds": 18.512840999999995,
+      "child_system_seconds": 1.2301889999999993,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "be65f42ccb085bf5dc847588b20cde347e91e606ea43d9b4907e2cd2aa89cad6",
+      "name": "part011"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart012.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart012.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 24.12175312099862,
+      "child_user_seconds": 22.880178,
+      "child_system_seconds": 1.2000090000000014,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "1060f857799b2ef818d8dd98b4b422b9df59cd617c34e533935005b01df98b8f",
+      "name": "part012"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart013.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart013.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 23.972257913002977,
+      "child_user_seconds": 22.76290499999999,
+      "child_system_seconds": 1.1801509999999986,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "39cda0f83d07a208db06ced5d2bf2932fcf5a8a2bd9adce581459d0bee731cd2",
+      "name": "part013"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart014.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart014.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 17.919850680998934,
+      "child_user_seconds": 16.70979300000002,
+      "child_system_seconds": 1.189985,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "f1b3f9a2fd318e8712a140b74b436f414bf4bbf9c2152b9916301de5a5ec4ba2",
+      "name": "part014"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart015.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart015.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 26.975673143999302,
+      "child_user_seconds": 25.84029099999998,
+      "child_system_seconds": 1.130013,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "19ac138e85d74c209ede452a448666c7e77e76eccfdb386563dfea0cd320de64",
+      "name": "part015"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart016.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart016.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 4.517332819996227,
+      "child_user_seconds": 3.2766200000000083,
+      "child_system_seconds": 1.238722000000001,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "0af9ace307f3a52318b5e0157d7382ce34b1bbdcd3902b9f75e64444965128f6",
+      "name": "part016"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart017.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart017.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 4.017520853994938,
+      "child_user_seconds": 2.7607519999999965,
+      "child_system_seconds": 1.2503410000000006,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "2c8f9fcd81a13162a8bec4ab9173c2d1735cd617096d8b34ff93383d746035e2",
+      "name": "part017"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart018.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart018.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 4.415892160002841,
+      "child_user_seconds": 3.192805000000021,
+      "child_system_seconds": 1.2072789999999998,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "5e769102d11535639ac5aec9842d3467f72268568691b1395b9ba2588520def9",
+      "name": "part018"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart019.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart019.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 19.6218786909958,
+      "child_user_seconds": 18.452902999999992,
+      "child_system_seconds": 1.139561999999998,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "f352e08993ef31cf964005eb7986f79bbfb8899ec9098805bf69cccb424242d5",
+      "name": "part019"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart020.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart020.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 6.666104928997811,
+      "child_user_seconds": 5.533412999999996,
+      "child_system_seconds": 1.100679000000003,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "f0247cb7141da8906ecabca0090cbc9295eca84a178991e11e25ec757cf25878",
+      "name": "part020"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart021.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart021.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 28.292622269000276,
+      "child_user_seconds": 27.139062999999993,
+      "child_system_seconds": 1.1499599999999965,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "b3a90cd3fa46f0ddb96a552c7734214161e9872c974bf12e5f0f18d6cc336ccc",
+      "name": "part021"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart022.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart022.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 20.50954924400139,
+      "child_user_seconds": 19.276490000000024,
+      "child_system_seconds": 1.209780000000002,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "5db80049429d5613bc272c24aba39a070c9bd0c27910a54771ec7db8baf7ab0e",
+      "name": "part022"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart023.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart023.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 7.003818937999313,
+      "child_user_seconds": 5.810007999999982,
+      "child_system_seconds": 1.1679910000000007,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "107cf76e23dabeeba83d9c6c5ed81b936e5733e15c29887e54007eb9c6fa5210",
+      "name": "part023"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart024.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart024.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 4.115772227996786,
+      "child_user_seconds": 2.8776940000000195,
+      "child_system_seconds": 1.19904,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "110bf1e0300481c93774c3ebd7229a65d17023c9193d5bbf35645e422573d402",
+      "name": "part024"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart025.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart025.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 17.471485405003477,
+      "child_user_seconds": 16.26553899999999,
+      "child_system_seconds": 1.1696789999999986,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "8e5841754205c5808034a3d66a49a4dfea6e2b9ad15318493923c0c8dcfd8524",
+      "name": "part025"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart026.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart026.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 18.120728322996,
+      "child_user_seconds": 16.85537099999999,
+      "child_system_seconds": 1.219664999999999,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "933ef40883c637d03fa80178876898413faf4bfe3e10a03e07af6b394fce9afc",
+      "name": "part026"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart027.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart027.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 33.62957936000021,
+      "child_user_seconds": 32.478747999999996,
+      "child_system_seconds": 1.1199569999999994,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "f6568e730c76dc6a445bd1f662cbb213bccd8a1909b21526c3f652038dd5fe68",
+      "name": "part027"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart028.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart028.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 4.0023086900037015,
+      "child_user_seconds": 2.737228000000016,
+      "child_system_seconds": 1.248735,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "b11e114b7b7b199f84f9af79963780e7d064209d5027f3ec80602802078b6258",
+      "name": "part028"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart029.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart029.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 6.503585625003325,
+      "child_user_seconds": 5.426211999999964,
+      "child_system_seconds": 1.051204000000002,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "caed876f3106aec1f594df25e4928aad73fde35062257cee9ecd7012ceff4361",
+      "name": "part029"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart030.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart030.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 12.505113434999657,
+      "child_user_seconds": 11.23361600000004,
+      "child_system_seconds": 1.2604050000000022,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "e17aee9a228cf6c2464e10bf9509fca25912ebb818b3edfb86c3e46914587f99",
+      "name": "part030"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart031.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart031.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 3.915411898000457,
+      "child_user_seconds": 2.6384289999999737,
+      "child_system_seconds": 1.2692440000000005,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "f9dcf67866b09155dec181566be1996fa0826c979276de493eecaf26e2e1f155",
+      "name": "part031"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart032.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart032.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 28.87538616600068,
+      "child_user_seconds": 27.63669900000002,
+      "child_system_seconds": 1.190289,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "b59c298bddcdf337816f666322c2d1fca5ab36a107789cc8efb77d2521331747",
+      "name": "part032"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart033.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart033.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 5.565851742001541,
+      "child_user_seconds": 4.415358999999967,
+      "child_system_seconds": 1.1487920000000003,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "5bbf5153d3c4e2fd55cc60bede071cd80ac47bcbb69451e27ebe065ef74e8859",
+      "name": "part033"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart034.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart034.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 33.47485188200517,
+      "child_user_seconds": 32.263761000000045,
+      "child_system_seconds": 1.1701369999999969,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "91ac86171e09a3afffe7b19c110d1c7b644a514c4e2f5086e1581fa856b9ea26",
+      "name": "part034"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart035.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart035.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 3.965179148995958,
+      "child_user_seconds": 2.7987269999999853,
+      "child_system_seconds": 1.1594729999999984,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "5d96f0b84b61e330a37f27d416da66df09d6d05aaa8ee1f7499f821ad0ceade3",
+      "name": "part035"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart036.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart036.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 3.9655557989972294,
+      "child_user_seconds": 2.7546519999999646,
+      "child_system_seconds": 1.2020290000000031,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "a0438c7aedd781873e442715aa9ecd6679dbab5725581ff05d22a44b57e8a168",
+      "name": "part036"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart037.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart037.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 5.2524773409968475,
+      "child_user_seconds": 4.037126999999998,
+      "child_system_seconds": 1.1991469999999964,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "86f82939142cc4d8a2eaac6c50450387335c489cdfbeb0929b49d2050df8f225",
+      "name": "part037"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart038.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart038.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 7.416431802994339,
+      "child_user_seconds": 6.28254000000004,
+      "child_system_seconds": 1.1204530000000048,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "e520581bf7f351dc7c7d8dd7974d3fbfefc110123775417620360fee53eceb08",
+      "name": "part038"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart039.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart039.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 9.86698096699547,
+      "child_user_seconds": 8.63417899999996,
+      "child_system_seconds": 1.190576,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "780c8a7ef1f4af5e459e19ed42d2f7098e92a18212176a5e016a00843fc122ec",
+      "name": "part039"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart040.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart040.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 8.253287640000053,
+      "child_user_seconds": 7.059695000000033,
+      "child_system_seconds": 1.16995,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "ef1557feeedcc2819ca638cf3cdfe100eb3938d23896dccb127311282375f278",
+      "name": "part040"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart041.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart041.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 4.61530854999728,
+      "child_user_seconds": 3.338015999999982,
+      "child_system_seconds": 1.229268999999995,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "56790ebdf13343b87bfb3b17133ba4c7b12df51c5d6164a9c3df2a53cb04a90b",
+      "name": "part041"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart042.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart042.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 9.78514721699321,
+      "child_user_seconds": 8.554404000000034,
+      "child_system_seconds": 1.2192030000000003,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "442e8a2d6629bc5c20e96bca9b22e7ebc176c908c090818c9c57a7ad0f48dd63",
+      "name": "part042"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart043.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart043.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 76.09136763399874,
+      "child_user_seconds": 74.96534300000002,
+      "child_system_seconds": 1.1199300000000036,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "a842f36b56bfcbbb7d7ec4deb15c6c59a58ecd6f9ce1beb5a555467a52d13c0f",
+      "name": "part043"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart044.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart044.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 7.366730567002378,
+      "child_user_seconds": 6.106963999999948,
+      "child_system_seconds": 1.2293889999999976,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "db424511a74b4eeb6b061b1fab5ed56e87cdac267d502c586d0da2713f155001",
+      "name": "part044"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart045.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart045.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 18.67059073600103,
+      "child_user_seconds": 17.484634000000028,
+      "child_system_seconds": 1.1496470000000016,
+      "child_maxrss_kib_cumulative": 6486100,
+      "log_sha256": "86ad5133c615ef506b2c11925ed17ef1f2079719d5ce29e7b23047aa842f1816",
+      "name": "part045"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart046.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart046.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 6.21623385699786,
+      "child_user_seconds": 4.909221000000002,
+      "child_system_seconds": 1.292428000000001,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "51bf8852086b97962aba2d7160ac55c338176a32a4a52fa05f64c881319a7be3",
+      "name": "part046"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart047.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart047.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 5.966340346996731,
+      "child_user_seconds": 4.63646099999994,
+      "child_system_seconds": 1.2790239999999997,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "d6d433efb74ccfd050fd209519dc8622805744c34d9ee38c131764d130db3020",
+      "name": "part047"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart048.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart048.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 6.784132298998884,
+      "child_user_seconds": 5.656223000000068,
+      "child_system_seconds": 1.119251999999996,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "dbd4cfed3d22b069e287b7726cdb3b6b0fc6d27084e1bd512319f1b53064d6ba",
+      "name": "part048"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart049.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart049.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 5.665763732002233,
+      "child_user_seconds": 4.51123999999993,
+      "child_system_seconds": 1.1503160000000037,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "e3aee746bd7a0c80458ddbc54740abd4dd1e59fdb8a679a0f13efb35004e307c",
+      "name": "part049"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart050.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart050.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 4.115204044996062,
+      "child_user_seconds": 2.788004000000001,
+      "child_system_seconds": 1.279084999999995,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "24f6fb7a60694ec6134bfab491dcf26cea0ea5bef5ec93f608c39e3038769e8e",
+      "name": "part050"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart051.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart051.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 7.066637256000831,
+      "child_user_seconds": 5.804102000000057,
+      "child_system_seconds": 1.2487310000000065,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "f912ca109d32771023c9847e9558cf6921989072fd23a6659df34ee394ca0d77",
+      "name": "part051"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart052.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart052.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 5.116322367997782,
+      "child_user_seconds": 3.905446999999981,
+      "child_system_seconds": 1.188613999999994,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "14224f6d6cfbac4800e04675e4cad6ce8babff9bd1f238eb3611edfce0f2b239",
+      "name": "part052"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart053.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart053.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 5.216514732004725,
+      "child_user_seconds": 3.994509999999991,
+      "child_system_seconds": 1.2083399999999997,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "48ee2a7dbfde8bb99849852a5b14948956886011dc1e0469471cb3c22c1c53b5",
+      "name": "part053"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart054.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart054.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 12.618638883999665,
+      "child_user_seconds": 11.380278999999973,
+      "child_system_seconds": 1.2200300000000013,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "f0f3f8e25164c253e50ba503a9f86666610bb5bb3dbdf42e706f1e668708ddd5",
+      "name": "part054"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart055.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart055.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 14.16912539799523,
+      "child_user_seconds": 13.018521000000078,
+      "child_system_seconds": 1.1198720000000009,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "cfe31775b9e262de2eedcb77b3e4f4be4f8f0d47bf5ada829d4d73118207e97b",
+      "name": "part055"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart056.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart056.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 6.253115703999356,
+      "child_user_seconds": 4.982794000000013,
+      "child_system_seconds": 1.2382100000000023,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "d34b47bd1c79791dd45cb3ab4351f680723a7060c6e863736a3085e19cfc9690",
+      "name": "part056"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart057.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart057.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 5.466371654998511,
+      "child_user_seconds": 4.284066999999936,
+      "child_system_seconds": 1.148409000000001,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "9ff4aa7630acc2f7347dbdd18fcfd09ebab9d7bf1eb8f114f4f58deba5fe0184",
+      "name": "part057"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart058.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart058.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 5.815927513001952,
+      "child_user_seconds": 4.575761000000057,
+      "child_system_seconds": 1.2215379999999953,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "fdaed367b48a7fe2388912ad4c2fc177d525bc7af02852393cca906185861d85",
+      "name": "part058"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart059.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart059.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 8.817012603998592,
+      "child_user_seconds": 7.674518999999918,
+      "child_system_seconds": 1.130666000000005,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "c3af992ed19081ee0e2fffab345045c75666002ad3701dd6eb0d304d9a8a232f",
+      "name": "part059"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart060.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart060.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 27.54016488399793,
+      "child_user_seconds": 26.288095,
+      "child_system_seconds": 1.2399099999999947,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "84d70ee50e64946dcc22fd6b6e808db0530426ad044e53430288cccbb0015c8d",
+      "name": "part060"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart061.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart061.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 5.216178276001301,
+      "child_user_seconds": 3.982470000000035,
+      "child_system_seconds": 1.210751000000002,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "5d48a13903dc3da0f7bd679ad9d434cc07b7dde9c4f20e8f53386e3584daa1e4",
+      "name": "part061"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart062.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart062.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 5.31576856400352,
+      "child_user_seconds": 4.070302999999967,
+      "child_system_seconds": 1.217100000000002,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "c931efd68eaecdd20fdf86e939432e596def40e498bc19508f4ec841a510fa86",
+      "name": "part062"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart063.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart063.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 5.502209222002421,
+      "child_user_seconds": 4.305977999999982,
+      "child_system_seconds": 1.158918,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "7bdd45d2eb2f2341a96bc3b52a68dec391f4900bccbabd58955d68154651421b",
+      "name": "part063"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart064.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart064.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 32.42929092200211,
+      "child_user_seconds": 31.211557000000084,
+      "child_system_seconds": 1.169682999999992,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "9d16f8a9aa41a0f7702507ef8f1e096f62a40590308b2631fe0b96f0f9f3307b",
+      "name": "part064"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart065.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart065.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 5.784367056003248,
+      "child_user_seconds": 4.530230999999958,
+      "child_system_seconds": 1.250064000000009,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "2799be13b0fff5469d0e8aefa93dff683b0356599b68cadb08a4ab468f18530e",
+      "name": "part065"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart066.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart066.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 4.002288561001478,
+      "child_user_seconds": 2.7608920000000126,
+      "child_system_seconds": 1.2159889999999933,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "e872b48236da13e8e2939a640bf4541df3584246684b83fb3404e1ef2a95bae2",
+      "name": "part066"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart067.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart067.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 6.753513346004183,
+      "child_user_seconds": 5.638094000000024,
+      "child_system_seconds": 1.097682000000006,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "95c851c390b9ee73d938c9a3d39ce98fb6a822cf0e72de791ce9342a815516e2",
+      "name": "part067"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart068.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart068.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 3.965795910000452,
+      "child_user_seconds": 2.8769979999999578,
+      "child_system_seconds": 1.0588949999999926,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "d8f90670aadece54ea7960c0ba77a538b8d65a9a624963da11cd0efa9e50159d",
+      "name": "part068"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart069.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart069.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 4.502474562999851,
+      "child_user_seconds": 3.389519000000064,
+      "child_system_seconds": 1.0998440000000045,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "fd9a9806899bad0d43110f3415cb3cb2cf9bc859e0102bdc747825b890c947ba",
+      "name": "part069"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart070.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart070.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 5.8163395170049625,
+      "child_user_seconds": 4.594171999999958,
+      "child_system_seconds": 1.2184540000000084,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "962026021fe7f741f57813d13e6ba36b378883a10b80039c2265a1f3a86b9eac",
+      "name": "part070"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart071.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart071.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 15.256065456000215,
+      "child_user_seconds": 14.138133000000039,
+      "child_system_seconds": 1.099854999999991,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "b8c18606bde05bc53e07377ffecd7bded622aa1ec9eac6a8f60929cee8723d54",
+      "name": "part071"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart072.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart072.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 7.9667557810025755,
+      "child_user_seconds": 6.693409999999972,
+      "child_system_seconds": 1.2287900000000036,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "c211f49e5c535a5007d2fcbc0f9363a36dbc0c226b4b8eb04b2599303f6d4420",
+      "name": "part072"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart073.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart073.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 3.9654008410070674,
+      "child_user_seconds": 2.738381000000004,
+      "child_system_seconds": 1.1992910000000023,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "efe75d08a33c6ca91fdbd10a4db559b7a5eb83fd3c55267df4dd02301a3a72e8",
+      "name": "part073"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart074.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart074.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 18.25760149200505,
+      "child_user_seconds": 16.998598000000015,
+      "child_system_seconds": 1.2298979999999915,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "a4845f62d7ecf7e7317b52446d1b91adf385bceab501c563ab876d869e9f59e7",
+      "name": "part074"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart075.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart075.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 4.565772495996498,
+      "child_user_seconds": 3.3753809999999476,
+      "child_system_seconds": 1.1783879999999982,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "7852397e27462b1fc01c0acaa994db2d0f83a0f28a6d89b7686832ac1cb4a9dc",
+      "name": "part075"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart076.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart076.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 21.972758333002275,
+      "child_user_seconds": 20.80857500000002,
+      "child_system_seconds": 1.1499210000000062,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "cb5bc00870bb3348ea79e01e78905ff4005d8c181848b278e224f9357a4c7cc8",
+      "name": "part076"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart077.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart077.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 8.867206054004782,
+      "child_user_seconds": 7.659007999999972,
+      "child_system_seconds": 1.1798469999999952,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "2fc212f2a19fdff8a340d28227cdb01739e3bfee6cc844ca3a9e4b20d20231b5",
+      "name": "part077"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart078.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart078.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 8.167291071993532,
+      "child_user_seconds": 6.949487999999974,
+      "child_system_seconds": 1.1699140000000057,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "c9c82f2d54aae2177147ea6d72cae3ed7c02f42c08efb1aff984b260b6fa19e6",
+      "name": "part078"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart079.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart079.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 5.2157510700053535,
+      "child_user_seconds": 3.9019960000000538,
+      "child_system_seconds": 1.2806549999999959,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "acd88b3f4d58f5318427a46fed64418ff8cb00371ce223097f2a0c54bfde7f15",
+      "name": "part079"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart080.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart080.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 12.168720686997403,
+      "child_user_seconds": 11.032167999999956,
+      "child_system_seconds": 1.1202200000000033,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "101e33a7203143de89582c110244f53c744c0bc5287bdc942aed5043657cdae0",
+      "name": "part080"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart081.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart081.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 8.667789687999175,
+      "child_user_seconds": 7.4087330000000975,
+      "child_system_seconds": 1.2197919999999982,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "43230c458128b70e06acb66efdeee82717887b65be93a8071a9238fe75e75909",
+      "name": "part081"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart082.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart082.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 15.256576545994903,
+      "child_user_seconds": 14.130023999999935,
+      "child_system_seconds": 1.0900019999999984,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "701d1ced660b50734bd78049f891e0a87a6b3b579797a56f669437e6524cbbf4",
+      "name": "part082"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart083.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart083.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 4.465725768000993,
+      "child_user_seconds": 3.2436589999999796,
+      "child_system_seconds": 1.2013550000000066,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "ffd1cd6722ff30b6610453033c53d08cb67fced6ec984631a5433b8368d95bb4",
+      "name": "part083"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart084.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart084.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 18.620899633999215,
+      "child_user_seconds": 17.441685000000007,
+      "child_system_seconds": 1.160111999999998,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "1ad5d3dbce4675584540917fee9f97060a6a05b6681b52f6456fdc68a0565ca3",
+      "name": "part084"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart085.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart085.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 3.965810015994066,
+      "child_user_seconds": 2.820547000000033,
+      "child_system_seconds": 1.1302189999999968,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "5fde8b48b4f41d910e02614ae5aec371316cb76873c5e296ac98aa7503b5073c",
+      "name": "part085"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart086.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart086.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 5.034048866000376,
+      "child_user_seconds": 3.8501119999999673,
+      "child_system_seconds": 1.1800340000000062,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "7dbdf957046575b117b3160855718833a28aeb608a5ed65388db82f23a55a3e8",
+      "name": "part086"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart087.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart087.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 13.669503329998406,
+      "child_user_seconds": 12.594613999999979,
+      "child_system_seconds": 1.0703919999999982,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "67955228db34ff17b5c13fcf8f695c04b9725598705c18913538d2fe8054538e",
+      "name": "part087"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart088.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart088.olean"
+      ],
+      "returncode": 0,
+      "stop_reason": null,
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 8.004123569997319,
+      "child_user_seconds": 6.8013160000000425,
+      "child_system_seconds": 1.1685080000000028,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "18362bc52f0d4befd0b9e0a6c515cf0eb41a522917aeb2256927d4d93865d103",
+      "name": "part088"
+    },
+    {
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_campaign_20261008/attempt1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart089.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart089.olean"
+      ],
+      "returncode": -9,
+      "stop_reason": "TIMEOUT",
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "elapsed_seconds": 90.21225942900492,
+      "child_user_seconds": 89.06616099999997,
+      "child_system_seconds": 1.1399509999999964,
+      "child_maxrss_kib_cumulative": 6487004,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name": "part089"
+    }
+  ],
+  "parts": [
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart001",
+      "source_sha256": "4f8052522b7c4e8f0221f30225d924712b3cec1439406725b1e6c4fd853eb2ac",
+      "object_sha256": "c13391a2aa2f51c3fac9ec8b37d3544c728d25c52eb9dcf847f668cc8258552d",
+      "object_bytes": 6712,
+      "object_mtime": 1791463510.2671645,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_001",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_001._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 1
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart002",
+      "source_sha256": "96152d758116a42d888b18eef4cb5fec4093f673a6dfaae52435dec9894c2218",
+      "object_sha256": "c72c44ec1c3fbcd28953fd3ad10d1a588d4d6fcb46f60c20260dbd7dc9b7371e",
+      "object_bytes": 6712,
+      "object_mtime": 1791463521.5268316,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_002",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_002._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 2
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart006",
+      "source_sha256": "b0c1e989b9e9f5e455766862cf93cce631b16b4b874b8be7b3e325d99031bb88",
+      "object_sha256": "0045ac15947e366f614d3dae1659f3d83db0ff499c937a2f852bd7c6fd2aa004",
+      "object_bytes": 6712,
+      "object_mtime": 1791463538.1939123,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_006",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_006._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 6
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart007",
+      "source_sha256": "85941360358de90be99b6d3a56ac4c7c947fdc788bc579667fe62a5bae755763",
+      "object_sha256": "3edd79825d86160e23f364bbb0bdb5325e5e0e4897cfc7de694eb2a932fc0de0",
+      "object_bytes": 6712,
+      "object_mtime": 1791463552.9774325,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_007",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_007._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 7
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart008",
+      "source_sha256": "3d244792619f3b63a9b497e24f3c589f6904cb278bf65a7e0c75e68c115e4e2f",
+      "object_sha256": "07ced9e2ed9696ef60be5857a401a0820fbb1b9cdbf2074cf29b05a45a321874",
+      "object_bytes": 6712,
+      "object_mtime": 1791463560.7383018,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_008",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_008._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 8
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart009",
+      "source_sha256": "ad18916bdd5cb11359857d6301bbc948c9cd98a3f86f508d1b66e970b9edf838",
+      "object_sha256": "96cee0038bc33dbfd81512ebd6972668c138a9099712a41d66ef53fd0bd99768",
+      "object_bytes": 6712,
+      "object_mtime": 1791463589.3279102,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_009",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_009._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 9
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart010",
+      "source_sha256": "a3da31212bbeee6d58084fa813b3c6579796f6266f7f26e70d94fa95173d1e6d",
+      "object_sha256": "2bf7d15363adfa8b98c5621fe7aec8f73943cf9ea97599844d558e18b3d6e856",
+      "object_bytes": 6712,
+      "object_mtime": 1791463612.5804882,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_010",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_010._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 10
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart011",
+      "source_sha256": "ef89e12261a0e685b5aece6fcc0fd2b290e9b8ae98975e5f3ee31f76034e4aed",
+      "object_sha256": "dc0610760587855b17e75922c6432c65fac8074b9ddbeb90865fb98bd0dcc1d8",
+      "object_bytes": 6712,
+      "object_mtime": 1791463632.343452,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_011",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_011._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 11
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart012",
+      "source_sha256": "11cb544cbf10a6e61c41c1ae050d4ab5ceef65b22cbae88c5b1b876823540c7b",
+      "object_sha256": "3036ef59a37b02f9243074767ece636708a22d55132c8599c8a9ab4136f93ee7",
+      "object_bytes": 6712,
+      "object_mtime": 1791463656.4353318,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_012",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_012._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 12
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart013",
+      "source_sha256": "5c55268e11611d0242329b539d3b294748f0be4173d5a834f0da7ebe726ccd4b",
+      "object_sha256": "2cfbd6a3ded49eafe5fdc937c2345c65f0a7ef7c61e7024e8155eeea98923234",
+      "object_bytes": 6712,
+      "object_mtime": 1791463680.4292743,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_013",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_013._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 13
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart014",
+      "source_sha256": "7304f3bf745a44f8511ef1bae7f4321199496a085587ee5123f7c41596f61b70",
+      "object_sha256": "cfb41fa9ea264af9d1435d7e811b27b458e1f74b4868ad384fcc03e2b7481614",
+      "object_bytes": 6712,
+      "object_mtime": 1791463698.3636332,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_014",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_014._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 14
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart015",
+      "source_sha256": "cb0d053fc13adb26071938c0875b7e14ed219706f11ebafcf661e6b788c01533",
+      "object_sha256": "13d642b6d7d9270e1dfc35713b5383be5c2b68c09b7a8c5e9a1f705672c3f47b",
+      "object_bytes": 6712,
+      "object_mtime": 1791463725.3601015,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_015",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_015._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 15
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart016",
+      "source_sha256": "7acc9cbb84867762ffb8bc1dd23aec74585bee7fea3e79a67927e9685e884351",
+      "object_sha256": "eefd138ad9ed6f64941b3143604bec12117444a582768c60aebb2b3eac881c2a",
+      "object_bytes": 6712,
+      "object_mtime": 1791463729.8756845,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_016",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_016._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 16
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart017",
+      "source_sha256": "1a420303d9e8947f5a0f828b14c08e4dbca0cfca82d0287c035f51c361caadc9",
+      "object_sha256": "bbd2896aca7fcfdff1f06ce834321bcc94dadd0598dbd5a8017f57deb7fb146d",
+      "object_bytes": 6712,
+      "object_mtime": 1791463733.893575,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_017",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_017._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 17
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart018",
+      "source_sha256": "4d88be72652c46dfd155e1b4d8cf6f996526dd921bca1e93cb2a6f674a1246cc",
+      "object_sha256": "a791795dbd594da3496ddd73a4d77504dd57d0edfb76a0808beea946d2366e23",
+      "object_bytes": 6712,
+      "object_mtime": 1791463738.311412,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_018",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_018._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 18
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart019",
+      "source_sha256": "ef330cd6770087118589af2b7f8663d7f5bbb8e4dd5f240d25bb540b6f1cdf48",
+      "object_sha256": "d60d2c58edb4bf3209dad4068b37e5d2efd2ae87f6bb39c6d5212730dbdafc99",
+      "object_bytes": 6712,
+      "object_mtime": 1791463757.9131417,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_019",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_019._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 19
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart020",
+      "source_sha256": "0b86aebec2742082bfcb4fcc3d6cf365aa338e2d139f5f84ea194404a10070fd",
+      "object_sha256": "c58cdc20c9a0f1fe8aa2023423deee341501498a40b7ac43663b5163b117fd44",
+      "object_bytes": 6712,
+      "object_mtime": 1791463764.5857897,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_020",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_020._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 20
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart021",
+      "source_sha256": "f59d6e6f1b9852c15429a1e3ffdcbcc66e4642b2b101fda7d078907dd658471f",
+      "object_sha256": "ebb722485f41f3313a2e86f5a8fe0d51cdd8a172e262a8864130541631d13c46",
+      "object_bytes": 6712,
+      "object_mtime": 1791463792.9118748,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_021",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_021._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 21
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart022",
+      "source_sha256": "42f90d0bbb5117a0a2ba39d75dc9cff439655014b3f25999dead4ad2a3c9ff3f",
+      "object_sha256": "af847dffebb4bde422b1da1bcdbb3f24528834586619bf4a091380e6b908db6e",
+      "object_bytes": 6712,
+      "object_mtime": 1791463813.404876,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_022",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_022._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 22
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart023",
+      "source_sha256": "3a884854401f22f91d6892c88715da3e5f7fcacd575a16a3724311b48fd44026",
+      "object_sha256": "30fa9b93a62cf217a1bf4268c58a0fbc8b68560a425cd610c59d754ba8f4d79b",
+      "object_bytes": 6712,
+      "object_mtime": 1791463820.4067974,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_023",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_023._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 23
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart024",
+      "source_sha256": "e683d6af9c7e6e067bfa1909a4a1fe096d6c290f7f4ce0379103b444a6e5475e",
+      "object_sha256": "7091ebb1c8cc0d9789bbfaac3359db24b35f9da874746d7534995c9466cc9d31",
+      "object_bytes": 6712,
+      "object_mtime": 1791463824.5211313,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_024",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_024._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 24
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart025",
+      "source_sha256": "03b31d0ed3e34d2104fad48dc83763c8235ac8fcca57a6713477c3e27525a7c5",
+      "object_sha256": "0799f9341da1cc65a5f52cab21f3efff9c42686dcbc28646b5ea33cf81a3d4a3",
+      "object_bytes": 6712,
+      "object_mtime": 1791463841.997844,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_025",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_025._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 25
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart026",
+      "source_sha256": "3b0dd192924c4cbf5f6f0e7c4edd0be12a4173f140b32827185607f0fc088efe",
+      "object_sha256": "ed33dec0ea3e33328e27402cb9943e3ec5659581bc26385b16fe726b81342a7b",
+      "object_bytes": 6712,
+      "object_mtime": 1791463860.1102912,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_026",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_026._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 26
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart027",
+      "source_sha256": "6f1ae28c46719cfb67e4a54fc258a193c956bbebdbc52ae8ad1918322882c0fd",
+      "object_sha256": "731713c3cda41da4a38406ba0ddc8cec9ee868e3f055b621f4d45eb016b079f4",
+      "object_bytes": 6712,
+      "object_mtime": 1791463893.768963,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_027",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_027._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 27
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart028",
+      "source_sha256": "f8788e440c7cb9d70f304608f825df67cd1b80a0b7bc22ca8b0dec6d44b98970",
+      "object_sha256": "b568badc21ba322f069de61f436ba3367f311ea23bbb535ce1770f9f66ef28bf",
+      "object_bytes": 6712,
+      "object_mtime": 1791463897.793432,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_028",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_028._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 28
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart029",
+      "source_sha256": "b6fcf2edf3fb9ff607d3b6a33f375114768185a1e1fd03866c6429ad7aa11ca9",
+      "object_sha256": "5120537e6ba5379ff57097bdd2ee7e718a615c7f33fd7c10f4c0f309d05e8559",
+      "object_bytes": 6712,
+      "object_mtime": 1791463904.2839215,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_029",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_029._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 29
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart030",
+      "source_sha256": "90cb08951044d96ac7b09e9da8fe255bb5f10e28d7937fbe15221659ec2fb863",
+      "object_sha256": "9cd75bdbdfce0dd6962e63fd5dc73459e30d1e6f577e756e9034352e9e456a44",
+      "object_bytes": 6712,
+      "object_mtime": 1791463916.812316,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_030",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_030._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 30
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart031",
+      "source_sha256": "41619ae912e816e166d63e7a35ca950bdb24d8304e2eb953f08912adaa70f1b3",
+      "object_sha256": "6248b16f6862d94ba06eb23270e53cbac11d534061454e6427f286ae8a3e5b46",
+      "object_bytes": 6712,
+      "object_mtime": 1791463920.7353923,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_031",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_031._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 31
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart032",
+      "source_sha256": "2fef030699fcefae3cf65a02580f13b3713508dc84ebb69c3f204b2b9f89e1a8",
+      "object_sha256": "6aa8bf7c33d0d747102de462178ea8c2a02bcaf5c555a0464070063d217e0a42",
+      "object_bytes": 6712,
+      "object_mtime": 1791463949.570165,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_032",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_032._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 32
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart033",
+      "source_sha256": "f04eefb5f382a10f8cdba9202cf6373e444c8fcb31893d0797163b9858d02497",
+      "object_sha256": "215e72168300ac02839152f781808b553973aade95bfb54d442d322ad993d691",
+      "object_bytes": 6712,
+      "object_mtime": 1791463955.1889834,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_033",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_033._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 33
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart034",
+      "source_sha256": "aa774db9a26b89b487bc91448940aa29d9ee4dfb3cfd2cc9303f1d7d8459d1a0",
+      "object_sha256": "772304f64c3b2db18385901176e3b34f85fc2f60b88fd863057231aee2d68c8f",
+      "object_bytes": 6712,
+      "object_mtime": 1791463988.6267557,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_034",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_034._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 34
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart035",
+      "source_sha256": "2529d7ea43908893beb2e7703eac63226320bbcb1819d6bb99cc77fe85f1498f",
+      "object_sha256": "fd93ed8a583c10008b24f00f51ac07ffefa62dc526d669a50a16c5442ba6295c",
+      "object_bytes": 6712,
+      "object_mtime": 1791463992.6355019,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_035",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_035._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 35
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart036",
+      "source_sha256": "84f313d911ffa1c4551a531c1e4c420f3c99684ca9df4c817e5b1558fdc5ab4b",
+      "object_sha256": "ccc979b1cec3aaa2b5b75af3a78980a268834ad999e848facfc976313ff38852",
+      "object_bytes": 6712,
+      "object_mtime": 1791463996.5977607,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_036",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_036._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 36
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart037",
+      "source_sha256": "6ad26c7bb1e04e229c6df2d3d5b0751452768be9706d494097a77ed05cc106a5",
+      "object_sha256": "be27c15bd034ac55897bc9b653c9d710a7e2dd7b0fffbcfc3eb49e647bf89831",
+      "object_bytes": 6712,
+      "object_mtime": 1791464001.845918,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_037",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_037._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 37
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart038",
+      "source_sha256": "8aa44dffe45113c4b662e0bde4739f83bb064c343f21ab6303d184126e86209f",
+      "object_sha256": "6257425864c93fca241ae0ce3a41ce4ec7adab1c92565ebaea2115f104d72f59",
+      "object_bytes": 6712,
+      "object_mtime": 1791464009.2787411,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_038",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_038._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 38
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart039",
+      "source_sha256": "f0d1930e9c4062f9cc039f95687e128979f807fa762a27312ebf2fba1e6d0c85",
+      "object_sha256": "545b9dbef35018e1944799cb76ade7d2be964f58bf53129878889dab426c0e9b",
+      "object_bytes": 6712,
+      "object_mtime": 1791464019.1179152,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_039",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_039._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 39
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart040",
+      "source_sha256": "1450104e05dd149ff8d1e820a51a08724c1ab4430848845cec721a5fb4c5864e",
+      "object_sha256": "bb4e4763eedc55a08e192ef577907dfc2e0d0617886df32cbffa8f1c914fda50",
+      "object_bytes": 6712,
+      "object_mtime": 1791464027.3650093,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_040",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_040._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 40
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart041",
+      "source_sha256": "f759df92514dfb60448f3840d94486268e92d07e7097513dd6d4f5b76b7a7189",
+      "object_sha256": "fa77cd2191140c4eed83339e2a6e82753ee2da7b88bd2c3f4c4e186291a51257",
+      "object_bytes": 6712,
+      "object_mtime": 1791464031.995606,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_041",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_041._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 41
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart042",
+      "source_sha256": "4b0a3055f63040f1200e6b67957cc46550972eac04ba04d30a965289c06e151d",
+      "object_sha256": "f7ad58be3ac9cf82cda090a24869b7a52d9c579d9604236888f6fdadf46069cf",
+      "object_bytes": 6712,
+      "object_mtime": 1791464041.8256924,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_042",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_042._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 42
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart043",
+      "source_sha256": "bec143719ebb573a1ca61c472193d3267b424a195f6fe730a7a1f9f904c9a1ee",
+      "object_sha256": "fe14d7cb236ec02dfd64ef5237a7c1b0693301ce312203e2b7d329c8bb873336",
+      "object_bytes": 6712,
+      "object_mtime": 1791464117.931131,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_043",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_043._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 43
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart044",
+      "source_sha256": "08c203923755335fcbaa709a20d25b5cf9b4237aab54d7447633b618747b1c28",
+      "object_sha256": "1ae337a0c0ff7cace6680b1e4b882def9b11a3fdc49fa7fbca97f8de9ae1b6a1",
+      "object_bytes": 6712,
+      "object_mtime": 1791464125.2669222,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_044",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_044._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 44
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart045",
+      "source_sha256": "1573b83f88e4e890a0ef5a73a4a28ee9a1809991734a7fd2b4342ff0ae1ba513",
+      "object_sha256": "59df4dfe919fe68b88ee119ebb3c4a10ceb54c067bfd1ead33b078a86bd1ea6c",
+      "object_bytes": 6712,
+      "object_mtime": 1791464143.9367979,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_045",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_045._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 45
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart046",
+      "source_sha256": "4b09bb8cc003893fca3f49ce99b0c74972d55ce6d963d004721e41dddc1097dc",
+      "object_sha256": "4058fcce7cab8c108bf2e12c1ff97ce8121014dd3708d35b6d5d564524da69b6",
+      "object_bytes": 6712,
+      "object_mtime": 1791464150.1822941,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_046",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_046._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 46
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart047",
+      "source_sha256": "ea6f4aac5a7a93553cb9081452811f8a7d91be96b5c4afe7613c3ce82fb92eb9",
+      "object_sha256": "fd99fcdc88adf3234e2cb2627bbaf5619570bd4c837098a1afc3f0ba8a25c530",
+      "object_bytes": 6712,
+      "object_mtime": 1791464156.1120014,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_047",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_047._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 47
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart048",
+      "source_sha256": "3d684ee2b46d1acae0c71578698ae152d5a4cd1e3cb5a411c93f3513b512baf2",
+      "object_sha256": "3bc1bec966af61068f28eebac81e44a6f8543440144929e7a2b78b9ace837e9f",
+      "object_bytes": 6712,
+      "object_mtime": 1791464162.9431934,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_048",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_048._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 48
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart049",
+      "source_sha256": "e4c75aba87ed8ca9d42c16813fce8a8454457e04fad904cbe8b276203914c83f",
+      "object_sha256": "9f8c0a20b287733de6cdffaed011afec6dab52e9c9853930558f14ce486716d8",
+      "object_bytes": 6712,
+      "object_mtime": 1791464168.6220124,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_049",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_049._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 49
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart050",
+      "source_sha256": "06b82282499d8be741da1a03801d9da5288c1a6415ad1e43ac215bb73487d120",
+      "object_sha256": "60af3991ba31854f0830f4c6c742f6fa42dd940b2e38a5135c3222d80ef64a6a",
+      "object_bytes": 6712,
+      "object_mtime": 1791464172.7029753,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_050",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_050._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 50
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart051",
+      "source_sha256": "58bde77ca20efffed9da0b83781ceb905973429055c823cec0112ef264cccba0",
+      "object_sha256": "9da5d328d76047d4ed051072f708ef80734c0d33219f7d99b13dac57f673bb23",
+      "object_bytes": 6712,
+      "object_mtime": 1791464179.8085055,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_051",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_051._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 51
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart052",
+      "source_sha256": "8169e338c0ec486e4ce1381db9940180a9c08310196dd0572f4536ebdbcbecd9",
+      "object_sha256": "1f7ac7f8fb91fa67343e4b344194b11ef1d8624100985176b2cf814ef15eb45d",
+      "object_bytes": 6712,
+      "object_mtime": 1791464184.9365296,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_052",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_052._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 52
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart053",
+      "source_sha256": "b0184ba2d62f4f4f70898e7a9bb672d9b31c7b1bf67f63757a6216b0215e2ab8",
+      "object_sha256": "c5623ca83efc021590c7ea2d6bc61d7df1e9a47348d808fc41f19e13b8fe5ff3",
+      "object_bytes": 6712,
+      "object_mtime": 1791464190.1601024,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_053",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_053._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 53
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart054",
+      "source_sha256": "eea8882da8276f3326cbfdbfcb12d1df88e3c5539c4071866d208c4278586f85",
+      "object_sha256": "bf7b66150eeafb7f4d99918e1e755d2ee43f0c24ac5cd635fe78c1edcfa3af45",
+      "object_bytes": 6712,
+      "object_mtime": 1791464202.7889352,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_054",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_054._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 54
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart055",
+      "source_sha256": "413e9948d3522bcb1e5307dc2239c305d3bf91fa4dddd029295f4d4a651c29dc",
+      "object_sha256": "591be9f62c5f92f12d30512230f5a2c7f837aecb45333a4cfe18c26db6686c60",
+      "object_bytes": 6712,
+      "object_mtime": 1791464216.948483,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_055",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_055._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 55
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart056",
+      "source_sha256": "ae0d5558239ff7d0350ed0f54679ed39cda85a65df6c99ee28a3d9e3efd26868",
+      "object_sha256": "b9571342f64187ffc4e8b56c0f3eeee8337d0258900bb34ee7b566cda4d3035c",
+      "object_bytes": 6712,
+      "object_mtime": 1791464223.203267,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_056",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_056._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 56
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart057",
+      "source_sha256": "666815c9cf75e4585d5c3e0b0d1fe868cd439a0bb511c44d54e690ef41d5423a",
+      "object_sha256": "55de5d0928bcf78036ebe0e2772f17fbeda9ea35e25d00b86f6042005c3ccffa",
+      "object_bytes": 6712,
+      "object_mtime": 1791464228.672929,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_057",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_057._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 57
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart058",
+      "source_sha256": "37777282374a6f53383b95050f7b23ece2792b5c73b550849d94d200708130f8",
+      "object_sha256": "8b4132eafa684f9fef47a62382023e63ea8228a9519d1b8c9187de207d70f106",
+      "object_bytes": 6712,
+      "object_mtime": 1791464234.5070915,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_058",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_058._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 58
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart059",
+      "source_sha256": "d95966b5b272c28baedc019195d47bdc9d2cf09b2a369301c6cc12887a1e9419",
+      "object_sha256": "dfa6dc9a0d8017acadaa23387c98277589a5386345297c467b929c2caed5f361",
+      "object_bytes": 6712,
+      "object_mtime": 1791464243.3425682,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_059",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_059._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 59
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart060",
+      "source_sha256": "dbcc318489f9deb81ccf917af50d19afcd91d5e6b262e89ea558a3293c4b7891",
+      "object_sha256": "4b11b8475d6a0ff86a331a063e6be518f6597151c86858470e673a06754a58ee",
+      "object_bytes": 6712,
+      "object_mtime": 1791464270.8932998,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_060",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_060._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 60
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart061",
+      "source_sha256": "a9875d502ca75857ffe14c53aec78ee8983e738923739aa9b2601769b76791e2",
+      "object_sha256": "10ae85cde4bd10a12c97e7efbbeb95f7a5aef071875be4209220109cf9c70fa0",
+      "object_bytes": 6712,
+      "object_mtime": 1791464276.0990598,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_061",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_061._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 61
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart062",
+      "source_sha256": "d19d104d4ed5112da45d783565bf3cae2525701ed4087266eeb24386f2239834",
+      "object_sha256": "c7d13400955052ae71e743dc8bdc39614a78d964c2b43e8d117febbce07e7bac",
+      "object_bytes": 6712,
+      "object_mtime": 1791464281.4166603,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_062",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_062._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 62
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart063",
+      "source_sha256": "bcb09ac4a29b536ce757e1b54ac9de2fe9f99a0580e8ca9cc2870c17443a2942",
+      "object_sha256": "44727e38ff76fd0a38f8afe818d2600f5961ee7592a1ff5daf6412b3b51a67ca",
+      "object_bytes": 6712,
+      "object_mtime": 1791464286.920611,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_063",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_063._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 63
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart064",
+      "source_sha256": "aeba214d9c60617455a3f8459dc6e1c867855fc967b63b3aeea9c36a5900be20",
+      "object_sha256": "11b0550aadf09d55e253480e06b084e0f0154f8a4e79d86b70b0af52d8483183",
+      "object_bytes": 6712,
+      "object_mtime": 1791464319.3438904,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_064",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_064._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 64
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart065",
+      "source_sha256": "8b807ec6390a5de15f4f2aeb27b847ec7d69d56798f9ef00318ddf65c13ce2f0",
+      "object_sha256": "73bf5bca3a74ba387958338308ba2627337fcf66b989b79bc2485c5dc060f15c",
+      "object_bytes": 6712,
+      "object_mtime": 1791464325.1766195,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_065",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_065._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 65
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart066",
+      "source_sha256": "9a5e0ad6f2a11a98e234a444dd866a4a49b78333213af76ae22aa327e97d998d",
+      "object_sha256": "5ccd1571d20af9afc63839cbd8411aed7ee8fa4dbfd20d7fcbb80c93af2edb7a",
+      "object_bytes": 6712,
+      "object_mtime": 1791464329.1627834,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_066",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_066._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 66
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart067",
+      "source_sha256": "b061f6dd0d9c04f6bbe0b74a994329021692ed7436b7fdc3de1f62f6407614c2",
+      "object_sha256": "96b59d907d2ac8d46420ba34299cff7648fa9c8bf01b4711058ec5418defeff0",
+      "object_bytes": 6712,
+      "object_mtime": 1791464335.9371927,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_067",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_067._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 67
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart068",
+      "source_sha256": "fb8e7f879f7c27b9d8d5796b92301ff26ffdc749943df421eb9c5e7fb3a46571",
+      "object_sha256": "6b450947691f38e440b9a1eb60585f17af61d0731506725107136fd46067d77e",
+      "object_bytes": 6712,
+      "object_mtime": 1791464339.8938131,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_068",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_068._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 68
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart069",
+      "source_sha256": "e9b131fa0826f3bf9624a598a6d58ace7212341374be52ad3a331538d14603fa",
+      "object_sha256": "4efffefa2c67032a9e5f16f8ff9d5555c3e06df6e7585609bafd746ac8b2fcd5",
+      "object_bytes": 6712,
+      "object_mtime": 1791464344.420585,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_069",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_069._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 69
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart070",
+      "source_sha256": "0c576ebd086e2444d645c833490373f87401bdd3dec57ff77d90a1e8c003dcbc",
+      "object_sha256": "e139a3e12c62793118baec0b02ee5bb6518b564d052590820ac98b687ead85a3",
+      "object_bytes": 6712,
+      "object_mtime": 1791464350.2506278,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_070",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_070._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 70
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart071",
+      "source_sha256": "b0b3ead93d4adf4e273c6b7cd03c239110e41332152ae4d9cd7982a1335ef3c2",
+      "object_sha256": "2ebf6aeb12bee3bd88e865eb43dcc738ab4764e922c3768480149cead9590fd1",
+      "object_bytes": 6712,
+      "object_mtime": 1791464365.5045762,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_071",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_071._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 71
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart072",
+      "source_sha256": "062e64ec08a5bd2740a5ec7c6821a9c2b224ce3d30563684e8b8e7fc37e93a9d",
+      "object_sha256": "578882f5cb5180df89332b97885785dacca9fcb5394df39790899099e99f2eec",
+      "object_bytes": 6712,
+      "object_mtime": 1791464373.4594111,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_072",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_072._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 72
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart073",
+      "source_sha256": "846810c8cfff2c4086cd948180d00273a2564615ba91cc2348ddadb9b0581be2",
+      "object_sha256": "8f511d5c3e3c5e9765bf03d60a6fd419d6de6930279363e06cd4d28f15e1a72e",
+      "object_bytes": 6712,
+      "object_mtime": 1791464377.4412358,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_073",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_073._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 73
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart074",
+      "source_sha256": "616ece40e3ee79d57fe0b31e44847ccda4e28e1b52067a49f9a783b0c37d936f",
+      "object_sha256": "d1968a1a64c27df9c8e658d0349f83a6d7cb4051132a2d27c9541fe64359387a",
+      "object_bytes": 6712,
+      "object_mtime": 1791464395.7009053,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_074",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_074._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 74
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart075",
+      "source_sha256": "e6fccfaad416dca91e8fefca57610f0b3328f0b487037edfaa386fbc6b42911e",
+      "object_sha256": "471c1af756179bec07917b587f585dec9fcb62fd18ced5c18d78dd1bf29dc1f7",
+      "object_bytes": 6712,
+      "object_mtime": 1791464400.2872443,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_075",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_075._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 75
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart076",
+      "source_sha256": "d6e1d797bc5fe195810f9dda2229c347a4acfe77b3a7e7c44a2c23abbe7a97d8",
+      "object_sha256": "a5d21c92798fde5ac5db133c36b502cde389991b95cc55ef978b49302d8a41c9",
+      "object_bytes": 6712,
+      "object_mtime": 1791464422.2646356,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_076",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_076._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 76
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart077",
+      "source_sha256": "77134642207010a0a7307828ac0e0a492b2eb03f6d9d8b9f31cfe21c40c655f4",
+      "object_sha256": "edebab657f412d881dcb2ae240c87d23f3b6a54340f977bd35ab816f9b3be6fc",
+      "object_bytes": 6712,
+      "object_mtime": 1791464431.127221,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_077",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_077._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 77
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart078",
+      "source_sha256": "fdf1af2dfc784d2b8ec04c6a1bd6e688e9be4d71943e0f3973277e074d35ff13",
+      "object_sha256": "7bd6a21fd49c122cd682072ee7e88ef0ccd298842b211b34abc466e51435fb51",
+      "object_bytes": 6712,
+      "object_mtime": 1791464439.2840157,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_078",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_078._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 78
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart079",
+      "source_sha256": "0f7ca4469ad32152e6f6c156c3d77b4a822c7db2f6a54e50f86a078416ffa5e9",
+      "object_sha256": "eaadbcfa837048bbb00382c346b3387dc28b21cb818bc97d736c8bc77716fce1",
+      "object_bytes": 6712,
+      "object_mtime": 1791464444.522551,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_079",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_079._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 79
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart080",
+      "source_sha256": "de202355b2223e8748ded24ab0dac285921875e365738937c89b8c6d9dc4ba14",
+      "object_sha256": "ea669ee07a589a8d9711cdd88add4b25e6b87b8778247a453c6fd24fc066faf2",
+      "object_bytes": 6712,
+      "object_mtime": 1791464456.7168844,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_080",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_080._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 80
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart081",
+      "source_sha256": "4dd1b1f1174de2a9af959f71e6ca9156523c8627816fabfd35d4445b9fb23732",
+      "object_sha256": "0abd8b829ad012b735e7ad2370fbf2316ba8efc2c4c44521996e25504c294cb0",
+      "object_bytes": 6712,
+      "object_mtime": 1791464465.3704305,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_081",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_081._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 81
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart082",
+      "source_sha256": "d35841557555855f664bf332d669eb9f62f50a121b4a24ded11bcf4a031e12c5",
+      "object_sha256": "79ac8bfc8c787d097177c9a1745702942d038a9238a79a127206af0e665dbecf",
+      "object_bytes": 6712,
+      "object_mtime": 1791464480.6406937,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_082",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_082._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 82
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart083",
+      "source_sha256": "a36e7f488cd6027a4b53aa9a86a58f1360a731ff16d63317b5efef106f52b6e7",
+      "object_sha256": "7404a0b6c60cca9bf75713a9e309d82e327dff3b6ba12490adfca53b6c48ac61",
+      "object_bytes": 6712,
+      "object_mtime": 1791464485.1276817,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_083",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_083._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 83
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart084",
+      "source_sha256": "d3ff748c36c2f20d75eb33b4a10a0026509c3531ce9527731ab9060219a0e176",
+      "object_sha256": "c90f75a300bf55d62a18a89a109bca83ac88b76724964afffcafc0b1356be95d",
+      "object_bytes": 6712,
+      "object_mtime": 1791464503.7587993,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_084",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_084._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 84
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart085",
+      "source_sha256": "c25696638749d2b27d3efa365256d008539afba8d68454bc65dc66f9a910d301",
+      "object_sha256": "274a5197df646d31acef605cb16d180ddaaf4e8b23fd98b47ee40fcb6a672328",
+      "object_bytes": 6712,
+      "object_mtime": 1791464507.7412562,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_085",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_085._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 85
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart086",
+      "source_sha256": "9d5a59f1cf41e687051384b1134387fa9661e0763f53c281a5119438f36ecac8",
+      "object_sha256": "7297bc48f26a3397802b655a014cc7c791642c343564bbba3f784d2efaf1f7a5",
+      "object_bytes": 6712,
+      "object_mtime": 1791464512.796703,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_086",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_086._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 86
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart087",
+      "source_sha256": "9a49be63ebb511ea942e9b3ca8c26770b9c5bd53e10cb4e8618b54752fe8093e",
+      "object_sha256": "f970a894490e8936ef54b6a2030fd7b7f369d8034000f9d421dae60756e18302",
+      "object_bytes": 6712,
+      "object_mtime": 1791464526.4659572,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_087",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_087._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 87
+    },
+    {
+      "module": "Proofs.Erdos85H3TripleCompletionPart088",
+      "source_sha256": "2d8ee125c6c80a8fe9325a20762c4558b4493efb4d708432e6f12cc96da92acd",
+      "object_sha256": "9d1a7861a39041e86af8eaa23a152c584988cd5faa85effd08d8a08abbeba41a",
+      "object_bytes": 6712,
+      "object_mtime": 1791464534.4472988,
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.triplePart_384_088",
+          "axioms": [
+            "propext",
+            "Quot.sound",
+            "Erdos85.H3TripleCompletion.triplePart_384_088._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "status": "COMPILED_PENDING_AUDIT",
+      "residue": 88
+    }
+  ],
+  "initializer": "initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+  "scope": "H3 triple cell (3,1) only. No old census credit, whole-H3 stratum, global order-49 theorem, or paper publication.",
+  "library": {
+    "sha256": "34da36a0730f0dfc6dd6d5c9f2cf47119b1ee8fe86e95a606067546422e6cdeb",
+    "bytes": 179320
+  },
+  "elapsed_seconds": 1129.8378018510048
+}
