@@ -52,3 +52,30 @@ resume. A `PASS` for this package will still leave the finite rejection
 hypotheses open.
 
 Use `python3 check.py --plan` for a read-only inventory without Lean.
+
+`audit.py` independently checks a completed build's retained evidence without
+running Lean or changing build files. It requires the original source copies,
+objects, logs, individual receipts, and `RUN.json` for both builds. It checks
+the complete source inventory, dependency commands and hashes, compiler
+commands, object hashes, and axiom reports parsed directly from compiler logs.
+It rejects incomplete receipts, changed artifacts, and nonstandard axioms.
+The final build must also record the exact prerequisite receipt hash.
+
+Run on the cloud host with this script available (the running build branch
+does not need to be advanced):
+
+```sh
+python3 audit.py --repository /opt/e85/wt/erdos85__h3-census-20261008 \
+  --base-build /opt/e85/wt/erdos85__h3-census-20261008/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full \
+  --output /opt/e85/wt/erdos85__h3-census-20261008/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first
+```
+
+The recorded container repository defaults to `/workspace`; override
+`--recorded-repository` only for a build that used a different mount path.
+Validation of the audit: a valid synthetic receipt was accepted and seven
+variants were rejected (running status, missing module, changed source,
+changed object, changed log, mismatched individual receipt, and nonstandard
+axioms). The audit also passed against the real full-census prerequisite:
+107 modules and 228 axiom reports, receipt SHA-256
+`9924e45dfa932bae6af3607eb7de97e4b77d590366bf8d4bb9eaaf8de480236f`.
+The final 342-module audit remains pending completion of its cloud build.
