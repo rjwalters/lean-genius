@@ -25,3 +25,10 @@ Cloud job `20261008T050920-erdos85__h3-triple-formal-20261007-210533`
 uses source `41efcf17a72`, 32 GiB, four Lake threads (one per direct Lean
 compiler), and a 30-minute cap. The 614 prerequisite files were hash-checked
 before and after copying. `launch.json` records the submission provenance.
+
+The first launch exited 2 before Lean because root-owned staging directories
+blocked checkout. Its follower log and failed receipt are retained. Ownership
+was corrected only for this new package, and its three committed source files
+were restored exactly. Retry `20261008T051053-erdos85__h3-triple-formal-20261007-212516`
+uses the same proof/checker bytes at `11d4ba4b3b3`; `retry-launch.json` records
+the bounded submission. No native search was repeated.

@@ -1,0 +1,18 @@
+{
+  "status": "SUBMITTED",
+  "job": "20261008T051053-erdos85__h3-triple-formal-20261007-212516",
+  "execution_commit": "11d4ba4b3b32f33988970c1ef9937c3c56fe58c5",
+  "memory_gib": 32,
+  "lake_threads": 4,
+  "lean_threads": 1,
+  "timeout": "30m",
+  "prerequisite_copied_files": 614,
+  "prerequisite_manifest_sha256": "5f2acd4f2e727dcd589b5f62368b9cbd55b39b7baf5d4ca63b13ab723c2eb5a8",
+  "source_sha256": {
+    "Deficient1553.lean": "5e6f06cf69c7cfda568268d47c46c2019ca848392684f3abf5200cd264846720",
+    "check.py": "fe007a3f9b58d93bdc7ed2591523f43ea223825f7a264ad66b947747278acec4"
+  },
+  "scope": "Consume existing native certificate; no native rejection search repeated.",
+  "previous_launch": "launch.json",
+  "correction": "Only staged package ownership corrected, then three source files restored exactly; no proof changes"
+}
