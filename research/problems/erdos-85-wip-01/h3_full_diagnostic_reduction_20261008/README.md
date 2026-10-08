@@ -1,6 +1,26 @@
 # Consume the full diagnostic certificates
 
-Status: **Full259-only build prepared; U54/R20 timed out and Full258 remains blocked**.
+Status: **Full259 compiled and independently audited PASS; Full258 remains blocked**.
+
+Full259 build `20261008T085716-erdos85__h3-triple-formal-20261007-357296`
+and audit `20261008T085913-erdos85__h3-triple-formal-20261007-359172`
+both exited 0 at execution commit `9761aeec04b88e042d570f788a1fc7d7e8270bce`.
+The composition took 4.722 s wall, 3.620 s user CPU, 1.458 s system CPU,
+and 6,842,052 KiB peak RSS. The six exports have exactly the trust sets below.
+No native rejection search was repeated, and no new computation credit was
+created: the previously verified U3/R3 result is now formally connected.
+
+Evidence is in `full259-evidence/`. RUN SHA-256:
+`a0816150ca3127f6500f2caa6132bc6740f97946a42416d48513cef04c65409f`.
+Full259 object SHA-256:
+`3240bd42f42caecc7b2dadf7881b7ba0394b20db051f723122062404bde42b68`.
+The object remains on the existing builder in `_build/full259-first/`;
+the independent audit inspected its actual bytes. Raw build/audit job logs,
+source bytes, individual receipt, dependency log and execution scripts are
+retained. The first audit launch (job 358295, exit 1) failed before executing
+Python because shell redirection into the Docker-owned directory was denied.
+Its raw record is retained; the successful read-only audit printed to the
+host job log instead. `AUDIT.json` is extracted from that log.
 
 The U54/R20 job exited 124 at its two-hour cap, with no completed certificate.
 Its raw timeout evidence is in `../h3_varied_pilot_20261008/FullU54R20-timeout-evidence/`.
@@ -9,7 +29,7 @@ This mode neither requests nor credits U54/R20. Full258 continues to require an 
 verified U54/R20 certificate. No native search should be repeated just to run
 the Full259 connection.
 
-`Full259.lean` proposes consuming the independently audited U3/R3 native
+`Full259.lean` consumes the independently audited U3/R3 native
 certificate after the verified `Full260` reduction. `Full258.lean` proposes
 consuming U54/R20 after that. The latter certificate is not yet verified;
 its preparation does not authorize another native search. Its
@@ -42,8 +62,8 @@ exact exports, and per-module wall/CPU/RSS evidence; it revalidates every
 prerequisite before PASS. `audit.py` independently checks the actual compiled
 inventory, source/object/log hashes, commands and six exact trust sets per
 module; it revalidates prerequisite evidence and requires an explicit final
-stage. Full259 must have no Full258 artifacts. An actual passing audit is
-still required before this preparation can be credited.
+stage. Full259 must have no Full258 artifacts. Only Full259 has passed this
+audit; Full258 has not been compiled or queued.
 
 Arguments are `--prior-build` (the verified Full260 output),
 `--prerequisites` (its staged full base/final/extra directory),

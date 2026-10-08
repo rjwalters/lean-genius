@@ -35,10 +35,13 @@ vectors from pinned source, checks the cardinalities, and emits `MANIFEST.json`
 with a unique case ID, compact parameters, exact module names and source hashes
 for every pair. The four audited computations are credited explicitly, leaving
 1,811 pending computations, including the timed-out diagnostic. No triple
-diagnostic remains in flight. The current formal
-connections Full260 + Deficient1552 still expose 1,812 hypotheses: the U3/R3
-computation has passed but its further full-census connection is prepared,
-not compiled. Keep compute credit and formal aggregation status distinct.
+diagnostic remains in flight. The current formal connections Full259 +
+Deficient1552 expose 1,811 hypotheses. The U3/R3 computation is now consumed
+by the compiled and independently audited Full259 reduction (evidence in
+`../h3_full_diagnostic_reduction_20261008/full259-evidence/`, RUN
+`a0816150ca3127f6500f2caa6132bc6740f97946a42416d48513cef04c65409f`).
+This composition creates no new computation credit; Full258 remains blocked
+on the unresolved U54/R20 certificate.
 
 `MANIFEST.json` SHA-256 at preparation:
 `11ded9568ddc0497b8fd58d9107bc35f50caca0fd9064e9f85db18f98f614445`.

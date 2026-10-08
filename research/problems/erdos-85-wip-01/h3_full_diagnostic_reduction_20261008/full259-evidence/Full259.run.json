@@ -1,0 +1,76 @@
+{
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_full_diagnostic_reduction_20261008/_build/full259-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_full_diagnostic_reduction_20261008/_build/full259-first/Full259.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_full_diagnostic_reduction_20261008/_build/full259-first/Full259.lean"
+  ],
+  "started_utc": "2026-10-08T08:57:24.614995+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 4.721587225001713,
+  "user_cpu_seconds": 3.619641,
+  "system_cpu_seconds": 1.457911,
+  "max_rss_kib": 6842052,
+  "log_sha256": "9b205e51c99e67998a627e4338e39d13a573b58723ca2b67b03c0e165611a6be",
+  "module": "Full259",
+  "status": "PASS",
+  "source_sha256": "3947dfad8c20caffc5823edb2306be57bd7b695e3a94cdab56916e760d091ae8",
+  "olean_sha256": "3240bd42f42caecc7b2dadf7881b7ba0394b20db051f723122062404bde42b68",
+  "axiom_exports": [
+    {
+      "theorem": "FullUStrongAfterTwoPilots.pilot_mem",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUStrongAfterTwoPilots.remainingPairs_card",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUStrongAfterTwoPilots.pilot_input",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUStrongAfterTwoPilots.pilot_rejected",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.VariedPilot.FullU3R3.rejected._native.native_decide.ax_1_1"
+      ]
+    },
+    {
+      "theorem": "FullUStrongAfterTwoPilots.actual_distinct_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1",
+        "Erdos85.VariedPilot.FullU3R3.rejected._native.native_decide.ax_1_1"
+      ]
+    },
+    {
+      "theorem": "FullUStrongAfterTwoPilots.excluded_of_rejections",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1",
+        "Erdos85.VariedPilot.FullU3R3.rejected._native.native_decide.ax_1_1"
+      ]
+    }
+  ]
+}
