@@ -29,8 +29,9 @@ consumer failure therefore need not discard its compiled object. The consumer
 uses the cloud-verified local-irreducibility fix for `threeHighCrossDomain`.
 All files remain outside the library's default build glob.
 
-Before any expensive search, compile `FullMembership.lean` and
-`DeficientMembership.lean`, including their input modules. Each checks the
+Before an expensive search for a case, compile its corresponding
+`FullMembership.lean` or `DeficientMembership.lean`, including its input
+module. Each checks the
 selected pair's census membership and its exact representative/input identity.
 They require separate import paths: the full build uses the checked
 `CapacityReduction` plus full census output, while the deficient build uses
@@ -61,3 +62,26 @@ The preflight is cloud job
 The copied base contains 610 files; all copied source/log/object hashes match
 the original audited receipt. `preflight-launch.json` records this launch,
 not a successful proof receipt.
+
+`check_case.py` runs one selected pair only after an independent audit of its
+matching preflight. It rechecks the prepared source hashes, membership and
+input-identity reports, and the preflight receipt/logs. The two census branches
+have separate prerequisites: a verified deficient preflight suffices for a
+deficient timing case; a full case must wait for its full membership proof.
+Each case is a separate bounded cloud job, initially capped at two hours,
+16 GiB, and one compiler thread on the existing instance. A timeout remains
+unresolved and is a censored timing observation, not a rejection result.
+
+The runner builds Inputs, Certificate, and Consumer separately, preserving
+source copies, raw logs, object hashes, exact native-backed axiom sets, and
+wall/CPU/peak-RSS measurements. Linux `wait4` RSS is per Lake process and its
+waited children, not total container memory. There is no retry or batch launch.
+No case is queued merely by preparing this runner. Example after a passing,
+independently audited deficient preflight:
+
+```sh
+lake env python3 ../research/problems/erdos-85-wip-01/h3_varied_pilot_20261008/check_case.py \
+  --case DeficientU26R2 \
+  --membership-evidence ../research/problems/erdos-85-wip-01/h3_varied_pilot_20261008/preflight-evidence \
+  --output ../research/problems/erdos-85-wip-01/h3_varied_pilot_20261008/_build/DeficientU26R2-first
+```
