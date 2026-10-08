@@ -319,7 +319,8 @@ python3 cert_controller.py plan
 python3 cert_controller.py setup --commit <sha> --dry-run        # role policy, launch template, user data
 python3 cert_controller.py freight --dry-run                      # packs inputs (2.6 MB), checks the cake_lpr hash, no upload
 python3 cert_controller.py launch 3 --dry-run                     # the exact create-fleet request
-python3 cert_controller.py status                                 # read-only pass
+python3 cert_controller.py status                                 # read-only
+python3 cert_controller.py --pass canary host-launch --commit <sha> --dry-run   # controller host request + policy
 # worker end to end on the builder, local directory store, about 6 minutes, 2 threads; last line E2E_ALL_PASS
 e85-remote run <sha> --host --full -- bash research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/e2e_test.sh \
     ~/h7camp/inputs ~/h7camp/e2e ~/h7pilot/bin/cadical ~/h7pilot/bin/cake_lpr 2
@@ -330,49 +331,100 @@ python3.12 cert_worker.py --inputs <inputs> --inputs-sha256 f2d2be89… --manife
 
 ### 4.4 Launch (operator go required)
 
-`<sha>` is a pushed commit of `erdos85/h7t0-formal-20261007` that contains this directory; the
-node clones that branch and checks out exactly that commit.
+`<sha>` is a pushed commit of `erdos85/h7t0-formal-20261007` that contains this directory; nodes
+and the controller host clone that branch and check out exactly that commit. All commands run
+from this directory on the Mac with profile `2am-admin`. `C="python3 cert_controller.py"`.
+
+**Two passes, two prefixes.** The canary runs under its own S3 prefix
+(`sat49/h7hsb-20261008-canary`), tag and launch template (`e85-h7hsb-20261008-canary`); the full
+run uses `sat49/h7hsb-20261008` / `e85-h7hsb-20261008`. The persistent `control/STOP` that ends
+the canary therefore never reaches the full run, and nothing is ever cleared (codex, room 52854).
+`launch` refuses to start a fleet into a prefix that holds a STOP or an ALARM marker. An ALARM, a
+budget stop or a STOP of unknown cause can never be cleared; a completion or operator stop can be
+archived with `launch --clear-stop "<reason>"`, which is logged under `transitions/`.
+
+**The controller does not run on the Mac.** `host-launch` starts a dedicated `t4g.small`
+on-demand instance (about $0.017/h) with its own least-privilege role
+(`Erdos85H7HsbController`: describe, terminate and delete only resources tagged with this
+campaign, read/write/delete only the two prefixes; it cannot launch anything). It runs `watch`
+in a loop until the watch acts (budget stop or everything CERTIFIED), uploads its report every
+pass, then powers itself off (terminate). It has its own 72 h hard-stop timer. This was chosen
+over the builder because the builder idle-stops after 60 minutes and its uptime wall resets to
+10 h at 00:00 UTC, and because the builder's role has no EC2 rights.
+
+```bash
+# ---- Phase 1: canary (1 node, 8 pinned rows = 2 covers + 384 leaves, $10 hard stop, 5 h lifetime)
+$C --pass canary freight                      # inputs + approved cake_lpr -> canary prefix
+$C --pass canary setup --commit <sha>         # roles, security group, canary launch template
+$C --pass canary launch 1
+$C --pass canary host-launch --commit <sha>   # detached watch; stops the node when all 8 rows are CERTIFIED
+$C --pass canary status                       # repeat; see "Status" below
+#   expect: nodes/<iid>/bootstrap.log ends "bootstrap ok" within ~10 min; 8 CERTIFIED ledgers;
+#   3 objects per cover under covers-retained/; >= 1 object under partial/; then the controller
+#   writes control/STOP + control/STOP-CAUSE ("all batches CERTIFIED; stopping") and the node terminates.
+aws s3 sync s3://2am-erdos85-certs/sat49/h7hsb-20261008-canary/results/ <Stripe>/run-canary/results/
+python3 collect_receipts.py --inputs <Stripe>/inputs --results <Stripe>/run-canary/results --cubes cube_F6_t14
+#   expect cover_certified true and certified_leaves 64 (exit 1: the cube is not complete, by design)
+$C --pass canary transition --note "<who checked what>"   # must print "ok": true
+
+# ---- Phase 2: full run (3 nodes, $160 hard stop, 36 h node lifetime)
+$C freight
+$C setup --commit <sha>
+$C launch 3                                   # refuses without an ok transition record, or with STOP/ALARM present
+$C host-launch --commit <sha>
+$C status
+```
+
+**Status (run from the Mac at any time, read-only):**
 
 ```bash
 cd research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008
-python3 cert_controller.py freight                                # uploads freight/h7-inputs.tar.zst and freight/cake_lpr
-# 1. canary: one node, the pinned mixed selection h7_common.CANARY_IDS, then it powers itself off
-python3 cert_controller.py setup --commit <sha> --canary
-python3 cert_controller.py launch 1
-python3 cert_controller.py watch            # in tmux; one report every 5 minutes
-#    expect within ~10 min: nodes/<iid>/bootstrap.log ends "bootstrap ok"; then 8 ledgers.
-#    check one ledger and one results file by hand, and that `status` shows spend and certified_items.
-# 2. full run: new launch-template version without the canary selection
-python3 cert_controller.py setup --commit <sha>
-python3 cert_controller.py launch 3         # fleet shape: section 3.4
-python3 cert_controller.py watch            # leave running; it syncs receipts to Stripe, releases the
-                                            # claims of dead nodes, estimates spend and stops at the cap
+python3 cert_controller.py status                 # full run;  add --pass canary before `status` for the canary
 ```
 
+It prints the controller host's last report (`estimated_spend_usd`, `certified_batches` of
+5,945, `certified_items`, `statuses`, `orphans_released`, `action`), `percent_batches_certified`,
+the live nodes, the controller host, and whether a STOP or an ALARM marker exists. The report is
+at most 5 minutes old while the host is alive; `controller_hosts: []` with no `action` in the
+last report means the host died and must be restarted with `host-launch` (the nodes keep
+working without it, bounded by their own lifetime and the fleet expiry).
+
 **What the canary covers.** The main manifest lists the 28 cover rows first, so "the first N
-batches" would run covers only. `--canary` instead pins eight ordinary manifest rows by id
-(`--only`): the covers of `cube_F6_t14` and `cube_F7_t10`, and leaf batch `b0000` (leaves 0–63) of
+batches" would run covers only. The canary pass instead pins eight ordinary manifest rows by id:
+the covers of `cube_F6_t14` and `cube_F7_t10`, and leaf batch `b0000` (leaves 0–63) of
 `cube_F6_t14`, `cube_F6_t18`, `cube_F7_t10`, `cube_F7_t13`, `cube_F8_t0` and `cube_F9_t0`:
-**2 cover CNFs + 384 leaf CNFs = 386 items**, with the smallest and the largest hsb clause sets
-(9,213 and 295,994 clauses). It sets the partial-receipt interval to 120 s, so the `partial/`
-upload path runs on every leaf batch that lasts longer than that. Expected result: 8 ledgers,
-`CERTIFIED` unless a leaf hits the 2 h cap (then that batch is `INCOMPLETE` with a
-`SOLVER_TIMEOUT` entry, which is a valid canary outcome); 8 objects in `results/`; at least one
-object in `partial/`; no `control/` object. Expected cost: one node for 1–2 h. Not covered by the
-canary: a spot reclaim with carry-forward and the STOP / ALARM path (both covered by
-`e2e_test.sh` on the local store only), and orphan release by the controller. The rows are part of
-the main manifest, so the full run skips them. `--max-batches N` remains available as a bound
-(the limit is now reserved atomically before any store call; codex review, room 52850).
+**2 cover CNFs + 384 leaf CNFs = 386 items**, with the smallest and the largest hsb clause sets.
+Partial receipts are uploaded every 120 s. It exercises: bootstrap and both binary hash checks,
+the S3 store and the IAM policy, the launch template, claims, partial and final receipts, cover
+retention, the collector, the controller host, and the completion stop against a live instance.
+A leaf that hits the 2 h cap makes its batch `INCOMPLETE`; then the canary does not complete by
+itself: stop it with `$C --pass canary stop --note ...` and judge the receipts by hand. Not
+covered by the canary: a real spot reclaim with carry-forward and the ALARM path (local-store
+`e2e_test.sh` only), and the budget stop at its real threshold (to exercise the code path against
+live instances, run the canary host with `host-launch --hard-stop-usd 0.01`, which stops at the
+first pass; that canary then has to be repeated for the receipts). Because the canary has its
+own prefix, the full run solves these 386 items again (about $0.10).
 
-`watch` stops everything (writes `control/STOP`, deletes the fleets, terminates every tagged
-instance) when its spend estimate reaches the hard stop, or when every batch is CERTIFIED.
-`python3 cert_controller.py stop` does the same by hand at any time.
+**Hard stops, all independent of any session:** (a) the controller host's budget stop; (b) the
+fleet request expires after node lifetime + 1 h and terminates its instances; (c) each node powers
+itself off after its lifetime (`systemd-run`, shutdown behaviour = terminate) even if the worker
+hangs; (d) a node powers off when nothing is left to claim; (e) `control/STOP` is read before
+every claim and every 10 minutes inside a batch. If the controller host is lost, (b)–(d) bound
+the spend at 3 nodes × 37 h × the $1.20 bid ceiling = $133.
+`$C stop --note "<why>"` stops everything by hand and records the cause.
 
-Independent hard stops: (a) controller budget stop; (b) the fleet request expires after
-node lifetime + 1 h and terminates its instances; (c) `systemd-run --on-active=<lifetime>` powers
-each node off (shutdown behaviour = terminate) even if the worker hangs; (d) a node powers off
-when its slots have nothing left to claim; (e) `control/STOP` is read before every claim and every
-10 minutes inside a batch (the batch then stops before its next item).
+**Retained cover proofs (codex, room 53116).** Cover rows, and only cover rows, keep the exact
+CNF bytes and the exact binary LRAT proof bytes: `covers-retained/<cube>.cover.{cnf,lrat,json}`
+under the campaign prefix (the JSON holds sha256, sizes, depth 3 and the cube ++ hsb ++ cover
+extension layout). For these rows CaDiCaL writes the proof to a file and cake_lpr checks that same
+file. Leaves stay check-then-discard. The same function already produced all 28 on the builder
+(`retain_covers.py`, job `20261008T153314-commit-b8bf078f3ef1-615947`): 28 / 28
+`s VERIFIED UNSAT`, 0.55 GB of CNF and 0.59 GB of proof at `~/h7camp/covers-retained/` on the
+builder, and every proof has the sha256 of the streamed proof in the cost sample
+(`receipts/covers_retained_index.json`).
+
+Milestones are not posted by the controller host (it has no access to the squad room); whoever
+polls `status` posts them.
 
 ### 4.5 During the run
 
@@ -397,7 +449,8 @@ python3 cert_controller.py residual               # writes .../residual-manifest
 # same code path, its own launch-template version
 python3 cert_controller.py freight --manifest <residual-manifest.jsonl>
 python3 cert_controller.py setup --commit <sha> --manifest <residual-manifest.jsonl> --cap 86400 --heap-mb 8000
-python3 cert_controller.py launch 1 && python3 cert_controller.py watch --manifest <residual-manifest.jsonl>
+python3 cert_controller.py launch 1 --manifest-pass --clear-stop "residual pass after completed main pass"
+python3 cert_controller.py watch --manifest <residual-manifest.jsonl>   # short pass: from the Mac, or adapt host-launch
 # completeness: every leaf of every cube and all 28 covers, hashes recomputed from the pinned inputs
 python3 collect_receipts.py --inputs <Stripe>/inputs --results <Stripe>/run/results --out <Stripe>/collected
 ```
@@ -416,12 +469,14 @@ a small new Lean wrapper (one level of nesting) and is not implemented here.
 
 1. **Operator go and a budget.** Nothing has been created in AWS.
 2. **The AWS path has not run.** Worker, batch runner, collector and the local store are tested
-   end to end on the builder (`receipts/e2e_test_builder.txt`, 12 checks, builder job
-   `20261008T061308-commit-327ec891b4b2-251246`) and by `test_campaign.py` (16 tests). The
+   end to end on the builder (`receipts/e2e_test_builder.txt`, 15 checks, builder job
+   `20261008T153314-commit-b8bf078f3ef1-615947`) and by `test_campaign.py` (16 tests). The
    controller's `plan`, `status`, `residual`, and the `--dry-run` forms of `setup`, `freight` and
    `launch` ran on the Mac. **Not exercised:** `cert_bootstrap.sh` on a fresh spot node, the S3
    store class (the same aws-cli calls as the H1 worker), the IAM policy, the launch template,
-   orphan release and the budget stop against live instances, and `release-errors --yes`. The
+   orphan release and the budget stop against live instances, `release-errors --yes`, the
+   controller host (`host-launch`: its role, its user data, `watch` under an instance role), the
+   `transition` record and `launch --clear-stop`. All of these exist only as dry runs. The
    one-node canary in 4.4 (386 items: 2 covers and 384 leaves) is mandatory.
 3. **Shared spot quota** (384 vCPU, about 180 in use by other workloads). Three nodes fit; more
    needs a quota increase or a quiet period.
