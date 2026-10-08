@@ -181,7 +181,7 @@ theorem addEdge_adj_iff (s : St) (u x a b : V) (hux : u ≠ x) :
     constructor
     · rintro (h | h)
       · exact Or.inl h
-      · exact Or.inr (Or.inr ⟨rfl, Fin.ext h.symm⟩)
+      · exact Or.inr (Or.inr ⟨trivial, Fin.ext h.symm⟩)
     · rintro (h | ⟨h1, _⟩ | ⟨_, h2⟩)
       · exact Or.inl h
       · exact absurd (congrArg Fin.val h1).symm hua
@@ -195,7 +195,7 @@ theorem addEdge_adj_iff (s : St) (u x a b : V) (hux : u ≠ x) :
       constructor
       · rintro (h | h)
         · exact Or.inl h
-        · exact Or.inr (Or.inl ⟨rfl, Fin.ext h.symm⟩)
+        · exact Or.inr (Or.inl ⟨trivial, Fin.ext h.symm⟩)
       · rintro (h | ⟨_, h2⟩ | ⟨h1, _⟩)
         · exact Or.inl h
         · exact Or.inr (by rw [h2])
@@ -848,6 +848,7 @@ theorem addTri_ne_none {s : St} {adj : V → V → Bool} (hs : s.WF) (M : Model 
     cases this
   | some s1 =>
     rw [h1] at h
+    dsimp only at h
     obtain ⟨hs1, _, _, _, hc1⟩ := tryAdd_some hs h1
     have hc1' := hc1 adj M hc ht.1
     cases h2 : s1.tryAdd n t.2.1 with
@@ -857,6 +858,7 @@ theorem addTri_ne_none {s : St} {adj : V → V → Bool} (hs : s.WF) (M : Model 
       cases this
     | some s2 =>
       rw [h2] at h
+      dsimp only at h
       obtain ⟨hs2, _, _, _, hc2⟩ := tryAdd_some hs1 h2
       have hc2' := hc2 adj M hc1' ht.2.1
       have := tryAdd_none hs2 M hc2' h
@@ -874,6 +876,7 @@ theorem addTri_some {s s' : St} {n : V} {t : Tri} (hs : s.WF)
     cases h
   | some s1 =>
     rw [h1] at h
+    dsimp only at h
     obtain ⟨hs1, he1, hm1, _, hc1⟩ := tryAdd_some hs h1
     cases h2 : s1.tryAdd n t.2.1 with
     | none =>
@@ -881,6 +884,7 @@ theorem addTri_some {s s' : St} {n : V} {t : Tri} (hs : s.WF)
       cases h
     | some s2 =>
       rw [h2] at h
+      dsimp only at h
       obtain ⟨hs2, _, hm2, _, hc2⟩ := tryAdd_some hs1 h2
       obtain ⟨hs3, _, hm3, _, hc3⟩ := tryAdd_some hs2 h
       refine ⟨hs3, hm3 _ _ (hm2 _ _ he1), fun a b hab => hm3 _ _ (hm2 _ _ (hm1 _ _ hab)), ?_⟩
@@ -1116,6 +1120,65 @@ theorem count_gate {s : St} {adj : V → V → Bool} (hs : s.WF) (M : Model adj)
   have := cap_ge u
   omega
 
+def addMany (s : St) (u : V) : List V → Option St
+  | [] => some s
+  | x :: xs =>
+    match s.tryAdd u x with
+    | none => none
+    | some s' => addMany s' u xs
+
+theorem addMany_ne_none {adj : V → V → Bool} (M : Model adj) {u : V} :
+    ∀ (xs : List V) (s : St), s.WF → Compat s adj → (∀ x ∈ xs, adj u x = true) →
+      addMany s u xs ≠ none := by
+  intro xs
+  induction xs with
+  | nil =>
+    intro s _ _ _ h
+    simp [addMany] at h
+  | cons x xs ih =>
+    intro s hs hc hall h
+    rw [addMany] at h
+    have hx : adj u x = true := hall x (List.mem_cons_self ..)
+    cases htry : s.tryAdd u x with
+    | none =>
+      have := tryAdd_none hs M hc htry
+      rw [hx] at this
+      cases this
+    | some s' =>
+      rw [htry] at h
+      dsimp only at h
+      obtain ⟨hs', _, _, _, hcompat⟩ := tryAdd_some hs htry
+      exact ih s' hs' (hcompat adj M hc hx)
+        (fun y hy => hall y (List.mem_cons_of_mem _ hy)) h
+
+theorem addMany_some {u : V} :
+    ∀ (xs : List V) (s s' : St), s.WF → addMany s u xs = some s' →
+      s'.WF ∧ ∀ adj, Model adj → Compat s adj → (∀ x ∈ xs, adj u x = true) →
+        Compat s' adj := by
+  intro xs
+  induction xs with
+  | nil =>
+    intro s s' hs h
+    rw [addMany] at h
+    cases h
+    exact ⟨hs, fun _ _ hc _ => hc⟩
+  | cons x xs ih =>
+    intro s s' hs h
+    rw [addMany] at h
+    cases htry : s.tryAdd u x with
+    | none =>
+      rw [htry] at h
+      cases h
+    | some s1 =>
+      rw [htry] at h
+      dsimp only at h
+      obtain ⟨hs1, _, _, _, hcompat⟩ := tryAdd_some hs htry
+      obtain ⟨hs', hc'⟩ := ih s1 s' hs1 h
+      refine ⟨hs', ?_⟩
+      intro adj M hc hall
+      exact hc' adj M (hcompat adj M hc (hall x (List.mem_cons_self ..)))
+        (fun y hy => hall y (List.mem_cons_of_mem _ hy))
+
 def dfs3 : Nat → St → Bool
   | 0, _ => false
   | fuel + 1, s =>
@@ -1123,11 +1186,10 @@ def dfs3 : Nat → St → Bool
       match pick3 s with
       | none => false
       | some u =>
-        decide ((s.nbr[u.val]).length < capOf u) &&
-          (cands3 s u).all fun x =>
-            match s.tryAdd u x with
-            | none => true
-            | some s' => dfs3 fuel s'
+        (List.sublistsLen (capOf u - (s.nbr[u.val]).length) (cands3 s u)).all fun B =>
+          match addMany s u B with
+          | none => true
+          | some s' => dfs3 fuel s'
 
 theorem dfs3_sound :
     ∀ (fuel : Nat) (s : St), s.WF → dfs3 fuel s = true →
@@ -1149,19 +1211,36 @@ theorem dfs3_sound :
     · split at h
       · cases h
       · rename_i u _
-        simp only [Bool.and_eq_true, decide_eq_true_eq] at h
-        obtain ⟨hdeg, hall⟩ := h
-        obtain ⟨x, hux, hsx⟩ := exists_unknown_nbr hs M hdeg
-        have hx := (List.all_eq_true.mp hall) x (mem_cands3 hs M hc hux hsx)
-        cases htry : s.tryAdd u x with
-        | none =>
-          have := tryAdd_none hs M hc htry
-          rw [hux] at this
-          cases this
+        obtain ⟨L, hnd, hlen, hmem⟩ := M.nb u
+        have hsub : ∀ y ∈ L, y ∈ s.nbr[u.val] ++
+            (cands3 s u).filter (fun x => adj u x) := by
+          intro y hy
+          have huy := (hmem y).mp hy
+          cases hsy : s.adj u y
+          · exact List.mem_append.mpr (Or.inr (List.mem_filter.mpr
+              ⟨mem_cands3 hs M hc huy hsy, huy⟩))
+          · exact List.mem_append.mpr (Or.inl ((hs.mem u y).mpr hsy))
+        have hle := length_le_of_nodup_subset hnd hsub
+        rw [List.length_append, hlen] at hle
+        have hB : ((cands3 s u).filter (fun x => adj u x)).take
+            (capOf u - (s.nbr[u.val]).length) ∈
+            List.sublistsLen (capOf u - (s.nbr[u.val]).length) (cands3 s u) := by
+          apply List.mem_sublistsLen.mpr
+          refine ⟨(List.take_sublist _ _).trans List.filter_sublist, ?_⟩
+          rw [List.length_take]
+          omega
+        have hall : ∀ x ∈ ((cands3 s u).filter (fun x => adj u x)).take
+            (capOf u - (s.nbr[u.val]).length), adj u x = true := by
+          intro x hx
+          exact (List.mem_filter.mp (List.mem_of_mem_take hx)).2
+        have hx := (List.all_eq_true.mp h) _ hB
+        cases hadd : addMany s u (((cands3 s u).filter (fun x => adj u x)).take
+            (capOf u - (s.nbr[u.val]).length)) with
+        | none => exact addMany_ne_none M _ s hs hc hall hadd
         | some s' =>
-          simp only [htry] at hx
-          obtain ⟨hs', _, _, _, hcompat⟩ := tryAdd_some hs htry
-          exact ih s' hs' hx adj M (hcompat adj M hc hux)
+          simp only [hadd] at hx
+          obtain ⟨hs', hcompat⟩ := addMany_some _ s s' hs hadd
+          exact ih s' hs' hx adj M (hcompat adj M hc hall)
 
 /-! ## The composed search -/
 

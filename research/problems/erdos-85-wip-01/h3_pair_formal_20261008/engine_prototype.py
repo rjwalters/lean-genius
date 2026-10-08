@@ -5,7 +5,7 @@ supports (six per colour); 24..48 empty supports.  This is a prototype used to
 size the Lean native_decide search; it is NOT a proof.
 """
 import sys, time
-from itertools import product
+from itertools import product,combinations
 sys.setrecursionlimit(10000)
 MASK=[0,0,0,3,5,6]+[1]*6+[2]*6+[4]*6+[0]*25
 CAP=[8]*3+[7]*46
@@ -98,6 +98,11 @@ def dfs2(s,avail):
         if t is None: continue
         if not dfs2(t,pre+cs[i:]): return False
     return True
+def add_many(s,u,xs):
+    for x in xs:
+        s=try_add(s,u,x)
+        if s is None: return None
+    return s
 def dfs3(s):
     stats['n3']+=1
     best=None
@@ -110,8 +115,10 @@ def dfs3(s):
         stats['found']+=1
         return False
     u,cands=best
-    for x in cands:
-        if not dfs3(add(s,u,x)): return False
+    for sub in combinations(cands,7-len(s.nbr[u])):
+        t=add_many(s,u,sub)
+        if t is None: continue
+        if not dfs3(t): return False
     return True
 if __name__=='__main__':
     if len(sys.argv)>1: HEUR=sys.argv[1]
