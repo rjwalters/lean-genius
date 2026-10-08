@@ -1,0 +1,2959 @@
+[e85] job 20261008T145924-erdos85__h3-triple-formal-20261007-594551  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T14:59:24Z
+[e85] commit bb71918f37667a3bd2cdc0c2ba21be33b593d9a7 (Bank verified H3 pair-object transfer for stratum assembly)
+=== Docker Lean Build ===
+Memory limit: 16384MB (hard enforced via cgroups)
+Timeout: 3m
+CPU limit: 2
+Target: all
+Build volume: lean-build-erdos85__h3-triple-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Command: lake env python3 -B ../research/problems/erdos-85-wip-01/h3_stratum_integration_20261008/run_stratum.py --triple-audit-sha 44513a1f3752f93b67c20378e072f0b67cfa73b5703c27b5226bd6c2ff74afd8 --transfer-receipt-sha ff7f693321672791c97049503da0e00ae4db598e2b7bcb697b8f0b18b42a7145
+Starting Docker build...
+
+{
+  "status": "STRATUM_COMPILED_PENDING_AUDIT",
+  "started_utc": "2026-10-08T14:59:26.446838+00:00",
+  "command": [
+    "lean",
+    "-j1",
+    "Proofs/Erdos85H3Stratum.lean",
+    "-o",
+    "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3Stratum.olean"
+  ],
+  "timeout_seconds": 90,
+  "cgroup_memory_bytes": 17179869184,
+  "cgroup_cpu_max": "200000 100000",
+  "input_sha256": {
+    "SOURCE.json": "10dd0fffec91c8ccbbd0916428e40492e3db50563ea1a4ef23f744b2b7a98aae",
+    "INTEGRATION.json": "fe7e3d89707235e1a85f305d29a4675b0df1b809212e2e81f2935df0b688b1b6",
+    "pair-AUDIT.json": "807d3a82bf01cb6ac1d7686632ab9a585899e3f6120519f9425370b99ce231c6",
+    "runtime-AUDIT.json": "21fd8bcce69730f9c3f0de0918412a22430b907d8954f1f90da436366c727b8b",
+    "triple-AUDIT.json": "44513a1f3752f93b67c20378e072f0b67cfa73b5703c27b5226bd6c2ff74afd8",
+    "pair-transfer.json": "ff7f693321672791c97049503da0e00ae4db598e2b7bcb697b8f0b18b42a7145"
+  },
+  "imported_objects": {
+    "Erdos85H3PairEngine": {
+      "source_sha256": "6f84fc3a0de0bbc170d98b7a85824b1c84282fbcf4f2824267cac96bf3b37625",
+      "sha256": "35c3cba5f6e9e8526ecc31c6471e591baafbe9a816641e50856b882cef440222",
+      "bytes": 2095936
+    },
+    "Erdos85H3PairBridge": {
+      "source_sha256": "be9455ca1bcc1eba1629b7b0a565d5196b79d118212af4228a39412846937715",
+      "sha256": "03fd6525e3f750f19e3ef10169ce4ce453a13d23210939e2778707edac483cef",
+      "bytes": 198584
+    },
+    "Erdos85H3PairSplit": {
+      "source_sha256": "788c54887e121212693f0aaae3d99577e30db2a383d2fea161ce08b127f44839",
+      "sha256": "d78f0f470f2771a7ff71922fd08b950264d9b0ca0c672798cd5c26bd81b8c7ff",
+      "bytes": 187696
+    },
+    "Erdos85H3PairPart00": {
+      "source_sha256": "6301719c1a7017797bd8dd1a906275cf607fdfb0b38cf89ebcd8bf7337fcfe15",
+      "sha256": "be01df72b0141a567997b717bbf37625a5dd4f10ed4dd19a09f13070009747fa",
+      "bytes": 7344
+    },
+    "Erdos85H3PairPart01": {
+      "source_sha256": "738b37213bea31f394633c7aaad3bf94245fff275afaf8ea95ae84e8925f3749",
+      "sha256": "2953e27e1a8f197e7caa70aa2bda229c746560a97bf54b87fb47e5859a9f3944",
+      "bytes": 7344
+    },
+    "Erdos85H3PairPart02": {
+      "source_sha256": "c048a311810d08231ce0c513be994a4d39d14bad1fe0e1e173c3499fa9f334f1",
+      "sha256": "176f6963ce9654518f5ccffda10b33c6ea2932896d2f1ba657c6caab994c7d24",
+      "bytes": 7344
+    },
+    "Erdos85H3PairPart03": {
+      "source_sha256": "baa3704a5e8242afaa648cb89d01c9031e724375f2dd7e4349477b9276429693",
+      "sha256": "8bc0b70691caee6c8b94b9c6f17b866945856c9c5b6def43ca4c890bbdacb131",
+      "bytes": 7344
+    },
+    "Erdos85H3PairPart04": {
+      "source_sha256": "ff910d1f2cb31cd3a3fe61d6716eefba3dad8971dff0fde9f9f6deb3c9c47f28",
+      "sha256": "aa486425d91b9eb5bef9f663b684946e938abed1e429a56508f30f98208d9deb",
+      "bytes": 7344
+    },
+    "Erdos85H3PairPart05": {
+      "source_sha256": "ea364dea00982e53ff28084187fd417e6f19f169bc16227d1f7b5ea06e9704f2",
+      "sha256": "9e8e9cb61c8543b3a308be5df996c969f25b5ce91d2d7bcf1f946a9e7dce5086",
+      "bytes": 7344
+    },
+    "Erdos85H3PairPart06": {
+      "source_sha256": "ed60af8abe744d817ea43cae0b88814c9f67444f58c072c00875a5f373692ed9",
+      "sha256": "8cb65a1803265964b4ccb4ae74ca3683c038b2e8333a3e2c7aea95a794946997",
+      "bytes": 7344
+    },
+    "Erdos85H3PairPart07": {
+      "source_sha256": "0e19b6e4c77f3597306964eb15286d28c1d281bd1a96130d5aa0104d08b10253",
+      "sha256": "1b842614086a87fec5504992b87c80b2b5a4d32cd8c38656a21d828e6ab7e8f5",
+      "bytes": 7344
+    },
+    "Erdos85H3PairPart08": {
+      "source_sha256": "c31c9def5e84d4a5e47a172571a769071a3da772550c4a7bb6c3a87ca15b1acf",
+      "sha256": "5fd896ff208d7e8378c8636a9e62b561a53496f9aac34caf03b8046960c4a865",
+      "bytes": 7344
+    },
+    "Erdos85H3PairPart09": {
+      "source_sha256": "833b4e7a43bba188ba6d077f9b1c699ec07a1cefd9fdb316266b129ba57ada28",
+      "sha256": "184a4174539c545a36e8a35e522ac7a8e529b3bb5df707ea21d5f4a3632ab07c",
+      "bytes": 7344
+    },
+    "Erdos85H3PairPart10": {
+      "source_sha256": "62bd3179e973405d1240d9313fedc15fff478c38638c67685983256937a5e4a1",
+      "sha256": "d3d8474bc3513347f2b2e2f8f3df6359459dbd6ed627d7309ad9d0c75baa6ccb",
+      "bytes": 7352
+    },
+    "Erdos85H3PairPart11": {
+      "source_sha256": "f7fbd1d56a12e3de486086e7202acb9bfd5964a63c30754b4cef7585171a36a4",
+      "sha256": "325e1c6b0940a00255a2b8454e83466733d48e579649d75e3270a72706b0c898",
+      "bytes": 7352
+    },
+    "Erdos85H3PairPart12": {
+      "source_sha256": "0d0d4fb70d4ffd85e336c177dd3471e1afba8dd8e6123ab048026707012b9115",
+      "sha256": "f25ee4732f9898a15b885f280ebe56c87c7ac1d6e4a67d1bb808fa75e8c9b9fd",
+      "bytes": 7352
+    },
+    "Erdos85H3PairPart13": {
+      "source_sha256": "581c0784732ed0c292dc2ee9ec9ec8ca640f1c37a0dc2b17984d22df38b3e7f7",
+      "sha256": "623d22d01f7801a8740f334e906410e8a1141ba5bfb3ad039249d10fc1896780",
+      "bytes": 7352
+    },
+    "Erdos85H3PairPart14": {
+      "source_sha256": "b0cbc3ad590d2e3396636f09d0f69cdc30cc7b7735a21b64aa20be8c0dcc416c",
+      "sha256": "aa599429abdb6e3b0a08163a2a1cd3f38b80a56b097f57af142b71682bfed60b",
+      "bytes": 7352
+    },
+    "Erdos85H3PairPart15": {
+      "source_sha256": "62ae9bef9670e5bcfbae2d42d22caab709248971970132ef0b29a510f3395bdc",
+      "sha256": "6339f67c26516e1ad0fd6e4bceead12b3de05f32040363e363be5ae2a98e842b",
+      "bytes": 7352
+    },
+    "Erdos85H3PairPart16": {
+      "source_sha256": "51ebd404d1ffe7e4f303b178cf3534c151bad3b98b4e860acbbdbdb1449e9f27",
+      "sha256": "23e251ea8724db9c5f6df9efc45094b23420d81c6bf1f03d0c1aa8eec1d2d4c3",
+      "bytes": 7352
+    },
+    "Erdos85H3PairPart17": {
+      "source_sha256": "1eab862b17c662896e751080f3c20129537fea8fe7ccc37928f7b6d588fb33ec",
+      "sha256": "4c4a020cd8c66305a30d6580fe8c454ed9108527d61fa2f0106b7489d140eedc",
+      "bytes": 7352
+    },
+    "Erdos85H3PairPart18": {
+      "source_sha256": "e692cb04e405d2fb75c2cee02f55ad7c6dce11b807755b9031546fd5415bdc11",
+      "sha256": "6df25f9af6573b23c4fa9d3d9de0a69bce2ac467a600a73180c07c9a5f859722",
+      "bytes": 7352
+    },
+    "Erdos85H3PairPart19": {
+      "source_sha256": "501524075810b030f4f070aaf88cb1e4cd470abeb6b85dec5eacfbfe480165c1",
+      "sha256": "71a02a51c8e24866091fc43923f89097f9535821d731ddcb7aff98fc6093a1ea",
+      "bytes": 7352
+    },
+    "Erdos85H3PairPart20": {
+      "source_sha256": "2d172b60dd1f512587c038f4f74bf343e38960e44e43eeb71353181b5b94f560",
+      "sha256": "20261d4855862b0f0503c3da718cc3cf76fd4b9d829e259900712accec3aad1e",
+      "bytes": 7352
+    },
+    "Erdos85H3PairPart21": {
+      "source_sha256": "f0f3b87a5a7d259344ca84a920340177cf3eb357885ace8b99af13bc6b80ab1a",
+      "sha256": "ce79b5f54f81409cf7cbe9696de832797234326876835d4a3d432fa5e02deef2",
+      "bytes": 7352
+    },
+    "Erdos85H3PairPart22": {
+      "source_sha256": "3d34ae0a3f49894ba9b09b05fae865e50785bf3f43477c27126e3d13a66f2a92",
+      "sha256": "2b72ec05b2fb596db26d5d858ab2e3a55b06b18e5dc78092caaca9890be9d34b",
+      "bytes": 7352
+    },
+    "Erdos85H3PairPart23": {
+      "source_sha256": "5de726b85fda5e1a96cd0765e53229b215cfbd3085aa9ec68dafca4e35a794f7",
+      "sha256": "a15eeea431b7bbdf577496ae17ae8c65bef53e610a3c684bdf40cab4a6d97405",
+      "bytes": 7352
+    },
+    "Erdos85H3PairCell": {
+      "source_sha256": "717702013f12303c841f1713c967d294bafa58ae9e9b6b147817ea9bdef28040",
+      "sha256": "e9a79924cce61c34e9ce46b74537e23180ee0518b6c5e42edea0dfc33a8e6e20",
+      "bytes": 74920
+    },
+    "Erdos85H3TripleCompletionRuntime": {
+      "source_sha256": "0cc88d985982c10df4fd24dbdb5b5699ac8a919b0e936eb0734c17c7ea34bfe4",
+      "sha256": "1995ca73491788c040a6c24f3a87653734ebd70af31d7b1bb26568b0eb37e4ee",
+      "bytes": 762936
+    },
+    "Erdos85H3TripleCompletionEngine": {
+      "source_sha256": "d4b00bd7e44638c5a9f4a50c3ff73c661e7eba79811cedfe7cb8b2caa8e8b52c",
+      "sha256": "37b0325155ffc909986d57b20fbfe71e5191ad607da06339bbc0242df8c35602",
+      "bytes": 1544224
+    },
+    "Erdos85H3TripleCompletionBridge": {
+      "source_sha256": "ab48d33eeed723aaec92bbfa32329e09f532a209e79da8330643014ca7f09f54",
+      "sha256": "579138abcddfb92dabdb7c4a160d9d37412d93700c18a41b97270a8e91a2a482",
+      "bytes": 175392
+    },
+    "Erdos85H3TripleCompletionSplit": {
+      "source_sha256": "1fa81f7a80e1cfd7a76320879b10e9d908c46174dab8106bc0f30a83c6ed0cdb",
+      "sha256": "2a3c491fbed12abc724d53ae025641215a4d567f029cdc46aca26592018a7bf7",
+      "bytes": 167992
+    },
+    "Erdos85H3TripleCompletionPart000": {
+      "source_sha256": "5f55cfadb0f631fd0bfd020aee8ef35a823134df6cdf48dfa3b312efd21d631c",
+      "sha256": "19080f7f1408316ee1368fc3361f1e26c334ee0f63cebcb01dd4c49936ad654a",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart001": {
+      "source_sha256": "4f8052522b7c4e8f0221f30225d924712b3cec1439406725b1e6c4fd853eb2ac",
+      "sha256": "c13391a2aa2f51c3fac9ec8b37d3544c728d25c52eb9dcf847f668cc8258552d",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart002": {
+      "source_sha256": "96152d758116a42d888b18eef4cb5fec4093f673a6dfaae52435dec9894c2218",
+      "sha256": "c72c44ec1c3fbcd28953fd3ad10d1a588d4d6fcb46f60c20260dbd7dc9b7371e",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart003": {
+      "source_sha256": "290ef90426844ddbec0cc0debc85ff37bd03b4d0e8bd74b42788bf19cfd07035",
+      "sha256": "a8fd2a0a0144cb854d8a24e4834babf41eaac301b89ad247246b15ca6637c5ee",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart004": {
+      "source_sha256": "9933806cec28fcf7dee00c28c150bf3292ad7b5e0cd4546dfa55bc38b94cc93d",
+      "sha256": "9bf4727cc3ed31f28650242c0bcbf86bbe6a34c74154c0340d09b6ba6d43664f",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart005": {
+      "source_sha256": "cd75031024faeb48a8e21f79b86ba1108cbea16d7b5a78f7215d684051f68911",
+      "sha256": "af2f2aa117fdb7e06e77ce11cf862970d08aba6ce7f20202359b57e94958c328",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart006": {
+      "source_sha256": "b0c1e989b9e9f5e455766862cf93cce631b16b4b874b8be7b3e325d99031bb88",
+      "sha256": "0045ac15947e366f614d3dae1659f3d83db0ff499c937a2f852bd7c6fd2aa004",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart007": {
+      "source_sha256": "85941360358de90be99b6d3a56ac4c7c947fdc788bc579667fe62a5bae755763",
+      "sha256": "3edd79825d86160e23f364bbb0bdb5325e5e0e4897cfc7de694eb2a932fc0de0",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart008": {
+      "source_sha256": "3d244792619f3b63a9b497e24f3c589f6904cb278bf65a7e0c75e68c115e4e2f",
+      "sha256": "07ced9e2ed9696ef60be5857a401a0820fbb1b9cdbf2074cf29b05a45a321874",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart009": {
+      "source_sha256": "ad18916bdd5cb11359857d6301bbc948c9cd98a3f86f508d1b66e970b9edf838",
+      "sha256": "96cee0038bc33dbfd81512ebd6972668c138a9099712a41d66ef53fd0bd99768",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart010": {
+      "source_sha256": "a3da31212bbeee6d58084fa813b3c6579796f6266f7f26e70d94fa95173d1e6d",
+      "sha256": "2bf7d15363adfa8b98c5621fe7aec8f73943cf9ea97599844d558e18b3d6e856",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart011": {
+      "source_sha256": "ef89e12261a0e685b5aece6fcc0fd2b290e9b8ae98975e5f3ee31f76034e4aed",
+      "sha256": "dc0610760587855b17e75922c6432c65fac8074b9ddbeb90865fb98bd0dcc1d8",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart012": {
+      "source_sha256": "11cb544cbf10a6e61c41c1ae050d4ab5ceef65b22cbae88c5b1b876823540c7b",
+      "sha256": "3036ef59a37b02f9243074767ece636708a22d55132c8599c8a9ab4136f93ee7",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart013": {
+      "source_sha256": "5c55268e11611d0242329b539d3b294748f0be4173d5a834f0da7ebe726ccd4b",
+      "sha256": "2cfbd6a3ded49eafe5fdc937c2345c65f0a7ef7c61e7024e8155eeea98923234",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart014": {
+      "source_sha256": "7304f3bf745a44f8511ef1bae7f4321199496a085587ee5123f7c41596f61b70",
+      "sha256": "cfb41fa9ea264af9d1435d7e811b27b458e1f74b4868ad384fcc03e2b7481614",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart015": {
+      "source_sha256": "cb0d053fc13adb26071938c0875b7e14ed219706f11ebafcf661e6b788c01533",
+      "sha256": "13d642b6d7d9270e1dfc35713b5383be5c2b68c09b7a8c5e9a1f705672c3f47b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart016": {
+      "source_sha256": "7acc9cbb84867762ffb8bc1dd23aec74585bee7fea3e79a67927e9685e884351",
+      "sha256": "eefd138ad9ed6f64941b3143604bec12117444a582768c60aebb2b3eac881c2a",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart017": {
+      "source_sha256": "1a420303d9e8947f5a0f828b14c08e4dbca0cfca82d0287c035f51c361caadc9",
+      "sha256": "bbd2896aca7fcfdff1f06ce834321bcc94dadd0598dbd5a8017f57deb7fb146d",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart018": {
+      "source_sha256": "4d88be72652c46dfd155e1b4d8cf6f996526dd921bca1e93cb2a6f674a1246cc",
+      "sha256": "a791795dbd594da3496ddd73a4d77504dd57d0edfb76a0808beea946d2366e23",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart019": {
+      "source_sha256": "ef330cd6770087118589af2b7f8663d7f5bbb8e4dd5f240d25bb540b6f1cdf48",
+      "sha256": "d60d2c58edb4bf3209dad4068b37e5d2efd2ae87f6bb39c6d5212730dbdafc99",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart020": {
+      "source_sha256": "0b86aebec2742082bfcb4fcc3d6cf365aa338e2d139f5f84ea194404a10070fd",
+      "sha256": "c58cdc20c9a0f1fe8aa2023423deee341501498a40b7ac43663b5163b117fd44",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart021": {
+      "source_sha256": "f59d6e6f1b9852c15429a1e3ffdcbcc66e4642b2b101fda7d078907dd658471f",
+      "sha256": "ebb722485f41f3313a2e86f5a8fe0d51cdd8a172e262a8864130541631d13c46",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart022": {
+      "source_sha256": "42f90d0bbb5117a0a2ba39d75dc9cff439655014b3f25999dead4ad2a3c9ff3f",
+      "sha256": "af847dffebb4bde422b1da1bcdbb3f24528834586619bf4a091380e6b908db6e",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart023": {
+      "source_sha256": "3a884854401f22f91d6892c88715da3e5f7fcacd575a16a3724311b48fd44026",
+      "sha256": "30fa9b93a62cf217a1bf4268c58a0fbc8b68560a425cd610c59d754ba8f4d79b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart024": {
+      "source_sha256": "e683d6af9c7e6e067bfa1909a4a1fe096d6c290f7f4ce0379103b444a6e5475e",
+      "sha256": "7091ebb1c8cc0d9789bbfaac3359db24b35f9da874746d7534995c9466cc9d31",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart025": {
+      "source_sha256": "03b31d0ed3e34d2104fad48dc83763c8235ac8fcca57a6713477c3e27525a7c5",
+      "sha256": "0799f9341da1cc65a5f52cab21f3efff9c42686dcbc28646b5ea33cf81a3d4a3",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart026": {
+      "source_sha256": "3b0dd192924c4cbf5f6f0e7c4edd0be12a4173f140b32827185607f0fc088efe",
+      "sha256": "ed33dec0ea3e33328e27402cb9943e3ec5659581bc26385b16fe726b81342a7b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart027": {
+      "source_sha256": "6f1ae28c46719cfb67e4a54fc258a193c956bbebdbc52ae8ad1918322882c0fd",
+      "sha256": "731713c3cda41da4a38406ba0ddc8cec9ee868e3f055b621f4d45eb016b079f4",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart028": {
+      "source_sha256": "f8788e440c7cb9d70f304608f825df67cd1b80a0b7bc22ca8b0dec6d44b98970",
+      "sha256": "b568badc21ba322f069de61f436ba3367f311ea23bbb535ce1770f9f66ef28bf",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart029": {
+      "source_sha256": "b6fcf2edf3fb9ff607d3b6a33f375114768185a1e1fd03866c6429ad7aa11ca9",
+      "sha256": "5120537e6ba5379ff57097bdd2ee7e718a615c7f33fd7c10f4c0f309d05e8559",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart030": {
+      "source_sha256": "90cb08951044d96ac7b09e9da8fe255bb5f10e28d7937fbe15221659ec2fb863",
+      "sha256": "9cd75bdbdfce0dd6962e63fd5dc73459e30d1e6f577e756e9034352e9e456a44",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart031": {
+      "source_sha256": "41619ae912e816e166d63e7a35ca950bdb24d8304e2eb953f08912adaa70f1b3",
+      "sha256": "6248b16f6862d94ba06eb23270e53cbac11d534061454e6427f286ae8a3e5b46",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart032": {
+      "source_sha256": "2fef030699fcefae3cf65a02580f13b3713508dc84ebb69c3f204b2b9f89e1a8",
+      "sha256": "6aa8bf7c33d0d747102de462178ea8c2a02bcaf5c555a0464070063d217e0a42",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart033": {
+      "source_sha256": "f04eefb5f382a10f8cdba9202cf6373e444c8fcb31893d0797163b9858d02497",
+      "sha256": "215e72168300ac02839152f781808b553973aade95bfb54d442d322ad993d691",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart034": {
+      "source_sha256": "aa774db9a26b89b487bc91448940aa29d9ee4dfb3cfd2cc9303f1d7d8459d1a0",
+      "sha256": "772304f64c3b2db18385901176e3b34f85fc2f60b88fd863057231aee2d68c8f",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart035": {
+      "source_sha256": "2529d7ea43908893beb2e7703eac63226320bbcb1819d6bb99cc77fe85f1498f",
+      "sha256": "fd93ed8a583c10008b24f00f51ac07ffefa62dc526d669a50a16c5442ba6295c",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart036": {
+      "source_sha256": "84f313d911ffa1c4551a531c1e4c420f3c99684ca9df4c817e5b1558fdc5ab4b",
+      "sha256": "ccc979b1cec3aaa2b5b75af3a78980a268834ad999e848facfc976313ff38852",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart037": {
+      "source_sha256": "6ad26c7bb1e04e229c6df2d3d5b0751452768be9706d494097a77ed05cc106a5",
+      "sha256": "be27c15bd034ac55897bc9b653c9d710a7e2dd7b0fffbcfc3eb49e647bf89831",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart038": {
+      "source_sha256": "8aa44dffe45113c4b662e0bde4739f83bb064c343f21ab6303d184126e86209f",
+      "sha256": "6257425864c93fca241ae0ce3a41ce4ec7adab1c92565ebaea2115f104d72f59",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart039": {
+      "source_sha256": "f0d1930e9c4062f9cc039f95687e128979f807fa762a27312ebf2fba1e6d0c85",
+      "sha256": "545b9dbef35018e1944799cb76ade7d2be964f58bf53129878889dab426c0e9b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart040": {
+      "source_sha256": "1450104e05dd149ff8d1e820a51a08724c1ab4430848845cec721a5fb4c5864e",
+      "sha256": "bb4e4763eedc55a08e192ef577907dfc2e0d0617886df32cbffa8f1c914fda50",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart041": {
+      "source_sha256": "f759df92514dfb60448f3840d94486268e92d07e7097513dd6d4f5b76b7a7189",
+      "sha256": "fa77cd2191140c4eed83339e2a6e82753ee2da7b88bd2c3f4c4e186291a51257",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart042": {
+      "source_sha256": "4b0a3055f63040f1200e6b67957cc46550972eac04ba04d30a965289c06e151d",
+      "sha256": "f7ad58be3ac9cf82cda090a24869b7a52d9c579d9604236888f6fdadf46069cf",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart043": {
+      "source_sha256": "bec143719ebb573a1ca61c472193d3267b424a195f6fe730a7a1f9f904c9a1ee",
+      "sha256": "fe14d7cb236ec02dfd64ef5237a7c1b0693301ce312203e2b7d329c8bb873336",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart044": {
+      "source_sha256": "08c203923755335fcbaa709a20d25b5cf9b4237aab54d7447633b618747b1c28",
+      "sha256": "1ae337a0c0ff7cace6680b1e4b882def9b11a3fdc49fa7fbca97f8de9ae1b6a1",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart045": {
+      "source_sha256": "1573b83f88e4e890a0ef5a73a4a28ee9a1809991734a7fd2b4342ff0ae1ba513",
+      "sha256": "59df4dfe919fe68b88ee119ebb3c4a10ceb54c067bfd1ead33b078a86bd1ea6c",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart046": {
+      "source_sha256": "4b09bb8cc003893fca3f49ce99b0c74972d55ce6d963d004721e41dddc1097dc",
+      "sha256": "4058fcce7cab8c108bf2e12c1ff97ce8121014dd3708d35b6d5d564524da69b6",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart047": {
+      "source_sha256": "ea6f4aac5a7a93553cb9081452811f8a7d91be96b5c4afe7613c3ce82fb92eb9",
+      "sha256": "fd99fcdc88adf3234e2cb2627bbaf5619570bd4c837098a1afc3f0ba8a25c530",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart048": {
+      "source_sha256": "3d684ee2b46d1acae0c71578698ae152d5a4cd1e3cb5a411c93f3513b512baf2",
+      "sha256": "3bc1bec966af61068f28eebac81e44a6f8543440144929e7a2b78b9ace837e9f",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart049": {
+      "source_sha256": "e4c75aba87ed8ca9d42c16813fce8a8454457e04fad904cbe8b276203914c83f",
+      "sha256": "9f8c0a20b287733de6cdffaed011afec6dab52e9c9853930558f14ce486716d8",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart050": {
+      "source_sha256": "06b82282499d8be741da1a03801d9da5288c1a6415ad1e43ac215bb73487d120",
+      "sha256": "60af3991ba31854f0830f4c6c742f6fa42dd940b2e38a5135c3222d80ef64a6a",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart051": {
+      "source_sha256": "58bde77ca20efffed9da0b83781ceb905973429055c823cec0112ef264cccba0",
+      "sha256": "9da5d328d76047d4ed051072f708ef80734c0d33219f7d99b13dac57f673bb23",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart052": {
+      "source_sha256": "8169e338c0ec486e4ce1381db9940180a9c08310196dd0572f4536ebdbcbecd9",
+      "sha256": "1f7ac7f8fb91fa67343e4b344194b11ef1d8624100985176b2cf814ef15eb45d",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart053": {
+      "source_sha256": "b0184ba2d62f4f4f70898e7a9bb672d9b31c7b1bf67f63757a6216b0215e2ab8",
+      "sha256": "c5623ca83efc021590c7ea2d6bc61d7df1e9a47348d808fc41f19e13b8fe5ff3",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart054": {
+      "source_sha256": "eea8882da8276f3326cbfdbfcb12d1df88e3c5539c4071866d208c4278586f85",
+      "sha256": "bf7b66150eeafb7f4d99918e1e755d2ee43f0c24ac5cd635fe78c1edcfa3af45",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart055": {
+      "source_sha256": "413e9948d3522bcb1e5307dc2239c305d3bf91fa4dddd029295f4d4a651c29dc",
+      "sha256": "591be9f62c5f92f12d30512230f5a2c7f837aecb45333a4cfe18c26db6686c60",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart056": {
+      "source_sha256": "ae0d5558239ff7d0350ed0f54679ed39cda85a65df6c99ee28a3d9e3efd26868",
+      "sha256": "b9571342f64187ffc4e8b56c0f3eeee8337d0258900bb34ee7b566cda4d3035c",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart057": {
+      "source_sha256": "666815c9cf75e4585d5c3e0b0d1fe868cd439a0bb511c44d54e690ef41d5423a",
+      "sha256": "55de5d0928bcf78036ebe0e2772f17fbeda9ea35e25d00b86f6042005c3ccffa",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart058": {
+      "source_sha256": "37777282374a6f53383b95050f7b23ece2792b5c73b550849d94d200708130f8",
+      "sha256": "8b4132eafa684f9fef47a62382023e63ea8228a9519d1b8c9187de207d70f106",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart059": {
+      "source_sha256": "d95966b5b272c28baedc019195d47bdc9d2cf09b2a369301c6cc12887a1e9419",
+      "sha256": "dfa6dc9a0d8017acadaa23387c98277589a5386345297c467b929c2caed5f361",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart060": {
+      "source_sha256": "dbcc318489f9deb81ccf917af50d19afcd91d5e6b262e89ea558a3293c4b7891",
+      "sha256": "4b11b8475d6a0ff86a331a063e6be518f6597151c86858470e673a06754a58ee",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart061": {
+      "source_sha256": "a9875d502ca75857ffe14c53aec78ee8983e738923739aa9b2601769b76791e2",
+      "sha256": "10ae85cde4bd10a12c97e7efbbeb95f7a5aef071875be4209220109cf9c70fa0",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart062": {
+      "source_sha256": "d19d104d4ed5112da45d783565bf3cae2525701ed4087266eeb24386f2239834",
+      "sha256": "c7d13400955052ae71e743dc8bdc39614a78d964c2b43e8d117febbce07e7bac",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart063": {
+      "source_sha256": "bcb09ac4a29b536ce757e1b54ac9de2fe9f99a0580e8ca9cc2870c17443a2942",
+      "sha256": "44727e38ff76fd0a38f8afe818d2600f5961ee7592a1ff5daf6412b3b51a67ca",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart064": {
+      "source_sha256": "aeba214d9c60617455a3f8459dc6e1c867855fc967b63b3aeea9c36a5900be20",
+      "sha256": "11b0550aadf09d55e253480e06b084e0f0154f8a4e79d86b70b0af52d8483183",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart065": {
+      "source_sha256": "8b807ec6390a5de15f4f2aeb27b847ec7d69d56798f9ef00318ddf65c13ce2f0",
+      "sha256": "73bf5bca3a74ba387958338308ba2627337fcf66b989b79bc2485c5dc060f15c",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart066": {
+      "source_sha256": "9a5e0ad6f2a11a98e234a444dd866a4a49b78333213af76ae22aa327e97d998d",
+      "sha256": "5ccd1571d20af9afc63839cbd8411aed7ee8fa4dbfd20d7fcbb80c93af2edb7a",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart067": {
+      "source_sha256": "b061f6dd0d9c04f6bbe0b74a994329021692ed7436b7fdc3de1f62f6407614c2",
+      "sha256": "96b59d907d2ac8d46420ba34299cff7648fa9c8bf01b4711058ec5418defeff0",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart068": {
+      "source_sha256": "fb8e7f879f7c27b9d8d5796b92301ff26ffdc749943df421eb9c5e7fb3a46571",
+      "sha256": "6b450947691f38e440b9a1eb60585f17af61d0731506725107136fd46067d77e",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart069": {
+      "source_sha256": "e9b131fa0826f3bf9624a598a6d58ace7212341374be52ad3a331538d14603fa",
+      "sha256": "4efffefa2c67032a9e5f16f8ff9d5555c3e06df6e7585609bafd746ac8b2fcd5",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart070": {
+      "source_sha256": "0c576ebd086e2444d645c833490373f87401bdd3dec57ff77d90a1e8c003dcbc",
+      "sha256": "e139a3e12c62793118baec0b02ee5bb6518b564d052590820ac98b687ead85a3",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart071": {
+      "source_sha256": "b0b3ead93d4adf4e273c6b7cd03c239110e41332152ae4d9cd7982a1335ef3c2",
+      "sha256": "2ebf6aeb12bee3bd88e865eb43dcc738ab4764e922c3768480149cead9590fd1",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart072": {
+      "source_sha256": "062e64ec08a5bd2740a5ec7c6821a9c2b224ce3d30563684e8b8e7fc37e93a9d",
+      "sha256": "578882f5cb5180df89332b97885785dacca9fcb5394df39790899099e99f2eec",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart073": {
+      "source_sha256": "846810c8cfff2c4086cd948180d00273a2564615ba91cc2348ddadb9b0581be2",
+      "sha256": "8f511d5c3e3c5e9765bf03d60a6fd419d6de6930279363e06cd4d28f15e1a72e",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart074": {
+      "source_sha256": "616ece40e3ee79d57fe0b31e44847ccda4e28e1b52067a49f9a783b0c37d936f",
+      "sha256": "d1968a1a64c27df9c8e658d0349f83a6d7cb4051132a2d27c9541fe64359387a",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart075": {
+      "source_sha256": "e6fccfaad416dca91e8fefca57610f0b3328f0b487037edfaa386fbc6b42911e",
+      "sha256": "471c1af756179bec07917b587f585dec9fcb62fd18ced5c18d78dd1bf29dc1f7",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart076": {
+      "source_sha256": "d6e1d797bc5fe195810f9dda2229c347a4acfe77b3a7e7c44a2c23abbe7a97d8",
+      "sha256": "a5d21c92798fde5ac5db133c36b502cde389991b95cc55ef978b49302d8a41c9",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart077": {
+      "source_sha256": "77134642207010a0a7307828ac0e0a492b2eb03f6d9d8b9f31cfe21c40c655f4",
+      "sha256": "edebab657f412d881dcb2ae240c87d23f3b6a54340f977bd35ab816f9b3be6fc",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart078": {
+      "source_sha256": "fdf1af2dfc784d2b8ec04c6a1bd6e688e9be4d71943e0f3973277e074d35ff13",
+      "sha256": "7bd6a21fd49c122cd682072ee7e88ef0ccd298842b211b34abc466e51435fb51",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart079": {
+      "source_sha256": "0f7ca4469ad32152e6f6c156c3d77b4a822c7db2f6a54e50f86a078416ffa5e9",
+      "sha256": "eaadbcfa837048bbb00382c346b3387dc28b21cb818bc97d736c8bc77716fce1",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart080": {
+      "source_sha256": "de202355b2223e8748ded24ab0dac285921875e365738937c89b8c6d9dc4ba14",
+      "sha256": "ea669ee07a589a8d9711cdd88add4b25e6b87b8778247a453c6fd24fc066faf2",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart081": {
+      "source_sha256": "4dd1b1f1174de2a9af959f71e6ca9156523c8627816fabfd35d4445b9fb23732",
+      "sha256": "0abd8b829ad012b735e7ad2370fbf2316ba8efc2c4c44521996e25504c294cb0",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart082": {
+      "source_sha256": "d35841557555855f664bf332d669eb9f62f50a121b4a24ded11bcf4a031e12c5",
+      "sha256": "79ac8bfc8c787d097177c9a1745702942d038a9238a79a127206af0e665dbecf",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart083": {
+      "source_sha256": "a36e7f488cd6027a4b53aa9a86a58f1360a731ff16d63317b5efef106f52b6e7",
+      "sha256": "7404a0b6c60cca9bf75713a9e309d82e327dff3b6ba12490adfca53b6c48ac61",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart084": {
+      "source_sha256": "d3ff748c36c2f20d75eb33b4a10a0026509c3531ce9527731ab9060219a0e176",
+      "sha256": "c90f75a300bf55d62a18a89a109bca83ac88b76724964afffcafc0b1356be95d",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart085": {
+      "source_sha256": "c25696638749d2b27d3efa365256d008539afba8d68454bc65dc66f9a910d301",
+      "sha256": "274a5197df646d31acef605cb16d180ddaaf4e8b23fd98b47ee40fcb6a672328",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart086": {
+      "source_sha256": "9d5a59f1cf41e687051384b1134387fa9661e0763f53c281a5119438f36ecac8",
+      "sha256": "7297bc48f26a3397802b655a014cc7c791642c343564bbba3f784d2efaf1f7a5",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart087": {
+      "source_sha256": "9a49be63ebb511ea942e9b3ca8c26770b9c5bd53e10cb4e8618b54752fe8093e",
+      "sha256": "f970a894490e8936ef54b6a2030fd7b7f369d8034000f9d421dae60756e18302",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart088": {
+      "source_sha256": "2d8ee125c6c80a8fe9325a20762c4558b4493efb4d708432e6f12cc96da92acd",
+      "sha256": "9d1a7861a39041e86af8eaa23a152c584988cd5faa85effd08d8a08abbeba41a",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart089": {
+      "source_sha256": "368f805ecaac57fb3a0c0ec7ec1d207ddede7e5bb2c4bee72f0c93fd8680e1e7",
+      "sha256": "1adb286b44f2305f71d3f2f6e5301d18bb48c9e86b98cc593b83e7d90c6f3434",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart090": {
+      "source_sha256": "c60257a79142cce2769112887f50d3cd8bc6e389cfc795d439fa1a9bb55db1fb",
+      "sha256": "5f7a93b44673371ab0091154bf7b2d7d8847e3bce2b8a5438c90dfc5bbfb84d2",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart091": {
+      "source_sha256": "8714a696fc6ea6bfceaef185a708d97c8ae89df413eb2128c2934c9d843108a0",
+      "sha256": "966460837e3852106b6c3dc1e30b88ee61aba4c096ece3cd3ee20587b7bbee7a",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart092": {
+      "source_sha256": "9c7c86d423ded2176e8d6b5594f57164a645d87b7321626de04cc245f7e1f61b",
+      "sha256": "0a1434f3dfb941e72c4a43e3d630c4c127c833bfffb82f17830c84fcdc542362",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart093": {
+      "source_sha256": "1fcccec7530acc424218f6473916d5084ce59191ac641318b8c3f637e8dc10c4",
+      "sha256": "c9b7add6ab4fb31954c8d921cd271ef75457f158cd8fdd8dfc6f6464cc2ead60",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart094": {
+      "source_sha256": "bf71c62257e57a5ed9ad1138263ad3bdc87093365fb4c66efc60bfd8700735c7",
+      "sha256": "961c24c7be94e83b8c6e1ed6d4c736bd54ed0b6f07591b0e5db2e8929beb1d3b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart095": {
+      "source_sha256": "aa00bf1602a5fb8a061af9eb51d13d750ac4bc4d403be34958fea8b9012ba176",
+      "sha256": "aea0ca0a24160e83d01e9cfade14fe68767f6a1ead2d0c1a7be3cf4ccb81c8e9",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart096": {
+      "source_sha256": "4c01dedb1e1ba4f80a1b594c3d343d8f7b9d889c15524f874bebc50efb2c19a6",
+      "sha256": "22ec2e60856e1743d880812c3185029e36fb9e1b9edc0ff97c86b76756001a61",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart097": {
+      "source_sha256": "d97b70934be8792c09927958c863e3ed5bf3d7127e138e7a21105c53e233554b",
+      "sha256": "386090b8d5656e669b835a96de661bd429ff60056c55d51d20fb46ea94eaaf09",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart098": {
+      "source_sha256": "24eb0bc010436847d621ad1ec82f9f25ab9d6ce28cd1bd1eaf1454f2000f388e",
+      "sha256": "b45962f9fdfc052e576af9547ccf83f0f445ad3b4f29f5ab4ff7678616ecc637",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart099": {
+      "source_sha256": "e881c158a873443e3fd7e75e9219e670460e5d06ddcadb57bfbf03cdebcb6997",
+      "sha256": "98341c86fad4d53775fffe9ba9705298317ce73b0a24a018979dfc38029035dc",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart100": {
+      "source_sha256": "4612bbc8ba476cd71978a9eddd2bb1511f20a524d41e5a737f40baddba18c2dd",
+      "sha256": "4cab97a02f6aad2fc5fad9122db5b576dbb3cb07adf9206c7eabfa58e8ccc1ba",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart101": {
+      "source_sha256": "1435b90c808df7511e6f5fde77bbafaa7ae8b6e986d04230dafb536f2ab03d7e",
+      "sha256": "2a7e8aa7bd680900ac9f9d14df7e66d8d0e27a6b5ab66490a60790bfabe24cd1",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart102": {
+      "source_sha256": "caf7aa40ad30ec393582e8cbc8e347b2c67cc668e8d25dd2cd6fe25f13e945a9",
+      "sha256": "e37ff490346e4da1b5bab244a6a74220d8b06889df8eba843a9f41c19c6e5b32",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart103": {
+      "source_sha256": "9ec37e0fd6405da3879f91cb7da8d9e47b5e3a0b11f54081c1c4950fa643f003",
+      "sha256": "4c27dc377549cbd0edbb5fa5d12d2e7ea3e21c443fa0ba55919aad9005ba929b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart104": {
+      "source_sha256": "a102f7c494ea33fffff8181c81273d2961c8bcd4fe7fd91d9d53d9d53ac09377",
+      "sha256": "b1eaad38c262fae7aa9ccac8de66b09ae13fa073590f17c0a30a70dbb9c737cc",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart105": {
+      "source_sha256": "e1d39de3c6e9cf085f3cde965e9f0d67675b6df0e1d2501e3721e9868f2348c2",
+      "sha256": "0dcf6fb4d13ce13e2de19dd38f8502426806b64020f48830648540ca4405e785",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart106": {
+      "source_sha256": "0bef85ed0b7f07963683b53501cc87f2f7a879f8e926b985db6d8fcb4bdbcb55",
+      "sha256": "99bfc37cd1537f6a1a57a6b0d3ef59ad3000da3d0cdcb85c904ae0f4b4efd521",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart107": {
+      "source_sha256": "6b71dead2b47ce7ceb272d716ec08ac8a58dbc456dbd07c611d6815335744839",
+      "sha256": "399a531444e6daa3894c967bf9ee7971609acf51bac8a12f7046de26b71666be",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart108": {
+      "source_sha256": "dc96638e8dafdae4c01cb060ec8b1034f5a24298f67a474ca360e2706fc67359",
+      "sha256": "851b90ee42be1de5798757804cba3ceb231fd3f87db928c240d4bb9c754a1308",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart109": {
+      "source_sha256": "c565068ed95969ea77b50739a50bbc439a80fa05dd1b90c5aa854ac671b1e161",
+      "sha256": "3fcb0c87a4ea26b21036ea226c2d1839308ee39c5f034302ed4baf3b8a8f9fb2",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart110": {
+      "source_sha256": "ceaef09d6ccd3a479414151e8faf326d2d4a760be86ddb6f4a8d9ea776bcd6ad",
+      "sha256": "033724da237c7caf19d3c5068969ac09d9157c9d4ce75c4f77ae8098475386af",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart111": {
+      "source_sha256": "ecb29879aebb68b5d31fd8aef32cfabcc137316e8189ddb6e724505ae0e1605d",
+      "sha256": "be85940976c6210f75072687482a76c85b3e3374fb82bda92a463d4c17a82ee0",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart112": {
+      "source_sha256": "5dd85ecc023adfd8852acdad54f7daaf6c5182a47c1fb9380b280a207e8f182b",
+      "sha256": "55702e9785ab8f88ebc2e1c60f3ff08c0dc987147bbea1611eb7ea6d9acffaae",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart113": {
+      "source_sha256": "c2f58ae3c676763fcb6501023d17fee440cf570560b8188bd29c060532f7c3f6",
+      "sha256": "fe10a1bb9583abb900c02825f5ec3c2dd65b8443063a9d1624b51d60b92624c2",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart114": {
+      "source_sha256": "ea3f3a2833e8a34e237b34efc0b0d24afc2a15b33f54c038f41ba0f10e3b6abf",
+      "sha256": "cf8d09f845f53a5f479cf61387098e8df33050c6b9495f4669d3aad62c8e3241",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart115": {
+      "source_sha256": "96859a8479c34f6f7f412920914583c210f024b7d6395d703142c29460eea980",
+      "sha256": "5dddfebb5dd0ffc6ff90fceadb61b74e019402eb16dffca03e529d84e526c79d",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart116": {
+      "source_sha256": "980daf1a23e8f4a908e82485d071aac5b19f7c8506ae06c3162fb2b20751fb52",
+      "sha256": "885f01c855c7f464413d307ed5040561f3d9d419140db33ab936d1a67cb6f1f6",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart117": {
+      "source_sha256": "e8d38917d24df2e3bd95d7d25a7c24bf34957f5c0cb1d362574fdb746f044182",
+      "sha256": "0367f64931d739cfa127c8199d19e7eae6becdaed3ad65746261592a0e5b6dd0",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart118": {
+      "source_sha256": "643df54b5d518e33962b3b44c6adb7aec04f4485c9bc0a82af780af2225a8ff2",
+      "sha256": "5de8f76bc6e4e4a3894797837fb18e5a18eb406533f8d263e7c47ac6db7b3f10",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart119": {
+      "source_sha256": "1263b3a0bfbd7588e5b8259f9546f07af3e053eed26683d5e26849e679a083a9",
+      "sha256": "b78538261cf937aee4dcdd12f1adaa84cf0d522301dcb56227177aa1c111a9f9",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart120": {
+      "source_sha256": "7c21a7cec560f16a8014515cb9030506def90de09550c9f9f3d9ee29b5467409",
+      "sha256": "bc23d736a3461534d3b0ec842ab7a7c317d6e79fdaa8e1546a19a280706f2f63",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart121": {
+      "source_sha256": "a40021e684ffc1d24a68c8c019d708fdfa62a1dce768f1070e8fee47d0d7812b",
+      "sha256": "cb542e38c14e388565a3d95daf55c22e4d60e2e040487ea0bd38710b866515ed",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart122": {
+      "source_sha256": "a1cba4a149145dfa8e1fcc468b7d025b6bba29f1cc51e991fb8a4c45da283cd7",
+      "sha256": "2ed05015b94c45ab18003a837b5cae8a988549c0e76ba4dde6a4c383aeb76a1b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart123": {
+      "source_sha256": "15928189a582c71a2628327ab617b29992cf11f6a2ee357f8f955f77d33326e2",
+      "sha256": "01695da4ed1ef61a8b8d6b41e81be6243ef87f75b064e13db3453f0f1d21fcfb",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart124": {
+      "source_sha256": "e838b8659a3b4d7844a03e28d99da8821181c806106878ff7fe6d7b133ad1129",
+      "sha256": "4a56ff3dd96132f00182dd05c802d412f580ca169d2fd1ccec270889f704b8b5",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart125": {
+      "source_sha256": "62388e8d0642985558baf66af7055941f71efe233e4bda7e30f302ca995bc3a4",
+      "sha256": "0c1a6f98ea6932aec58b45601400840964ba643392be969cc81dd8231fbd164b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart126": {
+      "source_sha256": "603435adfeed590a96a8f6c67622289cb3018385c397bed8ece65a44a84d25a0",
+      "sha256": "8b83048ac3fceff15d73c1ee5bda4c28715bfe97e5bb16b9df6d14885e9aa30d",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart127": {
+      "source_sha256": "de2abbedb49a8d8bd7270059cb1b8227ac07f2d031a12805018c4b01492151f5",
+      "sha256": "ad2cad98f602d19d779773edebae2eaf520722bd80cf7a30bffe8532f2ab71fa",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart128": {
+      "source_sha256": "0a52cd1fe0d17fc11c36f8ea866b4dfb1b09e5a60b898fa704d35881ca66e556",
+      "sha256": "19e0d7e1d702bb1cbb33ebd4ab0cd04819b51b116a70f992523e013190e0df42",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart129": {
+      "source_sha256": "d234f20c781390bdc525729904ebe0a2c389d7b8e98b75d2028655bf3ce290c8",
+      "sha256": "077bac65545afea8b351d2b7b662634381aa9677ad537ee1b34551bb34c95b8d",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart130": {
+      "source_sha256": "bada1b002888b5028cac40fdb46e5d92e1d9a3c0a2e48145ac5dabb394583c69",
+      "sha256": "489fbfa84da16d70fb063a60ccafa36b05e45b385eb941833eccd557f3eb74c2",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart131": {
+      "source_sha256": "85e9a92e413c8c633dc165a75bcbb4249b3e01d16950b10c868f34d367b356a0",
+      "sha256": "92b6e95ef9783d5e247f25e1ad43ba62325bb15b0a1cb49b39054234d1975be1",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart132": {
+      "source_sha256": "c9a5ea2e90876af4106c168f7d51f6a80723d3f334119886efe29eb026e3895b",
+      "sha256": "a071c6ebcee1148da07614cb64c874e1ccadb12ca5aa6c245af2af3406f18cb2",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart133": {
+      "source_sha256": "c9ab7a21c66078ff348fc58352355554db6869d0d2f94d2f6396179a26961a00",
+      "sha256": "0b959e99570ffe418a396c19cdee6632fb393591b225d34f0b3e6be6bce77611",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart134": {
+      "source_sha256": "f31efe382f3a615523ebf0dd0b293e2350b7ce427aa8b4d7c63713eab8ddd8db",
+      "sha256": "0c8f3d80f1c3038af72a9143f2e4e6d9046a1c47f93d67407a698b79ca9289e1",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart135": {
+      "source_sha256": "59d6353c430d890ee1d4ae09e1306328a6cc07ee929af62d52ed7fe25e9d2b83",
+      "sha256": "63b7f9160f97244363265886dd19bfb11c4d38b7f5609051b1cb7b3b6e011a48",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart136": {
+      "source_sha256": "e1df3356d6ce5f71de8584895e7c5bfe3a6357c2de8d38974f3f173e0c06924c",
+      "sha256": "447c5f5c7b5426d44d355f245325e23ff8d3511f632b95903e81edb45882dfe3",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart137": {
+      "source_sha256": "2974f808fffa33a5dad114b4d735dfbc9811e9604e153808357f1c5dcb0a32fc",
+      "sha256": "8b89314d63419c61b8d3ffe374f175202a2e8dbb9cbe1a777426b9644efebe66",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart138": {
+      "source_sha256": "986526d2b228657b94d24788930836ca9643903161a8c2243c101e47a8270a05",
+      "sha256": "be1c503ecf3562da2db047aa0b180770d97c9b3f1558d3fc69440611192758dc",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart139": {
+      "source_sha256": "27fa22d05c0445d2ee668b4ff925c38976463b18b9184680ed2d3296a324b822",
+      "sha256": "5507366bf99b233c53a8666f072fd3a5f09b86cf8fb5d6c6dbec807def174f94",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart140": {
+      "source_sha256": "2b0c09c0ce9c5d34afc1ff76d9a82bfceedbfadb2e352f0e91c1ef4e36b73f7d",
+      "sha256": "c24de1f71e00aaa8d7a80c227ce31f584e3d72ec6fc48f5953600308b146d56d",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart141": {
+      "source_sha256": "aea781c49a1f5e2030dd985affbf39462fec2beb8788a97badc99fb726c8f0ec",
+      "sha256": "3f98d26a38594978ad3a6e7910d5024a4049175ddf1935462ac8ffb552798c12",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart142": {
+      "source_sha256": "610384b63c34d1dc9e441d84d14c45fe2bc21ad884115c28e39b37000f01ae74",
+      "sha256": "9855dd1748d62b28c8a78d71f5b650fdeca7630a90dd3f734d44a1f8d4938f95",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart143": {
+      "source_sha256": "9c005e6730eb4deff7eef3b3662ff0954454a8a371219ed863336d343b538256",
+      "sha256": "20c87946761687468e083cb7923897e9191063ecd1211d83ade509ab771069d8",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart144": {
+      "source_sha256": "b78840b53f79e9b9ea55f1be619f9f8d383fe55020918ce922af693ec384363c",
+      "sha256": "bfca11b42f7f4f2813fe7c28dc6c92316b493d31cf53aad41c530befa441a49a",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart145": {
+      "source_sha256": "c4639f60f4261024f8e9a27b821cc2620625ce6375cb84995b1b1031bb6ea86e",
+      "sha256": "ca05590790589fd376593eea0f8432098340c4ec4b102fa6ca77949b9ff7b3c3",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart146": {
+      "source_sha256": "4fd489b2431fdce60f0dda53184562321c4e78dcd9192f4e995928d4a5782102",
+      "sha256": "8a07dc0bae035c2b4a888462719e6acd9dccc493ab81a970d48cfeca9fe11d10",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart147": {
+      "source_sha256": "5de29a3c017aad5cdca6ea8b376744de0e5a24b2d211768eceb8dcc7dccd90eb",
+      "sha256": "74348e2c0c5af8995791617614d9187dd99d13979c209398c920a4f74cda0129",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart148": {
+      "source_sha256": "dcae8558daec9d7506de27549633bbd950a02799bf374fdc8b4407c7d6eca3e2",
+      "sha256": "4a2214843b0012bde7be80cee6b9bef72a1b2eab6bffe34267ce219c7caec049",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart149": {
+      "source_sha256": "58ee843e8e7c3efea0fe6289eb3bc794ad57ca6c8fd13abeaa84611d9d99ab31",
+      "sha256": "899001e0f6cd8f0d8a1607089db2cd46b6002998ff3d1dbb2b9af4f25be1878b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart150": {
+      "source_sha256": "c2d336c542e75e0ad458c91009997d769b4229ec61bcdf15d1608be3606967f4",
+      "sha256": "f710c12bb70e6e541ac6741efa416c05b2d5b62fe67f9c26ecd139192b4cbd98",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart151": {
+      "source_sha256": "c65830115fe1f86768d7ad8927ffc5025da941863869f92283419217fd48dc16",
+      "sha256": "ac956c45bf51d5bfb6d93d030029be4162fe83490358379b30237b2517232d93",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart152": {
+      "source_sha256": "34b03874ba80fe1776df5618fe6ff928d9a13fd3a142ccacdb6f0199f76222b0",
+      "sha256": "13756e65b185de23a41584d31f44e9e740e82806c0f7f3f11c72087c32128077",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart153": {
+      "source_sha256": "c4bbe0c4bbf1e8f3e83d6d1bb5d6791c503362b3fd8069de92e15c64f865c40c",
+      "sha256": "dd8e07094f33d692ce9e0d5046bd55ea332b2c0aea8b3ef2b1f04fd3073158de",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart154": {
+      "source_sha256": "93d58a0c2e37544f73b4228e4d2f43ee7803299193a4a4bc2e583af1afbd2f71",
+      "sha256": "d6f986be1a27222b776f659c87c4dade542e4e7bb2f895d9a2cb8238968f07d0",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart155": {
+      "source_sha256": "8522cfa4a1b321ffdc67d31ee7f9a03dd5eceb6297104fbfd4f44d17af224cf5",
+      "sha256": "2c23efb934f64bac257fa139e225101ff8145ddb957b0d3ea23a69a08e6d5dfd",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart156": {
+      "source_sha256": "c6ccc28693fe7d22fdc59223fde651851335c84d4965e0b3bfd503c57bbf01bc",
+      "sha256": "64ed055d97939425d6d764ecffcb1b0246f6581ea8d2e9628dfc9feff2d7b123",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart157": {
+      "source_sha256": "034c9fee537dfecac5ee0b1ea033c88bb2fa4ebab67f33f17c0253721c8973c5",
+      "sha256": "9de20fd74a0f8ee3c16af692b77cdaead2fec9e235af96bbddb5276e02bfe5e9",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart158": {
+      "source_sha256": "11d28030650c647a6a1cec9e9e4899194eaa6890d8c828112abbf8e474e95cab",
+      "sha256": "32be362db48642f75954709ddfdf08857514e32ecd1ecf4bc569f0f9143ad794",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart159": {
+      "source_sha256": "51742d48ea5e8732588f8b66d4df20338bc4c0c3c08ce0bf54d3f3eaf8f02790",
+      "sha256": "6a19e06c0063b8771db6dd31450c45082fa7e6d0453bdc4ef97cc03e04eb3c56",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart160": {
+      "source_sha256": "ce31617a70cce369fcb5a01dedc1f12d5269140c3d162b1758eb1e1a35a9414c",
+      "sha256": "60a177ae9f19f17e17f9eba4db6663fb27fc757fafc0a8afa3c324f79d852dd9",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart161": {
+      "source_sha256": "8c08735639751ebb4446e28adb245929229375ea85461220a199fe01861c451b",
+      "sha256": "5c5f6373ccb7f24daaf17a8c904190b6bd48bf64e1ba23feb9f6e8466076a7bd",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart162": {
+      "source_sha256": "4eae109ee328ece731003f25c0e119b8bd98007bdb9c6ccca65fbbdcb0f58c63",
+      "sha256": "26fc4a710dfd297206072562f8421902873116f10ecc22f698c6ee8c7f08fed4",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart163": {
+      "source_sha256": "f7e7f48ee0d6ace6e5d92ece143c44fb4184e372a183aaa08cb8abc6fdd7061d",
+      "sha256": "9d37071d3511196353ee343c9ec69d3befaa535128606bdf28dee070d3d7c381",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart164": {
+      "source_sha256": "6ca12f3d79c5411cd585c9fe2b7f830ad7b6b5f4da93ee24774b20cf10f4c142",
+      "sha256": "164fa981684ef709b83ee4b75c7611040289cc907a5001597f3cfb6655ddc584",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart165": {
+      "source_sha256": "9520a2ea2ab05fec559e033f3a419513ff563aa91e86f75f8364a4ae0276a173",
+      "sha256": "5f4e2269eb3b36b0a6980a1879884e982975f2d211865a19cdd90084c0aa9e37",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart166": {
+      "source_sha256": "b613a7a75cb5c1f116c5842924a12fd8a8d0d5ee1f36a2b9d3485757c2256000",
+      "sha256": "04264e66f4cd498924db7952d166b5c9154be5e98f2216082f9f0285c14d2b72",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart167": {
+      "source_sha256": "293470ed0d6cc1c9ca7935180d66dd46457d557b1e34fec281c0afca28556953",
+      "sha256": "945c4b6c704918c8eccd7e14d6fb751edf61170a8e4138456301ec3c34c6d738",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart168": {
+      "source_sha256": "f4619179448a19bb11d2bfa3a4c2735ca7ddf80248b6495e72df1aa40cf84337",
+      "sha256": "d46e64f69a5dd38e679318f3ac1ecedbcca5b3b0a4de48215d800ab92b0dbeca",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart169": {
+      "source_sha256": "b6c195a64c6359c102ff44f4ddaa8abf7334be0b96195d69b8ce02e3f092daf8",
+      "sha256": "71648a2c0f9307232a659cf06f2e2d1728eee8729a4cb05d0b4260f4262a4089",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart170": {
+      "source_sha256": "95e139753d41666ef41c06df3b8cfd9ef47cf2bff03e15d9d5c699a3b7f7a167",
+      "sha256": "b6e0fcbc648bf67fa5ef2c32ef9eec0736fbd3088da38ae4e96cc1b5928d9f0f",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart171": {
+      "source_sha256": "5c65ea25d819d40515c86694916406820c0368a21b3e1b6d9fdf1afcb8f0d503",
+      "sha256": "4a65d6fdfb4bf1bcbff2cedf5bfc93c7ea27efb9cec8c6efc2ffd21e16fd1416",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart172": {
+      "source_sha256": "dd9131637aa9a9e0c9a69a733494406453f373ed4a25c2ef6de3270035e9e314",
+      "sha256": "80fd523ddbf7c17c719fd196306e10d16c06ae27ff26fe1a667ebd0aa8c59db7",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart173": {
+      "source_sha256": "3303be83609092352c2ee0731b09715bb951250d1c465a23dc9c53e7256417c8",
+      "sha256": "18bc5ea97224743d40d4ac24fdc16f367a61136eac186a5a8746785cde2570d8",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart174": {
+      "source_sha256": "7ee08a3abddf3f22ad9688280984145703402681005571d5cb6ae95edf538154",
+      "sha256": "00d0cf5cdd71856860d73aada30e1ae26019544fee18726298ccdd22025bcd8c",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart175": {
+      "source_sha256": "c6d28ab0c67144167ca035aedf22ffc95c5946d7a820045ba1db3e23eafab8f8",
+      "sha256": "8df64ce14899e8293688973d4c1cfba49ac00c3a9e30af495c6bff66dc13c3c3",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart176": {
+      "source_sha256": "d57a482027b5e202fa9627cc847128895d854e25bf4d68b98e26777c2aba476e",
+      "sha256": "070b34f3871fd872be8b9efb4e081ada95776506b5d844aeb0f956721c7a5614",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart177": {
+      "source_sha256": "94cc3186c66e1f1f3d87e5f39598d8d3ac8601b80891b41837c16b87bd25bfaa",
+      "sha256": "4956daadad48cc8475842b0d82ebfdf5a9044a32691ffe4419d84475cfe0bd95",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart178": {
+      "source_sha256": "bb30cab105e30686b74af2ee4ccbeb9cd0693b0637e792c438fb04ddf7656f25",
+      "sha256": "a57b4dc5dea451b4712244615f2e004eab11030d8dcfd748dbacdeec6124a672",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart179": {
+      "source_sha256": "aebcc3100f5108c11da6ff1173f7166cbf8d06cb737cab1c12ae1d4fe54e255c",
+      "sha256": "82548f411c8608c8fc8f247d57744a34cada57b5ecd97d7c116168b0b4b64d36",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart180": {
+      "source_sha256": "6bb437f75862ec3f546ef47c3f2c111f5452450bf529ff29289d5b8dd6cbc8b3",
+      "sha256": "a89e34af14566138d9e342cfabb3abe7b58a2bdcaa5a88a645c82f3ad92ef8d9",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart181": {
+      "source_sha256": "1f3647f40e15a7fc91851f0c49e82e38038f4addd908cdfb4c62c8dc0b50f708",
+      "sha256": "6f620588cdb8c48d657b25254d3271790af4f44ca769cd78dc60c10af422c2a2",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart182": {
+      "source_sha256": "c801806e5f9f7674f4e6b55024914a2ec9d843015a78929c10fb5ce6977f7d6e",
+      "sha256": "f71018c0651d93463f4726cb0ce41be81697a439e5174480366b8e49ccebf1a5",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart183": {
+      "source_sha256": "32309861500a09b8338ab9c53ec32c815bfff5b53b92ff7429a0fb8b7d25187c",
+      "sha256": "244fe51974baaae535147f971708bcb28344aadbc0e87a3e35c04a4acaff0f78",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart184": {
+      "source_sha256": "6e47d8e9e109e956802ba6e3257e2c614bb5d279f940229531265fad7ab520f9",
+      "sha256": "94ef4933dcbe373e01739e4ac7df8faded4871775da94917a4dcebd5dbc25443",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart185": {
+      "source_sha256": "4c4c2a240479b8e9d55b535f11d9de62bcf16b1f7bb8afc1c70df98dc7e9b69d",
+      "sha256": "f657412738760c6da7b6972e0a077553014ed6405de56e863c18d77c5f6bb5d5",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart186": {
+      "source_sha256": "4556ec03bff4e2f4976be05f7912f84cd01ebf18868bb057db7e59d0f2c6ec47",
+      "sha256": "412bcab1ac590d2bcff611d6828c95a38dc9f3876d4a8c9c8d609088772f2818",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart187": {
+      "source_sha256": "95ad1c69c57d9fcf0c74293bb1af45db544cbc68d30736ea2bc4ffda7809c816",
+      "sha256": "8ffbfbdb04fd600226b9319b834ac3366c8275063b05fa15a8b84015b9228b4b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart188": {
+      "source_sha256": "9148521793a9458b990423ff8093acdd62ea94b9c0043be16b8e9ddade5278c5",
+      "sha256": "87a4ab730cffc9f4cdf77e2049bd01162bf7a58a0f96ff5ba92968e3972eea6d",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart189": {
+      "source_sha256": "55af7cc61b97aabc461e5f79b8083b9596793796fdf643f8650517eaa62e5890",
+      "sha256": "8fe5c2a647fec7882378a32008a9cdefa26602ea6925510c86eae8b8790a7c10",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart190": {
+      "source_sha256": "0b0e602d0ad93435eb6bc4c47f769cc3a10b0f876104b98d607d08d7f2ea62a5",
+      "sha256": "5b7ca4fd1071c75fba599bc3e4bae120f805f6795f60505f1519a94fe585f92e",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart191": {
+      "source_sha256": "828be54031be118e081157114d68c31714ca8043b9291fa4442a27874165e6f2",
+      "sha256": "2281c02e72df2666d493005d98f03fb6fe70219f34353e6952d49faccab52847",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart192": {
+      "source_sha256": "2f57fd7512949316fdd4b4babb441696862404c48088633e0f016030a3a6b89a",
+      "sha256": "04223f0c6ccef2950434b672dd1e97dbc9b82e5b6e6d848ee73fee47735993e1",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart193": {
+      "source_sha256": "ad39733eb2cb26ca80d9d7cca12bccb25e9e1774de6cb203b6e3ec5ecdec5fed",
+      "sha256": "c52e3c82ad76df98314780b6d7c22b5b626b6e86f08df24d1cd1898dd5999b88",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart194": {
+      "source_sha256": "b4470fa9353dfe1c4a6240cfc18f1e9a0f2e08b57ab87ddd7229f7cb55206f8d",
+      "sha256": "2a56d75ff524d8e2aba7499354e2b4e2a869a636cf3f0c1b7696f9751442ee68",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart195": {
+      "source_sha256": "532de8e2931efee034c1244687f1581064fe6234b71e7e221001927dabc35370",
+      "sha256": "f637b8eca5ef47ab5b7eef75ff13dbaf265ab26b46796d5071b3409db33c1f36",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart196": {
+      "source_sha256": "e64c46acd6d5244e2b5c662cbe453ad5d43fddefb9ea2a4a370f17f7a1fe3f54",
+      "sha256": "22047a6e7e43166c7f467c317c1463e7cd13bca04f4153090cb9c84d184455f5",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart197": {
+      "source_sha256": "04b5a686eb5cfa0a16793834587978107f52c8ba0f6ea9d65d9235df01c2bc97",
+      "sha256": "ec64facfd1409be8f392627e5983411589ad0c0e78edb2effabfe88f0b5a687c",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart198": {
+      "source_sha256": "36bbed492a051b71da4b9c4178bef715bd3ff0b43bc96bcc1caa9c3b65a23353",
+      "sha256": "e899115283e2d4d5fd4a4957662abd01f0e58a7910604a70081a3b8d8f093fc1",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart199": {
+      "source_sha256": "db468e2fc7aad14c16e5cf8238b5b8e391159764d6017938b39d26679f6eb660",
+      "sha256": "2089325eb01f9308247a38a3a561996c5c0aa99bcaf8362b4569b5b7aa4948df",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart200": {
+      "source_sha256": "00f7f20e293fe9d8ed1584fa5b74ba24f37cfe94352cff77ca79f9e36b190198",
+      "sha256": "ab18f83784399d534c953acfc8091e6809a6d75895f229da88ee4771fccf6d66",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart201": {
+      "source_sha256": "b835e08c74162dee7340c76a9c24939999181307130522dfd449796af4115a06",
+      "sha256": "57b269283554b5c170a83cb7ecfc829c0afa97b6f80549c8c12cb7456b5e8d1e",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart202": {
+      "source_sha256": "5346c0161a69b19480da02e04eaf19fbd10314dabb3074f1380a612062efb10e",
+      "sha256": "d7719a39ee71a1689b662e951301a1eccc4716b732cfc4825cf750cbe218f153",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart203": {
+      "source_sha256": "53f2af5822addeb47309cdfd1a2a3c5cf243d82fd0b1dc5e88c81ea9d427710d",
+      "sha256": "4028069d9fd14b70b05d382714aedb119755aca8ae1995d9721187e4155a556c",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart204": {
+      "source_sha256": "8fd6e6c64523c46271a9f71d87df9131209f6dd1ab9c60114b6c39774979c694",
+      "sha256": "ceb0739799b550f7ab821442f59b1f6603f5daae446119c6c9a2f33b521cd2c3",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart205": {
+      "source_sha256": "2aa455aa1adf443fe06e14dd160ced1d18b3a64ab2d25a719bd6f48d260c58e7",
+      "sha256": "f5cb8564fbe34c09542608f0c6409e64eeccb4f4206a530eef9725bc9631f898",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart206": {
+      "source_sha256": "42f47f752d420bb08b420a63cf823247de5b404029380aad13cd1ffd3746b0a1",
+      "sha256": "393d29ee6bb80d4b4e220b331245a51aa487823d1e6572e631f7a8bcb3495955",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart207": {
+      "source_sha256": "b8cde395a327f218bc22abee9cbc179da04f0bcdc1fd4c9d9a19f2cfad3ab187",
+      "sha256": "a845a439fe5ac3fab2af0aa512615a22ba20172d0579f694b2094fbe694f73d0",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart208": {
+      "source_sha256": "fc39c1db8a4a9689e532bb477cc91ae258369bf3f173e93ee8e197b36241695a",
+      "sha256": "8dae54e820d57ee6e02fb82542f67b30a0623b4b5878ec5c8716a4ca114b6f02",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart209": {
+      "source_sha256": "885921c3d9fd2216e519cbcb9ecca7c52da71d79110957f09e61c79b49b0cf9b",
+      "sha256": "e1f28603ad292169316c284988c34683ffe854716cca1b185be86c79d7195657",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart210": {
+      "source_sha256": "338a0a510430d299ea6bbdf9302aabf88d65dec31b7bff4103baf553d91ae7ab",
+      "sha256": "a9ad283b1a2aee15c3ccc13911be98487edb9de495e91e8fc5d7a42816694480",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart211": {
+      "source_sha256": "696e5fa611da2e1d0d4c0149827465beab78e12b10d1ec17b3df59016050dad2",
+      "sha256": "792de71e885f64f2952fb18c43f9ad43e758f21a394da6c91bd98ded7bd319ae",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart212": {
+      "source_sha256": "559d90260ec8b18e5396d0c9486966d01a355590c37debb3dda10c7b9480ba18",
+      "sha256": "18cbe156211ea1776d115102bfd2ed7c647f42d76fbdfa2670311b4aed2e2af5",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart213": {
+      "source_sha256": "1057d1ba85824d753de80cc1c61345c82d15f0b3e28ff84c4970261fee5e88cf",
+      "sha256": "69e385d6f95c564553bd40ab7b8c011b368f5c28ba76a1e34a5e94ee787509f1",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart214": {
+      "source_sha256": "216381b318d8537a8215019b3a7407a7f3b8c90b7c8967ecfffcadf5c448d866",
+      "sha256": "b506b12fd6df39d2645f16f83523c2143ba528db3f42466b374a39060ed064a8",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart215": {
+      "source_sha256": "b874f80579e12c8338e2d25d718675311fe2806227ad1f21dc2ceb4d25974bb4",
+      "sha256": "0b7f7a7b019b28c33d1d9a06b16ae9ac5cf8d77487199a3639a69dc2df8dd3b7",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart216": {
+      "source_sha256": "14a6102db113e42be92fcada9d8d247efb99ff25e08026066ce6e8794d455fc2",
+      "sha256": "fd6b1ab3c0bbd594d1d72dd1782dc25471aec8c34c674905f392658da2466fc6",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart217": {
+      "source_sha256": "dca20389eb0e634cc1da362dd249f1d5a605555a7908b0a2cccb3d3dcaabd0ae",
+      "sha256": "978e290b353a3fc28c088dd02f5bee678f5836277faedc8ecc8cd8401aa969af",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart218": {
+      "source_sha256": "a12462b964d164f9ef11d628f2217188e1b8f6592d74ddf7235d5230516dfbaf",
+      "sha256": "0272f7882b23ea832ffc1f48ab86dea1f6e635c989baf5cabcd19759d10ac7a7",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart219": {
+      "source_sha256": "97160ea613ce6f09498bb2591757c3460a79fdf9c0fecfb0be2933a46cadfa4a",
+      "sha256": "e85954abc26ccd1c529cf16e620fb0c01f022897793ea04a3959c16bda6b4048",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart220": {
+      "source_sha256": "2491ecfe81240eb05ffce2b5affe92ab89b037d44a0f720640f79872cb0a701f",
+      "sha256": "6cc60b9020f01abfd321848ddf8a8ea62fca0809a05e72e9d00039d981223894",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart221": {
+      "source_sha256": "dc1cb684c71717845f970d000d0d243692964f9cb0515d24f6fd42d16862a167",
+      "sha256": "04af1c313c19a7c109dd267a075aa85277c51c02fb1d28c6d9dce289b863994d",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart222": {
+      "source_sha256": "41bd79e5b54df4811f9f92f537af335cbfb20aafa218eaa183d516146de9f87b",
+      "sha256": "b887cac2c9de21b1df2a8a2e1db02118747fbf38f2b837f4766cb20ebefcb548",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart223": {
+      "source_sha256": "5a2a01503c5d680f6f393e039249d09eb223db08e157995ea181369197db7542",
+      "sha256": "8a9e3bb1ca5830b1ab229a130a2ae84fff9011d0a42164dbcf6ab2a15922b9ec",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart224": {
+      "source_sha256": "3bb467b27e9bb43ddc8acb48bb60302a654eb1fdabb605671a957b77a79087f2",
+      "sha256": "c336ca6e93a1f5fb4dd96bf228d6289450d7f654cb2b1704c55fae32a5117f88",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart225": {
+      "source_sha256": "2881a9c7dcf01f76829e06556c56e68a45a683fe6bad7d5b7568cec390d41fdc",
+      "sha256": "8715d7f575d11f6b102a18ffe1a2e3c1f2638510d743f56da0f9160588764c9c",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart226": {
+      "source_sha256": "4619032c144e0693f1bfd9d7d06dde31fe035f056f47133675ce16eaed400e24",
+      "sha256": "4632c2d88bc5d9b3436418d6de2e2047ed65a0bcca8b9f2daf3f788a3264b5fe",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart227": {
+      "source_sha256": "4bed49d10e057a83e93a71ce56c42f14ddc76d488be24ce51e3d8fb49f64e2b8",
+      "sha256": "135328dc2cec2bb503e0baf6402a41779751cab4de0eddbb19a1f798f2d39c09",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart228": {
+      "source_sha256": "7b4785635c3bf708402db4d79cbbcc1217b6d8499724ea733c8e19a24d12d644",
+      "sha256": "7c1a2f28faaacb2595ac1e5ea11544d585f28a4f054451ab1ceaa44471e1fa1b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart229": {
+      "source_sha256": "b91c49d740de5263647ee72b6fd500ca4dba5c0271441b33445092c19d426e91",
+      "sha256": "b3ed8c7d60c476e6f0fa38b7fd6f6fe30d1f8726897ae6c716d9eef5d1a54008",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart230": {
+      "source_sha256": "1c0cbe541f3afe18bef598c5de9cbe6e3362309e495f4018d1fe232e0faa8b75",
+      "sha256": "45dc7af8702b787ed34fcd24677f7c18298aa8ab43353115cca48ba982e6da4e",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart231": {
+      "source_sha256": "fbc1bb9cf47125c82e3a8f3d043b6971eabbddace038c07fb19889f21bb4cece",
+      "sha256": "4a3375fd6b1f29ee88c1601b92bb3e420eac488444b6ffa0cef63ea6a5fd6871",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart232": {
+      "source_sha256": "05d06ef38f9ebdfc1523acd6dbb8e34c9088ec852a2d41b0ac57c767bf3c1614",
+      "sha256": "4639f51f67c1ee0b10fcdd43211174f4b996f5d20f16cce23d437fde684b9069",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart233": {
+      "source_sha256": "658ec675be64e713aba85a5ca7cb79b5f6623892c06545086cb5d4b65b328a02",
+      "sha256": "9ca7de3d40e26818b16bdcb680096a1cc94a2b6d2912301b9d2fab9289c206d4",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart234": {
+      "source_sha256": "213d0e0296552ad9f987a09b0709e387ae5482df3829ae486b3d0623cb698e62",
+      "sha256": "d478a3cdd7863e73527d84df5b6e6c4887d5979d6593a53c0bf4099650239035",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart235": {
+      "source_sha256": "d45f4a571a86a27376603ce89426b629ddcf867b9a14759bee6ddb4bcba47374",
+      "sha256": "41307a42963776f8f910eaafc39e3f4cfe7dfd51b6678e02833fcd40ac350412",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart236": {
+      "source_sha256": "0f7c7705129916c9d47df52bd750bf2ced2b03458555a917130cc40f3008cf3b",
+      "sha256": "b4f7fbdaad46300f50dab11441fe5bcd967111ca6d0e0b367b830458da8dca38",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart237": {
+      "source_sha256": "bbbc43f90d3b4cb7737e33f90f6f37860bd64bcddd5ef364cfc340e07860a4ae",
+      "sha256": "210cd6a65c9459bb655536104d3ebc8ffb6bf1b39eea8223ec795656adc8a190",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart238": {
+      "source_sha256": "547973d1a6556140500170e5483b972904189a0a519539cbc04b59eafc021614",
+      "sha256": "9b7cce2333633c3f356007dc00841970e58a2d7c10a9ce60fb42d31e09f44b4d",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart239": {
+      "source_sha256": "7fe2af2faf89bb917ed01b9e6ca71dd59eee005b422e3ec18df58a34887dbe2f",
+      "sha256": "f1e0b4f15ece52e223e6bc9b92502258e30bd4aac6eaec6bf82faea86dfaffc8",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart240": {
+      "source_sha256": "f6002650a63aa5b468f3d824d037129cf6a31e2d9cce758d504b0490c42094be",
+      "sha256": "61d61c1d2fb9559aeee202119518a18390e4c8f7650109dc059a9f5654aef28b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart241": {
+      "source_sha256": "cfa1330de37f456854846467eb571a84b93ab14ddcae816f1a5cf42709806a5e",
+      "sha256": "4ce65efbda52d3d500552e29e0a1482c79956d3191d7f84fcd6bfc273b08835f",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart242": {
+      "source_sha256": "a42a1508ef2ae2c1d3a9bdac70f44e715ebc410dd3692e1c05a7dcffaa5506d4",
+      "sha256": "6aea848ad5e74f2837caff7725ca89b557d3b3800d9750cbc7030aad2306edd5",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart243": {
+      "source_sha256": "f6e132d30970cb7259e3779390dc440caff0183b39ac9b347eed93eff08c52e8",
+      "sha256": "c361e75d6d4e55fb2d9ff8f8a256c59d852ecc34d4f0d550ae3f50dee1d76028",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart244": {
+      "source_sha256": "d78c6221749d77e9d20fd1c9635886fbf5390fface0f561311f2661fd27abbc7",
+      "sha256": "c375286c65e55d0cfa5ad6cae58c4bcdf8de950d872b5273982eaea0be422219",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart245": {
+      "source_sha256": "1580d8eef0ab7795a0bb7ee38498f3d97783a4cfd71495113595447c16c8eb82",
+      "sha256": "2adb62ab5a4a971ea40630d679b72779affa020013a3b0fa2fc5959a2fdf7668",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart246": {
+      "source_sha256": "6cf1f4c55b146ad36c13f65a009e3f981d636b104643ae255688bb32badbc9f7",
+      "sha256": "fa3febb3abc27bc1bdd7a4a28d214a7199d632362f418d8a97802d29f4f51698",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart247": {
+      "source_sha256": "6f7fec4b300b1c525181197f33887997553076c57aed664f9fc8e7b7ec16d682",
+      "sha256": "17f51587942b39ff4dd512cd62e89a8325d1ff694eb96f6f63e1bd0978cfa618",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart248": {
+      "source_sha256": "1b30de3ebabc930bb10e7de425835c59fa3b9537375d664b56ffd5c48d2316a7",
+      "sha256": "3dc572a693e0ffcb787d44c61fb94cd4ddf7b0403aa7af47ba01e857b6bcaa40",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart249": {
+      "source_sha256": "a8f8491b9249c790cbd2881a13b892813fbf720cad8fa69e7784bce853b9eba2",
+      "sha256": "6a0a4a0479ed3eccaca2d456c39d060f7481ff2e07ad8d712d2ebaee472ff81e",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart250": {
+      "source_sha256": "c24896690b12fad35b3b72acb06ca6f4d73b17e655876521416c0aa5c15aaae4",
+      "sha256": "60b0e4a10ca23e835844e8a0bead17c0de93341d63e51d252465b276a2a9d903",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart251": {
+      "source_sha256": "b7828d5cc96b3a8c48c45450f44a114f5e327839e344700512f2f8dd72296226",
+      "sha256": "635d61edd1a99d35e2f197ab6ac6592f58c30cf97b359c2ab29f202da73d7812",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart252": {
+      "source_sha256": "cf4d14d88dd43a6f2b5fdebe1f063fc7835b9b6fe6915d66ddbdd7db6cd9da98",
+      "sha256": "5ac4b389acdeb9f59e4ad4d4e691606e05eb2cc4dae55abdd34899c6ba493d11",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart253": {
+      "source_sha256": "c2ecc2d048ae3ced399e0b51471362e05a7822e48eed8aa8cc849210797fe1a0",
+      "sha256": "2355363c48fa33154dfc9c96fca663ce91e31e467dbbc87e993ae242519417ca",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart254": {
+      "source_sha256": "57b7dff43b06adc1d76dd1032fa8394a71ad08bb6a58a10c4541faeb42c05d1f",
+      "sha256": "c43a0918ad840cfeeaf9826c4534bf686dde06d374adc9ac4c04cfefa2d804a7",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart255": {
+      "source_sha256": "08302997a3327bdf88828ad10366eee3d4df0cf11248662bae72b0c341cb6f25",
+      "sha256": "93c59e73d1bd9e76c51b01faba8edc395021bbf88b6d57e6bb357ac476ba8411",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart256": {
+      "source_sha256": "37977b4522417c0012eaff8d3b83491911a79b45d3603da5422536bb602c74ae",
+      "sha256": "93114ca55f7c6829f10d210169c0bc8769066e17f17222febef51cdf9cc62b9b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart257": {
+      "source_sha256": "3e00c9e2de6e5f957bd5c702ba7935dcf9db21904327f20a25d1d7f4833895de",
+      "sha256": "f66b6cbbebabc92d31838d149123ab44deb2a89ac8713b41390cbf8e4a72f111",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart258": {
+      "source_sha256": "00019732afc929bdbf2ff0f0ea5a9e392c2965a473cb21815a10a8aac9ce8217",
+      "sha256": "8b1b6d3e8afe33df85346749121e5bc5509cbc09dc49c9b0f53caf9c87eba7cd",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart259": {
+      "source_sha256": "eb6908ba2ed6d362b5266babd7d8a480885156609b5f113839fbe9b55d4c5e5e",
+      "sha256": "937f075fd31b4aac3b530253f41649298a77bac9a20cf202cde42d7c3c2da660",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart260": {
+      "source_sha256": "d46b07a1a7fe74b7bc5149af6ad7260c89d0690dba8b9c7ca061335a5408e279",
+      "sha256": "18b802486e0c12ce78ead44c39f4916e0df874606574acab379fec62a8fdf978",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart261": {
+      "source_sha256": "436cb001837f30e04f8cf6d07856d2f5658a35e8b9a7670043ef2bc8739db81f",
+      "sha256": "902528e4c971170cfae83be4eddf918e2e1cf759d662123dbb7a2804716988f9",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart262": {
+      "source_sha256": "6ac07d27195976c47ab6e86dab6548d8ce57a61dce1b505e74d87b19d6d9ca38",
+      "sha256": "3552f0e1f7f09f63c7639352122c2eaf155b3c6c962ee569e931559de7145d8f",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart263": {
+      "source_sha256": "343ccf9b85f049c847b3d4c7c4f0df2ef085e47f7cdb16b3a9ea206392cf2407",
+      "sha256": "d52525e3e2795332353af9572e36bf015e3a66c6a34e3db3af1333b3918c5e9b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart264": {
+      "source_sha256": "815f33e9eb1eeb2a3c257a3566a4464a9d38d22bc83a6b32ffbfab7a97d26cbe",
+      "sha256": "5d1fa98588a91f2a73fe438d437604d013472f79c62b77764fe901640d10a851",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart265": {
+      "source_sha256": "e822ecd24a338bf2c6e2d1d23b5e48249189a5fb8725e360c327924d82c81067",
+      "sha256": "b71a78eea890cc0908e72de81a059ec9fc5789f7c7adce197ba20d9b9bc2dae3",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart266": {
+      "source_sha256": "b83105ce41cefb0484ed717f5e7bd2f4897951376945a1ef2e3ae4b1d5b28624",
+      "sha256": "47d13ad6e2141281b902b0adaf81e1ed81c1c3e8bbf42ecdcd5ac910025bc71b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart267": {
+      "source_sha256": "4d1433ed8ce2c6636552f033518ac0ec27e691ca9f723ed646f61cf2905e4456",
+      "sha256": "6acb3fa5e2fd72ee112df6e6c0b9a41c5f816472b995708dd14445320fe186fa",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart268": {
+      "source_sha256": "b44cdb6440ba1eb7f73c3abfecf2d457efc8bc45ede0ef9bfe10ae129346121e",
+      "sha256": "a631a8e42fc2a200e64d25306f2f19585ca76ec37c9d1342340fe57e13d9fbc4",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart269": {
+      "source_sha256": "80735d88d34a7ea023bb8774e971564de2ee31f4f5989ed2dc5ae50e7fdf8771",
+      "sha256": "a737f3209891299dd2e63501441164fde76b1969fb429515f2bfad4722f2506d",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart270": {
+      "source_sha256": "96a31c2e57d9e6678792b739e312fe9cad1c393e4e72587a14560568aca89f92",
+      "sha256": "c6cf3a77f34d93c48c297de2613f7f9731b7ea262bd63ac0217e1e0b231a4145",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart271": {
+      "source_sha256": "cf2acb5b5395ca7d51d99f0ec2467ba793b089ffe8d3a85fa6626bed16576b40",
+      "sha256": "5d91046e26db860cbc8e6deb8b2a6ec9f86bfea103e77f4e6f6d215fbf4b90d3",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart272": {
+      "source_sha256": "d752a2c546741bcb2715b743f6c38058a1bc911f44d8cc0ec4b810b6ab32135e",
+      "sha256": "37ed34bf59a36df1a7f7e7bd832f60c3a8078f83b0ee65c7f1b9d2a2d5644d69",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart273": {
+      "source_sha256": "f50dbd68cb0c359513e6aef8a131e0ea2ae24434dcb4beb9d36bc6fe2251251d",
+      "sha256": "b3b9e73bed50d10b774561a044ac4952a9d76148039e6e8845d54aa5df94932b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart274": {
+      "source_sha256": "874e22201603fe6a83a2aee4036e522a6e243e9d010d67cd523aa5a73fc86701",
+      "sha256": "4b58be15acbdddb4615a6fa53e734d188435b24f8813e349f7b4efe9e4efca45",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart275": {
+      "source_sha256": "baddb27923e119ed4f926add2dcf0376dcb10c311d1cbd57a2833c60306e97fe",
+      "sha256": "98de871c55e82cb9fa36657461b3ba3e68decb05d187fec048a3f3b07d7ced73",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart276": {
+      "source_sha256": "8994b9c51a26c86748ec36c657730d9cf626a367922106437719ff7f80004c03",
+      "sha256": "3d77a8f90f19b1e645189965a71472f8f2ec30cd3fe99d5739200f07a52a09cf",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart277": {
+      "source_sha256": "8938503a88c1cec1a69e6a5b1f69996432d854a7c96e9e9ab7a8ba5cb2d18302",
+      "sha256": "34164041006902621edab4fec98772e526c5eeb16fe3de2a5c7295d770460f37",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart278": {
+      "source_sha256": "26c5f60e8ae0177ae99eaf970b09895379dfd01c2d0ad3fbcd481cb90bc245da",
+      "sha256": "24d00d2d3b39e4cce05abf8edcca65571a233f9a3ee8c268f9f7705ba7df17ff",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart279": {
+      "source_sha256": "0f3bc89fd04b522bf01e10992c00f9bc6b07ddc62b0d3e8745aeea12634c3ee1",
+      "sha256": "d79deb0e02737b9f915258f676813434d4295bae4f4df8c54ae01e4537e224ec",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart280": {
+      "source_sha256": "a7444f59cbea5ff750cf456cefae23e7574e2424831651d4d5c9635b13c4eea8",
+      "sha256": "0a886f67243b65ec52199441bdcff48ded544ca3e5df8eac0f613ade423c89c4",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart281": {
+      "source_sha256": "6831947e84b8eca29fee25d1926d1932cd7a7f80882f01394086eaad062f14dc",
+      "sha256": "a80c8d7b45608238fd9a89ac3b625d821990123aa8b90b941a1522b6846e0b64",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart282": {
+      "source_sha256": "0eaa4cf125fe00db277bacd6ccc36b832f3a33e600b2b3ede75c8b3cb5f4c29f",
+      "sha256": "6381f816cfac9c2d1d247ced3a0eb05366ede341f5e75f5f75a667907a30a515",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart283": {
+      "source_sha256": "eed8b38b10043cf70c0f6c17b3e4af0de24aa9f239c30e1a2a17593a3d73ef48",
+      "sha256": "5a41ebce2d80daeca7207350b9f71056551e26159a2c2ec2dcfdfaf9bd9c98f6",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart284": {
+      "source_sha256": "14518944d2869b6a65af319fb3043e34363552463a14515f0e5ae9fa4cf7be4b",
+      "sha256": "e0bdffdc3506522069578e94a316e8f9219938409cf98f759165cb1cb3b2534b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart285": {
+      "source_sha256": "eb7dec9975fa84ee62f3141a55d4988303bf40676cc6d9d5ac8d3771f88ca923",
+      "sha256": "7af1015bfa4222dff8fb6adfd583aa33fd28ac963eab00d4c294194a2b60cb30",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart286": {
+      "source_sha256": "9a5aa97ec187386eeefeaa1b8cc254a02b6f58230dbda027eec1c2c8a6aae3ac",
+      "sha256": "5bc8cc1274caca8a0601672788af9ec21de3afa1347b87ce08e816fd9663b434",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart287": {
+      "source_sha256": "5accbc1127e42b2b6a3c105f4afc518c47535a1e394c97e766da797b6efba781",
+      "sha256": "7a14686aaa22aa97057cafdc0ad262802ecdca2a6d0e28afdf00ca5e5ea660b5",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart288": {
+      "source_sha256": "3981982dd326d6da70ae35c3e228d248d506311a3a008db865aba89fa9a9b277",
+      "sha256": "cbd60a02208b01f44a185c2f336ad9f12b15cfc5d7b3e5654852551168e2695a",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart289": {
+      "source_sha256": "b97a1aae0acd6d2e1408c259ed328bc344b272e375ad2d2673f1ad34edb5a61b",
+      "sha256": "7572e08e4359e0b82d3f40877851a658a5a11e7f931717ea693ca7e543e65072",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart290": {
+      "source_sha256": "c9e16d4f68255c646335c797b8ebb5f6fa398eb2611b98185e541750ce67bef4",
+      "sha256": "88720cd6451cc1495db5168fef8672a8b1440bb49552d1cc9239ecb70dadf535",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart291": {
+      "source_sha256": "844066491485bc0780544cd3e8b38e61b55425c838f02ebf82b0a5059e99f1a5",
+      "sha256": "97c6f316954f5695b9b9bab4f4c68f9ab0ae502ab81a1c0fe9842f37bde4ac75",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart292": {
+      "source_sha256": "7431388fdc922d51475146e817af815a614a3351ee770f0becbbcb2d7bd653f8",
+      "sha256": "fbe939d8b47a6ea45820f1f861d51e766dbbea77261c1be1e3f7904d51af8c72",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart293": {
+      "source_sha256": "94d089aea6b3e0bd3e8b563b3bc16c8c85bc656e049e68027df3f46809f13b05",
+      "sha256": "35dbad3d370939cc38ca8f5c98852c1c4e3d2a2efefea38af3a8384c0f37d43a",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart294": {
+      "source_sha256": "2953f6ee667188b173b1b05a3a3103827be0e9bf8a0836fb051d902791848334",
+      "sha256": "8519483aa76cb7833690fd6e7468421d73ca7e4fe069fc51a09b9125cf81d30f",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart295": {
+      "source_sha256": "d344c0682165aa96759014d5d4eb38875116ecf49f4eeb9f9a82b92c5912d34b",
+      "sha256": "d009b43f3ab10525e83f86013447989505d31bd02fd18778232d07e44a9a5764",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart296": {
+      "source_sha256": "80b577923f8b42b228e4007154a166fbd02d7a2dc29730c8aabd0fd100a0d98b",
+      "sha256": "d215c575f2ba8344ebb1181d6c4020f83025233f625f66de68b7b7d68e3e7a22",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart297": {
+      "source_sha256": "b90f0623667eba3b0c7545004907f07856e2d8506623e24db10e1185dc193d1b",
+      "sha256": "300977cdb6813c2cf99add58c977acfccee751f5ea8974cef700a25a96382cee",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart298": {
+      "source_sha256": "818e8677501308d375ac592e204de6fb249cb903f70c59c2b3905481efe85b5e",
+      "sha256": "c8f8df6497ee3408b02cb197df48e5e9047a242f4354eb7cad410af8ff2d3e70",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart299": {
+      "source_sha256": "95cb80d4e5eaae1f7c538219c7721601a61ed3bc061d1ddec4636d9982be1999",
+      "sha256": "3005661d0b61ea67d22a93732420e0ef9b52e5f85df9eb1eb293e30343b3ec97",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart300": {
+      "source_sha256": "23eb7139bde7498a28f345da6240c10e01d6c9645e499ce5e07f7ac77dd2c4bc",
+      "sha256": "7e2a966d96a095e8f73c94eefe30ede07dfaafaa55dfe5e9273f12e550066f01",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart301": {
+      "source_sha256": "c3e446110f7e6abc259f3dd3b7b16e1d816e0b41b94dc921e0cfc2d66f850d78",
+      "sha256": "969f43f7e503229a0f4f379d99caaeaf681f3bc8425ba238b44382614ebe13b5",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart302": {
+      "source_sha256": "751b66a885e91fed93725662b40ef3964830646c537be7fd129a290572e435e0",
+      "sha256": "31779b438b03eafccd95faea15f86a508aa5d45d97990863cc60b5c2ca44c3e5",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart303": {
+      "source_sha256": "eb113f47f1050960ba34a2e5aff5ae51e813577df4c0dc7c01b7e523f0fd561a",
+      "sha256": "beece06f839c9965c61563b428cbcf40d9caad0794cd21559d4f33c730228c8e",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart304": {
+      "source_sha256": "d31740dd0c0154e7d51e3af801574838c13bfd11a697bae68840beb8134240e2",
+      "sha256": "85ca0248254cdb25111a307b2b6746e244f394366956b74c768cfd5e8bcd170f",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart305": {
+      "source_sha256": "6811104a236d95c04f4282c58c66f17bae50f63159326d93a1f1957f25493bb3",
+      "sha256": "8b60913956aa1144c35c1ab648da853c1f39369d379795f5c3f0e66dcdb17fc4",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart306": {
+      "source_sha256": "dd1d43055fe4394128ed7401f6ce6ca1c9caed3aa6a63b80887ddd209f72143a",
+      "sha256": "f4d3e8523c24b2a18ed7d6a5e7114ceda5b5dcb392478fbda7b976666ad28d25",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart307": {
+      "source_sha256": "fee3982787f784addc4cef4ae8bdd7d63a89441f7cd4cd6f5994f94e68a0b6cf",
+      "sha256": "a5fc6b0f9ac34621dc85d9e5da7da0073827694a9054ddaae98de5d4748a58c5",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart308": {
+      "source_sha256": "727b7bcbfb20da6f659ccec3260a69a47faf4adeed1fb804c6f6092ca00bfc85",
+      "sha256": "6c2ad9eed3db6862045bfdf1f6408014b689a5fa27fe1df6cd5854f53dcc71e9",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart309": {
+      "source_sha256": "347bf612c65499694111e885783ae6efdf0c873136012bcb657eb200a4cb9dab",
+      "sha256": "b20cdcc3738b209cd2bc5c098b02d9619e972367931f6081fef220fc8ebfeb9a",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart310": {
+      "source_sha256": "46984ba589b001f82316157484b522c0f52708d5b6de9e51fc3019d969c00d95",
+      "sha256": "dd870c6ecf8b4a2d8ec8baac50c0f7c7be8cace4a3337fa09ad467ebe0ddbb09",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart311": {
+      "source_sha256": "3818f98059d867b1f1278607afd60992c49e64f35f1c2e91248620bd123d812e",
+      "sha256": "76b542cacfe456a14a71db3c46e3e4e31a5b57f316bfe908f827aef753bc55f5",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart312": {
+      "source_sha256": "01d3187b3500b7db25ed90011d2a8463493f5dd6ac89c023a9543da2f847c2bf",
+      "sha256": "e1c61c570e3e243f7ba57d08f860018ae13cb6f456153c8eb851583a3fa1f7ef",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart313": {
+      "source_sha256": "1ec5c0e91f12fc3f20daa7208dde207acf72a324a1dd5bc3e516b6dd9d54f05b",
+      "sha256": "85562b0501f14a54b85b8fc90bd077cba31020effd2718be56bd576be1b169e0",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart314": {
+      "source_sha256": "5965801a522e9ca61fa2cf0fbdd78cfb01f3b4c04e85a834538f86194e69982b",
+      "sha256": "b1fb26b4ca942e05a4666de5db14f6b769525ede4474e3f98ab1f19ad9da8c8f",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart315": {
+      "source_sha256": "89ef87a05d61f6ccf2e33b4962d748c384fa04ffb2f834cc0dcd6ea19b1fa4fb",
+      "sha256": "b5a9455f27ff4bfef79ec3b514139dae1ea986c1ca367c594e29d37479b9de09",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart316": {
+      "source_sha256": "5f265b64d527d71480e16d62bb3492bcf9f4729721988efae7fb7f8594bbb570",
+      "sha256": "c4dee83e13887348b0ec47ba09f6ec58fe7b9b4b63c45448d78fe8bf0b92065c",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart317": {
+      "source_sha256": "c5f34a331e3e9109ea3eba9347f6ebd37cf7eefa539b6477bbda4afc5d52d626",
+      "sha256": "27d4697970954c778c863a5e9f08cfc6f72a48b36be905ca9d44203048360db2",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart318": {
+      "source_sha256": "9d6039ec3b4851bdbdedc4882dade09997da07f6e2d52eabbe04b79bb0a39db7",
+      "sha256": "a2d17b5721b3300df4b8f9d7ab34b8c4889815eb4741231702bec6e738d8b45c",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart319": {
+      "source_sha256": "49f804b04110b4b8a9e1e56c67107135b515a0e0d489e23a24c6f7d338472965",
+      "sha256": "c56d0cd396cf0ffd376f61266a5e1e91a587bccfc5aa21e6541cf660f2869fa5",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart320": {
+      "source_sha256": "c92954b5f5af3c3d56579667ef20ebf8a3eadd14f9065f99752fa3a7ec8fbfa7",
+      "sha256": "7ae702be973108d802318509d20cc1d1b68a14078d82281518f9a59e51e01ef0",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart321": {
+      "source_sha256": "266bcbf7d221596b5885aee276de850abc4be0753032a798ebd0288e60ea810d",
+      "sha256": "88b6251431156ba60b864ddce051f14c0d8e2abaa7cf096b8ab12fca79fed8d0",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart322": {
+      "source_sha256": "978112b5f425ddac95c889cfbd6b7848209ec03c9dfa44778a450631b6c6b925",
+      "sha256": "b6d6e7e2809c6742fcb0df51f04a894d45ae22d36f543fd94302dbaf0a7a5464",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart323": {
+      "source_sha256": "03bd55a083736a5539507faeca13e82c4821f2373d648052db2d6d0e4b473233",
+      "sha256": "70c330b340d0378342e5c87d2df614980df92ee2d2b99803b6a84ad70c54aba3",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart324": {
+      "source_sha256": "829300551d4580330ec2d1dbe1c0e3cd9dace3d813a7c0660a84511baec1772b",
+      "sha256": "f99d0a96ac2d36d8b5c99f830e65d152e48574d9d7f986c2c3db729f0f388730",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart325": {
+      "source_sha256": "5e575c423433da65357b30cddaa74ed176b7f2fa5ad80e731e5d95045c60b15c",
+      "sha256": "b5c29f77d40dadb6a605f77a057b0398e79a0aeb0dca0dfd267da14e7a04eb34",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart326": {
+      "source_sha256": "7e6d8e2dcba630a8ef2785a18bd617fe45b2bdd7112a594aeb5b9d258585ad28",
+      "sha256": "da38788ba03a279d4d5a7acd3cdbd3462cc7a301779d0ea73812a5b772d508a6",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart327": {
+      "source_sha256": "f96c181b7db483892417cd83b610bebbe7a0f42c180d427c4a034eb897e421c6",
+      "sha256": "f3013d6ee6a9e0c95c9f55622cfedf15fd8200a9b03e99bec1f92c59d6d5a361",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart328": {
+      "source_sha256": "20140e4ecb43dbc3010ecc7faae1fc58ff1937d484a59b70e77fc20d6d743439",
+      "sha256": "8b033fc73a41772541922a76500d79798e17833ec4d9edca4f485910a6178637",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart329": {
+      "source_sha256": "1d3c7a53e499efca18ec41123e731d9561e179464396d9682276de376a40a8e0",
+      "sha256": "df0ee288f749495ba4adb06708181326cf5c9bf482904203081eddfb05f81694",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart330": {
+      "source_sha256": "661cff595c3252a5825b30db5c7a277a26a0f44b6ce6376a57178f31d270ad4f",
+      "sha256": "56fdd165072bf88a5b6d2e54e1c75eca73e4e1f0a3366d7050f34b4e92983a6e",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart331": {
+      "source_sha256": "772cfcc89f4b9da2ad6f486ee656c1bc6b40fb4df1fc4a4bd612ea1bf4f714c7",
+      "sha256": "06b3f302ff5fd0d3c37ee7e989666a511d58154728834c841aa80899c6249a8c",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart332": {
+      "source_sha256": "0084728e440487d43e2a12152c96748cfaa1e1f0629149cca6571acef909e451",
+      "sha256": "0541c8f65cbfd9fa50bf692b04824be49dda95894ae82d072147b2961ed15de8",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart333": {
+      "source_sha256": "8084f926d95aba4fbd6fb871796bc2ced920d7c3154aced294f8ac07d2a51b69",
+      "sha256": "298a4f9eeedb3cc18396a0408163f8cd1206c08e9dcd96a455501bfbacfafe00",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart334": {
+      "source_sha256": "142b146079bc57768d374706c7bbf0f3da5fc69547f4c1df1eff35cbe6a6dba8",
+      "sha256": "6ca0139805bbbbda1d993667cdc344e874f9ae4df00f27f36986e58531671c44",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart335": {
+      "source_sha256": "63d843da3c3c8d1fdbbdf8fcbe0ef4741aea50297aee7843ed599bfbfcdd3908",
+      "sha256": "3b86580ab480b1a1d093cfbf3094e9525dbfe0b723bf6712e47651d950c054c6",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart336": {
+      "source_sha256": "4b5f1a0392145cbf400600aa1fa6723e71b1ad220a43927e29b349c9b9fe4578",
+      "sha256": "b9ef9d6991db304c5adbff2defa257645a4828ded477c60741ff099495cf0076",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart337": {
+      "source_sha256": "bad2f47828c912b3084712fc9b9d57422cd574b9aa5d18620885353482401dea",
+      "sha256": "705fe1f39815d4861d04f73d5b6c822b6cb777d462de8580774dfe2643d1691b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart338": {
+      "source_sha256": "bb2f458ea3664a1ed9e54b1a36f0c74199a28c55b21d59fc448a5fc8d3f2ee31",
+      "sha256": "14bb5a6953278180e42173aed7092e67777e1c147a5a89e5473147771816a693",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart339": {
+      "source_sha256": "f839ecfb77a9655b4c2606dc76f2b644513cdbf8611e37cf0e2469402413d32b",
+      "sha256": "39fb8f9faccf82813a7043e19b6e7a62c77b4d514f146a7ef04246163b76e447",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart340": {
+      "source_sha256": "4c37dfd38f4217a6544a0bff9a087e176ccd740f185d2737d71e47935250f424",
+      "sha256": "80f8ed25dc8a1eaf3b79cfe14271a1e4e18f52985deae8c2f77a2c3361608325",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart341": {
+      "source_sha256": "e91d227a31be4fd2cf3bc52d13d6a52f680f0d0d6b45efa8888f7f8434590d54",
+      "sha256": "b2fd0a521fb106c342d6ab46cea0fd4c0827db2bc8046ea5fefcb9aafc773a0f",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart342": {
+      "source_sha256": "0d844695e955ccbd4646c0af237b94148cb709b02b4e6a4ae24ed69071020144",
+      "sha256": "c0f023c15a256ce4e954d910e6caeb4ab1bc3f81db5502c133f3ef9c41096053",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart343": {
+      "source_sha256": "47140bfc702ea6bec2ec0ac6d8d398dace74aa2cc2685641b0c07b9be36d2d7e",
+      "sha256": "58d1ab96833752069225a9e815ff2ad0786f998eab4b275d8db604a8702b9c33",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart344": {
+      "source_sha256": "6c6a374a7ca102597ebd08a727d2a6f44b562509f9ea76712beeb2b826bac133",
+      "sha256": "aff566f42fe12c1e758b535cae2822eea81e3781afe0303290ba5e7279875eb4",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart345": {
+      "source_sha256": "dc478df15feaf84005e4a6a84b43e4bbc87ecce0f41fe8cbca2213cbdd1560f0",
+      "sha256": "fd6d55fb166ddb0b7b67ba527a3f7f0aeca3fed5e4e7292d605dd547f263c664",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart346": {
+      "source_sha256": "b9a9398156b9565fffa3306145ff45d8c9d3ba880864dbf02f45293a5c635a53",
+      "sha256": "ed1f6bc9d478e7308b9d61907111d72f9cc79fc6c6a6a21182460452b93a16c9",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart347": {
+      "source_sha256": "24bbe5c2a2b2d323bf6f4e82020b0093217f99dba5b4a418f3329f10296b1515",
+      "sha256": "4b4360d17c7c6d2c968368d25c7e76dc5aaa38d7b7f6ef1611459b251f7954da",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart348": {
+      "source_sha256": "21b865d35eb82962087896ab0c89fa9d58b8a9d9ee5e4527de621e3768d73ff7",
+      "sha256": "9e3f608108b511b7443060c7f889a746a129f90fe705a4461afc2db8f4fc4b4b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart349": {
+      "source_sha256": "85d8748ab04564a2579637a9ce3e233127f2f3b8f381908d4697a912a9e3df8e",
+      "sha256": "1027c926c3e028961a88f85d6c8e36a2d7418480191a2d39551e02c137a59397",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart350": {
+      "source_sha256": "ad09769d5d133dd79942ee83c4195592a5961c2245465d692a2ad56f9727c61f",
+      "sha256": "e971a4b4b6b545dc5f3e35c2ca7925cdc2bfc7d056d88c8c2959bf1b1a29351d",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart351": {
+      "source_sha256": "bb2ed695ec53f34c4645fc845a2cbebbc9574dc4ff6db1aab1392d946a44c749",
+      "sha256": "6798ebef033c684053aa472990b01b3962d6f600f5e7f2eda0f110693cdada11",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart352": {
+      "source_sha256": "a45832de7288272189c340eeb6f6b524514502c5b55bc07a50149eb6c0ae4d1b",
+      "sha256": "1fc7361bb8c3dbdf6d756f62f27363e06868c879b55d264cda1e043d93925913",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart353": {
+      "source_sha256": "368ab509874181bfed9523184bbefe37c232acb7587ee3c8d36eaed6be325baa",
+      "sha256": "1ee370e92c64351e98f5a1e4594933a9e49a4c1d412bdfe71e11be0b20562536",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart354": {
+      "source_sha256": "e9ef4162f7964010e15b442b8f0437dd13e6075513b636380414d19c2dca8f9a",
+      "sha256": "9a38baf272a31bd94f3ca6160f9fd01eb4b74204a467021688bbd2a8e823b3eb",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart355": {
+      "source_sha256": "8b4a43e633d081832346360d52fd7e27d89904b1fd53774212ca7988da2f73a5",
+      "sha256": "99ecee29ce207bce020e32440a6a2b8825755ca310d92a8fe12ffc2dbf328977",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart356": {
+      "source_sha256": "33750c028a29fd0189cfe4572d163c1a12749e804b7d5bb2ed4bd129b9fe1a58",
+      "sha256": "e83b1b7108d3cd1a2318c0c64d00e566dae96c62404cb3b1c85e600c725c09cd",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart357": {
+      "source_sha256": "6698e96dafb1af12cfcf5efde2cb8ae33f8ba6d8b42e231d514fdb13484369d9",
+      "sha256": "83500eef3b25e1991ade46d9fb0471fcc9eb45defccc680406fc8d6fdc86feb8",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart358": {
+      "source_sha256": "0ed2eef98575a93186933f76c94649c4854f1a7a3930c208acdc5291ed8fe2a4",
+      "sha256": "dbed043574acda1fc44d9a29a32aff70276986636cf44752c604c0ec3400e1fd",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart359": {
+      "source_sha256": "02259c3f4ce3328c570e89b448856ab1678b3b0ff767a507e2b4b25fefa83d71",
+      "sha256": "c23c42b17f3fc58b6f1ff1e368b198909cb1479427f393a00f5b005b41935d76",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart360": {
+      "source_sha256": "0ad6c2a9b321d9b237798e529d6d338336c7efc118ae08ccdabb6ad7eaf01e18",
+      "sha256": "ef34efdb43eff898e9a72c8719d95ad8f87fa73429f0fb9847602090e53c4355",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart361": {
+      "source_sha256": "769e7e61df8dd891e40211e493cbca294f7b33900c78009291c7bdeeee120eaa",
+      "sha256": "ca1b3d2a6ea7e39012688d86c0fd6a99b441bdfda14be6be2b8ad449cff0cf10",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart362": {
+      "source_sha256": "257213e68d106a708f4b99bc37e4a6e7c35c664fa9a546911be4efaad0215865",
+      "sha256": "64777bc3645138e7c2e8b50b976b076adcdc0607eb39f2097ce610d29a940b93",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart363": {
+      "source_sha256": "bdf0d759b3b6a2e6f41a0c2093c3f12effaa2506d52a519065032a6290521319",
+      "sha256": "b94ffac949b722961368883ca35435c502f594e30bd683ca60a27c6ef6c92847",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart364": {
+      "source_sha256": "64fddee839cfdeb67400efd68607563f77c069278425e680c182e68c99446ecb",
+      "sha256": "6e3786b223222c6e6e8e79ba14c970ac1ef98792814fcd33e10462c47e96d4fc",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart365": {
+      "source_sha256": "e9d17ad9b21975d2ac653efb601b41c7cf41e561b1a4fde13286ec4df499acf7",
+      "sha256": "d34af096c41c594daccd70d967381d9e5480be8ea450eff29ce101c68727e59b",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart366": {
+      "source_sha256": "838a554904d3776782d74be7e1e020c104e041fc2b6480465f14dcebba57aea0",
+      "sha256": "6c64510dda7beab16bdecfc12186210b21464decd8015ce85c26efa9dd8778cb",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart367": {
+      "source_sha256": "f2d43544706f550ad719460a3dfa77aff1e52b427d0cd7c4db815f94828c65bb",
+      "sha256": "58acb5a621555891adb86f2c073203dc87c471bbdc6e5bfe5fb9479dac92771c",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart368": {
+      "source_sha256": "a87fb918ea85b1e2f1f15f04428197912c9bc93ea4e2ae8e8f5d6af060ecacf2",
+      "sha256": "25e4cbeb8022464bbb869d40719031cd521cde981f19d935c90a612f1e0b6041",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart369": {
+      "source_sha256": "a1b9d333ba1fc313bd761e3440c32961b079470375631553d2d36235ee4ebfe4",
+      "sha256": "6f249e067e12128c64df8943ab3e2c88522cebb3fc036f545f99f883d14e6361",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart370": {
+      "source_sha256": "b312d9c80c1dfa09ebe525243530b8412e2fa21017c3f0687997222e3205be95",
+      "sha256": "3b8be859663a530fd342a68228e9427bc62725af4ec8e460fb7e5c9030794015",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart371": {
+      "source_sha256": "a05ec137e828f10ac019136604e73c4decd189342c58afe7fab394f19ca41136",
+      "sha256": "599757aae418e2606ab443af91463dfacfafb04847687fec995b0ead9459b6b8",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart372": {
+      "source_sha256": "e48567dbd7b1e9c0a1f56e3d4c13a61b79a4041d996133d5c05f105264638afc",
+      "sha256": "66be8bf99cc7d0d8af66fe22aa60a5bc136ca26672039bd1cd3f6b9ee4e2ecc7",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart373": {
+      "source_sha256": "3911aaca0068b94077680ba51762cee9b80c0d162e72a5d45dac3674e33d0289",
+      "sha256": "8810e0fccc8fb3a4d4f4514c0bd2d483bb888ad7be407f62f9843b67718c5950",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart374": {
+      "source_sha256": "855cbd29c6ab6d6aa7233d82cdcaf001699dfa7547e4e87c562188e7171ac9cd",
+      "sha256": "923b2f2e0d9a34de51f3d0d7dbf5fbe6b57fcdb91aebfdd0c30441083aed8985",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart375": {
+      "source_sha256": "7f3d8e0206959c1ffe017c0d1f458c2e74b9ac6f80d57366cd2642d91bd06e46",
+      "sha256": "81f6d8cdc6afd33b3dc53f122053fdd86b19b47bb4965400d2f0bcdf1a636e17",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart376": {
+      "source_sha256": "3b69d01907eed332b4c09ee2208c28c2a9476b6353a545a887bbdb389702ee31",
+      "sha256": "6a27797c4c5946ab69e8ad1b2bce01fddbdcd53d617e94585918fc39fe21d243",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart377": {
+      "source_sha256": "b8aebda8f153370961f63c241a3de8540e77db795ad871ed41f60829ba23e063",
+      "sha256": "8acbed1e9269ef1b2f2a1fa825812f4d75baa3c3fd9e1b882e2f3b17458c6600",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart378": {
+      "source_sha256": "7324be37ba9d99403652020ea5dc69b0eca939a2e0225adc0e6434ff708f8428",
+      "sha256": "4c73573c726b274e9ad47cf12e00aaa38c0476e112743318e667780e1d97bb9c",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart379": {
+      "source_sha256": "50fdd8bcf5a9e633f10e4ce6fbce8cb021114658a9a6c9dd52cc99aa8149e4ad",
+      "sha256": "ed18ac1b09fefff09ddc6528897e80639ab1e04a6b7f3444183afd780be9ed80",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart380": {
+      "source_sha256": "0af8c0e56e76296f37c85d3e101145c9f5e2ce5e9c3d3c6cae21eb6cacf1593f",
+      "sha256": "bc264e6c3b50b3f576e9a065281869c538cc360f301525b2c585af3f76d5b881",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart381": {
+      "source_sha256": "fdad8cfde4cc8155acebca410219e071fb91154618528f17957d606b197dc73c",
+      "sha256": "ff1026584b0377995c3d9e9d4633116ed6e20f38f5524d9c5a9885b71784eb9c",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart382": {
+      "source_sha256": "3e55db1c99aa4698448639adc24ece1c71bb65a91303a415ce8b857a7c3494f6",
+      "sha256": "50ec813858ee219c9c02d19992b167cb933efbd2fb3bd9231e09229a345de745",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionPart383": {
+      "source_sha256": "7767d5523b8a9d854bc613e06b482862fe1bdff7bcc5b6b354d84062ddd7e862",
+      "sha256": "027b83a185d35b9dc4da761df9999be218799e10a51b8ff05e82de1a20f40fbc",
+      "bytes": 6712
+    },
+    "Erdos85H3TripleCompletionCell": {
+      "source_sha256": "8ae20670851e4b3491f63b9b18cb1351a6efd6a4cc4aeaebc94e96bc645aefd5",
+      "sha256": "a8cf3dbc6feaaf142b46bffc4be31bceac14fe265f38c875e9df1b39fe3b2159",
+      "bytes": 716168
+    }
+  },
+  "returncode": 0,
+  "timed_out": false,
+  "elapsed_seconds": 4.018494780000765,
+  "child_user_seconds": 2.88736,
+  "child_system_seconds": 1.128968,
+  "child_maxrss_kib": 6489968,
+  "log_sha256": "3f46a32030ee83398a83161f9c7aebae61a9b9b1c6993f234b9940996381d3c5",
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound",
+    "Erdos85.H3Pair.pairPart_24_00._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_01._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_02._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_03._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_04._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_05._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_06._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_07._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_08._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_09._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_10._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_11._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_12._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_13._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_14._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_15._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_16._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_17._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_18._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_19._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_20._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_21._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_22._native.native_decide.ax_1_1",
+    "Erdos85.H3Pair.pairPart_24_23._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_000._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_001._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_002._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_003._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_004._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_005._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_006._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_007._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_008._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_009._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_010._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_011._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_012._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_013._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_014._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_015._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_016._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_017._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_018._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_019._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_020._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_021._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_022._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_023._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_024._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_025._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_026._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_027._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_028._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_029._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_030._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_031._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_032._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_033._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_034._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_035._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_036._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_037._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_038._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_039._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_040._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_041._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_042._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_043._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_044._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_045._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_046._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_047._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_048._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_049._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_050._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_051._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_052._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_053._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_054._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_055._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_056._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_057._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_058._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_059._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_060._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_061._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_062._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_063._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_064._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_065._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_066._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_067._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_068._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_069._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_070._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_071._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_072._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_073._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_074._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_075._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_076._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_077._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_078._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_079._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_080._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_081._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_082._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_083._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_084._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_085._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_086._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_087._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_088._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_089._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_090._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_091._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_092._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_093._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_094._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_095._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_096._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_097._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_098._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_099._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_100._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_101._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_102._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_103._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_104._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_105._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_106._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_107._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_108._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_109._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_110._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_111._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_112._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_113._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_114._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_115._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_116._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_117._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_118._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_119._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_120._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_121._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_122._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_123._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_124._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_125._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_126._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_127._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_128._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_129._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_130._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_131._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_132._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_133._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_134._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_135._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_136._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_137._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_138._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_139._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_140._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_141._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_142._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_143._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_144._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_145._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_146._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_147._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_148._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_149._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_150._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_151._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_152._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_153._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_154._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_155._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_156._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_157._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_158._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_159._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_160._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_161._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_162._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_163._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_164._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_165._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_166._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_167._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_168._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_169._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_170._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_171._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_172._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_173._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_174._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_175._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_176._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_177._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_178._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_179._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_180._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_181._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_182._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_183._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_184._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_185._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_186._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_187._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_188._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_189._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_190._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_191._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_192._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_193._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_194._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_195._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_196._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_197._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_198._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_199._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_200._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_201._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_202._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_203._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_204._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_205._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_206._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_207._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_208._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_209._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_210._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_211._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_212._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_213._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_214._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_215._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_216._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_217._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_218._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_219._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_220._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_221._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_222._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_223._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_224._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_225._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_226._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_227._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_228._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_229._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_230._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_231._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_232._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_233._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_234._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_235._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_236._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_237._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_238._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_239._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_240._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_241._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_242._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_243._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_244._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_245._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_246._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_247._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_248._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_249._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_250._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_251._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_252._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_253._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_254._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_255._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_256._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_257._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_258._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_259._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_260._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_261._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_262._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_263._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_264._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_265._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_266._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_267._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_268._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_269._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_270._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_271._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_272._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_273._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_274._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_275._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_276._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_277._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_278._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_279._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_280._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_281._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_282._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_283._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_284._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_285._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_286._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_287._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_288._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_289._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_290._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_291._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_292._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_293._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_294._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_295._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_296._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_297._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_298._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_299._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_300._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_301._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_302._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_303._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_304._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_305._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_306._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_307._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_308._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_309._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_310._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_311._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_312._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_313._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_314._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_315._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_316._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_317._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_318._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_319._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_320._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_321._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_322._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_323._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_324._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_325._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_326._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_327._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_328._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_329._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_330._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_331._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_332._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_333._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_334._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_335._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_336._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_337._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_338._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_339._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_340._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_341._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_342._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_343._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_344._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_345._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_346._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_347._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_348._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_349._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_350._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_351._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_352._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_353._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_354._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_355._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_356._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_357._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_358._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_359._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_360._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_361._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_362._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_363._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_364._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_365._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_366._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_367._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_368._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_369._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_370._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_371._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_372._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_373._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_374._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_375._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_376._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_377._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_378._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_379._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_380._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_381._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_382._native.native_decide.ax_1_1",
+    "Erdos85.H3TripleCompletion.triplePart_384_383._native.native_decide.ax_1_1"
+  ],
+  "object_sha256": "f5bdf620605cc2c53a63eea2cab1c09708be8fdd9899f5d2f1106935c4687141",
+  "object_bytes": 83600,
+  "object_mtime": 1791471570.230646
+}
+'Erdos85.H3.orderFortyNineStratumExcluded_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Erdos85.H3Pair.pairPart_24_00._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_01._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_02._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_03._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_04._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_05._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_06._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_07._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_08._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_09._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_10._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_11._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_12._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_13._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_14._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_15._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_16._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_17._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_18._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_19._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_20._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_21._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_22._native.native_decide.ax_1_1,
+ Erdos85.H3Pair.pairPart_24_23._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_000._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_001._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_002._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_003._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_004._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_005._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_006._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_007._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_008._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_009._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_010._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_011._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_012._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_013._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_014._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_015._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_016._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_017._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_018._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_019._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_020._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_021._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_022._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_023._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_024._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_025._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_026._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_027._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_028._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_029._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_030._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_031._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_032._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_033._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_034._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_035._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_036._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_037._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_038._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_039._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_040._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_041._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_042._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_043._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_044._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_045._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_046._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_047._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_048._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_049._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_050._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_051._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_052._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_053._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_054._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_055._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_056._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_057._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_058._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_059._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_060._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_061._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_062._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_063._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_064._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_065._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_066._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_067._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_068._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_069._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_070._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_071._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_072._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_073._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_074._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_075._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_076._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_077._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_078._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_079._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_080._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_081._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_082._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_083._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_084._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_085._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_086._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_087._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_088._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_089._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_090._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_091._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_092._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_093._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_094._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_095._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_096._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_097._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_098._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_099._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_100._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_101._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_102._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_103._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_104._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_105._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_106._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_107._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_108._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_109._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_110._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_111._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_112._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_113._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_114._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_115._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_116._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_117._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_118._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_119._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_120._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_121._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_122._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_123._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_124._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_125._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_126._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_127._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_128._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_129._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_130._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_131._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_132._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_133._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_134._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_135._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_136._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_137._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_138._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_139._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_140._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_141._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_142._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_143._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_144._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_145._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_146._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_147._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_148._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_149._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_150._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_151._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_152._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_153._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_154._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_155._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_156._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_157._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_158._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_159._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_160._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_161._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_162._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_163._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_164._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_165._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_166._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_167._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_168._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_169._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_170._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_171._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_172._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_173._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_174._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_175._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_176._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_177._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_178._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_179._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_180._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_181._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_182._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_183._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_184._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_185._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_186._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_187._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_188._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_189._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_190._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_191._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_192._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_193._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_194._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_195._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_196._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_197._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_198._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_199._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_200._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_201._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_202._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_203._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_204._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_205._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_206._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_207._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_208._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_209._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_210._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_211._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_212._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_213._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_214._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_215._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_216._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_217._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_218._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_219._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_220._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_221._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_222._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_223._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_224._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_225._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_226._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_227._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_228._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_229._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_230._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_231._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_232._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_233._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_234._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_235._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_236._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_237._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_238._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_239._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_240._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_241._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_242._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_243._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_244._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_245._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_246._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_247._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_248._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_249._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_250._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_251._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_252._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_253._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_254._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_255._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_256._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_257._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_258._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_259._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_260._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_261._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_262._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_263._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_264._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_265._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_266._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_267._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_268._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_269._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_270._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_271._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_272._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_273._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_274._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_275._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_276._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_277._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_278._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_279._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_280._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_281._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_282._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_283._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_284._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_285._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_286._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_287._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_288._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_289._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_290._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_291._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_292._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_293._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_294._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_295._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_296._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_297._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_298._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_299._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_300._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_301._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_302._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_303._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_304._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_305._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_306._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_307._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_308._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_309._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_310._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_311._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_312._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_313._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_314._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_315._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_316._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_317._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_318._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_319._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_320._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_321._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_322._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_323._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_324._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_325._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_326._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_327._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_328._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_329._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_330._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_331._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_332._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_333._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_334._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_335._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_336._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_337._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_338._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_339._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_340._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_341._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_342._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_343._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_344._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_345._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_346._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_347._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_348._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_349._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_350._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_351._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_352._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_353._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_354._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_355._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_356._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_357._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_358._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_359._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_360._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_361._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_362._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_363._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_364._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_365._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_366._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_367._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_368._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_369._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_370._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_371._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_372._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_373._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_374._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_375._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_376._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_377._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_378._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_379._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_380._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_381._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_382._native.native_decide.ax_1_1,
+ Erdos85.H3TripleCompletion.triplePart_384_383._native.native_decide.ax_1_1]
+
+
+=== Build succeeded ===

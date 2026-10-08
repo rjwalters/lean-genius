@@ -1,7 +1,7 @@
-# H3 stratum integration preparation
+# H3 stratum integration acceptance
 
-Status: bound to the accepted triple cell; exact sources materialized and pair objects transferred;
-no stratum build or acceptance yet.
+Status: independently accepted; the H3 stratum theorem compiles with exactly
+411 axioms and no `sorry`.
 Claude requested this integration in squad message 53033 after confirming
 that the bounded H3 campaign fits the builder usage already approved.
 The original campaign, job
@@ -50,7 +50,7 @@ the printed set exactly and reject any additional or missing axiom.
    H3 stratum closure does not discharge the remaining H1/H7 external
    evidence hypotheses or complete the paper's human/publication review.
 
-The pair-object transfer is independently verified. Stratum compilation is pending.
+The pair-object transfer and final stratum compilation are independently verified.
 
 ## Transfer and materialization helpers
 
@@ -126,8 +126,8 @@ verdict. Preserve failed attempts and force-add ignored raw logs when banking.
 python3 -B capture_stratum.py --job JOB --commit FULL_COMMIT --triple-audit-sha TRIPLE_SHA --transfer-receipt-sha TRANSFER_SHA
 ```
 
-These build/collector scripts are prepared but have not run. Their execution
-is gated by complete cell acceptance and its explicit producer binding.
+The build and collector completed after complete cell acceptance and its explicit
+producer binding.
 The failed campaign's receipts and original prepared `SOURCE.json` remain
 unchanged; the new binding does not retroactively grant them cell credit.
 
@@ -144,8 +144,7 @@ prepared source hashes; `SOURCE.json` remains unchanged.
 Materialization preflight and application both passed: 414 new files copied
 byte-for-byte into `proofs/Proofs`, with the four existing runtime-chain
 sources unchanged. The 168 shared pair dependency sources also match.
-This grants no additional theorem; fresh stratum compilation/acceptance
-still remain.
+Materialization alone granted no additional theorem; final acceptance is recorded below.
 
 ## Verified pair-object transfer
 
@@ -164,3 +163,19 @@ independent inspection are retained unchanged.
 The final input loader passes with 417 accepted imported objects and all
 418 exact materialized sources. No native search was repeated by this
 transfer, and it grants no new stratum theorem.
+
+## Independently accepted H3 stratum
+
+Job `20261008T145924-erdos85__h3-triple-formal-20261007-594551` at
+`bb71918f37667a3bd2cdc0c2ba21be33b593d9a7` exited zero.
+`stratum-evidence1/AUDIT.json` reports `H3_STRATUM_ARTIFACT_AUDIT_PASS`.
+The exported theorem `Erdos85.H3.orderFortyNineStratumExcluded_three` has
+exactly 411 axioms: the three standard axioms, 24 accepted pair native axioms,
+and 384 accepted triple native axioms. No `sorry` occurs.
+
+Direct Lean compilation took 4.0185 seconds under the bounded configuration
+above. All 417 imported objects were verified before and after compilation
+and independently during collection. The 83,600-byte stratum object has SHA256
+`f5bdf620605cc2c53a63eea2cab1c09708be8fdd9899f5d2f1106935c4687141`.
+The independent audit retains and hashes 436 evidence files, including raw
+logs and source snapshots. It does not discharge H1 or H7 external evidence.

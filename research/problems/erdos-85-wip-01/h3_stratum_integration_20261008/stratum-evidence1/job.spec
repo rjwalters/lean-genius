@@ -1,0 +1,11 @@
+MODE=run
+REF=erdos85/h3-triple-formal-20261007
+TARGET=''
+CMD=lake\ env\ python3\ -B\ ../research/problems/erdos-85-wip-01/h3_stratum_integration_20261008/run_stratum.py\ --triple-audit-sha\ 44513a1f3752f93b67c20378e072f0b67cfa73b5703c27b5226bd6c2ff74afd8\ --transfer-receipt-sha\ ff7f693321672791c97049503da0e00ae4db598e2b7bcb697b8f0b18b42a7145
+MEM_GB=16
+TIMEOUT=3m
+THREADS=1
+CACHE=0
+CPUS=2
+VOLUME=''
+FULL=1
