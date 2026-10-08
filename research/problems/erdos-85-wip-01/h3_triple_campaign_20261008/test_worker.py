@@ -20,6 +20,7 @@ class WorkerMetadata(unittest.TestCase):
         self.limits = {'memory_bytes': 16 * 1024**3, 'cpu_quota_us': 200000,
                        'cpu_period_us': 100000, 'wall_seconds': 7200}
         self.launch = {'schema': 'erdos85-h3-triple-launch-v1', 'attempt_id': 'synthetic-attempt-0001',
+            'mode': 'production',
             'case_id': self.case['id'], 'execution_commit': 'a' * 40, 'image_id': 'sha256:' + 'b' * 64,
             'instance_id': 'synthetic', 'slot': 'synthetic',
             'recorded_root': '/workspace/attempts/synthetic-attempt-0001', 'limits': self.limits,
@@ -39,7 +40,7 @@ class WorkerMetadata(unittest.TestCase):
                     worker.validate_launch(launch, self.manifest)
 
     def test_wrong_or_missing_launch_identity_rejected(self):
-        for key, value in [('attempt_id', '../escape'), ('execution_commit', 'main'),
+        for key, value in [('mode', 'unknown'), ('attempt_id', '../escape'), ('execution_commit', 'main'),
                            ('image_id', 'latest'), ('instance_id', ''), ('slot', ''),
                            ('recorded_root', '/tmp/synthetic-attempt-0001'),
                            ('recorded_root', '/workspace/../synthetic-attempt-0001'),

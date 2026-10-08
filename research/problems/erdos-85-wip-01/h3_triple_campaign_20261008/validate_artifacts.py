@@ -119,7 +119,8 @@ def validate_stage(directory, case, stage, entry, recorded_root):
 
 
 def validate_bundle(manifest_path, manifest_sha, case_id, attempt, recorded_root,
-                    certificate_only=False):
+                    certificate_only=False, preflight_only=False):
+    require(not (certificate_only and preflight_only), 'Choose one validation scope')
     require(digest(manifest_path) == manifest_sha, 'Manifest hash mismatch')
     manifest = read(manifest_path)
     require(manifest['schema'] == 'erdos85-h3-triple-manifest-v1', 'Wrong manifest schema')
@@ -133,16 +134,17 @@ def validate_bundle(manifest_path, manifest_sha, case_id, attempt, recorded_root
     run_path = regular(attempt, 'RUN.json')
     before = digest(run_path)
     run = read(run_path)
-    require(run['schema'] == 'erdos85-h3-triple-receipt-v1', 'Wrong receipt schema')
-    require(run['production_native_search'] is True, 'Not a production native attempt')
+    schema = 'erdos85-h3-triple-preflight-v1' if preflight_only else 'erdos85-h3-triple-receipt-v1'
+    require(run['schema'] == schema, 'Wrong receipt schema')
+    require(run['production_native_search'] is (not preflight_only), 'Wrong native-search scope')
     require(run['manifest_sha256'] == manifest_sha and run['case_id'] == case_id,
             'Wrong attempt manifest or case')
     require(re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{7,127}', run['attempt_id']) is not None,
             'Invalid attempt ID')
     require(run['recorded_root'] == recorded_root, 'Wrong attempt root')
     entries = run['results']
-    needed = STAGES[:3] if certificate_only else STAGES
-    require(len(entries) in (3, 4) if certificate_only else len(entries) == 4,
+    needed = STAGES[:2] if preflight_only else STAGES[:3] if certificate_only else STAGES
+    require(len(entries) in (3, 4) if certificate_only else len(entries) == len(needed),
             'Incomplete or extra module inventory')
     require([e['stage'] for e in entries] == list(STAGES[:len(entries)]),
             'Wrong module order or duplicate stage')
@@ -156,7 +158,8 @@ def validate_bundle(manifest_path, manifest_sha, case_id, attempt, recorded_root
     require(all(not p.is_symlink() and digest(p) == sha for p, sha in snapshot.items()),
             'Artifacts changed during validation')
     require(digest(run_path) == before, 'Receipt changed during validation')
-    return {'status': 'CERTIFICATE_ARTIFACTS_VALID' if certificate_only else 'ARTIFACTS_VALID',
+    return {'status': 'PREFLIGHT_ARTIFACTS_VALID' if preflight_only else
+                     'CERTIFICATE_ARTIFACTS_VALID' if certificate_only else 'ARTIFACTS_VALID',
             'case_id': case_id, 'attempt_id': run['attempt_id'], 'manifest_sha256': manifest_sha,
             'run_sha256': before, 'results': checked, 'campaign_credit': False,
             'retry_authorized': False,
@@ -171,10 +174,12 @@ def main():
     p.add_argument('--case', required=True)
     p.add_argument('--attempt', type=Path, required=True)
     p.add_argument('--recorded-root', required=True)
-    p.add_argument('--certificate-only', action='store_true')
+    scope = p.add_mutually_exclusive_group()
+    scope.add_argument('--certificate-only', action='store_true')
+    scope.add_argument('--preflight-only', action='store_true')
     a = p.parse_args()
     print(json.dumps(validate_bundle(a.manifest, a.manifest_sha256, a.case, a.attempt,
-                                    a.recorded_root, a.certificate_only), indent=2))
+                                    a.recorded_root, a.certificate_only, a.preflight_only), indent=2))
 
 
 if __name__ == '__main__':

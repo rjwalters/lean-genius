@@ -64,7 +64,8 @@ recovery candidate; it does not authorize work while the old process may live.
 
 ## Worker launch and cache inputs
 
-The launch host prepares `erdos85-h3-triple-launch-v1` with `attempt_id`,
+The launch host prepares `erdos85-h3-triple-launch-v1` with `mode` (exactly
+`preflight` or `production`), `attempt_id`,
 `case_id`, `manifest_sha256`, `recorded_root`, the 40-character `execution_commit`,
 an immutable `image_id` (`sha256:...`), `instance_id`, `slot`, and `limits`
 (`memory_bytes`, `cpu_quota_us`, `cpu_period_us`, `wall_seconds`). Limits must be
@@ -96,6 +97,14 @@ A successful worker result is only `WORKER_PASS`. The implemented worker does
 not yet support consumer-only continuation; the artifact validator can establish
 the retained certificate prefix for a future continuation implementation.
 Missing terminal evidence remains `UNKNOWN`, even if `WORKER_PASS` is present.
+
+Preflight mode compiles Inputs and Membership only. It emits the distinct
+`erdos85-h3-triple-preflight-v1` schema with `production_native_search=false`
+and successful status `PREFLIGHT_PASS`. The artifact validator requires an
+explicit `--preflight-only` request and exactly those two ordered stages;
+production and certificate-prefix validation reject preflight receipts.
+Preflight cannot receive campaign rejection credit. It still requires the same
+source/cache pins, hard cgroup limits and independent host execution audit.
 
 States are `PENDING`, `CLAIMED`, `RUNNING`, `CERTIFICATE_RETAINED`,
 `AUDITED_PASS`, `TIMEOUT`, `OOM`, `ERROR`, `UNKNOWN`, and `ALARM`.

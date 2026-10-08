@@ -201,6 +201,29 @@ class Artifacts(unittest.TestCase):
             audit.validate_bundle(self.manifest, self.manifest_sha, self.case['id'],
                 common.PACKAGE / 'canary-evidence', self.recorded_root)
 
+    def test_preflight_is_never_a_rejection_receipt(self):
+        self.run['schema'] = 'erdos85-h3-triple-preflight-v1'
+        self.run['production_native_search'] = False
+        self.run['results'] = self.run['results'][:2]
+        self.save()
+        result = audit.validate_bundle(self.manifest, self.manifest_sha, self.case['id'],
+                                        self.root, self.recorded_root, preflight_only=True)
+        self.assertEqual(result['status'], 'PREFLIGHT_ARTIFACTS_VALID')
+        self.assertFalse(result['campaign_credit'])
+        with self.assertRaises(ValueError):
+            self.check()
+        with self.assertRaises(ValueError):
+            self.check(certificate_only=True)
+
+    def test_production_cannot_be_reclassified_as_preflight(self):
+        with self.assertRaises(ValueError):
+            audit.validate_bundle(self.manifest, self.manifest_sha, self.case['id'],
+                                  self.root, self.recorded_root, preflight_only=True)
+        with self.assertRaises(ValueError):
+            audit.validate_bundle(self.manifest, self.manifest_sha, self.case['id'],
+                                  self.root, self.recorded_root, certificate_only=True,
+                                  preflight_only=True)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

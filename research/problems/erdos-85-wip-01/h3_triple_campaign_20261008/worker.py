@@ -80,6 +80,7 @@ def bounded(command, log, env, deadline):
 
 def validate_launch(launch, manifest):
     require(launch['schema'] == 'erdos85-h3-triple-launch-v1', 'Wrong launch schema')
+    require(launch['mode'] in ('preflight', 'production'), 'Unknown worker mode')
     require(re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{7,127}', launch['attempt_id']) is not None,
             'Invalid attempt ID')
     require(re.fullmatch(r'[0-9a-f]{40}', launch['execution_commit']) is not None, 'Invalid commit pin')
@@ -198,8 +199,10 @@ def main():
     require(not args.stop_file.exists(), 'STOP before attempt creation')
     output = Path(launch['recorded_root'])
     output.mkdir(parents=True, exist_ok=False)
-    receipt = {'schema': 'erdos85-h3-triple-receipt-v1', 'status': 'RUNNING',
-               'production_native_search': True, 'manifest_sha256': launch['manifest_sha256'],
+    preflight = launch['mode'] == 'preflight'
+    receipt = {'schema': 'erdos85-h3-triple-preflight-v1' if preflight else 'erdos85-h3-triple-receipt-v1',
+               'status': 'RUNNING', 'mode': launch['mode'],
+               'production_native_search': not preflight, 'manifest_sha256': launch['manifest_sha256'],
                'case_id': case['id'], 'attempt_id': launch['attempt_id'],
                'recorded_root': str(output), 'launch_sha256': args.launch_sha256,
                'cache_inventory_sha256': launch['cache_inventory_sha256'],
@@ -245,7 +248,7 @@ def main():
         require(env.get('LEAN_PATH', '') == launch['inherited_lean_path'], 'Unexpected inherited Lean path')
         env['LEAN_PATH'] = import_paths(roots, private, directory, case['branch'], launch['inherited_lean_path'])
         receipt['lean_path'] = env['LEAN_PATH']
-        for stage in artifacts.STAGES:
+        for stage in artifacts.STAGES[:2] if preflight else artifacts.STAGES:
             if stop_or_timeout():
                 return 1
             check_limits(launch['limits'], actual_limits())
@@ -294,8 +297,9 @@ def main():
         require(cache_roots(cache, case, manifest) == roots, 'Imported cache changed')
         require(digest(args.launch) == args.launch_sha256 and
                 digest(args.cache_inventory) == launch['cache_inventory_sha256'], 'Input records changed')
-        artifacts.validate_bundle(manifest_path, launch['manifest_sha256'], case['id'], output, str(output))
-        receipt['status'] = 'WORKER_PASS'
+        artifacts.validate_bundle(manifest_path, launch['manifest_sha256'], case['id'], output,
+                                  str(output), preflight_only=preflight)
+        receipt['status'] = 'PREFLIGHT_PASS' if preflight else 'WORKER_PASS'
         receipt['finished_utc'] = utc()
         save()
         return 0

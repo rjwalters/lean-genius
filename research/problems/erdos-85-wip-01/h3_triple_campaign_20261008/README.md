@@ -95,7 +95,9 @@ opaque test objects are explicitly synthetic, not compilation evidence.
 
 `worker.py` consumes an externally pinned launch record and complete cache
 inventory, enforces the actual Docker cgroup memory/CPU limits, and runs four
-direct Lean compiler processes in order. It creates a fresh attempt directory,
+direct Lean compiler processes in production mode. Its separate preflight mode
+stops after Inputs and Membership and emits a distinct non-native receipt that
+cannot pass rejection validation. It creates a fresh attempt directory,
 copies the complete library into private storage, verifies the copy, and refuses
 pre-existing campaign objects. Native certificates are copied into the retained
 case bundle immediately after compilation. STOP is checked before starting an
@@ -104,8 +106,9 @@ compiler process group. A non-timeout certificate failure is an `ALARM` pending
 raw diagnostic review. There is no automatic retry, resizing, claim release,
 fleet launch, or acceptance as `AUDITED_PASS`.
 
-The launch schema and cache contract are in `RECEIPT.md`. Nine worker metadata
-tests pass, for 30 metadata tests total. `test_worker_runtime.py` is a separate
+The launch schema and cache contract are in `RECEIPT.md`. Forty metadata tests
+pass across worker, artifact, inventory and container-audit suites, including
+preflight/production separation. `test_worker_runtime.py` is a separate
 cloud-host-only check of subprocess completion, nonzero exit, timeout cleanup
 and refusal to overwrite retained logs. Production compilation, cache staging,
 Docker mount/image verification, host collection and consumer-only continuation
@@ -153,6 +156,34 @@ cache contents or validate a production worker attempt. Complete cache staging
 and provenance, host launch/collection, bounded worker preflight and a limited
 production canary remain next gates. The host launch must give only the fresh
 attempt output a writable mount while keeping the verified inputs read-only.
+
+`prepare_cache.py` rechecks both audited census bundles and the frozen source
+manifest, builds only the three generic dependency targets, and copies the
+complete library into a fresh private snapshot. It compares the source cache
+before/after copying, verifies every copied file, and writes separate full and
+deficient cache inventories. Its result is `CACHE_PREPARED`; independent host
+audit is required before the worker uses either inventory.
+
+The first preparation and independent artifact audit passed. Job
+`20261008T075504-erdos85__h3-triple-formal-20261007-314442` ran at
+`3080636e2d0897e29a2f24eb723ed762db018e2a`, with 16 GiB, one Lake thread and a
+15-minute outer cap. The preparation wrapper's CPU limit was 16; this was not
+the two-CPU production worker. Its only build targets were the three generic
+dependency modules, completed in 6.42 seconds. Snapshotting used a separate
+complete library directory and no native certificate search was requested.
+
+`audit_cache.py` verified the terminal exit, execution source hashes, commands,
+logs, previous census evidence and actual retained file inventories independently
+of the worker's inventory walk. It checked 2,471 library files, 430 full-base
+files, 1,370 final-full files and 610 deficient-base files. Evidence is in
+`cache-preparation-evidence/`; the cache objects remain on the cloud. Full
+inventory SHA-256 is
+`0bdeec182744aa0737982d109290613eece8ac2f3c0115fa1307ddb76dd1d735`, and deficient
+inventory SHA-256 is
+`3397a58699851e910c33ad8d3e5ca099de3e2665dc151cc000de934450a29c9a`.
+This uses the established builder/toolchain cache and audited census objects;
+it is not a clean rebuild of Mathlib or new rejection credit. The worker
+preflight and independent host launch/terminal audit remain to be executed.
 
 ## Resource and controller design
 
