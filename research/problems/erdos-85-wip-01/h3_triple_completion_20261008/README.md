@@ -254,3 +254,43 @@ prints its outer two-minute limit; that banner is not the measured duration.
 receipt and raw job/compiler logs. All prerequisite object hashes remained
 unchanged. This result does not measure a complete-bucket speedup in Lean;
 more targeted instrumentation is needed before increasing search scope.
+
+## Bounded phase-two Lean profile
+
+`PhaseTwoProfile.lean` collects the four bucket-zero phase-one states and
+mirrors phase two with a 10,000-node limit for each state. It uses the engine's
+state check, candidate filter, ratio picker, fresh-vertex selection, insertion
+and pattern-ban order. It records invalid states and fuel exhaustion; it is
+instrumentation, without a proved equivalence or exclusion theorem.
+
+The first compilation at `6bc0161345d6c92c5b9378a8f69a650368ddfb24`, job
+`20261008T105909-erdos85__h3-triple-formal-20261007-432793`, failed because
+the timing block inferred `BaseIO` while printing requires `IO`. It produced
+no accepted profile. `phase-two-profile-evidence/` preserves that failure.
+
+After adding the explicit `IO Unit` type, job
+`20261008T110003-erdos85__h3-triple-formal-20261007-433844` at
+`47ccc586fd33cf86c51304eb1cda39e1e67fd95e` compiled and ran successfully.
+Phase-one collection took 674 ms. The complete helper took 11.378 seconds,
+including startup (10.144 user, 1.230 system; maximum RSS 6,501,468 KiB).
+
+| State key | Visited nodes | Phase-two leaves | Node cap reached | Measured phase-two ms |
+| --- | ---: | ---: | --- | ---: |
+| 975744 | 17 | 0 | No | 9 |
+| 986112 | 10,000 | 427 | Yes | 2,187 |
+| 41088 | 10,000 | 478 | Yes | 2,068 |
+| 776448 | 10,000 | 451 | Yes | 2,142 |
+
+All fuel-exhaustion, invalid-state, missing-fresh-vertex and rejected-insertion
+counters were zero. The first state's 17 nodes match the C prototype. The
+other states' counts are incomplete prefixes. These measurements expose
+substantial cost per visited node in the instrumented evaluator; they do not
+isolate the time spent in each engine function, prove equivalence to C, or
+bound the uninstrumented native diagnostic. In particular they do not show
+that the fourth state alone explains the earlier timeout.
+
+`phase-two-profile-fixed-evidence/` retains the helper, runner, raw logs,
+receipt and audit, with a nonempty object checked on the builder and unchanged
+prerequisite object hashes. Next useful work is to measure the costs of state
+validation, candidate filtering, vertex selection and insertion on this same
+bounded sample before choosing further engine changes.

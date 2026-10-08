@@ -1,0 +1,80 @@
+{
+  "job": "20261008T110003-erdos85__h3-triple-formal-20261007-433844",
+  "execution_commit": "47ccc586fd33cf86c51304eb1cda39e1e67fd95e",
+  "status": "COMPILED",
+  "exit": 0,
+  "prerequisite_objects_unchanged": {
+    "Erdos85H3TripleCompletionEngine": "c144efb4d85c1186f5019666fd8dede6b71e92ec0c8bc14390457f539ab2e412",
+    "Erdos85H3TripleCompletionBridge": "02220d1339caaf079b5889edf2e0c4e52b49b37d6c2b89ba4886c06d5a77e18e",
+    "Erdos85H3TripleCompletionSplit": "acfdbed1a9ccec6f972f9c8c8afc5575937d82b3cbc3541f0239a8e3b019d0d3"
+  },
+  "retained_sha256": {
+    "job.log": "7524f53ce2ed01258dba61b51577b917f8c775c02a9a8f3fa8e61b26efa7a255",
+    "job.spec": "dada0740bf7e112869ae2d47f3a338c79d86cc4660f1287dc60de2d346b1b1ec",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "PhaseTwoProfile.lean": "d9b1b3b6aa8b3db11460c22a2a5e908642f173e3cad76a488e2e853288810991",
+    "run_phase_two_profile.py": "5239bdc0614b8a3df4c1fe8b3f6db5aa3fa7a2dc4f533aa33d4dfebc644a6cf5",
+    "RUN.json": "d0548ced125d15284538c201f734fbf8b438effa09ff4924f188942862f3a070",
+    "probe.log": "df727b05e1ae56610943dd9c434778d7afd2518951576b5ca5e1300c4f161381"
+  },
+  "scope": "Bounded instrumented phase-two profile only; no theorem or graph-exclusion credit.",
+  "profile": {
+    "collection_elapsed_ms": 674,
+    "states": [
+      {
+        "leaf": 1,
+        "key": 975744,
+        "nodes": 17,
+        "leaves": 0,
+        "exhausted": 0,
+        "invalid": 0,
+        "no_fresh": 0,
+        "rejected": 0,
+        "available": 1062,
+        "capped": false,
+        "elapsed_ms": 9
+      },
+      {
+        "leaf": 2,
+        "key": 986112,
+        "nodes": 10000,
+        "leaves": 427,
+        "exhausted": 0,
+        "invalid": 0,
+        "no_fresh": 0,
+        "rejected": 0,
+        "available": 142563,
+        "capped": true,
+        "elapsed_ms": 2187
+      },
+      {
+        "leaf": 3,
+        "key": 41088,
+        "nodes": 10000,
+        "leaves": 478,
+        "exhausted": 0,
+        "invalid": 0,
+        "no_fresh": 0,
+        "rejected": 0,
+        "available": 119580,
+        "capped": true,
+        "elapsed_ms": 2068
+      },
+      {
+        "leaf": 4,
+        "key": 776448,
+        "nodes": 10000,
+        "leaves": 451,
+        "exhausted": 0,
+        "invalid": 0,
+        "no_fresh": 0,
+        "rejected": 0,
+        "available": 134497,
+        "capped": true,
+        "elapsed_ms": 2142
+      }
+    ],
+    "first_state_matches_C_17_nodes": true
+  },
+  "auditor_sha256": "ee2895a3bb699840dd7248f5ab67955e70f540f9be80a0323cc1e46f7d6dbe93"
+}
