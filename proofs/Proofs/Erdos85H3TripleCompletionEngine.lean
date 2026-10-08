@@ -776,6 +776,27 @@ def stateOK (s : St) : Bool :=
     (coreVerts.all fun a => hasAllCols s a) &&
     (emptyVerts.all fun e => (s.rows[e.val] == 0) || hasAllCols s e)
 
+/-- The fibre masks already have no bits above 48. Cache the row and avoid
+three redundant intersections with M49. -/
+@[inline] def hasAllColsFast (s : St) (a : V) : Bool :=
+  let row := s.rows[a.val]
+  !((row &&& 2040) == 0) && !((row &&& 260104) == 0) &&
+    !((row &&& 33292296) == 0)
+
+theorem hasAllColsFast_eq (s : St) (a : V) :
+    hasAllColsFast s a = hasAllCols s a := by
+  unfold hasAllColsFast hasAllCols hasCol
+  simp only [fiberMask, Nat.and_assoc]
+  rfl
+
+def stateOKFast (s : St) : Bool :=
+  (highVerts.all fun h => decide ((s.nbr[h.val]).length = capOf h)) &&
+    (coreVerts.all fun a => hasAllColsFast s a) &&
+    (emptyVerts.all fun e => (s.rows[e.val] == 0) || hasAllColsFast s e)
+
+theorem stateOKFast_eq (s : St) : stateOKFast s = stateOK s := by
+  simp only [stateOKFast, stateOK, hasAllColsFast_eq]
+
 theorem exists_fresh_nbr {s : St} {adj : V → V → Bool} (hs : s.WF) (M : Model adj)
     (hc : Compat s adj) (hok : stateOK s = true) {v : V} (hv3 : 3 ≤ v.val)
     (hv25 : v.val < 25) (hdeg : (s.nbr[v.val]).length < 7) :
@@ -968,7 +989,7 @@ def step2 (leaf : St → Bool) (rec : St → List Tri → Bool) (s : St)
 def dfs2 (leaf : St → Bool) : Nat → St → List Tri → Bool
   | 0, _, _ => false
   | fuel + 1, s, avail0 =>
-    stateOK s && step2 leaf (dfs2 leaf fuel) s (avail0.filter (insertable s))
+    stateOKFast s && step2 leaf (dfs2 leaf fuel) s (avail0.filter (insertable s))
 
 theorem tri_fixed {x y : V} (hx : 25 ≤ x.val) (hy : 25 ≤ y.val) {a : V} {w : Fin 3}
     (ha : col a w = true) : Equiv.swap x y a = a := by
@@ -994,7 +1015,7 @@ theorem dfs2_sound (leaf : St → Bool)
     simp [dfs2] at h
   | succ fuel ih =>
     intro s avail0 hs h adj M hc hw0
-    rw [dfs2] at h
+    rw [dfs2, stateOKFast_eq] at h
     simp only [Bool.and_eq_true] at h
     obtain ⟨hok, h⟩ := h
     have hw := freshWit_filter hs M hc hw0

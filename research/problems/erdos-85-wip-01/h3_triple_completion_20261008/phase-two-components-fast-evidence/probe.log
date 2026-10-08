@@ -1,0 +1,38 @@
+'Erdos85.H3TripleCompletion.stateOKFast_eq' depends on axioms: [propext, Quot.sound]
+STATES count=4
+SAMPLE leaf=1 key=975744 nodes=17 leaves=0 exhausted=0 invalid=0 capped=false
+COMPONENT leaf=1 name=state elapsed_ms=1 checksum=17
+COMPONENT leaf=1 name=state_fast elapsed_ms=0 checksum=17
+COMPONENT leaf=1 name=filter elapsed_ms=5 checksum=1062
+COMPONENT leaf=1 name=pick elapsed_ms=2 checksum=212
+COMPONENT leaf=1 name=fresh elapsed_ms=0 checksum=482
+COMPONENT leaf=1 name=partition elapsed_ms=1 checksum=1062
+COMPONENT leaf=1 name=append elapsed_ms=1 checksum=1052
+COMPONENT leaf=1 name=insert elapsed_ms=1 checksum=62
+SAMPLE leaf=2 key=986112 nodes=1000 leaves=30 exhausted=0 invalid=0 capped=true
+COMPONENT leaf=2 name=state elapsed_ms=97 checksum=1000
+COMPONENT leaf=2 name=state_fast elapsed_ms=30 checksum=1000
+COMPONENT leaf=2 name=filter elapsed_ms=53 checksum=15339
+COMPONENT leaf=2 name=pick elapsed_ms=42 checksum=11324
+COMPONENT leaf=2 name=fresh elapsed_ms=4 checksum=41402
+COMPONENT leaf=2 name=partition elapsed_ms=15 checksum=15339
+COMPONENT leaf=2 name=append elapsed_ms=16 checksum=19678
+COMPONENT leaf=2 name=insert elapsed_ms=22 checksum=4154
+SAMPLE leaf=3 key=41088 nodes=1000 leaves=52 exhausted=0 invalid=0 capped=true
+COMPONENT leaf=3 name=state elapsed_ms=101 checksum=1000
+COMPONENT leaf=3 name=state_fast elapsed_ms=30 checksum=1000
+COMPONENT leaf=3 name=filter elapsed_ms=43 checksum=12315
+COMPONENT leaf=3 name=pick elapsed_ms=36 checksum=12312
+COMPONENT leaf=3 name=fresh elapsed_ms=5 checksum=41684
+COMPONENT leaf=3 name=partition elapsed_ms=13 checksum=12315
+COMPONENT leaf=3 name=append elapsed_ms=13 checksum=16712
+COMPONENT leaf=3 name=insert elapsed_ms=20 checksum=4138
+SAMPLE leaf=4 key=776448 nodes=1000 leaves=51 exhausted=0 invalid=0 capped=true
+COMPONENT leaf=4 name=state elapsed_ms=100 checksum=1000
+COMPONENT leaf=4 name=state_fast elapsed_ms=30 checksum=1000
+COMPONENT leaf=4 name=filter elapsed_ms=45 checksum=12885
+COMPONENT leaf=4 name=pick elapsed_ms=38 checksum=11873
+COMPONENT leaf=4 name=fresh elapsed_ms=4 checksum=41460
+COMPONENT leaf=4 name=partition elapsed_ms=13 checksum=12885
+COMPONENT leaf=4 name=append elapsed_ms=14 checksum=17352
+COMPONENT leaf=4 name=insert elapsed_ms=21 checksum=4178

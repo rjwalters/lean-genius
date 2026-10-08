@@ -294,3 +294,51 @@ receipt and audit, with a nonempty object checked on the builder and unchanged
 prerequisite object hashes. Next useful work is to measure the costs of state
 validation, candidate filtering, vertex selection and insertion on this same
 bounded sample before choosing further engine changes.
+
+## Component replay and equivalent state validation
+
+`PhaseTwoComponents.lean` collects up to 1,000 nodes from each of the same four
+states, then replays individual engine operations over those inputs. The first
+run (job `436420`, execution `521505a9874ce443503fb280024947a6ead2e8d9`)
+reported zero milliseconds for every component. Those timings are not accepted:
+the pure checksum was not forced before the ending clock read. Its counters,
+logs and source remain in `phase-two-components-evidence/`.
+
+The corrected timer writes the computed checksum to an `IO.Ref` before reading
+the ending clock. Job `20261008T110539-erdos85__h3-triple-formal-20261007-437976`
+at `280ed4603d3a28e435c8d7480f681b1c133095ec` compiled and completed in
+7.073 seconds including startup, with the same sample counts and checksums.
+`phase-two-components-forced-evidence/` retains its audit and exact records.
+
+| Component | State 986112 ms | State 41088 ms | State 776448 ms |
+| --- | ---: | ---: | ---: |
+| State validation | 97 | 100 | 100 |
+| Candidate filtering | 52 | 43 | 44 |
+| Vertex selection | 42 | 36 | 38 |
+| Fresh-vertex selection | 5 | 4 | 4 |
+| Pattern partitioning | 15 | 14 | 14 |
+| Candidate-list assembly | 16 | 13 | 14 |
+| Triple insertion | 22 | 20 | 21 |
+
+Each column uses 1,000 sampled nodes. These are separate replay timings,
+including iteration overhead. Assembly and insertion also perform partitioning;
+insertion replays every candidate, including candidates beyond the collection
+cutoff. The figures therefore must not be added into a production runtime
+estimate. They identify state validation as the largest measured component.
+
+`PhaseTwoComponentsFast.lean` adds an equivalent state check: cache each row,
+and remove its repeated intersection with `M49` after masking by a fibre mask
+whose bits already lie below 49. The Lean theorem `stateOKFast_eq` proves
+pointwise equality for every state, without a well-formedness precondition.
+Job `20261008T110838-erdos85__h3-triple-formal-20261007-440039`, execution
+`88c9c3dc8149803ed9e83cc54cefb7c1b45415b9`, compiled that proof with only
+`propext` and `Quot.sound`, and completed its helper in 7.273 seconds.
+
+On the three 1,000-node samples, original validation took 97/101/100 ms;
+the equivalent check took 30/30/30 ms. Checksums matched. The 17-node first
+state is too small for meaningful millisecond timing. This supports integrating
+the helper, but is not an end-to-end search speedup measurement.
+`phase-two-components-fast-evidence/` retains source, receipts, raw logs and
+the proof/timing audit. The engine's `dfs2` now calls `stateOKFast`, and its
+soundness proof rewrites through `stateOKFast_eq`; the full chain must rebuild
+before this change is accepted as verified.
