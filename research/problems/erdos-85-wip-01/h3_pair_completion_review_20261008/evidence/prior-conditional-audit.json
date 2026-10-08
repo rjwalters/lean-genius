@@ -1,0 +1,82 @@
+{
+  "status": "CONDITIONAL_SPLIT_CHAIN_BUILD_AUDIT_PASS",
+  "job": "20261008T081543-erdos85__h3-pair-formal-20261008-329751",
+  "execution_commit": "bc7532e9303e8082b8a8dfe7b305732ec194150a",
+  "review_commit": "b3545ac16ae75faa072a66400bedb087544a03bf",
+  "authoritative_exit": 0,
+  "auditor_sha256": "698523f6c4b1e4a755173f7fde893e8059c1cb0a3e17d6d7259626528028f67a",
+  "job_log_sha256": "aaf39843475db3cf5e297e63b425c1b49f88b2e92c75b0e142b1eac6fef5b320",
+  "retained_files_sha256": {
+    "job.log": "aaf39843475db3cf5e297e63b425c1b49f88b2e92c75b0e142b1eac6fef5b320",
+    "job.spec": "03a86c406880c9f18890ccd4aa80422f4e237f5cd5269f83b1963170056deaa7",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "Erdos85H3PairEngine.lean": "6f84fc3a0de0bbc170d98b7a85824b1c84282fbcf4f2824267cac96bf3b37625",
+    "Erdos85H3PairBridge.lean": "be9455ca1bcc1eba1629b7b0a565d5196b79d118212af4228a39412846937715",
+    "Erdos85H3PairSplit.lean": "788c54887e121212693f0aaae3d99577e30db2a383d2fea161ce08b127f44839"
+  },
+  "results": [
+    {
+      "module": "Erdos85H3PairEngine",
+      "source_sha256": "6f84fc3a0de0bbc170d98b7a85824b1c84282fbcf4f2824267cac96bf3b37625",
+      "olean_sha256": "35c3cba5f6e9e8526ecc31c6471e591baafbe9a816641e50856b882cef440222",
+      "olean_bytes": 2095936,
+      "olean_mtime": 1791447355.1365063,
+      "fresh_build_elapsed": "9.8s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3Pair.search_sound",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85H3PairBridge",
+      "source_sha256": "be9455ca1bcc1eba1629b7b0a565d5196b79d118212af4228a39412846937715",
+      "olean_sha256": "03fd6525e3f750f19e3ef10169ce4ce453a13d23210939e2778707edac483cef",
+      "olean_bytes": 198584,
+      "olean_mtime": 1791447362.676699,
+      "fresh_build_elapsed": "4.8s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3Pair.threeHighCanonicalRepresentativeExcluded_zero_of_pairSearch",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.H3Pair.orderFortyNineTripleCellExcluded_three_zero_of_pairSearch",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85H3PairSplit",
+      "source_sha256": "788c54887e121212693f0aaae3d99577e30db2a383d2fea161ce08b127f44839",
+      "olean_sha256": "d78f0f470f2771a7ff71922fd08b950264d9b0ca0c672798cd5c26bd81b8c7ff",
+      "olean_bytes": 187696,
+      "olean_mtime": 1791447366.4846327,
+      "fresh_build_elapsed": "3.8s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3Pair.orderFortyNineTripleCellExcluded_three_zero_of_parts",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  ],
+  "scope": "Fresh Engine, conditional Bridge and conditional 24-way composition theorem only. No native part result or unconditional pair exclusion."
+}
