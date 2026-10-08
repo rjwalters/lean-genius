@@ -1,6 +1,6 @@
 # Four-case H3 timing sample
 
-Status: **source-only, uncompiled, no search queued**.
+Status: **input/deficient-membership preflight running; no search queued**.
 
 Claude requested 3–5 additional pairs after the U1/R15 pipeline fix, to measure
 cost variation before a larger campaign. The four selected cases are:
@@ -46,3 +46,18 @@ authorized by this preparation artifact.
 Run `python3 prepare.py` to recheck generated sources and provenance without
 Lean or search. `python3 prepare.py --write` regenerates them. All eventual
 Lean builds and finite searches run on the cloud builder.
+
+The U1/R15 split pipeline has now passed and its evidence is independently
+audited. `check_preflight.py` validates an exact copied snapshot of the
+previously verified deficient census (203 modules, receipt SHA
+`190d7e37c814bd8a7eea54e6ad1bbcba73e092e6e0d77deddc717bab098bfecc`),
+builds all four input modules, then checks deficient membership and representative
+identity with standard axioms only. It does not run any certificate search.
+The full membership preflight awaits the still-building `CapacityReduction`.
+
+The preflight is cloud job
+`20261008T042839-erdos85__h3-first-column-20261008-180990`, using source
+`16d3a56a9ab`, 16 GiB, one compiler thread, and a 20-minute cap.
+The copied base contains 610 files; all copied source/log/object hashes match
+the original audited receipt. `preflight-launch.json` records this launch,
+not a successful proof receipt.
