@@ -33,10 +33,16 @@ creating a release tag and repointing `\repobase`. The older
 [wrap-up punchlist](../../WRAPUP_PUNCHLIST_20260921.md) remains historical context;
 its version 5/8 wording notes are superseded where version 9 addresses them.
 
-Release-branch check on 2026-10-08: fetched `erdos85/integration` at
-`bc5291aa220` already contains the corrected H3/H1 receipt rows identified by
-the audit's P1 note. It does not yet contain `b0b815e175c`, which adds the
-AI-author review disclosure to the abstract and collaboration section. Include
-that disclosure, its matching PDF, and this README correction in the release
-branch before publishing; the immutable audit remains a record of its earlier
-snapshot.
+Release-branch check on 2026-10-08 at 09:07 UTC: both public branches
+`erdos85/integration` and `erdos85/paper-v6` advertise
+`458227dcb638bd6611a2f738652b12f73394d266`. That commit contains the corrected
+H3/H1 receipt rows and has `b0b815e175c` as an ancestor. The AI-author review
+disclosure and matching PDF are already integrated: source and PDF blobs match
+the disclosure commit, and the manuscript-of-record files match version 9.
+The prior paragraph's missing-disclosure warning is superseded; no further
+cherry-pick is needed. All 50 distinct repository targets used by the paper
+exist at this commit. See the [reproducible repository check](../../paper_release_check_20261008/README.md)
+and [citation follow-up](../../paper_release_check_20261008/CITATION_SUPPORT.md).
+These checks do not constitute human read-through, a fresh full manuscript
+audit, or publication approval. The immutable audit remains a record of its
+earlier snapshot.
