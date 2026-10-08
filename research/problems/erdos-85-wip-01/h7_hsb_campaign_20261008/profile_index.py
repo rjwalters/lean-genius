@@ -6,7 +6,7 @@ first leaves are far harder than that sample suggests. This profiles geometric i
 for every k, the leaf at index 2^k (and index 0), plus one seeded random leaf of the stratum
 [2^k, 2^(k+1)), per cube. Each leaf goes through cert_item.certify (CaDiCaL -> cake_lpr stream);
 timeouts are recorded as data. Every receipt carries the leaf's position in the generator's
-tree (leaf_tree.tree: first / second / third row index). Head leaves are scheduled first.
+tree (leaf_tree.tree: first / second / third row index).
 
     profile_index.py --inputs DIR --out FILE --cubes cube_F7_t0,... --slots 14 --cap 7200
 """
@@ -54,6 +54,7 @@ def main() -> int:
     ap.add_argument("--cadical", default="cadical")
     ap.add_argument("--cake-lpr", default="cake_lpr")
     ap.add_argument("--print-plan", action="store_true")
+    ap.add_argument("--skip", default="", help="cube:leaf,... already measured elsewhere (canary)")
     a = ap.parse_args()
     meta = json.loads((a.inputs / "inputs.json").read_text())
     names = a.cubes.split(",")
@@ -62,7 +63,16 @@ def main() -> int:
     for name in names:
         for p in plan(meta["cubes"][name]["leaves"], name):
             items.append(dict(p, cube=name))
-    items.sort(key=lambda p: (p["leaf"], names.index(p["cube"])))  # head first, round-robin over cubes
+    # Spread over the scales first (so that an early look already shows where the head ends), edge
+    # picks before the random pick of each stratum, round-robin over cubes.
+    order = [6, 9, 3, 12, 1, 8, 4, 10, 0, 7, 2, 11, 5, 13, 14, 15, 16, -1]
+
+    def key(p):
+        k = -1 if p["leaf"] == 0 else p["stratum"][0].bit_length() - 1
+        return (p["pick"] == "random", order.index(k) if k in order else 99, names.index(p["cube"]))
+    items.sort(key=key)
+    skip = {tuple(x.split(":")) for x in a.skip.split(",") if x}
+    items = [p for p in items if (p["cube"], str(p["leaf"])) not in skip]
     if a.print_plan:
         print(json.dumps({"items": len(items), "per_cube": {c: [p["leaf"] for p in items if p["cube"] == c] for c in names}}))
         return 0
