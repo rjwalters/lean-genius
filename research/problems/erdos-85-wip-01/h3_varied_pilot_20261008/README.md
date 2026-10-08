@@ -108,4 +108,8 @@ with wait4 peak RSS 6,549,052 KiB; its consumer took 9.702 seconds.
 Both reports contain exactly the standard three axioms plus this pair's
 native-decision axiom. The consumer retains its cross-domain and external
 capacity premises. This closes one pair, not the deficient census or H3.
-The other three selected cases remain unqueued at this record.
+The second deficient sample U369/R11 was subsequently submitted as
+`20261008T050258-erdos85__h3-first-column-20261008-206594`, with the same
+source ref, audited preflight, and two-hour/16-GiB/one-thread limits.
+`DeficientU369R11-launch.json` is a submission record, not a passing result.
+Both full sample cases remain unqueued pending their membership proof.
