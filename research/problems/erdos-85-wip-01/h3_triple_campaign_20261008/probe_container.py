@@ -11,6 +11,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import signal
 import subprocess
 import uuid
 
@@ -63,6 +64,10 @@ def main():
                'command': command, 'wall_cap_seconds': 45, 'production_native_search': False}
     write(output / 'RUN.json', receipt)
     created = False
+    def interrupted(signum, frame):
+        raise SystemExit(128 + signum)
+    signal.signal(signal.SIGTERM, interrupted)
+    signal.signal(signal.SIGINT, interrupted)
     try:
         result = subprocess.run(command, capture_output=True, text=True, timeout=30)
         (output / 'create.stdout').write_text(result.stdout)
