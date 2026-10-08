@@ -1,0 +1,56 @@
+{
+  "status": "EXTERNAL_PASS_LEAN_PENDING",
+  "cube": "cube_F6_t5",
+  "kind": "cover",
+  "depth": 3,
+  "solver_cap_seconds": 120,
+  "process_wall_cap_seconds": 180,
+  "process_file_size_cap_bytes": 67108864,
+  "binaries": {
+    "cadical": "fd601b827c2f6e72c255dd27d6bfa9d7f982414181195fe3ea07ec81385772a2",
+    "cake_lpr": "4d47ffdd19fc6a80e24025f8c5d27d89c4309c9931bdad6d389d87e35be5464b"
+  },
+  "scope": "One retained optional cover pilot; no leaf campaign or stratum exclusion.",
+  "cnf_sha256": "1cacfbaac58d988d4396fdf24c7169d1b6d70a8f22707ad83de2e66944d995bb",
+  "cnf_bytes": 16571068,
+  "input_manifest_sha256": "f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c",
+  "solver": {
+    "command": [
+      "/home/ec2-user/h7pilot/bin/cadical",
+      "-t",
+      "120",
+      "--lrat=true",
+      "--binary=true",
+      "/opt/e85/wt/erdos85__h7-lrat-adapter-20261008/research/problems/erdos-85-wip-01/h7_cover_lean_pilot_20261008/_build/cover-first/cover.cnf",
+      "/opt/e85/wt/erdos85__h7-lrat-adapter-20261008/research/problems/erdos-85-wip-01/h7_cover_lean_pilot_20261008/_build/cover-first/proof.lrat"
+    ],
+    "exit_code": 20,
+    "timed_out": false,
+    "elapsed_seconds": 3.2574691320005513,
+    "user_cpu_seconds": 3.164891,
+    "system_cpu_seconds": 0.087867,
+    "max_rss_kib": 165500,
+    "log_sha256": "6f4df0ac2fcdc726aae5434d714fda64544879cd5362132b7d84ce7271439979"
+  },
+  "proof_sha256": "05251385816da1aadade1c77812e751f97b6ea0ec47d16928f5e3dcf35bdb7a7",
+  "proof_bytes": 9870017,
+  "checker": {
+    "command": [
+      "/home/ec2-user/h7pilot/bin/cake_lpr",
+      "/opt/e85/wt/erdos85__h7-lrat-adapter-20261008/research/problems/erdos-85-wip-01/h7_cover_lean_pilot_20261008/_build/cover-first/cover.cnf",
+      "/opt/e85/wt/erdos85__h7-lrat-adapter-20261008/research/problems/erdos-85-wip-01/h7_cover_lean_pilot_20261008/_build/cover-first/proof.lrat",
+      "--CML_HEAP_SIZE=2000",
+      "--CML_STACK_SIZE=512"
+    ],
+    "exit_code": 0,
+    "timed_out": false,
+    "elapsed_seconds": 1.905409528000746,
+    "user_cpu_seconds": 1.338484,
+    "system_cpu_seconds": 0.559366,
+    "max_rss_kib": 2050848,
+    "log_sha256": "c680d3bd38a04c7beee7d54999f8f00b43051f75a53cf2bd170ae0cc5f99eb5f"
+  },
+  "packed_sha256": "3c9df044973228754482029a32bace1b541e1b2bd7af77f3ebf34ce759ecbc0a",
+  "packed_bytes": 11280020,
+  "lean_source_sha256": "b3cc455851fc73d9972ef0a9d196777157ca829b622d69545b0a560bfe733342"
+}

@@ -1,5 +1,5 @@
 {
-  "status": "SUBMITTED",
+  "status": "EXTERNAL_PASS_LEAN_PENDING",
   "job": "20261008T053625-erdos85__h7-lrat-adapter-20261008-228680",
   "execution_commit": "ab6faa2dd2a470b0d51293ac566063e1f2cabdb3",
   "branch": "erdos85/h7-lrat-adapter-20261008",
@@ -10,5 +10,8 @@
   "process_file_size_cap_bytes": 67108864,
   "inputs": "/home/ec2-user/h7camp/inputs",
   "source_sha256": "5940a07ab28ea4bbc263ec509fc55d34389e217839360916e7c89e65a9d98f6f",
-  "scope": "One retained cover proof; Lean replay separate and pending."
+  "scope": "One retained cover proof; Lean replay separate and pending.",
+  "exit_code": 0,
+  "production_receipt_sha256": "274b250e970ba21704ce1fc8d7acb800bdf77aceec51e54bfaeeef166ed69c56",
+  "artifact_index": "production-evidence/artifact-index.json"
 }

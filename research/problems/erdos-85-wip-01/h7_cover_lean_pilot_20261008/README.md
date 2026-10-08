@@ -1,6 +1,18 @@
 # One retained H7 cover pilot
 
-Status: **prepared; production and Lean check not yet run**.
+Status: **external certificate PASS; optional Lean replay running**.
+
+The producer job `20261008T053625-erdos85__h7-lrat-adapter-20261008-228680`
+exited successfully. CaDiCaL produced the proof in 3.26 seconds and cake_lpr
+verified it in 1.91 seconds. The 9,870,017-byte proof, its packed copy, and
+the exact CNF are retained outside Git at the path recorded in
+`production-evidence/artifact-index.json`; all seven artifact hashes were
+checked after retrieval. Small receipts, source, and raw logs are retained
+in `production-evidence/`.
+
+The separate cloud Lean job is recorded in `lean-launch.json`. It has a
+16-GiB memory limit and a ten-minute cap. Its result remains pending; the
+external PASS does not establish that the Lean replay passed.
 
 This optional strengthening targets only the depth-three F6/t5 cover CNF,
 SHA-256 `1cacfbaac58d988d4396fdf24c7169d1b6d70a8f22707ad83de2e66944d995bb`.
