@@ -36,7 +36,16 @@ Job `20261008T032226-erdos85__h3-first-column-20261008-138766` continues from
 the same build cache at commit `34bb24f5fb1`, using 16 GiB, one Lean thread,
 and a 30-minute limit. It runs `check_inventory.py`, which first builds the
 theorem module and then evaluates the inventory only if dependencies pass.
-No theorem or diagnostic result from that job is claimed yet.
+That job reached the target and failed its proof elaboration (exit 1): a
+partially applied branch was not unfolded by `simp`, the generic congruence
+tactic exhausted its heartbeat budget, and `List.any_eq_false` expected
+non-truth rather than a Boolean equality to false. Its complete dependency
+log and receipt are retained in `failed-inventory-first/`. No diagnostic ran
+and no theorem result is claimed from the failed module.
+
+The revised source unfolds the branch explicitly, uses a direct `congrArg`
+proof, and converts the Boolean rejection to non-truth. These fixes await
+a new cloud check.
 
 `audit.py` independently checks a completed run's commands, logs, source and
 object hashes, all five theorem axiom reports (standard axioms only), and

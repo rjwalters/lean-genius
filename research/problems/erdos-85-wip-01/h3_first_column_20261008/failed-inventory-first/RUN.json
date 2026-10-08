@@ -1,0 +1,18 @@
+{
+  "status": "DEPENDENCY_FAILURE",
+  "scope": "Diagnostic only; no rejection theorem.",
+  "source_sha256": "849908e705485a0d2e831073455e33540c9d53a0ea6c101fbde0001c4edff9a1",
+  "lean_threads": 1,
+  "dependencies": {
+    "command": [
+      "lake",
+      "build",
+      "Proofs.Erdos85ThreeHighFirstColumnSearch",
+      "Proofs.Erdos85ThreeBlockCompactCodes",
+      "Proofs.Erdos85ThreeHighSecondaryOrbitTable"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 564.0271187960025,
+    "log_sha256": "282051cfc536cb43298f10ff26310e24eb0821c8496443a972df71dc76bb2630"
+  }
+}

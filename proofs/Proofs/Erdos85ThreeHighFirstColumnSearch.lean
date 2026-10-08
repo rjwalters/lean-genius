@@ -51,10 +51,10 @@ theorem threeHighFactoredCapacityColumnDFS_eq_firstColumns
     threeHighFactoredCapacityColumnDFS U R accept =
       (threeHighStaticPrunedColumnList U R 0).any
         (threeHighFirstColumnBranch U R accept) := by
-  unfold threeHighFactoredCapacityColumnDFS
+  unfold threeHighFactoredCapacityColumnDFS threeHighFirstColumnBranch
+    threeHighFactoredColumnGate threeHighFactoredColumnAccept
   rw [finiteRowDFS_eight_first]
-  simp [threeHighFirstColumnBranch, threeHighFactoredColumnGate,
-    threeHighFactoredColumnAccept]
+  simp
 
 /-- Cache U/R once for a separately executable native first-column branch. -/
 def threeHighNativeFirstColumnSearch
@@ -88,9 +88,8 @@ theorem threeHighNativePairSearch_eq_firstColumns
       (threeHighStaticPrunedColumnList U R 0).any (threeHighNativeFirstColumnSearch U R) := by
   rw [threeHighNativePairSearch_eq, ← threeHighFactoredCapacityColumnDFS_eq,
     threeHighFactoredCapacityColumnDFS_eq_firstColumns]
-  congr 1
-  funext S
-  exact (threeHighNativeFirstColumnSearch_eq U R S).symm
+  exact congrArg (fun f => (threeHighStaticPrunedColumnList U R 0).any f)
+    (funext (fun S => (threeHighNativeFirstColumnSearch_eq U R S).symm))
 
 theorem threeHighNativePairSearch_false_of_firstColumns
     (U : Fin 15 → Fin 15 → Bool) (R : Fin 8 → Fin 8 → Bool)
@@ -98,7 +97,9 @@ theorem threeHighNativePairSearch_false_of_firstColumns
       threeHighNativeFirstColumnSearch U R S = false) :
     threeHighNativePairSearch U R = false := by
   rw [threeHighNativePairSearch_eq_firstColumns]
-  exact List.any_eq_false.mpr hreject
+  apply List.any_eq_false.mpr
+  intro S hS
+  simp [hreject S hS]
 
 attribute [local irreducible] threeHighCrossDomain
 
