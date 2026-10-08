@@ -39,8 +39,11 @@ def validate_base(base):
     spec.loader.exec_module(census)
     sources, _, library = census.plan("deficient")
     assert receipt["status"] == "PASS" and receipt["branch"] == "deficient"
-    assert [r["module"] for r in receipt["results"]] == [n for n, _ in sources]
-    for entry, (name, source) in zip(receipt["results"], sources):
+    entries = {r["module"]: r for r in receipt["results"]}
+    assert len(entries) == len(receipt["results"])
+    assert set(entries) == {n for n, _ in sources}
+    for name, source in sources:
+        entry = entries[name]
         assert entry["status"] == "PASS" and entry["exit_code"] == 0
         assert digest(source) == entry["source_sha256"]
         expected = re.findall(r"^#print axioms (\S+)\s*$", source.read_text(), re.M)
