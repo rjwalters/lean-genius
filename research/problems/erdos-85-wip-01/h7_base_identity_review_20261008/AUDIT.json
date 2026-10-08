@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "job": "20261008T051026-erdos85__h7t0-formal-20261007-211746",
+  "execution_commit": "50a06c7c033ac8b63a7f9695e7dc7cfd15b38a28",
+  "raw_log_sha256": "5fa05b60844451f5d6098af7ddcbe11b7c5522479ac813ea6c1902ea2e482beb",
+  "receipt_sha256": "48d478dd92acfb2f84e2888f9b967b20ede810fedec5e69ffb4d8cd2c0e56ea6",
+  "input_manifest_sha256": "f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c",
+  "cubes": 28,
+  "clauses_per_cube": 720825,
+  "variables": 17633,
+  "source_sha256": {
+    "research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/EmitCube.lean": "16749c7ee71d8e2bbda47bfc461894e72af276346f037e3756837cb982ea8716",
+    "proofs/Proofs/Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeCnf.lean": "fb9762b1f45d6163f0a2d7ae3f8d4015f6e232584059042799b87da39ed84622",
+    "proofs/Proofs/Erdos85OrderFortyNineSevenHighT0CanonicalCnf.lean": "711cd891769b04c2ffb19988845f8a87c2194a61440a539e27895bb058ea7b4e",
+    "research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/check_base_identity.py": "04f125ca5cddd0e5df3ae4edff90e5b0086b40a92da2f58a80e0b7aa93810fea",
+    "research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/check_base_identity.sh": "6c4101f2ac04f1050a248b4ee85de486327ae534cb109531e34aeda01b092259",
+    "research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/h7_common.py": "35dac31448dbedb7466011a21550ac4504465dcf1b62d4522f79b3a427cb163a"
+  },
+  "checks": [
+    "Raw job reports success at pinned execution commit",
+    "All 28 unique roots and masks match campaign manifest and frozen roots",
+    "Every emitted hash equals frozen root and campaign cube hash",
+    "Inline results exactly equal complete receipt inventory",
+    "Three printed Lean source hashes equal execution-commit source bytes",
+    "Emitter, comparator and wrapper source reviewed; all six current files match execution commit",
+    "Authoritative cloud exit 0 and independently computed raw-log SHA-256 match"
+  ],
+  "scope": "Byte identity of all 28 base cube CNFs; no UNSAT or campaign completion claim.",
+  "authoritative_exit_code": 0,
+  "cloud_raw_log_sha256": "5fa05b60844451f5d6098af7ddcbe11b7c5522479ac813ea6c1902ea2e482beb"
+}
