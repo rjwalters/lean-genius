@@ -9,5 +9,8 @@ the complete private cache remain on the existing cloud builder under
 
 Only Inputs and Membership were compiled. Certificate and Consumer source
 files were generated but not compiled. This preflight gives no census credit.
-`AUDIT.json`, when present, records the independent host/artifact audit; the
-producer's success status alone is insufficient.
+Independent audit job `20261008T081830-erdos85__h3-triple-formal-20261007-332954`
+exited 0 at commit `1895b057bec3b5a7d4b8e5594795de821df5e885`. `AUDIT.json`
+is the result extracted from the retained raw audit log. Both membership
+exports use exactly the standard three Lean axioms. The producer's success
+status alone is insufficient.

@@ -1,11 +1,12 @@
 # H3 triple-profile campaign plan
 
 Status: **plan and deterministic metadata tooling prepared; no fleet launched**.
-The single-attempt worker is implemented but has not run a production case.
+The single-attempt worker has passed full and deficient non-native preflights,
+but has not run a production case.
 The complete artifact collector, fleet lifecycle and final Lean aggregation
 remain implementation/readiness gates. The read-only artifact
-validation component is implemented; independent host execution/provenance
-checks remain pending. `controller.py` is a read-only
+validation component and preflight host execution/provenance audit are implemented
+and exercised; production acceptance remains pending. `controller.py` is a read-only
 capacity and queue planner, not an execution controller. This package supports
 budget and architecture review; it is not yet a launch-ready campaign.
 
@@ -89,7 +90,7 @@ the raw axiom reports, and rejects incomplete inventories and substituted bridge
 proofs. Its certificate-only mode preserves a verified artifact prefix after
 Consumer fails. Neither mode grants campaign credit or permits a retry; a host
 collector must establish execution, immutable dependencies, limits and terminal
-state. Fifteen synthetic metadata tests in `test_artifacts.py` exercise rejection
+state. Seventeen synthetic metadata tests in `test_artifacts.py` exercise rejection
 and recovery cases without Lean, Docker, native search or cloud calls. Their
 opaque test objects are explicitly synthetic, not compilation evidence.
 
@@ -106,14 +107,16 @@ compiler process group. A non-timeout certificate failure is an `ALARM` pending
 raw diagnostic review. There is no automatic retry, resizing, claim release,
 fleet launch, or acceptance as `AUDITED_PASS`.
 
-The launch schema and cache contract are in `RECEIPT.md`. Forty metadata tests
+The launch schema and cache contract are in `RECEIPT.md`. Forty-nine metadata tests
 pass across worker, artifact, inventory and container-audit suites, including
 preflight/production separation. `test_worker_runtime.py` is a separate
 cloud-host-only check of subprocess completion, nonzero exit, timeout cleanup
-and refusal to overwrite retained logs. Production compilation, cache staging,
-Docker mount/image verification, host collection and consumer-only continuation
-are still untested or unimplemented gates. Do not use the worker for a campaign
-until those gates and the limited production canary are complete.
+and refusal to overwrite retained logs. Cache staging, Docker mount/image
+verification and host collection have passed for the two preflights below.
+Production native compilation, production host acceptance, consumer-only
+continuation and fleet recovery remain untested or unimplemented gates. Do not
+use the worker for a campaign until those gates and the limited production
+canary are complete.
 
 The four cloud process tests passed in 1.211 seconds in job
 `20261008T072956-erdos85__h3-triple-formal-20261007-298258`, at execution commit
@@ -152,10 +155,10 @@ search path includes the pinned toolchain's standard library after project
 objects, and that exact suffix is checked.
 
 This establishes the container environment setup. It does not approve arbitrary
-cache contents or validate a production worker attempt. Complete cache staging
-and provenance, host launch/collection, bounded worker preflight and a limited
-production canary remain next gates. The host launch must give only the fresh
-attempt output a writable mount while keeping the verified inputs read-only.
+cache contents or validate a production worker attempt. Cache preparation and
+bounded worker preflights are separately audited below. The limited production
+canary remains open. The host launcher gives only the fresh attempt output a
+writable mount while keeping the verified inputs read-only.
 
 `prepare_cache.py` rechecks both audited census bundles and the frozen source
 manifest, builds only the three generic dependency targets, and copies the
@@ -182,8 +185,47 @@ inventory SHA-256 is
 inventory SHA-256 is
 `3397a58699851e910c33ad8d3e5ca099de3e2665dc151cc000de934450a29c9a`.
 This uses the established builder/toolchain cache and audited census objects;
-it is not a clean rebuild of Mathlib or new rejection credit. The worker
-preflight and independent host launch/terminal audit remain to be executed.
+it is not a clean rebuild of Mathlib or new rejection credit.
+
+## Bounded worker preflights
+
+`launch_preflight.py` runs one preflight on the existing builder with a hard
+16 GiB memory limit, no swap, a hard two-CPU quota, no network, one Lean thread,
+a 600-second worker deadline and a 660-second container deadline. The repository,
+build/packages volumes and image root are read-only; only the fresh output is
+writable. It retains pre-start and terminal Docker inspections and logs before
+removing its uniquely named container. It has no production or fleet mode.
+
+Both first attempts passed, with no retries:
+
+| Case | Producer job suffix | Execution commit | Container seconds | Inputs / Membership seconds | Peak compiler RSS KiB |
+|---|---|---|---:|---:|---:|
+| `full-u001-r16` | `20261008T081422-…-328527` | `f8f011a45170d289dca8cbb17f6946420cbbae00` | 16.720 | 3.905 / 5.608 | 6,897,840 |
+| `deficient-u000-r02` | `20261008T081938-…-334858` | `1895b057bec3b5a7d4b8e5594795de821df5e885` | 33.688 | 3.805 / 22.930 | 8,079,692 |
+
+`audit_preflight.py` independently checked the actual retained sources, objects,
+logs, receipts and complete cache inventories, the execution commit's source
+closure, the approved image and launch command, exact mounts and cgroups,
+terminal exit zero, no OOM/restart, wall limits and container removal. Audit jobs
+`20261008T081830-…-332954` and `20261008T082035-…-335743` both exited zero at
+`1895b057bec3b5a7d4b8e5594795de821df5e885`. Each Membership module exported
+`member` and `input_identity` with exactly `propext`, `Classical.choice` and
+`Quot.sound`. Inputs modules are data-only and emitted no axiom reports.
+
+`worker-preflight-full-evidence/` and `worker-preflight-deficient-evidence/`
+retain raw job/audit logs, Docker records, launch/cache inventories, generated
+sources and per-stage receipts. Lean objects and private libraries stay on the
+cloud at the corresponding `_build/worker-preflight-<branch>-first` paths.
+The RUN hashes are respectively
+`527d1492ac71e7a136a1fbac784e12eab976352c7b1bbd715634e0839583d0cd` and
+`ca7c920dcc97745e7929b75e09c9120ecdf221a6a65313f609c0fe9c81b7d56c`.
+Six mutation tests use retained real Docker observations, and three launcher
+tests check scope, mounts and refusal to run locally.
+
+These runs compile only Inputs and Membership. Generated Certificate and
+Consumer sources were retained but not compiled. No native certificate search,
+new exclusion, campaign credit, concurrent campaign or clean Mathlib rebuild
+is established by these preflights.
 
 ## Resource and controller design
 

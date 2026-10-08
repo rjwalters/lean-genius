@@ -1,0 +1,72 @@
+[e85] job 20261008T082035-erdos85__h3-triple-formal-20261007-335743  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T08:20:35Z
+[e85] commit 1895b057bec3b5a7d4b8e5594795de821df5e885 (Retain hash-bound raw logs for full worker preflight)
+[e85] host command: python3 -B research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/audit_preflight.py --repository /opt/e85/wt/erdos85__h3-triple-formal-20261007 --job 20261008T081938-erdos85__h3-triple-formal-20261007-334858 --case deficient-u000-r02 --manifest-sha256 11ded9568ddc0497b8fd58d9107bc35f50caca0fd9064e9f85db18f98f614445 --output research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first
+{
+  "status": "WORKER_PREFLIGHT_AUDIT_PASS",
+  "job": "20261008T081938-erdos85__h3-triple-formal-20261007-334858",
+  "case_id": "deficient-u000-r02",
+  "execution_commit": "1895b057bec3b5a7d4b8e5594795de821df5e885",
+  "manifest_sha256": "11ded9568ddc0497b8fd58d9107bc35f50caca0fd9064e9f85db18f98f614445",
+  "host_sha256": "b069f94d10d48f19c157550f5c555927270af1cc9dca43c52d95422e1066f744",
+  "run_sha256": "ca7c920dcc97745e7929b75e09c9120ecdf221a6a65313f609c0fe9c81b7d56c",
+  "launch_sha256": "a9322fbe8a73328028ddedb98907c770fea2d7f01eca5877adb76c423a9497f7",
+  "cache_inventory_sha256": "3397a58699851e910c33ad8d3e5ca099de3e2665dc151cc000de934450a29c9a",
+  "job_log_sha256": "724d2a05cb0b2c1f83e7c896d07b1733f93e5ec892ba124d4b751aaf5f98cedc",
+  "authoritative_exit": 0,
+  "container_runtime_seconds": 33.68751,
+  "limits": {
+    "memory_bytes": 17179869184,
+    "cpu_quota_us": 200000,
+    "cpu_period_us": 100000,
+    "wall_seconds": 600
+  },
+  "container_removed": true,
+  "artifacts": {
+    "status": "PREFLIGHT_ARTIFACTS_VALID",
+    "case_id": "deficient-u000-r02",
+    "attempt_id": "preflight-043588c86ae64f35855a091655ba3a30",
+    "manifest_sha256": "11ded9568ddc0497b8fd58d9107bc35f50caca0fd9064e9f85db18f98f614445",
+    "run_sha256": "ca7c920dcc97745e7929b75e09c9120ecdf221a6a65313f609c0fe9c81b7d56c",
+    "results": [
+      {
+        "stage": "Inputs",
+        "module": "Erdos85ThreeHighCampaignDeficientU0R2Inputs",
+        "source_sha256": "dd1a1a53fe2138fea1ddf41a8a6670e8496da2069a6987c0cfa68c50e91e2842",
+        "olean_sha256": "daef39f8b2d3cb2a811afe7c5b2934ba09d8fb0d6cb32e5f3ccc0ac8f10242ff",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "axiom_exports": []
+      },
+      {
+        "stage": "Membership",
+        "module": "Erdos85ThreeHighCampaignDeficientU0R2Membership",
+        "source_sha256": "6fdaba295209cd0f395bb825c29583dfba4cc353fa114b2c3096dde16bbd4aaa",
+        "olean_sha256": "5f601aed488f9a039dad35a7ddd6b37a44a92a9b95c516db54df39b4469a06cd",
+        "log_sha256": "e5fc2c65fef1529b1c4a4ec4fb4fe6519b10b2087b8b8772c8c8ee442015c1a0",
+        "axiom_exports": [
+          {
+            "theorem": "Erdos85.TripleCampaign.DeficientU0R2.member",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          },
+          {
+            "theorem": "Erdos85.TripleCampaign.DeficientU0R2.input_identity",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          }
+        ]
+      }
+    ],
+    "campaign_credit": false,
+    "retry_authorized": false,
+    "scope": "Artifact component only. Requires independent host execution/provenance audit; does not establish terminal state, authorize retry, or credit the campaign."
+  },
+  "production_native_search": false,
+  "campaign_credit": false,
+  "scope": "Bounded Inputs+Membership worker execution on the audited existing cache. No native certificate, consumer, campaign exclusion, or clean Mathlib rebuild."
+}

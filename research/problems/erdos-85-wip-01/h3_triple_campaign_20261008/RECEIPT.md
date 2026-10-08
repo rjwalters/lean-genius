@@ -1,7 +1,9 @@
 # Required per-attempt receipt and acceptance rules
 
 Status: the artifact-validation component and single-attempt worker are
-implemented and metadata-tested. Production worker execution and the independent
+implemented and metadata-tested. Full and deficient non-native worker preflights
+have passed independent host/artifact audits (see README and their evidence
+directories). Production worker execution and the independent
 host execution/provenance collector remain readiness gates.
 The planner's output is not a proof receipt and cannot complete a campaign.
 

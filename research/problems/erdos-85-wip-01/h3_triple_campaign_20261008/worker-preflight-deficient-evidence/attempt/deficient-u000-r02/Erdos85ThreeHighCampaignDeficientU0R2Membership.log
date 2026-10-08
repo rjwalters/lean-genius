@@ -1,0 +1,43 @@
+/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/work/preflight-043588c86ae64f35855a091655ba3a30/deficient-u000-r02/Erdos85ThreeHighCampaignDeficientU0R2Membership.lean:8:52: warning: This simp argument is unused:
+  Finset.mem_erase
+
+Hint: Omit it from the simp argument list.
+  simp only [DeficientUOrbitPruning.remainingPairs, Finset.mem_e̵r̵a̵se̵,̵ ̵F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵s̵diff,
+  ̵  ̵ ̵ ̵Finset.mem_product,
+  ̲  ̲ ̲ ̲Finset.mem_filter, Finset.mem_univ, true_and]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/work/preflight-043588c86ae64f35855a091655ba3a30/deficient-u000-r02/Erdos85ThreeHighCampaignDeficientU0R2Membership.lean:9:4: warning: This simp argument is unused:
+  Finset.mem_product
+
+Hint: Omit it from the simp argument list.
+  simp only [DeficientUOrbitPruning.remainingPairs, Finset.mem_erase, Finset.mem_sdiff,
+      Finset.mem_p̵r̵o̵d̵u̵c̵t̵,̵ ̵F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵filter, Finset.mem_univ, true_and]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/work/preflight-043588c86ae64f35855a091655ba3a30/deficient-u000-r02/Erdos85ThreeHighCampaignDeficientU0R2Membership.lean:9:24: warning: This simp argument is unused:
+  Finset.mem_filter
+
+Hint: Omit it from the simp argument list.
+  simp only [DeficientUOrbitPruning.remainingPairs, Finset.mem_erase, Finset.mem_sdiff,
+      Finset.mem_product, Finset.mem_f̵i̵l̵t̵e̵r̵,̵ ̵F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵univ, true_and]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/work/preflight-043588c86ae64f35855a091655ba3a30/deficient-u000-r02/Erdos85ThreeHighCampaignDeficientU0R2Membership.lean:9:43: warning: This simp argument is unused:
+  Finset.mem_univ
+
+Hint: Omit it from the simp argument list.
+  simp only [DeficientUOrbitPruning.remainingPairs, Finset.mem_erase, Finset.mem_sdiff,
+      Finset.mem_product, Finset.mem_filter, F̵i̵n̵s̵e̵t.̵m̵e̵m̵_̵u̵n̵i̵v̵,̵ ̵t̵rue_and]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/work/preflight-043588c86ae64f35855a091655ba3a30/deficient-u000-r02/Erdos85ThreeHighCampaignDeficientU0R2Membership.lean:9:60: warning: This simp argument is unused:
+  true_and
+
+Hint: Omit it from the simp argument list.
+  simp only [DeficientUOrbitPruning.remainingPairs, Finset.mem_erase, Finset.mem_sdiff,
+      Finset.mem_product, Finset.mem_filter, Finset.mem_univ,̵ ̵t̵r̵u̵e̵_̵a̵n̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'Erdos85.TripleCampaign.DeficientU0R2.member' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos85.TripleCampaign.DeficientU0R2.input_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
