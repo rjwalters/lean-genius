@@ -75,7 +75,7 @@ def profileTwo (limit : Nat) : Nat → St → List Tri → StateM TwoProfile Uni
           (avail.filter fun t => !containsM m v t)
           (avail.filter fun t => containsM m v t)
 
-def runTwoProfile : IO Unit := do
+#eval do
   let start ← IO.monoMsNow
   let (_, states) := (collectZero 70 s0).run #[]
   let ready ← IO.monoMsNow
@@ -87,7 +87,5 @@ def runTwoProfile : IO Unit := do
     let (_, p) := (profileTwo 10000 30 s allTriples).run {}
     let finish ← IO.monoMsNow
     IO.println s!"PROFILE leaf={i} key={stKey s} nodes={p.nodes} leaves={p.leaves} exhausted={p.exhausted} invalid={p.invalid} no_fresh={p.noFresh} rejected={p.rejected} available={p.available} capped={p.capped} elapsed_ms={finish-begin}"
-
-#eval runTwoProfile
 
 end Erdos85.H3TripleCompletion
