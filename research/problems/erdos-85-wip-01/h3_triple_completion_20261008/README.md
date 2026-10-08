@@ -402,3 +402,33 @@ all audited prerequisite object hashes remained unchanged. This is a completed
 bucket-zero traversal with a constant-true callback at phase-two leaves.
 It does not prove those leaves impossible: phase-three completion remains the
 next computational step. No new exclusion or old-census credit is claimed.
+
+## Phase-three prototype sizing
+
+`h3_phase3_profile.c` adds the phase-three traversal from the pinned H5
+prototype at `6e85c306db71d4080850edfc4ef5436544cc2997` to the H3 ratio
+prototype. It retains the degree-capacity test, smallest-candidate vertex
+choice, combination enumeration and checked edge insertion. Budget checks
+cover phase-three nodes and combination iterations. Counters separate degree
+gates, combination attempts and rejected insertions. This remains an unproved
+C implementation used for sizing.
+
+Job `20261008T112128-erdos85__h3-triple-formal-20261007-450887` at
+`0779d10cba3a4a9b13feb5634cb15f55ddc4b4bf` compiled it and completed all
+three bounded runs. The phase-one control matched every Lean bucket count;
+the phase-two control reproduced 458,244 nodes and 19,920 leaves. The run
+with phase three enabled also completed all four selected states, reporting:
+
+- 24,322 phase-three nodes and 4,141 degree-gate rejections;
+- 52,876 combinations, including 48,474 rejected edge insertions;
+- zero completed graphs, `stopped=0`, `stop_reason=none`, exit zero;
+- 0.265 seconds wrapper wall time (phase-two-only control: 0.165 seconds).
+
+The identity `24,322 = 19,920 + 52,876 - 48,474` cross-checks the phase-three
+root and child counts. Total visited nodes remain below the unchanged
+two-million-node cap. Limits were 20 seconds internally, 30 seconds hard
+wall/CPU, two GiB address space and CPUs 0–1 on the existing builder.
+`phase-three-evidence/` retains source, helper, binary hash, raw logs, receipts
+and audit. These results justify a single optimized Lean bucket-zero canary
+using the original five-minute inner cap (`run_probe_fast.py`), but provide
+no formal exclusion credit themselves. No broader native campaign is started.

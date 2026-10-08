@@ -1,0 +1,15 @@
+T1 core=22 E0=25 patterns=344 masks: 0 0 0 7 1 1 1 1 1 1 1 2 2 2 2 2 2 2 4 4 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+STATE leaf=1 key=975744 n1=1393
+leaf 1 n1 1393 n2 17 leaf2 0 n3 0 secs 0.000 r 1
+STATE leaf=2 key=986112 n1=6289
+leaf 2 n1 6289 n2 66382 leaf2 2456 n3 0 secs 0.020 r 1
+STATE leaf=3 key=41088 n1=6321
+leaf 3 n1 6321 n2 329300 leaf2 14856 n3 0 secs 0.096 r 1
+STATE leaf=4 key=776448 n1=7657
+leaf 4 n1 7657 n2 62545 leaf2 2608 n3 0 secs 0.018 r 1
+PROFILE T1 traversal_return=1 stopped=0 n1=8167 leaf1=4 leafrun=4 n2=458244 leaf2=19920 n3=0 found=0 secs=0.1 mrv=0 fc=0
+SPLIT pre=22 mod=384 prefix_nodes=7079 prefix_leaves=1088 part_min=0 part_max=4 part_sum=4
+ 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+GATE enabled=0 hits=0 node_cap=2000000
+ORDER pick=2 stop_reason=none maxleaf=0
+FULL p3=0 gates=0 combinations=0 rejects=0
