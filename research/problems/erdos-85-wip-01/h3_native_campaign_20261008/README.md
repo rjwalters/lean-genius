@@ -1,6 +1,6 @@
 # Bounded H3 native completion campaign
 
-Status: prepared for launch review; not authorized or launched. This is the
+Status: cloud preflight independently audited; full run not authorized or launched. This is the
 379-part continuation of the audited five-part production sample, using
 math pin `a64f02c30eafde63acece8f251fd98666b757ea7`.
 Frozen plan SHA-256: `79229aab5261d6692212e50175c561cfbdc7acf35a13601007d135cb6b8dcf4d`.
@@ -69,7 +69,7 @@ Read-only cloud preflight, after committing and pushing the exact source:
 e85-remote ssh 'taskset -c 0,1 /opt/e85/bin/e85-host run erdos85/h3-triple-formal-20261007 --full --mem 16 --threads 1 --timeout 3m --no-follow -- lake env python3 -B ../research/problems/erdos-85-wip-01/h3_native_campaign_20261008/run.py'
 ```
 
-After explicit launch authorization, on the same prepared execution pin:
+After explicit launch authorization, with the same prepared worker and plan:
 
 ```sh
 e85-remote ssh 'taskset -c 0,1 /opt/e85/bin/e85-host run erdos85/h3-triple-formal-20261007 --full --mem 16 --threads 1 --timeout 2h --no-follow -- lake env python3 -B ../research/problems/erdos-85-wip-01/h3_native_campaign_20261008/run.py --execute-approved-plan 79229aab5261d6692212e50175c561cfbdc7acf35a13601007d135cb6b8dcf4d'
@@ -90,3 +90,14 @@ child success/failure, active and pre-launch STOP, per-part timeout, global
 deadline truncation and preservation of existing logs. Dummy subprocesses
 perform no Lean evaluation or finite search. The full campaign remains
 unexecuted until launch authorization.
+
+## Audited cloud readiness
+
+Read-only job `20261008T124149-erdos85__h3-triple-formal-20261007-500956`,
+execution pin `f1fb8666820f40158ca1cf01598002696b549350`, exited zero.
+`preflight-evidence/AUDIT.json` records `CAMPAIGN_PREFLIGHT_AUDIT_PASS`.
+The actual memory/CPU limits, five reusable objects, prerequisite objects,
+source/input hashes and absence of a campaign attempt were checked. No new
+residue was computed or accepted. The raw preflight log and inputs are
+retained unchanged. Launch remains a separate authorization decision for
+the fixed two-hour envelope above.

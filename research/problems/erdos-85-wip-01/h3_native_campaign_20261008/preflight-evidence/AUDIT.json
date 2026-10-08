@@ -1,0 +1,80 @@
+{
+  "job": "20261008T124149-erdos85__h3-triple-formal-20261007-500956",
+  "execution_commit": "f1fb8666820f40158ca1cf01598002696b549350",
+  "authoritative_exit": 0,
+  "prerequisites": [
+    {
+      "module": "Erdos85H3TripleCompletionRuntime",
+      "source_sha256": "0cc88d985982c10df4fd24dbdb5b5699ac8a919b0e936eb0734c17c7ea34bfe4",
+      "object": {
+        "sha256": "1995ca73491788c040a6c24f3a87653734ebd70af31d7b1bb26568b0eb37e4ee",
+        "bytes": 762936,
+        "mtime": 1791460995.902036
+      }
+    },
+    {
+      "module": "Erdos85H3TripleCompletionEngine",
+      "source_sha256": "d4b00bd7e44638c5a9f4a50c3ff73c661e7eba79811cedfe7cb8b2caa8e8b52c",
+      "object": {
+        "sha256": "37b0325155ffc909986d57b20fbfe71e5191ad607da06339bbc0242df8c35602",
+        "bytes": 1544224,
+        "mtime": 1791461002.7822106
+      }
+    },
+    {
+      "module": "Erdos85H3TripleCompletionBridge",
+      "source_sha256": "ab48d33eeed723aaec92bbfa32329e09f532a209e79da8330643014ca7f09f54",
+      "object": {
+        "sha256": "579138abcddfb92dabdb7c4a160d9d37412d93700c18a41b97270a8e91a2a482",
+        "bytes": 175392,
+        "mtime": 1791461009.6167257
+      }
+    },
+    {
+      "module": "Erdos85H3TripleCompletionSplit",
+      "source_sha256": "1fa81f7a80e1cfd7a76320879b10e9d908c46174dab8106bc0f30a83c6ed0cdb",
+      "object": {
+        "sha256": "2a3c491fbed12abc724d53ae025641215a4d567f029cdc46aca26592018a7bf7",
+        "bytes": 167992,
+        "mtime": 1791461013.3224778
+      }
+    }
+  ],
+  "reused_residues": [
+    0,
+    3,
+    5,
+    4,
+    162
+  ],
+  "scope": "H3 triple cell (3,1) only. No old census credit, whole-H3 stratum, global order-49 theorem, or paper publication.",
+  "status": "CAMPAIGN_PREFLIGHT_AUDIT_PASS",
+  "receipt": {
+    "status": "READ_ONLY_PREFLIGHT_PASS",
+    "plan_sha256": "79229aab5261d6692212e50175c561cfbdc7acf35a13601007d135cb6b8dcf4d",
+    "reused_objects_checked": 5,
+    "new_parts": 379,
+    "cgroup_memory_bytes": 17179869184,
+    "cgroup_cpu_max": "200000 100000",
+    "scope": "No compilation, native search, artifact changes or launch authorization."
+  },
+  "accepted_new_residues": [],
+  "retained_sha256": {
+    "job.log": "135768609e4bb5a7c250df3a921ce537b5a4681aadf04edddf429e860a23b454",
+    "job.spec": "1eb7a44baae640b77e2870eba47ae6b97d028aaa2fb61127996fb21ff87a4781",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "PLAN.json": "79229aab5261d6692212e50175c561cfbdc7acf35a13601007d135cb6b8dcf4d",
+    "run.py": "c82ced33fd4c286f5e1496032659dcf819bb0b33040039052e417f9423412403",
+    "common.py": "7cde2fb4f0c2a370ed217098364491910fb345cd2e04e3032aace458939d6fbc",
+    "prepare.py": "80c21b4071fcb5b06133db9c4a77129e6c9a0ad5df06216f85fc8e62ed8f73c3",
+    "inputs/manifest.json": "50487367dadbc9192c092b8acdd0cd030bcd9b4ecf47131cb2cfe7a655b5bead",
+    "inputs/generator.py": "0e2b2cd96bacd793457b6759b323cc64b95240b422fc5a86e94a3a38d191e305",
+    "inputs/acceptance.json": "731ad5ee3366e2678b5b64cb179680c47f7e54c82c00f23762cf4980b8ef240d",
+    "inputs/sample_audit.json": "377b0a90e360cfba11acfe91cd079d4cf45f85384527142f5766f16ec477951f",
+    "inputs/prerequisite_audit.json": "21fd8bcce69730f9c3f0de0918412a22430b907d8954f1f90da436366c727b8b",
+    "inputs/assembly_audit.json": "98a5ff97649b1760d5d23586203f16bc187a9850b6cf0e71e7295ac3ffe46531",
+    "inputs/cell_source.lean": "8ae20670851e4b3491f63b9b18cb1351a6efd6a4cc4aeaebc94e96bc645aefd5",
+    "collector.py": "40d9bf1a4ea70b2cc785d329f2516fbe9fd1b97eb37e992f272edd2c6f09e9b7",
+    "auditor.py": "eb958581f315b7003e96adbac9cd05b0cd25bdafe60a8d998f6d4785c99be9a5"
+  }
+}

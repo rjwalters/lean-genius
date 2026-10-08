@@ -1,0 +1,24 @@
+[e85] job 20261008T124149-erdos85__h3-triple-formal-20261007-500956  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T12:41:49Z
+[e85] commit f1fb8666820f40158ca1cf01598002696b549350 (Prepare bounded H3 native completion campaign for review)
+=== Docker Lean Build ===
+Memory limit: 16384MB (hard enforced via cgroups)
+Timeout: 3m
+CPU limit: 2
+Target: all
+Build volume: lean-build-erdos85__h3-triple-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Command: lake env python3 -B ../research/problems/erdos-85-wip-01/h3_native_campaign_20261008/run.py
+Starting Docker build...
+
+{
+  "status": "READ_ONLY_PREFLIGHT_PASS",
+  "plan_sha256": "79229aab5261d6692212e50175c561cfbdc7acf35a13601007d135cb6b8dcf4d",
+  "reused_objects_checked": 5,
+  "new_parts": 379,
+  "cgroup_memory_bytes": 17179869184,
+  "cgroup_cpu_max": "200000 100000",
+  "scope": "No compilation, native search, artifact changes or launch authorization."
+}
+
+=== Build succeeded ===
