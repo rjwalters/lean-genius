@@ -9,7 +9,7 @@
 # A bootstrap failure uploads the log and powers off.
 set -u
 B=2am-erdos85-certs; VP=sat49/verdict-only-20260921; PP=sat49/h7hsb-20261008
-E85_LIFETIME=${E85_LIFETIME:-100800}
+E85_LIFETIME=${E85_LIFETIME:-129600}
 E85_INPUTS_SHA=${E85_INPUTS_SHA:?inputs.json sha required}
 E85_MANIFEST_SHA=${E85_MANIFEST_SHA:?manifest sha required}
 E85_MANIFEST_KEY=${E85_MANIFEST_KEY:-}

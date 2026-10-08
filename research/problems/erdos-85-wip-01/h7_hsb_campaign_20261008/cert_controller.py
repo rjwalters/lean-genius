@@ -48,7 +48,7 @@ VERDICT_PREFIX = vc.BASE_PREFIX  # shared freight: pinned CaDiCaL 3.0.1 build
 vc.PREFIX = vc.BASE_PREFIX = "sat49/h7hsb-20261008"
 vc.TAG = vc.LT_NAME = "e85-h7hsb-20261008"
 vc.STRIPE = vc.BASE_STRIPE = STRIPE / "run"
-vc.HARD_STOP_USD = 260.0
+vc.HARD_STOP_USD = 160.0  # estimate: 50-90 USD at 0.0147 USD/vCPU-h (README section 3); 3 nodes x 36 h at the bid ceiling is 143
 # 8 GiB/vCPU: 64 slots x (2 GB checker heap + 1.5 GB) fits with a wide margin. 16xlarge only, so that
 # slots = vCPUs = 64 and the spot quota (384 vCPU on 2026-10-08) is 6 nodes.
 vc.TYPES = ["r8g.16xlarge", "r7g.16xlarge", "m8g.16xlarge", "m7g.16xlarge"]
@@ -56,7 +56,7 @@ vc.MAX_SPOT_PRICE = "1.20"
 vc.ON_DEMAND_USD_PER_HOUR.update({"r7g.4xlarge": 0.8568, "r7g.16xlarge": 3.4272, "r8g.16xlarge": 3.7699,
                                   "m7g.16xlarge": 2.6112, "m8g.16xlarge": 2.8723})
 vc.EBS_GIB = 40
-LIFETIME = 100800  # 28 h per node
+LIFETIME = 129600  # 36 h per node (3 nodes x 36 h x 64 slots covers the 95% estimate)
 vc.PASS.update(name="h7hsb", lifetime=LIFETIME)
 EXCLUDE_AZ = ["us-east-1d"]  # 2026-10-04: every one of the 7 H1 spot reclaims was in us-east-1d
 MAX_NODES = 6  # 384 spot vCPU quota / 64; the quota is SHARED with CI and other spot jobs (see README)

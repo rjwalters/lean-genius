@@ -6,8 +6,9 @@
 Per leaf the campaign cost is solver CPU + checker CPU (both measured by wait4 rusage on the exact
 campaign path). Per cube: leaves x sample mean. Range: stratified bootstrap (resample within each
 cube), 5%-95%. The bootstrap cannot see leaves harder than the sample maximum, so the tail is
-reported separately (share of the estimate carried by the largest samples, capped leaves, a
-Hill tail index on the pooled normalised sample, and a rule-of-three bound on capped leaves).
+reported separately (share of the sample's CPU carried by the largest samples, the expected number
+of capped leaves, which are counted only at the cap, and a Hill tail index on the pooled normalised
+sample).
 """
 from __future__ import annotations
 
@@ -91,7 +92,14 @@ def main() -> int:
     kk = max(5, len(pooled_norm) // 20)
     hill = kk / sum(math.log(pooled_norm[i] / pooled_norm[kk]) for i in range(kk)) if pooled_norm[kk] > 0 else float("nan")
     cap = max((r.get("cap_seconds", 3600) for r in recs), default=3600)
-    r3 = 3.0 / max(1, total["n"])  # 95% upper bound on the capped fraction if none was seen (pooled, unweighted)
+    # Capped leaves: expected number in the campaign (stratified), and the CPU they are counted with
+    # (their observed time at the cap, i.e. a LOWER bound on their true cost).
+    capped_expected = sum(r["leaves"] * r["capped"] / r["sampled"] for r in rows)
+    capped_counted_h = sum(r["leaves"] / r["sampled"] * sum(
+        x.get("solver", {}).get("cpu_seconds", 0) + x.get("checker", {}).get("cpu_seconds", 0)
+        for x in by[r["cube"]] if x["status"] == "SOLVER_TIMEOUT") for r in rows) / 3600
+    top = sorted((x.get("solver", {}).get("cpu_seconds", 0) + x.get("checker", {}).get("cpu_seconds", 0)
+                  for rs in by.values() for x in rs), reverse=True)
 
     def usd(cpu_h: float, rate: float) -> float:
         return cpu_h / UTILISATION * rate
@@ -102,7 +110,11 @@ def main() -> int:
                "solver_cpu_hours": round(total["solver_h"]), "checker_cpu_hours": round(total["checker_h"]),
                "fixed_overhead_cpu_s_per_leaf": round(fixed_solver + fixed_checker, 2), "fixed_overhead_cpu_hours": round(fixed_h),
                "proof_tb_streamed": round(total["proof_bytes"] / 1e12, 1), "hill_tail_index_top5pct": round(hill, 2),
-               "rule_of_three_capped_fraction_95": r3, "rule_of_three_capped_leaves_95": round(r3 * total["leaves"]),
+               "expected_capped_leaves": round(capped_expected), "cpu_hours_counted_for_capped_leaves": round(capped_counted_h),
+               "extra_cpu_hours_per_extra_hour_of_capped_leaves": round(capped_expected),
+               "sample_cpu_share_top_1pct": round(sum(top[:max(1, len(top) // 100)]) / sum(top), 3),
+               "sample_cpu_share_top_5pct": round(sum(top[:max(1, len(top) // 20)]) / sum(top), 3),
+               "samples_over_600s": sum(v > 600 for v in top), "samples_over_1800s": sum(v > 1800 for v in top),
                "utilisation_assumed": UTILISATION,
                "usd_spot": [round(usd(v, SPOT_PER_VCPU_H)) for v in (lo, total["cpu_h"], hi)],
                "usd_builder_on_demand": [round(usd(v, BUILDER_PER_VCPU_H)) for v in (lo, total["cpu_h"], hi)],

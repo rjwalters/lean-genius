@@ -333,7 +333,7 @@ def main() -> int:
     p.add_argument("--allow-unpinned-binaries", action="store_true", help="tests only (fake checker)")
     p.add_argument("--heap-mb", type=int, default=2000)
     p.add_argument("--cap", type=int, default=3600)
-    p.add_argument("--lifetime", type=int, default=86400)
+    p.add_argument("--lifetime", type=int, default=129600)
     p.add_argument("--min-left", type=int, default=3 * 3600, help="do not claim with less node lifetime left")
     p.add_argument("--partial-seconds", type=int, default=PARTIAL_SECONDS)
     p.add_argument("--cadical", default="/usr/local/bin/cadical")
