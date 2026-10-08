@@ -349,3 +349,40 @@ The four exported theorems still have exactly `propext`, `Classical.choice`
 and `Quot.sound`, with no `sorry`. `fast-state-build/` retains the successful
 fresh-object/source/log audit. The component optimization is integrated and
 sound; complete-bucket runtime and graph exclusion remain unverified.
+
+## Bucket-zero sizing and integrated traversal comparison
+
+The ratio-ordered C prototype completed all four bucket-zero states under the
+unchanged two-million-node and 20-second internal caps in job
+`20261008T111356-erdos85__h3-triple-formal-20261007-443889`, execution
+`d02fb5b5430ff42a1113172df00ef16cefc3adaf`. It reported exit zero,
+`stopped=0`, `stop_reason=none`, 8,167 phase-one nodes, 458,244 phase-two nodes
+and 19,920 phase-two leaves. Wrapper wall time was 0.165 seconds. The fourth
+state contributes 62,545 nodes, so it is not the dominant subtree in this
+prototype. The control again matched every one of the 384 Lean bucket counts.
+`bucket-zero-evidence/` retains the read-only source/binary/log/counter audit.
+Phase three is omitted; completion here is sizing evidence, not exclusion.
+
+`PhaseTwoPaired.lean` runs the original and optimized validation in one
+10,000-node-per-state Lean profiling job. It forces the completed profile into
+an `IO.Ref` before stopping each clock. Job
+`20261008T111445-erdos85__h3-triple-formal-20261007-445375` at the same
+execution commit compiled and completed in 15.783 seconds including startup.
+
+| State key | Original ms | Optimized ms | Nodes in each run |
+| --- | ---: | ---: | ---: |
+| 975744 | 9 | 8 | 17, complete |
+| 986112 | 2,175 | 1,469 | 10,000, capped |
+| 41088 | 2,061 | 1,334 | 10,000, capped |
+| 776448 | 2,137 | 1,420 | 10,000, capped |
+
+All non-timing counters matched between variants and the previous profile,
+including zero invalid/fuel-exhausted states. The nontrivial prefixes improve
+by 32–35% in this instrumented run. This is not a complete-bucket or campaign
+runtime bound. `phase-two-paired-evidence/` retains exact source, object hash,
+logs, receipts and the cross-profile counter audit.
+
+The measured prefix costs and complete C bucket size support a new bounded
+90-second phase-two-only diagnostic (`run_phase_two_fast.py`) against the
+optimized engine. It still accepts phase-two leaves and cannot prove graph
+exclusion. The earlier timed-out runs retain their original limits and pins.
