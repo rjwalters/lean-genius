@@ -62,9 +62,21 @@ Do not start another part after a timeout, compiler failure or explicit STOP.
 Keep successful objects and raw evidence even if a later part fails. No
 automatic retries, resizing, new machines or full-part loop are included.
 
-The worker and independent collector still need to be implemented and
-checked against these requirements before this sample is run. The source
-inventory alone is not a launcher.
+`run_sample.py` implements this fixed five-part sequence. It refuses existing
+sources/objects, verifies the actual cgroup memory and CPU limits, checks
+the audited dependency hashes before each part, and retains completed objects
+immediately. Sources are staged at their real `Proofs.*` module paths and
+removed after each invocation. Objects are retained both in the H3 cache and
+under the immutable attempt directory. The source inventory alone runs none
+of this work.
+
+`capture_sample.py --job JOB --commit FULL_COMMIT` independently checks an
+explicitly selected terminal job, exact source/command hashes, raw axiom
+reports, actual object hashes/sizes/modification times, library hash and
+prerequisites. While the job is live it reports the exact PID and writes no
+acceptance record. Successful prefixes can be retained after a later timeout;
+only explicitly accepted parts receive credit. Neither script launches the
+full set or retries a failed part.
 
 ## Acceptance and subsequent decision
 
