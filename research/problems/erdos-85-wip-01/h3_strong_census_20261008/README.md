@@ -19,6 +19,10 @@ capacity reductions to 261 pairs remain to be connected separately; this
 package does not replace that intended final census. The H3 pair-profile branch
 and the full paper conclusion remain open.
 
+The queued job is `20261008T005410-erdos85__h3-triple-formal-20261007-50086`;
+`launch.json` records its submission and initial wait on the pilot. This does
+not count as a successful compile.
+
 ## Checker
 
 The read-only plan validates all 100 full and 200 deficient shard names against

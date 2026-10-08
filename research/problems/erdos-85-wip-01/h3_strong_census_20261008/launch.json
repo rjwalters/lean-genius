@@ -1,0 +1,31 @@
+{
+  "record_type": "queued_check_not_proof_receipt",
+  "job_id": "20261008T005410-erdos85__h3-triple-formal-20261007-50086",
+  "branch": "erdos85/h3-triple-formal-20261007",
+  "source_commit_at_submission": "04f367734e8161e20e3acc221e38261ff6b4ef87",
+  "source_commit_at_execution": null,
+  "observation": "Job log reports waiting for another job on worktree erdos85__h3-triple-formal-20261007; no census Docker build has begun.",
+  "predecessor_job": "20261008T004436-erdos85__h3-triple-formal-20261007-42449",
+  "memory_gib": 48,
+  "lake_threads": 2,
+  "shard_workers": 2,
+  "lean_threads_per_shard": 1,
+  "timeout_seconds_after_lock": 7200,
+  "final_result": null,
+  "source_sha256": {
+    "Full276.lean": "918a03deb83446bc4486d0f43c9efd996f74078b4d893c9fb64b961967fda60b",
+    "Deficient1554.lean": "23193540957af89f769b0406630e969a727e057f0902bd38258599dec0a74c06",
+    "check.py": "1f0a95f75f5372b7c6fa686cbed204c80ee85c03eee517e9789c7489a92979c8"
+  },
+  "submit_command": "e85-remote run erdos85/h3-triple-formal-20261007 --full --mem 48 --threads 2 --timeout 2h --no-follow -- 'lake env python3 ../research/problems/erdos-85-wip-01/h3_strong_census_20261008/check.py --branch both --workers 2 --output /workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-first'",
+  "follow_command": "e85-remote logs 20261008T005410-erdos85__h3-triple-formal-20261007-50086",
+  "check_scope": "100 full and 200 deficient coverage shards, their retained reductions, then four new concrete strong census exports. Conditional exclusions retain every finite rejection premise.",
+  "completion_requirements": [
+    "Record actual source commit after acquiring branch lock",
+    "Both branch RUN.json statuses PASS",
+    "All 107 full and 203 deficient module checks present and passed",
+    "Source/log hashes match retained evidence",
+    "Four new exports have standard axioms only",
+    "Do not interpret this as proving any finite rejection"
+  ]
+}
