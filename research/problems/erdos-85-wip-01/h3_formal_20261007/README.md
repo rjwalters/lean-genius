@@ -48,3 +48,11 @@ The full-261 connection is still building. Remaining finite rejections, the H3 p
 profile, and final stratum assembly are open. See
 [`../H3_MACHINE_CHECK_FRONTIER_20261007.md`](../H3_MACHINE_CHECK_FRONTIER_20261007.md)
 for existing coverage/pruning packages and the precise terminal mismatch.
+
+The exact first-column decomposition is now cloud-verified in
+[`../h3_first_column_20261008/`](../h3_first_column_20261008/): five additional
+structural/conditional exports, standard axioms only. It permits independently
+checking each first-column branch while requiring rejection of every candidate
+before deriving the original pair rejection. The retained proof receipt is
+separate from the still-running five-pair candidate inventory diagnostic.
+No concrete branch rejection or measured speedup is claimed by this result.
