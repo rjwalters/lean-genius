@@ -417,10 +417,15 @@ def one_pass(state: dict, act: bool) -> dict:
     report["proof_tb"] = round(sum(l.get("proof_bytes", 0) for l in ls) / 1e12, 3)
     report["hard_stop_usd"] = vc.HARD_STOP_USD
     report["prefix"] = vc.PREFIX
+    # A STOP written by anyone else (operator `stop`, a node's ALARM) ends the controller too: the watch
+    # returns, and the controller host's loop then powers the host off (canary 2026-10-08: the host kept
+    # running after an operator stop). Nothing is cleared.
+    if act and not report.get("action") and "STOP" in report.get("control", []):
+        report["action"] = "STOP marker present; controller exits"
     if act and not report.get("action") and len(done) >= len(ids):
         report["action"] = "all batches CERTIFIED; stopping"
         vc.stop(None)
-    if act and report.get("action"):  # why the persistent STOP exists; launch reads this and never clears a budget stop
+    if act and report.get("action") and report["action"] != "STOP marker present; controller exits":  # why the persistent STOP exists; launch reads this and never clears a budget stop
         try:
             put_json("control/STOP-CAUSE", {"action": report["action"], "utc": report["utc"],
                                             "estimated_spend_usd": report.get("estimated_spend_usd")})
