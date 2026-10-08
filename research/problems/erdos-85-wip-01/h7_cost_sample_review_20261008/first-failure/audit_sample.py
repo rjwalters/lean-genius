@@ -21,7 +21,6 @@ JOB = Path('/opt/e85/jobs/20261008T050835-commit-50a06c7c033a-210080')
 INPUT_SHA = 'f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c'
 SAMPLE_SHA = '8a244515666117ce4d4592c396a5bfa434e2affc8f4b0bb677e31c5a1bac8477'
 RAW_SHA = 'b93066071de9969416f0d3267082b1a97ca52fc97d5a173b26afe228716ce97d'
-HELPER_SHA = '733aeacf1be139ea7897ab90b4635f33f6aa38a4fd2bf7b34791a4837089c486'
 BINS = {'cadical': 'fd601b827c2f6e72c255dd27d6bfa9d7f982414181195fe3ea07ec81385772a2',
         'cake_lpr': '4d47ffdd19fc6a80e24025f8c5d27d89c4309c9931bdad6d389d87e35be5464b'}
 PAIRS = [(6, 5), (6, 8), (6, 14), (6, 15), (6, 16), (6, 17), (6, 18),
@@ -51,16 +50,6 @@ def read(path):
 
 def record_key(record):
     return record['cube'], record['kind'], record['leaf']
-
-
-def committed_view(original, duplicate_count):
-    """Exactly the observed archival annotation and diagnostic-tail transform."""
-    result = dict(original, sampler='main')
-    if duplicate_count:
-        result['duplicate_runs_same_proof'] = duplicate_count
-    if 'logs' in original:
-        result['logs'] = {name: value[-1500:] for name, value in original['logs'].items()}
-    return result
 
 
 def check_result(record, expected_hash, expected_bytes, units):
@@ -113,27 +102,13 @@ def main():
     require(sha(sample_bytes) == SAMPLE_SHA and sha(raw_bytes) == RAW_SHA, 'Sample bytes changed')
     rows = [json.loads(line) for line in sample_bytes.splitlines() if line.strip()]
     raw_rows = [json.loads(line) for line in raw_bytes.splitlines() if line.strip()]
-    helper_path = SAMPLE.with_name('results-rev.jsonl')
-    helper_bytes = helper_path.read_bytes()
-    require(sha(helper_bytes) == HELPER_SHA, 'Helper receipt snapshot changed')
-    helper_rows = [json.loads(line) for line in helper_bytes.splitlines() if line.strip()]
-    require(len(helper_rows) == len({record_key(r) for r in helper_rows}) == 146,
-            'Wrong duplicate-run snapshot inventory')
     require(len(rows) == len(raw_rows) == 1428, 'Wrong sample size')
     raw_by_key = {record_key(r): r for r in raw_rows}
     require(len(raw_by_key) == len({record_key(r) for r in rows}) == 1428, 'Duplicate sample item')
-    duplicates = Counter()
-    for helper in helper_rows:
-        original = raw_by_key[record_key(helper)]
-        require(helper['proof']['sha256'] == original['proof']['sha256'] and
-                helper['cnf_sha256'] == original['cnf_sha256'] and helper['binaries'] == BINS and
-                helper['status'] == original['status'] == 'CERTIFIED' and
-                helper['checker']['verified_line'] is True and helper['solver']['returncode'] == 20,
-                'Duplicate helper result differs')
-        duplicates[record_key(helper)] += 1
     for row in rows:
-        require(row == committed_view(raw_by_key[record_key(row)], duplicates[record_key(row)]),
-                'Committed sample differs from exact reviewed archival transformation')
+        require(row.get('sampler') == 'main' and
+                {k: v for k, v in row.items() if k != 'sampler'} == raw_by_key[record_key(row)],
+                'Committed sample differs from primary raw receipt')
     require((JOB / 'exit').read_text().strip() == '0' and
             '[e85] commit 50a06c7c033ac8b63a7f9695e7dc7cfd15b38a28 ' in (JOB / 'log').read_text(),
             'Missing primary job provenance or terminal exit')
@@ -212,15 +187,11 @@ def main():
     require(estimate['utilisation_assumed'] == 0.85 and
             round(total_cpu / 0.85 * 0.0147) == estimate['usd_spot'][1] == 67,
             'Conditional dollar arithmetic differs')
-    require(SAMPLE.read_bytes() == raw_bytes and helper_path.read_bytes() == helper_bytes and
-            (INPUTS / 'inputs.json').read_bytes() == input_bytes,
+    require(SAMPLE.read_bytes() == raw_bytes and (INPUTS / 'inputs.json').read_bytes() == input_bytes,
             'Evidence changed during audit')
     print(json.dumps({'status': 'COST_SAMPLE_RECEIPT_AND_ARITHMETIC_AUDIT_PASS',
         'review_commit': source['commit'], 'auditor_sha256': sha(Path(__file__).read_bytes()),
         'inputs_sha256': INPUT_SHA, 'sample_sha256': SAMPLE_SHA, 'raw_sample_sha256': RAW_SHA,
-        'helper_snapshot_sha256': HELPER_SHA, 'matching_duplicate_proofs': 146,
-        'archival_transform': 'Add sampler=main; annotate 146 matching duplicate runs; '
-                             'truncate two timeout diagnostic maps to each value\'s last 1500 characters.',
         'primary_job': JOB.name, 'primary_job_exit': 0, 'primary_job_log_sha256': sha((JOB / 'log').read_bytes()),
         'status_counts': statuses, 'sample_seed': 20261008, 'sampled_leaves': 1400,
         'total_campaign_leaves': 377776, 'cpu_hours': total_cpu, 'bootstrap_5_95_rounded': interval,
@@ -229,8 +200,7 @@ def main():
         'timeouts': [{'cube': row['cube'], 'leaf': row['leaf']} for row in rows if row['status'] != 'CERTIFIED'],
         'cubes': checked, 'full_campaign_complete': False,
         'scope': 'Recorded sample receipt identities and internally consistent solver/checker outcomes; '
-                 'independently reconstructed CNF hashes, deterministic sample selection, primary receipt equality '
-                 'under the exact verified archival transform, '
+                 'independently reconstructed CNF hashes, deterministic sample selection, primary receipt equality, '
                  'and estimate arithmetic. Proof streams were discarded and were not rechecked. '
                  'The interval describes a censored empirical bootstrap, not a completion-time bound. '
                  'The dollar result uses stated price/utilisation assumptions, not current billing verification.'}, indent=2))

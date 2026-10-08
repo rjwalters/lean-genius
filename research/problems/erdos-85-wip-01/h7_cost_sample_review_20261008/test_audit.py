@@ -49,6 +49,18 @@ class ReceiptAudit(unittest.TestCase):
         with self.assertRaises(ValueError):
             audit_sample.check_result(r, r['cnf_sha256'], r['cnf_bytes'], r['units'])
 
+    def test_archival_transform_preserves_all_substantive_fields(self):
+        original = copy.deepcopy(self.timeout)
+        original.pop('sampler', None)
+        original['logs'] = {'cadical.log': 'x' * 2500 + 'y' * 1500, 'cake_lpr.log': 'diagnostic'}
+        changed = audit_sample.committed_view(original, 1)
+        self.assertEqual(changed['logs'], {'cadical.log': 'y' * 1500, 'cake_lpr.log': 'diagnostic'})
+        self.assertEqual(changed['sampler'], 'main')
+        self.assertEqual(changed['duplicate_runs_same_proof'], 1)
+        for key in ('status', 'solver', 'checker', 'proof', 'cnf_sha256', 'units'):
+            self.assertEqual(changed[key], original[key])
+        self.assertEqual(len(original['logs']['cadical.log']), 4000)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
