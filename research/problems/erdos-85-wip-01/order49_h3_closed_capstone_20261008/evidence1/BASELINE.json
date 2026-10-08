@@ -1,0 +1,24 @@
+{
+  "status": "BASELINE_REBUILD_BYTE_IDENTICAL",
+  "command": [
+    "lean",
+    "-j1",
+    "/workspace/proofs/Proofs/Erdos85OrderFortyNineThreeHighOneFiber.lean",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/order49_h3_closed_capstone_20261008/attempt2/Erdos85OrderFortyNineThreeHighOneFiber.olean",
+    "-i",
+    "/workspace/research/problems/erdos-85-wip-01/order49_h3_closed_capstone_20261008/attempt2/Erdos85OrderFortyNineThreeHighOneFiber.ilean",
+    "-c",
+    "/workspace/research/problems/erdos-85-wip-01/order49_h3_closed_capstone_20261008/attempt2/Erdos85OrderFortyNineThreeHighOneFiber.c",
+    "--setup",
+    "/workspace/research/problems/erdos-85-wip-01/order49_h3_closed_capstone_20261008/baseline.setup.json",
+    "--json"
+  ],
+  "returncode": 0,
+  "elapsed_seconds": 10.176698094997846,
+  "sha256": "35640afbbecfca8f5172edf322a475a9fdfbe24dc2e1967ee9da1be12ae81501",
+  "bytes": 763272,
+  "log_sha256": "a11bc330cc06b0456f28b388031b108fc2dad4b9f31f2d2687bf03c4422ac362",
+  "setup_sha256": "0d446b08699e4c68c2040e28b69173055545bf3202e6a9c7523635078623a358",
+  "trace_sha256": "a7a41c303aef0f7d8430e2168a21494c0aa9fc30d482c922ecdb6674e42ad22f"
+}

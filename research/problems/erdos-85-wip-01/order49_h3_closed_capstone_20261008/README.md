@@ -1,6 +1,7 @@
 # H3-discharged order-49 capstone
 
-Status: source and acceptance procedure prepared; compilation pending.
+Status: independently accepted; all three corollaries compile with exactly
+601, 607 and 604 axioms, with no `sorry`.
 
 `Proofs.Erdos85OrderFortyNineCapstoneH3` imports the unchanged accepted
 conditional capstone and the independently accepted H3 stratum. Its three
@@ -75,7 +76,7 @@ at `ef7d2bda68008a8380d17acfffc58141dd84094b` exited zero. Independent
 read-only inspection accepted all 500 capstone objects; 216 absent objects
 were copied, with no overwrites. All other H3 inputs also matched.
 `transfer-evidence1/AUDIT.json` reports
-`CAPSTONE_TRANSFER_ARTIFACT_AUDIT_PASS`. Compilation remains pending.
+`CAPSTONE_TRANSFER_ARTIFACT_AUDIT_PASS`. Final compilation acceptance follows below.
 
 ## Preserved first attempt and setup correction
 
@@ -92,3 +93,22 @@ attempt uses the original Lean flags (with separate output paths), still
 requires byte identity, and retains fresh outputs under `attempt2`. The
 limits, accepted source/object ledger and expected axiom sets are unchanged.
 No cache artifact was overwritten and no native search was repeated.
+
+## Independently accepted corollaries
+
+Job `20261008T151644-erdos85__h3-triple-formal-20261007-605561` at
+`ff69771986d22eae0b3bbeabc6232e184da98776` exited zero.
+`evidence1/AUDIT.json` reports
+`H1_H7_CONDITIONAL_CAPSTONE_ARTIFACT_AUDIT_PASS`. All three exported
+axiom sets match their prepared unions exactly (601, 607, 604); no `sorry`
+occurs. The baseline rebuild using the original setup is byte-identical
+to the unchanged cached baseline.
+
+The wrapper compiled in 4.8196 seconds. The independent collector checked
+all 892 source files against the execution commit and all 891 imported
+objects twice, checked the fresh wrapper object's creation time and hash,
+and retained the original job and compile logs. H1 and H7 external evidence
+remain hypotheses.
+
+The wrapper object has 134,648 bytes and SHA256
+`938512cc7510b59c3187b10bdf9f4de55b2a8f139ebb52bebd74c9ec6ad41629`. The audit hashes 22 retained files.
