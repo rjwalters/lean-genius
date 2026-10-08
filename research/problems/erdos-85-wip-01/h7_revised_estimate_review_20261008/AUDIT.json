@@ -1,0 +1,89 @@
+{
+  "status": "ESTIMATE_RECOMPUTATION",
+  "commit": "8afe018d8b0587ff2f21f31624161a227eeb99f8",
+  "source_sha256": {
+    "inputs.json": "f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c",
+    "old-sample.jsonl": "8a244515666117ce4d4592c396a5bfa434e2affc8f4b0bb677e31c5a1bac8477",
+    "new-sample.jsonl": "34ced4cd4a18bbe2503f721ba8d55c570e2946ab34d61363f7061f57005118a4",
+    "followup.jsonl": "353f949b37a01018258f653e061d7b155cb342633874db1742bab4f9e769c8ea",
+    "old-estimate.json": "fb77d33b3e75f317274bb8b9cfe8b7cb8c23b48554ea2e8b6bb278f9fe4ec219",
+    "new-estimate.json": "39b5ddfdf5aeab7a346bff82a968b2fa31555cf4c3954185d8b1b4ad809dcc2f",
+    "estimate.py": "ea708a401e334d64f5451db0368e1c362ee5c7a554a13a6c0cc8f0491abd7368"
+  },
+  "python": "3.9.25 (main, Jul 15 2026, 00:00:00) \n[GCC 11.5.0 20240719 (Red Hat 11.5.0-5)]",
+  "bootstrap_replicates": 5000,
+  "random_seed": 1,
+  "sample_substitution_identity": "PASS",
+  "published_intervals": {
+    "old": [
+      2864,
+      5216
+    ],
+    "new": [
+      2864,
+      5392
+    ]
+  },
+  "results": {
+    "old_archive_order": {
+      "cpu_hours": 3855.8493677589286,
+      "cpu_hours_rounded": 3856,
+      "bootstrap_5_95": [
+        2867,
+        5208
+      ],
+      "bootstrap_5_95_unrounded": [
+        2866.699463808522,
+        5207.658327066962
+      ],
+      "proof_tb": 20.13232667033302,
+      "matches_published_point": true,
+      "matches_published_bootstrap": false
+    },
+    "old_raw_order": {
+      "cpu_hours": 3855.8493677589286,
+      "cpu_hours_rounded": 3856,
+      "bootstrap_5_95": [
+        2867,
+        5208
+      ],
+      "bootstrap_5_95_unrounded": [
+        2866.699463808522,
+        5207.658327066962
+      ],
+      "proof_tb": 20.13232667033302,
+      "matches_published_point": true,
+      "matches_published_bootstrap": false
+    },
+    "new_archive_order": {
+      "cpu_hours": 3915.351700597328,
+      "cpu_hours_rounded": 3915,
+      "bootstrap_5_95": [
+        2865,
+        5369
+      ],
+      "bootstrap_5_95_unrounded": [
+        2865.4765956147385,
+        5369.042359532639
+      ],
+      "proof_tb": 20.4423127612789,
+      "matches_published_point": true,
+      "matches_published_bootstrap": false
+    },
+    "new_raw_order": {
+      "cpu_hours": 3915.351700597328,
+      "cpu_hours_rounded": 3915,
+      "bootstrap_5_95": [
+        2865,
+        5369
+      ],
+      "bootstrap_5_95_unrounded": [
+        2865.4765956147385,
+        5369.042359532639
+      ],
+      "proof_tb": 20.4423127612789,
+      "matches_published_point": true,
+      "matches_published_bootstrap": false
+    }
+  }
+}
