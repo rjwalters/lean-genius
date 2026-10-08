@@ -57,7 +57,7 @@ vc.STRIPE = vc.BASE_STRIPE = STRIPE / "run"
 vc.HARD_STOP_USD = 160.0  # estimate: 50-90 USD at 0.0147 USD/vCPU-h (README section 3); 3 nodes x 36 h at the bid ceiling is 143
 # 8 GiB/vCPU: 64 slots x (2 GB checker heap + 1.5 GB) fits with a wide margin. 16xlarge only, so that
 # slots = vCPUs = 64 and the spot quota (384 vCPU on 2026-10-08) is 6 nodes.
-vc.TYPES = ["r8g.16xlarge", "r7g.16xlarge", "m8g.16xlarge", "m7g.16xlarge"]
+vc.TYPES = ["r8g.16xlarge", "r7g.16xlarge"]  # 512 GiB: 64 slots x (6 GB heap + 1.5 GB) = 480 GB. No m-types (256 GiB = 33 slots).
 vc.MAX_SPOT_PRICE = "1.20"
 vc.ON_DEMAND_USD_PER_HOUR.update({"r7g.4xlarge": 0.8568, "r7g.16xlarge": 3.4272, "r8g.16xlarge": 3.7699,
                                   "m7g.16xlarge": 2.6112, "m8g.16xlarge": 2.8723})
@@ -146,6 +146,10 @@ exec bash research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/cert_bootst
 
 def setup(a) -> None:
     a.lifetime = a.lifetime or LIFETIME
+    if a.residual:
+        if not a.manifest:
+            raise SystemExit("--residual needs --manifest <residual-manifest.jsonl>")
+        a.cap, a.heap_mb = 43200, 16000
     if PASS_NAME == "canary":
         if a.only or a.manifest:
             raise SystemExit("the canary pass selects its own pinned rows; do not combine it with --only/--manifest")
@@ -368,7 +372,7 @@ def freight(a) -> None:
     if hc.sha_file(cake) != hc.CAKE_LPR_SHA256:
         raise SystemExit(f"{cake} is not the approved cake_lpr build")
     report = {"cake_lpr_sha256": hc.CAKE_LPR_SHA256, "freight": out.name, "bytes": out.stat().st_size, "inputs_json_sha256": inputs_sha(),
-              "manifest_sha256": manifest_sha(), "batches": meta["batches"], "leaves": meta["total_leaves"]}
+              "manifest_sha256": manifest_sha(), "batches": len(hc.batches(meta)), "leaves": meta["total_leaves"]}
     if a.dry_run:
         print(json.dumps(dict(report, dry_run=True)))
         return
@@ -618,7 +622,8 @@ def main() -> int:
     sub = p.add_subparsers(dest="command", required=True)
     s = sub.add_parser("plan"); s.add_argument("--count", type=int, default=0); s.set_defaults(run=plan)
     s = sub.add_parser("setup"); s.add_argument("--commit", required=True); s.add_argument("--only", default="")
-    s.add_argument("--heap-mb", type=int, default=2000); s.add_argument("--cap", type=int, default=7200)
+    s.add_argument("--heap-mb", type=int, default=6000); s.add_argument("--cap", type=int, default=7200)
+    s.add_argument("--residual", action="store_true", help="residual pass: 12 h cap, 16 GB heap (the bootstrap derives the slot count from memory: 28 on 512 GiB)")
     s.add_argument("--lifetime", type=int, default=0); s.add_argument("--max-batches", type=int, default=0)
     s.add_argument("--manifest", default="", help="alternative manifest file (residual pass)")
     s.add_argument("--partial-seconds", type=int, default=600)

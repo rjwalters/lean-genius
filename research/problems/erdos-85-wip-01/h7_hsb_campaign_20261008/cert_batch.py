@@ -13,7 +13,9 @@ and copied, not re-run. A --stop-file is honoured between items.
 The checker heap is fixed for the whole batch. CHECK_HEAP_EXHAUSTED is recorded like a solver
 timeout (not an alarm, not retried here): the node's memory budget is slots x (heap + 1.5 GB), so an
 in-batch heap escalation would overcommit it. Such items go to the residual pass, which runs with a
-larger heap and correspondingly fewer slots.
+larger heap and correspondingly fewer slots. The proof is streamed and not kept, so a re-check
+without re-solving is not possible; the leaf is never re-solved at the same heap inside a pass
+(only CERTIFIED receipts are carried forward when a reclaimed batch is re-claimed).
 Exit: 0 all items CERTIFIED, 3 alarm (CHECK_FAILED / SOLVER_SAT), 4 stopped, 1 otherwise.
 """
 from __future__ import annotations
@@ -42,7 +44,7 @@ def main() -> int:
     p.add_argument("--out", type=Path, required=True)
     p.add_argument("--work", type=Path, default=Path("/dev/shm/h7camp"))
     p.add_argument("--cap", type=int, default=7200)
-    p.add_argument("--heap-mb", type=int, default=2000)
+    p.add_argument("--heap-mb", type=int, default=6000)
     p.add_argument("--cadical", default="cadical")
     p.add_argument("--cake-lpr", default="cake_lpr")
     p.add_argument("--carry", type=Path)

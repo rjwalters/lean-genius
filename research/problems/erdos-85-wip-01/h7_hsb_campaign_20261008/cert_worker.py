@@ -347,7 +347,7 @@ def main() -> int:
     p.add_argument("--mem-gb", type=float, required=True,
                    help="node memory budget: slots * (heap + 1.5 GB) must fit (the heap never grows inside a batch)")
     p.add_argument("--allow-unpinned-binaries", action="store_true", help="tests only (fake checker)")
-    p.add_argument("--heap-mb", type=int, default=2000)
+    p.add_argument("--heap-mb", type=int, default=6000)
     p.add_argument("--cap", type=int, default=7200)
     p.add_argument("--lifetime", type=int, default=129600)
     p.add_argument("--min-left", type=int, default=3 * 3600, help="do not claim with less node lifetime left")

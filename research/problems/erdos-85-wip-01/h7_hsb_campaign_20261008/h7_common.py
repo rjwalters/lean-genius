@@ -124,24 +124,41 @@ class Cube:
         path.write_bytes(self.cover_cnf())
 
 
+HEAD_LEAVES = 1024  # leaves [0, 1024) of every cube: the hard head (README section 6)
+HEAD_BATCH = 4
+
+
 def batches(inputs_meta: dict, batch: int = BATCH) -> list[dict]:
-    """Deterministic claim units: 28 cover rows, then leaf ranges of `batch` leaves, cube by cube.
-    IDs contain no '.', because the reviewed controller splits ledger names at the first dot."""
+    """Deterministic claim units (manifest v2, 2026-10-08), in claim order:
+      1. the 28 cover rows;
+      2. HEAD rows `<cube>-h<k>`: leaves [4k, 4k+4) below index 1024, interleaved over the cubes by k,
+         so the hardest leaves (smallest indices) of every cube start first, in short batches;
+      3. TAIL rows `<cube>-b<k>`: leaves from 1024 on, 64 per row, cube by cube.
+    Only batching and order differ from v1: a leaf is still (cube, leaf index), with the same units and
+    the same CNF sha256. IDs contain no '.', because the reviewed controller splits ledger names at the
+    first dot. inputs.json is unchanged; its `batches` / `batch_manifest_sha256` fields describe v1."""
     rows = [{"id": f"{c}-cover", "cube": c, "kind": "cover"} for c in CUBES]
+    n = {c: inputs_meta["cubes"][c]["leaves"] for c in CUBES}
+    for k in range(HEAD_LEAVES // HEAD_BATCH):
+        for c in CUBES:
+            start = k * HEAD_BATCH
+            if start < min(n[c], HEAD_LEAVES):
+                rows.append({"id": f"{c}-h{k:04d}", "cube": c, "kind": "leaves", "start": start,
+                             "end": min(n[c], HEAD_LEAVES, start + HEAD_BATCH)})
     for c in CUBES:
-        n = inputs_meta["cubes"][c]["leaves"]
-        for k, start in enumerate(range(0, n, batch)):
+        for k, start in enumerate(range(HEAD_LEAVES, n[c], batch)):
             rows.append({"id": f"{c}-b{k:04d}", "cube": c, "kind": "leaves", "start": start,
-                         "end": min(n, start + batch)})
+                         "end": min(n[c], start + batch)})
     return rows
 
 
-# Cloud canary: a pinned MIXED selection of main-manifest rows (2 covers + 6 leaf batches from six
-# cubes with small, medium and the largest hsb clause sets) = 2 + 6 x 64 = 386 items. The main
-# manifest lists all 28 covers first, so "the first N rows" would never reach a leaf batch (codex
-# review, room 52852). The ids are ordinary manifest ids: the full run later skips them as done.
-CANARY_IDS = ["cube_F6_t14-cover", "cube_F7_t10-cover", "cube_F6_t14-b0000", "cube_F6_t18-b0000",
-              "cube_F7_t10-b0000", "cube_F7_t13-b0000", "cube_F8_t0-b0000", "cube_F9_t0-b0000"]
+# Cloud canary: a pinned MIXED selection of main-manifest rows: 2 covers, 2 head rows of a small
+# cube (8 leaves) and 6 tail rows (leaves 1024..1087) of six cubes with small, medium and the largest
+# hsb clause sets = 2 + 8 + 6 x 64 = 394 items. Tail rows on purpose: head rows of the big cubes take
+# hours each. (The canary that ran on 2026-10-08 used the v1 manifest: b0000 = leaves 0..63.)
+CANARY_IDS = ["cube_F6_t14-cover", "cube_F7_t10-cover", "cube_F6_t14-h0000", "cube_F6_t14-h0001",
+              "cube_F6_t16-b0000", "cube_F6_t18-b0000", "cube_F7_t10-b0000", "cube_F7_t13-b0000",
+              "cube_F8_t0-b0000", "cube_F9_t0-b0000"]
 
 
 def canary_rows(inputs_meta: dict) -> list[dict]:

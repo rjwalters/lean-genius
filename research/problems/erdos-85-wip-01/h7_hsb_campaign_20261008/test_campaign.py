@@ -29,6 +29,7 @@ import collect_receipts as collector  # noqa: E402
 import h7_common as hc  # noqa: E402
 
 CAKE = "4d47ffdd19fc6a80e24025f8c5d27d89c4309c9931bdad6d389d87e35be5464b"
+MANIFEST_V2_SHA256 = "0deb438f9bd7f5cfb840fd799330e6b80e70a043b21f96fcf0737c826515290c"  # 12,605 rows
 
 
 class FakeCube:
@@ -269,11 +270,65 @@ class Canary(unittest.TestCase):
         self.assertEqual([r["id"] for r in rows], hc.CANARY_IDS)
         self.assertTrue(all(main[r["id"]] == r for r in rows))
         self.assertEqual(sum(r["kind"] == "cover" for r in rows), 2)
-        self.assertEqual(sum(r["kind"] == "leaves" for r in rows), 6)
-        self.assertEqual(sum(hc.row_items(r) for r in rows), 386)
-        self.assertEqual(len({r["cube"] for r in rows if r["kind"] == "leaves"}), 6)
-        # the first rows of the main manifest are covers only: "first N" is not a canary
+        self.assertEqual(sum(hc.row_items(r) for r in rows), 394)
         self.assertTrue(all(r["kind"] == "cover" for r in hc.batches(meta)[:28]))
+
+
+class ManifestV2(unittest.TestCase):
+    def setUp(self):
+        self.meta = json.loads((HERE / "receipts" / "inputs.json").read_text())
+        self.rows = hc.batches(self.meta)
+
+    def test_every_leaf_exactly_once_and_covers(self):
+        seen = {}
+        for r in self.rows:
+            if r["kind"] == "leaves":
+                for leaf in range(r["start"], r["end"]):
+                    self.assertNotIn((r["cube"], leaf), seen)
+                    seen[(r["cube"], leaf)] = r["id"]
+        self.assertEqual(len(seen), 377776)
+        for c in hc.CUBES:
+            self.assertEqual(sum(1 for k in seen if k[0] == c), self.meta["cubes"][c]["leaves"])
+        self.assertEqual(sum(r["kind"] == "cover" for r in self.rows), 28)
+        self.assertEqual(len({r["id"] for r in self.rows}), len(self.rows))
+        self.assertFalse(any("." in r["id"] for r in self.rows))
+
+    def test_head_first_in_batches_of_four(self):
+        leaves = [r for r in self.rows if r["kind"] == "leaves"]
+        first_tail = next(i for i, r in enumerate(leaves) if "-b" in r["id"])
+        head, tail = leaves[:first_tail], leaves[first_tail:]
+        self.assertTrue(all("-h" in r["id"] and r["end"] <= 1024 and r["end"] - r["start"] <= 4 for r in head))
+        self.assertTrue(all("-b" in r["id"] and r["start"] >= 1024 and r["end"] - r["start"] <= 64 for r in tail))
+        self.assertEqual([r["start"] for r in head[:28]], [0] * 28)  # leaf 0..3 of all 28 cubes come first
+        self.assertEqual({r["cube"] for r in head[:28]}, set(hc.CUBES))
+
+    def test_manifest_sha_is_pinned(self):
+        self.assertEqual(hc.sha_bytes(hc.manifest_bytes(self.meta)), MANIFEST_V2_SHA256)
+
+
+class ControllerStop(unittest.TestCase):
+    """The detached controller must return (so its host powers off) when anyone has written STOP."""
+
+    def run_pass(self, control):
+        import cert_controller as cc
+        calls = []
+        base = {"utc": "t", "control": control, "estimated_spend_usd": 1.0}
+        with patch.object(cc, "_reviewed_one_pass", lambda state, act: dict(base)), patch.object(cc, "ledgers", lambda: []), \
+                patch.object(cc, "put_json", lambda key, obj: calls.append(key)), \
+                patch.object(cc.vc, "aws", lambda *a, **k: ""), patch.object(cc.vc, "stop", lambda a: calls.append("stop")), \
+                patch.object(cc, "MANIFEST", [{"id": "x"}]), tempfile.TemporaryDirectory() as tmp, \
+                patch.object(cc.vc, "STRIPE", Path(tmp)):
+            return cc.one_pass({}, True), calls
+
+    def test_exits_on_foreign_stop_without_touching_the_cause(self):
+        report, calls = self.run_pass(["STOP", "STOP-CAUSE"])
+        self.assertEqual(report["action"], "STOP marker present; controller exits")
+        self.assertNotIn("control/STOP-CAUSE", calls)
+        self.assertNotIn("stop", calls)
+
+    def test_keeps_watching_without_stop(self):
+        report, _ = self.run_pass([])
+        self.assertNotIn("action", report)
 
 
 class Pins(unittest.TestCase):
