@@ -1,0 +1,34 @@
+{
+  "status": "HASH_VERIFIED",
+  "files": [
+    {
+      "module": "Erdos85ThreeHighPilotFullU3R3Inputs",
+      "sha256": "cc9f6bd43319f43b33633b3ea99e82912e07a664de01723869b33a9e5e4bcfe1",
+      "source": "/var/lib/docker/volumes/lean-build-erdos85__h3-first-column-20261008/_data/lib/lean/Proofs/Erdos85ThreeHighPilotFullU3R3Inputs.olean",
+      "destination": "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-prerequisites/Erdos85ThreeHighPilotFullU3R3Inputs.olean",
+      "bytes": 25568
+    },
+    {
+      "module": "Erdos85ThreeHighPilotFullU3R3Certificate",
+      "sha256": "8567bf6f2d03d3e6b0fbfefac7433cc2686b2d01170d810ce1df5acccb4f7184",
+      "source": "/var/lib/docker/volumes/lean-build-erdos85__h3-first-column-20261008/_data/lib/lean/Proofs/Erdos85ThreeHighPilotFullU3R3Certificate.olean",
+      "destination": "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-prerequisites/Erdos85ThreeHighPilotFullU3R3Certificate.olean",
+      "bytes": 7384
+    },
+    {
+      "module": "Erdos85ThreeHighPilotDeficientU26R2Inputs",
+      "sha256": "23e1b2bda5a011cd8c1f26fb913cc334d2b373e5d03970b5c6c3895293b578e7",
+      "source": "/var/lib/docker/volumes/lean-build-erdos85__h3-first-column-20261008/_data/lib/lean/Proofs/Erdos85ThreeHighPilotDeficientU26R2Inputs.olean",
+      "destination": "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-prerequisites/Erdos85ThreeHighPilotDeficientU26R2Inputs.olean",
+      "bytes": 28240
+    },
+    {
+      "module": "Erdos85ThreeHighPilotDeficientU26R2Certificate",
+      "sha256": "898bb93401b80e72561b054462fab7d3dd93cb80e0017bd38866b9629814f783",
+      "source": "/var/lib/docker/volumes/lean-build-erdos85__h3-first-column-20261008/_data/lib/lean/Proofs/Erdos85ThreeHighPilotDeficientU26R2Certificate.olean",
+      "destination": "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-prerequisites/Erdos85ThreeHighPilotDeficientU26R2Certificate.olean",
+      "bytes": 7392
+    }
+  ],
+  "scope": "Immutable prior objects copied to canary staging; no Lean computation."
+}

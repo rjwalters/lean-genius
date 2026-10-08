@@ -180,3 +180,23 @@ separate lane and is not covered by this triple-profile campaign.
 Outstanding: final diagnostic audit and manifest re-freeze; campaign source
 canary; executable worker/collector/fleet controller with tested recovery;
 budget approval; execution; independent receipts; final Lean aggregation.
+
+## Source bridge canary
+
+`canary.py` prepares a bounded cloud check for Full U3/R3 and deficient U26/R2.
+It compiles the exact generated Inputs, Membership and Consumer source bytes.
+For Certificate only, it substitutes an explicit proof from the corresponding
+old, independently audited certificate. The production native_decide source
+hash and the substituted source hash are both recorded. This avoids repeating
+an already verified native search while testing the new representative bridge.
+
+All resulting objects go into a private complete copy of the Lean library,
+with branch-specific census import paths. The original cache cannot acquire
+substituted campaign certificate objects. Only the three generic dependency
+modules are Lake targets; prior native certificates are imported as hash-checked
+objects. A successful status is `BRIDGE_CANARY_PASS`, never a production PASS.
+It cannot count as a new campaign rejection or test the production native
+search/controller/collector lifecycle. An independent artifact audit follows.
+
+The canary remains uncompiled until its separately recorded cloud job passes.
+Local Python syntax/import and host-execution-refusal checks pass.
