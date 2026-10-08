@@ -106,7 +106,7 @@ theorem edgeVal_edgeVar
       (sevenHighT0CanonicalLowEdgeId (7 + j.1) v) =
       sevenHighT0CanonicalAdjBool H ⟨7 + j.1, by omega⟩ ⟨v, h49⟩ :=
     sevenHighT0CanonicalEdgeVal_edge H ⟨7 + j.1, by omega⟩ ⟨v, h49⟩
-      (Nat.le_add_right 7 j.1) (le_trans (by decide) h14) hne
+      (Nat.le_add_right 7 j.1) (_root_.le_trans (by decide) h14) hne
   have hsat : satAssignmentOfDimacs (sevenHighT0CanonicalEdgeVal H)
       (edgeVar j.1 v) =
       sevenHighT0CanonicalEdgeVal H (edgeVar j.1 v + 1) := rfl
@@ -352,10 +352,10 @@ theorem clause_eval_of_check
           weightO (sevenHighT0OutsideHighPerm σ (flipOf flips) x)).sum =
           (((rows.getD j.1 []).map outOfNat).map weightO).sum
         have hj' : j.1 < rows.length - 1 := hj
-        have hcmp := (hrows j.1 (hjlt j (le_of_lt hj))).2
+        have hcmp := (hrows j.1 (hjlt j (_root_.le_of_lt hj))).2
         rw [if_neg (by omega)] at hcmp
-        rw [key_map_vmap _ (hspec j (le_of_lt hj)).1 (sigOf sig) flips σ hσ,
-          key_map_outOfNat _ (hspec j (le_of_lt hj)).1]
+        rw [key_map_vmap _ (hspec j (_root_.le_of_lt hj)).1 (sigOf sig) flips σ hσ,
+          key_map_outOfNat _ (hspec j (_root_.le_of_lt hj)).1]
         exact of_decide_eq_true hcmp)
       (by
         show (((rows.getD k.1 []).map outOfNat).map fun x =>
@@ -364,10 +364,10 @@ theorem clause_eval_of_check
         have hk : k.1 + 1 = rows.length := by
           show rows.length - 1 + 1 = rows.length
           omega
-        have hcmp := (hrows k.1 (hjlt k (le_refl k))).2
+        have hcmp := (hrows k.1 (hjlt k (_root_.le_refl k))).2
         rw [if_pos hk] at hcmp
-        rw [key_map_vmap _ (hspec k (le_refl k)).1 (sigOf sig) flips σ hσ,
-          key_map_outOfNat _ (hspec k (le_refl k)).1]
+        rw [key_map_vmap _ (hspec k (_root_.le_refl k)).1 (sigOf sig) flips σ hσ,
+          key_map_outOfNat _ (hspec k (_root_.le_refl k)).1]
         exact of_decide_eq_true hcmp)
   obtain ⟨v, hv, rfl⟩ := List.mem_map.mp hx
   have hbounds := (hspec j hjk).1 v hv
