@@ -1,0 +1,22 @@
+{
+  "status": "RUNNING",
+  "job": "20261008T060931-erdos85__h3-census-20261008-248468",
+  "execution_commit": "6b91e1d41371835eb90e2aa647786be506a86766",
+  "branch": "erdos85/h3-census-20261008",
+  "memory_gib": 32,
+  "lake_threads": 1,
+  "timeout": "1h",
+  "terminal_capture_job": "20261008T060758-erdos85__h3-triple-formal-20261007-247462",
+  "terminal_capture_exit_code": 0,
+  "terminal_record_sha256": "f2f925adac0e34387fec6140133af380ce223c6cd0e809ba62e7d645cc59532c",
+  "prior_receipt_sha256": "8d9f95bb0a840c82073d878332498c4131036ea215d69ff07b5aedb39906948a",
+  "observed_receipt_sha256": "da440ec385ec068e9ad76e0995ddd483a618369a1cf476e752aae0d28427b035",
+  "reused_modules": 309,
+  "unchanged_library_inputs": 453,
+  "observed_new_modules": [
+    "Zero32Shard8",
+    "Zero32Shard9"
+  ],
+  "snapshot": "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/snapshot-first-terminal",
+  "scope": "Validated continuation of an incomplete conditional census; not a final proof receipt."
+}

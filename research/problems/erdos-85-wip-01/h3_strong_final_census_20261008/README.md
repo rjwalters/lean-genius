@@ -1,6 +1,18 @@
 # Strong full-case census: 276 to 261
 
-Status: **cloud check running, not a Lean proof receipt**.
+Status: **bounded cloud continuation running, not a final Lean proof receipt**.
+
+The first job reached its four-hour limit and exited 124 at 06:07:02 UTC,
+with 309 of 342 modules passing through `Zero32Shard7`. Its container and
+compiler processes were confirmed absent before terminal capture. The new
+job `20261008T060931-erdos85__h3-census-20261008-248468`, at commit
+`6b91e1d41371835eb90e2aa647786be506a86766`, has a one-hour cap and 32-GiB
+memory limit. It validated the complete prerequisite, all 309 passing
+modules, and 453 library/toolchain source paths, then preserved and
+revalidated the old output snapshot. Observed new PASS results include
+`Zero32Shard8` and `Zero32Shard9`. `continuation-evidence/` retains the old
+terminal log and receipt, host capture, observed continuation receipt,
+and launch record. The final audit remains pending.
 
 `Full261.lean` connects the strong actual-graph witness in `Full276.lean`
 to `FullCapacityPruning.remainingPairs`, the retained 261-pair census.
@@ -83,8 +95,8 @@ The final 342-module audit remains pending completion of its cloud build.
 ## Continuation after a terminal timeout or failure
 
 `resume.py` preserves verified prefix work if the original bounded job stops
-before completion. It is prepared and metadata-tested, but has not been used
-to continue the running census. It never stops or submits a cloud job.
+before completion. Its first use is recorded above. It never stops or submits
+a cloud job itself.
 
 First, on the cloud host, its `--capture-terminal JOB` mode requires the
 authoritative job exit file to contain a nonzero exit and the old process ID
