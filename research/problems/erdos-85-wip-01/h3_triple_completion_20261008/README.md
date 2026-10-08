@@ -228,3 +228,18 @@ The result justifies trying the ratio ordering in the sound Lean engine.
 `heuristic-evidence/` preserves the source, runner and imported helper, raw
 logs and receipts, plus a read-only audit of the execution pin, file and
 binary hashes, counters, state sequence, stop reasons and control vector.
+
+The Lean ratio ordering was implemented at
+`e899840b71d004c63daaf9f83bec9bffa255a4a0`. Job
+`20261008T105436-erdos85__h3-triple-formal-20261007-429055` rebuilt Engine,
+Bridge and Split successfully (11s, 4.0s and 3.8s respectively). The existing
+soundness proof required no change: phase-two vertex guards validate the
+chosen vertex, independent of the ordering. All four audited exports retain
+exactly `propext`, `Classical.choice`, and `Quot.sound`, with no `sorry`.
+`ratio-build/` and its capture/audit scripts retain fresh-object provenance
+and the exact source/log records. Earlier evidence remains pinned to its
+original engine and is not evidence of this version's runtime.
+
+`run_phase_two_ratio.py` repeats the existing one-minute phase-two-only
+bucket-zero diagnostic with the newly audited prerequisite hashes. It still
+accepts all phase-two leaves and therefore cannot establish graph exclusion.
