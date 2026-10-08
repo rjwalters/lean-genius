@@ -1,0 +1,11 @@
+MODE=run
+REF=erdos85/h3-triple-formal-20261007
+TARGET=''
+CMD=lake\ env\ python3\ -B\ ../research/problems/erdos-85-wip-01/h3_native_residual_20261008/run.py
+MEM_GB=64
+TIMEOUT=3m
+THREADS=4
+CACHE=0
+CPUS=8
+VOLUME=''
+FULL=1

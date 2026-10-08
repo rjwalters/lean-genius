@@ -1,0 +1,31 @@
+[e85] job 20261008T144142-erdos85__h3-triple-formal-20261007-578119  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T14:41:43Z
+[e85] commit a464ccde01560afabfd2f5250b30ebc6a0356a39 (Accept H3 sweep and freeze six-part residual pass)
+=== Docker Lean Build ===
+Memory limit: 65536MB (hard enforced via cgroups)
+Timeout: 3m
+CPU limit: 8
+Target: all
+Build volume: lean-build-erdos85__h3-triple-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Command: lake env python3 -B ../research/problems/erdos-85-wip-01/h3_native_residual_20261008/run.py
+Starting Docker build...
+
+{
+  "status": "READ_ONLY_PREFLIGHT_PASS",
+  "plan_sha256": "f6443ae8f4debda5515f031a8be7b0e997b4c4a2062f8ca4e8c5de7312874f00",
+  "reused_objects_checked": 378,
+  "residual_residues": [
+    89,
+    134,
+    142,
+    186,
+    279,
+    298
+  ],
+  "workers": 4,
+  "cgroup_memory_bytes": 68719476736,
+  "cgroup_cpu_max": "800000 100000"
+}
+
+=== Build succeeded ===

@@ -77,4 +77,17 @@ class ReceiptChecks(unittest.TestCase):
         item['status']='TIMEOUT';s.update(stop_reason='TIMEOUT',returncode=-9,elapsed_seconds=1800,finished_utc=self.ts(1806))
         self.run['status']='TIMEOUT'
         with self.assertRaises(AssertionError):self.check(rc=1)
+    def test_exit_zero_racing_timeout_receives_no_credit(self):
+        self.run['parts'].pop();item=self.run['attempts'][-1];s=item['step']
+        item['status']='TIMEOUT';s.update(stop_reason='TIMEOUT',returncode=0,elapsed_seconds=1800.1,finished_utc=self.ts(1806.1))
+        self.objects[200]=None;self.run['status']='TIMEOUT'
+        result=self.check(rc=1)
+        self.assertEqual(result['status'],'PARTIAL_RESIDUAL_ARTIFACT_AUDIT')
+        self.assertEqual(result['accepted_new_residues'],[89,100])
+        self.assertEqual(result['unresolved_residues'],[200])
+    def test_exit_zero_timeout_object_cannot_remain_in_cache(self):
+        self.run['parts'].pop();item=self.run['attempts'][-1];s=item['step']
+        item['status']='TIMEOUT';s.update(stop_reason='TIMEOUT',returncode=0,elapsed_seconds=1800.1,finished_utc=self.ts(1806.1))
+        self.run['status']='TIMEOUT'
+        with self.assertRaises(AssertionError):self.check(rc=1)
 if __name__=='__main__':unittest.main()

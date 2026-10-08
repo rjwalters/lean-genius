@@ -24,9 +24,7 @@ def verify_run(run,plan,manifest,files,objects,finish,rc):
         assert start<=begin<=end<=finish and s['elapsed_seconds']>=0
         if name!='shared':intervals.extend([(begin,1),(end,-1)])
         if s['stop_reason']=='TIMEOUT':
-            # A normal child exit can race the timer. Explicit timeout still
-            # withholds acceptance, including when a quarantined object exists.
-            assert type(s['returncode']) is int and s['effective_timeout_seconds']==cap and s['elapsed_seconds']>=cap
+            assert s['returncode']!=0 and s['effective_timeout_seconds']==cap and s['elapsed_seconds']>=cap
         if s['stop_reason']=='BUDGET_STOP':assert s['effective_timeout_seconds']<cap
         if name=='shared':
             expected=['leanc','-O3','-DLEAN_EXPORTING','-shared','-fPIC','/workspace/proofs/.lake/build/ir/Proofs/Erdos85H3TripleCompletionRuntime.c','-o',library]

@@ -75,4 +75,24 @@ excess concurrency and partial acceptance. Run with:
 python3 -B -m unittest discover -p 'test_*.py'
 ```
 
-Real cloud preflight and terminal artifact collection remain required.
+## Independently accepted preflight
+
+Read-only job `20261008T144142-erdos85__h3-triple-formal-20261007-578119`,
+execution pin `a464ccde01560afabfd2f5250b30ebc6a0356a39`, exited zero.
+`preflight-evidence1/AUDIT.json` is `RESIDUAL_PREFLIGHT_AUDIT_PASS`, with
+22 retained hash-verified files. It checked all 378 reused objects, runtime
+prerequisites and source/input pins, with actual cgroups of eight CPUs and
+64 GiB, four workers, and no residual attempt directory. It granted no new
+mathematical credit.
+
+The frozen plan SHA256 is
+`f6443ae8f4debda5515f031a8be7b0e997b4c4a2062f8ca4e8c5de7312874f00`.
+All execution code and this plan remain byte-identical to the preflight pin.
+The independent auditor was subsequently corrected for the timeout/normal
+exit race observed in sweep part 279: an explicit full-cap timeout remains
+unresolved even if the child exits zero, and any output object must be absent
+from the reusable cache. Quarantined bytes are retained. All 66 preparation,
+process, scheduler and artifact tests pass, including two regressions for
+this case. The preflight's original auditor snapshots remain unchanged.
+
+Terminal artifact collection remains required after the authorized pass.

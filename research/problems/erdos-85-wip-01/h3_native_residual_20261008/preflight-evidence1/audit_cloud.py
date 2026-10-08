@@ -81,7 +81,6 @@ def main(config):
                 a=item['unaccepted_object'];r=item['residue']
                 assert a['path']=='unaccepted-objects/'+manifest['parts'][r]['module'].split('.')[-1]+'.olean'
                 data=(out/a['path']).read_bytes();assert sha(data)==a['sha256'] and len(data)==a['bytes']
-                files[a['path']]=data
         finish=(job/'exit').stat().st_mtime
         report.update(verify_run(run,plan,manifest,files,objects,finish,rc))
     for path,metadata in stable.items():assert info(path)==metadata,'Artifact changed during audit'
