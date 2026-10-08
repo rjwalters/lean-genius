@@ -1,0 +1,116 @@
+{
+  "status": "METADATA_REVIEW_PASS",
+  "commit": "797579e113ab59e1bcbcb93eb0b84540b628ded0",
+  "slot_loop_equals_reviewed_proposal_ast": true,
+  "in_tree_unit_tests": 16,
+  "selection": [
+    {
+      "id": "cube_F6_t14-cover",
+      "cube": "cube_F6_t14",
+      "kind": "cover"
+    },
+    {
+      "id": "cube_F7_t10-cover",
+      "cube": "cube_F7_t10",
+      "kind": "cover"
+    },
+    {
+      "id": "cube_F6_t14-b0000",
+      "cube": "cube_F6_t14",
+      "kind": "leaves",
+      "start": 0,
+      "end": 64
+    },
+    {
+      "id": "cube_F6_t18-b0000",
+      "cube": "cube_F6_t18",
+      "kind": "leaves",
+      "start": 0,
+      "end": 64
+    },
+    {
+      "id": "cube_F7_t10-b0000",
+      "cube": "cube_F7_t10",
+      "kind": "leaves",
+      "start": 0,
+      "end": 64
+    },
+    {
+      "id": "cube_F7_t13-b0000",
+      "cube": "cube_F7_t13",
+      "kind": "leaves",
+      "start": 0,
+      "end": 64
+    },
+    {
+      "id": "cube_F8_t0-b0000",
+      "cube": "cube_F8_t0",
+      "kind": "leaves",
+      "start": 0,
+      "end": 64
+    },
+    {
+      "id": "cube_F9_t0-b0000",
+      "cube": "cube_F9_t0",
+      "kind": "leaves",
+      "start": 0,
+      "end": 64
+    }
+  ],
+  "canary_items": 386,
+  "main_manifest_rows": 5945,
+  "watcher_cases": [
+    {
+      "case": "full_manifest_canary_only",
+      "stop_called": false,
+      "report": {
+        "queue": 5945,
+        "certified_batches": 8,
+        "certified_items": 386,
+        "solver_cpu_hours": 0.0,
+        "proof_tb": 0.0,
+        "hard_stop_usd": 160
+      }
+    },
+    {
+      "case": "full_manifest_all_certified",
+      "stop_called": true,
+      "report": {
+        "queue": 5945,
+        "certified_batches": 5945,
+        "certified_items": 377804,
+        "solver_cpu_hours": 0.0,
+        "proof_tb": 0.0,
+        "hard_stop_usd": 160,
+        "action": "all batches CERTIFIED; stopping"
+      }
+    },
+    {
+      "case": "restricted_manifest_all_certified",
+      "stop_called": true,
+      "report": {
+        "queue": 8,
+        "certified_batches": 8,
+        "certified_items": 386,
+        "solver_cpu_hours": 0.0,
+        "proof_tb": 0.0,
+        "hard_stop_usd": 160,
+        "action": "all batches CERTIFIED; stopping"
+      }
+    }
+  ],
+  "user_data_selector_and_interval_pass": true,
+  "sources_sha256": {
+    "research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/cert_worker.py": "e159d9fe358488fbaf8c6f3095915b613beb895c7fff3c07e5b72cd5af2792d4",
+    "research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/cert_controller.py": "a93911ccd34d61fa4f22dcdf3d5dbeaa636f8f0d3fd33903d8d8204aa1774568",
+    "research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/cert_bootstrap.sh": "3de1b7ac810aabc67e933f6b686b72dd1a4054e0d12cf629224d80dc1736c466",
+    "research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/h7_common.py": "15c989c2edca1d292ac611e1b6ae91aaee7df6c4ff4b3ebdc7f116f26a01da0d",
+    "research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/cert_item.py": "a4881b2ce594e167c8f316f6fffffebc54879f96e8edf6526ea68f3e5c185ef7",
+    "research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/cert_batch.py": "97c83fafe92ad879d317de9c6844dd09ae468b05f518a426bdcb418026c7efce",
+    "research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/collect_receipts.py": "ee6e410c12bc049e1ff947fb2b1cc1d325b93797deaea70624ce12b9c25e176e",
+    "research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/test_campaign.py": "02ebb3b79849f561812c443553bb005c316e931f1beef6f8498fac2ad5b03e28",
+    "research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/receipts/inputs.json": "f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c",
+    "research/problems/erdos-85-wip-01/h1_cert_full_20261001/cert_row.py": "23bf81ec4bd31d911e11d3c89a0b6779cb69ef8a75140367f370b33909e50f3c"
+  },
+  "scope": "Pinned source with mocked store/batches/watch backend; no solver, AWS operation, or Lean run."
+}

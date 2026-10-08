@@ -1,0 +1,58 @@
+{
+ "all_complete": false,
+ "cake_lpr_sha256": [
+  "4d47ffdd19fc6a80e24025f8c5d27d89c4309c9931bdad6d389d87e35be5464b"
+ ],
+ "cubes": {
+  "cube_F6_t14": {
+   "alarm_receipts": 0,
+   "certified_leaves": 10,
+   "checker_cpu_hours": 0.01,
+   "complete": false,
+   "cover_certified": true,
+   "first_missing": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29
+   ],
+   "leaves": 893,
+   "max_solver_cpu_seconds": 39.0,
+   "missing_leaves": 883,
+   "other_non_certified_receipts": 0,
+   "proof_bytes": 255729364,
+   "solver_cpu_hours": 0.03
+  }
+ },
+ "full_campaign_complete": false,
+ "inputs_json_sha256": "f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c",
+ "result_files": 5,
+ "schema": "erdos85-h7-hsb-campaign-summary-v1",
+ "selected_cubes": [
+  "cube_F6_t14"
+ ],
+ "totals": {
+  "certified_leaves": 10,
+  "checker_cpu_hours": 0.01,
+  "leaves": 893,
+  "missing_leaves": 883,
+  "proof_bytes": 255729364,
+  "solver_cpu_hours": 0.03
+ }
+}

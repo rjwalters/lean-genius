@@ -1,0 +1,21 @@
+test_alarm_stops_the_batch (__main__.Batch.test_alarm_stops_the_batch) ... ok
+test_heap_exhaustion_is_recorded_not_escalated (__main__.Batch.test_heap_exhaustion_is_recorded_not_escalated) ... ok
+test_no_heap_retry_symbol_left (__main__.Batch.test_no_heap_retry_symbol_left) ... ok
+test_stop_between_items (__main__.Batch.test_stop_between_items) ... ok
+test_canary_is_a_pinned_mix_of_main_manifest_rows (__main__.Canary.test_canary_is_a_pinned_mix_of_main_manifest_rows) ... ok
+test_approved_checker (__main__.Collector.test_approved_checker) ... ok
+test_known_subset_is_not_the_full_campaign (__main__.Collector.test_known_subset_is_not_the_full_campaign) ... ok
+test_pins_are_the_reviewed_hashes (__main__.Collector.test_pins_are_the_reviewed_hashes) ... ok
+test_unknown_mixed_and_empty_selectors_are_rejected (__main__.Collector.test_unknown_mixed_and_empty_selectors_are_rejected) ... ok
+test_wrong_or_missing_checker_hash_counts_for_nothing (__main__.Collector.test_wrong_or_missing_checker_hash_counts_for_nothing) ... ok
+test_wrong_solver_hash_counts_for_nothing (__main__.Collector.test_wrong_solver_hash_counts_for_nothing) ... ok
+test_unapproved_binary_is_refused (__main__.Pins.test_unapproved_binary_is_refused) ... ok
+test_batch_exception_releases_capacity (__main__.Reservation.test_batch_exception_releases_capacity) ... ok
+test_one_batch_limit_holds_with_a_slow_store (__main__.Reservation.test_one_batch_limit_holds_with_a_slow_store) ... ok
+test_stop_expiry_empty_and_store_errors_release_capacity (__main__.Reservation.test_stop_expiry_empty_and_store_errors_release_capacity) ... ok
+test_unlimited_mode_still_runs_available_batches (__main__.Reservation.test_unlimited_mode_still_runs_available_batches) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.335s
+
+OK

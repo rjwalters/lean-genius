@@ -1,0 +1,14 @@
+2026-10-08T08:59:51Z node start iid=i-test-a type=builder slots=2 heap=2000MB cap=900s rows=5 store=/home/ec2-user/h7camp/e2e/store head=797579e113ab59e1bcbcb93eb0b84540b628ded0
+2026-10-08T08:59:51Z slot=0 claimed cube_F6_t14-cover
+2026-10-08T08:59:52Z slot=1 claimed cube_F6_t14-b0000
+2026-10-08T08:59:55Z slot=0 cube_F6_t14-cover CERTIFIED certified=1/1 proof=4484246 solver_cpu=2s
+2026-10-08T08:59:55Z slot=0 claimed cube_F6_t14-b0001
+2026-10-08T09:00:00Z slot=1 cube_F6_t14-b0000 CERTIFIED certified=5/5 proof=6903610 solver_cpu=2s
+2026-10-08T09:00:00Z slot=1 claimed cube_F9_t1-x0
+2026-10-08T09:01:54Z slot=1 cube_F9_t1-x0 CERTIFIED certified=5/5 proof=204880813 solver_cpu=101s
+2026-10-08T09:01:54Z slot=1 claimed cube_F7_t5-x0
+2026-10-08T09:02:06Z slot=0 cube_F6_t14-b0001 CERTIFIED certified=5/5 proof=248825754 solver_cpu=116s
+2026-10-08T09:02:06Z slot=0 nothing claimable
+2026-10-08T09:02:43Z slot=1 cube_F7_t5-x0 CERTIFIED certified=5/5 proof=86813774 solver_cpu=40s
+2026-10-08T09:02:43Z slot=1 nothing claimable
+2026-10-08T09:02:46Z all slots exited

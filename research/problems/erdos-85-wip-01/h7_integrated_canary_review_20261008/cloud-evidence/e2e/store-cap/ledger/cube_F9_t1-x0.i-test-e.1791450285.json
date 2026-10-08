@@ -1,0 +1,47 @@
+{
+ "id": "cube_F9_t1-x0",
+ "cube": "cube_F9_t1",
+ "kind": "leaves",
+ "node": "i-test-e",
+ "instance_type": "builder",
+ "slot": 0,
+ "status": "INCOMPLETE",
+ "items": 5,
+ "ran": 5,
+ "certified": 1,
+ "carried": 0,
+ "statuses": {
+  "CERTIFIED": 1,
+  "SOLVER_TIMEOUT": 4
+ },
+ "batch_returncode": 1,
+ "not_certified": [
+  {
+   "leaf": 4571,
+   "status": "SOLVER_TIMEOUT"
+  },
+  {
+   "leaf": 6823,
+   "status": "SOLVER_TIMEOUT"
+  },
+  {
+   "leaf": 4349,
+   "status": "SOLVER_TIMEOUT"
+  },
+  {
+   "leaf": 4067,
+   "status": "SOLVER_TIMEOUT"
+  }
+ ],
+ "results_key": "sat49/h7hsb-20261008/results/cube_F9_t1-x0.i-test-e.1791450285.jsonl.zst",
+ "results_sha256": "3ac04a6d9c1015b6d0910de806a322cad7ac18483fa0044c2798733742328b86",
+ "receipts_sha256": "3fb6b8fb7ef77167bc290335e17403e717b1cf6feabaadbe74d998cee4e42220",
+ "proof_bytes": 34829886,
+ "solver_cpu_seconds": 15.750995,
+ "checker_cpu_seconds": 9.794191,
+ "max_solver_cpu_seconds": 3.7257409999999997,
+ "inputs_json_sha256": "f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c",
+ "manifest_sha256": "c446923e5531c26493d8228ab70c384bfeef71da2bc37da2ccf37d3496244f3e",
+ "checkout_head": "797579e113ab59e1bcbcb93eb0b84540b628ded0",
+ "stderr_tail": null
+}
