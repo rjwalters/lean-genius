@@ -10,22 +10,22 @@
   "cube_F9_t0",
   "cube_F9_t1"
  ],
- "pooled_head_factor": 0.948663992052647,
+ "pooled_head_factor": 0.9537543073898335,
  "head_factor_range": [
   0.7063364993508412,
   1.667881036823506
  ],
  "uniform_sample_cpu_h": 3915.351700597328,
- "head_corrected_cpu_h": 3714.353174578781,
+ "head_corrected_cpu_h": 3734.283549390811,
  "head_corrected_cpu_h_range": [
-  3391.854793780409,
-  4671.513791375209
+  3405.010788864854,
+  4684.669786459653
  ],
  "expected_capped_leaves_profiled_cubes": 8.0,
  "expected_capped_leaves_all_cubes_if_same_rate": 15.963490386646946,
  "usd_spot": [
   59,
-  64,
+  65,
   81
  ],
  "cubes": [
@@ -34,7 +34,7 @@
    "leaves": 893,
    "uniform_cpu_h": 6.003815709816666,
    "profiled": false,
-   "estimate_cpu_h": 5.695603778823075,
+   "estimate_cpu_h": 5.726165094012396,
    "estimate_low": 4.24071417121949,
    "estimate_high": 10.013650370986275
   },
@@ -43,7 +43,7 @@
    "leaves": 893,
    "uniform_cpu_h": 39.873728572594445,
    "profiled": false,
-   "estimate_cpu_h": 37.826770525701136,
+   "estimate_cpu_h": 38.02974037780503,
    "estimate_low": 28.164269856031975,
    "estimate_high": 66.50463575367787
   },
@@ -52,7 +52,7 @@
    "leaves": 9442,
    "uniform_cpu_h": 97.09481888198889,
    "profiled": false,
-   "estimate_cpu_h": 92.1103584882163,
+   "estimate_cpu_h": 92.60460173393264,
    "estimate_low": 68.58161447420798,
    "estimate_high": 161.94260718708216
   },
@@ -61,7 +61,7 @@
    "leaves": 9442,
    "uniform_cpu_h": 24.309594929633334,
    "profiled": false,
-   "estimate_cpu_h": 23.061637371128743,
+   "estimate_cpu_h": 23.185380875039847,
    "estimate_low": 17.17075418323417,
    "estimate_high": 40.54551239599629
   },
@@ -223,7 +223,7 @@
    "leaves": 3456,
    "uniform_cpu_h": 36.375723052800005,
    "profiled": false,
-   "estimate_cpu_h": 34.50833864507075,
+   "estimate_cpu_h": 34.693502546027666,
    "estimate_low": 25.69350088247045,
    "estimate_high": 60.67037868050878
   },
@@ -232,7 +232,7 @@
    "leaves": 20225,
    "uniform_cpu_h": 64.5266096736111,
    "profiled": false,
-   "estimate_cpu_h": 61.21407112659086,
+   "estimate_cpu_h": 61.54253191746909,
    "estimate_low": 45.57749959183659,
    "estimate_high": 107.62270864512816
   },
@@ -574,7 +574,7 @@
    "leaves": 20225,
    "uniform_cpu_h": 98.23098092944446,
    "profiled": false,
-   "estimate_cpu_h": 93.18819451177421,
+   "estimate_cpu_h": 93.68822118058624,
    "estimate_low": 69.38412719750303,
    "estimate_high": 163.83759032079186
   },
@@ -583,7 +583,7 @@
    "leaves": 20225,
    "uniform_cpu_h": 20.06290662513889,
    "profiled": false,
-   "estimate_cpu_h": 19.032957091183757,
+   "estimate_cpu_h": 19.135083612486245,
    "estimate_low": 14.171163232403403,
    "estimate_high": 33.462541503629836
   },
@@ -592,11 +592,11 @@
    "leaves": 9442,
    "uniform_cpu_h": 360.2283861780333,
    "profiled": true,
-   "stratified_cpu_h": 282.58296353633193,
-   "head_cpu_h_first_1024": 63.566160313796296,
+   "stratified_cpu_h": 295.7389586207764,
+   "head_cpu_h_first_1024": 76.72215539824074,
    "expected_capped_leaves": 0.0,
    "capped_cpu_h_counted": 0.0,
-   "ratio": 0.7844550134832318,
+   "ratio": 0.8209762749641147,
    "strata": [
     {
      "lo": 0,
@@ -655,11 +655,11 @@
     {
      "lo": 32,
      "hi": 64,
-     "n_obs": 1,
-     "mean_s": 110.23577300000001,
-     "max_s": 110.23577300000001,
+     "n_obs": 2,
+     "mean_s": 1590.28522,
+     "max_s": 3070.334667,
      "capped_obs": 0,
-     "cpu_h": 0.9798735377777779
+     "cpu_h": 14.135868622222223
     },
     {
      "lo": 64,
@@ -734,18 +734,18 @@
      "cpu_h": 3.7980434294871794
     }
    ],
-   "observations": 77,
+   "observations": 78,
    "max_s": 5101.646101,
-   "estimate_cpu_h": 282.58296353633193,
-   "estimate_low": 282.58296353633193,
-   "estimate_high": 282.58296353633193
+   "estimate_cpu_h": 295.7389586207764,
+   "estimate_low": 295.7389586207764,
+   "estimate_high": 295.7389586207764
   },
   {
    "cube": "cube_F7_t2",
    "leaves": 11025,
    "uniform_cpu_h": 121.93898528,
    "profiled": false,
-   "estimate_cpu_h": 115.67912456257375,
+   "estimate_cpu_h": 116.29983244954549,
    "estimate_low": 86.12995599706895,
    "estimate_high": 203.37972119801262
   },
@@ -754,7 +754,7 @@
    "leaves": 11025,
    "uniform_cpu_h": 112.86170820749999,
    "profiled": false,
-   "estimate_cpu_h": 107.06783865800793,
+   "estimate_cpu_h": 107.64234034227763,
    "estimate_low": 79.71834388604164,
    "estimate_high": 188.23990290279707
   },
@@ -763,7 +763,7 @@
    "leaves": 11025,
    "uniform_cpu_h": 69.60702080499999,
    "profiled": false,
-   "estimate_cpu_h": 66.03367423176294,
+   "estimate_cpu_h": 66.3879959173425,
    "estimate_low": 49.16597940564487,
    "estimate_high": 116.09623003043873
   },
@@ -772,7 +772,7 @@
    "leaves": 3456,
    "uniform_cpu_h": 60.0165963648,
    "profiled": false,
-   "estimate_cpu_h": 56.935583896843546,
+   "estimate_cpu_h": 57.241087297805024,
    "estimate_low": 42.39191257926525,
    "estimate_high": 100.10054297154049
   },
@@ -781,7 +781,7 @@
    "leaves": 3456,
    "uniform_cpu_h": 171.1100501376,
    "profiled": false,
-   "estimate_cpu_h": 162.3259432438642,
+   "estimate_cpu_h": 163.1969473564264,
    "estimate_low": 120.86127381793932,
    "estimate_high": 285.3912078344224
   },
@@ -790,7 +790,7 @@
    "leaves": 3456,
    "uniform_cpu_h": 75.3839554176,
    "profiled": false,
-   "estimate_cpu_h": 71.51404408317919,
+   "estimate_cpu_h": 71.89777218761918,
    "estimate_low": 53.24643917688747,
    "estimate_high": 125.73146972176364
   },
@@ -799,7 +799,7 @@
    "leaves": 3456,
    "uniform_cpu_h": 29.834550240000002,
    "profiled": false,
-   "estimate_cpu_h": 28.30296353177366,
+   "estimate_cpu_h": 28.45483080043839,
    "estimate_low": 21.0732317762284,
    "estimate_high": 49.76048058745418
   },
@@ -970,7 +970,7 @@
    "leaves": 11025,
    "uniform_cpu_h": 56.084858305,
    "profiled": false,
-   "estimate_cpu_h": 53.205685573328346,
+   "estimate_cpu_h": 53.49117518774222,
    "estimate_low": 39.61478248174165,
    "estimate_high": 93.54287161984281
   },
@@ -979,7 +979,7 @@
    "leaves": 11025,
    "uniform_cpu_h": 43.18275227875,
    "profiled": false,
-   "estimate_cpu_h": 40.96592216457952,
+   "estimate_cpu_h": 41.18573599080596,
    "estimate_low": 30.501554076906835,
    "estimate_high": 72.02369364357416
   },
@@ -988,7 +988,7 @@
    "leaves": 11025,
    "uniform_cpu_h": 39.59720625,
    "profiled": false,
-   "estimate_cpu_h": 37.564443755257024,
+   "estimate_cpu_h": 37.76600602154114,
    "estimate_low": 27.96895204669825,
    "estimate_high": 66.0434294155642
   },
@@ -1150,7 +1150,7 @@
    "leaves": 3456,
    "uniform_cpu_h": 42.05593372799999,
    "profiled": false,
-   "estimate_cpu_h": 39.89694997990603,
+   "estimate_cpu_h": 40.11102794438137,
    "estimate_low": 29.705641006366488,
    "estimate_high": 70.14429435083728
   },
@@ -1159,7 +1159,7 @@
    "leaves": 20225,
    "uniform_cpu_h": 122.68515258847222,
    "profiled": false,
-   "estimate_cpu_h": 116.38698662016819,
+   "estimate_cpu_h": 117.01149273403436,
    "estimate_low": 86.65700120166527,
    "estimate_high": 204.6242395021111
   },

@@ -1,7 +1,7 @@
 == plan
 {"plan": true, "manifest_rows": 5, "claimed": 0, "claimable": 5, "claimable_items": 21, "slots": 2, "heap_mb": 2000, "cap": 900, "first": ["cube_F6_t14-cover", "cube_F6_t14-b0000"], "store": "/home/ec2-user/h7camp/e2e/store"}
 == run 1 (all rows)
-run1 wall 170s
+run1 wall 225s
 PASS 5 claims
 PASS 5 CERTIFIED ledgers
 PASS cover row retained exact CNF + LRAT + metadata
@@ -46,11 +46,11 @@ PASS re-claimed batch CERTIFIED with 3 carried
     29
    ],
    "leaves": 893,
-   "max_solver_cpu_seconds": 38.3,
+   "max_solver_cpu_seconds": 52.8,
    "missing_leaves": 883,
    "other_non_certified_receipts": 0,
    "proof_bytes": 255729364,
-   "solver_cpu_hours": 0.03
+   "solver_cpu_hours": 0.04
 PASS collector rejects an unknown cube selector (exit 2)
 PASS collector sees cover + 10 leaves of cube_F6_t14
 == must-ALARM: fake checker that never verifies
@@ -64,9 +64,9 @@ PASS slots x (heap + 1.5 GB) over the memory budget is refused
 == cap path: 5 s cap on a batch with leaves that need 7-50 s -> INCOMPLETE, no alarm
 PASS INCOMPLETE ledger lists SOLVER_TIMEOUT leaves, no STOP
 == ledgers
-cube_F6_t14-b0000 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 1.7 checker_cpu 7.4 proof 6903610
-cube_F6_t14-b0001 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 114.2 checker_cpu 23.1 proof 248825754
-cube_F6_t14-cover i-test-a CERTIFIED 1 / 1 carried 0 solver_cpu 1.8 checker_cpu 1.6 proof 4484246
-cube_F7_t5-x0 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 39.2 checker_cpu 12.3 proof 86813774
-cube_F9_t1-x0 i-test-b CERTIFIED 5 / 5 carried 3 solver_cpu 98.2 checker_cpu 20.0 proof 204880813
+cube_F6_t14-b0000 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 2.0 checker_cpu 8.3 proof 6903610
+cube_F6_t14-b0001 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 157.7 checker_cpu 30.0 proof 248825754
+cube_F6_t14-cover i-test-a CERTIFIED 1 / 1 carried 0 solver_cpu 2.6 checker_cpu 1.9 proof 4484246
+cube_F7_t5-x0 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 47.6 checker_cpu 14.0 proof 86813774
+cube_F9_t1-x0 i-test-b CERTIFIED 5 / 5 carried 3 solver_cpu 123.1 checker_cpu 23.5 proof 204880813
 E2E_ALL_PASS

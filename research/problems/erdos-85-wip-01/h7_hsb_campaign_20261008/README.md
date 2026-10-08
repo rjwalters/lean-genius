@@ -532,3 +532,32 @@ Recommended changes before the main pass (not yet implemented; they change the m
 checker heap 6,000 MB on r-type 16xlarge only (64 × 7.5 GB = 480 GB); head rows first and in
 small batches (the first 1,024 leaves of every cube in batches of 4, at the front of the manifest);
 2 h cap unchanged; residual pass with 12 h cap and 16 GB heap; main-pass hard stop stays $160.
+
+## 7. Main-pass configuration after the head profile (manifest v2, 2026-10-08)
+
+This section supersedes the earlier sections where they differ (2 GB heap, 5,945 batches, the
+386-item canary, m-type fallbacks).
+
+* **Manifest v2** (`h7_common.batches`): 28 cover rows; then head rows `<cube>-h<k>` (leaves
+  below index 1,024 in batches of 4, interleaved over the cubes so leaves 0–3 of all 28 cubes are
+  claimed first); then tail rows `<cube>-b<k>` (64 leaves from index 1,024 on). 12,605 rows, sha256
+  `0deb438f9bd7f5cfb840fd799330e6b80e70a043b21f96fcf0737c826515290c`. A leaf is still (cube, leaf
+  index) with the same units and CNF sha256; `inputs.json` is unchanged (`f2d2be89…cb6c`; its
+  `batches` and `batch_manifest_sha256` fields describe the v1 manifest).
+* **Checker heap 6,000 MB, `r8g.16xlarge` / `r7g.16xlarge` only.** The bootstrap sets slots =
+  min(vCPUs, (RAM − 8 GB) / (heap + 1.5 GB)) = 64 on 512 GiB.
+* **`CHECK_HEAP_EXHAUSTED`** is never re-solved at the same heap within a pass; the proof is
+  streamed and not kept, so it cannot be re-checked without re-solving. The leaf goes to the
+  residual pass.
+* **Residual pass:** `setup --commit <sha> --manifest <residual-manifest.jsonl> --residual` sets a
+  12 h cap and a 16 GB heap (28 slots on 512 GiB).
+* **Canary selection** is now 2 covers, 2 head rows of `cube_F6_t14` and 6 tail rows = 394 items.
+  The canary that ran on 2026-10-08 used the v1 manifest: 5 of 8 rows CERTIFIED before an operator
+  stop, one spot reclaim with orphan release and partial-receipt carry-forward exercised.
+* **Controller host** returns on any STOP marker and powers off (unit-tested with a mocked pass;
+  not yet seen on a live host).
+* **Split-leaf lemma:** `sevenHighT0CanonicalHsbLeafChecked_of_split` in
+  `proofs/Proofs/Erdos85OrderFortyNineSevenHighT0CanonicalHsbLeafSplit.lean`, built on the builder
+  (job `20261008T220255-…-821964`, axioms `propext`, `Quot.sound`). No split tooling exists yet.
+* Tests: `test_campaign.py` 21 tests; `e2e_test.sh` 15 of 15 (builder job
+  `20261008T220330-commit-ff46715e06e0-822935`).
