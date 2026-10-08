@@ -15,9 +15,16 @@ def remainingPairs : Finset (Fin 55 × Fin 21) :=
   FullCapacityPruning.remainingPairs.erase (1,15)
 
 theorem pilot_mem : ((1 : Fin 55), (15 : Fin 21)) ∈
-    FullCapacityPruning.remainingPairs := by decide
+    FullCapacityPruning.remainingPairs := by
+  simp only [FullCapacityPruning.remainingPairs, FullTerminalPruning.remainingPairs,
+    FullUBlockPruning.remainingPairs, FullUOrbitPruning.remainingPairs,
+    Finset.mem_erase, Finset.mem_sdiff, Finset.mem_product,
+    Finset.mem_filter, Finset.mem_univ, true_and]
+  decide
 
-theorem remainingPairs_card : remainingPairs.card = 260 := by decide
+theorem remainingPairs_card : remainingPairs.card = 260 := by
+  rw [remainingPairs, Finset.card_erase_of_mem pilot_mem,
+    FullCapacityPruning.remainingPairs_card]
 
 theorem pilot_input : FullURestrictedAssembly.representative 1 =
     NativeTerminalPilot.U := by rfl
