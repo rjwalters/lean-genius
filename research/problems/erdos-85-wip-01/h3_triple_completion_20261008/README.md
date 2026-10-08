@@ -150,3 +150,48 @@ not a formal lower/upper bound on the uninstrumented search. Four leaves in
 bucket 0 do not imply that other buckets have equal runtime; no campaign cost
 is extrapolated. These partial-graph leaves also are not the old census's
 1,811 outstanding pairs and grant no credit to that census.
+
+## Early degree-capacity gate: prototype result
+
+The C sizing prototype from H5 commit
+`6e85c306db71d4080850edfc4ef5436544cc2997` was adapted to the canonical H3/T1
+layout in `h3_phase2_profile.c`. Phase three is omitted. The proposed gate
+checks during phase two whether an empty vertex can still attain degree seven
+using its current neighbours and all presently admissible candidate edges.
+Its mathematical justification would be the existing `count_gate` argument.
+
+Before comparison, the control reproduced the Lean profile's 8,167 phase-one
+nodes, 1,088 leaves and every one of the 384 bucket counts, with the exact
+canonical masks. This is an implementation cross-check, not a formal proof
+that the C and Lean programs are equivalent. The prototype pre-generates only
+colour-consistent patterns and stores their distinct vertices as sets; it has
+344 patterns, whereas Lean starts with all 512 triples and filters at runtime.
+
+Job `20261008T104402-erdos85__h3-triple-formal-20261007-423339` at
+`e7a5c8ae2dcf2eb0726ab84f1f3937fbc5ee732a` exited zero after recording the
+control and both capped comparisons. Each comparison selected bucket 0 with
+first-open-clause ordering and no phase-one forward checking. Child programs
+had a two-million-node cap, a 20-second internal wall check, 30-second outer
+wall/CPU limits, two-GiB address-space limits and affinity to CPUs 0–1.
+The runs used the existing shared cloud host, not Docker.
+
+| Variant | Wrapper wall seconds | Phase-two nodes | Gate hits | Result |
+| --- | ---: | ---: | ---: | --- |
+| Baseline | 0.566 | 1,992,343 | 0 | Node cap |
+| Early gate | 4.771 | 1,992,343 | 2,407 | Node cap |
+
+Both reached 7,657 phase-one nodes, making the total two million. Their fourth
+selected leaf was interrupted, so neither completes the bucket. The prototype
+returns 124 with `stopped=1`; its `traversal_return=1` is not a successful
+complete traversal or an exclusion claim.
+
+For the two completed nontrivial leaves, phase-two nodes fell only from
+291,381 to 291,262 and from 1,574,657 to 1,574,586; their combined C time
+grew roughly ninefold. That is insufficient benefit on this sample to justify
+formalizing the gate. No Lean engine change was made.
+
+`prototype-evidence/` retains the source, runner, compiler/control/comparison
+logs, job records, receipt and read-only audit. The audit checks the source
+against the execution commit, actual binary hash, raw counters and caps, and
+the full control bucket vector against the retained Lean profile. This records
+prototype performance only, with no graph-exclusion credit or campaign estimate.

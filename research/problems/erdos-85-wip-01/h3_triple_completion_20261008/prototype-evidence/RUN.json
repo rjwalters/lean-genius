@@ -1,0 +1,144 @@
+{
+  "source_sha256": "81de4c1d92002ceb43ccb9f7daf7834d023a55350485c05673c11a0507dfcd4d",
+  "runner_sha256": "fa587c617e71432e0258c7bcf62280a0e66071c4026e76205534c886fdd27ab4",
+  "affinity": [
+    0,
+    1
+  ],
+  "child_address_space_bytes": 2147483648,
+  "child_cpu_seconds": 30,
+  "child_wall_seconds": 30,
+  "scope": "PROFILING_ONLY",
+  "runs": {
+    "control": {
+      "command": [
+        "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-degree-gate/profile",
+        "1",
+        "mrv=0",
+        "fc=0",
+        "pre=22",
+        "mod=384",
+        "secs=20",
+        "nodes=2000000",
+        "res=-1",
+        "p1only=1",
+        "verbose=1",
+        "earlygate=0"
+      ],
+      "started_utc": "2026-10-08T10:44:02.982081+00:00",
+      "returncode": 0,
+      "outer_timeout": false,
+      "elapsed_seconds": 0.0053109329965082,
+      "log_sha256": "aeafbd6ef8e467b04009da3e9cbf0d9ac7889e0b8cf6ee33a5a532965569235d",
+      "profile": {
+        "traversal_return": 1,
+        "stopped": 0,
+        "n1": 8167,
+        "leaf1": 1088,
+        "leafrun": 0,
+        "n2": 0,
+        "leaf2": 0,
+        "n3": 0,
+        "found": 0,
+        "secs": 0.0,
+        "mrv": 0,
+        "fc": 0,
+        "early_gate": 0,
+        "gate_hits": 0,
+        "node_cap": 2000000
+      }
+    },
+    "baseline": {
+      "command": [
+        "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-degree-gate/profile",
+        "1",
+        "mrv=0",
+        "fc=0",
+        "pre=22",
+        "mod=384",
+        "secs=20",
+        "nodes=2000000",
+        "res=0",
+        "p1only=0",
+        "verbose=1",
+        "earlygate=0"
+      ],
+      "started_utc": "2026-10-08T10:44:02.990585+00:00",
+      "returncode": 124,
+      "outer_timeout": false,
+      "elapsed_seconds": 0.5660801460035145,
+      "log_sha256": "91e6084c54a277a284c10abc0afb7f3f542ace3f731185a122d454d4fee13900",
+      "profile": {
+        "traversal_return": 1,
+        "stopped": 1,
+        "n1": 7657,
+        "leaf1": 4,
+        "leafrun": 4,
+        "n2": 1992343,
+        "leaf2": 18638,
+        "n3": 0,
+        "found": 0,
+        "secs": 0.5,
+        "mrv": 0,
+        "fc": 0,
+        "early_gate": 0,
+        "gate_hits": 0,
+        "node_cap": 2000000
+      }
+    },
+    "early-gate": {
+      "command": [
+        "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-degree-gate/profile",
+        "1",
+        "mrv=0",
+        "fc=0",
+        "pre=22",
+        "mod=384",
+        "secs=20",
+        "nodes=2000000",
+        "res=0",
+        "p1only=0",
+        "verbose=1",
+        "earlygate=1"
+      ],
+      "started_utc": "2026-10-08T10:44:03.557355+00:00",
+      "returncode": 124,
+      "outer_timeout": false,
+      "elapsed_seconds": 4.771294028003467,
+      "log_sha256": "56c5faf8cbdf9f84c143aa1c0865d9e5fddb3c7938648d3016b0176745873c44",
+      "profile": {
+        "traversal_return": 1,
+        "stopped": 1,
+        "n1": 7657,
+        "leaf1": 4,
+        "leafrun": 4,
+        "n2": 1992343,
+        "leaf2": 16537,
+        "n3": 0,
+        "found": 0,
+        "secs": 4.7,
+        "mrv": 0,
+        "fc": 0,
+        "early_gate": 1,
+        "gate_hits": 2407,
+        "node_cap": 2000000
+      }
+    }
+  },
+  "compile": {
+    "command": [
+      "gcc",
+      "-O3",
+      "-std=gnu11",
+      "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/h3_phase2_profile.c",
+      "-o",
+      "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-degree-gate/profile"
+    ],
+    "started_utc": "2026-10-08T10:44:02.715630+00:00",
+    "returncode": 0,
+    "outer_timeout": false,
+    "elapsed_seconds": 0.26583322899386985,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "binary_sha256": "03d0a3700b4f8f600d44f21f1334b9704cca11746ce79b8e252c9726a9ca4057"
+}

@@ -1,0 +1,11 @@
+MODE=host
+REF=erdos85/h3-triple-formal-20261007
+TARGET=''
+CMD=python3\ -B\ research/problems/erdos-85-wip-01/h3_triple_completion_20261008/run_prototype.py
+MEM_GB=64
+TIMEOUT=2m
+THREADS=''
+CACHE=0
+CPUS=2
+VOLUME=''
+FULL=1
