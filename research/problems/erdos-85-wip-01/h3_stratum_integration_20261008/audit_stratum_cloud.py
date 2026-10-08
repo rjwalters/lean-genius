@@ -22,7 +22,7 @@ def main(config):
     files={'job.'+n:(job/n).read_bytes() for n in ('log','spec','exit')}
     raw=files['job.log'].decode();rc=int(files['job.exit'])
     assert re.findall(r'^\[e85\] commit ([a-f0-9]{40}) ',raw,re.M)==[config['commit']]
-    for name in ('SOURCE.json','run_stratum.py','stratum_inputs.py','transfer_pair.py'):
+    for name in ('SOURCE.json','INTEGRATION.json','run_stratum.py','stratum_inputs.py','transfer_pair.py'):
         data=subprocess.check_output(['git','-C',str(REPO),'show',config['commit']+':'+AREA+'/'+name])
         assert data==(ROOT/name).read_bytes();files[name]=data
     spec,objects,inputs=load(ROOT,REPO,config['triple_audit_sha'],config['transfer_receipt_sha'])

@@ -2,7 +2,7 @@
 
 The real `PLAN.json` now binds all 384 independently accepted native parts:
 the original 90-part baseline, 288 new sweep parts and six residual parts.
-No cell compilation or cell acceptance exists here yet. The source and
+The cell has now compiled and passed independent acceptance. The source and
 object ledger retain the exact producer of every part.
 
 `prepare.py` combines the original five-part sample and 85-part campaign
@@ -55,3 +55,23 @@ unchanged, actual limits two CPUs and 16 GiB, no cell source/object or
 attempt directory present. The frozen plan SHA256 is
 `1818caee727c64640ad17fde34a57c04a81afee5c723739d9a44f79c7c1a8d51`.
 This preflight compiled no theorem; terminal cell acceptance is still required.
+
+## Accepted triple cell
+
+Job `20261008T145420-erdos85__h3-triple-formal-20261007-591342`, execution
+pin `b9acc6c5cae9c30dd91255cb57e7bb06ea9f1fc0`, exited zero.
+`cell-evidence1/AUDIT.json` is `H3_TRIPLE_CELL_ARTIFACT_AUDIT_PASS`, with
+24 retained hash-verified files. The direct Lean composition took 6.468
+seconds and reused all 388 imported objects unchanged.
+
+Both exports in namespace `Erdos85.H3TripleCompletion` are accepted:
+`threeHighCanonicalRepresentativeExcluded_one` and
+`orderFortyNineTripleCellExcluded_three_one`. Each prints exactly the three
+standard axioms and the 384 part-native axioms, with no `sorry`.
+The cell object is 716,168 bytes, SHA256
+`a8cf3dbc6feaaf142b46bffc4be31bceac14fe265f38c875e9df1b39fe3b2159`.
+The full cell audit SHA256 is
+`44513a1f3752f93b67c20378e072f0b67cfa73b5703c27b5226bd6c2ff74afd8`.
+
+This closes the H3 triple cell. The full H3 stratum still needs its separate
+composition with the accepted pair cell and its exact 411-axiom audit.

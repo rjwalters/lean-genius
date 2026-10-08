@@ -2,24 +2,14 @@
 import copy,json,unittest
 from pathlib import Path
 from stratum_inputs import object_ledger
-from transfer_pair import JOB
+from fixture_cell import complete_cell_fixture
 ROOT=Path(__file__).resolve().parent
 class LedgerChecks(unittest.TestCase):
     def setUp(self):
-        self.spec=json.loads((ROOT/'SOURCE.json').read_text())
+        self.spec,self.triple=complete_cell_fixture()
         self.pair=json.loads((ROOT.parent/'h3_pair_completion_review_20261008/AUDIT.json').read_text())
         self.runtime=json.loads((ROOT.parent/'h3_phase3_runtime_20261008/build-evidence/AUDIT.json').read_text())
-        self.sample=json.loads((ROOT.parent/'h3_native_parts_20261008/sample-evidence/AUDIT.json').read_text())
-        reused=[x['residue'] for x in self.sample['accepted_parts']]
-        self.triple={'status':'H3_TRIPLE_CELL_ARTIFACT_AUDIT_PASS','authoritative_exit':0,'job':JOB.name,
-                     'execution_commit':self.spec['triple_source_commit'],'reused_residues':reused,
-                     'accepted_new_residues':[r for r in range(384) if r not in reused],'accepted_parts':[]}
-        for r in self.triple['accepted_new_residues']:
-            module=f'Erdos85H3TripleCompletionPart{r:03d}'
-            self.triple['accepted_parts'].append({'module':'Proofs.'+module,'source_sha256':self.spec['sources'][module]['source_sha256'],'object_sha256':'synthetic-only','object_bytes':1})
-        module='Erdos85H3TripleCompletionCell'
-        self.triple['cell']={'module':'Proofs.'+module,'source_sha256':self.spec['sources'][module]['source_sha256'],'object_sha256':'synthetic-cell-only','object_bytes':1}
-    def result(self):return object_ledger(self.spec,self.pair,self.runtime,self.sample,self.triple)
+    def result(self):return object_ledger(self.spec,self.pair,self.runtime,self.triple)
     def test_complete_imports(self):self.assertEqual(len(self.result()),417)
     def test_missing_object(self):
         self.triple['accepted_parts'].pop()
@@ -39,8 +29,8 @@ class LedgerChecks(unittest.TestCase):
     def test_missing_runtime(self):
         self.runtime['results'].pop()
         with self.assertRaises(ValueError):self.result()
-    def test_unaccepted_sample(self):
-        self.sample['status']='COMPILED_PENDING_AUDIT'
+    def test_changed_cell_runtime(self):
+        self.triple['imported_objects'][self.runtime['results'][0]['module']]['sha256']='wrong'
         with self.assertRaises(ValueError):self.result()
     def test_unaccepted_triple(self):
         self.triple['status']='PARTIAL_CAMPAIGN_ARTIFACT_AUDIT'

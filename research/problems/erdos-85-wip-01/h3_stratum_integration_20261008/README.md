@@ -1,11 +1,17 @@
 # H3 stratum integration preparation
 
-Status: prepared source bundle; no stratum build or acceptance yet.
+Status: bound to the accepted triple cell; exact sources materialized;
+no stratum build or acceptance yet.
 Claude requested this integration in squad message 53033 after confirming
 that the bounded H3 campaign fits the builder usage already approved.
-The live campaign is job `20261008T124453-erdos85__h3-triple-formal-20261007-503105`,
-execution pin `002fc52979945c83ada35b24c430e6e2103a6797`.
-Do not advance that cloud branch or change its cache while it runs.
+The original campaign, job
+`20261008T124453-erdos85__h3-triple-formal-20261007-503105` at
+`002fc52979945c83ada35b24c430e6e2103a6797`, stopped at residue 89's
+90-second limit. Its audit accepts 90 cumulative parts, not the full cell.
+The historical `SOURCE.json` remains unchanged. These helpers now require
+an explicit `INTEGRATION.json` binding to a future independently accepted
+384-part cell assembly. The actual binding is now recorded below. Do not advance a cloud
+branch or change its cache while its producer is running.
 
 The source bundle stages 418 modules outside the production library glob:
 28 unchanged audited pair modules, four triple-runtime modules, 384 exact
@@ -29,7 +35,7 @@ the printed set exactly and reject any additional or missing axiom.
 ## Remaining work
 
 1. Obtain terminal, independently accepted triple-cell evidence from the
-   bounded campaign. Preserve partial results if it stops early; do not
+   bounded sweep, residual pass and final cell assembly. Preserve partial results if a pass stops early; do not
    treat preparation or reported part completions as full cell acceptance.
 2. Recheck the pair cache against its retained audit and inspect required
    object companions. Transfer only the audited artifacts into a complete
@@ -41,17 +47,23 @@ the printed set exactly and reject any additional or missing axiom.
 4. Independently retain and audit the fresh stratum object, terminal job,
    exact source/dependency hashes and the 411-entry printed axiom set.
 5. Report `OrderFortyNineStratumExcluded 3` only after that audit succeeds.
-   H3 stratum closure still does not close H5/H7 or the global order-49
-   theorem, and does not complete the paper's human/publication review.
+   H3 stratum closure does not discharge the remaining H1/H7 external
+   evidence hypotheses or complete the paper's human/publication review.
 
-This directory is prepared locally while the campaign runs; it is not
-pushed into the live cloud worktree. No cloud cache transfer or stratum
-compilation has occurred.
+No cloud cache transfer or stratum compilation has occurred yet.
 
 ## Transfer and materialization helpers
 
+`bind_cell.py --triple-audit PATH` validates the complete cell audit, all
+384 exact part sources and axiom sets, both exact 387-axiom cell exports,
+retained evidence hashes and all 418 prepared sources. It records the
+producer job, execution commit, repository-relative audit path and audit
+hash in a new immutable `INTEGRATION.json`, bound to the unchanged source
+specification hash. It refuses a partial receipt or a different existing
+binding. This performs no compilation, transfer or materialization.
+
 `transfer_pair.py` defaults to read-only inspection on the cloud host. It
-requires the exact successful campaign job, a caller-pinned independent
+requires the bound successful cell job, a caller-pinned independent
 triple audit and all 384 unique residues. It verifies retained evidence
 hashes, all existing triple objects and unchanged shared sources. `--apply`
 atomically publishes the 28 pair `.olean` files into the complete H3 cache,
@@ -64,23 +76,28 @@ object companions were observed. Direct Lean theorem import uses the audited
 `materialize.py` uses the same full-triple acceptance gate before copying
 the prepared sources into `proofs/Proofs`. It checks all source hashes and
 existing files first, defaults to read-only inspection, and refuses to
-overwrite differing source. It must run after campaign acceptance and before
+overwrite differing source. It must run after cell acceptance and binding, and before
 the integration commit/build; it does not execute Lean.
 
-Fourteen tiny-file/metadata tests pass for object inspection, atomic copy,
+Tiny-file/metadata tests cover object inspection, atomic copy,
 idempotence, conflicting/corrupt artifacts, and rejection of partial, failed,
 wrong-job, wrong-commit, incomplete, duplicate or wrong-cell triple receipts.
+Binding checks reject missing bindings, changed historical sources,
+invalid producer identifiers/hashes and paths outside the repository.
 No real cloud cache was modified by those tests.
 
 ## Bounded final build and acceptance
 
 `stratum_inputs.py` constructs an exact 417-module imported-object ledger
-from the pair audit, runtime-chain audit, five-part sample and full triple
-campaign audit. It rejects missing/duplicate modules, changed source hashes,
-empty objects and unaccepted inputs. Nine additional synthetic-ledger tests
-pass (23 integration tests total); synthetic triple objects grant no credit.
+from the pair audit, runtime-chain audit and complete triple-cell audit.
+The cell audit itself accounts for every part from the sample, initial
+campaign, sweep and residual pass. The ledger requires its four runtime
+objects to match the prior runtime audit exactly. It rejects missing or
+duplicate modules, changed source hashes, empty objects and unaccepted
+inputs. The transfer, binding and synthetic-ledger suite has 33 tests;
+synthetic triple objects grant no credit.
 
-After the full triple audit is retained, materialize sources locally, commit
+After the full triple audit is retained and bound, materialize sources locally, commit
 and push the integration only while the producer is terminal. Run the guarded
 pair transfer on the cloud host and retain its immutable `pair-transfer.json`.
 The transfer's receipt must be copied back unchanged for banking. Do not
@@ -110,14 +127,22 @@ python3 -B capture_stratum.py --job JOB --commit FULL_COMMIT --triple-audit-sha 
 ```
 
 These build/collector scripts are prepared but have not run. Their execution
-is gated by the still-running native campaign and its independent audit.
+is gated by complete cell acceptance and its explicit producer binding.
+The failed campaign's receipts and original prepared `SOURCE.json` remain
+unchanged; the new binding does not retroactively grant them cell credit.
 
-## Producer stopped before integration
+## Bound producer and source materialization
 
-Campaign 503105 stopped at residue 89 under its 90-second cap. Its partial
-audit accepts 85 new parts (90 cumulative), not the full triple cell. These
-helpers therefore remain unexecuted and correctly reject that receipt.
-The source bundle and expected axiom set remain useful preparation, but the
-producer-specific gate must be deliberately updated against a future full,
-independent cell acceptance before integration can proceed. The original
-prepared `SOURCE.json` is retained unchanged as a historical plan.
+`INTEGRATION.json` binds cell job
+`20261008T145420-erdos85__h3-triple-formal-20261007-591342` at
+`b9acc6c5cae9c30dd91255cb57e7bb06ea9f1fc0` and audit SHA256
+`44513a1f3752f93b67c20378e072f0b67cfa73b5703c27b5226bd6c2ff74afd8`.
+Its independent audit accepts all 384 exact parts and both cell exports with
+387 axioms each. The binding verified all retained evidence and all 418
+prepared source hashes; `SOURCE.json` remains unchanged.
+
+Materialization preflight and application both passed: 414 new files copied
+byte-for-byte into `proofs/Proofs`, with the four existing runtime-chain
+sources unchanged. The 168 shared pair dependency sources also match.
+This grants no additional theorem; object transfer and fresh stratum
+compilation/acceptance still remain.
