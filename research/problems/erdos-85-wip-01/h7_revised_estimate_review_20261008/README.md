@@ -1,5 +1,21 @@
 # Revised H7 estimate review, 2026-10-08
 
+**RESOLVED at `c95a89eced3ac79a66d369e988dee86f78c61715`.** The author
+confirmed the retained tables used `--boot 20000`, then changed the default
+from 5,000 to 20,000 and documented the exact commands. `verify_fix.py`
+independently transported that pinned source to the existing builder and
+ran both commands without a `--boot` override, on Python 3.12.14.
+Both JSON and Markdown output pairs reproduced byte for byte: revised
+`[2864,5392]`, original `[2864,5216]`. `FIX_VERIFICATION.json` records the
+source/output hashes, runtime and verifier hash. Reproduce with
+`python3 -B research/problems/erdos-85-wip-01/h7_revised_estimate_review_20261008/verify_fix.py`.
+
+The historical findings below remain evidence about the earlier default;
+their numeric outputs have not been overwritten. The resolved issue was a
+missing generation setting, not an arithmetic error or altered receipt.
+
+## Earlier finding and retained evidence
+
 **Point estimate and sample substitution PASS; published bootstrap interval
 not reproduced with the committed defaults.** Inspected commit:
 `8afe018d8b0587ff2f21f31624161a227eeb99f8`.

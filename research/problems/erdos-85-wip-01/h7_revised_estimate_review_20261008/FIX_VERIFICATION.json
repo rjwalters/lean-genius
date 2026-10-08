@@ -1,0 +1,46 @@
+{
+  "status": "PUBLISHED_ESTIMATE_REPRODUCED",
+  "commit": "c95a89eced3ac79a66d369e988dee86f78c61715",
+  "python": "3.12.14 (main, Aug 24 2026, 00:00:00) [GCC 11.5.0 20240719 (Red Hat 11.5.0-5)]",
+  "replicates": 20000,
+  "random_seed": 1,
+  "uses_committed_default": true,
+  "source_sha256": {
+    "estimate.py": "a8254dcd65a2410bafd23ff9d51a0612ddf140c3c84613a2a555dda6ee80af70",
+    "README.md": "aa8fb517efe029a0766d2529dfb977a7b12ba4d0f80b95940285941b7a371163",
+    "receipts/inputs.json": "f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c",
+    "receipts/sample_results.jsonl": "8a244515666117ce4d4592c396a5bfa434e2affc8f4b0bb677e31c5a1bac8477",
+    "receipts/sample_results_with_followup.jsonl": "34ced4cd4a18bbe2503f721ba8d55c570e2946ab34d61363f7061f57005118a4",
+    "receipts/estimate.json": "39b5ddfdf5aeab7a346bff82a968b2fa31555cf4c3954185d8b1b4ad809dcc2f",
+    "receipts/estimate_table.md": "a84d416df84a54d64aeda2b1e7cdca5ff16838c95f28445447866ebedaec46cf",
+    "receipts/estimate_capped_at_1h.json": "fb77d33b3e75f317274bb8b9cfe8b7cb8c23b48554ea2e8b6bb278f9fe4ec219",
+    "receipts/estimate_table_capped_at_1h.md": "723d5111e14ba4806e8e44fd183b44fe9ca165bffc0f5e5c55c3d17a084c3a28"
+  },
+  "results": [
+    {
+      "sample": "sample_results_with_followup.jsonl",
+      "byte_identical_outputs": {
+        "estimate.json": "39b5ddfdf5aeab7a346bff82a968b2fa31555cf4c3954185d8b1b4ad809dcc2f",
+        "estimate_table.md": "a84d416df84a54d64aeda2b1e7cdca5ff16838c95f28445447866ebedaec46cf"
+      },
+      "cpu_hours_5_95": [
+        2864,
+        5392
+      ],
+      "cpu_hours": 3915
+    },
+    {
+      "sample": "sample_results.jsonl",
+      "byte_identical_outputs": {
+        "estimate_capped_at_1h.json": "fb77d33b3e75f317274bb8b9cfe8b7cb8c23b48554ea2e8b6bb278f9fe4ec219",
+        "estimate_table_capped_at_1h.md": "723d5111e14ba4806e8e44fd183b44fe9ca165bffc0f5e5c55c3d17a084c3a28"
+      },
+      "cpu_hours_5_95": [
+        2864,
+        5216
+      ],
+      "cpu_hours": 3856
+    }
+  ],
+  "verifier_sha256": "09d17efb8edd03cebcea0f9b04187ede3a6d8c7353134d1b097abbdcd84f5d8b"
+}
