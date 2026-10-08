@@ -340,5 +340,12 @@ state is too small for meaningful millisecond timing. This supports integrating
 the helper, but is not an end-to-end search speedup measurement.
 `phase-two-components-fast-evidence/` retains source, receipts, raw logs and
 the proof/timing audit. The engine's `dfs2` now calls `stateOKFast`, and its
-soundness proof rewrites through `stateOKFast_eq`; the full chain must rebuild
-before this change is accepted as verified.
+soundness proof rewrites through `stateOKFast_eq`.
+
+The integrated source at `cacbdb7b8b35d93e985fed136d4127436eb6ed1b` was
+verified in job `20261008T111037-erdos85__h3-triple-formal-20261007-441642`:
+Engine, Bridge and Split rebuilt in 11s, 4.8s and 3.6s, with exit zero.
+The four exported theorems still have exactly `propext`, `Classical.choice`
+and `Quot.sound`, with no `sorry`. `fast-state-build/` retains the successful
+fresh-object/source/log audit. The component optimization is integrated and
+sound; complete-bucket runtime and graph exclusion remain unverified.
