@@ -1,0 +1,151 @@
+#!/usr/bin/env bash
+# e85-remote: drive the erdos85 cloud Lean builder from the Mac (no SSH know-how needed).
+#
+#   e85-remote start [--wall H]       start the builder (H: raise today's UTC uptime wall)
+#   e85-remote stop                   stop it (EBS kept; nothing is terminated)
+#   e85-remote status                 EC2 state, watchdog counters, containers, recent jobs
+#   e85-remote build <branch|commit> <Module> [--mem GB] [--timeout 2h] [--threads N]
+#                                     [--cache] [--full] [--no-follow]
+#   e85-remote run <branch|commit> [--host] [--mem GB] [--timeout 2h] [--threads N]
+#                                     [--full] [--no-follow] -- <cmd...>
+#                                     cmd runs in the branch worktree's proofs/ dir INSIDE
+#                                     the pinned Lean image (same mounts as a build), or on
+#                                     the host in the worktree root with --host
+#   e85-remote logs <job>             reattach / replay a job log (exit status returned)
+#   e85-remote jobs | kill <job>      list jobs / stop one
+#   e85-remote sync-artifacts <path>  push a file/dir under /Volumes/Stripe/lean-genius/artifacts
+#                                     to the builder at the same absolute path (via private S3)
+#   e85-remote worktrees | clean <name>
+#   e85-remote ssh [cmd...]           raw shell (debugging)
+#
+# Branches must be pushed to origin first; the builder fetches from GitHub. Remote worktrees
+# are sparse (proofs/ + scripts/) unless --full is given once for that branch. Each branch
+# gets its own worktree and its own proofs/.lake/build volume (seeded from the warm base);
+# Mathlib packages are shared. Exit status of build/run/logs = the remote job's exit status.
+# The instance auto-starts on build/run (E85_NO_AUTOSTART=1 to disable) and stops itself
+# after 60 idle minutes or 10 h uptime per UTC day. See README.md next to this script.
+set -euo pipefail
+export AWS_PROFILE=${E85_AWS_PROFILE:-2am-admin}
+export AWS_DEFAULT_REGION=${E85_AWS_REGION:-us-east-1}
+KEY=${E85_SSH_KEY:-$HOME/.ssh/e85-lean-builder}
+ART_ROOT=/Volumes/Stripe/lean-genius/artifacts
+ART_S3=s3://2am-erdos85-certs/lean-builder/artifacts
+SELF_DIR=$(cd "$(dirname "$(readlink -f "$0" 2>/dev/null || echo "$0")")" && pwd)
+
+die() { echo "e85-remote: $*" >&2; exit 2; }
+say() { echo "[e85-remote] $*" >&2; }
+
+instance_id() {
+    [[ -n "${E85_INSTANCE_ID:-}" ]] && { echo "$E85_INSTANCE_ID"; return; }
+    aws ec2 describe-instances \
+        --filters Name=tag:Project,Values=erdos85-lean-builder Name=tag:Role,Values=builder \
+                  Name=instance-state-name,Values=pending,running,stopping,stopped \
+        --query 'Reservations[].Instances[].InstanceId' --output text | awk '{print $1}'
+}
+IID=""
+iid() { [[ -n "$IID" ]] || IID=$(instance_id); [[ -n "$IID" ]] || die "no builder instance (tag Project=erdos85-lean-builder, Role=builder)"; echo "$IID"; }
+state() { aws ec2 describe-instances --instance-ids "$(iid)" --query 'Reservations[0].Instances[0].State.Name' --output text; }
+
+SSH_OPTS=()
+ssh_opts() {
+    mkdir -p "$HOME/.ssh/e85cm"
+    SSH_OPTS=(-i "$KEY" -l ec2-user
+        -o "ProxyCommand=aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters portNumber=%p"
+        -o ControlMaster=auto -o "ControlPath=$HOME/.ssh/e85cm/%C" -o ControlPersist=5m
+        -o StrictHostKeyChecking=accept-new -o "UserKnownHostsFile=$HOME/.ssh/known_hosts_e85"
+        -o ServerAliveInterval=30 -o ServerAliveCountMax=6 -o LogLevel=ERROR -o ConnectTimeout=60)
+}
+rsh() { ssh_opts; ssh "${SSH_OPTS[@]}" "$(iid)" "$@"; }
+
+wait_ready() {
+    local id; id=$(iid)
+    say "waiting for $id (running + SSM online)..."
+    aws ec2 wait instance-running --instance-ids "$id"
+    for _ in $(seq 1 60); do
+        [[ "$(aws ssm describe-instance-information --filters Key=InstanceIds,Values="$id" \
+              --query 'InstanceInformationList[0].PingStatus' --output text 2>/dev/null)" == Online ]] && break
+        sleep 5
+    done
+    for _ in $(seq 1 30); do rsh true </dev/null 2>/dev/null && { say "builder ready"; return 0; }; sleep 5; done
+    die "builder did not become reachable over SSM"
+}
+
+do_start() {
+    local wall=""
+    [[ "${1:-}" == --wall ]] && wall=${2:?hours}
+    if [[ -n "$wall" ]]; then
+        aws ec2 create-tags --resources "$(iid)" --tags "Key=E85WallHours,Value=${wall}@$(date -u +%F)"
+        say "today's (UTC) uptime wall raised to ${wall}h"
+    fi
+    case $(state) in
+        running) ;;
+        stopping) say "instance is stopping; waiting"; aws ec2 wait instance-stopped --instance-ids "$(iid)"
+                  aws ec2 start-instances --instance-ids "$(iid)" >/dev/null ;;
+        *) say "starting $(iid)"; aws ec2 start-instances --instance-ids "$(iid)" >/dev/null ;;
+    esac
+    wait_ready
+    sync_tooling
+}
+
+ensure_running() {
+    [[ "$(state)" == running ]] && { sync_tooling; return; }
+    [[ -n "${E85_NO_AUTOSTART:-}" ]] && die "builder is $(state); run: e85-remote start"
+    do_start
+}
+
+# Keep the host-side runner in sync with this checkout's copy (one cheap hash compare).
+# docker-build.sh is taken from next to this script (installed copy) or the repo checkout.
+sync_tooling() {
+    local db="$SELF_DIR/docker-build.sh"
+    [[ -r "$db" ]] || db="$SELF_DIR/../../../../proofs/scripts/docker-build.sh"
+    [[ -r "$db" && -r "$SELF_DIR/e85-host.sh" && -r "$SELF_DIR/e85-watchdog.sh" ]] || return 0
+    local h; h=$(cat "$SELF_DIR/e85-host.sh" "$SELF_DIR/e85-watchdog.sh" "$db" | shasum -a 256 | cut -c1-64)
+    [[ "$(rsh cat /opt/e85/bin/.tooling-hash </dev/null 2>/dev/null || true)" == "$h" ]] && return 0
+    say "updating host tooling"
+    tar -cf - -C "$SELF_DIR" e85-host.sh e85-watchdog.sh -C "$(dirname "$db")" docker-build.sh |
+        rsh "set -e; test -d /opt/e85/bin || exit 0; s=/opt/e85/tooling-staging; mkdir -p \$s; tar -xf - -C \$s
+        install -m 755 \$s/e85-host.sh /opt/e85/bin/e85-host; install -m 755 \$s/docker-build.sh /opt/e85/bin/docker-build.sh
+        sudo install -m 755 \$s/e85-watchdog.sh /usr/local/sbin/e85-watchdog; echo $h > /opt/e85/bin/.tooling-hash"
+}
+
+do_status() {
+    local id st; id=$(iid); st=$(state)
+    aws ec2 describe-instances --instance-ids "$id" --query 'Reservations[0].Instances[0].[InstanceId,InstanceType,InstanceLifecycle||`on-demand`,Placement.AvailabilityZone,State.Name,LaunchTime]' --output text
+    [[ "$st" == running ]] && rsh /opt/e85/bin/e85-host status
+    return 0
+}
+
+do_sync_artifacts() {
+    [[ $# -ge 1 ]] || die "usage: sync-artifacts <path under $ART_ROOT> ..."
+    local p abs rel
+    for p in "$@"; do
+        abs=$(cd "$(dirname "$p")" && pwd)/$(basename "$p")
+        [[ "$abs" == "$ART_ROOT"/* ]] || die "$p is not under $ART_ROOT"
+        rel=${abs#"$ART_ROOT"/}
+        if [[ -d "$abs" ]]; then
+            aws s3 sync --only-show-errors "$abs/" "$ART_S3/$rel/"
+            ensure_running; rsh "aws s3 sync --only-show-errors '$ART_S3/$rel/' '$ART_ROOT/$rel/' && du -sh '$ART_ROOT/$rel'"
+        else
+            aws s3 cp --only-show-errors "$abs" "$ART_S3/$rel"
+            ensure_running; rsh "mkdir -p '$(dirname "$ART_ROOT/$rel")' && aws s3 cp --only-show-errors '$ART_S3/$rel' '$ART_ROOT/$rel' && ls -l '$ART_ROOT/$rel'"
+        fi
+    done
+}
+
+qargs() { local a out=""; for a in "$@"; do out+=" $(printf '%q' "$a")"; done; echo "$out"; }
+
+cmd=${1:-help}; shift || true
+case $cmd in
+    start) do_start "$@" ;;
+    stop) say "stopping $(iid)"; aws ec2 stop-instances --instance-ids "$(iid)" --query 'StoppingInstances[0].CurrentState.Name' --output text ;;
+    status) do_status ;;
+    build|run) ensure_running; rsh -t -t /opt/e85/bin/e85-host "$cmd$(qargs "$@")" 2>&1 | perl -pe 'BEGIN { $| = 1 } s/\r//g'; exit "${PIPESTATUS[0]}" ;;
+    logs|follow) ensure_running; rsh /opt/e85/bin/e85-host follow "$(printf %q "${1:?job id}")" ;;
+    jobs|worktrees) ensure_running; rsh /opt/e85/bin/e85-host "$cmd" ;;
+    kill|clean) ensure_running; rsh /opt/e85/bin/e85-host "$cmd" "$(printf %q "${1:?arg}")" ;;
+    sync-artifacts) do_sync_artifacts "$@" ;;
+    ssh) ensure_running; rsh "$@" ;;
+    instance-id) iid ;;
+    help|-h|--help) sed -n '2,27p' "$0" ;;
+    *) die "unknown command $cmd (try: e85-remote help)" ;;
+esac
