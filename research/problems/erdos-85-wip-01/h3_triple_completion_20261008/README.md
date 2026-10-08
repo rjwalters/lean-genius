@@ -111,3 +111,42 @@ was captured for this job.
 This rules out attributing all expensive work to phase three. It does not yet
 distinguish callback hashing from phase-two branching. No pruning change or
 new exclusion attempt was made on this measurement alone.
+
+## Phase-one counts and hashing
+
+The instrumented traversal `PhaseOneProfile.lean` follows the same clause
+choice, low-vertex/open-clause guards, twin skipping and edge-insertion
+branches as `dfs1`. At each leaf it computes the existing `stKey` and increments
+one of 384 counters. It records fuel exhaustion and invalid guards separately.
+This is profiling code, not a proved counting theorem or an exclusion result.
+
+The first helper failed to parse a multiline record update, before evaluation.
+`profile-evidence/` preserves that failed compilation at `4ac20ada301` in job
+`20261008T103524-erdos85__h3-triple-formal-20261007-417821`; no counts or
+certificate are accepted from it. The compiler's subsequent `#eval` refusal
+mentions `sorry` because elaboration had failed, not because an accepted
+search result was obtained.
+
+After the syntax fix, job
+`20261008T103658-erdos85__h3-triple-formal-20261007-419075` at
+`16bc832cef47affb671b7fc225d88f0ff521fc59` exited zero in 4.870 seconds
+(3.647 user, 1.189 system), including Lean startup. Maximum RSS was
+6,497,672 KiB. The one-minute cap did not fire. The output reports:
+
+- 8,167 phase-one nodes and 1,088 leaves;
+- zero fuel-exhausted or invalid-guard states;
+- four leaves in bucket 0 of 384;
+- bucket sizes ranging from zero to eleven, summing to 1,088.
+
+`profile-fixed-evidence/` retains the exact helper and runner, raw records,
+receipt and audit. The read-only audit checks source/commit identity, the
+nonempty compiler object, unchanged prerequisite objects, complete counter
+output, 384 nonnegative integer buckets, their sum and zero failure counters.
+The spec requests 16 GiB/two CPUs; no live container snapshot was captured.
+
+This measurement includes hashing and points to phase-two branching as the
+dominant unresolved cost in the earlier diagnostic. The helper's timing is
+not a formal lower/upper bound on the uninstrumented search. Four leaves in
+bucket 0 do not imply that other buckets have equal runtime; no campaign cost
+is extrapolated. These partial-graph leaves also are not the old census's
+1,811 outstanding pairs and grant no credit to that census.
