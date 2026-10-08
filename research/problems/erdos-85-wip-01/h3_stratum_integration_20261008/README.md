@@ -1,6 +1,6 @@
 # H3 stratum integration preparation
 
-Status: bound to the accepted triple cell; exact sources materialized;
+Status: bound to the accepted triple cell; exact sources materialized and pair objects transferred;
 no stratum build or acceptance yet.
 Claude requested this integration in squad message 53033 after confirming
 that the bounded H3 campaign fits the builder usage already approved.
@@ -32,7 +32,7 @@ The expected stratum trust set is listed explicitly in `SOURCE.json`:
 `Classical.choice`, `Quot.sound` (411 total). Final acceptance must compare
 the printed set exactly and reject any additional or missing axiom.
 
-## Remaining work
+## Integration sequence
 
 1. Obtain terminal, independently accepted triple-cell evidence from the
    bounded sweep, residual pass and final cell assembly. Preserve partial results if a pass stops early; do not
@@ -50,7 +50,7 @@ the printed set exactly and reject any additional or missing axiom.
    H3 stratum closure does not discharge the remaining H1/H7 external
    evidence hypotheses or complete the paper's human/publication review.
 
-No cloud cache transfer or stratum compilation has occurred yet.
+The pair-object transfer is independently verified. Stratum compilation is pending.
 
 ## Transfer and materialization helpers
 
@@ -144,5 +144,23 @@ prepared source hashes; `SOURCE.json` remains unchanged.
 Materialization preflight and application both passed: 414 new files copied
 byte-for-byte into `proofs/Proofs`, with the four existing runtime-chain
 sources unchanged. The 168 shared pair dependency sources also match.
-This grants no additional theorem; object transfer and fresh stratum
-compilation/acceptance still remain.
+This grants no additional theorem; fresh stratum compilation/acceptance
+still remain.
+
+## Verified pair-object transfer
+
+Host job `20261008T145641-erdos85__h3-triple-formal-20261007-593077` at
+`80818771f0f157d0363b6d9d93b0afc8b9df9c04` exited zero and atomically
+copied 28 audited pair objects without overwriting any destination.
+`transfer-evidence1/AUDIT.json` is `PAIR_TRANSFER_ARTIFACT_AUDIT_PASS`.
+The read-only inspection was repeated after transfer and all 28 source and
+destination objects matched the receipt; the existing triple objects and
+shared sources also passed the helper's checks. The original host log,
+specification, exit, pinned helper/source/binding, transfer receipt and
+independent inspection are retained unchanged.
+
+`pair-transfer.json` SHA256 is
+`ff7f693321672791c97049503da0e00ae4db598e2b7bcb697b8f0b18b42a7145`.
+The final input loader passes with 417 accepted imported objects and all
+418 exact materialized sources. No native search was repeated by this
+transfer, and it grants no new stratum theorem.

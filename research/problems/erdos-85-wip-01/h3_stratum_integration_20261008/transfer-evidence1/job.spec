@@ -1,0 +1,11 @@
+MODE=host
+REF=erdos85/h3-triple-formal-20261007
+TARGET=''
+CMD=sudo\ python3\ -B\ research/problems/erdos-85-wip-01/h3_stratum_integration_20261008/transfer_pair.py\ --triple-audit\ research/problems/erdos-85-wip-01/h3_cell_assembly_20261008/cell-evidence1/AUDIT.json\ --triple-audit-sha\ 44513a1f3752f93b67c20378e072f0b67cfa73b5703c27b5226bd6c2ff74afd8\ --apply\ --receipt\ research/problems/erdos-85-wip-01/h3_stratum_integration_20261008/pair-transfer.json
+MEM_GB=16
+TIMEOUT=3m
+THREADS=1
+CACHE=0
+CPUS=2
+VOLUME=''
+FULL=1
