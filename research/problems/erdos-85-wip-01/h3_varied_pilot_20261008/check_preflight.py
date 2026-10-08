@@ -117,8 +117,10 @@ def main():
     log = target.with_suffix(".log")
     env["LEAN_PATH"] = str(output) + os.pathsep + str(base) + os.pathsep + env.get("LEAN_PATH", "")
     result = run(["lean", "-R", str(output), "-o", str(obj), str(target)], log, env)
-    reports = [{"theorem": n, "axioms": [x.strip() for x in ax.split(",") if x.strip()]}
-               for n, ax in re.findall(r"'([^']+)' depends on axioms: \[([^]]*)\]", log.read_text())]
+    reports = [{"theorem": n, "axioms": [x.strip() for x in (ax or "").split(",") if x.strip()]}
+               for n, ax in re.findall(
+                   r"'([^']+)' (?:depends on axioms: \[([^]]*)\]|does not depend on any axioms)",
+                   log.read_text())]
     expected = re.findall(r"^#print axioms (\S+)\s*$", source.read_text(), re.M)
     passed = (result["exit_code"] == 0 and obj.is_file()
               and [r["theorem"] for r in reports] == expected
