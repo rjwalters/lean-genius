@@ -62,7 +62,32 @@ process were also observed absent after termination.
 affinity `0,1` to `e85-host`, so its `nproc`-derived Docker quota was two.
 
 This one censored sample does not estimate the whole route's cost or establish
-that it improves on the census. Before another exclusion computation, measure
-phase-one traversal separately to distinguish repeated traversal overhead from
-work inside the selected phase-two/three leaves. No full campaign is authorized
-or launched by this experiment, and the prior census route is unchanged.
+that it improves on the census. No full campaign is authorized or launched by
+this experiment, and the prior census route is unchanged.
+
+## Phase-one-only follow-up
+
+`PhaseOneOnly.lean` establishes `dfs1 (fun _ => true) 70 s0 = true` by
+`native_decide`: every phase-one leaf is accepted without running phase two or
+three. This is a traversal diagnostic and cannot imply graph exclusion.
+
+Job `20261008T102436-erdos85__h3-triple-formal-20261007-410562`, execution
+`94aab7d1b8baacb6e5b3c65c6ea319b65ebe89f6`, exited zero under a 60-second
+inner cap. The compiler process finished in 4.970 seconds, including imports
+and Lean startup, with 3.648 user seconds and 1.299 system seconds. Maximum RSS
+was 6,485,932 KiB. The object hash is
+`5f43898b6c353e3ed38c2c6c5d3006e85e212739b7d302c3a2672ba732076150`.
+The theorem uses `propext`, `Quot.sound`, and its own
+`phaseOneTraversal._native.native_decide.ax_1_1`; it is not standard-axiom-only.
+
+`phase-one-evidence/` retains the exact source, runner, raw job records, inner
+receipt, compiler log and read-only audit. The audit checks execution/source
+identity, actual object hash, exact axiom set, unchanged prerequisite objects
+and removal of the staged source. The job spec requests 16 GiB/two CPUs; no
+live Docker inspection was captured for this short job. No isolation from
+other workloads on this shared builder was enforced.
+
+The result shows that the basic phase-one traversal can finish well within the
+earlier cap. It suggests the expensive work is elsewhere, but the constant
+callback also omits per-leaf hashing: this measurement alone does not isolate
+hashing from phase-two/three search or measure bucket balance.

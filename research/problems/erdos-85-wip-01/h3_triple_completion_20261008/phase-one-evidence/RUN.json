@@ -1,0 +1,86 @@
+{
+  "command": [
+    "lean",
+    "-j1",
+    "H3TripleCompletionPhaseOneOnly.lean",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/phase-one-only/PhaseOneOnly.olean"
+  ],
+  "source_sha256": "ab38e66749e9d54a5dd6b276d74bad87ab0e6201f843281e51fde45521b54ea1",
+  "timeout_seconds": 60,
+  "started_utc": "2026-10-08T10:24:37.703375+00:00",
+  "prerequisites": [
+    {
+      "module": "Erdos85H3TripleCompletionEngine",
+      "source_sha256": "cbd5665d134afaeeaedd65be02bb4e121559b4fd747cea6828fe4658cbe5dca1",
+      "olean_sha256": "c87b641fc9d2b1ad101edf455fe56be65afbf1b5770b8793f2c3e7c361122903",
+      "olean_bytes": 2091840,
+      "olean_mtime": 1791454444.2055662,
+      "fresh_build_elapsed": "9.7s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.search_sound",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85H3TripleCompletionBridge",
+      "source_sha256": "499f480a8d1eb73f33ca4119b0175f319982484a9d3fcdf0a2fbbda73d2db36b",
+      "olean_sha256": "02220d1339caaf079b5889edf2e0c4e52b49b37d6c2b89ba4886c06d5a77e18e",
+      "olean_bytes": 198624,
+      "olean_mtime": 1791454455.655508,
+      "fresh_build_elapsed": "5.1s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.threeHighCanonicalRepresentativeExcluded_one_of_tripleSearch",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.H3TripleCompletion.orderFortyNineTripleCellExcluded_three_one_of_tripleSearch",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85H3TripleCompletionSplit",
+      "source_sha256": "b85d4d99bb82cefdbe5f8d0543928262422f2f5e6a8dfa799d7100dc7ca826a3",
+      "olean_sha256": "acfdbed1a9ccec6f972f9c8c8afc5575937d82b3cbc3541f0239a8e3b019d0d3",
+      "olean_bytes": 187736,
+      "olean_mtime": 1791454459.5419788,
+      "fresh_build_elapsed": "3.9s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.orderFortyNineTripleCellExcluded_three_one_of_parts",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  ],
+  "status": "COMPILED",
+  "returncode": 0,
+  "timed_out": false,
+  "elapsed_seconds": 4.969927978003398,
+  "child_user_seconds": 3.647617,
+  "child_system_seconds": 1.299151,
+  "child_maxrss_kib": 6485932,
+  "log_sha256": "8697b34723d3ec7fba41afaab47549e03b21c6e3d861f996dc8c7fe5f01dce3a",
+  "olean_sha256": "5f43898b6c353e3ed38c2c6c5d3006e85e212739b7d302c3a2672ba732076150",
+  "olean_bytes": 7448
+}

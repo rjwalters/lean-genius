@@ -1,0 +1,11 @@
+MODE=build
+REF=erdos85/h5-formal-20261008
+TARGET=Proofs.Erdos85H5Bridge
+CMD=''
+MEM_GB=64
+TIMEOUT=30m
+THREADS=4
+CACHE=0
+CPUS=16
+VOLUME=''
+FULL=0
