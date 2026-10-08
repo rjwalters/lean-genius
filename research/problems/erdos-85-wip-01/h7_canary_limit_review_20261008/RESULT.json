@@ -1,0 +1,59 @@
+{
+  "status": "MOCKED_CANARY_RACE_REPRODUCED_AND_PATCH_VALIDATED",
+  "original": {
+    "source_sha256": "5fb1c7adaf444375a18ced2e82b22eefac74e80f79b0600f4a607c5b0959273e",
+    "mode": "race",
+    "limit": 1,
+    "claimed": [
+      "batch-a",
+      "batch-b"
+    ],
+    "completed": [
+      "batch-a",
+      "batch-b"
+    ],
+    "state": {
+      "errors": 0,
+      "done": 2,
+      "items": 2,
+      "stop": false,
+      "active": {},
+      "statuses": {
+        "CERTIFIED": 2
+      }
+    },
+    "logs": [
+      "slot=1 claimed batch-a",
+      "slot=1 batch-a CERTIFIED certified=1/1 proof=None solver_cpu=0s",
+      "slot=0 claimed batch-b",
+      "slot=0 batch-b CERTIFIED certified=1/1 proof=None solver_cpu=0s"
+    ]
+  },
+  "proposed": {
+    "source_sha256": "e159d9fe358488fbaf8c6f3095915b613beb895c7fff3c07e5b72cd5af2792d4",
+    "mode": "race",
+    "limit": 1,
+    "claimed": [
+      "batch-a"
+    ],
+    "completed": [
+      "batch-a"
+    ],
+    "state": {
+      "errors": 0,
+      "done": 1,
+      "items": 1,
+      "stop": false,
+      "active": {},
+      "statuses": {
+        "CERTIFIED": 1
+      }
+    },
+    "logs": [
+      "slot=0 claimed batch-a",
+      "slot=0 batch-a CERTIFIED certified=1/1 proof=None solver_cpu=0s"
+    ]
+  },
+  "tests_run": 5,
+  "scope": "Exact slot_loop AST with mocked store and batch execution. No AWS, solver, Lean, production canary or source integration."
+}
