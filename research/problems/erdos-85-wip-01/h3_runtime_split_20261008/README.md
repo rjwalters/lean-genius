@@ -19,3 +19,22 @@ soundness exports retaining their standard axiom sets. A plugin test must
 then use the generated C from that exact production Runtime and the existing
 bucket-zero source. No additional bucket or whole-cell credit is asserted
 by the relocation or by the earlier standalone benchmark.
+
+## Conditional build verified
+
+Job `20261008T115540-erdos85__h3-triple-formal-20261007-472600` exited zero
+at `3247ac5b9e10d688214d3de9f5f0a2d6442dc087`. Runtime, Engine, Bridge and
+Split were freshly built in 1.4, 9.8, 4.0 and 3.9 seconds. All four soundness
+exports retained exactly `propext`, `Classical.choice`, `Quot.sound`, with no
+`sorry`. `build-evidence` retains the exact sources and raw job records;
+the read-only audit binds those to the fresh objects and generated Runtime C.
+The first observation arrived before the terminal exit record; the later
+successful audit inspected the same job, without a restart.
+
+`run_canary.py` compiles that audited Runtime C with Lean's exported-symbol
+flag and loads the resulting plugin for the existing `Probe384R0.lean`.
+It checks all prerequisite source/object hashes before running, uses a
+60-second shared-library compile cap and a 180-second Lean cap, and records
+the exact commands, artifacts and raw reports. The outer cloud job is capped
+at four minutes, two CPUs and 16 GiB. It reruns only the already verified
+bucket zero; other bucket premises remain outstanding.
