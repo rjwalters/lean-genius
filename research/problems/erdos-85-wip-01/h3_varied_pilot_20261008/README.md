@@ -1,6 +1,6 @@
 # Four-case H3 timing sample
 
-Status: **input/deficient-membership preflight PASS; Deficient U26/R2 certificate and consumer PASS**.
+Status: **input/deficient-membership preflight PASS; both deficient certificates and consumers PASS**.
 
 Claude requested 3–5 additional pairs after the U1/R15 pipeline fix, to measure
 cost variation before a larger campaign. The four selected cases are:
@@ -108,8 +108,18 @@ with wait4 peak RSS 6,549,052 KiB; its consumer took 9.702 seconds.
 Both reports contain exactly the standard three axioms plus this pair's
 native-decision axiom. The consumer retains its cross-domain and external
 capacity premises. This closes one pair, not the deficient census or H3.
-The second deficient sample U369/R11 was subsequently submitted as
+The second deficient sample U369/R11 passed as
 `20261008T050258-erdos85__h3-first-column-20261008-206594`, with the same
-source ref, audited preflight, and two-hour/16-GiB/one-thread limits.
-`DeficientU369R11-launch.json` is a submission record, not a passing result.
+source ref, audited preflight, and two-hour/16-GiB/one-thread limits, exiting
+zero at 06:17:21 UTC. Its certificate took 4,442.672 seconds wall (74.04
+minutes), 4,438.415 seconds user CPU, and 8,332,452 KiB peak RSS. Its consumer
+took 10.345 seconds. `DeficientU369R11-evidence/` retains all three exact
+sources, logs, individual receipts, the job log, and an independent audit.
+Source/object hashes were separately checked on the cloud; certificate and
+consumer were freshly built. Both reports have exactly the standard three
+axioms and `Erdos85.VariedPilot.DeficientU369R11.rejected._native.native_decide.ax_1_1`.
+
+The two deficient certificate times differ by more than a factor of 23.
+Together with the 97.4-minute U1/R15 pilot, this shows substantial variation
+among these selected cases; it does not determine a census-wide average.
 Both full sample cases remain unqueued pending their membership proof.
