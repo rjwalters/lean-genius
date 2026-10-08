@@ -205,7 +205,9 @@ def fleet_request(a, version: str) -> dict:
     subnets = [s for s in subnets if s["AvailabilityZone"] not in a.exclude_az]
     overrides = [{"InstanceType": kind, "SubnetId": s["SubnetId"], "MaxPrice": a.max_price or vc.MAX_SPOT_PRICE}
                  for kind in (a.types or vc.TYPES) for s in subnets]
-    return {"Type": "request", "TerminateInstancesWithExpiration": True,
+    # "maintain" makes EC2 replace spot-reclaimed nodes; `stop` deletes active fleets with
+    # --terminate-instances (controller.stop), and ValidUntil bounds the fleet either way.
+    return {"Type": getattr(a, "fleet_type", "request"), "TerminateInstancesWithExpiration": True,
             "ValidUntil": (vc.now() + dt.timedelta(seconds=LIFETIME + 3600)).strftime("%Y-%m-%dT%H:%M:%SZ"),
             "SpotOptions": {"AllocationStrategy": "price-capacity-optimized", "InstanceInterruptionBehavior": "terminate"},
             "LaunchTemplateConfigs": [{"LaunchTemplateSpecification": {"LaunchTemplateName": vc.LT_NAME, "Version": version},
@@ -620,6 +622,8 @@ def main() -> int:
     s = sub.add_parser("freight"); s.add_argument("--manifest", default=""); s.add_argument("--dry-run", action="store_true"); s.set_defaults(run=freight)
     s = sub.add_parser("launch"); s.add_argument("count", type=int); s.add_argument("--types", nargs="*")
     s.add_argument("--exclude-az", nargs="*", default=EXCLUDE_AZ); s.add_argument("--max-price", default="")
+    s.add_argument("--fleet-type", choices=["request", "maintain"], default="request",
+                   help="maintain: EC2 replaces spot-reclaimed nodes until the fleet is deleted by stop or expires")
     s.add_argument("--clear-stop", default="", metavar="REASON",
                    help="archive a clearable control/STOP (completion or operator stop only) and log the reason")
     s.add_argument("--manifest-pass", action="store_true", help="residual / top-up launch: skip the canary-record check")
