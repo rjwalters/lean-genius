@@ -1,9 +1,9 @@
 # Positive-unit leaf and negative-cover interface
 
-Status: **first cloud build failed on simplification; fixed source awaiting recheck**.
+Status: **cloud build PASS; all four exports audited with standard axioms only**.
 
 `Proofs.Erdos85CnfPositiveCaseSplit` defines a positive-unit CNF for each
-list of variables and the negative blocking clause for each list. It proposes
+list of variables and the negative blocking clause for each list. It proves
 a generic Boolean partition theorem and a conditional UNSAT theorem from
 all case certificates plus a cover certificate, without a separate `hsplit`
 hypothesis. Repeated variables, duplicate cases, and empty lists are allowed.
@@ -26,3 +26,11 @@ cross-check and requires no changes to Claude's proof files. The first build
 failed because composition expressions were not unfolded by the core simp
 set; `Function.comp_def` is now supplied explicitly. The failed build and
 its follower output are retained in `first-build.json` / `first-build.log`.
+
+The corrected source compiled in cloud job
+`20261008T045302-erdos85__h3-triple-formal-20261007-199278` at
+`0fac07a162181577a146ddb5608f9dfee505f791` (exit 0; target 318 ms).
+`proof-pass.json` binds the source, independently fetched object hash, and
+raw cloud log. The two evaluation lemmas use `propext` and `Quot.sound`;
+the partition and conditional UNSAT theorems additionally use
+`Classical.choice`. There is no `sorryAx` or native-decision axiom.

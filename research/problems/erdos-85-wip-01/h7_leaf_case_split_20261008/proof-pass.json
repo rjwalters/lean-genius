@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "job": "20261008T045302-erdos85__h3-triple-formal-20261007-199278",
+  "execution_commit": "0fac07a162181577a146ddb5608f9dfee505f791",
+  "exit_code": 0,
+  "source": "proofs/Proofs/Erdos85CnfPositiveCaseSplit.lean",
+  "source_sha256": "a6e57fbcff2637f0376218e683dfd77367a07a3677ff402457fb8f00d412bbf9",
+  "object_sha256": "4c34a21b135243a6b9cca636ab78680d61b9e28fda456259d91bf2cdb537b20f",
+  "raw_log_sha256": "15e9a471b772436f10ad18d719eeeba9d8f60dc126095e74642ec268cd9a568c",
+  "axiom_reports": {
+    "Erdos85.cnfPositiveUnits_eval": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Erdos85.cnfNegativeCaseCover_eval": [
+      "propext",
+      "Quot.sound"
+    ],
+    "Erdos85.cnfPositiveCases_cover_or_case": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Erdos85.cnf_unsat_of_positive_cases": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "verification": "Local and execution-commit source match independently fetched cloud source hash; cloud object hash and authoritative job exit fetched separately; raw log has exactly four expected reports.",
+  "scope": "Generic conditional theorem only; no finite rejection or H7 closure."
+}
