@@ -23,16 +23,19 @@ its later consumer fails. It has four independently audited completed pairs:
 | Deficient U26/R2 | 3.207 | 6,549,052 |
 | Deficient U369/R11 | 74.045 | 8,332,452 |
 
-The final diagnostic Full U54/R20 is running separately. It must not be
-claimed by a campaign worker while that run is live. Its future PASS needs
-independent audit before reuse; a timeout stays unresolved.
+The final diagnostic Full U54/R20 reached its two-hour job cap and exited 124.
+Its independently audited timeout evidence is in
+`../h3_varied_pilot_20261008/FullU54R20-timeout-evidence/`. No Certificate or
+Consumer object was produced. It stays unresolved and excluded by the current
+preflight launcher; this timeout does not authorize a retry or grant credit.
 
 The original verified reduced census is 261 full + 1,554 deficient = 1,815
 pairs. `manifest.py` reconstructs the literal set formulas and representative
 vectors from pinned source, checks the cardinalities, and emits `MANIFEST.json`
 with a unique case ID, compact parameters, exact module names and source hashes
 for every pair. The four audited computations are credited explicitly, leaving
-1,811 pending computations, of which one is in flight. The current formal
+1,811 pending computations, including the timed-out diagnostic. No triple
+diagnostic remains in flight. The current formal
 connections Full260 + Deficient1552 still expose 1,812 hypotheses: the U3/R3
 computation has passed but its further full-census connection is prepared,
 not compiled. Keep compute credit and formal aggregation status distinct.
@@ -275,7 +278,9 @@ partial upload, consumer-only continuation, budget exhaustion and STOP tests.
 This plan intentionally creates no IAM role, bucket object or instance.
 
 The implemented planner checks manifest hashes/counts, excludes caller-specified
-live IDs, enforces the capacity fit, and emits a deterministic pending queue:
+live IDs, enforces the capacity fit, and emits a deterministic pending queue.
+The following is the historical snapshot while Full U54/R20 was live; that
+diagnostic has since timed out. Planner output never grants retry permission:
 
 ```sh
 python3 -B controller.py --manifest MANIFEST.json \
@@ -325,8 +330,8 @@ A native_decide receipt remains native-backed; do not describe it as a
 standard-axiom-only or external CakeML certificate. H3 pair profile t=0 is a
 separate lane and is not covered by this triple-profile campaign.
 
-Outstanding: final diagnostic audit and manifest re-freeze; production native
-worker canary; executable worker/collector/fleet controller with tested recovery;
+Outstanding: a reviewed disposition for the timed-out diagnostic; production native
+worker canary; production collector/fleet controller with tested recovery;
 budget approval; execution; independent receipts; final Lean aggregation.
 
 ## Source bridge canary

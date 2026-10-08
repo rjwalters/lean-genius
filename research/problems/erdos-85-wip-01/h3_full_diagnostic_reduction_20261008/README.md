@@ -1,6 +1,14 @@
 # Consume the full diagnostic certificates
 
-Status: **prepared, uncompiled, unqueued; U54/R20 remains a live diagnostic**.
+Status: **prepared, uncompiled, unqueued; U54/R20 timed out and remains unresolved**.
+
+The U54/R20 job exited 124 at its two-hour cap, with no completed certificate.
+Its raw timeout evidence is in `../h3_varied_pilot_20261008/FullU54R20-timeout-evidence/`.
+Full259 can consume the already verified U3/R3 result, but the current combined
+checker below requires both diagnostics. A separately bounded Full259-only
+check remains to be prepared; Full258 must continue to require an independently
+verified U54/R20 certificate. No native search should be repeated just to run
+the Full259 connection.
 
 `Full259.lean` proposes consuming the independently audited U3/R3 native
 certificate after the verified `Full260` reduction. `Full258.lean` proposes

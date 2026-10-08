@@ -1,0 +1,46 @@
+{
+  "status": "TIMEOUT_OBSERVATION_AUDIT_PASS",
+  "case": "FullU54R20",
+  "job": "20261008T064336-erdos85__h3-first-column-20261008-270638",
+  "execution_commit": "9a1555a52461ab6d53bb145378f92de81c88cdc6",
+  "authoritative_exit": 124,
+  "terminal_classification": "TIMEOUT",
+  "outer_cap_seconds": 7200,
+  "raw_run_status": "RUNNING",
+  "active_module_at_cutoff": "Erdos85ThreeHighPilotFullU54R20Certificate",
+  "auditor_sha256": "75b46123102b2ec519b0bc3ee7fdb622323e93df733bbbb63c693d0a381bfc1b",
+  "files_sha256": {
+    "job.log": "41a4d04784fb932064d53296dfe2255c453ed3a4b23ff02d285750b96e92f48c",
+    "job.exit": "ca2ebdf97d7469496b1f4b78958f9dc8447efdcb623953fee7b6996b762f6fff",
+    "job.spec": "7f9918442bdafc4a5430472d8738b854276524c4d7a83302e054af2f878ac78b",
+    "RUN.json": "a4d73bd66c7fbb78fbecff516b55b1630789188f595d1e7f78a3d58b2fa50b56",
+    "Erdos85ThreeHighPilotFullU54R20Inputs.lean": "324653ac84cdf0a257221e3a495ace46b96e64a73e5d5f2fd3d0de1071f2bd38",
+    "Erdos85ThreeHighPilotFullU54R20Inputs.log": "89f00c55794c2bf21d3c8b08fe8553206f54bed742ce95992c57d657a406d97d",
+    "Erdos85ThreeHighPilotFullU54R20Inputs.run.json": "534678c99e9927663fd7eef29c027022b1fabb0746c2e2fff9ed9bc5227b36c1",
+    "Erdos85ThreeHighPilotFullU54R20Certificate.lean": "be3a4ac1b4700915860fc4507ef4df4c725439b8ba7bb47870791c3037125f28",
+    "Erdos85ThreeHighPilotFullU54R20Certificate.log": "218b3350d7f0dc260d958568abbcd02a91c47d4ce92981702ff57904827ce746",
+    "unexecuted-Erdos85ThreeHighPilotFullU54R20Consumer.lean": "1d0aa08a664fa59a2d0cee5564d6d49e4b37b12280aef646f41777e37ef5ea3e"
+  },
+  "objects": {
+    "Inputs": {
+      "exists": true,
+      "sha256": "f2b33f05da755c15afdf72c2ed3af608f46996d1830072fa612d7a7964e715d3"
+    },
+    "Certificate": {
+      "exists": false,
+      "sha256": null
+    },
+    "Consumer": {
+      "exists": false,
+      "sha256": null
+    }
+  },
+  "container_removed": true,
+  "old_runner_and_compiler_absent": true,
+  "completed_stages": [
+    "Inputs"
+  ],
+  "new_rejection_credit": false,
+  "retry_authorized": false,
+  "scope": "Right-censored selected diagnostic at the outer two-hour cap. No successful Certificate/Consumer object or receipt. Original RUN.json is retained unchanged even though the outer runner is terminal. No counterexample or OOM is inferred."
+}

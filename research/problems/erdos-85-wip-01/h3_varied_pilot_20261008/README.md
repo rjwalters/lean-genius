@@ -1,6 +1,7 @@
 # Four-case H3 timing sample
 
-Status: **both membership gates PASS; both deficient cases and Full U3/R3 PASS; Full U54/R20 pending**.
+Status: **both membership gates PASS; both deficient cases and Full U3/R3 PASS;
+Full U54/R20 timed out at its two-hour job cap and remains unresolved**.
 
 Claude requested 3–5 additional pairs after the U1/R15 pipeline fix, to measure
 cost variation before a larger campaign. The four selected cases are:
@@ -127,7 +128,7 @@ axioms and `Erdos85.VariedPilot.DeficientU369R11.rejected._native.native_decide.
 The two deficient certificate times differ by more than a factor of 23.
 Together with the 97.4-minute U1/R15 pilot, this shows substantial variation
 among these selected cases; it does not determine a census-wide average.
-Both full sample cases remain unqueued pending their membership proof.
+The full membership gate subsequently passed, enabling the two full diagnostics below.
 
 Full U3/R3 passed as cloud job
 `20261008T063412-erdos85__h3-first-column-20261008-264145` at commit
@@ -139,13 +140,26 @@ It completed with exit zero at 06:38:33 UTC. The certificate took
 the consumer took 10.336 seconds. Both were freshly built and use standard
 axioms plus exactly the matching FullU3R3 native rejection axiom.
 `FullU3R3-evidence/` retains the independently audited source/log/receipt
-sets; all cloud object hashes matched. Full U54/R20 is now submitted under the same bounded limits.
+sets; all cloud object hashes matched. Full U54/R20 used the same bounded limits.
 
-Full U54/R20 is submitted as
+Full U54/R20 ran as
 `20261008T064336-erdos85__h3-first-column-20261008-270638`, using the
 same pinned source commit `9a1555a52461ab6d53bb145378f92de81c88cdc6`,
 16-GiB limit, one Lake thread, and two-hour cap. It is the last of the four
-agreed diagnostic cases. No result is claimed yet.
+agreed diagnostic cases. It reached the 7,200-second job cap and exited 124.
+`FullU54R20-timeout-evidence/` retains the original job records, partial receipt,
+input/certificate logs and source snapshots. `audit_full54_timeout.py` checked
+the terminal exit, explicit timeout event, exact execution sources, absence of
+the old runner/compiler and container, and actual object inventory. Inputs has
+the expected object; Certificate and Consumer have neither completed objects
+nor per-stage receipts. The consumer source was never executed.
+
+The original `RUN.json` still says `RUNNING`, with Certificate active: the
+outer container timeout killed the runner before it could finalize that file.
+It is retained unchanged; `AUDIT.json` records the authoritative TIMEOUT.
+This is a censored timing observation, not a rejection, counterexample or OOM.
+No completed certificate duration or final peak RSS is available. No retry is
+authorized by this record and no automatic restart was performed.
 
 Audited certificate timings so far (consumer time excluded):
 
@@ -154,8 +168,8 @@ Audited certificate timings so far (consumer time excluded):
 | Deficient U26/R2 | 3.207 | 6,549,052 |
 | Deficient U369/R11 | 74.045 | 8,332,452 |
 | Full U3/R3 | 3.983 | 6,562,176 |
-| Full U54/R20 | pending | pending |
+| Full U54/R20 | TIMEOUT (two-hour job cap) | unavailable |
 
 The earlier U1/R15 pilot took 97.400 minutes. This selected diagnostic
 set shows large cost variation; it is not a basis for an unbiased campaign
-average. The remaining live case cannot yet be assigned a completed time.
+average. The timed-out case must remain censored in any cost analysis.
