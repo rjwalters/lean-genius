@@ -27,9 +27,8 @@ import Proofs.Erdos85H3PairPart23
 # Exclusion of the order-49 three-high pair cell
 
 Composition of the 24 `native_decide` parts of the pair-cell search with
-the kernel-checked engine soundness and bridge.  The result depends on
-`Lean.ofReduceBool` through the 24 part theorems and on nothing else
-beyond the standard axioms.
+the kernel-checked engine soundness and bridge.  The result uses the 24 native-backed part theorems. The final axiom
+reports below expose their exact trust dependencies.
 -/
 
 namespace Erdos85
@@ -37,7 +36,31 @@ namespace H3Pair
 
 theorem pairPart_24_all : ∀ r, r < 24 → pairPart 24 r = true := by
   intro r hr
-  interval_cases r <;> first | exact pairPart_24_00 | exact pairPart_24_01 | exact pairPart_24_02 | exact pairPart_24_03 | exact pairPart_24_04 | exact pairPart_24_05 | exact pairPart_24_06 | exact pairPart_24_07 | exact pairPart_24_08 | exact pairPart_24_09 | exact pairPart_24_10 | exact pairPart_24_11 | exact pairPart_24_12 | exact pairPart_24_13 | exact pairPart_24_14 | exact pairPart_24_15 | exact pairPart_24_16 | exact pairPart_24_17 | exact pairPart_24_18 | exact pairPart_24_19 | exact pairPart_24_20 | exact pairPart_24_21 | exact pairPart_24_22 | exact pairPart_24_23
+  interval_cases r
+  · exact pairPart_24_00
+  · exact pairPart_24_01
+  · exact pairPart_24_02
+  · exact pairPart_24_03
+  · exact pairPart_24_04
+  · exact pairPart_24_05
+  · exact pairPart_24_06
+  · exact pairPart_24_07
+  · exact pairPart_24_08
+  · exact pairPart_24_09
+  · exact pairPart_24_10
+  · exact pairPart_24_11
+  · exact pairPart_24_12
+  · exact pairPart_24_13
+  · exact pairPart_24_14
+  · exact pairPart_24_15
+  · exact pairPart_24_16
+  · exact pairPart_24_17
+  · exact pairPart_24_18
+  · exact pairPart_24_19
+  · exact pairPart_24_20
+  · exact pairPart_24_21
+  · exact pairPart_24_22
+  · exact pairPart_24_23
 
 /-- The canonical `t = 0` three-high representative is excluded. -/
 theorem threeHighCanonicalRepresentativeExcluded_zero :
