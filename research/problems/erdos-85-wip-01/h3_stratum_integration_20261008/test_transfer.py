@@ -1,7 +1,8 @@
 """Metadata and tiny-file transfer tests; no Lean or real cache mutations."""
-import copy,hashlib,tempfile,unittest
+import copy,hashlib,json,tempfile,unittest
 from pathlib import Path
-from transfer_pair import inspect,publish,validate_triple,JOB
+from transfer_pair import inspect,publish,validate_triple,load_spec,sha
+from fixture_cell import complete_cell_fixture
 class TransferChecks(unittest.TestCase):
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup)
@@ -30,13 +31,39 @@ class TransferChecks(unittest.TestCase):
     def test_wrong_size_rejected(self):
         self.rows[0]['object']['bytes']+=1
         with self.assertRaises(ValueError):inspect(self.rows,self.source,self.dest)
+class BindingChecks(unittest.TestCase):
+    def setUp(self):
+        self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup)
+        self.root=Path(self.tmp.name);self.raw=b'{"historical": true}\n'
+        (self.root/'SOURCE.json').write_bytes(self.raw)
+        self.binding={'status':'CELL_ACCEPTANCE_BOUND','source_spec_sha256':sha(self.raw),
+            'job':'20261008T235959-erdos85__h3-triple-formal-20261007-999999',
+            'execution_commit':'b'*40,'triple_audit_sha256':'c'*64,
+            'triple_audit_path':'research/test/AUDIT.json'}
+    def save(self):
+        (self.root/'INTEGRATION.json').write_text(json.dumps(self.binding))
+    def test_bound_source_loads_unchanged(self):
+        self.save();self.assertEqual(load_spec(self.root)['triple_producer'],self.binding)
+        self.assertEqual((self.root/'SOURCE.json').read_bytes(),self.raw)
+    def test_missing_binding_rejected(self):
+        with self.assertRaises(FileNotFoundError):load_spec(self.root)
+    def test_changed_source_rejected(self):
+        self.save();(self.root/'SOURCE.json').write_bytes(self.raw+b' ')
+        with self.assertRaises(ValueError):load_spec(self.root)
+    def test_wrong_producer_or_hash_rejected(self):
+        for field in ('status','job','execution_commit','triple_audit_sha256'):
+            with self.subTest(field=field):
+                original=self.binding[field];self.binding[field]='invalid';self.save()
+                with self.assertRaises(ValueError):load_spec(self.root)
+                self.binding[field]=original
+    def test_nonlocal_audit_path_rejected(self):
+        for path in ('/tmp/AUDIT.json','../AUDIT.json','research/else.json'):
+            with self.subTest(path=path):
+                self.binding['triple_audit_path']=path;self.save()
+                with self.assertRaises(ValueError):load_spec(self.root)
 class TripleGateChecks(unittest.TestCase):
     def setUp(self):
-        self.spec={'triple_source_commit':'test-pin'}
-        self.audit={'status':'H3_TRIPLE_CELL_ARTIFACT_AUDIT_PASS','authoritative_exit':0,'job':JOB.name,
-                    'execution_commit':'test-pin','reused_residues':[0,3,4,5,162],
-                    'accepted_new_residues':[r for r in range(384) if r not in [0,3,4,5,162]],
-                    'cell':{'module':'Proofs.Erdos85H3TripleCompletionCell'}}
+        self.spec,self.audit=complete_cell_fixture()
     def test_full_gate(self):validate_triple(self.audit,self.spec)
     def test_partial_rejected(self):
         self.audit['status']='PARTIAL_CAMPAIGN_ARTIFACT_AUDIT'
@@ -51,12 +78,27 @@ class TripleGateChecks(unittest.TestCase):
         self.audit['execution_commit']='other'
         with self.assertRaises(ValueError):validate_triple(self.audit,self.spec)
     def test_missing_residue_rejected(self):
-        self.audit['accepted_new_residues'].pop()
+        self.audit['accepted_parts'].pop()
         with self.assertRaises(ValueError):validate_triple(self.audit,self.spec)
     def test_duplicate_residue_rejected(self):
-        self.audit['accepted_new_residues'][0]=0
+        self.audit['accepted_parts'][1]=self.audit['accepted_parts'][0]
         with self.assertRaises(ValueError):validate_triple(self.audit,self.spec)
     def test_wrong_cell_rejected(self):
         self.audit['cell']['module']='Other'
+        with self.assertRaises(ValueError):validate_triple(self.audit,self.spec)
+    def test_unbound_historical_source_spec_rejected(self):
+        self.spec.pop('triple_producer')
+        with self.assertRaises(ValueError):validate_triple(self.audit,self.spec)
+    def test_wrong_cell_axioms_rejected(self):
+        self.audit['cell']['axiom_exports'][0]['axioms'].pop()
+        with self.assertRaises(ValueError):validate_triple(self.audit,self.spec)
+    def test_wrong_part_axioms_rejected(self):
+        self.audit['accepted_parts'][0]['axioms'][0]='sorryAx'
+        with self.assertRaises(ValueError):validate_triple(self.audit,self.spec)
+    def test_wrong_part_source_rejected(self):
+        self.audit['accepted_parts'][0]['source_sha256']='wrong'
+        with self.assertRaises(ValueError):validate_triple(self.audit,self.spec)
+    def test_unverified_whole_cell_rejected(self):
+        self.audit['whole_cell_verified']=False
         with self.assertRaises(ValueError):validate_triple(self.audit,self.spec)
 if __name__=='__main__':unittest.main()

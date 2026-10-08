@@ -3,14 +3,29 @@
 Run on the cloud host. Default is read-only; --apply performs exclusive,
 atomic publication of missing files and never overwrites a cache artifact.
 """
-import argparse,hashlib,json,os,tempfile
+import argparse,hashlib,json,os,re,tempfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent
 REPO=ROOT.parents[3]
 PAIR_CACHE=Path('/var/lib/docker/volumes/lean-build-erdos85__h3-pair-formal-20261008/_data/lib/lean/Proofs')
 TRIPLE_CACHE=Path('/var/lib/docker/volumes/lean-build-erdos85__h3-triple-formal-20261007/_data/lib/lean/Proofs')
-JOB=Path('/opt/e85/jobs/20261008T124453-erdos85__h3-triple-formal-20261007-503105')
 def sha(data):return hashlib.sha256(data).hexdigest()
+def validate_binding(binding,raw):
+    if binding['status']!='CELL_ACCEPTANCE_BOUND' or binding['source_spec_sha256']!=sha(raw):
+        raise ValueError('No binding to this historical source bundle')
+    if not re.fullmatch(r'\d{8}T\d{6}-erdos85__h3-triple-formal-20261007-\d+',binding['job']):
+        raise ValueError('Invalid bound producer job')
+    if not re.fullmatch('[a-f0-9]{40}',binding['execution_commit']):raise ValueError('Invalid bound producer commit')
+    if not re.fullmatch('[a-f0-9]{64}',binding['triple_audit_sha256']):raise ValueError('Invalid bound audit hash')
+    path=Path(binding['triple_audit_path'])
+    if path.is_absolute() or '..' in path.parts or path.name!='AUDIT.json':
+        raise ValueError('Bound audit must be a repository-relative AUDIT.json')
+def load_spec(root=ROOT):
+    raw=(root/'SOURCE.json').read_bytes();spec=json.loads(raw)
+    binding=json.loads((root/'INTEGRATION.json').read_text())
+    validate_binding(binding,raw)
+    spec['triple_producer']=binding
+    return spec
 def inspect(rows,source,destination):
     result=[]
     for row in rows:
@@ -49,12 +64,35 @@ def publish(rows,source,destination):
 def validate_triple(audit,spec):
     if audit['status']!='H3_TRIPLE_CELL_ARTIFACT_AUDIT_PASS' or audit['authoritative_exit']!=0:
         raise ValueError('Full triple-cell acceptance required')
-    if audit['job']!=JOB.name or audit['execution_commit']!=spec['triple_source_commit']:
+    binding=spec.get('triple_producer')
+    if binding is None:raise ValueError('New complete-cell producer binding required')
+    if audit['job']!=binding['job'] or audit['execution_commit']!=binding['execution_commit']:
         raise ValueError('Wrong triple producer')
-    residues=audit['reused_residues']+audit['accepted_new_residues']
-    if len(residues)!=384 or sorted(residues)!=list(range(384)):
+    if audit['reused_residues']!=list(range(384)) or audit['accepted_new_residues']!=[] or not audit['whole_cell_verified']:
+        raise ValueError('Complete cell assembly audit required')
+    residues=[r['residue'] for r in audit['accepted_parts']]
+    if residues!=list(range(384)):
         raise ValueError('Incomplete or duplicate triple coverage')
-    if audit['cell']['module']!='Proofs.Erdos85H3TripleCompletionCell':raise ValueError('Wrong cell module')
+    natives=set()
+    for row in audit['accepted_parts']:
+        r=row['residue'];module=f'Erdos85H3TripleCompletionPart{r:03d}'
+        theorem=f'Erdos85.H3TripleCompletion.triplePart_384_{r:03d}'
+        native=theorem+'._native.native_decide.ax_1_1';natives.add(native)
+        if row['module']!='Proofs.'+module or row['source_sha256']!=spec['sources'][module]['source_sha256']:
+            raise ValueError('Triple source mismatch')
+        if row['theorem']!=theorem or len(row['axioms'])!=3 or set(row['axioms'])!={'propext','Quot.sound',native}:
+            raise ValueError('Triple part axiom mismatch')
+        if not re.fullmatch('[a-f0-9]{64}',row['object_sha256']) or row['object_bytes']<=0:
+            raise ValueError('Invalid triple part object')
+    cell=audit['cell'];module='Erdos85H3TripleCompletionCell'
+    if cell['module']!='Proofs.'+module or cell['source_sha256']!=spec['sources'][module]['source_sha256']:
+        raise ValueError('Wrong cell source')
+    if not re.fullmatch('[a-f0-9]{64}',cell['object_sha256']) or cell['object_bytes']<=0:raise ValueError('Invalid cell object')
+    expected={'propext','Classical.choice','Quot.sound'}|natives
+    names=['Erdos85.H3TripleCompletion.'+n for n in ('threeHighCanonicalRepresentativeExcluded_one','orderFortyNineTripleCellExcluded_three_one')]
+    if [r['theorem'] for r in cell['axiom_exports']]!=names:raise ValueError('Wrong cell exports')
+    if any(len(r['axioms'])!=387 or set(r['axioms'])!=expected for r in cell['axiom_exports']):
+        raise ValueError('Wrong exact cell axioms')
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
@@ -64,13 +102,14 @@ def main():
     parser.add_argument('--receipt',type=Path)
     args=parser.parse_args()
     assert str(REPO).startswith('/opt/e85/wt/'),'Cloud host only'
-    assert (JOB/'exit').read_text().strip()=='0','Producer must be terminal and successful'
-    pid=int((JOB/'pid').read_text());assert not Path(f'/proc/{pid}').exists(),'Producer PID still exists'
-    spec=json.loads((ROOT/'SOURCE.json').read_text())
+    spec=load_spec();job=Path('/opt/e85/jobs')/spec['triple_producer']['job']
+    assert (job/'exit').read_text().strip()=='0','Producer must be terminal and successful'
+    pid=int((job/'pid').read_text());assert not Path(f'/proc/{pid}').exists(),'Producer PID still exists'
     pair_path=ROOT.parent/'h3_pair_completion_review_20261008/AUDIT.json'
     assert sha(pair_path.read_bytes())==spec['pair_audit_sha256']
     pair=json.loads(pair_path.read_text());assert pair['status']=='H3_PAIR_CELL_TERMINAL_AUDIT_PASS'
     assert sha(args.triple_audit.read_bytes())==args.triple_audit_sha
+    assert args.triple_audit_sha==spec['triple_producer']['triple_audit_sha256']
     triple=json.loads(args.triple_audit.read_text());validate_triple(triple,spec)
     for name,digest in triple['retained_sha256'].items():
         assert sha((args.triple_audit.parent/name).read_bytes())==digest,'Triple evidence changed: '+name
@@ -81,8 +120,7 @@ def main():
         assert sha(data)==row['source_sha256']
     # The already accepted triple objects must also remain intact in this cache.
     manifest=json.loads((ROOT.parent/'h3_native_parts_20261008/MANIFEST.json').read_text())
-    sample=json.loads((ROOT.parent/'h3_native_parts_20261008/sample-evidence/AUDIT.json').read_text())
-    for row in sample['accepted_parts']+triple['accepted_parts']+[triple['cell']]:
+    for row in triple['accepted_parts']+[triple['cell']]:
         data=(TRIPLE_CACHE/(row['module'].split('.')[-1]+'.olean')).read_bytes()
         assert sha(data)==row['object_sha256'] and len(data)==row['object_bytes']
     assert len(pair['results'])==28 and manifest['modulus']==384

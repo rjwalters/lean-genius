@@ -1,13 +1,14 @@
 """Materialize the reviewed proof sources only after full triple-cell acceptance."""
 import argparse,json
 from pathlib import Path
-from transfer_pair import ROOT,REPO,sha,validate_triple
+from transfer_pair import ROOT,REPO,sha,validate_triple,load_spec
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--triple-audit',type=Path,required=True)
     p.add_argument('--triple-audit-sha',required=True);p.add_argument('--apply',action='store_true');a=p.parse_args()
-    spec=json.loads((ROOT/'SOURCE.json').read_text())
+    spec=load_spec()
     data=a.triple_audit.read_bytes();assert sha(data)==a.triple_audit_sha
+    assert a.triple_audit_sha==spec['triple_producer']['triple_audit_sha256']
     audit=json.loads(data);validate_triple(audit,spec)
     for name,digest in audit['retained_sha256'].items():assert sha((a.triple_audit.parent/name).read_bytes())==digest
     pending=[]
