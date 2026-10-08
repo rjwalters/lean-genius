@@ -1,0 +1,20 @@
+{
+  "status": "BRIDGE_CANARY_PASS",
+  "job": "20261008T071036-erdos85__h3-triple-formal-20261007-286861",
+  "expected_execution_commit": "bd40e23c8a2dbc0231a0b3cc7af29c89a56905d4",
+  "memory_gib": 16,
+  "lake_threads": 1,
+  "lean_num_threads_environment": "1",
+  "timeout": "15m",
+  "manifest_sha256": "11ded9568ddc0497b8fd58d9107bc35f50caca0fd9064e9f85db18f98f614445",
+  "production_native_search": false,
+  "previous_job": "20261008T070527-erdos85__h3-triple-formal-20261007-283163",
+  "previous_authoritative_exit": 1,
+  "correction": "Import the complete verified deficient census to expose its normalized representative.",
+  "scope": "Fresh isolated bridge canary after source correction; no production native-search credit.",
+  "execution_commit": "bd40e23c8a2dbc0231a0b3cc7af29c89a56905d4",
+  "exit_code": 0,
+  "finished_at_utc": "2026-10-08T07:11:47Z",
+  "run_sha256": "420fe58eddf04363b5f57745376f3e2544afecbb4a64bea900aafeda41e7b874",
+  "audit": "canary-evidence/AUDIT.json"
+}

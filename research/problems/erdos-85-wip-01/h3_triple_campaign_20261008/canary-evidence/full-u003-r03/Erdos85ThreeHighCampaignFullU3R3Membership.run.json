@@ -1,0 +1,42 @@
+{
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/full-u003-r03",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/full-u003-r03/Erdos85ThreeHighCampaignFullU3R3Membership.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/full-u003-r03/Erdos85ThreeHighCampaignFullU3R3Membership.lean"
+  ],
+  "started_utc": "2026-10-08T07:10:51.080693+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 5.927128221999737,
+  "user_cpu_seconds": 4.463753,
+  "system_cpu_seconds": 1.3873820000000001,
+  "max_rss_kib": 6896488,
+  "log_sha256": "56ec27cf647b5cece540dda36f3ccd15e23e75bc70d7c75f81ba288868450903",
+  "case_id": "full-u003-r03",
+  "module": "Erdos85ThreeHighCampaignFullU3R3Membership",
+  "stage": "Membership",
+  "status": "PASS",
+  "source_sha256": "f6954e8248656d82ba05fb84be080158944eef282d9630b9f1662fc55f577adf",
+  "olean_sha256": "698613c9aae4fea087207e6990aca9aa641e0ee092911a3acc91b0ae6cc7ea66",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.TripleCampaign.FullU3R3.member",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.TripleCampaign.FullU3R3.input_identity",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "certificate_substitution": false
+}

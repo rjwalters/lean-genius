@@ -1,0 +1,37 @@
+{
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/source-root",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/library/Proofs/Erdos85ThreeHighCampaignDeficientU26R2Certificate.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/source-root/Proofs/Erdos85ThreeHighCampaignDeficientU26R2Certificate.lean"
+  ],
+  "started_utc": "2026-10-08T07:11:33.779640+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 4.330642861001252,
+  "user_cpu_seconds": 3.139428,
+  "system_cpu_seconds": 1.209779,
+  "max_rss_kib": 6535524,
+  "log_sha256": "b0a96343dea2121f97dc9fecd2a4167ea2275c40b65bf52040e2a13f0549d5be",
+  "case_id": "deficient-u026-r02",
+  "module": "Erdos85ThreeHighCampaignDeficientU26R2Certificate",
+  "stage": "Certificate",
+  "status": "PASS",
+  "source_sha256": "4b135e58421625f83b1bfc8a5d729411cb02fb2ce85f05094611c18e1eff4a08",
+  "olean_sha256": "ef5b427e52d1fc95c9a0736acfb7ee59452a252cf92a585b647b10aaba07fc54",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.TripleCampaign.DeficientU26R2.rejected",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.VariedPilot.DeficientU26R2.rejected._native.native_decide.ax_1_1"
+      ]
+    }
+  ],
+  "certificate_substitution": true,
+  "production_source_sha256_not_executed": "5f4b5dafd7883ddaca5ebad5393c948b36587f93a4a0150900bc095622bc3ae3",
+  "prior_native_namespace": "Erdos85.VariedPilot.DeficientU26R2"
+}

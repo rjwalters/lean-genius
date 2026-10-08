@@ -1,0 +1,374 @@
+{
+  "schema": "erdos85-h3-triple-bridge-canary-v1",
+  "status": "BRIDGE_CANARY_PASS",
+  "production_native_search": false,
+  "manifest_sha256": "11ded9568ddc0497b8fd58d9107bc35f50caca0fd9064e9f85db18f98f614445",
+  "full_prerequisite_audit": {
+    "base": {
+      "status": "PASS",
+      "receipt_sha256": "9924e45dfa932bae6af3607eb7de97e4b77d590366bf8d4bb9eaaf8de480236f",
+      "modules": 107,
+      "axiom_reports": 228,
+      "data_only_modules": 0,
+      "final_module_exports": [
+        {
+          "theorem": "FullUStrongCensus.actual_distinct_witness",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUStrongCensus.excluded_of_rejections",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    "final": {
+      "status": "PASS",
+      "receipt_sha256": "dd262a3d974d3da91d5365dd88d7668183f55cb6083a5dca803588ba517217cb",
+      "modules": 342,
+      "axiom_reports": 1077,
+      "data_only_modules": 15,
+      "final_module_exports": [
+        {
+          "theorem": "FullUStrongFinalCensus.actual_distinct_witness",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUStrongFinalCensus.excluded_of_rejections",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  },
+  "results": [
+    {
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/source-root",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/library/Proofs/Erdos85ThreeHighCampaignFullU3R3Inputs.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/source-root/Proofs/Erdos85ThreeHighCampaignFullU3R3Inputs.lean"
+      ],
+      "started_utc": "2026-10-08T07:10:45.594399+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 5.484998186999292,
+      "user_cpu_seconds": 2.824131,
+      "system_cpu_seconds": 1.190661,
+      "max_rss_kib": 6505296,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "case_id": "full-u003-r03",
+      "module": "Erdos85ThreeHighCampaignFullU3R3Inputs",
+      "stage": "Inputs",
+      "status": "PASS",
+      "source_sha256": "5ea265368d0d50fbabad96bdd6dbf77745af4e2206badbd6ff2db853cdeebb51",
+      "olean_sha256": "1064aeefc93ac1a3e81cb8f336656c1f804278d955a8c1401ddd0a538235fd42",
+      "axiom_exports": [],
+      "certificate_substitution": false
+    },
+    {
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/full-u003-r03",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/full-u003-r03/Erdos85ThreeHighCampaignFullU3R3Membership.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/full-u003-r03/Erdos85ThreeHighCampaignFullU3R3Membership.lean"
+      ],
+      "started_utc": "2026-10-08T07:10:51.080693+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 5.927128221999737,
+      "user_cpu_seconds": 4.463753,
+      "system_cpu_seconds": 1.3873820000000001,
+      "max_rss_kib": 6896488,
+      "log_sha256": "56ec27cf647b5cece540dda36f3ccd15e23e75bc70d7c75f81ba288868450903",
+      "case_id": "full-u003-r03",
+      "module": "Erdos85ThreeHighCampaignFullU3R3Membership",
+      "stage": "Membership",
+      "status": "PASS",
+      "source_sha256": "f6954e8248656d82ba05fb84be080158944eef282d9630b9f1662fc55f577adf",
+      "olean_sha256": "698613c9aae4fea087207e6990aca9aa641e0ee092911a3acc91b0ae6cc7ea66",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.TripleCampaign.FullU3R3.member",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.TripleCampaign.FullU3R3.input_identity",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ],
+      "certificate_substitution": false
+    },
+    {
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/source-root",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/library/Proofs/Erdos85ThreeHighCampaignFullU3R3Certificate.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/source-root/Proofs/Erdos85ThreeHighCampaignFullU3R3Certificate.lean"
+      ],
+      "started_utc": "2026-10-08T07:10:57.008946+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 4.452129723002145,
+      "user_cpu_seconds": 3.070021,
+      "system_cpu_seconds": 1.404585,
+      "max_rss_kib": 6535260,
+      "log_sha256": "1e45a248ef84feb6f0b0ecdc80992b39686669a4abd6b324f13eaaade17c31d8",
+      "case_id": "full-u003-r03",
+      "module": "Erdos85ThreeHighCampaignFullU3R3Certificate",
+      "stage": "Certificate",
+      "status": "PASS",
+      "source_sha256": "e40b25a84f991681537709fef812a20a3108cb7e3c7044c0237c195fa346beed",
+      "olean_sha256": "932b43309530d14212a02d2df643614b12d1d909ee60170ca023c39004f9376b",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.TripleCampaign.FullU3R3.rejected",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+            "Erdos85.VariedPilot.FullU3R3.rejected._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "certificate_substitution": true,
+      "production_source_sha256_not_executed": "3d0ef1c289ce8254e85392f19f00645a0e369d26294c45fb5afc624fe5faefa6",
+      "prior_native_namespace": "Erdos85.VariedPilot.FullU3R3"
+    },
+    {
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/full-u003-r03",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/full-u003-r03/Erdos85ThreeHighCampaignFullU3R3Consumer.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/full-u003-r03/Erdos85ThreeHighCampaignFullU3R3Consumer.lean"
+      ],
+      "started_utc": "2026-10-08T07:11:01.462138+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 4.636227612001676,
+      "user_cpu_seconds": 3.385821,
+      "system_cpu_seconds": 1.278422,
+      "max_rss_kib": 6793816,
+      "log_sha256": "1c48782414216a928e96d9c3477d4a9b885a531cb2d808a2f30b41b29e21ac07",
+      "case_id": "full-u003-r03",
+      "module": "Erdos85ThreeHighCampaignFullU3R3Consumer",
+      "stage": "Consumer",
+      "status": "PASS",
+      "source_sha256": "b4271960512c720781ba2f61fbea5ced2f0551b9b13e778eaba21db4b66a80e9",
+      "olean_sha256": "c2d9011213e0f61d691cfe771e761f0822034074f30b6adf9e6ff54d7ca3d8d7",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.TripleCampaign.FullU3R3.representative_rejected",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+            "Erdos85.VariedPilot.FullU3R3.rejected._native.native_decide.ax_1_1"
+          ]
+        },
+        {
+          "theorem": "Erdos85.TripleCampaign.FullU3R3.no_joint",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+            "Erdos85.VariedPilot.FullU3R3.rejected._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "certificate_substitution": false
+    },
+    {
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/source-root",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/library/Proofs/Erdos85ThreeHighCampaignDeficientU26R2Inputs.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/source-root/Proofs/Erdos85ThreeHighCampaignDeficientU26R2Inputs.lean"
+      ],
+      "started_utc": "2026-10-08T07:11:06.099608+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 3.853226616000029,
+      "user_cpu_seconds": 2.643825,
+      "system_cpu_seconds": 1.227134,
+      "max_rss_kib": 6512964,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "case_id": "deficient-u026-r02",
+      "module": "Erdos85ThreeHighCampaignDeficientU26R2Inputs",
+      "stage": "Inputs",
+      "status": "PASS",
+      "source_sha256": "565129b463296562e14861813709afa531c648c4bc0e1a813523a304e4706b32",
+      "olean_sha256": "24b3f3a1070b959505b1acc02202147a26f54af7d41edd934bb8bb13625f7691",
+      "axiom_exports": [],
+      "certificate_substitution": false
+    },
+    {
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/deficient-u026-r02",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/deficient-u026-r02/Erdos85ThreeHighCampaignDeficientU26R2Membership.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/deficient-u026-r02/Erdos85ThreeHighCampaignDeficientU26R2Membership.lean"
+      ],
+      "started_utc": "2026-10-08T07:11:09.954041+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 23.824346027999127,
+      "user_cpu_seconds": 22.272895,
+      "system_cpu_seconds": 1.558802,
+      "max_rss_kib": 8075532,
+      "log_sha256": "9f99a0b42fd951eb3f16f86511fa8766aaf7017ba5dad9c7fe17e2c3ca5fcc0a",
+      "case_id": "deficient-u026-r02",
+      "module": "Erdos85ThreeHighCampaignDeficientU26R2Membership",
+      "stage": "Membership",
+      "status": "PASS",
+      "source_sha256": "161e4ddcbdb03b1eb2323e28d856982fa80a8e21eea2a201c33c41d4b184553a",
+      "olean_sha256": "a1d2b21246015fd441ee0ba65b968ee4fcc1cb3e88e2ad9dd5025ed2115ad707",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.TripleCampaign.DeficientU26R2.member",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.TripleCampaign.DeficientU26R2.input_identity",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ],
+      "certificate_substitution": false
+    },
+    {
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/source-root",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/library/Proofs/Erdos85ThreeHighCampaignDeficientU26R2Certificate.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/source-root/Proofs/Erdos85ThreeHighCampaignDeficientU26R2Certificate.lean"
+      ],
+      "started_utc": "2026-10-08T07:11:33.779640+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 4.330642861001252,
+      "user_cpu_seconds": 3.139428,
+      "system_cpu_seconds": 1.209779,
+      "max_rss_kib": 6535524,
+      "log_sha256": "b0a96343dea2121f97dc9fecd2a4167ea2275c40b65bf52040e2a13f0549d5be",
+      "case_id": "deficient-u026-r02",
+      "module": "Erdos85ThreeHighCampaignDeficientU26R2Certificate",
+      "stage": "Certificate",
+      "status": "PASS",
+      "source_sha256": "4b135e58421625f83b1bfc8a5d729411cb02fb2ce85f05094611c18e1eff4a08",
+      "olean_sha256": "ef5b427e52d1fc95c9a0736acfb7ee59452a252cf92a585b647b10aaba07fc54",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.TripleCampaign.DeficientU26R2.rejected",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+            "Erdos85.VariedPilot.DeficientU26R2.rejected._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "certificate_substitution": true,
+      "production_source_sha256_not_executed": "5f4b5dafd7883ddaca5ebad5393c948b36587f93a4a0150900bc095622bc3ae3",
+      "prior_native_namespace": "Erdos85.VariedPilot.DeficientU26R2"
+    },
+    {
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/deficient-u026-r02",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/deficient-u026-r02/Erdos85ThreeHighCampaignDeficientU26R2Consumer.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/deficient-u026-r02/Erdos85ThreeHighCampaignDeficientU26R2Consumer.lean"
+      ],
+      "started_utc": "2026-10-08T07:11:38.111492+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 4.482423050001671,
+      "user_cpu_seconds": 3.137812,
+      "system_cpu_seconds": 1.37466,
+      "max_rss_kib": 6701084,
+      "log_sha256": "2ace1517e729454e07a784c5180e9160e59225940600a6e82d89b511239db4f3",
+      "case_id": "deficient-u026-r02",
+      "module": "Erdos85ThreeHighCampaignDeficientU26R2Consumer",
+      "stage": "Consumer",
+      "status": "PASS",
+      "source_sha256": "1eb86f9a67cf24793097bccee7e4127ee140e0605543ca838e2fe0dcdbdbb599",
+      "olean_sha256": "a227d56348af39be7be58fd8405bb3cfb58f5a787904de4e7a3ab29b709d00cb",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.TripleCampaign.DeficientU26R2.representative_rejected",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+            "Erdos85.VariedPilot.DeficientU26R2.rejected._native.native_decide.ax_1_1"
+          ]
+        },
+        {
+          "theorem": "Erdos85.TripleCampaign.DeficientU26R2.no_joint",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+            "Erdos85.VariedPilot.DeficientU26R2.rejected._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "certificate_substitution": false
+    }
+  ],
+  "source_sha256": "9412d95d23c32cae8abf73e6fb7c47087d72a5c7adab5fa9be409c8adda5c6a5",
+  "scope": "Generated source bridge canary with substituted prior proofs; no new native search or production-worker claim.",
+  "dependencies": {
+    "command": [
+      "lake",
+      "build",
+      "Proofs.Erdos85ThreeHighNativePairSearch",
+      "Proofs.Erdos85ThreeBlockCompactCodes",
+      "Proofs.Erdos85ThreeHighSecondaryOrbitTable"
+    ],
+    "started_utc": "2026-10-08T07:10:39.065469+00:00",
+    "exit_code": 0,
+    "elapsed_seconds": 6.4295488739990105,
+    "user_cpu_seconds": 5.488252,
+    "system_cpu_seconds": 1.534291,
+    "max_rss_kib": 913752,
+    "log_sha256": "930d10ba4e9e55e2b59a68cfb1f0ab2858b4fbef9017f3f9767b54cb71d7c325"
+  }
+}

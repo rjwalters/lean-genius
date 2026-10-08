@@ -63,9 +63,10 @@ The two census roots both contain `Pruning`; they require separate import
 paths. Inputs/Certificate are library targets under `Proofs`; Membership and
 Consumer use direct Lean invocation with their branch's audited census objects.
 Consumers must keep `threeHighCrossDomain` locally irreducible, as in the
-verified diagnostic pipeline. The newly emitted campaign namespace and added
-consumer bridge have not yet had a cloud canary; successful diagnostic modules
-are evidence for the underlying pipeline, not for these new source bytes.
+verified diagnostic pipeline. The newly emitted campaign namespace and added consumer bridge passed a
+two-case cloud canary after a deficient import correction. That canary reused
+old native certificates explicitly; it validates the new source bridge for
+those two cases, not the production native worker or all 1,815 generated cases.
 
 Generate a source bundle for review, without Lean:
 
@@ -177,8 +178,8 @@ A native_decide receipt remains native-backed; do not describe it as a
 standard-axiom-only or external CakeML certificate. H3 pair profile t=0 is a
 separate lane and is not covered by this triple-profile campaign.
 
-Outstanding: final diagnostic audit and manifest re-freeze; campaign source
-canary; executable worker/collector/fleet controller with tested recovery;
+Outstanding: final diagnostic audit and manifest re-freeze; production native
+worker canary; executable worker/collector/fleet controller with tested recovery;
 budget approval; execution; independent receipts; final Lean aggregation.
 
 ## Source bridge canary
@@ -198,8 +199,9 @@ objects. A successful status is `BRIDGE_CANARY_PASS`, never a production PASS.
 It cannot count as a new campaign rejection or test the production native
 search/controller/collector lifecycle. An independent artifact audit follows.
 
-The canary remains uncompiled until its separately recorded cloud job passes.
-Local Python syntax/import and host-execution-refusal checks pass.
+The corrected canary now passes its separately recorded cloud job and
+independent audit. Local Python syntax/import and host-execution-refusal
+checks also pass.
 
 The first bridge canary exited 1 at 07:06:40 UTC. Its complete source/log/run
 failure evidence is retained in `canary-first-failure/`, at execution commit
@@ -210,5 +212,17 @@ unknown identifier and sorryAx. Those failed exports are not accepted evidence.
 The generator now imports the already verified `Deficient1554` module, which
 imports both Assembly and Pruning. This changes deficient membership source
 hashes and the frozen manifest hash; the old manifest remains in the original
-Git commit and its hash is recorded with the failed run. A fresh canary must
-verify this correction before source readiness is claimed.
+Git commit and its hash is recorded with the failed run. The fresh second canary verified this correction.
+
+The corrected job `20261008T071036-erdos85__h3-triple-formal-20261007-286861`
+exited zero at 07:11:47 UTC, at source
+`bd40e23c8a2dbc0231a0b3cc7af29c89a56905d4`. All eight modules and ten exact
+axiom reports passed independent cloud-host audit with `audit_canary.py`.
+The Membership reports use standard axioms only; the two substituted
+Certificates and their Consumers use exactly the corresponding old pilot
+native axiom plus standard axioms. The audit also confirmed no campaign
+Input/Certificate objects existed in the shared library cache. The artifacts
+and audit are retained in `canary-evidence/`; objects stay on the cloud.
+RUN SHA-256: `420fe58eddf04363b5f57745376f3e2544afecbb4a64bea900aafeda41e7b874`.
+This is source-bridge readiness for the two tested cases, not a production
+campaign receipt, a new native rejection, or a full-campaign execution test.

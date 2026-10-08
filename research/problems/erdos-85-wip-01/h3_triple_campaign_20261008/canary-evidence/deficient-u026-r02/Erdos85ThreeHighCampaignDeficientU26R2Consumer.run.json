@@ -1,0 +1,44 @@
+{
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/deficient-u026-r02",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/deficient-u026-r02/Erdos85ThreeHighCampaignDeficientU26R2Consumer.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/deficient-u026-r02/Erdos85ThreeHighCampaignDeficientU26R2Consumer.lean"
+  ],
+  "started_utc": "2026-10-08T07:11:38.111492+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 4.482423050001671,
+  "user_cpu_seconds": 3.137812,
+  "system_cpu_seconds": 1.37466,
+  "max_rss_kib": 6701084,
+  "log_sha256": "2ace1517e729454e07a784c5180e9160e59225940600a6e82d89b511239db4f3",
+  "case_id": "deficient-u026-r02",
+  "module": "Erdos85ThreeHighCampaignDeficientU26R2Consumer",
+  "stage": "Consumer",
+  "status": "PASS",
+  "source_sha256": "1eb86f9a67cf24793097bccee7e4127ee140e0605543ca838e2fe0dcdbdbb599",
+  "olean_sha256": "a227d56348af39be7be58fd8405bb3cfb58f5a787904de4e7a3ab29b709d00cb",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.TripleCampaign.DeficientU26R2.representative_rejected",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.VariedPilot.DeficientU26R2.rejected._native.native_decide.ax_1_1"
+      ]
+    },
+    {
+      "theorem": "Erdos85.TripleCampaign.DeficientU26R2.no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.VariedPilot.DeficientU26R2.rejected._native.native_decide.ax_1_1"
+      ]
+    }
+  ],
+  "certificate_substitution": false
+}
