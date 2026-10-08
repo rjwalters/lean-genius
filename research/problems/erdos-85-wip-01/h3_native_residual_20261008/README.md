@@ -1,6 +1,6 @@
 # H3 residual native parts
 
-Prepared worker and independent collector; not launched. `PLAN.json` now
+Completed and independently accepted. `PLAN.json`
 binds the accepted complete sweep: 378 reusable parts and exactly six
 residuals, **89, 134, 142, 186, 279, 298**. A fresh authoritative H5
 observation selects four workers, eight CPUs and 64 GiB. This
@@ -95,4 +95,19 @@ from the reusable cache. Quarantined bytes are retained. All 66 preparation,
 process, scheduler and artifact tests pass, including two regressions for
 this case. The preflight's original auditor snapshots remain unchanged.
 
-Terminal artifact collection remains required after the authorized pass.
+## Terminal residual acceptance
+
+Job `20261008T144421-erdos85__h3-triple-formal-20261007-582400`, execution
+pin `ed45ae396a63ae340c5e55f8a940d31746c97f23`, exited zero.
+`residual-evidence1/AUDIT.json` is `H3_RESIDUAL_ARTIFACT_AUDIT_PASS`:
+all six residues accepted, no unresolved parts. All 36 retained evidence
+files are hash-verified. The run took 252.127 seconds overall; part times
+were 120.157 (89), 104.143 (134), 109.480 (142), 98.935 (186), 90.331
+(279), and 146.775 seconds (298). No timeout, retry or cap change occurred.
+`h5-observation-before-launch.json` preserves the second, fresh observation
+made after banking preflight and immediately before launch.
+
+Together with the original 90-part baseline and 288-part sweep, all 384
+parts now have independent artifact acceptance. The cell and stratum
+compositions still need their own bounded compilation and acceptance;
+`whole_cell_verified` remains false in this residual audit.
