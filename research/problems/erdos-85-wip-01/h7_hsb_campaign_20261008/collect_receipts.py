@@ -5,7 +5,9 @@
 
 For every structural cube: the cover CNF and every leaf 0..n-1 must have a CERTIFIED receipt whose
 cnf_sha256 equals the value recomputed from the pinned inputs, whose checker saw `s VERIFIED UNSAT`
-and whose solver/checker binaries are the pinned ones. Writes <out>/<cube>.receipts.tsv.zst (one
+and whose solver AND checker binaries have the approved sha256 (h7_common.PINNED_BINARIES).
+Unknown or empty --cubes selections are rejected; `all_complete` is about the selected cubes,
+`full_campaign_complete` is true only when all 28 cubes were selected and are complete. Writes <out>/<cube>.receipts.tsv.zst (one
 line per leaf) and <out>/summary.json. Exit 0 only if all 28 cubes are complete.
 """
 from __future__ import annotations
@@ -20,7 +22,10 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import h7_common as hc  # noqa: E402
 
-CADICAL = "fd601b827c2f6e72c255dd27d6bfa9d7f982414181195fe3ea07ec81385772a2"
+# New linked checker builds require an independently reviewed hash before acceptance
+# (codex review 2026-10-08, room 52742-52751; pins live in h7_common).
+CADICAL = hc.CADICAL_SHA256
+CAKE_LPR = hc.CAKE_LPR_SHA256
 
 
 def main() -> int:
@@ -30,6 +35,13 @@ def main() -> int:
     ap.add_argument("--out", type=Path)
     ap.add_argument("--cubes", default="")
     a = ap.parse_args()
+    requested = set(a.cubes.split(",")) if a.cubes else set(hc.CUBES)
+    unknown = requested - set(hc.CUBES)
+    if unknown:
+        ap.error("unknown cube selector(s): " + ", ".join(repr(c) for c in sorted(unknown)))
+    names = [c for c in hc.CUBES if c in requested]
+    if not names:
+        ap.error("at least one known cube must be selected")
     by_cube: dict[str, list[dict]] = {}
     files = sorted(a.results.glob("*.jsonl.zst"))
     for f in files:
@@ -38,9 +50,9 @@ def main() -> int:
             r = json.loads(line)
             r["_file"] = f.name
             by_cube.setdefault(r["cube"], []).append(r)
-    names = [c for c in hc.CUBES if not a.cubes or c in a.cubes.split(",")]
     summary = {"schema": "erdos85-h7-hsb-campaign-summary-v1", "result_files": len(files), "cubes": {}, "all_complete": True,
                "inputs_json_sha256": hc.sha_file(a.inputs / "inputs.json")}
+    summary["selected_cubes"] = names
     cakes = set()
     for name in names:
         cube = hc.Cube(a.inputs, name)
@@ -50,6 +62,7 @@ def main() -> int:
             key = "cover" if r["kind"] == "cover" else r["leaf"]
             want = cube.meta["cover_cnf_sha256"] if key == "cover" else cube.leaf_sha256(key)
             good = (r["status"] == "CERTIFIED" and r.get("cnf_sha256") == want and r.get("binaries", {}).get("cadical") == CADICAL
+                    and r.get("binaries", {}).get("cake_lpr") == CAKE_LPR
                     and r.get("checker", {}).get("verified_line") is True and r.get("solver", {}).get("returncode") == 20
                     and not r.get("proof", {}).get("checker_closed_early"))
             if good:
@@ -79,12 +92,13 @@ def main() -> int:
                                                         r["solver"].get("conflicts"), r["host"], r["_file"])) + "\n")
             subprocess.run(["zstd", "-q", "-19", "-f", "-o", str(a.out / f"{name}.receipts.tsv.zst")], input="".join(lines).encode(), check=True)
     summary["cake_lpr_sha256"] = sorted(cakes)
+    summary["full_campaign_complete"] = summary["all_complete"] and set(names) == set(hc.CUBES)
     summary["totals"] = {k: round(sum(c[k] for c in summary["cubes"].values()), 2) for k in
                          ("leaves", "certified_leaves", "missing_leaves", "proof_bytes", "solver_cpu_hours", "checker_cpu_hours")}
     text = json.dumps(summary, indent=1, sort_keys=True) + "\n"
     if a.out:
         (a.out / "summary.json").write_text(text)
-    print(text if len(names) < 6 else json.dumps({"all_complete": summary["all_complete"], "totals": summary["totals"]}))
+    print(text if len(names) < 6 else json.dumps({"all_complete": summary["all_complete"], "full_campaign_complete": summary["full_campaign_complete"], "selected_cubes": names, "totals": summary["totals"]}))
     return 0 if summary["all_complete"] else 1
 
 

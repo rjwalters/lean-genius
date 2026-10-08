@@ -34,6 +34,13 @@ STRUCTURAL = [(6, 5), (6, 8), (6, 14), (6, 15), (6, 16), (6, 17), (6, 18),
               (9, 0), (9, 1)]
 CUBES = [f"cube_F{f}_t{i}" for f, i in STRUCTURAL]
 BATCH = 64  # leaves per claim
+# The only solver and checker binaries whose receipts count. cake_lpr is the Linux arm64 build of
+# tanyongkiam/cake_lpr @ a36874a8 (cake_lpr_arm8.S sha256 95b64883…f00c) made on the builder and
+# used for the cost sample and the 28 cover receipts; it is shipped as freight, never rebuilt on a
+# node. A different build needs a reviewed hash added here (and in collect_receipts.py) first.
+CADICAL_SHA256 = "fd601b827c2f6e72c255dd27d6bfa9d7f982414181195fe3ea07ec81385772a2"
+CAKE_LPR_SHA256 = "4d47ffdd19fc6a80e24025f8c5d27d89c4309c9931bdad6d389d87e35be5464b"
+PINNED_BINARIES = {"cadical": CADICAL_SHA256, "cake_lpr": CAKE_LPR_SHA256}
 
 
 def sha_bytes(data: bytes) -> str:

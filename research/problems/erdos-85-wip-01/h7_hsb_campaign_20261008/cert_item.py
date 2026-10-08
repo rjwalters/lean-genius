@@ -35,11 +35,15 @@ _PARSE = re.compile(rb"^c\s+([0-9.]+)\s+[0-9.]+%\s+parse\s*$", re.M)
 _TOTAL = re.compile(rb"^c total process time since initialization:\s+([0-9.]+)", re.M)
 
 
-def tools(cadical: str, cake_lpr: str) -> dict:
+def tools(cadical: str, cake_lpr: str, allow_unpinned: bool = False) -> dict:
+    """Resolve and hash the two binaries. Unless allow_unpinned (tests only), both must be the
+    approved builds: a receipt made with any other solver or checker is worthless to the collector."""
     out = {}
     for k, v in (("cadical", cadical), ("cake_lpr", cake_lpr)):
         p = shutil.which(v) or v
         out[k] = {"path": str(p), "sha256": hc.sha_file(Path(p))}
+        if not allow_unpinned and out[k]["sha256"] != hc.PINNED_BINARIES[k]:
+            raise SystemExit(f"{k} at {p} has sha256 {out[k]['sha256']}, not the approved {hc.PINNED_BINARIES[k]}")
     return out
 
 

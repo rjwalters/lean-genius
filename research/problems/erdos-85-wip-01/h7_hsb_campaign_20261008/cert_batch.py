@@ -9,6 +9,11 @@ evidence `SevenHighT0CanonicalHsbEvidence` wants one checked CNF per leaf.
 Appends one receipt per item to --out (fsync after each). Items already CERTIFIED in --carry
 (partial receipts of an interrupted earlier attempt) are re-validated against the pinned inputs
 and copied, not re-run. A --stop-file is honoured between items.
+
+The checker heap is fixed for the whole batch. CHECK_HEAP_EXHAUSTED is recorded like a solver
+timeout (not an alarm, not retried here): the node's memory budget is slots x (heap + 1.5 GB), so an
+in-batch heap escalation would overcommit it. Such items go to the residual pass, which runs with a
+larger heap and correspondingly fewer slots.
 Exit: 0 all items CERTIFIED, 3 alarm (CHECK_FAILED / SOLVER_SAT), 4 stopped, 1 otherwise.
 """
 from __future__ import annotations
@@ -23,9 +28,6 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import cert_item  # noqa: E402
 import h7_common as hc  # noqa: E402
-
-MAX_HEAP_MB = 32000
-
 
 def items_of(row: dict) -> list:
     if row["kind"] == "cover":
@@ -45,9 +47,10 @@ def main() -> int:
     p.add_argument("--cake-lpr", default="cake_lpr")
     p.add_argument("--carry", type=Path)
     p.add_argument("--stop-file", type=Path)
+    p.add_argument("--allow-unpinned-binaries", action="store_true", help="tests only (fake checker)")
     a = p.parse_args()
     row = json.loads(a.batch)
-    bins = cert_item.tools(a.cadical, a.cake_lpr)
+    bins = cert_item.tools(a.cadical, a.cake_lpr, a.allow_unpinned_binaries)
     want_bins = {k: v["sha256"] for k, v in bins.items()}
     cube = hc.Cube(a.inputs, row["cube"])  # verifies every pinned hash of this cube
     kind = "cover" if row["kind"] == "cover" else "leaf"
@@ -73,13 +76,7 @@ def main() -> int:
             if leaf in carried:
                 rec = dict(carried[leaf], carried=True)
             else:
-                heap = a.heap_mb
-                while True:
-                    rec = cert_item.certify(cube, kind, leaf, a.work, bins, a.cap, heap)
-                    if rec["status"] == "CHECK_HEAP_EXHAUSTED" and heap * 2 <= MAX_HEAP_MB:
-                        heap *= 2
-                        continue
-                    break
+                rec = cert_item.certify(cube, kind, leaf, a.work, bins, a.cap, a.heap_mb)
             rec["batch"] = row["id"]
             out.write(json.dumps(rec, sort_keys=True) + "\n")
             out.flush()

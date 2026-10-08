@@ -59,7 +59,7 @@ vc.EBS_GIB = 40
 LIFETIME = 100800  # 28 h per node
 vc.PASS.update(name="h7hsb", lifetime=LIFETIME)
 EXCLUDE_AZ = ["us-east-1d"]  # 2026-10-04: every one of the 7 H1 spot reclaims was in us-east-1d
-MAX_NODES = 6
+MAX_NODES = 6  # 384 spot vCPU quota / 64; the quota is SHARED with CI and other spot jobs (see README)
 SPARSE = ["/research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/*",
           "/research/problems/erdos-85-wip-01/h1_cert_full_20261001/cert_row.py"]
 
@@ -135,8 +135,13 @@ def setup(a) -> None:
     vc.aws("iam", "create-instance-profile", "--instance-profile-name", ROLE, check=False)
     vc.aws("iam", "add-role-to-instance-profile", "--instance-profile-name", ROLE, "--role-name", ROLE, check=False)
     vpc = vc.aws("ec2", "describe-vpcs", "--filters", "Name=is-default,Values=true", "--query", "Vpcs[0].VpcId", "--output", "text").strip()
-    sg = vc.aws_json("ec2", "describe-security-groups", "--filters", f"Name=group-name,Values={vc.SG_NAME}",
-                     f"Name=vpc-id,Values={vpc}")["SecurityGroups"][0]["GroupId"]
+    groups = vc.aws_json("ec2", "describe-security-groups", "--filters", f"Name=group-name,Values={vc.SG_NAME}",
+                         f"Name=vpc-id,Values={vpc}")["SecurityGroups"]
+    if groups:
+        sg = groups[0]["GroupId"]
+    else:  # absent on 2026-10-08: recreate it exactly as the reviewed verdict-pass setup does (no ingress rules)
+        sg = vc.aws_json("ec2", "create-security-group", "--group-name", vc.SG_NAME, "--vpc-id", vpc,
+                         "--description", "Erdos 85 workers: no ingress, default egress")["GroupId"]
     ami = vc.aws("ssm", "get-parameter", "--name", vc.AMI_PARAM, "--query", "Parameter.Value", "--output", "text").strip()
     data.update(ImageId=ami, SecurityGroupIds=[sg])
     existing = vc.aws_json("ec2", "describe-launch-templates", "--filters", f"Name=launch-template-name,Values={vc.LT_NAME}")
@@ -191,12 +196,16 @@ def freight(a) -> None:
     tar.stdout.close()
     if tar.wait() != 0:
         raise SystemExit("tar failed")
-    report = {"freight": out.name, "bytes": out.stat().st_size, "inputs_json_sha256": inputs_sha(),
+    cake = STRIPE / "tools" / "cake_lpr"  # the approved checker build, copied from the builder
+    if hc.sha_file(cake) != hc.CAKE_LPR_SHA256:
+        raise SystemExit(f"{cake} is not the approved cake_lpr build")
+    report = {"cake_lpr_sha256": hc.CAKE_LPR_SHA256, "freight": out.name, "bytes": out.stat().st_size, "inputs_json_sha256": inputs_sha(),
               "manifest_sha256": manifest_sha(), "batches": meta["batches"], "leaves": meta["total_leaves"]}
     if a.dry_run:
         print(json.dumps(dict(report, dry_run=True)))
         return
     vc.aws("s3", "cp", "--only-show-errors", str(out), f"s3://{vc.BUCKET}/{vc.PREFIX}/freight/h7-inputs.tar.zst")
+    vc.aws("s3", "cp", "--only-show-errors", str(cake), f"s3://{vc.BUCKET}/{vc.PREFIX}/freight/cake_lpr")
     if a.manifest:
         vc.aws("s3", "cp", "--only-show-errors", a.manifest, f"s3://{vc.BUCKET}/{vc.PREFIX}/freight/{Path(a.manifest).name}")
     print(json.dumps(report))

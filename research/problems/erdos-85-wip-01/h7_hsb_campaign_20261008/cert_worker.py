@@ -163,6 +163,8 @@ def run_batch(args, store, slot: int, row: dict) -> dict:
     cmd = [sys.executable, "-B", str(HERE / "cert_batch.py"), "--inputs", str(args.inputs), "--batch", json.dumps(row),
            "--out", str(receipts), "--work", str(args.work), "--cap", str(args.cap), "--heap-mb", str(args.heap_mb),
            "--cadical", args.cadical, "--cake-lpr", args.cake_lpr, "--carry", str(carry), "--stop-file", str(stop_file)]
+    if args.allow_unpinned_binaries:
+        cmd.append("--allow-unpinned-binaries")
     proc = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=open(out_dir / "batch.err", "wb"))
     last = time.time()
     while True:
@@ -194,8 +196,8 @@ def run_batch(args, store, slot: int, row: dict) -> dict:
         status = "ALARM"
     elif rc == 0 and certified == expected == len(recs):
         status = "CERTIFIED"
-    elif len(recs) == expected and all(s in ("CERTIFIED", "SOLVER_TIMEOUT") for s in statuses):
-        status = "INCOMPLETE"  # every item ran; the timeouts go to the residual pass
+    elif len(recs) == expected and all(s in ("CERTIFIED", "SOLVER_TIMEOUT", "CHECK_HEAP_EXHAUSTED") for s in statuses):
+        status = "INCOMPLETE"  # every item ran; timeouts and heap-exhausted checks go to the residual pass
     else:
         status = "ERROR"
     stamp = int(time.time())
@@ -326,7 +328,9 @@ def main() -> int:
     p.add_argument("--itype", default="unknown")
     p.add_argument("--head", default="unknown")
     p.add_argument("--slots", type=int, required=True)
-    p.add_argument("--mem-gb", type=float, default=0, help="if set, refuse slots * (heap + 1.5 GB) > mem")
+    p.add_argument("--mem-gb", type=float, required=True,
+                   help="node memory budget: slots * (heap + 1.5 GB) must fit (the heap never grows inside a batch)")
+    p.add_argument("--allow-unpinned-binaries", action="store_true", help="tests only (fake checker)")
     p.add_argument("--heap-mb", type=int, default=2000)
     p.add_argument("--cap", type=int, default=3600)
     p.add_argument("--lifetime", type=int, default=86400)
@@ -354,8 +358,12 @@ def main() -> int:
     if args.only:
         keep = set(args.only.split(","))
         rows = [r for r in rows if r["id"] in keep]
-    if args.mem_gb and args.slots * (args.heap_mb / 1000 + SLOT_GB) > args.mem_gb:
+    if args.slots * (args.heap_mb / 1000 + SLOT_GB) > args.mem_gb:
         raise SystemExit(f"{args.slots} slots x ({args.heap_mb} MB heap + {SLOT_GB} GB) exceeds {args.mem_gb} GB")
+    if not args.allow_unpinned_binaries:  # fail before claiming anything
+        for k, path in (("cadical", args.cadical), ("cake_lpr", args.cake_lpr)):
+            if hc.sha_file(Path(path)) != hc.PINNED_BINARIES[k]:
+                raise SystemExit(f"{k} at {path} is not the approved build")
     store = LocalStore(args.local_store) if args.local_store else S3Store()
     if args.plan:
         taken = store.listing("claims/") if (args.local_store or os.path.exists(AWS)) else set()
