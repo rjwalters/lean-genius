@@ -1,0 +1,69 @@
+== plan
+{"plan": true, "manifest_rows": 5, "claimed": 0, "claimable": 5, "claimable_items": 21, "slots": 2, "heap_mb": 2000, "cap": 900, "first": ["cube_F6_t14-cover", "cube_F6_t14-b0000"], "store": "/home/ec2-user/h7camp/e2e/store"}
+== run 1 (all rows)
+run1 wall 180s
+PASS 5 claims
+PASS 5 CERTIFIED ledgers
+PASS claim body is the instance id
+== simulated reclaim of cube_F9_t1-x0 (3 receipts survive as a partial)
+PASS re-claimed batch CERTIFIED with 3 carried
+== collect
+{
+ "all_complete": false,
+ "cake_lpr_sha256": [
+  "4d47ffdd19fc6a80e24025f8c5d27d89c4309c9931bdad6d389d87e35be5464b"
+ ],
+ "cubes": {
+  "cube_F6_t14": {
+   "alarm_receipts": 0,
+   "certified_leaves": 10,
+   "checker_cpu_hours": 0.01,
+   "complete": false,
+   "cover_certified": true,
+   "first_missing": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29
+   ],
+   "leaves": 893,
+   "max_solver_cpu_seconds": 40.8,
+   "missing_leaves": 883,
+   "other_non_certified_receipts": 0,
+   "proof_bytes": 255729364,
+   "solver_cpu_hours": 0.03
+PASS collector rejects an unknown cube selector (exit 2)
+PASS collector sees cover + 10 leaves of cube_F6_t14
+== must-ALARM: fake checker that never verifies
+cake_lpr at /home/ec2-user/h7camp/e2e/fake_cake is not the approved build
+PASS unapproved checker binary is refused before any claim
+PASS ALARM + STOP written, nothing CERTIFIED
+PASS worker after STOP claims nothing
+PASS collector counts nothing from the fake-checker store
+8 slots x (4000 MB heap + 1.5 GB) exceeds 16.0 GB
+PASS slots x (heap + 1.5 GB) over the memory budget is refused
+== cap path: 5 s cap on a batch with leaves that need 7-50 s -> INCOMPLETE, no alarm
+PASS INCOMPLETE ledger lists SOLVER_TIMEOUT leaves, no STOP
+== ledgers
+cube_F6_t14-b0000 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 1.8 checker_cpu 7.4 proof 6903610
+cube_F6_t14-b0001 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 121.7 checker_cpu 24.6 proof 248825754
+cube_F6_t14-cover i-test-a CERTIFIED 1 / 1 carried 0 solver_cpu 1.9 checker_cpu 1.6 proof 4484246
+cube_F7_t5-x0 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 41.0 checker_cpu 12.8 proof 86813774
+cube_F9_t1-x0 i-test-b CERTIFIED 5 / 5 carried 3 solver_cpu 104.2 checker_cpu 20.9 proof 204880813
+E2E_ALL_PASS

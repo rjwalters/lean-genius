@@ -49,6 +49,8 @@ def main() -> int:
     ap.add_argument("--stop-launch-at", type=float, default=0, help="epoch seconds: start no new item after this")
     ap.add_argument("--no-covers", action="store_true")
     ap.add_argument("--cubes", default="", help="comma list (default all 28)")
+    ap.add_argument("--reverse", action="store_true", help="schedule from the last round backwards (helper process)")
+    ap.add_argument("--also-done", type=Path, help="another sampler's results file: skip items it has finished")
     args = ap.parse_args()
     meta = json.loads((args.inputs / "inputs.json").read_text())
     bins = cert_item.tools(args.cadical, args.cake_lpr)
@@ -63,6 +65,20 @@ def main() -> int:
     for j in range(args.per_cube):
         items += [(c, "leaf", chosen[c][j]) for c in names if j < len(chosen[c])]
     items = [it for it in items if it not in done]
+    if args.reverse:
+        items.reverse()
+
+    def done_elsewhere(item) -> bool:
+        if not (args.also_done and args.also_done.exists()):
+            return False
+        for line in args.also_done.read_text().splitlines():
+            try:
+                r = json.loads(line)
+            except ValueError:
+                continue
+            if (r["cube"], r["kind"], r["leaf"]) == item:
+                return True
+        return False
     cubes: dict[str, hc.Cube] = {}
     load_lock, out_lock = threading.Lock(), threading.Lock()
     args.work.mkdir(parents=True, exist_ok=True)
@@ -71,7 +87,7 @@ def main() -> int:
 
     def run(item) -> None:
         name, kind, leaf = item
-        if args.stop_launch_at and time.time() > args.stop_launch_at:
+        if (args.stop_launch_at and time.time() > args.stop_launch_at) or done_elsewhere(item):
             return
         with load_lock:
             if name not in cubes:
