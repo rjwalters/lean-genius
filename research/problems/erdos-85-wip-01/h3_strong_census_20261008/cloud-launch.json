@@ -1,0 +1,30 @@
+{
+  "record_type": "launch_not_proof_receipt",
+  "job_id": "20261008T012918-erdos85__h3-census-20261008-67303",
+  "branch": "erdos85/h3-census-20261008",
+  "source_commit_at_execution": "3e67a0afc3b9b99a478f5c37cc7c2ac29a8bcfb7",
+  "job_pid": 67331,
+  "started_at_utc": "2026-10-08T01:29:18Z",
+  "source_sha256": {
+    "Full276.lean": "918a03deb83446bc4486d0f43c9efd996f74078b4d893c9fb64b961967fda60b",
+    "Deficient1554.lean": "23193540957af89f769b0406630e969a727e057f0902bd38258599dec0a74c06",
+    "check.py": "1f0a95f75f5372b7c6fa686cbed204c80ee85c03eee517e9789c7489a92979c8"
+  },
+  "memory_gib": 32,
+  "lake_threads": 4,
+  "shard_workers": 4,
+  "lean_threads_per_shard": 1,
+  "timeout_seconds": 14400,
+  "output": "_build/cloud-dedicated-first",
+  "coordination_message": 52533,
+  "submit_command": "e85-remote run erdos85/h3-census-20261008 --full --mem 32 --threads 4 --timeout 4h --no-follow -- 'lake env python3 ../research/problems/erdos-85-wip-01/h3_strong_census_20261008/check.py --branch both --workers 4 --output /workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first'",
+  "follow_command": "e85-remote logs 20261008T012918-erdos85__h3-census-20261008-67303",
+  "final_result": null,
+  "completion_requirements": [
+    "Both branch RUN.json statuses PASS",
+    "All 107 full and 203 deficient module checks present and passed",
+    "Source/log hashes match retained evidence",
+    "Four new exports have standard axioms only",
+    "Do not interpret this as proving any finite rejection"
+  ]
+}

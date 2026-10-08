@@ -1,0 +1,85 @@
+=== Docker Lean Build ===
+Memory limit: 8192MB (hard enforced via cgroups)
+Timeout: 60m
+CPU limit: 14
+Target: all
+
+Command: lake env python3 ../research/problems/erdos-85-wip-01/h3_strong_census_20261008/check.py --branch both --workers 1 --output /workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first
+Starting Docker build...
+
+[30s] Building...
+{"branch": "full", "module": "Full_3_3", "status": "PASS"}
+{"branch": "full", "module": "Full_3_4", "status": "PASS"}
+[60s] Building...
+{"branch": "full", "module": "Full_3_5", "status": "PASS"}
+{"branch": "full", "module": "Full_3_6", "status": "PASS"}
+{"branch": "full", "module": "Full_3_7", "status": "PASS"}
+[90s] Building...
+{"branch": "full", "module": "Full_3_8", "status": "PASS"}
+{"branch": "full", "module": "Full_3_9", "status": "PASS"}
+{"branch": "full", "module": "Full_3_10", "status": "PASS"}
+[120s] Building...
+{"branch": "full", "module": "Full_3_12", "status": "PASS"}
+{"branch": "full", "module": "Full_3_13", "status": "PASS"}
+{"branch": "full", "module": "Full_4_3", "status": "PASS"}
+[150s] Building...
+{"branch": "full", "module": "Full_4_4", "status": "PASS"}
+{"branch": "full", "module": "Full_4_5", "status": "PASS"}
+{"branch": "full", "module": "Full_4_6", "status": "PASS"}
+[180s] Building...
+{"branch": "full", "module": "Full_4_7", "status": "PASS"}
+{"branch": "full", "module": "Full_4_8", "status": "PASS"}
+[210s] Building...
+{"branch": "full", "module": "Full_4_9", "status": "PASS"}
+[240s] Building...
+{"branch": "full", "module": "Full_4_10", "status": "PASS"}
+{"branch": "full", "module": "Full_4_12", "status": "PASS"}
+{"branch": "full", "module": "Full_4_13", "status": "PASS"}
+[270s] Building...
+{"branch": "full", "module": "Full_5_3", "status": "PASS"}
+{"branch": "full", "module": "Full_5_4", "status": "PASS"}
+[300s] Building...
+{"branch": "full", "module": "Full_5_5", "status": "PASS"}
+{"branch": "full", "module": "Full_5_6", "status": "PASS"}
+{"branch": "full", "module": "Full_5_7", "status": "PASS"}
+[330s] Building...
+{"branch": "full", "module": "Full_5_8", "status": "PASS"}
+{"branch": "full", "module": "Full_5_9", "status": "PASS"}
+{"branch": "full", "module": "Full_5_10", "status": "PASS"}
+[360s] Building...
+{"branch": "full", "module": "Full_5_12", "status": "PASS"}
+{"branch": "full", "module": "Full_5_13", "status": "PASS"}
+{"branch": "full", "module": "Full_6_3", "status": "PASS"}
+[390s] Building...
+{"branch": "full", "module": "Full_6_4", "status": "PASS"}
+{"branch": "full", "module": "Full_6_5", "status": "PASS"}
+{"branch": "full", "module": "Full_6_6", "status": "PASS"}
+[420s] Building...
+{"branch": "full", "module": "Full_6_7", "status": "PASS"}
+[450s] Building...
+{"branch": "full", "module": "Full_6_8", "status": "PASS"}
+[480s] Building...
+{"branch": "full", "module": "Full_6_9", "status": "PASS"}
+{"branch": "full", "module": "Full_6_10", "status": "PASS"}
+[510s] Building...
+{"branch": "full", "module": "Full_6_12", "status": "PASS"}
+{"branch": "full", "module": "Full_6_13", "status": "PASS"}
+[540s] Building...
+{"branch": "full", "module": "Full_7_3", "status": "PASS"}
+[570s] Building...
+{"branch": "full", "module": "Full_7_4", "status": "PASS"}
+{"branch": "full", "module": "Full_7_5", "status": "PASS"}
+[600s] Building...
+{"branch": "full", "module": "Full_7_6", "status": "PASS"}
+{"branch": "full", "module": "Full_7_7", "status": "PASS"}
+{"branch": "full", "module": "Full_7_8", "status": "PASS"}
+[630s] Building...
+{"branch": "full", "module": "Full_7_9", "status": "PASS"}
+{"branch": "full", "module": "Full_7_10", "status": "PASS"}
+{"branch": "full", "module": "Full_7_12", "status": "PASS"}
+[660s] Building...
+{"branch": "full", "module": "Full_7_13", "status": "PASS"}
+{"branch": "full", "module": "Full_8_3", "status": "PASS"}
+
+=== Build killed - exceeded 8192MB memory limit ===
+The proof consumed too much memory and was terminated by Docker.

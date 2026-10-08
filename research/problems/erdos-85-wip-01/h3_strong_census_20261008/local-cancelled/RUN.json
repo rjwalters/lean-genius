@@ -1,0 +1,2296 @@
+{
+  "branch": "full",
+  "status": "RUNNING",
+  "shard_count": 100,
+  "workers": 1,
+  "lean_threads_per_worker": 1,
+  "inputs": {
+    "Full_3_3": {
+      "source": "compact_u_orbits/full_coverage/Full_3_3.lean",
+      "sha256": "ab9da838815a58639215d3100fd5bbb009e4dbe2eded60e6e20365e2e0e76533"
+    },
+    "Full_3_4": {
+      "source": "compact_u_orbits/full_coverage/Full_3_4.lean",
+      "sha256": "448416efac9959076fd39c2213653776fb30e2d4ea6105042f23cfb1f497eeac"
+    },
+    "Full_3_5": {
+      "source": "compact_u_orbits/full_coverage/Full_3_5.lean",
+      "sha256": "dd67df22f8c1bbd716c06189851a1b3cffbe33a0c1445e5ae51b8a26f8edc1e8"
+    },
+    "Full_3_6": {
+      "source": "compact_u_orbits/full_coverage/Full_3_6.lean",
+      "sha256": "c380727f4147d7a177370aa68f56f0758874fdc4d70e8bfaa7777bb02cdf00b9"
+    },
+    "Full_3_7": {
+      "source": "compact_u_orbits/full_coverage/Full_3_7.lean",
+      "sha256": "affdea88a2bf0355315ebac221cb9d100653fbbb78cb0f21de3158a6ff3d2068"
+    },
+    "Full_3_8": {
+      "source": "compact_u_orbits/full_coverage/Full_3_8.lean",
+      "sha256": "6391744c200148fdcd1361553946fbdd66228bd01c1b47d91a98fec6808bc8ad"
+    },
+    "Full_3_9": {
+      "source": "compact_u_orbits/full_coverage/Full_3_9.lean",
+      "sha256": "c465eb933ae3eb4f3e13d406ef5dfebab5fdceab4c169f5f4fbec635d7f513f4"
+    },
+    "Full_3_10": {
+      "source": "compact_u_orbits/full_coverage/Full_3_10.lean",
+      "sha256": "6ce5bd7c8a05d5fc1e7365a6e1ae0c0056fd0b18ce477f46e5ce8cb8b7b3ab1e"
+    },
+    "Full_3_12": {
+      "source": "compact_u_orbits/full_coverage/Full_3_12.lean",
+      "sha256": "b8a78364dfc2bede3b666e38538aa75f31319b6e42b5017f66bb883f37be1e32"
+    },
+    "Full_3_13": {
+      "source": "compact_u_orbits/full_coverage/Full_3_13.lean",
+      "sha256": "c81a2bd8159e1121068985f7ac0afaaaec7db9e4e87368ab844ae4dfedda12fe"
+    },
+    "Full_4_3": {
+      "source": "compact_u_orbits/full_coverage/Full_4_3.lean",
+      "sha256": "7536090d8832f559a8a1762d3cf57d9123369a73786a586c5648ef1c5ed09b48"
+    },
+    "Full_4_4": {
+      "source": "compact_u_orbits/full_coverage/Full_4_4.lean",
+      "sha256": "a1904fa0fa15355d6ebb9323ac3026a2e5a60ac5b98dfa56208b2be07ce5c876"
+    },
+    "Full_4_5": {
+      "source": "compact_u_orbits/full_coverage/Full_4_5.lean",
+      "sha256": "377e8d3370560a10b3005b4dbb7be259468807ba2af1283716266c238ba78d49"
+    },
+    "Full_4_6": {
+      "source": "compact_u_orbits/full_coverage/Full_4_6.lean",
+      "sha256": "3665402831f6e2cff655c57770412f268ba6d02cdc42dcfe6066e3158734364b"
+    },
+    "Full_4_7": {
+      "source": "compact_u_orbits/full_coverage/Full_4_7.lean",
+      "sha256": "8d2fe82c603c2aa02ef199b041d8611dcb3a341af8e203ff0b9b75f0fc2a2f7c"
+    },
+    "Full_4_8": {
+      "source": "compact_u_orbits/full_coverage/Full_4_8.lean",
+      "sha256": "8e149f8ad7d32152868c4ec15464e8fe33ab623f7c1940ea2292320c68b4ad0e"
+    },
+    "Full_4_9": {
+      "source": "compact_u_orbits/full_coverage/Full_4_9.lean",
+      "sha256": "f2bd1fd20a23b2bd8d52259862f1367fab80563cb51e5a9f5ec8859ebe36d347"
+    },
+    "Full_4_10": {
+      "source": "compact_u_orbits/full_coverage/Full_4_10.lean",
+      "sha256": "bb8bd03f82a9bfefffe5ecb3597eacbd32f4e660899a245533e19f15e08428ca"
+    },
+    "Full_4_12": {
+      "source": "compact_u_orbits/full_coverage/Full_4_12.lean",
+      "sha256": "040564ffefcb2f1773d2c55558da9a46d9ca48a7be68861f930bd67ce896ce46"
+    },
+    "Full_4_13": {
+      "source": "compact_u_orbits/full_coverage/Full_4_13.lean",
+      "sha256": "62d513d7e78e459e40020bd8b56a0684c16dbc6ef32ad082f7fabf97331a034a"
+    },
+    "Full_5_3": {
+      "source": "compact_u_orbits/full_coverage/Full_5_3.lean",
+      "sha256": "cc23ebf45c2582ecbf633b82872f7c45e0bf8dbcc0bbf46f94b42cd807e1fa72"
+    },
+    "Full_5_4": {
+      "source": "compact_u_orbits/full_coverage/Full_5_4.lean",
+      "sha256": "0b87bd711eb5d36a43bdd5c109b581ad20b18bfd448a9456073bd5dd28e0e510"
+    },
+    "Full_5_5": {
+      "source": "compact_u_orbits/full_coverage/Full_5_5.lean",
+      "sha256": "77df19719da8195756a874f6b6758ed29c19101b0433d651add42547a6cb9075"
+    },
+    "Full_5_6": {
+      "source": "compact_u_orbits/full_coverage/Full_5_6.lean",
+      "sha256": "2ff067697e70d2ac68d375819be3a6c808088c8db027142c3db21d4ff02fca4d"
+    },
+    "Full_5_7": {
+      "source": "compact_u_orbits/full_coverage/Full_5_7.lean",
+      "sha256": "082af219ceb42b84a9021fd950fb39c8567c65a823b4f0913afba96ec95fbf8d"
+    },
+    "Full_5_8": {
+      "source": "compact_u_orbits/full_coverage/Full_5_8.lean",
+      "sha256": "81319b6aeabda0cffcb2933159851682a1cd9514833871f5508ab6bbda9abc92"
+    },
+    "Full_5_9": {
+      "source": "compact_u_orbits/full_coverage/Full_5_9.lean",
+      "sha256": "d405d5e95abdd300e67f9dca935570099f48866cc4943d1b472b5b60f335d8a6"
+    },
+    "Full_5_10": {
+      "source": "compact_u_orbits/full_coverage/Full_5_10.lean",
+      "sha256": "2e302754dc5ad4843fe7d0c1564cc6e48d06fb6d7d34af06de1fde2a26ea7bb1"
+    },
+    "Full_5_12": {
+      "source": "compact_u_orbits/full_coverage/Full_5_12.lean",
+      "sha256": "6b203f6b22e1c9124c6f344baebde012e003de708253d260692c63f5f50195e2"
+    },
+    "Full_5_13": {
+      "source": "compact_u_orbits/full_coverage/Full_5_13.lean",
+      "sha256": "b6053ec8ff94eceed439ad45df8fa4fa9036c8bb61cdeead6ff65abb68e36021"
+    },
+    "Full_6_3": {
+      "source": "compact_u_orbits/full_coverage/Full_6_3.lean",
+      "sha256": "d7944d89f617437a275379d7e496e6081b50a8afaa253b4bcef74c41314f727b"
+    },
+    "Full_6_4": {
+      "source": "compact_u_orbits/full_coverage/Full_6_4.lean",
+      "sha256": "4d484ea49bc457c8aeba498753797866ad77a865283140065b0de85076b9f1c6"
+    },
+    "Full_6_5": {
+      "source": "compact_u_orbits/full_coverage/Full_6_5.lean",
+      "sha256": "0b30f64be9b4a5e2f9eba87575c69d86fc55f6e176ae8f32cc7c48cdfff0dbec"
+    },
+    "Full_6_6": {
+      "source": "compact_u_orbits/full_coverage/Full_6_6.lean",
+      "sha256": "2467e8979c536d816893321bcb663a96c8a49c4de47b395918641f9c049e29f4"
+    },
+    "Full_6_7": {
+      "source": "compact_u_orbits/full_coverage/Full_6_7.lean",
+      "sha256": "f881be81e14a5d089932e2c99c0bae971fea044cb4d7ff629a55b1a8aaed7216"
+    },
+    "Full_6_8": {
+      "source": "compact_u_orbits/full_coverage/Full_6_8.lean",
+      "sha256": "2380ff849ecc7d16cf3cdad748746bffd149f6d1a4d6fd2744dbd314272317c3"
+    },
+    "Full_6_9": {
+      "source": "compact_u_orbits/full_coverage/Full_6_9.lean",
+      "sha256": "e20cb588f5b505804cf101c81a9a9cb95828c39dc338820453ab7e9ad8c54377"
+    },
+    "Full_6_10": {
+      "source": "compact_u_orbits/full_coverage/Full_6_10.lean",
+      "sha256": "9b95c794b8ddcfb4c7da09f7c30b6ecb90b41d262aacc5bcc0b4730e20dc8705"
+    },
+    "Full_6_12": {
+      "source": "compact_u_orbits/full_coverage/Full_6_12.lean",
+      "sha256": "9253ecd9263381a748d611589bc9bed42c2d77e82c4f48e1eead424f97f5de59"
+    },
+    "Full_6_13": {
+      "source": "compact_u_orbits/full_coverage/Full_6_13.lean",
+      "sha256": "3084d8f440dc99ee5086d6e1d9b4d5d0ee5751c9102e205bbf207c300850f0d3"
+    },
+    "Full_7_3": {
+      "source": "compact_u_orbits/full_coverage/Full_7_3.lean",
+      "sha256": "c28e801ec1bea60904bc4958f16d430305a67354b3ed3f509d7f8aa92cfadab6"
+    },
+    "Full_7_4": {
+      "source": "compact_u_orbits/full_coverage/Full_7_4.lean",
+      "sha256": "994b39648c0d32d5c0e2043c73abd88f6f3b9d5a613b3ab3d91f00782c6b31c6"
+    },
+    "Full_7_5": {
+      "source": "compact_u_orbits/full_coverage/Full_7_5.lean",
+      "sha256": "6ffa731d89bb5d678e7e384c95690e5042522d8845fc9c6a22fedb27456b6731"
+    },
+    "Full_7_6": {
+      "source": "compact_u_orbits/full_coverage/Full_7_6.lean",
+      "sha256": "4fa955303c8a97b4ac2486e644641955610a5308327c29289b9a4d46cc14b6cc"
+    },
+    "Full_7_7": {
+      "source": "compact_u_orbits/full_coverage/Full_7_7.lean",
+      "sha256": "ccd47dfe741705c31dc78bbaa8250104c74c0cda4a8fa634e34bdddfbe61ec17"
+    },
+    "Full_7_8": {
+      "source": "compact_u_orbits/full_coverage/Full_7_8.lean",
+      "sha256": "3c4c2f9956cb5a9a32236c159357a8692106a8af29f8866ae94e6870a944fd77"
+    },
+    "Full_7_9": {
+      "source": "compact_u_orbits/full_coverage/Full_7_9.lean",
+      "sha256": "8812a86247c692134440d42f444bb2ac81c9fbf5320dbfdb6f9e944c59177aed"
+    },
+    "Full_7_10": {
+      "source": "compact_u_orbits/full_coverage/Full_7_10.lean",
+      "sha256": "05d5389cc0a972d5747604e9fd13e52ecbd9b7f7d2fa3c3927f1962fe0884938"
+    },
+    "Full_7_12": {
+      "source": "compact_u_orbits/full_coverage/Full_7_12.lean",
+      "sha256": "e87b6b9014a39c82000de53510d835d804ca34dc995e5ab1813611c348633a4f"
+    },
+    "Full_7_13": {
+      "source": "compact_u_orbits/full_coverage/Full_7_13.lean",
+      "sha256": "491c9a7dd936008fa837b7f69d6388317854e75b8081c56205c9cd638d4268b3"
+    },
+    "Full_8_3": {
+      "source": "compact_u_orbits/full_coverage/Full_8_3.lean",
+      "sha256": "adf6eb43e576619f4b6ab8b86687bf91a693eb39a69b7940b6ab68bca3a6ef6a"
+    },
+    "Full_8_4": {
+      "source": "compact_u_orbits/full_coverage/Full_8_4.lean",
+      "sha256": "8354a0f72db1a73a2933aa75a790d985df6e0e3576df046895e2061d0dffc881"
+    },
+    "Full_8_5": {
+      "source": "compact_u_orbits/full_coverage/Full_8_5.lean",
+      "sha256": "1a2a7bbefb6dba7ff788f35f1a7331fc3a0abfa667ac325fc5f3618bcf561fb6"
+    },
+    "Full_8_6": {
+      "source": "compact_u_orbits/full_coverage/Full_8_6.lean",
+      "sha256": "cf5cf5a363cc089236af42d83a83e52c0457a3e6ab9d90603c4213e63ab2eb1d"
+    },
+    "Full_8_7": {
+      "source": "compact_u_orbits/full_coverage/Full_8_7.lean",
+      "sha256": "e756c460e1fba571f1f4b63062d22fd686fecfee7153e6492e245a5b460c3a68"
+    },
+    "Full_8_8": {
+      "source": "compact_u_orbits/full_coverage/Full_8_8.lean",
+      "sha256": "80e4c7474bd37f5feb83fc9e4119f66dc9cd6cd069a4f96b2d34b203862b41d1"
+    },
+    "Full_8_9": {
+      "source": "compact_u_orbits/full_coverage/Full_8_9.lean",
+      "sha256": "5828a85a09a2637a870ba7fc813c27d34c6e7c20065dd2018e6f1676a3b5ecf0"
+    },
+    "Full_8_10": {
+      "source": "compact_u_orbits/full_coverage/Full_8_10.lean",
+      "sha256": "0a42e833259a031117231b2ac187eeb7b4c0eb5439f4e0eb4c091079060e7aac"
+    },
+    "Full_8_12": {
+      "source": "compact_u_orbits/full_coverage/Full_8_12.lean",
+      "sha256": "4ab1f937d58d6ef6328cc48d7ea2af65f47eacf704634357d3c48b12f94571ba"
+    },
+    "Full_8_13": {
+      "source": "compact_u_orbits/full_coverage/Full_8_13.lean",
+      "sha256": "01c6eb58420943e0dc539d633619e92e14f71a6975bd4f2cc15533ef7b491c1d"
+    },
+    "Full_9_3": {
+      "source": "compact_u_orbits/full_coverage/Full_9_3.lean",
+      "sha256": "14ef2d7b6a17aeba1ab8f5c9ef9412c2a2762ff8c96380dc11ee8ee894cb6115"
+    },
+    "Full_9_4": {
+      "source": "compact_u_orbits/full_coverage/Full_9_4.lean",
+      "sha256": "b44dff3c10fd0254a77720ec66e04cfdfec6be2d249859bb1fae3326efe1321b"
+    },
+    "Full_9_5": {
+      "source": "compact_u_orbits/full_coverage/Full_9_5.lean",
+      "sha256": "a15bf1e2b60a4cf9a2ce4a625123afb7eb7085d3906e017da2d64578088224dc"
+    },
+    "Full_9_6": {
+      "source": "compact_u_orbits/full_coverage/Full_9_6.lean",
+      "sha256": "0cbc77f5e51b88099da1992f71de5dfe6a7d817a07282956c2307cdd3843f07b"
+    },
+    "Full_9_7": {
+      "source": "compact_u_orbits/full_coverage/Full_9_7.lean",
+      "sha256": "8669d4ed30f2b913fa463d0e8765f9ebf399638afbf76f6869b6370bd6460dda"
+    },
+    "Full_9_8": {
+      "source": "compact_u_orbits/full_coverage/Full_9_8.lean",
+      "sha256": "93619e48657ae75df541ab594fa56974eebccb516006da8cc7afd293ff0a310a"
+    },
+    "Full_9_9": {
+      "source": "compact_u_orbits/full_coverage/Full_9_9.lean",
+      "sha256": "cc9d8e762e6a8315f04faf7484a7427d571c8ec2c7be2e4e746aae819d823616"
+    },
+    "Full_9_10": {
+      "source": "compact_u_orbits/full_coverage/Full_9_10.lean",
+      "sha256": "42d39cb3ddd031d6667ef25f617136df846dada3253c82dc586ae0893f6134cd"
+    },
+    "Full_9_12": {
+      "source": "compact_u_orbits/full_coverage/Full_9_12.lean",
+      "sha256": "40105cdfb5c6542b87ec90979383af20fac431a91f3c0f6603090a5aae3f6f6b"
+    },
+    "Full_9_13": {
+      "source": "compact_u_orbits/full_coverage/Full_9_13.lean",
+      "sha256": "423e9d4958ad5f2398ee03645491ce86ce927b03484ad8d196320cbb85b76ff5"
+    },
+    "Full_10_3": {
+      "source": "compact_u_orbits/full_coverage/Full_10_3.lean",
+      "sha256": "7435872c8fbef68b4f23517d55b498f9029d1e918452fcf975a89c90a7663276"
+    },
+    "Full_10_4": {
+      "source": "compact_u_orbits/full_coverage/Full_10_4.lean",
+      "sha256": "1c2244eb987d5a9000e306d27252c25310f761dade3b6486706885673f335ab2"
+    },
+    "Full_10_5": {
+      "source": "compact_u_orbits/full_coverage/Full_10_5.lean",
+      "sha256": "6a09dde39c16cacb81b77d421869068a354c61f167bba17fad60f36445db4d3b"
+    },
+    "Full_10_6": {
+      "source": "compact_u_orbits/full_coverage/Full_10_6.lean",
+      "sha256": "a072196467a94282b5f54830ab2c77be0cc9031993a8778999b8b4501846d3ca"
+    },
+    "Full_10_7": {
+      "source": "compact_u_orbits/full_coverage/Full_10_7.lean",
+      "sha256": "8c0270f359e83c6866847217a575cd18a706cd0a721d0d2885e3e5f9779c8cfe"
+    },
+    "Full_10_8": {
+      "source": "compact_u_orbits/full_coverage/Full_10_8.lean",
+      "sha256": "2581ce759785bff9838ce13bc03501b2a0a27da0a859e0db4fbe8a6d4bb2b5c5"
+    },
+    "Full_10_9": {
+      "source": "compact_u_orbits/full_coverage/Full_10_9.lean",
+      "sha256": "9cfe516d33833a2826054045f957d3db0bb3f72c750b014534cec679f18f60d2"
+    },
+    "Full_10_10": {
+      "source": "compact_u_orbits/full_coverage/Full_10_10.lean",
+      "sha256": "56522c712499239d68420f957692a177c5a908bac37a5b131b5ba6b684fcc8d9"
+    },
+    "Full_10_12": {
+      "source": "compact_u_orbits/full_coverage/Full_10_12.lean",
+      "sha256": "ca1f7dd2656e2c37e0070921cfeece6d769ca034970586fb917ee278390db0ca"
+    },
+    "Full_10_13": {
+      "source": "compact_u_orbits/full_coverage/Full_10_13.lean",
+      "sha256": "9f7b4b3fdda29af65cb319c42a8206d0cb91908829715ed62f15d8d2956128da"
+    },
+    "Full_12_3": {
+      "source": "compact_u_orbits/full_coverage/Full_12_3.lean",
+      "sha256": "2df9e5aa7eec6b09673693ebaf64e57ad6386fb7287dd52d3ef5eed3d290772c"
+    },
+    "Full_12_4": {
+      "source": "compact_u_orbits/full_coverage/Full_12_4.lean",
+      "sha256": "213ae16118be0c715c7690a532164b57cb15ac9c3e5945821c35dd30f21ceb21"
+    },
+    "Full_12_5": {
+      "source": "compact_u_orbits/full_coverage/Full_12_5.lean",
+      "sha256": "d0eef8c0e68ab8bbe53c670d9cebbd077c0d06340b36b373f871e40e1a66fd7b"
+    },
+    "Full_12_6": {
+      "source": "compact_u_orbits/full_coverage/Full_12_6.lean",
+      "sha256": "060e08bf7ef103311b60143b11b103d677f590ee50dad2d5e381f6ca7c40b82b"
+    },
+    "Full_12_7": {
+      "source": "compact_u_orbits/full_coverage/Full_12_7.lean",
+      "sha256": "17c1f94b967c159151ef1cb04982651d700c302320a43fad16f77a5f460bb780"
+    },
+    "Full_12_8": {
+      "source": "compact_u_orbits/full_coverage/Full_12_8.lean",
+      "sha256": "a26447b3cd14dcbe0e71b11f20765123c439b2a1d74813cb48e78b16b0049d05"
+    },
+    "Full_12_9": {
+      "source": "compact_u_orbits/full_coverage/Full_12_9.lean",
+      "sha256": "8d84cc7d033d5a49064ead34e16fdf6ad6dfe5d07fa8b953694f4155f0a56399"
+    },
+    "Full_12_10": {
+      "source": "compact_u_orbits/full_coverage/Full_12_10.lean",
+      "sha256": "34bcb914b39286a9930ad37fbab12fe9ca746feae53283aa2c1dd3e34cd94c52"
+    },
+    "Full_12_12": {
+      "source": "compact_u_orbits/full_coverage/Full_12_12.lean",
+      "sha256": "ed43aeee535e29d3e7ebc23c9cb9e991af6b4bc09f420dd35fab9cef83160be9"
+    },
+    "Full_12_13": {
+      "source": "compact_u_orbits/full_coverage/Full_12_13.lean",
+      "sha256": "3b9fac12974a74998d13af9ab0106386490aa674f896db3c806e315788b87ead"
+    },
+    "Full_13_3": {
+      "source": "compact_u_orbits/full_coverage/Full_13_3.lean",
+      "sha256": "d25b46828c67c35318fb9f59c043e017cf084ff5ea1644f1a79eab7b244c7a7e"
+    },
+    "Full_13_4": {
+      "source": "compact_u_orbits/full_coverage/Full_13_4.lean",
+      "sha256": "6b9129cf2ded759764303005422ff35de13449414fd60d819618caa176cf5daa"
+    },
+    "Full_13_5": {
+      "source": "compact_u_orbits/full_coverage/Full_13_5.lean",
+      "sha256": "a3e8a8a009459dcabcf95ad2093b5dd3659ccbf3a5ede2cc25eb213e01cad5d1"
+    },
+    "Full_13_6": {
+      "source": "compact_u_orbits/full_coverage/Full_13_6.lean",
+      "sha256": "a0a5a3ed62ce7bffed1b409f36e615439d6e484751edd46b6da68e1af616b720"
+    },
+    "Full_13_7": {
+      "source": "compact_u_orbits/full_coverage/Full_13_7.lean",
+      "sha256": "53e3d9c122cea80afcddd3bf2d3b02a3a7c3a1d363de7df1e4a75e1eb743b958"
+    },
+    "Full_13_8": {
+      "source": "compact_u_orbits/full_coverage/Full_13_8.lean",
+      "sha256": "cd686f8f1df58fac95cf7a1163de2e542905c893db7936bf1c0fe5bbd27a0c94"
+    },
+    "Full_13_9": {
+      "source": "compact_u_orbits/full_coverage/Full_13_9.lean",
+      "sha256": "c6d960a63e29c2b0b47424a792970d1d497b91cdd44b3de6452a4df0559f8dc7"
+    },
+    "Full_13_10": {
+      "source": "compact_u_orbits/full_coverage/Full_13_10.lean",
+      "sha256": "6d85bcac801dc1206e335053269bc5db3632ec698a712a7c0b62cb21c06780ca"
+    },
+    "Full_13_12": {
+      "source": "compact_u_orbits/full_coverage/Full_13_12.lean",
+      "sha256": "2dd45df53a6591e5a25b9363c866b1e6547d98e4c6a29a165732b9e322f1c16f"
+    },
+    "Full_13_13": {
+      "source": "compact_u_orbits/full_coverage/Full_13_13.lean",
+      "sha256": "2315ee4a1e308f4fe82650a29535c92d0e03cc6bd81ce40ca1ffb40447c519ce"
+    },
+    "Assembly": {
+      "source": "compact_u_orbits/full_coverage/Assembly.lean",
+      "sha256": "83f4922e096f9cf96dfc482ac10ffb6bcea30593b393e78752c950dcc47dffa1"
+    },
+    "Transport": {
+      "source": "full_orbit_transport/Transport.lean",
+      "sha256": "97380e9f83da623865cff06428368d1fd20f07a45bc2c42f6e02f9e2e6bebe44"
+    },
+    "Pruning": {
+      "source": "full_orbit_pruning/Pruning.lean",
+      "sha256": "8f3b04ba385c0794033047e3077ed56d606b40f8c59aa17d23b7fbdc9db8825e"
+    },
+    "Certificate": {
+      "source": "full_block_orbits/Certificate.lean",
+      "sha256": "e86619944bbdf83fd475651b09a59383072b5b59092be43914f3b1a201ad31fb"
+    },
+    "StrongTransport": {
+      "source": "h3_strong_block_transport_20261008/StrongTransport.lean",
+      "sha256": "dc128e80a71e9035cd97e25423a2a828788f4d5d37a48838ead9f6e4311f9d66"
+    },
+    "FullBlockReduction": {
+      "source": "full_block_pruning/Reduction.lean",
+      "sha256": "a24ddb491107a93138f8c328bd3f89acfbb77de2011a8e11364da7ab65ad880d"
+    },
+    "Full276": {
+      "source": "h3_strong_census_20261008/Full276.lean",
+      "sha256": "918a03deb83446bc4486d0f43c9efd996f74078b4d893c9fb64b961967fda60b"
+    }
+  },
+  "results": [
+    {
+      "module": "Full_3_3",
+      "source": "compact_u_orbits/full_coverage/Full_3_3.lean",
+      "source_sha256": "ab9da838815a58639215d3100fd5bbb009e4dbe2eded60e6e20365e2e0e76533",
+      "log_sha256": "93b7de74cc72141422c9b69ce4fc42c0442da24b0ee1cc3d628c86732dd8bda0",
+      "olean_sha256": "1949d7e06422a2843143a4e1f731c560ddca823486eab04b0c6088804398be95",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_3.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_3.lean"
+      ],
+      "elapsed_seconds": 10.761483296009828,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_3_3.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_3_3.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_3_4",
+      "source": "compact_u_orbits/full_coverage/Full_3_4.lean",
+      "source_sha256": "448416efac9959076fd39c2213653776fb30e2d4ea6105042f23cfb1f497eeac",
+      "log_sha256": "c871f93d7f694fcb28585740da701073abdad6d4b45a1c60e3f148ad686836f1",
+      "olean_sha256": "336008bee3edf83e2d6384a0d6aed92647cd1d9341419c01a0bea381bb023404",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_4.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_4.lean"
+      ],
+      "elapsed_seconds": 10.278063003992429,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_3_4.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_3_4.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_3_5",
+      "source": "compact_u_orbits/full_coverage/Full_3_5.lean",
+      "source_sha256": "dd67df22f8c1bbd716c06189851a1b3cffbe33a0c1445e5ae51b8a26f8edc1e8",
+      "log_sha256": "2d0d922d47c92d98b8fbcaed299981ec43ae32716fb1bb90c9285f9d81f2f5c7",
+      "olean_sha256": "a2b65d4bc0caa788fa070ee0c43e2ca4fa35277af8bc5aee058ec0d375312dee",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_5.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_5.lean"
+      ],
+      "elapsed_seconds": 10.485175213994808,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_3_5.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_3_5.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_3_6",
+      "source": "compact_u_orbits/full_coverage/Full_3_6.lean",
+      "source_sha256": "c380727f4147d7a177370aa68f56f0758874fdc4d70e8bfaa7777bb02cdf00b9",
+      "log_sha256": "79e5d153109c62b341fce50286f20afc0e17db07509184730220e204fda121e8",
+      "olean_sha256": "fe01d4f4d4d0e30b0e8fd23c92f74190238dfa87eedd3c3a458e5e7477462fed",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_6.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_6.lean"
+      ],
+      "elapsed_seconds": 9.815362712994101,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_3_6.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_3_6.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_3_7",
+      "source": "compact_u_orbits/full_coverage/Full_3_7.lean",
+      "source_sha256": "affdea88a2bf0355315ebac221cb9d100653fbbb78cb0f21de3158a6ff3d2068",
+      "log_sha256": "a93ea4b72cfed754fa0c5b9af00dabea3649c8ae37a2b2c2f610da98663b24d8",
+      "olean_sha256": "617705ad548ab7597111536015bb828d2b570cb15e48eb53862bcc61efd7119c",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_7.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_7.lean"
+      ],
+      "elapsed_seconds": 9.429520420992048,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_3_7.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_3_7.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_3_8",
+      "source": "compact_u_orbits/full_coverage/Full_3_8.lean",
+      "source_sha256": "6391744c200148fdcd1361553946fbdd66228bd01c1b47d91a98fec6808bc8ad",
+      "log_sha256": "61b6160943071d6fc5309ab10e916a1dcc643d924438c43e5e051706166e96cd",
+      "olean_sha256": "77d99026dac7f7f91ac1629d5ce2f3b29b3326933ec7af46569c80f0ca952c2d",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_8.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_8.lean"
+      ],
+      "elapsed_seconds": 9.362908337003319,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_3_8.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_3_8.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_3_9",
+      "source": "compact_u_orbits/full_coverage/Full_3_9.lean",
+      "source_sha256": "c465eb933ae3eb4f3e13d406ef5dfebab5fdceab4c169f5f4fbec635d7f513f4",
+      "log_sha256": "60faab842c9b1f7d082fff8b35646eddc9b852e92c117c2b0fadf0827ad9e125",
+      "olean_sha256": "2eb7defb16c79758209e424624d7473e6236fad2d78c4447993f042117e4407a",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_9.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_9.lean"
+      ],
+      "elapsed_seconds": 9.292544046998955,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_3_9.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_3_9.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_3_10",
+      "source": "compact_u_orbits/full_coverage/Full_3_10.lean",
+      "source_sha256": "6ce5bd7c8a05d5fc1e7365a6e1ae0c0056fd0b18ce477f46e5ce8cb8b7b3ab1e",
+      "log_sha256": "15bd5381b11de1ddf67c2ae0a0d46f5c2f144065187d11867bca175713a4ba88",
+      "olean_sha256": "e22570a98f815a31b1a0531a4d98cf5b83a2631a8f1c84b672d404a2a3bd3185",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_10.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_10.lean"
+      ],
+      "elapsed_seconds": 10.80263721299707,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_3_10.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_3_10.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_3_12",
+      "source": "compact_u_orbits/full_coverage/Full_3_12.lean",
+      "source_sha256": "b8a78364dfc2bede3b666e38538aa75f31319b6e42b5017f66bb883f37be1e32",
+      "log_sha256": "4437ba4161453cc1ca3efe3a40ee1a8a3a2e5b248b7c2570ddae9bbd21e325f8",
+      "olean_sha256": "3eb788c487821230b1008d78f79b84b672c479e18737ae8ce15993ef48917ec6",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_12.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_12.lean"
+      ],
+      "elapsed_seconds": 9.86682917100552,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_3_12.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_3_12.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_3_13",
+      "source": "compact_u_orbits/full_coverage/Full_3_13.lean",
+      "source_sha256": "c81a2bd8159e1121068985f7ac0afaaaec7db9e4e87368ab844ae4dfedda12fe",
+      "log_sha256": "840ebe3f9ea5b69cb9ffb98e5612ba8bf3f20f99d0bbfe56fc566e19b600c94d",
+      "olean_sha256": "8047f8510d893fe1da8991ddd35443229b5b09e9bc827aa914ccd84c5e6f8f4e",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_13.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_3_13.lean"
+      ],
+      "elapsed_seconds": 9.965144255009363,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_3_13.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_3_13.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_4_3",
+      "source": "compact_u_orbits/full_coverage/Full_4_3.lean",
+      "source_sha256": "7536090d8832f559a8a1762d3cf57d9123369a73786a586c5648ef1c5ed09b48",
+      "log_sha256": "077a30eb920c5ad5991049b03831e657a52328829898a9330d8f20b7d37442e1",
+      "olean_sha256": "8de398f7e1c22e3a42eab0c15cbed1889e10336aedff2e91e6d5f352cae9ff10",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_3.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_3.lean"
+      ],
+      "elapsed_seconds": 9.909268503004569,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_4_3.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_4_3.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_4_4",
+      "source": "compact_u_orbits/full_coverage/Full_4_4.lean",
+      "source_sha256": "a1904fa0fa15355d6ebb9323ac3026a2e5a60ac5b98dfa56208b2be07ce5c876",
+      "log_sha256": "1eabb942ba672a394afa1c3e0eb90b3e55d712bf4c308a7974d774499cc2eb73",
+      "olean_sha256": "ca5ea0040e558b66c4380ecb0fc891ac88d7ebfb08678a1b01c3da56cfad6cb1",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_4.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_4.lean"
+      ],
+      "elapsed_seconds": 11.293516880003153,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_4_4.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_4_4.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_4_5",
+      "source": "compact_u_orbits/full_coverage/Full_4_5.lean",
+      "source_sha256": "377e8d3370560a10b3005b4dbb7be259468807ba2af1283716266c238ba78d49",
+      "log_sha256": "bafcdb640c6a2cdfcaba268439e913fc2fdda314d5e9f962b04aff857c3d16ca",
+      "olean_sha256": "f6762331100beed189c58cf50c2cdfd33b9da7aff48bb235f3507d1474dbde93",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_5.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_5.lean"
+      ],
+      "elapsed_seconds": 10.801792172002024,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_4_5.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_4_5.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_4_6",
+      "source": "compact_u_orbits/full_coverage/Full_4_6.lean",
+      "source_sha256": "3665402831f6e2cff655c57770412f268ba6d02cdc42dcfe6066e3158734364b",
+      "log_sha256": "002ef40ef2148c4b9cb6a4055ab53e8c0f693d4ad9da93ca83980f8730a0c601",
+      "olean_sha256": "c7066168b22dbff3c0c6c1c3920262fe597b1b4a54f701e91adbffa53fd70d0d",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_6.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_6.lean"
+      ],
+      "elapsed_seconds": 10.245806295992224,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_4_6.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_4_6.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_4_7",
+      "source": "compact_u_orbits/full_coverage/Full_4_7.lean",
+      "source_sha256": "8d2fe82c603c2aa02ef199b041d8611dcb3a341af8e203ff0b9b75f0fc2a2f7c",
+      "log_sha256": "006622f47ee918f2d0079abd83c7d38ccb730831872110d74c58621dbde4b15d",
+      "olean_sha256": "b7d9dc8461d4ac27c611a81f6413e841b4e13595ee68b5a2988905ae69f2a902",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_7.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_7.lean"
+      ],
+      "elapsed_seconds": 10.812921504999395,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_4_7.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_4_7.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_4_8",
+      "source": "compact_u_orbits/full_coverage/Full_4_8.lean",
+      "source_sha256": "8e149f8ad7d32152868c4ec15464e8fe33ab623f7c1940ea2292320c68b4ad0e",
+      "log_sha256": "44047cc0305e0c6b68ff0bcc4422daaae791b1d9d43635c7bdbf589928311b1a",
+      "olean_sha256": "ab98d249fb3c1e88ac8ded4761078e9a94fbb3edd0ee0596bd1d17b6892c8a55",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_8.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_8.lean"
+      ],
+      "elapsed_seconds": 10.52864867199969,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_4_8.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_4_8.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_4_9",
+      "source": "compact_u_orbits/full_coverage/Full_4_9.lean",
+      "source_sha256": "f2bd1fd20a23b2bd8d52259862f1367fab80563cb51e5a9f5ec8859ebe36d347",
+      "log_sha256": "263394dd1a7daee891e680e2a0aa00dd2bbc331ffcd85d9ef641bd77715c1c59",
+      "olean_sha256": "5038fd227b970f4c6e86b45dac6da49f5f39721c762c96a9698bae1ca22fcbf8",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_9.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_9.lean"
+      ],
+      "elapsed_seconds": 26.930068886998924,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_4_9.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_4_9.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_4_10",
+      "source": "compact_u_orbits/full_coverage/Full_4_10.lean",
+      "source_sha256": "bb8bd03f82a9bfefffe5ecb3597eacbd32f4e660899a245533e19f15e08428ca",
+      "log_sha256": "24233c9bb019361e29d851e777b3c880872f635069ed9c8c44c2ae6176794607",
+      "olean_sha256": "9605c52fa8c13678228a6c0258255f003ac2a6212e143cbf42e537d401370be6",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_10.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_10.lean"
+      ],
+      "elapsed_seconds": 13.732903465002892,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_4_10.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_4_10.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_4_12",
+      "source": "compact_u_orbits/full_coverage/Full_4_12.lean",
+      "source_sha256": "040564ffefcb2f1773d2c55558da9a46d9ca48a7be68861f930bd67ce896ce46",
+      "log_sha256": "dfffab9f245831b58484e0b9d44ba5f6fee0d4ee04962fb6c2ab1e3a0f68a149",
+      "olean_sha256": "4815a4bd143109d1314f1f605492c7965194a78519d777ce70c22d601a93526a",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_12.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_12.lean"
+      ],
+      "elapsed_seconds": 12.471730463992571,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_4_12.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_4_12.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_4_13",
+      "source": "compact_u_orbits/full_coverage/Full_4_13.lean",
+      "source_sha256": "62d513d7e78e459e40020bd8b56a0684c16dbc6ef32ad082f7fabf97331a034a",
+      "log_sha256": "664fd3026763a261acc80e30c5d5bbf7a297469b5e9271d84c3b90cbcd6d9c05",
+      "olean_sha256": "82b717a5704631fd4620766de347bb628efda157017c309afe678cfad6e40022",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_13.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_4_13.lean"
+      ],
+      "elapsed_seconds": 11.760141713995836,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_4_13.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_4_13.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_5_3",
+      "source": "compact_u_orbits/full_coverage/Full_5_3.lean",
+      "source_sha256": "cc23ebf45c2582ecbf633b82872f7c45e0bf8dbcc0bbf46f94b42cd807e1fa72",
+      "log_sha256": "43d8667b626acf1ce59835fb9386d3c1157f043d70274a5da755cd2bc2381d91",
+      "olean_sha256": "2b27af327edeba92e223c6efeb8c7f8ecc1ffee911849984e5442287d0ba935a",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_3.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_3.lean"
+      ],
+      "elapsed_seconds": 12.770080046990188,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_5_3.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_5_3.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_5_4",
+      "source": "compact_u_orbits/full_coverage/Full_5_4.lean",
+      "source_sha256": "0b87bd711eb5d36a43bdd5c109b581ad20b18bfd448a9456073bd5dd28e0e510",
+      "log_sha256": "c9101ed3dbfac1d9f9651700b0ba6a1a0483a94782a64ed87491f04ce0077aa0",
+      "olean_sha256": "c641a4e729bf6f6d4b4159956a5a469796f4d664cc70d96eaffbbeb5c7b7a59f",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_4.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_4.lean"
+      ],
+      "elapsed_seconds": 11.168560880993027,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_5_4.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_5_4.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_5_5",
+      "source": "compact_u_orbits/full_coverage/Full_5_5.lean",
+      "source_sha256": "77df19719da8195756a874f6b6758ed29c19101b0433d651add42547a6cb9075",
+      "log_sha256": "cd833ad050ad65ceb8712711e27e3c251aa6dc4299acdd32dd44d7b8a124906b",
+      "olean_sha256": "a138378e4be7ea4e96d7a7d3821cdc77236d21a6623e1d7a8084180966604fda",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_5.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_5.lean"
+      ],
+      "elapsed_seconds": 11.367371462998562,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_5_5.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_5_5.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_5_6",
+      "source": "compact_u_orbits/full_coverage/Full_5_6.lean",
+      "source_sha256": "2ff067697e70d2ac68d375819be3a6c808088c8db027142c3db21d4ff02fca4d",
+      "log_sha256": "2b6d2b0683c6b6a23d4a63e27430900627030b56c69e721f9e4a8351f6a5aee5",
+      "olean_sha256": "c4c8d16fefe99f1db738c4ffa877059fd2efa07b20078185d536de2059e4dbe3",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_6.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_6.lean"
+      ],
+      "elapsed_seconds": 9.578206963007688,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_5_6.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_5_6.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_5_7",
+      "source": "compact_u_orbits/full_coverage/Full_5_7.lean",
+      "source_sha256": "082af219ceb42b84a9021fd950fb39c8567c65a823b4f0913afba96ec95fbf8d",
+      "log_sha256": "51abcbbcc68f3951c5d761b8360255dfde49b3e961d2a5ea2b6351fe5f81d58a",
+      "olean_sha256": "cd769db6f7c6be778a1652446a83bd034c58303a3458f79eb04fdcb304b49075",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_7.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_7.lean"
+      ],
+      "elapsed_seconds": 10.186500046998844,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_5_7.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_5_7.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_5_8",
+      "source": "compact_u_orbits/full_coverage/Full_5_8.lean",
+      "source_sha256": "81319b6aeabda0cffcb2933159851682a1cd9514833871f5508ab6bbda9abc92",
+      "log_sha256": "34c527728c65d79a8d7fef2906c29be33bc2d5f161a17196f0cd89ab195fc361",
+      "olean_sha256": "7f8d83a7b3ea3ea5d991e840d1b7ab0c77a75a180e33d8d8addda1608491631e",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_8.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_8.lean"
+      ],
+      "elapsed_seconds": 9.732169337992673,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_5_8.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_5_8.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_5_9",
+      "source": "compact_u_orbits/full_coverage/Full_5_9.lean",
+      "source_sha256": "d405d5e95abdd300e67f9dca935570099f48866cc4943d1b472b5b60f335d8a6",
+      "log_sha256": "0d104f55cda16f2212cc5d7a33fb0ddbfc34571f750c183b61e3094beac44b06",
+      "olean_sha256": "966fa218b3596e5e5f2bcbaad3fd6dfe55cca89fc4607f3e09d8a7398c76802f",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_9.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_9.lean"
+      ],
+      "elapsed_seconds": 11.099831088009523,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_5_9.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_5_9.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_5_10",
+      "source": "compact_u_orbits/full_coverage/Full_5_10.lean",
+      "source_sha256": "2e302754dc5ad4843fe7d0c1564cc6e48d06fb6d7d34af06de1fde2a26ea7bb1",
+      "log_sha256": "55cf9babfe82328d75330bd7320b69a8d9a5383185847bf8189012bdfe6a12ef",
+      "olean_sha256": "b932ea1fc9f9497571d2ec3b8ad5ad9c203144b12b9b4977c57a6a630a87b625",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_10.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_10.lean"
+      ],
+      "elapsed_seconds": 13.695902380990447,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_5_10.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_5_10.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_5_12",
+      "source": "compact_u_orbits/full_coverage/Full_5_12.lean",
+      "source_sha256": "6b203f6b22e1c9124c6f344baebde012e003de708253d260692c63f5f50195e2",
+      "log_sha256": "6a5df26488a942d3aab7cb5713cda043a6336ed6dbdb8df9e81155efd357ccec",
+      "olean_sha256": "6e9348c1a904d9f327c9abec7e10f4b011ddad88ee566649df652bcc3925cbf4",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_12.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_12.lean"
+      ],
+      "elapsed_seconds": 12.627218547000666,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_5_12.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_5_12.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_5_13",
+      "source": "compact_u_orbits/full_coverage/Full_5_13.lean",
+      "source_sha256": "b6053ec8ff94eceed439ad45df8fa4fa9036c8bb61cdeead6ff65abb68e36021",
+      "log_sha256": "77237aa578b569bce7472b31c74a446d72d86bbf63db71ca0fbefe5446b15ac8",
+      "olean_sha256": "aa0d4f9ca1ee63928e6ea8de604952e39aa5f042ce3646af005e3e0231272378",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_13.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_5_13.lean"
+      ],
+      "elapsed_seconds": 9.887331837991951,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_5_13.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_5_13.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_6_3",
+      "source": "compact_u_orbits/full_coverage/Full_6_3.lean",
+      "source_sha256": "d7944d89f617437a275379d7e496e6081b50a8afaa253b4bcef74c41314f727b",
+      "log_sha256": "c28db66bc192b38f7f7e2efa31a3ccedc2a78c90743d4e800dbb6f6b58c1080b",
+      "olean_sha256": "ece5f2d2cf6a7ad3d53e05a9d9570b4e43adfc0c0a09da3e70215cbf67022a3a",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_3.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_3.lean"
+      ],
+      "elapsed_seconds": 9.830115795994061,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_6_3.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_6_3.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_6_4",
+      "source": "compact_u_orbits/full_coverage/Full_6_4.lean",
+      "source_sha256": "4d484ea49bc457c8aeba498753797866ad77a865283140065b0de85076b9f1c6",
+      "log_sha256": "eb15ef2b261cb117f1f0c78fd54b5ff3f0aba996a9c442741324a80918c79fcd",
+      "olean_sha256": "800ff5724ac50a88504b3d13bd26edc4e3cd3623f708a7ded341ede2943e0cd7",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_4.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_4.lean"
+      ],
+      "elapsed_seconds": 9.230488546003471,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_6_4.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_6_4.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_6_5",
+      "source": "compact_u_orbits/full_coverage/Full_6_5.lean",
+      "source_sha256": "0b30f64be9b4a5e2f9eba87575c69d86fc55f6e176ae8f32cc7c48cdfff0dbec",
+      "log_sha256": "433df3aae862ed85baa89f484f09437e54f1078236bc05367c5cae844b4b7e27",
+      "olean_sha256": "d4f09ca7f3c9753fd09e18095f2bf149a0e73311f479072958fbfb6cdf44b933",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_5.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_5.lean"
+      ],
+      "elapsed_seconds": 10.166965587995946,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_6_5.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_6_5.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_6_6",
+      "source": "compact_u_orbits/full_coverage/Full_6_6.lean",
+      "source_sha256": "2467e8979c536d816893321bcb663a96c8a49c4de47b395918641f9c049e29f4",
+      "log_sha256": "17637f8ef24d554bb5c385f548af7a060f1c221743bb699aa78e032fd407d23a",
+      "olean_sha256": "39408c26307e3437d1c730777d516777d1259a066c9f8c2ce86bc6e0e0744b9f",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_6.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_6.lean"
+      ],
+      "elapsed_seconds": 12.499073172002682,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_6_6.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_6_6.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_6_7",
+      "source": "compact_u_orbits/full_coverage/Full_6_7.lean",
+      "source_sha256": "f881be81e14a5d089932e2c99c0bae971fea044cb4d7ff629a55b1a8aaed7216",
+      "log_sha256": "e88be7fc2a51a7c69c68f34aa0f89430ec5b4cd171e4411653c675fed2800dc1",
+      "olean_sha256": "c92396f280c227a084007ed10f7a537f820c957467886968c6ec3921809f15d0",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_7.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_7.lean"
+      ],
+      "elapsed_seconds": 29.90702238898666,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_6_7.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_6_7.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_6_8",
+      "source": "compact_u_orbits/full_coverage/Full_6_8.lean",
+      "source_sha256": "2380ff849ecc7d16cf3cdad748746bffd149f6d1a4d6fd2744dbd314272317c3",
+      "log_sha256": "bdda947817ca990b233f8a0db1773605b2cfcd129af62394847fc93210182598",
+      "olean_sha256": "405d1804645edd7018fac4c8a84d5c67c6f27d789f82d816ad7776f5fefdb611",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_8.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_8.lean"
+      ],
+      "elapsed_seconds": 20.762352634992567,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_6_8.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_6_8.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_6_9",
+      "source": "compact_u_orbits/full_coverage/Full_6_9.lean",
+      "source_sha256": "e20cb588f5b505804cf101c81a9a9cb95828c39dc338820453ab7e9ad8c54377",
+      "log_sha256": "361ccad866a6544ebeec1be4528ec6739a978d022039e005ab03ac8b1c86bb45",
+      "olean_sha256": "fe60c964213ec397b35393fbe8322dc86cf6efe45d467487d2005d6b230e6e12",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_9.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_9.lean"
+      ],
+      "elapsed_seconds": 19.625782300994615,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_6_9.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_6_9.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_6_10",
+      "source": "compact_u_orbits/full_coverage/Full_6_10.lean",
+      "source_sha256": "9b95c794b8ddcfb4c7da09f7c30b6ecb90b41d262aacc5bcc0b4730e20dc8705",
+      "log_sha256": "9bf3edec5116846b663043eeba11536e6135da6f9a2ec04e7e59523a7cfa94ef",
+      "olean_sha256": "eb0545a1d958c0e93bd3ed5279ca5e2560f2c579a66e2e2b606f522b00d3ac18",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_10.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_10.lean"
+      ],
+      "elapsed_seconds": 11.923741548001999,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_6_10.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_6_10.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_6_12",
+      "source": "compact_u_orbits/full_coverage/Full_6_12.lean",
+      "source_sha256": "9253ecd9263381a748d611589bc9bed42c2d77e82c4f48e1eead424f97f5de59",
+      "log_sha256": "0aa26ee73736e2ddf1e9d07342d402edf72b6ef4df05b1a4c28aace97417a357",
+      "olean_sha256": "a1f05b672954c5e06e64193d301b563dff41f6c2c6799ff14f7454428732ed5e",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_12.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_12.lean"
+      ],
+      "elapsed_seconds": 14.029197755997302,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_6_12.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_6_12.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_6_13",
+      "source": "compact_u_orbits/full_coverage/Full_6_13.lean",
+      "source_sha256": "3084d8f440dc99ee5086d6e1d9b4d5d0ee5751c9102e205bbf207c300850f0d3",
+      "log_sha256": "95ba17905deb8ce37d6dd71745e9043686ef4be387d3ef7d1f54eb9977a2e796",
+      "olean_sha256": "062bd2d784d46b74db9bb0b684d19c85274f0f498e68f163fed5b11d27a6fe67",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_13.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_6_13.lean"
+      ],
+      "elapsed_seconds": 12.984901297997567,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_6_13.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_6_13.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_7_3",
+      "source": "compact_u_orbits/full_coverage/Full_7_3.lean",
+      "source_sha256": "c28e801ec1bea60904bc4958f16d430305a67354b3ed3f509d7f8aa92cfadab6",
+      "log_sha256": "649ea64834d84be076866cdfdf1f86ade44fb61cfb556a8daf5e4febcd36c1c6",
+      "olean_sha256": "67abbc39afd4cb704f265133c97856cd5acf7ace6516ccada777500740f2f820",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_3.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_3.lean"
+      ],
+      "elapsed_seconds": 25.082548968988704,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_7_3.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_7_3.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_7_4",
+      "source": "compact_u_orbits/full_coverage/Full_7_4.lean",
+      "source_sha256": "994b39648c0d32d5c0e2043c73abd88f6f3b9d5a613b3ab3d91f00782c6b31c6",
+      "log_sha256": "ed71b23a14175c8d9f8aa305194b375e0027c77bd9b5843513efd8840d4c093d",
+      "olean_sha256": "8b46c1bc0d01f4ab895e84822fb94ff9315500e9a198cbbc9a0fb1e7629ff39b",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_4.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_4.lean"
+      ],
+      "elapsed_seconds": 27.378674555002362,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_7_4.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_7_4.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_7_5",
+      "source": "compact_u_orbits/full_coverage/Full_7_5.lean",
+      "source_sha256": "6ffa731d89bb5d678e7e384c95690e5042522d8845fc9c6a22fedb27456b6731",
+      "log_sha256": "b685738e105abd12adfc49de4b7baf1ff2001416e542c1cbdbeb1e42640c7e1a",
+      "olean_sha256": "26ab43976b228de6b066a589521ca128b2ffab2bf806268e80dd7910b0900517",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_5.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_5.lean"
+      ],
+      "elapsed_seconds": 11.78207167200162,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_7_5.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_7_5.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_7_6",
+      "source": "compact_u_orbits/full_coverage/Full_7_6.lean",
+      "source_sha256": "4fa955303c8a97b4ac2486e644641955610a5308327c29289b9a4d46cc14b6cc",
+      "log_sha256": "f518f18463d50e8d7850a0552f61f918b7c74c78279b97c77132fac80233c1a2",
+      "olean_sha256": "7e3f5c0de809a2fb9f930c045bccd768b6e052f684f6f39856bdf45cf4c84ce3",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_6.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_6.lean"
+      ],
+      "elapsed_seconds": 10.234716879000189,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_7_6.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_7_6.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_7_7",
+      "source": "compact_u_orbits/full_coverage/Full_7_7.lean",
+      "source_sha256": "ccd47dfe741705c31dc78bbaa8250104c74c0cda4a8fa634e34bdddfbe61ec17",
+      "log_sha256": "4bce23d0b539d7f8e68dfdccab213debd6df7bfede2d1394ebbef31c9777a3f4",
+      "olean_sha256": "e0d527f1bf2b7409aec05459e8f61188ccf0c2e3bb3f4d133e475b0d38630e63",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_7.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_7.lean"
+      ],
+      "elapsed_seconds": 11.614361629995983,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_7_7.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_7_7.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_7_8",
+      "source": "compact_u_orbits/full_coverage/Full_7_8.lean",
+      "source_sha256": "3c4c2f9956cb5a9a32236c159357a8692106a8af29f8866ae94e6870a944fd77",
+      "log_sha256": "2b8c011b5eecfd63c6e3ef269ad3992683532de97f3562e5af42bfa2ac568ddb",
+      "olean_sha256": "60bbabf74d8ff7231cb32dba33dbf0d759fbcdc5d506d93b62b8aab888322de8",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_8.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_8.lean"
+      ],
+      "elapsed_seconds": 11.340580254996894,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_7_8.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_7_8.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_7_9",
+      "source": "compact_u_orbits/full_coverage/Full_7_9.lean",
+      "source_sha256": "8812a86247c692134440d42f444bb2ac81c9fbf5320dbfdb6f9e944c59177aed",
+      "log_sha256": "43d77330da658f0c84192c247bb64436f1843183517f6a08150c1c73aad3bab1",
+      "olean_sha256": "9c7603375df02cd6eedad33e574703deb4c38bcd5cfa2a683e6b0ac18af00286",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_9.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_9.lean"
+      ],
+      "elapsed_seconds": 9.556931753002573,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_7_9.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_7_9.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_7_10",
+      "source": "compact_u_orbits/full_coverage/Full_7_10.lean",
+      "source_sha256": "05d5389cc0a972d5747604e9fd13e52ecbd9b7f7d2fa3c3927f1962fe0884938",
+      "log_sha256": "6e86db5907895fa18ba20cd62a42d3b1aebf63a9a5b56e15c64c8da611927562",
+      "olean_sha256": "d431fdef29b8ac519bf1dbfd740adc116d66de47d8745cf914e173724bc295eb",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_10.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_10.lean"
+      ],
+      "elapsed_seconds": 9.433451795994188,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_7_10.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_7_10.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_7_12",
+      "source": "compact_u_orbits/full_coverage/Full_7_12.lean",
+      "source_sha256": "e87b6b9014a39c82000de53510d835d804ca34dc995e5ab1813611c348633a4f",
+      "log_sha256": "1fc6a962962bc93b6c484520dd5f9be933693984d32233d8fd574d836ac67aa0",
+      "olean_sha256": "c5b1531b50a03e2e776104f853cafee09238d65aaf6b62bdbc50305de8c52d60",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_12.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_12.lean"
+      ],
+      "elapsed_seconds": 9.783264547004364,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_7_12.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_7_12.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_7_13",
+      "source": "compact_u_orbits/full_coverage/Full_7_13.lean",
+      "source_sha256": "491c9a7dd936008fa837b7f69d6388317854e75b8081c56205c9cd638d4268b3",
+      "log_sha256": "d524457560248066e5aa12266d93bdc6fe4e805b1c7d80f38cdb5424c6497b1b",
+      "olean_sha256": "50840d6c896a5010cf31ba2cb15c010ff10e2c041218c038c49398ec2e431730",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_13.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_7_13.lean"
+      ],
+      "elapsed_seconds": 9.412074462001328,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_7_13.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_7_13.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Full_8_3",
+      "source": "compact_u_orbits/full_coverage/Full_8_3.lean",
+      "source_sha256": "adf6eb43e576619f4b6ab8b86687bf91a693eb39a69b7940b6ab68bca3a6ef6a",
+      "log_sha256": "73668fb1d03d2f87e78a867d6e5db1b7275d1ac8122a046af7d5a7ddeed0f146",
+      "olean_sha256": "34552bf73d1f9dcdd42fbe1e515b204610629118ad9f9be0b1fe6083c4bf15e9",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_8_3.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first/full/Full_8_3.lean"
+      ],
+      "elapsed_seconds": 9.098319462995278,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_8_3.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_8_3.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  ],
+  "dependency_build": {
+    "command": [
+      "lake",
+      "build",
+      "Proofs.Erdos85ThreeBlockCompactCodes",
+      "Proofs.Erdos85ThreeBlockOrbitCertificate",
+      "Proofs.Erdos85ThreeBlockRestrictedOrbitCover",
+      "Proofs.Erdos85ThreeHighBlockPermutationTransport",
+      "Proofs.Erdos85ThreeHighBranchDegreeClasses",
+      "Proofs.Erdos85ThreeHighDistinctBlockPermutationTransport",
+      "Proofs.Erdos85ThreeHighDistinctRepresentativeWitness",
+      "Proofs.Erdos85ThreeHighExternalSearchCertificate",
+      "Proofs.Erdos85ThreeHighFarColorCertificate",
+      "Proofs.Erdos85ThreeHighLowDegreeTriangleGate",
+      "Proofs.Erdos85ThreeHighNativePairSearch",
+      "Proofs.Erdos85ThreeHighOrbitJointTransport",
+      "Proofs.Erdos85ThreeHighOrbitRejection"
+    ],
+    "exit_code": 0,
+    "log_sha256": "5801917fc19a4cc9cb30cc1f5af372f50c9e9bb9e26910806a9812bde33b39bd"
+  }
+}

@@ -13,7 +13,17 @@
   "timeout_seconds": 3600,
   "output": "_build/local-first",
   "log": "/tmp/erdos85-h3-census-local-20261008.log",
-  "final_result": null,
+  "final_result": {
+    "status": "STOPPED_BY_OPERATOR_CONSTRAINT",
+    "wrapper_exit_code": 1,
+    "completed_shards": 51,
+    "new_census_exports_verified": 0,
+    "stop_command": "docker stop --time 10 lean-build-22830",
+    "reason": "Claude relayed the user constraint against compute-heavy Mac work in room message 52533. Moved to separate cloud branch.",
+    "wrapper_message_note": "The wrapper labels the explicit Docker termination as memory-limit failure; that message is not evidence of an OOM.",
+    "raw_receipt_note": "Abruptly stopped checker left RUN.json marked RUNNING; it is incomplete and must not be accepted as a PASS receipt.",
+    "retained_evidence": "local-cancelled/"
+  },
   "runner_sha256": "c94620e9f316c2f654fc03c6e520918da907cec54daf91b516cfb0f30492bc2a",
   "command": "LEAN_REPO_ROOT=/Volumes/Stripe/lean-genius/erdos85-certpilot LEAN_NUM_THREADS=1 LEAN_MEMORY_LIMIT=8192 LEAN_BUILD_TIMEOUT=60m LEAN_SKIP_CACHE=true LEAN_DOCKER_CMD='lake env python3 ../research/problems/erdos-85-wip-01/h3_strong_census_20261008/check.py --branch both --workers 1 --output /workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first' /Volumes/Stripe/lean-genius/erdos85-h7t0/proofs/scripts/docker-build.sh"
 }

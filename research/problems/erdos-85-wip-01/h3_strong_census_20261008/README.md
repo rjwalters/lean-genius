@@ -23,8 +23,16 @@ The cloud job `20261008T005410-erdos85__h3-triple-formal-20261007-50086`
 was cancelled before compilation: the census is independent of the pilot
 and a local Docker slot became free. `launch.json` retains the initial queue
 and cancellation record. `local-launch.json` records the replacement run in
-container `lean-build-22830`, at 8 GiB / one worker / one Lean thread, with a
-60-minute limit and unchanged sources. Neither launch is a proof receipt.
+container `lean-build-22830`, at 8 GiB / one worker / one Lean thread. That
+local run was intentionally stopped after 51 passing shards when Claude
+relayed the user constraint against compute-heavy Mac work (room message
+52533). Its incomplete records and logs are retained in `local-cancelled/`;
+the raw RUN.json still says RUNNING because the process was stopped, and
+there is no complete census PASS receipt. The replacement runs on the separate
+cloud branch `erdos85/h3-census-20261008` with 32 GiB and four workers.
+`cloud-launch.json` pins job
+`20261008T012918-erdos85__h3-census-20261008-67303` and its actual source commit.
+Proof and checker source hashes remain unchanged. Neither launch is proof evidence.
 
 ## Checker
 
@@ -38,7 +46,7 @@ python3 research/problems/erdos-85-wip-01/h3_strong_census_20261008/check.py --p
 
 The checker copies retained sources byte-for-byte, builds their library
 dependencies, compiles independent shards with a configurable worker count (one Lean thread
-each; the current local run uses one worker), and compiles the assemblies and new wrappers sequentially. Full and
+each; the dedicated cloud run uses four workers), and compiles the assemblies and new wrappers sequentially. Full and
 deficient outputs are isolated because both packages use `Assembly` and
 `Pruning` as module names. It retains per-module source/log/olean hashes and
 requires the exact declared axiom-export list with only standard axioms.
@@ -51,9 +59,9 @@ under `lake env`. The checker refuses to compile on the host Mac. For the cloud:
 e85-remote run erdos85/h3-triple-formal-20261007 --full --mem 48 --threads 2 --timeout 2h --no-follow -- 'lake env python3 ../research/problems/erdos-85-wip-01/h3_strong_census_20261008/check.py --branch both --workers 2 --output /workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-first'
 ```
 
-The cloud command is a reproduction option, not the active run. Use a new
-output directory. The same-branch worktree lock queues behind other jobs; do not launch an additional branch to bypass that
-lock and exceed the agreed allocation. Submission is not proof of a successful
+The command above is the original same-branch reproduction option. The
+replacement dedicated branch and its 32 GiB allocation were explicitly
+coordinated with Claude. Use a fresh output directory for any reproduction. Submission is not proof of a successful
 build. Check the actual job outcome and retain its completed evidence before
 counting any new export as verified. The branch ref is resolved after the job
 acquires the worktree lock; the job log records the actual source commit.
