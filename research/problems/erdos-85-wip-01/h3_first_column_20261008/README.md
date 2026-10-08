@@ -1,6 +1,6 @@
 # Exact first-column decomposition of the H3 native search
 
-Status: **source awaiting cloud verification**.
+Status: **five structural/conditional exports cloud-verified; diagnostic pending**.
 
 `Proofs.Erdos85ThreeHighFirstColumnSearch` expresses the existing native pair
 search as the Boolean OR over its complete static-pruned first-column list.
@@ -13,8 +13,9 @@ A subset of completed branches cannot establish a pair rejection. The final
 consumer retains the cross-domain and external-cap hypotheses. No concrete
 branch, pair, or stratum rejection is supplied by this module.
 
-The equality proof and four associated exports are to be checked in an
-isolated cloud branch. The running U1/R15 and Full261 jobs are unchanged.
+The equality proof and four associated exports passed in an isolated cloud
+branch, with only `propext`, `Classical.choice`, and `Quot.sound` and no `sorry`.
+The running U1/R15 and Full261 jobs are unchanged.
 This module enables smaller parallel proof units; no runtime improvement is
 claimed until measured.
 
@@ -44,8 +45,18 @@ log and receipt are retained in `failed-inventory-first/`. No diagnostic ran
 and no theorem result is claimed from the failed module.
 
 The revised source unfolds the branch explicitly, uses a direct `congrArg`
-proof, and converts the Boolean rejection to non-truth. These fixes await
-a new cloud check.
+proof, and converts the Boolean rejection to non-truth. Job
+`20261008T033506-erdos85__h3-first-column-20261008-147034`, execution commit
+`bd597a87fc2`, verified all five exports (target build 3.7 seconds). The cloud
+source hash matches the local source, and the compiled object's hash was
+read independently from the cloud build volume. `proof-pass.json` records
+the verified proof result; `proof-pass-inventory-failed/` retains the full
+dependency log and the separate diagnostic failure.
+
+That diagnostic could not compile its `Finset.toList` encoding because the
+operation is noncomputable. The diagnostic now folds over `List.finRange 15`
+and tests membership, leaving the verified theorem source unchanged. This
+diagnostic-only fix awaits a further cloud check.
 
 `audit.py` independently checks a completed run's commands, logs, source and
 object hashes, all five theorem axiom reports (standard axioms only), and

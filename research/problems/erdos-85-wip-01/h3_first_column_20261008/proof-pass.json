@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "scope": "Five structural/conditional exports; no concrete branch or pair rejection. Diagnostic failed separately.",
+  "job": "20261008T033506-erdos85__h3-first-column-20261008-147034",
+  "execution_commit": "bd597a87fc2cbef684527136e7291e7900a0b14f",
+  "source_sha256": "a26ad622f3b6500a5e02801ef4ee93b8f9978608054c54b8facaf252c885ba13",
+  "olean_sha256": "a5d97a1821ce701dd0dfb1822be310a233331e3651a49d8f878b85055feaa405",
+  "object_verification": "Read directly by sudo sha256sum in cloud named build volume.",
+  "dependency_log_sha256": "760565af35fec4594c26a5afb3183ce8360d31217fadecd7dfa2ef850a9648ed",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.threeHighFactoredCapacityColumnDFS_eq_firstColumns",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighNativeFirstColumnSearch_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighNativePairSearch_eq_firstColumns",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighNativePairSearch_false_of_firstColumns",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighNativeFirstColumns_no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "diagnostic_status": "FAIL_NONCOMPUTABLE_FINSET_TOLIST"
+}

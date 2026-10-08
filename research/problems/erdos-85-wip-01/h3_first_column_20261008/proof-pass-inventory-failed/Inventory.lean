@@ -24,8 +24,7 @@ def inventory (name : String)
   let candidates := threeHighStaticPrunedColumnList U R 0
   let gate := threeHighFactoredColumnGate U R
   let branches := candidates.map fun S =>
-    let mask := (List.finRange 15).foldl
-      (fun n i => if i ∈ S then n + 2 ^ i.val else n) (0 : Nat)
+    let mask := S.toList.foldl (fun n i => n + 2 ^ i.val) (0 : Nat)
     let first := Function.update (fun _ : Fin 8 => (∅ : Finset (Fin 15))) 0 S
     (mask, gate 1 first)
   IO.println (Json.mkObj [
