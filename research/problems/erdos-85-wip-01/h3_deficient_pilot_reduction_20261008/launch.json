@@ -1,5 +1,5 @@
 {
-  "status": "SUBMITTED",
+  "status": "CHECKOUT_FAILURE",
   "job": "20261008T050920-erdos85__h3-triple-formal-20261007-210533",
   "execution_commit": "41efcf17a72e87284a93f350106ce635032435fb",
   "memory_gib": 32,
@@ -12,5 +12,9 @@
     "Deficient1553.lean": "5e6f06cf69c7cfda568268d47c46c2019ca848392684f3abf5200cd264846720",
     "check.py": "fe007a3f9b58d93bdc7ed2591523f43ea223825f7a264ad66b947747278acec4"
   },
-  "scope": "Consume existing native certificate; no native rejection search repeated."
+  "scope": "Consume existing native certificate; no native rejection search repeated.",
+  "exit_code": 2,
+  "log_sha256": "965dde686dbb0a265049a348002068bd13e0121331c6a204e37475a250828579",
+  "log_kind": "Complete follower output including wrapper terminal line",
+  "failure": "Root-owned staged package parent blocked git checkout; checker did not run"
 }
