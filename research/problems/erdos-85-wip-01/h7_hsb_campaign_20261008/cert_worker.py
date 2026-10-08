@@ -237,6 +237,8 @@ def slot_loop(args, store, slot: int, rows: list[dict]) -> None:
         with lock:
             if node["stop"] or (args.max_batches and node["done"] + len(node["active"]) >= args.max_batches):
                 return
+            # Reserve capacity before slow store calls can admit another slot.
+            node["active"][slot] = "<claiming>"
         try:
             picked = None
             for attempt in range(3):
@@ -299,6 +301,10 @@ def slot_loop(args, store, slot: int, rows: list[dict]) -> None:
                 if node["errors"] >= MAX_NODE_ERRORS:
                     node["stop"] = True
             return
+        finally:
+            # STOP, lifetime expiry, no claim and store errors also release it.
+            with lock:
+                node["active"].pop(slot, None)
 
 
 def heartbeat(args, store, threads, final=False) -> None:

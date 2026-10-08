@@ -87,7 +87,7 @@ def user_data(a) -> str:
     env = (f"export E85_INPUTS_SHA='{inputs_sha()}' E85_MANIFEST_SHA='{manifest_sha(a.manifest)}' "
            f"E85_MANIFEST_KEY='{('freight/' + Path(a.manifest).name) if a.manifest else ''}' "
            f"E85_LIFETIME='{a.lifetime}' E85_ONLY='{a.only}' E85_HEAP_MB='{a.heap_mb}' E85_CAP='{a.cap}' "
-           f"E85_MAX_BATCHES='{a.max_batches}'")
+           f"E85_MAX_BATCHES='{a.max_batches}' E85_PARTIAL_SECONDS='{a.partial_seconds}'")
     script = f"""#!/bin/bash
 exec >> /var/log/e85-userdata.log 2>&1
 set -u
@@ -109,6 +109,13 @@ exec bash research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/cert_bootst
 
 
 def setup(a) -> None:
+    if a.canary:
+        if a.only or a.manifest:
+            raise SystemExit("--canary selects its own pinned rows; do not combine it with --only/--manifest")
+        rows = hc.canary_rows(inputs_meta())
+        a.only, a.partial_seconds = ",".join(r["id"] for r in rows), 120
+        print(json.dumps({"canary_rows": [r["id"] for r in rows], "canary_items": sum(hc.row_items(r) for r in rows),
+                          "partial_seconds": a.partial_seconds}), file=sys.stderr)
     trust = {"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Principal": {"Service": "ec2.amazonaws.com"},
                                                      "Action": "sts:AssumeRole"}]}
     policy = {"Version": "2012-10-17", "Statement": [
@@ -306,7 +313,8 @@ def plan(a) -> None:
                       "cover_rows": sum(r["kind"] == "cover" for r in rows), "leaves": meta["total_leaves"],
                       "hsb_clauses": meta["total_hsb_clauses"], "prefix": f"s3://{vc.BUCKET}/{vc.PREFIX}",
                       "hard_stop_usd": vc.HARD_STOP_USD, "types": vc.TYPES, "max_spot_price": vc.MAX_SPOT_PRICE,
-                      "node_lifetime_s": LIFETIME, "exclude_az": EXCLUDE_AZ, "max_nodes": MAX_NODES}, indent=1))
+                      "node_lifetime_s": LIFETIME, "exclude_az": EXCLUDE_AZ, "max_nodes": MAX_NODES,
+                      "canary_rows": hc.CANARY_IDS, "canary_items": sum(hc.row_items(r) for r in hc.canary_rows(meta))}, indent=1))
 
 
 def main() -> int:
@@ -317,6 +325,8 @@ def main() -> int:
     s.add_argument("--heap-mb", type=int, default=2000); s.add_argument("--cap", type=int, default=3600)
     s.add_argument("--lifetime", type=int, default=LIFETIME); s.add_argument("--max-batches", type=int, default=0)
     s.add_argument("--manifest", default="", help="alternative manifest file (residual pass)")
+    s.add_argument("--partial-seconds", type=int, default=600)
+    s.add_argument("--canary", action="store_true", help="pinned mixed canary: 2 covers + 6 leaf batches (386 items), partials every 120 s")
     s.add_argument("--dry-run", action="store_true"); s.set_defaults(run=setup)
     s = sub.add_parser("freight"); s.add_argument("--manifest", default=""); s.add_argument("--dry-run", action="store_true"); s.set_defaults(run=freight)
     s = sub.add_parser("launch"); s.add_argument("count", type=int); s.add_argument("--types", nargs="*")

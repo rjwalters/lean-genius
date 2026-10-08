@@ -237,7 +237,7 @@ until step 4.4.
 | `collect_receipts.py` | completeness check and per-cube receipt tables |
 | `sample.py`, `estimate.py` | the cost sample and this estimate |
 | `e2e_test.sh` | worker end-to-end test against a local directory store (12 checks) |
-| `test_campaign.py` | metadata-only unit tests: codex's 8 collector fixtures, batch heap/STOP/alarm behaviour, binary pins |
+| `test_campaign.py` | metadata-only unit tests: codex's collector fixtures and batch-limit reservation fixtures, batch heap/STOP/alarm behaviour, binary pins, canary selection |
 
 ### 4.1 Lessons from the H1 census, and where they are applied
 
@@ -287,7 +287,7 @@ shasum -a 256 /Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h7-hsb-campaig
 
 # approved checker binary onto Stripe (freight source); must print 4d47ffdd…464b
 e85-remote ssh 'cat ~/h7pilot/bin/cake_lpr' > /Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h7-hsb-campaign-20261008/tools/cake_lpr
-python3 test_campaign.py                                           # 11 unit tests, no solver
+python3 test_campaign.py                                           # 16 unit tests, no solver
 
 # dry runs: none of these creates or changes anything in AWS
 python3 cert_controller.py plan
@@ -311,18 +311,33 @@ node clones that branch and checks out exactly that commit.
 ```bash
 cd research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008
 python3 cert_controller.py freight                                # uploads freight/h7-inputs.tar.zst and freight/cake_lpr
-# 1. canary: one node, 8 batches (about 500 leaves), then it powers itself off
-python3 cert_controller.py setup --commit <sha> --max-batches 8
+# 1. canary: one node, the pinned mixed selection h7_common.CANARY_IDS, then it powers itself off
+python3 cert_controller.py setup --commit <sha> --canary
 python3 cert_controller.py launch 1
 python3 cert_controller.py watch            # in tmux; one report every 5 minutes
-#    expect within ~10 min: nodes/<iid>/bootstrap.log ends "bootstrap ok"; then 8 CERTIFIED ledgers.
+#    expect within ~10 min: nodes/<iid>/bootstrap.log ends "bootstrap ok"; then 8 ledgers.
 #    check one ledger and one results file by hand, and that `status` shows spend and certified_items.
-# 2. full run: new launch-template version without the batch limit
+# 2. full run: new launch-template version without the canary selection
 python3 cert_controller.py setup --commit <sha>
 python3 cert_controller.py launch 3         # fleet shape: section 3.4
 python3 cert_controller.py watch            # leave running; it syncs receipts to Stripe, releases the
                                             # claims of dead nodes, estimates spend and stops at the cap
 ```
+
+**What the canary covers.** The main manifest lists the 28 cover rows first, so "the first N
+batches" would run covers only. `--canary` instead pins eight ordinary manifest rows by id
+(`--only`): the covers of `cube_F6_t14` and `cube_F7_t10`, and leaf batch `b0000` (leaves 0–63) of
+`cube_F6_t14`, `cube_F6_t18`, `cube_F7_t10`, `cube_F7_t13`, `cube_F8_t0` and `cube_F9_t0`:
+**2 cover CNFs + 384 leaf CNFs = 386 items**, with the smallest and the largest hsb clause sets
+(9,213 and 295,994 clauses). It sets the partial-receipt interval to 120 s, so the `partial/`
+upload path runs on every leaf batch that lasts longer than that. Expected result: 8 ledgers,
+`CERTIFIED` unless a leaf hits the 1 h cap (then that batch is `INCOMPLETE` with a
+`SOLVER_TIMEOUT` entry, which is a valid canary outcome); 8 objects in `results/`; at least one
+object in `partial/`; no `control/` object. Expected cost: one node for 1–2 h. Not covered by the
+canary: a spot reclaim with carry-forward and the STOP / ALARM path (both covered by
+`e2e_test.sh` on the local store only), and orphan release by the controller. The rows are part of
+the main manifest, so the full run skips them. `--max-batches N` remains available as a bound
+(the limit is now reserved atomically before any store call; codex review, room 52850).
 
 `watch` stops everything (writes `control/STOP`, deletes the fleets, terminates every tagged
 instance) when its spend estimate reaches the hard stop, or when every batch is CERTIFIED.
@@ -377,12 +392,12 @@ a small new Lean wrapper (one level of nesting) and is not implemented here.
 1. **Operator go and a budget.** Nothing has been created in AWS.
 2. **The AWS path has not run.** Worker, batch runner, collector and the local store are tested
    end to end on the builder (`receipts/e2e_test_builder.txt`, 12 checks, builder job
-   `20261008T061308-commit-327ec891b4b2-251246`) and by `test_campaign.py` (11 tests). The
+   `20261008T061308-commit-327ec891b4b2-251246`) and by `test_campaign.py` (16 tests). The
    controller's `plan`, `status`, `residual`, and the `--dry-run` forms of `setup`, `freight` and
    `launch` ran on the Mac. **Not exercised:** `cert_bootstrap.sh` on a fresh spot node, the S3
    store class (the same aws-cli calls as the H1 worker), the IAM policy, the launch template,
    orphan release and the budget stop against live instances, and `release-errors --yes`. The
-   one-node canary in 4.4 is mandatory.
+   one-node canary in 4.4 (386 items: 2 covers and 384 leaves) is mandatory.
 3. **Shared spot quota** (384 vCPU, about 180 in use by other workloads). Three nodes fit; more
    needs a quota increase or a quiet period.
 4. **The security group `erdos85-verdict-noingress` no longer exists.** `setup` now recreates it

@@ -136,5 +136,24 @@ def batches(inputs_meta: dict, batch: int = BATCH) -> list[dict]:
     return rows
 
 
+# Cloud canary: a pinned MIXED selection of main-manifest rows (2 covers + 6 leaf batches from six
+# cubes with small, medium and the largest hsb clause sets) = 2 + 6 x 64 = 386 items. The main
+# manifest lists all 28 covers first, so "the first N rows" would never reach a leaf batch (codex
+# review, room 52852). The ids are ordinary manifest ids: the full run later skips them as done.
+CANARY_IDS = ["cube_F6_t14-cover", "cube_F7_t10-cover", "cube_F6_t14-b0000", "cube_F6_t18-b0000",
+              "cube_F7_t10-b0000", "cube_F7_t13-b0000", "cube_F8_t0-b0000", "cube_F9_t0-b0000"]
+
+
+def canary_rows(inputs_meta: dict) -> list[dict]:
+    by_id = {r["id"]: r for r in batches(inputs_meta)}
+    rows = [by_id[i] for i in CANARY_IDS]  # KeyError if the manifest ever stops containing one
+    assert any(r["kind"] == "cover" for r in rows) and any(r["kind"] == "leaves" for r in rows)
+    return rows
+
+
+def row_items(row: dict) -> int:
+    return 1 if row["kind"] == "cover" else (len(row["leaves"]) if "leaves" in row else row["end"] - row["start"])
+
+
 def manifest_bytes(inputs_meta: dict, batch: int = BATCH) -> bytes:
     return "".join(json.dumps(r, sort_keys=True) + "\n" for r in batches(inputs_meta, batch)).encode()

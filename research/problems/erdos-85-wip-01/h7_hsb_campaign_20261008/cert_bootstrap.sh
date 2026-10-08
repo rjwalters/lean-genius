@@ -17,6 +17,7 @@ E85_HEAP_MB=${E85_HEAP_MB:-2000}
 E85_CAP=${E85_CAP:-3600}
 E85_ONLY=${E85_ONLY:-}
 E85_MAX_BATCHES=${E85_MAX_BATCHES:-0}
+E85_PARTIAL_SECONDS=${E85_PARTIAL_SECONDS:-600}
 CAKE_LPR_SHA=4d47ffdd19fc6a80e24025f8c5d27d89c4309c9931bdad6d389d87e35be5464b   # = h7_common.CAKE_LPR_SHA256
 HERE=$(cd "$(dirname "$0")" && pwd); REPO=$(git -C "$HERE" rev-parse --show-toplevel)
 LOG=/var/log/e85-bootstrap.log; exec >> $LOG 2>&1
@@ -85,7 +86,7 @@ SLOTS=${E85_SLOTS:-$(nproc)}; [ "$SLOTS" -gt "$FIT" ] && SLOTS=$FIT
 export PYTHONFAULTHANDLER=1 PYTHONUNBUFFERED=1
 CMD=(python3.12 -B $HERE/cert_worker.py --inputs /scratch/inputs --inputs-sha256 $E85_INPUTS_SHA --manifest-sha256 $E85_MANIFEST_SHA
   "${MANIFEST_ARGS[@]}" --iid $IID --itype $ITYPE --head $HEAD --slots "$SLOTS" --mem-gb $BUDGET_GB --heap-mb $E85_HEAP_MB
-  --lifetime $E85_LIFETIME --cap $E85_CAP --max-batches $E85_MAX_BATCHES --no-poweroff)
+  --lifetime $E85_LIFETIME --cap $E85_CAP --max-batches $E85_MAX_BATCHES --partial-seconds $E85_PARTIAL_SECONDS --no-poweroff)
 [ -n "$E85_ONLY" ] && CMD+=(--only "$E85_ONLY")
 echo "$(date -u +%FT%TZ) worker command: ${CMD[*]}"
 "${CMD[@]}" 2>> /var/log/e85-h7hsb.err

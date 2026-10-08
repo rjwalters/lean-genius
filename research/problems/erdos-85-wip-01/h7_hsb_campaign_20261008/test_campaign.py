@@ -165,6 +165,117 @@ class Batch(unittest.TestCase):
         self.assertFalse(hasattr(cert_batch, "MAX_HEAP_MB"))
 
 
+def exercise_slot_loop(mode="race", max_batches=1):
+    """codex's reservation fixture (h7_canary_limit_review_20261008/test_reservation.py, room 52850):
+    the in-tree slot_loop AST with a delayed fake store and fake batches, two slots."""
+    import ast
+    import threading
+    import time
+    from types import SimpleNamespace
+    path = HERE / "cert_worker.py"
+    function, = [n for n in ast.parse(path.read_text()).body if isinstance(n, ast.FunctionDef) and n.name == "slot_loop"]
+    state = {"errors": 0, "done": 0, "items": 0, "stop": False, "active": {}, "statuses": {}}
+    node_lock, store_lock, second_listing = threading.Lock(), threading.Lock(), threading.Event()
+    claims, batch_ids, logs, failures = set(), [], [], []
+
+    class Store:
+        listings = 0
+
+        def exists(self, key):
+            return mode == "stop"
+
+        def listing(self, prefix):
+            if mode == "store_error":
+                raise RuntimeError("injected store error")
+            with store_lock:
+                self.listings += 1
+                if self.listings >= 2:
+                    second_listing.set()
+            if mode == "race":
+                second_listing.wait(timeout=0.25)
+            with store_lock:
+                return set(claims)
+
+        def put_new(self, key, marker):
+            row_id = key[len("claims/"):]
+            with store_lock:
+                if row_id in claims:
+                    return False
+                claims.add(row_id)
+                return True
+
+    def batch(args, store, slot, row):
+        if mode == "batch_error":
+            raise RuntimeError("injected batch error")
+        with store_lock:
+            batch_ids.append(row["id"])
+        return {"id": row["id"], "status": "CERTIFIED", "ran": 1, "items": 1, "certified": 1}
+
+    namespace = {"node": state, "lock": node_lock, "STARTED": time.time(), "MAX_NODE_ERRORS": 6,
+                 "time": SimpleNamespace(time=time.time, sleep=lambda seconds: None), "run_batch": batch, "log": logs.append,
+                 "put_with_retry": lambda *a: True}
+    exec(compile(ast.Module(body=[function], type_ignores=[]), str(path), "exec"), namespace)
+    args = SimpleNamespace(local_store=True, max_batches=max_batches, out=Path("/mock-only"),
+                           lifetime=-1 if mode == "expired" else 60, min_left=0)
+    rows = [] if mode == "empty" else [{"id": "batch-a"}, {"id": "batch-b"}]
+    store = Store()
+
+    def target(slot):
+        try:
+            namespace["slot_loop"](args, store, slot, rows)
+        except BaseException as error:  # noqa: BLE001
+            failures.append(repr(error))
+
+    threads = [threading.Thread(target=target, args=(slot,), daemon=True) for slot in range(2)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join(timeout=3)
+    assert not any(t.is_alive() for t in threads) and not failures, failures
+    return {"claimed": sorted(claims), "completed": sorted(batch_ids), "state": state}
+
+
+class Reservation(unittest.TestCase):
+    def test_one_batch_limit_holds_with_a_slow_store(self):
+        r = exercise_slot_loop()
+        self.assertEqual(len(r["claimed"]), 1)
+        self.assertEqual(r["state"]["done"], 1)
+        self.assertEqual(r["state"]["active"], {})
+
+    def test_stop_expiry_empty_and_store_errors_release_capacity(self):
+        for mode in ("stop", "expired", "empty", "store_error"):
+            with self.subTest(mode=mode):
+                r = exercise_slot_loop(mode=mode)
+                self.assertEqual(r["claimed"], [])
+                self.assertEqual(r["state"]["done"], 0)
+                self.assertEqual(r["state"]["active"], {})
+
+    def test_batch_exception_releases_capacity(self):
+        r = exercise_slot_loop(mode="batch_error")
+        self.assertEqual(r["state"]["active"], {})
+        self.assertGreater(r["state"]["errors"], 0)
+
+    def test_unlimited_mode_still_runs_available_batches(self):
+        r = exercise_slot_loop(mode="normal", max_batches=0)
+        self.assertEqual(r["state"]["done"], 2)
+        self.assertEqual(r["state"]["active"], {})
+
+
+class Canary(unittest.TestCase):
+    def test_canary_is_a_pinned_mix_of_main_manifest_rows(self):
+        meta = json.loads((HERE / "receipts" / "inputs.json").read_text())
+        rows = hc.canary_rows(meta)
+        main = {r["id"]: r for r in hc.batches(meta)}
+        self.assertEqual([r["id"] for r in rows], hc.CANARY_IDS)
+        self.assertTrue(all(main[r["id"]] == r for r in rows))
+        self.assertEqual(sum(r["kind"] == "cover" for r in rows), 2)
+        self.assertEqual(sum(r["kind"] == "leaves" for r in rows), 6)
+        self.assertEqual(sum(hc.row_items(r) for r in rows), 386)
+        self.assertEqual(len({r["cube"] for r in rows if r["kind"] == "leaves"}), 6)
+        # the first rows of the main manifest are covers only: "first N" is not a canary
+        self.assertTrue(all(r["kind"] == "cover" for r in hc.batches(meta)[:28]))
+
+
 class Pins(unittest.TestCase):
     def test_unapproved_binary_is_refused(self):
         with tempfile.TemporaryDirectory() as tmp:
