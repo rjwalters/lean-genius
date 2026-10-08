@@ -1,0 +1,11 @@
+MODE=host
+REF=erdos85/h3-triple-formal-20261007
+TARGET=''
+CMD=python3\ -B\ research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/probe_container.py\ --output\ research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/container-probe-first
+MEM_GB=64
+TIMEOUT=2m
+THREADS=''
+CACHE=0
+CPUS=16
+VOLUME=''
+FULL=1

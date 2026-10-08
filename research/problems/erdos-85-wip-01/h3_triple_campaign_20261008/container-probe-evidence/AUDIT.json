@@ -1,0 +1,22 @@
+{
+  "status": "ENVIRONMENT_PROBE_AUDIT_PASS",
+  "job": "20261008T074307-erdos85__h3-triple-formal-20261007-307377",
+  "execution_commit": "653a7d59de8e73fab45a21dda04912b9b5428a22",
+  "authoritative_exit": 0,
+  "run_sha256": "256b55a435937671e2225185c854faea59eacdd2743f6acd48115d7e01bae5eb",
+  "job_log_sha256": "60a28e0decc7c7cf12c7fc816567c9bbccf6c4043b70c54a14c6e0f9f7933788",
+  "checked": {
+    "container_runtime_seconds": 0.706068,
+    "image_id": "sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6",
+    "read_only_inputs": true,
+    "memory_bytes": 2147483648,
+    "cpu_limit": 2,
+    "container_exit": 0,
+    "lean_version": "Lean (version 4.31.0, aarch64-unknown-linux-gnu, commit 68218e876d2a38b1985b8590fff244a83c321783, Release)",
+    "inherited_lean_path": "/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean:/root/.elan/toolchains/leanprover--lean4---v4.31.0/lib/lean"
+  },
+  "probe_container_removed": true,
+  "production_native_search": false,
+  "scope": "Pinned image, read-only mounts, actual resource limits and successful environment setup. No worker proof compilation, cache provenance approval or production credit.",
+  "audit_source_sha256": "2a0c226fa1a187cc2c1a4fb1e2723e0f6f32774f391c70f36f993491fe7ae30c"
+}

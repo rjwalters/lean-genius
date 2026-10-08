@@ -1,0 +1,265 @@
+[
+    {
+        "Id": "da8d98ee1c92f4cacc6968e0ef921c7dd0b2a546879176b92c56d8e54c34dbea",
+        "Created": "2026-10-08T07:43:07.830249184Z",
+        "Path": "lake",
+        "Args": [
+            "env",
+            "python3",
+            "-B",
+            "-c",
+            "import hashlib,json,os,pathlib,subprocess\np=pathlib.Path('/sys/fs/cgroup')\nprint(json.dumps({'lean_path':os.environ.get('LEAN_PATH',''),\n'path':os.environ.get('PATH',''),\n'toolchain':pathlib.Path('lean-toolchain').read_text().strip(),\n'lake_manifest_sha256':hashlib.sha256(pathlib.Path('lake-manifest.json').read_bytes()).hexdigest(),\n'lean_version':subprocess.check_output(['lean','--version'],text=True).strip(),\n'limits':{n:(p/n).read_text().strip() for n in ['memory.max','memory.swap.max','cpu.max']}}))\n"
+        ],
+        "State": {
+            "Status": "created",
+            "Running": false,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 0,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "0001-01-01T00:00:00Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6",
+        "ResolvConfPath": "",
+        "HostnamePath": "",
+        "HostsPath": "",
+        "LogPath": "",
+        "Name": "/h3-triple-probe-351641cf39ed4a96aa9b905c230f6d3f",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "local",
+                "Config": {}
+            },
+            "NetworkMode": "none",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": true,
+            "SecurityOpt": null,
+            "Tmpfs": {
+                "/tmp": "rw,nosuid,size=268435456"
+            },
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 2147483648,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 100000,
+            "CpuQuota": 200000,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 2147483648,
+            "MemorySwappiness": null,
+            "OomKillDisable": false,
+            "PidsLimit": 128,
+            "Ulimits": [
+                {
+                    "Name": "nofile",
+                    "Hard": 65536,
+                    "Soft": 32768
+                }
+            ],
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "Mounts": [
+                {
+                    "Type": "bind",
+                    "Source": "/opt/e85/wt/erdos85__h3-triple-formal-20261007",
+                    "Target": "/workspace",
+                    "ReadOnly": true
+                },
+                {
+                    "Type": "volume",
+                    "Source": "lean-build-erdos85__h3-triple-formal-20261007",
+                    "Target": "/workspace/proofs/.lake/build",
+                    "ReadOnly": true
+                },
+                {
+                    "Type": "volume",
+                    "Source": "lean-mathlib-packages",
+                    "Target": "/workspace/proofs/.lake/packages",
+                    "ReadOnly": true
+                }
+            ],
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": null,
+            "Name": "overlayfs"
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/opt/e85/wt/erdos85__h3-triple-formal-20261007",
+                "Destination": "/workspace",
+                "Mode": "",
+                "RW": false,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "volume",
+                "Name": "lean-build-erdos85__h3-triple-formal-20261007",
+                "Source": "/var/lib/docker/volumes/lean-build-erdos85__h3-triple-formal-20261007/_data",
+                "Destination": "/workspace/proofs/.lake/build",
+                "Driver": "local",
+                "Mode": "z",
+                "RW": false,
+                "Propagation": ""
+            },
+            {
+                "Type": "volume",
+                "Name": "lean-mathlib-packages",
+                "Source": "/var/lib/docker/volumes/lean-mathlib-packages/_data",
+                "Destination": "/workspace/proofs/.lake/packages",
+                "Driver": "local",
+                "Mode": "z",
+                "RW": false,
+                "Propagation": ""
+            }
+        ],
+        "Config": {
+            "Hostname": "da8d98ee1c92",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PYTHONDONTWRITEBYTECODE=1",
+                "LEAN_NUM_THREADS=1",
+                "PATH=/root/.elan/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "DEBIAN_FRONTEND=noninteractive"
+            ],
+            "Cmd": [
+                "lake",
+                "env",
+                "python3",
+                "-B",
+                "-c",
+                "import hashlib,json,os,pathlib,subprocess\np=pathlib.Path('/sys/fs/cgroup')\nprint(json.dumps({'lean_path':os.environ.get('LEAN_PATH',''),\n'path':os.environ.get('PATH',''),\n'toolchain':pathlib.Path('lean-toolchain').read_text().strip(),\n'lake_manifest_sha256':hashlib.sha256(pathlib.Path('lake-manifest.json').read_bytes()).hexdigest(),\n'lean_version':subprocess.check_output(['lean','--version'],text=True).strip(),\n'limits':{n:(p/n).read_text().strip() for n in ['memory.max','memory.swap.max','cpu.max']}}))\n"
+            ],
+            "Image": "sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6",
+            "Volumes": null,
+            "WorkingDir": "/workspace/proofs",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {
+                "org.opencontainers.image.version": "22.04"
+            }
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "",
+            "SandboxKey": "",
+            "Ports": {},
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "",
+            "Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "MacAddress": "",
+            "Networks": {
+                "none": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "MacAddress": "",
+                    "NetworkID": "",
+                    "EndpointID": "",
+                    "Gateway": "",
+                    "IPAddress": "",
+                    "IPPrefixLen": 0,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DriverOpts": null,
+                    "DNSNames": null
+                }
+            }
+        }
+    }
+]

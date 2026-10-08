@@ -122,6 +122,38 @@ The later import-path correction keeps full final census objects before the
 base objects, matching the bridge canary; a metadata regression checks both
 branches. The tested subprocess function is unchanged, checked by AST equality.
 
+## Container environment probe
+
+`probe_container.py` was run once on the existing builder, using the immutable
+image `sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6`.
+Job `20261008T074307-erdos85__h3-triple-formal-20261007-307377` ran at
+`653a7d59de8e73fab45a21dda04912b9b5428a22` and exited zero. Lake environment
+setup and `lean --version` succeeded with the repository, existing build volume,
+package volume and image root mounted read-only. The probe used a hard 2 GiB
+memory limit, zero swap, two CPUs, no network, and a 45-second container cap.
+It performed no proof build or native search.
+
+`audit_probe.py` independently checked the raw pre-start and terminal Docker
+inspections, image/command/environment identity, exact resource settings,
+read-only mounts, in-container cgroup observations, toolchain/config hashes,
+terminal exit zero, no OOM, no restart and removal of the probe container. Its
+read-only cloud audit passed. `container-probe-evidence/` retains the raw records
+and hashes. Eight mutation tests cover wrong identity/image/command/environment,
+changed limits or mounts, nonterminal/nonzero/OOM states and restart/wall overruns.
+
+Two auditor compatibility corrections were needed, without rerunning the probe:
+this daemon serializes the default `OomKillDisable` value as false before start
+and null after exit (true remains rejected); its nanosecond timestamps need
+sub-microsecond truncation for the builder's Python parser. The actual Lake
+search path includes the pinned toolchain's standard library after project
+objects, and that exact suffix is checked.
+
+This establishes the container environment setup. It does not approve arbitrary
+cache contents or validate a production worker attempt. Complete cache staging
+and provenance, host launch/collection, bounded worker preflight and a limited
+production canary remain next gates. The host launch must give only the fresh
+attempt output a writable mount while keeping the verified inputs read-only.
+
 ## Resource and controller design
 
 Start with 16 GiB hard memory per active Docker job, a hard two-vCPU limit,
