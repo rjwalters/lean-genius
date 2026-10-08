@@ -1,0 +1,45 @@
+{
+  "status": "PASS",
+  "job": "20261008T052852-erdos85__h7-lrat-adapter-20261008-224002",
+  "execution_commit": "ef132f31619a8d3a8fd2c088fb137e3399887c7c",
+  "authoritative_exit": 0,
+  "source_sha256": "f87baf9b40e197c9338a17679164fbefa4b9567ad1b2c00858df6c64a5a9b6ba",
+  "object_sha256": "5adf68e45a2bb2a8e6c11302284c5120654ed93133dc40542cab00a01b6d0447",
+  "raw_log_sha256": "b8daca40d3ab8c45d830c49da4e2ff9fe1c7cabe6fc34c741531d18425ae705c",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.SevenHighT0CanonicalHsbLeafLratChecked.unsat",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.SevenHighT0CanonicalHsbCoverLratChecked.unsat",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.sevenHighT0CanonicalHsbEvidence_of_lratChecks",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.sevenHighT0CanonicalEmptyCubeSemanticExclusion_of_hsbLratChecks",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "validation": "Execution-commit/current/cloud source hashes match; object and authoritative exit fetched independently; exactly four requested reports, standard axioms only.",
+  "scope": "Generic conditional LRAT adapter; no concrete cover or leaf certificate supplied."
+}

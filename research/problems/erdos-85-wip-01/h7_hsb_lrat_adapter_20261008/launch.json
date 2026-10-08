@@ -1,5 +1,5 @@
 {
-  "status": "SUBMITTED",
+  "status": "PASS",
   "job": "20261008T052852-erdos85__h7-lrat-adapter-20261008-224002",
   "branch": "erdos85/h7-lrat-adapter-20261008",
   "execution_commit": "ef132f31619a8d3a8fd2c088fb137e3399887c7c",
@@ -8,5 +8,7 @@
   "lake_threads": 1,
   "timeout": "10m",
   "cache": "Independent XFS reflink copy of H7 cache; HsbLeaves object cf2b052ca7e60305fc948036414e320d4b66e0bd7ad08a343ab2035a601d82a0 matched separately",
-  "scope": "Optional standard LRAT interface; no concrete certificates provided."
+  "scope": "Optional standard LRAT interface; no concrete certificates provided.",
+  "exit_code": 0,
+  "audit": "audit.json"
 }
