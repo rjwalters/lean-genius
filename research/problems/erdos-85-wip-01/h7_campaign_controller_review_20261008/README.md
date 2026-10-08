@@ -1,7 +1,34 @@
 # H7 campaign completion review
 
+Current status: **three findings resolved at `327ec891b4b26e9a88a606c78267d40e4e273517`; independent review PASS**.
+
+`fixed-AUDIT.json` records the reviewed source hashes and limits. Eleven
+metadata-only tests passed independently in an isolated temporary tree.
+The retained raw cloud job log has independently matched SHA-256 and
+authoritative exit zero; its wrapper reports `E2E_ALL_PASS` for real solver
+and checker items, interrupted-batch carry recovery, checker rejection,
+ALARM/STOP, memory reservation rejection, and solver timeout handling.
+The wrapper prints selected lines from the inner E2E log. This review does
+not independently replay those proofs or certify campaign completion.
+
+The collector now requires both approved binary hashes, rejects unknown or
+empty selections, and distinguishes a complete subset from the full
+campaign. Bootstrap ships the approved checker binary; the default worker
+rejects unapproved binaries before claiming work. Batches use a fixed heap
+and leave heap-exhausted items incomplete for a later resource-sized pass.
+The worker requires a memory budget, and bootstrap limits slots accordingly.
+
+The heap-exhaustion regression uses a stub, not an induced real checker
+failure. The 1.5 GB per-slot overhead is a reservation estimate, not a hard
+RSS bound. STOP takes effect between items. Two documentation corrections
+remain: the collector's final docstring sentence should describe subset
+exit status, and bootstrap's `true peak` wording should say estimate.
+Neither changes the verified fix behavior. No campaign was launched.
+
+The original findings and proposed patch remain below as historical evidence.
+
 Reviewed commit: `1cab73ef2a2780161d98ac389068acbb54b9002b`.
-Status: **two collector defects reproduced; proposed patch passes eight metadata checks**.
+Original status: **two collector defects reproduced; proposed patch passes eight metadata checks**.
 
 `proposed-collector.patch` is a minimal patch against the reviewed commit.
 It pins the currently approved checker binary, rejects unknown or empty
