@@ -139,7 +139,14 @@ end {ns}
 """
         representative = "FullURestrictedAssembly.representative" if branch == "full" else "DeficientUOrbitPruning.representative"
         census = "FullCapacityPruning.remainingPairs" if branch == "full" else "DeficientUOrbitPruning.remainingPairs"
-        memberships[branch].append((module, f"""theorem {tag}_mem : ({r},{q}) ∈ {census} := by decide
+        membership_defs = (
+            "FullCapacityPruning.remainingPairs, FullTerminalPruning.remainingPairs, "
+            "FullUBlockPruning.remainingPairs, FullUOrbitPruning.remainingPairs"
+            if branch == "full" else "DeficientUOrbitPruning.remainingPairs")
+        memberships[branch].append((module, f"""theorem {tag}_mem : ({r},{q}) ∈ {census} := by
+  simp only [{membership_defs}, Finset.mem_erase, Finset.mem_sdiff,
+    Finset.mem_product, Finset.mem_filter, Finset.mem_univ, true_and]
+  decide
 theorem {tag}_input : {representative} {r} = {ns}.U := by rfl
 #print axioms {tag}_mem
 #print axioms {tag}_input
