@@ -37,7 +37,11 @@ theorem dfs1_succ (leaf : St → Bool) (fuel : Nat) (s : St) :
               match s.tryAdd u x with
               | none => true
               | some s' => dfs1 leaf fuel s' := by
-  rw [dfs1]
+  first
+    | rfl
+    | (unfold dfs1; rfl)
+    | (rw [dfs1]; rfl)
+    | simp only [dfs1]
 
 theorem dfs1_sound_parts (m : Nat) (hm : 0 < m) :
     ∀ (fuel : Nat) (s : St), s.WF →
