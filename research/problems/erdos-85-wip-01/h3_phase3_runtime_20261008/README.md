@@ -17,3 +17,18 @@ This change requires a fresh Runtime/Engine/Bridge/Split build and a new
 bounded plugin check of the existing bucket `triplePart 384 0 = true` before
 any timing or validation result is credited. No other bucket is run and no
 whole-cell exclusion is claimed.
+
+## Conditional build
+
+Job `20261008T120308-erdos85__h3-triple-formal-20261007-477911` exited zero
+at `a64f02c30eafde63acece8f251fd98666b757ea7`. Runtime, Engine, Bridge and
+Split freshly built in 1.5, 9.1, 4.7 and 3.7 seconds. The four printed
+soundness exports use exactly `propext`, `Classical.choice`, `Quot.sound`.
+No `sorry` or additional assumption was found. `build-evidence` binds the
+exact sources, fresh objects, Runtime C and terminal job records.
+
+`run_canary.py` uses that exact Runtime C, preserves the production probe
+source, and verifies prerequisite hashes before compiling the exported
+library and running the existing bucket-zero theorem. Caps remain 60
+seconds for the library, 180 seconds for Lean, four minutes for the outer
+job, two CPUs and 16 GiB. No full campaign is launched.
