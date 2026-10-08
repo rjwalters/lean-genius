@@ -16,6 +16,7 @@ Subcommands
   watch [--dry] [--once]        sync receipts, release dead nodes' claims, estimate spend, budget stop
   status                        one dry pass
   residual                      list items without a CERTIFIED receipt (from synced ledgers)
+  release-errors [--yes]        release the claims of batches whose only ledgers are ERROR
   stop                          write control/STOP, terminate every tagged instance, delete the fleets
 
 Budget: HARD_STOP_USD below on the controller's own estimate (override: --hard-stop-usd on watch).
@@ -28,6 +29,7 @@ import base64
 import datetime as dt
 import hashlib
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -38,7 +40,7 @@ sys.path.insert(0, str(HERE.parent / "phase_b_h1_verdict_cloud_20260921"))
 import controller as vc  # noqa: E402  (reviewed verdict-pass controller)
 import h7_common as hc  # noqa: E402
 
-STRIPE = Path("/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h7-hsb-campaign-20261008")
+STRIPE = Path(os.environ.get("E85_H7_STRIPE", "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h7-hsb-campaign-20261008"))
 INPUTS = STRIPE / "inputs"
 ROLE = "Erdos85H7HsbWorker"
 BRANCH = "erdos85/h7t0-formal-20261007"
@@ -272,6 +274,21 @@ def residual(a) -> None:
                       "residual_manifest": str(out), "sha256": hashlib.sha256(out.read_bytes()).hexdigest()}))
 
 
+def release_errors(a) -> None:
+    """Delete the claims of batches whose only ledgers are ERROR (infrastructure failures), so that a
+    live node re-claims them. The reviewed pass releases claims of dead nodes only when no ledger exists."""
+    by: dict[str, set] = {}
+    for l in ledgers():
+        by.setdefault(l["id"], set()).add(l.get("status"))
+    ids = sorted(i for i, st in by.items() if st == {"ERROR"} and i in {r["id"] for r in MANIFEST})
+    claims = set(vc.listing("claims"))
+    todo = [i for i in ids if i in claims]
+    if a.yes:
+        for i in todo:
+            vc.aws("s3api", "delete-object", "--bucket", vc.BUCKET, "--key", f"{vc.PREFIX}/claims/{i}")
+    print(json.dumps({"error_only_batches": len(ids), "claims_released" if a.yes else "claims_to_release (--yes to act)": todo}))
+
+
 def plan(a) -> None:
     meta = inputs_meta()
     rows = manifest_rows()
@@ -301,6 +318,7 @@ def main() -> int:
     s.add_argument("--hard-stop-usd", type=float, default=0); s.add_argument("--manifest", default=""); s.set_defaults(run=vc.watch)
     s = sub.add_parser("status"); s.add_argument("--manifest", default=""); s.set_defaults(run=lambda a: vc.watch(argparse.Namespace(dry=True, once=True)))
     s = sub.add_parser("residual"); s.add_argument("--manifest", default=""); s.set_defaults(run=residual)
+    s = sub.add_parser("release-errors"); s.add_argument("--manifest", default=""); s.add_argument("--yes", action="store_true"); s.set_defaults(run=release_errors)
     s = sub.add_parser("stop"); s.set_defaults(run=vc.stop)
     a = p.parse_args()
     if a.command not in ("stop",):
