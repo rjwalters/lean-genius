@@ -1,0 +1,19 @@
+{
+  "record_type": "launch_not_proof_receipt",
+  "container": "lean-build-22830",
+  "source_commit": "9fe3daf9be2cf8cf3069598b9efde928827703e4",
+  "source_sha256": {
+    "Full276.lean": "918a03deb83446bc4486d0f43c9efd996f74078b4d893c9fb64b961967fda60b",
+    "Deficient1554.lean": "23193540957af89f769b0406630e969a727e057f0902bd38258599dec0a74c06",
+    "check.py": "1f0a95f75f5372b7c6fa686cbed204c80ee85c03eee517e9789c7489a92979c8"
+  },
+  "memory_bytes_verified": 8589934592,
+  "lean_threads_verified": 1,
+  "workers": 1,
+  "timeout_seconds": 3600,
+  "output": "_build/local-first",
+  "log": "/tmp/erdos85-h3-census-local-20261008.log",
+  "final_result": null,
+  "runner_sha256": "c94620e9f316c2f654fc03c6e520918da907cec54daf91b516cfb0f30492bc2a",
+  "command": "LEAN_REPO_ROOT=/Volumes/Stripe/lean-genius/erdos85-certpilot LEAN_NUM_THREADS=1 LEAN_MEMORY_LIMIT=8192 LEAN_BUILD_TIMEOUT=60m LEAN_SKIP_CACHE=true LEAN_DOCKER_CMD='lake env python3 ../research/problems/erdos-85-wip-01/h3_strong_census_20261008/check.py --branch both --workers 1 --output /workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/local-first' /Volumes/Stripe/lean-genius/erdos85-h7t0/proofs/scripts/docker-build.sh"
+}

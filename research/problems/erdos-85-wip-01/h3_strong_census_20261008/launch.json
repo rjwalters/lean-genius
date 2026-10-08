@@ -27,5 +27,13 @@
     "Source/log hashes match retained evidence",
     "Four new exports have standard axioms only",
     "Do not interpret this as proving any finite rejection"
-  ]
+  ],
+  "scheduling_update": {
+    "status": "CANCELLED_BEFORE_COMPILATION",
+    "observed_at_utc": "2026-10-08T01:17:37Z",
+    "reason": "Moved independent census checking to the free bounded local Docker runner instead of waiting behind the pilot. No census compiler had started.",
+    "cancellation_command": "e85-remote kill 20261008T005410-erdos85__h3-triple-formal-20261007-50086",
+    "verification": "Remote ps -p 50113 returned no process; only the existing H3 pilot and H7 containers remained.",
+    "replacement": "local-launch.json"
+  }
 }

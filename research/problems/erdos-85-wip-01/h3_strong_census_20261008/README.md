@@ -19,9 +19,12 @@ capacity reductions to 261 pairs remain to be connected separately; this
 package does not replace that intended final census. The H3 pair-profile branch
 and the full paper conclusion remain open.
 
-The queued job is `20261008T005410-erdos85__h3-triple-formal-20261007-50086`;
-`launch.json` records its submission and initial wait on the pilot. This does
-not count as a successful compile.
+The cloud job `20261008T005410-erdos85__h3-triple-formal-20261007-50086`
+was cancelled before compilation: the census is independent of the pilot
+and a local Docker slot became free. `launch.json` retains the initial queue
+and cancellation record. `local-launch.json` records the replacement run in
+container `lean-build-22830`, at 8 GiB / one worker / one Lean thread, with a
+60-minute limit and unchanged sources. Neither launch is a proof receipt.
 
 ## Checker
 
@@ -34,8 +37,8 @@ python3 research/problems/erdos-85-wip-01/h3_strong_census_20261008/check.py --p
 ```
 
 The checker copies retained sources byte-for-byte, builds their library
-dependencies, compiles independent shards with two workers (one Lean thread
-each), and compiles the assemblies and new wrappers sequentially. Full and
+dependencies, compiles independent shards with a configurable worker count (one Lean thread
+each; the current local run uses one worker), and compiles the assemblies and new wrappers sequentially. Full and
 deficient outputs are isolated because both packages use `Assembly` and
 `Pruning` as module names. It retains per-module source/log/olean hashes and
 requires the exact declared axiom-export list with only standard axioms.
@@ -48,8 +51,8 @@ under `lake env`. The checker refuses to compile on the host Mac. For the cloud:
 e85-remote run erdos85/h3-triple-formal-20261007 --full --mem 48 --threads 2 --timeout 2h --no-follow -- 'lake env python3 ../research/problems/erdos-85-wip-01/h3_strong_census_20261008/check.py --branch both --workers 2 --output /workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-first'
 ```
 
-Use a new output directory. The same-branch worktree lock queues this behind
-the existing U1/R15 pilot; do not launch an additional branch to bypass that
+The cloud command is a reproduction option, not the active run. Use a new
+output directory. The same-branch worktree lock queues behind other jobs; do not launch an additional branch to bypass that
 lock and exceed the agreed allocation. Submission is not proof of a successful
 build. Check the actual job outcome and retain its completed evidence before
 counting any new export as verified. The branch ref is resolved after the job
