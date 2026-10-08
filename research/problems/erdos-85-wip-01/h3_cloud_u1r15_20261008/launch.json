@@ -1,0 +1,21 @@
+{
+  "record_type": "launch_and_initial_observation_not_proof_receipt",
+  "job_id": "20261008T004436-erdos85__h3-triple-formal-20261007-42449",
+  "branch": "erdos85/h3-triple-formal-20261007",
+  "observed_job_commit": "cfb0b04246a7053375a5ed29135604a340eee8ac",
+  "job_started_utc": "2026-10-08T00:44:36Z",
+  "container": "lean-build-42721",
+  "container_started_utc": "2026-10-08T00:45:16.719165371Z",
+  "last_observation": "Container running; dependency compilers active; target rejection theorem not yet checked.",
+  "final_result": null,
+  "memory_limit_bytes_verified": 51539607552,
+  "lean_num_threads_verified": 8,
+  "timeout_seconds": 21600,
+  "pilot_source": "research/problems/erdos-85-wip-01/h3_formal_20261007/Erdos85ThreeHighNativeTerminalPilot.lean",
+  "pilot_source_sha256": "8da3fcb8847f6206e26026905e256438d39eacb6d804b8ff33fabed68619f499",
+  "submit_command": "e85-remote run erdos85/h3-triple-formal-20261007 --full --mem 48 --threads 8 --timeout 6h --no-follow -- 'cp ../research/problems/erdos-85-wip-01/h3_formal_20261007/Erdos85ThreeHighNativeTerminalPilot.lean Proofs/Erdos85ThreeHighNativeTerminalPilot.lean && lake build Proofs.Erdos85ThreeHighNativeTerminalPilot'",
+  "follow_command": "e85-remote logs 20261008T004436-erdos85__h3-triple-formal-20261007-42449",
+  "status_command": "e85-remote status",
+  "scope": "Attempt one full-U representative 1 / secondary representative 15 rejection. A successful result would still not exclude the complete H3 stratum.",
+  "coordination": "Claude LIVE announcement in Squad message 52496 allocated at most 48 GiB and eight threads. Submitted job posted in message 52498. H7 MixedCapstone is a separate live job and must not be stopped."
+}
