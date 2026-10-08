@@ -34,7 +34,10 @@ chk "5 claims" '[ $(ls "$S/claims" | wc -l) = 5 ]'
 chk "5 CERTIFIED ledgers" '[ $(grep -l "\"status\": \"CERTIFIED\"" "$S"/ledger/*.json | wc -l) = 5 ]'
 chk "claim body is the instance id" '[ "$(cat "$S/claims/cube_F9_t1-x0")" = i-test-a ]'
 echo "== simulated reclaim of cube_F9_t1-x0 (3 receipts survive as a partial)"
-f=$(ls "$S"/results/cube_F9_t1-x0.*.jsonl.zst); zstd -dc "$f" | head -3 > "$S/partial/cube_F9_t1-x0.i-dead.jsonl" 2>/dev/null || { mkdir -p "$S/partial"; zstd -dc "$f" | head -3 > "$S/partial/cube_F9_t1-x0.i-dead.jsonl"; }
+# (run 1 itself uploaded partials every 20 s; move its own away so exactly 3 receipts are carried)
+f=$(ls "$S"/results/cube_F9_t1-x0.*.jsonl.zst); mkdir -p "$S/partial" "$OUT/removed"
+find "$S/partial" -name 'cube_F9_t1-x0.*' -exec mv {} "$OUT/removed/" \;
+zstd -dc "$f" | head -3 > "$S/partial/cube_F9_t1-x0.i-dead.jsonl"; echo '{"torn line' >> "$S/partial/cube_F9_t1-x0.i-dead.jsonl"
 mkdir -p "$OUT/removed"; mv "$f" "$S"/ledger/cube_F9_t1-x0.* "$OUT/removed/"; rm "$S/claims/cube_F9_t1-x0"
 W b "$S" "$CAKE"
 L=$(ls "$S"/ledger/cube_F9_t1-x0.i-test-b.*.json)
