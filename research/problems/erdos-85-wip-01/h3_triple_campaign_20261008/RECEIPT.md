@@ -1,8 +1,8 @@
 # Required per-attempt receipt and acceptance rules
 
-Status: contract prepared; the artifact-validation component is implemented and
-metadata-tested. The cloud worker and host execution/provenance collector are
-not yet implemented.
+Status: the artifact-validation component and single-attempt worker are
+implemented and metadata-tested. Production worker execution and the independent
+host execution/provenance collector remain readiness gates.
 The planner's output is not a proof receipt and cannot complete a campaign.
 
 A receipt is immutable and belongs to `(manifest_sha256, case_id, attempt_id)`.
@@ -61,6 +61,41 @@ commands, launches no retries and changes no claims. `--certificate-only`
 validates the first three stages even if Consumer is absent or failed, returning
 `CERTIFICATE_ARTIFACTS_VALID` with `retry_authorized=false`. This preserves a
 recovery candidate; it does not authorize work while the old process may live.
+
+## Worker launch and cache inputs
+
+The launch host prepares `erdos85-h3-triple-launch-v1` with `attempt_id`,
+`case_id`, `manifest_sha256`, `recorded_root`, the 40-character `execution_commit`,
+an immutable `image_id` (`sha256:...`), `instance_id`, `slot`, and `limits`
+(`memory_bytes`, `cpu_quota_us`, `cpu_period_us`, `wall_seconds`). Limits must be
+positive integers, at most 16 GiB, two CPUs and 7,200 seconds. The worker checks
+the cgroup quota and memory limit against these exact values and requires zero
+swap. It also checks `code_sha256` for exactly worker.py, validate_artifacts.py,
+common.py and manifest.py, `cache_inventory_sha256`, and `inherited_lean_path`.
+The host must independently verify these assertions; a worker echoing an image
+or commit string is not evidence that those inputs were executed.
+
+The pinned cache inventory uses `erdos85-h3-triple-cache-v1`,
+`manifest_sha256`, the manifest's exact `base_receipts`, and `roots`. Full cases
+require `library`, `full_base`, `full_final`; deficient cases require `library`
+and `deficient_base`. Each root has an absolute in-container `path` and a
+complete relative-file-to-SHA-256 `files` map. Symlinks, missing/extra/changed
+files, incomplete generic dependencies and pre-existing campaign files are
+rejected. The host must establish the cache's approved source/toolchain and
+audited census provenance before pinning it. The inventory itself does not
+prove that arbitrary cached `.olean` bytes came from the intended source.
+
+The worker never builds prerequisites or writes the shared library. It copies
+the complete approved library and writes generated objects only in its private
+attempt directory. Census roots and package/toolchain mounts must be immutable
+for the attempt; host launch and collection must enforce and check that fact.
+The host's hard outer wall cap is required in addition to the worker's compiler
+deadline, since Python hashing and staging are not a container lifetime limit.
+
+A successful worker result is only `WORKER_PASS`. The implemented worker does
+not yet support consumer-only continuation; the artifact validator can establish
+the retained certificate prefix for a future continuation implementation.
+Missing terminal evidence remains `UNKNOWN`, even if `WORKER_PASS` is present.
 
 States are `PENDING`, `CLAIMED`, `RUNNING`, `CERTIFICATE_RETAINED`,
 `AUDITED_PASS`, `TIMEOUT`, `OOM`, `ERROR`, `UNKNOWN`, and `ALARM`.

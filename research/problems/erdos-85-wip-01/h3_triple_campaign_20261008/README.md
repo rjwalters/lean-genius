@@ -1,8 +1,9 @@
 # H3 triple-profile campaign plan
 
 Status: **plan and deterministic metadata tooling prepared; no fleet launched**.
-The cloud worker, complete artifact collector, fleet lifecycle and final Lean
-aggregation are still implementation/readiness gates. The read-only artifact
+The single-attempt worker is implemented but has not run a production case.
+The complete artifact collector, fleet lifecycle and final Lean aggregation
+remain implementation/readiness gates. The read-only artifact
 validation component is implemented; independent host execution/provenance
 checks remain pending. `controller.py` is a read-only
 capacity and queue planner, not an execution controller. This package supports
@@ -91,6 +92,25 @@ collector must establish execution, immutable dependencies, limits and terminal
 state. Fifteen synthetic metadata tests in `test_artifacts.py` exercise rejection
 and recovery cases without Lean, Docker, native search or cloud calls. Their
 opaque test objects are explicitly synthetic, not compilation evidence.
+
+`worker.py` consumes an externally pinned launch record and complete cache
+inventory, enforces the actual Docker cgroup memory/CPU limits, and runs four
+direct Lean compiler processes in order. It creates a fresh attempt directory,
+copies the complete library into private storage, verifies the copy, and refuses
+pre-existing campaign objects. Native certificates are copied into the retained
+case bundle immediately after compilation. STOP is checked before starting an
+attempt and between stages; the attempt deadline kills and reaps the active
+compiler process group. A non-timeout certificate failure is an `ALARM` pending
+raw diagnostic review. There is no automatic retry, resizing, claim release,
+fleet launch, or acceptance as `AUDITED_PASS`.
+
+The launch schema and cache contract are in `RECEIPT.md`. Eight worker metadata
+tests pass, for 29 metadata tests total. `test_worker_runtime.py` is a separate
+cloud-host-only check of subprocess completion, nonzero exit, timeout cleanup
+and refusal to overwrite retained logs. Production compilation, cache staging,
+Docker mount/image verification, host collection and consumer-only continuation
+are still untested or unimplemented gates. Do not use the worker for a campaign
+until those gates and the limited production canary are complete.
 
 ## Resource and controller design
 
