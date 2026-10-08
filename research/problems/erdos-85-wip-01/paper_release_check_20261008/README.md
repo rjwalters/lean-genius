@@ -28,7 +28,7 @@ inspect and record the new commit instead of treating the old result as current.
 | Record matches v9 | `main.tex`, `main.pdf`, `refs.bib`, `anvil-paper.cls` match byte for byte. |
 | Public repository targets | 50/50 exist; Git object IDs retained. Existence does not verify all linked mathematical claims. |
 | Current PDF disclosure | Present in the extracted PDF text; no `??`, `[?]`, or `(?)` markers. This is not a fresh compile or visual review. |
-| Priority citation claims | See `CITATION_SUPPORT.md`: checker parsing and both hexagon claims supported; Ramsey lower endpoints remain unverified. |
+| Priority citation claims | See `CITATION_SUPPORT.md`: checker parsing and both hexagon claims supported; both Ramsey intervals follow from cited theorem statements, with the polarity full-proof access limit recorded. |
 | Human read-through | No new human approval supplied in this check. |
 | Release tag / publication | Not performed. Repoint the paper's repository base only with the chosen release tag in the authorized publication workflow. |
 
