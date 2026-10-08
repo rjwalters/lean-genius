@@ -1,6 +1,8 @@
 # Required per-attempt receipt and acceptance rules
 
-Status: contract prepared; the cloud worker and collector are not yet implemented.
+Status: contract prepared; the artifact-validation component is implemented and
+metadata-tested. The cloud worker and host execution/provenance collector are
+not yet implemented.
 The planner's output is not a proof receipt and cannot complete a campaign.
 
 A receipt is immutable and belongs to `(manifest_sha256, case_id, attempt_id)`.
@@ -38,6 +40,27 @@ axioms without this check. An accepted result is `AUDITED_PASS`; each prior
 pilot credit instead references its immutable old receipt, audit, exact case,
 identity proof and native object. Old pilot namespaces need not match new
 campaign namespaces, and their objects must not be relabeled as new builds.
+
+`validate_artifacts.py` implements the artifact part of this contract. Its input
+is an externally pinned manifest and recorded attempt root, an attempt-level
+`RUN.json`, and `<case-id>/<module>.{lean,log,olean,run.json}`. It requires all
+four stages in order and regenerates their exact source bytes. The receipt uses
+`schema=erdos85-h3-triple-receipt-v1`, `production_native_search=true`,
+`manifest_sha256`, `case_id`, `attempt_id`, `recorded_root`, and `results`.
+Module records follow the existing timing fields and include `stage`, `module`,
+`case_id`, exact command, artifact hashes and parsed exports. Inputs/Certificate
+commands use `<recorded-root>/source-root/Proofs` and the private complete
+`<recorded-root>/library`; Membership/Consumer use `<recorded-root>/<case-id>`.
+The worker's textual status is never sufficient evidence.
+
+The component returns only `ARTIFACTS_VALID`, never `AUDITED_PASS`. It does not
+parse or type-check an `.olean` itself; its hash binds retained bytes to the
+recorded compilation. Authentic execution and dependency provenance remain
+mandatory independent host checks. The validator executes no Lean or shell
+commands, launches no retries and changes no claims. `--certificate-only`
+validates the first three stages even if Consumer is absent or failed, returning
+`CERTIFICATE_ARTIFACTS_VALID` with `retry_authorized=false`. This preserves a
+recovery candidate; it does not authorize work while the old process may live.
 
 States are `PENDING`, `CLAIMED`, `RUNNING`, `CERTIFICATE_RETAINED`,
 `AUDITED_PASS`, `TIMEOUT`, `OOM`, `ERROR`, `UNKNOWN`, and `ALARM`.

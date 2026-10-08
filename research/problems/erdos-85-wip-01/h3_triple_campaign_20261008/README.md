@@ -1,8 +1,10 @@
 # H3 triple-profile campaign plan
 
 Status: **plan and deterministic metadata tooling prepared; no fleet launched**.
-The cloud worker, artifact collector, fleet lifecycle and final Lean aggregation
-are still implementation/readiness gates. `controller.py` is a read-only
+The cloud worker, complete artifact collector, fleet lifecycle and final Lean
+aggregation are still implementation/readiness gates. The read-only artifact
+validation component is implemented; independent host execution/provenance
+checks remain pending. `controller.py` is a read-only
 capacity and queue planner, not an execution controller. This package supports
 budget and architecture review; it is not yet a launch-ready campaign.
 
@@ -79,6 +81,16 @@ hash to the frozen manifest before building. Prior credits keep their original
 names and receipts; do not rerun or relabel them to fit campaign namespaces.
 See `RECEIPT.md` for the required artifacts, trust sets, failure states and
 independent acceptance rules.
+
+`validate_artifacts.py` checks retained production source/object/log bundles
+against an externally pinned manifest and exact commands, independently parses
+the raw axiom reports, and rejects incomplete inventories and substituted bridge
+proofs. Its certificate-only mode preserves a verified artifact prefix after
+Consumer fails. Neither mode grants campaign credit or permits a retry; a host
+collector must establish execution, immutable dependencies, limits and terminal
+state. Fifteen synthetic metadata tests in `test_artifacts.py` exercise rejection
+and recovery cases without Lean, Docker, native search or cloud calls. Their
+opaque test objects are explicitly synthetic, not compilation evidence.
 
 ## Resource and controller design
 
