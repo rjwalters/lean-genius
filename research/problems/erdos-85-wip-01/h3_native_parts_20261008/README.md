@@ -1,13 +1,16 @@
 # H3 native completion parts: prepared inventory and sizing plan
 
-Status: source inventory prepared; no sizing run or full campaign launched
-by this package. The full campaign is not launch-ready or authorized here.
+Status: the bounded five-part sample passed its independent artifact audit.
+Five of 384 unique residues are verified; 379 remain. The full campaign is
+not launch-ready or authorized here.
 
 The current engine is pinned at
 `a64f02c30eafde63acece8f251fd98666b757ea7`. Its Runtime, Engine, Bridge and
 Split have an audited fresh build. Bucket `triplePart 384 0 = true` has
 been verified with the production runtime plugin in 15.132 seconds. The
-other 383 Boolean premises remain unverified.
+subsequent sample also verified residues 3, 4, 5 and 162, as recorded in
+`ACCEPTANCE.json`. The immutable preparation manifest retains its original
+pre-run statuses; acceptance is recorded separately.
 
 ## Exact deliverable
 
@@ -19,8 +22,9 @@ index, and applies the existing soundness bridge to obtain both the
 canonical representative exclusion and `OrderFortyNineTripleCellExcluded 3 1`.
 
 The review bundle is under `source-review/Proofs`, outside the production
-library glob. Its five part sources and full composition have not been
-compiled. Preparing `native_decide` source is not computation credit.
+library glob. Its five part sources have now been compiled at their production module
+paths and independently audited. The full composition remains uncompiled.
+Preparing `native_decide` source alone is not computation credit.
 
 The earlier bucket-zero object belongs to a temporary diagnostic module.
 It proves the needed proposition but is not a compiled production
@@ -35,11 +39,11 @@ pair-cell `(3,0)` result and the existing three-high stratum capstone. Closing
 this cell alone would not prove the complete order-49 exclusion or finish
 the paper's human review/publication work.
 
-## Bounded sizing run to prepare next
+## Completed bounded sizing run
 
-Use the existing cloud builder, pinned Lean image and current H3 cache, with
-one worker, a two-CPU quota and 16 GiB. Run these production module sources
-sequentially with the audited Runtime plugin:
+The sample used the existing cloud builder, pinned Lean image and current
+H3 cache, with one worker, a two-CPU quota and 16 GiB. These production module
+sources ran sequentially with the audited Runtime plugin:
 
 | Residue | Historical phase-one leaves | Purpose |
 |---:|---:|---|
@@ -77,6 +81,33 @@ prerequisites. While the job is live it reports the exact PID and writes no
 acceptance record. Successful prefixes can be retained after a later timeout;
 only explicitly accepted parts receive credit. Neither script launches the
 full set or retries a failed part.
+
+## Audited sample result
+
+Job `20261008T121835-erdos85__h3-triple-formal-20261007-487248`, execution
+commit `afcd487aecce0b9950355c0d06e2f81ffef63093`, exited zero.
+`sample-evidence/AUDIT.json` records `SAMPLE_ARTIFACT_AUDIT_PASS` after
+checking each retained source, raw axiom report, source/object dependency,
+plugin, actual cache object hash and its creation time within the job.
+All five reports contain exactly `propext`, `Quot.sound` and the part's
+own named native-decide axiom, with no `sorryAx`.
+
+| Residue | Elapsed seconds |
+|---:|---:|
+| 0 | 15.183 |
+| 3 | 3.968 |
+| 5 | 3.918 |
+| 4 | 5.971 |
+| 162 | 34.457 |
+
+Shared-library compilation took 1.115 seconds. Every part finished within
+its 90-second cap. Sources and raw logs are retained here; compiled objects
+remain in both the cloud attempt directory and the H3 cache, with hashes
+and sizes in the audit. Residue zero validates production packaging for an
+already verified proposition; the sample adds four new mathematical
+residues. There are five unique accepted residues and 379 unresolved ones.
+These deliberately chosen timings provide no statistical whole-run bound.
+The whole-cell theorem and its 384-part composition remain unverified.
 
 ## Acceptance and subsequent decision
 
