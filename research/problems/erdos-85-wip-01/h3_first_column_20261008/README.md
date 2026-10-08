@@ -56,7 +56,14 @@ dependency log and the separate diagnostic failure.
 That diagnostic could not compile its `Finset.toList` encoding because the
 operation is noncomputable. The diagnostic now folds over `List.finRange 15`
 and tests membership, leaving the verified theorem source unchanged. This
-diagnostic-only fix awaits a further cloud check.
+diagnostic-only fix was submitted as job
+`20261008T033806-erdos85__h3-first-column-20261008-150178`. That run passed the
+dependency build but reached its 15-minute cap in the diagnostic stage, whose
+source passed uncached adjacency functions to the checks. No completed
+inventory was emitted. `uncached-inventory-timeout/` retains its sources,
+logs, and external exit-124 record; the interrupted runner's RUNNING receipt
+is preserved unchanged. The next diagnostic caches U/R in vectors exactly as
+the verified native first-column search does. Its runtime effect is unmeasured.
 
 `audit.py` independently checks a completed run's commands, logs, source and
 object hashes, all five theorem axiom reports (standard axioms only), and

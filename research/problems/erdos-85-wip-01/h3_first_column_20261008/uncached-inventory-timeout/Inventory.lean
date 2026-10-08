@@ -21,12 +21,8 @@ def secondary (r : Fin 21) : Fin 8 → Fin 8 → Bool :=
 
 def inventory (name : String)
     (U : Fin 15 → Fin 15 → Bool) (R : Fin 8 → Fin 8 → Bool) : IO Unit := do
-  let uRows := Vector.ofFn (fun i => Vector.ofFn (U i))
-  let rRows := Vector.ofFn (fun i => Vector.ofFn (R i))
-  let cachedU := fun i j => (uRows.get i).get j
-  let cachedR := fun i j => (rRows.get i).get j
-  let candidates := threeHighStaticPrunedColumnList cachedU cachedR 0
-  let gate := threeHighFactoredColumnGate cachedU cachedR
+  let candidates := threeHighStaticPrunedColumnList U R 0
+  let gate := threeHighFactoredColumnGate U R
   let branches := candidates.map fun S =>
     let mask := (List.finRange 15).foldl
       (fun n i => if i ∈ S then n + 2 ^ i.val else n) (0 : Nat)
