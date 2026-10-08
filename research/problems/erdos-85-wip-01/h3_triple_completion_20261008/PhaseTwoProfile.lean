@@ -80,11 +80,12 @@ def profileTwo (limit : Nat) : Nat → St → List Tri → StateM TwoProfile Uni
   let (_, states) := (collectZero 70 s0).run #[]
   let ready ← IO.monoMsNow
   IO.println s!"STATES count={states.size} elapsed_ms={ready-start}"
-  for i in [:states.size] do
-    let s := states[i]!
+  let mut i := 0
+  for s in states do
+    i := i + 1
     let begin ← IO.monoMsNow
     let (_, p) := (profileTwo 10000 30 s allTriples).run {}
     let finish ← IO.monoMsNow
-    IO.println s!"PROFILE leaf={i+1} key={stKey s} nodes={p.nodes} leaves={p.leaves} exhausted={p.exhausted} invalid={p.invalid} no_fresh={p.noFresh} rejected={p.rejected} available={p.available} capped={p.capped} elapsed_ms={finish-begin}"
+    IO.println s!"PROFILE leaf={i} key={stKey s} nodes={p.nodes} leaves={p.leaves} exhausted={p.exhausted} invalid={p.invalid} no_fresh={p.noFresh} rejected={p.rejected} available={p.available} capped={p.capped} elapsed_ms={finish-begin}"
 
 end Erdos85.H3TripleCompletion
