@@ -1,0 +1,29 @@
+{
+  "command": [
+    "lake",
+    "build",
+    "Proofs.Erdos85ThreeHighPilotDeficientU26R2Certificate"
+  ],
+  "started_utc": "2026-10-08T04:46:55.680242+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 192.40442450699993,
+  "user_cpu_seconds": 190.908343,
+  "system_cpu_seconds": 2.081701,
+  "max_rss_kib": 6549052,
+  "log_sha256": "6b69e9e9d6b11cfa1d4fd039d21d0f9ad4c1b219457eebc86789560260158e8d",
+  "module": "Erdos85ThreeHighPilotDeficientU26R2Certificate",
+  "status": "PASS",
+  "source_sha256": "19241072eccf8b014ea12dd7245439a5d23367cc9403dddcd751d29b3ce27f6d",
+  "olean_sha256": "898bb93401b80e72561b054462fab7d3dd93cb80e0017bd38866b9629814f783",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.VariedPilot.DeficientU26R2.rejected",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.VariedPilot.DeficientU26R2.rejected._native.native_decide.ax_1_1"
+      ]
+    }
+  ]
+}

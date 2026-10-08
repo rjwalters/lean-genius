@@ -1,6 +1,6 @@
 # Four-case H3 timing sample
 
-Status: **input/deficient-membership preflight PASS; Deficient U26/R2 timing run active**.
+Status: **input/deficient-membership preflight PASS; Deficient U26/R2 certificate and consumer PASS**.
 
 Claude requested 3–5 additional pairs after the U1/R15 pipeline fix, to measure
 cost variation before a larger campaign. The four selected cases are:
@@ -97,10 +97,15 @@ lake env python3 ../research/problems/erdos-85-wip-01/h3_varied_pilot_20261008/c
   --output ../research/problems/erdos-85-wip-01/h3_varied_pilot_20261008/_build/DeficientU26R2-first
 ```
 
-Deficient U26/R2 is now running as
+Deficient U26/R2 passed as
 `20261008T044647-erdos85__h3-first-column-20261008-194983`, at source
 `1d388af91cd`, under the above two-hour/16-GiB/one-thread limits.
-`DeficientU26R2-launch.json` records the exact source and preflight hashes.
-This is a launch record, not a passing rejection receipt. The other three
-sample cases are not queued. Observe this same job; do not restart it because
-a local log follower disconnects or an observation times out.
+`DeficientU26R2-evidence/` retains exact sources, raw per-module logs, run
+records, and an independent audit. All three object hashes match a separate
+cloud read; both certificate and consumer targets were freshly built.
+The certificate took 192.404 seconds wall / 190.908 seconds user CPU,
+with wait4 peak RSS 6,549,052 KiB; its consumer took 9.702 seconds.
+Both reports contain exactly the standard three axioms plus this pair's
+native-decision axiom. The consumer retains its cross-domain and external
+capacity premises. This closes one pair, not the deficient census or H3.
+The other three selected cases remain unqueued at this record.

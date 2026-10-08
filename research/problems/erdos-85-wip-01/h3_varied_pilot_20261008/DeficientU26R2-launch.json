@@ -1,5 +1,5 @@
 {
-  "status": "RUNNING",
+  "status": "PASS",
   "job": "20261008T044647-erdos85__h3-first-column-20261008-194983",
   "branch": "erdos85/h3-first-column-20261008",
   "execution_commit": "1d388af91cd645c9d8edf53e30a786698a61b971",
@@ -14,5 +14,8 @@
     "Erdos85ThreeHighPilotDeficientU26R2Consumer.lean": "2161fa6533b67580b8af285b1b591bf77749071e922b56b11bb36be7fa8ca5c8",
     "check_case.py": "b7eecdd21d78bb81574a0f34d1042aa90f1c0a7045bfb934747d57e23c37b137"
   },
-  "scope": "One complete deficient timing-sample pair; no other pair is launched and no H3 exclusion follows."
+  "scope": "One complete deficient timing-sample pair; no other pair is launched and no H3 exclusion follows.",
+  "exit_code": 0,
+  "run_sha256": "c084a76d8c05199564a29058ae256b205d5d7d94fa9f4dde7bf77a3b2117ee4c",
+  "audit": "DeficientU26R2-evidence/AUDIT.json"
 }
