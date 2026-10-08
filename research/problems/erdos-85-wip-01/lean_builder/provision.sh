@@ -6,7 +6,7 @@
 #   provision.sh create-ami <iid>         stop it, image it as erdos85-lean-builder-<date> (private)
 #   provision.sh launch <ami-id>          launch the long-lived builder (Role=builder) from the AMI
 #
-# One-time prerequisites (already created in account 221082181346, us-east-1):
+# One-time prerequisites (already created in the project AWS account, us-east-1):
 #   IAM role + instance profile Erdos85LeanBuilder (AmazonSSMManagedInstanceCore + S3 read on
 #   s3://2am-erdos85-certs/lean-builder/* and the checker-kit image), EC2 key pair
 #   e85-lean-builder (private key ~/.ssh/e85-lean-builder), security group
