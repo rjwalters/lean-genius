@@ -1,0 +1,102 @@
+[e85] job 20261008T105548-erdos85__h3-triple-formal-20261007-430342  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T10:55:48Z
+[e85] commit bab58460183e3512014f7413d850678e4fbb33e1 (Audit ratio-ordered Lean chain and prepare bounded diagnostic)
+=== Docker Lean Build ===
+Memory limit: 16384MB (hard enforced via cgroups)
+Timeout: 2m
+CPU limit: 2
+Target: all
+Build volume: lean-build-erdos85__h3-triple-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Command: lake env python3 -B ../research/problems/erdos-85-wip-01/h3_triple_completion_20261008/run_phase_two_ratio.py
+Starting Docker build...
+
+[30s] Building...
+[60s] Building...
+
+{
+  "command": [
+    "lean",
+    "-j1",
+    "H3TripleCompletionPhaseTwoRatio.lean",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/phase-two-ratio/PhaseTwoOnly.olean"
+  ],
+  "source_sha256": "d039c1e7b13d8da016aede597b3aaa2c2864bd1399f22d9db33fe1ca1f111751",
+  "timeout_seconds": 60,
+  "started_utc": "2026-10-08T10:55:49.932936+00:00",
+  "prerequisites": [
+    {
+      "module": "Erdos85H3TripleCompletionEngine",
+      "source_sha256": "a8bbf737978ff1ff1a24b8d3bb675304a00006f8927b17d9478656907d393c39",
+      "olean_sha256": "c144efb4d85c1186f5019666fd8dede6b71e92ec0c8bc14390457f539ab2e412",
+      "olean_bytes": 2103088,
+      "olean_mtime": 1791456891.6277816,
+      "fresh_build_elapsed": "11s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.search_sound",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85H3TripleCompletionBridge",
+      "source_sha256": "499f480a8d1eb73f33ca4119b0175f319982484a9d3fcdf0a2fbbda73d2db36b",
+      "olean_sha256": "02220d1339caaf079b5889edf2e0c4e52b49b37d6c2b89ba4886c06d5a77e18e",
+      "olean_bytes": 198624,
+      "olean_mtime": 1791456899.3572543,
+      "fresh_build_elapsed": "4.0s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.threeHighCanonicalRepresentativeExcluded_one_of_tripleSearch",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.H3TripleCompletion.orderFortyNineTripleCellExcluded_three_one_of_tripleSearch",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85H3TripleCompletionSplit",
+      "source_sha256": "b85d4d99bb82cefdbe5f8d0543928262422f2f5e6a8dfa799d7100dc7ca826a3",
+      "olean_sha256": "acfdbed1a9ccec6f972f9c8c8afc5575937d82b3cbc3541f0239a8e3b019d0d3",
+      "olean_bytes": 187736,
+      "olean_mtime": 1791456903.1570253,
+      "fresh_build_elapsed": "3.8s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.orderFortyNineTripleCellExcluded_three_one_of_parts",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  ],
+  "status": "TIMEOUT",
+  "returncode": -9,
+  "timed_out": true,
+  "elapsed_seconds": 60.21094622000237,
+  "child_user_seconds": 58.945905,
+  "child_system_seconds": 1.259912,
+  "child_maxrss_kib": 6452544,
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
+
+=== Build timed out after 2m ===

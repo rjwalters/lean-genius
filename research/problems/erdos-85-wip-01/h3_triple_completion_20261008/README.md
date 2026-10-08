@@ -243,3 +243,14 @@ original engine and is not evidence of this version's runtime.
 `run_phase_two_ratio.py` repeats the existing one-minute phase-two-only
 bucket-zero diagnostic with the newly audited prerequisite hashes. It still
 accepts all phase-two leaves and therefore cannot establish graph exclusion.
+
+The ratio diagnostic ran at `bab58460183e3512014f7413d850678e4fbb33e1`
+in job `20261008T105548-erdos85__h3-triple-formal-20261007-430342` and
+still timed out: 60.211 seconds elapsed, 58.946 user, 1.260 system, maximum
+RSS 6,452,544 KiB. The inner runner killed and reaped Lean, retained an empty
+compiler log and produced no object. The wrapper maps this to exit 1 and
+prints its outer two-minute limit; that banner is not the measured duration.
+`phase-two-ratio-evidence/` retains the read-only audit, source, runner,
+receipt and raw job/compiler logs. All prerequisite object hashes remained
+unchanged. This result does not measure a complete-bucket speedup in Lean;
+more targeted instrumentation is needed before increasing search scope.
