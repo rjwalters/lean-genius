@@ -1,0 +1,11 @@
+MODE=host
+REF=4c8bab43fccd5b3f0250cf96d8ee2568f1818fdd
+TARGET=''
+CMD=exec\ python3.12\ research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/rerun_items.py\ --inputs\ ~/h7camp/inputs\ --out\ ~/h7camp/sample/capped-followup.jsonl\ --items\ cube_F7_t0:2061\,cube_F7_t6:119\ --cap\ 7200\ --heap-mb\ 4000\ --cadical\ ~/h7pilot/bin/cadical\ --cake-lpr\ ~/h7pilot/bin/cake_lpr
+MEM_GB=64
+TIMEOUT=130m
+THREADS=''
+CACHE=0
+CPUS=16
+VOLUME=''
+FULL=1

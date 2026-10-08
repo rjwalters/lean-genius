@@ -1,0 +1,5 @@
+[e85] job 20261008T081402-commit-4c8bab43fccd-328154  ref=4c8bab43fccd5b3f0250cf96d8ee2568f1818fdd  worktree=/opt/e85/wt/commit-4c8bab43fccd  started 2026-10-08T08:14:02Z
+[e85] commit 4c8bab43fccd5b3f0250cf96d8ee2568f1818fdd (erdos85(h7-hsb-campaign): rerun_items.py for capped-leaf follow-up)
+[e85] host command: exec python3.12 research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/rerun_items.py --inputs ~/h7camp/inputs --out ~/h7camp/sample/capped-followup.jsonl --items cube_F7_t0:2061,cube_F7_t6:119 --cap 7200 --heap-mb 4000 --cadical ~/h7pilot/bin/cadical --cake-lpr ~/h7pilot/bin/cake_lpr
+cube_F7_t6 119 CERTIFIED 3474.334389 252.98021400000002 3109017461
+cube_F7_t0 2061 CERTIFIED 3807.8943590000003 364.46779200000003 5193710663
