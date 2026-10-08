@@ -1,0 +1,24 @@
+{
+  "status": "COPIED_RUNTIME_PLUGIN_COMPARISON_CAPTURED",
+  "job": "20261008T115032-erdos85__h3-triple-formal-20261007-469274",
+  "execution_commit": "2ca3c3209b337114caa151158b7f565e16b130ff",
+  "authoritative_exit": 0,
+  "run_status": "PLUGIN_COMPILED",
+  "retained_sha256": {
+    "job.log": "8c144fe94a75b7e89fc2dba7972846abd680a23590cad744ed5a63cc0e11caec",
+    "job.spec": "8ceb78a1bfcd0e939bfa27ba6b50124a3b079b8a595e3a706c7cb59301119eda",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "H3NativeRuntime.lean": "f94e1ae512e8b5baf988c06b2cb292e74e8a7e9e380b38d19428f0a1df848c2f",
+    "H3NativeProbe.lean": "8fa011ad6c4401157ce54cfab442316a97ff044b4ef1234b846fbba0cf9b9ba0",
+    "SOURCE.json": "b4ae9490c47c663837d4f39a19d8985f1d8e60ab3e2a33c93ee98237197519c6",
+    "run_plugin.py": "e8ad0c26bab6e48d86ca6d1459de7a77365510fa09714649c76247751ea3cf94",
+    "RUN.json": "1631521b8513bf01f75705bce6cd8daa2fe525154bc551e1bfd70d4cb394e981",
+    "shared.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "plugin.log": "755d51e2e2c2c21a896e2d792a7fce19577cfb36a0d801455657733bbf1c691a",
+    "baseline.RUN.json": "1bb04c81729eb00e382f37cb2838a4af3c232ab0671452b76f47566f35787bde",
+    "baseline.log": "755d51e2e2c2c21a896e2d792a7fce19577cfb36a0d801455657733bbf1c691a",
+    "symbols.log": "87047a8a1fc3692d2eda305fc5347c5dce843840bea06cd5abb0039f6ecdd5fd"
+  },
+  "scope": "Standalone copied-runtime timing only; no production exclusion or equivalence credit.",
+  "capture_script_sha256": "845f3cab27e5699ea600aeedd3850d4ec4d0c39ae43ab068d5f63a7f34f2edef"
+}

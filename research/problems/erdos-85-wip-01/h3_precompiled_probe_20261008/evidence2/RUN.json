@@ -1,0 +1,62 @@
+{
+  "status": "PLUGIN_COMPILED",
+  "steps": [
+    {
+      "name": "shared",
+      "command": [
+        "leanc",
+        "-O3",
+        "-DLEAN_EXPORTING",
+        "-shared",
+        "-fPIC",
+        "H3NativeRuntime.c",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_precompiled_probe_20261008/attempt2/libH3NativeRuntimeExport.so"
+      ],
+      "timeout_seconds": 60,
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 1.1151508910043049,
+      "child_user_seconds": 1.060059,
+      "child_system_seconds": 0.035476,
+      "child_maxrss_kib_cumulative": 100520,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "plugin",
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_precompiled_probe_20261008/attempt2/libH3NativeRuntimeExport.so=initialize_H3NativeRuntime",
+        "H3NativeProbe.lean",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_precompiled_probe_20261008/attempt2/Plugin.olean"
+      ],
+      "timeout_seconds": 90,
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 4.669363228997099,
+      "child_user_seconds": 4.504816,
+      "child_system_seconds": 0.149828,
+      "child_maxrss_kib_cumulative": 745764,
+      "log_sha256": "755d51e2e2c2c21a896e2d792a7fce19577cfb36a0d801455657733bbf1c691a"
+    }
+  ],
+  "scope": "Copied-definition timing diagnostic only; no production theorem credit",
+  "prior_receipt_sha256": "1bb04c81729eb00e382f37cb2838a4af3c232ab0671452b76f47566f35787bde",
+  "started_utc": "2026-10-08T11:50:34.126553+00:00",
+  "artifacts": {
+    "libH3NativeRuntimeExport.so": {
+      "sha256": "cdfca116826fd86c927e35cea210fda58afe5ce72460753780bff600669eac19",
+      "bytes": 161752
+    },
+    "Plugin.olean": {
+      "sha256": "68dadade0403147cf8acc3abc57bbb16d0d0c31bfb3e93e7ef223fb197abb6e3",
+      "bytes": 10552
+    },
+    "symbols.log": {
+      "sha256": "87047a8a1fc3692d2eda305fc5347c5dce843840bea06cd5abb0039f6ecdd5fd",
+      "bytes": 8547
+    }
+  }
+}
