@@ -20,8 +20,7 @@ def profilePhaseOne : Nat → St → StateM Profile Unit
     match findClause s with
     | none =>
       let bucket := stKey s % 384
-      modify fun p => { p with
-        leaves := p.leaves + 1
+      modify fun p => { p with leaves := p.leaves + 1,
         buckets := p.buckets.modify bucket (· + 1) }
     | some (u, w) =>
       if decide (3 ≤ u.val) && clauseOpen s u w then

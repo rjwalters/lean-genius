@@ -18,7 +18,7 @@ def sha(path):
 
 def main():
     assert Path('/.dockerenv').exists() and Path.cwd() == Path('/workspace/proofs')
-    output = ROOT / 'phase-one-profile-fixed'
+    output = ROOT / 'phase-one-profile'
     output.mkdir(exist_ok=False)
     source = ROOT / 'PhaseOneProfile.lean'
     staged = Path('H3TripleCompletionPhaseOneProfile.lean')
