@@ -8,7 +8,7 @@
 # preflight of solver + checker (incl. a must-REJECT case), S3 claim self-test, then cert_worker.py.
 # A bootstrap failure uploads the log and powers off.
 set -u
-B=2am-erdos85-certs; VP=sat49/verdict-only-20260921; PP=sat49/h7hsb-20261008
+B=2am-erdos85-certs; VP=sat49/verdict-only-20260921; PP=${E85_PREFIX:-sat49/h7hsb-20261008}; export E85_PREFIX=$PP
 E85_LIFETIME=${E85_LIFETIME:-129600}
 E85_INPUTS_SHA=${E85_INPUTS_SHA:?inputs.json sha required}
 E85_MANIFEST_SHA=${E85_MANIFEST_SHA:?manifest sha required}

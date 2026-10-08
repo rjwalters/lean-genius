@@ -15,6 +15,7 @@ SOLVER_NOT_UNSAT, CHECK_HEAP_EXHAUSTED (retry with a larger heap), CHECK_FAILED 
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import platform
 import re
@@ -45,6 +46,73 @@ def tools(cadical: str, cake_lpr: str, allow_unpinned: bool = False) -> dict:
         if not allow_unpinned and out[k]["sha256"] != hc.PINNED_BINARIES[k]:
             raise SystemExit(f"{k} at {p} has sha256 {out[k]['sha256']}, not the approved {hc.PINNED_BINARIES[k]}")
     return out
+
+
+def certify_cover_retained(cube: hc.Cube, retain: Path, bins: dict, cap: int, heap_mb: int) -> dict:
+    """Cover CNFs only (codex, room 53116): keep the exact CNF bytes and the exact binary LRAT proof
+    bytes, so that the cover can later be admitted into Lean. The proof is written to a file by
+    CaDiCaL and that same file is checked by cake_lpr; nothing is streamed. Leaves never use this.
+    Files: <cube>.cover.cnf, <cube>.cover.lrat, <cube>.cover.json (sha256, sizes, depth, extension)."""
+    import subprocess
+    rec: dict = {"schema": "erdos85-h7-hsb-cert-v1", "cube": cube.name, "kind": "cover", "leaf": None, "depth": hc.DEPTH,
+                 "started_utc": h1.now(), "host": platform.node(), "cap_seconds": cap,
+                 "binaries": {k: v["sha256"] for k, v in bins.items()}, "expected_cnf_sha256": cube.meta["cover_cnf_sha256"]}
+    try:
+        retain.mkdir(parents=True, exist_ok=True)
+        cnf, proof, meta = (retain / f"{cube.name}.cover.{e}" for e in ("cnf", "lrat", "json"))
+        tmp = retain / f"{cube.name}.cover.lrat.tmp{os.getpid()}"
+        cube.write_cover(cnf)
+        rec["cnf_sha256"], rec["cnf_bytes"] = hc.sha_file(cnf), cnf.stat().st_size
+        if rec["cnf_sha256"] != rec["expected_cnf_sha256"]:
+            rec["status"] = "CNF_MISMATCH"
+        else:
+            t0 = time.time()
+            s = subprocess.run([bins["cadical"]["path"], "-t", str(cap), "--lrat=true", "--binary=true", str(cnf), str(tmp)],
+                               capture_output=True)
+            t1 = time.time()
+            rec["solver"] = {"returncode": s.returncode, "wall_seconds": t1 - t0, "unsat_line": b"s UNSATISFIABLE" in s.stdout}
+            for m in _STAT.finditer(s.stdout):
+                rec["solver"][m.group(1).decode()] = int(m.group(2))
+            m = _TOTAL.search(s.stdout)
+            rec["solver"]["cpu_seconds"] = float(m.group(1)) if m else t1 - t0
+            if not (s.returncode == 20 and rec["solver"]["unsat_line"]):
+                rec["status"] = "SOLVER_SAT" if s.returncode == 10 else "SOLVER_TIMEOUT" if s.returncode == 0 else "SOLVER_NOT_UNSAT"
+            else:
+                c = subprocess.run([bins["cake_lpr"]["path"], str(cnf), str(tmp), f"--CML_HEAP_SIZE={heap_mb}", "--CML_STACK_SIZE=1000"],
+                                   capture_output=True)
+                clog = c.stdout.decode(errors="replace")
+                # cake_lpr exits 0 even when a check fails: only this stdout line counts.
+                ok = any(line == "s VERIFIED UNSAT" for line in clog.splitlines())
+                rec["checker"] = {"returncode": c.returncode, "wall_seconds": time.time() - t1, "cpu_seconds": time.time() - t1,
+                                  "heap_mb": heap_mb, "verified_line": ok}
+                rec["proof"] = {"sha256": hc.sha_file(tmp), "bytes": tmp.stat().st_size, "format": "cadical binary LRAT",
+                                "stored": True, "checker_closed_early": False}
+                rec["status"] = "CERTIFIED" if ok else ("CHECK_HEAP_EXHAUSTED" if "heap space exhausted" in clog else "CHECK_FAILED")
+                if not ok:
+                    rec["logs"] = {"cake_lpr.log": clog[-4000:]}
+        if rec["status"] == "CERTIFIED":
+            os.replace(tmp, proof)
+            m = cube.meta
+            meta.write_text(json.dumps({
+                "schema": "erdos85-h7-hsb-retained-cover-v1", "cube": cube.name, "mask": m["mask"], "edge_count": m["edge_count"],
+                "depth": hc.DEPTH, "variables": hc.VARIABLES,
+                "lean_statement": f"SevenHighT0CanonicalHsbCoverChecked {hc.DEPTH} F i (SevenHighT0Hsb.leaves {hc.DEPTH} mask)",
+                "extension": {"order": ["cube", "hsb", "cover"], "cube_clauses": hc.CUBE_CLAUSES, "hsb_clauses": cube.n_hsb,
+                              "cover_clauses": cube.n_leaves, "total_clauses": hc.CUBE_CLAUSES + cube.n_hsb + cube.n_leaves,
+                              "cube_cnf_sha256": m["cube_cnf_sha256"], "hsb_sha256": m["hsb_sha256"], "cover_sha256": m["cover_sha256"]},
+                "cnf": {"file": cnf.name, "sha256": rec["cnf_sha256"], "bytes": rec["cnf_bytes"]},
+                "proof": {"file": proof.name, "sha256": rec["proof"]["sha256"], "bytes": rec["proof"]["bytes"],
+                          "format": "CaDiCaL 3.0.1 binary LRAT (--lrat=true --binary=true)"},
+                "checker": "cake_lpr: s VERIFIED UNSAT (on this exact file pair)", "binaries": rec["binaries"],
+                "solver": rec["solver"], "finished_utc": h1.now(), "host": rec["host"]}, indent=1, sort_keys=True) + "\n")
+        else:
+            for p in (tmp, cnf):
+                if p.exists():
+                    p.unlink()
+    except Exception as e:  # noqa: BLE001
+        rec["status"], rec["error"] = "ERROR", f"{type(e).__name__}: {e}"
+    rec["finished_utc"] = h1.now()
+    return rec
 
 
 def certify(cube: hc.Cube, kind: str, leaf: int | None, work_root: Path, bins: dict, cap: int, heap_mb: int,

@@ -33,7 +33,7 @@ sys.path.insert(0, str(HERE))
 import h7_common as hc  # noqa: E402
 
 BUCKET = "2am-erdos85-certs"
-PREFIX = "sat49/h7hsb-20261008"
+PREFIX = os.environ.get("E85_PREFIX", "sat49/h7hsb-20261008")  # the canary pass uses its own prefix
 AWS = "/usr/local/bin/aws"
 MAX_NODE_ERRORS = 6
 PARTIAL_SECONDS = 600
@@ -165,6 +165,9 @@ def run_batch(args, store, slot: int, row: dict) -> dict:
            "--cadical", args.cadical, "--cake-lpr", args.cake_lpr, "--carry", str(carry), "--stop-file", str(stop_file)]
     if args.allow_unpinned_binaries:
         cmd.append("--allow-unpinned-binaries")
+    retain = out_dir / "retain"
+    if row["kind"] == "cover":  # covers only: exact CNF + proof bytes are kept under covers-retained/
+        cmd += ["--retain-covers", str(retain)]
     proc = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=open(out_dir / "batch.err", "wb"))
     last = time.time()
     while True:
@@ -183,6 +186,13 @@ def run_batch(args, store, slot: int, row: dict) -> dict:
             except Exception as e:  # noqa: BLE001
                 log(f"slot={slot} {bid} partial upload/STOP check failed: {type(e).__name__}: {e}")
     recs = [json.loads(l) for l in receipts.read_text().splitlines()] if receipts.is_file() else []
+    retained = []
+    if row["kind"] == "cover" and rc == 0 and (retain / f"{row['cube']}.cover.json").is_file():
+        # Upload order: CNF, proof, then the metadata that names their hashes (its presence = complete).
+        for ext in ("cnf", "lrat", "json"):
+            f = retain / f"{row['cube']}.cover.{ext}"
+            store.put(f"covers-retained/{f.name}", f)
+            retained.append(f.name)
     if rc == 4:  # stopped between items: keep the partial, write no ledger, leave the claim for the controller
         if recs:
             store.put(f"partial/{bid}.{args.iid}.jsonl", receipts)
@@ -220,7 +230,7 @@ def run_batch(args, store, slot: int, row: dict) -> dict:
               "solver_cpu_seconds": sum(r.get("solver", {}).get("cpu_seconds") or 0 for r in recs),
               "checker_cpu_seconds": sum(r.get("checker", {}).get("cpu_seconds") or 0 for r in recs),
               "max_solver_cpu_seconds": max([r.get("solver", {}).get("cpu_seconds") or 0 for r in recs] or [0]),
-              "inputs_json_sha256": args.inputs_sha256, "manifest_sha256": args.manifest_sha256,
+              "retained": retained, "inputs_json_sha256": args.inputs_sha256, "manifest_sha256": args.manifest_sha256,
               "checkout_head": args.head, "stderr_tail": err if status == "ERROR" else None}
     lp = out_dir / "ledger.json"
     lp.write_text(json.dumps(ledger, indent=1) + "\n")

@@ -32,6 +32,9 @@ echo "== plan"; W plan "$S" "$CAKE" --plan
 echo "== run 1 (all rows)"; t0=$(date +%s); W a "$S" "$CAKE"; echo "run1 wall $(( $(date +%s) - t0 ))s"
 chk "5 claims" '[ $(ls "$S/claims" | wc -l) = 5 ]'
 chk "5 CERTIFIED ledgers" '[ $(grep -l "\"status\": \"CERTIFIED\"" "$S"/ledger/*.json | wc -l) = 5 ]'
+chk "cover row retained exact CNF + LRAT + metadata" '[ $(ls "$S/covers-retained" | wc -l) = 3 ] && [ "$(sha256sum "$S/covers-retained/cube_F6_t14.cover.lrat" | cut -d" " -f1)" = "$($PY -c "import json,sys;print(json.load(open(sys.argv[1]))[\"proof\"][\"sha256\"])" "$S/covers-retained/cube_F6_t14.cover.json")" ]'
+chk "retained cover re-verifies with cake_lpr from the stored bytes" '"$CAKE" "$S/covers-retained/cube_F6_t14.cover.cnf" "$S/covers-retained/cube_F6_t14.cover.lrat" | grep -qx "s VERIFIED UNSAT"'
+chk "no leaf artefact is retained" '! ls "$S/covers-retained" | grep -v "\.cover\."'
 chk "claim body is the instance id" '[ "$(cat "$S/claims/cube_F9_t1-x0")" = i-test-a ]'
 echo "== simulated reclaim of cube_F9_t1-x0 (3 receipts survive as a partial)"
 # (run 1 itself uploaded partials every 20 s; move its own away so exactly 3 receipts are carried)

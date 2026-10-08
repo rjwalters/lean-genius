@@ -47,6 +47,7 @@ def main() -> int:
     p.add_argument("--cake-lpr", default="cake_lpr")
     p.add_argument("--carry", type=Path)
     p.add_argument("--stop-file", type=Path)
+    p.add_argument("--retain-covers", type=Path, help="cover rows: keep exact CNF + LRAT proof bytes here (never used for leaves)")
     p.add_argument("--allow-unpinned-binaries", action="store_true", help="tests only (fake checker)")
     a = p.parse_args()
     row = json.loads(a.batch)
@@ -73,10 +74,13 @@ def main() -> int:
         for leaf in items_of(row):
             if a.stop_file and a.stop_file.exists():
                 return 4
-            if leaf in carried:
+            if leaf in carried and not (kind == "cover" and a.retain_covers):  # a retained cover is always re-run
                 rec = dict(carried[leaf], carried=True)
             else:
-                rec = cert_item.certify(cube, kind, leaf, a.work, bins, a.cap, a.heap_mb)
+                if kind == "cover" and a.retain_covers:
+                    rec = cert_item.certify_cover_retained(cube, a.retain_covers, bins, a.cap, a.heap_mb)
+                else:
+                    rec = cert_item.certify(cube, kind, leaf, a.work, bins, a.cap, a.heap_mb)
             rec["batch"] = row["id"]
             out.write(json.dumps(rec, sort_keys=True) + "\n")
             out.flush()
