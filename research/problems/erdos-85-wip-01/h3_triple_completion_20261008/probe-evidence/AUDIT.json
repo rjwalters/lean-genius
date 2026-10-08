@@ -1,0 +1,23 @@
+{
+  "job": "20261008T101712-erdos85__h3-triple-formal-20261007-405471",
+  "execution_commit": "0be06607d7d5e176fa0c8f3abf040d191d4447ee",
+  "status": "TIMEOUT",
+  "exit": 1,
+  "prerequisite_objects_unchanged": {
+    "Erdos85H3TripleCompletionEngine": "c87b641fc9d2b1ad101edf455fe56be65afbf1b5770b8793f2c3e7c361122903",
+    "Erdos85H3TripleCompletionBridge": "02220d1339caaf079b5889edf2e0c4e52b49b37d6c2b89ba4886c06d5a77e18e",
+    "Erdos85H3TripleCompletionSplit": "acfdbed1a9ccec6f972f9c8c8afc5575937d82b3cbc3541f0239a8e3b019d0d3"
+  },
+  "retained_sha256": {
+    "job.log": "bc57bf107e13c2672927e87a36c1b104fe23ba36675bd091be3f59100ae4369e",
+    "job.spec": "3f2a9cd29bf3657fd4ce00e656f88038426d1df4a59f1e7e263c93cbf97d1f6a",
+    "job.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "Probe384R0.lean": "badb03f821a2011a5dd36b0793d5ad608ef1139a12729cd97afd072e6b9d840d",
+    "run_probe.py": "f6df64189119523617ffd96c66300bac759436db2f77d19aa41b272a3ce29b14",
+    "RUN.json": "a3efed31406513194abbbdf12b5d241a3da52f0acaac58bb62507761b0828023",
+    "probe.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "scope": "One part of 384 only; no whole-cell exclusion or full-campaign estimate.",
+  "auditor_sha256": "24fa834aa42a784acdb8f57625aa7b3c34b5f687c731b6a9a2f77802c036ee95",
+  "container_snapshot_sha256": "c3f7e3f70217ee6ab29a517adbb33ec172b093e4809f86f8a014b894d6d7fe44"
+}

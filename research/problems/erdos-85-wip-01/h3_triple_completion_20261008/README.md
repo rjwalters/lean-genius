@@ -39,5 +39,30 @@ parts is required by the composition theorem.
 It is outside the library's automatic module glob. `run_probe.py` stages it
 under the Lean project root, checks the three prerequisite source/object
 hashes, and limits its Lean process group to 300 seconds. Only the existing
-cloud builder is used. Results are pending; no full campaign is authorized
+cloud builder was used.
+
+The diagnostic **timed out without a certificate**. Job
+`20261008T101712-erdos85__h3-triple-formal-20261007-405471` ran at
+`0be06607d7d5e176fa0c8f3abf040d191d4447ee`; its Lean child was killed and
+reaped at 300.221 elapsed seconds, with 298.868 user seconds, 1.340 system
+seconds and maximum RSS 6,451,688 KiB. Its compiler log is empty and no
+`Probe384R0.olean` exists. The result remains unresolved.
+
+The runner exits 124 after its five-minute timeout. The existing Docker
+wrapper maps that to job exit 1 and prints its outer limit, “6m”, in the
+timeout banner. That banner is not a six-minute runtime measurement.
+`probe-evidence/` retains both layers' raw evidence and the read-only audit.
+The audit verifies execution/source identity, absent certificate, removal of
+the staged source, and unchanged prerequisite objects. The container and Lean
+process were also observed absent after termination.
+
+`probe-container-live.json` records the actual pinned image
+`sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6`,
+16 GiB hard memory limit, and two-CPU cgroup quota. The launch applied CPU
+affinity `0,1` to `e85-host`, so its `nproc`-derived Docker quota was two.
+
+This one censored sample does not estimate the whole route's cost or establish
+that it improves on the census. Before another exclusion computation, measure
+phase-one traversal separately to distinguish repeated traversal overhead from
+work inside the selected phase-two/three leaves. No full campaign is authorized
 or launched by this experiment, and the prior census route is unchanged.
