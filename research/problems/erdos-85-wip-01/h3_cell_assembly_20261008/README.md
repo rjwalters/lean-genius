@@ -44,3 +44,14 @@ pending or failed jobs. The baseline inputs are real accepted audit metadata;
 future sweep, residual and assembly outcomes are synthetic fixtures. Tests run
 no Lean or finite search. Real cloud preflight and terminal acceptance are
 still required.
+
+## Independently accepted preflight
+
+Read-only job `20261008T145222-erdos85__h3-triple-formal-20261007-589730`,
+execution pin `9f4301c1a5a4670abe56f4e488fbad189fc9ed3f`, exited zero.
+`preflight-evidence1/AUDIT.json` is `CELL_ASSEMBLY_PREFLIGHT_AUDIT_PASS`:
+all 384 part objects and four prerequisites checked, source/input pins
+unchanged, actual limits two CPUs and 16 GiB, no cell source/object or
+attempt directory present. The frozen plan SHA256 is
+`1818caee727c64640ad17fde34a57c04a81afee5c723739d9a44f79c7c1a8d51`.
+This preflight compiled no theorem; terminal cell acceptance is still required.

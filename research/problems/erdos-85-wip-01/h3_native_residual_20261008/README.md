@@ -4,7 +4,7 @@ Completed and independently accepted. `PLAN.json`
 binds the accepted complete sweep: 378 reusable parts and exactly six
 residuals, **89, 134, 142, 186, 279, 298**. A fresh authoritative H5
 observation selects four workers, eight CPUs and 64 GiB. This
-directory grants no mathematical credit. All Lean execution and native search
+plan alone grants no mathematical credit. All Lean execution and native search
 must stay on the existing cloud builder.
 
 Room message 53044 from `claude-h5` authorizes a subsequent pass over only

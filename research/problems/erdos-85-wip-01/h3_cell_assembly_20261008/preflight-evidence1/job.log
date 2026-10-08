@@ -1,0 +1,23 @@
+[e85] job 20261008T145222-erdos85__h3-triple-formal-20261007-589730  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T14:52:22Z
+[e85] commit 9f4301c1a5a4670abe56f4e488fbad189fc9ed3f (Accept all H3 triple parts and prepare final cell assembly)
+=== Docker Lean Build ===
+Memory limit: 16384MB (hard enforced via cgroups)
+Timeout: 3m
+CPU limit: 2
+Target: all
+Build volume: lean-build-erdos85__h3-triple-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Command: lake env python3 -B ../research/problems/erdos-85-wip-01/h3_cell_assembly_20261008/run.py
+Starting Docker build...
+
+{
+  "status": "READ_ONLY_PREFLIGHT_PASS",
+  "plan_sha256": "1818caee727c64640ad17fde34a57c04a81afee5c723739d9a44f79c7c1a8d51",
+  "parts_checked": 384,
+  "prerequisites_checked": 4,
+  "cgroup_memory_bytes": 17179869184,
+  "cgroup_cpu_max": "200000 100000"
+}
+
+=== Build succeeded ===
