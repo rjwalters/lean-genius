@@ -17,35 +17,34 @@ The Docker thread-limit fix is `34caae65a09`.
 - Receipts record source, toolchain, manifest, and full local log hashes.
   Retained text files are axiom excerpts, not complete dependency logs.
 
-From the repository root, with the single shared Docker slot available:
-
-```sh
-LEAN_NUM_THREADS=1 LEAN_MEMORY_LIMIT=8192 LEAN_BUILD_TIMEOUT=10m LEAN_SKIP_CACHE=true ./proofs/scripts/docker-build.sh Proofs.Erdos85ThreeHighNativePairSearch
-```
-
-A cold dependency build may exceed this cap. The recorded final successful run
-used a two-minute cap with already-built dependencies.
+These receipts record earlier Docker runs. Current verification uses the cloud
+builder; Lean and Docker builds must not run on the Mac. The historical final
+successful run used a two-minute cap with already-built dependencies.
 
 ## Unverified finite pilot
 
-`Erdos85ThreeHighNativeTerminalPilot.lean` is retained here, outside the default
-`proofs/Proofs` build glob. Its proposed `native_decide` rejection theorem has
-**not** compiled. The four-minute, one-thread, 8 GiB run reached the target
+The pilot sources are retained here, outside the default `proofs/Proofs` build
+glob. There is **no passing concrete rejection receipt**. The original
+four-minute, one-thread, 8 GiB run reached the target
 compiler process and timed out with exit 124. See `pilot-receipt.json` and
 `pilot-timeout.txt`. The full pair is U representative 1, compact code `(6,6,15)`,
 and secondary representative 15, which remains in the 261-pair full census.
 
-To retry in an isolated worktree, copy this source to
-`proofs/Proofs/Erdos85ThreeHighNativeTerminalPilot.lean`, ensure the Docker slot
-is available, and use the exact command in `pilot-receipt.json`. Remove that
-experimental copy afterward if it remains unverified. A successful native check
-would add a native-computation axiom and must be reported separately from the
-14 standard-axiom exports.
+The later cloud run took 5,859 seconds on the target module and printed the
+native rejection declaration, but failed on recursion depth in its `no_joint`
+consumer. The consumer fix was then verified independently with an explicit
+rejection hypothesis. `Erdos85ThreeHighNativeTerminalPilotCertificate.lean` now
+holds the unchanged rejection computation; `Erdos85ThreeHighNativeTerminalPilot.lean`
+imports it and applies the fixed consumer. The cloud runner in
+[`../h3_cloud_u1r15_20261008/`](../h3_cloud_u1r15_20261008/) builds these separately
+and preserves the first object if the second fails. A successful native check
+would add a native-computation axiom, separately from the 14 standard-axiom exports.
 
 ## Handoff
 
-The stronger joint witness still needs transport through the retained compact
-and orbit census. Remaining full/deficient finite rejections, the H3 pair
+The stronger witness transport and full-276/deficient-1554 census connections
+are now verified in [`../h3_strong_census_20261008/`](../h3_strong_census_20261008/).
+The full-261 connection is still building. Remaining finite rejections, the H3 pair
 profile, and final stratum assembly are open. See
 [`../H3_MACHINE_CHECK_FRONTIER_20261007.md`](../H3_MACHINE_CHECK_FRONTIER_20261007.md)
 for existing coverage/pruning packages and the precise terminal mismatch.

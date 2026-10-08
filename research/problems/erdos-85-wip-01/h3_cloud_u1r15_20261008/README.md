@@ -12,8 +12,22 @@ rejection as an explicit hypothesis. The proposed fix makes
 `threeHighCrossDomain` locally irreducible, matching the existing search
 soundness module. `check_consumer.py` checks that the baseline reproduces the
 error and the proposed consumer compiles with standard axioms. These probes
-do not evaluate or prove the finite rejection. Their cloud validation is
-pending; no expensive retry or larger finite campaign has been queued.
+do not evaluate or prove the finite rejection. Cloud job
+`20261008T023753-erdos85__h3-triple-formal-20261007-112090` passed: the baseline
+failed as expected in 3.82 seconds and the fixed consumer passed in 3.97 seconds.
+`consumer-evidence/consumer-rooted/` retains the complete records and logs;
+its source/log hashes were independently checked and the cloud consumer
+object hash matches the receipt. `consumer-evidence/consumer-first/` retains
+an earlier runner setup failure (missing Lean source root), before elaboration.
+
+The pilot is now split into `Erdos85ThreeHighNativeTerminalPilotCertificate.lean`
+(unchanged rejection computation) and `Erdos85ThreeHighNativeTerminalPilot.lean`
+(the fixed consumer). `check_split_pilot.py` copies these into the disposable
+cloud worktree and builds them separately, retaining each complete log, source,
+object hash, and axiom report. Thus a later consumer failure preserves a
+successfully compiled rejection object. It records per-process wall/CPU time
+and Linux `wait4` peak RSS; that RSS is not aggregate concurrent memory.
+The split pilot has not yet passed. No larger finite campaign has been queued.
 
 The 5,859-second measurement includes both declarations and does not isolate
 native search time. If every one of the 1,815 remaining pairs cost that much,

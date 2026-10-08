@@ -1,0 +1,19 @@
+{
+  "module": "ConsumerBaseline",
+  "source_sha256": "33ee4613c6f98e3efcd3edb720ffaeb3fc24cfb8fe917befd058548e08a4c49c",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_cloud_u1r15_20261008",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_cloud_u1r15_20261008/_build/consumer-rooted/ConsumerBaseline.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_cloud_u1r15_20261008/ConsumerBaseline.lean"
+  ],
+  "exit_code": 1,
+  "timeout": false,
+  "elapsed_seconds": 3.8187142339993443,
+  "expectation_met": true,
+  "axiom_exports": [],
+  "log_sha256": "cff945a89fd8b1e8ba2b68510f5634ae3196e73abc56bedabf93c03b010ce4f5",
+  "olean_sha256": null
+}

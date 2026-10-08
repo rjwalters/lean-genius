@@ -1,0 +1,51 @@
+{
+  "status": "FAIL",
+  "scope": "Conditional consumer only; no finite rejection.",
+  "results": [
+    {
+      "module": "ConsumerBaseline",
+      "source_sha256": "33ee4613c6f98e3efcd3edb720ffaeb3fc24cfb8fe917befd058548e08a4c49c",
+      "command": [
+        "lean",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_cloud_u1r15_20261008/_build/consumer-first/ConsumerBaseline.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_cloud_u1r15_20261008/ConsumerBaseline.lean"
+      ],
+      "exit_code": 1,
+      "timeout": false,
+      "elapsed_seconds": 0.06426142099917342,
+      "expectation_met": false,
+      "axiom_exports": [],
+      "log_sha256": "ee53b4aed2b5772249948303628d76401ceb472fa17cd88690b51a4dfdfb58ab",
+      "olean_sha256": null
+    },
+    {
+      "module": "Consumer",
+      "source_sha256": "1dc9c8a7bb7350c9a946eb04f0b745d65814fab8f4a1f1762ea5fd393569a125",
+      "command": [
+        "lean",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_cloud_u1r15_20261008/_build/consumer-first/Consumer.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_cloud_u1r15_20261008/Consumer.lean"
+      ],
+      "exit_code": 1,
+      "timeout": false,
+      "elapsed_seconds": 0.06396640999992087,
+      "expectation_met": false,
+      "axiom_exports": [],
+      "log_sha256": "91b079618fec52bc1b3816d0228e6d159f26862850ee71186e29380995b4bc60",
+      "olean_sha256": null
+    }
+  ],
+  "dependency_build": {
+    "command": [
+      "lake",
+      "build",
+      "Proofs.Erdos85ThreeHighNativePairSearch",
+      "Proofs.Erdos85ThreeBlockCompactCodes",
+      "Proofs.Erdos85ThreeHighSecondaryOrbitTable"
+    ],
+    "exit_code": 0,
+    "log_sha256": "fb4b0fd96ca27417bbad26ea1b46bdaeffc848461d943e8326a487ec235d5a7a"
+  }
+}
