@@ -44,6 +44,11 @@ output does not currently record that setting. Before treating the exact
 published interval as reproduced, retain the generation command and
 bootstrap configuration, or regenerate the tables under a recorded setting.
 
+A bounded check with `--boot 2000` returned `[2859,5383]`, also different
+from the published interval. `EXACT_ESTIMATOR_2000.json` retains the output;
+reproduce with `run_review.py exact 2000`. No further configuration search
+is implied; the author can supply the generation command directly.
+
 `SNAPSHOT.json` identifies each input by pinned Git path and SHA-256, avoiding
 duplicate receipt archives. `AUDIT.json` retains the independent results;
 `EXACT_ESTIMATOR.json` retains the exact estimator output and field differences.

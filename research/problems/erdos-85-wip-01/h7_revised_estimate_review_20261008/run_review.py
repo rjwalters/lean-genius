@@ -1,6 +1,7 @@
 """Local metadata transport only; all estimate computation runs on the builder.
 
 Run from a Git checkout containing the pinned commit. Mode: independent or exact.
+Exact mode optionally takes a positive bootstrap replicate count (default 5000).
 Outputs go next to this script; no solver, Lean, fleet or branch advance.
 """
 import base64
@@ -49,12 +50,16 @@ with tempfile.TemporaryDirectory(prefix="h7-estimate-review-") as d:
 def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else 'independent'
     assert mode in ('independent', 'exact')
+    boot = int(sys.argv[2]) if len(sys.argv) > 2 else 5000
+    assert boot > 0 and (mode == 'exact' or boot == 5000)
     files = {k: subprocess.check_output(['git', 'show', COMMIT + ':' + PKG + v]).decode()
              for k, v in PATHS.items()}
     bundle = {'commit': COMMIT, 'paths': PATHS, 'files': files,
               'sha256': {k: hashlib.sha256(v.encode()).hexdigest() for k, v in files.items()}}
     (ROOT / 'SNAPSHOT.json').write_text(json.dumps({k:v for k,v in bundle.items() if k != 'files'}, indent=2) + '\n')
-    script = (ROOT / 'audit_cloud.py').read_bytes() if mode == 'independent' else EXACT.encode()
+    exact = EXACT.replace('"5000"', json.dumps(str(boot))).replace(
+        '"bootstrap_replicates": 5000', '"bootstrap_replicates": ' + str(boot))
+    script = (ROOT / 'audit_cloud.py').read_bytes() if mode == 'independent' else exact.encode()
     code = 'import base64; exec(compile(base64.b64decode(' + repr(base64.b64encode(script).decode()) + '), "audit.py", "exec"))'
     result = subprocess.run(['/Users/rwalters/.local/bin/e85-remote', 'ssh',
                              'python3.12 -B -c ' + shlex.quote(code)],
@@ -65,6 +70,8 @@ def main():
         raise SystemExit(result.returncode)
     data = json.loads(result.stdout)
     name = 'AUDIT.json' if mode == 'independent' else 'EXACT_ESTIMATOR.json'
+    if mode == 'exact' and boot != 5000:
+        name = f'EXACT_ESTIMATOR_{boot}.json'
     (ROOT / name).write_text(json.dumps(data, indent=2) + '\n')
     print(name, 'written')
 
