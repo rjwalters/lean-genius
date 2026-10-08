@@ -1,0 +1,76 @@
+{
+  "status": "PASS",
+  "receipt_sha256": "64be84c5d58910baa099d20ab18f7b6c76c2d4228a8203cb87ba97d224d5f52b",
+  "theorem_source_sha256": "a26ad622f3b6500a5e02801ef4ee93b8f9978608054c54b8facaf252c885ba13",
+  "theorem_olean_sha256": "a5d97a1821ce701dd0dfb1822be310a233331e3651a49d8f878b85055feaa405",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.threeHighFactoredCapacityColumnDFS_eq_firstColumns",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighNativeFirstColumnSearch_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighNativePairSearch_eq_firstColumns",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighNativePairSearch_false_of_firstColumns",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighNativeFirstColumns_no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "case": "FullU1R15",
+      "static_count": 15,
+      "prefix_survivors": 15
+    },
+    {
+      "case": "FullU3R3",
+      "static_count": 1,
+      "prefix_survivors": 1
+    },
+    {
+      "case": "FullU54R20",
+      "static_count": 36,
+      "prefix_survivors": 36
+    },
+    {
+      "case": "DeficientU26R2",
+      "static_count": 1,
+      "prefix_survivors": 1
+    },
+    {
+      "case": "DeficientU369R11",
+      "static_count": 40,
+      "prefix_survivors": 40
+    }
+  ],
+  "scope": "Five structural/conditional exports plus diagnostic counts; no concrete rejection."
+}

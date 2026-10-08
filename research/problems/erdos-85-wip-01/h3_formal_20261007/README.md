@@ -53,6 +53,7 @@ The exact first-column decomposition is now cloud-verified in
 [`../h3_first_column_20261008/`](../h3_first_column_20261008/): five additional
 structural/conditional exports, standard axioms only. It permits independently
 checking each first-column branch while requiring rejection of every candidate
-before deriving the original pair rejection. The retained proof receipt is
-separate from the still-running five-pair candidate inventory diagnostic.
+before deriving the original pair rejection. The separate cloud diagnostic
+found first-column candidate counts 15, 1, 36, 1, and 40 for the five pilot
+pairs; the two one-candidate cases would need a deeper split for parallelism.
 No concrete branch rejection or measured speedup is claimed by this result.

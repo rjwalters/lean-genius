@@ -1,6 +1,6 @@
 # Exact first-column decomposition of the H3 native search
 
-Status: **five structural/conditional exports cloud-verified; diagnostic pending**.
+Status: **five structural/conditional exports and five-case diagnostic cloud-verified**.
 
 `Proofs.Erdos85ThreeHighFirstColumnSearch` expresses the existing native pair
 search as the Boolean OR over its complete static-pruned first-column list.
@@ -23,7 +23,7 @@ claimed until measured.
 for U1/R15 and the four cases selected in `h3_varied_pilot_20261008`. They
 enumerate static first-column candidates and record the first prefix gate
 result for every candidate, encoded as a 15-bit mask. They do not run the
-remaining DFS. These diagnostic sources are **awaiting cloud verification**.
+remaining DFS. The cached diagnostic passed on the cloud.
 The runner requires a fresh output directory and retains the complete compiler
 log, candidate list, and source/object hashes; its PASS is a diagnostic result,
 not a rejection certificate.
@@ -62,12 +62,34 @@ dependency build but reached its 15-minute cap in the diagnostic stage, whose
 source passed uncached adjacency functions to the checks. No completed
 inventory was emitted. `uncached-inventory-timeout/` retains its sources,
 logs, and external exit-124 record; the interrupted runner's RUNNING receipt
-is preserved unchanged. The next diagnostic caches U/R in vectors exactly as
-the verified native first-column search does. Its runtime effect is unmeasured.
+is preserved unchanged. The revised diagnostic caches U/R in vectors exactly as
+the verified native first-column search does.
+
+Cached job `20261008T035456-erdos85__h3-first-column-20261008-160549`, execution
+commit `a024813ca54`, passed. The diagnostic compiler/evaluation took 22.494
+seconds; dependency replay took 6.277 seconds. These are diagnostic timings,
+not whole-search timings or evidence of a search speedup.
+
+| Pair | Static first-column candidates | First-prefix survivors |
+| --- | ---: | ---: |
+| Full U1/R15 | 15 | 15 |
+| Full U3/R3 | 1 | 1 |
+| Full U54/R20 | 36 | 36 |
+| Deficient U26/R2 | 1 | 1 |
+| Deficient U369/R11 | 40 | 40 |
+
+Both singleton candidate lists contain only the empty column. First-column
+splitting therefore gives no parallelism for those two pairs; a deeper split
+would be needed. All candidate masks and first-prefix booleans are retained
+in `evidence/RUN.json` and `evidence/Inventory.log`. No branch has been rejected
+by this diagnostic, and the relative costs of the branches remain unknown.
 
 `audit.py` independently checks a completed run's commands, logs, source and
 object hashes, all five theorem axiom reports (standard axioms only), and
 the complete diagnostic candidate lists against the compiler output. It is
 read-only and does not run Lean. A synthetic valid receipt passed, while
 altered candidate counts and a changed diagnostic object were rejected.
-The real artifact audit remains pending.
+The real cloud artifact audit passed and is retained as `evidence/AUDIT.json`.
+It independently read both objects, checked all five standard-only axiom
+reports, and validated the diagnostic against the complete compiler output.
+The downloaded source, receipt, and log hashes were also checked locally.
