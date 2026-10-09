@@ -1,0 +1,101 @@
+{
+  "status": "CANARY_V2_RECEIPT_METADATA_AND_TERMINAL_CHECKS_PASS",
+  "worker_pin": "729127aa817263475e7aa0c65c3db34a65da3389",
+  "inputs_sha256": "f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c",
+  "manifest_sha256": "0deb438f9bd7f5cfb840fd799330e6b80e70a043b21f96fcf0737c826515290c",
+  "batches": [
+    {
+      "batch": "cube_F6_t14-cover",
+      "items": 1,
+      "carried": 0,
+      "node": "i-0bb73b844e2d00959"
+    },
+    {
+      "batch": "cube_F6_t14-h0000",
+      "items": 4,
+      "carried": 0,
+      "node": "i-0bb73b844e2d00959"
+    },
+    {
+      "batch": "cube_F6_t14-h0001",
+      "items": 4,
+      "carried": 0,
+      "node": "i-0bb73b844e2d00959"
+    },
+    {
+      "batch": "cube_F6_t16-b0000",
+      "items": 64,
+      "carried": 15,
+      "node": "i-0da45fb9523dc10e3"
+    },
+    {
+      "batch": "cube_F6_t18-b0000",
+      "items": 64,
+      "carried": 21,
+      "node": "i-0833a782bacb5625e"
+    },
+    {
+      "batch": "cube_F7_t10-b0000",
+      "items": 64,
+      "carried": 49,
+      "node": "i-0833a782bacb5625e"
+    },
+    {
+      "batch": "cube_F7_t10-cover",
+      "items": 1,
+      "carried": 0,
+      "node": "i-0bb73b844e2d00959"
+    },
+    {
+      "batch": "cube_F7_t13-b0000",
+      "items": 64,
+      "carried": 0,
+      "node": "i-0bb73b844e2d00959"
+    },
+    {
+      "batch": "cube_F8_t0-b0000",
+      "items": 64,
+      "carried": 11,
+      "node": "i-0da45fb9523dc10e3"
+    },
+    {
+      "batch": "cube_F9_t0-b0000",
+      "items": 64,
+      "carried": 9,
+      "node": "i-0da45fb9523dc10e3"
+    }
+  ],
+  "items": 394,
+  "covers": 2,
+  "leaves": 392,
+  "carried": 105,
+  "nodes_with_accepted_receipts": {
+    "i-0da45fb9523dc10e3": {
+      "host": "ip-172-31-12-223.ec2.internal",
+      "slots": 64,
+      "instance_type": "r7g.16xlarge"
+    },
+    "i-0833a782bacb5625e": {
+      "host": "ip-172-31-12-147.ec2.internal",
+      "slots": 64,
+      "instance_type": "r7g.16xlarge"
+    },
+    "i-0bb73b844e2d00959": {
+      "host": "ip-172-31-12-164.ec2.internal",
+      "slots": 48,
+      "instance_type": "r8g.12xlarge"
+    }
+  },
+  "proof_bytes_reported": 48952873823,
+  "independent_formula_identity_checked": false,
+  "canary_fleet_deleted": true,
+  "canary_controller_terminated": true,
+  "main_launched_before_canary_completed": true,
+  "canary_accepted": false,
+  "full_campaign_verified": false,
+  "lean_evidence_discharged": false,
+  "limitations": [
+    "Pending independent v2 CNF reconstruction on cloud builder (stopped at snapshot)."
+  ],
+  "scope": "Receipt metadata and archived operational evidence; no rerun of solver/checker, no independent retained-proof byte hashing, and no Lean admission."
+}

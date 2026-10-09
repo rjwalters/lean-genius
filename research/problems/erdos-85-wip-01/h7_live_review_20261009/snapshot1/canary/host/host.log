@@ -1,0 +1,100 @@
+Running timer as unit: e85-host-lifetime.timer
+Will run service as unit: e85-host-lifetime.service
+Amazon Linux 2023 repository                     82 MB/s |  80 MB     00:00    
+Amazon Linux 2023 Kernel Livepatch repository   707 kB/s |  87 kB     00:00    
+Package zstd-1.5.5-1.amzn2023.0.1.aarch64 is already installed.
+Package tar-2:1.34-1.amzn2023.0.4.aarch64 is already installed.
+Dependencies resolved.
+================================================================================
+ Package               Arch     Version                      Repository    Size
+================================================================================
+Installing:
+ git                   aarch64  2.50.1-1.amzn2023.0.1        amazonlinux   53 k
+ python3.12            aarch64  3.12.14-2.amzn2023.0.1       amazonlinux   27 k
+Installing dependencies:
+ git-core              aarch64  2.50.1-1.amzn2023.0.1        amazonlinux  5.1 M
+ git-core-doc          noarch   2.50.1-1.amzn2023.0.1        amazonlinux  2.8 M
+ mpdecimal             aarch64  2.5.1-3.amzn2023.0.3         amazonlinux  103 k
+ perl-Error            noarch   1:0.17030-2.amzn2023.0.1     amazonlinux   42 k
+ perl-File-Find        noarch   1.37-477.amzn2023.0.9        amazonlinux   26 k
+ perl-Git              noarch   2.50.1-1.amzn2023.0.1        amazonlinux   41 k
+ perl-TermReadKey      aarch64  2.38-9.amzn2023.0.3          amazonlinux   36 k
+ perl-lib              aarch64  0.65-477.amzn2023.0.9        amazonlinux   15 k
+ python3.12-libs       aarch64  3.12.14-2.amzn2023.0.1       amazonlinux  9.2 M
+ python3.12-pip-wheel  noarch   23.2.1-4.amzn2023.0.11       amazonlinux  1.5 M
+
+Transaction Summary
+================================================================================
+Install  12 Packages
+
+Total download size: 19 M
+Installed size: 95 M
+Downloading Packages:
+(1/12): git-2.50.1-1.amzn2023.0.1.aarch64.rpm   2.1 MB/s |  53 kB     00:00    
+(2/12): git-core-doc-2.50.1-1.amzn2023.0.1.noar  56 MB/s | 2.8 MB     00:00    
+(3/12): mpdecimal-2.5.1-3.amzn2023.0.3.aarch64. 3.4 MB/s | 103 kB     00:00    
+(4/12): git-core-2.50.1-1.amzn2023.0.1.aarch64.  70 MB/s | 5.1 MB     00:00    
+(5/12): perl-Error-0.17030-2.amzn2023.0.1.noarc 1.6 MB/s |  42 kB     00:00    
+(6/12): perl-File-Find-1.37-477.amzn2023.0.9.no 902 kB/s |  26 kB     00:00    
+(7/12): perl-Git-2.50.1-1.amzn2023.0.1.noarch.r 1.7 MB/s |  41 kB     00:00    
+(8/12): perl-TermReadKey-2.38-9.amzn2023.0.3.aa 1.3 MB/s |  36 kB     00:00    
+(9/12): perl-lib-0.65-477.amzn2023.0.9.aarch64. 636 kB/s |  15 kB     00:00    
+(10/12): python3.12-3.12.14-2.amzn2023.0.1.aarc 923 kB/s |  27 kB     00:00    
+(11/12): python3.12-pip-wheel-23.2.1-4.amzn2023  34 MB/s | 1.5 MB     00:00    
+(12/12): python3.12-libs-3.12.14-2.amzn2023.0.1  77 MB/s | 9.2 MB     00:00    
+--------------------------------------------------------------------------------
+Total                                            68 MB/s |  19 MB     00:00     
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                        1/1 
+  Installing       : git-core-2.50.1-1.amzn2023.0.1.aarch64                1/12 
+  Installing       : git-core-doc-2.50.1-1.amzn2023.0.1.noarch             2/12 
+  Installing       : python3.12-pip-wheel-23.2.1-4.amzn2023.0.11.noarch    3/12 
+  Installing       : perl-lib-0.65-477.amzn2023.0.9.aarch64                4/12 
+  Installing       : perl-TermReadKey-2.38-9.amzn2023.0.3.aarch64          5/12 
+  Installing       : perl-File-Find-1.37-477.amzn2023.0.9.noarch           6/12 
+  Installing       : perl-Error-1:0.17030-2.amzn2023.0.1.noarch            7/12 
+  Installing       : perl-Git-2.50.1-1.amzn2023.0.1.noarch                 8/12 
+  Installing       : git-2.50.1-1.amzn2023.0.1.aarch64                     9/12 
+  Installing       : mpdecimal-2.5.1-3.amzn2023.0.3.aarch64               10/12 
+  Installing       : python3.12-3.12.14-2.amzn2023.0.1.aarch64            11/12 
+  Installing       : python3.12-libs-3.12.14-2.amzn2023.0.1.aarch64       12/12 
+  Running scriptlet: python3.12-libs-3.12.14-2.amzn2023.0.1.aarch64       12/12 
+  Verifying        : git-2.50.1-1.amzn2023.0.1.aarch64                     1/12 
+  Verifying        : git-core-2.50.1-1.amzn2023.0.1.aarch64                2/12 
+  Verifying        : git-core-doc-2.50.1-1.amzn2023.0.1.noarch             3/12 
+  Verifying        : mpdecimal-2.5.1-3.amzn2023.0.3.aarch64                4/12 
+  Verifying        : perl-Error-1:0.17030-2.amzn2023.0.1.noarch            5/12 
+  Verifying        : perl-File-Find-1.37-477.amzn2023.0.9.noarch           6/12 
+  Verifying        : perl-Git-2.50.1-1.amzn2023.0.1.noarch                 7/12 
+  Verifying        : perl-TermReadKey-2.38-9.amzn2023.0.3.aarch64          8/12 
+  Verifying        : perl-lib-0.65-477.amzn2023.0.9.aarch64                9/12 
+  Verifying        : python3.12-3.12.14-2.amzn2023.0.1.aarch64            10/12 
+  Verifying        : python3.12-libs-3.12.14-2.amzn2023.0.1.aarch64       11/12 
+  Verifying        : python3.12-pip-wheel-23.2.1-4.amzn2023.0.11.noarch   12/12 
+
+Installed:
+  git-2.50.1-1.amzn2023.0.1.aarch64                                             
+  git-core-2.50.1-1.amzn2023.0.1.aarch64                                        
+  git-core-doc-2.50.1-1.amzn2023.0.1.noarch                                     
+  mpdecimal-2.5.1-3.amzn2023.0.3.aarch64                                        
+  perl-Error-1:0.17030-2.amzn2023.0.1.noarch                                    
+  perl-File-Find-1.37-477.amzn2023.0.9.noarch                                   
+  perl-Git-2.50.1-1.amzn2023.0.1.noarch                                         
+  perl-TermReadKey-2.38-9.amzn2023.0.3.aarch64                                  
+  perl-lib-0.65-477.amzn2023.0.9.aarch64                                        
+  python3.12-3.12.14-2.amzn2023.0.1.aarch64                                     
+  python3.12-libs-3.12.14-2.amzn2023.0.1.aarch64                                
+  python3.12-pip-wheel-23.2.1-4.amzn2023.0.11.noarch                            
+
+Complete!
+/usr/bin/git
+/usr/bin/python3.12
+/usr/bin/zstd
+Cloning into 'repo'...
+HEAD is now at 729127a erdos85(h7-hsb-campaign): e2e receipt (16/16) for the wait-for-orphans worker
+2026-10-08T23:51:30Z controller host watching sat49/h7hsb-20261008-canary at 729127aa817
+2026-10-09T03:12:59Z watch finished with an action; host powers off

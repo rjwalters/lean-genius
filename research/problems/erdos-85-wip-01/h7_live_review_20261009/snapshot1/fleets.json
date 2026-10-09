@@ -1,0 +1,289 @@
+{
+    "Fleets": [
+        {
+            "CreateTime": "2026-10-08T23:50:15+00:00",
+            "FleetId": "fleet-d57fe55e-20a4-4cb1-ba3e-3562f2608b82",
+            "FleetState": "deleted",
+            "ClientToken": "a2ea6585-3304-47a6-86ee-ad9173b4a3a1",
+            "ExcessCapacityTerminationPolicy": "termination",
+            "FulfilledCapacity": 0.0,
+            "FulfilledOnDemandCapacity": 0.0,
+            "LaunchTemplateConfigs": [
+                {
+                    "LaunchTemplateSpecification": {
+                        "LaunchTemplateName": "e85-h7hsb-20261008-canary",
+                        "Version": "3"
+                    },
+                    "Overrides": [
+                        {
+                            "InstanceType": "r8g.16xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-08f3348aed146a9bc"
+                        },
+                        {
+                            "InstanceType": "r8g.16xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-02fc817f5f4ecc2db"
+                        },
+                        {
+                            "InstanceType": "r8g.16xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-001eae30bfb430d62"
+                        },
+                        {
+                            "InstanceType": "r8g.16xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-022031acfedcf865d"
+                        },
+                        {
+                            "InstanceType": "r8g.16xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-03e885cbfead001a8"
+                        },
+                        {
+                            "InstanceType": "r7g.16xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-08f3348aed146a9bc"
+                        },
+                        {
+                            "InstanceType": "r7g.16xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-02fc817f5f4ecc2db"
+                        },
+                        {
+                            "InstanceType": "r7g.16xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-001eae30bfb430d62"
+                        },
+                        {
+                            "InstanceType": "r7g.16xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-022031acfedcf865d"
+                        },
+                        {
+                            "InstanceType": "r7g.16xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-03e885cbfead001a8"
+                        },
+                        {
+                            "InstanceType": "r8g.12xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-08f3348aed146a9bc"
+                        },
+                        {
+                            "InstanceType": "r8g.12xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-02fc817f5f4ecc2db"
+                        },
+                        {
+                            "InstanceType": "r8g.12xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-001eae30bfb430d62"
+                        },
+                        {
+                            "InstanceType": "r8g.12xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-022031acfedcf865d"
+                        },
+                        {
+                            "InstanceType": "r8g.12xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-03e885cbfead001a8"
+                        },
+                        {
+                            "InstanceType": "r7g.12xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-08f3348aed146a9bc"
+                        },
+                        {
+                            "InstanceType": "r7g.12xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-02fc817f5f4ecc2db"
+                        },
+                        {
+                            "InstanceType": "r7g.12xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-001eae30bfb430d62"
+                        },
+                        {
+                            "InstanceType": "r7g.12xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-022031acfedcf865d"
+                        },
+                        {
+                            "InstanceType": "r7g.12xlarge",
+                            "MaxPrice": "1.00",
+                            "SubnetId": "subnet-03e885cbfead001a8"
+                        }
+                    ]
+                }
+            ],
+            "TargetCapacitySpecification": {
+                "TotalTargetCapacity": 1,
+                "OnDemandTargetCapacity": 0,
+                "SpotTargetCapacity": 1,
+                "DefaultTargetCapacityType": "spot"
+            },
+            "TerminateInstancesWithExpiration": true,
+            "Type": "maintain",
+            "ValidUntil": "2026-10-09T05:50:12+00:00",
+            "ReplaceUnhealthyInstances": false,
+            "SpotOptions": {
+                "AllocationStrategy": "price-capacity-optimized",
+                "InstanceInterruptionBehavior": "terminate"
+            },
+            "OnDemandOptions": {
+                "AllocationStrategy": "lowestPrice"
+            },
+            "Tags": [
+                {
+                    "Key": "project",
+                    "Value": "e85-h7hsb-20261008-canary"
+                }
+            ]
+        },
+        {
+            "ActivityStatus": "fulfilled",
+            "CreateTime": "2026-10-09T02:02:07+00:00",
+            "FleetId": "fleet-dae91a7e-68ca-4e6c-b946-247aa86069fb",
+            "FleetState": "active",
+            "ClientToken": "bd01db80-f06a-4ea0-a5c3-a18d5920b2fa",
+            "ExcessCapacityTerminationPolicy": "termination",
+            "FulfilledCapacity": 3.0,
+            "FulfilledOnDemandCapacity": 0.0,
+            "LaunchTemplateConfigs": [
+                {
+                    "LaunchTemplateSpecification": {
+                        "LaunchTemplateName": "e85-h7hsb-20261008",
+                        "Version": "1"
+                    },
+                    "Overrides": [
+                        {
+                            "InstanceType": "r8g.16xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-08f3348aed146a9bc"
+                        },
+                        {
+                            "InstanceType": "r8g.16xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-02fc817f5f4ecc2db"
+                        },
+                        {
+                            "InstanceType": "r8g.16xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-001eae30bfb430d62"
+                        },
+                        {
+                            "InstanceType": "r8g.16xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-022031acfedcf865d"
+                        },
+                        {
+                            "InstanceType": "r8g.16xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-03e885cbfead001a8"
+                        },
+                        {
+                            "InstanceType": "r7g.16xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-08f3348aed146a9bc"
+                        },
+                        {
+                            "InstanceType": "r7g.16xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-02fc817f5f4ecc2db"
+                        },
+                        {
+                            "InstanceType": "r7g.16xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-001eae30bfb430d62"
+                        },
+                        {
+                            "InstanceType": "r7g.16xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-022031acfedcf865d"
+                        },
+                        {
+                            "InstanceType": "r7g.16xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-03e885cbfead001a8"
+                        },
+                        {
+                            "InstanceType": "r8g.12xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-08f3348aed146a9bc"
+                        },
+                        {
+                            "InstanceType": "r8g.12xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-02fc817f5f4ecc2db"
+                        },
+                        {
+                            "InstanceType": "r8g.12xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-001eae30bfb430d62"
+                        },
+                        {
+                            "InstanceType": "r8g.12xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-022031acfedcf865d"
+                        },
+                        {
+                            "InstanceType": "r8g.12xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-03e885cbfead001a8"
+                        },
+                        {
+                            "InstanceType": "r7g.12xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-08f3348aed146a9bc"
+                        },
+                        {
+                            "InstanceType": "r7g.12xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-02fc817f5f4ecc2db"
+                        },
+                        {
+                            "InstanceType": "r7g.12xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-001eae30bfb430d62"
+                        },
+                        {
+                            "InstanceType": "r7g.12xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-022031acfedcf865d"
+                        },
+                        {
+                            "InstanceType": "r7g.12xlarge",
+                            "MaxPrice": "1.20",
+                            "SubnetId": "subnet-03e885cbfead001a8"
+                        }
+                    ]
+                }
+            ],
+            "TargetCapacitySpecification": {
+                "TotalTargetCapacity": 3,
+                "OnDemandTargetCapacity": 0,
+                "SpotTargetCapacity": 3,
+                "DefaultTargetCapacityType": "spot"
+            },
+            "TerminateInstancesWithExpiration": true,
+            "Type": "maintain",
+            "ValidUntil": "2026-10-10T15:02:05+00:00",
+            "ReplaceUnhealthyInstances": false,
+            "SpotOptions": {
+                "AllocationStrategy": "price-capacity-optimized",
+                "InstanceInterruptionBehavior": "terminate"
+            },
+            "OnDemandOptions": {
+                "AllocationStrategy": "lowestPrice"
+            },
+            "Tags": [
+                {
+                    "Key": "project",
+                    "Value": "e85-h7hsb-20261008"
+                }
+            ]
+        }
+    ]
+}

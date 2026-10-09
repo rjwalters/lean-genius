@@ -1,0 +1,897 @@
+{
+    "Contents": [
+        {
+            "Key": "sat49/h7hsb-20261008-canary/claims/cube_F6_t14-cover",
+            "LastModified": "2026-10-09T00:07:22+00:00",
+            "ETag": "\"c1cb5134d1da527583fa04d9b97f20d9\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 19,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/claims/cube_F6_t14-h0000",
+            "LastModified": "2026-10-09T00:07:28+00:00",
+            "ETag": "\"c1cb5134d1da527583fa04d9b97f20d9\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 19,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/claims/cube_F6_t14-h0001",
+            "LastModified": "2026-10-09T00:07:31+00:00",
+            "ETag": "\"c1cb5134d1da527583fa04d9b97f20d9\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 19,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/claims/cube_F6_t16-b0000",
+            "LastModified": "2026-10-09T00:58:48+00:00",
+            "ETag": "\"768af244660cc0fdc756825a8257ea37\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 19,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/claims/cube_F6_t18-b0000",
+            "LastModified": "2026-10-09T00:22:34+00:00",
+            "ETag": "\"aa4e42c0dc2c222a6a80d29ead913bb6\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 19,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/claims/cube_F7_t10-b0000",
+            "LastModified": "2026-10-09T00:22:35+00:00",
+            "ETag": "\"aa4e42c0dc2c222a6a80d29ead913bb6\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 19,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/claims/cube_F7_t10-cover",
+            "LastModified": "2026-10-09T00:07:25+00:00",
+            "ETag": "\"c1cb5134d1da527583fa04d9b97f20d9\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 19,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/claims/cube_F7_t13-b0000",
+            "LastModified": "2026-10-09T00:07:37+00:00",
+            "ETag": "\"c1cb5134d1da527583fa04d9b97f20d9\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 19,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/claims/cube_F8_t0-b0000",
+            "LastModified": "2026-10-09T00:58:49+00:00",
+            "ETag": "\"768af244660cc0fdc756825a8257ea37\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 19,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/claims/cube_F9_t0-b0000",
+            "LastModified": "2026-10-09T00:58:52+00:00",
+            "ETag": "\"768af244660cc0fdc756825a8257ea37\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 19,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/control/STOP",
+            "LastModified": "2026-10-09T03:12:53+00:00",
+            "ETag": "\"1766aa05a3dff63867beec7254760075\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 49,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/control/STOP-CAUSE",
+            "LastModified": "2026-10-09T03:12:58+00:00",
+            "ETag": "\"3f933c95810e92b54ebeabdfd5d99245\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 111,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/covers-retained/cube_F6_t14.cover.cnf",
+            "LastModified": "2026-10-09T00:07:26+00:00",
+            "ETag": "\"0e16ce91755fb855f16ca14a2bceee65-2\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 15609534,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/covers-retained/cube_F6_t14.cover.json",
+            "LastModified": "2026-10-09T00:07:28+00:00",
+            "ETag": "\"adf28c9c8a32c5d7d7d03aa40628ce2a\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1556,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/covers-retained/cube_F6_t14.cover.lrat",
+            "LastModified": "2026-10-09T00:07:27+00:00",
+            "ETag": "\"7fba652f32f3e03fd47595ac9ee7462c\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 4484246,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/covers-retained/cube_F7_t10.cover.cnf",
+            "LastModified": "2026-10-09T00:08:06+00:00",
+            "ETag": "\"8edab25b65c7d17757ff924a0d1cd02c-5\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 33861614,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/covers-retained/cube_F7_t10.cover.json",
+            "LastModified": "2026-10-09T00:08:08+00:00",
+            "ETag": "\"50bcaccf956e24566bf698dc94dd4841\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1566,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/covers-retained/cube_F7_t10.cover.lrat",
+            "LastModified": "2026-10-09T00:08:07+00:00",
+            "ETag": "\"aca1d163dea85a7572a2ab0d7cd5ab0e-11\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 85020728,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/freight/cake_lpr",
+            "LastModified": "2026-10-08T23:50:01+00:00",
+            "ETag": "\"ee2085f7bc5e5328e3f33a85cb165f05\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 701256,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/freight/h7-inputs.tar.zst",
+            "LastModified": "2026-10-08T23:50:00+00:00",
+            "ETag": "\"1d1805de7d86417ca0db09043af0caa7\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 2621005,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/host/host.log",
+            "LastModified": "2026-10-09T03:13:00+00:00",
+            "ETag": "\"128c2a5e0d52e48c5bd9de77a795b166\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 6521,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/host/last_report.json",
+            "LastModified": "2026-10-09T03:12:59+00:00",
+            "ETag": "\"ff0e804333ca67b8f45118fc8ae809b7\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 708,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/host/watch.log",
+            "LastModified": "2026-10-09T03:13:00+00:00",
+            "ETag": "\"2d6e02a6b2fc2bdfc3aa968bbf7550c5\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 23332,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/ledger/cube_F6_t14-cover.i-0bb73b844e2d00959.1791504447.json",
+            "LastModified": "2026-10-09T00:07:29+00:00",
+            "ETag": "\"c22226967281f6980ef1fe255655b73b\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1097,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/ledger/cube_F6_t14-h0000.i-0bb73b844e2d00959.1791504452.json",
+            "LastModified": "2026-10-09T00:07:34+00:00",
+            "ETag": "\"27d519195b12c98171a2a296beedb870\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1031,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/ledger/cube_F6_t14-h0001.i-0bb73b844e2d00959.1791504549.json",
+            "LastModified": "2026-10-09T00:09:11+00:00",
+            "ETag": "\"d1c9849f018c804535ae8e9c92430167\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1017,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/ledger/cube_F6_t16-b0000.i-0da45fb9523dc10e3.1791511480.json",
+            "LastModified": "2026-10-09T02:04:42+00:00",
+            "ETag": "\"ce808400a1fd77637a7a5e55a60690d4\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1027,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/ledger/cube_F6_t18-b0000.i-0833a782bacb5625e.1791506480.json",
+            "LastModified": "2026-10-09T00:41:22+00:00",
+            "ETag": "\"14af20b4de154c9ebbd16f9d1f274ad8\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1028,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/ledger/cube_F7_t10-b0000.i-0833a782bacb5625e.1791505606.json",
+            "LastModified": "2026-10-09T00:26:48+00:00",
+            "ETag": "\"e93e4070bbe27ecf6cc3a666856add18\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1042,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/ledger/cube_F7_t10-cover.i-0bb73b844e2d00959.1791504487.json",
+            "LastModified": "2026-10-09T00:08:09+00:00",
+            "ETag": "\"ec9c7e9efeb8b1bab13addb1d01c5986\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1100,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/ledger/cube_F7_t13-b0000.i-0bb73b844e2d00959.1791504591.json",
+            "LastModified": "2026-10-09T00:09:52+00:00",
+            "ETag": "\"ccde6ae60d73db573f5e646fb4490761\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1035,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/ledger/cube_F8_t0-b0000.i-0da45fb9523dc10e3.1791515402.json",
+            "LastModified": "2026-10-09T03:10:04+00:00",
+            "ETag": "\"53d7864b61bb9e85a24ef8dd2cd2d380\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1035,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/ledger/cube_F9_t0-b0000.i-0da45fb9523dc10e3.1791514829.json",
+            "LastModified": "2026-10-09T03:00:31+00:00",
+            "ETag": "\"2869eaf9b17ac194fdd398a04455423b\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1027,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0833a782bacb5625e/bootstrap.log",
+            "LastModified": "2026-10-09T00:20:30+00:00",
+            "ETag": "\"46545e6a9eca75530af22967dddc09d6\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 3833,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0833a782bacb5625e/e85-h7hsb.err",
+            "LastModified": "2026-10-09T00:55:01+00:00",
+            "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 0,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0833a782bacb5625e/e85-h7hsb.log",
+            "LastModified": "2026-10-09T00:55:02+00:00",
+            "ETag": "\"d3713063a8b38202fdca4194e132b7df\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 21285,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0833a782bacb5625e/ps.txt",
+            "LastModified": "2026-10-09T00:55:03+00:00",
+            "ETag": "\"e464a58d876da5ed920feb7f8cd09a9e\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 4640,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0833a782bacb5625e/status.json",
+            "LastModified": "2026-10-09T00:50:41+00:00",
+            "ETag": "\"589576e2e2e668b4d974ee7c27055eba\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 472,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0833a782bacb5625e/tools.build.txt",
+            "LastModified": "2026-10-09T00:20:29+00:00",
+            "ETag": "\"79ec391595cddfb9347d80ecda2b13d9\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 353,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0833a782bacb5625e/worker.log",
+            "LastModified": "2026-10-09T00:50:42+00:00",
+            "ETag": "\"91db72be9ed11e631a046787078ac871\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 15361,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0bb73b844e2d00959/bootstrap.log",
+            "LastModified": "2026-10-09T00:07:20+00:00",
+            "ETag": "\"4d7bfa7e9ab8bf44c68840b815703a5d\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 3833,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0bb73b844e2d00959/e85-h7hsb.err",
+            "LastModified": "2026-10-09T00:18:46+00:00",
+            "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 0,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0bb73b844e2d00959/e85-h7hsb.log",
+            "LastModified": "2026-10-09T00:18:46+00:00",
+            "ETag": "\"68751ae34f2f0b07583682ca38bea00e\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 6128,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0bb73b844e2d00959/ps.txt",
+            "LastModified": "2026-10-09T00:18:47+00:00",
+            "ETag": "\"d32926e889ff72d98343622a263796e3\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 5361,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0bb73b844e2d00959/status.json",
+            "LastModified": "2026-10-09T00:17:24+00:00",
+            "ETag": "\"066dbe91d05003c35f76b028a8ad9572\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 482,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0bb73b844e2d00959/tools.build.txt",
+            "LastModified": "2026-10-09T00:07:20+00:00",
+            "ETag": "\"d647550c12ef31d50c5fc7731ef9cdea\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 353,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0bb73b844e2d00959/worker.log",
+            "LastModified": "2026-10-09T00:17:25+00:00",
+            "ETag": "\"68751ae34f2f0b07583682ca38bea00e\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 6128,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0da45fb9523dc10e3/bootstrap.log",
+            "LastModified": "2026-10-09T03:10:09+00:00",
+            "ETag": "\"1a030ea11dd401d713900a547000a288\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 4600,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0da45fb9523dc10e3/e85-h7hsb.err",
+            "LastModified": "2026-10-09T03:10:07+00:00",
+            "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 0,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0da45fb9523dc10e3/e85-h7hsb.log",
+            "LastModified": "2026-10-09T03:10:08+00:00",
+            "ETag": "\"dd923374e617586c4d98f71407f6ba69\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 62226,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0da45fb9523dc10e3/ps.txt",
+            "LastModified": "2026-10-09T03:09:28+00:00",
+            "ETag": "\"78157721959415c81a9038d52968d4bb\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 3734,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0da45fb9523dc10e3/status.json",
+            "LastModified": "2026-10-09T03:10:09+00:00",
+            "ETag": "\"bdaaeae3f6cb12fcdffc9f20bbfc7a53\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 320,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0da45fb9523dc10e3/tools.build.txt",
+            "LastModified": "2026-10-09T00:56:41+00:00",
+            "ETag": "\"f7b58ccf140e20193cea1a0dc77e7c54\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 353,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/nodes/i-0da45fb9523dc10e3/worker.log",
+            "LastModified": "2026-10-09T03:10:07+00:00",
+            "ETag": "\"dd923374e617586c4d98f71407f6ba69\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 62226,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/partial/cube_F6_t16-b0000.i-0833a782bacb5625e.jsonl",
+            "LastModified": "2026-10-09T00:54:57+00:00",
+            "ETag": "\"dcfcd0610db4585727f3d06dbb7dd5af\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 20573,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/partial/cube_F6_t16-b0000.i-0bb73b844e2d00959.jsonl",
+            "LastModified": "2026-10-09T00:17:37+00:00",
+            "ETag": "\"4db25b5960dd4c8324db753eef073719\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 2750,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/partial/cube_F6_t16-b0000.i-0da45fb9523dc10e3.jsonl",
+            "LastModified": "2026-10-09T02:03:39+00:00",
+            "ETag": "\"465415c9a7618a201d0d8d96af267a75\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 79688,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/partial/cube_F6_t18-b0000.i-0833a782bacb5625e.jsonl",
+            "LastModified": "2026-10-09T00:40:49+00:00",
+            "ETag": "\"2b8b3d3ee4fe0497011cceeec5a7fe37\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 79567,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/partial/cube_F6_t18-b0000.i-0bb73b844e2d00959.jsonl",
+            "LastModified": "2026-10-09T00:17:40+00:00",
+            "ETag": "\"7872dbb6999e16d0aa1f11d9d1ccce02\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 28671,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/partial/cube_F7_t10-b0000.i-0833a782bacb5625e.jsonl",
+            "LastModified": "2026-10-09T00:26:39+00:00",
+            "ETag": "\"152c274585297ba533c246b72701e320\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 86360,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/partial/cube_F7_t10-b0000.i-0bb73b844e2d00959.jsonl",
+            "LastModified": "2026-10-09T00:17:42+00:00",
+            "ETag": "\"b8022282079378c2b5f9fc0a4fa6ec22\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 66509,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/partial/cube_F7_t13-b0000.i-0bb73b844e2d00959.jsonl",
+            "LastModified": "2026-10-09T00:09:38+00:00",
+            "ETag": "\"fd373af90d142e495d3d56b0457bb976\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 76010,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/partial/cube_F8_t0-b0000.i-0833a782bacb5625e.jsonl",
+            "LastModified": "2026-10-09T00:55:03+00:00",
+            "ETag": "\"c51a89b49d6231950f84a12ffa86f31c\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 15020,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/partial/cube_F8_t0-b0000.i-0bb73b844e2d00959.jsonl",
+            "LastModified": "2026-10-09T00:17:46+00:00",
+            "ETag": "\"4ca29130e5d927ee495d32c685e145a8\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 8108,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/partial/cube_F8_t0-b0000.i-0da45fb9523dc10e3.jsonl",
+            "LastModified": "2026-10-09T03:08:30+00:00",
+            "ETag": "\"d8e5ebea907b42c8ac5ccd12f7d75fa2\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 85729,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/partial/cube_F9_t0-b0000.i-0833a782bacb5625e.jsonl",
+            "LastModified": "2026-10-09T00:55:03+00:00",
+            "ETag": "\"52aee308a2bdf538ea592a1a3d092e50\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 12330,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/partial/cube_F9_t0-b0000.i-0bb73b844e2d00959.jsonl",
+            "LastModified": "2026-10-09T00:17:50+00:00",
+            "ETag": "\"94e97cc12c95dbf8046020209bc6e388\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 9485,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/partial/cube_F9_t0-b0000.i-0da45fb9523dc10e3.jsonl",
+            "LastModified": "2026-10-09T03:00:27+00:00",
+            "ETag": "\"d88db3e89be0b47c5f905b9e455cbab0\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 85634,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/results/cube_F6_t14-cover.i-0bb73b844e2d00959.1791504447.jsonl.zst",
+            "LastModified": "2026-10-09T00:07:29+00:00",
+            "ETag": "\"67f65706f48f20fafc36c2f2844869b9\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 652,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/results/cube_F6_t14-h0000.i-0bb73b844e2d00959.1791504452.jsonl.zst",
+            "LastModified": "2026-10-09T00:07:34+00:00",
+            "ETag": "\"83dda00ec5602c64c132b79813cf61d7\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1234,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/results/cube_F6_t14-h0001.i-0bb73b844e2d00959.1791504549.jsonl.zst",
+            "LastModified": "2026-10-09T00:09:11+00:00",
+            "ETag": "\"b9d065e5ce565499e09cfe5415472fc8\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1291,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/results/cube_F6_t16-b0000.i-0da45fb9523dc10e3.1791511480.jsonl.zst",
+            "LastModified": "2026-10-09T02:04:41+00:00",
+            "ETag": "\"393a58dbddca996611ccd9ce9857685c\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 11954,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/results/cube_F6_t18-b0000.i-0833a782bacb5625e.1791506480.jsonl.zst",
+            "LastModified": "2026-10-09T00:41:21+00:00",
+            "ETag": "\"c6080ca64f1b3194bd9cbd462d268efd\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 11701,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/results/cube_F7_t10-b0000.i-0833a782bacb5625e.1791505606.jsonl.zst",
+            "LastModified": "2026-10-09T00:26:47+00:00",
+            "ETag": "\"d0faadb9538b5c91ac616f0c049bf1e1\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 11633,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/results/cube_F7_t10-cover.i-0bb73b844e2d00959.1791504487.jsonl.zst",
+            "LastModified": "2026-10-09T00:08:09+00:00",
+            "ETag": "\"b578be15f0dbd7c66338228a5a952733\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 662,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/results/cube_F7_t13-b0000.i-0bb73b844e2d00959.1791504591.jsonl.zst",
+            "LastModified": "2026-10-09T00:09:52+00:00",
+            "ETag": "\"f7d42c12ddf4b9befbd685d09e574e14\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 10848,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/results/cube_F8_t0-b0000.i-0da45fb9523dc10e3.1791515402.jsonl.zst",
+            "LastModified": "2026-10-09T03:10:03+00:00",
+            "ETag": "\"56694059767262b8958c58db78bcf572\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 11885,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/results/cube_F9_t0-b0000.i-0da45fb9523dc10e3.1791514829.jsonl.zst",
+            "LastModified": "2026-10-09T03:00:31+00:00",
+            "ETag": "\"391527a4f3c4a4f9383aae8889847ee9\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 11883,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/selftest/i-0833a782bacb5625e",
+            "LastModified": "2026-10-09T00:20:28+00:00",
+            "ETag": "\"9cf2c3db91d62dc57aa85696a713d73b\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 20,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/selftest/i-0bb73b844e2d00959",
+            "LastModified": "2026-10-09T00:07:19+00:00",
+            "ETag": "\"3ed0aee350d0bcf86f16483dc023b64e\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 20,
+            "StorageClass": "STANDARD"
+        },
+        {
+            "Key": "sat49/h7hsb-20261008-canary/selftest/i-0da45fb9523dc10e3",
+            "LastModified": "2026-10-09T00:56:39+00:00",
+            "ETag": "\"1b4c26cae03c81fc90df4685000ac4d8\"",
+            "ChecksumAlgorithm": [
+                "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 20,
+            "StorageClass": "STANDARD"
+        }
+    ],
+    "RequestCharged": null,
+    "Prefix": "sat49/h7hsb-20261008-canary/"
+}

@@ -1,0 +1,61 @@
+2026-10-09T00:07:09Z h7hsb bootstrap start iid=i-0bb73b844e2d00959 type=r8g.12xlarge head=729127aa817263475e7aa0c65c3db34a65da3389 inputs=f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c manifest=0deb438f9bd7f5cfb840fd799330e6b80e70a043b21f96fcf0737c826515290c only=cube_F6_t14-cover,cube_F7_t10-cover,cube_F6_t14-h0000,cube_F6_t14-h0001,cube_F6_t16-b0000,cube_F6_t18-b0000,cube_F7_t10-b0000,cube_F7_t13-b0000,cube_F8_t0-b0000,cube_F9_t0-b0000
+Running timer as unit: e85-lifetime.timer
+Will run service as unit: e85-lifetime.service
+Last metadata expiration check: 0:00:07 ago on Fri Oct  9 00:07:03 2026.
+Package zstd-1.5.5-1.amzn2023.0.1.aarch64 is already installed.
+Package tar-2:1.34-1.amzn2023.0.4.aarch64 is already installed.
+Package unzip-6.0-68.amzn2023.0.2.aarch64 is already installed.
+Package git-2.50.1-1.amzn2023.0.1.aarch64 is already installed.
+Dependencies resolved.
+================================================================================
+ Package                Arch      Version                   Repository     Size
+================================================================================
+Installing:
+ python3.12             aarch64   3.12.14-2.amzn2023.0.1    amazonlinux    27 k
+Installing dependencies:
+ mpdecimal              aarch64   2.5.1-3.amzn2023.0.3      amazonlinux   103 k
+ python3.12-libs        aarch64   3.12.14-2.amzn2023.0.1    amazonlinux   9.2 M
+ python3.12-pip-wheel   noarch    23.2.1-4.amzn2023.0.11    amazonlinux   1.5 M
+
+Transaction Summary
+================================================================================
+Install  4 Packages
+
+Total download size: 11 M
+Installed size: 53 M
+Downloading Packages:
+(1/4): mpdecimal-2.5.1-3.amzn2023.0.3.aarch64.r 2.9 MB/s | 103 kB     00:00    
+(2/4): python3.12-3.12.14-2.amzn2023.0.1.aarch6 706 kB/s |  27 kB     00:00    
+(3/4): python3.12-pip-wheel-23.2.1-4.amzn2023.0  40 MB/s | 1.5 MB     00:00    
+(4/4): python3.12-libs-3.12.14-2.amzn2023.0.1.a  41 MB/s | 9.2 MB     00:00    
+--------------------------------------------------------------------------------
+Total                                            40 MB/s |  11 MB     00:00     
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                        1/1 
+  Installing       : python3.12-pip-wheel-23.2.1-4.amzn2023.0.11.noarch     1/4 
+  Installing       : mpdecimal-2.5.1-3.amzn2023.0.3.aarch64                 2/4 
+  Installing       : python3.12-3.12.14-2.amzn2023.0.1.aarch64              3/4 
+  Installing       : python3.12-libs-3.12.14-2.amzn2023.0.1.aarch64         4/4 
+  Running scriptlet: python3.12-libs-3.12.14-2.amzn2023.0.1.aarch64         4/4 
+  Verifying        : mpdecimal-2.5.1-3.amzn2023.0.3.aarch64                 1/4 
+  Verifying        : python3.12-3.12.14-2.amzn2023.0.1.aarch64              2/4 
+  Verifying        : python3.12-libs-3.12.14-2.amzn2023.0.1.aarch64         3/4 
+  Verifying        : python3.12-pip-wheel-23.2.1-4.amzn2023.0.11.noarch     4/4 
+
+Installed:
+  mpdecimal-2.5.1-3.amzn2023.0.3.aarch64                                        
+  python3.12-3.12.14-2.amzn2023.0.1.aarch64                                     
+  python3.12-libs-3.12.14-2.amzn2023.0.1.aarch64                                
+  python3.12-pip-wheel-23.2.1-4.amzn2023.0.11.noarch                            
+
+Complete!
+You can now run: /usr/local/bin/aws --version
+Tip: run 'aws configure agent-toolkit' to set up AWS skills and the AWS MCP server for your AI coding agent(s).
+aws-cli/2.37.11 Python/3.14.6 Linux/6.18.51-120.163.amzn2023.aarch64 exe/aarch64.amzn.2023
+cadical: OK
+c Checking failed at line: 0. Reason: failed to parse line (compressed format)
+2026-10-09T00:07:19Z bootstrap ok

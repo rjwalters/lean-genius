@@ -1,0 +1,35 @@
+{
+ "utc": "2026-10-09T03:12:52Z",
+ "pass": "h7hsb-canary",
+ "live_instances": 1,
+ "instances_seen": 4,
+ "estimated_spend_usd": 4.56,
+ "queue": 10,
+ "claimed": 10,
+ "finished": 10,
+ "statuses": {
+  "CERTIFIED": 10
+ },
+ "orphans_released": 0,
+ "control": [],
+ "certified_batches": 10,
+ "certified_items": 394,
+ "solver_cpu_hours": 7.1,
+ "proof_tb": 0.049,
+ "hard_stop_usd": 10.0,
+ "prefix": "sat49/h7hsb-20261008-canary",
+ "orphans_released_this_pass": 0,
+ "orphans_released_total": 8,
+ "orphan_release_passes": [
+  {
+   "utc": "2026-10-09T00:22:35Z",
+   "released": 5
+  },
+  {
+   "utc": "2026-10-09T00:58:49Z",
+   "released": 3
+  }
+ ],
+ "incomplete_batches": 0,
+ "action": "all batches CERTIFIED; stopping"
+}

@@ -1,0 +1,30 @@
+{
+ "id": "cube_F6_t14-h0001",
+ "cube": "cube_F6_t14",
+ "kind": "leaves",
+ "node": "i-0bb73b844e2d00959",
+ "instance_type": "r8g.12xlarge",
+ "slot": 0,
+ "status": "CERTIFIED",
+ "items": 4,
+ "ran": 4,
+ "certified": 4,
+ "carried": 0,
+ "statuses": {
+  "CERTIFIED": 4
+ },
+ "batch_returncode": 0,
+ "not_certified": [],
+ "results_key": "sat49/h7hsb-20261008-canary/results/cube_F6_t14-h0001.i-0bb73b844e2d00959.1791504549.jsonl.zst",
+ "results_sha256": "ea3036a7d12191bc26384443b7fb52e29efcc02343f2437d9a79be99f0d538b7",
+ "receipts_sha256": "6bea478cfa743d49935e2eae993a7b68a5ad3316041f876ae11ddf287ca52328",
+ "proof_bytes": 247356793,
+ "solver_cpu_seconds": 86.159042,
+ "checker_cpu_seconds": 19.528731,
+ "max_solver_cpu_seconds": 29.277508,
+ "retained": [],
+ "inputs_json_sha256": "f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c",
+ "manifest_sha256": "0deb438f9bd7f5cfb840fd799330e6b80e70a043b21f96fcf0737c826515290c",
+ "checkout_head": "729127aa817263475e7aa0c65c3db34a65da3389",
+ "stderr_tail": null
+}
