@@ -18,7 +18,8 @@ Subcommands
   local-pass                    one dry pass of the watch loop from this machine
   host-launch --commit C        start the detached controller host (t4g.small, watches until it acts)
   host-stop                     terminate the controller host
-  (--pass canary before the subcommand selects the canary's own prefix, tag and launch template)
+  (--pass canary before the subcommand selects the canary's own prefix, tag and launch template;
+   --pass residual likewise, for residual leaves run beside the main pass: see select_pass)
   residual                      list items without a CERTIFIED receipt (from synced ledgers)
   release-errors [--yes]        release the claims of batches whose only ledgers are ERROR
   transition                    (--pass canary) canary -> main record: markers, terminal fleet, receipt reconciliation
@@ -66,6 +67,10 @@ LIFETIME = 129600  # 36 h per node (3 nodes x 36 h x 64 slots covers the 95% est
 vc.PASS.update(name="h7hsb", lifetime=LIFETIME)
 MAIN_PREFIX, MAIN_TAG = vc.PREFIX, vc.TAG
 CANARY_PREFIX, CANARY_TAG = MAIN_PREFIX + "-canary", MAIN_TAG + "-canary"
+RESIDUAL_PREFIX, RESIDUAL_TAG = MAIN_PREFIX + "-residual", MAIN_TAG + "-residual"
+ALL_PREFIXES, ALL_TAGS = (MAIN_PREFIX, CANARY_PREFIX, RESIDUAL_PREFIX), [MAIN_TAG, CANARY_TAG, RESIDUAL_TAG]
+RESIDUAL_MANIFEST = "residual-pass-manifest.jsonl"  # under STRIPE; shipped as freight/<same name>
+RESIDUAL_HARD_STOP_USD = 100.0
 PASS_NAME = "main"
 HOST_ROLE = "Erdos85H7HsbController"
 HOST_TAG = "e85-h7hsb-controller"  # NOT the fleet tag: `stop` terminates fleet-tagged instances only
@@ -85,6 +90,17 @@ def select_pass(name: str) -> None:
         vc.HARD_STOP_USD = 10.0
         LIFETIME = 5 * 3600
         vc.PASS.update(name="h7hsb-canary", lifetime=LIFETIME)
+    if name == "residual":
+        # Residual leaves (2 h cap or heap exhausted in the main pass) run under their own prefix, tag,
+        # launch template and Stripe directory, exactly like the canary, so that a residual batch can run
+        # WHILE the main pass is still running: its claims, ledgers, STOP and budget stop never touch main
+        # (operator, 2026-10-09). The manifest is one leaf per row (`--pass main residual` writes it); a later,
+        # larger manifest reuses the prefix, and rows that already have a claim or a ledger are skipped.
+        vc.PREFIX = vc.BASE_PREFIX = RESIDUAL_PREFIX
+        vc.TAG = vc.LT_NAME = RESIDUAL_TAG
+        vc.STRIPE = vc.BASE_STRIPE = STRIPE / "run-residual"
+        vc.HARD_STOP_USD = RESIDUAL_HARD_STOP_USD
+        vc.PASS.update(name="h7hsb-residual", lifetime=LIFETIME)
 
 
 if os.environ.get("E85_AWS_NO_PROFILE"):  # on the controller host: instance role, no named profile
@@ -146,6 +162,8 @@ exec bash research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/cert_bootst
 
 def setup(a) -> None:
     a.lifetime = a.lifetime or LIFETIME
+    if PASS_NAME == "residual":
+        a.residual = True
     if a.residual:
         if not a.manifest:
             raise SystemExit("--residual needs --manifest <residual-manifest.jsonl>")
@@ -163,9 +181,9 @@ def setup(a) -> None:
         {"Sid": "VerdictFreightRead", "Effect": "Allow", "Action": ["s3:GetObject"],
          "Resource": f"arn:aws:s3:::{vc.BUCKET}/{VERDICT_PREFIX}/freight/*"},
         {"Sid": "CampaignPrefix", "Effect": "Allow", "Action": ["s3:GetObject", "s3:PutObject"],
-         "Resource": [f"arn:aws:s3:::{vc.BUCKET}/{MAIN_PREFIX}/*", f"arn:aws:s3:::{vc.BUCKET}/{CANARY_PREFIX}/*"]},
+         "Resource": [f"arn:aws:s3:::{vc.BUCKET}/{p}/*" for p in ALL_PREFIXES]},
         {"Sid": "CampaignList", "Effect": "Allow", "Action": "s3:ListBucket", "Resource": f"arn:aws:s3:::{vc.BUCKET}",
-         "Condition": {"StringLike": {"s3:prefix": [f"{MAIN_PREFIX}/*", f"{CANARY_PREFIX}/*"]}}}]}
+         "Condition": {"StringLike": {"s3:prefix": [f"{p}/*" for p in ALL_PREFIXES]}}}]}
     data = {"IamInstanceProfile": {"Name": ROLE}, "InstanceInitiatedShutdownBehavior": "terminate",
             "MetadataOptions": {"HttpTokens": "required", "HttpEndpoint": "enabled"},
             "BlockDeviceMappings": [{"DeviceName": "/dev/xvda", "Ebs": {"VolumeSize": vc.EBS_GIB, "VolumeType": "gp3",
@@ -525,8 +543,8 @@ def release_errors(a) -> None:
 
 def host_policy() -> dict:
     """Least privilege for the detached controller: watch, release orphans, budget stop. It cannot launch."""
-    tagged = {"StringEquals": {"aws:ResourceTag/project": [MAIN_TAG, CANARY_TAG]}}
-    objects = [f"arn:aws:s3:::{vc.BUCKET}/{p}/*" for p in (MAIN_PREFIX, CANARY_PREFIX)]
+    tagged = {"StringEquals": {"aws:ResourceTag/project": ALL_TAGS}}
+    objects = [f"arn:aws:s3:::{vc.BUCKET}/{p}/*" for p in ALL_PREFIXES]
     return {"Version": "2012-10-17", "Statement": [
         {"Sid": "Describe", "Effect": "Allow", "Resource": "*",
          "Action": ["ec2:DescribeInstances", "ec2:DescribeSpotPriceHistory", "ec2:DescribeFleets"]},
@@ -534,13 +552,18 @@ def host_policy() -> dict:
          "Resource": "*", "Condition": tagged},
         {"Sid": "Objects", "Effect": "Allow", "Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"], "Resource": objects},
         {"Sid": "List", "Effect": "Allow", "Action": "s3:ListBucket", "Resource": f"arn:aws:s3:::{vc.BUCKET}",
-         "Condition": {"StringLike": {"s3:prefix": [f"{MAIN_PREFIX}/*", f"{CANARY_PREFIX}/*"]}}}]}
+         "Condition": {"StringLike": {"s3:prefix": [f"{p}/*" for p in ALL_PREFIXES]}}}]}
 
 
 def host_user_data(a) -> str:
     sparse = " ".join(f"'{p}'" for p in ["/research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/*",
                                          "/research/problems/erdos-85-wip-01/phase_b_h1_verdict_cloud_20260921/controller.py"])
     extra = f"--hard-stop-usd {a.hard_stop_usd}" if a.hard_stop_usd else ""
+    residual_fetch = ""
+    if PASS_NAME == "residual":  # the watch needs the pass manifest to know when the pass is complete
+        residual_fetch = (f"aws s3 cp --only-show-errors $P/freight/{RESIDUAL_MANIFEST} /opt/e85/stripe/{RESIDUAL_MANIFEST} "
+                          f"&& [ \"$(sha256sum /opt/e85/stripe/{RESIDUAL_MANIFEST} | cut -d' ' -f1)\" = \"{manifest_sha(str(STRIPE / RESIDUAL_MANIFEST))}\" ] "
+                          "|| die \"residual manifest\"")
     script = f"""#!/bin/bash
 exec >> /var/log/e85-host.log 2>&1
 set -u
@@ -558,6 +581,7 @@ git sparse-checkout set --no-cone {sparse} || die "sparse"
 git checkout --detach {a.commit} || die "checkout"
 aws s3 cp --only-show-errors $P/freight/h7-inputs.tar.zst /opt/e85/ && zstd -dc /opt/e85/h7-inputs.tar.zst | tar -C /opt/e85/stripe/inputs -xf - || die "inputs"
 [ "$(sha256sum /opt/e85/stripe/inputs/inputs.json | cut -d' ' -f1)" = "{inputs_sha()}" ] || die "inputs.json sha"
+{residual_fetch}
 cd research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008
 echo "$(date -u +%FT%TZ) controller host watching {vc.PREFIX} at {a.commit}"; up
 # watch returns when it has acted (budget stop or everything CERTIFIED); any crash is retried.
@@ -615,7 +639,7 @@ def hosts() -> list[dict]:
 
 
 def host_stop(a) -> None:
-    ids = [h["id"] for h in hosts()]
+    ids = [h["id"] for h in hosts() if h["name"] == f"{HOST_TAG}-{PASS_NAME}"]  # this pass's host only
     if ids:
         vc.aws("ec2", "terminate-instances", "--instance-ids", *ids)
     print(json.dumps({"terminated_controller_hosts": ids}))
@@ -651,8 +675,10 @@ def plan(a) -> None:
 
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--pass", dest="pass_name", choices=["main", "canary"], default="main",
-                   help="canary: own S3 prefix / tag / launch template, the 8 pinned rows (386 items), $10 hard stop")
+    p.add_argument("--pass", dest="pass_name", choices=["main", "canary", "residual"], default="main",
+                   help="canary: own S3 prefix / tag / launch template, the 8 pinned rows (386 items), $10 hard stop. "
+                        "residual: own prefix / tag / launch template, manifest <STRIPE>/residual-pass-manifest.jsonl, "
+                        "12 h cap, 16 GB heap, $100 hard stop; may run while the main pass is running")
     sub = p.add_subparsers(dest="command", required=True)
     s = sub.add_parser("plan"); s.add_argument("--count", type=int, default=0); s.set_defaults(run=plan)
     s = sub.add_parser("setup"); s.add_argument("--commit", required=True); s.add_argument("--only", default="")
@@ -687,6 +713,12 @@ def main() -> int:
     s = sub.add_parser("stop"); s.add_argument("--note", default=""); s.set_defaults(run=stop_cmd)
     a = p.parse_args()
     select_pass(a.pass_name)
+    if PASS_NAME == "residual" and a.command not in ("stop", "host-stop"):
+        if getattr(a, "manifest", "") not in ("", str(STRIPE / RESIDUAL_MANIFEST)):
+            raise SystemExit(f"the residual pass uses {STRIPE / RESIDUAL_MANIFEST}; do not pass another --manifest")
+        if not (STRIPE / RESIDUAL_MANIFEST).exists():
+            raise SystemExit(f"missing {STRIPE / RESIDUAL_MANIFEST} (write it with: --pass main residual, then copy)")
+        a.manifest = str(STRIPE / RESIDUAL_MANIFEST)
     if a.command not in ("stop", "host-stop"):
         MANIFEST.extend(hc.canary_rows(inputs_meta()) if PASS_NAME == "canary" else manifest_rows(getattr(a, "manifest", "")))
         vc.PASS["size"] = len(MANIFEST)
