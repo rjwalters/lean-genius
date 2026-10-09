@@ -312,6 +312,19 @@ def stop_cmd(a) -> None:
     vc.stop(None)
 
 
+def terminate_pass_fleet() -> dict:
+    """Delete this pass's active fleets and terminate its live instances without touching control markers."""
+    fleets = vc.aws_json("ec2", "describe-fleets", "--filters", "Name=fleet-state,Values=submitted,active,modifying")
+    ids = [f["FleetId"] for f in fleets["Fleets"]
+           if any(t["Key"] == "project" and t["Value"] == vc.TAG for t in f.get("Tags", []))]
+    if ids:
+        vc.aws("ec2", "delete-fleets", "--fleet-ids", *ids, "--terminate-instances")
+    live = [row["id"] for row in vc.row_filter(vc.instances(), {"pending", "running", "stopping", "stopped"})]
+    if live:
+        vc.aws("ec2", "terminate-instances", "--instance-ids", *live)
+    return {"deleted_fleets": ids, "terminated": live}
+
+
 def launch(a) -> None:
     if not 1 <= a.count <= MAX_NODES:
         raise SystemExit(f"count must be 1..{MAX_NODES}")
@@ -438,6 +451,10 @@ def one_pass(state: dict, act: bool) -> dict:
     # running after an operator stop). Nothing is cleared.
     if act and not report.get("action") and "STOP" in report.get("control", []):
         report["action"] = "STOP marker present; controller exits"
+        # Before exiting, end the fleet: otherwise a maintain fleet keeps replacing workers with no budget
+        # watch until ValidUntil (codex, room 53145). The existing STOP / STOP-CAUSE / ALARM markers are
+        # left exactly as they are: this only deletes fleets and terminates instances of this pass.
+        report["stop_enforced"] = terminate_pass_fleet()
     if act and not report.get("action") and len(done) >= len(ids):
         report["action"] = "all batches CERTIFIED; stopping"
         vc.stop(None)

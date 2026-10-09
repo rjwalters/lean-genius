@@ -328,7 +328,11 @@ class ControllerStop(unittest.TestCase):
         base = {"utc": "t", "control": control, "estimated_spend_usd": 1.0}
         with patch.object(cc, "_reviewed_one_pass", lambda state, act: dict(base)), patch.object(cc, "ledgers", lambda: []), \
                 patch.object(cc, "put_json", lambda key, obj: calls.append(key)), \
-                patch.object(cc.vc, "aws", lambda *a, **k: ""), patch.object(cc.vc, "stop", lambda a: calls.append("stop")), \
+                patch.object(cc.vc, "aws", lambda *a, **k: calls.append(("aws",) + a) or ""), \
+                patch.object(cc.vc, "stop", lambda a: calls.append("stop")), \
+                patch.object(cc.vc, "aws_json", lambda *a: {"Fleets": [{"FleetId": "fleet-1", "Tags": [{"Key": "project", "Value": cc.vc.TAG}]}]}), \
+                patch.object(cc.vc, "instances", lambda: [{"id": "i-1", "state": "running"}]), \
+                patch.object(cc.vc, "row_filter", lambda rows, states: [r for r in rows if r["state"] in states]), \
                 patch.object(cc, "MANIFEST", [{"id": "x"}]), tempfile.TemporaryDirectory() as tmp, \
                 patch.object(cc.vc, "STRIPE", Path(tmp)):
             return cc.one_pass({}, True), calls
@@ -337,7 +341,11 @@ class ControllerStop(unittest.TestCase):
         report, calls = self.run_pass(["STOP", "STOP-CAUSE"])
         self.assertEqual(report["action"], "STOP marker present; controller exits")
         self.assertNotIn("control/STOP-CAUSE", calls)
-        self.assertNotIn("stop", calls)
+        self.assertNotIn("stop", calls)  # the marker is not rewritten
+        # but the fleet is ended (codex 53145): a maintain fleet must not outlive the controller
+        self.assertIn(("aws", "ec2", "delete-fleets", "--fleet-ids", "fleet-1", "--terminate-instances"), calls)
+        self.assertIn(("aws", "ec2", "terminate-instances", "--instance-ids", "i-1"), calls)
+        self.assertEqual(report["stop_enforced"], {"deleted_fleets": ["fleet-1"], "terminated": ["i-1"]})
 
     def test_orphan_release_total_is_cumulative(self):
         import cert_controller as cc
