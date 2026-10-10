@@ -731,5 +731,41 @@ class SplitPass(unittest.TestCase):
         self.assertEqual(info["residual_certified"], 1)
 
 
+class HostReplace(unittest.TestCase):
+    """codex 53158: a grown manifest needs a REPLACED controller host; host-launch refuses a second host."""
+
+    def run_launch(self, replace, dry_run):
+        import argparse as ap
+        import cert_controller as cc
+        calls = []
+        live = [{"id": "i-oldhost", "state": "running", "launch": "t", "name": f"{cc.HOST_TAG}-{cc.PASS_NAME}"}]
+        a = ap.Namespace(type="t4g.small", commit="c", hard_stop_usd=0, dry_run=dry_run, replace=replace)
+        with patch.object(cc, "hosts", lambda: live), patch.object(cc, "host_user_data", lambda a: ""), \
+                patch.object(cc.vc, "aws", lambda *x, **k: calls.append(x) or "x"), \
+                patch.object(cc.vc, "aws_json", lambda *x, **k: {"SecurityGroups": [{"GroupId": "sg"}], "Instances": [{"InstanceId": "i-new"}]}), \
+                patch("time.sleep", lambda s: None), contextlib.redirect_stdout(io.StringIO()) as out, \
+                contextlib.redirect_stderr(io.StringIO()):
+            cc.host_launch(a)
+        return calls, out.getvalue()
+
+    def test_second_host_is_refused(self):
+        with self.assertRaises(SystemExit):
+            self.run_launch(replace=False, dry_run=True)
+
+    def test_replace_terminates_the_old_host_first(self):
+        calls, out = self.run_launch(replace=True, dry_run=False)
+        self.assertEqual(calls[0], ("ec2", "terminate-instances", "--instance-ids", "i-oldhost"))
+        self.assertEqual(calls[1][:2], ("ec2", "wait"))
+        self.assertIn("i-new", out)
+        _, dry = self.run_launch(replace=True, dry_run=True)
+        self.assertIn("i-oldhost", dry)
+
+    def test_host_restores_mirrored_watch_state(self):
+        import cert_controller as cc
+        self.assertEqual(cc.HOST_STATE_KEY, "host/controller-state.json")
+        src = (HERE / "cert_controller.py").read_text()
+        self.assertIn("controller-state.json; then echo \"restored watch state\"", src)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -82,6 +82,7 @@ PASS_NAME = "main"
 HOST_ROLE = "Erdos85H7HsbController"
 HOST_TAG = "e85-h7hsb-controller"  # NOT the fleet tag: `stop` terminates fleet-tagged instances only
 HOST_LIFETIME = 72 * 3600
+HOST_STATE_KEY = "host/controller-state.json"  # mirrored watch state; a replacement host starts from it
 
 
 def select_pass(name: str) -> None:
@@ -530,6 +531,11 @@ def one_pass(state: dict, act: bool) -> dict:
             p = vc.STRIPE / "last_report.json"
             p.write_text(json.dumps(report, indent=1) + "\n")
             vc.aws("s3", "cp", "--only-show-errors", str(p), f"s3://{vc.BUCKET}/{vc.PREFIX}/host/last_report.json", check=False)
+            # Spend accounting survives a controller-host replacement (codex 53158): the watch state (every
+            # instance ever seen, with launch time and price) is mirrored to S3 and restored by a new host.
+            sp = vc.STRIPE / "controller-state.s3.json"
+            sp.write_text(json.dumps(state, indent=1) + "\n")
+            vc.aws("s3", "cp", "--only-show-errors", str(sp), f"s3://{vc.BUCKET}/{vc.PREFIX}/{HOST_STATE_KEY}", check=False)
         except Exception:  # noqa: BLE001
             pass
     return report
@@ -610,7 +616,9 @@ def split_manifest(a) -> None:
     """Build the split-pass manifest (README section 9): pick the leaves (uncertified_leaves, or --leaves-file),
     run split_leaf.py's deterministic generator on the pinned inputs, write <STRIPE>/split-manifest.jsonl and
     <STRIPE>/split-specs.jsonl. Nothing in AWS is changed (--sync only downloads ledgers). To use it, copy it to
-    <STRIPE>/split-pass-manifest.jsonl (a later manifest for the same prefix may only ADD rows)."""
+    <STRIPE>/split-pass-manifest.jsonl (a later manifest for the same prefix may only ADD rows). A grown manifest
+    of a running pass needs freight + setup (new launch-template version) + launch AND
+    `host-launch --replace --commit <sha>` (codex 53158): the old controller host fetched the manifest once."""
     if PASS_NAME != "split":
         raise SystemExit("run as: --pass split split-manifest")
     import split_leaf
@@ -695,6 +703,9 @@ git checkout --detach {a.commit} || die "checkout"
 aws s3 cp --only-show-errors $P/freight/h7-inputs.tar.zst /opt/e85/ && zstd -dc /opt/e85/h7-inputs.tar.zst | tar -C /opt/e85/stripe/inputs -xf - || die "inputs"
 [ "$(sha256sum /opt/e85/stripe/inputs/inputs.json | cut -d' ' -f1)" = "{inputs_sha()}" ] || die "inputs.json sha"
 {residual_fetch}
+# A replacement host (larger manifest, codex 53158) continues the spend accounting of the host it replaces.
+mkdir -p /opt/e85/stripe/{vc.STRIPE.name}
+if aws s3 cp --only-show-errors $P/{HOST_STATE_KEY} /opt/e85/stripe/{vc.STRIPE.name}/controller-state.json; then echo "restored watch state"; fi
 cd research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008
 echo "$(date -u +%FT%TZ) controller host watching {vc.PREFIX} at {a.commit}"; up
 # watch returns when it has acted (budget stop or everything CERTIFIED); any crash is retried.
@@ -723,8 +734,18 @@ def host_launch(a) -> None:
                "TagSpecifications": [{"ResourceType": kind, "Tags": [{"Key": "project", "Value": HOST_TAG}, {"Key": "Name", "Value": f"{HOST_TAG}-{PASS_NAME}"}]}
                                      for kind in ("instance", "volume")],
                "UserData": host_user_data(a)}
+    mine = [h for h in hosts() if h["name"] == f"{HOST_TAG}-{PASS_NAME}"]
+    if mine and not a.replace:
+        raise SystemExit(f"REFUSED: a controller host of this pass is live ({[h['id'] for h in mine]}). After the pass "
+                         "manifest grew, replace it: host-launch --replace --commit <sha> (codex 53158); the old host "
+                         "fetched the manifest once and would stop the pass when its original rows finish.")
+    if mine and a.replace and not a.dry_run:
+        ids = [h["id"] for h in mine]
+        vc.aws("ec2", "terminate-instances", "--instance-ids", *ids)
+        vc.aws("ec2", "wait", "instance-terminated", "--instance-ids", *ids, timeout=900)
+        print(json.dumps({"replaced_controller_hosts": ids}), file=sys.stderr)
     if a.dry_run:
-        print(json.dumps({"dry_run": True, "role": HOST_ROLE, "policy": host_policy(),
+        print(json.dumps({"dry_run": True, "role": HOST_ROLE, "policy": host_policy(), "would_replace": [h["id"] for h in mine],
                           "run_instances": dict(request, UserData=base64.b64decode(request["UserData"]).decode())}, indent=1))
         return
     vc.aws("iam", "create-role", "--role-name", HOST_ROLE, "--assume-role-policy-document", json.dumps(trust),
@@ -821,6 +842,9 @@ def main() -> int:
     s = sub.add_parser("status"); s.add_argument("--manifest", default=""); s.set_defaults(run=status)
     s = sub.add_parser("local-pass"); s.add_argument("--manifest", default=""); s.set_defaults(run=lambda a: vc.watch(argparse.Namespace(dry=True, once=True)))
     s = sub.add_parser("host-launch"); s.add_argument("--commit", required=True); s.add_argument("--type", default="t4g.small")
+    s.add_argument("--replace", action="store_true",
+                   help="terminate this pass's live controller host first (required after the pass manifest grew; "
+                        "the new host restores the spend accounting from host/controller-state.json)")
     s.add_argument("--hard-stop-usd", type=float, default=0); s.add_argument("--dry-run", action="store_true"); s.set_defaults(run=host_launch)
     s = sub.add_parser("host-stop"); s.set_defaults(run=host_stop)
     s = sub.add_parser("residual"); s.add_argument("--manifest", default=""); s.set_defaults(run=residual)
