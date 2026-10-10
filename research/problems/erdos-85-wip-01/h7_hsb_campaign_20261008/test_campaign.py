@@ -330,7 +330,7 @@ class ControllerStop(unittest.TestCase):
                 patch.object(cc, "put_json", lambda key, obj: calls.append(key)), \
                 patch.object(cc.vc, "aws", lambda *a, **k: calls.append(("aws",) + a) or ""), \
                 patch.object(cc.vc, "stop", lambda a: calls.append("stop")), \
-                patch.object(cc.vc, "aws_json", lambda *a: {"Fleets": [{"FleetId": "fleet-1", "Tags": [{"Key": "project", "Value": cc.vc.TAG}]}]}), \
+                patch.object(cc.vc, "aws_json", lambda *a: calls.append(("aws",) + a) or ({"Successful": [{"FleetId": "fleet-1"}], "Unsuccessful": []} if a[1] == "delete-fleets" else {"Fleets": [{"FleetId": "fleet-1", "Tags": [{"Key": "project", "Value": cc.vc.TAG}]}]})), \
                 patch.object(cc.vc, "instances", lambda: [{"id": "i-1", "state": "running"}]), \
                 patch.object(cc.vc, "row_filter", lambda rows, states: [r for r in rows if r["state"] in states]), \
                 patch.object(cc, "MANIFEST", [{"id": "x"}]), tempfile.TemporaryDirectory() as tmp, \

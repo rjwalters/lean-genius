@@ -579,3 +579,19 @@ The last six profile leaves were the slowest and change the capped-leaf picture
 * **Residual load is not measured**: no leaf has been run beyond 2 h. At 4–12 h each, 270 leaves
   are 1,100–3,200 CPU-hours ($19–55 on spot); 800 leaves at 12 h would be 9,600 CPU-hours ($166).
   A leaf that exceeds 12 h needs the split of section 4.6 (the lemma exists, the tooling does not).
+
+## 9. Operator rulings and residual pass (2026-10-09/10)
+
+* **Budget:** Robb, 2026-10-09: a TOTAL ceiling of **$300** for H7 (main + residual + split). The main
+  pass's $160 hard stop is unchanged. Residual pass hard stop $100; split pass hard stop $60.
+* **Release:** Robb, 2026-10-09: "I really want to have a settled drop". There is no conditional release.
+  The release tag and the publication sequence wait until H7 is fully certified (every leaf, or a split
+  of it, plus the 28 covers).
+* **Residual pass launched beside the main pass** (operator, 2026-10-09 23:27Z): `--pass residual`
+  (bda60d92132), 194 SOLVER_TIMEOUT leaves snapshotted at 23:10Z (manifest sha 20da71d9…), 12 h cap,
+  16 GB heap, spot. The first nodes were reclaimed after 20 min; spot rarely holds a 12 h solve.
+* **Split route chosen** (Robb, 2026-10-10, over on-demand): hard leaves are split per
+  `sevenHighT0CanonicalHsbLeafChecked_of_split` into sub-leaves short enough for spot (aca9cc9d043).
+* **Extending a pass manifest** (codex 53158): the controller host fetches the manifest once. A larger
+  manifest therefore needs a REPLACED controller host (accounting preserved) as well as setup + launch.
+  Otherwise the old host stops the pass when its original rows finish.

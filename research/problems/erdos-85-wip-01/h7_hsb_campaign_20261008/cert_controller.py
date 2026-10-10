@@ -354,11 +354,31 @@ def terminate_pass_fleet() -> dict:
     ids = [f["FleetId"] for f in fleets["Fleets"]
            if any(t["Key"] == "project" and t["Value"] == vc.TAG for t in f.get("Tags", []))]
     if ids:
-        vc.aws("ec2", "delete-fleets", "--fleet-ids", *ids, "--terminate-instances")
+        reply = vc.aws_json("ec2", "delete-fleets", "--fleet-ids", *ids, "--terminate-instances")
+        # EC2 can return HTTP success with per-fleet failures. Keep the watch alive
+        # to retry; killing instances alone lets a maintain fleet replace them.
+        succeeded = {f["FleetId"] for f in reply.get("Successful", [])}
+        missing = sorted(set(ids) - succeeded)
+        if reply.get("Unsuccessful") or missing:
+            raise RuntimeError(f"fleet deletion incomplete: missing={missing}, errors={reply.get('Unsuccessful', [])}")
     live = [row["id"] for row in vc.row_filter(vc.instances(), {"pending", "running", "stopping", "stopped"})]
     if live:
         vc.aws("ec2", "terminate-instances", "--instance-ids", *live)
     return {"deleted_fleets": ids, "terminated": live}
+
+
+def stop_pass(_args) -> None:
+    """Checked shutdown for operator, budget and completion stops of this H7 pass."""
+    vc.STRIPE.mkdir(parents=True, exist_ok=True)
+    marker = vc.STRIPE / "STOP.txt"
+    marker.write_text(f"controller stop {vc.now().isoformat()}\n")
+    vc.aws("s3", "cp", "--only-show-errors", str(marker), f"s3://{vc.BUCKET}/{vc.PREFIX}/control/STOP")
+    print(json.dumps(terminate_pass_fleet()))
+
+
+# The inherited one_pass resolves stop in vc's globals, so budget stops also
+# use the checked path without changing other campaigns' source files.
+vc.stop = stop_pass
 
 
 def launch(a) -> None:
