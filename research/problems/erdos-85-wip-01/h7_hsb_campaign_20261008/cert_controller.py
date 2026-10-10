@@ -636,12 +636,12 @@ def split_manifest(a) -> None:
     if not leaves:
         print(json.dumps(dict(info, leaves=0)))
         return
-    specs, rows = split_leaf.generate(INPUTS, leaves, a.depth, a.jobs)
+    specs, rows = split_leaf.generate(INPUTS, leaves, a.depth, a.jobs, a.cubes)
     raw = split_leaf.manifest_bytes(rows)
     out = STRIPE / "split-manifest.jsonl"
     out.write_bytes(raw)
     (STRIPE / "split-specs.jsonl").write_text("".join(json.dumps(s, sort_keys=True) + "\n" for s in specs))
-    print(json.dumps(dict(info, leaves=len(specs), depth=a.depth, rows=len(rows), subleaves=sum(s["subleaves"] for s in specs),
+    print(json.dumps(dict(info, leaves=len(specs), depth=a.depth, cubes=a.cubes, rows=len(rows), subleaves=sum(s["subleaves"] for s in specs),
                           split_manifest=str(out), sha256=hashlib.sha256(raw).hexdigest(),
                           next=f"cp {out} {STRIPE / SPLIT_MANIFEST}")))
 
@@ -849,7 +849,9 @@ def main() -> int:
     s = sub.add_parser("host-stop"); s.set_defaults(run=host_stop)
     s = sub.add_parser("residual"); s.add_argument("--manifest", default=""); s.set_defaults(run=residual)
     s = sub.add_parser("split-manifest", help="(--pass split) build split-manifest.jsonl from main/residual ledgers")
-    s.add_argument("--depth", type=int, default=6); s.add_argument("--jobs", type=int, default=4)
+    s.add_argument("--depth", type=int, default=16, help="maximum decisions per cube")
+    s.add_argument("--cubes", type=int, default=64, help="best-first cubes per leaf (0: uniform tree of --depth)")
+    s.add_argument("--jobs", type=int, default=4)
     s.add_argument("--mode", choices=["uncertified", "residual-failed"], default="uncertified")
     s.add_argument("--leaves-file", default="", help="explicit leaves instead of the ledgers ('cube n' lines or JSON rows)")
     s.add_argument("--limit", type=int, default=0); s.add_argument("--sync", action="store_true",

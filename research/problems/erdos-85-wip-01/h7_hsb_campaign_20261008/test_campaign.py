@@ -497,12 +497,12 @@ class SplitBytes(unittest.TestCase):
 
 
 class SplitGenerator(unittest.TestCase):
-    def run_generate(self, leaves, depth=3):
+    def run_generate(self, leaves, depth=3, cubes=0):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             files = make_inputs(root)
             with SyntheticCube(root, files):
-                specs, rows = split_leaf.generate(root, leaves, depth, jobs=1)
+                specs, rows = split_leaf.generate(root, leaves, depth, jobs=1, cubes=cubes)
                 raw = split_leaf.manifest_bytes(rows)
         return specs, rows, raw, files
 
@@ -523,9 +523,20 @@ class SplitGenerator(unittest.TestCase):
             self.assertTrue(all(r["split_sha256"] == s["split_sha256"] for r in mine))
             self.assertTrue(1 <= len(s["clauses"]) <= 8)
 
+    def test_best_first_is_deterministic(self):
+        a = self.run_generate([("cube_syn", 2), ("cube_syn", 0)], depth=8, cubes=6)
+        b = self.run_generate([("cube_syn", 0), ("cube_syn", 2)], depth=8, cubes=6)
+        self.assertEqual(a[2], b[2])
+        self.assertTrue(all(1 <= len(s["clauses"]) <= 6 and s["cubes"] == 6 for s in a[0]))
+
     def test_cubes_cover_every_model_of_the_leaf(self):
         """Brute force: every model of the leaf CNF falsifies some blocking clause (sub-cover UNSAT)."""
-        specs, _, _, files = self.run_generate([("cube_syn", 0), ("cube_syn", 1), ("cube_syn", 2)], depth=4)
+        for depth, cubes in ((4, 0), (8, 6)):
+            with self.subTest(depth=depth, cubes=cubes):
+                self.check_cover(depth, cubes)
+
+    def check_cover(self, depth, cubes):
+        specs, _, _, files = self.run_generate([("cube_syn", 0), ("cube_syn", 1), ("cube_syn", 2)], depth=depth, cubes=cubes)
         base = [[int(t) for t in l.split()[:-1]] for l in (files["body"] + files["hsb"]).splitlines()]
         base = [c for c in base if all(abs(x) <= 14 for x in c)]
         for s in specs:
