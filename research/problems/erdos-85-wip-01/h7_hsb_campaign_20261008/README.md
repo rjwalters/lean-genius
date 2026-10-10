@@ -595,3 +595,97 @@ The last six profile leaves were the slowest and change the capped-leaf picture
 * **Extending a pass manifest** (codex 53158): the controller host fetches the manifest once. A larger
   manifest therefore needs a REPLACED controller host (accounting preserved) as well as setup + launch.
   Otherwise the old host stops the pass when its original rows finish.
+
+## 10. Leaf split: tooling and measurement (claude, 2026-10-10)
+
+**What is certified.** For a leaf `(cube, n)` with leaf CNF `L` and blocking list `B = [c_0, …]`
+(`sevenHighT0CanonicalHsbLeafChecked_of_split`):
+
+| file | bytes | Lean term |
+|---|---|---|
+| sub-leaf `i` | `L` ++ one unit `-x 0` per literal `x` of `c_i`, in order | `SevenHighT0CanonicalHsbSubLeafChecked 3 F i rows_n c_i` (`cnfClauseNegUnits c_i`) |
+| sub-cover | `L` ++ every `c_i` verbatim, in list order | `SevenHighT0CanonicalHsbSubCoverChecked 3 F i rows_n B` (`cnfOfClauseList B`) |
+
+Header `p cnf 17633 <clauses of L + appended lines>`. **Identity:** `EmitSplit.lean` prints the appended
+tails (and the leaf's own units) from the Lean definitions and proves by `rfl` that both formulas are
+`cube ++ hsb ++ leaf units ++ tail` as clause arrays; `check_split_identity.sh` compared 7 splits
+(7 × 66 segments) with `h7_common`: all identical (`receipts/split_identity_lean.json`, builder job
+`20261010T003138-…-4904`). `cube ++ hsb` is covered by the earlier identity receipts.
+
+**Files.** `split_leaf.py` (generator), `h7_common.Cube.{subleaf,subcover}_{sha256,tail}` /
+`write_sub*` (bytes; sha256 without writing the CNF), `cert_item` / `cert_batch` / `cert_worker` kinds
+`subleaf` (check-then-discard, like leaves) and `subcover` (CNF + LRAT retained under
+`subcovers-retained/`, like covers), `collect_receipts.split_complete`, `cert_controller --pass split`
+(`split-manifest`), `split_measure.py`, `EmitSplit.lean`, `check_split_identity.{py,sh}`.
+
+**Split choice.** A row split of the next empty (option b) is too fine: after unit propagation the 4th
+empty of `cube_F9_t0` leaf 1 still has 27 free edge variables for a 4-element row (C(27,4) = 17,550
+candidates). The generator uses k-variable cubes chosen by lookahead (option a): primary edge variables
+1..861 only, both signs probed by unit propagation, failed literals forced, score (pT+1)(pF+1),
+UP-refuted nodes omitted (so the sub-cover is refuted by propagation, about 2 s with cake_lpr). It is a
+pure function of the pinned inputs, the leaf and the depth (~55 s per leaf on the Mac). The split sha256
+covers `(cube, leaf, leaf CNF sha256, B)`; row ids `<cube>-s<leaf>-<sha8>-<i|cover>` (no '.'), so a
+deeper re-split of the same leaf never collides with an earlier one. The collector accepts a leaf
+through a split only with a good sub-cover whose `B` hashes to its split sha256 and a good sub-leaf for
+every `c ∈ B` with the same split sha256; every CNF sha256 is recomputed from the pinned inputs.
+
+**Measurement** (builder r7g.4xlarge, 13 slots, pinned CaDiCaL + cake_lpr, 6 GB heap, 1 h cap per item;
+`receipts/split_measure_uniform_d6.jsonl`, `receipts/split_measure_bestfirst_c64.jsonl`). CPU-h =
+solver + checker over all sub-leaves (capped items counted at the cap, so lower bounds). "Unsplit" is the
+same leaf in the residual pass (12 h cap, certified):
+
+| leaf | unsplit | uniform depth 6 (64) | capped | max item | best-first 64 cubes | capped |
+|---|---:|---:|---:|---:|---:|---:|
+| F7_t0 1 | 2.04 | 1.04 | 0 | 12 min | – | – |
+| F8_t0 4 | 2.54 | 3.24 | 0 | 57 min | 9.83 | 1 |
+| F8_t4 3 | 3.39 | ≥2.99 | 2 | cap | 5.43 | 1 |
+| F9_t0 1 | 2.51 | ≥5.27 | 3 | cap | 6.93 | 1 |
+| F9_t0 2 | 4.21 | – | – | – | 7.17 | 2 |
+| F9_t0 3 | 4.54 | – | – | – | 8.70 | 2 |
+| F9_t0 4 | 5.89 | – | – | – | 9.98 | 2 |
+
+Sub-covers: 10/10 certified, 0.3 s solver + 2 s checker each. No SAT, no rejection, no heap exhaustion.
+
+* Splitting does **not** save CPU: uniform depth 6 costs 0.5–2.1× the unsplit leaf, best-first 1.7–3.9×.
+  Its only benefit is item length, and even at 64 sub-leaves 0–3 items per leaf still pass 1 h
+  (the mostly-negative branches of the lookahead tree; proofs ~5.5 GB at the cap).
+* Uniform beats best-first; the controller default is `--depth 6 --cubes 0`.
+* The residual pass is doing better than expected: 111/194 certified at 06:07Z for $11.84, unsplit
+  leaves 1.5 CPU-h median, 5.9 max.
+
+**Cost extrapolation** (spot $0.04 per slot-hour, utilisation 0.85): uniform depth 6 averages ≥3.1
+CPU-h per hard leaf (≈3.5 with the capped items run to 2 h): 200 leaves ≈ 700 CPU-h ≈ **$33**,
+300 leaves ≈ 1,050 CPU-h ≈ **$49**. Best-first ≈ 8 CPU-h per leaf ≈ $113 for 300 (over the $60 stop).
+The same leaves unsplit average 1.95 CPU-h (residual receipts), i.e. $15–23 for 200–300 leaves if spot
+lets them finish.
+
+**Recommendation.** Do not split leaves the residual pass is certifying. Use `--pass split` only for
+leaves that remain uncertified after the residual pass (12 h cap or repeated reclaims): uniform depth 6
+and a 2 h cap; a leaf with a capped sub-leaf is re-split at depth 8 (new split sha, new ids; the
+collector takes any complete split).
+
+**Runbook (operator go required; not launched).** `C="python3 cert_controller.py --pass split"`.
+
+```bash
+$C split-manifest --sync --mode residual-failed            # or --mode uncertified / --leaves-file F; --depth 6 default
+cp <STRIPE>/split-manifest.jsonl <STRIPE>/split-pass-manifest.jsonl
+$C freight                                                 # inputs + cake_lpr + split-pass-manifest.jsonl -> split prefix
+$C setup --commit <sha>                                    # 2 h cap, 6 GB heap; also adds the split prefix to the shared worker role
+$C launch 1 --fleet-type maintain
+$C host-launch --commit <sha>                              # $60 hard stop
+$C status
+python3 collect_receipts.py --inputs <Stripe>/inputs --results <Stripe>/run/results --out <Stripe>/collected
+#   (point --results at a directory holding main, residual and split results together)
+```
+
+**Growing the manifest of a running split pass** (codex 53158): write the larger manifest (rows may only
+be added), then `freight`, `setup --commit <sha>` (new launch-template version), `launch N`, and
+`host-launch --replace --commit <sha>`. `host-launch` refuses while a host of the pass is live; `--replace`
+terminates it first, and the new host restores `host/controller-state.json`, so the spend accounting and
+the $60 stop continue.
+
+**Lean-side gap.** None for the external (check-then-discard, emitter identity) evidence: the split
+receipts instantiate `SubLeafChecked` / `SubCoverChecked`, and `…LeafChecked_of_split` yields the leaf.
+For the optional LRAT replay route (codex's `…HsbLrat.lean`) two analogues are missing:
+`SevenHighT0CanonicalHsbSub{Leaf,Cover}LratChecked` + `.unsat`, the same shape as the leaf/cover ones.
+Retained sub-cover proofs (`subcovers-retained/`) are what that route would replay.
