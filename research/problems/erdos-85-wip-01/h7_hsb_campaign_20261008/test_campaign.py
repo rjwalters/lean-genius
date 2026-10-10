@@ -390,5 +390,346 @@ class Pins(unittest.TestCase):
             self.assertEqual(set(cert_item.tools(str(fake), str(fake), allow_unpinned=True)), {"cadical", "cake_lpr"})
 
 
+# ---- split leaves (README section 9) ---------------------------------------------------------------
+
+import hashlib  # noqa: E402
+import random  # noqa: E402
+
+import split_leaf  # noqa: E402
+
+REAL_INPUTS = Path("/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h7-hsb-campaign-20261008/inputs")
+
+
+def independent_cnf(files: dict, leaf: int, appended: list[str]) -> bytes:
+    """Build a split CNF from the raw input files without h7_common: header with the counted clause
+    lines, canonical body, cube units, hsb, the leaf's positive units (cover line negated, in order),
+    then the appended lines."""
+    cover_line = files["cover"].splitlines()[leaf].split()
+    assert cover_line[-1] == b"0"
+    leaf_units = [f"{-int(t)} 0\n".encode() for t in cover_line[:-1]]
+    lines = (files["body"] + files["units"] + files["hsb"]).splitlines(keepends=True) + leaf_units + \
+        [x.encode() for x in appended]
+    return f"p cnf 17633 {len(lines)}\n".encode() + b"".join(lines)
+
+
+def make_inputs(root: Path, name: str = "cube_syn", nvars: int = 14, seed: int = 7) -> dict:
+    """A tiny synthetic cube in the inputs layout. Variables nvars+1..861 are fixed by cube units, so the
+    split can only branch on 1..nvars."""
+    rng = random.Random(seed)
+    body = "".join(" ".join(str(rng.choice((-1, 1)) * v) for v in rng.sample(range(1, nvars + 1), 3)) + " 0\n"
+                   for _ in range(2 * nvars)).encode()
+    units = "".join(f"{v} 0\n" for v in range(nvars + 1, 862)).encode()
+    hsb = b"-1 -2 3 0\n4 5 0\n"
+    cover = b"-6 -7 0\n-8 -9 0\n-6 -9 0\n"
+    files = {"body": body, "units": units, "hsb": hsb, "cover": cover}
+    root.mkdir(parents=True, exist_ok=True)
+    (root / "canonical.body").write_bytes(body)
+    for ext in ("units", "hsb", "cover"):
+        (root / f"{name}.{ext}").write_bytes(files[ext])
+    (root / "inputs.json").write_text(json.dumps({"cubes": {name: {"mask": 0}}}))
+    return files
+
+
+class SyntheticCube:
+    """Context manager: hc.Cube / CUBES / CUBE_CLAUSES patched for a synthetic inputs directory."""
+
+    def __init__(self, root: Path, files: dict, name: str = "cube_syn"):
+        n_body = files["body"].count(b"\n") + files["units"].count(b"\n")
+        real = hc.Cube
+        self.patches = [patch.object(hc, "CUBE_CLAUSES", n_body), patch.object(hc, "CUBES", [name]),
+                        patch.object(hc, "Cube", lambda inputs, nm, verify=True: real(inputs, nm, verify=False))]
+
+    def __enter__(self):
+        for p in self.patches:
+            p.start()
+
+    def __exit__(self, *exc):
+        for p in reversed(self.patches):
+            p.stop()
+
+
+class SplitBytes(unittest.TestCase):
+    """Sub-leaf / sub-cover CNF bytes = an independent construction of the Lean terms
+    leafSatCnf ++ cnfClauseNegUnits c  and  leafSatCnf ++ cnfOfClauseList blocking."""
+
+    def test_synthetic_subleaf_and_subcover_bytes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            files = make_inputs(root)
+            with SyntheticCube(root, files):
+                cube = hc.Cube(root, "cube_syn")
+                for leaf in range(3):
+                    clause = [-5, 7, -12]  # Lean literals (4,false),(6,true),(11,false)
+                    # cnfClauseNegUnits flips each literal: units 5, -7, 12 in clause order
+                    want = independent_cnf(files, leaf, ["5 0\n", "-7 0\n", "12 0\n"])
+                    out = root / "s.cnf"
+                    cube.write_subleaf(leaf, clause, out)
+                    self.assertEqual(out.read_bytes(), want)
+                    self.assertEqual(cube.subleaf_sha256(leaf, clause), hashlib.sha256(want).hexdigest())
+                    blocking = [[-5, 7], [5, -7, 3], [11]]
+                    want = independent_cnf(files, leaf, ["-5 7 0\n", "5 -7 3 0\n", "11 0\n"])
+                    cube.write_subcover(leaf, blocking, out)
+                    self.assertEqual(out.read_bytes(), want)
+                    self.assertEqual(cube.subcover_sha256(leaf, blocking), hashlib.sha256(want).hexdigest())
+
+    def test_bad_clauses_are_refused(self):
+        for bad in ([], [0], [17634], [3, -3], [2, 2], "1 2", [1.0]):
+            with self.assertRaises(ValueError, msg=repr(bad)):
+                hc.check_clause(bad)
+
+    @unittest.skipUnless((REAL_INPUTS / "inputs.json").is_file(), "pinned inputs not on this host")
+    def test_real_inputs_subleaf_and_subcover_bytes(self):
+        cube = hc.Cube(REAL_INPUTS, "cube_F9_t0")  # verifies every pinned hash of the cube
+        files = {"body": (REAL_INPUTS / "canonical.body").read_bytes(), "units": (REAL_INPUTS / "cube_F9_t0.units").read_bytes(),
+                 "hsb": (REAL_INPUTS / "cube_F9_t0.hsb").read_bytes(), "cover": (REAL_INPUTS / "cube_F9_t0.cover").read_bytes()}
+        leaf_cnf = independent_cnf(files, 1, [])
+        self.assertEqual(hashlib.sha256(leaf_cnf).hexdigest(), cube.leaf_sha256(1))
+        clause = [-158, -153, 266, -860]
+        want = independent_cnf(files, 1, ["158 0\n", "153 0\n", "-266 0\n", "860 0\n"])
+        self.assertEqual(cube.subleaf_sha256(1, clause), hashlib.sha256(want).hexdigest())
+        blocking = [[-158], [158, -153], [158, 153]]
+        want = independent_cnf(files, 1, ["-158 0\n", "158 -153 0\n", "158 153 0\n"])
+        self.assertEqual(cube.subcover_sha256(1, blocking), hashlib.sha256(want).hexdigest())
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "c.cnf"
+            cube.write_subcover(1, blocking, out)
+            self.assertEqual(hc.sha_file(out), hashlib.sha256(want).hexdigest())
+
+
+class SplitGenerator(unittest.TestCase):
+    def run_generate(self, leaves, depth=3):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            files = make_inputs(root)
+            with SyntheticCube(root, files):
+                specs, rows = split_leaf.generate(root, leaves, depth, jobs=1)
+                raw = split_leaf.manifest_bytes(rows)
+        return specs, rows, raw, files
+
+    def test_manifest_is_deterministic_and_order_independent(self):
+        a = self.run_generate([("cube_syn", 0), ("cube_syn", 2), ("cube_syn", 1)])
+        b = self.run_generate([("cube_syn", 1), ("cube_syn", 0), ("cube_syn", 2)])
+        self.assertEqual(a[2], b[2])
+        specs, rows = a[0], a[1]
+        self.assertEqual([s["leaf"] for s in specs], [0, 1, 2])
+        self.assertEqual(len({r["id"] for r in rows}), len(rows))
+        self.assertFalse(any("." in r["id"] for r in rows))
+        for s in specs:
+            mine = [r for r in rows if r["leaf"] == s["leaf"]]
+            self.assertEqual(mine[0]["kind"], "subcover")
+            self.assertEqual(mine[0]["clauses"], s["clauses"])
+            self.assertEqual([r["clause"] for r in mine[1:]], s["clauses"])
+            self.assertEqual([r["index"] for r in mine[1:]], list(range(len(s["clauses"]))))
+            self.assertTrue(all(r["split_sha256"] == s["split_sha256"] for r in mine))
+            self.assertTrue(1 <= len(s["clauses"]) <= 8)
+
+    def test_cubes_cover_every_model_of_the_leaf(self):
+        """Brute force: every model of the leaf CNF falsifies some blocking clause (sub-cover UNSAT)."""
+        specs, _, _, files = self.run_generate([("cube_syn", 0), ("cube_syn", 1), ("cube_syn", 2)], depth=4)
+        base = [[int(t) for t in l.split()[:-1]] for l in (files["body"] + files["hsb"]).splitlines()]
+        base = [c for c in base if all(abs(x) <= 14 for x in c)]
+        for s in specs:
+            units = [-int(t) for t in files["cover"].splitlines()[s["leaf"]].split()[:-1]]
+            models = 0
+            for bits in range(1 << 14):
+                val = lambda x: ((bits >> (abs(x) - 1)) & 1) == (1 if x > 0 else 0)  # noqa: E731
+                if not all(val(u) for u in units) or not all(any(val(x) for x in c) for c in base):
+                    continue
+                models += 1
+                self.assertTrue(any(not any(val(x) for x in c) for c in s["clauses"]), (s["leaf"], bits))
+            self.assertGreater(models, 0)
+
+
+class SplitFakeCube:
+    def __init__(self, *args, **kwargs):
+        self.name = args[1] if len(args) > 1 else "cube_a"
+        self.meta = {"cover_cnf_sha256": "a" * 64}
+        self.n_leaves = 2
+
+    def leaf_sha256(self, leaf):
+        return {0: "b" * 64, 1: "d" * 64}[leaf]
+
+    def subleaf_sha256(self, leaf, clause):
+        hc.check_clause(clause)
+        return hashlib.sha256(json.dumps(["sub", leaf, clause]).encode()).hexdigest()
+
+    def subcover_sha256(self, leaf, clauses):
+        return hashlib.sha256(json.dumps(["cov", leaf, clauses]).encode()).hexdigest()
+
+
+class SplitCollector(unittest.TestCase):
+    """Leaf 1 of cube_a is certified only through a complete split; leaf 0 and the cover directly."""
+    B = [[-3, -4], [-3, 4], [3]]
+
+    def receipts(self, mutate=None):
+        cube = SplitFakeCube(None, "cube_a")
+        sha = hc.split_sha256("cube_a", 1, cube.leaf_sha256(1), self.B)
+        ok = {"status": "CERTIFIED", "binaries": {"cadical": collector.CADICAL, "cake_lpr": CAKE},
+              "checker": {"verified_line": True, "cpu_seconds": 1}, "solver": {"returncode": 20, "cpu_seconds": 2, "conflicts": 5},
+              "host": "h", "proof": {"checker_closed_early": False, "bytes": 10, "sha256": "c" * 64}}
+        rows = [dict(ok, cube="cube_a", kind="cover", leaf=None, cnf_sha256="a" * 64),
+                dict(ok, cube="cube_a", kind="leaf", leaf=0, cnf_sha256="b" * 64),
+                dict(ok, cube="cube_a", kind="subcover", leaf=1, split_sha256=sha, clauses=self.B,
+                     cnf_sha256=cube.subcover_sha256(1, self.B))]
+        rows += [dict(ok, cube="cube_a", kind="subleaf", leaf=1, split_sha256=sha, index=i, clause=c,
+                      cnf_sha256=cube.subleaf_sha256(1, c)) for i, c in enumerate(self.B)]
+        if mutate:
+            mutate(rows)
+        return rows
+
+    def collect(self, rows):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "in").mkdir()
+            (root / "res").mkdir()
+            (root / "in" / "inputs.json").write_text("{}\n")
+            (root / "res" / "f.jsonl.zst").write_bytes(b"x")
+            decoded = "".join(json.dumps(r) + "\n" for r in rows).encode()
+            argv = ["collect_receipts.py", "--inputs", str(root / "in"), "--results", str(root / "res"), "--out", str(root / "out")]
+            real_run = subprocess.run
+
+            def fake_run(cmd, *a, **k):
+                if cmd[0] == "zstd" and "-dc" in cmd:
+                    return subprocess.CompletedProcess([], 0, stdout=decoded)
+                return real_run(cmd, *a, **k)
+            with patch.object(collector.hc, "CUBES", ["cube_a"]), patch.object(collector.hc, "Cube", SplitFakeCube), \
+                    patch.object(collector.subprocess, "run", fake_run), patch.object(sys, "argv", argv), \
+                    contextlib.redirect_stdout(io.StringIO()) as out:
+                rc = collector.main()
+            summary = json.loads(out.getvalue())
+            split_tsv = (root / "out" / "cube_a.split-receipts.tsv.zst").is_file()
+        return rc, summary["cubes"]["cube_a"], split_tsv
+
+    def test_complete_split_certifies_the_leaf(self):
+        rc, c, split_tsv = self.collect(self.receipts())
+        self.assertEqual(rc, 0)
+        self.assertTrue(c["complete"])
+        self.assertEqual((c["certified_leaves"], c["split_leaves"], c["split_items"]), (2, 1, 4))
+        self.assertTrue(split_tsv)
+
+    def test_incomplete_or_mismatched_splits_do_not(self):
+        def drop_subleaf(rows):
+            rows.pop()
+
+        def other_split_sha(rows):
+            rows[-1]["split_sha256"] = "e" * 64
+
+        def cover_list_not_the_split(rows):
+            rows[2]["clauses"] = self.B[:2]  # cnf sha recomputed would differ, and the split sha no longer matches
+
+        def cover_list_tampered_consistently(rows):  # sha256 of the CNF fits the new list, but split sha does not
+            rows[2]["clauses"] = self.B[:2]
+            rows[2]["cnf_sha256"] = SplitFakeCube(None, "cube_a").subcover_sha256(1, self.B[:2])
+
+        def subleaf_wrong_clause(rows):
+            rows[-1]["clause"] = [-3, 5]
+            rows[-1]["cnf_sha256"] = SplitFakeCube(None, "cube_a").subleaf_sha256(1, [-3, 5])
+
+        def subleaf_cnf_sha_wrong(rows):
+            rows[-1]["cnf_sha256"] = "0" * 64
+
+        def subcover_unapproved_checker(rows):
+            rows[2]["binaries"] = dict(rows[2]["binaries"], cake_lpr="0" * 64)
+
+        def subleaf_not_verified(rows):
+            rows[3]["checker"] = {"verified_line": False, "cpu_seconds": 1}
+
+        def no_subcover(rows):
+            del rows[2]
+
+        for m in (drop_subleaf, other_split_sha, cover_list_not_the_split, cover_list_tampered_consistently,
+                  subleaf_wrong_clause, subleaf_cnf_sha_wrong, subcover_unapproved_checker, subleaf_not_verified, no_subcover):
+            with self.subTest(m.__name__):
+                rc, c, _ = self.collect(self.receipts(m))
+                self.assertEqual(rc, 1)
+                self.assertFalse(c["complete"])
+                self.assertEqual((c["certified_leaves"], c["split_leaves"], c["missing_leaves"]), (1, 0, 1))
+
+    def test_sat_subleaf_is_an_alarm(self):
+        def sat(rows):
+            rows.append(dict(rows[-1], status="SOLVER_SAT"))
+        rc, c, _ = self.collect(self.receipts(sat))
+        self.assertEqual(c["alarm_receipts"], 1)
+        self.assertFalse(c["complete"])
+
+
+class SplitBatch(unittest.TestCase):
+    """cert_batch passes the manifest row to cert_item for split kinds, and requires retention for sub-covers."""
+
+    def test_subleaf_and_subcover_rows(self):
+        calls = []
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+
+            def fake_certify(cube, kind, leaf, work, bins, cap, heap_mb, keep_logs=False, split=None):
+                calls.append((kind, leaf, split["id"]))
+                return {"cube": "cube_a", "kind": kind, "leaf": leaf, "status": "CERTIFIED"}
+
+            def fake_retained(cube, retain, bins, cap, heap_mb, split=None):
+                calls.append(("retained", split["leaf"], split["id"]))
+                return {"cube": "cube_a", "kind": "subcover", "leaf": split["leaf"], "status": "CERTIFIED"}
+
+            class Cube(SplitFakeCube):
+                pass
+            bins = {k: {"path": k, "sha256": v} for k, v in hc.PINNED_BINARIES.items()}
+            sub = {"id": "cube_a-s00001-abcdef01-002", "cube": "cube_a", "kind": "subleaf", "leaf": 1, "index": 2,
+                   "clause": [3], "split_sha256": "f" * 64, "subleaves": 3}
+            cov = {"id": "cube_a-s00001-abcdef01-cover", "cube": "cube_a", "kind": "subcover", "leaf": 1,
+                   "clauses": [[-3], [3]], "split_sha256": "f" * 64, "subleaves": 2}
+            for row, extra in ((sub, []), (cov, ["--retain-covers", str(root / "ret")])):
+                argv = ["cert_batch.py", "--inputs", str(root), "--batch", json.dumps(row), "--out", str(root / f"{row['kind']}.jsonl"),
+                        "--work", str(root / "w"), *extra]
+                with patch.object(cert_batch.hc, "Cube", Cube), patch.object(cert_batch.cert_item, "certify", fake_certify), \
+                        patch.object(cert_batch.cert_item, "certify_cover_retained", fake_retained), \
+                        patch.object(cert_batch.cert_item, "tools", return_value=bins), patch.object(sys, "argv", argv):
+                    self.assertEqual(cert_batch.main(), 0)
+            self.assertEqual(calls, [("subleaf", 1, sub["id"]), ("retained", 1, cov["id"])])
+            self.assertEqual(hc.row_items(sub), 1)
+            self.assertEqual(hc.row_items(cov), 1)
+
+
+class SplitPass(unittest.TestCase):
+    def test_split_pass_has_its_own_prefix_tag_and_stop(self):
+        import cert_controller as cc
+        saved = (cc.vc.PREFIX, cc.vc.BASE_PREFIX, cc.vc.TAG, cc.vc.LT_NAME, cc.vc.STRIPE, cc.vc.BASE_STRIPE,
+                 cc.vc.HARD_STOP_USD, dict(cc.vc.PASS), cc.PASS_NAME)
+        try:
+            cc.select_pass("split")
+            self.assertEqual(cc.vc.PREFIX, "sat49/h7hsb-20261008-split")
+            self.assertEqual(cc.vc.TAG, "e85-h7hsb-20261008-split")
+            self.assertEqual(cc.vc.LT_NAME, cc.vc.TAG)
+            self.assertEqual(cc.vc.HARD_STOP_USD, 60.0)
+            self.assertTrue(str(cc.vc.STRIPE).endswith("run-split"))
+            self.assertNotIn(cc.vc.PREFIX, (cc.MAIN_PREFIX, cc.RESIDUAL_PREFIX, cc.CANARY_PREFIX))
+            self.assertIn(cc.SPLIT_PREFIX, cc.ALL_PREFIXES)
+            self.assertIn(cc.SPLIT_TAG, cc.ALL_TAGS)
+        finally:
+            (cc.vc.PREFIX, cc.vc.BASE_PREFIX, cc.vc.TAG, cc.vc.LT_NAME, cc.vc.STRIPE, cc.vc.BASE_STRIPE,
+             cc.vc.HARD_STOP_USD, pass_, cc.PASS_NAME) = saved
+            cc.vc.PASS.clear()
+            cc.vc.PASS.update(pass_)
+
+    def test_uncertified_leaves_from_main_and_residual_ledgers(self):
+        import cert_controller as cc
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for d, ledgers in (("run", [{"id": "cube_F7_t0-h0000", "cube": "cube_F7_t0", "kind": "leaves", "status": "INCOMPLETE",
+                                         "not_certified": [{"leaf": 1, "status": "SOLVER_TIMEOUT"}, {"leaf": 2, "status": "SOLVER_TIMEOUT"},
+                                                           {"leaf": 3, "status": "CHECK_HEAP_EXHAUSTED"}]},
+                                        {"id": "cube_F9_t0-h0000", "cube": "cube_F9_t0", "kind": "leaves", "status": "CERTIFIED",
+                                         "not_certified": []}]),
+                               ("run-residual", [{"id": "cube_F7_t0-r00001", "cube": "cube_F7_t0", "kind": "leaves", "status": "CERTIFIED"},
+                                                 {"id": "cube_F7_t0-r00002", "cube": "cube_F7_t0", "kind": "leaves", "status": "INCOMPLETE"}])):
+                (root / d / "ledger").mkdir(parents=True)
+                for k, l in enumerate(ledgers):
+                    (root / d / "ledger" / f"{l['id']}.i-x.{k}.json").write_text(json.dumps(l))
+            with patch.object(cc, "STRIPE", root):
+                leaves, info = cc.uncertified_leaves("uncertified")
+                failed, _ = cc.uncertified_leaves("residual-failed")
+        self.assertEqual(leaves, [("cube_F7_t0", 2), ("cube_F7_t0", 3)])
+        self.assertEqual(failed, [("cube_F7_t0", 2)])
+        self.assertEqual(info["residual_certified"], 1)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

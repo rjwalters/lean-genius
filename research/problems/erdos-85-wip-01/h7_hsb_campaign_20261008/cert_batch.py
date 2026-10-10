@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Certify one claim unit (a batch of leaves of one cube, or one cover CNF). One process per
+"""Certify one claim unit (a batch of leaves of one cube, one cover CNF, or one split sub-leaf / sub-cover). One process per
 batch: the cube's pinned bytes (cube ++ hsb, ~10 MB) are loaded and verified once and reused for
 every leaf, so the per-leaf cost is one file write + one solver parse + one checker parse.
 
@@ -34,7 +34,27 @@ import h7_common as hc  # noqa: E402
 def items_of(row: dict) -> list:
     if row["kind"] == "cover":
         return [None]
+    if row["kind"] in ("subleaf", "subcover"):  # one split item per row; the item key is the leaf index
+        return [row["leaf"]]
     return list(row["leaves"]) if "leaves" in row else list(range(row["start"], row["end"]))
+
+
+def expected_sha(cube: hc.Cube, row: dict, kind: str, leaf) -> str | None:
+    """The CNF sha256 an item of this row must have, recomputed from the pinned inputs (None: invalid)."""
+    try:
+        if kind == "cover":
+            return cube.meta["cover_cnf_sha256"]
+        if not (isinstance(leaf, int) and 0 <= leaf < cube.n_leaves):
+            return None
+        if kind == "leaf":
+            return cube.leaf_sha256(leaf)
+        if kind == "subleaf":
+            return cube.subleaf_sha256(leaf, row["clause"])
+        if kind == "subcover":
+            return cube.subcover_sha256(leaf, row["clauses"])
+    except (KeyError, ValueError):
+        return None
+    return None
 
 
 def main() -> int:
@@ -49,14 +69,15 @@ def main() -> int:
     p.add_argument("--cake-lpr", default="cake_lpr")
     p.add_argument("--carry", type=Path)
     p.add_argument("--stop-file", type=Path)
-    p.add_argument("--retain-covers", type=Path, help="cover rows: keep exact CNF + LRAT proof bytes here (never used for leaves)")
+    p.add_argument("--retain-covers", type=Path, help="cover and subcover rows: keep exact CNF + LRAT proof bytes here (never used for leaves or subleaves)")
     p.add_argument("--allow-unpinned-binaries", action="store_true", help="tests only (fake checker)")
     a = p.parse_args()
     row = json.loads(a.batch)
     bins = cert_item.tools(a.cadical, a.cake_lpr, a.allow_unpinned_binaries)
     want_bins = {k: v["sha256"] for k, v in bins.items()}
     cube = hc.Cube(a.inputs, row["cube"])  # verifies every pinned hash of this cube
-    kind = "cover" if row["kind"] == "cover" else "leaf"
+    kind = {"cover": "cover", "subleaf": "subleaf", "subcover": "subcover"}.get(row["kind"], "leaf")
+    split = row if kind in ("subleaf", "subcover") else None
     carried = {}
     if a.carry and a.carry.is_file():
         for line in a.carry.read_text().splitlines():
@@ -64,10 +85,10 @@ def main() -> int:
                 r = json.loads(line)
             except ValueError:
                 continue  # a torn last line of a partial upload
-            want = cube.meta["cover_cnf_sha256"] if kind == "cover" else (
-                cube.leaf_sha256(r["leaf"]) if isinstance(r.get("leaf"), int) and 0 <= r["leaf"] < cube.n_leaves else None)
+            want = expected_sha(cube, row, kind, r.get("leaf"))
             if (r.get("status") == "CERTIFIED" and r.get("cube") == cube.name and r.get("kind") == kind
-                    and r.get("cnf_sha256") == want and r.get("binaries") == want_bins
+                    and want is not None and r.get("cnf_sha256") == want and r.get("binaries") == want_bins
+                    and (split is None or r.get("split_sha256") == split["split_sha256"])
                     and r.get("checker", {}).get("verified_line") is True):
                 carried[r["leaf"]] = r
     a.work.mkdir(parents=True, exist_ok=True)
@@ -76,13 +97,17 @@ def main() -> int:
         for leaf in items_of(row):
             if a.stop_file and a.stop_file.exists():
                 return 4
-            if leaf in carried and not (kind == "cover" and a.retain_covers):  # a retained cover is always re-run
+            retained = kind in ("cover", "subcover") and a.retain_covers
+            if leaf in carried and not retained:  # a retained (sub-)cover is always re-run
                 rec = dict(carried[leaf], carried=True)
             else:
-                if kind == "cover" and a.retain_covers:
-                    rec = cert_item.certify_cover_retained(cube, a.retain_covers, bins, a.cap, a.heap_mb)
+                if retained:
+                    rec = cert_item.certify_cover_retained(cube, a.retain_covers, bins, a.cap, a.heap_mb, split=split)
+                elif kind == "subcover":
+                    raise SystemExit("a subcover row needs --retain-covers")
                 else:
-                    rec = cert_item.certify(cube, kind, leaf, a.work, bins, a.cap, a.heap_mb)
+                    extra = {"split": split} if split else {}  # leaf and cover calls are unchanged
+                    rec = cert_item.certify(cube, kind, leaf, a.work, bins, a.cap, a.heap_mb, **extra)
             rec["batch"] = row["id"]
             out.write(json.dumps(rec, sort_keys=True) + "\n")
             out.flush()

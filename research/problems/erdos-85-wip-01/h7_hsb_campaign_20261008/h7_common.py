@@ -123,6 +123,83 @@ class Cube:
     def write_cover(self, path: Path) -> None:
         path.write_bytes(self.cover_cnf())
 
+    # ---- split leaves (README section 9; Lean: ...HsbLeafSplit.lean) ----------------------------
+    # leaf CNF       L = cube ++ hsb ++ positive units of cover line n        (...HsbLeafSatCnf)
+    # sub-leaf CNF     = L ++ cnfClauseNegUnits c : one unit `-x 0` per literal x of c, in c's order
+    #                                                         (SevenHighT0CanonicalHsbSubLeafChecked)
+    # sub-cover CNF    = L ++ cnfOfClauseList blocking : each clause verbatim, in list order
+    #                                                         (SevenHighT0CanonicalHsbSubCoverChecked)
+    # A blocking clause is a list of DIMACS literals (Lean literal (v, b) <-> DIMACS +-(v + 1)).
+
+    @property
+    def leaf_clauses(self) -> int:
+        return CUBE_CLAUSES + self.n_hsb + self.leaf_units
+
+    def _prefix_hash(self, clauses: int):
+        """sha256 state of header(clauses) ++ cube ++ hsb (cached per clause count)."""
+        cache = self.__dict__.setdefault("_prefix_cache", {})
+        if clauses not in cache:
+            cache[clauses] = hashlib.sha256(header(clauses) + self.body)
+        return cache[clauses].copy()
+
+    def subleaf_tail(self, leaf: int, clause: list[int]) -> bytes:
+        check_clause(clause)
+        return self.leaf_tail(leaf) + "".join(f"{-x} 0\n" for x in clause).encode()
+
+    def subleaf_sha256(self, leaf: int, clause: list[int]) -> str:
+        h = self._prefix_hash(self.leaf_clauses + len(clause))
+        h.update(self.subleaf_tail(leaf, clause))
+        return h.hexdigest()
+
+    def write_subleaf(self, leaf: int, clause: list[int], path: Path) -> None:
+        with open(path, "wb") as f:
+            f.write(header(self.leaf_clauses + len(clause)))
+            f.write(self.body)
+            f.write(self.subleaf_tail(leaf, clause))
+
+    def subcover_tail(self, leaf: int, clauses: list[list[int]]) -> bytes:
+        if not clauses:
+            raise ValueError("empty blocking list")
+        for c in clauses:
+            check_clause(c)
+        return self.leaf_tail(leaf) + "".join(" ".join(str(x) for x in c) + " 0\n" for c in clauses).encode()
+
+    def subcover_sha256(self, leaf: int, clauses: list[list[int]]) -> str:
+        h = self._prefix_hash(self.leaf_clauses + len(clauses))
+        h.update(self.subcover_tail(leaf, clauses))
+        return h.hexdigest()
+
+    def write_subcover(self, leaf: int, clauses: list[list[int]], path: Path) -> None:
+        with open(path, "wb") as f:
+            f.write(header(self.leaf_clauses + len(clauses)))
+            f.write(self.body)
+            f.write(self.subcover_tail(leaf, clauses))
+
+
+def check_clause(clause: list[int]) -> None:
+    """A blocking clause of a split: non-empty, DIMACS literals of existing variables, no repeated
+    variable. (Lean accepts any clause; this keeps the header's variable count and the CNF sane.)"""
+    if not isinstance(clause, list) or not clause:
+        raise ValueError(f"bad blocking clause {clause!r}")
+    if any(type(x) is not int or x == 0 or abs(x) > VARIABLES for x in clause):
+        raise ValueError(f"bad literal in blocking clause {clause!r}")
+    if len({abs(x) for x in clause}) != len(clause):
+        raise ValueError(f"repeated variable in blocking clause {clause!r}")
+
+
+SPLIT_SCHEMA = "erdos85-h7-hsb-split-v1"
+
+
+def split_spec_bytes(cube: str, leaf: int, leaf_cnf_sha256: str, clauses: list[list[int]]) -> bytes:
+    """Canonical bytes that the split sha256 is taken of: the leaf (cube, index, CNF sha256) and the
+    ordered blocking-clause list. Nothing else (no method, no depth): the split is exactly this list."""
+    return json.dumps({"schema": SPLIT_SCHEMA, "cube": cube, "leaf": leaf, "leaf_cnf_sha256": leaf_cnf_sha256,
+                       "clauses": clauses}, sort_keys=True, separators=(",", ":")).encode()
+
+
+def split_sha256(cube: str, leaf: int, leaf_cnf_sha256: str, clauses: list[list[int]]) -> str:
+    return sha_bytes(split_spec_bytes(cube, leaf, leaf_cnf_sha256, clauses))
+
 
 HEAD_LEAVES = 1024  # leaves [0, 1024) of every cube: the hard head (README section 6)
 HEAD_BATCH = 4
@@ -168,8 +245,11 @@ def canary_rows(inputs_meta: dict) -> list[dict]:
     return rows
 
 
+SINGLE_ITEM_KINDS = ("cover", "subleaf", "subcover")
+
+
 def row_items(row: dict) -> int:
-    return 1 if row["kind"] == "cover" else (len(row["leaves"]) if "leaves" in row else row["end"] - row["start"])
+    return 1 if row["kind"] in SINGLE_ITEM_KINDS else (len(row["leaves"]) if "leaves" in row else row["end"] - row["start"])
 
 
 def manifest_bytes(inputs_meta: dict, batch: int = BATCH) -> bytes:

@@ -167,7 +167,7 @@ def run_batch(args, store, slot: int, row: dict) -> dict:
     if args.allow_unpinned_binaries:
         cmd.append("--allow-unpinned-binaries")
     retain = out_dir / "retain"
-    if row["kind"] == "cover":  # covers only: exact CNF + proof bytes are kept under covers-retained/
+    if row["kind"] in ("cover", "subcover"):  # (sub-)covers only: exact CNF + proof bytes are kept under *-retained/
         cmd += ["--retain-covers", str(retain)]
     proc = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=open(out_dir / "batch.err", "wb"))
     last = time.time()
@@ -188,11 +188,14 @@ def run_batch(args, store, slot: int, row: dict) -> dict:
                 log(f"slot={slot} {bid} partial upload/STOP check failed: {type(e).__name__}: {e}")
     recs = [json.loads(l) for l in receipts.read_text().splitlines()] if receipts.is_file() else []
     retained = []
-    if row["kind"] == "cover" and rc == 0 and (retain / f"{row['cube']}.cover.json").is_file():
+    stem = (f"{row['cube']}.cover" if row["kind"] == "cover" else
+            f"{row['cube']}-s{row['leaf']:05d}.subcover" if row["kind"] == "subcover" else None)  # = cert_item.retained_stem
+    if stem and rc == 0 and (retain / f"{stem}.json").is_file():
         # Upload order: CNF, proof, then the metadata that names their hashes (its presence = complete).
+        area = "covers-retained" if row["kind"] == "cover" else "subcovers-retained"
         for ext in ("cnf", "lrat", "json"):
-            f = retain / f"{row['cube']}.cover.{ext}"
-            store.put(f"covers-retained/{f.name}", f)
+            f = retain / f"{stem}.{ext}"
+            store.put(f"{area}/{f.name}", f)
             retained.append(f.name)
     if rc == 4:  # stopped between items: keep the partial, write no ledger, leave the claim for the controller
         if recs:
@@ -201,7 +204,7 @@ def run_batch(args, store, slot: int, row: dict) -> dict:
     statuses: dict[str, int] = {}
     for r in recs:
         statuses[r["status"]] = statuses.get(r["status"], 0) + 1
-    expected = 1 if row["kind"] == "cover" else (len(row["leaves"]) if "leaves" in row else row["end"] - row["start"])
+    expected = hc.row_items(row)
     certified = statuses.get("CERTIFIED", 0)
     if rc == 3 or any(s in statuses for s in ("CHECK_FAILED", "SOLVER_SAT")):
         status = "ALARM"
@@ -221,7 +224,7 @@ def run_batch(args, store, slot: int, row: dict) -> dict:
     if not put_with_retry(store, key, packed):
         raise RuntimeError(f"result key exists: {key}")
     err = (out_dir / "batch.err").read_text(errors="replace")[-2000:]
-    ledger = {"id": bid, "cube": row["cube"], "kind": row["kind"], "node": args.iid, "instance_type": args.itype,
+    ledger = {"id": bid, "cube": row["cube"], "kind": row["kind"], "split_sha256": row.get("split_sha256"), "node": args.iid, "instance_type": args.itype,
               "slot": slot, "status": status, "items": expected, "ran": len(recs), "certified": certified,
               "carried": sum(1 for r in recs if r.get("carried")), "statuses": statuses, "batch_returncode": rc,
               "not_certified": [{"leaf": r["leaf"], "status": r["status"]} for r in recs if r["status"] != "CERTIFIED"],
@@ -409,7 +412,7 @@ def main() -> int:
     if args.plan:
         taken = store.listing("claims/") if (args.local_store or os.path.exists(AWS)) else set()
         free = [r for r in rows if r["id"] not in taken]
-        items = sum(1 if r["kind"] == "cover" else (len(r["leaves"]) if "leaves" in r else r["end"] - r["start"]) for r in free)
+        items = sum(hc.row_items(r) for r in free)
         print(json.dumps({"plan": True, "manifest_rows": len(rows), "claimed": len(rows) - len(free), "claimable": len(free),
                           "claimable_items": items, "slots": args.slots, "heap_mb": args.heap_mb, "cap": args.cap,
                           "first": [r["id"] for r in free[:args.slots]], "store": str(args.local_store or f"s3://{BUCKET}/{PREFIX}")}))

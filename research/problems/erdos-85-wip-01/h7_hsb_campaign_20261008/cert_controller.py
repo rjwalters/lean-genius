@@ -19,7 +19,9 @@ Subcommands
   host-launch --commit C        start the detached controller host (t4g.small, watches until it acts)
   host-stop                     terminate the controller host
   (--pass canary before the subcommand selects the canary's own prefix, tag and launch template;
-   --pass residual likewise, for residual leaves run beside the main pass: see select_pass)
+   --pass residual likewise, for residual leaves run beside the main pass; --pass split for split
+   sub-leaves / sub-covers: see select_pass)
+  split-manifest [--depth D]    (--pass split) split the uncertified leaves of the synced main/residual ledgers
   residual                      list items without a CERTIFIED receipt (from synced ledgers)
   release-errors [--yes]        release the claims of batches whose only ledgers are ERROR
   transition                    (--pass canary) canary -> main record: markers, terminal fleet, receipt reconciliation
@@ -68,9 +70,14 @@ vc.PASS.update(name="h7hsb", lifetime=LIFETIME)
 MAIN_PREFIX, MAIN_TAG = vc.PREFIX, vc.TAG
 CANARY_PREFIX, CANARY_TAG = MAIN_PREFIX + "-canary", MAIN_TAG + "-canary"
 RESIDUAL_PREFIX, RESIDUAL_TAG = MAIN_PREFIX + "-residual", MAIN_TAG + "-residual"
-ALL_PREFIXES, ALL_TAGS = (MAIN_PREFIX, CANARY_PREFIX, RESIDUAL_PREFIX), [MAIN_TAG, CANARY_TAG, RESIDUAL_TAG]
+SPLIT_PREFIX, SPLIT_TAG = MAIN_PREFIX + "-split", MAIN_TAG + "-split"
+ALL_PREFIXES = (MAIN_PREFIX, CANARY_PREFIX, RESIDUAL_PREFIX, SPLIT_PREFIX)
+ALL_TAGS = [MAIN_TAG, CANARY_TAG, RESIDUAL_TAG, SPLIT_TAG]
 RESIDUAL_MANIFEST = "residual-pass-manifest.jsonl"  # under STRIPE; shipped as freight/<same name>
 RESIDUAL_HARD_STOP_USD = 100.0
+SPLIT_MANIFEST = "split-pass-manifest.jsonl"  # under STRIPE; written as split-manifest.jsonl by `--pass split split-manifest`
+SPLIT_HARD_STOP_USD = 60.0  # campaign ceiling 300 USD, about 80 spent before the split pass (2026-10-10)
+PASS_MANIFESTS = {"residual": RESIDUAL_MANIFEST, "split": SPLIT_MANIFEST}
 PASS_NAME = "main"
 HOST_ROLE = "Erdos85H7HsbController"
 HOST_TAG = "e85-h7hsb-controller"  # NOT the fleet tag: `stop` terminates fleet-tagged instances only
@@ -101,6 +108,15 @@ def select_pass(name: str) -> None:
         vc.STRIPE = vc.BASE_STRIPE = STRIPE / "run-residual"
         vc.HARD_STOP_USD = RESIDUAL_HARD_STOP_USD
         vc.PASS.update(name="h7hsb-residual", lifetime=LIFETIME)
+    if name == "split":
+        # Split leaves (README section 9): one row per sub-leaf and one per sub-cover, under their own prefix,
+        # tag, launch template and Stripe directory, like the residual pass; may run beside main and residual.
+        # Row ids carry the split sha, so a later manifest (more leaves, or a deeper re-split) reuses the prefix.
+        vc.PREFIX = vc.BASE_PREFIX = SPLIT_PREFIX
+        vc.TAG = vc.LT_NAME = SPLIT_TAG
+        vc.STRIPE = vc.BASE_STRIPE = STRIPE / "run-split"
+        vc.HARD_STOP_USD = SPLIT_HARD_STOP_USD
+        vc.PASS.update(name="h7hsb-split", lifetime=LIFETIME)
 
 
 if os.environ.get("E85_AWS_NO_PROFILE"):  # on the controller host: instance role, no named profile
@@ -164,6 +180,8 @@ def setup(a) -> None:
     a.lifetime = a.lifetime or LIFETIME
     if PASS_NAME == "residual":
         a.residual = True
+    if PASS_NAME == "split" and not a.manifest:
+        raise SystemExit("the split pass needs its manifest")
     if a.residual:
         if not a.manifest:
             raise SystemExit("--residual needs --manifest <residual-manifest.jsonl>")
@@ -502,6 +520,8 @@ vc.one_pass = one_pass
 
 def residual(a) -> None:
     """Items that have no CERTIFIED receipt in any synced ledger; writes a single-leaf-per-row manifest."""
+    if PASS_NAME == "split":
+        raise SystemExit("not for the split pass: re-split uncertified leaves with `--pass split split-manifest`")
     best: dict[str, dict] = {}
     for l in ledgers():
         if l["id"] not in best or l.get("status") == "CERTIFIED":
@@ -524,6 +544,78 @@ def residual(a) -> None:
     out.write_text("".join(json.dumps(r, sort_keys=True) + "\n" for r in rows))
     print(json.dumps({"batches_without_ledger_or_incomplete": len(missing), "first": missing[:10], "residual_items": len(rows),
                       "residual_manifest": str(out), "sha256": hashlib.sha256(out.read_bytes()).hexdigest()}))
+
+
+def _ledger_dir_best(d: Path) -> dict[str, dict]:
+    best: dict[str, dict] = {}
+    for p in sorted((d / "ledger").glob("*.json")):
+        try:
+            l = json.loads(p.read_text())
+        except Exception:  # noqa: BLE001
+            continue
+        if l["id"] not in best or l.get("status") == "CERTIFIED":
+            best[l["id"]] = l
+    return best
+
+
+def uncertified_leaves(mode: str) -> tuple[list[tuple[str, int]], dict]:
+    """Leaves to split, from the synced main and residual ledgers (read only):
+      uncertified      leaves listed as not CERTIFIED by a main-pass ledger and with no CERTIFIED residual ledger
+      residual-failed  of those, only leaves whose residual row has a terminal non-CERTIFIED ledger
+    A main row without any ledger is still running and contributes nothing."""
+    main_best = _ledger_dir_best(STRIPE / "run")
+    res_best = _ledger_dir_best(STRIPE / "run-residual")
+    cand: set[tuple[str, int]] = set()
+    for l in main_best.values():
+        if l.get("status") != "CERTIFIED" and l.get("kind") == "leaves":
+            for item in l.get("not_certified", []):
+                if isinstance(item.get("leaf"), int):
+                    cand.add((l["cube"], item["leaf"]))
+    res_status: dict[tuple[str, int], str] = {}
+    for rid, l in res_best.items():
+        if "-r" in rid and l.get("kind") == "leaves":
+            cube, _, n = rid.rpartition("-r")
+            res_status[(cube, int(n))] = l.get("status")
+    out = [x for x in cand if res_status.get(x) != "CERTIFIED"]
+    if mode == "residual-failed":
+        out = [x for x in out if res_status.get(x) in ("INCOMPLETE", "ERROR")]
+    order = {c: i for i, c in enumerate(hc.CUBES)}
+    out.sort(key=lambda x: (order[x[0]], x[1]))
+    return out, {"main_ledger_rows": len(main_best), "residual_ledger_rows": len(res_best),
+                 "main_uncertified_leaves": len(cand), "residual_certified": sum(1 for x in cand if res_status.get(x) == "CERTIFIED"),
+                 "residual_terminal_failed": sum(1 for x in cand if res_status.get(x) in ("INCOMPLETE", "ERROR"))}
+
+
+def split_manifest(a) -> None:
+    """Build the split-pass manifest (README section 9): pick the leaves (uncertified_leaves, or --leaves-file),
+    run split_leaf.py's deterministic generator on the pinned inputs, write <STRIPE>/split-manifest.jsonl and
+    <STRIPE>/split-specs.jsonl. Nothing in AWS is changed (--sync only downloads ledgers). To use it, copy it to
+    <STRIPE>/split-pass-manifest.jsonl (a later manifest for the same prefix may only ADD rows)."""
+    if PASS_NAME != "split":
+        raise SystemExit("run as: --pass split split-manifest")
+    import split_leaf
+    if a.sync:
+        for prefix, d in ((MAIN_PREFIX, STRIPE / "run"), (RESIDUAL_PREFIX, STRIPE / "run-residual")):
+            (d / "ledger").mkdir(parents=True, exist_ok=True)
+            vc.aws("s3", "sync", "--only-show-errors", f"s3://{vc.BUCKET}/{prefix}/ledger/", str(d / "ledger"))
+    if a.leaves_file:
+        ns = argparse.Namespace(leaf=[], leaves_file=a.leaves_file)
+        leaves, info = split_leaf.parse_leaves(ns), {"source": a.leaves_file}
+    else:
+        leaves, info = uncertified_leaves(a.mode)
+    if a.limit:
+        leaves = leaves[:a.limit]
+    if not leaves:
+        print(json.dumps(dict(info, leaves=0)))
+        return
+    specs, rows = split_leaf.generate(INPUTS, leaves, a.depth, a.jobs)
+    raw = split_leaf.manifest_bytes(rows)
+    out = STRIPE / "split-manifest.jsonl"
+    out.write_bytes(raw)
+    (STRIPE / "split-specs.jsonl").write_text("".join(json.dumps(s, sort_keys=True) + "\n" for s in specs))
+    print(json.dumps(dict(info, leaves=len(specs), depth=a.depth, rows=len(rows), subleaves=sum(s["subleaves"] for s in specs),
+                          split_manifest=str(out), sha256=hashlib.sha256(raw).hexdigest(),
+                          next=f"cp {out} {STRIPE / SPLIT_MANIFEST}")))
 
 
 def release_errors(a) -> None:
@@ -560,10 +652,11 @@ def host_user_data(a) -> str:
                                          "/research/problems/erdos-85-wip-01/phase_b_h1_verdict_cloud_20260921/controller.py"])
     extra = f"--hard-stop-usd {a.hard_stop_usd}" if a.hard_stop_usd else ""
     residual_fetch = ""
-    if PASS_NAME == "residual":  # the watch needs the pass manifest to know when the pass is complete
-        residual_fetch = (f"aws s3 cp --only-show-errors $P/freight/{RESIDUAL_MANIFEST} /opt/e85/stripe/{RESIDUAL_MANIFEST} "
-                          f"&& [ \"$(sha256sum /opt/e85/stripe/{RESIDUAL_MANIFEST} | cut -d' ' -f1)\" = \"{manifest_sha(str(STRIPE / RESIDUAL_MANIFEST))}\" ] "
-                          "|| die \"residual manifest\"")
+    if PASS_NAME in PASS_MANIFESTS:  # the watch needs the pass manifest to know when the pass is complete
+        mf = PASS_MANIFESTS[PASS_NAME]
+        residual_fetch = (f"aws s3 cp --only-show-errors $P/freight/{mf} /opt/e85/stripe/{mf} "
+                          f"&& [ \"$(sha256sum /opt/e85/stripe/{mf} | cut -d' ' -f1)\" = \"{manifest_sha(str(STRIPE / mf))}\" ] "
+                          f"|| die \"{PASS_NAME} manifest\"")
     script = f"""#!/bin/bash
 exec >> /var/log/e85-host.log 2>&1
 set -u
@@ -675,10 +768,12 @@ def plan(a) -> None:
 
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--pass", dest="pass_name", choices=["main", "canary", "residual"], default="main",
+    p.add_argument("--pass", dest="pass_name", choices=["main", "canary", "residual", "split"], default="main",
                    help="canary: own S3 prefix / tag / launch template, the 8 pinned rows (386 items), $10 hard stop. "
                         "residual: own prefix / tag / launch template, manifest <STRIPE>/residual-pass-manifest.jsonl, "
-                        "12 h cap, 16 GB heap, $100 hard stop; may run while the main pass is running")
+                        "12 h cap, 16 GB heap, $100 hard stop; may run while the main pass is running. "
+                        "split: own prefix / tag / launch template, manifest <STRIPE>/split-pass-manifest.jsonl "
+                        "(sub-leaf and sub-cover rows), 2 h cap, 6 GB heap, $60 hard stop")
     sub = p.add_subparsers(dest="command", required=True)
     s = sub.add_parser("plan"); s.add_argument("--count", type=int, default=0); s.set_defaults(run=plan)
     s = sub.add_parser("setup"); s.add_argument("--commit", required=True); s.add_argument("--only", default="")
@@ -709,17 +804,26 @@ def main() -> int:
     s.add_argument("--hard-stop-usd", type=float, default=0); s.add_argument("--dry-run", action="store_true"); s.set_defaults(run=host_launch)
     s = sub.add_parser("host-stop"); s.set_defaults(run=host_stop)
     s = sub.add_parser("residual"); s.add_argument("--manifest", default=""); s.set_defaults(run=residual)
+    s = sub.add_parser("split-manifest", help="(--pass split) build split-manifest.jsonl from main/residual ledgers")
+    s.add_argument("--depth", type=int, default=6); s.add_argument("--jobs", type=int, default=4)
+    s.add_argument("--mode", choices=["uncertified", "residual-failed"], default="uncertified")
+    s.add_argument("--leaves-file", default="", help="explicit leaves instead of the ledgers ('cube n' lines or JSON rows)")
+    s.add_argument("--limit", type=int, default=0); s.add_argument("--sync", action="store_true",
+                                                                   help="first download the main and residual ledgers (read only)")
+    s.set_defaults(run=split_manifest)
     s = sub.add_parser("release-errors"); s.add_argument("--manifest", default=""); s.add_argument("--yes", action="store_true"); s.set_defaults(run=release_errors)
     s = sub.add_parser("stop"); s.add_argument("--note", default=""); s.set_defaults(run=stop_cmd)
     a = p.parse_args()
     select_pass(a.pass_name)
-    if PASS_NAME == "residual" and a.command not in ("stop", "host-stop"):
-        if getattr(a, "manifest", "") not in ("", str(STRIPE / RESIDUAL_MANIFEST)):
-            raise SystemExit(f"the residual pass uses {STRIPE / RESIDUAL_MANIFEST}; do not pass another --manifest")
-        if not (STRIPE / RESIDUAL_MANIFEST).exists():
-            raise SystemExit(f"missing {STRIPE / RESIDUAL_MANIFEST} (write it with: --pass main residual, then copy)")
-        a.manifest = str(STRIPE / RESIDUAL_MANIFEST)
-    if a.command not in ("stop", "host-stop"):
+    if PASS_NAME in PASS_MANIFESTS and a.command not in ("stop", "host-stop", "split-manifest"):
+        mf = STRIPE / PASS_MANIFESTS[PASS_NAME]
+        if getattr(a, "manifest", "") not in ("", str(mf)):
+            raise SystemExit(f"the {PASS_NAME} pass uses {mf}; do not pass another --manifest")
+        if not mf.exists():
+            how = "--pass main residual" if PASS_NAME == "residual" else "--pass split split-manifest"
+            raise SystemExit(f"missing {mf} (write it with: {how}, then copy)")
+        a.manifest = str(mf)
+    if a.command not in ("stop", "host-stop", "split-manifest"):
         MANIFEST.extend(hc.canary_rows(inputs_meta()) if PASS_NAME == "canary" else manifest_rows(getattr(a, "manifest", "")))
         vc.PASS["size"] = len(MANIFEST)
     if getattr(a, "hard_stop_usd", 0):

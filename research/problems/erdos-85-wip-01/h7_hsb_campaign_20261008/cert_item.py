@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Certify ONE campaign CNF (a leaf or a cover) of a structural H7/T0 cube, check-then-discard.
+"""Certify ONE campaign CNF (a leaf, a cover, a split sub-leaf or a split sub-cover) of a structural
+H7/T0 cube; leaves and sub-leaves check-then-discard, covers and sub-covers retained.
 
 1. Write the CNF from the pinned in-memory cube (h7_common.Cube), hash the file that the solver
    and the checker will read, and require sha256 == the expected value.
@@ -48,22 +49,40 @@ def tools(cadical: str, cake_lpr: str, allow_unpinned: bool = False) -> dict:
     return out
 
 
-def certify_cover_retained(cube: hc.Cube, retain: Path, bins: dict, cap: int, heap_mb: int) -> dict:
-    """Cover CNFs only (codex, room 53116): keep the exact CNF bytes and the exact binary LRAT proof
-    bytes, so that the cover can later be admitted into Lean. The proof is written to a file by
-    CaDiCaL and that same file is checked by cake_lpr; nothing is streamed. Leaves never use this.
-    Files: <cube>.cover.cnf, <cube>.cover.lrat, <cube>.cover.json (sha256, sizes, depth, extension)."""
+def retained_stem(cube_name: str, kind: str, leaf: int | None = None) -> str:
+    """File stem of a retained CNF/proof pair: <cube>.cover, or <cube>-s<leaf:05d>.subcover."""
+    return f"{cube_name}.cover" if kind == "cover" else f"{cube_name}-s{leaf:05d}.subcover"
+
+
+def certify_cover_retained(cube: hc.Cube, retain: Path, bins: dict, cap: int, heap_mb: int,
+                           split: dict | None = None) -> dict:
+    """Cover CNFs (codex, room 53116) and split sub-cover CNFs (split = the manifest row): keep the
+    exact CNF bytes and the exact binary LRAT proof bytes, so that the (sub-)cover can later be
+    admitted into Lean. The proof is written to a file by CaDiCaL and that same file is checked by
+    cake_lpr; nothing is streamed. Leaves and sub-leaves never use this.
+    Files: <stem>.cnf, <stem>.lrat, <stem>.json (sha256, sizes, depth, extension); stem = retained_stem."""
     import subprocess
-    rec: dict = {"schema": "erdos85-h7-hsb-cert-v1", "cube": cube.name, "kind": "cover", "leaf": None, "depth": hc.DEPTH,
+    kind = "subcover" if split else "cover"
+    leaf = split["leaf"] if split else None
+    rec: dict = {"schema": "erdos85-h7-hsb-cert-v1", "cube": cube.name, "kind": kind, "leaf": leaf, "depth": hc.DEPTH,
                  "started_utc": h1.now(), "host": platform.node(), "cap_seconds": cap,
-                 "binaries": {k: v["sha256"] for k, v in bins.items()}, "expected_cnf_sha256": cube.meta["cover_cnf_sha256"]}
+                 "binaries": {k: v["sha256"] for k, v in bins.items()}}
     try:
+        if split:
+            rec.update(split_fields(cube, split))
+            rec["expected_cnf_sha256"] = cube.subcover_sha256(leaf, split["clauses"])
+        else:
+            rec["expected_cnf_sha256"] = cube.meta["cover_cnf_sha256"]
         retain.mkdir(parents=True, exist_ok=True)
-        cnf, proof, meta = (retain / f"{cube.name}.cover.{e}" for e in ("cnf", "lrat", "json"))
-        tmp = retain / f"{cube.name}.cover.lrat.tmp{os.getpid()}"
-        cube.write_cover(cnf)
+        stem = retained_stem(cube.name, kind, leaf)
+        cnf, proof, meta = (retain / f"{stem}.{e}" for e in ("cnf", "lrat", "json"))
+        tmp = retain / f"{stem}.lrat.tmp{os.getpid()}"
+        if split:
+            cube.write_subcover(leaf, split["clauses"], cnf)
+        else:
+            cube.write_cover(cnf)
         rec["cnf_sha256"], rec["cnf_bytes"] = hc.sha_file(cnf), cnf.stat().st_size
-        if rec["cnf_sha256"] != rec["expected_cnf_sha256"]:
+        if rec["cnf_sha256"] != rec["expected_cnf_sha256"] or (split and split.get("cnf_sha256") not in (None, rec["cnf_sha256"])):
             rec["status"] = "CNF_MISMATCH"
         else:
             t0 = time.time()
@@ -90,7 +109,24 @@ def certify_cover_retained(cube: hc.Cube, retain: Path, bins: dict, cap: int, he
                 rec["status"] = "CERTIFIED" if ok else ("CHECK_HEAP_EXHAUSTED" if "heap space exhausted" in clog else "CHECK_FAILED")
                 if not ok:
                     rec["logs"] = {"cake_lpr.log": clog[-4000:]}
-        if rec["status"] == "CERTIFIED":
+        if rec["status"] == "CERTIFIED" and split:
+            os.replace(tmp, proof)
+            m = cube.meta
+            meta.write_text(json.dumps({
+                "schema": "erdos85-h7-hsb-retained-subcover-v1", "cube": cube.name, "mask": m["mask"], "edge_count": m["edge_count"],
+                "depth": hc.DEPTH, "variables": hc.VARIABLES, "leaf": leaf, "leaf_units": cube.units(leaf),
+                "split_sha256": split["split_sha256"], "blocking_clauses": split["clauses"],
+                "lean_statement": f"SevenHighT0CanonicalHsbSubCoverChecked {hc.DEPTH} F i rows_leaf blocking",
+                "extension": {"order": ["cube", "hsb", "leaf units", "blocking clauses"], "cube_clauses": hc.CUBE_CLAUSES,
+                              "hsb_clauses": cube.n_hsb, "leaf_units": cube.leaf_units, "blocking_clauses": len(split["clauses"]),
+                              "total_clauses": cube.leaf_clauses + len(split["clauses"]), "leaf_cnf_sha256": cube.leaf_sha256(leaf),
+                              "cube_cnf_sha256": m["cube_cnf_sha256"], "hsb_sha256": m["hsb_sha256"]},
+                "cnf": {"file": cnf.name, "sha256": rec["cnf_sha256"], "bytes": rec["cnf_bytes"]},
+                "proof": {"file": proof.name, "sha256": rec["proof"]["sha256"], "bytes": rec["proof"]["bytes"],
+                          "format": "CaDiCaL 3.0.1 binary LRAT (--lrat=true --binary=true)"},
+                "checker": "cake_lpr: s VERIFIED UNSAT (on this exact file pair)", "binaries": rec["binaries"],
+                "solver": rec["solver"], "finished_utc": h1.now(), "host": rec["host"]}, indent=1, sort_keys=True) + "\n")
+        elif rec["status"] == "CERTIFIED":
             os.replace(tmp, proof)
             m = cube.meta
             meta.write_text(json.dumps({
@@ -115,10 +151,28 @@ def certify_cover_retained(cube: hc.Cube, retain: Path, bins: dict, cap: int, he
     return rec
 
 
+def split_fields(cube: hc.Cube, split: dict) -> dict:
+    """Receipt fields that tie a sub-leaf / sub-cover to its split. The split sha256 is recomputed from
+    the leaf's pinned CNF sha256 and the row's blocking list (sub-cover) and must equal the row's."""
+    leaf = split["leaf"]
+    out = {"split_sha256": split["split_sha256"], "subleaves": split["subleaves"], "leaf_units": cube.units(leaf)}
+    if "clauses" in split:
+        if hc.split_sha256(cube.name, leaf, cube.leaf_sha256(leaf), split["clauses"]) != split["split_sha256"]:
+            raise ValueError("split_sha256 does not match the blocking clauses of the row")
+        if len(split["clauses"]) != split["subleaves"]:
+            raise ValueError("subleaves != number of blocking clauses")
+        out["clauses"] = split["clauses"]
+    else:
+        hc.check_clause(split["clause"])
+        out.update(index=split["index"], clause=split["clause"])
+    return out
+
+
 def certify(cube: hc.Cube, kind: str, leaf: int | None, work_root: Path, bins: dict, cap: int, heap_mb: int,
-            keep_logs: bool = False) -> dict:
-    """kind = 'leaf' (leaf index required) or 'cover'. Returns the receipt (never raises)."""
-    ident = f"{cube.name}.{kind}{'' if leaf is None else leaf}"
+            keep_logs: bool = False, split: dict | None = None) -> dict:
+    """kind = 'leaf' (leaf index required), 'cover', or 'subleaf' (split = the manifest row, leaf = its
+    leaf; check-then-discard exactly like a leaf). Returns the receipt (never raises)."""
+    ident = f"{cube.name}.{kind}{'' if leaf is None else leaf}{'' if split is None or 'index' not in split else '-' + str(split['index'])}"
     # Unique per attempt (H1 lesson: a duplicate claim must never touch a live attempt's directory).
     work = work_root / f"{ident}.{os.getpid()}.{time.time_ns()}"
     rec: dict = {"schema": "erdos85-h7-hsb-cert-v1", "cube": cube.name, "kind": kind, "leaf": leaf,
@@ -135,12 +189,19 @@ def certify(cube: hc.Cube, kind: str, leaf: int | None, work_root: Path, bins: d
         elif kind == "cover":
             rec["expected_cnf_sha256"] = cube.meta["cover_cnf_sha256"]
             cube.write_cover(cnf)
+        elif kind == "subleaf":
+            if split is None or split.get("leaf") != leaf:
+                raise ValueError("subleaf needs its manifest row")
+            rec.update(split_fields(cube, split))
+            rec["expected_cnf_sha256"] = cube.subleaf_sha256(leaf, split["clause"])
+            cube.write_subleaf(leaf, split["clause"], cnf)
         else:
             raise ValueError(kind)
         rec["cnf_sha256"] = hc.sha_file(cnf)
         rec["cnf_bytes"] = cnf.stat().st_size
         rec["write_seconds"] = round(time.time() - t0, 3)
-        if rec["cnf_sha256"] != rec["expected_cnf_sha256"]:
+        if rec["cnf_sha256"] != rec["expected_cnf_sha256"] or (split is not None and split.get("cnf_sha256")
+                                                                not in (None, rec["cnf_sha256"])):
             rec["status"] = "CNF_MISMATCH"
         else:
             a = argparse.Namespace(cadical=bins["cadical"]["path"], cake_lpr=bins["cake_lpr"]["path"], cap=cap,
