@@ -1,0 +1,90 @@
+{
+ "all_ok": true,
+ "count": 7,
+ "emitter_sha256": "cf8e77e23cd615c000610d739fa6b81066d68d9a931b9fbca48f7a48b2d7021d",
+ "fixture_sha256": "6c06b78657de1a00906e8e14e8c7536de1a467698edb03c70a8f4b6bb20509b7",
+ "lean_terms": [
+  "SevenHighT0CanonicalHsbSubLeafChecked: leafSatCnf ++ cnfClauseNegUnits c",
+  "SevenHighT0CanonicalHsbSubCoverChecked: leafSatCnf ++ cnfOfClauseList blocking"
+ ],
+ "results": [
+  {
+   "cube": "cube_F7_t0",
+   "emitter_returncode": 0,
+   "expected_segments": 66,
+   "identical": true,
+   "leaf": 1,
+   "mismatched": [],
+   "segments": 66,
+   "split_sha256": "7f7763a2ea385e9356a90475d6b3c0ab18b72513e9141905c5fb58fc90c959e4",
+   "stderr_tail": ""
+  },
+  {
+   "cube": "cube_F8_t0",
+   "emitter_returncode": 0,
+   "expected_segments": 66,
+   "identical": true,
+   "leaf": 4,
+   "mismatched": [],
+   "segments": 66,
+   "split_sha256": "9eb1be6e60516cf02cbc871c249ee4981a9ae9c9cc5551889f95193cfb636c6d",
+   "stderr_tail": ""
+  },
+  {
+   "cube": "cube_F8_t4",
+   "emitter_returncode": 0,
+   "expected_segments": 66,
+   "identical": true,
+   "leaf": 3,
+   "mismatched": [],
+   "segments": 66,
+   "split_sha256": "976622d4a8dd77b8c11bb0653708e745a3d2bcbf132b12c7f7aeb8835e2b019a",
+   "stderr_tail": ""
+  },
+  {
+   "cube": "cube_F9_t0",
+   "emitter_returncode": 0,
+   "expected_segments": 66,
+   "identical": true,
+   "leaf": 1,
+   "mismatched": [],
+   "segments": 66,
+   "split_sha256": "a81f02febf9fb02f2ccc7836d846407b9418ce0a3b0459662d5e81c4a4eebf03",
+   "stderr_tail": ""
+  },
+  {
+   "cube": "cube_F9_t0",
+   "emitter_returncode": 0,
+   "expected_segments": 66,
+   "identical": true,
+   "leaf": 2,
+   "mismatched": [],
+   "segments": 66,
+   "split_sha256": "c4ced33cd32a689375113c330d41235b58ff9dbda4b8ca11dc5c6342f4a56ef3",
+   "stderr_tail": ""
+  },
+  {
+   "cube": "cube_F9_t0",
+   "emitter_returncode": 0,
+   "expected_segments": 66,
+   "identical": true,
+   "leaf": 3,
+   "mismatched": [],
+   "segments": 66,
+   "split_sha256": "582318f3420d9c8bd1352b5b9c631bba83355fa90fc358d2a5534ae1225e35ae",
+   "stderr_tail": ""
+  },
+  {
+   "cube": "cube_F9_t0",
+   "emitter_returncode": 0,
+   "expected_segments": 66,
+   "identical": true,
+   "leaf": 4,
+   "mismatched": [],
+   "segments": 66,
+   "split_sha256": "22531f61646823091ff5c6532eec22831287e47ea18dda9520c6fb87c510826c",
+   "stderr_tail": ""
+  }
+ ],
+ "schema": "erdos85-h7-split-identity-v1"
+}
