@@ -10,13 +10,22 @@ from unittest.mock import patch
 
 import cert_controller as cc
 
+# AWS CLI delete-fleets, Example 1 (not a hand-designed response schema):
+# https://docs.aws.amazon.com/cli/latest/reference/ec2/delete-fleets.html
+SUCCESS_FIXTURE = Path(__file__).with_name("fixtures") / "delete_fleets_success.json"
+FLEET_ID = "fleet-12a34b55-67cd-8ef9-ba9b-9208dEXAMPLE"
+
+
+def successful_deletion():
+    return json.loads(SUCCESS_FIXTURE.read_text())
+
 
 class StopEnforcement(unittest.TestCase):
     def setUp(self):
         self.stack = contextlib.ExitStack()
         self.addCleanup(self.stack.close)
         self.calls = []
-        self.response = {"Successful": [{"FleetId": "fleet-mine"}], "Unsuccessful": []}
+        self.response = successful_deletion()
         self.stack.enter_context(patch.object(cc.vc, "aws", self.aws))
         self.stack.enter_context(patch.object(cc.vc, "instances", return_value=[{"id": "i-mine", "state": "running"}]))
         tmp = self.stack.enter_context(tempfile.TemporaryDirectory())
@@ -27,7 +36,7 @@ class StopEnforcement(unittest.TestCase):
         self.calls.append(args)
         if args[:2] == ("ec2", "describe-fleets"):
             return json.dumps({"Fleets": [
-                {"FleetId": "fleet-mine", "Tags": [{"Key": "project", "Value": cc.vc.TAG}]},
+                {"FleetId": FLEET_ID, "Tags": [{"Key": "project", "Value": cc.vc.TAG}]},
                 {"FleetId": "fleet-other", "Tags": [{"Key": "project", "Value": "another-pass"}]},
             ]})
         if args[:2] == ("ec2", "delete-fleets"):
@@ -35,24 +44,36 @@ class StopEnforcement(unittest.TestCase):
         return "{}"
 
     def fail_delete(self):
-        self.response = {"Successful": [], "Unsuccessful": [
-            {"FleetId": "fleet-mine", "Error": {"Code": "UnauthorizedOperation"}}
+        self.response = {"SuccessfulFleetDeletions": [], "UnsuccessfulFleetDeletions": [
+            {"FleetId": FLEET_ID, "Error": {"Code": "unexpectedError", "Message": "injected deletion failure"}}
         ]}
 
     def test_success_deletes_only_selected_pass(self):
         result = cc.terminate_pass_fleet()
-        self.assertEqual(result, {"deleted_fleets": ["fleet-mine"], "terminated": ["i-mine"]})
+        self.assertEqual(result, {"deleted_fleets": [FLEET_ID], "terminated": ["i-mine"]})
         deletion = next(c for c in self.calls if c[:2] == ("ec2", "delete-fleets"))
         self.assertNotIn("fleet-other", deletion)
         self.assertFalse(any(c[:2] == ("s3", "cp") for c in self.calls))
 
     def test_partial_failure_does_not_report_deleted(self):
         self.fail_delete()
+        with self.assertRaisesRegex(RuntimeError, "unexpectedError"):
+            cc.terminate_pass_fleet()
+
+    def test_failure_array_is_checked_even_with_success_acknowledgement(self):
+        self.response["UnsuccessfulFleetDeletions"] = [
+            {"FleetId": FLEET_ID, "Error": {"Code": "fleetNotInDeletableState", "Message": "conflicting reply"}}
+        ]
+        with self.assertRaisesRegex(RuntimeError, "fleetNotInDeletableState"):
+            cc.terminate_pass_fleet()
+
+    def test_old_invented_response_keys_are_not_success(self):
+        self.response = {"Successful": [{"FleetId": FLEET_ID}], "Unsuccessful": []}
         with self.assertRaises(RuntimeError):
             cc.terminate_pass_fleet()
 
     def test_missing_success_acknowledgement_is_retried(self):
-        self.response = {"Successful": [], "Unsuccessful": []}
+        self.response = {"SuccessfulFleetDeletions": [], "UnsuccessfulFleetDeletions": []}
         with self.assertRaises(RuntimeError):
             cc.terminate_pass_fleet()
 
@@ -91,7 +112,7 @@ class StopEnforcement(unittest.TestCase):
         self.fail_delete()
 
         def next_attempt(_seconds):
-            self.response = {"Successful": [{"FleetId": "fleet-mine"}], "Unsuccessful": []}
+            self.response = successful_deletion()
 
         with patch.object(cc, "_reviewed_one_pass", side_effect=lambda *a: {"utc": "t", "control": ["STOP"]}), \
                 patch.object(cc, "ledgers", return_value=[]), patch.object(cc, "MANIFEST", [{"id": "x"}]), \

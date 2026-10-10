@@ -358,10 +358,10 @@ def terminate_pass_fleet() -> dict:
         reply = vc.aws_json("ec2", "delete-fleets", "--fleet-ids", *ids, "--terminate-instances")
         # EC2 can return HTTP success with per-fleet failures. Keep the watch alive
         # to retry; killing instances alone lets a maintain fleet replace them.
-        succeeded = {f["FleetId"] for f in reply.get("Successful", [])}
+        succeeded = {f["FleetId"] for f in reply.get("SuccessfulFleetDeletions", [])}
         missing = sorted(set(ids) - succeeded)
-        if reply.get("Unsuccessful") or missing:
-            raise RuntimeError(f"fleet deletion incomplete: missing={missing}, errors={reply.get('Unsuccessful', [])}")
+        if reply.get("UnsuccessfulFleetDeletions") or missing:
+            raise RuntimeError(f"fleet deletion incomplete: missing={missing}, errors={reply.get('UnsuccessfulFleetDeletions', [])}")
     live = [row["id"] for row in vc.row_filter(vc.instances(), {"pending", "running", "stopping", "stopped"})]
     if live:
         vc.aws("ec2", "terminate-instances", "--instance-ids", *live)
