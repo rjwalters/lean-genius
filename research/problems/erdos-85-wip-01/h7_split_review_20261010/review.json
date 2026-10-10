@@ -1,0 +1,53 @@
+{
+  "reviewed_commit": "336fabf2b61",
+  "reviewer": "codex",
+  "room_request": 53166,
+  "verdict": "Generator and collector have no correctness finding in this review; fix split artifact retention before production re-splits. Host replacement and kernel admission are not cleared.",
+  "findings": [
+    {
+      "priority": 1,
+      "location": "h7_hsb_campaign_20261008/cert_item.py:52 and cert_worker.py:191",
+      "problem": "Retained subcover filenames use only cube and leaf. Distinct splits have distinct claims/receipts but overwrite the same subcovers-retained CNF, LRAT and JSON objects. Re-splitting a leaf at depth 8 can destroy the depth-6 proof required by a completed split's receipts.",
+      "reproduction": "RetainedSubcovers.test_two_splits_keep_both_exact_artifact_triples calls the real retained certifier and worker upload code into LocalStore for two different blocking lists of one leaf; only one metadata file survives before patch. Solver/checker output is mocked, so this is an artifact-lifecycle test, not proof verification.",
+      "fix": "retain_split_identity.patch puts the full split_sha256 in both producer and uploader filenames. Both artifact triples survive and their exact CNF/proof hashes match the corresponding ledgers after patch.",
+      "migration": "No split fleet was reported launched. If historical subcover artifacts exist, preserve and validate them by split_sha256 from their JSON; the patch does not recover overwritten files or migrate old keys."
+    },
+    {
+      "priority": 1,
+      "location": "h7_hsb_campaign_20261008/cert_controller.py:706 and 739-746; README.md live-manifest growth procedure",
+      "problem": "--replace terminates the old host without verifying a saved checkpoint. The new host silently continues when its state download fails. Mirroring also uses check=False and ignores upload failure, so the existence and currency of the saved state are not guaranteed. A replacement can lose historical spending while preserving the nominal full cap.",
+      "reproduction": "probe_host.py mocks all cloud calls and shows terminate-instances occurs without any checkpoint read; it then runs the exact generated restore condition with a shell aws stub returning 42 and observes continuation to the watch boundary.",
+      "fix_required": "Before retiring the only budget watcher, validate a durable checkpoint and transfer a pinned snapshot that the new host must restore successfully. Distinguish an intentional fresh run with an explicit remaining cap from a replacement. Retire the stale manifest watcher before exposing expanded work; freight/setup/launch followed by replacement leaves a premature-STOP window.",
+      "current_workaround": "Claude's clean-drain, terminal-fleet verification, then fresh batch-2 host with a reduced remaining residual cap avoids relying on --replace. Do not silently restore an unrelated stale checkpoint when using a fresh-accounting budget.",
+      "patch_status": "Not fixed by the retention patch; independent replacement work remains."
+    },
+    {
+      "priority": 1,
+      "location": "h7_hsb_campaign_20261008/README.md:687; proofs/Proofs/Erdos85OrderFortyNineSevenHighT0CanonicalHsbLeafSplit.lean:25-49",
+      "problem": "The statement that external receipts instantiate the Lean SubLeafChecked/SubCoverChecked propositions and leave no Lean-side gap is stronger than the code. These propositions are CNF.Unsat, and the composition theorem takes proofs of them. The collector outputs metadata and does not produce those proofs.",
+      "distinction": "Checked external UNSAT evidence with exact CNF identity supports the external mathematical argument. It does not itself discharge hSeven inside Lean or establish an unconditional kernel-checked capstone. Neither emitter identity nor JSON completeness changes this boundary.",
+      "suggested_documentation": "The external evidence route has the needed split formulas and a Lean-checked conditional composition theorem. The collector establishes receipt completeness and exact CNF binding. Admission of those external checks as Lean Unsat proofs remains separate. The LRAT route still needs SubLeaf/SubCover checker interfaces and successful check proofs for the concrete certificates; retained subcovers alone cannot replay discarded subleaf proofs.",
+      "release_gate": "Do not mark hSeven discharged or remove its hypotheses on the basis of this review."
+    }
+  ],
+  "positive_findings": {
+    "formula_identity": "Subleaf appends each negated blocking literal as a unit, preserving order; subcover appends each blocking clause verbatim, preserving list order. DIMACS +/- (v+1) matches the emitter and the Lean definitions.",
+    "composition": "cnf_unsat_of_blocking_clauses applies to arbitrary blocking clauses. Checked subcover and every checked subleaf suffice; the lookahead generator does not need to be trusted for this implication.",
+    "generator": "200 seeded six-variable formulas, four primary variables and two auxiliary variables; 572 uniform/best-first trees; 8064 model/tree pairs exhaustively checked for exact coverage and disjointness. No lost model, overlap, or leaked trail state found. This is bounded testing, not a general proof of the Python generator.",
+    "collector": "Independent fixtures use actual h7_common hashes over synthetic input bytes. Missing cover/leaf, cross-split and cross-leaf substitutions, altered CNF hashes, changed cover lists, bad solver/checker pins, solver SAT status, missing verification and early checker closure are rejected. Empty and malformed covers do not certify vacuously. Complete receipts remain valid under reordering and duplication.",
+    "identity_receipts": "All seven stored fixtures regenerate byte-for-byte from pinned inputs and split specs; fixture and emitter hashes equal the stored Lean receipt. No fresh Lean elaboration was performed: local Docker is unavailable and this review launched no remote job.",
+    "ordinary_leaves": "Prior room 53169 review found no ordinary-leaf regression; existing Cube methods are AST-identical, five differential batch scenarios agree, and the ledger gains split_sha256:null."
+  },
+  "validation": {
+    "original_review_suite": "6 pass, 1 expected retention failure",
+    "patched_review_suite": "7/7 pass",
+    "patched_campaign_suite": "39/39 pass",
+    "patched_stop_suite": "9/9 pass",
+    "host_failure_probe": "Both defects reproduced offline",
+    "patch_apply_check": "Passes against 336fabf2b61",
+    "replay": "python3 -B research/problems/erdos-85-wip-01/h7_split_review_20261010/run_review.py"
+  },
+  "cloud_mutations": false,
+  "deployment": "Proposed patch only; owner campaign tree and live infrastructure untouched",
+  "lean_proof_status": "No new Lean proof, certificate admission, or global goal completion claimed"
+}
