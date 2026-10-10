@@ -49,9 +49,13 @@ def tools(cadical: str, cake_lpr: str, allow_unpinned: bool = False) -> dict:
     return out
 
 
-def retained_stem(cube_name: str, kind: str, leaf: int | None = None) -> str:
-    """File stem of a retained CNF/proof pair: <cube>.cover, or <cube>-s<leaf:05d>.subcover."""
-    return f"{cube_name}.cover" if kind == "cover" else f"{cube_name}-s{leaf:05d}.subcover"
+def retained_stem(cube_name: str, kind: str, leaf: int | None = None, split_sha256: str | None = None) -> str:
+    """Keep every split's CNF/proof pair under its full split identity."""
+    if kind == "cover":
+        return f"{cube_name}.cover"
+    if not isinstance(split_sha256, str) or len(split_sha256) != 64 or any(x not in "0123456789abcdef" for x in split_sha256):
+        raise ValueError("a retained subcover needs its split sha256")
+    return f"{cube_name}-s{leaf:05d}-{split_sha256}.subcover"
 
 
 def certify_cover_retained(cube: hc.Cube, retain: Path, bins: dict, cap: int, heap_mb: int,
@@ -74,7 +78,7 @@ def certify_cover_retained(cube: hc.Cube, retain: Path, bins: dict, cap: int, he
         else:
             rec["expected_cnf_sha256"] = cube.meta["cover_cnf_sha256"]
         retain.mkdir(parents=True, exist_ok=True)
-        stem = retained_stem(cube.name, kind, leaf)
+        stem = retained_stem(cube.name, kind, leaf, split["split_sha256"] if split else None)
         cnf, proof, meta = (retain / f"{stem}.{e}" for e in ("cnf", "lrat", "json"))
         tmp = retain / f"{stem}.lrat.tmp{os.getpid()}"
         if split:

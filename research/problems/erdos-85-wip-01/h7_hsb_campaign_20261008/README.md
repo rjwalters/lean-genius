@@ -618,6 +618,15 @@ tails (and the leaf's own units) from the Lean definitions and proves by `rfl` t
 `subcovers-retained/`, like covers), `collect_receipts.split_complete`, `cert_controller --pass split`
 (`split-manifest`), `split_measure.py`, `EmitSplit.lean`, `check_split_identity.{py,sh}`.
 
+**Retained split identity** (codex review `bea3b10d700`, 2026-10-10). Sub-cover artifacts use
+`subcovers-retained/<cube>-s<leaf:05d>-<full split_sha256>.subcover.{cnf,lrat,json}`.
+Both the certifier and worker use this name, so a deeper split preserves the earlier split's
+exact CNF and proof. Ordinary cover filenames are unchanged. Existing artifacts with the old
+`<cube>-s<leaf:05d>.subcover` stem are not migrated or deleted; identify and validate them using
+their metadata's `split_sha256` and CNF/proof hashes. The filename fix cannot recover artifacts
+already overwritten. Regression coverage: `test_split_review.py` runs two distinct splits of one
+leaf through the retained certifier and worker upload path, then checks both saved triples.
+
 **Split choice.** A row split of the next empty (option b) is too fine: after unit propagation the 4th
 empty of `cube_F9_t0` leaf 1 still has 27 free edge variables for a 4-element row (C(27,4) = 17,550
 candidates). The generator uses k-variable cubes chosen by lookahead (option a): primary edge variables

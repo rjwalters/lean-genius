@@ -189,7 +189,7 @@ def run_batch(args, store, slot: int, row: dict) -> dict:
     recs = [json.loads(l) for l in receipts.read_text().splitlines()] if receipts.is_file() else []
     retained = []
     stem = (f"{row['cube']}.cover" if row["kind"] == "cover" else
-            f"{row['cube']}-s{row['leaf']:05d}.subcover" if row["kind"] == "subcover" else None)  # = cert_item.retained_stem
+            f"{row['cube']}-s{row['leaf']:05d}-{row['split_sha256']}.subcover" if row["kind"] == "subcover" else None)  # = cert_item.retained_stem
     if stem and rc == 0 and (retain / f"{stem}.json").is_file():
         # Upload order: CNF, proof, then the metadata that names their hashes (its presence = complete).
         area = "covers-retained" if row["kind"] == "cover" else "subcovers-retained"
