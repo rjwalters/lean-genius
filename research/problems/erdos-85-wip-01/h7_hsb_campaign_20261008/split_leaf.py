@@ -48,6 +48,8 @@ import h7_common as hc  # noqa: E402
 PRIMARY_VARIABLES = 861  # C(42, 2): edges among the vertices 7..48 (edgeVar j v, j < 41)
 METHOD = ("lookahead-v1: primary vars 1..861; probe both signs by unit propagation; failed literals forced; "
           "score (pT+1)*(pF+1), ties smallest var; positive branch first; UP/failed-literal-refuted nodes omitted")
+METHOD_V2 = ("lookahead-v2 best-first: as lookahead-v1, but the open node with the fewest assigned variables "
+             "(ties: tree order) is expanded next, until `cubes` cubes or `depth` decisions; cubes in tree order")
 REFUTED = object()
 
 
@@ -183,21 +185,63 @@ class Engine:
         return out
 
 
-def split(engine: Engine, leaf: int, depth: int) -> dict:
-    """The split of one leaf: blocking clauses and the split sha256 (deterministic)."""
+    def bestfirst(self, n_cubes: int, max_depth: int, stats: dict) -> list[list[int]]:
+        """Best-first tree: repeatedly expand the open node with the FEWEST assigned variables (the least
+        constrained, i.e. presumably hardest, sub-problem; ties: tree order) with the lookahead choice above,
+        until there are n_cubes cubes. Refuted nodes are omitted as in tree(). Cubes in tree order."""
+        import heapq
+        root = len(self.trail)
+
+        def key(prefix):
+            return tuple(0 if l > 0 else 1 for l in prefix)
+        heap = [(root, (), [])]
+        final: list[list[int]] = []
+        while heap and len(heap) + len(final) < n_cubes:
+            _, _, prefix = heapq.heappop(heap)
+            self.undo(root)
+            if not all(self.assume(l) for l in prefix):  # cannot happen: the child was pushed after a good assume
+                raise RuntimeError("replay of a pushed node failed")
+            stats["nodes"] += 1
+            r = self.choose()
+            if r is REFUTED:
+                stats["refuted"] += 1
+                continue
+            if r is None or len(prefix) >= max_depth:
+                final.append(prefix)
+                continue
+            mark = len(self.trail)
+            for lit in (r, -r):
+                if self.assume(lit):
+                    heapq.heappush(heap, (len(self.trail), key(prefix + [lit]), prefix + [lit]))
+                else:
+                    stats["refuted"] += 1
+                self.undo(mark)
+        self.undo(root)
+        out = final + [p for _, _, p in heap]
+        return sorted(out, key=key)
+
+
+def split(engine: Engine, leaf: int, depth: int, cubes: int = 0) -> dict:
+    """The split of one leaf: blocking clauses and the split sha256 (deterministic).
+    cubes == 0: uniform lookahead tree of depth `depth` (lookahead-v1);
+    cubes > 0:  best-first lookahead tree with `cubes` cubes and at most `depth` decisions (lookahead-v2)."""
     cube = engine.cube
-    if not 1 <= depth <= 10:
-        raise ValueError("depth must be 1..10")
+    n_cubes = cubes
+    if not 1 <= depth <= 16 or not 0 <= n_cubes <= 1024:
+        raise ValueError("depth must be 1..16, cubes 0..1024")
     if not engine.reset(cube.units(leaf)):
         raise ValueError(f"{cube.name} leaf {leaf}: unit propagation refutes the leaf; no split needed")
     stats = {"nodes": 0, "refuted": 0, "root_assigned": len(engine.trail)}
-    cubes = engine.tree(depth, [], stats)
+    if n_cubes:
+        cubes = engine.bestfirst(n_cubes, depth, stats)
+    else:
+        cubes = engine.tree(depth, [], stats)
     if not cubes or cubes == [[]]:
         raise ValueError(f"{cube.name} leaf {leaf}: split produced no cube ({stats})")
     clauses = [[-l for l in c] for c in cubes]
     leaf_sha = cube.leaf_sha256(leaf)
     return {"schema": hc.SPLIT_SCHEMA, "cube": cube.name, "leaf": leaf, "leaf_cnf_sha256": leaf_sha, "depth": depth,
-            "method": METHOD, "clauses": clauses, "split_sha256": hc.split_sha256(cube.name, leaf, leaf_sha, clauses),
+            "cubes": n_cubes, "method": METHOD_V2 if n_cubes else METHOD, "clauses": clauses, "split_sha256": hc.split_sha256(cube.name, leaf, leaf_sha, clauses),
             "subleaves": len(clauses), "stats": stats}
 
 
@@ -247,13 +291,14 @@ def parse_leaves(a) -> list[tuple[str, int]]:
 
 
 def _work(args: tuple) -> list[dict]:
-    inputs, name, leaves, depth = args
+    inputs, name, leaves, depth, n_cubes = args
     cube = hc.Cube(Path(inputs), name)
     eng = Engine(cube)
-    return [split(eng, n, depth) for n in leaves]
+    return [split(eng, n, depth, n_cubes) for n in leaves]
 
 
-def generate(inputs: Path, leaves: list[tuple[str, int]], depth: int, jobs: int = 1) -> tuple[list[dict], list[dict]]:
+def generate(inputs: Path, leaves: list[tuple[str, int]], depth: int, jobs: int = 1,
+             cubes: int = 0) -> tuple[list[dict], list[dict]]:
     """Specs and manifest rows for the given leaves, in (cube order, leaf) order regardless of jobs."""
     by_cube: dict[str, list[int]] = {}
     for c, n in leaves:
@@ -261,7 +306,7 @@ def generate(inputs: Path, leaves: list[tuple[str, int]], depth: int, jobs: int 
     tasks = []
     for c, ns in by_cube.items():  # chunks of 8 leaves so that --jobs parallelises inside a big cube
         for k in range(0, len(ns), 8):
-            tasks.append((str(inputs), c, ns[k:k + 8], depth))
+            tasks.append((str(inputs), c, ns[k:k + 8], depth, cubes))
     if jobs > 1:
         import multiprocessing as mp
         with mp.get_context("spawn").Pool(jobs) as pool:
@@ -283,7 +328,8 @@ def main() -> int:
     p.add_argument("--inputs", type=Path, required=True)
     p.add_argument("--leaf", action="append", default=[], help="cube:index (repeatable)")
     p.add_argument("--leaves-file", help="lines 'cube index', or JSON rows with cube + leaves/leaf (e.g. a residual manifest)")
-    p.add_argument("--depth", type=int, default=6)
+    p.add_argument("--depth", type=int, default=6, help="uniform tree depth (or, with --cubes, the maximum depth)")
+    p.add_argument("--cubes", type=int, default=0, help="best-first tree with this many cubes (lookahead-v2); 0 = uniform")
     p.add_argument("--out", type=Path, help="manifest (jsonl)")
     p.add_argument("--specs", type=Path, help="split specs with stats (jsonl)")
     p.add_argument("--jobs", type=int, default=1)
@@ -295,7 +341,7 @@ def main() -> int:
     leaves = parse_leaves(a)
     if not leaves:
         raise SystemExit("no leaves given")
-    specs, rows = generate(a.inputs, leaves, a.depth, a.jobs)
+    specs, rows = generate(a.inputs, leaves, a.depth, a.jobs, a.cubes)
     gen = {"split_leaf_py_sha256": hc.sha_file(Path(__file__)), "h7_common_py_sha256": hc.sha_file(HERE / "h7_common.py"),
            "inputs_json_sha256": got}
     raw = manifest_bytes(rows)
@@ -303,7 +349,7 @@ def main() -> int:
         a.out.write_bytes(raw)
     if a.specs:
         a.specs.write_text("".join(json.dumps(dict(s, generator=gen), sort_keys=True) + "\n" for s in specs))
-    print(json.dumps({"leaves": len(specs), "depth": a.depth, "rows": len(rows),
+    print(json.dumps({"leaves": len(specs), "depth": a.depth, "cubes": a.cubes, "rows": len(rows),
                       "subleaves": sum(s["subleaves"] for s in specs),
                       "subleaves_per_leaf": [s["subleaves"] for s in specs][:40],
                       "manifest_sha256": hashlib.sha256(raw).hexdigest(), **gen}))

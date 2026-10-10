@@ -33,6 +33,7 @@ def main() -> int:
     ap.add_argument("--inputs", type=Path, required=True)
     ap.add_argument("--leaf", action="append", required=True)
     ap.add_argument("--depth", type=int, default=6)
+    ap.add_argument("--cubes", type=int, default=0, help="best-first split with this many cubes (0 = uniform depth)")
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--retain", type=Path, required=True)
     ap.add_argument("--cap", type=int, default=3600)
@@ -49,7 +50,7 @@ def main() -> int:
     bins = cert_item.tools(a.cadical, a.cake_lpr)
     leaves = split_leaf.parse_leaves(argparse.Namespace(leaf=a.leaf, leaves_file=None))
     t0 = time.time()
-    specs, rows = split_leaf.generate(a.inputs, leaves, a.depth, a.jobs)
+    specs, rows = split_leaf.generate(a.inputs, leaves, a.depth, a.jobs, a.cubes)
     gen_s = time.time() - t0
     a.out.parent.mkdir(parents=True, exist_ok=True)
     specs_path = a.out.with_suffix(".specs.jsonl")
