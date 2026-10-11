@@ -1,6 +1,18 @@
 # H7 t=0 hsb3 certificate campaign: estimate and runbook (2026-10-08)
 
-**Status: prepared, NOT launched. Not launch-ready until the items in section 5 are cleared.** No instance, role, launch template or S3 object of this
+**Final status (2026-10-11): COMPLETE.** All 28 cover CNFs and all 377,776 leaf CNFs are certified by cake_lpr
+(`collect_receipts.py`: `full_campaign_complete = true`; one leaf, cube_F9_t0 leaf 249, certified through a depth-8
+split of 256 sub-leaves + 1 sub-cover). Receipts: `receipts/collected/` (`summary.json`, 28 per-cube tables + split
+table, `campaign_totals.json`), independently re-collected by codex (room 53222, 53251). Passes: main (12,605 batches,
+2 h cap), residual (232 leaves, 12 h cap; spot then on-demand), split (257 items, 2 h cap). Every run record: 378,293
+runs, 4,711.11 solver + 740.44 checker CPU-h, 21.52 TB LRAT streamed (`campaign_totals.json`).
+**Cost (controller-reported estimates, not billing totals):** main $125.24, residual $81.99, split $1.53, plus about
+$6 of split measurement time on the builder: about $215 in all, within the operator's $300 H7 ceiling. No campaign
+instance or fleet remains (verified 2026-10-11). The text below is the original runbook and estimate (2026-10-08);
+sections 9-10 record the residual and split passes. These are external-checker evidence for the explicit hSeven
+hypothesis, not Lean proofs of `.Unsat` (section 10).
+
+**Original status line (2026-10-08): prepared, NOT launched. Not launch-ready until the items in section 5 are cleared.** No instance, role, launch template or S3 object of this
 campaign exists. Everything below was measured on the existing cloud builder
 (`i-04a61ff360a07bef2`, r7g.4xlarge) with at most 8 threads.
 
