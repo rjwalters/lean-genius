@@ -1,0 +1,166 @@
+{
+  "check": "audience_check",
+  "version_dir": "erdos85-drop.11",
+  "body_path": "main.tex",
+  "files": [
+    "main.tex"
+  ],
+  "declared_audience": [],
+  "public_repo_url": "https://github.com/rjwalters/lean-genius",
+  "public_repo_url_source": "derived",
+  "public_repo_url_declared": false,
+  "hits": [
+    {
+      "rule": "unlinked_artifact_path",
+      "terms": [
+        "rp/h1_bank_check_20261006/receipts/README.md",
+        "h1_bank_check_20261006/receipts/README.md",
+        "rp/h1_bank_check_20261006/receipts/h1_bank_check_receipts.tsv",
+        "rp/h1_bank_check_20261006/receipts/h1_bank_check_summary.json"
+      ],
+      "path": "main.tex",
+      "line": 274,
+      "region": "body",
+      "section": "Availability",
+      "severity": "major",
+      "suppressed": false,
+      "excerpt": "\\item H1 bank re-check: \\repofile{\\rp/h1_bank_check_20261006/receipts/README.md}{h1_bank_check_20261006/receipts/README.md}, with one receipt per orbit in \\rep\u2026"
+    },
+    {
+      "rule": "unlinked_artifact_path",
+      "terms": [
+        "rp/h1_cert_full_20261001/receipts/README.md",
+        "h1_cert_full_20261001/receipts/README.md",
+        "rp/h1_cert_full_20261001/receipts/h1_cert_census_receipts.tsv",
+        "rp/h1_cert_full_20261001/receipts/h1_cert_census_summary.json",
+        "rp/h1_cert_full_20261001/receipts/historical96_cake_lpr_receipts.jsonl",
+        "rp/h1_cert_full_20261001/receipts/historical96_receipts.jsonl",
+        "rp/h1_cert_full_20261001/receipts/pilot_h1_81494a_leaf_cake_lpr.jsonl",
+        "rp/h1_cert_pilot_20261001/H1_COVER_AXIOMS_20261006.txt",
+        "rp/h1_cert_pilot_20261001/COMPOSITION_AXIOMS_20261006.txt"
+      ],
+      "path": "main.tex",
+      "line": 275,
+      "region": "body",
+      "section": "Availability",
+      "severity": "major",
+      "suppressed": false,
+      "excerpt": "\\item Fresh census, historical certificates and cube leaves: \\repofile{\\rp/h1_cert_full_20261001/receipts/README.md}{h1_cert_full_20261001/receipts/README.md} \u2026"
+    },
+    {
+      "rule": "unlinked_artifact_path",
+      "terms": [
+        "rp/phase_b_h1_census_20260927/CENSUS.md",
+        "rp/phase_b_h1_census_20260927/cube-h1_81494a6ef36d3ec9/tree-check.json",
+        "rp/CENSUS_TIMING_20260928.md",
+        "rp/PHASE_B_H1_H3_INVENTORY_20260910.md"
+      ],
+      "path": "main.tex",
+      "line": 276,
+      "region": "body",
+      "section": "Availability",
+      "severity": "major",
+      "suppressed": false,
+      "excerpt": "\\item Verdict census and cube tree: \\repofile{\\rp/phase_b_h1_census_20260927/CENSUS.md}{CENSUS.md}, \\repofile{\\rp/phase_b_h1_census_20260927/cube-h1_81494a6ef3\u2026"
+    },
+    {
+      "rule": "unlinked_artifact_path",
+      "terms": [
+        "proofs/Proofs/Erdos85OneHighV2CapacityCover.lean",
+        "proofs/Proofs/Erdos85OneHighV2CapacityInventory.lean",
+        "proofs/Proofs/Certificates/h1_orbit_inventory.compact",
+        "Certificates/h1_orbit_inventory.compact",
+        "rp/AXIOM_AUDIT_COLD_20260927/axioms.out",
+        "AXIOM_AUDIT_COLD_20260927/axioms.out",
+        "rp/STRATA_AND_SMALL_ORDERS_20260928.md"
+      ],
+      "path": "main.tex",
+      "line": 277,
+      "region": "body",
+      "section": "Availability",
+      "severity": "major",
+      "suppressed": false,
+      "excerpt": "\\item Lean: the H1 reduction in \\repofile{proofs/Proofs/Erdos85OneHighV2CapacityCover.lean}{Erdos85OneHighV2CapacityCover.lean} and \\repofile{proofs/Proofs/Erd\u2026"
+    },
+    {
+      "rule": "unlinked_artifact_path",
+      "terms": [
+        "rp/Q7_H3_PROFILE_EXCLUSION_20260910.md",
+        "rp/H7_POSITIVE_TRIPLE_CELLS_H5_CLOSURE_FORMULA_COUNTS_20260928.md",
+        "rp/q7_h5_closure_ledger/REVIEWED_RESULT.md",
+        "q7_h5_closure_ledger/REVIEWED_RESULT.md",
+        "rp/H7_CLOSURE_20260915.md",
+        "rp/Q7_H5_H7_SQUEEZE_20260910.md"
+      ],
+      "path": "main.tex",
+      "line": 278,
+      "region": "body",
+      "section": "Availability",
+      "severity": "major",
+      "suppressed": false,
+      "excerpt": "\\item Earlier reviewed arguments for the small strata, superseded by the Lean proofs and certificates (history): \\repofile{\\rp/Q7_H3_PROFILE_EXCLUSION_20260910\u2026"
+    },
+    {
+      "rule": "unlinked_artifact_path",
+      "terms": [
+        "proofs/Proofs/Erdos85OrderFortyNineCapstoneH3.lean",
+        "proofs/Proofs/Erdos85FiniteDropCapstone.lean",
+        "rp/order49_h3_closed_capstone_20261008/README.md",
+        "order49_h3_closed_capstone_20261008/README.md",
+        "rp/release_assembly_20261011/README.md",
+        "release_assembly_20261011/README.md",
+        "rp/h5_terminal_review_20261008/README.md",
+        "h5_terminal_review_20261008/README.md",
+        "proofs/Proofs/Erdos85OrderFortyNineSevenHighT0CanonicalHsbStratumCapstone.lean",
+        "proofs/Proofs/Erdos85OrderFortyNineSevenHighT0CanonicalHsbLeafSplit.lean"
+      ],
+      "path": "main.tex",
+      "line": 279,
+      "region": "body",
+      "section": "Availability",
+      "severity": "major",
+      "suppressed": false,
+      "excerpt": "\\item Lean upper side and strata: \\repofile{proofs/Proofs/Erdos85OrderFortyNineCapstoneH3.lean}{Erdos85OrderFortyNineCapstoneH3.lean}, re-exported by \\repofile\u2026"
+    },
+    {
+      "rule": "unlinked_artifact_path",
+      "terms": [
+        "rp/h7_hsb_campaign_20261008/README.md",
+        "h7_hsb_campaign_20261008/README.md",
+        "rp/h7_hsb_campaign_20261008/receipts/collected/summary.json",
+        "rp/h7_hsb_campaign_20261008/collect_receipts.py"
+      ],
+      "path": "main.tex",
+      "line": 280,
+      "region": "body",
+      "section": "Availability",
+      "severity": "major",
+      "suppressed": false,
+      "excerpt": "\\item H7 ($t=0$) certificates: \\repofile{\\rp/h7_hsb_campaign_20261008/README.md}{h7_hsb_campaign_20261008/README.md} (formulas, identity receipts, runbook and \u2026"
+    },
+    {
+      "rule": "unlinked_artifact_path",
+      "terms": [
+        "rp/manuscript/FIRST_DROP_LITERATURE_CHECK.md",
+        "manuscript/FIRST_DROP_LITERATURE_CHECK.md",
+        "rp/sat49/BOZA48_NONISOMORPHISM_RECEIPT_20260928.txt",
+        "sat49/BOZA48_NONISOMORPHISM_RECEIPT_20260928.txt"
+      ],
+      "path": "main.tex",
+      "line": 281,
+      "region": "body",
+      "section": "Availability",
+      "severity": "major",
+      "suppressed": false,
+      "excerpt": "\\item Literature readings and the $r$-to-$f$ conversion: \\repofile{\\rp/manuscript/FIRST_DROP_LITERATURE_CHECK.md}{manuscript/FIRST_DROP_LITERATURE_CHECK.md}; t\u2026"
+    }
+  ],
+  "counts": {
+    "governance_vocabulary": 0,
+    "private_locator": 0,
+    "unlinked_artifact_path": 8
+  },
+  "suppressed_count": 0,
+  "advisory": true,
+  "pass": false
+}
