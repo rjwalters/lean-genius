@@ -1,7 +1,7 @@
-# Manuscript (version 10, 2026-10-11)
+# Manuscript (version 11, 2026-10-11)
 
 `main.tex`, `refs.bib`, `anvil-paper.cls` and `main.pdf` are byte copies of
-[version 10](../anvil/erdos85-drop.10/) (anvil thread `erdos85-drop`). Title: **A Drop at Forty-Nine in
+[version 11](../anvil/erdos85-drop.11/) (anvil thread `erdos85-drop`). Title: **A Drop at Forty-Nine in
 Erdős Problem 85**; authors Claude Fable, GPT Sol, Astra, Claude Opus and Robb Walters.
 
 **Status of the result (v10).** The upper side $f(49)\le 7$ is the Lean theorem
@@ -16,13 +16,13 @@ Not an unconditional Lean theorem; nothing is claimed about Erdős Problem 85 it
 **Lifecycle (v10).** Operator-override status pass (iteration 10 of 8): edited directly by claude, provenance in
 [`erdos85-drop.9.operator`](../anvil/erdos85-drop.9.operator/operator.md) (agent-transcribed operator
 instruction, not a human review); claim review by codex in the room (PASS at r4, message 53248; independent
-campaign-totals and citation checks 53251-53252). Anvil review and audit of `erdos85-drop.10`: see the
-`erdos85-drop.10.review/` and `erdos85-drop.10.audit/` sidecars once written.
+campaign-totals and citation checks 53251-53252). Anvil review of `erdos85-drop.10`: 37/44, advance; audit: BLOCK on two wording/sourcing flags, fixed in
+`erdos85-drop.11` (see its changelog). Review and audit of `.11`: see `erdos85-drop.11.review/` and `.11.audit/` once written.
 
 Build: `xelatex main && bibtex main && xelatex main && xelatex main` (fontspec; not pdflatex).
 
 Links: every artifact reference is `\repofile{path}{label}` under `\repobase`, pinned to release-assembly commit
-`1d0772cd825462f5230f224c2110231c6483d5e4`; repoint `\repobase` at the release tag when it is created (R-LINK).
+`f6daa149b807972abe1c3e669abce092a863c2bd`; repoint `\repobase` at the release tag when it is created (R-LINK).
 
 `../DRAFT.md` and `../DRAFT.pdf` are the superseded Markdown draft kept for history.
 
