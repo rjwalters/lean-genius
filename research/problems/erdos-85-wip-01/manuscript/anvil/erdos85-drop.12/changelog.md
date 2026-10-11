@@ -19,7 +19,7 @@ No READY/AUDITED or publication decision is recorded here.
 | .11.review (generic n4) | Operator-ceiling clause in linked H7 README | Removed from the supporting receipt on this draft branch; final artifact re-pin remains outstanding. |
 | .11.review (generic n5) | H5 table check count | States 40 search parts and 18 cover/cardinality checks. |
 | .11.review (BRIEF advisory) | Stale historical claim | Updated the BRIEF current claim and factual amendment; manuscript README now records v11 review/audit and distinguishes editable v12 from the manuscript of record. |
-| .11.audit (citation limits) | Ten sources unverified locally, three partial | Preserved as audit limits; no claim that the revision verifies those sources. Bibliography unchanged. |
+| .11.audit (citation limits) | Ten sources unverified locally, three partial | Follow-up reads of eight existing sources are recorded in citation-followup.md, with abstract-only and retention limits explicit. Removed the unsupported generalization “too large to keep.” Bibliography unchanged; final audit still outstanding. |
 | .11.numeric / .11.pending / .11.audience | Existing deterministic checks | Prior clean numeric/pending results are not reused as new results. Prior audience hits were verified macro-expansion false positives. The new draft contains an intentional pending cold-build marker. |
 
 The initial artifact pin is published commit

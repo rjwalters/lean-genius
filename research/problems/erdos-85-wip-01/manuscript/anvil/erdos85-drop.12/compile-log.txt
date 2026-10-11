@@ -1,4 +1,3 @@
-$ xelatex -interaction=nonstopmode -halt-on-error main.tex
 This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex)
  restricted \write18 enabled.
 entering extended mode
@@ -409,14 +408,10 @@ Package rerunfilecheck Warning: File `main.out' has changed.
 (see the transcript file for additional information)
 Output written on main.pdf (12 pages).
 Transcript written on main.log.
-
-$ bibtex main
 This is BibTeX, Version 0.99e (TeX Live 2026)
 The top-level auxiliary file: main.aux
 The style file: plainnat.bst
 Database file #1: refs.bib
-
-$ xelatex -interaction=nonstopmode -halt-on-error main.tex
 This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex)
  restricted \write18 enabled.
 entering extended mode
@@ -750,8 +745,6 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 (see the transcript file for additional information)
 Output written on main.pdf (14 pages).
 Transcript written on main.log.
-
-$ xelatex -interaction=nonstopmode -halt-on-error main.tex
 This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex)
  restricted \write18 enabled.
 entering extended mode

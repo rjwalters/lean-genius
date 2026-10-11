@@ -12,10 +12,10 @@
   "unresolved_citations": [],
   "pending_cold_build_marker": 1,
   "sha256": {
-    "main.tex": "2bf19ea4bf29a6afef9788d4d46d79368142fab77783d5bacc23d5c4a9998d32",
-    "main.pdf": "81ba2d4a966a785b84623b904b46151a766a9b9de08dd27dd61e991ff0f69f84",
+    "main.tex": "0e9910c9eefc94eedc92ca09aaff7d6271d7dd7d0987ec2492096c4c382c189c",
+    "main.pdf": "7e8c968c4e569f1640620f82e3da2bbea428547ca4ccb8bbd0bb6fdca07db70f",
     "refs.bib": "2d5b67fb542d2d68f558a0b5727987b57fb44a0d5e2fad10cc2b64e387f9fe8f",
-    "compile-log.txt": "8340c5ec2ece2fcc6efcf44600f73286e53001e6d9fe33ab70df80152d5cec86"
+    "compile-log.txt": "5feed998a158ab70b00056d2e2d364016f08be16ff2d73fb105ca1defec04dcb"
   },
   "link_targets": [
     "proofs/Proofs/",
@@ -85,5 +85,9 @@
     "research/problems/erdos-85-wip-01/release_cold_build_20261011/README.md",
     "research/problems/erdos-85-wip-01/sat49/BOZA48_NONISOMORPHISM_RECEIPT_20260928.txt",
     "research/problems/erdos-85-wip-01/sat49/verify_boza48_nonisomorphism.py"
-  ]
+  ],
+  "undefined_or_rerun_scope": "Unresolved citations/references or label rerun requests; font substitutions tracked separately",
+  "font_shape_substitution_warnings": 26,
+  "updated_for": "citation support wording correction",
+  "xelatex_passes": 3
 }
