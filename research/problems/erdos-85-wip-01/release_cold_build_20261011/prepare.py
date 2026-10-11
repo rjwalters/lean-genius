@@ -120,6 +120,8 @@ def make_plan(root):
             "source_commit": subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip(),
             "sources": sources, "changed_from_accepted": changed, "artifacts": artifacts,
             "config_sha256": {p: sha(root / "proofs" / p) for p in ("lean-toolchain", "lakefile.toml", "lake-manifest.json")},
+            "runner_sha256": {p: sha(Path(__file__).parent / p) for p in ("prepare.py", "run.py", "audit.py")},
+            "accepted_axiom_plan_sha256": sha(evidence),
             "expected_exports": expected,
             "limits": {"workers": 6, "memory_gib": 110, "cpus": 16, "wall_seconds": 35400},
             "scope": "Fresh project closure; pinned external Lean/Mathlib packages may be cached. No external SAT replay."}

@@ -102,6 +102,17 @@ class Controls(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "revision mismatch"):
                     run.package_revisions(root)
 
+    def test_runner_drift_rejected(self):
+        plan = {"sources": {}, "config_sha256": {}, "runner_sha256": {"run.py": "0" * 64}}
+        with patch.object(run, "closure", return_value={}):
+            with self.assertRaisesRegex(ValueError, "Runner drift"):
+                run.validate_inputs(plan, prepare.ROOT)
+
+    def test_source_drift_rejected(self):
+        with patch.object(run, "closure", return_value={"changed": {}}):
+            with self.assertRaisesRegex(ValueError, "Source/dependency drift"):
+                run.validate_inputs({"sources": {}}, prepare.ROOT)
+
 
 if __name__ == "__main__":
     unittest.main()

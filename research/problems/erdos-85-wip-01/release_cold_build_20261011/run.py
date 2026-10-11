@@ -28,6 +28,12 @@ def validate_inputs(plan, root):
     for rel, digest in plan["config_sha256"].items():
         if sha(root / "proofs" / rel) != digest:
             raise ValueError("Toolchain/config drift: " + rel)
+    for rel, digest in plan["runner_sha256"].items():
+        if sha(Path(__file__).parent / rel) != digest:
+            raise ValueError("Runner drift: " + rel)
+    accepted = root / "research/problems/erdos-85-wip-01/order49_h3_closed_capstone_20261008/PLAN.json"
+    if sha(accepted) != plan["accepted_axiom_plan_sha256"] or json.loads(accepted.read_text())["exports"] != plan["expected_exports"]:
+        raise ValueError("Accepted axiom evidence drift")
     for row in plan["artifacts"]:
         path = root / row["path"]
         if path.stat().st_size != row["bytes"] or sha(path) != row["sha256"]:
@@ -116,6 +122,7 @@ def build(plan, out):
               "initial_project_objects": [], "lean_path": env["LEAN_PATH"],
               "lean_version": subprocess.check_output(["lean", "--version"], text=True).strip(),
               "completed": {}, "started_unix": time.time(), "output_root": str(out),
+              "execution_commit": subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", "HEAD"], text=True).strip(),
               "external_package_revisions": package_revisions(ROOT),
               "cgroup_memory_bytes": int(Path("/sys/fs/cgroup/memory.max").read_text()),
               "cgroup_cpu_max": Path("/sys/fs/cgroup/cpu.max").read_text().strip()}
