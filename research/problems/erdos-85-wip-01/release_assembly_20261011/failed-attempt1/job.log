@@ -1,0 +1,23 @@
+[e85] job 20261011T204435-erdos85__release-assembly-20261011-4952  ref=erdos85/release-assembly-20261011  worktree=/opt/e85/wt/erdos85__release-assembly-20261011  started 2026-10-11T20:44:35Z
+[e85] commit fb8838172e0fc01f7b439bb2790075068b59ff0e (Merge H7 LRAT adapter and split review evidence)
+=== Docker Lean Build ===
+Memory limit: 16384MB (hard enforced via cgroups)
+Timeout: 4m
+CPU limit: 2
+Target: all
+Build volume: lean-build-erdos85__h3-triple-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Command: lake env python3 -B ../research/problems/erdos-85-wip-01/release_assembly_20261011/validate.py --cloud
+Starting Docker build...
+
+[30s] Building...
+Traceback (most recent call last):
+  File "/workspace/proofs/../research/problems/erdos-85-wip-01/release_assembly_20261011/validate.py", line 118, in <module>
+    main()
+  File "/workspace/proofs/../research/problems/erdos-85-wip-01/release_assembly_20261011/validate.py", line 93, in main
+    assert rc == 0 and not re.search(r"\b(sorry|error)\b", text, re.I), text
+AssertionError: Proofs/Erdos85OrderFortyNineCapstoneH3.lean:1:0: error: object file '/workspace/research/problems/erdos-85-wip-01/release_assembly_20261011/run-output/lean/Proofs/Erdos85OrderFortyNineCapstone.olean' of module Proofs.Erdos85OrderFortyNineCapstone does not exist
+
+
+=== Build failed with exit code 1 ===

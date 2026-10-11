@@ -2,8 +2,10 @@
 
 Branch `erdos85/release-assembly-20261011` merges the completed H7 campaign
 at `27a58f56e63`, accepted H3 capstone at `7717312e11b`, and integration
-record at `458227dcb63`. The only merge conflict was in the Docker wrapper's
-comments; the cloud-builder override documentation was retained.
+record at `458227dcb63`. It also merges the H5 terminal audit, later H3
+campaign audits, Ramsey citation review, and H7 LRAT/split review branch.
+Merge conflicts were confined to documentation: the cloud-builder override
+comments and the later independently audited LRAT-adapter status were retained.
 
 `Erdos85FiniteDropCapstone.lean` now imports the accepted conditional
 `Erdos85OrderFortyNineCapstoneH3` endpoint. H1 and H7 UNSAT evidence remain
@@ -43,3 +45,11 @@ This is fresh endpoint compilation against accepted dependency objects,
 not a cold rebuild of all native certificates. Cloud validation results
 are retained separately after completion. Paper v10 and public release
 remain separate work; this assembly does not publish or tag anything.
+
+The first bounded attempt at `fb8838172e0` passed the dependency hash checks,
+then failed before theorem checking because Lean resolved the partial fresh
+`Proofs` package root without falling through to the original cache.
+`failed-attempt1` preserves its raw job and compile logs. The retry links
+the 891 verified dependency objects into the fresh package root, then writes
+the two new endpoint objects there. Resource limits and theorem sources
+are unchanged.

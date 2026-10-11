@@ -68,10 +68,15 @@ def main():
         return result
 
     before = check_objects()
-    out = ROOT / "run-output"
+    out = ROOT / "run-output-2"
     out.mkdir(exist_ok=False)
     fresh = out / "lean/Proofs"
     fresh.mkdir(parents=True)
+    # Lean resolves a package root as a whole; it does not fall through to
+    # another LEAN_PATH entry for a missing module within the same root.
+    # Populate the isolated Proofs root with links to the verified imports.
+    for name in plan["objects"]:
+        (fresh / (name + ".olean")).symlink_to((cache / (name + ".olean")).resolve())
     env = os.environ.copy()
     env["LEAN_PATH"] = str(fresh.parent) + os.pathsep + env.get("LEAN_PATH", "")
     runs = []
