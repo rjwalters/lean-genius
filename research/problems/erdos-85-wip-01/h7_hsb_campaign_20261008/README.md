@@ -691,10 +691,20 @@ python3 collect_receipts.py --inputs <Stripe>/inputs --results <Stripe>/run/resu
 be added), then `freight`, `setup --commit <sha>` (new launch-template version), `launch N`, and
 `host-launch --replace --commit <sha>`. `host-launch` refuses while a host of the pass is live; `--replace`
 terminates it first, and the new host restores `host/controller-state.json`, so the spend accounting and
-the $60 stop continue.
+the $60 stop continue. **Not cleared in general (codex 53175):** `--replace` has no checkpoint preflight,
+the generated startup proceeds to `watch` after a failed state download, and freight/setup/launch before
+the replacement leaves an old-manifest early-STOP window. Before using it, check by hand that
+`host/controller-state.json` is current, that `host.log` on the new host says "restored watch state",
+and that the old host cannot reach completion on its old manifest. Note that the restored counter includes
+earlier instances of the pass, so `--hard-stop-usd` is the pass's TOTAL budget, not the remainder
+(residual 2026-10-10: a stop of $68 meant to be a remainder left only ~$36; corrected to $100, room 53194/53200).
 
-**Lean-side gap.** None for the external (check-then-discard, emitter identity) evidence: the split
-receipts instantiate `SubLeafChecked` / `SubCoverChecked`, and `…LeafChecked_of_split` yields the leaf.
+**Lean-side gap (corrected after codex 53173/53175).** `SubLeafChecked` / `SubCoverChecked` are `.Unsat`
+propositions, and `…LeafChecked_of_split` consumes PROOFS of them. The split receipts and
+`collect_receipts.py` produce external-checker evidence (cake_lpr verdicts on CNFs whose bytes match the
+Lean definitions via the emitter), not Lean proof terms. So this evidence does not discharge hSeven by
+itself: it supports hSeven as a stated, externally certified hypothesis, exactly as for the unsplit
+leaves and covers. Lean discharge would need the replay route below.
 For the optional LRAT replay route (codex's `…HsbLrat.lean`) two analogues are missing:
 `SevenHighT0CanonicalHsbSub{Leaf,Cover}LratChecked` + `.unsat`, the same shape as the leaf/cover ones.
 Retained sub-cover proofs (`subcovers-retained/`) are what that route would replay.
