@@ -85,6 +85,20 @@ def closure(root):
     return sources
 
 
+def include_paths(text):
+    clean = uncomment(text)
+    matches = re.findall(r'\binclude_str\s+("[^"\n]+"(?:\s*/\s*"[^"\n]+")*)', clean)
+    if len(matches) != len(re.findall(r"\binclude_str\b", clean)):
+        raise ValueError("Unsupported include_str syntax")
+    result = []
+    for expression in matches:
+        parts = re.findall(r'"([^"\n]+)"', expression)
+        if any(Path(p).is_absolute() for p in parts):
+            raise ValueError("Unpublished absolute include path remains")
+        result.append(str(Path(*parts)))
+    return result
+
+
 def make_plan(root):
     sources = closure(root)
     baseline = json.loads((root / "research/problems/erdos-85-wip-01/release_assembly_20261011/source-manifest.json").read_text())["sources"]
@@ -104,9 +118,7 @@ def make_plan(root):
     artifacts = []
     for name in sources:
         file = root / "proofs/Proofs" / (name.replace(".", "/") + ".lean")
-        for raw in re.findall(r'\binclude_str\s+"([^"\n]+)"', uncomment(file.read_text())):
-            if Path(raw).is_absolute():
-                raise ValueError("Unpublished absolute include path remains: " + name)
+        for raw in include_paths(file.read_text()):
             path = (file.parent / raw).resolve()
             path.relative_to(root.resolve())
             artifacts.append({"module": name, "path": str(path.relative_to(root)),

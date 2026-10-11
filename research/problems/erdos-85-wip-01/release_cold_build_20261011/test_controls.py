@@ -121,6 +121,14 @@ class Controls(unittest.TestCase):
         self.assertEqual(actual, expected)
         self.assertEqual([len(row["axioms"]) for row in actual], [601, 607, 604])
 
+    def test_segmented_relative_include(self):
+        self.assertEqual(prepare.include_paths('include_str "Certificates" / "test.lrat"'),
+                         ["Certificates/test.lrat"])
+        self.assertEqual(prepare.include_paths('include_str "Certificates/strata-lrat/test"'),
+                         ["Certificates/strata-lrat/test"])
+        with self.assertRaises(ValueError):
+            prepare.include_paths('include_str "Certificates" / "/private/test"')
+
 
 if __name__ == "__main__":
     unittest.main()
