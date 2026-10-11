@@ -1,0 +1,36 @@
+{
+ "all_runs": {
+  "checker_cpu_hours": 740.44,
+  "proof_bytes": 21518493035521,
+  "runs": 378293,
+  "solver_cpu_hours": 4711.11
+ },
+ "by_kind_status": {
+  "cover:CERTIFIED": {
+   "checker_cpu_hours": 0.02,
+   "proof_bytes": 590245399,
+   "runs": 28,
+   "solver_cpu_hours": 0.06
+  },
+  "leaf:CERTIFIED": {
+   "checker_cpu_hours": 705.12,
+   "proof_bytes": 20187079160421,
+   "runs": 377775,
+   "solver_cpu_hours": 4264.81
+  },
+  "leaf:SOLVER_TIMEOUT": {
+   "checker_cpu_hours": 34.69,
+   "proof_bytes": 1307313221375,
+   "runs": 233,
+   "solver_cpu_hours": 442.35
+  },
+  "split:CERTIFIED": {
+   "checker_cpu_hours": 0.6,
+   "proof_bytes": 23510408326,
+   "runs": 257,
+   "solver_cpu_hours": 3.89
+  }
+ },
+ "result_files": 13094,
+ "schema": "erdos85-h7-campaign-totals-v1"
+}

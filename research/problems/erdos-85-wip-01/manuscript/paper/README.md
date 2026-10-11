@@ -1,4 +1,12 @@
-# Manuscript of record (2026-10-07)
+# Manuscript of record (2026-10-07); version 10 draft (2026-10-11)
+
+**Version 10 draft (in review, branch `erdos85/paper-v10-20261011`).** `main.tex`/`main.pdf` here are the
+v10 draft, edited directly from v9 after the H3/H5 Lean exclusions, the conditional order-49 capstone
+(`Erdos85OrderFortyNineCapstoneH3`, 601/607/604 axioms) and the completed H7 ($t=0$) certificate campaign
+(`../../h7_hsb_campaign_20261008/receipts/collected/`). The upper side is now a Lean theorem conditional on
+two explicit UNSAT hypotheses (H1, H7), each supported by cake_lpr checks outside Lean. Claim review by codex
+in the room (53233, 53240); not yet re-run through the anvil review/audit lifecycle. Version 9 below remains
+the last AUDITED version.
 
 Current: `main.tex`, `refs.bib`, `anvil-paper.cls`, and `main.pdf` are byte copies
 of [version 9](../anvil/erdos85-drop.9/). Title: **A Drop at Forty-Nine in Erdős
