@@ -1,0 +1,160 @@
+{
+ "schema_version": "1",
+ "kind": "judgment",
+ "version_dir": "erdos85-drop.11",
+ "critic_id": "paper-review",
+ "model": "claude-opus-5-5",
+ "rubric": "anvil-pub-v2",
+ "scores": [
+  {
+   "dimension": "1_rigor",
+   "score": 6,
+   "max": 6,
+   "critical": false,
+   "evidence_span": "main.tex:L66,L123",
+   "fix": null,
+   "justification": "Strata count and depth 3 fixed; upper side stated as a Lean derivation from two hypotheses; H7 91-axiom count matches stratum.log at pin."
+  },
+  {
+   "dimension": "2_evidence",
+   "score": 5,
+   "max": 6,
+   "critical": false,
+   "evidence_span": "main.tex:L121,L132,L191",
+   "fix": null,
+   "justification": "All counts reconcile; $215 removed; $225 traces to two H1 receipts; t>=1 certificate modules not replayed and inputs unpublished (disclosed)."
+  },
+  {
+   "dimension": "3_contribution_clarity",
+   "score": 5,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L66,L78,L85,L87",
+   "fix": null,
+   "justification": "C1 resolved: 'Lean thus derives the upper side from two explicit unsatisfiability hypotheses'; every 'Lean theorem' near Result A is a negation."
+  },
+  {
+   "dimension": "4_related_work",
+   "score": 4,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L123,L153",
+   "fix": "Add one sentence positioning the H7 Lean-checked symmetry breaking against subercaseaux2024hexagonlean.",
+   "justification": "Hexagon comparison accurate ('only through emitters'); H7 symmetry-breaking method still not positioned against the precedent."
+  },
+  {
+   "dimension": "5_reproducibility",
+   "score": 4,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L87,L203,L223,L232",
+   "fix": "Deposit the 13 packed files and repin before the tag (release step).",
+   "justification": "M1 disclosed at L87/Table 2/L232; M2 banner at pin; H7 axiom log linked; capstone still not publicly rebuildable; no H7 public checker."
+  },
+  {
+   "dimension": "6_figures_tables",
+   "score": 4,
+   "max": 4,
+   "critical": false,
+   "evidence_span": "main.tex:L225",
+   "fix": null,
+   "justification": "Table 2 H7 formulas row fixed; render gate pass 14 pp."
+  },
+  {
+   "dimension": "7_prose_structure",
+   "score": 4,
+   "max": 4,
+   "critical": false,
+   "evidence_span": "main.tex:L117,L147,L262",
+   "fix": null,
+   "justification": "Changelog voice removed from \u00a72.2-2.3; two antecedent-bearing 'now superseded' remain (nit)."
+  },
+  {
+   "dimension": "8_citation_hygiene",
+   "score": 5,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L132",
+   "fix": null,
+   "justification": "refs.bib unchanged, 0 undefined; CaDiCaL cited at first mention."
+  },
+  {
+   "dimension": "9_rhetorical_economy",
+   "score": 3,
+   "max": 4,
+   "critical": false,
+   "evidence_span": "main.tex:L132",
+   "fix": "Move pass/cap narrative and all-runs totals to the campaign README if a page matters.",
+   "justification": "H7 paragraph trimmed but main text still 11 pp vs ~10."
+  }
+ ],
+ "findings": [
+  {
+   "severity": "minor",
+   "dimension": "4_related_work",
+   "evidence_span": "main.tex:L123,L153",
+   "rationale": "H7 Lean-verified symmetry-breaking extension not positioned against Subercaseaux et al. (carried from v10 D4).",
+   "suggested_fix": "One sentence in \u00a73 comparing the H7 symmetry breaking/cover-in-Lean with subercaseaux2024hexagonlean."
+  },
+  {
+   "severity": "minor",
+   "dimension": "5_reproducibility",
+   "evidence_span": "main.tex:L87,L232",
+   "rationale": "L87 says the capstone cannot be recompiled without the 13 packed files; L232 files their publication only under 'for a fully independent audit'.",
+   "suggested_fix": "Move publication out of the 'fully independent audit' clause: 'publication of the 13 packed H7 (t>=1) files (without which the capstone cannot be recompiled from the public repository), and, for a fully independent audit, a cold rebuild'."
+  },
+  {
+   "severity": "minor",
+   "dimension": "6_figures_tables",
+   "evidence_span": "main.tex:L223",
+   "rationale": "'Open in Lean' column for H7 t>=1 now holds a reproducibility item, not an open Lean obligation.",
+   "suggested_fix": "Begin the cell 'nothing in Lean;' or rename the column."
+  },
+  {
+   "severity": "minor",
+   "dimension": "9_rhetorical_economy",
+   "evidence_span": "main.tex:L132",
+   "rationale": "Main text 11 pp vs R-SIMPLE ~10.",
+   "suggested_fix": "Move cap narrative and all-runs totals to the linked README."
+  },
+  {
+   "severity": "nit",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L147,L262",
+   "rationale": "'now superseded' residual of v10 m7.",
+   "suggested_fix": "'is superseded by' / 'was later superseded by'."
+  },
+  {
+   "severity": "nit",
+   "dimension": "2_evidence",
+   "evidence_span": "main.tex:L191",
+   "rationale": "$225 drops the 'controller estimate' qualifier of its two receipts.",
+   "suggested_fix": "'about $225 of cloud compute (controller estimates)'."
+  },
+  {
+   "severity": "nit",
+   "dimension": "3_contribution_clarity",
+   "evidence_span": "main.tex:L85",
+   "rationale": "'previously settled' sits near the BRIEF's banned 'decided'.",
+   "suggested_fix": "'previously known'."
+  },
+  {
+   "severity": "nit",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L280",
+   "rationale": "Linked H7 README at pin contains 'within the operator's $300 H7 ceiling' (governance vocabulary in a linked receipt).",
+   "suggested_fix": "Trim the clause in the repository before the tag."
+  },
+  {
+   "severity": "nit",
+   "dimension": "6_figures_tables",
+   "evidence_span": "main.tex:L222",
+   "rationale": "Table 2 H5 row omits the 18 count given in \u00a72.3.",
+   "suggested_fix": "'40 search parts and 18 cover and cardinality checks'."
+  }
+ ],
+ "critical_flags": [],
+ "total": 40,
+ "threshold": 35,
+ "verdict": "ADVANCE"
+}

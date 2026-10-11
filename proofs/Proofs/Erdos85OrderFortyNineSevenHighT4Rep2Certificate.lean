@@ -13,7 +13,7 @@ namespace Erdos85
 open Std.Tactic.BVDecide
 
 private def sevenHighT4Rep2ProofText : String :=
-  include_str "/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/strata-lrat/h7_t4_rep2.packed.lz4p7"
+  include_str "Certificates/strata-lrat/h7_t4_rep2.packed.lz4p7"
 
 private def sevenHighT4Rep2Proof : Array LRAT.IntAction :=
   parsePackedLz4OrderFortyNineLratProof sevenHighT4Rep2ProofText
