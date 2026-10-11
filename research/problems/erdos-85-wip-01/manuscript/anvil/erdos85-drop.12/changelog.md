@@ -41,3 +41,12 @@ warnings. All 67 artifact-link targets exist at the interim pin; all 17
 citation keys resolve. The pending-marker tool exits 1 for the real
 outstanding cold-build dependency. Main-text length remains an advisory
 item; no final review score or audit acceptance is inferred.
+
+Publication follow-up: unauthenticated HTTPS downloads of the pinned fetch
+script and manifest match their Git blobs. S3 configuration confirms the
+public GetObject grant includes the H7 positive-triple prefix, Requester
+Pays is enabled, and no bucket/account public-policy restriction or explicit
+bucket-policy deny blocks that grant. This is configuration evidence, not
+a separate-account download test; see publication-check.json. The fetch
+script's credential comment now states the required S3 permissions, with
+no executable behavior change.

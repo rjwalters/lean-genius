@@ -5,7 +5,8 @@
 # proofs/Proofs/Certificates/strata-lrat.MANIFEST.sha256.
 #
 # The files (2,574,916,357 bytes in all) are public in a Requester Pays S3 bucket:
-# the requester pays the transfer, so any AWS credentials work, e.g.
+# the requester pays the transfer. Use valid AWS credentials with permission
+# for Requester Pays S3 downloads, e.g.
 #   AWS_PROFILE=<yours> proofs/scripts/fetch-h7-certificates.sh
 # Inside AWS us-east-1 the transfer is free of data-transfer charges.
 set -euo pipefail
