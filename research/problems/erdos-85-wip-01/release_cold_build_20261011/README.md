@@ -89,6 +89,10 @@ Review the plan, commit it with the runner, then pin that execution commit.
 Prepare the cloud job using the existing builder with `--full --mem 110
 --threads 6 --timeout 10h`. It must run `lake env python3 -B` on `run.py`
 from `/workspace/proofs`, with the committed plan and a fresh output path.
+Pass `--execution-commit <full-host-job-sha>`: the container cannot traverse
+the linked worktree's host-only Git metadata. Source/config/runner hashes
+are checked inside the container, and the terminal audit binds the declared
+execution identity to the host job's retained `sha` file copied as `job.sha`.
 First omit `--execute-plan` for preflight. An approved execution then adds
 `--execute-plan <reviewed-plan-sha256>`. Do not invoke e85-remote merely to
 inspect old logs while the builder is stopped: some commands auto-start it.
@@ -100,7 +104,8 @@ when this bounded attempt is terminal. Preserve failed evidence as well as
 successful evidence. No local Lean build is needed for preparation/tests.
 
 After a terminal success, run `audit.py --plan <plan.json> --output <run-output>`
-and retain its JSON output. It checks every source, certificate, raw log,
+after copying the host job's `sha` into the bundle as `job.sha`, and retain
+its JSON output. It checks every source, certificate, raw log,
 compile command, dependency order, object identity and endpoint axiom set.
 Its verification can run against a copied output bundle (the original command
 paths remain in the receipts). A human/peer review of the runner and receipts

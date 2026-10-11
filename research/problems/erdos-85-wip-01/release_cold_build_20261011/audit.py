@@ -12,6 +12,9 @@ def audit(plan, out):
     report = json.loads((out / "RUN.json").read_text())
     if report["status"] != "COLD_PROJECT_BUILD_COMPLETE_PENDING_AUDIT":
         raise ValueError("Run is not complete")
+    host_commit = (out / "job.sha").read_text().strip()
+    if not re.fullmatch(r"[0-9a-f]{40}", host_commit) or host_commit != report["execution_commit_declared"]:
+        raise ValueError("Host job execution identity mismatch")
     if json.loads((out / "plan.json").read_text()) != plan or report["sources"] != plan["sources"]:
         raise ValueError("Run/plan identity mismatch")
     validate_inputs(plan, ROOT)

@@ -104,7 +104,7 @@ def weight(name):
     return 64 if re.fullmatch(r"Erdos85OrderFortyNineSevenHighT[1-7]Rep[0-2]Certificate", name) else 16
 
 
-def build(plan, out):
+def build(plan, out, execution_commit=None):
     out.mkdir(exist_ok=False)
     fresh = out / "lean"
     (fresh / "Proofs").mkdir(parents=True)
@@ -122,7 +122,7 @@ def build(plan, out):
               "initial_project_objects": [], "lean_path": env["LEAN_PATH"],
               "lean_version": subprocess.check_output(["lean", "--version"], text=True).strip(),
               "completed": {}, "started_unix": time.time(), "output_root": str(out),
-              "execution_commit": subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", "HEAD"], text=True).strip(),
+              "execution_commit_declared": execution_commit,
               "external_package_revisions": package_revisions(ROOT),
               "cgroup_memory_bytes": int(Path("/sys/fs/cgroup/memory.max").read_text()),
               "cgroup_cpu_max": Path("/sys/fs/cgroup/cpu.max").read_text().strip()}
@@ -239,15 +239,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--plan", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--execution-commit", required=True,
+                        help="Full host job commit; terminal auditor binds this to retained host job.sha")
     parser.add_argument("--execute-plan", help="Exact SHA256 of reviewed plan; not itself spending authorization")
     args = parser.parse_args()
     plan = json.loads(args.plan.read_text())
-    actual_commit = subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", "HEAD"], text=True).strip()
-    if actual_commit != plan["source_commit"]:
-        # The reviewed plan may be committed on top of its frozen source commit;
-        # validate_inputs still requires exact source, config and artifact bytes.
-        subprocess.run(["git", "-C", str(ROOT), "merge-base", "--is-ancestor",
-                        plan["source_commit"], actual_commit], check=True)
+    if not re.fullmatch(r"[0-9a-f]{40}", args.execution_commit):
+        raise ValueError("Full execution commit required")
+    # /workspace is a linked worktree: its .git pointer refers to host-only
+    # /opt/lean-genius metadata. Bind source/code bytes here, and bind the host
+    # execution identity to its retained job.sha in the terminal audit.
     if not Path("/.dockerenv").exists() or Path.cwd() != Path("/workspace/proofs"):
         raise RuntimeError("Cloud container /workspace/proofs required; local Lean execution prohibited")
     limits = plan["limits"]
@@ -266,7 +267,7 @@ def main():
         return
     if args.execute_plan != sha(args.plan):
         raise ValueError("Plan identity mismatch")
-    build(plan, args.output.resolve())
+    build(plan, args.output.resolve(), args.execution_commit)
 
 
 if __name__ == "__main__":
