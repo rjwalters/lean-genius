@@ -1,0 +1,20 @@
+{
+  "critic": "audit",
+  "role": "paper-audit.md",
+  "started": "2026-10-11T21:28:10Z",
+  "finished": "2026-10-11T21:31:43.675322+00:00",
+  "model": "Codex (GPT-6)",
+  "schema_version": 1,
+  "scorecard_kind": "human-verdict",
+  "authorship_disclosure": "AI author codex; not an independent external critic. human-verdict is the schema category for narrative judgment, not human authorship.",
+  "rubric_id": "anvil-pub-v2",
+  "rubric_total": 44,
+  "advance_threshold": 35,
+  "verdict": "PASS",
+  "critical_flags": 0,
+  "source_commit": "a2204511564c1766ba6bcc88e3bbb88f551cbc0e",
+  "artifact_pin": "f6daa149b807972abe1c3e669abce092a863c2bd",
+  "sidecar": "CLI stage/copy/commit; scratch build; immutable manuscript untouched",
+  "lean_check": "Retained source/axiom/accepted-object evidence; no new Lean build or certificate replay",
+  "pending_gate": "pass; read-only scan, reviewer sibling not overwritten"
+}
