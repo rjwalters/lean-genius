@@ -1,3 +1,11 @@
+> **Superseded status (banner added 2026-10-11).** This note records the 2026-09-28 status and is kept for its
+> strata definitions and small-order Lean names. Its statements that H3/H5 rest on reviewed paper/computation
+> covers and that the H7 capstone is not instantiated are out of date: H3 and H5 are excluded in Lean
+> (`H3.orderFortyNineStratumExcluded_three`, `H5.orderFortyNineStratumExcluded_five`), and the upper side is
+> `not_c4FreeMinDegreeWitness_fortyNine_seven_of_h1_h7Evidence`, conditional on explicit H1 and H7 unsatisfiability
+> hypotheses. See `order49_h3_closed_capstone_20261008/README.md`, `release_assembly_20261011/README.md` and
+> `h7_hsb_campaign_20261008/README.md`.
+
 # The order-49 strata and the small-order exact values, from the Lean source (2026-09-28)
 
 All names are declarations in `proofs/Proofs/` on `erdos85/integration` (verified 2026-09-28 by grep; the census-facing ones are in the cold-build cone of `AXIOM_AUDIT_COLD_20260927`).
