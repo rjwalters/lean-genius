@@ -1,0 +1,48 @@
+{
+  "base_main_tex_sha256": "8ce86ab97be1d9324a44c42e4d5c143b94381f03050fa2f6fb7b405b07f92d53",
+  "candidate_main_tex_sha256": "0bbf1e70ec42452f16be97d08db855c9686a2b90d61635bd3682ec1dc6daad36",
+  "patch_sha256": "77eaa6e5b71ff3a01547ce3c07dcd0bd4a6f773a5fc357d0f5c143cafc096a18",
+  "scratch": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/e85-v12-review-patch-cq4ily5p",
+  "edits": 6,
+  "compile": {
+    "commands": [
+      [
+        "xelatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "main.tex"
+      ],
+      [
+        "bibtex",
+        "main"
+      ],
+      [
+        "xelatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "main.tex"
+      ],
+      [
+        "xelatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "main.tex"
+      ]
+    ],
+    "all_exit_zero": true,
+    "aux_fixpoint": true,
+    "overfull_boxes": 0,
+    "undefined_or_rerun": false,
+    "pages": 14,
+    "pdf_sha256": "a5550b2488ec6164808c6cef2ec3690a4b36f1aef6f635ac7e3723e0f6846d84",
+    "log_sha256": "4b5adb97bd8d8f486bc4f4c3ed552dd4ed0dcf667903d87210d2da429e161785"
+  },
+  "new_link_targets": {
+    "pin": "f6daa149b807972abe1c3e669abce092a863c2bd",
+    "paths": [
+      "research/problems/erdos-85-wip-01/h1_cert_full_20261001/receipts/README.md",
+      "research/problems/erdos-85-wip-01/h1_bank_check_20261006/receipts/README.md"
+    ],
+    "all_exist": true
+  }
+}
