@@ -1,0 +1,228 @@
+{
+ "schema_version": "1",
+ "kind": "tool_evidence",
+ "version_dir": "erdos85-drop.10",
+ "critic_id": "paper-audit",
+ "model": "claude-opus-5-5",
+ "rubric": null,
+ "scores": [
+  {
+   "dimension": "citation_resolution",
+   "score": null,
+   "max": 1,
+   "critical": false,
+   "evidence_span": "main.tex:L73-L257",
+   "fix": null,
+   "justification": "17/17 keys resolve; 0 undefined; 0 '??'. 6 partial, 11 unverified (no source on disk), 0 does-not-support."
+  },
+  {
+   "dimension": "numerical_consistency",
+   "score": null,
+   "max": 1,
+   "critical": true,
+   "evidence_span": "main.tex:L132-L132",
+   "fix": "Delete the $215 clause or repin to >= d56328ec42b, link the README and label it a controller-reported estimate.",
+   "justification": "All H7/capstone/H3/H5 counts and H1 totals match receipts; one number ($215) untraced at its linked receipt and in refs/."
+  },
+  {
+   "dimension": "build",
+   "score": null,
+   "max": 1,
+   "critical": false,
+   "evidence_span": null,
+   "fix": null,
+   "justification": "Converged at pass 4 (aux byte-identical); 0 errors/undefined/overfull; 14 pages; shipped PDF text-identical."
+  },
+  {
+   "dimension": "pending_marker",
+   "score": null,
+   "max": 1,
+   "critical": false,
+   "evidence_span": null,
+   "fix": null,
+   "justification": "pass, 0 markers."
+  },
+  {
+   "dimension": "link_hygiene",
+   "score": null,
+   "max": 1,
+   "critical": false,
+   "evidence_span": "main.tex:L272-L285",
+   "fix": null,
+   "justification": "63/63 targets at pin; STRATA receipt stale (M2); capstone closure reads 13 unpublished files by absolute path (M1)."
+  },
+  {
+   "dimension": "scope_rules",
+   "score": null,
+   "max": 1,
+   "critical": true,
+   "evidence_span": "main.tex:L66-L85",
+   "fix": "Reword L66/L85 so Lean 'derives the upper side from' the two hypotheses, or operator R-V10 BRIEF amendment.",
+   "justification": "Unamended BRIEF hard rule 'Never call Result A a theorem' (critical if violated) is broken by L66 and L85; substance is conditional and accurate."
+  }
+ ],
+ "findings": [
+  {
+   "severity": "blocker",
+   "dimension": "scope_rules",
+   "evidence_span": "main.tex:L66-L85",
+   "rationale": "L66 'The result is a Lean theorem conditional on two explicit unsatisfiability hypotheses' and L85 'the upper side is a single Lean theorem' call Result A a theorem against the unamended BRIEF hard rule (critical if violated); claim frontmatter still says 'not a Lean theorem'.",
+   "suggested_fix": "L66: 'Lean derives the upper side from two explicit unsatisfiability hypotheses, h_H1 and h_H7, which the external checks support but which are not admitted into Lean'; L85 likewise; or operator adds R-V10.",
+   "tool_calls": [
+    {
+     "tool": "read",
+     "args": {
+      "path": "erdos85-drop/BRIEF.md"
+     },
+     "result_summary": "Hard scope rules: 'Never call Result A a theorem, proof, or decided'; no R-V10 amendment; claim says 'not a Lean theorem'"
+    }
+   ]
+  },
+  {
+   "severity": "blocker",
+   "dimension": "numerical_consistency",
+   "evidence_span": "main.tex:L132-L132",
+   "rationale": "'about $215 of cloud compute' cites campaign_totals.json, which has no cost; pin README has only pre-run estimates; no refs/ file has $215; figure first appears post-pin (d56328ec42b) as 'controller-reported estimates, not billing totals'.",
+   "suggested_fix": "Delete the clause (also restores R-SIMPLE one dollar sentence), or repin, link README and label it a controller-reported estimate.",
+   "tool_calls": [
+    {
+     "tool": "git",
+     "args": {
+      "cmd": "git show d56328ec42b:research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/README.md; git show <pin>:.../README.md | grep -c 215"
+     },
+     "result_summary": "post-pin L9-10: main $125.24 + residual $81.99 + split $1.53 + ~$6 = ~$215 (controller-reported estimates); pin README: 0 hits"
+    }
+   ]
+  },
+  {
+   "severity": "major",
+   "dimension": "5_reproducibility",
+   "evidence_span": "main.tex:L232-L232",
+   "rationale": "Capstone import closure (892 modules) includes 13 H7 t>=1 certificate modules that include_str absolute private paths (2.57 GB, largest 1.61 GB); the capstone cannot be recompiled from the public repo, and the 'complete list' omits it.",
+   "suggested_fix": "Add the publication item to L232 and L87; better, deposit the files (Zenodo) and repoint include_str before tagging.",
+   "tool_calls": [
+    {
+     "tool": "python",
+     "args": {
+      "cmd": "import-closure walk of Erdos85OrderFortyNineCapstoneH3 over git archive of pin"
+     },
+     "result_summary": "892 modules; 13 Erdos85OrderFortyNineSevenHighT*Rep*Certificate with include_str \"/Volumes/Stripe/...\""
+    }
+   ]
+  },
+  {
+   "severity": "major",
+   "dimension": "5_reproducibility",
+   "evidence_span": "main.tex:L277-L277",
+   "rationale": "Linked STRATA_AND_SMALL_ORDERS_20260928.md at pin (unchanged through 98ee2fc) says H5 'reviewed paper/computation cover', H7 capstone 'not instantiated', H3 no Lean discharge.",
+   "suggested_fix": "Banner it superseded on the release branch and repin, or cite the capstone README for the strata names.",
+   "tool_calls": [
+    {
+     "tool": "git",
+     "args": {
+      "cmd": "git show <pin>:research/problems/erdos-85-wip-01/STRATA_AND_SMALL_ORDERS_20260928.md"
+     },
+     "result_summary": "H5 row 'reviewed paper/computation cover'; H7 row '... is not instantiated'"
+    }
+   ]
+  },
+  {
+   "severity": "minor",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L66-L66",
+   "rationale": "'into four strata' vs h in {1,3,5,7,9} with h=9 refuted (L97).",
+   "suggested_fix": "'four remaining strata' or 'five strata ... refutes H9'.",
+   "tool_calls": [
+    {
+     "tool": "read",
+     "args": {
+      "path": "erdos85-drop.10/main.tex"
+     },
+     "result_summary": "L97 lists five values"
+    }
+   ]
+  },
+  {
+   "severity": "minor",
+   "dimension": "1_rigor",
+   "evidence_span": "main.tex:L78-L78",
+   "rationale": "377,776 is the depth-3 leaf count; capstone quantifies over depth.",
+   "suggested_fix": "Add 'at symmetry-breaking depth 3'.",
+   "tool_calls": [
+    {
+     "tool": "grep",
+     "args": {
+      "path": "refs/H7_HSB_CAMPAIGN_README_20261011.md",
+      "pattern": "depth"
+     },
+     "result_summary": "L229 'fixes the list to leaves 3 mask'"
+    }
+   ]
+  },
+  {
+   "severity": "minor",
+   "dimension": "1_rigor",
+   "evidence_span": "main.tex:L66-L66",
+   "rationale": "'compiled emitter' inexact for H7 (EmitCube via interpreted lean --run; native generator hash-matched).",
+   "suggested_fix": "'by emitters, not a kernel proof'.",
+   "tool_calls": [
+    {
+     "tool": "read",
+     "args": {
+      "path": "refs/H7_HSB_CAMPAIGN_README_20261011.md"
+     },
+     "result_summary": "L38-39 interpreted lake env lean --run"
+    }
+   ]
+  },
+  {
+   "severity": "minor",
+   "dimension": "6_figures_tables",
+   "evidence_span": "main.tex:L225-L225",
+   "rationale": "'377,804 refutations accepted' counts one leaf refuted via 257 split formulas.",
+   "suggested_fix": "'all 377,804 formulas refuted, one leaf through a 256-way split (257 formulas)'.",
+   "tool_calls": [
+    {
+     "tool": "read",
+     "args": {
+      "path": "refs/h7_campaign_totals_20261011.json"
+     },
+     "result_summary": "leaf:CERTIFIED 377,775; split:CERTIFIED 257"
+    }
+   ]
+  },
+  {
+   "severity": "minor",
+   "dimension": "5_reproducibility",
+   "evidence_span": "main.tex:L224-L225",
+   "rationale": "No linked printed-axiom receipt for the H7 reduction or split lemma.",
+   "suggested_fix": "Link their #print axioms output.",
+   "tool_calls": [
+    {
+     "tool": "grep",
+     "args": {
+      "path": "erdos85-drop.10/main.tex",
+      "pattern": "AXIOMS"
+     },
+     "result_summary": "only H1_COVER_AXIOMS and COMPOSITION_AXIOMS linked"
+    }
+   ]
+  }
+ ],
+ "critical_flags": [
+  {
+   "type": "scope_rule_violation",
+   "justification": "BRIEF hard rule 'Never call Result A a theorem' (critical if violated) vs main.tex L66 'The result is a Lean theorem conditional on ...' and L85 'the upper side is a single Lean theorem ...'."
+  },
+  {
+   "type": "numerical_inconsistency",
+   "justification": "main.tex L132 'about $215 of cloud compute' is untraced: linked campaign_totals.json has no cost; no refs/ file contains it; source exists only post-pin (d56328ec42b) as a controller-reported estimate."
+  }
+ ],
+ "total": null,
+ "threshold": null,
+ "verdict": "BLOCK",
+ "rendered_artifact": null,
+ "probes": null,
+ "unscored": false
+}

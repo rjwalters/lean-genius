@@ -1,0 +1,35 @@
+{
+  "files": 13094,
+  "by_kind_status": {
+    "cover:CERTIFIED": {
+      "runs": 28,
+      "solver_cpu_hours": 0.06,
+      "checker_cpu_hours": 0.02,
+      "proof_bytes": 590245399
+    },
+    "leaf:CERTIFIED": {
+      "runs": 377775,
+      "solver_cpu_hours": 4264.81,
+      "checker_cpu_hours": 705.12,
+      "proof_bytes": 20187079160421
+    },
+    "leaf:SOLVER_TIMEOUT": {
+      "runs": 233,
+      "solver_cpu_hours": 442.35,
+      "checker_cpu_hours": 34.69,
+      "proof_bytes": 1307313221375
+    },
+    "split:CERTIFIED": {
+      "runs": 257,
+      "solver_cpu_hours": 3.89,
+      "checker_cpu_hours": 0.6,
+      "proof_bytes": 23510408326
+    }
+  },
+  "all_runs": {
+    "runs": 378293,
+    "solver_cpu_hours": 4711.11,
+    "checker_cpu_hours": 740.44,
+    "proof_bytes": 21518493035521
+  }
+}
