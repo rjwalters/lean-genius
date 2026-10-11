@@ -1,0 +1,34 @@
+{
+  "module": "TableRejections",
+  "source": "fixed_pair_coverage/TableRejections.lean",
+  "source_sha256": "d798fb064b836d29a56619e4d59d5afbdf04665d7281c87ab5dcbda34f49c5a1",
+  "log_sha256": "09f5fd724978b4c7931f2757645d0a86c41301bf8d210efcff5679ddad2f6316",
+  "olean_sha256": "76d385c20eb214b8376f879a3f1b818d90ae624f8cfb51eec135d8911723c550",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/TableRejections.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/TableRejections.lean"
+  ],
+  "elapsed_seconds": 4.619788315001642,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "ColumnCoverageFixedPair.table_eq",
+      "axioms": [
+        "propext"
+      ]
+    },
+    {
+      "theorem": "ColumnCoverageFixedPair.table_no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

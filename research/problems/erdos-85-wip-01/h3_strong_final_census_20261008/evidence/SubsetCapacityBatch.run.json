@@ -1,0 +1,44 @@
+{
+  "module": "SubsetCapacityBatch",
+  "source": "full_subset_capacity/SubsetCapacityBatch.lean",
+  "source_sha256": "35fee6206b3d64b36c2e50caaf894c46cee90fef5ba274f49ca7f86d535b36e2",
+  "log_sha256": "2af3a579ff34874e316ca5f65c8a8bb0c7b8a6ffb0ea137403fb44163a11dae3",
+  "olean_sha256": "87fc01a6e7729ddb72e58dfc4c1144df2495498c4eced5cfbeaf8fe3d3804868",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/SubsetCapacityBatch.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/SubsetCapacityBatch.lean"
+  ],
+  "elapsed_seconds": 4.870579064001504,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "SubsetCapacityBatch.pairs_card",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SubsetCapacityBatch.impossible",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SubsetCapacityBatch.no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

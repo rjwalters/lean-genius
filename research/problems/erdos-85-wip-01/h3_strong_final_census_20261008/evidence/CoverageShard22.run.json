@@ -1,0 +1,28 @@
+{
+  "module": "CoverageShard22",
+  "source": "fixed_pair_coverage/CoverageShard22.lean",
+  "source_sha256": "d99f8835a3fc02b1243d4883ca198dfbcf956162d5316514a4711205aa862286",
+  "log_sha256": "c1d7c6d62b565ab1034093431723c34fc9fa1b1a4c85ed75d71c983b5306e976",
+  "olean_sha256": "6fcec613bf9d07c8c5c01202f0fd802ce8377a36ff7b77ba8cf15743007225c3",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/CoverageShard22.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/CoverageShard22.lean"
+  ],
+  "elapsed_seconds": 235.16575890900094,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "CoverageShard22.checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

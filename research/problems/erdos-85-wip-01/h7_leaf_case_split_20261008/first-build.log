@@ -1,0 +1,50 @@
+[e85] job 20261008T045101-erdos85__h3-triple-formal-20261007-197810  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T04:51:01Z
+[e85] commit 34bde77f9e94d9b278c8a4f831b5207e146253eb (Prove positive-unit leaf and negative-cover partition for CNF splitting)
+=== Docker Lean Build ===
+Memory limit: 8192MB (hard enforced via cgroups)
+Timeout: 10m
+CPU limit: 16
+Target: Proofs.Erdos85CnfPositiveCaseSplit
+Build volume: lean-build-erdos85__h3-triple-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Starting Docker build...
+
+✖ [2/2] Building Proofs.Erdos85CnfPositiveCaseSplit (305ms)
+trace: .> LEAN_PATH=/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/Erdos85CnfPositiveCaseSplit.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85CnfPositiveCaseSplit.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85CnfPositiveCaseSplit.ilean -c /workspace/proofs/.lake/build/ir/Proofs/Erdos85CnfPositiveCaseSplit.c --setup /workspace/proofs/.lake/build/ir/Proofs/Erdos85CnfPositiveCaseSplit.setup.json --json
+error: Proofs/Erdos85CnfPositiveCaseSplit.lean:19:79: unsolved goals
+α : Type u_1
+variables : List α
+assignment : α → Bool
+⊢ variables.all ((fun a => List.any a fun x => assignment x.fst == x.snd) ∘ fun v => [(v, true)]) =
+    variables.all assignment
+error: Proofs/Erdos85CnfPositiveCaseSplit.lean:26:2: Type mismatch: After simplification, term
+  Eq.symm List.not_all_eq_any_not
+ has type
+  (variables.any fun a => !assignment a) = !variables.all assignment
+but is expected to have type
+  variables.any ((fun x => assignment x.fst == x.snd) ∘ fun v => (v, false)) = !variables.all assignment
+error: Proofs/Erdos85CnfPositiveCaseSplit.lean:30:64: unsolved goals
+α : Type u_1
+cases : List (List α)
+assignment : α → Bool
+⊢ cases.all ((fun a => CNF.Clause.eval assignment a) ∘ fun variables => List.map (fun v => (v, false)) variables) =
+    cases.all fun variables => !variables.all assignment
+warning: Proofs/Erdos85CnfPositiveCaseSplit.lean:31:54: This simp argument is unused:
+  negativeClause_eval
+
+Hint: Omit it from the simp argument list.
+  simp [cnfNegativeCaseCover, CNF.eval, List.all_map,̵ ̵n̵e̵g̵a̵t̵i̵v̵e̵C̵l̵a̵u̵s̵e̵_̵e̵v̵a̵l̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+info: Proofs/Erdos85CnfPositiveCaseSplit.lean:69:0: 'Erdos85.cnfPositiveUnits_eval' depends on axioms: [propext, sorryAx, Quot.sound]
+info: Proofs/Erdos85CnfPositiveCaseSplit.lean:70:0: 'Erdos85.cnfNegativeCaseCover_eval' depends on axioms: [propext, sorryAx, Quot.sound]
+info: Proofs/Erdos85CnfPositiveCaseSplit.lean:71:0: 'Erdos85.cnfPositiveCases_cover_or_case' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+info: Proofs/Erdos85CnfPositiveCaseSplit.lean:72:0: 'Erdos85.cnf_unsat_of_positive_cases' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+error: Lean exited with code 1
+Some required targets logged failures:
+- Proofs.Erdos85CnfPositiveCaseSplit
+error: build failed
+
+=== Build failed with exit code 1 ===
+[e85] job 20261008T045101-erdos85__h3-triple-formal-20261007-197810 finished: exit 1  (2026-10-08T04:51:27Z)

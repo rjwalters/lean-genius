@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "job": "20261008T052325-erdos85__h3-triple-formal-20261007-220726",
+  "execution_commit": "6e44e57cd8304094264dcae2a777f2130527352b",
+  "authoritative_exit": 0,
+  "run_sha256": "368442552377b3438ffeaea3fd291c327b5cfeec9432e94b4b913cfef2bcb0f0",
+  "checks": [
+    "Exact six source-requested axiom reports from raw log",
+    "Standard axioms for first three exports; only existing U26/R2 native axiom for remaining three",
+    "Source matches execution commit and current source",
+    "Object hash independently read from cloud",
+    "All retained log hashes and compiler command matched",
+    "Base/pilot receipt and imported-object hashes match audited prior evidence"
+  ],
+  "scope": "One actual deficient census pair removed; remainingPairs.card =1553. Deficient exclusion still conditional on all remaining rejections."
+}

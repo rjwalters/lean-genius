@@ -1,0 +1,69 @@
+{
+  "status": "WORKER_PREFLIGHT_AUDIT_PASS",
+  "job": "20261008T081422-erdos85__h3-triple-formal-20261007-328527",
+  "case_id": "full-u001-r16",
+  "execution_commit": "f8f011a45170d289dca8cbb17f6946420cbbae00",
+  "manifest_sha256": "11ded9568ddc0497b8fd58d9107bc35f50caca0fd9064e9f85db18f98f614445",
+  "host_sha256": "64642095241d811b27e4f925dc8848379067ab3857b38ed58e8c95fee79b2c52",
+  "run_sha256": "527d1492ac71e7a136a1fbac784e12eab976352c7b1bbd715634e0839583d0cd",
+  "launch_sha256": "54755718dcd0452b211121a8b1f4764cdf50b528fc4afae7ff9939ce90b1a9f2",
+  "cache_inventory_sha256": "0bdeec182744aa0737982d109290613eece8ac2f3c0115fa1307ddb76dd1d735",
+  "job_log_sha256": "3f7d8ff5db61282ff610095bd93362a075cd7b7a0bb78cc87d5c9c4d52d047d3",
+  "authoritative_exit": 0,
+  "container_runtime_seconds": 16.719877,
+  "limits": {
+    "memory_bytes": 17179869184,
+    "cpu_quota_us": 200000,
+    "cpu_period_us": 100000,
+    "wall_seconds": 600
+  },
+  "container_removed": true,
+  "artifacts": {
+    "status": "PREFLIGHT_ARTIFACTS_VALID",
+    "case_id": "full-u001-r16",
+    "attempt_id": "preflight-7c64e01e5b274ff0a435e90cbb956c54",
+    "manifest_sha256": "11ded9568ddc0497b8fd58d9107bc35f50caca0fd9064e9f85db18f98f614445",
+    "run_sha256": "527d1492ac71e7a136a1fbac784e12eab976352c7b1bbd715634e0839583d0cd",
+    "results": [
+      {
+        "stage": "Inputs",
+        "module": "Erdos85ThreeHighCampaignFullU1R16Inputs",
+        "source_sha256": "5b39fd61ffdce09431ecf4e4532a0a3e0d335ff76a2332739e2471b54e60f574",
+        "olean_sha256": "94d03f74a4b77fc8b01173cde6ea864661c1242ff9acfe8b2bd414026ad2057a",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "axiom_exports": []
+      },
+      {
+        "stage": "Membership",
+        "module": "Erdos85ThreeHighCampaignFullU1R16Membership",
+        "source_sha256": "ca7f3f67a695c43c77fa17511f89ce84d08a9e047af2b421c5294cc3647b8007",
+        "olean_sha256": "f60a7ec3afefad0608df6d5a2f545686a7ef69ed7768e8a8a160136d29754b4d",
+        "log_sha256": "348a38bf79857e045b6f7dcde36605f0a2dda5038abef166f84ae80e83156c45",
+        "axiom_exports": [
+          {
+            "theorem": "Erdos85.TripleCampaign.FullU1R16.member",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          },
+          {
+            "theorem": "Erdos85.TripleCampaign.FullU1R16.input_identity",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          }
+        ]
+      }
+    ],
+    "campaign_credit": false,
+    "retry_authorized": false,
+    "scope": "Artifact component only. Requires independent host execution/provenance audit; does not establish terminal state, authorize retry, or credit the campaign."
+  },
+  "production_native_search": false,
+  "campaign_credit": false,
+  "scope": "Bounded Inputs+Membership worker execution on the audited existing cache. No native certificate, consumer, campaign exclusion, or clean Mathlib rebuild."
+}

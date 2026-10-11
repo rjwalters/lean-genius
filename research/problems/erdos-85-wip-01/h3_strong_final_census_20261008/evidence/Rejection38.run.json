@@ -1,0 +1,28 @@
+{
+  "module": "Rejection38",
+  "source": "fixed_pair_rejections/Rejection38.lean",
+  "source_sha256": "a6a63646fe50d732d561b0a6fdff33c62c058a9d313107919436196041f64b5d",
+  "log_sha256": "fd8f2b1256e3fda02142326f3f069ec7c17ae193daba7af938e8f498bcf1c0ec",
+  "olean_sha256": "a8e92d9bba400ce2ee10222dae98c823c8fffa5864156c31041cf03ac4377253",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Rejection38.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Rejection38.lean"
+  ],
+  "elapsed_seconds": 4.054692625999451,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "Rejection38.no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

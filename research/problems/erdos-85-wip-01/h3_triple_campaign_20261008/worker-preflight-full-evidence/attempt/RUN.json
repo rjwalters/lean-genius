@@ -1,0 +1,110 @@
+{
+  "schema": "erdos85-h3-triple-preflight-v1",
+  "status": "PREFLIGHT_PASS",
+  "mode": "preflight",
+  "production_native_search": false,
+  "manifest_sha256": "11ded9568ddc0497b8fd58d9107bc35f50caca0fd9064e9f85db18f98f614445",
+  "case_id": "full-u001-r16",
+  "attempt_id": "preflight-7c64e01e5b274ff0a435e90cbb956c54",
+  "recorded_root": "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-full-first/work/preflight-7c64e01e5b274ff0a435e90cbb956c54",
+  "launch_sha256": "54755718dcd0452b211121a8b1f4764cdf50b528fc4afae7ff9939ce90b1a9f2",
+  "cache_inventory_sha256": "0bdeec182744aa0737982d109290613eece8ac2f3c0115fa1307ddb76dd1d735",
+  "started_utc": "2026-10-08T08:14:43.206138+00:00",
+  "actual_limits": {
+    "memory_bytes": 17179869184,
+    "cpu_quota_us": 200000,
+    "cpu_period_us": 100000
+  },
+  "results": [
+    {
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-full-first/work/preflight-7c64e01e5b274ff0a435e90cbb956c54/source-root",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-full-first/work/preflight-7c64e01e5b274ff0a435e90cbb956c54/library/Proofs/Erdos85ThreeHighCampaignFullU1R16Inputs.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-full-first/work/preflight-7c64e01e5b274ff0a435e90cbb956c54/source-root/Proofs/Erdos85ThreeHighCampaignFullU1R16Inputs.lean"
+      ],
+      "started_utc": "2026-10-08T08:14:48.404807+00:00",
+      "finished_utc": "2026-10-08T08:14:52.310197+00:00",
+      "exit_code": 0,
+      "deadline_exceeded": false,
+      "elapsed_seconds": 3.905414346001635,
+      "user_cpu_seconds": 2.7155389999999997,
+      "system_cpu_seconds": 1.158097,
+      "max_rss_kib": 6525384,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "case_id": "full-u001-r16",
+      "module": "Erdos85ThreeHighCampaignFullU1R16Inputs",
+      "stage": "Inputs",
+      "source_sha256": "5b39fd61ffdce09431ecf4e4532a0a3e0d335ff76a2332739e2471b54e60f574",
+      "olean_sha256": "94d03f74a4b77fc8b01173cde6ea864661c1242ff9acfe8b2bd414026ad2057a",
+      "axiom_exports": [],
+      "certificate_substitution": false
+    },
+    {
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-full-first/work/preflight-7c64e01e5b274ff0a435e90cbb956c54/full-u001-r16",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-full-first/work/preflight-7c64e01e5b274ff0a435e90cbb956c54/full-u001-r16/Erdos85ThreeHighCampaignFullU1R16Membership.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-full-first/work/preflight-7c64e01e5b274ff0a435e90cbb956c54/full-u001-r16/Erdos85ThreeHighCampaignFullU1R16Membership.lean"
+      ],
+      "started_utc": "2026-10-08T08:14:52.332800+00:00",
+      "finished_utc": "2026-10-08T08:14:57.940689+00:00",
+      "exit_code": 0,
+      "deadline_exceeded": false,
+      "elapsed_seconds": 5.607911806997436,
+      "user_cpu_seconds": 4.236506,
+      "system_cpu_seconds": 1.402223,
+      "max_rss_kib": 6897840,
+      "log_sha256": "348a38bf79857e045b6f7dcde36605f0a2dda5038abef166f84ae80e83156c45",
+      "case_id": "full-u001-r16",
+      "module": "Erdos85ThreeHighCampaignFullU1R16Membership",
+      "stage": "Membership",
+      "source_sha256": "ca7f3f67a695c43c77fa17511f89ce84d08a9e047af2b421c5294cc3647b8007",
+      "olean_sha256": "f60a7ec3afefad0608df6d5a2f545686a7ef69ed7768e8a8a160136d29754b4d",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.TripleCampaign.FullU1R16.member",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.TripleCampaign.FullU1R16.input_identity",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ],
+      "certificate_substitution": false
+    }
+  ],
+  "scope": "Worker result only; independent host and artifact audit required.",
+  "cache_copy": {
+    "command": [
+      "cp",
+      "-a",
+      "--reflink=auto",
+      "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/cache-preflight-first/library",
+      "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-full-first/work/preflight-7c64e01e5b274ff0a435e90cbb956c54/library"
+    ],
+    "started_utc": "2026-10-08T08:14:44.384716+00:00",
+    "finished_utc": "2026-10-08T08:14:44.485823+00:00",
+    "exit_code": 0,
+    "deadline_exceeded": false,
+    "elapsed_seconds": 0.10112644599576015,
+    "user_cpu_seconds": 0.009545999999999999,
+    "system_cpu_seconds": 0.085918,
+    "max_rss_kib": 388616,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "lean_path": "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-full-first/work/preflight-7c64e01e5b274ff0a435e90cbb956c54/library:/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-full-first/work/preflight-7c64e01e5b274ff0a435e90cbb956c54/full-u001-r16:/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/prerequisites/final:/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/prerequisites/base:/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean:/root/.elan/toolchains/leanprover--lean4---v4.31.0/lib/lean",
+  "finished_utc": "2026-10-08T08:14:59.173738+00:00"
+}

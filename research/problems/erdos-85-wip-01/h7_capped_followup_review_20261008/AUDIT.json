@@ -1,0 +1,47 @@
+{
+  "status": "CAPPED_FOLLOWUP_RECEIPT_AUDIT_PASS",
+  "producer_commit": "4c8bab43fccd5b3f0250cf96d8ee2568f1818fdd",
+  "producer_job": "20261008T081402-commit-4c8bab43fccd-328154",
+  "authoritative_exit": 0,
+  "verified": [
+    {
+      "cube": "cube_F7_t6",
+      "leaf": 119,
+      "cnf_sha256": "b0f8831bf78a41551fd940d2175d77ffa367a0e70dea4aaa65bb28c3a69193f8",
+      "solver_cpu_seconds": 3474.334389,
+      "checker_cpu_seconds": 252.98021400000002,
+      "proof_bytes": 3109017461,
+      "proof_sha256": "764c2c8db7478805d0311053961b74eca84619c9312c7618506efa50296a9fab"
+    },
+    {
+      "cube": "cube_F7_t0",
+      "leaf": 2061,
+      "cnf_sha256": "852bdc1424466f635ee2b357e639790b3d5fb4f39338dfe0917a545ea536ba8c",
+      "solver_cpu_seconds": 3807.8943590000003,
+      "checker_cpu_seconds": 364.46779200000003,
+      "proof_bytes": 5193710663,
+      "proof_sha256": "a22dcfeb2f993d14af72fc4d303591eeb13179a97d0e2ef0f95234fe9e68c0f1"
+    }
+  ],
+  "artifact_sha256": {
+    "sources/h7_hsb_campaign_20261008/rerun_items.py": "997ff3975259544b77ac0d6ac14fb28e154613bfe6347e482c4de1e7d1353d81",
+    "sources/h7_hsb_campaign_20261008/cert_item.py": "a4881b2ce594e167c8f316f6fffffebc54879f96e8edf6526ea68f3e5c185ef7",
+    "sources/h7_hsb_campaign_20261008/h7_common.py": "8b93557c814946edd4863310e4ae63c8f4f4a29e45cccc72960b402111d11925",
+    "sources/h7_hsb_campaign_20261008/receipts/inputs.json": "f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c",
+    "sources/h1_cert_full_20261001/cert_row.py": "23bf81ec4bd31d911e11d3c89a0b6779cb69ef8a75140367f370b33909e50f3c",
+    "job.log": "4c596158822eed117ea7ab153b0581a1491b2f78726b8594c9e488adad046fab",
+    "job.spec": "1220b85c66ed36c592de30924cb7ecd31b5910bba505ea9fe2d75e85dd4f2851",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "raw-followup.jsonl": "353f949b37a01018258f653e061d7b155cb342633874db1742bab4f9e769c8ea"
+  },
+  "scope": "Source pins, current approved binary bytes, reconstructed CNF identities, and producer receipts. Proof streams were discarded; no independent proof replay or fresh Lean emitter check. Original censored cost sample unchanged.",
+  "auditor_sha256": "5270aed5bc4ba7109d3b684bb35d5bd0d60920aaa1bf5739e8a11ecdb915b949",
+  "original_sample_comparison": {
+    "original_sample_sha256": "b93066071de9969416f0d3267082b1a97ca52fc97d5a173b26afe228716ce97d",
+    "selected_rows_sha256": "ee6ca5453ca611b4efffa371d27055bdb4b8076460834751053b21646026f047",
+    "original_status": "SOLVER_TIMEOUT",
+    "original_cap_seconds": 3600,
+    "same_cnf_bytes_units_and_binaries": true,
+    "original_sample_modified": false
+  }
+}

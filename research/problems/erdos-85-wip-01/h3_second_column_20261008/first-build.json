@@ -1,0 +1,13 @@
+{
+  "status": "FAIL",
+  "job": "20261008T041547-erdos85__h3-first-column-20261008-173049",
+  "execution_commit": "765b97a125f6d91a4607a7ecdc96d0c199950803",
+  "exit_code": 1,
+  "source_sha256": "eaf0ee1aca7b7df16a8cc7b05a393617e0492607fd56669f26817b2d33a40159",
+  "log_sha256": "275400385d4c5fdc6a48bedc5fd3a34177de25f8aa4fce977631e526b4a5a573",
+  "errors": [
+    "Missing parentheses around Boolean conjunction equality in and_list_any",
+    "DFS rewrite blocked by unreduced local let expressions"
+  ],
+  "verified_exports": 0
+}

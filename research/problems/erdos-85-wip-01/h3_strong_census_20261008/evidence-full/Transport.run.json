@@ -1,0 +1,44 @@
+{
+  "module": "Transport",
+  "source": "full_orbit_transport/Transport.lean",
+  "source_sha256": "97380e9f83da623865cff06428368d1fd20f07a45bc2c42f6e02f9e2e6bebe44",
+  "log_sha256": "f6a590f971fcff1dcf985dcee2b87a9130f9d69afa61808233570d8a4bd40229",
+  "olean_sha256": "44c7ebf20e4c16e943e35d1f93a5776bfdc36e4107a77c809e7ce0e5597405fb",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full/Transport.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full/Transport.lean"
+  ],
+  "elapsed_seconds": 4.829244765998737,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "FullUOrbitTransport.joint_transport",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUOrbitTransport.actual_full_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUOrbitTransport.actual_full_excluded",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

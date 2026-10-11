@@ -1,0 +1,254 @@
+[e85] job 20261008T121835-erdos85__h3-triple-formal-20261007-487248  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T12:18:35Z
+[e85] commit afcd487aecce0b9950355c0d06e2f81ffef63093 (Add capped H3 five-part worker and independent artifact collector)
+=== Docker Lean Build ===
+Memory limit: 16384MB (hard enforced via cgroups)
+Timeout: 10m
+CPU limit: 2
+Target: all
+Build volume: lean-build-erdos85__h3-triple-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Command: lake env python3 -B ../research/problems/erdos-85-wip-01/h3_native_parts_20261008/run_sample.py
+Starting Docker build...
+
+{"name": "shared", "command": ["leanc", "-O3", "-DLEAN_EXPORTING", "-shared", "-fPIC", "/workspace/proofs/.lake/build/ir/Proofs/Erdos85H3TripleCompletionRuntime.c", "-o", "/workspace/research/problems/erdos-85-wip-01/h3_native_parts_20261008/sample1/libH3TripleRuntime.so"], "timeout_seconds": 60, "effective_timeout_seconds": 60, "returncode": 0, "timed_out": false, "elapsed_seconds": 1.1151872169939452, "child_user_seconds": 1.026816, "child_system_seconds": 0.048854999999999996, "child_maxrss_kib_cumulative": 102588, "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
+
+{"name": "part000", "command": ["lean", "-j1", "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_parts_20261008/sample1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime", "Proofs/Erdos85H3TripleCompletionPart000.lean", "-o", "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart000.olean"], "timeout_seconds": 90, "effective_timeout_seconds": 90, "returncode": 0, "timed_out": false, "elapsed_seconds": 15.182851193996612, "child_user_seconds": 13.823648, "child_system_seconds": 1.329389, "child_maxrss_kib_cumulative": 6485820, "log_sha256": "4a959daff55ca990e91af53d38dccb5cc6039587834a019e27a15a25b6571078"}
+'Erdos85.H3TripleCompletion.triplePart_384_000' depends on axioms: [propext,
+ Quot.sound,
+ Erdos85.H3TripleCompletion.triplePart_384_000._native.native_decide.ax_1_1]
+
+{"name": "part003", "command": ["lean", "-j1", "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_parts_20261008/sample1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime", "Proofs/Erdos85H3TripleCompletionPart003.lean", "-o", "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart003.olean"], "timeout_seconds": 90, "effective_timeout_seconds": 90, "returncode": 0, "timed_out": false, "elapsed_seconds": 3.968345418004901, "child_user_seconds": 2.894194999999998, "child_system_seconds": 1.057878, "child_maxrss_kib_cumulative": 6485820, "log_sha256": "ecb90adb8000c15fc0c6edc8ff758317aaa77e9c400a5aa4f4c8ddb528e4efaf"}
+'Erdos85.H3TripleCompletion.triplePart_384_003' depends on axioms: [propext,
+ Quot.sound,
+ Erdos85.H3TripleCompletion.triplePart_384_003._native.native_decide.ax_1_1]
+
+{"name": "part005", "command": ["lean", "-j1", "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_parts_20261008/sample1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime", "Proofs/Erdos85H3TripleCompletionPart005.lean", "-o", "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart005.olean"], "timeout_seconds": 90, "effective_timeout_seconds": 90, "returncode": 0, "timed_out": false, "elapsed_seconds": 3.9183551500027534, "child_user_seconds": 2.7299330000000026, "child_system_seconds": 1.149972, "child_maxrss_kib_cumulative": 6485892, "log_sha256": "d986849d10fc9472d2be11caceed98a8c62c4d5a5b9f9eb219b6c1e8b4109914"}
+'Erdos85.H3TripleCompletion.triplePart_384_005' depends on axioms: [propext,
+ Quot.sound,
+ Erdos85.H3TripleCompletion.triplePart_384_005._native.native_decide.ax_1_1]
+
+[30s] Building...
+{"name": "part004", "command": ["lean", "-j1", "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_parts_20261008/sample1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime", "Proofs/Erdos85H3TripleCompletionPart004.lean", "-o", "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart004.olean"], "timeout_seconds": 90, "effective_timeout_seconds": 90, "returncode": 0, "timed_out": false, "elapsed_seconds": 5.9706088329985505, "child_user_seconds": 4.768836, "child_system_seconds": 1.199707, "child_maxrss_kib_cumulative": 6485892, "log_sha256": "9c99cfcf7ede121c50ed6ed7904c6f91cd4c20596e0a6c7df89ecd8c15603096"}
+'Erdos85.H3TripleCompletion.triplePart_384_004' depends on axioms: [propext,
+ Quot.sound,
+ Erdos85.H3TripleCompletion.triplePart_384_004._native.native_decide.ax_1_1]
+
+[60s] Building...
+{"name": "part162", "command": ["lean", "-j1", "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_parts_20261008/sample1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime", "Proofs/Erdos85H3TripleCompletionPart162.lean", "-o", "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart162.olean"], "timeout_seconds": 90, "effective_timeout_seconds": 90, "returncode": 0, "timed_out": false, "elapsed_seconds": 34.45724963200337, "child_user_seconds": 33.342586, "child_system_seconds": 1.0800840000000003, "child_maxrss_kib_cumulative": 6485892, "log_sha256": "dff547f76b41f4426be89b5557152c42ab8254b547bdf329b0c618f709786693"}
+'Erdos85.H3TripleCompletion.triplePart_384_162' depends on axioms: [propext,
+ Quot.sound,
+ Erdos85.H3TripleCompletion.triplePart_384_162._native.native_decide.ax_1_1]
+
+{
+  "status": "SAMPLE_COMPILED_PENDING_AUDIT",
+  "steps": [
+    {
+      "name": "shared",
+      "command": [
+        "leanc",
+        "-O3",
+        "-DLEAN_EXPORTING",
+        "-shared",
+        "-fPIC",
+        "/workspace/proofs/.lake/build/ir/Proofs/Erdos85H3TripleCompletionRuntime.c",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_native_parts_20261008/sample1/libH3TripleRuntime.so"
+      ],
+      "timeout_seconds": 60,
+      "effective_timeout_seconds": 60,
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 1.1151872169939452,
+      "child_user_seconds": 1.026816,
+      "child_system_seconds": 0.048854999999999996,
+      "child_maxrss_kib_cumulative": 102588,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "part000",
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_parts_20261008/sample1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart000.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart000.olean"
+      ],
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 15.182851193996612,
+      "child_user_seconds": 13.823648,
+      "child_system_seconds": 1.329389,
+      "child_maxrss_kib_cumulative": 6485820,
+      "log_sha256": "4a959daff55ca990e91af53d38dccb5cc6039587834a019e27a15a25b6571078"
+    },
+    {
+      "name": "part003",
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_parts_20261008/sample1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart003.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart003.olean"
+      ],
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 3.968345418004901,
+      "child_user_seconds": 2.894194999999998,
+      "child_system_seconds": 1.057878,
+      "child_maxrss_kib_cumulative": 6485820,
+      "log_sha256": "ecb90adb8000c15fc0c6edc8ff758317aaa77e9c400a5aa4f4c8ddb528e4efaf"
+    },
+    {
+      "name": "part005",
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_parts_20261008/sample1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart005.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart005.olean"
+      ],
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 3.9183551500027534,
+      "child_user_seconds": 2.7299330000000026,
+      "child_system_seconds": 1.149972,
+      "child_maxrss_kib_cumulative": 6485892,
+      "log_sha256": "d986849d10fc9472d2be11caceed98a8c62c4d5a5b9f9eb219b6c1e8b4109914"
+    },
+    {
+      "name": "part004",
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_parts_20261008/sample1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart004.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart004.olean"
+      ],
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 5.9706088329985505,
+      "child_user_seconds": 4.768836,
+      "child_system_seconds": 1.199707,
+      "child_maxrss_kib_cumulative": 6485892,
+      "log_sha256": "9c99cfcf7ede121c50ed6ed7904c6f91cd4c20596e0a6c7df89ecd8c15603096"
+    },
+    {
+      "name": "part162",
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_native_parts_20261008/sample1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "Proofs/Erdos85H3TripleCompletionPart162.lean",
+        "-o",
+        "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85H3TripleCompletionPart162.olean"
+      ],
+      "timeout_seconds": 90,
+      "effective_timeout_seconds": 90,
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 34.45724963200337,
+      "child_user_seconds": 33.342586,
+      "child_system_seconds": 1.0800840000000003,
+      "child_maxrss_kib_cumulative": 6485892,
+      "log_sha256": "dff547f76b41f4426be89b5557152c42ab8254b547bdf329b0c618f709786693"
+    }
+  ],
+  "parts": [
+    {
+      "residue": 0,
+      "module": "Proofs.Erdos85H3TripleCompletionPart000",
+      "source_sha256": "5f55cfadb0f631fd0bfd020aee8ef35a823134df6cdf48dfa3b312efd21d631c",
+      "status": "COMPILED_PENDING_AUDIT",
+      "axioms": [
+        "propext",
+        "Quot.sound",
+        "Erdos85.H3TripleCompletion.triplePart_384_000._native.native_decide.ax_1_1"
+      ],
+      "object_sha256": "19080f7f1408316ee1368fc3361f1e26c334ee0f63cebcb01dd4c49936ad654a",
+      "object_bytes": 6712,
+      "object_mtime": 1791461933.1088498
+    },
+    {
+      "residue": 3,
+      "module": "Proofs.Erdos85H3TripleCompletionPart003",
+      "source_sha256": "290ef90426844ddbec0cc0debc85ff37bd03b4d0e8bd74b42788bf19cfd07035",
+      "status": "COMPILED_PENDING_AUDIT",
+      "axioms": [
+        "propext",
+        "Quot.sound",
+        "Erdos85.H3TripleCompletion.triplePart_384_003._native.native_decide.ax_1_1"
+      ],
+      "object_sha256": "a8fd2a0a0144cb854d8a24e4834babf41eaac301b89ad247246b15ca6637c5ee",
+      "object_bytes": 6712,
+      "object_mtime": 1791461937.089969
+    },
+    {
+      "residue": 5,
+      "module": "Proofs.Erdos85H3TripleCompletionPart005",
+      "source_sha256": "cd75031024faeb48a8e21f79b86ba1108cbea16d7b5a78f7215d684051f68911",
+      "status": "COMPILED_PENDING_AUDIT",
+      "axioms": [
+        "propext",
+        "Quot.sound",
+        "Erdos85.H3TripleCompletion.triplePart_384_005._native.native_decide.ax_1_1"
+      ],
+      "object_sha256": "af2f2aa117fdb7e06e77ce11cf862970d08aba6ce7f20202359b57e94958c328",
+      "object_bytes": 6712,
+      "object_mtime": 1791461940.9992514
+    },
+    {
+      "residue": 4,
+      "module": "Proofs.Erdos85H3TripleCompletionPart004",
+      "source_sha256": "9933806cec28fcf7dee00c28c150bf3292ad7b5e0cd4546dfa55bc38b94cc93d",
+      "status": "COMPILED_PENDING_AUDIT",
+      "axioms": [
+        "propext",
+        "Quot.sound",
+        "Erdos85.H3TripleCompletion.triplePart_384_004._native.native_decide.ax_1_1"
+      ],
+      "object_sha256": "9bf4727cc3ed31f28650242c0bcbf86bbe6a34c74154c0340d09b6ba6d43664f",
+      "object_bytes": 6712,
+      "object_mtime": 1791461947.01647
+    },
+    {
+      "residue": 162,
+      "module": "Proofs.Erdos85H3TripleCompletionPart162",
+      "source_sha256": "4eae109ee328ece731003f25c0e119b8bd98007bdb9c6ccca65fbbdcb0f58c63",
+      "status": "COMPILED_PENDING_AUDIT",
+      "axioms": [
+        "propext",
+        "Quot.sound",
+        "Erdos85.H3TripleCompletion.triplePart_384_162._native.native_decide.ax_1_1"
+      ],
+      "object_sha256": "26fc4a710dfd297206072562f8421902873116f10ecc22f698c6ee8c7f08fed4",
+      "object_bytes": 6712,
+      "object_mtime": 1791461981.4462152
+    }
+  ],
+  "cgroup_memory_bytes": 17179869184,
+  "cgroup_cpu_max": "200000 100000",
+  "started_utc": "2026-10-08T12:18:37.038931+00:00",
+  "manifest_sha256": "50487367dadbc9192c092b8acdd0cd030bcd9b4ecf47131cb2cfe7a655b5bead",
+  "prerequisite_audit_sha256": "21fd8bcce69730f9c3f0de0918412a22430b907d8954f1f90da436366c727b8b",
+  "initializer": "initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+  "scope": "Frozen five-part sample only; no full campaign or aggregate verdict.",
+  "library": {
+    "sha256": "34da36a0730f0dfc6dd6d5c9f2cf47119b1ee8fe86e95a606067546422e6cdeb",
+    "bytes": 179320
+  }
+}
+
+=== Build succeeded ===

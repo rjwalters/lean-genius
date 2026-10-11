@@ -1,0 +1,31 @@
+{
+  "command": [
+    "lake",
+    "build",
+    "Proofs.Erdos85ThreeHighNativeTerminalPilot"
+  ],
+  "started_utc": "2026-10-08T04:24:10.856356+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 9.572761366998748,
+  "user_cpu_seconds": 7.843676,
+  "system_cpu_seconds": 2.378518,
+  "max_rss_kib": 6560696,
+  "log_sha256": "32f1750ebbb5d4cce7faaa1b450b6b3fa6cbf314b7d885b90603c7bb9f5bfc47",
+  "module": "Erdos85ThreeHighNativeTerminalPilot",
+  "status": "PASS",
+  "source_sha256": "8e72a9b53ba46245a58723afa6e9e57056411ddfe2b19e6d84f47525c6dc74f2",
+  "source": "/workspace/research/problems/erdos-85-wip-01/h3_formal_20261007/Erdos85ThreeHighNativeTerminalPilot.lean",
+  "olean_path": "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85ThreeHighNativeTerminalPilot.olean",
+  "olean_sha256": "7d5f793a53b3fd0a04284d28e0b1f9deb53f7346e651ba0ca71322f06b2b195c",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.NativeTerminalPilot.no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+[e85] job 20261008T111356-erdos85__h3-triple-formal-20261007-443889  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T11:13:56Z
+[e85] commit d02fb5b5430ff42a1113172df00ef16cefc3adaf (Measure integrated H3 traversal and bounded bucket-zero size)
+[e85] host command: python3 -B research/problems/erdos-85-wip-01/h3_triple_completion_20261008/run_bucket_zero.py
+{
+  "source_hashes": {
+    "h3_phase2_heuristics.c": "1fa13648f41214ed1bc3e5483d94bfa4d8ad5d1b990ce63e1675f632125d13f1",
+    "run_bucket_zero.py": "cf22783a70d98c010097203d63e6830115795f27f9d7247aef9c82df82c5a4fb",
+    "run_prototype.py": "fa587c617e71432e0258c7bcf62280a0e66071c4026e76205534c886fdd27ab4",
+    "run_heuristics.py": "83a2d1f632e773d5d5c3627d80dc730ca3892395a0771f92b8b10219845d0b93"
+  },
+  "scope": "PROFILING_ONLY",
+  "affinity": [
+    0,
+    1
+  ],
+  "child_address_space_bytes": 2147483648,
+  "child_cpu_seconds": 30,
+  "child_wall_seconds": 30,
+  "runs": {
+    "control": {
+      "command": [
+        "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-bucket-zero/profile",
+        "1",
+        "mrv=0",
+        "fc=0",
+        "pre=22",
+        "mod=384",
+        "secs=20",
+        "nodes=2000000",
+        "earlygate=0",
+        "verbose=1",
+        "pick=2",
+        "res=-1",
+        "p1only=1"
+      ],
+      "started_utc": "2026-10-08T11:13:56.778344+00:00",
+      "returncode": 0,
+      "outer_timeout": false,
+      "elapsed_seconds": 0.004901963999145664,
+      "log_sha256": "ea77e10c8924baab63aa0ae0796de77e470f2373a62af8968bb1a1ebc794ee3d",
+      "profile": {
+        "traversal_return": 1,
+        "stopped": 0,
+        "n1": 8167,
+        "leaf1": 1088,
+        "leafrun": 0,
+        "n2": 0,
+        "leaf2": 0,
+        "n3": 0,
+        "found": 0,
+        "secs": 0.0,
+        "mrv": 0,
+        "fc": 0,
+        "early_gate": 0,
+        "gate_hits": 0,
+        "node_cap": 2000000,
+        "pick": 2,
+        "stop_reason": "none",
+        "maxleaf": 0,
+        "states": []
+      }
+    },
+    "bucket-zero": {
+      "command": [
+        "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-bucket-zero/profile",
+        "1",
+        "mrv=0",
+        "fc=0",
+        "pre=22",
+        "mod=384",
+        "secs=20",
+        "nodes=2000000",
+        "earlygate=0",
+        "verbose=1",
+        "pick=2",
+        "res=0",
+        "p1only=0",
+        "maxleaf=0"
+      ],
+      "started_utc": "2026-10-08T11:13:56.784861+00:00",
+      "returncode": 0,
+      "outer_timeout": false,
+      "elapsed_seconds": 0.16502108100394253,
+      "log_sha256": "a36d4ed2207a5fc8d230b7d5fa8b1451f5b68aee55c7f7a9754dd3504598d059",
+      "profile": {
+        "traversal_return": 1,
+        "stopped": 0,
+        "n1": 8167,
+        "leaf1": 4,
+        "leafrun": 4,
+        "n2": 458244,
+        "leaf2": 19920,
+        "n3": 0,
+        "found": 0,
+        "secs": 0.1,
+        "mrv": 0,
+        "fc": 0,
+        "early_gate": 0,
+        "gate_hits": 0,
+        "node_cap": 2000000,
+        "pick": 2,
+        "stop_reason": "none",
+        "maxleaf": 0,
+        "states": [
+          [
+            1,
+            975744,
+            1393
+          ],
+          [
+            2,
+            986112,
+            6289
+          ],
+          [
+            3,
+            41088,
+            6321
+          ],
+          [
+            4,
+            776448,
+            7657
+          ]
+        ]
+      }
+    }
+  },
+  "compile": {
+    "command": [
+      "gcc",
+      "-O3",
+      "-std=gnu11",
+      "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/h3_phase2_heuristics.c",
+      "-o",
+      "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-bucket-zero/profile"
+    ],
+    "started_utc": "2026-10-08T11:13:56.512127+00:00",
+    "returncode": 0,
+    "outer_timeout": false,
+    "elapsed_seconds": 0.2656209690030664,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "binary_sha256": "f02ab56ccaf187399906b57ef3f73748a150340854a608a15726fbf1e3ac6f0d"
+}

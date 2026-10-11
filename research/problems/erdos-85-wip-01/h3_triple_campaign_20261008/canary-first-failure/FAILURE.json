@@ -1,0 +1,18 @@
+{
+  "status": "MODULE_FAILURE",
+  "job": "20261008T070527-erdos85__h3-triple-formal-20261007-283163",
+  "expected_execution_commit": "c47efaa6ffb003b4dc665bfbd3a887d93c51730f",
+  "memory_gib": 16,
+  "lake_threads": 1,
+  "lean_num_threads_environment": "1",
+  "timeout": "15m",
+  "manifest_sha256": "576f7038609e1a26094c9e1a7d9e38044f4522692a5eef68747e7b4b99944f49",
+  "production_native_search": false,
+  "scope": "Isolated source bridge canary using prior audited native objects; no campaign completion credit.",
+  "exit_code": 1,
+  "finished_at_utc": "2026-10-08T07:06:40Z",
+  "evidence": "canary-first-failure",
+  "failure": "Deficient membership imported Pruning without Assembly defining DeficientUNormalizedAssembly.representative",
+  "run_sha256": "0d60e840bb985c0706c79f792750431a34dc21f8f6487a879e14cc01a4a37021",
+  "job_log_sha256": "a1b1fdda7b2c5829e46620418b2aa7b98b194f01758795dba3e87d6552faac8b"
+}

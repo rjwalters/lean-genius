@@ -1,0 +1,23 @@
+{
+  "status": "FAILED_ATTEMPT_CAPTURED",
+  "job": "20261008T114617-erdos85__h3-triple-formal-20261007-466599",
+  "execution_commit": "301cc8b1c20237b7e36dc5f2440659678cb76416",
+  "authoritative_exit": 1,
+  "run_status": "COMPARISON_INCOMPLETE",
+  "retained_sha256": {
+    "job.log": "c1fad37c33f406da83880ebebc68d5acbb6c4d36c020492e8f520e748e939c7f",
+    "job.spec": "111b672123c48c39c64bcc01e15f1e50f28a79cc1486f607f88e1459c5529a76",
+    "job.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "H3NativeRuntime.lean": "f94e1ae512e8b5baf988c06b2cb292e74e8a7e9e380b38d19428f0a1df848c2f",
+    "H3NativeProbe.lean": "8fa011ad6c4401157ce54cfab442316a97ff044b4ef1234b846fbba0cf9b9ba0",
+    "SOURCE.json": "b4ae9490c47c663837d4f39a19d8985f1d8e60ab3e2a33c93ee98237197519c6",
+    "run_probe.py": "33a915e196d9776a0192e1b5aaad9536ccc3064fa4e1aa24d3d927c4c60dfb09",
+    "RUN.json": "1bb04c81729eb00e382f37cb2838a4af3c232ab0671452b76f47566f35787bde",
+    "runtime.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "shared.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "plain.log": "755d51e2e2c2c21a896e2d792a7fce19577cfb36a0d801455657733bbf1c691a",
+    "plugin.log": "3b94a8d1be7ad68f8040c0a62c44adb8ab618fe4329717155ab0c108efc40592"
+  },
+  "scope": "Standalone copied-runtime timing only; no production exclusion or equivalence credit.",
+  "capture_script_sha256": "7b6e55f3e2f479c6fbdd8c03caabb51e045df1d09923363e6d29b9ea23454e63"
+}

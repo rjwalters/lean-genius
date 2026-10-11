@@ -1,0 +1,51 @@
+H3TripleCompletionPhaseTwoProfile.lean:82:2: error: Type mismatch
+  IO.println (toString "STATES count=" ++ toString states.size ++ toString " elapsed_ms=" ++ toString (ready - start))
+has type
+  IO Unit
+but is expected to have type
+  BaseIO PUnit.{1}
+H3TripleCompletionPhaseTwoProfile.lean:89:4: error: Application type mismatch: The argument
+  IO.println
+    (toString "PROFILE leaf=" ++ toString i ++ toString " key=" ++ toString (stKey s) ++ toString " nodes=" ++
+                                      toString p.nodes ++
+                                    toString " leaves=" ++
+                                  toString p.leaves ++
+                                toString " exhausted=" ++
+                              toString p.exhausted ++
+                            toString " invalid=" ++
+                          toString p.invalid ++
+                        toString " no_fresh=" ++
+                      toString p.noFresh ++
+                    toString " rejected=" ++
+                  toString p.rejected ++
+                toString " available=" ++
+              toString p.available ++
+            toString " capped=" ++
+          toString p.capped ++
+        toString " elapsed_ms=" ++
+      toString (finish - begin))
+has type
+  IO Unit
+but is expected to have type
+  BaseIO ?m.119
+in the application
+  bind
+    (IO.println
+      (toString "PROFILE leaf=" ++ toString i ++ toString " key=" ++ toString (stKey s) ++ toString " nodes=" ++
+                                        toString p.nodes ++
+                                      toString " leaves=" ++
+                                    toString p.leaves ++
+                                  toString " exhausted=" ++
+                                toString p.exhausted ++
+                              toString " invalid=" ++
+                            toString p.invalid ++
+                          toString " no_fresh=" ++
+                        toString p.noFresh ++
+                      toString " rejected=" ++
+                    toString p.rejected ++
+                  toString " available=" ++
+                toString p.available ++
+              toString " capped=" ++
+            toString p.capped ++
+          toString " elapsed_ms=" ++
+        toString (finish - begin)))

@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "scope": "Four soundness exports for distinct support pruning and the pair search; no finite rejection.",
+  "source_sha256": {
+    "proofs/Proofs/Erdos85ThreeHighDistinctSupportSearch.lean": "e46f85286bc1306dfc862cad685746a41d3f558e3d5c4a2fa6fb948b907687e0"
+  },
+  "log_sha256": "65c37bf6e71d56cff534ce3b0410b59020fb5d3bc9e1a298e5dc8d6f49702ef0",
+  "exit_code": 0,
+  "command": "LEAN_NUM_THREADS=1 LEAN_MEMORY_LIMIT=8192 LEAN_BUILD_TIMEOUT=5m LEAN_SKIP_CACHE=true ./proofs/scripts/docker-build.sh Proofs.Erdos85ThreeHighDistinctSupportSearch",
+  "lean_toolchain": "leanprover/lean4:v4.31.0",
+  "lake_manifest_sha256": "f243fb1348183fbb95612c9c97beea1620651a55441b3e78fbc6bc3bfd26da01",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.threeHighDistinctSupportPass_preserves",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighDistinctSupportUntilStable_preserves",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighDistinctSupportSearch_sound",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighDistinctSupportPairSearch_no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

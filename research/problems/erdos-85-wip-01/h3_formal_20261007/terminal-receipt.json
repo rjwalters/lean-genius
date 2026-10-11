@@ -1,0 +1,130 @@
+{
+  "scope": "Stronger H3 actual-graph witness, relabeling, terminal soundness, and conditional pair-search exclusion; NO concrete pair or stratum rejection",
+  "result": "PASS",
+  "command": "LEAN_NUM_THREADS=1 LEAN_MEMORY_LIMIT=8192 LEAN_BUILD_TIMEOUT=2m LEAN_SKIP_CACHE=true ./proofs/scripts/docker-build.sh Proofs.Erdos85ThreeHighNativePairSearch",
+  "source_commit": "e6ebfb739d8cc9058dd71e6bcbc0a38277f8f00a",
+  "source_sha256": {
+    "proofs/Proofs/Erdos85OrderFortyNineThreeHighTripleDistinctColorNeighbor.lean": "50d64d83b95b27ccd67ceca0afcb3762767215cddb95e40b84042c027f1d8c6e",
+    "proofs/Proofs/Erdos85ThreeHighDistinctJointWitness.lean": "9aa549d45b6f2e3a0e8989b54dfcf4138cdf4f271c49f2c22a53d8dc27bba2b7",
+    "proofs/Proofs/Erdos85ThreeHighDistinctJointSearch.lean": "70ad447fb98c13eaa26a882ab71b71b98f1162eb473ff8c5441f1d5433a909a0",
+    "proofs/Proofs/Erdos85ThreeHighNativePairSearch.lean": "da9fa30d29fceed3cd1ef4dadc5bd83e214dc5f1fe178e2158eda42479d87c37"
+  },
+  "lean_toolchain": "leanprover/lean4:v4.31.0",
+  "lake_manifest_sha256": "f243fb1348183fbb95612c9c97beea1620651a55441b3e78fbc6bc3bfd26da01",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.encodedDistinctFamilyCompatibility_forget",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.encodedDistinctFamilyCompatibility_relabel",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHigh_triple_distinct_coordinate_color_compatibility",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHigh_triple_distinct_color_family_compatibility",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.ThreeHighDistinctJointWitness.forget",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.ThreeHighDistinctJointWitness.relabel",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHigh_triple_distinct_joint_block_families",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighListedDistinctJointSearch_of_families",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighDistinctJointSearch_sound",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighCachedDistinctJointSearch_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighCachedDistinctJointSearch_sound",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighFactoredCapacityColumnDFS_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighNativePairSearch_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighNativePairSearch_no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "full_local_log_sha256": "8db9cb04efc8c3edaf6f0de3e957ad922ebead774ac764f4e08bbe5189a9c6f6",
+  "retained_log": "terminal-axioms.txt (axiom excerpt, not the full dependency build log)"
+}

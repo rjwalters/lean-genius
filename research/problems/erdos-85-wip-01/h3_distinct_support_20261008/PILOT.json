@@ -1,0 +1,22 @@
+{
+  "status": "TIMEOUT",
+  "exit_code": 124,
+  "timeout_seconds": 240,
+  "memory_limit_mib": 8192,
+  "lean_threads": 1,
+  "pair": {
+    "U_index": 1,
+    "U_compact_code": [
+      6,
+      6,
+      15
+    ],
+    "R_index": 15
+  },
+  "source_sha256": "b60e49313dbc83a47078a388004dbbcc146f4a23300fb3b488a9f25784753e34",
+  "log_sha256": "8f256cd56d758e4fbfbe3a99fccd36f95a3b63c5e5ef2665ce8ca613f3adafeb",
+  "runner_sha256": "c94620e9f316c2f654fc03c6e520918da907cec54daf91b516cfb0f30492bc2a",
+  "command": "LEAN_REPO_ROOT=/Volumes/Stripe/lean-genius/erdos85-certpilot LEAN_NUM_THREADS=1 LEAN_MEMORY_LIMIT=8192 LEAN_BUILD_TIMEOUT=4m LEAN_SKIP_CACHE=true LEAN_DOCKER_CMD='lake env lean /workspace/research/problems/erdos-85-wip-01/h3_distinct_support_20261008/Pilot.lean' /Volumes/Stripe/lean-genius/erdos85-h7t0/proofs/scripts/docker-build.sh",
+  "finite_rejection_verified": false,
+  "performance_comparison": "No result within budget; no speedup measured."
+}

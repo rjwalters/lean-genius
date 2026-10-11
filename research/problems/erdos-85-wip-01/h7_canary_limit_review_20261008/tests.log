@@ -1,0 +1,10 @@
+test_batch_exception_releases_capacity (__main__.Reservation.test_batch_exception_releases_capacity) ... ok
+test_original_overshoots_one_batch_limit (__main__.Reservation.test_original_overshoots_one_batch_limit) ... ok
+test_proposal_enforces_one_batch_limit (__main__.Reservation.test_proposal_enforces_one_batch_limit) ... ok
+test_stop_expiry_empty_and_store_errors_release_capacity (__main__.Reservation.test_stop_expiry_empty_and_store_errors_release_capacity) ... ok
+test_unlimited_mode_still_runs_available_batches (__main__.Reservation.test_unlimited_mode_still_runs_available_batches) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.295s
+
+OK

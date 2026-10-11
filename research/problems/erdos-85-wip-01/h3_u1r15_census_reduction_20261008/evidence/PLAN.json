@@ -1,0 +1,117 @@
+{
+  "status": "SOURCE_ONLY_NOT_COMPILED",
+  "selection": "Diagnostic diversity, not a random or representative sample.",
+  "census_counts": {
+    "full": 261,
+    "deficient": 1554
+  },
+  "cases": [
+    {
+      "branch": "full",
+      "u_index": 3,
+      "r_index": 3,
+      "compact_code": [
+        6,
+        9,
+        5
+      ],
+      "secondary_code": [
+        "0",
+        "1",
+        "1",
+        "true"
+      ],
+      "module_prefix": "Erdos85ThreeHighPilotFullU3R3",
+      "namespace": "Erdos85.VariedPilot.FullU3R3",
+      "source_census_member": true
+    },
+    {
+      "branch": "full",
+      "u_index": 54,
+      "r_index": 20,
+      "compact_code": [
+        9,
+        12,
+        90
+      ],
+      "secondary_code": [
+        "2",
+        "0",
+        "0",
+        "true"
+      ],
+      "module_prefix": "Erdos85ThreeHighPilotFullU54R20",
+      "namespace": "Erdos85.VariedPilot.FullU54R20",
+      "source_census_member": true
+    },
+    {
+      "branch": "deficient",
+      "u_index": 26,
+      "r_index": 2,
+      "compact_code": [
+        6,
+        9,
+        11,
+        1
+      ],
+      "secondary_code": [
+        "0",
+        "1",
+        "1",
+        "false"
+      ],
+      "module_prefix": "Erdos85ThreeHighPilotDeficientU26R2",
+      "namespace": "Erdos85.VariedPilot.DeficientU26R2",
+      "source_census_member": true
+    },
+    {
+      "branch": "deficient",
+      "u_index": 369,
+      "r_index": 11,
+      "compact_code": [
+        9,
+        12,
+        92,
+        2
+      ],
+      "secondary_code": [
+        "1",
+        "0",
+        "0",
+        "true"
+      ],
+      "module_prefix": "Erdos85ThreeHighPilotDeficientU369R11",
+      "namespace": "Erdos85.VariedPilot.DeficientU369R11",
+      "source_census_member": true
+    }
+  ],
+  "input_source_sha256": {
+    "research/problems/erdos-85-wip-01/full_orbit_pruning/Pruning.lean": "8f3b04ba385c0794033047e3077ed56d606b40f8c59aa17d23b7fbdc9db8825e",
+    "research/problems/erdos-85-wip-01/full_block_orbits/Certificate.lean": "e86619944bbdf83fd475651b09a59383072b5b59092be43914f3b1a201ad31fb",
+    "research/problems/erdos-85-wip-01/full_block_pruning/Reduction.lean": "a24ddb491107a93138f8c328bd3f89acfbb77de2011a8e11364da7ab65ad880d",
+    "research/problems/erdos-85-wip-01/full_terminal_pruning/TerminalReduction.lean": "18008bfb85a87c14d9f24efe0d2180a3d17653b7bc25c9a8f1e5f5c5cafe35a7",
+    "research/problems/erdos-85-wip-01/full_capacity_pruning/CapacityReduction.lean": "be324322294737ef5b069f9a8016c74c0b6a83c0bc1992001787beb159c74c9d",
+    "research/problems/erdos-85-wip-01/full_subset_capacity/SubsetCapacityBatch.lean": "35fee6206b3d64b36c2e50caaf894c46cee90fef5ba274f49ca7f86d535b36e2",
+    "research/problems/erdos-85-wip-01/deficient_orbit_pruning/Pruning.lean": "0854db8aa4463eef1fa1bd64a94c56a14abecf53e4e4c29dc5d699ccb6dae4ed",
+    "proofs/Proofs/Erdos85ThreeHighSecondaryDegreeClasses.lean": "502155220fea97c68a6c119003e0b59113be2c488098d603c72f3ab3850665e3",
+    "research/problems/erdos-85-wip-01/compact_u_orbits/full_coverage/Full_3_3.lean": "ab9da838815a58639215d3100fd5bbb009e4dbe2eded60e6e20365e2e0e76533",
+    "research/problems/erdos-85-wip-01/compact_u_orbits/deficient_coverage/Deficient_3_3_0.lean": "8bf129063d301fe6225f0f506ac0e89a87251fff75be4338002f95acffa7f378",
+    "proofs/Proofs/Erdos85ThreeHighSecondaryOrbitTable.lean": "9e0ed747ec664eb99b0864ce364c67282bd32d452522cd2951fcab4748ef86b6"
+  },
+  "generated_source_sha256": {
+    "Erdos85ThreeHighPilotFullU3R3Inputs.lean": "1e3491373759875229ed79a8700f65c6ae4599b344cbb0c84000c08e822932d6",
+    "Erdos85ThreeHighPilotFullU3R3Certificate.lean": "186d7dde7a6d0be550a6e16dec0c06265b3b78a3550dc24c2850a43a3ade619b",
+    "Erdos85ThreeHighPilotFullU3R3Consumer.lean": "2f8f051a0621f465b37a066e3a454d0db7a49051a2998f7ba830270f66f065dd",
+    "Erdos85ThreeHighPilotFullU54R20Inputs.lean": "324653ac84cdf0a257221e3a495ace46b96e64a73e5d5f2fd3d0de1071f2bd38",
+    "Erdos85ThreeHighPilotFullU54R20Certificate.lean": "be3a4ac1b4700915860fc4507ef4df4c725439b8ba7bb47870791c3037125f28",
+    "Erdos85ThreeHighPilotFullU54R20Consumer.lean": "1d0aa08a664fa59a2d0cee5564d6d49e4b37b12280aef646f41777e37ef5ea3e",
+    "Erdos85ThreeHighPilotDeficientU26R2Inputs.lean": "4e864df441cf5afab76be002d9abd90fcdb906752c4d5207e8522b74b164e02c",
+    "Erdos85ThreeHighPilotDeficientU26R2Certificate.lean": "19241072eccf8b014ea12dd7245439a5d23367cc9403dddcd751d29b3ce27f6d",
+    "Erdos85ThreeHighPilotDeficientU26R2Consumer.lean": "2161fa6533b67580b8af285b1b591bf77749071e922b56b11bb36be7fa8ca5c8",
+    "Erdos85ThreeHighPilotDeficientU369R11Inputs.lean": "7589738f71cca554b32567acf56d4f433a358ed9a79801f923c828f763dadd67",
+    "Erdos85ThreeHighPilotDeficientU369R11Certificate.lean": "107917385f710e4436505522b643ede576a27d7110c37a5923b33d389a2d7ac8",
+    "Erdos85ThreeHighPilotDeficientU369R11Consumer.lean": "4ffcfb1d3285482d219be26b1e002550e267e48bc81d15d7a4d2dd7679d99dce",
+    "FullMembership.lean": "2bd57a5707e8a90c42b4fad2b5271ef403ad458f8d96e3f1ed84421f1b4b7086",
+    "DeficientMembership.lean": "c146558cad4d6a7b599b581e2903aa5f4884b719dae2c7c91e35935c2f7ad47a"
+  }
+}

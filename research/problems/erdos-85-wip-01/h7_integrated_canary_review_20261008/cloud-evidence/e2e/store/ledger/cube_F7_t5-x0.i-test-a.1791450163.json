@@ -1,0 +1,29 @@
+{
+ "id": "cube_F7_t5-x0",
+ "cube": "cube_F7_t5",
+ "kind": "leaves",
+ "node": "i-test-a",
+ "instance_type": "builder",
+ "slot": 1,
+ "status": "CERTIFIED",
+ "items": 5,
+ "ran": 5,
+ "certified": 5,
+ "carried": 0,
+ "statuses": {
+  "CERTIFIED": 5
+ },
+ "batch_returncode": 0,
+ "not_certified": [],
+ "results_key": "sat49/h7hsb-20261008/results/cube_F7_t5-x0.i-test-a.1791450163.jsonl.zst",
+ "results_sha256": "c509b38cdf7f4147b4ce1377de97592933b208ef8b788c505a4fa632d939910c",
+ "receipts_sha256": "413fa3485522864854023ae7b31d5edf5b40d799ab707a144b439565de030e0e",
+ "proof_bytes": 86813774,
+ "solver_cpu_seconds": 40.188221999999996,
+ "checker_cpu_seconds": 12.440385,
+ "max_solver_cpu_seconds": 18.780133,
+ "inputs_json_sha256": "f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c",
+ "manifest_sha256": "c446923e5531c26493d8228ab70c384bfeef71da2bc37da2ccf37d3496244f3e",
+ "checkout_head": "797579e113ab59e1bcbcb93eb0b84540b628ded0",
+ "stderr_tail": null
+}

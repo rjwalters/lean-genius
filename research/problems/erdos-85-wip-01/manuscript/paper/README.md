@@ -1,6 +1,19 @@
 # Manuscript of record (2026-10-07)
 
-Current: `main.tex`, `refs.bib`, `anvil-paper.cls`, `main.pdf` are copies of `../anvil/erdos85-drop.8/` (AUDITED 2026-10-07: review 39/44, advance, 0 critical; audit 0 critical, 1 major (hexagon comparison axis), 6 minors — queued for the operator's read-through pass), rebuilt to the xelatex fixpoint (4 passes). Title: A Certificate-Checked Drop and a Uniform Reduction for Erdős Problem 85; authors Claude Fable, GPT Sol, Astra, Claude Opus, Robb Walters.
+Current: `main.tex`, `refs.bib`, `anvil-paper.cls`, and `main.pdf` are byte copies
+of [version 9](../anvil/erdos85-drop.9/). Title: **A Drop at Forty-Nine in Erdős
+Problem 85**; authors Claude Fable, GPT Sol, Astra, Claude Opus, and Robb Walters.
+The version 9 [review](../anvil/erdos85-drop.9.review/verdict.md) records 39/44
+and advancement with no critical flags; its [audit](../anvil/erdos85-drop.9.audit/flags.md)
+records AUDITED with no critical flags and a clean four-pass XeLaTeX build.
+The audit status concerns the manuscript and does not make the computational
+upper bound a Lean theorem: the H3, H5, and H7 zero-triple exclusions remain
+open in Lean, as disclosed in the paper.
+
+Version 9 corrects the earlier H3 certificate attribution, scopes
+certificate checking to H1 and H7 with positive triple count, and uses the
+operator's revised title. The current source also identifies the small-stratum
+reviews as reviews by the AI authors, not human referees.
 
 ## History (2026-09-28 record)
 
@@ -12,4 +25,18 @@ Links: every artifact reference is `\repofile{path}{label}` under `\repobase` = 
 
 `../DRAFT.md` and `../DRAFT.pdf` are the superseded Markdown draft kept for history.
 
-Open before publication (see `../../WRAPUP_PUNCHLIST_20260921.md`): the operator's read-through; the two audit nits (§3.1 `Lean.ofReduceBool` identification is a statement about Lean's implementation, not printed by `axioms.out`; Appendix B "thirteen input hashes" is the 2026-08 grid campaign's inputs, not the thirteen H7 certificate modules); the abstract no longer mentions `native_decide` for the lower sides (still disclosed in §1, Table 1, §4.1, §6); the nine citations with no source on disk (author obligation: check Zhang–Chen–Cheng's values and Boza's r(109), r(155) bounds against the papers); a figure and a method-lineage literature search were declined for lack of sources.
+Before publication, use the version 9 [audit flags](../anvil/erdos85-drop.9.audit/flags.md)
+for the recorded release preconditions, citation-support limitations, and
+remaining minor findings. Its repository-state observations are dated snapshots:
+verify that the corrected receipts and paper are on the release branch before
+creating a release tag and repointing `\repobase`. The older
+[wrap-up punchlist](../../WRAPUP_PUNCHLIST_20260921.md) remains historical context;
+its version 5/8 wording notes are superseded where version 9 addresses them.
+
+Release-branch check on 2026-10-08: fetched `erdos85/integration` at
+`bc5291aa220` already contains the corrected H3/H1 receipt rows identified by
+the audit's P1 note. It does not yet contain `b0b815e175c`, which adds the
+AI-author review disclosure to the abstract and collaboration section. Include
+that disclosure, its matching PDF, and this README correction in the release
+branch before publishing; the immutable audit remains a record of its earlier
+snapshot.

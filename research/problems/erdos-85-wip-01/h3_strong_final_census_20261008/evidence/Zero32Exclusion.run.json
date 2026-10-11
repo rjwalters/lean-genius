@@ -1,0 +1,36 @@
+{
+  "module": "Zero32Exclusion",
+  "source": "zero32_coverage/Zero32Exclusion.lean",
+  "source_sha256": "d38aa5544d80a4470a8a1fe381f7527266e3cb19b80455fd13c90fe26a520d2d",
+  "log_sha256": "dba87335af6d0ac8e6023dc1a33c186d60375d19ed57f64b177a53416e4ee183",
+  "olean_sha256": "1da37a7cc015716acfaa19552f87420a64c71119c01f9bee011855da5d9c584c",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Zero32Exclusion.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Zero32Exclusion.lean"
+  ],
+  "elapsed_seconds": 4.422983980999561,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "Zero32.no_joint_literal",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Zero32.no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

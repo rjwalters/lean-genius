@@ -1,0 +1,19 @@
+{
+  "module": "LiteralData",
+  "source": "fixed_pair_coverage/LiteralData.lean",
+  "source_sha256": "451bcb416e6abdab2b54fc097d923993e4102ec1f7a1ae27af5d0778959d726e",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "olean_sha256": "08e3a42ef39582ab78c625d762cef609d8d9e97e28b185b2d871e468aaa31b83",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/LiteralData.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/LiteralData.lean"
+  ],
+  "elapsed_seconds": 6.277897356001631,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": []
+}

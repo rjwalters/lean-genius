@@ -1,0 +1,28 @@
+{
+  "module": "Zero32Shard33",
+  "source": "zero32_coverage/Zero32Shard33.lean",
+  "source_sha256": "87461312ae9b7db62978a2e276829447de1e19e8ac4665da9404fb61ee1c0b4c",
+  "log_sha256": "e8acc30b005daaf83d5cd7618089532a893309ba3956301f8ed1aba14a029f72",
+  "olean_sha256": "6caaefdef44227b956de913b297df96ee599623cf5da2e99f95ac67f3ad319e0",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Zero32Shard33.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Zero32Shard33.lean"
+  ],
+  "elapsed_seconds": 37.964187691002735,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "Zero32Shard33.checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

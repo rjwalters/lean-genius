@@ -1,0 +1,11 @@
+[e85] job 20261008T083812-erdos85__h3-triple-formal-20261007-346714  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T08:38:12Z
+[e85] commit db8b6a986ec2dad89a57e7b98b861118bc17825d (Verify H7 archival annotations against retained raw sampler receipts)
+[e85] host command: python3 -B research/problems/erdos-85-wip-01/h7_cost_sample_review_20261008/audit_sample.py
+Traceback (most recent call last):
+  File "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h7_cost_sample_review_20261008/audit_sample.py", line 240, in <module>
+    main()
+  File "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h7_cost_sample_review_20261008/audit_sample.py", line 206, in main
+    require(round(total_cpu) == estimate['cpu_hours'] == 3856 and
+  File "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h7_cost_sample_review_20261008/audit_sample.py", line 35, in require
+    raise ValueError(message)
+ValueError: Estimate summary differs

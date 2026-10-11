@@ -1,0 +1,28 @@
+{
+  "module": "LeafPilot",
+  "source": "fixed_pair_coverage/LeafPilot.lean",
+  "source_sha256": "cf9c168b6d807a8b22785faf6aa540f53f46404d522efc35d8c801671ad2ae53",
+  "log_sha256": "1419035708d0efa3da346714fe6bad36d460f5f6746386d989d3f605c3939f6c",
+  "olean_sha256": "2c707f40f7cd915132c333dbb5b1258beb52829563c2246e29e09d5436cb528a",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/LeafPilot.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/LeafPilot.lean"
+  ],
+  "elapsed_seconds": 91.75056752899945,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "ColumnCoverageLeafPilot.checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

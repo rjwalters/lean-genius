@@ -1,0 +1,11 @@
+MODE=run
+REF=erdos85/h3-first-column-20261008
+TARGET=''
+CMD=lake\ env\ python3\ ../research/problems/erdos-85-wip-01/h3_varied_pilot_20261008/check_case.py\ --case\ FullU54R20\ --membership-evidence\ /workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/evidence\ --output\ /workspace/research/problems/erdos-85-wip-01/h3_varied_pilot_20261008/_build/FullU54R20-first
+MEM_GB=16
+TIMEOUT=2h
+THREADS=1
+CACHE=0
+CPUS=16
+VOLUME=''
+FULL=1

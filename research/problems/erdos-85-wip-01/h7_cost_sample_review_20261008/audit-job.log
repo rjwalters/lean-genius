@@ -1,0 +1,289 @@
+[e85] job 20261008T084139-erdos85__h3-triple-formal-20261007-348672  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T08:41:39Z
+[e85] commit 9a1995108b9c0ac7edc658f5be19fef545c03902 (Report H7 bootstrap reproducibility finding separately from verified receipts)
+[e85] host command: python3 -B research/problems/erdos-85-wip-01/h7_cost_sample_review_20261008/audit_sample.py
+{
+  "status": "COST_SAMPLE_AUDIT_WITH_REPRODUCIBILITY_FINDING",
+  "receipt_identity_status": "PASS",
+  "point_arithmetic_status": "PASS",
+  "bootstrap_reproduction": {
+    "status": "NOT_REPRODUCED",
+    "replicates": 5000,
+    "seed": 1,
+    "sample_order": "committed sample_results.jsonl",
+    "recorded_interval": [
+      2864,
+      5216
+    ],
+    "reproduced_interval": [
+      2867,
+      5208
+    ],
+    "finding": "Retained estimate does not reproduce with the committed estimator default replicate count and committed sample order. The original generation command/ordering has been requested from the owner."
+  },
+  "review_commit": "f995bd5f7a417dce8d7ea8d6e694b31f95120e45",
+  "auditor_sha256": "22665c17f14af4e906a94dfa47625448612740121b62b976fce6648808d950e1",
+  "inputs_sha256": "f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c",
+  "sample_sha256": "8a244515666117ce4d4592c396a5bfa434e2affc8f4b0bb677e31c5a1bac8477",
+  "raw_sample_sha256": "b93066071de9969416f0d3267082b1a97ca52fc97d5a173b26afe228716ce97d",
+  "helper_snapshot_sha256": "733aeacf1be139ea7897ab90b4635f33f6aa38a4fd2bf7b34791a4837089c486",
+  "matching_duplicate_proofs": 146,
+  "archival_transform": "Add sampler=main; annotate 146 matching duplicate runs; truncate two timeout diagnostic maps to each value's last 1500 characters.",
+  "primary_job": "20261008T050835-commit-50a06c7c033a-210080",
+  "primary_job_exit": 0,
+  "primary_job_log_sha256": "c41fefb0960e448a75084070d3b0ca2f476a8fd5e913fa102400691a4b83fc1c",
+  "status_counts": {
+    "cover:CERTIFIED": 28,
+    "leaf:CERTIFIED": 1398,
+    "leaf:SOLVER_TIMEOUT": 2
+  },
+  "sample_seed": 20261008,
+  "sampled_leaves": 1400,
+  "total_campaign_leaves": 377776,
+  "cpu_hours": 3855.8493677589286,
+  "bootstrap_5_95_rounded": [
+    2867,
+    5208
+  ],
+  "expected_capped_leaves": 719.88,
+  "cpu_hours_counted_for_capped_leaves": 766.2861057016333,
+  "proof_tb_streamed": 20.13232667033302,
+  "conditional_cost_usd": 66.68351259536028,
+  "timeouts": [
+    {
+      "cube": "cube_F7_t6",
+      "leaf": 119
+    },
+    {
+      "cube": "cube_F7_t0",
+      "leaf": 2061
+    }
+  ],
+  "cubes": [
+    {
+      "cube": "cube_F6_t14",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 893,
+      "cpu_hours": 6.003815709816667
+    },
+    {
+      "cube": "cube_F6_t15",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 893,
+      "cpu_hours": 39.873728572594445
+    },
+    {
+      "cube": "cube_F6_t16",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 9442,
+      "cpu_hours": 97.0948188819889
+    },
+    {
+      "cube": "cube_F6_t17",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 9442,
+      "cpu_hours": 24.309594929633324
+    },
+    {
+      "cube": "cube_F6_t18",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 9442,
+      "cpu_hours": 33.749097625544444
+    },
+    {
+      "cube": "cube_F6_t5",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 3456,
+      "cpu_hours": 36.3757230528
+    },
+    {
+      "cube": "cube_F6_t8",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 20225,
+      "cpu_hours": 64.5266096736111
+    },
+    {
+      "cube": "cube_F7_t0",
+      "sampled": 50,
+      "certified": 49,
+      "capped": 1,
+      "leaves": 32538,
+      "cpu_hours": 914.4411620424669
+    },
+    {
+      "cube": "cube_F7_t10",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 50772,
+      "cpu_hours": 188.86881088606677
+    },
+    {
+      "cube": "cube_F7_t11",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 20225,
+      "cpu_hours": 98.23098092944444
+    },
+    {
+      "cube": "cube_F7_t13",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 20225,
+      "cpu_hours": 20.062906625138893
+    },
+    {
+      "cube": "cube_F7_t14",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 9442,
+      "cpu_hours": 360.22838617803336
+    },
+    {
+      "cube": "cube_F7_t2",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 11025,
+      "cpu_hours": 121.93898528
+    },
+    {
+      "cube": "cube_F7_t3",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 11025,
+      "cpu_hours": 112.8617082075
+    },
+    {
+      "cube": "cube_F7_t4",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 11025,
+      "cpu_hours": 69.60702080500002
+    },
+    {
+      "cube": "cube_F7_t5",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 3456,
+      "cpu_hours": 60.016596364799994
+    },
+    {
+      "cube": "cube_F7_t6",
+      "sampled": 50,
+      "certified": 49,
+      "capped": 1,
+      "leaves": 3456,
+      "cpu_hours": 172.52569061760002
+    },
+    {
+      "cube": "cube_F7_t8",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 3456,
+      "cpu_hours": 75.38395541759998
+    },
+    {
+      "cube": "cube_F7_t9",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 3456,
+      "cpu_hours": 29.83455024
+    },
+    {
+      "cube": "cube_F8_t0",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 32538,
+      "cpu_hours": 231.86888760603333
+    },
+    {
+      "cube": "cube_F8_t1",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 11025,
+      "cpu_hours": 56.084858305
+    },
+    {
+      "cube": "cube_F8_t2",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 11025,
+      "cpu_hours": 43.182752278749994
+    },
+    {
+      "cube": "cube_F8_t3",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 11025,
+      "cpu_hours": 39.59720624999999
+    },
+    {
+      "cube": "cube_F8_t4",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 11025,
+      "cpu_hours": 220.46998584625004
+    },
+    {
+      "cube": "cube_F8_t5",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 3456,
+      "cpu_hours": 42.055933728
+    },
+    {
+      "cube": "cube_F8_t6",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 20225,
+      "cpu_hours": 122.68515258847225
+    },
+    {
+      "cube": "cube_F9_t0",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 32538,
+      "cpu_hours": 305.87588530803345
+    },
+    {
+      "cube": "cube_F9_t1",
+      "sampled": 50,
+      "certified": 50,
+      "capped": 0,
+      "leaves": 11025,
+      "cpu_hours": 268.09456380875
+    }
+  ],
+  "full_campaign_complete": false,
+  "scope": "Recorded sample receipt identities and internally consistent solver/checker outcomes; independently reconstructed CNF hashes, deterministic sample selection, primary receipt equality under the exact verified archival transform, and point-estimate arithmetic. Bootstrap reproduction is reported separately; a mismatch remains an unresolved finding, not an accepted interval. Proof streams were discarded and were not rechecked. The interval describes a censored empirical bootstrap, not a completion-time bound. The dollar result uses stated price/utilisation assumptions, not current billing verification."
+}

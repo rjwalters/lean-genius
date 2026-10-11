@@ -1,0 +1,34 @@
+{
+ "id": "cube_F6_t14-b0000",
+ "cube": "cube_F6_t14",
+ "kind": "leaves",
+ "node": "i-test-c",
+ "instance_type": "builder",
+ "slot": 0,
+ "status": "ALARM",
+ "items": 5,
+ "ran": 1,
+ "certified": 0,
+ "carried": 0,
+ "statuses": {
+  "CHECK_FAILED": 1
+ },
+ "batch_returncode": 3,
+ "not_certified": [
+  {
+   "leaf": 0,
+   "status": "CHECK_FAILED"
+  }
+ ],
+ "results_key": "sat49/h7hsb-20261008/results/cube_F6_t14-b0000.i-test-c.1791450252.jsonl.zst",
+ "results_sha256": "554499eccc80178061f7973170288a0706cb6541fa29a49f30c572fa5f7929d9",
+ "receipts_sha256": "9bd580e5ac79f65639959b867429d3a4d7747e8db93f44006decf02cc3483052",
+ "proof_bytes": 1383171,
+ "solver_cpu_seconds": 0.363468,
+ "checker_cpu_seconds": 0.00264,
+ "max_solver_cpu_seconds": 0.363468,
+ "inputs_json_sha256": "f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c",
+ "manifest_sha256": "c446923e5531c26493d8228ab70c384bfeef71da2bc37da2ccf37d3496244f3e",
+ "checkout_head": "797579e113ab59e1bcbcb93eb0b84540b628ded0",
+ "stderr_tail": null
+}

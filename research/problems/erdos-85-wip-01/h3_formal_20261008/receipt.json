@@ -1,0 +1,93 @@
+{
+  "result": "PASS",
+  "scope": "Eight standard-axiom exports: strong H3 full/deficient actual-graph orbit candidates, orbit and block-permutation transport, and representative transport parameterized by complete coverage. No new concrete census instantiation or finite pair rejection.",
+  "source_commit": "e39c5dc949e0ed626e313d15e29781d9fdfece26",
+  "source_sha256": {
+    "proofs/Proofs/Erdos85ThreeHighDistinctOrbitTransport.lean": "91087bab040275d05539406401be3cacd0c3d7680b13ce8d96b1bc397f0545e2",
+    "proofs/Proofs/Erdos85ThreeHighDistinctOrbitCandidates.lean": "5b69990324f4014a30073a36b244100e3605dfb6bf8bfb59d721f26448a54702",
+    "proofs/Proofs/Erdos85ThreeHighDistinctRepresentativeWitness.lean": "d576628d657caf3f27790bfb229b1a2b9ca4619a9cc01aadd1f17560d750456f",
+    "proofs/Proofs/Erdos85ThreeHighDistinctBlockPermutationTransport.lean": "ab3ea1f75399818f3d068e7a8bcac8e8fca6616ec0b580e4d40808959d928c39"
+  },
+  "lean_toolchain": "leanprover/lean4:v4.31.0",
+  "lake_manifest_sha256": "f243fb1348183fbb95612c9c97beea1620651a55441b3e78fbc6bc3bfd26da01",
+  "commands": [
+    "LEAN_NUM_THREADS=1 LEAN_MEMORY_LIMIT=8192 LEAN_BUILD_TIMEOUT=5m LEAN_SKIP_CACHE=true ./proofs/scripts/docker-build.sh Proofs.Erdos85ThreeHighDistinctRepresentativeWitness",
+    "LEAN_NUM_THREADS=1 LEAN_MEMORY_LIMIT=8192 LEAN_BUILD_TIMEOUT=3m LEAN_SKIP_CACHE=true ./proofs/scripts/docker-build.sh Proofs.Erdos85ThreeHighDistinctBlockPermutationTransport"
+  ],
+  "exit_codes": [
+    0,
+    0
+  ],
+  "full_local_logs": {
+    "/tmp/erdos85-h3-distinct-representatives-retry-20261008.log": "efcbff16a0d1ae1eeb96dc0c5c8e10bf1e13cd1e2214ba036b9370ae2da256d5",
+    "/tmp/erdos85-h3-distinct-block-transport-20261008.log": "155fa04af3d8767ab573ee2505017493d9a33fcc33e248db179b4f70dc4800d1"
+  },
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.threeHighOrbit_distinct_joint_transport",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHigh_triple_four_secondary_edges_distinct_orbit_external_candidate",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHigh_triple_three_secondary_edges_distinct_orbit_external_candidate",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHigh_full_distinct_cover_transport",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHigh_full_distinct_representative_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHigh_deficient_distinct_cover_transport",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHigh_deficient_distinct_representative_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHighBlockPermutation_distinct_joint_transport",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "retained_log": "axioms.txt (excerpts only)",
+  "earlier_attempt": "The first representative build hit its 5-minute cap while compiling cold dependencies, exit 124. It did compile the two new candidate theorems; the final successful retry is the evidence for all representative exports."
+}

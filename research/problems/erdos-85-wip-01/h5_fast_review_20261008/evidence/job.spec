@@ -1,0 +1,11 @@
+MODE=build
+REF=erdos85/h5-formal-20261008
+TARGET=Proofs.Erdos85H5Calib
+CMD=''
+MEM_GB=16
+TIMEOUT=2h
+THREADS=2
+CACHE=0
+CPUS=16
+VOLUME=''
+FULL=0

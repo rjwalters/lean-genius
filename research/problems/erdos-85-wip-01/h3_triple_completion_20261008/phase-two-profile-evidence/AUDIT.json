@@ -1,0 +1,22 @@
+{
+  "job": "20261008T105909-erdos85__h3-triple-formal-20261007-432793",
+  "execution_commit": "6bc0161345d6c92c5b9378a8f69a650368ddfb24",
+  "status": "FAILED",
+  "exit": 1,
+  "prerequisite_objects_unchanged": {
+    "Erdos85H3TripleCompletionEngine": "c144efb4d85c1186f5019666fd8dede6b71e92ec0c8bc14390457f539ab2e412",
+    "Erdos85H3TripleCompletionBridge": "02220d1339caaf079b5889edf2e0c4e52b49b37d6c2b89ba4886c06d5a77e18e",
+    "Erdos85H3TripleCompletionSplit": "acfdbed1a9ccec6f972f9c8c8afc5575937d82b3cbc3541f0239a8e3b019d0d3"
+  },
+  "retained_sha256": {
+    "job.log": "1a479251cf14f741d48c5146e98f279b28a92e2d58d43f569ce5caf022c4ca29",
+    "job.spec": "dada0740bf7e112869ae2d47f3a338c79d86cc4660f1287dc60de2d346b1b1ec",
+    "job.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "PhaseTwoProfile.lean": "2f1b2d53041c370f0f6872a4ed84ff7b0e29db5bd1ecf11375b7654ccb4ea7aa",
+    "run_phase_two_profile.py": "25995756fab54e1cd1c09c6f46139ad263398008408505c1c9fd2dfdd82f7a5b",
+    "RUN.json": "59769e1146f0596300ba4f6450dd8675830256391c2eb8fd0ab40d3cb7c24801",
+    "probe.log": "7076d1c67faccb1761aa2d12324e8ac79162e0f62d6c7b73b61aa54e0f34f974"
+  },
+  "scope": "Bounded instrumented phase-two profile only; no theorem or graph-exclusion credit.",
+  "auditor_sha256": "12a24df3764c56e181a3e203c72a745e48b34a1338480dccea8a2c19db792ff2"
+}

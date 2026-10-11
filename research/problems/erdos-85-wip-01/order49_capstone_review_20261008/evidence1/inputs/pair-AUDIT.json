@@ -1,0 +1,398 @@
+{
+  "status": "H3_PAIR_CELL_TERMINAL_AUDIT_PASS",
+  "native_producer_job": "20261008T081713-erdos85__h3-pair-formal-20261008-331716",
+  "native_producer_commit": "b3545ac16ae75faa072a66400bedb087544a03bf",
+  "native_producer_exit": 1,
+  "cell_producer_job": "20261008T100037-erdos85__h3-pair-formal-20261008-394958",
+  "cell_producer_commit": "dc7f78d47d7017dcb8da5cc4aa200f1432a0f5df",
+  "cell_producer_exit": 0,
+  "fresh_parts": 24,
+  "results": [
+    {
+      "module": "Erdos85H3PairEngine",
+      "source_sha256": "6f84fc3a0de0bbc170d98b7a85824b1c84282fbcf4f2824267cac96bf3b37625",
+      "object": {
+        "sha256": "35c3cba5f6e9e8526ecc31c6471e591baafbe9a816641e50856b882cef440222",
+        "bytes": 2095936,
+        "mtime": 1791447355.1365063
+      },
+      "fresh_in_producer": false
+    },
+    {
+      "module": "Erdos85H3PairBridge",
+      "source_sha256": "be9455ca1bcc1eba1629b7b0a565d5196b79d118212af4228a39412846937715",
+      "object": {
+        "sha256": "03fd6525e3f750f19e3ef10169ce4ce453a13d23210939e2778707edac483cef",
+        "bytes": 198584,
+        "mtime": 1791447362.676699
+      },
+      "fresh_in_producer": false
+    },
+    {
+      "module": "Erdos85H3PairSplit",
+      "source_sha256": "788c54887e121212693f0aaae3d99577e30db2a383d2fea161ce08b127f44839",
+      "object": {
+        "sha256": "d78f0f470f2771a7ff71922fd08b950264d9b0ca0c672798cd5c26bd81b8c7ff",
+        "bytes": 187696,
+        "mtime": 1791447366.4846327
+      },
+      "fresh_in_producer": false
+    },
+    {
+      "module": "Erdos85H3PairPart00",
+      "source_sha256": "6301719c1a7017797bd8dd1a906275cf607fdfb0b38cf89ebcd8bf7337fcfe15",
+      "object": {
+        "sha256": "be01df72b0141a567997b717bbf37625a5dd4f10ed4dd19a09f13070009747fa",
+        "bytes": 7344,
+        "mtime": 1791453503.5256224
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart01",
+      "source_sha256": "738b37213bea31f394633c7aaad3bf94245fff275afaf8ea95ae84e8925f3749",
+      "object": {
+        "sha256": "2953e27e1a8f197e7caa70aa2bda229c746560a97bf54b87fb47e5859a9f3944",
+        "bytes": 7344,
+        "mtime": 1791453103.6879275
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart02",
+      "source_sha256": "c048a311810d08231ce0c513be994a4d39d14bad1fe0e1e173c3499fa9f334f1",
+      "object": {
+        "sha256": "176f6963ce9654518f5ccffda10b33c6ea2932896d2f1ba657c6caab994c7d24",
+        "bytes": 7344,
+        "mtime": 1791452969.4793015
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart03",
+      "source_sha256": "baa3704a5e8242afaa648cb89d01c9031e724375f2dd7e4349477b9276429693",
+      "object": {
+        "sha256": "8bc0b70691caee6c8b94b9c6f17b866945856c9c5b6def43ca4c890bbdacb131",
+        "bytes": 7344,
+        "mtime": 1791452074.293561
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart04",
+      "source_sha256": "ff910d1f2cb31cd3a3fe61d6716eefba3dad8971dff0fde9f9f6deb3c9c47f28",
+      "object": {
+        "sha256": "aa486425d91b9eb5bef9f663b684946e938abed1e429a56508f30f98208d9deb",
+        "bytes": 7344,
+        "mtime": 1791451896.9604483
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart05",
+      "source_sha256": "ea364dea00982e53ff28084187fd417e6f19f169bc16227d1f7b5ea06e9704f2",
+      "object": {
+        "sha256": "9e8e9cb61c8543b3a308be5df996c969f25b5ce91d2d7bcf1f946a9e7dce5086",
+        "bytes": 7344,
+        "mtime": 1791452225.554001
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart06",
+      "source_sha256": "ed60af8abe744d817ea43cae0b88814c9f67444f58c072c00875a5f373692ed9",
+      "object": {
+        "sha256": "8cb65a1803265964b4ccb4ae74ca3683c038b2e8333a3e2c7aea95a794946997",
+        "bytes": 7344,
+        "mtime": 1791451829.3663614
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart07",
+      "source_sha256": "0e19b6e4c77f3597306964eb15286d28c1d281bd1a96130d5aa0104d08b10253",
+      "object": {
+        "sha256": "1b842614086a87fec5504992b87c80b2b5a4d32cd8c38656a21d828e6ab7e8f5",
+        "bytes": 7344,
+        "mtime": 1791452001.2226691
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart08",
+      "source_sha256": "c31c9def5e84d4a5e47a172571a769071a3da772550c4a7bb6c3a87ca15b1acf",
+      "object": {
+        "sha256": "5fd896ff208d7e8378c8636a9e62b561a53496f9aac34caf03b8046960c4a865",
+        "bytes": 7344,
+        "mtime": 1791450869.320562
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart09",
+      "source_sha256": "833b4e7a43bba188ba6d077f9b1c699ec07a1cefd9fdb316266b129ba57ada28",
+      "object": {
+        "sha256": "184a4174539c545a36e8a35e522ac7a8e529b3bb5df707ea21d5f4a3632ab07c",
+        "bytes": 7344,
+        "mtime": 1791451439.7879522
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart10",
+      "source_sha256": "62bd3179e973405d1240d9313fedc15fff478c38638c67685983256937a5e4a1",
+      "object": {
+        "sha256": "d3d8474bc3513347f2b2e2f8f3df6359459dbd6ed627d7309ad9d0c75baa6ccb",
+        "bytes": 7352,
+        "mtime": 1791450860.9177194
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart11",
+      "source_sha256": "f7fbd1d56a12e3de486086e7202acb9bfd5964a63c30754b4cef7585171a36a4",
+      "object": {
+        "sha256": "325e1c6b0940a00255a2b8454e83466733d48e579649d75e3270a72706b0c898",
+        "bytes": 7352,
+        "mtime": 1791450970.660366
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart12",
+      "source_sha256": "0d0d4fb70d4ffd85e336c177dd3471e1afba8dd8e6123ab048026707012b9115",
+      "object": {
+        "sha256": "f25ee4732f9898a15b885f280ebe56c87c7ac1d6e4a67d1bb808fa75e8c9b9fd",
+        "bytes": 7352,
+        "mtime": 1791450231.490368
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart13",
+      "source_sha256": "581c0784732ed0c292dc2ee9ec9ec8ca640f1c37a0dc2b17984d22df38b3e7f7",
+      "object": {
+        "sha256": "623d22d01f7801a8740f334e906410e8a1141ba5bfb3ad039249d10fc1896780",
+        "bytes": 7352,
+        "mtime": 1791449926.0852785
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart14",
+      "source_sha256": "b0cbc3ad590d2e3396636f09d0f69cdc30cc7b7735a21b64aa20be8c0dcc416c",
+      "object": {
+        "sha256": "aa599429abdb6e3b0a08163a2a1cd3f38b80a56b097f57af142b71682bfed60b",
+        "bytes": 7352,
+        "mtime": 1791450319.1430287
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart15",
+      "source_sha256": "62ae9bef9670e5bcfbae2d42d22caab709248971970132ef0b29a510f3395bdc",
+      "object": {
+        "sha256": "6339f67c26516e1ad0fd6e4bceead12b3de05f32040363e363be5ae2a98e842b",
+        "bytes": 7352,
+        "mtime": 1791449839.7152157
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart16",
+      "source_sha256": "51ebd404d1ffe7e4f303b178cf3534c151bad3b98b4e860acbbdbdb1449e9f27",
+      "object": {
+        "sha256": "23e251ea8724db9c5f6df9efc45094b23420d81c6bf1f03d0c1aa8eec1d2d4c3",
+        "bytes": 7352,
+        "mtime": 1791450017.5577824
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart17",
+      "source_sha256": "1eab862b17c662896e751080f3c20129537fea8fe7ccc37928f7b6d588fb33ec",
+      "object": {
+        "sha256": "4c4a020cd8c66305a30d6580fe8c454ed9108527d61fa2f0106b7489d140eedc",
+        "bytes": 7352,
+        "mtime": 1791449347.3588889
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart18",
+      "source_sha256": "e692cb04e405d2fb75c2cee02f55ad7c6dce11b807755b9031546fd5415bdc11",
+      "object": {
+        "sha256": "6df25f9af6573b23c4fa9d3d9de0a69bce2ac467a600a73180c07c9a5f859722",
+        "bytes": 7352,
+        "mtime": 1791448276.796462
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart19",
+      "source_sha256": "501524075810b030f4f070aaf88cb1e4cd470abeb6b85dec5eacfbfe480165c1",
+      "object": {
+        "sha256": "71a02a51c8e24866091fc43923f89097f9535821d731ddcb7aff98fc6093a1ea",
+        "bytes": 7352,
+        "mtime": 1791449443.167699
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart20",
+      "source_sha256": "2d172b60dd1f512587c038f4f74bf343e38960e44e43eeb71353181b5b94f560",
+      "object": {
+        "sha256": "20261d4855862b0f0503c3da718cc3cf76fd4b9d829e259900712accec3aad1e",
+        "bytes": 7352,
+        "mtime": 1791448788.5572484
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart21",
+      "source_sha256": "f0f3b87a5a7d259344ca84a920340177cf3eb357885ace8b99af13bc6b80ab1a",
+      "object": {
+        "sha256": "ce79b5f54f81409cf7cbe9696de832797234326876835d4a3d432fa5e02deef2",
+        "bytes": 7352,
+        "mtime": 1791448821.4145122
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart22",
+      "source_sha256": "3d34ae0a3f49894ba9b09b05fae865e50785bf3f43477c27126e3d13a66f2a92",
+      "object": {
+        "sha256": "2b72ec05b2fb596db26d5d858ab2e3a55b06b18e5dc78092caaca9890be9d34b",
+        "bytes": 7352,
+        "mtime": 1791448512.2857866
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairPart23",
+      "source_sha256": "5de726b85fda5e1a96cd0765e53229b215cfbd3085aa9ec68dafca4e35a794f7",
+      "object": {
+        "sha256": "a15eeea431b7bbdf577496ae17ae8c65bef53e610a3c684bdf40cab4a6d97405",
+        "bytes": 7352,
+        "mtime": 1791448576.3786697
+      },
+      "fresh_in_producer": true
+    },
+    {
+      "module": "Erdos85H3PairCell",
+      "source_sha256": "717702013f12303c841f1713c967d294bafa58ae9e9b6b147817ea9bdef28040",
+      "object": {
+        "sha256": "e9a79924cce61c34e9ce46b74537e23180ee0518b6c5e42edea0dfc33a8e6e20",
+        "bytes": 74920,
+        "mtime": 1791453645.1277504
+      },
+      "fresh_in_producer": true
+    }
+  ],
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.H3Pair.threeHighCanonicalRepresentativeExcluded_zero",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.H3Pair.pairPart_24_00._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_01._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_02._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_03._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_04._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_05._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_06._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_07._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_08._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_09._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_10._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_11._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_12._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_13._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_14._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_15._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_16._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_17._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_18._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_19._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_20._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_21._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_22._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_23._native.native_decide.ax_1_1"
+      ]
+    },
+    {
+      "theorem": "Erdos85.H3Pair.orderFortyNineTripleCellExcluded_three_zero",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.H3Pair.pairPart_24_00._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_01._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_02._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_03._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_04._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_05._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_06._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_07._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_08._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_09._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_10._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_11._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_12._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_13._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_14._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_15._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_16._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_17._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_18._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_19._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_20._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_21._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_22._native.native_decide.ax_1_1",
+        "Erdos85.H3Pair.pairPart_24_23._native.native_decide.ax_1_1"
+      ]
+    }
+  ],
+  "retained_sha256": {
+    "native-job.log": "6b095dea1615fd96e338acbcf16aaf05ac8245c18d6ada888127a7669e684e5c",
+    "native-job.spec": "8d166dca1e2a8400923f3e687d7edc43c090094d2b1001dd4012187d8ad545f6",
+    "native-job.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "cell-job.log": "70802df770d1c008c7db5ac530e193a73cd856e335350da351b8c66dc6d8dbe4",
+    "cell-job.spec": "9e6da4f67a9076cf5019eb67753df0817b5efb12317da76dcfa4ef2a44b3aa86",
+    "cell-job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "prior-conditional-audit.json": "3934f17222945727c6e4d8ccc3726342907c2fea44479226ea5bab2e278aec4c",
+    "sources/Erdos85H3PairEngine.lean": "6f84fc3a0de0bbc170d98b7a85824b1c84282fbcf4f2824267cac96bf3b37625",
+    "sources/Erdos85H3PairBridge.lean": "be9455ca1bcc1eba1629b7b0a565d5196b79d118212af4228a39412846937715",
+    "sources/Erdos85H3PairSplit.lean": "788c54887e121212693f0aaae3d99577e30db2a383d2fea161ce08b127f44839",
+    "sources/Erdos85H3PairPart00.lean": "6301719c1a7017797bd8dd1a906275cf607fdfb0b38cf89ebcd8bf7337fcfe15",
+    "sources/Erdos85H3PairPart01.lean": "738b37213bea31f394633c7aaad3bf94245fff275afaf8ea95ae84e8925f3749",
+    "sources/Erdos85H3PairPart02.lean": "c048a311810d08231ce0c513be994a4d39d14bad1fe0e1e173c3499fa9f334f1",
+    "sources/Erdos85H3PairPart03.lean": "baa3704a5e8242afaa648cb89d01c9031e724375f2dd7e4349477b9276429693",
+    "sources/Erdos85H3PairPart04.lean": "ff910d1f2cb31cd3a3fe61d6716eefba3dad8971dff0fde9f9f6deb3c9c47f28",
+    "sources/Erdos85H3PairPart05.lean": "ea364dea00982e53ff28084187fd417e6f19f169bc16227d1f7b5ea06e9704f2",
+    "sources/Erdos85H3PairPart06.lean": "ed60af8abe744d817ea43cae0b88814c9f67444f58c072c00875a5f373692ed9",
+    "sources/Erdos85H3PairPart07.lean": "0e19b6e4c77f3597306964eb15286d28c1d281bd1a96130d5aa0104d08b10253",
+    "sources/Erdos85H3PairPart08.lean": "c31c9def5e84d4a5e47a172571a769071a3da772550c4a7bb6c3a87ca15b1acf",
+    "sources/Erdos85H3PairPart09.lean": "833b4e7a43bba188ba6d077f9b1c699ec07a1cefd9fdb316266b129ba57ada28",
+    "sources/Erdos85H3PairPart10.lean": "62bd3179e973405d1240d9313fedc15fff478c38638c67685983256937a5e4a1",
+    "sources/Erdos85H3PairPart11.lean": "f7fbd1d56a12e3de486086e7202acb9bfd5964a63c30754b4cef7585171a36a4",
+    "sources/Erdos85H3PairPart12.lean": "0d0d4fb70d4ffd85e336c177dd3471e1afba8dd8e6123ab048026707012b9115",
+    "sources/Erdos85H3PairPart13.lean": "581c0784732ed0c292dc2ee9ec9ec8ca640f1c37a0dc2b17984d22df38b3e7f7",
+    "sources/Erdos85H3PairPart14.lean": "b0cbc3ad590d2e3396636f09d0f69cdc30cc7b7735a21b64aa20be8c0dcc416c",
+    "sources/Erdos85H3PairPart15.lean": "62ae9bef9670e5bcfbae2d42d22caab709248971970132ef0b29a510f3395bdc",
+    "sources/Erdos85H3PairPart16.lean": "51ebd404d1ffe7e4f303b178cf3534c151bad3b98b4e860acbbdbdb1449e9f27",
+    "sources/Erdos85H3PairPart17.lean": "1eab862b17c662896e751080f3c20129537fea8fe7ccc37928f7b6d588fb33ec",
+    "sources/Erdos85H3PairPart18.lean": "e692cb04e405d2fb75c2cee02f55ad7c6dce11b807755b9031546fd5415bdc11",
+    "sources/Erdos85H3PairPart19.lean": "501524075810b030f4f070aaf88cb1e4cd470abeb6b85dec5eacfbfe480165c1",
+    "sources/Erdos85H3PairPart20.lean": "2d172b60dd1f512587c038f4f74bf343e38960e44e43eeb71353181b5b94f560",
+    "sources/Erdos85H3PairPart21.lean": "f0f3b87a5a7d259344ca84a920340177cf3eb357885ace8b99af13bc6b80ab1a",
+    "sources/Erdos85H3PairPart22.lean": "3d34ae0a3f49894ba9b09b05fae865e50785bf3f43477c27126e3d13a66f2a92",
+    "sources/Erdos85H3PairPart23.lean": "5de726b85fda5e1a96cd0765e53229b215cfbd3085aa9ec68dafca4e35a794f7",
+    "sources/Erdos85H3PairCell.lean": "717702013f12303c841f1713c967d294bafa58ae9e9b6b147817ea9bdef28040"
+  },
+  "scope": "Unconditional native-backed pair cell (3,0) only; not the remaining H3 triple profile or full drop.",
+  "auditor_sha256": "32a770c4c5d05350b793b4e5b85a833010c7d4ba47320c273e50b7abe8d347d9",
+  "container_live_snapshot_sha256": "4fdbfd11d79d4974ead54d2c1c5425308a4f031e49caa3a5bcb510d300ced30d"
+}

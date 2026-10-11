@@ -1,0 +1,32 @@
+{
+  "status": "FAIL",
+  "scope": "Diagnostic only; no rejection theorem.",
+  "source_sha256": "849908e705485a0d2e831073455e33540c9d53a0ea6c101fbde0001c4edff9a1",
+  "lean_threads": 1,
+  "dependencies": {
+    "command": [
+      "lake",
+      "build",
+      "Proofs.Erdos85ThreeHighFirstColumnSearch",
+      "Proofs.Erdos85ThreeBlockCompactCodes",
+      "Proofs.Erdos85ThreeHighSecondaryOrbitTable"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 9.781114298999455,
+    "log_sha256": "760565af35fec4594c26a5afb3183ce8360d31217fadecd7dfa2ef850a9648ed"
+  },
+  "inventory": {
+    "command": [
+      "lean",
+      "-R",
+      "/workspace/research/problems/erdos-85-wip-01/h3_first_column_20261008/_build/cloud-inventory-second",
+      "-o",
+      "/workspace/research/problems/erdos-85-wip-01/h3_first_column_20261008/_build/cloud-inventory-second/Inventory.olean",
+      "/workspace/research/problems/erdos-85-wip-01/h3_first_column_20261008/_build/cloud-inventory-second/Inventory.lean"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 3.6913181339987204,
+    "log_sha256": "cb325fe5a552a36386aa289e9600292f69134a5e09d2cf1d677eeecf910c2710"
+  },
+  "error": "Missing, repeated, or unexpected inventory cases"
+}

@@ -1,0 +1,22 @@
+{
+  "job": "20261008T102436-erdos85__h3-triple-formal-20261007-410562",
+  "execution_commit": "94aab7d1b8baacb6e5b3c65c6ea319b65ebe89f6",
+  "status": "COMPILED",
+  "exit": 0,
+  "prerequisite_objects_unchanged": {
+    "Erdos85H3TripleCompletionEngine": "c87b641fc9d2b1ad101edf455fe56be65afbf1b5770b8793f2c3e7c361122903",
+    "Erdos85H3TripleCompletionBridge": "02220d1339caaf079b5889edf2e0c4e52b49b37d6c2b89ba4886c06d5a77e18e",
+    "Erdos85H3TripleCompletionSplit": "acfdbed1a9ccec6f972f9c8c8afc5575937d82b3cbc3541f0239a8e3b019d0d3"
+  },
+  "retained_sha256": {
+    "job.log": "55bacf92ad6c92d8931ae272c0ad3f10356b013f2c72c3445ab45f69b03f303c",
+    "job.spec": "2150d40672664954c22436419aed50856c8886c1e69579098af952eb1ef495f2",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "PhaseOneOnly.lean": "ab38e66749e9d54a5dd6b276d74bad87ab0e6201f843281e51fde45521b54ea1",
+    "run_phase_one.py": "fc220b8f5f738f7a1ca2ee4c55ec6b7dc92ef4c53e525938b36cbee01d4899cd",
+    "RUN.json": "7bff156ed86c2fdee67c84ed0dd17c303d182505af514a09f29200839a1739dd",
+    "probe.log": "8697b34723d3ec7fba41afaab47549e03b21c6e3d861f996dc8c7fe5f01dce3a"
+  },
+  "scope": "Phase-one traversal only, constant-true leaf; no graph-exclusion credit.",
+  "auditor_sha256": "382378d5a43f65fde92be321e12d423b7682d677dd96f6b8dffebbf228bf6b7d"
+}

@@ -1,0 +1,19 @@
+{
+  "module": "Zero32Data",
+  "source": "zero32_coverage/Zero32Data.lean",
+  "source_sha256": "6a944fe982826e36e5f2977366db9800526125b8da12e4c18167790ad9921322",
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "olean_sha256": "0cba7c47ffa88c3d25679070d3b6a92cbf29e7ce3e82feb5e0eeea0693d2ed7a",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Zero32Data.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Zero32Data.lean"
+  ],
+  "elapsed_seconds": 4.616048289000901,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": []
+}

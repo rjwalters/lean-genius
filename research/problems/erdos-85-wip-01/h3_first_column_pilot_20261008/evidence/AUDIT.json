@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "receipt_sha256": "e0a663d274abcc1baabf254f402b4136a4f25a7960896df8a5395582db19363f",
+  "source_sha256": "3c7ab2412963ccb41eb2cc21e80a1f7a94b831626cb2bab76125b4466df82628",
+  "olean_sha256": "19bd5e9ce712ff13542385029956316d1fc9ac669b989eed8edba5cf6a841cc6",
+  "object_verification": "Independently read by sudo sha256sum in the cloud build volume.",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.FirstColumnPilot.rejected",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.FirstColumnPilot.rejected._native.native_decide.ax_1_1"
+      ]
+    }
+  ],
+  "wall_seconds": 645.4756837780005,
+  "user_cpu_seconds": 643.690954,
+  "system_cpu_seconds": 2.410228,
+  "max_rss_kib": 8333084,
+  "scope": "One fixed first-column rejection, not the whole pair. Includes one explicit native_decide axiom."
+}

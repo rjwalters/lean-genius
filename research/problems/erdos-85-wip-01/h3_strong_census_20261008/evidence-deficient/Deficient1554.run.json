@@ -1,0 +1,36 @@
+{
+  "module": "Deficient1554",
+  "source": "h3_strong_census_20261008/Deficient1554.lean",
+  "source_sha256": "23193540957af89f769b0406630e969a727e057f0902bd38258599dec0a74c06",
+  "log_sha256": "7771771720baca635ebc485b0e6a44a586d699de7392b01109d136f66ed7ffd2",
+  "olean_sha256": "529f1d03f05564fcdf3fe02af91e65b36983804cad46c084bd4a2ca09e441ce1",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/deficient",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/deficient/Deficient1554.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/deficient/Deficient1554.lean"
+  ],
+  "elapsed_seconds": 26.155030377000003,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "DeficientUStrongCensus.actual_distinct_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "DeficientUStrongCensus.excluded_of_rejections",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

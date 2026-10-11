@@ -1,0 +1,86 @@
+{
+  "status": "PASS",
+  "lean_threads": 1,
+  "scope": "One full U1/R15 pair; not a full H3 exclusion.",
+  "memory_scope": "Linux wait4 maximum RSS for each Lake process and its waited children; not aggregate concurrent container memory.",
+  "results": [
+    {
+      "command": [
+        "lake",
+        "build",
+        "Proofs.Erdos85ThreeHighNativeTerminalPilotCertificate"
+      ],
+      "started_utc": "2026-10-08T02:46:46.823263+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 5844.029924014001,
+      "user_cpu_seconds": 5837.17865,
+      "system_cpu_seconds": 7.609182,
+      "max_rss_kib": 8337112,
+      "log_sha256": "0eb5e5edc0389a2f803728f01950ae1a87dad78f3ade4cc592261d06ac31bf99",
+      "module": "Erdos85ThreeHighNativeTerminalPilotCertificate",
+      "status": "PASS",
+      "source_sha256": "a9aeca79f21509badf9ae1d4fc882e98c47ea8970a5f2b3f2a2f6eacb94b6a05",
+      "source": "/workspace/research/problems/erdos-85-wip-01/h3_formal_20261007/Erdos85ThreeHighNativeTerminalPilotCertificate.lean",
+      "olean_path": "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85ThreeHighNativeTerminalPilotCertificate.olean",
+      "olean_sha256": "9bca1c131be95e871a2edf8e514ccf870971ee3e2b685db50739d3cc138cb4c0",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.NativeTerminalPilot.rejected",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+            "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1"
+          ]
+        }
+      ]
+    },
+    {
+      "command": [
+        "lake",
+        "build",
+        "Proofs.Erdos85ThreeHighNativeTerminalPilot"
+      ],
+      "started_utc": "2026-10-08T04:24:10.856356+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 9.572761366998748,
+      "user_cpu_seconds": 7.843676,
+      "system_cpu_seconds": 2.378518,
+      "max_rss_kib": 6560696,
+      "log_sha256": "32f1750ebbb5d4cce7faaa1b450b6b3fa6cbf314b7d885b90603c7bb9f5bfc47",
+      "module": "Erdos85ThreeHighNativeTerminalPilot",
+      "status": "PASS",
+      "source_sha256": "8e72a9b53ba46245a58723afa6e9e57056411ddfe2b19e6d84f47525c6dc74f2",
+      "source": "/workspace/research/problems/erdos-85-wip-01/h3_formal_20261007/Erdos85ThreeHighNativeTerminalPilot.lean",
+      "olean_path": "/workspace/proofs/.lake/build/lib/lean/Proofs/Erdos85ThreeHighNativeTerminalPilot.olean",
+      "olean_sha256": "7d5f793a53b3fd0a04284d28e0b1f9deb53f7346e651ba0ca71322f06b2b195c",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.NativeTerminalPilot.no_joint",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+            "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1"
+          ]
+        }
+      ]
+    }
+  ],
+  "dependency_build": {
+    "command": [
+      "lake",
+      "build",
+      "Proofs.Erdos85ThreeHighNativePairSearch",
+      "Proofs.Erdos85ThreeBlockCompactCodes",
+      "Proofs.Erdos85ThreeHighSecondaryOrbitTable"
+    ],
+    "started_utc": "2026-10-08T02:46:40.748582+00:00",
+    "exit_code": 0,
+    "elapsed_seconds": 6.073730561000048,
+    "user_cpu_seconds": 5.174072,
+    "system_cpu_seconds": 1.431065,
+    "max_rss_kib": 915248,
+    "log_sha256": "65ad4bee7b7d93c277bc65a8dbb602bfd92edbb0a785ca9f0ec79861df1c0f8f"
+  }
+}

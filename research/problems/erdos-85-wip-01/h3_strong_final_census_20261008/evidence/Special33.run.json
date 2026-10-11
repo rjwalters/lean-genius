@@ -1,0 +1,76 @@
+{
+  "module": "Special33",
+  "source": "fixed_pair_rejections/Special33.lean",
+  "source_sha256": "89696a6669545535015857ff01bf4e12a61f128f5dc15331e7a7b835aa143384",
+  "log_sha256": "b289094b8f7ea4505219d7fcb8f158528f412d0d77f99dbe0e7acbf93c8f3651",
+  "olean_sha256": "6aa445b0dd28895857401dc2cafa1d3b4b5dfc35583dfae1ebc016d2dda38daa",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Special33.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Special33.lean"
+  ],
+  "elapsed_seconds": 107.62442155000099,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "ExactCoverCanary.initial_cover_checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "ExactCoverCanary.no_cover_checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "ExactCoverCanary.B_eq",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "ExactCoverCanary.admissible",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "ExactCoverCanary.external_cap",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "ExactCoverCanary.no_joint_literal",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "ExactCoverCanary.no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "status": "PASS",
+  "job": "20261008T063412-erdos85__h3-first-column-20261008-264145",
+  "execution_commit": "9a1555a52461ab6d53bb145378f92de81c88cdc6",
+  "authoritative_exit": 0,
+  "run_sha256": "1a59f0543cf7ee4ddf31c88a9efd2a15585310a14d333f6281e8abce91eb43d0",
+  "job_log_sha256": "eb100bd25a3f843707b9382253c107f72f88aaa6be5026fa5432e66c96629426",
+  "preflight_sha256": "36fe58d9bae19306311cc9655d0300a3ecf60e669141c4fe834e89be670de820",
+  "results": [
+    {
+      "command": [
+        "lake",
+        "build",
+        "Proofs.Erdos85ThreeHighPilotFullU3R3Inputs"
+      ],
+      "started_utc": "2026-10-08T06:34:13.841252+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 6.431826551000995,
+      "user_cpu_seconds": 5.520054,
+      "system_cpu_seconds": 1.505623,
+      "max_rss_kib": 917432,
+      "log_sha256": "0a63dc71909218c20d73db012a273af7293a149a2470a0d58d41fbae48ad39ad",
+      "module": "Erdos85ThreeHighPilotFullU3R3Inputs",
+      "status": "PASS",
+      "source_sha256": "1e3491373759875229ed79a8700f65c6ae4599b344cbb0c84000c08e822932d6",
+      "olean_sha256": "cc9f6bd43319f43b33633b3ea99e82912e07a664de01723869b33a9e5e4bcfe1",
+      "axiom_exports": []
+    },
+    {
+      "command": [
+        "lake",
+        "build",
+        "Proofs.Erdos85ThreeHighPilotFullU3R3Certificate"
+      ],
+      "started_utc": "2026-10-08T06:34:20.275774+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 238.9755074729983,
+      "user_cpu_seconds": 237.364964,
+      "system_cpu_seconds": 2.272666,
+      "max_rss_kib": 6562176,
+      "log_sha256": "a8ac38cf2febacad0d89a5af6541927d6e5045ee9153dc06dbd566f7ff40e232",
+      "module": "Erdos85ThreeHighPilotFullU3R3Certificate",
+      "status": "PASS",
+      "source_sha256": "186d7dde7a6d0be550a6e16dec0c06265b3b78a3550dc24c2850a43a3ade619b",
+      "olean_sha256": "8567bf6f2d03d3e6b0fbfefac7433cc2686b2d01170d810ce1df5acccb4f7184",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.VariedPilot.FullU3R3.rejected",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+            "Erdos85.VariedPilot.FullU3R3.rejected._native.native_decide.ax_1_1"
+          ]
+        }
+      ]
+    },
+    {
+      "command": [
+        "lake",
+        "build",
+        "Proofs.Erdos85ThreeHighPilotFullU3R3Consumer"
+      ],
+      "started_utc": "2026-10-08T06:38:19.256835+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 10.336028326000815,
+      "user_cpu_seconds": 8.562089,
+      "system_cpu_seconds": 2.437564,
+      "max_rss_kib": 6559700,
+      "log_sha256": "6ac8ae8408caa61340ac6e1b1bd5ddde715bb2b065d4105fafd82e0ea98ae7fa",
+      "module": "Erdos85ThreeHighPilotFullU3R3Consumer",
+      "status": "PASS",
+      "source_sha256": "2f8f051a0621f465b37a066e3a454d0db7a49051a2998f7ba830270f66f065dd",
+      "olean_sha256": "ff539dec205c63c906824f2e0c18eff60086720fa9c8459f01dddfedfa5237de",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.VariedPilot.FullU3R3.no_joint",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+            "Erdos85.VariedPilot.FullU3R3.rejected._native.native_decide.ax_1_1"
+          ]
+        }
+      ]
+    }
+  ],
+  "scope": "One complete full diagnostic pair; not a census exclusion. Source/object/log/commands and exact native-backed exports independently matched."
+}

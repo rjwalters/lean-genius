@@ -1,0 +1,12 @@
+[e85] job 20261008T072956-erdos85__h3-triple-formal-20261007-298258  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T07:29:56Z
+[e85] commit 9e80ddc38aaa2eef9a13fc834e96b3c4bbb432ee (Prepare bounded single-attempt H3 worker with strict cache and limit gates)
+[e85] host command: cd research/problems/erdos-85-wip-01/h3_triple_campaign_20261008 && python3 -B -m unittest -v test_worker_runtime
+test_existing_log_refused_without_running_child (test_worker_runtime.WorkerRuntime) ... ok
+test_nonzero_is_not_timeout (test_worker_runtime.WorkerRuntime) ... ok
+test_success_exit_log_and_usage (test_worker_runtime.WorkerRuntime) ... ok
+test_timeout_kills_child_and_descendant (test_worker_runtime.WorkerRuntime) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.211s
+
+OK

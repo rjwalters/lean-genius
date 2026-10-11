@@ -1,0 +1,68 @@
+{
+  "module": "TerminalReduction",
+  "source": "full_terminal_pruning/TerminalReduction.lean",
+  "source_sha256": "18008bfb85a87c14d9f24efe0d2180a3d17653b7bc25c9a8f1e5f5c5cafe35a7",
+  "log_sha256": "0acaf44a354a4859d29c835344c6721c6935b55e2db20ae04cd0ea1558de457b",
+  "olean_sha256": "16367701e342945e58b049862486b8a6ce176d50effbe6c60f12a40ffcf2281f",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/TerminalReduction.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/TerminalReduction.lean"
+  ],
+  "elapsed_seconds": 11.843506268000056,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "FullTerminalPruning.first_pair_mem",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullTerminalPruning.remainingPairs_card",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullTerminalPruning.representative_one",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullTerminalPruning.actual_pair_mem",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullTerminalPruning.actual_full_witness_pruned",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullTerminalPruning.actual_full_excluded_pruned",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

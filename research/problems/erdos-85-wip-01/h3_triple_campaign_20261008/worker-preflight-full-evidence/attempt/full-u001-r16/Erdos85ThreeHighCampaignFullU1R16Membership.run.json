@@ -1,0 +1,43 @@
+{
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-full-first/work/preflight-7c64e01e5b274ff0a435e90cbb956c54/full-u001-r16",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-full-first/work/preflight-7c64e01e5b274ff0a435e90cbb956c54/full-u001-r16/Erdos85ThreeHighCampaignFullU1R16Membership.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-full-first/work/preflight-7c64e01e5b274ff0a435e90cbb956c54/full-u001-r16/Erdos85ThreeHighCampaignFullU1R16Membership.lean"
+  ],
+  "started_utc": "2026-10-08T08:14:52.332800+00:00",
+  "finished_utc": "2026-10-08T08:14:57.940689+00:00",
+  "exit_code": 0,
+  "deadline_exceeded": false,
+  "elapsed_seconds": 5.607911806997436,
+  "user_cpu_seconds": 4.236506,
+  "system_cpu_seconds": 1.402223,
+  "max_rss_kib": 6897840,
+  "log_sha256": "348a38bf79857e045b6f7dcde36605f0a2dda5038abef166f84ae80e83156c45",
+  "case_id": "full-u001-r16",
+  "module": "Erdos85ThreeHighCampaignFullU1R16Membership",
+  "stage": "Membership",
+  "source_sha256": "ca7f3f67a695c43c77fa17511f89ce84d08a9e047af2b421c5294cc3647b8007",
+  "olean_sha256": "f60a7ec3afefad0608df6d5a2f545686a7ef69ed7768e8a8a160136d29754b4d",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.TripleCampaign.FullU1R16.member",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.TripleCampaign.FullU1R16.input_identity",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "certificate_substitution": false
+}

@@ -1,0 +1,292 @@
+[
+    {
+        "Id": "1b0a5a37fc5ef90df983ab32e1dd9e033d4cdb0e1249a7d00960fb931dd6e208",
+        "Created": "2026-10-08T08:19:38.916600167Z",
+        "Path": "lake",
+        "Args": [
+            "env",
+            "python3",
+            "-B",
+            "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/worker.py",
+            "--launch",
+            "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/LAUNCH.json",
+            "--launch-sha256",
+            "a9322fbe8a73328028ddedb98907c770fea2d7f01eca5877adb76c423a9497f7",
+            "--cache-inventory",
+            "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/CACHE.json",
+            "--stop-file",
+            "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/STOP"
+        ],
+        "State": {
+            "Status": "exited",
+            "Running": false,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 0,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-08T08:19:39.188433918Z",
+            "FinishedAt": "2026-10-08T08:20:12.875943611Z"
+        },
+        "Image": "sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6",
+        "ResolvConfPath": "/var/lib/docker/containers/1b0a5a37fc5ef90df983ab32e1dd9e033d4cdb0e1249a7d00960fb931dd6e208/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/1b0a5a37fc5ef90df983ab32e1dd9e033d4cdb0e1249a7d00960fb931dd6e208/hostname",
+        "HostsPath": "/var/lib/docker/containers/1b0a5a37fc5ef90df983ab32e1dd9e033d4cdb0e1249a7d00960fb931dd6e208/hosts",
+        "LogPath": "",
+        "Name": "/h3-worker-preflight-043588c86ae64f35855a091655ba3a30",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "local",
+                "Config": {}
+            },
+            "NetworkMode": "none",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": true,
+            "SecurityOpt": null,
+            "Tmpfs": {
+                "/tmp": "rw,nosuid,size=1073741824"
+            },
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 17179869184,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 100000,
+            "CpuQuota": 200000,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 17179869184,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": 256,
+            "Ulimits": [
+                {
+                    "Name": "nofile",
+                    "Hard": 65536,
+                    "Soft": 32768
+                }
+            ],
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "Mounts": [
+                {
+                    "Type": "bind",
+                    "Source": "/opt/e85/wt/erdos85__h3-triple-formal-20261007",
+                    "Target": "/workspace",
+                    "ReadOnly": true
+                },
+                {
+                    "Type": "volume",
+                    "Source": "lean-build-erdos85__h3-triple-formal-20261007",
+                    "Target": "/workspace/proofs/.lake/build",
+                    "ReadOnly": true
+                },
+                {
+                    "Type": "volume",
+                    "Source": "lean-mathlib-packages",
+                    "Target": "/workspace/proofs/.lake/packages",
+                    "ReadOnly": true
+                },
+                {
+                    "Type": "bind",
+                    "Source": "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/work",
+                    "Target": "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/work"
+                }
+            ],
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": null,
+            "Name": "overlayfs"
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/opt/e85/wt/erdos85__h3-triple-formal-20261007",
+                "Destination": "/workspace",
+                "Mode": "",
+                "RW": false,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "volume",
+                "Name": "lean-build-erdos85__h3-triple-formal-20261007",
+                "Source": "/var/lib/docker/volumes/lean-build-erdos85__h3-triple-formal-20261007/_data",
+                "Destination": "/workspace/proofs/.lake/build",
+                "Driver": "local",
+                "Mode": "z",
+                "RW": false,
+                "Propagation": ""
+            },
+            {
+                "Type": "volume",
+                "Name": "lean-mathlib-packages",
+                "Source": "/var/lib/docker/volumes/lean-mathlib-packages/_data",
+                "Destination": "/workspace/proofs/.lake/packages",
+                "Driver": "local",
+                "Mode": "z",
+                "RW": false,
+                "Propagation": ""
+            },
+            {
+                "Type": "bind",
+                "Source": "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/work",
+                "Destination": "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/work",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "1b0a5a37fc5e",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PYTHONDONTWRITEBYTECODE=1",
+                "LEAN_NUM_THREADS=1",
+                "PATH=/root/.elan/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "DEBIAN_FRONTEND=noninteractive"
+            ],
+            "Cmd": [
+                "lake",
+                "env",
+                "python3",
+                "-B",
+                "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/worker.py",
+                "--launch",
+                "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/LAUNCH.json",
+                "--launch-sha256",
+                "a9322fbe8a73328028ddedb98907c770fea2d7f01eca5877adb76c423a9497f7",
+                "--cache-inventory",
+                "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/CACHE.json",
+                "--stop-file",
+                "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/STOP"
+            ],
+            "Image": "sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6",
+            "Volumes": null,
+            "WorkingDir": "/workspace/proofs",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {
+                "org.opencontainers.image.version": "22.04"
+            }
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "184956c29a584ef911b5ccb642f09beb29289f95b5a78fda8bdd5497484face7",
+            "SandboxKey": "/var/run/docker/netns/184956c29a58",
+            "Ports": {},
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "",
+            "Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "MacAddress": "",
+            "Networks": {
+                "none": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "MacAddress": "",
+                    "NetworkID": "9d4948746c19726a1f82cfef2aedae91d7a7636026da552a7f68bd81dd23857d",
+                    "EndpointID": "",
+                    "Gateway": "",
+                    "IPAddress": "",
+                    "IPPrefixLen": 0,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DriverOpts": null,
+                    "DNSNames": null
+                }
+            }
+        }
+    }
+]

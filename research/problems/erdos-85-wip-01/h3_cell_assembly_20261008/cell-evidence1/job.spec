@@ -1,0 +1,11 @@
+MODE=run
+REF=erdos85/h3-triple-formal-20261007
+TARGET=''
+CMD=lake\ env\ python3\ -B\ ../research/problems/erdos-85-wip-01/h3_cell_assembly_20261008/run.py\ --execute-approved-plan\ 1818caee727c64640ad17fde34a57c04a81afee5c723739d9a44f79c7c1a8d51
+MEM_GB=16
+TIMEOUT=3m
+THREADS=1
+CACHE=0
+CPUS=2
+VOLUME=''
+FULL=1

@@ -1,0 +1,204 @@
+{
+  "status": "PASS",
+  "through": "Full259",
+  "run_sha256": "a0816150ca3127f6500f2caa6132bc6740f97946a42416d48513cef04c65409f",
+  "provenance": {
+    "prior_receipt_sha256": "36fe58d9bae19306311cc9655d0300a3ecf60e669141c4fe834e89be670de820",
+    "census_receipt_sha256": "dd262a3d974d3da91d5365dd88d7668183f55cb6083a5dca803588ba517217cb",
+    "diagnostics": [
+      {
+        "case": "FullU3R3",
+        "receipt_sha256": "1a59f0543cf7ee4ddf31c88a9efd2a15585310a14d333f6281e8abce91eb43d0"
+      }
+    ],
+    "prior_audit": {
+      "status": "PASS",
+      "run_sha256": "36fe58d9bae19306311cc9655d0300a3ecf60e669141c4fe834e89be670de820",
+      "final_census_receipt_sha256": "dd262a3d974d3da91d5365dd88d7668183f55cb6083a5dca803588ba517217cb",
+      "results": [
+        {
+          "module": "FullMembership",
+          "source_sha256": "2bd57a5707e8a90c42b4fad2b5271ef403ad458f8d96e3f1ed84421f1b4b7086",
+          "olean_sha256": "9266a931db7aeb951bfd6db575f6a4ff71518fef69b37a3917f4588c076abf76",
+          "log_sha256": "4837302d54d1eec11c2c98022034021aab0bf409f358dcb0b10c86618ff1cf59",
+          "axiom_exports": [
+            {
+              "theorem": "FullU3R3_mem",
+              "axioms": [
+                "propext",
+                "Classical.choice",
+                "Quot.sound"
+              ]
+            },
+            {
+              "theorem": "FullU3R3_input",
+              "axioms": [
+                "propext",
+                "Classical.choice",
+                "Quot.sound"
+              ]
+            },
+            {
+              "theorem": "FullU54R20_mem",
+              "axioms": [
+                "propext",
+                "Classical.choice",
+                "Quot.sound"
+              ]
+            },
+            {
+              "theorem": "FullU54R20_input",
+              "axioms": [
+                "propext",
+                "Classical.choice",
+                "Quot.sound"
+              ]
+            }
+          ],
+          "elapsed_seconds": 7.369779398999526,
+          "user_cpu_seconds": 5.979945,
+          "system_cpu_seconds": 1.467532,
+          "max_rss_kib": 6965080
+        },
+        {
+          "module": "Full260",
+          "source_sha256": "00b22bffb6a8c02a67d686b84af6296cfa80ac8da315770f4e65cb46abedc60a",
+          "olean_sha256": "3b1fbd5db9fd8ccc459ea9eaa9dbbf3cc4af130beea1de45f494d8ba0afecc24",
+          "log_sha256": "2f6d1a53ca345b4667ebfe57162af08ea68f443747e591110d583a23dc40616b",
+          "axiom_exports": [
+            {
+              "theorem": "FullUStrongAfterPilot.pilot_mem",
+              "axioms": [
+                "propext",
+                "Classical.choice",
+                "Quot.sound"
+              ]
+            },
+            {
+              "theorem": "FullUStrongAfterPilot.remainingPairs_card",
+              "axioms": [
+                "propext",
+                "Classical.choice",
+                "Quot.sound"
+              ]
+            },
+            {
+              "theorem": "FullUStrongAfterPilot.pilot_input",
+              "axioms": [
+                "propext",
+                "Classical.choice",
+                "Quot.sound"
+              ]
+            },
+            {
+              "theorem": "FullUStrongAfterPilot.pilot_rejected",
+              "axioms": [
+                "propext",
+                "Classical.choice",
+                "Quot.sound",
+                "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1"
+              ]
+            },
+            {
+              "theorem": "FullUStrongAfterPilot.actual_distinct_witness",
+              "axioms": [
+                "propext",
+                "Classical.choice",
+                "Quot.sound",
+                "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1"
+              ]
+            },
+            {
+              "theorem": "FullUStrongAfterPilot.excluded_of_rejections",
+              "axioms": [
+                "propext",
+                "Classical.choice",
+                "Quot.sound",
+                "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1"
+              ]
+            }
+          ],
+          "elapsed_seconds": 5.826272425998468,
+          "user_cpu_seconds": 4.863256,
+          "system_cpu_seconds": 1.413853,
+          "max_rss_kib": 6907472
+        }
+      ],
+      "scope": "Conditional 260-pair reduction and membership for two diagnostic cases; remaining rejections open."
+    },
+    "imported_object_sha256": {
+      "Erdos85ThreeHighPilotFullU3R3Inputs": "cc9f6bd43319f43b33633b3ea99e82912e07a664de01723869b33a9e5e4bcfe1",
+      "Erdos85ThreeHighPilotFullU54R20Inputs": "f2b33f05da755c15afdf72c2ed3af608f46996d1830072fa612d7a7964e715d3",
+      "Erdos85ThreeHighNativeTerminalPilotCertificate": "9bca1c131be95e871a2edf8e514ccf870971ee3e2b685db50739d3cc138cb4c0",
+      "Erdos85ThreeHighPilotFullU3R3Certificate": "8567bf6f2d03d3e6b0fbfefac7433cc2686b2d01170d810ce1df5acccb4f7184"
+    }
+  },
+  "results": [
+    {
+      "module": "Full259",
+      "source_sha256": "3947dfad8c20caffc5823edb2306be57bd7b695e3a94cdab56916e760d091ae8",
+      "olean_sha256": "3240bd42f42caecc7b2dadf7881b7ba0394b20db051f723122062404bde42b68",
+      "log_sha256": "9b205e51c99e67998a627e4338e39d13a573b58723ca2b67b03c0e165611a6be",
+      "axiom_exports": [
+        {
+          "theorem": "FullUStrongAfterTwoPilots.pilot_mem",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUStrongAfterTwoPilots.remainingPairs_card",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUStrongAfterTwoPilots.pilot_input",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUStrongAfterTwoPilots.pilot_rejected",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+            "Erdos85.VariedPilot.FullU3R3.rejected._native.native_decide.ax_1_1"
+          ]
+        },
+        {
+          "theorem": "FullUStrongAfterTwoPilots.actual_distinct_witness",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+            "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1",
+            "Erdos85.VariedPilot.FullU3R3.rejected._native.native_decide.ax_1_1"
+          ]
+        },
+        {
+          "theorem": "FullUStrongAfterTwoPilots.excluded_of_rejections",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+            "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1",
+            "Erdos85.VariedPilot.FullU3R3.rejected._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "elapsed_seconds": 4.721587225001713,
+      "user_cpu_seconds": 3.619641,
+      "system_cpu_seconds": 1.457911,
+      "max_rss_kib": 6842052
+    }
+  ],
+  "scope": "Two prior full certificates consumed; 259 rejection hypotheses remain."
+}

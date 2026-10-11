@@ -1,0 +1,135 @@
+[e85] job 20261008T114617-erdos85__h3-triple-formal-20261007-466599  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T11:46:17Z
+[e85] commit 301cc8b1c20237b7e36dc5f2440659678cb76416 (Prepare bounded standalone H3 native-library comparison)
+=== Docker Lean Build ===
+Memory limit: 16384MB (hard enforced via cgroups)
+Timeout: 6m
+CPU limit: 2
+Target: all
+Build volume: lean-build-erdos85__h3-triple-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Command: lake env python3 -B ../research/problems/erdos-85-wip-01/h3_precompiled_probe_20261008/run_probe.py
+Starting Docker build...
+
+{"name": "runtime", "command": ["lean", "-j1", "H3NativeRuntime.lean", "-o", "H3NativeRuntime.olean", "-c", "H3NativeRuntime.c"], "timeout_seconds": 60, "returncode": 0, "timed_out": false, "elapsed_seconds": 1.5658382589972462, "child_user_seconds": 1.406336, "child_system_seconds": 0.13058799999999998, "child_maxrss_kib_cumulative": 783200, "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
+
+{"name": "shared", "command": ["leanc", "-O3", "-shared", "-fPIC", "H3NativeRuntime.c", "-o", "/workspace/proofs/H3NativeStandaloneProbe/libH3NativeRuntime.so"], "timeout_seconds": 60, "returncode": 0, "timed_out": false, "elapsed_seconds": 1.0159884599997895, "child_user_seconds": 0.9355959999999999, "child_system_seconds": 0.04892100000000002, "child_maxrss_kib_cumulative": 783200, "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
+
+[30s] Building...
+[60s] Building...
+{"name": "plain", "command": ["lean", "-j1", "H3NativeProbe.lean", "-o", "/workspace/research/problems/erdos-85-wip-01/h3_precompiled_probe_20261008/attempt1/Plain.olean"], "timeout_seconds": 90, "returncode": 0, "timed_out": false, "elapsed_seconds": 61.38904933800222, "child_user_seconds": 61.236138, "child_system_seconds": 0.129991, "child_maxrss_kib_cumulative": 783200, "log_sha256": "755d51e2e2c2c21a896e2d792a7fce19577cfb36a0d801455657733bbf1c691a"}
+'Erdos85.H3TripleCompletion.phaseTwoTraversal' depends on axioms: [propext,
+ Quot.sound,
+ Erdos85.H3TripleCompletion.phaseTwoTraversal._native.native_decide.ax_1_1]
+
+{"name": "plugin", "command": ["lean", "-j1", "--plugin=/workspace/proofs/H3NativeStandaloneProbe/libH3NativeRuntime.so:initialize_H3NativeRuntime", "H3NativeProbe.lean", "-o", "/workspace/research/problems/erdos-85-wip-01/h3_precompiled_probe_20261008/attempt1/Plugin.olean"], "timeout_seconds": 90, "returncode": 1, "timed_out": false, "elapsed_seconds": 0.06410913400031859, "child_user_seconds": 0.028128000000002373, "child_system_seconds": 0.009375999999999995, "child_maxrss_kib_cumulative": 783200, "log_sha256": "3b94a8d1be7ad68f8040c0a62c44adb8ab618fe4329717155ab0c108efc40592"}
+error: no such file or directory (error code: 2)
+  file: /workspace/proofs/H3NativeStandaloneProbe/libH3NativeRuntime.so:initialize_H3NativeRuntime
+
+{
+  "status": "COMPARISON_INCOMPLETE",
+  "scope": "Copied-definition timing diagnostic only; no production theorem credit",
+  "steps": [
+    {
+      "name": "runtime",
+      "command": [
+        "lean",
+        "-j1",
+        "H3NativeRuntime.lean",
+        "-o",
+        "H3NativeRuntime.olean",
+        "-c",
+        "H3NativeRuntime.c"
+      ],
+      "timeout_seconds": 60,
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 1.5658382589972462,
+      "child_user_seconds": 1.406336,
+      "child_system_seconds": 0.13058799999999998,
+      "child_maxrss_kib_cumulative": 783200,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "shared",
+      "command": [
+        "leanc",
+        "-O3",
+        "-shared",
+        "-fPIC",
+        "H3NativeRuntime.c",
+        "-o",
+        "/workspace/proofs/H3NativeStandaloneProbe/libH3NativeRuntime.so"
+      ],
+      "timeout_seconds": 60,
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 1.0159884599997895,
+      "child_user_seconds": 0.9355959999999999,
+      "child_system_seconds": 0.04892100000000002,
+      "child_maxrss_kib_cumulative": 783200,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "plain",
+      "command": [
+        "lean",
+        "-j1",
+        "H3NativeProbe.lean",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_precompiled_probe_20261008/attempt1/Plain.olean"
+      ],
+      "timeout_seconds": 90,
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 61.38904933800222,
+      "child_user_seconds": 61.236138,
+      "child_system_seconds": 0.129991,
+      "child_maxrss_kib_cumulative": 783200,
+      "log_sha256": "755d51e2e2c2c21a896e2d792a7fce19577cfb36a0d801455657733bbf1c691a"
+    },
+    {
+      "name": "plugin",
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/proofs/H3NativeStandaloneProbe/libH3NativeRuntime.so:initialize_H3NativeRuntime",
+        "H3NativeProbe.lean",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_precompiled_probe_20261008/attempt1/Plugin.olean"
+      ],
+      "timeout_seconds": 90,
+      "returncode": 1,
+      "timed_out": false,
+      "elapsed_seconds": 0.06410913400031859,
+      "child_user_seconds": 0.028128000000002373,
+      "child_system_seconds": 0.009375999999999995,
+      "child_maxrss_kib_cumulative": 783200,
+      "log_sha256": "3b94a8d1be7ad68f8040c0a62c44adb8ab618fe4329717155ab0c108efc40592"
+    }
+  ],
+  "started_utc": "2026-10-08T11:46:19.467926+00:00",
+  "runtime_source_sha256": "f94e1ae512e8b5baf988c06b2cb292e74e8a7e9e380b38d19428f0a1df848c2f",
+  "probe_source_sha256": "8fa011ad6c4401157ce54cfab442316a97ff044b4ef1234b846fbba0cf9b9ba0",
+  "initializer": "initialize_H3NativeRuntime",
+  "artifacts": {
+    "H3NativeRuntime.olean": {
+      "sha256": "f7ad424e193df4fdd88ca4122bcfcea35c2da09924cc0956fcd7a47f82b31c35",
+      "bytes": 707352
+    },
+    "H3NativeRuntime.c": {
+      "sha256": "e558b02ba016764b1a7cd54834a6d528f13b1014cc0784351b6ea2f84d7a8a53",
+      "bytes": 208432
+    },
+    "libH3NativeRuntime.so": {
+      "sha256": "e47467058251ad9c7e1965b2eddaa4806e1c467bee1295144037a7d7bd8e65ea",
+      "bytes": 9040
+    },
+    "Plain.olean": {
+      "sha256": "68dadade0403147cf8acc3abc57bbb16d0d0c31bfb3e93e7ef223fb197abb6e3",
+      "bytes": 10552
+    }
+  }
+}
+
+=== Build failed with exit code 1 ===

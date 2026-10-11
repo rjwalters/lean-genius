@@ -1,0 +1,69 @@
+{
+  "status": "COMPILED",
+  "steps": [
+    {
+      "name": "shared",
+      "command": [
+        "leanc",
+        "-O3",
+        "-DLEAN_EXPORTING",
+        "-shared",
+        "-fPIC",
+        "/workspace/proofs/.lake/build/ir/Proofs/Erdos85H3TripleCompletionRuntime.c",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_runtime_split_20261008/canary1/libH3TripleRuntime.so"
+      ],
+      "timeout_seconds": 60,
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.9649858729972038,
+      "child_user_seconds": 0.92831,
+      "child_system_seconds": 0.036309,
+      "child_maxrss_kib_cumulative": 100416,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "probe",
+      "command": [
+        "lean",
+        "-j1",
+        "--plugin=/workspace/research/problems/erdos-85-wip-01/h3_runtime_split_20261008/canary1/libH3TripleRuntime.so=initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+        "H3TripleCompletionPrecompiledProbe.lean",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_runtime_split_20261008/canary1/Probe384R0.olean"
+      ],
+      "timeout_seconds": 180,
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 31.355354489998717,
+      "child_user_seconds": 30.119197,
+      "child_system_seconds": 1.2099680000000002,
+      "child_maxrss_kib_cumulative": 6486088,
+      "log_sha256": "b0d8ca00d025781fec4f8703a61b6b17674636b5e429e84cbecf5568709fb9dd"
+    }
+  ],
+  "source_sha256": "badb03f821a2011a5dd36b0793d5ad608ef1139a12729cd97afd072e6b9d840d",
+  "started_utc": "2026-10-08T11:58:45.299018+00:00",
+  "build_audit_sha256": "477f1d4ca6eb5d957acb9d1e327e72ad4c7124b4772577b78033571eb4ab66b6",
+  "runtime_c": {
+    "sha256": "f7d846fa9a99fbe4f98427cc9b29f5dbb40449f2d5941fd9f4fb1b0677f66a06",
+    "bytes": 218399,
+    "mtime": 1791460549.1026928
+  },
+  "initializer": "initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime",
+  "scope": "Existing triplePart 384 0 only; no additional bucket or whole-cell credit.",
+  "artifacts": {
+    "libH3TripleRuntime.so": {
+      "sha256": "1d58071a6732bd981763acae6ccd916f2e43ecdffdedbbd6b3ed182d9810cc95",
+      "bytes": 166688
+    },
+    "Probe384R0.olean": {
+      "sha256": "f41f84072713f0b4baec2698955ed25a95bad7d5fe5fae7ef504fa2e96dc3959",
+      "bytes": 6712
+    },
+    "symbols.log": {
+      "sha256": "b1116522dc865879490cbc7e21c77a0c9ae1e9258013f5de149668054673b756",
+      "bytes": 9498
+    }
+  }
+}

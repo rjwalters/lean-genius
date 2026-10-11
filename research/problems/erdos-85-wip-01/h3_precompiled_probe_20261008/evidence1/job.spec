@@ -1,0 +1,11 @@
+MODE=run
+REF=erdos85/h3-triple-formal-20261007
+TARGET=''
+CMD=lake\ env\ python3\ -B\ ../research/problems/erdos-85-wip-01/h3_precompiled_probe_20261008/run_probe.py
+MEM_GB=16
+TIMEOUT=6m
+THREADS=1
+CACHE=0
+CPUS=2
+VOLUME=''
+FULL=1

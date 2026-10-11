@@ -1,0 +1,76 @@
+# Cloud U1/R15 pilot, 8 October 2026 (UTC)
+
+Status: **split pilot passed; one complete U1/R15 pair has a native-backed receipt**.
+
+The original combined-module run failed in consumer elaboration.
+The job exited 1 at 02:31:46 UTC. Lake reports 5,859 seconds for the target
+module. Its native rejection declaration was printed, but `no_joint` at line
+21 exceeded the recursion-depth limit, so the entire module failed.
+`first-run.json` and the complete `first-run.log` preserve that outcome.
+This was neither a timeout nor an out-of-memory termination.
+
+`ConsumerBaseline.lean` and `Consumer.lean` isolate the consumer with the
+rejection as an explicit hypothesis. The proposed fix makes
+`threeHighCrossDomain` locally irreducible, matching the existing search
+soundness module. `check_consumer.py` checks that the baseline reproduces the
+error and the proposed consumer compiles with standard axioms. These probes
+do not evaluate or prove the finite rejection. Cloud job
+`20261008T023753-erdos85__h3-triple-formal-20261007-112090` passed: the baseline
+failed as expected in 3.82 seconds and the fixed consumer passed in 3.97 seconds.
+`consumer-evidence/consumer-rooted/` retains the complete records and logs;
+its source/log hashes were independently checked and the cloud consumer
+object hash matches the receipt. `consumer-evidence/consumer-first/` retains
+an earlier runner setup failure (missing Lean source root), before elaboration.
+
+The pilot is now split into `Erdos85ThreeHighNativeTerminalPilotCertificate.lean`
+(unchanged rejection computation) and `Erdos85ThreeHighNativeTerminalPilot.lean`
+(the fixed consumer). `check_split_pilot.py` copies these into the disposable
+cloud worktree and builds them separately, retaining each complete log, source,
+object hash, and axiom report. Thus a later consumer failure preserves a
+successfully compiled rejection object. It records per-process wall/CPU time
+and Linux `wait4` peak RSS; that RSS is not aggregate concurrent memory.
+The split pilot passed as job
+`20261008T024639-erdos85__h3-triple-formal-20261007-116600`, started at 02:46:39 UTC
+from `bd75f1b58288bb94294825d9d1c58e009f1847c2`, with 24 GiB and a four-hour cap.
+It finished with exit 0 at 04:24:22 UTC. `split-launch.json` retains the launch
+provenance and final audit. `split-evidence/` preserves both compiled sources,
+complete raw logs, separate module records, and the full run receipt.
+Independent source/object/hash/report checks passed (`split-evidence/AUDIT.json`).
+
+The native rejection took 5,844.03 seconds wall time and 5,837.18 seconds user
+CPU, with `wait4` maximum RSS 8,337,112 KiB (about 7.95 GiB). The consumer took
+9.57 seconds wall time. Both exports report exactly `propext`,
+`Classical.choice`, `Quot.sound`, and
+`Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1`.
+The consumer still assumes cross-domain membership and the external block cap.
+This establishes one complete pair, not full H3 exclusion. No larger finite
+campaign has been queued.
+
+The 5,859-second measurement includes both declarations and does not isolate
+native search time. If every one of the 1,815 remaining pairs cost that much,
+the arithmetic scenario would be 2,953.9 serial hours (369.2 hours at eight
+ideal workers, 184.6 at sixteen). One pair does not justify that average, and
+these idealized figures omit overhead and memory constraints.
+
+`launch.json` identifies the existing six-hour native-check job, pinned source
+commit, exact pilot source hash, and verified resource settings. It is a launch
+record, **not** a successful proof receipt. At the recorded initial inspection,
+the Docker container and dependency compiler processes were running.
+
+Inspect the original job record:
+
+```sh
+e85-remote status
+e85-remote logs 20261008T004436-erdos85__h3-triple-formal-20261007-42449
+```
+
+The cloud job is detached; a disconnected local log follower does not stop it.
+Do not restart because a log observation times out. Inspect this same job and
+its container. Once it actually terminates, retain its exit status, source
+commit, complete relevant log, and printed theorem axioms as a separate result
+record. The native rejection, if established, must be distinguished from the
+standard-axiom structural lemmas. No full H3 exclusion follows from this one
+pair alone.
+
+The copied pilot exists only in the disposable remote worktree. The local
+library's default build glob still contains no unchecked finite-pilot module.

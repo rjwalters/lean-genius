@@ -1,0 +1,17 @@
+{
+  "status": "SUBMITTED",
+  "job": "20261008T064336-erdos85__h3-first-column-20261008-270638",
+  "branch": "erdos85/h3-first-column-20261008",
+  "expected_execution_commit": "9a1555a52461ab6d53bb145378f92de81c88cdc6",
+  "case": "FullU54R20",
+  "memory_gib": 16,
+  "lean_threads": 1,
+  "timeout": "2h",
+  "preflight_receipt_sha256": "36fe58d9bae19306311cc9655d0300a3ecf60e669141c4fe834e89be670de820",
+  "source_sha256": {
+    "Erdos85ThreeHighPilotFullU54R20Inputs.lean": "324653ac84cdf0a257221e3a495ace46b96e64a73e5d5f2fd3d0de1071f2bd38",
+    "Erdos85ThreeHighPilotFullU54R20Certificate.lean": "be3a4ac1b4700915860fc4507ef4df4c725439b8ba7bb47870791c3037125f28",
+    "Erdos85ThreeHighPilotFullU54R20Consumer.lean": "1d0aa08a664fa59a2d0cee5564d6d49e4b37b12280aef646f41777e37ef5ea3e"
+  },
+  "scope": "Final agreed varied diagnostic pair; no full H3 closure or full campaign."
+}

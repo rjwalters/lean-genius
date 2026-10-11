@@ -1,0 +1,11 @@
+MODE=host
+REF=erdos85/h3-triple-formal-20261007
+TARGET=''
+CMD=python3\ -B\ research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/launch_preflight.py\ --case\ full-u001-r16\ --manifest-sha256\ 11ded9568ddc0497b8fd58d9107bc35f50caca0fd9064e9f85db18f98f614445\ --output\ research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-full-first
+MEM_GB=64
+TIMEOUT=15m
+THREADS=''
+CACHE=0
+CPUS=16
+VOLUME=''
+FULL=1

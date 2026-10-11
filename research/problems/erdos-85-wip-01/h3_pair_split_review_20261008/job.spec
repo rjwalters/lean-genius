@@ -1,0 +1,11 @@
+MODE=build
+REF=erdos85/h3-pair-formal-20261008
+TARGET=Proofs.Erdos85H3PairSplit
+CMD=''
+MEM_GB=16
+TIMEOUT=2h
+THREADS=2
+CACHE=0
+CPUS=16
+VOLUME=''
+FULL=0

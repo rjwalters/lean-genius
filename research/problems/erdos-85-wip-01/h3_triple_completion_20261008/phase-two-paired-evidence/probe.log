@@ -1,0 +1,9 @@
+STATES count=4
+PROFILE fast=false leaf=1 key=975744 nodes=17 leaves=0 exhausted=0 invalid=0 no_fresh=0 rejected=0 available=1062 capped=false elapsed_ms=9
+PROFILE fast=false leaf=2 key=986112 nodes=10000 leaves=427 exhausted=0 invalid=0 no_fresh=0 rejected=0 available=142563 capped=true elapsed_ms=2175
+PROFILE fast=false leaf=3 key=41088 nodes=10000 leaves=478 exhausted=0 invalid=0 no_fresh=0 rejected=0 available=119580 capped=true elapsed_ms=2061
+PROFILE fast=false leaf=4 key=776448 nodes=10000 leaves=451 exhausted=0 invalid=0 no_fresh=0 rejected=0 available=134497 capped=true elapsed_ms=2137
+PROFILE fast=true leaf=1 key=975744 nodes=17 leaves=0 exhausted=0 invalid=0 no_fresh=0 rejected=0 available=1062 capped=false elapsed_ms=8
+PROFILE fast=true leaf=2 key=986112 nodes=10000 leaves=427 exhausted=0 invalid=0 no_fresh=0 rejected=0 available=142563 capped=true elapsed_ms=1469
+PROFILE fast=true leaf=3 key=41088 nodes=10000 leaves=478 exhausted=0 invalid=0 no_fresh=0 rejected=0 available=119580 capped=true elapsed_ms=1334
+PROFILE fast=true leaf=4 key=776448 nodes=10000 leaves=451 exhausted=0 invalid=0 no_fresh=0 rejected=0 available=134497 capped=true elapsed_ms=1420

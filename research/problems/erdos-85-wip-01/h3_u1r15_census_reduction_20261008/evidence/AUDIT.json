@@ -1,0 +1,121 @@
+{
+  "status": "PASS",
+  "run_sha256": "36fe58d9bae19306311cc9655d0300a3ecf60e669141c4fe834e89be670de820",
+  "final_census_receipt_sha256": "dd262a3d974d3da91d5365dd88d7668183f55cb6083a5dca803588ba517217cb",
+  "results": [
+    {
+      "module": "FullMembership",
+      "source_sha256": "2bd57a5707e8a90c42b4fad2b5271ef403ad458f8d96e3f1ed84421f1b4b7086",
+      "olean_sha256": "9266a931db7aeb951bfd6db575f6a4ff71518fef69b37a3917f4588c076abf76",
+      "log_sha256": "4837302d54d1eec11c2c98022034021aab0bf409f358dcb0b10c86618ff1cf59",
+      "axiom_exports": [
+        {
+          "theorem": "FullU3R3_mem",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullU3R3_input",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullU54R20_mem",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullU54R20_input",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ],
+      "elapsed_seconds": 7.369779398999526,
+      "user_cpu_seconds": 5.979945,
+      "system_cpu_seconds": 1.467532,
+      "max_rss_kib": 6965080
+    },
+    {
+      "module": "Full260",
+      "source_sha256": "00b22bffb6a8c02a67d686b84af6296cfa80ac8da315770f4e65cb46abedc60a",
+      "olean_sha256": "3b1fbd5db9fd8ccc459ea9eaa9dbbf3cc4af130beea1de45f494d8ba0afecc24",
+      "log_sha256": "2f6d1a53ca345b4667ebfe57162af08ea68f443747e591110d583a23dc40616b",
+      "axiom_exports": [
+        {
+          "theorem": "FullUStrongAfterPilot.pilot_mem",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUStrongAfterPilot.remainingPairs_card",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUStrongAfterPilot.pilot_input",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUStrongAfterPilot.pilot_rejected",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+            "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1"
+          ]
+        },
+        {
+          "theorem": "FullUStrongAfterPilot.actual_distinct_witness",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+            "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1"
+          ]
+        },
+        {
+          "theorem": "FullUStrongAfterPilot.excluded_of_rejections",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+            "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1"
+          ]
+        }
+      ],
+      "elapsed_seconds": 5.826272425998468,
+      "user_cpu_seconds": 4.863256,
+      "system_cpu_seconds": 1.413853,
+      "max_rss_kib": 6907472
+    }
+  ],
+  "scope": "Conditional 260-pair reduction and membership for two diagnostic cases; remaining rejections open.",
+  "job": "20261008T062957-erdos85__h3-triple-formal-20261007-260985",
+  "execution_commit": "8cf6b79ce2da127d9a80383f8a019947fff0d58d",
+  "authoritative_exit": 0,
+  "job_log_sha256": "d70bb38531e893abcb88711f72d4a0bfa72e103bf91810919bfb199c7234d5c6",
+  "audit_source_sha256": "bc62c341b567ac7dc08cbdc078d70e652c54fd653f8528f5c3b441081401f870",
+  "artifact_scope": "Original compiled objects checked on cloud host; copied source/log/receipt hashes rechecked locally."
+}

@@ -1,0 +1,227 @@
+[e85] job 20261008T112128-erdos85__h3-triple-formal-20261007-450887  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T11:21:28Z
+[e85] commit 0779d10cba3a4a9b13feb5634cb15f55ddc4b4bf (Profile bounded H3 phase-three completion with phase-one and two controls)
+[e85] host command: python3 -B research/problems/erdos-85-wip-01/h3_triple_completion_20261008/run_phase_three.py
+{
+  "source_hashes": {
+    "h3_phase3_profile.c": "e67a97e86a71a8c37d0808ef7a6f3d00965a1e6bcb587593368d2d4440e39861",
+    "run_phase_three.py": "3d09be924cc229660c997dc62dfb280ec9d94fbfa2852a66ad8a06017fd89eb9",
+    "run_prototype.py": "fa587c617e71432e0258c7bcf62280a0e66071c4026e76205534c886fdd27ab4"
+  },
+  "scope": "PROFILING_ONLY",
+  "affinity": [
+    0,
+    1
+  ],
+  "child_address_space_bytes": 2147483648,
+  "child_cpu_seconds": 30,
+  "child_wall_seconds": 30,
+  "runs": {
+    "control": {
+      "command": [
+        "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-phase-three/profile",
+        "1",
+        "mrv=0",
+        "fc=0",
+        "pre=22",
+        "mod=384",
+        "secs=20",
+        "nodes=2000000",
+        "earlygate=0",
+        "verbose=1",
+        "pick=2",
+        "res=-1",
+        "p1only=1",
+        "p3=0"
+      ],
+      "started_utc": "2026-10-08T11:21:29.456605+00:00",
+      "returncode": 0,
+      "outer_timeout": false,
+      "elapsed_seconds": 0.004766691003169399,
+      "log_sha256": "677420d382bf918fa0b5bca359ef1d36cfce70b328652cf9a7940b3b015b8e44",
+      "profile": {
+        "traversal_return": 1,
+        "stopped": 0,
+        "n1": 8167,
+        "leaf1": 1088,
+        "leafrun": 0,
+        "n2": 0,
+        "leaf2": 0,
+        "n3": 0,
+        "found": 0,
+        "secs": 0.0,
+        "mrv": 0,
+        "fc": 0,
+        "pick": 2,
+        "stop_reason": "none",
+        "maxleaf": 0,
+        "states": [],
+        "early_gate": 0,
+        "gate_hits": 0,
+        "node_cap": 2000000,
+        "p3": 0,
+        "p3_gates": 0,
+        "p3_combinations": 0,
+        "p3_rejects": 0,
+        "candidates": []
+      }
+    },
+    "phase-two": {
+      "command": [
+        "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-phase-three/profile",
+        "1",
+        "mrv=0",
+        "fc=0",
+        "pre=22",
+        "mod=384",
+        "secs=20",
+        "nodes=2000000",
+        "earlygate=0",
+        "verbose=1",
+        "pick=2",
+        "res=0",
+        "p1only=0",
+        "maxleaf=0",
+        "p3=0"
+      ],
+      "started_utc": "2026-10-08T11:21:29.463179+00:00",
+      "returncode": 0,
+      "outer_timeout": false,
+      "elapsed_seconds": 0.16484028300328646,
+      "log_sha256": "2798cb1745ca4de6b9db8648c3f3b989aeb3d0d8820487f2a7c41784c1be4895",
+      "profile": {
+        "traversal_return": 1,
+        "stopped": 0,
+        "n1": 8167,
+        "leaf1": 4,
+        "leafrun": 4,
+        "n2": 458244,
+        "leaf2": 19920,
+        "n3": 0,
+        "found": 0,
+        "secs": 0.1,
+        "mrv": 0,
+        "fc": 0,
+        "pick": 2,
+        "stop_reason": "none",
+        "maxleaf": 0,
+        "states": [
+          [
+            1,
+            975744,
+            1393
+          ],
+          [
+            2,
+            986112,
+            6289
+          ],
+          [
+            3,
+            41088,
+            6321
+          ],
+          [
+            4,
+            776448,
+            7657
+          ]
+        ],
+        "early_gate": 0,
+        "gate_hits": 0,
+        "node_cap": 2000000,
+        "p3": 0,
+        "p3_gates": 0,
+        "p3_combinations": 0,
+        "p3_rejects": 0,
+        "candidates": []
+      }
+    },
+    "phase-three": {
+      "command": [
+        "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-phase-three/profile",
+        "1",
+        "mrv=0",
+        "fc=0",
+        "pre=22",
+        "mod=384",
+        "secs=20",
+        "nodes=2000000",
+        "earlygate=0",
+        "verbose=1",
+        "pick=2",
+        "res=0",
+        "p1only=0",
+        "maxleaf=0",
+        "p3=1"
+      ],
+      "started_utc": "2026-10-08T11:21:29.628602+00:00",
+      "returncode": 0,
+      "outer_timeout": false,
+      "elapsed_seconds": 0.26515723400370916,
+      "log_sha256": "6b4e49980075cec10da4b3e4e3e04a6076ebfbb8348ae556ebcb5a7e8433b822",
+      "profile": {
+        "traversal_return": 1,
+        "stopped": 0,
+        "n1": 8167,
+        "leaf1": 4,
+        "leafrun": 4,
+        "n2": 458244,
+        "leaf2": 19920,
+        "n3": 24322,
+        "found": 0,
+        "secs": 0.2,
+        "mrv": 0,
+        "fc": 0,
+        "pick": 2,
+        "stop_reason": "none",
+        "maxleaf": 0,
+        "states": [
+          [
+            1,
+            975744,
+            1393
+          ],
+          [
+            2,
+            986112,
+            6289
+          ],
+          [
+            3,
+            41088,
+            6321
+          ],
+          [
+            4,
+            776448,
+            7657
+          ]
+        ],
+        "early_gate": 0,
+        "gate_hits": 0,
+        "node_cap": 2000000,
+        "p3": 1,
+        "p3_gates": 4141,
+        "p3_combinations": 52876,
+        "p3_rejects": 48474,
+        "candidates": []
+      }
+    }
+  },
+  "compile": {
+    "command": [
+      "gcc",
+      "-O3",
+      "-std=gnu11",
+      "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/h3_phase3_profile.c",
+      "-o",
+      "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/prototype-phase-three/profile"
+    ],
+    "started_utc": "2026-10-08T11:21:29.140898+00:00",
+    "returncode": 0,
+    "outer_timeout": false,
+    "elapsed_seconds": 0.31515532399498625,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "binary_sha256": "02424e4262342bb4368d15badd14aa0d33f791517abbafefef8b01bf3a789b4b"
+}

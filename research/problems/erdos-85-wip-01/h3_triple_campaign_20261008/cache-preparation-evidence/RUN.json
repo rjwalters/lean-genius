@@ -1,0 +1,119 @@
+{
+  "schema": "erdos85-h3-cache-preparation-v1",
+  "status": "CACHE_PREPARED",
+  "manifest_sha256": "11ded9568ddc0497b8fd58d9107bc35f50caca0fd9064e9f85db18f98f614445",
+  "source_sha256": "73ee08f6fa4ffc7f45eeda4aa0e6b5369c065a9802aba23282ef1df5faf04c2b",
+  "started_utc": "2026-10-08T07:55:05.753885+00:00",
+  "production_native_search": false,
+  "scope": "Cache preparation only. Requires host provenance audit before worker launch.",
+  "census_audit": {
+    "full": {
+      "base": {
+        "status": "PASS",
+        "receipt_sha256": "9924e45dfa932bae6af3607eb7de97e4b77d590366bf8d4bb9eaaf8de480236f",
+        "modules": 107,
+        "axiom_reports": 228,
+        "data_only_modules": 0,
+        "final_module_exports": [
+          {
+            "theorem": "FullUStrongCensus.actual_distinct_witness",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          },
+          {
+            "theorem": "FullUStrongCensus.excluded_of_rejections",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          }
+        ]
+      },
+      "final": {
+        "status": "PASS",
+        "receipt_sha256": "dd262a3d974d3da91d5365dd88d7668183f55cb6083a5dca803588ba517217cb",
+        "modules": 342,
+        "axiom_reports": 1077,
+        "data_only_modules": 15,
+        "final_module_exports": [
+          {
+            "theorem": "FullUStrongFinalCensus.actual_distinct_witness",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          },
+          {
+            "theorem": "FullUStrongFinalCensus.excluded_of_rejections",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          }
+        ]
+      }
+    },
+    "deficient_receipt_sha256": "190d7e37c814bd8a7eea54e6ad1bbcba73e092e6e0d77deddc717bab098bfecc",
+    "deficient_modules": 203
+  },
+  "dependencies": {
+    "command": [
+      "lake",
+      "build",
+      "Proofs.Erdos85ThreeHighNativePairSearch",
+      "Proofs.Erdos85ThreeBlockCompactCodes",
+      "Proofs.Erdos85ThreeHighSecondaryOrbitTable"
+    ],
+    "started_utc": "2026-10-08T07:55:07.086196+00:00",
+    "finished_utc": "2026-10-08T07:55:13.506657+00:00",
+    "exit_code": 0,
+    "deadline_exceeded": false,
+    "elapsed_seconds": 6.420484253001632,
+    "user_cpu_seconds": 5.680982,
+    "system_cpu_seconds": 1.288117,
+    "max_rss_kib": 914512,
+    "log_sha256": "6abffa9641f9fb388ecc1b95455decd4b2ac43bddb616c41c773cdb0bd236a5d"
+  },
+  "copy": {
+    "command": [
+      "cp",
+      "-a",
+      "--reflink=auto",
+      "/workspace/proofs/.lake/build/lib/lean",
+      "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/cache-preflight-first/library"
+    ],
+    "started_utc": "2026-10-08T07:55:15.602243+00:00",
+    "finished_utc": "2026-10-08T07:55:15.703094+00:00",
+    "exit_code": 0,
+    "deadline_exceeded": false,
+    "elapsed_seconds": 0.10087287799979094,
+    "user_cpu_seconds": 0.010492,
+    "system_cpu_seconds": 0.083939,
+    "max_rss_kib": 390656,
+    "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "inventories": {
+    "full": {
+      "sha256": "0bdeec182744aa0737982d109290613eece8ac2f3c0115fa1307ddb76dd1d735",
+      "files": {
+        "library": 2471,
+        "full_base": 430,
+        "full_final": 1370
+      }
+    },
+    "deficient": {
+      "sha256": "3397a58699851e910c33ad8d3e5ca099de3e2665dc151cc000de934450a29c9a",
+      "files": {
+        "library": 2471,
+        "deficient_base": 610
+      }
+    }
+  },
+  "finished_utc": "2026-10-08T07:55:24.790643+00:00"
+}

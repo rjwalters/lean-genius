@@ -1,0 +1,28 @@
+{
+  "status": "FAILED_CONSUMER_ELABORATION",
+  "job_id": "20261008T004436-erdos85__h3-triple-formal-20261007-42449",
+  "execution_commit": "cfb0b04246a7053375a5ed29135604a340eee8ac",
+  "job_exit_code": 1,
+  "finished_utc_observed_in_follower": "2026-10-08T02:31:46Z",
+  "module_elapsed_seconds_reported_by_lake": 5859,
+  "module": "Proofs.Erdos85ThreeHighNativeTerminalPilot",
+  "source_sha256": "8da3fcb8847f6206e26026905e256438d39eacb6d804b8ff33fabed68619f499",
+  "log_sha256": "f471aa04a4832853ea93c86484f2b0c41beacb4a9a491924ce0cb2dfd56544e7",
+  "failure": "maximum recursion depth at no_joint declaration, line 21",
+  "rejected_axioms_reported": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound",
+    "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1"
+  ],
+  "proof_receipt": false,
+  "scope": "The rejection declaration was printed, but the module failed. No successful concrete rejection receipt or H3 exclusion is claimed.",
+  "timing_scope": "Whole target module including rejection computation and failed consumer elaboration; not an isolated search benchmark.",
+  "extrapolation": {
+    "assumption": "Every one of the 261 full and 1554 deficient pairs costs exactly the same as this failed module. This is a scenario, not an estimate from a representative sample.",
+    "pairs": 1815,
+    "serial_hours": 2953.9125,
+    "ideal_8_worker_hours": 369.2390625,
+    "ideal_16_worker_hours": 184.61953125
+  }
+}

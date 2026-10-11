@@ -1,0 +1,17 @@
+'FullUStrongAfterTwoPilots.pilot_mem' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FullUStrongAfterTwoPilots.remainingPairs_card' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FullUStrongAfterTwoPilots.pilot_input' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FullUStrongAfterTwoPilots.pilot_rejected' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Erdos85.VariedPilot.FullU3R3.rejected._native.native_decide.ax_1_1]
+'FullUStrongAfterTwoPilots.actual_distinct_witness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1,
+ Erdos85.VariedPilot.FullU3R3.rejected._native.native_decide.ax_1_1]
+'FullUStrongAfterTwoPilots.excluded_of_rejections' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1,
+ Erdos85.VariedPilot.FullU3R3.rejected._native.native_decide.ax_1_1]

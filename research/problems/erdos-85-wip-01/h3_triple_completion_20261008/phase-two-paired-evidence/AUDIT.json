@@ -1,0 +1,135 @@
+{
+  "job": "20261008T111445-erdos85__h3-triple-formal-20261007-445375",
+  "execution_commit": "d02fb5b5430ff42a1113172df00ef16cefc3adaf",
+  "status": "COMPILED",
+  "exit": 0,
+  "prerequisite_objects_unchanged": {
+    "Erdos85H3TripleCompletionEngine": "24524f945a9ff93f888e90a369f1e6da4cdfa3d479ff0bfd72ea4070698ccc28",
+    "Erdos85H3TripleCompletionBridge": "02220d1339caaf079b5889edf2e0c4e52b49b37d6c2b89ba4886c06d5a77e18e",
+    "Erdos85H3TripleCompletionSplit": "acfdbed1a9ccec6f972f9c8c8afc5575937d82b3cbc3541f0239a8e3b019d0d3"
+  },
+  "retained_sha256": {
+    "job.log": "699c3abf66d737536df06d3d8764782bcda7fda7e6bcd9576fe097c3725122aa",
+    "job.spec": "9a55a0de6160a35fdebf239cf4939b8cc4d3a9fccb7482d4d7e3743e31534d6f",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "PhaseTwoPaired.lean": "fff74a07cbd8f4522a06450ae9506795d04b604a1e9c935d1e4d15a5b82505e3",
+    "run_phase_two_paired.py": "def4456bcc5725af16cf4f76690232e6474cb29cbca78fed1f9d774bebcb4e28",
+    "RUN.json": "93a21b71b01d4b09f57f8c868ba03869b925fc51b7ced1e3980dd5a8d1765648",
+    "probe.log": "de406cca770ad83047ec7b44fedae10801ffe7da94204c5ea78728179c480a7e"
+  },
+  "scope": "Bounded instrumented phase-two profile only; no theorem or graph-exclusion credit.",
+  "profile": {
+    "modes": {
+      "false": [
+        {
+          "leaf": 1,
+          "key": 975744,
+          "nodes": 17,
+          "leaves": 0,
+          "exhausted": 0,
+          "invalid": 0,
+          "no_fresh": 0,
+          "rejected": 0,
+          "available": 1062,
+          "capped": false,
+          "elapsed_ms": 9
+        },
+        {
+          "leaf": 2,
+          "key": 986112,
+          "nodes": 10000,
+          "leaves": 427,
+          "exhausted": 0,
+          "invalid": 0,
+          "no_fresh": 0,
+          "rejected": 0,
+          "available": 142563,
+          "capped": true,
+          "elapsed_ms": 2175
+        },
+        {
+          "leaf": 3,
+          "key": 41088,
+          "nodes": 10000,
+          "leaves": 478,
+          "exhausted": 0,
+          "invalid": 0,
+          "no_fresh": 0,
+          "rejected": 0,
+          "available": 119580,
+          "capped": true,
+          "elapsed_ms": 2061
+        },
+        {
+          "leaf": 4,
+          "key": 776448,
+          "nodes": 10000,
+          "leaves": 451,
+          "exhausted": 0,
+          "invalid": 0,
+          "no_fresh": 0,
+          "rejected": 0,
+          "available": 134497,
+          "capped": true,
+          "elapsed_ms": 2137
+        }
+      ],
+      "true": [
+        {
+          "leaf": 1,
+          "key": 975744,
+          "nodes": 17,
+          "leaves": 0,
+          "exhausted": 0,
+          "invalid": 0,
+          "no_fresh": 0,
+          "rejected": 0,
+          "available": 1062,
+          "capped": false,
+          "elapsed_ms": 8
+        },
+        {
+          "leaf": 2,
+          "key": 986112,
+          "nodes": 10000,
+          "leaves": 427,
+          "exhausted": 0,
+          "invalid": 0,
+          "no_fresh": 0,
+          "rejected": 0,
+          "available": 142563,
+          "capped": true,
+          "elapsed_ms": 1469
+        },
+        {
+          "leaf": 3,
+          "key": 41088,
+          "nodes": 10000,
+          "leaves": 478,
+          "exhausted": 0,
+          "invalid": 0,
+          "no_fresh": 0,
+          "rejected": 0,
+          "available": 119580,
+          "capped": true,
+          "elapsed_ms": 1334
+        },
+        {
+          "leaf": 4,
+          "key": 776448,
+          "nodes": 10000,
+          "leaves": 451,
+          "exhausted": 0,
+          "invalid": 0,
+          "no_fresh": 0,
+          "rejected": 0,
+          "available": 134497,
+          "capped": true,
+          "elapsed_ms": 1420
+        }
+      ]
+    },
+    "scope": "Paired instrumented traversal, 10000-node cap per state."
+  },
+  "auditor_sha256": "dd478dc06c353cbbdcdcc03bc6aafcaa9ab079a81115b783845ac6352aa1a05e"
+}

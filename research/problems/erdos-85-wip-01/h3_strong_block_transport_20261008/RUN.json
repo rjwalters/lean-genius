@@ -1,0 +1,143 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "source": "compact_u_orbits/full_coverage/Full_3_3.lean",
+      "source_sha256": "ab9da838815a58639215d3100fd5bbb009e4dbe2eded60e6e20365e2e0e76533",
+      "log_sha256": "93b7de74cc72141422c9b69ce4fc42c0442da24b0ee1cc3d628c86732dd8bda0",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_block_transport_20261008/_build/first",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_block_transport_20261008/_build/first/Full_3_3.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_block_transport_20261008/_build/first/Full_3_3.lean"
+      ],
+      "elapsed_seconds": 10.965863838006044,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUShard_3_3.checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUShard_3_3.covered",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "source": "full_block_orbits/Certificate.lean",
+      "source_sha256": "e86619944bbdf83fd475651b09a59383072b5b59092be43914f3b1a201ad31fb",
+      "log_sha256": "ce09f5ddf8051dbc0968e9f1fa62104a987ef53ac1300bacb2f21000bd9d12d1",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_block_transport_20261008/_build/first",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_block_transport_20261008/_build/first/Certificate.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_block_transport_20261008/_build/first/Certificate.lean"
+      ],
+      "elapsed_seconds": 35.67999297499773,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUBlockOrbits.inverse_checked",
+          "axioms": [
+            "propext",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUBlockOrbits.block_inverse_checked",
+          "axioms": [
+            "propext",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUBlockOrbits.adjacency_checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUBlockOrbits.rows_checked",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUBlockOrbits.target_mem",
+          "axioms": [
+            "propext",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUBlockOrbits.targets_card",
+          "axioms": [
+            "propext",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUBlockOrbits.joint_transport",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "source": "h3_strong_block_transport_20261008/StrongTransport.lean",
+      "source_sha256": "dc128e80a71e9035cd97e25423a2a828788f4d5d37a48838ead9f6e4311f9d66",
+      "log_sha256": "4a0812da752646d80afd8224e8e54fb042a68b31a20ecfa61166cce3141751f3",
+      "command": [
+        "lean",
+        "-R",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_block_transport_20261008/_build/first",
+        "-o",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_block_transport_20261008/_build/first/StrongTransport.olean",
+        "/workspace/research/problems/erdos-85-wip-01/h3_strong_block_transport_20261008/_build/first/StrongTransport.lean"
+      ],
+      "elapsed_seconds": 6.569827086990699,
+      "exit_code": 0,
+      "status": "PASS",
+      "axiom_exports": [
+        {
+          "theorem": "FullUBlockOrbits.distinct_joint_transport",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUBlockOrbits.distinct_joint_transport_to_targets",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  ]
+}

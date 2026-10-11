@@ -1,0 +1,82 @@
+{
+  "status": "RATIO_ORDERING_CHAIN_BUILD_AUDIT_PASS",
+  "job": "20261008T105436-erdos85__h3-triple-formal-20261007-429055",
+  "execution_commit": "e899840b71d004c63daaf9f83bec9bffa255a4a0",
+  "review_commit": "e899840b71d004c63daaf9f83bec9bffa255a4a0",
+  "authoritative_exit": 0,
+  "job_log_sha256": "7403952c4452f9cdbb53b483bf6e07333a86907fb72c9f6ece9e90706325b9d8",
+  "retained_files_sha256": {
+    "job.log": "7403952c4452f9cdbb53b483bf6e07333a86907fb72c9f6ece9e90706325b9d8",
+    "job.spec": "b30eee076fd9e191ded93efa1c0aeb6598efc36bd2c8a17aa4b52c1f16f35cc0",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "Erdos85H3TripleCompletionEngine.lean": "a8bbf737978ff1ff1a24b8d3bb675304a00006f8927b17d9478656907d393c39",
+    "Erdos85H3TripleCompletionBridge.lean": "499f480a8d1eb73f33ca4119b0175f319982484a9d3fcdf0a2fbbda73d2db36b",
+    "Erdos85H3TripleCompletionSplit.lean": "b85d4d99bb82cefdbe5f8d0543928262422f2f5e6a8dfa799d7100dc7ca826a3"
+  },
+  "results": [
+    {
+      "module": "Erdos85H3TripleCompletionEngine",
+      "source_sha256": "a8bbf737978ff1ff1a24b8d3bb675304a00006f8927b17d9478656907d393c39",
+      "olean_sha256": "c144efb4d85c1186f5019666fd8dede6b71e92ec0c8bc14390457f539ab2e412",
+      "olean_bytes": 2103088,
+      "olean_mtime": 1791456891.6277816,
+      "fresh_build_elapsed": "11s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.search_sound",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85H3TripleCompletionBridge",
+      "source_sha256": "499f480a8d1eb73f33ca4119b0175f319982484a9d3fcdf0a2fbbda73d2db36b",
+      "olean_sha256": "02220d1339caaf079b5889edf2e0c4e52b49b37d6c2b89ba4886c06d5a77e18e",
+      "olean_bytes": 198624,
+      "olean_mtime": 1791456899.3572543,
+      "fresh_build_elapsed": "4.0s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.threeHighCanonicalRepresentativeExcluded_one_of_tripleSearch",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.H3TripleCompletion.orderFortyNineTripleCellExcluded_three_one_of_tripleSearch",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85H3TripleCompletionSplit",
+      "source_sha256": "b85d4d99bb82cefdbe5f8d0543928262422f2f5e6a8dfa799d7100dc7ca826a3",
+      "olean_sha256": "acfdbed1a9ccec6f972f9c8c8afc5575937d82b3cbc3541f0239a8e3b019d0d3",
+      "olean_bytes": 187736,
+      "olean_mtime": 1791456903.1570253,
+      "fresh_build_elapsed": "3.8s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.orderFortyNineTripleCellExcluded_three_one_of_parts",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  ],
+  "scope": "Fresh Engine, conditional Bridge and conditional m-way composition theorem only. No native part result or unconditional triple exclusion.",
+  "auditor_sha256": "b2452604490a1a9fa7ef241d10a49d9faafe84c096f406e7d576ea01bcd34b75"
+}

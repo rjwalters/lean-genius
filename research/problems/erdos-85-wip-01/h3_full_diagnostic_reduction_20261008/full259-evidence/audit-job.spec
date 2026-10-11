@@ -1,0 +1,11 @@
+MODE=host
+REF=erdos85/h3-triple-formal-20261007
+TARGET=''
+CMD=python3\ -B\ research/problems/erdos-85-wip-01/h3_full_diagnostic_reduction_20261008/audit.py\ --repository\ .\ --output\ research/problems/erdos-85-wip-01/h3_full_diagnostic_reduction_20261008/_build/full259-first\ --prior-build\ research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/cloud-first\ --prerequisites\ research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/prerequisites\ --extra-objects\ research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-prerequisites\ --through\ Full259
+MEM_GB=64
+TIMEOUT=10m
+THREADS=''
+CACHE=0
+CPUS=16
+VOLUME=''
+FULL=1

@@ -1,0 +1,79 @@
+{
+  "Id": "818665cc6b3e24554952c47cd088abd63bcbefecce4edf15d8d37d86320048ae",
+  "Name": "/lean-build-331825",
+  "Image": "sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6",
+  "State": {
+    "Status": "running",
+    "Running": true,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 332141,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-10-08T08:17:14.599351243Z",
+    "FinishedAt": "0001-01-01T00:00:00Z"
+  },
+  "Created": "2026-10-08T08:17:14.203058796Z",
+  "Path": "/bin/bash",
+  "Args": [
+    "-c",
+    "lake build Proofs.Erdos85H3PairCell"
+  ],
+  "Mounts": [
+    {
+      "Type": "bind",
+      "Source": "/Volumes/Stripe/lean-genius/artifacts",
+      "Destination": "/Volumes/Stripe/lean-genius/artifacts",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/opt/e85/wt/erdos85__h3-pair-formal-20261008",
+      "Destination": "/workspace",
+      "Mode": "delegated",
+      "RW": true,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "volume",
+      "Name": "lean-build-erdos85__h3-pair-formal-20261008",
+      "Source": "/var/lib/docker/volumes/lean-build-erdos85__h3-pair-formal-20261008/_data",
+      "Destination": "/workspace/proofs/.lake/build",
+      "Driver": "local",
+      "Mode": "delegated",
+      "RW": true,
+      "Propagation": ""
+    },
+    {
+      "Type": "volume",
+      "Name": "lean-mathlib-packages",
+      "Source": "/var/lib/docker/volumes/lean-mathlib-packages/_data",
+      "Destination": "/workspace/proofs/.lake/packages",
+      "Driver": "local",
+      "Mode": "delegated",
+      "RW": true,
+      "Propagation": ""
+    }
+  ],
+  "HostConfig": {
+    "Memory": 34359738368,
+    "MemorySwap": 34359738368,
+    "NanoCpus": 16000000000,
+    "CpuQuota": 0,
+    "CpuPeriod": 0,
+    "NetworkMode": "default"
+  },
+  "Config": {
+    "Image": "lean4-arm64:v4.31.0",
+    "WorkingDir": "/workspace/proofs",
+    "Cmd": [
+      "/bin/bash",
+      "-c",
+      "lake build Proofs.Erdos85H3PairCell"
+    ]
+  }
+}

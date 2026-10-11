@@ -1,0 +1,26 @@
+{
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/work/preflight-043588c86ae64f35855a091655ba3a30/source-root",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/work/preflight-043588c86ae64f35855a091655ba3a30/library/Proofs/Erdos85ThreeHighCampaignDeficientU0R2Inputs.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/work/preflight-043588c86ae64f35855a091655ba3a30/source-root/Proofs/Erdos85ThreeHighCampaignDeficientU0R2Inputs.lean"
+  ],
+  "started_utc": "2026-10-08T08:19:45.011037+00:00",
+  "finished_utc": "2026-10-08T08:19:48.816355+00:00",
+  "exit_code": 0,
+  "deadline_exceeded": false,
+  "elapsed_seconds": 3.805340087004879,
+  "user_cpu_seconds": 2.528519,
+  "system_cpu_seconds": 1.209291,
+  "max_rss_kib": 6527516,
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "case_id": "deficient-u000-r02",
+  "module": "Erdos85ThreeHighCampaignDeficientU0R2Inputs",
+  "stage": "Inputs",
+  "source_sha256": "dd1a1a53fe2138fea1ddf41a8a6670e8496da2069a6987c0cfa68c50e91e2842",
+  "olean_sha256": "daef39f8b2d3cb2a811afe7c5b2934ba09d8fb0d6cb32e5f3ccc0ac8f10242ff",
+  "axiom_exports": [],
+  "certificate_substitution": false
+}

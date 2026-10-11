@@ -1,0 +1,55 @@
+{
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/cloud-first/FullMembership.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/cloud-first/FullMembership.lean"
+  ],
+  "started_utc": "2026-10-08T06:31:28.275107+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 7.369779398999526,
+  "user_cpu_seconds": 5.979945,
+  "system_cpu_seconds": 1.467532,
+  "max_rss_kib": 6965080,
+  "log_sha256": "4837302d54d1eec11c2c98022034021aab0bf409f358dcb0b10c86618ff1cf59",
+  "module": "FullMembership",
+  "status": "PASS",
+  "source_sha256": "2bd57a5707e8a90c42b4fad2b5271ef403ad458f8d96e3f1ed84421f1b4b7086",
+  "olean_sha256": "9266a931db7aeb951bfd6db575f6a4ff71518fef69b37a3917f4588c076abf76",
+  "axiom_exports": [
+    {
+      "theorem": "FullU3R3_mem",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullU3R3_input",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullU54R20_mem",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullU54R20_input",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

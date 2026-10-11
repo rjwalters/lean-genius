@@ -1,0 +1,11 @@
+MODE=host
+REF=50a06c7c033ac8b63a7f9695e7dc7cfd15b38a28
+TARGET=''
+CMD=mkdir\ -p\ ~/h7camp/sample\;\ exec\ python3.12\ research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/sample.py\ --inputs\ ~/h7camp/inputs\ --out\ ~/h7camp/sample/results.jsonl\ --per-cube\ 50\ --slots\ 6\ --cap\ 3600\ --heap-mb\ 2000\ --cadical\ ~/h7pilot/bin/cadical\ --cake-lpr\ ~/h7pilot/bin/cake_lpr\ --stop-launch-at\ \$\(date\ -u\ -d\ \"2026-10-08\ 08:40\"\ +%s\)
+MEM_GB=64
+TIMEOUT=285m
+THREADS=''
+CACHE=0
+CPUS=16
+VOLUME=''
+FULL=1

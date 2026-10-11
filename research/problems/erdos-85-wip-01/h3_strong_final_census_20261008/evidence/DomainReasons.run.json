@@ -1,0 +1,28 @@
+{
+  "module": "DomainReasons",
+  "source": "fixed_pair_coverage/DomainReasons.lean",
+  "source_sha256": "44e1ba65290df617c2beef238732dd5c752103d6b43d6339d505394d2e76bf5f",
+  "log_sha256": "e9fb785baf129944783ef0d322b166ea7b19cdaeb3ccee7a1a5dfc2a2f08d1a5",
+  "olean_sha256": "3bb22a2589f91168270678433553ff3276bdbaa3ced40ee1cdaeeef630d38e3e",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/DomainReasons.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/DomainReasons.lean"
+  ],
+  "elapsed_seconds": 9.909711783000603,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "ColumnCoverageDomains.checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

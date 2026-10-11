@@ -1,0 +1,185 @@
+{
+  "job": "20261008T110539-erdos85__h3-triple-formal-20261007-437976",
+  "execution_commit": "280ed4603d3a28e435c8d7480f681b1c133095ec",
+  "status": "COMPILED",
+  "exit": 0,
+  "prerequisite_objects_unchanged": {
+    "Erdos85H3TripleCompletionEngine": "c144efb4d85c1186f5019666fd8dede6b71e92ec0c8bc14390457f539ab2e412",
+    "Erdos85H3TripleCompletionBridge": "02220d1339caaf079b5889edf2e0c4e52b49b37d6c2b89ba4886c06d5a77e18e",
+    "Erdos85H3TripleCompletionSplit": "acfdbed1a9ccec6f972f9c8c8afc5575937d82b3cbc3541f0239a8e3b019d0d3"
+  },
+  "retained_sha256": {
+    "job.log": "6b610d2a46a442cf4602fdae33864e0d3405b419218248fe307b43669768c347",
+    "job.spec": "52e07825d634173ff4cfdd11e038d7d227b0d2e1813291d6877bbd9e59c83467",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "PhaseTwoComponents.lean": "9d1d691509d617f15f4a6bdf78a07783519a13ebb805a1a94e17ce0ea4499664",
+    "run_phase_two_components.py": "858b578b8d3d9b2468d3822b2b34c8e80b4fdc69745f9f8578a60bf2801d3a82",
+    "RUN.json": "e905f88965107cc91955978e3ae95e536040f8c5ad7a6892b738391dd33891b9",
+    "probe.log": "4bad12ca9fb52d6856210aa067fc54f1cb4781be3da647bb4fd0ad2a3da36204"
+  },
+  "scope": "Bounded component replay profile only; no theorem or graph-exclusion credit.",
+  "profile": {
+    "states": [
+      {
+        "leaf": 1,
+        "key": 975744,
+        "nodes": 17,
+        "leaves": 0,
+        "exhausted": 0,
+        "invalid": 0,
+        "capped": false
+      },
+      {
+        "leaf": 2,
+        "key": 986112,
+        "nodes": 1000,
+        "leaves": 30,
+        "exhausted": 0,
+        "invalid": 0,
+        "capped": true
+      },
+      {
+        "leaf": 3,
+        "key": 41088,
+        "nodes": 1000,
+        "leaves": 52,
+        "exhausted": 0,
+        "invalid": 0,
+        "capped": true
+      },
+      {
+        "leaf": 4,
+        "key": 776448,
+        "nodes": 1000,
+        "leaves": 51,
+        "exhausted": 0,
+        "invalid": 0,
+        "capped": true
+      }
+    ],
+    "components": {
+      "1": {
+        "state": {
+          "elapsed_ms": 1,
+          "checksum": 17
+        },
+        "filter": {
+          "elapsed_ms": 4,
+          "checksum": 1062
+        },
+        "pick": {
+          "elapsed_ms": 3,
+          "checksum": 212
+        },
+        "fresh": {
+          "elapsed_ms": 0,
+          "checksum": 482
+        },
+        "partition": {
+          "elapsed_ms": 1,
+          "checksum": 1062
+        },
+        "append": {
+          "elapsed_ms": 1,
+          "checksum": 1052
+        },
+        "insert": {
+          "elapsed_ms": 1,
+          "checksum": 62
+        }
+      },
+      "2": {
+        "state": {
+          "elapsed_ms": 97,
+          "checksum": 1000
+        },
+        "filter": {
+          "elapsed_ms": 52,
+          "checksum": 15339
+        },
+        "pick": {
+          "elapsed_ms": 42,
+          "checksum": 11324
+        },
+        "fresh": {
+          "elapsed_ms": 5,
+          "checksum": 41402
+        },
+        "partition": {
+          "elapsed_ms": 15,
+          "checksum": 15339
+        },
+        "append": {
+          "elapsed_ms": 16,
+          "checksum": 19678
+        },
+        "insert": {
+          "elapsed_ms": 22,
+          "checksum": 4154
+        }
+      },
+      "3": {
+        "state": {
+          "elapsed_ms": 100,
+          "checksum": 1000
+        },
+        "filter": {
+          "elapsed_ms": 43,
+          "checksum": 12315
+        },
+        "pick": {
+          "elapsed_ms": 36,
+          "checksum": 12312
+        },
+        "fresh": {
+          "elapsed_ms": 4,
+          "checksum": 41684
+        },
+        "partition": {
+          "elapsed_ms": 14,
+          "checksum": 12315
+        },
+        "append": {
+          "elapsed_ms": 13,
+          "checksum": 16712
+        },
+        "insert": {
+          "elapsed_ms": 20,
+          "checksum": 4138
+        }
+      },
+      "4": {
+        "state": {
+          "elapsed_ms": 100,
+          "checksum": 1000
+        },
+        "filter": {
+          "elapsed_ms": 44,
+          "checksum": 12885
+        },
+        "pick": {
+          "elapsed_ms": 38,
+          "checksum": 11873
+        },
+        "fresh": {
+          "elapsed_ms": 4,
+          "checksum": 41460
+        },
+        "partition": {
+          "elapsed_ms": 14,
+          "checksum": 12885
+        },
+        "append": {
+          "elapsed_ms": 14,
+          "checksum": 17352
+        },
+        "insert": {
+          "elapsed_ms": 21,
+          "checksum": 4178
+        }
+      }
+    },
+    "scope": "Separate component replays; overlapping work, not additive production times."
+  },
+  "auditor_sha256": "570bca6d88bc735e9625216295b5277f26782c58e7f83133378ea43d51179af5"
+}

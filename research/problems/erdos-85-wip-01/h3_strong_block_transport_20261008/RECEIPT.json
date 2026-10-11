@@ -1,0 +1,18 @@
+{
+  "result": "PASS",
+  "scope": "Concrete 55-entry full-U block certificate preserves the distinct-neighbor joint witness at its 29 listed targets. Two new exports, nine retained certificate exports freshly rechecked. No full-U census coverage or finite pair rejection asserted.",
+  "library_dependencies_commit": "b98d741b2e8e8fea380bd31b3165281fe9d07805",
+  "lean_toolchain": "leanprover/lean4:v4.31.0",
+  "lake_manifest_sha256": "f243fb1348183fbb95612c9c97beea1620651a55441b3e78fbc6bc3bfd26da01",
+  "runner_path_at_run": "/Volumes/Stripe/lean-genius/erdos85-h7t0/proofs/scripts/docker-build.sh",
+  "runner_sha256": "c94620e9f316c2f654fc03c6e520918da907cec54daf91b516cfb0f30492bc2a",
+  "command": "LEAN_REPO_ROOT=/Volumes/Stripe/lean-genius/erdos85-certpilot LEAN_NUM_THREADS=1 LEAN_MEMORY_LIMIT=8192 LEAN_BUILD_TIMEOUT=5m LEAN_SKIP_CACHE=true LEAN_DOCKER_CMD='lake build Proofs.Erdos85ThreeHighBlockPermutationTransport Proofs.Erdos85ThreeHighDistinctBlockPermutationTransport && lake env python3 ../research/problems/erdos-85-wip-01/h3_strong_block_transport_20261008/check.py --output /workspace/research/problems/erdos-85-wip-01/h3_strong_block_transport_20261008/_build/first' /Volumes/Stripe/lean-genius/erdos85-h7t0/proofs/scripts/docker-build.sh",
+  "docker_exit_code": 0,
+  "source_sha256": {
+    "StrongTransport.lean": "dc128e80a71e9035cd97e25423a2a828788f4d5d37a48838ead9f6e4311f9d66",
+    "check.py": "d901689b1dd7115e9e136d55201518287a69cec2933991727a944d05697493f8"
+  },
+  "run_manifest_sha256": "8f81f3c057e35feacaf11dea6e69b152eaef2ad0fae2b61a9bc8e0c933f14db2",
+  "full_docker_log_sha256": "9262cd9587bc118b148eb6ff21e6a7ffb7c01c7cc8377f4694414ca7025dfa17",
+  "retained_logs": "Full_3_3.log, Certificate.log, StrongTransport.log: complete individual compiler logs. The enclosing dependency-build log is not retained."
+}

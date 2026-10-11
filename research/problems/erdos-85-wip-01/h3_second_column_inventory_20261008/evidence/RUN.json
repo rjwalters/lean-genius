@@ -1,0 +1,590 @@
+{
+  "status": "PASS",
+  "scope": "Diagnostic only; no rejection theorem.",
+  "source_sha256": "21077beb0c213d50666dbdacca947ab026169319c9aa34bfc6235d1c2fd71297",
+  "lean_threads": 1,
+  "dependencies": {
+    "command": [
+      "lake",
+      "build",
+      "Proofs.Erdos85ThreeHighSecondColumnSearch",
+      "Proofs.Erdos85ThreeBlockCompactCodes",
+      "Proofs.Erdos85ThreeHighSecondaryOrbitTable"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 6.201559563000046,
+    "log_sha256": "a95c9ec9cf7c5a85b9f30675774abc5c87664cf32453ed65094bac9db2d8d8bc"
+  },
+  "inventory": {
+    "command": [
+      "lean",
+      "-R",
+      "/workspace/research/problems/erdos-85-wip-01/h3_second_column_inventory_20261008/_build/cloud-first",
+      "-o",
+      "/workspace/research/problems/erdos-85-wip-01/h3_second_column_inventory_20261008/_build/cloud-first/Inventory.olean",
+      "/workspace/research/problems/erdos-85-wip-01/h3_second_column_inventory_20261008/_build/cloud-first/Inventory.lean"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 5.008067424998444,
+    "log_sha256": "aecedb600cd863d0d6d70ea64f36dfc6d5a1687686b9b403726616dcfff122b0"
+  },
+  "cases": [
+    {
+      "branches": [
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 2080
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 4128
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 1088
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 8256
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 8320
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 16512
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 2304
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 4352
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 16640
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 1536
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 4608
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 8704
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 4097
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 8193
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 129
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 513
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 8194
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 16386
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 258
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 514
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 1028
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 4100
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 36
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 132
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 1032
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 2056
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 16392
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 72
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 520
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 2064
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 8208
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 16400
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 48
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 80
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 272
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 528
+        }
+      ],
+      "case": "FullU3R3",
+      "first_masks": [
+        0
+      ],
+      "second_masks": [
+        2080,
+        4128,
+        1088,
+        8256,
+        8320,
+        16512,
+        2304,
+        4352,
+        16640,
+        1536,
+        4608,
+        8704,
+        4097,
+        8193,
+        129,
+        513,
+        8194,
+        16386,
+        258,
+        514,
+        1028,
+        4100,
+        36,
+        132,
+        1032,
+        2056,
+        16392,
+        72,
+        520,
+        2064,
+        8208,
+        16400,
+        48,
+        80,
+        272,
+        528
+      ],
+      "static_pair_count": 36,
+      "prefix_survivors": 36
+    },
+    {
+      "branches": [
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 2080
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 4128
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 1088
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 4160
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 8256
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 2176
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 8320
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 16512
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 2304
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 4352
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 16640
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 1536
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 2560
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 8704
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 4097
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 8193
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 129
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 513
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 2050
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 8194
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 16386
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 66
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 258
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 1028
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 4100
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 36
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 132
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 516
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 1032
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 2056
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 16392
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 72
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 520
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 4112
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 8208
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 16400
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 48
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 80
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 272
+        },
+        {
+          "first_gate": true,
+          "first_mask": 0,
+          "second_gate": true,
+          "second_mask": 528
+        }
+      ],
+      "case": "DeficientU26R2",
+      "first_masks": [
+        0
+      ],
+      "second_masks": [
+        2080,
+        4128,
+        1088,
+        4160,
+        8256,
+        2176,
+        8320,
+        16512,
+        2304,
+        4352,
+        16640,
+        1536,
+        2560,
+        8704,
+        4097,
+        8193,
+        129,
+        513,
+        2050,
+        8194,
+        16386,
+        66,
+        258,
+        1028,
+        4100,
+        36,
+        132,
+        516,
+        1032,
+        2056,
+        16392,
+        72,
+        520,
+        4112,
+        8208,
+        16400,
+        48,
+        80,
+        272,
+        528
+      ],
+      "static_pair_count": 40,
+      "prefix_survivors": 40
+    }
+  ],
+  "olean_sha256": "154df104407aad38018cba7c100eee35f27738d01f8b802aaa149efdcfd5aa9b"
+}

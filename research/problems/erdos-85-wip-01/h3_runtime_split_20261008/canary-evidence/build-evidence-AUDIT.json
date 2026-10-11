@@ -1,0 +1,97 @@
+{
+  "status": "RUNTIME_SPLIT_CHAIN_BUILD_AUDIT_PASS",
+  "runtime_c": {
+    "sha256": "f7d846fa9a99fbe4f98427cc9b29f5dbb40449f2d5941fd9f4fb1b0677f66a06",
+    "bytes": 218399,
+    "mtime": 1791460549.1026928
+  },
+  "job": "20261008T115540-erdos85__h3-triple-formal-20261007-472600",
+  "execution_commit": "3247ac5b9e10d688214d3de9f5f0a2d6442dc087",
+  "review_commit": "3247ac5b9e10d688214d3de9f5f0a2d6442dc087",
+  "authoritative_exit": 0,
+  "job_log_sha256": "112836f3c5aec69bd3726669b1a0f4703e93107dcd14b0335b0605c25c979151",
+  "retained_files_sha256": {
+    "job.log": "112836f3c5aec69bd3726669b1a0f4703e93107dcd14b0335b0605c25c979151",
+    "job.spec": "ded2e889add3caad45dbc4240164929272a68ad70b8228acc5d8ae6ff05a6d6c",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "Erdos85H3TripleCompletionRuntime.lean": "e18fe817f771bb4450ae17151c36fbb8d82df968b4f2610d02962f7b2ce77849",
+    "Erdos85H3TripleCompletionEngine.lean": "d784db719a5049d053ad5198d5b80ac74c91d30f8895e3df583f2735bdbe72dc",
+    "Erdos85H3TripleCompletionBridge.lean": "ab48d33eeed723aaec92bbfa32329e09f532a209e79da8330643014ca7f09f54",
+    "Erdos85H3TripleCompletionSplit.lean": "1fa81f7a80e1cfd7a76320879b10e9d908c46174dab8106bc0f30a83c6ed0cdb"
+  },
+  "results": [
+    {
+      "module": "Erdos85H3TripleCompletionRuntime",
+      "source_sha256": "e18fe817f771bb4450ae17151c36fbb8d82df968b4f2610d02962f7b2ce77849",
+      "olean_sha256": "528ebf337432a045532805cf8aaefa2bea745c014570c9921a4f76a656d94a08",
+      "olean_bytes": 710928,
+      "olean_mtime": 1791460549.0506678,
+      "fresh_build_elapsed": "1.4s",
+      "axiom_exports": []
+    },
+    {
+      "module": "Erdos85H3TripleCompletionEngine",
+      "source_sha256": "d784db719a5049d053ad5198d5b80ac74c91d30f8895e3df583f2735bdbe72dc",
+      "olean_sha256": "11c3df5c778edbe00955c87921e33c929890a65a0e37b1e7ea8b13cf8d3b413a",
+      "olean_bytes": 1606152,
+      "olean_mtime": 1791460556.3308527,
+      "fresh_build_elapsed": "9.8s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.search_sound",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85H3TripleCompletionBridge",
+      "source_sha256": "ab48d33eeed723aaec92bbfa32329e09f532a209e79da8330643014ca7f09f54",
+      "olean_sha256": "579138abcddfb92dabdb7c4a160d9d37412d93700c18a41b97270a8e91a2a482",
+      "olean_bytes": 175392,
+      "olean_mtime": 1791460563.6647613,
+      "fresh_build_elapsed": "4.0s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.threeHighCanonicalRepresentativeExcluded_one_of_tripleSearch",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.H3TripleCompletion.orderFortyNineTripleCellExcluded_three_one_of_tripleSearch",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85H3TripleCompletionSplit",
+      "source_sha256": "1fa81f7a80e1cfd7a76320879b10e9d908c46174dab8106bc0f30a83c6ed0cdb",
+      "olean_sha256": "2a3c491fbed12abc724d53ae025641215a4d567f029cdc46aca26592018a7bf7",
+      "olean_bytes": 167992,
+      "olean_mtime": 1791460567.5374238,
+      "fresh_build_elapsed": "3.9s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.orderFortyNineTripleCellExcluded_three_one_of_parts",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  ],
+  "scope": "Fresh Runtime, Engine, conditional Bridge and conditional m-way composition theorem only. No native part result or unconditional triple exclusion.",
+  "auditor_sha256": "52b31cc51bd5bdda102baa6e94c19883f8427502d191b64a5b6fc2551d778880"
+}

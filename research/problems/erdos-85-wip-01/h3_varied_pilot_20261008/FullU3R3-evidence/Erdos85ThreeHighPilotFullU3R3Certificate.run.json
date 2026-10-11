@@ -1,0 +1,29 @@
+{
+  "command": [
+    "lake",
+    "build",
+    "Proofs.Erdos85ThreeHighPilotFullU3R3Certificate"
+  ],
+  "started_utc": "2026-10-08T06:34:20.275774+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 238.9755074729983,
+  "user_cpu_seconds": 237.364964,
+  "system_cpu_seconds": 2.272666,
+  "max_rss_kib": 6562176,
+  "log_sha256": "a8ac38cf2febacad0d89a5af6541927d6e5045ee9153dc06dbd566f7ff40e232",
+  "module": "Erdos85ThreeHighPilotFullU3R3Certificate",
+  "status": "PASS",
+  "source_sha256": "186d7dde7a6d0be550a6e16dec0c06265b3b78a3550dc24c2850a43a3ade619b",
+  "olean_sha256": "8567bf6f2d03d3e6b0fbfefac7433cc2686b2d01170d810ce1df5acccb4f7184",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.VariedPilot.FullU3R3.rejected",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.VariedPilot.FullU3R3.rejected._native.native_decide.ax_1_1"
+      ]
+    }
+  ]
+}

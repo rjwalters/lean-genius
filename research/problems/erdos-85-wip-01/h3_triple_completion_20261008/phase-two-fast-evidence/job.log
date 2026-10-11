@@ -1,0 +1,107 @@
+[e85] job 20261008T111628-erdos85__h3-triple-formal-20261007-446936  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T11:16:28Z
+[e85] commit 85d3b19ad0c9dd26bfc42e8f05e564facad6b304 (Retain H3 traversal improvement and complete bucket-zero sizing)
+=== Docker Lean Build ===
+Memory limit: 16384MB (hard enforced via cgroups)
+Timeout: 3m
+CPU limit: 2
+Target: all
+Build volume: lean-build-erdos85__h3-triple-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Command: lake env python3 -B ../research/problems/erdos-85-wip-01/h3_triple_completion_20261008/run_phase_two_fast.py
+Starting Docker build...
+
+[30s] Building...
+[60s] Building...
+'Erdos85.H3TripleCompletion.phaseTwoTraversal' depends on axioms: [propext,
+ Quot.sound,
+ Erdos85.H3TripleCompletion.phaseTwoTraversal._native.native_decide.ax_1_1]
+
+{
+  "command": [
+    "lean",
+    "-j1",
+    "H3TripleCompletionPhaseTwoFast.lean",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_completion_20261008/phase-two-fast/PhaseTwoOnly.olean"
+  ],
+  "source_sha256": "d039c1e7b13d8da016aede597b3aaa2c2864bd1399f22d9db33fe1ca1f111751",
+  "timeout_seconds": 90,
+  "started_utc": "2026-10-08T11:16:29.780349+00:00",
+  "prerequisites": [
+    {
+      "module": "Erdos85H3TripleCompletionEngine",
+      "source_sha256": "c6ba723e09968d420aabf98d2117d2648929bf92690e5e2a6f9ceb68cf2222cb",
+      "olean_sha256": "24524f945a9ff93f888e90a369f1e6da4cdfa3d479ff0bfd72ea4070698ccc28",
+      "olean_bytes": 2159656,
+      "olean_mtime": 1791457852.2320316,
+      "fresh_build_elapsed": "11s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.search_sound",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85H3TripleCompletionBridge",
+      "source_sha256": "499f480a8d1eb73f33ca4119b0175f319982484a9d3fcdf0a2fbbda73d2db36b",
+      "olean_sha256": "02220d1339caaf079b5889edf2e0c4e52b49b37d6c2b89ba4886c06d5a77e18e",
+      "olean_bytes": 198624,
+      "olean_mtime": 1791457859.7616894,
+      "fresh_build_elapsed": "4.8s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.threeHighCanonicalRepresentativeExcluded_one_of_tripleSearch",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.H3TripleCompletion.orderFortyNineTripleCellExcluded_three_one_of_tripleSearch",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85H3TripleCompletionSplit",
+      "source_sha256": "b85d4d99bb82cefdbe5f8d0543928262422f2f5e6a8dfa799d7100dc7ca826a3",
+      "olean_sha256": "acfdbed1a9ccec6f972f9c8c8afc5575937d82b3cbc3541f0239a8e3b019d0d3",
+      "olean_bytes": 187736,
+      "olean_mtime": 1791457863.4325974,
+      "fresh_build_elapsed": "3.6s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3TripleCompletion.orderFortyNineTripleCellExcluded_three_one_of_parts",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  ],
+  "status": "COMPILED",
+  "returncode": 0,
+  "timed_out": false,
+  "elapsed_seconds": 67.29223911000008,
+  "child_user_seconds": 66.106721,
+  "child_system_seconds": 1.179941,
+  "child_maxrss_kib": 6485576,
+  "log_sha256": "755d51e2e2c2c21a896e2d792a7fce19577cfb36a0d801455657733bbf1c691a",
+  "olean_sha256": "ba5b387836b542ba2036343adbdd513d7f959179da080b6b700586f8ad9bd4f2",
+  "olean_bytes": 10624
+}
+
+=== Build succeeded ===

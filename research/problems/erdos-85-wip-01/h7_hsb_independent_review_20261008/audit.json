@@ -1,0 +1,94 @@
+{
+  "status": "PASS",
+  "job": "20261008T043722-erdos85__h7t0-formal-20261007-189071",
+  "execution_commit": "436d43bb4864c76641db3d8e13d02cac893151b1",
+  "exit_code": 0,
+  "raw_log_sha256": "2f780e1a6b6e1bc05a4325010340b7b619e5df78a19883bf80e3acca0e1db74c",
+  "modules": [
+    {
+      "module": "Erdos85OrderFortyNineSevenHighT0CanonicalHsbSound",
+      "source_sha256": "460f8914bddc2a5860cda50eae4a8c368f7d653ce8a80e1e5a44b7ec4cb5175a",
+      "olean_sha256": "3fcad1d06e6a5d18591bd8e5c35c1b25b67654fe6aeedf1e98bb90a20ace71e5",
+      "exports": [
+        {
+          "theorem": "Erdos85.SevenHighT0Hsb.clause_eval_of_check",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.sevenHighT0CanonicalHsb_representative",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.sevenHighT0CanonicalHsb_orbitSound",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.sevenHighT0CanonicalEmptyCubeSemanticExclusion_of_hsbUnsat",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85OrderFortyNineSevenHighT0CanonicalHighSymmetryRowKey",
+      "source_sha256": "1c684659b74527d9554252b6826d713597c1c2318cbf064eaf109bbafa597424",
+      "olean_sha256": "995417e33675f972839eb9f8bb5055dfac2ac98f6e18987ec8368af45e2915ec",
+      "exports": [
+        {
+          "theorem": "Erdos85.sevenHighT0RowKey_highRelabel",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.SevenHighT0CanonicalCompletionSemantics.emptyNbr_add_row_card",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.SevenHighT0CanonicalCompletionSemantics.exists_rowKeyMinimal",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.sevenHighT0HsbWitness_excludes",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85OrderFortyNineSevenHighT0CanonicalHsbGen",
+      "source_sha256": "1392283ebaff7a8de62837a0eef0480a3838d466473162039a8348c476510e54",
+      "olean_sha256": "67962bd759b984d83b99aae80bab558caefee31856d40535201f13894f7aedd3",
+      "exports": []
+    }
+  ],
+  "scope": "Eight structural soundness exports using standard axioms only. Generator uniform in witness-checked entries; conditional semantic exclusion still requires UNSAT. No complete H7 certificate campaign or stratum closure."
+}

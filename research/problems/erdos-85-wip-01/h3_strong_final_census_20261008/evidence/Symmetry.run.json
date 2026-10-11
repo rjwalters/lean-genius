@@ -1,0 +1,57 @@
+{
+  "module": "Symmetry",
+  "source": "fixed_pair_rejections/Symmetry.lean",
+  "source_sha256": "98517ff26b53cc50115e6d721bc4d82902aaf8f433af97eaaee206811e5d7244",
+  "log_sha256": "b6b48a09dcb37bbb08b2328cf80020694812f86b56754eee772d86c32907df6f",
+  "olean_sha256": "1e5440a200966d1866cb283f0b4ce567de7d277b1010b27e51d282570b7ba431",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Symmetry.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/Symmetry.lean"
+  ],
+  "elapsed_seconds": 8.790407026999674,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "FixedPairSymmetry.involutive_checked",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FixedPairSymmetry.block_involutive_checked",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FixedPairSymmetry.root_checked",
+      "axioms": [
+        "propext",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FixedPairSymmetry.rows_checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FixedPairSymmetry.no_joint_transfer",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

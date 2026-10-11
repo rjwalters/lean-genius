@@ -1,0 +1,25 @@
+{
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/source-root",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/library/Proofs/Erdos85ThreeHighCampaignDeficientU26R2Inputs.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/source-root/Proofs/Erdos85ThreeHighCampaignDeficientU26R2Inputs.lean"
+  ],
+  "started_utc": "2026-10-08T07:11:06.099608+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 3.853226616000029,
+  "user_cpu_seconds": 2.643825,
+  "system_cpu_seconds": 1.227134,
+  "max_rss_kib": 6512964,
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "case_id": "deficient-u026-r02",
+  "module": "Erdos85ThreeHighCampaignDeficientU26R2Inputs",
+  "stage": "Inputs",
+  "status": "PASS",
+  "source_sha256": "565129b463296562e14861813709afa531c648c4bc0e1a813523a304e4706b32",
+  "olean_sha256": "24b3f3a1070b959505b1acc02202147a26f54af7d41edd934bb8bb13625f7691",
+  "axiom_exports": [],
+  "certificate_substitution": false
+}

@@ -1,0 +1,74 @@
+{
+  "status": "HASH_VERIFIED",
+  "files": {
+    "base": {
+      "source": "/opt/e85/wt/erdos85__h3-census-20261008/research/problems/erdos-85-wip-01/h3_strong_census_20261008/_build/cloud-dedicated-first/full",
+      "destination": "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/prerequisites/base",
+      "count": 430,
+      "run_sha256": "9924e45dfa932bae6af3607eb7de97e4b77d590366bf8d4bb9eaaf8de480236f"
+    },
+    "final": {
+      "source": "/opt/e85/wt/erdos85__h3-census-20261008/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+      "destination": "/opt/e85/wt/erdos85__h3-triple-formal-20261007/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/prerequisites/final",
+      "count": 1370,
+      "run_sha256": "dd262a3d974d3da91d5365dd88d7668183f55cb6083a5dca803588ba517217cb"
+    }
+  },
+  "census_audit": {
+    "base": {
+      "status": "PASS",
+      "receipt_sha256": "9924e45dfa932bae6af3607eb7de97e4b77d590366bf8d4bb9eaaf8de480236f",
+      "modules": 107,
+      "axiom_reports": 228,
+      "data_only_modules": 0,
+      "final_module_exports": [
+        {
+          "theorem": "FullUStrongCensus.actual_distinct_witness",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUStrongCensus.excluded_of_rejections",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    "final": {
+      "status": "PASS",
+      "receipt_sha256": "dd262a3d974d3da91d5365dd88d7668183f55cb6083a5dca803588ba517217cb",
+      "modules": 342,
+      "axiom_reports": 1077,
+      "data_only_modules": 15,
+      "final_module_exports": [
+        {
+          "theorem": "FullUStrongFinalCensus.actual_distinct_witness",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "FullUStrongFinalCensus.excluded_of_rejections",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  },
+  "imported_objects": {
+    "Erdos85ThreeHighPilotFullU3R3Inputs": "cc9f6bd43319f43b33633b3ea99e82912e07a664de01723869b33a9e5e4bcfe1",
+    "Erdos85ThreeHighPilotFullU54R20Inputs": "f2b33f05da755c15afdf72c2ed3af608f46996d1830072fa612d7a7964e715d3",
+    "Erdos85ThreeHighNativeTerminalPilotCertificate": "9bca1c131be95e871a2edf8e514ccf870971ee3e2b685db50739d3cc138cb4c0"
+  }
+}

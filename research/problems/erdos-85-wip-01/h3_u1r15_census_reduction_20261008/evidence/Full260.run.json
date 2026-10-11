@@ -1,0 +1,74 @@
+{
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/cloud-first/Full260.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_u1r15_census_reduction_20261008/_build/cloud-first/Full260.lean"
+  ],
+  "started_utc": "2026-10-08T06:31:35.646118+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 5.826272425998468,
+  "user_cpu_seconds": 4.863256,
+  "system_cpu_seconds": 1.413853,
+  "max_rss_kib": 6907472,
+  "log_sha256": "2f6d1a53ca345b4667ebfe57162af08ea68f443747e591110d583a23dc40616b",
+  "module": "Full260",
+  "status": "PASS",
+  "source_sha256": "00b22bffb6a8c02a67d686b84af6296cfa80ac8da315770f4e65cb46abedc60a",
+  "olean_sha256": "3b1fbd5db9fd8ccc459ea9eaa9dbbf3cc4af130beea1de45f494d8ba0afecc24",
+  "axiom_exports": [
+    {
+      "theorem": "FullUStrongAfterPilot.pilot_mem",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUStrongAfterPilot.remainingPairs_card",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUStrongAfterPilot.pilot_input",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "FullUStrongAfterPilot.pilot_rejected",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1"
+      ]
+    },
+    {
+      "theorem": "FullUStrongAfterPilot.actual_distinct_witness",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1"
+      ]
+    },
+    {
+      "theorem": "FullUStrongAfterPilot.excluded_of_rejections",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound",
+        "Erdos85.NativeTerminalPilot.rejected._native.native_decide.ax_1_1"
+      ]
+    }
+  ]
+}

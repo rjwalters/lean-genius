@@ -1,0 +1,165 @@
+{
+  "Id": "fbd182fb02dc94a534a31f7cb4ca21e82ab4972b9eba179889221d4a1e6802d9",
+  "Created": "2026-10-08T10:17:13.536581534Z",
+  "Path": "/bin/bash",
+  "Args": [
+    "-c",
+    "lake env python3 -B ../research/problems/erdos-85-wip-01/h3_triple_completion_20261008/run_probe.py"
+  ],
+  "State": {
+    "Status": "running",
+    "Running": true,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 405818,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-10-08T10:17:13.938546824Z",
+    "FinishedAt": "0001-01-01T00:00:00Z"
+  },
+  "Image": "sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6",
+  "Name": "/lean-build-405569",
+  "HostConfig": {
+    "Binds": [
+      "lean-build-erdos85__h3-triple-formal-20261007:/workspace/proofs/.lake/build:delegated",
+      "lean-mathlib-packages:/workspace/proofs/.lake/packages:delegated",
+      "/Volumes/Stripe/lean-genius/artifacts:/Volumes/Stripe/lean-genius/artifacts:ro",
+      "/opt/e85/wt/erdos85__h3-triple-formal-20261007:/workspace:delegated"
+    ],
+    "ContainerIDFile": "",
+    "LogConfig": {
+      "Type": "local",
+      "Config": {}
+    },
+    "NetworkMode": "default",
+    "PortBindings": {},
+    "RestartPolicy": {
+      "Name": "no",
+      "MaximumRetryCount": 0
+    },
+    "AutoRemove": true,
+    "VolumeDriver": "",
+    "VolumesFrom": null,
+    "ConsoleSize": [
+      0,
+      0
+    ],
+    "CapAdd": null,
+    "CapDrop": null,
+    "CgroupnsMode": "private",
+    "Dns": [],
+    "DnsOptions": [],
+    "DnsSearch": [],
+    "ExtraHosts": null,
+    "GroupAdd": null,
+    "IpcMode": "private",
+    "Cgroup": "",
+    "Links": null,
+    "OomScoreAdj": 0,
+    "PidMode": "",
+    "Privileged": false,
+    "PublishAllPorts": false,
+    "ReadonlyRootfs": false,
+    "SecurityOpt": null,
+    "UTSMode": "",
+    "UsernsMode": "",
+    "ShmSize": 67108864,
+    "Runtime": "runc",
+    "Isolation": "",
+    "CpuShares": 0,
+    "Memory": 17179869184,
+    "NanoCpus": 2000000000,
+    "CgroupParent": "",
+    "BlkioWeight": 0,
+    "BlkioWeightDevice": [],
+    "BlkioDeviceReadBps": [],
+    "BlkioDeviceWriteBps": [],
+    "BlkioDeviceReadIOps": [],
+    "BlkioDeviceWriteIOps": [],
+    "CpuPeriod": 0,
+    "CpuQuota": 0,
+    "CpuRealtimePeriod": 0,
+    "CpuRealtimeRuntime": 0,
+    "CpusetCpus": "",
+    "CpusetMems": "",
+    "Devices": [],
+    "DeviceCgroupRules": null,
+    "DeviceRequests": null,
+    "MemoryReservation": 0,
+    "MemorySwap": 17179869184,
+    "MemorySwappiness": null,
+    "OomKillDisable": null,
+    "PidsLimit": null,
+    "Ulimits": [
+      {
+        "Name": "nofile",
+        "Hard": 65536,
+        "Soft": 32768
+      }
+    ],
+    "CpuCount": 0,
+    "CpuPercent": 0,
+    "IOMaximumIOps": 0,
+    "IOMaximumBandwidth": 0,
+    "MaskedPaths": [
+      "/proc/asound",
+      "/proc/acpi",
+      "/proc/kcore",
+      "/proc/keys",
+      "/proc/latency_stats",
+      "/proc/timer_list",
+      "/proc/timer_stats",
+      "/proc/sched_debug",
+      "/proc/scsi",
+      "/sys/firmware",
+      "/sys/devices/virtual/powercap"
+    ],
+    "ReadonlyPaths": [
+      "/proc/bus",
+      "/proc/fs",
+      "/proc/irq",
+      "/proc/sys",
+      "/proc/sysrq-trigger"
+    ]
+  },
+  "Mounts": [
+    {
+      "Type": "volume",
+      "Name": "lean-mathlib-packages",
+      "Source": "/var/lib/docker/volumes/lean-mathlib-packages/_data",
+      "Destination": "/workspace/proofs/.lake/packages",
+      "Driver": "local",
+      "Mode": "delegated",
+      "RW": true,
+      "Propagation": ""
+    },
+    {
+      "Type": "bind",
+      "Source": "/Volumes/Stripe/lean-genius/artifacts",
+      "Destination": "/Volumes/Stripe/lean-genius/artifacts",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/opt/e85/wt/erdos85__h3-triple-formal-20261007",
+      "Destination": "/workspace",
+      "Mode": "delegated",
+      "RW": true,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "volume",
+      "Name": "lean-build-erdos85__h3-triple-formal-20261007",
+      "Source": "/var/lib/docker/volumes/lean-build-erdos85__h3-triple-formal-20261007/_data",
+      "Destination": "/workspace/proofs/.lake/build",
+      "Driver": "local",
+      "Mode": "delegated",
+      "RW": true,
+      "Propagation": ""
+    }
+  ]
+}

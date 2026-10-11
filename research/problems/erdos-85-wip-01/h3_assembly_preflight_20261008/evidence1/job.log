@@ -1,0 +1,48 @@
+[e85] job 20261008T122748-erdos85__h3-triple-formal-20261007-492954  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T12:27:48Z
+[e85] commit 1e7db250cbfc656e4e26afcd877abcc1e0545e40 (Prepare bounded conditional H3 assembly preflight)
+=== Docker Lean Build ===
+Memory limit: 16384MB (hard enforced via cgroups)
+Timeout: 3m
+CPU limit: 2
+Target: all
+Build volume: lean-build-erdos85__h3-triple-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Command: lake env python3 -B ../research/problems/erdos-85-wip-01/h3_assembly_preflight_20261008/run.py
+Starting Docker build...
+
+{
+  "status": "COMPILED_PENDING_AUDIT",
+  "started_utc": "2026-10-08T12:27:49.890037+00:00",
+  "source_sha256": "9dcfdcafc1386236719e11061c28c23bcc4db8f47a04179ed1f90a18eda06b05",
+  "prerequisite_audit_sha256": "21fd8bcce69730f9c3f0de0918412a22430b907d8954f1f90da436366c727b8b",
+  "cgroup_memory_bytes": 17179869184,
+  "cgroup_cpu_max": "200000 100000",
+  "command": [
+    "lean",
+    "-j1",
+    "H3AssemblyPreflight.lean",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_assembly_preflight_20261008/attempt1/H3AssemblyPreflight.olean"
+  ],
+  "timeout_seconds": 90,
+  "returncode": 0,
+  "timed_out": false,
+  "elapsed_seconds": 7.6242607759995735,
+  "child_user_seconds": 6.376138,
+  "child_system_seconds": 1.211165,
+  "child_maxrss_kib": 6659892,
+  "log_sha256": "ef20f40c977e850a86608481c81caf2f30a9d72a82772df4d29756d231764380",
+  "object_sha256": "2f4c644c5ff9a32d4e1a3f798bbb9a38d894d9be941672e72c5f7ed89beca1dc",
+  "object_bytes": 768408,
+  "object_mtime": 1791462477.239617
+}
+'Erdos85.H3TripleCompletion.AssemblyPreflight.threeHighCanonicalRepresentativeExcluded_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Erdos85.H3TripleCompletion.AssemblyPreflight.orderFortyNineTripleCellExcluded_three_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+
+
+=== Build succeeded ===

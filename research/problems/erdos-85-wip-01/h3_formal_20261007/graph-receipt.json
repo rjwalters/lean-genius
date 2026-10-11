@@ -1,0 +1,46 @@
+{
+  "scope": "Actual-graph distinct-neighbor lemmas and relabel invariance only; no H3 pair or stratum exclusion",
+  "result": "PASS",
+  "command": "LEAN_NUM_THREADS=1 LEAN_MEMORY_LIMIT=8192 LEAN_BUILD_TIMEOUT=5m LEAN_SKIP_CACHE=true ./proofs/scripts/docker-build.sh Proofs.Erdos85OrderFortyNineThreeHighTripleDistinctColorNeighbor",
+  "source_commit": "55c9ceea2a101fafc4d01bf5a6f13f87fcf98c80",
+  "source_path": "proofs/Proofs/Erdos85OrderFortyNineThreeHighTripleDistinctColorNeighbor.lean",
+  "source_sha256": "50d64d83b95b27ccd67ceca0afcb3762767215cddb95e40b84042c027f1d8c6e",
+  "lean_toolchain": "leanprover/lean4:v4.31.0",
+  "lake_manifest_sha256": "f243fb1348183fbb95612c9c97beea1620651a55441b3e78fbc6bc3bfd26da01",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.encodedDistinctFamilyCompatibility_forget",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.encodedDistinctFamilyCompatibility_relabel",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHigh_triple_distinct_coordinate_color_compatibility",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.threeHigh_triple_distinct_color_family_compatibility",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "full_local_log_sha256": "a8cd843d39822371de1d87a00b25bb738fcc34b811e3917cab28f85d9c56a13e",
+  "retained_log": "graph-axioms.txt (axiom excerpt, not the full dependency build log)"
+}

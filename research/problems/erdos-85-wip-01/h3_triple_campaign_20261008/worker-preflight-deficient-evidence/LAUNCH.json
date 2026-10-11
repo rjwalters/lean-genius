@@ -1,0 +1,26 @@
+{
+  "schema": "erdos85-h3-triple-launch-v1",
+  "mode": "preflight",
+  "attempt_id": "preflight-043588c86ae64f35855a091655ba3a30",
+  "case_id": "deficient-u000-r02",
+  "manifest_sha256": "11ded9568ddc0497b8fd58d9107bc35f50caca0fd9064e9f85db18f98f614445",
+  "recorded_root": "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/worker-preflight-deficient-first/work/preflight-043588c86ae64f35855a091655ba3a30",
+  "execution_commit": "1895b057bec3b5a7d4b8e5594795de821df5e885",
+  "image_id": "sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6",
+  "instance_id": "i-04a61ff360a07bef2",
+  "slot": "owned-triple-preflight",
+  "limits": {
+    "memory_bytes": 17179869184,
+    "cpu_quota_us": 200000,
+    "cpu_period_us": 100000,
+    "wall_seconds": 600
+  },
+  "code_sha256": {
+    "worker.py": "6cd1ece95b6671776a96f29d4c951f6170f8798b85930850c7aaa6ab33d7e729",
+    "validate_artifacts.py": "b693015cb6a658e0387b27084a51d8a4b6cbffcf1cc24f8f70f4595e32ab31a0",
+    "common.py": "5bcb94d5c45905a6a6b25ae6f5f3db8bbf5cbfcec30e89bfe86c2294f4734b31",
+    "manifest.py": "15f4594c91c6437b7eaa5675fe1cdc13a13829da704a6a476a4cabe5e9f43e7c"
+  },
+  "cache_inventory_sha256": "3397a58699851e910c33ad8d3e5ca099de3e2665dc151cc000de934450a29c9a",
+  "inherited_lean_path": "/workspace/proofs/.lake/packages/Cli/.lake/build/lib/lean:/workspace/proofs/.lake/packages/batteries/.lake/build/lib/lean:/workspace/proofs/.lake/packages/Qq/.lake/build/lib/lean:/workspace/proofs/.lake/packages/aesop/.lake/build/lib/lean:/workspace/proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/workspace/proofs/.lake/packages/importGraph/.lake/build/lib/lean:/workspace/proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/workspace/proofs/.lake/packages/plausible/.lake/build/lib/lean:/workspace/proofs/.lake/packages/mathlib/.lake/build/lib/lean:/workspace/proofs/.lake/build/lib/lean:/root/.elan/toolchains/leanprover--lean4---v4.31.0/lib/lean"
+}

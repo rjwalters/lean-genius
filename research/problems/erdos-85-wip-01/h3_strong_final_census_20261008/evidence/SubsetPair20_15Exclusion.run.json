@@ -1,0 +1,52 @@
+{
+  "module": "SubsetPair20_15Exclusion",
+  "source": "full_subset_capacity/SubsetPair20_15Exclusion.lean",
+  "source_sha256": "e64f46800a3a4f46a85c932351f53e5dc65b8ea6dd37d259dc1542baf072b240",
+  "log_sha256": "e48062f2d001d3af37c93de5be61aadc25677c28275800e1afd31bae7cde5fdb",
+  "olean_sha256": "a0d066d83f5930b374ea1775732c905cd18d7746dc812a60eb118b51285a0d58",
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/SubsetPair20_15Exclusion.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_strong_final_census_20261008/_build/cloud-first/SubsetPair20_15Exclusion.lean"
+  ],
+  "elapsed_seconds": 4.519804736002698,
+  "exit_code": 0,
+  "status": "PASS",
+  "axiom_exports": [
+    {
+      "theorem": "SubsetPair20_15.checked",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SubsetPair20_15.impossible_literal",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SubsetPair20_15.impossible",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "SubsetPair20_15.no_joint",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ]
+}

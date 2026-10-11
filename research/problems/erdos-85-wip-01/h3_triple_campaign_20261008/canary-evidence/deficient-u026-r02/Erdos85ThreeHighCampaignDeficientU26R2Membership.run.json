@@ -1,0 +1,42 @@
+{
+  "command": [
+    "lean",
+    "-R",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/deficient-u026-r02",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/deficient-u026-r02/Erdos85ThreeHighCampaignDeficientU26R2Membership.olean",
+    "/workspace/research/problems/erdos-85-wip-01/h3_triple_campaign_20261008/_build/canary-second/deficient-u026-r02/Erdos85ThreeHighCampaignDeficientU26R2Membership.lean"
+  ],
+  "started_utc": "2026-10-08T07:11:09.954041+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 23.824346027999127,
+  "user_cpu_seconds": 22.272895,
+  "system_cpu_seconds": 1.558802,
+  "max_rss_kib": 8075532,
+  "log_sha256": "9f99a0b42fd951eb3f16f86511fa8766aaf7017ba5dad9c7fe17e2c3ca5fcc0a",
+  "case_id": "deficient-u026-r02",
+  "module": "Erdos85ThreeHighCampaignDeficientU26R2Membership",
+  "stage": "Membership",
+  "status": "PASS",
+  "source_sha256": "161e4ddcbdb03b1eb2323e28d856982fa80a8e21eea2a201c33c41d4b184553a",
+  "olean_sha256": "a1d2b21246015fd441ee0ba65b968ee4fcc1cb3e88e2ad9dd5025ed2115ad707",
+  "axiom_exports": [
+    {
+      "theorem": "Erdos85.TripleCampaign.DeficientU26R2.member",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    {
+      "theorem": "Erdos85.TripleCampaign.DeficientU26R2.input_identity",
+      "axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  ],
+  "certificate_substitution": false
+}

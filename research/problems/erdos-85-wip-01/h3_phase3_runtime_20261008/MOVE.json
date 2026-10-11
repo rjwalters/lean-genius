@@ -1,0 +1,312 @@
+{
+  "prior_source_commit": "2f41a16de17",
+  "moved_definition_count": 49,
+  "definitions": [
+    {
+      "name": "V",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 36,
+      "sha256": "47ccbb1695e231c5561494481d1f02b49790757f7555e6b538e9d670e5c1b010"
+    },
+    {
+      "name": "maskOf",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 39,
+      "sha256": "a2ce6576fc477a51cc1330eeb964b232126c508a01b6c30ec79e09cf72985386"
+    },
+    {
+      "name": "col",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 43,
+      "sha256": "d5c7ffbb8d25173a40ee83832b1571597d3b513094a64d159c2377dfa8546e63"
+    },
+    {
+      "name": "capOf",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 45,
+      "sha256": "757487939574abb57c9887df8fc1f1287d1c00ddc4a4535e294d71ab9c9bc60f"
+    },
+    {
+      "name": "fiber0",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 47,
+      "sha256": "6225adb8edaff32cc442e655f38eb282966bd48b7ec9a3ab1c6a54a42d4c92b2"
+    },
+    {
+      "name": "fiber1",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 48,
+      "sha256": "3f9941a8fe7c01569d87bf6d5cfb54e678416249d41b7c6b36d2b9f6803a1480"
+    },
+    {
+      "name": "fiber2",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 49,
+      "sha256": "a66824d87d05b57badd0f6eee24c9dae5d5e6e3e30fefc9d18b7102356ae2e45"
+    },
+    {
+      "name": "fiberList",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 51,
+      "sha256": "4b37e61eae1006da3a5c601bd549c28c8f776131ffb2de63de2a80f0898c76cb"
+    },
+    {
+      "name": "fiberMask",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 57,
+      "sha256": "5f33fd5d6792eaa2de3f129dfb17f23af3998346bb3e5f071350221cf4a916e3"
+    },
+    {
+      "name": "highVerts",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 63,
+      "sha256": "1f835dc344b4e4d36bd00e65278ad46a53d0ef8cb15924f34bfe1f2823722e41"
+    },
+    {
+      "name": "coreVerts",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 65,
+      "sha256": "e1b7a83216ba3aa8513d4b9eb8d07177e589db49894903db2ac366750abb5fa2"
+    },
+    {
+      "name": "emptyVerts",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 68,
+      "sha256": "ae6464b2b8a94c9c8e12137f97b4c05cba3099a2402919f771e315ac846418b0"
+    },
+    {
+      "name": "coreClauses",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 72,
+      "sha256": "a8c2e084f3c7be6f6a95ec2c322d67079a6af1eae9e0d01b98754013c84fc6f3"
+    },
+    {
+      "name": "M49",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 75,
+      "sha256": "139d1b8b7a236e5fb027a31f32601d7e0affe3c1a5c7aaf56b38770bc26e9870"
+    },
+    {
+      "name": "St",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 159,
+      "sha256": "8b16064c7f666485d0b44eaf382ca08e1388b07f0eccd0653bad4da8eb3b7a83"
+    },
+    {
+      "name": "St.adj",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 163,
+      "sha256": "a1b0eb753f31da020e1ecee31562ddd52cb2cda451d09471b13099d23eb4e0da"
+    },
+    {
+      "name": "St.addEdge",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 165,
+      "sha256": "748c1c3f3d4f73e936957097e033fd81d6987a6912fd25feeb5966313dd4a777"
+    },
+    {
+      "name": "St.allowed",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 349,
+      "sha256": "fe01477dc0b354b6aac8f5cb53bcedcfdd09672cab28cb083ffb8e06d88a3cd5"
+    },
+    {
+      "name": "St.tryAdd",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 382,
+      "sha256": "61489cb2a9f43f112c2570907a07b3c4cb68fbcccb0b4fa6cb523d92b29a275a"
+    },
+    {
+      "name": "clauseOpen",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 537,
+      "sha256": "0998feddddc0a82cc01e5542f097fc78feb65f12c3de125254dba2c5076bdee6"
+    },
+    {
+      "name": "twinSkip",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 548,
+      "sha256": "d841f4b8b1b494b1066821f66ee49f87f9bc795409872c8faf660564f120b6b2"
+    },
+    {
+      "name": "findClause",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 553,
+      "sha256": "24585753375fb4a8da7c652dc4e3b8f5629e34b2ff02011cfad64a372b79f27a"
+    },
+    {
+      "name": "dfs1",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 556,
+      "sha256": "1556c09670e8c762b72b20bbd33b0abc88f44a41b9ebb9244fe37bc1e8fa6529"
+    },
+    {
+      "name": "Tri",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 632,
+      "sha256": "5ac8b7859808dbc42d6f7d33be085527b3e1f40ffcba28864008597490e930de"
+    },
+    {
+      "name": "allTriples",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 634,
+      "sha256": "2d155ac14c8d93bc3e5ca309148a7ccf6daab35def054f108f8ef415631bc83d"
+    },
+    {
+      "name": "containsV",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 670,
+      "sha256": "841587e9caf2113467cea8b49b507fcc4a380acb67e809cd156ef43341aabb2f"
+    },
+    {
+      "name": "pairOK",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 690,
+      "sha256": "92440abf83ec3379bd0bfef63049503da0cf645dfb395f7530993edb4dff478e"
+    },
+    {
+      "name": "insertable",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 693,
+      "sha256": "f895f286a77de7048ba12b86e939ed2c38782079e527480a54a83acb046443e0"
+    },
+    {
+      "name": "hasCol",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 743,
+      "sha256": "e7f2053a6febdebc1aa9b94b6030b7798857f2d0af735a751244c79a33453bc3"
+    },
+    {
+      "name": "hasAllCols",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 759,
+      "sha256": "a362eb23cfc4c5c1c3d8c3696d9a2bd4dad9500ebdc932fc1d461531af6af940"
+    },
+    {
+      "name": "stateOK",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 774,
+      "sha256": "e3ed87c2d62c38e616b45edc3e2bab880ec3c00d69fcba3b722df6e9e09ecd51"
+    },
+    {
+      "name": "hasAllColsFast",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 781,
+      "sha256": "ad0c62111e7994dae8bdbef706a04be8170742e24cea9383121b8c0bf0681b95"
+    },
+    {
+      "name": "stateOKFast",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 792,
+      "sha256": "fe9be368fe75c8aee0e7b733485255d15cd43dee57f1283790aed0cb291db063"
+    },
+    {
+      "name": "triCounts",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 842,
+      "sha256": "88cb44c0a79cd1e4b0dc27ef8056254d1677b7baab3397b752f2673951778f75"
+    },
+    {
+      "name": "pickCore",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 852,
+      "sha256": "1c3d54cf1307c1a019cc7a806ce524b38539337de38bd7d9a80b50e593c3f45e"
+    },
+    {
+      "name": "findFresh",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 864,
+      "sha256": "4156fd6825df101919741fa9d13dedeb0750101880c3089a67d5b101134d254c"
+    },
+    {
+      "name": "addTri",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 867,
+      "sha256": "d6551c13ad29efc91359156a93a310a2b2bb963af8e7d64df1a3ae86ac0a8315"
+    },
+    {
+      "name": "patLoop",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 930,
+      "sha256": "6a753be69ca577b6c9aee3cf21a718db6355009c09e0763f2be496b2745af273"
+    },
+    {
+      "name": "containsM",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 956,
+      "sha256": "22e7096ea56e23b024513ee3880631b582873eff2b187a2d6b91a8ef51ad8a48"
+    },
+    {
+      "name": "patLoopSplit",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 961,
+      "sha256": "319d7dd082e4f50fdaddca14fa3c124436b615dbd9693b42ca16864687d61ce9"
+    },
+    {
+      "name": "step2",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 971,
+      "sha256": "ed3b01705ae5a6d14cacff1038025dc8946d998e861f42feb6772b4ba3120539"
+    },
+    {
+      "name": "dfs2",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 989,
+      "sha256": "952da500db92f9e50752c7d6382dfeeb341c43351fcbe4914d73d3c0696433af"
+    },
+    {
+      "name": "initRow",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionBridge.lean",
+      "source_line": 27,
+      "sha256": "2506c9abc6304528bac21a56383485f677215fd78e8f83fe1d375e4953a0bce8"
+    },
+    {
+      "name": "s0",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionBridge.lean",
+      "source_line": 31,
+      "sha256": "218275204034698c2899217c91d1eeb7b22fcec43dcdbfa318e3831f2eddfb08"
+    },
+    {
+      "name": "stKey",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionSplit.lean",
+      "source_line": 18,
+      "sha256": "c1803f67338ff5c7153d796bff476aca05e2caa2c32ba1fc6a66f8567f82373c"
+    },
+    {
+      "name": "cands3",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 1135,
+      "sha256": "1b5aa93d3a560a4494360ba827e3fbe9789f511da121b180c9137d7a896a5fce"
+    },
+    {
+      "name": "gate3",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 1138,
+      "sha256": "1ba2b76f9185d8f191d0206201340101b29d787ce9d05db3af2350f915bd52df"
+    },
+    {
+      "name": "pick3",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 1143,
+      "sha256": "563793e25a762c08c0b473f85e6cb72b25b932675b769d92fbeff61c48e36784"
+    },
+    {
+      "name": "addMany",
+      "source": "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean",
+      "source_line": 1178,
+      "sha256": "28a8d4bfdebe104b4698e63dd2e622c1f524dc2efe208bc4303d3066f6379ec1"
+    }
+  ],
+  "old_sources_sha256": {
+    "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean": "c6ba723e09968d420aabf98d2117d2648929bf92690e5e2a6f9ceb68cf2222cb",
+    "proofs/Proofs/Erdos85H3TripleCompletionBridge.lean": "499f480a8d1eb73f33ca4119b0175f319982484a9d3fcdf0a2fbbda73d2db36b",
+    "proofs/Proofs/Erdos85H3TripleCompletionSplit.lean": "b85d4d99bb82cefdbe5f8d0543928262422f2f5e6a8dfa799d7100dc7ca826a3"
+  },
+  "new_sources_sha256": {
+    "proofs/Proofs/Erdos85H3TripleCompletionEngine.lean": "d4b00bd7e44638c5a9f4a50c3ff73c661e7eba79811cedfe7cb8b2caa8e8b52c",
+    "proofs/Proofs/Erdos85H3TripleCompletionBridge.lean": "ab48d33eeed723aaec92bbfa32329e09f532a209e79da8330643014ca7f09f54",
+    "proofs/Proofs/Erdos85H3TripleCompletionSplit.lean": "1fa81f7a80e1cfd7a76320879b10e9d908c46174dab8106bc0f30a83c6ed0cdb",
+    "proofs/Proofs/Erdos85H3TripleCompletionRuntime.lean": "0cc88d985982c10df4fd24dbdb5b5699ac8a919b0e936eb0734c17c7ea34bfe4"
+  },
+  "scope": "49 verbatim declarations relocated; no remaining proof/source tokens changed from original engine."
+}
