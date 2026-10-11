@@ -63,5 +63,37 @@
       "bytes": 518366,
       "sha256": "bace16799c1ffb8ffc68880fb39ef4dffba7edfe1ccada387349020ad7c926b7"
     }
+  ],
+  "mathlib_source_check": {
+    "revision": "9a9483a92959bc92bd6a60176dd1fe597298c1f8",
+    "local_head_matches": true,
+    "files": [
+      {
+        "path": "Mathlib/Combinatorics/SimpleGraph/Basic.lean",
+        "sha256": "4f4fe413cead4a0f8a835e2eb2e1ae16c133b58bb6e9762141b81138923edc7e",
+        "matches_pinned_git_blob": true
+      },
+      {
+        "path": "Mathlib/Combinatorics/SimpleGraph/Finite.lean",
+        "sha256": "a26b9436ebd7fcdf54d586f0d05763dbe7ee38810e2df3f90a0d417a51bd59d8",
+        "matches_pinned_git_blob": true
+      }
+    ],
+    "project_usage": "proofs/Proofs/Erdos85Problem.lean",
+    "verification": "source inspection only; no local Lean build"
+  },
+  "competition_retrievals": [
+    {
+      "year": 2024,
+      "official_page": "https://satcompetition.github.io/2024/",
+      "proceedings_url": "https://helda.helsinki.fi/handle/10138/584822",
+      "result": "Access denied in web tool; source content unverified"
+    },
+    {
+      "year": 2020,
+      "official_page": "https://satcompetition.github.io/2020/downloads.html",
+      "proceedings_url": "https://helda.helsinki.fi/handle/10138/318450",
+      "result": "Access denied in web tool; source content unverified"
+    }
   ]
 }

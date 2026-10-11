@@ -15,7 +15,7 @@ identify those exact responses, not stable canonical publisher bytes.
 | Existing key | Evidence read | Support and limits |
 |---|---|---|
 | `moura2021lean4` | [Publisher abstract and introduction](https://link.springer.com/chapter/10.1007/978-3-030-79876-5_37) | Supports Lean 4 system attribution. Does not establish this project's compiler version, axiom counts or successful builds. |
-| `mathlib2020` | [Author-submitted abstract and DOI cross-reference](https://arxiv.org/abs/1910.09336) | Supports Mathlib library attribution; partial for the surrounding simple-graph usage. Current graph definitions and imports require the pinned project/Mathlib sources, not this historical abstract. |
+| `mathlib2020` | [Author-submitted abstract and DOI cross-reference](https://arxiv.org/abs/1910.09336), plus pinned code below | Supports Mathlib library attribution. Simple-graph usage is verified separately from current pinned code, not inferred from this historical abstract. |
 | `wetzler2014drat` | [Publisher abstract](https://link.springer.com/chapter/10.1007/978-3-319-09284-3_31) | Supports the DRAT/drat-trim attribution and proof-checking role. Full subscription chapter was not read. |
 | `cruzfilipe2017lrat` | [Publisher abstract](https://link.springer.com/chapter/10.1007/978-3-319-63046-5_14) | Supports LRAT hints and simple certified checking; abstract identifies Coq and ACL2 checkers. Full subscription chapter was not read. |
 | `heule2011cube` | [Publisher abstract](https://link.springer.com/chapter/10.1007/978-3-642-34188-5_8) | Supports cube-and-conquer attribution and the partition/solve method. Full subscription chapter was not read. |
@@ -30,6 +30,21 @@ proofs. No numerical value or formal trust claim was added.
 
 The two SAT Competition solver-description citations (`biere2024kissat`
 and `biere2020cadical`) remain unverified against locally retained source
-content. Earlier limits for Bloom, Zhang and the graph-data page also
+content. The official [2024 competition page](https://satcompetition.github.io/2024/)
+and [2020 downloads page](https://satcompetition.github.io/2020/downloads.html)
+link the proceedings, but both institutional repository destinations
+([2024](https://helda.helsinki.fi/handle/10138/584822),
+[2020](https://helda.helsinki.fi/handle/10138/318450)) returned access-denied
+pages during this check. No content verification is inferred from the links.
+Earlier limits for Bloom, Zhang and the graph-data page also
 remain. The v11 audit is immutable; these notes must be reconciled into a
 fresh audit of the final v12 sources.
+
+Pinned-code follow-up: `proofs/lake-manifest.json` pins Mathlib to
+`9a9483a92959bc92bd6a60176dd1fe597298c1f8`. The local Mathlib checkout has that
+HEAD, and its `Mathlib/Combinatorics/SimpleGraph/Basic.lean` and `Finite.lean`
+have no working-tree differences from it. `Basic.lean:92` defines
+`SimpleGraph` using symmetric, irreflexive adjacency; `Finite.lean:378`
+defines `minDegree`. This project's `Erdos85Problem.lean` imports Mathlib
+and uses those definitions in `minDegreeForC4`. This is source inspection,
+not a new local Lean build.
