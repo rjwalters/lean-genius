@@ -53,3 +53,20 @@ then failed before theorem checking because Lean resolved the partial fresh
 the 891 verified dependency objects into the fresh package root, then writes
 the two new endpoint objects there. Resource limits and theorem sources
 are unchanged.
+
+## Completed validation
+
+Job `20261011T204721-erdos85__release-assembly-20261011-6322` at
+`0127768493ffd3750c4c742957bd6345e660f61d` exited zero under Lean 4.31.0
+on the existing ARM64 builder. `evidence1/AUDIT.json` records the successful
+terminal capture and hashes every retained file, including both raw axiom
+logs, job specification/exit/commit, and `validation.json`.
+
+The fresh H3 wrapper compiled in 79.86 seconds and is byte-identical to its
+previously accepted object. The new endpoint compiled in 4.32 seconds. Both
+printed the exact expected sets: upper bound 601 (3 standard + 598 native),
+exact thresholds 607 (3 + 604), strict drop 604 (3 + 601). The 893 source
+hashes and all 891 imported object hashes matched; no imported object was
+overwritten and no `sorry` was reported. The original failed attempt remains
+preserved separately. This validates the assembly with its stated H1/H7
+hypotheses, without replaying the external certificate campaign.

@@ -46,15 +46,21 @@ assert len(report['sources'])==893 and len(report['imported_objects'])==891
 for name,digest in report['sources'].items():
  assert hashlib.sha256((repo/'proofs/Proofs'/(name+'.lean')).read_bytes()).hexdigest()==digest
 plan=json.loads((root.parent/'order49_h3_closed_capstone_20261008/PLAN.json').read_text())
+assert report['imported_objects']=={n:{k:v[k] for k in ['sha256','bytes']} for n,v in plan['objects'].items()}
+assert report['memory_bytes']==16*1024**3
+quota,period=map(int,report['cpu_max'].split());assert quota==2*period
+assert [r['module'] for r in report['runs']]==['Erdos85OrderFortyNineCapstoneH3','Erdos85FiniteDropCapstone']
 for run in report['runs']:
  name=run['module'];b=(out/(name+'.log')).read_bytes();files[name+'.log']=b
  assert hashlib.sha256(b).hexdigest()==run['log_sha256'] and run['returncode']==0
+ assert run['elapsed_seconds']<90 and not re.search(r'\\b(sorry|error)\\b',b.decode(),re.I)
  matches=re.findall(r"'([^']+)' depends on axioms: \\[([^\\]]*)\\]",b.decode())
  exports=[{'theorem':n,'axioms':sorted(x.strip() for x in raw.split(',') if x.strip())} for n,raw in matches]
  assert exports==plan['exports']==run['exports']
  obj=out/'lean/Proofs'/(name+'.olean')
  assert hashlib.sha256(obj.read_bytes()).hexdigest()==run['object_sha256']
  assert obj.stat().st_size==run['object_bytes']>0
+ assert (job/'sha').stat().st_mtime<=obj.stat().st_mtime<=(job/'exit').stat().st_mtime
 files['endpoint.lean']=(repo/'proofs/Proofs/Erdos85FiniteDropCapstone.lean').read_bytes()
 print(json.dumps({'status':'TERMINAL_ENDPOINT_CAPTURE_PASS','files':{n:base64.b64encode(b).decode() for n,b in files.items()}}))
 '''

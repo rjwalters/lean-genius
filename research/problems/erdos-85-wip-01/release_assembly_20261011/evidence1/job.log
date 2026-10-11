@@ -1,0 +1,19 @@
+[e85] job 20261011T204721-erdos85__release-assembly-20261011-6322  ref=erdos85/release-assembly-20261011  worktree=/opt/e85/wt/erdos85__release-assembly-20261011  started 2026-10-11T20:47:21Z
+[e85] commit 0127768493ffd3750c4c742957bd6345e660f61d (Fix isolated Lean import root and preserve first validation attempt)
+=== Docker Lean Build ===
+Memory limit: 16384MB (hard enforced via cgroups)
+Timeout: 4m
+CPU limit: 2
+Target: all
+Build volume: lean-build-erdos85__h3-triple-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Command: lake env python3 -B ../research/problems/erdos-85-wip-01/release_assembly_20261011/validate.py --cloud
+Starting Docker build...
+
+[30s] Building...
+[60s] Building...
+[90s] Building...
+{"status": "CONDITIONAL_RELEASE_ENDPOINTS_VALIDATED", "axiom_counts": [601, 607, 604]}
+
+=== Build succeeded ===
