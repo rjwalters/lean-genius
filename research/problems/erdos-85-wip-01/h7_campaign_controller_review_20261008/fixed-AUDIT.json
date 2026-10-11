@@ -1,0 +1,43 @@
+{
+  "status": "REVIEWED_FIXES_PASS",
+  "reviewed_commit": "327ec891b4b26e9a88a606c78267d40e4e273517",
+  "prior_review_commit": "1cab73ef2a2780161d98ac389068acbb54b9002b",
+  "findings_resolved": [
+    "approved solver and checker hashes enforced by collector and default worker before claiming",
+    "unknown/empty selections rejected and full-campaign scope explicit",
+    "automatic checker heap escalation removed; fixed heap and mandatory memory reservation"
+  ],
+  "metadata_tests": {
+    "count": 11,
+    "returncode": 0,
+    "receipt": "fixed-metadata-tests.json"
+  },
+  "cloud_e2e": {
+    "job": "20261008T061308-commit-327ec891b4b2-251246",
+    "authoritative_exit": 0,
+    "raw_job_log_sha256": "58bfd2bcb381d995d9429997ff8b49a244e8458f0f3dec5eccbb0829f49c7dad",
+    "evidence": "fixed-e2e-job.log",
+    "scope": "Job wrapper retains filtered inner E2E output; real solver/checker success, carry recovery, fake checker rejection, ALARM/STOP, memory reservation rejection, solver timeout. No independent proof replay in this review."
+  },
+  "limitations": [
+    "Heap-exhaustion scheduling tested with stub statuses, not real induced checker exhaustion.",
+    "Memory reservation uses estimated 1.5 GB overhead per slot; not an enforced or measured upper bound on solver RSS.",
+    "STOP is checked between items; it does not immediately interrupt a running item.",
+    "No fleet launched or full campaign completion established."
+  ],
+  "documentation_nits": [
+    "Collector docstring final sentence still says exit 0 requires all 28 cubes; code correctly permits complete selected subsets.",
+    "Bootstrap comment calls estimated memory reservation the true peak; replace with reservation estimate."
+  ],
+  "source_sha256": {
+    "collect_receipts.py": "ee6e410c12bc049e1ff947fb2b1cc1d325b93797deaea70624ce12b9c25e176e",
+    "cert_item.py": "a4881b2ce594e167c8f316f6fffffebc54879f96e8edf6526ea68f3e5c185ef7",
+    "cert_batch.py": "97c83fafe92ad879d317de9c6844dd09ae468b05f518a426bdcb418026c7efce",
+    "cert_worker.py": "f954ebe2f86d603b33ea7024ff8557ab25be9775ff62610d944d6996202c6c03",
+    "cert_bootstrap.sh": "5737a33140c1aea8a2db4504c5fdb578d80964520a70a189db85afa60af5c631",
+    "cert_controller.py": "a11eb5f5a503ba7155702781f68b9b2e4114dd79004efac4f2444a21240ed18b",
+    "h7_common.py": "8b93557c814946edd4863310e4ae63c8f4f4a29e45cccc72960b402111d11925",
+    "test_campaign.py": "e6a161f125fa9b00a73779e1e810d8a5a512b1ecee3b6d4fc851876a8e85230b",
+    "e2e_test.sh": "6582859dcb067d9bffe25ec2f628520509c485c948dd22268e26ce104b2a95f6"
+  }
+}

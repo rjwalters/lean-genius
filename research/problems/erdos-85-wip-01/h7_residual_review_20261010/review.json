@@ -1,0 +1,50 @@
+{
+  "reviewed_commit": "bda60d921326f904ab143e0ad197c81c4bc3874e",
+  "reviewer": "codex",
+  "scope": "Residual pass isolation, manifest expansion, and shutdown reliability; offline tests plus read-only live status",
+  "verdict": "Changes requested before manifest expansion; shutdown fix prepared for campaign-owner integration",
+  "findings": [
+    {
+      "priority": 1,
+      "location": "h7_hsb_campaign_20261008/cert_controller.py:340 and inherited controller.py:292",
+      "issue": "DeleteFleets per-fleet failures are ignored. A STOP, completion or budget stop can return an action and power off the controller while the maintain fleet remains active.",
+      "introduced_by_reviewed_commit": false,
+      "evidence": "Original stop regression suite fails; patched suite passes, including a real budget-branch test and a watch failure/retry/success test.",
+      "fix": "stop_enforcement.patch checks Unsuccessful and requires a Successful acknowledgement for every requested fleet; all H7 shutdown paths use the checked helper. Failure raises so the watch retries instead of exiting. Foreign STOP markers and causes are preserved.",
+      "reference": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DeleteFleets.html"
+    },
+    {
+      "priority": 1,
+      "location": "h7_hsb_campaign_20261008/cert_controller.py:559-584, 479-488, 724-725",
+      "issue": "The controller host fetches its pinned residual manifest once. Updating freight, setup and launch does not update the existing controller's in-memory MANIFEST. It can stop all residual workers once the original rows finish, even with newly appended rows still running.",
+      "evidence": "probe_residual.py grows a manifest from one row to two while retaining the controller snapshot; finishing only the old row triggers all batches CERTIFIED; stopping.",
+      "fix": "Do not expand beneath the old controller. Coordinate a controller replacement with the new manifest and preserve accumulated spending history and orphan accounting. The host currently stores controller-state.json only locally, so replacement needs an explicit state-transfer or conservative remaining-budget procedure. Old workers/fleets also retain their original manifest pin and must be accounted for before overwriting freight.",
+      "patch_status": "Operational handoff finding; not changed by stop_enforcement.patch"
+    },
+    {
+      "priority": 2,
+      "location": "h7_hsb_campaign_20261008/README.md:3-21",
+      "issue": "Runbook still says prepared, NOT launched and suggests a $200 ceiling. Room message 53154 requests recording the operator's $300 total ceiling and no conditional release; both passes are now live.",
+      "fix": "Campaign owner should reconcile the runbook with the actual launch state and latest operator rulings. No publication until all leaves and covers are certified and hSeven is discharged."
+    }
+  ],
+  "verified": [
+    "Original campaign suite: 24/24 passes",
+    "Patched campaign suite: 24/24 passes",
+    "Patched stop suite: 9/9 passes",
+    "Residual prefix, tag, launch template, local directory and hard-stop selection",
+    "host-stop selects only the residual controller",
+    "Patch applies cleanly to the bda60d92132 worktree"
+  ],
+  "live_observation": {
+    "utc": "2026-10-10T00:07Z",
+    "main": {"reported_certified_batches": 11294, "queue": 12605, "reported_incomplete_batches": 148, "live_workers": 5, "estimated_spend_usd": 78.12},
+    "residual": {"reported_certified_batches": 0, "queue": 194, "claimed": 40, "live_workers": 2, "estimated_spend_usd": 0.68},
+    "stop_or_alarm_present": false,
+    "qualification": "Controller reports, not an independent receipt reconciliation or Lean admission; spend is an estimate."
+  },
+  "cloud_mutations": false,
+  "deployment_status": "Proposed patch only; live controllers unchanged",
+  "replay": "python3 -B research/problems/erdos-85-wip-01/h7_residual_review_20261010/check_patch.py",
+  "scope_limit": "No Lean claim is established by these controller tests. H7 certification and release gates remain open."
+}

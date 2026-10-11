@@ -1,0 +1,324 @@
+[e85] job 20261008T051026-erdos85__h7t0-formal-20261007-211746  ref=erdos85/h7t0-formal-20261007  worktree=/opt/e85/wt/erdos85__h7t0-formal-20261007  started 2026-10-08T05:10:26Z
+[e85] commit 50a06c7c033ac8b63a7f9695e7dc7cfd15b38a28 (erdos85(h7-hsb-campaign): inputs builder, per-item certifier, cost sampler, base-cube Lean)
+=== Docker Lean Build ===
+Memory limit: 16384MB (hard enforced via cgroups)
+Timeout: 90m
+CPU limit: 16
+Target: all
+Build volume: lean-build-erdos85__h7t0-formal-20261007
+Extra read-only mounts: /Volumes/Stripe/lean-genius/artifacts
+
+Command: bash ../research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/check_base_identity.sh
+Starting Docker build...
+
+16749c7ee71d8e2bbda47bfc461894e72af276346f037e3756837cb982ea8716  ../research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/EmitCube.lean
+fb9762b1f45d6163f0a2d7ae3f8d4015f6e232584059042799b87da39ed84622  Proofs/Erdos85OrderFortyNineSevenHighT0CanonicalEmptyCubeCnf.lean
+711cd891769b04c2ffb19988845f8a87c2194a61440a539e27895bb058ea7b4e  Proofs/Erdos85OrderFortyNineSevenHighT0CanonicalCnf.lean
+[30s] Building...
+[60s] Building...
+[90s] Building...
+[120s] Building...
+[150s] Building...
+[180s] Building...
+[210s] Building...
+[240s] Building...
+[270s] Building...
+[300s] Building...
+[330s] Building...
+[360s] Building...
+[390s] Building...
+[420s] Building...
+{"bytes": 15151828, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "9ba7a01f108ba63db914dd1e89d2ce8aa32e52d1fb81e712e6851136354fbc21", "mask": 1081415, "python_frozen_cnf_sha256": "9ba7a01f108ba63db914dd1e89d2ce8aa32e52d1fb81e712e6851136354fbc21", "root": "cube_F6_t5"}
+{"bytes": 15151828, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "88d4d5d2aec446d8f3ec3f75f28f76705678b1461498ed06da49a386ace80bc5", "mask": 139527, "python_frozen_cnf_sha256": "88d4d5d2aec446d8f3ec3f75f28f76705678b1461498ed06da49a386ace80bc5", "root": "cube_F6_t8"}
+{"bytes": 15151828, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "569406015c7ee26452e76299f518fba008e36c3b7519e1d6f3f1591487af72d9", "mask": 360515, "python_frozen_cnf_sha256": "569406015c7ee26452e76299f518fba008e36c3b7519e1d6f3f1591487af72d9", "root": "cube_F6_t14"}
+{"bytes": 15151828, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "dec6221d8537ede14d953812d18b346fddb6e28595488e5c065f324be6445c28", "mask": 622659, "python_frozen_cnf_sha256": "dec6221d8537ede14d953812d18b346fddb6e28595488e5c065f324be6445c28", "root": "cube_F6_t15"}
+{"bytes": 15151828, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "b583bccaa37ecbc5d71f75345a4d1a81114d6b917e2e163378ca560f76727d4f", "mask": 1085571, "python_frozen_cnf_sha256": "b583bccaa37ecbc5d71f75345a4d1a81114d6b917e2e163378ca560f76727d4f", "root": "cube_F6_t16"}
+{"bytes": 15151828, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "46e285a83f217bea8dfd0eeb3da54c7a1d1805fdd1360badff844dd212cae2dd", "mask": 331907, "python_frozen_cnf_sha256": "46e285a83f217bea8dfd0eeb3da54c7a1d1805fdd1360badff844dd212cae2dd", "root": "cube_F6_t17"}
+{"bytes": 15151828, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "acf7bcd846e311fd26794243804a5a69e24b6961a415609302a60e09665a8e44", "mask": 594051, "python_frozen_cnf_sha256": "acf7bcd846e311fd26794243804a5a69e24b6961a415609302a60e09665a8e44", "root": "cube_F6_t18"}
+{"bytes": 15151827, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "37f2f36b11336b316c43a54e6d17054c2283dcb8644a9b5969ef0c883eae287b", "mask": 139591, "python_frozen_cnf_sha256": "37f2f36b11336b316c43a54e6d17054c2283dcb8644a9b5969ef0c883eae287b", "root": "cube_F7_t0"}
+{"bytes": 15151827, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "3115dee58497c9c92b4b9d58699cadc755f3630deb52dade1be27d360cb29c60", "mask": 328007, "python_frozen_cnf_sha256": "3115dee58497c9c92b4b9d58699cadc755f3630deb52dade1be27d360cb29c60", "root": "cube_F7_t2"}
+{"bytes": 15151827, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "89f33dd196d5c335b51cd6b27c426bed351d055d3ab6583988821fb874a8a72f", "mask": 590151, "python_frozen_cnf_sha256": "89f33dd196d5c335b51cd6b27c426bed351d055d3ab6583988821fb874a8a72f", "root": "cube_F7_t3"}
+{"bytes": 15151827, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "4648849e97b17d3e28aeb6d2a7d3f99989ecb608d898eb41ee55887cd03ea3b7", "mask": 1114439, "python_frozen_cnf_sha256": "4648849e97b17d3e28aeb6d2a7d3f99989ecb608d898eb41ee55887cd03ea3b7", "root": "cube_F7_t4"}
+{"bytes": 15151827, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "c1cca36d03731199d8fe1035347bab00f502af31f39b61bcd8320528ad8aee3d", "mask": 360519, "python_frozen_cnf_sha256": "c1cca36d03731199d8fe1035347bab00f502af31f39b61bcd8320528ad8aee3d", "root": "cube_F7_t5"}
+{"bytes": 15151827, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "f362392181acb436cfb23108237f72519da6ff732e1a74044bea8002b2d97897", "mask": 622663, "python_frozen_cnf_sha256": "f362392181acb436cfb23108237f72519da6ff732e1a74044bea8002b2d97897", "root": "cube_F7_t6"}
+{"bytes": 15151827, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "ff0c11fa8e91c63209ae045f4a81c4a5caa89b0bd1d2b2c0e0833b5b140e8f5d", "mask": 1343559, "python_frozen_cnf_sha256": "ff0c11fa8e91c63209ae045f4a81c4a5caa89b0bd1d2b2c0e0833b5b140e8f5d", "root": "cube_F7_t8"}
+{"bytes": 15151827, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "35829f55cc74b309c5cc0d870c0680ac8704cd995b61fa67c43a3036d203affb", "mask": 1835079, "python_frozen_cnf_sha256": "35829f55cc74b309c5cc0d870c0680ac8704cd995b61fa67c43a3036d203affb", "root": "cube_F7_t9"}
+{"bytes": 15151827, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "fb64663b99d27e36141a36c4ce6fb29e19e03acac37415c87dc675b4e14cfc11", "mask": 541447, "python_frozen_cnf_sha256": "fb64663b99d27e36141a36c4ce6fb29e19e03acac37415c87dc675b4e14cfc11", "root": "cube_F7_t10"}
+{"bytes": 15151827, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "f73c5bc81c1e75c1b324292ace83624efd1ca9f00d3ad7dfb72c269a95b9fb80", "mask": 401671, "python_frozen_cnf_sha256": "f73c5bc81c1e75c1b324292ace83624efd1ca9f00d3ad7dfb72c269a95b9fb80", "root": "cube_F7_t11"}
+{"bytes": 15151827, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "f9d944afdae6b2ba73a85d7d3e0b00a7da686b1013292f27589dfbfa820bfd0f", "mask": 1581319, "python_frozen_cnf_sha256": "f9d944afdae6b2ba73a85d7d3e0b00a7da686b1013292f27589dfbfa820bfd0f", "root": "cube_F7_t13"}
+{"bytes": 15151827, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "4d3488e69b5b65a04025be95c9e0c8237aac80fe4ebfb372ea8e658826f25fed", "mask": 1642627, "python_frozen_cnf_sha256": "4d3488e69b5b65a04025be95c9e0c8237aac80fe4ebfb372ea8e658826f25fed", "root": "cube_F7_t14"}
+{"bytes": 15151826, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "cd3dcf59cab76e9195b0da47ffe1b419b34d5c9d23d3a3cab65186072b94eda8", "mask": 663879, "python_frozen_cnf_sha256": "cd3dcf59cab76e9195b0da47ffe1b419b34d5c9d23d3a3cab65186072b94eda8", "root": "cube_F8_t0"}
+{"bytes": 15151826, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "23a6f8d6c07d0220b4914fc83d13a16c5481efc3f2ec3d1188488659c1c6862a", "mask": 459079, "python_frozen_cnf_sha256": "23a6f8d6c07d0220b4914fc83d13a16c5481efc3f2ec3d1188488659c1c6862a", "root": "cube_F8_t1"}
+{"bytes": 15151826, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "2ee7fc53f9db811a83d52db49471ebfd585af9a18d180df13a3d5341f09edf35", "mask": 1245511, "python_frozen_cnf_sha256": "2ee7fc53f9db811a83d52db49471ebfd585af9a18d180df13a3d5341f09edf35", "root": "cube_F8_t2"}
+{"bytes": 15151826, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "d3ebb94d52cababd1a9b1979930b0f5aaaad0e9cf5716b5d331c1e4516676d2b", "mask": 1376583, "python_frozen_cnf_sha256": "d3ebb94d52cababd1a9b1979930b0f5aaaad0e9cf5716b5d331c1e4516676d2b", "root": "cube_F8_t3"}
+{"bytes": 15151826, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "7547c031d4c729a9431b1cd19fbf2b58f220a7106a0fbcbddb70602a0cfe8e1a", "mask": 1638727, "python_frozen_cnf_sha256": "7547c031d4c729a9431b1cd19fbf2b58f220a7106a0fbcbddb70602a0cfe8e1a", "root": "cube_F8_t4"}
+{"bytes": 15151826, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "ed84d0484ddd66caf5053327264800ee7e538bee1f5f1ebf973c1534e6871257", "mask": 1867847, "python_frozen_cnf_sha256": "ed84d0484ddd66caf5053327264800ee7e538bee1f5f1ebf973c1534e6871257", "root": "cube_F8_t5"}
+{"bytes": 15151826, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "2231696282f2c078d80d45be976d4fe50f928c97df576c8c0fef40915533745f", "mask": 925959, "python_frozen_cnf_sha256": "2231696282f2c078d80d45be976d4fe50f928c97df576c8c0fef40915533745f", "root": "cube_F8_t6"}
+{"bytes": 15151825, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "80d756b1d1c2eb8df411afcce2af38370e94d587d0901011412aefeec77d3c60", "mask": 1712455, "python_frozen_cnf_sha256": "80d756b1d1c2eb8df411afcce2af38370e94d587d0901011412aefeec77d3c60", "root": "cube_F9_t0"}
+{"bytes": 15151825, "clauses": 720825, "identical": true, "lean_cube_cnf_sha256": "c18551bf2fff0228ab246d773ab5057e6732d30bd8384416f21300cfa2075d70", "mask": 1507655, "python_frozen_cnf_sha256": "c18551bf2fff0228ab246d773ab5057e6732d30bd8384416f21300cfa2075d70", "root": "cube_F9_t1"}
+BASE_IDENTITY_ALL_OK
+=====RECEIPT-BEGIN=====
+{
+ "all_ok": true,
+ "count": 28,
+ "lean_term": "orderFortyNineSevenHighT0CanonicalEmptyCubeSatCnf F i",
+ "results": [
+  {
+   "bytes": 15151828,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "9ba7a01f108ba63db914dd1e89d2ce8aa32e52d1fb81e712e6851136354fbc21",
+   "mask": 1081415,
+   "python_frozen_cnf_sha256": "9ba7a01f108ba63db914dd1e89d2ce8aa32e52d1fb81e712e6851136354fbc21",
+   "root": "cube_F6_t5"
+  },
+  {
+   "bytes": 15151828,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "88d4d5d2aec446d8f3ec3f75f28f76705678b1461498ed06da49a386ace80bc5",
+   "mask": 139527,
+   "python_frozen_cnf_sha256": "88d4d5d2aec446d8f3ec3f75f28f76705678b1461498ed06da49a386ace80bc5",
+   "root": "cube_F6_t8"
+  },
+  {
+   "bytes": 15151828,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "569406015c7ee26452e76299f518fba008e36c3b7519e1d6f3f1591487af72d9",
+   "mask": 360515,
+   "python_frozen_cnf_sha256": "569406015c7ee26452e76299f518fba008e36c3b7519e1d6f3f1591487af72d9",
+   "root": "cube_F6_t14"
+  },
+  {
+   "bytes": 15151828,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "dec6221d8537ede14d953812d18b346fddb6e28595488e5c065f324be6445c28",
+   "mask": 622659,
+   "python_frozen_cnf_sha256": "dec6221d8537ede14d953812d18b346fddb6e28595488e5c065f324be6445c28",
+   "root": "cube_F6_t15"
+  },
+  {
+   "bytes": 15151828,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "b583bccaa37ecbc5d71f75345a4d1a81114d6b917e2e163378ca560f76727d4f",
+   "mask": 1085571,
+   "python_frozen_cnf_sha256": "b583bccaa37ecbc5d71f75345a4d1a81114d6b917e2e163378ca560f76727d4f",
+   "root": "cube_F6_t16"
+  },
+  {
+   "bytes": 15151828,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "46e285a83f217bea8dfd0eeb3da54c7a1d1805fdd1360badff844dd212cae2dd",
+   "mask": 331907,
+   "python_frozen_cnf_sha256": "46e285a83f217bea8dfd0eeb3da54c7a1d1805fdd1360badff844dd212cae2dd",
+   "root": "cube_F6_t17"
+  },
+  {
+   "bytes": 15151828,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "acf7bcd846e311fd26794243804a5a69e24b6961a415609302a60e09665a8e44",
+   "mask": 594051,
+   "python_frozen_cnf_sha256": "acf7bcd846e311fd26794243804a5a69e24b6961a415609302a60e09665a8e44",
+   "root": "cube_F6_t18"
+  },
+  {
+   "bytes": 15151827,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "37f2f36b11336b316c43a54e6d17054c2283dcb8644a9b5969ef0c883eae287b",
+   "mask": 139591,
+   "python_frozen_cnf_sha256": "37f2f36b11336b316c43a54e6d17054c2283dcb8644a9b5969ef0c883eae287b",
+   "root": "cube_F7_t0"
+  },
+  {
+   "bytes": 15151827,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "3115dee58497c9c92b4b9d58699cadc755f3630deb52dade1be27d360cb29c60",
+   "mask": 328007,
+   "python_frozen_cnf_sha256": "3115dee58497c9c92b4b9d58699cadc755f3630deb52dade1be27d360cb29c60",
+   "root": "cube_F7_t2"
+  },
+  {
+   "bytes": 15151827,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "89f33dd196d5c335b51cd6b27c426bed351d055d3ab6583988821fb874a8a72f",
+   "mask": 590151,
+   "python_frozen_cnf_sha256": "89f33dd196d5c335b51cd6b27c426bed351d055d3ab6583988821fb874a8a72f",
+   "root": "cube_F7_t3"
+  },
+  {
+   "bytes": 15151827,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "4648849e97b17d3e28aeb6d2a7d3f99989ecb608d898eb41ee55887cd03ea3b7",
+   "mask": 1114439,
+   "python_frozen_cnf_sha256": "4648849e97b17d3e28aeb6d2a7d3f99989ecb608d898eb41ee55887cd03ea3b7",
+   "root": "cube_F7_t4"
+  },
+  {
+   "bytes": 15151827,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "c1cca36d03731199d8fe1035347bab00f502af31f39b61bcd8320528ad8aee3d",
+   "mask": 360519,
+   "python_frozen_cnf_sha256": "c1cca36d03731199d8fe1035347bab00f502af31f39b61bcd8320528ad8aee3d",
+   "root": "cube_F7_t5"
+  },
+  {
+   "bytes": 15151827,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "f362392181acb436cfb23108237f72519da6ff732e1a74044bea8002b2d97897",
+   "mask": 622663,
+   "python_frozen_cnf_sha256": "f362392181acb436cfb23108237f72519da6ff732e1a74044bea8002b2d97897",
+   "root": "cube_F7_t6"
+  },
+  {
+   "bytes": 15151827,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "ff0c11fa8e91c63209ae045f4a81c4a5caa89b0bd1d2b2c0e0833b5b140e8f5d",
+   "mask": 1343559,
+   "python_frozen_cnf_sha256": "ff0c11fa8e91c63209ae045f4a81c4a5caa89b0bd1d2b2c0e0833b5b140e8f5d",
+   "root": "cube_F7_t8"
+  },
+  {
+   "bytes": 15151827,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "35829f55cc74b309c5cc0d870c0680ac8704cd995b61fa67c43a3036d203affb",
+   "mask": 1835079,
+   "python_frozen_cnf_sha256": "35829f55cc74b309c5cc0d870c0680ac8704cd995b61fa67c43a3036d203affb",
+   "root": "cube_F7_t9"
+  },
+  {
+   "bytes": 15151827,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "fb64663b99d27e36141a36c4ce6fb29e19e03acac37415c87dc675b4e14cfc11",
+   "mask": 541447,
+   "python_frozen_cnf_sha256": "fb64663b99d27e36141a36c4ce6fb29e19e03acac37415c87dc675b4e14cfc11",
+   "root": "cube_F7_t10"
+  },
+  {
+   "bytes": 15151827,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "f73c5bc81c1e75c1b324292ace83624efd1ca9f00d3ad7dfb72c269a95b9fb80",
+   "mask": 401671,
+   "python_frozen_cnf_sha256": "f73c5bc81c1e75c1b324292ace83624efd1ca9f00d3ad7dfb72c269a95b9fb80",
+   "root": "cube_F7_t11"
+  },
+  {
+   "bytes": 15151827,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "f9d944afdae6b2ba73a85d7d3e0b00a7da686b1013292f27589dfbfa820bfd0f",
+   "mask": 1581319,
+   "python_frozen_cnf_sha256": "f9d944afdae6b2ba73a85d7d3e0b00a7da686b1013292f27589dfbfa820bfd0f",
+   "root": "cube_F7_t13"
+  },
+  {
+   "bytes": 15151827,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "4d3488e69b5b65a04025be95c9e0c8237aac80fe4ebfb372ea8e658826f25fed",
+   "mask": 1642627,
+   "python_frozen_cnf_sha256": "4d3488e69b5b65a04025be95c9e0c8237aac80fe4ebfb372ea8e658826f25fed",
+   "root": "cube_F7_t14"
+  },
+  {
+   "bytes": 15151826,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "cd3dcf59cab76e9195b0da47ffe1b419b34d5c9d23d3a3cab65186072b94eda8",
+   "mask": 663879,
+   "python_frozen_cnf_sha256": "cd3dcf59cab76e9195b0da47ffe1b419b34d5c9d23d3a3cab65186072b94eda8",
+   "root": "cube_F8_t0"
+  },
+  {
+   "bytes": 15151826,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "23a6f8d6c07d0220b4914fc83d13a16c5481efc3f2ec3d1188488659c1c6862a",
+   "mask": 459079,
+   "python_frozen_cnf_sha256": "23a6f8d6c07d0220b4914fc83d13a16c5481efc3f2ec3d1188488659c1c6862a",
+   "root": "cube_F8_t1"
+  },
+  {
+   "bytes": 15151826,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "2ee7fc53f9db811a83d52db49471ebfd585af9a18d180df13a3d5341f09edf35",
+   "mask": 1245511,
+   "python_frozen_cnf_sha256": "2ee7fc53f9db811a83d52db49471ebfd585af9a18d180df13a3d5341f09edf35",
+   "root": "cube_F8_t2"
+  },
+  {
+   "bytes": 15151826,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "d3ebb94d52cababd1a9b1979930b0f5aaaad0e9cf5716b5d331c1e4516676d2b",
+   "mask": 1376583,
+   "python_frozen_cnf_sha256": "d3ebb94d52cababd1a9b1979930b0f5aaaad0e9cf5716b5d331c1e4516676d2b",
+   "root": "cube_F8_t3"
+  },
+  {
+   "bytes": 15151826,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "7547c031d4c729a9431b1cd19fbf2b58f220a7106a0fbcbddb70602a0cfe8e1a",
+   "mask": 1638727,
+   "python_frozen_cnf_sha256": "7547c031d4c729a9431b1cd19fbf2b58f220a7106a0fbcbddb70602a0cfe8e1a",
+   "root": "cube_F8_t4"
+  },
+  {
+   "bytes": 15151826,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "ed84d0484ddd66caf5053327264800ee7e538bee1f5f1ebf973c1534e6871257",
+   "mask": 1867847,
+   "python_frozen_cnf_sha256": "ed84d0484ddd66caf5053327264800ee7e538bee1f5f1ebf973c1534e6871257",
+   "root": "cube_F8_t5"
+  },
+  {
+   "bytes": 15151826,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "2231696282f2c078d80d45be976d4fe50f928c97df576c8c0fef40915533745f",
+   "mask": 925959,
+   "python_frozen_cnf_sha256": "2231696282f2c078d80d45be976d4fe50f928c97df576c8c0fef40915533745f",
+   "root": "cube_F8_t6"
+  },
+  {
+   "bytes": 15151825,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "80d756b1d1c2eb8df411afcce2af38370e94d587d0901011412aefeec77d3c60",
+   "mask": 1712455,
+   "python_frozen_cnf_sha256": "80d756b1d1c2eb8df411afcce2af38370e94d587d0901011412aefeec77d3c60",
+   "root": "cube_F9_t0"
+  },
+  {
+   "bytes": 15151825,
+   "clauses": 720825,
+   "identical": true,
+   "lean_cube_cnf_sha256": "c18551bf2fff0228ab246d773ab5057e6732d30bd8384416f21300cfa2075d70",
+   "mask": 1507655,
+   "python_frozen_cnf_sha256": "c18551bf2fff0228ab246d773ab5057e6732d30bd8384416f21300cfa2075d70",
+   "root": "cube_F9_t1"
+  }
+ ],
+ "schema": "erdos85-h7-base-cube-lean-identity-v1"
+}
+=====RECEIPT-END=====
+[450s] Building...
+
+=== Build succeeded ===

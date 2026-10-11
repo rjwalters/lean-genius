@@ -1,0 +1,59 @@
+{
+  "status": "PASS",
+  "production_receipt_sha256": "274b250e970ba21704ce1fc8d7acb800bdf77aceec51e54bfaeeef166ed69c56",
+  "lean_num_threads_environment": "1",
+  "scope": "One generated cover CNF only; no structural cube or stratum exclusion.",
+  "dependencies": {
+    "command": [
+      "lake",
+      "build",
+      "Proofs.Erdos85OrderFortyNineSevenHighT0CanonicalHsbLrat",
+      "Proofs.Erdos85OrderFortyNineLratCertificateBase"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 6.855196019001596,
+    "user_cpu_seconds": 5.974724,
+    "system_cpu_seconds": 1.49336,
+    "max_rss_kib": 917004,
+    "log_sha256": "05cfcec861d358a2f2d986411ff218291c0f5b13b4f594baedb10a47a0f7f0f2"
+  },
+  "result": {
+    "command": [
+      "lean",
+      "-R",
+      "/workspace/research/problems/erdos-85-wip-01/h7_cover_lean_pilot_20261008/_build/lean-first",
+      "-o",
+      "/workspace/research/problems/erdos-85-wip-01/h7_cover_lean_pilot_20261008/_build/lean-first/CoverF6T5.olean",
+      "/workspace/research/problems/erdos-85-wip-01/h7_cover_lean_pilot_20261008/_build/lean-first/CoverF6T5.lean"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 577.1131309880002,
+    "user_cpu_seconds": 575.68614,
+    "system_cpu_seconds": 1.449939,
+    "max_rss_kib": 7700740,
+    "log_sha256": "ddcf816b063ebaaf7867233145348d95110f20fcb148ba8b96b32c3034ef29ff",
+    "status": "PASS",
+    "source_sha256": "b3cc455851fc73d9972ef0a9d196777157ca829b622d69545b0a560bfe733342",
+    "olean_sha256": "91b3f8e93b6a73244450cfbbc0848866157f5a42ab88a5f76a7cf5d9e3bc7500",
+    "axiom_exports": [
+      {
+        "theorem": "Erdos85.HsbCoverPilot.F6T5.check",
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound",
+          "Erdos85.HsbCoverPilot.F6T5.check._native.native_decide.ax_1_1"
+        ]
+      },
+      {
+        "theorem": "Erdos85.HsbCoverPilot.F6T5.checkedCover",
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound",
+          "Erdos85.HsbCoverPilot.F6T5.check._native.native_decide.ax_1_1"
+        ]
+      }
+    ]
+  }
+}

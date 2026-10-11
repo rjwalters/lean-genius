@@ -1,0 +1,16 @@
+test_alarm_stops_the_batch (__main__.Batch.test_alarm_stops_the_batch) ... ok
+test_heap_exhaustion_is_recorded_not_escalated (__main__.Batch.test_heap_exhaustion_is_recorded_not_escalated) ... ok
+test_no_heap_retry_symbol_left (__main__.Batch.test_no_heap_retry_symbol_left) ... ok
+test_stop_between_items (__main__.Batch.test_stop_between_items) ... ok
+test_approved_checker (__main__.Collector.test_approved_checker) ... ok
+test_known_subset_is_not_the_full_campaign (__main__.Collector.test_known_subset_is_not_the_full_campaign) ... ok
+test_pins_are_the_reviewed_hashes (__main__.Collector.test_pins_are_the_reviewed_hashes) ... ok
+test_unknown_mixed_and_empty_selectors_are_rejected (__main__.Collector.test_unknown_mixed_and_empty_selectors_are_rejected) ... ok
+test_wrong_or_missing_checker_hash_counts_for_nothing (__main__.Collector.test_wrong_or_missing_checker_hash_counts_for_nothing) ... ok
+test_wrong_solver_hash_counts_for_nothing (__main__.Collector.test_wrong_solver_hash_counts_for_nothing) ... ok
+test_unapproved_binary_is_refused (__main__.Pins.test_unapproved_binary_is_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.015s
+
+OK

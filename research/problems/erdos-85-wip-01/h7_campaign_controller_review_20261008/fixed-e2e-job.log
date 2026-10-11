@@ -1,0 +1,33 @@
+[e85] job 20261008T061308-commit-327ec891b4b2-251246  ref=327ec891b4b26e9a88a606c78267d40e4e273517  worktree=/opt/e85/wt/commit-327ec891b4b2  started 2026-10-08T06:13:08Z
+[e85] commit 327ec891b4b26e9a88a606c78267d40e4e273517 (erdos85(h7-hsb-campaign): fix codex review findings (checker pin, selector validation, hea)
+[e85] host command: python3.12 research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/test_campaign.py 2>&1 | tail -4; bash research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/e2e_test.sh ~/h7camp/inputs ~/h7camp/e2e ~/h7pilot/bin/cadical ~/h7pilot/bin/cake_lpr 2 > ~/h7camp/e2e.log 2>&1; rc=$?; grep -E "^(PASS|FAIL|E2E|run1|cube_|== )" ~/h7camp/e2e.log; exit $rc
+----------------------------------------------------------------------
+Ran 11 tests in 0.012s
+
+OK
+== plan
+== run 1 (all rows)
+run1 wall 180s
+PASS 5 claims
+PASS 5 CERTIFIED ledgers
+PASS claim body is the instance id
+== simulated reclaim of cube_F9_t1-x0 (3 receipts survive as a partial)
+PASS re-claimed batch CERTIFIED with 3 carried
+== collect
+PASS collector rejects an unknown cube selector (exit 2)
+PASS collector sees cover + 10 leaves of cube_F6_t14
+== must-ALARM: fake checker that never verifies
+PASS unapproved checker binary is refused before any claim
+PASS ALARM + STOP written, nothing CERTIFIED
+PASS worker after STOP claims nothing
+PASS collector counts nothing from the fake-checker store
+PASS slots x (heap + 1.5 GB) over the memory budget is refused
+== cap path: 5 s cap on a batch with leaves that need 7-50 s -> INCOMPLETE, no alarm
+PASS INCOMPLETE ledger lists SOLVER_TIMEOUT leaves, no STOP
+== ledgers
+cube_F6_t14-b0000 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 1.8 checker_cpu 7.4 proof 6903610
+cube_F6_t14-b0001 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 121.7 checker_cpu 24.6 proof 248825754
+cube_F6_t14-cover i-test-a CERTIFIED 1 / 1 carried 0 solver_cpu 1.9 checker_cpu 1.6 proof 4484246
+cube_F7_t5-x0 i-test-a CERTIFIED 5 / 5 carried 0 solver_cpu 41.0 checker_cpu 12.8 proof 86813774
+cube_F9_t1-x0 i-test-b CERTIFIED 5 / 5 carried 3 solver_cpu 104.2 checker_cpu 20.9 proof 204880813
+E2E_ALL_PASS

@@ -1,0 +1,275 @@
+{
+  "status": "PREPARED_NOT_LAUNCHED",
+  "input_manifest_sha256": "f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c",
+  "source_sha256": {
+    "research/problems/erdos-85-wip-01/h7_cover_lean_admission_20261008/common.py": "50891df0e29a2dd538c4cc6fefc4cc335bb4c7cd79c3c9c1272809a7da7dd2b5",
+    "research/problems/erdos-85-wip-01/h7_cover_lean_admission_20261008/produce.py": "3e8f760fb2b20219478478a2cc443e912200c408fbf1d01b035567b779096b1c",
+    "research/problems/erdos-85-wip-01/h7_cover_lean_admission_20261008/check.py": "e5205c327a06e02417a7284f673b1aceb85a0a1609bee827d7fd51347677f12f",
+    "research/problems/erdos-85-wip-01/h7_cover_lean_pilot_20261008/produce.py": "5940a07ab28ea4bbc263ec509fc55d34389e217839360916e7c89e65a9d98f6f",
+    "research/problems/erdos-85-wip-01/h7_cover_lean_pilot_20261008/check.py": "f8ae4acabb665a2fa8448fe97333042adf7b7542673922cf90e46de84975bdec"
+  },
+  "covers": [
+    {
+      "cube": "cube_F6_t5",
+      "edge_count": 6,
+      "type_index": 5,
+      "mask": 1081415,
+      "depth": 3,
+      "cover_cnf_sha256": "1cacfbaac58d988d4396fdf24c7169d1b6d70a8f22707ad83de2e66944d995bb",
+      "leaves": 3456
+    },
+    {
+      "cube": "cube_F6_t8",
+      "edge_count": 6,
+      "type_index": 8,
+      "mask": 139527,
+      "depth": 3,
+      "cover_cnf_sha256": "064f148bbbcbaa2c1c9cf7d646ebfe1a144265b700388e82cfe30f79c8eefdf4",
+      "leaves": 20225
+    },
+    {
+      "cube": "cube_F6_t14",
+      "edge_count": 6,
+      "type_index": 14,
+      "mask": 360515,
+      "depth": 3,
+      "cover_cnf_sha256": "f5a36574dd9a0fa6a002d5a062936bdf72ff316fb0b957562a89ab38b86759f5",
+      "leaves": 893
+    },
+    {
+      "cube": "cube_F6_t15",
+      "edge_count": 6,
+      "type_index": 15,
+      "mask": 622659,
+      "depth": 3,
+      "cover_cnf_sha256": "9c6080b74eeeac6d1863897b83d52977acdf889f9c5789b77d4089a14cd9d74d",
+      "leaves": 893
+    },
+    {
+      "cube": "cube_F6_t16",
+      "edge_count": 6,
+      "type_index": 16,
+      "mask": 1085571,
+      "depth": 3,
+      "cover_cnf_sha256": "bd0cd2dd171c7d3a2a7b5f66cb91b75fc4f946883b1abab694366ae0dc205d84",
+      "leaves": 9442
+    },
+    {
+      "cube": "cube_F6_t17",
+      "edge_count": 6,
+      "type_index": 17,
+      "mask": 331907,
+      "depth": 3,
+      "cover_cnf_sha256": "d60ee49fecb34038f7e5325304697103a648748ab347f98ac0ce3eb6922614cc",
+      "leaves": 9442
+    },
+    {
+      "cube": "cube_F6_t18",
+      "edge_count": 6,
+      "type_index": 18,
+      "mask": 594051,
+      "depth": 3,
+      "cover_cnf_sha256": "70b58db4a1e41b07297830cd58ef190d81247a0e2b2fa78fac138cd187a39022",
+      "leaves": 9442
+    },
+    {
+      "cube": "cube_F7_t0",
+      "edge_count": 7,
+      "type_index": 0,
+      "mask": 139591,
+      "depth": 3,
+      "cover_cnf_sha256": "12d7ea2298425252f87b8a880d31b58d90e24c5b78432ceeaa74898482342a41",
+      "leaves": 32538
+    },
+    {
+      "cube": "cube_F7_t2",
+      "edge_count": 7,
+      "type_index": 2,
+      "mask": 328007,
+      "depth": 3,
+      "cover_cnf_sha256": "e6d32d70441fcf0bef3f6969d120046fa324df4a1bb082cfe881868cf38705c7",
+      "leaves": 11025
+    },
+    {
+      "cube": "cube_F7_t3",
+      "edge_count": 7,
+      "type_index": 3,
+      "mask": 590151,
+      "depth": 3,
+      "cover_cnf_sha256": "33185eb850a182efacf4a996118c4e42034cf4edea6bd734e934e74198d78f4d",
+      "leaves": 11025
+    },
+    {
+      "cube": "cube_F7_t4",
+      "edge_count": 7,
+      "type_index": 4,
+      "mask": 1114439,
+      "depth": 3,
+      "cover_cnf_sha256": "d4409a4d67c1836ddb36962180e1fdabc7d7eea789d300410652386db8707fbb",
+      "leaves": 11025
+    },
+    {
+      "cube": "cube_F7_t5",
+      "edge_count": 7,
+      "type_index": 5,
+      "mask": 360519,
+      "depth": 3,
+      "cover_cnf_sha256": "8129908e9b2f1dfe0009224d8d5c35232aeffb3b46fdd7af809a34a353b468d8",
+      "leaves": 3456
+    },
+    {
+      "cube": "cube_F7_t6",
+      "edge_count": 7,
+      "type_index": 6,
+      "mask": 622663,
+      "depth": 3,
+      "cover_cnf_sha256": "1112fe832cb30ebebb08ae1544410cb1e61b2643bc4022601a98d424d1ec152b",
+      "leaves": 3456
+    },
+    {
+      "cube": "cube_F7_t8",
+      "edge_count": 7,
+      "type_index": 8,
+      "mask": 1343559,
+      "depth": 3,
+      "cover_cnf_sha256": "82b27d4a6052a8fb911e143f04da4be9ebafdfc560cefa770f2f30f907d1273b",
+      "leaves": 3456
+    },
+    {
+      "cube": "cube_F7_t9",
+      "edge_count": 7,
+      "type_index": 9,
+      "mask": 1835079,
+      "depth": 3,
+      "cover_cnf_sha256": "095b1693dfc4cb017af5d8ba653b3efe5a0a13d0e703dd8e9d5ce381161f231c",
+      "leaves": 3456
+    },
+    {
+      "cube": "cube_F7_t10",
+      "edge_count": 7,
+      "type_index": 10,
+      "mask": 541447,
+      "depth": 3,
+      "cover_cnf_sha256": "8799776e6625c187ff528df455156ce37cbc012efdeef53a7e96358496341866",
+      "leaves": 50772
+    },
+    {
+      "cube": "cube_F7_t11",
+      "edge_count": 7,
+      "type_index": 11,
+      "mask": 401671,
+      "depth": 3,
+      "cover_cnf_sha256": "9db2aa8e354498a3f2072ae92a6c308e10e0c9dc35d6cc616ded3a5a58532db1",
+      "leaves": 20225
+    },
+    {
+      "cube": "cube_F7_t13",
+      "edge_count": 7,
+      "type_index": 13,
+      "mask": 1581319,
+      "depth": 3,
+      "cover_cnf_sha256": "e8e34f48403bfa6b33b31d78d233b585f3e12cca759d3f106720e365c855822d",
+      "leaves": 20225
+    },
+    {
+      "cube": "cube_F7_t14",
+      "edge_count": 7,
+      "type_index": 14,
+      "mask": 1642627,
+      "depth": 3,
+      "cover_cnf_sha256": "f949f7608bae779570b1e0b181663de40acac9fc9280eb906c4b672b617f042b",
+      "leaves": 9442
+    },
+    {
+      "cube": "cube_F8_t0",
+      "edge_count": 8,
+      "type_index": 0,
+      "mask": 663879,
+      "depth": 3,
+      "cover_cnf_sha256": "76760fa7da97c5e9825d1e2ee80b6b853bec2af8bcdb5eb8f65305e646437aa4",
+      "leaves": 32538
+    },
+    {
+      "cube": "cube_F8_t1",
+      "edge_count": 8,
+      "type_index": 1,
+      "mask": 459079,
+      "depth": 3,
+      "cover_cnf_sha256": "b2552b508bcbdc5e5531464d1b3e552685f99579616b13f803e5765fb795bc76",
+      "leaves": 11025
+    },
+    {
+      "cube": "cube_F8_t2",
+      "edge_count": 8,
+      "type_index": 2,
+      "mask": 1245511,
+      "depth": 3,
+      "cover_cnf_sha256": "4c8a3fc584d3d79d889bc93603c2f82f0c3b2e78e11486a13911a3ff863fcc25",
+      "leaves": 11025
+    },
+    {
+      "cube": "cube_F8_t3",
+      "edge_count": 8,
+      "type_index": 3,
+      "mask": 1376583,
+      "depth": 3,
+      "cover_cnf_sha256": "45b6ae5e9f0039ded41c035c00317b09b6e3b601c179b5e66552a04faf69f7fb",
+      "leaves": 11025
+    },
+    {
+      "cube": "cube_F8_t4",
+      "edge_count": 8,
+      "type_index": 4,
+      "mask": 1638727,
+      "depth": 3,
+      "cover_cnf_sha256": "94b6bea071daa17d25e70260405156ac2050b1671d6ab79a8c238b78dd169aee",
+      "leaves": 11025
+    },
+    {
+      "cube": "cube_F8_t5",
+      "edge_count": 8,
+      "type_index": 5,
+      "mask": 1867847,
+      "depth": 3,
+      "cover_cnf_sha256": "01274e9e8667b2d1bbf71fe4e79043461609170e4ad96dc8e7b63baee46c7094",
+      "leaves": 3456
+    },
+    {
+      "cube": "cube_F8_t6",
+      "edge_count": 8,
+      "type_index": 6,
+      "mask": 925959,
+      "depth": 3,
+      "cover_cnf_sha256": "4ad97de13d3e68e954db880da67ddf950ecb2151b854a60d4af5dcce359584a3",
+      "leaves": 20225
+    },
+    {
+      "cube": "cube_F9_t0",
+      "edge_count": 9,
+      "type_index": 0,
+      "mask": 1712455,
+      "depth": 3,
+      "cover_cnf_sha256": "df019508c193591b98130e8b1600f05c72d8d63b4be65f3fc6ff3bf755123d3b",
+      "leaves": 32538
+    },
+    {
+      "cube": "cube_F9_t1",
+      "edge_count": 9,
+      "type_index": 1,
+      "mask": 1507655,
+      "depth": 3,
+      "cover_cnf_sha256": "f6babadfa2db16098c06510cca5ff206c5e75e3bdd1acf0bda3795648b07cd81",
+      "leaves": 11025
+    }
+  ],
+  "prior_pilot": {
+    "cube": "cube_F6_t5",
+    "status": "AUDITED_PILOT_AVAILABLE_FOR_REUSE",
+    "run_sha256": "44741af6ed1f4dcbd44b470c1ad57f898fa006033d6eb2d7191f1eda02100727",
+    "olean_sha256": "91b3f8e93b6a73244450cfbbc0848866157f5a42ab88a5f76a7cf5d9e3bc7500",
+    "namespace": "Erdos85.HsbCoverPilot.F6T5",
+    "note": "Recheck retained artifact and object hashes before using the existing proof."
+  },
+  "new_covers_pending": 27,
+  "scope": "Optional cover-only admission after campaign/input freeze; no all-leaf replay."
+}

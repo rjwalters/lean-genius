@@ -1,0 +1,95 @@
+{
+  "reviewed_commit": "1cab73ef2a2780161d98ac389068acbb54b9002b",
+  "unknown_cube_selector": {
+    "exit_code": 0,
+    "summary": {
+      "all_complete": true,
+      "cake_lpr_sha256": [],
+      "cubes": {},
+      "inputs_json_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "result_files": 0,
+      "schema": "erdos85-h7-hsb-campaign-summary-v1",
+      "totals": {
+        "certified_leaves": 0,
+        "checker_cpu_hours": 0,
+        "leaves": 0,
+        "missing_leaves": 0,
+        "proof_bytes": 0,
+        "solver_cpu_hours": 0
+      }
+    }
+  },
+  "approved_checker_control": {
+    "exit_code": 0,
+    "summary": {
+      "all_complete": true,
+      "cake_lpr_sha256": [
+        "4d47ffdd19fc6a80e24025f8c5d27d89c4309c9931bdad6d389d87e35be5464b"
+      ],
+      "cubes": {
+        "cube_fixture": {
+          "alarm_receipts": 0,
+          "certified_leaves": 1,
+          "checker_cpu_hours": 0.0,
+          "complete": true,
+          "cover_certified": true,
+          "first_missing": [],
+          "leaves": 1,
+          "max_solver_cpu_seconds": 1,
+          "missing_leaves": 0,
+          "other_non_certified_receipts": 0,
+          "proof_bytes": 1,
+          "solver_cpu_hours": 0.0
+        }
+      },
+      "inputs_json_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "result_files": 1,
+      "schema": "erdos85-h7-hsb-campaign-summary-v1",
+      "totals": {
+        "certified_leaves": 1,
+        "checker_cpu_hours": 0.0,
+        "leaves": 1,
+        "missing_leaves": 0,
+        "proof_bytes": 1,
+        "solver_cpu_hours": 0.0
+      }
+    }
+  },
+  "unapproved_checker_fixture": {
+    "exit_code": 0,
+    "summary": {
+      "all_complete": true,
+      "cake_lpr_sha256": [
+        "0000000000000000000000000000000000000000000000000000000000000000"
+      ],
+      "cubes": {
+        "cube_fixture": {
+          "alarm_receipts": 0,
+          "certified_leaves": 1,
+          "checker_cpu_hours": 0.0,
+          "complete": true,
+          "cover_certified": true,
+          "first_missing": [],
+          "leaves": 1,
+          "max_solver_cpu_seconds": 1,
+          "missing_leaves": 0,
+          "other_non_certified_receipts": 0,
+          "proof_bytes": 1,
+          "solver_cpu_hours": 0.0
+        }
+      },
+      "inputs_json_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "result_files": 1,
+      "schema": "erdos85-h7-hsb-campaign-summary-v1",
+      "totals": {
+        "certified_leaves": 1,
+        "checker_cpu_hours": 0.0,
+        "leaves": 1,
+        "missing_leaves": 0,
+        "proof_bytes": 1,
+        "solver_cpu_hours": 0.0
+      }
+    }
+  },
+  "scope": "Metadata-only reproduction of old collector behavior. Checker fixtures stub only Cube and decompression; the selector case uses neither stub. No solver, Lean, real CNF, network operation, or cloud mutation."
+}
