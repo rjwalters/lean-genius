@@ -1,0 +1,28 @@
+{
+ "iid": "i-0bb73b844e2d00959",
+ "instance_type": "r8g.12xlarge",
+ "utc": "2026-10-09T00:17:23Z",
+ "slots": 48,
+ "alive_slots": 48,
+ "batches_done": 5,
+ "items_done": 74,
+ "errors": 0,
+ "statuses": {
+  "CERTIFIED": 5
+ },
+ "active": {
+  "3": "cube_F6_t16-b0000",
+  "4": "cube_F6_t18-b0000",
+  "2": "cube_F7_t10-b0000",
+  "6": "cube_F8_t0-b0000",
+  "7": "cube_F9_t0-b0000",
+  "21": "<claiming>"
+ },
+ "final": false,
+ "loadavg": [
+  6.25,
+  5.57,
+  3.15
+ ],
+ "work_free_gib": 185.4
+}

@@ -1,0 +1,32 @@
+{
+  "utc": "2026-10-09T03:28:48.018560+00:00",
+  "commands": {
+    "cube_F6_t14.cover.json": [
+      "s3",
+      "cp",
+      "--only-show-errors",
+      "s3://2am-erdos85-certs/sat49/h7hsb-20261008-canary/covers-retained/cube_F6_t14.cover.json",
+      "-"
+    ],
+    "cube_F7_t10.cover.json": [
+      "s3",
+      "cp",
+      "--only-show-errors",
+      "s3://2am-erdos85-certs/sat49/h7hsb-20261008-canary/covers-retained/cube_F7_t10.cover.json",
+      "-"
+    ],
+    "builder.json": [
+      "ec2",
+      "describe-instances",
+      "--instance-ids",
+      "i-04a61ff360a07bef2",
+      "--query",
+      "Reservations[].Instances[].{Id:InstanceId,State:State.Name,LaunchTime:LaunchTime}"
+    ]
+  },
+  "retained_sha256": {
+    "builder.json": "c47bd5bdeaec88156516f4d2bb553457cb4e96b7b48f8c592694fc547a0176cb",
+    "cube_F6_t14.cover.json": "812bf3619176ccbb4fcb5834c265d8f9e5bf35efad72a384c96519de04633d9c",
+    "cube_F7_t10.cover.json": "cfbc7e7e8be542c32ee5c78cf9b723777f89d3fecb35ba616c803371e21bc6be"
+  }
+}

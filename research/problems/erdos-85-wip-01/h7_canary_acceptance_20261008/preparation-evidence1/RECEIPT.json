@@ -1,0 +1,18 @@
+{
+  "status": "CANARY_INPUT_PREPARATION_RETAINED",
+  "job": "20261008T152813-erdos85__h3-triple-formal-20261007-613037",
+  "execution_commit": "25a893dc893e970b28b54258d6631a0a70e092c4",
+  "authoritative_exit": 0,
+  "expected_items": 386,
+  "canary_verified": false,
+  "full_campaign_verified": false,
+  "retained_sha256": {
+    "job.log": "1037bc7cb75f9cf7802f72da3380e0e444df4b9cd22c9d409d6d43be96fc447b",
+    "job.spec": "a3fe94c524f3750c676ad84053da2c5b04ca680d4497ec5260f19a44543f63ad",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "prepare_inputs.py": "d770c3f5ef8cf8003fe33c7ca126a3a90030208e8b540071c431457f1a1f3e13",
+    "validate.py": "037eb8da1d6f91bd1965b27da6b9ac0236c95ff83329cec3accf65de0670872e",
+    "test_validate.py": "74624f8eba412175b8eec038efffc8c30a9ff4110efb236244a95b7ea767b4f1",
+    "EXPECTED.json": "dbd866038055ef2751ca876f10d0591c134bceaa2d57f0b80c735557530ab8a6"
+  }
+}

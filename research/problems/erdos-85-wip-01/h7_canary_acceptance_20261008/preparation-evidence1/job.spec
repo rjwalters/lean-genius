@@ -1,0 +1,11 @@
+MODE=host
+REF=erdos85/h3-triple-formal-20261007
+TARGET=''
+CMD=python3\ -B\ research/problems/erdos-85-wip-01/h7_canary_acceptance_20261008/prepare_inputs.py\ --inputs\ /home/ec2-user/h7camp/inputs\ --output\ research/problems/erdos-85-wip-01/h7_canary_acceptance_20261008/EXPECTED.json
+MEM_GB=16
+TIMEOUT=3m
+THREADS=1
+CACHE=0
+CPUS=2
+VOLUME=''
+FULL=1

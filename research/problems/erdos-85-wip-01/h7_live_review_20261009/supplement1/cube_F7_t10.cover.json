@@ -1,0 +1,50 @@
+{
+ "binaries": {
+  "cadical": "fd601b827c2f6e72c255dd27d6bfa9d7f982414181195fe3ea07ec81385772a2",
+  "cake_lpr": "4d47ffdd19fc6a80e24025f8c5d27d89c4309c9931bdad6d389d87e35be5464b"
+ },
+ "checker": "cake_lpr: s VERIFIED UNSAT (on this exact file pair)",
+ "cnf": {
+  "bytes": 33861614,
+  "file": "cube_F7_t10.cover.cnf",
+  "sha256": "8799776e6625c187ff528df455156ce37cbc012efdeef53a7e96358496341866"
+ },
+ "cube": "cube_F7_t10",
+ "depth": 3,
+ "edge_count": 7,
+ "extension": {
+  "cover_clauses": 50772,
+  "cover_sha256": "372a46f4005403ee10b2b93717ca7509390eaaa3704b78a4f3142e9e43f79ac2",
+  "cube_clauses": 720825,
+  "cube_cnf_sha256": "fb64663b99d27e36141a36c4ce6fb29e19e03acac37415c87dc675b4e14cfc11",
+  "hsb_clauses": 295994,
+  "hsb_sha256": "0e62843ffdf0d568527187a912d52076e411a565d6ac0cabdd1bf40165c7ddbe",
+  "order": [
+   "cube",
+   "hsb",
+   "cover"
+  ],
+  "total_clauses": 1067591
+ },
+ "finished_utc": "2026-10-09T00:08:04Z",
+ "host": "ip-172-31-12-164.ec2.internal",
+ "lean_statement": "SevenHighT0CanonicalHsbCoverChecked 3 F i (SevenHighT0Hsb.leaves 3 mask)",
+ "mask": 541447,
+ "proof": {
+  "bytes": 85020728,
+  "file": "cube_F7_t10.cover.lrat",
+  "format": "CaDiCaL 3.0.1 binary LRAT (--lrat=true --binary=true)",
+  "sha256": "0d50480eded8b39fb152c66026e1ff4bfa57d836dc435f6f4f5fe2badab67c33"
+ },
+ "schema": "erdos85-h7-hsb-retained-cover-v1",
+ "solver": {
+  "conflicts": 261587,
+  "cpu_seconds": 33.52,
+  "decisions": 439116,
+  "propagations": 27714777,
+  "returncode": 20,
+  "unsat_line": true,
+  "wall_seconds": 33.52823090553284
+ },
+ "variables": 17633
+}

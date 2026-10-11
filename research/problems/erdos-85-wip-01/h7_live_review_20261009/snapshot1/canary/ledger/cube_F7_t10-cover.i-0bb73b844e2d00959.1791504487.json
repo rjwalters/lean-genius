@@ -1,0 +1,34 @@
+{
+ "id": "cube_F7_t10-cover",
+ "cube": "cube_F7_t10",
+ "kind": "cover",
+ "node": "i-0bb73b844e2d00959",
+ "instance_type": "r8g.12xlarge",
+ "slot": 1,
+ "status": "CERTIFIED",
+ "items": 1,
+ "ran": 1,
+ "certified": 1,
+ "carried": 0,
+ "statuses": {
+  "CERTIFIED": 1
+ },
+ "batch_returncode": 0,
+ "not_certified": [],
+ "results_key": "sat49/h7hsb-20261008-canary/results/cube_F7_t10-cover.i-0bb73b844e2d00959.1791504487.jsonl.zst",
+ "results_sha256": "59ee921fda8be039c0787811f9e1610f4f104654a8865c9ab7137d3d09d0ed82",
+ "receipts_sha256": "3c678bac39da30d1117600742bacca7d20b1fd8b68e4c0dd685e9d497986f19d",
+ "proof_bytes": 85020728,
+ "solver_cpu_seconds": 33.52,
+ "checker_cpu_seconds": 5.9048545360565186,
+ "max_solver_cpu_seconds": 33.52,
+ "retained": [
+  "cube_F7_t10.cover.cnf",
+  "cube_F7_t10.cover.lrat",
+  "cube_F7_t10.cover.json"
+ ],
+ "inputs_json_sha256": "f2d2be89aeee6603201649a70a64a6cdf4f20acc6e9268d502f686f0d39dcb6c",
+ "manifest_sha256": "0deb438f9bd7f5cfb840fd799330e6b80e70a043b21f96fcf0737c826515290c",
+ "checkout_head": "729127aa817263475e7aa0c65c3db34a65da3389",
+ "stderr_tail": null
+}

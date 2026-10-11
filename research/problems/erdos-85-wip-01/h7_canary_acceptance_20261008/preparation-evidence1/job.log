@@ -1,0 +1,4 @@
+[e85] job 20261008T152813-erdos85__h3-triple-formal-20261007-613037  ref=erdos85/h3-triple-formal-20261007  worktree=/opt/e85/wt/erdos85__h3-triple-formal-20261007  started 2026-10-08T15:28:13Z
+[e85] commit 25a893dc893e970b28b54258d6631a0a70e092c4 (Prepare independent H7 canary receipt and transition checks)
+[e85] host command: python3 -B research/problems/erdos-85-wip-01/h7_canary_acceptance_20261008/prepare_inputs.py --inputs /home/ec2-user/h7camp/inputs --output research/problems/erdos-85-wip-01/h7_canary_acceptance_20261008/EXPECTED.json
+{"status": "CANARY_INPUT_IDENTITIES_PREPARED", "output_sha256": "dbd866038055ef2751ca876f10d0591c134bceaa2d57f0b80c735557530ab8a6", "batches": 8, "items": 386, "canary_verified": false}

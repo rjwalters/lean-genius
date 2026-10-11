@@ -1,0 +1,34 @@
+{
+ "utc": "2026-10-09T03:19:19Z",
+ "pass": "h7hsb",
+ "live_instances": 3,
+ "instances_seen": 5,
+ "estimated_spend_usd": 3.56,
+ "queue": 12605,
+ "claimed": 475,
+ "finished": 283,
+ "statuses": {
+  "CERTIFIED": 283
+ },
+ "orphans_released": 0,
+ "control": [],
+ "certified_batches": 283,
+ "certified_items": 1048,
+ "solver_cpu_hours": 59.4,
+ "proof_tb": 0.223,
+ "hard_stop_usd": 160.0,
+ "prefix": "sat49/h7hsb-20261008",
+ "orphans_released_this_pass": 0,
+ "orphans_released_total": 112,
+ "orphan_release_passes": [
+  {
+   "utc": "2026-10-09T02:19:48Z",
+   "released": 48
+  },
+  {
+   "utc": "2026-10-09T02:43:11Z",
+   "released": 64
+  }
+ ],
+ "incomplete_batches": 0
+}

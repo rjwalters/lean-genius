@@ -1,0 +1,68 @@
+{
+    "LaunchTemplateVersions": [
+        {
+            "LaunchTemplateId": "lt-07329f425d7867404",
+            "LaunchTemplateName": "e85-h7hsb-20261008",
+            "VersionNumber": 1,
+            "CreateTime": "2026-10-09T02:02:03+00:00",
+            "CreatedBy": "arn:aws:iam::221082181346:user/2am-admin",
+            "DefaultVersion": true,
+            "LaunchTemplateData": {
+                "IamInstanceProfile": {
+                    "Name": "Erdos85H7HsbWorker"
+                },
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/xvda",
+                        "Ebs": {
+                            "DeleteOnTermination": true,
+                            "VolumeSize": 40,
+                            "VolumeType": "gp3"
+                        }
+                    }
+                ],
+                "ImageId": "ami-065b1b834d2a83a7a",
+                "InstanceInitiatedShutdownBehavior": "terminate",
+                "UserData": "IyEvYmluL2Jhc2gKZXhlYyA+PiAvdmFyL2xvZy9lODUtdXNlcmRhdGEubG9nIDI+JjEKc2V0IC11CmV4cG9ydCBIT01FPS9yb290IEFXU19ERUZBVUxUX1JFR0lPTj11cy1lYXN0LTEKZXhwb3J0IEU4NV9JTlBVVFNfU0hBPSdmMmQyYmU4OWFlZWU2NjAzMjAxNjQ5YTcwYTY0YTZjZGY0ZjIwYWNjNmU5MjY4ZDUwMmY2ODZmMGQzOWRjYjZjJyBFODVfTUFOSUZFU1RfU0hBPScwZGViNDM4ZjliZDdmNWNmYjg0MGZkNzk5MzMwZTZiODBlNzBhMDQzYjIxZjk2ZmNmMDczN2M4MjY1MTUyOTBjJyBFODVfTUFOSUZFU1RfS0VZPScnIEU4NV9MSUZFVElNRT0nMTI5NjAwJyBFODVfT05MWT0nJyBFODVfSEVBUF9NQj0nNjAwMCcgRTg1X0NBUD0nNzIwMCcgRTg1X01BWF9CQVRDSEVTPScwJyBFODVfUEFSVElBTF9TRUNPTkRTPSc2MDAnIEU4NV9QUkVGSVg9J3NhdDQ5L2g3aHNiLTIwMjYxMDA4JwpUT0tFTj0kKGN1cmwgLXMgLVggUFVUIGh0dHA6Ly8xNjkuMjU0LjE2OS4yNTQvbGF0ZXN0L2FwaS90b2tlbiAtSCAnWC1hd3MtZWMyLW1ldGFkYXRhLXRva2VuLXR0bC1zZWNvbmRzOiA2MDAnKQpJSUQ9JChjdXJsIC1zIC1IICJYLWF3cy1lYzItbWV0YWRhdGEtdG9rZW46ICRUT0tFTiIgaHR0cDovLzE2OS4yNTQuMTY5LjI1NC9sYXRlc3QvbWV0YS1kYXRhL2luc3RhbmNlLWlkKQpkaWUoKSB7IGVjaG8gIlVTRVJEQVRBLUZBSUw6ICQqIjsgYXdzIHMzIGNwIC0tb25seS1zaG93LWVycm9ycyAvdmFyL2xvZy9lODUtdXNlcmRhdGEubG9nIHMzOi8vMmFtLWVyZG9zODUtY2VydHMvc2F0NDkvaDdoc2ItMjAyNjEwMDgvbm9kZXMvJElJRC91c2VyZGF0YS1GQUlMRUQubG9nOyAvdXNyL3NiaW4vcG93ZXJvZmY7IGV4aXQgMTsgfQpmb3IgdCBpbiAxIDIgMyA0IDU7IGRvIGRuZiAteSBpbnN0YWxsIGdpdCAmJiBicmVhazsgc2xlZXAgMzA7IGRvbmUKY29tbWFuZCAtdiBnaXQgfHwgZGllICJnaXQgaW5zdGFsbCIKbWtkaXIgLXAgL29wdC9lODUgJiYgY2QgL29wdC9lODUKZm9yIHQgaW4gMSAyIDM7IGRvIGdpdCBjbG9uZSAtLWZpbHRlcj1ibG9iOm5vbmUgLS1uby1jaGVja291dCAtLWRlcHRoIDMwMCAtLXNpbmdsZS1icmFuY2ggLWIgZXJkb3M4NS9oN3QwLWZvcm1hbC0yMDI2MTAwNyBodHRwczovL2dpdGh1Yi5jb20vcmp3YWx0ZXJzL2xlYW4tZ2VuaXVzIHJlcG8gJiYgYnJlYWs7IHJtIC1yZiByZXBvOyBzbGVlcCAzMDsgZG9uZQpjZCAvb3B0L2U4NS9yZXBvIHx8IGRpZSAiY2xvbmUiCmdpdCBzcGFyc2UtY2hlY2tvdXQgc2V0IC0tbm8tY29uZSAnL3Jlc2VhcmNoL3Byb2JsZW1zL2VyZG9zLTg1LXdpcC0wMS9oN19oc2JfY2FtcGFpZ25fMjAyNjEwMDgvKicgJy9yZXNlYXJjaC9wcm9ibGVtcy9lcmRvcy04NS13aXAtMDEvaDFfY2VydF9mdWxsXzIwMjYxMDAxL2NlcnRfcm93LnB5JyB8fCBkaWUgInNwYXJzZSIKZ2l0IGNoZWNrb3V0IC0tZGV0YWNoIDcyOTEyN2FhODE3IHx8IGRpZSAiY2hlY2tvdXQgNzI5MTI3YWE4MTciCmV4ZWMgYmFzaCByZXNlYXJjaC9wcm9ibGVtcy9lcmRvcy04NS13aXAtMDEvaDdfaHNiX2NhbXBhaWduXzIwMjYxMDA4L2NlcnRfYm9vdHN0cmFwLnNoCg==",
+                "TagSpecifications": [
+                    {
+                        "ResourceType": "instance",
+                        "Tags": [
+                            {
+                                "Key": "project",
+                                "Value": "e85-h7hsb-20261008"
+                            },
+                            {
+                                "Key": "Name",
+                                "Value": "e85-h7hsb-20261008"
+                            }
+                        ]
+                    },
+                    {
+                        "ResourceType": "volume",
+                        "Tags": [
+                            {
+                                "Key": "project",
+                                "Value": "e85-h7hsb-20261008"
+                            },
+                            {
+                                "Key": "Name",
+                                "Value": "e85-h7hsb-20261008"
+                            }
+                        ]
+                    }
+                ],
+                "SecurityGroupIds": [
+                    "sg-02f2b41865caa365e"
+                ],
+                "MetadataOptions": {
+                    "HttpTokens": "required",
+                    "HttpEndpoint": "enabled"
+                }
+            },
+            "Operator": {
+                "Managed": false
+            }
+        }
+    ]
+}

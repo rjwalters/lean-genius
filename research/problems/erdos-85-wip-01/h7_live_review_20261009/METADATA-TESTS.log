@@ -1,0 +1,11 @@
+test_batch_exception_releases_capacity (builtins.Reservation.test_batch_exception_releases_capacity) ... ok
+test_one_batch_limit_holds_with_a_slow_store (builtins.Reservation.test_one_batch_limit_holds_with_a_slow_store) ... ok
+test_slot_waits_for_orphaned_claims_instead_of_exiting (builtins.Reservation.test_slot_waits_for_orphaned_claims_instead_of_exiting) ... ok
+test_stop_expiry_empty_and_store_errors_release_capacity (builtins.Reservation.test_stop_expiry_empty_and_store_errors_release_capacity) ... ok
+test_unlimited_mode_still_runs_available_batches (builtins.Reservation.test_unlimited_mode_still_runs_available_batches) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.291s
+
+OK
+{"status": "METADATA_AND_MOCKED_CONTROL_CHECKS_PASS", "reservation_tests": 5, "rejected_receipt_mutations": 13, "manifest_rows": 12605, "leaf_coverage": 377776, "covers": 28, "manifest_sha256": "0deb438f9bd7f5cfb840fd799330e6b80e70a043b21f96fcf0737c826515290c", "cloud_calls": 0}

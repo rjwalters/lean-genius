@@ -1,0 +1,28 @@
+{
+ "iid": "i-0833a782bacb5625e",
+ "instance_type": "r7g.16xlarge",
+ "utc": "2026-10-09T00:50:40Z",
+ "slots": 64,
+ "alive_slots": 64,
+ "batches_done": 2,
+ "items_done": 128,
+ "errors": 0,
+ "statuses": {
+  "CERTIFIED": 2
+ },
+ "active": {
+  "40": "cube_F6_t16-b0000",
+  "1": "cube_F8_t0-b0000",
+  "4": "cube_F9_t0-b0000",
+  "17": "<claiming>",
+  "34": "<claiming>",
+  "14": "<claiming>"
+ },
+ "final": false,
+ "loadavg": [
+  4.24,
+  4.55,
+  4.27
+ ],
+ "work_free_gib": 247.3
+}

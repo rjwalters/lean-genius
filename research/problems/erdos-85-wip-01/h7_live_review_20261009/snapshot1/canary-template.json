@@ -1,0 +1,68 @@
+{
+    "LaunchTemplateVersions": [
+        {
+            "LaunchTemplateId": "lt-0dcb4a71cfd5de065",
+            "LaunchTemplateName": "e85-h7hsb-20261008-canary",
+            "VersionNumber": 3,
+            "CreateTime": "2026-10-08T23:50:10+00:00",
+            "CreatedBy": "arn:aws:iam::221082181346:user/2am-admin",
+            "DefaultVersion": false,
+            "LaunchTemplateData": {
+                "IamInstanceProfile": {
+                    "Name": "Erdos85H7HsbWorker"
+                },
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/xvda",
+                        "Ebs": {
+                            "DeleteOnTermination": true,
+                            "VolumeSize": 40,
+                            "VolumeType": "gp3"
+                        }
+                    }
+                ],
+                "ImageId": "ami-065b1b834d2a83a7a",
+                "InstanceInitiatedShutdownBehavior": "terminate",
+                "UserData": "IyEvYmluL2Jhc2gKZXhlYyA+PiAvdmFyL2xvZy9lODUtdXNlcmRhdGEubG9nIDI+JjEKc2V0IC11CmV4cG9ydCBIT01FPS9yb290IEFXU19ERUZBVUxUX1JFR0lPTj11cy1lYXN0LTEKZXhwb3J0IEU4NV9JTlBVVFNfU0hBPSdmMmQyYmU4OWFlZWU2NjAzMjAxNjQ5YTcwYTY0YTZjZGY0ZjIwYWNjNmU5MjY4ZDUwMmY2ODZmMGQzOWRjYjZjJyBFODVfTUFOSUZFU1RfU0hBPScwZGViNDM4ZjliZDdmNWNmYjg0MGZkNzk5MzMwZTZiODBlNzBhMDQzYjIxZjk2ZmNmMDczN2M4MjY1MTUyOTBjJyBFODVfTUFOSUZFU1RfS0VZPScnIEU4NV9MSUZFVElNRT0nMTgwMDAnIEU4NV9PTkxZPSdjdWJlX0Y2X3QxNC1jb3ZlcixjdWJlX0Y3X3QxMC1jb3ZlcixjdWJlX0Y2X3QxNC1oMDAwMCxjdWJlX0Y2X3QxNC1oMDAwMSxjdWJlX0Y2X3QxNi1iMDAwMCxjdWJlX0Y2X3QxOC1iMDAwMCxjdWJlX0Y3X3QxMC1iMDAwMCxjdWJlX0Y3X3QxMy1iMDAwMCxjdWJlX0Y4X3QwLWIwMDAwLGN1YmVfRjlfdDAtYjAwMDAnIEU4NV9IRUFQX01CPSc2MDAwJyBFODVfQ0FQPSc3MjAwJyBFODVfTUFYX0JBVENIRVM9JzAnIEU4NV9QQVJUSUFMX1NFQ09ORFM9JzEyMCcgRTg1X1BSRUZJWD0nc2F0NDkvaDdoc2ItMjAyNjEwMDgtY2FuYXJ5JwpUT0tFTj0kKGN1cmwgLXMgLVggUFVUIGh0dHA6Ly8xNjkuMjU0LjE2OS4yNTQvbGF0ZXN0L2FwaS90b2tlbiAtSCAnWC1hd3MtZWMyLW1ldGFkYXRhLXRva2VuLXR0bC1zZWNvbmRzOiA2MDAnKQpJSUQ9JChjdXJsIC1zIC1IICJYLWF3cy1lYzItbWV0YWRhdGEtdG9rZW46ICRUT0tFTiIgaHR0cDovLzE2OS4yNTQuMTY5LjI1NC9sYXRlc3QvbWV0YS1kYXRhL2luc3RhbmNlLWlkKQpkaWUoKSB7IGVjaG8gIlVTRVJEQVRBLUZBSUw6ICQqIjsgYXdzIHMzIGNwIC0tb25seS1zaG93LWVycm9ycyAvdmFyL2xvZy9lODUtdXNlcmRhdGEubG9nIHMzOi8vMmFtLWVyZG9zODUtY2VydHMvc2F0NDkvaDdoc2ItMjAyNjEwMDgtY2FuYXJ5L25vZGVzLyRJSUQvdXNlcmRhdGEtRkFJTEVELmxvZzsgL3Vzci9zYmluL3Bvd2Vyb2ZmOyBleGl0IDE7IH0KZm9yIHQgaW4gMSAyIDMgNCA1OyBkbyBkbmYgLXkgaW5zdGFsbCBnaXQgJiYgYnJlYWs7IHNsZWVwIDMwOyBkb25lCmNvbW1hbmQgLXYgZ2l0IHx8IGRpZSAiZ2l0IGluc3RhbGwiCm1rZGlyIC1wIC9vcHQvZTg1ICYmIGNkIC9vcHQvZTg1CmZvciB0IGluIDEgMiAzOyBkbyBnaXQgY2xvbmUgLS1maWx0ZXI9YmxvYjpub25lIC0tbm8tY2hlY2tvdXQgLS1kZXB0aCAzMDAgLS1zaW5nbGUtYnJhbmNoIC1iIGVyZG9zODUvaDd0MC1mb3JtYWwtMjAyNjEwMDcgaHR0cHM6Ly9naXRodWIuY29tL3Jqd2FsdGVycy9sZWFuLWdlbml1cyByZXBvICYmIGJyZWFrOyBybSAtcmYgcmVwbzsgc2xlZXAgMzA7IGRvbmUKY2QgL29wdC9lODUvcmVwbyB8fCBkaWUgImNsb25lIgpnaXQgc3BhcnNlLWNoZWNrb3V0IHNldCAtLW5vLWNvbmUgJy9yZXNlYXJjaC9wcm9ibGVtcy9lcmRvcy04NS13aXAtMDEvaDdfaHNiX2NhbXBhaWduXzIwMjYxMDA4LyonICcvcmVzZWFyY2gvcHJvYmxlbXMvZXJkb3MtODUtd2lwLTAxL2gxX2NlcnRfZnVsbF8yMDI2MTAwMS9jZXJ0X3Jvdy5weScgfHwgZGllICJzcGFyc2UiCmdpdCBjaGVja291dCAtLWRldGFjaCA3MjkxMjdhYTgxNyB8fCBkaWUgImNoZWNrb3V0IDcyOTEyN2FhODE3IgpleGVjIGJhc2ggcmVzZWFyY2gvcHJvYmxlbXMvZXJkb3MtODUtd2lwLTAxL2g3X2hzYl9jYW1wYWlnbl8yMDI2MTAwOC9jZXJ0X2Jvb3RzdHJhcC5zaAo=",
+                "TagSpecifications": [
+                    {
+                        "ResourceType": "instance",
+                        "Tags": [
+                            {
+                                "Key": "project",
+                                "Value": "e85-h7hsb-20261008-canary"
+                            },
+                            {
+                                "Key": "Name",
+                                "Value": "e85-h7hsb-20261008-canary"
+                            }
+                        ]
+                    },
+                    {
+                        "ResourceType": "volume",
+                        "Tags": [
+                            {
+                                "Key": "project",
+                                "Value": "e85-h7hsb-20261008-canary"
+                            },
+                            {
+                                "Key": "Name",
+                                "Value": "e85-h7hsb-20261008-canary"
+                            }
+                        ]
+                    }
+                ],
+                "SecurityGroupIds": [
+                    "sg-02f2b41865caa365e"
+                ],
+                "MetadataOptions": {
+                    "HttpTokens": "required",
+                    "HttpEndpoint": "enabled"
+                }
+            },
+            "Operator": {
+                "Managed": false
+            }
+        }
+    ]
+}

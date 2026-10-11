@@ -1,0 +1,46 @@
+2026-10-09T03:09:25Z
+ 03:09:25 up  2:13,  0 users,  load average: 1.04, 1.39, 2.28
+               total        used        free      shared  buff/cache   available
+Mem:             494           6         486           0           1         485
+Swap:              0           0           0
+tmpfs           248G   21M  248G   1% /dev/shm
+    PID    PPID STAT ELAPSED %CPU   RSS COMMAND         COMMAND
+ 180728   39349 S         71 93.5 113572 cadical        /usr/local/bin/cadical -t 7200 --lrat=true --binary=true /dev/shm/h7camp/cube_F8_t0.leaf1087.39349.1791515293496278133/input.cnf /dev/shm/h7camp
+ 180727   39349 R         71 14.6 6150744 cake_lpr      /usr/local/bin/cake_lpr /dev/shm/h7camp/cube_F8_t0.leaf1087.39349.1791515293496278133/input.cnf /dev/shm/h7camp/cube_F8_t0.leaf1087.39349.179151
+  39349   36991 Sl      7834  0.3 75456 python3.12      /usr/bin/python3.12 -B /opt/e85/repo/research/problems/erdos-85-wip-01/h7_hsb_campaign_20261008/cert_batch.py --inputs /scratch/inputs --batch {
+      1       0 Ss      8004  0.0 16752 systemd         /usr/lib/systemd/systemd --switched-root --system --deserialize=32
+      2       0 S       8004  0.0     0 kthreadd        [kthreadd]
+      3       2 S       8004  0.0     0 pool_workqueue_ [pool_workqueue_release]
+      4       2 I<      8004  0.0     0 kworker/R-rcu_g [kworker/R-rcu_gp]
+      5       2 I<      8004  0.0     0 kworker/R-sync_ [kworker/R-sync_wq]
+      6       2 I<      8004  0.0     0 kworker/R-kvfre [kworker/R-kvfree_rcu_reclaim]
+      7       2 I<      8004  0.0     0 kworker/R-slub_ [kworker/R-slub_flushwq]
+      8       2 I<      8004  0.0     0 kworker/R-netns [kworker/R-netns]
+     10       2 I<      8004  0.0     0 kworker/0:0H-ev [kworker/0:0H-events_highpri]
+     13       2 I<      8004  0.0     0 kworker/R-mm_pe [kworker/R-mm_percpu_wq]
+     14       2 S       8004  0.0     0 ksoftirqd/0     [ksoftirqd/0]
+     15       2 I       8004  0.0     0 rcu_sched       [rcu_sched]
+     16       2 S       8004  0.0     0 rcu_exp_par_gp_ [rcu_exp_par_gp_kthread_worker/1]
+     17       2 S       8004  0.0     0 rcu_exp_gp_kthr [rcu_exp_gp_kthread_worker]
+     18       2 S       8004  0.0     0 migration/0     [migration/0]
+     19       2 S       8004  0.0     0 cpuhp/0         [cpuhp/0]
+     20       2 S       8004  0.0     0 cpuhp/1         [cpuhp/1]
+     21       2 S       8004  0.0     0 migration/1     [migration/1]
+     22       2 S       8004  0.0     0 ksoftirqd/1     [ksoftirqd/1]
+     24       2 I<      8004  0.0     0 kworker/1:0H-ev [kworker/1:0H-events_highpri]
+     25       2 S       8004  0.0     0 cpuhp/2         [cpuhp/2]
+     26       2 S       8004  0.0     0 migration/2     [migration/2]
+     27       2 S       8004  0.0     0 ksoftirqd/2     [ksoftirqd/2]
+     29       2 I<      8004  0.0     0 kworker/2:0H-ev [kworker/2:0H-events_highpri]
+     30       2 S       8004  0.0     0 cpuhp/3         [cpuhp/3]
+     31       2 S       8004  0.0     0 migration/3     [migration/3]
+     32       2 S       8004  0.0     0 ksoftirqd/3     [ksoftirqd/3]
+     34       2 I<      8004  0.0     0 kworker/3:0H-ev [kworker/3:0H-events_highpri]
+     35       2 S       8004  0.0     0 cpuhp/4         [cpuhp/4]
+     36       2 S       8004  0.0     0 migration/4     [migration/4]
+     37       2 S       8004  0.0     0 ksoftirqd/4     [ksoftirqd/4]
+     39       2 I<      8004  0.0     0 kworker/4:0H-ev [kworker/4:0H-events_highpri]
+     40       2 S       8004  0.0     0 cpuhp/5         [cpuhp/5]
+     41       2 S       8004  0.0     0 migration/5     [migration/5]
+     42       2 S       8004  0.0     0 ksoftirqd/5     [ksoftirqd/5]
+     43       2 I       8004  0.0     0 kworker/5:0-eve [kworker/5:0-events]
