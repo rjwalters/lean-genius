@@ -1,0 +1,11 @@
+MODE=build
+REF=erdos85/h5-formal-20261008
+TARGET=Proofs.Erdos85OrderFortyNineFiveHighTwoFiber
+CMD=''
+MEM_GB=32
+TIMEOUT=1h
+THREADS=4
+CACHE=0
+CPUS=16
+VOLUME=''
+FULL=0

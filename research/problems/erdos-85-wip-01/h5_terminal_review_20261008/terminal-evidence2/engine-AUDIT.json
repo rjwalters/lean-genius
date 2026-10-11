@@ -1,0 +1,90 @@
+{
+  "status": "CONDITIONAL_SPLIT_CHAIN_BUILD_AUDIT_PASS",
+  "job": "20261008T102318-erdos85__h5-formal-20261008-409207",
+  "execution_commit": "6e85c306db71d4080850edfc4ef5436544cc2997",
+  "review_commit": "6e85c306db71d4080850edfc4ef5436544cc2997",
+  "authoritative_exit": 0,
+  "job_log_sha256": "1f891867306358fbf899a5232a059d8b5236a79cdacc08eadd081525971e7f3f",
+  "retained_files_sha256": {
+    "job.log": "1f891867306358fbf899a5232a059d8b5236a79cdacc08eadd081525971e7f3f",
+    "job.spec": "38b1274c58e36cf9283feff577b0053e68913288463cc74c285b63be2fa93cea",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "Erdos85H3PairEngine.lean": "6f84fc3a0de0bbc170d98b7a85824b1c84282fbcf4f2824267cac96bf3b37625",
+    "Erdos85H5Engine.lean": "7e39050eeef3acda6f578a321a148873961e3a09b332776806cc3236b842638a",
+    "Erdos85H5Bridge.lean": "81f0128eb80a6509f30c2962636d1865678480f167c7ad01fd890f34851b3205"
+  },
+  "results": [
+    {
+      "module": "Erdos85H3PairEngine",
+      "source_sha256": "6f84fc3a0de0bbc170d98b7a85824b1c84282fbcf4f2824267cac96bf3b37625",
+      "olean_sha256": "35c3cba5f6e9e8526ecc31c6471e591baafbe9a816641e50856b882cef440222",
+      "olean_bytes": 2095936,
+      "olean_mtime": 1791455014.379877,
+      "fresh_build_elapsed": "9.8s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H3Pair.search_sound",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85H5Engine",
+      "source_sha256": "7e39050eeef3acda6f578a321a148873961e3a09b332776806cc3236b842638a",
+      "olean_sha256": "a70da513a95fac71dbab06bcedf1d91faf6bbce1aa24585c246d276d03a9af4e",
+      "olean_bytes": 2492824,
+      "olean_mtime": 1791455026.030168,
+      "fresh_build_elapsed": "11s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H5.search_sound",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.H5.parts_sound",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "Erdos85H5Bridge",
+      "source_sha256": "81f0128eb80a6509f30c2962636d1865678480f167c7ad01fd890f34851b3205",
+      "olean_sha256": "1ecb095d48ef4b380851a8c57e177fe01f51d1dd543007dc52cfcb271cefcd3c",
+      "olean_bytes": 207608,
+      "olean_mtime": 1791455037.3504512,
+      "fresh_build_elapsed": "8.6s",
+      "axiom_exports": [
+        {
+          "theorem": "Erdos85.H5.model_of_constraints",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "Erdos85.H5.fiveHighCanonicalRepresentativeExcluded_of_parts",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ]
+    }
+  ],
+  "scope": "Fresh shared H3PairEngine, H5Engine and H5Bridge; conditional canonical representative exclusion only. No native result, whole-cell or stratum exclusion.",
+  "auditor_sha256": "c050459f9bd3681f9d633454cdbd9997768190da3ee03278f147b87e624e137a"
+}
