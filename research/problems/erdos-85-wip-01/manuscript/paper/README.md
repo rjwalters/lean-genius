@@ -1,29 +1,42 @@
-# Manuscript of record (2026-10-07); version 10 draft (2026-10-11)
+# Manuscript (version 10, 2026-10-11)
 
-**Version 10 draft (in review, branch `erdos85/paper-v10-20261011`).** `main.tex`/`main.pdf` here are the
-v10 draft, edited directly from v9 after the H3/H5 Lean exclusions, the conditional order-49 capstone
-(`Erdos85OrderFortyNineCapstoneH3`, 601/607/604 axioms) and the completed H7 ($t=0$) certificate campaign
-(`../../h7_hsb_campaign_20261008/receipts/collected/`). The upper side is now a Lean theorem conditional on
-two explicit UNSAT hypotheses (H1, H7), each supported by cake_lpr checks outside Lean. Claim review by codex
-in the room (53233, 53240); not yet re-run through the anvil review/audit lifecycle. Version 9 below remains
-the last AUDITED version.
+`main.tex`, `refs.bib`, `anvil-paper.cls` and `main.pdf` are byte copies of
+[version 10](../anvil/erdos85-drop.10/) (anvil thread `erdos85-drop`). Title: **A Drop at Forty-Nine in
+Erdős Problem 85**; authors Claude Fable, GPT Sol, Astra, Claude Opus and Robb Walters.
 
-Current: `main.tex`, `refs.bib`, `anvil-paper.cls`, and `main.pdf` are byte copies
-of [version 9](../anvil/erdos85-drop.9/). Title: **A Drop at Forty-Nine in Erdős
-Problem 85**; authors Claude Fable, GPT Sol, Astra, Claude Opus, and Robb Walters.
-The version 9 [review](../anvil/erdos85-drop.9.review/verdict.md) records 39/44
-and advancement with no critical flags; its [audit](../anvil/erdos85-drop.9.audit/flags.md)
-records AUDITED with no critical flags and a clean four-pass XeLaTeX build.
-The audit status concerns the manuscript and does not make the computational
-upper bound a Lean theorem: the H3, H5, and H7 zero-triple exclusions remain
-open in Lean, as disclosed in the paper.
+**Status of the result (v10).** The upper side $f(49)\le 7$ is the Lean theorem
+`not_c4FreeMinDegreeWitness_fortyNine_seven_of_h1_h7Evidence`, conditional on exactly two explicit
+unsatisfiability hypotheses: the 13,351 H1 orbit formulas and the 28 cover + 377,776 leaf formulas of H7 with
+no triple. Both families are cake_lpr-checked outside Lean (H7: `../../h7_hsb_campaign_20261008/receipts/collected/`,
+one leaf via a split composed in Lean). H3 and H5 are excluded in Lean. Axioms: 601/607/604 = 3 standard +
+598/604/601 `native_decide`, no `sorry`, validated on the release assembly by fresh endpoint compilation against
+accepted, hash-pinned dependency objects (`../../release_assembly_20261011/README.md`), not a cold rebuild.
+Not an unconditional Lean theorem; nothing is claimed about Erdős Problem 85 itself.
 
-Version 9 corrects the earlier H3 certificate attribution, scopes
-certificate checking to H1 and H7 with positive triple count, and uses the
-operator's revised title. The current source also identifies the small-stratum
-reviews as reviews by the AI authors, not human referees.
+**Lifecycle (v10).** Operator-override status pass (iteration 10 of 8): edited directly by claude, provenance in
+[`erdos85-drop.9.operator`](../anvil/erdos85-drop.9.operator/operator.md) (agent-transcribed operator
+instruction, not a human review); claim review by codex in the room (PASS at r4, message 53248; independent
+campaign-totals and citation checks 53251-53252). Anvil review and audit of `erdos85-drop.10`: see the
+`erdos85-drop.10.review/` and `erdos85-drop.10.audit/` sidecars once written.
 
-## History (2026-09-28 record)
+Build: `xelatex main && bibtex main && xelatex main && xelatex main` (fontspec; not pdflatex).
+
+Links: every artifact reference is `\repofile{path}{label}` under `\repobase`, pinned to release-assembly commit
+`1d0772cd825462f5230f224c2110231c6483d5e4`; repoint `\repobase` at the release tag when it is created (R-LINK).
+
+`../DRAFT.md` and `../DRAFT.pdf` are the superseded Markdown draft kept for history.
+
+## History: version 9 record (2026-10-07)
+
+Version 9 (review 39/44, advance, no critical flags; audit AUDITED, no critical flags) was the manuscript of
+record until v10. As of 2026-10-07 it stated that the H3, H5 and H7 zero-triple exclusions were open in Lean and
+rested on reviewed arguments; v10 supersedes that status. Version 9 corrected the earlier H3 certificate
+attribution, scoped certificate checking to H1 and H7 with positive triple count, used the operator's revised
+title, and identified the small-stratum reviews as reviews by the AI authors. Its
+[audit flags](../anvil/erdos85-drop.9.audit/flags.md) record release preconditions and citation-support
+limitations as dated snapshots.
+
+## History: earlier records (2026-09-28 to 2026-10-08; superseded)
 
 `main.tex`, `refs.bib`, `anvil-paper.cls` and `main.pdf` are byte copies of `../anvil/erdos85-drop.5/`, the version that reached AUDITED in the anvil paper lifecycle (review 38/44, advance, 0 critical flags; audit 0 critical, 0 major, 0 minor, 2 nits). Lifecycle history: v1 17/44 → v2 32/44 → v3 35/44 (audit BLOCK on H7 cell attribution and the five-vs-seven formula count) → v4 37/44 AUDITED → operator read-through rules R-AUD and R-LINK (`../anvil/erdos85-drop/BRIEF.md`) → v5 38/44 AUDITED.
 
