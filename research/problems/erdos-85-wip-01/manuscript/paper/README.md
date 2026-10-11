@@ -4,7 +4,7 @@
 [version 11](../anvil/erdos85-drop.11/) (anvil thread `erdos85-drop`). Title: **A Drop at Forty-Nine in
 Erdős Problem 85**; authors Claude Fable, GPT Sol, Astra, Claude Opus and Robb Walters.
 
-**Status of the result (v10).** The upper side $f(49)\le 7$ is the Lean theorem
+**Status of the result (v11).** The upper side $f(49)\le 7$ is derived in Lean by
 `not_c4FreeMinDegreeWitness_fortyNine_seven_of_h1_h7Evidence`, conditional on exactly two explicit
 unsatisfiability hypotheses: the 13,351 H1 orbit formulas and the 28 cover + 377,776 leaf formulas of H7 with
 no triple. Both families are cake_lpr-checked outside Lean (H7: `../../h7_hsb_campaign_20261008/receipts/collected/`,
@@ -13,11 +13,18 @@ one leaf via a split composed in Lean). H3 and H5 are excluded in Lean. Axioms: 
 accepted, hash-pinned dependency objects (`../../release_assembly_20261011/README.md`), not a cold rebuild.
 Not an unconditional Lean theorem; nothing is claimed about Erdős Problem 85 itself.
 
-**Lifecycle (v10).** Operator-override status pass (iteration 10 of 8): edited directly by claude, provenance in
-[`erdos85-drop.9.operator`](../anvil/erdos85-drop.9.operator/operator.md) (agent-transcribed operator
-instruction, not a human review); claim review by codex in the room (PASS at r4, message 53248; independent
-campaign-totals and citation checks 53251-53252). Anvil review of `erdos85-drop.10`: 37/44, advance; audit: BLOCK on two wording/sourcing flags, fixed in
-`erdos85-drop.11` (see its changelog). Review and audit of `.11`: see `erdos85-drop.11.review/` and `.11.audit/` once written.
+**Lifecycle (v11).** The [review](../anvil/erdos85-drop.11.review/verdict.md) advances at 40/44 with no
+critical or major findings, and the [author audit](../anvil/erdos85-drop.11.audit/flags.md) reports no
+unresolved critical findings. These are AI-author checks, not an independent external or human review.
+The v10 wording and sourcing flags are resolved in the [v11 changelog](../anvil/erdos85-drop.11/changelog.md).
+The historical iteration-override provenance remains in
+[the existing operator record](../anvil/erdos85-drop.9.operator/operator.md), which is agent-transcribed.
+
+**Editable next version.** [Version 12](../anvil/erdos85-drop.12/) incorporates the published H7 inputs and
+remaining review edits. It is still in progress, with an explicit pending cold-build audit, and is not
+the manuscript of record. The files in this directory remain the frozen v11 copies. The certificate
+publication supersedes v11's availability statement; the [current build record](../../release_cold_build_20261011/README.md)
+describes the running verification attempt without claiming its success.
 
 Build: `xelatex main && bibtex main && xelatex main && xelatex main` (fontspec; not pdflatex).
 

@@ -16,9 +16,9 @@ No READY/AUDITED or publication decision is recorded here.
 | .11.review (generic n1) | Two “now superseded” phrases | Removed “now”; made the chronology explicit where appropriate. |
 | .11.review (generic n2) | $225 estimate qualifier and sources | Added “controller estimates” and linked both source receipts. |
 | .11.review (generic n3) | “Previously settled” | Changed to “previously known”; novelty remains qualified. |
-| .11.review (generic n4) | Operator-ceiling clause in linked H7 README | Outstanding: update the supporting receipt before final pin. |
+| .11.review (generic n4) | Operator-ceiling clause in linked H7 README | Removed from the supporting receipt on this draft branch; final artifact re-pin remains outstanding. |
 | .11.review (generic n5) | H5 table check count | States 40 search parts and 18 cover/cardinality checks. |
-| .11.review (BRIEF advisory) | Stale historical claim | Outstanding: reconcile the BRIEF and manuscript README with current evidence. |
+| .11.review (BRIEF advisory) | Stale historical claim | Updated the BRIEF current claim and factual amendment; manuscript README now records v11 review/audit and distinguishes editable v12 from the manuscript of record. |
 | .11.audit (citation limits) | Ten sources unverified locally, three partial | Preserved as audit limits; no claim that the revision verifies those sources. Bibliography unchanged. |
 | .11.numeric / .11.pending / .11.audience | Existing deterministic checks | Prior clean numeric/pending results are not reused as new results. Prior audience hits were verified macro-expansion false positives. The new draft contains an intentional pending cold-build marker. |
 
@@ -29,8 +29,8 @@ procedure. This is an interim artifact pin; the final version must link the
 terminal result and reviewed integration snapshot. Download success from a
 separate AWS account has not been tested.
 
-Remaining work: terminal cold-build evidence/audit; supporting-document
-corrections; final pin; complete render, link, numeric, claim, peer review
+Remaining work: terminal cold-build evidence/audit; final pin; complete
+render, link, numeric, claim, peer review
 and author audit checks. A successful source rebuild would not discharge
 the explicit H1/H7 UNSAT hypotheses, the emitter identity gap or the
 native_decide trust assumptions.
