@@ -154,7 +154,8 @@ def build(plan, out):
         if not obj.is_file() or obj.is_symlink() or obj.stat().st_size == 0:
             raise ValueError("Missing fresh output: " + name)
         row.update({"source_sha256": sha(source), "object_sha256": sha(obj),
-                    "object_bytes": obj.stat().st_size, "exports": exports(text)})
+                    "object_bytes": obj.stat().st_size, "exports": exports(text),
+                    "warning_count": len(re.findall(r"\bwarning:", text))})
         if name == RUNTIME:
             plugin_command = ["leanc", "-O3", "-DLEAN_EXPORTING", "-shared", "-fPIC",
                               str(cfile), "-o", str(library)]

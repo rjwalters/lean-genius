@@ -113,6 +113,14 @@ class Controls(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "Source/dependency drift"):
                 run.validate_inputs({"sources": {}}, prepare.ROOT)
 
+    def test_real_accepted_endpoint_axiom_format(self):
+        root = prepare.ROOT / "research/problems/erdos-85-wip-01"
+        expected = json.loads((root / "order49_h3_closed_capstone_20261008/PLAN.json").read_text())["exports"]
+        raw = (root / "release_assembly_20261011/evidence1/Erdos85FiniteDropCapstone.log").read_text()
+        actual = run.exports(raw)
+        self.assertEqual(actual, expected)
+        self.assertEqual([len(row["axioms"]) for row in actual], [601, 607, 604])
+
 
 if __name__ == "__main__":
     unittest.main()

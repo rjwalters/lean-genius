@@ -76,9 +76,14 @@ After the publication/path patch is merged and the 13 hash-verified files are
 present at the relative include locations, generate a new plan (no Lean):
 
 ```sh
+AWS_PROFILE=2am-admin proofs/scripts/fetch-h7-certificates.sh
 python3 -B research/problems/erdos-85-wip-01/release_cold_build_20261011/prepare.py --output /tmp/erdos85-cold-plan.json
 python3 -B -m unittest discover -s research/problems/erdos-85-wip-01/release_cold_build_20261011 -p 'test_*.py' -v
 ```
+
+The builder must also run the fetch script before its input preflight; its
+instance role needs requester-pays GetObject access. Do not assume the
+builder's older absolute-path copies satisfy the new relative includes.
 
 Review the plan, commit it with the runner, then pin that execution commit.
 Prepare the cloud job using the existing builder with `--full --mem 110
