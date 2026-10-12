@@ -1,0 +1,14 @@
+Proofs/Erdos85PrimeFourierNonsquare.lean:62:4: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/Erdos85PrimeFourierNonsquare.lean:76:10: warning: This simp argument is unused:
+  exceptional
+
+Hint: Omit it from the simp argument list.
+  simp ̵[̵e̵x̵c̵e̵p̵t̵i̵o̵n̵a̵l̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

@@ -1,0 +1,26 @@
+Proofs/Erdos85FrequencyPairMixed.lean:164:0: warning: automatically included section variable(s) unused in theorem `Erdos85.cycle_recurrence_nat`:
+  [NeZero n]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [NeZero n] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85FrequencyPairMixed.lean:310:0: warning: automatically included section variable(s) unused in theorem `Erdos85.blockDiagonal'_smul_blocks`:
+  [Fintype C]
+  [∀ (c : C), NeZero (ℓ c)]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype C] [∀ (c : C), NeZero (ℓ c)] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85FrequencyPairMixed.lean:491:5: warning: Variable name `hp` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/Erdos85FrequencyPairMixed.lean:597:0: warning: automatically included section variable(s) unused in theorem `Erdos85.mixed_diag_block_apply_eq_zero_row`:
+  [Field K]
+  [Fintype C]
+  [DecidableEq C]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Field K] [Fintype C] [DecidableEq C] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`

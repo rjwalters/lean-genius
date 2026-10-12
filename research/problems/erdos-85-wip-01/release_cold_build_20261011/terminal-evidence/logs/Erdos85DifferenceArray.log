@@ -1,0 +1,45 @@
+Proofs/Erdos85DifferenceArray.lean:28:0: warning: automatically included section variable(s) unused in theorem `Erdos85.everyInvolutionHasFixedPoint_of_odd`:
+  [DecidableEq I]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq I] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85DifferenceArray.lean:48:0: warning: automatically included section variable(s) unused in theorem `Erdos85.subset_diagonal_biUnion_of_symmetric_unique_rows`:
+  [DecidableEq I]
+  [Fintype Z]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq I] [Fintype Z] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85DifferenceArray.lean:95:24: warning: Variable name `hr3` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/Erdos85DifferenceArray.lean:134:10: warning: This simp argument is unused:
+  hone0
+
+Hint: Omit it from the simp argument list.
+  simp [̵h̵o̵n̵e̵0̵,̵ ̵h̵o̵n̵e̵0̵.̵s̵y̵m̵m̵,̵[̲h̲o̲n̲e̲0̲.̲s̲y̲m̲m̲,̲ hnegone0, hnegone0.symm, hminus, hminus.symm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85DifferenceArray.lean:134:29: warning: This simp argument is unused:
+  hnegone0
+
+Hint: Omit it from the simp argument list.
+  simp [hone0, hone0.symm, h̵n̵e̵g̵o̵n̵e̵0̵,̵ ̵hnegone0.symm, hminus, hminus.symm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85DifferenceArray.lean:135:6: warning: This simp argument is unused:
+  hminus
+
+Hint: Omit it from the simp argument list.
+  simp [hone0, hone0.symm, hnegone0, hnegone0.symm, h̵m̵i̵n̵u̵s̵,̵ ̵hminus.symm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85DifferenceArray.lean:199:0: warning: automatically included section variable(s) unused in theorem `Erdos85.sum_diagonal_orderedDifference_card_eq_of_trace`:
+  [DecidableEq I]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq I] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`

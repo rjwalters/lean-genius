@@ -1,0 +1,9 @@
+Proofs/Erdos85OrderFortyNineSevenHighT0CanonicalCnfC4Witness.lean:153:12: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+'Erdos85.sevenHighT0Canonical_fourCross_not_all_adj' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos85.sevenHighT0CanonicalEdgeStatusValue_low_low' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos85.sevenHighT0CanonicalEdgeStatusValue_eq_adj' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos85.SevenHighT0CanonicalCompletionSemantics.exists_missing_cross_edge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

@@ -1,0 +1,110 @@
+Proofs/Erdos85EdgeSlideCriterion.lean:172:26: warning: This simp argument is unused:
+  Sym2.eq_iff
+
+Hint: Omit it from the simp argument list.
+  simp [edgeSlide, addEdge, SimpleGraph.deleteEdges_adj,
+  ̵  ̵ ̵ ̵SimpleGraph.edge_adj, S̵y̵m̵2̵.̵e̵q̵_̵i̵f̵f̵,̵ ̵hxy, hxy.symm, hxz,
+  ̲  ̲ ̲ ̲hxz.symm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85EdgeSlideCriterion.lean:172:44: warning: This simp argument is unused:
+  hxy.symm
+
+Hint: Omit it from the simp argument list.
+  simp [edgeSlide, addEdge, SimpleGraph.deleteEdges_adj,
+  ̵  ̵ ̵ ̵SimpleGraph.edge_adj, Sym2.eq_iff, hxy,
+  ̲ h̵x̵y̵.̵s̵y̵m̵m̵,̵  ̲ ̲hxz, hxz.symm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85EdgeSlideCriterion.lean:172:59: warning: This simp argument is unused:
+  hxz.symm
+
+Hint: Omit it from the simp argument list.
+  simp [edgeSlide, addEdge, SimpleGraph.deleteEdges_adj, SimpleGraph.edge_adj, Sym2.eq_iff, hxy,
+  ̲  ̲ ̲ ̲hxy.symm, h̵x̵z̵,̵ ̵h̵x̵z̵.̵s̵y̵m̵m̵]̵h̲x̲z̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85EdgeSlideCriterion.lean:172:69: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+Proofs/Erdos85EdgeSlideCriterion.lean:182:26: warning: This simp argument is unused:
+  Sym2.eq_iff
+
+Hint: Omit it from the simp argument list.
+  simp [edgeSlide, addEdge, SimpleGraph.deleteEdges_adj,
+  ̵  ̵ ̵ ̵SimpleGraph.edge_adj, S̵y̵m̵2̵.̵e̵q̵_̵i̵f̵f̵,̵ ̵hxy, hxy.symm, hyz,
+  ̲  ̲ ̲ ̲hyz.symm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85EdgeSlideCriterion.lean:182:39: warning: This simp argument is unused:
+  hxy
+
+Hint: Omit it from the simp argument list.
+  simp [edgeSlide, addEdge, SimpleGraph.deleteEdges_adj,
+  ̵  ̵ ̵ ̵SimpleGraph.edge_adj, Sym2.eq_iff,
+  ̲ h̵x̵y̵,̵  ̲ ̲hxy.symm, hyz, hyz.symm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85EdgeSlideCriterion.lean:182:59: warning: This simp argument is unused:
+  hyz.symm
+
+Hint: Omit it from the simp argument list.
+  simp [edgeSlide, addEdge, SimpleGraph.deleteEdges_adj,
+  ̵  ̵ ̵ ̵SimpleGraph.edge_adj, Sym2.eq_iff, hxy,
+  ̲  ̲ ̲ ̲hxy.symm, hyz,̵ ̵h̵y̵z̵.̵s̵y̵m̵m̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85EdgeSlideCriterion.lean:182:69: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+Proofs/Erdos85EdgeSlideCriterion.lean:193:26: warning: This simp argument is unused:
+  Sym2.eq_iff
+
+Hint: Omit it from the simp argument list.
+  simp [edgeSlide, addEdge, SimpleGraph.deleteEdges_adj, SimpleGraph.edge_adj, S̵y̵m̵2̵.̵e̵q̵_̵i̵f̵f̵,̵ ̵hxy, hxy.symm, hxz,
+  ̲  ̲ ̲ ̲hxz.symm, hyz, hyz.symm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85EdgeSlideCriterion.lean:193:39: warning: This simp argument is unused:
+  hxy
+
+Hint: Omit it from the simp argument list.
+  simp [edgeSlide, addEdge, SimpleGraph.deleteEdges_adj, SimpleGraph.edge_adj, Sym2.eq_iff,
+  ̲  ̲ ̲ ̲h̵x̵y̵,̵ ̵hxy.symm, hxz, hxz.symm, hyz, hyz.symm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85EdgeSlideCriterion.lean:193:44: warning: This simp argument is unused:
+  hxy.symm
+
+Hint: Omit it from the simp argument list.
+  simp [edgeSlide, addEdge, SimpleGraph.deleteEdges_adj, SimpleGraph.edge_adj, Sym2.eq_iff, hxy,
+  ̲  ̲ ̲ ̲h̵x̵y̵.̵s̵y̵m̵m̵,̵ ̵hxz, hxz.symm, hyz, hyz.symm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85EdgeSlideCriterion.lean:193:54: warning: This simp argument is unused:
+  hxz
+
+Hint: Omit it from the simp argument list.
+  simp [edgeSlide, addEdge, SimpleGraph.deleteEdges_adj, SimpleGraph.edge_adj, Sym2.eq_iff, hxy,
+  ̲  ̲ ̲ ̲hxy.symm, h̵x̵z̵,̵ ̵hxz.symm, hyz, hyz.symm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85EdgeSlideCriterion.lean:194:6: warning: This simp argument is unused:
+  hyz
+
+Hint: Omit it from the simp argument list.
+  simp [edgeSlide, addEdge, SimpleGraph.deleteEdges_adj, SimpleGraph.edge_adj, Sym2.eq_iff, hxy,
+  ̲  ̲ ̲ ̲hxy.symm, hxz, hxz.symm, h̵y̵z̵,̵ ̵hyz.symm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85EdgeSlideCriterion.lean:194:21: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+Proofs/Erdos85EdgeSlideCriterion.lean:204:26: warning: This simp argument is unused:
+  Sym2.eq_iff
+
+Hint: Omit it from the simp argument list.
+  simp [edgeSlide, addEdge, SimpleGraph.deleteEdges_adj,
+  ̵  ̵ ̵ ̵SimpleGraph.edge_adj, S̵y̵m̵2̵.̵e̵q̵_̵i̵f̵f̵,̵ ̵hvx, hvy, hvz]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

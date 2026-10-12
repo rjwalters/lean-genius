@@ -1,0 +1,46 @@
+Proofs/Erdos85FrequencyPairTransport.lean:54:8: warning: automatically included section variable(s) unused in theorem `Erdos85.labeledAdjMatrix_apply`:
+  [Fintype V]
+  [DecidableEq V]
+  [Fintype C]
+  [DecidableEq C]
+  [NeZero r]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] [DecidableEq V] [Fintype C] [DecidableEq C] [NeZero r] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85FrequencyPairTransport.lean:59:0: warning: automatically included section variable(s) unused in theorem `Erdos85.adjMatrix_map_intCast`:
+  [Fintype V]
+  [DecidableEq V]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] [DecidableEq V] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85FrequencyPairTransport.lean:68:0: warning: automatically included section variable(s) unused in theorem `Erdos85.submatrix_defect_eq_cycleDefectMatrix`:
+  [Fintype C]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype C] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85FrequencyPairTransport.lean:174:0: warning: automatically included section variable(s) unused in theorem `Erdos85.labeledAdjMatrix_isSymm`:
+  [Fintype V]
+  [DecidableEq V]
+  [Fintype C]
+  [DecidableEq C]
+  [NeZero r]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] [DecidableEq V] [Fintype C] [DecidableEq C] [NeZero r] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85FrequencyPairTransport.lean:182:0: warning: automatically included section variable(s) unused in theorem `Erdos85.labeledAdjMatrix_diag_translationInvariant`:
+  [Fintype C]
+  [DecidableEq C]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype C] [DecidableEq C] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85FrequencyPairTransport.lean:204:0: warning: automatically included section variable(s) unused in theorem `Erdos85.sum_labeledAdjMatrix_diag_eq_anchorMultiplicity`:
+  [DecidableEq C]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq C] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
