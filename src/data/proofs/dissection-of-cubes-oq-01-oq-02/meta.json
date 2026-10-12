@@ -93,12 +93,26 @@
  },
  "sections": [
   {
+   "id": "imports",
+   "title": "Imports: the Two Sibling Files",
+   "startLine": 1,
+   "endLine": 6,
+   "summary": "Mathlib.Tactic, Data.Finset.Basic, Data.Real.Basic for the combinatorics/arithmetic, plus the two sibling files this entry packages: Proofs.DissectionOfCubesOQ01 (the lower bound at_least_two_colliding_cubes) and Proofs.DissectionOfCubesOQ01OQ01 (the achievability witness example_has_minimal_collision)."
+  },
+  {
    "id": "header",
    "title": "Question, Answer, and the Combinatorial Caveat",
    "startLine": 7,
    "endLine": 48,
    "summary": "Module docstring. States the parent open question (the actual minimum of collidingCubes.card) and its answer — exactly 2 — as the package of the sibling lower bound (at_least_two_colliding_cubes) and achievability witness (example_has_minimal_collision). Flags that a third witness makes the spectrum nontrivial, and records the honest caveat that CubeDissection.covers_unit_cube is a True placeholder, so every claim is about the combinatorial model (containment + interior-disjointness), not the full 3D tiling.",
    "mathContext": "$\\min\\{(\\text{collidingCubes}\\,d).\\mathrm{card} : d \\text{ nonempty}\\} = 2$ in the combinatorial model."
+  },
+  {
+   "id": "namespace-setup",
+   "title": "Opens and Namespace",
+   "startLine": 49,
+   "endLine": 55,
+   "summary": "Opens the DissectionOfCubes, DissectionOfCubesOQ01, and DissectionOfCubesOQ01OQ01 namespaces (bringing collidingCubes and the sibling constructions into scope unqualified) and declares this file's own DissectionOfCubesOQ01OQ02 namespace, immediately before Section 1 begins."
   },
   {
    "id": "collision-spectrum",
