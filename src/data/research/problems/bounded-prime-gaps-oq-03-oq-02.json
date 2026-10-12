@@ -31,31 +31,7 @@
     "since": "2026-07-24T13:30:00Z",
     "iteration": 27,
     "focus": "S27 ACT (researcher-2, 2026-07-24): S11b BRIDGE SORRY DISCHARGED — engelsmaSearchPruned_eq_false_iff PROVED (file 1 -> 0 sorries). New S27 section (~275 LOC): residue-avoidance <-> image-cardinality converters; searchAux_sound (S11b-beta, witness = chosen ++ take (k-|chosen|) candidates, invariants = (chosen++candidates).Nodup + |chosen| <= k); searchAux_complete (S11b-gamma, witness-guided branch, chosen survives filter via filter_eq_self); engelsmaSearchPruned_eq_true_iff (S11b-delta entry assembly via entry_pool_nodup/entry_pool_toFinset + S11b-alpha combiner). Plain structural induction on the primes list — no WF-recursion machinery needed in proofs. Statement byte-identical; downstream consumer engelsma_lower_bound_of_engelsmaSearchPruned_false unchanged.",
-    "blockers": [
-      {
-        "id": "B1",
-        "status": "CLEARED",
-        "clearedAt": "2026-06-01T20:50:00.000Z",
-        "description": "Docker daemon hung at S22 PREP open (docker info exit 124 / Server section blank). Re-verified at S23 STATE-SYNC: docker info returns normally with full Server section. Recovery is 15+ days old; not attributable to a specific Loom PR.",
-        "since": "2026-05-16T06:01:00Z",
-        "mitigation": "Cleared by natural recovery (host-side restart or daemon resync)."
-      },
-      {
-        "id": "B2",
-        "status": "CLEARED",
-        "clearedAt": "2026-06-01T20:50:00.000Z",
-        "description": "Host disk RED below 5 Gi soft-floor at S22 PREP open (/System/Volumes/Data at 4.2 Gi free, 100% capacity). Re-verified at S23 STATE-SYNC: /System/Volumes/Data at 41 Gi free / 96% capacity (926 Gi total, 858 Gi used) — well above 5 Gi soft-floor.",
-        "since": "2026-05-17T00:00:00Z",
-        "mitigation": "Cleared by natural recovery + likely host-side cleanup (docker prune, lake cache eviction). Not attributable to a specific Loom PR."
-      },
-      {
-        "id": "B3",
-        "status": "ACTIVE",
-        "description": "proofs/.lake circular self-symlink — `proofs/.lake -> /Users/rwalters/GitHub/lean-genius/proofs/.lake` (self-referential). Re-verified at S23 STATE-SYNC: symlink still present at the same path, ls timestamp 2026-05-29 11:42 unchanged, target unchanged. Will cause lake build to fail before reaching Mathlib.",
-        "since": "2026-05-16T09:04:00Z",
-        "mitigation": "`rm /Users/rwalters/GitHub/lean-genius/proofs/.lake` (symlink-only removal; safe — does NOT recurse into directory because target is the symlink itself). One-line host-side fix; not removable by a research PR from a worktree."
-      }
-    ],
+    "blockers": [],
     "nextAction": "S11b-β ACT (next): searchAux_sound — given primes residue-disjoint to chosen, searchAux returning true implies witness existence. ~70-120 LOC, MEDIUM risk (well-founded recursion + invariant lemmas per S18 PREP §2). Then S11b-γ ACT searchAux_complete (~110-170 LOC, HIGH risk) and S11b-δ bridge assembly (~20-30 LOC, LOW risk) using S11b-α + β + γ to discharge the line-969 sorry. PREREQUISITE: B3 host-side rm `rm /Users/rwalters/GitHub/lean-genius/proofs/.lake` for Docker verify of S11b-α + subsequent ACTs. Until B3 clears, the entire S11b-{α,β,γ,δ} chain ships build-pending (Docker not just contended but host-blocked at the symlink layer). Auditor / next-cycle picker should defer verify until B3 cleared.",
     "attemptCounts": {
       "total": 24,
@@ -65,7 +41,7 @@
     "lastUpdate": "2026-06-02T17:50:00Z"
   },
   "knowledge": {
-    "progressSummary": "S27 (researcher-2, 2026-07-24): S11b COMPLETE — the bridge engelsmaSearchPruned_eq_false_iff is PROVED (file 0 sorries, axiomCount 1). The pruned Engelsma search is now fully verified sound+complete against the powersetCard admissibility semantics. Remaining: S12 native_decide at (246,50) to discharge engelsma_lower_bound (axiom 1 -> 0); wall-clock untested, probe (30,10) scaling first.",
+    "progressSummary": "COMPLETED-TARGET (S12/S28, 2026-09-29, researcher-1): the engelsma_lower_bound AXIOM IS ELIMINATED — the S27-verified pruned search evaluated at (246,50) by native_decide (108 ms; feasibility fears were unfounded) makes Engelsma 2013 a machine-checked theorem; (247,50)=true cross-check pins H(50)=246 exactly. Trust base narrowed from an external 2013 computation to Lean.ofReduceBool. S27 (researcher-2, 2026-07-24): S11b COMPLETE — the bridge engelsmaSearchPruned_eq_false_iff is PROVED (file 0 sorries, axiomCount 1). The pruned Engelsma search is now fully verified sound+complete against the powersetCard admissibility semantics. Remaining: S12 native_decide at (246,50) to discharge engelsma_lower_bound (axiom 1 -> 0); wall-clock untested, probe (30,10) scaling first.",
     "builtItems": [
       "research/problems/bounded-prime-gaps-oq-03-oq-02/problem.md — formal statement, classification, approach menu, related-proof table.",
       "research/problems/bounded-prime-gaps-oq-03-oq-02/knowledge.md — full S1 survey: §1 target, §2 reduction to finitary form (with bridge-lemma proof sketch), §3 decidability and direct-enumeration cost, §4 Engelsma's algorithm and Path-B representation choice, §5 sieve-based fallback Path C (eliminated), §6 risk register, §7 Mathlib API survey, §8 sibling lessons, §9 next-action menu.",
@@ -101,7 +77,8 @@
       "searchAux_sound (S27, S11b-beta): soundness invariant for the pruned search",
       "searchAux_complete (S27, S11b-gamma): completeness invariant for the pruned search",
       "engelsmaSearchPruned_eq_true_iff + entry_pool_nodup + entry_pool_toFinset (S27, S11b-delta): entry-point assembly",
-      "engelsmaSearchPruned_eq_false_iff (S27): the bridge, sorry -> proved"
+      "engelsmaSearchPruned_eq_false_iff (S27): the bridge, sorry -> proved",
+      "S28 section in BoundedPrimeGapsOQ03OQ02.lean: engelsmaSearchPruned_246_50_eq_false, engelsmaSearchPruned_247_50_eq_true (sharpness cross-check), engelsma_lower_bound_verified; BoundedPrimeGapsOQ03.lean Part IV axiom -> theorem (name and statement unchanged, all downstream consumers untouched)."
     ],
     "insights": [
       "Translation invariance reduces the unbounded `∀ H : Finset ℕ` axiom to a finitary `∀ H ∈ Finset.range 246` quantification — this is the *only* way certified computation is even relevant.",
@@ -126,7 +103,9 @@
       "S27: The S11b sound/complete development needs NO well-founded-recursion machinery — searchAux only recurses on the tail of the primes list, so both invariants go through by plain structural induction on primes (generalizing candidates/chosen); simp only [searchAux] applies the equation lemmas cleanly and the termination_by clause never surfaces.",
       "S27: tryBranch shrink-guard gives the prefix-avoidance fact for free in BOTH directions: surviving branch means chosen.filter has full length, and Sublist.eq_of_length upgrades length-equality to list-equality, then List.filter_eq_self.mp yields forall n in chosen, n % p != r.",
       "S27: The S26 disjointness lesson is encoded as ONE hypothesis (chosen ++ candidates).Nodup — it carries chosen-candidates disjointness AND internal distinctness, exactly what makes the leaf count |chosen| + |take (k-|chosen|) candidates| = k correct (toFinset_card_of_nodup + length_take + omega, which handles the min).",
-      "S27 false-green gotcha recurrence: piping lake env lean through grep -v/head masks the exit code — the first S27 typecheck reported exit 0 with a REAL error at line 1225 hidden. Always capture to a log file and check $? of lean itself plus grep -c error on the FULL log."
+      "S27 false-green gotcha recurrence: piping lake env lean through grep -v/head masks the exit code — the first S27 typecheck reported exit 0 with a REAL error at line 1225 hidden. Always capture to a log file and check $? of lean itself plus grep -c error on the FULL log.",
+      "S28/S12 (2026-09-29): the feared (246,50) compute wall was a PHANTOM — the interpreter decides engelsmaSearchPruned 246 50 = false in 108 ms (and 247 50 = true in 39 ms, pinning H(50)=246 on both sides). Why: chosen stays [0] so the node guard compares the pool against the constant k-1 while each prime level multiplies the pool by (p-1)/p; by Mertens the pool crosses below k-1 within ~6 primes on almost every residue combination. Profiled ladder: (32,10) 0.09ms, (76,20) 2.6ms, (124,30) 0.8ms, (176,40) 4.0ms, (246,50) 108ms — all false, matching the Engelsma H-table at every point.",
+      "S12: engelsma_lower_bound is ELIMINATED as a stated axiom — BoundedPrimeGapsOQ03.lean now imports the OQ02 companion and proves the identically-named, identically-stated theorem from engelsma_lower_bound_verified (bridge consumer + native_decide value). #print axioms: foundational + per-decl native_decide ax_* only. Gallery meta: leanFile.axiomCount 1->0, meta.axiomCount stays 1 (Lean.ofReduceBool per gallery convention), status/badge unchanged axiomatized/axiom."
     ],
     "mathlibGaps": [
       "Decidable (IsAdmissible H) — not in Mathlib (admissible-tuple theory is absent from Mathlib entirely).",
@@ -134,9 +113,9 @@
       "A verified-backtracking combinator library — not in Mathlib; Path B will build a bespoke one in the gallery and (potentially) upstream after stabilization."
     ],
     "nextSteps": [
-      "S12: engelsmaSearchPruned 246 50 = false := by native_decide, consuming the S27 bridge through engelsma_lower_bound_of_engelsmaSearchPruned_false; eliminates the engelsma_lower_bound axiom. Probe native_decide scaling at (30,10) first — (246,50) wall-clock/memory untested.",
-      "If (246,50) is infeasible: profile intermediate (w,k) points and document the compute frontier; the bridge itself is now permanent verified infrastructure.",
-      "Optional cleanup: kernel decide for small sanity tests where feasible (naive search reduces; searchAux needs native_decide)."
+      "Optional cleanup: kernel decide for small sanity tests where feasible (naive search reduces; searchAux needs native_decide).",
+      "Optional: generalize the pipeline to other k (the search + bridge are fully parametric): machine-verified H(k) values for the Engelsma table entries used elsewhere in the gallery.",
+      "The OQ-03-OQ-02 mission (discharge the Engelsma axiom via verified search) is COMPLETE; remaining bounded-prime-gaps assumptions live in the parent entries (maynard_tao_sieve et al.), out of scope for this slug."
     ]
   },
   "tags": [
@@ -487,5 +466,6 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsTPC.lean"
     }
   ],
-  "iteration": 25
+  "iteration": 25,
+  "updatedAt": "2026-09-29"
 }
