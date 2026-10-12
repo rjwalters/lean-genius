@@ -1,0 +1,21 @@
+{
+  "job": "20261012T042927-commit-afa46bc50783-6039",
+  "execution_commit": "afa46bc5078314df87d7f49002c07a5edeed79d5",
+  "authoritative_exit": 0,
+  "archive_sha256": "842425345d6a6cabf5613f15e3117979be7a364c1fea19f48e83a061213021b2",
+  "archive_bytes": 2389485055,
+  "plan_sha256": "dfd3900da690370a5304ff536d63a390ea95b2c11e14066bddb298f5f401148f",
+  "status": "COLD_PROJECT_BUILD_ACCEPTED",
+  "audit": {
+    "status": "COLD_PROJECT_BUILD_AUDIT_PASS",
+    "source_count": 893,
+    "axiom_counts": [
+      601,
+      607,
+      604
+    ],
+    "run_sha256": "fba3a2482c7e724307775f5b0f8901bf7693b9584ec69f80518c2219d0c0c826",
+    "scope": "Fresh project closure; pinned external Lean/Mathlib packages may be cached. No external SAT replay.",
+    "elapsed_seconds": 13135.885250444
+  }
+}

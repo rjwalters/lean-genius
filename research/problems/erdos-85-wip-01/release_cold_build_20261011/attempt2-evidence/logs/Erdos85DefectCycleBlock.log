@@ -1,0 +1,6 @@
+Proofs/Erdos85DefectCycleBlock.lean:102:6: warning: 'change (iz - (iz - io)).val = 1' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+Proofs/Erdos85DefectCycleBlock.lean:119:6: warning: 'change (iz + io - iz).val = 1' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`

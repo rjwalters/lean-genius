@@ -1,0 +1,6 @@
+Proofs/Erdos85CyclicConvolutionParity.lean:25:0: warning: automatically included section variable(s) unused in theorem `Erdos85.cyclicConvolution_comm`:
+  [DecidableEq Z]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq Z] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`

@@ -1,0 +1,16 @@
+{
+  "command": [
+    "lean",
+    "-j1",
+    "--plugin=/workspace/research/problems/erdos-85-wip-01/release_cold_build_20261011/run-output/libH3TripleRuntime.so=initialize_Proofs_Erdos85H3TripleCompletionRuntime",
+    "Proofs/Erdos85H3TripleCompletionPart010.lean",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/release_cold_build_20261011/run-output/lean/Proofs/Erdos85H3TripleCompletionPart010.olean"
+  ],
+  "returncode": 0,
+  "stop_reason": null,
+  "elapsed_seconds": 23.121328629000345,
+  "log_sha256": "07f2ca9633b3743ed39736b01b85706b97498fdfab34971f9debd698081a72c3",
+  "started_unix": 1791791766.4238105,
+  "finished_unix": 1791791789.5452518
+}

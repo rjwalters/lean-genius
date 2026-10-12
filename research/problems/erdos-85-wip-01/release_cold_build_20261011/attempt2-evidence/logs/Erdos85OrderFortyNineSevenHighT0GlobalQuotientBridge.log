@@ -1,0 +1,13 @@
+'Erdos85.sevenHigh_t0_sum_pairNeighborCount_eq_sum_lowEmpty_add' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Erdos85.sevenHigh_t0_pairFiber_global_balance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos85.sevenHigh_t0_singletonFiber_global_balance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos85.sevenHigh_t0_emptyFiber_global_balance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos85.sevenHighT0DirectedIncidence_comm' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos85.sevenHigh_t0_directedIncidence_global_balances' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos85.sevenHigh_t0_directedIncidence_empty_capacity_bounds' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Erdos85.sevenHigh_t0_directedIncidence_profile_equations' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos85.sevenHigh_t0_directed_quotient_one_parameter' depends on axioms: [propext, Classical.choice, Quot.sound]

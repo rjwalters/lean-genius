@@ -1,0 +1,9 @@
+Proofs/Erdos85LocalTriangleParity.lean:52:57: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+Proofs/Erdos85LocalTriangleParity.lean:187:8: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+Proofs/Erdos85LocalTriangleParity.lean:168:4: warning: 'change (G.induce (G.neighborSet x)).degree y ≤ 1' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`

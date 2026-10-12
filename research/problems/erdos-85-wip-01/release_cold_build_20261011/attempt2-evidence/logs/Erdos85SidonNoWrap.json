@@ -1,0 +1,15 @@
+{
+  "command": [
+    "lean",
+    "-j1",
+    "Proofs/Erdos85SidonNoWrap.lean",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/release_cold_build_20261011/run-output/lean/Proofs/Erdos85SidonNoWrap.olean"
+  ],
+  "returncode": 0,
+  "stop_reason": null,
+  "elapsed_seconds": 4.519030271999952,
+  "log_sha256": "9ec86b79ea92acdbe2deccf21fcb789a1ab47b2e865e5f4aaf7eb9ae17e1752d",
+  "started_unix": 1791779575.6375155,
+  "finished_unix": 1791779580.1566975
+}

@@ -1,0 +1,9 @@
+Proofs/Erdos85OrderFortyNineSevenHighT0CanonicalFinTransport.lean:232:4: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+'Erdos85.SevenHighT0CanonicalCompletionSemantics.finGraph_hypotheses' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Erdos85.SevenHighT0CanonicalCompletionSemantics.finGraph_internalEmptyEdge_bounds' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

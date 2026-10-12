@@ -1,0 +1,10 @@
+Proofs/Erdos85OrderFortyNineSevenHighTwoFiber.lean:111:43: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+Proofs/Erdos85OrderFortyNineSevenHighTwoFiber.lean:281:48: warning: This simp argument is unused:
+  hxy
+
+Hint: Omit it from the simp argument list.
+  simp [sevenHighT2TripleSet,̵ ̵h̵x̵y̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

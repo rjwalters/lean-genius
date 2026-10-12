@@ -1,0 +1,10 @@
+Proofs/Erdos85EnergyMinimalEdgeCover.lean:22:37: warning: This simp argument is unused:
+  Sym2.eq_iff
+
+Hint: Omit it from the simp argument list.
+  simp [SimpleGraph.deleteEdges_adj,̵ ̵S̵y̵m̵2̵.̵e̵q̵_̵i̵f̵f̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85EnergyMinimalEdgeCover.lean:22:50: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`

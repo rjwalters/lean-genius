@@ -1,0 +1,14 @@
+Proofs/Erdos85SecondOrderColorTrace.lean:42:50: warning: This simp argument is unused:
+  Ne
+
+Hint: Omit it from the simp argument list.
+  simp only [*, adj_comm, true_and, N̵e̵,̵ ̵not_true] at *
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85SecondOrderColorTrace.lean:134:53: warning: This simp argument is unused:
+  Nat.mul_mod
+
+Hint: Omit it from the simp argument list.
+  simp [Nat.add_mod,̵ ̵N̵a̵t̵.̵m̵u̵l̵_̵m̵o̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

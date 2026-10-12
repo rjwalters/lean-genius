@@ -1,0 +1,17 @@
+Proofs/Erdos85CycleResolvent.lean:80:2: warning: 'norm_num at ha ⊢' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+Proofs/Erdos85CycleResolvent.lean:162:29: warning: This simp argument is unused:
+  he
+
+Hint: Omit it from the simp argument list.
+  simp [oddCycleCount, he̵,̵ ̵h̵o, ih, Nat.odd_add]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85CycleResolvent.lean:164:29: warning: This simp argument is unused:
+  he
+
+Hint: Omit it from the simp argument list.
+  simp [oddCycleCount, he̵,̵ ̵h̵o, ih, Nat.odd_add]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

@@ -1,0 +1,15 @@
+{
+  "command": [
+    "lean",
+    "-j1",
+    "Proofs/Erdos85SequentialCounter.lean",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/release_cold_build_20261011/run-output/lean/Proofs/Erdos85SequentialCounter.olean"
+  ],
+  "returncode": 0,
+  "stop_reason": null,
+  "elapsed_seconds": 18.042576113999985,
+  "log_sha256": "a37c0d727e46554e6a6bb440156d81e862598c72ee3dc8ebc019e50350246cdb",
+  "started_unix": 1791779372.5306647,
+  "finished_unix": 1791779390.57334
+}

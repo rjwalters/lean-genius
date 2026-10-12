@@ -1,0 +1,13 @@
+Proofs/Erdos85QuadraticTraceField.lean:24:23: warning: This simp argument is unused:
+  pow_two
+
+Hint: Omit it from the simp argument list.
+  simp ̵[̵p̵o̵w̵_̵t̵w̵o̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85QuadraticTraceField.lean:37:17: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+Proofs/Erdos85QuadraticTraceField.lean:100:2: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`

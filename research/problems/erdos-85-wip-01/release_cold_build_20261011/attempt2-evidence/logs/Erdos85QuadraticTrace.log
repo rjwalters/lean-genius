@@ -1,0 +1,6 @@
+Proofs/Erdos85QuadraticTrace.lean:88:17: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+Proofs/Erdos85QuadraticTrace.lean:155:2: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`

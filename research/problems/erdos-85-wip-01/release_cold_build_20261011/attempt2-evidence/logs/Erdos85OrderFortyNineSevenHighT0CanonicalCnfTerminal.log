@@ -1,0 +1,13 @@
+Proofs/Erdos85OrderFortyNineSevenHighT0CanonicalCnfTerminal.lean:83:10: warning: Variable name `hc` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/Erdos85OrderFortyNineSevenHighT0CanonicalCnfTerminal.lean:95:29: warning: Variable name `hc` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+'Erdos85.sevenHighT0CanonicalDegreeState_nonzero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos85.sevenHighT0CanonicalFinalState_nonzero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos85.sevenHighT0CanonicalBaseSat' depends on axioms: [propext, Classical.choice, Quot.sound]

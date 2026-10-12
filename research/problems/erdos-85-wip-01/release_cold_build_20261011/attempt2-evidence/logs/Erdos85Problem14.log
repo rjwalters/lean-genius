@@ -1,0 +1,20 @@
+Proofs/Erdos85Problem14.lean:49:6: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/Erdos85Problem14.lean:41:6: warning: 'norm_num at hv6 ⊢' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+Proofs/Erdos85Problem14.lean:71:6: warning: 'norm_num at hu5 ⊢' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+Proofs/Erdos85Problem14.lean:289:52: warning: This simp argument is unused:
+  Ne
+
+Hint: Omit it from the simp argument list.
+  simp only [*, adj_comm, true_and, N̵e̵,̵ ̵not_true] at *
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
