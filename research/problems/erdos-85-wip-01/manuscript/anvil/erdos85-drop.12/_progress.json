@@ -5,7 +5,7 @@
     "revise": {
       "state": "in_progress",
       "started": "2026-10-11T22:32:42.379857+00:00",
-      "note": "Editable author draft; full cold-build result, final artifact pin and fresh review/audit remain outstanding."
+      "note": "Editable author draft; failed cold-build evidence retained and reconciled in prose; final artifact pin and fresh peer review/author audit remain outstanding."
     }
   },
   "metadata": {
@@ -16,9 +16,9 @@
     "session_authorized_revision": true,
     "authorization_note": "Prepared under the active user instruction to work with Claude to finalize the paper after certificate publication. This is not a new human read-through or a fabricated operator critic. The capped automatic revise command was not invoked.",
     "pending_dependencies": [
-      "cold-build terminal evidence and audit",
       "final release artifact pin",
       "peer review and author audit of the final combined version"
-    ]
+    ],
+    "cold_build_status": "FAILED_EVIDENCE_RETAINED"
   }
 }

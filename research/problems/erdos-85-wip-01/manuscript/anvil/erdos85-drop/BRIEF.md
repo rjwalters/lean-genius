@@ -304,8 +304,12 @@ the emitter identity gap, external-checker boundary, native_decide disclosure
 and the conditional status of A-REG.
 
 The thirteen positive-triple H7 packed certificate inputs are now published
-with Requester Pays access and a hash-verifying fetch script. A full cold
-project rebuild has been launched but is not yet accepted; publication of
-inputs alone does not establish a successful replay. The editable v12 draft
-retains that pending dependency. This is an AI-author factual update, not a
-claim of a new human read-through.
+with Requester Pays access and a hash-verifying fetch script. The full cold
+project rebuild attempt failed on 2026-10-12 after 460 of 893 modules because
+the runner requested the wrong native-plugin initializer. The
+[terminal failure record](../../../release_cold_build_20261011/FAILURE.md)
+retains the evidence; the builder is stopped. Publication of inputs alone
+does not establish a successful replay. The editable v12 draft reports the
+failure and preserves the full-rebuild limitation; final review/audit remain
+outstanding. This is an AI-author factual update, not a claim of a new human
+read-through.

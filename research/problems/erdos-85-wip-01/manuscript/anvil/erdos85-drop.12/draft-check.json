@@ -5,17 +5,17 @@
   "overfull_boxes": 0,
   "undefined_or_rerun": false,
   "pages": 14,
-  "link_pin": "92ff6248033c6e6a16acd372120a056df759c9f4",
-  "unique_link_targets": 67,
+  "link_pin": "1a16e9d3a087a98718f40f6b3b16265e995adbfb",
+  "unique_link_targets": 68,
   "all_link_targets_exist": true,
   "citation_keys": 17,
   "unresolved_citations": [],
-  "pending_cold_build_marker": 1,
+  "pending_cold_build_marker": 0,
   "sha256": {
-    "main.tex": "98418648f1f48cf6005cf58a7dc7db28f90fe0491d56a6e305750f50ed2ef622",
-    "main.pdf": "3d8b19c49a8c0a08011b5795d1a05bf7050955bad738dbdb4702cbcec8630e63",
+    "main.tex": "afc3f4496ad98a1067b1cee7ef42a6081359e3e399aad17160aefd0ef8f2f62e",
+    "main.pdf": "342324445ef033b0dc53a68d18c4696a575f138949e6b31579cb6e21953c7edf",
     "refs.bib": "2d5b67fb542d2d68f558a0b5727987b57fb44a0d5e2fad10cc2b64e387f9fe8f",
-    "compile-log.txt": "c41b1fc8aae68b6fb5611ff115854eac0c2e0bf8e2b623ac8f89be3cf7fb33bb"
+    "compile-log.txt": "587885b88018de29879307486505bc1d6b94e9cdfb3c716c6015d71ddc03daef"
   },
   "link_targets": [
     "proofs/Proofs/",
@@ -82,12 +82,14 @@
     "research/problems/erdos-85-wip-01/q7_h5_closure_ledger/REVIEWED_RESULT.md",
     "research/problems/erdos-85-wip-01/q9_solver_controls/Q9_EXISTENCE_DECISION_20260911.md",
     "research/problems/erdos-85-wip-01/release_assembly_20261011/README.md",
+    "research/problems/erdos-85-wip-01/release_cold_build_20261011/FAILURE.md",
     "research/problems/erdos-85-wip-01/release_cold_build_20261011/README.md",
     "research/problems/erdos-85-wip-01/sat49/BOZA48_NONISOMORPHISM_RECEIPT_20260928.txt",
     "research/problems/erdos-85-wip-01/sat49/verify_boza48_nonisomorphism.py"
   ],
   "undefined_or_rerun_scope": "Unresolved citations/references or label rerun requests; font substitutions tracked separately",
   "font_shape_substitution_warnings": 26,
-  "updated_for": "Claude review 2747: explain timeout as reason for H7 leaf split",
-  "xelatex_passes": 3
+  "updated_for": "Retained terminal failure c540c6b9b60; full cold build is not accepted",
+  "xelatex_passes": 4,
+  "cold_build_status": "FAILED_EVIDENCE_RETAINED"
 }
