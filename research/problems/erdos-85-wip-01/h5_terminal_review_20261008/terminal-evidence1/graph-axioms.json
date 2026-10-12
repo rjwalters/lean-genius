@@ -1,0 +1,43 @@
+{
+  "status": "AWAITING_EXACT_PRINTED_SET_REVIEW",
+  "execution_commit": "99bc3e3413008ca13d5efb29bee5e855af961976",
+  "sources": {
+    "Erdos85OrderFortyNineFiveHighZeroFiber": {
+      "sha256": "8b20ae6587298f58437d3729cc2920678e00573b617fe30e241bf184f78b79b1",
+      "path": "proofs/Proofs/Erdos85OrderFortyNineFiveHighZeroFiber.lean",
+      "native_tactic_lines": [
+        349,
+        482
+      ]
+    },
+    "Erdos85OrderFortyNineFiveHighOneFiber": {
+      "sha256": "22fd0a1f00e4d37f3cf7ec6da1bb391ac7eca3c89b33c4c64ac8a30b4b66e1e3",
+      "path": "proofs/Proofs/Erdos85OrderFortyNineFiveHighOneFiber.lean",
+      "native_tactic_lines": [
+        510,
+        518
+      ]
+    },
+    "Erdos85OrderFortyNineFiveHighTwoFiber": {
+      "sha256": "38fc0cda32a0626a1358df99fa24fb936831abb2ba013f133c7a0674bbf5d04d",
+      "path": "proofs/Proofs/Erdos85OrderFortyNineFiveHighTwoFiber.lean",
+      "native_tactic_lines": [
+        270,
+        274,
+        490,
+        647
+      ]
+    }
+  },
+  "native_proof_owners_for_source_review": [
+    "Erdos85.fiveHigh_t0_mask_key_fiber_card",
+    "Erdos85.fiveHighCanonicalFiberCover_zero",
+    "Erdos85.fiveHigh_t1_mask_key_fiber_card",
+    "Erdos85.fiveHighCanonicalFiberCover_one",
+    "Erdos85.fiveHigh_t2_local_triple_card",
+    "Erdos85.fiveHigh_t2_mask_key_fiber_card",
+    "Erdos85.fiveHighCanonicalFiberCover_two"
+  ],
+  "exports": {},
+  "scope": "These seven source owners are review pointers, not an allowed axiom-prefix list. Exact generated axiom names must be reviewed and listed per final export after terminal logs are available."
+}

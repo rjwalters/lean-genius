@@ -1,0 +1,72 @@
+{
+  "status": "H5_GRAPH_DEPENDENCY_ARTIFACT_AUDIT_PASS",
+  "job": "20261008T112554-erdos85__h5-formal-20261008-454084",
+  "execution_commit": "f7117ae8d261c6a0ad7176503983d6938532c1ae",
+  "h5_execution_commit": "99bc3e3413008ca13d5efb29bee5e855af961976",
+  "authoritative_exit": 0,
+  "results": [
+    {
+      "module": "Erdos85OrderFortyNineSmallHighLabelingBridge",
+      "source_sha256": "fc8393b64cced6955300e2d26ff6d045c1a2557c361071bb1f40efc54cb1dde9",
+      "object": {
+        "sha256": "d0cbb1ccae5b4e5f79c30d225bd85bd708396b4593de302cc21705e5dd3bde37",
+        "bytes": 78032,
+        "mtime": 1791458762.0463235
+      },
+      "fresh_build_elapsed": "3.7s"
+    },
+    {
+      "module": "Erdos85OrderFortyNineSmallHighFiberLabeling",
+      "source_sha256": "95ca2c68172607c7f3b2a4b8ecb19763a6e88c2b07738841c506ea3ef2348c38",
+      "object": {
+        "sha256": "9b53d529870014d0c25a47e8a9821caeecfba049e5acd17e537322849ac94805",
+        "bytes": 391144,
+        "mtime": 1791458766.3850698
+      },
+      "fresh_build_elapsed": "4.6s"
+    },
+    {
+      "module": "Erdos85OrderFortyNineFiveHighZeroFiber",
+      "source_sha256": "8b20ae6587298f58437d3729cc2920678e00573b617fe30e241bf184f78b79b1",
+      "object": {
+        "sha256": "5e1e2418eca8415f2011ee52dc168cd3c40e0ab1a7ecb52164be0af503fae441",
+        "bytes": 520480,
+        "mtime": 1791458771.395197
+      },
+      "fresh_build_elapsed": "5.1s"
+    },
+    {
+      "module": "Erdos85OrderFortyNineFiveHighOneFiber",
+      "source_sha256": "22fd0a1f00e4d37f3cf7ec6da1bb391ac7eca3c89b33c4c64ac8a30b4b66e1e3",
+      "object": {
+        "sha256": "ce45763c4d8921749677e47fc06ca1e8732b3072586f86e4b2870805786047ba",
+        "bytes": 844304,
+        "mtime": 1791458778.5253804
+      },
+      "fresh_build_elapsed": "7.1s"
+    },
+    {
+      "module": "Erdos85OrderFortyNineFiveHighTwoFiber",
+      "source_sha256": "38fc0cda32a0626a1358df99fa24fb936831abb2ba013f133c7a0674bbf5d04d",
+      "object": {
+        "sha256": "e0f03481b2953e0d97ec75c236837829796133be6cf355cff956a750dbf5abc7",
+        "bytes": 2221648,
+        "mtime": 1791458851.0972207
+      },
+      "fresh_build_elapsed": "72s"
+    }
+  ],
+  "scope": "Five graph dependency objects only. Final H5 exported axiom sets and all search objects require their own terminal audit.",
+  "retained_sha256": {
+    "job.log": "982a3f16752e0350bdafcb6ff7019e3e122db481351f562d7be2f38b9872161c",
+    "job.spec": "b819296248c46bcae55de2f9a0099878aa7fb4e7b40ddb5956461e08bd2cb43f",
+    "job.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "sources/Erdos85OrderFortyNineSmallHighLabelingBridge.lean": "fc8393b64cced6955300e2d26ff6d045c1a2557c361071bb1f40efc54cb1dde9",
+    "sources/Erdos85OrderFortyNineSmallHighFiberLabeling.lean": "95ca2c68172607c7f3b2a4b8ecb19763a6e88c2b07738841c506ea3ef2348c38",
+    "sources/Erdos85OrderFortyNineFiveHighZeroFiber.lean": "8b20ae6587298f58437d3729cc2920678e00573b617fe30e241bf184f78b79b1",
+    "sources/Erdos85OrderFortyNineFiveHighOneFiber.lean": "22fd0a1f00e4d37f3cf7ec6da1bb391ac7eca3c89b33c4c64ac8a30b4b66e1e3",
+    "sources/Erdos85OrderFortyNineFiveHighTwoFiber.lean": "38fc0cda32a0626a1358df99fa24fb936831abb2ba013f133c7a0674bbf5d04d",
+    "collector.py": "14da2ca47b9bc25603d2068e4bbe55ec4c75947bbd9fb8cd1d0778fc1efce0d8",
+    "graph-input.json": "00d4f97ad89aa8b3e80c9bf9d6e098bbf5f56d7fc93bcba9d7c2baf223c7bf88"
+  }
+}

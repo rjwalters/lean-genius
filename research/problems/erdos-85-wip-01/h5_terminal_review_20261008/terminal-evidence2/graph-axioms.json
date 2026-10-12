@@ -1,0 +1,228 @@
+{
+  "status": "EXACT_GRAPH_AXIOMS_REVIEWED",
+  "execution_commit": "99bc3e3413008ca13d5efb29bee5e855af961976",
+  "sources": {
+    "Erdos85OrderFortyNineFiveHighZeroFiber": {
+      "sha256": "8b20ae6587298f58437d3729cc2920678e00573b617fe30e241bf184f78b79b1",
+      "path": "proofs/Proofs/Erdos85OrderFortyNineFiveHighZeroFiber.lean",
+      "native_tactic_lines": [
+        349,
+        482
+      ]
+    },
+    "Erdos85OrderFortyNineFiveHighOneFiber": {
+      "sha256": "22fd0a1f00e4d37f3cf7ec6da1bb391ac7eca3c89b33c4c64ac8a30b4b66e1e3",
+      "path": "proofs/Proofs/Erdos85OrderFortyNineFiveHighOneFiber.lean",
+      "native_tactic_lines": [
+        510,
+        518
+      ]
+    },
+    "Erdos85OrderFortyNineFiveHighTwoFiber": {
+      "sha256": "38fc0cda32a0626a1358df99fa24fb936831abb2ba013f133c7a0674bbf5d04d",
+      "path": "proofs/Proofs/Erdos85OrderFortyNineFiveHighTwoFiber.lean",
+      "native_tactic_lines": [
+        270,
+        274,
+        490,
+        647
+      ]
+    }
+  },
+  "native_proof_owners_for_source_review": [
+    "Erdos85.fiveHigh_t0_mask_key_fiber_card",
+    "Erdos85.fiveHighCanonicalFiberCover_zero",
+    "Erdos85.fiveHigh_t1_mask_key_fiber_card",
+    "Erdos85.fiveHighCanonicalFiberCover_one",
+    "Erdos85.fiveHigh_t2_local_triple_card",
+    "Erdos85.fiveHigh_t2_mask_key_fiber_card",
+    "Erdos85.fiveHighCanonicalFiberCover_two"
+  ],
+  "exports": {
+    "Erdos85.H5.orderFortyNineTripleCellExcluded_five_zero": [
+      "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+      "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+      "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2"
+    ],
+    "Erdos85.H5.orderFortyNineTripleCellExcluded_five_one": [
+      "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+      "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+      "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2"
+    ],
+    "Erdos85.H5.orderFortyNineTripleCellExcluded_five_two": [
+      "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+      "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+      "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2"
+    ],
+    "Erdos85.H5.orderFortyNineStratumExcluded_five": [
+      "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+      "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2",
+      "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+      "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+      "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+      "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2"
+    ]
+  },
+  "scope": "Exact reviewed graph-native extras for each of the four H5 graph exports. The final stratum must also contain the three standard logical axioms and all 40 independently audited search-part axioms.",
+  "review": {
+    "reviewer": "codex",
+    "observed_terminal_audit_sha256": "6cf451ee30f216e4f5fcc3dd755271a164820c8d36285ac52db484940644a0b0",
+    "dependency_artifact_audit_sha256": "c5dd931b3057845a7998cafe80895f29c97ef45477c91dbb506619eb6e148167",
+    "owners": [
+      {
+        "theorem": "Erdos85.fiveHighCanonicalFiberCover_one",
+        "module": "Erdos85OrderFortyNineFiveHighOneFiber",
+        "source_sha256": "22fd0a1f00e4d37f3cf7ec6da1bb391ac7eca3c89b33c4c64ac8a30b4b66e1e3",
+        "native_tactic_lines": [
+          518
+        ],
+        "exact_axioms": [
+          "Erdos85.fiveHighCanonicalFiberCover_one._native.native_decide.ax_1_1"
+        ],
+        "meaning": "Representative array length 49"
+      },
+      {
+        "theorem": "Erdos85.fiveHighCanonicalFiberCover_two",
+        "module": "Erdos85OrderFortyNineFiveHighTwoFiber",
+        "source_sha256": "38fc0cda32a0626a1358df99fa24fb936831abb2ba013f133c7a0674bbf5d04d",
+        "native_tactic_lines": [
+          647
+        ],
+        "exact_axioms": [
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_1",
+          "Erdos85.fiveHighCanonicalFiberCover_two._native.native_decide.ax_1_2"
+        ],
+        "meaning": "Representative array length 49 in the two index branches"
+      },
+      {
+        "theorem": "Erdos85.fiveHighCanonicalFiberCover_zero",
+        "module": "Erdos85OrderFortyNineFiveHighZeroFiber",
+        "source_sha256": "8b20ae6587298f58437d3729cc2920678e00573b617fe30e241bf184f78b79b1",
+        "native_tactic_lines": [
+          482
+        ],
+        "exact_axioms": [
+          "Erdos85.fiveHighCanonicalFiberCover_zero._native.native_decide.ax_1_1"
+        ],
+        "meaning": "Representative array length 49"
+      },
+      {
+        "theorem": "Erdos85.fiveHigh_t0_mask_key_fiber_card",
+        "module": "Erdos85OrderFortyNineFiveHighZeroFiber",
+        "source_sha256": "8b20ae6587298f58437d3729cc2920678e00573b617fe30e241bf184f78b79b1",
+        "native_tactic_lines": [
+          349
+        ],
+        "exact_axioms": [
+          "Erdos85.fiveHigh_t0_mask_key_fiber_card._native.native_decide.ax_1_1"
+        ],
+        "meaning": "Complete finite aligned-mask fiber census"
+      },
+      {
+        "theorem": "Erdos85.fiveHigh_t1_mask_key_fiber_card",
+        "module": "Erdos85OrderFortyNineFiveHighOneFiber",
+        "source_sha256": "22fd0a1f00e4d37f3cf7ec6da1bb391ac7eca3c89b33c4c64ac8a30b4b66e1e3",
+        "native_tactic_lines": [
+          510
+        ],
+        "exact_axioms": [
+          "Erdos85.fiveHigh_t1_mask_key_fiber_card._native.native_decide.ax_1_1"
+        ],
+        "meaning": "Complete finite aligned-mask fiber census"
+      },
+      {
+        "theorem": "Erdos85.fiveHigh_t2_local_triple_card",
+        "module": "Erdos85OrderFortyNineFiveHighTwoFiber",
+        "source_sha256": "38fc0cda32a0626a1358df99fa24fb936831abb2ba013f133c7a0674bbf5d04d",
+        "native_tactic_lines": [
+          270,
+          274
+        ],
+        "exact_axioms": [
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_4",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_5",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_6",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_7",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_8",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_9",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_10",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_11",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_12",
+          "Erdos85.fiveHigh_t2_local_triple_card._native.native_decide.ax_1_13"
+        ],
+        "meaning": "Local triple incidence count: two index branches times five high labels after graph-fiber reduction"
+      },
+      {
+        "theorem": "Erdos85.fiveHigh_t2_mask_key_fiber_card",
+        "module": "Erdos85OrderFortyNineFiveHighTwoFiber",
+        "source_sha256": "38fc0cda32a0626a1358df99fa24fb936831abb2ba013f133c7a0674bbf5d04d",
+        "native_tactic_lines": [
+          490
+        ],
+        "exact_axioms": [
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_1",
+          "Erdos85.fiveHigh_t2_mask_key_fiber_card._native.native_decide.ax_1_2"
+        ],
+        "meaning": "Complete finite aligned-mask fiber census in two index branches"
+      }
+    ],
+    "dependency_explanation": "All four graph exports use fiveHighCanonicalGraphCover_all, whose proof refers to all three graph-cover branches; each therefore retains the same exact 18 graph-native axioms."
+  }
+}

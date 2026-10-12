@@ -1,9 +1,23 @@
-# H5 terminal acceptance preparation
+# H5 terminal acceptance
 
-Status: collector prepared and metadata tests pass. The exact H5 build job
-`20261008T112746-erdos85__h5-formal-20261008-455708` was independently confirmed
-live while preparing this package. No part or whole-stratum acceptance is
-recorded here yet.
+Status: **H5_STRATUM_ARTIFACT_AUDIT_PASS**, recorded in
+`terminal-evidence2/AUDIT.json`. Job
+`20261008T112746-erdos85__h5-formal-20261008-455708` finished with authoritative
+exit 0. All 40 native parts, all three representative assemblies and the H5
+stratum assembly were independently checked against their fresh compiled
+objects, reviewed sources and exact printed axiom sets. No `sorry` was found.
+
+The accepted theorem is `Erdos85.H5.orderFortyNineStratumExcluded_five`.
+Its exact trust set contains 61 axioms: the three standard logical axioms,
+40 native search axioms and 18 reviewed native graph-cover axioms. This closes
+the five-high stratum under that explicit trust set; it does not establish
+the full order-49 or global Erdős85 theorem.
+
+The initial `terminal-evidence1` collection is retained unchanged with status
+`NEEDS_GRAPH_AXIOM_REVIEW`. The second collection binds the completed exact
+review and the independently audited graph dependency objects. The final
+stratum object is 53,592 bytes with SHA-256
+`71c5f298447769ee058de801206b1415228de6e92a9814a4d4856fb78731aa8d`.
 
 Execution pin: `99bc3e3413008ca13d5efb29bee5e855af961976`.
 The source inventory was previously checked in `../h5_stratum_review_20261008`:
@@ -68,9 +82,32 @@ never overwritten. After a terminal capture, explicitly force-add ignored
 raw `*.log` files when banking the evidence. `REJECTED` and
 `NEEDS_GRAPH_AXIOM_REVIEW` grant no whole-stratum credit.
 
-Validation performed: 23 metadata-only tests. Twelve cover exact axiom sets,
+Validation performed: 25 metadata-only tests. Twelve cover exact axiom sets,
 missing or duplicate reports, incorrect cells, unreviewed graph axioms and
-`sorryAx`; eleven cover terminal acceptance, missing/stale/future/changed
+`sorryAx`; thirteen cover terminal acceptance, missing/stale/future/changed
 objects, source drift, missing fresh build records, failed jobs, wrong
 execution pins, and live/graph-review pending states. Synthetic tests grant
-no mathematical credit and run no finite search.
+no mathematical credit and run no finite search. The two additional tests
+reject an unaccepted graph dependency audit or an incorrect H5 source pin.
+
+## Completed graph review
+
+`graph-axioms.json` now contains the exact 18 additional names separately for
+all four graph exports, with each name linked to its enclosing source theorem
+and tactic line. The names were checked against the actual terminal reports.
+The four mask-census proofs contribute 1 + 1 + 2 axioms; the three array-length
+proofs contribute 1 + 1 + 2; and the local triple-incidence proof contributes
+ten, one for each of two index branches and five high labels. The latter's
+printed suffixes are exactly `ax_1_4` through `ax_1_13`.
+
+All four graph exports retain the same 18 graph axioms because the generic
+cover theorem refers to all three cover branches. The representative exports
+have 19, 19 and 11 axioms; graph-cell exports have 37, 37 and 29; the final
+stratum has 61.
+
+`capture_graph_dependencies.py` independently checked earlier job
+`20261008T112554-erdos85__h5-formal-20261008-454084`, execution commit
+`f7117ae8d261c6a0ad7176503983d6938532c1ae`. Its five fresh graph dependency
+objects match sources that are unchanged at the H5 execution pin.
+`graph-dependency-evidence1` retains that job's raw evidence. The final H5
+collector binds all five object hashes and checks them again during collection.
