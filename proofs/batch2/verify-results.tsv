@@ -57,7 +57,7 @@ AlternatingSeriesBooleSummationOQ01OQ01ClosedForm	GREEN	post-inventory
 AmgmInequalityOQ02	GREEN	
 AmgmInequalityOQ02Aristotle	GREEN	
 AmgmInequalityOQ02Defs	GREEN	
-AmgmInequalityOQ02OQ01OQ02	RESIDUAL	import-case:19: Proofs.AmgmInequalityOQ02OQ01 missing on Linux; repair applied, cloud recheck pending (#43756)
+AmgmInequalityOQ02OQ01OQ02	GREEN	Linux import-case repair; explicit lean -j1 check passed 2026-10-12 (#43756)
 AmgmInequalityOQ02OQ01OQ02OQ01Aristotle	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01OQ01OQ01OQ01	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01OQ01OQ01OQ01OQ01	GREEN	
@@ -230,7 +230,7 @@ BezoutIdentityOQ03OQ04	GREEN
 BezoutIdentityOQ04OQ01	GREEN	
 BezoutIdentityOQ04OQ01OQ01	GREEN	
 BinaryGcdOQ02	GREEN	
-BinaryGcdOQ02OQ01	RESIDUAL	import-case:2: Proofs.GCDAlgorithmOQ02 missing on Linux; repair applied, cloud recheck pending (#43756)
+BinaryGcdOQ02OQ01	GREEN	Linux import-case repair; explicit lean -j1 check passed 2026-10-12 (#43756)
 BinomialTheorem	GREEN	
 BinomialTheoremOQ01	GREEN	
 BinomialTheoremOQ02OQ01	GREEN
@@ -295,7 +295,7 @@ BrouwerFixedPointOQ02OQ02OQ01Iteration	GREEN
 BrouwerFixedPointOQ02OQ03	GREEN	
 BrouwerFixedPointOQ04OQ02	GREEN	
 BrouwerFixedPointOQ04OQ03	GREEN	
-BrouwerFixedPointOQ04OQ04	RESIDUAL	type-mismatch:317:49;320:10-unknown-const in 2026-09-25 build; repair applied, cloud recheck pending (#43756)
+BrouwerFixedPointOQ04OQ04	GREEN	cloud v4.31 2026-10-12; repaired and rebuilt in full safe-subset run (#43756)
 BuffonConstantAsymptotic	GREEN	
 BuffonsNeedleOQ01	GREEN	
 BuffonsNeedleOQ01OQ01	GREEN	
@@ -453,7 +453,7 @@ ChineseRemainderConstructiveOQ04OQ03	GREEN
 ChineseRemainderExplicitOQ04OQ03OQ01	GREEN	
 ChineseRemainderNonCoprimeList	GREEN	
 ChineseRemainderNonCoprimeOQ01	GREEN	
-ChineseRemainderNonCoprimeOQ01OQ01	RESIDUAL	proof-drift:58:63;83:2-type-mismatch in 2026-09-25 build; repair applied, cloud recheck pending (#43756)
+ChineseRemainderNonCoprimeOQ01OQ01	GREEN	cloud v4.31 2026-10-12; repaired and rebuilt in full safe-subset run (#43756)
 ChineseRemainderNonCoprimeOQ02	GREEN	parse-error
 ChineseRemainderNonCoprimeOQ02OQ01	GREEN	instance-synth
 ChineseRemainderNonCoprimeOQ03OQ02	GREEN	
@@ -1595,7 +1595,7 @@ Erdos678Aristotle	GREEN
 Erdos678Problem	GREEN	
 Erdos679Aristotle	GREEN	
 Erdos679Problem	GREEN	
-Erdos679ProblemAristotle	GREEN	
+Erdos679ProblemAristotle	GREEN	previous cascade rechecked in full cloud safe-subset run 2026-10-12 (#43756)
 Erdos67Problem	GREEN	
 Erdos680Problem	GREEN	
 Erdos681Problem	GREEN	
@@ -1926,7 +1926,7 @@ Erdos964Aristotle	GREEN	unknown-const:Nat.divisors_prime
 Erdos964Problem	GREEN	
 Erdos965Problem	GREEN	
 Erdos966Problem	GREEN	
-Erdos967Problem	RESIDUAL	proof-drift:209:48;209:65-omega in 2026-09-25 build; repair applied, cloud recheck pending (#43756)
+Erdos967Problem	GREEN	cloud v4.31 2026-10-12; repaired and rebuilt in full safe-subset run (#43756)
 Erdos968Problem	GREEN	
 Erdos969Problem	GREEN	
 Erdos96Problem	GREEN	
@@ -2333,7 +2333,7 @@ PartitionTheoremOQ04Aristotle	GREEN
 PascalsHexagon	GREEN	
 PascalsHexagonOQ02	GREEN	
 PascalsHexagonOQ03	GREEN	
-PascalsHexagonOQ03Incomplete01Derangements	RESIDUAL	duplicate-declaration:48:8 in 2026-09-25 build; repair applied, cloud recheck pending (#43756)
+PascalsHexagonOQ03Incomplete01Derangements	GREEN	cloud v4.31 2026-10-12; repaired and rebuilt in full safe-subset run (#43756)
 PascalsHexagonOQ03Reflections	GREEN	post-inventory
 PellEquationOQ01	GREEN	unknown-const:Int.cast_nonneg.mpr
 PentagonalNumberTheoremOQ01	GREEN	
@@ -2697,6 +2697,8 @@ ZsqrtdNegTwoOQ03	GREEN	elab-drift
 ZsqrtdNegTwoOQ03OQ01	GREEN	elab-drift
 ZsqrtdNegTwoOQ03OQ06	GREEN	elab-drift
 eTranscendental	GREEN	
-MinkowskiFundamentalTheoremOQ06	RESIDUAL	no-goals:568:42 in 2026-09-25 build; repair applied, cloud recheck pending (#43756)
+MinkowskiFundamentalTheoremOQ06	GREEN	cloud v4.31 2026-10-12; repaired and rebuilt in full safe-subset run (#43756)
 BirthdayProblemOQ03OQ01OQ01	RESIDUAL	hang:10h+-decide/native_decide; excluded from safe subset (#43756)
 AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle	RESIDUAL	import-all artifact bypasses quarantines; no declarations; excluded from safe subset (#43756)
+Erdos18WIP01	GREEN	isolated cloud v4.31 build passed 2026-10-12 at 110 GiB after parallel-batch OOM (#43756)
+Erdos30WIP01	RESIDUAL	resource-oom: 81 GiB compiler RSS in 110 GiB cloud batch; excluded pending bounded rebuild (#43846, #43756)

@@ -22,6 +22,10 @@ esac
 #   - known-broken legacy files awaiting redesign (do NOT repair in place)
 EXCLUDE=(
     "Erdos728FactorialDivisibility"   # memory hog
+    # Kernel finite searches consumed 81 GiB in one compiler process and
+    # triggered OOM in the 110 GiB cloud batch. Preserve the proof source;
+    # restore this target after a bounded rebuild. See #43846 / #43756.
+    "Erdos30WIP01"
     # Legacy oriented-adjacency file; the false `boundary_doors_odd` block does
     # not compile and is slated for replacement by the #8998 GridSimplex/gridAdj
     # redesign. Canonical foundation: Proofs.SpernerGridBase. See #38578 / #8998.

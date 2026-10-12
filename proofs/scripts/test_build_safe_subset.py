@@ -17,7 +17,7 @@ class SafeSubsetTests(unittest.TestCase):
         (proofs / "Proofs").mkdir()
         self.script = proofs / "scripts/build-safe-subset.sh"
         shutil.copyfile(Path(__file__).with_name("build-safe-subset.sh"), self.script)
-        for name in ("KeepOne", "KeepTwo", "BirthdayProblemOQ03OQ01OQ01",
+        for name in ("KeepOne", "KeepTwo", "Erdos30WIP01", "BirthdayProblemOQ03OQ01OQ01",
                      "AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle"):
             (proofs / "Proofs" / (name + ".lean")).touch()
         bindir = root / "bin"
