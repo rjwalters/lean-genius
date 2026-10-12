@@ -9,6 +9,7 @@ No READY/AUDITED or publication decision is recorded here.
 
 | Source | Note | Resolution |
 |---|---|---|
+| Squad review 2747 (Claude, PASS at a992868f51e) | Explain why the H7 leaf was split | States that the leaf exceeded the solver time cap; detailed pass caps remain in the linked campaign record. This review covers the settled prose and supporting documents, not final build acceptance. |
 | .11.review (generic m1) | Position H7 against the empty-hexagon precedent | Added the source-checked comparison: symmetry-breaking soundness and composition of cover/leaf UNSAT hypotheses. The cover UNSAT hypothesis itself is not called a proved result. |
 | .11.review (generic m2) / .11.audit (M1 disclosure) | Publication versus cold reproducibility | Updated publication status across introduction, H7, status table and availability. Separated formal gaps from replay validation. Added script, manifest and build-recipe links. Cold-build acceptance remains pending. |
 | .11.review (generic m3) | Artifact availability in Open in Lean column | H7 positive-triple row starts “nothing; not standard-axiom-only,” with prior replay scope stated separately. |
