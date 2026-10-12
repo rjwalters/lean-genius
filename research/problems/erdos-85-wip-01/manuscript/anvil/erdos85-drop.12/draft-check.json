@@ -12,10 +12,10 @@
   "unresolved_citations": [],
   "pending_cold_build_marker": 0,
   "sha256": {
-    "main.tex": "afc3f4496ad98a1067b1cee7ef42a6081359e3e399aad17160aefd0ef8f2f62e",
-    "main.pdf": "342324445ef033b0dc53a68d18c4696a575f138949e6b31579cb6e21953c7edf",
+    "main.tex": "c4773897a2b5b99d1deecae72df5d6897b87375afcfa1ae90137ecaa7a5ebe1c",
+    "main.pdf": "fcd68098814bb57ece74b65490be7b3c032fa91322fbaff50c87b0e9b2bd2979",
     "refs.bib": "2d5b67fb542d2d68f558a0b5727987b57fb44a0d5e2fad10cc2b64e387f9fe8f",
-    "compile-log.txt": "587885b88018de29879307486505bc1d6b94e9cdfb3c716c6015d71ddc03daef"
+    "compile-log.txt": "3e51c7853dda53ce2e99c5193b96e72c93cca0824ee18824f87652ef8e0eae93"
   },
   "link_targets": [
     "proofs/Proofs/",
@@ -89,7 +89,7 @@
   ],
   "undefined_or_rerun_scope": "Unresolved citations/references or label rerun requests; font substitutions tracked separately",
   "font_shape_substitution_warnings": 26,
-  "updated_for": "Retained terminal failure c540c6b9b60; full cold build is not accepted",
-  "xelatex_passes": 4,
+  "updated_for": "Terminal failure disclosure; filename link labels avoid whitespace loss in lean macro",
+  "xelatex_passes": 2,
   "cold_build_status": "FAILED_EVIDENCE_RETAINED"
 }
