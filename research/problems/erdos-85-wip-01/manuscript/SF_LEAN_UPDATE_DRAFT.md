@@ -1,6 +1,6 @@
 # Draft: update to the SF Lean group (Robb's voice) — HOLD until the paper's DOI and article links exist
 
-Links (Robb, 2026-10-12): the blog post plus the Zenodo record; the article is linked from the blog post. The blog URL is the planned id; confirm it is live before posting.
+Links (Robb, 2026-10-12): the blog post plus the Zenodo record; the article is linked from the blog post. All links live (blog deployed 2026-10-12). Ready for Robb to post.
 Numbers are from paper v13 (anvil/erdos85-drop.13/main.tex, 12 October 2026) or the pinned receipts it links.
 
 ---
