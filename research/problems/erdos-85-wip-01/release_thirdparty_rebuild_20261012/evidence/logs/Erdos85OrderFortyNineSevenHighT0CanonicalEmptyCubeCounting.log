@@ -1,0 +1,14 @@
+'Erdos85.sevenHighT0Canonical_emptyMask_ne_of_countingCertificate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Erdos85.sevenHighT0CanonicalEmptyCube_semanticExclusion_of_counting' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Erdos85.sevenHighT0CanonicalEmptyCube_f6_t2_semanticExclusion' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Erdos85.sevenHighT0Canonical_noCompletion_of_structuralChecked' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Erdos85.sevenHighT0CanonicalEmptyPermutationAction_table._native.native_decide.ax_1_1,
+ Erdos85.sevenHighT0CanonicalEmptyRepresentative_orbit_cover._native.native_decide.ax_1_1]

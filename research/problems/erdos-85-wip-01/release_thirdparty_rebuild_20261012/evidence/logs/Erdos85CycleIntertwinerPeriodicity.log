@@ -1,0 +1,7 @@
+Proofs/Erdos85CycleIntertwinerPeriodicity.lean:284:53: warning: This simp argument is unused:
+  G.adj_comm
+
+Hint: Omit it from the simp argument list.
+  simp [SimpleGraph.mem_neighborFinset, hxy, hx'y,̵ ̵G̵.̵a̵d̵j̵_̵c̵o̵m̵m̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

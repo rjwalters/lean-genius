@@ -1,0 +1,17 @@
+Proofs/Erdos85OrderFortyNineHighIncidenceCensus.lean:46:39: warning: This simp argument is unused:
+  hfx
+
+Hint: Omit it from the simp argument list.
+  simp ̵[̵h̵f̵x̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OrderFortyNineHighIncidenceCensus.lean:304:14: warning: This simp argument is unused:
+  hxw
+
+Hint: Omit it from the simp argument list.
+  simp ̵[̵h̵x̵w̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OrderFortyNineHighIncidenceCensus.lean:629:4: warning: 'change (∑ x ∈ (Finset.univ : Finset V), D.degree x) = _' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`

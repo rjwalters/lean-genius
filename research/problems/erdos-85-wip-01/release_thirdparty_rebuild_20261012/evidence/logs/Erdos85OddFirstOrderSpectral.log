@@ -1,0 +1,21 @@
+Proofs/Erdos85OddFirstOrderSpectral.lean:75:20: warning: This simp argument is unused:
+  add_smul
+
+Hint: Omit it from the simp argument list.
+  simp [sub_smul, a̵d̵d̵_̵s̵m̵u̵l̵,̵ ̵smul_smul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OddFirstOrderSpectral.lean:75:30: warning: This simp argument is unused:
+  smul_smul
+
+Hint: Omit it from the simp argument list.
+  simp [sub_smul, add_smul,̵ ̵s̵m̵u̵l̵_̵s̵m̵u̵l̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OddFirstOrderSpectral.lean:429:40: warning: This simp argument is unused:
+  hx
+
+Hint: Omit it from the simp argument list.
+  simp ̵[̵h̵x̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

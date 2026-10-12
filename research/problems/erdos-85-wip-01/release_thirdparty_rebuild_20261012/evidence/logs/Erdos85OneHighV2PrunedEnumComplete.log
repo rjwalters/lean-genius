@@ -1,0 +1,14 @@
+Proofs/Erdos85OneHighV2PrunedEnumComplete.lean:115:12: warning: This simp argument is unused:
+  List.getD_cons_succ
+
+Hint: Omit it from the simp argument list.
+  simp [List.getD_cons_s̵u̵c̵c̵,̵ ̵L̵i̵s̵t̵.̵g̵e̵t̵D̵_̵c̵o̵n̵s̵_̵zero, Nat.add_comm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OneHighV2PrunedEnumComplete.lean:115:33: warning: This simp argument is unused:
+  List.getD_cons_zero
+
+Hint: Omit it from the simp argument list.
+  simp [List.getD_cons_succ, L̵i̵s̵t̵.̵g̵e̵t̵D̵_̵c̵o̵n̵s̵_̵z̵e̵r̵o̵,̵ ̵Nat.add_comm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

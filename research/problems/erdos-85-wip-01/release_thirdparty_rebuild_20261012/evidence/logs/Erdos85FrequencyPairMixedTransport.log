@@ -1,0 +1,48 @@
+Proofs/Erdos85FrequencyPairMixedTransport.lean:56:8: warning: automatically included section variable(s) unused in theorem `Erdos85.mixedLabeledAdjMatrix_apply`:
+  [Fintype V]
+  [DecidableEq V]
+  [Fintype C]
+  [DecidableEq C]
+  [∀ (c : C), NeZero (ℓ c)]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] [DecidableEq V] [Fintype C] [DecidableEq C] [∀ (c : C), NeZero (ℓ c)] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85FrequencyPairMixedTransport.lean:64:0: warning: automatically included section variable(s) unused in theorem `Erdos85.mixedCycleLabeling_bijective`:
+  [Fintype V]
+  [DecidableEq V]
+  [Fintype C]
+  [∀ (c : C), NeZero (ℓ c)]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] [DecidableEq V] [Fintype C] [∀ (c : C), NeZero (ℓ c)] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85FrequencyPairMixedTransport.lean:81:0: warning: automatically included section variable(s) unused in theorem `Erdos85.submatrix_defect_eq_mixedDefectMatrix`:
+  [Fintype C]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype C] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85FrequencyPairMixedTransport.lean:197:0: warning: automatically included section variable(s) unused in theorem `Erdos85.mixedLabeledAdjMatrix_isSymm`:
+  [Fintype V]
+  [DecidableEq V]
+  [Fintype C]
+  [DecidableEq C]
+  [∀ (c : C), NeZero (ℓ c)]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] [DecidableEq V] [Fintype C] [DecidableEq C] [∀ (c : C), NeZero (ℓ c)] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85FrequencyPairMixedTransport.lean:205:0: warning: automatically included section variable(s) unused in theorem `Erdos85.mixedLabeledAdjMatrix_diag_translationInvariant`:
+  [Fintype C]
+  [DecidableEq C]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype C] [DecidableEq C] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85FrequencyPairMixedTransport.lean:237:0: warning: automatically included section variable(s) unused in theorem `Erdos85.sum_mixedLabeled_diag_eq_mixedProjectedAnchor`:
+  [DecidableEq C]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq C] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`

@@ -1,0 +1,16 @@
+'Erdos85.SevenHighT0CanonicalEmptyCubeChecked.semanticExclusion' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Erdos85.SevenHighT0CanonicalEmptyCubeMixedEvidence.exclusion' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Erdos85.sevenHighT0Canonical_noCompletion_of_semanticExclusions' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Erdos85.sevenHighT0CanonicalEmptyPermutationAction_table._native.native_decide.ax_1_1,
+ Erdos85.sevenHighT0CanonicalEmptyRepresentative_orbit_cover._native.native_decide.ax_1_1]
+'Erdos85.sevenHighT0Canonical_noCompletion_of_mixedEvidenceVectors' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Erdos85.sevenHighT0CanonicalEmptyPermutationAction_table._native.native_decide.ax_1_1,
+ Erdos85.sevenHighT0CanonicalEmptyRepresentative_orbit_cover._native.native_decide.ax_1_1]

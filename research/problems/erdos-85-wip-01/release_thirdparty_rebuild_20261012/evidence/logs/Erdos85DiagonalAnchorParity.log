@@ -1,0 +1,13 @@
+Proofs/Erdos85DiagonalAnchorParity.lean:23:0: warning: automatically included section variable(s) unused in theorem `Erdos85.anchorMultiplicity_neg_eq`:
+  [DecidableEq I]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq I] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85DiagonalAnchorParity.lean:41:0: warning: automatically included section variable(s) unused in theorem `Erdos85.anchorMultiplicity_eq_one_iff`:
+  [DecidableEq I]
+  [Fintype Z]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq I] [Fintype Z] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`

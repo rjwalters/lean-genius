@@ -1,0 +1,11 @@
+MODE=host
+REF=47e1755cb9e21389348d78fe7c07ad60bd41cab3
+TARGET=''
+CMD=ls\ proofs/Proofs/Certificates/strata-lrat\ 2\>\&1\ \|\ head\ -3\;\ aws\ sts\ get-caller-identity\ --query\ Arn\ --output\ text\;\ time\ proofs/scripts/fetch-h7-certificates.sh
+MEM_GB=64
+TIMEOUT=30m
+THREADS=''
+CACHE=0
+CPUS=16
+VOLUME=''
+FULL=1

@@ -1,0 +1,42 @@
+Proofs/Erdos85OrderFortyNineOneHighOverlap.lean:1218:5: warning: Variable name `hfree` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/Erdos85OrderFortyNineOneHighOverlap.lean:1219:5: warning: Variable name `hmin` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/Erdos85OrderFortyNineOneHighOverlap.lean:1220:5: warning: Variable name `hcard` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/Erdos85OrderFortyNineOneHighOverlap.lean:1221:13: warning: Variable name `hv` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/Erdos85OrderFortyNineOneHighOverlap.lean:1377:2: warning: Try this: intro x hx y hy hxy hadj
+Proofs/Erdos85OrderFortyNineOneHighOverlap.lean:1669:14: warning: This simp argument is unused:
+  SimpleGraph.mem_neighborFinset
+
+Hint: Omit it from the simp argument list.
+  simp [̵S̵i̵m̵p̵l̵e̵G̵r̵a̵p̵h̵.̵m̵e̵m̵_̵n̵e̵i̵g̵h̵b̵o̵r̵F̵i̵n̵s̵e̵t̵,̵ ̵h̵q̵v̵,̵[̲h̲q̲v̲,̲ hqNotNv]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OrderFortyNineOneHighOverlap.lean:3017:10: warning: This simp argument is unused:
+  S
+
+Hint: Omit it from the simp argument list.
+  simp [S̵,̵ ̵hx]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OrderFortyNineOneHighOverlap.lean:3017:13: warning: This simp argument is unused:
+  hx
+
+Hint: Omit it from the simp argument list.
+  simp [S,̵ ̵h̵x̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

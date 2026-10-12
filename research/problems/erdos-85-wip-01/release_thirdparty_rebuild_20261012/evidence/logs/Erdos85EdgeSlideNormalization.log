@@ -1,0 +1,7 @@
+Proofs/Erdos85EdgeSlideNormalization.lean:51:42: warning: This simp argument is unused:
+  hxy
+
+Hint: Omit it from the simp argument list.
+  simp [oldCorrection, newCorrection, h̵x̵y̵,̵ ̵Nat.add_comm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

@@ -1,0 +1,22 @@
+[e85] job 20261012T143725-commit-47e1755cb9e2-4815  ref=47e1755cb9e21389348d78fe7c07ad60bd41cab3  worktree=/opt/e85/wt/commit-47e1755cb9e2  started 2026-10-12T14:37:25Z
+[e85] commit 47e1755cb9e21389348d78fe7c07ad60bd41cab3 (erdos85: freeze third-party-path rebuild plan 1eee4968 (only run.py + source_commit differ)
+[e85] host command: ls proofs/Proofs/Certificates/strata-lrat 2>&1 | head -3; aws sts get-caller-identity --query Arn --output text; time proofs/scripts/fetch-h7-certificates.sh
+ls: cannot access 'proofs/Proofs/Certificates/strata-lrat': No such file or directory
+arn:aws:sts::221082181346:assumed-role/Erdos85LeanBuilder/i-04a61ff360a07bef2
+OK   h7_t1_rep0.packed.lz4p7
+OK   h7_t2_rep0.packed.lz4p7
+OK   h7_t2_rep1.packed.lz4p7
+OK   h7_t3_rep0.packed.lz4p7
+OK   h7_t3_rep1.packed.lz4p7
+OK   h7_t3_rep2.packed.lz4p7
+OK   h7_t4_rep0.packed.lz4p7
+OK   h7_t4_rep1.packed.lz4p7
+OK   h7_t4_rep2.packed.lz4p7
+OK   h7_t5_rep0.packed.lz4p7
+OK   h7_t5_rep1.packed.lz4p7
+OK   h7_t6_rep0.packed.lz4p7
+OK   h7_t7_rep0.packed.lz4p7
+
+real	0m16.604s
+user	0m11.340s
+sys	0m3.710s

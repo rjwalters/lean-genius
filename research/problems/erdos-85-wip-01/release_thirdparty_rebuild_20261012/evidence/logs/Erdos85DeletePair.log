@@ -1,0 +1,42 @@
+Proofs/Erdos85DeletePair.lean:28:19: warning: This simp argument is unused:
+  if_neg
+
+Hint: Omit it from the simp argument list.
+  simp only [hx, i̵f̵_̵n̵e̵g̵,̵ ̵Nat.add_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85DeletePair.lean:28:27: warning: This simp argument is unused:
+  Nat.add_zero
+
+Hint: Omit it from the simp argument list.
+  simp only [hx, if_neg,̵ ̵N̵a̵t̵.̵a̵d̵d̵_̵z̵e̵r̵o̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85DeletePair.lean:57:10: warning: This simp argument is unused:
+  T
+
+Hint: Omit it from the simp argument list.
+  simp [T̵,̵ ̵SimpleGraph.card_neighborFinset_eq_degree]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85DeletePair.lean:58:19: warning: This simp argument is unused:
+  if_neg
+
+Hint: Omit it from the simp argument list.
+  simp only [hx, i̵f̵_̵n̵e̵g̵,̵ ̵Nat.sub_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85DeletePair.lean:58:27: warning: This simp argument is unused:
+  Nat.sub_zero
+
+Hint: Omit it from the simp argument list.
+  simp only [hx, if_neg,̵ ̵N̵a̵t̵.̵s̵u̵b̵_̵z̵e̵r̵o̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85DeletePair.lean:61:10: warning: This simp argument is unused:
+  T
+
+Hint: Omit it from the simp argument list.
+  simp [T̵,̵ ̵SimpleGraph.card_neighborFinset_eq_degree]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

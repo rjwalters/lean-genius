@@ -1,0 +1,73 @@
+Proofs/Erdos85CycleCharpoly.lean:75:51: warning: This simp argument is unused:
+  Matrix.diagonal_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Q, Matrix.charmatrix, Matrix.scalar_apply, M̵a̵t̵r̵i̵x̵.̵d̵i̵a̵g̵o̵n̵a̵l̵_̵a̵p̵p̵l̵y̵,̵SimpleGraph.adjMatrix_apply, cycleGraph_adj',
+  ̲  ̲ ̲ ̲Matrix.submatrix_apply, Fin.ext_iff, cycle_succ_sub_val_eq_one]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85CycleCharpoly.lean:85:41: warning: This simp argument is unused:
+  Fin.zero_succAbove
+
+Hint: Omit it from the simp argument list.
+  simp only [Matrix.submatrix_submatrix,̵ ̵F̵i̵n̵.̵z̵e̵r̵o̵_̵s̵u̵c̵c̵A̵b̵o̵v̵e̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85CycleCharpoly.lean:88:48: warning: This simp argument is unused:
+  Matrix.diagonal_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.charmatrix, Matrix.scalar_apply, M̵a̵t̵r̵i̵x̵.̵d̵i̵a̵g̵o̵n̵a̵l̵_̵a̵p̵p̵l̵y̵,̵
+  ̵ ̵ ̵ ̵ ̵SimpleGraph.adjMatrix_apply, cycleGraph_adj',
+  ̲  ̲ ̲ ̲Matrix.submatrix_apply,
+  ̵  ̵ ̵ ̵Matrix.charpoly, Fin.ext_iff, cycle_middle_not_adj_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85CycleCharpoly.lean:113:51: warning: This simp argument is unused:
+  Matrix.diagonal_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Q, Matrix.charmatrix, Matrix.scalar_apply, M̵a̵t̵r̵i̵x̵.̵d̵i̵a̵g̵o̵n̵a̵l̵_̵a̵p̵p̵l̵y̵,̵SimpleGraph.adjMatrix_apply, cycleGraph_adj',
+  ̲  ̲ ̲ ̲Matrix.submatrix_apply, Fin.ext_iff, cycle_succ_sub_val_eq_one]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85CycleCharpoly.lean:136:48: warning: This simp argument is unused:
+  Matrix.diagonal_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.charmatrix, Matrix.scalar_apply, M̵a̵t̵r̵i̵x̵.̵d̵i̵a̵g̵o̵n̵a̵l̵_̵a̵p̵p̵l̵y̵,̵
+  ̵ ̵ ̵ ̵ ̵SimpleGraph.adjMatrix_apply, cycleGraph_adj',
+  ̲  ̲ ̲ ̲Matrix.submatrix_apply,
+  ̵  ̵ ̵ ̵Matrix.charpoly, Fin.ext_iff, cycle_middle_not_adj_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85CycleCharpoly.lean:170:48: warning: This simp argument is unused:
+  Matrix.diagonal_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.charmatrix, Matrix.scalar_apply, M̵a̵t̵r̵i̵x̵.̵d̵i̵a̵g̵o̵n̵a̵l̵_̵a̵p̵p̵l̵y̵,̵
+  ̵ ̵ ̵ ̵ ̵SimpleGraph.adjMatrix_apply, cycleGraph_adj',
+  ̲  ̲ ̲ ̲Matrix.submatrix_apply,
+  ̵  ̵ ̵ ̵Matrix.charpoly, Fin.ext_iff, cycle_middle_not_adj_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85CycleCharpoly.lean:171:50: warning: This simp argument is unused:
+  Matrix.submatrix_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.charmatrix, Matrix.scalar_apply, Matrix.diagonal_apply, SimpleGraph.adjMatrix_apply,
+  ̲  ̲ ̲ ̲cycleGraph_adj', M̵a̵t̵r̵i̵x̵.̵s̵u̵b̵m̵a̵t̵r̵i̵x̵_̵a̵p̵p̵l̵y̵,̵Matrix.charpoly, Fin.ext_iff, cycle_middle_not_adj_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.

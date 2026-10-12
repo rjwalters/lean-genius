@@ -1,0 +1,7 @@
+Proofs/Erdos85MooreFriendship.lean:145:43: warning: This simp argument is unused:
+  SimpleGraph.mem_neighborFinset
+
+Hint: Omit it from the simp argument list.
+  simp [SimpleGraph.mem_commonNeighbors,̵ ̵S̵i̵m̵p̵l̵e̵G̵r̵a̵p̵h̵.̵m̵e̵m̵_̵n̵e̵i̵g̵h̵b̵o̵r̵F̵i̵n̵s̵e̵t̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

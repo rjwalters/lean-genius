@@ -1,0 +1,51 @@
+Proofs/Erdos85OrderFortyNineFullCanonicalLabeling.lean:234:56: warning: This simp argument is unused:
+  h0
+
+Hint: Omit it from the simp argument list.
+  simp [orderFortyNineCanonicalSupportMultiplicity, h0̵,̵ ̵h̵1, h2, h3,
+  ̵  ̵ ̵ ̵ ̵ ̵ ̵ ̵hmem]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OrderFortyNineFullCanonicalLabeling.lean:234:60: warning: This simp argument is unused:
+  h1
+
+Hint: Omit it from the simp argument list.
+  simp [orderFortyNineCanonicalSupportMultiplicity, h0, h1̵,̵ ̵h̵2, h3,
+  ̵  ̵ ̵ ̵ ̵ ̵ ̵ ̵hmem]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OrderFortyNineFullCanonicalLabeling.lean:234:64: warning: This simp argument is unused:
+  h2
+
+Hint: Omit it from the simp argument list.
+  simp [orderFortyNineCanonicalSupportMultiplicity, h0, h1, h2̵,̵ ̵h̵3,
+  ̵  ̵ ̵ ̵ ̵ ̵ ̵ ̵hmem]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OrderFortyNineFullCanonicalLabeling.lean:243:56: warning: This simp argument is unused:
+  h0
+
+Hint: Omit it from the simp argument list.
+  simp [orderFortyNineCanonicalSupportMultiplicity, h0̵,̵ ̵h̵1, h2, h3,
+  ̵  ̵ ̵ ̵ ̵ ̵ ̵ ̵hnotmem]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OrderFortyNineFullCanonicalLabeling.lean:243:60: warning: This simp argument is unused:
+  h1
+
+Hint: Omit it from the simp argument list.
+  simp [orderFortyNineCanonicalSupportMultiplicity, h0, h1̵,̵ ̵h̵2, h3,
+  ̵  ̵ ̵ ̵ ̵ ̵ ̵ ̵hnotmem]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OrderFortyNineFullCanonicalLabeling.lean:243:64: warning: This simp argument is unused:
+  h2
+
+Hint: Omit it from the simp argument list.
+  simp [orderFortyNineCanonicalSupportMultiplicity, h0, h1, h2̵,̵ ̵h̵3,
+  ̵  ̵ ̵ ̵ ̵ ̵ ̵ ̵hnotmem]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OrderFortyNineFullCanonicalLabeling.lean:451:14: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`

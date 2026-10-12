@@ -1,0 +1,30 @@
+Proofs/Erdos85UniqueSidonFactor.lean:50:0: warning: automatically included section variable(s) unused in theorem `Erdos85.mem_orderedDistinctPairs_iff`:
+  [Fintype Z]
+  [AddCommGroup Z]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype Z] [AddCommGroup Z] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85UniqueSidonFactor.lean:66:0: warning: automatically included section variable(s) unused in theorem `Erdos85.card_orderedDistinctPairs`:
+  [Fintype Z]
+  [AddCommGroup Z]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype Z] [AddCommGroup Z] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85UniqueSidonFactor.lean:91:61: warning: This simp argument is unused:
+  not_not
+
+Hint: Omit it from the simp argument list.
+  simp only [Finset.mem_filter, Finset.mem_sdiff, not_and,̵ ̵n̵o̵t̵_̵n̵o̵t̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85UniqueSidonFactor.lean:251:0: warning: automatically included section variable(s) unused in theorem `Erdos85.unique_pair_sums_of_convolution_card_eq_one`:
+  [Fintype Z]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype Z] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85UniqueSidonFactor.lean:328:6: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`

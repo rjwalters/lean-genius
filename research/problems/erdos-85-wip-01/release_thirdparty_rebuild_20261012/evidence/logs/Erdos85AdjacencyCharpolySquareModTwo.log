@@ -1,0 +1,8 @@
+Proofs/Erdos85AdjacencyCharpolySquareModTwo.lean:58:8: warning: This simp argument is unused:
+  G.loopless.irrefl
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.submatrix_apply, SimpleGraph.adjMatrix_apply,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵G̵.̵l̵o̵o̵p̵l̵e̵s̵s̵.̵i̵r̵r̵e̵f̵l̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

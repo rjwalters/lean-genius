@@ -1,0 +1,11 @@
+MODE=run
+REF=47e1755cb9e21389348d78fe7c07ad60bd41cab3
+TARGET=''
+CMD=lake\ env\ python3\ -B\ ../research/problems/erdos-85-wip-01/release_thirdparty_rebuild_20261012/run.py\ --plan\ ../research/problems/erdos-85-wip-01/release_thirdparty_rebuild_20261012/PLAN.json\ --output\ ../research/problems/erdos-85-wip-01/release_thirdparty_rebuild_20261012/run-output\ --execution-commit\ 47e1755cb9e21389348d78fe7c07ad60bd41cab3\ --execute-plan\ 1eee4968a7a37adaa64e05058c4908bdbfa7a0c4192aa8dd4d9f63c9e2f61ce0
+MEM_GB=110
+TIMEOUT=580m
+THREADS=6
+CACHE=0
+CPUS=16
+VOLUME=lean-build-e85-thirdparty-20261012
+FULL=0
