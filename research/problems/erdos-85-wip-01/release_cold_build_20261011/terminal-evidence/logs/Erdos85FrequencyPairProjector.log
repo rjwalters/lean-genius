@@ -1,0 +1,21 @@
+Proofs/Erdos85FrequencyPairProjector.lean:83:0: warning: automatically included section variable(s) unused in theorem `Erdos85.cyclePow_one`:
+  [NeZero r]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [NeZero r] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85FrequencyPairProjector.lean:284:0: warning: automatically included section variable(s) unused in theorem `Erdos85.blockDiagonal_const_smul`:
+  [Fintype C]
+  [NeZero r]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype C] [NeZero r] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85FrequencyPairProjector.lean:679:0: warning: automatically included section variable(s) unused in theorem `Erdos85.diag_block_apply_eq_zero_row`:
+  [Field K]
+  [Fintype C]
+  [DecidableEq C]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Field K] [Fintype C] [DecidableEq C] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`

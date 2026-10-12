@@ -1,0 +1,57 @@
+Proofs/Erdos85TaggedFactorization.lean:31:0: warning: automatically included section variable(s) unused in theorem `Erdos85.taggedPairSum_bijective`:
+  [Fintype Z]
+  [DecidableEq Z]
+  [Fintype K]
+  [DecidableEq K]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype Z] [DecidableEq Z] [Fintype K] [DecidableEq K] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85TaggedFactorization.lean:54:0: warning: automatically included section variable(s) unused in theorem `Erdos85.orderedDifferenceSet_disjoint_of_uniqueTaggedSums`:
+  [Fintype K]
+  [DecidableEq K]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype K] [DecidableEq K] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85TaggedFactorization.lean:78:0: warning: automatically included section variable(s) unused in theorem `Erdos85.channel_add_injective_of_uniqueTaggedSums`:
+  [Fintype Z]
+  [DecidableEq Z]
+  [Fintype K]
+  [DecidableEq K]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype Z] [DecidableEq Z] [Fintype K] [DecidableEq K] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85TaggedFactorization.lean:91:0: warning: automatically included section variable(s) unused in theorem `Erdos85.channel_sums_ne_of_uniqueTaggedSums`:
+  [Fintype Z]
+  [DecidableEq Z]
+  [Fintype K]
+  [DecidableEq K]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype Z] [DecidableEq Z] [Fintype K] [DecidableEq K] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85TaggedFactorization.lean:123:21: warning: This simp argument is unused:
+  hone0
+
+Hint: Omit it from the simp argument list.
+  simp [forbidden, hone0,̵ ̵h̵o̵n̵e̵0̵.symm, hnegone0, hnegone0.symm,
+  ̵  ̵ ̵ ̵ ̵ ̵hminus, hminus.symm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85TaggedFactorization.lean:123:40: warning: This simp argument is unused:
+  hnegone0
+
+Hint: Omit it from the simp argument list.
+  simp [forbidden, hone0, hone0.symm, h̵n̵e̵g̵o̵n̵e̵0̵,̵ ̵hnegone0.symm, hminus, hminus.symm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85TaggedFactorization.lean:124:6: warning: This simp argument is unused:
+  hminus
+
+Hint: Omit it from the simp argument list.
+  simp [forbidden, hone0, hone0.symm, hnegone0, hnegone0.symm,
+  ̵  ̵ ̵ ̵ ̵ ̵hminus,̵ ̵h̵m̵i̵n̵u̵s̵.symm]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

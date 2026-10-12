@@ -1,0 +1,68 @@
+Proofs/Erdos85PathCharpoly.lean:21:48: warning: This simp argument is unused:
+  Matrix.diagonal_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.charmatrix, Matrix.scalar_apply, M̵a̵t̵r̵i̵x̵.̵d̵i̵a̵g̵o̵n̵a̵l̵_̵a̵p̵p̵l̵y̵,̵SimpleGraph.adjMatrix_apply, pathGraph_adj,
+  ̲  ̲ ̲ ̲Matrix.submatrix_apply]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85PathCharpoly.lean:25:8: warning: This simp argument is unused:
+  Matrix.charmatrix
+
+Hint: Omit it from the simp argument list.
+  s̵i̵m̵p̵ ̵[̵M̵a̵t̵r̵i̵x̵.̵c̵h̵a̵r̵m̵a̵t̵r̵i̵x̵,̵ ̵M̵a̵t̵r̵i̵x̵.̵s̵c̵a̵l̵a̵r̵_̵a̵p̵p̵l̵y̵,̵ ̵M̵a̵t̵r̵i̵x̵.̵d̵i̵a̵g̵o̵n̵a̵l̵_̵a̵p̵p̵l̵y̵,̵
+  ̵ ̵ ̵ ̵ ̵S̵i̵m̵p̵l̵e̵G̵r̵a̵p̵h̵.̵a̵d̵j̵M̵a̵t̵r̵i̵x̵_̵a̵p̵p̵l̵y̵,̵ ̵p̵a̵t̵h̵G̵r̵a̵p̵h̵_̵a̵d̵j̵,̵ ̵M̵a̵t̵r̵i̵x̵.̵s̵u̵b̵m̵a̵t̵r̵i̵x̵_̵a̵p̵p̵l̵y̵]̵s̲i̲m̲p̲ ̲[̲M̲a̲t̲r̲i̲x̲.̲s̲c̲a̲l̲a̲r̲_̲a̲p̲p̲l̲y̲,̲ ̲M̲a̲t̲r̲i̲x̲.̲d̲i̲a̲g̲o̲n̲a̲l̲_̲a̲p̲p̲l̲y̲,̲ ̲S̲i̲m̲p̲l̲e̲G̲r̲a̲p̲h̲.̲a̲d̲j̲M̲a̲t̲r̲i̲x̲_̲a̲p̲p̲l̲y̲,̲ ̲p̲a̲t̲h̲G̲r̲a̲p̲h̲_̲a̲d̲j̲,̲
+  ̲ ̲ ̲ ̲ ̲M̲a̲t̲r̲i̲x̲.̲s̲u̲b̲m̲a̲t̲r̲i̲x̲_̲a̲p̲p̲l̲y̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85PathCharpoly.lean:25:27: warning: This simp argument is unused:
+  Matrix.scalar_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.charmatrix, M̵a̵t̵r̵i̵x̵.̵s̵c̵a̵l̵a̵r̵_̵a̵p̵p̵l̵y̵,̵ ̵Matrix.diagonal_apply, SimpleGraph.adjMatrix_apply, pathGraph_adj,
+  ̲  ̲ ̲ ̲Matrix.submatrix_apply]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85PathCharpoly.lean:43:48: warning: This simp argument is unused:
+  Matrix.diagonal_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.charmatrix, Matrix.scalar_apply, M̵a̵t̵r̵i̵x̵.̵d̵i̵a̵g̵o̵n̵a̵l̵_̵a̵p̵p̵l̵y̵,̵SimpleGraph.adjMatrix_apply, pathGraph_adj,
+  ̲  ̲ ̲ ̲Matrix.submatrix_apply, Matrix.charpoly, hz]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85PathCharpoly.lean:44:48: warning: This simp argument is unused:
+  Matrix.submatrix_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.charmatrix, Matrix.scalar_apply, Matrix.diagonal_apply, SimpleGraph.adjMatrix_apply,
+  ̲  ̲ ̲ ̲pathGraph_adj, M̵a̵t̵r̵i̵x̵.̵s̵u̵b̵m̵a̵t̵r̵i̵x̵_̵a̵p̵p̵l̵y̵,̵Matrix.charpoly, hz]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85PathCharpoly.lean:58:6: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+Proofs/Erdos85PathCharpoly.lean:53:29: warning: This simp argument is unused:
+  Matrix.det_fin_one
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.charpoly, M̵a̵t̵r̵i̵x̵.̵d̵e̵t̵_̵f̵i̵n̵_̵o̵n̵e̵,̵ ̵Matrix.charmatrix, Matrix.scalar_apply, Matrix.diagonal_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲SimpleGraph.adjMatrix_apply, pathGraph_adj, S_one]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85PathCharpoly.lean:54:29: warning: This simp argument is unused:
+  Matrix.diagonal_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix, Matrix.scalar_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲M̵a̵t̵r̵i̵x̵.̵d̵i̵a̵g̵o̵n̵a̵l̵_̵a̵p̵p̵l̵y̵,̵ ̵SimpleGraph.adjMatrix_apply, pathGraph_adj, S_one]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85PathCharpoly.lean:55:8: warning: This simp argument is unused:
+  pathGraph_adj
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix, Matrix.scalar_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲Matrix.diagonal_apply, SimpleGraph.adjMatrix_apply, p̵a̵t̵h̵G̵r̵a̵p̵h̵_̵a̵d̵j̵,̵ ̵S_one]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

@@ -1,0 +1,11 @@
+MODE=run
+REF=8d4f59c82e40f08ae9377458779a68fde8a7ddc9
+TARGET=''
+CMD=lake\ env\ python3\ -B\ ../research/problems/erdos-85-wip-01/release_cold_build_20261011/run.py\ --plan\ ../research/problems/erdos-85-wip-01/release_cold_build_20261011/PLAN.json\ --output\ ../research/problems/erdos-85-wip-01/release_cold_build_20261011/run-output\ --execution-commit\ 8d4f59c82e40f08ae9377458779a68fde8a7ddc9\ --execute-plan\ b46f4095c15134c9e8e55f47edf024f16d5f68542ffc18c9aea3a081e92cca90
+MEM_GB=110
+TIMEOUT=580m
+THREADS=6
+CACHE=0
+CPUS=16
+VOLUME=lean-build-e85-cold-20261011-2146
+FULL=1

@@ -1,0 +1,17 @@
+Proofs/Erdos85ComponentFactorization.lean:44:6: warning: This simp argument is unused:
+  hcc
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.reindex_apply, vertexConnectedComponentEquiv,
+        Matrix.blockDiagonal'_apply_ne _ _ _ hcc, SimpleGraph.adjMatrix_apply,
+  ̵  ̵ ̵ ̵ ̵ ̵hc̵c̵,̵ ̵h̵nadj]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85ComponentFactorization.lean:74:71: warning: This simp argument is unused:
+  hcc
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.reindex_apply, e, vertexConnectedComponentEquiv,
+          Matrix.blockDiagonal'_apply_ne _ _ _ hcc, Matrix.scalar_apply, hc̵c̵,̵ ̵h̵val]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

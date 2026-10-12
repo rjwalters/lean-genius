@@ -55,7 +55,9 @@ def collect(job, commit, output):
     remote_output = remote_root / folder / "run-output"
     # These are unmodified host receipts, not reconstructed summaries.
     for name in ("sha", "spec", "log", "exit"):
-        remote("cp", jobdir / name, remote_output / ("job." + name))
+        # The container creates run-output as root; retain receipt bytes without
+        # changing ownership or permissions of the original build evidence.
+        remote("sudo", "-n", "cp", jobdir / name, remote_output / ("job." + name))
     output.mkdir(parents=True, exist_ok=False)
     archive = output / "run-output.tar.gz"
     command = shlex.join(["tar", "-C", str(remote_root / folder), "-czf", "-", "run-output"])

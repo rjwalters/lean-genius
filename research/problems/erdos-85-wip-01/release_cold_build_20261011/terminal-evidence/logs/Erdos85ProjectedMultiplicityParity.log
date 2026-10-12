@@ -1,0 +1,25 @@
+Proofs/Erdos85ProjectedMultiplicityParity.lean:27:0: warning: automatically included section variable(s) unused in theorem `Erdos85.card_projectionFiber_inter_eq_indicator_of_image_injective`:
+  [Fintype Y]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype Y] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85ProjectedMultiplicityParity.lean:60:0: warning: automatically included section variable(s) unused in theorem `Erdos85.odd_projectedMultiplicity_iff`:
+  [DecidableEq X]
+  [Fintype Y]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq X] [Fintype Y] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85ProjectedMultiplicityParity.lean:93:0: warning: automatically included section variable(s) unused in theorem `Erdos85.odd_projectedMultiplicity_iff_of_exception_bijection`:
+  [Fintype Y]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype Y] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85ProjectedMultiplicityParity.lean:128:0: warning: automatically included section variable(s) unused in theorem `Erdos85.exists_integer_error_of_odd_iff`:
+  [Fintype Y]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype Y] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`

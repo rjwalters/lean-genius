@@ -1,0 +1,73 @@
+Proofs/Erdos85OneHighFamilyCnfSatisfaction.lean:37:55: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+Proofs/Erdos85OneHighFamilyCnfSatisfaction.lean:569:5: warning: Variable name `hcPos` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/Erdos85OneHighFamilyCnfSatisfaction.lean:575:30: warning: This simp argument is unused:
+  hcPos
+
+Hint: Omit it from the simp argument list.
+  simp [dimacsLitValue, hc,̵ ̵h̵c̵P̵o̵s̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OneHighFamilyCnfSatisfaction.lean:2025:43: warning: Variable name `hz` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/Erdos85OneHighFamilyCnfSatisfaction.lean:2086:6: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/Erdos85OneHighFamilyCnfSatisfaction.lean:2241:27: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+Proofs/Erdos85OneHighFamilyCnfSatisfaction.lean:3110:13: warning: This simp argument is unused:
+  h₁
+
+Hint: Omit it from the simp argument list.
+  simp only [h₁̵,̵ ̵h̵₂, h₃]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OneHighFamilyCnfSatisfaction.lean:3170:13: warning: This simp argument is unused:
+  h₁
+
+Hint: Omit it from the simp argument list.
+  simp only [h₁̵,̵ ̵h̵₂, h₃]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OneHighFamilyCnfSatisfaction.lean:3231:17: warning: This simp argument is unused:
+  oneHighFamilyCollectMidpointsVal
+
+Hint: Omit it from the simp argument list.
+  simp only [o̵n̵e̵H̵i̵g̵h̵F̵a̵m̵i̵l̵y̵C̵o̵l̵l̵e̵c̵t̵M̵i̵d̵p̵o̵i̵n̵t̵s̵V̵a̵l̵,̵ ̵List.foldl_cons]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OneHighFamilyCnfSatisfaction.lean:3532:38: warning: This simp argument is unused:
+  mids
+
+Hint: Omit it from the simp argument list.
+  simp only [oneHighFamilyCommonTseitinStepVal,
+  ̵  ̵ ̵ ̵oneHighFamilyCollectMidpointsVal,̵ ̵m̵i̵d̵s̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OneHighFamilyCnfSatisfaction.lean:3792:13: warning: This simp argument is unused:
+  hraw
+
+Hint: Omit it from the simp argument list.
+  simp only ̵[̵h̵r̵a̵w̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OneHighFamilyCnfSatisfaction.lean:3994:18: warning: This simp argument is unused:
+  hf'
+
+Hint: Omit it from the simp argument list.
+  simp [hf,̵ ̵h̵f̵'̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

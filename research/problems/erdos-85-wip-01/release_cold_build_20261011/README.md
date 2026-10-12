@@ -1,6 +1,6 @@
 # Cold project build preparation
 
-Status: **launched; acceptance pending**. This is a bounded verification
+Status: **failed; no cold-build acceptance**. This was a bounded verification
 of the finite endpoint's entire 893-source project closure after publication
 of the 13 packed H7 certificates and the corresponding relative-path patch.
 It is not a new SAT campaign, and it does not discharge the H1/H7 UNSAT
@@ -16,6 +16,17 @@ isolation probe passed by failing on the expected missing fresh endpoint
 object; this is not evidence of full build completion. See [COLLECT.md](COLLECT.md)
 for the terminal evidence procedure. Only a retained terminal audit can
 establish acceptance; the execution branch remains frozen.
+
+The attempt terminated with host exit code 1 at 2026-10-12 03:01:47 UTC,
+after reporting 460 completed modules. The first H3 triple-part invocation
+failed while loading the freshly generated native plugin: the frozen runner
+requested `initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime`, whereas
+the library exports `initialize_Proofs_Erdos85H3TripleCompletionRuntime`.
+The run did not reach the endpoint/axiom audit and does not establish a
+complete cold rebuild. The failure bundle is retained and the builder is
+confirmed stopped; see [FAILURE.md](FAILURE.md) for raw receipts, the diagnostic,
+and the unexecuted correction. No retry or resume has been started; this
+failed attempt does not authorize one.
 
 ## Inputs and isolation
 
