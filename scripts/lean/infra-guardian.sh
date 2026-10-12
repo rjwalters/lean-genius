@@ -19,7 +19,8 @@
 #
 # It is intentionally conservative: it only removes worktrees whose branch is
 # already merged into origin/main, or that are unlocked and older than
-# INFRA_WORKTREE_STALE_HOURS; and it only restarts Docker when `docker ps` times
+# INFRA_WORKTREE_STALE_HOURS; it never removes a worktree with uncommitted or
+# untracked changes, nor one reset to exactly origin/main; and it only restarts Docker when `docker ps` times
 # out (a healthy-but-busy daemon answers `docker ps` instantly, so an in-progress
 # build is never interrupted).
 #
@@ -28,6 +29,7 @@
 #   INFRA_GUARDIAN_INTERVAL       seconds between cycles          (default 120)
 #   INFRA_DISK_MIN_FREE_GB        cleanup trigger, GB free        (default 15)
 #   INFRA_WORKTREE_STALE_HOURS    reap unmerged worktrees older   (default 24)
+#   INFRA_WORKTREE_MERGED_GRACE_MIN keep merged worktrees active within (default 120)
 #   INFRA_DOCKER_RESTART_COOLDOWN min seconds between restarts     (default 600)
 #   INFRA_GIT_GC_THRESHOLD_MB     git gc when .git exceeds, MB     (default 3000)
 #
@@ -53,6 +55,7 @@ STOP_SIGNAL_FILE=".loom/signals/stop-lean-daemon"
 INTERVAL="${INFRA_GUARDIAN_INTERVAL:-120}"
 DISK_MIN_FREE_GB="${INFRA_DISK_MIN_FREE_GB:-15}"
 WORKTREE_STALE_HOURS="${INFRA_WORKTREE_STALE_HOURS:-24}"
+WORKTREE_MERGED_GRACE_MIN="${INFRA_WORKTREE_MERGED_GRACE_MIN:-120}"
 DOCKER_RESTART_COOLDOWN="${INFRA_DOCKER_RESTART_COOLDOWN:-600}"
 GIT_GC_THRESHOLD_MB="${INFRA_GIT_GC_THRESHOLD_MB:-3000}"
 
@@ -119,6 +122,7 @@ reap_worktrees() {
 
     local now; now=$(date +%s)
     local stale_secs=$(( WORKTREE_STALE_HOURS * 3600 ))
+    local merged_grace_secs=$(( WORKTREE_MERGED_GRACE_MIN * 60 ))
 
     # Snapshot locked worktrees so we never remove one an agent pinned.
     local locked; locked=$(git worktree list --porcelain 2>/dev/null \
@@ -146,12 +150,36 @@ reap_worktrees() {
             deployer) continue ;;
         esac
 
-        if [[ "$ref" != "DETACHED" ]] && git merge-base --is-ancestor "$ref" origin/main 2>/dev/null; then
+        # Never destroy uncommitted work, whatever the branch state says
+        # (#43833). `remove --force` discards modified and untracked files.
+        # --no-optional-locks: do not refresh the index, whose mtime is the
+        # activity signal read below.
+        if [[ -n "$(git --no-optional-locks -C "$wt" status --porcelain 2>/dev/null | head -1)" ]]; then
+            continue
+        fi
+
+        # Last activity = newer of the HEAD commit and the worktree's index.
+        # A branch freshly reset to an old origin/main has an old HEAD commit
+        # but a just-written index.
+        local head_epoch index_epoch index_path
+        head_epoch=$(git -C "$wt" log -1 --format=%ct 2>/dev/null || echo "$now")
+        index_path=$(git -C "$wt" rev-parse --git-path index 2>/dev/null || true)
+        [[ -n "$index_path" && "$index_path" != /* ]] && index_path="$wt/$index_path"
+        index_epoch=$(stat -f %m "$index_path" 2>/dev/null || stat -c %Y "$index_path" 2>/dev/null || echo 0)
+        (( index_epoch > head_epoch )) && head_epoch=$index_epoch
+
+        # "Ancestor of origin/main" is trivially true for a branch just reset
+        # for its next task (`git checkout -B <branch> origin/main`), not only
+        # for a merged one (#43833). Reused role worktrees sit in that state
+        # between tasks, so skip a tip equal to origin/main and anything
+        # active within the grace window; a truly merged worktree goes idle.
+        if [[ "$ref" != "DETACHED" ]] \
+           && (( now - head_epoch > merged_grace_secs )) \
+           && [[ "$(git rev-parse "$ref" 2>/dev/null)" != "$(git rev-parse origin/main 2>/dev/null)" ]] \
+           && git merge-base --is-ancestor "$ref" origin/main 2>/dev/null; then
             _reap_one "$wt" "merged"
             continue
         fi
-        local head_epoch
-        head_epoch=$(git -C "$wt" log -1 --format=%ct 2>/dev/null || echo "$now")
         if (( now - head_epoch > stale_secs )); then
             _reap_one "$wt" "stale>${WORKTREE_STALE_HOURS}h"
         fi
