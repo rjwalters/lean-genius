@@ -1,0 +1,10 @@
+Proofs/Erdos85BranchDeficitSymmetry.lean:62:48: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+Proofs/Erdos85BranchDeficitSymmetry.lean:517:16: warning: This simp argument is unused:
+  hone
+
+Hint: Omit it from the simp argument list.
+  simp [ho̵n̵e̵,̵ ̵h̵zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

@@ -1,0 +1,11 @@
+--- a/research/problems/erdos-85-wip-01/release_cold_build_20261011/run.py
++++ b/research/problems/erdos-85-wip-01/release_cold_build_20261011/run.py
+@@ -13,7 +13,7 @@
+ from prepare import ROOT, closure, sha
+ 
+ RUNTIME = "Erdos85H3TripleCompletionRuntime"
+-INIT = "initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime"
++INIT = "initialize_Proofs_Erdos85H3TripleCompletionRuntime"
+ 
+ 
+ def save(path, data):

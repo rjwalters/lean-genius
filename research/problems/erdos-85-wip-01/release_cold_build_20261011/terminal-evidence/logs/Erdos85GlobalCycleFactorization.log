@@ -1,0 +1,29 @@
+Proofs/Erdos85GlobalCycleFactorization.lean:72:6: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+Proofs/Erdos85GlobalCycleFactorization.lean:141:33: warning: This simp argument is unused:
+  Matrix.diagonal_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.scalar_apply,̵ ̵M̵a̵t̵r̵i̵x̵.̵d̵i̵a̵g̵o̵n̵a̵l̵_̵a̵p̵p̵l̵y̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85GlobalCycleFactorization.lean:142:33: warning: This simp argument is unused:
+  Matrix.diagonal_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.scalar_apply, M̵a̵t̵r̵i̵x̵.̵d̵i̵a̵g̵o̵n̵a̵l̵_̵a̵p̵p̵l̵y̵,̵ ̵Matrix.one_apply, hxy]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85GlobalCycleFactorization.lean:142:56: warning: This simp argument is unused:
+  Matrix.one_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.scalar_apply, Matrix.diagonal_apply, M̵a̵t̵r̵i̵x̵.̵o̵n̵e̵_̵a̵p̵p̵l̵y̵,̵ ̵hxy]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85GlobalCycleFactorization.lean:148:4: warning: 'change
+  (Int.castRingHom ℚ) (((Matrix.scalar V ((d : ℤ) - 1) - D.adjMatrix ℤ) x y)) =
+    (Matrix.scalar V ((d : ℚ) - 1) - D.adjMatrix ℚ) x y' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`

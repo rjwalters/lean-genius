@@ -1,0 +1,50 @@
+Proofs/Erdos85DifferencePacking.lean:103:4: warning: Try this: intro h p hp q hq heq
+Proofs/Erdos85DifferencePacking.lean:159:0: warning: automatically included section variable(s) unused in theorem `Erdos85.neg_mem_unusedOrderedDifferences_iff`:
+  [DecidableEq K]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq K] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85DifferencePacking.lean:178:0: warning: automatically included section variable(s) unused in theorem `Erdos85.card_unusedOrderedDifferences_eq_two_of_packing`:
+  [DecidableEq K]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq K] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85DifferencePacking.lean:250:21: warning: This simp argument is unused:
+  hminus
+
+Hint: Omit it from the simp argument list.
+  simp [hdistinct,̵ ̵h̵m̵i̵n̵u̵s̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85DifferencePacking.lean:274:8: warning: This simp argument is unused:
+  hba
+
+Hint: Omit it from the simp argument list.
+  simp [hba̵,̵ ̵h̵b̵neg]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85DifferencePacking.lean:299:0: warning: automatically included section variable(s) unused in theorem `Erdos85.orderedDifferenceSet_disjoint_of_c4Free_circulantBlocks`:
+  [Fintype K]
+  [DecidableEq K]
+  [Fintype V]
+  [DecidableEq V]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype K] [DecidableEq K] [Fintype V] [DecidableEq V] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85DifferencePacking.lean:349:0: warning: automatically included section variable(s) unused in theorem `Erdos85.orderedDifferenceSet_disjoint_of_c4Free_two_circulantBlocks`:
+  [Fintype V]
+  [DecidableEq V]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype V] [DecidableEq V] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85DifferencePacking.lean:602:21: warning: This simp argument is unused:
+  hminus
+
+Hint: Omit it from the simp argument list.
+  simp [hdistinct,̵ ̵h̵m̵i̵n̵u̵s̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

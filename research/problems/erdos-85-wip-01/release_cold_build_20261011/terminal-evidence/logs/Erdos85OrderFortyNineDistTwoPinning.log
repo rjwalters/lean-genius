@@ -1,0 +1,10 @@
+Proofs/Erdos85OrderFortyNineDistTwoPinning.lean:131:37: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+Proofs/Erdos85OrderFortyNineDistTwoPinning.lean:438:36: warning: This simp argument is unused:
+  or_assoc
+
+Hint: Omit it from the simp argument list.
+  simp [K, or_comm, or_left_comm,̵ ̵o̵r̵_̵a̵s̵s̵o̵c̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

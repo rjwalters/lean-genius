@@ -1,0 +1,7 @@
+Proofs/Erdos85OneHighV2Satisfaction.lean:385:13: warning: This simp argument is unused:
+  h₁
+
+Hint: Omit it from the simp argument list.
+  simp only [h₁̵,̵ ̵h̵₂, h₃]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

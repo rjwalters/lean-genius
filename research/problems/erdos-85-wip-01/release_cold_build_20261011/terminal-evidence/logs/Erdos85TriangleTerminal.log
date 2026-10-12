@@ -1,0 +1,43 @@
+Proofs/Erdos85TriangleTerminal.lean:57:40: warning: This simp argument is unused:
+  mul_one
+
+Hint: Omit it from the simp argument list.
+  simp only [Matrix.mul_apply, normalizedOnesProjection,
+  ̵  ̵ ̵ ̵Matrix.smul_apply, Matrix.of_apply,̵ ̵m̵u̵l̵_̵o̵n̵e̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85TriangleTerminal.lean:75:40: warning: This simp argument is unused:
+  one_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [Matrix.mul_apply, normalizedOnesProjection,
+  ̵  ̵ ̵ ̵Matrix.smul_apply, Matrix.of_apply,̵ ̵o̵n̵e̵_̵m̵u̵l̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85TriangleTerminal.lean:108:6: warning: This simp argument is unused:
+  one_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [normalizedOnesProjection, Matrix.toLin'_apply, Matrix.mulVec,
+  ̵  ̵ ̵ ̵ ̵ ̵dotProduct,
+  ̲  ̲ ̲ ̲ ̲ ̲Matrix.smul_apply, Matrix.of_apply, v, Pi.sub_apply,
+  ̵  ̵ ̵ ̵ ̵ ̵o̵n̵e̵_̵m̵u̵l̵,̵ ̵smul_eq_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85TriangleTerminal.lean:110:34: warning: This simp argument is unused:
+  hab
+
+Hint: Omit it from the simp argument list.
+  simp [Finset.sum_sub_distrib,̵ ̵h̵a̵b̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85TriangleTerminal.lean:547:6: warning: This simp argument is unused:
+  one_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [P, normalizedOnesProjection, Matrix.toLin'_apply,
+  ̵  ̵ ̵ ̵ ̵ ̵Matrix.mulVec, dotProduct,
+  ̲  ̲ ̲ ̲ ̲ ̲Matrix.smul_apply, Matrix.of_apply,
+  ̵  ̵ ̵ ̵ ̵ ̵o̵n̵e̵_̵m̵u̵l̵,̵ ̵Pi.zero_apply, smul_eq_mul] at hi
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

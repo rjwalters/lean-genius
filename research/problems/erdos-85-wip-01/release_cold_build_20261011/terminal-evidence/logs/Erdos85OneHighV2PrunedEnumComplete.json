@@ -1,0 +1,15 @@
+{
+  "command": [
+    "lean",
+    "-j1",
+    "Proofs/Erdos85OneHighV2PrunedEnumComplete.lean",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/release_cold_build_20261011/run-output/lean/Proofs/Erdos85OneHighV2PrunedEnumComplete.olean"
+  ],
+  "returncode": 0,
+  "stop_reason": null,
+  "elapsed_seconds": 5.915829648998624,
+  "log_sha256": "e05421bb7ea799fece4eee9af02a50b21e4f71b4eda474109a5bfb47717026be",
+  "started_unix": 1791773469.868424,
+  "finished_unix": 1791773475.7843611
+}

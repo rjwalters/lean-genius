@@ -1,0 +1,57 @@
+Proofs/Erdos85InvariantDecomposition.lean:23:8: warning: automatically included section variable(s) unused in theorem `_private.Proofs.Erdos85InvariantDecomposition.0.Erdos85.invariant_prodMap_eq_conj`:
+  [FiniteDimensional K E]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [FiniteDimensional K E] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Proofs/Erdos85InvariantDecomposition.lean:40:4: warning: This simp argument is unused:
+  hU
+
+Hint: Omit it from the simp argument list.
+  simp only [Basis.prod_apply, LinearMap.coe_inl, LinearMap.coe_inr,
+  ̵  ̵ ̵ ̵LinearMap.prodMap_apply,
+  ̲  ̲ ̲ ̲LinearEquiv.conj_apply, LinearEquiv.symm_symm,
+  ̵  ̵ ̵ ̵Submodule.coe_prodEquivOfIsCompl,
+  ̲  ̲ ̲ ̲LinearMap.coe_comp,
+  ̵  ̵ ̵ ̵LinearEquiv.coe_coe, Function.comp_apply, LinearMap.coprod_apply,
+      Submodule.coe_subtype, map_add, Sum.forall, Sum.elim_inl, map_zero,
+  ̵  ̵ ̵ ̵ZeroMemClass.coe_zero,
+  ̲  ̲ ̲ ̲add_zero, LinearEquiv.eq_symm_apply, and_self,
+  ̵  ̵ ̵ ̵Submodule.coe_prodEquivOfIsCompl', ̵L̵i̵n̵e̵a̵r̵M̵a̵p̵.̵c̵o̵e̵_̵r̵e̵s̵t̵r̵i̵c̵t̵_̵a̵p̵p̵l̵y̵,̵
+      h̵U̵L̲i̲n̲e̲a̲r̲M̲a̲p̲.̲c̲o̲e̲_̲r̲e̲s̲t̲r̲i̲c̲t̲_̲a̲p̲p̲l̲y̲, hW, implies_true, Sum.elim_inr, zero_add, e, b]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85InvariantDecomposition.lean:40:8: warning: This simp argument is unused:
+  hW
+
+Hint: Omit it from the simp argument list.
+  simp only [Basis.prod_apply, LinearMap.coe_inl, LinearMap.coe_inr,
+  ̵  ̵ ̵ ̵LinearMap.prodMap_apply,
+  ̲  ̲ ̲ ̲LinearEquiv.conj_apply, LinearEquiv.symm_symm,
+  ̵  ̵ ̵ ̵Submodule.coe_prodEquivOfIsCompl,
+  ̲  ̲ ̲ ̲LinearMap.coe_comp,
+  ̵  ̵ ̵ ̵LinearEquiv.coe_coe, Function.comp_apply, LinearMap.coprod_apply,
+      Submodule.coe_subtype, map_add, Sum.forall, Sum.elim_inl, map_zero,
+  ̵  ̵ ̵ ̵ZeroMemClass.coe_zero,
+  ̲  ̲ ̲ ̲add_zero, LinearEquiv.eq_symm_apply, and_self,
+  ̵  ̵ ̵ ̵Submodule.coe_prodEquivOfIsCompl', ̵L̵i̵n̵e̵a̵r̵M̵a̵p̵.̵c̵o̵e̵_̵r̵e̵s̵t̵r̵i̵c̵t̵_̵a̵p̵p̵l̵y̵,̵
+      h̵U̵L̲i̲n̲e̲a̲r̲M̲a̲p̲.̲c̲o̲e̲_̲r̲e̲s̲t̲r̲i̲c̲t̲_̲a̲p̲p̲l̲y̲, hW̵U̲, implies_true, Sum.elim_inr, zero_add, e, b]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85InvariantDecomposition.lean:40:50: warning: This simp argument is unused:
+  e
+
+Hint: Omit it from the simp argument list.
+  simp only [Basis.prod_apply, LinearMap.coe_inl, LinearMap.coe_inr,
+  ̵  ̵ ̵ ̵LinearMap.prodMap_apply,
+  ̲  ̲ ̲ ̲LinearEquiv.conj_apply, LinearEquiv.symm_symm,
+  ̵  ̵ ̵ ̵Submodule.coe_prodEquivOfIsCompl,
+  ̲  ̲ ̲ ̲LinearMap.coe_comp,
+  ̵  ̵ ̵ ̵LinearEquiv.coe_coe, Function.comp_apply, LinearMap.coprod_apply,
+      Submodule.coe_subtype, map_add, Sum.forall, Sum.elim_inl, map_zero,
+  ̵  ̵ ̵ ̵ZeroMemClass.coe_zero,
+  ̲  ̲ ̲ ̲add_zero, LinearEquiv.eq_symm_apply, and_self,
+  ̵  ̵ ̵ ̵Submodule.coe_prodEquivOfIsCompl', ̵L̵i̵n̵e̵a̵r̵M̵a̵p̵.̵c̵o̵e̵_̵r̵e̵s̵t̵r̵i̵c̵t̵_̵a̵p̵p̵l̵y̵,̵
+      L̲i̲n̲e̲a̲r̲M̲a̲p̲.̲c̲o̲e̲_̲r̲e̲s̲t̲r̲i̲c̲t̲_̲a̲p̲p̲l̲y̲,̲ ̲hU, hW, implies_true, Sum.elim_inr, zero_add, e̵,̵ ̵b]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

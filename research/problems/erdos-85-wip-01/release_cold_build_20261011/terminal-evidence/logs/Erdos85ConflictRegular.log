@@ -1,0 +1,10 @@
+Proofs/Erdos85ConflictRegular.lean:85:4: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+Proofs/Erdos85ConflictRegular.lean:108:12: warning: This simp argument is unused:
+  nsmul_eq_mul
+
+Hint: Omit it from the simp argument list.
+  simp ̵[̵n̵s̵m̵u̵l̵_̵e̵q̵_̵m̵u̵l̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

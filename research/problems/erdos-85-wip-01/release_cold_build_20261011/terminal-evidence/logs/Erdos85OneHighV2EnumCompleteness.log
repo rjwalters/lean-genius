@@ -1,0 +1,22 @@
+Proofs/Erdos85OneHighV2EnumCompleteness.lean:150:14: warning: This simp argument is unused:
+  Function.update_apply
+
+Hint: Omit it from the simp argument list.
+  simp ̵[̵F̵u̵n̵c̵t̵i̵o̵n̵.̵u̵p̵d̵a̵t̵e̵_̵a̵p̵p̵l̵y̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OneHighV2EnumCompleteness.lean:193:29: warning: This simp argument is unused:
+  List.mem_filter
+
+Hint: Omit it from the simp argument list.
+  simp [List.mem_toFinset, L̵i̵s̵t̵.̵m̵e̵m̵_̵f̵i̵l̵t̵e̵r̵,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵oneHighRelevantPairList_complete e, oneHighPairIncident]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OneHighV2EnumCompleteness.lean:264:14: warning: This simp argument is unused:
+  hji
+
+Hint: Omit it from the simp argument list.
+  simp ̵[̵h̵j̵i̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

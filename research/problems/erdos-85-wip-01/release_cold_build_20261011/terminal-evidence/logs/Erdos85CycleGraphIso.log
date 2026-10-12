@@ -1,0 +1,17 @@
+Proofs/Erdos85CycleGraphIso.lean:28:5: warning: Variable name `hp` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/Erdos85CycleGraphIso.lean:96:10: warning: 'change (j - i).val = 1' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+Proofs/Erdos85CycleGraphIso.lean:106:10: warning: 'change (j - i).val = 1' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+Proofs/Erdos85CycleGraphIso.lean:121:10: warning: 'change (i - j).val = 1' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+Proofs/Erdos85CycleGraphIso.lean:131:10: warning: 'change (i - j).val = 1' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`

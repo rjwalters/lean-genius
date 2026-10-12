@@ -1,0 +1,482 @@
+Proofs/FriendshipTheoremOQ01.lean:152:19: warning: Variable name `huw` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/FriendshipTheoremOQ01.lean:152:33: warning: Variable name `hvw` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/FriendshipTheoremOQ01.lean:153:5: warning: Variable name `hadj_uv` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/FriendshipTheoremOQ01.lean:315:19: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/FriendshipTheoremOQ01.lean:317:21: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/FriendshipTheoremOQ01.lean:313:47: warning: 'push_cast at hc ⊢' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+Proofs/FriendshipTheoremOQ01.lean:404:37: warning: This simp argument is unused:
+  G.loopless.irrefl v
+
+Hint: Omit it from the simp argument list.
+  simp [SimpleGraph.adjMatrix_apply,̵ ̵G̵.̵l̵o̵o̵p̵l̵e̵s̵s̵.̵i̵r̵r̵e̵f̵l̵ ̵v̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:414:64: warning: This simp argument is unused:
+  SimpleGraph.loopless
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.trace, Matrix.diag, SimpleGraph.adjMatrix_apply,̵ ̵S̵i̵m̵p̵l̵e̵G̵r̵a̵p̵h̵.̵l̵o̵o̵p̵l̵e̵s̵s̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+FriendshipTheoremOQ01.ucn.{u_1} {V : Type u_1} (G : SimpleGraph V) (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v) :
+  V
+FriendshipTheoremOQ01.ucn_ne_left.{u_1} {V : Type u_1} [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+  [DecidableRel G.Adj] (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v) : ucn G hF u v huv ≠ u
+FriendshipTheoremOQ01.friendship_separation.{u_1} {V : Type u_1} [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+  [DecidableRel G.Adj] (hF : IsFriendshipGraph G) (u v x : V) (hxv : x ≠ v) (hadj_uv : G.Adj u v)
+  (hadj_ux : G.Adj u x) : ucn G hF x v hxv = u
+FriendshipTheoremOQ01.ucn_involutive.{u_1} {V : Type u_1} [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+  [DecidableRel G.Adj] (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v) (hadj : G.Adj u v) :
+  ucn G hF u (ucn G hF u v huv) ⋯ = v
+FriendshipTheoremOQ01.ucn_unique_in_neighborhood.{u_1} {V : Type u_1} [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+  [DecidableRel G.Adj] (hF : IsFriendshipGraph G) (u v w : V) (huv : u ≠ v) (huw : u ≠ w) (hvw : v ≠ w)
+  (hadj_uv : G.Adj u v) (hadj_uw : G.Adj u w) (hadj_vw : G.Adj v w) : w = ucn G hF u v huv
+FriendshipTheoremOQ01.common_neighbor_finset_card.{u_1} {V : Type u_1} [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+  [DecidableRel G.Adj] (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v) :
+  #(G.neighborFinset u ∩ G.neighborFinset v) = 1
+FriendshipTheoremOQ01.counting_identity.{u_1} {V : Type u_1} [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+  [DecidableRel G.Adj] (hF : IsFriendshipGraph G) (u : V) :
+  #(univ.erase u) = ∑ v ∈ G.neighborFinset u, #((G.neighborFinset v).erase u)
+FriendshipTheoremOQ01.regular_friendship_card.{u_1} {V : Type u_1} [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+  [DecidableRel G.Adj] (hF : IsFriendshipGraph G) (u : V) (k : ℕ) (hreg : ∀ (v : V), G.degree v = k) (hk : k ≥ 1) :
+  Fintype.card V = k * (k - 1) + 1
+FriendshipTheoremOQ01.dvd_sq_add_one_imp_one (s : ℕ) (hs : s ≥ 1) (h : s ∣ s * s + 1) : s = 1
+Proofs/FriendshipTheoremOQ01.lean:552:28: warning: Variable name `hF` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/FriendshipTheoremOQ01.lean:593:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/FriendshipTheoremOQ01.lean:604:30: warning: Variable name `hF` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/FriendshipTheoremOQ01.lean:624:60: warning: Variable name `hn` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/FriendshipTheoremOQ01.lean:655:60: warning: Variable name `hk` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/FriendshipTheoremOQ01.lean:688:8: warning: This simp argument is unused:
+  smul_eq_mul
+
+Hint: Omit it from the simp argument list.
+  simp ̵[̵s̵m̵u̵l̵_̵e̵q̵_̵m̵u̵l̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:828:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/FriendshipTheoremOQ01.lean:821:18: warning: This simp argument is unused:
+  Matrix.smul_mulVec
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.s̵m̵u̵l̵_̵m̵u̵l̵V̵e̵c̵,̵ ̵M̵a̵t̵r̵i̵x̵.̵one_mulVec]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:821:38: warning: This simp argument is unused:
+  Matrix.one_mulVec
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.smul_mulVec,̵ ̵M̵a̵t̵r̵i̵x̵.̵o̵n̵e̵_̵m̵u̵l̵V̵e̵c̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:848:50: warning: This simp argument is unused:
+  smul_eq_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, Pi.sub_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲Pi.smul_apply, P̵i̵.̵z̵e̵r̵o̵_̵a̵p̵p̵l̵y̵,̵ ̵s̵m̵u̵l̵_̵e̵q̵_̵m̵u̵l̵]̵P̲i̲.̲z̲e̲r̲o̲_̲a̲p̲p̲l̲y̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:879:43: warning: This simp argument is unused:
+  Polynomial.eval_sub
+
+Hint: Omit it from the simp argument list.
+  simp_all [Matrix.diagonal, P̵o̵l̵y̵n̵o̵m̵i̵a̵l̵.̵e̵v̵a̵l̵_̵s̵u̵b̵,̵ ̵Polynomial.eval_one, Polynomial.eval_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:984:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/FriendshipTheoremOQ01.lean:978:16: warning: This simp argument is unused:
+  Matrix.smul_mulVec
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.s̵m̵u̵l̵_̵m̵u̵l̵V̵e̵c̵,̵ ̵M̵a̵t̵r̵i̵x̵.̵one_mulVec]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:978:36: warning: This simp argument is unused:
+  Matrix.one_mulVec
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.smul_mulVec,̵ ̵M̵a̵t̵r̵i̵x̵.̵o̵n̵e̵_̵m̵u̵l̵V̵e̵c̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1004:33: warning: Variable name `hF` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/FriendshipTheoremOQ01.lean:1004:68: warning: Variable name `hk` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/FriendshipTheoremOQ01.lean:1053:57: warning: This simp argument is unused:
+  mul_one
+
+Hint: Omit it from the simp argument list.
+  simp only [Matrix.sub_apply, Matrix.one_apply_eq, B, A, Matrix.mul_apply, Matrix.of_apply,
+  ̲  ̲ ̲ ̲Finset.sum_const, F̵i̵n̵s̵e̵t̵.̵c̵a̵r̵d̵_̵u̵n̵i̵v̵,̵ ̵m̵u̵l̵_̵o̵n̵e̵]̵F̲i̲n̲s̲e̲t̲.̲c̲a̲r̲d̲_̲u̲n̲i̲v̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1070:22: warning: This simp argument is unused:
+  mul_one
+
+Hint: Omit it from the simp argument list.
+  simp only [Matrix.det_fin_one, Matrix.sub_apply, Matrix.one_apply_eq, B, A, Matrix.mul_apply,
+  ̲  ̲ ̲ ̲Matrix.of_apply, Finset.sum_const, Finset.card_univ, m̵u̵l̵_̵o̵n̵e̵,̵ ̵hA_def, hB_def]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1070:31: warning: This simp argument is unused:
+  hA_def
+
+Hint: Omit it from the simp argument list.
+  simp only [Matrix.det_fin_one, Matrix.sub_apply, Matrix.one_apply_eq, B, A, Matrix.mul_apply,
+  ̲  ̲ ̲ ̲Matrix.of_apply, Finset.sum_const, Finset.card_univ, mul_one, h̵A̵_̵d̵e̵f̵,̵ ̵hB_def]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1070:39: warning: This simp argument is unused:
+  hB_def
+
+Hint: Omit it from the simp argument list.
+  simp only [Matrix.det_fin_one, Matrix.sub_apply, Matrix.one_apply_eq,
+  ̵  ̵ ̵ ̵B, A, Matrix.mul_apply,
+  ̲  ̲ ̲ ̲Matrix.of_apply, Finset.sum_const,
+  ̵  ̵ ̵ ̵Finset.card_univ, mul_one, hA_def,̵ ̵h̵B̵_̵d̵e̵f̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1071:2: warning: 'push_cast' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+Proofs/FriendshipTheoremOQ01.lean:1078:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/FriendshipTheoremOQ01.lean:1088:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/FriendshipTheoremOQ01.lean:1107:46: warning: This simp argument is unused:
+  zero_pow
+
+Hint: Omit it from the simp argument list.
+  simp only [zero_smul, zero_sub, z̵e̵r̵o̵_̵p̵o̵w̵,̵ ̵Int.cast_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1107:56: warning: This simp argument is unused:
+  Int.cast_zero
+
+Hint: Omit it from the simp argument list.
+  simp only [zero_smul, zero_sub, zero_pow,̵ ̵I̵n̵t̵.̵c̵a̵s̵t̵_̵z̵e̵r̵o̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1130:47: warning: This simp argument is unused:
+  map_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [hM_def, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.sub_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲Matrix.smul_apply, Matrix.one_apply, onesMatrix, Matrix.of_apply, smul_eq_mul, map_sub,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲m̵a̵p̵_̵m̵u̵l̵,̵ ̵Int.coe_castRingHom]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1165:6: warning: This simp argument is unused:
+  Polynomial.eval_sub
+
+Hint: Omit it from the simp argument list.
+  simp only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.charmatrix_apply, Matrix.sub_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲Matrix.diagonal_apply, P̵o̵l̵y̵n̵o̵m̵i̵a̵l̵.̵e̵v̵a̵l̵_̵s̵u̵b̵,̵ ̵Polynomial.eval_X, Polynomial.eval_C, onesMatrix, Matrix.of_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1165:27: warning: This simp argument is unused:
+  Polynomial.eval_X
+
+Hint: Omit it from the simp argument list.
+  simp only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.charmatrix_apply, Matrix.sub_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲Matrix.diagonal_apply, Polynomial.eval_sub, P̵o̵l̵y̵n̵o̵m̵i̵a̵l̵.̵e̵v̵a̵l̵_̵X̵,̵ ̵Polynomial.eval_C, onesMatrix, Matrix.of_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1165:46: warning: This simp argument is unused:
+  Polynomial.eval_C
+
+Hint: Omit it from the simp argument list.
+  simp only [RingHom.mapMatrix_apply, Matrix.map_apply,
+  ̵  ̵ ̵ ̵ ̵ ̵Matrix.charmatrix_apply, Matrix.sub_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲Matrix.diagonal_apply,
+  ̵  ̵ ̵ ̵ ̵ ̵Polynomial.eval_sub, Polynomial.eval_X, P̵ol̵y̵no̵m̵i̵a̵l̵.̵ev̵a̵l̵_̵C̵,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵o̵n̵e̵sMatrix, Matrix.of_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1173:25: warning: This simp argument is unused:
+  Polynomial.eval_C
+
+Hint: Omit it from the simp argument list.
+  simp [Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_sub, P̵o̵l̵y̵n̵o̵m̵i̵a̵l̵.̵e̵v̵a̵l̵_̵X̵,̵ ̵P̵o̵l̵y̵n̵o̵m̵i̵a̵l̵.̵e̵v̵a̵l̵_̵C̵]̵P̲o̲l̲y̲n̲o̲m̲i̲a̲l̲.̲e̲v̲a̲l̲_̲X̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1191:46: warning: This simp argument is unused:
+  zero_pow
+
+Hint: Omit it from the simp argument list.
+  simp only [zero_smul, zero_sub, z̵e̵r̵o̵_̵p̵o̵w̵,̵ ̵Int.cast_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1191:56: warning: This simp argument is unused:
+  Int.cast_zero
+
+Hint: Omit it from the simp argument list.
+  simp only [zero_smul, zero_sub, zero_pow,̵ ̵I̵n̵t̵.̵c̵a̵s̵t̵_̵z̵e̵r̵o̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1220:47: warning: This simp argument is unused:
+  map_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [hM_def, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.sub_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲Matrix.smul_apply, Matrix.one_apply, onesMatrix, Matrix.of_apply, smul_eq_mul, map_sub,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲m̵a̵p̵_̵m̵u̵l̵,̵ ̵Int.coe_castRingHom]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1322:21: warning: This simp argument is unused:
+  Matrix.smul_apply
+
+Hint: Omit it from the simp argument list.
+  simp [̵M̵a̵t̵r̵i̵x̵.̵s̵m̵u̵l̵_̵a̵p̵p̵l̵y̵,̵ ̵M̵a̵t̵r̵i̵x̵.̵s̵u̵b̵_̵a̵p̵p̵l̵y̵,̵[̲M̲a̲t̲r̲i̲x̲.̲s̲u̲b̲_̲a̲p̲p̲l̲y̲,̲ Matrix.add_apply, Matrix.neg_apply, Matrix.one_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲smul_eq_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1323:26: warning: This simp argument is unused:
+  Matrix.one_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, Matrix.neg_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲M̵a̵t̵r̵i̵x̵.̵o̵n̵e̵_̵a̵p̵p̵l̵y̵,̵ ̵smul_eq_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1323:44: warning: This simp argument is unused:
+  smul_eq_mul
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, Matrix.neg_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲M̵a̵t̵r̵i̵x̵.̵o̵n̵e̵_̵a̵p̵p̵l̵y̵,̵ ̵s̵m̵u̵l̵_̵e̵q̵_̵m̵u̵l̵]̵M̲a̲t̲r̲i̲x̲.̲o̲n̲e̲_̲a̲p̲p̲l̲y̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1332:32: warning: This simp argument is unused:
+  Matrix.smul_apply
+
+Hint: Omit it from the simp argument list.
+  simp [̵M̵a̵t̵r̵i̵x̵.̵s̵m̵u̵l̵_̵a̵p̵p̵l̵y̵,̵ ̵M̵a̵t̵r̵i̵x̵.̵s̵u̵b̵_̵a̵p̵p̵l̵y̵,̵[̲M̲a̲t̲r̲i̲x̲.̲s̲u̲b̲_̲a̲p̲p̲l̲y̲,̲ Matrix.add_apply, Matrix.one_apply, onesMatrix,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲Matrix.of_apply, smul_eq_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1333:55: warning: This simp argument is unused:
+  smul_eq_mul
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply,
+          Matrix.one_apply, onesMatrix, Matrix.of_apply,̵ ̵s̵m̵u̵l̵_̵e̵q̵_̵m̵u̵l̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1370:38: warning: This simp argument is unused:
+  ite_false
+
+Hint: Omit it from the simp argument list.
+  simp only [Polynomial.coeff_sub, Polynomial.coeff_X_pow, Polynomial.coeff_C,
+        Polynomial.coeff_zero, if_true,̵ ̵i̵t̵e̵_̵f̵a̵l̵s̵e̵] at this
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1458:48: warning: Variable name `hd` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/FriendshipTheoremOQ01.lean:1479:52: warning: This simp argument is unused:
+  degree_X_pow
+
+Hint: Omit it from the simp argument list.
+  simp ̵[̵d̵e̵g̵r̵e̵e̵_̵X̵_̵p̵o̵w̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1483:12: warning: This simp argument is unused:
+  natDegree_C
+
+Hint: Omit it from the simp argument list.
+  simp [natDegree_C̵,̵ ̵n̵a̵t̵D̵e̵g̵r̵e̵e̵_̵X_pow]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1483:25: warning: This simp argument is unused:
+  natDegree_X_pow
+
+Hint: Omit it from the simp argument list.
+  simp [natDegree_C,̵ ̵n̵a̵t̵D̵e̵g̵r̵e̵e̵_̵X̵_̵p̵o̵w̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1530:44: warning: This simp argument is unused:
+  Finset.sum_range_one
+
+Hint: Omit it from the simp argument list.
+  simp only [Finset.sum_range_succ, F̵i̵n̵s̵e̵t̵.̵s̵u̵m̵_̵r̵a̵n̵g̵e̵_̵o̵n̵e̵,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵pow_zero, mul_one, pow_one]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1552:2: warning: 'change f = p ^ ((k + k) / 2)' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+Proofs/FriendshipTheoremOQ01.lean:1634:2: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/FriendshipTheoremOQ01.lean:1697:52: warning: This simp argument is unused:
+  degree_X_pow
+
+Hint: Omit it from the simp argument list.
+  simp ̵[̵d̵e̵g̵r̵e̵e̵_̵X̵_̵p̵o̵w̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1702:6: warning: This simp argument is unused:
+  Polynomial.C_comp
+
+Hint: Omit it from the simp argument list.
+  simp [Polynomial.sub_comp, Polynomial.pow_comp, Polynomial.X_comp, P̵o̵l̵y̵n̵o̵m̵i̵a̵l̵.̵C̵_̵c̵o̵m̵p̵,̵ ̵neg_sq]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1702:25: warning: This simp argument is unused:
+  neg_sq
+
+Hint: Omit it from the simp argument list.
+  simp [Polynomial.sub_comp, Polynomial.pow_comp, Polynomial.X_comp,
+  ̵  ̵ ̵ ̵ ̵ ̵Polynomial.C_comp,̵ ̵n̵e̵g̵_̵s̵q̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1768:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/FriendshipTheoremOQ01.lean:1837:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/FriendshipTheoremOQ01.lean:1947:23: warning: This simp argument is unused:
+  smul_eq_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [Matrix.mul_apply, onesMatrix, Matrix.of_apply, one_mul,
+  ̵  ̵ ̵ ̵Matrix.smul_apply, s̵mul_o̲n̲eq̵_̵m̵u̵l̵,
+  ̲ m̵u̵l̵_̵o̵n̵e̵,̵  ̲ ̲SimpleGraph.adjMatrix_apply]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:1947:36: warning: This simp argument is unused:
+  mul_one
+
+Hint: Omit it from the simp argument list.
+  simp only [Matrix.mul_apply, onesMatrix, Matrix.of_apply, one_mul,
+  ̵  ̵ ̵ ̵Matrix.smul_apply, smul_eq_mul,
+  ̲ m̵u̵l̵_̵o̵n̵e̵,̵  ̲ ̲SimpleGraph.adjMatrix_apply]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:2007:22: warning: This simp argument is unused:
+  Finset.filter_congr_decidable
+
+Hint: Omit it from the simp argument list.
+  simp [SimpleGraph.adjMatrix_apply, SimpleGraph.degree, SimpleGraph.neighborFinset,
+      Finset.sum_boole,̵ ̵F̵i̵n̵s̵e̵t̵.̵f̵i̵l̵t̵e̵r̵_̵c̵o̵n̵g̵r̵_̵d̵e̵c̵i̵d̵a̵b̵l̵e̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/FriendshipTheoremOQ01.lean:2018:60: warning: Variable name `hij` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/FriendshipTheoremOQ01.lean:2054:60: warning: Variable name `hij` is not explicitly referenced.
+
+The binding can be removed (if unused) or named `_` (if used implicitly).
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Proofs/FriendshipTheoremOQ01.lean:2227:4: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Proofs/FriendshipTheoremOQ01.lean:2243:17: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```

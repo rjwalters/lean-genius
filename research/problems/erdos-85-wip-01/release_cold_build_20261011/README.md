@@ -1,11 +1,41 @@
 # Cold project build preparation
 
-Status: **prepared, not launched**. This is a proposed bounded verification
+Status: **attempt 2 accepted** (attempt 1 failed; both retained). This is a bounded verification
 of the finite endpoint's entire 893-source project closure after publication
 of the 13 packed H7 certificates and the corresponding relative-path patch.
 It is not a new SAT campaign, and it does not discharge the H1/H7 UNSAT
 hypotheses. It may use pinned Lean/Mathlib external package caches; it does
 not claim to rebuild Lean or Mathlib from source.
+
+The approved attempt started on 2026-10-11 at 21:51:26 UTC, job
+`20261011T215126-commit-8d4f59c82e40-9322`, execution commit
+`8d4f59c82e40f08ae9377458779a68fde8a7ddc9`. Its outer timeout is 580 minutes
+(9 hours 40 minutes), reserving startup/capture time within the approximate
+10-hour budget. The dedicated volume was empty before preflight. The live
+isolation probe passed by failing on the expected missing fresh endpoint
+object; this is not evidence of full build completion. See [COLLECT.md](COLLECT.md)
+for the terminal evidence procedure. Only a retained terminal audit can
+establish acceptance; the execution branch remains frozen.
+
+The attempt terminated with host exit code 1 at 2026-10-12 03:01:47 UTC,
+after reporting 460 completed modules. The first H3 triple-part invocation
+failed while loading the freshly generated native plugin: the frozen runner
+requested `initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime`, whereas
+the library exports `initialize_Proofs_Erdos85H3TripleCompletionRuntime`.
+The run did not reach the endpoint/axiom audit and does not establish a
+complete cold rebuild. The failure bundle is retained and the builder is
+confirmed stopped; see [FAILURE.md](FAILURE.md) for raw receipts, the diagnostic,
+and the correction. That failed attempt did not itself authorize a retry; the
+operator separately authorized retries until a pass.
+
+Attempt 2 (execution commit `afa46bc5078314df87d7f49002c07a5edeed79d5`, plan
+`dfd3900d…`, job `20261012T042927-commit-afa46bc50783-6039`) corrected the plugin
+initializer name, replaced alphabetical scheduling with critical-path ordering,
+and removed the serializing per-certificate memory reservation (`ATTEMPT2.md`).
+Sources, the 32 hash-verified inputs and expected exports are identical to
+attempt 1. It exited 0 after 13,136 s with 893/893 modules compiled from a
+fresh volume; capture status `COLD_PROJECT_BUILD_ACCEPTED`, audit PASS, axiom
+counts 601/607/604. See [ACCEPTED.md](ACCEPTED.md) and `attempt2-evidence/`.
 
 ## Inputs and isolation
 
@@ -76,10 +106,17 @@ After the publication/path patch is merged and the 13 hash-verified files are
 present at the relative include locations, generate a new plan (no Lean):
 
 ```sh
-AWS_PROFILE=2am-admin proofs/scripts/fetch-h7-certificates.sh
+AWS_PROFILE=your-profile proofs/scripts/fetch-h7-certificates.sh
 python3 -B research/problems/erdos-85-wip-01/release_cold_build_20261011/prepare.py --output /tmp/erdos85-cold-plan.json
 python3 -B -m unittest discover -s research/problems/erdos-85-wip-01/release_cold_build_20261011 -p 'test_*.py' -v
 ```
+
+Fetching requires the AWS CLI and authenticated AWS credentials permitted
+to make Requester Pays requests. The script supplies `--request-payer requester`;
+anonymous HTTP downloads are unavailable. The 13 files total 2,574,916,357
+bytes, and request/transfer charges may apply. The local fetch log records
+all 13 successful hash checks using bucket-owner credentials; it does not
+establish access from a separate AWS account.
 
 The builder must also run the fetch script before its input preflight; its
 instance role needs requester-pays GetObject access. Do not assume the

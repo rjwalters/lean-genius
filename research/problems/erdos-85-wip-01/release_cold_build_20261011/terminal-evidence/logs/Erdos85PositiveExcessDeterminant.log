@@ -1,0 +1,30 @@
+Proofs/Erdos85PositiveExcessDeterminant.lean:55:8: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+Proofs/Erdos85PositiveExcessDeterminant.lean:58:8: warning: 'congr 1' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+Proofs/Erdos85PositiveExcessDeterminant.lean:145:19: warning: This simp argument is unused:
+  Pi.smul_apply
+
+Hint: Omit it from the simp argument list.
+  simp only [Matrix.add_apply, Matrix.one_apply, Matrix.of_apply, if_pos, u, P̵i̵.̵s̵m̵u̵l̵_̵a̵p̵p̵l̵y̵,̵ ̵smul_eq_mul,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲one_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85PositiveExcessDeterminant.lean:145:34: warning: This simp argument is unused:
+  smul_eq_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [Matrix.add_apply, Matrix.one_apply, Matrix.of_apply, if_pos, u, Pi.smul_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲s̵m̵u̵l̵_̵e̵q̵_̵m̵u̵l̵,̵ ̵one_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85PositiveExcessDeterminant.lean:145:47: warning: This simp argument is unused:
+  one_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [Matrix.add_apply, Matrix.one_apply, Matrix.of_apply, if_pos, u, Pi.smul_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲s̵m̵u̵l̵_̵e̵q̵_̵m̵u̵l̵,̵ ̵o̵n̵e̵_̵m̵u̵l̵]̵s̲m̲u̲l̲_̲e̲q̲_̲m̲u̲l̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

@@ -1,0 +1,16 @@
+Proofs/Erdos85OrderSixtyFourEightComponentKill.lean:54:20: warning: This simp argument is unused:
+  fun hxz : D.connectedComponentMk x = D.connectedComponentMk z => hz (hxz.symm.trans hxy)
+
+Hint: Omit it from the simp argument list.
+  simp [hz,̵ ̵f̵u̵n̵ ̵h̵x̵z̵ ̵:̵ ̵D̵.̵c̵o̵n̵n̵e̵c̵t̵e̵d̵C̵o̵m̵p̵o̵n̵e̵n̵t̵M̵k̵ ̵x̵ ̵=̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵D̵.̵c̵o̵n̵n̵e̵c̵t̵e̵d̵C̵o̵m̵p̵o̵n̵e̵n̵t̵M̵k̵ ̵z̵ ̵=̵>̵ ̵h̵z̵ ̵(̵h̵x̵z̵.̵s̵y̵m̵m̵.̵t̵r̵a̵n̵s̵ ̵h̵x̵y̵)̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OrderSixtyFourEightComponentKill.lean:286:15: warning: This simp argument is unused:
+  Matrix.mulVec_mulVec
+
+Hint: Omit it from the simp argument list.
+  simp only [̵M̵a̵t̵r̵i̵x̵.̵m̵u̵l̵V̵e̵c̵_̵m̵u̵l̵V̵e̵c̵,̵ ̵M̵a̵t̵r̵i̵x̵.̵a̵d̵d̵_̵m̵u̵l̵V̵e̵c̵,̵[̲M̲a̲t̲r̲i̲x̲.̲a̲d̲d̲_̲m̲u̲l̲V̲e̲c̲,̲ Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, hvJ,
+  ̲  ̲ ̲ ̲ ̲ ̲hvP, add_zero, smul_zero, sub_zero] at hv
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

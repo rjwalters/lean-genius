@@ -1,0 +1,15 @@
+{
+  "command": [
+    "lean",
+    "-j1",
+    "Proofs/Erdos85ThreeLevelSupportBalance.lean",
+    "-o",
+    "/workspace/research/problems/erdos-85-wip-01/release_cold_build_20261011/run-output/lean/Proofs/Erdos85ThreeLevelSupportBalance.olean"
+  ],
+  "returncode": 0,
+  "stop_reason": null,
+  "elapsed_seconds": 14.569221662000018,
+  "log_sha256": "a5dc3671d9b823860f0d2776d8d8128e16b77410577acf2a1b051a647b35f61c",
+  "started_unix": 1791755528.2696903,
+  "finished_unix": 1791755542.8390303
+}

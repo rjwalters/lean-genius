@@ -1,0 +1,7 @@
+Proofs/Erdos85OrderFortyNineDefectPerfectCodes.lean:37:10: warning: This simp argument is unused:
+  Finset.insert_inter
+
+Hint: Omit it from the simp argument list.
+  simp [F̵i̵n̵s̵e̵t̵.̵i̵n̵s̵e̵r̵t̵_̵i̵n̵t̵e̵r̵,̵ ̵SimpleGraph.mem_neighborFinset, hvx, hempty]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

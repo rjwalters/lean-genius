@@ -1,0 +1,20 @@
+Proofs/Erdos85OrderSixtyFourExteriorPairGraph.lean:222:4: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+Proofs/Erdos85OrderSixtyFourExteriorPairGraph.lean:193:8: warning: This simp argument is unused:
+  Matrix.one_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply,
+  ̵  ̵ ̵ ̵ ̵ ̵ ̵ ̵M̵a̵t̵r̵i̵x̵.̵o̵n̵e̵_̵a̵p̵p̵l̵y̵,̵ ̵FriendshipTheoremOQ01.onesMatrix,
+          SimpleGraph.adjMatrix_apply, hAii, hDii] at he
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Proofs/Erdos85OrderSixtyFourExteriorPairGraph.lean:194:8: warning: This simp argument is unused:
+  SimpleGraph.adjMatrix_apply
+
+Hint: Omit it from the simp argument list.
+  simp [Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲FriendshipTheoremOQ01.onesMatrix, S̵i̵m̵p̵l̵e̵G̵r̵a̵p̵h̵.̵a̵d̵j̵M̵a̵t̵r̵i̵x̵_̵a̵p̵p̵l̵y̵,̵ ̵hAii, hDii] at he
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
