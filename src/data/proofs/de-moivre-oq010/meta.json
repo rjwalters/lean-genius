@@ -70,11 +70,19 @@
     },
     {
       "id": "orderfour",
-      "title": "Part III: Reflection is Involutive and U⁴ = 1, Sharply",
-      "summary": "reflMatrix_mul_self (R² = 1 via the group Fin n), dftMatrix_pow_four (U⁴ = 1), and the n ≥ 3 sharpness reflMatrix_ne_one / dftMatrix_sq_ne_one",
+      "title": "Part III: Reflection is Involutive and U⁴ = 1",
+      "summary": "reflMatrix_mul_self (R² = 1 via the group Fin n) and dftMatrix_pow_four (U⁴ = 1, chaining U² = R with R² = 1).",
       "startLine": 133,
+      "endLine": 170,
+      "mathContext": "$R^2 = 1$ (reversal is an involution), so $U^4 = (U^2)^2 = R^2 = 1$."
+    },
+    {
+      "id": "sharpness",
+      "title": "Part IV: Sharpness — the Order is Exactly Four for n ≥ 3",
+      "summary": "reflMatrix_ne_one (R ≠ 1 for n ≥ 3, via the index-1 entry) and dftMatrix_sq_ne_one (U² ≠ 1), which combined with Part III's U⁴ = 1 pins ord(U) = 4 exactly, not merely dividing 4.",
+      "startLine": 172,
       "endLine": 194,
-      "mathContext": "$R^2 = 1$ (reversal is an involution), so $U^4 = (U^2)^2 = 1$; for $n\\ge 3$, $U^2 \\ne 1$, so $\\mathrm{ord}(U) = 4$ exactly."
+      "mathContext": "For $n\\ge 3$, $U^2 \\ne 1$ (since $R \\ne 1$), so together with $U^4=1$ the order of $U$ is exactly $4$, not $1$ or $2$."
     }
   ],
   "conclusion": {
