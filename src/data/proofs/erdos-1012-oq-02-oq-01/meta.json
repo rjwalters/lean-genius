@@ -43,7 +43,8 @@
       "Triangle-freeness is the structural reason the complete bipartite graph is the extremal exception: it has no odd cycle, in particular no triangle",
       "A length-3 closed walk already forces a triangle — the IsCycle hypothesis is not even needed for the obstruction",
       "getVert + adj_getVert_succ cleanly extract the cyclic adjacencies of a short closed walk without destructuring the Walk inductively",
-      "The exception branch of Bondy's disjunction is inhabited by a non-vertex-pancyclic graph, so the n²/4+1 edge hypothesis is sharp"
+      "The exception branch of Bondy's disjunction is inhabited by a non-vertex-pancyclic graph, so the n²/4+1 edge hypothesis is sharp",
+      "Self-containment here is a workaround, not a design choice. The Part 0 predicates (hasCycleThroughVertex, isPancyclicUpTo, etc.) are copied verbatim from the parent Erdos1012OQ02 rather than imported, because the parent currently fails to compile against the pinned Mathlib (renamed Finset.card_Icc, deprecated Set.ncard_coe_Finset). Duplicating them lets this entry's necessity result stay independently machine-checked despite the parent's toolchain drift, at the cost of two copies of the same five definitions that will need reconciling once the parent is repaired."
     ],
     "prerequisites": [
       "Bondy's vertex-pancyclicity theorem and its bipartite exception",
@@ -55,7 +56,7 @@
     "summary": "The bipartite exception in Bondy's vertex-pancyclicity theorem is necessary: the complete bipartite graph is triangle-free (no vertex on a 3-cycle), hence not pancyclic and not vertex-pancyclic, while realizing exactly the exception's structural predicate. 9 theorems, 279 lines, 0 axioms, 0 sorries.",
     "implications": "Confirms the sharpness of the n²/4+1 edge threshold by exhibiting the unique extremal obstruction concretely in Lean. The getVert-based 'short closed walk ⟹ triangle' technique is reusable for ruling out short cycles in any graph defined by an adjacency predicate. Complements the parent OQ-02 by populating its previously-opaque bipartite disjunct.",
     "openQuestions": [
-      "Prove the exact extremal edge count |E(K_{m,m})| = m² = ⌊(2m)²/4⌋ via an edgeFinset ≃ V × W bijection or degree-sum argument, quantifying the sharpness numerically",
+      "Is the complete bipartite graph the *unique* (up to isomorphism) non-vertex-pancyclic graph on n vertices with m² = ⌊n²/4⌋ edges, or do other extremal graphs at the same edge count also fail vertex-pancyclicity?",
       "Generalize triangle-freeness to 'no odd cycle' for complete bipartite graphs (Mathlib lists this as a TODO in Bipartite.lean)"
     ]
   },
