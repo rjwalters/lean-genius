@@ -14,8 +14,11 @@
 # Per-machine install record (absolute source path + install timestamp)
 .claude/skills/repo/.install-local.json
 .claude/projects/
-# Codex agent worktrees (same role as .claude/worktrees/ and .loom/worktrees/)
+# Codex agent worktrees (same role as .claude/worktrees/ and .loom/worktrees/).
+# Both forms: the slash form matches a real directory, the bare form matches the
+# symlink used when the worktrees are offloaded to another volume.
 .codex/worktrees/
+.codex/worktrees
 
 # Machine-local git hooks (git-lfs install --local writes here; wired via core.hooksPath)
 .githooks/
