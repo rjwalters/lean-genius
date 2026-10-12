@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "endpoint": "Erdos85FiniteDropCapstone",
-  "source_commit": "af3e7ab27aa628214955a40ee154acdd8c7713d8",
+  "source_commit": "8d4f59c82e40f08ae9377458779a68fde8a7ddc9",
   "sources": {
     "Erdos85Problem": {
       "sha256": "ac93ab677ff54606330a179d764418e4e317d477aba5cce604a5d3e6de48ed95",
@@ -6295,8 +6295,8 @@
     "lake-manifest.json": "f243fb1348183fbb95612c9c97beea1620651a55441b3e78fbc6bc3bfd26da01"
   },
   "runner_sha256": {
-    "prepare.py": "a80771e8e9f4e449973a7fb92c3ff8892f8e337bfb83d16bdd72051e361b9dfb",
-    "run.py": "f352f611f505b28939a90f9770874a9f19d61b5bb6bac5d697a462bd4266f64b",
+    "prepare.py": "eb4cf71d2f5eadb7a615055d05f3186448dd40dd0f3470b8ca217392bf1be534",
+    "run.py": "b4f725fe4d81be63840531434535ea09a6e1049b1278b67af4ef82fdeef90fd0",
     "audit.py": "b1ac4cca717a288cfc319a3e2f63d94d28d3500df2b762da14f3b50449a9a3e2"
   },
   "accepted_axiom_plan_sha256": "886c8e7caef256a580f72cbe71257f6b98c9b64a5d91745cebf26cd718d76577",
@@ -8130,7 +8130,7 @@
     }
   ],
   "limits": {
-    "workers": 6,
+    "workers": 12,
     "memory_gib": 110,
     "cpus": 16,
     "wall_seconds": 35400

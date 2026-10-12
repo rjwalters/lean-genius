@@ -13,7 +13,10 @@ from pathlib import Path
 from prepare import ROOT, closure, sha
 
 RUNTIME = "Erdos85H3TripleCompletionRuntime"
-INIT = "initialize_proofs_Proofs_Erdos85H3TripleCompletionRuntime"
+# Exported by `lean -c` without a Lake package (attempt 1 copied the Lake-built
+# spelling `initialize_proofs_...` and failed to load the plugin).
+INIT = "initialize_Proofs_Erdos85H3TripleCompletionRuntime"
+SMOKE = "Erdos85H3TripleCompletionPart000"
 
 
 def save(path, data):
@@ -98,10 +101,50 @@ def command_run(command, log, env, deadline, stop):
     return row
 
 
-def weight(name):
-    # Keep large packed-certificate compilation from overlapping another large
-    # certificate. The cgroup is the hard limit; these are scheduler reservations.
-    return 64 if re.fullmatch(r"Erdos85OrderFortyNineSevenHighT[1-7]Rep[0-2]Certificate", name) else 16
+# Rough per-module wall-time estimates in seconds (attempt 1 receipts and the
+# Oct 7/8 builder log). They only order ready work; they never gate it.
+ESTIMATES = [
+    (r"Erdos85OrderFortyNineSevenHighT1Rep0Certificate", 8149),
+    (r"Erdos85OrderFortyNineSevenHighT[2-7]Rep\d+Certificate", 3000),
+    (r"Erdos85H5T\dPart\d+", 2000),
+    (r"Erdos85H3PairPart\d+", 1300),
+    (r"Erdos85OrderFortyNineSevenHighCnf", 1011),
+    (r"Erdos85SignedSRGSAT", 843),
+    (r"Erdos85OrderFortyNineCanonicalMaskFibers", 609),
+    (r"Erdos85H3TripleCompletionPart\d{3}", 20),
+]
+
+
+def estimate(name):
+    for pattern, seconds in ESTIMATES:
+        if re.fullmatch(pattern, name):
+            return seconds
+    return 30
+
+
+def priorities(sources):
+    """Longest estimated path from each module to the endpoint; the smoke part
+    and its ancestors come first so a plugin failure surfaces within the first hour.
+    Attempt 1 scheduled alphabetically and left the H7 certificate chain idle
+    behind 35-minute searches for four hours."""
+    users = {name: [] for name in sources}
+    for name, row in sources.items():
+        for dep in row["dependencies"]:
+            users[dep].append(name)
+    tail = {}
+
+    def path(name):
+        if name not in tail:
+            tail[name] = estimate(name) + max([path(u) for u in users[name]] or [0])
+        return tail[name]
+
+    smoke, stack = {SMOKE} if SMOKE in sources else set(), [SMOKE] if SMOKE in sources else []
+    while stack:
+        for dep in sources[stack.pop()]["dependencies"]:
+            if dep not in smoke:
+                smoke.add(dep)
+                stack.append(dep)
+    return {name: (name in smoke, path(name)) for name in sources}
 
 
 def build(plan, out, execution_commit=None):
@@ -161,6 +204,8 @@ def build(plan, out, execution_commit=None):
                               str(cfile), "-o", str(library)]
             row["plugin_build"] = command_run(plugin_command, out / "logs/plugin.log", env,
                                                min(deadline, time.monotonic() + 120), stop)
+            if INIT not in cfile.read_text(errors="replace"):
+                raise ValueError("Runtime C does not define plugin initializer " + INIT)
             row["runtime_c_sha256"] = sha(cfile)
             row["plugin_sha256"] = sha(library)
         if name == plan["endpoint"] and row["exports"] != plan["expected_exports"]:
@@ -168,6 +213,7 @@ def build(plan, out, execution_commit=None):
         return row
 
     pending = set(plan["sources"])
+    rank = priorities(plan["sources"])
     active = {}
     pool = concurrent.futures.ThreadPoolExecutor(max_workers=plan["limits"]["workers"])
     try:
@@ -196,17 +242,15 @@ def build(plan, out, execution_commit=None):
                     report["completed"][name] = future.result()
                     save(out / "RUN.json", report)
                     print(json.dumps({"compiled": name, "complete": len(report["completed"])}), flush=True)
-            reserved = sum(weight(n) for n in active.values())
-            for name in sorted(pending):
+            # No memory reservations: the Oct 7/8 builder compiled all 13 H7
+            # certificates concurrently at a ~20 GB peak; the 110 GiB cgroup is the bound.
+            for name in sorted(pending, key=lambda n: (rank[n], n), reverse=True):
                 if len(active) >= plan["limits"]["workers"]:
                     break
-                if reserved + weight(name) > 96:
-                    continue
                 if not set(plan["sources"][name]["dependencies"]) <= report["completed"].keys():
                     continue
                 active[pool.submit(compile_one, name)] = name
                 pending.remove(name)
-                reserved += weight(name)
             if pending and not active:
                 raise ValueError("Unresolvable build dependency graph")
             if active:
@@ -252,7 +296,7 @@ def main():
     if not Path("/.dockerenv").exists() or Path.cwd() != Path("/workspace/proofs"):
         raise RuntimeError("Cloud container /workspace/proofs required; local Lean execution prohibited")
     limits = plan["limits"]
-    if limits != {"workers": 6, "memory_gib": 110, "cpus": 16, "wall_seconds": 35400}:
+    if limits != {"workers": 12, "memory_gib": 110, "cpus": 16, "wall_seconds": 35400}:
         raise ValueError("Unreviewed resource limits")
     memory = int(Path("/sys/fs/cgroup/memory.max").read_text())
     quota, period = map(int, Path("/sys/fs/cgroup/cpu.max").read_text().split())

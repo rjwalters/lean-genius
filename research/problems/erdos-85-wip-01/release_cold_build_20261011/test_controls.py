@@ -1,6 +1,7 @@
 """Control tests use temporary text files and Python children, never Lean."""
 import json
 import os
+import re
 import sys
 import tempfile
 import threading
@@ -82,8 +83,24 @@ class Controls(unittest.TestCase):
             with self.assertRaises(FileExistsError):
                 run.build({}, Path(tmp))
 
-    def test_large_certificates_cannot_overlap(self):
-        self.assertGreater(2 * run.weight("Erdos85OrderFortyNineSevenHighT1Rep0Certificate"), 96)
+    def test_real_plan_priorities(self):
+        plan = json.loads((Path(run.__file__).parent / "PLAN.json").read_text())
+        rank = run.priorities(plan["sources"])
+        order = sorted(plan["sources"], key=lambda n: (rank[n], n), reverse=True)
+        smoke = [n for n in order if rank[n][0]]
+        self.assertEqual(order[:len(smoke)], smoke)
+        self.assertIn(run.SMOKE, smoke)
+        self.assertIn("Erdos85H3TripleCompletionRuntime", smoke)
+        # The H7 certificate chain outranks every H5/H3-pair search outside the smoke set.
+        chain = rank["Erdos85OrderFortyNineSevenHighCertificateBridge"]
+        for name in plan["sources"]:
+            if re.fullmatch(r"Erdos85(H5T\dPart\d+|H3PairPart\d+)", name) and not rank[name][0]:
+                self.assertLess(rank[name], chain, name)
+        self.assertEqual(rank[plan["endpoint"]], (False, run.estimate(plan["endpoint"])))
+
+    def test_initializer_matches_attempt1_plugin_export(self):
+        symbols = (Path(run.__file__).parent / "attempt1-plugin-symbols.txt").read_text()
+        self.assertRegex(symbols, r"\bT " + run.INIT + r"\n")
 
     def test_failed_bundle_never_passes_audit(self):
         with tempfile.TemporaryDirectory() as tmp:

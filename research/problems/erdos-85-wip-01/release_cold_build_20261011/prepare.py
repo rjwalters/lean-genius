@@ -135,7 +135,7 @@ def make_plan(root):
             "runner_sha256": {p: sha(Path(__file__).parent / p) for p in ("prepare.py", "run.py", "audit.py")},
             "accepted_axiom_plan_sha256": sha(evidence),
             "expected_exports": expected,
-            "limits": {"workers": 6, "memory_gib": 110, "cpus": 16, "wall_seconds": 35400},
+            "limits": {"workers": 12, "memory_gib": 110, "cpus": 16, "wall_seconds": 35400},
             "scope": "Fresh project closure; pinned external Lean/Mathlib packages may be cached. No external SAT replay."}
 
 
