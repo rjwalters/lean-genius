@@ -83,9 +83,23 @@
   },
   "sections": [
     {
+      "id": "docstring",
+      "title": "Docstring: From Base-10 to Arbitrary Base b",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "States the parent's base-10 result, observes its argument only used that 10 is a unit mod d, and generalizes: ∀ b ≥ 2, ∀ d > 1 coprime to b, ∃ k > 0 with d ∣ n ↔ d ∣ (base-b^k digit sum of n). Previews the three results (base-agnostic Euler's theorem, the general existence theorem, and the base-10 corollary) and the Euler-theorem proof strategy."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and Namespace",
+      "startLine": 44,
+      "endLine": 52,
+      "summary": "Nat.Digits (Defs and Lemmas) for the digit-sum machinery, ZMod.Units/Basic for the unit-group argument, and Mathlib.Tactic; opens the DivisibilityRulesOQ01OQ01OQ02 namespace and Nat/BigOperators."
+    },
+    {
       "id": "euler-engine",
       "title": "Base-Agnostic Euler's Theorem b^φ(d) ≡ 1 (mod d)",
-      "startLine": 56,
+      "startLine": 53,
       "endLine": 84,
       "summary": "pow_totient_mod_eq_one generalizes the parent's ten_pow_totient_mod_eq_one by replacing 10 with a variable base b. Constructs the NeZero instance, builds u = ZMod.unitOfCoprime b hcop.symm, applies ZMod.pow_totient, coerces through Units.val, casts back to ℕ via ZMod.natCast_eq_natCast_iff, and simplifies 1 % d = 1.",
       "mathContext": "The group (ZMod d)ˣ has order φ(d). `ZMod.unitOfCoprime b hcop.symm` realizes b as a unit when gcd(b, d) = 1, and `ZMod.pow_totient u` gives u^φ(d) = 1. The coercion (u : ZMod d) = b is the only place the base enters, and it works for any b. Casting yields the ℕ statement b^φ(d) % d = 1."
