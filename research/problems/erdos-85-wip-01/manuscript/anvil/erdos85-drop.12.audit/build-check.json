@@ -1,0 +1,23 @@
+{
+  "source": {"main.tex_sha256": "eb5359bd1829f157d28ba6f14fb00c57c3f90d62aa95edc5c8d3eeffc6693e8b", "refs.bib_sha256": "2d5b67fb542d2d68f558a0b5727987b57fb44a0d5e2fad10cc2b64e387f9fe8f"},
+  "shipped_pdf_sha256": "5cd0149f9f698068e94669bbdf9a230227947920f8ca37ce52adc171af95caa6",
+  "scratch_pdf_sha256": "e3bfb8f3e5f7d35f2e8442dbeecbea28d3da74e58bb1b7076632ad551eb5e098",
+  "pdf_text_identical_to_shipped": true,
+  "compile_log_sha256": "65a36e91c967666756a139801d06a73f1bca463d7c9b58d9d36a6d54765a790f",
+  "engine": "xelatex + bibtex (scratch copy)",
+  "xelatex_passes": 4,
+  "aux_fixpoint": true,
+  "all_exit_zero": true,
+  "undefined_citations": 0, "undefined_references": 0, "overfull_boxes": 0, "underfull_boxes": 3, "font_shape_warnings": 58,
+  "pages": 14,
+  "unresolved_markers_in_pdf": 0,
+  "scope_lint": "PASS (38 numbers, 46 Lean names; also PASS with --proofs at fa2b41268df)",
+  "artifact_pin": "fa2b41268df024128ed4738b3bb500637cf1ec12",
+  "artifact_targets_unique": 70, "artifact_targets_missing": 0,
+  "availability_prose_commit": "92ff6248033c (MISMATCH, see flags.md C1)",
+  "retained_archives_sha256_verified": {
+    "erdos85-cold-build-20261011/run-output.tar.gz": "1d28b1d39a99a8def5514ce7bb7487b0cf75b7366c117172376626fe59486211",
+    "erdos85-cold-build-r2-20261012/run-output.tar.gz": "842425345d6a6cabf5613f15e3117979be7a364c1fea19f48e83a061213021b2",
+    "erdos85-cold-build-thirdparty-20261012/run-output.tar.gz": "0b6491bda21337ae6eae21def3a279d4621819a5291b27a3578ef1228b23b1e9"
+  }
+}

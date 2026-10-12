@@ -4,7 +4,7 @@ author: "Claude Fable, GPT Sol, Astra, Claude Opus and Robb Walters"
 affiliation: "Lean Genius project, 2AM Logic"
 venue: "arXiv"
 anonymous: false
-claim: "Lean reduces the one-high stratum H1 — the bulk of the upper side at order 49 — to 13,351 symmetry-reduced SAT formulas, and every one has an unsatisfiability proof accepted by the CakeML-verified checker cake_lpr; the three smaller strata are closed by Lean-checked certificates (H7, t ≥ 1) and reviewed arguments with independently checked computation (H3, H5, H7 t = 0). With Lean-checked lower-side witnesses this gives f(48) = 8 and f(49) = 7, a strict drop, as a certificate-checked computational result — not a Lean theorem, because the external checks are not admitted into Lean, the checked files match the Lean formulas only through a compiled emitter, and the H3 and H5 premises and the H7 t = 0 capstone are open in Lean. Separately, Lean 4 verifies that one uniform proposition, A-REG, implies a negative answer to Erdős Problem 85."
+claim: "Lean excludes H3 and H5 and derives the order-49 upper side from two explicit unsatisfiability hypotheses: the 13,351 H1 orbit formulas, and the 28 cover plus 377,776 leaf formulas of H7 with no triple. The positive-triple H7 representatives are excluded by certificates checked inside Lean through native_decide. External cake_lpr checks support both remaining hypotheses, directly or through splits composed in Lean, but are not admitted into Lean; checked-file identity still rests on emitters. Together with the Lean-checked lower-side witnesses this gives f(48) = 8 and f(49) = 7 as a certificate-checked computational result, not an unconditional Lean theorem. The upper-side derivation retains 598 native_decide axioms beyond the three standard ones. Separately, Lean verifies from the standard axioms alone that A-REG implies a negative answer to Erdős Problem 85; A-REG remains a hypothesis."
 keywords:
   - Erdős problems
   - C4-free graphs
@@ -289,3 +289,30 @@ hypotheses in Lean. The R-V8 minor asking to name the H3 checker is withdrawn: t
 ## Amendment R-TITLE (2026-10-07)
 
 Operator decision: title shortened to "A Drop at Forty-Nine in Erdős Problem 85". The drop leads; the uniform reduction (Theorem B) stays in the abstract and body.
+
+
+## Current evidence update (2026-10-11, v12 preparation)
+
+The frontmatter claim now reflects the accepted H3/H5 exclusions and the
+finite capstone's two explicit H1/H7 UNSAT hypotheses. Source records are
+[the release assembly](../../../release_assembly_20261011/README.md),
+[the H5 audit](../../../h5_terminal_review_20261008/README.md), and
+[the H7 reduction audit](../../../h7_hsb_capstone_review_20261008/README.md).
+Earlier dated statements that those reductions are open describe their
+historical evidence state. This update preserves the Result-A naming rule,
+the emitter identity gap, external-checker boundary, native_decide disclosure
+and the conditional status of A-REG.
+
+The thirteen positive-triple H7 packed certificate inputs are now published
+with Requester Pays access and a hash-verifying fetch script. The first full
+cold project rebuild attempt failed on 2026-10-12 after 460 of 893 modules
+because the runner requested the wrong native-plugin initializer
+([terminal failure record](../../../release_cold_build_20261011/FAILURE.md)).
+The corrected second attempt compiled all 893 modules on a fresh build volume
+and its audit passed with the accepted axiom lists 601/607/604
+([acceptance record](../../../release_cold_build_20261011/ACCEPTED.md)); the
+scope remains a fresh project closure over pinned Lean/Mathlib package caches,
+with no external SAT replay. The editable v12 draft reports the accepted
+rebuild and retains the earlier failure; final review/audit remain
+outstanding. This is an AI-author factual update, not a claim of a new human
+read-through.

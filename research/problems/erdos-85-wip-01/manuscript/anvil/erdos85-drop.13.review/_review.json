@@ -1,0 +1,125 @@
+{
+ "schema_version": "1",
+ "kind": "judgment",
+ "version_dir": "erdos85-drop.13",
+ "critic_id": "paper-review",
+ "model": "claude-opus-5-5",
+ "rubric": "anvil-pub-v2",
+ "scores": [
+  {
+   "dimension": "1_rigor",
+   "score": 6,
+   "max": 6,
+   "critical": false,
+   "evidence_span": "main.tex:L78",
+   "fix": null,
+   "justification": "Argument unchanged; upper side still derived from exactly two named hypotheses; Lean name present at pin."
+  },
+  {
+   "dimension": "2_evidence",
+   "score": 6,
+   "max": 6,
+   "critical": false,
+   "evidence_span": "main.tex:L113",
+   "fix": null,
+   "justification": "Codex independent re-audit recorded in ACCEPTED.md at pin (squad review_requests 2749 PASS); audit.py checks what the paper says."
+  },
+  {
+   "dimension": "3_contribution_clarity",
+   "score": 5,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L89",
+   "fix": null,
+   "justification": "'Result A is not an unconditional theorem of Lean'; no under- or overclaim."
+  },
+  {
+   "dimension": "4_related_work",
+   "score": 5,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L155",
+   "fix": null,
+   "justification": "Unchanged from v12; H7 precedent positioning and encoding-faithfulness concession kept."
+  },
+  {
+   "dimension": "5_reproducibility",
+   "score": 5,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L32-L34,L274,L282",
+   "fix": null,
+   "justification": "Printed commit derived from \\repocommit; 70/70 targets and PDF URIs resolve at full-hash pin; fetch comment corrected; remaining limits disclosed."
+  },
+  {
+   "dimension": "6_figures_tables",
+   "score": 4,
+   "max": 4,
+   "critical": false,
+   "evidence_span": "main.tex:L225,L228",
+   "fix": null,
+   "justification": "Replay note moved to 'How it is checked'; render gate pass 14 pp, no rerun warning."
+  },
+  {
+   "dimension": "7_prose_structure",
+   "score": 4,
+   "max": 4,
+   "critical": false,
+   "evidence_span": "main.tex:L95,L134,L193,L238",
+   "fix": null,
+   "justification": "Single-token labels; September 2026 cold axiom audit named; 'A further cold rebuild'."
+  },
+  {
+   "dimension": "8_citation_hygiene",
+   "score": 5,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex",
+   "fix": null,
+   "justification": "refs.bib byte-identical to v12; 0 undefined citations."
+  },
+  {
+   "dimension": "9_rhetorical_economy",
+   "score": 3,
+   "max": 4,
+   "critical": false,
+   "evidence_span": "main.tex:L113",
+   "fix": "Collapse the three rebuild sentences in 2.2 into one.",
+   "justification": "Length not addressed (declared); main text ~12 pp vs ~10 target."
+  }
+ ],
+ "findings": [
+  {
+   "severity": "minor",
+   "dimension": "9_rhetorical_economy",
+   "evidence_span": "main.tex:L113",
+   "rationale": "Main text ~12 pp (refs from p.13) vs R-SIMPLE ~10; v12 m7 declared not addressed.",
+   "suggested_fix": "Collapse the 2.2 rebuild history to one sentence."
+  },
+  {
+   "severity": "minor",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L282 (linked records at pin)",
+   "rationale": "Linked records partially cleaned: README keeps 'separate spending authorization' and 'approximate 10-hour budget'; FAILURE.md keeps a /Volumes/Stripe path; ACCEPTED.md cites 'squad review #2749' (private room pointer). Outside the paper text.",
+   "suggested_fix": "Trim before the tag; replace the room pointer with a plain description of the re-audit."
+  },
+  {
+   "severity": "nit",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L219",
+   "rationale": "Table 2 says 'September 2026 cold audit' where prose says 'cold axiom audit'.",
+   "suggested_fix": "Use one name."
+  },
+  {
+   "severity": "nit",
+   "dimension": "5_reproducibility",
+   "evidence_span": "erdos85-drop/BRIEF.md",
+   "rationale": "BRIEF evidence update still describes the v12 draft and outstanding review/audit.",
+   "suggested_fix": "Add a dated v13 line at thread close."
+  }
+ ],
+ "critical_flags": [],
+ "total": 43,
+ "threshold": 35,
+ "verdict": "ADVANCE"
+}

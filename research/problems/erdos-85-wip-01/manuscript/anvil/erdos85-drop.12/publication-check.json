@@ -1,0 +1,56 @@
+{
+  "checked_at": "2026-10-11T22:42:22.982247+00:00",
+  "github_repo_is_private": false,
+  "unauthenticated_https_checks": [
+    {
+      "url": "https://raw.githubusercontent.com/rjwalters/lean-genius/92ff6248033c6e6a16acd372120a056df759c9f4/proofs/scripts/fetch-h7-certificates.sh",
+      "bytes": 1348,
+      "sha256": "dd960e281f3f315b019a490c82431dca7a5d1e79bf16ff1b82eceb3dad7f402e",
+      "matches_pinned_git_blob": true
+    },
+    {
+      "url": "https://raw.githubusercontent.com/rjwalters/lean-genius/92ff6248033c6e6a16acd372120a056df759c9f4/proofs/Proofs/Certificates/strata-lrat.MANIFEST.sha256",
+      "bytes": 1170,
+      "sha256": "14fbbfad03fc7e9b23855e6e0a25896f8adb6cb321f0a06443a0ec270253f31a",
+      "matches_pinned_git_blob": true
+    }
+  ],
+  "limits": "These HTTP checks cover the public fetch script and SHA256 manifest. They do not test certificate access from a separate AWS account or establish a successful cold build. S3 configuration checks confirm the public GetObject grant covers the certificate prefix and Requester Pays is enabled; they are not an end-to-end separate-account download test.",
+  "s3_configuration_check": {
+    "checked_at": "2026-10-11T22:42:43.359333+00:00",
+    "bucket": "2am-erdos85-certs",
+    "relevant_policy_statements": [
+      {
+        "Sid": "PublicReadErdos85H1BankProofs",
+        "Effect": "Allow",
+        "Principal": "*",
+        "Action": "s3:GetObject",
+        "Resource": [
+          "arn:aws:s3:::2am-erdos85-certs/sat49/campaign-20260825/h1/*",
+          "arn:aws:s3:::2am-erdos85-certs/public/erdos85-h1-checker-kit/*",
+          "arn:aws:s3:::2am-erdos85-certs/public/erdos85-h7-positive-triple-lrat/*"
+        ]
+      }
+    ],
+    "bucket_public_access_block": {
+      "PublicAccessBlockConfiguration": {
+        "BlockPublicAcls": true,
+        "IgnorePublicAcls": true,
+        "BlockPublicPolicy": false,
+        "RestrictPublicBuckets": false
+      }
+    },
+    "bucket_policy_status": {
+      "PolicyStatus": {
+        "IsPublic": true
+      }
+    },
+    "account_public_access_block": {
+      "status": "NoSuchPublicAccessBlockConfiguration"
+    },
+    "request_payment": {
+      "Payer": "Requester"
+    },
+    "explicit_deny_statements": []
+  }
+}
