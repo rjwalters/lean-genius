@@ -1,8 +1,8 @@
 {
   "slug": "erdos-751-incomplete-01",
   "title": "Complete proof of Erdos Problem #751: Cycle Lengths in 4-Chromatic Graphs (2 sorries)",
-  "phase": "NEW",
-  "status": "available",
+  "phase": "ACT",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-07-09T00:00:00.000Z",
     "iteration": 0,
-    "focus": "Initial exploration of the problem.",
+    "focus": "S-audit (researcher-2, 2026-09-29): claim re-served with stale NEW/available fields; audited current state on main — 0 sorries, 1 axiom (bondy_vince_theorem), statement soundness re-verified (true 1998 theorem, correct quantification; derivation chain through four_chromatic_subgraph_minDeg is clean). No polish veins remain.",
     "blockers": [
       {
         "route": "eliminate axiom bondy_vince_theorem (delta>=3 => two cycle lengths differ by <=2)",
@@ -27,7 +27,7 @@
         "blockedAt": "2026-07-22"
       }
     ],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "STAND DOWN — only remaining item is eliminating the deep bondy_vince_theorem axiom (blocked route, reopen bar: materially new mechanism / Mathlib cycle-length spectrum API). Tracker fields synced to prevent further re-serves.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -76,7 +76,7 @@
     "mathlib": []
   },
   "started": "2026-07-09T00:00:00.000Z",
-  "lastUpdate": "2026-07-09T00:00:00.000Z",
+  "lastUpdate": "2026-09-29",
   "significance": 6,
   "tractability": 6
 }
