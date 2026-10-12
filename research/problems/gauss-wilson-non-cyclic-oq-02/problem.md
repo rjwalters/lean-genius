@@ -116,3 +116,35 @@ tractability: 5
 tier: B
 category: generalization
 ```
+
+## Adversarial checklist (S4 completion claim, 2026-09-29)
+
+How the "both halves formal" claim could be wrong — audit points:
+
+1. **Statement mismatch — collapse vs elementary-abelian.** The S4 theorem
+   proves `∀ x : (ZMod n)ˣ, x⁴ = 1 → x² = 1`, not a literal statement about
+   the Sylow 2-subgroup. These agree for finite abelian groups (no element
+   of order 4 ⟺ the 2-Sylow has exponent ≤ 2 ⟺ elementary abelian), but the
+   file never constructs a `Sylow` term — confirm the reader accepts the
+   Sylow-free reformulation stated in the docstring, or reject the "Sylow"
+   gloss and keep the exponent wording.
+2. **`n = 0` exclusion.** `units_pow_four_imp_sq_iff` requires `n ≠ 0`. At
+   `n = 0` the LHS is true (`ℤˣ = {±1}`) but the RHS is false (every prime
+   divides 0), so dropping the hypothesis would be WRONG — check no
+   downstream use forgets it.
+3. **Boundary of the 2-adic cap.** The cap is `factorization 2 ≤ 3`
+   (i.e. `2⁴ ∤ n`), NOT `≤ 2`: `(ZMod 8)ˣ ≅ C₂ × C₂` still collapses. The
+   `n = 24` decide anchor pins the boundary from below and
+   `pow_four_imp_sq_units_two_pow_iff` pins `a = 4` from above via
+   `ZMod.orderOf_five` — confirm neither direction silently proves the
+   weaker `≤ 2` or stronger `≤ 4` cap.
+4. **Odd-prime direction depends on primitive-root existence.** The
+   `p % 4 = 1 ⟹ ∃ order-4` direction uses
+   `ZMod.isCyclic_units_of_prime_pow` (Mathlib) — circularity is impossible
+   (that lemma is about cyclicity, not 4-torsion), but confirm the exponent
+   `a ≥ 1` hypothesis is genuinely used (at `a = 0` the group is trivial and
+   the iff would fail for `p ≡ 1 mod 4`).
+5. **Vacuous-condition traps.** For `n = 2^k` the odd-prime condition is
+   vacuously true and the content sits entirely in the cap; for odd `n` the
+   cap is `0 ≤ 3` vacuously and content sits in the congruences. Both decide
+   anchors (`n = 24` positive, `n = 5` negative) hit non-vacuous mixes.
