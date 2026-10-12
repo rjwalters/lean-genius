@@ -1,0 +1,12 @@
+2026-10-12T23:17:09Z
+0
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Build completed successfully (8577 jobs).
+
+=== Build succeeded ===
+/lean-build-111189 [/bin/bash -c lake build Proofs.Erdos30WIP01]
+lean-build-111189

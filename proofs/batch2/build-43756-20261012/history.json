@@ -1,0 +1,78 @@
+{
+  "initial_checkout_failure": {
+    "job": "20261012T220229-fix__safe-subset-43756-20261012-5135",
+    "exit_code": 127,
+    "phase": "checkout",
+    "log": "attempt1-checkout-failure.log",
+    "error": "Missing promised Git blob; Lean never started"
+  },
+  "initial_full_build": {
+    "job": "20261012T220454-fix__safe-subset-43756-20261012-6708",
+    "source_commit": "f84fbaf493219e31dd69bf52772095d9753a4ad6",
+    "targets": 5940,
+    "lake_jobs": 14527,
+    "exit_code": 1,
+    "started_at": "2026-10-12T22:04:54Z",
+    "finished_at": "2026-10-12T22:55:24Z",
+    "failed_jobs": [
+      "Proofs.AmgmInequalityOQ02OQ01",
+      "Proofs.AmgmInequalityOQ02OQ01OQ02",
+      "Proofs.BallotProblemOQ03OQ01OQ02Helpers",
+      "Proofs.GCDAlgorithmOQ02",
+      "Proofs.BinaryGcdOQ02OQ01",
+      "Proofs.Erdos30WIP01",
+      "Proofs.Erdos18WIP01",
+      "Proofs.KonigsbergOQ01OQ02"
+    ],
+    "log": "full-build.log",
+    "log_sha256": "c5f71b633a311d2c2c8d0ec09d8ef4f576eccd652ff23a1e02f39a571095984f",
+    "log_bytes": 4777000,
+    "repair_results": {
+      "BrouwerFixedPointOQ04OQ04": "⚠ [9416/9434] Built Proofs.BrouwerFixedPointOQ04OQ04 (4.4s)",
+      "ChineseRemainderNonCoprimeOQ01OQ01": "⚠ [9901/9917] Built Proofs.ChineseRemainderNonCoprimeOQ01OQ01 (4.6s)",
+      "Erdos967Problem": "⚠ [12306/12321] Built Proofs.Erdos967Problem (3.9s)",
+      "MinkowskiFundamentalTheoremOQ06": "⚠ [13437/13461] Built Proofs.MinkowskiFundamentalTheoremOQ06 (7.2s)",
+      "PascalsHexagonOQ03Incomplete01Derangements": "✔ [13560/13576] Built Proofs.PascalsHexagonOQ03Incomplete01Derangements (3.0s)",
+      "Erdos679ProblemAristotle": "✔ [11875/11890] Built Proofs.Erdos679ProblemAristotle (5.2s)"
+    }
+  },
+  "isolated_checks": [
+    {
+      "module": "Proofs.Erdos18WIP01",
+      "job": "20261012T224911-fix__safe-subset-43756-20261012-91994",
+      "source_commit": "b3b160fb697840210b08a101a89ff3d61c1f0f98",
+      "memory_gib": 110,
+      "timeout": "2h",
+      "status": "passed",
+      "log": "erdos18-serial.log",
+      "threads_requested": 1,
+      "thread_limit_effective": false,
+      "exit_code": 0,
+      "log_sha256": "77c9dd4b1e8eb46b91a00f171375bb602e10ddd3ec2dc6089343cec3635ed9d5",
+      "collector_note": "Initial SSH follow ended 255; complete authoritative job log recollected after remote exit 0."
+    },
+    {
+      "module": "Proofs.Erdos30WIP01",
+      "job": "20261012T225326-fix__safe-subset-43756-20261012-101342",
+      "source_commit": "b3b160fb697840210b08a101a89ff3d61c1f0f98",
+      "memory_gib": 110,
+      "timeout": "2h",
+      "status": "cancelled",
+      "log": "erdos30-cancelled.log",
+      "threads_requested": 1,
+      "thread_limit_effective": false,
+      "exit_code": 1,
+      "log_sha256": "f99daa854465b617e17a4ff424d6980061d20217317d480cc543ac0d597764f0",
+      "cancellation_reason": "Quarantined from batch; explicit docker stop --time 5, not a completed standalone proof check.",
+      "wrapper_note": "Wrapper generically labels container exit 137 as memory exceeded; this retry was intentionally stopped. See retry-cancellation.txt.",
+      "collector_note": "Queued SSH follow ended 255; authoritative job log recollected after controlled cancellation."
+    }
+  ],
+  "thread_control_note": "LEAN_NUM_THREADS is forwarded by the wrapper but the Lean 4.31 compiler command has no -j flag and the isolated Erdos18 process used ~15 CPU cores. Recorded thread values are requested settings, not an effective compiler thread cap. Retry jobs are serialized by the worktree lock.",
+  "memory_adjustment": {
+    "initial_gib": 96,
+    "new_gib": 110,
+    "reason": "Erdos18WIP01 and Erdos30WIP01 computations concurrently reached 94.51 GiB; 123 GiB host had 35 GiB available at check.",
+    "receipt": "memory-adjustment.txt"
+  }
+}

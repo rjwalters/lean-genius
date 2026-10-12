@@ -57,7 +57,7 @@ AlternatingSeriesBooleSummationOQ01OQ01ClosedForm	GREEN	post-inventory
 AmgmInequalityOQ02	GREEN	
 AmgmInequalityOQ02Aristotle	GREEN	
 AmgmInequalityOQ02Defs	GREEN	
-AmgmInequalityOQ02OQ01OQ02	GREEN	Linux import-case repair; explicit lean -j1 check passed 2026-10-12 (#43756)
+AmgmInequalityOQ02OQ01OQ02	GREEN	Linux import-case repair; full cloud safe-subset build passed 2026-10-12 (#43756)
 AmgmInequalityOQ02OQ01OQ02OQ01Aristotle	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01OQ01OQ01OQ01	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01OQ01OQ01OQ01OQ01	GREEN	
@@ -230,7 +230,7 @@ BezoutIdentityOQ03OQ04	GREEN
 BezoutIdentityOQ04OQ01	GREEN	
 BezoutIdentityOQ04OQ01OQ01	GREEN	
 BinaryGcdOQ02	GREEN	
-BinaryGcdOQ02OQ01	GREEN	Linux import-case repair; explicit lean -j1 check passed 2026-10-12 (#43756)
+BinaryGcdOQ02OQ01	GREEN	Linux import-case repair; full cloud safe-subset build passed 2026-10-12 (#43756)
 BinomialTheorem	GREEN	
 BinomialTheoremOQ01	GREEN	
 BinomialTheoremOQ02OQ01	GREEN
@@ -2702,3 +2702,4 @@ BirthdayProblemOQ03OQ01OQ01	RESIDUAL	hang:10h+-decide/native_decide; excluded fr
 AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle	RESIDUAL	import-all artifact bypasses quarantines; no declarations; excluded from safe subset (#43756)
 Erdos18WIP01	GREEN	isolated cloud v4.31 build passed 2026-10-12 at 110 GiB after parallel-batch OOM (#43756)
 Erdos30WIP01	RESIDUAL	resource-oom: 81 GiB compiler RSS in 110 GiB cloud batch; excluded pending bounded rebuild (#43846, #43756)
+Erdos46WIP01SmallDivisors	GREEN	cloud v4.31 final safe-subset build passed after isolated Erdos18 rebuild 2026-10-12 (#43756)
