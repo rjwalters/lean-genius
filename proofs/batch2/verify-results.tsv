@@ -57,7 +57,7 @@ AlternatingSeriesBooleSummationOQ01OQ01ClosedForm	GREEN	post-inventory
 AmgmInequalityOQ02	GREEN	
 AmgmInequalityOQ02Aristotle	GREEN	
 AmgmInequalityOQ02Defs	GREEN	
-AmgmInequalityOQ02OQ01OQ02	GREEN	
+AmgmInequalityOQ02OQ01OQ02	RESIDUAL	import-case:19: Proofs.AmgmInequalityOQ02OQ01 missing on Linux; repair applied, cloud recheck pending (#43756)
 AmgmInequalityOQ02OQ01OQ02OQ01Aristotle	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01OQ01OQ01OQ01	GREEN	
 AmgmInequalityOQ02OQ01OQ02OQ01OQ01OQ01OQ01OQ01	GREEN	
@@ -230,7 +230,7 @@ BezoutIdentityOQ03OQ04	GREEN
 BezoutIdentityOQ04OQ01	GREEN	
 BezoutIdentityOQ04OQ01OQ01	GREEN	
 BinaryGcdOQ02	GREEN	
-BinaryGcdOQ02OQ01	GREEN	
+BinaryGcdOQ02OQ01	RESIDUAL	import-case:2: Proofs.GCDAlgorithmOQ02 missing on Linux; repair applied, cloud recheck pending (#43756)
 BinomialTheorem	GREEN	
 BinomialTheoremOQ01	GREEN	
 BinomialTheoremOQ02OQ01	GREEN
