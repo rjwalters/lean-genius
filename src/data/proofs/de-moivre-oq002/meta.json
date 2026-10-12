@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "§0: Module Header — Question and Answer",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring stating OQ-01 of the parent entry — whether the pointwise integer-index identity assembles into the structural law C_{mn} = Cₘ ∘ Cₙ, making n ↦ Cₙ a monoid homomorphism (ℤ, ·) → (End, ∘) — and answering YES. Records that Mathlib's C_mul and C_one are exactly the two homomorphism axioms in Function.End R[X], that commutativity of (ℤ, ·) forces a commuting image, and previews the unit-circle conjugacy chebyshevC_nest_eval_field_int carrying (End, ∘) to the power monoid under z ↦ z + z⁻¹. Status: 0 sorries, 0 axioms, no native_decide.",
+      "mathContext": "$n \\mapsto C_n$ as a homomorphism $(\\mathbb{Z},\\cdot) \\to (\\mathrm{End}\\,R[X], \\circ)$: `map_mul` $= C_{mn}=C_m\\circ C_n$, `map_one` $= C_1 = X$."
+    },
+    {
       "id": "imports",
       "title": "Imports",
       "summary": "Imports Mathlib's Chebyshev polynomial library (providing C_mul, C_one), the p-adic numbers, and the parent file providing the integer-index evaluation identity.",
