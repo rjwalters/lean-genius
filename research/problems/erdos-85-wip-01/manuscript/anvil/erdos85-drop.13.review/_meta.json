@@ -1,0 +1,17 @@
+{
+ "critic": "review",
+ "role": "paper-review.md",
+ "started": "2026-10-12T19:40:00Z",
+ "finished": "2026-10-12T19:46:46Z",
+ "model": "claude-opus-5-5",
+ "schema_version": 1,
+ "scorecard_kind": "human-verdict",
+ "rubric_id": "anvil-pub-v2",
+ "rubric_total": 44,
+ "advance_threshold": 35,
+ "sidecar": "python -m anvil.lib.sidecar cleanup/stage/commit (issue #645 CLI shim; PYTHONPATH=.anvil .anvil/.venv/bin/python from main checkout, absolute paths)",
+ "prior_review": "erdos85-drop.12.review (41/44, advance, anvil-pub-v2)",
+ "prior_audit": "erdos85-drop.12.audit (BLOCK on C1)",
+ "note": "Link targets, rendered PDF URIs and Lean names verified at pinned commit 2029149d7e42b74036ff0e1e82af6d33c2e32748 via git show/cat-file/grep; no lake build or Lean compilation. numeric/pending/audience run without --write-review (no sibling sidecars written, per caller scope).",
+ "evidence_check": "anvil.lib.evidence_check on staged scoring.md: 9 dimensions, 0 findings, pass"
+}

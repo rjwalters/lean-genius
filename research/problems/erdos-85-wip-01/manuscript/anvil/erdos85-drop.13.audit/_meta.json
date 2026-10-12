@@ -1,0 +1,20 @@
+{
+  "critic": "audit",
+  "role": "paper-audit.md",
+  "started": "2026-10-12T19:38:00Z",
+  "finished": "2026-10-12T19:48:30Z",
+  "model": "Claude Opus 5.5 (claude-opus-5-5[1m])",
+  "schema_version": 1,
+  "scorecard_kind": "human-verdict",
+  "authorship_disclosure": "Claude agent as paper-audit critic; Claude models are listed AI authors of the paper, so not an independent external critic. human-verdict is the schema category, not human authorship.",
+  "rubric_id": "anvil-pub-v2",
+  "verdict": "PASS",
+  "critical_flags": 0,
+  "major_findings": 0,
+  "resolved_prior_findings": ["v12 C1 (Availability commit vs link pin)", "v12 M1 (independent re-audit recorded at pin)"],
+  "source_commit": "9da680666dc",
+  "artifact_pin": "2029149d7e42b74036ff0e1e82af6d33c2e32748",
+  "sidecar": "uv run --project <main-checkout>/.anvil python -m anvil.lib.sidecar cleanup/stage/copy/commit; scratch build; manuscript untouched",
+  "lean_check": "None run. Pinned evidence read via git show / git archive; squad review_requests row 2749 read via read-only sqlite query.",
+  "pending_gate": "pass; read-only (no --write-review, no .pending sibling written)"
+}
