@@ -15,7 +15,7 @@
 - Capture: `COLD_PROJECT_BUILD_ACCEPTED`; audit `COLD_PROJECT_BUILD_AUDIT_PASS`,
   893 sources, endpoint axiom lists exactly the accepted 601/607/604;
   RUN.json sha256 `6010394fdd4257ea9168990d9954c6a78854965c951205d52c2429ddda097379`.
-- Archive (not in Git): `/Volumes/Stripe/lean-genius/artifacts/erdos85-cold-build-thirdparty-20261012/run-output.tar.gz`,
+- Archive (not in Git): retained on the project's artifact volume, not published (`run-output.tar.gz`),
   2,389,489,668 bytes, sha256 `0b6491bda21337ae6eae21def3a279d4621819a5291b27a3578ef1228b23b1e9`;
   per-file hashes in `evidence/full-bundle-manifest.json` (2,692 files).
 - Reproducibility: all 893 compiled `.olean` objects are byte-identical (same SHA256) to
@@ -24,5 +24,5 @@
 
 Scope unchanged: fresh project closure over pinned Lean/Mathlib package caches; no
 external SAT replay (H1 and H7 t=0 remain cake_lpr-checked hypotheses). Limitation:
-the fetch ran under the bucket-owner account (221082181346); access from a separate
+the fetch ran under the bucket owner's AWS account; access from a separate
 AWS account is still untested.

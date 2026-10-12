@@ -1,5 +1,9 @@
 # Cold-build attempt: terminal failure
 
+> **Superseded.** This records attempt 1 only. The corrected attempt 2 completed and
+> was accepted; see [ACCEPTED.md](ACCEPTED.md). The statements below describe the
+> evidence state at the time of attempt 1.
+
 The approved attempt did **not** complete the cold project build. This is a
 failure receipt, not an acceptance audit.
 

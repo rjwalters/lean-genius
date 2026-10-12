@@ -18,6 +18,6 @@ Runner changes relative to attempt 2 (copied from `../release_cold_build_2026101
 - `capture.py`: runner folder derived from its own location instead of hard-coded.
 
 Limitation: the builder's instance role and every local profile belong to the bucket
-owner account (221082181346). This run exercises the public script, the bucket policy
+owner account. This run exercises the public script, the bucket policy
 path and requester-pays flag end to end, but it is still not a download from a separate
 AWS account.

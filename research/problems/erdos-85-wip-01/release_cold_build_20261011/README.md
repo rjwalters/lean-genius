@@ -25,8 +25,7 @@ the library exports `initialize_Proofs_Erdos85H3TripleCompletionRuntime`.
 The run did not reach the endpoint/axiom audit and does not establish a
 complete cold rebuild. The failure bundle is retained and the builder is
 confirmed stopped; see [FAILURE.md](FAILURE.md) for raw receipts, the diagnostic,
-and the correction. That failed attempt did not itself authorize a retry; the
-operator separately authorized retries until a pass.
+and the correction. A corrected retry followed.
 
 Attempt 2 (execution commit `afa46bc5078314df87d7f49002c07a5edeed79d5`, plan
 `dfd3900d…`, job `20261012T042927-commit-afa46bc50783-6039`) corrected the plugin
