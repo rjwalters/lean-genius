@@ -505,4 +505,140 @@ theorem fg_of_kernel
 
 end NoetherReduction
 
+section ZeroSumEngine
+
+/-! ### S7b engine — Davenport-bound extraction for the diagonal warm-up
+
+The abelian/diagonal warm-up of the S7b multiplicative kernel `hker` reduces
+to a purely group-theoretic fact: a monomial `x^m` invariant under a diagonal
+action corresponds to a multiset of characters with trivial product, and if
+`deg m > |G|` that multiset must split off a *nonempty sub-multiset of size
+`≤ |G|` with trivial product* — the classical Davenport-bound extraction
+(`D(H) ≤ |H|`), by pigeonhole on partial products.  Splitting the monomial
+along that sub-multiset and recursing places `reynolds (monomial m 1)` in
+`noetherCandidate` for the diagonal case.
+
+This section proves the extraction engine, in two layers:
+
+* `exists_segment_prod_eq_one` — list level, for **any** finite group: among
+  the first `|H| + 1` prefix products of a list of length `> |H|` two must
+  coincide, so some nonempty consecutive segment of length `≤ |H|` has
+  product `1`, and excising it leaves the total product unchanged (prefix
+  products cancel — no commutativity needed).
+* `exists_zeroSum_sub_multiset` — multiset packaging over a `CommGroup`
+  (commutativity re-orders the complement), the form the future
+  finsupp-flattening wiring consumes: every multiset of size `> |H|` admits
+  a nonempty sub-multiset of size `≤ |H|` with product `1` whose removal
+  preserves the total product.
+
+The kernel `hker` itself (even in the diagonal case) is **not** claimed
+here — this is the combinatorial heart only; the character bookkeeping and
+the recursion are the next rung. -/
+
+/-- **Prefix-product pigeonhole** (list level, any finite group).  A list
+strictly longer than `|H|` has a consecutive segment, nonempty and of length
+at most `|H|`, whose product is `1`; removing the segment leaves the total
+product unchanged.  The segment is `(l.drop i).take (j - i)` for two prefix
+lengths `i < j ≤ |H|` with equal prefix products. -/
+theorem exists_segment_prod_eq_one {H : Type*} [Group H] [Fintype H]
+    {l : List H} (_hlen : Fintype.card H < l.length) :
+    ∃ i j : ℕ, i < j ∧ j ≤ Fintype.card H ∧
+      ((l.drop i).take (j - i)).prod = 1 ∧
+      (l.take i ++ l.drop j).prod = l.prod := by
+  -- pigeonhole on the first |H| + 1 prefix products
+  obtain ⟨a, ha, b, hb, hab, heq⟩ :=
+    Finset.exists_ne_map_eq_of_card_lt_of_maps_to
+      (s := Finset.range (Fintype.card H + 1)) (t := Finset.univ)
+      (by simp) (fun a _ => Finset.mem_univ ((l.take a).prod))
+  -- normalize to i < j
+  obtain ⟨i, j, hij, hjcard, hPij⟩ :
+      ∃ i j : ℕ, i < j ∧ j ≤ Fintype.card H ∧
+        (l.take i).prod = (l.take j).prod := by
+    rcases Nat.lt_or_ge a b with h | h
+    · exact ⟨a, b, h, Nat.lt_succ_iff.mp (Finset.mem_range.mp hb), heq⟩
+    · exact ⟨b, a, Nat.lt_of_le_of_ne h (Ne.symm hab),
+        Nat.lt_succ_iff.mp (Finset.mem_range.mp ha), heq.symm⟩
+  -- the three take/drop product identities
+  have hi : (l.take i).prod * (l.drop i).prod = l.prod :=
+    List.prod_take_mul_prod_drop l i
+  have hj : (l.take j).prod * (l.drop j).prod = l.prod :=
+    List.prod_take_mul_prod_drop l j
+  have hseg : ((l.drop i).take (j - i)).prod * ((l.drop i).drop (j - i)).prod
+      = (l.drop i).prod :=
+    List.prod_take_mul_prod_drop (l.drop i) (j - i)
+  have hdd : (l.drop i).drop (j - i) = l.drop j := by
+    rw [List.drop_drop]
+    congr 1
+    omega
+  rw [hdd] at hseg
+  refine ⟨i, j, hij, hjcard, ?_, ?_⟩
+  · -- segment product is 1: cancel (drop j).prod, then the equal prefixes
+    have hkey : (l.take i).prod * (((l.drop i).take (j - i)).prod *
+        (l.drop j).prod) = (l.take j).prod * (l.drop j).prod := by
+      rw [hseg, hi, hj]
+    rw [hPij] at hkey
+    have h1 := mul_left_cancel hkey
+    have h1' : ((l.drop i).take (j - i)).prod * (l.drop j).prod
+        = 1 * (l.drop j).prod := by
+      rw [one_mul]; exact h1
+    exact mul_right_cancel h1'
+  · -- complement product equals the total product
+    rw [List.prod_append, hPij, hj]
+
+/-- **Davenport-bound extraction** (multiset packaging, commutative case):
+every multiset over a finite commutative group `H` of size strictly greater
+than `|H|` contains a nonempty sub-multiset of size at most `|H|` with
+product `1`, whose removal preserves the total product.  This is the form
+consumed by the planned finsupp-flattening wiring of the diagonal `hker`
+warm-up. -/
+theorem exists_zeroSum_sub_multiset {H : Type*} [CommGroup H] [Fintype H]
+    [DecidableEq H] {s : Multiset H} (hcard : Fintype.card H < Multiset.card s) :
+    ∃ t : Multiset H, t ≤ s ∧ t ≠ 0 ∧
+      Multiset.card t ≤ Fintype.card H ∧ t.prod = 1 ∧
+      (s - t).prod = s.prod := by
+  set l := s.toList with hl
+  have hlen : Fintype.card H < l.length := by
+    rwa [hl, Multiset.length_toList]
+  obtain ⟨i, j, hij, hjcard, hprod, -⟩ := exists_segment_prod_eq_one hlen
+  set seg := (l.drop i).take (j - i) with hsegdef
+  have hsegsub : seg.Sublist l :=
+    ((List.take_prefix _ _).sublist).trans ((List.drop_suffix _ _).sublist)
+  have hseglen : seg.length = j - i := by
+    have hdroplen : (l.drop i).length = l.length - i := List.length_drop
+    have : seg.length = min (j - i) (l.drop i).length := List.length_take
+    rw [this, hdroplen]
+    omega
+  refine ⟨(seg : Multiset H), ?_, ?_, ?_, ?_, ?_⟩
+  · -- t ≤ s via sublist → subperm, transported along s = ↑s.toList
+    have : (seg : Multiset H) ≤ (l : Multiset H) :=
+      Multiset.coe_le.mpr hsegsub.subperm
+    rwa [hl, Multiset.coe_toList] at this
+  · -- nonempty
+    intro hzero
+    have : seg.length = 0 := by
+      simpa using congrArg Multiset.card hzero
+    omega
+  · -- size bound
+    have : Multiset.card (seg : Multiset H) = seg.length := Multiset.coe_card _
+    omega
+  · -- trivial product
+    have : (seg : Multiset H).prod = seg.prod := Multiset.prod_coe seg
+    rw [this, hprod]
+  · -- removal preserves the product
+    have hle : (seg : Multiset H) ≤ s := by
+      have : (seg : Multiset H) ≤ (l : Multiset H) :=
+        Multiset.coe_le.mpr hsegsub.subperm
+      rwa [hl, Multiset.coe_toList] at this
+    have hsum : s - (seg : Multiset H) + (seg : Multiset H) = s :=
+      Multiset.sub_add_cancel hle
+    have hp : (s - (seg : Multiset H)).prod * (seg : Multiset H).prod
+        = s.prod := by
+      rw [← Multiset.prod_add, hsum]
+    have hone : (seg : Multiset H).prod = 1 := by
+      rw [Multiset.prod_coe seg, hprod]
+    rw [hone, mul_one] at hp
+    exact hp
+
+end ZeroSumEngine
+
 end Hilbert14OQ04
