@@ -2,19 +2,12 @@
   "check": "pending_marker",
   "version_dir": "erdos85-drop.12",
   "body_path": "main.tex",
-  "markers": [
-    {
-      "source": "cold-build terminal audit",
-      "raw": "[PENDING cold-build terminal audit]",
-      "line": 111,
-      "suppressed": false
-    }
-  ],
-  "outstanding_sources": [
-    "cold-build terminal audit"
-  ],
+  "markers": [],
+  "outstanding_sources": [],
   "suppressed_count": 0,
   "expected_sources": [],
-  "resolved_sources": [],
-  "pass": false
+  "resolved_sources": [
+    "cold-build terminal audit"
+  ],
+  "pass": true
 }

@@ -5,17 +5,17 @@
   "overfull_boxes": 0,
   "undefined_or_rerun": false,
   "pages": 14,
-  "link_pin": "1a16e9d3a087a98718f40f6b3b16265e995adbfb",
-  "unique_link_targets": 68,
+  "link_pin": "87e58b130b5ffd1c24876f026e2a35de8d484c3e",
+  "unique_link_targets": 69,
   "all_link_targets_exist": true,
   "citation_keys": 17,
   "unresolved_citations": [],
   "pending_cold_build_marker": 0,
   "sha256": {
-    "main.tex": "c4773897a2b5b99d1deecae72df5d6897b87375afcfa1ae90137ecaa7a5ebe1c",
-    "main.pdf": "fcd68098814bb57ece74b65490be7b3c032fa91322fbaff50c87b0e9b2bd2979",
+    "main.tex": "aa3d33179cea47d195358a0a168887e786e6a11680f26eb623d06403e6a7c007",
+    "main.pdf": "4e9165fc749c332c4c04f8f89cc59f2116c1a6a30ad4efd076f3ee31325e4e18",
     "refs.bib": "2d5b67fb542d2d68f558a0b5727987b57fb44a0d5e2fad10cc2b64e387f9fe8f",
-    "compile-log.txt": "3e51c7853dda53ce2e99c5193b96e72c93cca0824ee18824f87652ef8e0eae93"
+    "compile-log.txt": "64d1c6643a253ab5de2ec17d22781e11051153521aea4c7da862cbf95fffb2e5"
   },
   "link_targets": [
     "proofs/Proofs/",
@@ -82,6 +82,7 @@
     "research/problems/erdos-85-wip-01/q7_h5_closure_ledger/REVIEWED_RESULT.md",
     "research/problems/erdos-85-wip-01/q9_solver_controls/Q9_EXISTENCE_DECISION_20260911.md",
     "research/problems/erdos-85-wip-01/release_assembly_20261011/README.md",
+    "research/problems/erdos-85-wip-01/release_cold_build_20261011/ACCEPTED.md",
     "research/problems/erdos-85-wip-01/release_cold_build_20261011/FAILURE.md",
     "research/problems/erdos-85-wip-01/release_cold_build_20261011/README.md",
     "research/problems/erdos-85-wip-01/sat49/BOZA48_NONISOMORPHISM_RECEIPT_20260928.txt",
@@ -89,7 +90,7 @@
   ],
   "undefined_or_rerun_scope": "Unresolved citations/references or label rerun requests; font substitutions tracked separately",
   "font_shape_substitution_warnings": 26,
-  "updated_for": "Terminal failure disclosure; filename link labels avoid whitespace loss in lean macro",
-  "xelatex_passes": 2,
-  "cold_build_status": "FAILED_EVIDENCE_RETAINED"
+  "updated_for": "Accepted cold rebuild (attempt 2) wording; \\repobase pinned to release assembly 87e58b130b5",
+  "xelatex_passes": 3,
+  "cold_build_status": "COLD_PROJECT_BUILD_ACCEPTED"
 }

@@ -34,7 +34,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("main_tex", type=pathlib.Path)
     ap.add_argument("--refs", type=pathlib.Path, default=None)
-    ap.add_argument("--proofs", type=pathlib.Path, default=pathlib.Path("/Volumes/Stripe/lean-genius/claude-e85-wrapup/proofs/Proofs"))
+    ap.add_argument("--proofs", type=pathlib.Path, default=pathlib.Path(__file__).resolve().parents[5] / "proofs" / "Proofs")
     a = ap.parse_args()
     tex = a.main_tex.read_text()
     body = re.sub(r"(?m)^%.*$", "", tex)

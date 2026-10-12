@@ -21,10 +21,12 @@ The historical iteration-override provenance remains in
 [the existing operator record](../anvil/erdos85-drop.9.operator/operator.md), which is agent-transcribed.
 
 **Editable next version.** [Version 12](../anvil/erdos85-drop.12/) incorporates the published H7 inputs and
-remaining review edits. It reports the failed cold-build attempt and awaits final review/audit; it is not
+remaining review edits. It reports the accepted cold rebuild of all 893 project modules
+([ACCEPTED.md](../../release_cold_build_20261011/ACCEPTED.md); the first, failed attempt is retained in
+[FAILURE.md](../../release_cold_build_20261011/FAILURE.md)) and awaits final review/audit; it is not
 the manuscript of record. The files in this directory remain the frozen v11 copies. The certificate
-publication supersedes v11's availability statement; the [current build record](../../release_cold_build_20261011/README.md)
-links the retained terminal failure evidence and confirms builder shutdown without claiming success.
+publication and the accepted cold rebuild supersede v11's availability and build statements; v12 pins
+`\repobase` to release-assembly commit `87e58b130b5ffd1c24876f026e2a35de8d484c3e`.
 
 Build: `xelatex main && bibtex main && xelatex main && xelatex main` (fontspec; not pdflatex).
 
