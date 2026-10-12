@@ -31,7 +31,7 @@ Title options:
   2. One Step Down
   3. What the Room Found
 
-Placeholders: [ARTICLE] = the companion article's /blog/<id>; [DOI]; [CHECKING.md]
+Placeholders: [ARTICLE] = the companion article's /blog/<id> (DOI, release and CHECKING.md links filled 2026-10-12).
 -->
 
 # We Did Not Solve Erdős 85
@@ -40,7 +40,7 @@ Placeholders: [ARTICLE] = the companion article's /blog/<id>; [DOI]; [CHECKING.m
 
 In the SF Lean group I was publicly bullish that the room might solve Erdős Problem 85. I had reasons. The agents had been working it since early August, the proof outline in [the room](/rooms/erdos-85) had for weeks carried the title "Final proof outline: Erdős 85 is false," and every few days something that had been open closed.
 
-We did not solve it. The problem asks whether a certain function f(n), the minimum degree that forces a four-cycle in a graph on n vertices, eventually stops going down. What we have is narrower and, I think, more durable than what I was hoping for. We established one strict drop, f(48) = 8 and f(49) = 7, as a computational result: Lean derives the hard side from two explicit hypotheses, that two large families of formulas are unsatisfiable, and a formally verified checker has checked every one of those formulas outside Lean. Separately, Lean verifies that a single open proposition about regular graphs, which we call A-REG, would imply a negative answer to the whole problem. A-REG is still open. One drop decides nothing about the problem, which concerns all large n. The details, including exactly what "certificate-checked" covers, are in [the companion article]([ARTICLE]) and [the paper]([DOI]).
+We did not solve it. The problem asks whether a certain function f(n), the minimum degree that forces a four-cycle in a graph on n vertices, eventually stops going down. What we have is narrower and, I think, more durable than what I was hoping for. We established one strict drop, f(48) = 8 and f(49) = 7, as a computational result: Lean derives the hard side from two explicit hypotheses, that two large families of formulas are unsatisfiable, and a formally verified checker has checked every one of those formulas outside Lean. Separately, Lean verifies that a single open proposition about regular graphs, which we call A-REG, would imply a negative answer to the whole problem. A-REG is still open. One drop decides nothing about the problem, which concerns all large n. The details, including exactly what "certificate-checked" covers, are in [the companion article]([ARTICLE]) and [the paper]([10.5281/zenodo.23325806](https://doi.org/10.5281/zenodo.23325806)).
 
 ## Belief, then accounting
 
@@ -56,7 +56,7 @@ The build got the same treatment. Before release we rebuilt the whole Lean proje
 
 In mid-September I told the room we would stop at strong belief and publish what certainty would cost, because the certificates looked too expensive to buy. When we came back to certificates at the start of October, the plan was still to cube every hard instance into small pieces just to keep the proofs manageable. What changed that was a property of `cake_lpr`: it checks a proof of any length within a heap fixed in advance, and four gigabytes was enough for most of ours. Checking added about 6% to the solver's time. In the end the fresh census and the bank re-check together cost about $225 of AWS compute, by our controllers' estimates, for about 28 TB of checked proof, none of which we kept. The same method then checked a second family, 377,804 formulas from the stratum with seven high-degree vertices, on about 20 TB more.
 
-We do not store the proofs. With the same solver binary they reproduce byte for byte, so we published the hashes, a public machine image, and a tool that lets anyone regenerate a proof and check it. If you have an AWS account you can repeat any piece of the main stratum's check; [CHECKING.md] has the steps. There is no such image for the second family yet; its receipts and checking script are in the repository.
+We do not store the proofs. With the same solver binary they reproduce byte for byte, so we published the hashes, a public machine image, and a tool that lets anyone regenerate a proof and check it. If you have an AWS account you can repeat any piece of the main stratum's check; [CHECKING.md](https://github.com/rjwalters/lean-genius/blob/erdos85-paper-v1/research/problems/erdos-85-wip-01/CHECKING.md) has the steps. There is no such image for the second family yet; its receipts and checking script are in the repository.
 
 ## Who did the work
 

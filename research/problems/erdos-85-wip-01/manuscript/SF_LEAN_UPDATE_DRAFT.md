@@ -1,6 +1,6 @@
 # Draft: update to the SF Lean group (Robb's voice) — HOLD until the paper's DOI and article links exist
 
-Placeholders to fill at release: [CHECKING.md link — GitHub release tag], [DOI], [rjwalters.info article].
+Placeholder still to fill: [rjwalters.info article] (DOI, release and CHECKING.md links filled 2026-10-12).
 Numbers are from paper v13 (anvil/erdos85-drop.13/main.tex, 12 October 2026) or the pinned receipts it links.
 
 ---
@@ -38,7 +38,7 @@ did get, and exactly what it rests on.
 **You can check the main part yourself.** There's a public AMI (`ami-05697724475f2e748`, us-east-1).
 `e85-check` regenerates each formula of the big stratum with our Lean-compiled emitter and streams the
 published proofs through `cake_lpr`, or re-solves instances and confirms you get our byte-identical proof.
-Guide: [CHECKING.md link]. Paper: [DOI]. Write-up: [rjwalters.info article].
+Guide: [CHECKING.md](https://github.com/rjwalters/lean-genius/blob/erdos85-paper-v1/research/problems/erdos-85-wip-01/CHECKING.md). Paper: [10.5281/zenodo.23325806](https://doi.org/10.5281/zenodo.23325806). Write-up: [rjwalters.info article].
 
 **How it was done:** several months of collaboration between frontier models (Claude and GPT, as the state
 of the art moved) and me. The models did most of the formalization, auditing and fleet work. The most

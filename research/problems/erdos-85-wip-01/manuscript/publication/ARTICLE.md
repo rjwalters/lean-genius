@@ -1,6 +1,6 @@
 <!--
 DRAFT for Robb Walters. Not published. Every number is taken from paper v13
-(manuscript/anvil/erdos85-drop.13/main.tex, 12 October 2026; to be copied into manuscript/paper/ at
+(manuscript/anvil/erdos85-drop.13/main.tex, 12 October 2026; now the manuscript of record in manuscript/paper/,
 release) or the pinned receipts it links, unless marked as coming from CHECKING.md.
 
 Site format (rjwalters.info, matched from drafts/*/post.md and src/blog/posts/posts.ts):
@@ -34,7 +34,7 @@ Title options:
   2. What We Found About Erdős 85, and What We Did Not
   3. One Step Down, and What It Rests On
 
-Placeholders: [DOI], [GitHub release], [CHECKING.md]
+Placeholders: none (DOI, release and CHECKING.md links filled 2026-10-12).
 -->
 
 # A Drop at Forty-Nine
@@ -45,7 +45,7 @@ Take a graph on n vertices and ask how large every vertex's degree has to be bef
 
 [Erdős Problem 85](https://www.erdosproblems.com/85) asks whether f is eventually nondecreasing: is f(n+1) ≥ f(n) for all sufficiently large n? It sounds like it should be obvious. Adding a vertex should never make the property easier to force. But f is defined by a minimum degree, and one extra vertex changes the arithmetic of who can be adjacent to whom, so nothing rules out a small step down. The problem is open, and the maintained record on erdosproblems.com lists no partial result.
 
-For several months a team of frontier AI models and I worked on it in [a shared room](/rooms/erdos-85), formalizing in Lean 4 and running SAT solvers on rented machines. We did not solve it. This piece describes what we did establish, which is two things: a strict drop between two adjacent orders, f(48) = 8 and f(49) = 7, at a level of evidence I will spell out carefully; and a Lean-verified proof that one open proposition about regular graphs would imply a negative answer to the whole problem. The paper is at [DOI]; the code, Lean sources and receipts are at [GitHub release].
+For several months a team of frontier AI models and I worked on it in [a shared room](/rooms/erdos-85), formalizing in Lean 4 and running SAT solvers on rented machines. We did not solve it. This piece describes what we did establish, which is two things: a strict drop between two adjacent orders, f(48) = 8 and f(49) = 7, at a level of evidence I will spell out carefully; and a Lean-verified proof that one open proposition about regular graphs would imply a negative answer to the whole problem. The paper is at [10.5281/zenodo.23325806](https://doi.org/10.5281/zenodo.23325806); the code, Lean sources and receipts are at [GitHub release erdos85-paper-v1](https://github.com/rjwalters/lean-genius/releases/tag/erdos85-paper-v1).
 
 There is also a Ramsey-theory way to say the same thing. Write r(s) for the Ramsey number R(C4, K1,s), as in Luis Boza's table of these numbers. Then r(s) ≤ N exactly when f(N) ≤ N − s, so a plateau r(s) = r(s+1) = N is the same as a drop f(N) < f(N−1). Boza's table gives r(41) = 49 and leaves r(42) open between 49 and 50. Our upper side selects r(42) = 49, which is exactly f(49) = 7 < 8 = f(48).
 
@@ -131,7 +131,7 @@ What remains beneath A-REG has a sharp one-component form: for powers of two q �
 
 ## Check it yourself
 
-You do not have to trust our receipts. For H1 we published a machine image and the proofs so that anyone with an AWS account can repeat any part of the check without downloading anything to their own computer. The guide is [CHECKING.md]; in outline:
+You do not have to trust our receipts. For H1 we published a machine image and the proofs so that anyone with an AWS account can repeat any part of the check without downloading anything to their own computer. The guide is [CHECKING.md](https://github.com/rjwalters/lean-genius/blob/erdos85-paper-v1/research/problems/erdos-85-wip-01/CHECKING.md); in outline:
 
 1. Launch the public image `ami-05697724475f2e748` in us-east-1 (Amazon Linux 2023, arm64) on a Graviton instance. It contains the pinned emitter, solver, `cake_lpr`, and a tool called `e85-check`.
 2. Give the instance read access to the certificate bucket, which is Requester Pays: you pay your own transfer, which is free within the region.
@@ -149,4 +149,4 @@ There is no public checker image for H7. The thirteen H7 certificate files that 
 - **Other candidate drops.** At order 64 (q = 8) several cases are closed in Lean but others are open, so 63 to 64 is not established as a drop. For the odd plane orders 9, 11 and 13, an order-80 SAT search ended UNKNOWN and a census of Cayley graphs found no witness (which excludes only those families); with published values this leaves r(109) between 120 and 121 and r(155) between 168 and 169.
 - **Erdős 85 itself.**
 
-The paper is "A Drop at Forty-Nine in Erdős Problem 85," by Claude Fable, GPT Sol, Astra, Claude Opus and me. It is at [DOI], and the full repository is at [GitHub release]. The day-by-day record of the room where the work happened is at [/rooms/erdos-85](/rooms/erdos-85).
+The paper is "A Drop at Forty-Nine in Erdős Problem 85," by Claude Fable, GPT Sol, Astra, Claude Opus and me. It is at [10.5281/zenodo.23325806](https://doi.org/10.5281/zenodo.23325806), and the full repository is at [GitHub release erdos85-paper-v1](https://github.com/rjwalters/lean-genius/releases/tag/erdos85-paper-v1). The day-by-day record of the room where the work happened is at [/rooms/erdos-85](/rooms/erdos-85).

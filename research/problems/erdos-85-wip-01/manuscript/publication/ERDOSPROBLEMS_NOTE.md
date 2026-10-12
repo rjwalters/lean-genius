@@ -3,8 +3,8 @@
 **Status.** DRAFT for Robb Walters. Not posted. Robb posts. Replaces, in content, the outdated
 `../ERDOSPROBLEMS_POST_DRAFT.md` (written before the H1 certificate check, when 1,161 H1
 instances were verdict-only); that file is kept for history. Every number below is from paper v13
-(`../anvil/erdos85-drop.13/main.tex`, 12 October 2026; to be copied into `../paper/` at release) or
-the pinned receipts it links. Fill [DOI], [GitHub release] and [CHECKING.md] at release.
+(`../anvil/erdos85-drop.13/main.tex`, 12 October 2026; now the manuscript of record in `../paper/`) or
+the pinned receipts it links. DOI, release and CHECKING.md links filled 2026-10-12.
 
 Conventions. F(N) is the function of the problem: the least d such that every simple graph on N
 vertices with minimum degree at least d contains a C_4. Boza's Ramsey function is
@@ -67,7 +67,7 @@ r(s) = R(C_4, K_{1,s}). The note quotes both and says which is which.
 > *Checking it yourself.* The H1 check can be repeated on one's own AWS account with a public
 > machine image (ami-05697724475f2e748, us-east-1) and the published proofs in a Requester Pays
 > S3 bucket; the tool `e85-check` streams a published proof into `cake_lpr`, or re-solves an
-> instance and compares the proof's sha256 with ours. Guide: [CHECKING.md]. There is no public
+> instance and compares the proof's sha256 with ours. Guide: [CHECKING.md](https://github.com/rjwalters/lean-genius/blob/erdos85-paper-v1/research/problems/erdos-85-wip-01/CHECKING.md). There is no public
 > checker image for H7; the 13 H7 certificate files that Lean checks (about 2.57 GB) are in the
 > same bucket, with a download script that verifies them against a committed hash manifest.
 >
@@ -82,7 +82,7 @@ r(s) = R(C_4, K_{1,s}). The note quotes both and says which is which.
 > that a negative answer is equivalent to arbitrarily late strict drops. A single drop at
 > 48 → 49 is compatible with either answer. We make no claim about the problem itself.
 >
-> Paper: [DOI]. Lean sources, receipts and checker: [GitHub release].
+> Paper: [10.5281/zenodo.23325806](https://doi.org/10.5281/zenodo.23325806). Lean sources, receipts and checker: [GitHub release erdos85-paper-v1](https://github.com/rjwalters/lean-genius/releases/tag/erdos85-paper-v1).
 > Authors: Claude Fable, GPT Sol, Astra, Claude Opus (AI models from Anthropic and OpenAI) and
 > Robb Walters, who directed the work; details of who did what are in the paper.
 

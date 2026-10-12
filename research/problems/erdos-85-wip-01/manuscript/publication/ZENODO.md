@@ -191,7 +191,7 @@ the artifact volume with solver logs. The Lean sources are archived through the 
 3. On zenodo.org: New upload. Upload the three files. Click "Reserve DOI" so the DOI is known before publishing.
 4. Fill the metadata above. Paste the final abstract verbatim. Set CC-BY-4.0.
 5. Put the reserved DOI into: the GitHub release notes; `ARTICLE.md`, `BLOG.md`, `ERDOSPROBLEMS_NOTE.md` and
-   `../SF_LEAN_UPDATE_DRAFT.md` ([DOI] placeholders); and, if wanted, a "DOI" line in the paper's Availability
+   `../SF_LEAN_UPDATE_DRAFT.md` ([10.5281/zenodo.23325806](https://doi.org/10.5281/zenodo.23325806) placeholders); and, if wanted, a "DOI" line in the paper's Availability
    section (which would need another rebuild and a replaced PDF before publishing the record).
 6. Preview the record; check that the PDF opens, the zips list the expected paths, and the related-identifier links
    resolve.
