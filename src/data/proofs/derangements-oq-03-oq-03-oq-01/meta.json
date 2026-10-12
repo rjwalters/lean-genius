@@ -53,11 +53,18 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Module docstring stating the open question (expected number of fixed points of a random permutation), the Cauchy–Frobenius/Burnside answer strategy, and the axiom disclosure. Imports Mathlib and the parent DerangementsOQ03OQ03, opens Equiv.Perm and BigOperators. Places a noncomputable Fintype instance on the orbit quotient of the Sₙ-action, needed to state the Burnside count."
+    },
+    {
       "id": "fixed-set-as-group-action",
       "title": "Fixed Set as a Group-Action Fixed Set",
-      "startLine": 1,
+      "startLine": 57,
       "endLine": 77,
-      "summary": "Module overview plus the reconciliation of two fixed-set notions. A noncomputable Fintype instance is placed on the orbit quotient of the Sₙ-action (needed to state the Burnside count). `fixedBy_eq_fixedPoints`: Mathlib's group-action fixed set `MulAction.fixedBy (Fin n) σ` equals the dynamical `Function.fixedPoints σ` — both are {x | σ x = x}, the only content being unfolding the `Equiv.Perm` scalar action σ • x = σ x. `ncard_fixedPoints_eq_card_fixedBy`: the parent's `Set.ncard` count used in the trace formula equals the `Fintype.card` of that group-action fixed set consumed by Burnside's lemma.",
+      "summary": "`fixedBy_eq_fixedPoints`: Mathlib's group-action fixed set `MulAction.fixedBy (Fin n) σ` equals the dynamical `Function.fixedPoints σ` — both are {x | σ x = x}, the only content being unfolding the `Equiv.Perm` scalar action σ • x = σ x. `ncard_fixedPoints_eq_card_fixedBy`: the parent's `Set.ncard` count used in the trace formula equals the `Fintype.card` of that group-action fixed set consumed by Burnside's lemma.",
       "mathContext": "$\\mathrm{fixedBy}(\\mathrm{Fin}\\,n)\\,\\sigma=\\mathrm{Fix}(\\sigma)=\\{x\\mid\\sigma x=x\\}$"
     },
     {
