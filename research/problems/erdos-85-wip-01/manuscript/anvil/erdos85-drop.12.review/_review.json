@@ -1,0 +1,174 @@
+{
+ "schema_version": "1",
+ "kind": "judgment",
+ "version_dir": "erdos85-drop.12",
+ "critic_id": "paper-review",
+ "model": "claude-opus-5-5",
+ "rubric": "anvil-pub-v2",
+ "scores": [
+  {
+   "dimension": "1_rigor",
+   "score": 6,
+   "max": 6,
+   "critical": false,
+   "evidence_span": "main.tex:L66,L111",
+   "fix": null,
+   "justification": "Rebuild sentences match both ACCEPTED.md records (893/893, 601/607/604); capstone still hOne/depth/hSeven; upper side an implication from two named hypotheses."
+  },
+  {
+   "dimension": "2_evidence",
+   "score": 6,
+   "max": 6,
+   "critical": false,
+   "evidence_span": "main.tex:L111,L121",
+   "fix": null,
+   "justification": "t>=1 certificate modules now replayed from published files; byte-identical objects in second rebuild; all claims trace to linked records."
+  },
+  {
+   "dimension": "3_contribution_clarity",
+   "score": 5,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L66,L87",
+   "fix": null,
+   "justification": "Two results extractable; 'Result A is not an unconditional theorem of Lean'; no under- or overclaim."
+  },
+  {
+   "dimension": "4_related_work",
+   "score": 5,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L153",
+   "fix": null,
+   "justification": "v11 m1 fixed: H7 symmetry-breaking soundness positioned against subercaseaux2024hexagonlean; concession on encoding faithfulness kept."
+  },
+  {
+   "dimension": "5_reproducibility",
+   "score": 4,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L203,L272,L280",
+   "fix": "Replace commit 92ff6248033c at L272 with the \\repobase pin/tag.",
+   "justification": "Capstone now rebuildable from public inputs; but L272 names commit 92ff6248033c, which lacks the cited rebuild records (M1); no H7 public checker; owner-account-only fetch (disclosed)."
+  },
+  {
+   "dimension": "6_figures_tables",
+   "score": 4,
+   "max": 4,
+   "critical": false,
+   "evidence_span": "main.tex:L223,L226",
+   "fix": null,
+   "justification": "m3 mostly fixed; replay notes still in 'Open in Lean' column (minor); render gate pass 14 pp."
+  },
+  {
+   "dimension": "7_prose_structure",
+   "score": 3,
+   "max": 4,
+   "critical": false,
+   "evidence_span": "main.tex:L93,L132,L191,L236,L280",
+   "fix": "Use non-url label macro for prose labels; name the September cold axiom audit at L93/L236.",
+   "justification": "Four link labels render without spaces (campaigntotals, censusreceipts, bankreceipts, cold-buildrecipe); 'a cold rebuild'/'the cold audit' ambiguous now that two cold builds are reported."
+  },
+  {
+   "dimension": "8_citation_hygiene",
+   "score": 5,
+   "max": 5,
+   "critical": false,
+   "evidence_span": "main.tex:L151",
+   "fix": null,
+   "justification": "refs.bib unchanged, 0 undefined; 'too large to keep' replaced with source-supported wording."
+  },
+  {
+   "dimension": "9_rhetorical_economy",
+   "score": 3,
+   "max": 4,
+   "critical": false,
+   "evidence_span": "main.tex:L111,L280",
+   "fix": "Collapse the three rebuild sentences in 2.2 into one.",
+   "justification": "Main text ~12 pp (refs from p.13) vs R-SIMPLE ~10; rebuild/fetch prose outweighed the H7 trim."
+  }
+ ],
+ "findings": [
+  {
+   "severity": "major",
+   "dimension": "5_reproducibility",
+   "evidence_span": "main.tex:L272",
+   "rationale": "Availability states commit 92ff6248033c while \\repobase is fa2b41268df; release_cold_build_20261011/ACCEPTED.md, FAILURE.md and release_thirdparty_rebuild_20261012/ACCEPTED.md do not exist at 92ff6248033c.",
+   "suggested_fix": "Print the \\repobase commit (or final tag), ideally derived from the same macro."
+  },
+  {
+   "severity": "minor",
+   "dimension": "5_reproducibility",
+   "evidence_span": "main.tex:L280",
+   "rationale": "Pinned fetch-h7-certificates.sh comment says 'any AWS credentials work'; corrected comment exists only after the pin (2fb3abe6abc).",
+   "suggested_fix": "Repin to a commit containing the corrected comment; test fetch from a non-owner account."
+  },
+  {
+   "severity": "minor",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L111,L280",
+   "rationale": "Linked FAILURE.md ends 'The manuscript must not claim a completed cold project rebuild' (superseded, no banner); cold-build README carries budget/authorization language; ACCEPTED.md files carry private path, process note and account number.",
+   "suggested_fix": "Add superseded banner to FAILURE.md; trim governance clauses in linked records before the tag."
+  },
+  {
+   "severity": "minor",
+   "dimension": "6_figures_tables",
+   "evidence_span": "main.tex:L223,L226",
+   "rationale": "'Open in Lean' column carries replay notes ('replayed in the cold rebuild', 'reproduced by the cold rebuild of all 893 modules').",
+   "suggested_fix": "Move replay notes to 'How it is checked' or drop them."
+  },
+  {
+   "severity": "minor",
+   "dimension": "2_evidence",
+   "evidence_span": "main.tex:L111,L262",
+   "rationale": "Section 7 says every Lean result was independently reviewed by another AI author; attempt-2 ACCEPTED.md says independent re-audit of the bundle is open for Codex.",
+   "suggested_fix": "Complete the re-audit before the tag or state in 2.2 that the rebuild audit is automated and an independent re-audit is pending."
+  },
+  {
+   "severity": "minor",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L132,L191,L280",
+   "rationale": "\\repofile labels typeset via url-style \\lean drop spaces: 'campaigntotals', 'censusreceipts', 'bankreceipts', 'cold-buildrecipe'.",
+   "suggested_fix": "Single-token labels or a prose-label \\href macro."
+  },
+  {
+   "severity": "minor",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L93,L236",
+   "rationale": "'A cold rebuild from source' and 'the cold audit' ambiguous between the September 2026 axiom audit and the October 893-module rebuild.",
+   "suggested_fix": "Name the September 2026 cold axiom audit with its link."
+  },
+  {
+   "severity": "minor",
+   "dimension": "9_rhetorical_economy",
+   "evidence_span": "main.tex:L111",
+   "rationale": "Main text ~12 pp vs ~10 target; refs start p.13.",
+   "suggested_fix": "Collapse rebuild history in 2.2 to one sentence."
+  },
+  {
+   "severity": "nit",
+   "dimension": "7_prose_structure",
+   "evidence_span": "main.tex:L58",
+   "rationale": "\\date{11 October 2026} predates the 12 October rebuild reported.",
+   "suggested_fix": "Update date at tagging."
+  },
+  {
+   "severity": "nit",
+   "dimension": "6_figures_tables",
+   "evidence_span": "compile-log.txt",
+   "rationale": "Recorded final pass ends with 'Label(s) may have changed. Rerun'; rendered refs are correct.",
+   "suggested_fix": "One more LaTeX pass before the tag."
+  },
+  {
+   "severity": "nit",
+   "dimension": "5_reproducibility",
+   "evidence_span": "erdos85-drop.12/_progress.json",
+   "rationale": "Version-dir progress/changelog cite superseded pins 87e58b130b5 / 92ff6248033c.",
+   "suggested_fix": "Reconcile at final pin."
+  }
+ ],
+ "critical_flags": [],
+ "total": 41,
+ "threshold": 35,
+ "verdict": "ADVANCE"
+}

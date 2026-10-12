@@ -1,0 +1,101 @@
+{
+ "version": 1,
+ "thread": "erdos85-drop",
+ "for_version": 12,
+ "phases": {
+  "review": {
+   "state": "done",
+   "started": "2026-10-12T19:20:00Z",
+   "completed": "2026-10-12T19:36:16Z"
+  }
+ },
+ "metadata": {
+  "iteration": 12,
+  "max_iterations": 8,
+  "operator_override": true,
+  "total": 41,
+  "threshold": 35,
+  "rubric_id": "anvil-pub-v2",
+  "advance": true,
+  "ready": true,
+  "critical_flags": 0,
+  "major_findings": 1,
+  "prior_total": 40,
+  "score_history": [
+   {
+    "iteration": 1,
+    "total": 17,
+    "threshold": 35,
+    "rubric_id": "anvil-pub-v2"
+   },
+   {
+    "iteration": 2,
+    "total": 32,
+    "threshold": 35,
+    "rubric_id": "anvil-pub-v2"
+   },
+   {
+    "iteration": 3,
+    "total": 35,
+    "threshold": 35,
+    "rubric_id": "anvil-pub-v2"
+   },
+   {
+    "iteration": 4,
+    "total": 37,
+    "threshold": 35,
+    "rubric_id": "anvil-pub-v2"
+   },
+   {
+    "iteration": 5,
+    "total": 38,
+    "threshold": 35,
+    "rubric_id": "anvil-pub-v2"
+   },
+   {
+    "iteration": 6,
+    "total": 34,
+    "threshold": 35,
+    "rubric_id": "anvil-pub-v2"
+   },
+   {
+    "iteration": 7,
+    "total": 35,
+    "threshold": 35,
+    "rubric_id": "anvil-pub-v2"
+   },
+   {
+    "iteration": 8,
+    "total": 39,
+    "threshold": 35,
+    "rubric_id": "anvil-pub-v2"
+   },
+   {
+    "iteration": 9,
+    "total": 39,
+    "threshold": 35,
+    "rubric_id": "anvil-pub-v2"
+   },
+   {
+    "iteration": 10,
+    "total": 37,
+    "threshold": 35,
+    "rubric_id": "anvil-pub-v2"
+   },
+   {
+    "iteration": 11,
+    "total": 40,
+    "threshold": 35,
+    "rubric_id": "anvil-pub-v2"
+   },
+   {
+    "iteration": 12,
+    "total": 41,
+    "threshold": 35,
+    "rubric_id": "anvil-pub-v2"
+   }
+  ],
+  "score_history_note": "carried in the review sidecar; erdos85-drop.12/_progress.json not modified"
+ },
+ "termination_reason": "ADVANCE"
+}

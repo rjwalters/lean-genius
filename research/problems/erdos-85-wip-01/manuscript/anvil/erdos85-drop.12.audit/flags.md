@@ -1,0 +1,36 @@
+# Audit flags: erdos85-drop.12
+
+**Verdict: BLOCK. 1 critical flag, 1 major finding.** The thread state is `READY-WITH-AUDIT-FLAGS`; there is no `erdos85-drop.12.review/`, so v12 is not yet READY either. Auditor: Claude (Opus 5.5) acting as the paper-audit critic. The paper's authors include Claude models, so this is not an independent external audit. No Lean build or `lake` invocation was run, and no SAT replay or cloud compute was performed.
+
+Hard scope rules are satisfied. Result A is never called an unconditional Lean theorem: L87 says so explicitly, and L66, L78 and Table 2 keep both UNSAT hypotheses, external cake_lpr checking, the emitter identity gap and native_decide dependence. Nothing is claimed about Erdős Problem 85 itself: L66 says "one drop is compatible with either answer", and L87 says "Nothing is claimed about Erdős Problem 85 itself". Theorem B stays conditional on A-REG. `scope_lint.py` passes with and without `--proofs` at the pin (38 numbers, 46 Lean names).
+
+## Critical flags (block advancement to AUDITED)
+
+- **C1. Snapshot identifier inconsistency (Availability, main.tex:L272).** The prose says the source code, receipts and tooling "are in the Lean Genius repository ... at commit `92ff6248033c`". Every link, through `\repobase` (L32), points at `fa2b41268df024128ed4738b3bb500637cf1ec12`. `92ff6248033c` is the interim pin from the changelog ("docs(erdos85): prepare verified paper review-fix patch"). It is an ancestor of the pin but does **not** contain the evidence v12 newly relies on. `git cat-file -e 92ff6248033c:research/problems/erdos-85-wip-01/release_cold_build_20261011/ACCEPTED.md` fails, and so does the same check for `release_thirdparty_rebuild_20261012/ACCEPTED.md`. A reader who checks out the stated commit cannot find the receipts for the cold-rebuild claims in L111, L121, L226, L232 and L280. This is a regression: v11 named `f6daa149b807`, which matched its `\repobase`. Fix (mechanical): replace `\texttt{92ff6248033c}` with `\texttt{fa2b41268df0}` (or the release tag at publication), and name the branch as v11 did if wanted. Better still, derive the displayed hash from the same macro as `\repobase` so the two cannot drift.
+
+## Major findings (not blocking under the paper-audit contract; reviser should act)
+
+- **M1. Independent review of the cold-rebuild acceptance is still open at the pin.** `release_cold_build_20261011/ACCEPTED.md` (last paragraph, at `fa2b41268df`) says: "Capture was run by Claude because Codex's session was inactive at terminal time; independent re-audit of the bundle is open for Codex." The cold-build README also says the deterministic `audit.py` is "author-written" and that "a human/peer review of the runner and receipts remains distinct". The paper describes this check as "A read-only audit of the retained output" (L111). §7 Reviews (L262) says "Every Lean result and certificate collection in this paper was accepted only after another AI author independently reviewed it ... rebuilt where stated." The underlying Lean results (the axiom lists 601/607/604) were already independently accepted at the release assembly, and the rebuild reproduces them exactly. So no mathematical claim is wrong. But the new reproducibility claims rest on one author's capture plus an author-written checker, and L262 can be read as covering them. Fix: either (a) have the second author re-audit the bundle and record it at the pin before publication, or (b) add a clause to L111 such as "(captured and audited by one AI author with the deterministic checker; independent re-audit pending)". What this audit did independently: it recomputed the sha256 and size of all three retained archives (attempt 1, attempt 2, third-party), and all match their records. That does not replace a re-audit of the bundle contents.
+
+## Build and deterministic gates
+
+- **Build:** a scratch copy (manuscript untouched) ran xelatex → bibtex → xelatex ×3, 4 XeLaTeX passes in total. Pass 3 still emitted the rerun warning; pass 4 did not, and `.aux` was byte-identical between passes 3 and 4. All 5 invocations exited 0. There are 0 undefined citations or references and 0 overfull boxes; 3 underfull boxes and 58 font-shape warnings (Menlo small caps and semibold substitutions) are cosmetic. The output is 14 pages. Rebuilt PDF text (`pdftotext -layout`) is identical to the shipped `erdos85-drop.12/main.pdf` text, and there is no `??` in the PDF. The raw output is in `compile-log.txt`.
+- **Pending-marker gate:** PASS, 0 active markers (`pending_marker.json`; read-only run, no `.pending` sibling written).
+- **Artifact link hygiene / audience (step 6c):** `audience_check.json` reports 0 governance-vocabulary hits, 0 private-locator hits and 9 `unlinked_artifact_path` hits (L274 to L282). Every hit is an argument of `\repofile`, which expands to a public `\href`, so all 9 are confirmed scanner false positives. `public_repo_url` is only `derived`, not declared, so none could be critical anyway. All 70 distinct link targets exist at `fa2b41268df`, and the pin is on `origin`.
+- **Corpus tier:** inactive (no `corpus:` in BRIEF), so no `.corpus-audit/` sibling was written.
+
+## Non-critical notes
+
+- **Date line (L58)** reads "11 October 2026", but v12 reports both cold rebuilds, which completed on 12 October 2026. Update the date.
+- **"A second cold rebuild" (L111)** is the second *successful* rebuild and the third attempt, since the failed attempt is mentioned just before it. Consider "A further cold rebuild" to avoid a miscount.
+- **Table 2, "Open in Lean" column:** "replayed in the cold rebuild" (H7 t≥1 row) and "reproduced by the cold rebuild of all 893 modules" (Upper side row) are reproducibility facts, not open items, and they sit in the column that lists what is open. Consider moving them to the "How it is checked" column.
+- **Output bundle (L280):** "retained outside the repository" is accurate. Under R-LINK, an unpublished item should be described as not published, so "(not published)" would be clearer.
+- **Fetch script comment (outside the paper):** `proofs/scripts/fetch-h7-certificates.sh` says "any AWS credentials work", but only bucket-owner credentials have been tested. The paper's L280 wording is correctly limited. Consider aligning the script comment before the release tag.
+- **Changelog (outside the paper):** `erdos85-drop.12/changelog.md` still opens with "Status: revise in progress" and keeps superseded lines (an "attempted cold build failed ... without an acceptance claim" row, interim pins `92ff62...` and `1a16e9d...`, and a "Remaining work" list). It is not reader-facing, but it is probably where the stale commit in C1 came from.
+- **Length:** references begin on p.13, so the main text is about 12 pages against the BRIEF's target of about 10 (advisory, unchanged from v11).
+- **Citations:** 4 supports, 11 partial (8 abstract-level only), 2 unverified, 0 does-not-support, 0 unresolved. The new v12 sentence on verified symmetry breaking in the hexagon development was checked against the primary source (Subercaseaux et al., arXiv 2403.17370v1, §5) and is supported. See citation-audit.md.
+- **State:** no `erdos85-drop.12.review/` exists. Even after C1 is fixed, AUDITED also requires a v12 review that advances.
+
+## Audience-fit notes
+
+None. The 9 scanner hits were confirmed false positives (see above).
