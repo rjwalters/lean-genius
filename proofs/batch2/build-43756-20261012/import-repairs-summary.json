@@ -1,0 +1,12 @@
+{
+  "source_commit": "b3b160fb697840210b08a101a89ff3d61c1f0f98",
+  "checked_at": "2026-10-12T23:11:13.439561+00:00",
+  "commands": [
+    "lake env lean -j1 Proofs/AmgmInequalityOQ02OQ01OQ02.lean",
+    "lake env lean -j1 Proofs/BinaryGcdOQ02OQ01.lean"
+  ],
+  "exit_code": 0,
+  "outputs_written": false,
+  "log": "import-repairs-check.log",
+  "log_sha256": "4ee49b6eb3099b779520e52081a59a222481fb5a2b50aecc5f8ac3238f757a58"
+}

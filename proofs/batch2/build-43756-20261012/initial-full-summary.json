@@ -1,0 +1,30 @@
+{
+  "job": "20261012T220454-fix__safe-subset-43756-20261012-6708",
+  "source_commit": "f84fbaf493219e31dd69bf52772095d9753a4ad6",
+  "targets": 5940,
+  "lake_jobs": 14527,
+  "exit_code": 1,
+  "started_at": "2026-10-12T22:04:54Z",
+  "finished_at": "2026-10-12T22:55:24Z",
+  "failed_jobs": [
+    "Proofs.AmgmInequalityOQ02OQ01",
+    "Proofs.AmgmInequalityOQ02OQ01OQ02",
+    "Proofs.BallotProblemOQ03OQ01OQ02Helpers",
+    "Proofs.GCDAlgorithmOQ02",
+    "Proofs.BinaryGcdOQ02OQ01",
+    "Proofs.Erdos30WIP01",
+    "Proofs.Erdos18WIP01",
+    "Proofs.KonigsbergOQ01OQ02"
+  ],
+  "log": "full-build.log",
+  "log_sha256": "c5f71b633a311d2c2c8d0ec09d8ef4f576eccd652ff23a1e02f39a571095984f",
+  "log_bytes": 4777000,
+  "repair_results": {
+    "BrouwerFixedPointOQ04OQ04": "⚠ [9416/9434] Built Proofs.BrouwerFixedPointOQ04OQ04 (4.4s)",
+    "ChineseRemainderNonCoprimeOQ01OQ01": "⚠ [9901/9917] Built Proofs.ChineseRemainderNonCoprimeOQ01OQ01 (4.6s)",
+    "Erdos967Problem": "⚠ [12306/12321] Built Proofs.Erdos967Problem (3.9s)",
+    "MinkowskiFundamentalTheoremOQ06": "⚠ [13437/13461] Built Proofs.MinkowskiFundamentalTheoremOQ06 (7.2s)",
+    "PascalsHexagonOQ03Incomplete01Derangements": "✔ [13560/13576] Built Proofs.PascalsHexagonOQ03Incomplete01Derangements (3.0s)",
+    "Erdos679ProblemAristotle": "✔ [11875/11890] Built Proofs.Erdos679ProblemAristotle (5.2s)"
+  }
+}

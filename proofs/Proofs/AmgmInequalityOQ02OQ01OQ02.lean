@@ -16,7 +16,7 @@
 -/
 
 import Mathlib
-import Proofs.AmgmInequalityOQ02OQ01
+import Proofs.AMGMInequalityOQ02OQ01
 
 namespace AMGMInequalityOQ02OQ01OQ02
 

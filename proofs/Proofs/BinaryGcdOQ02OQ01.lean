@@ -1,5 +1,5 @@
 import Mathlib
-import Proofs.GCDAlgorithmOQ02
+import Proofs.GcdAlgorithmOQ02
 
 /-
 # Binary GCD via Bit Operations (binary-gcd-oq-02-oq-01)

@@ -1,0 +1,29 @@
+Oct 12 22:38:17 ip-172-31-5-148.ec2.internal kernel: lean invoked oom-killer: gfp_mask=0xcc0(GFP_KERNEL), order=0, oom_score_adj=0
+Oct 12 22:38:17 ip-172-31-5-148.ec2.internal kernel:  oom_kill_process+0x1d8/0x380
+Oct 12 22:38:17 ip-172-31-5-148.ec2.internal kernel: [  pid  ]   uid  tgid total_vm      rss rss_anon rss_file rss_shmem pgtables_bytes swapents oom_score_adj name
+Oct 12 22:38:17 ip-172-31-5-148.ec2.internal kernel: oom-kill:constraint=CONSTRAINT_MEMCG,nodemask=(null),cpuset=docker-15cff8ac49ec138cbe9b9ce41109c56e3338435e5627360b4fb5bc762a3614f6.scope,mems_allowed=0,oom_memcg=/system.slice/docker-15cff8ac49ec138cbe9b9ce41109c56e3338435e5627360b4fb5bc762a3614f6.scope,task_memcg=/system.slice/docker-15cff8ac49ec138cbe9b9ce41109c56e3338435e5627360b4fb5bc762a3614f6.scope,task=lean,pid=50617,uid=0
+Oct 12 22:38:17 ip-172-31-5-148.ec2.internal kernel: Memory cgroup out of memory: Killed process 50617 (lean) total-vm:123207780kB, anon-rss:85367456kB, file-rss:1908kB, shmem-rss:0kB, UID:0 pgtables:342772kB oom_score_adj:0
+Oct 12 22:38:17 ip-172-31-5-148.ec2.internal kernel: lean invoked oom-killer: gfp_mask=0x100cca(GFP_HIGHUSER_MOVABLE), order=0, oom_score_adj=0
+Oct 12 22:38:17 ip-172-31-5-148.ec2.internal kernel:  oom_kill_process+0x1d8/0x380
+Oct 12 22:38:17 ip-172-31-5-148.ec2.internal kernel: [  pid  ]   uid  tgid total_vm      rss rss_anon rss_file rss_shmem pgtables_bytes swapents oom_score_adj name
+Oct 12 22:38:17 ip-172-31-5-148.ec2.internal kernel: oom-kill:constraint=CONSTRAINT_MEMCG,nodemask=(null),cpuset=docker-15cff8ac49ec138cbe9b9ce41109c56e3338435e5627360b4fb5bc762a3614f6.scope,mems_allowed=0,oom_memcg=/system.slice/docker-15cff8ac49ec138cbe9b9ce41109c56e3338435e5627360b4fb5bc762a3614f6.scope,task_memcg=/system.slice/docker-15cff8ac49ec138cbe9b9ce41109c56e3338435e5627360b4fb5bc762a3614f6.scope,task=lean,pid=46822,uid=0
+Oct 12 22:38:17 ip-172-31-5-148.ec2.internal kernel: Memory cgroup out of memory: Killed process 46822 (lean) total-vm:63262268kB, anon-rss:17269076kB, file-rss:4268kB, shmem-rss:0kB, UID:0 pgtables:232892kB oom_score_adj:0
+299-      }
+300-      try
+301:        withTraceNode `Elab.async (fun _ => return desc) do
+302-          act a
+303-      catch e =>
+304-        logException e
+305-      finally
+306-        addTraceAsMessages
+307-      get
+--
+332-open Language in
+333-def runLintersAsync (stx : Syntax) : CommandElabM Unit := do
+334:  if !Elab.async.get (← getOptions) then
+335-    withoutModifyingEnv do
+336-      runLinters stx
+337-    return
+338-
+339-  -- linters should have access to the complete info tree and message log
+340-  let mut snaps := (← get).snapshotTasks
