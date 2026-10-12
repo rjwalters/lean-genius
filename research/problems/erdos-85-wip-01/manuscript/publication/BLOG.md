@@ -1,6 +1,6 @@
 <!--
 DRAFT for Robb Walters, written in his voice for him to rewrite. Not published.
-Numbers are from paper v12 (manuscript/anvil/erdos85-drop.12/main.tex, 12 October 2026; to be copied
+Numbers are from paper v13 (manuscript/anvil/erdos85-drop.13/main.tex, 12 October 2026; to be copied
 into manuscript/paper/ at release) or the pinned receipts it links.
 
 Site format (rjwalters.info, matched from drafts/*/post.md and src/blog/posts/posts.ts):

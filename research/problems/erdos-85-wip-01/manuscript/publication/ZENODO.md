@@ -1,25 +1,24 @@
 # Zenodo deposit plan: Erdős 85 paper
 
 **Status.** DRAFT plan for Robb Walters. Nothing has been uploaded or reserved. The manuscript of record
-will be paper v12 (`research/problems/erdos-85-wip-01/manuscript/anvil/erdos85-drop.12/`, 12 October 2026),
+will be paper v13 (`research/problems/erdos-85-wip-01/manuscript/anvil/erdos85-drop.13/`, 12 October 2026),
 copied into `research/problems/erdos-85-wip-01/manuscript/paper/` at release; that directory still holds the
 frozen v11 copies today. All paths below are relative to the repository root on branch
 `erdos85/paper-v12-final-20261012` (worktree `/Volumes/Stripe/lean-genius/erdos85-paper-v12-final`) unless
 stated otherwise. Receipt paths were checked to exist at the pinned release-assembly commit
-`fa2b41268df024128ed4738b3bb500637cf1ec12` (v12's current `\repobase`).
+`2029149d7e42b74036ff0e1e82af6d33c2e32748` (v13's current `\repobase`).
 
 ## Before depositing
 
-1. Robb's read-through of paper v12 (`manuscript/anvil/erdos85-drop.12/main.pdf`). Its changelog records AI-author
+1. Robb's read-through of paper v13 (`manuscript/anvil/erdos85-drop.13/main.pdf`). Its changelog records AI-author
    review and audit passes only; no human read-through is recorded.
-2. Copy v12 (`main.tex`, `refs.bib`, `anvil-paper.cls`, `main.pdf`) into `manuscript/paper/` and update
-   `manuscript/paper/README.md` to say v12 is the manuscript of record.
-3. Create the GitHub release tag (suggested: `erdos85-paper-v1`) on the commit that holds the final paper and receipts.
-4. Repin `\repobase` in `main.tex` from `blob/fa2b41268df024128ed4738b3bb500637cf1ec12` to `blob/<release tag>`,
-   rebuild with `xelatex main && bibtex main && xelatex main && xelatex main`, and confirm the links resolve.
-   In the same pass, align two strings in v12's `main.tex` that do not match the pin: the Availability sentence
-   still says "at commit `92ff6248033c`", and `\date` reads 11 October 2026 although the last v12 edit (the
-   second rebuild) is dated 12 October 2026.
+2. Copy v13 (`main.tex`, `refs.bib`, `anvil-paper.cls`, `main.pdf`) into `manuscript/paper/` and update
+   `manuscript/paper/README.md` to say v13 is the manuscript of record.
+3. Merge the paper branch into `erdos85/release-assembly-20261011` and create the GitHub release tag
+   (suggested: `erdos85-paper-v1`) on that merge commit.
+4. No repin is needed: every link goes through `\repocommit` = `2029149d7e42b74036ff0e1e82af6d33c2e32748`, an
+   immutable commit that is an ancestor of the tag, and the Availability sentence prints the same commit. Confirm
+   that the tag contains it (`git merge-base --is-ancestor 2029149d7e42 <tag>`).
 5. Decide author metadata for the four AI authors (see "Creators" below) and check Zenodo's current guidance on
    non-human creators before submitting.
 6. Zenodo account, DOI reservation and upload are done by Robb (see "Steps").
@@ -30,7 +29,7 @@ Three files. Zenodo previews PDFs; keep the source and receipts as zips.
 
 | Upload as | Contents (exact source paths) |
 |---|---|
-| `erdos85-drop-paper.pdf` | `research/problems/erdos-85-wip-01/manuscript/paper/main.pdf` (v12, after the copy in step 2 and the rebuild in step 4) |
+| `erdos85-drop-paper.pdf` | `research/problems/erdos-85-wip-01/manuscript/paper/main.pdf` (v13, after the copy in step 2) |
 | `erdos85-drop-latex.zip` | `research/problems/erdos-85-wip-01/manuscript/paper/main.tex`<br>`research/problems/erdos-85-wip-01/manuscript/paper/refs.bib`<br>`research/problems/erdos-85-wip-01/manuscript/paper/anvil-paper.cls`<br>`research/problems/erdos-85-wip-01/manuscript/paper/README.md` (build line: xelatex + fontspec, not pdflatex) |
 | `erdos85-receipts.zip` (about 46 MB uncompressed at the pin; the H7 receipt tables are already zstd-compressed) | see the list below |
 
@@ -113,7 +112,7 @@ the artifact volume with solver logs. The Lean sources are archived through the 
 
 - **Resource type:** Publication / Preprint
 - **Title:** A Drop at Forty-Nine in Erdős Problem 85
-- **Publication date:** the deposit date (paper v12, 12 October 2026; see step 4 for the `\date` line)
+- **Publication date:** the deposit date (paper v13, 12 October 2026; see step 4 for the `\date` line)
 - **Creators** (order as in the paper):
   1. Claude Fable (affiliation: Lean Genius project) [decide: name format and whether to add "Anthropic model"]
   2. GPT Sol (affiliation: Lean Genius project) [decide: "OpenAI model"]
@@ -123,7 +122,7 @@ the artifact volume with solver logs. The Lean sources are archived through the 
   The paper's byline reads "Lean Genius project, 2AM Logic" for all five. Zenodo's form expects "Family, Given"
   for persons; the AI authors may need to go in as organizational names or as contributors, depending on
   current Zenodo guidance.
-- **Description (abstract, verbatim from paper v12, converted to plain text):**
+- **Description (abstract, verbatim from paper v13, converted to plain text):**
 
   > For n ≥ 4 let f(n) be the least d such that every simple graph on n vertices with minimum degree at least d
   > contains a four-cycle. Erdős Problem 85 asks whether f is eventually nondecreasing. We report two results.

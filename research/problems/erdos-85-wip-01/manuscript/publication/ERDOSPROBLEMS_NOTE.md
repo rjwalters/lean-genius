@@ -2,8 +2,8 @@
 
 **Status.** DRAFT for Robb Walters. Not posted. Robb posts. Replaces, in content, the outdated
 `../ERDOSPROBLEMS_POST_DRAFT.md` (written before the H1 certificate check, when 1,161 H1
-instances were verdict-only); that file is kept for history. Every number below is from paper v12
-(`../anvil/erdos85-drop.12/main.tex`, 12 October 2026; to be copied into `../paper/` at release) or
+instances were verdict-only); that file is kept for history. Every number below is from paper v13
+(`../anvil/erdos85-drop.13/main.tex`, 12 October 2026; to be copied into `../paper/` at release) or
 the pinned receipts it links. Fill [DOI], [GitHub release] and [CHECKING.md] at release.
 
 Conventions. F(N) is the function of the problem: the least d such that every simple graph on N

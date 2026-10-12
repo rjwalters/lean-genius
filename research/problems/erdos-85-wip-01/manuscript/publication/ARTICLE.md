@@ -1,6 +1,6 @@
 <!--
-DRAFT for Robb Walters. Not published. Every number is taken from paper v12
-(manuscript/anvil/erdos85-drop.12/main.tex, 12 October 2026; to be copied into manuscript/paper/ at
+DRAFT for Robb Walters. Not published. Every number is taken from paper v13
+(manuscript/anvil/erdos85-drop.13/main.tex, 12 October 2026; to be copied into manuscript/paper/ at
 release) or the pinned receipts it links, unless marked as coming from CHECKING.md.
 
 Site format (rjwalters.info, matched from drafts/*/post.md and src/blog/posts/posts.ts):

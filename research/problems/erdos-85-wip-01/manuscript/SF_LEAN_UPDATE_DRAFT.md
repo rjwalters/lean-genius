@@ -1,7 +1,7 @@
 # Draft: update to the SF Lean group (Robb's voice) — HOLD until the paper's DOI and article links exist
 
 Placeholders to fill at release: [CHECKING.md link — GitHub release tag], [DOI], [rjwalters.info article].
-Numbers are from paper v12 (anvil/erdos85-drop.12/main.tex, 12 October 2026) or the pinned receipts it links.
+Numbers are from paper v13 (anvil/erdos85-drop.13/main.tex, 12 October 2026) or the pinned receipts it links.
 
 ---
 
