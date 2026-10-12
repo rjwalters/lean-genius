@@ -11,6 +11,12 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
+case "${1:-}" in
+    ""|--list) ;;
+    *) echo "Usage: $0 [--list]" >&2; exit 2 ;;
+esac
+(( $# <= 1 )) || { echo "Usage: $0 [--list]" >&2; exit 2; }
+
 # Files to exclude:
 #   - known memory hogs (unbounded-memory tactics)
 #   - known-broken legacy files awaiting redesign (do NOT repair in place)
@@ -28,15 +34,19 @@ EXCLUDE=(
     # 10h+ during the 2026-09-25 full build, blocking every full build). Quarantine
     # until the hanging tactic is replaced with a bounded computation. See #43756.
     "BirthdayProblemOQ03OQ01OQ01"
+    # Accidental import-all artifact, with no declarations: it imports the
+    # quarantined Birthday, Erdos728 and SpernerGrid modules, bypassing the
+    # exclusions above. Preserve its source but omit this aggregate (#43756).
+    "AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle"
 )
 
-echo "=== Building Safe Subset of Proofs ==="
-echo "Excluding: ${EXCLUDE[*]}"
-echo ""
+echo "Excluding: ${EXCLUDE[*]}" >&2
 
-# Build each proof file individually, skipping excluded ones
+# One Lake invocation shares dependency work and preserves its failure status.
+targets=()
 for file in Proofs/*.lean; do
-    name=$(basename "$file" .lean)
+    name=${file##*/}
+    name=${name%.lean}
 
     # Check if excluded
     skip=false
@@ -48,16 +58,15 @@ for file in Proofs/*.lean; do
     done
 
     if $skip; then
-        echo "SKIP: Proofs.$name (excluded - memory intensive)"
         continue
     fi
 
-    echo "BUILD: Proofs.$name"
-    if ! lake build "Proofs.$name" 2>&1; then
-        echo "FAILED: Proofs.$name"
-        # Continue with other files instead of stopping
-    fi
+    targets+=("Proofs.$name")
 done
 
-echo ""
-echo "=== Done ==="
+if [[ "${1:-}" == --list ]]; then
+    printf '%s\n' "${targets[@]}"
+    exit 0
+fi
+echo "Building ${#targets[@]} safe-subset targets" >&2
+exec lake build "${targets[@]}"

@@ -565,7 +565,7 @@ theorem exists_radius_of_density {n : ℕ} (hn : 2 ≤ n) {d : ℝ} (hd : 0 < d)
       (show (0 : ℝ) < 2 ^ (n - 1) * 2 by positivity)
     calc 2 * (2 ^ (n - 1) * d) = 2 ^ (n - 1) * 2 * d := by ring
       _ < 2 ^ (n - 1) * 2 * (zetaSum n / 2 ^ (n - 1)) := this
-      _ = 2 * zetaSum n := by field_simp; ring
+      _ = 2 * zetaSum n := by field_simp
 
 /-- **Minkowski–Hlawka, packing-density form (staged, S6).** Under the
 primitive Siegel–Rogers staging hypotheses (`hMV`, `hInt` — quantified over
