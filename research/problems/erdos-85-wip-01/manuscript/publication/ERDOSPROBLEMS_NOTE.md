@@ -14,7 +14,9 @@ r(s) = R(C_4, K_{1,s}). The note quotes both and says which is which.
 
 ## Text to post
 
-> We report two results on this problem. Neither settles it.
+> Following StijnC's comment above (F(48) = 8, F(50) = 8, with F(49) the hard case), we can
+> report F(49) = 7, so there is a strict drop from 48 to 49. We report two results on this
+> problem. Neither settles it.
 >
 > **1. A strict drop, F(48) = 8 and F(49) = 7, as a computational result.**
 >
@@ -89,6 +91,15 @@ r(s) = R(C_4, K_{1,s}). The note quotes both and says which is which.
 ---
 
 ## Notes for Robb (not for posting)
+
+- **Forum state (checked 2026-10-12, https://www.erdosproblems.com/forum/thread/85):** new comments on
+  this thread are currently suspended; the page says proof expositions can be sent to a moderator.
+  So either wait for comments to reopen or send this text to a moderator. The thread has two
+  comments: Woett (the sqrt(n) bounds) and StijnC (17 Sep 2026: F(48) = 8, F(50) = 8 via
+  Hoffman-Singleton and n >= 57 for minimum degree 8; F(49) "tough", a colleague's attempt "takes too
+  long"). The opening sentence replies to StijnC. F(50) = 8 is StijnC's claim, not ours; the text
+  only quotes it. The forum renders LaTeX ($...$); the text uses plain Unicode, which also reads fine,
+  and the thread writes f(n) where this note writes F(N).
 
 - The `r(s) = min{N : F(N) ≤ N − s}` conversion and the r(41)/r(42) values are from the paper's
   introduction and `../FIRST_DROP_LITERATURE_CHECK.md` (2026-09-28 correction section).
