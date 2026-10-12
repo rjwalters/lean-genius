@@ -6,6 +6,22 @@
       "state": "complete",
       "started": "2026-10-12T19:55:00+00:00",
       "note": "Direct edit addressing v12 review M1/minors and audit C1/M1; pin release assembly 2029149d7e42. Fresh review and author audit outstanding."
+    },
+    "review": {
+      "state": "complete",
+      "verdict": "advance",
+      "score": "43/44"
+    },
+    "audit": {
+      "state": "complete",
+      "verdict": "AUDITED",
+      "critical": 0,
+      "major": 0
+    },
+    "operator": {
+      "state": "approved",
+      "date": "2026-10-12",
+      "note": "Robb Walters read v13 and approved publication: \"I'm happy with the paper. let's publish it!\""
     }
   },
   "metadata": {
@@ -15,9 +31,7 @@
     "direct_edit": true,
     "session_authorized_revision": true,
     "authorization_note": "Prepared under the active user instruction to work with Claude to finalize the paper after certificate publication. This is not a new human read-through or a fabricated operator critic. The capped automatic revise command was not invoked.",
-    "pending_dependencies": [
-      "peer review and author audit of v13"
-    ],
+    "pending_dependencies": [],
     "cold_build_status": "COLD_PROJECT_BUILD_ACCEPTED"
   }
 }
