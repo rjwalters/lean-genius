@@ -8,7 +8,7 @@ h1_cert_full_20261001/receipts/pilot_h1_81494a_leaf_expected_sha256.tsv. Read-on
 """
 import hashlib, json, sys
 from pathlib import Path
-W = Path("/Volumes/Stripe/lean-genius/erdos85-review-deposit/research/problems/erdos-85-wip-01")
+W = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(W / "phase_b_h1_verdict_cloud_20260921")); sys.path.insert(0, str(W / "sat49"))
 import cube_verdict
 CASE = Path("/Volumes/Stripe/lean-genius/artifacts/erdos85-sat49/h1-cube-pass4-20260926/h1_81494a6ef36d3ec9")

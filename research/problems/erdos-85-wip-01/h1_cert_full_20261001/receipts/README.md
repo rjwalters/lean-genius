@@ -95,3 +95,20 @@ Result: 36/36 MATCH on all four values, including the five rows above. Columns: 
 `literals`, `expected_cube_sha256` (banked tree), `receipt_cube_sha256`,
 `recomputed_cube_sha256`, `ondisk_cube_sha256`, `receipt_had_cube_sha_ok`, `match`.
 TSV sha256: `3e1cc9accc4c6c12762c3471560145c191c8821d6c05c4dcdfa10c4ca6183e89`.
+
+## Census manifest (added 2026-10-20, review jhpvtq)
+
+`h1_cert_full_manifest.jsonl` is the manifest cited in step 1 above (sha256
+`9d04a66c36497329ae594c5b0f2924c7055a8355651b223bef3c4d8a4fb231c2`, 1,160 lines, 345,305 bytes;
+also `manifest_sha256` in `h1_cert_census_summary.json`). It was written by
+`../build_manifest.py` (originally at `artifacts/erdos85-sat49/h1-cert-full-freight/manifest.jsonl`
+on the project volume) and gives, per census root, `id`, `profile`, `cnf_sha256`,
+`table_sha256` and the census solver times. Its 1,160 ids and `cnf_sha256` values agree
+one-for-one with `h1_cert_census_receipts.tsv`.
+
+This manifest covers the 1,160 census roots only. The expected CNF hashes for the 96 historical
+orbits (`cnf_sha256_expected` in `historical96_*receipts.jsonl`, checked against the archived
+sweep CNFs) come from the tracked files `phase_b_historical_overlay/historical-95.json`
+(sha256 `80fd7a26…8d98`) and `phase_b_historical_overlay_96/historical-96.json`
+(`extra_case`; sha256 `f60a6590…495d`), as read by `h1_cert_pilot_20261001/replay_historical96.py`.
+All 96 tags in both historical receipt files match those values.
