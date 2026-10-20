@@ -1,0 +1,6 @@
+name = "emitbug"
+defaultTargets = ["emitbug"]
+
+[[lean_exe]]
+name = "emitbug"
+root = "Main"
