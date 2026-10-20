@@ -2,7 +2,7 @@
   {
     "id": "ann-fiboq020101-1",
     "proofId": "fibonacci-identities-oq-02-oq-01-oq-01",
-    "range": { "startLine": 3, "endLine": 48 },
+    "range": { "startLine": 4, "endLine": 48 },
     "type": "concept",
     "title": "The Quadratic Companion of the Product Identity",
     "content": "**Module framing.** The parent entry isolated the *product* identity $F_{2n}=F_n\\cdot L_n$ as the engine of Lucas divisibility. This module supplies the *quadratic* companion as a universally quantified theorem over $\\mathbb{Z}$: $L_n^2-5F_n^2=4(-1)^n$. The two are the fundamental degree-2 relations between the companion sequences. The quadratic identity is the integer residue of Binet's formulas $F_n=(\\varphi^n-\\psi^n)/\\sqrt5$, $L_n=\\varphi^n+\\psi^n$: since $\\varphi\\psi=-1$, eliminating $\\varphi,\\psi$ makes $\\sqrt5$ vanish and leaves $L_n^2-5F_n^2=4(\\varphi\\psi)^n=4(-1)^n$. Two consequences are drawn: $L_n^2=5F_n^2\\pm4$ (sign by parity) and $\\gcd(F_n,L_n)\\mid 2$.",
@@ -23,7 +23,7 @@
   {
     "id": "ann-fiboq020101-2",
     "proofId": "fibonacci-identities-oq-02-oq-01-oq-01",
-    "range": { "startLine": 58, "endLine": 94 },
+    "range": { "startLine": 59, "endLine": 95 },
     "type": "concept",
     "title": "Lucas Numbers and the Subtraction-Free Bridge",
     "content": "Mathlib has `Nat.fib` but not the Lucas numbers, so we reuse the parent's structural pair recursion `lucasPair n = (L_n, L_{n+1})`, giving `lucas n` that reduces by `rfl`/`decide`. The link to Fibonacci is the subtraction-free bridge $2F_{n+1}=L_n+F_n$ (`two_mul_fib_succ`, a two-step induction), which over $\\mathbb{Z}$ becomes the closed form $L_n=2F_{n+1}-F_n$ (`lucas_eq_int`). This single substitution is what converts every Lucas statement below into a pure Fibonacci statement.",

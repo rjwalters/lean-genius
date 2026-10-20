@@ -133,10 +133,10 @@
     "id": "ann-erdos-1104-oq01-iter-iff",
     "proofId": "erdos-1104-oq-01",
     "range": {
-      "startLine": 294,
+      "startLine": 291,
       "endLine": 308
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Exact Colourability of the Iterated Tower",
     "content": "mycielskianIter builds the k-fold Mycielskian over a recursively-defined vertex type mycVertexIter. mycielskianIter_colorable (upper) and mycielskianIter_colorable_of_add (lower, the iterated form of the recolouring argument) combine into mycielskianIter_colorable_iff: (mycielskianIter G k).Colorable (m+k) ↔ G.Colorable m. Equivalently χ(mycielskianIter G k) = χ(G) + k — the chromatic number rises by exactly one per Mycielski step, pinned both above and below.",
     "mathContext": "$\\chi(M^k(G)) = \\chi(G) + k$: each iteration adds exactly one to the chromatic number while preserving triangle-freeness.",

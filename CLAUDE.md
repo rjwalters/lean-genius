@@ -75,7 +75,7 @@ LEAN_BUILD_TIMEOUT=30m ./proofs/scripts/docker-build.sh
 ./proofs/scripts/build-safe-subset.sh
 ```
 
-A `lake` wrapper in `proofs/bin/` blocks direct `lake build` calls when activated via `direnv allow` or `source ./proofs/scripts/activate-safety.sh`. Bypass with `LAKE_UNSAFE=1` (dangerous).
+A `lake` wrapper in `proofs/bin/` blocks direct `lake build` calls when activated via `source ./proofs/scripts/activate-safety.sh` (there is no `.envrc`, so direnv does not apply). Bypass with `LAKE_UNSAFE=1` (dangerous).
 
 ---
 
@@ -97,7 +97,7 @@ Software development workflow. See `.loom/roles/*.md` for detailed role definiti
 | **Doctor** | Fixes bugs and PR feedback | Manual |
 | **Guide** | Prioritizes and triages issues | Autonomous (15min) |
 
-Invoke via: `/builder`, `/judge`, `/curator`, `/architect`, `/hermit`, `/doctor`, `/guide`
+Invoke via: `/loom:builder`, `/loom:judge`, `/loom:curator`, `/loom:architect`, `/loom:hermit`, `/loom:doctor`, `/loom:guide`
 
 ### Lean Genius (Mathematical Orchestration)
 
@@ -119,13 +119,13 @@ Mathematical work: formalizing proofs, enhancing entries, automated proof search
 
 **Team orchestration**: `/lean` manages Enricher, Aristotle, Researcher, Auditor, Mechanic, Seeker, Deployer, Tester, Herald. Run `/lean` for commands and pool configuration.
 
-**Legacy**: Erdos Enhancer (`make enhance`) — stub creation is complete (0 stubs remaining).
+**Legacy**: Erdos Enhancer (`make enhance`) — stub creation is complete (no problems are waiting for a stub; the 105 files under `proofs/Proofs/Stubs/` are the finished legacy stubs).
 
 ### When to Use Which
 
 | Task | Use |
 |------|-----|
-| Writing code, fixing bugs, reviewing PRs | Loom agents (`/builder`, `/judge`, etc.) |
+| Writing code, fixing bugs, reviewing PRs | Loom agents (`/loom:builder`, `/loom:judge`, etc.) |
 | Enriching existing gallery proofs | `/lean` (enricher) |
 | Formalizing math, proving theorems | `/lean` (researcher) |
 | Automated proof search | `/lean` (aristotle) |
@@ -258,7 +258,7 @@ make status                   # Show all agent claim status
 **Labels out of sync**: `gh label sync --file .github/labels.yml`
 
 <!-- BEGIN REPO-SKILLS -->
-This repository has [Repo Skills](https://github.com/rjwalters/repo) v0.7.0 installed —
+This repository has [Repo Skills](https://github.com/rjwalters/repo) v0.16.1 installed —
 general repository hygiene and environment commands invoked as `/repo:<command>`. Run
 `/repo:help` for the command list, or see `.claude/skills/repo/SKILL.md` for the full
 guide. Hygiene commands apply safe, reversible fixes by default and report each
@@ -294,3 +294,8 @@ a teammate said they're working on. At session start, a `squad_check` with
 Join commands: `/squad:join` (Claude) or `/squad-join` (Codex) — then hold
 the loop: check(wait 25s) → respond/work → repeat.
 <!-- END SQUAD -->
+
+<!-- BEGIN ANVIL -->
+This repository uses [Anvil](https://github.com/rjwalters/anvil) for AI-powered artifact creation. See `.anvil/CLAUDE.md` for the full guide (skills, rubric, state machine). To upgrade Anvil, re-run `install-anvil.sh .` from the anvil checkout without `--skills=` to pick up newly-shipped skills; pass `--skills=...` only to install a strict subset.
+In Claude Code, invoke an installed skill via `/anvil:<skill>` (e.g. `/anvil:paper-draft <slug>`) -- the per-skill registration shim lives at `.claude/skills/anvil-<skill>/`.
+<!-- END ANVIL -->

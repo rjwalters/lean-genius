@@ -1,7 +1,16 @@
 # A Scale-Bridging Conditional Regularity Criterion for Navier-Stokes
 
 **Date:** 2025-12-22
-**Status:** THEOREM FORMULATED
+**Status:** THEOREM FORMULATED — **Step 3 WITHDRAWN 2026-09-08** (see erratum below and
+`openai-forced-blowup-2026.md`)
+
+> **Erratum (2026-09-08).** Step 2 below states the cubic enstrophy inequality
+> dE/dt ≤ CE³ gives an *upper* bound E ≤ C(T*−t)^{−1/2}. It does not: integrating from a
+> blowup time gives Leray's *lower* bound E ≥ c(T*−t)^{−1/2}, and no upper bound follows.
+> Step 3 used the upper bound to force Type I from B′, so Step 3 does not go through.
+> OpenAI's September 2026 forced blowup is an explicit witness: it satisfies B′ at every
+> dyadic scale in [R_diff, √(T*−t)] and blows up at the Type II rate α = 1+h. The unforced
+> ingredients (Steps 1, 4, 5) stand; B′ ⇒ Type I is open.
 
 ---
 
@@ -63,32 +72,40 @@ The enstrophy E(t) = ∫|ω|² satisfies:
 dE/dt ≤ C E³/ν³
 ```
 
-Integrating, if blowup occurs at T*:
+Integrating d/dt(E^{-2}) ≥ -2C from a blowup time T* gives Leray's **lower** bound:
 ```
-E(t) ≤ C(T* - t)^{-1/2}
+E(t) ≥ c(T* - t)^{-1/2}
 ```
 
-This is the Type I rate for total enstrophy.
+This is the minimum enstrophy a solution must carry to blow up at T*. It gives
+**no upper bound**: the cubic inequality permits arbitrarily fast growth, and an
+upper bound on enstrophy near a singularity is the whole problem. (Corrected
+2026-09-08; the original text stated the inequality in the wrong direction.)
 
-**Status:** ✓ PROVEN (Standard energy methods)
+**Status:** ✓ PROVEN (Leray 1934) — as a lower bound only
 
 ### Step 3: Scale Comparison via Anti-Escape (Uses Hypothesis)
 
 The Bubble Persistence hypothesis ensures concentration persists across scales
 from R_diff up to √(T*-t).
 
-**Claim:** Under this hypothesis, if Ω ~ (T*-t)^{-α} with α > 1 (Type II), the
-enstrophy bound and CKN are incompatible.
+**Original claim (WITHDRAWN 2026-09-08):** Under this hypothesis, if Ω ~ (T*-t)^{-α}
+with α > 1 (Type II), the enstrophy bound and CKN are incompatible.
 
-**Argument:**
-- For Type II: R_diff = √(ν/Ω) ~ (T*-t)^{α/2}
-- Enstrophy bound: E ~ (T*-t)^{-1/2}
-- CKN at R_diff: local enstrophy ≥ ε/R_diff ~ (T*-t)^{-α/2}
-- Bubble persistence: this concentration extends to scale √(T*-t)
-- But total E ~ (T*-t)^{-1/2} cannot accommodate concentration ~ (T*-t)^{-α/2}
-  at the larger scale √(T*-t) for α > 1
+**Why the original argument fails:** it used "E ≲ (T*-t)^{-1/2}" as an upper bound
+to say that total enstrophy "cannot accommodate" the CKN concentration
+~(T*-t)^{-α/2} at R_diff propagated to scale √(T*-t). Step 2 only gives a lower
+bound, so nothing prevents E from being as large as B′ + CKN require. With the
+correct direction there is no contradiction.
 
-**Status:** ◐ USES HYPOTHESIS (anti-escape bridges the scales)
+**Witness:** OpenAI's forced construction (see `openai-forced-blowup-2026.md`)
+satisfies B′ at every dyadic scale in [R_diff, √(T*-t)] — a single bubble at a
+single point, A(r) ≍ r⁴(T*-t)^{-2-2h} ≥ 1 — and blows up with α = 1 + h > 1. Since a
+smooth compactly supported force is invisible in the enstrophy budget, no
+forcing-insensitive scale-comparison argument can prove B′ ⇒ Type I; any repair
+must use f = 0 through the momentum equation.
+
+**Status:** ✗ WITHDRAWN — B′ ⇒ Type I is an open question
 
 ### Step 4: Type I Concentration (Standard for Type I)
 
@@ -113,13 +130,15 @@ non-trivial ancient solution vanishing at t = 0, contradicting backward uniquene
 
 ### Conclusion
 
-Steps 1-5 chain together:
+As originally written, Steps 1-5 were meant to chain:
 - Blowup → CKN concentration (Step 1)
-- + Anti-escape → Type I (Steps 2-3)
+- + Anti-escape → Type I (Steps 2-3) — **broken**, see Step 3
 - Type I → L³ concentration (Step 4)
 - L³ concentration at Type I rate → contradiction (Step 5)
 
-Therefore no blowup occurs. ∎
+What actually survives is the classical unforced statement
+"Type I ⇒ regularity" (Steps 4-5, Barker-Prange + ESŠ). The step from B′ to
+Type I is not established. ∎ (withdrawn)
 
 ---
 
@@ -128,12 +147,13 @@ Therefore no blowup occurs. ∎
 | Step | Content | Status |
 |------|---------|--------|
 | 1 | CKN ε-regularity | ✓ Proven |
-| 2 | Enstrophy ODE bound | ✓ Proven |
-| 3 | Scale bridge via anti-escape | ◐ **Uses Hypothesis** |
+| 2 | Enstrophy ODE bound (Leray LOWER bound) | ✓ Proven — lower bound only |
+| 3 | Scale bridge via anti-escape | ✗ **Withdrawn** (used Step 2 as an upper bound) |
 | 4 | Type I concentration | ✓ Proven |
 | 5 | Backward uniqueness | ✓ Proven |
 
-**The single gap:** Step 3 requires the Bubble Persistence hypothesis.
+**The gap:** Step 3 requires Bubble Persistence *and* an argument from B′ to Type I that
+uses f = 0; the latter does not exist yet.
 
 ---
 
@@ -221,18 +241,20 @@ Ask: what is the minimal condition (weaker than LPS) forcing trivial Euler limit
 
 ### The Diagnostic Value
 
-This theorem is not "just conditional" — it is **diagnostic**. We have implicitly
-proven:
+The diagnostic reading has to be weakened after v5. What remains true:
 
-> **Any unconditional proof of Navier-Stokes regularity must, in some form,
-> rule out failure of Bubble Persistence.**
+> **Any unconditional proof of Navier-Stokes regularity must rule out the
+> scenario OpenAI's forced construction realizes — a single persistent bubble at
+> the parabolic scale, Re_θ → ∞, α = 1 + h — using f = 0 in an essential way.**
+
+B′ alone does not rule it out (the forced flow satisfies B′).
 
 This is a logical consequence of assembling the full picture:
 
 | Tool | What it gives | What it misses |
 |------|---------------|----------------|
 | CKN ε-regularity | Necessity at singular points | No localization |
-| Enstrophy ODE | Timing constraint | No geometry |
+| Enstrophy ODE | Lower bound E ≥ c(T*-t)^{-1/2} | No upper bound, no geometry |
 | Barker-Prange | Concentration at √(T*-t) | Only Type I |
 | Seregin | Type II exclusion | Needs LPS |
 
@@ -256,7 +278,8 @@ A fair description of this work:
 - We identify the precise structural obstruction to ruling out Type II blowup
 - We show that any mechanism preventing blowup must enforce scale-bridging concentration
 - We isolate a minimal hypothesis under which all known tools close
-- We provide a clean conditional pipeline: B′ → Type I → ESŠ → regularity
+- We proposed a conditional pipeline B′ → Type I → ESŠ → regularity, whose first arrow
+  was withdrawn in v5 (2026-09-08)
 
 ---
 

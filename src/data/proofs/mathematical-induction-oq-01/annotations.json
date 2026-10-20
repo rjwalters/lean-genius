@@ -3,10 +3,10 @@
     "id": "ann-mi01-wf-induction",
     "proofId": "mathematical-induction-oq-01",
     "range": {
-      "startLine": 34,
-      "endLine": 46
+      "startLine": 38,
+      "endLine": 50
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Well-Founded Induction: The Abstract Principle",
     "content": "`wf_induction` wraps `WellFounded.fix` (or equivalently `WellFounded.induction`): given a well-founded relation `r` on type `α`, and a hypothesis that P(x) follows from P(y) for all y with `r y x`, then P holds everywhere. This is provably equivalent to the transfinite induction principle. `nat_induction_from_wf` then applies this to `Nat.lt_wfRel.wf`, recovering strong induction on ℕ. The proof is one line: `wf_induction Nat.lt_wfRel.wf P h`.",
     "mathContext": "A relation $r$ on $\\alpha$ is *well-founded* if there is no infinite descending chain $x_0 \\mathrel{r} x_1 \\mathrel{r} x_2 \\cdots$. Equivalently, every non-empty subset has an $r$-minimal element. The induction principle is: $(\\forall x,\\, (\\forall y,\\, r\\, y\\, x \\Rightarrow P\\, y) \\Rightarrow P\\, x) \\Rightarrow \\forall x,\\, P\\, x$. In Lean 4, `WellFounded.fix` implements this as a function, not just a proof: `WellFounded.fix : WellFounded r → (∀ x, (∀ y, r y x → C y) → C x) → ∀ x, C x`.",
@@ -27,8 +27,8 @@
     "id": "ann-mi01-transfinite",
     "proofId": "mathematical-induction-oq-01",
     "range": {
-      "startLine": 53,
-      "endLine": 76
+      "startLine": 56,
+      "endLine": 79
     },
     "type": "concept",
     "title": "Transfinite Induction: Ordinal.induction + Trichotomy",
@@ -51,8 +51,8 @@
     "id": "ann-mi01-course-of-values",
     "proofId": "mathematical-induction-oq-01",
     "range": {
-      "startLine": 85,
-      "endLine": 101
+      "startLine": 87,
+      "endLine": 103
     },
     "type": "insight",
     "title": "Strong Induction ↔ Weak Induction: Equivalence Proved",
@@ -73,8 +73,8 @@
     "id": "ann-mi01-well-ordering",
     "proofId": "mathematical-induction-oq-01",
     "range": {
-      "startLine": 108,
-      "endLine": 147
+      "startLine": 112,
+      "endLine": 151
     },
     "type": "concept",
     "title": "Well-Ordering ↔ Induction: Equivalence via Smallest Counterexample",

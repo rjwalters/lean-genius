@@ -14,7 +14,7 @@
   {
     "id": "ann-abund040102-decidability",
     "proofId": "abundant-number-oq-04-oq-01-oq-02",
-    "range": { "startLine": 32, "endLine": 48 },
+    "range": { "startLine": 79, "endLine": 95 },
     "type": "tactic",
     "title": "Exposing Decidable instances for the factorisation predicates",
     "content": "Nat.Abundant, Nat.Deficient and Nat.Perfect are plain `def`s, so typeclass search will not look through them to find the underlying Decidable instance on the divisor-sum inequality/equality. Each instance is recovered by `unfold; infer_instance`: after unfolding, the goal is a decidable `<`, `=` or `∧` on a computable Finset sum, for which Lean already has instances. With these in scope, concrete claims like `IsPrimitiveAbundant 20` reduce to kernel `decide` — crucially NOT native_decide, so no Lean.ofReduceBool enters the axiom set.",

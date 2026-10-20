@@ -23,7 +23,7 @@
   {
     "id": "ann-setup-oq0401",
     "proofId": "inverse-galois-oq-04-oq-01",
-    "range": { "startLine": 48, "endLine": 52 },
+    "range": { "startLine": 50, "endLine": 52 },
     "type": "definition",
     "title": "Ambient data: an arbitrary number field, algebraic integer, and rational prime",
     "content": "The `variable` block fixes the fully general setting: a number field `K` (`[Field K] [NumberField K]`), an algebraic integer `θ : 𝓞 K` of its ring of integers, and a rational prime `p : ℕ` carried as a typeclass fact `[Fact (Nat.Prime p)]` (so that `ZMod p` is a field and `(ZMod p)[X]` a UFD, letting `minpoly ℤ θ mod p` factor into monic irreducibles). Nothing here is specialized to A₅ or to p = 7 — the two theorems hold for every such K, θ, p, which is exactly what makes the brick reusable. The `open Polynomial NumberField Ideal RingOfIntegers` line brings the Kummer–Dedekind vocabulary (`inertiaDeg`, `span`, `primesOverSpanEquivMonicFactorsMod`, `exponent`, `monicFactorsMod`) into scope.",

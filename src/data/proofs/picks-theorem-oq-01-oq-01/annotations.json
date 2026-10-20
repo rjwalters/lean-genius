@@ -2,7 +2,7 @@
   {
     "id": "ann-picks-lattice-det",
     "proofId": "picks-theorem-oq-01-oq-01",
-    "range": { "startLine": 37, "endLine": 58 },
+    "range": { "startLine": 38, "endLine": 59 },
     "type": "definition",
     "title": "LatticeTriangle: the 2D cross product as area",
     "content": "Defines `LatticeTriangle` as a structure with three integer-coordinate vertices, and `det(T) = (v2-v1) × (v3-v1)` (2D cross product / determinant). `IsPrimitive` means |det|=1 (minimum non-zero area = 1/2). `NonDegenerate` means det≠0. The `splitLeft` and `splitRight` functions introduce a new vertex M on an edge, creating two sub-triangles.",

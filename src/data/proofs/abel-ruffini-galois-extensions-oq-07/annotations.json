@@ -26,7 +26,7 @@
   {
     "id": "ann-pgroup-issolvable",
     "proofId": "abel-ruffini-galois-extensions-oq-07",
-    "range": { "startLine": 58, "endLine": 61 },
+    "range": { "startLine": 59, "endLine": 65 },
     "type": "theorem",
     "title": "pGroup_isSolvable: one-line packaging of the Mathlib chain",
     "content": "Repackages Mathlib's `IsPGroup → IsNilpotent → IsSolvable` chain as a single named theorem for use in the trivial cases. The proof is two tactics: `haveI := hG.isNilpotent` introduces the nilpotency instance, and `infer_instance` then resolves the `IsSolvable` goal via the Mathlib typeclass instance for `IsNilpotent → IsSolvable`. This is the foundational lemma that makes ALL three trivial cases (a=0, b=0, p=q) free — every prime-power-order group is solvable for free.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-burnside-a-zero",
     "proofId": "abel-ruffini-galois-extensions-oq-07",
-    "range": { "startLine": 69, "endLine": 76 },
+    "range": { "startLine": 71, "endLine": 80 },
     "type": "theorem",
     "title": "burnside_pq_a_zero: a=0 reduces to q-group + IsPGroup.iff_card",
     "content": "When a=0, the cardinality p^0·q^b = q^b makes G a q-group. The proof simplifies p^0·q^b to q^b via simpa, then uses Mathlib's bidirectional cardinality criterion `IsPGroup.iff_card.mpr` to derive `IsPGroup q G` from the existence of an exponent witness ⟨b, hcard'⟩, then applies pGroup_isSolvable. Axiom-free. The technique generalizes immediately: any time a finite group's cardinality reduces to a single prime power, IsPGroup.iff_card.mpr ⟨n, _⟩ is the canonical bridge to the IsPGroup → IsSolvable chain.",

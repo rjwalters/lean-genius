@@ -25,10 +25,10 @@
     "id": "ann-606oq03oq03-collinear",
     "proofId": "erdos-606-oq-03-oq-03",
     "range": {
-      "startLine": 41,
-      "endLine": 73
+      "startLine": 53,
+      "endLine": 85
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Collinearity in ℝ² via Parametric Lines",
     "content": "Defines collinearity parametrically: $c$ is collinear with $a, b$ iff $c - a = t(b - a)$ for some $t \\in \\mathbb{R}$. This is equivalent to the cross product $(b-a) \\times (c-a) = 0$. Includes two proved lemmas: `collinear_self_left` (reflexivity, $t = 0$) and `collinear_comm` (symmetry in $a, b$, $t \\mapsto 1-t$). The symmetry proof handles the degenerate case $a = b$ separately.",
     "mathContext": "The parametric definition $c = a + t(b - a)$ for $t \\in \\mathbb{R}$ describes the full line through $a$ and $b$. For $t \\in [0,1]$ it gives the segment $\\overline{ab}$; $t = 0$ gives $a$, $t = 1$ gives $b$. The cross product vanishing $(b_1-a_1)(c_2-a_2) - (b_2-a_2)(c_1-a_1) = 0$ is the standard collinearity test.",
@@ -47,8 +47,8 @@
     "id": "ann-606oq03oq03-ordinary",
     "proofId": "erdos-606-oq-03-oq-03",
     "range": {
-      "startLine": 75,
-      "endLine": 91
+      "startLine": 80,
+      "endLine": 96
     },
     "type": "definition",
     "title": "Ordinary Lines and Problem Statement",
@@ -69,8 +69,8 @@
     "id": "ann-606oq03oq03-distance",
     "proofId": "erdos-606-oq-03-oq-03",
     "range": {
-      "startLine": 93,
-      "endLine": 104
+      "startLine": 98,
+      "endLine": 109
     },
     "type": "definition",
     "title": "Point-Line Distance Formula",
@@ -92,7 +92,7 @@
     "id": "ann-606oq03oq03-kelly-lemma",
     "proofId": "erdos-606-oq-03-oq-03",
     "range": {
-      "startLine": 106,
+      "startLine": 108,
       "endLine": 129
     },
     "type": "concept",

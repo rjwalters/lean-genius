@@ -14,7 +14,7 @@
   {
     "id": "ann-ktr-corner-neighbors",
     "proofId": "knights-tour-oblique-oq-01-oq-02",
-    "range": { "startLine": 146, "endLine": 215 },
+    "range": { "startLine": 147, "endLine": 215 },
     "type": "theorem",
     "title": "Corner Degree 2: each corner has exactly two knight neighbors",
     "content": "cornerTL/TR/BL/BR_neighbors prove that, for m, n ≥ 5, any knight-neighbor of a given corner is exactly one of two specific squares. The proof case-splits the eight knight offsets; six of them push one coordinate of the neighbor below 0 or to ≥ m (rows) or ≥ n (columns) and are eliminated by s.1.isLt or s.2.isLt with omega. Because rows are bounded by m and columns by n separately, the elimination is insensitive to whether m = n — this is the precise place where dropping squareness is harmless.",

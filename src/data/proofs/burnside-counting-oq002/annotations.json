@@ -38,8 +38,8 @@
   {
     "id": "burnside-oq04010101-ann-equiv",
     "proofId": "burnside-counting-oq002",
-    "range": { "startLine": 95, "endLine": 121 },
-    "type": "theorem",
+    "range": { "startLine": 92, "endLine": 119 },
+    "type": "definition",
     "title": "rotFixedEquiv — fixed colourings ≃ functions on the coset space",
     "content": "The bijection `RotFixed n i ≃ (ZMod n ⧸ zmultiples i → Fin 2)`. Forward: an invariant colouring factors through the quotient via `Quotient.liftOn'`, well-defined because $b\\sim a \\Rightarrow b=a+k\\cdot i \\Rightarrow c(b)=c(a)$ (exactly `invariant_zsmul`). Backward: any function on the quotient pulls back along `QuotientAddGroup.mk`, and the pullback is invariant because $(p+i)-p=i\\in\\langle i\\rangle$. Both round-trips are definitional (`rfl` after `Quotient.inductionOn'`). This recasts 'count fixed colourings' as 'count arbitrary functions on the orbit space'.",
     "mathContext": "$\\{c \\mid \\texttt{IsRotInvariant } i\\ c\\} \\;\\simeq\\; \\big(\\mathbb{Z}/n \\,/\\, \\langle i\\rangle \\to \\mathbb{F}_2\\big).$",

@@ -49,7 +49,7 @@
   {
     "id": "ann-degreeOfEnd-comp",
     "proofId": "borsuk-ulam-oq-03-oq-02",
-    "range": { "startLine": 86, "endLine": 99 },
+    "range": { "startLine": 87, "endLine": 99 },
     "type": "insight",
     "title": "Multiplicativity: deg(g∘f) = deg(g)·deg(f)",
     "content": "The algebraic form of the degree's headline functoriality property. deg(id)=1 is immediate from the definition. For composition, the proof rewrites f(e⁻¹ 1) as e⁻¹(deg f) and then applies the conjugation identity for g at n = deg(f), turning e(g(e⁻¹(deg f))) into deg(g)·deg(f). This is where 'the conjugate is multiplication by the degree' pays off: composition of self-maps becomes multiplication of integers.",
@@ -61,7 +61,7 @@
   {
     "id": "ann-degreeOfEnd-indep",
     "proofId": "borsuk-ulam-oq-03-oq-02",
-    "range": { "startLine": 101, "endLine": 128 },
+    "range": { "startLine": 102, "endLine": 128 },
     "type": "insight",
     "title": "Well-definedness: the degree is independent of the identification",
     "content": "The subtle correctness theorem. A priori deg depends on the chosen iso e : G ≃+ ℤ; this proves any two choices e₁, e₂ give the same integer. The argument transports through the change-of-identification automorphism ψ = e₂ ∘ e₁⁻¹ : ℤ →+ ℤ, which sends the relevant generator a ↦ 1, and uses its ℤ-linearity to peel off the scalar d. Conceptually this is the commutativity (centrality) of integer multiplication: changing basis on ℤ cannot change a scalar.",
@@ -73,7 +73,7 @@
   {
     "id": "ann-degreeOfEnd-unit",
     "proofId": "borsuk-ulam-oq-03-oq-02",
-    "range": { "startLine": 130, "endLine": 144 },
+    "range": { "startLine": 131, "endLine": 144 },
     "type": "tactic",
     "title": "Automorphisms have degree ±1",
     "content": "For an automorphism σ : G ≃+ G the degrees of σ and σ⁻¹ multiply to deg(id)=1 (by multiplicativity), so deg(σ) is a unit of ℤ. Since the only units of ℤ are ±1 (Int.isUnit_iff), an automorphism has degree exactly +1 or -1. Applied to a homeomorphism this recovers the classical fact that a self-homeomorphism of Sⁿ has degree ±1.",
@@ -85,7 +85,7 @@
   {
     "id": "ann-functorDegree",
     "proofId": "borsuk-ulam-oq-03-oq-02",
-    "range": { "startLine": 146, "endLine": 175 },
+    "range": { "startLine": 147, "endLine": 175 },
     "type": "insight",
     "title": "The degree's properties ARE the functor laws",
     "content": "Section II reveals the conceptual punchline: for an arbitrary functor F : C ⥤ AddCommGrpCat, functorDegree transports the algebraic degree through F. Then functorDegree_id is literally F.map_id and functorDegree_comp is literally F.map_comp, fed through Section I. So deg(id)=1 and deg(g∘f)=deg(g)·deg(f) are not analytic facts about spheres — they are the two functor axioms read through End(F.obj X) ≅ ℤ. Note the reversed composition order (f ≫ g) tracking covariant functoriality.",
@@ -97,7 +97,7 @@
   {
     "id": "ann-functorDegree-iso",
     "proofId": "borsuk-ulam-oq-03-oq-02",
-    "range": { "startLine": 177, "endLine": 186 },
+    "range": { "startLine": 178, "endLine": 186 },
     "type": "tactic",
     "title": "Isomorphisms map to automorphisms, hence degree ±1",
     "content": "An iso σ : X ≅ X in C is sent by F to an iso F.mapIso σ in AddCommGrpCat; addCommGroupIsoToAddEquiv turns that categorical isomorphism into a genuine additive automorphism of F.obj X, to which degreeOfEnd_equiv_eq applies. This is the abstract template later instantiated to 'homeomorphisms have Brouwer degree ±1'.",
@@ -109,7 +109,7 @@
   {
     "id": "ann-brouwer-instantiation",
     "proofId": "borsuk-ulam-oq-03-oq-02",
-    "range": { "startLine": 188, "endLine": 237 },
+    "range": { "startLine": 189, "endLine": 237 },
     "type": "concept",
     "title": "Instantiation: the real Brouwer degree on singular homology",
     "content": "Section III plugs Mathlib's actual functor into Section II. Hn n is the n-th integral singular homology functor Hₙ(-;ℤ) : TopCat ⥤ AddCommGrpCat, obtained by applying singularHomologyFunctor to the coefficient object ℤ. brouwerDegree is functorDegree of Hn, with brouwerDegree_id, brouwerDegree_comp, and brouwerDegree_iso_eq (homeomorphisms have degree ±1) inherited verbatim from the functorial layer. The ContinuousMap wrappers brouwerDegreeCM/_id repackage continuous self-maps C(α,α) through TopCat for ergonomic use. Every result still carries the explicit identification hypothesis e : Hₙ(X) ≃+ ℤ.",

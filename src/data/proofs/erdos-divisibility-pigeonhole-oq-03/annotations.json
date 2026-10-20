@@ -86,7 +86,7 @@
   {
     "id": "ann-axiom-audit",
     "proofId": "erdos-divisibility-pigeonhole-oq-03",
-    "range": { "startLine": 158, "endLine": 162 },
+    "range": { "startLine": 151, "endLine": 162 },
     "type": "concept",
     "title": "In-file axiom audit",
     "content": "`#print axioms` on both headline theorems confirms dependence only on the standard foundational axioms `propext`, `Classical.choice`, `Quot.sound` — no `Lean.ofReduceBool` (the proof uses no `native_decide`) and no `sorryAx`. This substantiates the `verified` / `original` badge: the result is fully machine-checked with zero added assumptions, built on the parent's verified pigeonhole theorem.",

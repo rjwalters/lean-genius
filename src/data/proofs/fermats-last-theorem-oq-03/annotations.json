@@ -38,7 +38,7 @@
   {
     "id": "ann-asymptotic-flt",
     "proofId": "fermats-last-theorem-oq-03",
-    "range": { "startLine": 57, "endLine": 75 },
+    "range": { "startLine": 59, "endLine": 77 },
     "type": "insight",
     "title": "AsymptoticFLT: ∃ B, ∀ Large Primes p > B, No Solution",
     "content": "AsymptoticFLT K = ∃ B : ℕ, ∀ p prime, p > B → ¬FermatEquation K p captures the 'eventual' version of FLT: solutions may exist for small exponents but must fail for all large enough primes. asymptotic_flt_Q proves this over ℚ with B = 2: by flt_over_Q, for any prime p > 2 (i.e., p ≥ 3), there's no solution. The proof uses omega to show p ≥ 3 from p > 2 and p prime. Over a number field K, AsymptoticFLT K is the correct statement since n=1 always has solutions and n=2 may have solutions.",

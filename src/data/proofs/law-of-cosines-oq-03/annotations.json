@@ -20,7 +20,7 @@
     "content": "Structure-encoded axioms are a common pattern in Lean 4 for axiomatizing geometric theories without committing to a specific model. The alternative — proving the law from the Poincaré disk — requires formalizing the hyperbolic metric, geodesics, and triangle congruence. The structure-field approach allows the mathematical content (Pythagorean theorem, angle defect) to be formalized while deferring the model-theoretic grounding. The CLAUDE.md axiom integrity policy requires this pattern to be reflected in axiomCount (3 structure-encoded assumptions in this file).",
     "proofId": "law-of-cosines-oq-03",
     "range": {
-      "startLine": 77,
+      "startLine": 81,
       "endLine": 94
     }
   },
@@ -45,7 +45,7 @@
     "content": "The hyperbolic Pythagorean theorem is simpler than the general law (no cos C correction) but differs fundamentally from the Euclidean version. Since cosh is superadditive and cosh(a)·cosh(b) > cosh(a+b) only for large values, the relationship between c and a,b is nontrivial. Geometrically: in hyperbolic geometry, right triangles are 'more spread out' than Euclidean right triangles of the same leg lengths.",
     "proofId": "law-of-cosines-oq-03",
     "range": {
-      "startLine": 120,
+      "startLine": 124,
       "endLine": 131
     }
   },
@@ -70,7 +70,7 @@
     "content": "The non-existence of similar (non-congruent) triangles is one of the most striking features of hyperbolic geometry. It means that AAA is a congruence criterion in hyperbolic geometry (unlike in Euclidean geometry where it only gives similarity). The second law formalizes this rigidity: given three angles summing to less than π, the triangle is uniquely determined up to congruence. This has no Euclidean analogue precisely because Euclidean geometry admits scale transformations.",
     "proofId": "law-of-cosines-oq-03",
     "range": {
-      "startLine": 136,
+      "startLine": 141,
       "endLine": 167
     }
   },
@@ -120,7 +120,7 @@
     "content": "These identities form the algebraic backbone for all computations in the file. cosh²x - sinh²x = 1 is the hyperbolic analogue of cos²x + sin²x = 1. cosh ≥ 1 reflects that cosh x is a distance function (always at least the minimum value 1, attained at x=0). The parity theorems (sinh odd, cosh even) are analogues of sin odd, cos even. Setting up these identities as named local theorems (rather than inline Mathlib calls) documents the mathematical structure clearly.",
     "proofId": "law-of-cosines-oq-03",
     "range": {
-      "startLine": 46,
+      "startLine": 50,
       "endLine": 72
     }
   }

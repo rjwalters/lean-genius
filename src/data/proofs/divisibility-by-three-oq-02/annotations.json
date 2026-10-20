@@ -38,7 +38,7 @@
   {
     "id": "ann-div3oq2-1001-factorization",
     "proofId": "divisibility-by-three-oq-02",
-    "range": { "startLine": 183, "endLine": 201 },
+    "range": { "startLine": 184, "endLine": 201 },
     "type": "insight",
     "title": "The Factorization 1001 = 7 × 11 × 13 Unifies Three Tests",
     "content": "The theorems eleven_dvd_alt_three_digit, thirteen_dvd_alt_three_digit, and thousand_one_dvd_alt_three_digit all follow from the same instantiation pattern, with the key arithmetic facts 1000 % 11 = 10 and 1000 % 13 = 12 verified by native_decide. The deeper reason: 1001 = 7 × 11 × 13, so 1000 = 1001 - 1 ≡ -1 modulo each divisor of 1001. This means that a single alternating three-digit block computation simultaneously tests divisibility by 7, 11, and 13—and even by 1001 itself. This is the computational explanation of why '1001' is used as a shortcut in recreational mathematics.",

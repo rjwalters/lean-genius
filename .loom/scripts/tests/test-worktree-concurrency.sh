@@ -11,13 +11,51 @@
 #   - A stale lock dir from a dead PID is recovered (not stranded).
 #   - On lock-acquisition timeout, --json emits the documented error schema.
 #
+# Also covers the issue #6014 fixes:
+#   - A late release from a stale/wedged holder (wrong acquisition token)
+#     cannot remove a different, currently-live holder's lock.
+#   - A release with no token (never acquired / already released) is a no-op.
+#   - The git-worktree-add lock is released as soon as `git worktree add`
+#     completes, not held through a slow post-worktree hook -- a second,
+#     unrelated invocation is not serialized behind the first one's hook.
+#
 # Pattern follows test-worktree-sentinel.sh: throw-away bare origin + clone in a
 # mktemp dir, copy worktree.sh + lib/, exercise behaviors.
+#
+# Needs a BUILT `loom-daemon` since #8195 slice 5: the partial-state cleanup
+# Tests 2 and 3 assert on (`cleanup_partial_worktree_state`) is now a thin stub
+# over `loom-daemon worktree-cleanup`, so those two recoveries do not happen at
+# all without the binary. Every assertion below is unchanged from the shell
+# implementation — running them against the port is the equivalence evidence —
+# so this suite moved to the "Native Port Suites" CI job, which builds the
+# binary, and FAILS rather than skips without one.
+#
+# The lock/concurrency assertions (Tests 1, 4-8) now exercise `loom-daemon
+# worktree-lock acquire`/`release` too (#8195 slice 7): worktree.sh's
+# acquire_worktree_lock/release_worktree_lock try the daemon FIRST and fall
+# straight through to their own mkdir bodies, UNCHANGED, on anything that is not
+# a real answer from it (#8226 reverted a hard, exec-style delegation on this
+# always-taken path; this is not that). Every assertion is unchanged from the
+# shell-only implementation — running them against a real, built binary (which
+# this suite already requires) is the equivalence evidence. Test 7 alone stays
+# on the shell body deliberately: it sources the extracted primitives with
+# $_WT_DAEMON_BIN unset, which is what exercises the ownership-token rules it is
+# about. Test 9 covers the fallback discrimination itself. They stay here rather
+# than splitting into a second file — they share this suite's fixture, and a
+# split would duplicate it.
+#
+# Usage:
+#   cargo build --package loom-daemon
+#   bash defaults/scripts/tests/test-worktree-concurrency.sh
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# shellcheck source=lib/require-daemon-bin.sh
+source "$SCRIPT_DIR/lib/require-daemon-bin.sh"
+loom_test_require_daemon_bin "$SCRIPTS_DIR" "worktree-cleanup"
 
 WORKTREE_SH="$SCRIPTS_DIR/worktree.sh"
 
@@ -68,6 +106,25 @@ setup_repo() {
         chmod +x .loom/scripts/worktree.sh
     )
     echo "$tmp/repo"
+}
+
+# Echo the path of a temp file holding worktree.sh's lock primitives —
+# _worktree_locks_dir / _worktree_lock_path / acquire_worktree_lock /
+# release_worktree_lock — cut out of the copy under test, for a caller that
+# wants to drive them directly instead of through a full worktree.sh run.
+# Tests 7 and 9 both do; sharing this is what keeps the extraction from drifting
+# between them. Must be run from inside the fixture repo.
+#
+# Pipe-free on purpose (`awk … exit` rather than `grep -n | head -1 | cut`):
+# under `set -o pipefail` an early-exit consumer can SIGPIPE its producer and
+# fail the whole pipeline — scripts/check-pipefail-early-exit.sh's class.
+extract_lock_functions() {
+    local start end out
+    start=$(awk '/^_worktree_locks_dir\(\) \{/{print NR; exit}' .loom/scripts/worktree.sh)
+    end=$(awk '/^release_worktree_lock\(\) \{/{f=1} f && /^}/{print NR; exit}' .loom/scripts/worktree.sh)
+    out=$(mktemp /tmp/loom-wt-lockfns.XXXXXX)
+    sed -n "${start},${end}p" .loom/scripts/worktree.sh > "$out"
+    echo "$out"
 }
 
 cleanup_repo() {
@@ -273,6 +330,251 @@ EOF
     fi
     # Cleanup the synthetic lock we created.
     rm -rf .loom/locks/worktree-add
+)
+cleanup_repo "$REPO"
+
+# --- Test 7: late release from a stale/wedged holder cannot clobber a live holder's lock (#6014) ---
+echo ""
+echo "Test 7: late release with a stale token cannot remove a different, live holder's lock"
+REPO=$(setup_repo)
+(
+    cd "$REPO"
+
+    # Exercise the exact lock primitives worktree.sh uses (not a hand-rolled
+    # reimplementation): extract _worktree_locks_dir / _worktree_lock_path /
+    # acquire_worktree_lock / release_worktree_lock from the copy of
+    # worktree.sh under test and source them directly. $_WT_DAEMON_BIN is
+    # resolved outside this range and so is unset here, which keeps this test on
+    # the shell body (#8195 slice 7) — the ownership-token rules below are what
+    # it is about, and they are the fallback's own, not the daemon's.
+    FUNCS_FILE=$(extract_lock_functions)
+
+    # These three are consumed only inside the extracted lock functions that
+    # get `source`d from "$FUNCS_FILE" below — a dynamic path shellcheck
+    # cannot statically follow, so it reports them as unused (SC2034).
+    # shellcheck disable=SC2034
+    LOOM_WORKTREE_LOCK_TIMEOUT=5
+    # shellcheck disable=SC2034
+    LOOM_WORKTREE_LOCK_POLL_INTERVAL=1
+    # shellcheck disable=SC2034
+    JSON_OUTPUT=""
+    print_warning() { :; }
+
+    # shellcheck disable=SC1090
+    source "$FUNCS_FILE"
+    rm -f "$FUNCS_FILE"
+
+    # --- Process A acquires the lock and remembers its own token. ---
+    acquire_worktree_lock 200
+    TOKEN_A="$WORKTREE_LOCK_TOKEN"
+
+    # --- An operator judges A dead/wedged and manually clears the lock dir
+    #     directly -- the exact recovery path acquire_worktree_lock's own
+    #     timeout error message suggests (issue #6014, step 2). ---
+    rm -rf "$(_worktree_lock_path 200)"
+
+    # --- Process B legitimately re-acquires the now-vacant lock. ---
+    acquire_worktree_lock 201
+    TOKEN_B="$WORKTREE_LOCK_TOKEN"
+
+    if [[ "$TOKEN_A" == "$TOKEN_B" ]]; then
+        fail "test setup invalid: acquisition tokens A and B are identical"
+    else
+        # --- Process A, unaware it was pre-empted, finally unwinds and its
+        #     EXIT trap fires release_worktree_lock with ITS OWN remembered
+        #     token (not whatever now happens to be current on disk). ---
+        release_worktree_lock 200 "$TOKEN_A"
+
+        LOCK_201="$(_worktree_lock_path 201)"
+        if [[ -d "$LOCK_201" ]] && [[ -f "$LOCK_201/owner.json" ]] && grep -q "$TOKEN_B" "$LOCK_201/owner.json"; then
+            pass "stale holder A's late release (mismatched token) left live holder B's lock intact"
+        else
+            fail "stale holder A's late release clobbered live holder B's lock"
+        fi
+
+        # --- Process B's own, correctly-tokened release DOES remove it. ---
+        release_worktree_lock 201 "$TOKEN_B"
+        if [[ ! -d "$LOCK_201" ]]; then
+            pass "live holder B's own release (matching token) removes its lock"
+        else
+            fail "live holder B's own release (matching token) failed to remove its lock"
+        fi
+    fi
+
+    # --- An empty token (never acquired, or already released) must never
+    #     remove a lock -- defends against a caller accidentally releasing
+    #     before/without ever successfully acquiring. ---
+    LOCK_202="$(_worktree_lock_path 202)"
+    mkdir -p "$LOCK_202"
+    cat > "$LOCK_202/owner.json" <<EOF
+{
+  "issue": 202,
+  "owner_pid": $$,
+  "token": "some-real-token",
+  "script": "worktree.sh",
+  "acquired_at": "1970-01-01T00:00:00Z"
+}
+EOF
+    release_worktree_lock 202 ""
+    if [[ -d "$LOCK_202" ]]; then
+        pass "release with an empty token is a no-op (never removes an unowned lock)"
+    else
+        fail "release with an empty token incorrectly removed a lock"
+    fi
+    rm -rf "$LOCK_202"
+)
+cleanup_repo "$REPO"
+
+# --- Test 8: the lock is released right after `git worktree add`, not held through the post-worktree hook (#6014) ---
+echo ""
+echo "Test 8: a slow post-worktree hook for one issue does not serialize an unrelated invocation"
+REPO=$(setup_repo)
+(
+    cd "$REPO"
+
+    MARKER="/tmp/loom-wt-hook-marker-$$"
+    rm -f "$MARKER"
+    # Hook blocks ONLY for issue 98 (simulating a slow `cargo build --release`
+    # in a project's real post-worktree hook), signaling readiness via a
+    # marker file so the test doesn't have to guess timing.
+    cat > .loom/hooks/post-worktree.sh <<EOF
+#!/usr/bin/env bash
+if [[ "\$3" == "98" ]]; then
+    touch "$MARKER"
+    sleep 6
+fi
+exit 0
+EOF
+    chmod +x .loom/hooks/post-worktree.sh
+
+    set +e
+    ./.loom/scripts/worktree.sh 98 >/tmp/wt-98.$$ 2>&1 &
+    PID98=$!
+
+    # Wait (bounded) for the hook to signal it has started sleeping -- i.e.
+    # `git worktree add` for issue 98 is done and its lock should already be
+    # released.
+    WAITED=0
+    while [[ ! -f "$MARKER" ]] && [[ $WAITED -lt 30 ]]; do
+        sleep 1
+        WAITED=$((WAITED + 1))
+    done
+
+    if [[ ! -f "$MARKER" ]]; then
+        fail "post-worktree hook for issue 98 never signaled start (see /tmp/wt-98.$$)"
+        kill "$PID98" 2>/dev/null
+        wait "$PID98" 2>/dev/null
+    else
+        START=$(date +%s)
+        timeout 30 ./.loom/scripts/worktree.sh 99 >/tmp/wt-99.$$ 2>&1
+        rc99=$?
+        ELAPSED=$(( $(date +%s) - START ))
+
+        if [[ $rc99 -eq 0 ]] && [[ -f .loom/worktrees/issue-99/.loom-managed ]] && [[ $ELAPSED -lt 5 ]]; then
+            pass "issue 99's worktree.sh completed in ${ELAPSED}s while issue 98's hook was still sleeping (not serialized)"
+        else
+            echo "--- worktree.sh 99 output (rc=$rc99, elapsed=${ELAPSED}s) ---" >&2
+            cat /tmp/wt-99.$$ >&2 2>/dev/null || true
+            fail "issue 99's worktree.sh was serialized behind issue 98's slow hook (rc=$rc99, elapsed=${ELAPSED}s, expected <5s)"
+        fi
+
+        wait "$PID98" 2>/dev/null
+    fi
+    set -e
+    rm -f "$MARKER" /tmp/wt-98.$$ /tmp/wt-99.$$
+)
+cleanup_repo "$REPO"
+
+# --- Test 9: only a MARKED answer from `loom-daemon worktree-lock acquire` is trusted (#8195 slice 7) ---
+echo ""
+echo "Test 9: a daemon answer is trusted only on its stdout marker, never on the exit code alone"
+REPO=$(setup_repo)
+(
+    cd "$REPO"
+
+    # Same extraction as Test 7, but this time $_WT_DAEMON_BIN is SET, to each
+    # of the shapes a resolved `loom-daemon` can actually turn out to be. The
+    # property under test is the one #6017 makes expensive to get wrong: the
+    # wrapper must never report a lock it does not hold, and must never hand a
+    # release to an implementation that did not mint the token.
+    #
+    # Exit 1 with nothing on stdout is the shape that motivated this: a
+    # DIFFERENT binary named loom-daemon (found for real in another suite's
+    # fixture — test-worktree-forge-pr-check.sh's Test 8) reuses exit 1 for "I
+    # do not understand this subcommand", and clap does the same on a daemon
+    # predating the worktree-lock family. Read as a refusal, worktree.sh would
+    # abort a perfectly valid worktree creation; read as an acquisition, two
+    # `git worktree add` calls would run concurrently. It must be neither: it
+    # must fall through to the shell body, which is what the real refusal's
+    # mandatory `HOLDER_PID=` marker makes distinguishable.
+    FUNCS_FILE=$(extract_lock_functions)
+    # shellcheck disable=SC2034
+    LOOM_WORKTREE_LOCK_TIMEOUT=5
+    # shellcheck disable=SC2034
+    LOOM_WORKTREE_LOCK_POLL_INTERVAL=1
+    # shellcheck disable=SC2034
+    JSON_OUTPUT=""
+    print_warning() { :; }
+    # shellcheck disable=SC1090
+    source "$FUNCS_FILE"
+    rm -f "$FUNCS_FILE"
+
+    FAKES=$(mktemp -d /tmp/loom-wt-fakebin.XXXXXX)
+    printf '#!/bin/sh\nexit 1\n'                              > "$FAKES/silent-1"
+    printf '#!/bin/sh\necho "unrecognized" >&2\nexit 1\n'     > "$FAKES/noisy-1"
+    printf '#!/bin/sh\necho "lock dir boom" >&2\nexit 2\n'    > "$FAKES/unusable-2"
+    printf '#!/bin/sh\nexit 0\n'                              > "$FAKES/silent-0"
+    chmod +x "$FAKES"/*
+
+    for shape in silent-1 noisy-1 unusable-2 silent-0; do
+        _WT_DAEMON_BIN="$FAKES/$shape"
+        if acquire_worktree_lock 300 && [[ "$_WT_LOCK_DELEGATED" != "true" ]] \
+            && [[ -d "$(_worktree_lock_path 300)" ]]; then
+            pass "'$shape' is not an answer: fell through to the shell lock and took it for real"
+        else
+            fail "'$shape' was mistaken for a daemon answer (delegated=$_WT_LOCK_DELEGATED, dir=$([[ -d "$(_worktree_lock_path 300)" ]] && echo yes || echo no))"
+        fi
+        # Release must go back to the shell body that minted the token — a
+        # delegated release here would hand the token to a binary that has
+        # never seen it and leave the real lock dir behind forever.
+        release_worktree_lock 300 "$WORKTREE_LOCK_TOKEN"
+        if [[ ! -d "$(_worktree_lock_path 300)" ]]; then
+            pass "'$shape': the shell body that minted the token also released it"
+        else
+            fail "'$shape': the lock survived its own release"
+        fi
+    done
+
+    # And the real binary IS trusted, on both answers: a marked acquisition,
+    # then a marked refusal while it is still held.
+    _WT_DAEMON_BIN="${LOOM_DAEMON_SELF_BIN:-}"
+    if [[ -z "$_WT_DAEMON_BIN" ]]; then
+        fail "the require-daemon-bin harness pinned no binary — this suite requires a built one"
+    else
+        if acquire_worktree_lock 301 && [[ "$_WT_LOCK_DELEGATED" == "true" ]] \
+            && [[ -n "$WORKTREE_LOCK_TOKEN" ]] && [[ -d "$(_worktree_lock_path 301)" ]]; then
+            pass "a real 'TOKEN=' answer is trusted and the daemon holds the same lock dir the shell would"
+        else
+            fail "a real acquisition was not trusted (delegated=$_WT_LOCK_DELEGATED)"
+        fi
+        REAL_TOKEN="$WORKTREE_LOCK_TOKEN"
+        if acquire_worktree_lock 302; then
+            fail "a second acquisition against a held lock did not refuse"
+        else
+            if [[ "$_WT_LOCK_DELEGATED" == "true" ]]; then
+                pass "a real 'HOLDER_PID=' answer is trusted as a refusal, not retried in shell"
+            else
+                fail "a real refusal fell through to the shell body instead of being trusted"
+            fi
+        fi
+        release_worktree_lock 301 "$REAL_TOKEN"
+        if [[ ! -d "$(_worktree_lock_path 301)" ]]; then
+            pass "the delegated release returned the token to the daemon that minted it"
+        else
+            fail "the delegated release left the lock dir behind"
+        fi
+    fi
+    rm -rf "$FAKES"
 )
 cleanup_repo "$REPO"
 

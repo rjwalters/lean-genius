@@ -23,7 +23,7 @@
   {
     "id": "cay-oq0102-ann-regreps",
     "proofId": "cayleys-theorem-oq-01-oq-02",
-    "range": { "startLine": 50, "endLine": 70 },
+    "range": { "startLine": 51, "endLine": 70 },
     "type": "definition",
     "title": "The two regular representations, re-declared",
     "content": "leftReg G : G →* Equiv.Perm G is Equiv.mulLeft (x ↦ g·x), a homomorphism on the nose since mulLeft (a·b) = mulLeft a * mulLeft b. rightReg G : G →* Equiv.Perm G is g ↦ Equiv.mulRight g⁻¹ (x ↦ x·g⁻¹); the inverse is forced because plain right multiplication is an anti-homomorphism, and inverting the argument (with mul_inv_rev) repairs the order. These match the conventions of the right-regular sibling so the file is self-contained. The apply lemmas leftReg_apply and rightReg_apply are definitional (rfl).",

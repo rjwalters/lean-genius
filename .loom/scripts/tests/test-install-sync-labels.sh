@@ -22,6 +22,11 @@
 #
 # Usage:
 #   ./defaults/scripts/tests/test-install-sync-labels.sh
+#
+# Source-tree-only by design (#6194/#6241): scripts/install/sync-labels.sh
+# lives at the repo root, not under defaults/, so it is never shipped into an
+# installed consumer repo. This suite SKIPs (exit 0) rather than errors when
+# run outside Loom's own checkout.
 
 set -uo pipefail
 
@@ -51,10 +56,14 @@ assert_eq() {
     fi
 }
 
+# assert_contains/assert_not_contains use a pure-bash substring match (no
+# forked printf|grep pipeline) so a transient fork/exec failure under
+# run-ci-suites.sh's parallel suite pool can never masquerade as a genuine
+# content mismatch (#7819, #7874).
 assert_contains() {
     local haystack="$1" needle="$2" msg="$3"
     TESTS_RUN=$((TESTS_RUN + 1))
-    if printf '%s' "$haystack" | grep -qF -- "$needle"; then
+    if [[ "$haystack" == *"$needle"* ]]; then
         TESTS_PASSED=$((TESTS_PASSED + 1))
         echo -e "  ${GREEN}PASS${NC}: $msg"
     else
@@ -68,7 +77,7 @@ assert_contains() {
 assert_not_contains() {
     local haystack="$1" needle="$2" msg="$3"
     TESTS_RUN=$((TESTS_RUN + 1))
-    if ! printf '%s' "$haystack" | grep -qF -- "$needle"; then
+    if ! [[ "$haystack" == *"$needle"* ]]; then
         TESTS_PASSED=$((TESTS_PASSED + 1))
         echo -e "  ${GREEN}PASS${NC}: $msg"
     else
@@ -80,8 +89,8 @@ assert_not_contains() {
 }
 
 if [[ ! -x "$SLS" ]]; then
-    echo -e "${RED}FATAL${NC}: $SLS not found or not executable" >&2
-    exit 2
+    echo "SKIP: source-tree-only test, $SLS not found (not shipped into an installed repo)" >&2
+    exit 0
 fi
 
 TMP="$(mktemp -d)"

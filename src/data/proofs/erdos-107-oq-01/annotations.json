@@ -24,7 +24,7 @@
   {
     "id": "ann-noncollinearity-crossproduct",
     "proofId": "erdos-107-oq-01",
-    "range": { "startLine": 99, "endLine": 168 },
+    "range": { "startLine": 105, "endLine": 168 },
     "type": "tactic",
     "title": "Non-Collinearity as a Vanishing Cross-Product",
     "content": "General position means no three of the four points are collinear, and each of the four triples needs its own certificate (ncol_v0v1v2, ncol_cc_v0_v1, ncol_cc_v0_v2, ncol_cc_v1_v2). The trick is `collinear_iff_of_mem`: collinearity of {a, b, c} through a base point a is equivalent to the existence of a common direction — both b − a and c − a are scalar multiples of one vector. Negating this and specialising reduces 'collinear' to the 2D determinant (b − a) × (c − a) = (b₁−a₁)(c₂−a₂) − (b₂−a₂)(c₁−a₁) being zero; a nonzero value is a contradiction. After unfolding the points' coordinates through the WithLp layer, each cross-product is a concrete rational that `norm_num` evaluates — e.g. for the triangle (6)(6) − (0)(0) = 36 ≠ 0. So a geometric predicate becomes one arithmetic inequality per triple, with no affine-independence machinery.",
@@ -89,7 +89,7 @@
   {
     "id": "ann-lower-bound",
     "proofId": "erdos-107-oq-01",
-    "range": { "startLine": 242, "endLine": 266 },
+    "range": { "startLine": 248, "endLine": 272 },
     "type": "insight",
     "title": "Four Points Do Not Force a Convex Quadrilateral: 4 ∉ CardSet 4",
     "content": "This is the theorem the entry contributes (the parent only axiomatised it). `not_hasConvexNGon_W` shows W contains no convex 4-gon: since |W| = 4 (W_card), the only 4-element subset of W is W itself, so a convex quadrilateral would have to be all of W — but `IsConvexNGon 4 W` requires every point to be a vertex of the convex hull, and the centroid cc is in the hull of the other three (cc_mem_hull), contradiction. Then `four_notin_cardSet : 4 ∉ CardSet 4` follows: CardSet 4 collects the cardinalities N such that *every* N-point set in general position has a convex 4-gon; W is a 4-point general-position set (general_position_W) with no convex 4-gon, so 4 is not such an N. Combinatorially this is the lower bound f(4) ≥ 5 — four points are never enough.",

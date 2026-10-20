@@ -14,7 +14,7 @@
   {
     "id": "ann-burnside-sum-form",
     "proofId": "lagrange-theorem-oq-02-oq-02-oq-01",
-    "range": { "startLine": 72, "endLine": 90 },
+    "range": { "startLine": 73, "endLine": 91 },
     "type": "theorem",
     "title": "Burnside's Lemma (Sum Form): Direct Mathlib Invocation",
     "content": "`burnside_lemma_sum_form` proves Σ_g |Fix(g)| = |X/G| · |G| by direct application of `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group` from `Mathlib.GroupTheory.GroupAction.Quotient`. The pattern is exactly the one used by `BurnsideCounting.burnside_lemma` (line 52 of the gallery's `Proofs/BurnsideCounting.lean`), confirmed against three other in-tree precedents (`BurnsideCountingOQ03OQ03` line 87, `DerangementsOQ02OQ02` line 171, `ArithmeticSeriesOQ02OQ02OQ03OQ01` line 187). The typeclass burden is `[Fintype G]`, `[(g : G) → Fintype (fixedBy X g)]`, and `[Fintype (orbitRel.Quotient G X)]`; the first two are automatic for finite groups acting on finite sets, the third is the only mildly non-trivial instance.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-burnside-average-form",
     "proofId": "lagrange-theorem-oq-02-oq-02-oq-01",
-    "range": { "startLine": 94, "endLine": 116 },
+    "range": { "startLine": 95, "endLine": 117 },
     "type": "theorem",
     "title": "Burnside's Lemma (Average Form): ℕ-Division Corollary",
     "content": "`burnside_lemma_average_form` derives |X/G| = (Σ_g |Fix(g)|) / |G| from the sum form by rewriting and applying `Nat.mul_div_cancel`. The hypothesis `0 < |G|` is explicit (and automatic from `Fintype G` plus inhabitedness, but is taken as an argument to keep the statement self-contained and to avoid Lean having to infer non-emptiness from `[Group G]`'s identity element via a chain of instances). This is the classical Burnside formulation; the symmetric form (without division) is preferred in Mathlib because `Nat.div` rounds down and is brittle for divisibility-sensitive arguments.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-oq01-resolution",
     "proofId": "lagrange-theorem-oq-02-oq-02-oq-01",
-    "range": { "startLine": 142, "endLine": 175 },
+    "range": { "startLine": 143, "endLine": 176 },
     "type": "theorem",
     "title": "OQ-01 Resolution: The Affirmative Answer Packaged",
     "content": "`oq01_resolution` bundles the answer to OQ-01 as a single conjunction: (1) the general Burnside identity, and (2) its conjugation-action specialisation. The proof is the trivial conjunction `⟨..., ...⟩`. This pattern (a bundled conjunction stating the OQ's affirmative answer) is reusable for any open question that asks 'can X be proved using machinery Y' — the resolution exhibits (a) the general statement and (b) its specialisation to Y, in one theorem.",

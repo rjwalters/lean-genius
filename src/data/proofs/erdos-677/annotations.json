@@ -29,8 +29,8 @@
     "proofId": "erdos-677",
     "type": "definition",
     "range": {
-      "startLine": 32,
-      "endLine": 35
+      "startLine": 33,
+      "endLine": 36
     },
     "title": "LCM Interval M(n, k)",
     "content": "**lcmInterval n k** = lcm(n+1, n+2, ..., n+k), computed as a fold of Nat.lcm over Finset.range k. This captures the **least common multiple** of k consecutive integers starting at n+1. The offset-by-one convention avoids degeneracy at n = 0.",
@@ -54,7 +54,7 @@
     "proofId": "erdos-677",
     "type": "insight",
     "range": {
-      "startLine": 39,
+      "startLine": 40,
       "endLine": 41
     },
     "title": "Main Conjecture: Distinct LCM Values",
@@ -77,7 +77,7 @@
     "proofId": "erdos-677",
     "type": "concept",
     "range": {
-      "startLine": 45,
+      "startLine": 46,
       "endLine": 48
     },
     "title": "Known Cross-Parameter Examples",

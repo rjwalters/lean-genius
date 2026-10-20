@@ -22,7 +22,7 @@
     "content": "Stein's algorithm (1967) replaces Euclidean division with bit shifts (division by 2), making it faster on binary computers for multi-precision integers. GMP and other bignum libraries use this approach. The formalization proves that this hardware-optimized algorithm computes the same mathematical object as the classical Euclidean GCD.",
     "proofId": "gcd-algorithm-oq-02",
     "range": {
-      "startLine": 27,
+      "startLine": 28,
       "endLine": 30
     }
   },

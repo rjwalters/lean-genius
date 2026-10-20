@@ -38,8 +38,8 @@
   {
     "id": "ann-odd-divisibility",
     "proofId": "repunit-oq-02-oq-01",
-    "range": { "startLine": 78, "endLine": 86 },
-    "type": "lemma",
+    "range": { "startLine": 76, "endLine": 83 },
+    "type": "theorem",
     "title": "b^d + 1 ∣ b^m + 1 when m/d is odd",
     "content": "pow_add_one_dvd_of_odd_quotient packages the forward direction: if d ∣ m and the cofactor m/d is odd, then b^d + 1 ∣ b^m + 1. Write m = d·q with q = m/d odd; then b^m + 1 = (b^d)^q + 1 and the sign lemma add_one_dvd_pow_add_one applies with x = b^d. This is the statement 'b^n + 1 divides b^{kn} + 1 exactly when k is odd', the elementary obstruction to strong divisibility.",
     "mathContext": "$d \\mid m,\\ m/d$ odd $\\Rightarrow b^d+1 \\mid b^m+1$.",

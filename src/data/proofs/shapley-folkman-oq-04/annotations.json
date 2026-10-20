@@ -28,8 +28,8 @@
     "id": "ann-oq04-subset",
     "proofId": "shapley-folkman-oq-04",
     "range": {
-      "startLine": 63,
-      "endLine": 104
+      "startLine": 64,
+      "endLine": 105
     },
     "type": "insight",
     "title": "Core Lemma: Every Excess Index Is a Non-Convex Index",
@@ -49,8 +49,8 @@
     "id": "ann-oq04-refined",
     "proofId": "shapley-folkman-oq-04",
     "range": {
-      "startLine": 105,
-      "endLine": 143
+      "startLine": 110,
+      "endLine": 148
     },
     "type": "theorem",
     "title": "The Refined Bound: excess ≤ min(d, #nonConvex)",
@@ -72,8 +72,8 @@
     "id": "ann-oq04-convex-case",
     "proofId": "shapley-folkman-oq-04",
     "range": {
-      "startLine": 144,
-      "endLine": 180
+      "startLine": 148,
+      "endLine": 184
     },
     "type": "insight",
     "title": "k = 0: Minkowski Sum of Convex Sets Is Convex",
@@ -93,10 +93,10 @@
     "id": "ann-oq04-starr",
     "proofId": "shapley-folkman-oq-04",
     "range": {
-      "startLine": 181,
-      "endLine": 254
+      "startLine": 189,
+      "endLine": 255
     },
-    "type": "theorem",
+    "type": "lemma",
     "title": "Refined Starr Bound: dist ≤ min(d, #nonConvex)·δ",
     "content": "In a finite-dimensional normed space F, `shapley_folkman_starr_refined` sharpens OQ03's Starr theorem. Given x ∈ conv(∑Sᵢ) with each Sᵢ of diameter ≤ δ, it produces x' ∈ ∑Sᵢ with\n\n    dist(x, x') ≤ min(dim F, #nonConvex)·δ.\n\nThe proof reuses OQ03's point-selection argument: take the refined decomposition from `sum_close_refined` (excess filter J with |J| ≤ min(d, k)), replace each excess summand by a genuine point of its set, and estimate ‖x - x'‖ = ‖∑_{j∈J}(fⱼ - gⱼ)‖ ≤ |J|·δ ≤ min(d,k)·δ via the triangle inequality and the local `convexHull_dist_le_diam` lemma.\n\nEconomic reading: a market with n agents but only k non-convex ones is within min(d, k)·δ of exactly convex — a strictly better guarantee than d·δ whenever k < d, and uniform in n.",
     "mathContext": "$\\|x - x'\\| = \\|\\sum_{j \\in J}(f_j - g_j)\\| \\le \\sum_{j \\in J}\\delta = |J|\\cdot\\delta \\le \\min(\\dim F, k)\\cdot\\delta$, since only excess indices contribute and $|J| \\le \\min(\\dim F, k)$.",

@@ -50,8 +50,8 @@
     "proofId": "erdos-323",
     "type": "definition",
     "range": {
-      "startLine": 30,
-      "endLine": 31
+      "startLine": 31,
+      "endLine": 33
     },
     "title": "IsSumOfPowers Predicate",
     "content": "**IsSumOfPowers $n$ $k$ $m$** holds when $n$ can be written as a sum of $m$ nonnegative $k$-th powers: $\\exists x_1, \\ldots, x_m \\in \\mathbb{N}: n = \\sum_{i=1}^{m} x_i^k$. Summands need not be distinct, and zero is allowed ($0^k = 0$).",
@@ -74,8 +74,8 @@
     "proofId": "erdos-323",
     "type": "definition",
     "range": {
-      "startLine": 34,
-      "endLine": 35
+      "startLine": 35,
+      "endLine": 37
     },
     "title": "Counting Function f_{k,m}(x)",
     "content": "**powerSumCount $k$ $m$ $x$ = $f_{k,m}(x)$:** counts integers in $[0, x]$ representable as sums of $m$ nonnegative $k$-th powers. This is the central quantity studied in Problem #323.\n\n```lean\n(Finset.range (x + 1)).filter (fun n => IsSumOfPowers n k m) |>.card\n```",
@@ -215,8 +215,8 @@
     "proofId": "erdos-323",
     "type": "definition",
     "range": {
-      "startLine": 131,
-      "endLine": 131
+      "startLine": 132,
+      "endLine": 133
     },
     "title": "Combined Statement",
     "content": "**ErdosProblem323** is the conjunction of both parts: the near-full density bound for $f_{k,k}$ (Part 1) **and** the $x^{m/k}$ lower bound for $f_{k,m}$ when $m < k$ (Part 2).",

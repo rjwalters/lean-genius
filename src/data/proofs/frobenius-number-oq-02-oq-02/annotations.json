@@ -14,7 +14,7 @@
   {
     "id": "ann-defs",
     "proofId": "frobenius-number-oq-02-oq-02",
-    "range": { "startLine": 47, "endLine": 59 },
+    "range": { "startLine": 49, "endLine": 59 },
     "type": "definition",
     "title": "Gaps and Non-Gaps in the Window [0,F]",
     "content": "For a decidable membership predicate S and bound F, nonGaps and gaps filter the window [0,F] = Finset.range (F+1) into members of S and non-members. The membership lemmas mem_nonGaps_iff / mem_gaps_iff unfold each to z ≤ F ∧ (¬)S z (via Nat.lt_succ_iff to turn z < F+1 into z ≤ F). For a genuine numerical semigroup F is the largest gap, so every gap lies in this window and #gaps is exactly the genus.",

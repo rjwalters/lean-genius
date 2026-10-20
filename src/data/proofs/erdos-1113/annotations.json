@@ -134,10 +134,10 @@
     "id": "ann-e1113-ffk",
     "proofId": "erdos-1113",
     "range": {
-      "startLine": 135,
-      "endLine": 154
+      "startLine": 138,
+      "endLine": 157
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "FFK Conjecture and Power Result",
     "content": "**FFKConjecture (Filaseta-Finch-Kozek 2008)**: Every Sierpinski number is either a perfect power ($m = n^k$, $k \\geq 2$) OR has a finite covering set. This refines Erdos #1113 by suggesting that uncovered Sierpinski numbers can only arise from the algebraic structure of perfect powers. `izotov_is_power` (verified) and `ffk_consistent_with_izotov` (verified) show the conjecture is compatible with Izotov's example. FFK also proved: for every $\\ell \\geq 1$, there exists $m$ where $2^k \\cdot m^i + 1$ is composite for all $1 \\leq i \\leq \\ell$ and $k \\geq 0$.",
     "mathContext": "$\\text{FFKConjecture}: \\forall\\, m$, $\\text{Sierpinski}(m) \\Rightarrow \\text{IsPerfectPower}(m) \\vee \\text{HasCovering}(m)$. IsPerfectPower $m = \\exists n\\, k$, $k \\geq 2$, $m = n^k$. The FFK power result (axiomatized) shows that for any $l$, simultaneous Sierpinski conditions $2^k \\cdot m^i + 1$ composite for $i=1..l$ are achievable.",

@@ -117,10 +117,10 @@
     "id": "ann-ordered-pairs-diffset",
     "proofId": "erdos-340-greedy-sidon",
     "range": {
-      "startLine": 163,
-      "endLine": 191
+      "startLine": 164,
+      "endLine": 192
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Ordered Pairs and Difference Map Framework",
     "content": "Defines the infrastructure for counting arguments:\n\n- `orderedPairsLt A`: the set of ordered pairs $(a, b)$ with $a, b \\in A$ and $a < b$, constructed by filtering `A.offDiag` (pairs with $a \\neq b$).\n- `pairDiff`: the difference map $(a, b) \\mapsto b - a$.\n- `sidon_pairDiff_injective`: for Sidon sets, `pairDiff` is injective on `orderedPairsLt A`. This follows from `diff_injective`.\n- `sidon_diffSet_card`: the image of `pairDiff` on `orderedPairsLt A` has the same cardinality as `orderedPairsLt A`, by `card_image_of_injOn`.\n\nThis framework separates the counting argument into two clean steps: (1) count ordered pairs (combinatorics), and (2) show differences are injective (Sidon property). Step 1 is `orderedPairsLt_card_via_choose`; step 2 is the injectivity theorem above.",
     "mathContext": "For Sidon $A$ with $n$ elements: $|\\{(a,b) : a < b,\\ a,b \\in A\\}| = \\binom{n}{2}$ and $\\text{pairDiff}$ is injective $\\Rightarrow |\\text{diffSet}(A)| = \\binom{n}{2} = n(n-1)/2$.",

@@ -157,23 +157,51 @@ see step 5. Never installed here.
 
 #### 2.5 Build-tree bloat — portable
 
-The directory trees the scanner keeps re-walking. Dead worktree `target/` dirs
-are the safe-to-reclaim ones.
+The directory trees the scanner keeps re-walking. On a machine with several
+sibling checkouts, no single repo's `target/` looks alarming — the bloat is
+only visible in aggregate. Sweep a **bounded** roots list, never an unbounded
+`find $HOME` — an unbounded home scan is a working-set-size problem in its own
+right (slow, and liable to walk into directories the operator never intended
+to be scanned), independent of the build-tree-bloat question this check is
+answering:
 
 ```bash
-# target/ sizes across the repo and every loom worktree
+# target/ sizes across the current repo and every loom worktree
 du -sh target 2>/dev/null || true
 for wt in .loom/worktrees/*/; do du -sh "$wt/target" 2>/dev/null || true; done
 # Dead worktrees whose branch/issue is gone but whose target/ lingers
 git worktree list --porcelain
+
+# Sibling repos under a bounded roots list (default: the parent dir of this
+# repo, e.g. ~/GitHub/*/target — configurable via a roots list, never a bare
+# `find $HOME`). Aggregate a cross-repo total: the per-repo figures
+# individually understate the problem, and the aggregate can exceed any one
+# repo's number by an order of magnitude.
+PARENT_DIR="$(dirname "$(pwd)")"
+TOTAL_BYTES=0
+for t in "$PARENT_DIR"/*/target; do
+  [ -d "$t" ] || continue
+  sz="$(du -sk "$t" 2>/dev/null | cut -f1)"
+  TOTAL_BYTES=$((TOTAL_BYTES + sz * 1024))
+  du -sh "$t" 2>/dev/null
+done
+echo "cross-repo target/ total: $((TOTAL_BYTES / 1024 / 1024)) MiB"
 ```
 
 - **warn**: multi-GB of `target/` under `.loom/worktrees/` belonging to worktrees
-  git no longer lists (dead artifacts), or a very large main `target/`.
-- **info**: only live-worktree build trees present.
+  git no longer lists (dead artifacts), a very large main `target/`, or a
+  cross-repo total in the tens-of-GB range even when no single repo's figure
+  looks alarming on its own.
+- **info**: only live-worktree build trees present, and the cross-repo total is
+  small.
+
+A sibling repo's `target/` that has already been redirected off the boot disk
+(present but near-empty on this volume) should not be double-counted as
+bloat; a sibling repo directory that no longer exists is skipped, not an error.
 
 Cross-reference [[tidy]] for the in-repo clutter half; this check is specifically
-about the dead-worktree build artifacts the host scanner re-walks.
+about the dead-worktree build artifacts and cross-repo bloat the host scanner
+re-walks.
 
 #### 2.6 Cache infra — portable
 
@@ -237,7 +265,7 @@ then list what the apply phase *will* do per tier before doing it.
 | warn     | gatekeeper       | Developer Tools exemption list empty |
 | warn     | backup agents    | Backblaze present; target/ not excluded |
 | warn     | sudo posture     | no /etc/sudoers.d/<user>-nopasswd drop-in |
-| warn     | build-tree bloat | 9.7 GB target/ across 4 dead worktrees; 77 GB main target/ |
+| warn     | build-tree bloat | 9.7 GB target/ across 4 dead worktrees; 77 GB main target/; 104 GiB across 6 sibling repos under ~/GitHub |
 | info     | cache infra      | sccache working; 41% disk free |
 | info     | remote access    | SSH on, Screen Sharing on, sleep disabled |
 
@@ -248,6 +276,8 @@ then list what the apply phase *will* do per tier before doing it.
 - Print Backblaze exclusion instructions (manual — GUI-gated)
 
 ### Will prompt (confirm-first)
+- Cargo target-dir redirect to /Volumes/<volume>/cargo-target (fail-loud verified)
+- Bulk reclaim of the now-orphaned 104 GiB across sibling repos, once redirect is applied
 - spctl developer-mode enable-terminal (+ GUI toggle you must flip)
 - sudo drop-in via /repo:sudo (delegated; not yet installed)
 
@@ -315,7 +345,58 @@ must be idempotent — re-running skips anything already done.
 ### 6. Apply — confirm-first (explicit prompt before acting)
 
 Each of these prompts for confirmation before doing anything (and under `--ask`
-so does everything in step 5):
+so does everything in step 5). **Order matters for the two build-tree items
+below: offer the `target-dir` redirect first, then the bulk reclaim it
+unlocks** — per the "Note on ordering" in 2.5, applying the redirect before
+reclaiming turns "delete this again next month" into a one-time cleanup.
+
+- **Cargo `build.target-dir` redirect (durable build-tree remedy).** The
+  dead-worktree cleanup in step 5 treats a symptom that regrows on the next
+  build; the durable fix is moving Cargo's build output off the boot disk
+  entirely. After confirmation, offer to write to the **global**
+  `~/.cargo/config.toml` (untracked, machine-scoped — never a repo's own
+  `.cargo/config.toml`, which is typically tracked and would ship a machine
+  path to every clone):
+
+  ```toml
+  # ~/.cargo/config.toml
+  [build]
+  target-dir = "/Volumes/<volume>/cargo-target"
+  ```
+
+  **Check, never assume, the fail-loud property** before proposing a path: the
+  parent directory must not be user-writable (e.g. `/Volumes` is
+  `root:wheel`), so cargo errors instead of silently recreating the path on
+  the boot disk if the target volume is ever unmounted:
+
+  ```bash
+  # parent of the proposed target-dir must NOT be writable by the current user
+  PARENT="$(dirname "<proposed-target-dir>")"
+  [ -w "$PARENT" ] && echo "WARNING: $PARENT is user-writable — an unmounted volume would silently refill the boot disk" \
+                    || echo "OK: $PARENT fails loud if unmounted"
+  ```
+
+  State the trade-offs rather than hiding them: a single shared `target-dir`
+  serializes concurrent builds across every repo on cargo's build lock, and a
+  bare `cargo clean` run in **any** repo clears every project's artifacts
+  under it (`cargo clean -p <pkg>` scopes it to one package). **Never suggest
+  relocating `CARGO_HOME`** — it holds the registry/dependency cache needed to
+  *resolve* every build (not just its output), so an unreachable volume there
+  breaks builds outright instead of failing loud; `target/` is pure derived
+  state (a missing volume costs a rebuild, never data), which is precisely why
+  it is the safe half of this idea and `CARGO_HOME` is not.
+
+- **Bulk reclaim of now-orphaned `target/` dirs.** Only offer this once the
+  redirect above is confirmed and applied (or already in place) — never
+  before, and never bundled into step 5's no-confirmation tier. Once
+  `build.target-dir` points off the boot disk, every pre-existing `target/`
+  measured in 2.5 (this repo, its worktrees, and the sibling repos under the
+  bounded roots list) is orphaned: no cargo invocation will ever write to it
+  again, which is what makes bulk `rm -rf` correct rather than a judgment
+  call, unlike a live repo's `target/` before the redirect exists. After
+  confirmation, remove them and report bytes freed per repo plus the
+  aggregate. A sibling repo whose `target/` is already near-empty (already
+  redirected) is skipped, not double-counted.
 
 - **`spctl developer-mode enable-terminal`** (macOS): after confirmation, run it
   to add the terminal's toolchain to the Developer Tools exemption — then **tell
@@ -360,11 +441,19 @@ not re-apply or error.
    worktrees git no longer lists. Regenerable build output only; never tracked
    files, never `.git/`.
 5. **Confirm-first means confirm.** `spctl developer-mode enable-terminal`, the
-   sudo delegation, and backup-agent pause/resume all require an explicit prompt;
-   `--ask` extends confirmation to the safe tier too.
+   sudo delegation, backup-agent pause/resume, the `target-dir` redirect, and
+   the bulk sibling-`target/` reclaim it unlocks all require an explicit
+   prompt; `--ask` extends confirmation to the safe tier too.
 6. **macOS-only checks skip cleanly on non-macOS** with a one-line note; the
    portable subset (checks 4–8) still runs and reports.
 7. **Idempotent** — a second run on a prepared host reports a no-op, never
    re-applies or errors.
 8. **Never edit `.loom/config.json`** — the concurrency check reports a mismatch
    and suggests a value; changing it is a deliberate operator call.
+9. **The `target-dir` redirect is global and `CARGO_HOME` is never a candidate
+   for it.** Write only to `~/.cargo/config.toml`, never a repo's own
+   `.cargo/config.toml`. Never propose relocating `CARGO_HOME` — unlike
+   `target/`, it is not pure derived state. Verify the fail-loud property
+   (parent not user-writable) on any proposed path before offering it, and
+   never bulk-reclaim sibling `target/` dirs ahead of the redirect being
+   applied.

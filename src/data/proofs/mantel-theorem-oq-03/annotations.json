@@ -26,7 +26,7 @@
   {
     "id": "mantel-oq03-ann-setup",
     "proofId": "mantel-theorem-oq-03",
-    "range": { "startLine": 37, "endLine": 43 },
+    "range": { "startLine": 39, "endLine": 43 },
     "type": "concept",
     "title": "Ambient Setup: Finite Vertices with Decidable Adjacency",
     "content": "Opens Finset and SimpleGraph, enters namespace MantelMinDegree, and fixes a finite vertex type V with decidable equality together with a graph G whose adjacency is decidable. DecidableEq V is needed to form the vertex triple {u,v,x} and to take unions of neighbour finsets; DecidableRel G.Adj and Fintype V make neighborFinset and degree well-defined finite quantities.",

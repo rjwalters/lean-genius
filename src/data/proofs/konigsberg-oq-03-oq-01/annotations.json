@@ -57,7 +57,7 @@
   {
     "id": "ann-konigsb-oq03-oq01-ray-euler",
     "proofId": "konigsberg-oq-03-oq-01",
-    "range": { "startLine": 219, "endLine": 237 },
+    "range": { "startLine": 223, "endLine": 237 },
     "type": "theorem",
     "title": "EGW Conclusion for the Ray",
     "content": "rayEulerWalk is the identity walk vertex n = n; rayGraphN_hasEulerPath proves it is an Euler walk. Covering: an adjacent pair satisfies u = v+1 or v = u+1, traversed (backwards or forwards) at an explicit step. Edge-injectivity: sameEdge m n unfolds to a small arithmetic disjunction closed by omega (the reversal case n+1+1 = n is impossible in ℕ). No compactness is needed because the witness is explicit.",

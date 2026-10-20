@@ -1,0 +1,175 @@
+%% anvil/lib/memo/template.tex
+%%
+%% Pandoc xelatex template — fallback memo PDF renderer when neither
+%% weasyprint nor wkhtmltopdf is on PATH. Consumed via:
+%%
+%%   pandoc memo.md \
+%%     --template anvil/lib/memo/template.tex \
+%%     --pdf-engine=xelatex \
+%%     --metadata title="..." \
+%%     --metadata author="..." \
+%%     --metadata date="..." \
+%%     -o memo.pdf
+%%
+%% This template is DELIBERATELY MINIMAL. The HTML chain
+%% (pandoc → styles.css → weasyprint OR wkhtmltopdf) is the canonical
+%% memo render path; this xelatex fallback exists so the chain has a
+%% last-resort engine in environments where the HTML-to-PDF binaries are
+%% unavailable but TeX Live is. The two outputs are not pixel-identical
+%% by design — the HTML chain owns the canonical typography.
+%%
+%% Maintainer policy mirrors styles.css: aesthetic-tuning PRs against the
+%% default template are closed. Consumers who want custom LaTeX class,
+%% headers, or fonts SHOULD override at
+%% <consumer>/.anvil/anvil/lib/memo/template.tex after install.
+
+\documentclass[11pt,letterpaper]{article}
+
+% --- Geometry: 0.75in margins, matching styles.css ----------------------
+\usepackage[margin=0.75in]{geometry}
+
+% --- Fonts: fontspec lets us request system Helvetica/Arial via xelatex --
+% TeX Live's default Computer Modern is acceptable when fontspec is
+% absent; consumers who want a specific font override the template.
+\usepackage{fontspec}
+\setmainfont{Helvetica}[
+  ItalicFont = Helvetica,
+  BoldFont = Helvetica Bold,
+  BoldItalicFont = Helvetica Bold,
+]
+
+% --- Math support ----------------------------------------------------------
+% pandoc emits amsmath-only commands when converting markdown math, most
+% commonly the text-in-math macro (multi-letter subscripts, units, labels).
+% amsmath defines that macro (via amstext); amssymb covers the broader symbol
+% set pandoc can emit (mathbb, lesssim, nleq, ...). pandoc's stock LaTeX
+% template loads amsmath by default; this custom template replaced the stock
+% one, so without these loads any text-in-math body fails to render with
+% ``Undefined control sequence'' (xelatex exit 43). See issue #592 for the
+% canary reproducer. amssymb must load after amsmath (standard ordering).
+% NOTE: this file is a pandoc template — avoid literal dollar signs in
+% comments, which pandoc's template engine parses as variable interpolation.
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% --- Unicode fallback for symbols not covered by Helvetica ---------------
+% Helvetica (and Arial) lack coverage for many Unicode symbols — arrows
+% (→ ↑ ↓ ←), Greek/SI letters (μ), math-adjacent signs (≥ ≤ ± × ÷).
+% Without a fallback these glyphs render as spaces in the PDF (no compile
+% error, silent drop). ``newunicodechar`` ships in texlive-latex-extra
+% (Debian) and MacTeX. DejaVu Sans ships in texlive-fonts-recommended
+% and MacTeX full install. ``Scale=MatchLowercase`` blends the fallback
+% glyph size with Helvetica body text. See issue #309 for the canary
+% reproducer. Consumers who override template.tex SHOULD preserve this
+% block or supply an equivalent font fallback for their chosen main font.
+\usepackage{newunicodechar}
+\newfontfamily\UnicodeFallback[Scale=MatchLowercase]{DejaVuSans.ttf}
+\newunicodechar{→}{\UnicodeFallback →}
+\newunicodechar{↑}{\UnicodeFallback ↑}
+\newunicodechar{↓}{\UnicodeFallback ↓}
+\newunicodechar{←}{\UnicodeFallback ←}
+\newunicodechar{μ}{\UnicodeFallback μ}
+\newunicodechar{≥}{\UnicodeFallback ≥}
+\newunicodechar{≤}{\UnicodeFallback ≤}
+\newunicodechar{±}{\UnicodeFallback ±}
+\newunicodechar{×}{\UnicodeFallback ×}
+\newunicodechar{÷}{\UnicodeFallback ÷}
+
+% --- Page numbering: footer page X of Y, matching @page rule in CSS -----
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage\ / \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\usepackage{lastpage}
+
+% --- Hyperref: clickable links and PDF metadata -------------------------
+\usepackage{hyperref}
+\hypersetup{
+  pdftitle={$if(title)$$title$$else$Untitled Memo$endif$},
+  pdfauthor={$if(author)$$author$$endif$},
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=black,
+  citecolor=black,
+}
+
+% --- Pandoc 3.x emission compatibility ----------------------------------
+% Pandoc 3.x's default LaTeX template assumes these packages are loaded.
+% The shipped minimal preamble above (geometry/fontspec/fancyhdr/lastpage/
+% hyperref) is intentionally lean; this block tracks the additional
+% emission-time packages modern pandoc expects when the template doesn't
+% supply its own. ``\IfFileExists`` guards (mirroring the
+% ``check_*_available`` graceful-degrade precedent in
+% ``anvil/lib/render.py``) keep thin TeX Live installs renderable —
+% missing-package consumers get a slightly worse memo (e.g.
+% strikethrough passes through unstyled) rather than a hard compile
+% failure on ``\Undefined control sequence``.
+%
+% Maintainer policy: this block tracks pandoc's default-template
+% emission, not aesthetics. Consumers overriding template.tex SHOULD
+% preserve this block. See issue #277 for the canary reproducer
+% (pandoc 3.9.0.2 + MacTeX xelatex, undefined ``\st``).
+\usepackage{xcolor}
+\usepackage{iftex}
+\ifluatex
+  \IfFileExists{lua-ul.sty}{\usepackage[soul]{lua-ul}}{}
+\fi
+\IfFileExists{soul.sty}{\usepackage{soul}}{}
+% Fallback: when soul.sty is absent the strikethrough macro is
+% undefined; \providecommand keeps the document compiling by passing
+% the content through unstyled. The HTML chain remains the canonical
+% strikethrough rendering path.
+\providecommand{\st}[1]{#1}
+\usepackage{fancyvrb}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc}
+\usepackage{etoolbox}
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\usepackage{bookmark}
+% \newcounter{none} backs the \noalign{} hooks pandoc 3.x emits for
+% unnumbered tables; the counter is referenced but never advanced.
+\newcounter{none}
+% \tightlist is pandoc's spacing macro for lists with no blank line
+% between items. \providecommand keeps the document compiling even when
+% an upstream package already defines it.
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% --- Pandoc-supplied preamble blocks ------------------------------------
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+% --- Title block --------------------------------------------------------
+$if(title)$
+\title{$title$}
+$endif$
+$if(author)$
+\author{$author$}
+$endif$
+$if(date)$
+\date{$date$}
+$else$
+\date{}
+$endif$
+
+\begin{document}
+
+$if(title)$
+\maketitle
+$endif$
+
+$body$
+
+$if(ai_byline)$
+\bigskip
+\textit{$ai_byline$}
+$endif$
+
+\end{document}

@@ -73,8 +73,8 @@
     "proofId": "erdos-345",
     "type": "definition",
     "range": {
-      "startLine": 27,
-      "endLine": 30
+      "startLine": 38,
+      "endLine": 41
     },
     "title": "Complete Sequence",
     "content": "**IsComplete $A$:** $\\exists m, \\forall n \\ge m: n \\in P(A)$. Asserts that all sufficiently large integers are subset sums of $A$. This is the key property connecting to Waring's problem for power sequences.",
@@ -162,7 +162,7 @@
     "proofId": "erdos-345",
     "type": "concept",
     "range": {
-      "startLine": 75,
+      "startLine": 76,
       "endLine": 78
     },
     "title": "Waring Completeness",

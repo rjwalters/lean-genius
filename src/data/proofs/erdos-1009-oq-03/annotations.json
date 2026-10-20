@@ -26,7 +26,7 @@
   {
     "id": "ek4gap-no-two-disjoint",
     "proofId": "erdos-1009-oq-03",
-    "range": { "startLine": 88, "endLine": 92 },
+    "range": { "startLine": 89, "endLine": 93 },
     "type": "insight",
     "title": "Any Two Distinct Triangles of K₄ Share an Edge",
     "content": "The combinatorial heart of the integer bound: `no_two_edge_disjoint` states that for all distinct triangles S, T of K₄, `¬ EdgeDisjoint S T`. Because the model is decidable and finite, the entire universally-quantified statement is checked by `decide` — the Lean kernel exhaustively verifies all pairs. This is the reason a packing can hold at most one triangle.",

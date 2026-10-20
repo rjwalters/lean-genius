@@ -14,7 +14,7 @@
   {
     "id": "ann-bs-oq0101-setup",
     "proofId": "banach-steinhaus-theorem-oq-01-oq-01",
-    "range": { "startLine": 51, "endLine": 57 },
+    "range": { "startLine": 53, "endLine": 57 },
     "type": "definition",
     "title": "The Banach-space setting",
     "content": "The variable block fixes the abstract setting in which Banach–Steinhaus lives: a nontrivially normed scalar field 𝕜, a source space E that is a normed 𝕜-space and `CompleteSpace` (the Banach hypothesis — completeness is exactly what the proof needs, via the Baire category theorem underlying `banach_steinhaus`), and a target normed space F. Stating the core at this generality — rather than specializing to E = C(𝕋), F = ℂ — is what makes the resonance principle a reusable lemma; the Fourier application is just one instantiation. `open Filter Topology Set` brings `range`, `atTop`, and the filter API into scope.",

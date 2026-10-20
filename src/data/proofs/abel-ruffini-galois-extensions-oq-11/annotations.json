@@ -14,7 +14,7 @@
   {
     "id": "ann-abelruffini-oq11-algindep",
     "proofId": "abel-ruffini-galois-extensions-oq-11",
-    "range": { "startLine": 65, "endLine": 86 },
+    "range": { "startLine": 66, "endLine": 86 },
     "type": "insight",
     "title": "Algebraic Independence of e₁,…,eₙ (the transcendence-degree-n core)",
     "content": "esymm_algebraicIndependent: for n ≤ #σ the n elementary symmetric polynomials e₁,…,eₙ are algebraically independent over any commutative ring R. By algebraicIndependent_iff_injective_aeval this is exactly injectivity of aeval (fun i ↦ esymm σ R (i+1)); that map's values are the coordinates of Mathlib's esymmAlgHom (esymmAlgHom_apply), so injectivity follows from esymmAlgHom_injective composed with Subtype.ext. Mathlib supplies the fundamental theorem esymmAlgEquiv but NOT this algebraic-independence statement — it is the transcendence-degree-n fact that makes the Sₙ-fixed field purely transcendental rather than merely finitely generated.",

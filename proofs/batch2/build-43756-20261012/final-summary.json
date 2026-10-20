@@ -1,0 +1,35 @@
+{
+  "result": "expected_legacy_failures_only",
+  "source_commit": "898252bfa8fc59b4e3b62584065f1b6b95233edb",
+  "main_base": "9019cca651249bff7ba4d0308486f40b4a48ca88",
+  "proof_source_tree": "cf5b31961d3f695f84ce215afb6a832321201c2f",
+  "job": "20261012T231918-fix__safe-subset-43756-20261012-113072",
+  "started_at": "2026-10-12T23:19:18Z",
+  "finished_at": "2026-10-12T23:19:48Z",
+  "targets": 5939,
+  "lake_graph_jobs": 14524,
+  "exit_code": 1,
+  "failed_source_modules": [
+    "Proofs.BallotProblemOQ03OQ01OQ02Helpers",
+    "Proofs.KonigsbergOQ01OQ02"
+  ],
+  "blocked_target_modules": [
+    "Proofs.BallotProblemOQ03OQ01OQ02",
+    "Proofs.BallotProblemOQ03OQ01OQ02Aristotle"
+  ],
+  "memory_gib": 96,
+  "cpu_quota": 16,
+  "compiler_thread_limit": null,
+  "cache_scope": "Incremental Lake verification using retained project and pinned Mathlib caches.",
+  "log": "final-build.log.gz",
+  "uncompressed_log_sha256": "6e6d49aa99c0592e3e572e5955e6d5067d1604cf144ec2f411e8594505d85591",
+  "newly_built_repairs": [
+    "✔ [14519/14524] Built Proofs.Erdos46WIP01SmallDivisors (4.3s)",
+    "✔ [14520/14524] Built Proofs.AmgmInequalityOQ02OQ01OQ02 (4.0s)",
+    "⚠ [14521/14524] Built Proofs.BinaryGcdOQ02OQ01 (4.7s)"
+  ],
+  "new_resource_quarantine": {
+    "module": "Proofs.Erdos30WIP01",
+    "issue": 43846
+  }
+}

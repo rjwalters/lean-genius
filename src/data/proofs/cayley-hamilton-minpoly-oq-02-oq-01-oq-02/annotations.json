@@ -2,7 +2,7 @@
   {
     "id": "ann-setup",
     "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
-    "range": { "startLine": 37, "endLine": 40 },
+    "range": { "startLine": 35, "endLine": 38 },
     "type": "concept",
     "title": "Abstract K-Algebra Setting",
     "content": "The proof works in full generality: K is any field, A and B are any K-algebras (rings with a K-action), and f : A →ₐ[K] B is any K-algebra homomorphism. The key variable declarations use type-class inference for [Field K], [Ring A], [Algebra K A], etc. No commutativity, no finite-dimensionality, no other constraints are needed for the main theorem.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-main-theorem",
     "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
-    "range": { "startLine": 57, "endLine": 85 },
+    "range": { "startLine": 58, "endLine": 85 },
     "type": "insight",
     "title": "Main Theorem: Iff Characterization via Mutual Divisibility",
     "content": "The core proof. The ⟹ direction is trivial: if minpoly(f a) = minpoly(a), then aeval a (minpoly(f a)) = aeval a (minpoly(a)) = 0 by the defining property. The ⟸ direction: given aeval a (minpoly(f a)) = 0, apply minpoly.dvd to get minpoly(a) ∣ minpoly(f a). Combined with universal divisibility (always holds), mutual divisibility gives equality of monic polynomials via associated_of_dvd_dvd + eq_of_monic_of_associated.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-isroot-form",
     "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
-    "range": { "startLine": 86, "endLine": 100 },
+    "range": { "startLine": 87, "endLine": 100 },
     "type": "insight",
     "title": "Equivalent Forms: IsRoot and Failure Mode",
     "content": "Two reformulations of the main theorem: (1) IsRoot form: minpoly(f a) = minpoly(a) iff a is a root of minpoly(f a) — since IsRoot.{x} p ↔ p.aeval x = 0. (2) Failure mode: the negation characterizes when f 'collapses' an algebraic relation. The zero map is the canonical example: f(a) = 0, minpoly(0) = X, aeval a X = a ≠ 0 for nonzero a.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-injective-case",
     "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
-    "range": { "startLine": 106, "endLine": 124 },
+    "range": { "startLine": 108, "endLine": 124 },
     "type": "insight",
     "title": "Why Injectivity Is Sufficient (But Not Necessary)",
     "content": "For injective f, the criterion is always satisfied: minpoly.algHom_eq gives minpoly(f a) = minpoly(a) for injective f, so aeval a (minpoly(f a)) = aeval a (minpoly(a)) = 0. The proof directly invokes Mathlib's minpoly.algHom_eq and rw. This shows the injective case from the parent entry OQ02OQ01 is a special case. But the iff characterization is strictly weaker: many non-injective maps also satisfy the criterion.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-degree-bound",
     "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
-    "range": { "startLine": 130, "endLine": 144 },
+    "range": { "startLine": 132, "endLine": 144 },
     "type": "insight",
     "title": "Degree Monotonicity: Non-Injective Maps Only Shrink Minpoly",
     "content": "Since minpoly(f a) ∣ minpoly(a), the degree of minpoly(f a) is at most the degree of minpoly(a). The proof handles the degenerate case minpoly(f a) = 0 separately (gives 0 ≤ anything), then uses natDegree_le_of_dvd for the general case. The result formalizes the intuition: non-injective maps can only 'simplify' algebraic relations, never introduce new ones.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-complete-picture",
     "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
-    "range": { "startLine": 149, "endLine": 169 },
+    "range": { "startLine": 151, "endLine": 169 },
     "type": "insight",
     "title": "The Complete Characterization as a Single Theorem",
     "content": "The summary theorem complete_characterization is definitionally equal to minpoly_eq_iff_aeval_zero — it's just a re-export for documentation purposes, showing all three properties in one place. The docstring contains the canonical zero-map example, making the failure mode explicit: for f ≡ 0, f(a) = 0, minpoly(0) = X, aeval a X = a. The criterion fails iff a ≠ 0, as expected.",

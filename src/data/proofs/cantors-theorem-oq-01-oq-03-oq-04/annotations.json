@@ -78,7 +78,7 @@
   {
     "id": "aleph-beth-uniformity",
     "proofId": "cantors-theorem-oq-01-oq-03-oq-04",
-    "range": { "startLine": 132, "endLine": 162 },
+    "range": { "startLine": 133, "endLine": 163 },
     "type": "concept",
     "title": "Uniform Aleph and Beth Specialisations",
     "content": "The aleph specialisation `cf_powerSet_real_ne_aleph_of_aleph_le_continuum` and the beth specialisation `cf_powerSet_real_ne_beth_of_beth_le_continuum` parameterise the exclusion over the entire below-continuum aleph and beth hierarchies, respectively. The implicit ordinal $\\alpha$ ranges over all ordinals such that $\\aleph_\\alpha \\leq \\mathfrak{c}$ (resp. $\\beth_\\alpha \\leq \\mathfrak{c}$).\n\n**Aleph range depends on the model of ZFC**: Under CH, $\\mathfrak{c} = \\aleph_1$ so $\\alpha \\in \\{0, 1\\}$. Under Martin's Axiom + $\\neg$CH, $\\mathfrak{c}$ can be $\\aleph_2, \\aleph_3, \\ldots$ extending the valid range of $\\alpha$.\n\n**Beth range is uniform**: Since $\\beth_1 = 2^{\\aleph_0} = \\mathfrak{c}$, the constraint $\\beth_\\alpha \\leq \\mathfrak{c}$ forces $\\alpha \\leq 1$ in every ZFC model. So the beth specialisation has a fixed range (just $\\alpha = 0$ giving $\\aleph_0$ or $\\alpha = 1$ giving $\\mathfrak{c}$), making it less informative than the aleph version but still useful as a named lemma.\n\nUnder CH the aleph and beth ranges coincide; without CH the aleph range can extend strictly further (e.g. $\\aleph_2 \\leq \\mathfrak{c}$ is consistent, but $\\beth_2 = 2^{\\mathfrak{c}} > \\mathfrak{c}$ is forced by König).",

@@ -165,8 +165,8 @@
     "id": "ann-e36-small-values",
     "proofId": "erdos-36",
     "range": {
-      "startLine": 152,
-      "endLine": 158
+      "startLine": 166,
+      "endLine": 172
     },
     "type": "theorem",
     "title": "Exact Small Values M(1)…M(5)",
@@ -259,10 +259,10 @@
     "id": "ann-e36-pigeonhole",
     "proofId": "erdos-36",
     "range": {
-      "startLine": 300,
-      "endLine": 352
+      "startLine": 299,
+      "endLine": 351
     },
-    "type": "theorem",
+    "type": "lemma",
     "title": "Pigeonhole Lower Bound: (4N−1)·M(N) ≥ N²",
     "content": "`pigeonhole_maxOverlap` combines the fiber-sum identity with `diff_range_card` (the difference range has $4N-1$ values): $N^2 = \\sum_k \\mathrm{overlap} \\le (4N-1)\\cdot\\mathrm{maxOverlap}$, so some difference is hit at least $N^2/(4N-1)$ times. `M_lower_pigeonhole` lifts this to $M(N)$ by extracting a partition achieving the minimum (via `Finset.min'_mem`) and applying the bound to it.",
     "mathContext": "$N^2 \\le (4N-1)\\cdot\\mathrm{maxOverlap}(A,B)$ for any balanced $A,B$; hence $N^2 \\le (4N-1)\\,M(N)$. The pigeonhole: $N^2$ pairs across $4N-1$ buckets.",

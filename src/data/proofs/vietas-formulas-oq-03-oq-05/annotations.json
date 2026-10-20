@@ -27,10 +27,10 @@
     "id": "ann-vf-vieta-quartic",
     "proofId": "vietas-formulas-oq-03-oq-05",
     "range": {
-      "startLine": 62,
-      "endLine": 76
+      "startLine": 66,
+      "endLine": 80
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "vieta_quartic: Quartic Expansion via Vieta's Formulas",
     "content": "Proves that the monic quartic (x−r₁)(x−r₂)(x−r₃)(x−r₄) expands to x⁴ − e₁x³ + e₂x² − e₃x + e₄, where e₁ = r₁+r₂+r₃+r₄ (sum), e₂ = ∑_{i<j} rᵢrⱼ (pairwise products, 6 terms), e₃ = ∑_{i<j<k} rᵢrⱼrₖ (triple products, 4 terms), e₄ = r₁r₂r₃r₄ (product). The proof is a single `ring` call — over any commutative ring R. The alternating signs (−e₁, +e₂, −e₃, +e₄) reflect the inclusion-exclusion structure of the symmetric group S₄ acting on monomials.",
     "mathContext": "$(x-r_1)(x-r_2)(x-r_3)(x-r_4) = x^4 - e_1 x^3 + e_2 x^2 - e_3 x + e_4$ where $e_k = \\sum_{|S|=k} \\prod_{i \\in S} r_i$. Signs: $(-1)^k e_k$.",
@@ -51,7 +51,7 @@
     "id": "ann-vf-discriminant-quartic",
     "proofId": "vietas-formulas-oq-03-oq-05",
     "range": {
-      "startLine": 89,
+      "startLine": 93,
       "endLine": 120
     },
     "type": "insight",
@@ -75,8 +75,8 @@
     "id": "ann-vf-depressed",
     "proofId": "vietas-formulas-oq-03-oq-05",
     "range": {
-      "startLine": 133,
-      "endLine": 166
+      "startLine": 159,
+      "endLine": 192
     },
     "type": "concept",
     "title": "Depressed Quartic: Specializing e₁=0 and the q→−q Symmetry",
@@ -99,8 +99,8 @@
     "id": "ann-vf-ferrari-resolvent",
     "proofId": "vietas-formulas-oq-03-oq-05",
     "range": {
-      "startLine": 178,
-      "endLine": 215
+      "startLine": 204,
+      "endLine": 241
     },
     "type": "insight",
     "title": "Ferrari's Identity: Completing the Biquadratic Square",
@@ -124,7 +124,7 @@
     "id": "ann-vf-discriminant-connection",
     "proofId": "vietas-formulas-oq-03-oq-05",
     "range": {
-      "startLine": 232,
+      "startLine": 236,
       "endLine": 260
     },
     "type": "insight",

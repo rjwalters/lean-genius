@@ -73,8 +73,8 @@
     "id": "hasmingap-pairwise-equivalence",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 58,
-      "endLine": 128
+      "startLine": 62,
+      "endLine": 132
     },
     "type": "insight",
     "title": "Part I-B: hasMinGap ⟺ List.Pairwise Equivalence",
@@ -95,8 +95,8 @@
     "id": "partition-extensions",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 133,
-      "endLine": 151
+      "startLine": 137,
+      "endLine": 155
     },
     "type": "definition",
     "title": "Noncomputable Partition Predicates via Multiset Sorting",
@@ -271,8 +271,8 @@
     "id": "false-theorem-counterexample",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 292,
-      "endLine": 294
+      "startLine": 162,
+      "endLine": 164
     },
     "type": "insight",
     "title": "Identifying a False Containment: Mod-5 Partitions Are Not Necessarily Distinct",
@@ -333,7 +333,7 @@
     "id": "part8-type-checking-summary",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 367,
+      "startLine": 380,
       "endLine": 414
     },
     "type": "concept",
@@ -354,8 +354,8 @@
     "id": "part9-decidable-predicates",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 415,
-      "endLine": 466
+      "startLine": 432,
+      "endLine": 483
     },
     "type": "tactic",
     "title": "Decidable Reformulation via Direct Pairwise Separation",
@@ -376,7 +376,7 @@
     "id": "part10-computational-verification",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 467,
+      "startLine": 470,
       "endLine": 509
     },
     "type": "insight",
@@ -397,8 +397,8 @@
     "id": "part11-euler-connection",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 510,
-      "endLine": 603
+      "startLine": 523,
+      "endLine": 616
     },
     "type": "insight",
     "title": "Containment Bounds and the Connection to Euler's Theorem",
@@ -418,8 +418,8 @@
     "id": "part12-16-strict-containment",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 604,
-      "endLine": 717
+      "startLine": 630,
+      "endLine": 743
     },
     "type": "insight",
     "title": "Strict Containment, Explicit Counts (n=8,9), and Parity Observations",
@@ -439,8 +439,8 @@
     "id": "part17-20-corrected-schur-decidable-bridge",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 718,
-      "endLine": 922
+      "startLine": 732,
+      "endLine": 936
     },
     "type": "tactic",
     "title": "The Corrected Schur Set and the hasMinGap/Decidable-Gap Bridge",
@@ -460,8 +460,8 @@
     "id": "part21-22-decidable-bridges-rr1",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 923,
-      "endLine": 1058
+      "startLine": 955,
+      "endLine": 1090
     },
     "type": "tactic",
     "title": "Decidable ↔ Noncomputable Bridge Theorems (RR1 Side)",
@@ -481,8 +481,8 @@
     "id": "part23-24-rr2-schur-bridges",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 1059,
-      "endLine": 1426
+      "startLine": 1133,
+      "endLine": 1500
     },
     "type": "tactic",
     "title": "Completing the Decidable ↔ Noncomputable Dictionary",
@@ -501,8 +501,8 @@
     "id": "part25-29-part-count-bounds",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 1427,
-      "endLine": 1642
+      "startLine": 1481,
+      "endLine": 1696
     },
     "type": "insight",
     "title": "Part-Count Bounds via Gap-Sum Estimates and the SchurMod Characterization",
@@ -523,8 +523,8 @@
     "id": "part30-34-generating-function-infrastructure",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 1643,
-      "endLine": 2161
+      "startLine": 1661,
+      "endLine": 2179
     },
     "type": "insight",
     "title": "Generating-Function Toolkit and the Subset-Sum Bijection",
@@ -545,8 +545,8 @@
     "id": "part35-37-repetition-gf-verification",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 2162,
-      "endLine": 2476
+      "startLine": 2217,
+      "endLine": 2531
     },
     "type": "tactic",
     "title": "Generating Functions with Repetition and Verification to n=15",
@@ -566,8 +566,8 @@
     "id": "part38-40-bounded-counts-unrestricted-gf",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 2477,
-      "endLine": 2863
+      "startLine": 2568,
+      "endLine": 2954
     },
     "type": "tactic",
     "title": "Bounded Schur Counting Functions and the Unrestricted Generating Series",
@@ -587,8 +587,8 @@
     "id": "part41-43-convolution-partgf-recursion",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 2864,
-      "endLine": 3139
+      "startLine": 2888,
+      "endLine": 3163
     },
     "type": "tactic",
     "title": "Convolution Identities and the partGF Coefficient Recursion",
@@ -608,8 +608,8 @@
     "id": "part44-47-partition-count-bridges",
     "proofId": "partition-theorem-oq-01",
     "range": {
-      "startLine": 3140,
-      "endLine": 3541
+      "startLine": 3263,
+      "endLine": 3542
     },
     "type": "insight",
     "title": "Final Bridge: partGF Coefficients Count Partitions with Repetition",

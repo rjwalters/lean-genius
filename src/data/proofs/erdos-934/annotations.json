@@ -97,7 +97,7 @@
     "proofId": "erdos-934",
     "type": "concept",
     "range": {
-      "startLine": 94,
+      "startLine": 95,
       "endLine": 103
     },
     "title": "h_1(d) = d + 1",
@@ -143,7 +143,7 @@
     "proofId": "erdos-934",
     "type": "concept",
     "range": {
-      "startLine": 116,
+      "startLine": 117,
       "endLine": 127
     },
     "title": "CGTT Theorem (1990)",
@@ -258,7 +258,7 @@
     "proofId": "erdos-934",
     "type": "concept",
     "range": {
-      "startLine": 156,
+      "startLine": 157,
       "endLine": 158
     },
     "title": "Lower Bound for Large t",
@@ -281,8 +281,8 @@
     "proofId": "erdos-934",
     "type": "definition",
     "range": {
-      "startLine": 160,
-      "endLine": 166
+      "startLine": 149,
+      "endLine": 155
     },
     "title": "Asymptotic Conjecture",
     "content": "**AsymptoticConjecture:**\n\nFor all t ≥ 3:\n- Lower: For infinitely many d, h_t(d) ≥ (1 - o(1))d^t\n- Upper: For all d, h_t(d) ≤ (1 + o(1))d^t\n\nThis says the leading coefficient of h_t(d)/d^t approaches 1 as d → ∞.\n\nIf true, h_t(d) ~ d^t asymptotically.",

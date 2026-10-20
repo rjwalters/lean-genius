@@ -50,8 +50,8 @@
     "proofId": "erdos-54",
     "type": "definition",
     "range": {
-      "startLine": 28,
-      "endLine": 28
+      "startLine": 29,
+      "endLine": 30
     },
     "title": "2-Colouring Definition",
     "content": "**Colouring2 $A$** $= \\{n : n \\in A\\} \\to \\text{Bool}$: a function assigning `true` or `false` to each element of $A$. This is the standard 2-colouring using `Bool` as the colour set.",
@@ -72,8 +72,8 @@
     "proofId": "erdos-54",
     "type": "definition",
     "range": {
-      "startLine": 31,
-      "endLine": 34
+      "startLine": 32,
+      "endLine": 36
     },
     "title": "Monochromatic Subset Sums",
     "content": "**monoSubsetSums $A$ $c$ colour**: the set of all sums $\\sum_{s \\in S} s$ where $S \\subseteq A$ is finite and every element of $S$ has the given colour under $c$.",
@@ -117,8 +117,8 @@
     "proofId": "erdos-54",
     "type": "definition",
     "range": {
-      "startLine": 49,
-      "endLine": 50
+      "startLine": 50,
+      "endLine": 52
     },
     "title": "Counting Function",
     "content": "**countingFn $A$ $N$** $= |A \\cap \\{1,\\ldots,N\\}|$: the number of elements of $A$ up to $N$. Noncomputable since membership in a general `Set ℕ` is not decidable.",

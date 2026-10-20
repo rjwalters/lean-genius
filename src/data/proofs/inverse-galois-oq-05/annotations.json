@@ -13,7 +13,7 @@
   {
     "id": "ann-penultimate-abelian",
     "proofId": "inverse-galois-oq-05",
-    "range": { "startLine": 67, "endLine": 84 },
+    "range": { "startLine": 69, "endLine": 84 },
     "type": "tactic",
     "title": "The penultimate derived term is abelian",
     "content": "derivedSeries_penultimate_comm: if the derived series drops to ⊥ one step further (⁅Dₙ,Dₙ⁆ = Dₙ₊₁ = ⊥), then Dₙ is commutative. The proof reads commutativity out of the commutator/centralizer duality: commutator_eq_bot_iff_le_centralizer turns ⁅Dₙ,Dₙ⁆ = ⊥ into Dₙ ≤ centralizer Dₙ, and mem_centralizer_iff extracts, for any x, y ∈ Dₙ, the identity y·x = x·y, lifted to the subgroup type by Subtype.ext. This is the abelian layer that the induction peels off at each step.",

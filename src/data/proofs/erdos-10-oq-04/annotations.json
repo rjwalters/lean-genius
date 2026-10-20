@@ -74,7 +74,7 @@
   {
     "id": "ann-thm-densityicc-erdos10oq04",
     "proofId": "erdos-10-oq-04",
-    "range": { "startLine": 101, "endLine": 134 },
+    "range": { "startLine": 113, "endLine": 146 },
     "type": "theorem",
     "title": "Two concrete witnesses, then the counting ratio lands in [0, 1]",
     "content": "`4 = 2 + 2¹` and `9 = 7 + 2¹` are exhibited as concrete elements of `S₁` via the membership iff, confirming the `p + 2ᵃ` branch is nonvacuous. `densityFn_mem_Icc` then proves the finite counting ratio always lies in `[0, 1]`: nonnegativity is `positivity`, and the upper bound rewrites `div_le_one` to the numerator-vs-denominator inequality `|S ∩ [0,n]| ≤ n + 1`, which follows because a filtered subset of `Finset.range (n+1)` can have at most `Finset.card_range` many elements. The two boundedness lemmas that follow package this `[0,1]` bound as the `IsBoundedUnder`/`IsCoboundedUnder` side-conditions `Filter.liminf_le_liminf` will need.",
@@ -98,7 +98,7 @@
   {
     "id": "ann-thm-densityrange-erdos10oq04",
     "proofId": "erdos-10-oq-04",
-    "range": { "startLine": 149, "endLine": 172 },
+    "range": { "startLine": 150, "endLine": 173 },
     "type": "theorem",
     "title": "The liminf itself lands in [0, 1]",
     "content": "`lowerDensity_nonneg` and `lowerDensity_le_one` lift the pointwise `densityFn ∈ [0,1]` bound to the liminf, each via `Filter.liminf_le_liminf` sandwiched against the constant sequences `0` and `1` (rewritten as liminfs of themselves through `Filter.liminf_const`), discharging the boundedness/coboundedness side-conditions with the two lemmas proved just above. `lowerDensity_S1_mem_Icc` packages both halves into the single membership fact `d̲(S₁) ∈ [0,1]` — the coarsest possible statement about the open quantity, obtained with no case-specific work at all.",

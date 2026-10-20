@@ -61,7 +61,8 @@
       "Identifying the parent's axiom with an existing Mathlib theorem is the whole game: 'triangle-free' = `CliqueFree 3`, 'no $K_{r+1}$' with $r = 2$. Once the dictionary is fixed, the Erdős #1011 triangle axiom is a specialization of `CliqueFree.card_edgeFinset_le`, not a new proof obligation.",
       "Mathlib states the Turán bound with exact integer-arithmetic correction terms `(n² − (n%r)²)(r−1)/(2r) + (n%r).choose 2`. The work of specialization is arithmetic hygiene: at `r = 2` the binomial term is identically 0 (since `n % 2 < 2`) and the subtraction only decreases the bound, so the clean `⌊n²/4⌋` form drops out by `Nat`-division monotonicity.",
       "Sharpness is not folklore here — it is exhibited by a concrete witness. `turanGraph n 2` is proved triangle-free and its edge count is computed exactly as `(n² − (n%2)²)/4`, which equals `n²/4` precisely when `n` is even. This turns 'the bound is best possible' into a checked existence statement.",
-      "Converting `turan_theorem` from axiom to theorem is genuine axiom elimination for the Erdős #1011 family: the triangle case is now machine-checked rather than assumed, reducing the trusted base of the development."
+      "Converting `turan_theorem` from axiom to theorem is genuine axiom elimination for the Erdős #1011 family: the triangle case is now machine-checked rather than assumed, reducing the trusted base of the development.",
+      "The even-`n` restriction in `mantel_sharp_even` is a scope choice, not a mathematical necessity. `card_edgeFinset_turanGraph_two` already computes `(n² − (n%2)²)/4` for *every* `n`, and this equals `Nat`-division `n²/4` in general: when `n` is odd, `n²` is odd and `n² ≡ 1 (mod 4)` (every odd square is), so `(n² − 1)/4 = ⌊n²/4⌋` too. The file only names the sharp witness for even `n`; the identical arithmetic would extend it to odd `n` with no new proof technique."
     ]
   },
   "sections": [

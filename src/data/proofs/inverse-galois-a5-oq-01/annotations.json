@@ -86,7 +86,7 @@
   {
     "id": "ann-frobenius-witness",
     "proofId": "inverse-galois-a5-oq-01",
-    "range": { "startLine": 98, "endLine": 108 },
+    "range": { "startLine": 103, "endLine": 108 },
     "type": "tactic",
     "title": "The Arithmetic Frobenius as Explicit Witness",
     "content": "The proof body is three lines but carries the conceptual payoff. `orderOf_arithFrobAt_eq_inertiaDegIn` (the abstract bridge) gives $\\mathrm{orderOf}(\\mathrm{arithFrobAt}\\,\\mathbb{Z}\\,q.\\text{Gal}\\,Q) = \\mathrm{inertiaDegIn}(Q.\\text{under}\\,\\mathbb{Z})$. Rewriting the hypothesis $3 \\mid \\mathrm{inertiaDegIn}$ through this equality gives $3 \\mid \\mathrm{orderOf}(\\text{Frob})$, and `orderOf_dvd_card` (Lagrange) transports it to $3 \\mid |q.\\text{Gal}|$. Crucially the arithmetic Frobenius `arithFrobAt ℤ q.Gal Q` is produced as an *explicit* group element of order divisible by 3 — matching the informal $(1,1,3)$ cycle type with a concrete Mathlib term rather than a bare existence claim.",

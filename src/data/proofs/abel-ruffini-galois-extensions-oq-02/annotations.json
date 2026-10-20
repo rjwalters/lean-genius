@@ -14,8 +14,8 @@
   {
     "id": "ann-arge-oq02-correspondence",
     "proofId": "abel-ruffini-galois-extensions-oq-02",
-    "range": { "startLine": 75, "endLine": 95 },
-    "type": "theorem",
+    "range": { "startLine": 82, "endLine": 102 },
+    "type": "definition",
     "title": "The correspondence and its round trips",
     "content": "`galoisCorrespondence` is Mathlib's `IsGalois.intermediateFieldEquivSubgroup`: an order isomorphism onto the order DUAL of the subgroup lattice (the dual encodes the inclusion-reversal). The two round trips `fixedField_fixingSubgroup` (`fixedField (fixingSubgroup K) = K`) and `fixingSubgroup_fixedField` (`fixingSubgroup (fixedField H) = H`) say the two maps are mutually inverse — the heart of the theorem.",
     "mathContext": "$\\mathrm{fixedField}(\\mathrm{fixingSubgroup}\\,K) = K$ and $\\mathrm{fixingSubgroup}(\\mathrm{fixedField}\\,H) = H$.",
@@ -38,8 +38,8 @@
   {
     "id": "ann-arge-oq02-counting-degree",
     "proofId": "abel-ruffini-galois-extensions-oq-02",
-    "range": { "startLine": 126, "endLine": 159 },
-    "type": "theorem",
+    "range": { "startLine": 133, "endLine": 166 },
+    "type": "definition",
     "title": "Counting and the degree/index dictionary",
     "content": "`intermediateFieldEquivSubgroup'` strips the order-dual wrapper to give a plain bijection, and `card_intermediateField_eq_card_subgroup` counts it: a finite Galois extension has as many intermediate fields as the Galois group has subgroups. The degree dictionary: `card_fixingSubgroup_eq_finrank` gives [E:K] = |K.fixingSubgroup| (Mathlib), and `finrank_eq_index_fixingSubgroup` gives [K:F] = (K.fixingSubgroup).index — assembled by cancelling [E:K] from the tower law [K:F]·[E:K] = [E:F] = |Gal| = index·|fixingSubgroup| (using card_aut_eq_finrank and index_mul_card).",
     "mathContext": "$[E:K] = |\\mathrm{fixingSubgroup}\\,K|$ and $[K:F] = [\\mathrm{Gal} : \\mathrm{fixingSubgroup}\\,K]$.",

@@ -110,7 +110,7 @@
   {
     "id": "ann-unweighted-recovery",
     "proofId": "chebyshev-sum-inequality-oq-01-oq-01",
-    "range": { "startLine": 188, "endLine": 194 },
+    "range": { "startLine": 189, "endLine": 194 },
     "type": "concept",
     "title": "Recovering Mathlib's #s Form",
     "content": "Substituting the constant weight w ≡ 1 collapses W = ∑ 1 = #s and ∑ 1·fᵢgᵢ = ∑ fᵢgᵢ, so the weighted bound becomes exactly Mathlib's (∑ f)(∑ g) ≤ #s · ∑ fg. This is the sanity check that the generalization is faithful: the new result contains the old one as a special case rather than diverging from it.",

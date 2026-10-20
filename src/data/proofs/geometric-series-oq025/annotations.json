@@ -24,7 +24,7 @@
   {
     "id": "ann-typeclass-setting",
     "proofId": "geometric-series-oq025",
-    "range": { "startLine": 62, "endLine": 63 },
+    "range": { "startLine": 65, "endLine": 65 },
     "type": "concept",
     "title": "The Minimal Ambient Structure: a Complete Hausdorff Uniform Abelian Group",
     "content": "The variable block fixes M to be an additive abelian group with a uniform structure compatible with the group operation (IsUniformAddGroup), that is complete (CompleteSpace) and Hausdorff (T2Space). This is exactly the structure each ingredient needs: completeness so that each residue subseries actually converges (Summable.comp_injective lives in the complete-uniform-group section), Hausdorffness so that sums are unique (HasSum.unique requires T2Space), and the topological-group structure to supply the RegularSpace instance that HasSum.prod_fiberwise consumes. Crucially there is no norm, no Banach space, and no absolute convergence beyond plain Summable — the result is strictly more general than the normed-field parent.",

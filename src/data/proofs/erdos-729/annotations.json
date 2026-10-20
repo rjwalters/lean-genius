@@ -26,10 +26,10 @@
   {
     "id": "erdos-729-padic-val",
     "proofId": "erdos-729",
-    "type": "definition",
+    "type": "theorem",
     "range": {
-      "startLine": 41,
-      "endLine": 47
+      "startLine": 42,
+      "endLine": 56
     },
     "title": "Factorial p-adic Valuation",
     "content": "Defines `factorialPadicVal p n` as $\\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$, computing $v_p(n!)$ via Legendre's formula. The axiom `legendre_formula` equates this with Mathlib's `padicValNat p n.factorial`. The sum is finite since $\\lfloor n/p^i \\rfloor = 0$ for $p^i > n$, so only $O(\\log_p n)$ terms are nonzero.",
@@ -170,8 +170,8 @@
     "proofId": "erdos-729",
     "type": "definition",
     "range": {
-      "startLine": 90,
-      "endLine": 93
+      "startLine": 110,
+      "endLine": 113
     },
     "title": "Relaxed Divisibility",
     "content": "Defines `DividesFactorialModSmall n a b C`: there exists a $C$-smooth number $k$ (all prime factors $\\leq C$) such that $k \\cdot a! \\cdot b! \\mid n!$. Multiplying by $k$ 'absorbs' the small prime factors in the denominator. Equivalently, $v_p(a!) + v_p(b!) \\leq v_p(n!)$ need only hold for primes $p > C$, since any deficit at small primes can be compensated by $k$.",
@@ -219,7 +219,7 @@
     "proofId": "erdos-729",
     "type": "concept",
     "range": {
-      "startLine": 114,
+      "startLine": 115,
       "endLine": 116
     },
     "title": "Barreto-Leeham Theorem",
@@ -408,8 +408,8 @@
     "proofId": "erdos-729",
     "type": "concept",
     "range": {
-      "startLine": 179,
-      "endLine": 188
+      "startLine": 134,
+      "endLine": 143
     },
     "title": "Main Problem Statement",
     "content": "Proves `erdos_729_statement` by combining `erdos_1968_classical` (the 1968 bound) and `barreto_leeham_theorem` (the extension). The proof is a simple `constructor` splitting the conjunction, with each half forwarded to its respective axiom. This packages both results into a single statement that Erdős's bound is both true and robust.",
@@ -431,8 +431,8 @@
     "proofId": "erdos-729",
     "type": "concept",
     "range": {
-      "startLine": 194,
-      "endLine": 206
+      "startLine": 257,
+      "endLine": 269
     },
     "title": "Summary Theorem",
     "content": "Proves `erdos_729_summary` combining the negative answer ($\\neg\\text{InfinitelyManyExceptions}(C)$) with the explicit quantitative bound ($a + b \\leq n + D \\log n$ under the relaxed condition). The proof again splits with `constructor` and forwards to the two Barreto-Leeham axioms. This provides the complete answer: NO, and here is the explicit bound.",

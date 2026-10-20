@@ -45,7 +45,8 @@
       "The degree lemma from the parent entry is the load-bearing input: without natDegree (T ℝ n) = n one could exhibit the n nodes as roots but not conclude they are ALL the roots. roots_eq_of_natDegree_le_card_of_ne_zero converts 'n distinct roots' + 'degree n' into the exact root set.",
       "Generalizing the degree/leading-coefficient induction from ℤ to an arbitrary integral domain (with 2 ≠ 0) costs nothing and is exactly what lets the same proof serve over ℝ.",
       "Distinctness is cleanest as a composition: the angle map k ↦ (2k+1)π/(2n) is injective into [0,π], and cos is injective there (injOn_cos), so the node map is injective — no need to compare cosine values directly.",
-      "Phrasing the conclusion as a multiset equality (T ℝ n).roots = S.val packages count (card), simplicity (Nodup), and the explicit node list in one statement, from which the individual corollaries are one-liners."
+      "Phrasing the conclusion as a multiset equality (T ℝ n).roots = S.val packages count (card), simplicity (Nodup), and the explicit node list in one statement, from which the individual corollaries are one-liners.",
+      "The formalized location bound (T_roots_mem_Icc) is the closed statement x ∈ [−1,1], via neg_one_le_cos/cos_le_one; the classical picture actually places every node strictly inside (−1,1), since the node angle (2k+1)π/(2n) ranges over the open interval (0,π) for k = 0,…,n−1 and never hits the endpoints 0 or π where cos is ±1. That sharper Ioo-valued fact is immediate from the same angle bounds already proved in node_injective but is not separately recorded — a natural one-line strengthening."
     ],
     "prerequisites": [
       "The first-kind Chebyshev polynomials and the identity Tₙ(cos θ) = cos(nθ) (Mathlib's Polynomial.Chebyshev.T_real_cos)",

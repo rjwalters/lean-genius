@@ -2,7 +2,7 @@
   {
     "id": "ann-001",
     "proofId": "erdos-895-oq-01",
-    "range": { "startLine": 33, "endLine": 49 },
+    "range": { "startLine": 37, "endLine": 49 },
     "type": "definition",
     "title": "Core Definitions — Graph, Triangle-Free, and Hindman Sets",
     "content": "The file sets up four core definitions. GraphOnInterval n = SimpleGraph (Fin n) represents a graph on vertices {0,1,...,n-1}. IsTriangleFree checks that no three vertices form a triangle (no K₃ subgraph). IsAdditiveTriple requires a.val + b.val = c.val with positive a, b (non-trivial sums). hindmanSet base is the FS-set: all values achievable as a finite nonempty sub-sum of base, modeled as a Set ℕ rather than a Finset (since sums can be arbitrarily large in principle).",
@@ -14,7 +14,7 @@
   {
     "id": "ann-002",
     "proofId": "erdos-895-oq-01",
-    "range": { "startLine": 53, "endLine": 77 },
+    "range": { "startLine": 55, "endLine": 77 },
     "type": "insight",
     "title": "Hindman Set Structural Properties — Monotonicity and Pair Membership",
     "content": "Four sorry-free structural lemmas: (1) hindmanSet_mem_self: every base element is in its own FS-set (via the singleton subset {a}); (2) hindmanSet_mono: FS is monotone — larger base → larger FS-set (via subset transitivity); (3) hindmanSet_pair_left/right: both elements of a 2-element base are in the FS-set; (4) hindmanSet_pair_sum: the sum a+b is in FS({a,b}) for distinct a ≠ b, using Finset.sum_pair to evaluate the full-set sum.",

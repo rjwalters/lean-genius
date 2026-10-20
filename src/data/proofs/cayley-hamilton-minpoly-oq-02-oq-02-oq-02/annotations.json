@@ -94,10 +94,10 @@
     "id": "ann-general-block",
     "proofId": "cayley-hamilton-minpoly-oq-02-oq-02-oq-02",
     "range": {
-      "startLine": 188,
-      "endLine": 254
+      "startLine": 171,
+      "endLine": 237
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "General Jordan Block J_n(mu): minpoly = (X - C mu)^n",
     "content": "Defines `jordanBlock n mu = algebraMap mu + shift n`, the block $J_n(\\mu) = \\mu I + N$. Choosing the algebra-map form makes $\\mathrm{aeval}_{J_n(\\mu)}(X - C\\mu) = J_n(\\mu) - \\mu I = N$ hold by `add_sub_cancel_left`. Hence $(X - C\\mu)^n$ evaluates to $N^n = 0$ and annihilates the block. The minimal polynomial is then $(X - C\\mu)^n$ by the identical UFD argument as the nilpotent case, now over the prime $X - C\\mu$: $\\mathrm{minpoly} = (X - C\\mu)^j$, and $j < n$ would give $N^j = 0$ hence $N^{n-1} = 0$, a contradiction. So each Jordan block contributes exactly the elementary divisor $(X-\\mu)^n$.",
     "mathContext": "$\\mathrm{aeval}_{J_n(\\mu)}(X - C\\mu) = N$, so $\\mathrm{minpoly}(J_n(\\mu)) = (X - C\\mu)^n$ -- the elementary divisor of the block.",

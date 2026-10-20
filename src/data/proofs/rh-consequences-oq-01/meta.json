@@ -96,6 +96,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "§0: Module Header — The Honest Axiom Boundary",
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "Module docstring stating the forward direction of Littlewood's theorem and explaining why this file exists alongside the sibling oq-03: that sibling derives the ε-bound from the |M(n)| ≤ C·√n axiom, which is strictly stronger than RH gives and believed false (Odlyzko–te Riele 1985 disproved the Mertens conjecture). This file instead factors the implication through Perron's formula via the RH-free truncation-error axiom (P) and the RH-carrying conditional 1/ζ bound (Z), combined by a machine-checked triangle-inequality Assembly. Also flags that the parent's rh_implies_mertens_bound axiom overclaims and should be softened to the ε-form. Imports Mathlib's RiemannHypothesis predicate and ArithmeticFunction.moebius.",
+      "mathContext": "Forward direction of Littlewood's theorem: RH $\\Rightarrow M(x) = O(x^{1/2+\\varepsilon})$, factored through Perron's formula rather than the believed-false $|M(x)| \\le C\\sqrt x$ bound."
+    },
+    {
       "id": "mertens-function",
       "title": "The Mertens function",
       "startLine": 69,

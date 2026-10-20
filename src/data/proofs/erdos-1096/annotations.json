@@ -46,8 +46,8 @@
     "id": "ann-e1096-examples",
     "proofId": "erdos-1096",
     "range": {
-      "startLine": 60,
-      "endLine": 70
+      "startLine": 61,
+      "endLine": 71
     },
     "type": "concept",
     "title": "Basic Examples",
@@ -67,7 +67,7 @@
     "id": "ann-e1096-sequence",
     "proofId": "erdos-1096",
     "range": {
-      "startLine": 79,
+      "startLine": 81,
       "endLine": 89
     },
     "type": "definition",
@@ -112,10 +112,10 @@
     "id": "ann-e1096-gap-property",
     "proofId": "erdos-1096",
     "range": {
-      "startLine": 123,
-      "endLine": 134
+      "startLine": 81,
+      "endLine": 92
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "Gap Property and EJK Results",
     "content": "**HasGapProperty q:**\n\nA value q has the **gap property** if:\n\n`lim_{k→∞} gap(q, k) = 0`\n\nFormalized as `Filter.Tendsto (gap q) Filter.atTop (nhds 0)`.\n\n**Key EJK Results (1990):**\n- `pisot_no_gap_property`: Pisot numbers do NOT have the gap property\n- `gap_universal_bound`: For 1 < q ≤ 2, all gaps ≤ 1\n\nPisot numbers create 'holes' in q-expansion structure that persist at all scales.",
     "mathContext": "$\\text{HasGapProperty}(q) :\\Leftrightarrow \\lim_{k \\to \\infty} g_q(k) = 0$, formalized as `Filter.Tendsto (gap q) atTop (nhds 0)`. EJK (1990): $\\theta$ Pisot $\\Rightarrow \\neg\\text{HasGapProperty}(\\theta)$. Also: $\\forall q \\in (1, 2],\\, g_q(k) \\leq 1$.",

@@ -44,7 +44,7 @@
   {
     "id": "ann-frobeniusnumber3-def",
     "proofId": "frobenius-number-oq-03",
-    "range": { "startLine": 96, "endLine": 112 },
+    "range": { "startLine": 109, "endLine": 125 },
     "type": "definition",
     "title": "frobeniusNumber3 — The Three-Generator Frobenius Number as sSup",
     "content": "Defines `frobeniusNumber3 a b c` as the supremum of the set of non-representable naturals. The choice of `sSup` (rather than a minimum-of-counterexamples formulation) gracefully handles two degenerate cases via the ℕ-sSup convention `csSup_empty = 0`: (1) when the set is empty (e.g., a = 1, where every n = a*n is representable), and (2) when the set is unbounded (e.g., a = b = c = 0). In both degenerate cases, `frobeniusNumber3` defaults to 0. The trade-off: attainment of the supremum becomes a separate theorem (`not_representable3_frobeniusNumber3_of_nonempty`) requiring `BddAbove` + `Nonempty` hypotheses. The function is marked `noncomputable` because `sSup` on ℕ uses classical choice.",

@@ -330,10 +330,10 @@
     "id": "ann-1131-cheb-exact",
     "proofId": "erdos-1131",
     "range": {
-      "startLine": 987,
-      "endLine": 1006
+      "startLine": 993,
+      "endLine": 1053
     },
-    "type": "theorem",
+    "type": "lemma",
     "title": "Exact Chebyshev Integral",
     "content": "`chebyshev_integral_exact`: for $n \\ge 2$, $I(\\text{Chebyshev}) = 2 - \\frac{2(n-1)}{n(2n-1)}$, an exact closed form. Combines the trace formula `chebyshev_integral_trace` with the telescoping `partial_fraction_sum`, finishing with `field_simp`.",
     "significance": "key",
@@ -351,8 +351,8 @@
     "id": "ann-1131-cheb-lt-two",
     "proofId": "erdos-1131",
     "range": {
-      "startLine": 1008,
-      "endLine": 1021
+      "startLine": 1076,
+      "endLine": 1089
     },
     "type": "theorem",
     "title": "Chebyshev Integral is < 2",
@@ -371,8 +371,8 @@
     "id": "ann-1131-cheb-integral",
     "proofId": "erdos-1131",
     "range": {
-      "startLine": 1023,
-      "endLine": 1040
+      "startLine": 1091,
+      "endLine": 1108
     },
     "type": "theorem",
     "title": "Chebyshev Integral Estimate: I ≈ 2 − c/n",
@@ -392,8 +392,8 @@
     "id": "ann-1131-min-integral",
     "proofId": "erdos-1131",
     "range": {
-      "startLine": 1046,
-      "endLine": 1048
+      "startLine": 1114,
+      "endLine": 1116
     },
     "type": "definition",
     "title": "Minimum Lagrange Integral",

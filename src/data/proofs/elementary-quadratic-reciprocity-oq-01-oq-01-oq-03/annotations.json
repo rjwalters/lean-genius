@@ -14,7 +14,7 @@
   {
     "id": "ann-gauss-jacobi-identity",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
-    "range": { "startLine": 62, "endLine": 107 },
+    "range": { "startLine": 70, "endLine": 115 },
     "type": "insight",
     "title": "The Gauss-Jacobi Product Identity (Part I)",
     "content": "Part I of the file packages five core Mathlib identities into a clean, locally-named API. The headline `jacobiSum_gaussSum_relation`: $g(\\chi\\phi, \\psi) \\cdot J(\\chi,\\phi) = g(\\chi, \\psi) \\cdot g(\\phi, \\psi)$ for $\\chi\\phi \\neq 1$. The four supporting identities are the ratio form (when $|F| \\neq 0$ in $R$), the trivial-left case $J(1,\\chi) = -1$, the complementary pair $J(\\chi, \\chi^{-1}) = -\\chi(-1)$ (which immediately collapses $J(\\chi,\\chi)$ to a sign in the quadratic case), and commutativity. Each is a one-line term-mode delegation to `Mathlib.NumberTheory.JacobiSum.Basic`. The bundled set is what every higher-power-reciprocity client downstream needs.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-algebraic-norm",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
-    "range": { "startLine": 109, "endLine": 141 },
+    "range": { "startLine": 116, "endLine": 148 },
     "type": "insight",
     "title": "Algebraic Norm: J(χ,φ)·J(χ⁻¹,φ⁻¹) = #F (Part II)",
     "content": "Part II of the file. `jacobiSum_algebraic_norm` (lines 124-129): for nontrivial $\\chi, \\phi, \\chi\\phi$ with cross-characteristic $\\mathrm{char}(F') \\neq \\mathrm{char}(F)$, the algebraic norm $J(\\chi,\\phi) \\cdot J(\\chi^{-1},\\phi^{-1}) = |F|$. `jacobiSum_prime_field_norm` (lines 132-139): specializes to $F = \\mathbb{Z}/p\\mathbb{Z}$, simplifying the conclusion to $J \\cdot \\bar J = p$. The prime-field specialization is the workhorse used by Parts III-IV.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-cubic-quartic",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
-    "range": { "startLine": 143, "endLine": 189 },
+    "range": { "startLine": 152, "endLine": 198 },
     "type": "insight",
     "title": "Cubic = Quartic, Abstractly: The Order-Blind Norm Theorems (Part III)",
     "content": "Part III states the cubic, quartic, and general k-th-power norm theorems. The striking observation: `quartic_jacobi_algebraic_norm` is *implemented as a literal one-line wrapper* around `cubic_jacobi_algebraic_norm`. Both share the same Lean signature — hypothesis `χ ≠ 1 ∧ χ^2 ≠ 1`, conclusion `J(χ,χ)·J(χ⁻¹,χ⁻¹) = p` — because the abstract Mathlib theorem only sees `χ * χ = χ^2 ≠ 1`, not the order of $\\chi$ itself. This means **the formal Lean statement cannot distinguish cubic from quartic characters**; the arithmetic distinction (Eisenstein vs Gaussian integers, $a^2-ab+b^2=p$ vs $a^2+b^2=p$) is *external* to the abstract signature, emerging only when one tracks $J$ as a concrete element of $\\mathbb{Z}[\\omega]$ vs $\\mathbb{Z}[i]$ in the ambient $F'$. The general theorem `general_jacobi_norm` (lines 182-187) extends to non-diagonal pairs $(\\chi, \\chi^k)$ — the form needed for full Eisenstein reciprocity at higher prime orders $\\ell$. The `pow_succ` rewrite ($\\chi \\cdot \\chi^k = \\chi^{k+1}$) is what discharges the nontriviality of the product factor.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-quadratic-recovery",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
-    "range": { "startLine": 191, "endLine": 230 },
+    "range": { "startLine": 200, "endLine": 239 },
     "type": "insight",
     "title": "Quadratic Degeneracy: Why the Jacobi-Sum Framework Excludes Quadratic Reciprocity (Part IV)",
     "content": "Part IV makes the quadratic-vs-higher-order contrast explicit. `quadratic_jacobi_is_sign` (lines 213-216): for any nontrivial $\\chi$, $J(\\chi, \\chi^{-1}) = -\\chi(-1)$; for quadratic $\\chi$ ($\\chi^2 = 1$, so $\\chi^{-1} = \\chi$), this collapses to $J(\\chi,\\chi) = -\\chi(-1) \\in \\{\\pm 1\\}$ — just a sign, encoding only $p \\bmod 4$. `cubic_vs_quadratic_contrast` (lines 223-228): for cubic+ $\\chi$ ($\\chi^2 \\neq 1$), the norm formula activates, giving $J(\\chi,\\chi) \\cdot J(\\chi^{-1},\\chi^{-1}) = p$ — the full algebraic norm. The conceptual lesson: the quadratic Legendre character is *too weak* for the Jacobi-sum framework, and it sits at the *boundary* of where the framework applies. Quadratic reciprocity must therefore be proved by the *Gauss-sum* framework instead — specifically by $g(\\chi)^2 = \\chi(-1) \\cdot p$, which is the substantive object in the quadratic case.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-results-summary-program-map",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
-    "range": { "startLine": 232, "endLine": 277 },
+    "range": { "startLine": 219, "endLine": 264 },
     "type": "concept",
     "title": "Results Summary Table and the Higher-Power Reciprocity Program Map",
     "content": "The 44-line trailing docstring serves two functions. First, a Markdown table inventories all 12 file-level theorems, separating the 7 Mathlib-API wrappers from the 5 original contributions (`jacobiSum_prime_field_norm`, `cubic_jacobi_algebraic_norm`, `quartic_jacobi_algebraic_norm`, `general_jacobi_norm`, `cubic_vs_quadratic_contrast`). Second, a 'Mathematical Significance' section maps the algebraic norm identity onto three classical reciprocity laws and one general framework: cubic reciprocity (Gauss 1828, Eisenstein 1844 in $\\mathbb{Z}[\\omega]$), quartic reciprocity (Gauss/Eisenstein in $\\mathbb{Z}[i]$), general Eisenstein reciprocity (Eisenstein 1850 in $\\mathbb{Z}[\\zeta_\\ell]$ for odd prime $\\ell$). For each, the residue-symbol formula is given alongside the role of $J$ as an explicit norm-$p$ element. The table+map combination makes the file *self-indexing*: a downstream reader can identify the relevant lemma for their reciprocity-proof step without re-reading the implementation.",

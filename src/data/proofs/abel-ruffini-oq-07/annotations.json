@@ -32,7 +32,7 @@
   {
     "id": "ann-abel-ruffini-oq-07-03",
     "proofId": "abel-ruffini-oq-07",
-    "range": { "startLine": 78, "endLine": 91 },
+    "range": { "startLine": 79, "endLine": 91 },
     "type": "insight",
     "title": "The Corrected Assembly Criterion",
     "content": "gal_eq_top_of_five_dvd_and_swap is the group-theoretic core: any subgroup G ≤ S₅ with 5 ∣ |G| and containing a transposition equals ⊤ = S₅. It is proved by feeding the two number-theoretic facts into Mathlib's Equiv.Perm.subgroup_eq_top_of_swap_mem together with card_fin5_prime. Crucially the two inputs (5 ∣ |G|, transposition ∈ G) are HYPOTHESES of the theorem, not axioms — keeping the file fully verified (0 sorry, 0 axiom) while making explicit exactly what the missing Dedekind–Frobenius bridge would have to supply. This is the corrected proof's reusable, hypothesis-driven heart.",
@@ -56,7 +56,7 @@
   {
     "id": "ann-abel-ruffini-oq-07-05",
     "proofId": "abel-ruffini-oq-07",
-    "range": { "startLine": 101, "endLine": 111 },
+    "range": { "startLine": 102, "endLine": 111 },
     "type": "insight",
     "title": "The Formal Correction: a Double Transposition is Even",
     "content": "prod_two_swaps_mem_alternating is the formal content of the correction: a product of two transpositions is an EVEN permutation (sign = (−1)(−1) = 1), so it lies in A₅. Complex conjugation on the roots of X⁵−X−1 (one real root fixed, two conjugate pairs swapped) is exactly such a double transposition — hence NOT a transposition, contradicting the curated route's assumption. The proof rewrites through map_mul (sign is multiplicative) and the two IsSwap.sign_eq facts, then decide. This single lemma is why the curated assembler fails for this polynomial.",

@@ -197,8 +197,8 @@
     "id": "ann-hausdorff-free-subgroup",
     "proofId": "lebesgue-measure-oq-06",
     "range": {
-      "startLine": 554,
-      "endLine": 858
+      "startLine": 555,
+      "endLine": 875
     },
     "type": "theorem",
     "title": "Hausdorff's Theorem: SO(3) Contains a Free Subgroup of Rank 2 (Proved)",
@@ -248,10 +248,10 @@
     "id": "ann-nonmeasurable-corollary",
     "proofId": "lebesgue-measure-oq-06",
     "range": {
-      "startLine": 904,
-      "endLine": 962
+      "startLine": 905,
+      "endLine": 963
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Corollary: Banach-Tarski Pieces Are Non-Measurable (Proved)",
     "content": "`banach_tarski_pieces_nonmeasurable` is a **proved theorem** (derived from the `banach_tarski` axiom, no sorry): the unit ball contains a non-Lebesgue-measurable subset. The argument: if all pieces were measurable, countable additivity gives λ(B³) = Σᵢ λ(pᵢ); the two reassemblies and isometry-invariance of λ give Σᵢ λ(pᵢ) = 2λ(B³) = 2·(4π/3), contradicting Σᵢ λ(pᵢ) = λ(B³). Hence at least one piece is non-measurable.",
     "mathContext": "If pieces $P_i$ are measurable: $\\lambda(B^3) = \\sum_i \\lambda(P_i)$, and isometry-invariance gives $\\sum_i \\lambda(P_i) = 2\\lambda(B^3)$. Since $\\lambda(B^3) = 4\\pi/3 \\in (0,\\infty)$, this forces $\\lambda(B^3) = 2\\lambda(B^3)$, a contradiction — so some $P_i$ is non-measurable.",
@@ -272,8 +272,8 @@
     "id": "ann-amenability",
     "proofId": "lebesgue-measure-oq-06",
     "range": {
-      "startLine": 968,
-      "endLine": 984
+      "startLine": 986,
+      "endLine": 1002
     },
     "type": "definition",
     "title": "§VI: Amenable Groups — The Group-Theoretic Obstruction",
@@ -297,8 +297,8 @@
     "id": "ann-int-amenable",
     "proofId": "lebesgue-measure-oq-06",
     "range": {
-      "startLine": 996,
-      "endLine": 1259
+      "startLine": 1014,
+      "endLine": 1279
     },
     "type": "theorem",
     "title": "ℤ is Amenable (Proved)",

@@ -14,7 +14,7 @@
   {
     "id": "ann-edpoq01010101-oddpart",
     "proofId": "erdos-divisibility-pigeonhole-oq001",
-    "range": { "startLine": 59, "endLine": 85 },
+    "range": { "startLine": 49, "endLine": 75 },
     "type": "definition",
     "title": "The odd-part interface (N-independent)",
     "content": "oddPart m := ordCompl[2] m = m / 2^(v₂ m) is the index of the divisibility chain containing m. The helper lemmas — oddPart_dvd, oddPart_le, oddPart_pos, odd_oddPart (it is odd, via Nat.not_dvd_ordCompl), and oddPart_eq_self (an odd number equals its own odd part) — are reused verbatim from the even-case sibling: the chain interface does not depend on the interval endpoint N. The odd numbers are exactly the fixed points of oddPart, hence the chain representatives.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-edpoq01010101-chaincount",
     "proofId": "erdos-divisibility-pigeonhole-oq001",
-    "range": { "startLine": 104, "endLine": 134 },
+    "range": { "startLine": 108, "endLine": 134 },
     "type": "theorem",
     "title": "Exactly ⌈N/2⌉ chains",
     "content": "image_oddPart_Icc identifies the odd parts occurring in {1,…,N} with {2i+1 : i < (N+1)/2}. The ceiling appears here: the bound 2i+1 ≤ N is equivalent to i < (N+1)/2, and omega proves both directions natively (it handles ℕ division by 2, including the parity split that distinguishes even N = 2n from odd N = 2n+1). card_chains then counts the image via the injective i ↦ 2i+1: the chain cover of {1,…,N} has exactly ⌈N/2⌉ = (N+1)/2 chains. fiber_chain restricts the comparability lemma to {1,…,N}, certifying each fiber is a chain.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-edpoq01010101-antichainbound",
     "proofId": "erdos-divisibility-pigeonhole-oq001",
-    "range": { "startLine": 136, "endLine": 152 },
+    "range": { "startLine": 137, "endLine": 154 },
     "type": "theorem",
     "title": "Upper bound via the chain cover (Mirsky/Dilworth)",
     "content": "antichain_card_le: any divisibility-antichain A ⊆ {1,…,N} has |A| ≤ ⌈N/2⌉. If two members of A shared an odd part they would be ∣-comparable (fiber_chain), forcing equality, so oddPart is injective on A; thus |A| = |A.image oddPart| ≤ |image over the whole interval| = ⌈N/2⌉ (card_chains). This is the Mirsky/Dilworth direction — max antichain ≤ min chain cover — now established for every N rather than only the even case.",

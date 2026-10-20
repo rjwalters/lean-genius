@@ -14,7 +14,7 @@
   {
     "id": "definitions-mirror",
     "proofId": "bounded-prime-gaps-oq-01-oq-01",
-    "range": { "startLine": 64, "endLine": 84 },
+    "range": { "startLine": 69, "endLine": 84 },
     "type": "definition",
     "title": "Definitions mirrored from the parent file",
     "content": "IsAdmissible, nthPrime, primeGap, and MaynardTaoDensity are reproduced verbatim from Proofs.BoundedPrimeGaps. Keeping the file dependent only on Mathlib lets it verify without rebuilding the native_decide-heavy parent, while the verbatim definitions make the redundancy claim literal: the theorems below discharge the exact conclusion shape of the parent's axioms.",

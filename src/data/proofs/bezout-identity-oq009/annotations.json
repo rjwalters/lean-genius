@@ -50,7 +50,7 @@
   {
     "id": "ann-concrete-examples",
     "proofId": "bezout-identity-oq009",
-    "range": { "startLine": 121, "endLine": 140 },
+    "range": { "startLine": 122, "endLine": 140 },
     "type": "concept",
     "title": "Concrete Examples: norm_num for Positive Cases, decide for Negative",
     "content": "Part 3 gives machine-checked examples. Positive cases (primes ≡ 1 mod 4 and p=2): 2=1²+1², 5=1²+2², 13=2²+3², 17=1²+4², 29=2²+5², all verified by norm_num. Negative cases (primes ≡ 3 mod 4): 3, 7, 11 are not sums of two squares, each proved by not_sum_sq_of_mod4_eq_three with primality and p%4=3 verified by decide. The pattern 'norm_num for existence, decide for primality' is characteristic of concrete number-theoretic verifications in Lean 4.",

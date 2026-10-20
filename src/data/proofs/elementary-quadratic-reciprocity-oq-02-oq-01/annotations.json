@@ -44,7 +44,7 @@
   {
     "id": "quad-char-c-definition",
     "proofId": "elementary-quadratic-reciprocity-oq-02-oq-01",
-    "range": { "startLine": 65, "endLine": 78 },
+    "range": { "startLine": 69, "endLine": 82 },
     "type": "definition",
     "title": "quadCharC: Promoting the Legendre Symbol to ℂ",
     "content": "The key definition: quadCharC is the Legendre symbol (quadraticChar (ZMod p)) composed with the ring homomorphism Int.castRingHom ℂ : ℤ →+* ℂ. This produces a MulChar (ZMod p) ℂ — a multiplicative character from ZMod p to ℂ. The private lemma char_ZMod_ne_two shows ringChar (ZMod p) = p ≠ 2 for odd primes, which is needed to establish that the character is nontrivial.",

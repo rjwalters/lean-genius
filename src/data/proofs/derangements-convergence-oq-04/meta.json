@@ -96,9 +96,17 @@
       "id": "sec-congruence",
       "title": "Companion Congruence: D(n) ≡ (−1)^n (mod n)",
       "startLine": 57,
-      "endLine": 92,
-      "summary": "numDerangements_congr_neg_one_pow: for all n, (n : ℤ) ∣ (D(n) − (−1)^n), via numDerangements_succ and (−1)^{n+1} = −(−1)^n; n=0 is 0∣0. numDerangements_zmod_eq restates it as (D(n) : ZMod n) = (−1)^n. Closing examples sanity-check the main divisibility on n = 2, 4, 5.",
+      "endLine": 82,
+      "summary": "numDerangements_congr_neg_one_pow: for all n, (n : ℤ) ∣ (D(n) − (−1)^n), via numDerangements_succ and (−1)^{n+1} = −(−1)^n; n=0 is 0∣0. numDerangements_zmod_eq restates it as (D(n) : ZMod n) = (−1)^n.",
       "mathContext": "$D(n+1) - (-1)^{n+1} = (n+1)\\,D(n)$ follows from $D(n+1) = (n+1)D(n) - (-1)^n$ since $(-1)^{n+1} = -(-1)^n$; hence $D(n) \\equiv (-1)^n \\pmod n$."
+    },
+    {
+      "id": "sec-examples",
+      "title": "Sanity-Check Examples",
+      "startLine": 84,
+      "endLine": 90,
+      "summary": "Five closing `example`s numerically confirm the main divisibility on concrete small cases: (2−1) ∣ D(2), (4−1) ∣ D(4), D(4) = 9 and D(5) = 44 by `decide`, and (5−1) ∣ D(5) — a spot-check that the abstract theorem matches the known derangement values.",
+      "mathContext": "D(4) = 9, D(5) = 44 are the standard small derangement counts; 44 = 4·11 witnesses (5−1) ∣ D(5) concretely."
     }
   ],
   "crossReferences": [

@@ -2,7 +2,7 @@
   "id": "erdos-180",
   "title": "Erdős Problem #180: Turán Numbers for Graph Families",
   "slug": "erdos-180",
-  "description": "For a finite family F of graphs, does there exist G in F such that ex(n;G) = O(ex(n;F))? Yes for non-bipartite families by Erdős-Stone. Folklore counterexample for infinite families. OPEN.",
+  "description": "For a finite family F of graphs, does there exist G in F such that ex(n;G) = O(ex(n;F))? Yes for non-bipartite families by Erdős-Stone. Folklore counterexample for infinite families. Reported refuted 2026-08-01 (external). Reported resolved externally on 2026-08-01 by OpenAI's Lean-certified `ten-proofs` release (statement-level review only in this gallery — not rebuilt; see the external-resolution note in the overview).",
   "meta": {
     "author": "Erdős-Simonovits [ErSi82]",
     "sourceUrl": "https://erdosproblems.com/180",
@@ -86,9 +86,9 @@
     "definitionCount": 6
   },
   "overview": {
-    "historicalContext": "Erdős and Miklós Simonovits posed this problem in their 1982 survey [ErSi82] on extremal graph theory. The question is motivated by the Erdős-Stone theorem (1946), which determines $\\mathrm{ex}(n; H) = (1 - 1/(\\chi(H)-1) + o(1))\\binom{n}{2}$ for non-bipartite $H$, making the domination question trivial when all forbidden graphs have $\\chi \\geq 3$. The difficulty lies entirely in the bipartite case, where the Zarankiewicz problem (Kővári-Sós-Turán 1954) gives $\\mathrm{ex}(n; K_{s,t}) = O(n^{2-1/s})$ but precise asymptotics are often unknown. The problem connects to Simonovits's broader program of understanding when extremal functions for families are 'simple' — determined by a single member rather than requiring the full family structure.",
-    "problemStatement": "For a finite family $\\mathcal{F}$ of graphs, let $\\mathrm{ex}(n; \\mathcal{F})$ be the maximum edges in an $n$-vertex $\\mathcal{F}$-free graph. Does there always exist $G \\in \\mathcal{F}$ such that $\\mathrm{ex}(n; G) = O(\\mathrm{ex}(n; \\mathcal{F}))$? **OPEN.**",
-    "text": "For a finite family F of graphs, does there exist G in F such that ex(n;G) = O(ex(n;F))? Yes for non-bipartite families by Erdős-Stone. Folklore counterexample for infinite families. OPEN.",
+    "historicalContext": "Erdős and Miklós Simonovits posed this problem in their 1982 survey [ErSi82] on extremal graph theory. The question is motivated by the Erdős-Stone theorem (1946), which determines $\\mathrm{ex}(n; H) = (1 - 1/(\\chi(H)-1) + o(1))\\binom{n}{2}$ for non-bipartite $H$, making the domination question trivial when all forbidden graphs have $\\chi \\geq 3$. The difficulty lies entirely in the bipartite case, where the Zarankiewicz problem (Kővári-Sós-Turán 1954) gives $\\mathrm{ex}(n; K_{s,t}) = O(n^{2-1/s})$ but precise asymptotics are often unknown. The problem connects to Simonovits's broader program of understanding when extremal functions for families are 'simple' — determined by a single member rather than requiring the full family structure.\n\n**External resolution (2026-08-01, OpenAI/Astra, Lean-certified) — reviewed here at statement level, not independently rebuilt.** OpenAI's release *Ten advances in mathematics and theoretical computer science* (2026-08-01) reports a counterexample to the Erdős–Simonovits compactness conjecture, certified in `CompactnessAndDegeneracy.lean` in https://github.com/openai/ten-proofs @ 94bc0feb6a9ff12c7d31d6de640a725c9d43d2b6 (Apache-2.0, Lean 4.32.0 + Mathlib v4.32.0). Their `CompactnessConjecture.CompactnessConjectureStatement` reads: for every nonempty finite family whose every member contains a cycle, some member $F$ admits $C > 0$ with $\\mathrm{ex}(n; F) \\le C \\cdot \\mathrm{ex}(n; \\mathcal{F})$ eventually — i.e. exactly the domination question this entry poses, phrased over Mathlib's `SimpleGraph.extremalNumber`. `CompactnessConjecture.not_erdos_180 : ¬ CompactnessConjectureStatement` asserts the conjecture is false, and `quantitativeCompactnessCounterexample` exhibits the witness: a finite family containing $C_4$ and $C_6$ together with two explicit quotient constructions, every member connected, bipartite and cyclic, with $\\mathrm{ex}(n; \\mathcal{F}) = o(n^{4/3})$ while every member satisfies $\\mathrm{ex}(n; F) \\ge c \\cdot n^{4/3}$ — so no member is within a constant factor of the family. The family is **finite** and has at least two members, so the reported counterexample is of the kind this entry says is missing, not the folklore infinite-family one.\n\n**Verification status (gallery, 2026-09-23).** Static review of the module found 0 `sorry`, 0 `axiom` declarations, no `native_decide`, and no `opaque` / `unsafe` / `implemented_by`; their `formalization.yaml` declares `sorry_count: 0` with axioms `propext`, `Classical.choice`, `Quot.sound` only, and the paired `ComparatorChallenges/*.json` independently re-states the theorems and permits exactly those three axioms. We could not rebuild the module: their `lean-toolchain` pins Lean 4.32.0 while the gallery's sanctioned Docker image pins Lean 4.31.0, and the in-container attempt to install 4.32.0 failed on the build host (`Read-only file system (os error 30)` while unpacking the toolchain, and a matching read-only error from the Docker daemon's own containerd store), so this is a **statement-level review only**. Two caveats specific to this entry. First, our Lean file does not state the conjecture over graphs at all: `Erdos180.ErdosConjecture180` quantifies over abstract extremal functions `ℕ → ℕ`, so their theorem refutes the *mathematical* conjecture rather than literally our formal statement. Second, and independently of anything OpenAI did: our `erdos_stone_domination` axiom is stated unconditionally over arbitrary function families, with nothing linking `familyEx` to `memberExs`, and instantiating it at `familyEx := fun _ => 0` and `memberExs := {fun _ => 1}` demands `1 ≤ C * 0` — so that axiom implies `False` and `erdos_180_summary` carries no information. That is a defect in this entry, not a consequence of the external result; a restatement over `SimpleGraph.extremalNumber` is tracked in follow-up issue #43752. **Status, badge and axiom count are left unchanged in this pass**, pending that repair and a build we ran ourselves.",
+    "problemStatement": "For a finite family $\\mathcal{F}$ of graphs, let $\\mathrm{ex}(n; \\mathcal{F})$ be the maximum edges in an $n$-vertex $\\mathcal{F}$-free graph. Does there always exist $G \\in \\mathcal{F}$ such that $\\mathrm{ex}(n; G) = O(\\mathrm{ex}(n; \\mathcal{F}))$?\n\n**Reported refuted (2026-08-01, external).** OpenAI's `ten-proofs` release reports a finite family of connected bipartite cyclic graphs with $\\mathrm{ex}(n; \\mathcal{F}) = o(n^{4/3})$ while every member has $\\mathrm{ex}(n; F) \\ge c \\cdot n^{4/3}$. Reviewed at statement level here, not rebuilt — see the external-resolution note in the historical context.",
+    "text": "For a finite family F of graphs, does there exist G in F such that ex(n;G) = O(ex(n;F))? Yes for non-bipartite families by Erdős-Stone. Folklore counterexample for infinite families. Reported refuted 2026-08-01 (external). Reported resolved externally on 2026-08-01 by OpenAI's Lean-certified `ten-proofs` release (statement-level review only in this gallery — not rebuilt; see the external-resolution note in the overview).",
     "proofStrategy": "The formalization abstracts the problem to functions $\\mathbb{N} \\to \\mathbb{N}$ (`ExFamily`, `ExSingle`) rather than encoding concrete graph structures. `HasDomination` captures the Big-$O$ relationship via an explicit constant $C > 0$. The non-bipartite case is axiomatized via Erdős-Stone — but note that the `erdos_stone_domination` axiom is stated *unconditionally* (domination for every nonempty family, with no bipartite hypothesis), so as formalized it assumes more than the non-bipartite case alone and in fact subsumes the open conjecture itself. The folklore counterexample for infinite families uses `List` (unbounded) rather than `Finset` (finite) to demonstrate that finiteness is essential. The summary theorem `erdos_180_summary` proves both results as a conjunction in a single line.",
     "keyInsights": [
       "The domination property asks if a single forbidden graph controls the family's extremal function",
@@ -125,7 +125,7 @@
       "title": "The Main Conjecture",
       "startLine": 53,
       "endLine": 63,
-      "summary": "ErdosConjecture180: every finite family has domination (OPEN)"
+      "summary": "ErdosConjecture180: every finite family has domination (reported refuted 2026-08-01, external — see the overview)"
     },
     {
       "id": "erdos-stone",
@@ -157,14 +157,15 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #180 asks whether a single forbidden graph always dominates the Turán number of a finite graph family. Resolved for non-bipartite families via Erdős-Stone, but open in general. The folklore counterexample shows finiteness is essential.",
+    "summary": "Erdős Problem #180 asks whether a single forbidden graph always dominates the Turán number of a finite graph family. Resolved for non-bipartite families via Erdős-Stone, and open in general until the 2026 external counterexample noted below. The folklore counterexample shows finiteness is essential. **External claim (2026-08-01):** OpenAI's `ten-proofs` release reports a Lean-certified finite counterexample — a family containing C_4 and C_6 plus explicit quotients, with ex(n;F) = o(n^{4/3}) but ex(n;F_i) ≥ c·n^{4/3} for every member — hence `not_erdos_180 : ¬ CompactnessConjectureStatement`. Reviewed at statement level in the overview above; not rebuilt here (their Lean 4.32.0 vs. our 4.31.0 image). Note also that this entry's own `erdos_stone_domination` axiom, as written, implies `False` (see the overview) — a defect tracked separately.",
     "implications": "**Theoretical Significance**: A positive resolution would show that the extremal function of any finite forbidden family is always asymptotically determined by a single 'bottleneck' member.\n\nThis would simplify the study of extremal functions and connect to the broader Simonovits program. A negative resolution (a finite counterexample) would reveal unexpected complexity in how bipartite Turán numbers interact, with implications for the Zarankiewicz problem and algebraic constructions of extremal graphs.",
     "openQuestions": [
-      "Does domination hold for all finite families, especially those containing bipartite graphs with different Zarankiewicz exponents?",
-      "For finite families $\\{K_{2,3}, K_{3,3}\\}$, does $\\mathrm{ex}(n; K_{2,3}) = O(\\mathrm{ex}(n; \\{K_{2,3}, K_{3,3}\\}))$?",
-      "Can the infinite-family counterexample be adapted to a finite family by truncating?",
-      "Is there a connection between domination and the algebraic structure of extremal graphs (e.g., incidence geometries)?",
-      "Does a weaker statement hold: $\\mathrm{ex}(n; G) = O(\\mathrm{ex}(n; \\mathcal{F})^{1+\\varepsilon})$ for some $G \\in \\mathcal{F}$?"
+      "Does domination hold for all finite families, especially those containing bipartite graphs with different Zarankiewicz exponents? — **reported answered NO** (OpenAI, 2026-08-01: a finite family of connected bipartite cyclic graphs with ex(n;F) = o(n^{4/3}) and every member ≥ c·n^{4/3}); statement-level review only, see the external-resolution note in the overview",
+      "For finite families $\\{K_{2,3}, K_{3,3}\\}$, does $\\mathrm{ex}(n; K_{2,3}) = O(\\mathrm{ex}(n; \\{K_{2,3}, K_{3,3}\\}))$? — still open; the reported counterexample uses a different family",
+      "Can the infinite-family counterexample be adapted to a finite family by truncating? — the reported counterexample is finite but is built from cycle plus quotient constructions rather than by truncating the folklore star/matching family, so the truncation question stands",
+      "Is there a connection between domination and the algebraic structure of extremal graphs (e.g., incidence geometries)? — sharpened by the reported witness, whose lower bounds come from symplectic-quadrangle avoidance over GaloisField 2^j and 3^j",
+      "Does a weaker statement hold: $\\mathrm{ex}(n; G) = O(\\mathrm{ex}(n; \\mathcal{F})^{1+\\varepsilon})$ for some $G \\in \\mathcal{F}$? — the natural surviving question once exact domination is reported false",
+      "Can this entry be restated over Mathlib's `SimpleGraph.extremalNumber` and `Finset` families, replacing the abstract `ℕ → ℕ` formulation and the unconditional `erdos_stone_domination` axiom (which as written implies `False`) with a genuine Erdős–Stone statement?"
     ]
   },
   "leanFile": {
@@ -210,6 +211,17 @@
       "venue": "Academic Press, London",
       "year": "1978",
       "note": "Comprehensive reference for extremal graph theory"
+    },
+    {
+      "key": "OpenAI26",
+      "authors": [
+        "OpenAI"
+      ],
+      "title": "Ten advances in mathematics and theoretical computer science",
+      "year": "2026",
+      "venue": "OpenAI (paper plus Lean 4 certificates; github.com/openai/ten-proofs, Apache-2.0)",
+      "url": "https://cdn.openai.com/pdf/ten-proofs-oai.pdf",
+      "note": "Result 10 reports counterexamples to the compactness and degeneracy conjectures, resolving Erdős #180 and #146 (CompactnessAndDegeneracy.lean; declarations quantitativeCompactnessCounterexample, compactnessCounterexample_bigO and not_erdos_180; repo commit 94bc0fe, Lean 4.32.0). Reviewed at statement level 2026-09-23; not rebuilt in this gallery."
     }
   ],
   "sorries": 0

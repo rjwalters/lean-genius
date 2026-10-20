@@ -48,8 +48,8 @@
     "proofId": "erdos-848",
     "type": "definition",
     "range": {
-      "startLine": 23,
-      "endLine": 25
+      "startLine": 24,
+      "endLine": 26
     },
     "title": "Squarefree Definition",
     "content": "**`IsSquarefree n`** holds when no prime squared divides n. Equivalently, in the prime factorization n = Π p^{aₚ}, all exponents aₚ are 0 or 1.",
@@ -71,8 +71,8 @@
     "proofId": "erdos-848",
     "type": "definition",
     "range": {
-      "startLine": 27,
-      "endLine": 37
+      "startLine": 28,
+      "endLine": 38
     },
     "title": "Non-Squarefree Product Property and Extremal Function",
     "content": "**`HasNonSqfreeProductProp A`** requires that for ALL pairs a, b ∈ A (including a = b), the product ab + 1 is not squarefree. **`maxNonSqfreeSet N`** is axiomatized as the maximum cardinality of such a set in {1,...,N}, with the trivial upper bound maxNonSqfreeSet(N) ≤ N.",

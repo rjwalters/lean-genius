@@ -14,7 +14,7 @@
   {
     "id": "ann-drs-oq0104-signvarlist",
     "proofId": "descartes-rule-of-signs-oq-01-oq-04",
-    "range": { "startLine": 57, "endLine": 71 },
+    "range": { "startLine": 59, "endLine": 73 },
     "type": "definition",
     "title": "signVarList: The Computable Core",
     "content": "`signVarList (l : List ℚ) : ℕ := (((l.map SignType.sign).filter (· ≠ 0)).destutter (· ≠ ·)).length - 1` is a deliberate operation-for-operation mirror of Mathlib's `signVariations`, but taking an explicit list of rational coefficients rather than a polynomial.\n\nEvery step is decidable on ℚ: `SignType.sign` needs only a decidable comparison with 0, the `· ≠ 0` filter is a decidable predicate on `SignType`, and `List.destutter (· ≠ ·)` needs `DecidableEq SignType`. Consequently the whole function reduces in the kernel — it `#eval`s and, crucially, equalities about it are provable by `decide` (no `native_decide`, so no `Lean.ofReduceBool`).",

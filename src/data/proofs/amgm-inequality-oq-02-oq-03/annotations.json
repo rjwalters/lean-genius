@@ -53,10 +53,10 @@
     "id": "ann-newton-lc",
     "proofId": "amgm-inequality-oq-02-oq-03",
     "range": {
-      "startLine": 81,
-      "endLine": 86
+      "startLine": 85,
+      "endLine": 97
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "newton_lc: Log-Concavity Bridge to Axiom",
     "content": "`newton_lc` is a one-line wrapper that restates `newton_log_concavity` from the parent file in terms of `normElemSymm`: $a_k^2 \\geq a_{k-1} \\cdot a_{k+1}$. This indirection serves two purposes: (1) it translates the parent axiom's statement from raw `elemSymm`/`choose` notation into the local `normElemSymm` notation; (2) it clearly marks the single point of dependence on the parent axiom within this file — every use of log-concavity in the proof flows through this bridge. The theorem is called at line 110 inside the inductive step of `power_inequality`.",
     "mathContext": "$a_k^2 \\geq a_{k-1} \\cdot a_{k+1}$ for $1 \\leq k$ and $k+1 \\leq n$ and non-negative inputs. This is Newton's inequality in normalized form. Equivalent to: $\\left(\\frac{e_k}{\\binom{n}{k}}\\right)^2 \\geq \\frac{e_{k-1}}{\\binom{n}{k-1}} \\cdot \\frac{e_{k+1}}{\\binom{n}{k+1}}$.",
@@ -101,8 +101,8 @@
     "id": "ann-maclaurin-rpow-step",
     "proofId": "amgm-inequality-oq-02-oq-03",
     "range": {
-      "startLine": 186,
-      "endLine": 213
+      "startLine": 39,
+      "endLine": 66
     },
     "type": "insight",
     "title": "Maclaurin Step via Root Extraction: rpow Monotonicity",

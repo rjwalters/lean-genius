@@ -27,8 +27,8 @@
     "proofId": "erdos-95",
     "type": "definition",
     "range": {
-      "startLine": 43,
-      "endLine": 60
+      "startLine": 44,
+      "endLine": 61
     },
     "title": "Points, Configurations, and Distance Multiplicity",
     "content": "`Point := EuclideanSpace ℝ (Fin 2)` (the plane $\\mathbb{R}^2$). `dist p q := \\|p - q\\|`. `PointConfig`: a `Finset Point` with `card > 0`. `distanceSet P`: all pairwise distances via `image` on the Cartesian product. `multiplicity P d`: counts pairs at distance $d$ via `filter` on the product.",
@@ -125,7 +125,7 @@
     "proofId": "erdos-95",
     "type": "concept",
     "range": {
-      "startLine": 118,
+      "startLine": 119,
       "endLine": 133
     },
     "title": "The Polynomial Method (Commentary)",
@@ -173,8 +173,8 @@
     "proofId": "erdos-95",
     "type": "concept",
     "range": {
-      "startLine": 165,
-      "endLine": 183
+      "startLine": 130,
+      "endLine": 164
     },
     "title": "Main Theorem and Summary",
     "content": "`erdos_95`: the conjunction `ErdosConjecture ∧ (∃ C > 0, ∀ P, ∑f(d)² ≤ C · n³ log n)`, proved by `⟨erdos_conjecture_proved, guth_katz_theorem⟩`. Also `erdos_95_answer` and `erdos_95_status` as documentation strings. `#check` commands verify the key definitions typecheck.",

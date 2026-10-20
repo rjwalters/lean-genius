@@ -50,7 +50,7 @@
   {
     "id": "ann-schur-invertible",
     "proofId": "cramers-rule-oq-01-oq-02-oq-03",
-    "range": { "startLine": 164, "endLine": 205 },
+    "range": { "startLine": 187, "endLine": 205 },
     "type": "definition",
     "title": "Two-Sided Inverse and Invertible Instance",
     "content": "Assembles $\\mathrm{schurInv}(A) \\cdot A = 1$, states the two-sided theorem, and constructs an `Invertible A` instance with inverse `schurInv A`. Over a commutative field this is shown to coincide with Mathlib's nonsingular inverse $A^{-1}$ via `Matrix.inv_eq_left_inv`.",

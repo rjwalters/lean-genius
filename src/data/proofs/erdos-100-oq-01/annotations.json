@@ -115,8 +115,8 @@
     "content": "`piepmeyer_upper` states the existence of Piepmeyer's 9-point configuration: a set of 9 non-collinear points in ℝ² with all $\\binom{9}{2} = 36$ pairwise distances being positive integers $\\leq 4$. The proof has 1 sorry because it requires an explicit coordinate witness — specific $(x_i, y_i)$ values that must be verified by computation. This configuration is extremal: it shows the diameter can be as small as 4 for $n = 9$, while the lower bound gives $\\text{diam} \\geq c \\cdot 9 / \\log 9 \\approx 4.1c$.\n\nDemonstrates that small-$n$ configurations achieving near-optimal diameter ratios exist explicitly. These extremal cases are important calibration points: the lower bound conjecture must be consistent with such constructions. Piepmeyer's configuration is a key data point suggesting the true constant $c$ in the linear conjecture is small.",
     "proofId": "erdos-100-oq-01",
     "range": {
-      "startLine": 123,
-      "endLine": 141
+      "startLine": 124,
+      "endLine": 142
     }
   }
 ]

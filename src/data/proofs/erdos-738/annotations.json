@@ -52,8 +52,8 @@
     "proofId": "erdos-738",
     "type": "definition",
     "range": {
-      "startLine": 35,
-      "endLine": 37
+      "startLine": 50,
+      "endLine": 56
     },
     "title": "Chromatic Number Bound",
     "content": "Defines `ChromAtMost G k` as `Nonempty (G.Coloring (Fin k))`: there exists a proper coloring of $G$ with at most $k$ colors. A proper coloring assigns colors to vertices such that adjacent vertices receive different colors. Using `Fin k` as the color type makes the number of colors explicit.",
@@ -148,8 +148,8 @@
     "proofId": "erdos-738",
     "type": "concept",
     "range": {
-      "startLine": 57,
-      "endLine": 63
+      "startLine": 309,
+      "endLine": 318
     },
     "title": "Gyárfás Conjecture (Main)",
     "content": "Axiomatizes `gyarfas_conjecture`: for every triangle-free graph $G$ with $\\chi(G) = \\infty$ and every finite tree $T$ on $n$ vertices, $G$ contains an induced copy of $T$. The statement is universe-polymorphic in $V$ (the vertex type), making it applicable to any graph. This is the central open problem, with only partial results known (paths, stars, radius-2 trees, caterpillars).",
@@ -268,8 +268,8 @@
     "proofId": "erdos-738",
     "type": "concept",
     "range": {
-      "startLine": 93,
-      "endLine": 99
+      "startLine": 358,
+      "endLine": 367
     },
     "title": "Kierstead-Penrice: Radius-2 Trees",
     "content": "Axiomatizes `kierstead_penrice_radius2`: the conjecture holds for trees of radius $\\leq 2$ (all vertices within distance 2 of a center vertex). The 1994 proof uses the high chromatic number to find a center vertex whose neighborhood has high chromatic number, then extends outward. The axiom includes a placeholder `True` hypothesis for the radius condition, simplifying the formalization.",

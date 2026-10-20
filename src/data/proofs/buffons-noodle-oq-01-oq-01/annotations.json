@@ -14,7 +14,7 @@
   {
     "id": "ann-buffons-noodle-oq-01-oq-01-02",
     "proofId": "buffons-noodle-oq-01-oq-01",
-    "range": { "startLine": 56, "endLine": 73 },
+    "range": { "startLine": 61, "endLine": 78 },
     "type": "definition",
     "title": "smoothExpectedGridCrossings: Additivity at the Kinematic-Measure Level",
     "content": "smoothExpectedGridCrossings γ a b dh dv := smoothExpectedCrossings γ a b dh + smoothExpectedCrossings γ a b dv, the sum of the parent's smooth single-family functional over the two perpendicular spacings. This encodes additivity of expectation across families definitionally, with no new probabilistic primitive — the smooth analogue of the parent's expectedGridCrossings for polygonal noodles. It is declared in the BuffonsNoodle namespace (alongside the parent definition) so it sits with the kinematic-measure layer it builds on.",

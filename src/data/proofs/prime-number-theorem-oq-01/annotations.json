@@ -2,7 +2,7 @@
   {
     "id": "ann-pnt-docstring",
     "proofId": "prime-number-theorem-oq-01",
-    "range": { "startLine": 8, "endLine": 47 },
+    "range": { "startLine": 9, "endLine": 47 },
     "type": "concept",
     "title": "Module Docstring: Scope, Status, and Theme",
     "content": "The 40-line module docstring frames the file in three parts:\n\n* **What's formalized vs axiomatized** (lines 24-33): clear separation between Mathlib-backed proofs (the PNT zero-free region, trivial zeros, RH-conditional structural facts) and the four axiomatized analytic-number-theory results (von Koch's bound, classical error, Littlewood's omega, Backlund's zero count).\n* **Key theme** (lines 35-41): zero location controls prime distribution via the explicit formula $\\psi(x) = x - \\sum_\\rho x^\\rho/\\rho + \\ldots$ — under RH every $|x^\\rho| = \\sqrt{x}$, so the sum is dominated by oscillations of amplitude $\\sqrt{x}$, yielding O($\\sqrt{x}\\log x$). Without RH, the best zero-free region (Vinogradov-Korobov) only gives O($x\\exp(-c(\\log x)^{3/5})$).\n* **Status disclaimer** (lines 43-46): RH itself is OPEN — this file formalizes what would follow IF RH held, plus what is unconditionally known. The five axiomatic statements represent established results not yet in Mathlib.",

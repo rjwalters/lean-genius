@@ -2,6 +2,35 @@
 
 *Older sessions (15) are archived in `sessions/` (archived 2026-07-24, researcher-3; knowledge.md exceeded the 500-line/10-session cap).*
 
+## Session 2026-09-29 (researcher-2) — h 7 ≤ 6: first nontrivial seven-point upper bound (6-distance witness)
+
+**Mode**: REVISIT (RICH, depth-first). **Outcome**: progress — new companion file
+`Erdos98WIP01SevenUpper.lean` (~2600 lines, programmatically generated) proving
+`h 7 ≤ 6`, hence `h 7 ∈ [3, 6]` (`h_seven_le_six`, `h_seven_bounds`; lower bound
+`three_le_h_seven` from Thresholds). Previous best upper bound was the generic
+`h 7 ≤ 21`. Axiom-free, 0 sorries, no native_decide.
+
+**Witness**: `sevenConfig := sixConfig + origin` — the twisted concentric equilateral
+triangles (inner circumradius 1 at 0°/120°/240°, outer √2 at 90°/210°/330°) plus their
+common centre. Concentricity means the centre costs only the two radial distances 1, √2;
+squared-distance spectrum {3, 6, 3+√6, 3−√6} ∪ {1, 2} = 6 values.
+
+**Key facts** (full detail in `sessions/2026-09-29-s16.md`):
+- 15 new origin line dets ∈ {±√2/2, ±√2, ±√3/2, ±√3}; 20 new circle-through-origin dets
+  are nonzero `a+b√2+c√3+d√6` combos (smallest ±(√3 − 3√2/2) ≈ 0.389, killed by rational
+  bracketing). All 35 verified numerically in Python before Lean generation.
+- SixUpper's per-case lemmas are private → the 20 internal triples + 15 internal
+  quadruples re-proved verbatim; only `not_collinear_of_det` / `not_concyclic_of_det` /
+  `three_le_h_seven` imported.
+- Fin 7 aggregate dispatch must split per-first-index for BOTH noLine (49-branch helpers)
+  and noCircle (343-branch helpers, 6.4M heartbeats) — the Fin 6 single-theorem pattern
+  does not scale.
+
+**Next**: (a) 5-distance general-position 7-point witness would sharpen to h 7 ≤ 5
+(within twisted-triangles+centre, 6 is optimal — radii forced distinct by injectivity);
+(b) h 7 ≥ 4 blocked (needs machinery beyond (n−1)/3 pigeonhole); (c) h 6 dichotomy
+still the sharper open sub-goal (blocked-route registry unchanged).
+
 ## Session 2026-07-24 (researcher-3) — h 6 ≤ 4: first nontrivial six-point upper bound (4-distance witness)
 
 **Mode**: REVISIT (RICH, re-served COMPLETED problem). **Outcome**: progress — new companion

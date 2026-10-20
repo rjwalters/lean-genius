@@ -26,7 +26,7 @@
   {
     "id": "lucas-gen-invariant",
     "proofId": "fibonacci-identities-oq003",
-    "range": { "startLine": 105, "endLine": 124 },
+    "range": { "startLine": 106, "endLine": 124 },
     "type": "insight",
     "title": "The Generalized Cassini Invariant",
     "content": "The fundamental invariant Uₙ₊₁² − P·Uₙ₊₁·Uₙ + Q·Uₙ² = Qⁿ is a one-step induction in which substituting Uₙ₊₂ = P·Uₙ₊₁ − Q·Uₙ multiplies the quadratic form by exactly Q — so the inductive step is the single tactic `linear_combination Q * ih`. This is the Lucas-sequence generalization of Cassini's identity Fₙ₊₁Fₙ₋₁ − Fₙ² = (−1)ⁿ, which is its P = 1, Q = −1 shadow. Combined with the bridge it gives the difference of squares (Ⅰ) outright.",
@@ -38,7 +38,7 @@
   {
     "id": "lucas-gen-addition",
     "proofId": "fibonacci-identities-oq003",
-    "range": { "startLine": 126, "endLine": 185 },
+    "range": { "startLine": 127, "endLine": 185 },
     "type": "tactic",
     "title": "Addition Laws and Their Diagonal Cases",
     "content": "The two addition laws 2·Uₘ₊ₙ = Uₘ·Vₙ + Vₘ·Uₙ and 2·Vₘ₊ₙ = Vₘ·Vₙ + D·Uₘ·Uₙ are two-step inductions in n, base cases n = 0, 1 supplied by the bridge, inductive step closed by `linear_combination P * ih2 − Q * ih1`. Setting m = n collapses them to the diagonal: lucas_sq_add (the sum of squares Vₙ² + D·Uₙ² = 2V₂ₙ) and lucas_mul (the cross identity Vₙ·Uₙ = U₂ₙ). Keeping the factor 2 throughout keeps every step inside ℤ with no division; it cancels exactly once, in the cross identity, via `mul_left_cancel₀ two_ne_zero`.",
@@ -50,7 +50,7 @@
   {
     "id": "lucas-gen-recovery",
     "proofId": "fibonacci-identities-oq003",
-    "range": { "startLine": 187, "endLine": 246 },
+    "range": { "startLine": 188, "endLine": 246 },
     "type": "concept",
     "title": "Recovering Fibonacci–Lucas as the D = 5 Instance",
     "content": "U_eq_fib and V_eq_lucas prove by two-step induction that the (P, Q) = (1, −1) sequences are literally the gallery's Nat.fib and the parent's lucas, so fib_lucas_sq_sub, fib_lucas_sq_add, and fib_lucas_mul are corollaries of the general theorems rather than independent re-proofs. The same four-line identification specializes the entire trio to any concrete sequence: the numeric checks exhibit the difference identity for the Pell–Lucas sequence (P, Q) = (2, −1) and the cross identity for (P, Q) = (3, 2), where Uₙ = 2ⁿ − 1.",

@@ -2,10 +2,10 @@
   {
     "id": "inverse-galois-a5-polynomial",
     "proofId": "inverse-galois-a5",
-    "type": "definition",
+    "type": "theorem",
     "range": {
-      "startLine": 85,
-      "endLine": 200
+      "startLine": 170,
+      "endLine": 285
     },
     "title": "The Polynomial q(x) = x⁵ - 5x⁴ + 10x³ - 10x² + 25x - 5",
     "content": "`q : ℚ[X]` is defined explicitly with coefficients. Four key properties are proved:\n\n- **`q_irreducible`**: Proved by Eisenstein's criterion at p=5. Non-leading coefficients are {-5, 25, -10, 10, -5} — all divisible by 5. The constant term -5 is not divisible by 25. Leading coefficient 1 is not divisible by 5. Therefore q is irreducible over ℚ.\n- **`q_natDegree = 5`**: Proved by `norm_num` / computation.\n- **`q_monic`**: Direct from definition (leading coefficient is 1).\n- **`q_separable`**: Follows from irreducibility (`Irreducible.separable`).\n- **`q_rootSet_card = 5`**: The splitting field has exactly 5 distinct roots, proved using Mathlib's `Polynomial.roots` API and separability.",

@@ -28,8 +28,8 @@
     "proofId": "erdos-393",
     "type": "definition",
     "range": {
-      "startLine": 45,
-      "endLine": 47
+      "startLine": 46,
+      "endLine": 48
     },
     "title": "Factorization Definition",
     "content": "**IsFactorization n factors:**\n\nA factorization of n is a list of positive integers whose product equals n.\n\nConditions:\n- factors.prod = n\n- All factors are ≥ 1\n\nThis captures the basic notion of multiplicative decomposition.",
@@ -74,7 +74,7 @@
     "proofId": "erdos-393",
     "type": "concept",
     "range": {
-      "startLine": 72,
+      "startLine": 73,
       "endLine": 77
     },
     "title": "The f(n) Function",
@@ -97,8 +97,8 @@
     "proofId": "erdos-393",
     "type": "definition",
     "range": {
-      "startLine": 84,
-      "endLine": 86
+      "startLine": 81,
+      "endLine": 83
     },
     "title": "Product of Consecutive Integers",
     "content": "**IsProductOfConsecutive n:**\n\nn! = k(k+1) for some k ≥ 1.\n\nThis is the special case where f(n) = 1 - the smallest possible span.\n\n**Example:** 3! = 6 = 2 · 3 (two consecutive integers).\n\nErdős and Graham asked: Is this true for infinitely many n?",
@@ -120,8 +120,8 @@
     "proofId": "erdos-393",
     "type": "definition",
     "range": {
-      "startLine": 103,
-      "endLine": 105
+      "startLine": 98,
+      "endLine": 100
     },
     "title": "Counting Function F_m(N)",
     "content": "**F(m, N):**\n\nThe count of n ≤ N with f(n) = m.\n\nF_m(N) = #{n ≤ N : f(n) = m}\n\nThis allows density analysis: how often does f(n) take the value m?",
@@ -189,8 +189,8 @@
     "proofId": "erdos-393",
     "type": "definition",
     "range": {
-      "startLine": 122,
-      "endLine": 126
+      "startLine": 117,
+      "endLine": 121
     },
     "title": "ABC Conjecture",
     "content": "**ABCConjecture:**\n\nFor all ε > 0, there exists K such that for coprime a + b = c:\n\nc ≤ K · rad(abc)^{1+ε}\n\nwhere rad(n) is the product of distinct prime factors of n.\n\nThis is one of the most important open conjectures in number theory.",

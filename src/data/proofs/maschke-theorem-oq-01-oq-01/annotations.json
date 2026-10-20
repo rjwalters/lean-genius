@@ -2,7 +2,7 @@
   {
     "id": "ann-setup-definitions",
     "proofId": "maschke-theorem-oq-01-oq-01",
-    "range": { "startLine": 63, "endLine": 79 },
+    "range": { "startLine": 65, "endLine": 79 },
     "type": "definition",
     "title": "The Modular Group Algebra and Its Generator",
     "content": "The cyclic group ℤ/p is written multiplicatively as `G = Multiplicative (ZMod p)` so that its group algebra is a `MonoidAlgebra`, and `A = MonoidAlgebra (ZMod p) (G p)` is the modular group algebra 𝔽_p[ℤ/p] — the regular representation of ℤ/p over the field with p elements. The `CharP (A p) p` instance is supplied by `charP_of_injective_algebraMap'`, which transfers the characteristic from the scalar field 𝔽_p up to the faithful algebra A; this is what licenses the freshman's dream later. The generator `g = single (ofAdd 1) 1` is the basis element indexed by the additive generator 1 ∈ ℤ/p — the group element whose powers exhaust the group.",

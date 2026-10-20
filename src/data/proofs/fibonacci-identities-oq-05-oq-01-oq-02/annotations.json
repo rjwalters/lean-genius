@@ -2,7 +2,7 @@
   {
     "id": "ann-gib-setup",
     "proofId": "fibonacci-identities-oq-05-oq-01-oq-02",
-    "range": { "startLine": 41, "endLine": 45 },
+    "range": { "startLine": 37, "endLine": 45 },
     "type": "definition",
     "title": "Gibonacci abstraction: recurrence as a hypothesis",
     "content": "The `Gibonacci` section fixes an arbitrary integer sequence `G : ℕ → ℤ` together with a hypothesis `hrec : ∀ n, G (n+2) = G n + G (n+1)` (the only structure used). Abstracting the recurrence this way — rather than hard-coding Fibonacci — is the key move: Fibonacci and Lucas then become the *same* theorem evaluated at different sequences, and the discriminant D = G₁² − G₁G₀ − G₀² is the sole invariant that survives.",

@@ -1,0 +1,16 @@
+2026-10-12T23:01:10Z
+1
+  -j, --threads=num      number of threads used to process lean files
+  -s, --tstack=num       thread stack size in Kb
+104600              282                 719                 28841312            /root/.elan/toolchains/leanprover--lean4---v4.31.0/bin/lean /workspace/proofs/Proofs/Erdos18WIP01.lean -o /workspace/proofs/.lake/build/lib/lean/Proofs/Erdos18WIP01.olean -i /workspace/proofs/.lake/build/lib/lean/Proofs/Erdos18WIP01.ilean -c /workspace/proofs/.lake/build/ir/Proofs/Erdos18WIP01.c --setup /workspace/proofs/.lake/build/ir/Proofs/Erdos18WIP01.setup.json --json
+MODE=build
+REF=fix/safe-subset-43756-20261012
+TARGET=Proofs.Erdos18WIP01
+CMD=''
+MEM_GB=110
+TIMEOUT=2h
+THREADS=1
+CACHE=0
+CPUS=16
+VOLUME=''
+FULL=0

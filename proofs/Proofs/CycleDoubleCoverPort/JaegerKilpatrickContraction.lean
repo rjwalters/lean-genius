@@ -24,6 +24,8 @@ Unlike the earlier slices of this port, which were independent re-derivations,
 this file follows upstream's definitions, statements and proof scripts closely,
 adapted only where this repository's Mathlib pin required it. Attribution: the
 mathematical content and the proof scripts originate with `openai/cdc-lean`.
+See `LICENSE-STATUS.md` in this directory for the inventory of vendored files and
+the per-file re-derivation plan (tracking issue #43638).
 
 Upstream's toolchain pin (Lean `v4.31.0`) now matches this repository's, so the
 adaptation surface is small. It consists of:

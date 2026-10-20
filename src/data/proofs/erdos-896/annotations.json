@@ -189,8 +189,8 @@
     "proofId": "erdos-896",
     "type": "concept",
     "range": {
-      "startLine": 128,
-      "endLine": 132
+      "startLine": 74,
+      "endLine": 80
     },
     "title": "Exact Order Conjecture",
     "content": "`ExactOrderConjecture` states that $\\max F(A,B) = \\Theta(N^2/\\log N)$: there exist constants $C_1, C_2 > 0$ such that $C_1 N^2/\\log N \\leq \\max F \\leq C_2 N^2/\\log N$ for all $N \\geq 2$. This is equivalent to `ErdosProblem896` and asserts that Van Doorn's lower bound captures the correct order of magnitude.",
@@ -233,8 +233,8 @@
     "proofId": "erdos-896",
     "type": "concept",
     "range": {
-      "startLine": 144,
-      "endLine": 146
+      "startLine": 109,
+      "endLine": 110
     },
     "title": "Summary Theorem",
     "content": "`erdos_896_summary` combines both of Van Doorn's bounds into a single statement: `VanDoornLowerBound ∧ VanDoornUpperBound`. The proof extracts directly from the `van_doorn_bounds` axiom. This serves as the file's main result, packaging the state of knowledge: the lower bound $(1+o(1))N^2/\\log N$ and the upper bound $N^2/(\\log N)^{0.086} \\cdot (\\log\\log N)^{3/2}$.",

@@ -98,7 +98,7 @@
   {
     "id": "ann-sub-instances",
     "proofId": "zsqrtd-neg-two-oq-03",
-    "range": { "startLine": 120, "endLine": 126 },
+    "range": { "startLine": 135, "endLine": 141 },
     "type": "insight",
     "title": "Subtraction projection lemmas (via sub_eq_add_neg)",
     "content": "`sub_re` and `sub_im` are derived from `add_re/add_im` and `neg_re/neg_im` via the `sub_eq_add_neg` rewrite. The `show (x + -y).re = x.re - y.re` line opens the goal at the underlying definition `a - b := a + -b` (introduced by the `sub := fun a b => a + -b` field in `addCommGroup`), and `simp [sub_eq_add_neg]` finishes. Once these are `@[simp]`-tagged, the `commRing` instance proof can rely on them automatically during the ring-axiom discharge.",
@@ -110,7 +110,7 @@
   {
     "id": "ann-addgroupwithone-commring",
     "proofId": "zsqrtd-neg-two-oq-03",
-    "range": { "startLine": 128, "endLine": 149 },
+    "range": { "startLine": 107, "endLine": 128 },
     "type": "insight",
     "title": "AddGroupWithOne and CommRing instances",
     "content": "`AddGroupWithOne Eisenstein` extends the `AddCommGroup` with `natCast := fun n => ofInt (n : ℤ)` and `intCast := ofInt` — the canonical embeddings of the literal-numeral types. `CommRing Eisenstein` then refines onto this base, supplying `npowRec` for the power-recursor and discharging the remaining ring axioms (`left/right_distrib`, `zero_mul`, `mul_zero`, `mul_assoc`, `one_mul`, `mul_one`, `mul_comm`) by the same `<;> intros <;> ext <;> simp <;> ring` template. Each axiom reduces to an integer-polynomial identity in `re` and `im`, which `ring` decides. **Why this works uniformly**: the multiplication formula $(ac - bd, ad + bc - bd)$ is bilinear in $(a,b)$ and $(c,d)$, so every ring axiom unfolds to a polynomial identity in 6 integer variables — well within `ring`'s decision procedure.",
@@ -146,7 +146,7 @@
   {
     "id": "ann-norm-mul",
     "proofId": "zsqrtd-neg-two-oq-03",
-    "range": { "startLine": 169, "endLine": 173 },
+    "range": { "startLine": 144, "endLine": 148 },
     "type": "theorem",
     "title": "Multiplicativity: $N(xy) = N(x)N(y)$",
     "content": "`norm_mul` proves the multiplicativity of the norm: $N(xy) = N(x) \\cdot N(y)$ for all $x, y \\in \\mathbb{Z}[\\omega]$. The one-line proof `simp only [norm, mul_re, mul_im]; ring` unfolds both sides into polynomial expressions in $x.\\mathrm{re}, x.\\mathrm{im}, y.\\mathrm{re}, y.\\mathrm{im}$ and closes by `ring`. This is **the algebraic spine of the entire $p = x^2 + 3y^2$ program**: in S4-S5, the splitting argument runs by showing a prime $p \\equiv 1 \\pmod 3$ is non-irreducible in $\\mathbb{Z}[\\omega]$ (via quadratic reciprocity), then writing $p = N(\\alpha)$ for some $\\alpha = a + b\\omega$, and finally extracting $p = a^2 - ab + b^2$ which the completing-the-square identity converts to $4p = (2a - b)^2 + 3b^2$ and after parity analysis to $p = x^2 + 3y^2$.",
@@ -242,8 +242,8 @@
   {
     "id": "ann-legendresym-neg-three",
     "proofId": "zsqrtd-neg-two-oq-03",
-    "range": { "startLine": 459, "endLine": 476 },
-    "type": "theorem",
+    "range": { "startLine": 471, "endLine": 488 },
+    "type": "lemma",
     "title": "S4 Step 1: $\\bigl(\\tfrac{-3}{p}\\bigr) = \\bigl(\\tfrac{-1}{p}\\bigr) \\cdot \\bigl(\\tfrac{3}{p}\\bigr)$",
     "content": "`legendreSym_neg_three` is the **first** ingredient of the S4 splitting argument toward $p = x^2 + 3y^2$. It is the trivial multiplicativity step using `legendreSym.mul` from Mathlib's Legendre-symbol API: $\\bigl(\\tfrac{-3}{p}\\bigr) = \\bigl(\\tfrac{(-1) \\cdot 3}{p}\\bigr) = \\bigl(\\tfrac{-1}{p}\\bigr) \\cdot \\bigl(\\tfrac{3}{p}\\bigr)$. Hypothesis: only `[Fact p.Prime]` is required (no $p \\ne 2$ or $p \\ne 3$), since `legendreSym` is defined for all primes and the multiplicativity holds unconditionally on the codomain $\\{-1, 0, 1\\}$. This is the lightest possible API call in the splitting argument, but it sets up the **classical Heegner-3 factorization template** $\\bigl(\\tfrac{-3}{p}\\bigr) = \\chi_4(p) \\cdot \\bigl(\\tfrac{p}{3}\\bigr) \\cdot (\\mathrm{QR sign})$ that S15 Step 2 will continue.",
     "mathContext": "$\\bigl(\\tfrac{-3}{p}\\bigr) = \\bigl(\\tfrac{-1}{p}\\bigr) \\bigl(\\tfrac{3}{p}\\bigr)$ for any odd prime $p$. Combined with $\\bigl(\\tfrac{-1}{p}\\bigr) = \\chi_4(p)$ (legendreSym.at_neg_one) and quadratic reciprocity $\\bigl(\\tfrac{3}{p}\\bigr) \\bigl(\\tfrac{p}{3}\\bigr) = (-1)^{(p-1)(3-1)/4} = \\chi_4(p)$, we get $\\bigl(\\tfrac{-3}{p}\\bigr) = \\bigl(\\tfrac{p}{3}\\bigr)$ — which equals 1 iff $p \\equiv 1 \\pmod 3$.",
@@ -254,8 +254,8 @@
   {
     "id": "ann-legendresym-neg-three-iff",
     "proofId": "zsqrtd-neg-two-oq-03",
-    "range": { "startLine": 516, "endLine": 557 },
-    "type": "theorem",
+    "range": { "startLine": 517, "endLine": 558 },
+    "type": "lemma",
     "title": "S15 Step 2: $\\bigl(\\tfrac{-3}{p}\\bigr) = 1 \\iff p \\equiv 1 \\pmod 3$",
     "content": "`legendreSym_neg_three_eq_one_iff` is the **main S15 ACT deliverable** and the Heegner-3 characterization: for odd primes $p \\ne 3$, $\\bigl(\\tfrac{-3}{p}\\bigr) = 1 \\iff p \\equiv 1 \\pmod 3$. This is the classical Heegner-number criterion for the primes representable as $x^2 + 3y^2$. Proof strategy:\n\n1. Decompose via `legendreSym_neg_three` (S4 Step 1): $\\bigl(\\tfrac{-3}{p}\\bigr) = \\bigl(\\tfrac{-1}{p}\\bigr) \\cdot \\bigl(\\tfrac{3}{p}\\bigr)$.\n2. Compute $\\bigl(\\tfrac{-1}{p}\\bigr) = \\chi_4(p)$ via `legendreSym.at_neg_one`.\n3. Case-split on $p \\bmod 4 \\in \\{1, 3\\}$:\n   - $p \\equiv 1 \\pmod 4$: $\\chi_4(p) = 1$, QR gives $\\bigl(\\tfrac{3}{p}\\bigr) = \\bigl(\\tfrac{p}{3}\\bigr)$.\n   - $p \\equiv 3 \\pmod 4$: $\\chi_4(p) = -1$, QR for $(3 \\bmod 4, p \\bmod 4) = (3, 3)$ gives $\\bigl(\\tfrac{3}{p}\\bigr) = -\\bigl(\\tfrac{p}{3}\\bigr)$; the two $-1$ signs cancel.\n4. Both branches reduce to $\\bigl(\\tfrac{p}{3}\\bigr) = 1 \\iff p \\equiv 1 \\pmod 3$ via the private helper `legendreSym_three_eq_one_iff_p_mod_three_eq_one` (decides on the finite codomain $\\mathbb{Z}/3$).\n\nThe helper handles the $p \\bmod 3 \\in \\{1, 2\\}$ split (forced by $p \\ne 3$ so $p \\bmod 3 \\ne 0$): branch 1 has $\\bigl(\\tfrac{1}{3}\\bigr) = 1 \\checkmark$; branch 2 has $\\bigl(\\tfrac{2}{3}\\bigr) = -1$ since 2 is not a square mod 3 (closed `decide` helper `not_isSquare_two_zmod_three`).",
     "mathContext": "Classical Heegner result: $p = x^2 + 3y^2$ has a solution iff $p \\equiv 1 \\pmod 3$ (for $p$ an odd prime, $p \\ne 3$). The Legendre-symbol equivalence $\\bigl(\\tfrac{-3}{p}\\bigr) = 1 \\iff -3 \\text{ is QR mod } p$ then closes via $p = x^2 + 3y^2 \\iff (-3)$ is a square mod $p$ via Eisenstein factorization. S16+ will use this to extract the explicit factorization $p = \\alpha \\beta$ in $\\mathbb{Z}[\\omega]$.",

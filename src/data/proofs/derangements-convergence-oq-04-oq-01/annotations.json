@@ -62,7 +62,7 @@
   {
     "id": "ann-terms-verification",
     "proofId": "derangements-convergence-oq-04-oq-01",
-    "range": { "startLine": 94, "endLine": 103 },
+    "range": { "startLine": 95, "endLine": 103 },
     "type": "concept",
     "title": "Tabulated Terms and Cross-Checks",
     "content": "The examples verify q 2..5 = 3, 11, 53, 309 by decide (the first A000255 terms), that the recurrence reproduces them (q 4 = 4·q 3 + 3·q 2 = 53), and the quotient identity D(6) = 5·q(4) = 265. These decidable checks certify the closed recurrence and quotient identity against the tabulated integer sequence, guarding against off-by-one indexing errors.",

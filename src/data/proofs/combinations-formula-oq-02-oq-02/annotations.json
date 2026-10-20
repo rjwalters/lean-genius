@@ -98,7 +98,7 @@
   {
     "id": "ann-cfoq0202-consistency",
     "proofId": "combinations-formula-oq-02-oq-02",
-    "range": { "startLine": 176, "endLine": 187 },
+    "range": { "startLine": 177, "endLine": 187 },
     "type": "theorem",
     "title": "Consistency: Values and Agreement with Mathlib",
     "content": "Two sanity checks. catalan_values reproduces C_0..C_5 = 1,1,2,5,14,42 by decide, and catalan_eq_mathlib proves the local catalan agrees with Mathlib's catalan by combining the multiplicative identity with Nat.catalan_eq_centralBinom_div. Together they confirm the definition and all derived closed forms describe the genuine Catalan sequence.",

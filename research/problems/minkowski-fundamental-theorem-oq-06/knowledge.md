@@ -187,3 +187,28 @@ fails, contradicting mean < 2. `IsPrimitive.neg` via `smul_neg`;
 no-2-torsion via `(2:ℝ)•v = 0`. 383→498 LOC, 21 thms, 0 sorry/axiom,
 host-verified v4.31 foundational-only. Next: density form (assess ball-volume
 scaling API) or stand down (identity itself is the registry blocker).
+
+## Session 2026-09-29 (researcher-2, S7): packing rung DONE
+
+`packingDensity L r := vol(ball(r/2))/ZLattice.covolume L` (Mathlib covolume
+API); `pairwiseDisjoint_balls_of_minDist` (unconditional: min-dist ≥ r ⟹
+radius-r/2 balls pairwise disjoint via `Metric.ball_disjoint_ball` +
+`dist_eq_norm`); covolume-one/scaling/positivity lemmas; staged headline
+`hlawka_packing_symm` — every `0 < d < ζ(n)/2^(n-1)` realized by a
+covolume-one lattice whose disjoint balls achieve `packingDensity = d`
+(δₙ ≥ ζ(n)/2^(n-1) in standard packing form, staged on `hMV`/`hInt` only).
+File 619 → 732 LOC, 0 sorry / 0 axiom, Docker-GREEN.
+
+Mechanism notes:
+- Headline over `Submodule ℤ E`, reusing the AddSubgroup surface via
+  `.toAddSubgroup`; memberships transport by defeq (`mem_toAddSubgroup` does
+  NOT name-resolve in pinned v4.31 Mathlib — module-system exposure — but
+  `toAddSubgroup` is `@[reducible]`; `coe_toAddSubgroup` resolves and closes
+  the Pairwise coercion via `simpa`).
+- `hcov : ∀ ω, covolume (latticeOf ω) = 1` sidesteps `DiscreteTopology`/
+  `IsZLattice` instance families over Ω; only `packingDensity_pos` needs the
+  instances (for `ZLattice.covolume_pos`).
+
+Staging surface now saturated through the classical packing formulation; the
+DEEP Siegel–Rogers blocker is the only remaining content. Side-rung candidate
+(value-assess first): instantiate ℤⁿ via `ZSpan` as a covolume-one inhabitant.

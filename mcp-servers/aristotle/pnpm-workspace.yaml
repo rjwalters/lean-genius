@@ -1,0 +1,5 @@
+# pnpm 12 refuses to install a dependency that runs build scripts unless it is
+# allow-listed here (ERR_PNPM_IGNORED_BUILDS). esbuild is pulled in by tsx.
+# Mirrors the root pnpm-workspace.yaml's allowBuilds entry.
+allowBuilds:
+  esbuild: true

@@ -44,7 +44,7 @@
     "content": "This dichotomy is foundational for all mod-4 prime arguments. It shows that the classification of odd primes into two classes (1 mod 4 and 3 mod 4) is exhaustive and complete — there is no 'third class'. The proof by writing p = 2k+1 and splitting on k's parity is a standard elementary argument that translates cleanly into Lean via Nat.odd_of_ne_two and omega.",
     "proofId": "infinitude-primes-4k3",
     "range": {
-      "startLine": 53,
+      "startLine": 54,
       "endLine": 75
     }
   },

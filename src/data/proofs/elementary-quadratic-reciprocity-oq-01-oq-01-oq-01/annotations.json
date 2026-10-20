@@ -14,7 +14,7 @@
   {
     "id": "ann-quad-char-def",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
-    "range": { "startLine": 57, "endLine": 70 },
+    "range": { "startLine": 61, "endLine": 74 },
     "type": "definition",
     "title": "The Legendre Symbol as a ℂ-Valued Multiplicative Character",
     "content": "`quadCharC` is the **Legendre symbol promoted to a ℂ-valued multiplicative character** via `Int.castRingHom`. The standard Mathlib `quadraticChar` takes values in ℤ; Mathlib's `gaussSum_sq` requires a `MulChar (ZMod p) ℂ`, so this bridging definition is an essential step.\n\nThe construction uses `ringHomComp`: it first applies `quadraticChar` (ℤ-valued), then applies `Int.cast : ℤ → ℂ`. This composition **automatically inherits multiplicativity** — a key advantage of the `MulChar` abstraction, which tracks this property in the type. The companion lemma `quadCharC_isQuadratic` confirms that χ(a)² ∈ {0, 1} for all a, which is the defining property of a quadratic character.",
@@ -38,8 +38,8 @@
   {
     "id": "ann-classical-gauss-sum",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
-    "range": { "startLine": 90, "endLine": 97 },
-    "type": "theorem",
+    "range": { "startLine": 85, "endLine": 92 },
+    "type": "definition",
     "title": "Assembling the Classical Gauss Sum",
     "content": "`classicalGaussSum` assembles the two ingredients: the **multiplicative character** `quadCharC` (Legendre symbol in ℂ) and the **additive character** `ZMod.stdAddChar` (which maps a ↦ exp(2πia/p)). Mathlib's bilinear `gaussSum` combines them as Σ_{a} χ(a)·ψ(a).\n\nThe key fact consumed in the main theorem is `ZMod.isPrimitive_stdAddChar`: the standard additive character of ZMod p is **primitive** — it does not factor through any proper subgroup. This is a non-trivial result from the theory of exponential sums; it is what prevents the Gauss sum from vanishing due to character orthogonality, and it is a required hypothesis of `gaussSum_sq`.",
     "mathContext": "$\\tau_p = \\text{classicalGaussSum}(p) = \\sum_{a \\in \\mathbb{Z}/p\\mathbb{Z}} \\left(\\frac{a}{p}\\right) e^{2\\pi i a/p} \\in \\mathbb{C}$",

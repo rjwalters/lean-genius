@@ -24,7 +24,7 @@
   {
     "id": "ann-closed-forms",
     "proofId": "erdos-1-wip-01-oq-02",
-    "range": { "startLine": 68, "endLine": 84 },
+    "range": { "startLine": 69, "endLine": 85 },
     "type": "lemma",
     "title": "Part I: Closed Forms for the Reference Block",
     "content": "`sum_range_id_int` (2∑_{i<M}i = M(M−1)) and `sum_range_sq_int` (6∑_{i<M}i² = (M−1)M(2M−1)), both stated over ℤ and proved by a one-line induction (`Finset.sum_range_succ`, then `push_cast; ring`). Working in ℤ from the start avoids natural-number subtraction in the M(M−1) and (2M−1) factors.",

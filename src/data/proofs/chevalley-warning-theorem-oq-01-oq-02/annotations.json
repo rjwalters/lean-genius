@@ -2,7 +2,7 @@
   {
     "id": "ann-cwegz-overview",
     "proofId": "chevalley-warning-theorem-oq-01-oq-02",
-    "range": { "startLine": 3, "endLine": 45 },
+    "range": { "startLine": 4, "endLine": 45 },
     "type": "concept",
     "title": "EGZ Rebuilt on the Chevalley–Warning Engine",
     "content": "The docstring lays out the plan: prove the prime case of the Erdős–Ginzburg–Ziv theorem — among any 2p−1 elements of ZMod p, some p sum to 0 — entirely through the gallery's own chevalley_warning_nontrivial, rather than re-importing Mathlib's ZMod.erdos_ginzburg_ziv. The engine is applied to two degree-(p−1) power-sum forms f₁ = ∑ (X i)^(p−1) and f₂ = ∑ (a i)(X i)^(p−1) in 2p−1 variables. Their degrees sum to 2(p−1) = 2p−2, one short of the 2p−1 variables, so Chevalley–Warning yields a nonzero common zero; Fermat's little theorem then reads the two vanishing forms as a support-cardinality congruence and a subset-sum equation. This closes the loop the parent entry opened: its docstring names EGZ as the intended consumer of the corollary, and here that derivation is carried out and machine-checked.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-cwegz-egz-int",
     "proofId": "chevalley-warning-theorem-oq-01-oq-02",
-    "range": { "startLine": 168, "endLine": 175 },
+    "range": { "startLine": 169, "endLine": 176 },
     "type": "theorem",
     "title": "The Classical Integer Statement",
     "content": "egz_int lifts the ZMod p result to the classical form: among any 2p−1 integers, some p of them sum to a multiple of p. The proof is a one-line reduction — apply egz_zmod to the residues (a i : ZMod p), then push the resulting ZMod p sum equation back to ℤ divisibility via ZMod.intCast_zmod_eq_zero_iff_dvd. This is the statement in which Erdős, Ginzburg, and Ziv originally phrased the prime case.",

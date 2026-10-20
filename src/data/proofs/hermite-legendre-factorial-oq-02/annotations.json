@@ -18,7 +18,7 @@
   {
     "id": "ann-hlfoq02-factorial-sum",
     "proofId": "hermite-legendre-factorial-oq-02",
-    "range": { "startLine": 45, "endLine": 51 },
+    "range": { "startLine": 46, "endLine": 51 },
     "type": "tactic",
     "title": "Valuation of a Factorial as a Sum of Valuations",
     "content": "factorization_factorial_eq_sum turns v_p(n!) into ∑_{k∈Icc 1 n} v_p(k). The p-adic valuation is additive over products, and n! is the product ∏_{k∈Ico 1 (n+1)} k (Finset.prod_Ico_id_eq_factorial). Applying Nat.factorization_prod (valid because every factor in Icc 1 n is nonzero) turns the valuation of the product into a Finsupp sum of valuations, and Finsupp.finset_sum_apply evaluates that sum at the prime p. This is the additive skeleton on which the whole recursion rests.",

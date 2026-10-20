@@ -62,7 +62,7 @@
   {
     "id": "ann-packaged-dichotomy",
     "proofId": "algebraic-numbers-countable-oq001",
-    "range": { "startLine": 96, "endLine": 105 },
+    "range": { "startLine": 97, "endLine": 106 },
     "type": "insight",
     "title": "The complete generic dichotomy, packaged",
     "content": "`dense_countable_gδ_fσ_dichotomy` is the headline packaged result: it bundles both one-sided theorems into one statement, `(IsFσ D ∧ ¬ IsGδ D) ∧ (IsGδ Dᶜ ∧ ¬ IsFσ Dᶜ)`, by a two-line term-mode pairing of `dense_countable_isFσ_and_not_isGδ` and `dense_countable_compl_isGδ_not_isFσ`. Its content is that a dense countable set and its complement sit on opposite, Fσ-only and Gδ-only, sides of the second Borel level: D lands in Σ⁰₂ ∖ Π⁰₂ while Dᶜ lands in Π⁰₂ ∖ Σ⁰₂. This is precisely the abstract shape of the concrete algebraic-reals-versus-transcendentals dichotomy the parent proves in ℝ — here stripped of everything but the four topological instances that make it run.",

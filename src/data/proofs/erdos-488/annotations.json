@@ -25,8 +25,8 @@
     "id": "multiples-set-def",
     "proofId": "erdos-488",
     "range": {
-      "startLine": 29,
-      "endLine": 30
+      "startLine": 23,
+      "endLine": 26
     },
     "type": "definition",
     "title": "Multiples Set B(A)",
@@ -73,8 +73,8 @@
     "id": "density-ratio",
     "proofId": "erdos-488",
     "range": {
-      "startLine": 39,
-      "endLine": 40
+      "startLine": 34,
+      "endLine": 36
     },
     "type": "definition",
     "title": "Density Ratio",
@@ -355,8 +355,8 @@
     "proofId": "erdos-488",
     "type": "insight",
     "range": {
-      "startLine": 248,
-      "endLine": 322
+      "startLine": 249,
+      "endLine": 323
     },
     "title": "Davenport's Density Theorem (Proved)",
     "content": "`multiplesSet_density_exists` proves that the asymptotic density $\\delta=\\lim_{N\\to\\infty}|B(A)\\cap[1,N]|/N$ exists and equals $\\text{count}(P)/P$ with $P=\\text{lcm}(A)$, satisfying $0<\\delta\\leq1$. The convergence is quantitative: writing $N=qP+r$, the decomposition gives $\\text{ratio}(N)-\\delta=\\frac{dP-rc}{NP}$ with $|dP-rc|\\leq Pr<P^2$, so the error is $O(P/N)$ and drops below any $\\varepsilon$ once $N>P/\\varepsilon$. This is the deepest proved result in the file -- the full Davenport-style density theorem -- even though the main Erdős inequality remains a stated open conjecture (status `wip`).",

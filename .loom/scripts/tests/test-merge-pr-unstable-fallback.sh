@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
-# test-merge-pr-unstable-fallback.sh - Unit tests for the UNSTABLE-fallback
-# logic in merge-pr.sh and its supporting helper in forge-helpers.sh.
+# test-merge-pr-unstable-fallback.sh - Unit tests for the check-settling
+# policy `merge-pr.sh --auto` merges behind, and its supporting helper in
+# forge-helpers.sh.
 #
-# The UNSTABLE-fallback (#3486) sits immediately after the CLEAN-fallback
-# (#3371) and decides whether an auto-merge "Pull request is in unstable
-# status" error can be safely demoted to the immediate-merge path. It fires
-# only when every failing check on the PR is OUTSIDE branch protection's
-# requiredStatusCheckContexts.
+# This policy (#3486) decides whether a PR whose check rollup is not green can
+# still be merged: it can, only when every failing check on the PR is OUTSIDE
+# branch protection's requiredStatusCheckContexts and nothing is still running.
+# It used to live in the "Pull request is in unstable status" rejection
+# handler; since #8410 removed the server-side auto-merge arm entirely it lives
+# in `_wait_for_checks_then_sync_merge`, which every `--auto` run now takes.
+# The policy itself — and every assertion below — is unchanged.
 #
 # This test exercises three surfaces:
 #   1. `forge_get_required_status_check_contexts` (GitHub) returns the
@@ -76,36 +79,75 @@ FORGE_TYPE="github"
 STUB_DIR=$(mktemp -d)
 trap 'rm -rf "$STUB_DIR"' EXIT
 
-# Stub gh that recognizes the GraphQL query for required status check contexts.
-# We inspect $* for the GraphQL ref argument shape and pick the response from
-# canned files keyed by `ref=refs/heads/<branch>`.
+# Stub gh that recognizes BOTH sources the GitHub path queries (#8103):
+#   - the Rulesets effective-rules REST endpoint, and
+#   - the classic branch-protection GraphQL query,
+# picking each response from canned files keyed by branch name.
 cat > "$STUB_DIR/gh" <<'STUB'
 #!/usr/bin/env bash
 # Stub gh used by test-merge-pr-unstable-fallback.sh.
 #
 # Recognizes:
-#   gh api graphql -f query=... -F owner=... -F name=... -F ref=refs/heads/<b>
-#                  --jq '.data.repository.ref.branchProtectionRule.requiredStatusCheckContexts // [] | .[]'
 #
-# It pulls the branch from the ref=... arg and looks up a canned response in
-# $STUB_DIR/required-checks-<branch>.txt (one context per line). If the file
-# doesn't exist, emits nothing (simulates absent branchProtectionRule).
+#   1. Rulesets (#8103):
+#        gh api repos/<owner>/<repo>/rules/branches/<b> --jq '<filter>'
+#      Canned body: $STUB_DIR/ruleset-rules-<branch>.json — a VERBATIM-SHAPED
+#      GitHub effective-rules response. The stub runs the REAL `--jq` filter the
+#      helper passed against it, so the fixture exercises the helper's own
+#      parsing of the documented API shape rather than a pre-digested answer.
+#      A `$STUB_DIR/ruleset-fail-<branch>` marker makes the call exit nonzero
+#      (network failure / 403), to test the fail-closed paths — either source
+#      erroring fails the lookup. No canned file at all = a 200 with an empty
+#      rules array (a SUCCESSFUL "no ruleset rules" answer, not a failure).
+#      The marker file's CONTENT (if any) is emitted on stderr, so #8872's
+#      plan-gated-403 tests can control the exact failure message.
+#
+#   2. Classic branch protection:
+#        gh api graphql -f query=... -F owner=... -F name=... -F ref=refs/heads/<b>
+#                       --jq '.data.repository.ref.branchProtectionRule.requiredStatusCheckContexts // [] | .[]'
+#      Canned response: $STUB_DIR/required-checks-<branch>.txt (one context per
+#      line, post-jq). Missing file = absent branchProtectionRule (empty).
+#      A `$STUB_DIR/graphql-fail-<branch>` marker makes the call exit nonzero,
+#      its content (if any) emitted on stderr, same as the ruleset marker.
 STUB_DIR_FROM_ENV="${LOOM_TEST_STUB_DIR:-}"
 if [[ -z "$STUB_DIR_FROM_ENV" ]]; then
   echo "stub gh: LOOM_TEST_STUB_DIR not set" >&2
   exit 2
 fi
 
-# Find the ref=... arg
+# Find the ref=... arg (GraphQL), the rules-endpoint path (REST), and the --jq
+# filter (used verbatim for the REST fixture).
 ref=""
+rules_branch=""
+jq_filter=""
+prev=""
 for a in "$@"; do
   case "$a" in
     ref=refs/heads/*) ref="${a#ref=refs/heads/}" ;;
+    repos/*/rules/branches/*) rules_branch="${a##*/rules/branches/}" ;;
   esac
+  [[ "$prev" == "--jq" ]] && jq_filter="$a"
+  prev="$a"
 done
+
+if [[ -n "$rules_branch" ]]; then
+  if [[ -f "$STUB_DIR_FROM_ENV/ruleset-fail-$rules_branch" ]]; then
+    cat "$STUB_DIR_FROM_ENV/ruleset-fail-$rules_branch" >&2
+    exit 1
+  fi
+  canned="$STUB_DIR_FROM_ENV/ruleset-rules-$rules_branch.json"
+  [[ -f "$canned" ]] || exit 0
+  jq -r "$jq_filter" "$canned"
+  exit 0
+fi
 
 if [[ -z "$ref" ]]; then
   exit 0
+fi
+
+if [[ -f "$STUB_DIR_FROM_ENV/graphql-fail-$ref" ]]; then
+  cat "$STUB_DIR_FROM_ENV/graphql-fail-$ref" >&2
+  exit 1
 fi
 
 # Canned response file lookup
@@ -140,6 +182,198 @@ assert_eq "" "$result" "GitHub: empty requiredStatusCheckContexts yields empty o
 echo "Code Ownership" > "$STUB_DIR/required-checks-single.txt"
 result=$(forge_get_required_status_check_contexts "owner/repo" "single" "$STUB_DIR/gh" | tr '\n' '|' | sed 's/|$//')
 assert_eq "Code Ownership" "$result" "GitHub: single required context returned correctly"
+
+# --- Ruleset-sourced required checks (#8103) ---
+#
+# GitHub has TWO backing systems for branch protection and the classic
+# GraphQL `branchProtectionRule` field reports ONLY the legacy one. Verified
+# live on rjwalters/loom (2026-09-17): `main` is governed by an ACTIVE
+# ruleset, and the GraphQL query still returns `branchProtectionRule: null`
+# while `GET /repos/{owner}/{repo}/rules/branches/main` returns every rule.
+# Before this fix the helper queried GraphQL only, so on a ruleset-governed
+# repo it reported "no required checks" no matter what the ruleset said —
+# which would have let merge-pr.sh's #3720 fallback merge straight over a
+# failing required check, silently.
+#
+# The fixtures below are shaped exactly like real effective-rules responses
+# (including the non-`required_status_checks` rules that accompany them) and
+# the stub applies the helper's real `--jq` filter to them.
+echo ""
+echo "Testing forge_get_required_status_check_contexts (ruleset source, #8103)..."
+
+# Subtest 1.5: ruleset-only required checks, no classic protection at all —
+# this is rjwalters/loom's exact configuration.
+cat > "$STUB_DIR/ruleset-rules-ruleset-only.json" <<'EOF'
+[
+  {"type": "deletion", "ruleset_source_type": "Repository", "ruleset_id": 8809610},
+  {"type": "non_fast_forward", "ruleset_source_type": "Repository", "ruleset_id": 8809610},
+  {"type": "required_linear_history", "ruleset_source_type": "Repository", "ruleset_id": 8809610},
+  {"type": "pull_request",
+   "parameters": {"required_approving_review_count": 0, "allowed_merge_methods": ["squash"]},
+   "ruleset_source_type": "Repository", "ruleset_id": 8809610},
+  {"type": "required_status_checks",
+   "parameters": {
+     "strict_required_status_checks_policy": false,
+     "do_not_enforce_on_create": false,
+     "required_status_checks": [
+       {"context": "Role Prompt Prefix Ratchet", "integration_id": 15368},
+       {"context": "CLAUDE.md Line Budget", "integration_id": 15368}
+     ]},
+   "ruleset_source_type": "Repository", "ruleset_id": 8809610}
+]
+EOF
+result=$(forge_get_required_status_check_contexts "owner/repo" "ruleset-only" "$STUB_DIR/gh" | tr '\n' '|' | sed 's/|$//')
+assert_eq "Role Prompt Prefix Ratchet|CLAUDE.md Line Budget" "$result" \
+  "#8103: ruleset-sourced required checks are detected with NO classic branch protection"
+
+# Subtest 1.6: an active ruleset carrying no required_status_checks rule (the
+# pre-#8103 state of rjwalters/loom) still means "no required checks".
+cat > "$STUB_DIR/ruleset-rules-ruleset-no-checks.json" <<'EOF'
+[
+  {"type": "deletion", "ruleset_source_type": "Repository", "ruleset_id": 8809610},
+  {"type": "required_linear_history", "ruleset_source_type": "Repository", "ruleset_id": 8809610}
+]
+EOF
+result=$(forge_get_required_status_check_contexts "owner/repo" "ruleset-no-checks" "$STUB_DIR/gh" | tr '\n' '|' | sed 's/|$//')
+assert_eq "" "$result" "#8103: ruleset without a required_status_checks rule yields empty output"
+
+# Subtest 1.7: both sources configured — union, de-duplicated, each name once
+# (the callers' comm set-difference needs unique names).
+cat > "$STUB_DIR/ruleset-rules-both.json" <<'EOF'
+[
+  {"type": "required_status_checks",
+   "parameters": {
+     "strict_required_status_checks_policy": true,
+     "required_status_checks": [
+       {"context": "Shared Check"},
+       {"context": "Ruleset Only Check"}
+     ]}}
+]
+EOF
+cat > "$STUB_DIR/required-checks-both.txt" <<'EOF'
+Shared Check
+Classic Only Check
+EOF
+result=$(forge_get_required_status_check_contexts "owner/repo" "both" "$STUB_DIR/gh" | tr '\n' '|' | sed 's/|$//')
+assert_eq "Shared Check|Ruleset Only Check|Classic Only Check" "$result" \
+  "#8103: ruleset + classic contexts are unioned and de-duplicated"
+
+# Subtest 1.8: partial lookup failure — the rules endpoint errors but classic
+# protection answers. FAIL CLOSED anyway: a surviving source is a partial view
+# of what is required, and a partial view is not a safe input to a merge
+# decision. The surviving source's answer is NOT reported (empty stdout).
+: > "$STUB_DIR/ruleset-fail-partial"
+cat > "$STUB_DIR/required-checks-partial.txt" <<'EOF'
+Classic Survivor
+EOF
+rc=0
+result=$(forge_get_required_status_check_contexts "owner/repo" "partial" "$STUB_DIR/gh" 2>/dev/null | tr '\n' '|' | sed 's/|$//') || rc=$?
+assert_eq "1" "$rc" "#8103: ruleset source failing -> nonzero exit even though classic answered"
+assert_eq "" "$result" "#8103: partial failure does not report the surviving source's contexts"
+
+# Subtest 1.8a: THE blind spot this whole fix exists to close — the ruleset
+# endpoint errors (403/404/network) and classic branch protection SUCCEEDS with
+# an empty result. Under a both-must-fail rule this returns success with an
+# empty list, which is indistinguishable at the callsite from a genuinely
+# unprotected branch and sends `merge-pr.sh --auto` down the
+# "No-required-checks fallback (#3720)" path — merging over red required checks
+# exactly as the pre-#8103 GraphQL-only helper did. Must fail closed.
+: > "$STUB_DIR/ruleset-fail-ruleset-err-classic-empty"
+rc=0
+result=$(forge_get_required_status_check_contexts "owner/repo" "ruleset-err-classic-empty" "$STUB_DIR/gh" 2>/dev/null | tr '\n' '|' | sed 's/|$//') || rc=$?
+assert_eq "1" "$rc" "#8103: ruleset errors + classic succeeds EMPTY -> nonzero (no silent no-required-checks)"
+assert_eq "" "$result" "#8103: ruleset errors + classic succeeds empty -> empty stdout"
+
+# Subtest 1.8b: the mirror image — the ruleset endpoint succeeds with real
+# contexts but the classic GraphQL query errors. Also fail closed: an
+# unreadable classic rule may require contexts the ruleset does not list.
+cat > "$STUB_DIR/ruleset-rules-classic-err.json" <<'EOF'
+[
+  {"type": "required_status_checks",
+   "parameters": {
+     "strict_required_status_checks_policy": true,
+     "required_status_checks": [{"context": "Ruleset Survivor"}]}}
+]
+EOF
+: > "$STUB_DIR/graphql-fail-classic-err"
+rc=0
+result=$(forge_get_required_status_check_contexts "owner/repo" "classic-err" "$STUB_DIR/gh" 2>/dev/null | tr '\n' '|' | sed 's/|$//') || rc=$?
+assert_eq "1" "$rc" "#8103: classic source failing -> nonzero exit even though the ruleset answered"
+assert_eq "" "$result" "#8103: classic failure does not report the ruleset's contexts"
+
+# Subtest 1.9: BOTH sources error -> fail closed (nonzero exit, empty stdout),
+# matching the Gitea path and the callers' documented fail-closed contract.
+: > "$STUB_DIR/ruleset-fail-dead"
+: > "$STUB_DIR/graphql-fail-dead"
+rc=0
+result=$(forge_get_required_status_check_contexts "owner/repo" "dead" "$STUB_DIR/gh" 2>/dev/null | tr '\n' '|' | sed 's/|$//') || rc=$?
+assert_eq "1" "$rc" "#8103: both sources failing -> nonzero exit (fail closed)"
+assert_eq "" "$result" "#8103: both sources failing -> empty stdout"
+
+# Subtest 1.10: the helper must actually QUERY the rulesets endpoint. A
+# refactor that drops the REST call and goes back to GraphQL-only would pass
+# every assertion above except this one (the fixtures would simply go unread),
+# so anchor on the call itself.
+if grep -q 'rules/branches/' "$HELPERS_DIR/lib/forge-helpers.sh"; then
+    TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "  ${GREEN}PASS${NC}: #8103: forge-helpers queries the Rulesets effective-rules endpoint"
+else
+    TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "  ${RED}FAIL${NC}: #8103: forge-helpers no longer queries /rules/branches/ (ruleset-based required checks would be invisible)"
+fi
+
+# --- Plan-gated 403 relaxation (#8872, mirrors #8871's Rust
+# `stale_checks::fetch::is_plan_gated`) ---
+#
+# On a private repo whose GitHub plan excludes rulesets/branch protection,
+# BOTH sources answer the SAME 403:
+#   "HTTP 403: Upgrade to GitHub Pro or make this repository public to
+#   enable this feature."
+# That source cannot hold a required_status_checks rule, so it must
+# configure NO required checks (per source) rather than failing the whole
+# lookup closed. Any OTHER 403 (missing scope, SSO, rate limit) must keep
+# failing closed -- the match is on the message, never the status code.
+echo ""
+echo "Testing the plan-gated 403 relaxation (#8872)..."
+
+PLAN_GATED_403="HTTP 403: Upgrade to GitHub Pro or make this repository public to enable this feature."
+OTHER_403="HTTP 403: Resource not accessible by integration"
+
+# Subtest P.1: ruleset source plan-gated, classic source answers normally ->
+# the classic contexts stay authoritative; only the ruleset configures
+# nothing.
+echo "$PLAN_GATED_403" > "$STUB_DIR/ruleset-fail-plan-gated-ruleset"
+cat > "$STUB_DIR/required-checks-plan-gated-ruleset.txt" <<EOF
+Classic Required
+EOF
+result=$(forge_get_required_status_check_contexts "owner/repo" "plan-gated-ruleset" "$STUB_DIR/gh" 2>/dev/null | tr '\n' '|' | sed 's/|$//')
+assert_eq "Classic Required" "$result" "#8872: plan-gated ruleset source configures nothing; classic source stays authoritative"
+
+# Subtest P.2: BOTH sources plan-gated -> empty result, exit 0 (this plan has
+# no required checks anywhere), plus a visible warning on stderr.
+echo "$PLAN_GATED_403" > "$STUB_DIR/ruleset-fail-plan-gated-both"
+echo "$PLAN_GATED_403" > "$STUB_DIR/graphql-fail-plan-gated-both"
+rc=0
+result=$(forge_get_required_status_check_contexts "owner/repo" "plan-gated-both" "$STUB_DIR/gh" 2>/dev/null | tr '\n' '|' | sed 's/|$//') || rc=$?
+stderr_out=$(forge_get_required_status_check_contexts "owner/repo" "plan-gated-both" "$STUB_DIR/gh" 2>&1 1>/dev/null)
+assert_eq "0" "$rc" "#8872: both sources plan-gated -> success exit (no required checks, not a failure)"
+assert_eq "" "$result" "#8872: both sources plan-gated -> empty stdout"
+case "$stderr_out" in
+  *"plan-gated"*)
+    TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "  ${GREEN}PASS${NC}: #8872: plan-gated relaxation emits a visible stderr warning" ;;
+  *)
+    TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "  ${RED}FAIL${NC}: #8872: no visible warning emitted for the plan-gated relaxation" ;;
+esac
+
+# Subtest P.3: a DIFFERENT 403 (missing scope / SSO / rate limit) must keep
+# failing closed -- the narrow message match is the whole point.
+echo "$OTHER_403" > "$STUB_DIR/ruleset-fail-other-403"
+rc=0
+result=$(forge_get_required_status_check_contexts "owner/repo" "other-403" "$STUB_DIR/gh" 2>/dev/null | tr '\n' '|' | sed 's/|$//') || rc=$?
+assert_eq "1" "$rc" "#8872: a non-plan-gated 403 keeps failing closed"
+assert_eq "" "$result" "#8872: a non-plan-gated 403 -> empty stdout"
 
 # --- Test the set-difference policy ---
 # These replicate the comm/sort/diff logic used inside merge-pr.sh so that the
@@ -609,8 +843,8 @@ assert_eq "wait" "$result" "#3678: fetch failure ignores stale/empty payload -> 
 
 # --- Test the poll-window env-var wiring in merge-pr.sh (#3664) ---
 # The script reuses LOOM_AUTO_MERGE_POLL_INTERVAL / LOOM_AUTO_MERGE_TIMEOUT with
-# the same defaults as the shell Gitea auto-merge poller (forge_auto_merge in
-# lib/forge-helpers.sh): 30s / 600s. Assert the defaulting expressions the
+# the same defaults as the since-retired (#8427) shell Gitea auto-merge
+# poller: 30s / 600s. Assert the defaulting expressions the
 # script uses resolve as expected.
 echo ""
 echo "Testing poll-window env-var defaults (#3664)..."
@@ -644,9 +878,12 @@ fi
 
 # Assert the merge-pr.sh source captures the check-runs fetch exit status
 # separately (the core of the #3678 fix) rather than collapsing it to empty JSON.
-if grep -q '_UNSTABLE_FETCH_RC' "$MERGE_PR_SRC"; then
+# Post-#8410 the single surviving copy of this loop is the one inside
+# `_wait_for_checks_then_sync_merge` (`fetch_rc`); the UNSTABLE-rejection copy
+# (`_UNSTABLE_FETCH_RC`) went with the server-side arm it existed to handle.
+if grep -q 'fetch_rc="$attempt1_rc"' "$MERGE_PR_SRC"; then
     TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "  ${GREEN}PASS${NC}: merge-pr.sh captures the check-runs fetch exit status (_UNSTABLE_FETCH_RC)"
+    echo -e "  ${GREEN}PASS${NC}: merge-pr.sh captures the check-runs fetch exit status (fetch_rc)"
 else
     TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1))
     echo -e "  ${RED}FAIL${NC}: merge-pr.sh missing the fetch-exit-status capture (#3678 regression)"
@@ -661,80 +898,55 @@ else
     echo -e "  ${GREEN}PASS${NC}: merge-pr.sh no longer collapses a failed check-runs fetch to empty JSON"
 fi
 
-# --- Test the no-required-checks fallback (#3720) ---
-# When the repo defines ZERO required status checks, GitHub's
-# enablePullRequestAutoMerge mutation is rejected outright (nothing to queue the
-# merge behind). That rejection matches neither the CLEAN nor the UNSTABLE grep,
-# so pre-#3720 it fell through to the generic terminal error. The #3720 fallback
-# is STRING-INDEPENDENT and self-gating: it fires only when the base branch has
-# NO required status check contexts AND the PR is mergeable (.mergeable == true),
-# in which case an immediate synchronous merge is exactly equivalent to a
-# server-side auto-merge. It preserves the #3664/#3486/#3678 required-check
-# gating BY CONSTRUCTION — any required context present skips the branch.
+# --- The server-side auto-merge arm is gone (#8410) ---
+#
+# #3720's no-required-checks fallback, #3763's repo-setting fallback, #4447's
+# GraphQL-rate-limit fallback and #3371's CLEAN fallback all existed to handle a
+# REJECTION of GitHub's enablePullRequestAutoMerge mutation. #8410 stopped
+# calling that mutation at all: a merge armed on the server is gated only by the
+# ruleset's REQUIRED checks and re-reads neither the loom:pr label nor the
+# non-required suites, so `--auto` now always settles the checks here and merges
+# in-process. Each of those rejection paths is therefore unreachable-by-
+# construction rather than "handled", and the assertions below pin that — if the
+# arm ever comes back, these fail and the fallbacks have to come back with it.
 echo ""
-echo "Testing the no-required-checks fallback decision (#3720)..."
+echo "Testing that merge-pr.sh never arms a server-side auto-merge (#8410)..."
 
-# Mirror the merge-pr.sh callsite's self-gating predicate. Returns "merge" when
-# the fallback fires (no required checks + mergeable + clean lookup), else
-# "preserve" (the existing CLEAN/UNSTABLE/terminal path stays in charge).
-_nrc_decision() {
-    local required="$1" mergeable="$2" lookup_rc="$3"
-    if [[ "$lookup_rc" -eq 0 ]] && [[ -z "$required" ]] && [[ "$mergeable" == "true" ]]; then
-        echo "merge"
+_assert_absent() {
+    local pattern="$1" msg="$2"
+    TESTS_RUN=$((TESTS_RUN + 1))
+    if grep -q -- "$pattern" "$MERGE_PR_SRC"; then
+        TESTS_FAILED=$((TESTS_FAILED + 1))
+        echo -e "  ${RED}FAIL${NC}: $msg (found: $pattern)"
     else
-        echo "preserve"
+        TESTS_PASSED=$((TESTS_PASSED + 1))
+        echo -e "  ${GREEN}PASS${NC}: $msg"
     fi
 }
 
-# Core #3720 case: no required checks + mergeable + successful lookup -> merge.
-assert_eq "merge" "$(_nrc_decision "" "true" 0)" "#3720: no required checks + mergeable -> immediate merge"
+_assert_absent 'forge_auto_merge "$REPO_NWO"' \
+  "#8410: merge-pr.sh never calls the shell forge_auto_merge arm"
+_assert_absent 'loom-daemon forge auto-merge' \
+  "#8410: merge-pr.sh never calls the native forge auto-merge arm"
+_assert_absent 'is in clean status' \
+  "#8410: the CLEAN-rejection fallback (#3371) is gone with the mutation it handled"
+_assert_absent 'is in unstable status' \
+  "#8410: the UNSTABLE-rejection fallback (#3486/#3664) is gone with the mutation it handled"
+_assert_absent 'Auto merge is not allowed for this repository' \
+  "#8410: the repo-setting rejection fallback (#3763) is gone with the mutation it handled"
+_assert_absent 'Auto-merge queued' \
+  "#8410: there is no queued early-exit left to bypass the post-merge cleanup block"
 
-# Required checks present -> preserve (UNSTABLE classifier stays in charge). This
-# is the by-construction #3664/#3486/#3678 gating guarantee.
-assert_eq "preserve" "$(_nrc_decision "Code Ownership" "true" 0)" "#3720: required checks present -> fallback does NOT fire (gating preserved)"
-assert_eq "preserve" "$(_nrc_decision $'Code Ownership\nRequired Build' "true" 0)" "#3720: multiple required checks -> fallback does NOT fire"
-
-# Not mergeable -> preserve (a conflicting PR must not be force-merged).
-assert_eq "preserve" "$(_nrc_decision "" "false" 0)" "#3720: no required checks but NOT mergeable -> preserve"
-
-# .mergeable still null (GitHub not yet computed / jq // empty) -> preserve.
-assert_eq "preserve" "$(_nrc_decision "" "" 0)" "#3720: mergeable unknown (empty) -> preserve (do not merge blind)"
-
-# Lookup failure (nonzero exit) -> fail closed even when required is empty.
-assert_eq "preserve" "$(_nrc_decision "" "true" 1)" "#3720: required-checks lookup failure -> fail closed (preserve)"
-
-# End-to-end with the real helper (GitHub stub): a branch with no protection
-# rule yields empty required contexts, so a mergeable PR fires the fallback.
-required="$(forge_get_required_status_check_contexts "owner/repo" "no-protection-branch" "$STUB_DIR/gh")"
-assert_eq "merge" "$(_nrc_decision "$required" "true" 0)" "#3720: GitHub no-protection branch + mergeable -> fallback fires (real helper)"
-
-# End-to-end with the real helper: a branch WITH required contexts preserves.
-required="$(forge_get_required_status_check_contexts "owner/repo" "main" "$STUB_DIR/gh")"
-assert_eq "preserve" "$(_nrc_decision "$required" "true" 0)" "#3720: GitHub protected branch with required contexts -> preserve (real helper)"
-
-# Assert the merge-pr.sh source actually wires the #3720 fallback so a refactor
-# that drops it fails this test. The fallback must be STRING-INDEPENDENT: it
-# calls forge_get_required_status_check_contexts and checks .mergeable rather
-# than grepping AUTO_MERGE_OUTPUT.
-if grep -q '_NRC_REQUIRED' "$MERGE_PR_SRC" && grep -q 'no required status checks' "$MERGE_PR_SRC"; then
+# ...and the policy those fallbacks protected is still enforced, by the wait
+# path every --auto run now takes: it computes the same failing/pending sets and
+# the same required-context set difference asserted at the top of this file.
+if grep -q '_wait_for_checks_then_sync_merge$' "$MERGE_PR_SRC" && \
+   grep -q 'forge_get_required_status_check_contexts "$REPO_NWO" "$base_ref"' "$MERGE_PR_SRC"; then
     TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "  ${GREEN}PASS${NC}: merge-pr.sh wires the #3720 no-required-checks fallback"
+    echo -e "  ${GREEN}PASS${NC}: #8410: --auto routes into the wait path, which classifies against required contexts"
 else
     TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "  ${RED}FAIL${NC}: merge-pr.sh missing the #3720 no-required-checks fallback"
-fi
-# The #3720 fallback must sit BEFORE the CLEAN/UNSTABLE greps so the
-# zero-required-checks rejection (which matches neither) is caught first.
-_nrc_line=$(grep -n '_NRC_REQUIRED=' "$MERGE_PR_SRC" | head -1 | cut -d: -f1)
-# Anchor on the actual CLEAN-grep code line (not a comment mention of the
-# substring) so the ordering check reflects execution order.
-_clean_line=$(grep -n 'grep -q "is in clean status"' "$MERGE_PR_SRC" | head -1 | cut -d: -f1)
-if [[ -n "$_nrc_line" ]] && [[ -n "$_clean_line" ]] && [[ "$_nrc_line" -lt "$_clean_line" ]]; then
-    TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "  ${GREEN}PASS${NC}: #3720 fallback is inserted BEFORE the clean/unstable greps"
-else
-    TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "  ${RED}FAIL${NC}: #3720 fallback must precede the clean/unstable greps (nrc=$_nrc_line clean=$_clean_line)"
+    echo -e "  ${RED}FAIL${NC}: #8410: --auto must call _wait_for_checks_then_sync_merge, which must classify failures against required contexts"
 fi
 
 # --- Summary ---

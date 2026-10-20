@@ -99,8 +99,8 @@
     "id": "ann-trivial-zeros",
     "proofId": "riemann-hypothesis",
     "range": {
-      "startLine": 90,
-      "endLine": 91
+      "startLine": 103,
+      "endLine": 104
     },
     "type": "definition",
     "title": "Trivial Zeros",
@@ -148,7 +148,7 @@
     "id": "ann-functional-equation",
     "proofId": "riemann-hypothesis",
     "range": {
-      "startLine": 160,
+      "startLine": 161,
       "endLine": 165
     },
     "type": "concept",
@@ -268,7 +268,7 @@
     "id": "ann-selberg",
     "proofId": "riemann-hypothesis",
     "range": {
-      "startLine": 293,
+      "startLine": 294,
       "endLine": 302
     },
     "type": "concept",
@@ -550,7 +550,7 @@
   {
     "id": "ann-computational-verification-barriers",
     "proofId": "riemann-hypothesis",
-    "range": { "startLine": 2482, "endLine": 2624 },
+    "range": { "startLine": 2484, "endLine": 2624 },
     "type": "concept",
     "title": "Computational Verification Methods and Barriers to Proving RH",
     "content": "Part F surveys the computational-verification toolchain — the Riemann-Siegel formula for O(√t) evaluation of ζ(1/2+it), a milestone table from Gram (1903, 15 zeros) to Gourdon (2004, 10^13 zeros), and Turing's rigorous method for certifying no zeros are missed between sign changes. Part G is a frank inventory of why every attempted approach has failed after 165+ years: Hilbert-Pólya (no self-adjoint operator has been constructed), Connes's noncommutative trace formula (an equivalent reformulation, not a proof), the function-field analogue (proved by Weil/Deligne but with no known 'Frobenius' for ℚ), and the Selberg-class barrier (some Selberg-class L-functions genuinely fail RH-type statements, ruling out purely axiomatic proof strategies).",
@@ -562,7 +562,7 @@
   {
     "id": "ann-zero-density-selberg-class",
     "proofId": "riemann-hypothesis",
-    "range": { "startLine": 2624, "endLine": 2869 },
+    "range": { "startLine": 2732, "endLine": 2977 },
     "type": "tactic",
     "title": "Zero-Density Estimates and the Selberg Class Structure Theorem",
     "content": "After local definitions of `chebyshevPsi` and `mertensFunction`, Part XXX states classical zero-density bounds — Ingham (1940), Huxley (1972), and the density hypothesis $N(\\sigma,T)=O(T^{2(1-\\sigma)+\\varepsilon})$ — via a placeholder `zeroDensityCount := 0`, so these theorems hold trivially pending a genuine zero-counting definition; `VK_improves_classical` records that the Vinogradov-Korobov zero-free region is wider than the classical one. Part XXXI defines `SelbergClassFunction` with its degree/conductor/Ramanujan-bound fields and states the Kaczorowski-Perelli 2011 structure theorem: every degree-1 element of the extended Selberg class is a shifted Dirichlet L-function.",
@@ -658,7 +658,7 @@
   {
     "id": "ann-euler-product-algebra",
     "proofId": "riemann-hypothesis",
-    "range": { "startLine": 4084, "endLine": 4190 },
+    "range": { "startLine": 4099, "endLine": 4205 },
     "type": "tactic",
     "title": "Euler Product Algebra and Arithmetic Identities",
     "content": "Part XLIII is a purely computational section (no sorry, no axiom) verifying small arithmetic facts that underlie the file's analytic claims: truncated Euler products over the first few primes (`euler_product_first_three_primes`, `euler_product_first_four_primes`, approximating ζ(2)=π²/6), Möbius-sum identities Σ_{d|n}μ(d)=[n=1] for n=1,2,4,6,12,30, von Mangoldt prime-power factorizations, the moment exponents k² for k=1..4, Bourgain's subconvexity exponent 13/84<1/4, and the factorization 5040=2⁴·3²·5·7 of Robin's last known exceptional integer.",
@@ -730,7 +730,7 @@
   {
     "id": "ann-montgomery-weil-zerofree",
     "proofId": "riemann-hypothesis",
-    "range": { "startLine": 5335, "endLine": 5633 },
+    "range": { "startLine": 5455, "endLine": 5753 },
     "type": "concept",
     "title": "Montgomery's Pair Correlation, Weil's Explicit Formula, and Zero-Free Regions",
     "content": "Part XLIX revisits Montgomery's 1973 GUE pair-correlation conjecture together with Odlyzko's numerical confirmation near the 10²⁰-th zero and the Keating-Snaith moment prediction. Part L states Weil's explicit formula linking $\\sum_\\rho \\hat f(\\rho)$ to a sum over primes (`weil_explicit_formula`) and the Riemann-von Mangoldt zero-counting asymptotic $N(T)=\\frac{T}{2\\pi}\\log\\frac{T}{2\\pi e}+O(\\log T)$ (`riemann_von_mangoldt_params`, including Backlund's 7/8 correction term). Part LI records the classical zero-free regions — de la Vallée-Poussin (1899), Vinogradov-Korobov (1958) — and the Siegel-zero obstruction (`siegel_zero_obstruction`) that keeps effective class-number bounds out of reach.",
@@ -742,7 +742,7 @@
   {
     "id": "ann-selberg-trace-langlands",
     "proofId": "riemann-hypothesis",
-    "range": { "startLine": 5633, "endLine": 5950 },
+    "range": { "startLine": 5636, "endLine": 5953 },
     "type": "insight",
     "title": "The Selberg Trace Formula, the Langlands Program, and Computational Verification",
     "content": "Part LII surveys the Selberg trace formula and Selberg zeta function for compact Riemann surfaces, whose analogue of RH is an actually PROVED theorem (`selberg_trace_analogy`) — self-adjointness of the Laplacian forces all spectral zeros onto Re(s)=1/2, the model case that motivates the Hilbert-Pólya conjecture for ζ itself. It also records the Langlands program's Kim-Shahidi bound (7/64, `langlands_gl_hierarchy`), the Katz-Sarnak classification of 5 random-matrix symmetry types for L-function families, and the BSD-RH analogy (`bsd_rh_connection`). Part LIII documents computational verification history (Riemann to Platt, 10¹³ zeros) and Turing's rigorous zero-counting method (`turing_method_count`), tying back to Selberg's central limit theorem for the size of S(T).",
@@ -754,7 +754,7 @@
   {
     "id": "ann-moment-conjectures",
     "proofId": "riemann-hypothesis",
-    "range": { "startLine": 5950, "endLine": 6064 },
+    "range": { "startLine": 5966, "endLine": 6080 },
     "type": "concept",
     "title": "Moment Conjectures and Mean Value Theorems",
     "content": "Part LIV formalizes the $2k$-th moment integral $I_k(T)=\\frac1T\\int_0^T|\\zeta(1/2+it)|^{2k}dt$ (opaque `zetaMomentIntegral`) and proves the exponent pattern $k^2$ is strictly increasing (`moment_exponent_growth`), matching random-matrix predictions for $\\mathbb E|\\det(I-U)|^{2k}\\sim N^{k^2}$. It states Harper's 2013 sharp upper bound and Radziwiłł-Soundararajan's 2015 lower bound (both RH-conditional axioms), which together pin down the growth rate exactly at $T(\\log T)^{k^2}$ (`moment_growth_rate_determined`) — leaving only the leading constant undetermined.",
@@ -766,7 +766,7 @@
   {
     "id": "ann-integral-criteria",
     "proofId": "riemann-hypothesis",
-    "range": { "startLine": 6064, "endLine": 6210 },
+    "range": { "startLine": 6087, "endLine": 6233 },
     "type": "concept",
     "title": "Integral Criteria: BSY, Riesz, Báez-Duarte, and Volchkov",
     "content": "Part LV adds four more equivalent formulations beyond the K₁₀ network, each an axiomatized biconditional with an opaque defining quantity: the Balazard-Saias-Yor vanishing-integral criterion (1999, `RH_iff_BSY`), the Riesz criterion (1916, one of the earliest known equivalences, on the growth of an entire function built from $1/\\zeta(2k)$), the Báez-Duarte criterion (2003, using only ζ at positive even integers), and Volchkov's explicit single-integral criterion (1995). `rh_formulation_count` totals 10+4=14 named formulations with $\\binom{14}{2}=91$ pairwise equivalences (native_decide), and three PROVED theorems chain the four integral criteria together via RH as hub.",
@@ -778,7 +778,7 @@
   {
     "id": "ann-li-redux-prime-constellations",
     "proofId": "riemann-hypothesis",
-    "range": { "startLine": 6210, "endLine": 6379 },
+    "range": { "startLine": 6249, "endLine": 6418 },
     "type": "concept",
     "title": "A Soundness Fix to Li's Criterion, and RH's Consequences for Prime Constellations",
     "content": "Part LVI documents a 2026-03-22 soundness fix: an earlier concrete `liCoefficient` definition used only the leading asymptotic term $n\\log(4\\pi)+n\\gamma-(n-1)\\log n$, which goes negative for n≈50+ even though the true Li coefficients stay positive under RH — combined with the (now-removed) `li_criterion` axiom, this let ¬RH be derived, a critical unsoundness. The correct, sound statement is the opaque `liConstant`/`RH_iff_LiPositivity` from Part XLVIII; `li_criterion_sharp` restates the sharp contrapositive test safely. Part LVII then surveys RH's consequences for prime patterns: effective Goldbach (`goldbach_ternary_effective`), Cramér-type prime-gap bounds (`rh_prime_gap_bound`, axiom), and twin-prime density asymptotics.",
@@ -790,7 +790,7 @@
   {
     "id": "ann-cryptographic-number-theory",
     "proofId": "riemann-hypothesis",
-    "range": { "startLine": 6379, "endLine": 6594 },
+    "range": { "startLine": 6480, "endLine": 6595 },
     "type": "concept",
     "title": "RH and Cryptographic Number Theory",
     "content": "Part LVIII closes the file with RH/GRH's consequences for computational number theory: Miller's 1976 deterministic primality test under GRH (witness bound $O((\\log n)^2)$, `miller_faster_than_aks` shows it beats the unconditional AKS algorithm's $O((\\log n)^{6+\\varepsilon})$), the Dickman-de Bruijn function ρ(u) governing smooth-number density (and hence factoring-algorithm complexity via `factoring_rh_dependence`), Hooley's 1967 theorem that Artin's primitive-root conjecture follows from GRH, and the least-quadratic-nonresidue bound $O((\\log p)^2)$ under GRH versus Burgess's unconditional $O(p^{1/(4\\sqrt e)+\\varepsilon})$. The section's closing insight: RH would help cryptography (faster primality, better prime generation) far more than it would hurt it — factoring stays hard either way.",

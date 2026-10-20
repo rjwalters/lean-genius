@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigationType } from 'react-router-dom'
 import { getResearchListings, getResearchSearchIndex } from '@/data/research'
 // Auth context available if needed for future features
 // import { useAuth } from '@/contexts/AuthContext'
@@ -8,7 +8,7 @@ import { Footer } from '@/components/Footer'
 import { LoadingScreen } from '@/components/LoadingScreen'
 import { ResearchCard, ContributeSection, RelatedToolsSection } from '@/components/research'
 import { PHASE_INFO, TIER_INFO } from '@/types/research'
-import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData, useIncrementalList } from '@/hooks'
+import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData, useIncrementalList, useScrollRestoration } from '@/hooks'
 import { LoadMore } from '@/components/ui/load-more'
 import { buildHaystacks, compareTitles, normalizeSearchText } from '@/lib/gallery-search'
 import type { ResearchPhase, ValueTier, ResearchStatus, ResearchListing } from '@/types/research'
@@ -144,7 +144,17 @@ export function ResearchPage() {
   }, [researchListings, haystacks, sortKeys, searchQuery, selectedPhases, selectedTiers, selectedStatus, sortBy])
 
   // Mount the grid in batches rather than every card at once.
-  const { visible: visibleProblems, hasMore, remaining, sentinelRef, showAll } = useIncrementalList(problems)
+  // Back-navigation lands on this page before the listings have loaded, so
+  // restore the revealed depth and scroll offset ourselves once they have
+  // (#43696). Keyed by pathname + search so each filter view restores its own.
+  const location = useLocation()
+  const restore = useNavigationType() === 'POP'
+  const routeKey = `${location.pathname}${location.search}`
+  const { visible: visibleProblems, hasMore, remaining, sentinelRef, showAll } = useIncrementalList(problems, {
+    persistKey: routeKey,
+    restore,
+  })
+  useScrollRestoration(routeKey, researchListings !== null, restore)
 
   const handlePhaseToggle = (phase: ResearchPhase) => {
     setSelectedPhases((prev) =>

@@ -100,10 +100,10 @@
     "id": "ann-e528-sawcount",
     "proofId": "erdos-528",
     "range": {
-      "startLine": 74,
-      "endLine": 78
+      "startLine": 70,
+      "endLine": 74
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "SAW Count f(n,k)",
     "content": "`sawCount n k` is the number of $n$-step self-avoiding walks in $\\mathbb{Z}^k$ starting at the origin. Axiomatized because enumerating SAWs in Lean requires decidability of `isSAW`, which involves quantifying over all lattice points visited — an infinite set.",
     "mathContext": "The function $f(n,k)$ = `sawCount n k` is always finite (bounded by $(2k)^n$) but computing it exactly is \\#P-complete. Known 2D values: $f(0,2)=1$, $f(1,2)=4$, $f(2,2)=12$, $f(3,2)=36$, $f(4,2)=100$, $f(5,2)=284$. The sequence grows exponentially as $f(n,k) \\sim A \\cdot \\mu_k^n \\cdot n^{\\gamma-1}$.",
@@ -125,7 +125,7 @@
     "id": "ann-e528-submult",
     "proofId": "erdos-528",
     "range": {
-      "startLine": 91,
+      "startLine": 93,
       "endLine": 93
     },
     "type": "concept",
@@ -175,8 +175,8 @@
     "id": "ann-e528-connective",
     "proofId": "erdos-528",
     "range": {
-      "startLine": 99,
-      "endLine": 105
+      "startLine": 85,
+      "endLine": 91
     },
     "type": "definition",
     "title": "Connective Constant μ_k",
@@ -199,8 +199,8 @@
     "id": "ann-e528-trivialbounds",
     "proofId": "erdos-528",
     "range": {
-      "startLine": 120,
-      "endLine": 123
+      "startLine": 106,
+      "endLine": 109
     },
     "type": "concept",
     "title": "Trivial Bounds: k ≤ μ_k ≤ 2k-1",
@@ -294,8 +294,8 @@
     "id": "ann-e528-honeycomb",
     "proofId": "erdos-528",
     "range": {
-      "startLine": 184,
-      "endLine": 198
+      "startLine": 152,
+      "endLine": 166
     },
     "type": "concept",
     "title": "Honeycomb Lattice: Exact Value √(2+√2)",

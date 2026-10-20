@@ -2,7 +2,7 @@
   {
     "id": "hypothesis",
     "proofId": "maschke-theorem-oq-01",
-    "range": { "startLine": 66, "endLine": 72 },
+    "range": { "startLine": 67, "endLine": 73 },
     "type": "concept",
     "title": "The Hypothesis: |G| Invertible in k",
     "content": "`card_isUnit` makes the running hypothesis legible. Mathlib carries the assumption as a typeclass instance NeZero (Fintype.card G : k); this theorem shows that over a field it is exactly the statement that (Fintype.card G : k) is a unit (via isUnit_iff_ne_zero), which is the classical 'characteristic of k does not divide |G|'. The `omit [Group G]` annotation drops the unused group structure for this purely field-theoretic fact. This invertibility is the one thing the whole proof depends on — it is what lets the averaging step divide by |G|.",
@@ -14,7 +14,7 @@
   {
     "id": "averaging",
     "proofId": "maschke-theorem-oq-01",
-    "range": { "startLine": 74, "endLine": 81 },
+    "range": { "startLine": 75, "endLine": 82 },
     "type": "insight",
     "title": "The Averaging Projection — the Heart of Maschke",
     "content": "`splitting` exposes the technical core: an injective k[G]-linear map f admits a k[G]-linear left inverse g (g ∘ f = id). The construction (inside Mathlib's MonoidAlgebra.exists_leftInverse_of_injective) takes any k-linear splitting π — which exists because vector spaces are always semisimple — and averages it over the group, π ↦ (1/|G|)∑_g g·π·g⁻¹. The average is k[G]-equivariant by a reindexing of the group sum, and it is well-defined precisely because (card G : k) is invertible. Every other result in the file is a corollary of this one equivariant splitting.",
@@ -26,7 +26,7 @@
   {
     "id": "direct-summand",
     "proofId": "maschke-theorem-oq-01",
-    "range": { "startLine": 83, "endLine": 94 },
+    "range": { "startLine": 84, "endLine": 95 },
     "type": "concept",
     "title": "Every Subrepresentation Is a Direct Summand",
     "content": "`exists_isCompl` is the classical statement of Maschke's theorem: every k[G]-submodule p of a representation V has a complementary subrepresentation q (IsCompl p q). `exists_complement` unfolds IsCompl into the explicit direct-sum decomposition p ⊓ q = ⊥ (trivial intersection) and p ⊔ q = ⊤ (they span V), i.e. V = p ⊕ q as representations. This is what 'completely reducible' means concretely — no subrepresentation is 'stuck' inside V without a G-invariant complement, in contrast to the modular case.",
@@ -38,7 +38,7 @@
   {
     "id": "semisimple",
     "proofId": "maschke-theorem-oq-01",
-    "range": { "startLine": 96, "endLine": 103 },
+    "range": { "startLine": 97, "endLine": 104 },
     "type": "concept",
     "title": "Semisimplicity of V and of k[G]",
     "content": "`isSemisimpleModule` states every representation V is a semisimple k[G]-module (a direct sum of irreducible subrepresentations); `isSemisimpleRing` states the group algebra k[G] is itself a semisimple ring. Both are obtained by `inferInstance` — Mathlib's instance graph already derives them from the direct-summand property. Semisimplicity of k[G] is the entry point to Artin–Wedderburn, which decomposes it as a finite product ∏ Mₙᵢ(Dᵢ) of matrix algebras over division rings, the structural backbone from which character theory follows.",
@@ -50,7 +50,7 @@
   {
     "id": "ses-splits",
     "proofId": "maschke-theorem-oq-01",
-    "range": { "startLine": 105, "endLine": 118 },
+    "range": { "startLine": 106, "endLine": 119 },
     "type": "tactic",
     "title": "Short Exact Sequences Split Both Ways",
     "content": "`surjection_splits` gives every surjective k[G]-map a section (f ∘ s = id) — projectivity, the lifting form of complete reducibility (IsSemisimpleModule.lifting_property). `injection_splits` gives every injective k[G]-map a retraction (r ∘ f = id) — the extension/injective form (IsSemisimpleModule.extension_property), which re-proves the earlier `splitting` through the semisimplicity API. Together they say every short exact sequence of representations splits, the categorical heart of why representation theory in this setting is 'as easy as linear algebra'.",
@@ -62,7 +62,7 @@
   {
     "id": "quotient-sub",
     "proofId": "maschke-theorem-oq-01",
-    "range": { "startLine": 120, "endLine": 125 },
+    "range": { "startLine": 121, "endLine": 126 },
     "type": "concept",
     "title": "Quotients Are Subrepresentations",
     "content": "`quotient_iso_submodule` records that for every subrepresentation N, the quotient V ⧸ N is k[G]-linearly isomorphic to some subrepresentation P of V (IsSemisimpleModule.exists_submodule_linearEquiv_quotient). In a completely reducible module, quotients never produce anything genuinely new — they are realized inside V itself, mirroring the direct-summand property at the level of isomorphism type. This fails in the modular case, where quotients can be strictly 'smaller' than any submodule.",

@@ -62,7 +62,7 @@
   {
     "id": "ann-cro06-witness",
     "proofId": "cramers-rule-oq-06",
-    "range": { "startLine": 104, "endLine": 114 },
+    "range": { "startLine": 105, "endLine": 114 },
     "type": "concept",
     "title": "A Concrete Fin 2 Witness",
     "content": "The closing examples ground the abstract laws: adj !![1,2;3,4] = !![4,-2;-3,1] via Mathlib's adjugate_fin_two_of (which sends !![a,b;c,d] to !![d,-b;-c,a]), and the anti-homomorphism law checked on a concrete Fin 2 product. These confirm the packaged identities compute as expected on explicit matrices.",

@@ -167,10 +167,10 @@
     "id": "ann-s4-instance-existential",
     "proofId": "kepler-conjecture-oq-04",
     "range": {
-      "startLine": 233,
-      "endLine": 260
+      "startLine": 295,
+      "endLine": 322
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "S4: tetrahedronDimerPacking instance + exists_packingDensity_gt_fcc",
     "content": "Packages the S3 inequality at the type level. `tetrahedronDimerPacking` bundles `tetrahedronDimerDensity` with its S2-proven bounds (`tetrahedronDimerDensity_pos.le` and `tetrahedronDimerDensity_lt_one.le`) into the parent file's abstract `PackingDensity` structure, with no new axioms. The corollary `exists_packingDensity_gt_fcc : ∃ p : PackingDensity, fccDensity < p.density` is the bottom-line existential refutation: the parent's `PackingDensity` type, taken without the sphere hypothesis, is NOT bounded above by `fccDensity`. Restoring such a bound requires the sphere shape hypothesis (the parent `kepler_conjecture` axiom). The witness is `tetrahedronDimerPacking`, and the proof is a one-line anonymous constructor over the S3 theorem.",
     "mathContext": "$\\exists\\, p : \\mathrm{PackingDensity},\\ \\delta_{\\mathrm{FCC}} < p.\\mathrm{density}$, witnessed by the dimer packing with $p.\\mathrm{density} = 4000/4671$.",

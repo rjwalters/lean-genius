@@ -2,7 +2,7 @@
   {
     "id": "ann-t2-and-haar",
     "proofId": "fourier-series-oq-04-oq-01",
-    "range": { "startLine": 72, "endLine": 82 },
+    "range": { "startLine": 81, "endLine": 91 },
     "type": "definition",
     "title": "The 2-torus and its product Haar measure",
     "content": "The 2-torus $\\mathbb{T}^2 = (\\mathbb{R}/\\mathbb{Z})^2$ is modelled as `Fin 2 → AddCircle (1 : ℝ)`, a `Pi` type rather than a record. This shape makes the product Haar measure cheap to define: `haarT2 := Measure.pi (fun _ => haarAddCircle)`. The `Fact (0 < 1)` instance is the standard hypothesis that `AddCircle T` expects to expose its full measure-theoretic instance suite (`MeasurableSpace`, `BorelSpace`, `IsAddHaarMeasure haarAddCircle`).",

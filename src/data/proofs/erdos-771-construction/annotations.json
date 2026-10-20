@@ -14,7 +14,7 @@
   {
     "id": "ann-definitions",
     "proofId": "erdos-771-construction",
-    "range": { "startLine": 37, "endLine": 52 },
+    "range": { "startLine": 40, "endLine": 55 },
     "type": "definition",
     "title": "Self-Contained Definitions (Icc_n, subsetSums, AvoidSum, primeMultiples)",
     "content": "Four definitions set up the problem without depending on the broken companion file. Icc_n n = Finset.Icc 1 n is the ground set {1,…,n}. subsetSums S = (S.powerset.image (∑ a ∈ A, a)).filter (· > 0) is the set of *positive* subset sums of S — the powerset is imaged under summation and the zero sum (from the empty set) is filtered out, matching the 'no nonempty subset sums to m' formulation. AvoidSum S m := m ∉ subsetSums S says S avoids m. primeMultiples p n = (Icc_n n).filter (p ∣ ·) is the construction itself: the multiples of p inside {1,…,n}. Keeping subsetSums noncomputable and filtering on > 0 are the two design choices that make the avoidance statement clean.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-size",
     "proofId": "erdos-771-construction",
-    "range": { "startLine": 54, "endLine": 63 },
+    "range": { "startLine": 57, "endLine": 66 },
     "type": "theorem",
     "title": "Size of the Construction (prime_multiples_size)",
     "content": "prime_multiples_size proves (primeMultiples p n).card = n / p — the multiples of p in {1,…,n} number exactly ⌊n/p⌋ (Nat division). The proof first rewrites the ground set: Icc_n n = Finset.Ioc 0 n (the half-open interval (0, n], proved by ext + omega), which matches the form of the counting lemma. It then unfolds primeMultiples and applies Nat.Ioc_filter_dvd_card_eq_div n p, Mathlib's exact count of the multiples of p in (0, n]. This is the cardinality that, summed with the (1/2+o(1)) density of suitable primes, drives the n/log n leading order of the lower bound — but here only the exact finite count is claimed.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-avoidance",
     "proofId": "erdos-771-construction",
-    "range": { "startLine": 65, "endLine": 81 },
+    "range": { "startLine": 68, "endLine": 84 },
     "type": "theorem",
     "title": "The Avoidance Property — the Engine (prime_multiples_avoid)",
     "content": "prime_multiples_avoid is the heart of the construction: if p ∤ m then primeMultiples p n avoids m. The proof is a clean contradiction. Suppose m ∈ subsetSums (primeMultiples p n); unfolding gives a subset A ⊆ primeMultiples p n with ∑ a ∈ A, a = m. Every element a ∈ A is a multiple of p (it passed the p ∣ · filter), so by Finset.dvd_sum the whole sum is divisible by p — i.e. p ∣ m after rewriting with hAsum. That contradicts the hypothesis p ∤ m. Notice the primality hypothesis _hp is never actually used (underscored): avoidance holds for the multiples of *any* p with p ∤ m. Primality is retained only to align with the construction and to guarantee, via the next lemma, that a suitable p exists densely enough for the asymptotic count.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-existence",
     "proofId": "erdos-771-construction",
-    "range": { "startLine": 83, "endLine": 98 },
+    "range": { "startLine": 86, "endLine": 101 },
     "type": "theorem",
     "title": "The Construction Always Applies (exists_prime_not_dvd, exists_avoiding_multiples)",
     "content": "Two lemmas close the existence half. exists_prime_not_dvd shows that for every m ≥ 1 there is a prime p ∤ m: take any prime p > m (Nat.exists_infinite_primes (m+1)); if p ∣ m then Nat.le_of_dvd would force p ≤ m, contradicting p > m (closed by omega). exists_avoiding_multiples then assembles the full statement: for every m ≥ 1 there is a prime p such that primeMultiples p n ⊆ Icc_n n (immediate, Finset.filter_subset) and AvoidSum (primeMultiples p n) m (from prime_multiples_avoid). This is the existence statement the lower bound rests on — an m-avoiding subset of {1,…,n} always exists — even though the *optimal* size driving the (1/2)·n/log n constant (smallest suitable prime) is left external.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-quantitative",
     "proofId": "erdos-771-construction",
-    "range": { "startLine": 100, "endLine": 140 },
+    "range": { "startLine": 115, "endLine": 155 },
     "type": "theorem",
     "title": "Quantitative Existence via Bertrand's Postulate (exists_avoiding_multiples_quantitative)",
     "content": "The bare existence above is unsatisfying for sizing the construction: exists_prime_not_dvd produces *some* prime p > m, but p can be enormous (e.g. for m = lcm{2,…,t} the least prime not dividing m is the next prime after t), making ⌊n/p⌋ tiny. exists_avoiding_multiples_quantitative fixes this with Bertrand's postulate (Nat.exists_prime_lt_and_le_two_mul), which guarantees a prime in the window m < p ≤ 2m. The helper prime_gt_not_dvd notes that any prime strictly above a positive m cannot divide m (else Nat.le_of_dvd forces p ≤ m). Combining: p ∤ m gives avoidance (prime_multiples_avoid), and p ≤ 2m gives, after rewriting the cardinality with prime_multiples_size, the size bound ⌊n/(2m)⌋ ≤ ⌊n/p⌋ = |S| via Nat.div_le_div_left (dividing by a smaller denominator only increases the quotient). So for every m ≥ 1 there is an m-avoiding subset of {1,…,n} of size at least ⌊n/(2m)⌋ — the construction's size is now controlled to within a factor of two of n/m. This is still a per-m bound (it weakens as m grows); the uniform-over-all-m argument behind the n/log n lower bound is not formalized here.",

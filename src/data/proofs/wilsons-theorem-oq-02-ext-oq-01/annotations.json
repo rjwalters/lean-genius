@@ -50,7 +50,7 @@
   {
     "id": "ann-miller-prod",
     "proofId": "wilsons-theorem-oq-02-ext-oq-01",
-    "range": { "startLine": 173, "endLine": 198 },
+    "range": { "startLine": 174, "endLine": 202 },
     "type": "theorem",
     "title": "miller_prod: Miller's Theorem (1903)",
     "content": "The headline result: in a finite abelian group, either ∏G = 1, or there exists a unique element t of order 2 with ∏G = t. The proof cases on whether |S| = 2. If |S| = 2, then S = {1, t}; extracting t (the non-identity element of the pair) gives the unique-involution branch via prod_eq_unique_involution. Otherwise |S| ≠ 2 and prod_eq_one_of_card_ne_two gives ∏G = 1. This is the full Miller disjunction unifying both cases.",

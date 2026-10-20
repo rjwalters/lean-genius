@@ -243,16 +243,65 @@ function extractRelatedProofs(content: string): string[] {
 }
 
 /**
+ * Extract a named section of state.md.
+ *
+ * The canonical convention is a level-2 heading with the exact title
+ * (`## Current Focus`, `## Next Action`) followed by the section body. Long-
+ * running problems instead carry the field inside per-iteration blocks with
+ * headings like `### Next action (S10)` or `### Next steps`, recorded
+ * newest-first (#43679). Resolution order:
+ *
+ *   1. the canonical `## <title>` section, when present;
+ *   2. otherwise the first per-iteration heading in document order, i.e. the
+ *      newest one under the newest-first convention.
+ *
+ * The body runs to the next heading of any level, so a `###` sub-section
+ * ends at the next `###` or `##`.
+ */
+function extractStateSection(content: string, canonical: RegExp, perIteration: RegExp): string {
+  const canon = canonical.exec(content)
+  if (canon) return sectionBodyAfter(content, canon.index + canon[0].length)
+  const first = perIteration.exec(content)
+  perIteration.lastIndex = 0
+  return first ? sectionBodyAfter(content, first.index + first[0].length) : ''
+}
+
+function sectionBodyAfter(content: string, headingEnd: number): string {
+  const rest = content.slice(headingEnd)
+  const next = rest.search(/\n#{1,6}\s/)
+  return (next === -1 ? rest : rest.slice(0, next)).trim()
+}
+
+/**
+ * Focus fallback for per-iteration state files: the title of the newest
+ * `## Iteration N (…) — <title>` heading (the text after the dash, or the
+ * whole heading minus the "Iteration N (…)" prefix).
+ */
+function latestIterationTitle(content: string): string {
+  const m = /^##[ \t]*Iteration[ \t]+\d+[^\n]*$/m.exec(content)
+  if (!m) return ''
+  const heading = m[0].replace(/^##[ \t]*/, '')
+  const dash = heading.search(/\s[—–-]{1,2}\s/)
+  const title = dash === -1 ? heading.replace(/^Iteration[ \t]+\d+[ \t]*(\([^)]*\))?[ \t]*/, '') : heading.slice(dash).replace(/^\s[—–-]{1,2}\s/, '')
+  return title.trim()
+}
+
+const FOCUS_CANONICAL = /^##[ \t]*Current Focus[ \t]*$/m
+const FOCUS_PER_ITERATION = /^#{2,4}[ \t]*(?:Current[ \t-]+)?[Ff]ocus\b[^\n]*$/m
+const NEXT_CANONICAL = /^##[ \t]*Next Action[ \t]*$/m
+const NEXT_PER_ITERATION = /^#{2,4}[ \t]*Next[ \t-]+(?:[Aa]ction|[Ss]teps?|[Ii]teration)s?\b[^\n]*$/m
+
+/**
  * Parse state.md to extract current state
  */
-function parseState(content: string, registryEntry: RegistryEntry): ResearchProblem['currentState'] {
+export function parseState(content: string, registryEntry: RegistryEntry): ResearchProblem['currentState'] {
   const phaseMatch = content.match(/\*\*Phase\*\*:\s*(\w+)/)
   const sinceMatch = content.match(/\*\*Since\*\*:\s*(.+)/)
   const iterationMatch = content.match(/\*\*Iteration\*\*:\s*(\d+)/)
-  const focusMatch = content.match(/##\s*Current Focus\s*\n([\s\S]*?)(?=\n##|$)/m)
+  const focus = extractStateSection(content, FOCUS_CANONICAL, FOCUS_PER_ITERATION) || latestIterationTitle(content)
   const activeMatch = content.match(/##\s*Active Approach\s*\n([\s\S]*?)(?=\n##|$)/m)
   const blockersMatch = content.match(/##\s*Blockers\s*\n([\s\S]*?)(?=\n##|$)/m)
-  const nextMatch = content.match(/##\s*Next Action\s*\n([\s\S]*?)(?=\n##|$)/m)
+  const nextAction = extractStateSection(content, NEXT_CANONICAL, NEXT_PER_ITERATION)
   const totalMatch = content.match(/Total attempts:\s*(\d+)/)
   const currentMatch = content.match(/Current approach attempts:\s*(\d+)/)
   const triedMatch = content.match(/Approaches tried:\s*(\d+)/)
@@ -269,10 +318,10 @@ function parseState(content: string, registryEntry: RegistryEntry): ResearchProb
     phase: (phaseMatch?.[1] as ResearchPhase) || registryEntry.phase,
     since: sinceMatch?.[1] || registryEntry.started,
     iteration: parseInt(iterationMatch?.[1] || '1', 10),
-    focus: focusMatch?.[1]?.trim() || '',
+    focus,
     activeApproach: activeMatch?.[1]?.trim() !== 'None yet.' ? activeMatch?.[1]?.trim() : undefined,
     blockers,
-    nextAction: nextMatch?.[1]?.trim() || '',
+    nextAction,
     attemptCounts: {
       total: parseInt(totalMatch?.[1] || '0', 10),
       currentApproach: parseInt(currentMatch?.[1] || '0', 10),
@@ -984,5 +1033,8 @@ function build(): void {
   }
 }
 
-// Run
-build()
+// Run only when executed directly, so `parseState` can be imported by tests
+// (scripts/tests/research-state-headings.test.ts) without triggering a build.
+if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
+  build()
+}

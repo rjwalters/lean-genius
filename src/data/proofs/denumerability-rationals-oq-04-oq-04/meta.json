@@ -52,11 +52,20 @@
       "summary": "Module docstring stating the promotion goal (Countable → Denumerable, an explicit Q̄ ≅ ℕ), the classical/noncomputable caveat (the constructive index-computing enumeration remains open), and the axiom disclosure (only the foundational trio). Imports Mathlib and opens the Cardinal namespace."
     },
     {
-      "id": "sec-denum0404-countable-infinite",
-      "title": "Countable and Infinite Instances",
+      "id": "sec-denum0404-countable",
+      "title": "Type Definition and Countable Instance",
       "startLine": 54,
+      "endLine": 60,
+      "summary": "Defines AlgQ = {x : ℂ // IsAlgebraic ℚ x}. The Countable instance comes from Mathlib's Algebraic.countable ℚ ℂ (ℚ is a countable base ring), specialised via .to_subtype.",
+      "mathContext": "$\\mathrm{AlgQ} := \\{x \\in \\mathbb{C} \\mid x \\text{ algebraic over } \\mathbb{Q}\\}$ is countable because $\\mathbb{Q}$ is."
+    },
+    {
+      "id": "sec-denum0404-infinite",
+      "title": "The Infinite Instance",
+      "startLine": 62,
       "endLine": 68,
-      "summary": "Defines AlgQ = {x : ℂ // IsAlgebraic ℚ x}. The Countable instance comes from Mathlib's Algebraic.countable ℚ ℂ (ℚ is a countable base ring). The Infinite instance embeds ℚ via q ↦ ⟨algebraMap ℚ ℂ q, isAlgebraic_algebraMap q⟩, injective by FaithfulSMul.algebraMap_injective."
+      "summary": "Every rational is algebraic, so q ↦ ⟨algebraMap ℚ ℂ q, isAlgebraic_algebraMap q⟩ embeds ℚ into AlgQ; injectivity comes from FaithfulSMul.algebraMap_injective, giving Infinite AlgQ.",
+      "mathContext": "The embedding $\\mathbb{Q} \\hookrightarrow \\mathrm{AlgQ}$ witnesses infinitude, independently of the countability argument."
     },
     {
       "id": "sec-denum0404-denumerable",

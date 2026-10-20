@@ -38,7 +38,7 @@
   {
     "id": "ann-ures-sin",
     "proofId": "de-moivre-oq-01-oq-02-oq-02",
-    "range": { "startLine": 115, "endLine": 126 },
+    "range": { "startLine": 116, "endLine": 127 },
     "type": "theorem",
     "title": "Circular-sine ratio from the same identity",
     "content": "`U_resolvent_sin` substitutes $z\\mapsto xi$ into the hyperbolic result, using $\\cosh(xi)=\\cos x$ and $\\sinh(xi)=\\sin x\\cdot i$, then cancels the unit $i$ to obtain $U_n(\\cos x)\\sin x = \\sin((n+1)x)$. Because the resolvent ($\\star$) is about a formal unit $w$, the passage from the hyperbolic to the circular ratio is a one-line change of variable — the polynomial $U_n$ itself is untouched. This is the concrete sense in which one identity yields both ratios.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-ueval",
     "proofId": "de-moivre-oq-01-oq-02-oq-02",
-    "range": { "startLine": 128, "endLine": 136 },
+    "range": { "startLine": 131, "endLine": 139 },
     "type": "theorem",
     "title": "Packaged: one Uₙ, both sine ratios",
     "content": "`U_eval_cos_and_cosh` bundles the two analytic ratios $U_n(\\cos z)\\sin z=\\sin((n+1)z)$ and $U_n(\\cosh z)\\sinh z=\\sinh((n+1)z)$ into a single conjunction — the direct $U$-analogue of the parent's `T_eval_cos_and_cosh`, making explicit that the *same* $U_n$ governs both.",

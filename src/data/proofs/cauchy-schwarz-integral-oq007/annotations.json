@@ -14,7 +14,7 @@
   {
     "id": "wpme-ann-defs",
     "proofId": "cauchy-schwarz-integral-oq007",
-    "range": { "startLine": 52, "endLine": 67 },
+    "range": { "startLine": 56, "endLine": 67 },
     "type": "definition",
     "title": "The four weighted means",
     "content": "Four noncomputable definitions mirror the parent file: the weighted harmonic mean WHM = (w₁/a + w₂/b)⁻¹, geometric mean WGM = a^w₁·b^w₂ (using Real.rpow for the real exponents), arithmetic mean WAM = w₁a + w₂b, and quadratic mean WQM = √(w₁a² + w₂b²). The parent established WHM ≤ WGM ≤ WAM ≤ WQM for positive a,b and weights w₁,w₂ > 0 with w₁ + w₂ = 1; this entry characterizes exactly when the chain collapses to a single value.",
@@ -26,7 +26,7 @@
   {
     "id": "wpme-ann-collapse",
     "proofId": "cauchy-schwarz-integral-oq007",
-    "range": { "startLine": 68, "endLine": 95 },
+    "range": { "startLine": 72, "endLine": 95 },
     "type": "tactic",
     "title": "Every mean collapses to a when a = b",
     "content": "The backward direction's building blocks: whm/wgm/wam/wqm_eq_of_eq each show that at a = b the corresponding mean equals the common value a, using only the weight-sum constraint w₁ + w₂ = 1. The geometric case uses Real.rpow_add to combine a^w₁·a^w₂ = a^(w₁+w₂) = a^1 = a; the quadratic case uses √((w₁+w₂)a²) = √(a²) = a via Real.sqrt_sq. These supply the 'all four equal a' half of the headline iff.",
@@ -38,7 +38,7 @@
   {
     "id": "wpme-ann-variance",
     "proofId": "cauchy-schwarz-integral-oq007",
-    "range": { "startLine": 97, "endLine": 106 },
+    "range": { "startLine": 101, "endLine": 106 },
     "type": "insight",
     "title": "The weighted-variance identity",
     "content": "weighted_variance_eq is the exact algebraic identity w₁a² + w₂b² − (w₁a + w₂b)² = w₁w₂(a−b)² for weights summing to 1 (substitute w₂ = 1 − w₁ and ring). Being an exact equality — not just ≥ 0 — its left side is the weighted variance and its right side vanishes iff a = b. This is the cleanest 'pinch' driving the entire collapse: with nothing beyond ring and Real.sqrt it forces a = b at the WAM = WQM link. Probabilistically it is 'variance = 0 iff the random variable is constant'.",
@@ -50,7 +50,7 @@
   {
     "id": "wpme-ann-wam-wqm",
     "proofId": "cauchy-schwarz-integral-oq007",
-    "range": { "startLine": 108, "endLine": 164 },
+    "range": { "startLine": 65, "endLine": 121 },
     "type": "insight",
     "title": "WAM = WQM ⇔ a = b (the zero-variance link)",
     "content": "wam_eq_wqm_iff is the central link. Forward: both means are nonnegative, so WAM = WQM squares to (w₁a + w₂b)² = w₁a² + w₂b² (via Real.sq_sqrt on the WQM side); the variance identity then gives w₁w₂(a−b)² = 0, and since w₁w₂ > 0 we get a = b. Backward is the collapse-value lemmas. The companion wam_lt_wqm_of_ne upgrades this to the strict gap WAM < WQM whenever a ≠ b — the quadratic mean strictly exceeds the arithmetic mean off the diagonal.",
@@ -62,7 +62,7 @@
   {
     "id": "wpme-ann-wgm-wam",
     "proofId": "cauchy-schwarz-integral-oq007",
-    "range": { "startLine": 166, "endLine": 252 },
+    "range": { "startLine": 62, "endLine": 148 },
     "type": "tactic",
     "title": "WGM = WAM and WHM = WGM via AM–GM equality and reciprocal duality",
     "content": "wgm_eq_wam_iff is the two-variable weighted AM–GM equality case: it instantiates Mathlib's general-Finset Real.geom_mean_eq_arith_mean_weighted_iff' at Fin 2 with weights ![w₁,w₂] and values ![a,b]; equality means every value equals the common mean, i.e. a = b. whm_eq_wgm_iff then reduces the harmonic–geometric link to this one for free via reciprocal duality: WHM(a,b)⁻¹ = WAM(1/a,1/b) and WGM(a,b)⁻¹ = WGM(1/a,1/b) (using Real.div_rpow), so WHM = WGM at (a,b) iff WGM = WAM at (1/a,1/b), iff 1/a = 1/b, iff a = b.",

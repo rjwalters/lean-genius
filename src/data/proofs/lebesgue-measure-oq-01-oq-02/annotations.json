@@ -22,7 +22,7 @@
   {
     "id": "ann-definition",
     "proofId": "lebesgue-measure-oq-01-oq-02",
-    "range": { "startLine": 39, "endLine": 51 },
+    "range": { "startLine": 40, "endLine": 51 },
     "type": "definition",
     "title": "Thomae's function as a dependent if-then-else",
     "content": "thomae x is defined as `if h : ∃ q : ℚ, (q : ℝ) = x then 1 / h.choose.den else 0`. The dependent `dite` lets the then-branch use the existence witness h to name the rational and read off its canonical denominator. A classical decidability instance (`open Classical in`) is needed because membership of x in the range of ℚ→ℝ is not decidable constructively. thomae_irrational then reads directly off the else-branch: Irrational x is definitionally x ∉ range((↑):ℚ→ℝ), exactly the negation that selects `0`.",

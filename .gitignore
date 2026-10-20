@@ -14,7 +14,17 @@
 # Per-machine install record (absolute source path + install timestamp)
 .claude/skills/repo/.install-local.json
 .claude/projects/
-.claude/worktrees/
+# Codex agent worktrees (same role as .claude/worktrees/ and .loom/worktrees/).
+# Both forms: the slash form matches a real directory, the bare form matches the
+# symlink used when the worktrees are offloaded to another volume.
+.codex/worktrees/
+.codex/worktrees
+
+# Machine-local git hooks (git-lfs install --local writes here; wired via core.hooksPath)
+.githooks/
+
+# Per-issue research scaffolds (problem.md / state.md) are local working notes, not gallery content
+research/problems/issue-*/
 aristotle-results/llm-mapping-cache.json
 *.token
 
@@ -24,29 +34,21 @@ aristotle-results/llm-mapping-cache.json
 # blanket `.loom/*` ignore, so we enumerate runtime paths instead of the old
 # ignore-then-negate. Secrets lines above (.loom/tokens, *.token) still apply.
 # (Loom's own installer appends a `>>> loom-managed >>>` block below covering
-# logs/signals/worktrees/daemon files; the paths here fill its gaps.)
+# logs/signals/worktrees/locks/checkpoints/exit-codes/accounts.env/.loom-managed
+# and .claude/worktrees; the paths here are only the gaps that block lacks.)
 # .loom/config.json is HOST-LOCAL (worktree.root=/Volumes/Stripe, guards.forceScope)
 # and must never be committed.
-.loom/accounts.env
-.loom/locks/
 .loom/state/
 .loom/tmp/
-.loom/sweep-checkpoint/
-.loom/exit-codes/
 .loom/config.json
 .loom/model-config.env
-.loom-managed
 # host-local dev symlink to the loom-tools package source (see #43675)
 loom-tools
 research/*.pid
-research/*.log
-proofs/err.log
-scripts/enricher/*.log
 scripts/enricher/logs/
 
 # ── Build artifacts / caches ───────────────────────────────────────────
 .lake
-.lake/
 .build-cache/
 .erdos-cache/
 .wrangler/
@@ -113,11 +115,7 @@ proofs/data/knuth/tour-finder/Cargo.lock
 proofs/data/knuth/tour-finder/target/
 
 # Research runtime leftovers
-research/stub-claims/
-# Retired daemon-stop sentinel; the live signal is .loom/signals/stop-lean-daemon
-research/lean-stop-daemon
 proofs/Proofs/*.bak
-proofs/Proofs/*.lean.bak
 proofs/Proofs/*.backup
 proofs/Proofs/*.test
 
@@ -133,7 +131,10 @@ __pycache__/
 # Loom runtime state (don't commit these)
 .loom-in-use
 .loom-checkpoint
+.loom-managed
+.loom-cargo-target-dir
 .no-changes-needed
+.snapshots/
 .loom/.daemon.pid
 .loom/.daemon.log
 .loom/daemon.sock
@@ -147,14 +148,21 @@ __pycache__/
 .loom/interventions/
 .loom/worktrees/
 .loom/worktrees-local/
+.claude/worktrees/
 .loom/state.json
 .loom/mcp-command.json
 .loom/activity.db
 .loom/claims/
+.loom/locks/
 .loom/signals/
 .loom/status/
 .loom/retry-state/
+.loom/exit-codes/
+.loom/sweep-checkpoint/
 .loom/sweep-run/
+.loom/state/ci-telemetry/
+.loom/state/fleet-captain/
+.loom/concierge/
 .loom/stats/
 .loom/diagnostics/
 .loom/guide-docs-state.json
@@ -164,6 +172,18 @@ __pycache__/
 .loom/metrics/
 .loom/usage-cache.json
 .loom/claude-config/
+.loom/claude-config.*/
+.loom/claude-config-*/
+.loom/native-tools/
+.loom/tokens/
+.loom/tokens.*/
+.loom/tokens-*/
+.loom/accounts.env
+.loom/accounts.env.*
+.loom/accounts.env-*
+.loom/api-keys/
+.loom/api-keys.*/
+.loom/api-keys-*/
 .loom/account-health.json
 .loom/account-health.lock
 .loom/CANARY
@@ -171,9 +191,18 @@ __pycache__/
 .loom/*.sock
 .loom/*.tmp
 .loom/*.bak
+.loom/.install.lock
 .loom/logs/
+.loom/.resync-in-progress
+.loom/gh-config/
+.loom/gh-config.*/
+.loom/gh-config-*/
+.loom/gh-config-by-owner/
+.loom/gh-config-by-owner.*/
+.loom/gh-config-by-owner-*/
+.loom-local/
 # <<< loom-managed <<<
 
-# Repo Skills machine-local install metadata (absolute source path + timestamp)
-.claude/skills/repo/.install-local.json
 .squad/
+**/*.vision/pages/
+**/*.vision/slides/

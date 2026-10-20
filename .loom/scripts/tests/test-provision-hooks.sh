@@ -12,12 +12,23 @@
 #   - pre-existing non-Loom hooks + permissions are preserved
 #   - invalid existing JSON -> soft-fail (return 1) with NO write
 #   - a backup file is written before the first mutation
+#   - backups are deduped (byte-identical to the last one -> skipped) and
+#     bounded to a retention count, on BOTH provision and deprovision (#5387)
 #   - the wired command WRAPPER behaves: no-ops outside a Loom workspace (AC3),
 #     execs the machine-checkout hook inside one (AC1), and defers to a present
 #     per-repo .loom/hooks/ copy (transition dedup, design decision 3)
 #   - deprovision removes ONLY Loom-owned entries, preserving operator hooks
+#   - #6544: project-level entries are quoted so a project path containing a
+#     space survives `sh -c` execution, and a pre-existing UNQUOTED entry
+#     self-heals to the quoted form on the next re-provision (not left as an
+#     already-provisioned no-op); the machine-level wrapper is unaffected
 #
 # Sandboxed $HOME per case via mktemp -d, matching test-provision-skills.sh.
+#
+# Source-tree-only by design (#6194/#6241): scripts/install/provision-hooks.sh
+# lives at the repo root, not under defaults/, so it is never shipped into an
+# installed consumer repo. This suite SKIPs (exit 0) rather than errors when
+# run outside Loom's own checkout.
 
 set -uo pipefail
 
@@ -45,7 +56,10 @@ assert_contains() {
     if [[ "$1" == *"$2"* ]]; then pass "$3"; else fail "$3 (missing substring: '$2')"; fi
 }
 
-[[ -f "$PROVISION_LIB" ]] || { echo "provisioning lib not found at $PROVISION_LIB"; exit 1; }
+if [[ ! -f "$PROVISION_LIB" ]]; then
+    echo "SKIP: source-tree-only test, $PROVISION_LIB not found (not shipped into an installed repo)" >&2
+    exit 0
+fi
 command -v jq >/dev/null 2>&1 || { echo "jq required for these tests"; exit 1; }
 
 # shellcheck source=/dev/null
@@ -150,6 +164,40 @@ backups=$(find "$HOME7/.claude" -maxdepth 1 -name 'settings.json.loom-backup-*' 
 bfile=$(find "$HOME7/.claude" -maxdepth 1 -name 'settings.json.loom-backup-*' | head -1)
 assert_eq "$(jq -r '.permissions.allow[0]' "$bfile")" "Bash(x:*)" "backup preserves the pre-mutation content"
 
+# ── Test 7b: unchanged settings between runs -> no new backup (#5387) ────────
+echo "Test 7b: re-running with unchanged settings does not add a new backup (#5387)"
+# HOME7's settings.json was mutated by Test 7's provision call (raw ->
+# hooks-wired) — that transition is itself a real content change, so a SECOND
+# call legitimately backs up the now-wired state once (its own new backup).
+# The interesting assertion is the THIRD call onward: install.sh run
+# repeatedly with the settings already stable must stop adding backups.
+sleep 1
+provision_loom_hooks "$HOME7/.claude" >/dev/null 2>&1
+count_before_7b=$(find "$HOME7/.claude" -maxdepth 1 -name 'settings.json.loom-backup-*' | wc -l | tr -d ' ')
+sleep 1  # ensure a distinguishable timestamp would exist if a new backup WERE written
+provision_loom_hooks "$HOME7/.claude" >/dev/null 2>&1
+count_after_7b=$(find "$HOME7/.claude" -maxdepth 1 -name 'settings.json.loom-backup-*' | wc -l | tr -d ' ')
+assert_eq "$count_after_7b" "$count_before_7b" "no new backup written when settings.json is unchanged since the last backup"
+
+# ── Test 7c: bounded retention across repeated CHANGING runs (#5387) ─────────
+echo "Test 7c: backup count stays bounded across repeated settings-changing runs (#5387)"
+HOME7C=$(mktemp -d); mkdir -p "$HOME7C/.claude"
+i=0
+while [[ "$i" -lt 8 ]]; do
+    printf '{"permissions":{"allow":["Bash(x%d:*)"]}}\n' "$i" > "$HOME7C/.claude/settings.json"
+    provision_loom_hooks "$HOME7C/.claude" >/dev/null 2>&1
+    # Re-seed with new, non-Loom content so the NEXT provision sees changed
+    # settings again (provision_loom_hooks itself mutates the file with the
+    # wired hooks, which would otherwise make every subsequent call a no-op
+    # dedup case rather than a genuinely changing run).
+    i=$((i + 1))
+    sleep 1  # force a distinguishable %Y%m%dT%H%M%SZ timestamp per iteration
+done
+count_7c=$(find "$HOME7C/.claude" -maxdepth 1 -name 'settings.json.loom-backup-*' | wc -l | tr -d ' ')
+[[ "$count_7c" -le 5 ]] && pass "backup count bounded to retention limit (5) after 8 changing runs (got $count_7c)" \
+    || fail "backup count exceeded retention limit after 8 changing runs (got $count_7c)"
+[[ "$count_7c" -ge 1 ]] && pass "at least one backup survives pruning" || fail "pruning removed every backup"
+
 # ── Test 8: the wired WRAPPER command behaves correctly ──────────────────────
 echo "Test 8: the wired command wrapper — workspace gate, machine exec, transition dedup"
 # Build a fake machine checkout whose guard-destructive.sh prints a sentinel.
@@ -222,6 +270,44 @@ assert_eq "$(count_marker "$S9" guard-destructive.sh)" "0" "deprovision removed 
 assert_eq "$(jq -r '[.hooks.PreToolUse[]? | .hooks[]? | .command | select(. == ".claude/hooks/my-own-guard.sh")] | length' "$S9")" "1" "operator's own hook preserved after deprovision"
 assert_eq "$(jq -r '.permissions.allow[0]' "$S9")" "Bash(x:*)" "operator's permissions preserved after deprovision"
 
+# ── Test 9b: deprovision's backups are also deduped (#5387 edge case) ────────
+echo "Test 9b: deprovision does not write a duplicate backup for repeated byte-identical settings (#5387)"
+HOME9B=$(mktemp -d); mkdir -p "$HOME9B/.claude"
+SETTINGS_9B='{ "hooks": { "PreToolUse": [ { "matcher": "Bash", "hooks": [
+  { "type": "command", "command": "/machine/checkout/defaults/hooks/guard-destructive.sh" }
+] } ] }, "permissions": { "allow": ["Bash(x:*)"] } }'
+echo "$SETTINGS_9B" > "$HOME9B/.claude/settings.json"
+deprovision_loom_hooks "$HOME9B/.claude" >/dev/null 2>&1
+count_before_9b=$(find "$HOME9B/.claude" -maxdepth 1 -name 'settings.json.loom-backup-*' | wc -l | tr -d ' ')
+[[ "$count_before_9b" -ge 1 ]] && pass "deprovision wrote a backup before its first mutation" || fail "deprovision did not write a backup"
+sleep 1  # ensure a distinguishable timestamp would exist if a new backup WERE (wrongly) written
+# Restore the SAME pre-mutation content and run deprovision again — it still
+# has Loom entries to strip (so it does not early-return before reaching the
+# backup step), but the content is byte-identical to what the last backup
+# already captured.
+echo "$SETTINGS_9B" > "$HOME9B/.claude/settings.json"
+deprovision_loom_hooks "$HOME9B/.claude" >/dev/null 2>&1
+count_after_9b=$(find "$HOME9B/.claude" -maxdepth 1 -name 'settings.json.loom-backup-*' | wc -l | tr -d ' ')
+assert_eq "$count_after_9b" "$count_before_9b" "deprovision does not write a duplicate backup when the pre-mutation content repeats"
+
+# ── Test 9c: deprovision's backups are also bounded (#5387 edge case) ────────
+echo "Test 9c: deprovision backup count stays bounded across repeated changing runs (#5387)"
+HOME9C=$(mktemp -d); mkdir -p "$HOME9C/.claude"
+i=0
+while [[ "$i" -lt 8 ]]; do
+    cat > "$HOME9C/.claude/settings.json" <<EOF
+{ "hooks": { "PreToolUse": [ { "matcher": "Bash", "hooks": [
+  { "type": "command", "command": "/machine/checkout/defaults/hooks/guard-destructive.sh" }
+] } ] }, "permissions": { "allow": ["Bash(x${i}:*)"] } }
+EOF
+    deprovision_loom_hooks "$HOME9C/.claude" >/dev/null 2>&1
+    i=$((i + 1))
+    sleep 1  # force a distinguishable %Y%m%dT%H%M%SZ timestamp per iteration
+done
+count_9c=$(find "$HOME9C/.claude" -maxdepth 1 -name 'settings.json.loom-backup-*' | wc -l | tr -d ' ')
+[[ "$count_9c" -le 5 ]] && pass "deprovision backup count bounded to retention limit (5) after 8 changing runs (got $count_9c)" \
+    || fail "deprovision backup count exceeded retention limit after 8 changing runs (got $count_9c)"
+
 # ─────────────────────────────────────────────────────────────────────────────
 # ensure_project_hook_wiring — the project-level fallback (#4401)
 #
@@ -274,8 +360,11 @@ assert_eq "$(count_project_entry "$S10" guard-background-subagents.sh)" "1" "gua
 assert_eq "$PROJECT_HOOKS_WIRED" "6" "PROJECT_HOOKS_WIRED reports all six copies (#4053 verifiable-globals contract)"
 assert_eq "$PROJECT_HOOKS_SETTINGS" "$S10" "PROJECT_HOOKS_SETTINGS points at the project settings file"
 assert_eq "$(jq -r '.permissions.allow[0]' "$S10")" "Bash(gh:*)" "existing project permissions preserved"
-# Every written command must be resolvable by Claude Code from the project root.
-assert_eq "$(jq -r '[(.hooks // {}) | to_entries[] | .value[]? | .hooks[]? | .command | select(startswith("${CLAUDE_PROJECT_DIR}/.loom/hooks/") | not)] | length' "$S10")" "0" "all written commands use the \${CLAUDE_PROJECT_DIR} prefix (#3277)"
+# Every written command must be resolvable by Claude Code from the project root
+# AND be quoted (#6544) so a project path containing a space does not get
+# word-split by `sh` at hook-execution time.
+assert_eq "$(jq -r '[(.hooks // {}) | to_entries[] | .value[]? | .hooks[]? | .command | select(startswith("\"${CLAUDE_PROJECT_DIR}/.loom/hooks/") | not)] | length' "$S10")" "0" "all written commands use the quoted \${CLAUDE_PROJECT_DIR} prefix (#3277, #6544)"
+assert_eq "$(jq -r '[(.hooks // {}) | to_entries[] | .value[]? | .hooks[]? | .command | select(endswith("\"") | not)] | length' "$S10")" "0" "all written commands end on the closing quote (#6544)"
 # The referenced script must exist — a dangling entry is not coverage.
 for n in guard-destructive.sh guard-background-subagents.sh; do
     [[ -x "$R10/.loom/hooks/$n" ]] && pass "wired entry for $n points at an executable copy" \
@@ -432,6 +521,104 @@ assert_eq "$(jq -r '[.hooks.PreToolUse[0].hooks[] | select(.command == $h)] | le
 # treats the marker match as satisfied and does NOT append a second (Loom)
 # entry either — same no-duplicate contract as before this issue.
 assert_eq "$(count_marker "$HOME20/.claude/settings.json" guard-destructive.sh)" "1" "no second (Loom) entry appended alongside the hand-written one"
+
+# ── Test 21: the #7761 project wiring is recognized, not duplicated ──────────
+#
+# ensure_project_hook_wiring dedups on `.loom/hooks/<name>` while EXCLUDING any
+# command containing `defaults/hooks/` (that substring marks the MACHINE-level
+# wrapper, which embeds `$ROOT/.loom/hooks/<name>` in its own dedup probe). The
+# #7761 project wiring therefore must not carry a `defaults/hooks/` substring —
+# if it ever does, the exclude test misreads it as a machine-level entry and
+# APPENDS a second, bare project entry, double-firing every guard. That
+# constraint is invisible from the settings file itself, so it is pinned here.
+echo "Test 21: the #7761 project-level wiring is deduped, never duplicated (#7761)"
+if [[ -f "$REPO_ROOT/.claude/settings.json" ]]; then
+    TARGET21=$(mktemp -d); mkdir -p "$TARGET21/.loom/hooks" "$TARGET21/.claude"
+    for n in guard-destructive.sh guard-loom-workflow.sh guard-worktree-paths.sh \
+             skill-router.sh methodology-inject.sh guard-background-subagents.sh hook-wiring.sh; do
+        printf '#!/bin/sh\nexit 0\n' > "$TARGET21/.loom/hooks/$n"
+        chmod +x "$TARGET21/.loom/hooks/$n"
+    done
+    cp "$REPO_ROOT/.claude/settings.json" "$TARGET21/.claude/settings.json"
+    ensure_project_hook_wiring "$TARGET21" >/dev/null 2>&1 || true
+    for n in guard-destructive.sh guard-loom-workflow.sh guard-worktree-paths.sh \
+             skill-router.sh guard-background-subagents.sh; do
+        assert_eq "$(jq -r --arg n "$n" \
+            '[.. | objects | .command? // empty] | map(select(contains(".loom/hooks/" + $n))) | length' \
+            "$TARGET21/.claude/settings.json")" "1" \
+            "exactly one project entry for $n after re-asserting project wiring"
+    done
+    assert_eq "$(jq -r '[.. | objects | .command? // empty] | map(select(contains("defaults/hooks/"))) | length' \
+        "$REPO_ROOT/.claude/settings.json")" "0" \
+        "the project wiring carries no 'defaults/hooks/' substring (would defeat the dedup exclude)"
+    rm -rf "$TARGET21"
+else
+    echo "  (skipped: no $REPO_ROOT/.claude/settings.json)"
+fi
+
+# ─────────────────────────────────────────────────────────────────────────────
+# #6544: project paths containing a space. `${CLAUDE_PROJECT_DIR}` is expanded
+# by Claude Code into a literal path string BEFORE the command reaches `sh` —
+# so an unquoted emitted command word-splits on any space in the project path.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Test 22: fresh provision into a spaced path survives sh -c (#6544) ───────
+echo "Test 22: fresh provision into a project path containing a space survives sh -c execution (#6544)"
+R22_PARENT=$(mktemp -d)
+R22="$R22_PARENT/has a space"
+mkdir -p "$R22"
+make_transition_repo "$R22"
+printf '{}\n' > "$R22/.claude/settings.json"
+ensure_project_hook_wiring "$R22" >/dev/null 2>&1
+S22="$R22/.claude/settings.json"
+CMD22=$(jq -r '[(.hooks // {}) | to_entries[] | .value[]? | .hooks[]? | .command | select(contains("guard-destructive.sh"))][0]' "$S22")
+assert_eq "$CMD22" '"${CLAUDE_PROJECT_DIR}/.loom/hooks/guard-destructive.sh"' "emitted command is quoted"
+# Simulate Claude Code's substitution: ${CLAUDE_PROJECT_DIR} is a literal text
+# replacement into the command string, not a shell-level expansion, so mimic
+# that here rather than exporting the env var and letting sh expand it.
+LITERAL22=${CMD22//\$\{CLAUDE_PROJECT_DIR\}/$R22}
+OUT22=$(sh -c "$LITERAL22" 2>&1); rc22=$?
+assert_eq "$rc22" "0" "quoted command survives sh -c execution against a spaced path"
+assert_eq "$OUT22" "" "no word-split error output from the quoted command"
+# Negative control: confirm the OLD unquoted form really did break on the same
+# path (pins the bug this fixes rather than assuming it).
+LEGACY22='${CLAUDE_PROJECT_DIR}/.loom/hooks/guard-destructive.sh'
+LEGACY_LITERAL22=${LEGACY22//\$\{CLAUDE_PROJECT_DIR\}/$R22}
+sh -c "$LEGACY_LITERAL22" >/dev/null 2>&1
+rc22_legacy=$?
+[[ "$rc22_legacy" != "0" ]] && pass "the pre-#6544 unquoted form fails on the same spaced path (regression pinned)" \
+    || fail "expected the unquoted form to fail on a spaced path (word-split), it did not"
+
+# ── Test 23: a pre-existing UNQUOTED entry self-heals to quoted (#6544) ──────
+echo "Test 23: re-provisioning over a pre-existing UNQUOTED entry rewrites it to the quoted form (#6544)"
+R23=$(mktemp -d)
+make_transition_repo "$R23"
+cat > "$R23/.claude/settings.json" <<'EOF'
+{ "hooks": { "PreToolUse": [ { "matcher": "Bash", "hooks": [
+  { "type": "command", "command": "${CLAUDE_PROJECT_DIR}/.loom/hooks/guard-destructive.sh" }
+] } ] } }
+EOF
+S23="$R23/.claude/settings.json"
+BEFORE_CMD23=$(jq -r '.hooks.PreToolUse[0].hooks[0].command' "$S23")
+assert_eq "$BEFORE_CMD23" '${CLAUDE_PROJECT_DIR}/.loom/hooks/guard-destructive.sh' "precondition: the unquoted legacy entry is seeded verbatim"
+ensure_project_hook_wiring "$R23" >/dev/null 2>&1
+AFTER_CMD23=$(jq -r '.hooks.PreToolUse[0].hooks[0].command' "$S23")
+assert_eq "$AFTER_CMD23" '"${CLAUDE_PROJECT_DIR}/.loom/hooks/guard-destructive.sh"' "the unquoted entry was rewritten to the quoted form (migration, not a no-op)"
+assert_eq "$(count_project_entry "$S23" guard-destructive.sh)" "1" "rewritten in place — still exactly one entry, not duplicated"
+assert_eq "$(count_project_entry "$S23" guard-loom-workflow.sh)" "1" "the missing sibling entry was also added in the same pass"
+# Idempotent: a second re-provision leaves the now-current quoted entry alone.
+ensure_project_hook_wiring "$R23" >/dev/null 2>&1
+assert_eq "$(jq -r '.hooks.PreToolUse[0].hooks[0].command' "$S23")" '"${CLAUDE_PROJECT_DIR}/.loom/hooks/guard-destructive.sh"' "already-quoted entry left unchanged by a second re-provision"
+assert_eq "$(count_project_entry "$S23" guard-destructive.sh)" "1" "still exactly one entry after a second re-provision"
+
+# ── Test 24: the machine-level (user-scope) wrapper path is unaffected ───────
+echo "Test 24: the machine-level ~/.claude/settings.json wrapper is unaffected by the project-level quoting fix (#6544)"
+HOME24=$(mktemp -d)
+provision_loom_hooks "$HOME24/.claude" >/dev/null 2>&1
+CMD24=$(jq -r '.hooks.PreToolUse[] | select(.matcher=="Bash") | .hooks[] | .command | select(contains("guard-destructive.sh"))' "$HOME24/.claude/settings.json" | head -1)
+assert_contains "$CMD24" "bash -c '" "machine-level entry is still the bash -c wrapper form"
+[[ "$CMD24" != *'"${CLAUDE_PROJECT_DIR}'* ]] && pass "machine-level wrapper does not use the project-level \${CLAUDE_PROJECT_DIR} quoting form at all" \
+    || fail "machine-level wrapper unexpectedly picked up the project-level quoting form"
 
 echo ""
 echo "======================================"

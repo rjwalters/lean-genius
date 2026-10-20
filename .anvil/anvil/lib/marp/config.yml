@@ -1,0 +1,68 @@
+# anvil/lib/marp/config.yml
+#
+# Canonical Marp configuration shared by anvil:deck and anvil:slides.
+# Pinned at the framework level per CLAUDE.md (Presentation renderer).
+#
+# Consumed via Marp CLI's native --config-file flag, e.g.:
+#
+#   marp <thread>.{N}/deck.md \
+#     --pdf \
+#     --html \
+#     --config-file anvil/lib/marp/config.yml \
+#     --no-stdin \
+#     --output <thread>.{N}/deck.pdf
+#
+# The --no-stdin flag keeps marp-cli from blocking on an open stdin pipe in
+# non-TTY / agent-driven contexts (#620); it is a CLI-only flag and has no
+# config-file equivalent, so it lives here as an example, not an options key.
+#
+# In an installed consumer repo this path resolves to
+# .anvil/anvil/lib/marp/config.yml (the install script copies anvil/lib/ wholesale).
+#
+# This file is the CLI-side companion to the per-document frontmatter pin.
+# Per-deck frontmatter still pins `math: mathjax` and `html: true` explicitly
+# (see anvil/skills/{deck,slides}/templates/deck.md.j2) so a deck.md checked
+# into a consumer repo renders correctly under `marp deck.md --pdf` even
+# without this config file. Belt-and-suspenders by design — when the two pins
+# disagree, the frontmatter wins (Marp's own precedence rule).
+#
+# What is pinned and why:
+#
+#   html: true
+#     Lets raw <script>/HTML blocks in the source pass through into the
+#     rendered HTML/PDF output. NOTE (verified, issue #65): html: true does
+#     NOT make fenced ```mermaid blocks render as diagrams in the canonical
+#     --pdf output. With marp-cli v4.4.0 / marp-core v4.3.0, an inline
+#     ```mermaid fence emits as RAW MONOSPACE CODE in the PDF (the grammar
+#     leaks verbatim), not a diagram — --html only passes raw HTML through and
+#     does not execute mermaid.js during Marp's PDF render. Diagrams MUST be
+#     pre-rendered to PNG via `mmdc` (see
+#     anvil/skills/{deck,slides}/commands/{deck,slides}-figures.md). html: true
+#     remains pinned for genuine raw-HTML slides and local-image inlining.
+#
+#   allowLocalFiles: true
+#     Required for Marp to inline local image references (figures/*.png,
+#     assets/*.png). Without it, every `![](figures/foo.png)` reference
+#     renders as a broken-image icon in the PDF.
+#
+#   themeSet: <both shipped themes>
+#     The shipped deck and slides themes are referenced by name in the
+#     per-document frontmatter (`theme: anvil-deck`, `theme:
+#     anvil-slides-theme`). Listing them here lets Marp resolve those names
+#     without a `--theme-set` flag on the CLI side. Consumer overrides at
+#     .anvil/skills/{deck,slides}/templates/<their-theme>.css are still
+#     respected via the per-command --theme-set flag (which Marp merges
+#     with this set).
+#
+# Math engine note: this config file does NOT set `math:` because Marp v3
+# already defaults to MathJax. The per-document frontmatter pins the value
+# explicitly to keep the source self-describing. If Marp's default ever
+# changes again, add `math: mathjax` here and the frontmatter remains the
+# authoritative pin.
+options:
+  allowLocalFiles: true
+  html: true
+  pdfNotes: false
+  themeSet:
+    - anvil/skills/deck/assets/anvil-deck.css
+    - anvil/skills/slides/templates/anvil-slides-theme.css

@@ -27,8 +27,8 @@
     "proofId": "erdos-853",
     "type": "definition",
     "range": {
-      "startLine": 42,
-      "endLine": 46
+      "startLine": 40,
+      "endLine": 44
     },
     "title": "Prime Enumeration and Gap Function",
     "content": "`nthPrime n` = `Nat.nth Nat.Prime n` gives the 0-indexed prime sequence ($p_0 = 2, p_1 = 3, p_2 = 5, \\ldots$). `primeGap n` = $p_{n+1} - p_n$ is the $n$-th prime gap. Both are `noncomputable` since `Nat.nth` uses classical choice.",
@@ -170,10 +170,10 @@
   {
     "id": "erdos-853-conjectures",
     "proofId": "erdos-853",
-    "type": "definition",
+    "type": "axiom",
     "range": {
-      "startLine": 180,
-      "endLine": 187
+      "startLine": 440,
+      "endLine": 447
     },
     "title": "Main Conjectures (OPEN)",
     "content": "`erdos_853_weak`: $\\forall M, \\exists X, \\forall x \\ge X, r(x) \\ge M$ (i.e., $r(x) \\to \\infty$). `erdos_853_strong`: $\\forall C > 0, \\exists X, \\forall x \\ge X, r(x) \\ge C \\log x$ (i.e., $r(x)/\\log x \\to \\infty$). Both are axiomatized as OPEN problems.",

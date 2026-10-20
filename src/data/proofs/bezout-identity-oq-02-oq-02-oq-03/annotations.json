@@ -26,7 +26,7 @@
   {
     "id": "ann-bezout-nss-backward",
     "proofId": "bezout-identity-oq-02-oq-02-oq-03",
-    "range": { "startLine": 82, "endLine": 109 },
+    "range": { "startLine": 92, "endLine": 119 },
     "type": "tactic",
     "title": "Where the Nullstellensatz Enters: FTA via a Non-Unit gcd",
     "content": "`no_common_root_imp_coprime` is the only nontrivial direction and the only place algebraic closure is used. Arguing by contradiction, `¬ IsCoprime f g` gives `¬ IsUnit (gcd f g)` via `gcd_isUnit_iff` (a `classical` instance supplies the `GCDMonoid k[X]` needed for `gcd`). Over a field a non-unit polynomial has nonzero degree (`isUnit_iff_degree_eq_zero`), so the fundamental theorem of algebra (`IsAlgClosed.exists_root`) produces a root `r` of `gcd f g`. Because `gcd f g` divides both `f` and `g`, `IsRoot.dvd` promotes `r` to a common root of `f` and `g`, contradicting the hypothesis. The fundamental theorem of algebra is thus the sole 'Nullstellensatz ingredient' beyond elementary ring theory.",

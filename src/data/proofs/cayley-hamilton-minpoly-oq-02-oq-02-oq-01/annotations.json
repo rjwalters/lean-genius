@@ -3,10 +3,10 @@
     "id": "ann-forward",
     "proofId": "cayley-hamilton-minpoly-oq-02-oq-02-oq-01",
     "range": {
-      "startLine": 92,
-      "endLine": 103
+      "startLine": 84,
+      "endLine": 97
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "Forward: Intertwiner Induces a K[X]-Module Isomorphism",
     "content": "`aeval_linearEquiv_of_conj` takes a $K$-linear automorphism $e$ with $e \\circ \\varphi = \\psi \\circ e$ and produces a $K[X]$-linear isomorphism $\\mathrm{AEval}'\\,\\varphi \\simeq \\mathrm{AEval}'\\,\\psi$. The underlying map is just $e$; the intertwining hypothesis is exactly what makes $e$ commute with the $X$-action ($X$ acts as $\\varphi$ on the source, $\\psi$ on the target), so `LinearEquiv.ofAEval` upgrades it to a $K[X]$-linear equivalence. This repackages the construction Mathlib uses internally in `LinearEquiv.isSemisimple_iff`.",
     "mathContext": "If $e\\varphi = \\psi e$ then on $\\mathrm{AEval}'$ modules $e(X \\cdot m) = X \\cdot e(m)$, so $e$ is $K[X]$-linear.",

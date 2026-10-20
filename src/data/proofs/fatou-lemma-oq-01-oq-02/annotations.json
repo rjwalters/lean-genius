@@ -38,7 +38,7 @@
   {
     "id": "no-integrable-majorant",
     "proofId": "fatou-lemma-oq-01-oq-02",
-    "range": { "startLine": 62, "endLine": 105 },
+    "range": { "startLine": 65, "endLine": 105 },
     "type": "tactic",
     "title": "No Integrable Majorant for the Escaping Bumps",
     "content": "ici_indicator_le_of_dominates: if escaping n ≤ g for all n, then 𝟙_[0,∞) ≤ g, because for x ≥ 0 the single bump escaping ⌊x⌋₊ already equals 1 at x (x ∈ [⌊x⌋₊, ⌊x⌋₊+1) via Nat.floor_le and Nat.lt_floor_add_one). escaping_no_integrable_majorant then integrates: ∫⁻ g ≥ ∫⁻ 𝟙_[0,∞) = volume (Set.Ici 0) = ∞. The pointwise supremum of the bumps is the indicator of the whole half-line, of infinite mass — so no integrable majorant can exist.",
@@ -62,7 +62,7 @@
   {
     "id": "dct-failure-package",
     "proofId": "fatou-lemma-oq-01-oq-02",
-    "range": { "startLine": 142, "endLine": 160 },
+    "range": { "startLine": 143, "endLine": 160 },
     "type": "concept",
     "title": "The Sharp Boundary Case: DCT's Hypothesis Is Necessary",
     "content": "escaping_dct_failure bundles four facts: escaping n x → 0 for every x; ∫⁻ escaping n → 1; ∫⁻ 0 = 0; and no integrable majorant exists. Read together they certify that DCT's integrable-majorant hypothesis cannot be dropped: here ∫⁻ fₙ → 1 ≠ 0 = ∫⁻ (lim), and the only reason this does not contradict DCT is that domination fails. This is the dual of the parent's strict-gap result — Fatou is strict, and DCT cannot rescue equality because its hypothesis is unmet.",

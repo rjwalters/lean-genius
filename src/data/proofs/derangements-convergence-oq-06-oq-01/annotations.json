@@ -26,8 +26,8 @@
   {
     "id": "derange-oq0601-envelope",
     "proofId": "derangements-convergence-oq-06-oq-01",
-    "range": { "startLine": 65, "endLine": 78 },
-    "type": "theorem",
+    "range": { "startLine": 64, "endLine": 77 },
+    "type": "lemma",
     "title": "The one-sided envelope 0 ≤ T(m) ≤ 1/m!",
     "content": "`tailFrom_nonneg` and `tailFrom_le` restate the parent's alternating-series partial-sum lemmas (alt_partial_sum_nonneg and alt_partial_sum_le_first) for the infinite sum. The bridge is HasSum.tendsto_sum_nat: the partial sums ∑_{k<N} converge to T(m), so bounds holding for every partial sum pass to the limit via le_of_tendsto_of_tendsto (lower) and le_of_tendsto (upper). All the alternating-series analysis is inherited from the parent.",
     "mathContext": "$0 \\le T(m) \\le \\tfrac{1}{m!}$: the alternating series starts at $+\\tfrac{1}{m!}$ and its partial sums oscillate within $[0, \\tfrac{1}{m!}]$.",
@@ -38,8 +38,8 @@
   {
     "id": "derange-oq0601-recurrence",
     "proofId": "derangements-convergence-oq-06-oq-01",
-    "range": { "startLine": 80, "endLine": 99 },
-    "type": "theorem",
+    "range": { "startLine": 79, "endLine": 98 },
+    "type": "lemma",
     "title": "The tail recurrence T(m) = 1/m! − T(m+1)",
     "content": "`tailFrom_succ` is the crux. Peeling off the k=0 term with `tsum_eq_zero_add` gives T(m) = 1/m! + ∑' k, (−1)^{k+1}/(m+1+k)!. Each (k+1)-term is −1 times the corresponding term of T(m+1) (pow_succ), so the remaining sum is −T(m+1), yielding T(m) = 1/m! − T(m+1). `tailFrom_ge` then feeds the upper bound tailFrom_le (m+1) into this recurrence: T(m) = 1/m! − T(m+1) ≥ 1/m! − 1/(m+1)!. This is precisely how a one-sided envelope becomes two-sided — the upper bound on T(m+1) is a lower bound on T(m).",
     "mathContext": "$T(m) = \\tfrac{1}{m!} - T(m+1) \\ge \\tfrac{1}{m!} - \\tfrac{1}{(m+1)!}$",
@@ -62,8 +62,8 @@
   {
     "id": "derange-oq0601-integer-scale",
     "proofId": "derangements-convergence-oq-06-oq-01",
-    "range": { "startLine": 133, "endLine": 181 },
-    "type": "theorem",
+    "range": { "startLine": 134, "endLine": 182 },
+    "type": "lemma",
     "title": "Integer-scale sandwich: 1/(n+2) ≤ |D(n) − n!·e⁻¹| ≤ 1/(n+1)",
     "content": "`abs_int_eq_factorial_mul` rewrites the integer-scale error as n!·|D(n)/n! − e⁻¹| (factor out n! > 0 via abs_mul, abs_of_pos). `abs_derangements_sub_le` multiplies the /n!-upper bound by n!, simplifying n!/(n+1)! = 1/(n+1). `abs_derangements_sub_ge` multiplies the /n!-lower bound by n!: the telescoping n!·(1/(n+1)! − 1/(n+2)!) = 1/(n+1) − 1/((n+1)(n+2)) collapses to exactly 1/(n+2). `derangements_two_sided_sandwich` packages both into a single conjunction — the sharp band answering OQ-06's open question.",
     "mathContext": "$n!\\left(\\tfrac{1}{(n+1)!} - \\tfrac{1}{(n+2)!}\\right) = \\tfrac{1}{n+1} - \\tfrac{1}{(n+1)(n+2)} = \\tfrac{1}{n+2}$",

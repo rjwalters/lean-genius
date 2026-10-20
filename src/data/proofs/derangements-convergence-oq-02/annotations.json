@@ -14,7 +14,7 @@
   {
     "id": "ann-dcoq02-signs",
     "proofId": "derangements-convergence-oq-02",
-    "range": { "startLine": 58, "endLine": 70 },
+    "range": { "startLine": 59, "endLine": 70 },
     "type": "tactic",
     "title": "Parity Determines the Sign of Each Taylor Term",
     "content": "altFactTerm_of_even and altFactTerm_of_odd compute the k-th term (-1)^k/k! as +1/k! or -(1/k!) using Even.neg_one_pow and Odd.neg_one_pow. Producing the odd term as -(1/k!) rather than (-1)/k! is deliberate: it lets later linarith calls relate it to the positive quantity 1/k!.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-dcoq02-monotone",
     "proofId": "derangements-convergence-oq-02",
-    "range": { "startLine": 71, "endLine": 114 },
+    "range": { "startLine": 72, "endLine": 114 },
     "type": "tactic",
     "title": "Pairing Two Steps Makes the Even/Odd Subsequences Strictly Monotone",
     "content": "aSeq_add_two expresses a(n+2) - a(n) as the sum of two consecutive alternating terms. At an even index this sum is 1/(2k+2)! - 1/(2k+1)! < 0 (even ratios decrease); at an odd index it is 1/(2k+2)! - 1/(2k+3)! > 0 (odd ratios increase). The strictness comes from Nat.factorial_lt. strictAnti_nat_of_succ_lt / strictMono_nat_of_lt_succ then upgrade the one-step facts to monotonicity of the whole subsequence.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-dcoq02-onesided",
     "proofId": "derangements-convergence-oq-02",
-    "range": { "startLine": 139, "endLine": 154 },
+    "range": { "startLine": 140, "endLine": 154 },
     "type": "tactic",
     "title": "A Strictly Monotone Convergent Sequence Never Reaches Its Limit",
     "content": "lt_of_strictAnti_tendsto and gt_of_strictMono_tendsto are the crux: a strictly decreasing sequence converging to L has every term strictly above L (its successor is already ≥ L by le_of_tendsto, and the term is strictly larger than its successor). This yields strictness in the bracket for free, avoiding any tail estimate.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-dcoq02-main",
     "proofId": "derangements-convergence-oq-02",
-    "range": { "startLine": 155, "endLine": 213 },
+    "range": { "startLine": 156, "endLine": 213 },
     "type": "insight",
     "title": "Two-Sided Bracketing, Unified Sign Law, and Exact Nesting Width",
     "content": "Combining monotonicity with the shared limit gives e⁻¹ < a(2k) and a(2k+1) < e⁻¹ (ratio_even_gt, ratio_odd_lt), hence the bracket numDerangements_bracket. Casing on the parity of n yields the unified sign law numDerangements_error_sign: (-1)^n·(D(n)/n! - e⁻¹) > 0, and the opposite-sign product consecutive_error_opposite. nested_interval_width pins the bracket width to exactly 1/(2k+1)!.",

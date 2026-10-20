@@ -38,7 +38,7 @@
   {
     "id": "ann-edpoq010101-chaincount",
     "proofId": "erdos-divisibility-pigeonhole-oq-01-oq-01-oq-01",
-    "range": { "startLine": 89, "endLine": 116 },
+    "range": { "startLine": 102, "endLine": 116 },
     "type": "theorem",
     "title": "The n-chain partition",
     "content": "image_oddPart_Icc identifies the set of odd parts occurring in {1,…,2n} with {2i+1 : i < n} — every odd part is an odd number ≤ 2n (forward: oddPart is odd and ≤ 2n), and every odd 2i+1 with i < n is its own odd part (reverse: oddPart_eq_self). card_chains then counts this image as n via the injective i ↦ 2i+1 and card_range, giving the explicit cover by n divisibility chains. fiber_chain restricts the comparability lemma to {1,…,2n}: each fiber is a chain.",

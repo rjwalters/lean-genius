@@ -50,8 +50,8 @@
     "proofId": "erdos-913",
     "type": "definition",
     "range": {
-      "startLine": 38,
-      "endLine": 45
+      "startLine": 40,
+      "endLine": 47
     },
     "title": "Distinct Exponent Property",
     "content": "The predicate `HasDistinctExponents n` holds when the exponent map $p \\mapsto v_p(n(n+1))$ is injective on the set of prime factors of $n(n+1)$. Here $v_p(m)$ denotes the $p$-adic valuation (exponent of $p$ in the factorization of $m$). Using Mathlib's `Nat.factorization` (a `Finsupp ℕ ℕ`) and `Set.InjOn`, this says no two distinct primes share the same exponent. The set $\\{n : \\text{HasDistinctExponents}(n)\\}$ is called `DistinctExponentSet`.",

@@ -255,3 +255,51 @@ Now 23 theorems, 0 sorry, 0 axiom.
   — heavy but self-contained; this closes the third exact value.
 - `√n × √n` grid toward `g(n) = Θ(n/√(log n))` (deep, number-theoretic); Guth–Katz
   `Ω(n/log n)` lower bound stays imported.
+
+## Session 2026-09-29 (researcher-1) — the polynomial method: first g(n) ≥ 3
+
+**Mode**: build on the g(n) ≥ 2 floor. **Outcome**: progress — the FIRST lower
+bound beyond `no_four_equidistant`. New file `Erdos89WIP01TwoDistance.lean`
+(~250 LOC, 0 axiom / 0 sorry, `#print axioms` = `[propext, Classical.choice,
+Quot.sound]` on all headline theorems — no `native_decide`). Docker-verified.
+
+### The mathematics (Larman–Rogers–Seidel, naive planar instance)
+
+A planar set whose pairwise distances take at most two positive values `a, b`
+has **≤ 10 points**. To each point `p` attach
+`F_p(x) = (‖x−p‖² − a²)(‖x−p‖² − b²)`. After the coordinate expansion
+`‖x−p‖² = (x₀−p₀)² + (x₁−p₁)²`, every `F_p` is a fixed linear combination
+(`twoDistCoeff`) of the ten monomials `Q², Qx₀, Qx₁, Q, x₀², x₀x₁, x₁², x₀,
+x₁, 1` (`Q = x₀²+x₁²`, lemma `twoDistPoly_eq_sum`, closed by `ring`). The
+family `{F_p : p ∈ S}` is **linearly independent** by diagonal evaluation: a
+vanishing combination evaluated at any set point `q` kills every off-diagonal
+term (`F_p(q) = 0` since `dist p q ∈ {a,b}`) and leaves `c_q · a²b² = 0`, so
+`c_q = 0`. Independent vectors in a 10-dim space ⇒ ≤ 10 points. Hence
+`g(n) ≥ 3` for `n ≥ 11` (an 11-set forcing ≤ 2 distances would exceed 10),
+giving the bracket `3 ≤ g(n) ≤ ⌊n/2⌋` and `g(11) ∈ [3, 5]`.
+
+### Why only n ≥ 11 (the gap to the exact values)
+
+10 is the *naive* dimension. The sharp planar two-distance maximum is **5**
+(Kelly 1947, case analysis); the genuine LRS rank bound is **6**. Either
+improves the threshold: LRS-6 ⇒ `g(7) = 3`, sharp-5 ⇒ `g(6) = 3`. Both need
+arguments finer than diagonal evaluation (relating the monomials on the
+2-dimensional embedding / the actual case analysis) and remain on the
+blocked-route ledger.
+
+### Lean idioms (v4.31)
+
+- Span over `Set.range b` (NOT `Finset.image`) — functions have no
+  `DecidableEq`, which `Finset.image`/`Finset.card` demand.
+- `finrank_range_le_card b : (Set.range b).finrank ℝ ≤ Fintype.card ι` is the
+  exact ceiling; `Set.finrank ℝ s = finrank ℝ (span ℝ s)` definitionally, so
+  it matches `finrank ℝ V` for `V = span ℝ (Set.range b)`.
+- `fintype_card_le_finrank` needs `Module.Finite ℝ V`; supply via
+  `Module.Finite.span_of_finite ℝ (Set.finite_range b)`.
+- `LinearIndependent.of_comp V.subtype` lifts raw-function independence into
+  the submodule (avoids proving independence of the `⟨_, mem⟩` family
+  directly).
+- `‖x−p‖²` → coordinates: `EuclideanSpace.norm_eq` + `Real.sq_sqrt (by
+  positivity)` + `simp [Fin.sum_univ_two, sq_abs]`.
+- `Finset.card_eq_one.mp (by omega)` leaves the card goal as a metavariable
+  that omega can't see — wrap with `show (distinctDistances S).card = 1 by omega`.

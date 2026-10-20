@@ -139,6 +139,96 @@ case "$platform" in
         ;;
 esac
 
+# -------- Test 8: host.preventSleep config awareness (#6311) --------
+# Builds a scratch `.loom/` repo root + a stubbed `systemctl`/`systemd-inhibit`
+# on PATH so these assertions are deterministic regardless of the live host's
+# own sleep-inhibitor state (unlike Test 7 above, which reads the real host).
+#
+# #6661 design decision: `check_linux()` in check-host-sleep.sh takes an
+# early "no systemd" return (see the comment there) before it ever reaches
+# the #6311 `PREVENT_SLEEP_ENABLED` note this test exercises below — so on a
+# real Linux host/container without systemd, that branch would be skipped
+# entirely and this test would silently pass or fail depending on host
+# environment rather than on the code path we actually mean to test. We
+# stub `systemctl` (not just `systemd-inhibit`) here so this test forces the
+# "systemd present" branch deterministically on ANY Linux host, systemd or
+# not — a test-only fix; check-host-sleep.sh's real-world behavior on a
+# genuinely non-systemd host is intentionally left unchanged (see its
+# comment for the rationale).
+echo "Test 8: host.preventSleep config awareness (#6311)"
+
+SCRATCH_DIR="$(mktemp -d)"
+mkdir -p "$SCRATCH_DIR/.loom" "$SCRATCH_DIR/stub"
+trap 'rm -rf "$SCRATCH_DIR"' EXIT
+
+# A stub `systemctl` that always reports a usable version, so `check_linux()`
+# takes the "systemd present" branch regardless of whether this test host
+# actually has systemd.
+cat > "$SCRATCH_DIR/stub/systemctl" <<'STUB'
+#!/usr/bin/env bash
+if [[ "$1" == "--version" ]]; then
+    echo "systemd 255 (stub)"
+    exit 0
+fi
+exit 0
+STUB
+chmod +x "$SCRATCH_DIR/stub/systemctl"
+
+# A stub `systemd-inhibit` that reports NO active lock via --list (the
+# "warn" branch) but still execs through when invoked as a real wrapper.
+cat > "$SCRATCH_DIR/stub/systemd-inhibit" <<'STUB'
+#!/usr/bin/env bash
+if [[ "$1" == "--list" ]]; then
+    echo "WHO WHAT WHY MODE"
+    exit 0
+fi
+exec "$@"
+STUB
+chmod +x "$SCRATCH_DIR/stub/systemd-inhibit"
+
+platform="$(uname -s 2>/dev/null || echo unknown)"
+if [[ "$platform" == "Linux" ]]; then
+    # 8a: absent config -> byte-identical to pre-#6311 behavior, no new note.
+    rm -f "$SCRATCH_DIR/.loom/config.json"
+    out_absent="$(cd "$SCRATCH_DIR" && PATH="$SCRATCH_DIR/stub:$PATH" "$SCRIPT" 2>&1 || true)"
+    if ! printf '%s' "$out_absent" | grep -q "6311"; then
+        pass "absent host.preventSleep: no #6311 note leaks into the default warning (regression guard)"
+    else
+        fail "absent host.preventSleep: unexpected #6311 note in output. Got: $out_absent"
+    fi
+
+    # 8b: host.preventSleep=true, no active lock -> extra note appears.
+    echo '{"host": {"preventSleep": true}}' > "$SCRATCH_DIR/.loom/config.json"
+    out_enabled="$(cd "$SCRATCH_DIR" && PATH="$SCRATCH_DIR/stub:$PATH" "$SCRIPT" 2>&1 || true)"
+    if printf '%s' "$out_enabled" | grep -q "host.preventSleep is enabled"; then
+        pass "host.preventSleep=true with no active lock: the #6311 note is printed"
+    else
+        fail "host.preventSleep=true with no active lock: expected the #6311 note. Got: $out_enabled"
+    fi
+
+    # 8c: malformed config value never blocks -- still exits 0, still warns.
+    echo '{"host": {"preventSleep": "not-a-bool"}}' > "$SCRATCH_DIR/.loom/config.json"
+    out_malformed="$(cd "$SCRATCH_DIR" && PATH="$SCRATCH_DIR/stub:$PATH" "$SCRIPT" 2>&1)"
+    rc=$?
+    if [[ "$rc" -eq 0 ]]; then
+        pass "malformed host.preventSleep value: script still exits 0 (never blocks, #6311)"
+    else
+        fail "malformed host.preventSleep value: expected exit 0, got $rc"
+    fi
+    if printf '%s' "$out_malformed" | grep -qi "malformed"; then
+        pass "malformed host.preventSleep value: falls back to disabled with a visible warning"
+    else
+        fail "malformed host.preventSleep value: expected a 'malformed' warning. Got: $out_malformed"
+    fi
+
+    rm -f "$SCRATCH_DIR/.loom/config.json"
+else
+    pass "host.preventSleep config-awareness assertions are Linux-specific (platform=$platform, skipped)"
+fi
+
+rm -rf "$SCRATCH_DIR"
+trap - EXIT
+
 # -------- Summary --------
 echo ""
 echo "Results: $TESTS_PASSED/$TESTS_RUN passed"

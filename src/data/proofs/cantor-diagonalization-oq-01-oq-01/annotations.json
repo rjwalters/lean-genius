@@ -27,10 +27,10 @@
     "id": "ann-cardinal-basics",
     "proofId": "cantor-diagonalization-oq-01-oq-01",
     "range": {
-      "startLine": 57,
-      "endLine": 76
+      "startLine": 60,
+      "endLine": 79
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "\u2135\u2081 and the Continuum: Two Foundational Inequalities",
     "content": "`aleph_one_gt_aleph_zero` proves $\\aleph_0 < \\aleph_1$ by showing $\\aleph_1 = \\mathrm{succ}(\\aleph_0)$ (via `Cardinal.aleph_succ` and the fact that $1 = \\mathrm{succ}(0)$ in ordinals), then applying `Order.lt_succ`. `aleph_one_le_continuum` proves $\\aleph_1 \\leq 2^{\\aleph_0}$: first shows $\\aleph_1 = \\mathrm{succ}(\\aleph_0)$, then uses `Order.succ_le_of_lt` with `Cardinal.cantor` ($\\aleph_0 < 2^{\\aleph_0}$). Together these establish the fundamental sandwich $\\aleph_0 < \\aleph_1 \\leq 2^{\\aleph_0}$ that makes CH a meaningful question.",
     "mathContext": "Cantor's theorem states $\\kappa < 2^\\kappa$ for any cardinal $\\kappa$. The **successor cardinal** $\\aleph_1 = \\mathrm{succ}(\\aleph_0)$ is the least cardinal greater than $\\aleph_0$. Since $\\aleph_0 < 2^{\\aleph_0}$, the minimality of the successor gives $\\aleph_1 = \\mathrm{succ}(\\aleph_0) \\leq 2^{\\aleph_0}$. CH asks whether this $\\leq$ is $=$.",
@@ -149,7 +149,7 @@
     "id": "ann-large-cardinals",
     "proofId": "cantor-diagonalization-oq-01-oq-01",
     "range": {
-      "startLine": 200,
+      "startLine": 201,
       "endLine": 234
     },
     "type": "concept",

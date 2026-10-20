@@ -73,8 +73,8 @@
     "proofId": "erdos-425",
     "type": "definition",
     "range": {
-      "startLine": 65,
-      "endLine": 75
+      "startLine": 66,
+      "endLine": 76
     },
     "title": "Multiplicative Sidon Set",
     "content": "`IsMultiplicativeSidon A` holds when ab = cd with a < b and c < d implies a = c, b = d. Equivalently, the product map (a,b) -> ab is injective on ordered pairs. `IsMultiplicativeSidon'` gives the cardinality-based characterization.",

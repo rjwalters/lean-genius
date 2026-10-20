@@ -74,7 +74,7 @@
     "proofId": "pythagorean-theorem-oq-03",
     "type": "concept",
     "range": {
-      "startLine": 131,
+      "startLine": 132,
       "endLine": 188
     },
     "title": "Hyperbolic Triangle Properties",
@@ -213,8 +213,8 @@
     "proofId": "pythagorean-theorem-oq-03",
     "type": "concept",
     "range": {
-      "startLine": 421,
-      "endLine": 456
+      "startLine": 432,
+      "endLine": 467
     },
     "title": "Flat Limit: Second-Order Behavior at Zero",
     "content": "Proves that $\\cosh(t) - 1$ and $1 - \\cos(t)$ both have derivative 0 at $t = 0$, capturing the second-order behavior $\\cosh(t) \\approx 1 + t^2/2$ and $\\cos(t) \\approx 1 - t^2/2$. These are the Taylor expansions that connect non-Euclidean geometry to the Euclidean case. The theorems `trig_at_zero` and `hyp_trig_at_zero` verify the base values, and `both_trivial_at_zero` confirms both products equal 1 at the origin.",
@@ -237,8 +237,8 @@
     "proofId": "pythagorean-theorem-oq-03",
     "type": "definition",
     "range": {
-      "startLine": 502,
-      "endLine": 535
+      "startLine": 498,
+      "endLine": 531
     },
     "title": "Unified Curvature Framework",
     "content": "Defines `generalizedCos` $C_\\kappa(x)$ as $\\cos(\\sqrt{\\kappa} \\cdot x)$ for $\\kappa > 0$, $\\cosh(\\sqrt{-\\kappa} \\cdot x)$ for $\\kappa < 0$, and $1$ for $\\kappa = 0$. The `GeneralizedPythagorean` predicate asserts $C_\\kappa(c) = C_\\kappa(a) \\cdot C_\\kappa(b)$. Three theorems verify correctness: the flat case ($\\kappa = 0$) is trivially satisfied ($1 = 1 \\cdot 1$), positive curvature reduces to spherical, and negative curvature reduces to hyperbolic.",
@@ -399,7 +399,7 @@
     "proofId": "pythagorean-theorem-oq-03",
     "type": "definition",
     "range": {
-      "startLine": 933,
+      "startLine": 940,
       "endLine": 977
     },
     "title": "Gauss-Bonnet for Triangles",
@@ -422,7 +422,7 @@
     "proofId": "pythagorean-theorem-oq-03",
     "type": "concept",
     "range": {
-      "startLine": 992,
+      "startLine": 993,
       "endLine": 1023
     },
     "title": "Quantitative Flat-Limit Approximation",

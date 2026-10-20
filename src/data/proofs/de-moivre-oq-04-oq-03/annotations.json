@@ -98,7 +98,7 @@
   {
     "id": "ann-examples",
     "proofId": "de-moivre-oq-04-oq-03",
-    "range": { "startLine": 119, "endLine": 135 },
+    "range": { "startLine": 120, "endLine": 135 },
     "type": "concept",
     "title": "Verified Small Cases (n = 1, 4, 5, 6)",
     "content": "Concrete instantiations confirming the general theorems: deg minpoly for n=1 is 1 (Φ₁ = X − 1), for n=4 is 2 (Φ₄ = X² + 1, ω = i), for n=5 is 4 (Φ₅ = X⁴+X³+X²+X+1); and field dimensions [ℚ(ω):ℚ] = 2 for n=6 (Φ₆ = X² − X + 1) and 4 for n=5. The φ(n) values 1, 2, 2, 4 are recovered by `rfl` after rewriting with the general degree/finrank theorems.",

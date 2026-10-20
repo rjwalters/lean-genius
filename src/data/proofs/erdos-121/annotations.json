@@ -48,8 +48,8 @@
     "proofId": "erdos-121",
     "type": "definition",
     "range": {
-      "startLine": 28,
-      "endLine": 31
+      "startLine": 29,
+      "endLine": 33
     },
     "title": "k-Square-Free Set",
     "content": "**`IsKSquareFree A k`** means no product of k distinct elements of A is a perfect square. For k = 2, this forbids a·b being a square; for k = 3, it forbids a·b·c being a square.",
@@ -71,8 +71,8 @@
     "proofId": "erdos-121",
     "type": "definition",
     "range": {
-      "startLine": 34,
-      "endLine": 38
+      "startLine": 35,
+      "endLine": 40
     },
     "title": "Extremal Function F_k(N)",
     "content": "**`squareFreeMax k N`** is the maximum cardinality of a k-square-free subset of {1,...,N}. This extremal function is the central object of study.",
@@ -93,7 +93,7 @@
     "proofId": "erdos-121",
     "type": "insight",
     "range": {
-      "startLine": 43,
+      "startLine": 44,
       "endLine": 47
     },
     "title": "F_2: Squarefree Density 6/π²",
@@ -116,7 +116,7 @@
     "proofId": "erdos-121",
     "type": "insight",
     "range": {
-      "startLine": 49,
+      "startLine": 50,
       "endLine": 54
     },
     "title": "F_3 Has Full Density",
@@ -158,7 +158,7 @@
     "proofId": "erdos-121",
     "type": "concept",
     "range": {
-      "startLine": 65,
+      "startLine": 66,
       "endLine": 72
     },
     "title": "Erdős's Conjecture (Disproved)",

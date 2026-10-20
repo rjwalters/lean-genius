@@ -171,24 +171,6 @@
     ]
   },
   {
-    "id": "ann-reducibility",
-    "proofId": "four-color-theorem",
-    "range": {
-      "startLine": 156,
-      "endLine": 172
-    },
-    "type": "concept",
-    "title": "Reducibility: Configurations That Can't Block Coloring",
-    "content": "A configuration C is **reducible** if it cannot appear in a minimal counterexample to Four Color. That is: if a planar graph G contains C, then G is 4-colorable (or G can be simplified to a smaller graph that's 4-colorable).\n\nProving reducibility requires showing that any 4-coloring of the graph minus the configuration can be extended to include it. This involves analyzing all possible colorings of the boundary and showing Kempe chains can always make room.\n\nFor many configurations, this case analysis is astronomically complex—too many cases for human verification. This is where computers become essential.",
-    "mathContext": "A configuration $C$ with ring of size $r$ is **D-reducible** if every proper 4-coloring of the ring extends to the interior. Checking D-reducibility requires examining at most $3 \\cdot 4^r$ colorings (since one color is fixed on the ring). For $r \\leq 14$ (the largest in Appel-Haken's set), this is computationally feasible. A weaker form, **C-reducibility**, allows Kempe chain swaps on the ring before extending: $C$ is C-reducible if after at most one Kempe swap on the ring coloring, the result extends. Appel-Haken (1976) proved an unavoidable set of 1,936 configurations, all C-reducible. Robertson et al. (1997) found a smaller unavoidable set of 633, all D-reducible.",
-    "significance": "key",
-    "relatedConcepts": [
-      "minimal counterexample",
-      "configuration",
-      "extendability"
-    ]
-  },
-  {
     "id": "ann-computer-verification",
     "proofId": "four-color-theorem",
     "range": {

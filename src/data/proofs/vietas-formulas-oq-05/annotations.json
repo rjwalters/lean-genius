@@ -3,10 +3,10 @@
     "id": "ann-vf-oq05-esymm-boundary",
     "proofId": "vietas-formulas-oq-05",
     "range": {
-      "startLine": 54,
-      "endLine": 66
+      "startLine": 53,
+      "endLine": 65
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Boundary Values: esymm 1 = sum and esymm (card s) = prod",
     "content": "Two degenerate layers of the elementary symmetric functions of a multiset. `esymm_one` unfolds e₁(s) via `powersetCard_one`: the 1-element sub-multisets of s are exactly the singletons {a}, whose products are the elements a, so the sum over them is s.sum. `esymm_self` handles the top layer e_{card s}(s): the sub-multisets of s with cardinality card s number (card s).choose(card s) = 1, and s itself is one of them (s ≤ s), so the top layer is the single element {s}; its only product is s.prod. These are precisely the two symmetric functions that become the sum and the product of the roots.",
     "mathContext": "e_1(s) = Σ_{a∈s} a via powersetCard 1 s = s.map singleton; e_{|s|}(s) = Π_{a∈s} a because powersetCard (card s) s = {s} (cardinality (card s).choose(card s) = 1, and s ≤ s).",
@@ -94,8 +94,8 @@
     "id": "ann-vf-oq05-build-coeff",
     "proofId": "vietas-formulas-oq-05",
     "range": {
-      "startLine": 119,
-      "endLine": 129
+      "startLine": 120,
+      "endLine": 130
     },
     "type": "theorem",
     "title": "build_coeff: the Converse Constructive Direction",

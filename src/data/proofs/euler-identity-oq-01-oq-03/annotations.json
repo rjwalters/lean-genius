@@ -86,7 +86,7 @@
   {
     "id": "eioq01x3-ann-08",
     "proofId": "euler-identity-oq-01-oq-03",
-    "range": { "startLine": 157, "endLine": 173 },
+    "range": { "startLine": 161, "endLine": 175 },
     "type": "insight",
     "title": "The n-th Roots of Unity Sum to Zero",
     "content": "`sum_rou_pow_eq_zero (n : ℕ) (hn : 2 ≤ n) : ∑_{k<n} (rou n)^k = 0`. The finite geometric series `geom_sum_eq` (valid since $\\omega_n \\ne 1$) gives $\\sum_{k<n}\\omega_n^k = (\\omega_n^n - 1)/(\\omega_n - 1)$, and $\\omega_n^n = 1$ makes the numerator vanish. Geometrically: the centroid of the vertices of a regular $n$-gon on the unit circle is the centre.",

@@ -62,7 +62,7 @@
   {
     "id": "ann-spc-oq02-capstone",
     "proofId": "sperner-simplicial-bridge-oq-02",
-    "range": { "startLine": 191, "endLine": 217 },
+    "range": { "startLine": 193, "endLine": 219 },
     "type": "insight",
     "title": "Capstone with certified dimension",
     "content": "`exists_panchromatic_facet_of_finrank` specialises to a finite-dimensional field and bundles everything: the panchromatic witness is a genuine facet *and* its combinatorial dimension satisfies `d ≤ finrank 𝕜 E`, by applying `facet_dim_le_ambient` to the witness. One statement captures the full answer to the open question.",

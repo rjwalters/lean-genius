@@ -26,7 +26,7 @@
   {
     "id": "ann-geomoq09chain-fiber",
     "proofId": "geometric-series-oq026",
-    "range": { "startLine": 89, "endLine": 113 },
+    "range": { "startLine": 93, "endLine": 117 },
     "type": "insight",
     "title": "The single-fiber embedding",
     "content": "The technical heart of the completeness-free converse. fiber f q a embeds a residue subseries into ℕ × Fin q, supported on the single fiber {p.2 = a} and zero elsewhere. hasSum_fiber proves this embedding has the SAME HasSum as the subseries n ↦ f(q·n+a): the injection n ↦ (n,a) has that fiber as its range and the function vanishes off it, so Function.Injective.hasSum_iff transports the sum. Crucially this is a monoid-level lemma — no group or completeness — making the residue subseries' sum visible as a sum over the two-dimensional index ℕ × Fin q.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-geomoq09chain-converse",
     "proofId": "geometric-series-oq026",
-    "range": { "startLine": 115, "endLine": 189 },
+    "range": { "startLine": 117, "endLine": 189 },
     "type": "insight",
     "title": "The converse: a finite sum of HasSums, no completeness",
     "content": "hasSum_of_residues is the main result: if each residue subseries has sum S a, then HasSum f (∑_{a<q} S a). Because q is FINITE, the q single-fiber embeddings assemble as a finite sum of HasSums (hasSum_sum — the only ContinuousAdd input). The pointwise fiberwise sum ∑_a fiber f q a p collapses (Finset.sum_eq_single) to the reindexed term f(q·p.1 + p.2), and (Nat.divModEquiv q).symm.hasSum_iff transports the two-dimensional HasSum back to f on ℕ. summable_of_residues is the Summable corollary; tsum_multisection_of_residues gives the value identity ∑_{a<q} ∑_n f(q·n+a) = ∑_m f(m) over a merely T2 monoid (T2 only supplies uniqueness of the sum). summable_of_even_odd / tsum_even_add_odd_of_residues are the q=2 specialisations.",

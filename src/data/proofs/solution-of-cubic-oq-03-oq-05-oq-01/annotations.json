@@ -3,10 +3,10 @@
     "id": "ann-esymm-helper",
     "proofId": "solution-of-cubic-oq-03-oq-05-oq-01",
     "range": {
-      "startLine": 36,
-      "endLine": 47
+      "startLine": 43,
+      "endLine": 54
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "First Symmetric Function Equals the Sum",
     "content": "`esymm_one_eq_sum (s : Multiset R) : s.esymm 1 = s.sum`. The elementary symmetric function `Multiset.esymm s 1` is defined as the sum, over all 1-element sub-multisets of `s`, of their products. `Multiset.powersetCard_one` identifies those 1-element subsets with the singletons of `s`, so each product is just the element itself and the total is `∑ s`. This tiny lemma is what converts the abstract `e₁(roots)` appearing in the coefficient formula into the concrete sum of the roots used by `sum_of_roots`.",
     "mathContext": "$e_1(r_1,\\ldots,r_n) = \\sum_i r_i$. In Mathlib, `esymm s k = ((s.powersetCard k).map Multiset.prod).sum`; the `k = 1` case collapses by `powersetCard_one`.",
@@ -48,8 +48,8 @@
     "id": "ann-named-monic",
     "proofId": "solution-of-cubic-oq-03-oq-05-oq-01",
     "range": {
-      "startLine": 64,
-      "endLine": 103
+      "startLine": 65,
+      "endLine": 104
     },
     "type": "theorem",
     "title": "Sum, Product, and Second Symmetric Function of the Roots",
@@ -71,8 +71,8 @@
     "id": "ann-field",
     "proofId": "solution-of-cubic-oq-03-oq-05-oq-01",
     "range": {
-      "startLine": 104,
-      "endLine": 145
+      "startLine": 113,
+      "endLine": 154
     },
     "type": "theorem",
     "title": "Field Forms: Dividing by the Leading Coefficient",

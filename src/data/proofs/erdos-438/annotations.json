@@ -53,7 +53,7 @@
     "proofId": "erdos-438",
     "type": "concept",
     "range": {
-      "startLine": 59,
+      "startLine": 60,
       "endLine": 74
     },
     "title": "Simple mod $3$ Construction",
@@ -75,10 +75,10 @@
   {
     "id": "erdos-438-massias",
     "proofId": "erdos-438",
-    "type": "definition",
+    "type": "axiom",
     "range": {
-      "startLine": 79,
-      "endLine": 95
+      "startLine": 69,
+      "endLine": 85
     },
     "title": "Massias Construction (mod $32$)",
     "content": "`massias_residues` $= \\{1,5,9,13,14,17,21,25,26,29,30\\}$: $11$ residue classes mod $32$ whose pairwise sums avoid all quadratic residues mod $32$. `massias_construction N` filters $\\{1,\\ldots,N\\}$ by membership in these classes, achieving density $11/32 \\approx 0.344$. `massias_construction_works` axiomatizes the square-free property; `massias_density` bounds $|A| \\ge (11/32)N - 11$.",

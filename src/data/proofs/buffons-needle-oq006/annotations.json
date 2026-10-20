@@ -84,7 +84,7 @@
   {
     "id": "concrete-values",
     "proofId": "buffons-needle-oq006",
-    "range": { "startLine": 138, "endLine": 168 },
+    "range": { "startLine": 142, "endLine": 168 },
     "type": "insight",
     "title": "First Higher Concrete Values",
     "content": "Evaluates the product over a small range to obtain the first dimensions beyond the base: crossingFactor_four (α₄ = 4/(3π)), crossingFactor_six (α₆ = 16/(15π)) on the even side, and crossingFactor_five (α₅ = 3/8), crossingFactor_seven (α₇ = 5/16) on the odd side. Each proof instantiates the closed form at m = 1 or 2, unfolds the product with Finset.prod_range_one / Finset.prod_range_succ, and finishes with push_cast and ring. None of these were computed in the parent entry. They make the decay concrete: 2/π ≈ 0.6366 → 4/(3π) ≈ 0.4244 → 16/(15π) ≈ 0.3395 on the even side, and 1/2 → 3/8 → 5/16 on the odd side.",

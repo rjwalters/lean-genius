@@ -26,7 +26,7 @@
   {
     "id": "ann-monotone-runs",
     "proofId": "erdos-415-oq-01",
-    "range": { "startLine": 44, "endLine": 71 },
+    "range": { "startLine": 45, "endLine": 71 },
     "type": "insight",
     "title": "The Rare Monotone Runs",
     "content": "Of the six orderings of three consecutive totients, four are 'mixed' (pattern_acb at m=6, pattern_bac at m=5, pattern_bca at m=13, pattern_cab at m=16) and appear almost immediately (m ≤ 16). The two strictly monotone runs are rare. The first strictly increasing run is φ(105)=48 < φ(106)=52 < φ(107)=106 (φ(107)=106 because 107 is prime, so φ(p)=p−1); the first strictly decreasing run is φ(313)=312 > φ(314)=156 > φ(315)=144 (313 prime gives the large φ; 315=3²·5·7 highly composite gives the small φ). Monotone runs are hard precisely because φ swings between p−1 at primes and small values at highly composite numbers.",

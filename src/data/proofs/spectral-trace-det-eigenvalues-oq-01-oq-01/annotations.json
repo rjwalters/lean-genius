@@ -14,7 +14,7 @@
   {
     "id": "ann-det-power",
     "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01",
-    "range": { "startLine": 56, "endLine": 77 },
+    "range": { "startLine": 63, "endLine": 77 },
     "type": "theorem",
     "title": "det(Aᵏ) = Π(λᵢᵏ): The Determinant Power Identity",
     "content": "det_pow_eq_prod_pow_eigenvalues proves det(Aᵏ) = Π(λᵢᵏ) over any algebraically closed field, for ALL dimensions n and exponents k. The proof needs no triangularisation: Matrix.det_pow gives det(Aᵏ) = (det A)ᵏ by multiplicativity, the oq-01 identity det = Πλ rewrites the base, and prod_map_pow_eigenvalues — an instance of Multiset.prod_hom for the power monoid hom — turns (Πλᵢ)ᵏ into Π(λᵢᵏ). This is the determinant instance of the spectral mapping theorem spec(p(A)) = p(spec(A)) for p(X) = Xᵏ, and it is the EASY half precisely because the determinant is a multiplicative invariant.",

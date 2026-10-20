@@ -14,7 +14,7 @@
   {
     "id": "ann-clt-oq04-definitions",
     "proofId": "central-limit-theorem-oq-01-oq-01-oq-04",
-    "range": { "startLine": 37, "endLine": 81 },
+    "range": { "startLine": 42, "endLine": 86 },
     "type": "definition",
     "title": "Six Core Definitions: From Quadratic Forms to Domain of Attraction",
     "content": "Six noncomputable definitions build the framework. `quadForm d Σ ξ = ∑ᵢ ∑ⱼ Σᵢⱼ ξᵢ ξⱼ` is the Gaussian exponent. `vecInner d x y = ∑ᵢ xᵢyᵢ` is the dot product for drift terms. `gaussCharFun d Σ ξ = exp(-quadForm(ξ)/2)` is the Gaussian characteristic function in ℂ. `IsOperatorStable` asserts the self-similarity condition φ(Aₙᵀξ)^n = φ(ξ)·exp(i⟨bₙ,ξ⟩) for some matrix sequence {Aₙ} and drift {bₙ}. `HasScalarExponent` specializes to scalar A_n = n^{-c}·I, corresponding to 1D stability index α = 1/c. `InOperatorDomainOfAttraction` requires both operator-stability of the limit and convergence of scaled n-fold convolutions.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-clt-oq04-quadform",
     "proofId": "central-limit-theorem-oq-01-oq-01-oq-04",
-    "range": { "startLine": 83, "endLine": 127 },
+    "range": { "startLine": 88, "endLine": 132 },
     "type": "insight",
     "title": "Quadratic Form Scaling: The Key Computation for Gaussian Self-Similarity",
     "content": "Two critical lemmas establish the algebraic core. `quadForm_scale` proves quadForm(c·ξ) = c²·quadForm(ξ) by ring: scalar multiplication factors out as c² from the double sum. `quadForm_scale_inv_sqrt` is the pivotal application: quadForm(ξ/√n) = (1/n)·quadForm(ξ). The proof uses `Real.mul_self_sqrt` (√n · √n = n) and `field_simp` to handle the division, then `ring` for the algebra. Two supporting lemmas: `gaussCharFun_zero` (φ = 1 at ξ = 0, from exp(0) = 1) and `gaussCharFun_norm_le_one` (|φ| ≤ 1 for psd Σ, from exp(-nonneg) ≤ 1).",

@@ -46,7 +46,7 @@
   {
     "id": "ann-boundary-statement",
     "proofId": "inverse-galois-d4-oq-02-oq-03-oq-01",
-    "range": { "startLine": 53, "endLine": 63 },
+    "range": { "startLine": 55, "endLine": 63 },
     "type": "insight",
     "title": "The boundary identity n·φ(n) = n! ⟺ n ∈ {2,3}",
     "content": "The headline lemma totient_mul_eq_factorial_iff turns the algebraic 'when is the Galois order pinned?' into a purely arithmetic identity. The reverse direction is a finite check (`decide` on n = 2 and n = 3). The forward direction is the substance: assuming n·φ(n) = n! with n ≥ 2, it argues by contradiction that n cannot exceed 3. The reframing is the conceptual payoff — pinning is governed by an elementary totient/factorial equation with exactly two solutions, independent of any Galois machinery.",
@@ -108,7 +108,7 @@
   {
     "id": "ann-pin-theorem",
     "proofId": "inverse-galois-d4-oq-02-oq-03-oq-01",
-    "range": { "startLine": 92, "endLine": 104 },
+    "range": { "startLine": 94, "endLine": 104 },
     "type": "insight",
     "title": "The pin theorem — coprimality comes for free",
     "content": "gal_card_eq_factorial_of_pin states that the squeeze condition n·φ(n) = n! alone forces |Gal(Xⁿ−p)| = n!, with NO separate coprimality hypothesis. The reason is structural: by the boundary identity the only solutions are n ∈ {2,3}, and both are coprime to their totient (gcd(2,1) = gcd(3,2) = 1, checked by `decide`). So the parent's coprime lower bound mul_totient_dvd_gal_card_of_coprime applies automatically, giving n! ∣ |Gal|; combined with |Gal| ∣ n! (gal_card_dvd_factorial), Nat.dvd_antisymm squeezes equality. The arithmetic boundary condition silently supplies the algebraic coprimality the lower bound needs.",
@@ -129,7 +129,7 @@
   {
     "id": "ann-quadratic-witness",
     "proofId": "inverse-galois-d4-oq-02-oq-03-oq-01",
-    "range": { "startLine": 110, "endLine": 116 },
+    "range": { "startLine": 112, "endLine": 116 },
     "type": "concept",
     "title": "The quadratic companion |Gal(X²−p)| = 2",
     "content": "gal_card_quadratic_eq_two instantiates the pin theorem at n = 2: since 2·φ(2) = 2·1 = 2 = 2!, the squeeze pins |Gal(X²−p/ℚ)| = 2 for every prime p — the Galois group C₂ of the quadratic field ℚ(√p). It is the quadratic companion of the parent's cubic witness |Gal(X³−p)| = 6 = |S₃|. Together n = 2 and n = 3 are the ONLY argument-free, prime-uniform pins the bracket provides; n = 4 already escapes it (4·φ(4) = 8 ≠ 24 = 4!), which is exactly why the base D₄ entry |Gal(X⁴−2)| = 8 needed a separate resolvent/ℝ-embedding argument.",

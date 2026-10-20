@@ -38,7 +38,7 @@
   {
     "id": "ecsoq0101-ann-ker",
     "proofId": "euler-criterion-squares-oq-01-oq-01",
-    "range": { "startLine": 49, "endLine": 74 },
+    "range": { "startLine": 50, "endLine": 75 },
     "type": "insight",
     "title": "The Kernel Is {1, −1}",
     "content": "`mem_sqHom_ker` identifies the kernel of squaring with the square roots of unity: $u^2 = 1$ iff $u = \\pm 1$, using that a field has only the two solutions $\\pm 1$ to $x^2 = 1$ (`sq_eq_one_iff`). `card_sqHom_ker` then rewrites the kernel as the set $\\{1, -1\\}$ and applies `Set.ncard_pair` with the distinctness $1 \\ne -1$ to conclude the kernel has cardinality exactly 2. This factor of 2 is the entire reason the unit count is halved.",
@@ -62,7 +62,7 @@
   {
     "id": "ecsoq0101-ann-bridge",
     "proofId": "euler-criterion-squares-oq-01-oq-01",
-    "range": { "startLine": 86, "endLine": 105 },
+    "range": { "startLine": 87, "endLine": 106 },
     "type": "tactic",
     "title": "Bridging Units to Field Squares",
     "content": "`isSquare_coe_iff_mem_range` connects two notions of 'square': for a unit $u$, the field element $\\uparrow u$ is a square in $\\mathbb{Z}/p$ iff $u$ lies in the image of the squaring map on units. The forward direction lifts a nonzero square root $r$ (nonzero because $u$ is a unit) to a unit via `isUnit_iff_ne_zero`; the reverse maps an image element back. This is the link that lets the unit-group cardinality transfer to the field's nonzero quadratic residues.",

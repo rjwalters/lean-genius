@@ -36,8 +36,8 @@
   {
     "id": "ann-closed-form-bridge",
     "proofId": "odd-cubes-sum-oq-01",
-    "range": { "startLine": 99, "endLine": 108 },
-    "type": "lemma",
+    "range": { "startLine": 95, "endLine": 108 },
+    "type": "theorem",
     "title": "Closed-Form Bridge: n²(2n²−1) + n² = 2n⁴",
     "content": "Shows the conventional closed form satisfies the same additive relation as the sum. The genuine $\\mathbb{N}$ subtraction in $n^2(2n^2-1) = 2n^4 - n^2$ is the only one in the file's headline path, and is resolved once via `Nat.sub_add_cancel` (using $1 \\le 2n^2$ for $n \\ge 1$, with the $n=0$ case dispatched by `simp`). A `calc` chain distributes, cancels the subtraction, and finishes with `ring`.",
     "mathContext": "$n^2(2n^2-1) + n^2 = 2n^4$, i.e. $n^2(2n^2-1) = 2n^4 - n^2$.",

@@ -20,15 +20,23 @@ no admissible 50-tuple has diameter < 246. The tuple {0,4,...,246} is optimal.
 **Part I**: Engelsma 50-tuple — explicit definition with exact computed properties.
 **Part II**: Admissibility — native_decide for primes ≤ 47; automatic for p ≥ 53.
 **Part III**: Diameter = 246 exactly (max = 246, min = 0).
-**Part IV**: Engelsma lower bound axiom — no admissible 50-tuple has diam < 246.
+**Part IV**: Engelsma lower bound — no admissible 50-tuple has diam < 246.
+  Formerly a stated axiom citing Engelsma's 2013 exhaustive computation; as of
+  S12 (2026-09-29) it is a THEOREM, consuming the verified pruned search of
+  `Proofs.BoundedPrimeGapsOQ03OQ02` (soundness + completeness proved in
+  S26/S27) at the `native_decide`-computed value
+  `engelsmaSearchPruned 246 50 = false`. The trust base is the Lean compiler
+  (`Lean.ofReduceBool`), the same as this file's other `native_decide` facts.
 **Part V**: Optimality — 246 is both achievable and minimal.
 **Part VI**: Consequences — the 50-tuple approach cannot improve beyond 246.
 
-Axioms: 1 (engelsma_lower_bound — Engelsma 2013 exhaustive computation)
+Axioms: 0 declarations (headline lower bound rests on `native_decide`,
+  i.e. `Lean.ofReduceBool` — disclosed in the gallery entry)
 Sorries: 0
 -/
 import Mathlib
 import Proofs.BoundedPrimeGaps
+import Proofs.BoundedPrimeGapsOQ03OQ02
 
 namespace BoundedPrimeGapsOQ03
 
@@ -122,18 +130,27 @@ theorem engelsma50Tuple_mem_range (a : ℕ) (ha : a ∈ engelsma50Tuple) :
   ⟨Finset.min'_le _ a ha, Finset.le_max' _ a ha⟩
 
 /-
-## Part IV: Engelsma Lower Bound (Axiom)
+## Part IV: Engelsma Lower Bound (proved — S12, formerly an axiom)
 
 Engelsma (2013) proved by exhaustive computer search that no admissible 50-tuple
-has diameter < 246. This is the computational foundation of the 246 bound being tight.
+has diameter < 246. This is the computational foundation of the 246 bound being
+tight. Originally stated here as an axiom citing that computation; the
+`BoundedPrimeGapsOQ03OQ02` companion re-did the computation *inside Lean* — a
+residue-pruned depth-first search whose soundness and completeness are proved
+(S26/S27), evaluated at the target parameters by `native_decide` (S12) — so the
+statement is now a theorem. The trust base is the Lean compiler
+(`Lean.ofReduceBool`), replacing trust in an external 2013 computation.
 -/
 
-/-- **Engelsma's lower bound (2013)**: Any admissible set with ≥ 50 elements
-    has diameter ≥ 246.
-    Reference: T. Engelsma, "Permissible patterns and prime gaps" (2013). -/
-axiom engelsma_lower_bound :
+/-- **Engelsma's lower bound (2013), machine-verified**: Any admissible set
+    with ≥ 50 elements has diameter ≥ 246.
+    Reference: T. Engelsma, "Permissible patterns and prime gaps" (2013);
+    re-verified in Lean by the pruned search of
+    `Proofs.BoundedPrimeGapsOQ03OQ02` (see `engelsma_lower_bound_verified`). -/
+theorem engelsma_lower_bound :
     ∀ H : Finset ℕ, IsAdmissible H → H.card ≥ 50 →
-    ∀ hne : H.Nonempty, H.max' hne - H.min' hne ≥ 246
+    ∀ hne : H.Nonempty, H.max' hne - H.min' hne ≥ 246 :=
+  BoundedPrimeGapsOQ03OQ02.engelsma_lower_bound_verified
 
 /-
 ## Part V: Optimality of the 246 Bound
@@ -260,7 +277,8 @@ Key results proved in this file:
 3. `engelsma50Tuple_admissible` — formally verified admissible
 4. `engelsma50Tuple_max = 246`, `_min = 0` — exact extremes
 5. `engelsma50Tuple_diam = 246` — exact diameter
-6. `engelsma_lower_bound` (axiom) — no admissible 50-tuple has diam < 246
+6. `engelsma_lower_bound` (theorem as of S12; formerly an axiom) — no
+   admissible 50-tuple has diam < 246, via the verified pruned search
 7. `admissible_50_tuple_diam_ge_246` — diameter ≥ 246 for any admissible 50-tuple
 8. `admissible_50_tuple_large_spread` — existence of wide-spread elements
 9. `no_admissible_50_tuple_diam_le_245` — diameter 245 impossible

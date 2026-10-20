@@ -22,7 +22,7 @@
   {
     "id": "abundant-ann-bridge",
     "proofId": "abundant-number-oq-01",
-    "range": { "startLine": 38, "endLine": 53 },
+    "range": { "startLine": 43, "endLine": 58 },
     "type": "insight",
     "title": "From Proper Divisors to the Full Divisor Sum",
     "content": "Mathlib defines abundance with *proper* divisors, but the multiplicative argument is cleanest with the *full* divisor sum. `abundant_iff_two_mul_lt_sigma` bridges the two: for any $n$,\n$$ n.\\mathrm{Abundant} \\iff 2n < \\sum_{d \\mid n} d. $$\nThe proof rewrites the full divisor sum as proper-divisor sum plus $n$ (`Nat.sum_divisors_eq_sum_properDivisors_add_self`) and finishes with `omega`. `pos_of_abundant` records the easy fact that an abundant number is positive (zero has no proper divisors).",
@@ -61,8 +61,8 @@
   {
     "id": "abundant-ann-witness-family",
     "proofId": "abundant-number-oq-01",
-    "range": { "startLine": 101, "endLine": 113 },
-    "type": "lemma",
+    "range": { "startLine": 112, "endLine": 124 },
+    "type": "theorem",
     "title": "The Witness Family 12·(k+1) and Its Injectivity",
     "content": "Two small lemmas assemble the witnessing infinite family before the headline theorem. `abundant_twelve_mul k : (12 \\cdot (k+1)).\\mathrm{Abundant}$ specializes closure (`abundant_mul_right`) to the abundant base $12$, certifying that every term of $24, 36, 48, \\dots$ — and $12$ itself at $k = 0$ — is abundant. `twelve_mul_succ_injective` shows the indexing map $k \\mapsto 12(k+1)$ is injective: from $12(a+1) = 12(b+1)$, left-cancelling the nonzero factor $12$ (`Nat.eq_of_mul_eq_mul_left`) gives $a+1 = b+1$, and `omega` finishes. Injectivity is exactly the hypothesis that turns \"all members of this family are abundant\" into \"there are infinitely many abundant numbers\": a function injective on the infinite domain $\\mathbb{N}$ has infinite range.",
     "mathContext": "`abundant_twelve_mul = abundant_mul_right Nat.abundant_twelve (Nat.succ_pos k)`; injectivity of $k \\mapsto 12(k+1)$ via cancellation of the nonzero factor 12.",

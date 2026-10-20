@@ -97,8 +97,8 @@
     "proofId": "erdos-380",
     "type": "theorem",
     "range": {
-      "startLine": 49,
-      "endLine": 51
+      "startLine": 50,
+      "endLine": 57
     },
     "title": "Membership in a Bad Interval",
     "content": "**InBadInterval n** means ∃ u ≤ n ≤ v such that [u, v] is bad. An integer n belongs to B(x) if it lies in *any* bad interval — it need not be responsible for the repeated prime factor itself.",
@@ -119,8 +119,8 @@
     "proofId": "erdos-380",
     "type": "definition",
     "range": {
-      "startLine": 55,
-      "endLine": 62
+      "startLine": 79,
+      "endLine": 86
     },
     "title": "Counting Functions B(x) and gpfSquareCount(x)",
     "content": "**badCount x** = |{n ∈ [1,x] : InBadInterval(n)}| counts integers in bad intervals.\n\n**gpfSquareCount x** = |{n ∈ [2,x] : P(n)² | n}| counts integers whose greatest prime factor divides them with multiplicity ≥ 2.\n\nBoth are `noncomputable` due to the decidability requirements of the predicates.",
@@ -142,7 +142,7 @@
     "proofId": "erdos-380",
     "type": "insight",
     "range": {
-      "startLine": 66,
+      "startLine": 67,
       "endLine": 72
     },
     "title": "Erdős Problem 380: Asymptotic Equivalence",

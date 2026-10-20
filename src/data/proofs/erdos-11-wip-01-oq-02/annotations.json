@@ -38,7 +38,7 @@
   {
     "id": "ann-erdos11wipoq02-range",
     "proofId": "erdos-11-wip-01-oq-02",
-    "range": { "startLine": 95, "endLine": 104 },
+    "range": { "startLine": 96, "endLine": 104 },
     "type": "insight",
     "title": "The verified range by a single kernel decide",
     "content": "repr_range proves ∀ n ∈ range 100, Odd n → 1 < n → ReprCheck n by one kernel `decide`. Because ReprCheck (and through it SquarefreeCheck) is a finite conjunction/disjunction of Nat divisibility and comparison tests, the kernel can fully evaluate it for each of the 100 values. set_option maxRecDepth 8000 is raised only so the kernel can walk the nested Finset.range recursions during that evaluation — it is a proof-search recursion budget, NOT an axiom or a trust assumption, so it does not enlarge the trusted axiom set. This single decide replaces the parent's per-number hand-written squarefree witnesses for 3, …, 17.",

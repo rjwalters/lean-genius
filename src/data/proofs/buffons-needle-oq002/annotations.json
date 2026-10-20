@@ -26,7 +26,7 @@
   {
     "id": "ann-003",
     "proofId": "buffons-needle-oq002",
-    "range": { "startLine": 68, "endLine": 96 },
+    "range": { "startLine": 72, "endLine": 96 },
     "type": "insight",
     "title": "Axiom-Free AngularAverageData 2 Instance",
     "content": "The AngularAverageData 2 instance is constructed entirely from interval integration: angularAvg r = r · 2 = 2r matches the required formula sphereArea(0)/(2-1) · r = 2 · r. Here sphereArea(0) = 2 (two points ±1 on S^0) and 2-1 = 1 as a real number, so the verification reduces to 2*r = 2/(1)*r. The consistency check angularAverageData2D_expectedCrossings then confirms this instance produces E[crossings] = 2L/(πd) for n=2 by delegating to the parent file's expectedCrossings_eq_angularAvg theorem.",

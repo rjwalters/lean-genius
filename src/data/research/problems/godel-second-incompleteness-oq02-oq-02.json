@@ -33,8 +33,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-24",
-    "iteration": 18,
-    "focus": "S22a ACT shipped GodelSecondIncompletenessOQ02Lindenbaum.lean (docker green 5 jobs, 0 sorries, 0 axiom declarations, Mathlib-free): the FMP world-construction layer. Finite consistency calculus over PDeriv (Consistent, of_subset, deriv_neg_of_inconsistent, consistent_cons_or, consistent_cons_of_deriv), subformula closure (subf, self_mem_subf, subf_closed), classical one-pass finite Lindenbaum extension (extend + consistent_extend/subset_extend/mem_or_of_mem_extend/mem_extend_of_consistent), MaximalIn structure + lindenbaum, maximal-set toolkit (mem_of_deriv, deriv_iff_mem, neg_deriv_of_not_mem, not_mem_of_neg_deriv, falsum_not_mem, impl_mem_iff = the impl case of the future truth lemma), and exists_root_world: GL not-proves phi gives a maximal consistent subset of subf(not phi) containing not phi.",
+    "iteration": 19,
+    "focus": "S22b ACT COMPLETE (researcher-2, 2026-09-29): GodelSecondIncompletenessOQ02Canonical.lean — canonical finite model over MaximalIn worlds, Boolos Ch.5 accessibility, cwf via boxed-count measure, Loeb box-case consistency lemma via curried premise lists, truth lemma, exists_countermodel, gl_complete, gl_proves_iff_valid. Docker green (7 jobs), 0 sorries, 0 axioms, Mathlib-free.",
     "blockers": [
       "Verification blackout (2026-06-13): Docker daemon DOWN — Lean builds unverifiable. All remaining next-steps (S17 Hk-discharge, S4 Löb, S7 arith-soundness taut-lift) add Lean code that requires a Docker build to ship. No build-free ACT remains; trackers (state.md, JSON, knowledge.md) all in sync at iteration 16 (9-axiom floor, 0 real sorries). Re-open when Docker recovers.",
       "taut/k/lob remain hypotheses, not theorems: k needs an internal deduction theorem to lift meta-level internal_K to object level; lob needs S4 ACT (Löb, lob_henkin_fixed_point); taut needs a Łukasiewicz/Kalmár CPL-completeness lift. All three are PA-provable derivability facts but undischarge-able under the opaque Provable.",
@@ -45,7 +45,7 @@
         "blockedAt": "2026-07-24"
       }
     ],
-    "nextAction": "S22b: canonical finite model over MaximalIn worlds — Boolos Ch.5 accessibility relation, list-conjunction machinery, the box-case consistency lemma (Loeb + S18 four schema), truth lemma, Segerberg completeness + FMP; then S22c decidability. Arithmetic Htaut/Hk/Hlob still blocked on Sigma1 Provable rebuild.",
+    "nextAction": "S22c: FMP as a finite type + decidability of GL_proves — quotient canonical worlds to canonical representatives (e.g. dedup/sorted sublists of negClosure), derive decidability by finite search over frames bounded by the closure. Arithmetic Htaut/Hk/Hlob discharge still blocked on Sigma1 Provable rebuild (S6 PREP #18497).",
     "attemptCounts": {
       "total": 17,
       "currentApproach": 17,
@@ -53,7 +53,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS S22a: finite Lindenbaum layer for the GL FMP (Lindenbaum.lean, docker green): consistency calculus over PDeriv, subformula closure, finite maximal-consistent extension within a closure list, truth-lemma impl-case characterization, and root-world existence for any GL-unprovable formula. S18 GLFour + S19 Kalmar + S20 Kripke soundness + S21 box-free decidability all landed earlier; canonical model (S22b) is next.",
+    "progressSummary": "PROGRESS S22b COMPLETE: Segerberg/Boolos Kripke completeness of GL shipped (Canonical.lean, docker green, 0 sorries, 0 axiom declarations, Mathlib-free). gl_proves_iff_valid : GL_proves phi <-> Valid phi — soundness (S20) + canonical-model completeness (S22b) now bracket the modal logic exactly. Remaining: S22c FMP/decidability packaging; arithmetic Htaut/Hk/Hlob still blocked on Sigma1 Provable rebuild.",
     "builtItems": [
       "research/problems/godel-second-incompleteness-oq02-oq-02/problem.md (S1 OBSERVE — statement, scope, anchors)",
       "research/problems/godel-second-incompleteness-oq02-oq-02/knowledge.md (S1 OBSERVE — GL axioms, realization, soundness/completeness split, Mathlib survey, S2 candidates)",
@@ -96,7 +96,13 @@
       "extend one-pass classical Lindenbaum sweep + consistent_extend/subset_extend/mem_or_of_mem_extend/mem_extend_of_consistent",
       "MaximalIn (consistent/subset/maximal) + lindenbaum (finite Lindenbaum lemma)",
       "MaximalIn toolkit: mem_of_deriv, deriv_iff_mem, neg_deriv_of_not_mem, not_mem_of_neg_deriv, falsum_not_mem, impl_mem_iff",
-      "exists_root_world: root world of the future canonical countermodel"
+      "exists_root_world: root world of the future canonical countermodel",
+      "GodelSecondIncompletenessOQ02Canonical.lean (S22b): curried premise-list toolkit (imps, imps_exchange, imps_of_pderiv, imps_mono_concl, box_imps, pderiv_imps_discharge)",
+      "consistent_lob_seed: the box-case consistency lemma — sole use of Loeb's axiom, via necessitation + premise-wise K-distribution + S18 four schema",
+      "negClosure (subformula closure + negations), unbox (boxed content of a world), bcount strict-growth measure",
+      "canonicalFrame: worlds = MaximalIn (negClosure phi0), Boolos Ch.5 accessibility; trans + cwf proved (cwf via bcount measure, local nat_lt_wf)",
+      "truth_lemma: Forces w psi <-> psi in w for psi in subf phi0 (impl case = S22a impl_mem_iff; box case = consistent_lob_seed + lindenbaum successor)",
+      "exists_countermodel / not_valid_of_not_provable / gl_complete / gl_proves_iff_valid: Segerberg completeness, GL_proves phi <-> Valid phi"
     ],
     "insights": [
       "S14 STATE-SYNC (researcher-1, 2026-05-25T10:00Z): PR #19037 (S2-α ACT) MERGED 2026-05-19T18:15:15Z (commit 84055877c4a, squash-merge, rebased by deployer/champion path with loom:pr + loom:merge-conflict labels). The S13 bottleneck is cleared. Ships GodelSecondIncompletenessOQ02Companion.lean (~225 LOC) with impl_formula, impl_mp, d2_distribution, d3_internal_necessitation, derived internal_K theorem. No new PRs on this slug in the 6 days since merge (2026-05-19 → 2026-05-25); next-action handoff for S10 translate ACT or S4 Löb ACT is needed.",
@@ -122,7 +128,12 @@
       "S22a (researcher-3, 2026-07-24): PDeriv (S19) is already the right hypothesis layer for the canonical model — modal completeness never needs necessitation under hypotheses, and PDeriv.thm imports arbitrary (modal) GL theorems. No new derivation system needed.",
       "S22a: the finite Lindenbaum extension is a one-pass sweep over the closure list with Classical.propDecidable ifs — maximality follows because a skipped formula was skipped against a subset of the final context, so weakening transports the inconsistency forward. No Zorn, no Mathlib.",
       "S22a Lean gotcha: a doc comment cannot precede open Classical in — put the open line first, then the doc comment, then the def.",
-      "S22a: MaximalIn.impl_mem_iff discharges the impl case of the future truth lemma once and for all; the S22b truth lemma then only has atom/falsum/box cases to argue, with box the Loeb-trick heart (needs list-conjunction + S18 four)."
+      "S22a: MaximalIn.impl_mem_iff discharges the impl case of the future truth lemma once and for all; the S22b truth lemma then only has atom/falsum/box cases to argue, with box the Loeb-trick heart (needs list-conjunction + S18 four).",
+      "Curried implication lists (imps) replace list-conjunction machinery entirely: iterated deduction closes PDeriv to GL theorems, K distributes premise-wise (box_imps), and the four schema re-discharges boxed premises against the world — the whole Boolos box-case argument runs at k1/k2 combinator level.",
+      "The negation-augmented closure (subf + its negations) is what lets the box-case Lindenbaum seed {not p, box p} ∪ unbox(Delta) stay inside the closure while the truth lemma only ever visits genuine subformulas; boxed members of the closure are automatically in the subf part since negations are impl-shaped.",
+      "Converse well-foundedness of the canonical R is a counting argument: boxed members strictly grow along R and are bounded by closure length; a 10-line local nat_lt_wf keeps the file Mathlib-free.",
+      "v4.31 core drift: List.mem_cons_self is now fully implicit ({a} {l}); explicit-arg calls give 'function expected'. by_contra is NOT available in Mathlib-free files (use Classical.byContradiction). rcases ... with rfl on x = q may substitute away the cases-binder q — keep the equation named instead.",
+      "Completeness is over general GLFrames (S20 Valid); the canonical worlds are list-valued with many representatives per world-set, so FMP-as-finite-type (and S22c decidability) needs a canonical-representative quotient — deliberately deferred."
     ],
     "mathlibGaps": [
       "No modal logic / provability logic library in Mathlib.",
@@ -172,7 +183,7 @@
     ]
   },
   "started": "2026-05-12T14:35:20.287Z",
-  "lastUpdate": "2026-07-24",
+  "lastUpdate": "2026-09-29",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

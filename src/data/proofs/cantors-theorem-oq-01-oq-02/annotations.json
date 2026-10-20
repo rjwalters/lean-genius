@@ -2,8 +2,8 @@
   {
     "id": "ann-cantor-beth-def",
     "proofId": "cantors-theorem-oq-01-oq-02",
-    "range": { "startLine": 37, "endLine": 55 },
-    "type": "definition",
+    "range": { "startLine": 41, "endLine": 59 },
+    "type": "theorem",
     "title": "Beth lemmas: converting ℕ indices to Ordinal for Cardinal.beth",
     "content": "Two private lemmas prepare the beth number computations: `beth_three_eq : Cardinal.beth 3 = 2 ^ Cardinal.beth 2` (from `Cardinal.beth_succ`) and `beth_nat_succ : ∀ n : ℕ, Cardinal.beth (↑n + 1) = 2 ^ Cardinal.beth n` (the general recursion). The challenge is that `Cardinal.beth` takes an `Ordinal` argument, requiring `Order.succ_eq_add_one + push_cast + ring` to convert natural number successors.",
     "mathContext": "The beth hierarchy: $\\beth_0 = \\aleph_0$, $\\beth_{\\alpha+1} = 2^{\\beth_\\alpha}$, $\\beth_\\lambda = \\sup_{\\alpha < \\lambda} \\beth_\\alpha$ for limit ordinals $\\lambda$. In Lean 4, `Cardinal.beth_succ : beth (Order.succ o) = 2^(beth o)`. For $n : \\mathbb{N}$: `Order.succ (n : Ordinal) = (n : Ordinal) + 1 = (n+1 : \\mathbb{N})` by `Nat.cast_add`. The `push_cast` tactic handles the coercion chain $\\mathbb{N} \\to \\mathbb{Z} \\to \\mathbb{Q} \\to \\mathbb{R} \\to \\text{Ordinal}$.",

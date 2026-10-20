@@ -14,7 +14,7 @@
   {
     "id": "chcv-oq02oq01-ann-dim-adjoin",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-01",
-    "range": { "startLine": 67, "endLine": 99 },
+    "range": { "startLine": 69, "endLine": 99 },
     "type": "insight",
     "title": "dim K[M] = deg(minpoly) via the First Isomorphism Theorem",
     "content": "finrank_adjoin_eq_natDegree_minpoly computes dim_K K[M] = deg(minpoly K M). Because the matrix algebra is noncommutative, the PowerBasis API for Algebra.adjoin does not apply directly; instead K[M] is realized as the range of aeval M : K[X] →ₐ[K] Matrix (Algebra.adjoin_singleton_eq_range_aeval), whose kernel is the ideal (minpoly K M) (minpoly.ker_aeval_eq_span_minpoly). The first isomorphism theorem (Ideal.quotientKerEquivRange) gives K[M] ≅ K[X]/(minpoly), and finrank_quotient_span_eq_natDegree reads off its K-dimension as deg(minpoly).",

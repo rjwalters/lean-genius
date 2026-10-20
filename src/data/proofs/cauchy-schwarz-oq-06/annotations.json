@@ -50,7 +50,7 @@
   {
     "id": "cs-oq06-ann-sharp",
     "proofId": "cauchy-schwarz-oq-06",
-    "range": { "startLine": 110, "endLine": 122 },
+    "range": { "startLine": 114, "endLine": 126 },
     "type": "theorem",
     "title": "Sharp Form: Strict Inequality ↔ Independence",
     "content": "`norm_inner_lt_norm_mul_iff_linearIndependent` completes the dichotomy: `‖⟪x,y⟫‖ < ‖x‖·‖y‖ ↔ LinearIndependent 𝕜 ![x,y]`. Because Cauchy-Schwarz always supplies `≤`, strict inequality is exactly 'not equality'. The proof rewrites `<` as `≤ ∧ ≠` (`lt_iff_le_and_ne`), discharges the `≤` half with `norm_inner_le_norm`, and turns the `≠` half into the negated equality case, where `not_not` cancels the double negation back to `LinearIndependent`.",
@@ -62,7 +62,7 @@
   {
     "id": "cs-oq06-ann-real-corollaries",
     "proofId": "cauchy-schwarz-oq-06",
-    "range": { "startLine": 124, "endLine": 166 },
+    "range": { "startLine": 128, "endLine": 167 },
     "type": "theorem",
     "title": "Real Specializations and Degenerate Corollaries",
     "content": "Over a real inner-product space the inner product is real, so `Real.norm_eq_abs` lets `abs_real_inner_eq_norm_mul_iff_not_linearIndependent` and `abs_real_inner_lt_norm_mul_iff_linearIndependent` restate the results with `|⟪x,y⟫_ℝ|`. The sanity corollaries `norm_inner_eq_norm_mul_left_zero` (equality when x = 0) and `norm_inner_eq_norm_mul_of_smul` (equality when y = r•x) exhibit exactly the degenerate cases that Mathlib's nonzero-hypothesis form cannot even state — both proved by producing the dependence witness directly.",

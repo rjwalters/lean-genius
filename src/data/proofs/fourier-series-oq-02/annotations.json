@@ -88,10 +88,10 @@
     "id": "ann-foq02-fourier-norm-axiom",
     "proofId": "fourier-series-oq-02",
     "range": {
-      "startLine": 91,
+      "startLine": 88,
       "endLine": 92
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Fourier Monomials Have Unit Norm",
     "content": "The theorem `fourier_norm_one` proves that $\\|e_n(x)\\| = 1$ for all $n$ and $x$ (by `simp [fourier_apply]`). The Fourier monomials $e_n(x) = e^{2\\pi i n x / T}$ lie on the unit circle in $\\mathbb{C}$. This fact is used in the integral bound: $\\|f(x) \\cdot e_{-n}(x)\\| = \\|f(x)\\|$ because the exponential factor has unit norm.",
     "mathContext": "$\\|e^{2\\pi i n x/T}\\| = 1$ for all $n \\in \\mathbb{Z}$, $x \\in \\mathbb{R}/T\\mathbb{Z}$.",

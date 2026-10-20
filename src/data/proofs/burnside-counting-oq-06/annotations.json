@@ -14,7 +14,7 @@
   {
     "id": "ann-imports-namespace",
     "proofId": "burnside-counting-oq-06",
-    "range": { "startLine": 46, "endLine": 50 },
+    "range": { "startLine": 50, "endLine": 50 },
     "type": "concept",
     "title": "Imports: the Reused Divisor-Form Necklace Count",
     "content": "The single piece of gallery infrastructure this entry consumes is `card_necklaces_mul_eq_sum_divisors` from `BurnsideCountingOQ03OQ02OQ01OQ02` — the textbook divisor form $(\\#\\text{necklaces})\\cdot n = \\sum_{d\\mid n}\\varphi(n/d)k^d$ of the cyclic necklace count. The selective `open BurnsideCountingOQ03OQ02OQ01 (Rot)` brings the rotation action $\\mathrm{Rot}\\,n = \\mathrm{Multiplicative}(\\mathbb{Z}/n)$ into scope so the orbit space `orbitRel.Quotient (Rot p) (Rot p → Fin k)` — the set of $k$-colored $p$-bead necklaces — can be named. `open Finset MulAction` supplies $\\sum$ notation and the orbit-space construction.",

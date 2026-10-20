@@ -72,10 +72,10 @@
     "id": "ann-fdoq0703-existence",
     "proofId": "fibonacci-divisibility-oq-07-oq-03",
     "range": {
-      "startLine": 128,
-      "endLine": 154
+      "startLine": 125,
+      "endLine": 151
     },
-    "type": "theorem",
+    "type": "lemma",
     "title": "exists_pos_dvd_fib: existence via pigeonhole",
     "content": "Every $k\\ge1$ divides some positive-index Fibonacci number. `exists_pos_dvd_of_pair_eq` takes a collision $p_i=p_j$ ($i<j$) and, using injectivity of $\\text{shift}^i$, cancels the common prefix to get $p_0=p_{j-i}$; reading the first coordinate gives $F_{j-i}\\equiv F_0=0\\pmod k$, i.e. $k\\mid F_{j-i}$ with $j-i>0$. `exists_pos_dvd_fib` produces the collision from `Finite.exists_ne_map_eq_of_infinite` — pigeonhole of infinite ℕ into the finite square $(\\mathbb{Z}/k)^2$.",
     "mathContext": "$k\\ge1\\Rightarrow\\exists n>0,\\ k\\mid F_n$, via a repeat in $(\\mathbb{Z}/k)^2$.",

@@ -46,7 +46,7 @@
   {
     "id": "ann-boundary-recurrence",
     "proofId": "binomial-theorem-oq-02-oq-02-oq-01",
-    "range": { "startLine": 65, "endLine": 75 },
+    "range": { "startLine": 66, "endLine": 76 },
     "type": "insight",
     "title": "Boundary Lemmas + Recurrence Re-Statement",
     "content": "Three @[simp]-tagged lemmas pin down the boundary behavior. `qBinomial_zero_right` (`= 1`) requires a `cases n` because the recursion's `_, 0` pattern is not definitionally equal to either `qBinomial q n 0` template — `cases n <;> rfl` resolves both. `qBinomial_zero_succ` (`= 0`) is `rfl` directly, since `0, k+1 => 0` is the matching pattern. `qBinomial_succ_succ` is the recurrence stated as a theorem (`rfl`-provable), exposed for `rw` use. The `@[simp]` attributes are crucial: downstream proofs of `qVandermonde_zero_left` rely on `simp` automatically firing these to collapse summands.",

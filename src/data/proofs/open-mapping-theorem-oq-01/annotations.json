@@ -2,7 +2,7 @@
   {
     "id": "ann-setup",
     "proofId": "open-mapping-theorem-oq-01",
-    "range": { "startLine": 33, "endLine": 36 },
+    "range": { "startLine": 29, "endLine": 35 },
     "type": "concept",
     "title": "The Banach-space Setting",
     "content": "Everything is stated over a nontrivially normed field 𝕜 and two Banach spaces E, F — `NormedAddCommGroup` + `NormedSpace 𝕜 _` + `CompleteSpace _`. The `CompleteSpace` assumptions on *both* spaces are not cosmetic: completeness is exactly what the entire theory turns on. A continuous linear bijection between incomplete normed spaces can fail to have a continuous inverse; the open mapping theorem is the statement of precisely what completeness, through the Baire category theorem, guarantees.",

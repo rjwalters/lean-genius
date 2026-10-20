@@ -26,7 +26,7 @@
   {
     "id": "ann-cro05-invariants",
     "proofId": "cramers-rule-oq-05",
-    "range": { "startLine": 56, "endLine": 75 },
+    "range": { "startLine": 60, "endLine": 75 },
     "type": "tactic",
     "title": "The Three Similarity Invariants",
     "content": "det_conj, trace_conj, and charpoly_conj re-express Mathlib's det_units_conj, trace_units_conj, and charpoly_units_conj through conj. Determinant invariance follows from multiplicativity (det U · det N · det U⁻¹ = det N); trace invariance from cyclic invariance trace(AB) = trace(BA); characteristic-polynomial invariance because conjugation commutes with forming X·I − N over R[X]. Each is a one-line wrapper, but together they constitute the basis-independent data of the operator.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-cro05-bundle",
     "proofId": "cramers-rule-oq-05",
-    "range": { "startLine": 76, "endLine": 92 },
+    "range": { "startLine": 81, "endLine": 92 },
     "type": "concept",
     "title": "Packaging the Invariants",
     "content": "similarity_invariants bundles the three facts into a single conjunction: conjugation by a unit preserves det, trace, and charpoly simultaneously. The packaging is the point — det and trace are (up to sign) the constant and subleading coefficients of the characteristic polynomial, so the three invariances are not independent but form a coherent whole, which the conjunction makes explicit and reusable downstream.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-cro05-similarity",
     "proofId": "cramers-rule-oq-05",
-    "range": { "startLine": 93, "endLine": 118 },
+    "range": { "startLine": 94, "endLine": 118 },
     "type": "tactic",
     "title": "The Similarity Relation and Its Corollaries",
     "content": "IsSimilar M N := ∃ U, N = conj U M is the textbook similarity relation. After proving reflexivity (conjugate by the identity unit), the corollaries IsSimilar.det_eq, trace_eq, and charpoly_eq are discharged by destructuring the witness U and applying the corresponding invariance. This yields the familiar statement 'similar matrices have the same determinant, trace, and characteristic polynomial' directly in the ∃-quantified form used in linear-algebra texts.",

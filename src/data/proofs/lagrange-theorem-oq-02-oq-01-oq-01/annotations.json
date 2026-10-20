@@ -80,7 +80,7 @@
   {
     "id": "ann-divisibility",
     "proofId": "lagrange-theorem-oq-02-oq-01-oq-01",
-    "range": { "startLine": 129, "endLine": 135 },
+    "range": { "startLine": 130, "endLine": 137 },
     "type": "concept",
     "title": "Divisibility Corollary: |G| Divides the Fixed-Point Sum",
     "content": "`burnside_divides_no_intermediate` records the immediate combinatorial consequence: since Σ_g |Fix(g)| = |X/G| × |G|, the group order |G| divides the total number of fixed points. After rewriting with the Burnside identity, `dvd_mul_left` finishes. This is the form most often used in counting applications — for instance, the number of distinct colorings (orbits) under a symmetry group is the fixed-point sum divided by |G|, which is only an integer because of exactly this divisibility.",

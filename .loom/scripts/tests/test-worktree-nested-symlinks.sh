@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # test-worktree-nested-symlinks.sh — Tests for nested-node_modules + linkPaths symlinking (#3528)
+# and root node_modules / .mcp.json exclude coverage (#5474)
 #
 # Verifies worktree.sh symlinks per-package node_modules and configurable
 # gitignored artifact paths from the main workspace into a fresh worktree,
@@ -15,23 +16,55 @@
 #      second pass does not duplicate the entries (idempotent).
 #   4. A repo with NO nested node_modules and NO linkPaths config produces no
 #      nested/linkPaths symlinks (no-behavior-change regression guard).
-#   5. Missing jq (simulated via PATH override) skips the linkPaths step silently.
+#   5. Missing jq (simulated via PATH override) does not break worktree
+#      creation — and, since #8195 slice 4, no longer costs the linkPaths
+#      symlink either (see the retirement record in Test 5 itself).
 #   6. A forced ln -s failure (dst pre-exists as a real file) warns and worktree
 #      creation still succeeds (exit 0).
+#   7. The root node_modules symlink and the .mcp.json symlink both get
+#      .git/info/exclude entries too — including the trailing-slash-only
+#      `.gitignore` (`node_modules/`) repro from #5474, where a clean
+#      `git status --porcelain` depends entirely on the exclude entry (the
+#      .gitignore rule does not match the symlink at all).
+#   8. A pnpm workspace gets NEITHER node_modules symlink (#8944), because pnpm
+#      purges THROUGH such a link into the main workspace and `CI=true` ANDs
+#      away every confirmation it offers. Asserted the way the hazard actually
+#      lands: pnpm's own `removeContentsOfDir` is replayed against the
+#      worktree, with a positive control proving the replay has teeth, and the
+#      MAIN workspace's tree must survive it. `worktree.linkNodeModules: true`
+#      restores the old behaviour.
 #
 # Pattern follows test-worktree-sentinel.sh / test-worktree-concurrency.sh:
 # throw-away bare origin + clone in a mktemp dir, copy worktree.sh + lib/,
 # exercise behaviors.
+#
+# Needs a BUILT `loom-daemon` since #8195 slice 4: every symlink and every
+# .git/info/exclude entry asserted below is now written by
+# `loom-daemon worktree-link`, which worktree.sh invokes after `git worktree
+# add`. Apart from Test 5's one retired assertion (see there), every
+# assertion is unchanged from the shell implementation — running them against
+# the port is the equivalence evidence — so this suite moved to the "Native
+# Port Suites" CI job, which builds the binary, and FAILS rather than skips
+# without one.
+#
+# Usage:
+#   cargo build --package loom-daemon
+#   bash defaults/scripts/tests/test-worktree-nested-symlinks.sh
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
+# shellcheck source=lib/require-daemon-bin.sh
+source "$SCRIPT_DIR/lib/require-daemon-bin.sh"
+loom_test_require_daemon_bin "$SCRIPTS_DIR" "worktree-link"
+
 WORKTREE_SH="$SCRIPTS_DIR/worktree.sh"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+YELLOW='\033[0;33m'  # retired() below
 NC='\033[0m'
 
 TESTS_RUN=0
@@ -41,6 +74,18 @@ TESTS_FAILED=0
 pass() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1)); echo -e "  ${GREEN}PASS${NC}: $1"; }
 fail() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1)); echo -e "  ${RED}FAIL${NC}: $1"; }
 
+# An assertion that CANNOT survive the port to Rust, retired under the
+# three-part test in defaults/docs/verification-recipes.md §6. Printed, not
+# deleted: a reader must be able to see what was removed, why, and what proves
+# the property now. Counted as run so the totals stay honest.
+retired() { # <what> <property> <why-structural> <successor>
+    TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "  ${YELLOW}RETIRED${NC}: $1"
+    echo "      property:   $2"
+    echo "      structural: $3"
+    echo "      successor:  $4"
+}
+
 assert_symlink() {
     if [[ -L "$1" ]]; then
         pass "$2"
@@ -49,6 +94,10 @@ assert_symlink() {
     fi
 }
 
+# Kept although its only call site was retired in Test 5 (#8195 slice 4): the
+# negative form is the natural way to write the next "must NOT be linked"
+# case, and re-deriving it later is how a suite ends up with two spellings.
+# shellcheck disable=SC2329  # referenced only by future cases
 assert_not_symlink() {
     if [[ ! -L "$1" ]]; then
         pass "$2"
@@ -203,9 +252,9 @@ else
 fi
 cleanup_repo "$REPO"
 
-# --- Test 5: missing jq → linkPaths step skipped silently ---
+# --- Test 5: missing jq → worktree still succeeds ---
 echo ""
-echo "Test 5: missing jq → linkPaths skipped, worktree still succeeds"
+echo "Test 5: missing jq → worktree still succeeds, linkPaths still applied"
 REPO=$(setup_repo)
 (
     cd "$REPO"
@@ -242,7 +291,23 @@ if [[ -d "$WT" ]]; then
 else
     fail "worktree not created when jq unavailable"
 fi
-assert_not_symlink "$WT/apps/web/src/wasm" "linkPaths symlink skipped when jq unavailable"
+
+# The pre-port assertion here was:
+#     assert_not_symlink "$WT/apps/web/src/wasm" \
+#         "linkPaths symlink skipped when jq unavailable"
+# Retired under verification-recipes.md §6's three-part test, and replaced
+# below by the strictly stronger positive assertion — which also happens to
+# be the outcome the property always wanted.
+retired "linkPaths symlink skipped when jq unavailable" \
+    "A host without jq must still get a usable worktree: the linkPaths step degrades instead of breaking creation. The NEGATIVE form asserted the MECHANISM of that degradation (the symlink is not made), not the property." \
+    "There is no jq call left to be missing. worktree.sh delegates to 'loom-daemon worktree-link', which resolves worktree.linkPaths through config_resolver.rs (serde). The dependency this assertion modelled does not exist in the port — not 'we handle it', but 'the construct is gone'." \
+    "The two assertions immediately below: the worktree is created AND the linkPaths symlink is present AND its .git/info/exclude entry is recorded, all with jq absent. That subsumes the retired assertion (creation still succeeds) and closes the gap it tolerated (the link silently going missing)."
+
+assert_symlink "$WT/apps/web/src/wasm" \
+    "linkPaths symlink IS created with jq unavailable (successor to the retired assertion)"
+EXCLUDE="$(worktree_exclude_path "$WT")"
+assert_grep "apps/web/src/wasm" "$EXCLUDE" \
+    ".git/info/exclude records the linkPaths entry with jq unavailable"
 cleanup_repo "$REPO"
 
 # --- Test 6: forced ln -s failure warns but worktree creation succeeds ---
@@ -284,6 +349,162 @@ if [[ -d "$WT" ]]; then
 else
     fail "worktree directory missing after linkPaths processing"
 fi
+cleanup_repo "$REPO"
+
+# --- Test 7: root node_modules + .mcp.json get exclude entries (#5474) ---
+# Reproduces the exact hazard from #5474: a consumer repo whose .gitignore
+# uses ONLY the trailing-slash `node_modules/` form (matches directories only,
+# not the symlink worktree.sh creates) and has no .mcp.json ignore rule at
+# all. Before the fix, _append_worktree_exclude() was defined AFTER the root
+# node_modules symlink was created (and never called for the .mcp.json
+# symlink either), so both showed up as untracked noise in `git status`.
+echo ""
+echo "Test 7: root node_modules + .mcp.json symlinks recorded in .git/info/exclude"
+REPO=$(setup_repo)
+(
+    cd "$REPO"
+    # Trailing-slash-only .gitignore — the exact repro from the issue. A
+    # `node_modules/` rule matches directories only, not the symlink created
+    # here, so without an info/exclude entry the symlink shows as untracked.
+    # Trailing-slash node_modules/ plus the sentinel entries a correctly
+    # installed Loom repo's .gitignore carries (see repo .gitignore's
+    # "loom-managed" block) — kept here so the test isolates the node_modules
+    # / .mcp.json exclude behavior under test from unrelated sentinel noise.
+    cat > .gitignore <<'GITIGNORE'
+node_modules/
+.loom-in-use
+.loom-checkpoint
+.loom-managed
+GITIGNORE
+    mkdir -p node_modules
+    echo '{"name":"root"}' > package.json
+    echo '{"mcpServers":{}}' > .mcp.json
+    git add .gitignore package.json
+    git commit -q -m "add gitignore + package.json"
+    git push -q origin main
+
+    ./.loom/scripts/worktree.sh 5474 >/tmp/wt-root.$$ 2>&1 || {
+        echo "worktree.sh failed (see /tmp/wt-root.$$)"; cat /tmp/wt-root.$$
+    }
+)
+WT="$REPO/.loom/worktrees/issue-5474"
+assert_symlink "$WT/node_modules" "root node_modules symlinked into worktree"
+assert_symlink "$WT/.mcp.json" ".mcp.json symlinked into worktree"
+
+EXCLUDE="$(worktree_exclude_path "$WT")"
+assert_grep "node_modules" "$EXCLUDE" ".git/info/exclude records root node_modules"
+assert_grep ".mcp.json" "$EXCLUDE" ".git/info/exclude records .mcp.json"
+
+# The actual acceptance criterion from the issue: a fresh worktree in a repo
+# whose .gitignore only has the trailing-slash node_modules/ form must show a
+# clean git status, with no help from .gitignore matching the symlinks.
+(
+    cd "$WT"
+    STATUS_OUT="$(git status --porcelain 2>/dev/null)"
+    if [[ -z "$STATUS_OUT" ]]; then
+        pass "git status --porcelain is clean despite trailing-slash-only .gitignore"
+    else
+        fail "git status --porcelain not clean: $STATUS_OUT"
+    fi
+)
+
+# Idempotency: re-invoke worktree.sh — must not duplicate exclude entries.
+(
+    cd "$REPO"
+    ./.loom/scripts/worktree.sh 5474 >/tmp/wt-root2.$$ 2>&1 || true
+)
+ROOT_NM_COUNT=$(grep -cxF "node_modules" "$EXCLUDE" 2>/dev/null || echo 0)
+MCP_COUNT=$(grep -cxF ".mcp.json" "$EXCLUDE" 2>/dev/null || echo 0)
+if [[ "$ROOT_NM_COUNT" == "1" && "$MCP_COUNT" == "1" ]]; then
+    pass "root node_modules/.mcp.json exclude entries appear exactly once (no duplication)"
+else
+    fail "root node_modules/.mcp.json exclude entries duplicated (node_modules=$ROOT_NM_COUNT, mcp.json=$MCP_COUNT)"
+fi
+cleanup_repo "$REPO"
+
+# --- Test 8: a pnpm workspace is not aliased, and the main tree survives ---
+#
+# The replay below is pnpm 11.20.0's `removeContentsOfDir(dir)`: `readdir(dir)`
+# followed by a recursive delete of each entry. Through a symlink those paths
+# resolve into the MAIN workspace, which is how #8944 destroys the primary
+# clone's node_modules from inside a worktree. `find -H` follows the symlink
+# named on the command line and nothing else — exactly readdir's behaviour.
+# Replaying the shape rather than invoking pnpm keeps the suite hermetic (no
+# registry, no pnpm on PATH) while testing the property that actually matters.
+purge_modules_dir() {
+    local dir="$1"
+    [[ -e "$dir" ]] || return 0
+    find -H "$dir" -mindepth 1 -delete 2>/dev/null || true
+}
+
+echo ""
+echo "Test 8: pnpm workspace — no node_modules alias, main tree survives a purge (#8944)"
+REPO=$(setup_repo)
+(
+    cd "$REPO"
+    # A pnpm workspace by its most conclusive marker.
+    echo "lockfileVersion: '9.0'" > pnpm-lock.yaml
+    mkdir -p node_modules apps/web/node_modules apps/web/src/wasm
+    echo '{"name":"root","packageManager":"pnpm@11.20.0"}' > package.json
+    echo '{"name":"web"}' > apps/web/package.json
+    echo '{"mcpServers":{}}' > .mcp.json
+    # Canaries: what a purge through the alias would destroy.
+    echo "root dep" > node_modules/CANARY.txt
+    echo "web dep" > apps/web/node_modules/CANARY.txt
+    echo "generated" > apps/web/src/wasm/index.js
+    cat > .loom/config.json <<'JSON'
+{ "worktree": { "linkPaths": ["apps/web/src/wasm"] } }
+JSON
+    git add apps/web/package.json package.json
+    git commit -q -m "pnpm workspace"
+    git push -q origin main
+
+    ./.loom/scripts/worktree.sh 8944 >/tmp/wt-pnpm.$$ 2>&1 || {
+        echo "worktree.sh failed (see /tmp/wt-pnpm.$$)"; cat /tmp/wt-pnpm.$$
+    }
+)
+WT="$REPO/.loom/worktrees/issue-8944"
+assert_not_symlink "$WT/node_modules" "pnpm workspace: root node_modules NOT symlinked"
+assert_not_symlink "$WT/apps/web/node_modules" "pnpm workspace: nested node_modules NOT symlinked"
+# Narrow blast radius: only the package manager's own directory is withheld.
+assert_symlink "$WT/apps/web/src/wasm" "pnpm workspace: worktree.linkPaths entry still symlinked"
+assert_symlink "$WT/.mcp.json" ".mcp.json still symlinked on a pnpm workspace"
+
+# POSITIVE CONTROL first, or the survival assertion below proves nothing: an
+# alias of the same shape worktree.sh used to create must be reached through.
+# If this ever stops destroying the canary the replay has lost its teeth and
+# the real assertion has silently become vacuous.
+ln -s "$REPO/node_modules" "$WT/decoy_modules"
+purge_modules_dir "$WT/decoy_modules"
+if [[ -f "$REPO/node_modules/CANARY.txt" ]]; then
+    fail "positive control: the purge replay did NOT delete through a node_modules alias"
+else
+    pass "positive control: the purge replay does delete through a node_modules alias"
+fi
+echo "root dep" > "$REPO/node_modules/CANARY.txt"
+
+# The acceptance criterion: replay the same purge against the paths a Builder
+# would actually run it on, and require the MAIN workspace to be intact.
+purge_modules_dir "$WT/node_modules"
+purge_modules_dir "$WT/apps/web/node_modules"
+if [[ -f "$REPO/node_modules/CANARY.txt" && -f "$REPO/apps/web/node_modules/CANARY.txt" ]]; then
+    pass "main workspace node_modules survives a pnpm-shaped purge run in the worktree"
+else
+    fail "main workspace node_modules destroyed through the worktree (root: [$(ls -A "$REPO/node_modules" 2>&1)], nested: [$(ls -A "$REPO/apps/web/node_modules" 2>&1)])"
+fi
+
+# The escape hatch is real: a repo that knows what it is doing can opt back in.
+(
+    cd "$REPO"
+    cat > .loom/config.json <<'JSON'
+{ "worktree": { "linkNodeModules": true, "linkPaths": ["apps/web/src/wasm"] } }
+JSON
+    ./.loom/scripts/worktree.sh 8945 >/tmp/wt-pnpm-optin.$$ 2>&1 || {
+        echo "worktree.sh failed (see /tmp/wt-pnpm-optin.$$)"; cat /tmp/wt-pnpm-optin.$$
+    }
+)
+assert_symlink "$REPO/.loom/worktrees/issue-8945/node_modules" \
+    "worktree.linkNodeModules=true restores the root symlink on a pnpm workspace"
 cleanup_repo "$REPO"
 
 # --- Summary ---

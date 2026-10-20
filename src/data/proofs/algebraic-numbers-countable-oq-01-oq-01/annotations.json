@@ -14,7 +14,7 @@
   {
     "id": "algnum-ann-mathlib-agreement",
     "proofId": "algebraic-numbers-countable-oq-01-oq-01",
-    "range": { "startLine": 78, "endLine": 81 },
+    "range": { "startLine": 79, "endLine": 81 },
     "type": "concept",
     "title": "Agreement with Mathlib's relative algebraic closure",
     "content": "algebraicIntermediateField_eq_algebraicClosure shows the hand-built field equals Mathlib's algebraicClosure K L (the maximal algebraic subextension, defined as the integral closure upgraded to an intermediate field). The proof is a one-line ext + rewrite, since both sides are characterized by the same membership predicate IsAlgebraic K x. This confirms the parent's elementary construction recovers the standard library object and inherits its API.",

@@ -50,7 +50,7 @@
   {
     "id": "eqr-lift-ann-concrete",
     "proofId": "elementary-quadratic-reciprocity-oq002",
-    "range": { "startLine": 110, "endLine": 122 },
+    "range": { "startLine": 114, "endLine": 122 },
     "type": "concept",
     "title": "Concrete verifications by kernel decide",
     "content": "Two worked instances ground the theorem: (p,q) = (3,5) gives (3|5)·(5|3) = 1 = (-1)^(2·1), and (3,7) gives (3|7)·(7|3) = -1 = (-1)^(3·1). Both close by decide — pure kernel reduction, not native_decide — so they introduce no Lean.ofReduceBool dependency and the entry remains genuinely axiom-free. They independently confirm both the +1 and −1 sign outcomes of the reciprocity law.",

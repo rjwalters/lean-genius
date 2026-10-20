@@ -22,7 +22,7 @@
   {
     "id": "ann-strictmono",
     "proofId": "geometric-series-oq008",
-    "range": { "startLine": 53, "endLine": 73 },
+    "range": { "startLine": 54, "endLine": 73 },
     "type": "tactic",
     "title": "A Strictly Monotone Permutation Is the Identity",
     "content": "perm_eq_one_of_strictMono: a strictly monotone self-equivalence of Fin n must be the identity. The argument promotes σ to an order isomorphism: σ is monotone by hypothesis, and its inverse is monotone too (a short by_contra using strict monotonicity), so σ.toOrderIso gives an element of Fin n ≃o Fin n. That type is a subsingleton — a finite linear order has exactly one order automorphism, the identity — so Subsingleton.elim forces e = OrderIso.refl, hence σ i = i for all i. This is the structural lemma that pins down the unique descent-free permutation.",
@@ -42,7 +42,7 @@
   {
     "id": "ann-descentcount",
     "proofId": "geometric-series-oq008",
-    "range": { "startLine": 75, "endLine": 81 },
+    "range": { "startLine": 80, "endLine": 83 },
     "type": "definition",
     "title": "The Descent Statistic",
     "content": "descentCount σ is defined as the number of positions i : Fin n where σ falls, i.e. σ(i.succ) < σ(i.castSucc) — the cardinality of the filter of descent positions among the n adjacent pairs of Fin (n+1). This is the permutation descent statistic des(σ), built directly since Mathlib lacks it. For n = 0 there are no adjacent pairs, so every permutation of Fin 1 is vacuously descent-free.",

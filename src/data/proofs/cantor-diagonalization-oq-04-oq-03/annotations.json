@@ -3,8 +3,8 @@
     "id": "ann-lfpt-lawvere",
     "proofId": "cantor-diagonalization-oq-04-oq-03",
     "range": {
-      "startLine": 44,
-      "endLine": 76
+      "startLine": 61,
+      "endLine": 93
     },
     "type": "concept",
     "title": "Lawvere's Fixed-Point Theorem via Retraction",
@@ -26,8 +26,8 @@
     "id": "ann-lfpt-kleene-chain",
     "proofId": "cantor-diagonalization-oq-04-oq-03",
     "range": {
-      "startLine": 77,
-      "endLine": 110
+      "startLine": 85,
+      "endLine": 118
     },
     "type": "definition",
     "title": "Kleene Chain: $\\bot, f(\\bot), f^2(\\bot), \\ldots$",
@@ -49,10 +49,10 @@
     "id": "ann-lfpt-omega-continuous",
     "proofId": "cantor-diagonalization-oq-04-oq-03",
     "range": {
-      "startLine": 112,
-      "endLine": 139
+      "startLine": 151,
+      "endLine": 178
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "$\\omega$-Continuity and Chain Supremum Shifting",
     "content": "Defines $\\omega$-continuity: $f(\\bigsqcup_n c_n) = \\bigsqcup_n f(c_n)$ for ascending $\\omega$-chains. Also proves `iSup_succ_of_ascending`: the supremum of a shifted ascending chain equals the original supremum ($\\bigsqcup_n c_{n+1} = \\bigsqcup_n c_n$). This shift lemma is the key tool for the Kleene theorem: it equates $\\bigsqcup_n f^{n+1}(\\bot)$ with $\\bigsqcup_n f^n(\\bot)$.",
     "mathContext": "$f$ is $\\omega$-continuous if $f(\\bigsqcup c_n) = \\bigsqcup f(c_n)$. The shift lemma: $\\bigsqcup_{n} c_{n+1} = \\bigsqcup_{n} c_n$ for ascending chains.",

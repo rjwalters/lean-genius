@@ -51,8 +51,8 @@
     "id": "ann-limit-cycle",
     "proofId": "hilbert-16",
     "range": {
-      "startLine": 144,
-      "endLine": 173
+      "startLine": 141,
+      "endLine": 170
     },
     "type": "definition",
     "title": "Limit Cycles and Counting",
@@ -75,10 +75,10 @@
     "id": "ann-hilbert-number",
     "proofId": "hilbert-16",
     "range": {
-      "startLine": 175,
-      "endLine": 206
+      "startLine": 197,
+      "endLine": 228
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Hilbert Number H(n)",
     "content": "**HilbertNumber n**: Defined as $\\iSup_{F : \\text{PolynomialVectorField}\\; n} (\\text{limitCycles}\\; F.\\text{toVectorField}).\\text{ncard}$, valued in $\\mathbb{N}_{\\infty}$ to allow for the possibility that $H(n) = \\infty$ (which Ecalle-Ilyashenko rules out).\n\nThe theorem `HilbertNumber_ge_iff` provides a useful characterization: $k \\leq H(n) \\iff \\exists F$ with $\\geq k$ limit cycles. The forward direction uses an axiomatized witness lemma; the reverse uses `le_iSup_of_le`.",
     "mathContext": "$H(n) = \\sup_{\\deg F \\leq n} |\\{\\text{limit cycles of } F\\}| \\in \\mathbb{N} \\cup \\{\\infty\\}$. The Ecalle-Ilyashenko theorem asserts $H(n) \\in \\mathbb{N}$, but no explicit formula or bound is known for any $n \\geq 2$.",
@@ -98,8 +98,8 @@
     "id": "ann-linear",
     "proofId": "hilbert-16",
     "range": {
-      "startLine": 224,
-      "endLine": 306
+      "startLine": 229,
+      "endLine": 311
     },
     "type": "concept",
     "title": "H(1) = 0: No Limit Cycles for Linear Systems",

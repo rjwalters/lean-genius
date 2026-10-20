@@ -50,7 +50,7 @@
   {
     "id": "ann-factorial",
     "proofId": "inverse-galois-d4-oq-02",
-    "range": { "startLine": 90, "endLine": 108 },
+    "range": { "startLine": 94, "endLine": 108 },
     "type": "insight",
     "title": "|Gal| ∣ n! — the Sₙ ceiling",
     "content": "A Galois automorphism is determined by its action on the n roots, and that action is faithful (galActionHom_injective): the only automorphism fixing all roots is the identity. This injects Gal into the symmetric group Sₙ on the root set, whose order is n!. By Lagrange |Gal| ∣ n!. The exact root count n comes from card_rootSet_eq_natDegree (separable, splits). This is the universal upper bound for any degree-n polynomial; it generalizes the parent's x4_sub_2_gal_card_dvd_24 (24 = 4!).",

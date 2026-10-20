@@ -53,8 +53,8 @@
     "proofId": "erdos-462",
     "type": "definition",
     "range": {
-      "startLine": 19,
-      "endLine": 23
+      "startLine": 22,
+      "endLine": 25
     },
     "title": "Least Prime Factor Definition",
     "content": "The least prime factor $p(n)$ returns 0 for $n \\leq 1$ and `Nat.minFac n` otherwise. For $n \\geq 2$, $p(n)$ is the smallest prime dividing $n$. For primes, $p(p) = p$; for composites, $p(n) \\leq \\sqrt{n}$.",
@@ -200,7 +200,7 @@
     "proofId": "erdos-462",
     "type": "concept",
     "range": {
-      "startLine": 78,
+      "startLine": 79,
       "endLine": 85
     },
     "title": "Least Prime Factor of a Prime",

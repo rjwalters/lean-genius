@@ -26,7 +26,7 @@
   {
     "id": "pent-oq0102-genfuns",
     "proofId": "pentagonal-number-theorem-oq-01-oq-02",
-    "range": { "startLine": 56, "endLine": 76 },
+    "range": { "startLine": 57, "endLine": 76 },
     "type": "definition",
     "title": "The two generating functions and their coefficient dictionaries",
     "content": "P := Nat.Partition.genFun (fun _ _ => 1) is the partition generating function; coeff_P proves [Xⁿ]P = #(Partition n) = p(n), because with the trivial character every Finsupp.prod factor in genFun's coefficient formula is 1, so the inner sum just counts the partitions of n. E := ∏_i (1 − X^{i+1}) is Euler's product; coeff_E reuses the parent's coeff_tprod_pent to read [Xⁿ]E = ∑_{q∈distincts n}(−1)^{#parts} = p_even(n) − p_odd(n). These two dictionaries are what turn the abstract reciprocal P·E=1 into a statement about partition numbers and signed distinct-parts counts.",
@@ -38,7 +38,7 @@
   {
     "id": "pent-oq0102-telescope",
     "proofId": "pentagonal-number-theorem-oq-01-oq-02",
-    "range": { "startLine": 78, "endLine": 96 },
+    "range": { "startLine": 79, "endLine": 96 },
     "type": "insight",
     "title": "Per-factor geometric telescoping",
     "content": "factor_telescope is the algebraic heart: the i-th factor of P, written by genFun_eq_tprod as 1 + ∑_j 1·X^{(i+1)(j+1)}, is the geometric series ∑_n (X^{i+1})^n (the j-shift is handled by tsum_eq_zero_add', splitting off the n=0 term = 1). Since X^{i+1} has zero constant term, the formal geometric identity tsum_pow_mul_one_sub_of_constantCoeff_eq_zero gives (∑_n (X^{i+1})^n)·(1 − X^{i+1}) = 1. So the i-th factor of P times the i-th factor of E is exactly 1 — the cancellation 1/(1−Xᵐ)·(1−Xᵐ)=1 made rigorous at the level of formal power series.",
@@ -50,7 +50,7 @@
   {
     "id": "pent-oq0102-reciprocal",
     "proofId": "pentagonal-number-theorem-oq-01-oq-02",
-    "range": { "startLine": 98, "endLine": 109 },
+    "range": { "startLine": 99, "endLine": 109 },
     "type": "insight",
     "title": "The reciprocal identity P·E = 1 (headline)",
     "content": "partition_genFun_mul_euler_eq_one proves P(X)·∏_{m≥1}(1−Xᵐ) = 1, i.e. ∑ p(n)Xⁿ = ∏ 1/(1−Xᵐ) — the multiplicative inverse relation Mathlib lists as a TODO. Both families are multipliable (multipliable_genFun for P, multipliable_one_sub_X_pow for E), so Multipliable.tprod_mul rewrites (∏ factor_P)·(∏ factor_E) as a single product ∏ (factor_P · factor_E); each combined factor telescopes to 1 by factor_telescope, and tprod_one collapses ∏ 1 to 1. The infinite product is handled without ever expanding either series into coefficients.",
@@ -62,7 +62,7 @@
   {
     "id": "pent-oq0102-convolution",
     "proofId": "pentagonal-number-theorem-oq-01-oq-02",
-    "range": { "startLine": 111, "endLine": 130 },
+    "range": { "startLine": 112, "endLine": 130 },
     "type": "insight",
     "title": "Euler's recurrence in convolution form",
     "content": "euler_convolution extracts the n-th coefficient of P·E=1. PowerSeries.coeff_mul turns [Xⁿ](P·E) into the finite Cauchy convolution ∑_{(a,b)∈antidiagonal n} (coeff a P)(coeff b E), and coeff_one evaluates [Xⁿ]1 = [n=0]; coeff_P and coeff_E rewrite the entries into p(a) and c_b = ∑_{q∈distincts b}(−1)^{#parts}. The result ∑_{a+b=n} p(a)·c_b = [n=0] is Euler's recurrence in its purest form. distinctsSum_zero records the base case c_0 = 1 (the empty partition is the unique partition of 0), read straight off the constant term.",

@@ -20,8 +20,12 @@ permitting the upstream text to be vendored with attribution and adaptation.
 That is a **risk acceptance, not a license grant**: the statements and the
 three-line proof scripts below follow upstream `CDCLean/CubicTheorem.lean`
 closely, and are attributed as such. Should the upstream licensing position
-change, this file is the one to revisit — nothing else in the port vendors
-upstream text.
+change, this file is one of nine to revisit: the four Jaeger--Kilpatrick slices,
+`NashWilliams3.lean`, `NashWilliams4.lean`, `Main.lean` and `Audit.lean` landed the
+same day under the same decision. (This paragraph originally said "nothing else in
+the port vendors upstream text" — true when this was the first such file, stale
+once those landed.) The inventory and the per-file re-derivation plan are in
+`LICENSE-STATUS.md` in this directory (tracking issue #43638).
 
 The adaptations are naming, not mathematics:
 

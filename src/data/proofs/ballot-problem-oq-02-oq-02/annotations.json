@@ -180,7 +180,7 @@
   {
     "id": "ann-ballot-crossing-fpt-bound",
     "proofId": "ballot-problem-oq-02-oq-02",
-    "range": { "startLine": 162, "endLine": 185 },
+    "range": { "startLine": 165, "endLine": 187 },
     "type": "insight",
     "title": "Capstone: crossing paths automatically discharge nonemptiness",
     "content": "Two corollaries close the loop on the conditional characterization. `hittingSet_nonempty_of_ivt` repackages the IVT witness from Part VII as a nonemptiness proof for the hitting set $H_a(\\omega) = \\{t \\ge 0 : B(t,\\omega) \\ge a\\}$ — purely a coordinate change between the IVT output (a witness $s \\in [0,T]$ with $B(s,\\omega) = a$) and the hitting-set predicate. `fpt_le_T_of_crossing` then composes `hittingSet_nonempty_of_ivt` with `fpt_le_iff_maxEvent` to deliver, in one user-facing step, both $\\tau(\\omega) \\le T$ and $\\omega \\in \\mathrm{maxEvent}$ for any path satisfying the natural crossing endpoints $B(0,\\omega) < a \\le B(T,\\omega)$. This is the *deliverable* of the file: the parent axiom holds (with both directions) for every crossing path, with no remaining nonemptiness obligation on the caller.",

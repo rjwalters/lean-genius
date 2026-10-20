@@ -44,6 +44,32 @@ JOBS_FILE="$PROJECT_ROOT/research/aristotle-jobs.json"
 OPEN_CONJ_REGISTRY="$PROJECT_ROOT/research/open-conjectures.json"
 ARISTOTLE_RUNS_DIR="$PROJECT_ROOT/research/aristotle-runs"
 
+# Repeat-submission dedup guard (issue #43033). A file submitted this many
+# times or more (any status, summed across the whole jobs.json history)
+# without ever reaching "integrated" is a repeat offender: further
+# resubmission is unlikely to make progress and just burns server capacity.
+# This is a backstop independent of get_submitted_files()/get_blocked_files()
+# above, which key off the *current* status of the *most recent* job(s) and
+# can be fooled by a jobs.json history that lost or never recorded
+# intermediate attempts (the root cause of #43006's 90-duplicate incident).
+# It is independent of those *filters*, not of their *data source*: a
+# malformed jobs.json yields an empty list here just as it does there, so this
+# is a backstop against lost history, not against an unreadable jobs file.
+# The exclusion is NOT permanent: a file modified since its last recorded
+# submission is considered repaired and requeued — see
+# get_repeat_offender_files() for that escape hatch and its limits.
+ARISTOTLE_DEDUP_MAX_ATTEMPTS="${ARISTOTLE_DEDUP_MAX_ATTEMPTS:-3}"
+
+# Diagnostic notices (dedup-guard skips and un-exclusions) go to *stderr* so
+# stdout stays machine-readable for --count/--json consumers. Suppressible with
+# ARISTOTLE_QUIET=true, mirroring the QUIET convention in prune-zombies.sh and
+# drift-repair.sh.
+ARISTOTLE_QUIET="${ARISTOTLE_QUIET:-false}"
+dedup_log() {
+    [[ "$ARISTOTLE_QUIET" == true ]] && return 0
+    echo "find-candidates: $*" >&2
+}
+
 # Parse arguments
 COUNT_ONLY=false
 BEST_N=0
@@ -120,6 +146,66 @@ get_blocked_files() {
     done | sort -u
 }
 
+# Files submitted ARISTOTLE_DEDUP_MAX_ATTEMPTS+ times across all of jobs.json
+# history (any status) with no "integrated" job among them. Excluded from
+# candidate selection regardless of the current-status filters above.
+#
+# Escape hatch (same rule as get_blocked_files() above): "resubmitting won't
+# help" is only true while the file is *unchanged*. A file whose mtime is newer
+# than its last recorded submission has been repaired since the attempts that
+# made it an offender, so it is NOT treated as a repeat offender and returns to
+# the queue. Without this, crossing the threshold would exclude a file
+# permanently and silently defeat get_blocked_files()' own escape hatch.
+#
+# Fails *closed* when "modified since" cannot be established (no parseable
+# `submitted` timestamp — e.g. the `"submitted": "unknown"` records recovered
+# during the #43006 backlog recovery — or the path no longer exists on disk):
+# an unknown timestamp is not evidence of repair, and failing open there would
+# disable the guard for exactly the corrupt-history case it exists to backstop.
+# The skip notice in collect_candidates() makes such an exclusion attributable;
+# repair the record's `submitted` field to re-enable the escape hatch.
+get_repeat_offender_files() {
+    if [[ ! -f "$JOBS_FILE" ]]; then
+        return
+    fi
+
+    jq -r --argjson max "$ARISTOTLE_DEDUP_MAX_ATTEMPTS" '
+        .jobs
+        | group_by(.file)
+        | map(select(length >= $max and all(.[]; .status != "integrated")))
+        | map({
+            file: .[0].file,
+            count: length,
+            last_submitted: ([.[].submitted // empty] | sort | last)
+          })
+        | .[]
+        | "\(.file)|\(.count)|\(.last_submitted // "")"
+    ' "$JOBS_FILE" 2>/dev/null | while IFS='|' read -r file count last_submitted; do
+        [[ -z "$file" ]] && continue
+
+        local abs_file="$PROJECT_ROOT/$file"
+        local basename
+        basename=$(basename "$file" .lean)
+
+        if [[ -f "$abs_file" && -n "$last_submitted" ]]; then
+            local file_mtime
+            file_mtime=$(stat -f '%m' "$abs_file" 2>/dev/null || stat -c '%Y' "$abs_file" 2>/dev/null || echo 0)
+
+            local submit_epoch
+            submit_epoch=$(date -j -f '%Y-%m-%dT%H:%M:%SZ' "$last_submitted" '+%s' 2>/dev/null || \
+                           date -d "$last_submitted" '+%s' 2>/dev/null || echo 0)
+
+            # Repaired since the last attempt -> eligible again.
+            if [[ "$submit_epoch" -gt 0 && "$file_mtime" -gt "$submit_epoch" ]]; then
+                dedup_log "$basename: repeat-offender exclusion lifted ($count non-integrated jobs, but the file was modified after its last submission $last_submitted)"
+                continue
+            fi
+        fi
+
+        echo "$basename"
+    done | sort -u
+}
+
 # Analyze a single file. Returns score -1 for hard rejects.
 # Args: file, tier (0, 1 or 2)
 analyze_file() {
@@ -165,7 +251,8 @@ collect_candidates() {
     local tier="$1"
     local submitted_files="$2"
     local blocked_files="$3"
-    shift 3
+    local repeat_offender_files="$4"
+    shift 4
     local files=("$@")
 
     for file in "${files[@]}"; do
@@ -180,6 +267,14 @@ collect_candidates() {
 
         # Skip if blocked (repeatedly failed, not modified)
         if echo "$blocked_files" | grep -q "^${basename}$"; then
+            continue
+        fi
+
+        # Skip repeat offenders (ARISTOTLE_DEDUP_MAX_ATTEMPTS+ submissions,
+        # never integrated, unmodified since the last one) — see
+        # get_repeat_offender_files().
+        if echo "$repeat_offender_files" | grep -q "^${basename}$"; then
+            dedup_log "$basename (tier $tier): skipped by the repeat-submission dedup guard — >= $ARISTOTLE_DEDUP_MAX_ATTEMPTS jobs in research/aristotle-jobs.json, none integrated, and no modification recorded since the last submission (modify the file, or raise ARISTOTLE_DEDUP_MAX_ATTEMPTS, to requeue)"
             continue
         fi
 
@@ -331,6 +426,9 @@ main() {
     local blocked_files
     blocked_files=$(get_blocked_files)
 
+    local repeat_offender_files
+    repeat_offender_files=$(get_repeat_offender_files)
+
     local candidate_data=()
 
     # Tier 0: StatementOnly files (*StatementOnly.lean) — Harmonic format
@@ -342,7 +440,7 @@ main() {
     if [[ ${#tier0_files[@]} -gt 0 ]]; then
         while IFS= read -r line; do
             [[ -n "$line" ]] && candidate_data+=("$line")
-        done < <(collect_candidates 0 "$submitted_files" "$blocked_files" "${tier0_files[@]}")
+        done < <(collect_candidates 0 "$submitted_files" "$blocked_files" "$repeat_offender_files" "${tier0_files[@]}")
     fi
 
     # Tier 1: Companion files (*Aristotle.lean)
@@ -354,7 +452,7 @@ main() {
     if [[ ${#tier1_files[@]} -gt 0 ]]; then
         while IFS= read -r line; do
             [[ -n "$line" ]] && candidate_data+=("$line")
-        done < <(collect_candidates 1 "$submitted_files" "$blocked_files" "${tier1_files[@]}")
+        done < <(collect_candidates 1 "$submitted_files" "$blocked_files" "$repeat_offender_files" "${tier1_files[@]}")
     fi
 
     # Tier 2: Regular proof files (unless --tier1-only).
@@ -380,7 +478,7 @@ main() {
         if [[ ${#tier2_files[@]} -gt 0 ]]; then
             while IFS= read -r line; do
                 [[ -n "$line" ]] && candidate_data+=("$line")
-            done < <(collect_candidates 2 "$submitted_files" "$blocked_files" "${tier2_files[@]}")
+            done < <(collect_candidates 2 "$submitted_files" "$blocked_files" "$repeat_offender_files" "${tier2_files[@]}")
         fi
     fi
 

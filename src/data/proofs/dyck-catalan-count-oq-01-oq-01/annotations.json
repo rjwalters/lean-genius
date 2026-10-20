@@ -38,7 +38,7 @@
   {
     "id": "dyck-oq0101-ann-todyck",
     "proofId": "dyck-catalan-count-oq-01-oq-01",
-    "range": { "startLine": 142, "endLine": 190 },
+    "range": { "startLine": 143, "endLine": 190 },
     "type": "tactic",
     "title": "Composing to Dyck words and reading off the count",
     "content": "forestEquivDyck composes forestEquivTree with Mathlib's DyckWord.equivTree.symm to give the explicit plane-forest/Dyck-word bijection the open question asks for. forestEquivTreeSubtype uses Equiv.subtypeEquiv with numNodes_encode to match forests of n nodes with binary trees of n internal nodes; forestEquivDyckSubtype then matches them with Dyck words of semilength n, using semilength_eq_numNodes_equivTree to align the statistics. card_planeForest_numNodes_eq_catalan transports Fintype.card along this equivalence and rewrites with the parent's headline count to conclude catalan n. card_planeForest_eq_card_dyckWord records that the two families literally have equal cardinality at every size.",

@@ -3,7 +3,7 @@
     "id": "ann-meager-overview",
     "proofId": "algebraic-reals-meager",
     "range": {
-      "startLine": 8,
+      "startLine": 9,
       "endLine": 59
     },
     "type": "concept",
@@ -33,7 +33,7 @@
     "id": "ann-meager-nowheredense-meagre",
     "proofId": "algebraic-reals-meager",
     "range": {
-      "startLine": 65,
+      "startLine": 66,
       "endLine": 73
     },
     "type": "tactic",
@@ -57,7 +57,7 @@
     "id": "ann-meager-singleton-nowheredense",
     "proofId": "algebraic-reals-meager",
     "range": {
-      "startLine": 75,
+      "startLine": 76,
       "endLine": 79
     },
     "type": "insight",
@@ -83,8 +83,8 @@
     "id": "ann-meager-countable-ismeagre",
     "proofId": "algebraic-reals-meager",
     "range": {
-      "startLine": 81,
-      "endLine": 92
+      "startLine": 82,
+      "endLine": 93
     },
     "type": "concept",
     "title": "countable_isMeagre: The Reusable Abstract Baire-Category Lemma",
@@ -110,10 +110,10 @@
     "id": "ann-meager-algebraic-reals",
     "proofId": "algebraic-reals-meager",
     "range": {
-      "startLine": 94,
-      "endLine": 102
+      "startLine": 95,
+      "endLine": 103
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "algebraicReals_isMeagre: Instantiating at the Algebraic Reals",
     "content": "The headline application is a one-liner: feed the countability of {x : ℝ | IsAlgebraic ℚ x} into countable_isMeagre. The countability input is Mathlib's Algebraic.countable, repackaged as AlgebraicNumbersCountable.algebraic_reals_countable and reused from the grandparent gallery entry algebraic-numbers-countable — so this proof genuinely strengthens that entry's conclusion (countable) to a topological one (meagre) by composing across the gallery rather than re-deriving countability. The typeclass resolver discharges T1Space ℝ and PerfectSpace ℝ automatically, so no real-specific topological work appears at this step; all of it was front-loaded into isNowhereDense_singleton.",
     "mathContext": "$\\{x \\in \\mathbb{R} : x \\text{ algebraic over } \\mathbb{Q}\\} = \\overline{\\mathbb{Q}} \\cap \\mathbb{R}$ is countable (Cantor 1874 / `Algebraic.countable`), and $\\mathbb{R}$ is a perfect $T_1$ space, so $\\operatorname{IsMeagre}\\{x \\in \\mathbb{R} : \\operatorname{IsAlgebraic}_{\\mathbb{Q}} x\\}$ follows directly from `countable_isMeagre`.",
@@ -136,7 +136,7 @@
     "id": "ann-meager-transcendental-dense",
     "proofId": "algebraic-reals-meager",
     "range": {
-      "startLine": 104,
+      "startLine": 105,
       "endLine": 117
     },
     "type": "concept",
@@ -162,7 +162,7 @@
     "id": "ann-meager-existence-from-smallness",
     "proofId": "algebraic-reals-meager",
     "range": {
-      "startLine": 119,
+      "startLine": 120,
       "endLine": 134
     },
     "type": "insight",

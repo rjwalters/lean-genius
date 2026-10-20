@@ -179,8 +179,8 @@
     "proofId": "erdos-883",
     "type": "concept",
     "range": {
-      "startLine": 195,
-      "endLine": 216
+      "startLine": 207,
+      "endLine": 217
     },
     "title": "Supporting Properties: Chromatic Number, isCoprimeCycle, Inclusion-Exclusion",
     "content": "`isCoprimeCycle` formalizes a cycle as a List where every consecutive pair (including the last-to-first wrap) satisfies Nat.Coprime. The `threshold_by_inclusion_exclusion` theorem proves `threshold n = n / 2 + n / 3 - n / 6` by `rfl` — the definition and the formula are definitionally equal. Two axiom placeholders appear: `coprime_graph_chromatic` (chromatic number ≥ 3 above threshold — a consequence of odd cycles by the chromatic polynomial argument) and `triangles_above_threshold` (n ≥ 10, above threshold → triangle exists — the base case of the cycle question). The `threshold_by_inclusion_exclusion` `rfl` proof shows the definition was written to match the formula directly.",

@@ -14,7 +14,7 @@
   {
     "id": "ann-erdos1002-defs",
     "proofId": "erdos-1002-oq-01-oq-01-incomplete-01",
-    "range": { "startLine": 62, "endLine": 77 },
+    "range": { "startLine": 66, "endLine": 77 },
     "type": "definition",
     "title": "The Re-declared #1002 Definitions",
     "content": "Three noncomputable definitions, re-declared verbatim because the base file no longer builds: deviation x = 1/2 − Int.fract x (the signed gap from the midpoint of [0,1]), innerSum α n = ∑_{k ∈ range n} deviation(α·(k+1)) (the inner sum S(α,n) over k = 1..n), and f α n = if n ≤ 1 then 0 else innerSum α n / Real.log n (the normalized weighted sum, guarded against log n ≤ 0 for small n). These mirror Erdos1002Problem.lean exactly so the results transfer back once the base file is repaired.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-erdos1002-envelope",
     "proofId": "erdos-1002-oq-01-oq-01-incomplete-01",
-    "range": { "startLine": 79, "endLine": 98 },
+    "range": { "startLine": 82, "endLine": 98 },
     "type": "theorem",
     "title": "The Sharp Pointwise Envelope",
     "content": "Three one-line lemmas establish |deviation x| ≤ 1/2 with no equidistribution input. neg_half_lt_deviation: deviation x > −1/2 from Int.fract_lt_one ({x} < 1). deviation_le_half: deviation x ≤ 1/2 from Int.fract_nonneg (0 ≤ {x}). abs_deviation_le_half combines them via abs_le into the sharp two-sided bound, with the upper value 1/2 attained exactly at integers (where {x} = 0). This elementary envelope is the floor all subsequent control is built on.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-erdos1002-sum-bound",
     "proofId": "erdos-1002-oq-01-oq-01-incomplete-01",
-    "range": { "startLine": 100, "endLine": 113 },
+    "range": { "startLine": 103, "endLine": 113 },
     "type": "theorem",
     "title": "A Priori Bound on the Inner Sum",
     "content": "abs_innerSum_le bounds the inner sum |S(α,n)| ≤ n/2 by the triangle inequality (Finset.abs_sum_le_sum_abs) over the pointwise envelope, summing n copies of the bound 1/2 (Finset.sum_le_sum) and collapsing the constant sum via Finset.sum_const / Finset.card_range.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-erdos1002-zero-mean",
     "proofId": "erdos-1002-oq-01-oq-01-incomplete-01",
-    "range": { "startLine": 127, "endLine": 173 },
+    "range": { "startLine": 131, "endLine": 173 },
     "type": "theorem",
     "title": "The Zero Mean: the Structural Keystone",
     "content": "integral_deviation_eq_zero is the headline: ∫₀¹ deviation x dx = 0. On [0,1) the fractional part is the identity (Int.fract_eq_self), so deviation x = 1/2 − x. The proof replaces {x} by x via an almost-everywhere congruence (intervalIntegral.integral_congr_ae): the two integrands differ only at the single point x = 1, which has measure zero (measure_singleton), so the a.e. equality is valid and avoids any special fractional-part integration lemma. Then ∫₀¹ (1/2 − x) = ∫₀¹ 1/2 − ∫₀¹ x = 1/2 − 1/2 = 0 (integral_const, integral_id). This vanishing mean is the structural reason every Weyl/Cesàro equidistribution average of the deviation converges to 0 — the open content concerns the fluctuations around this center, not its value.",

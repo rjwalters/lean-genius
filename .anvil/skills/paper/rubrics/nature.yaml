@@ -1,0 +1,120 @@
+# Nature reviewer rubric — advisory overlay for `anvil:paper`.
+#
+# Source: Nature "Guide to Authors" + Nature reviewer instructions.
+# See:
+#   https://www.nature.com/nature/for-authors/initial-submission
+#   https://www.nature.com/nature/for-referees
+# Nature's reviewer criteria emphasize broad significance, accessibility
+# to a non-specialist scientific audience, strength of supporting
+# evidence, and conceptual advance over incremental result.
+#
+# This rubric is ADVISORY — it produces venue-specific scoring that the
+# reviser consumes for additional signal, but does NOT contribute to the
+# /40 convergence gate in `anvil/skills/paper/rubric.md`. The generic /40
+# rubric remains the authoritative convergence gate for advance decisions.
+# See `anvil/lib/snippets/rubric.md` and `anvil/lib/rubric.py` for the
+# advisory-vs-gate distinction.
+#
+# Weights sum to 15.
+
+id: anvil-pub-nature-v1
+name: Nature reviewer rubric (advisory overlay)
+venue: nature
+total: 15
+advisory: true
+source: https://www.nature.com/nature/for-referees
+
+dimensions:
+  - id: broad_significance
+    name: Broad significance
+    weight: 5
+    description: >-
+      Importance and interest to scientists outside the paper's
+      immediate subfield. Nature's editorial framing requires the
+      contribution to matter to readers who do not share the authors'
+      narrow specialty. A result that is excellent for the field but
+      uninteresting outside it belongs in a specialist journal, not
+      Nature. This is the highest-weighted dimension because it drives
+      the editor's initial triage decision.
+    calibration: >-
+      5/5 — the contribution would interest a substantial fraction of
+      Nature's readership across disciplines. 4/5 — strong interest to
+      adjacent subfields. 3/5 — interest is largely confined to the
+      authors' subfield, with some adjacent overlap. 1-2/5 — narrowly
+      specialist. 0/5 — of interest essentially only to the authors'
+      immediate working group.
+
+  - id: accessibility
+    name: Accessibility to a non-specialist scientific audience
+    weight: 3
+    description: >-
+      Readability by a scientifically literate non-specialist (Nature's
+      target reader). Assesses whether jargon is defined on first use,
+      whether the abstract states the contribution in plain language,
+      whether figures communicate the result without requiring deep
+      subfield context, and whether the introduction motivates the work
+      for someone outside the area.
+    calibration: >-
+      3/3 — accessible throughout; a chemist could follow a biology
+      paper or vice versa. 2/3 — accessible to adjacent fields; some
+      passages require area knowledge. 1/3 — accessible only with
+      effort; jargon-dense in places. 0/3 — inaccessible without
+      area expertise.
+
+  - id: evidence_strength
+    name: Strength and breadth of supporting evidence
+    weight: 4
+    description: >-
+      Strength and breadth of the supporting data. Single-experiment
+      claims, single-cohort observational results, or methods-paper
+      arguments without external validation rarely meet Nature's bar.
+      This dimension assesses whether the result is supported by
+      multiple independent lines of evidence (independent experiments,
+      orthogonal methods, multiple cohorts) sufficient to convince a
+      skeptical reader that the conclusion is robust.
+    calibration: >-
+      4/4 — multiple independent lines of evidence converge on the
+      result. 3/4 — solid evidence with one independent confirmation
+      OR strong main evidence with limited orthogonal support. 2/4 —
+      single strong experiment; the headline claim depends on one
+      result. 1/4 — preliminary; the evidence supports the claim only
+      weakly. 0/4 — the evidence presented does not support the claim
+      as framed.
+
+  - id: novelty
+    name: Conceptual advance vs. incremental result
+    weight: 3
+    description: >-
+      Whether the work represents a conceptual advance or an
+      incremental refinement of an established direction. Nature
+      explicitly rejects incremental work — a better measurement of a
+      known effect, a 5% improvement on a benchmark, or a confirmation
+      of a published prediction in a new system, however well-executed,
+      typically does not advance to peer review at Nature.
+    calibration: >-
+      3/3 — clear conceptual advance; a new finding, mechanism, or
+      framework. 2/3 — substantial advance with some incremental
+      framing. 1/3 — primarily incremental with one new wrinkle. 0/3 —
+      incremental: a refinement of an existing direction.
+
+critical_flags:
+  - type: incremental_only
+    description: >-
+      The contribution as framed is an incremental refinement of a
+      published result, with no identifiable conceptual advance. Nature
+      editorial policy treats this as a desk-reject condition; the
+      paper belongs in a specialist journal instead.
+
+  - type: jargon_inaccessible
+    description: >-
+      The paper is so dense in subfield jargon that it is unreadable by
+      Nature's target audience. The abstract, introduction, or key
+      figures fail the "non-specialist scientific reader" test in a way
+      that cannot be repaired by light copy-editing.
+
+  - type: single_experiment_claim
+    description: >-
+      A central claim rests on a single experiment, single cohort, or
+      single condition without orthogonal confirmation. Nature requires
+      the headline result to be supported by multiple independent lines
+      of evidence; reliance on a single experiment is a blocker.

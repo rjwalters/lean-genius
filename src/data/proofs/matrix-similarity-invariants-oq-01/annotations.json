@@ -62,7 +62,7 @@
   {
     "id": "ann-eigenvalues-corollary",
     "proofId": "matrix-similarity-invariants-oq-01",
-    "range": { "startLine": 72, "endLine": 76 },
+    "range": { "startLine": 73, "endLine": 77 },
     "type": "theorem",
     "title": "Corollary: Similar Matrices Have the Same Eigenvalues",
     "content": "Over an integral domain, equal characteristic polynomials force equal multisets of roots — so similar matrices share their eigenvalues with multiplicities. The proof is a one-line `congrArg Polynomial.roots` applied to `charpoly_eq`. The `IsDomain R` hypothesis is needed so root multiplicities are well-behaved.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-invariants-packaged",
     "proofId": "matrix-similarity-invariants-oq-01",
-    "range": { "startLine": 78, "endLine": 82 },
+    "range": { "startLine": 79, "endLine": 83 },
     "type": "theorem",
     "title": "The Three Classical Invariants, Packaged",
     "content": "`Similar.invariants` bundles det, trace, and charpoly invariance into a single conjunction — the unified 'these are all similarity invariants' statement that Mathlib proves piecewise but never collects. This is the headline deliverable: a one-stop lemma for downstream use.",

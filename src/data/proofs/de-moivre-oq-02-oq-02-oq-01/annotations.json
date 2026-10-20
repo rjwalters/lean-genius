@@ -14,7 +14,7 @@
   {
     "id": "demoivre-uu-ann-ssum",
     "proofId": "de-moivre-oq-02-oq-02-oq-01",
-    "range": { "startLine": 53, "endLine": 55 },
+    "range": { "startLine": 55, "endLine": 57 },
     "type": "definition",
     "title": "The Linearization Sum S(m,n)",
     "content": "Ssum m n is the candidate right-hand side ∑_{k∈range(n+1)} U_(m+n−2k). Indexing the summand by m + n − 2k with m : ℤ keeps the identity valid for every integer m via Mathlib's ℤ-indexed U, so no m ≥ n hypothesis is needed. It is noncomputable because Polynomial arithmetic over a general ring is.",
@@ -26,7 +26,7 @@
   {
     "id": "demoivre-uu-ann-two-x-u",
     "proofId": "de-moivre-oq-02-oq-02-oq-01",
-    "range": { "startLine": 58, "endLine": 62 },
+    "range": { "startLine": 59, "endLine": 62 },
     "type": "insight",
     "title": "Rearranging the Chebyshev Recurrence",
     "content": "two_X_U turns the standard recurrence U_add_two into the symmetric form 2·X·U_k = U_(k+1) + U_(k−1). This is the single algebraic identity that lets 2X be distributed across the linearization sum; it is proved by shifting U_add_two at k−1 and a linear_combination.",
@@ -50,7 +50,7 @@
   {
     "id": "demoivre-uu-ann-base",
     "proofId": "de-moivre-oq-02-oq-02-oq-01",
-    "range": { "startLine": 102, "endLine": 113 },
+    "range": { "startLine": 103, "endLine": 113 },
     "type": "insight",
     "title": "Base Values for the Two-Step Induction",
     "content": "Ssum_zero (S(m,0) = U_m) and Ssum_one (S(m,1) = U_(m+1) + U_(m−1)) provide the two consecutive base cases that a second-order recurrence requires. They are computed directly from the sum definition via Finset.sum_range_one and Finset.sum_range_succ plus cast normalization.",

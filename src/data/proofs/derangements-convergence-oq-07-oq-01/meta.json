@@ -106,11 +106,19 @@
     },
     {
       "id": "sec-fin",
-      "title": "Specialization to Fin n and Sanity Checks",
+      "title": "Specialization to Fin n",
       "startLine": 111,
+      "endLine": 118,
+      "summary": "card_perm_fixedPoints_card_eq_fin specializes the general finite-type statement to α = Fin n via a single simpa rewrite along Fintype.card_fin, turning Fintype.card α into the literal n.",
+      "mathContext": "$\\#\\{\\sigma \\in S_n : \\#\\mathrm{Fix}(\\sigma) = r\\} = \\binom{n}{r} D(n-r)$."
+    },
+    {
+      "id": "sec-examples",
+      "title": "Sanity Checks",
+      "startLine": 120,
       "endLine": 136,
-      "summary": "card_perm_fixedPoints_card_eq_fin specializes to α = Fin n via Fintype.card_fin. Two decide-checked examples confirm C(3,1)·D(2) = 3 permutations of Fin 3 with one fixed point, and C(4,0)·D(4) = 9 derangements of Fin 4.",
-      "mathContext": "$\\#\\{\\sigma \\in S_n : \\#\\mathrm{Fix}(\\sigma) = r\\} = \\binom{n}{r} D(n-r)$, with numerical checks."
+      "summary": "Two decide-checked examples confirm the closed form at concrete values: C(3,1)·D(2) = 3 permutations of Fin 3 with exactly one fixed point (the three transpositions), and C(4,0)·D(4) = 9 derangements of Fin 4. Each rewrites by card_perm_fixedPoints_card_eq_fin first, reducing to a plain Nat equality closed by decide.",
+      "mathContext": "$D_{3,1} = \\binom{3}{1}D(2) = 3$ and $D_{4,0} = \\binom{4}{0}D(4) = 9$."
     }
   ],
   "crossReferences": [

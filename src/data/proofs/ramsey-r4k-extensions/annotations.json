@@ -150,10 +150,10 @@
     "id": "ann-r4k-upper-table",
     "proofId": "ramsey-r4k-extensions",
     "range": {
-      "startLine": 91,
-      "endLine": 260
+      "startLine": 124,
+      "endLine": 293
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "ramseyUpperBound Properties: Symmetry, Base Cases, and Monotonicity",
     "content": "This section develops the mathematical structure of `ramseyUpperBound r s = C(r+s-2,r-1)`.\n\n**Computed values** (91-113): Native_decide verifies R(3,3)≤6, R(3,4)≤10, R(3,5)≤15, R(4,4)≤20, R(4,5)≤35, R(5,5)≤70. The gap to exact values (R(3,3)=6, R(4,4)=18, R(5,5) ∈ [43,48]) illustrates both the strength and weakness of the binomial bound.\n\n**Symmetry** (118-134): `ramseyUpperBound_symm`: R(r,s) = R(s,r). Proof: normalize top argument (r+s-2=s+r-2), then apply `Nat.choose_symm` to swap C(n,k) = C(n,n-k).\n\n**Base cases** (136-174): R(1,s) = R(r,1) = 1 (trivial — any 1-element subset is a clique); R(2,s) = s and R(r,2) = r (the binomial C(s,1) = s exactly).\n\n**Positivity and monotonicity** (176-204): `ramseyUpperBound_pos`: C(r+s-2,r-1) ≥ 1 for r,s ≥ 1 (via `Nat.choose_pos`). `ramseyUpperBound_mono_right`: R(r,s) ≤ R(r,s+1) via `Nat.choose_le_choose`. `ramseyUpperBound_mono_left`: by symmetry.\n\n**Pascal recursion** (206-260): `ramseyUpperBound_pascal`: C(r+s-2,r-1) = C(r-1+s-2,r-2) + C(r+s-3,r-1) follows from Pascal C(n,k) = C(n-1,k-1)+C(n-1,k), using `Nat.add_choose_eq` (or `Nat.choose_succ_succ'`).",
     "mathContext": "Symmetry: $\\binom{r+s-2}{r-1} = \\binom{r+s-2}{s-1}$ by $\\binom{n}{k} = \\binom{n}{n-k}$. Base: $R(2,s) = \\binom{s}{1} = s$. Monotonicity: $\\binom{r+s-1}{r-1} \\geq \\binom{r+s-2}{r-1}$ from Pascal. Pascal recursion: $R(r,s) = R(r-1,s) + R(r,s-1)$ as binomials: $\\binom{r+s-2}{r-1} = \\binom{r+s-3}{r-2} + \\binom{r+s-3}{r-1}$.",

@@ -26,8 +26,8 @@
     "id": "ann-historical-context",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 8,
-      "endLine": 65
+      "startLine": 172,
+      "endLine": 229
     },
     "type": "concept",
     "title": "The Three Classical Greek Problems",
@@ -49,7 +49,7 @@
     "id": "ann-namespace-and-derivation",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 67,
+      "startLine": 70,
       "endLine": 85
     },
     "type": "concept",
@@ -93,8 +93,8 @@
     "id": "ann-angle-definitions",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 96,
-      "endLine": 110
+      "startLine": 97,
+      "endLine": 111
     },
     "type": "definition",
     "title": "Angle Definitions and cos(60°) = 1/2",
@@ -158,10 +158,10 @@
     "id": "ann-no-rational-roots",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 139,
-      "endLine": 153
+      "startLine": 140,
+      "endLine": 154
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Computational Verification of No Rational Roots",
     "content": "`evalTrisectionPoly` evaluates $8q^3 - 6q - 1$ at a rational $q$. `no_rational_roots` checks all 8 candidates from the rational root theorem ($\\pm 1, \\pm 1/2, \\pm 1/4, \\pm 1/8$) and proves none equals zero, all discharged by a single `norm_num` invocation.\n\nFor cubics, having no rational roots is equivalent to irreducibility over $\\mathbb{Q}$ (since a factorization would require a linear factor, hence a rational root).",
     "mathContext": "The rational root theorem: if $p/q$ is a root of $a_nx^n + \\cdots + a_0$ with $\\gcd(p,q) = 1$, then $p \\mid a_0$ and $q \\mid a_n$. For $8x^3 - 6x - 1$: $a_0 = -1$, $a_n = 8$, so candidates are $\\{\\pm 1\\} \\times \\{1, 1/2, 1/4, 1/8\\}$.",
@@ -317,8 +317,8 @@
     "id": "ann-cube-doubling",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 292,
-      "endLine": 306
+      "startLine": 293,
+      "endLine": 307
     },
     "type": "concept",
     "title": "Doubling the Cube is Impossible",

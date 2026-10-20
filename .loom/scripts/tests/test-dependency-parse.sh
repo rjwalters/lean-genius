@@ -40,10 +40,45 @@ set -uo pipefail
 
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="$(cd "$TEST_DIR/.." && pwd)"
-DEFAULTS_DIR="$(cd "$SCRIPTS_DIR/.." && pwd)"
-GUIDE_MD="$DEFAULTS_DIR/.claude/commands/loom/guide.md"
-SWEEP_MD="$DEFAULTS_DIR/.claude/commands/loom/sweep.md"
-CHAMPION_MD="$DEFAULTS_DIR/.claude/commands/loom/champion-pr-merge.md"
+
+# Two `..` reaches repo-root/.claude/commands/loom for an INSTALLED copy
+# (SCRIPTS_DIR is .loom/scripts there); one `..` reaches defaults/.claude/
+# commands/loom when running inside this source repo (SCRIPTS_DIR is
+# defaults/scripts) -- the two layouts differ in depth, so probe both rather
+# than hard-coding one (#6725).
+if [[ -d "$SCRIPTS_DIR/../../.claude/commands/loom" ]]; then
+    PROMPT_DIR="$(cd "$SCRIPTS_DIR/../../.claude/commands/loom" && pwd)"
+else
+    PROMPT_DIR="$(cd "$SCRIPTS_DIR/../.claude/commands/loom" && pwd)"
+fi
+GUIDE_MD="$PROMPT_DIR/guide.md"
+CHAMPION_MD="$PROMPT_DIR/champion-pr-merge.md"
+CHAMPION_COMMON_MD="$PROMPT_DIR/champion-common.md"
+
+# The /loom:sweep skill in document order (#7726 split the monolithic
+# sweep.md into a dispatcher + 11 sibling reference files). Concatenate them
+# into one file so the --auto-stack detection pattern is found wherever it
+# now lives — mirrors SWEEP_SKILL_FILES in
+# loom-daemon/tests/sweep_md_doc_lint.rs.
+SWEEP_SKILL_FILES=(
+    sweep.md
+    sweep-arguments.md
+    sweep-examples.md
+    sweep-execution-model.md
+    sweep-backend-detection.md
+    sweep-scheduling-signals.md
+    sweep-dry-run.md
+    sweep-mode-c-lifecycle.md
+    sweep-wave-lifecycle.md
+    sweep-summary-output.md
+    sweep-run-hygiene.md
+    sweep-reference.md
+)
+SWEEP_MD="$(mktemp)"
+trap 'rm -f "$SWEEP_MD"' EXIT
+for f in "${SWEEP_SKILL_FILES[@]}"; do
+    cat "$PROMPT_DIR/$f" >> "$SWEEP_MD"
+done
 
 # Source warn-out-of-set-deps.sh's real parse_out_of_set_deps BEFORE defining
 # our own RED/GREEN/NC below — the script's own `[[ -t 2 ]]` color block
@@ -90,12 +125,13 @@ assert_doc_contains() {
 
 # =====================================================================
 # guide.md's parse_dependencies — mirrors defaults/.claude/commands/loom/guide.md
-# verbatim (four alternatives incl. checkbox form; widened separator).
+# verbatim (four alternatives incl. checkbox form, UNCHECKED only per #7973;
+# widened separator).
 # =====================================================================
 guide_parse_dependencies() {
     local body="$1"
     echo "$body" \
-        | grep -E '(Blocked by|Depends on|Requires|\- \[.\])[*_:[:space:]]*#[0-9]+' \
+        | grep -E '(Blocked by|Depends on|Requires|\- \[ \])[*_:[:space:]]*#[0-9]+' \
         | grep -oE '#[0-9]+' | tr -d '#' | sort -u
 }
 
@@ -110,12 +146,26 @@ sweep_auto_stack_detect() {
 }
 
 # =====================================================================
-# champion-pr-merge.md's ALL_DEPS extraction — mirrors
-# defaults/.claude/commands/loom/champion-pr-merge.md verbatim.
+# champion-pr-merge.md's ALL_DEPS extraction — champion-pr-merge.md now
+# calls THROUGH to the shared `extract_blocker_refs` helper in
+# defaults/.claude/commands/loom/champion-common.md (#5211) instead of an
+# inline pipeline, so this mirror reproduces that helper verbatim. The
+# helper is cross-repo aware: it captures an optional `owner/repo` prefix
+# ahead of the `#N` and (unlike the old bare-`#N` pipeline) returns each
+# reference WITH its `#`/`owner/repo#` form rather than a stripped number.
+# Two-stage shape (matches guide.md/sweep.md/warn-out-of-set-deps.sh):
+# stage 1 selects the whole matching line (grep -E, no -o), stage 2
+# extracts every ref found on that line — a single-stage `grep -Eo`
+# anchored to the phrase + its immediately-following #N can only ever
+# match one ref per phrase occurrence, silently dropping every other
+# comma-separated ref on the same line.
 # =====================================================================
 champion_all_deps() {
     local blocked_body="$1"
-    echo "$blocked_body" | grep -E "(Blocked by|Depends on|Requires)[*_:[:space:]]*#[0-9]+" | grep -Eo "#[0-9]+" | grep -Eo "[0-9]+" | sort -u
+    printf '%s\n' "$blocked_body" \
+        | grep -E '(Blocked by|Depends on|Requires)[*_:[:space:]]*([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[0-9]+|#[0-9]+)' \
+        | grep -Eo '([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[0-9]+|#[0-9]+)' \
+        | sort -u
 }
 
 echo "--- guide.md parse_dependencies: markdown-bold/colon forms ---"
@@ -145,6 +195,15 @@ out="$(guide_parse_dependencies '- [ ] #12: some description')"
 assert_eq "12" "$out" "checkbox form still works (- [ ] #N)"
 
 echo
+echo "--- guide.md parse_dependencies: checked vs. unchecked checklist (#7973) ---"
+
+out="$(guide_parse_dependencies '- [x] #7431 (soak criteria + rollback path documented)')"
+assert_eq "" "$out" "a CHECKED checklist box (- [x] #N) is NOT a dependency (#7973 regression guard)"
+
+out="$(guide_parse_dependencies '- [ ] #12: some description')"
+assert_eq "12" "$out" "an UNCHECKED checklist box (- [ ] #N) still IS a dependency (no regression to #4508)"
+
+echo
 echo "--- guide.md parse_dependencies: edge case (unrelated same-line ref) ---"
 
 out="$(guide_parse_dependencies 'Depends on #5 (see #99)')"
@@ -163,15 +222,24 @@ out="$(sweep_auto_stack_detect '**Blocked by:** #1')"
 assert_eq "" "$out" "Blocked by NEVER matches --auto-stack detection (phrase-set split preserved)"
 
 echo
-echo "--- champion-pr-merge.md ALL_DEPS: previously-empty parse now resolves ---"
+echo "--- champion-pr-merge.md ALL_DEPS (extract_blocker_refs): phrase-anchored + cross-repo ---"
 
-out="$(champion_all_deps '**Blocked by:** #1 (reason), #3 (reason)')"
-assert_eq $'1\n3' "$out" "bold+colon comma-list yields 1 3 (previously empty -> silent unblock)"
+out="$(champion_all_deps '**Blocked by:** #1 (reason)')"
+assert_eq '#1' "$out" "bold+colon phrase yields the anchored ref (previously empty -> silent unblock)"
 
 out="$(champion_all_deps 'Blocked by #7
 Depends on #8
 Requires #9')"
-assert_eq $'7\n8\n9' "$out" "plain unformatted forms (no regression)"
+assert_eq $'#7\n#8\n#9' "$out" "plain unformatted forms (no regression)"
+
+out="$(champion_all_deps 'Depends on owner/repo#42')"
+assert_eq 'owner/repo#42' "$out" "cross-repo owner/repo#N reference is preserved (#5211)"
+
+out="$(champion_all_deps '**Blocked by:** #1 (x), #3 (y)')"
+assert_eq $'#1\n#3' "$out" "bold+colon comma-list captures ALL refs, not just the first (regression guard)"
+
+out="$(champion_all_deps 'Blocked by: #1, owner/repo#3')"
+assert_eq $'#1\nowner/repo#3' "$out" "mixed same-repo/cross-repo comma-list captures both refs"
 
 echo
 echo "--- champion-pr-merge.md BLOCKED_ISSUES jq filter: widened separator ---"
@@ -204,16 +272,20 @@ echo
 echo "--- Doc pins: shipped markdown matches the mirrored functions above ---"
 
 assert_doc_contains "$GUIDE_MD" \
-    "grep -E '(Blocked by|Depends on|Requires|\- \[.\])[*_:[:space:]]*#[0-9]+'" \
-    "guide.md parse_dependencies ships the widened four-alternative pattern"
+    "grep -E '(Blocked by|Depends on|Requires|\- \[ \])[*_:[:space:]]*#[0-9]+'" \
+    "guide.md parse_dependencies ships the widened four-alternative pattern (unchecked checkbox only, #7973)"
 
 assert_doc_contains "$SWEEP_MD" \
     "grep -E '(Depends on|Requires)[*_:[:space:]]*#[0-9]+'" \
     "sweep.md --auto-stack detection ships the widened two-phrase pattern"
 
 assert_doc_contains "$CHAMPION_MD" \
-    'grep -E "(Blocked by|Depends on|Requires)[*_:[:space:]]*#[0-9]+"' \
-    "champion-pr-merge.md ALL_DEPS extraction ships the widened pattern"
+    'ALL_DEPS=$(extract_blocker_refs "$BLOCKED_BODY")' \
+    "champion-pr-merge.md ALL_DEPS extraction calls through to extract_blocker_refs (#5211)"
+
+assert_doc_contains "$CHAMPION_COMMON_MD" \
+    "grep -E '(Blocked by|Depends on|Requires)[*_:[:space:]]*([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[0-9]+|#[0-9]+)'" \
+    "champion-common.md extract_blocker_refs ships the widened cross-repo pattern (two-stage: whole-line select)"
 
 assert_doc_contains "$CHAMPION_MD" \
     'test(\"(Blocked by|Depends on|Requires)[*_:[:space:]]*#$CLOSED_ISSUE\"; \"i\")' \

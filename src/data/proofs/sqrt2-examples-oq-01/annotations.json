@@ -14,8 +14,8 @@
   {
     "id": "sqr-concrete-instances",
     "proofId": "sqrt2-examples-oq-01",
-    "range": { "startLine": 37, "endLine": 47 },
-    "type": "definition",
+    "range": { "startLine": 23, "endLine": 33 },
+    "type": "theorem",
     "title": "Concrete Instances: ℕ, ℤ, ℚ, ℝ",
     "content": "Four specializations of `square_nonneg_general` to standard number systems. Each is a one-liner application, demonstrating that the general theorem subsumes all specific cases. Notably, `ℕ` is included even though $n \\cdot n \\geq 0$ for naturals is trivially true — it fits the `LinearOrderedSemiring` framework uniformly.",
     "mathContext": "Instances of `LinearOrderedSemiring`: $\\mathbb{N} \\subset \\mathbb{Z} \\subset \\mathbb{Q} \\subset \\mathbb{R}$. The semiring structure on $\\mathbb{N}$ lacks subtraction; the ring structure on $\\mathbb{Z}$ adds it. All satisfy $0 \\leq x^2$.",
@@ -26,7 +26,7 @@
   {
     "id": "sqr-case-analysis-proof",
     "proofId": "sqrt2-examples-oq-01",
-    "range": { "startLine": 53, "endLine": 64 },
+    "range": { "startLine": 55, "endLine": 64 },
     "type": "insight",
     "title": "Case-Analysis Proof for LinearOrderedRing",
     "content": "An independent proof by cases on the sign of $x$, generalizing the parent file's integer-specific proof technique. If $x \\geq 0$: `mul_nonneg h h` gives $x \\cdot x \\geq 0$ directly. If $x < 0$: negate to get $-x > 0$, then use `ring` to rewrite $x \\cdot x = (-x) \\cdot (-x)$, and apply `mul_nonneg` again. This uses `LinearOrderedRing` (rather than `LinearOrderedSemiring`) because negation requires subtraction/ring structure.",
@@ -38,7 +38,7 @@
   {
     "id": "sqr-sum-abs",
     "proofId": "sqrt2-examples-oq-01",
-    "range": { "startLine": 70, "endLine": 77 },
+    "range": { "startLine": 72, "endLine": 77 },
     "type": "insight",
     "title": "Sum of Squares and Absolute Value Identity",
     "content": "Two corollaries: (1) the sum of squares $x^2 + y^2 \\geq 0$ via `add_nonneg` applied to the two square non-negativity results; (2) $|x| \\cdot |x| = x \\cdot x$ in any `LinearOrderedCommRing`, using Mathlib's `abs_mul_self`. The second identity shows that absolute value is a 'square root' in the ordering sense: $|x|^2 = x^2$.",

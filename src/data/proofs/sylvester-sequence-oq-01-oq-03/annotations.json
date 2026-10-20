@@ -98,7 +98,7 @@
   {
     "id": "ann-mod6",
     "proofId": "sylvester-sequence-oq-01-oq-03",
-    "range": { "startLine": 131, "endLine": 145 },
+    "range": { "startLine": 132, "endLine": 146 },
     "type": "insight",
     "title": "The mod-6 Invariant",
     "content": "`six_dvd_syl_sub_one` establishes $6 \\mid a_n - 1$ for $n \\ge 2$ by `Nat.le_induction` from the base $a_2 - 1 = 6$. The inductive step needs no case analysis: since $a_{n+1} - 1 = a_n(a_n - 1)$ and $a_n - 1$ is literally a factor, $6 \\mid a_n - 1 \\implies 6 \\mid a_{n+1} - 1$ (`Dvd.mul_left`). `syl_mod_six` then reads off $a_n \\equiv 1 \\pmod 6$. So from $7$ onward every term ends the same way modulo $6$ — a clean example of a divisibility invariant inherited multiplicatively rather than re-derived.",

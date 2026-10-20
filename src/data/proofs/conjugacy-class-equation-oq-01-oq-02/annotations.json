@@ -14,7 +14,7 @@
   {
     "id": "pgroup-center-overview",
     "proofId": "conjugacy-class-equation-oq-01-oq-02",
-    "range": { "startLine": 3, "endLine": 45 },
+    "range": { "startLine": 4, "endLine": 45 },
     "type": "concept",
     "title": "p-group center theorem via the class equation",
     "content": "The docstring states the target — a nontrivial finite p-group has nontrivial center — and the strategy. Mathlib already proves this as IsPGroup.center_nontrivial by counting fixed points of the conjugation action (card_modEq_card_fixedPoints). This entry instead gives the textbook class-equation derivation requested by the parent's second open question: lift per-class divisibility to the quotient, show every noncentral class has size a positive power of p, and read |Z(G)| + Σ = |G| modulo p.",
@@ -48,8 +48,8 @@
   {
     "id": "noncentral-prime-power",
     "proofId": "conjugacy-class-equation-oq-01-oq-02",
-    "range": { "startLine": 59, "endLine": 80 },
-    "type": "lemma",
+    "range": { "startLine": 55, "endLine": 73 },
+    "type": "theorem",
     "title": "Noncentral classes have size a positive power of p",
     "content": "noncentral_class_card_eq_prime_pow is the arithmetic heart. For a finite p-group, IsPGroup.iff_card gives |G| = pⁿ; any class size divides pⁿ, so by Nat.dvd_prime_pow it equals pᵏ for some k. A class lies in ConjClasses.noncenter G exactly when its carrier is a nontrivial set — more than one element — which forces 1 < pᵏ and hence k > 0. Thus p divides every noncentral class size. Mathlib does not package this intermediate fact on its own.",
     "mathContext": "$x \\in \\mathrm{noncenter}\\,G \\Rightarrow |x| = p^k,\\ k>0$",

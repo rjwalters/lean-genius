@@ -28,8 +28,8 @@
     "proofId": "erdos-460",
     "type": "definition",
     "range": {
-      "startLine": 35,
-      "endLine": 49
+      "startLine": 47,
+      "endLine": 61
     },
     "title": "Greedy Coprime Sieve Sequence",
     "content": "The function `greedyCoprimeSieve n k` gives the $k$-th element of the greedy sequence for a fixed $n$. Starting with $a_0 = 0, a_1 = 1$, each subsequent $a_k$ is the least integer greater than $a_{k-1}$ such that $\\gcd(n - a_k, n - a_i) = 1$ for all $i < k$. The sieve ensures the shifted values $n - a_0, n - a_1, \\ldots$ are pairwise coprime.",
@@ -95,8 +95,8 @@
     "proofId": "erdos-460",
     "type": "definition",
     "range": {
-      "startLine": 112,
-      "endLine": 115
+      "startLine": 129,
+      "endLine": 133
     },
     "title": "Sieve Count",
     "content": "`sieveCount n` counts how many terms of the sieve sequence are less than $n$. Since the sequence is increasing and bounded by $n$, this is finite. The count determines the range of summation for the reciprocal sum.",
@@ -117,8 +117,8 @@
     "proofId": "erdos-460",
     "type": "definition",
     "range": {
-      "startLine": 121,
-      "endLine": 126
+      "startLine": 129,
+      "endLine": 134
     },
     "title": "Reciprocal Sum $\\sum 1/a_i$",
     "content": "The sum $\\sum_{0 < a_i < n} 1/a_i$ is computed over positive sieve terms less than $n$. This is a finite sum for each $n$. The central question is whether this sum diverges as $n \\to \\infty$. If the Eggleton-Erdős-Selfridge conjectured bound $a_k \\ll k \\log k$ holds, then the reciprocal sum would be $\\gg \\sum 1/(k \\log k) = \\infty$.",
@@ -226,8 +226,8 @@
     "proofId": "erdos-460",
     "type": "definition",
     "range": {
-      "startLine": 197,
-      "endLine": 204
+      "startLine": 191,
+      "endLine": 198
     },
     "title": "Least Prime Factor Filtered Sum $f(n)$",
     "content": "The function $f(n) = \\sum_{\\substack{0 < a < n \\\\ P^-(n-a) > a}} 1/a$ sums reciprocals over those $a < n$ whose complement $n - a$ has all prime factors exceeding $a$. This is a 'smooth number' condition on $n - a$. Divergence of $f(n)$ would imply Problem #460.",
@@ -293,8 +293,8 @@
     "proofId": "erdos-460",
     "type": "definition",
     "range": {
-      "startLine": 240,
-      "endLine": 246
+      "startLine": 249,
+      "endLine": 257
     },
     "title": "Large Prime Sum",
     "content": "The complementary sum over sieve terms where $P^-(n - a_k) > a_k$ — all prime factors of $n - a_k$ exceed $a_k$. These are the 'hard' terms where coprimality is automatic but the contribution to the reciprocal sum depends on the distribution of smooth numbers.",

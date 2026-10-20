@@ -31,8 +31,8 @@
     "proofId": "szemeredi-counting",
     "type": "definition",
     "range": {
-      "startLine": 25,
-      "endLine": 29
+      "startLine": 165,
+      "endLine": 169
     },
     "title": "Triangle Count Definition",
     "content": "`triangleCount G A B C` counts ordered triples $(a, b, c) \\in A \\times B \\times C$ forming a triangle in $G$. Implemented via filtering the product set $A \\times (B \\times C)$ for triples where all three pairs are adjacent.\n\nThis counts ordered triples, so each triangle contributes 1 to the count (since vertices are in distinct sets $A$, $B$, $C$). For the counting lemma, this is the natural quantity to estimate.",
@@ -222,8 +222,8 @@
     "proofId": "szemeredi-counting",
     "type": "concept",
     "range": {
-      "startLine": 511,
-      "endLine": 536
+      "startLine": 515,
+      "endLine": 540
     },
     "title": "Triangle Count Monotonicity (Proved)",
     "content": "`triangleCount_mono`: if $A_1 \\subseteq A_2$, $B_1 \\subseteq B_2$, $C_1 \\subseteq C_2$, then $T(A_1,B_1,C_1) \\leq T(A_2,B_2,C_2)$. Proved by `Finset.card_le_card`: every triangle in the smaller product is also in the larger product. Corollary `triangleCount_le_total`: $T(A,B,C) \\leq T(V,V,V)$ for any subsets.\n\nThese monotonicity results are used in the quantitative removal proof to relate per-part triangle counts to total triangle counts.",
@@ -243,8 +243,8 @@
     "proofId": "szemeredi-counting",
     "type": "insight",
     "range": {
-      "startLine": 537,
-      "endLine": 1001
+      "startLine": 541,
+      "endLine": 1005
     },
     "title": "Quantitative Triangle Removal via Regularity (Main Result)",
     "content": "The centerpiece of the file: `triangle_removal_quantitative` constructs explicit $\\gamma(\\delta)$ using the Regularity Lemma. The proof: (1) Set $\\varepsilon = \\delta/6$ and apply `regularity_with_finpartition` to get a Finpartition with $m_0 \\leq k \\leq M$ parts. (2) Construct the removal set $R$: edges within parts, edges in irregular pairs, and edges in regular pairs with density $< \\delta/2$. (3) Show $|R| \\leq \\delta n^2$ by counting: within-part edges $\\leq n^2/k$, irregular edges $\\leq \\varepsilon n^2$, sparse edges contribute at most $(\\delta/2) n^2$. (4) Show any remaining triangle has vertices in three mutually regular, dense parts (since all other edges were removed). (5) Apply `counting_lemma` to get a positive lower bound on the triangle count from this triple, at least $c \\cdot (n/2M)^3$ triangles. (6) Set $\\gamma$ small enough that $\\gamma n^3 < c(n/2M)^3$, ensuring no such triple exists.\n\nThis is the most technically demanding section of the file, requiring careful management of the partition structure (via `Finpartition`), part size bounds (equitability gives $|P_i| \\geq n/2M$), and the interplay between the counting lemma and the removal set construction.",

@@ -50,7 +50,7 @@
   {
     "id": "ann-oq10-complement",
     "proofId": "lagrange-theorem-oq-10",
-    "range": { "startLine": 73, "endLine": 81 },
+    "range": { "startLine": 74, "endLine": 81 },
     "type": "insight",
     "title": "Coprime Orders Filling |G| Give an Internal Direct Product",
     "content": "When the coprime orders additionally multiply to |G| (and G is finite), H and K complement each other: H.IsComplement' K, meaning every element of G factors uniquely as a product from H and K. This is the internal direct-product situation and the elementary form of the coprime splitting behind CRT-style decompositions of finite abelian groups and Sylow theory. The statement wraps Mathlib's Subgroup.isComplement'_of_coprime, whose hypotheses are exactly coprimality plus the order product.",

@@ -506,7 +506,9 @@ needs θ ≥ c at the SMALLER scale R_diff.
 
 The cubic enstrophy inequality: dE/dt ≤ C E³
 
-This LIMITS how fast enstrophy can grow!
+**Correction (2026-09-08):** this bounds how *slowly* enstrophy may grow near a
+blowup, not how fast. The consistency computation below is correct, but its
+conclusion was misread.
 
 **Analysis:** If E ~ (T*-t)^{-β}, then the inequality requires:
 ```
@@ -515,7 +517,9 @@ C E³ ~ (T*-t)^{-3β}
 ```
 For consistency as t → T*: -(β+1) ≥ -3β → β ≥ 1/2
 
-**So E can grow at most as (T*-t)^{-1/2}!** This is the TYPE I RATE.
+**So E must grow at least as fast as (T*-t)^{-1/2}** (β ≥ 1/2 is a floor on the
+exponent). This is Leray's lower bound. The original text said "at most"; that is
+wrong and everything below that used it as a ceiling is void.
 
 ### Implications for Type II
 
@@ -526,12 +530,14 @@ E ~ Ω² R_diff³ = Ω² (ν/Ω)^{3/2} = ν^{3/2} Ω^{1/2}
 
 So E ~ Ω^{1/2}, meaning Ω ~ E².
 
-If E ~ (T*-t)^{-1/2} (maximum from enstrophy inequality):
+If E ~ (T*-t)^{-1/2} (the *minimum* allowed — not a maximum; corrected 2026-09-08):
 ```
 Ω ~ E² ~ (T*-t)^{-1}
 ```
 
-**This is exactly Type I!** If Ω grew faster (Type II), E would violate the inequality.
+**This would be exactly Type I** — but only for a solution sitting on Leray's floor.
+Faster growth of Ω does not violate the inequality (corrected 2026-09-08). OpenAI's
+forced flow has E ≍ (T*-t)^{-1/2-3h}, above the floor, with Ω ≍ (T*-t)^{-1-h}.
 
 ### The Catch: Spread-Out Vorticity
 
@@ -542,7 +548,8 @@ For vorticity in region of size L with magnitude Ω:
 E ~ Ω² L³
 ```
 
-For Type II (Ω ~ (T*-t)^{-α}) with E ~ (T*-t)^{-1/2}:
+For Type II (Ω ~ (T*-t)^{-α}) with E ~ (T*-t)^{-1/2} (assuming the floor is attained —
+not forced; corrected 2026-09-08):
 ```
 (T*-t)^{-1/2} ~ (T*-t)^{-2α} L³
 L³ ~ (T*-t)^{2α-1/2}

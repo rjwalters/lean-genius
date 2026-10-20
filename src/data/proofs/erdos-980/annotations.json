@@ -131,7 +131,7 @@
     "id": "ann-e980-vinogradov",
     "proofId": "erdos-980",
     "range": {
-      "startLine": 91,
+      "startLine": 92,
       "endLine": 94
     },
     "type": "concept",
@@ -153,7 +153,7 @@
     "id": "ann-e980-grh-bound",
     "proofId": "erdos-980",
     "range": {
-      "startLine": 100,
+      "startLine": 101,
       "endLine": 103
     },
     "type": "concept",
@@ -219,10 +219,10 @@
     "id": "ann-e980-constants-ck",
     "proofId": "erdos-980",
     "range": {
-      "startLine": 152,
-      "endLine": 158
+      "startLine": 144,
+      "endLine": 150
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "General Constants $c_k$",
     "content": "For $k \\geq 2$, the constant $c_k$ in the asymptotic $\\sum n_k(p) \\sim c_k \\cdot x/\\log x$ is defined via character sums and the distribution of $k$-th power residues. The exact formula involves a weighted sum over primes analogous to $c_2$, but with weights depending on the $k$-th power residue structure. Positivity is axiomatized via `c_k_positive`.",
     "mathContext": "$c_k > 0$ for all $k \\geq 2$. The formula generalizes $c_2 = \\sum p_j/2^j$ to higher power residue characters. The positivity follows from the fact that $k$-th power nonresidues exist among small integers for all primes $p > k$.",
@@ -329,7 +329,7 @@
     "id": "ann-e980-special-cases",
     "proofId": "erdos-980",
     "range": {
-      "startLine": 251,
+      "startLine": 252,
       "endLine": 262
     },
     "type": "concept",

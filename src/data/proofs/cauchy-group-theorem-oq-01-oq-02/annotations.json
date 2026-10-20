@@ -2,7 +2,7 @@
   {
     "id": "prime-power-tower",
     "proofId": "cauchy-group-theorem-oq-01-oq-02",
-    "range": { "startLine": 70, "endLine": 77 },
+    "range": { "startLine": 71, "endLine": 78 },
     "type": "theorem",
     "title": "Sylow's First Theorem (Tower Form)",
     "content": "`exists_subgroup_card_pow_prime`: for a prime p and any exponent n with pⁿ ∣ |G|, the group G has a subgroup of order exactly pⁿ. This is the strongest form of Sylow's first theorem and the baseline of the whole entry — Mathlib proves it as `Sylow.exists_subgroup_card_pow_prime`, here restated in `Nat.card` form to match the parent's `cauchy_subgroup`. Every other existence result in the file is a specialization of this single tower.",
@@ -14,7 +14,7 @@
   {
     "id": "cauchy-as-base-case",
     "proofId": "cauchy-group-theorem-oq-01-oq-02",
-    "range": { "startLine": 79, "endLine": 86 },
+    "range": { "startLine": 80, "endLine": 87 },
     "type": "theorem",
     "title": "Recovering Cauchy as the n = 1 Slice",
     "content": "`cauchy_subgroup`: if p ∣ |G| then G has a subgroup of order exactly p. The proof simply instantiates the tower at n = 1 and rewrites p¹ = p (`pow_one`). This makes precise the textbook slogan that Cauchy's theorem is the base case of Sylow's: the parent's `CauchyGroupTheoremOQ01.cauchy_subgroup` is not a separate result but a literal specialization of the prime-power tower.",
@@ -26,7 +26,7 @@
   {
     "id": "sylow-subgroup",
     "proofId": "cauchy-group-theorem-oq-01-oq-02",
-    "range": { "startLine": 90, "endLine": 97 },
+    "range": { "startLine": 91, "endLine": 98 },
     "type": "theorem",
     "title": "The Sylow p-Subgroup of Order p^k",
     "content": "`exists_sylow_subgroup`: G has a subgroup of order p^k where k = (Nat.card G).factorization p is the multiplicity of p in |G| — the maximal power of p dividing the order. The witness is a term of Mathlib's `Sylow p G` type (always nonempty by `Sylow.nonempty`), whose order is computed exactly by `Sylow.card_eq_multiplicity`. This is the genuine 'p-Sylow subgroup of order pᵏ' the open question asks for.",
@@ -38,7 +38,7 @@
   {
     "id": "maximality-index",
     "proofId": "cauchy-group-theorem-oq-01-oq-02",
-    "range": { "startLine": 106, "endLine": 127 },
+    "range": { "startLine": 107, "endLine": 128 },
     "type": "theorem",
     "title": "Maximality: the Index Is Coprime to p",
     "content": "`sylow_index_not_dvd`: the Sylow subgroup H (order p^k) has index [G : H] not divisible by p. This is the defining property that separates a full Sylow subgroup from a merely-large p-subgroup. The proof writes |H|·[G:H] = |G| (`card_mul_index`) with |H| = ordProj[p]|G| = p^k; cancelling against the identity ordProj·ordCompl = |G| (`ordProj_mul_ordCompl_eq_self`, with left cancellation by the positive p^k) identifies [G:H] = ordCompl[p]|G|, whose coprimality to p is `Nat.not_dvd_ordCompl`.",
@@ -50,7 +50,7 @@
   {
     "id": "nontriviality-boundary",
     "proofId": "cauchy-group-theorem-oq-01-oq-02",
-    "range": { "startLine": 129, "endLine": 150 },
+    "range": { "startLine": 130, "endLine": 151 },
     "type": "theorem",
     "title": "Nontriviality Boundary",
     "content": "`sylow_nontrivial_iff_dvd`: the Sylow p-subgroup is nontrivial (1 < p^k) if and only if p ∣ |G|. The forward direction observes 1 < p^k forces k ≠ 0, hence p ∣ |G| via `Nat.dvd_of_factorization_pos`; the backward direction uses `Prime.factorization_pos_of_dvd` to get k > 0, so p^k > p^0 = 1. The whole Sylow tower therefore fires under exactly the divisibility hypothesis that triggers Cauchy.",
@@ -62,7 +62,7 @@
   {
     "id": "concrete-s3",
     "proofId": "cauchy-group-theorem-oq-01-oq-02",
-    "range": { "startLine": 152, "endLine": 203 },
+    "range": { "startLine": 155, "endLine": 204 },
     "type": "theorem",
     "title": "Concrete Sylow Subgroups in S₃",
     "content": "On the symmetric group S₃ (order 6 = 2·3): `card_perm_fin3` computes |S₃| = 6; `factorization_six_two` and `factorization_six_three` pin the 2- and 3-adic multiplicities of 6 to 1 by the squeeze p ∣ 6 and p² ∤ 6 (`pow_dvd_iff_le_factorization`) — needed because `Nat.factorization` is not kernel-reducible, so `decide` cannot close these; `sylow2_perm_fin3` and `sylow3_perm_fin3` produce the order-2 (a transposition) and order-3 (the alternating group A₃) Sylow subgroups by applying the tower at p = 2 and p = 3. Using the factorization squeeze instead of `native_decide` keeps the file free of `Lean.ofReduceBool`, genuinely 0-axiom.",

@@ -69,8 +69,8 @@
     "proofId": "erdos-450",
     "type": "definition",
     "range": {
-      "startLine": 111,
-      "endLine": 148
+      "startLine": 117,
+      "endLine": 154
     },
     "title": "Density Bound and Trivial Cases",
     "content": "**`DensityBound x y n εNum εDen`**: the count satisfies $N(x, y, n) \\cdot \\varepsilon_{\\text{Den}} \\leq \\varepsilon_{\\text{Num}} \\cdot y$, encoding $N \\leq \\varepsilon \\cdot y$ in $\\mathbb{N}$. Four trivial cases are **proved**: $y = 0$, $\\varepsilon \\geq 1$ (count $\\leq y$), $n = 0$, and $n = 1$.",
@@ -90,8 +90,8 @@
     "proofId": "erdos-450",
     "type": "definition",
     "range": {
-      "startLine": 150,
-      "endLine": 160
+      "startLine": 156,
+      "endLine": 166
     },
     "title": "For All $x$ Version",
     "content": "**`ErdosProblem450_ForAll`**: given $\\varepsilon > 0$ and $n \\geq 2$, there exists $y \\geq 1$ such that $N(x, y, n) \\leq \\varepsilon \\cdot y$ for **all** $x$. This is the stronger version that Cambie showed **fails** in certain regimes.",

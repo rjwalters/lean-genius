@@ -2,7 +2,7 @@
   {
     "id": "ann-catalan-andre-encoding",
     "proofId": "catalan-numbers-oq-01-oq-01-oq-01",
-    "range": { "startLine": 33, "endLine": 57 },
+    "range": { "startLine": 34, "endLine": 57 },
     "type": "definition",
     "title": "Encoding paths as up-step position sets",
     "content": "A 2n-step monotone lattice path is encoded as the set S : Finset (Fin (2n)) of positions carrying an up-step. preUps S j counts the up-steps among the first j positions, so the height after j steps is 2·preUps S j − j (ups minus downs). hitsAt S j says the path reaches height −1 at prefix length j, i.e. j = 2·preUps S j + 1; Reaches S says this happens somewhere among the 2n prefixes. reflect S t is André's reflection at cut point t: keep every step before t, complement membership from t onward.",
@@ -14,7 +14,7 @@
   {
     "id": "ann-catalan-andre-card-identity",
     "proofId": "catalan-numbers-oq-01-oq-01-oq-01",
-    "range": { "startLine": 68, "endLine": 103 },
+    "range": { "startLine": 69, "endLine": 103 },
     "type": "lemma",
     "title": "The subtraction-free reflection cardinality identity",
     "content": "The single quantitative engine: #(reflect S t) + #S + t = 2·preUps S t + 2n for every cut t ≤ 2n. The proof is one pointwise indicator computation over all positions i — below the cut, reflect and S agree; at or above it they are complementary — so the contributions [reflect i] + [i ∈ S] + [i < t] equal 2·[i ∈ S ∧ i < t] + 1 at each i, and summing gives the identity. Stated additively to avoid ℕ truncated subtraction so everything downstream closes by omega.",
@@ -62,8 +62,8 @@
   {
     "id": "ann-catalan-andre-headline",
     "proofId": "catalan-numbers-oq-01-oq-01-oq-01",
-    "range": { "startLine": 343, "endLine": 360 },
-    "type": "theorem",
+    "range": { "startLine": 270, "endLine": 287 },
+    "type": "definition",
     "title": "Headline: #GoodPaths = catalan n",
     "content": "card_goodPaths_eq_catalan: splitting all n-up paths into good (never dip) and bad (dip) via filter_card_add_filter_neg, then substituting the total count C(2n,n) and the bijective bad-path count C(2n,n+1), and reproving the additive partition C(2n,n) = catalan n + C(2n,n+1) inline (kept self-contained), gives #GoodPaths = C(2n,n) − C(2n,n+1) = catalan n. This is the bijective upgrade of the arithmetic Catalan reflection form — Mathlib counts Dyck words only through the binary-tree recursion, not by reflection.",
     "mathContext": "$\\#\\operatorname{GoodPaths}(n) = \\binom{2n}{n} - \\binom{2n}{n+1} = \\operatorname{catalan} n.$",

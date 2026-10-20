@@ -119,14 +119,10 @@ fi
 
 ### List Problems by Knowledge (Weakest First)
 
-> ⚠️ `.lean/scripts/knowledge-scores.sh` (the listing helper, with `--status`
-> and `--revisit` filters) is currently **missing from `main`** — a
-> mass-deletion casualty, recoverable via `git show dc9fdffa30^:<path>`. See
-> the Known-Gaps Ledger in
-> [`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#known-gaps-ledger-issue-38387--38398).
-> Until restored: `scripts/research/claim-problem.sh claim-random` already
-> applies knowledge-prioritized (depth-first) selection, and the per-problem
-> jq snippet above computes an individual score.
+`.lean/scripts/knowledge-scores.sh [--status STATUS] [--revisit]` lists problems
+by knowledge score, weakest first. `scripts/research/claim-problem.sh claim-random`
+applies the same knowledge-prioritized (depth-first) selection automatically, and
+the per-problem jq snippet above computes an individual score.
 
 ### Selection Rule — DEPTH OVER BREADTH
 
@@ -314,9 +310,7 @@ default "materially new mechanism required".
 find research/claims -name "*.lock" -type d -mmin +120 -exec rm -rf {} \; 2>/dev/null || true
 
 # List available problems by knowledge score (lowest first).
-# NOTE: knowledge-scores.sh is currently missing from main (Known-Gaps Ledger
-# in .lean/roles/COMMON.md); claim-problem.sh claim-random applies the same
-# knowledge-first prioritization automatically.
+# (claim-problem.sh claim-random applies the same knowledge-first prioritization.)
 .lean/scripts/knowledge-scores.sh --status available
 
 # Select the one with lowest knowledge score
@@ -343,11 +337,6 @@ fi
 ```
 
 Scout returns gallery proofs, techniques, Mathlib gaps, and recommended approaches. Use this as your primary ORIENT tool.
-
-> `/lean-scout` (`.claude/commands/lean-scout.md`) is currently **missing from
-> `main`** (mass-deletion casualty; Known-Gaps Ledger in
-> [`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#known-gaps-ledger-issue-38387--38398)).
-> Until restored, run the manual checks below instead.
 
 **Supplement with manual checks if needed:**
 1. **Search Mathlib**: WebSearch "Mathlib4 Lean [topic] 2025 2026"
@@ -396,12 +385,9 @@ After each session, advance the problem's phase to reflect work done:
 .lean/scripts/research.sh phase "$PROBLEM_ID" "COMPLETED"
 ```
 
-> ⚠️ `.lean/scripts/research.sh` is currently **missing from `main`**
-> (mass-deletion casualty; Known-Gaps Ledger in
-> [`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#known-gaps-ledger-issue-38387--38398),
-> recoverable via `git show dc9fdffa30^:.lean/scripts/research.sh`). Until
-> restored, update the phase field directly in `research/registry.json` with
-> `jq` (`.problems[] | select(.slug == $id) | .phase = $phase`).
+(If `research.sh` is unavailable in a sparse worktree, the equivalent is updating
+the phase field in `research/registry.json` with `jq`:
+`.problems[] | select(.slug == $id) | .phase = $phase`.)
 
 **Phase meanings:**
 - **OBSERVE**: Surveyed only — wrote knowledge.md but no proof attempt
@@ -435,9 +421,6 @@ When pool is empty, we scout for new knowledge and attempt if promising.
 
 ```bash
 # List revisitable problems by knowledge score (lowest first).
-# NOTE: knowledge-scores.sh is currently missing from main (Known-Gaps Ledger
-# in .lean/roles/COMMON.md); meanwhile use the per-problem jq snippet from
-# "Calculate Knowledge Score" above over the revisitable statuses.
 .lean/scripts/knowledge-scores.sh --revisit
 ```
 
@@ -469,7 +452,7 @@ Scout will return:
 - Literature highlights and key papers
 - Recommended approaches with evidence
 
-**Incorporate Scout's findings into your ORIENT exploration.** Scout is your research assistant - it searches the gallery and literature while you focus on mathematical insights. (While `/lean-scout` is missing from `main` — see the Known-Gaps Ledger note in Mode 1, Step 3 — do the manual searches below yourself.)
+**Incorporate Scout's findings into your ORIENT exploration.** Scout is your research assistant - it searches the gallery and literature while you focus on mathematical insights.
 
 **Manual searches (if Scout results are incomplete):**
 
@@ -523,10 +506,9 @@ Archive manually: move each old session block to
 `research/problems/<id>/sessions/YYYY-MM-DD-sNN.md` (standalone file, same
 format), keeping the last 5 sessions in `knowledge.md`.
 
-> The helper `.lean/scripts/archive-sessions.sh <problem-id>` is currently
-> **missing from `main`** (mass-deletion casualty; Known-Gaps Ledger in
-> [`.lean/roles/COMMON.md`](../../.lean/roles/COMMON.md#known-gaps-ledger-issue-38387--38398),
-> recoverable via `git show dc9fdffa30^:.lean/scripts/archive-sessions.sh`).
+The helper `.lean/scripts/archive-sessions.sh <problem-id> [--keep N]` does this
+automatically (moves older sessions to `sessions/`, keeps the last N — default 5 —
+in `knowledge.md`).
 
 ### Update Problem Knowledge (MANDATORY)
 

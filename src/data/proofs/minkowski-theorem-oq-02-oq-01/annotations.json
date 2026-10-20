@@ -14,7 +14,7 @@
   {
     "id": "ann-mink-oq01-dirichlet-set",
     "proofId": "minkowski-theorem-oq-02-oq-01",
-    "range": { "startLine": 36, "endLine": 54 },
+    "range": { "startLine": 40, "endLine": 58 },
     "type": "definition",
     "title": "The Dirichlet Parallelogram and Its Symmetry",
     "content": "The `dirichletSet α Q` is defined as pairs (x,y) with |x| < Q+1 and |αx-y| < 1/Q. It is encoded as a subset of `Fin 2 → ℝ` (vectors indexed by Fin 2). The theorem `dirichletSet_symmetric` proves central symmetry: if v ∈ S then -v ∈ S. This is required by Minkowski's theorem (symmetric means -S = S).",
@@ -26,7 +26,7 @@
   {
     "id": "ann-mink-oq01-measurability",
     "proofId": "minkowski-theorem-oq-02-oq-01",
-    "range": { "startLine": 56, "endLine": 69 },
+    "range": { "startLine": 60, "endLine": 73 },
     "type": "insight",
     "title": "Measurability via Openness",
     "content": "The `dirichletSet_measurable` proof shows that S is measurable by showing it is open. The key: S equals the intersection of two preimages of open intervals under continuous maps. Specifically, S = (v ↦ v 0)⁻¹(Ioo(-Q-1, Q+1)) ∩ (v ↦ αv0-v1)⁻¹(Ioo(-1/Q, 1/Q)). Open preimages of open sets under continuous maps are open, and open sets are measurable.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-mink-oq01-convexity",
     "proofId": "minkowski-theorem-oq-02-oq-01",
-    "range": { "startLine": 71, "endLine": 85 },
+    "range": { "startLine": 75, "endLine": 89 },
     "type": "insight",
     "title": "Convexity via Linear Preimages",
     "content": "The `dirichletSet_convex` proof uses the algebraic characterization: a set defined by |f(v)| < c (where f is linear) is convex, because it equals f⁻¹(Ioo(-c,c)) and Ioo is convex. The two conditions |x| < Q+1 and |αx-y| < 1/Q are each preimages of Ioo under linear maps (`LinearMap.proj 0` and `α • proj 0 - proj 1`). Intersections of convex sets are convex.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-mink-oq01-volume",
     "proofId": "minkowski-theorem-oq-02-oq-01",
-    "range": { "startLine": 87, "endLine": 140 },
+    "range": { "startLine": 96, "endLine": 149 },
     "type": "insight",
     "title": "Volume via the Shear Map (det = -1)",
     "content": "The `dirichletSet_volume` proof uses the shear map T(x,y) = (x, αx-y), which maps S bijectively to the rectangle R = (-Q-1,Q+1)×(-1/Q,1/Q). Since det(T) = -1, |det(T)| = 1, so T is measure-preserving. The volume of R is 2(Q+1) × 2/Q = 4(Q+1)/Q. In Lean, `map_matrix_volume_pi_eq_smul_volume_pi` combined with `|det| = 1` gives the measure-preserving property, and `volume_pi_Ioo` computes the rectangle's volume.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-mink-oq01-main-theorem",
     "proofId": "minkowski-theorem-oq-02-oq-01",
-    "range": { "startLine": 157, "endLine": 267 },
+    "range": { "startLine": 161, "endLine": 268 },
     "type": "insight",
     "title": "Minkowski's Theorem Applied to Get the Approximation",
     "content": "The main theorem `dirichlet_approximation` applies Minkowski's lattice point theorem from Mathlib: since S is symmetric, convex, open, and has volume > 4 (= 2² × vol(fundamental domain)), it must contain a nonzero integer lattice point (c₀, c₁) ∈ ℤ². Setting q = |c₀| and p = sign(c₀)·c₁ gives the Dirichlet approximation. The proof must extract integer coordinates from the Submodule.span ℤ (standard basis), then show c₀ ≠ 0 (otherwise the lattice point would be zero).",

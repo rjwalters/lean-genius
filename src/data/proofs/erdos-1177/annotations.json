@@ -73,8 +73,8 @@
     "proofId": "erdos-1177",
     "type": "definition",
     "range": {
-      "startLine": 78,
-      "endLine": 93
+      "startLine": 92,
+      "endLine": 95
     },
     "title": "Forbidden Subgraph Family F_G(kappa)",
     "content": "Defines forbiddenFamily G kappa = {H : chi(H) = kappa and G is not a subhypergraph of H}. This is the central object: the collection of hypergraphs with prescribed chromatic number that avoid a fixed finite forbidden subgraph. forbiddenFamilyNonempty is the existence predicate.",
@@ -139,7 +139,7 @@
     "proofId": "erdos-1177",
     "type": "insight",
     "range": {
-      "startLine": 155,
+      "startLine": 156,
       "endLine": 177
     },
     "title": "Anti-Monotonicity of Forbidden Families",

@@ -22,7 +22,7 @@
   {
     "id": "ann-erdos1005oq04-scaffold",
     "proofId": "erdos-1005-oq-04",
-    "range": { "startLine": 64, "endLine": 84 },
+    "range": { "startLine": 67, "endLine": 84 },
     "type": "definition",
     "title": "Farey fraction scaffold",
     "content": "The FareyFraction n structure packages a reduced fraction p/q with 0 ≤ p ≤ q, 1 ≤ q ≤ n and gcd(p,q)=1, together with its rational value toRat = p/q and the unimodular adjacency predicate IsConsecutiveFarey (g.p·f.q − f.p·g.q = 1). This mirrors the parent and the sibling OQ-03 exactly, so the witnesses below are bona fide order-n Farey fractions and the adjacency engine of §6 applies verbatim.",
@@ -41,7 +41,7 @@
   {
     "id": "ann-erdos1005oq04-relation",
     "proofId": "erdos-1005-oq-04",
-    "range": { "startLine": 86, "endLine": 108 },
+    "range": { "startLine": 89, "endLine": 108 },
     "type": "definition",
     "title": "The similarly-ordered relation: reflexive, symmetric",
     "content": "SimOrdered f g is defined in its native product form 0 ≤ (f.p − g.p)(f.q − g.q) over ℤ, with a DecidableRel instance so concrete instances reduce by decide. simOrdered_refl ((a−a)(b−b)=0) and simOrdered_symm ((a−c)(b−d)=(c−a)(d−b)) record the two properties the relation does have. The conspicuous omission — transitivity — is the subject of §3 and the whole engine of the separation.",
@@ -61,7 +61,7 @@
   {
     "id": "ann-erdos1005oq04-nontransitive",
     "proofId": "erdos-1005-oq-04",
-    "range": { "startLine": 110, "endLine": 135 },
+    "range": { "startLine": 113, "endLine": 135 },
     "type": "insight",
     "title": "Non-transitivity is the whole content of OQ-04",
     "content": "simOrdered_not_transitive exhibits the failure directly with three order-4 fractions: 1/4 ~ 1/2 (numerators tie, so the product is 0 ≥ 0), 1/2 ~ 2/3 (both numerator and denominator rise), yet 1/4 ̸~ 2/3 because the numerator rises while the denominator falls, (1−2)(4−3) = −1 < 0. This is precisely why requiring all pairs of a run to be similarly ordered (pairwise) is strictly stronger than requiring only neighbours (consecutive): a chain of locally-monotone steps can bend back on itself globally.",
@@ -80,7 +80,7 @@
   {
     "id": "ann-erdos1005oq04-two-notions",
     "proofId": "erdos-1005-oq-04",
-    "range": { "startLine": 137, "endLine": 156 },
+    "range": { "startLine": 140, "endLine": 156 },
     "type": "definition",
     "title": "Consecutive = IsChain, pairwise = Pairwise",
     "content": "The two run notions are identified with Mathlib's standard list predicates: ConsecutivelySimOrdered l := l.IsChain SimOrdered inspects only adjacent pairs (xᵢ, xᵢ₊₁), while PairwiseSimOrdered l := l.Pairwise SimOrdered inspects all pairs (xᵢ, xⱼ), i < j. This makes the easy direction a one-liner — pairwise_imp_consecutive is exactly List.Pairwise.isChain — and reduces the whole problem to producing a witness where the converse fails.",
@@ -99,7 +99,7 @@
   {
     "id": "ann-erdos1005oq04-witness",
     "proofId": "erdos-1005-oq-04",
-    "range": { "startLine": 159, "endLine": 200 },
+    "range": { "startLine": 162, "endLine": 200 },
     "type": "insight",
     "title": "A real length-5 F₄ block that is consecutive but not pairwise",
     "content": "The block farey4Block = [1/4, 1/3, 1/2, 2/3, 3/4] is the separating witness. farey4_block_chain' verifies it is consecutively similarly ordered — numerators 1,1,1,2,3 and denominators 4,3,2,3,4 keep every adjacent step monotone in both coordinates (or tied). farey4_block_not_pairwise shows it is not pairwise: the non-adjacent endpoints 1/4 and 2/3 reverse direction, (1−2)(4−3) = −1 < 0. consecutive_strictly_weaker packages this with the trivial direction into the headline — consecutive is strictly weaker than pairwise, so f_consec(n) ≥ f(n) with the gap already nonzero on a single length-5 run.",
@@ -118,7 +118,7 @@
   {
     "id": "ann-erdos1005oq04-adjacency",
     "proofId": "erdos-1005-oq-04",
-    "range": { "startLine": 202, "endLine": 282 },
+    "range": { "startLine": 211, "endLine": 282 },
     "type": "insight",
     "title": "Certifying the witnesses are truly consecutive in F₄",
     "content": "To ensure the separation concerns an honest contiguous block of the Farey sequence rather than an arbitrary list, §6 certifies adjacency. The reused engine — toRat_lt_iff (order is cross-multiplication), intermediate_denom_ge (any fraction strictly between a unimodular pair has denominator ≥ b + d), farey_adjacent_of_denom_sum_gt (b + d > n forces adjacency) — combines with farey4_block_unimodular and farey4_block_increasing in farey4_block_consecutive_in_F4: for each adjacent pair of the block the denominators sum past 4, so no order-4 fraction lies strictly between them. The block is therefore exactly five consecutive entries of F_4.",

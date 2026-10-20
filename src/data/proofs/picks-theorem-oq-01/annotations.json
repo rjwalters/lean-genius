@@ -27,10 +27,10 @@
     "id": "ann-pick01-primitive",
     "proofId": "picks-theorem-oq-01",
     "range": {
-      "startLine": 163,
-      "endLine": 183
+      "startLine": 156,
+      "endLine": 176
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "IsPrimitive: Unimodular Lattice Triangles",
     "content": "`IsPrimitive x₁ y₁ x₂ y₂ x₃ y₃ : Prop` asserts that `|x₁(y₂-y₃)+x₂(y₃-y₁)+x₃(y₁-y₂)| = 1`. This is the condition for a lattice triangle to contain no lattice points other than its three vertices. The `primitive_area` theorem proves that `IsPrimitive` triangles have shoelace area = 1/2 by simply unfolding the definition and rewriting with the hypothesis h (which states the absolute value equals 1), then `norm_num`.",
     "mathContext": "A lattice triangle is *primitive* (or *fundamental* or *unimodular*) if the edge vectors from one vertex to the other two form a basis for $\\mathbb{Z}^2$. Equivalently, the $2\\times 2$ determinant $\\det(v_2-v_1, v_3-v_1)$ has absolute value 1. In Pick's theorem terminology, primitive triangles have $i=0$ interior points, $b=3$ boundary points, and area $A = \\frac{1}{2}$, giving $0 + \\frac{3}{2} - 1 = \\frac{1}{2}$. Every lattice triangle can be subdivided into primitive triangles by adding lattice points on edges and in the interior.",

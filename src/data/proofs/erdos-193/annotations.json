@@ -26,7 +26,7 @@
     "proofId": "erdos-193",
     "type": "definition",
     "range": {
-      "startLine": 20,
+      "startLine": 21,
       "endLine": 27
     },
     "title": "Lattice Points, Walks, and Step Sets",
@@ -264,8 +264,8 @@
     "proofId": "erdos-193",
     "type": "theorem",
     "range": {
-      "startLine": 126,
-      "endLine": 158
+      "startLine": 127,
+      "endLine": 159
     },
     "title": "Singleton Step Sets: Walks on a Single Direction",
     "content": "When the step set is a singleton $S = \\{s\\}$, every step is identical, so the walk is the arithmetic progression $w(n) = w(0) + n\\,s$. `singleton_walk_pos` records the closed form, `singleton_step_collinear` shows any three of its points are collinear (they lie on one line), and `erdos193_singleton` concludes the conjecture for singleton step sets. This is the simplest nontrivial structural case.",
@@ -286,8 +286,8 @@
     "proofId": "erdos-193",
     "type": "concept",
     "range": {
-      "startLine": 162,
-      "endLine": 216
+      "startLine": 163,
+      "endLine": 217
     },
     "title": "Parallel Step Sets: All Steps Along One Line",
     "content": "`IsParallelStepSet S` captures step sets whose elements are all integer-multiples of a common direction $v$. `parallel_walk_on_line` shows such a walk stays on the affine line through $w(0)$ with direction $v$, `line_points_collinear` proves any three points on a line are collinear, and `parallel_step_collinear` + `erdos193_parallel` conclude the conjecture for all parallel step sets. This generalizes the singleton case from one step to many collinear steps.",

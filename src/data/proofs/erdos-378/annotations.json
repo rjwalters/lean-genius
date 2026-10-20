@@ -62,7 +62,7 @@
  {
   "id": "ann-e378-density",
   "proofId": "erdos-378",
-  "range": { "startLine": 178, "endLine": 187 },
+  "range": { "startLine": 355, "endLine": 364 },
   "type": "definition",
   "title": "Natural Density",
   "content": "`NaturalDensity S d` says the ratios |S ∩ [0,N)| / N converge to d. The count is `Set.ncard (S ∩ Set.Iio N)`, which needs **no decidability assumption** on S. `HasDensity S` asserts some density exists.",

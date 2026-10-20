@@ -38,7 +38,7 @@
   {
     "id": "ann-continuity-integrability",
     "proofId": "ballot-problem-oq-02-oq-03",
-    "range": { "startLine": 122, "endLine": 148 },
+    "range": { "startLine": 125, "endLine": 151 },
     "type": "theorem",
     "title": "Continuity and Interval Integrability of the Density (arcsineDensity_continuousOn, arcsineDensity_intervalIntegrable)",
     "content": "arcsineDensity_continuousOn shows f is continuous on every closed subinterval [a,b]⊂(0,1): it is ContinuousOn.div of the constant 1 by π·√(x(1−x)), whose denominator is continuous and strictly positive there because x(1−x)>0 for x∈(0,1) (so its square root is positive and the whole denominator nonzero — discharged by positivity). arcsineDensity_intervalIntegrable then upgrades continuity on the closed interval to interval-integrability via ContinuousOn.intervalIntegrable. Restricting to closed subintervals is essential: f is unbounded as x→0 or x→1, so it is NOT integrable on all of [0,1] in the proper sense.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-ftc",
     "proofId": "ballot-problem-oq-02-oq-03",
-    "range": { "startLine": 149, "endLine": 162 },
+    "range": { "startLine": 152, "endLine": 165 },
     "type": "theorem",
     "title": "Fundamental Theorem of Calculus on Subintervals (arcsineDensity_intervalIntegral)",
     "content": "arcsineDensity_intervalIntegral proves ∫ₐᵇ f = F(b)−F(a) for 0<a≤b<1, by intervalIntegral.integral_eq_sub_of_hasDerivAt. The two hypotheses it requires are exactly the previous results: the pointwise derivative identity arcsineCDF_hasDerivAt holds at every x in uIcc a b = [a,b] (each such x lies in (0,1)), and arcsineDensity_intervalIntegrable supplies the integrability of the derivative. Because the integral is over a closed subinterval where f is bounded, this is a proper integral and the classical FTC applies directly.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-normalization",
     "proofId": "ballot-problem-oq-02-oq-03",
-    "range": { "startLine": 163, "endLine": 215 },
+    "range": { "startLine": 166, "endLine": 218 },
     "type": "theorem",
     "title": "Total-Mass Normalization via Symmetric Exhaustion (arcsineCDF_continuous, arcsineDensity_symmetric_integral_tendsto_one)",
     "content": "Because f diverges at both endpoints, its total integral over (0,1) is improper and cannot be obtained from the FTC on [0,1] directly. arcsineCDF_continuous establishes that F=(2/π)·arcsin(√·) is continuous on all of ℝ (arcsin and sqrt are continuous everywhere — even where f blows up), and the simp lemmas arcsineCDF_zero/arcsineCDF_one record F(0)=0, F(1)=1. The capstone arcsineDensity_symmetric_integral_tendsto_one then proves ∫ over [a,1−a] of f → 1 as a→0⁺: on (0,1/2) the integral equals the FTC increment F(1−a)−F(a) (an eventuallyEq on the filter 𝓝[>]0, transferred with Tendsto.congr'), and by continuity of F at the endpoints F(1−a)−F(a) → F(1)−F(0) = 1−0 = 1. This certifies f as a genuine probability density: its improper integral over (0,1) is the total mass 1.",

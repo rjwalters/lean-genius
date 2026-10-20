@@ -29,7 +29,7 @@
     "id": "ann-setup-imports-seam",
     "proofId": "cauchy-interlacing-theorem-oq-01-oq-02",
     "range": {
-      "startLine": 49,
+      "startLine": 52,
       "endLine": 55
     },
     "type": "concept",
@@ -99,10 +99,10 @@
     "id": "ann-compression-span-frame",
     "proofId": "cauchy-interlacing-theorem-oq-01-oq-02",
     "range": {
-      "startLine": 134,
-      "endLine": 147
+      "startLine": 123,
+      "endLine": 146
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Compression onto the Span of an Orthonormal Frame",
     "content": "`poincare_separation_compression_span` replaces the explicit dimension hypothesis with an arbitrary orthonormal family `f : Fin n → V`, compressing onto `H = Submodule.span 𝕜 (Set.range f)`. The dimension `finrank H = n` is discharged inline by `finrank_span_eq_card hf.linearIndependent` composed with `Fintype.card_fin`. This is the literal 'eigenvalue interlacing under compression onto a k-dimensional subspace' phrasing, taking the subspace as the span of k orthonormal vectors.",
     "mathContext": "An orthonormal k-frame spans a k-dimensional subspace; compressing onto it gives μ with λ_{k+m} ≤ μ_k ≤ λ_k.",

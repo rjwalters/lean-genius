@@ -38,8 +38,8 @@
   {
     "id": "sod-oq0601-ann-prime-two-divisors",
     "proofId": "sum-of-divisors-oq-06-oq-01",
-    "range": { "startLine": 48, "endLine": 50 },
-    "type": "definition",
+    "range": { "startLine": 47, "endLine": 50 },
+    "type": "theorem",
     "title": "τ(p) = 2 characterises primes",
     "content": "The a = 1 specialisation: substituting a = 1 into τ(pᵃ) = a + 1 and rewriting p¹ = p (via `pow_one`) gives τ(p) = 2. Conceptually this is the defining property of a prime — exactly two divisors, 1 and p itself — recovered here as a corollary of the prime-power count rather than taken as an axiom. The converse (τ(n) = 2 ⟹ n prime) is the structural classification flagged in the entry's open questions.",
     "mathContext": "$\\tau(p) = 2$ for prime $p$ — the divisors are exactly $1$ and $p$. Conversely $\\tau(n) = 2 \\iff n$ is prime.",

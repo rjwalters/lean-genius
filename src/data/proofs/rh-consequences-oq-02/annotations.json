@@ -38,7 +38,7 @@
   {
     "id": "ann-bertrand-baseline",
     "proofId": "rh-consequences-oq-02",
-    "range": { "startLine": 119, "endLine": 126 },
+    "range": { "startLine": 120, "endLine": 127 },
     "type": "concept",
     "title": "Unconditional baseline: gap ≤ p_n from Bertrand's postulate",
     "content": "`primeGap_le_nthPrime` proves the *unconditional*, axiom-free bound `p_{n+1} - p_n ≤ p_n`. It applies `Nat.exists_prime_lt_and_le_two_mul` (Bertrand's postulate: a prime `q` with `p_n < q ≤ 2p_n`) and then the bridge lemma to get `p_{n+1} ≤ q ≤ 2p_n`, so `p_{n+1} - p_n ≤ p_n`. This linear bound is the honest yardstick against which RH's improvement is measured: RH sharpens the multiplicative factor from `p_n` all the way down to `√p_n · log p_n`.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-rh-axiom",
     "proofId": "rh-consequences-oq-02",
-    "range": { "startLine": 137, "endLine": 144 },
+    "range": { "startLine": 138, "endLine": 145 },
     "type": "concept",
     "title": "The single analytic axiom: RH forces a prime into every short interval",
     "content": "This is the one genuine assumption of the entry. `rh_implies_short_interval_prime` states that RH yields an absolute constant `C > 0` such that every interval `(x, x + C√x·log x]` with `x ≥ 2` contains a prime. Classically this follows from RH's control of the error term in π(x) via the explicit formula and zero-density estimates — machinery not yet in Mathlib, which is why it is axiomatized rather than proved. It is the *entire* analytic content of Cramér's theorem; everything else in the file is elementary. Note the axiom is stated as an implication from `RiemannHypothesis`, so the conditional structure is honest: no unconditional prime-distribution claim is smuggled in.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-bound-predicate",
     "proofId": "rh-consequences-oq-02",
-    "range": { "startLine": 150, "endLine": 154 },
+    "range": { "startLine": 151, "endLine": 155 },
     "type": "definition",
     "title": "The conditional gap-bound predicate",
     "content": "`PrimeGapBoundRH` spells out the big-O statement `p_{n+1} - p_n = O(√p_n·log p_n)` with an explicit witness constant: `∃ C > 0, ∀ n, (primeGap n : ℝ) ≤ C·√p_n·log p_n`. Making the constant existential and uniform in `n` is the correct formalization of a big-O bound; casting `primeGap n` to `ℝ` lets the √ and log live in `Real`.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-main-theorem",
     "proofId": "rh-consequences-oq-02",
-    "range": { "startLine": 156, "endLine": 178 },
+    "range": { "startLine": 157, "endLine": 179 },
     "type": "insight",
     "title": "Main theorem: the machine-checked reduction",
     "content": "`rh_implies_prime_gap_bound` performs the elementary reduction that constitutes the file's genuine mathematical content. Instantiate the short-interval axiom at `x = p_n ≥ 2` to obtain a prime `q` with `p_n < q ≤ p_n + C√p_n·log p_n`. The bridge lemma gives `p_{n+1} ≤ q`. The delicate step is casting the Nat gap to ℝ: `Nat.cast_sub (nthPrime_le_succ n)` turns `primeGap n` into `(p_{n+1} : ℝ) - (p_n : ℝ)`, safe precisely because the enumeration is monotone. A short `calc`/`linarith` chain then yields `p_{n+1} - p_n ≤ q - p_n ≤ C√p_n·log p_n`. No `native_decide` appears, so the file carries no `Lean.ofReduceBool` dependency — the lone assumption is the analytic axiom.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-restatement",
     "proofId": "rh-consequences-oq-02",
-    "range": { "startLine": 180, "endLine": 190 },
+    "range": { "startLine": 181, "endLine": 191 },
     "type": "concept",
     "title": "Readability restatement: a prime just past each p_n",
     "content": "`rh_implies_prime_after_each_prime` re-packages the axiom in prime-indexed form: under RH, for every `n` there is a prime `q` with `p_n < q ≤ p_n + C√p_n·log p_n`. It is immediate from the axiom (instantiated at `x = p_n`) and carries no new mathematical work — recorded only to make the short-interval consequence legible at the level of consecutive primes. The substantive theorem remains `rh_implies_prime_gap_bound`.",

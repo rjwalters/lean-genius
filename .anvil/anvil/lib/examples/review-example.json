@@ -1,0 +1,109 @@
+{
+  "schema_version": "1",
+  "kind": "judgment",
+  "version_dir": "acme-seed.3",
+  "critic_id": "memo-review",
+  "model": "claude-opus-4-7",
+  "rubric": "anvil-memo-v1",
+  "scores": [
+    {
+      "dimension": "recommendation_clarity",
+      "score": 4,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "acme-seed.3/memo.md:L8-L14",
+      "fix": "State the conditional in one sentence under the recommendation heading.",
+      "justification": "Recommendation is clear (conditional invest at $2M on revised milestones) but the conditional is split across two paragraphs in section 2."
+    },
+    {
+      "dimension": "thesis_coherence",
+      "score": 5,
+      "max": 6,
+      "critical": false,
+      "evidence_span": "acme-seed.3/memo.md:L24-L62",
+      "fix": "Tighten the second thesis branch: the causal link from procurement-cycle compression to ARR is asserted, not argued.",
+      "justification": "Thesis is falsifiable (\"if ACV stays under $40k we still hit Series A milestones at our check size\") and the supporting claims chain logically. One mid-chain claim (procurement compression) is asserted rather than argued."
+    },
+    {
+      "dimension": "evidence_quality",
+      "score": 3,
+      "max": 6,
+      "critical": false,
+      "evidence_span": "acme-seed.3/memo.md:L80-L110",
+      "fix": "Replace the unsourced TAM figure with a citation or remove the claim. Add a primary source for the win-rate number.",
+      "justification": "Two load-bearing numbers (TAM and the 38% win-rate) are unsourced. Other claims are well-sourced."
+    },
+    {
+      "dimension": "risk_honesty",
+      "score": 4,
+      "max": 6,
+      "critical": false,
+      "evidence_span": "acme-seed.3/memo.md:L130-L170",
+      "fix": "Add a fifth risk: regulatory exposure if HHS reverses its current procurement guidance.",
+      "justification": "Top 4 risks are named with mitigations. A fifth risk (regulatory exposure on HHS guidance) is visible elsewhere in the memo but omitted from the risks section."
+    },
+    {
+      "dimension": "market_framing",
+      "score": null,
+      "max": 4,
+      "critical": false,
+      "evidence_span": null,
+      "fix": null,
+      "justification": "n/a — see memo-market critic."
+    },
+    {
+      "dimension": "financial_reasoning",
+      "score": 4,
+      "max": 5,
+      "critical": false,
+      "evidence_span": "acme-seed.3/memo.md:L200-L240",
+      "fix": "Add a downside-case sensitivity table — current scenarios are base and upside only.",
+      "justification": "Unit economics, CAC payback, and capital efficiency are quantified. Sensitivity table covers two scenarios; a downside is missing."
+    },
+    {
+      "dimension": "scope_discipline",
+      "score": 4,
+      "max": 4,
+      "critical": false,
+      "evidence_span": null,
+      "fix": null,
+      "justification": "Memo stays within scope. No appendix bloat. Length proportionate to a seed-stage decision."
+    },
+    {
+      "dimension": "prose_structure",
+      "score": 3,
+      "max": 4,
+      "critical": false,
+      "evidence_span": "acme-seed.3/memo.md:L62",
+      "fix": "Define \"shadow pipeline\" on first use; the term appears five times before the gloss in the appendix.",
+      "justification": "Navigable structure, terse prose. One undefined term (\"shadow pipeline\") used before its first gloss."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "major",
+      "dimension": "evidence_quality",
+      "evidence_span": "acme-seed.3/memo.md:L92",
+      "rationale": "TAM figure of $12B is unsourced; the cited PitchBook report covers only the federal sub-segment ($1.4B).",
+      "suggested_fix": "Either cite the broader TAM source or constrain the claim to the federal sub-segment."
+    },
+    {
+      "severity": "minor",
+      "dimension": "risk_honesty",
+      "evidence_span": "acme-seed.3/memo.md:L155",
+      "rationale": "Risk #4 mitigates by reference to a partner relationship that is described as \"early-stage\" elsewhere in the memo.",
+      "suggested_fix": "Either qualify the mitigation or downgrade it; the current phrasing implies a stronger commitment than the partnership status supports."
+    },
+    {
+      "severity": "nit",
+      "dimension": "prose_structure",
+      "evidence_span": "acme-seed.3/memo.md:L62",
+      "rationale": "\"Shadow pipeline\" is undefined on first use.",
+      "suggested_fix": "Add a one-line gloss inline."
+    }
+  ],
+  "critical_flags": [],
+  "total": 27,
+  "threshold": 32,
+  "verdict": "REVISE"
+}

@@ -52,9 +52,22 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HELPERS_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 MERGE_PR_SRC="$HELPERS_DIR/merge-pr.sh"
 
+# #8191: the ref extractors now delegate to `loom-daemon merge-pr-refs`. Pin
+# the binary they exec and verify it HAS that subcommand — the same harness the
+# epic's five other ported suites use. Without the subcommand check, a stale
+# binary would make every extractor return empty, and "no references found" is
+# the reading that closes an unfinished issue.
+# shellcheck source=lib/require-daemon-bin.sh
+source "$SCRIPT_DIR/lib/require-daemon-bin.sh"
+# The post-merge reset's decision is `loom-daemon merge-pr partial-reset`
+# and the pre-merge conflict guard's is `merge-pr partial-conflict` (#8191
+# slices), so the same binary must carry both verbs too.
+loom_test_require_daemon_bin "$HELPERS_DIR" merge-pr-refs "merge-pr partial-reset" "merge-pr partial-conflict"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+YELLOW='\033[0;33m'  # retired() below
 NC='\033[0m'
 
 TESTS_RUN=0
@@ -73,6 +86,18 @@ assert_eq() {
         echo "    Expected: '$expected'"
         echo "    Actual:   '$actual'"
     fi
+}
+
+# An assertion that CANNOT survive the port to Rust, retired under the
+# three-part test in defaults/docs/verification-recipes.md §6. Printed, not
+# deleted: a reader must be able to see what was removed, why, and what proves
+# the property now. Counted as run so the totals stay honest.
+retired() { # <what> <property> <why-structural> <successor>
+    TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "  ${YELLOW}RETIRED${NC}: $1"
+    echo "      property:   $2"
+    echo "      structural: $3"
+    echo "      successor:  $4"
 }
 
 assert_contains() {
@@ -110,6 +135,14 @@ assert_not_contains() {
 info()    { echo "INFO: $*"; }
 success() { echo "OK: $*"; }
 warning() { echo "WARN: $*" >&2; }
+# _mp_refs's fail-closed path calls error(), same as merge-pr.sh's own (echo to
+# stderr, exit 1) -- #8897's new BT4 case is the first in this suite to reach
+# it. Without a real `exit`, bash's command-substitution subshells do NOT
+# inherit `-e` by default (no `inherit_errexit`), so an undefined `error`
+# would silently no-op ("command not found") instead of aborting the subshell
+# the way production's error() does, masking the exact fail-open/fail-closed
+# distinction this suite exists to pin.
+error()   { echo "ERROR: $*" >&2; exit 1; }
 
 # --- Real forge-helpers.sh (for the #4856 rate-limit-safe mutation wrappers) ---
 # merge-pr.sh's mutating call sites no longer invoke `gh issue edit` / `gh issue
@@ -127,28 +160,40 @@ source "$HELPERS_DIR/lib/forge-helpers.sh"
 
 # --- Extract the functions under test from merge-pr.sh and source them ---
 # Two spans, each bounded by an anchor line that is NOT part of the span:
-#   1. `_partial_increment_refs() {` .. `_check_partial_increment_close_conflict
-#      || true` — the #4569 pre-merge guard and its two pure-text ref extractors.
+#   1. `_strip_fenced_code_blocks() {` .. `_check_partial_increment_close_conflict
+#      || true` — the #4569 pre-merge guard, its pure-text ref extractors, and
+#      the #5234 code-span/fence-stripping helper the extractors depend on.
 #      Stopping at the INVOCATION line keeps the top-level call out of the
 #      sourced file (we drive the guard explicitly from the tests).
 #   2. `_reset_one_partial_issue() {` .. `# Handle auto-merge mode` — the
 #      post-merge reset/reopen pass.
 # Both spans contain only function definitions plus comments (harmless when
 # sourced).
+#
+# Two lines are pulled in from OUTSIDE both spans: the one-line
+# `_mp_daemon_roll_hint` (which `_mp_refs`'s refusal path calls, and which is
+# defined above span 1 because the verdict-label guard needs it earlier) and
+# every `# requires-daemon:` marker comment (which that function reads back out
+# of ${BASH_SOURCE[0]} — i.e. out of THIS extracted file, so the markers have to
+# travel with it). #8285's own suite,
+# test-merge-pr-daemon-version-floor.sh, is what asserts on that message; here
+# they exist only so the refusal path is not a dangling call.
 FUNCS_FILE="$(mktemp)"
 trap 'rm -rf "$FUNCS_FILE" "$STUB_DIR" 2>/dev/null || true' EXIT
 awk '
-  /^_partial_increment_refs\(\) \{/                     { capture=1 }
+  /^# requires-daemon:/                                  { print; next }
+  /^_mp_daemon_roll_hint\(\) \{/                         { print; next }
+  /^_strip_fenced_code_blocks\(\) \{/                    { capture=1 }
   /^_check_partial_increment_close_conflict \|\| true/   { capture=0 }
   /^_reset_one_partial_issue\(\) \{/                    { capture=1 }
   /^# Handle auto-merge mode/                           { capture=0 }
   capture { print }
 ' "$MERGE_PR_SRC" > "$FUNCS_FILE"
 
-for _fn in _partial_increment_refs _closing_refs_stdin _body_closing_refs \
-           _closing_ref_snippets _pr_commit_messages \
-           _check_partial_increment_close_conflict _reset_one_partial_issue \
-           _reset_partial_increment_labels; do
+for _fn in _strip_fenced_code_blocks _partial_increment_refs _closing_refs_stdin \
+           _body_closing_refs _closing_ref_snippets _partial_increment_ref_snippets \
+           _pr_commit_messages _check_partial_increment_close_conflict \
+           _reset_one_partial_issue _reset_partial_increment_labels; do
     if ! grep -q "^${_fn}() {" "$FUNCS_FILE"; then
         echo -e "${RED}FATAL${NC}: could not extract $_fn from $MERGE_PR_SRC" >&2
         exit 2
@@ -250,6 +295,17 @@ cat > "$STUB_DIR/issue-888.json" <<'EOF'
 EOF
 cat > "$STUB_DIR/issue-321.json" <<'EOF'
 {"state":"open","pull_request":{"url":"x"},"labels":[{"name":"loom:building"}]}
+EOF
+cat > "$STUB_DIR/issue-4574.json" <<'EOF'
+{"state":"open","labels":[{"name":"loom:building"}]}
+EOF
+# PA6 fixtures: a numbered-list declaration `3. Part of #789` whose marker
+# ordinal (3) collides with a genuine `Closes #3` elsewhere in the same body.
+cat > "$STUB_DIR/issue-3.json" <<'EOF'
+{"state":"open","labels":[{"name":"loom:building"}]}
+EOF
+cat > "$STUB_DIR/issue-789.json" <<'EOF'
+{"state":"open","labels":[{"name":"loom:building"}]}
 EOF
 
 # Canned `pulls/<N>/commits` payload: one JSON commit object per message given.
@@ -394,6 +450,249 @@ assert_eq "" "$(_body_closing_refs 'close issue #123')" \
   "'close issue #123' is NOT a closing reference (keyword not adjacent to #N)"
 assert_eq "1234" "$(_body_closing_refs 'Closes #1234')" \
   "Full number is extracted (no #123 prefix confusion)"
+
+echo ""
+echo "Testing _partial_increment_refs prose/code-span guarding (#5234)..."
+
+# PA1: the exact #5234 incident shape — a mid-sentence, backticked, conditional
+# mention of `Part of #4574` inside a paragraph addressed to the Judge, plus
+# the real, declared `Closes #4574` elsewhere in the body. The backticked
+# mention is prose describing a hypothetical ("if you would rather... I will
+# switch the reference to"), not a declaration, and must NOT be read as one.
+incident_body='Summary of the fix.
+
+Judge: if you would rather this stay open until #4580 lands, say so and I will switch the reference to `Part of #4574`.
+
+More detail about the change.
+
+Closes #4574'
+assert_eq "" "$(_partial_increment_refs "$incident_body")" \
+  "#5234 incident: backticked, mid-sentence 'Part of #4574' is NOT read as a declaration"
+
+reset_log
+PR_JSON="$(jq -n --arg body "$incident_body" '{body: $body}')"
+_check_partial_increment_close_conflict 2>/dev/null
+assert_eq "" "$PARTIAL_CONFLICT_ISSUES" \
+  "#5234 incident: no conflict recorded — the real 'Closes #4574' stands unopposed"
+assert_eq "" "$PARTIAL_OPEN_BEFORE_MERGE" \
+  "#5234 incident: #4574 is not tracked as a partial-increment ref at all (no declaration found)"
+
+# PA2: companion — a genuine, line-leading `Part of #4574` trailer (its own
+# line, no backticks) still triggers the existing partial-increment path, and
+# a conflicting closing reference elsewhere in the body is still detected. Also
+# verifies AC #4: the warning quotes the matched declaration text.
+genuine_body='Summary of the fix.
+
+Part of #4574
+
+Closes #4574'
+assert_eq "4574" "$(_partial_increment_refs "$genuine_body")" \
+  "Companion: genuine line-leading 'Part of #4574' IS read as a declaration"
+
+reset_log
+PR_JSON="$(jq -n --arg body "$genuine_body" '{body: $body}')"
+run_capturing_stderr _check_partial_increment_close_conflict
+genuine_err="$(read_stderr)"
+assert_eq "4574" "$PARTIAL_CONFLICT_ISSUES" \
+  "Companion: genuine 'Part of #4574' + 'Closes #4574' -> conflict recorded (existing path still fires)"
+assert_contains "$genuine_err" '("Part of #4574")' \
+  "Companion: warning quotes the matched declaration text with context (AC #4)"
+assert_contains "$genuine_err" 'Closes #4574' \
+  "Companion: warning also quotes the offending closing-keyword text"
+
+# PA3: `Part of #123` shown inside a FENCED code block (not just inline
+# backticks) is also excluded — a documentation example, not a live
+# declaration.
+fenced_body='Example usage of the convention:
+
+```
+Part of #123
+```
+
+Closes #123'
+assert_eq "" "$(_partial_increment_refs "$fenced_body")" \
+  "Fenced code block: 'Part of #123' inside a triple-backtick fence is NOT a declaration"
+
+# PA4: mid-sentence prose (no backticks at all) referencing the pattern is
+# still excluded by the line-leading anchor alone.
+prose_body='This work is part of #123, a larger initiative that will continue after this PR.'
+assert_eq "" "$(_partial_increment_refs "$prose_body")" \
+  "Mid-sentence prose 'part of #123' (no backticks) is NOT a declaration (line-leading anchor)"
+
+# PA5: a list-marker-prefixed declaration still counts (AC: "optionally after
+# list-marker/whitespace").
+list_body='Changes in this increment:
+
+- Part of #123'
+assert_eq "123" "$(_partial_increment_refs "$list_body")" \
+  "List-marker prefix: '- Part of #123' still counts as a declaration"
+
+# PA6: a NUMBERED list marker carries its own digits, which the second-stage
+# extraction must not mistake for an issue number. PA5 only covers a dash
+# marker (no digits to leak), so this case is what caught the regression: with
+# a naive `grep -oE '[0-9]+'` over the whole matched span, `3. Part of #789`
+# yielded BOTH `3` and `789`. Paired with a genuine `Closes #3` elsewhere in
+# the body, that spuriously registers #3 as a declared partial increment AND a
+# closing reference — the exact false-positive-reopen shape #5234 exists to
+# eliminate, reintroduced through the list-marker support itself.
+numbered_body='Changes in this increment:
+
+3. Part of #789
+
+Closes #3'
+assert_eq "789" "$(_partial_increment_refs "$numbered_body")" \
+  "Numbered list marker: '3. Part of #789' yields ONLY 789 — the marker ordinal 3 does not leak"
+
+reset_log
+PR_JSON="$(jq -n --arg body "$numbered_body" '{body: $body}')"
+_check_partial_increment_close_conflict 2>/dev/null
+assert_eq "" "$PARTIAL_CONFLICT_ISSUES" \
+  "Numbered list marker: no conflict — 'Closes #3' stands, #3 is not a partial-increment ref"
+assert_eq "789" "$PARTIAL_OPEN_BEFORE_MERGE" \
+  "Numbered list marker: only the real declaration target (#789) is tracked as open before the merge"
+
+# PA7: blockquote marker (`>`), the other marker branch the regex claims to
+# support and that no test previously exercised.
+quoted_body='Context from the epic:
+
+> Part of #456'
+assert_eq "456" "$(_partial_increment_refs "$quoted_body")" \
+  "Blockquote marker: '> Part of #456' still counts as a declaration"
+
+echo ""
+echo "Testing backticked-trailer warning (#5690, ported to Rust #8831)..."
+
+# #8831: the detection logic (_backticked_partial_increment_trailer_refs /
+# _backticked_partial_increment_trailer_snippets) and the warning-message
+# assembly moved to loom-daemon (cli/merge_pr_refs.rs's
+# `backticks-partial-increment-warnings`, loom_daemon::merge_pr::refs) to keep
+# the portable shell pool net zero (Shell Budget Ratchet). BT2-BT7 exercised
+# the detector's regex shape directly and are retired in favor of the byte-
+# identical port's own unit tests
+# (loom-daemon/src/merge_pr/refs/tests.rs::bt2_.. through bt7_..). BT1 and BT8
+# stay HERE as call-site wiring pins: they prove merge-pr.sh's own guard still
+# invokes the daemon correctly and still surfaces the warning end to end —
+# they do not re-litigate the regex shape.
+retired "BT2: plain-text trailer does not warn" \
+  "a real 'Part of #N' trailer must not trigger the backticked-trailer warning" \
+  "detection logic moved to loom-daemon (#8831); shell no longer defines the detector to call directly" \
+  "loom-daemon/src/merge_pr/refs/tests.rs::bt2_a_plain_text_trailer_does_not_warn"
+retired "BT3: mid-sentence backticked mention does not warn" \
+  "prose describing a hypothetical must stay silent" \
+  "detection logic moved to loom-daemon (#8831)" \
+  "loom-daemon/src/merge_pr/refs/tests.rs::bt3_a_mid_sentence_backticked_mention_does_not_warn"
+retired "BT4: a line listing backticked trailers as examples does not warn" \
+  "documentation prose is not an attempted declaration" \
+  "detection logic moved to loom-daemon (#8831)" \
+  "loom-daemon/src/merge_pr/refs/tests.rs::bt4_a_line_listing_backticked_trailers_as_examples_does_not_warn"
+retired "BT5: a backticked trailer inside a fenced block does not warn" \
+  "fenced code blocks are stripped before matching" \
+  "detection logic moved to loom-daemon (#8831)" \
+  "loom-daemon/src/merge_pr/refs/tests.rs::bt5_a_backticked_trailer_inside_a_fenced_block_does_not_warn"
+retired "BT6: an issue named by both shapes is not warned about" \
+  "the plain-text trailer's declaration wins; the reset fires regardless" \
+  "detection logic moved to loom-daemon (#8831)" \
+  "loom-daemon/src/merge_pr/refs/tests.rs::bt6_an_issue_named_by_both_shapes_is_not_warned_about"
+retired "BT7: marker-prefixed and numbered-list forms; the PA6 ordinal trap" \
+  "a numbered-list marker's own ordinal must not leak in as an issue number" \
+  "detection logic moved to loom-daemon (#8831)" \
+  "loom-daemon/src/merge_pr/refs/tests.rs::bt7_marker_prefixed_and_numbered_list_forms"
+
+# BT1 (wiring pin): the exact incident shape — PR #5686's body wrote the
+# trailer as `Part of #5240` (whole line, wrapped in an inline code span)
+# instead of the plain `Part of #5240`. #5234's code-span exclusion correctly
+# reads that as a non-declaration, so the #3667 reset silently no-opped and
+# #5240 was stranded at loom:building with no log line anywhere. The parser's
+# answer must NOT change; the guard's warning is what makes the silence
+# visible — and this proves merge-pr.sh's call site still wires it up after
+# the port.
+backticked_body='## Summary
+
+Implements the first slice.
+
+`Part of #5240`'
+assert_eq "" "$(_partial_increment_refs "$backticked_body")" \
+  "#5690 incident: backticked '\`Part of #5240\`' is still NOT a declaration (#5234 unchanged)"
+
+reset_log
+PR_JSON="$(jq -n --arg body "$backticked_body" '{body: $body}')"
+run_capturing_stderr _check_partial_increment_close_conflict
+bt_err="$(read_stderr)"
+assert_contains "$bt_err" "Backticked partial-increment trailer (#5690)" \
+  "#5690 incident: pre-merge guard emits the backticked-trailer warning"
+assert_contains "$bt_err" '"`Part of #5240`"' \
+  "#5690 incident: warning quotes the offending line verbatim"
+assert_contains "$bt_err" '#5240' \
+  "#5690 incident: warning names the affected issue"
+assert_eq "" "$PARTIAL_CONFLICT_ISSUES" \
+  "#5690 incident: warning is advisory only — no conflict recorded"
+assert_eq "" "$PARTIAL_OPEN_BEFORE_MERGE" \
+  "#5690 incident: warning does not add the issue to the partial-increment tracking sets"
+assert_eq "" "$(read_log)" \
+  "#5690 incident: warning is non-blocking and mutates nothing"
+
+# BT2 (wiring pin, renumbered from BT8): --dry-run prefixes the warning,
+# matching the conflict warnings' contract — proves the guard forwards
+# DRY_RUN to the daemon subcommand correctly.
+reset_log
+PR_JSON="$(jq -n --arg body "$backticked_body" '{body: $body}')"
+# Set/unset explicitly rather than `DRY_RUN=true run_capturing_stderr …`:
+# in bash, a variable assignment preceding a SHELL FUNCTION call leaks into the
+# calling shell afterwards, which would silently flip every later case to
+# dry-run mode.
+DRY_RUN=true
+run_capturing_stderr _check_partial_increment_close_conflict
+unset DRY_RUN
+assert_contains "$(read_stderr)" "[dry-run] Backticked partial-increment trailer (#5690)" \
+  "Dry run: warning carries the [dry-run] prefix"
+
+# BT3 (wiring pin): a plain-text-only body must not warn — proves the guard
+# does not fire the daemon subcommand's finding when there is nothing to
+# report (the common, non-#5690 path).
+reset_log
+PR_JSON='{"body":"## Summary\n\nImplements the first slice.\n\nPart of #123"}'
+run_capturing_stderr _check_partial_increment_close_conflict
+assert_not_contains "$(read_stderr)" "Backticked partial-increment trailer (#5690)" \
+  "Plain-text 'Part of #123' trailer: no warning (declaration parses, reset will fire)"
+
+# BT4 (#8897): a daemon that answers `merge-pr-refs closing-refs` /
+# `partial-increment-refs` but REJECTS `backticks-partial-increment-warnings`
+# (the daemon predates that mode, #8808) must not print _mp_refs's
+# hardcoded, fail-closed "Refusing..." wording -- that text is hardcoded to
+# the closing-reference case, so on THIS mode it names the wrong PR (#8191)
+# and cites a roll-hint version this host already satisfies, while the merge
+# proceeds regardless (the `local var=$(...)` exit-status swallow, unrelated
+# to this fix, that makes the call fail-open in practice already). The call
+# site must instead report a quiet, advisory skip.
+fake_daemon="$STUB_DIR/fake-loom-daemon-no-bt-mode"
+cat > "$fake_daemon" <<'FAKEDAEMON'
+#!/usr/bin/env bash
+# Simulates a loom-daemon predating #8808: answers merge-pr-refs for every
+# mode EXCEPT backticks-partial-increment-warnings, which it rejects the way
+# clap rejects an unknown subcommand (nonzero exit, no stdout).
+if [[ "$1" == "merge-pr-refs" && "$2" == "backticks-partial-increment-warnings" ]]; then
+  echo "error: unrecognized subcommand 'backticks-partial-increment-warnings'" >&2
+  exit 2
+fi
+exit 0
+FAKEDAEMON
+chmod +x "$fake_daemon"
+
+reset_log
+PR_JSON='{"body":"Implements a slice.\n\nPart of #123"}'
+saved_self_bin="${LOOM_DAEMON_SELF_BIN:-}"
+export LOOM_DAEMON_SELF_BIN="$fake_daemon"
+run_capturing_stderr _check_partial_increment_close_conflict
+no_bt_mode_err="$(read_stderr)"
+export LOOM_DAEMON_SELF_BIN="$saved_self_bin"
+assert_not_contains "$no_bt_mode_err" "Refusing" \
+  "#8897: daemon rejecting backticks-partial-increment-warnings -> no 'Refusing' wording printed"
+assert_not_contains "$no_bt_mode_err" "#8191" \
+  "#8897: daemon rejecting backticks-partial-increment-warnings -> does not blame the closing-ref analysis (#8191)"
+assert_contains "$no_bt_mode_err" "Skipped backticked-trailer advisory warning check" \
+  "#8897: daemon rejecting backticks-partial-increment-warnings -> quiet skip note printed instead"
+assert_eq "" "$(read_log)" \
+  "#8897: the skip is advisory only -- no forge mutation results from it"
 
 echo ""
 echo "Testing _check_partial_increment_close_conflict (pre-merge guard)..."
@@ -608,6 +907,31 @@ assert_not_contains "$nofetch_err" "simulated commits fetch failure" \
   "No partial-increment ref -> commits endpoint is never called"
 unset LOOM_TEST_COMMITS_FAIL
 
+# T31 (#8191): the conflict decision moved to `loom-daemon merge-pr
+# partial-conflict`. A daemon that cannot answer must REFUSE the merge -- an
+# unread plan is not an empty one, and read as empty it would record nothing
+# for the post-merge pass to revert -- while --dry-run only reports it.
+reset_log
+fake_no_conflict="$STUB_DIR/fake-loom-daemon-no-partial-conflict"
+printf '#!/usr/bin/env bash\necho "error: unrecognized subcommand" >&2\nexit 2\n' > "$fake_no_conflict"
+chmod +x "$fake_no_conflict"
+saved_bin="${LOOM_DAEMON_BIN:-}"
+export LOOM_DAEMON_BIN="$fake_no_conflict"
+PR_JSON='{"body":"Verify, then close #123.\n\nContributes to #123"}'
+nc_rc=0
+( _check_partial_increment_close_conflict ) 2>"$STUB_DIR/stderr.log" || nc_rc=$?
+assert_eq "1" "$nc_rc" "#8191: daemon without 'merge-pr partial-conflict' -> the merge is refused"
+assert_contains "$(read_stderr)" "partial-increment close-conflict guard (#4569) could not run" \
+  "#8191: the refusal names the guard that could not run"
+DRY_RUN=true
+nc_rc=0
+( _check_partial_increment_close_conflict ) 2>"$STUB_DIR/stderr.log" || nc_rc=$?
+DRY_RUN=false
+export LOOM_DAEMON_BIN="$saved_bin"
+assert_eq "0" "$nc_rc" "#8191: --dry-run with no answerable daemon -> reported, not exited"
+assert_contains "$(read_stderr)" "[dry-run] Would BLOCK merge of PR #999" \
+  "#8191: --dry-run phrases the refusal as conditional"
+
 echo ""
 echo "Testing the post-merge premature-close revert..."
 
@@ -651,14 +975,55 @@ _reset_partial_increment_labels 2>/dev/null
 assert_eq "" "$(read_log)" \
   "Untracked closed #777 -> unchanged log-and-skip behavior"
 
+# T29 (#8191): the reset's decision moved to `loom-daemon merge-pr
+# partial-reset`. A daemon that cannot answer (missing, or predating the verb)
+# must degrade to a loud warning naming the manual swap -- never a guessed
+# mutation, and never a silent skip that leaves loom:building orphaned unseen.
+reset_log
+fake_no_reset="$STUB_DIR/fake-loom-daemon-no-partial-reset"
+cat > "$fake_no_reset" <<'FAKEDAEMON'
+#!/usr/bin/env bash
+echo "error: unrecognized subcommand 'partial-reset'" >&2
+exit 2
+FAKEDAEMON
+chmod +x "$fake_no_reset"
+saved_bin="${LOOM_DAEMON_BIN:-}"
+export LOOM_DAEMON_BIN="$fake_no_reset"
+PR_JSON='{"body":"Part of #123"}'
+run_capturing_stderr _reset_partial_increment_labels
+no_reset_err="$(read_stderr)"
+export LOOM_DAEMON_BIN="$saved_bin"
+assert_eq "" "$(read_log)" \
+  "#8191: daemon without 'merge-pr partial-reset' -> no label mutation is guessed"
+assert_contains "$no_reset_err" "Partial-increment reset for issue #123 did not run" \
+  "#8191: daemon without 'merge-pr partial-reset' -> the skipped reset is reported"
+assert_contains "$no_reset_err" "gh issue edit 123 --repo owner/repo --remove-label loom:building --add-label loom:issue" \
+  "#8191: the report names the exact manual swap"
+
+# T30 (#8191): a failed reopen stops the pass -- the plan's later SWAP must not
+# run against an issue that is still closed. (The reopen wrapper is overridden
+# in a subshell; the gh call log is on disk, so the assertion still sees it.)
+reset_log
+PARTIAL_OPEN_BEFORE_MERGE="777"
+PARTIAL_CONFLICT_ISSUES="777"
+PR_JSON='{"body":"Verify, then close #777.\n\nContributes to #777"}'
+( forge_gh_reopen_issue_rl_safe() { return 1; }; _reset_partial_increment_labels ) 2>"$STUB_DIR/stderr.log" || true
+reopen_fail_err="$(read_stderr)"
+assert_not_contains "$(read_log)" "issue edit 777" \
+  "#8191: failed reopen of #777 -> no label swap follows it"
+assert_contains "$reopen_fail_err" "Could not reopen issue #777 after its premature auto-close" \
+  "#8191: failed reopen of #777 -> warns with the manual reopen command"
+
 # --- Source-contains guards (fail if a refactor drops the key behavior) ---
 echo ""
 echo "Testing merge-pr.sh source guards..."
 src="$(cat "$MERGE_PR_SRC")"
 assert_contains "$src" "_reset_partial_increment_labels" \
   "merge-pr.sh defines and calls _reset_partial_increment_labels"
-assert_contains "$src" "(Part of|Contributes to)" \
-  "merge-pr.sh matches the non-closing partial-increment keywords"
+retired "merge-pr.sh's source contains the (Part of|Contributes to) alternation" \
+    "the non-closing partial-increment vocabulary must not be silently narrowed or dropped by a refactor -- a dropped keyword means a declared partial increment is read as a plain close" \
+    "the alternation is no longer in this file; it is a Rust pattern in loom-daemon/src/merge_pr/refs.rs, so no grep of merge-pr.sh can pass" \
+    "merge_pr::refs::tests::a_line_leading_declaration_is_still_read pins all nine accepted spellings, and tests/merge_pr_refs_differential.rs proves the port agrees with the RETIRED shell byte-for-byte on a 29-entry corpus (frozen fixture). A scan checks the text is present; the differential checks the behaviour is identical, which subsumes it."
 # The label swap / reopen / comment mutations route through the #4856
 # rate-limit-safe wrappers in lib/forge-helpers.sh, so the source guards assert
 # on the WRAPPER call sites (with their label/issue arguments) rather than the
@@ -680,12 +1045,22 @@ assert_contains "$src" 'forge_gh_reopen_issue_rl_safe "$REPO_NWO" "$issue_num"' 
   "merge-pr.sh reverts a premature auto-close via the rate-limit-safe reopen wrapper (#4856)"
 assert_contains "$src" 'forge_gh_comment_rl_safe "$REPO_NWO" "$issue_num" "$comment"' \
   "merge-pr.sh posts the partial-increment / premature-close comments via the rate-limit-safe wrapper (#4856)"
-assert_contains "$src" 'close[sd]?|fix(e[sd])?|resolve[sd]?' \
-  "merge-pr.sh matches the canonical GitHub closing-keyword set"
+retired "merge-pr.sh's source contains the closing-keyword alternation" \
+    "the GitHub closing-keyword set (and its \\b guard, which is what stops 'Discloses #N' matching) must not drift from the one forge_pr_close_targets uses" \
+    "the alternation is now a Rust pattern; the grep cannot pass against this file" \
+    "merge_pr::refs::tests::every_documented_closing_keyword_form_is_recognised pins all ten forms and a_keyword_substring_does_not_match pins the boundary; the differential confirms agreement with the retired shell."
 assert_contains "$src" 'repos/$REPO_NWO/pulls/$PR_NUMBER/commits' \
   "merge-pr.sh reads the PR's commit messages for closing keywords (#4595)"
 assert_contains "$src" '--paginate' \
   "merge-pr.sh paginates the commits fetch (>30-commit PRs are not truncated)"
+assert_contains "$src" '_strip_fenced_code_blocks' \
+  "merge-pr.sh strips fenced code blocks before matching a partial-increment declaration (#5234)"
+retired "merge-pr.sh's source contains the inline-code-span strip" \
+    "inline code spans are blanked before the line-leading anchor runs, so the anchor sees the text a reader sees rather than the raw markup. (The #5234 incident itself is caught by the ANCHOR, not by this strip: its mention is mid-sentence. On a single line the strip only ever ADDS matches -- measured, 0 of 29 corpus entries change without it.)" \
+    "the strip is now blank_inline_code() in Rust; this file no longer runs sed" \
+    "merge_pr::refs::tests::the_inline_code_strip_changes_the_answer_and_this_pins_which_way, which asserts the one single-line shape where the strip is load-bearing (\"\`x\` Part of #5\" -> [5]) and would fail if the strip were removed -- the property the original successor did NOT pin."
+assert_contains "$src" '_partial_increment_ref_snippets' \
+  "merge-pr.sh quotes the matched partial-increment declaration text in the pre-merge warning (#5234 AC #4)"
 
 # --- Summary ---
 echo ""

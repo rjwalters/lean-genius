@@ -1,3 +1,76 @@
+# DOCTOR RE-VERIFY WAVE (Opus, #38065, 2026-09-23) — post-flip ledger reconciliation
+
+First Doctor increment run **after the migration flip landed on `main`** (#39062), so the base is
+`main`, not `feature/issue-37508`. All builds `./proofs/scripts/docker-build.sh Proofs.<M>` in the
+v4.31 container (`lean4-arm64:v4.31.0`, shared `lean-mathlib-cache` / `lean-mathlib-packages`
+volumes), one container at a time.
+
+**Ledger: 2659 → 2699 rows; 2625 → 2667 GREEN; 6 → 4 RESIDUAL; PRE-EXISTING unchanged (28).**
+
+## 1. The 6 RESIDUAL rows were re-verified zero-edit — 2 were STALE
+
+| Module | ledger class (before) | rebuild | after |
+|---|---|---|---|
+| `Erdos10Incomplete01OQ02` | `slow-timeout` | exit 0, 20s | **GREEN** |
+| `Erdos10WIP01OQ03` | `slow-timeout` | exit 0, 25s | **GREEN** |
+| `BallotProblemOQ03OQ01OQ02` | `type-mismatch` | FAIL 26s | RESIDUAL (dep) |
+| `BallotProblemOQ03OQ01OQ02Aristotle` | `type-mismatch` | FAIL 26s | RESIDUAL (dep) |
+| `BallotProblemOQ03OQ01OQ02Helpers` | `type-mismatch` | FAIL 35s | RESIDUAL (deep) |
+| `Erdos1162Problem` | `unknown-const:Nat.card_pos_of_nonempty` | FAIL 26s → 26s | RESIDUAL (deep) |
+
+Both `slow-timeout` rows were stale: their diagnosed cause was heartbeat timeouts **inside the
+dependency** `Proofs/Erdos10OQ01Incomplete01.lean` (diag-W0ac lines 94/115/123/134). That
+dependency now builds green on its own in 20s (`Build completed successfully (2969 jobs)`), and both
+dependents follow. No edit was needed — the diag simply predated a later repair of the parent.
+
+## 2. The Ballot triple is ONE root cause, not three
+
+`BallotProblemOQ03OQ01OQ02` and `…OQ02Aristotle` both fail with the *same first error*,
+`Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:166:4: omega could not prove the goal` — i.e. they are
+pure dependents. The old diag pointing at `BallotProblemOQ03OQ02` is stale: that module is green on
+its own (exit 0, 30s, 8576 jobs).
+
+`…Helpers` itself (15,995 lines) produces **101 errors and hits Lean's `maxErrors` cap (100)** at
+line 1424 of 15,995, so the true error count is unknown and larger. Error mix: 10 `simp made no
+progress`, 9 `unsolved goals`, 9+8+7+1 `don't know how to synthesize placeholder / implicit argument
+a|b|ha`, 6 `Function expected at`, 5 `subst failed: invalid equality proof`, 5 `No goals to be
+solved`, 4 `failed to infer have declaration type`, 4 `Application type mismatch`, 3 `rewrite failed`,
+3 `omega`, 3 `Invalid ⟨...⟩ notation`, plus singleton unknown-constants (`YoungDiagram.mem_cells.mp`,
+`Nat.eq_or_gt_of_le`, `List.Sorted`, `Finset.card_Ico`, `Finset.card_Icc`). **Not a bounded
+increment** — routed to the existing open issue #39060; the three ledger rows now carry
+`deep-rework:…(#39060)` instead of the misleading `type-mismatch`.
+
+## 3. `Erdos1162Problem` — 3 of 4 error classes fixed (file-only, row stays RESIDUAL)
+
+Errors before: 6 (4 classes). Errors after: 3 (1 class). Recipes are in
+`research/toolchain-v4.31-rename-map.md` §7j. The remaining 3 are `native_decide` on `f2`/`f3`/`f4`
+failing with *"depends on `SetLike.instFintype`, which is `noncomputable`"* — a **computability-model
+regression**, not drift: v4.31 Mathlib declares the generic SetLike→Fintype instance
+`noncomputable` (`Mathlib/Data/SetLike/Fintype.lean:25`, `Fintype.ofInjective SetLike.coe …`), so no
+`native_decide` over `Fintype.card (Subgroup G)` / `Sylow p G` / any SetLike carrier can compile any
+more. Already tracked as #39058 (whose gallery `meta.json` also records the ~2^24 enumeration as
+compute-infeasible independently of the instance change). Same root cause as the long-standing
+`SylowTheoremOQ04` / `Erdos662Problem` / `PicksTheoremOQ01OQ01OQ01` skips.
+
+## 4. Wave A/C — 40 post-inventory modules added to the ledger, 40/40 GREEN
+
+The ledger covered exactly the 2,659 inventory-FAIL baseline, but the repo now holds **199 modules
+that appear in neither `spike-logs-full/results-full.tsv` nor the ledger** (added after the
+inventory snapshot; `comm -23` of `ls Proofs/*.lean` against the union). 40 of them were rebuilt
+zero-edit — 20 smallest (wave A, 60–111 lines) and 20 mid-size (wave C, 130–187 lines), spread
+across ~25 families — and **all 40 are GREEN** (20–146s each, median ~27s). Rows added with
+`post-inventory` in column 3 so the set stays distinguishable from the inventory baseline.
+
+**Sizing note for the next increment:** the untracked pool is essentially healthy, so re-verifying
+the remaining 159 is bookkeeping, not repair work — but budget for the tail: heavy research WIP
+files are slow, `Erdos18WIP01` (4,202 lines) was still building after **11 minutes** and was
+abandoned (not recorded). Prefer ≤400-line modules per wave, or raise `LEAN_BUILD_TIMEOUT` and run
+the mega-WIP files in a dedicated wave.
+
+**Host note:** `/Volumes/Stripe` lost read access twice during this session (TCC removable-volumes
+denial; `tccutil reset SystemPolicyRemovableVolumes com.apple.Terminal` fixes it instantly) and the
+Docker Linux VM had died and needed a force-restart before any build could run.
+
 # DOCTOR SINGLE-PROOF BATCH 364 (Sonnet, #38065, 2026-07-16)
 
 **+1 GREEN**: BallotProblemOQ03OQ01OQ01OQ01Aristotle (rewrote 2 helper lemmas from broken generic

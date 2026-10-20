@@ -124,10 +124,10 @@
     "id": "ann-e529-question2",
     "proofId": "erdos-529",
     "range": {
-      "startLine": 194,
-      "endLine": 231
+      "startLine": 202,
+      "endLine": 239
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Question 2: Three and Four Dimensions",
     "content": "`question2 k` formalizes: $k \\ge 3 \\implies \\exists C > 0,\\, \\forall n,\\, d_k(n) \\le C\\sqrt{n}$. `conjecture_3d`: $\\exists \\nu \\in (1/2, 3/4)$ with $d_3(n)/n^\\nu \\to 1$ (refutes Question 2 for $k=3$). `conjecture_4d`: $d_4(n) \\sim D (\\log n)^{1/8} \\sqrt{n}$ (refutes for $k=4$). `question2_high_dim`: TRUE for $k \\ge 5$. `question2_false_3d`: conditional refutation.",
     "significance": "key",
@@ -172,10 +172,10 @@
     "id": "ann-e529-flory",
     "proofId": "erdos-529",
     "range": {
-      "startLine": 280,
-      "endLine": 288
+      "startLine": 261,
+      "endLine": 269
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Flory's Prediction and Verification",
     "content": "`floryExponent d = 3/(d+2)`: Paul Flory's 1949 mean-field prediction for the SAW exponent. `flory_2d`: $3/(2+2) = 3/4$ (proved by `norm_num`). `flory_3d`: $3/(3+2) = 3/5$ (proved by `norm_num`). The 2D prediction is conjectured exact; the 3D prediction ($0.6$) is close to the numerical $0.5876$.",
     "significance": "key",
@@ -196,8 +196,8 @@
     "id": "ann-e529-summary",
     "proofId": "erdos-529",
     "range": {
-      "startLine": 304,
-      "endLine": 306
+      "startLine": 286,
+      "endLine": 303
     },
     "type": "concept",
     "title": "Main Results Summary",

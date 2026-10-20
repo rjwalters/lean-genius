@@ -42,10 +42,10 @@
     "id": "ann-first-divisor",
     "proofId": "erdos-1100-incomplete-01",
     "range": {
-      "startLine": 63,
-      "endLine": 75
+      "startLine": 38,
+      "endLine": 50
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "The First Sorted Divisor is 1",
     "content": "Proves `(divisorList n).getD 0 0 = 1` for n ≥ 1. The 0-th sorted entry is the minimum of the divisor set (`Finset.sorted_zero_eq_min'`); that minimum is $\\le 1$ (since 1 is a divisor) and $\\ge 1$ (the smallest divisor is positive, `Nat.pos_of_dvd_of_pos`), hence equals 1. This is exactly the 'sorted divisor position' reasoning the parent flagged.",
     "mathContext": "$d_1 = \\min'\\{d : d \\mid n\\} = 1$.",

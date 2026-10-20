@@ -75,8 +75,8 @@
     "proofId": "erdos-940",
     "type": "definition",
     "range": {
-      "startLine": 80,
-      "endLine": 86
+      "startLine": 84,
+      "endLine": 90
     },
     "title": "Set of Sums and Diagonal Case",
     "content": "`SumsOfPowerful r k` is $\\{n \\in \\mathbb{N} : n = a_1 + \\cdots + a_j, j \\le k, \\text{each } a_i \\text{ is } r\\text{-powerful}\\}$. `DiagonalSums r = SumsOfPowerful r r` is the diagonal case where the number of summands matches the power. Defined using `Multiset` for variable-length sums.",
@@ -99,8 +99,8 @@
     "proofId": "erdos-940",
     "type": "definition",
     "range": {
-      "startLine": 108,
-      "endLine": 117
+      "startLine": 112,
+      "endLine": 121
     },
     "title": "Natural Density Framework",
     "content": "`countingFunction A N` counts $|A \\cap [0, N]|$. `HasDensity A d` says $(\\text{count}(N)/N) \\to d$ as $N \\to \\infty$ via `Filter.Tendsto`. `HasDensityZero A` is density 0: the set is sparse but may still be infinite.",
@@ -195,8 +195,8 @@
     "proofId": "erdos-940",
     "type": "definition",
     "range": {
-      "startLine": 191,
-      "endLine": 203
+      "startLine": 247,
+      "endLine": 259
     },
     "title": "Three Cubes Conjecture and Cubefull Case",
     "content": "`three_cubes_conjecture`: does $\\{a^3 + b^3 + c^3 : a,b,c \\in \\mathbb{N}\\}$ have density 0? OPEN. `cubes_subset_cubefull` proves cubes $\\subseteq$ cubefull numbers (via `power_isPowerful`). `cubefull_conjecture` is the $r = 3$ case of the main conjecture.",

@@ -2,7 +2,7 @@
   {
     "id": "ann-ch020201-setup",
     "proofId": "cayley-hamilton-oq-02-oq-02-oq-01",
-    "range": { "startLine": 45, "endLine": 46 },
+    "range": { "startLine": 40, "endLine": 40 },
     "type": "concept",
     "title": "Diagonalizable setting over a commutative ring",
     "content": "The file works with a matrix presented in already-diagonalized form A = U · diagonal d · V, where U and V are mutually inverse (U V = V U = 1) and d : n → 𝕜 lists the diagonal entries (eigenvalues). Crucially the scalars 𝕜 form only a CommRing, not a field: no division, determinants, or characteristic-polynomial machinery is used. Everything is purely algebraic manipulation of the Frobenius covariants Z_μ = frobeniusCovariant U V d μ inherited from the parent file. Working over a ring keeps the results applicable to integer and modular matrices, not just over ℝ or ℂ.",

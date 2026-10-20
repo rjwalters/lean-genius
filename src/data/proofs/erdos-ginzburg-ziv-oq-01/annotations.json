@@ -84,7 +84,7 @@
   {
     "id": "ann-egz-sharp-bounds",
     "proofId": "erdos-ginzburg-ziv-oq-01",
-    "range": { "startLine": 111, "endLine": 138 },
+    "range": { "startLine": 89, "endLine": 138 },
     "type": "tactic",
     "title": "Sharpness: Trapping the Count in [1, n−1] and Concluding",
     "content": "The proof pins the count k of chosen ones strictly between 1 and n. Upper bound: the chosen ones live in Ico (n−1) (2n−2), which has exactly (2n−2)−(n−1) = n−1 elements, so k ≤ n−1 (card_le_card + Nat.card_Ico + omega). Lower bound: the chosen zeros lie in range (n−1), at most n−1 of them; since k + #zeros = #t = n (filter_card_add_filter_neg_card_eq_card), omega forces k ≥ 1. Finally a residue k with 1 ≤ k ≤ n−1 < n is nonzero in ZMod n: ZMod.natCast_eq_zero_iff turns the goal into ¬(n ∣ k), and n ∣ k with k > 0 would give n ≤ k by Nat.le_of_dvd, contradicting k ≤ n−1 (omega). Hence the sum is nonzero, completing the sharpness proof and pinning the EGZ constant at exactly 2n−1.",

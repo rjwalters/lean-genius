@@ -1,0 +1,14 @@
+898252bfa8fc59b4e3b62584065f1b6b95233edb
+MODE=run
+REF=fix/safe-subset-43756-20261012
+TARGET=''
+CMD=bash\ scripts/build-safe-subset.sh
+MEM_GB=96
+TIMEOUT=2h
+THREADS=''
+CACHE=0
+CPUS=16
+VOLUME=''
+FULL=0
+1
+sha256:a5ca6c4e3328a1832d5f9b814ab7c1e35616903b3956341962a5b1a96fb6dff6

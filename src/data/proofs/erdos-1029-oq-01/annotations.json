@@ -50,7 +50,7 @@
   {
     "id": "ann-r3-decide",
     "proofId": "erdos-1029-oq-01",
-    "range": { "startLine": 164, "endLine": 169 },
+    "range": { "startLine": 165, "endLine": 169 },
     "type": "insight",
     "title": "R(3) > 3 by a Decidable Threshold Check",
     "content": "The corollary exists_good_coloring_three applies the main theorem at n = k = 3 and discharges the numeric hypothesis with `decide`. Here the threshold reads 2·C(3,3) < 2^{C(3,2)}, i.e. 2·1 = 2 < 2^3 = 8, which Lean checks by kernel computation. The conclusion is that K_3 has a 2-coloring with no monochromatic triangle, so R(3) > 3. This is the smallest non-trivial instance and illustrates how every concrete Ramsey lower bound in this family is a finite arithmetic fact fed into the same counting theorem. (The true value R(3) = 6 is much larger; the elementary bound is far from tight even here.)",

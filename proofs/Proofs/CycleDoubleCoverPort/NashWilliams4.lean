@@ -40,7 +40,9 @@ response and the upstream issue tracker has since been disabled.
 This file is vendored under the operator's explicit **risk acceptance** recorded
 on #37507 (comment of 2026-08-03), which permits vendoring with attribution. It
 is an accepted risk, not a determination that reuse is permitted. If upstream
-ever objects, this file and `NashWilliams3.lean` are the units of removal.
+ever objects, this file and `NashWilliams3.lean` are the units of removal;
+`LICENSE-STATUS.md` in this directory holds the inventory of vendored files and
+the per-file re-derivation plan (tracking issue #43638).
 
 ## Ported in this part
 

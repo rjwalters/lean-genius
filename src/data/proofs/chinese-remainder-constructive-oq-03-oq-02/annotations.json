@@ -26,8 +26,8 @@
     "id": "ann-coprime-low-high",
     "proofId": "chinese-remainder-constructive-oq-03-oq-02",
     "range": {
-      "startLine": 91,
-      "endLine": 111
+      "startLine": 112,
+      "endLine": 132
     },
     "type": "insight",
     "title": "The Only Hard Pair: 2ⁿ−1 and 2ⁿ+1",
@@ -72,10 +72,10 @@
     "id": "ann-three-moduli-base",
     "proofId": "chinese-remainder-constructive-oq-03-oq-02",
     "range": {
-      "startLine": 137,
-      "endLine": 191
+      "startLine": 138,
+      "endLine": 192
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "threeModuliBase: A Genuine RNS Base",
     "content": "A self-contained `RNSBase` structure (fields: `moduli : List ℕ`, `coprime : moduli.Pairwise Nat.Coprime`, `ge_two : ∀ m ∈ moduli, 2 ≤ m`) is re-declared locally because the parent `ChineseRemainderConstructiveOQ03` no longer compiles against Mathlib 4.26.0. `threeModuli_pairwise_coprime` assembles pairwise coprimality of `[2ⁿ−1, 2ⁿ, 2ⁿ+1]` from the three pair facts via nested `List.Pairwise.cons`. `threeModuliBase n (hn : 2 ≤ n)` is then the base with `channels = 3` (`rfl`) and `dynamicRange = 2^(3n) − 2ⁿ` (`threeModuliBase_dynamicRange`, from `List.prod_cons` + `dynamicRange_formula`). The `n ≥ 2` bound ensures the smallest modulus `2ⁿ−1 ≥ 3 ≥ 2`.",
     "mathContext": "Bundling the moduli, a proof of pairwise coprimality, and the lower bound on each modulus is exactly the data the CRT needs to guarantee a bijection between residue vectors and integers in $[0, M)$. Exhibiting $\\{2^n-1, 2^n, 2^n+1\\}$ as such a structure certifies it is a legitimate RNS base, not merely a coprime list.",
@@ -118,8 +118,8 @@
     "id": "ann-cross-checks",
     "proofId": "chinese-remainder-constructive-oq-03-oq-02",
     "range": {
-      "startLine": 216,
-      "endLine": 241
+      "startLine": 241,
+      "endLine": 266
     },
     "type": "concept",
     "title": "Concrete Instances: {3,4,5}, {7,8,9}, {15,16,17}",

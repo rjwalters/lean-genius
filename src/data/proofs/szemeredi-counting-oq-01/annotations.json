@@ -14,7 +14,7 @@
   {
     "id": "sc-bridge",
     "proofId": "szemeredi-counting-oq-01",
-    "range": { "startLine": 81, "endLine": 116 },
+    "range": { "startLine": 82, "endLine": 116 },
     "type": "theorem",
     "title": "The Bridge: Triangle-Free After Deletion ⟺ F Covers Every Triangle",
     "content": "The keystone lemma cliqueFree_deleteEdges_iff_covers links the analytic side (the removal lemma's 'make G triangle-free') with the combinatorial side ('F meets every triangle'). Forward: if deletion is triangle-free but some triangle s had no edge in F, every edge of s survives deletion (SimpleGraph.deleteEdges_adj), so s remains a triangle — contradiction. Backward: any triangle surviving deletion is a triangle of G, hence covered, but its covering edge was deleted — contradiction. This iff is what lets every later result reason about edge covers instead of graph deletion.",
@@ -26,7 +26,7 @@
   {
     "id": "sc-weak-duality",
     "proofId": "szemeredi-counting-oq-01",
-    "range": { "startLine": 122, "endLine": 177 },
+    "range": { "startLine": 123, "endLine": 177 },
     "type": "theorem",
     "title": "Weak LP Duality: |Packing| ≤ |Cover|",
     "content": "The lower bracket's engine, packing_card_le_cover_card: any edge-disjoint packing P has |P| ≤ |F| for any cover F. Assign to each packed triangle a covering edge of F (Classical.choose on the attached domain, no junk values). The map is injective: if two triangles a, b receive the same edge s(x,y), then both x and y lie in a AND in b (via Sym2.eq_iff, handling both endpoint orderings), so |a ∩ b| ≥ 2 — contradicting edge-disjointness |a ∩ b| ≤ 1. Finset.card_le_card_of_injOn then gives |P| = |P.attach| ≤ |F|. This is the König-type weak-duality inequality ν ≤ τ-cover for the triangle hypergraph.",
@@ -38,7 +38,7 @@
   {
     "id": "sc-triangles-numtriangles",
     "proofId": "szemeredi-counting-oq-01",
-    "range": { "startLine": 183, "endLine": 203 },
+    "range": { "startLine": 184, "endLine": 203 },
     "type": "definition",
     "title": "The Triangle Set and Count τ(G)",
     "content": "triangles G is the finite set of all 3-cliques (filtering univ by IsTriangle), and numTriangles G = |triangles G| is the total triangle count τ(G), the upper end of the bracket. mem_triangles is the membership simp lemma. IsTriangle.exists_edge extracts an explicit edge s(x,y) with x ≠ y from any triangle (its card is 3 > 1), the witness the greedy cover selects. These definitions are noncomputable (they use Classical decidability of IsTriangle), which is harmless for the existence statements.",
@@ -86,7 +86,7 @@
   {
     "id": "sc-sharpness-zero",
     "proofId": "szemeredi-counting-oq-01",
-    "range": { "startLine": 298, "endLine": 312 },
+    "range": { "startLine": 299, "endLine": 312 },
     "type": "theorem",
     "title": "Sharpness: Triangle-Free ⟹ ρ = 0",
     "content": "removalNumber_eq_zero_of_cliqueFree confirms the bracket bottoms out correctly: if G is already triangle-free, the empty edge set is a cover (deleting nothing leaves G unchanged and triangle-free), so 0 is a cover size and ρ(G) = 0. Combined with ν = τ = 0 in this case, the whole bracket collapses to ν = ρ = τ = 0 — the degenerate equality case that any meaningful two-sided bound must respect.",

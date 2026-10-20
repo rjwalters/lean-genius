@@ -149,7 +149,7 @@
   {
     "id": "ann-locq04oq02-special-cases",
     "proofId": "law-of-cosines-oq-04-oq-02",
-    "range": { "startLine": 148, "endLine": 173 },
+    "range": { "startLine": 150, "endLine": 173 },
     "type": "concept",
     "title": "Special Cases: Equilateral, 3-4-5, and Isoceles Triangles",
     "content": "Three special cases verify the formula concretely. The equilateral case (a=b=c=s) gives 4t²s² = 3s⁴, i.e., t = s√3/2, the standard altitude-bisector of an equilateral triangle. The 3-4-5 right triangle gives 49t² = 288, i.e., t = 12√2/7. The isoceles case (b=c) gives 4t²b² = b²(4b²-a²), i.e., 4t² = 4b²-a², which matches the altitude formula for isoceles triangles. All three are proved by nlinarith from the specialized form of the main formula.",

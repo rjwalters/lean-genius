@@ -62,8 +62,8 @@
   {
     "id": "ann-triangle-regular",
     "proofId": "handshake-lemma",
-    "range": { "startLine": 79, "endLine": 84 },
-    "type": "definition",
+    "range": { "startLine": 81, "endLine": 84 },
+    "type": "theorem",
     "title": "Sharpness Witness: K₃ is 2-Regular",
     "content": "The complete graph on three vertices, K₃ = (⊤ : SimpleGraph (Fin 3)), is 2-regular: `IsRegularOfDegree.top` gives degree `Fintype.card (Fin 3) - 1 = 2`, and `simpa` evaluates it. This is the first half of the sharpness argument — an example with even regularity degree (2).",
     "mathContext": "$K_3 = \\top$ on $\\mathrm{Fin}\\,3$ satisfies $\\deg(v) = 3-1 = 2$ for every $v$, so $K_3$ is $2$-regular.",

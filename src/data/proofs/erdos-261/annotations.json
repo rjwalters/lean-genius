@@ -110,7 +110,7 @@
       "computational verification methods"
     ],
     "range": {
-      "startLine": 59,
+      "startLine": 60,
       "endLine": 61
     }
   },
@@ -134,8 +134,8 @@
       "Borwein–Loring family"
     ],
     "range": {
-      "startLine": 71,
-      "endLine": 73
+      "startLine": 39,
+      "endLine": 41
     }
   },
   {
@@ -337,8 +337,8 @@
     "proofId": "erdos-261",
     "type": "concept",
     "range": {
-      "startLine": 349,
-      "endLine": 357
+      "startLine": 350,
+      "endLine": 358
     },
     "title": "The Erdős Conjectures (Parts 1–2)",
     "content": "`ErdosProblem261_infinitely_many` records the resolved Part 1 (= Cusick). Part 2 -- that *every* $n\\geq1$ is representable -- is stated only as a docstring conjecture, not a theorem: it remains genuinely open, verified computationally only up to $n\\leq10000$. The file is careful not to assert it, keeping the formalization honest about what is proved versus conjectured.",
@@ -360,7 +360,7 @@
     "proofId": "erdos-261",
     "type": "concept",
     "range": {
-      "startLine": 358,
+      "startLine": 359,
       "endLine": 388
     },
     "title": "Continuum Part: Honest Incompleteness Caveat",

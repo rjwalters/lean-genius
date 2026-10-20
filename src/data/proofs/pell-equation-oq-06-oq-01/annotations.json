@@ -74,7 +74,7 @@
   {
     "id": "ann-verification",
     "proofId": "pell-equation-oq-06-oq-01",
-    "range": { "startLine": 163, "endLine": 167 },
+    "range": { "startLine": 161, "endLine": 165 },
     "type": "concept",
     "title": "Verification and axiom status",
     "content": "The closing `#check` block exports the three headline theorems. The entry is honestly badged `verified` with `axiomCount: 0`: 6 theorems, 0 sorries, 0 `axiom` declarations, no `native_decide` (the finite checks use `interval_cases`/`omega`/`norm_num`, all kernel-level). All results rest only on `propext` / `Classical.choice` / `Quot.sound`. It imports the parent `Proofs.PellEquationOQ06` to reuse the chain `negPellSeq` and its forward properties, so the descent and classification are the new content.",

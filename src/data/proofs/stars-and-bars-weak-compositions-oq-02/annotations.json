@@ -38,7 +38,7 @@
   {
     "id": "ann-inclusion-exclusion-form",
     "proofId": "stars-and-bars-weak-compositions-oq-02",
-    "range": { "startLine": 150, "endLine": 194 },
+    "range": { "startLine": 151, "endLine": 195 },
     "type": "theorem",
     "title": "The inclusion–exclusion count (mem_inf_compl_overflow, instFintypeBounded, card_boundedComposition_powerset)",
     "content": "mem_inf_compl_overflow identifies the intersection of complements univ.inf (fun i => (overflow i)ᶜ) with the bounded compositions {f | ∀ i, f i ≤ b} (¬(b+1 ≤ x) ↔ x ≤ b via Nat.lt_succ_iff). instFintypeBounded gives the Fintype instance on the conjunction subtype {f : Fin k → ℕ // (∑ f = n) ∧ ∀ i, f i ≤ b} through Equiv.subtypeSubtypeEquivSubtypeInter and the parent's instance — necessary because Lean cannot synthesise a Fintype for a subtype of the infinite Fin k → ℕ directly. card_boundedComposition_powerset then applies Mathlib's Finset.inclusion_exclusion_card_inf_compl with the overflow family and rewrites each term by card_inf_overflow, expressing the bounded count as the alternating sum over all index subsets t of the overflow counts.",

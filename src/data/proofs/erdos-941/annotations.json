@@ -51,8 +51,8 @@
     "proofId": "erdos-941",
     "type": "concept",
     "range": {
-      "startLine": 51,
-      "endLine": 54
+      "startLine": 63,
+      "endLine": 66
     },
     "title": "Equivalence of Definitions (sorry)",
     "content": "`powerful_iff_alt`: For $n > 0$, `IsPowerful n ↔ IsPowerfulAlt n`. This has a sorry — the proof requires showing that if all prime exponents are $\\ge 2$, then $n$ decomposes as $a^2 b^3$ (Golomb's argument), and conversely.",
@@ -74,8 +74,8 @@
     "proofId": "erdos-941",
     "type": "concept",
     "range": {
-      "startLine": 56,
-      "endLine": 84
+      "startLine": 99,
+      "endLine": 127
     },
     "title": "Structural Properties: 1, Squares, Cubes, Products",
     "content": "`one_is_powerful`: 1 is powerful vacuously (no primes divide 1). `square_is_powerful` (sorry): $a^2$ is powerful since $p \\mid a^2 \\Rightarrow p \\mid a \\Rightarrow p^2 \\mid a^2$. `cube_is_powerful` (sorry): similarly for $a^3$. `powerful_mul` (sorry): if $m, n$ are powerful, so is $mn$ (prime divisors of $mn$ come from $m$ or $n$, both giving $p^2 \\mid$).",
@@ -214,8 +214,8 @@
     "proofId": "erdos-941",
     "type": "definition",
     "range": {
-      "startLine": 185,
-      "endLine": 197
+      "startLine": 262,
+      "endLine": 274
     },
     "title": "Counting Representations and Density",
     "content": "`numRepresentations n`: counts the number of ways to write $n = a + b + c$ with $a, b, c$ powerful (using nested `Finset.filter`). `powerful_density` (axiom): the density of powerful numbers satisfies $|\\{n \\le N : \\text{IsPowerful}(n)\\}| / N^{1/2} \\to c$ for some $c > 0$.",

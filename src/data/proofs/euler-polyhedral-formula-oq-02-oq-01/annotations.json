@@ -347,10 +347,10 @@
     "id": "ann-girard-formula",
     "proofId": "euler-polyhedral-formula-oq-02-oq-01",
     "range": {
-      "startLine": 525,
-      "endLine": 598
+      "startLine": 614,
+      "endLine": 687
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Girard's Formula (1629): K\u00b7Area = \u03b1 + \u03b2 + \u03b3 \u2212 \u03c0 for Geodesic Triangles",
     "content": "Girard's formula (1629): on a surface of constant curvature K, a geodesic triangle has K\u00b7Area = (\u03b1 + \u03b2 + \u03b3 \u2212 \u03c0). On the unit sphere: Area = \u03b1 + \u03b2 + \u03b3 \u2212 \u03c0 (the spherical excess). This directly follows from the polygon Gauss-Bonnet with \u03c7 = 1.\n\nRelated theorems proved: `unit_sphere_triangle_area`, `positive_curvature_angle_excess` (\u03b1+\u03b2+\u03b3 > \u03c0), `flat_angle_sum_pi` (K=0 recovers Euclidean), `negative_curvature_angle_deficit` (K<0 gives \u03b1+\u03b2+\u03b3 < \u03c0), `hyperbolic_triangle_area_bound` (0 < Area < \u03c0 for K=\u22121).",
     "mathContext": "For a geodesic triangle on a surface of constant curvature $K$:\n$$K \\cdot \\text{Area} = \\alpha + \\beta + \\gamma - \\pi$$\nTrichotomy: $K > 0$ (spherical, angle excess), $K = 0$ (Euclidean, angle sum $= \\pi$), $K < 0$ (hyperbolic, angle deficit). The `GeodesicTriangle` structure (line 525) packages the angles, area, curvature, and the Girard axiom. Proofs use `linarith`.",
@@ -373,8 +373,8 @@
     "id": "ann-poincare-hopf",
     "proofId": "euler-polyhedral-formula-oq-02-oq-01",
     "range": {
-      "startLine": 638,
-      "endLine": 715
+      "startLine": 689,
+      "endLine": 766
     },
     "type": "definition",
     "title": "Poincar\u00e9-Hopf: \u03a3 index(V,p_i) = \u03c7; Hairy Ball as Corollary",
@@ -399,8 +399,8 @@
     "id": "ann-morse-theory",
     "proofId": "euler-polyhedral-formula-oq-02-oq-01",
     "range": {
-      "startLine": 725,
-      "endLine": 770
+      "startLine": 785,
+      "endLine": 830
     },
     "type": "definition",
     "title": "Morse Theory: \u03c7 = #min \u2212 #saddles + #max via Critical Points",

@@ -23,7 +23,7 @@
   {
     "id": "ann-setup",
     "proofId": "banach-fixed-point-oq-01-oq-01",
-    "range": { "startLine": 31, "endLine": 35 },
+    "range": { "startLine": 33, "endLine": 35 },
     "type": "definition",
     "title": "Setup: An Autonomous Field on a Normed Space",
     "content": "The development works over a general real normed vector space $E$ (`NormedAddCommGroup E`, `NormedSpace ℝ E`), with completeness `CompleteSpace E` added where existence requires it. The vector field $f : E \\to E$ is **autonomous** — time-independent — which is the case where the Mathlib uniqueness lemma collapses most cleanly (see the uniqueness theorem). Opening `Set` and `Metric` brings the open interval `Ioo`, `closedBall`, and `EqOn` notation into scope.",

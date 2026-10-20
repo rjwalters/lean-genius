@@ -217,8 +217,8 @@
     "proofId": "erdos-850",
     "type": "concept",
     "range": {
-      "startLine": 107,
-      "endLine": 121
+      "startLine": 25,
+      "endLine": 39
     },
     "title": "SamePrimeFactors Equivalence Relation",
     "content": "Proves `SamePrimeFactors` is reflexive (`rfl`), symmetric (`.symm`), and transitive (`.trans`) — making it a genuine equivalence relation on $\\mathbb{N}$. All three proofs are one-liners leveraging `Finset` equality properties.",

@@ -512,3 +512,68 @@ hierarchy OQ-03b (Σ⁰ₙ strictness via iterated `jumpSet` — the iteration i
 now definable concretely, not just abstractly); (c) upstreaming candidate:
 the enumeration theorem + jump would be a natural Mathlib contribution atop
 `RecursiveIn`.
+
+## 8. S12 (researcher-1, 2026-09-29) — the iterated jump tower is strict; TuringDegree is infinite
+
+New file `proofs/Proofs/RelativizedHaltingHierarchy.lean` (~215 LOC, 0 axioms,
+0 sorries; `#print axioms` on every headline declaration shows only
+propext/Classical.choice/Quot.sound). Docker-verified
+(`docker-build.sh Proofs.RelativizedHaltingHierarchy`, 803 jobs, green).
+
+### 8.1 What was built
+
+* `jumpChar o := fun e => decide (e ∈ jumpSet o)` — the jump as a
+  **Bool-valued** oracle (classically), the only form `evalO`/`oracleFun`
+  can consume. Bridge `oracleFun_jumpChar : oracleFun (jumpChar o) =
+  jumpCharFun o` connects it to the S11 vocabulary.
+* `jumpIterChar o n` — the iterated jump `o⁽ⁿ⁾` (`0 ↦ o`,
+  `n+1 ↦ jumpChar (jumpIterChar o n)`).
+* **`jump_hierarchy_strict`**: for every base oracle `o` and `m < n`,
+  `o⁽ᵐ⁾ ≤ᵀ o⁽ⁿ⁾ ∧ ¬ o⁽ⁿ⁾ ≤ᵀ o⁽ᵐ⁾`. Proof economy: ONE application of
+  S10+S11's `oracle_lt_jump` per level; monotonicity by `Nat.le` induction
+  with `TuringReducible.refl/trans`; strictness because a downward
+  reduction would collapse the `m`-th step through
+  `o⁽ᵐ⁺¹⁾ ≤ᵀ o⁽ⁿ⁾ ≤ᵀ o⁽ᵐ⁾`.
+* Degree form: `jumpDegree o n := toAntisymmetrization TuringReducible
+  (oracleFun (jumpIterChar o n))` is `StrictMono`;
+  `jumpOrderEmbedding : ℕ ↪o TuringDegree`
+  (`OrderEmbedding.ofStrictMono`); **`instance : Infinite TuringDegree`**
+  — absent from Mathlib, whose `TuringDegree` file stops at the partial
+  order.
+* Classical tower `classical_jump_tower_strict`:
+  `∅⁽ᵐ⁾ <ᵀ ∅⁽ⁿ⁾` over the computable base `fun _ => false`
+  (`oracleFun_false_partrec : Partrec (oracleFun fun _ => false)` via
+  `Partrec.const'`).
+
+### 8.2 Lean idioms (v4.31)
+
+* Degree-level `≤` needs NO transfer lemmas: on `toAntisymmetrization`
+  images the quotient `Quotient.lift₂` order reduces definitionally to
+  `TuringReducible`, so `exact jumpIter_mono o h` closes
+  `jumpDegree o m ≤ jumpDegree o n` directly. Same for `¬ ≤` and
+  `lt_iff_le_not_ge.mpr`.
+* `rw`'s closing-`rfl` runs at reducible transparency and does NOT reduce
+  `bif true`/`bif false`: after `rw [decide_eq_true h, if_pos h]` an
+  explicit `rfl` is required (cost one round).
+* `induction h with | refl | step _ ih` on `h : m ≤ n` (core `Nat.le`)
+  is the clean monotonicity skeleton; `m < n` passes defeq as `m+1 ≤ n`
+  where needed.
+* Host-verify WITHOUT the shared build cache having the sibling oleans:
+  plain `lean` (NOT `lake env lean` — lake overrides `LEAN_PATH`) with
+  `LEAN_PATH="$PWD/.hbuild:$(lake env printenv LEAN_PATH)"`, compiling
+  each dependency with `-o .hbuild/Proofs/X.olean` in import order. The
+  local root must come FIRST: the first root containing a `Proofs/`
+  directory claims the whole module namespace, so appending loses to the
+  shared build dir ("object file does not exist" error).
+
+### 8.3 State after S12
+
+OQ-03b's **semantic backbone is done**: the jump tower is strict at every
+level in full generality (any base oracle), and the consequence Mathlib
+lacks (`Infinite TuringDegree`, ℕ order-embedding) is banked. Remaining for
+OQ-03b proper: the SYNTACTIC hierarchy (Σ⁰ₙ/Π⁰ₙ via quantifier prefixes)
+and Post's hierarchy theorem linking level `n` to
+`jumpIterChar (fun _ => false) n` — large (~400 lines, multi-session),
+likely its own sub-OQ slug. OQ-03c (hypercomputation placement) waits on
+that. Third open direction: Mathlib upstreaming of
+OracleCode/enumeration/jump/`Infinite TuringDegree`.

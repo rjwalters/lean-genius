@@ -1,0 +1,640 @@
+{
+  "$defs": {
+    "AggregatedReview": {
+      "additionalProperties": false,
+      "description": "Result of merging N per-critic ``Review`` objects.\n\nProduced by ``anvil/lib/critics.py::aggregate``. The aggregated review\nis what the orchestrator reads to decide ADVANCE / REVISE / BLOCK.",
+      "properties": {
+        "critic_ids": {
+          "description": "Stable IDs of every critic that contributed.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Critic Ids",
+          "type": "array"
+        },
+        "critical_flags": {
+          "description": "Deduplicated union of all critic critical flags.",
+          "items": {
+            "$ref": "#/$defs/CriticalFlag"
+          },
+          "title": "Critical Flags",
+          "type": "array"
+        },
+        "findings": {
+          "description": "Deduplicated union of all critic findings.",
+          "items": {
+            "$ref": "#/$defs/Finding"
+          },
+          "title": "Findings",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "score_means": {
+          "additionalProperties": true,
+          "description": "Per-dimension float mean of non-null critic scores, indexed by dimension. Preserved for reporting so the rounded integer in scores[] does not lose precision.",
+          "title": "Score Means",
+          "type": "object"
+        },
+        "scores": {
+          "description": "Per-dimension aggregated scorecard. For each dim: score = mean of non-null per-critic scores (rounded to int via round-half-to-even for the total; the float mean is preserved on the AggregatedReview via score_means below); critical = logical OR across critics; fix = union of per-critic fixes joined with '; '. evidence_span retains the first non-null span.",
+          "items": {
+            "$ref": "#/$defs/Score"
+          },
+          "title": "Scores",
+          "type": "array"
+        },
+        "threshold": {
+          "description": "Threshold to advance for this rubric.",
+          "title": "Threshold",
+          "type": "integer"
+        },
+        "total": {
+          "description": "Sum of aggregated per-dimension scores (using the rounded integer in scores[]). Used to compute verdict against threshold.",
+          "title": "Total",
+          "type": "integer"
+        },
+        "verdict": {
+          "$ref": "#/$defs/Verdict",
+          "description": "Final verdict. NO_GO if any critical flag of type 'no_go' is present (issue #559 \u2014 thesis-failure terminal sink, highest priority); else BLOCK if any other critical flag; else ADVANCE if total >= threshold; else REVISE. STALLED is reserved for #27 (convergence-time stable-score plateau, lowest priority)."
+        },
+        "version_dir": {
+          "title": "Version Dir",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version_dir",
+        "critic_ids",
+        "scores",
+        "total",
+        "threshold",
+        "verdict"
+      ],
+      "title": "AggregatedReview",
+      "type": "object"
+    },
+    "CriticalFlag": {
+      "additionalProperties": false,
+      "description": "A top-level critical flag, short-circuiting the verdict.\n\nA critical flag indicates a defect severe enough that a sophisticated\nreader would stop reading. Most critical flags force ``Verdict.BLOCK``\nregardless of total score.\n\nTwo ``type`` values are **specially resolved** (additive, no schema-\nversion bump \u2014 each carries its own priority tier in\n``anvil/lib/convergence.py``):\n\n- ``\"no_go\"`` (issue #559) \u2014 a *stronger* terminator than a generic\n  critical flag: short-circuits to ``Verdict.NO_GO`` (thesis-failure\n  terminal sink).\n- ``\"pending_dependency\"`` (issue #842) \u2014 a *weaker* signal than a\n  generic critical flag: an honestly-declared ``[PENDING <source>]``\n  value that is still outstanding. It is visible in\n  ``AggregatedReview.critical_flags`` for reporting, but it **never**\n  forces ``Verdict.BLOCK`` and **never** deducts a dimension score.\n  The terminal-state gate (READY / AUDITED) for an unresolved pending\n  marker is enforced *separately* by the consuming skill (via\n  ``convergence.has_pending_dependency_flag`` or a deterministic\n  re-run of ``anvil/lib/pending_marker.py``), decoupled from the\n  score/verdict path here.",
+      "properties": {
+        "evidence_span": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "See Score.evidence_span for format.",
+          "title": "Evidence Span"
+        },
+        "justification": {
+          "description": "One paragraph explaining why this is a critical flag.",
+          "title": "Justification",
+          "type": "string"
+        },
+        "type": {
+          "description": "Short tag, e.g. 'fabricated_traction', 'factual_error', 'conflict_of_interest'. Skill-defined; the lib does not enforce a vocabulary. Two values are specially resolved: 'no_go' (issue #559 \u2014 forces Verdict.NO_GO) and 'pending_dependency' (issue #842 \u2014 an outstanding pending-measurement marker; visible for reporting but never forces Verdict.BLOCK and never deducts a dimension score, with the terminal-state gate enforced separately).",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "justification"
+      ],
+      "title": "CriticalFlag",
+      "type": "object"
+    },
+    "Finding": {
+      "additionalProperties": false,
+      "description": "One actionable critique item beyond the per-dimension scorecard.\n\nFindings are the granular work items the reviser consumes. Each finding\nSHOULD reference a specific evidence span; the reviser uses spans to\nlocate text to revise.",
+      "properties": {
+        "dimension": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Dimension this finding contributes to. Optional \u2014 cross-cutting findings (e.g. 'fix all citations') need not name a dimension.",
+          "title": "Dimension"
+        },
+        "downstream_risk": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Issue #1197. Free-text note naming a *predicted consequence* of applying `suggested_fix` literally, elsewhere in the body \u2014 NOT a restatement of the defect itself. Populated only when the critic can foresee a specific knock-on effect; absent (the default, and every pre-#1197 finding) means either 'no foreseeable downstream effect' or 'not evaluated', which are indistinguishable by design (this is advisory, not a coverage guarantee). Two effect classes are common enough to name explicitly, though the field is free text (matching `evidence_span` / `CriticalFlag.type`'s precedent of an opaque, skill-defined string rather than a closed enum \u2014 a fixed vocabulary would force every future consequence class through a schema change, exactly what #1197 wants to avoid): 'cross-reference-dangle' (fixing this finding as stated would orphan a sentence elsewhere in the body that refers back to the text being changed \u2014 name the referring location) and 'envelope-breach' (the fix's likely size would push the body past a declared word/line ceiling \u2014 name the ceiling and the expected delta). A reviser MUST address the named consequence in the same revision pass that addresses the finding itself, not defer it to the next review cycle.",
+          "title": "Downstream Risk"
+        },
+        "evidence_span": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "See Score.evidence_span for format.",
+          "title": "Evidence Span"
+        },
+        "rationale": {
+          "description": "1-2 sentences explaining the defect.",
+          "title": "Rationale",
+          "type": "string"
+        },
+        "severity": {
+          "description": "Severity tier. 'blocker' implies critical.",
+          "enum": [
+            "blocker",
+            "major",
+            "minor",
+            "nit"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "suggested_fix": {
+          "description": "One sentence: what the reviser should do about it.",
+          "title": "Suggested Fix",
+          "type": "string"
+        },
+        "tool_calls": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ToolCall"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Required when the parent Review has kind='tool_evidence'. Reserved for #29; v1 leaves this None for judgment reviews.",
+          "title": "Tool Calls"
+        }
+      },
+      "required": [
+        "severity",
+        "rationale",
+        "suggested_fix"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "Kind": {
+      "description": "Critic output kind.\n\n- ``judgment``: standard rubric-scored review (v1 default).\n- ``tool_evidence``: reserved for #29 \u2014 review backed by tool calls.\n  When set, the schema requires a ``tool_calls`` array per finding.\n- ``vision``: reserved for #30 \u2014 vision-model review of a rendered\n  artifact. When set, the schema requires ``rendered_artifact``.\n\nOnly ``judgment`` is actively used in v1. The other values are accepted\nby the parser so #29 / #30 can populate the new required fields without\nbumping ``schema_version``.",
+      "enum": [
+        "judgment",
+        "tool_evidence",
+        "vision"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "Probe": {
+      "additionalProperties": false,
+      "description": "One **perishable** external verification: what was probed, and when.\n\nIssue #863. ``kind: tool_evidence`` conflates two materially different\nverifications:\n\n- **Durable** \u2014 BOM arithmetic, link budgets, internal consistency, a\n  subtotal that sums. Verified once, true forever unless the document\n  changes. These are recorded as ordinary claim rows / findings; they\n  need no ``Probe``.\n- **Perishable** \u2014 a live URL, an HTTP status, a version pin, the SHA\n  of a served artifact, a price quote with an expiry. Verified once,\n  true *until the world moves*. A ``VERIFIED`` verdict on one of these\n  carries an implicit expiry the framework did not previously record,\n  so it read identically to a durable verification and silently rotted\n  between passes.\n\n**The existence of a ``Probe`` row IS the perishability marker.** There\nis no ``durable: true`` counterpart \u2014 durable verifications are simply\nthe ones with no ``Probe``. This keeps the marker additive: a critic\nthat records nothing is byte-identical to a pre-#863 critic.\n\nThe four required fields are the minimum a later pass needs to re-run\nthe verification *without re-deriving what to check*: ``target`` (what),\n``method`` (how), ``observed`` (what it said then), ``checked_at``\n(when). ``recheck_command`` is the optional literal one-liner when the\nprobe is shell-reproducible.\n\nFreshness is evaluated by ``anvil/lib/probe_freshness.py``. Like\n``evidence_drift`` (issue #857), that check is **advisory** \u2014 it never\ngates, scores, or raises a critical flag.",
+      "properties": {
+        "checked_at": {
+          "description": "ISO-8601 timestamp of the probe (UTC, per anvil/lib/snippets/timestamp.md). Validated as parseable \u2014 a probe whose timestamp cannot be read is worse than no probe, because it looks fresh to a reader and is uncheckable by a tool.",
+          "title": "Checked At",
+          "type": "string"
+        },
+        "claim": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "The artifact claim that depends on this probe, in one line. Lets a staleness report name what would become false, not just which URL went cold.",
+          "title": "Claim"
+        },
+        "evidence_span": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "See Score.evidence_span for format.",
+          "title": "Evidence Span"
+        },
+        "max_age_days": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Per-probe freshness budget, overriding the caller's default. Set it when the claim has a known expiry (a 30-day vendor quote) or decays unusually fast.",
+          "title": "Max Age Days"
+        },
+        "method": {
+          "description": "How it was probed. Free-form tag; the lib enforces no vocabulary. Observed values: 'http_status', 'sha256', 'version_string', 'content_match', 'quote_validity'.",
+          "title": "Method",
+          "type": "string"
+        },
+        "observed": {
+          "description": "What the probe returned at 'checked_at', verbatim enough to diff against a later re-probe: '200', 'HTTP 404', 'sha256:ab12...', 'working draft v8'.",
+          "title": "Observed",
+          "type": "string"
+        },
+        "recheck_command": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Literal command that re-runs this probe, e.g. 'curl -sI https://example.org/x | head -1'. Optional: not every probe is shell-reproducible, and 'target' + 'method' already say what to re-check.",
+          "title": "Recheck Command"
+        },
+        "target": {
+          "description": "What was probed, as a stable identifier a later pass can re-address: a URL, a DOI, a vendor SKU, a host:port. Used as the identity key when matching a re-probe against an earlier one, so keep it byte-stable across passes.",
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target",
+        "method",
+        "observed",
+        "checked_at"
+      ],
+      "title": "Probe",
+      "type": "object"
+    },
+    "ProbeLog": {
+      "additionalProperties": false,
+      "description": "The standalone ``probes.json`` re-probe list in a critic sibling dir.\n\nIssue #863. ``Probe`` rows have **two** carriers, because the shipped\naudit commands have not all migrated to ``_review.json`` (see\n``anvil/lib/snippets/audit.md`` \u00a7\"Migration status\"): a schema-era\ncritic puts them on ``Review.probes``; a prose-era critic \u2014 every\nshipped auditor today \u2014 writes this file alongside its\n``findings.md`` / ``verdict.md``. ``anvil/lib/probe_freshness.py``\nreads both and unions them, so the perishability contract does not\nhave to wait on the per-skill ``_review.json`` migration.\n\nAn **empty** ``probes`` list is meaningful and is NOT the same as an\nabsent file: it is the auditor stating \"I looked; nothing in this\nartifact is perishable.\" An absent file is unknown-freshness.",
+      "properties": {
+        "critic_id": {
+          "description": "Stable identifier of the critic that probed.",
+          "title": "Critic Id",
+          "type": "string"
+        },
+        "probes": {
+          "description": "Every perishable verification this critic performed. Empty declares 'no perishable claims in this artifact' \u2014 distinct from an absent probes.json, which is unknown-freshness.",
+          "items": {
+            "$ref": "#/$defs/Probe"
+          },
+          "title": "Probes",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "version_dir": {
+          "description": "Name of the version directory probed, e.g. 'memo.3'.",
+          "title": "Version Dir",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version_dir",
+        "critic_id"
+      ],
+      "title": "ProbeLog",
+      "type": "object"
+    },
+    "Review": {
+      "additionalProperties": false,
+      "description": "The canonical ``_review.json`` payload from one critic.\n\nWritten by every critic sibling in a versioned thread. The reviser reads\nevery ``_review.json`` across sibling critics and aggregates per\n``anvil/lib/critics.py::aggregate``.",
+      "properties": {
+        "critic_id": {
+          "description": "Stable identifier for the critic that wrote this review, e.g. 'memo-review', 'deck-market', 'ip-uspto-s112'.",
+          "title": "Critic Id",
+          "type": "string"
+        },
+        "critical_flags": {
+          "description": "Top-level critical flags. Any non-empty list forces Verdict.BLOCK in the aggregated verdict, regardless of total.",
+          "items": {
+            "$ref": "#/$defs/CriticalFlag"
+          },
+          "title": "Critical Flags",
+          "type": "array"
+        },
+        "findings": {
+          "description": "Itemized critique entries beyond the scorecard. Empty list is valid (a clean review with no defects).",
+          "items": {
+            "$ref": "#/$defs/Finding"
+          },
+          "title": "Findings",
+          "type": "array"
+        },
+        "kind": {
+          "$ref": "#/$defs/Kind",
+          "default": "judgment",
+          "description": "Critic output kind. v1 ships only 'judgment'; 'tool_evidence' and 'vision' are reserved for #29 and #30 respectively."
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Model identifier that produced this review. Optional but strongly recommended for reproducibility.",
+          "title": "Model"
+        },
+        "probes": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/Probe"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Perishable external verifications performed by this critic (issue #863) \u2014 the machine-readable re-probe list a later pass re-runs instead of re-deriving what needs checking. `None` (the default, and every pre-#863 review) means unknown freshness, NOT 'nothing perishable'; an explicit empty list is the auditor declaring the artifact durable-only. Optional even for kind='tool_evidence' so existing audit siblings keep validating unchanged.",
+          "title": "Probes"
+        },
+        "rendered_artifact": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Path (relative to version_dir) of the rendered artifact the critic reviewed. Required when kind='vision' (#30); optional otherwise.",
+          "title": "Rendered Artifact"
+        },
+        "rubric": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Rubric identifier, e.g. 'anvil-memo-v1'. Optional; the reviser uses this only to surface mismatched-rubric warnings.",
+          "title": "Rubric"
+        },
+        "schema_version": {
+          "const": "1",
+          "default": "1",
+          "description": "Pinned to '1' for the v1 contract. Bumped only on a breaking on-disk shape change; additive fields do not require a bump.",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scores": {
+          "description": "Per-dimension scorecard. MUST contain one entry per rubric dimension (even when score is None for unowned dims). Aggregation expects every critic's scorecard to enumerate the full rubric so the aggregator can mean-of-non-null cleanly.",
+          "items": {
+            "$ref": "#/$defs/Score"
+          },
+          "title": "Scores",
+          "type": "array"
+        },
+        "threshold": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Threshold to advance, echoed from the rubric. Optional on a per-critic review; required on AggregatedReview.",
+          "title": "Threshold"
+        },
+        "total": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Sum of this critic's non-null scores. Optional \u2014 most critics compute it; the aggregator recomputes it after merge so this field is informational on a per-critic basis.",
+          "title": "Total"
+        },
+        "unscored": {
+          "default": false,
+          "description": "True ONLY for honest unscored-foreign stubs produced by `anvil:project-migrate --adopt-review` (issue #454). A foreign critic sidecar's prose `review.md` was never scored on any anvil rubric, so the stub carries empty `scores` and null `total`/`threshold`/`verdict` rather than fabricated values. This flag is the ONLY condition under which `scores` may be empty; for every real (scored) review the validator still requires a full scorecard. Absent (the default `False`) is byte-identical to a pre-#454 Review.",
+          "title": "Unscored",
+          "type": "boolean"
+        },
+        "verdict": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Verdict"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Per-critic verdict. Optional \u2014 most critics omit and let the aggregator compute verdict over the full scorecard. When present, the aggregator IGNORES per-critic verdict and recomputes from the aggregated total + critical flags."
+        },
+        "version_dir": {
+          "description": "Name of the version directory being reviewed, e.g. 'memo.3'. Lets a critic's _review.json travel out of its sibling dir and still be locatable.",
+          "title": "Version Dir",
+          "type": "string"
+        }
+      },
+      "required": [
+        "version_dir",
+        "critic_id",
+        "scores"
+      ],
+      "title": "Review",
+      "type": "object"
+    },
+    "Score": {
+      "additionalProperties": false,
+      "description": "One rubric-dimension score from one critic.\n\n``score`` is ``None`` when this critic does not own the dimension.\nAggregation across critics uses mean-of-non-null per dimension (see\n``anvil/lib/critics.py::aggregate``). The reviser reads ``fix`` to\nconstruct the revision plan; ``evidence_span`` lets the reviser locate\nthe original text without re-reading the whole artifact.",
+      "properties": {
+        "critical": {
+          "default": false,
+          "description": "True when this dimension has a critical-flag-worthy defect. Aggregation is logical OR across critics for this dim.",
+          "title": "Critical",
+          "type": "boolean"
+        },
+        "dimension": {
+          "description": "Dimension identifier. Skills choose their own convention (memo uses bare names like 'evidence'; deck and ip-uspto use ordinal-prefixed names like '2_problem_clarity'). The schema does not enforce a format \u2014 it is opaque to the lib.",
+          "title": "Dimension",
+          "type": "string"
+        },
+        "evidence_span": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Pointer to the source location supporting this score. Format: '<path_relative_to_version_dir>:L<start>-L<end>' for text artifacts; '<path>:slide=<N>' for deck/slides. Optional when score is None.",
+          "title": "Evidence Span"
+        },
+        "fix": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "One-sentence actionable revision instruction. Optional when score is full-weight or score is None. The reviser reads this to assemble the revision plan, so terse and concrete wins.",
+          "title": "Fix"
+        },
+        "justification": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "1-3 sentence rationale for the score, citing specific evidence from the artifact. Optional but strongly recommended. When score is None, use this to point at the owning critic, e.g. 'n/a \u2014 see deck-market'.",
+          "title": "Justification"
+        },
+        "max": {
+          "description": "Per-dimension weight from the rubric. Constant per skill, echoed here so a stand-alone _review.json is self-contained.",
+          "minimum": 1,
+          "title": "Max",
+          "type": "integer"
+        },
+        "score": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Integer score in [0, max], or None if this critic does not own this dimension. Use None (not 0) for unowned dimensions; aggregation across critics computes mean of non-null only.",
+          "title": "Score"
+        }
+      },
+      "required": [
+        "dimension",
+        "score",
+        "max"
+      ],
+      "title": "Score",
+      "type": "object"
+    },
+    "ToolCall": {
+      "additionalProperties": false,
+      "description": "A single tool invocation supporting a tool-evidence review.\n\nReserved for #29. v1 ships the type so callers know the shape; the\n``tool_calls`` field on findings is unused in ``kind=judgment`` reviews.",
+      "properties": {
+        "args": {
+          "additionalProperties": true,
+          "description": "Arguments passed.",
+          "title": "Args",
+          "type": "object"
+        },
+        "result_summary": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "One-line summary of the tool's response.",
+          "title": "Result Summary"
+        },
+        "tool": {
+          "description": "Tool name, e.g. 'web_search', 'grep'.",
+          "title": "Tool",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tool"
+      ],
+      "title": "ToolCall",
+      "type": "object"
+    },
+    "Verdict": {
+      "description": "Per-review or aggregated verdict.\n\n- ``ADVANCE``: total >= threshold AND no critical flag.\n- ``REVISE``: total < threshold AND no critical flag.\n- ``BLOCK``: any critical flag is set (regardless of total).\n- ``STALLED``: reserved for #27 \u2014 stable-score termination when\n  successive revisions stop improving. v1 does not produce this value;\n  the value is reserved so #27 does not need a schema bump.\n- ``NO_GO``: reserved for #559 \u2014 thesis-failure terminal sink. Set\n  when a critical flag of type ``\"no_go\"`` is present (typically\n  promoted from a load-bearing red-team ``SURVIVES`` / ``UNENGAGED``\n  finding, an unaddressed load-bearing strongman objection, or a\n  contradicted thesis-level claim). NO-GO is a *thesis-level*\n  verdict \u2014 the evaluation concludes the idea fails, not that the\n  prose has a defect. It short-circuits the revise loop (the loop's\n  job is no longer \"raise the score\") and requires an explicit\n  operator override to resurrect. Additive optional enum value;\n  legacy consumers tolerate via pydantic strict-mode and the\n  ``schema_version`` stays at ``\"1\"`` (additive optional enum values\n  do not require a bump per the module-top docstring \u00a76).",
+      "enum": [
+        "ADVANCE",
+        "REVISE",
+        "BLOCK",
+        "STALLED",
+        "NO_GO"
+      ],
+      "title": "Verdict",
+      "type": "string"
+    }
+  },
+  "$id": "https://anvil.dev/schemas/review_schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Canonical JSON contract written by Anvil critic siblings as _review.json, and produced by the aggregator. Generated from anvil/lib/review_schema.py; do not edit by hand.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/Review"
+    },
+    {
+      "$ref": "#/$defs/AggregatedReview"
+    },
+    {
+      "$ref": "#/$defs/ProbeLog"
+    }
+  ],
+  "title": "Anvil critic output schema"
+}

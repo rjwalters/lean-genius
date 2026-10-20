@@ -49,8 +49,8 @@
     "id": "erdos-963-ann-fn",
     "proofId": "erdos-963",
     "range": {
-      "startLine": 40,
-      "endLine": 44
+      "startLine": 35,
+      "endLine": 39
     },
     "type": "definition",
     "title": "f(n) — Maximum Guaranteed Dissociated Subset Size",
@@ -94,8 +94,8 @@
     "id": "erdos-963-ann-conjecture",
     "proofId": "erdos-963",
     "range": {
-      "startLine": 61,
-      "endLine": 65
+      "startLine": 56,
+      "endLine": 60
     },
     "type": "definition",
     "title": "Main Conjecture: f(n) ≥ ⌊log₂ n⌋",
@@ -116,10 +116,10 @@
     "id": "erdos-963-ann-greedy",
     "proofId": "erdos-963",
     "range": {
-      "startLine": 92,
-      "endLine": 118
+      "startLine": 76,
+      "endLine": 102
     },
-    "type": "theorem",
+    "type": "lemma",
     "title": "Greedy Lower Bound: f(n) ≥ ⌊log₃ n⌋",
     "content": "`greedy_lower_bound` (formerly an axiom, now fully proved) formalizes Erdős's greedy argument: $f(n) \\ge \\lfloor\\log_3 n\\rfloor$. The proof shows $\\lfloor\\log_3 n\\rfloor$ lies in the set whose `sSup` is $f(n)$ via `le_csSup`, with boundedness witnessed by $n$ and membership supplied by `greedy_dissociated` together with the arithmetic lemma `gt_add_pow3_of_lt_log` (which gives $n > j + 3^j$ for $j < \\log_3 n$). At each step, a new element is forbidden only if it equals a difference of two existing subset sums, limiting exclusions to fewer than $3^k$ values after $k$ choices.",
     "mathContext": "At step $k$: each element of $B$ contributes a coefficient in $\\{-1,0,1\\}$ to a difference-sum, so at most $3^k$ values are forbidden; the greedy succeeds while $3^k \\le n$, giving $f(n) \\ge \\lfloor\\log_3 n\\rfloor$.",
@@ -251,8 +251,8 @@
     "id": "erdos-963-ann-diffsum",
     "proofId": "erdos-963",
     "range": {
-      "startLine": 213,
-      "endLine": 220
+      "startLine": 182,
+      "endLine": 189
     },
     "type": "definition",
     "title": "Difference-Sum Finset",
@@ -412,8 +412,8 @@
     "id": "erdos-963-ann-powers",
     "proofId": "erdos-963",
     "range": {
-      "startLine": 627,
-      "endLine": 641
+      "startLine": 634,
+      "endLine": 648
     },
     "type": "theorem",
     "title": "Powers of 2 are Dissociated",

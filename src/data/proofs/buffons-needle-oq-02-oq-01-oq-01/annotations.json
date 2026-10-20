@@ -3,8 +3,8 @@
     "id": "ann-buffon-nd-gammaform-def",
     "proofId": "buffons-needle-oq-02-oq-01-oq-01",
     "range": {
-      "startLine": 50,
-      "endLine": 58
+      "startLine": 54,
+      "endLine": 62
     },
     "type": "definition",
     "title": "The closed-form candidate: gammaForm n = Γ(n/2)/(√π·Γ((n+1)/2))",
@@ -27,8 +27,8 @@
     "id": "ann-buffon-nd-base-values",
     "proofId": "buffons-needle-oq-02-oq-01-oq-01",
     "range": {
-      "startLine": 60,
-      "endLine": 73
+      "startLine": 64,
+      "endLine": 77
     },
     "type": "insight",
     "title": "The two base Gamma values: Γ(3/2) = √π/2 and Γ(2) = 1",
@@ -51,8 +51,8 @@
     "id": "ann-buffon-nd-gammaform-rec",
     "proofId": "buffons-needle-oq-02-oq-01-oq-01",
     "range": {
-      "startLine": 75,
-      "endLine": 98
+      "startLine": 79,
+      "endLine": 102
     },
     "type": "insight",
     "title": "The heart: the closed form satisfies the SAME recurrence (one field_simp)",
@@ -75,8 +75,8 @@
     "id": "ann-buffon-nd-main-induction",
     "proofId": "buffons-needle-oq-02-oq-01-oq-01",
     "range": {
-      "startLine": 100,
-      "endLine": 138
+      "startLine": 104,
+      "endLine": 142
     },
     "type": "insight",
     "title": "Uniqueness by recurrence: crossingFactor n = gammaForm n for all n ≥ 2",
@@ -100,8 +100,8 @@
     "id": "ann-buffon-nd-closed-form",
     "proofId": "buffons-needle-oq-02-oq-01-oq-01",
     "range": {
-      "startLine": 140,
-      "endLine": 152
+      "startLine": 144,
+      "endLine": 156
     },
     "type": "insight",
     "title": "The recursion eliminated: αₙ = Γ(n/2)/(√π·Γ((n+1)/2)) stated cleanly",
@@ -123,8 +123,8 @@
     "id": "ann-buffon-nd-sanity-and-buffon",
     "proofId": "buffons-needle-oq-02-oq-01-oq-01",
     "range": {
-      "startLine": 154,
-      "endLine": 188
+      "startLine": 178,
+      "endLine": 189
     },
     "type": "concept",
     "title": "Sanity checks and the n-dimensional Buffon formula in closed form",

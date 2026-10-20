@@ -164,8 +164,8 @@
     "proofId": "erdos-417",
     "type": "concept",
     "range": {
-      "startLine": 93,
-      "endLine": 96
+      "startLine": 101,
+      "endLine": 119
     },
     "title": "Odd Numbers > 1 Are Not Totient Values",
     "content": "`odd_gt_one_not_totient`: For n > 1 odd, ¬IsTotientValue(n). Since φ(m) is even for m > 2, and φ(1) = φ(2) = 1, the only odd totient is 1.",
@@ -211,7 +211,7 @@
     "proofId": "erdos-417",
     "type": "insight",
     "range": {
-      "startLine": 130,
+      "startLine": 131,
       "endLine": 140
     },
     "title": "Intuition for the Conjecture",

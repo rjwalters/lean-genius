@@ -14,7 +14,7 @@
   {
     "id": "mantel-oq02-ann-setup",
     "proofId": "mantel-theorem-oq-02",
-    "range": { "startLine": 49, "endLine": 53 },
+    "range": { "startLine": 51, "endLine": 53 },
     "type": "concept",
     "title": "Ambient Setup: Finite Graphs with Decidable Adjacency",
     "content": "The variable block fixes a finite vertex type V with a graph G whose adjacency relation is decidable: [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj]. These are exactly the assumptions making G.edgeFinset.card and G.CliqueFree (r+1) well-defined finite quantities. Stating the theorems at this generality keeps them reusable on any vertex type, with n = Fintype.card V.",

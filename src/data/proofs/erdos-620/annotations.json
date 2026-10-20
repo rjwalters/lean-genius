@@ -138,7 +138,7 @@
     "id": "ann-620-function",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 88,
+      "startLine": 91,
       "endLine": 104
     },
     "type": "definition",
@@ -161,7 +161,7 @@
     "id": "ann-620-statement",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 105,
+      "startLine": 108,
       "endLine": 116
     },
     "type": "definition",
@@ -182,7 +182,7 @@
     "id": "ann-620-trivial",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 117,
+      "startLine": 118,
       "endLine": 126
     },
     "type": "concept",
@@ -249,7 +249,7 @@
     "id": "ann-620-krivelevich",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 143,
+      "startLine": 144,
       "endLine": 150
     },
     "type": "concept",
@@ -379,10 +379,10 @@
     "id": "ann-620-ramsey",
     "proofId": "erdos-620",
     "range": {
-      "startLine": 206,
-      "endLine": 225
+      "startLine": 207,
+      "endLine": 226
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Ramsey Number R(3,k)",
     "content": "$R(3,k)$ is the minimum $n$ such that every graph on $n$ vertices has a triangle or an independent set of size $k$. **Kim (1995)** proved $R(3,k) = \\Theta(k^2/\\log k)$, resolving a famous Erdős conjecture. This connects to the Erdős-Rogers problem: finding triangle-free induced subgraphs in $K_4$-free graphs generalizes finding independent sets. The theorem `erdos_rogers_ramsey_connection` formalizes this link: if $n \\ge R(3,k)$, then either $f(n) \\ge k$ or every $K_4$-free graph on $n$ vertices contains a triangle.",
     "mathContext": "The axiom `ramsey_3k_bound` states $c \\cdot k^2/\\log k \\le R(3,k) \\le C \\cdot k^2/\\log k$. Kim's lower bound used the **triangle-free process** (random greedy algorithm). Bohman (2009) and Bohman-Keevash (2010) refined the analysis. The theorem `erdos_rogers_ramsey_connection` (sorry'd) states the dichotomy: for $n \\ge R(3,k)$, either $f(n) \\ge k$ or all $K_4$-free graphs on $n$ vertices have a triangle.",

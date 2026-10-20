@@ -2,7 +2,7 @@
   "id": "erdos-183",
   "title": "Erdős Problem #183: Multicolor Triangle Ramsey Numbers",
   "slug": "erdos-183",
-  "description": "Determine the limit of R(3;k)^{1/k} as k approaches infinity, where R(3;k) is the minimum n such that any k-coloring of the edges of K_n contains a monochromatic triangle.",
+  "description": "Determine the limit of R(3;k)^{1/k} as k approaches infinity, where R(3;k) is the minimum n such that any k-coloring of the edges of K_n contains a monochromatic triangle. Reported resolved externally on 2026-08-01 by OpenAI's Lean-certified `ten-proofs` release (statement-level review only in this gallery — not rebuilt; see the external-resolution note in the overview).",
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/183",
@@ -78,19 +78,19 @@
         "description": "Establishes the lower bound R(3;k) ≥ 380^{k/5} − O(1), a major improvement over previous bounds"
       }
     ],
-    "assumptions": "0 axioms. R3k_exponential_lower PROVED via doubling construction (R3k k ≥ 2^k for k ≥ 1, witness c=2). R3k_factorial_upper PROVED from R3k_le_three_factorial (induction on pigeonhole recurrence). R3k_inductive_upper PROVED from extracted pigeonhole step. forcing_set_nonempty PROVED via pigeonhole induction. R3k_one (=3), R3k_two (=6), monotonicity PROVED. The limit lim R(3;k)^{1/k} as k→∞ remains the open question."
+    "assumptions": "0 axioms. R3k_exponential_lower PROVED via doubling construction (R3k k ≥ 2^k for k ≥ 1, witness c=2). R3k_factorial_upper PROVED from R3k_le_three_factorial (induction on pigeonhole recurrence). R3k_inductive_upper PROVED from extracted pigeonhole step. forcing_set_nonempty PROVED via pigeonhole induction. R3k_one (=3), R3k_two (=6), monotonicity PROVED. The limit lim R(3;k)^{1/k} as k→∞ is the headline question, reported resolved externally in 2026 (see the overview)."
   },
   "overview": {
-    "historicalContext": "This problem was posed by Paul Erdős in 1961 [Er61] and remains one of the fundamental open questions in Ramsey theory. The multicolor Ramsey number R(3;k) generalizes the classical two-color Ramsey number R(3,3) = 6, which asks for the minimum n such that any 2-coloring of K_n's edges contains a monochromatic triangle.\n\nThe problem connects to several areas of combinatorics. The upper bound R(3;k) ≤ ⌈e·k!⌉ follows from a clever pigeonhole argument, while lower bounds come from connections to Schur numbers. A major breakthrough came in 2021 when Ageron, Casteras, Pellerin, Portella, Rimmel, and Tomasik [ACPPRT21] improved the lower bound to R(3;k) ≥ 380^{k/5} - O(1).\n\nErdős offered $250 for solving this problem, with an additional $100 specifically for proving that the limit is finite. The gap between known bounds is enormous: R(3;k) lies between roughly 3.28^k and k!, making this one of the most intriguing open problems in Ramsey theory.",
-    "problemStatement": "Let $R(3;k)$ denote the minimum $n$ such that any $k$-coloring of the edges of the complete graph $K_n$ must contain a monochromatic triangle. Determine:\n\n$$\\lim_{k \\to \\infty} R(3;k)^{1/k}$$\n\n**Known bounds:**\n- Upper: $R(3;k) \\leq \\lceil e \\cdot k! \\rceil$\n- Lower: $R(3;k) \\geq 380^{k/5} - O(1)$\n\n**Reward:** $250 (plus $100 for proving the limit is finite)",
-    "text": "Determine the limit of R(3;k)^{1/k} as k approaches infinity, where R(3;k) is the minimum n such that any k-coloring of the edges of K_n contains a monochromatic triangle.",
+    "historicalContext": "This problem was posed by Paul Erdős in 1961 [Er61] and was for six decades one of the fundamental open questions in Ramsey theory. The multicolor Ramsey number R(3;k) generalizes the classical two-color Ramsey number R(3,3) = 6, which asks for the minimum n such that any 2-coloring of K_n's edges contains a monochromatic triangle.\n\nThe problem connects to several areas of combinatorics. The upper bound R(3;k) ≤ ⌈e·k!⌉ follows from a clever pigeonhole argument, while lower bounds come from connections to Schur numbers. A major breakthrough came in 2021 when Ageron, Casteras, Pellerin, Portella, Rimmel, and Tomasik [ACPPRT21] improved the lower bound to R(3;k) ≥ 380^{k/5} - O(1).\n\nErdős offered $250 for solving this problem, with an additional $100 specifically for proving that the limit is finite. The gap between known bounds is enormous: R(3;k) lies between roughly 3.28^k and k!, which made this one of the most intriguing open problems in Ramsey theory.\n\n**External resolution (2026-08-01, OpenAI/Astra, Lean-certified) — reviewed here at statement level, not independently rebuilt.** OpenAI's release *Ten advances in mathematics and theoretical computer science* (2026-08-01) reports a superexponential lower bound for R(3;k) and states that it resolves Erdős #183. The certificate is `MulticolorTriangleRamsey.lean` in https://github.com/openai/ten-proofs @ 94bc0feb6a9ff12c7d31d6de640a725c9d43d2b6 (Apache-2.0, Lean 4.32.0 + Mathlib v4.32.0). Its headline declarations are `ErdosProblems.MulticolourTriangleRamsey.erdos_183`, which asserts `Tendsto (fun k => (triangleRamseyNumber k : ℝ) ^ (1/k)) atTop atTop`, and `erdos_problem_183_explicit`, which adds the explicit bound $\\left(\\tfrac{1}{6e^{38}} \\cdot k^{1/3}/\\log k\\right)^{k} \\le R(3;k)$ for every $k \\ge 2$; the same file also proves `triangleRamseyNumber_log_isTheta` ($\\log R(3;k) = \\Theta(k \\log k)$). Their `triangleRamseyNumber k := sInf {n | ∀ C : SimpleGraph.TopEdgeLabeling (Fin n) (Fin k), ¬ TriangleFree C}` is the same quantity this entry calls `R3k` (least n forcing a monochromatic triangle in every k-edge-colouring of K_n), only with a different encoding of colourings, so their theorem does address **this entry's exact question**: if the proof checks, the limit is $+\\infty$ — this entry's `LimitIsInfinite` is true and `ErdosProblem183` / `LimitIsFinite` (existence of a finite limit) are false.\n\n**Verification status (gallery, 2026-09-23).** Static review of the module found 0 `sorry`, 0 `axiom` declarations, no `native_decide`, and no `opaque` / `unsafe` / `implemented_by`; their `formalization.yaml` declares `sorry_count: 0` with axioms `propext`, `Classical.choice`, `Quot.sound` only, and the paired `ComparatorChallenges/*.json` independently re-states the theorems and permits exactly those three axioms. The module's one `structure`, `PaletteBlockCertificate`, bundles construction data that the file itself builds; it is not a hypothesis of any top-level theorem, and `erdos_problem_183_explicit` is a closed statement with no hypotheses and no typeclass assumptions. We could not rebuild the module: their `lean-toolchain` pins Lean 4.32.0 while the gallery's sanctioned Docker image pins Lean 4.31.0, and the in-container attempt to install 4.32.0 failed on the build host (`Read-only file system (os error 30)` while unpacking the toolchain, and a matching read-only error from the Docker daemon's own containerd store), so this is a **statement-level review only**. **This entry's own status is unchanged**: our Lean file still proves only the $2^k$ doubling lower bound and the $3 \\cdot k!$ upper bound, and an external result does not change what our formalization verifies.",
+    "problemStatement": "Let $R(3;k)$ denote the minimum $n$ such that any $k$-coloring of the edges of the complete graph $K_n$ must contain a monochromatic triangle. Determine:\n\n$$\\lim_{k \\to \\infty} R(3;k)^{1/k}$$\n\n**Known bounds:**\n- Upper: $R(3;k) \\leq \\lceil e \\cdot k! \\rceil$\n- Lower: $R(3;k) \\geq 380^{k/5} - O(1)$\n\n**Reward:** $250 (plus $100 for proving the limit is finite)\n\n**Reported resolved (2026-08-01, external).** OpenAI's `ten-proofs` release reports $R(3;k)^{1/k} \\to \\infty$ (so no finite limit) together with the explicit bound $\\left(\\tfrac{1}{6e^{38}} \\cdot k^{1/3}/\\log k\\right)^{k} \\le R(3;k)$ for $k \\ge 2$. Reviewed at statement level here, not rebuilt — see the external-resolution note in the historical context.",
+    "text": "Determine the limit of R(3;k)^{1/k} as k approaches infinity, where R(3;k) is the minimum n such that any k-coloring of the edges of K_n contains a monochromatic triangle. Reported resolved externally on 2026-08-01 by OpenAI's Lean-certified `ten-proofs` release (statement-level review only in this gallery — not rebuilt; see the external-resolution note in the overview).",
     "proofStrategy": "The formalization defines R(3;k) as the minimum n forcing a monochromatic triangle in any k-coloring of K_n, established as a theorem (forcing_set_nonempty) via Ramsey's theorem proved by pigeonhole induction on k. The small values R(3;1) = 3 and R(3;2) = 6 are PROVED (not axiomatized): R(3;1) via Subsingleton.elim on Fin 1, R(3;2) via the classical R(3,3) = 6 with the C₅ cycle as the lower-bound witness.\n\nThe upper bound is proved via the inductive relation R(3;k) ≤ 2 + k(R(3;k-1)-1) (theorem R3k_inductive_upper, extracted from the same pigeonhole step that proves forcing_set_nonempty), unfolded to R(3;k) ≤ 3·k! by induction (theorem R3k_le_three_factorial). Monotonicity (R3k_mono) is proved via Fin.castLE embedding.\n\nAll theorems are proved without axioms. R3k_exponential_lower is proved with constant c = 2 via the doubling construction (theorem at line 686): a triangle-free k-coloring of K_n yields a triangle-free (k+1)-coloring of K_{2n} by using a new color for cross-half edges, iterating from R(3;1) = 3. The stronger Ageron et al. (2021) bound c = 380^{1/5} ≈ 3.28 is referenced in comments but not formalized.\n\nThe main question is formulated as Filter.Tendsto (fun k => R(3;k)^{1/k}) atTop (nhds L) for some limit L, or alternatively whether this tends to infinity.",
     "keyInsights": [
       "**Multicolor Generalization**: R(3;k) extends the classical R(3,3)=6 to k colors, asking when monochromatic triangles are unavoidable",
       "**Enormous Gap**: Known bounds span from exponential (3.28^k) to factorial (k!), leaving vast uncertainty about the true growth rate",
       "**Schur Connection**: Lower bounds come from Schur numbers S(k), where R(3;k) ≥ S(k) + 2, linking sum-free colorings to triangle-free colorings",
       "**Pigeonhole Upper Bound**: The relation R(3;k) ≤ 2 + k(R(3;k-1)-1) follows from considering color classes at a vertex",
-      "**Open Questions**: Both whether the limit exists and whether it is finite remain unknown, each worth separate rewards"
+      "**Open Questions**: Whether the limit exists and whether it is finite were both unknown, each worth a separate reward, until the 2026 external result reported R(3;k)^{1/k} → ∞"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -174,14 +174,15 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #183 on multicolor triangle Ramsey numbers. We define R(3;k), establish its basic properties, and formalize the known upper and lower bounds. The main open question asks for the limit of R(3;k)^{1/k}.",
+    "summary": "This formalization captures Erdős Problem #183 on multicolor triangle Ramsey numbers. We define R(3;k), establish its basic properties, and formalize the known upper and lower bounds. The headline question asks for the limit of R(3;k)^{1/k}. **External claim (2026-08-01):** OpenAI's `ten-proofs` release reports a Lean-certified superexponential lower bound resolving #183, which would make that limit $+\\infty$; it is reviewed at statement level in the overview above and was not rebuilt here (their Lean 4.32.0 vs. our 4.31.0 image). The scope and status of this formalization are unchanged by it.",
     "implications": "**Theoretical Significance**: The growth rate of R(3;k) is fundamental to understanding how combinatorial structures resist partitioning.\n\nA resolution would illuminate deep connections between Ramsey theory, Schur numbers, and extremal combinatorics. The $350 reward reflects the problem's difficulty and importance.",
     "openQuestions": [
-      "Does lim_{k→∞} R(3;k)^{1/k} exist?",
-      "If the limit exists, is it finite?",
+      "Does lim_{k→∞} R(3;k)^{1/k} exist? — **reported resolved 2026-08-01**: OpenAI's `erdos_183` proves R(3;k)^{1/k} → ∞, so no finite limit exists (statement-level review only; see the external-resolution note in the overview)",
+      "If the limit exists, is it finite? — **reported answered NO** by the same result",
       "What is the exact value of R(3;4)?",
-      "Can the lower bound 380^{k/5} be improved?",
-      "Is there a construction giving R(3;k) = o(k!)?"
+      "Can the lower bound 380^{k/5} be improved? — superseded in principle by the reported ((1/(6e^38))·k^{1/3}/log k)^k bound, but that bound is not verified in this gallery",
+      "Is there a construction giving R(3;k) = o(k!)?",
+      "Can the OpenAI superexponential lower bound (or just its statement) be ported to Lean 4.31 / Mathlib v4.31 and rebuilt under `./proofs/scripts/docker-build.sh`, so this entry can rest on a build we ran?"
     ]
   },
   "leanFile": {
@@ -216,6 +217,11 @@
       "relationship": "related",
       "targetId": "ramseys-theorem",
       "description": "Ramsey's Theorem"
+    },
+    {
+      "targetId": "erdos-146",
+      "relationship": "related",
+      "description": "Same 2026-08-01 OpenAI release reports a Lean-certified counterexample to the Erdős–Simonovits degeneracy conjecture (#146); erdos-146 carries the parallel external-resolution note"
     }
   ],
   "references": [
@@ -232,6 +238,17 @@
       "volume": "35",
       "pages": "1-14",
       "note": "Modern bounds on Ramsey numbers for graphs and hypergraphs"
+    },
+    {
+      "key": "OpenAI26",
+      "authors": [
+        "OpenAI"
+      ],
+      "title": "Ten advances in mathematics and theoretical computer science",
+      "year": "2026",
+      "venue": "OpenAI (paper plus Lean 4 certificates; github.com/openai/ten-proofs, Apache-2.0)",
+      "url": "https://cdn.openai.com/pdf/ten-proofs-oai.pdf",
+      "note": "Result 9 reports a superexponential lower bound for multicolour triangle Ramsey numbers resolving Erdős #183 (MulticolorTriangleRamsey.lean; declarations erdos_183 and erdos_problem_183_explicit; repo commit 94bc0fe, Lean 4.32.0). Reviewed at statement level 2026-09-23; not rebuilt in this gallery."
     }
   ],
   "sorries": 0

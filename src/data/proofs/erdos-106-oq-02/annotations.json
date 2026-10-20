@@ -148,7 +148,7 @@
     "id": "ann-erdos106-oq02-midpoint-lemmas",
     "proofId": "erdos-106-oq-02",
     "range": {
-      "startLine": 158,
+      "startLine": 160,
       "endLine": 272
     },
     "type": "lemma",
@@ -246,10 +246,10 @@
     "id": "ann-erdos106-oq02-perfect-square",
     "proofId": "erdos-106-oq-02",
     "range": {
-      "startLine": 378,
-      "endLine": 504
+      "startLine": 113,
+      "endLine": 239
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "Exact Values at Perfect Squares: g(k²) = f_rot(k²) = k",
     "content": "The heart of the proved content. g_ap_perfect_square constructs the k×k grid of side-1/k squares (indexed by i ↦ (i mod k, i div k)) and shows its side-sum is exactly k, matching the √(k²) = k upper bound — so g(k²) = k. The disjointness argument splits on whether two cells share a column (then rows differ, giving y-separation) or differ in column (x-separation). f_rot_perfect_square then squeezes f_rot(k²) between the √(k²) = k upper bound and the g(k²) = k lower bound, proving f_rot(k²) = k. This is why rotation provably cannot help at perfect squares.",
     "mathContext": "Grid: cell $i$ at center $\\left(\\tfrac{2(i\\bmod k)+1}{2k}, \\tfrac{2(i\\div k)+1}{2k}\\right)$, side $1/k$. Sum $= k^2 \\cdot \\tfrac{1}{k} = k$. Upper bound $g(k^2) \\le \\sqrt{k^2} = k$ gives $g(k^2) = k$ by antisymmetry. Squeeze: $k = g(k^2) \\le f_{\\text{rot}}(k^2) \\le \\sqrt{k^2} = k$.",
@@ -295,8 +295,8 @@
     "id": "ann-erdos106-oq02-open-question",
     "proofId": "erdos-106-oq-02",
     "range": {
-      "startLine": 538,
-      "endLine": 555
+      "startLine": 627,
+      "endLine": 644
     },
     "type": "definition",
     "title": "The Open Question: rotationHelps vs rotationNeverHelps",

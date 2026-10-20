@@ -14,7 +14,7 @@
   {
     "id": "ann-setup",
     "proofId": "cauchy-interlacing-theorem-oq001",
-    "range": { "startLine": 39, "endLine": 46 },
+    "range": { "startLine": 42, "endLine": 46 },
     "type": "definition",
     "title": "Setup: two finite-dimensional inner-product spaces over an RCLike field",
     "content": "The development is stated over an arbitrary `RCLike` field `𝕜` (covering both `ℝ` and `ℂ`) and two finite-dimensional inner-product spaces `E`, `F`. Working with abstract operators `T : E →ₗ[𝕜] E`, `S : F →ₗ[𝕜] F` and a linear isometry equivalence `e : E ≃ₗᵢ[𝕜] F` between them — rather than with matrices — is what lets the proof be a few lines of basis transport: the unitary is packaged as `≃ₗᵢ`, whose defining property `⟪e x, e y⟫ = ⟪x, y⟫` is exactly the inner-product preservation the argument needs.",

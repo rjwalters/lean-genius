@@ -22,7 +22,8 @@ The system can run completely autonomously:
 ```
 
 This will:
-1. Extract open problems from the proof gallery (427+ problems)
+1. Extract open problems from the proof gallery (the tracked `problems.json`
+   snapshot holds 427; the live candidate pool is far larger — see Problem Sources)
 2. Select a tractable problem to work on
 3. Initialize a research workspace
 4. Run one OODA loop iteration
@@ -54,7 +55,7 @@ npx tsx .lean/scripts/extract-problems.ts
 # research/problems/goldbach-weak/problem.md
 
 # Start the OODA loop
-/researcher
+/lean-research
 ```
 
 ### Option 3: Check Status
@@ -81,7 +82,10 @@ Problems are automatically extracted from the proof gallery:
 | **Hilbert** | 21 | Hilbert's 23 Problems |
 | **GitHub issues** | on demand | Human-filed problems tagged `research:queued` (see below) |
 
-**Total**: 427+ extractable open problems
+**Total**: the per-source counts above are an early snapshot and drift as the
+gallery grows — the live candidate pool (`.lean/state/candidate-pool.json`)
+currently holds ~4,200 candidates, and `research/problems/` tracks ~2,700
+worked problems.
 
 ### GitHub-issue intake (`research:queued`)
 
@@ -144,7 +148,7 @@ OBSERVE → ORIENT → DECIDE → ACT → VERIFY → LEARN
 
 ### Primary Role
 
-**Researcher** (`/researcher`): Drives the main OODA loop. Reads state, decides what phase to execute, performs the work, updates state.
+**Researcher** (`/lean-research`): Drives the main OODA loop. Reads state, decides what phase to execute, performs the work, updates state.
 
 ### Supporting Roles
 
@@ -152,8 +156,8 @@ OBSERVE → ORIENT → DECIDE → ACT → VERIFY → LEARN
 |------|---------|-----------|
 | **Scout** (`/lean-scout`) | Structured gallery, technique, and literature survey | ORIENT phase (auto-invoked by Researcher) |
 | **Seeker** (`/lean-seeker`) | Selects next research problem from candidate pool | Between research iterations (daemon-managed) |
-| **Adversary** (`/adversary`) | Attack proofs | VERIFY phase |
-| **Chronicler** (`/chronicler`) | Document learnings, update technique index | LEARN phase |
+| **Adversary** (no dedicated command — performed by the Researcher) | Attack proofs | VERIFY phase |
+| **Chronicler** (no dedicated command — performed by the Researcher) | Document learnings, update technique index | LEARN phase |
 
 ## Autonomous OODA Loop
 
@@ -181,8 +185,8 @@ Seeker selects next problem (loop repeats)
 ### Starting the Autonomous Loop
 
 ```bash
-# Start the full mathematical team with seeker
-/lean-daemon start --seeker 1 --researcher 1
+# Start the full mathematical team with seeker (see also: /lean)
+./scripts/lean/launch.sh start --seeker 1 --researcher 1
 
 # Or start individual agents
 /lean-seeker                    # Select next problem
@@ -249,25 +253,59 @@ research/
 ├── README.md                 # This file
 ├── registry.json             # Active/completed problems
 ├── STATE_MACHINE.md          # State definitions
+├── PROBLEMS-STRUCTURE.md     # Layout of research/problems/<slug>/
+├── CANDIDATE_POOL.md         # Candidate pool notes
+├── HIGH_VALUE_PROBLEMS.md    # High-value research candidates
+├── VISION.md                 # Distributed research platform vision
+├── SORRY-CLASSIFICATION.md   # Sorry tiers + Aristotle pre-submission rules
+├── ARISTOTLE-WORKFLOW.md     # Aristotle CLI pipeline (single source of truth)
+├── aristotle-jobs.json       # Aristotle job tracker (+ archive JSONs)
+├── problems.json             # Extracted-problem snapshot (427 entries)
+├── open-conjectures.json     # Tier-3 open-conjecture targets for Aristotle
+├── FAST_PATH.md              # Abbreviated OODA loop for straightforward problems
+├── FEASIBILITY_CHECK.md      # Feasibility reconnaissance before committing to a problem
+├── MATHLIB_SEARCH.md         # Mathlib exploration protocol
+├── VALUE_ASSESSMENT.md       # Value assessment framework
+├── MATHLIB-PREREQS-UNIT-DISTANCE.md  # Mathlib prerequisites scoping (class field towers, #20577)
+├── sperner-grid-analysis.md  # Sperner grid instance analysis
+├── erdos-mordell-chord-identity-strategy.md  # Erdős–Mordell key_inequality strategy note
+├── toolchain-upgrade-v4.31-spike.md  # Lean v4.26→v4.31 upgrade spike report (#37508)
+├── toolchain-v4.31-rename-map.md     # v4.31 rename map (Mechanic batch input, #38064)
+├── remote-build-pool-design.md       # Remote lake-build pool design (#38684, unapplied)
+├── remote-build-pool-cost-estimate.md # Companion cost estimate for the design above
+├── lean-daemon-state.json    # Snapshot of a 2026-01 lean daemon run (historical)
 │
 ├── templates/                # Document templates
 │   ├── problem.md            # Problem statement
 │   ├── hypothesis.md         # Approach definition
 │   ├── post-mortem.md        # Failure documentation
-│   └── insight.md            # Knowledge capture
+│   ├── insight.md            # Knowledge capture
+│   ├── knowledge-structured.md
+│   ├── success-recap.md
+│   └── value-assessment.md
 │
 ├── creativity/               # Ideation tools
 │   ├── divergent.md          # Idea generation
+│   ├── divergent-quick.md    # 5–10 minute idea generation
 │   ├── convergent.md         # Idea evaluation
 │   └── strategies.md         # Technique catalog
 │
 ├── knowledge/                # Cross-problem insights
 │   ├── technique-index.json  # Which techniques used on which problems
-│   ├── synthesis-report.md   # Auto-generated cross-problem report
 │   ├── patterns.md           # Cross-problem patterns
-│   └── techniques.md         # General learnings
+│   ├── tactics.md            # Tactic-level learnings
+│   ├── theorems.md           # Reusable theorem catalog
+│   └── templates/            # Lean file templates (e.g. nrt-irrational.lean.tmpl)
 │
-└── problems/                 # Active research
+├── scripts/                  # aristotle-status/submit/validate + verify_*.py checks
+├── aristotle-runs/           # Recovered Aristotle output (.lean)
+├── migration/                # Toolchain/Mathlib bump toolkit (see its README)
+├── certs/, certificates/     # Python verification scripts for specific results
+├── notes/                    # Ad-hoc research notes
+├── summaries/                # Generated knowledge-base overview
+├── vibemathed/               # One-off discovery-feed join analysis (see its README)
+│
+└── problems/                 # Active research (~2,700 problem dirs)
     └── {problem-slug}/
         ├── problem.md        # Problem statement
         ├── state.md          # Current OODA state
@@ -286,6 +324,22 @@ research/
                 │   └── ...
                 └── post-mortem.md  # What we learned
 ```
+
+### Legacy problem directories outside `problems/`
+
+Seven problem directories sit directly under `research/` rather than under
+`research/problems/`. They are left where they are (no relocation); where a
+twin exists under `problems/`, the twin is the live one.
+
+| Directory | Twin under `research/problems/` |
+|-----------|----------------------------------|
+| `area-of-circle-oq-05-oq-04/` | yes, diverged: `state.md` differs; the twin carries the `sessions/` log, the stray copy carries `knowledge.md`/`problem.md` and s4b/s6 prep notes |
+| `ballot-problem-oq-01-oq-02/` | yes, diverged: `knowledge.md` differs |
+| `binary-gcd-oq-02-oq-02/` | yes, diverged: `state.md` differs; the stray copy has one extra `sessions/` note |
+| `erdos-574-oq-01/` | none (`knowledge.md` + `verify_lower_bound.py`) |
+| `konigsberg-hierholzer-drafts/` | none (a single draft `.lean`) |
+| `roth-theorem-oq-02/` | yes, diverged: `knowledge.md`, `problem.md` and `state.md` all differ; the twin carries the `sessions/` log |
+| `sperner-simplicial-instance-oq-05/` | yes, diverged: `state.md` differs; the two `sessions/` sets do not overlap |
 
 ## State Machine
 
@@ -317,9 +371,9 @@ See `STATE_MACHINE.md` for full state definitions and transitions.
 
 | Label | Meaning |
 |-------|---------|
-| `loom:research-active` | Problem under investigation |
-| `loom:hypothesis` | Approach awaiting testing |
-| `loom:breakthrough` | Potential proof, needs review |
+| `research` | Research agent work (general topic tag) |
+| `research:queued` | Math problem to route into the researcher candidate pool (Seeker intake trigger) |
+| `research:pooled` | Ingested into the candidate pool by the Seeker intake (idempotency marker) |
 
 ## Scripts
 

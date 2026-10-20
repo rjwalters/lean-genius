@@ -46,7 +46,7 @@
   {
     "id": "ann-row1-peano-pattern",
     "proofId": "russell-1-plus-1-oq-04",
-    "range": { "startLine": 62, "endLine": 73 },
+    "range": { "startLine": 63, "endLine": 73 },
     "type": "concept",
     "title": "Row 1 — Pattern-Matched Peano (Rules(E) = {δ, ι})",
     "content": "The parent file's encoding. The kernel rewrites `Peano.one + Peano.one` to `Peano.two` in 5 single-rule steps: three `δ`-unfoldings (one each for `Peano.one`, `Peano.add`, `Peano.two`) and two `ι`-reductions firing the recursive and base clauses of `Peano.add`'s `match`. **No `β` appears** — yet the underlying recursor *does* have a step lambda. The equation compiler folds this lambda into the `ι`-rule at the user-visible level, hiding the β-redex. Row 2 (raw recursor) makes the hidden β explicit, exhibiting concretely how Lean's surface-level pattern matching translates to the kernel-level eliminator + λ. The structural takeaway: *the user-visible rule trace depends on how `add` is written, not just on what it computes*.",

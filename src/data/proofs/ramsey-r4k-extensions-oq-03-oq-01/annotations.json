@@ -26,7 +26,7 @@
   {
     "id": "r4k-oq0301-ann-edge-count",
     "proofId": "ramsey-r4k-extensions-oq-03-oq-01",
-    "range": { "startLine": 80, "endLine": 101 },
+    "range": { "startLine": 82, "endLine": 103 },
     "type": "theorem",
     "title": "cliqueEdges_card and card_edgeColorings: C(k,2) edges, 2^C(k,2) colourings",
     "content": "cliqueEdges S is the set of 2-element subsets of S (the edges of the clique), of cardinality C(k,2) by Finset.card_powersetCard. EdgeColoring S is the function type {e // e ∈ cliqueEdges S} → Bool; card_edgeColorings computes its cardinality as 2^C(k,2) using Fintype.card_fun (functions into a 2-element codomain) and Fintype.card_coe (the edge subtype has cardinality equal to the edge Finset).",

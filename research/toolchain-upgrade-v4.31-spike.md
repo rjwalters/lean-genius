@@ -70,7 +70,7 @@ with a 16 GB memory cap. `Erdos728FactorialDivisibility` remained excluded and s
 
 ## Failure-class breakdown (86 failing files in the sample)
 
-Classified from retained per-file logs (`proofs/spike-logs/*.log`):
+Classified from retained per-file logs (`proofs/spike-logs/*.log`; the spike-log summaries were parked out of the repo on 2026-09-29 at `/Volumes/Stripe/lean-genius/attic/retired-20260929/proofs/spike-logs/`):
 
 | Class | Count | Fix tier | Notes |
 |-------|-------|----------|-------|

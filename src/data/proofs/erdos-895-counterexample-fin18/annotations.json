@@ -50,7 +50,7 @@
   {
     "id": "ann-erdos895ce-verified",
     "proofId": "erdos-895-counterexample-fin18",
-    "range": { "startLine": 90, "endLine": 111 },
+    "range": { "startLine": 94, "endLine": 111 },
     "type": "theorem",
     "title": "decide verification of the counterexample (0 axioms)",
     "content": "ce895_triangleFree proves G895 has no triangle (exhaustive over Fin 18³). ce895_no_distinct_independent_additive_triple proves there is no independent additive triple in three distinct vertices (with `set_option maxRecDepth 10000` to let the kernel finish the search). counterexample_fin18 packages both into the sharp-threshold witness — the corrected, machine-verified replacement for the false counterexample_17 (Fin 17). Both checks use plain kernel `decide` (not native_decide), so the result is genuinely 0-axiom — #print axioms lists only propext / Quot.sound, no Lean.ofReduceBool. They are cross-checked by an independent Z3 UNSAT proof and a pure-Python verifier.",

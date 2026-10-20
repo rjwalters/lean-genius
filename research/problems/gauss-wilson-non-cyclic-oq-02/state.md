@@ -65,3 +65,38 @@ CRT decomposition `(ZMod n)ˣ ≅ (ZMod 2^a)ˣ × ∏ (ZMod pᵢ^{eᵢ})ˣ`, the
 When build infra returns: create `GaussWilsonNonCyclicOQ02.lean` stating
 `s2_cyclic_iff` and `s2_elementaryAbelian_iff`, reusing the parent CRT lemmas;
 locate or build the `(ZMod 2^a)ˣ` structure lemma.
+
+## Status (S4, researcher-3, 2026-09-29) — ACT: elementary-abelian half PROVED; OQ-02 fully formal
+
+`GaussWilsonNonCyclicOQ02.lean` extended 131 → 379 lines (0 sorries, 0 axioms,
+kernel `decide` only; `#print axioms` = foundational trio on all headline
+theorems; host-verified `lake env lean` exit 0):
+
+- **`units_pow_four_imp_sq_iff`** (n ≠ 0): `(∀ x : (ZMod n)ˣ, x⁴ = 1 → x² = 1)
+  ↔ (∀ odd prime p ∣ n, p % 4 = 3) ∧ n.factorization 2 ≤ 3` — the Sylow
+  2-subgroup of `(ZMod n)ˣ` is elementary abelian iff every odd prime factor
+  is ≡ 3 (mod 4) and 2⁴ ∤ n. Together with S3's
+  `two_torsion_pm_one_iff_isCyclic`, BOTH halves of OQ-02 are now formal.
+- Proof: multiplicative induction `Nat.recOnPosPrimePosCoprime`; CRT splitting
+  `(ZMod ab)ˣ ≃* (ZMod a)ˣ × (ZMod b)ˣ` via `ZMod.chineseRemainder` +
+  `Units.mapEquiv` + `MulEquiv.prodUnits`; odd prime powers via
+  `ZMod.isCyclic_units_of_prime_pow` + generator order = φ(p^a) with
+  `4 ∣ p−1 ⟺ p % 4 = 1`; 2-adic cap via **`ZMod.orderOf_five`** (5 has order
+  `2^(a−2)`), which landed in `Mathlib.RingTheory.ZMod.UnitsCyclic` — the
+  structure lemma S3 predicted would be an 80–150-line gap required ZERO gap
+  lines.
+- Reusable helper `exists_pow_four_ne_sq`: `orderOf g = 4m, m ≠ 0` ⟹ `g^m`
+  is the order-4 violation — avoids `orderOf_pow`/gcd bookkeeping.
+- v4.31 drift notes: `orderOf_eq_card_of_forall_mem_zpowers` now lands in
+  `Nat.card` (bridge with `Nat.card_eq_fintype_card`; use
+  `orderOf_dvd_natCard`); `Nat.recOnPosPrimePosCoprime` hands the case
+  `Nat.Prime p` directly (no `Nat.prime_iff` conversion);
+  `Nat.Prime.factorization_pow` takes `Nat.Prime`; `Nat.Coprime.pow` has
+  explicit exponent arguments.
+
+## Next Action
+OQ-02 is answered in full (both halves formal). Candidate follow-ups: none
+strong — the natural next invariant (full 2-adic valuation of the exponent of
+`(ZMod n)ˣ`, i.e. `v₂(λ(n))`) is a routine generalization of the same
+induction, and the rank/exponent contrast is already pinned by the S3 anchors.
+Prefer marking completed.

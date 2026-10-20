@@ -9,6 +9,10 @@ Lean 4 mathematical proofs with Mathlib, integrated into the LeanGenius monorepo
 | ✅ Verified | Compiles without sorry/axioms |
 | ⚠️ WIP | Contains sorry or custom axioms |
 
+> The lists below cover only the original core proofs. The project now holds
+> 6,000+ Lean files (including 2,000+ Erdős problem formalizations); per-proof
+> status is tracked in the gallery metadata under `src/data/proofs/`.
+
 ### Verified Proofs
 - `Sqrt2.lean` - Basic √2 properties
 - `Sqrt2Irrational.lean` - √2 is irrational
@@ -16,18 +20,18 @@ Lean 4 mathematical proofs with Mathlib, integrated into the LeanGenius monorepo
 - `FundamentalTheoremCalculus.lean` - FTC
 - `InfinitudePrimes.lean` - Infinitely many primes
 - `CantorDiagonalization.lean` - Cantor's diagonal argument
-
-### Work in Progress (contain sorry/axioms)
-- `NavierStokes.lean` - Navier-Stokes regularity (θₖ approach)
 - `AbelRuffini.lean` - Quintic unsolvability
 - `GodelIncompleteness.lean` - Gödel's incompleteness
-- `BrouwerFixedPoint.lean` - Brouwer fixed point
 - `EulerIdentity.lean` - Euler's identity
-- `FourColorTheorem.lean` - Four color theorem
 - `FundamentalTheoremAlgebra.lean` - FTA
 - `HaltingProblem.lean` - Halting problem
 - `PythagoreanTheorem.lean` - Pythagorean theorem
-- `RamanujanSumFallacy.lean` - 1+2+3+... = -1/12 fallacy
+
+### Work in Progress (contain sorry/axioms)
+- `NavierStokes.lean` - Navier-Stokes regularity (θₖ approach; sorries)
+- `BrouwerFixedPoint.lean` - Brouwer fixed point (axioms)
+- `FourColorTheorem.lean` - Four color theorem (axioms)
+- `RamanujanSumFallacy.lean` - 1+2+3+... = -1/12 fallacy (axioms)
 
 ## Version Compatibility
 
@@ -68,10 +72,11 @@ This will:
      sorry
    ```
 
-2. Add import to `Proofs.lean`:
-   ```lean
-   import Proofs.MyTheorem
-   ```
+2. No import registration is needed — `lakefile.toml` uses
+   `globs = ["Proofs", "Proofs.*"]`, so every file under `Proofs/` is picked up
+   automatically. Do **not** add `import Proofs.MyTheorem` to `Proofs.lean`
+   (see the note at the top of that file — per-file imports there caused
+   constant merge conflicts).
 
 3. Build:
    ```bash
@@ -98,15 +103,26 @@ Output is saved as `<filename>.leanInk` JSON files.
 ```
 proofs/
 ├── lakefile.toml        # Lake configuration
+├── lake-manifest.json   # Lake dependency lockfile
 ├── lean-toolchain       # Lean 4.31.0
-├── Proofs.lean          # Main import file
+├── Dockerfile           # Memory-limited build image used by scripts/docker-build.sh
+├── Proofs.lean          # Root module (intentionally no imports; modules found by lakefile globs)
 ├── Proofs/              # Individual proofs
 │   ├── Sqrt2Irrational.lean  # ✅ Verified
 │   ├── NavierStokes.lean     # ⚠️ WIP (axioms)
 │   └── ...
+├── bin/                 # Safety wrapper blocking direct `lake build`
+├── batch2/              # v4.26→v4.31 migration ledger (STATUS.md, verify-results.tsv) — see its README
+├── MATHLIB_STYLE.md     # Style/naming notes for files headed to Mathlib
+├── BADGE_TAXONOMY.md    # Proof badge definitions
 └── scripts/
     ├── setup.sh
-    └── extract-proof-info.sh
+    ├── docker-build.sh          # REQUIRED build path (memory-limited)
+    ├── build-safe-subset.sh
+    ├── activate-safety.sh
+    ├── DOCKER-BUILD-RUNBOOK.md
+    ├── extract-proof-info.sh
+    └── ...                      # cache priming/repair, safe-build, verify_*.py numeric checks
 ```
 
 ## Troubleshooting

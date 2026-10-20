@@ -14,7 +14,7 @@
   {
     "id": "real-root-unique",
     "proofId": "cube-root-3-irrational-oq-03-oq-03",
-    "range": { "startLine": 55, "endLine": 63 },
+    "range": { "startLine": 56, "endLine": 64 },
     "type": "theorem",
     "title": "Uniqueness of the Real Cube Root of 3",
     "content": "`real_root_eq_cbrt3` proves that any real number `r` with `r³ = 3` is exactly `∛3`. The argument is a one-liner: `r³ = 3 = (∛3)³` (using the parent's `cbrt3_pow_three`), and `x ↦ x³` is injective on ℝ because it is strictly monotone (`Odd.strictMono_pow` with `Odd 3`). This is the real-analytic heart of the whole proof — the fact that ℝ contains only ONE cube root of 3, unlike ℂ which contains three (∛3, ω∛3, ω²∛3).",

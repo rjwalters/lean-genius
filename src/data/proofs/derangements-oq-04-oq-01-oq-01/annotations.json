@@ -47,7 +47,7 @@
   {
     "id": "derangements-oq040101-poisson-main",
     "proofId": "derangements-oq-04-oq-01-oq-01",
-    "range": { "startLine": 58, "endLine": 84 },
+    "range": { "startLine": 59, "endLine": 84 },
     "type": "insight",
     "title": "Assembling the Poisson Limit: Composition and Scaling",
     "content": "fixedPoints_tendsto_poisson is the main theorem: for fixed k, S(n,k)/n! → e^{-1}/k!. Phase one builds the limit from the analytic input. Because k is constant, n−k → ∞ (hsubk, proved by omega), so composing the partial-sum limit with n ↦ n−k gives altFactPartialSum(n−k) → e^{-1} (Tendsto.comp). Scaling by the constant 1/k! (Tendsto.const_mul) produces a sequence tending to (1/k!)·e^{-1}, and a ring rewrite identifies that limit with the target e^{-1}/k!.",
@@ -88,7 +88,7 @@
   {
     "id": "derangements-oq040101-k0-consistency",
     "proofId": "derangements-oq-04-oq-01-oq-01",
-    "range": { "startLine": 101, "endLine": 110 },
+    "range": { "startLine": 102, "endLine": 110 },
     "type": "insight",
     "title": "k = 0 Recovers the Classical Derangement Limit",
     "content": "derangements_tendsto_poisson_zero specialises the main theorem to k = 0, recovering D_n/n! → e^{-1}: the probability that a uniformly random permutation has no fixed point (is a derangement) tends to 1/e, which is the Poisson(1) mass at 0. The proof is a one-liner — instantiate fixedPoints_tendsto_poisson at k = 0 and simplify e^{-1}/0! = e^{-1}. This provides a sanity check consistent with the well-known derangement asymptotic and ties the new distributional statement back to the classical special case.",

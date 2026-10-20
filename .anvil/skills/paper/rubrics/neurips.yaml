@@ -1,0 +1,138 @@
+# NeurIPS reviewer rubric — advisory overlay for `anvil:paper`.
+#
+# Source: NeurIPS reviewer guidelines, derived from the program-chairs'
+# published reviewer form. See:
+#   https://neurips.cc/Conferences/2024/ReviewerGuidelines
+# (The exact dimensions appear consistently across recent years; the
+# guidelines are republished annually and may be updated by the chairs.)
+#
+# This rubric is ADVISORY — it produces venue-specific scoring that the
+# reviser consumes for additional signal, but does NOT contribute to the
+# /40 convergence gate in `anvil/skills/paper/rubric.md`. The generic /40
+# rubric remains the authoritative convergence gate for advance decisions.
+# See `anvil/lib/snippets/rubric.md` and `anvil/lib/rubric.py` for the
+# advisory-vs-gate distinction.
+#
+# Weights sum to 16. Skill rubric.md (/40) drives the actual advance gate.
+
+id: anvil-pub-neurips-v1
+name: NeurIPS reviewer rubric (advisory overlay)
+venue: neurips
+total: 16
+advisory: true
+source: https://neurips.cc/Conferences/2024/ReviewerGuidelines
+
+dimensions:
+  - id: soundness
+    name: Technical soundness
+    weight: 4
+    description: >-
+      Technical soundness of the methodology, claims, and the inferences
+      drawn from the evidence. Assesses whether the experimental setup,
+      proofs, or derivations adequately support the stated contributions
+      without overclaiming. A paper with a clean method that produces
+      weak signal still scores well here if the claims are calibrated to
+      the evidence; one with a strong result whose methodology has gaps
+      (missing baselines, unjustified hyperparameter choices, unstated
+      assumptions) does not.
+    calibration: >-
+      4/4 — methodology is rigorous; every claim is supported by
+      appropriate evidence; no obvious sound-confounding gaps. 3/4 —
+      one specific weakness (e.g., a missing ablation) that does not
+      undermine the headline claim. 2/4 — two or more weaknesses, OR
+      one weakness that materially affects a load-bearing claim. 1/4 —
+      the headline claim is not adequately supported by the presented
+      method. 0/4 — the method as described cannot produce the claimed
+      result (a serious error in setup, statistics, or proof).
+
+  - id: presentation
+    name: Quality of presentation
+    weight: 2
+    description: >-
+      Quality of the writing, organization, figures, and tables.
+      Assesses whether a competent program committee member can extract
+      the contribution, follow the argument, and reproduce the experiment
+      sketch on first pass. Figure captions must be self-contained;
+      tables must have meaningful column headers and consistent
+      alignment; cross-references must resolve.
+    calibration: >-
+      2/2 — well-written, well-organized; figures self-contained; no
+      broken refs. 1/2 — readable but rough in places; one or two
+      figures missing essential context in captions; some
+      flow / cross-reference issues. 0/2 — hard to follow; major
+      structural problems; figures so unclear they obscure the result.
+
+  - id: contribution
+    name: Significance of contribution
+    weight: 4
+    description: >-
+      Significance of the claimed contribution to the field. Distinct
+      from novelty (which asks whether the work is new): this dimension
+      asks whether the work matters. A new but trivial result scores
+      high on novelty and low here; a non-novel but well-executed
+      consolidation scores the inverse.
+    calibration: >-
+      4/4 — the result advances the field in a way a program committee
+      would recognize as important to the community. 3/4 — solid
+      contribution; useful but incremental. 2/4 — minor advance; the
+      community benefit is modest. 1/4 — the contribution as framed is
+      hard to identify, or applies to a narrow corner. 0/4 — no
+      identifiable contribution distinct from prior work.
+
+  - id: novelty
+    name: Originality vs. prior work
+    weight: 3
+    description: >-
+      Originality of the contribution versus published prior work. The
+      reviewer checks whether the closest prior work has been engaged
+      on its actual merits and whether the contribution is honestly
+      placed. Failure mode: a paper that frames a known result as new
+      because the related-work section omitted the prior art.
+    calibration: >-
+      3/3 — clearly new; prior work is engaged accurately. 2/3 —
+      mostly new with one close prior result that is either omitted or
+      under-engaged. 1/3 — substantial overlap with prior work that the
+      paper does not adequately address. 0/3 — the paper rediscovers a
+      published result without acknowledging it.
+
+  - id: reproducibility
+    name: Reproducibility
+    weight: 3
+    description: >-
+      Adherence to the NeurIPS reproducibility checklist: are code,
+      data, seeds, and hyperparameters either supplied or sufficiently
+      described that an independent group could replicate the headline
+      result? At top venues this is increasingly a hard requirement;
+      a paper without it does not advance regardless of how strong the
+      result claims to be.
+    calibration: >-
+      3/3 — full reproducibility: code+data+seeds either supplied or
+      referenced via a stable artifact. 2/3 — methods section is
+      sufficient for a determined replicator; code/seeds may be
+      supplementary. 1/3 — partial: experimental setup is described but
+      key hyperparameters or data preprocessing are missing. 0/3 —
+      independent replication is not possible from the paper alone.
+
+critical_flags:
+  - type: unverified_reproducibility_claim
+    description: >-
+      The paper claims code/data/seeds are available, but no link,
+      repository, or supplementary archive is referenced — or the
+      referenced artifact is unreachable / does not contain what was
+      claimed. The NeurIPS reproducibility checklist treats this as a
+      blocker because reviewers cannot verify the central result.
+
+  - type: missing_baseline
+    description: >-
+      The paper claims an improvement (accuracy, efficiency,
+      robustness) without comparing against an established baseline a
+      sophisticated reviewer would expect. Includes both
+      community-standard baselines for the task and prior-work
+      baselines named in the related-work section.
+
+  - type: prior_work_omission
+    description: >-
+      A close prior result is missing from the related-work section
+      AND that omission changes the assessed novelty of the paper.
+      Distinct from novelty < 1/3: the flag fires when the omission is
+      a misrepresentation, not merely an incomplete survey.

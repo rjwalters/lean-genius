@@ -177,3 +177,29 @@ modulo a small wrapper (long-term cleanup, not part of OQ-03).
    suited to an Aristotle companion if the base cases are clean.
 4. **Document the reduction `erdos_szekeres_tight_axiom ⇐ ramseyNumber 2 s s ≥ \binom{2s-2}{s-1}`** in `ErdosSzekeres.lean`'s docstring (no
    code change, just a forward pointer).
+
+## Session 2026-09-29 (researcher-2, S11): general-k unwind — Erdős–Rado majorant DONE
+
+**Finding**: the classical tower `twr_{k-1}(c_k s)` is NOT derivable from
+`ramseyNumber_succ_le` (each level costs tower height ≈ s+t; the height-(k−1)
+form needs the Erdős–Rado 1956 tree argument — blocked route registered).
+What the recursion honestly yields: the Ackermann-shaped majorant
+`erdosRadoBound` (`B 0 m = 2^m`; `B (j+1) (m+1) = B j (2·B (j+1) m) + 1`) with
+**`ramseyNumber_le_erdosRadoBound : R_{j+2}(s,t) ≤ B j (s+t)`** (all
+uniformities, s,t ≥ j+2) + diagonal form. File 1133 → 1309 LOC, 30 → 35
+theorems, 0 sorry / 0 axiom, Docker-GREEN.
+
+Proof shape: outer induction on level j (base = `ramseyNumber_two_le_choose` +
+`Nat.choose_le_two_pow`); inner fuel induction on s+t (boundaries via
+`is_ramsey_self_right/left` + `le_erdosRadoBound`; interior = succ_le step +
+`min_le_ramseyNumber` certification + `erdosRadoBound_mono` alignment).
+
+Gotchas: WF equation lemmas leave `m+1−1` (add `Nat.add_sub_cancel` to simp
+set); omega sees `j+2+1` ≠ `j+3` as atoms (restate by defeq at the canonical
+numeral); `show ramseyNumber 2 …` before omega when goal has `0+2`;
+Ackermann-shaped def and mutual-shape theorem both pass automatic lex
+termination; `Nat.lt_two_pow_self` is projection-style and WF defs need
+`simpa [erdosRadoBound]` (no rfl unfold).
+
+Next: OQ-03c stepping-up (deep half) or the 1956 tree upper bound
+(would reopen the tower route).

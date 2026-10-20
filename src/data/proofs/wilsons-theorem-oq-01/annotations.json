@@ -86,7 +86,7 @@
   {
     "id": "ann-wq01-gauss-wilson-main",
     "proofId": "wilsons-theorem-oq-01",
-    "range": { "startLine": 674, "endLine": 687 },
+    "range": { "startLine": 676, "endLine": 687 },
     "type": "insight",
     "title": "Gauss-Wilson Classification: The Main Theorem",
     "content": "gaussWilson_classification is the culminating theorem: for n ≥ 3, unitsProduct n % n = n-1 iff n ∈ {4, p^k, 2p^k} for odd prime p. The proof chain: (1) unitsProduct_eq_neg_one_iff_cyclic reduces the concrete arithmetic to IsCyclic (ℤ/nℤ)* via WilsonsTheoremOQ02's abstract bridge; (2) isCyclic_units_iff_gaussWilson (restating Mathlib's ZMod.isCyclic_units_iff) gives the p^k/2p^k characterization. This connects 200-case computational verification with the abstract group-theoretic proof.",

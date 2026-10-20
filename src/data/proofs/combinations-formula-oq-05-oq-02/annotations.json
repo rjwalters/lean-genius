@@ -14,7 +14,7 @@
   {
     "id": "ann-cf0502-root-facts",
     "proofId": "combinations-formula-oq-05-oq-02",
-    "range": { "startLine": 46, "endLine": 61 },
+    "range": { "startLine": 47, "endLine": 58 },
     "type": "definition",
     "title": "Fixing a primitive cube root and its basic laws",
     "content": "ω is fixed as Complex.exp(2πi/3), certified a primitive cube root of unity via Complex.isPrimitiveRoot_exp. Three consequences are drawn directly from the IsPrimitiveRoot API: ω³ = 1 (pow_eq_one), ω ≠ 1 (ne_one), and the general divisibility criterion ω^m = 1 ⟺ 3 ∣ m (pow_eq_one_iff_dvd). The last fact is what later turns a complex-exponent identity into the purely arithmetic residue condition k % 3 = r.",
@@ -26,8 +26,8 @@
   {
     "id": "ann-cf0502-cube-root-sum",
     "proofId": "combinations-formula-oq-05-oq-02",
-    "range": { "startLine": 63, "endLine": 74 },
-    "type": "lemma",
+    "range": { "startLine": 60, "endLine": 70 },
+    "type": "theorem",
     "title": "Cube roots annihilate 1 + t + t²",
     "content": "cube_root_sum: for any t with t³ = 1 and t ≠ 1, necessarily 1 + t + t² = 0. The proof factors (t − 1)(1 + t + t²) = t³ − 1 = 0 by `ring` + the hypothesis, then splits on `mul_eq_zero`: since t ≠ 1 rules out the first factor, the second must vanish. Note the hypothesis is only t³ = 1, not that t is a *primitive* cube root — the lemma applies to every power ω^m appearing later, not just ω itself.",
     "mathContext": "$t^3 = 1 \\wedge t \\neq 1 \\;\\Rightarrow\\; 1 + t + t^2 = 0,\\quad\\text{via } (t-1)(1+t+t^2) = t^3-1$",
@@ -50,7 +50,7 @@
   {
     "id": "ann-cf0502-extraction",
     "proofId": "combinations-formula-oq-05-oq-02",
-    "range": { "startLine": 98, "endLine": 151 },
+    "range": { "startLine": 101, "endLine": 151 },
     "type": "theorem",
     "title": "The three-way extraction identity (main result)",
     "content": "three_way_split, the heart of the answer to OQ-05-OQ-02: for r < 3, 3·S_r(n) = ∑_{j<3} ω^{2jr}(1+ω^j)^n. The calc proof (1) expands each (1+ω^j)^n binomially via add_pow, (2) swaps the j- and k-sums with Finset.sum_comm to isolate, for each fixed k, the inner sum ∑_j ω^{j(k+2r)}, (3) collapses that inner sum through filter3 — it is 3·C(n,k) exactly when 3 ∣ (k+2r), i.e. when k % 3 = r, a translation discharged uniformly by `omega`, and (4) reassembles the surviving terms into 3·S_r(n) via Finset.sum_filter. All exponents stay natural-number valued (ω^{-jr} is encoded as ω^{2jr} since ω^{3j} = 1, i.e. ω^{-1} = ω²), so the whole extraction is Finset bookkeeping with no complex-analytic machinery beyond ω³ = 1.",

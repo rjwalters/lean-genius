@@ -63,6 +63,8 @@ vendored with adaptation per the operator decision recorded on #37507 (comment o
 2026-08-03). `openai/cdc-lean` carries **no license file**, so default copyright
 applies; the operator's decision is an explicit *risk acceptance*, not a license.
 The mathematical content and the proof scripts originate with `openai/cdc-lean`.
+See `LICENSE-STATUS.md` in this directory for the inventory of vendored files and the
+per-file re-derivation plan (tracking issue #43638).
 
 ## Adaptations from upstream
 

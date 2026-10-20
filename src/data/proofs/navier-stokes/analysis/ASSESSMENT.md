@@ -3,6 +3,13 @@
 **Date:** 2025-12-22
 **Purpose:** Determine what we can honestly claim and potentially publish
 
+> **Superseded in part (2026-09-08).** The conditional theorem's B′ ⇒ Type I step used
+> the cubic enstrophy inequality as an upper bound; it is Leray's lower bound, and
+> OpenAI's forced Type II flow satisfies B′. Claims below that B′ "bridges the scale
+> gap" or that "all steps are sound" are withdrawn; see
+> `openai-forced-blowup-2026.md`. The v3 novelty claim reduces to the scale-mismatch
+> diagnosis and the formulation of B′ as a hypothesis.
+
 ---
 
 ## What We Started With
@@ -88,9 +95,9 @@ This assumption is essentially equivalent to what needs to be proven.
    - It is exactly what bridges the scale gap
    - It is strictly weaker than LPS-type conditions
 
-3. **We proved a clean conditional theorem**
-   - B′ → Type I → regularity
-   - All steps are sound and correctly attributed
+3. ~~**We proved a clean conditional theorem**~~ (withdrawn 2026-09-08)
+   - B′ → Type I → regularity — the first arrow rested on a reversed inequality
+   - Steps 1, 4, 5 are sound and correctly attributed; Step 3 is not
    - The hypothesis is clearly stated
 
 4. **We provided diagnostic insight**

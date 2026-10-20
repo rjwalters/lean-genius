@@ -23,7 +23,7 @@
   {
     "id": "ann-pythag-oq08-oq01-coprime-engine",
     "proofId": "pythagorean-triples-oq-08-oq-01",
-    "range": { "startLine": 54, "endLine": 64 },
+    "range": { "startLine": 56, "endLine": 64 },
     "type": "insight",
     "title": "Coprimality Engine: No Prime Divides Both Legs",
     "content": "not_dvd_both_of_coprime is the one place primitivity is used. If a prime p divided both legs, IsCoprime.isUnit_of_dvd' would make p a unit, contradicting Prime.not_unit. Specialised to p = 2 and p = 3 it powers both per-leg theorems.",

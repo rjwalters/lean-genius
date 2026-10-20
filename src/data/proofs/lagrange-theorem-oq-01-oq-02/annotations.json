@@ -14,7 +14,7 @@
   {
     "id": "ann-a4-element-orders",
     "proofId": "lagrange-theorem-oq-01-oq-02",
-    "range": { "startLine": 33, "endLine": 52 },
+    "range": { "startLine": 34, "endLine": 52 },
     "type": "insight",
     "title": "Element Order Distribution via native_decide",
     "content": "Four theorems establish A₄'s complete element structure by native_decide. A4_card computes |A₄| = 12. A4_no_element_order6 shows no element has order 6 — immediately ruling out cyclic subgroups ℤ₆. A4_three_order2_elements counts exactly 3 order-2 elements (the double transpositions). A4_eight_order3_elements counts exactly 8 order-3 elements (the 3-cycles). These facts are all decided computationally since A₄ is a concrete finite type in Lean 4 via `alternatingGroup (Fin 4)`. The native_decide tactic compiles the decision procedure to native code for efficiency.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-subgroup-lift",
     "proofId": "lagrange-theorem-oq-01-oq-02",
-    "range": { "startLine": 70, "endLine": 98 },
+    "range": { "startLine": 71, "endLine": 98 },
     "type": "insight",
     "title": "Lifting Finset Result to Subgroup Type",
     "content": "A4_no_subgroup_order6 bridges the gap between the Finset theorem and the Subgroup type. Given H : Subgroup A4 with [Fintype H] and Fintype.card H = 6, we construct S = Finset.univ.filter (· ∈ H). The key steps: (1) S.card = 6 via `have hcard : Fintype.card H = S.card := by simp [Fintype.card_subtype]` and `omega`; (2) 1 ∈ S via `simp [H.one_mem]`; (3) multiplication closure via `H.mul_mem`; (4) inverse closure via `H.inv_mem`. Then A4_no_subgroup_order6_finset gives the contradiction. The Fintype.card_subtype bridge is the crucial lemma.",

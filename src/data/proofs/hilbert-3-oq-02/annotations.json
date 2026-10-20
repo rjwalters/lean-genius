@@ -26,7 +26,7 @@
   {
     "id": "ann-angle-group",
     "proofId": "hilbert-3-oq-02",
-    "range": { "startLine": 89, "endLine": 106 },
+    "range": { "startLine": 93, "endLine": 106 },
     "type": "tactic",
     "title": "Rational multiples of π vanish in the angle group",
     "content": "The quotient computations that make rational dihedral angles trivial. angleClass_eq_zero_of_ratPi proves q·π is 0 in ℝ/πℚ: by QuotientAddGroup.eq_zero_iff this reduces to membership of q·π in piRatHom.range, witnessed by q. angleClass_pi is the special case π = 1·π. angleClass_add records additivity of the class map (inherited from map_add of the quotient homomorphism), needed for the supplementary-angle identity.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-dehn-term",
     "proofId": "hilbert-3-oq-02",
-    "range": { "startLine": 108, "endLine": 140 },
+    "range": { "startLine": 112, "endLine": 140 },
     "type": "insight",
     "title": "The two key facts: rational-angle vanishing and supplementary cancellation",
     "content": "The algebraic heart of the entry. dehnTerm_eq_zero_of_ratPi: a length at a rational-multiple-of-π angle contributes 0, because the angle class is 0 and TensorProduct.tmul_zero finishes — this is the mechanism behind D(cube)=0. Additivity in length (add_tmul) and angle (tmul_add) give the Dehn term its bilinear structure. dehnTerm_supplementary: l ⊗ θ + l ⊗ (π−θ) = 0, proved by combining the two terms with tmul_add into l ⊗ (θ+(π−θ)) = l ⊗ π and then angleClass_pi + tmul_zero. This single identity is exactly why a planar cut (which replaces a dihedral angle θ by θ and π−θ on the two new pieces) preserves the Dehn invariant — the statement the parent could only assert as ':= trivial'.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-polyhedron",
     "proofId": "hilbert-3-oq-02",
-    "range": { "startLine": 142, "endLine": 165 },
+    "range": { "startLine": 146, "endLine": 165 },
     "type": "concept",
     "title": "Whole-polyhedron consequences: the cube is Dehn-trivial",
     "content": "The single-edge facts lift to entire polyhedra. dehnSum_eq_zero_of_ratPi: if every dihedral angle is a rational multiple of π, the whole Dehn invariant vanishes, by Finset.sum_eq_zero applied to dehnTerm_eq_zero_of_ratPi edge-by-edge. cube_dehnSum_zero specializes to all angles π/2 = (1/2)·π, recovering Dehn's original computation that the cube has Dehn invariant 0 — now inside the genuine real tensor-product group rather than the parent's surrogate. (The contrast — the regular tetrahedron's NONvanishing, which needs Niven's transcendence theorem — is left as an open question.)",

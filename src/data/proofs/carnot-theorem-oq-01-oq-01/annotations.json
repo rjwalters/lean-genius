@@ -14,8 +14,8 @@
   {
     "id": "ann-carnot-oq0101-decomp",
     "proofId": "carnot-theorem-oq-01-oq-01",
-    "range": { "startLine": 49, "endLine": 66 },
-    "type": "lemma",
+    "range": { "startLine": 53, "endLine": 66 },
+    "type": "theorem",
     "title": "Sum-to-Product Decomposition of the Cosine Sum",
     "content": "The private lemma cos_sum_decomp is the analytic engine. Using Real.cos_add_cos, cos A + cos B = 2 cos((A+B)/2) cos((A-B)/2); the angle constraint gives (A+B)/2 = π/2 − C/2, so the leading factor becomes sin(C/2) via Real.cos_pi_div_two_sub. With cos C = 1 − 2 sin²(C/2), the whole sum collapses to 1 + 2 sin(C/2) cos((A-B)/2) − 2 sin²(C/2), closed by linear_combination. This couples all three angles into the two scalars sin(C/2) and cos((A-B)/2).",
     "mathContext": "$\\cos A + \\cos B + \\cos C = 1 + 2\\sin\\tfrac{C}{2}\\cos\\tfrac{A-B}{2} - 2\\sin^2\\tfrac{C}{2}.$",

@@ -26,7 +26,7 @@
   {
     "id": "ann-finset-variant",
     "proofId": "ballot-problem-oq002",
-    "range": { "startLine": 83, "endLine": 93 },
+    "range": { "startLine": 84, "endLine": 93 },
     "type": "insight",
     "title": "Finset Index: Cleaner Membership Coercion",
     "content": "When the index set is a Finset rather than a Set.Finite, membership coercion via Finset.mem_coe bridges between the membership hypotheses. The Set.ncard_coe_Finset lemma identifies |(I : Set ι).ncard| = I.card, keeping the conclusion in terms of Finset.card which is more natural for discrete combinatorics.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-fintype-version",
     "proofId": "ballot-problem-oq002",
-    "range": { "startLine": 99, "endLine": 109 },
+    "range": { "startLine": 100, "endLine": 109 },
     "type": "insight",
     "title": "Fintype Version: Universe Union via biUnion_univ",
     "content": "When the index type ι is Fintype, the union covers all elements with no index set restriction. The proof rewrites the unindexed union as a biUnion over Set.univ via Set.biUnion_univ, applies the core lemma, then uses Set.ncard_univ to identify the index set size as Fintype.card ι. The hypothesis Pairwise (Disjoint on s) with no membership condition is equivalent to Set.univ.PairwiseDisjoint s.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-fiber-consequence",
     "proofId": "ballot-problem-oq002",
-    "range": { "startLine": 115, "endLine": 131 },
+    "range": { "startLine": 118, "endLine": 131 },
     "type": "insight",
     "title": "Fiber Decomposition: |A| = k × |f(A)| for Uniform Surjections",
     "content": "This theorem is the combinatorial heart of the ballot probability transfer. If a set A decomposes as a disjoint union of fibers f⁻¹{b} ∩ A over values b in B, and every fiber has size k, then |A| = k × |B|. This is the discrete analogue of the fiber integral formula from measure theory. In the ballot problem, A is the set of all multi-candidate sequences and B is the set of election outcomes, with k being the number of orderings within each outcome.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-compatibility",
     "proofId": "ballot-problem-oq002",
-    "range": { "startLine": 137, "endLine": 145 },
+    "range": { "startLine": 140, "endLine": 145 },
     "type": "insight",
     "title": "API Compatibility: PairwiseDisjoint from Explicit Forall",
     "content": "The parent file BallotProblemOQ01OQ02OQ01.lean used the explicit forall-forall form for disjointness. This compatibility lemma shows that the PairwiseDisjoint reformulation is strictly more general: the explicit form follows by simple eta-expansion. The result validates that upgrading the API to PairwiseDisjoint is purely additive with no loss of coverage.",

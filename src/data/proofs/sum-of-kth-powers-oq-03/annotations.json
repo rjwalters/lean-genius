@@ -86,7 +86,7 @@
   {
     "id": "sumkth-oq03-ann-main",
     "proofId": "sum-of-kth-powers-oq-03",
-    "range": { "startLine": 130, "endLine": 143 },
+    "range": { "startLine": 131, "endLine": 144 },
     "type": "concept",
     "title": "Nicomachus's theorem assembled",
     "content": "`sum_cubes_eq_sum_squared_via_odds` chains L1–L3. First `Finset.sum_congr` rewrites each i³ as its block via `block_eq_cube`; then `tiling` collapses the sum of blocks to ∑_{j<T(n+1)}(2j+1); then `sum_odds` evaluates that to (T(n+1))². The closing `rfl` is the elegant finish: T(n+1) is definitionally ∑ i ∈ range (n+1), i, so the result lands exactly on the parent's right-hand side (∑_{i≤n} i)² with no further rewriting. The whole identity is proved without ever leaving the ℕ semiring.",
@@ -98,7 +98,7 @@
   {
     "id": "sumkth-oq03-ann-cube-consecutive-odds",
     "proofId": "sum-of-kth-powers-oq-03",
-    "range": { "startLine": 145, "endLine": 156 },
+    "range": { "startLine": 146, "endLine": 157 },
     "type": "insight",
     "title": "Corollary: each cube is a run of consecutive odd numbers",
     "content": "`cube_eq_sum_consecutive_odds` restates the block lemma as a standalone identity: i³ is the sum of the i consecutive odds starting at 2·(T i)+1, i.e. 1³=1, 2³=3+5, 3³=7+9+11, 4³=13+15+17+19. The proof reindexes the block sum over `Ico (T i) (T(i+1))` to a sum over `range i` via `Finset.sum_Ico_eq_sum_range`, then simplifies the new upper bound with `T_succ` and `Nat.add_sub_cancel_left`. Crucially the first odd is written 2·(T i)+1 so that the reindexed summand 2·(T i + k)+1 introduces no ℕ-subtraction. This is the historically famous form of Nicomachus's identity — the visual 'odd-number staircase' decomposition of the cubes.",

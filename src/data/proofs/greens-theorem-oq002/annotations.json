@@ -22,7 +22,7 @@
   {
     "id": "ann-imports-setup",
     "proofId": "greens-theorem-oq002",
-    "range": { "startLine": 41, "endLine": 54 },
+    "range": { "startLine": 42, "endLine": 53 },
     "type": "definition",
     "title": "Banach Codomain Variable Block",
     "content": "The three-instance variable block `[NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]` is the canonical Mathlib4 setup for Bochner-valued integration. Completeness is essential: the Bochner integral is defined as the unique continuous linear extension of the simple-function integral, and the limit exists only in a Banach space. `NormedSpace ℝ` (rather than over an arbitrary scalar field) is required because `intervalIntegral.integral_symm` and `integral_neg` are proved in Mathlib for ℝ-modules; the result is *not* a scalar-genericity result but specifically a real-scalar Bochner-genericity result. The three imports cover (i) `intervalIntegral` notation, (ii) product-measure Fubini, and (iii) product-measure mass and monotonicity.",

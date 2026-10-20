@@ -50,7 +50,7 @@
   {
     "id": "ann-pyth60sharp-primepower",
     "proofId": "pythagorean-triples-oq002",
-    "range": { "startLine": 134, "endLine": 158 },
+    "range": { "startLine": 135, "endLine": 158 },
     "type": "concept",
     "title": "Each prime power in 60 is individually maximal",
     "content": "Because (3,4,5) has product 60 = 2²·3·5, none of 8 = 2³, 9 = 3², 25 = 5² divides 60, so not_universal_eight / _nine / _twentyfive each fail to be universal (and not_universal_onehundredtwenty rules out doubling 60). This shows the package 60 ∣ xyz is sharp prime-by-prime: the 2-adic content stops at 4, the 3-adic at 3, the 5-adic at 5 — exactly the structural refinement asked for. The closing sixty_dvd_prod_of_pythagoreanTriple restates the package through Mathlib's PythagoreanTriple structure.",

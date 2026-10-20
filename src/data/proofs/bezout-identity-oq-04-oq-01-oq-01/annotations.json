@@ -114,7 +114,7 @@
   {
     "id": "ann-axioms",
     "proofId": "bezout-identity-oq-04-oq-01-oq-01",
-    "range": { "startLine": 156, "endLine": 171 },
+    "range": { "startLine": 157, "endLine": 171 },
     "type": "concept",
     "title": "Why Two Axioms Remain: The Mathlib Module ↔ Matrix Bridge",
     "content": "The two `axiom` declarations are the only remaining gaps. Both are theorems Mathlib already has machinery for, but in a different form:\n\n**snf_pid_exists**: For any PID $R$, every $A \\in M_{m \\times n}(R)$ has an SNF decomposition $A = U \\cdot D \\cdot V$. Mathlib has `Submodule.smithNormalForm` (in `Mathlib.LinearAlgebra.FreeModule.PID`) which gives a basis of $R^m$ in which the image $A(R^n)$ has SNF basis. Bridging requires translating between matrices (concrete entries) and submodules (abstract subspaces).\n\n**snf_pid_solvability**: $Ax = b$ is solvable iff for each row $i$, either $\\mathrm{invariantFactor}_i \\neq 0$ and divides $(Ub)_i$, or $\\mathrm{invariantFactor}_i = 0$ and $(Ub)_i = 0$. The intuition: SNF reduces $Ax = b$ to $Dy = Ub$ (with $y = Vx$), and a diagonal system $d_i y_i = c_i$ is solvable iff $d_i | c_i$ (or both sides are 0).\n\nThe axioms are stated with full PID hypotheses (`[CommRing R] [IsDomain R] [IsPrincipalIdealRing R]`) so they apply to ℤ, k[X], ℤ[i], etc. simultaneously. Once the bridge to `Submodule.smithNormalForm` is built, both axioms become theorems and this entry transitions from `axiomatized` to `verified`.\n\nThe authors chose to state these as axioms (rather than `sorry`) because: (1) they are *actually true* mathematical statements (not conjectures), (2) Aristotle proof search skips axioms entirely, signaling that human translation work is needed, and (3) the entire downstream theory is unblocked while the bridge is built.",
@@ -137,7 +137,7 @@
   {
     "id": "ann-bezout-pid",
     "proofId": "bezout-identity-oq-04-oq-01-oq-01",
-    "range": { "startLine": 172, "endLine": 191 },
+    "range": { "startLine": 173, "endLine": 191 },
     "type": "concept",
     "title": "Bezout in GCDMonoid and k[X] as PID",
     "content": "The final section provides the two directions of Bezout's identity and the canonical PID instance.\n\n**bezout_pid_forward** (any GCDMonoid): If ax+by=c, then gcd(a,b)|c. The proof is pure divisibility algebra:\n- gcd|a → gcd|ax (dvd_mul_of_dvd_left)\n- gcd|b → gcd|by (dvd_mul_of_dvd_left)\n- gcd|(ax+by) = c (dvd_add)\n\nThis holds in any GCDMonoid (no PID needed) — a GCDMonoid provides gcd_dvd_left and gcd_dvd_right, which suffice.\n\n**bezout_int_backward** (ℤ only): Uses `Int.gcdA` and `Int.gcdB` (the Bezout coefficients over ℤ satisfying `a * gcdA a b + b * gcdB a b = Int.gcd a b`). The proof multiplies through by k (the quotient c = k*gcd) and reassociates.\n\n**k[X] is a PID**: `instance {k : Type*} [Field k] : IsPrincipalIdealRing (Polynomial k) := inferInstance`. This instance is in Mathlib (Euclidean domains are PIDs, and k[X] is Euclidean via polynomial division). The single line makes the entire SNF theory available for polynomial rings over fields.\n\nThis means rational canonical form and Frobenius normal form — classical results of linear algebra — follow from the PID SNF theory instantiated at R = k[X].",

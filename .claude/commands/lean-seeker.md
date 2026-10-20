@@ -94,8 +94,10 @@ Researchers will not be able to discover or claim it.
 PROBLEM_ID="$2"  # from --init <id>
 
 # Step 1: Ensure the database exists
+# research/db/migrate.py is currently absent from disk (research/db/ is gitignored
+# runtime state; see the Known-Gaps Ledger in .lean/roles/COMMON.md) — only call it if present.
 if [ ! -f research/db/knowledge.db ]; then
-    python3 research/db/migrate.py
+    [ -f research/db/migrate.py ] && python3 research/db/migrate.py || echo "research/db/migrate.py absent — see COMMON.md Known-Gaps Ledger"
 fi
 
 # Step 2: Check if problem already exists in the database
@@ -273,8 +275,10 @@ fi
 
 # CRITICAL: Register in database (database-first workflow)
 # Ensure database exists
+# research/db/migrate.py is currently absent from disk (research/db/ is gitignored
+# runtime state; see the Known-Gaps Ledger in .lean/roles/COMMON.md) — only call it if present.
 if [ ! -f research/db/knowledge.db ]; then
-  python3 research/db/migrate.py
+  [ -f research/db/migrate.py ] && python3 research/db/migrate.py || echo "research/db/migrate.py absent — see COMMON.md Known-Gaps Ledger"
 fi
 
 # Upsert the selected problem into the database
@@ -438,8 +442,10 @@ if [ "$AVAILABLE" -lt "$THRESHOLD" ]; then
   echo "Pool running low ($AVAILABLE available). Replenishing..."
 
   # Ensure database exists
+  # research/db/migrate.py is currently absent from disk (research/db/ is gitignored
+  # runtime state; see the Known-Gaps Ledger in .lean/roles/COMMON.md) — only call it if present.
   if [ ! -f research/db/knowledge.db ]; then
-    python3 research/db/migrate.py
+    [ -f research/db/migrate.py ] && python3 research/db/migrate.py || echo "research/db/migrate.py absent — see COMMON.md Known-Gaps Ledger"
   fi
 
   # After selecting new problems, insert each into the database:

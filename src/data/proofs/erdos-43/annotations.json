@@ -52,8 +52,8 @@
     "proofId": "erdos-43",
     "type": "definition",
     "range": {
-      "startLine": 37,
-      "endLine": 38
+      "startLine": 30,
+      "endLine": 32
     },
     "title": "Disjoint Differences",
     "content": "`DisjointDifferences A B` holds when $(A - A) \\cap (B - B) = \\{0\\}$: every $d$ in both difference sets must be zero. This forces the nonzero differences to be completely disjoint.",
@@ -97,8 +97,8 @@
     "proofId": "erdos-43",
     "type": "definition",
     "range": {
-      "startLine": 55,
-      "endLine": 60
+      "startLine": 47,
+      "endLine": 54
     },
     "title": "Erdős Problem #43 ($100 Prize)",
     "content": "`ErdosProblem43`: $\\exists C,\\, \\forall N, A, B$, if $A, B$ are Sidon sets in $\\{1,\\ldots,N\\}$ with disjoint nonzero differences, then $\\binom{|A|}{2} + \\binom{|B|}{2} \\le \\binom{f(N)}{2} + C$.",
@@ -119,10 +119,10 @@
   {
     "id": "ann-43-equal-variant",
     "proofId": "erdos-43",
-    "type": "definition",
+    "type": "axiom",
     "range": {
-      "startLine": 67,
-      "endLine": 75
+      "startLine": 68,
+      "endLine": 76
     },
     "title": "Equal Size Variant and Barreto's Counterexample",
     "content": "`EqualSizeVariant`: when $|A| = |B|$, can we get the stronger bound $\\binom{|A|}{2} + \\binom{|B|}{2} \\le (1-c) \\binom{f(N)}{2}$? `barreto_counterexample` (axiom): NO, this is FALSE for infinitely many $N$.",
@@ -143,8 +143,8 @@
     "proofId": "erdos-43",
     "type": "concept",
     "range": {
-      "startLine": 84,
-      "endLine": 96
+      "startLine": 110,
+      "endLine": 147
     },
     "title": "Structural Pair Bounds",
     "content": "`sidon_pair_bound` (sorry): $\\binom{|A|}{2} \\le N$ for a single Sidon set. `disjoint_diff_combined_bound` (sorry): $\\binom{|A|}{2} + \\binom{|B|}{2} \\le N$ under disjoint differences.",

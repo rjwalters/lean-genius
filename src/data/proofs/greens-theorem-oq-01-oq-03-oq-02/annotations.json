@@ -86,7 +86,7 @@
   {
     "id": "ann-axiom-audit",
     "proofId": "greens-theorem-oq-01-oq-03-oq-02",
-    "range": { "startLine": 191, "endLine": 199 },
+    "range": { "startLine": 179, "endLine": 199 },
     "type": "concept",
     "title": "Axiom Audit",
     "content": "The closing #print axioms commands confirm greens_additive_horizontal and greens_grid_2x2 depend only on the standard foundational axioms propext, Classical.choice, and Quot.sound — no Lean.ofReduceBool (so no native_decide) and no sorryAx. This certifies the entry as genuinely verified rather than axiomatized: the result is fully machine-checked.",

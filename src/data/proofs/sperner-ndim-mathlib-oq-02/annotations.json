@@ -2,7 +2,7 @@
   {
     "id": "ann-in-simplex",
     "proofId": "sperner-ndim-mathlib-oq-02",
-    "range": { "startLine": 74, "endLine": 76 },
+    "range": { "startLine": 79, "endLine": 81 },
     "type": "definition",
     "title": "Standard n-Simplex",
     "content": "Defines membership in the standard n-simplex as the conjunction of two affine constraints: every coordinate is nonnegative, and the coordinates sum to one. This represents the convex hull of the n+1 unit basis vectors in ℝⁿ⁺¹, viewed as functions Fin (n+1) → ℝ. Encoding `Δⁿ` as a predicate on `Fin (n+1) → ℝ` (rather than a Subtype) keeps the function space ambient and lets Mathlib's continuity, pi-topology, and Finset.sum machinery apply directly without a layer of subtype lifts.",
@@ -14,7 +14,7 @@
   {
     "id": "ann-supp",
     "proofId": "sperner-ndim-mathlib-oq-02",
-    "range": { "startLine": 78, "endLine": 89 },
+    "range": { "startLine": 79, "endLine": 89 },
     "type": "definition",
     "title": "Support of a Simplex Point",
     "content": "The support records exactly which faces v lies on: i ∈ supp(v) iff vᵢ > 0, equivalently i ∉ supp(v) iff vᵢ = 0 (since coordinates are nonnegative — the auxiliary lemma supp_le packages this). Geometrically, supp(v) is the index set of the smallest face containing v in its relative interior. This is the central data structure that makes the Sperner coloring well-typed: we restrict the candidate color of v to lie in supp(v), automatically inheriting the Sperner boundary condition from a structural fact about face containment.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-key-lemma",
     "proofId": "sperner-ndim-mathlib-oq-02",
-    "range": { "startLine": 104, "endLine": 123 },
+    "range": { "startLine": 109, "endLine": 123 },
     "type": "insight",
     "title": "Key Coloring Lemma — Heart of the Proof",
     "content": "The mathematical core of the entire Sperner-Brouwer route. For any simplex self-map of Δⁿ, at every vertex v there exists at least one supported coordinate i where f does not strictly increase: fᵢ(v) ≤ vᵢ. Proof is by contradiction: if f strictly increased on every supported coordinate, and f ≥ 0 = v on every unsupported coordinate, then Σf > Σv would follow from Finset.sum_lt_sum, contradicting Σf = 1 = Σv. This is a pure pigeonhole-by-summation argument — no continuity, no compactness, no topology — proving that the Sperner coloring is well-defined for ANY simplex self-map, not just continuous ones. The witness for the strict inequality in Finset.sum_lt_sum is precisely the (nonempty) supp(v).",
@@ -50,7 +50,7 @@
   {
     "id": "ann-color-set",
     "proofId": "sperner-ndim-mathlib-oq-02",
-    "range": { "startLine": 129, "endLine": 146 },
+    "range": { "startLine": 134, "endLine": 146 },
     "type": "definition",
     "title": "Sperner Candidate Color Set",
     "content": "The candidate color set for vertex v is the intersection of two conditions: the coordinate must be in supp(v), AND f must not strictly increase there. The previous key lemma exactly says this intersection is nonempty for any v, fv ∈ Δⁿ. By construction, colorSet ⊆ supp, so any color drawn from this set automatically satisfies the Sperner boundary condition. This two-stage construction (candidate set, then minimum) is a clean way to package the coloring as a deterministic function of (v, fv), avoiding any reliance on classical choice for the witness.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-sperner-axiom",
     "proofId": "sperner-ndim-mathlib-oq-02",
-    "range": { "startLine": 196, "endLine": 216 },
+    "range": { "startLine": 201, "endLine": 216 },
     "type": "concept",
     "title": "Axiom: Grid Sperner → Panchromatic Tuple",
     "content": "The single remaining axiom packages three independently-formalized pieces: (a) the Nth Freudenthal grid triangulation of Δⁿ from sperner-ndim-mathlib-oq-01; (b) the proved Sperner boundary condition spernerColorMap_boundary; (c) the abstract Sperner's lemma from sperner-ndim-mathlib (0 axioms). Crucially, the AXIOM IS PANCHROMATIC, NOT NEAR-FIXED-POINT: it returns n+1 distinct grid vertices, one per color, with the per-color inequality at each, plus a coordinatewise diameter bound n/N. That choice eliminates a spurious Lipschitz hypothesis from the downstream argument: a near-fixed-point '∀ i, |f(x)ᵢ - xᵢ| ≤ ε' would force a Lipschitz factor when comparing f(x) to f(vᵢ) at each color-i vertex, while the panchromatic form never compares f at two distinct points.",

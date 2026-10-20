@@ -2,7 +2,7 @@
   {
     "id": "ann-namespace-and-opens",
     "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
-    "range": { "startLine": 50, "endLine": 56 },
+    "range": { "startLine": 93, "endLine": 99 },
     "type": "concept",
     "title": "Namespace, Linter, and Big-Operator Notation",
     "content": "Three small but load-bearing setup decisions before the structure definition. (1) `set_option linter.unusedVariables false` is needed because the dependent involution argument `g : ∀ a ∈ s, ι` passed to `Finset.sum_involution` has a per-call membership hypothesis `_hp` that is intentionally unused in the closure body — the linter would otherwise flag every case. (2) The nested `namespace SpernerAbstract.Signed` segregates this file's identifiers from the parent's `SpernerAbstract` namespace, so qualified names like `SpernerAbstract.Signed.SignedCellComplex.signedDoorCount` stay distinct from any future signed variants. (3) `open Finset BigOperators` brings `∑` notation and the `Finset.univ`, `Finset.filter`, `Finset.sum_involution` API into scope without per-call prefixing — essential for the readability of the `signedDoorCount` definition and the main-theorem proof body.",
@@ -194,7 +194,7 @@
   {
     "id": "ann-namespace-linter-setup",
     "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
-    "range": { "startLine": 50, "endLine": 55 },
+    "range": { "startLine": 52, "endLine": 55 },
     "type": "concept",
     "title": "Namespace Layout and Linter Suppression",
     "content": "Two namespacing decisions deserve note. (1) `set_option linter.unusedVariables false` is enabled because the dependent-argument signature of `Finset.sum_involution` (`g : ∀ a ∈ s, ι`) forces every obligation lambda to bind a membership proof `_hp` that the cancellation does not consume — the unused-binder linter would otherwise drown the proof in noise. The leading underscore in `_hp` signals intent, but the linter still fires. (2) The file lives in a *nested* namespace `SpernerAbstract.Signed`, paralleling the parent's `SpernerAbstract` root. This is the conventional Lean 4 idiom for orientation/signing variants: the unsigned theory lives at the root, signed/oriented/graded extensions inhabit sub-namespaces so that `import Proofs.SpernerNDimMathlibOQ01OQ04` does not shadow parent definitions. (3) `open Finset BigOperators` enables the `∑ p ∈ s, f p` notation throughout — without `BigOperators`, the sum expressions in `signedDoorCount` and the main theorem would need explicit `Finset.sum` invocations.",

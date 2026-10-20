@@ -71,8 +71,8 @@
     "proofId": "erdos-555",
     "type": "definition",
     "range": {
-      "startLine": 50,
-      "endLine": 56
+      "startLine": 53,
+      "endLine": 58
     },
     "title": "Ramsey Number $R(C_{2n}; k)$",
     "content": "ramseyEvenCycle n k is $R(C_{2n}; k)$, the minimum $m$ such that every $k$-coloring of $K_m$ contains a monochromatic copy of the even cycle $C_{2n}$. Defined via Nat.find with a trivial existence witness. This multicolor Ramsey number is the central object of Problem 555: determining its exact growth rate as a function of $k$ for fixed $n$.",

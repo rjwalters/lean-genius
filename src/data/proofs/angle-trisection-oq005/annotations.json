@@ -50,7 +50,7 @@
   {
     "id": "normdeg-ann-boundary",
     "proofId": "angle-trisection-oq005",
-    "range": { "startLine": 111, "endLine": 147 },
+    "range": { "startLine": 112, "endLine": 147 },
     "type": "insight",
     "title": "The separability boundary and the Galois corollary",
     "content": "The final block reads the separability boundary off the factorisation. card_algEquiv_eq_finrank_iff_finInsepDegree_eq_one cancels the positive automorphism count (Nat.eq_of_mul_eq_mul_left) to show |Aut_F(K)| = [K:F] ⟺ the inseparable cofactor [K:F]_i = 1. card_algEquiv_eq_finrank_iff_isSeparable composes this with isSeparable_iff_finInsepDegree_eq_one to reach the intrinsic form: full automorphism count ⟺ K/F separable ⟺ Galois — the parent's boundary re-derived through the complementary inseparable degree. card_algEquiv_eq_finrank_of_isSeparable is the Galois corollary, recovering Mathlib's IsGalois.card_aut_eq_finrank as the [K:F]_i = 1 specialisation of the degree formula, and closing the namespace.",

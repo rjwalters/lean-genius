@@ -2,7 +2,7 @@
   {
     "id": "ann-lagrange-oq01-lagrange",
     "proofId": "lagrange-theorem-oq-01",
-    "range": { "startLine": 34, "endLine": 44 },
+    "range": { "startLine": 35, "endLine": 45 },
     "type": "insight",
     "title": "Lagrange's Theorem as Mathlib Delegation: card_subgroup_dvd_card",
     "content": "The theorem `lagrange` (line 34) is a single-line delegation to `H.card_subgroup_dvd_card`, Mathlib's canonical proof of Lagrange's theorem. The proof formalizes: |H| | |G| because G decomposes into |G|/|H| cosets of H, each of size |H|.\n\nThe companion `lagrange_index` uses `Subgroup.card_mul_index` to give the explicit formula |G| = |H| · [G:H], and `order_dvd_card` uses `orderOf_dvd_card` to show that the order of any element divides |G| — a consequence of Lagrange applied to the cyclic subgroup ⟨g⟩.\n\nThis pattern — single-line proofs that delegate to Mathlib lemmas — is characteristic of the Lean Genius gallery's approach to foundational results: the mathematical content is in Mathlib, and the gallery entry provides the organizational and pedagogical framing.",
@@ -14,7 +14,7 @@
   {
     "id": "ann-lagrange-oq01-existence",
     "proofId": "lagrange-theorem-oq-01",
-    "range": { "startLine": 56, "endLine": 67 },
+    "range": { "startLine": 57, "endLine": 68 },
     "type": "insight",
     "title": "First Sylow Theorem: Sylow.nonempty and p-adic Multiplicity",
     "content": "The First Sylow Theorem is presented in three parts. `sylow_exists` (line 56) reduces to `Sylow.nonempty` — the Lean type `Sylow p G` (the type of Sylow p-subgroups of G) is nonempty, meaning such a subgroup always exists when G is a finite group and p is prime (recorded via `[Fact p.Prime]`).\n\n`sylow_card_eq` (line 60) gives the explicit cardinality formula: |P| = p^((card G).factorization p), where `Nat.factorization p |G|` is the p-adic valuation of |G| (the exponent of p in the prime factorization of |G|). This is Mathlib's formulation of 'p^k exactly divides |G|' — P is the largest p-subgroup.\n\nMathlib's Sylow typeclass encodes the p-maximality condition automatically: a `Sylow p G` is not just any p-subgroup, but a maximal one. The nonemptiness `Sylow.nonempty` is the deep result, proved in Mathlib using the action of G on the set of all p-subsets of G.",

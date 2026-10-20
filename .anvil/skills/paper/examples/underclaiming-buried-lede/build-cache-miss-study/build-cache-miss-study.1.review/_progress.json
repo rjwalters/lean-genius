@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "for_version": 1,
+  "thread": "build-cache-miss-study",
+  "critic": "review",
+  "phases": {
+    "review": {
+      "state": "done",
+      "started": "2026-08-15T01:00:00Z",
+      "completed": "2026-08-15T01:22:00Z"
+    }
+  },
+  "metadata": {
+    "critic": "review",
+    "scorecard_kind": "human-verdict",
+    "rubric_id": "anvil-pub-v2",
+    "rubric_total": 44,
+    "advance_threshold": 35,
+    "total_score": 33,
+    "advance": false,
+    "critical_flags": 0,
+    "named_findings": ["underclaiming_buried_lede"]
+  }
+}

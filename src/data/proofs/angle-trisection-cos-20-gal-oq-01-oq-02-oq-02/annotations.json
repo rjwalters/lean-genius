@@ -14,7 +14,7 @@
   {
     "id": "ann-cosine-identity",
     "proofId": "angle-trisection-cos-20-gal-oq-01-oq-02-oq-02",
-    "range": { "startLine": 37, "endLine": 55 },
+    "range": { "startLine": 38, "endLine": 55 },
     "type": "insight",
     "title": "The Central Reduction: cos(π/n) = cos(2π/(2n))",
     "content": "The lemma cos_pi_eq_cos_2pi_div_2n proves cos(π/n) = cos(2π/(2n)) by `congr 1; push_cast; ring`. This is arithmetically trivial (π/n = 2π/(2n)) but mathematically decisive: it reduces the cos(π/n) problem to the cos(2π/m) problem with m = 2n, which is exactly what AngleTrisectionOQ02OQ03OQ01 formalizes. The entire proof of the degree theorem flows from this single identity. The `NeZero (2*n)` instance is needed downstream to satisfy cyclotomic field infrastructure requirements.",

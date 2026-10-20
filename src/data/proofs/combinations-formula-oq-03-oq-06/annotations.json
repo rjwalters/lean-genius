@@ -47,7 +47,7 @@
   {
     "id": "divided-power-induction",
     "proofId": "combinations-formula-oq-03-oq-06",
-    "range": { "startLine": 65, "endLine": 95 },
+    "range": { "startLine": 68, "endLine": 95 },
     "type": "insight",
     "title": "Divided Power Formula: F^n·v₀ = [n]_q!·vₙ by Induction",
     "content": "The central result verma_Fpower_eq_qFactorial is proved by induction. Base case n=0: F^0·v₀ = v₀ = 1·v₀ = [0]_q!·v₀ (since qFactorial q 0 = 1). Inductive step n→n+1: unfold F^{n+1} via Function.iterate_succ, apply IH to get [n]_q!·vₙ, apply map_smul (F is linear: F(c·v) = c·F(v)), apply F_action to get [n]_q!·[n+1]_q·vₙ₊₁, use smul_smul to combine scalars, and rewrite with qFactorial_succ: [n]_q!·[n+1]_q = [n+1]_q!.",
@@ -69,7 +69,7 @@
   {
     "id": "q-number-results",
     "proofId": "combinations-formula-oq-03-oq-06",
-    "range": { "startLine": 97, "endLine": 131 },
+    "range": { "startLine": 100, "endLine": 131 },
     "type": "insight",
     "title": "q-Number Scaling Factors and Product Formula",
     "content": "Three related results: (1) F_squared_action directly applies F_action twice to get F(F(vₙ)) = [n+1]_q·[n+2]_q·vₙ₊₂. (2) verma_spinOne_F_middle specializes to n=1: F(v₁) = [2]_q·v₂ = (1+q)·v₂, using the explicit computation [2]_q = 1+q. (3) verma_qFactorial_product proves [n]_q! = ∏_{i<n} [i+1]_q by induction using Finset.prod_range_succ, connecting qFactorial to individual qNumber multiplicands.",
@@ -91,7 +91,7 @@
   {
     "id": "classical-limit",
     "proofId": "combinations-formula-oq-03-oq-06",
-    "range": { "startLine": 133, "endLine": 193 },
+    "range": { "startLine": 137, "endLine": 193 },
     "type": "insight",
     "title": "Classical Limit q=1 and Concrete Computations",
     "content": "verma_at_q_one and verma_Fpower_at_q_one specialize to q=1 using qNumber_at_one (qNumber k 1 n = n) and qFactorial_at_one (qFactorial k 1 n = n!). At q=1, U_q(𝔰𝔩₂) reduces to the classical 𝔰𝔩₂, and F^n·v₀ = n!·vₙ recovers the classical Verma formula. The concrete computations verify [2]_q=1+q, [3]_q=1+q+q², [2]_q!=1+q, and apply these to get F²·v₀=(1+q)·v₂ and F³·v₀=(1+q+q²)(1+q)·v₃.",

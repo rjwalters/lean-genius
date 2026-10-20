@@ -296,7 +296,7 @@
     "proofId": "erdos-382",
     "type": "concept",
     "range": {
-      "startLine": 373,
+      "startLine": 374,
       "endLine": 390
     },
     "title": "Cramér Implies Question 1",
@@ -363,8 +363,8 @@
     "proofId": "erdos-382",
     "type": "definition",
     "range": {
-      "startLine": 592,
-      "endLine": 602
+      "startLine": 605,
+      "endLine": 615
     },
     "title": "Prime-Free Interval Perspective",
     "content": "noPrimeLargerThanSqrt(u, v) captures the equivalent formulation: all primes in [u,v] are at most √v. The axiom condition_iff_no_large_prime establishes this equivalence with satisfiesCondition. This reformulates Problem 382 as a question about the existence and length of prime-free intervals above √v.",

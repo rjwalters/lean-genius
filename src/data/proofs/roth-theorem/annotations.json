@@ -4,8 +4,8 @@
     "proofId": "roth-theorem",
     "type": "definition",
     "range": {
-      "startLine": 25,
-      "endLine": 28
+      "startLine": 32,
+      "endLine": 35
     },
     "title": "AP-Free Definition on ZMod N",
     "content": "`APFree A` asserts that `A ⊆ ZMod N` contains no nontrivial 3-term arithmetic progression: there are no $a, d$ with $d \\ne 0$ such that $\\{a, a+d, a+2d\\} \\subseteq A$.\n\nWorking in `ZMod N` (rather than `Finset ℕ`) gives automatic wrap-around arithmetic, simplifying the modular structure. The non-triviality condition `d ≠ 0` excludes the degenerate case where $a = a+d = a+2d$.",
@@ -26,8 +26,8 @@
     "proofId": "roth-theorem",
     "type": "definition",
     "range": {
-      "startLine": 98,
-      "endLine": 99
+      "startLine": 102,
+      "endLine": 106
     },
     "title": "Fourier Coefficient on ZMod N",
     "content": "`fourierCoeff A r = Σ_{x∈A} exp(2πi·val(r·x)/N)` computes the Fourier coefficient of the characteristic function of $A$ at frequency $r \\in \\mathbb{Z}/N\\mathbb{Z}$.\n\nThe additive character is `ψ(x) = exp(2πi·val(x)/N)`. The `ZMod.val` function extracts the representative in `{0,...,N-1}`, making the argument to `exp` a real number. The key property is that ψ is a group homomorphism: `ψ(a+b) = ψ(a)·ψ(b)` (proved as `psi_add`).",
@@ -49,8 +49,8 @@
     "proofId": "roth-theorem",
     "type": "theorem",
     "range": {
-      "startLine": 354,
-      "endLine": 397
+      "startLine": 361,
+      "endLine": 404
     },
     "title": "Parseval's Identity on ZMod N",
     "content": "`parseval_on_zmod`: $\\sum_{r \\in \\mathbb{Z}/N\\mathbb{Z}} \\|\\hat{A}(r)\\|^2 = |A| \\cdot N$.\n\nThe proof starts from the complex identity $\\sum_r \\hat{A}(r) \\cdot \\overline{\\hat{A}(r)} = |A| \\cdot N$ and extracts the real part. The key step is character orthogonality: $\\sum_r \\psi(r(x-y)) = N \\cdot \\mathbf{1}[x=y]$, which converts the double sum to a delta function, leaving $\\sum_{x,y \\in A} N \\cdot \\mathbf{1}[x=y] = |A| \\cdot N$.",
@@ -72,8 +72,8 @@
     "proofId": "roth-theorem",
     "type": "theorem",
     "range": {
-      "startLine": 615,
-      "endLine": 816
+      "startLine": 617,
+      "endLine": 825
     },
     "title": "Large Fourier Coefficient from AP-Freeness",
     "content": "`fourier_large_coefficient`: If $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ is AP-free with $|A| \\geq \\delta N$, then $\\exists r \\ne 0$ with $\\|\\hat{A}(r)\\| \\geq \\delta^2 N/2$.\n\nThis is the key analytic step in Roth's proof, formalized in two cases:\n\n**Case 1** ($\\delta^2 N < 2$): The bound $\\delta^2 N/2 < 1$. By Parseval, $\\sum_{r \\ne 0} \\|\\hat{A}(r)\\|^2 = |A|(N-|A|) \\geq N-1$. Since there are $N-1$ nonzero frequencies, some $\\|\\hat{A}(r)\\|^2 \\geq 1 > \\delta^2 N/2$.\n\n**Case 2** ($\\delta^2 N \\geq 2$): If all $\\|\\hat{A}(r)\\| < \\delta^2 N/2$ for $r \\ne 0$, use the AP counting identity $|A| \\cdot N = \\sum_r \\hat{A}(r)^2 \\overline{\\hat{A}(2r)}$ (from AP-freeness: tripleCount = 0). Split the nonzero-frequency sum into T₁ (where $2r \\ne 0$) and T₂ (where $2r = 0$, at most one element). Bound each part using the hypothesis and Parseval, obtaining $|A|^2 - N < \\delta^2 N^2/2$, contradicting $|A| \\geq \\delta N$.",
@@ -95,8 +95,8 @@
     "proofId": "roth-theorem",
     "type": "theorem",
     "range": {
-      "startLine": 1127,
-      "endLine": 1330
+      "startLine": 1276,
+      "endLine": 1479
     },
     "title": "Density Increment Lemma",
     "content": "`density_increment_lemma`: If $A$ is AP-free with density $\\delta$ in $\\mathbb{Z}/N\\mathbb{Z}$, then some coset of a subgroup has density $\\geq \\delta + \\delta^2/4$.\n\nProof via Fourier decomposition over cosets: Write $\\hat{A}(r) = \\sum_j (f_j - m) \\psi(rj)$ where $f_j$ is the density of $A$ in the $j$-th coset and $m = |A|/g$ is the mean. The large Fourier coefficient $|\\hat{A}(r)| \\geq \\delta^2 N/2$ (from `fourier_large_coefficient`) forces the sum of deviations $\\sum_j |f_j - m|$ to be large. The zero-sum property $\\sum_j (f_j - m) = 0$ implies the positive deviations sum to $\\geq \\delta^2 N/4$, so some coset achieves density $m + \\delta^2 N/(4g) = \\delta + \\delta^2/4$ (in ZMod(N/g)).",

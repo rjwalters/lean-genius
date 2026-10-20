@@ -22,26 +22,26 @@ When `proofs/bin` is in your PATH (before `~/.elan/bin`), the `lake` wrapper scr
 
 ## Activation
 
-### Option 1: direnv (recommended)
+### Option 1: activation script (recommended)
 
-If you use [direnv](https://direnv.net/), the project's `.envrc` automatically adds this to your PATH:
-
-```bash
-# Already in .envrc:
-export PATH="$PWD/proofs/bin:$PATH"
-```
-
-Just run `direnv allow` in the project root.
-
-### Option 2: Manual activation
-
-Source the activation script:
+Source the activation script from the repo root:
 
 ```bash
 source ./proofs/scripts/activate-safety.sh
 ```
 
-Or add to your shell profile:
+### Option 2: direnv
+
+The repo does not ship an `.envrc` (it's a per-machine choice). If you use
+[direnv](https://direnv.net/), create one at the project root and run
+`direnv allow`:
+
+```bash
+# .envrc
+export PATH="$PWD/proofs/bin:$PATH"
+```
+
+### Option 3: Shell profile
 
 ```bash
 # In ~/.bashrc or ~/.zshrc

@@ -86,7 +86,7 @@
   {
     "id": "ann-7",
     "proofId": "birthday-problem-oq-01-oq-01",
-    "range": { "startLine": 176, "endLine": 198 },
+    "range": { "startLine": 193, "endLine": 222 },
     "type": "insight",
     "title": "Double counting: the two core lemmas",
     "content": "The expected value proof rests on two lemmas, both fully proved:\n\n1. **`card_funs_shared_birthday`**: $|\\{f : f(i)=f(j)\\}| = d^{n-1}$ for $i \\neq j$. Bijection: fix shared value $v$ ($d$ choices), assign remaining $n-2$ positions freely ($d^{n-2}$ options), total $d \\cdot d^{n-2} = d^{n-1}$. In Lean this is built with `Fintype.card_congr` to the function type `{k : Fin n // k ≠ j} → Fin d`, then `Fintype.card_fun`, with the index count `Fin n \\ {j}` computed via `Finset.card_compl`.\n\n2. **`sum_collisionCount`**: $\\sum_f X(f) = \\binom{n}{2} \\cdot d^{n-1}$. Proved via `collisionCount_eq_sum_indicators` then `Finset.sum_comm` (Fubini for finite sums), applying `card_funs_shared_birthday` to each pair term.",
@@ -110,7 +110,7 @@
   {
     "id": "ann-concentration",
     "proofId": "birthday-problem-oq-01-oq-01",
-    "range": { "startLine": 223, "endLine": 241 },
+    "range": { "startLine": 224, "endLine": 241 },
     "type": "concept",
     "title": "Concentration: Var(X) ≤ E[X] (sub-Poisson)",
     "content": "The final section imports variance bounds from `BirthdayProblemOQ01.lean`. The result $\\text{Var}(X) \\leq E[X]$ means the collision count is **sub-Poisson** — more concentrated than a Poisson with the same mean.\n\nThis is intuitively expected: the indicators $I_{ij}$ are negatively correlated (if pair $(i,j)$ collides, it's slightly less likely for $(i,k)$ to also collide), reducing variance below the Poisson benchmark.\n\nThe final `distribution_summary : True := trivial` serves as structured documentation: it collects the full distributional picture ($X \\in [0,\\binom{n}{2}]$, $\\Pr(X=0)$, $E[X]$, $\\text{Var}(X)$, $\\text{Var}(X) \\leq E[X]$) in one readable place.",

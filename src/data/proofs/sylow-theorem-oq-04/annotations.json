@@ -145,8 +145,8 @@
     "id": "ann-sylow-oq04-nonnormal-theorems",
     "proofId": "sylow-theorem-oq-04",
     "range": {
-      "startLine": 134,
-      "endLine": 152
+      "startLine": 349,
+      "endLine": 367
     },
     "type": "insight",
     "title": "No Sylow Subgroup Is Normal",
@@ -254,16 +254,16 @@
     "content": "The theorem `A5_not_solvable` derives non-solvability from simplicity using the short exact sequence A₅ →ⁱ S₅ →ˢⁱᵍⁿ ℤ/2:\n\n1. Assume for contradiction that A₅ is solvable\n2. Construct: if A₅ = ker(sign) is solvable and ℤ/2 is solvable, then S₅ is solvable by `solvable_of_ker_le_range` applied to the subtype embedding A₅ → S₅ and the sign map S₅ → ℤ/2 (with membership condition checked via `Equiv.Perm.mem_alternatingGroup`)\n3. But `Equiv.Perm.not_solvable (Fin 5) (by simp)` proves S₅ is not solvable for n ≥ 5\n4. Contradiction.\n\nThe companion theorem `A5_normal_subgroups` derives that the only normal subgroups of A₅ are ⊥ (trivial) and ⊤ (whole group) via `IsSimpleGroup.eq_bot_or_eq_top_of_normal`.\n\nThis formally verifies the algebraic core of one of mathematics' most celebrated theorems. While a full formal proof of Abel-Ruffini would need to connect polynomial Galois groups to abstract group theory, this result provides the essential group-theoretic ingredient.",
     "proofId": "sylow-theorem-oq-04",
     "range": {
-      "startLine": 217,
-      "endLine": 220
+      "startLine": 439,
+      "endLine": 452
     }
   },
   {
     "id": "ann-sylow-oq04-normal-subgroups",
     "proofId": "sylow-theorem-oq-04",
     "range": {
-      "startLine": 232,
-      "endLine": 235
+      "startLine": 454,
+      "endLine": 457
     },
     "type": "concept",
     "title": "Only ⊥ and ⊤ Are Normal",

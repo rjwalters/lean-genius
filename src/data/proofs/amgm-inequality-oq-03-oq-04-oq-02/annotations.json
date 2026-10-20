@@ -24,7 +24,7 @@
   {
     "id": "ann-tsallis-oq0302-02-defs",
     "proofId": "amgm-inequality-oq-03-oq-04-oq-02",
-    "range": { "startLine": 61, "endLine": 77 },
+    "range": { "startLine": 64, "endLine": 77 },
     "type": "definition",
     "title": "The q-Logarithm and Tsallis Entropy",
     "content": "renyiEntropy is reproduced locally so the file is self-contained. qLog is the q-deformed logarithm ln_q(x) = (x^{1−q}−1)/(1−q). tsallisEntropy is S_q(p) = (1 − Σ pᵢ^q)/(q−1). As q → 1 the q-logarithm degenerates to log and S_q degenerates to Shannon entropy.",
@@ -129,7 +129,7 @@
   {
     "id": "ann-tsallis-oq0302-07-limit",
     "proofId": "amgm-inequality-oq-03-oq-04-oq-02",
-    "range": { "startLine": 193, "endLine": 228 },
+    "range": { "startLine": 184, "endLine": 222 },
     "type": "tactic",
     "title": "The q → 1 Limit as a Derivative",
     "content": "qLog_tendsto_log proves ln_q(x) → log(x) as q → 1 (for x > 0). After the substitution u = 1−q, ln_q(x) equals the slope at 0 of the map u ↦ exp(log x · u), namely (exp(log x · u) − 1)/u. That map has derivative log x at 0 (chain rule on exp and const-mul), so hasDerivAt_iff_tendsto_slope yields the limit on the punctured neighborhood 𝓝[≠] 1. The reparametrization q ↦ 1−q sends 𝓝[≠] 1 to 𝓝[≠] 0, and Real.rpow_def_of_pos identifies the slope function with ln_q. This is the analytic statement that the entire q-deformed framework recovers the Shannon case.",

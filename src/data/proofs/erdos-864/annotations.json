@@ -148,8 +148,8 @@
     "proofId": "erdos-864",
     "type": "theorem",
     "range": {
-      "startLine": 143,
-      "endLine": 197
+      "startLine": 148,
+      "endLine": 227
     },
     "title": "Upper-Triangle Pair Count (Proved)",
     "content": "`pairwise_sum_count` proves (it is NOT an axiom) that the number of ordered pairs $(a,b)\\in A^2$ with $a\\le b$ is $|A|(|A|+1)/2$. The proof partitions $A\\times A$ into strict-upper, diagonal, and strict-lower triangles, shows the diagonal has $|A|$ elements (image of $a\\mapsto(a,a)$) and the two strict triangles are equinumerous via the swap involution $(a,b)\\mapsto(b,a)$, then solves $n^2 = 2u + n$ for the upper-triangle size with `omega`. This count is what the Sidon sum-bound divides into the available range $[2,2N]$.",

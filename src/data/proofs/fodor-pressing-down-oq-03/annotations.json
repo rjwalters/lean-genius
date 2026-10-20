@@ -42,7 +42,7 @@
   {
     "id": "fodoroq03-ann-clubreflects",
     "proofId": "fodor-pressing-down-oq-03",
-    "range": { "startLine": 69, "endLine": 95 },
+    "range": { "startLine": 70, "endLine": 96 },
     "type": "theorem",
     "title": "clubReflects — the base case of stationary reflection",
     "content": "The load-bearing theorem: if C is a club below o and α ≤ o is an accumulation point of C, then C ∩ Iio α is a club below α. The three club fields are discharged locally. **subset**: C ∩ Iio α ⊆ Iio α is inter_subset_right. **closed**: via isClosedBelow_iff, an accumulation point p < α of C ∩ Iio α is also an accumulation point of C (IsAcc.mono, since C ∩ Iio α ⊆ C); it lies below o because p < α ≤ o, so closedness of C (hC.closed.forall_lt) puts it in C, and p < α puts it in Iio α. **unbounded**: IsUnboundedBelow (C ∩ Iio α) α is precisely the hypothesis α.IsAcc C read through IsAcc.forall_lt — for each p < α it yields δ ∈ C with p < δ < α, i.e. δ ∈ C ∩ Iio α with p < δ < α. Crucially, no cofinality assumption is used: this is the unconditional ZFC-true core, in contrast to stationary reflection.",

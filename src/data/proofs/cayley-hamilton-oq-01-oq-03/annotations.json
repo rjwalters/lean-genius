@@ -72,7 +72,7 @@
   {
     "id": "ann-ch-basis-expansion",
     "proofId": "cayley-hamilton-oq-01-oq-03",
-    "range": { "startLine": 172, "endLine": 178 },
+    "range": { "startLine": 192, "endLine": 198 },
     "type": "insight",
     "title": "power_eq_basis_sum: M^m as a polynomial in M via minpoly reduction",
     "content": "Proves `M^m = ∑_{k < d} (X^m mod μ_M).coeff k • M^k`. The proof uses: (1) `power_eq_aeval_mod_minpoly` (from CayleyHamiltonOQ01): `M^m = aeval M (X^m mod μ_M)`; (2) `Polynomial.eval₂_eq_sum_range'`: the evaluation of a polynomial is a finite sum up to its degree. The degree bound `natDegree(X^m mod μ_M) < d` ensures the sum stops at k=d-1.",

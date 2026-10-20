@@ -1,0 +1,87 @@
+{
+  "schema_version": "1",
+  "kind": "vision",
+  "version_dir": "acme-seed.3",
+  "critic_id": "deck-vision",
+  "model": "claude-opus-4-7-20251022",
+  "rubric": "anvil-vision-v1",
+  "scores": [
+    {
+      "dimension": "vertical_overflow",
+      "score": 5,
+      "max": 5,
+      "critical": false,
+      "evidence_span": null,
+      "fix": null,
+      "justification": "Nothing clipped on any slide."
+    },
+    {
+      "dimension": "label_cropping",
+      "score": 4,
+      "max": 5,
+      "critical": false,
+      "evidence_span": null,
+      "fix": null,
+      "justification": "One axis label slightly tight on slide 3 but legible."
+    },
+    {
+      "dimension": "axis_legibility",
+      "score": 5,
+      "max": 5,
+      "critical": false,
+      "evidence_span": null,
+      "fix": null,
+      "justification": "Chart fonts readable at projection scale."
+    },
+    {
+      "dimension": "palette_adherence",
+      "score": 4,
+      "max": 5,
+      "critical": false,
+      "evidence_span": null,
+      "fix": "Set figure rcParams from anvil-deck palette.",
+      "justification": "Slide 7 chart uses default mpl colors, not theme palette."
+    },
+    {
+      "dimension": "mathtext_artifacts",
+      "score": 5,
+      "max": 5,
+      "critical": false,
+      "evidence_span": null,
+      "fix": null,
+      "justification": "No mathtext italicization observed."
+    },
+    {
+      "dimension": "slide_density",
+      "score": 4,
+      "max": 5,
+      "critical": false,
+      "evidence_span": null,
+      "fix": "Drop two bullets or split.",
+      "justification": "Slide 4 has 7 bullets; one over the working bar."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "minor",
+      "dimension": "palette_adherence",
+      "evidence_span": "deck.pdf:slide=7",
+      "rationale": "Slide 7 chart uses default matplotlib colors.",
+      "suggested_fix": "Apply anvil-deck palette to figures/src/foo.py.",
+      "tool_calls": null
+    },
+    {
+      "severity": "nit",
+      "dimension": "slide_density",
+      "evidence_span": "deck.pdf:slide=4",
+      "rationale": "Slide 4 has 7 bullets.",
+      "suggested_fix": "Drop two bullets.",
+      "tool_calls": null
+    }
+  ],
+  "critical_flags": [],
+  "total": 27,
+  "threshold": 30,
+  "verdict": null,
+  "rendered_artifact": "deck.pdf"
+}

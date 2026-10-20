@@ -50,7 +50,7 @@
   {
     "id": "ann-existence-banach",
     "proofId": "brouwer-fixed-point-oq-02-oq-02-oq-01",
-    "range": { "startLine": 257, "endLine": 296 },
+    "range": { "startLine": 258, "endLine": 297 },
     "type": "tactic",
     "title": "Existence via Mathlib's ContractingWith (Banach on ℝ)",
     "content": "Discharges the standing hypothesis f x* = x* that every estimate carried. `exists_fixed_point` bridges the raw real bound |f x − f y| ≤ L·|x − y| to `LipschitzWith L.toNNReal f` using `LipschitzWith.of_dist_le_mul` and `Real.dist_eq`, packages it as a `ContractingWith` on the complete space ℝ, and reads off a fixed point from `ContractingWith.exists_fixedPoint`. `exists_unique_fixed_point` combines this with `fixed_point_unique` for the self-contained Banach existence-and-uniqueness statement on ℝ.",

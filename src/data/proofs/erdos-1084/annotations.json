@@ -27,8 +27,8 @@
     "proofId": "erdos-1084",
     "type": "concept",
     "range": {
-      "startLine": 132,
-      "endLine": 167
+      "startLine": 135,
+      "endLine": 170
     },
     "title": "1D Counting Helper Lemmas",
     "content": "Four private lemmas supporting the 1D upper bound. `nat_abs_sub_ge_one`: distinct naturals have $|a - b| \\geq 1$ as reals (case split on $a < b$ vs $a > b$). `nat_consecutive_abs_eq_one`: $|i - (i+1)| = 1$. `unit_dist_left`: if $|a-b| = 1$ and $a \\leq b$, then $b = a+1$. Together these establish that the consecutive integer configuration is the unique (up to translation) 1D separated configuration achieving $n-1$ unit pairs.",
@@ -71,8 +71,8 @@
     "id": "ann-1084-separated-config",
     "proofId": "erdos-1084",
     "range": {
-      "startLine": 44,
-      "endLine": 48
+      "startLine": 45,
+      "endLine": 49
     },
     "type": "definition",
     "title": "Separated Point Configuration",
@@ -93,8 +93,8 @@
     "id": "ann-1084-unit-dist-pairs",
     "proofId": "erdos-1084",
     "range": {
-      "startLine": 50,
-      "endLine": 54
+      "startLine": 51,
+      "endLine": 55
     },
     "type": "definition",
     "title": "Unit Distance Pairs",
@@ -115,8 +115,8 @@
     "id": "ann-1084-max-unit-dist",
     "proofId": "erdos-1084",
     "range": {
-      "startLine": 56,
-      "endLine": 58
+      "startLine": 68,
+      "endLine": 72
     },
     "type": "definition",
     "title": "Maximum Unit Distance Pairs f_d(n)",
@@ -137,7 +137,7 @@
     "id": "ann-1084-config-1d",
     "proofId": "erdos-1084",
     "range": {
-      "startLine": 67,
+      "startLine": 68,
       "endLine": 77
     },
     "type": "definition",
@@ -159,7 +159,7 @@
     "id": "ann-1084-triangle",
     "proofId": "erdos-1084",
     "range": {
-      "startLine": 79,
+      "startLine": 80,
       "endLine": 97
     },
     "type": "concept",
@@ -181,7 +181,7 @@
     "id": "ann-1084-degree-bound",
     "proofId": "erdos-1084",
     "range": {
-      "startLine": 99,
+      "startLine": 100,
       "endLine": 130
     },
     "type": "concept",
