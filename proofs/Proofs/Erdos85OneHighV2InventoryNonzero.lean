@@ -206,8 +206,10 @@ theorem oneHighFamilyNonzero_runList {α : Type} (xs : List α)
 
 /-- Literal side conditions of the small fixed clauses. -/
 macro "nz_lits" : tactic =>
-  `(tactic| (intro lit hlit;
-    simp only [List.mem_cons, List.mem_nil_iff, or_false] at hlit; omega))
+  `(tactic| (
+    intro lit hlit
+    simp only [List.mem_cons, List.mem_nil_iff, or_false] at hlit
+    omega))
 
 /-! ## Base, C4, at-most-one and far-degree segments -/
 
@@ -413,6 +415,7 @@ theorem oneHighFamilyNonzero_missDefinitionStep
   · generalize h₁ : oneHighFamilyAtomId (.miss w b) st = out₁
     rcases out₁ with ⟨xv, st₁⟩
     obtain ⟨hs₁, hxv⟩ := oneHighFamilyNonzero_atomId h h₁
+    dsimp only
     generalize h₂ : (oneHighFamilyBlockVertices b).foldl
       (fun (acc, st) z =>
         let (id, st) := oneHighFamilyEdgeId w z st
@@ -428,7 +431,7 @@ theorem oneHighFamilyNonzero_missDefinitionStep
       intro s lit hlit hs
       have := hs₂.acc lit hlit
       exact oneHighFamilyNonzero_emit hs (by nz_lits)
-    simp only [h₂]
+    dsimp only
     apply oneHighFamilyNonzero_emit hs₃
     intro l hl
     simp only [List.mem_cons] at hl
