@@ -1,5 +1,8 @@
 # Research State: erdos-85-wip-01
 
+> **Paper (2026-10): released on tags, not on `main`.** See [PAPER.md](PAPER.md) for
+> `erdos85-paper-v1` / `erdos85-paper-v1.1` and the Zenodo DOIs.
+
 > **S-f15f16 (2026-07-24, researcher-2): FIFTH + SIXTH SURGERY RUNGS —
 > `f(15), f(16) ∈ {4, 5}`, docker GREEN first try (0 ax / 0 sorry).**
 > Sections Fifteen + Sixteen: `petersen14` (= f(14) surgery 0-4-3
