@@ -7,7 +7,7 @@ the research tree is about 4.5 GB, and `main`'s lakefile builds every `Proofs.*`
 | Version | Git tag | Branch | Zenodo |
 |---------|---------|--------|--------|
 | v1 (12 October 2026) | [`erdos85-paper-v1`](https://github.com/rjwalters/lean-genius/releases/tag/erdos85-paper-v1) | archived as the tag | [10.5281/zenodo.23325806](https://doi.org/10.5281/zenodo.23325806) |
-| v1.1 (revision answering review jhpvtq) | [`erdos85-paper-v1.1`](https://github.com/rjwalters/lean-genius/releases/tag/erdos85-paper-v1.1) | `erdos85/review-jhpvtq-v2` | V11DOI |
+| v1.1 (revision answering review jhpvtq) | [`erdos85-paper-v1.1`](https://github.com/rjwalters/lean-genius/releases/tag/erdos85-paper-v1.1) | `erdos85/review-jhpvtq-v2` | [10.5281/zenodo.23519149](https://doi.org/10.5281/zenodo.23519149) |
 
 The Zenodo concept DOI [10.5281/zenodo.23325805](https://doi.org/10.5281/zenodo.23325805)
 always resolves to the latest version.
