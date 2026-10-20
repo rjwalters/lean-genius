@@ -121,8 +121,6 @@ they are unchanged at the tag.
 - `emitter_duplicate_bytes_20261020/`: diagnosis and reproducer for the "duplicated trailing bytes" docstring of
   `Erdos85OneHighV2CnfEmit.lean` (two writers on one redirected file, not Lean).
 - `proofs/Proofs/Erdos85OneHighV2InventoryNonzero.lean`: Lean proof of the `nonzero` field over the whole inventory.
-- `proofs/Proofs/Erdos85OrderFortyNineCapstoneH3UnsatOnly.lean`: the three capstone theorems restated on bare
-  unsatisfiability of the H1 family.
 - The emitter sources `proofs/Proofs/Erdos85OneHighV2CnfEmit.lean`,
   `proofs/Proofs/Erdos85OrderFortyNineSevenHighT0CanonicalHsbEmit.lean` and
   `proofs/Proofs/Erdos85OrderFortyNineSevenHighT0CubeCnfEmit.lean`, and `proofs/lakefile.toml`. The emitters
