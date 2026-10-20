@@ -66,3 +66,32 @@ CERTIFIED). Cloud spend ≈ $204 (controller estimate incl. 10% margin).
 2026-10-07: all 96 historical certificates were re-checked by cake_lpr (`historical96_cake_lpr_receipts.jsonl`), so every H1 orbit in this repository's receipts is cake_lpr-checked.
 
 cake_lpr builds: the AWS rows used a Linux arm64 build of commit `a36874a8` (`cake_lpr_arm8.S` sha256 `95b64883…`); the 96 historical orbits and the 36 pilot leaves were checked locally by a macOS arm64 build of the same commit and the same `cake_lpr_arm8.S` (binary sha256 `d23c413b1852eafd…`, recorded as `checker_sha256` in those receipts).
+
+## Pilot leaf cube hashes (added 2026-10-20, review jhpvtq)
+
+Five rows of `pilot_h1_81494a_leaf_solves.jsonl` (nodes 54, 61, 64, 65, 70) carry `cube_sha256`
+and `command` but no `cube_sha_ok` field. They are the five leaves solved live by
+`h1_cert_pilot_20261001/solve_leaves.py` after the 2026-10-01 host crash; that driver regenerates
+the cube CNF, compares its sha256 with the banked tree's `cube_sha256`, and emits a
+`CUBE_SHA_MISMATCH` row (and does not solve) on disagreement, so the check was made but not
+recorded as a field. The other 31 rows were rebuilt by `backfill_leaf_receipts.py`, which does
+record `cube_sha_ok`. The jsonl rows are historical and are left unchanged.
+
+`pilot_h1_81494a_leaf_expected_sha256.tsv` records the check explicitly for all 36 leaves. It
+was produced by `h1_cert_pilot_20261001/recompute_leaf_cube_sha256.py`, which:
+
+1. loads the base CNF (`h1-cube-pass4-20260926/h1_81494a6ef36d3ec9/run-adaptive/base.cnf`) and
+   requires its sha256 = the tree's `base_sha256` `860d8af2…177d` (the census `cnf_sha256` for
+   this orbit; the materializer receipt shows the pinned v2cnf emitter reproduces it);
+2. for every leaf of the banked tree
+   (`phase_b_h1_census_20260927/cube-h1_81494a6ef36d3ec9/results.json`, identical to the run
+   copy), rebuilds the cube CNF with `cube_verdict.cube_bytes` (base + the leaf's unit literals
+   inserted after the header — the same function used by `solve_leaves.py` and
+   `h1_checker_kit/cube_check.py`) and hashes it;
+3. compares that with the tree's `cube_sha256`, the receipt's `cube_sha256`, and the sha256 of
+   the `cube.cnf` still on disk from the pilot run.
+
+Result: 36/36 MATCH on all four values, including the five rows above. Columns: `node`,
+`literals`, `expected_cube_sha256` (banked tree), `receipt_cube_sha256`,
+`recomputed_cube_sha256`, `ondisk_cube_sha256`, `receipt_had_cube_sha_ok`, `match`.
+TSV sha256: `3e1cc9accc4c6c12762c3471560145c191c8821d6c05c4dcdfa10c4ca6183e89`.
