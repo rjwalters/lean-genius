@@ -415,7 +415,7 @@ theorem oneHighFamilyNonzero_missDefinitionStep
   · generalize h₁ : oneHighFamilyAtomId (.miss w b) st = out₁
     rcases out₁ with ⟨xv, st₁⟩
     obtain ⟨hs₁, hxv⟩ := oneHighFamilyNonzero_atomId h h₁
-    dsimp only
+    try dsimp only
     generalize h₂ : (oneHighFamilyBlockVertices b).foldl
       (fun (acc, st) z =>
         let (id, st) := oneHighFamilyEdgeId w z st
@@ -431,7 +431,7 @@ theorem oneHighFamilyNonzero_missDefinitionStep
       intro s lit hlit hs
       have := hs₂.acc lit hlit
       exact oneHighFamilyNonzero_emit hs (by nz_lits)
-    dsimp only
+    try dsimp only
     apply oneHighFamilyNonzero_emit hs₃
     intro l hl
     simp only [List.mem_cons] at hl
