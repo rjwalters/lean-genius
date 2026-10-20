@@ -1,9 +1,10 @@
-# Zenodo v2: additions to the receipts bundle
+# Zenodo v1.1: additions to the receipts bundle
 
-**Status.** List for Robb, written 2026-10-20 in response to external review (erdosproblemaday.com, jhpvtq).
-Nothing has been uploaded. v1 (DOI 10.5281/zenodo.23325806) and its file list are in `ZENODO.md`. This file
-lists what a v2 `erdos85-receipts.zip` should add. Nothing is moved: every path below is a repository path, and
-the zip keeps the directory structure, exactly as in v1.
+**Status.** These are the files that version 1.1 of the Zenodo record adds to `erdos85-receipts.zip`. The version
+was written 2026-10-20 in response to external review (erdosproblemaday.com, jhpvtq). v1 (DOI 10.5281/zenodo.23325806)
+and its file list are in `ZENODO.md`. The v1.1 zip holds every v1 path plus the paths below, all taken from tag
+`erdos85-paper-v1.1`. Nothing is moved: every path is a repository path, and the zip keeps the directory structure,
+exactly as in v1.
 
 Blob hashes are `git rev-parse <commit>:<path>`. Every script blob below is identical at the pinned commit
 `2029149d7e42b74036ff0e1e82af6d33c2e32748` (the paper's `\repocommit`) and at the release-assembly tip
@@ -101,10 +102,10 @@ Acceptance tests as written in the code:
 | `sat49/generate_h7_canonical_cnfs.py` | `46f2fc43ae22ebe063c3c874aee934615eafd982` | Emits the 14 canonical h = 7 order-49 classified CNFs (linear triple systems on seven points, canonicalized under the 7! relabelings). Needs `python-sat` (`pysat.card`, `pysat.formula`). |
 | `sat49/generate_h7_lean_stubs.py` | `1b7da057f9e2c62632728c4326896d807029390c` | Generates the Lean certificate modules from the packed h = 7 strata manifests (the t >= 1 files listed in `strata-lrat.MANIFEST.sha256`). |
 
-## Receipts added on branch `erdos85/review-jhpvtq-deposit`
+## Receipts and notes added in v1.1
 
-These are new files. They are not at the pinned commit; they are on the review branch until it is merged into the
-release. Blob hashes are at that branch's commit that adds this file.
+These are new files, not at the pinned commit. The blob hashes in this table were taken at the commit that added them, and
+they are unchanged at the tag.
 
 | Path (under `research/problems/erdos-85-wip-01/`) | Git blob | Purpose |
 |---|---|---|
@@ -113,11 +114,23 @@ release. Blob hashes are at that branch's commit that adds this file.
 | `h1_cert_pilot_20261001/recompute_leaf_cube_sha256.py` | `104579ef354ccc2c556d8266b9155e4a1617399d` | Produces the TSV above. |
 | `h1_cert_full_20261001/receipts/README.md` | (changed; take the merged version) | Adds two sections: "Pilot leaf cube hashes" and "Census manifest". |
 
+## Other v1.1 additions (take them at the tag)
+
+- `H7_SOURCE_CNF_SHA256_NOTE.md`: what the `source_cnf_sha256` header of the H7 t >= 1 modules hashes (the pysat file,
+  with IDPool variable numbering), with the renumbered hashes.
+- `emitter_duplicate_bytes_20261020/`: diagnosis and reproducer for the "duplicated trailing bytes" docstring of
+  `Erdos85OneHighV2CnfEmit.lean` (two writers on one redirected file, not Lean).
+- `proofs/Proofs/Erdos85OneHighV2InventoryNonzero.lean`: Lean proof of the `nonzero` field over the whole inventory.
+- `proofs/Proofs/Erdos85OrderFortyNineCapstoneH3UnsatOnly.lean`: the three capstone theorems restated on bare
+  unsatisfiability of the H1 family.
+- The emitter sources `proofs/Proofs/Erdos85OneHighV2CnfEmit.lean`,
+  `proofs/Proofs/Erdos85OrderFortyNineSevenHighT0CanonicalHsbEmit.lean` and
+  `proofs/Proofs/Erdos85OrderFortyNineSevenHighT0CubeCnfEmit.lean`, and `proofs/lakefile.toml`. The emitters
+  run pinned by binary hash (emitter sha256 `4bd9604c…bf6`, image `sha256:a5ca6c4e…6dff6`).
+
 ## Not included, noted for completeness
 
-- The v2cnf emitter and the H7 `h7hsb` emitter are Lean programs pinned by binary hash (emitter sha256
-  `4bd9604c…bf6`, image `sha256:a5ca6c4e…6dff6`). Their Lean sources ship with the GitHub release, not in this zip.
 - `gen_leaf_stubs.py` imports `sat49/compress_h1_v2_binary_lrat.py`, and the H7 generators import other
-  `sat49/generate_h7_*` modules. Add those if v2 aims to let readers re-run generation, not only read it.
+  `sat49/generate_h7_*` modules. Add those if a later version aims to let readers re-run generation, not only read it.
 - H3/H5 cell certification (`h35_probe_20261007/cert_cell.py`, `h35_pilot_20261007/launch_pilot.py`) also parses
   `s VERIFIED UNSAT`. The paper excludes H3 and H5 in Lean, so these are optional.
