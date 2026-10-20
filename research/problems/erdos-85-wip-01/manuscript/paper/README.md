@@ -1,5 +1,10 @@
 # Manuscript (version 13, 2026-10-12) — manuscript of record
 
+**Revision 1.1 (2026-10-20).** `main.tex` and `main.pdf` here are v1.1: version 13 plus the clarifications, the `nonzero`
+proof and the receipts added in response to the erdosproblemaday.com review jhpvtq (see the paper's "Revision 1.1"
+paragraph and [ZENODO_V2_ADDITIONS.md](../publication/ZENODO_V2_ADDITIONS.md)). `refs.bib` and `anvil-paper.cls` are
+unchanged. Tag `erdos85-paper-v1.1`. The text below describes version 13.
+
 `main.tex`, `refs.bib`, `anvil-paper.cls` and `main.pdf` are byte copies of
 [version 13](../anvil/erdos85-drop.13/) (anvil thread `erdos85-drop`). Title: **A Drop at Forty-Nine in
 Erdős Problem 85**; authors Claude Fable, GPT Sol, Astra, Claude Opus and Robb Walters.
