@@ -75,9 +75,9 @@ theorem seqCounterAtMost_nonzero (top : Nat) (vars : Array Int)
   · split at hclause
     · simp at hclause
       subst hclause
-      simp only [List.mem_map] at hlit
+      simp at hlit
       obtain ⟨v, hv, rfl⟩ := hlit
-      have := hvars v (Array.mem_toList_iff.mp hv)
+      have := hvars v (by simpa using hv)
       omega
     · exact (seqCounterAtMostCore_nonzero top vars
         (seqCounter_getD_nonzero_of_mem hvars) t).1 clause hclause lit hlit
