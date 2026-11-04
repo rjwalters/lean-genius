@@ -24,6 +24,7 @@ clone to diff against, so it needs a different comparison model.
 /repo:update-tools --check       # Report only, never writes
 /repo:update-tools loom          # Only check/update one tool
 /repo:update-tools --no-commit   # Update the working tree but leave it uncommitted for review
+/repo:update-tools --branch      # Force step 5's branch + PR landing path unconditionally
 ```
 
 An update runs the tool's own installer or updater (executing code from its
@@ -35,7 +36,13 @@ Once an update is confirmed, it is committed and landed on the default branch
 (`main`) by default — it does **not** push, and it never folds a pre-existing
 dirty working tree into the update commit. Pass `--no-commit` (alias
 `--stage-only`) to restore the old behavior of leaving the changes uncommitted
-for manual review. See step 5 and the Safety Rules for details.
+for manual review. `<this-repo>`'s own default branch is sometimes PR-protected
+(a ruleset or legacy branch protection requiring a pull request), in which case
+landing on local `main` is a dead end — the commit cannot be pushed straight to
+`main` — so step 5 detects that case and lands on a `tooling/…` branch instead,
+offering to push it and open a PR. `--branch` forces that same path when
+detection itself cannot run (a non-GitHub remote, or Gitea). See step 5 and the
+Safety Rules for details.
 
 ## Steps
 
@@ -304,7 +311,6 @@ TOOL PACKAGES
 | Tool        | Installed        | Latest  | Status      |
 |-------------|------------------|---------|-------------|
 | loom        | 0.9.1 (Jun 4)    | 0.10.6  | STALE       |
-| anvil       | 0.9.0 (Jul 1)    | 0.9.0   | current     |
 | anvil       | 0.11.6 (Jul 1)   | 0.11.6  | current, but 14 skill(s) frozen behind (memo 0.10.1, deck 0.10.1, …) |
 | other-tool  | 1.2.0 (commit abc1234) | 1.2.0 | current, but 24 commits behind source HEAD |
 | repo-skills | 0.8.0 (Aug 9)    | —       | dev (symlinked to /Users/you/GitHub/repo) |
@@ -319,7 +325,8 @@ recorded, in this precedence order:
 | Version vs `origin/HEAD` | Frozen components (step 2.3) | Installed commit vs `origin/HEAD` | Status |
 |--------------------------|------------------------------|-----------------------------------|--------|
 | behind | not consulted | not consulted — version drift already decides it | `STALE` |
-| equal | N > 0 | not consulted | `current, but N skill(s) frozen behind (<name> <ver>, …)` |
+| equal | N > 0 | M > 0 commits behind (still computed) | `current, but N skill(s) frozen behind (<name> <ver>, …); also M commits behind source HEAD` |
+| equal | N > 0 | 0 or not computable | `current, but N skill(s) frozen behind (<name> <ver>, …)` |
 | equal | 0 | 0 commits behind | `current` |
 | equal | 0 | N > 0 commits behind | `current, but N commits behind source HEAD` |
 | equal | 0 | not computable (step 2) | `current (commit drift unknown — <why>)` |
@@ -425,13 +432,13 @@ report the trade-off instead of quietly escalating.** A skill lands in
 `skipped_overrides` precisely because the consumer edited it; the installer's
 default is to preserve that edit, and re-running the installer without
 `--force` skips it again and reports the identical status next pass. Only
-`install-anvil.sh --force <this-repo>` overwrites it — and `--force` is
+`<source>/scripts/install-anvil.sh --force <this-repo>` overwrites it — and `--force` is
 **global, not per-skill**: it overwrites *every* consumer-modified skill body
 plus the lib override assets, with no undo. So for a tool reported
 `current, but N skill(s) frozen behind`:
 
-- Offer the plain (non-`--force`) re-run as usual if it also has version or
-  commit drift — that still upgrades the unmodified components, and leaves the
+- Offer the plain (non-`--force`) re-run only if the status line also
+  reports commit drift (`; also M commits behind source HEAD`) — that still upgrades the unmodified components, and leaves the
   frozen ones exactly where they were.
 - Never add `--force` on your own initiative, and never treat a frozen count as
   license to escalate. Surface the choice explicitly, with the per-skill frozen
@@ -600,6 +607,16 @@ costs one `git diff --name-only` per candidate file:
    as a local modification, or the flag becomes noise the operator learns to
    click through.
 
+**A large `blocked` count right after an update-tools commit is usually a
+subject mismatch, not real local edits.** If the dry-run reports most Loom files
+as blocked (local-divergence guard, needs `--force`) and the last Loom update in
+this repo was committed as `chore(tooling): update loom …` (the subject earlier
+versions of this command prescribed), the guard failed to recognize that commit
+as a resync, so it read every file in it as a local fix. The upstream-diff check
+above tells the two apart: a genuinely modified file has no upstream change.
+Future Loom updates use the recognized subject (step 5); see
+rjwalters/loom#12618 for the content-based guard.
+
 Report the flagged set as its own block **before** the confirmation prompt,
 naming what would be lost:
 
@@ -715,10 +732,14 @@ a summary of what changed (`git status --short`).
 A confirmed tool bump is a safe, reversible, version-controlled change (the
 installer/updater is idempotent and re-runnable), so by default `update-tools`
 **commits it and lands it on the default branch** rather than stopping at an
-uncommitted diff. It **never** pushes — pushing is outward-facing and stays a separate,
-explicit action (Safety Rule 5). Pass `--no-commit` (alias `--stage-only`) to
-skip this step and leave the working-tree changes uncommitted for manual review
-instead (the old behavior).
+uncommitted diff. It **never** pushes the default branch — pushing is
+outward-facing and stays a separate, explicit action (Safety Rule 5). The one
+narrow exception is the `tooling/…` branch item 3 below uses when the default
+branch turns out to be PR-protected: pushing *that* branch (never the default
+branch itself) to open a PR is the only way to land anything there at all, and
+even then only on explicit operator confirmation. Pass `--no-commit` (alias
+`--stage-only`) to skip this step and leave the working-tree changes
+uncommitted for manual review instead (the old behavior).
 
 Land each tool's bump as its own commit:
 
@@ -781,37 +802,229 @@ Land each tool's bump as its own commit:
    flagged") so the absence is a reported result rather than an unasked
    question.
 
-3. **Commit + land on the default branch, without committing straight to it:**
+3. **Detect whether `<this-repo>`'s own default branch is push-protected, then
+   commit + land accordingly — without ever committing straight to it.**
+
+   A confirmed bump is safe to fast-forward-merge into *local* `$DEFAULT` on an
+   unprotected repo (the existing behavior, unchanged below). But when
+   `<this-repo>`'s default branch carries a PR-required ruleset or legacy
+   branch protection, that local merge is a dead end: the resulting commit
+   cannot be pushed straight to `$DEFAULT`, and the only way out by hand is to
+   cherry-pick it onto a fresh branch off `origin/$DEFAULT`, open a PR, and
+   reset local `$DEFAULT` afterwards (repo#530). Detect this **before**
+   deciding which of the two landing shapes below to use, mirroring
+   `.loom/scripts/land-resync-commit.sh`'s `default_branch_requires_pr()`
+   exactly — same fail-closed-on-error / fail-open-when-undetectable split,
+   same `PROTECTION_SOURCE` side effect (lines 598–625 as of commit
+   `082176e`). Reuse the *pattern* here; this command does not source that
+   script:
 
    ```bash
    DEFAULT=$(git -C <this-repo> symbolic-ref --quiet --short refs/remotes/origin/HEAD | sed 's#^origin/##')
    DEFAULT=${DEFAULT:-main}
    CUR=$(git -C <this-repo> symbolic-ref --short HEAD)
+
+   # Try the rulesets API, fall back to legacy branch protection, and treat
+   # ANY API failure or unparseable answer as protected — never assume
+   # unprotected on ambiguity. {owner}/{repo} here is gh's own placeholder for
+   # *this* repo's `origin` remote (the consumer being updated) — resolved
+   # from cwd, exactly like step 1's tool discovery. Do NOT substitute the
+   # tool-source-repo slug step 2's version check reads; that is a different
+   # repo answering a different question.
+   #
+   # Records WHY in PROTECTION_SOURCE at each protected return, so item 4's
+   # report can name the reason instead of just "protected" (same side effect,
+   # same strings as the mirrored function).
+   PROTECTION_SOURCE=""
+   default_branch_requires_pr() {
+     if [ "$FORCE_BRANCH" = "1" ]; then
+       PROTECTION_SOURCE="--branch forced the branch + PR path (detection skipped)"
+       return 0
+     fi
+     # Fail OPEN in the two cases where detection cannot run *at all*, exactly
+     # as the mirrored function does — a Gitea forge, or no `gh` on PATH.
+     # This is deliberate, not an oversight: these are the scenarios `--branch`
+     # exists for, and failing closed here would both diverge silently from
+     # land-resync-commit.sh and make the flag redundant (every non-GitHub repo
+     # would take the branch + PR path whether or not it needed one).
+     case "$(printf '%s' "${LOOM_FORGE_TYPE:-}" | tr '[:upper:]' '[:lower:]')" in
+       gitea) return 1 ;;                         # fail open — pass --branch if it does need a PR
+     esac
+     command -v gh >/dev/null 2>&1 || return 1    # fail open — same reason
+     # From here on the forge *was* asked, so an unhelpful answer fails CLOSED.
+     local rule_types
+     if ! rule_types="$(cd <this-repo> && gh api "repos/{owner}/{repo}/rules/branches/$DEFAULT" --jq '.[].type' 2>/dev/null)"; then
+       PROTECTION_SOURCE="rules API call failed — assumed protected (fail closed)"
+       return 0
+     fi
+     if grep -qvE '^[A-Za-z0-9_]*$' <<< "$rule_types"; then
+       PROTECTION_SOURCE="rules API answer unparseable — assumed protected (fail closed)"
+       return 0
+     fi
+     if grep -qxE 'pull_request|required_status_checks' <<< "$rule_types"; then
+       PROTECTION_SOURCE="ruleset rule(s): $(grep -xE 'pull_request|required_status_checks' <<< "$rule_types" | tr '\n' ' ' | sed 's/ $//')"
+       return 0
+     fi
+     local legacy
+     legacy="$(cd <this-repo> && gh api "repos/{owner}/{repo}/branches/$DEFAULT/protection" \
+       --jq '[.required_pull_request_reviews, .required_status_checks] | map(select(. != null)) | length' 2>/dev/null || true)"
+     if [[ "$legacy" =~ ^[0-9]+$ && "$legacy" -gt 0 ]]; then
+       PROTECTION_SOURCE="legacy branch protection (PR reviews / status checks required)"
+       return 0
+     fi
+     return 1   # the forge definitively answered "no rules"
+   }
+   ```
+
+   `FORCE_BRANCH=1` is what `--branch` sets — the escape hatch for exactly the
+   two fail-open cases above, where the detection cannot run at all (a
+   non-GitHub remote with no `gh api` to answer it, or a Gitea forge). On
+   those remotes the detector reports "unprotected" because it has no evidence
+   either way, so `--branch` is how the operator supplies that evidence by
+   hand and forces the branch + PR path.
+
+   ```bash
    MSG="chore(tooling): update <tool> <old>→<new>"
    # Commit-drift update (version identical on both sides): <old>→<new> would
    # read "0.9.0→0.9.0" and say nothing. Use the installed commits instead:
    #   chore(tooling): update <tool> 0.9.0 (abc1234→def5678)
+   #
+   # Loom is the exception — use its own recognized subject (see below):
+   #   MSG="chore(loom): resync installed Loom to v<new>"
+   ```
 
-   if [ "$CUR" = "$DEFAULT" ]; then
-     # On the default branch: commit on a short-lived branch, then fast-forward
-     # merge it in — lands on the default branch without a straight-to-main commit.
+   **Loom's commit subject is not negotiable.** Loom's
+   `resync-installed.sh` local-divergence guard trusts an installed file only
+   when its last commit subject matches `RESYNC_COMMIT_SUBJECT_RE`, and the
+   generic `chore(tooling): update …` subject does not match. Commit a Loom
+   update with a subject that does, and every other tool keeps the generic one:
+
+   | Tool | `$MSG` |
+   |------|--------|
+   | Loom | `chore(loom): resync installed Loom to v<new>` |
+   | Repo Skills, Anvil, kicad-tools | `chore(tooling): update <tool> <old>→<new>` |
+
+   `<new>` must be a plain `X.Y.Z` — the regex is end-anchored, so nothing but
+   an optional ` (#N)` may follow it. This also covers the commit-drift case:
+   if Loom's version is identical on both sides, still emit the `v<new>` form,
+   because the regex has no sha form. (Companion issue proposing a
+   content-based guard: rjwalters/loom#12618.)
+
+   **Unprotected, and already on the default branch — the original flow,
+   unchanged:**
+
+   ```bash
+   if [ "$CUR" = "$DEFAULT" ] && ! default_branch_requires_pr; then
+     # On the default branch, and it takes a plain push: commit on a
+     # short-lived branch, then fast-forward merge it in — lands on the
+     # default branch without a straight-to-main commit.
      tmp="tooling/update-<tool>-<new>"
      git -C <this-repo> checkout -b "$tmp"
      git -C <this-repo> commit -m "$MSG"
      git -C <this-repo> checkout "$DEFAULT"
      git -C <this-repo> merge --ff-only "$tmp"
      git -C <this-repo> branch -d "$tmp"
-   else
-     # Already on a feature branch: commit here and report where it landed —
-     # do NOT switch branches mid-session and disturb the user's working state.
+   fi
+   ```
+
+   **Already on a feature branch — unchanged regardless of protection status**
+   (protection only changes what happens to *local* `$DEFAULT`, and this arm
+   never touches it):
+
+   ```bash
+   if [ "$CUR" != "$DEFAULT" ]; then
+     # Commit here and report where it landed — do NOT switch branches
+     # mid-session and disturb the user's working state.
      git -C <this-repo> commit -m "$MSG"
      echo "Landed the update on '$CUR' (not '$DEFAULT') — you are on a feature branch."
    fi
    ```
 
-4. **Report** the resulting commit (`git -C <this-repo> log --oneline -1`), the
-   flagged-set outcome from item 2, and a reminder that it has **not** been
-   pushed (run `git push` explicitly to share it).
+   **On the default branch, and it is protected (or `--branch` forced it) —
+   land on a `tooling/…` branch in a worktree off `origin/$DEFAULT` instead of
+   local `$DEFAULT`, and offer to push + open a PR:**
+
+   ```bash
+   if [ "$CUR" = "$DEFAULT" ] && default_branch_requires_pr; then
+     WANT_BRANCH="tooling/update-<tool>-<new>"   # requested name; may be rewritten below
+     git -C <this-repo> fetch origin "$DEFAULT" --quiet
+     if [ -x <this-repo>/.loom/scripts/worktree.sh ] && [ -n "${ISSUE_NUMBER:-}" ]; then
+       # A Loom-managed repo, and this run is already attached to a real issue
+       # number: use the repo's own worktree helper — never a bare
+       # `git worktree add` — it is what writes the `.loom-managed` sentinel
+       # that authorizes later cleanup. Do not invent an issue number to
+       # unlock this arm; the ordinary ad hoc invocation has none.
+       #
+       # NOTE: worktree.sh ALWAYS rewrites a custom branch argument to
+       # `feature/<arg>` (BRANCH_NAME="feature/$CUSTOM_BRANCH", and it prints
+       # "Custom branch '…' resolved to '…' (feature/ prefix applied)"), so the
+       # branch this creates is `feature/tooling/update-<tool>-<new>`, NOT the
+       # name passed in. The worktree directory is always
+       # `issue-$ISSUE_NUMBER` regardless of the branch name.
+       <this-repo>/.loom/scripts/worktree.sh "$ISSUE_NUMBER" "$WANT_BRANCH"
+       WT="<this-repo>/.loom/worktrees/issue-$ISSUE_NUMBER"
+     else
+       # No issue number in scope (the normal case for an ad hoc
+       # /repo:update-tools run): a plain worktree following the same
+       # conventions the helper would use — off origin/$DEFAULT, not off
+       # local $DEFAULT, under .loom/worktrees/ when this is a Loom-managed
+       # repo, otherwise a sibling scratch directory. `git worktree add -b`
+       # takes the name literally — no prefix is applied on this path.
+       WT_ROOT="<this-repo>/.loom/worktrees"; [ -d "<this-repo>/.loom" ] || WT_ROOT="/tmp"
+       WT="$WT_ROOT/tooling-update-<tool>-<new>"
+       git -C <this-repo> worktree add -b "$WANT_BRANCH" "$WT" "origin/$DEFAULT"
+     fi
+     # The two paths above therefore end up with differently-shaped branch
+     # names (`feature/tooling/update-…` vs. `tooling/update-…`). Never reuse
+     # $WANT_BRANCH for the push or the PR — ask the worktree what it is
+     # actually on, which also covers worktree.sh's "directory already exists"
+     # fast path (it reuses that worktree's current branch, typically
+     # `feature/issue-$ISSUE_NUMBER`, and creates nothing new):
+     BRANCH="$(git -C "$WT" symbolic-ref --short HEAD)"
+     # Re-run step 4's installer/updater inside $WT (its target resolution is
+     # cwd-based — see step 4's note — so cd into $WT first), then repeat
+     # item 1's isolate-the-footprint recipe and item 2's cross-check there
+     # before committing, exactly as above:
+     git -C "$WT" commit -m "$MSG"
+     echo "$DEFAULT is protected — landed on '$BRANCH' in $WT instead of local $DEFAULT."
+   fi
+   ```
+
+   Fast-forward-merging into local `$DEFAULT` here would be worse than useless
+   — the commit would exist only where the operator cannot push it, and
+   recovering means exactly the manual cherry-pick-and-reset repo#530
+   describes. Skipping straight to a branch avoids ever creating that
+   unpushable commit.
+
+   **Pushing the `tooling/…` branch and opening the PR happens only on
+   explicit operator confirmation — never automatically:**
+
+   ```bash
+   # $BRANCH here is the name re-derived from $WT above — the actual local
+   # branch — so this pushes the right refspec on both worktree paths. Using
+   # the requested `tooling/update-…` name on the worktree.sh path would fail
+   # with `src refspec … does not match any`, since the branch there is
+   # `feature/tooling/update-…`.
+   git -C "$WT" push -u origin "$BRANCH"
+   gh pr create --head "$BRANCH" --base "$DEFAULT" --title "$MSG" \
+     --body "Automated tool bump via /repo:update-tools (Safety Rule 5 carve-out)."
+   ```
+
+   This is a **narrow carve-out of Safety Rule 5** ("never push"), scoped to
+   the `tooling/…` branch alone, confirmed by the operator each time — not a
+   repeal of the rule. Rule 5's prohibition on pushing `$DEFAULT` itself is
+   unchanged: nothing in this path ever pushes `$DEFAULT`, protected or not.
+
+4. **Report** the resulting commit (`git -C <this-repo> log --oneline -1` or,
+   on the protected path, `git -C "$WT" log --oneline -1`), the flagged-set
+   outcome from item 2, which of the three landing shapes above was taken and
+   why (unprotected default / feature branch / protected default — on the
+   protected path, quote `$PROTECTION_SOURCE` as the detector set it, e.g.
+   "ruleset rule(s): pull_request", and name the branch actually created,
+   which the `worktree.sh` path `feature/`-prefixes), and — for the two branches that stop at
+   a local commit — a reminder that it has **not** been pushed (run `git push`
+   explicitly to share it). The protected path's PR, once opened, is already
+   shared; report its URL instead of a push reminder.
 
 ## Safety Rules
 
@@ -838,9 +1051,23 @@ Land each tool's bump as its own commit:
    tree) — report and skip
 4. **Land the update, don't just stage it** — by default commit the installer's
    changes and land them on the default branch with a per-tool
-   `chore(tooling): update <tool> <old>→<new>` message. Stage **only** the paths
+   `chore(tooling): update <tool> <old>→<new>` message (Loom instead uses
+   `chore(loom): resync installed Loom to v<new>`, the subject its resync guard
+   recognizes — see step 5). Stage **only** the paths
    the installer actually changed — never fold a pre-existing dirty working tree
    into the update commit. `--no-commit` / `--stage-only` restores the old
    leave-it-uncommitted-for-review behavior.
 5. **Never push** — landing on the local default branch is reversible; pushing is
    outward-facing and stays a separate, explicit action the user runs themselves.
+   **This has one narrow, explicit carve-out**, not a repeal: when step 5's
+   detection finds `<this-repo>`'s own default branch is PR-protected (or
+   `--branch` forces that path), landing on *local* `$DEFAULT` is not just
+   "also outward-facing" — it is actively unpushable, because the operator
+   would still have to push it and the ruleset would reject that push exactly
+   as it would reject this command doing so. In that case, and only that case,
+   step 5 commits on a `tooling/update-<tool>-<new>` branch instead
+   (`feature/tooling/update-<tool>-<new>` when `worktree.sh` created it — it
+   prefixes custom branch names) and may
+   push *that branch* (never `$DEFAULT`) to open a PR, still gated on explicit
+   operator confirmation each time. Every other rule above, and this rule's
+   prohibition on pushing `$DEFAULT` itself, are unchanged.
