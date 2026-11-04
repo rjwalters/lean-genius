@@ -20,8 +20,29 @@ for Anvil. It handles:
 
 Discovery precedence: when a critic sibling directory contains both
 ``_review.json`` and one of the legacy file triples, the canonical JSON
-wins and the legacy files are treated as stale. A ``DeprecationWarning``
-is emitted whenever the adapter is invoked, on a per-sibling-dir basis.
+always wins as the parsed payload. Whether the co-present prose is
+*stale* is a separate question, and co-presence alone does not answer it
+(issue #1327): several skills — ``paper-review`` is the reference case —
+write the prose quadruple **and** ``_review.json`` together, atomically,
+as one canonical output, because the two serve different consumers (a
+reviser/human reads the prose; ``convergence`` and
+``scorecard_check`` read the JSON). That shape is declared by the
+``scorecard_kind`` discriminator in ``_meta.json`` (see
+``anvil/lib/snippets/scorecard_kind.md``), so ``load_review`` treats
+co-present prose as part of the same canonical write and stays silent
+when BOTH hold:
+
+1. ``_meta.json`` exists and declares a non-empty ``scorecard_kind`` —
+   the dir was written by a schema-aware, post-migration command; and
+2. the prose does not *contradict* ``_review.json`` — ``verdict.md``'s
+   ``Total: X / Y`` and ``Decision: advance: true|false`` lines, when
+   present, agree with the canonical ``total`` / ``verdict``.
+
+A ``DeprecationWarning`` is emitted, on a per-sibling-dir basis, when
+either condition fails (undeclared co-presence, or a hand-edited /
+left-behind prose file that disagrees) and whenever a legacy adapter is
+actually invoked (prose present *without* ``_review.json`` — the
+un-migrated critic signal, which ``scorecard_kind`` does NOT suppress).
 
 Aggregation rules
 -----------------
@@ -71,6 +92,10 @@ from anvil.lib.review_schema import (
 
 
 CANONICAL_REVIEW_FILENAME = "_review.json"
+
+# The critic-metadata sidecar carrying the ``scorecard_kind``
+# discriminator (anvil/lib/snippets/scorecard_kind.md).
+CRITIC_META_FILENAME = "_meta.json"
 
 # Legacy file triples that the adapter recognizes.
 LEGACY_MEMO_FILES = ("verdict.md", "scoring.md", "comments.md")
@@ -154,8 +179,12 @@ def load_review(critic_dir: Path) -> Review:
 
     Precedence:
 
-    1. If ``_review.json`` exists, use it. (Even if legacy files also
-       exist — they are treated as stale and a warning is emitted.)
+    1. If ``_review.json`` exists, use it. Co-present prose files are a
+       **canonical co-write** (no warning) when ``_meta.json`` declares a
+       ``scorecard_kind`` and the prose does not contradict the JSON;
+       otherwise they are treated as stale and a ``DeprecationWarning``
+       is emitted. See the module docstring for the full contract
+       (issue #1327).
     2. Else if the memo prose triple exists, run the memo legacy adapter
        and emit ``DeprecationWarning``.
     3. Else if the ip-uspto triple exists, run the ip-uspto legacy adapter
@@ -163,7 +192,37 @@ def load_review(critic_dir: Path) -> Review:
     4. Else raise ``CriticDiscoveryError``.
 
     Raises ``pydantic.ValidationError`` on schema violation; raises
-    ``CriticDiscoveryError`` when no recognizable payload is found.
+    ``CriticDiscoveryError`` when no recognizable payload is found;
+    raises ``json.JSONDecodeError`` (a ``ValueError``) when
+    ``_review.json`` is not syntactically valid JSON.
+
+    Caller convention on a corrupt sidecar (issue #1335)
+    ----------------------------------------------------
+
+    ``load_review`` deliberately **raises** rather than degrading — it has
+    no way to know whether its caller is allowed to proceed without the
+    payload. Which of the two behaviors a caller wants is decided by what
+    the loaded review *drives*:
+
+    - **Verdict-bearing consumers raise** (do NOT wrap): the review gates
+      a lifecycle decision, so silently dropping it would invert the
+      decision rather than degrade it. ``operator_feedback.
+      operator_blocking_flags`` (an unreadable operator sidecar must not
+      read as "no blocking flags" and let the thread advance past a
+      human's blocking feedback) and ``deslop/lib/orchestrate.
+      aggregate_reviews`` (a dropped sidecar silently shifts the
+      aggregated mean and loses critical flags) are the reference cases.
+    - **Display / report consumers degrade** (catch and skip): the review
+      only adds detail to a rendering, so one bad sibling must not blank
+      the whole surface. ``skills/diff/lib/overlay.py`` (skip the sibling,
+      render fewer notes) and ``skills/project-book/lib/collect.py``
+      (score degrades to ``None``, audit state to ``"present"``) are the
+      reference cases.
+
+    ``scorecard_check.check_review_dir`` is a third shape: it is the
+    *lint* whose entire job is reporting malformedness, so it converts
+    every load failure into a ``parse_error`` finding instead of either
+    raising or skipping.
     """
     critic_dir = Path(critic_dir)
     canonical = critic_dir / CANONICAL_REVIEW_FILENAME
@@ -177,16 +236,10 @@ def load_review(critic_dir: Path) -> Review:
     )
 
     if has_canonical:
-        if has_memo_legacy or has_ip_uspto_legacy:
-            warnings.warn(
-                f"{critic_dir}: both _review.json and legacy prose files "
-                f"are present; using _review.json as canonical and "
-                f"treating legacy files as stale.",
-                DeprecationWarning,
-                stacklevel=2,
-            )
         with canonical.open() as fh:
             data = json.load(fh)
+        if has_memo_legacy or has_ip_uspto_legacy:
+            _warn_on_stale_co_present_prose(critic_dir, data)
         return Review.model_validate(data)
 
     if has_memo_legacy:
@@ -213,6 +266,142 @@ def load_review(critic_dir: Path) -> Review:
         f"{critic_dir}: no recognizable review payload (neither "
         f"{CANONICAL_REVIEW_FILENAME} nor a known legacy triple)."
     )
+
+
+# --- Canonical co-write vs stale prose (issue #1327) ------------------------
+
+
+def _warn_on_stale_co_present_prose(critic_dir: Path, data: object) -> None:
+    """Emit a ``DeprecationWarning`` iff co-present prose looks stale.
+
+    Called only when ``_review.json`` AND at least one legacy file
+    triple are present in ``critic_dir``. Silence (the canonical
+    co-write case, e.g. every ``paper-review`` output) requires the dir
+    to be *declared* schema-aware via ``_meta.json.scorecard_kind`` AND
+    the prose to carry no field that contradicts ``data``.
+
+    ``data`` is the **raw** parsed JSON, read before
+    ``Review.model_validate`` runs, so it is not yet known to be an
+    object. A syntactically-valid non-object payload (``[]``, ``"x"``,
+    ``null``, ``3``) is passed over silently (issue #1335) for two
+    reasons: a staleness verdict is meaningless against a payload that
+    declares no comparable field and is about to fail validation anyway,
+    and probing one raises ``AttributeError`` from the ``.get`` calls in
+    :func:`_prose_contradicts_canonical` — replacing the
+    ``ValidationError`` the caller should have seen.
+    """
+    if not isinstance(data, dict):
+        return
+    contradiction = _prose_contradicts_canonical(critic_dir, data)
+    if contradiction is not None:
+        warnings.warn(
+            f"{critic_dir}: co-present prose disagrees with "
+            f"{CANONICAL_REVIEW_FILENAME} ({contradiction}); using "
+            f"{CANONICAL_REVIEW_FILENAME} as canonical and treating the "
+            f"prose files as stale.",
+            DeprecationWarning,
+            stacklevel=3,
+        )
+        return
+    if not _declares_scorecard_kind(critic_dir):
+        warnings.warn(
+            f"{critic_dir}: both {CANONICAL_REVIEW_FILENAME} and legacy "
+            f"prose files are present, and no {CRITIC_META_FILENAME} "
+            f"scorecard_kind declares the prose as part of a canonical "
+            f"co-write; using {CANONICAL_REVIEW_FILENAME} as canonical "
+            f"and treating legacy files as stale.",
+            DeprecationWarning,
+            stacklevel=3,
+        )
+
+
+def _declares_scorecard_kind(critic_dir: Path) -> bool:
+    """True when ``_meta.json`` declares a non-empty ``scorecard_kind``.
+
+    Presence of the discriminator is the marker that the directory was
+    written by a schema-aware command post-migration (the field is a
+    required output for every critic sibling per
+    ``anvil/lib/snippets/scorecard_kind.md``), so co-present prose is by
+    design rather than left over. A missing, unreadable, or
+    discriminator-less ``_meta.json`` is treated as *undeclared* — the
+    genuine "nobody has touched this since before the migration" signal.
+    """
+    meta_path = critic_dir / CRITIC_META_FILENAME
+    if not meta_path.exists():
+        return False
+    try:
+        meta = json.loads(meta_path.read_text())
+    except (OSError, ValueError):  # ValueError covers JSONDecodeError
+        return False
+    if not isinstance(meta, dict):
+        return False
+    kind = meta.get("scorecard_kind")
+    return isinstance(kind, str) and bool(kind.strip())
+
+
+def _prose_contradicts_canonical(critic_dir: Path, data: dict) -> Optional[str]:
+    """Describe a ``verdict.md`` vs ``_review.json`` disagreement, else None.
+
+    A cheap probe, deliberately NOT a full ``_adapt_memo_legacy`` run:
+    one file read plus the two public ``verdict.md`` field parsers. Only
+    ``verdict.md`` is compared. ``_summary.md``'s JSON-in-markdown blocks
+    are intentionally excluded — their shape is skill-specific (the paper
+    skill's first block is the rubric *pool*, ``"total": 44``, not the
+    scorecard's earned total), so they are not machine-comparable across
+    skills without false positives.
+
+    Fields are compared only when BOTH sides declare them; an absent or
+    unparseable prose field is "no evidence", never a disagreement.
+    """
+    verdict_path = critic_dir / "verdict.md"
+    if not verdict_path.exists():
+        return None
+    try:
+        text = verdict_path.read_text()
+    except OSError:
+        return None
+
+    canonical_total = data.get("total")
+    prose_total, _ = parse_memo_verdict_total(text)
+    if (
+        isinstance(prose_total, int)
+        and isinstance(canonical_total, int)
+        and prose_total != canonical_total
+    ):
+        return (
+            f"verdict.md declares Total {prose_total}, "
+            f"{CANONICAL_REVIEW_FILENAME} declares total {canonical_total}"
+        )
+
+    prose_advance = parse_memo_verdict_decision(text)
+    canonical_advance = _advance_from_verdict(data.get("verdict"))
+    if (
+        prose_advance is not None
+        and canonical_advance is not None
+        and prose_advance != canonical_advance
+    ):
+        return (
+            f"verdict.md declares advance: {str(prose_advance).lower()}, "
+            f"{CANONICAL_REVIEW_FILENAME} declares verdict "
+            f"{data.get('verdict')}"
+        )
+    return None
+
+
+def _advance_from_verdict(raw: object) -> Optional[bool]:
+    """Map a raw ``_review.json`` verdict value to an advance decision.
+
+    Returns ``None`` for an absent or non-decisive verdict (including
+    ``STALLED``, which says nothing about whether the artifact advances).
+    """
+    if not isinstance(raw, str):
+        return None
+    value = raw.strip().upper().replace("-", "_")
+    if value == Verdict.ADVANCE.value:
+        return True
+    if value in {Verdict.REVISE.value, Verdict.BLOCK.value, Verdict.NO_GO.value}:
+        return False
+    return None
 
 
 # --- Memo legacy adapter ----------------------------------------------------

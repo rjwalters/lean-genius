@@ -14,14 +14,14 @@
 # the anvil source repo on the consumer machine.
 
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=84.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "anvil"
-version = "0.11.9"
+version = "0.11.38"
 description = "AI-orchestrated artifact creation using the filesystem as the coordination layer (consumer-side install)."
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = { text = "MIT" }
 
 # Base deps: load-bearing for `anvil/lib/__init__.py`'s import chain.
@@ -36,8 +36,8 @@ license = { text = "MIT" }
 #     transitively required by `from anvil.lib import ...` — see issue
 #     #231 for the canary reproducer.
 dependencies = [
-    "pydantic>=2.0",
-    "pyyaml>=6.0",
+    "pydantic>=2.14.1",
+    "pyyaml>=6.0.3",
 ]
 
 # Opt-in extras mirrored from the source repo. Each one corresponds to a
@@ -46,14 +46,14 @@ dependencies = [
 # missing.
 [project.optional-dependencies]
 # `anvil:deck` silent-Marp-auto-shrink lint (issue #102 / #100b).
-# Pillow floor is >=12.3.0 (issue #744): 12.2.0 and earlier carry 13
-# Dependabot alerts (10 high), all resolved in 12.3.0. Anvil ships no
-# checked-in lockfile, so this lower bound is what forces a consumer's
-# `uv sync --project .anvil` to re-resolve past the vulnerable pin the
-# next time install-anvil.sh runs.
+# Pillow floor is >=13.0.0 (issues #744, #1429): 13.0.0 clears the open
+# Pillow Dependabot alerts but requires Python >=3.11, hence the
+# requires-python floor above. Anvil ships no checked-in lockfile, so this
+# lower bound is what forces a consumer's `uv sync --project .anvil` to
+# re-resolve past the vulnerable pin the next time install-anvil.sh runs.
 auto_shrink = [
-    "Pillow>=12.3.0",
-    "numpy>=1.24",
+    "Pillow>=13.0.0",
+    "numpy>=2.2.6",
 ]
 # `anvil:deck` deck-imagegen JPEG/WebP-to-PNG transcode (issue #564).
 # Real image backends (Flux, DALL-E, SDXL, etc.) often default to JPEG or
@@ -62,7 +62,7 @@ auto_shrink = [
 # this only fires when the adapter actually returns non-PNG bytes. Pillow
 # floor matches `[auto_shrink]` — see #744.
 deck_imagegen = [
-    "Pillow>=12.3.0",
+    "Pillow>=13.0.0",
 ]
 
 [tool.uv]

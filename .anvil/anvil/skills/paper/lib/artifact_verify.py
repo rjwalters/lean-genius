@@ -1,6 +1,6 @@
 """Deterministic external-artifact verification gate for ``anvil:paper``.
 
-This is the paper-skill analog of ``anvil/lib/render_gate.py``: a cheap,
+This is the paper-skill analog of ``anvil/lib/render_gate/``: a cheap,
 deterministic pre-scoring gate that runs *before* the expensive LLM content
 review. Where the render gate verifies the *rendered paper* (page fit,
 overfull boxes, compile success, placeholders) and the numeric-consistency

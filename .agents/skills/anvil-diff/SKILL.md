@@ -1,6 +1,6 @@
 ---
 name: anvil-diff
-description: Anvil skill registration for 'diff' (canonical body at .anvil/skills/diff/SKILL.md)
+description: "Local, ephemeral, read-only word-level side-by-side prose diff viewer — compares two anvil version dirs, a deslop origin/cleaned pair, or two arbitrary files, with an optional `.review/` sidecar + rhetoric_lint overlay. Stdlib-only, localhost-bound, never writes to any input path."
 ---
 
 See `.anvil/skills/diff/SKILL.md` for the canonical skill body.

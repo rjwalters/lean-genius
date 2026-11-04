@@ -1,7 +1,7 @@
 """Quoted-evidence verifier for critic scoring tables (issue #464).
 
 Fifth member of the deterministic-checks family (alongside
-``anvil/lib/render_gate.py``, ``anvil/lib/marp_lint.py``,
+``anvil/lib/render_gate/``, ``anvil/lib/marp_lint.py``,
 ``anvil/lib/revise_consistency.py``, ``anvil/lib/scorecard_check.py``,
 and ``anvil/lib/numeric_consistency.py``). It enforces the
 **quoted-evidence discipline** from the draftwell survey: every

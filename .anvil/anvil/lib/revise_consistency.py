@@ -1,7 +1,7 @@
 """Deterministic stale-token sweep for the ``*-revise`` lifecycle.
 
 This module is the third member of Anvil's deterministic-checks family
-(alongside ``anvil/lib/render_gate.py`` for compiled-PDF gating and
+(alongside ``anvil/lib/render_gate/`` for compiled-PDF gating and
 ``anvil/lib/marp_lint.py`` for slide-source linting). It
 catches a *content-integrity* failure mode that the LLM reviser silently
 misses today: when a sourced number on a slide is rewritten between

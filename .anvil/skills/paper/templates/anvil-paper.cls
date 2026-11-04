@@ -17,6 +17,10 @@
 %%   natbib (\citep, \citet) loaded with sort&compress; author-year
 %%     (round) by default, numeric with the `numeric` option
 %%   graphicx, amsmath, amssymb, xcolor, hyperref loaded
+%%   booktabs + longtable + array + calc + caption loaded in that order, so
+%%     a `pandoc -t latex` table body (which is always a `longtable`, and for
+%%     wide tables uses `>{\raggedright\arraybackslash}p{... \real{...}}`
+%%     column specs) typesets as-is, caption included. See issue #1328.
 %%   plainnat bibliography style baked in (natbib-aware; adapts to
 %%     both author-year and numeric modes)
 
@@ -56,6 +60,22 @@
   \RequirePackage[round,sort&compress,authoryear]{natbib}
 \fi
 \RequirePackage{booktabs}
+%% Table packages, ordered BEFORE caption on purpose (issue #1328).
+%% `longtable` is what `pandoc -t latex` emits for every pipe table, so a
+%% manuscript converted with pandoc pastes in `\begin{longtable}` bodies that
+%% the class must be able to typeset without the consumer patching the
+%% preamble. `array` backs pandoc's `>{\raggedright\arraybackslash}p{...}`
+%% column specs; `calc` backs the `\real{...}` width arithmetic in them.
+%% The ordering is load-bearing: `caption` registers its longtable-aware
+%% `\LT@` hooks for a `longtable` that is already loaded when `caption` itself
+%% loads. Adding `\usepackage{longtable}` to the *document* preamble instead
+%% is not a reliable substitute -- on older caption/longtable releases nothing
+%% installs those hooks retroactively, which is the reported
+%% "No counter 'none' defined" failure at the first `\caption` inside a
+%% longtable. Do not move `caption` above this block.
+\RequirePackage{longtable}
+\RequirePackage{array}
+\RequirePackage{calc}
 \RequirePackage{xcolor}
 \RequirePackage{caption}
 \captionsetup{font=small,labelfont=bf}

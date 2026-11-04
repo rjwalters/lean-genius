@@ -587,6 +587,34 @@ def _split_slides(source: str) -> list[_Slide]:
     return pruned
 
 
+# Any HTML comment, including multi-line ones (e.g. the page-text comment
+# ``slides-import`` writes behind an image-backed slide).
+_HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
+
+# A Marp background-image directive occupying a whole line: ``![bg](x)``,
+# ``![bg fit](x)``, ``![bg right:30%](x)``.
+_BG_IMAGE_LINE_RE = re.compile(r"^\s*!\[bg(?:\s[^\]]*)?\]\([^)]*\)\s*$")
+
+
+def _is_image_only_slide(slide_src: str) -> bool:
+    """A slide is image-only if it has >=1 ``![bg]`` image and nothing else.
+
+    Comments (directives, speaker notes, imported page text) are ignored.
+    Any other visible content — text, headings, bullets, a non-``bg`` image —
+    makes it a normal slide (issue #1368).
+    """
+    stripped = _HTML_COMMENT_RE.sub("", slide_src)
+    has_bg = False
+    for line in stripped.splitlines():
+        if not line.strip():
+            continue
+        if _BG_IMAGE_LINE_RE.match(line):
+            has_bg = True
+            continue
+        return False
+    return has_bg
+
+
 def _is_effectively_empty(slide_src: str) -> bool:
     """A slide is empty if every non-blank line is a directive comment."""
     for line in slide_src.splitlines():
@@ -1548,6 +1576,21 @@ def lint_source(
 
     slides = _split_slides(source)
     for slide in slides:
+        # Image-only slides (e.g. an imported PDF page rendered as a
+        # background image) have no markdown to measure; say so rather than
+        # letting 0 findings read as a pass (issue #1368).
+        if _is_image_only_slide(slide.raw):
+            result.infos.append(
+                Finding(
+                    slide=slide.index,
+                    line=slide.start_line,
+                    rule="image-only-slide",
+                    severity="info",
+                    message="image-only slide — lint not applicable",
+                )
+            )
+            continue
+
         # Escape hatch — collected once per slide; each rule asks the set.
         disabled_rules = _collect_disabled_rules(slide.raw)
 

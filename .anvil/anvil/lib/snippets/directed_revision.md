@@ -180,8 +180,14 @@ passed. The full set (12 skills): `memo`, `report`, `datasheet`,
   filter on the same terms `memo-revise.md` documents (the polish
   bypass and the scope filter are independent, orthogonal flags).
 
+- **`slides`** — the fourth consumer (issue #1369). Bypasses the
+  step-4 verdict pre-check; the review-exists check (step 1) and the
+  iteration cap (step 3) still apply. Also ports memo's `--reject
+  "<reason>"` (`metadata.revision_mode = "operator_reject"` +
+  `metadata.reject_reason`), mutually exclusive with `--polish`.
+
 **Pending adoption** (each its own scoped follow-up PR, referencing
-this snippet): `report`, `datasheet`, `deck`, `paper`, `slides`,
+this snippet): `report`, `datasheet`, `deck`, `paper`,
 `installation`, `essay`, `ip-uspto`, `ip-uspto-provisional`. The
 `essay` and `installation` shapes are review-only (no audit), so their
 bypass is even simpler — skip the single-critic verdict pre-check

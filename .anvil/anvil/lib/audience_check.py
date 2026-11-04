@@ -2,7 +2,7 @@
 
 Sixth member of the deterministic-checks family (alongside
 ``anvil/lib/numeric_consistency.py``, ``anvil/lib/pending_marker.py``,
-``anvil/lib/render_gate.py``, ``anvil/lib/marp_lint.py`` and
+``anvil/lib/render_gate/``, ``anvil/lib/marp_lint.py`` and
 ``anvil/lib/revise_consistency.py``).
 
 The problem
@@ -94,11 +94,16 @@ Both are reporting aids and never change what is detected:
   sentence should have been written for.
 - The public repository URL (:func:`resolve_public_repo_url`) resolves in
   order from ``<thread>/.anvil.json`` ``public_repo_url``, the thread
-  ``BRIEF.md`` frontmatter ``public_repo_url``, then the first public
-  forge link (GitHub, GitLab, Codeberg, Bitbucket, Zenodo, DOI, OSF,
-  figshare, Hugging Face) inside the paper's artifacts/availability
-  section only (a dependency cited elsewhere, e.g. the Mathlib GitHub in
-  the introduction, is never the paper's repository). The result carries
+  ``BRIEF.md`` frontmatter ``public_repo_url``, then a public forge link
+  (GitHub, GitLab, Codeberg, Bitbucket, Zenodo, DOI, OSF, figshare,
+  Hugging Face) inside the paper's artifacts/availability section only (a
+  dependency cited elsewhere, e.g. the Mathlib GitHub in the
+  introduction, is never the paper's repository). A link *inside* that
+  section is only offered as a candidate when the sentence around it
+  names it as the paper's own ("our code", "the repository for this
+  paper") or when the section holds exactly one repository and does not
+  introduce it as a dependency ("requires <library>, ``\\url{...}``") —
+  otherwise no candidate is named at all (#1329). The result carries
   ``public_repo_url_source`` (``anvil_json`` / ``brief`` = declared,
   ``derived`` = guessed). Only a declared URL yields a concrete ``\\href``
   in the ``unlinked_artifact_path`` fix (and, in ``paper-audit``, a
@@ -246,6 +251,53 @@ _PUBLIC_FORGE_RE = re.compile(
     re.IGNORECASE,
 )
 _FORGE_REPO_HOSTS = ("github.com", "gitlab.com", "codeberg.org", "bitbucket.org")
+
+# Ownership signal: the sentence around a forge link names the link as the
+# paper's OWN artifact. Small fixed vocabulary, same style as the governance
+# and private-locator sets above.
+_REPO_OWNERSHIP_RE = re.compile(
+    r"\b(?:our|the\s+authors?(?:['’]s?)?)\s+(?:own\s+)?"
+    r"(?:code|codebase|repo(?:sitory)?|implementation|artifacts?|scripts?|data)\b"
+    r"|\b(?:this|the)\s+paper['’]?s\s+(?:own\s+)?"
+    r"(?:code|codebase|repo(?:sitory)?|implementation|artifacts?|scripts?|data)\b"
+    r"|\b(?:repo(?:sitory)?|code|implementation|artifacts?|materials?|data)\s+"
+    r"(?:for|accompanying|behind|underlying)\s+(?:this|the)\s+"
+    r"(?:paper|manuscript|article|work|study)\b"
+    r"|\bwe\s+(?:release|publish|provide|ship)\b",
+    re.IGNORECASE,
+)
+
+# Dependency signal: the text immediately preceding a forge link introduces
+# it as something the work builds ON, not something the work publishes.
+#
+# Deliberately excludes the bare preposition "via" (#1341): it is the
+# ordinary locator idiom for the paper's OWN artifact ("available via
+# <link>", "the code used to produce these results is at <link>") far more
+# often than it is a dependency marker, and a genuine "X via <link>"
+# dependency phrasing is already caught above by its accompanying verb
+# ("requires X via <link>", "built on X via <link>").
+_REPO_DEPENDENCY_RE = re.compile(
+    r"\b(?:requires?|required|requiring|depends?\s+on|depending\s+on|"
+    r"built\s+(?:on|upon|with)|build(?:s|ing)?\s+(?:on|upon)|"
+    r"based\s+on|relies?\s+on|relying\s+on|uses?|using|used|"
+    r"powered\s+by|provided\s+by|courtesy\s+of|thanks\s+to|"
+    r"we\s+use|we\s+build\s+on)\b",
+    re.IGNORECASE,
+)
+
+# Sentence-ish segmentation used to scope the two signals above: a *paragraph*
+# break, or a sentence terminator followed by whitespace and a capital / LaTeX
+# control sequence (so "e.g. https://..." is not split off its sentence).
+#
+# Splitting on a *single* newline would make the two signals above
+# formatting-dependent: the text being segmented is `_artifacts_text()`, which
+# preserves the source line structure of the body verbatim, so a `.tex`
+# availability section hard-wrapped at ~80 columns would have each sentence
+# broken across several segments — and a dependency verb on one wrapped line
+# would not scope to the URL on the next (#1329). The sentence-terminator arm
+# still separates genuinely distinct sentences that share a paragraph,
+# including one-sentence-per-line source, because `\s+` spans a lone newline.
+_SEGMENT_SPLIT_RE = re.compile(r"\n\s*\n+|(?<=[.!?])\s+(?=[A-Z\\])")
 
 # ---------------------------------------------------------------------------
 # Masking
@@ -657,18 +709,80 @@ def _normalize_repo_url(url: str) -> str:
     return url
 
 
+def _segment_spans(text: str) -> List[Tuple[int, int]]:
+    """``(start, end)`` of each sentence-ish segment of ``text``."""
+    spans: List[Tuple[int, int]] = []
+    pos = 0
+    for sep in _SEGMENT_SPLIT_RE.finditer(text):
+        spans.append((pos, sep.start()))
+        pos = sep.end()
+    spans.append((pos, len(text)))
+    return spans
+
+
+def _derive_repo_candidate(text: str) -> Optional[str]:
+    """Best candidate repository among the forge links in ``text``, or ``None``.
+
+    ``text`` is the artifacts/availability-section text. Every forge link is
+    considered (not just the first), normalized, and classified by the
+    sentence around it:
+
+    1. exactly one distinct repository carries an **ownership** signal
+       ("our code", "the repository for this paper") -> that one;
+    2. otherwise, exactly one distinct repository appears in the whole
+       section AND it is not introduced by a **dependency** signal
+       ("requires <lib>, \\url{...}", "built on ...") -> that one;
+    3. otherwise ``None`` — an ambiguous or dependency-only section gets no
+       candidate rather than a guess (#1329).
+    """
+    matches = list(_PUBLIC_FORGE_RE.finditer(text or ""))
+    if not matches:
+        return None
+    spans = _segment_spans(text)
+    owned: List[str] = []
+    unflagged: List[str] = []
+    seen: List[str] = []
+    for m in matches:
+        url = _normalize_repo_url(m.group(0))
+        start, end = next(
+            ((s, e) for s, e in spans if s <= m.start() < e), (0, len(text))
+        )
+        sentence = text[start:end]
+        before = text[start:m.start()]
+        if url not in seen:
+            seen.append(url)
+        if _REPO_OWNERSHIP_RE.search(sentence) and url not in owned:
+            owned.append(url)
+        if not _REPO_DEPENDENCY_RE.search(before) and url not in unflagged:
+            unflagged.append(url)
+    if owned:
+        return owned[0] if len(owned) == 1 else None
+    # Rule 2: the section's sole distinct repository, and only when no
+    # dependency signal introduced it. `unflagged` is a subset of `seen`, so
+    # under the `len(seen) == 1` guard the membership test below is simply
+    # "the one repository is not dependency-flagged".
+    if len(seen) == 1 and seen[0] in unflagged:
+        return seen[0]
+    return None
+
+
 def resolve_public_repo_url_with_source(
     thread_dir: Path, text: str = ""
 ) -> Tuple[Optional[str], Optional[str]]:
     """Resolve the thread's public repository URL and where it came from.
 
     Returns ``(url, source)``; ``source`` is ``"anvil_json"`` or ``"brief"``
-    for a declared URL, ``"derived"`` for the first public-forge link in
-    ``text``, and ``None`` (with ``url=None``) when nothing resolves.
+    for a declared URL, ``"derived"`` for a candidate read out of ``text``,
+    and ``None`` (with ``url=None``) when nothing resolves.
     :func:`check_audience` passes only the artifacts/availability-section
     text as ``text``, so a dependency cited in the introduction (e.g. the
     Mathlib GitHub) is never mistaken for the paper's own repository.
-    Forge repo links are normalized to ``https://host/owner/repo``.
+
+    A *derived* candidate is deliberately conservative — see
+    :func:`_derive_repo_candidate`: a link the section itself introduces as a
+    dependency ("requires <library>, \\url{...}") is not offered, and neither
+    is any one of several competing links. Forge repo links are normalized to
+    ``https://host/owner/repo``.
     """
     thread_dir = Path(thread_dir)
     anvil_json = thread_dir / ANVIL_JSON
@@ -683,9 +797,9 @@ def resolve_public_repo_url_with_source(
     val = _read_frontmatter(thread_dir / BRIEF_FILENAME).get(PUBLIC_REPO_KEY)
     if isinstance(val, str) and val.strip():
         return val.strip().rstrip("/"), REPO_SOURCE_BRIEF
-    m = _PUBLIC_FORGE_RE.search(text or "")
-    if m:
-        return _normalize_repo_url(m.group(0)), REPO_SOURCE_DERIVED
+    candidate = _derive_repo_candidate(text or "")
+    if candidate:
+        return candidate, REPO_SOURCE_DERIVED
     return None, None
 
 
@@ -693,9 +807,10 @@ def resolve_public_repo_url(thread_dir: Path, text: str = "") -> Optional[str]:
     """Resolve the thread's public repository URL, or ``None``.
 
     Order: ``<thread>/.anvil.json`` ``public_repo_url`` → thread
-    ``BRIEF.md`` frontmatter ``public_repo_url`` → first public-forge link
-    in ``text``. See :func:`resolve_public_repo_url_with_source` for the
-    provenance, which decides whether the URL is trusted.
+    ``BRIEF.md`` frontmatter ``public_repo_url`` → a public-forge link in
+    ``text`` the section names as the paper's own (:func:`_derive_repo_candidate`).
+    See :func:`resolve_public_repo_url_with_source` for the provenance,
+    which decides whether the URL is trusted.
     """
     return resolve_public_repo_url_with_source(thread_dir, text)[0]
 

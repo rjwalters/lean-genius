@@ -210,9 +210,8 @@ def parse_timestamp(value: object) -> Optional[datetime]:
     """Parse an ISO-8601 timestamp, tolerating a trailing ``Z``.
 
     Returns ``None`` for anything unparseable. Python's
-    ``datetime.fromisoformat`` only learned ``Z`` in 3.11 and Anvil
-    supports 3.10 (see ``requires-python``), so the suffix is normalized
-    by hand.
+    ``datetime.fromisoformat`` learned ``Z`` in 3.11; the suffix is
+    still normalized by hand (a leftover from when Anvil supported 3.10).
     """
     if not isinstance(value, str):
         return None

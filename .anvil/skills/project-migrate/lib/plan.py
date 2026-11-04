@@ -101,7 +101,7 @@ def _validate_migrate_artifact_type(value: str, project_dir: Path) -> str:
 # Artifact-type inference from retained body filenames (issue #386).
 # A retained body identifies the owning skill, so the planner writes
 # the matching skill-identity artifact_type (registered in
-# ``anvil/lib/project_brief.py`` under #386) instead of silently
+# ``anvil/lib/project_brief/`` under #386) instead of silently
 # defaulting to 'investment-memo'. ``deck.md`` is ambiguous between
 # anvil:deck and anvil:slides (both use it) — the planner defaults to
 # 'deck' and the inference note tells the operator to edit the BRIEF
@@ -422,7 +422,7 @@ def _extract_iteration_cap(
 
     The deck skill's per-thread carrier (issue #382) pairs
     ``max_iterations`` with a required ``iteration_cap_rationale``. The
-    project-BRIEF schema (`anvil/lib/project_brief.py`) enforces the
+    project-BRIEF schema (`anvil/lib/project_brief/`) enforces the
     same contract STRICTLY at parse time, so the planner only carries
     the pair into the BRIEF when it would survive that validation:
 

@@ -37,8 +37,10 @@ Checks (finding codes)
   check degrades to this info finding.
 - ``parse_error`` — the scorecard could not be parsed into a typed
   ``Review`` for a reason other than a per-dimension bounds violation
-  (e.g. an empty scoring table). A malformed scorecard must produce
-  findings, never an unhandled exception.
+  (e.g. an empty scoring table, a syntactically-invalid
+  ``_review.json``, or a valid-JSON-but-non-object payload). A
+  malformed scorecard must produce findings, never an unhandled
+  exception.
 
 Failure behavior (the consumer contract)
 -----------------------------------------
@@ -59,8 +61,18 @@ filesystem access, mirroring ``critics.aggregate``. The filesystem
 convenience ``check_review_dir`` loads via ``critics.load_review``,
 reads the stamps from ``_meta.json``, reads any overlay-adjusted pool
 from ``_summary.md``'s ``rubric_overlay.weight_adjustments`` block, and
-converts ``pydantic.ValidationError`` into findings rather than
-crashing.
+converts **every** load failure into findings rather than crashing:
+``pydantic.ValidationError``, the ``json.JSONDecodeError`` a
+truncated/syntactically-invalid ``_review.json`` raises, and the
+``AttributeError`` / ``TypeError`` family a valid-JSON non-object payload
+can provoke (issue #1335). It is the one ``critics.load_review`` consumer
+whose job *is* reporting malformedness, so it neither raises like the
+verdict-bearing consumers nor silently skips like the display consumers —
+see ``critics.load_review``'s docstring for that convention. It
+suppresses the legacy adapter's ``DeprecationWarning``
+**only** for a genuinely-legacy sidecar (prose with no ``_review.json``
+at all), since reading that shape is its job; a warning about co-present
+prose is passed through to the caller (issue #1327).
 """
 
 from __future__ import annotations
@@ -74,7 +86,11 @@ from typing import Dict, List, Optional
 
 from pydantic import ValidationError
 
-from anvil.lib.critics import load_review, parse_memo_verdict_decision
+from anvil.lib.critics import (
+    CANONICAL_REVIEW_FILENAME,
+    load_review,
+    parse_memo_verdict_decision,
+)
 from anvil.lib.review_schema import Review, Verdict
 
 
@@ -376,6 +392,43 @@ def _validation_error_findings(exc: ValidationError) -> List[ScorecardFinding]:
     return findings
 
 
+def _load_error_finding(exc: BaseException) -> ScorecardFinding:
+    """Convert a non-pydantic ``load_review`` failure into a finding.
+
+    Covers the corruption modes that never reach ``Review.model_validate``
+    (issue #1335): a ``_review.json`` that is not syntactically valid JSON
+    (``json.JSONDecodeError``), and a valid-JSON payload of the wrong
+    shape tripping an attribute/type probe on the raw parsed data. Both
+    are ``parse_error`` — from a reviewer's point of view the payload is
+    simply unreadable, which is the same disposition as an unparseable
+    scoring table.
+    """
+    if isinstance(exc, json.JSONDecodeError):
+        detail = f"{CANONICAL_REVIEW_FILENAME} is not valid JSON: {exc}"
+        message = (
+            f"{CANONICAL_REVIEW_FILENAME} could not be parsed as JSON "
+            f"({exc}) — the file is truncated or otherwise malformed. A "
+            f"canonical scorecard is written atomically via "
+            f"`anvil.lib.sidecar.staged_sidecar`, so this shape means the "
+            f"file was written or edited outside that path; restore it "
+            f"from the writing command's output or re-run the review."
+        )
+    else:
+        detail = f"{type(exc).__name__}: {exc}"
+        message = (
+            f"scorecard could not be parsed into a typed Review — "
+            f"{type(exc).__name__}: {exc}. Verify "
+            f"{CANONICAL_REVIEW_FILENAME} holds a JSON *object* matching "
+            f"anvil/lib/review_schema.json."
+        )
+    return ScorecardFinding(
+        code=PARSE_ERROR,
+        severity=SEVERITY_ERROR,
+        detail=detail,
+        message=message,
+    )
+
+
 def check_review_dir(
     critic_dir: Path,
     *,
@@ -395,7 +448,17 @@ def check_review_dir(
 
     A scorecard that fails the typed bounds contract produces
     ``score_out_of_bounds`` / ``parse_error`` findings rather than an
-    unhandled ``pydantic.ValidationError``.
+    unhandled ``pydantic.ValidationError``. A ``_review.json`` that is
+    not syntactically valid JSON, or that parses to something other than
+    an object (``[]``, ``"x"``, ``null``, ``3``), likewise produces a
+    ``parse_error`` finding rather than an unhandled
+    ``json.JSONDecodeError`` / ``AttributeError`` (issue #1335).
+
+    An unreadable ``critic_dir`` (``OSError``) and a dir with no
+    recognizable payload at all (``critics.CriticDiscoveryError``) still
+    raise: neither is a malformed *scorecard*, and reporting "the
+    scorecard is broken" for a caller that passed the wrong path would
+    hide the real error.
 
     This is a **read-only** operation. Read-time consumers MUST treat a
     finding-bearing sidecar's verdict as advisory and MUST NOT mutate
@@ -439,14 +502,43 @@ def check_review_dir(
     if verdict_path.exists():
         advance = parse_memo_verdict_decision(verdict_path.read_text())
 
-    # Load the typed review. Reading legacy prose triples is this
-    # function's job, so the adapter's DeprecationWarning is suppressed.
+    # Load the typed review. Reading a genuinely-legacy prose triple (no
+    # `_review.json` at all) is this function's job, so the legacy
+    # adapter's DeprecationWarning is suppressed for that shape only.
+    #
+    # Issue #1327: the suppression no longer covers the canonical case.
+    # A sidecar carrying BOTH `_review.json` and prose no longer warns on
+    # its own (critics.load_review recognizes the declared co-write), so
+    # when it *does* warn the prose genuinely disagrees with the JSON or
+    # is undeclared — exactly the defect class this function reports on.
+    # Letting that through to the caller is the point.
     try:
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", DeprecationWarning)
+        if (critic_dir / CANONICAL_REVIEW_FILENAME).exists():
             review = load_review(critic_dir)
+        else:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", DeprecationWarning)
+                review = load_review(critic_dir)
     except ValidationError as exc:
         return _validation_error_findings(exc)
+    except (ValueError, AttributeError, TypeError) as exc:
+        # Issue #1335: the module's documented "never crash" contract has
+        # to cover the corruption modes `load_review` raises *outside*
+        # pydantic, not just schema violations.
+        #
+        # - `ValueError` catches `json.JSONDecodeError` (its subclass) —
+        #   the realistic corruption mode for a `_review.json` written
+        #   outside the `staged_sidecar` path: an interrupted write, a
+        #   hand-edit, a partial scp/rsync. Ordering matters: pydantic's
+        #   `ValidationError` is itself a `ValueError`, so the clause
+        #   above must stay first to keep its richer per-error mapping.
+        # - `AttributeError` / `TypeError` are defense-in-depth for a
+        #   valid-JSON non-object payload reaching a `.get`-style probe on
+        #   the raw parsed data before validation runs. The known instance
+        #   (`_warn_on_stale_co_present_prose`) now guards on
+        #   `isinstance(data, dict)` itself, so this is a backstop for the
+        #   contract, not the primary fix.
+        return [_load_error_finding(exc)]
 
     return check_scorecard(
         review,

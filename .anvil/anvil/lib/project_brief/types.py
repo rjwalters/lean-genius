@@ -380,14 +380,24 @@ _SLIDES_UNIT_ARTIFACT_TYPES: frozenset = frozenset(
 )
 
 # Rubric dimension range for the ``dim_N_calibration`` / ``dim_N_waiver``
-# key families: the closed interval [1, 9]. Both shipped consumers (memo
-# per ``anvil/skills/memo/rubric.md``, deck per
-# ``anvil/skills/deck/rubric.md`` — the issue #393 second consumer) carry
-# 9-dimension rubrics, so the range holds as-is. If a future consumer
-# ships a rubric with a different dimension count, the range must be
-# parameterized per artifact type.
+# key families: the closed interval [1, max_dim_for(artifact_type)]. Most
+# skills carry 9-dimension rubrics (``MAX_DIM``); deck carries 10
+# dimensions post-#550 (``anvil/skills/deck/rubric.md``), so the per-type
+# ceiling is looked up via ``MAX_DIM_BY_ARTIFACT_TYPE`` / ``max_dim_for``.
+# ``MAX_DIM_CEILING`` is the global ceiling the type-agnostic pydantic
+# models bound against; the per-type check lives in
+# ``_normalize_rubric_overrides`` (#1449).
 MIN_DIM = 1
 MAX_DIM = 9
+MAX_DIM_BY_ARTIFACT_TYPE: dict[str, int] = {"deck": 10}
+MAX_DIM_CEILING = max([MAX_DIM, *MAX_DIM_BY_ARTIFACT_TYPE.values()])
+
+
+def max_dim_for(artifact_type: str | None) -> int:
+    """Return the highest valid ``dim_N_*`` index for ``artifact_type``."""
+    key = getattr(artifact_type, "value", artifact_type) or ""
+    return MAX_DIM_BY_ARTIFACT_TYPE.get(str(key), MAX_DIM)
+
 
 # `dim_N_calibration` is a templated key; the regex below pins the shape.
 _DIM_CALIBRATION_RE = re.compile(r"^dim_(\d+)_calibration$")
@@ -476,6 +486,7 @@ _RECOGNIZED_DOCUMENT_KEYS = {
     "code_ref",
     "recommendation_target",
     "voice_corpus_exclude",
+    "editorial_overrides",
 }
 
 # Default iteration cap. The override floor mirrors the deck skill's

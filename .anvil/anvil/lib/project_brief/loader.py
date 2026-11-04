@@ -34,7 +34,7 @@ from anvil.lib.project_brief.fields import (
     _normalize_theme,
     _normalize_voice,
 )
-from anvil.lib.project_brief.models import ProjectBrief, RubricOverrides
+from anvil.lib.project_brief.models import EditorialOverride, ProjectBrief, RubricOverrides
 from anvil.lib.project_brief.types import (
     consumer_overlay_dir_for,
     discover_consumer_artifact_types,
@@ -359,8 +359,10 @@ def load_rubric_overrides_for_slug(
     - The BRIEF parses but has no entry for ``slug``.
     - The matching entry has no ``rubric_overrides:`` block.
 
-    Raises ``ValueError`` only on a structurally invalid BRIEF (the
-    same conditions as :func:`load_project_brief`). This is the
+    A structurally invalid BRIEF (the conditions under which
+    :func:`load_project_brief` raises ``ValueError``) also degrades to an
+    empty instance, but NOT silently: a ``UserWarning`` naming the BRIEF
+    path and the error text is emitted (#1449). This is the
     replacement for the retired
     ``anvil_config.load_rubric_overrides(thread_dir)`` API; the
     ``empty-on-absence`` contract is preserved exactly so the reviewer
@@ -385,11 +387,17 @@ def load_rubric_overrides_for_slug(
     """
     try:
         brief = load_project_brief(project_dir)
-    except ValueError:
+    except ValueError as exc:
         # The BRIEF exists but is structurally invalid. The lenient
         # contract says "degrade to empty"; propagating a ValueError
         # here would break the reviewer's pre-#296 zero-impact
-        # behavior for legacy threads. So we swallow.
+        # behavior for legacy threads. So we degrade, but loudly.
+        warnings.warn(
+            f"{Path(project_dir) / 'BRIEF.md'}: structurally invalid BRIEF; "
+            f"rubric_overrides for {slug!r} ignored: {exc}",
+            UserWarning,
+            stacklevel=2,
+        )
         return RubricOverrides()
     if brief is None:
         return RubricOverrides()
@@ -398,3 +406,24 @@ def load_rubric_overrides_for_slug(
     if doc is None or doc.rubric_overrides is None:
         return RubricOverrides()
     return doc.rubric_overrides
+
+
+def load_editorial_overrides_for_slug(
+    project_dir: Path, slug: str
+) -> List[EditorialOverride]:
+    """Return the ``editorial_overrides`` for ``slug`` from ``<project_dir>/BRIEF.md`` (issue #1373).
+
+    Lenient like :func:`load_rubric_overrides_for_slug`: returns ``[]``
+    when the BRIEF is missing or structurally invalid, the slug has no
+    entry, or the entry has no ``editorial_overrides:`` key.
+    """
+    try:
+        brief = load_project_brief(project_dir)
+    except ValueError:
+        return []
+    if brief is None:
+        return []
+    doc = brief.document_for_slug(slug)
+    if doc is None or not doc.editorial_overrides:
+        return []
+    return list(doc.editorial_overrides)

@@ -253,7 +253,7 @@ without forcing a `Verdict.BLOCK`.
 
 The family currently has three members:
 
-- **`anvil/lib/render_gate.py`** — page-fit, overfull-box, compile-
+- **`anvil/lib/render_gate/`** — page-fit, overfull-box, compile-
   success, and placeholder-scan gates over a compiled PDF + log
   (`Kind.TOOL_EVIDENCE`; `CriticalFlag` on fail because a missing PDF
   IS a blocker).

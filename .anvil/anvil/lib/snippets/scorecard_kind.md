@@ -219,6 +219,41 @@ For an aggregator critic, the `_meta.json` SHOULD record either kind
 primary deliverable). The presence of both shapes is the signal to
 downstream consumers; the discriminator carries the primary intent.
 
+## Canonical `_review.json` alongside prose
+
+Distinct from the aggregator case above: a **single** critic may emit
+one scorecard in two shapes at once — the `human-verdict` prose plus a
+canonical `_review.json` carrying the same scores — because the two
+serve different consumers. `paper-review` is the reference case: the
+reviser and a human read `verdict.md` / `scoring.md` / `comments.md` /
+`findings.md`; `anvil/lib/convergence.py` and
+`anvil/lib/scorecard_check.py` read `_review.json`. All of it is written
+in one atomic `staged_sidecar` commit, and all of it is canonical.
+
+**`scorecard_kind` is the discriminator that makes this legible to a
+loader** (issue #1327). `anvil/lib/critics.py::load_review` always parses
+`_review.json` as the payload when it is present, and decides whether
+co-present prose is *stale* as follows:
+
+| `_meta.json` | Prose vs `_review.json` | `load_review` |
+|---|---|---|
+| declares a `scorecard_kind` | agree (or prose carries no comparable field) | canonical co-write — **no warning** |
+| declares a `scorecard_kind` | `verdict.md`'s `Total:` / `Decision: advance:` contradicts the JSON's `total` / `verdict` | `DeprecationWarning` — the prose was hand-edited or left behind |
+| absent, unreadable, or no `scorecard_kind` | either | `DeprecationWarning` — undeclared co-presence, the pre-migration shape |
+
+Only `verdict.md` is compared. `_summary.md`'s JSON-in-markdown blocks
+are deliberately excluded: their shape is skill-specific (the paper
+skill's first block is the rubric *pool*, `"total": 44`, not the
+scorecard's earned total), so they are not machine-comparable across
+skills.
+
+**A critic emitting both shapes MUST keep them consistent**, and MUST
+stamp `scorecard_kind` (typically `human-verdict`, since the prose
+verdict is the primary human deliverable). The stamp does **not**
+suppress the warning for a prose-only sibling — prose with no
+`_review.json` at all is still the un-migrated-critic signal, and the
+`human-verdict` skills listed above are expected to keep emitting it.
+
 ## Audit / fact-check critics
 
 Audit critics (paper-audit, slides-audit, report-audit, ip-uspto-audit)
