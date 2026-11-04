@@ -273,7 +273,6 @@ research/
 ├── toolchain-v4.31-rename-map.md     # v4.31 rename map (Mechanic batch input, #38064)
 ├── remote-build-pool-design.md       # Remote lake-build pool design (#38684, unapplied)
 ├── remote-build-pool-cost-estimate.md # Companion cost estimate for the design above
-├── lean-daemon-state.json    # Snapshot of a 2026-01 lean daemon run (historical)
 │
 ├── templates/                # Document templates
 │   ├── problem.md            # Problem statement

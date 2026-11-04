@@ -13,6 +13,7 @@ consumed it.
 | `add_open_classical.py`, `dr6_fix.py`, `dr7_natdegree.py`, `dr7_noprogress.py`, `fix_noncomputable.py`, `sweep_modifier_in.py`, `sweep_orphan_binder.py` | Mechanical repair sweeps driven by diag output |
 | `diag-DR*.txt` (10 files) | First-error diagnostics kept for the waves still cited by `STATUS.md` |
 | `failsD-shard-aa`, `failsD-shard-ab` | Module lists for the sharded wave-D runs |
+| `build-43756-20261012/` | #43756 safe-subset verification receipts (summary, manifest, gzipped logs) — see its README |
 
 The rest of the raw wave output (several hundred `diag-*.txt` and per-chunk logs)
 was parked out of the repo on 2026-09-29 at

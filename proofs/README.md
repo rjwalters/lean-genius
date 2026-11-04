@@ -112,7 +112,7 @@ proofs/
 │   ├── NavierStokes.lean     # ⚠️ WIP (axioms)
 │   └── ...
 ├── bin/                 # Safety wrapper blocking direct `lake build`
-├── batch2/              # v4.26→v4.31 migration ledger (STATUS.md, verify-results.tsv) — see its README
+├── batch2/              # v4.26→v4.31 migration ledger + #43756 safe-subset build receipts — see its README
 ├── MATHLIB_STYLE.md     # Style/naming notes for files headed to Mathlib
 ├── BADGE_TAXONOMY.md    # Proof badge definitions
 └── scripts/
