@@ -4,11 +4,12 @@
     "squad": {
       "command": "node",
       "args": [
-        "/Users/rwalters/GitHub/squad/dist/index.js"
+        ".claude/hooks/squad-mcp.mjs"
       ],
       "env": {
-        "SQUAD_PERSONA": "claude",
-        "SQUAD_DIR": "/Users/rwalters/GitHub/lean-genius/.squad"
+        "SQUAD_DIR": ".squad",
+        "SQUAD_RUNTIME": "/Users/rwalters/.local/share/squad/current/dist/index.js",
+        "SQUAD_PERSONA": "claude"
       }
     }
   }
