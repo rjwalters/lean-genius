@@ -20,9 +20,9 @@ import {
   BookOpen,
   FileText,
   Archive,
-  Code2,
-  Github
+  Code2
 } from 'lucide-react'
+import { Github } from '@/components/icons/Github'
 
 function isValidFormalStatement(formal: string | undefined): boolean {
   if (!formal || !formal.trim()) return false

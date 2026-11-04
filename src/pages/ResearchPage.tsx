@@ -20,9 +20,9 @@ import {
   Sparkles,
   Activity,
   Target,
-  Github,
   Share2
 } from 'lucide-react'
+import { Github } from '@/components/icons/Github'
 
 type SortOption = 'newest' | 'activity' | 'significance' | 'alphabetical'
 

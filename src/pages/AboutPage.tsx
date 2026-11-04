@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Github, BookOpen, Target, Users, Sparkles } from 'lucide-react'
+import { ArrowLeft, BookOpen, Target, Users, Sparkles } from 'lucide-react'
+import { Github } from '@/components/icons/Github'
 import { Footer } from '@/components/Footer'
 
 export function AboutPage() {
