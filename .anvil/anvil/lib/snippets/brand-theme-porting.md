@@ -249,15 +249,15 @@ Run the two existing gates in order — mechanical first, judgment second:
    rendered-only defects (overflow, label cropping, legibility, density)
    that a `.sty` port can easily introduce.
 
-   > **Palette caveat (important).** Vision dimension v4
-   > `palette_adherence` hardcodes the shipped palettes — the
-   > anvil-deck hexes in `deck-vision.md` and the Okabe-Ito palette in
-   > `slides-vision.md`. A correctly ported brand theme will be flagged
-   > as off-palette unless you **state your brand palette in the
-   > thread's `BRIEF.md`** (e.g. a "Brand palette" line under
-   > constraints/voice) so the critic scores against your tokens
-   > instead of the defaults. De-hardcoding v4 to read the active theme
-   > is a possible follow-up; it is **not** part of this porting path.
+   > **Palette note.** Vision dimension v4 `palette_adherence` scores
+   > against the deck's declared palette — the "Brand palette" line in
+   > the thread's `BRIEF.md`, or the active Marp theme — and falls back
+   > to internal consistency (a small fixed color set used consistently)
+   > when the deck uses no anvil theme and declares none. The anvil
+   > hexes are the reference only for anvil-themed decks. Declaring your
+   > brand palette in `BRIEF.md` (e.g. a "Brand palette" line under
+   > constraints/voice) remains the way to make the critic score against
+   > your tokens.
 
 ## Porting checklist
 

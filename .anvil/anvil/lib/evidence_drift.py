@@ -24,7 +24,7 @@ mutates on-disk state, never affects scoring, `advance`, or critical
 flags, and never reopens the state machine — the same advisory posture as
 the ``NEVER-VISION-CHECKED`` orchestrator note (`anvil/skills/paper/commands/
 paper.md`) and, more directly, the ``pending_sources`` reporting aid
-(`anvil/lib/project_brief.py::resolve_pending_sources`). Unlike the
+(`anvil/lib/project_brief/thread.py::resolve_pending_sources`). Unlike the
 `pending_marker` gate (issue #841/#842), evidence drift is **never**
 wired through `anvil/lib/convergence.py`'s `CriticalFlag` machinery —
 there is nothing to "resolve" here, only something for a reviewer/auditor

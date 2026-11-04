@@ -127,7 +127,10 @@ DEFAULT_VISION_DIMENSIONS: Sequence[VisionDimension] = (
         description=(
             "Content cut off below the slide bottom; rendered-bbox-based, "
             "not source-based. 5 = nothing clipped; 0 = critical content "
-            "(numbers, names, citations) lost beneath the safe area."
+            "(numbers, names, citations) lost beneath the safe area. "
+            "Anchors: 3 = one non-critical element (footer, caption) "
+            "partly clipped; 1 = a body line or table row is cut off on "
+            "two or more slides."
         ),
     ),
     VisionDimension(
@@ -136,7 +139,10 @@ DEFAULT_VISION_DIMENSIONS: Sequence[VisionDimension] = (
         description=(
             "Chart axis labels, legends, annotations truncated by the "
             "slide or figure border. 5 = all labels fully visible; 0 = "
-            "key data labels unreadable."
+            "key data labels unreadable. Anchors: 3 = one or two "
+            "secondary labels (e.g. a legend entry) touch or cross the "
+            "border; 1 = three or more labels truncated, or any axis "
+            "title cut off."
         ),
     ),
     VisionDimension(
@@ -145,17 +151,29 @@ DEFAULT_VISION_DIMENSIONS: Sequence[VisionDimension] = (
         description=(
             "Font size of chart axis labels and tick marks vs projection "
             "scale. 5 = readable at the back of the conference room; 0 = "
-            "illegible at 50% zoom on the rendered PNG."
+            "illegible at 50% zoom on the rendered PNG. Anchors: 3 = "
+            "tick labels legible at 100% zoom but not at 50%; 1 = tick "
+            "labels need zoom beyond 100% to read, or overlap each "
+            "other."
         ),
     ),
     VisionDimension(
         name="palette_adherence",
         max=5,
         description=(
-            "Figures match the Marp theme palette (e.g. deck palette "
-            "#1f4e7a / #1a1a1a / #6b6b6b / #d6d6d6 / #f5f5f5 per #23). "
-            "5 = consistent; 0 = default matplotlib palette overrides "
-            "the theme."
+            "Figures use the deck's own palette. Score against the declared "
+            "palette (the BRIEF.md \"Brand palette\" line, or the active "
+            "Marp theme) when one exists; the anvil deck palette "
+            "#1f4e7a / #1a1a1a / #6b6b6b / #d6d6d6 / #f5f5f5 (per #23) is "
+            "the reference only for anvil-themed decks. When the deck "
+            "uses no anvil theme and declares no palette, score internal "
+            "consistency instead: a small fixed set of colors used the "
+            "same way on every slide, with no stray default-matplotlib "
+            "colors. 5 = consistent; 0 = default matplotlib palette "
+            "overrides the theme. Anchors: 3 = one off-palette color "
+            "appears on one or two slides; 1 = three or more "
+            "off-palette colors, or the same series changes color "
+            "between slides."
         ),
     ),
     VisionDimension(
@@ -165,7 +183,10 @@ DEFAULT_VISION_DIMENSIONS: Sequence[VisionDimension] = (
             "Italic letters adjacent to dollar signs (direct catch for "
             "#23); LaTeX source rendered literally; mathtext renders "
             "instead of intended literal text. 5 = no artifacts; 0 = "
-            "$11B rendered as italic 11B (semantic meaning lost)."
+            "$11B rendered as italic 11B (semantic meaning lost). Anchors: "
+            "3 = one cosmetic artifact (e.g. a stray backslash) where "
+            "meaning is intact; 1 = two or more artifacts, or one that "
+            "changes a number's reading."
         ),
     ),
     VisionDimension(
@@ -174,7 +195,9 @@ DEFAULT_VISION_DIMENSIONS: Sequence[VisionDimension] = (
         description=(
             "Walls of text exceeding ~30 words per slide / ~6 bullets "
             "(IC-grade decks). 5 = disciplined throughout; 0 = wall of "
-            "text on most slides."
+            "text on most slides. Anchors: 3 = one or two slides exceed "
+            "~30 words or ~6 bullets; 1 = more than a third of slides "
+            "exceed ~30 words or ~6 bullets."
         ),
     ),
 )

@@ -20,16 +20,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 BLAME_SCRIPT="$SCRIPTS_DIR/blame-issue.sh"
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
-
-TESTS_RUN=0
-TESTS_PASSED=0
-TESTS_FAILED=0
-
-pass() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1)); echo -e "  ${GREEN}PASS${NC}: $1"; }
-fail() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1)); echo -e "  ${RED}FAIL${NC}: $1"; }
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/assert.sh"
 
 assert_contains() {
     local needle="$1" haystack="$2" msg="$3"
@@ -66,6 +57,8 @@ trap cleanup EXIT
 
 export GIT_AUTHOR_NAME="test" GIT_AUTHOR_EMAIL="test@example.com"
 export GIT_COMMITTER_NAME="test" GIT_COMMITTER_EMAIL="test@example.com"
+# gh-cached must not replay one fixture's answer into the next (#9953).
+export GH_CACHE_DISABLE=1
 
 # ---- Fake `gh` stub ---------------------------------------------------------
 # Answers exactly the invocations blame-issue.sh makes, keyed off a synthetic

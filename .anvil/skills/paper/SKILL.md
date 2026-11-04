@@ -48,6 +48,11 @@ A **paper thread** is a single research paper authored across one or more revisi
   <thread>.1.audience/            Audience-fit pre-flight sidecar (deterministic, advisory — issue #1322)
     _review.json                  kind: tool_evidence; governance-vocabulary / private-locator /
                                   unlinked-artifact-path findings (major in body, minor in appendix)
+  <thread>.1.readerflow/          Reader-flow lens sidecar (fresh-context subagent, advisory — issue #1397)
+    _review.json                  kind: judgment, critic_id: "readerflow"; findings tagged by defect
+                                  class 1-7, 9 (+ class 8 when a reworded-caveats list is supplied); class 1 includes the referent/baseline sub-rule (#1432)
+    glossary.md                   term | first use | definition site | variants
+    _meta.json                    scorecard_kind declared (canonical co-write)
   <thread>.1.operator/            (optional, human) Operator read-through after READY (issue #1322)
     _review.json                  kind: judgment, critic_id: "operator", verdict: BLOCK; its critical
                                   flags make paper-revise produce one more version
@@ -113,7 +118,7 @@ The per-thread config supports the following optional fields:
 |---|---|---|---|
 | `max_iterations` | int | 4 | Iteration cap (see above). |
 | `venue` | string | none | Target venue slug. When set, `paper-review` also scores the paper against the matching venue YAML and writes `_review.venue.json` alongside `_review.json`. Advisory only; does not change the /44 gate. See "Venue overlays" below. |
-| `public_repo_url` | string | none | Public repository that hosts the paper's artifacts (issue #1322). `paper-review` step 4i and `paper-audit` step 6c use it to suggest the concrete `\href` for a bare repo-relative artifact path. With it declared (here, or in the thread `BRIEF.md` frontmatter `public_repo_url`), an unlinked path in an artifacts/availability section is an audit critical flag. Without a declaration the scanner may *derive* a candidate from the first GitHub/GitLab/Codeberg/Bitbucket/Zenodo/DOI/OSF/figshare/Hugging Face link inside the paper's artifacts/availability section (a dependency cited elsewhere, e.g. the Mathlib GitHub in the introduction, is never used). A derived URL is reported with `public_repo_url_source: "derived"` and is not trusted: unlinked paths stay a non-critical audit note that names the candidate and asks the author to declare it, and no concrete `\href` is templated. |
+| `public_repo_url` | string | none | Public repository that hosts the paper's artifacts (issue #1322). `paper-review` step 4i and `paper-audit` step 6c use it to suggest the concrete `\href` for a bare repo-relative artifact path. With it declared (here, or in the thread `BRIEF.md` frontmatter `public_repo_url`), an unlinked path in an artifacts/availability section is an audit critical flag. Without a declaration the scanner may *derive* a candidate from a GitHub/GitLab/Codeberg/Bitbucket/Zenodo/DOI/OSF/figshare/Hugging Face link inside the paper's artifacts/availability section (a dependency cited elsewhere, e.g. the Mathlib GitHub in the introduction, is never used). Inside that section a link is only offered when the sentence around it names it as the paper's own ("our code", "the repository for this paper") or when the section holds exactly one repository and does not introduce it as a dependency ("requires `<library>`, `\url{...}`"); an ambiguous or dependency-only section yields no candidate at all (issue #1329). A derived URL is reported with `public_repo_url_source: "derived"` and is not trusted: unlinked paths stay a non-critical audit note that names the candidate and asks the author to declare it, and no concrete `\href` is templated. |
 | `artifact_verify` | object | none | Optional external-artifact verification gate (issue #663). When declared, `paper-review` runs each command in `commands` (a list of command strings) in the resolved `cwd` (thread-relative or absolute; defaults to the thread root) under a per-command `timeout_s` budget (default 300s). A failed command (non-zero exit or timeout) emits an `artifact_verify_*` critical flag that blocks the review. When absent, behavior is byte-identical to today. See "External-artifact verification" below. |
 
 ### Venue overlays (advisory)
@@ -160,7 +165,7 @@ The contract mirrors the venue-overlay discovery/fail-open shape exactly (fail-o
 - **Declared and resolvable**: each command in `commands` runs via `subprocess.run` in the resolved `cwd` (thread-relative or absolute; defaults to the thread root) under `timeout_s` (default 300s), subprocess-only with no new Python dependency. ALL commands run — an earlier failure does not short-circuit the rest — so a reviewer sees every failing step in one pass. A failed command (non-zero exit OR timeout) emits a `CriticalFlag` with `type` prefix `artifact_verify_<n>` (`<n>` is the 0-based command index) that routes through the unchanged `anvil/lib/critics.py::compute_verdict` path and forces `Verdict.BLOCK` — no aggregator or schema change.
 - **Declared but unresolvable** (missing / non-directory `cwd`, or a command whose executable is not launchable): the gate **fails open** — a one-line stdout warning + a `major` finding in `comments.md`, and the review proceeds. A broken declaration is a defect worth surfacing, but it must not be indistinguishable from "the reviewer never checked" — so it does NOT block and does NOT silently pass as "verified".
 
-The gate's raw stdout/stderr capture is written to `<thread>.{N}.review/_artifact_verify.json` (mirroring the render gate's `_gate.json`) for CI/operator inspection — a conditional output, NOT in the review's required-files manifest. The skill-local implementation lives at `anvil/skills/paper/lib/artifact_verify.py` (`discover_artifact_verify`, `verify`, `ArtifactVerifyResult.to_review()`/`to_critical_flags()`), modeled on `anvil/lib/render_gate.py`'s `GateResult` shape but scoped to paper per the "wait for the second consumer before generalizing" rule.
+The gate's raw stdout/stderr capture is written to `<thread>.{N}.review/_artifact_verify.json` (mirroring the render gate's `_gate.json`) for CI/operator inspection — a conditional output, NOT in the review's required-files manifest. The skill-local implementation lives at `anvil/skills/paper/lib/artifact_verify.py` (`discover_artifact_verify`, `verify`, `ArtifactVerifyResult.to_review()`/`to_critical_flags()`), modeled on `anvil/lib/render_gate/`'s `GateResult` shape but scoped to paper per the "wait for the second consumer before generalizing" rule.
 
 ### Area Chair pattern (AI-Scientist) maps to existing N-critics-one-reviser
 
@@ -222,7 +227,7 @@ See `rubric.md` for the 9-dimension /44 scoring schema (paper-tuned weights, rig
 
 ### Opt-in web search (`web_search: true`) — issue #424
 
-By default this skill runs **no autonomous web search** — the anti-hallucination posture above. A consumer can opt a thread in by setting `web_search: true` (a YAML boolean, default `false`) in the per-thread `<thread>/BRIEF.md` frontmatter; in a post-#295 project layout the equivalent carrier is the `web_search` key on the thread's `documents:` entry in the project `BRIEF.md` (schema-validated as a strict bool by `anvil/lib/project_brief.py`). When the knob is absent or `false`, `paper-litsearch` and `paper-review` are byte-identical to their default no-web behavior.
+By default this skill runs **no autonomous web search** — the anti-hallucination posture above. A consumer can opt a thread in by setting `web_search: true` (a YAML boolean, default `false`) in the per-thread `<thread>/BRIEF.md` frontmatter; in a post-#295 project layout the equivalent carrier is the `web_search` key on the thread's `documents:` entry in the project `BRIEF.md` (schema-validated as a strict bool by `anvil/lib/project_brief/`). When the knob is absent or `false`, `paper-litsearch` and `paper-review` are byte-identical to their default no-web behavior.
 
 When enabled:
 
@@ -245,7 +250,7 @@ See `commands/paper-litsearch.md` § "Opt-in web search" and `commands/paper-rev
 
 The auditor (`paper-audit`) may re-run scripts in `figures/src/` to verify rendered outputs are current; this verification policy is documented in `paper-audit.md`.
 
-**`paper-review` render-gate hook (deterministic pre-flight).** `paper-review` runs a deterministic render-gate pre-flight via `anvil/lib/render_gate.py` (the LaTeX-skill analog of `marp_lint` for the deck/slides skills). The gate checks page count (`page_cap=None` — paper length is venue-dependent; consumers can override per-thread via `<thread>/.anvil.json: render_gate.page_cap`), overfull boxes (>5.0pt threshold), compile success, and source-side placeholders (`TODO` / `[TBD]` / `(figure)` / `.MISSING`). The gate runs after `paper-audit` has produced `main.pdf` + `compile-log.txt`; if invoked before audit, the gate fails open with a clear stdout message and the review proceeds without enforcement. On failure, the gate emits a typed `Review(kind=tool_evidence)` with one `CriticalFlag` per failed gate dimension, which the existing `anvil/lib/critics.py::compute_verdict` path treats as `BLOCK`. See `commands/paper-review.md` step 4b.
+**`paper-review` render-gate hook (deterministic pre-flight).** `paper-review` runs a deterministic render-gate pre-flight via `anvil/lib/render_gate/` (the LaTeX-skill analog of `marp_lint` for the deck/slides skills). The gate checks page count (`page_cap=None` — paper length is venue-dependent; consumers can override per-thread via `<thread>/.anvil.json: render_gate.page_cap`), overfull boxes (>5.0pt threshold), compile success, and source-side placeholders (`TODO` / `[TBD]` / `(figure)` / `.MISSING`). The gate runs after `paper-audit` has produced `main.pdf` + `compile-log.txt`; if invoked before audit, the gate fails open with a clear stdout message and the review proceeds without enforcement. On failure, the gate emits a typed `Review(kind=tool_evidence)` with one `CriticalFlag` per failed gate dimension, which the existing `anvil/lib/critics.py::compute_verdict` path treats as `BLOCK`. See `commands/paper-review.md` step 4b.
 
 ## Templates / assets
 
@@ -261,7 +266,7 @@ The auditor (`paper-audit`) may re-run scripts in `figures/src/` to verify rende
 
 `paper` is registered as a **skill-identity** `artifact_type` value in the
 shared project-BRIEF registry
-(`anvil/lib/project_brief.py::REGISTERED_ARTIFACT_TYPES` /
+(`anvil/lib/project_brief/types.py::REGISTERED_ARTIFACT_TYPES` /
 `SKILL_IDENTITY_ARTIFACT_TYPES`; issue #408, following the #386
 pattern for `deck`/`slides`/`proposal`). In a shared project BRIEF, a
 `documents:` entry with `artifact_type: paper` declares that this skill
@@ -299,6 +304,8 @@ Bringing a pre-existing, hand-authored LaTeX paper into the `paper` grammar is a
 **The lifecycle is class-agnostic.** `draft → review → revise → audit → figures`, the /44 rubric scoring, and the `render_gate.py` pre-flight all operate on the compiled artifact — **none of them inspect or require `anvil-paper.cls` specifically**, and no rubric dimension penalizes not using it. Keeping your own class costs you the free styling anvil-paper provides, nothing else.
 
 **Decision guidance:** use `\documentclass[numeric]{anvil-paper}` when only the citation style is the blocker; keep the original `\documentclass` verbatim when the preamble itself collides (theorem environments, package-option clashes, or highly customized macros). See `commands/paper-draft.md` § "Documentclass overrides" for how the brief frontmatter selects the class.
+
+**Migrating from Markdown via pandoc (issue #1328):** when the source manuscript is Markdown, `pandoc -t latex` body output pastes into `main.tex` under `anvil-paper` as-is — including its tables. Pandoc renders *every* pipe table as a `longtable` (not `tabular`), with the caption inside the environment and, for tables wider than the line, `>{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{...}}` column specs. The class loads `booktabs`, `longtable`, `array`, and `calc` **before** `caption` so all of that typesets without a preamble patch; the ordering is load-bearing (`caption` installs its `\LT@` longtable hooks for a `longtable` already loaded when `caption` itself loads, which is why adding `\usepackage{longtable}` to the document preamble instead is not a reliable substitute on older caption/longtable releases). **Do not rewrite pandoc longtables as `tabular`/`tabularx`** — that was the pre-#1328 workaround and it loses page breaking for tables longer than a page. Convert only the body (`pandoc -t latex body.md`), not a `--standalone` document: pandoc's own preamble would re-`\usepackage` these packages and clash with the class's options.
 
 ## Anonymous / double-blind submission
 

@@ -57,18 +57,14 @@ WORKTREE_SH="$SCRIPTS_DIR/worktree.sh"
 
 # shellcheck source=lib/require-daemon-bin.sh
 source "$SCRIPT_DIR/lib/require-daemon-bin.sh"
-loom_test_require_daemon_bin "$SCRIPTS_DIR" "worktree-upstream"
+# #8195 slice 14 folded this arm's correction into `worktree-branch-reuse`,
+# which calls `worktree_cli::upstream` IN-PROCESS: the shell's
+# `_worktree_upstream_check local-branch` call site is gone, so the subcommand
+# this suite reaches through worktree.sh is the reuse arm, not `worktree-upstream`
+# directly. Both are named so a binary missing either is diagnosed at once.
+loom_test_require_daemon_bin "$SCRIPTS_DIR" "worktree-upstream" "worktree-branch-reuse"
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
-
-TESTS_RUN=0
-TESTS_PASSED=0
-TESTS_FAILED=0
-
-pass() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1)); echo -e "  ${GREEN}PASS${NC}: $1"; }
-fail() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1)); echo -e "  ${RED}FAIL${NC}: $1"; }
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/assert.sh"
 
 # Build a throwaway repo with:
 #   - a local feature/issue-<n> branch (simulating one that already existed

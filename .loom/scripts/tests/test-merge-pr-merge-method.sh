@@ -27,21 +27,21 @@
 #   ./.loom/scripts/tests/test-merge-pr-merge-method.sh
 
 set -euo pipefail
+# shellcheck source=lib/write-scope-fixture.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/write-scope-fixture.sh"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 MERGE_PR="$SCRIPTS_DIR/merge-pr.sh"
+# #9548: merge-pr.sh vets its repo before it validates anything else. The
+# suite runs from a checkout registered as owner/repo (origin, .loom/, push
+# reported to the permission probe), so the real decision admits it. Later
+# cases that set LOOM_DAEMON_BIN or PATH for one invocation keep their stubs.
+WS_FIXTURE_DIR="$(mktemp -d)"
+write_scope_register "$WS_FIXTURE_DIR" owner/repo
+cd "$WS_FIXTURE_DIR"
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
-
-TESTS_RUN=0
-TESTS_PASSED=0
-TESTS_FAILED=0
-
-pass() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1)); echo -e "  ${GREEN}PASS${NC}: $1"; }
-fail() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1)); echo -e "  ${RED}FAIL${NC}: $1"; }
+source "$SCRIPT_DIR/lib/assert.sh"
 
 assert_grep() {
     local pattern="$1" file="$2" msg="$3"
@@ -49,6 +49,15 @@ assert_grep() {
 }
 
 [[ -x "$MERGE_PR" ]] || { echo "ERROR: $MERGE_PR not executable" >&2; exit 1; }
+
+# #8191 slice: Test 1 reads --help, whose text is `loom-daemon merge-pr usage`
+# now. --self-only pins ONLY LOOM_DAEMON_SELF_BIN (the seam --help resolves
+# first), so Tests 5/6's PATH stub and per-invocation LOOM_DAEMON_BIN keep
+# their meaning and no assertion changes. FAILS rather than skips without a
+# binary.
+# shellcheck source=lib/require-daemon-bin.sh
+source "$SCRIPT_DIR/lib/require-daemon-bin.sh"
+loom_test_require_daemon_bin --self-only "$SCRIPTS_DIR" "merge-pr usage"
 
 # --- Test 1: --help mentions --merge-method ---
 echo "Test 1: --help documents --merge-method"
@@ -186,8 +195,12 @@ echo "Test 5: live stubbed-daemon end-to-end (disallowed request hard-blocks)"
 
 STUB_DIR=$(mktemp -d)
 trap 'rm -rf "$STUB_DIR"' EXIT
-cat > "$STUB_DIR/loom-daemon" <<'STUB'
-#!/usr/bin/env bash
+echo '#!/usr/bin/env bash' > "$STUB_DIR/loom-daemon"
+# #9548: `forge may-write` goes to a real daemon when WRITE_SCOPE_DAEMON names
+# one (lib/write-scope-fixture.sh), else answers as a pre-verb binary, so the
+# registered fixture is admitted by a real decision either way.
+write_scope_stub_verb_snippet >> "$STUB_DIR/loom-daemon"
+cat >> "$STUB_DIR/loom-daemon" <<'STUB'
 if [[ "$1" == "forge" && "$2" == "merge-method" ]]; then
   echo "requested merge method 'merge' is not allowed by this repository; allowed method(s): squash" >&2
   exit 1
@@ -197,7 +210,8 @@ STUB
 chmod +x "$STUB_DIR/loom-daemon"
 
 set +e
-out=$(PATH="$STUB_DIR:$PATH" "$MERGE_PR" --merge-method merge 999999999 2>&1)
+# Pin LOOM_DAEMON_BIN to the stub (#9740): exercises the explicit-pin path, so a caller-exported LOOM_DAEMON_BIN cannot bypass the stub.
+out=$(PATH="$STUB_DIR:$PATH" LOOM_DAEMON_BIN="$STUB_DIR/loom-daemon" "$MERGE_PR" --merge-method merge 999999999 2>&1)
 rc=$?
 set -e
 if [[ $rc -ne 0 ]] && [[ "$out" == *"Merge blocked:"* ]] && [[ "$out" == *"allowed method(s): squash"* ]]; then

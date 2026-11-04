@@ -177,7 +177,7 @@ pending_sources:
 ---
 ```
 
-Parsing/validation lives in `anvil/lib/project_brief.py`
+Parsing/validation lives in `anvil/lib/project_brief/`
 (`resolve_pending_sources`, modeled on the `spec_ref`/`code_ref`
 companion-input validators in that same file — NOT a bespoke parser in
 `pending_marker.py`). It is **purely a reporting aid** — declaring a

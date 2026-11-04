@@ -76,6 +76,7 @@ anvil/lib/
     perspective.md             Perspective phase: pre-draft external-substrate sibling.
     provenance.md              Claim provenance: local-corpus ground-truth verification.
     voice_grounding.md         Voice grounding: persona docs as drafting/review substrate.
+    plain_language.md          Plain-language-first: explain before you name. (#1042)
   figures/                     Figure conventions: palette.py + palette.json +
                                 anvil.mplstyle + mermaid-theme.json.
   latex/                       Shared LaTeX substrate for LaTeX-source skills
@@ -134,6 +135,8 @@ anvil/lib/
                                 declared, derived = guessed from a link in the
                                 artifacts section only); only a declared URL
                                 yields a concrete \href fix. (#1322)
+  reader_flow_lint.py          Deterministic define-before-use, variant-name and
+                                roadmap-order lint (advisory, paper step 4k). (#1401)
   cross_thread_refs.py         Cross-thread reference resolver. (#287)
   evidence_check.py            Quoted-evidence verifier for critic scoring
                                 tables. (#464)
@@ -188,6 +191,11 @@ anvil/lib/
                                 multi-file LaTeX threads.
   theme.py                     Per-company theme primitive. (#322)
   vocab_reminder.py            Precision-vocabulary REMINDER tool. (#579)
+  atomic_write.py              Atomic tmp-sibling + os.replace file writes. (#1104)
+  body_resolution.py           Shared body-file resolution for version-dir verifiers. (#1110)
+  frontmatter.py               Shared YAML-frontmatter extraction. (#1075)
+  testing.py                   Shared test-support helpers (tree hashing). (#1125)
+  word_count.py                Canonical essay word count. (#1349)
   examples/
     review-example.json        Fully-populated worked example fixture.
     vision-review-example.json Fully-populated `kind: vision` example. (#30)
@@ -276,7 +284,7 @@ CLI render line.
 ### Smoke tests
 
 Each skill's `tests/` directory contains a `test_marp_smoke.py` that
-asserts the smoke fixture (`tests/fixtures/marp-smoke/deck.md`) parses
+asserts the smoke fixture (`anvil/skills/{deck,slides}/tests/fixtures/marp-smoke/deck.md`) parses
 with the pinned frontmatter and passes the `slide-content-overflow` lint.
 A conditional check renders the fixture via Marp CLI when the binary is on
 `PATH` and skips otherwise — matching the existing skill-test discipline
@@ -707,10 +715,20 @@ The lib reads three on-disk shapes today:
    used by ip-uspto and the deck specialists.
 
 When a critic sibling contains both `_review.json` and a legacy triple,
-the canonical JSON wins and the legacy files are treated as stale (with a
-`DeprecationWarning`). When only a legacy triple exists, the adapter
-parses it into a `Review` and emits a `DeprecationWarning` per call so the
-migration backlog is visible.
+the canonical JSON always wins as the parsed payload. Whether the
+co-present prose is *stale* is a separate question (issue #1327): a
+schema-aware command may write prose **and** `_review.json` together as
+one canonical output — `paper-review` does — so co-presence alone is not
+deprecation. The prose is treated as part of the same canonical write,
+with **no** `DeprecationWarning`, when `_meta.json` declares a
+`scorecard_kind` and `verdict.md`'s `Total:` / `Decision: advance:` lines
+do not contradict the JSON's `total` / `verdict`; otherwise the prose is
+reported as stale. See `snippets/scorecard_kind.md` §"Canonical
+`_review.json` alongside prose" for the full table.
+
+When only a legacy triple exists, the adapter parses it into a `Review`
+and emits a `DeprecationWarning` per call so the migration backlog is
+visible — `scorecard_kind` does not suppress that path.
 
 The adapter is a **bridge**, not a permanent home. Each shipped skill
 should migrate its `<skill>-review` command to write `_review.json` in a

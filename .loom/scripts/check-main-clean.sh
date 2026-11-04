@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # check-main-clean.sh - Backstop guard: fail if the MAIN worktree is dirty.
+# requires-daemon: stashes optional        --quarantine probes `stashes build-trees`; missing/too old -> loud include-everything rescue (#11075)
 #
 # Detects the #2802 / #3513 failure mode where a Builder agent's cwd resets
 # between tool calls and a repo-relative Write/Edit/Bash file operation lands
@@ -35,6 +36,7 @@
 #   ./.loom/scripts/check-main-clean.sh --snapshot FILE  # record main's porcelain state to FILE, exit 0
 #   ./.loom/scripts/check-main-clean.sh --baseline FILE  # check main, ignoring dirt recorded in FILE
 #   ./.loom/scripts/check-main-clean.sh --baseline FILE --quarantine [--label TEXT] [--log FILE]
+#   ./.loom/scripts/check-main-clean.sh --quarantine --allow-no-baseline  # no baseline: stash ALL dirt
 #                                                        # ...and atomically stash any new dirt away
 #   ./.loom/scripts/check-main-clean.sh --list-quarantined [--json]
 #                                                        # report outstanding quarantine stashes
@@ -99,10 +101,15 @@
 #   - Exit 4 (not 3) on a SUCCESSFUL quarantine: main is provably back at the
 #     baseline, so the caller can log and continue rather than hard-blocking. If
 #     the quarantine could not be completed, the exit stays 3 (hard-block).
-#   - `--quarantine` is intended with `--baseline`. It is accepted without one,
-#     in which case ALL non-Loom-owned dirt in main is quarantined (still a
-#     rescue ref, but with no notion of "pre-existing" to protect). It is a
-#     usage error with `--snapshot`.
+#   - `--quarantine` requires a usable `--baseline FILE` (#13535). With no
+#     baseline, or a missing/unreadable one, it REFUSES: nothing is stashed, the
+#     candidate paths are listed, a `"result":"refused_no_baseline"` log line is
+#     written, and it exits 3. Without a baseline there is no notion of
+#     "pre-existing", so stashing everything would move operator-owned untracked
+#     files. `--allow-no-baseline` opts back in to quarantining ALL non-Loom-owned
+#     dirt (the manual builder recipe, where no sweep baseline exists); it can
+#     sweep up operator-owned untracked files. It is a usage error with
+#     `--snapshot`.
 #   - Immediately before the `git stash push`, the offending path set is
 #     RE-DERIVED from a fresh `git status` (#5185). The first snapshot is taken
 #     earlier in the run, and on a busy host the dirt it describes can be
@@ -199,16 +206,8 @@ LOOM_OWNED_PREFIXES=(
     ".loom/sweep-run/"
     # The two per-host credential pools, never committed and never quarantined:
     # the Claude OAuth token pool and the provider-neutral API-key account pool
-    # (#8401). They share one physical line, and the reason is not stylistic:
-    # this file is `contract` in scripts/shell-allowlist.txt, so epic #7810's
-    # shell-budget ratchet counts code LINES and refuses a new one here. Putting
-    # the second entry on the existing line makes that count read +0. Nothing
-    # was removed elsewhere to pay for it, so this is NOT the ratchet's option 2
-    # -- it sidesteps the line count, because the gate offers no path for a pure
-    # data row. Whether that is acceptable is an open policy question raised on
-    # PR #8428; do not treat this line as precedent for adding further entries.
-    # The Rust mirror (loom-daemon/src/main_health_gate/owned_paths.rs) is under
-    # no such budget and lists them one per line.
+    # (#8401). They share one physical line. The Rust mirror
+    # (loom-daemon/src/main_health_gate/owned_paths.rs) lists them one per line.
     ".loom/tokens/" ".loom/api-keys/"
     ".loom/accounts.env"
     ".loom/exit-codes/"
@@ -277,14 +276,16 @@ is_loom_owned() {
 # filter_loom_owned <porcelain-text> -> the same text with Loom-owned transient
 # lines removed. Parses each `git status --porcelain` v1 line (2 status chars +
 # space + path; rename lines carry "old -> new" and are keyed on the new path).
+# Only an R/C status splits on " -> ": a non-rename path containing one always
+# arrives C-quoted (`?? "a -> b"`) and must be evaluated whole (#11149). A
+# QUOTED rename side that itself contains " -> " still mis-splits here — the
+# result is a path that matches nothing Loom-owned, so the line is kept.
 filter_loom_owned() {
     local in="$1" line path out=""
     while IFS= read -r line; do
         [[ -z "$line" ]] && continue
         path="${line:3}"
-        if [[ "$path" == *" -> "* ]]; then
-            path="${path##* -> }"
-        fi
+        if [[ "${line:0:2}" == *[RC]* ]]; then path="${path##* -> }"; fi
         path="${path%\"}"
         path="${path#\"}"
         if is_loom_owned "$path"; then
@@ -341,6 +342,7 @@ json_escape() {
 MODE="plain"
 MODE_FILE=""
 QUARANTINE=0
+ALLOW_NO_BASELINE=0
 LIST_QUARANTINED=0
 LIST_JSON=0
 QUARANTINE_LABEL="${LOOM_QUARANTINE_LABEL:-}"
@@ -375,6 +377,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --quarantine)
             QUARANTINE=1
+            shift
+            ;;
+        --allow-no-baseline)
+            ALLOW_NO_BASELINE=1
             shift
             ;;
         --list-quarantined)
@@ -718,7 +724,14 @@ EOF
 
     local comment_ts comment_err rc=0
     comment_ts=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo "")
-    comment_err=$(gh issue comment "$issue_num" --body "$body" 2>&1) || rc=$?
+    # #9548: vet the repo (forge-helpers.sh in a subshell: it sets -e), and
+    # name it; a refusal is logged as a failed breadcrumb like any other.
+    local comment_repo=""
+    if comment_repo="$(source "$(dirname "${BASH_SOURCE[0]}")/lib/forge-helpers.sh" && loom_write_repo "${LOOM_REPO:-}" 2>&1)"; then
+        comment_err=$(gh issue comment "$issue_num" --repo "$comment_repo" --body "$body" 2>&1) || rc=$?
+    else
+        rc=1; comment_err="loom-daemon forge may-write refused the repo (#9548): $comment_repo"
+    fi
     if [[ "$rc" -eq 0 ]]; then
         emit_quarantine_log "{\"event\":\"main-clean.quarantine-comment\",\"ts\":\"$comment_ts\",\"result\":\"posted\",\"issue\":\"$(json_escape "$issue_num")\",\"host\":\"$(json_escape "$host")\",\"stash_commit\":\"$stash_sha\"}"
     else
@@ -729,18 +742,53 @@ EOF
 
 # Collect the offending (NEW) paths from the porcelain lines. Rename lines
 # ("old -> new") contribute BOTH sides so the rename is undone as a whole.
+# Only an R/C status is split (#11149): `?? "a -> b"` is one quoted path. A
+# QUOTED rename side containing " -> " is still mis-split (pre-existing,
+# contrived); the bogus pathspec matches nothing, so the stash is unaffected.
+#
+# A STAGED deletion (`D  old.txt`) is unstaged here: `git stash push -- <path>`
+# fails ("did not match any files") on a path in neither the index nor the
+# worktree. A rename into a build tree leaves exactly that once its build-tree
+# side is unstaged (#11149); the stash still records the worktree deletion.
 collect_offending_paths() {
     local line path
     while IFS= read -r line; do
         [[ -z "$line" ]] && continue
         path="${line:3}"
-        if [[ "$path" == *" -> "* ]]; then
+        if [[ "${line:0:2}" == "D " ]]; then git -C "$main_root" reset -q -- ":(literal,top)$(unquote_path "$path")" >/dev/null 2>&1 || true; fi
+        if [[ "${line:0:2}" == *[RC]* && "$path" == *" -> "* ]]; then
             OFFENDING_PATHS+=("$(unquote_path "${path%% -> *}")")
             path="${path##* -> }"
         fi
         OFFENDING_PATHS+=("$(unquote_path "$path")")
     done <<< "$effective_status"
 }
+
+# Fail closed (#13535): without a usable baseline nothing distinguishes leaked
+# files from operator-owned pre-existing ones, so refuse unless opted in.
+if [[ -n "$effective_status" && "$QUARANTINE" -eq 1 && "$ALLOW_NO_BASELINE" -ne 1 ]] \
+    && { [[ "$MODE" != "baseline" ]] || [[ ! -r "$MODE_FILE" ]]; }; then
+    ts=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo "")
+    # Side-effect-free candidate list (collect_offending_paths unstages deletions).
+    candidate_paths=()
+    while IFS= read -r line; do
+        [[ -z "$line" ]] && continue
+        candidate_paths+=("$(unquote_path "${line:3}")")
+    done <<< "$effective_status"
+    paths_json=""
+    for p in "${candidate_paths[@]}"; do
+        paths_json+="${paths_json:+,}\"$(json_escape "$p")\""
+    done
+    emit_quarantine_log "{\"event\":\"main-clean.quarantine\",\"ts\":\"$ts\",\"result\":\"refused_no_baseline\",\"label\":\"$(json_escape "$QUARANTINE_LABEL")\",\"main\":\"$(json_escape "$main_root")\",\"reason\":\"no usable --baseline; refusing to stash everything\",\"paths\":[$paths_json],\"count\":${#candidate_paths[@]}}"
+    echo "check-main-clean.sh: REFUSING --quarantine: no usable --baseline (missing, unreadable, or not given)." >&2
+    echo "       Without a baseline, operator-owned untracked files cannot be told apart from leaked ones." >&2
+    echo "       Nothing was stashed. Candidate path(s) in $main_root:" >&2
+    for p in "${candidate_paths[@]}"; do
+        echo "         $p" >&2
+    done
+    echo "       If these are all yours to move (manual builder recipe), re-run with --allow-no-baseline." >&2
+    exit "$EXIT_MAIN_DIRTY"
+fi
 
 if [[ -n "$effective_status" && "$QUARANTINE" -eq 1 ]]; then
     ts=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo "")
@@ -763,7 +811,51 @@ if [[ -n "$effective_status" && "$QUARANTINE" -eq 1 ]]; then
             <(printf '%s\n' "$recheck_status" | sort) \
             | sed '/^$/d')
     fi
-    effective_status="$recheck_status"
+    # Cargo build trees are never rescued (#11075): a directory holding a
+    # content-verified cargo marker (any name, ignored or not) is excluded from
+    # the stash and its porcelain lines are neither offending nor residual
+    # dirt. Discovery lives in `loom-daemon stashes build-trees` (Rust, shared
+    # with the worktree quarantine) — one implementation, not two that drift.
+    #
+    # No usable daemon (missing, or too old to have the subcommand) falls back
+    # to the pre-#11075 include-everything rescue, LOUDLY. Refusing instead
+    # would leave the dirt on main, which is worse than one oversized stash.
+    TAG_DIRS=(); bt_excludes=(); bt_ok=0
+    # shellcheck source=lib/locate-daemon-bin.sh
+    source "$(dirname "${BASH_SOURCE[0]}")/lib/locate-daemon-bin.sh"
+    bt_bin=$(loom_daemon_self_bin_override || LOOM_LOCATE_DAEMON_BIN_QUIET=1 loom_locate_daemon_bin "$main_root" || true)
+    if [[ -n "$bt_bin" ]]; then
+        # A trailing empty record is the success sentinel: it only arrives when
+        # the subcommand exited 0, so a failed or absent subcommand stays bt_ok=0.
+        while IFS= read -r -d '' d; do
+            if [[ -z "$d" ]]; then bt_ok=1; else TAG_DIRS+=("$d"); fi
+        done < <("$bt_bin" stashes build-trees --workspace "$main_root" -z 2>/dev/null && printf '\0')
+    fi
+    if [[ "$bt_ok" -eq 0 ]]; then
+        # A subcommand that printed some directories and then failed must not
+        # leave them excluded: the warning promises include-everything (#11149).
+        TAG_DIRS=()
+        echo "WARNING: check-main-clean.sh: no loom-daemon with \`stashes build-trees\` (${bt_bin:-not found});" >&2
+        echo "         cargo build trees will NOT be excluded and may be stashed into refs/stash (#11075)." >&2
+        echo "         Update loom-daemon (\`loom update\`) to restore the exclusion." >&2
+    fi
+    for d in ${TAG_DIRS[@]+"${TAG_DIRS[@]}"}; do
+        # Exclude pathspecs only limit the worktree diff; unstage staged copies
+        # so the stash's index commit cannot carry them either.
+        git -C "$main_root" reset -q -- ":(literal,top)$d" >/dev/null 2>&1 || true
+        bt_excludes+=(":(exclude,literal,top)$d")
+    done
+    # bt_filter <porcelain> -> the text minus build-tree lines; unchanged when
+    # the daemon is unusable or the call fails (never drop real dirt).
+    bt_filter() {
+        local out
+        if [[ "$bt_ok" -eq 1 ]] && out=$(printf '%s\n' "$1" | "$bt_bin" stashes build-trees --workspace "$main_root" --filter-status 2>/dev/null); then
+            printf '%s' "$out"
+        else
+            printf '%s' "$1"
+        fi
+    }
+    effective_status=$(bt_filter "$recheck_status")
 
     OFFENDING_PATHS=()
     if [[ -n "$effective_status" ]]; then
@@ -804,7 +896,7 @@ if [[ -n "$effective_status" && "$QUARANTINE" -eq 1 ]]; then
     # offending pathspecs so baselined (pre-existing) dirt is left untouched;
     # `:(literal,top)` anchors each at the repo root and disables glob magic so
     # a path containing `*`/`[` cannot over-match.
-    stash_pathspecs=()
+    stash_pathspecs=(${bt_excludes[@]+"${bt_excludes[@]}"})
     for p in "${OFFENDING_PATHS[@]}"; do
         stash_pathspecs+=(":(literal,top)$p")
     done
@@ -830,11 +922,11 @@ if [[ -n "$effective_status" && "$QUARANTINE" -eq 1 ]]; then
     # no new dirt remains. A partial quarantine is exactly the failure mode this
     # mode exists to prevent, so it is reported as a hard failure, not a success.
     post_status=$(filter_loom_owned "$(git -C "$main_root" status --porcelain 2>/dev/null || true)")
-    post_effective="$post_status"
+    post_effective=$(bt_filter "$post_status")
     if [[ "$MODE" == "baseline" && -r "$MODE_FILE" ]]; then
         post_effective=$(comm -13 \
             <(sort "$MODE_FILE") \
-            <(printf '%s\n' "$post_status" | sort) \
+            <(printf '%s\n' "$post_effective" | sort) \
             | sed '/^$/d')
     fi
     if [[ -n "$post_effective" ]]; then
@@ -877,6 +969,12 @@ if [[ -n "$effective_status" && "$QUARANTINE" -eq 1 ]]; then
     echo "       Rescue ref:    stash@{0} = $stash_sha  (\"$stash_msg\")" >&2
     echo "       Nothing was discarded — recover the diff with:" >&2
     echo "         git -C \"$main_root\" stash show -p $stash_sha" >&2
+    echo "       Stashed path(s):" >&2
+    for p in "${OFFENDING_PATHS[@]}"; do
+        echo "         $p" >&2
+    done
+    echo "       Restore them with:" >&2
+    echo "         git -C \"$main_root\" stash pop $stash_sha   # or: stash apply $stash_sha" >&2
     echo "       This entry stays outstanding until someone reconciles it; it is listed by" >&2
     echo "       './.loom/scripts/check-main-clean.sh --list-quarantined' and by 'loom status'." >&2
     exit "$EXIT_QUARANTINED"

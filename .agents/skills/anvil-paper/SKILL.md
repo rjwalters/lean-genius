@@ -1,6 +1,6 @@
 ---
 name: anvil-paper
-description: Anvil skill registration for 'paper' (canonical body at .anvil/skills/paper/SKILL.md)
+description: "Draft, review, revise, and audit research papers in LaTeX (compilable PDF) using the standard anvil lifecycle plus an optional read-only literature-search critic."
 ---
 
 See `.anvil/skills/paper/SKILL.md` for the canonical skill body.

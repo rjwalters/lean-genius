@@ -544,7 +544,7 @@ def check_auto_shrink_deps_available() -> bool:
 # Remediation message surfaced when ``Pillow`` and/or ``numpy`` are absent
 # and the memo render-gate's content-bbox-vs-canvas check (issue #395,
 # check 3 of the ``memo_image_dimensions`` dimension) is requested. The
-# check lives in ``anvil/lib/render_gate.py`` and is OPTIONAL: the gate
+# check lives in ``anvil/lib/render_gate/`` and is OPTIONAL: the gate
 # graceful-skips the bbox check (with this message as a ``reasons``
 # breadcrumb) while the stdlib header checks (pixel ceiling, aspect ratio,
 # declared-vs-actual) still run.

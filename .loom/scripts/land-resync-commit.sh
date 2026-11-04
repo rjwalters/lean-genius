@@ -255,6 +255,10 @@ if [[ $_DB_RC -ne 0 ]]; then
 fi
 rm -f "$DEFAULT_BRANCH_ERR_FILE"
 
+# (#9106: loom_default_branch refuses an unsafe name at the source, and its
+# failure is already handled above, so the `git fetch origin --
+# "$DEFAULT_BRANCH"` below can never receive one.)
+
 CURRENT_BRANCH="$(git -C "$REPO_ROOT" rev-parse --abbrev-ref HEAD 2>/dev/null || true)"
 if [[ "$CURRENT_BRANCH" != "$DEFAULT_BRANCH" ]]; then
     err "The primary checkout ($REPO_ROOT) is on '$CURRENT_BRANCH', not '$DEFAULT_BRANCH'."
@@ -266,17 +270,40 @@ fi
 # ---------- identify resync-managed dirt; refuse anything else ----------
 #
 # Mirrors the path-prefix allowlist resync-installed.sh's own
-# suggest_commit_if_resync_only_dirt() uses for its printed suggestion, so
-# this script never stages (and commits) an unrelated -- possibly operator --
+# collect_resync_dirt() uses for its printed suggestion (its
+# _is_loom_pure_copy_surface_path() plus the single-file cases), so this
+# script never stages (and commits) an unrelated -- possibly operator --
 # change under the "chore: resync" message.
-
+#
+# #9345: `.agents/skills/*` and `.gitignore` were MISSING here while
+# resync-installed.sh wrote both on every run -- `.agents/skills/*` via
+# resync_agent_skills() (#8673) and `.gitignore` via the loom-daemon-managed
+# block refresh (#4280). The result was that this script refused its own
+# sibling's ordinary output as "non-resync dirt" on every repo those surfaces
+# existed in, which is exactly the ad hoc hand-committing it was written
+# (#6646) to eliminate. `.loom/biome.jsonc` / `.claude/biome.jsonc` (#6031)
+# had drifted out the same way.
+#
+# The two lists cannot silently re-diverge: init/resync_surface_parity_tests.rs
+# fails CI when a surface appears in one script's allowlist and not the other's.
+#
+# `.gitignore` is the one entry that is not purely Loom-owned (a consumer's own
+# rules live in it alongside the managed block), so landing it can carry an
+# unrelated .gitignore edit into the resync commit. That is accepted
+# deliberately: the alternative -- refusing every resync that refreshed the
+# managed block, i.e. all of them -- strands the block, and the block is where
+# the credential ignore rules live, so stranding it is itself a security
+# regression (#9046). The credential-class check below runs BEFORE this
+# allowlist and is unaffected either way. `.github/labels.yml` (#11033) is
+# co-owned the same way and accepted for the same reason: resync refreshes its
+# Loom-managed label block, and a stranded block keeps declaring retired labels.
 is_resync_surface_path() {
     case "$1" in
         .loom/hooks/* | .loom/scripts/* | .loom/roles/* | .loom/docs/* | \
-            .loom/bin/* | .loom/runtimes/* | \
-            .claude/commands/loom/* | .claude/README.md | \
-            .github/CONFIGURATION.md | \
-            .loom/install-metadata.json | .loom/CLAUDE.md | .gitattributes)
+            .loom/bin/* | .loom/runtimes/* | .agents/skills/* | \
+            .claude/commands/loom/* | .claude/agents/* | .claude/README.md | .claude/biome.jsonc | \
+            .github/CONFIGURATION.md | .github/labels.yml | .loom/biome.jsonc | .loom/CLAUDE.md | \
+            .loom/install-metadata.json | .gitattributes | .gitignore)
             return 0
             ;;
         *)
@@ -487,7 +514,10 @@ if [[ "${#RESYNC_PATHS[@]}" -gt 0 ]]; then
     fi
     require_identity
     git -C "$REPO_ROOT" add -- "${RESYNC_PATHS[@]}"
-    if ! git -C "$REPO_ROOT" commit --quiet -m "$RESYNC_COMMIT_SUBJECT"; then
+    # GIT_REFLOG_ACTION is inline (not exported, so it never reaches
+    # create-pr.sh): git writes `loom:resync: ...`, which the daemon's
+    # out-of-band checkout detector (#11566) recognises as Loom's own.
+    if ! GIT_REFLOG_ACTION="loom:resync" git -C "$REPO_ROOT" commit --quiet -m "$RESYNC_COMMIT_SUBJECT"; then
         err "git commit failed."
         exit "$EXIT_ERROR"
     fi
@@ -507,7 +537,7 @@ fi
 FETCH_ERR_FILE="$(mktemp)"
 PUSH_ERR_FILE="$(mktemp)"
 trap 'rm -f "$FETCH_ERR_FILE" "$PUSH_ERR_FILE"' EXIT
-if ! git -C "$REPO_ROOT" fetch --quiet origin "$DEFAULT_BRANCH" 2>"$FETCH_ERR_FILE"; then
+if ! git -C "$REPO_ROOT" fetch --quiet origin -- "$DEFAULT_BRANCH" 2>"$FETCH_ERR_FILE"; then
     warn "Could not fetch origin/$DEFAULT_BRANCH: $(cat "$FETCH_ERR_FILE")"
     if [[ -n "$RESYNC_SHA" ]]; then
         warn "  The resync commit ($RESYNC_SHA) stays LOCAL, uncommitted-to-origin."
@@ -663,7 +693,7 @@ BRANCH="$FALLBACK_BRANCH"
 # CURRENT tip of the side branch (not a stale local notion of it). If origin
 # has no such branch the lease must expect "absent", so drop any stale
 # tracking ref too.
-if ! git -C "$REPO_ROOT" fetch --quiet origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" 2>/dev/null; then
+if ! git -C "$REPO_ROOT" fetch --quiet origin -- "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" 2>/dev/null; then
     git -C "$REPO_ROOT" update-ref -d "refs/remotes/origin/$BRANCH" 2>/dev/null || true
 fi
 LEASE_SHA="$(git -C "$REPO_ROOT" rev-parse --verify --quiet "refs/remotes/origin/$BRANCH" 2>/dev/null || true)"
@@ -676,11 +706,13 @@ fi
 # The commit is now safely on the pushed side branch — reset the primary
 # checkout's default branch back to origin's tip so it never sits diverged,
 # waiting on a PR that may take a while to merge. This is the ONE place this
-# script writes a `reset: moving to origin/<default>` reflog entry on the
-# default branch (documented in troubleshooting.md's forensic recipe): it
-# always directly follows the `commit: chore: resync installed Loom surfaces`
-# entry, and the commit it moves away from is on origin/<side branch>.
-git -C "$REPO_ROOT" reset --hard "origin/$DEFAULT_BRANCH"
+# script writes a reset entry on the default branch (`loom:resync: updating
+# HEAD` -- git drops the `moving to <rev>` text when GIT_REFLOG_ACTION is set;
+# documented in troubleshooting.md's forensic recipe): it always directly
+# follows the `loom:resync: chore: resync installed Loom surfaces` commit
+# entry, and the commit it moves away from is on origin/<side branch>. The
+# inline GIT_REFLOG_ACTION tags both, so #11566's classifier skips them.
+GIT_REFLOG_ACTION="loom:resync" git -C "$REPO_ROOT" reset --hard "origin/$DEFAULT_BRANCH"
 
 PR_BODY="Automated resync of installed Loom surfaces from \`defaults/\`.
 

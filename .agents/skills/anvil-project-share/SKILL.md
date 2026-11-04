@@ -1,6 +1,6 @@
 ---
 name: anvil-project-share
-description: Anvil skill registration for 'project-share' (canonical body at .anvil/skills/project-share/SKILL.md)
+description: "Per-project SHARE/ export — collect each thread's latest source + rendered PDF + assets + refs and the shared research pool into one shareable, provenance-stamped folder (optionally zipped)."
 ---
 
 See `.anvil/skills/project-share/SKILL.md` for the canonical skill body.

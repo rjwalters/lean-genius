@@ -360,6 +360,8 @@ __all__ = [
     "commit_replace",
     "abort_replace",
     "recover_interrupted_replace",
+    "supersede_sidecar",
+    "prior_path_for",
     "copy_bytes",
     "staging_path_for",
     "backup_path_for",
@@ -1536,6 +1538,51 @@ def recover_interrupted_replace(final_dir: Path) -> bool:
 # ---------------------------------------------------------------------------
 
 
+def prior_path_for(final_dir: Path, k: int) -> Path:
+    """Return the archive path :func:`supersede_sidecar` uses for index ``k``.
+
+    ``output/acme-seed.3.review`` + ``k=1`` ->
+    ``output/acme-seed.3.review.prior-1``. A sibling in the same parent, so
+    the archive rename is atomic. Its tag after ``<thread>.{N}.`` contains a
+    ``.`` (``review.prior-1``), which ``critics.discover_critics`` skips, so an
+    archived review is never aggregated as a live critic sibling.
+    """
+    final_dir = Path(final_dir)
+    return final_dir.parent / f"{final_dir.name}.prior-{k}"
+
+
+def supersede_sidecar(final_dir: Path) -> Path:
+    """Archive a completed sidecar so a fresh one can be staged (issue #1450).
+
+    Atomically renames ``final_dir`` to ``<final_dir>.prior-<k>`` where ``k``
+    is one more than the highest existing archive index (``1`` for the first).
+    Nothing is modified or deleted, so each written review stays immutable
+    (#350) and readable; the ordinary ``stage`` / ``commit`` flow then writes
+    a new ``final_dir``. Use when reviewer inputs changed after the review
+    landed (sibling critics ran later, BRIEF ``rubric_overrides`` changed).
+
+    Raises
+    ------
+    FileNotFoundError
+        If ``final_dir`` does not exist (nothing to supersede).
+    """
+    final_dir = Path(final_dir)
+    if not final_dir.is_dir():
+        raise FileNotFoundError(
+            f"supersede_sidecar: {final_dir!s} does not exist; nothing to "
+            f"supersede (use `stage` to write the first one)."
+        )
+    prefix = f"{final_dir.name}.prior-"
+    highest = 0
+    for sibling in final_dir.parent.iterdir():
+        suffix = sibling.name[len(prefix):]
+        if sibling.name.startswith(prefix) and suffix.isdigit():
+            highest = max(highest, int(suffix))
+    target = prior_path_for(final_dir, highest + 1)
+    final_dir.rename(target)
+    return target
+
+
 def write_critic_review_dir(
     version_dir: Path,
     suffix: str,
@@ -1631,10 +1678,10 @@ def write_critic_review_dir(
         their ``exist_ok=True`` overwrite-in-place). Under
         ``atomic=True`` this also sweeps any leftover staging dir from a
         prior interrupted run (:func:`cleanup_one_staging`, issue #376)
-        before staging fresh. When ``False``, a pre-existing sibling dir
-        is left alone under ``atomic=False`` (mirroring
-        ``exist_ok=False``) or raises :class:`FileExistsError` under
-        ``atomic=True`` (:func:`staged_sidecar`'s own immutability
+        before staging fresh. When ``False``, a rerun over a pre-existing
+        sibling dir raises :class:`FileExistsError` under both
+        ``atomic=False`` (mirroring plain ``mkdir(..., exist_ok=False)``)
+        and ``atomic=True`` (:func:`staged_sidecar`'s own immutability
         default) — one-shot semantics for a caller that wants a rerun to
         be a hard error rather than a silent overwrite.
 
@@ -1816,6 +1863,20 @@ def _build_cli_parser():
         help="The intended final sidecar path, e.g. output/thread.3.review",
     )
 
+    p_supersede = sub.add_parser(
+        "supersede",
+        help=(
+            "Archive a completed FINAL_DIR to FINAL_DIR.prior-<k> (next free "
+            "k, from 1) so a fresh one can be staged with `stage`/`commit` "
+            "(issue #1450). Nothing is modified or deleted; the archive is "
+            "ignored by critic discovery. Exit 3 if FINAL_DIR is absent."
+        ),
+    )
+    p_supersede.add_argument(
+        "final_dir",
+        help="The completed sidecar path to archive, e.g. output/thread.3.review",
+    )
+
     p_copy = sub.add_parser(
         "copy",
         help=(
@@ -1883,6 +1944,10 @@ def main(argv: "Sequence[str] | None" = None) -> int:
       Restores FINAL_DIR when a prior ``replace``'s session died before
       ``commit-replace``; drops a provably-redundant backup when the swap
       already landed; leaves an ambiguous backup alone. Exit ``0`` always.
+    - ``supersede FINAL_DIR`` — archive FINAL_DIR to
+      ``FINAL_DIR.prior-<k>`` (issue #1450) so ``stage`` can write a fresh
+      one. Exit ``0`` on success (prints the archive path); ``3`` if
+      FINAL_DIR is absent.
     - ``copy SRC DST [--force] [--no-verify]`` — byte-safe copy of a file
       or directory tree (issue #1017), staged then atomically renamed into
       DST, with post-copy byte-identity verification by default. Exit
@@ -1984,6 +2049,15 @@ def main(argv: "Sequence[str] | None" = None) -> int:
             )
         else:
             print(f"nothing to recover for {final_dir}")
+        return 0
+
+    if args.subcommand == "supersede":
+        try:
+            archived = supersede_sidecar(final_dir)
+        except FileNotFoundError as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 3
+        print(str(archived))
         return 0
 
     if args.subcommand == "copy":

@@ -52,15 +52,7 @@ export LOOM_SWEEP_CPU_QUOTA=0
 # host.docker.internal, which the stub claude reaches with curl --connect-to.
 export LOOM_EGRESS_PROXY_BIND=127.0.0.1
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
-TESTS_RUN=0
-TESTS_PASSED=0
-TESTS_FAILED=0
-
-pass() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1)); echo -e "  ${GREEN}PASS${NC}: $1"; }
-fail() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1)); echo -e "  ${RED}FAIL${NC}: $1"; }
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/assert.sh"
 
 assert_eq() {
     if [[ "$1" == "$2" ]]; then pass "$3"; else fail "$3"; echo "    Expected: '$1'"; echo "    Actual:   '$2'"; fi
@@ -91,6 +83,7 @@ trap 'rm -rf "$WS" "$STUBS"' EXIT
 cat > "$STUBS/claude" <<STUB
 #!/usr/bin/env bash
 env > "$STUBS/claude-env.txt"
+printf '%s\n' "\$*" > "$STUBS/claude-args.txt"
 printf '%s\n%s\n' "\${CLAUDE_CODE_OAUTH_TOKEN:-}" "\${ANTHROPIC_BASE_URL:-}" > "$STUBS/claude-seen.txt"
 : > "$STUBS/claude-curl.txt"
 if [[ -n "\${ANTHROPIC_BASE_URL:-}" ]] && command -v curl >/dev/null 2>&1; then
@@ -127,16 +120,19 @@ chmod +x "$STUBS/docker"
 
 # Run spawn-claude.sh with a clean slate for every variable that decides the
 # path under test; extra KEY=VALUE pairs come in as arguments.
+# SPAWN_ARGS is the script's own argv: `-p ping` unless a case sets it.
+SPAWN_ARGS=(-p "ping")
 run_spawn() {
     : > "$DOCKER_LOG"
-    rm -f "$STUBS/claude-env.txt" "$STUBS/claude-seen.txt" "$STUBS/claude-curl.txt"
+    rm -f "$STUBS/claude-env.txt" "$STUBS/claude-seen.txt" "$STUBS/claude-curl.txt" "$STUBS/claude-args.txt"
     env -u CLAUDE_CODE_OAUTH_TOKEN -u LOOM_SWEEP_CREDENTIAL_PROXY \
         -u LOOM_SWEEP_CONTAINERIZED -u LOOM_SPAWN_CONTAINERIZED -u LOOM_SPAWN_NO_EXPORT \
         -u ANTHROPIC_BASE_URL -u LOOM_TOKEN_NAME \
+        -u LOOM_RESUME_SESSION_ID -u LOOM_RESUME_PROMPT -u LOOM_CLAUDE_SESSION_ID \
         LOOM_WORKSPACE="$WS" LOOM_DAEMON_BIN="$DAEMON_BIN" \
         LOOM_SHARED_TOKENS_DIR="$STUBS/no-shared-pool" \
         PATH="$STUBS:$PATH" "$@" \
-        "$SCRIPTS_DIR/spawn-claude.sh" -p "ping" 2>&1
+        "$SCRIPTS_DIR/spawn-claude.sh" "${SPAWN_ARGS[@]}" 2>&1
 }
 
 # ------------------------------------------------------------------ AC1/AC2
@@ -225,6 +221,30 @@ out="$(run_spawn || true)"
 assert_contains "# LOOM_DISPATCH_MODE mode=bare-metal" "$out" "containment off: the proxy flag alone does nothing"
 assert_eq "" "$(cat "$DOCKER_LOG")" "containment off: docker is never invoked"
 assert_eq "$REAL_TOKEN" "$(sed -n 1p "$STUBS/claude-seen.txt")" "containment off: uncontained dispatch unchanged"
+
+# ------------------------------------------- roll resume through the proxy
+# #10832: H5 resumes a paused session with LOOM_RESUME_SESSION_ID +
+# LOOM_RESUME_PROMPT and no prompt of its own. On the proxied path the HOST
+# half keeps those variables (it is the one path that does), because the
+# in-container copy of this script is what turns them into `--resume`.
+echo ""
+echo "Proxy ON: a roll resume reaches claude as one --resume, and its identity does not leak (#10832)..."
+echo '{"runtimes": {"containment": {"enabled": true, "claudeCredentialProxy": true}}}' > "$WS/.loom/config.json"
+RESUME_SID="11111111-2222-4333-8444-555555555555"
+SPAWN_ARGS=(-p)
+out="$(run_spawn LOOM_DAEMON_SELF_BIN="$DAEMON_BIN" LOOM_DAEMON_ITEM_ID=4242 \
+    LOOM_RESUME_SESSION_ID="$RESUME_SID" LOOM_RESUME_PROMPT="carry on" || true)"
+SPAWN_ARGS=(-p "ping")
+claude_args="$(cat "$STUBS/claude-args.txt" 2>/dev/null || true)"
+container_env="$(cat "$STUBS/claude-env.txt" 2>/dev/null || true)"
+assert_contains "stub-claude ran" "$out" "the proxied resume reaches claude"
+assert_contains "--resume $RESUME_SID carry on" "$claude_args" "the saved session and the resume prompt are on claude's command line"
+assert_eq "1" "$(grep -o -- '--resume' <<<"$claude_args" | wc -l | tr -d ' ')" "exactly one --resume: the host half and the in-container half do not both add it"
+assert_not_contains "--session-id" "$claude_args" "a resume is never pinned as a new session"
+assert_not_contains "LOOM_RESUME_SESSION_ID=" "$container_env" "the resume id is consumed: the agent's own tool calls do not inherit it"
+assert_not_contains "LOOM_RESUME_PROMPT=" "$container_env" "nor the resume prompt"
+assert_contains "LOOM_DAEMON_ITEM_ID=4242" "$container_env" "the item id stays, so the pause hook is armed in the resumed session"
+assert_contains "loom-placeholder-" "$(sed -n 1p "$STUBS/claude-seen.txt" 2>/dev/null || true)" "the resumed session still sees only a placeholder credential"
 
 # ------------------------------------------------------------ fail closed
 echo ""

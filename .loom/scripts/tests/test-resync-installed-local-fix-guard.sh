@@ -26,25 +26,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HELPERS_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 SCRIPT="$HELPERS_DIR/resync-installed.sh"
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
-
-TESTS_RUN=0
-TESTS_PASSED=0
-TESTS_FAILED=0
-
-pass() {
-    TESTS_RUN=$((TESTS_RUN + 1))
-    TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "  ${GREEN}PASS${NC}: $1"
-}
-
-fail() {
-    TESTS_RUN=$((TESTS_RUN + 1))
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "  ${RED}FAIL${NC}: $1"
-}
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/assert.sh"
 
 WORKDIR="$(mktemp -d "${TMPDIR:-/tmp}/test-resync-localfix.XXXXXX")"
 # shellcheck disable=SC2329  # invoked indirectly via the EXIT trap below
@@ -616,16 +598,85 @@ fi
 # When the installed version cannot be resolved at all (no usable loom_commit,
 # no matching tag -- e.g. a tarball/vendored source tree or a GC'd commit), the
 # subject heuristic remains the fallback and behaviour is exactly as before.
-echo "Test group 11e: an unresolvable installed version falls back to the subject heuristic (#8676)"
+# #9178 supersedes what this group used to assert. When the content rung
+# cannot run (a tarball/vendored source, a GC'd commit, metadata with no
+# loom_version at all) the old fallback was the subject heuristic alone -- and
+# there the ORIGINAL install commit is a permanent false positive: "its last
+# change was not a routine resync" is also true for every file nothing has
+# touched since the installer wrote it. The block then prevented the write, so
+# the file's last-touching commit stayed the install commit, so the next pass
+# blocked again -- ~63 of 75 flagged files fleet-wide, and two repos that could
+# never resync at all. The install-baseline rung answers that structurally
+# (last-touching commit == the commit that added .loom/install-metadata.json),
+# without widening RESYNC_COMMIT_SUBJECT_RE to match free-form install prose.
+echo "Test group 11e: an unresolvable installed version no longer blocks a file untouched since install (#9178)"
 REPO11F="$(make_lineage_fixture repo-lineage-unresolvable 'tooling: install Repo Skills and Loom into the map repo' unresolvable)"
 bump_upstream "$REPO11F"
+# Preconditions: the content rung genuinely cannot resolve here, and the
+# installed copy really is untouched since the install commit -- otherwise
+# this fixture would pass without exercising the install-baseline rung.
+if [[ "$(git -C "$REPO11F" log -1 --format='%s' -- .loom/hooks/guard.sh)" == 'tooling: install Repo Skills and Loom into the map repo' ]] \
+    && [[ "$(git -C "$REPO11F" log -1 --format='%H' -- .loom/hooks/guard.sh)" == "$(git -C "$REPO11F" log --diff-filter=A --format='%H' -- .loom/install-metadata.json | tail -1)" ]]; then
+    pass "(#9178) fixture precondition: the file's last touch IS the install commit, under a non-routine subject"
+else
+    fail "(#9178) fixture precondition unmet: the file was touched after the install commit"
+fi
 OUT="$(cd "$REPO11F" && bash "$SCRIPT" 2>&1)"
 RC=$?
-if [[ $RC -eq 1 ]] && grep -q "BLOCKED" <<<"$OUT" \
-    && [[ "$(cat "$REPO11F/.loom/hooks/guard.sh")" == $'line-one\nline-two\nline-three' ]]; then
-    pass "(#8676) an unresolvable installed version keeps the pre-#8676 (conservative) verdict"
+if [[ $RC -eq 0 ]] && ! grep -q "BLOCKED" <<<"$OUT" \
+    && [[ "$(cat "$REPO11F/.loom/hooks/guard.sh")" == $'line-one\nline-three' ]]; then
+    pass "(#9178) a file untouched since the install commit is updated, not blocked as a phantom local fix"
 else
-    fail "(#8676) the unresolvable-version fallback did not behave conservatively (rc=$RC); out=$OUT"
+    fail "(#9178) a file untouched since the install commit was still blocked (rc=$RC); out=$OUT"
+fi
+
+# The install-baseline rung must not become a blanket amnesty for the
+# unresolvable-version case: a hand edit made AFTER the install is a LATER
+# commit, so the file's last-touching commit is no longer the install commit
+# and the pre-#8676 conservative verdict still stands.
+echo "Test group 11e2: an unresolvable installed version still blocks a POST-install hand edit (#9178)"
+REPO11F2="$(make_lineage_fixture repo-lineage-unresolvable-handedit 'tooling: install Repo Skills and Loom into the map repo' unresolvable)"
+printf 'line-one\nline-two\nline-three\nLOCAL-HOTFIX\n' > "$REPO11F2/.loom/hooks/guard.sh"
+git -C "$REPO11F2" add .loom/hooks/guard.sh >/dev/null 2>&1
+git -C "$REPO11F2" commit -qm "fix(guard): hand-applied hotfix upstream never took" >/dev/null 2>&1
+bump_upstream "$REPO11F2"
+OUT="$(cd "$REPO11F2" && bash "$SCRIPT" 2>&1)"
+RC=$?
+if [[ $RC -eq 1 ]] && grep -q "BLOCKED" <<<"$OUT" \
+    && [[ "$(cat "$REPO11F2/.loom/hooks/guard.sh")" == $'line-one\nline-two\nline-three\nLOCAL-HOTFIX' ]]; then
+    pass "(#9178) a post-install hand edit is still protected when no content proof is available"
+else
+    fail "(#9178) the install-baseline rung weakened protection for a real hand edit (rc=$RC); out=$OUT"
+fi
+if grep -q "Decided from its last-touching commit:" <<<"$OUT" \
+    && grep -q "hand-applied hotfix upstream never took" <<<"$OUT"; then
+    pass "(#9178) the block message names the commit the decision was based on"
+else
+    fail "(#9178) the block message did not name the deciding commit; out=$OUT"
+fi
+
+# The install commit and "a commit that installed Loom AND carried a hand fix"
+# are structurally identical (one commit, it added the file, nothing since), so
+# the install-baseline rung defers to #8098's reading of the SUBJECT: one that
+# starts like routine tooling output and then says something else is a human
+# extending it. Group 9 asserts the end-to-end verdict for three such subjects;
+# this pins that the deference -- not some accident of the fixture -- is what
+# produces it, by checking the precondition the rung would otherwise clear on.
+echo "Test group 11e3: the install-baseline rung defers to #8098's extended-subject shape (#9178)"
+REPO11F3="$(make_fixture)"
+git -C "$REPO11F3" commit --amend -qm 'chore: install Loom v1 and also revert the guard fix' >/dev/null 2>&1
+if [[ "$(git -C "$REPO11F3" log -1 --format='%H' -- .loom/hooks/guard.sh)" == "$(git -C "$REPO11F3" log --diff-filter=A --format='%H' -- .loom/install-metadata.json | tail -1)" ]]; then
+    pass "(#9178) precondition: the file's last touch IS the install baseline, so only the deference can block it"
+else
+    fail "(#9178) precondition unmet: the file was touched after the install baseline"
+fi
+OUT="$(cd "$REPO11F3" && bash "$SCRIPT" 2>&1)"
+RC=$?
+if [[ $RC -eq 1 ]] && grep -q "BLOCKED" <<<"$OUT" \
+    && [[ "$(cat "$REPO11F3/.loom/hooks/guard.sh")" == "OLD" ]]; then
+    pass "(#9178) an extended routine subject on the install commit keeps #8098's protection"
+else
+    fail "(#9178) the install-baseline rung overrode #8098's extended-subject protection (rc=$RC); out=$OUT"
 fi
 
 # The recorded version DRIFTS AHEAD of the installed bytes: restamp_metadata()
@@ -754,6 +805,237 @@ if [[ $RC -eq 2 ]] && grep -q "would update hooks/guard.sh" <<<"$OUT" \
     pass "(#8676) a match late in a long id list is not lost to pipefail+SIGPIPE"
 else
     fail "(#8676) long-history lineage proof was lost -- phantom block (rc=$RC); out=$OUT"
+fi
+
+# --- /repo:update-tools subject and symlinked sources (#12618) ----------------
+#
+# Repo Skills' /repo:update-tools commits Loom updates as
+# `chore(tooling): update loom <old>→<new>`, which matches none of
+# RESYNC_COMMIT_SUBJECT_RE's alternatives (widening it was deliberately
+# declined, #8098/#8676). The content rung is what keeps such files from being
+# read as local fixes; these groups pin that for the two shapes the original
+# report named: that subject, and a symlinked source (defaults/roles/*.md link
+# into .claude/commands/loom/, #5222).
+UPDATE_TOOLS_SUBJECT='chore(tooling): update loom 0.19.1→0.19.2'
+
+echo "Test group 13: a pristine file last committed by /repo:update-tools is not a local fix (#12618)"
+REPO13="$(make_lineage_fixture repo-update-tools "$UPDATE_TOOLS_SUBJECT")"
+bump_upstream "$REPO13"
+if [[ "$(git -C "$REPO13" log -1 --format='%s' -- .loom/hooks/guard.sh)" == "$UPDATE_TOOLS_SUBJECT" ]]; then
+    pass "(#12618) fixture precondition: guard.sh's last subject is the /repo:update-tools subject"
+else
+    fail "(#12618) fixture precondition unmet: last subject is not the /repo:update-tools subject"
+fi
+OUT="$(cd "$REPO13" && bash "$SCRIPT" --dry-run 2>&1)"
+RC=$?
+if [[ $RC -eq 2 ]] && grep -q "would update hooks/guard.sh" <<<"$OUT" \
+    && ! grep -qE 'blocked[[:space:]]+hooks/guard\.sh' <<<"$OUT"; then
+    pass "(#12618) --dry-run previews 'would update', not 'blocked', for the update-tools subject"
+else
+    fail "(#12618) --dry-run blocked a pristine file with the update-tools subject (rc=$RC); out=$OUT"
+fi
+OUT="$(cd "$REPO13" && bash "$SCRIPT" 2>&1)"
+RC=$?
+if [[ $RC -eq 0 ]] && ! grep -q "BLOCKED" <<<"$OUT" \
+    && [[ "$(cat "$REPO13/.loom/hooks/guard.sh")" == $'line-one\nline-three' ]]; then
+    pass "(#12618) the upstream removal applies without --force for the update-tools subject"
+else
+    fail "(#12618) a pristine update-tools file was blocked (rc=$RC); out=$OUT"
+fi
+
+echo "Test group 13b: the same subject on a hand-edited file is still blocked (#12618, #7864)"
+REPO13H="$(make_lineage_fixture repo-update-tools-handedit 'tooling: install Repo Skills and Loom into the map repo')"
+printf 'line-one\nline-two\nline-three\nLOCAL-HOTFIX\n' > "$REPO13H/.loom/hooks/guard.sh"
+git -C "$REPO13H" add .loom/hooks/guard.sh >/dev/null 2>&1
+git -C "$REPO13H" commit -qm "$UPDATE_TOOLS_SUBJECT" >/dev/null 2>&1
+bump_upstream "$REPO13H"
+OUT="$(cd "$REPO13H" && bash "$SCRIPT" 2>&1)"
+RC=$?
+if [[ $RC -eq 1 ]] && grep -q "BLOCKED" <<<"$OUT" \
+    && [[ "$(cat "$REPO13H/.loom/hooks/guard.sh")" == $'line-one\nline-two\nline-three\nLOCAL-HOTFIX' ]]; then
+    pass "(#12618) a hand-edited file under the update-tools subject keeps its protection"
+else
+    fail "(#12618) a hand-edited file under the update-tools subject was overwritten (rc=$RC); out=$OUT"
+fi
+
+# make_symlink_source_fixture <dirname> [handedit]
+#   Like make_lineage_fixture, but the SOURCE file is a symlink, as every
+#   defaults/roles/*.md is: defaults/roles/guard.md -> ../.claude/commands/loom/guard.md.
+#   The installed .loom/roles/guard.md is a real file, pristine at the recorded
+#   loom_commit, last committed under the /repo:update-tools subject (or, with
+#   "handedit", carrying an extra local line committed under that subject).
+make_symlink_source_fixture() {
+    local repo="$WORKDIR/$1" edit="${2:-}"
+    rm -rf "$repo"
+    mkdir -p "$repo/defaults/roles" "$repo/defaults/scripts" "$repo/.claude/commands/loom" \
+             "$repo/.loom/roles" "$repo/.loom/scripts"
+    git -C "$repo" init -q
+    printf 'line-one\nline-two\nline-three\n' > "$repo/.claude/commands/loom/guard.md"
+    ln -s ../../.claude/commands/loom/guard.md "$repo/defaults/roles/guard.md"
+    printf 'line-one\nline-two\nline-three\n' > "$repo/.loom/roles/guard.md"
+    printf '{\n  "version": "9.9.9"\n}\n' > "$repo/package.json"
+    printf '{\n  "loom_version": "0.0.0",\n  "loom_commit": "unknown",\n  "install_date": "2020-01-01",\n  "loom_source": "%s",\n  "installed_files": []\n}\n' \
+        "$repo" > "$repo/.loom/install-metadata.json"
+    git -C "$repo" add -A >/dev/null 2>&1
+    git -C "$repo" commit -qm "$UPDATE_TOOLS_SUBJECT" >/dev/null 2>&1
+    printf '{\n  "loom_version": "0.0.0",\n  "loom_commit": "%s",\n  "install_date": "2020-01-01",\n  "loom_source": "%s",\n  "installed_files": []\n}\n' \
+        "$(git -C "$repo" rev-parse --short HEAD)" "$repo" > "$repo/.loom/install-metadata.json"
+    git -C "$repo" add .loom/install-metadata.json >/dev/null 2>&1
+    git -C "$repo" commit -qm "chore: record install metadata" >/dev/null 2>&1
+    if [[ -n "$edit" ]]; then
+        printf 'line-one\nline-two\nline-three\nLOCAL-HOTFIX\n' > "$repo/.loom/roles/guard.md"
+        git -C "$repo" add .loom/roles/guard.md >/dev/null 2>&1
+        git -C "$repo" commit -qm "$UPDATE_TOOLS_SUBJECT" >/dev/null 2>&1
+    fi
+    # Upstream drops a line from the symlink's TARGET.
+    printf 'line-one\nline-three\n' > "$repo/.claude/commands/loom/guard.md"
+    git -C "$repo" add .claude/commands/loom/guard.md >/dev/null 2>&1
+    git -C "$repo" commit -qm "fix(guard): drop line-two" >/dev/null 2>&1
+    echo "$repo"
+}
+
+echo "Test group 13c: a pristine installed copy of a symlinked source is not a local fix (#12618)"
+REPO13S="$(make_symlink_source_fixture repo-symlink-source)"
+if [[ -L "$REPO13S/defaults/roles/guard.md" ]] \
+    && [[ "$(git -C "$REPO13S" log -1 --format='%s' -- .loom/roles/guard.md)" == "$UPDATE_TOOLS_SUBJECT" ]]; then
+    pass "(#12618) fixture precondition: source is a symlink and the installed copy carries the update-tools subject"
+else
+    fail "(#12618) symlink fixture precondition unmet"
+fi
+OUT="$(cd "$REPO13S" && bash "$SCRIPT" --dry-run 2>&1)"
+RC=$?
+if [[ $RC -eq 2 ]] && grep -q "would update roles/guard.md" <<<"$OUT" \
+    && ! grep -qE 'blocked[[:space:]]+roles/guard\.md' <<<"$OUT"; then
+    pass "(#12618) --dry-run previews 'would update' for a symlinked source"
+else
+    fail "(#12618) --dry-run blocked a pristine symlinked-source file (rc=$RC); out=$OUT"
+fi
+OUT="$(cd "$REPO13S" && bash "$SCRIPT" 2>&1)"
+RC=$?
+if [[ $RC -eq 0 ]] && ! grep -q "BLOCKED" <<<"$OUT" \
+    && [[ "$(cat "$REPO13S/.loom/roles/guard.md")" == $'line-one\nline-three' ]]; then
+    pass "(#12618) the upstream removal applies without --force for a symlinked source"
+else
+    fail "(#12618) a pristine symlinked-source file was blocked (rc=$RC); out=$OUT"
+fi
+
+echo "Test group 13d: a hand-edited installed copy of a symlinked source is still blocked (#12618)"
+REPO13SH="$(make_symlink_source_fixture repo-symlink-source-handedit handedit)"
+OUT="$(cd "$REPO13SH" && bash "$SCRIPT" 2>&1)"
+RC=$?
+if [[ $RC -eq 1 ]] && grep -q "BLOCKED" <<<"$OUT" \
+    && grep -q "LOCAL-HOTFIX" "$REPO13SH/.loom/roles/guard.md"; then
+    pass "(#12618) a hand-edited symlinked-source file keeps its protection"
+else
+    fail "(#12618) a hand-edited symlinked-source file was overwritten (rc=$RC); out=$OUT"
+fi
+
+# --- the daemon's own resync commit is routine lineage (#8920) ---------------
+#
+# loom-daemon's workspace resync commits its refresh as
+# `chore(loom): resync installed Loom to v<version>` (resync_message() in
+# loom-daemon/src/fleet_sync/workspace_resync/git.rs). The subject rung did not
+# know that spelling, so once the daemon had resynced a repo the last touch of
+# every file it wrote read as "not a routine resync" -- and with no content
+# proof available (unresolvable recorded version) and the install-baseline rung
+# out of reach (the last touch is no longer the install commit), each later
+# upstream line removal was blocked as a phantom local fix, on every run.
+# A Rust test beside resync_message() binds the daemon's string to this
+# script's regex; these groups pin the end-to-end verdict.
+
+# make_daemon_resync_fixture <dirname> <resync-subject>
+#   An unresolvable-version install, then upstream grows a line and a resync
+#   commit titled <resync-subject> writes it to the installed copy. That commit
+#   is now guard.sh's last touch, and it is NOT the install baseline.
+make_daemon_resync_fixture() {
+    local repo
+    repo="$(make_lineage_fixture "$1" 'tooling: install Repo Skills and Loom into the map repo' unresolvable)"
+    printf 'line-one\nline-two\nline-three\nline-four\n' > "$repo/defaults/hooks/guard.sh"
+    git -C "$repo" add defaults/hooks/guard.sh >/dev/null 2>&1
+    git -C "$repo" commit -qm "feat(guard): add line-four" >/dev/null 2>&1
+    cp "$repo/defaults/hooks/guard.sh" "$repo/.loom/hooks/guard.sh"
+    git -C "$repo" add .loom/hooks/guard.sh >/dev/null 2>&1
+    git -C "$repo" commit -qm "$2" >/dev/null 2>&1
+    echo "$repo"
+}
+
+echo "Test group 12: the daemon's resync commit is routine lineage when no content proof is available (#8920)"
+N12=0
+for SUBJECT12 in 'chore(loom): resync installed Loom to v0.19.1021' \
+                 'chore(loom): resync installed Loom to v0.19.1021 (#123)'; do
+    N12=$((N12 + 1))
+    REPO12="$(make_daemon_resync_fixture "repo-daemon-resync-$N12" "$SUBJECT12")"
+    bump_upstream "$REPO12"
+    if [[ "$(git -C "$REPO12" log -1 --format='%s' -- .loom/hooks/guard.sh)" == "$SUBJECT12" ]] \
+        && [[ "$(git -C "$REPO12" log -1 --format='%H' -- .loom/hooks/guard.sh)" != "$(git -C "$REPO12" log --diff-filter=A --format='%H' -- .loom/install-metadata.json | tail -1)" ]]; then
+        pass "(#8920) fixture precondition: last touch is '$SUBJECT12', not the install baseline"
+    else
+        fail "(#8920) fixture precondition unmet for '$SUBJECT12'"
+    fi
+    OUT="$(cd "$REPO12" && bash "$SCRIPT" 2>&1)"
+    RC=$?
+    if [[ $RC -eq 0 ]] && ! grep -qi "blocked" <<<"$OUT" \
+        && [[ "$(cat "$REPO12/.loom/hooks/guard.sh")" == $'line-one\nline-three' ]]; then
+        pass "(#8920) a file last written by '$SUBJECT12' is updated, not blocked"
+    else
+        fail "(#8920) a file last written by '$SUBJECT12' was blocked as a local fix (rc=$RC); out=$OUT"
+    fi
+done
+
+# #8098 still holds for the new alternative: a human EXTENDING the daemon's
+# subject (or merely imitating its opening) carried more than routine output.
+echo "Test group 12b: an extended or look-alike daemon subject is still protected (#8920, #8098)"
+for SUBJECT12 in 'chore(loom): resync installed Loom to v1 and also revert the guard fix' \
+                 'chore(loom): resync installed Loom to vendor my guard fix' \
+                 'chore(loom): resync installed Loom to v0.19.1021 (#123) plus a hotfix' \
+                 'fixup! chore(loom): resync installed Loom to v0.19.1021'; do
+    N12=$((N12 + 1))
+    REPO12="$(make_daemon_resync_fixture "repo-daemon-resync-$N12" "$SUBJECT12")"
+    bump_upstream "$REPO12"
+    OUT="$(cd "$REPO12" && bash "$SCRIPT" 2>&1)"
+    RC=$?
+    if [[ $RC -eq 1 ]] && grep -q "BLOCKED" <<<"$OUT" \
+        && [[ "$(cat "$REPO12/.loom/hooks/guard.sh")" == $'line-one\nline-two\nline-three\nline-four' ]]; then
+        pass "(#8920) '$SUBJECT12' is not routine lineage -- still blocked"
+    else
+        fail "(#8920) '$SUBJECT12' was waved through as routine lineage (rc=$RC); out=$OUT"
+    fi
+done
+
+# Same deference on the #9178 install-baseline rung (ROUTINE_SUBJECT_PREFIX_RE):
+# an extended daemon subject on the install commit ITSELF stays protected.
+REPO12B="$(make_fixture)"
+git -C "$REPO12B" commit --amend -qm 'chore(loom): resync installed Loom to v1.2.3 and also revert the guard fix' >/dev/null 2>&1
+OUT="$(cd "$REPO12B" && bash "$SCRIPT" 2>&1)"
+RC=$?
+if [[ $RC -eq 1 ]] && grep -q "BLOCKED" <<<"$OUT" && [[ "$(cat "$REPO12B/.loom/hooks/guard.sh")" == "OLD" ]]; then
+    pass "(#8920) an extended daemon subject on the install commit is not cleared by the install-baseline rung"
+else
+    fail "(#8920) the install-baseline rung cleared an extended daemon subject (rc=$RC); out=$OUT"
+fi
+
+# Recognising the daemon's commit must not shelter what lands AFTER it: a hand
+# edit is a later commit, so the daemon's subject is no longer the last touch.
+echo "Test group 12c: a hand edit committed after a daemon resync is still blocked (#8920)"
+REPO12C="$(make_daemon_resync_fixture repo-daemon-resync-handedit 'chore(loom): resync installed Loom to v0.19.1021')"
+printf 'line-one\nline-two\nline-three\nline-four\nLOCAL-HOTFIX\n' > "$REPO12C/.loom/hooks/guard.sh"
+git -C "$REPO12C" add .loom/hooks/guard.sh >/dev/null 2>&1
+git -C "$REPO12C" commit -qm "fix(guard): hand-applied hotfix upstream never took" >/dev/null 2>&1
+bump_upstream "$REPO12C"
+OUT="$(cd "$REPO12C" && bash "$SCRIPT" 2>&1)"
+RC=$?
+if [[ $RC -eq 1 ]] && grep -q "BLOCKED" <<<"$OUT" && grep -q "hand-applied hotfix upstream never took" <<<"$OUT" \
+    && grep -q "LOCAL-HOTFIX" "$REPO12C/.loom/hooks/guard.sh"; then
+    pass "(#8920) a hand edit after a daemon resync is protected, and the block names its commit"
+else
+    fail "(#8920) a hand edit after a daemon resync was overwritten (rc=$RC); out=$OUT"
+fi
+OUT="$(cd "$REPO12C" && bash "$SCRIPT" --force 2>&1)"
+RC=$?
+if [[ $RC -eq 0 ]] && [[ "$(cat "$REPO12C/.loom/hooks/guard.sh")" == $'line-one\nline-three' ]]; then
+    pass "(#8920) --force still applies the update over that hand edit"
+else
+    fail "(#8920) --force did not apply the update (rc=$RC); out=$OUT"
 fi
 
 # --- summary -----------------------------------------------------------------

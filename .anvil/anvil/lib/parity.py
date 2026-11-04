@@ -121,7 +121,7 @@ absent from the deck, not accidentally dropped. Pre-#914, the lint's
 sharpest channel — the economic promotion — was recommending exactly the
 hard-rule violation the BRIEF forbids.
 
-``ProjectBrief.quarantine`` (``anvil/lib/project_brief.py``) is the fix: a
+``ProjectBrief.quarantine`` (``anvil/lib/project_brief/``) is the fix: a
 project author lists the literal tokens a hard rule forbids porting
 (``quarantine: ["$400M", "20-40%"]``), separate from the free-form
 ``hard_rules`` prose. ``lint_source()`` accepts the resulting token set as

@@ -8,7 +8,7 @@ latent until ``paper-draft`` merged candidate entries into the version's
 ``refs.bib`` and ``bibtex`` failed downstream — harder to trace back to
 its origin at that point, and had to be repaired by hand.
 
-This module is the paper-skill analog of ``anvil/lib/render_gate.py`` /
+This module is the paper-skill analog of ``anvil/lib/render_gate/`` /
 ``anvil/skills/paper/lib/artifact_verify.py``: a cheap, deterministic
 pre-flight gate that catches a structural defect *before* it propagates,
 per the framework's "deterministic pre-flight before judgment" convention

@@ -41,7 +41,7 @@ declare both.
 ## Scope boundary (vs. the AI-authorship byline, #941)
 
 A third, unrelated tier lives beside this one: the opt-in `ai_byline:`
-BRIEF block (`anvil/lib/project_brief.py::AiByline` /
+BRIEF block (`anvil/lib/project_brief/models.py::AiByline` /
 `resolve_ai_byline`, rendered by `anvil/lib/ai_byline.py`). Where this
 contract (`corpus:`) verifies **substance** — does a claim trace to a
 real source passage? — the AI-byline tier discloses **authorship**: a
@@ -70,7 +70,7 @@ per-skill `ai_byline:` integration (e.g. `essay`'s SKILL.md
 
 A project declares its factual ground truth via ONE optional
 **top-level** key in the project `BRIEF.md` frontmatter (parsed by
-`anvil/lib/project_brief.py::_normalize_corpus_dirs`, resolved by
+`anvil/lib/project_brief/fields.py::_normalize_corpus_dirs`, resolved by
 `resolve_corpus_dirs`):
 
 ```yaml
@@ -113,7 +113,7 @@ Activation rules (byte-identical when absent):
   (a `.gitignored` corpus resolves identically to a committed one).
 
 Resolve with
-`anvil/lib/project_brief.py::resolve_corpus_dirs(project_dir,
+`anvil/lib/project_brief/voice.py::resolve_corpus_dirs(project_dir,
 consumer_root=None)` — do not re-implement the walk. It returns one
 `ResolvedCorpusDir` per declared path, in declared order, each carrying
 `declared` / `path` (absolute, `None` when missing) / `missing` /

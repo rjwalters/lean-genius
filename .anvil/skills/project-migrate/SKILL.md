@@ -105,7 +105,7 @@ are consumed by external tooling (marp CLI, xelatex,
 `.anvil.json` → BRIEF merge only.
 
 **Artifact types.** The registered artifact-type enum
-(`anvil/lib/project_brief.py::ArtifactType`) carries skill-identity
+(`anvil/lib/project_brief/types.py::ArtifactType`) carries skill-identity
 values `deck`, `slides`, `proposal` (issue #386), and `paper` (registered as `pub`, issue
 #408) alongside the memo subtypes. The migration infers the type from
 the retained body filename and writes it into the BRIEF `documents:`

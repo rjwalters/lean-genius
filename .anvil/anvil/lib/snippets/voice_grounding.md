@@ -21,7 +21,7 @@ it.
 
 A project declares up to four voice artifacts via ONE optional
 top-level key in the project `BRIEF.md` frontmatter (parsed by
-`anvil/lib/project_brief.py::VoiceDocs`):
+`anvil/lib/project_brief/models.py::VoiceDocs`):
 
 ```yaml
 voice:
@@ -84,7 +84,7 @@ order or the reviewer's calibration, is excluded from
 `resolve_voice_docs` output, and does NOT count toward
 `VoiceDocs.is_empty`: a `rhetoric_rules`-only `voice:` block activates
 only the lint wiring (resolved by
-`anvil/lib/project_brief.py::resolve_rhetoric_rules`, same
+`anvil/lib/project_brief/voice.py::resolve_rhetoric_rules`, same
 project-root-then-consumer-root walk) and never the judgment tier
 below. A declared-but-missing rule file is still forwarded to the gate,
 where the lint emits one warning finding naming the error and runs
@@ -135,7 +135,7 @@ repo-root artifacts shared across every project in the consumer repo,
 but a project ghostwriting in a different persona can shadow them
 locally. The `corpus` value is a glob (`**` supported); a root "hits"
 when the glob matches at least one file; matches are sorted. Use
-`anvil/lib/project_brief.py::resolve_voice_docs(project_dir,
+`anvil/lib/project_brief/voice.py::resolve_voice_docs(project_dir,
 consumer_root=None)` — do not re-implement the walk.
 
 ## Private grounding (`.gitignored` personal docs)
@@ -467,7 +467,7 @@ voice:
   polish creep"). Corpus alone is sufficient to activate the entry.
 
 Resolve with
-`anvil/lib/project_brief.py::resolve_subject_voice_docs(project_dir,
+`anvil/lib/project_brief/voice.py::resolve_subject_voice_docs(project_dir,
 consumer_root=None)` — do not re-implement the walk. It returns one
 `ResolvedSubjectVoice` per declared subject, in declared order, each
 bundling a resolved `corpus` (`ResolvedVoiceDoc`, `kind='subject_corpus'`)

@@ -2,7 +2,7 @@
 
 Phase 1 of parent tracking issue #841, scoped by #842. Fifth member of
 the deterministic-checks family (alongside
-``anvil/lib/numeric_consistency.py``, ``anvil/lib/render_gate.py``,
+``anvil/lib/numeric_consistency.py``, ``anvil/lib/render_gate/``,
 ``anvil/lib/marp_lint.py``, and ``anvil/lib/revise_consistency.py``).
 
 The problem
@@ -139,7 +139,7 @@ source labels, or ``{source, expected_by}`` mappings::
         expected_by: 2026-08-15
     ---
 
-Parsing/validation lives in ``anvil/lib/project_brief.py``
+Parsing/validation lives in ``anvil/lib/project_brief/``
 (:func:`project_brief.resolve_pending_sources`, modeled on the
 ``spec_ref`` / ``code_ref`` companion-input validators
 ``_validate_companion_ref`` / ``resolve_spec_ref` in that same file) —
@@ -238,7 +238,7 @@ SEVERITY_SUPPRESSED = "nit"
 
 BRIEF_FILENAME = "BRIEF.md"
 """Thread-root brief filename read for the optional ``pending_sources``
-frontmatter key (parsed by ``anvil/lib/project_brief.py``)."""
+frontmatter key (parsed by ``anvil/lib/project_brief/``)."""
 
 # Suppression directive (shared shape with numeric_consistency / render_gate).
 # A directive on line L suppresses a marker on line L or line L+1.
@@ -389,7 +389,7 @@ def emit_pending_marker(source: str, *, colon: bool = False) -> str:
 # ---------------------------------------------------------------------------
 #
 # Parsing/validation of the ``pending_sources:`` frontmatter block lives in
-# ``anvil/lib/project_brief.py`` (``resolve_pending_sources``), modeled on
+# ``anvil/lib/project_brief/`` (``resolve_pending_sources``), modeled on
 # the ``spec_ref`` / ``code_ref`` companion-input validators in that same
 # file (issue #842). This module only consumes the resolved source LABELS
 # (the reporting aid) — it deliberately does NOT re-implement frontmatter
@@ -399,7 +399,7 @@ def emit_pending_marker(source: str, *, colon: bool = False) -> str:
 def load_expected_pending_sources(thread_dir: Path) -> List[str]:
     """Read the optional ``pending_sources`` source labels for ``thread_dir``.
 
-    Thin delegator to ``anvil/lib/project_brief.py::resolve_pending_sources``
+    Thin delegator to ``anvil/lib/project_brief/thread.py::resolve_pending_sources``
     (which owns the frontmatter parsing + validation, modeled on the
     ``spec_ref`` companion-input resolver). Returns the list of declared
     source *labels* (each ``PendingSource.source``) — the reporting aid used

@@ -44,57 +44,24 @@ MERGE_PR_SRC="$HELPERS_DIR/merge-pr.sh"
 # skips are all correct.
 # shellcheck source=lib/require-daemon-bin.sh
 source "$SCRIPT_DIR/lib/require-daemon-bin.sh"
-loom_test_require_daemon_bin "$HELPERS_DIR" "merge-pr closed-building"
+loom_test_require_daemon_bin "$HELPERS_DIR" "merge-pr closed-building" "merge-pr post-merge-bookkeeping"
+# shellcheck source=lib/write-scope-fixture.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/write-scope-fixture.sh"
 
 # Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
+# shellcheck source=lib/assert.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/assert.sh"
+YELLOW='\033[0;33m'  # retired() below
 
-TESTS_RUN=0
-TESTS_PASSED=0
-TESTS_FAILED=0
-
-assert_eq() {
-    local expected="$1" actual="$2" msg="$3"
-    TESTS_RUN=$((TESTS_RUN + 1))
-    if [[ "$expected" == "$actual" ]]; then
-        TESTS_PASSED=$((TESTS_PASSED + 1))
-        echo -e "  ${GREEN}PASS${NC}: $msg"
-    else
-        TESTS_FAILED=$((TESTS_FAILED + 1))
-        echo -e "  ${RED}FAIL${NC}: $msg"
-        echo "    Expected: '$expected'"
-        echo "    Actual:   '$actual'"
-    fi
-}
-
-assert_contains() {
-    local haystack="$1" needle="$2" msg="$3"
-    TESTS_RUN=$((TESTS_RUN + 1))
-    if grep -qF -- "$needle" <<<"$haystack"; then
-        TESTS_PASSED=$((TESTS_PASSED + 1))
-        echo -e "  ${GREEN}PASS${NC}: $msg"
-    else
-        TESTS_FAILED=$((TESTS_FAILED + 1))
-        echo -e "  ${RED}FAIL${NC}: $msg"
-        echo "    Expected substring: '$needle'"
-        echo "    In: '$haystack'"
-    fi
-}
-
-assert_not_contains() {
-    local haystack="$1" needle="$2" msg="$3"
-    TESTS_RUN=$((TESTS_RUN + 1))
-    if ! grep -qF -- "$needle" <<<"$haystack"; then
-        TESTS_PASSED=$((TESTS_PASSED + 1))
-        echo -e "  ${GREEN}PASS${NC}: $msg"
-    else
-        TESTS_FAILED=$((TESTS_FAILED + 1))
-        echo -e "  ${RED}FAIL${NC}: $msg"
-        echo "    Unexpected substring: '$needle'"
-        echo "    In: '$haystack'"
-    fi
+# An assertion that CANNOT survive the port to Rust, retired under the
+# three-part test in defaults/docs/verification-recipes.md §6. Printed, not
+# deleted. Counted as run so the totals stay honest.
+retired() { # <what> <property> <why-structural> <successor>
+    TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "  ${YELLOW}RETIRED${NC}: $1"
+    echo "      property:   $2"
+    echo "      structural: $3"
+    echo "      successor:  $4"
 }
 
 # --- Minimal logging shims the extracted functions call ---
@@ -111,13 +78,13 @@ source "$HELPERS_DIR/lib/forge-helpers.sh"
 FUNCS_FILE="$(mktemp)"
 trap 'rm -rf "$FUNCS_FILE" "$STUB_DIR" 2>/dev/null || true' EXIT
 awk '
-  /^_strip_one_closed_issue_building_label\(\) \{/ { capture=1 }
-  /^_strip_closed_issue_building_labels\(\) \{/    { capture=1 }
+  /^_post_merge_bookkeeping\(\) \{/ { capture=1 }
+  /^_strip_closed_issue_building_labels\(\) \{/ { print; capture=0; next }
   capture { print }
   capture && /^}/ { capture=0 }
 ' "$MERGE_PR_SRC" > "$FUNCS_FILE"
 
-for _fn in _strip_one_closed_issue_building_label _strip_closed_issue_building_labels; do
+for _fn in _post_merge_bookkeeping _strip_closed_issue_building_labels; do
     if ! grep -q "^${_fn}() {" "$FUNCS_FILE"; then
         echo -e "${RED}FATAL${NC}: could not extract $_fn from $MERGE_PR_SRC" >&2
         exit 2
@@ -189,12 +156,19 @@ STUB
 chmod +x "$STUB_DIR/gh"
 export LOOM_TEST_STUB_DIR="$STUB_DIR"
 export PATH="$STUB_DIR:$PATH"
+# #9548: merge-pr.sh vets its write target through the write scope before it
+# writes. It runs from a checkout registered as owner/repo (origin, .loom/, push
+# reported to the permission probe), so the real decision admits it.
+write_scope_register "$STUB_DIR/checkout" owner/repo
+cd "$STUB_DIR/checkout"
 
 # --- Shared globals the functions read ---
 REPO_NWO="owner/repo"
 PR_NUMBER="999"
 FORGE_TYPE="github"
 GH="gh"
+PR_JSON='{"body":""}'
+PR_BRANCH="docs/x"
 
 # Shim for the GraphQL-backed close-target helper merge-pr.sh gets from
 # forge-helpers.sh, mirroring test-merge-pr-partial-increment.sh's approach.
@@ -215,7 +189,7 @@ cat > "$STUB_DIR/issue-103.json" <<'EOF'
 {"state":"closed","pull_request":{"url":"x"},"labels":[{"name":"loom:building"}]}
 EOF
 cat > "$STUB_DIR/issue-104.json" <<'EOF'
-{"state":"closed","labels":[{"name":"loom:building"},{"name":"tier:maintenance"}]}
+{"state":"closed","labels":[{"name":"loom:building"},{"name":"loom:important"}]}
 EOF
 
 reset_log() {
@@ -226,40 +200,46 @@ reset_log() {
 }
 read_log()  { cat "$STUB_DIR/gh-calls.log" 2>/dev/null || true; }
 
-echo "Testing _strip_one_closed_issue_building_label behavior..."
+echo "Testing the single-target strip (via _strip_closed_issue_building_labels)..."
 
 # T1: closed + loom:building -> label removed via the rate-limit-safe wrapper.
 reset_log
-_strip_one_closed_issue_building_label "100"
+FORGE_CLOSE_TARGETS="100"; _strip_closed_issue_building_labels
 log="$(read_log)"
 assert_contains "$log" "issue edit 100 --repo owner/repo --remove-label loom:building" \
   "Closed issue #100 (loom:building) -> label removed via gh issue edit"
 
 # T2: open issue -> no-op (never strip a live claim).
 reset_log
-_strip_one_closed_issue_building_label "101"
+FORGE_CLOSE_TARGETS="101"; _strip_closed_issue_building_labels
 assert_eq "" "$(read_log)" "Open issue #101 -> no-op (label left in place)"
 
-# T3: closed but no loom:building label -> no-op (idempotent).
+# T3: closed, no loom:building but still loom:issue -> only loom:issue is
+# stripped (#11517, operator ruling 2026-10-13: a closed issue must not keep
+# the queue label consumers read as "Ready").
 reset_log
-_strip_one_closed_issue_building_label "102"
-assert_eq "" "$(read_log)" "Closed issue #102 (no loom:building) -> no-op, idempotent"
+FORGE_CLOSE_TARGETS="102"; _strip_closed_issue_building_labels
+log="$(read_log)"
+assert_contains "$log" "issue edit 102 --repo owner/repo --remove-label loom:issue" \
+  "Closed issue #102 (loom:issue, no loom:building) -> loom:issue stripped (#11517)"
+assert_not_contains "$log" "--remove-label loom:building" \
+  "Closed issue #102 -> no loom:building removal attempted"
 
 # T4: target is actually a PR (has .pull_request) -> skip.
 reset_log
-_strip_one_closed_issue_building_label "103"
+FORGE_CLOSE_TARGETS="103"; _strip_closed_issue_building_labels
 assert_eq "" "$(read_log)" "Issue #103 (is a PR, has .pull_request) -> skipped"
 
 # T5: closed issue carrying loom:building plus other labels -> only
 # loom:building is targeted (the --remove-label argument names it explicitly,
 # no other label is touched).
 reset_log
-_strip_one_closed_issue_building_label "104"
+FORGE_CLOSE_TARGETS="104"; _strip_closed_issue_building_labels
 log="$(read_log)"
 assert_contains "$log" "issue edit 104 --repo owner/repo --remove-label loom:building" \
-  "Closed issue #104 (loom:building + tier:maintenance) -> only loom:building removed"
-assert_not_contains "$log" "--remove-label tier:maintenance" \
-  "Closed issue #104 -> tier:maintenance is untouched"
+  "Closed issue #104 (loom:building + loom:important) -> only loom:building removed"
+assert_not_contains "$log" "--remove-label loom:important" \
+  "Closed issue #104 -> loom:important is untouched"
 
 echo ""
 echo "Testing _strip_closed_issue_building_labels behavior..."
@@ -280,8 +260,10 @@ assert_contains "$log" "issue edit 100 --repo owner/repo --remove-label loom:bui
   "Multi-target: #100 (closed, building) is stripped"
 assert_not_contains "$log" "issue edit 101" \
   "Multi-target: #101 (open) is left alone"
-assert_not_contains "$log" "issue edit 102" \
-  "Multi-target: #102 (closed, not building) is left alone"
+assert_not_contains "$log" "issue edit 102 --repo owner/repo --remove-label loom:building" \
+  "Multi-target: #102 (closed, not building) keeps no building removal"
+assert_contains "$log" "issue edit 102 --repo owner/repo --remove-label loom:issue" \
+  "Multi-target: #102 (closed, still loom:issue) loses loom:issue (#11517)"
 
 # T8: no close targets at all -> no-op, no gh calls.
 reset_log
@@ -306,12 +288,12 @@ FORGE_TYPE="github"
 reset_log
 LOOM_TEST_ISSUE_EDIT_FAIL=1
 set +e
-_strip_one_closed_issue_building_label "100"
+FORGE_CLOSE_TARGETS="100"; _strip_closed_issue_building_labels
 rc=$?
 set -e
 assert_eq "0" "$rc" "A failed removal attempt does not propagate a nonzero exit (best-effort)"
 
-# T11 (#8191): the decision moved to `loom-daemon merge-pr closed-building`,
+# T11 (#8191): the decision is `loom-daemon merge-pr post-merge-bookkeeping`,
 # so a daemon that predates the verb must produce a WARNING naming the manual
 # removal and must NOT mutate anything. A guessed strip here would drop a live
 # builder's claim label; a silent skip would hide that the pass stopped
@@ -320,23 +302,23 @@ reset_log
 fake_no_verb="$STUB_DIR/fake-loom-daemon-no-closed-building"
 cat > "$fake_no_verb" <<'FAKEDAEMON'
 #!/usr/bin/env bash
-echo "error: unrecognized subcommand 'closed-building'" >&2
+echo "error: unrecognized subcommand 'post-merge-bookkeeping'" >&2
 exit 2
 FAKEDAEMON
 chmod +x "$fake_no_verb"
 saved_bin="${LOOM_DAEMON_BIN:-}"
 export LOOM_DAEMON_BIN="$fake_no_verb"
-stderr_out="$(_strip_one_closed_issue_building_label "100" 2>&1 >/dev/null)"
+stderr_out="$(FORGE_CLOSE_TARGETS="100"; _strip_closed_issue_building_labels 2>&1 >/dev/null)"
 export LOOM_DAEMON_BIN="$saved_bin"
 assert_eq "" "$(read_log)" "Daemon without the verb -> nothing is mutated"
-assert_contains "$stderr_out" "--remove-label loom:building" \
+assert_contains "$stderr_out" "--remove-label loom:building --remove-label loom:issue" \
   "Daemon without the verb -> warning names the manual removal"
 
-# T12 (#8191): exit 0 is not enough — the wrapper accepts only the two known
-# lines. A daemon answering with anything else (a truncated write, a future
-# protocol it does not share) must be treated as "did not run", never replayed
-# as a silent SKIP. This is the whole reason the skip is a positive `SKIP`
-# line rather than empty output.
+# T12 (#8191): exit 0 is not enough — the wrapper accepts only a run that ends
+# in the LOOM-POST-MERGE-BOOKKEEPING DONE terminator. A daemon answering with
+# anything else (a truncated write, a muted or stale binary, a future protocol
+# it does not share) must be treated as "did not run", never replayed as a
+# silent "nothing to do".
 reset_log
 fake_garbage="$STUB_DIR/fake-loom-daemon-garbage"
 cat > "$fake_garbage" <<'FAKEDAEMON'
@@ -347,11 +329,11 @@ FAKEDAEMON
 chmod +x "$fake_garbage"
 saved_bin="${LOOM_DAEMON_BIN:-}"
 export LOOM_DAEMON_BIN="$fake_garbage"
-stderr_out="$(_strip_one_closed_issue_building_label "100" 2>&1 >/dev/null)"
+stderr_out="$(FORGE_CLOSE_TARGETS="100"; _strip_closed_issue_building_labels 2>&1 >/dev/null)"
 export LOOM_DAEMON_BIN="$saved_bin"
 assert_eq "" "$(read_log)" "Daemon answering off-protocol at exit 0 -> nothing is mutated"
-assert_contains "$stderr_out" "rather than STRIP or SKIP" \
-  "Daemon answering off-protocol -> warning says what it printed instead"
+assert_contains "$stderr_out" "no LOOM-POST-MERGE-BOOKKEEPING DONE terminator" \
+  "Daemon answering off-protocol -> warning says the terminator is missing"
 
 # --- Invariant guard: merge-pr.sh actually wires this pass in at the
 # confirmed-merge choke point (#6199 AC #1 and #4) ---
@@ -361,8 +343,10 @@ echo "Testing merge-pr.sh wiring..."
 src="$(cat "$MERGE_PR_SRC")"
 assert_contains "$src" "_strip_closed_issue_building_labels || true" \
   "merge-pr.sh invokes the closed-issue cleanup pass at the confirmed-merge choke point"
-assert_contains "$src" 'forge_gh_remove_label_rl_safe "$REPO_NWO" "$issue_num" "loom:building"' \
-  "merge-pr.sh strips loom:building via the rate-limit-safe remove wrapper (#4856-style)"
+retired "merge-pr.sh's source strips loom:building / loom:issue via the rate-limit-safe remove wrapper (#4856-style)" \
+    "the strip goes through forge_gh_remove_label_rl_safe (REST fallback), never a raw gh issue edit" \
+    "the call moved into loom-daemon/src/merge_pr/post_merge_bookkeeping.rs, which reaches the wrapper through a child bash; merge-pr.sh no longer contains the call text" \
+    "T1/T3/T5/T6/T7 above drive the real wrapper against the stub gh and assert the recorded 'issue edit N --repo owner/repo --remove-label ...' call; post_merge_bookkeeping::tests::strip_asks_first_then_strips_only_closed_claims asserts the helper name and arguments"
 
 # --- Summary ---
 echo ""

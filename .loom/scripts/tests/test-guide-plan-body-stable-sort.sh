@@ -21,7 +21,7 @@
 # by one position in both the Ready and Proposed sections and nothing else),
 # and the same tie flapped again on the next tick.
 #
-# THE FIX: every one of `render_plan_body()`'s 9 forge listings pipes through
+# THE FIX: every one of `render_plan_body()`'s 10 forge listings pipes through
 # `sort_by(.number)` — a stable, content-derived key — before formatting
 # bullets. `approved_json` is sorted once at the source so both the
 # `approved` and `held` derivations inherit it (without reintroducing the
@@ -29,7 +29,7 @@
 #
 # Verifies that:
 #   1. STRUCTURE: every `--jq` pipeline inside `render_plan_body()` carries
-#      `sort_by(.number)` (all 9 of them), and `approved_json` is sorted at
+#      `sort_by(.number)` (all 10 of them), and `approved_json` is sorted at
 #      the source so the `approved`/`held` split stays consistent.
 #   2. THE REGRESSION, executed rather than grepped: the REAL
 #      `render_plan_body()` (extracted from guide.md and eval'd against a
@@ -62,16 +62,7 @@ else
     GUIDE_MD="$REPO_ROOT/defaults/.claude/commands/loom/guide.md"
 fi
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
-
-TESTS_RUN=0
-TESTS_PASSED=0
-TESTS_FAILED=0
-
-pass() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1)); echo -e "  ${GREEN}PASS${NC}: $1"; }
-fail() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1)); echo -e "  ${RED}FAIL${NC}: $1"; }
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/assert.sh"
 
 assert_eq() {
     local actual="$1" expected="$2" msg="$3"
@@ -101,7 +92,7 @@ fi
 pass "render_plan_body() body extracted from $GUIDE_MD"
 
 JQ_LINES="$(grep -c -- '--jq' <<<"$RPB_BODY")"
-assert_eq "$JQ_LINES" "9" "render_plan_body() has the expected 9 --jq forge pipelines"
+assert_eq "$JQ_LINES" "10" "render_plan_body() has the expected 10 --jq forge pipelines"
 
 UNSORTED="$(grep -n -- '--jq' <<<"$RPB_BODY" | grep -v 'sort_by(\.number)' || true)"
 if [[ -z "$UNSORTED" ]]; then
@@ -184,8 +175,11 @@ mk_fixtures() {
             printf '%s' "$json" | jq '.' > "$dir/$file"
         fi
     }
-    _write issue-loom_operator-priority.json \
+    _write issue-loom_very-important.json \
         '{"number":6993,"title":"Guide render_plan_body is not stably sorted"}'
+    _write issue-loom_important.json \
+        '{"number":6995,"title":"Important B"}' \
+        '{"number":6994,"title":"Important A"}'
     # The exact #6613 tie from PR #6988, plus neighbours.
     _write issue-loom_issue.json \
         '{"number":6612,"title":"Issue six-six-one-two"}' \

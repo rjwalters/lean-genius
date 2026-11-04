@@ -1,6 +1,6 @@
 ---
 name: anvil-project-scout
-description: Anvil skill registration for 'project-scout' (canonical body at .anvil/skills/project-scout/SKILL.md)
+description: "Repo-wide, strictly read-only discovery of anvil-adoptable document clusters — walks a tree, classifies every version-dir family and loose document into an adoption taxonomy, and reports the recommended next command per cluster."
 ---
 
 See `.anvil/skills/project-scout/SKILL.md` for the canonical skill body.

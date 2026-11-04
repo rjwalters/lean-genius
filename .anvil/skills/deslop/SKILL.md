@@ -33,7 +33,7 @@ pasted text verbatim.
 
 Anvil's deterministic rhetoric lint (`anvil/lib/rhetoric_lint.py`, ~28
 default AI-tell rules) and the voice/persona grounding-docs contract
-(`anvil/lib/project_brief.py::resolve_voice_docs`, issue #461) both already
+(`anvil/lib/project_brief/voice.py::resolve_voice_docs`, issue #461) both already
 exist and are proven across `memo`/`essay`. But they only run **inside** an
 anvil artifact lifecycle — as an advisory gate on a memo render, or a
 dim-2/dim-9 critic pass on an essay review. A canary consumer with

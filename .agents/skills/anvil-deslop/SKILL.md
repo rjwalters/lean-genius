@@ -1,6 +1,6 @@
 ---
 name: anvil-deslop
-description: Anvil skill registration for 'deslop' (canonical body at .anvil/skills/deslop/SKILL.md)
+description: "Iterate arbitrary AI-drafted prose (website copy, README fragments, existing markdown/HTML, pasted text) clean of AI-tell rhetoric and voice mismatch — text anvil doesn't own the lifecycle of. Deterministic rhetoric lint + LLM critique loop to convergence; NEVER auto-edits the source, emits cleaned text + rationale + a ready-to-apply diff instead."
 ---
 
 See `.anvil/skills/deslop/SKILL.md` for the canonical skill body.

@@ -1,6 +1,6 @@
 ---
 name: anvil-help
-description: Anvil skill registration for 'help' (canonical body at .anvil/skills/help/SKILL.md)
+description: "Strictly read-only orientation for a consumer repo — introspects the installed Anvil skills (from .anvil/install-metadata.json, falling back to a directory scan) and prints what is installed, what each skill produces, and how to start. Two-tier — `anvil:help` overview, `anvil:help <skill>` deep-dive."
 ---
 
 See `.anvil/skills/help/SKILL.md` for the canonical skill body.

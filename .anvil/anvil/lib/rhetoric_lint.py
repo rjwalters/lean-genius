@@ -322,6 +322,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional, Sequence, Union
 
+from anvil.lib.word_count import WORD_RE as _CANONICAL_WORD_RE, count_words
+
 
 # Rule kinds ------------------------------------------------------------------
 
@@ -971,7 +973,7 @@ class RhetoricLintResult:
 
 # Word tokens for the per-1000-words denominator. Hyphenated and
 # apostrophized compounds count once ("fast-paced", "it's").
-_WORD_RE = re.compile(r"[A-Za-z0-9]+(?:['’\-][A-Za-z0-9]+)*")
+_WORD_RE = _CANONICAL_WORD_RE  # single definition: anvil/lib/word_count.py (#1349)
 
 # Code-fence opener/closer (``` or ~~~, up to 3 leading spaces per
 # CommonMark).
@@ -1001,7 +1003,18 @@ _HEADING_RE = re.compile(r"^#{1,6}\s")
 # same fidelity the module already accepts for word counts — abbreviation
 # noise ("Dr. Smith", "e.g. foo") produces occasional over-splits, which is
 # tolerated rather than specially handled (see the module docstring).
-_SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?])\s+")
+#
+# A terminator may be followed by one or two closing quotes (straight or
+# curly) before the whitespace: ``"...cited papers." After`` (issue #1348).
+# The lookbehind alternation keeps the closer attached to the preceding
+# sentence (a plain split would drop it). Closing ``)`` / ``]`` are
+# deliberately NOT treated as closers: ``(Smith et al.) went`` would
+# over-split, the same noise class as abbreviations but more frequent.
+_SENTENCE_SPLIT_RE = re.compile(
+    r"(?<=[.!?])\s+"
+    r"|(?<=[.!?][\"'\u201d\u2019])\s+"
+    r"|(?<=[.!?][\"'\u201d\u2019]{2})\s+"
+)
 
 # ATX heading line, depth-capturing variant. Used by
 # :func:`_sources_block_lines` to track section boundaries (needs the
@@ -1852,7 +1865,7 @@ def lint_rhetoric(
     scan_lines = _scannable_lines(text)
     scan_lines = _collapse_markdown_links(scan_lines)
     disabled_lines = _collect_disabled_lines(text, suppress_rules)
-    words = sum(len(_WORD_RE.findall(line)) for line in scan_lines)
+    words = count_words("\n".join(scan_lines))
     # Computed once for all positional (``scope: "first-line"``) rules.
     first_prose_lineno = _first_prose_lineno(scan_lines, text)
     # Computed lazily (only if a ``long_sentence``, ``sentence_variance``,

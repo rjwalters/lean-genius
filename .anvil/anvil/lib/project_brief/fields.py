@@ -17,6 +17,7 @@ under it). No behavior change.
 
 from __future__ import annotations
 
+import re
 import warnings
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Union
@@ -29,6 +30,7 @@ from anvil.lib.project_brief.models import (
     AiByline,
     BriefDocument,
     CalibrationOverride,
+    EditorialOverride,
     RubricOverrides,
     SubjectVoiceEntry,
     TargetLengthOverrides,
@@ -40,8 +42,8 @@ from anvil.lib.project_brief.types import (
     ArtifactType,
     CONSUMER_MEMO_OVERLAYS_RELPATH,
     DEFAULT_MAX_ITERATIONS,
-    MAX_DIM,
     MIN_DIM,
+    max_dim_for,
     REGISTERED_ARTIFACT_TYPES,
     _ARTIFACT_TYPE_INPUT_ALIASES,
     _DIM_CALIBRATION_RE,
@@ -781,6 +783,65 @@ def _parse_dim_waiver_key(key: str) -> Optional[int]:
         return None
 
 
+def _normalize_editorial_overrides(
+    raw: Any, field_path: str
+) -> Optional[List[EditorialOverride]]:
+    """Validate a raw ``editorial_overrides`` list (issue #1373).
+
+    STRICT: each entry must be a mapping with an int ``slide`` (bool
+    rejected), a ``dimension`` (non-empty string or int, stored as a
+    string), and non-empty string ``reason`` and ``date`` (``date`` must
+    be ISO ``YYYY-MM-DD``). Raises ``ValueError`` naming the field path.
+    Returns ``None`` for an absent value.
+    """
+    if raw is None:
+        return None
+    if not isinstance(raw, list):
+        raise ValueError(
+            f"BRIEF.{field_path} must be a list of mappings; got "
+            f"{type(raw).__name__}."
+        )
+    out: List[EditorialOverride] = []
+    for j, item in enumerate(raw):
+        path = f"{field_path}[{j}]"
+        if not isinstance(item, dict):
+            raise ValueError(
+                f"BRIEF.{path} must be a mapping with slide / dimension / "
+                f"reason / date; got {type(item).__name__}."
+            )
+        unknown = sorted(set(item) - {"slide", "dimension", "reason", "date"})
+        if unknown:
+            raise ValueError(f"BRIEF.{path}: unknown key(s) {unknown}.")
+        slide = item.get("slide")
+        if isinstance(slide, bool) or not isinstance(slide, int):
+            raise ValueError(f"BRIEF.{path}.slide must be an integer; got {slide!r}.")
+        dim = item.get("dimension")
+        if isinstance(dim, bool) or not isinstance(dim, (str, int)) or not str(dim).strip():
+            raise ValueError(
+                f"BRIEF.{path}.dimension must be a non-empty string or integer; "
+                f"got {dim!r}."
+            )
+        reason = item.get("reason")
+        if not isinstance(reason, str) or not reason.strip():
+            raise ValueError(f"BRIEF.{path}.reason must be a non-empty string; got {reason!r}.")
+        date = item.get("date")
+        if hasattr(date, "isoformat"):  # YAML parses bare 2026-10-15 as a date
+            date = date.isoformat()
+        if not isinstance(date, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date.strip()):
+            raise ValueError(
+                f"BRIEF.{path}.date must be an ISO date (YYYY-MM-DD); got {date!r}."
+            )
+        out.append(
+            EditorialOverride(
+                slide=slide,
+                dimension=str(dim).strip(),
+                reason=reason.strip(),
+                date=date.strip(),
+            )
+        )
+    return out
+
+
 def _normalize_rubric_overrides(
     raw: Any,
     field_path: str,
@@ -829,6 +890,7 @@ def _normalize_rubric_overrides(
     target_length: Optional[TargetLengthRange] = None
     unknown_keys: Dict[str, Any] = {}
 
+    max_dim = max_dim_for(artifact_type)
     seen_dims: set[int] = set()
     seen_waiver_dims: set[int] = set()
 
@@ -852,10 +914,10 @@ def _normalize_rubric_overrides(
 
         dim = _parse_dim_calibration_key(key)
         if dim is not None:
-            if dim < MIN_DIM or dim > MAX_DIM:
+            if dim < MIN_DIM or dim > max_dim:
                 raise ValueError(
                     f"BRIEF.{field_path}.{key}: dimension {dim} out of "
-                    f"range [{MIN_DIM}, {MAX_DIM}]."
+                    f"range [{MIN_DIM}, {max_dim}]."
                 )
             if dim in seen_dims:
                 raise ValueError(
@@ -874,10 +936,10 @@ def _normalize_rubric_overrides(
 
         waiver_dim = _parse_dim_waiver_key(key)
         if waiver_dim is not None:
-            if waiver_dim < MIN_DIM or waiver_dim > MAX_DIM:
+            if waiver_dim < MIN_DIM or waiver_dim > max_dim:
                 raise ValueError(
                     f"BRIEF.{field_path}.{key}: dimension {waiver_dim} out "
-                    f"of range [{MIN_DIM}, {MAX_DIM}]."
+                    f"of range [{MIN_DIM}, {max_dim}]."
                 )
             if waiver_dim in seen_waiver_dims:
                 raise ValueError(
@@ -1706,6 +1768,11 @@ def _normalize_documents(
             field_path=f"documents[{i}].voice_corpus_exclude",
         )
 
+        editorial_overrides = _normalize_editorial_overrides(
+            entry.get("editorial_overrides"),
+            field_path=f"documents[{i}].editorial_overrides",
+        )
+
         # Paired-override validation runs after the per-field validators
         # so the cross-field error names both keys with already-normalized
         # values (e.g., whitespace-only rationale → None → "missing").
@@ -1734,6 +1801,7 @@ def _normalize_documents(
                 code_ref=code_ref,
                 recommendation_target=recommendation_target,
                 voice_corpus_exclude=voice_corpus_exclude,
+                editorial_overrides=editorial_overrides,
             )
         except ValidationError as exc:
             raise ValueError(

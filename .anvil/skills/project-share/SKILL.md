@@ -176,7 +176,7 @@ single invocation; the on-disk evidence is the rebuilt `SHARE/` tree and its
 
 ## Lib primitives composed
 
-- `anvil/lib/project_brief.py` — `load_project_brief_strict` for the
+- `anvil/lib/project_brief/` — `load_project_brief_strict` for the
   `documents:` list and default ordering.
 - `anvil/lib/latest_resolution.py` — `resolve_latest(thread_dir, slug)` per
   thread (the exporter calls `.resolve()` to dereference; the helper returns

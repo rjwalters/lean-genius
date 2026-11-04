@@ -7,7 +7,7 @@ the ``memo-review`` lifecycle so that any per-dimension
 as a verbatim suffix on that dimension's justification in both
 ``_review.json`` and ``scoring.md``.
 
-The schema-of-record for the loader is ``anvil/lib/project_brief.py``
+The schema-of-record for the loader is ``anvil/lib/project_brief/``
 (issue #296 consolidation of the prior ``anvil_config.py``, promoted to
 the shared lib under issue #382). This module is the thin glue between the
 loader and the reviewer's per-dimension scoring write path: it accepts a

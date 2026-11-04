@@ -1,6 +1,6 @@
 ---
 name: anvil-project-migrate
-description: Anvil skill registration for 'project-migrate' (canonical body at .anvil/skills/project-migrate/SKILL.md)
+description: "Migrate existing studio projects to the post-#295 / post-#296 project-org model (BRIEF.md absorbs all config; `<project>/<slug>/<slug>.<N>/` shape; body filename echoes slug)."
 ---
 
 See `.anvil/skills/project-migrate/SKILL.md` for the canonical skill body.

@@ -5,12 +5,12 @@ implementations that had accumulated, each one documenting itself as a
 manual mirror of an earlier copy:
 
 - ``anvil/lib/project_discovery.py`` (the original)
-- ``anvil/lib/project_brief.py``
+- ``anvil/lib/project_brief/``
 - ``anvil/skills/project-share/lib/config.py``
 - ``anvil/skills/project-book/lib/config.py``
 - ``anvil/skills/proposal/lib/project_brief.py``
 
-``pyyaml>=6.0`` is a declared base dependency (``pyproject.toml``), so
+``pyyaml>=6.0.3`` is a declared base dependency (``pyproject.toml``), so
 every one of those five call sites can rely on it unconditionally. This
 module intentionally does NOT absorb the two lookalikes that keep a
 hand-rolled pyyaml-fallback parser for when pyyaml is absent —
