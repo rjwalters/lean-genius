@@ -1,9 +1,18 @@
 version: 2
+# Org policy (rjwalters/.github repo-policy.json): Dependabot, weekly Monday
+# 06:00 Pacific, 14-day cooldown on version updates (security updates are not
+# delayed). Local exceptions: label tier:maintenance (no `dependencies` label
+# exists here), submodules monthly without cooldown, risk-bearing npm deps ungrouped.
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/Los_Angeles"
+    cooldown:
+      default-days: 14
     labels: ["tier:maintenance"]
     groups:
       github-actions:
@@ -14,6 +23,11 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/Los_Angeles"
+    cooldown:
+      default-days: 14
     labels: ["tier:maintenance"]
     groups:
       npm-minor-patch:
@@ -29,6 +43,11 @@ updates:
     directory: "/mcp-servers/aristotle"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/Los_Angeles"
+    cooldown:
+      default-days: 14
     labels: ["tier:maintenance"]
     groups:
       aristotle-minor-patch:
@@ -45,6 +64,10 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+      time: "06:00"
+      timezone: "America/Los_Angeles"
+    # No cooldown here: the submodules are our own data mirrors, not third-party
+    # releases, and cooldown support for gitsubmodule is not guaranteed.
     labels: ["tier:maintenance"]
     groups:
       submodules:
