@@ -1,3 +1,12 @@
 allowBuilds:
   better-sqlite3: true
   esbuild: true
+# Security overrides for transitive deps with no upstream fix PR (Dependabot
+# alerts). Remove each once its parent ships the patched range.
+overrides:
+  # GHSA-238p-pmpm-9mq7 (<0.18.2) via remark-math, react-katex, rehype-katex.
+  katex@<0.18.2: ^0.19.1
+  # GHSA-67mh-4wv8-2f99 (<=0.24.2) via drizzle-kit -> @esbuild-kit/core-utils.
+  "@esbuild-kit/core-utils>esbuild": ^0.25.12
+  # GHSA-g3hv-75wg-m249 (<11.0.1) via eslint and typescript-eslint.
+  minimatch@<11.0.1: ^11.0.1
