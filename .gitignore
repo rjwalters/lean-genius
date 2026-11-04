@@ -10,9 +10,11 @@
 # and a directory-only rule let it slip through and get committed.
 .loom/tokens
 .loom/lean-daemon-state.json
+# Legacy location; launch.sh migrates it to .loom/ on start (#43768).
+research/lean-daemon-state.json
 .claude/settings.local.json
 # Per-machine install record (absolute source path + install timestamp)
-.claude/skills/repo/.install-local.json
+**/skills/*/.install-local.json
 .claude/projects/
 # Codex agent worktrees (same role as .claude/worktrees/ and .loom/worktrees/).
 # Both forms: the slash form matches a real directory, the bare form matches the
@@ -65,7 +67,9 @@ research/enrichment-claims/
 research/references/
 research/quality-history/
 research/candidate-pool.json
-research/db/
+# Local DB is state; the scripts that build it are tracked (#43767).
+research/db/*
+!research/db/*.py
 aristotle-results/
 
 # ── Generated site data (build outputs; see scripts/research/build.ts) ─

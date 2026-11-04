@@ -71,7 +71,7 @@ services worktrees at both the resolved root and the legacy
 LEAN_MEMORY_LIMIT=8192 ./proofs/scripts/docker-build.sh
 LEAN_BUILD_TIMEOUT=30m ./proofs/scripts/docker-build.sh
 
-# Or build the safe subset (excludes memory-intensive proofs)
+# Or build the safe subset (skips memory hogs and quarantined broken modules; --list prints targets)
 ./proofs/scripts/build-safe-subset.sh
 ```
 
