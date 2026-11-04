@@ -7836,7 +7836,7 @@ function mask_heredoc_bodies_selective(s,   out, lines, nl, i, j, line, trimmed,
                     first = 1
                     for (j = i + 1; j < closeat; j++) {
                         if (first) {
-                            lines[j] = "> ."
+                            lines[j] = "> __loom_opaque_heredoc_write__"
                             first = 0
                         } else {
                             body = lines[j]
@@ -9678,6 +9678,16 @@ if worktree_isolation_guard_enabled && \
     while IFS=$'\037' read -r _wcwd _wtarget; do
         [[ -z "$_wtarget" ]] && continue
 
+        # mask_heredoc_bodies_selective() (#331) stands in for the target of a
+        # write-marker interpreter heredoc with a sentinel word. Judge it as
+        # the cwd (`.`), exactly as before, but remember it so the final
+        # deny can say what actually happened (#722).
+        _wopaque=0
+        if [[ "$_wtarget" == "__loom_opaque_heredoc_write__" ]]; then
+            _wopaque=1
+            _wtarget="."
+        fi
+
         # Same-command $VAR/${VAR} resolution (#4881) happens inside
         # extract_write_targets(): a target whose leading `$NAME`/`${NAME}`
         # matched an assignment earlier in the SAME command arrives here
@@ -10040,6 +10050,9 @@ if worktree_isolation_guard_enabled && \
         # base is resolved off the same main-checkout root so the "a managed
         # worktree exists" gate stays consistent with the containment test.
         if _wt_isolation_in_play; then
+            if [[ "$_wopaque" -eq 1 ]]; then
+                deny "BLOCKED: this interpreter heredoc (python/perl/ruby/node <<EOF) performs a file write whose target this guard cannot determine from the script body, so it is treated as writing to the working directory '${_wabs}' — which resolves to the main repository checkout ('${_WT_MAIN_ROOT}'), and a Loom-managed worktree exists elsewhere in this repository (#722). The script may well write somewhere else; the guard fails closed because it does not parse paths out of arbitrary source. Run it from your issue worktree ($(_wt_worktree_hint)), write the file with the Write tool, or use a literal-path non-heredoc form. ${_WT_OPTOUT_HINT} (#4178)" "worktree-write-confinement-opaque-heredoc" "$(_wt_confinement_context "$_wabs" "$_wabsp")"
+            fi
             deny "BLOCKED: Bash-tool write to '${_wabs}' resolves to the main repository checkout ('${_WT_MAIN_ROOT}'), but a Loom-managed worktree exists elsewhere in this repository (this check cannot verify it belongs to the acting session — see #4245). This is a worktree-isolation bypass via Bash redirection/tee/sed -i/cp/mv/mkdir/touch/ln/install — do NOT retry the write through Bash. cd into your issue worktree ($(_wt_worktree_hint)) and write there instead. ${_WT_OPTOUT_HINT} (#4178)" "worktree-write-confinement" "$(_wt_confinement_context "$_wabs" "$_wabsp")"
         fi
     done <<< "$WRITE_TARGETS"
