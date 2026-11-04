@@ -40,22 +40,27 @@
 # Pattern follows test-worktree-base-override.sh: throwaway bare origin + repo
 # in a mktemp dir, copy worktree.sh + lib/, run.
 
+# SINCE #8195 SLICE 14 (epic #7810) Tests 3-4's local-reuse arm — including the
+# "already exists - reusing it" line both of them key on to prove WHICH arm
+# ran, and the divergence warning itself — is `loom-daemon
+# worktree-branch-reuse`. Every assertion below is unchanged from the shell
+# implementation, so the binary is pinned via loom_test_require_daemon_bin and
+# this suite FAILS rather than skips when there is none: without a binary the
+# arm prints nothing at all (the documented degradation), and Tests 3-4 would
+# be asserting on output nothing produced. Tests 1-2 (the REMOTE arm) are
+# untouched by that slice.
+
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 WORKTREE_SH="$SCRIPTS_DIR/worktree.sh"
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
+# shellcheck source=lib/require-daemon-bin.sh
+source "$SCRIPT_DIR/lib/require-daemon-bin.sh"
+loom_test_require_daemon_bin "$SCRIPTS_DIR" "worktree-branch-reuse"
 
-TESTS_RUN=0
-TESTS_PASSED=0
-TESTS_FAILED=0
-
-pass() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1)); echo -e "  ${GREEN}PASS${NC}: $1"; }
-fail() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1)); echo -e "  ${RED}FAIL${NC}: $1"; }
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/assert.sh"
 
 # Build a throwaway repo with an origin/main ref plus a pushed PR branch
 # (feature/issue-77) carrying one unique commit — but with NO local copy of

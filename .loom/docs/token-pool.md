@@ -31,7 +31,7 @@ it does not change runtime resolution or migrate existing credentials.
 - [Worktree handling](#worktree-handling)
 - [Shared machine-level pool fallback (#3938)](#shared-machine-level-pool-fallback-3938)
 - [Hard-fail on missing pool](#hard-fail-on-missing-pool)
-- [Per-repo pool vs. shared machine-level pool: which to provision (#4642)](#per-repo-pool-vs-shared-machine-level-pool-which-to-provision-4642)
+- [The shared machine-level pool is the only supported location (#4642, #9135)](#the-shared-machine-level-pool-is-the-only-supported-location-4642-9135)
 - [Operator CLI (`loom-daemon tokens pin/unpin/unblock`)](#operator-cli-loom-daemon-tokens-pinunpinunblock)
 - [Tests](#tests)
 - [Codex provider health](#codex-provider-health)
@@ -48,8 +48,10 @@ its files, selection order, state formats, `SelectedToken` API, and
 
 Provider-aware callers identify accounts by `(provider, name)`, so
 `claude/alice` and `codex/alice` are separate identities. Claude inventory
-continues to prefer a repo-local `.loom/tokens` pool and otherwise falls back
-to `LOOM_SHARED_TOKENS_DIR` (default `~/.loom/tokens`).
+resolves to `LOOM_SHARED_TOKENS_DIR` (default `~/.loom/tokens`). A legacy
+repo-local `<workspace>/.loom/tokens` pool is still recognized when the
+workspace is **not** inside a git worktree; inside one it is refused (#9135 —
+see "The shared machine-level pool is the only supported location" below).
 
 Codex inventory uses named directories below `LOOM_CODEX_PROFILE_ROOT`
 (default `~/.loom/codex-profiles`). With no repo metadata, each direct child
@@ -92,7 +94,8 @@ equivalent credential variable. Raw provider capacity counts enabled inventory
 candidates only. Quota health, cooldown, ranking, and failover are layered on
 later and do not alter this inventory contract.
 
-> **Secrets:** use external `~/.claude-monitor/accounts.env` or an explicitly
+> **Secrets:** use external `~/.llm-monitor/accounts.env` (`~/.claude-monitor` on
+> an llm-monitor 1.x host) or an explicitly
 > selected external source, mode `0600`. Do not create repo-local
 > `.loom/accounts.env`, `.env` or `.loom/tokens/` credentials.
 
@@ -132,7 +135,7 @@ storage policy. Higher-precedence sources override by account email.
 
 | Source | Default location | Override |
 |--------|------------------|----------|
-| **claude-monitor master** (primary) | `~/.claude-monitor/accounts.env` | `LOOM_CLAUDE_MONITOR_DIR` env var (directory) |
+| **llm-monitor master** (primary; formerly claude-monitor) | `<monitor dir>/accounts.env` — see [monitor directory resolution](#monitor-directory-resolution-8849) | `LOOM_LLM_MONITOR_DIR` env var (directory); deprecated `LOOM_CLAUDE_MONITOR_DIR` still honored |
 | **Repo-local** | `<repo>/.loom/accounts.env` if present, else legacy `<repo>/.env` | `--env <path>` on `bootstrap` |
 | **Home master** (opt-in only, #3704) | *no default location* — read **only** when explicitly pointed at | `LOOM_ACCOUNTS_ENV` env var (a path enables it, `""` disables); `--home-env <path>` / `--no-home` on `bootstrap` |
 
@@ -156,11 +159,27 @@ effective merged set (and where each account came from) is printed by `bootstrap
 and `bootstrap --dry-run`. A repo with only a legacy `.env` and no other source
 behaves exactly as before.
 
+### Monitor directory resolution (#8849)
+
+claude-monitor was renamed **llm-monitor** in 2.0 and moved its data directory
+from `~/.claude-monitor` to `~/.llm-monitor`. Loom resolves the one monitor
+directory used for `accounts.env`, `ranking.json`, and `usage.db` in this order:
+
+1. `$LOOM_LLM_MONITOR_DIR` (nonblank; `~` expanded)
+2. `$LOOM_CLAUDE_MONITOR_DIR` (deprecated; nonblank; `~` expanded)
+3. `~/.llm-monitor`, if it exists as a directory
+4. `~/.claude-monitor` (legacy fallback for a host still on llm-monitor 1.x)
+
+An explicit override is authoritative even if the path does not exist. All
+three files come from the selected directory — a file missing there is treated
+as unavailable, never read from the other directory. `import-from-monitor --db`
+still overrides the database path.
+
 ## Importing live tokens from claude-monitor (#4006)
 
 `accounts.env` is a **snapshot** — a file someone wrote by hand at some point.
 claude-monitor keeps the **live** credentials in its SQLite store
-(`~/.claude-monitor/usage.db` → `oauth_credentials`) and refreshes them as
+(`<monitor dir>/usage.db` → `oauth_credentials`, usually `~/.llm-monitor/usage.db`) and refreshes them as
 accounts are re-authenticated. The two drift, and the drift is silent and total:
 
 ```text
@@ -186,8 +205,8 @@ standard way to populate a new host's pool** (it replaces hand-copying a pool
 between machines):
 
 ```bash
-loom-daemon tokens import-from-monitor                  # into <repo>/.loom/tokens
-loom-daemon tokens import-from-monitor --shared         # into the machine-level pool (#3938)
+loom-daemon tokens import-from-monitor                  # into the machine-level pool
+loom-daemon tokens import-from-monitor --shared         # same thing; flag kept for compat (#9135)
 loom-daemon tokens import-from-monitor --force          # apply ROLLED tokens (see below)
 loom-daemon tokens import-from-monitor --dry-run        # preview
 loom-daemon tokens import-from-monitor --prune          # drop accounts the monitor no longer reports
@@ -245,6 +264,42 @@ falls back to this CLI's own native probe when one isn't present; `monitor`
 never falls back (an empty report when claude-monitor has nothing fresh);
 `probe` always uses the native probe, ignoring claude-monitor entirely.
 
+**`--source probe` probes bad-marked accounts too; nothing else does (#8972).**
+An account with a standing `auth` or `malformed-timestamp` entry in
+`.bad_tokens` is skipped by `auto`, by `monitor`, and by the overdue-reset
+re-probe — those run periodically, and probing a revoked credential every cycle
+is wasted. An **explicitly resolved** `probe` (the flag, or
+`LOOM_RANKING_SOURCE=probe`) sends the request anyway, because it is the command
+an operator runs to ask "is this mark still true?". A host that sets
+`LOOM_RANKING_SOURCE=probe` for its periodic refresh therefore spends one
+`max_tokens: 1` request per marked account per cycle. This is **reporting
+only**: a healthy answer never edits `.bad_tokens`, and the account stays
+excluded from selection — and `<name>|blocked` in `.ranking` — until
+`loom-daemon tokens unblock <name>`.
+
+Every row says whether it is a measurement or a stored record:
+
+| Field (`--json`) | Meaning |
+|---|---|
+| `probed` | Always present. `true` only when a request was sent for this account in this run; `false` for a monitor-served row and for a row that only reports a stored mark. |
+| `bad_mark` | Present only while a `.bad_tokens` entry stands: `{class, reason, marked_at}`. `marked_at` is the recorded timestamp verbatim — an unparseable one is shown as the raw text, never as an invented instant. |
+| `probe_status` | Present only when a permanent mark stands **and** the account was probed: the live verdict (`available`, `blocked`, …). `status` itself stays `blocked`, because it describes selectability. |
+| `error` | The live probe's error (`auth_401`, `timeout`, …) when `probed` is `true`. On an unprobed marked row it still carries the pre-#8972 `"<class>: <reason>"` text. |
+
+How to read a marked account:
+
+| `probed` | `probe_status` / `error` | Table note | Meaning |
+|---|---|---|---|
+| `true` | `available` (or `rate_limited` / `exhausted`), no `error` | `probed live: available — bad-mark recorded … looks stale; still excluded until …tokens unblock <name>` | The credential authenticates. The mark is stale; clear it with `tokens unblock`. |
+| `true` | `blocked`, `auth_401` | `probed live: blocked, auth_401 — confirms bad-mark recorded …` | Confirmed dead just now. Re-authenticate, then `tokens unblock`. |
+| `true` | `error`, `timeout` / `http_5xx` / … | `probed live: error, … inconclusive — bad-mark recorded … stands` | The request failed; nothing was learned. |
+| `false` | — | `not probed — bad-mark recorded …` | A stored record only. Re-run with `--source probe` to test it. |
+
+A self-clearing `exhaustion` mark was already probed under every source
+(#7522); its `status` is the live one and it now also reports its `bad_mark`.
+The table header reads `probed at <time>` only when at least one request was
+sent, and `ranked at <time>; no account was probed in this run` otherwise.
+
 **Provider-dispatched probing (issue #5608).** `--source probe` resolves each
 account's provider from `index.json` (a `.token` file with no manifest row is
 treated as `claude`) and only ever sends a `claude` credential to Anthropic's
@@ -296,7 +351,10 @@ the first probe of each run.
 Status assignment: `available` (utilizations < 99%), `exhausted`
 (`7d_utilization >= 0.99`), `rate_limited` (current 429), `blocked` (401 auth
 failure or token listed in `.bad_tokens`). Probe failures (network, timeout, 5xx)
-are logged and skipped — one bad account does not abort the run.
+are logged and skipped — one bad account does not abort the run. A `blocked`
+row is a live finding only when its `probed` field is `true`; see the
+`--source probe` table above for telling a confirmed-dead credential from a
+stale stored mark.
 
 OAuth tokens shaped `sk-ant-oat01-*` are sent with `Authorization: Bearer` +
 `anthropic-beta: oauth-2025-04-20`; plain API keys use `x-api-key`.
@@ -346,8 +404,8 @@ For Pro/Max plans, Loom supports rotating between multiple Claude Code OAuth
 tokens. This spreads load across accounts and recovers automatically when a single
 token hits its weekly limit.
 
-1. Declare account credentials in a default source — the shared claude-monitor
-   master `~/.claude-monitor/accounts.env` (primary) or per-repo in
+1. Declare account credentials in a default source — the shared llm-monitor
+   master `~/.llm-monitor/accounts.env` (primary; `~/.claude-monitor` on 1.x) or per-repo in
    `<repo>/.loom/accounts.env` (falls back to legacy `<repo>/.env`). The
    `~/.loom/accounts.env` home master is **opt-in only** since #3704 (no longer
    auto-read); point `LOOM_ACCOUNTS_ENV=~/.loom/accounts.env` (or `--home-env
@@ -588,7 +646,7 @@ reads as "unknown" and a wrong one reads as a fact.
 Both ranking backends populate it:
 
 - The **claude-monitor backend** (`tokens_pool::monitor`) reads
-  `accounts[].resets["5h"]` and `["7d"]` from `~/.claude-monitor/ranking.json`
+  `accounts[].resets["5h"]` and `["7d"]` from `<monitor dir>/ranking.json`
   and normalizes them to the instant format. It previously reported no reset at
   all, which is why the CLI's reset column was empty on every monitor-sourced
   run even though the data was on disk the whole time.
@@ -886,6 +944,19 @@ The `classify_error <output> <exit_code>` function returns one of `SUCCESS`,
 `TIMEOUT`, `CWD_DELETED`, `TOKEN_EXPIRED`, `TOKEN_EXHAUSTED`,
 `MODEL_CREDITS_EXHAUSTED`, `SESSION_LIMIT`, `MODEL_REFUSAL`, `RECOVERABLE`,
 `FATAL`.
+
+Since #11208 the classifier also ships natively as **`loom-daemon
+classify-error`** (`loom-daemon/src/classify_error.rs`): the error text on
+stdin (or `--stdout-tail`/`--stderr-tail` files) plus `--exit-code` and an
+optional `--provider` in, one category line out (`0` classified, `1` terminal
+for `--transient <CATEGORY>`, `2` usage error). The shell library delegates to
+it whenever a daemon binary resolves and carries no tables of its own
+(#11219): with no capable daemon it gives the fail-safe degraded answer
+(RECOVERABLE / retry). The native classifier is pinned by the shared
+`tests/fixtures/classify_error/vectors.tsv` fixture. Consumers that install
+the signed daemon (rather than vendoring the shell file) get the same
+classification through the binary alone.
+
 Critical fix from #3233: exit code is checked **before** output substring
 matching — clean exits (`exit_code == 0`) always return `SUCCESS` regardless of
 stdout content.
@@ -1320,10 +1391,13 @@ list.
 ## Shared machine-level pool fallback (#3938)
 
 Token selection resolves the effective pool as: the **per-repo** pool
-`<repo>/.loom/tokens/` when it holds `*.token` files, else the **shared
-machine-level pool** `~/.loom/tokens/` (override `LOOM_SHARED_TOKENS_DIR`; set it
-empty to disable the fallback). **This precedence is presence-based, not
-health-based**: a per-repo pool wins by merely *having* `.token` files present,
+`<repo>/.loom/tokens/` when it holds `*.token` files **and that workspace is not
+inside a git worktree** (issue #9135 — inside one it is refused outright, see
+"The shared machine-level pool is the only supported location" below), else the
+**shared machine-level pool** `~/.loom/tokens/` (override
+`LOOM_SHARED_TOKENS_DIR`; set it empty to disable the fallback). **Where a
+per-repo pool still applies, that precedence is presence-based, not
+health-based**: it wins by merely *having* `.token` files present,
 regardless of whether any of its accounts are actually usable — so a per-repo
 pool whose every account has since gone bad-marked or `.ranking`-excluded still
 shadows a healthy shared pool rather than falling back to it (issue #6758; the
@@ -1391,12 +1465,11 @@ default-`--workspace` case, and the daemon's autonomous ranking-refresh loop):
 
 **Operational contract**: for step 3 to actually find tokens, a machine-level
 daemon's pool must be bootstrapped at the shared location —
-`loom-daemon tokens bootstrap --shared` (or `import-from-monitor --shared`) — rather
-than per-repo at whatever directory happens to be the daemon's own checkout.
+`loom-daemon tokens bootstrap` — which since issue #9135 always writes there,
+never per-repo at whatever directory happens to be the daemon's own checkout.
 Registering the daemon's own checkout as a workspace
-(`loom-daemon workspace add <checkout>`) is the alternative: that makes step 2
-apply instead, so a per-repo pool bootstrapped there (without `--shared`) is
-found too.
+(`loom-daemon workspace add <checkout>`) no longer provides an alternative: a
+pool inside that checkout is refused, so the shared location is the contract.
 
 **No `WorkingDirectory=` needed**: with the pool bootstrapped per the
 contract above, a `systemd`-managed daemon started with the unit's default
@@ -1479,18 +1552,50 @@ hitting this hard-fail on every single tick forever. The skip is logged once
 role's log for `no token pool available` — and is re-checked every tick, so
 provisioning either pool later resumes ticking with no daemon restart needed.
 
-## Per-repo pool vs. shared machine-level pool: which to provision (#4642)
+## The shared machine-level pool is the only supported location (#4642, #9135)
 
-Provision an external shared pool with `loom-daemon tokens bootstrap --shared`
-(or `import-from-monitor --shared`). Its default is `~/.loom/tokens/`;
-`LOOM_SHARED_TOKENS_DIR` can select another external, owner-only directory.
-Do not provision credentials inside a repository, even for separate billing.
+**Invariant: a token pool never lives inside a git worktree.** OAuth
+credentials under version control are one `git add -A`, one directory rename,
+or one stale `.gitignore` away from being pushed — and every guard protecting
+the old in-repo path was keyed on that one literal path string, so any of those
+three defeated all of them at once. The structural answer is that the
+credentials are not in the repository at all (see
+[`credential-storage.md`](credential-storage.md)).
+
+Provision with `loom-daemon tokens bootstrap` (or `import-from-monitor`). The
+destination is always the shared machine-level pool — `~/.loom/tokens/` by
+default, or any other external owner-only directory named by
+`LOOM_SHARED_TOKENS_DIR`. `--shared` is accepted for backward compatibility and
+now selects what already happens; there is no workspace-relative alternative.
+`LOOM_SHARED_TOKENS_DIR` pointing *into* a checkout is refused too: the
+invariant is "outside every worktree", not "named `~/.loom/tokens`".
 
 Repositories using the same external pool compete for the same account quotas.
 Choose accounts deliberately; provisioning changes whose allowance is consumed.
-The runtime still prefers legacy repo-local pools when present. Migrate those
-separately and verify effective selection; this policy does not automatically
-move files or change billing isolation.
+
+### Migrating a legacy `<repo>/.loom/tokens` pool
+
+A populated `<repo>/.loom/tokens` inside a git worktree is **ignored, never
+deleted**: selection refuses it, `token_pool_size` counts it as 0 (so the host's
+concurrency cap does not promise spawns that would fail), and the resulting
+empty-pool error names the directory and the migration. `loom-daemon tokens
+check --all-pools` lists it as `legacy in-worktree, RETIRED and ignored by
+selection`. Loom will not relocate an OAuth token on its own — moving a
+credential is an operator act:
+
+```bash
+mkdir -p ~/.loom/tokens && mv <repo>/.loom/tokens/*.token ~/.loom/tokens/
+rm -rf <repo>/.loom/tokens
+loom-daemon tokens check --ranking          # verify effective selection
+```
+
+Re-provisioning from source (`loom-daemon tokens bootstrap --force`) is
+equivalent and preferable when the account sources are still available. A pool
+at `<dir>/.loom/tokens` that is **not** inside any checkout still resolves
+normally — the refusal is scoped to the policy it enforces, not to the path
+shape. If the shared pool is disabled outright (`LOOM_SHARED_TOKENS_DIR=""`)
+while a legacy in-worktree pool is the only one present, the host fails closed
+rather than readmitting it.
 
 ## Operator CLI (`loom-daemon tokens pin/unpin/unblock`)
 
@@ -1521,6 +1626,14 @@ print "No matching entries removed" and exit `0` (the pre-#4212 silent no-op tha
 let an operator dispatch onto a still-poisoned pool), `unblock` now **names the
 still-blocked accounts and exits `3`**. Re-run with `--all-reasons` to drop them,
 or wait for the cooldown to expire them automatically.
+
+**Is an `auth` mark still true? (#8972)** Nothing expires an `auth` entry, and
+re-authenticating an account does not clear it. Before unblocking, run
+`loom-daemon tokens check --source probe`: it probes the marked account and
+reports the live result beside the mark (and the mark's recorded timestamp), so
+`probed live: available … looks stale` means `unblock` is safe and `probed
+live: blocked, auth_401 — confirms …` means the credential still needs a
+re-auth first. The check itself never unblocks anything.
 
 ### Permanence: auth vs exhaustion, at read time and on disk
 
@@ -1714,7 +1827,7 @@ the `.ranking` file is what rules it out, and re-probing is the recovery.
 
 `exhausted`/`blocked` are the #5629 hard exclusions — never readmitted without a
 successful re-probe. Under the default `--source auto`, though, Loom derives the
-ranking from claude-monitor's `~/.claude-monitor/ranking.json` whenever that file
+ranking from llm-monitor's `<monitor dir>/ranking.json` whenever that file
 is fresh, and **returns before the probe loop**. So when a credential is *revoked*
 upstream, claude-monitor's own `usage.db` stops refreshing that account, its
 `ranking.json` row freezes, and Loom copied `exhausted` plus a reset instant days
@@ -1790,16 +1903,19 @@ of the cooldown fix — but confirming that required inspecting the host's
 installed binaries after the fact, which is exactly the forensics this log line
 removes.)
 
-**Auto-unpin** (`failure_counts`): the wrapper tracks consecutive
-`TOKEN_EXHAUSTED` failures per account in `.loom/tokens/.failure_counts` (JSON).
+**Auto-unpin** (`failure_counts`): the wrapper tracks a running
+total of `TOKEN_EXHAUSTED` marks per account (since its last reset — not strictly
+consecutive) in `.loom/tokens/.failure_counts` (JSON).
 When **every** account in the allowlist hits the threshold (default 5), the
 wrapper auto-clears `.allowlist` and `.failure_counts` with a loud stderr log
 line. Operators can re-pin afterwards. The threshold is `>= 5`, so a 6th failure
 does not silently exceed; it still triggers (idempotent at-or-above).
 
-Counters are reset on:
-- a successful spawn for that account, or
-- any operator allowlist mutation (`pin`, `unpin`, `add`, `remove`).
+A successful spawn does **not** reset the counter: `spawn-claude.sh` `exec`s
+`claude` and never regains control to attribute an outcome. Counters are reset on:
+- `loom-daemon tokens unblock <name>` (that account only),
+- any operator allowlist mutation (`pin`, `unpin`, `add`, `remove`), or
+- the auto-unpin itself (which clears `.failure_counts`).
 
 **Empty-pool guard**: if the selector finds the allowlist minus `.bad_tokens` is
 empty, `spawn-claude.sh` exits `78` (`EX_CONFIG`) with operator instructions. It
@@ -1836,8 +1952,12 @@ Terminal policy is intentionally conservative:
   design (#5687).
 - `RECOVERABLE` and `SESSION_LIMIT` apply short temporary backoffs.
 - Success records freshness and clears transient counters.
-- Timeouts, fatal/configuration failures, refusals, and deleted-cwd outcomes do
-  not poison account health.
+- Timeouts, fatal/configuration failures, refusals, deleted-cwd outcomes and
+  `SANDBOX_UNAVAILABLE` (#10003: the session exited 0 but its sandbox refused
+  every tool call), `SESSION_DOWN` (#10455: the session container was not
+  running) and `SESSION_MOUNT_STALE` (#10364: it was running but did not mount
+  the tick's working directory) do not poison account health. Those three also
+  record no freshness, because nothing ran.
 
 Codex exposes no trustworthy quota-headroom percentage here. Status/capacity
 therefore reports raw, enabled, healthy, cooldown, and reauth-required counts;
@@ -2230,6 +2350,15 @@ CLI: [`runtime-model-trials.md` § "API-key account pool"](runtime-model-trials.
 [`tokens import-from-monitor`](#importing-live-tokens-from-claude-monitor-4006): a **pull**-based
 convergence on an operator-maintained source of truth, so an ephemeral or
 autoscaled host that nobody runs `add` on still boots with the fleet's accounts.
+
+**Live marking from the egress proxy (#11300).** When a launch runs behind the
+credential proxy, the proxy sees a 429 or quota response before the harness's
+retry ladder gives up, and bad-marks that launch's account immediately (same
+model-class scoping and reset-aligned cooldown as the log-based marking above;
+escalate-only, once per level per launch). With observe mode on it also exports
+per-request, per-seat usage telemetry (counts and classified error codes only,
+never bodies or credentials). Details:
+[`runtime-adapters.md` § "Observe mode"](runtime-adapters.md#observe-mode-passive-per-request-telemetry-issue-11300-slice-1).
 
 ### Kimi's Moonshot-platform API-key route (#8563)
 

@@ -46,16 +46,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 WRAPPER="$SCRIPTS_DIR/claude-wrapper.sh"
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
-
-TESTS_RUN=0
-TESTS_PASSED=0
-TESTS_FAILED=0
-
-pass() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1)); echo -e "  ${GREEN}PASS${NC}: $1"; }
-fail() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1)); echo -e "  ${RED}FAIL${NC}: $1"; }
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/assert.sh"
 
 # assert_pred <fn> <expect 0|1> <output> <exit_code> <msg>
 assert_pred() {
@@ -66,17 +57,6 @@ assert_pred() {
         pass "$msg"
     else
         fail "$msg (wanted $want, got $got)"
-    fi
-}
-
-assert_eq() {
-    local expected="$1" actual="$2" msg="$3"
-    if [[ "$expected" == "$actual" ]]; then
-        pass "$msg"
-    else
-        fail "$msg"
-        echo "    Expected: '$expected'"
-        echo "    Actual:   '$actual'"
     fi
 }
 
@@ -212,6 +192,9 @@ echo "--- is_account_auth_dead: the fallback regex ---"
 assert_pred is_account_auth_dead 0 '401 authentication_error' 1 "a 401 authentication_error is auth-death"
 assert_pred is_account_auth_dead 0 '"type": "authentication_error"' 1 "the JSON authentication_error shape is auth-death"
 assert_pred is_account_auth_dead 0 "token has been revoked" 1 "a revoked token is auth-death"
+assert_pred is_account_auth_dead 0 "Failed to authenticate: OAuth token revoked. Please log in again" 1 "no-verb revoked token is auth-death (#10294)"
+assert_pred is_account_auth_dead 1 "Failed to authenticate: OAuth token revoked." 0 "zero exit never rotates (#10294)"
+assert_pred is_account_auth_dead 1 "The reviewer revoked their approval" 1 "unrelated revoked is not auth-death"
 assert_pred is_account_auth_dead 0 "invalid bearer token" 1 "an invalid bearer token is auth-death"
 assert_pred is_account_auth_dead 0 "OAuth token has expired" 1 "an expired OAuth token is auth-death"
 assert_pred is_account_auth_dead 1 "You have hit your weekly limit" 1 \

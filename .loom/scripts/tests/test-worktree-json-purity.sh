@@ -53,17 +53,8 @@ loom_test_require_daemon_bin "$SCRIPTS_DIR" "worktree-branch-conflict"
 
 WORKTREE_SH="$SCRIPTS_DIR/worktree.sh"
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/assert.sh"
 YELLOW='\033[1;33m'
-NC='\033[0m'
-
-TESTS_RUN=0
-TESTS_PASSED=0
-TESTS_FAILED=0
-
-pass() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1)); echo -e "  ${GREEN}PASS${NC}: $1"; }
-fail() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1)); echo -e "  ${RED}FAIL${NC}: $1"; }
 
 if ! command -v jq >/dev/null 2>&1; then
     echo -e "${YELLOW}SKIP${NC}: jq not available — JSON purity test requires jq"
@@ -311,6 +302,145 @@ else
     fail "un-ported daemon: main worktree was switched despite no guard being able to run"
 fi
 rm -f "$OUT" "$OLD_DAEMON"
+cleanup_repo "$REPO"
+
+# --- Test 7/8: "worktree already exists" exit-0 paths emit JSON too (#9111) -
+#
+# Before #9111, `--json N` against an EXISTING worktree that carries real work
+# (uncommitted changes, or commits ahead of base) exited 0 with COMPLETELY
+# EMPTY stdout — the "preserve existing work" branch never wrote to fd 3, so a
+# caller piping into `jq` got a parse error on nothing rather than a document.
+# These reuse the newbranch/reusebranch setup: create the worktree once, leave
+# real work in it, then run `--json N` again to hit the preserve branch.
+#
+# assert_worktree_json_shape checks the emitted document's key set against the
+# --sparse/--full reconfigure fast path's own shape (worktree.sh's sibling
+# "worktree already exists" answer, loom-daemon/src/worktree_cli/sparse.rs's
+# `{"success": true, "worktreePath": ..., "branchName": ..., "issueNumber":
+# ..., "sparse": ..., "cone": ...}`) — not just "parses", which trivially
+# passes on empty input from jq -e's perspective is a parse failure, not a
+# pass, so assert_pure_json alone already catches the pre-fix regression; this
+# adds the shape check the issue specifically asked for.
+assert_worktree_json_shape() {
+    local out_file="$1" label="$2"
+    local want='["branchName","cone","issueNumber","sparse","success","worktreePath"]'
+    local keys
+    keys=$(jq -S -c 'keys' "$out_file" 2>/dev/null)
+    if [[ "$keys" == "$want" ]]; then
+        pass "$label: JSON key set matches the sparse-fast-path shape"
+    else
+        fail "$label: JSON key set mismatch (got '${keys:-parse-error}', want '$want') — content: $(cat "$out_file")"
+    fi
+}
+
+echo ""
+echo "Test 7: preserve-existing-work path (uncommitted change) produces pure JSON (#9111)"
+REPO=$(setup_repo preserveuncommitted)
+OUT=$(mktemp /tmp/loom-wtjson-out.XXXXXX)
+(
+    cd "$REPO" || exit 1
+    ./.loom/scripts/worktree.sh --json 106 >/dev/null 2>&1
+    # A tracked-file edit left uncommitted, WITHOUT removing the worktree dir
+    # (unlike Test 2's branch-reuse setup) — this is what routes the second
+    # run into the registered-worktree "preserve" branch rather than reuse.
+    echo "dirty" >> .loom/worktrees/issue-106/.gitignore
+    ./.loom/scripts/worktree.sh --json 106 >"$OUT" 2>/dev/null
+)
+assert_pure_json "$OUT" "preserve-uncommitted"
+assert_worktree_json_shape "$OUT" "preserve-uncommitted"
+rm -f "$OUT"
+cleanup_repo "$REPO"
+
+echo ""
+echo "Test 8: preserve-existing-work path (commit ahead of base) produces pure JSON (#9111)"
+REPO=$(setup_repo preserveahead)
+OUT=$(mktemp /tmp/loom-wtjson-out.XXXXXX)
+(
+    cd "$REPO" || exit 1
+    ./.loom/scripts/worktree.sh --json 107 >/dev/null 2>&1
+    (
+        cd .loom/worktrees/issue-107 || exit 1
+        git config user.email t@t
+        git config user.name t
+        echo "work" > work.txt
+        git add work.txt
+        git commit -q -m "wip"
+    )
+    ./.loom/scripts/worktree.sh --json 107 >"$OUT" 2>/dev/null
+)
+assert_pure_json "$OUT" "preserve-ahead"
+assert_worktree_json_shape "$OUT" "preserve-ahead"
+rm -f "$OUT"
+cleanup_repo "$REPO"
+
+echo ""
+echo "Test 9: stale-worktree-reset path (no work) produces pure JSON (#9111)"
+# A clean worktree with nothing ahead routes the second run into the "stale
+# worktree reset" arm, which since #9111 shares the preserve arm's exit.
+REPO=$(setup_repo stalereset)
+OUT=$(mktemp /tmp/loom-wtjson-out.XXXXXX)
+(
+    cd "$REPO" || exit 1
+    ./.loom/scripts/worktree.sh --json 108 >/dev/null 2>&1
+    ./.loom/scripts/worktree.sh --json 108 >"$OUT" 2>/dev/null
+)
+assert_pure_json "$OUT" "stale-reset"
+assert_worktree_json_shape "$OUT" "stale-reset"
+rm -f "$OUT"
+cleanup_repo "$REPO"
+
+# --- Test 10: `worktree.sh N | cat` returns while a lease renewer runs (#10203)
+#
+# fd 3 is the caller's saved stdout. `lease ensure` starts a renewer that
+# outlives worktree.sh by up to 4h; if it inherits fd 3, a `worktree.sh N | tail`
+# pipe stays open that long. The stub stands in for a daemon whose `lease`
+# subcommand leaves a long-lived background child with every OTHER inherited fd
+# intact, and answers every other subcommand like an old binary. Its child's
+# stderr is /dev/null because the real renewer's is: `lease ensure` starts it
+# with `Stdio::null()` (cli/lease_ensure.rs `start_renewal`). worktree.sh leaves
+# its own stderr attached so the one outcome line stays visible (#10570), so
+# this models fd 3 alone. Bounded: a regression fails in ~30s.
+echo ""
+echo "Test 10: worktree.sh N | cat returns while a lease renewer keeps running (#10203)"
+REPO=$(setup_repo leasefd)
+RENEWER_DAEMON=$(mktemp /tmp/loom-wtjson-leasedaemon.XXXXXX)
+RENEWER_PIDFILE=$(mktemp /tmp/loom-wtjson-leasepid.XXXXXX)
+cat > "$RENEWER_DAEMON" <<STUB
+#!/usr/bin/env bash
+if [[ "\$1" == "lease" ]]; then
+    sleep 30 2>/dev/null &
+    echo \$! > "$RENEWER_PIDFILE"
+    exit 0
+fi
+echo "error: unrecognized subcommand '\$1'" >&2
+exit 2
+STUB
+chmod +x "$RENEWER_DAEMON"
+RENEWER_DONE=$(mktemp /tmp/loom-wtjson-leasedone.XXXXXX)
+# Time from worktree.sh's own exit to the pipe closing — not worktree.sh's own
+# runtime, which varies with host load.
+(
+    cd "$REPO" || exit 1
+    {
+        LOOM_DAEMON_SELF_BIN="$RENEWER_DAEMON" LOOM_DAEMON_BIN="$RENEWER_DAEMON" \
+            ./.loom/scripts/worktree.sh 109 2>&1
+        date +%s > "$RENEWER_DONE"
+    } | cat >/dev/null
+)
+ELAPSED=$(($(date +%s) - $(cat "$RENEWER_DONE")))
+RENEWER_PID=$(cat "$RENEWER_PIDFILE" 2>/dev/null)
+if [[ -n "$RENEWER_PID" ]] && kill -0 "$RENEWER_PID" 2>/dev/null; then
+    pass "lease-fd: the stub renewer was started and is still running"
+else
+    fail "lease-fd: the stub renewer is not running (never started, so the test is vacuous, or the pipe held long enough for it to exit)"
+fi
+if [[ "$ELAPSED" -lt 5 ]]; then
+    pass "lease-fd: the pipe closed when worktree.sh exited (${ELAPSED}s after)"
+else
+    fail "lease-fd: the pipe stayed open ${ELAPSED}s after worktree.sh exited — the renewer inherited its fd 3"
+fi
+[[ -n "$RENEWER_PID" ]] && kill "$RENEWER_PID" 2>/dev/null
+rm -f "$RENEWER_DAEMON" "$RENEWER_PIDFILE" "$RENEWER_DONE"
 cleanup_repo "$REPO"
 
 # --- Summary ---

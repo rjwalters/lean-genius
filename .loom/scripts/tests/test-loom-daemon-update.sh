@@ -238,12 +238,12 @@ if [[ "\${1:-}" == "restart" ]]; then
 fi
 # See write_fake_daemon's comment (#4799): no real calibrate implementation,
 # exit fast instead of falling into the daemon-body loop below.
-if [[ "\${1:-}" == "calibrate" ]]; then
-    exit 1
-fi
+if [[ "\${1:-}" == "calibrate" ]]; then exit 1; fi
 # Same catch-all as write_fake_daemon (#4799): an unrecognized NON-FLAG
 # subcommand must never fall into the foreground daemon loop and wedge its
 # caller. Flags still reach the daemon body.
+# Answers the post-build OTLP probe (#10700) like a real daemon.
+[[ "\${1:-}" == "telemetry-capabilities" ]] && { echo '{"otlp":true}'; exit 0; }
 if [[ -n "\${1:-}" && "\${1:-}" != -* ]]; then
     echo "fake loom-daemon: unsupported subcommand: \$*" >&2
     exit 1
@@ -282,9 +282,9 @@ if [[ -n '${status_json}' && "\${1:-}" == "status" ]]; then
     printf '%s\n' '${status_json}'
     exit 0
 fi
-if [[ "\${1:-}" == "calibrate" ]]; then
-    exit 1
-fi
+if [[ "\${1:-}" == "calibrate" ]]; then exit 1; fi
+# Answers the post-build OTLP probe (#10700) like a real daemon.
+[[ "\${1:-}" == "telemetry-capabilities" ]] && { echo '{"otlp":true}'; exit 0; }
 if [[ -n "\${1:-}" && "\${1:-}" != -* ]]; then
     echo "fake loom-daemon: unsupported subcommand: \$*" >&2
     exit 1
@@ -341,11 +341,14 @@ EOF
 # never invoked with `-k`) and, only when $4 (<kickstart_new_pid>) is given,
 # overwrites the state file with it — simulating a kickstart-triggered
 # relaunch; when $4 is omitted, `kickstart` is a no-op (a kickstart that also
-# fails to bring the job up).
+# fails to bring the job up). Optional $5 (<on_call>, #12776): the 1-based
+# kickstart call that is the first to move the pid (default 1), so a test can
+# make the fallback kickstart fail and the kickstart after a restore succeed.
 write_fake_launchd_pid_bin() {
-    local bin_dir="$1" log="$2" state_file="$3" kickstart_new_pid="${4:-}"
+    local bin_dir="$1" log="$2" state_file="$3" kickstart_new_pid="${4:-}" on_call="${5:-1}"
     mkdir -p "$bin_dir"
     : > "$log"
+    : > "${state_file}.ks"
     cat > "$bin_dir/launchctl" <<EOF
 #!/usr/bin/env bash
 echo "\$*" >> "${log}"
@@ -361,7 +364,8 @@ case "\${1:-}" in
     echo "	last exit status = 0"
     exit 0 ;;
   kickstart)
-    if [[ -n "${kickstart_new_pid}" ]]; then
+    echo x >> "${state_file}.ks"
+    if [[ -n "${kickstart_new_pid}" && "\$(wc -l < "${state_file}.ks")" -ge ${on_call} ]]; then
       echo "${kickstart_new_pid}" > "${state_file}"
     fi
     exit 0 ;;
@@ -613,6 +617,8 @@ StandardError=append:/tmp/daemon.log
 [Install]
 WantedBy=default.target
 EOF
+    # #11951: the host's drop-in owns autonomy, as the worker spec's does.
+    mkdir -p "$unit_path.d" && printf '%s\n' '[Service]' 'Environment=LOOM_WORK_FINDER=1 LOOM_MAIN_HEALTH_GATE=1' > "$unit_path.d/15-autonomy.conf"
 }
 
 
@@ -852,7 +858,7 @@ TESTS_RUN=$((TESTS_RUN + 1))
 if [[ -e "$W4/loom-daemon/target/release/loom-daemon" ]]; then
     TESTS_FAILED=$((TESTS_FAILED + 1))
     echo -e "${RED}✗${NC} --dry-run performs no rebuild"
-elif echo "$dryrun_out" | grep -q 'dry-run.*cargo build'; then
+elif grep -q 'dry-run.*cargo build' <<<"$dryrun_out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --dry-run performs no rebuild and prints the plan"
 else
@@ -1068,7 +1074,7 @@ rc5d=$?
 assert_eq "1" "$rc5d" "update exits 1 when cargo is genuinely absent (no PATH, no \$HOME/.cargo/bin)"
 
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out5d" | grep -qi 'rustup'; then
+if grep -qi 'rustup' <<<"$out5d"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} genuinely-absent-cargo error message suggests installing via rustup"
 else
@@ -1097,7 +1103,7 @@ out6=$( cd "$W6" && PATH="$TEST_PATH" LOOM_DAEMON_BIN="$INSTALLED6" NEW_FAKE_BIN
 rc6=$?
 assert_eq "0" "$rc6" "update with no prior PID file exits 0 (rebuild+provision only)"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out6" | grep -qi 'not running'; then
+if grep -qi 'not running' <<<"$out6"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} update reports the daemon was not running (nothing started)"
 else
@@ -1173,8 +1179,8 @@ kill "$old_pid7" 2>/dev/null || true
 help_ok=false
 for _help_attempt in 1 2 3 4 5 6; do
     help_out=$(bash "$UPDATE_SCRIPT" --help 2>/dev/null)
-    if echo "$help_out" | grep -q -- '--check' && echo "$help_out" | grep -q -- '--dry-run' \
-        && echo "$help_out" | grep -q -- '--no-restart'; then
+    if grep -q -- '--check' <<<"$help_out" && grep -q -- '--dry-run' <<<"$help_out" \
+        && grep -q -- '--no-restart' <<<"$help_out"; then
         help_ok=true
         break
     fi
@@ -1247,8 +1253,8 @@ for _race8b in $(seq 1 "$RACE_ITERS_8B"); do
     race_ok_8b=false
     for _attempt8b in 1 2 3 4 5 6; do
         race_out_8b=$(bash "$FIXTURE8B" --help 2>/dev/null)
-        if echo "$race_out_8b" | grep -q -- '--check' && echo "$race_out_8b" | grep -q -- '--dry-run' \
-            && echo "$race_out_8b" | grep -q -- '--no-restart'; then
+        if grep -q -- '--check' <<<"$race_out_8b" && grep -q -- '--dry-run' <<<"$race_out_8b" \
+            && grep -q -- '--no-restart' <<<"$race_out_8b"; then
             race_ok_8b=true
             break
         fi
@@ -1307,7 +1313,7 @@ else
     echo -e "${RED}✗${NC} build-commit mismatch does NOT provision (destination left untouched)"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out10" | grep -qi 'Build verification FAILED'; then
+if grep -qi 'Build verification FAILED' <<<"$out10"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} build-commit mismatch is reported distinguishably from a compile failure"
 else
@@ -1351,7 +1357,7 @@ out11=$( cd "$W11" && PATH="$TEST_PATH" NEW_FAKE_BIN_SRC="$NEW_FAKE11" \
 rc11=$?
 assert_eq "5" "$rc11" "provision reports success but ships a stale destination -> exit 5"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out11" | grep -qi 'Post-provision verification FAILED'; then
+if grep -qi 'Post-provision verification FAILED' <<<"$out11"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} silent no-op roll is caught and reported distinguishably"
 else
@@ -1393,7 +1399,7 @@ out12=$( cd "$W12" && PATH="$FAKE_SIGN_FAIL_DIR:$TEST_PATH" LOOM_DAEMON_BIN="$IN
 rc12=$?
 assert_eq "0" "$rc12" "codesign failure during update is non-fatal — exits 0"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out12" | grep -qi 'codesign failed'; then
+if grep -qi 'codesign failed' <<<"$out12"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} codesign failure surfaces a non-fatal warning"
 else
@@ -1537,7 +1543,7 @@ else
     echo "  output: $out15"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out15" | grep -qi 'not running'; then
+if grep -qi 'not running' <<<"$out15"; then
     TESTS_FAILED=$((TESTS_FAILED + 1))
     echo -e "${RED}✗${NC} launchd-loaded job is NOT mistaken for 'was not running'"
     echo "  output: $out15"
@@ -1546,7 +1552,7 @@ else
     echo -e "${GREEN}✓${NC} launchd-loaded job is NOT mistaken for 'was not running'"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if grep -q "^${RELAUNCHED_PID15}$\|new pid ${RELAUNCHED_PID15}" <<< "$out15" || echo "$out15" | grep -q "new pid ${RELAUNCHED_PID15}"; then
+if grep -q "^${RELAUNCHED_PID15}$\|new pid ${RELAUNCHED_PID15}" <<< "$out15" || grep -q "new pid ${RELAUNCHED_PID15}" <<<"$out15"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} success message reports the VERIFIED new pid (#4232)"
 else
@@ -1564,7 +1570,7 @@ else
     echo -e "${GREEN}✓${NC} relaunch observed immediately -> kickstart fallback is NEVER invoked (#4232 case a)"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out15" | grep -qi 'FLAGS-OFF'; then
+if grep -qi 'FLAGS-OFF' <<<"$out15"; then
     TESTS_FAILED=$((TESTS_FAILED + 1))
     echo -e "${RED}✗${NC} no 'restarting FLAGS-OFF' warning fires for a launchd restart"
     echo "  output: $out15"
@@ -1607,7 +1613,7 @@ assert_eq "6" "$rc16" "launchd restart refused -> exit 6 (never a silent half-up
 # (a) Names the --relaunch re-render path and does NOT recommend a bare
 #     `launchctl bootstrap` of the stale plist (the #4118 self-perpetuating bug).
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out16" | grep -q -- '--relaunch' && ! echo "$out16" | grep -qi 'launchctl bootstrap'; then
+if grep -q -- '--relaunch' <<<"$out16" && ! grep -qi 'launchctl bootstrap' <<<"$out16"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} refused restart names --relaunch, never a bare bootstrap of the stale plist"
 else
@@ -1619,8 +1625,8 @@ fi
 #     longer kills in-flight sweeps, but hand-running it can still race the
 #     async teardown) and still prefers a graceful `kill -TERM` fallback.
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out16" | grep -qi 'bootout' && echo "$out16" | grep -qi 'sweep' \
-    && echo "$out16" | grep -q 'kill -TERM'; then
+if grep -qi 'bootout' <<<"$out16" && grep -qi 'sweep' <<<"$out16" \
+    && grep -q 'kill -TERM' <<<"$out16"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} refused restart mentions bootout+sweeps (#5081-corrected) + prefers kill -TERM (AC4)"
 else
@@ -1646,7 +1652,7 @@ check_ld_out=$( cd "$W17" && PATH="$LD_BIN17:$TEST_PATH" LOOM_DAEMON_LAUNCHD=1 \
     LOOM_LAUNCHD_LABEL="com.example.scratch-4042" LOOM_DAEMON_BIN="$INSTALLED17" \
     bash "$UPDATE_SCRIPT" --check 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$check_ld_out" | grep -qi 'manager: launchd' && echo "$check_ld_out" | grep -q 'com.example.scratch-4042'; then
+if grep -qi 'manager: launchd' <<<"$check_ld_out" && grep -q 'com.example.scratch-4042' <<<"$check_ld_out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --check names launchd (with label) as the owning manager"
 else
@@ -1663,7 +1669,7 @@ echo "$pid17" > "$W17/.loom/.daemon.pid"
 check_pid_out=$( cd "$W17" && PATH="$TEST_PATH" LOOM_PID_FILE='' LOOM_DAEMON_LAUNCHD=0 \
     LOOM_DAEMON_BIN="$INSTALLED17" bash "$UPDATE_SCRIPT" --check 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$check_pid_out" | grep -qi 'manager: PID-file'; then
+if grep -qi 'manager: PID-file' <<<"$check_pid_out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --check names PID-file/nohup as the owning manager"
 else
@@ -1677,7 +1683,7 @@ rm -f "$W17/.loom/.daemon.pid"
 check_none_out=$( cd "$W17" && PATH="$TEST_PATH" LOOM_DAEMON_LAUNCHD=0 \
     LOOM_DAEMON_BIN="$INSTALLED17" bash "$UPDATE_SCRIPT" --check 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$check_none_out" | grep -qi 'manager: not running'; then
+if grep -qi 'manager: not running' <<<"$check_none_out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --check names 'not running' when no daemon is up"
 else
@@ -1701,7 +1707,7 @@ write_fake_launchd_loaded_bin "$LD_BIN18" "$W18/launchctl.log"
 dry18_out=$( cd "$W18" && PATH="$LD_BIN18:$TEST_PATH" LOOM_DAEMON_LAUNCHD=1 \
     LOOM_DAEMON_BIN="$INSTALLED18" bash "$UPDATE_SCRIPT" --dry-run 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$dry18_out" | grep -qi 'launchd-managed' && echo "$dry18_out" | grep -qi 'restart' \
+if grep -qi 'launchd-managed' <<<"$dry18_out" && grep -qi 'restart' <<<"$dry18_out" \
     && [[ ! -s "$RESTART_MARKER18" ]] && [[ ! -e "$W18/loom-daemon/target/release/loom-daemon" ]]; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --dry-run reports the launchd restart plan and makes no writes"
@@ -1734,7 +1740,7 @@ out19=$( cd "$W19" && PATH="$LD_BIN19:$TEST_PATH" LOOM_DAEMON_LAUNCHD=0 \
 rc19=$?
 assert_eq "0" "$rc19" "LOOM_DAEMON_LAUNCHD=0 update exits 0 (rebuild+provision, no launchd)"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out19" | grep -qi 'not running' && [[ ! -s "$RESTART_MARKER19" ]]; then
+if grep -qi 'not running' <<<"$out19" && [[ ! -s "$RESTART_MARKER19" ]]; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} LOOM_DAEMON_LAUNCHD=0 skips launchd tiers (no restart driven)"
 else
@@ -1788,9 +1794,9 @@ write_fixture_plist_pre4077 "$PLIST21" "$LOOM_LAUNCHD_LABEL" "$INSTALLED21" "$HO
     bash "$UPDATE_SCRIPT" --relaunch >/dev/null 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
 if grep -q 'LOOM_DAEMON_SUPERVISOR' "$PLIST21" 2>/dev/null \
-    && grep -q 'SuccessfulExit' "$PLIST21" 2>/dev/null; then
+    && grep -q 'SuccessfulExit' "$PLIST21" 2>/dev/null && grep -q '<key>Crashed</key>' "$PLIST21" 2>/dev/null; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} --relaunch re-renders the plist with KeepAlive:SuccessfulExit + LOOM_DAEMON_SUPERVISOR (AC1)"
+    echo -e "${GREEN}✓${NC} --relaunch re-renders the plist with KeepAlive:SuccessfulExit + Crashed (#11058) + LOOM_DAEMON_SUPERVISOR (AC1)"
 else
     TESTS_FAILED=$((TESTS_FAILED + 1))
     echo -e "${RED}✗${NC} --relaunch re-renders the plist with KeepAlive:SuccessfulExit + LOOM_DAEMON_SUPERVISOR (AC1)"
@@ -1862,9 +1868,9 @@ out23=$( cd "$W23" && PATH="$LD_BIN23:$TEST_PATH" LOOM_DAEMON_LAUNCHD=1 \
 rc23=$?
 assert_eq "0" "$rc23" "--no-restart on a launchd host exits 0"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out23" | grep -q -- '--relaunch' \
-    && ! echo "$out23" | grep -qi 'launchctl bootstrap' \
-    && echo "$out23" | grep -qi 'bootout' && echo "$out23" | grep -qi 'sweep'; then
+if grep -q -- '--relaunch' <<<"$out23" \
+    && ! grep -qi 'launchctl bootstrap' <<<"$out23" \
+    && grep -qi 'bootout' <<<"$out23" && grep -qi 'sweep' <<<"$out23"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --no-restart names --relaunch, no bare bootstrap, mentions bootout+sweeps (#5081-corrected)"
 else
@@ -1897,8 +1903,8 @@ out24=$( cd "$W24" && PATH="$LD_BIN24:$TEST_PATH" HOME="$HOME24" LOOM_DAEMON_LAU
     bash "$UPDATE_SCRIPT" --relaunch 2>&1 )
 rc24=$?
 TESTS_RUN=$((TESTS_RUN + 1))
-if [[ "$rc24" -ne 0 ]] && echo "$out24" | grep -qi 'not found' \
-    && echo "$out24" | grep -qF "$PLIST24" && [[ ! -e "$PLIST24" ]]; then
+if [[ "$rc24" -ne 0 ]] && grep -qi 'not found' <<<"$out24" \
+    && grep -qF "$PLIST24" <<<"$out24" && [[ ! -e "$PLIST24" ]]; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --relaunch with an absent plist fails loudly (names the path) and renders nothing"
 else
@@ -1931,7 +1937,7 @@ out=$( cd "$NON_LOOM_DIR" && PATH="$TEST_PATH" HOME="$HOME_WM1" LOOM_MACHINE_CHE
 rc=$(echo "$out" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
 assert_eq "0" "$rc" "machine mode: --check from an unrelated non-Loom \$PWD resolves the checkout as source tree (Gap 1)"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out" | grep -q "only works inside a Loom source checkout"; then
+if grep -q "only works inside a Loom source checkout" <<<"$out"; then
     TESTS_FAILED=$((TESTS_FAILED + 1))
     echo -e "${RED}✗${NC} machine mode: never refuses with the dev-mode 'source checkout' error"
     echo "  output: $out"
@@ -1940,7 +1946,7 @@ else
     echo -e "${GREEN}✓${NC} machine mode: never refuses with the dev-mode 'source checkout' error"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out" | grep -qF "$WM1"; then
+if grep -qF "$WM1" <<<"$out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} machine mode: reports the machine checkout as the resolved source tree"
 else
@@ -1975,7 +1981,7 @@ out_m2=$( cd "$HOME_LIKE_M2" && PATH="$TEST_PATH" HOME="$HOME_LIKE_M2" \
 rc_m2=$(echo "$out_m2" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
 assert_eq "0" "$rc_m2" "#5140: --check from a \$HOME-like dir holding a bare .loom/ resolves the script's own checkout"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out_m2" | grep -qF "$HOME_LIKE_M2/loom-daemon"; then
+if grep -qF "$HOME_LIKE_M2/loom-daemon" <<<"$out_m2"; then
     TESTS_FAILED=$((TESTS_FAILED + 1))
     echo -e "${RED}✗${NC} #5140: never resolves a bare ~/.loom directory as the repo root"
     echo "  output: $out_m2"
@@ -1984,7 +1990,7 @@ else
     echo -e "${GREEN}✓${NC} #5140: never resolves a bare ~/.loom directory as the repo root"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out_m2" | grep -qF "using this script's own checkout: $WM2"; then
+if grep -qF "using this script's own checkout: $WM2" <<<"$out_m2"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} #5140: announces the self-location fallback (never a silent switch)"
 else
@@ -2014,7 +2020,7 @@ out_m3=$( cd "$NON_REPO_M3" && PATH="$TEST_PATH" HOME="$HOME_M3" \
 rc_m3=$(echo "$out_m3" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
 assert_eq "1" "$rc_m3" "#5140: refuses (exit 1) when neither \$PWD nor the script's own tree is a Loom checkout"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out_m3" | grep -qi "Not in a Loom workspace" && echo "$out_m3" | grep -qF "$NON_REPO_M3"; then
+if grep -qi "Not in a Loom workspace" <<<"$out_m3" && grep -qF "$NON_REPO_M3" <<<"$out_m3"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} #5140: the refusal names the CWD it searched"
 else
@@ -2076,7 +2082,7 @@ else
     echo "  output: $out26"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out26" | grep -qi 'not running'; then
+if grep -qi 'not running' <<<"$out26"; then
     TESTS_FAILED=$((TESTS_FAILED + 1))
     echo -e "${RED}✗${NC} systemd-loaded unit is NOT mistaken for 'was not running'"
     echo "  output: $out26"
@@ -2085,7 +2091,7 @@ else
     echo -e "${GREEN}✓${NC} systemd-loaded unit is NOT mistaken for 'was not running'"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out26" | grep -qi 'FLAGS-OFF'; then
+if grep -qi 'FLAGS-OFF' <<<"$out26"; then
     TESTS_FAILED=$((TESTS_FAILED + 1))
     echo -e "${RED}✗${NC} no 'restarting FLAGS-OFF' warning fires for a systemd restart"
     echo "  output: $out26"
@@ -2145,9 +2151,9 @@ assert_eq "6" "$rc27" "systemd restart refused -> exit 6 (never a silent half-up
 # the ONLY manual systemctl-adjacent mention allowed is the "do NOT ... stop"
 # warning itself.
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out27" | grep -q -- '--relaunch' \
-    && ! echo "$out27" | grep -qi 'systemctl --user restart' \
-    && ! echo "$out27" | grep -qi 'systemctl --user enable'; then
+if grep -q -- '--relaunch' <<<"$out27" \
+    && ! grep -qi 'systemctl --user restart' <<<"$out27" \
+    && ! grep -qi 'systemctl --user enable' <<<"$out27"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} refused restart names --relaunch, never a bare manual systemctl restart/enable"
 else
@@ -2156,8 +2162,8 @@ else
     echo "  output: $out27"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out27" | grep -qi 'cgroup' && echo "$out27" | grep -qi 'sweep' \
-    && echo "$out27" | grep -q 'kill -TERM'; then
+if grep -qi 'cgroup' <<<"$out27" && grep -qi 'sweep' <<<"$out27" \
+    && grep -q 'kill -TERM' <<<"$out27"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} refused restart warns stop tears down the cgroup + kills in-flight sweeps, prefers kill -TERM"
 else
@@ -2182,7 +2188,7 @@ check_sd_out=$( cd "$W28" && PATH="$SD_BIN28:$TEST_PATH" LOOM_SYSTEMD_FORCE=1 LO
     LOOM_SYSTEMD_UNIT="loom-daemon-test-sd28.service" LOOM_DAEMON_BIN="$INSTALLED28" \
     bash "$UPDATE_SCRIPT" --check 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$check_sd_out" | grep -qi 'manager: systemd' && echo "$check_sd_out" | grep -q 'loom-daemon-test-sd28.service'; then
+if grep -qi 'manager: systemd' <<<"$check_sd_out" && grep -q 'loom-daemon-test-sd28.service' <<<"$check_sd_out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --check names systemd (with unit) as the owning manager"
 else
@@ -2208,7 +2214,7 @@ dry29_out=$( cd "$W29" && PATH="$SD_BIN29:$TEST_PATH" LOOM_SYSTEMD_FORCE=1 LOOM_
     LOOM_SYSTEMD_UNIT="loom-daemon-test-sd29.service" LOOM_DAEMON_BIN="$INSTALLED29" \
     bash "$UPDATE_SCRIPT" --dry-run 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$dry29_out" | grep -qi 'systemd-managed' && echo "$dry29_out" | grep -qi 'restart' \
+if grep -qi 'systemd-managed' <<<"$dry29_out" && grep -qi 'restart' <<<"$dry29_out" \
     && [[ ! -s "$RESTART_MARKER29" ]] && [[ ! -e "$W29/loom-daemon/target/release/loom-daemon" ]]; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --dry-run reports the systemd restart plan and makes no writes"
@@ -2244,7 +2250,7 @@ out30=$( cd "$W30" && PATH="$SD_BIN30:$TEST_PATH" LOOM_SYSTEMD_FORCE=1 LOOM_DAEM
 rc30=$?
 assert_eq "0" "$rc30" "LOOM_DAEMON_SYSTEMD=0 update exits 0 (rebuild+provision, no systemd)"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out30" | grep -qi 'not running' && [[ ! -s "$RESTART_MARKER30" ]] && [[ ! -s "$SD_LOG30" ]]; then
+if grep -qi 'not running' <<<"$out30" && [[ ! -s "$RESTART_MARKER30" ]] && [[ ! -s "$SD_LOG30" ]]; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} LOOM_DAEMON_SYSTEMD=0 skips systemd tiers (no restart driven, zero systemctl calls)"
 else
@@ -2257,7 +2263,7 @@ fi
 # ============================================================
 # 31. --relaunch re-renders the unit with the SUPERVISED keys (mirrors test
 #     21): after a refused restart, `--relaunch` re-renders via
-#     loom-daemon-start.sh, installing Restart=on-success +
+#     loom-daemon-start.sh, installing Restart=always + OOMPolicy=continue +
 #     LOOM_DAEMON_SUPERVISOR=systemd into the unit — the two keys the stale
 #     pre-#4267 fixture unit LACKS, so a passing assertion proves the
 #     re-render actually happened (not a leftover). HOME is sandboxed so
@@ -2286,21 +2292,21 @@ write_fixture_unit_pre4267 "$UNIT_PATH31" "$INSTALLED31"
     bash "$UPDATE_SCRIPT" --relaunch >/dev/null 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
 if grep -q 'LOOM_DAEMON_SUPERVISOR=systemd' "$UNIT_PATH31" 2>/dev/null \
-    && grep -qx 'Restart=on-success' "$UNIT_PATH31" 2>/dev/null \
+    && grep -qx 'Restart=always' "$UNIT_PATH31" 2>/dev/null && grep -qx 'OOMPolicy=continue' "$UNIT_PATH31" 2>/dev/null \
     && grep -qx 'KillMode=mixed' "$UNIT_PATH31" 2>/dev/null; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} --relaunch re-renders the unit with Restart=on-success + KillMode=mixed (#4862) + LOOM_DAEMON_SUPERVISOR=systemd"
+    echo -e "${GREEN}✓${NC} --relaunch re-renders the unit with Restart=always + OOMPolicy=continue (#11058) + KillMode=mixed (#4862) + LOOM_DAEMON_SUPERVISOR=systemd"
 else
     TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} --relaunch re-renders the unit with Restart=on-success + KillMode=mixed + LOOM_DAEMON_SUPERVISOR=systemd"
+    echo -e "${RED}✗${NC} --relaunch re-renders the unit with Restart=always + OOMPolicy=continue + KillMode=mixed + LOOM_DAEMON_SUPERVISOR=systemd"
     echo "  unit: $(cat "$UNIT_PATH31" 2>/dev/null)"
 fi
 
 # ============================================================
-# 32. --relaunch PRESERVES the live unit's autonomy env across the re-render
-#     (mirrors test 22): the four autonomy keys carry through byte-for-byte,
-#     and the stale sentinel PATH is NOT round-tripped (start.sh rebuilds
-#     PATH).
+# 32. --relaunch PRESERVES the live unit's other LOOM_* env across the
+#     re-render (mirrors test 22), PURGES its autonomy lines (#11951: the
+#     host's drop-in owns them), and does NOT round-trip the stale sentinel
+#     PATH (start.sh rebuilds PATH).
 # ============================================================
 W32="$BASE_WORKDIR/w32"
 new_fixture "$W32"
@@ -2323,16 +2329,15 @@ write_fixture_unit_pre4267 "$UNIT_PATH32" "$INSTALLED32"
     LOOM_DAEMON_BIN="$INSTALLED32" NEW_FAKE_BIN_SRC="$NEW_FAKE32" \
     bash "$UPDATE_SCRIPT" --relaunch >/dev/null 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
-if grep -qx 'Environment=LOOM_WORK_FINDER=1' "$UNIT_PATH32" 2>/dev/null \
-    && grep -qx 'Environment=LOOM_MAIN_HEALTH_GATE=1' "$UNIT_PATH32" 2>/dev/null \
-    && grep -qx 'Environment=LOOM_WORK_FINDER_MAX_CONCURRENT=10' "$UNIT_PATH32" 2>/dev/null \
+if ! grep -q '^Environment=LOOM_WORK_FINDER=\|^Environment=LOOM_MAIN_HEALTH_GATE=' "$UNIT_PATH32" 2>/dev/null \
+    && grep -q 'LOOM_DAEMON_SUPERVISOR=systemd' "$UNIT_PATH32" 2>/dev/null && grep -qx 'Environment=LOOM_WORK_FINDER_MAX_CONCURRENT=10' "$UNIT_PATH32" 2>/dev/null \
     && grep -qx 'Environment=LOOM_PER_TOKEN_CONCURRENCY=5' "$UNIT_PATH32" 2>/dev/null \
     && ! grep -q 'sentinel-oldpath-4267' "$UNIT_PATH32" 2>/dev/null; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} --relaunch preserves all 4 autonomy env keys and does NOT round-trip the stale PATH"
+    echo -e "${GREEN}✓${NC} --relaunch keeps the other LOOM_* keys, purges the autonomy lines (#11951), and does NOT round-trip the stale PATH"
 else
     TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} --relaunch preserves all 4 autonomy env keys and does NOT round-trip the stale PATH"
+    echo -e "${RED}✗${NC} --relaunch keeps the other LOOM_* keys, purges the autonomy lines (#11951), and does NOT round-trip the stale PATH"
     echo "  unit: $(cat "$UNIT_PATH32" 2>/dev/null)"
 fi
 
@@ -2360,10 +2365,10 @@ out33=$( cd "$W33" && PATH="$SD_BIN33:$TEST_PATH" LOOM_SYSTEMD_FORCE=1 LOOM_DAEM
 rc33=$?
 assert_eq "0" "$rc33" "--no-restart on a systemd host exits 0"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out33" | grep -q -- '--relaunch' \
-    && ! echo "$out33" | grep -qi 'systemctl --user restart' \
-    && ! echo "$out33" | grep -qi 'systemctl --user enable' \
-    && echo "$out33" | grep -qi 'cgroup' && echo "$out33" | grep -qi 'sweep'; then
+if grep -q -- '--relaunch' <<<"$out33" \
+    && ! grep -qi 'systemctl --user restart' <<<"$out33" \
+    && ! grep -qi 'systemctl --user enable' <<<"$out33" \
+    && grep -qi 'cgroup' <<<"$out33" && grep -qi 'sweep' <<<"$out33"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --no-restart names --relaunch, no bare manual systemctl restart/enable, warns cgroup teardown kills sweeps"
 else
@@ -2400,8 +2405,8 @@ out34=$( cd "$W34" && PATH="$SD_BIN34:$TEST_PATH" HOME="$HOME34" LOOM_SYSTEMD_FO
     bash "$UPDATE_SCRIPT" --relaunch 2>&1 )
 rc34=$?
 TESTS_RUN=$((TESTS_RUN + 1))
-if [[ "$rc34" -ne 0 ]] && echo "$out34" | grep -qi 'not found' \
-    && echo "$out34" | grep -qF "$UNIT_PATH34" && [[ ! -e "$UNIT_PATH34" ]]; then
+if [[ "$rc34" -ne 0 ]] && grep -qi 'not found' <<<"$out34" \
+    && grep -qF "$UNIT_PATH34" <<<"$out34" && [[ ! -e "$UNIT_PATH34" ]]; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --relaunch with an absent unit fails loudly (names the path) and renders nothing"
 else
@@ -2450,7 +2455,7 @@ rc26=$?
 kill "$OLD_PID26" "$KICKSTART_PID35" 2>/dev/null || true
 assert_eq "0" "$rc26" "no spontaneous relaunch -> kickstart fallback relaunches it -> exit 0 (#4232 case b)"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out35" | grep -qi 'kickstart' && echo "$out35" | grep -qi 'remediation'; then
+if grep -qi 'kickstart' <<<"$out35" && grep -qi 'remediation' <<<"$out35"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} success output names the kickstart fallback + a remediation note"
 else
@@ -2508,9 +2513,22 @@ out36=$( cd "$W36" && PATH="$LD_BIN36:$TEST_PATH" LOOM_DAEMON_LAUNCHD=1 \
     bash "$UPDATE_SCRIPT" 2>&1 )
 rc27=$?
 kill "$OLD_PID27" 2>/dev/null || true
-assert_eq "7" "$rc27" "no relaunch even after kickstart -> exit 7 (never a silent half-update, #4232 case c)"
+# #12776: the candidate was published over a live binary, so the failed start
+# is now followed by ONE restore + ONE restart. Neither moves the pid here, so
+# the outcome is exit 10 (restore failed), not the old bare exit 7.
+assert_eq "10" "$rc27" "no relaunch even after kickstart, and the restored binary does not come up either -> exit 10 (#12776)"
+assert_eq "2" "$(wc -l < "$STATE36.ks" | tr -d ' ')" "exactly one restore restart: the fallback kickstart plus one more, never a loop (#12776)"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out36" | grep -qi 'FAILED' && echo "$out36" | grep -qi 'kickstart'; then
+if grep -qi 'deadbee' <<<"$("$INSTALLED36" --version)" && [[ -e "$INSTALLED36.previous" ]]; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} exit 10 leaves the previous binary at the destination and keeps <dest>.previous"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} exit 10 leaves the previous binary at the destination and keeps <dest>.previous"
+    echo "  output: $out36"
+fi
+TESTS_RUN=$((TESTS_RUN + 1))
+if grep -qi 'FAILED' <<<"$out36" && grep -qi 'kickstart' <<<"$out36"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} failure output loudly reports the exhausted kickstart fallback"
 else
@@ -2519,7 +2537,7 @@ else
     echo "  output: $out36"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out36" | grep -qi 'last exit status'; then
+if grep -qi 'last exit status' <<<"$out36"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} failure output includes launchctl print diagnostics (state/last exit status)"
 else
@@ -2534,6 +2552,97 @@ if grep -q -- '-k' "$W36/launchctl.log" 2>/dev/null; then
 else
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} exhausted kickstart fallback was still never invoked with -k"
+fi
+
+# ============================================================
+# 36b. #12776: the candidate never starts, the restore puts the previous binary
+#      back, and the ONE restart onto it works -> exit 9 (the update did NOT
+#      take: never 0), dest holds the previous bytes, <dest>.previous is kept.
+#      The fallback kickstart (call 1) is a no-op; the post-restore kickstart
+#      (call 2) moves the pid.
+# ============================================================
+W36B="$BASE_WORKDIR/w36b"
+new_fixture "$W36B"
+INSTALLED36B="$W36B/installed/loom-daemon"
+mkdir -p "$W36B/installed"
+RESTART_MARKER36B="$W36B/restart-invoked"
+write_fake_daemon_restart "$INSTALLED36B" "deadbee" "$RESTART_MARKER36B" 0
+NEW_FAKE36B="$W36B/new-fake-daemon"
+HEAD36B="$(cd "$W36B" && git rev-parse --short HEAD)"
+write_fake_daemon_restart "$NEW_FAKE36B" "$HEAD36B" "$RESTART_MARKER36B" 0
+sleep 60 >/dev/null 2>&1 &
+OLD_PID36B=$!
+bg_proc_track "$OLD_PID36B"
+sleep 60 >/dev/null 2>&1 &
+RESTORED_PID36B=$!
+bg_proc_track "$RESTORED_PID36B"
+STATE36B="$W36B/launchd-pid-state"
+echo "$OLD_PID36B" > "$STATE36B"
+LD_BIN36B="$W36B/launchd-bin"
+write_fake_launchd_pid_bin "$LD_BIN36B" "$W36B/launchctl.log" "$STATE36B" "$RESTORED_PID36B" 2
+out36b=$( cd "$W36B" && PATH="$LD_BIN36B:$TEST_PATH" LOOM_DAEMON_LAUNCHD=1 \
+    LOOM_DAEMON_BIN="$INSTALLED36B" NEW_FAKE_BIN_SRC="$NEW_FAKE36B" \
+    LOOM_DAEMON_RESTART_POLL_SECS=1 LOOM_DAEMON_RESTART_POLL_INTERVAL=0.2 \
+    LOOM_DAEMON_RESTART_KICKSTART_POLL_SECS=1 \
+    bash "$UPDATE_SCRIPT" 2>&1 )
+rc36b=$?
+kill "$OLD_PID36B" "$RESTORED_PID36B" 2>/dev/null || true
+assert_eq "9" "$rc36b" "candidate never starts, restored binary does -> exit 9, not 0 (#12776)"
+TESTS_RUN=$((TESTS_RUN + 1))
+if grep -qi 'deadbee' <<<"$("$INSTALLED36B" --version)" \
+    && grep -qi 'deadbee' <<<"$("$INSTALLED36B.previous" --version)" \
+    && grep -q 'UPDATE FAILED' <<<"$out36b"; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} exit 9: dest holds the previous bytes, <dest>.previous is kept, output says the update failed"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} exit 9: dest holds the previous bytes, <dest>.previous is kept, output says the update failed"
+    echo "  output: $out36b"
+fi
+
+# ============================================================
+# 36c. #12776: the retained backup is corrupt when the restore would run ->
+#      the restore REFUSES (no destructive guess): exit 7 unchanged, a line
+#      naming the failed precondition, dest still the candidate, the corrupt
+#      file untouched. The corruption is injected by the candidate's own
+#      `restart` handler, i.e. after the install and before the failed start.
+# ============================================================
+W36C="$BASE_WORKDIR/w36c"
+new_fixture "$W36C"
+INSTALLED36C="$W36C/installed/loom-daemon"
+mkdir -p "$W36C/installed"
+RESTART_MARKER36C="$W36C/restart-invoked"
+write_fake_daemon_restart "$INSTALLED36C" "deadbee" "$RESTART_MARKER36C" 0
+NEW_FAKE36C="$W36C/new-fake-daemon"
+HEAD36C="$(cd "$W36C" && git rev-parse --short HEAD)"
+write_fake_daemon_restart "$NEW_FAKE36C" "$HEAD36C" "$RESTART_MARKER36C" 0
+sed "s|^    echo \"restart\" >> |    printf corrupt > \"${INSTALLED36C}.previous\"\n&|" "$NEW_FAKE36C" > "$NEW_FAKE36C.tmp" \
+    && mv "$NEW_FAKE36C.tmp" "$NEW_FAKE36C" && chmod +x "$NEW_FAKE36C"
+sleep 60 >/dev/null 2>&1 &
+OLD_PID36C=$!
+bg_proc_track "$OLD_PID36C"
+STATE36C="$W36C/launchd-pid-state"
+echo "$OLD_PID36C" > "$STATE36C"
+LD_BIN36C="$W36C/launchd-bin"
+write_fake_launchd_pid_bin "$LD_BIN36C" "$W36C/launchctl.log" "$STATE36C"
+out36c=$( cd "$W36C" && PATH="$LD_BIN36C:$TEST_PATH" LOOM_DAEMON_LAUNCHD=1 \
+    LOOM_DAEMON_BIN="$INSTALLED36C" NEW_FAKE_BIN_SRC="$NEW_FAKE36C" \
+    LOOM_DAEMON_RESTART_POLL_SECS=1 LOOM_DAEMON_RESTART_POLL_INTERVAL=0.2 \
+    LOOM_DAEMON_RESTART_KICKSTART_POLL_SECS=1 \
+    bash "$UPDATE_SCRIPT" 2>&1 )
+rc36c=$?
+kill "$OLD_PID36C" 2>/dev/null || true
+assert_eq "7" "$rc36c" "corrupt <dest>.previous -> restore refused, exit 7 unchanged (#12776)"
+TESTS_RUN=$((TESTS_RUN + 1))
+if grep -q 'Not restoring the previous binary' <<<"$out36c" \
+    && grep -qi "$HEAD36C" <<<"$("$INSTALLED36C" --version)" \
+    && [[ "$(cat "$INSTALLED36C.previous")" == "corrupt" ]]; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} refused restore names the precondition and writes nothing"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} refused restore names the precondition and writes nothing"
+    echo "  output: $out36c"
 fi
 
 # ============================================================
@@ -2552,7 +2661,7 @@ out37=$( cd "$W37" && PATH="$TEST_PATH" NEW_FAKE_BIN_SRC="$NEW_FAKE37" \
 rc37=$?
 assert_eq "0" "$rc37" "ff-first: behind origin + clean tree -> update succeeds (ff-merge applied)"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out37" | grep -qi 'Fast-forwarded'; then
+if grep -qi 'Fast-forwarded' <<<"$out37"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} ff-first: reports the fast-forward sync"
 else
@@ -2563,7 +2672,7 @@ fi
 HEAD_AFTER37="$(cd "$W37" && git rev-parse --short HEAD)"
 assert_eq "$ORIGIN_TIP37" "$HEAD_AFTER37" "ff-first: local HEAD now equals origin tip after the sync"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out37" | grep -qi "Build verification: freshly-built binary embeds source HEAD commit (${ORIGIN_TIP37})"; then
+if grep -qi "Build verification: freshly-built binary embeds source HEAD commit (${ORIGIN_TIP37})" <<<"$out37"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} ff-first: the rebuild is verified against the POST-merge HEAD, not the stale pre-merge one"
 else
@@ -2572,7 +2681,7 @@ else
     echo "  output: $out37"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out37" | grep -qE "Installed: ${ORIGIN_TIP37} \(matches origin/main\)"; then
+if grep -qE "Installed: ${ORIGIN_TIP37} \(matches origin/main\)" <<<"$out37"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} final installed line states the built commit AND that it matches origin/main (AC4)"
 else
@@ -2611,7 +2720,7 @@ assert_eq "1" "$rc38" "ff-first: diverged local commit -> abort exit 1 (never gu
 HEAD_AFTER38="$(cd "$W38" && git rev-parse --short HEAD)"
 assert_eq "$HEAD_BEFORE38" "$HEAD_AFTER38" "ff-first: diverged case leaves local HEAD completely untouched"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out38" | grep -qi 'Refusing to guess or hard-reset'; then
+if grep -qi 'Refusing to guess or hard-reset' <<<"$out38"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} ff-first: diverged case reports the abort rationale"
 else
@@ -2647,7 +2756,7 @@ assert_eq "0" "$rc39" "--allow-stale: builds the current (stale) checkout, exits
 HEAD_AFTER39="$(cd "$W39" && git rev-parse --short HEAD)"
 assert_eq "$HEAD_BEFORE39" "$HEAD_AFTER39" "--allow-stale: local HEAD is never merged/advanced"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out39" | grep -qi 'behind origin/main.*--allow-stale'; then
+if grep -qi 'behind origin/main.*--allow-stale' <<<"$out39"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --allow-stale: the behind-origin advisory warning is still printed"
 else
@@ -2656,7 +2765,7 @@ else
     echo "  output: $out39"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out39" | grep -qE "Installed: ${HEAD_BEFORE39} \(origin/main is at .* does NOT match"; then
+if grep -qE "Installed: ${HEAD_BEFORE39} \(origin/main is at .* does NOT match" <<<"$out39"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --allow-stale: final installed line reports the built commit does NOT match origin/main (AC4)"
 else
@@ -2680,7 +2789,7 @@ out40_check=$( cd "$W40" && PATH="$TEST_PATH" bash "$UPDATE_SCRIPT" --check 2>&1
 HEAD_AFTER40_CHECK="$(cd "$W40" && git rev-parse --short HEAD)"
 assert_eq "$HEAD_BEFORE40" "$HEAD_AFTER40_CHECK" "--check while behind origin: HEAD unchanged (no writes contract holds)"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out40_check" | grep -qi 'behind origin/main'; then
+if grep -qi 'behind origin/main' <<<"$out40_check"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --check reports the behind-origin status informationally"
 else
@@ -2692,7 +2801,7 @@ out40_dry=$( cd "$W40" && PATH="$TEST_PATH" bash "$UPDATE_SCRIPT" --dry-run 2>&1
 HEAD_AFTER40_DRY="$(cd "$W40" && git rev-parse --short HEAD)"
 assert_eq "$HEAD_BEFORE40" "$HEAD_AFTER40_DRY" "--dry-run while behind origin: HEAD unchanged (no writes contract holds)"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out40_dry" | grep -qi 'fast-forward.*origin/main'; then
+if grep -qi 'fast-forward.*origin/main' <<<"$out40_dry"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --dry-run's printed plan mentions the ff-sync"
 else
@@ -2718,7 +2827,7 @@ assert_eq "1" "$rc41" "non-default branch while behind -> abort exit 1"
 HEAD_AFTER41="$(cd "$W41" && git rev-parse --short HEAD)"
 assert_eq "$HEAD_BEFORE41" "$HEAD_AFTER41" "non-default branch while behind: HEAD untouched"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out41" | grep -q -- '--allow-stale'; then
+if grep -q -- '--allow-stale' <<<"$out41"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} abort message names --allow-stale as the deliberate escape hatch"
 else
@@ -2749,7 +2858,7 @@ out42=$( cd "$W42" && PATH="$TEST_PATH" LOOM_DAEMON_BIN="$INSTALLED42" \
 rc42=$?
 assert_eq "0" "$rc42" "fetch failure: proceeds as today (installed already matches local HEAD) -> exit 0"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out42" | grep -qi 'could not reach origin'; then
+if grep -qi 'could not reach origin' <<<"$out42"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} fetch failure surfaces a warning instead of aborting"
 else
@@ -2774,7 +2883,7 @@ out43=$( cd "$W43" && PATH="$TEST_PATH" NEW_FAKE_BIN_SRC="$NEW_FAKE43" \
 rc43=$?
 assert_eq "0" "$rc43" "no origin remote at all: update still succeeds"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out43" | grep -qi 'currency vs origin/<default-branch> unknown'; then
+if grep -qi 'currency vs origin/<default-branch> unknown' <<<"$out43"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} final installed line honestly reports unknown currency when origin is unresolvable"
 else
@@ -2838,10 +2947,10 @@ rc45=$(echo "$out45" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
 
 # 45. The three stale console scripts are named.
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out45" | grep -q "Stale 'loom-\*' entry points found on PATH" \
-   && echo "$out45" | grep -q "$STALE_BIN_DIR/loom-tokens" \
-   && echo "$out45" | grep -q "$STALE_BIN_DIR/loom-agent-spawn" \
-   && echo "$out45" | grep -q "$STALE_BIN_DIR/loom-search"; then
+if grep -q "Stale 'loom-\*' entry points found on PATH" <<<"$out45" \
+   && grep -q "$STALE_BIN_DIR/loom-tokens" <<<"$out45" \
+   && grep -q "$STALE_BIN_DIR/loom-agent-spawn" <<<"$out45" \
+   && grep -q "$STALE_BIN_DIR/loom-search" <<<"$out45"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} stale loom-* PATH entry points are warned about by path (#4079/#4557/#4970)"
 else
@@ -2854,8 +2963,8 @@ fi
 #     here would train operators to ignore the check).
 TESTS_RUN=$((TESTS_RUN + 1))
 _stale_block="$(echo "$out45" | sed -n "/Stale 'loom-\*' entry points/,/Suppress this check/p")"
-if ! echo "$_stale_block" | grep -q 'loom-clean' \
-   && ! echo "$_stale_block" | grep -qE '(^|/)loom-daemon —'; then
+if ! grep -q 'loom-clean' <<<"$_stale_block" \
+   && ! grep -qE '(^|/)loom-daemon —' <<<"$_stale_block"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} the current shim and the resolved binary are not flagged as stale"
 else
@@ -2874,7 +2983,7 @@ out48=$( cd "$W45" && PATH="$STALE_BIN_DIR:$TEST_PATH" \
     LOOM_SKIP_STALE_ENTRY_POINT_CHECK=1 \
     bash "$UPDATE_SCRIPT" --check 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
-if ! echo "$out48" | grep -q "Stale 'loom-\*' entry points"; then
+if ! grep -q "Stale 'loom-\*' entry points" <<<"$out48"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} LOOM_SKIP_STALE_ENTRY_POINT_CHECK=1 suppresses the advisory"
 else
@@ -2916,8 +3025,8 @@ out49=$( cd "$W49" && PATH="$TEST_PATH" HOME="$HOME49" \
     FAKE_CRONTAB_CONTENTS_FILE="$CRONFIX49" \
     bash "$UPDATE_SCRIPT" --check 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out49" | grep -q 'idle-shutdown cron guard installed' \
-   && echo "$out49" | grep -q -- '--idle-shutdown-minutes 45)'; then
+if grep -q 'idle-shutdown cron guard installed' <<<"$out49" \
+   && grep -q -- '--idle-shutdown-minutes 45)' <<<"$out49"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} idle-shutdown guard installed -> post-update notice names the configured minutes (#4697)"
 else
@@ -2934,7 +3043,7 @@ out50=$( cd "$W49" && PATH="$TEST_PATH" HOME="$HOME49" \
     FAKE_CRONTAB_CONTENTS_FILE="$CRONFIX50" \
     bash "$UPDATE_SCRIPT" --check 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
-if ! echo "$out50" | grep -qi 'idle-shutdown'; then
+if ! grep -qi 'idle-shutdown' <<<"$out50"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} no idle-shutdown guard installed -> no notice at all (#4697)"
 else
@@ -2950,7 +3059,7 @@ out51=$( cd "$W49" && PATH="$TEST_PATH" HOME="$HOME49" \
     LOOM_SKIP_IDLE_SHUTDOWN_NOTICE=1 \
     bash "$UPDATE_SCRIPT" --check 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
-if ! echo "$out51" | grep -qi 'idle-shutdown'; then
+if ! grep -qi 'idle-shutdown' <<<"$out51"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} LOOM_SKIP_IDLE_SHUTDOWN_NOTICE=1 suppresses the notice"
 else
@@ -2984,8 +3093,8 @@ out53=$( cd "$W49" && PATH="$TEST_PATH" HOME="$HOME53" \
     FAKE_CRONTAB_CONTENTS_FILE="$CRONFIX49" \
     bash "$UPDATE_SCRIPT" --check 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out53" | grep -q 'idle-shutdown cron guard installed' \
-   && echo "$out53" | grep -q 'could not be read from'; then
+if grep -q 'idle-shutdown cron guard installed' <<<"$out53" \
+   && grep -q 'could not be read from' <<<"$out53"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} unreadable guard script -> notice still fires with an honest unknown window (#4697)"
 else
@@ -3036,7 +3145,7 @@ rc54=$?
 kill "$RECOVERED_PID54" 2>/dev/null || true
 assert_eq "0" "$rc54" "no spontaneous relaunch, unit failed -> reset-failed+start recovers it -> exit 0 (#4950)"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out54" | grep -qi 'reset-failed' && echo "$out54" | grep -qi 'remediation'; then
+if grep -qi 'reset-failed' <<<"$out54" && grep -qi 'remediation' <<<"$out54"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} success output names the reset-failed+start self-heal + a remediation note"
 else
@@ -3095,9 +3204,10 @@ out55=$( cd "$W55" && PATH="$SD_BIN55:$TEST_PATH" LOOM_SYSTEMD_FORCE=1 LOOM_DAEM
     LOOM_DAEMON_RESTART_KICKSTART_POLL_SECS=1 \
     bash "$UPDATE_SCRIPT" 2>&1 )
 rc55=$?
-assert_eq "7" "$rc55" "no relaunch even after reset-failed+start -> exit 7 (never a silent half-update, #4950 case c)"
+# #12776: the published candidate is restored once; the restored binary does not come up either -> 10.
+assert_eq "10" "$rc55" "no relaunch even after reset-failed+start, restored binary also down -> exit 10 (was 7 before #12776, #4950 case c)"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out55" | grep -qi 'FAILED' && echo "$out55" | grep -qi 'reset-failed'; then
+if grep -qi 'FAILED' <<<"$out55" && grep -qi 'reset-failed' <<<"$out55"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} failure output loudly reports the exhausted self-heal fallback"
 else
@@ -3106,7 +3216,7 @@ else
     echo "  output: $out55"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out55" | grep -qi 'Active:' && echo "$out55" | grep -qi 'Result:'; then
+if grep -qi 'Active:' <<<"$out55" && grep -qi 'Result:' <<<"$out55"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} failure output includes systemctl status diagnostics (Active:/Result:)"
 else
@@ -3160,7 +3270,7 @@ out56=$( cd "$W56" && PATH="$SD_BIN56:$TEST_PATH" LOOM_SYSTEMD_FORCE=1 LOOM_DAEM
     LOOM_DAEMON_STOP_SETTLE_SECS=1 LOOM_DAEMON_RESTART_KICKSTART_POLL_SECS=1 \
     bash "$UPDATE_SCRIPT" 2>&1 )
 rc56=$?
-assert_eq "7" "$rc56" "transitional stall never recovers -> exit 7 after attempted self-heal (#5119)"
+assert_eq "10" "$rc56" "transitional stall never recovers, restored binary also down -> exit 10 after attempted self-heal (was 7 before #12776, #5119)"
 TESTS_RUN=$((TESTS_RUN + 1))
 if grep -q -- 'reset-failed' "$SD_LOG56" 2>/dev/null; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
@@ -3171,7 +3281,7 @@ else
     echo "  systemctl.log: $(cat "$SD_LOG56" 2>/dev/null)"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out56" | grep -qi 'FAILED'; then
+if grep -qi 'FAILED' <<<"$out56"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} failure output loudly reports the unconfirmed relaunch"
 else
@@ -3225,7 +3335,7 @@ rc56b=$?
 kill "$RECOVERED_PID56B" 2>/dev/null || true
 assert_eq "0" "$rc56b" "deactivating stall settles to failed -> settle-wait + reset-failed+start recovers -> exit 0 (#5119)"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out56b" | grep -qi 'settle' || echo "$out56b" | grep -qi 'transitioning'; then
+if grep -qi 'settle' <<<"$out56b" || grep -qi 'transitioning' <<<"$out56b"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} output names the settle-wait for the still-transitioning stop (#5119)"
 else
@@ -3277,7 +3387,7 @@ assert_eq "1" "$rc57" "content-identical divergence (no flag): still exits 1 by 
 HEAD_AFTER57="$(cd "$W57" && git rev-parse --short HEAD)"
 assert_eq "$HEAD_BEFORE57" "$HEAD_AFTER57" "content-identical divergence (no flag): HEAD completely untouched"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out57" | grep -qi 'content-IDENTICAL'; then
+if grep -qi 'content-IDENTICAL' <<<"$out57"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} content-identical divergence is classified and named explicitly"
 else
@@ -3286,7 +3396,7 @@ else
     echo "  output: $out57"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out57" | grep -q -- 'reset --hard origin/main'; then
+if grep -q -- 'reset --hard origin/main' <<<"$out57"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} abort message names the exact safe reset command"
 else
@@ -3295,7 +3405,7 @@ else
     echo "  output: $out57"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out57" | grep -q -- '--auto-resolve-safe-abort'; then
+if grep -q -- '--auto-resolve-safe-abort' <<<"$out57"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} abort message names --auto-resolve-safe-abort as the automatic path"
 else
@@ -3324,7 +3434,7 @@ assert_eq "0" "$rc58" "content-identical divergence + --auto-resolve-safe-abort:
 HEAD_AFTER58="$(cd "$W58" && git rev-parse --short HEAD)"
 assert_eq "$ORIGIN_TIP58" "$HEAD_AFTER58" "content-identical divergence + --auto-resolve-safe-abort: HEAD now equals origin/main's tip"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out58" | grep -qi 'Auto-resolved'; then
+if grep -qi 'Auto-resolved' <<<"$out58"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} auto-resolve reports what it did"
 else
@@ -3373,7 +3483,7 @@ else
     echo -e "${RED}✗${NC} dirty managed file is left untouched by default (no checkout performed)"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out59" | grep -qi 'Loom-managed installed copies'; then
+if grep -qi 'Loom-managed installed copies' <<<"$out59"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} managed-only dirty state is classified and named explicitly"
 else
@@ -3382,8 +3492,8 @@ else
     echo "  output: $out59"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out59" | grep -q -- 'checkout -- .loom/docs/example.md' \
-    && echo "$out59" | grep -q -- 'resync-installed.sh'; then
+if grep -q -- 'checkout -- .loom/docs/example.md' <<<"$out59" \
+    && grep -q -- 'resync-installed.sh' <<<"$out59"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} abort message names the exact safe checkout + resync commands"
 else
@@ -3447,7 +3557,7 @@ else
     echo -e "${RED}✗${NC} post-roll resync-installed.sh was actually invoked"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out60" | grep -qi 'Auto-resolved'; then
+if grep -qi 'Auto-resolved' <<<"$out60"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} auto-resolve reports what it did"
 else
@@ -3496,7 +3606,7 @@ else
     echo -e "${RED}✗${NC} unmanaged dirty file is left untouched -- no auto-resolve attempted"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out61" | grep -qi 'Refusing to guess or hard-reset'; then
+if grep -qi 'Refusing to guess or hard-reset' <<<"$out61"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} mixed managed+unmanaged dirty: falls through to the generic hard-abort message"
 else
@@ -3545,7 +3655,7 @@ else
     echo "  file now: $(cat "$W62/unmanaged-scratch.txt" 2>/dev/null)"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out62" | grep -qi 'Refusing to guess or hard-reset'; then
+if grep -qi 'Refusing to guess or hard-reset' <<<"$out62"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} content-identical + dirty unmanaged file falls through to the generic hard-abort message"
 else
@@ -3582,7 +3692,7 @@ assert_eq "1" "$rc63" "content-identical divergence + dirty MANAGED file, EVEN w
 HEAD_AFTER63="$(cd "$W63" && git rev-parse --short HEAD)"
 assert_eq "$HEAD_BEFORE63" "$HEAD_AFTER63" "content-identical divergence + dirty managed file: HEAD untouched (no reset --hard)"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out63" | grep -qi 'reset local main to origin/main'; then
+if grep -qi 'reset local main to origin/main' <<<"$out63"; then
     TESTS_FAILED=$((TESTS_FAILED + 1))
     echo -e "${RED}✗${NC} content-identical branch never claims a reset --hard while the tree is dirty"
     echo "  output: $out63"
@@ -3682,9 +3792,9 @@ rcP1=$(echo "$outP1" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
 assert_eq "0" "$rcP1" "prune: successful prune exits 0"
 
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outP1" | grep -q "removed: $PSTALE_BIN_DIR/loom-tokens" \
-   && echo "$outP1" | grep -q "removed: $PSTALE_BIN_DIR/loom-agent-spawn" \
-   && echo "$outP1" | grep -q "removed: $PSTALE_BIN_DIR/loom-search"; then
+if grep -q "removed: $PSTALE_BIN_DIR/loom-tokens" <<<"$outP1" \
+   && grep -q "removed: $PSTALE_BIN_DIR/loom-agent-spawn" <<<"$outP1" \
+   && grep -q "removed: $PSTALE_BIN_DIR/loom-search" <<<"$outP1"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} prune: all 3 stale Python console scripts are reported removed (#5139)"
 else
@@ -3745,7 +3855,7 @@ outP6=$( cd "$WP" && PATH="$PRUNE_PATH" \
 rcP6=$(echo "$outP6" | grep -o 'EXIT=[0-9]*' | cut -d= -f2)
 assert_eq "0" "$rcP6" "prune: second run (idempotent) exits 0"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$outP6" | grep -q 'nothing to prune'; then
+if grep -q 'nothing to prune' <<<"$outP6"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} prune: second run is a no-op (idempotent, #5139)"
 else
@@ -3763,9 +3873,9 @@ outP7=$( cd "$WP" && PATH="$PRUNE_PATH" \
     LOOM_DAEMON_BIN="$PSTALE_BIN_DIR/loom-daemon" \
     bash "$UPDATE_SCRIPT" --check 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
-if ! echo "$outP7" | grep -q "$PSTALE_BIN_DIR/loom-tokens" \
-   && ! echo "$outP7" | grep -q "$PSTALE_BIN_DIR/loom-agent-spawn" \
-   && ! echo "$outP7" | grep -q "$PSTALE_BIN_DIR/loom-search"; then
+if ! grep -q "$PSTALE_BIN_DIR/loom-tokens" <<<"$outP7" \
+   && ! grep -q "$PSTALE_BIN_DIR/loom-agent-spawn" <<<"$outP7" \
+   && ! grep -q "$PSTALE_BIN_DIR/loom-search" <<<"$outP7"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} prune: converges — a later --check no longer warns about the pruned paths (#5139)"
 else
@@ -3809,9 +3919,9 @@ fi
 # ============================================================
 help64_out=$(bash "$UPDATE_SCRIPT" --help 2>/dev/null)
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$help64_out" | grep -q -- '--drain' && echo "$help64_out" | grep -q -- '--timeout' \
-    && echo "$help64_out" | grep -q -- '--force-after-timeout' \
-    && echo "$help64_out" | grep -q -- '--restart-now'; then
+if grep -q -- '--drain' <<<"$help64_out" && grep -q -- '--timeout' <<<"$help64_out" \
+    && grep -q -- '--force-after-timeout' <<<"$help64_out" \
+    && grep -q -- '--restart-now' <<<"$help64_out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --help documents --drain / --timeout / --force-after-timeout / --restart-now"
 else
@@ -3827,7 +3937,7 @@ out65=$(bash "$UPDATE_SCRIPT" --drain --restart-now 2>&1)
 rc65=$?
 assert_eq "1" "$rc65" "--drain + --restart-now conflict -> exit 1"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out65" | grep -qi 'mutually exclusive'; then
+if grep -qi 'mutually exclusive' <<<"$out65"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --drain + --restart-now conflict names the conflict"
 else
@@ -3887,7 +3997,7 @@ else
     echo "  restart marker: $(cat "$RESTART_MARKER67" 2>/dev/null)"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out67" | grep -qi 'DEFAULT' && echo "$out67" | grep -q '5138'; then
+if grep -qi 'DEFAULT' <<<"$out67" && grep -q '5138' <<<"$out67"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} output names the systemd drain-by-default decision"
 else
@@ -3972,7 +4082,7 @@ else
     echo "  restart marker: $(cat "$RESTART_MARKER69" 2>/dev/null)"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out69" | grep -q '4090' || echo "$out69" | grep -qi 'DRAIN'; then
+if grep -q '4090' <<<"$out69" || grep -qi 'DRAIN' <<<"$out69"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} output names the drain restart primitive"
 else
@@ -4020,7 +4130,7 @@ out70=$( cd "$W70" && PATH="$SD_BIN70:$TEST_PATH" LOOM_SYSTEMD_FORCE=1 LOOM_DAEM
 rc70=$?
 assert_eq "8" "$rc70" "drain timeout without --force-after-timeout -> exit 8 (fail-safe, not a failure)"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out70" | grep -qi 'FAIL-SAFE' && echo "$out70" | grep -q "pid ${STILL_RUNNING_PID70}"; then
+if grep -qi 'FAIL-SAFE' <<<"$out70" && grep -q "pid ${STILL_RUNNING_PID70}" <<<"$out70"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} exit-8 output names the fail-safe and the still-running pre-update pid"
 else
@@ -4034,7 +4144,7 @@ TESTS_RUN=$((TESTS_RUN + 1))
 # resume dispatch). The detector must stay conservative there and keep the
 # historical "re-run" advice rather than promising a convergence that binary does
 # not implement.
-if echo "$out70" | grep -q 'Re-run this script' && ! echo "$out70" | grep -q 'ROLL PENDING'; then
+if grep -q 'Re-run this script' <<<"$out70" && ! grep -q 'ROLL PENDING' <<<"$out70"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} an unconfirmable pending roll falls back to the historical re-run advice (#6007)"
 else
@@ -4138,8 +4248,8 @@ dry72_default=$( cd "$W72" && PATH="$SD_BIN72:$TEST_PATH" LOOM_SYSTEMD_FORCE=1 L
     LOOM_SYSTEMD_UNIT="loom-daemon-test-sd72.service" LOOM_DAEMON_BIN="$INSTALLED72" \
     bash "$UPDATE_SCRIPT" --dry-run 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$dry72_default" | grep -q -- '--drain' && echo "$dry72_default" | grep -qi 'DEFAULT' \
-    && echo "$dry72_default" | grep -q '5119' && [[ ! -s "$RESTART_MARKER72" ]]; then
+if grep -q -- '--drain' <<<"$dry72_default" && grep -qi 'DEFAULT' <<<"$dry72_default" \
+    && grep -q '5119' <<<"$dry72_default" && [[ ! -s "$RESTART_MARKER72" ]]; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --dry-run on systemd (no flags) describes the drain-by-default plan, no writes"
 else
@@ -4152,7 +4262,7 @@ dry72_now=$( cd "$W72" && PATH="$SD_BIN72:$TEST_PATH" LOOM_SYSTEMD_FORCE=1 LOOM_
     LOOM_SYSTEMD_UNIT="loom-daemon-test-sd72.service" LOOM_DAEMON_BIN="$INSTALLED72" \
     bash "$UPDATE_SCRIPT" --dry-run --restart-now 2>&1 )
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$dry72_now" | grep -qi 'IMMEDIATE' && ! echo "$dry72_now" | grep -q -- '--drain' \
+if grep -qi 'IMMEDIATE' <<<"$dry72_now" && ! grep -q -- '--drain' <<<"$dry72_now" \
     && [[ ! -s "$RESTART_MARKER72" ]]; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --dry-run --restart-now on systemd describes the immediate (non-drained) plan"
@@ -4200,8 +4310,8 @@ else
     echo -e "${RED}✗${NC} the host's deliberate config edit is left untouched"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out73" | grep -q '\.loom/config\.json' \
-    && echo "$out73" | grep -q '\.loom-local/local\.json'; then
+if grep -q '\.loom/config\.json' <<<"$out73" \
+    && grep -q '\.loom-local/local\.json' <<<"$out73"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} hard abort names the dirty config tier and points at .loom-local/local.json (#6008)"
 else
@@ -4212,7 +4322,7 @@ fi
 # The hint is targeted, not unconditional: test 61's blocker was an ordinary
 # unmanaged file, so that abort must stay free of the config-tier advice.
 TESTS_RUN=$((TESTS_RUN + 1))
-if ! echo "$out61" | grep -q '\.loom-local/local\.json'; then
+if ! grep -q '\.loom-local/local\.json' <<<"$out61"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} config-tier hint is NOT emitted when the blocker is an ordinary unmanaged file"
 else
@@ -4252,7 +4362,7 @@ check74_out=$( cd "$W74" && PATH="$SD_BIN74:$PATHBIN_DIR74:$TEST_PATH" HOME="$HO
 rc74=$?
 assert_eq "0" "$rc74" "#6009: --check exits 0 (up to date) when the SUPERVISOR's binary matches source HEAD, even though a stale one sits on PATH"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$check74_out" | grep -qF "$SUP_DIR74/loom-daemon" && echo "$check74_out" | grep -qi 'already up to date'; then
+if grep -qF "$SUP_DIR74/loom-daemon" <<<"$check74_out" && grep -qi 'already up to date' <<<"$check74_out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} #6009: 'Installed binary' line reports the systemd-managed binary, not the PATH one"
 else
@@ -4261,8 +4371,8 @@ else
     echo "  output: $check74_out"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$check74_out" | grep -qF "$PATHBIN_DIR74/loom-daemon" && echo "$check74_out" | grep -qF "$SUP_DIR74/loom-daemon" \
-    && echo "$check74_out" | grep -qi 'is NOT the binary systemd will actually launch'; then
+if grep -qF "$PATHBIN_DIR74/loom-daemon" <<<"$check74_out" && grep -qF "$SUP_DIR74/loom-daemon" <<<"$check74_out" \
+    && grep -qi 'is NOT the binary systemd will actually launch' <<<"$check74_out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} #6009: divergence between the PATH-resolved and systemd-managed binaries is reported explicitly (AC2)"
 else
@@ -4301,7 +4411,7 @@ check75_out=$( cd "$W75" && PATH="$SD_BIN75:$PATHBIN_DIR75:$TEST_PATH" HOME="$HO
 rc75=$?
 assert_eq "3" "$rc75" "#6009: --check exits 3 (update available) when the SUPERVISOR's binary is stale, even though a current one sits on PATH"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$check75_out" | grep -qi 'already up to date'; then
+if grep -qi 'already up to date' <<<"$check75_out"; then
     TESTS_FAILED=$((TESTS_FAILED + 1))
     echo -e "${RED}✗${NC} #6009: never reports 'up to date' off the PATH-resolved binary when the supervisor's own binary is stale"
     echo "  output: $check75_out"
@@ -4310,8 +4420,8 @@ else
     echo -e "${GREEN}✓${NC} #6009: never reports 'up to date' off the PATH-resolved binary when the supervisor's own binary is stale"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$check75_out" | grep -qF "$PATHBIN_DIR75/loom-daemon" && echo "$check75_out" | grep -qF "$SUP_DIR75/loom-daemon" \
-    && echo "$check75_out" | grep -qi 'is NOT the binary systemd will actually launch'; then
+if grep -qF "$PATHBIN_DIR75/loom-daemon" <<<"$check75_out" && grep -qF "$SUP_DIR75/loom-daemon" <<<"$check75_out" \
+    && grep -qi 'is NOT the binary systemd will actually launch' <<<"$check75_out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} #6009: divergence reported even when the PATH-resolved binary looks current"
 else
@@ -4351,7 +4461,7 @@ check76_out=$( cd "$W76" && PATH="$LD_BIN76:$PATHBIN_DIR76:$TEST_PATH" HOME="$HO
 rc76=$?
 assert_eq "0" "$rc76" "#6009 (launchd): --check exits 0 (up to date) when the SUPERVISOR's binary matches source HEAD, even though a stale one sits on PATH"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$check76_out" | grep -qF "$SUP_DIR76/loom-daemon" && echo "$check76_out" | grep -qi 'already up to date'; then
+if grep -qF "$SUP_DIR76/loom-daemon" <<<"$check76_out" && grep -qi 'already up to date' <<<"$check76_out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} #6009 (launchd): 'Installed binary' line reports the launchd-managed binary, not the PATH one"
 else
@@ -4360,8 +4470,8 @@ else
     echo "  output: $check76_out"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$check76_out" | grep -qF "$PATHBIN_DIR76/loom-daemon" && echo "$check76_out" | grep -qF "$SUP_DIR76/loom-daemon" \
-    && echo "$check76_out" | grep -qi 'is NOT the binary launchd will actually launch'; then
+if grep -qF "$PATHBIN_DIR76/loom-daemon" <<<"$check76_out" && grep -qF "$SUP_DIR76/loom-daemon" <<<"$check76_out" \
+    && grep -qi 'is NOT the binary launchd will actually launch' <<<"$check76_out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} #6009 (launchd): divergence between the PATH-resolved and launchd-managed binaries is reported explicitly (AC2)"
 else
@@ -4411,8 +4521,8 @@ else
     echo "  output: $out77"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out77" | grep -qF "$SUP_DIR77/loom-daemon" && echo "$out77" | grep -qF "$MACHINE_INSTALL77/loom-daemon" \
-    && echo "$out77" | grep -qi 'is NOT the one just provisioned' && echo "$out77" | grep -q -- '--relaunch'; then
+if grep -qF "$SUP_DIR77/loom-daemon" <<<"$out77" && grep -qF "$MACHINE_INSTALL77/loom-daemon" <<<"$out77" \
+    && grep -qi 'is NOT the one just provisioned' <<<"$out77" && grep -q -- '--relaunch' <<<"$out77"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} #6009 AC3: post-provision verification warns the supervisor's config still points elsewhere and names --relaunch"
 else
@@ -4452,7 +4562,7 @@ check78_out=$( cd "$W78" && PATH="$SD_BIN78:$PATHBIN_DIR78:$TEST_PATH" HOME="$HO
 rc78=$?
 assert_eq "0" "$rc78" "#6009: --check exits 0 when the supervisor's ExecStart is a symlink to the PATH-resolved binary"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$check78_out" | grep -qi 'will actually launch'; then
+if grep -qi 'will actually launch' <<<"$check78_out"; then
     TESTS_FAILED=$((TESTS_FAILED + 1))
     echo -e "${RED}✗${NC} #6009: no divergence warning when ExecStart is just a symlink to the PATH-resolved binary"
     echo "  output: $check78_out"
@@ -4500,8 +4610,8 @@ out79=$( cd "$W79" && PATH="$SD_BIN79:$TEST_PATH" LOOM_SYSTEMD_FORCE=1 LOOM_DAEM
 rc79=$?
 assert_eq "8" "$rc79" "a retained (pending) roll still exits 8 — the fail-safe is unchanged (#6007)"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out79" | grep -q 'ROLL PENDING' && echo "$out79" | grep -q 'Nothing to re-run' \
-    && ! echo "$out79" | grep -q 'Re-run this script'; then
+if grep -q 'ROLL PENDING' <<<"$out79" && grep -q 'Nothing to re-run' <<<"$out79" \
+    && ! grep -q 'Re-run this script' <<<"$out79"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} a retained roll reports 'nothing to re-run' instead of the advice that reproduces the livelock (#6007)"
 else
@@ -4510,7 +4620,7 @@ else
     echo "  output: $out79"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out79" | grep -q -- '--abort-drain' && echo "$out79" | grep -q -- '--force-after-timeout'; then
+if grep -q -- '--abort-drain' <<<"$out79" && grep -q -- '--force-after-timeout' <<<"$out79"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} the pending-roll message names both operator escape hatches (#6007)"
 else

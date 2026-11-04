@@ -16,7 +16,7 @@
 # Strategy (mirrors test-merge-pr-merge-ordering-guard.sh): the functions
 # under test (_check_loom_pr_label, _check_champion_hold_state_staleness)
 # depend on globals (PR_NUMBER, REPO_NWO, PR_LABELS, PR_HEAD_SHA, DRY_RUN,
-# ALLOW_UNAPPROVED) plus forge_get_pr_comments() and forge_gh_comment_rl_safe()
+# ALLOW_UNAPPROVED) plus _trusted_pr_comments() and forge_gh_comment_rl_safe()
 # (both stubbed as shell functions here, not real forge-helpers.sh — this test
 # does not source that file). We extract the function definitions from
 # merge-pr.sh and source them, stub their forge calls, then assert on exit
@@ -33,8 +33,9 @@
 #
 # A later #8191 slice moved _check_champion_hold_state_staleness's
 # marker-extraction and staleness comparison to `loom-daemon merge-pr
-# hold-state` as well; only the forge_get_pr_comments() read stays in the
-# shell, so the stub below still drives both. T6-T8 pass unchanged against
+# hold-state` as well; the comment read stays in the shell too, routed
+# through _trusted_pr_comments() (#9548: trusted authors only), so the stub
+# below still drives both. T6-T8 pass unchanged against
 # that port, and T8a/T8b are new assertions for the two ways the retired
 # `grep | tail -1 | sed` pipeline lost the warning silently (an empty
 # `[0-9a-f]*` capture from a quoted template winning `tail -1`, and a bare
@@ -56,58 +57,8 @@ HELPERS_DIR="$(cd "$TEST_DIR/.." && pwd)"
 MERGE_PR_SRC="$HELPERS_DIR/merge-pr.sh"
 
 # Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
-
-TESTS_RUN=0
-TESTS_PASSED=0
-TESTS_FAILED=0
-
-assert_eq() {
-    local expected="$1" actual="$2" msg="$3"
-    TESTS_RUN=$((TESTS_RUN + 1))
-    if [[ "$expected" == "$actual" ]]; then
-        TESTS_PASSED=$((TESTS_PASSED + 1))
-        echo -e "  ${GREEN}PASS${NC}: $msg"
-    else
-        TESTS_FAILED=$((TESTS_FAILED + 1))
-        echo -e "  ${RED}FAIL${NC}: $msg"
-        echo "    Expected: '$expected'"
-        echo "    Actual:   '$actual'"
-    fi
-}
-
-assert_contains() {
-    local haystack="$1" needle="$2" msg="$3"
-    TESTS_RUN=$((TESTS_RUN + 1))
-    # Here-string, not a pipe, so grep -q exiting early on a match cannot
-    # SIGPIPE printf and (under set -o pipefail) flip the pipeline non-zero
-    # despite a match — a size-sensitive flake on large haystacks (#3820).
-    if grep -qF -- "$needle" <<<"$haystack"; then
-        TESTS_PASSED=$((TESTS_PASSED + 1))
-        echo -e "  ${GREEN}PASS${NC}: $msg"
-    else
-        TESTS_FAILED=$((TESTS_FAILED + 1))
-        echo -e "  ${RED}FAIL${NC}: $msg"
-        echo "    Expected substring: '$needle'"
-        echo "    In: '$haystack'"
-    fi
-}
-
-assert_not_contains() {
-    local haystack="$1" needle="$2" msg="$3"
-    TESTS_RUN=$((TESTS_RUN + 1))
-    if ! grep -qF -- "$needle" <<<"$haystack"; then
-        TESTS_PASSED=$((TESTS_PASSED + 1))
-        echo -e "  ${GREEN}PASS${NC}: $msg"
-    else
-        TESTS_FAILED=$((TESTS_FAILED + 1))
-        echo -e "  ${RED}FAIL${NC}: $msg"
-        echo "    Unexpected substring: '$needle'"
-        echo "    In: '$haystack'"
-    fi
-}
+# shellcheck source=lib/assert.sh
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/assert.sh"
 
 # --- Minimal logging/error shims the extracted functions call ---
 # `error` must exit non-zero to faithfully model the real script's hard block;
@@ -130,7 +81,7 @@ error()   { echo "ERROR: $*" >&2; exit 1; }
 COMMENT_POST_LOG="$(mktemp)"
 FAKE_PR_COMMENTS=""
 FAKE_COMMENT_POST_RC=0
-forge_get_pr_comments() { printf '%s' "$FAKE_PR_COMMENTS"; }
+_trusted_pr_comments() { printf '%s' "$FAKE_PR_COMMENTS"; }
 forge_gh_comment_rl_safe() {
     printf '%s' "$3" >> "$COMMENT_POST_LOG"
     printf '\n---CALL-BOUNDARY---\n' >> "$COMMENT_POST_LOG"
@@ -436,7 +387,7 @@ run_guard_strict() {
     export PR_NUMBER REPO_NWO PR_LABELS PR_HEAD_SHA DRY_RUN ALLOW_UNAPPROVED \
         FAKE_PR_COMMENTS FAKE_COMMENT_POST_RC COMMENT_POST_LOG
     export -f _check_loom_pr_label _check_champion_hold_state_staleness \
-        info success warning error forge_get_pr_comments forge_gh_comment_rl_safe
+        info success warning error _trusted_pr_comments forge_gh_comment_rl_safe
     bash -c 'set -euo pipefail; _check_loom_pr_label' >"$outfile" 2>&1 &
     local pid=$!
     set +e
@@ -509,6 +460,23 @@ assert_contains "$src" "merge-pr loom-pr-guard" \
   "merge-pr.sh delegates the label/override/block decision to loom-daemon (#8191)"
 assert_contains "$src" "merge-pr hold-state" \
   "merge-pr.sh delegates the champion:hold-state marker extraction to loom-daemon (#8191)"
+
+# #9461 regression ratchet: the loom-pr-guard call site must expand the flags
+# array with the empty-safe `${flags[@]+"${flags[@]}"}` idiom (as every other
+# daemon call site in this file does). Under `set -u` on stock macOS bash 3.2,
+# a bare `"${flags[@]}"` on an empty array aborts the expansion
+# ("flags[@]: unbound variable") BEFORE loom-daemon runs, so the guard faults
+# and the merge fails closed on an approved PR. A behavioral repro needs a
+# real bash 3.2 binary, so pin the source shape instead. The pattern anchors
+# on leading whitespace because the idiom itself CONTAINS the literal
+# `"${flags[@]}"` (as its inner expansion, preceded by `+`) — an unanchored
+# grep would flag every correct call site.
+bare_flags_count="$(grep -cE '[[:space:]]"\$\{flags\[@\]\}"' <<<"$src" || true)"
+assert_eq "0" "$bare_flags_count" \
+  "merge-pr.sh has no whitespace-preceded bare \"\${flags[@]}\" expansion (empty-array abort under bash 3.2 + set -u, #9461)"
+guard_call_line="$(grep 'merge-pr loom-pr-guard' "$MERGE_PR_SRC")"
+assert_contains "$guard_call_line" '${flags[@]+"${flags[@]}"}' \
+  "the loom-pr-guard call site expands flags with the empty-safe idiom (#9461)"
 
 # Assert the guard is invoked BEFORE the auto-merge path (line ordering): the
 # _check_loom_pr_label invocation must precede `# Handle auto-merge mode`.

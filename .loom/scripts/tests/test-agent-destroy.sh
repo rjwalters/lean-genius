@@ -32,17 +32,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 REPO_ROOT="$(cd "$SCRIPTS_DIR/../.." && pwd)"
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/assert.sh"
 YELLOW='\033[1;33m'
-NC='\033[0m'
-
-TESTS_RUN=0
-TESTS_PASSED=0
-TESTS_FAILED=0
-
-pass() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1)); echo -e "  ${GREEN}PASS${NC}: $1"; }
-fail() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1)); echo -e "  ${RED}FAIL${NC}: $1"; }
 
 # --- Resolve the subject: prefer the installed copy, fall back to source tree ---
 INSTALLED_SUBJECT="$REPO_ROOT/.loom/scripts/agent-destroy.sh"
@@ -100,7 +91,7 @@ else
     # inside main() rather than in an extractable function).
     active_pids=$(lsof +d "$TMP" -F pf 2>/dev/null | awk '/^p/{pid=substr($0,2)} /^fcwd/{print pid}' | grep -v "$$" || true)
 
-    if echo "$active_pids" | grep -qx "$BG_PID"; then
+    if grep -qx "$BG_PID" <<<"$active_pids"; then
         pass "corrected -F pf / /^fcwd/ pipeline detects a live process with cwd in the scratch dir (PID $BG_PID)"
     else
         fail "corrected pipeline did NOT detect PID $BG_PID (active_pids='$active_pids')"

@@ -128,6 +128,48 @@ trap 'bg_proc_reap; rm -rf "$WORKDIR"' EXIT
 trap 'bg_proc_reap; rm -rf "$WORKDIR"; exit 1' INT TERM
 mkdir -p "$WORKDIR/.loom"
 
+# ---------- operator-stop recorder (#9957) ----------
+# The stop records itself through `loom-daemon operator-stop record`, resolved
+# via LOOM_DAEMON_SELF_BIN first. Pin it suite-wide so no case depends on
+# whichever loom-daemon the host happens to have. Prefer a REAL binary that has
+# the verb (LOOM_STOP_TEST_DAEMON_BIN, e.g. a fresh `cargo build`) -- the record
+# format then comes from the one Rust implementation; else a stub that logs its
+# argv and moves the marker aside the same way (the Rust side is covered by
+# `cargo test -p loom-daemon --lib operator_stop`). OLD_BIN models a binary
+# that predates the verb: clap's unknown-subcommand exit 2.
+REC_ARGV_LOG="$WORKDIR/recorder-argv.log"; export REC_ARGV_LOG
+REC_BIN_DIR="$WORKDIR/rec-bin"; OLD_BIN_DIR="$WORKDIR/old-bin"
+mkdir -p "$REC_BIN_DIR" "$OLD_BIN_DIR"
+cat > "$REC_BIN_DIR/loom-daemon" <<'STUB'
+#!/usr/bin/env bash
+printf '%s\n' "$*" >> "$REC_ARGV_LOG"
+[[ "${1:-} ${2:-}" == "operator-stop record" ]] || { echo "error: unrecognized subcommand '${1:-}'" >&2; exit 2; }
+shift 2; marker=""; reason=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --marker) marker="$2"; shift 2 ;;
+        --reason) reason="$2"; shift 2 ;;
+        --help) exit 0 ;;
+        *) exit 2 ;;
+    esac
+done
+if [[ ! -e "$marker.stopped" ]]; then
+    { printf 'operator_stop_reason=%s\n' "$reason"; cat "$marker" 2>/dev/null; } > "$marker.stopped"
+fi
+rm -f "$marker"
+STUB
+printf '#!/usr/bin/env bash\necho "error: unrecognized subcommand '"'"'$1'"'"'" >&2\nexit 2\n' > "$OLD_BIN_DIR/loom-daemon"
+chmod +x "$REC_BIN_DIR/loom-daemon" "$OLD_BIN_DIR/loom-daemon"
+RECORDER_BIN="$REC_BIN_DIR/loom-daemon"
+RECORDER_KIND="stub"
+if [[ -n "${LOOM_STOP_TEST_DAEMON_BIN:-}" && -x "$LOOM_STOP_TEST_DAEMON_BIN" ]] \
+    && "$LOOM_STOP_TEST_DAEMON_BIN" operator-stop record --help >/dev/null 2>&1; then
+    RECORDER_BIN="$LOOM_STOP_TEST_DAEMON_BIN"
+    RECORDER_KIND="real binary"
+fi
+export LOOM_DAEMON_SELF_BIN="$RECORDER_BIN"
+echo "  (operator-stop recorder: $RECORDER_KIND — $RECORDER_BIN)"
+
 # ---------- tests ----------
 
 # 1. No PID file, no running process -> "nothing to stop", exits 0.
@@ -135,7 +177,7 @@ out=$( cd "$WORKDIR" && LOOM_LAUNCHD_LABEL="$FAKE_LABEL" bash "$STOP_SCRIPT" 2>&
 rc=$?
 assert_eq "0" "$rc" "no daemon running: exits 0"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out" | grep -qi "nothing to stop"; then
+if grep -qi "nothing to stop" <<<"$out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} no daemon running: reports 'nothing to stop'"
 else
@@ -200,7 +242,7 @@ fi
 # 4. --help documents the launchd bootout counterpart and LOOM_LAUNCHD_LABEL.
 help_out=$(bash "$STOP_SCRIPT" --help 2>/dev/null)
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$help_out" | grep -qi 'launchd' && echo "$help_out" | grep -q 'LOOM_LAUNCHD_LABEL'; then
+if grep -qi 'launchd' <<<"$help_out" && grep -q 'LOOM_LAUNCHD_LABEL' <<<"$help_out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --help documents the launchd bootout counterpart"
 else
@@ -254,7 +296,7 @@ FAKE
 
     assert_eq "1" "$stuck_rc" "relaunched-daemon-still-alive: stop exits non-zero (does not report success)"
     TESTS_RUN=$((TESTS_RUN + 1))
-    if echo "$stuck_out" | grep -qi 'still alive'; then
+    if grep -qi 'still alive' <<<"$stuck_out"; then
         TESTS_PASSED=$((TESTS_PASSED + 1))
         echo -e "${GREEN}✓${NC} relaunched-daemon-still-alive: reports the live daemon instead of success"
     else
@@ -301,7 +343,7 @@ else
     echo -e "${RED}✗${NC} decoy: survives a scratch-label stop (label-blind pgrep tier not taken)"
 fi
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$decoy_out" | grep -qi "nothing to stop"; then
+if grep -qi "nothing to stop" <<<"$decoy_out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} decoy: reports 'nothing to stop' (does not adopt an unrelated loom-daemon)"
 else
@@ -407,7 +449,7 @@ fi
 # 4011-e. --help documents the marker + --restarting.
 help_out2=$(bash "$STOP_SCRIPT" --help 2>/dev/null)
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$help_out2" | grep -q 'restarting' && echo "$help_out2" | grep -qi 'autonomy-desired'; then
+if grep -q 'restarting' <<<"$help_out2" && grep -qi 'autonomy-desired' <<<"$help_out2"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --help documents --restarting and the autonomy-desired marker"
 else
@@ -446,6 +488,7 @@ EOF
 make_sd_stop_stub
 mkdir -p "$WORKDIR/.loom"
 printf 'started_at=x\n' > "$WORKDIR/.loom/autonomy-desired"
+rm -f "$WORKDIR/.loom/autonomy-desired.stopped"   # earlier cases' record (#9957)
 ( cd "$WORKDIR" && PATH="$SD_BIN:$PATH" LOOM_SYSTEMD_FORCE=1 \
     LOOM_LAUNCHD_LABEL="$FAKE_LABEL" LOOM_AUTONOMY_MARKER="$WORKDIR/.loom/autonomy-desired" \
     bash "$STOP_SCRIPT" >/dev/null 2>&1 )
@@ -468,20 +511,26 @@ else
     TESTS_FAILED=$((TESTS_FAILED + 1))
     echo -e "${RED}✗${NC} systemd tier: operator stop clears the autonomy-desired marker"
 fi
-# SD1b (#4260 sub-issue D): the same operator stop also tears down the
-# watchdog timer + service pair, symmetric with the launchd bootout tier.
-# Naming mirrors loom-daemon-start.sh's resolve_systemd_watchdog_unit():
-# <daemon unit>-watchdog(.timer|.service).
+# SD1b (#9957, reverses #4260 sub-issue D): the operator stop leaves the
+# watchdog timer + service ARMED. The operator-stop record keeps it silent; a
+# stop that disarmed it was how a SIGTERM nobody issued went unnoticed.
 SD_WD_UNIT="${LOOM_SYSTEMD_UNIT%.service}-watchdog"
 TESTS_RUN=$((TESTS_RUN + 1))
-if grep -q -- "--user disable --now ${SD_WD_UNIT}.timer" "$SD_LOG" \
-    && grep -q -- "--user disable --now ${SD_WD_UNIT}.service" "$SD_LOG"; then
+if ! grep -q -- "$SD_WD_UNIT" "$SD_LOG"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
-    echo -e "${GREEN}✓${NC} systemd tier: operator stop disables the watchdog timer + service"
+    echo -e "${GREEN}✓${NC} systemd tier: operator stop leaves the watchdog timer + service untouched (#9957)"
 else
     TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo -e "${RED}✗${NC} systemd tier: operator stop disables the watchdog timer + service"
+    echo -e "${RED}✗${NC} systemd tier: operator stop leaves the watchdog timer + service untouched (#9957)"
     echo "  systemctl calls: $(cat "$SD_LOG")"
+fi
+TESTS_RUN=$((TESTS_RUN + 1))
+if [[ -f "$WORKDIR/.loom/autonomy-desired.stopped" ]]; then
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    echo -e "${GREEN}✓${NC} systemd tier: operator stop writes the operator-stop record (#9957)"
+else
+    TESTS_FAILED=$((TESTS_FAILED + 1))
+    echo -e "${RED}✗${NC} systemd tier: operator stop writes the operator-stop record (#9957)"
 fi
 
 # SD2. Post-disable verification: if the unit is STILL active after disable --now
@@ -505,7 +554,7 @@ stuck_out=$( cd "$WORKDIR" && PATH="$SD_BIN:$PATH" LOOM_SYSTEMD_FORCE=1 \
 stuck_rc=$?
 assert_eq "1" "$stuck_rc" "systemd tier: unit still active after disable --now → stop exits non-zero"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$stuck_out" | grep -qi 'still active'; then
+if grep -qi 'still active' <<<"$stuck_out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} systemd tier: reports the still-active unit instead of success"
 else
@@ -534,7 +583,7 @@ fi
 # SD4. --help documents the systemd disable counterpart + the LOOM_DAEMON_SYSTEMD
 #      escape hatch.
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$help_out" | grep -qi 'systemd' && echo "$help_out" | grep -q 'LOOM_DAEMON_SYSTEMD'; then
+if grep -qi 'systemd' <<<"$help_out" && grep -q 'LOOM_DAEMON_SYSTEMD' <<<"$help_out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} --help documents the systemd disable counterpart + LOOM_DAEMON_SYSTEMD"
 else
@@ -563,7 +612,7 @@ out_machine=$( cd "$NON_REPO_DIR" && LOOM_PID_FILE='' HOME="$MACHINE_HOME" LOOM_
 rc_machine=$?
 assert_eq "0" "$rc_machine" "machine mode: stop from a non-repo dir exits 0"
 TESTS_RUN=$((TESTS_RUN + 1))
-if ! echo "$out_machine" | grep -qi "Not in a Loom workspace"; then
+if ! grep -qi "Not in a Loom workspace" <<<"$out_machine"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} machine mode: never hits the dev-mode 'Not in a Loom workspace' refusal"
 else
@@ -594,7 +643,7 @@ out_dev=$( cd "$NON_REPO_DIR" && LOOM_LAUNCHD_LABEL="$FAKE_LABEL" bash "$STOP_SC
 rc_dev=$?
 assert_eq "1" "$rc_dev" "dev-mode fallback unchanged: stop from a non-repo dir (no dispatcher) still exits 1"
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$out_dev" | grep -qi "Not in a Loom workspace"; then
+if grep -qi "Not in a Loom workspace" <<<"$out_dev"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} dev-mode fallback unchanged: reports 'Not in a Loom workspace'"
 else
@@ -748,7 +797,7 @@ fi
 # (c) --help documents the new tier, so an operator reading the script's own
 #     contract sees which file a stop will target.
 TESTS_RUN=$((TESTS_RUN + 1))
-if echo "$help_out" | grep -q 'LOOM_PID_FILE'; then
+if grep -q 'LOOM_PID_FILE' <<<"$help_out"; then
     TESTS_PASSED=$((TESTS_PASSED + 1))
     echo -e "${GREEN}✓${NC} #6386: --help documents LOOM_PID_FILE"
 else
@@ -863,7 +912,7 @@ EOF
 
     # DR3. --help documents the seam.
     TESTS_RUN=$((TESTS_RUN + 1))
-    if echo "$help_out" | grep -q 'LOOM_DAEMON_STOP_DRYRUN'; then
+    if grep -q 'LOOM_DAEMON_STOP_DRYRUN' <<<"$help_out"; then
         TESTS_PASSED=$((TESTS_PASSED + 1))
         echo -e "${GREEN}✓${NC} --help documents LOOM_DAEMON_STOP_DRYRUN"
     else
@@ -894,6 +943,128 @@ else
     TESTS_FAILED=$((TESTS_FAILED + 1))
     echo -e "${RED}✗${NC} #5501: LOOM_DAEMON_STOP_DRYRUN=1 is the supported bypass for the guard"
 fi
+
+# ============================================================
+# #9957: an operator stop RECORDS itself (the #9588 operator-stop record)
+# instead of deleting the autonomy-desired marker, names its caller by `comm`
+# only, and leaves the watchdog armed. --restarting is unchanged.
+# Every case gets a fresh marker dir: the record is idempotent, so a stale one
+# from an earlier case would satisfy "record exists" vacuously.
+# ============================================================
+r_root="$(mktemp -d)"
+R_BODY=$'# loom autonomy-desired marker\nstarted_at=2026-10-13T00:00:00Z\nwork_finder=true\nhealth_gate=false'
+r_fresh() {  # r_fresh <name> -> marker path, with the marker written
+    mkdir -p "$r_root/$1"
+    printf '%s\n' "$R_BODY" > "$r_root/$1/autonomy-desired"
+    echo "$r_root/$1/autonomy-desired"
+}
+r_check() {  # r_check <desc> <command...>
+    local desc="$1"; shift
+    TESTS_RUN=$((TESTS_RUN + 1))
+    if "$@"; then
+        TESTS_PASSED=$((TESTS_PASSED + 1)); echo -e "${GREEN}✓${NC} #9957: $desc"
+    else
+        TESTS_FAILED=$((TESTS_FAILED + 1)); echo -e "${RED}✗${NC} #9957: $desc"
+    fi
+}
+r_body_kept() { grep -qxF 'work_finder=true' "$1" && grep -qxF 'health_gate=false' "$1" \
+    && grep -qxF 'started_at=2026-10-13T00:00:00Z' "$1"; }
+
+# R1. Live pid, real stop: marker moved aside into the record, original lines
+#     kept, reason names this script and a non-empty `comm` caller chain. The
+#     stop is launched through a `bash -c` whose argv carries a sentinel (two
+#     commands, so bash cannot exec away the wrapper): the record must name
+#     `bash` but NEVER the sentinel (comm, not args).
+R1="$(r_fresh r1)"
+( sleep 30 & echo $! > "$r_root/r1/.daemon.pid" )
+r1_pid=$(cat "$r_root/r1/.daemon.pid")
+bg_proc_track "$r1_pid"
+r1_out=$( cd "$WORKDIR" && LOOM_PID_FILE="$r_root/r1/.daemon.pid" LOOM_LAUNCHD_LABEL="$FAKE_LABEL" \
+    LOOM_AUTONOMY_MARKER="$R1" LOOM_DAEMON_STOP_GRACE_SECS=2 \
+    bash -c 'bash "$1"; exit $?' r1-wrapper "$STOP_SCRIPT" SECRET-ARG-9957 2>&1 )
+r1_rc=$?
+kill -9 "$r1_pid" 2>/dev/null || true
+assert_eq "0" "$r1_rc" "#9957: operator stop of a live daemon exits 0"
+r_check "the autonomy-desired marker is gone after an operator stop" test ! -e "$R1"
+r_check "the operator-stop record <marker>.stopped exists" test -f "$R1.stopped"
+r_check "the record keeps the original marker lines (work_finder=/health_gate=/started_at=)" r_body_kept "$R1.stopped"
+r_check "the record's reason is loom-daemon-stop.sh with a caller chain" \
+    grep -qE '^operator_stop_reason=loom-daemon-stop\.sh caller=[^ ]+' "$R1.stopped"
+r_check "the caller chain names the calling process by comm (bash)" \
+    grep -qE '^operator_stop_reason=.*caller=([^ ]*<)?bash' "$R1.stopped"
+r_check "the record never carries a caller's arguments" \
+    bash -c '! grep -q SECRET-ARG-9957 "$1"' _ "$R1.stopped"
+r_check "the summary line reports the record" grep -q "Operator stop recorded in $R1.stopped" <<<"$r1_out"
+
+# R2. Nothing to stop, but a marker exists (explicitly scoped): recorded too.
+R2="$(r_fresh r2)"
+( cd "$WORKDIR" && LOOM_PID_FILE="$r_root/r2/absent.pid" LOOM_LAUNCHD_LABEL="$FAKE_LABEL" \
+    LOOM_AUTONOMY_MARKER="$R2" bash "$STOP_SCRIPT" >/dev/null 2>&1 )
+r_check "nothing-to-stop path with a marker records the stop" \
+    bash -c 'test ! -e "$1" && test -f "$1.stopped"' _ "$R2"
+
+# R3. Nothing to stop and NO marker: no record is invented (a repeated stop on
+#     a quiet host must not leave a dispatch-holding record behind, cf. #11325).
+mkdir -p "$r_root/r3"
+( cd "$WORKDIR" && LOOM_PID_FILE="$r_root/r3/absent.pid" LOOM_LAUNCHD_LABEL="$FAKE_LABEL" \
+    LOOM_AUTONOMY_MARKER="$r_root/r3/autonomy-desired" bash "$STOP_SCRIPT" >/dev/null 2>&1 )
+r_check "nothing-to-stop path with no marker invents no record" test ! -e "$r_root/r3/autonomy-desired.stopped"
+
+# R4/R5. --restarting and LOOM_DAEMON_STOP_KEEP_INTENT=1 are unchanged: the
+#        marker stays byte-for-byte, no record, the recorder is never invoked.
+for r_mode in flag env; do
+    R4="$(r_fresh "r4-$r_mode")"
+    cp "$R4" "$r_root/r4-$r_mode/before"
+    : > "$REC_ARGV_LOG"
+    ( sleep 30 & echo $! > "$r_root/r4-$r_mode/.daemon.pid" )
+    r4_pid=$(cat "$r_root/r4-$r_mode/.daemon.pid")
+    bg_proc_track "$r4_pid"
+    if [[ "$r_mode" == "flag" ]]; then r4_args=(--restarting); r4_env=(); else r4_args=(); r4_env=(LOOM_DAEMON_STOP_KEEP_INTENT=1); fi
+    ( cd "$WORKDIR" && env ${r4_env[@]+"${r4_env[@]}"} LOOM_PID_FILE="$r_root/r4-$r_mode/.daemon.pid" \
+        LOOM_LAUNCHD_LABEL="$FAKE_LABEL" LOOM_AUTONOMY_MARKER="$R4" LOOM_DAEMON_STOP_GRACE_SECS=2 \
+        bash "$STOP_SCRIPT" ${r4_args[@]+"${r4_args[@]}"} >/dev/null 2>&1 )
+    kill -9 "$r4_pid" 2>/dev/null || true
+    r_check "restart stop ($r_mode): marker byte-for-byte unchanged" cmp -s "$r_root/r4-$r_mode/before" "$R4"
+    r_check "restart stop ($r_mode): no operator-stop record" test ! -e "$R4.stopped"
+    if [[ "$RECORDER_KIND" == "stub" ]]; then
+        r_check "restart stop ($r_mode): the recorder is never invoked" test ! -s "$REC_ARGV_LOG"
+    fi
+done
+
+# R6. Old binary (no `operator-stop record`): the stop still succeeds, removes
+#     the marker the pre-#9957 way, writes no record, and warns.
+R6="$(r_fresh r6)"
+r6_out=$( cd "$WORKDIR" && LOOM_DAEMON_SELF_BIN="$OLD_BIN_DIR/loom-daemon" \
+    LOOM_PID_FILE="$r_root/r6/absent.pid" LOOM_LAUNCHD_LABEL="$FAKE_LABEL" \
+    LOOM_AUTONOMY_MARKER="$R6" bash "$STOP_SCRIPT" 2>&1 )
+r6_rc=$?
+assert_eq "0" "$r6_rc" "#9957: a binary without the verb still stops cleanly (exit 0)"
+r_check "old-binary fallback removes the marker (rm -f)" test ! -e "$R6"
+r_check "old-binary fallback writes no record" test ! -e "$R6.stopped"
+r_check "old-binary fallback warns that the record could not be written" \
+    grep -q 'Could not record the operator stop' <<<"$r6_out"
+
+# R7. Dry-run seam (#5501), platform-independent: the systemd tier with a stub
+#     systemctl. The daemon unit's disable is only LOGGED, the watchdog is not
+#     even mentioned, and the record is still written (it is file state, not a
+#     mutation of the supervised job -- the marker removal behaved the same).
+make_sd_stop_stub
+R7="$(r_fresh r7)"
+R7_ACTIONS="$r_root/r7/actions.log"
+( cd "$WORKDIR" && PATH="$SD_BIN:$PATH" LOOM_SYSTEMD_FORCE=1 LOOM_DAEMON_STOP_DRYRUN=1 \
+    LOOM_DAEMON_STOP_DRYRUN_LOG="$R7_ACTIONS" LOOM_LAUNCHD_LABEL="$FAKE_LABEL" \
+    LOOM_AUTONOMY_MARKER="$R7" bash "$STOP_SCRIPT" >/dev/null 2>&1 )
+r_check "dry-run: the daemon unit's disable is logged, not performed" \
+    bash -c 'grep -q "would systemctl --user disable --now $2" "$1" && ! grep -q "^--user disable" "$3"' \
+    _ "$R7_ACTIONS" "$LOOM_SYSTEMD_UNIT" "$SD_LOG"
+r_check "dry-run: no watchdog action is logged or performed" \
+    bash -c '! grep -qi watchdog "$1" && ! grep -qi watchdog "$2"' _ "$R7_ACTIONS" "$SD_LOG"
+r_check "dry-run: the operator-stop record is written" test -f "$R7.stopped"
+
+# R8. The script no longer contains any watchdog teardown at all.
+r_check "no watchdog bootout / disable remains in loom-daemon-stop.sh" \
+    bash -c '! grep -qE "bootout .*wd_|disable --now .*watchdog|sd_wd_unit" "$1"' _ "$STOP_SCRIPT"
+rm -rf "$r_root"
 
 # Live daemon state guard (#5179, adopted here per #5191): every live `.loom`
 # state path reachable from the ambient environment (the real $HOME/.loom, the

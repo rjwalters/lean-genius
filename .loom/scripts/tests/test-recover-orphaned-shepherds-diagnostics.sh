@@ -36,16 +36,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 RECOVER_SCRIPT="$SCRIPTS_DIR/recover-orphaned-shepherds.sh"
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
-
-TESTS_RUN=0
-TESTS_PASSED=0
-TESTS_FAILED=0
-
-pass() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1)); echo -e "  ${GREEN}PASS${NC}: $1"; }
-fail() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1)); echo -e "  ${RED}FAIL${NC}: $1"; }
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/assert.sh"
 
 if [[ ! -x "$RECOVER_SCRIPT" ]]; then
     echo -e "${RED}FATAL${NC}: $RECOVER_SCRIPT not found or not executable" >&2
@@ -157,7 +148,7 @@ fi
 echo "Test 5: script header documents exit code meanings"
 header="$(sed -n '1,40p' "$RECOVER_SCRIPT")"
 for code_desc in "0 " "1 " "2 " "3 "; do
-    if echo "$header" | grep -qE "^#[[:space:]]*${code_desc}—"; then
+    if grep -qE "^#[[:space:]]*${code_desc}—" <<<"$header"; then
         pass "header documents exit code '${code_desc}—'"
     else
         fail "header does not document exit code '${code_desc}—'. Header:\n$header"

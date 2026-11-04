@@ -22,25 +22,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPTS_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 CLASSIFY_SCRIPT="$SCRIPTS_DIR/classify-ac-verification.sh"
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m'
-
-TESTS_RUN=0
-TESTS_PASSED=0
-TESTS_FAILED=0
-
-pass() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_PASSED=$((TESTS_PASSED + 1)); echo -e "  ${GREEN}PASS${NC}: $1"; }
-fail() { TESTS_RUN=$((TESTS_RUN + 1)); TESTS_FAILED=$((TESTS_FAILED + 1)); echo -e "  ${RED}FAIL${NC}: $1"; }
-
-assert_eq() {
-    local expected="$1" actual="$2" msg="$3"
-    if [[ "$expected" == "$actual" ]]; then
-        pass "$msg"
-    else
-        fail "$msg (expected '$expected', got '$actual')"
-    fi
-}
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/assert.sh"
 
 assert_contains() {
     local needle="$1" haystack="$2" msg="$3"
@@ -297,6 +279,34 @@ for phrase in "${OUT_OF_BAND_PHRASES[@]}"; do
     esac
 done
 assert_eq "0" "$BARE_WORD_FOUND" "no bare single-word phrase is in the vocabulary"
+
+# -------- Test 21: forge evidence counts only via the trust filter (#9548) --------
+echo "Test 21: --issue evidence is read through forge trusted-comments, never raw"
+T21="$WORK_DIR/t21"; mkdir -p "$T21"
+SHA21="abcdef1234567890abcdef1234567890abcdef12"
+# gh: the issue body carries an out-of-band criterion; any raw comment read
+# would see an (outsider's) marker for the head.
+cat > "$T21/gh" <<STUB
+#!/usr/bin/env bash
+case "\$*" in
+  *"--json body"*) printf '## Acceptance Criteria\n\n- [ ] Confirm it works on the next real run\n' ;;
+  *"--json headRefOid"*) echo "$SHA21" ;;
+  *) printf '<!-- loom:ac-verified sha=$SHA21 -->\n' ;;
+esac
+STUB
+# loom-daemon stub: prints the listing in \$T21_LISTING, or fails.
+cat > "$T21/loom-daemon" <<'STUB'
+#!/usr/bin/env bash
+[[ -n "${T21_LISTING:-}" ]] || exit 1
+printf '%s\n' "$T21_LISTING"
+STUB
+chmod +x "$T21/gh" "$T21/loom-daemon"
+run21() { PATH="$T21:$PATH" LOOM_DAEMON_BIN="$T21/loom-daemon" T21_LISTING="$1" \
+    "$CLASSIFY_SCRIPT" --issue 5 --pr 6 --repo o/r >/dev/null 2>&1; echo $?; }
+assert_eq "12" "$(run21 '[]')" "no trusted marker -> 12, whatever raw comments say"
+assert_eq "12" "$(run21 '')" "filter unavailable -> 12 (held open, fail safe)"
+assert_eq "11" "$(run21 "[{\"body\":\"ran it <!-- loom:ac-verified sha=$SHA21 -->\"}]")" "a trusted marker for the head -> 11"
+echo ""
 
 # -------- Summary --------
 echo ""
