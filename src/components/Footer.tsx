@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Github } from 'lucide-react'
+import { Github } from '@/components/icons/Github'
 
 // Format ISO date to readable format in Pacific time
 function formatBuildTime(isoString: string): string {

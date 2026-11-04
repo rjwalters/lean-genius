@@ -3,7 +3,8 @@ import { useParams, Link } from 'react-router-dom'
 import { ProofViewer, AnnotationPanel, TableOfContents, ProofOverview, ProofConclusion, LineageBreadcrumb } from '@/components/proof'
 import { getProofAsync } from '@/data/proofs'
 import type { Annotation, ProofSection, ProofData } from '@/types/proof'
-import { Menu, Github } from 'lucide-react'
+import { Menu } from 'lucide-react'
+import { Github } from '@/components/icons/Github'
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
